@@ -1,0 +1,361 @@
+public static class MummerLog
+{
+    const string Tag = "[Mummer] ";
+
+    public static void Info(string message) { Debug.Log(Tag + message); }
+    public static void Warn(string message) { Debug.LogWarning(Tag + message); }
+    public static void Error(string message) { Debug.LogError(Tag + message); }
+}
+
+public static class MummerUtil
+{
+    public static Dictionary<string, UnityEngine.Object> Folder(string name)
+    {
+        Tds_Masterdatabase db = Tds_Masterdatabase.Instance;
+        Dictionary<string, UnityEngine.Object> folder;
+        if (db == null || db.Items == null || !db.Items.TryGetValue(name, out folder))
+            return null;
+        return folder;
+    }
+
+    public static Heroentryobject Heroentry(string id)
+    {
+        Dictionary<string, UnityEngine.Object> heroes = Folder("Hero");
+        UnityEngine.Object found;
+        return heroes != null && heroes.TryGetValue(id, out found) ? found as Heroentryobject : null;
+    }
+
+    // Bl_Address.Getload, but quiet when the label or item is missing.
+    public static T Load<T>(string label, string name) where T : UnityEngine.Object
+    {
+        List<Bl_Address.Loadlist> lists;
+        if (string.IsNullOrEmpty(name) || !Bl_Address.Groups.TryGetValue(label, out lists))
+            return null;
+        foreach (Bl_Address.Loadlist list in lists)
+        {
+            UnityEngine.Object item;
+            if (list.Items.TryGetValue(name, out item) && item is T)
+                return (T)item;
+        }
+        return null;
+    }
+
+    public static T Clone<T>(T source, string name) where T : Bl_ScriptableObject
+    {
+        T copy = UnityEngine.Object.Instantiate(source);
+        Retag(copy, name);
+        return copy;
+    }
+
+    // Ids only need to be unique and identical on every player's machine.
+    public static void Retag(Bl_ScriptableObject obj, string name)
+    {
+        obj.name = name;
+        obj.Objectname = name;
+        obj.Id = Clip(name.ToLowerInvariant() + "-mummer");
+    }
+
+    // Names travel over the network as FixedString64Bytes (61 UTF-8 bytes max).
+    public static string Clip(string value) { return value.Length > 60 ? value.Substring(0, 60) : value; }
+
+    public static bool IsServer { get { return Game_Entity.Instance != null && Game_Entity.Instance.IsServer; } }
+
+    public static string BeingName(Entity_Master master)
+    {
+        if (master == null)
+            return "";
+        if (master.Beingserver != null && master.Beingserver.Being != null)
+            return master.Beingserver.Being.Objectname;
+        return master.Being.Value.ToString();
+    }
+
+    public static long Owner(Entity_Master master) { return master.Entitydata.Value.Owner; }
+    public static int Team(Entity_Master master) { return master.Entitydata.Value.Team; }
+    public static bool Alive(Entity_Master master) { return master != null && master.Beingserver != null && !master.Beingserver.Dead; }
+    public static Vector3 Pos(Entity_Master master) { return master.Entityposition.Value; }
+
+    public static float Stat(Entity_Master master, string name, float fallback)
+    {
+        Link_Stats stat;
+        return master != null && master.Statsserver != null && master.Statsserver.TryGetValue(name, out stat) ? stat.Value : fallback;
+    }
+
+    // A foe's base health from its data (its live Health is 0 by the time it is despawned).
+    public static float BaseHealth(Entity_Master master)
+    {
+        Entityobject e = master != null && master.Beingserver != null ? master.Beingserver.Entity : null;
+        if (e != null && e.Defaultstat != null)
+            foreach (Statproperties.Defaultstatgroup g in e.Defaultstat.Stats)
+                if (g.Name == "Health")
+                    return g.Value;
+        return Stat(master, "Health", 10f);
+    }
+
+    public static long LocalSession()
+    {
+        Blm_Server server = Blm_Server.Instance;
+        if (server == null || server.Localplayer == null)
+            return long.MinValue;
+        return server.Localplayer.Sessionid.Value;
+    }
+
+    public static bool OwnedLocally(Entity_Master master) { return master != null && master.Entitydata.Value.Owner == LocalSession(); }
+
+    public static bool IsFoe(Entity_Master e, int team)
+    {
+        if (e == null || !Alive(e) || Team(e) == team || e.Taglistserver == null)
+            return false;
+        return e.Taglistserver.Contains("Enemy") && !e.Taglistserver.Contains("Enemycore") && !e.Taglistserver.Contains("Core");
+    }
+
+    public static Link_Entityquery Foes(Entity_Master master)
+    {
+        Link_Entityquery query = new Link_Entityquery();
+        query.Being = master.Beingserver;
+        query.Teamfor = false;
+        query.Tags = new List<string> { "Mob" };
+        query.Style = Link_Entityquery.Styles.Both;
+        return query;
+    }
+
+    public static Link_Entityquery Tagged(string tag)
+    {
+        Link_Entityquery query = new Link_Entityquery();
+        query.Tags = new List<string> { tag };
+        query.Style = Link_Entityquery.Styles.Tag;
+        return query;
+    }
+
+    public static Entity_Master[] Area(Vector3 position, float radius, Link_Entityquery query)
+    {
+        Entity_Master[] found = Helper_Entityquerytools.Entityarea(position, radius, query, true);
+        return found ?? new Entity_Master[0];
+    }
+
+    // Foes (tagged Enemy) within a radius, nearest first.
+    public static List<Entity_Master> FoesNear(Entity_Master from, Vector3 position, float radius)
+    {
+        List<Entity_Master> list = new List<Entity_Master>();
+        int team = Team(from);
+        foreach (Entity_Master e in Area(position, radius, Foes(from)))
+            if (IsFoe(e, team))
+                list.Add(e);
+        return list;
+    }
+
+    public static Dictionary<string, float> Data(string key, float value)
+    {
+        Dictionary<string, float> data = new Dictionary<string, float>();
+        data[key] = value;
+        return data;
+    }
+
+    // A hit for an exact amount (Dodamage reads Data["Damage"] x Data["Damagemulti"]).
+    public static void Hurt(Entity_Master from, Entity_Master to, float damage)
+    {
+        if (from == null || to == null || !Alive(to) || damage <= 0f)
+            return;
+        Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", damage }, { "Damagemulti", 1f } };
+        Helper_Entitytools.Interact(from, to, "Hurt", d);
+    }
+
+    public static void Heal(Entity_Master from, Entity_Master to, float amount)
+    {
+        if (from == null || to == null || !Alive(to) || amount <= 0f)
+            return;
+        Dictionary<string, float> d = new Dictionary<string, float> { { "Heal", amount }, { "Damage", amount }, { "Damagemulti", 1f } };
+        Helper_Entitytools.Interact(from, to, "Heal", d);
+    }
+
+    // Plays a named effect on every player's machine (handled by MummerClient).
+    public static void Vis(Entity_Master master, string type, Vector3 position, float number)
+    {
+        if (master != null && master.Radio != null)
+            master.Radio.Vis_ClientRpc(type, position, number);
+    }
+
+    // A debuff effect the game itself attaches to the target on every player (looked up by name under "Vfx"). The
+    // target goes by its synced Beingref, as the game's own debuffs do: Link_Being.Beingrefparallel is copied before
+    // the spawn fills in its Worldobject, so clients can't resolve it and the effect never appears.
+    public static void Debuff(Entity_Master radioOf, Entity_Master target, string vfx, float duration)
+    {
+        if (radioOf != null && radioOf.Radio != null && target != null && target.Beingref != null)
+            radioOf.Radio.Vfxdebuffcheck(vfx, target.Beingref.Value, duration);
+    }
+
+    public static void RemoveDebuff(Entity_Master radioOf, Entity_Master target, string vfx)
+    {
+        if (radioOf != null && radioOf.Radio != null && target != null && target.Beingref != null)
+            radioOf.Radio.Vfxremovedebuff_ClientRpc(vfx, target.Beingref.Value);
+    }
+
+    // Owner-only message, shown by MummerClient on the owner's screen.
+    public static void Warn(Entity_Master master, int code) { Vis(master, "Mummer_Warn", Pos(master), code); }
+
+    // Network ids fit a float exactly below 2^24, which covers every entity of a match.
+    public static Entity_Master ById(ulong id)
+    {
+        Game_Entity ge = Game_Entity.Instance;
+        if (ge == null || ge.Entityclient == null)
+            return null;
+        foreach (Entity_Master e in ge.Entityclient)
+            if (e != null && e.NetworkObjectId == id)
+                return e;
+        return null;
+    }
+
+    public static List<Link_Resourceset> Costs(string spec)
+    {
+        List<Link_Resourceset> costs = new List<Link_Resourceset>();
+        if (string.IsNullOrEmpty(spec))
+            return costs;
+        foreach (string part in spec.Split(';'))
+        {
+            string[] kv = part.Split('=');
+            float amount;
+            if (kv.Length != 2 || !float.TryParse(kv[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out amount))
+                continue;
+            Link_Resourceset c = new Link_Resourceset();
+            c.Name = kv[0].Trim();
+            c.Amount = amount;
+            costs.Add(c);
+        }
+        return costs;
+    }
+
+    public static Dictionary<string, float> Params(string spec)
+    {
+        Dictionary<string, float> d = new Dictionary<string, float>();
+        if (string.IsNullOrEmpty(spec))
+            return d;
+        foreach (string part in spec.Split(';'))
+        {
+            string[] kv = part.Split('=');
+            float v;
+            if (kv.Length == 2 && float.TryParse(kv[1], System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v))
+                d[kv[0].Trim()] = v;
+        }
+        return d;
+    }
+
+    public static float F(string s)
+    {
+        float v;
+        return float.TryParse(s, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v) ? v : 0f;
+    }
+
+    public static string Join(IEnumerable<string> items) { return string.Join(", ", new List<string>(items).ToArray()); }
+
+    // The engine attaches AI and visual scripts with Type.GetType(listEntry.name): only an entry's name matters. A named
+    // carrier lets Mummer's data use any of the game's own generic scripts.
+    static readonly Dictionary<string, UnityEngine.Object> carriers = new Dictionary<string, UnityEngine.Object>();
+
+    public static UnityEngine.Object Script(string className)
+    {
+        UnityEngine.Object carrier;
+        if (carriers.TryGetValue(className, out carrier) && carrier != null)
+            return carrier;
+        carrier = new TextAsset("");
+        carrier.name = className;
+        carrier.hideFlags = HideFlags.DontUnloadUnusedAsset;
+        carriers[className] = carrier;
+        return carrier;
+    }
+
+    // A counter stat shown in the entity's stat panel (like the archer's Deathmarkkill), driven through a Base modifier.
+    public static Link_Modifier Counter(Entity_Master master, string name, float value)
+    {
+        if (!master.Statsserver.ContainsKey(name))
+        {
+            Link_Stats stat = new Link_Stats();
+            stat.Name = name;
+            stat.Value_Base = 0f;
+            stat.Style = Statproperties.Defaultstatgroup.Styles.Counter;
+            stat.Display_Type = Statproperties.Displaytypes.Int;
+            stat.Display_Exposed = true;
+            Helper_Entitytools.Addstat(master, stat, 0f);
+        }
+        Link_Modifier mod = Helper_Entitytools.Addmod(master, name, value, Helper_Entitytools.Modtypes.Base, 0f);
+        Link_Stats s;
+        if (master.Statsserver.TryGetValue(name, out s))
+            s.Value = s.Value_Calc;
+        return mod;
+    }
+
+    public static void SetCounter(Entity_Master master, Link_Modifier mod, string name, float value)
+    {
+        if (mod == null)
+            return;
+        mod.Value_Base = value;
+        Link_Stats s;
+        if (master != null && master.Statsserver.TryGetValue(name, out s))
+            s.Value = s.Value_Calc;
+    }
+
+    public static void Skin(Entity_Master master, string skin)
+    {
+        FixedString64Bytes value = new FixedString64Bytes(skin ?? "");
+        if (master.Skin.Value != value)
+            master.Skin.Value = value;
+    }
+
+    // Holds a foe in place (and optionally stops it attacking) for a while, with the game's own stun/slow look.
+    public static void Hold(Entity_Master by, Entity_Master foe, float seconds, bool noAttack, string vfx)
+    {
+        if (foe == null || !Alive(foe) || seconds <= 0f)
+            return;
+        Helper_Entitytools.Addmod(foe, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, seconds);
+        if (noAttack && foe.Statsserver.ContainsKey("Attackspeed"))
+            Helper_Entitytools.Addmod(foe, "Attackspeed", -0.95f, Helper_Entitytools.Modtypes.Multi, seconds);
+        if (!string.IsNullOrEmpty(vfx))
+            Debuff(by, foe, vfx, seconds);
+    }
+
+    public static void Slow(Entity_Master by, Entity_Master foe, float fraction, float seconds)
+    {
+        if (foe == null || !Alive(foe) || seconds <= 0f || fraction <= 0f)
+            return;
+        Helper_Entitytools.Addmod(foe, "Speed", -Mathf.Clamp01(fraction), Helper_Entitytools.Modtypes.Multi, seconds);
+    }
+
+    public static string JsonString(string json, string field)
+    {
+        string key = "\"" + field + "\"";
+        int i = json.IndexOf(key, StringComparison.Ordinal);
+        if (i < 0) return "";
+        i = json.IndexOf(':', i + key.Length);
+        if (i < 0) return "";
+        int start = json.IndexOf('"', i + 1);
+        if (start < 0) return "";
+        int end = json.IndexOf('"', start + 1);
+        return end > start ? json.Substring(start + 1, end - start - 1) : "";
+    }
+
+    public static double JsonNumber(string json, string field)
+    {
+        string key = "\"" + field + "\"";
+        int i = json.IndexOf(key, StringComparison.Ordinal);
+        if (i < 0) return 0;
+        i = json.IndexOf(':', i + key.Length);
+        if (i < 0) return 0;
+        int j = i + 1;
+        while (j < json.Length && (json[j] == ' ' || json[j] == '"')) j++;
+        int k = j;
+        while (k < json.Length && (char.IsDigit(json[k]) || json[k] == '-' || json[k] == '.' || json[k] == 'e' || json[k] == 'E' || json[k] == '+')) k++;
+        double v;
+        return double.TryParse(json.Substring(j, k - j), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out v) ? v : 0;
+    }
+
+    public static void Later(MonoBehaviour host, float delay, Action action)
+    {
+        if (host != null && host.isActiveAndEnabled)
+            host.StartCoroutine(Delay(delay, action));
+    }
+
+    static IEnumerator Delay(float delay, Action action)
+    {
+        yield return new WaitForSeconds(delay);
+        try { action(); }
+        catch (Exception e) { MummerLog.Warn("delayed action: " + e.Message); }
+    }
+}

@@ -1,0 +1,1166 @@
+BEGIN
+FOLDER Hero (6): [Hero_Smacky, Hero_Snosno, Hero_Boutman, Hero_Fie, Hero_Buster, Hero_Sprigg]
+FOLDER Map (54): [Map_Test, Map_Testflat, Map_Gridhead, Map_Monogrove, Map_Idk, Map_Galbass, Map_Estate, Map_Oakjunction, Map_Seasidevilla, Map_Maybeth, Map_Manafold, Map_Ulu, Map_Woozy, Map_Artrio, Map_Brittle, Map_Purlest, Map_Thehunt, Map_Vultures, Map_Tutorial, Map_Skyhook, Map_Manafoldold, Map_Kong, Map_Blasthead, Map_Hydroplane, Map_Mercs, Map_Oroboro, Map_Chrono, Map_Crescent, Map_Crimson, Map_Hold, Map_Mini, Map_Snobound, Map_Split, Map_Hydraden, Map_Final, Map_Artrio_Alt, Map_Blasthead_Alt, Map_Brittle_Alt, Map_Chrono_Alt, Map_Crescent_Alt, Map_Crimson_Alt, Map_Galbass_Alt, Map_Gridhead_Alt, Map_Mercs_Alt, Map_Mini_Alt, Map_Monogrove_Alt, Map_Purlest_Alt, Map_Skyhook_Alt, Map_Split_Alt, Map_Tutorial_Alt, Map_Ulu_Alt, Map_Vultures_Alt, Map_Woozy_Alt, Map_Custom]
+FOLDER Mode (6): [Mode_Normal, Mode_Tutorial, Mode_Storm, Mode_Drought, Mode_Tsunami, Mode_Final]
+FOLDER Icons (7): [Icon_Counters, Icon_Stats, Icon_Types, Icon_Macro, Icon_Warning, Icon_Endstats, Icon_Tutorial]
+FOLDER Other (2): [Stats_Default, Earlygame_Funfacts]
+FOLDER World (7): [World_Main, World_Sub, World_Omeanchor, World_Omesphere, World_Alphanchor, World_Aquillasphere, World_Turbulenthighsphere]
+FOLDER Vfx (36): [Mapselectpreview, Mapselectpreviewmini, Boat, Heroselectclick, Nodeselectpreview, Nodeselectpreviewmini, Warpselectpreview, Warpselectpreviewmini, Mapiconfill, Playeradd, Playerentry, Readychar, Selectotherchar, Towercontainer, Equipmenuoptioncontainer, Artifactcontainer, Mapgoto, Nextnodepreview, Nodegoto, Warpgoto, Blipcounter, Macrovfx_Unlockblip, Macrovfx_Beam, Macrovfx_Mapwaypointgrow, Macrovfx_Mapwaypointblip, Waypointcontainer, Billboardnode, Macro_Overlay, Macrovfx_Unlockblipcondition, Waypointvisual, Artifactdiscoverycontainer, Mapdiscoverycontainer, Markerdiscoverycontainer, Special_Gamepadind, Leaderboardcardinalbase, Vesselcardinalbase]
+FOLDER Soundtrack (6): [Soundtrack_Blue, Soundtrack_Main, Soundtrack_Yellow, Soundtrack_Red, Soundtrack_Cyan, Soundtrack_Mainoriginal]
+FOLDER Gameplan (51): [2B_Maybeth, 2_Gridhead, 2B_Monogrove, Test_Seaside, 2_Galbass, 4_Artrio, 3B_Woozy, Test_Manafold, 2_Ulu, Test_Brittle, 3_Opal, 3B_Thehunt, Test_Vultures, Special_Tutorial, 1_Skyhook, 3_Manafold, 3_Vultures, 3BH_Kong, 2C_Blasthead, 2D_Mercs, 4B_Brittle, 4_Hydroplane, 4C_Oroboro, 0B_Hydragen, 4B_Crimson, 5_Chrono, 5_Mini, 5_Snobound, 5B_Crescent, 5B_Hold, 5B_Split, 5B_Final, Alt_0_Tutorial, Alt_1_Skyhook, Alt_2_Galbass, Alt_2_Gridhead, Alt_2_Ulu, Alt_2B_Monogrove, Alt_2C_Blasthead, Alt_2D_Mercs, Alt_3_Opal, Alt_3_Vultures, Alt_3B_Woozy, Alt_4_Artrio, Alt_4B_Brittle, Alt_4B_Crimson, Alt_5_Chrono, Alt_5_Mini, Alt_5B_Crescent, Alt_5B_Split, Special_Custom]
+FOLDER Unlock (105): [Hero_Unlocksnono, 2B_Monogrovewaypoint, 1_Skyhookwaypoint, 2_Galbasswaypoint, 2_Gridheadwaypoint, 2_Uluwaypoint, 2B_Maybethwaypoint, 3_Opalwaypoint, 3B_Woozywaypoint, 4_Artriowaypoint, Hero_Unlockboutman, 3_Manafoldwaypoint, 3_Vultureswaypoint, 3B_Thehuntwaypoint, Drive_Blue, Drive_Red, Drive_Yellow, Gate_Alph1, Gate_Alph2, Artifact_Bluecoin, Artifact_Blurryphoto, Artifact_Caffeine, Artifact_Converter, Artifact_Glasscore, Artifact_Greencoin, Artifact_Kippy, Artifact_Moneybag, Artifact_Opalcore, Artifact_Paper, Artifact_Redcoin, Artifact_Samedayshipping, Artifact_Seeds, Artifact_Textbook, Artifact_Vintage, Artifact_Wavebreaker, Artifact_Yellowcoin, Hero_Unlocksnonocounter, Bird_Special, Artifact_Beastpelt, 3BH_Kongwaypoint, Artifact_Fishbait, Artifact_Rustypipe, Artifact_Slippers, 2C_Blastheadwaypoint, 2D_Mercswaypoint, 4B_Brittlewaypoint, 4_Hydroplanewaypoint, 4C_Oroborowaypoint, Artifact_Badge, Artifact_Chimera, Artifact_Gavel, Artifact_Loop, Artifact_Titan, Gate_Aquilla1, Gate_Aquilla2, Gate_Blasthead, Gate_Ometutorialpath, Artifact_Pig, Hero_Unlockbuster, 0B_Hydragenwaypoint, 4B_Crimsonwaypoint, 5_Chronowaypoint, 5_Miniwaypoint, 5_Snoboundwaypoint, 5B_Crescentwaypoint, 5B_Holdwaypoint, 5B_Splitwaypoint, Artifact_Fragment, Artifact_Mooncore, Artifact_Rock, Artifact_Sandbox, Artifact_Tackle, Artifact_Voice, Artifact_Checklist, Artifact_Computer, Artifact_Cubeddrink, Artifact_Diorama, Artifact_Greatspear, Artifact_Bluepaint, Hero_Unlockfiecounter, Hero_Unlockfie, Gate_Snobound, Gate_Mini, Gate_Chrono, Drive_Yellowshow, Gate_Yellowdrive, Gateview_Start, Gate_Final, Gate_Hold, Gate_Split, Gate_Crescent, Gate_Crescent_Beam, Gate_Hold_Beam, Gate_Split_Beam, Gate_Win, Leaderboard_Special, Altmaps_Special, Artifact_Special, Artifact_Bird, Playmode_Flood, Playmode_Normal, Playmode_Tsunami, Playmode_Storm, Playmode_Tutorial, Unlock_Firstartifact]
+FOLDER Artifact (40): [Artifact_Redcoin, Artifact_Yellowcoin, Artifact_Greencoin, Artifact_Bluecoin, Artifact_Pig, Artifact_Kippy, Artifact_Paper, Artifact_Vintage, Artifact_Blurryphoto, Artifact_Caffeine, Artifact_Converter, Artifact_Opalcore, Artifact_Samedayshipping, Artifact_Seeds, Artifact_Textbook, Artifact_Wavebreaker, Artifact_Glasscore, Artifact_Beastpelt, Artifact_Fishbait, Artifact_Rustypipe, Artifact_Slippers, Artifact_Badge, Artifact_Chimera, Artifact_Gavel, Artifact_Loop, Artifact_Titan, Artifact_Moneybag, Artifact_Bluepaint, Artifact_Fragment, Artifact_Mooncore, Artifact_Rock, Artifact_Sandbox, Artifact_Tackle, Artifact_Voice, Artifact_Checklist, Artifact_Computer, Artifact_Cubeddrink, Artifact_Diorama, Artifact_Greatspear, Artifact_Bird]
+FOLDER Lighting (55): [Macro_Alphanchor, Macro_Aquilla, Macro_Highsphere, Macro_Omeanchor, Macro_Omesphere, Macro_World, Other_Mainmenu, Other_Mainmenudemo, Map_Woozy, Map_Chrono, Map_Crescent, Map_Crimson, Map_Final, Map_Hold, Map_Hydragen, Map_Mini, Map_Snobound, Map_Split, Map_Artrio, Map_Blasthead, Map_Brittle, Map_Galbass, Map_Gridhead, Map_Hydroplane, Map_Kong, Map_Manafold, Map_Maybeth, Map_Mercs, Map_Monogrove, Map_Oroboro, Map_Prototyping, Map_Purlest, Map_Skyhook, Map_Thehunt, Map_Tutorial, Map_Ulu, Map_Vultures, Map_Woozy_Alt, Map_Blasthead_Alt, Map_Brittle_Alt, Map_Chrono_Alt, Map_Crescent_Alt, Map_Crimson_Alt, Map_Galbass_Alt, Map_Gridhead_Alt, Map_Mercs_Alt, Map_Mini_Alt, Map_Monogrove_Alt, Map_Purlest_Alt, Map_Skyhook_Alt, Map_Split_Alt, Map_Tutorial_Alt, Map_Ulu_Alt, Map_Vultures_Alt, Map_Artrio_Alt]
+FOLDER Atmosphere (28): [Map_Chrono, Map_Crescent, Map_Crimson, Map_Final, Map_Hold, Map_Hydragen, Map_Mini, Map_Snobound, Map_Split, Map_Artrio, Map_Blasthead, Map_Brittle, Map_Galbass, Map_Gridhead, Map_Hydroplane, Map_Kong, Map_Manafold, Map_Maybeth, Map_Mercs, Map_Monogrove, Map_Oroboro, Map_Purlest, Map_Skyhook, Map_Thehunt, Map_Tutorial, Map_Ulu, Map_Vultures, Map_Woozy]
+
+HERO Hero_Smacky | name 'Smacky' | sub 'Good Ol' Fella' | skill 'Basic' | towers [Tower_Smackyarcher, Tower_Smackybomber, Tower_Smackyhut, Tower_Smackywall] | color RGBA(0.502, 0.702, 1.000, 1.000) | loads Hero_Smacky | loadingsize (12.00, 1.00) landingsize (12.00, 1.00) idlesize (6.00, 1.00)
+  LOG title 'Smacky' desc 'Smacky, you are a great Vessel. Let your work bring purification to our home. No matter how big it may become.'
+  LIST Hero (1)
+    BEING Hero_Smacky | block General_Mob_Block_Height 1 | notes 'Uses the General_Mob preset\n'
+      ENTITY Hero_Smacky_Entity | name 'Hero Smacky' | display 'Smacky' | desc 'Fast, single-target melee'
+      tags [Mob, Hero] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Combat, Entity_Ai_Hero_Buildsell, Entity_Ai_Hero_Smacky] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Hero]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 3 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Hero_Smacky_Statproperties [Health=50 Number/Default/hidden, Speed=3 Number/Default/hidden, Damage=4 Number/Default/hidden, Range=1.5 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Buildrange=2 Number/Default/hidden, Sellrate=0.5 Number/Default/hidden]
+      VISUAL Hero_Smacky_Visualproperties | default Sprite prefab - sprite Hero_Smacky_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0 snd 2:General_Footstep/5:General_Footstep), Falling(1x12 spd 1 loop reset prio 2), Land(1x12 spd 1 reset prio 2 ->Idle), Landquick(4x1 spd 10 reset prio 2 ->Idle)]
+  LIST Upgrade (45)
+    UPGRADE Hero_Smacky_Speed_Upgradeobject | tier -1 | 'Smackin'' | desc '' | costs [] | params {} | ais [] | vis - | next []
+    UPGRADE Tower_Smackyarcher_Range2_Upgradeobject | tier 2 | 'Long Bow' | desc 'Greatly increased range' | costs [Blueaura 25] | params {Range_Add=2.5} | ais [] | vis Tower_Smackyarcher_Range2_Visualproperties | next [Tower_Smackyarcher_Rapid3_Upgradeobject, Tower_Smackyarcher_Heavy3_Upgradeobject, Tower_Smackyarcher_Range3_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Range3_Upgradeobject | tier 3 | 'Eagle Eyes' | desc 'Shoot with great precision and distance' | costs [Redaura 30, Blueaura 25] | params {Range_Multi=0.5; Projspeed_Pmulti=0.5} | ais [] | vis Tower_Smackyarcher_Range3_Visualproperties | next [Tower_Smackyarcher_Rapid4_Upgradeobject, Tower_Smackyarcher_Boss4_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Rapid2_Upgradeobject | tier 2 | 'Rapid Fire' | desc 'Increased firing speed' | costs [Redaura 35] | params {Attackspeed_Add=0.5} | ais [] | vis Tower_Smackyarcher_Rapid2_Visualproperties | next [Tower_Smackyarcher_Rapid3_Upgradeobject, Tower_Smackyarcher_Range3_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Rapid3_Upgradeobject | tier 3 | 'Auto Bow' | desc 'Shoot even faster' | costs [Redaura 45] | params {Attackspeed_Multi=0.5} | ais [] | vis Tower_Smackyarcher_Rapid3_Visualproperties | next [Tower_Smackyarcher_Rapid4_Upgradeobject, Tower_Smackyarcher_Explosive4_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Rapid4_Upgradeobject | tier 4 | 'Bow Squad' | desc 'Tower now supports two archers, increased damage' | costs [Redaura 500, Blueaura 50] | params {Attackspeed_Multi=1; Damage_Add=4} | ais [] | vis Tower_Smackyarcher_Rapid4_Visualproperties | next [] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Heavy3_Upgradeobject | tier 3 | 'Heavy Bow' | desc 'Fire heavy arrows that pierce' | costs [Redaura 50] | params {} | ais [] | vis Tower_Smackyarcher_Heavy3_Visualproperties | next [Tower_Smackyarcher_Rapid4_Upgradeobject, Tower_Smackyarcher_Explosive4_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Fire2_Upgradeobject | tier 2 | 'Fire Arrows' | desc 'Increased damage, dealt over time' | costs [Redaura 35] | params {Damage_Multi=0.6; Burnticks_Add=5; Burnticks_Duration=1} | ais [] | vis Tower_Smackyarcher_Fire2_Visualproperties | next [Tower_Smackyarcher_Rapid3_Upgradeobject, Tower_Smackyarcher_Heavy3_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Explosive4_Upgradeobject | tier 4 | 'Explosive Arrows' | desc 'Arrows deal damage in a small radius' | costs [Redaura 325, Blueaura 10] | params {} | ais [] | vis Tower_Smackyarcher_Explosive4_Visualproperties | next [Tower_Smackyarcher_Death5_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Death5_Upgradeobject | tier 5 | 'Death Mark' | desc 'Execute targets, grows stronger overtime' | costs [Redaura 4500] | params {Killthreshold_Percent=0.15; Damageperkill_Add=0.25} | ais [] | vis Tower_Smackyarcher_Death5_Visualproperties | next [] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackyarcher_Boss4_Upgradeobject | tier 4 | 'Assassin Shots' | desc 'The more health they have. The harder they fall.' | costs [Redaura 650] | params {Damageperhealth_Add=35; Healththreshold_Base=500; Damageadd_Max=100} | ais [] | vis Tower_Smackyarcher_Boss4_Visualproperties | next [Tower_Smackyarcher_Death5_Upgradeobject] | notes 'Requires Entity_Ai_Tower_Smackyarcher'
+    UPGRADE Tower_Smackywall_Beacon5_Upgradeobject | tier 5 | 'Beacon' | desc 'Increases adjacent buildings' defense each tide permanently' | costs [Blueaura 2750] | params {} | ais [] | vis Tower_Smackywall_Beacon5_Visualproperties | next [] | notes 'places nearby beacon-adding zones on adjacent diagonals\n'
+    UPGRADE Tower_Smackywall_Health2_Upgradeobject | tier 2 | 'Reinforced' | desc 'Increased health' | costs [Blueaura 25] | params {Health_Pmulti=1} | ais [] | vis Tower_Smackywall_Health2_Visualproperties | next [Tower_Smackywall_Health3_Upgradeobject, Tower_Smackywall_Regen3_Upgradeobject, Tower_Smackywall_Spike3_Upgradeobject]
+    UPGRADE Tower_Smackywall_Health3_Upgradeobject | tier 3 | 'Stone Wall' | desc 'Health greatly increased' | costs [Blueaura 75] | params {Health_Pmulti=1.5} | ais [] | vis Tower_Smackywall_Health3_Visualproperties | next [Tower_Smackywall_Health4_Upgradeobject, Tower_Smackywall_Permanent4_Upgradeobject]
+    UPGRADE Tower_Smackywall_Health4_Upgradeobject | tier 4 | 'Steel Wall' | desc 'Health increased drastically' | costs [Blueaura 325] | params {Health_Pmulti=3.5} | ais [] | vis Tower_Smackywall_Health4_Visualproperties | next [Tower_Smackywall_Beacon5_Upgradeobject]
+    UPGRADE Tower_Smackywall_Permanent4_Upgradeobject | tier 4 | 'Perma-Wall' | desc 'Wall will respawn if destroyed' | costs [Blueaura 500, Yellowaura 150] | params {} | ais [] | vis Tower_Smackywall_Permanent4_Visualproperties | next []
+    UPGRADE Tower_Smackywall_Regen2_Upgradeobject | tier 2 | 'Repair Team' | desc 'Regen health overtime' | costs [Blueaura 20] | params {Effect_Add=7.5} | ais [] | vis Tower_Smackywall_Regen2_Visualproperties | next [Tower_Smackywall_Health3_Upgradeobject, Tower_Smackywall_Regen3_Upgradeobject]
+    UPGRADE Tower_Smackywall_Regen3_Upgradeobject | tier 3 | 'Rejuvenate' | desc 'Heal nearby towers and units each tide' | costs [Blueaura 15, Yellowaura 10] | params {Effect_Add=100; Range_Base=2.5} | ais [Entity_Ai_Effect_Smackywall_Regen] | vis Tower_Smackywall_Regen3_Visualproperties | next [Tower_Smackywall_Health4_Upgradeobject, Tower_Smackywall_Permanent4_Upgradeobject]
+    UPGRADE Tower_Smackywall_Spike2_Upgradeobject | tier 2 | 'Spikes' | desc 'Hurt enemies that attack this building' | costs [Redaura 10, Blueaura 15] | params {Damage_Base=3} | ais [] | vis Tower_Smackywall_Spike2_Visualproperties | next [Tower_Smackywall_Spike3_Upgradeobject]
+    UPGRADE Tower_Smackywall_Spike3_Upgradeobject | tier 3 | 'Hidden Surprise' | desc 'leave lingering spikes when drowned' | costs [Redaura 80] | params {Damage_Base=5} | ais [] | vis Tower_Smackywall_Spike3_Visualproperties | next [Tower_Smackywall_Spike4_Upgradeobject]
+    UPGRADE Tower_Smackywall_Spike4_Upgradeobject | tier 4 | 'Bramble' | desc 'Adjacent towers will also do damage when attacked' | costs [Redaura 250, Yellowaura 50] | params {} | ais [] | vis Tower_Smackywall_Spike4_Visualproperties | next []
+    UPGRADE Tower_Smackybomber_Bounce4_Upgradeobject | tier 4 | 'Bouncing Bombs' | desc 'How does it work? Don't ask.' | costs [Redaura 600] | params {Damage_Add=4} | ais [] | vis Tower_Smackybomber_Bounce4_Visualproperties | next [Tower_Smackybomber_Detonate5_Upgradeobject]
+    UPGRADE Tower_Smackybomber_Detonate5_Upgradeobject | tier 5 | 'Detonate' | desc 'Take down everything in sight when drowned' | costs [Redaura 2500] | params {Damage_Multi=0.5; Attackspeed_Add=0.25; Detonate_Base=1000} | ais [] | vis Tower_Smackybomber_Detonate5_Visualproperties | next []
+    UPGRADE Tower_Smackybomber_Quick2_Upgradeobject | tier 2 | 'Quick Bombs' | desc 'Throw bombs faster' | costs [Redaura 50] | params {Attackspeed_Add=0.15} | ais [] | vis Tower_Smackybomber_Quick2_Visualproperties | next [Tower_Smackybomber_Quick3_Upgradeobject]
+    UPGRADE Tower_Smackybomber_Quick3_Upgradeobject | tier 3 | 'Cannons' | desc 'Adds an extra layer of boom!' | costs [Redaura 175] | params {Attackspeed_Multi=0.2} | ais [Entity_Ai_Tower_Smackybomber_Cannon] | vis Tower_Smackybomber_Quick3_Visualproperties | next []
+    UPGRADE Tower_Smackybomber_Range2_Upgradeobject | tier 2 | 'Bomb Launcher' | desc 'Increases the range greatly, reduced the tossing speed' | costs [Redaura 25, Blueaura 5] | params {Range_Add=3; Attackspeed_Add=-0.1} | ais [] | vis Tower_Smackybomber_Range2_Visualproperties | next [Tower_Smackybomber_Slow3_Upgradeobject, Tower_Smackybomber_Range3_Upgradeobject]
+    UPGRADE Tower_Smackybomber_Range3_Upgradeobject | tier 3 | 'Dynamite' | desc 'Vastly increased range and travel time, larger explosions' | costs [Redaura 100, Blueaura 100] | params {Range_Multi=0.5; Projduration_Add=1; Count_Add=10} | ais [] | vis Tower_Smackybomber_Range3_Visualproperties | next [Tower_Smackybomber_Split4_Upgradeobject, Tower_Smackybomber_Bounce4_Upgradeobject]
+    UPGRADE Tower_Smackybomber_Slow3_Upgradeobject | tier 3 | 'Staggering Bombs' | desc 'Slows enemies down on contact' | costs [Blueaura 100, Yellowaura 100] | params {Slow_Multi=-0.5; Duration_Base=4} | ais [] | vis Tower_Smackybomber_Slow3_Visualproperties | next [Tower_Smackybomber_Split4_Upgradeobject, Tower_Smackybomber_Bounce4_Upgradeobject]
+    UPGRADE Tower_Smackybomber_Splash2_Upgradeobject | tier 2 | 'Bigger Bombs' | desc 'Increase the explosive power of bombs' | costs [Redaura 20, Blueaura 20] | params {Count_Add=5} | ais [] | vis Tower_Smackybomber_Splash2_Visualproperties | next [Tower_Smackybomber_Slow3_Upgradeobject, Tower_Smackybomber_Range3_Upgradeobject]
+    UPGRADE Tower_Smackybomber_Split4_Upgradeobject | tier 4 | 'Splitting Bombs' | desc 'Smaller bombs on contact, stronger bombs' | costs [Redaura 250, Blueaura 250] | params {Damage_Add=2.5} | ais [] | vis Tower_Smackybomber_Split4_Visualproperties | next []
+    UPGRADE Tower_Smackyhut_Chips3_Upgradeobject | tier 3 | 'Ore Scraps' | desc 'Miners gain additional scraps of resources they hit' | costs [Redaura 75, Yellowaura 125] | params {} | ais [] | vis Tower_Smackyhut_Chips3_Visualproperties | next [Tower_Smackyhut_Convert4_Upgradeobject, Tower_Smackyhut_Market4_Upgradeobject]
+    UPGRADE Tower_Smackyhut_Convert4_Upgradeobject | tier 4 | 'Processing Plant' | desc 'Enables conversion, convert some resource to another' | costs [Yellowaura 250] | params {} | ais [] | vis Tower_Smackyhut_Convert4_Visualproperties | next [Tower_Smackyhut_Miner5_Upgradeobject]
+    UPGRADE Tower_Smackyhut_Market4_Upgradeobject | tier 4 | 'Marketplace' | desc 'Gain all resources across the world when miners pass' | costs [Yellowaura 275] | params {Visits_Base=4; Damage_Base=1} | ais [] | vis Tower_Smackyhut_Market4_Visualproperties | next []
+    UPGRADE Tower_Smackyhut_Miner2_Upgradeobject | tier 2 | 'Mining Operation' | desc 'Hire another miner' | costs [Yellowaura 30] | params {Units_Add=1} | ais [] | vis Tower_Smackyhut_Miner2_Visualproperties | next [Tower_Smackyhut_Miner3_Upgradeobject, Tower_Smackyhut_Chips3_Upgradeobject]
+    UPGRADE Tower_Smackyhut_Miner3_Upgradeobject | tier 3 | 'Mining Union' | desc 'Hire another miner' | costs [Yellowaura 100] | params {Units_Add=1} | ais [] | vis Tower_Smackyhut_Miner3_Visualproperties | next [Tower_Smackyhut_Convert4_Upgradeobject, Tower_Smackyhut_Market4_Upgradeobject, Tower_Smackyhut_Support4_Upgradeobject]
+    UPGRADE Tower_Smackyhut_Miner5_Upgradeobject | tier 5 | 'Excavation Facility' | desc 'Rough n' Tough Miners!' | costs [Yellowaura 2000] | params {Units_Add=1} | ais [] | vis Tower_Smackyhut_Miner5_Visualproperties | next []
+    UPGRADE Tower_Smackyhut_Speed2_Upgradeobject | tier 2 | 'Overtime' | desc 'Increased miner speed' | costs [Yellowaura 30] | params {Effect_Multi=0.75} | ais [] | vis Tower_Smackyhut_Speed2_Visualproperties | next [Tower_Smackyhut_Miner3_Upgradeobject, Tower_Smackyhut_Chips3_Upgradeobject]
+    UPGRADE Tower_Smackyhut_Support4_Upgradeobject | tier 4 | 'Support Team' | desc 'Engineers now increase the stats of nearby towers' | costs [Yellowaura 300] | params {} | ais [] | vis Tower_Smackyhut_Support4_Visualproperties | next [Tower_Smackyhut_Support5_Upgradeobject]
+    UPGRADE Tower_Smackyhut_Support5_Upgradeobject | tier 5 | 'Engineering Firm' | desc 'Drastically increase the effectiveness of engineers' | costs [Yellowaura 3000] | params {Effect_Multi=1} | ais [] | vis Tower_Smackyhut_Support5_Visualproperties | next []
+    UPGRADE Effect_Smackywall_Bramble_Upgradeobject | tier -1 | 'Bramble' | desc 'Retaliate damage done' | costs [] | params {Effect_Add=15} | ais [Entity_Ai_Effect_Smackywall_Bramble] | vis - | next [Effect_Smackywall_Bramble_Upgradeobject] | notes 'Activates a retaliation damage effect'
+    UPGRADE Effect_Smackywall_Beacon_Upgradeobject | tier -1 | 'Beacon' | desc 'Increased resistance, gain max health each tide' | costs [] | params {Effect_Add=750; Effect_Multi=1.5} | ais [Entity_Ai_Effect_Smackywall_Beacon] | vis - | next [Effect_Smackywall_Beacon_Upgradeobject] | notes 'Grants resistance (Effect_Multi)\nand health per round (Effect_Add)'
+    UPGRADE Mob_Smackyminer_Buff_Upgradeobject | tier -1 | 'Real Tough' | desc 'Very strong!' | costs [Yellowaura 100] | params {Health_Multi=9; Speed_Multi=1; Attackspeed_Multi=2; Damage_Resource=1} | ais [Entity_Ai_Effect_Smackyhut_Buff] | vis - | next []
+    UPGRADE Mob_Smackyminer_Chips_Upgradeobject | tier -1 | 'Ore Scraps' | desc 'Gains extra aura on hit' | costs [] | params {} | ais [Entity_Ai_Effect_Smackyhut_Scrap] | vis - | next []
+    UPGRADE Effect_Smackyhut_Buff2_Upgradeobject | tier -1 | 'Overtuned' | desc 'Drastic Increased tower proficiency' | costs [] | params {Range_Pmulti=0.5; Attackspeed_Pmulti=2; Damage_Pmulti=0.25; Duration_Base=14; Effect_Skin=1} | ais [Entity_Ai_Effect_Smackyhut_Towerbuff] | vis - | next [] | notes 'Activates a retaliation damage effect'
+    UPGRADE Effect_Smackyhut_Buff_Upgradeobject | tier -1 | 'Tuned' | desc 'Increased tower proficiency' | costs [] | params {Range_Pmulti=0.25; Attackspeed_Pmulti=0.5; Damage_Pmulti=0.25; Duration_Base=8; Effect_Skin=0} | ais [Entity_Ai_Effect_Smackyhut_Towerbuff] | vis - | next [] | notes 'Activates a retaliation damage effect'
+  LIST Mob (10)
+    BEING Tower_Smackyarcher | block General_Tower_Block_Height 3 | notes ''
+      ENTITY Tower_Smackyarcher_Entity | name 'Archertower' | display 'Archer Tower' | desc 'Precise, single-target'
+      tags [Tower, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Smackyarcher, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Animator_Tower_Smackyarcher, Entity_Vis_Tower_Range, Entity_Vis_Tower]
+      costs [Redaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Smackyarcher_Hitproperties
+      upgrades [Tower_Smackyarcher_Rapid2_Upgradeobject, Tower_Smackyarcher_Fire2_Upgradeobject, Tower_Smackyarcher_Range2_Upgradeobject] | upgradesinit []
+      STATS Tower_Smackyarcher_Statproperties [Health=25(+25/lvl) Number/Default/hidden, Attackspeed=0.7 Number/Default/hidden, Damage=4(+1/lvl) Number/Default/hidden, Range=6 Number/Default/hidden, Projspeed=20 Number/Default/hidden]
+      VISUAL Tower_Smackyarcher_Visualproperties | default Both prefab Tower_Smackyarcher sprite Tower_Smackyarcher_Spriteobject 'Archer Tower' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Active(4x1 spd 1 loop prio 0), Attack(4x1 spd 1 reset prio 0 ->Active)]
+    BEING Tower_Smackywall | block General_Wall_Block_Height 1_Space 2 | notes ''
+      ENTITY Tower_Smackywall_Entity | name 'Wall' | display 'Wall' | desc 'Strong, blocks advances'
+      tags [Tower, Smackywall] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Smackywall, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Tower_Smackywall, Entity_Vis_Tower]
+      costs [Blueaura 20] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Smackywall_Hitproperties
+      upgrades [Tower_Smackywall_Health2_Upgradeobject, Tower_Smackywall_Regen2_Upgradeobject, Tower_Smackywall_Spike2_Upgradeobject] | upgradesinit []
+      STATS Tower_Smackywall_Statproperties [Health=50(+150/lvl) Number/Default/hidden, Post_Left=1 Number/Default/hidden, Post_Right=1 Number/Default/hidden, Post_Back=1 Number/Default/hidden, Post_Front=1 Number/Default/hidden]
+      VISUAL Tower_Smackywall_Visualproperties | default Model prefab Tower_Smackywall sprite - 'Wall' addvis [] addprefabs []
+    BEING Tower_Smackyhut | block General_Tower_Block_Height 1 | notes ''
+      ENTITY Tower_Smackyhut_Entity | name 'Mining' | display 'Mining Hut' | desc 'Collects ores, spawns miners'
+      tags [Tower, Gatherer] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Smackyhut, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Tower]
+      costs [Yellowaura 35] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Smackyhut_Hitproperties
+      upgrades [Tower_Smackyhut_Miner2_Upgradeobject, Tower_Smackyhut_Speed2_Upgradeobject] | upgradesinit []
+      STATS Tower_Smackyhut_Statproperties [Health=25(+25/lvl) Number/Default/hidden, Respawn=10 Number/Default/hidden, Units=1 Number/Default/hidden]
+      VISUAL Tower_Smackyhut_Visualproperties | default Model prefab Tower_Smackyhut sprite - 'Mining Hut' addvis [] addprefabs []
+    BEING Tower_Smackybomber | block General_Tower_Block_Height 2 | notes ''
+      ENTITY Tower_Smackybomber_Entity | name 'Bombtower' | display 'Bomb Tower' | desc 'Powerful, splash damage '
+      tags [Tower, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Smackybomber, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Animator_Tower_Smackybomber, Entity_Vis_Tower_Range, Entity_Vis_Tower]
+      costs [Redaura 25, Blueaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Smackybomber_Hitproperties
+      upgrades [Tower_Smackybomber_Splash2_Upgradeobject, Tower_Smackybomber_Quick2_Upgradeobject, Tower_Smackybomber_Range2_Upgradeobject] | upgradesinit []
+      STATS Tower_Smackybomber_Statproperties [Health=50(+25/lvl) Number/Default/hidden, Attackspeed=0.35 Number/Default/hidden, Damage=3(+2/lvl) Number/Default/hidden, Range=5 Number/Default/hidden, Projduration=1 Number/Default/hidden, Projcount=5 Number/Default/hidden]
+      VISUAL Tower_Smackybomber_Visualproperties | default Both prefab Tower_Smackybomber sprite Tower_Smackybomber_Spriteobject 'Bomb Tower' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Active(4x1 spd 1 loop prio 0), Attack(4x1 spd 1 reset prio 0 ->Active)]
+    BEING Mob_Smackyminer | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Smackyminer_Entity | name 'Miner' | display 'Miner' | desc ''
+      tags [Mob, Gatherer] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Smackyminer] | visscripts [Entity_Vis_Animator_Mob]
+      costs [] | drops [Redaura 1] | sellable False | controllable False | orientable True | targetable True | level 1 | selprio 0 | hit General_Mobmini_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Smackyminer_Statproperties [Health=5(+5/lvl) Number/Default/hidden, Speed=1 Number/Default/hidden, Damage=0.5 Number/Default/hidden, Range=1.5 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Distancewait=0.15 Number/Default/hidden]
+      VISUAL Mob_Smackyminer_Visualproperties | default Sprite prefab - sprite Mob_Smackyminer_Sprite '' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Buff' Sprite prefab - sprite Mob_Smackybuffminer_Sprite 'Excavatior' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+    BEING Effect_Smackywall_Beacon | block General_Effect_Block_Height 1 | notes ''
+      ENTITY Effect_Smackywall_Beacon_Entity | name 'Beacon' | display 'Beacon' | desc ''
+      tags [Effect] | ais [Entity_Ai_Tower_Tilebuff] | visscripts [Entity_Vis_Tower_Buff]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Effect_Hitproperties
+      upgrades [Effect_Smackywall_Beacon_Upgradeobject] | upgradesinit []
+      STATS General_Effect_Statproperties []
+      VISUAL Effect_Smackywall_Beacon_Visualproperties | default Model prefab Beaconborder sprite - '' addvis [] addprefabs []
+    BEING Effect_Smackywall_Bramble | block General_Effect_Block_Height 1 | notes 'Applies the bramble upgrade to those on this block, uses the AI Tower buff, needs a upgradeobject as a first entry\n'
+      ENTITY Effect_Smackywall_Bramble_Entity | name 'Bramble' | display 'Bramble' | desc ''
+      tags [Effect] | ais [Entity_Ai_Tower_Tilebuff] | visscripts [Entity_Vis_Tower_Buff]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Effect_Hitproperties
+      upgrades [Effect_Smackywall_Bramble_Upgradeobject] | upgradesinit []
+      STATS General_Effect_Statproperties []
+      VISUAL Effect_Smackywall_Bramble_Visualproperties | default Model prefab Brambleborder sprite - '' addvis [] addprefabs []
+    BEING Trap_Smackywall_Perma | block General_Trap_Block_Height 1 | notes ''
+      ENTITY Trap_Smackywall_Perma_Entity | name 'Permadestroyed' | display 'Destroyed Perma-Wall' | desc 'Ow'
+      tags [Trap] | ais [Entity_Ai_Trap_Smackywall_Perma] | visscripts []
+      costs [Blueaura 20] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 1 | hit Trap_Smackywall_Spikes_Hitproperties
+      upgrades [] | upgradesinit []
+      STATS Trap_Smackywall_Perma_Statproperties [Health=100 Number/Default/hidden, Heal=0.5 Number/Default/hidden]
+      VISUAL Trap_Smackywall_Perma_Visualproperties | default Model prefab Trap_Smackywall_Perma sprite - '' addvis [] addprefabs []
+    BEING Trap_Smackywall_Spikes | block General_Trap_Block_Height 1 | notes ''
+      ENTITY Trap_Smackywall_Spikes_Entity | name 'Spikes' | display 'Spikes' | desc 'Hurt'
+      tags [Trap] | ais [Entity_Ai_Trap_Smackywall_Spikes, Entity_Ai_Trap_General] | visscripts []
+      costs [] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 1 | hit Trap_Smackywall_Spikes_Hitproperties
+      upgrades [] | upgradesinit []
+      STATS Trap_Smackywall_Spikes_Statproperties [Health=100 Number/Default/hidden, Damage=15 Number/Default/hidden, Drain=0.15 Number/Default/hidden, Drainkill=0.5 Number/Default/hidden]
+      VISUAL Trap_Smackywall_Spikes_Visualproperties | default Model prefab Trap_Smackywall_Spikes sprite - '' addvis [] addprefabs []
+    BEING Mob_Smackyengineer | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Smackyengineer_Entity | name 'Engineer' | display 'Engineer' | desc ''
+      tags [Mob] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Smackyengineer] | visscripts [Entity_Vis_Animator_Mob]
+      costs [] | drops [] | sellable False | controllable False | orientable True | targetable True | level 1 | selprio 0 | hit General_Mobmini_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Smackyengineer_Statproperties [Health=5(+5/lvl) Number/Default/hidden, Speed=1 Number/Default/hidden, Range=1.5 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Effect=1 Number/Default/hidden]
+      VISUAL Mob_Smackyengineer_Visualproperties | default Sprite prefab - sprite Mob_Smackyengineer_Sprite 'Engineer' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Firm' Sprite prefab - sprite Mob_Smackycontractor_Sprite 'Senior Engineer' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+  LIST Projectile (11)
+    PROJECTILE Tower_Smackyarcher_Arrow | vis Arrow | hit Arrowcollider | vfx Shoot_Star/Impact_Simple | sfx 'Tower_Smackyarcher_Shoot'/'Tower_Smackyarcher_Hit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {}
+    PROJECTILE Tower_Smackyarcher_Explosivearrow | vis Explosivearrow | hit Arrowcollider | vfx Shoot_Star/General_Explosionsmall | sfx 'Tower_Smackyarcher_Shoot'/'Tower_Smackyarcher_Hit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track, Projectile_Ai_Explosion] | params {Interact=0; Radius=1.25; Count=5}
+    PROJECTILE Tower_Smackyarcher_Explosiveheavyarrow | vis Explosiveheavyarrow | hit Arrowcollider | vfx Shoot_Star/Impact_Simple | sfx 'Tower_Smackyarcher_Shoot'/'Tower_Smackyarcher_Hit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosioncollide] | params {Interact=0; Gravity=-5; Radius=1; Count=4; Pierce=5}
+    PROJECTILE Tower_Smackyarcher_Heavyarrow | vis Heavyarrow | hit Arrowcollider | vfx Shoot_Star/Impact_Simple | sfx 'Tower_Smackyarcher_Shoot'/'Tower_Smackyarcher_Hit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple] | params {Gravity=-5; Pierce=5}
+    PROJECTILE Tower_Smackybomber_Bomb | vis Bomb | hit Bombcollider | vfx -/General_Explosionmedium | sfx 'Tower_Smackybomber_Throw'/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion, Projectile_Ai_Splitbounce] | params {Interact=2; Gravity=-10; Radius=1; Count=5; Splitbounce=0; Bouncerange=5}
+    PROJECTILE Tower_Smackybomber_Dynamite | vis Dynamite | hit Bombcollider | vfx -/General_Explosionlarge | sfx 'Tower_Smackybomber_Throw'/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion, Projectile_Ai_Splitbounce] | params {Interact=2; Gravity=-10; Radius=2.2; Count=10; Splitbounce=0; Bouncerange=9}
+    PROJECTILE Tower_Smackybomber_Bigbomb | vis Bigbomb | hit Bombcollider | vfx -/General_Explosionmedium | sfx 'Tower_Smackybomber_Throw'/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion, Projectile_Ai_Splitbounce] | params {Interact=2; Gravity=-10; Radius=1.5; Count=10; Splitbounce=0; Bouncerange=6}
+    PROJECTILE Tower_Smackybomber_Dynamitestick | vis Dynamitestick | hit Bombcollider | vfx -/General_Explosionsmall | sfx ''/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Interact=2; Gravity=-10; Radius=0.7; Count=10; Activetime=0.2}
+    PROJECTILE Tower_Smackybomber_Smallbomb | vis Bomb | hit Bombcollider | vfx -/General_Explosionsmall | sfx ''/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Interact=2; Gravity=-10; Radius=0.5; Count=6; Activetime=0.2}
+    PROJECTILE Tower_Smackybomber_Minibomb | vis Minibomb | hit Bombcollider | vfx -/General_Explosionsmall | sfx ''/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Interact=2; Gravity=-10; Radius=0.4; Count=4; Activetime=0.2}
+    PROJECTILE Tower_Smackybomber_Cannonbomb | vis Bomb | hit Bombcollider | vfx Shoot_Cannon/General_Explosionmedium | sfx 'Tower_Smackybomber_Cannon'/'' | ray Raycast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion, Projectile_Ai_Splitbounce] | params {Interact=2; Gravity=0; Radius=1; Count=5; Splitbounce=0; Bouncerange=5}
+  LIST Vfx (25)
+    ITEM World_Tower_Smackywall_Healpulse : GameObject
+    ITEM General_Explosionlarge : GameObject
+    ITEM General_Explosionmedium : GameObject
+    ITEM General_Explosionsmall : GameObject
+    ITEM World_Tower_Smackyhut_Market : GameObject
+    ITEM Shoot_Cannon : GameObject
+    ITEM World_Tower_Smackyhut_Convert : GameObject
+    ITEM Impact_Simple : GameObject
+    ITEM Shoot_Star : GameObject
+    ITEM Debuff_Fire : GameObject
+    ITEM Debuff_Slow : GameObject
+    ITEM World_Tower_Smackyhut_Convertblue : GameObject
+    ITEM World_Tower_Smackyhut_Convertred : GameObject
+    ITEM World_Tower_Smackyhut_Convertyellow : GameObject
+    ITEM World_Tower_Smackybomb_Detonate : GameObject
+    ITEM World_Tower_Smackywall_Perma : GameObject
+    ITEM World_Effect_Smackyhut_Engineerborder : GameObject
+    ITEM World_Effect_Smackyhut_Engineerborderfirm : GameObject
+    ITEM World_Tower_Smackyarcher_Execute : GameObject
+    ITEM World_Tower_Smackyarcher_Executebuff : GameObject
+    ITEM World_Hero_Smacky_Death : GameObject
+    ITEM World_Mob_Minion_Death : GameObject
+    ITEM World_Tower_Death : GameObject
+    ITEM World_Tower_Wall_Death : GameObject
+    ITEM Assassin_Shot : GameObject
+  LIST Command (1)
+    COMMAND Command_Tower_Smackyhut_Convert | style Button | 'Red' | desc '' | icon 'Yellowaura' | keys [Quickaction, 5] | keystate 'Onrelease' | prio 2 | funcs [Entity_Command_Tower_Smackyhut_Convert] | ui -
+  LIST Other (2)
+    ITEM Tower_Smackybomber_Big_Spriteobject : Spriteobject
+    ITEM Tower_Smackybomber_Dynamite_Spriteobject : Spriteobject
+  LIST Sound (13)
+    ITEM Arrowhit : AudioClip
+    ITEM Arrowshot2 : AudioClip
+    ITEM Biggestexplosion : AudioClip
+    ITEM Bombthrow : AudioClip
+    ITEM Cannonshot : AudioClip
+    ITEM Buffing : AudioClip
+    ITEM Permarevive : AudioClip
+    ITEM Rejuvepulse : AudioClip
+    ITEM Wallbreak : AudioClip
+    ITEM Deathmarkexecute : AudioClip
+    ITEM Towerbreak2 : AudioClip
+    ITEM Smackylanding : AudioClip
+    ITEM Footstep : AudioClip
+
+HERO Hero_Snosno | name 'Sno Sno' | sub 'Destroyer of Worlds' | skill 'Intermediate' | towers [Tower_Snosnocannon, Tower_Snosnobox, Tower_Snosnowall, Tower_Snosnoheater] | color RGBA(0.871, 0.871, 0.871, 1.000) | loads Hero_Snosno | loadingsize (12.00, 1.00) landingsize (12.00, 1.00) idlesize (6.00, 1.00)
+  LOG title 'Sno Sno' desc 'Sno is a pure form within this world, and one of the few terms we may trace back a long time. Hello Sno Sno!'
+  LIST Hero (1)
+    BEING Hero_Snosno | block General_Mob_Block_Height 1 | notes 'Uses the General_Mob preset\n'
+      ENTITY Hero_Snosno_Entity | name 'Snosno' | display 'Sno Sno' | desc 'Regular, single-target ranged'
+      tags [Mob, Hero] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Ranged, Entity_Ai_Mob_Movement, Entity_Ai_Hero_Buildsell, Entity_Ai_Hero_Snosno] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Hero, Entity_Vis_Mob_Attack]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 3 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit [Hero_Snosno_Tooltip_Upgradeproperties]
+      STATS Hero_Snosno_Statproperties [Health=25 Number/Default/hidden, Speed=2 Number/Default/hidden, Damage=3 Number/Default/hidden, Range=3 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Buildrange=2 Number/Default/hidden, Sellrate=0.5 Number/Default/hidden, Projspeed=15 Number/Default/hidden]
+      VISUAL Hero_Snosno_Visualproperties | default Sprite prefab - sprite Hero_Snosno_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Falling(2x6 spd 1 loop reset prio 2), Land(1x12 spd 1 reset prio 2 ->Idle), Attack(4x4 spd 3 reset prio 1 ->Idle), Landquick(4x1 spd 10 prio 2 ->Idle)]
+      UPGRADE Hero_Snosno_Tooltip_Upgradeproperties | tier -3 | 'Snoborne' | desc 'Ranged, leaves Sno when walking, can move faster in thick Sno' | costs [] | params {} | ais [] | vis - | next []
+  LIST Upgrade (48)
+    UPGRADE Tower_Snosnocannon_Blower2_Upgradeobject | tier 2 | 'Sno Blower' | desc 'Fire a stream of short ranged Sno' | costs [Redaura 30, Blueaura 15] | params {Range_Pmulti=-0.45; Attackspeed_Pmulti=3; Ammo_Add=-6; Damage_Pmulti=-0.75; Projspeed_Add=-8} | ais [] | vis Tower_Snosnocannon_Blower2_Visualproperties | next [Tower_Snosnocannon_Frosty3_Upgradeobject, Tower_Snosnocannon_Suck3_Upgradeobject]
+    UPGRADE Tower_Snosnocannon_Boulder3_Upgradeobject | tier 3 | 'Sno Boulder' | desc 'Sno chunks are much larger and explode' | costs [Redaura 100] | params {Ammo_Add=5; Damage_Multi=1; Sno_Add=10} | ais [] | vis Tower_Snosnocannon_Boulder3_Visualproperties | next [Tower_Snosnocannon_Hyper4_Upgradeobject, Tower_Snosnocannon_Icicle4_Upgradeobject, Tower_Snosnocannon_Perma4_Upgradeobject]
+    UPGRADE Tower_Snosnocannon_Chomper2_Upgradeobject | tier 2 | 'Sno Chomper' | desc 'Uses more Sno, Sno on hit' | costs [Redaura 20] | params {Ammo_Add=5; Sno_Add=20} | ais [] | vis Tower_Snosnocannon_Chomper2_Visualproperties | next [Tower_Snosnocannon_Boulder3_Upgradeobject, Tower_Snosnocannon_Powder3_Upgradeobject]
+    UPGRADE Tower_Snosnocannon_Frosty3_Upgradeobject | tier 3 | 'Extra Frosty' | desc 'Sno applies a slowing effect that can stack' | costs [Blueaura 30, Yellowaura 30] | params {Slow_Multi=-0.1; Duration_Base=0.75} | ais [] | vis Tower_Snosnocannon_Frosty3_Visualproperties | next [Tower_Snosnocannon_Hyper4_Upgradeobject, Tower_Snosnocannon_Perma4_Upgradeobject]
+    UPGRADE Tower_Snosnocannon_Hyper4_Upgradeobject | tier 4 | 'Hypercool' | desc 'Shoot Sno drastically faster on continuous fire' | costs [Redaura 150, Yellowaura 100] | params {Attackspeed_Base=0.5; Attackspeed_Multi=0.1; Effect_Base=1.5} | ais [] | vis Tower_Snosnocannon_Hyper4_Visualproperties | next [Tower_Snosnocannon_Snoble5_Upgradeobject, Tower_Snosnocannon_Ultra5_Upgradeobject] | notes 'Effect base is the max attackspeed additional'
+    UPGRADE Tower_Snosnocannon_Icicle4_Upgradeobject | tier 4 | 'Icicle Shot' | desc 'Sno explodes into icicles on impact' | costs [Redaura 75] | params {} | ais [] | vis Tower_Snosnocannon_Icicle4_Visualproperties | next []
+    UPGRADE Tower_Snosnocannon_Perma4_Upgradeobject | tier 4 | 'Permasno' | desc 'Can fire without Sno, additional Sno increases damage' | costs [Redaura 75, Blueaura 75, Yellowaura 50] | params {Damage_Multi=0.05; Sno_Base=0.5} | ais [] | vis Tower_Snosnocannon_Perma4_Visualproperties | next [Tower_Snosnocannon_Snoble5_Upgradeobject, Tower_Snosnocannon_Ultra5_Upgradeobject] | notes 'Sno base is minimum required sno amount to fire the weapon\nSno add is the passive generation'
+    UPGRADE Tower_Snosnocannon_Powder3_Upgradeobject | tier 3 | 'Snopowder' | desc 'Sno increases range, increase damage on distant targets' | costs [Redaura 5, Blueaura 25] | params {Snoperrange_Base=15; Snoprojspeed_Base=5; Damageperrange_Base=0.04} | ais [] | vis Tower_Snosnocannon_Powder3_Visualproperties | next [Tower_Snosnocannon_Hyper4_Upgradeobject, Tower_Snosnocannon_Icicle4_Upgradeobject]
+    UPGRADE Tower_Snosnocannon_Snoble5_Upgradeobject | tier 5 | 'Snoble Alert' | desc 'Shot Snobles deal massive damage. Go you little stinkers!' | costs [Redaura 1500] | params {Damage_Multi=4} | ais [] | vis Tower_Snosnocannon_Snoble5_Visualproperties | next [] | notes 'Shot snobles deal way more damage and can create mini snobles on impact'
+    UPGRADE Tower_Snosnocannon_Ultra5_Upgradeobject | tier 5 | 'Snoblaster 7A+' | desc 'Rapidly stores Sno, manually activate for massive damage' | costs [Redaura 2500, Blueaura 50] | params {Duration_Multi=0.002; Damage_Multi=0.0012; Sno_Base=1000; Sno_Max=5000} | ais [Entity_Ai_Tower_Snosnocannon_Laser] | vis Tower_Snosnocannon_Ultra5_Visualproperties | next [] | notes 'Shoots a super strong piercing laser for a few seconds depending on the sno gathered'
+    UPGRADE Tower_Snosnobox_Bank3_Upgradeobject | tier 3 | 'Sno Bank' | desc 'Sno spreads much further, generates in large amounts' | costs [Yellowaura 200] | params {Heal_Add=40; Spread_Base=1.25; Addrate_Base=2} | ais [] | vis Tower_Snosnobox_Bank3_Visualproperties | next [Tower_Snosnobox_Black4_Upgradeobject, Tower_Snosnobox_Rich4_Upgradeobject, Tower_Snosnobox_Snobles4_Upgradeobject]
+    UPGRADE Tower_Snosnobox_Black4_Upgradeobject | tier 4 | 'Black Sno' | desc 'Generate heat resistant Sno' | costs [Redaura 200, Blueaura 100] | params {} | ais [] | vis Tower_Snosnobox_Black4_Visualproperties | next []
+    UPGRADE Tower_Snosnobox_Fall2_Upgradeobject | tier 2 | 'Sno Fall' | desc 'Enables Sno launch, redirect Sno elsewhere' | costs [Blueaura 25] | params {} | ais [] | vis Tower_Snosnobox_Fall2_Visualproperties | next [Tower_Snosnobox_Hard3_Upgradeobject, Tower_Snosnobox_Soft3_Upgradeobject]
+    UPGRADE Tower_Snosnobox_Hard3_Upgradeobject | tier 3 | 'Hard Sno' | desc 'Launched Sno will deal some damage' | costs [Redaura 80] | params {Damage_Multi=50} | ais [] | vis Tower_Snosnobox_Hard3_Visualproperties | next [Tower_Snosnobox_Black4_Upgradeobject, Tower_Snosnobox_Snobles4_Upgradeobject] | notes '20 Damage'
+    UPGRADE Tower_Snosnobox_Rich4_Upgradeobject | tier 4 | 'Rich Sno' | desc 'Generate aura infused Sno giving resources on use' | costs [Yellowaura 300] | params {} | ais [] | vis Tower_Snosnobox_Rich4_Visualproperties | next []
+    UPGRADE Tower_Snosnobox_Slush2_Upgradeobject | tier 2 | 'Slush' | desc 'Increased siphon rate and Sno generation' | costs [Yellowaura 35] | params {Attackspeed_Pmulti=1; Healmod_Add=10; Damage_Add=0.1} | ais [] | vis Tower_Snosnobox_Slush2_Visualproperties | next [Tower_Snosnobox_Bank3_Upgradeobject, Tower_Snosnobox_Soft3_Upgradeobject]
+    UPGRADE Tower_Snosnobox_Snobles4_Upgradeobject | tier 4 | 'Snobles' | desc 'The Sno lives!' | costs [Redaura 100, Blueaura 100, Yellowaura 100] | params {Units_Base=3} | ais [] | vis Tower_Snosnobox_Snobles4_Visualproperties | next [Tower_Snosnobox_Big5_Upgradeobject]
+    UPGRADE Tower_Snosnobox_Soft3_Upgradeobject | tier 3 | 'Soft Sno' | desc 'Siphon rate boosted when covered in less Sno' | costs [Blueaura 25, Yellowaura 250] | params {Attackspeed_Multi=1.75; Attackspeed_Add=0.2} | ais [] | vis Tower_Snosnobox_Soft3_Visualproperties | next [Tower_Snosnobox_Black4_Upgradeobject, Tower_Snosnobox_Rich4_Upgradeobject]
+    UPGRADE Tower_Snosnoheater_Burn2_Upgradeobject | tier 2 | 'Double Burn' | desc 'Heat is twice as strong' | costs [Redaura 60] | params {Attackspeed_Pmulti=1} | ais [] | vis Tower_Snosnoheater_Burn2_Visualproperties | next [Tower_Snosnoheater_Eggs3_Upgradeobject, Tower_Snosnoheater_Shock3_Upgradeobject]
+    UPGRADE Tower_Snosnoheater_Eggs3_Upgradeobject | tier 3 | 'Cookin' Eggs' | desc 'Pulses heat for high damage, converts Snobles hit' | costs [Redaura 300] | params {Damage_Base=20} | ais [] | vis Tower_Snosnoheater_Eggs3_Visualproperties | next [Tower_Snosnoheater_Heat4_Upgradeobject, Tower_Snosnoheater_Scorch4_Upgradeobject]
+    UPGRADE Tower_Snosnoheater_Heat2_Upgradeobject | tier 2 | 'Burning Up' | desc 'Radius is larger, does not melt at farther range' | costs [Redaura 25, Blueaura 25] | params {Range_Pmulti=0.5} | ais [] | vis Tower_Snosnoheater_Heat2_Visualproperties | next [Tower_Snosnoheater_Eggs3_Upgradeobject, Tower_Snosnoheater_Shock3_Upgradeobject, Tower_Snosnoheater_Treat3_Upgradeobject]
+    UPGRADE Tower_Snosnoheater_Heat4_Upgradeobject | tier 4 | '134° - 57°' | desc 'Melts Sno extremely fast, extremely high damage' | costs [Redaura 600] | params {Attackspeed_Multi=1; Damage_Multi=1; Snomeltspeed_Multi=3} | ais [] | vis Tower_Snosnoheater_Heat4_Visualproperties | next []
+    UPGRADE Tower_Snosnoheater_Scorch4_Upgradeobject | tier 4 | 'Scorcher' | desc 'Enemies will burst into flames if heated continuously, ramping in intensity' | costs [Redaura 400, Blueaura 100] | params {} | ais [] | vis Tower_Snosnoheater_Scorch4_Visualproperties | next [Tower_Snosnoheater_Sweat5_Upgradeobject]
+    UPGRADE Tower_Snosnoheater_Shock3_Upgradeobject | tier 3 | 'Temperature Shock' | desc 'Heated enemies take more damage from Sno' | costs [Redaura 100, Yellowaura 150] | params {} | ais [] | vis Tower_Snosnoheater_Shock3_Visualproperties | next [Tower_Snosnoheater_Heat4_Upgradeobject, Tower_Snosnoheater_Scorch4_Upgradeobject]
+    UPGRADE Tower_Snosnoheater_Sweat5_Upgradeobject | tier 5 | 'Cold Sweats' | desc 'Have the best of both worlds!' | costs [Redaura 2000, Blueaura 2000] | params {Time_Base=20; Recovery_Base=5; Spread_Base=1.5; Sno_Base=100} | ais [Entity_Ai_Tower_Snosnoheater_Sweat] | vis Tower_Snosnoheater_Sweat5_Visualproperties | next []
+    UPGRADE Tower_Snosnoheater_Treat3_Upgradeobject | tier 3 | 'Heat Treat' | desc 'Units will heal nearby the heater' | costs [Blueaura 200, Yellowaura 100] | params {Effect_Add=10} | ais [] | vis Tower_Snosnoheater_Treat3_Visualproperties | next []
+    UPGRADE Tower_Snosnowall_Breaker4_Upgradeobject | tier 4 | 'Ice Breaker' | desc 'When broken, permanently weaken enemies in front' | costs [Blueaura 300] | params {} | ais [] | vis Tower_Snosnowall_Breaker4_Visualproperties | next [Tower_Snosnowall_Heat5_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Cold2_Upgradeobject | tier 2 | 'A Cold One' | desc 'Reduce damage taken' | costs [Blueaura 30] | params {Reduction_Base=0.15} | ais [] | vis Tower_Snosnowall_Cold2_Visualproperties | next [Tower_Snosnowall_Cold3_Upgradeobject, Tower_Snosnowall_Rock3_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Cold3_Upgradeobject | tier 3 | 'Cold Shoulder' | desc 'Maximum possible health increased drastically' | costs [Blueaura 200] | params {Maxhealth_Add=3.5; Heal_Add=2} | ais [] | vis Tower_Snosnowall_Cold3_Visualproperties | next [Tower_Snosnowall_Cold4_Upgradeobject, Tower_Snosnowall_Ice4_Upgradeobject, Tower_Snosnowall_Breaker4_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Cold4_Upgradeobject | tier 4 | 'Cold Feet' | desc 'Gain the ability to heal while being hurt, can self heal faster' | costs [Blueaura 200, Yellowaura 250] | params {Heal_Add=1; Healtime_Add=-0.9} | ais [] | vis Tower_Snosnowall_Cold4_Visualproperties | next []
+    UPGRADE Tower_Snosnowall_Effect2_Upgradeobject | tier 2 | 'Snoball Effect' | desc 'Generate Sno infront and behind when hurt' | costs [Blueaura 25] | params {} | ais [] | vis Tower_Snosnowall_Effect2_Visualproperties | next [Tower_Snosnowall_Cold3_Upgradeobject, Tower_Snosnowall_Rock3_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Heat5_Upgradeobject | tier 5 | 'Take the Heat' | desc 'Massive health potential, scorched and shocked enemies will fall' | costs [Redaura 250, Blueaura 1500] | params {Maxhealth_Multi=4; Damage_Base=200; Damageshock_Base=35} | ais [] | vis Tower_Snosnowall_Heat5_Visualproperties | next [] | notes 'Deals massive damage to those with the scorched debuff, deals semi damage to those with the shock debuff'
+    UPGRADE Tower_Snosnowall_Ice4_Upgradeobject | tier 4 | 'Tip of the Iceberg' | desc 'Fire piercing icicles forward and back when healed' | costs [Redaura 75, Blueaura 225] | params {Damage_Base=15} | ais [] | vis Tower_Snosnowall_Ice4_Visualproperties | next [Tower_Snosnowall_Heat5_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Rock3_Upgradeobject | tier 3 | 'On The Rocks' | desc 'Increased health, when destroyed leave a strong rock' | costs [Blueaura 150] | params {Health_Multi=1.25} | ais [] | vis Tower_Snosnowall_Rock3_Visualproperties | next [Tower_Snosnowall_Cold4_Upgradeobject, Tower_Snosnowall_Ice4_Upgradeobject, Tower_Snosnowall_Breaker4_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Thin2_Upgradeobject | tier 2 | 'Thin Ice' | desc 'Untargeted when broken, can reform' | costs [Blueaura 25, Yellowaura 25] | params {} | ais [] | vis Tower_Snosnowall_Thin2_Visualproperties | next [Tower_Snosnowall_Thin3_Upgradeobject]
+    UPGRADE Tower_Snosnowall_Thin3_Upgradeobject | tier 3 | 'Brain Freeze' | desc 'Withstand heavy hits, heals much slower' | costs [Blueaura 400] | params {Heal_Multi=-0.9; Healtharmor_Base=3} | ais [] | vis Tower_Snosnowall_Thin3_Visualproperties | next []
+    UPGRADE Effect_Snosnoheater_Shock_Upgradeobject | tier -2 | 'Temperature Shock' | desc 'Increased damage taken when hit with Sno' | costs [] | params {Effect_Multi=0.15; Duration_Base=5} | ais [Entity_Ai_Effect_Snosnoheater_Shock] | vis - | next []
+    UPGRADE Effect_Snosnoheater_Sweat_Upgradeobject | tier -1 | 'Boosted' | desc 'Feelin' cold!' | costs [] | params {Effect_Multi=1; Duration_Base=10} | ais [Entity_Ai_Effect_Snosnoheater_Sweat] | vis - | next []
+    UPGRADE Effect_Snosnoheater_Scorch_Upgradeobject | tier -2 | 'Scorching' | desc 'It's really hot... TOO HOT!' | costs [] | params {Damage_Base=5; Duration_Base=2; Damage_Add=0.1; Threshold_Base=3; Damage_Max=75} | ais [Entity_Ai_Effect_Snosnoheater_Scorch] | vis - | next []
+    UPGRADE Mob_Snoble_Black_Upgradeobject | tier 2 | 'Burning' | desc 'It doesn't seem to mind' | costs [Redaura 10] | params {Attackspeed_Multi=0.5; Drain_Multi=1; Damage_Multi=0.5} | ais [Entity_Ai_Mob_Snoble_Black] | vis Mob_Snobleblack_Visualproperties | next []
+    UPGRADE Effect_Snosnosnow_Black_Upgradeobject | tier 1 | '' | desc '' | costs [] | params {} | ais [Entity_Ai_Effect_Snosnosnow_Black] | vis Effect_Snosnosnow_Richblack_Visualproperties | next []
+    UPGRADE Effect_Snosnosnow_Rich_Upgradeobject | tier 1 | '' | desc '' | costs [] | params {Amount_Base=1} | ais [Entity_Ai_Effect_Snosnosnow_Rich] | vis - | next []
+    UPGRADE Mob_Snoblemini_Black_Upgradeobject | tier 1 | 'Burning' | desc 'It doesn't seem to mind' | costs [] | params {Attackspeed_Multi=1; Drain_Multi=0.75; Damage_Multi=0} | ais [Entity_Ai_Mob_Snoble_Black] | vis Mob_Snobleminiblack_Visualproperties | next []
+    UPGRADE Effect_Snosnowall_Breaker_Upgradeobject | tier -2 | 'Broken' | desc 'Reduced overall stats' | costs [] | params {Damage_Multi=-0.25; Health_Multi=-0.15; Speed_Multi=-0.15} | ais [Entity_Ai_Effect_Snosnowall_Breaker] | vis - | next []
+    UPGRADE Tower_Snosnocannon_Suck3_Upgradeobject | tier 3 | 'Sno Sucker' | desc 'Can use Sno from notably farther away' | costs [Redaura 50, Blueaura 15] | params {Rangesno_Multi=2} | ais [] | vis Tower_Snosnocannon_Suck3_Visualproperties | next [Tower_Snosnocannon_Hyper4_Upgradeobject, Tower_Snosnocannon_Perma4_Upgradeobject]
+    UPGRADE Tower_Snosnobox_Big5_Upgradeobject | tier 5 | 'BFS' | desc 'Summon the Snoble Mother... Feed it.' | costs [Blueaura 25, Yellowaura 5000] | params {Duration_Base=10} | ais [Entity_Ai_Tower_Snosnobox_Big] | vis Tower_Snosnobox_Big5_Visualproperties | next [] | notes 'Spawns at the core, rolls slowly towards the nearest enemy core\none mother per hut'
+    UPGRADE Mob_Snoblemega_Black_Upgradeobject | tier 2 | 'Burning' | desc 'It doesn't seem to mind' | costs [] | params {Attackspeed_Multi=0.5; Speed_Multi=1.25; Drain_Multi=0; Damage_Multi=0.5} | ais [Entity_Ai_Mob_Snoble_Black] | vis Mob_Snoblemega_Visualproperties | next []
+  LIST Mob (10)
+    BEING Tower_Snosnowall | block General_Tower_Block_Height 2 | notes ''
+      ENTITY Tower_Snosnowall_Entity | name 'Icebrick' | display 'Ice Brick' | desc 'Directional, strong, uses Sno to heal'
+      tags [Tower] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Snosnowall] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Orientation]
+      costs [Blueaura 15] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Snosnowall_Hitproperties
+      upgrades [Tower_Snosnowall_Thin2_Upgradeobject, Tower_Snosnowall_Cold2_Upgradeobject, Tower_Snosnowall_Effect2_Upgradeobject] | upgradesinit []
+      STATS Tower_Snosnowall_Statproperties [Health=50(+50/lvl) Number/Default/hidden, Healthover=0 Number/Default/hidden, Overmax=1 Number/Default/hidden, Heal=1 Number/Default/hidden, Healtime=1 Number/Default/hidden]
+      VISUAL Tower_Snosnowall_Visualproperties | default Model prefab Tower_Snosnowall sprite - '' addvis [] addprefabs []
+    BEING Tower_Snosnocannon | block General_Tower_Block_Height 1 | notes ''
+      ENTITY Tower_Snosnocannon_Entity | name 'Snocannon' | display 'Sno Cannon' | desc 'Fires Snoballs, uses Sno'
+      tags [Tower, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Snosnocannon] | visscripts [Entity_Vis_Tower_Range, Entity_Vis_Tower, Entity_Vis_Tower_Snosnocannon_Snorange, Entity_Vis_Tower_Snosnocannon]
+      costs [Redaura 30] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Snosnocannon_Hitproperties
+      upgrades [Tower_Snosnocannon_Blower2_Upgradeobject, Tower_Snosnocannon_Chomper2_Upgradeobject, Tower_Snosnocannon_Boulder3_Upgradeobject] | upgradesinit []
+      STATS Tower_Snosnocannon_Statproperties [Health=50(+25/lvl) Number/Default/hidden, Attackspeed=0.7 Number/Default/hidden, Damage=5(+1/lvl) Number/Default/hidden, Range=6.5 Number/Default/hidden, Projspeed=15 Number/Default/hidden, Rangesno=2(+0.25/lvl) Number/Default/hidden, Ammo=10 Number/Default/hidden]
+      VISUAL Tower_Snosnocannon_Visualproperties | default Model prefab Tower_Snosnocannon sprite - '' addvis [] addprefabs []
+    BEING Tower_Snosnoheater | block General_Tower_Block_Height 2 | notes ''
+      ENTITY Tower_Snosnoheater_Entity | name 'Heater' | display 'Heater' | desc 'Heats surrounding area, melts Sno'
+      tags [Tower, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Snosnoheater] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Range, Entity_Vis_Tower_Snosnocannon_Snorange, Entity_Vis_Animator_Tower_Snosnoheater]
+      costs [Redaura 60] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Snosnoheater_Hitproperties
+      upgrades [Tower_Snosnoheater_Burn2_Upgradeobject, Tower_Snosnoheater_Heat2_Upgradeobject] | upgradesinit []
+      STATS Tower_Snosnoheater_Statproperties [Health=100(+100/lvl) Number/Default/hidden, Attackspeed=1 Number/Default/hidden, Damage=1(+0.5/lvl) Number/Default/hidden, Range=3.5 Number/Default/hidden, Snomeltspeed=10 Number/Default/hidden, Projcount=10 Number/Default/hidden, Rangesno=3 Number/Default/hidden, Attackspeedpulse=0.25 Number/Default/hidden]
+      VISUAL Tower_Snosnoheater_Visualproperties | default Both prefab Tower_Snosnoheater sprite Tower_Snosnoheater_Pit_Sprite '' addvis [] addprefabs [] anims [Idle(1x6 spd 1 loop prio 1)]
+    BEING Tower_Snosnobox | block General_Tower_Block_Height 1 | notes ''
+      ENTITY Tower_Snosnobox_Entity | name 'Snobox' | display 'Sno Box' | desc 'Siphons nearby ores, generates Sno'
+      tags [Tower, Gatherer] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Snosnobox] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Range, Entity_Vis_Tower_Snosnobox]
+      costs [Blueaura 10, Yellowaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Snosnobox_Hitproperties
+      upgrades [Tower_Snosnobox_Fall2_Upgradeobject, Tower_Snosnobox_Slush2_Upgradeobject] | upgradesinit []
+      STATS Tower_Snosnobox_Statproperties [Health=25(+25/lvl) Number/Default/hidden, Attackspeed=0.2 Number/Default/hidden, Range=3(+1/lvl) Number/Default/hidden, Damage=0.4 Number/Default/hidden, Heal=15 Number/Default/hidden, Projduration=2 Number/Default/hidden]
+      VISUAL Tower_Snosnobox_Visualproperties | default Model prefab Tower_Snosnobox sprite - '' addvis [] addprefabs []
+    BEING Effect_Snosnosnow | block General_Effectground_Block_Height1 | notes ''
+      ENTITY Effect_Snosnosnow_Entity | name 'Sno' | display '' | desc ''
+      tags [Sno] | ais [Entity_Ai_Effect_Snosnosnow] | visscripts [Entity_Vis_Effect_Snosnosnow_Richblack]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Effect_Hitproperties
+      upgrades [] | upgradesinit []
+      STATS Effect_Snosnosnow_Statproperties [Level=100 Number/Float/hidden, Drain=10 Number/Default/hidden, Levelskin=0 String/Default/hidden]
+      VISUAL Effect_Snosnosnow_Visualproperties | default Model prefab Effect_Snosnosnow sprite - 'Sno' addvis [] addprefabs []
+        SKIN '2' Model prefab Effect_Snosnosnow2 sprite - '' addvis [] addprefabs []
+        SKIN '3' Model prefab Effect_Snosnosnow3 sprite - '' addvis [] addprefabs []
+        SKIN '4' Model prefab Effect_Snosnosnow4 sprite - '5' addvis [] addprefabs []
+        SKIN '5' Model prefab Effect_Snosnosnow5 sprite - '' addvis [] addprefabs []
+        SKIN '6' Model prefab Effect_Snosnosnow6 sprite - '' addvis [] addprefabs []
+        SKIN '7' Model prefab Effect_Snosnosnow7 sprite - '' addvis [] addprefabs []
+        SKIN '8' Model prefab Effect_Snosnosnow8 sprite - '' addvis [] addprefabs []
+        SKIN '9' Model prefab Effect_Snosnosnow9 sprite - '' addvis [] addprefabs []
+        SKIN '10' Model prefab Effect_Snosnosnow10 sprite - '' addvis [] addprefabs []
+    BEING Mob_Snoble | block General_Mobblocker_Block_Height 1 | notes ''
+      ENTITY Mob_Snoble_Entity | name 'Snoble' | display 'Snoble' | desc ''
+      tags [Mob, Sno, Snoble, Mobfighter] | ais [Entity_Ai_Mob_Combat, Entity_Ai_Mob_General, Entity_Ai_Mob_Snoble] | visscripts [Entity_Vis_Animator_Mob_Simple]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 4 | selprio 0 | hit General_Mobmini_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Snoble_Statproperties [Health=100 Number/Default/hidden, Damage=25 Number/Default/hidden, Attackspeed=0.2 Number/Default/hidden, Range=2 Number/Default/hidden, Drain=0.02 Number/Default/hidden]
+      VISUAL Mob_Snoble_Visualproperties | default Sprite prefab - sprite Mob_Snoble_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0)]
+    BEING Mob_Snoblemini | block General_Mobblocker_Block_Height 1 | notes ''
+      ENTITY Mob_Snoblemini_Entity | name 'Snoblemini' | display 'Mini Snoble' | desc ''
+      tags [Mob, Sno, Snoble, Mobfighter] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Combat, Entity_Ai_Mob_Snoble] | visscripts [Entity_Vis_Animator_Mob_Simple]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 5 | selprio 0 | hit General_Mobmini_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Snoblemini_Statproperties [Health=50 Number/Default/hidden, Damage=15 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Range=2 Number/Default/hidden, Drain=0.01 Number/Default/hidden]
+      VISUAL Mob_Snoblemini_Visualproperties | default Sprite prefab - sprite Mob_Snoblemini_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0)]
+    BEING Tower_Snosnowall_Rock | block General_Tower_Block_Height 2 | notes ''
+      ENTITY Tower_Snosnowall_Rock_Entity | name 'Rock' | display 'Rock' | desc ''
+      tags [Tower] | ais [Entity_Ai_Tower_General] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Orientation]
+      costs [] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Snosnowall_Hitproperties
+      upgrades [] | upgradesinit []
+      STATS Tower_Snosnowall_Rock_Statproperties [Health=1000 Number/Default/hidden]
+      VISUAL Tower_Snosnowall_Rock_Visualproperties | default Model prefab Tower_Snosnowall_Rock sprite - '' addvis [] addprefabs []
+    BEING Trap_Snosnowall_Thin | block General_Trap_Block_Height 1 | notes ''
+      ENTITY Trap_Snosnowall_Thin_Entity | name 'Brick' | display 'Melted Ice Brick' | desc ''
+      tags [Trap] | ais [Entity_Ai_Trap_Snosnowall_Thin, Entity_Ai_Trap_General] | visscripts [Entity_Vis_Tower_Orientation]
+      costs [Blueaura 15] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit General_Trap_Hitproperties_Hurtable
+      upgrades [] | upgradesinit []
+      STATS Trap_Snosnowall_Thin_Statproperties [Health=50 Number/Default/hidden, Heal=0.5 Number/Default/hidden]
+      VISUAL Trap_Snosnowall_Thin_Visualproperties | default Model prefab Tower_Snosnowall_Thin sprite - '' addvis [] addprefabs []
+    BEING Mob_Snoblemega | block General_Mobblocker_Block_Height 1 | notes ''
+      ENTITY Mob_Snoblemega_Entity | name 'Snoble Mother' | display 'Snoble Mother' | desc ''
+      tags [Mob, Mobfighter, Mobspecial] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Snoblemega] | visscripts [Entity_Vis_Animator_Mob]
+      costs [] | drops [] | sellable False | controllable False | orientable False | targetable True | level 5 | selprio 2 | hit General_Mobmega_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Snoblemega_Statproperties [Health=250 Number/Default/hidden, Damage=25 Number/Default/hidden, Attackspeed=0.1 Number/Default/hidden, Range=3 Number/Default/hidden, Rankup1=2500 Number/Default/hidden, Rankup2=7500 Number/Default/hidden, Speed=0.25 Number/Default/hidden, Deathdamage=150 Number/Default/hidden]
+      VISUAL Mob_Snoblemega_Visualproperties | default Sprite prefab - sprite Mob_Snoblemega1_Sprite 'Snoble Mother' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Level1Black' Sprite prefab - sprite Mob_Snoblemega1Black_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Level2' Sprite prefab - sprite Mob_Snoblemega2_Sprite '' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Level2Black' Sprite prefab - sprite Mob_Snoblemega2Black_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Level3' Sprite prefab - sprite Mob_Snoblemega3_Sprite '' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Level3Black' Sprite prefab - sprite Mob_Snoblemega3Black_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+  LIST Projectile (24)
+    PROJECTILE Hero_Snosno_Snoball | vis Snoball | hit Snocollider | vfx Shoot_Star/Impact_Sno | sfx ''/'Tower_Snosnocannon_Snoballhit' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Track] | params {}
+    PROJECTILE Tower_Snosnocannon_Snoball | vis Snoball | hit Snocollider | vfx Shoot_Snosnocannon/Impact_Sno | sfx 'Tower_Snosnocannon_Shot'/'' | ray Spherecast r 0.03 | replicate True | controllers [Projectile_Ai_Simple] | params {Gravity=-2}
+    PROJECTILE Tower_Snosnocannon_Snoballlarge | vis Snoballlarge | hit Snocollider | vfx Shoot_Snosnocannon/Snoball_Explosionsmall | sfx 'Tower_Snosnocannon_Heavyshot'/'' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Gravity=-2; Interact=2; Radius=0.5; Count=5}
+    PROJECTILE Tower_Snosnocannon_Snoblow | vis Snoblow | hit Snocollider | vfx Shoot_Snoblow/- | sfx 'Tower_Snosnocannon_Snoblow'/'' | ray Spherecast r 0.3 | replicate True | controllers [Projectile_Ai_Simple] | params {Pierce=8; Lifetime=0.5}
+    PROJECTILE Tower_Snosnobox_Snolaunch | vis Tower_Snosnobox_Snolaunch | hit Snocollider | vfx Shoot_Snoblow/Impact_Sno | sfx 'Tower_Snosnobox_Snofallshot'/'Tower_Snosnobox_Snofallimpact' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Sno, Projectile_Ai_Simple] | params {Gravity=-10; Interact=0}
+    PROJECTILE Tower_Snosnobox_Snolaunchhard | vis Tower_Snosnobox_Snolaunchhard | hit Snocollider | vfx Shoot_Snoblow/Snoball_Explosionvis | sfx 'Tower_Snosnobox_Snofallshot'/'Tower_Snosnobox_Snofallimpacthard' | ray Raycast r 0.3 | replicate True | controllers [Projectile_Ai_Sno, Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Gravity=-10; Interact=0; Radius=1; Count=5; Vis=0}
+    PROJECTILE Tower_Snosnowall_Icicle | vis Icicle | hit Snocollider | vfx Shoot_Icicle/Impact_Icicle | sfx 'Tower_Snosnocannon_Icicleshot'/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple] | params {Gravity=-8; Pierce=8}
+    PROJECTILE Tower_Snosnoheater_Pulse | vis Snosnoheaterpulse | hit Pulse_Collider | vfx -/- | sfx 'Tower_Snosnoheater_Firepulse'/'' | ray Regularphysics r 0 | replicate True | controllers [Projectile_Ai_Expand] | params {Radius=4; Initradius=1; Lifetime=0.5; Any=1; Pierce=30}
+    PROJECTILE Tower_Snosnocannon_Icicle | vis Smallicicle | hit Snocollider | vfx Shoot_Icicle/Impact_Icicle | sfx 'Tower_Snosnocannon_Icicleshot'/'' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple] | params {Lifetime=1; Gravity=-10}
+    PROJECTILE Tower_Snosnobox_Snoble | vis Tower_Snosnobox_Snoble | hit Snocollider | vfx Shoot_Snoblow/Impact_Sno | sfx ''/'Minion_Snoble_Land' | ray Spherecast r 0.3 | replicate True | controllers [Projectile_Ai_Sno, Projectile_Ai_Simple, Projectile_Ai_Snoble] | params {Gravity=-10; Type=0}
+    PROJECTILE Tower_Snosnocannon_Snoble | vis Cannonsnoble | hit Snocollider | vfx Shoot_Snosnocannon/Impact_Snoble | sfx 'Tower_Snosnocannon_Snobleshot'/'Minion_Snoble_Land' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoble, Projectile_Ai_Snoball] | params {Gravity=-10; Pierce=10; Type=0; Multi=1.5}
+    PROJECTILE Tower_Snosnocannon_Snoblemini | vis Cannonsnoblemini | hit Snocollider | vfx Shoot_Snosnocannon/Impact_Snoble | sfx 'Tower_Snosnocannon_Snobleshot'/'' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoble, Projectile_Ai_Snoball] | params {Gravity=-10; Pierce=10; Type=2; Multi=2}
+    PROJECTILE Tower_Snosnocannon_Snobleblack | vis Cannonsnobleblack | hit Snocollider | vfx Shoot_Icicle/Impact_Snobleblack | sfx 'Tower_Snosnocannon_Snobleshot'/'' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoble, Projectile_Ai_Snoball] | params {Gravity=-10; Pierce=10; Type=1; Multi=3}
+    PROJECTILE Tower_Snosnocannon_Snobleminiblack | vis Cannonsnobleminiblack | hit Snocollider | vfx Shoot_Icicle/Impact_Snobleblack | sfx 'Tower_Snosnocannon_Snobleshot'/'' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoble, Projectile_Ai_Snoball] | params {Gravity=-10; Pierce=10; Type=3; Multi=4}
+    PROJECTILE Tower_Snosnobox_Snolaunchblack | vis Tower_Snosnobox_Snolaunchblack | hit Snocollider | vfx Shoot_Snoblowblack/Impact_Sno | sfx ''/'' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Sno, Projectile_Ai_Simple] | params {Gravity=-10; Interact=0}
+    PROJECTILE Tower_Snosnobox_Snolaunchhardblack | vis Tower_Snosnobox_Snolaunchhardblack | hit Snocollider | vfx Shoot_Snoblowblack/- | sfx ''/'' | ray Raycast r 0.3 | replicate True | controllers [Projectile_Ai_Sno, Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Gravity=-10; Interact=0; Radius=1.25; Count=10; Vis=0}
+    PROJECTILE Tower_Snosnocannon_Snoballblack | vis Snoballblack | hit Snocollider | vfx Shoot_Snosnocannonblack/Impact_Sno | sfx 'Tower_Snosnocannon_Fireshot'/'' | ray Spherecast r 0.03 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoball] | params {Gravity=-2; Multi=2}
+    PROJECTILE Tower_Snosnocannon_Snoballlargeblack | vis Snoballlargeblack | hit Snocollider | vfx Shoot_Snosnocannonblack/Snoball_Explosionsmall | sfx 'Tower_Snosnocannon_Heavyfireshot'/'' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion, Projectile_Ai_Snoball] | params {Gravity=-2; Interact=2; Radius=0.5; Count=5; Multi=2}
+    PROJECTILE Tower_Snosnocannon_Snoblowblack | vis Snoblowblack | hit Snocollider | vfx Shoot_Star/Shoot_Snoblowblack | sfx 'Tower_Snosnocannon_Snoblowfireshot'/'' | ray Spherecast r 0.3 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoball] | params {Pierce=8; Lifetime=0.5; Multi=2}
+    PROJECTILE Tower_Snosnoheater_Healpulse | vis Snosnoheaterpulseheal | hit Pulse_Collider | vfx -/- | sfx 'Tower_Snosnoheater_Firepulseheal'/'' | ray Regularphysics r 0 | replicate True | controllers [Projectile_Ai_Expand] | params {Radius=3; Initradius=1; Lifetime=0.5; Any=1; Pierce=80}
+    PROJECTILE Tower_Snosnocannon_Snolaser | vis Cannonlaserultra | hit Laserbeamcollider | vfx -/- | sfx 'Tower_Snosnocannon_Laser'/'' | ray Regularphysics r 0.3 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Snoball, Projectile_Ai_Snosnocannon_Laser] | params {Pierce=999; Lifetime=0.5; Multi=1; Collision=0; Interact=0}
+    PROJECTILE Tower_Snosnobox_Bigslam1 | vis Tower_Snosnobox_Bigslam | hit Pulse_Collider | vfx -/- | sfx 'Tower_Snosnoheater_Firepulse'/'' | ray Regularphysics r 0 | replicate True | controllers [Projectile_Ai_Expand] | params {Radius=2; Initradius=1; Lifetime=0.5; Pierce=10}
+    PROJECTILE Tower_Snosnobox_Bigslam2 | vis Tower_Snosnobox_Bigslam | hit Pulse_Collider | vfx -/- | sfx 'Tower_Snosnoheater_Firepulse'/'' | ray Regularphysics r 0 | replicate True | controllers [Projectile_Ai_Expand] | params {Radius=3; Initradius=1; Lifetime=0.5; Pierce=20}
+    PROJECTILE Tower_Snosnobox_Bigslam3 | vis Tower_Snosnobox_Bigslam | hit Pulse_Collider | vfx -/- | sfx 'Tower_Snosnoheater_Firepulse'/'' | ray Regularphysics r 0 | replicate True | controllers [Projectile_Ai_Expand] | params {Radius=5; Initradius=1; Lifetime=0.5; Pierce=30}
+  LIST Vfx (37)
+    ITEM World_Tower_Death : GameObject
+    ITEM World_Tower_Wall_Death : GameObject
+    ITEM Impact_Sno : GameObject
+    ITEM Snoball_Explosionsmall : GameObject
+    ITEM Debuff_Shock : GameObject
+    ITEM World_Effect_Snosnoheater_Sweat : GameObject
+    ITEM Shoot_Icicle : GameObject
+    ITEM Debuff_Scorch : GameObject
+    ITEM World_Snosnobox_Fallpos : GameObject
+    ITEM Shoot_Snosnocannon : GameObject
+    ITEM Impact_Icicle : GameObject
+    ITEM World_Tower_Snosnowall_Heat : GameObject
+    ITEM Debuff_Broken : GameObject
+    ITEM Impact_Snoble : GameObject
+    ITEM Impact_Snobleblack : GameObject
+    ITEM Shoot_Snoblow : GameObject
+    ITEM Shoot_Snoblowblack : GameObject
+    ITEM Shoot_Snosnocannonblack : GameObject
+    ITEM World_Tower_Snosnowall_Heat2 : GameObject
+    ITEM World_Tower_Snosnowall_Break : GameObject
+    ITEM World_Tower_Snosnoheater_Heat : GameObject
+    ITEM World_Snosnobox_Fallpos_Command : GameObject
+    ITEM World_Tower_Snosnobox_Sno : GameObject
+    ITEM World_Hero_Snosno_Death : GameObject
+    ITEM Snoball_Explosionsmallblack : GameObject
+    ITEM Debuff_Slowcold : GameObject
+    ITEM Debuff_Nosnoammo : GameObject
+    ITEM World_Tower_Snosnowall_Thin : GameObject
+    ITEM World_Effect_Snosnosnow : GameObject
+    ITEM World_Effect_Snosnosnowblack : GameObject
+    ITEM World_Tower_Snosnoheater_Sweatpulse : GameObject
+    ITEM Mob_Snoblemegalaunch : GameObject
+    ITEM Mob_Snoblemegaland : GameObject
+    ITEM Mob_Snoblemegadead2 : GameObject
+    ITEM Mob_Snoblemegadead : GameObject
+    ITEM Mob_Snoblemegadead3 : GameObject
+    ITEM World_Snosnocannon_Cannonlaserultraend : GameObject
+  LIST Command (3)
+    COMMAND Command_Tower_Snosnobox_Launch | style Button | 'Fire' | desc '' | icon 'Snosno_Fall' | keys [Quickaction, 5] | keystate 'Onrelease' | prio 2 | funcs [Entity_Command_Tower_Snosnobox_Launch] | ui -
+    COMMAND Command_Tower_Snosnocannon_Ultra | style Button | 'Fire' | desc '' | icon 'Snosno_Ultra' | keys [5] | keystate 'Onpressed' | prio 2 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+    COMMAND Command_Tower_Snosnobox_Big | style Button | 'BFS' | desc '' | icon 'Snosno_Big' | keys [5] | keystate 'Onpressed' | prio 2 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+  LIST Other (1)
+    ITEM Tower_Snosnocannon_Snobles_Sprite : Spriteobject
+  LIST Sound (24)
+    ITEM Towerbreak2 : AudioClip
+    ITEM Snocannonshot : AudioClip
+    ITEM Snobleheavyshot : AudioClip
+    ITEM Snobleshot : AudioClip
+    ITEM Snoblow : AudioClip
+    ITEM Snoblowfireshot : AudioClip
+    ITEM Snoblowsnoble : AudioClip
+    ITEM Snocannonfireshot : AudioClip
+    ITEM Snocannonheavyfireshot : AudioClip
+    ITEM Snocannonheavyshot : AudioClip
+    ITEM Snofallshot : AudioClip
+    ITEM Snowballhit : AudioClip
+    ITEM Breakerbreak : AudioClip
+    ITEM Firepulse : AudioClip
+    ITEM Firepulseheal : AudioClip
+    ITEM Icewallbreak : AudioClip
+    ITEM Iciclehit : AudioClip
+    ITEM Icicleshot : AudioClip
+    ITEM Snofallimpact : AudioClip
+    ITEM Snofallimpacthard : AudioClip
+    ITEM Snobleland : AudioClip
+    ITEM Coldsweatcool2 : AudioClip
+    ITEM Icewallrevive : AudioClip
+    ITEM Snosnolanding : AudioClip
+
+HERO Hero_Boutman | name 'Boutman' | sub 'Fisher Extraordinaire' | skill 'Advanced' | towers [Tower_Boutmanbarrel, Tower_Boutmanboat, Tower_Boutmanhouse] | color RGBA(0.745, 0.631, 0.404, 1.000) | loads Hero_Boutman | loadingsize (11.00, 1.00) landingsize (15.00, 1.00) idlesize (6.00, 1.00)
+  LOG title 'Boutman' desc 'Boutman plays a martial-arts expert determined to help capture the fish dealer whose gang was responsible for the death of his fish. Bout enters a kung fu competition in an attempt to fight his way to the dealer's headquarters with the help of some friends.'
+  LIST Hero (1)
+    BEING Hero_Boutman | block General_Mob_Block_Height 1 | notes 'Uses the General_Mob preset\n'
+      ENTITY Hero_Boutman_Entity | name 'Hero Boutman' | display 'Boutman' | desc 'Fast, strong, single-target melee'
+      tags [Mob, Hero] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Hero_Buildsell, Entity_Ai_Hero_Boutman, Entity_Ai_Mob_Melee] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Hero, Entity_Vis_Hero_Boutman]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 3 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit [Hero_Boutman_Tooltip_Upgradeproperties]
+      STATS Hero_Boutman_Statproperties [Health=50(+50/lvl) Number/Default/hidden, Speed=3(+0.25/lvl) Number/Default/hidden, Damage=4(+2/lvl) Number/Default/hidden, Range=2 Number/Default/hidden, Attackspeed=0.75 Number/Default/hidden, Buildrange=2 Number/Default/hidden, Sellrate=0.5 Number/Default/hidden, Fishingspeed=0.3(+0.2/lvl) Number/Default/hidden, Fishingrange=3(+0.5/lvl) Number/Default/hidden, Heal=1 Number/Default/hidden]
+      VISUAL Hero_Boutman_Visualproperties | default Sprite prefab - sprite Hero_Boutman_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0 snd 2:General_Footstep/5:General_Footstep), Falling(1x6 spd 1 loop reset prio 2), Land(1x15 spd 1.6 reset prio 2 ->Idle), Attack1(4x3 spd 1 reset prio 2 ->Idle snd 0:Boutman_Punch), Attack2(4x3 spd 1 reset prio 2 ->Idle snd 0:Boutman_Punch), Attack3(4x3 spd 1 reset prio 2 ->Idle snd 0:Boutman_Rod), Landquick(4x1 spd 10 prio 2 ->Idle), Fishthrow(4x3 spd 1 reset prio 2 ->Idle snd 0:Boutman_Rod), Fish(4x6 spd 1 loop prio 0), Ko(4x6 spd 1 loop prio 0)]
+      UPGRADE Hero_Boutman_Tooltip_Upgradeproperties | tier -3 | 'The Bout Way' | desc 'Can recruit fish and revive them from barrels, cannot mine, buildings cost more per purchase' | costs [] | params {} | ais [] | vis - | next []
+  LIST Upgrade (52)
+    UPGRADE Tower_Boutmanhouse_Aoe2_Upgradeproperties | tier 2 | 'Fish of Fury' | desc 'Boutman can now hit multiple enemies at once' | costs [Redaura 150] | params {} | ais [] | vis - | next [Tower_Boutmanhouse_Range3_Upgradeproperties, Tower_Boutmanhouse_Recruit3_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Damage4_Upgradeproperties | tier 4 | '1 Inch Bout' | desc 'Boutman will ramp up in damage the longer he fights, including recruited fish' | costs [Redaura 1500] | params {Damage_Multi=0.035; Decay_Multi=2} | ais [] | vis - | next [Tower_Boutmanhouse_Family5_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Family5_Upgradeproperties | tier 5 | 'Ip Man-of-War' | desc 'The Bout family gains new abilities.' | costs [Yellowaura 3500, Blueaura 3500] | params {} | ais [] | vis - | next []
+    UPGRADE Tower_Boutmanhouse_Fishbuff4_Upgradeproperties | tier 4 | 'Iron Fish' | desc 'Recruited fish are exceptionally buffed' | costs [Redaura 650, Yellowaura 650, Blueaura 650] | params {Attackspeed_Multi=0.25; Damage_Multi=1.5; Range_Multi=0.25} | ais [] | vis - | next [Tower_Boutmanhouse_Family5_Upgradeproperties, Tower_Boutmanhouse_Recruit5_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Life2_Upgradeproperties | tier 2 | 'Enter the Boutman' | desc 'Boutman can no longer Drown, get KO'd instead' | costs [Blueaura 60, Redaura 75] | params {Heal_Add=3} | ais [] | vis - | next [Tower_Boutmanhouse_Range3_Upgradeproperties, Tower_Boutmanhouse_Recruit3_Upgradeproperties, Tower_Boutmanhouse_Life3_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Life3_Upgradeproperties | tier 3 | 'The Way of the Bout' | desc 'Boutman regenerates health rapidly, even when KO'd' | costs [Blueaura 400] | params {Heal_Add=6} | ais [] | vis - | next [Tower_Boutmanhouse_Damage4_Upgradeproperties, Tower_Boutmanhouse_Mine4_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Mine4_Upgradeproperties | tier 4 | 'Fishbender' | desc 'Boutman and recruited fish can mine, increased damage to ore' | costs [Yellowaura 1750] | params {Resourcedamage_Base=0.5} | ais [] | vis - | next [Tower_Boutmanhouse_Family5_Upgradeproperties, Tower_Boutmanhouse_Recruit5_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Range3_Upgradeproperties | tier 3 | 'Shao-min' | desc 'Boutman has a long range attack' | costs [Redaura 450, Yellowaura 250] | params {} | ais [Entity_Ai_Hero_Boutman_Shoot] | vis - | next [Tower_Boutmanhouse_Damage4_Upgradeproperties, Tower_Boutmanhouse_Mine4_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Recruit3_Upgradeproperties | tier 3 | 'Fight Blub' | desc 'Boutman can recruit more fish, increased capacity per tier' | costs [Yellowaura 125, Redaura 125, Blueaura 125] | params {} | ais [] | vis - | next [Tower_Boutmanhouse_Fishbuff4_Upgradeproperties, Tower_Boutmanhouse_Mine4_Upgradeproperties]
+    UPGRADE Tower_Boutmanhouse_Recruit5_Upgradeproperties | tier 5 | 'Kung Fu Tackle' | desc 'Boutman can recruit all nearby fish for a time, healing them' | costs [Redaura 2500, Yellowaura 2500, Blueaura 2500] | params {} | ais [] | vis - | next []
+    UPGRADE Tower_Boutmanboat_Barge3_Upgradeproperties | tier 3 | 'Bout Barge' | desc 'Increased health, stun enemies on arrival' | costs [Blueaura 175, Yellowaura 175] | params {Health_Pmulti=4; Stunbase_Base=2.5} | ais [] | vis Tower_Boutmanboat_Barge3_Visualproperties | next [Tower_Boutmanboat_Yat4_Upgradeproperties, Tower_Boutmanboat_Cargo4_Upgradeproperties]
+    UPGRADE Tower_Boutmanboat_Battleship4_Upgradeproperties | tier 4 | 'Bout Battleship' | desc 'Boutdad now owns an unregistered cannon!' | costs [Redaura 500] | params {Attackspeed_Multi=0.5} | ais [Entity_Ai_Tower_Boutmanboat_Cannon] | vis Tower_Boutmanboat_Battleship4_Visualproperties | next []
+    UPGRADE Tower_Boutmanboat_Boat2_Upgradeproperties | tier 2 | 'Bigger Boat' | desc 'Gain extended range at this position' | costs [Redaura 50, Blueaura 25] | params {Range_Add=3.5} | ais [] | vis Tower_Boutmanboat_Boat2_Visualproperties | next [Tower_Boutmanboat_Brig3_Upgradeproperties, Tower_Boutmanboat_Raft3_Upgradeproperties, Tower_Boutmanboat_Barge3_Upgradeproperties]
+    UPGRADE Tower_Boutmanboat_Brig3_Upgradeproperties | tier 3 | 'Bout Brig' | desc 'Boutdad throws bait in massive chunks' | costs [Redaura 175, Yellowaura 75] | params {} | ais [] | vis Tower_Boutmanboat_Brig3_Visualproperties | next [Tower_Boutmanboat_Yat4_Upgradeproperties, Tower_Boutmanboat_Battleship4_Upgradeproperties]
+    UPGRADE Tower_Boutmanboat_Cargo4_Upgradeproperties | tier 4 | 'Bout Cargo Inc' | desc 'Units can now travel to other boats instantly from here' | costs [Yellowaura 1250] | params {} | ais [] | vis Tower_Boutmanboat_Cargo4_Visualproperties | next [Tower_Boutmanboat_Liner5_Upgradeproperties]
+    UPGRADE Tower_Boutmanboat_Liner5_Upgradeproperties | tier 5 | 'Boutanic' | desc 'Boutdad afterimages appear on all boats when he lands here' | costs [Redaura 3500] | params {} | ais [] | vis Tower_Boutmanboat_Liner5_Visualproperties | next []
+    UPGRADE Tower_Boutmanboat_Raft3_Upgradeproperties | tier 3 | 'Bout Raft' | desc 'Does something...' | costs [Redaura 50] | params {Threshold_Base=4} | ais [] | vis Tower_Boutmanboat_Raft3_Visualproperties | next []
+    UPGRADE Tower_Boutmanboat_Speed2_Upgradeproperties | tier 2 | 'Speed Boat' | desc 'Attack faster and travel faster to this position' | costs [Redaura 50, Blueaura 10] | params {Landspeed_Add=3; Attackspeed_Add=1} | ais [] | vis Tower_Boutmanboat_Speed2_Visualproperties | next [Tower_Boutmanboat_Brig3_Upgradeproperties, Tower_Boutmanboat_Raft3_Upgradeproperties]
+    UPGRADE Tower_Boutmanboat_Yat4_Upgradeproperties | tier 4 | 'Bout Yacht' | desc 'Buff all units nearby when Boutdad lands here' | costs [Yellowaura 250, Redaura 100] | params {} | ais [] | vis Tower_Boutmanboat_Yat4_Visualproperties | next [Tower_Boutmanboat_Liner5_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Bucket4_Upgradeproperties | tier 4 | 'Janitorial Bucket' | desc 'Fish can be 'fished' much earlier and are immune temporarily' | costs [Blueaura 500] | params {Threshold_Base=0.4} | ais [] | vis Tower_Boutmanbarrel_Bucket4_Visualproperties | next []
+    UPGRADE Tower_Boutmanbarrel_Drybed3_Upgradeproperties | tier 3 | 'Drybed' | desc 'Fish will automatically revive after healing' | costs [Yellowaura 150, Blueaura 250] | params {} | ais [] | vis Tower_Boutmanbarrel_Drybed3_Visualproperties | next [Tower_Boutmanbarrel_Bucket4_Upgradeproperties, Tower_Boutmanbarrel_Gutter4_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Farmingbed3_Upgradeproperties | tier 3 | 'Farmingbed' | desc 'Fish give back some of their worth in aura when fished' | costs [Yellowaura 325] | params {Percent_Multi=0.05} | ais [] | vis Tower_Boutmanbarrel_Farmingbed3_Visualproperties | next [Tower_Boutmanbarrel_Bucket4_Upgradeproperties, Tower_Boutmanbarrel_Gutter4_Upgradeproperties, Tower_Boutmanbarrel_Watercooler4_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Gutter4_Upgradeproperties | tier 4 | 'Country Gutter' | desc 'If vacant, Drowned fish will reappear here without upgrades' | costs [Blueaura 400] | params {} | ais [] | vis Tower_Boutmanbarrel_Gutter4_Visualproperties | next [Tower_Boutmanbarrel_Watertower5_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Pond2_Upgradeproperties | tier 2 | 'Pond' | desc 'Increased collection effect and heal speed' | costs [Blueaura 50] | params {Speed_Add=0.75; Range_Add=2; Heal_Add=1.5} | ais [] | vis Tower_Boutmanbarrel_Pond2_Visualproperties | next [Tower_Boutmanbarrel_Farmingbed3_Upgradeproperties, Tower_Boutmanbarrel_Drybed3_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Pool2_Upgradeproperties | tier 2 | 'Pool' | desc 'Increased fish capacity, fish gain half of their health instantly' | costs [Yellowaura 25, Blueaura 40] | params {Threshold_Base=0.5; Cap_Add=1} | ais [] | vis Tower_Boutmanbarrel_Pool2_Visualproperties | next [Tower_Boutmanbarrel_Spawnbed3_Upgradeproperties, Tower_Boutmanbarrel_Drybed3_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Spawnbed3_Upgradeproperties | tier 3 | 'Spawnbed' | desc 'Increased fish capacity, fish are powerful temporarily when fished' | costs [Blueaura 150, Redaura 150] | params {Cap_Add=1} | ais [] | vis Tower_Boutmanbarrel_Spawnbed3_Visualproperties | next [Tower_Boutmanbarrel_Bucket4_Upgradeproperties, Tower_Boutmanbarrel_Gutter4_Upgradeproperties, Tower_Boutmanbarrel_Watercooler4_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Tank2_Upgradeproperties | tier 2 | 'Tank' | desc 'Fish gain permanent health when fished' | costs [Blueaura 75, Yellowaura 25] | params {Health_Add=25} | ais [] | vis Tower_Boutmanbarrel_Tank2_Visualproperties | next [Tower_Boutmanbarrel_Farmingbed3_Upgradeproperties, Tower_Boutmanbarrel_Drybed3_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Watercooler4_Upgradeproperties | tier 4 | 'IT Watercooler' | desc 'Pulses any barrel 'effects' to surrounding units each tide' | costs [Redaura 300, Blueaura 300, Yellowaura 300] | params {} | ais [] | vis Tower_Boutmanbarrel_Watercooler4_Visualproperties | next [Tower_Boutmanbarrel_Watertower5_Upgradeproperties]
+    UPGRADE Tower_Boutmanbarrel_Watertower5_Upgradeproperties | tier 5 | 'Bout Inc Watertower' | desc 'More fish! MORE FISH!' | costs [Blueaura 3500, Redaura 1000] | params {} | ais [] | vis Tower_Boutmanbarrel_Watertower5_Visualproperties | next []
+    UPGRADE Mob_Boutmanfish_Balibut3_Upgradeproperties | tier 3 | 'Balibut' | desc 'Even tougher, damage taken is reflected upon KO' | costs [Redaura 85, Blueaura 150] | params {Damage_Multi=0.5; Range_Base=1.5; Health_Multi=1} | ais [] | vis Mob_Boutmanfish_Balibut3_Visualproperties | next [Mob_Boutmanfish_Baviar4_Upgradeproperties, Mob_Boutmanfish_Pubberfish4_Upgradeproperties]
+    UPGRADE Mob_Boutmanfish_Bar4_Upgradeproperties | tier 4 | 'Bar' | desc 'Faster, aggressive, unhinged, insane.' | costs [Redaura 750] | params {Attackspeed_Multi=1.5; Speed_Multi=1; Range_Multi=0.15} | ais [] | vis Mob_Boutmanfish_Bar4_Visualproperties | next [Mob_Boutmanfish_Bass5_Upgradeproperties] | notes 'increases stats, does a cool stabby stabby effect\ninsane attackspeed boost, stacks on qoi'
+    UPGRADE Mob_Boutmanfish_Barp2_Upgradeproperties | tier 2 | 'Barp' | desc 'Faster, targets in a larger radius' | costs [Redaura 50] | params {Speed_Pmulti=0.75; Engagerange_Pmulti=0.5} | ais [] | vis Mob_Boutmanfish_Barp2_Visualproperties | next [Mob_Boutmanfish_Boi3_Upgradeproperties, Mob_Boutmanfish_Bwordfish3_Upgradeproperties]
+    UPGRADE Mob_Boutmanfish_Batfish2_Upgradeproperties | tier 2 | 'Batfish' | desc 'Tougher, gains ability to stand still' | costs [Blueaura 50] | params {Health_Pmulti=1.5} | ais [] | vis Mob_Boutmanfish_Batfish2_Visualproperties | next [Mob_Boutmanfish_Balibut3_Upgradeproperties, Mob_Boutmanfish_Bwordfish3_Upgradeproperties]
+    UPGRADE Mob_Boutmanfish_Baviar4_Upgradeproperties | tier 4 | 'Baviar' | desc 'Things hit become valuable, granting aura on destruction' | costs [Yellowaura 500] | params {} | ais [] | vis Mob_Boutmanfish_Baviar4_Visualproperties | next [Mob_Boutmanfish_Bass5_Upgradeproperties]
+    UPGRADE Mob_Boutmanfish_Boi3_Upgradeproperties | tier 3 | 'Boi' | desc 'Attack speed increased each Tide' | costs [Yellowaura 250, Redaura 50] | params {Attackspeed_Pmulti=0.05} | ais [] | vis Mob_Boutmanfish_Boi3_Visualproperties | next [Mob_Boutmanfish_Baviar4_Upgradeproperties, Mob_Boutmanfish_Bar4_Upgradeproperties]
+    UPGRADE Mob_Boutmanfish_Boldfish2_Upgradeproperties | tier 2 | 'Boldfish' | desc 'Can attack resources, dries fish' | costs [Yellowaura 50] | params {Drydamage_Base=5} | ais [] | vis Mob_Boutmanfish_Boldfish2_Visualproperties | next [Mob_Boutmanfish_Boi3_Upgradeproperties, Mob_Boutmanfish_Shrimb3_Upgradeproperties] | notes 'Resource damage deals damage to the fish!'
+    UPGRADE Mob_Boutmanfish_Bwordfish3_Upgradeproperties | tier 3 | 'Bwordfish' | desc 'Can also attack at range, enables relocation' | costs [Redaura 200] | params {Range_Base=0} | ais [Entity_Ai_Mob_Boutmanfish_Shoot] | vis Mob_Boutmanfish_Bwordfish3_Visualproperties | next [Mob_Boutmanfish_Baviar4_Upgradeproperties, Mob_Boutmanfish_Bar4_Upgradeproperties, Mob_Boutmanfish_Pubberfish4_Upgradeproperties]
+    UPGRADE Mob_Boutmanfish_Pubberfish4_Upgradeproperties | tier 4 | 'Pubberfish' | desc 'Now deals poison, deals massive damage to healthy enemies' | costs [Redaura 475, Blueaura 75] | params {} | ais [] | vis Mob_Boutmanfish_Pubberfish4_Visualproperties | next []
+    UPGRADE Effect_Tower_Boutmanbarrel_Spawnbed3_Boost_Upgradeobject | tier -1 | 'Fresh' | desc 'Increased Damage, Could make sushi out of this one!' | costs [] | params {Damage_Multi=0.75; Duration_Base=12} | ais [Entity_Ai_Effect_Boutmanspawnbed_Boost] | vis - | next []
+    UPGRADE Effect_Tower_Boutmanbarrel_Bucket4_Boost_Upgradeobject | tier -1 | 'Packaged' | desc 'Just bought from the store! Immune to all damage for a time' | costs [] | params {Duration_Base=4} | ais [Entity_Ai_Effect_Boutmanbucket_Boost] | vis - | next []
+    UPGRADE Effect_Hero_Boutman_Recruitbuff_Upgradeobject | tier -1 | 'Boutfish-ed' | desc 'Increased Stats' | costs [] | params {Damage_Multi=1.5; Attackspeed_Multi=0.1; Range_Multi=0.25} | ais [Entity_Ai_Effect_Boutmanrecruit_Boost] | vis - | next []
+    UPGRADE Effect_Hero_Boutman_Familybuff_Upgradeobject | tier -1 | 'Bout Family' | desc 'It runs deep.' | costs [] | params {Boutbro_Damage_Multi=8; Boutbro_Range_Multi=0.5; Damage_Multi=1} | ais [Entity_Ai_Effect_Boutmanfamily_Boost] | vis - | next [] | notes '\nBout dad and mom large damage increases'
+    UPGRADE Effect_Mob_Boutmanfish_Caviarbuff_Upgradeobject | tier -1 | 'Valuable' | desc 'Putting caviar on anything makes it better... Right?' | costs [] | params {Amount_Base=2} | ais [Entity_Ai_Effect_Boutmanfish_Caviarbuff] | vis - | next []
+    UPGRADE Effect_Mob_Boutmanfish_Pufferdebuff_Upgradeobject | tier -2 | 'Poisoned' | desc 'Small or big, poison acts the same!' | costs [] | params {Percent_Base=0.4; Duration_Base=2} | ais [Entity_Ai_Effect_Boutmanfish_Puffer] | vis - | next []
+    UPGRADE Effect_Hero_Boutman_Minebuff_Upgradeobject | tier -1 | 'Hates rocks' | desc 'Dunno why... It just does' | costs [] | params {Resourcedamage_Base=0.5} | ais [Entity_Ai_Effect_Boutmanmine_Boost] | vis - | next []
+    UPGRADE Effect_Mob_Boutmanmom_Aggro_Upgradeobject | tier -1 | 'Offended' | desc 'I'm mad at you now!' | costs [] | params {Aggrorange_Base=0.1; Damage_Multi=0; Health_Multi=0} | ais [Entity_Ai_Enemy_Red_Upgrade] | vis - | next [] | notes 'Grants aggression, checks within a range of itself OR if attacked'
+    UPGRADE Effect_Tower_Boutmanboat_Yat4_Boost_Upgradeobject | tier -1 | 'Caught' | desc 'Increased Damage, straight from the boat!' | costs [] | params {Damage_Multi=0.75; Duration_Base=13} | ais [Entity_Ai_Effect_Boutmanspawnbed_Boost] | vis - | next []
+    UPGRADE Effect_Mob_Boutmanfish_Bassdebuff_Upgradeobject | tier -2 | 'Death Mark'ed' | desc 'Executes at low health...Fish style' | costs [] | params {Percent_Base=0.15} | ais [Entity_Ai_Effect_Boutmanfish_Bass] | vis - | next []
+    UPGRADE Mob_Boutmanfish_Bass5_Upgradeproperties | tier 5 | 'Bass' | desc 'Can teleport, marks enemies for death' | costs [Redaura 4000] | params {Damage_Multi=1} | ais [Entity_Ai_Effect_Boutmanfish_Bassboost] | vis Mob_Boutmanfish_Bass5_Visualproperties | next [] | notes 'a debuff version of death mark's execute'
+    UPGRADE Mob_Boutmanfish_Shrimb3_Upgradeproperties | tier 3 | 'Bbetta' | desc 'When dried, will completely mine resources nearby' | costs [Yellowaura 300] | params {Range_Base=1} | ais [] | vis Mob_Boutmanfish_Shrimb3_Visualproperties | next []
+    UPGRADE Mob_Boutmanmom_Tooltip_Upgradeproperties | tier -3 | 'Catty Tendancies' | desc 'Aggravates enemies hit, increased damage per raft' | costs [] | params {} | ais [] | vis - | next []
+  LIST Mob (13)
+    BEING Mob_Boutmanbro | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Boutmanbro_Entity | name 'Boutbro' | display 'Boutbro' | desc ''
+      tags [Mob, Hero, Boutfamily, Boutbro] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Combat, Entity_Ai_Hero_Buildsell, Entity_Ai_Mob_Boutbro] | visscripts [Entity_Vis_Animator_Mob]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Boutmanbro_Statproperties [Damage=3 Number/Default/hidden, Range=1.5 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Speed=3 Number/Default/hidden, Buildrange=2 Number/Default/hidden, Sellrate=0.5 Number/Default/hidden, Health=10 Number/Default/hidden, Fishcost=1 Number/Default/hidden, Barrelcost=1 Number/Default/hidden, Boatcost=1 Number/Default/hidden]
+      VISUAL Mob_Boutmanbro_Visualproperties | default Sprite prefab - sprite Mob_Boutmanbro_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+    BEING Mob_Boutmanfish | block Mob_Boutmanfish_Block | notes ''
+      ENTITY Mob_Boutmanfish_Entity | name 'Boutmanfish' | display 'Gubby' | desc 'Fighter, blocks enemies'
+      tags [Mob, Mobfighter, Fish, Fishmain] | ais [Entity_Ai_Mob_Movement, Entity_Ai_Mob_Melee, Entity_Ai_Mob_Boutmanfish, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Mob_Boutmanfish, Entity_Vis_Mob_Boutmanfish_Engagerange]
+      costs [Yellowaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Mob_Hitproperties_Height 1
+      upgrades [Mob_Boutmanfish_Boldfish2_Upgradeproperties, Mob_Boutmanfish_Barp2_Upgradeproperties, Mob_Boutmanfish_Batfish2_Upgradeproperties] | upgradesinit []
+      STATS Mob_Boutmanfish_Statproperties [Health=50(+75/lvl) Number/Default/hidden, Speed=1.25(+0.25/lvl) Number/Default/hidden, Damage=10(+10/lvl) Number/Default/hidden, Range=1.75 Number/Default/hidden, Attackspeed=0.3(+0.1/lvl) Number/Default/hidden, Engagerange=3(+0.5/lvl) Number/Default/hidden, Live=0 Number/Default/hidden, Deadarmor=10(+5/lvl) Number/Default/hidden, Following=0 Number/None/hidden]
+      VISUAL Mob_Boutmanfish_Visualproperties | default Sprite prefab - sprite Mob_Boutmanfish_Gubby_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Dead(1x1 spd 1 loop prio 1)]
+    BEING Tower_Boutmanbarrel | block General_Tower_Block_Height 1_Space 2 | notes ''
+      ENTITY Tower_Boutmanbarrel_Entity | name 'Fishbarrel' | display 'Fish Barrel' | desc 'Saves dried fish, grants buffs'
+      tags [Boutbarrel, Tower] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Boutmanbarrel, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Tower_Range, Entity_Vis_Tower_Boutmanbarrel, Entity_Vis_Tower]
+      costs [Blueaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Boutmanbarrel_Hitproperties
+      upgrades [Tower_Boutmanbarrel_Pool2_Upgradeproperties, Tower_Boutmanbarrel_Pond2_Upgradeproperties, Tower_Boutmanbarrel_Tank2_Upgradeproperties] | upgradesinit []
+      STATS Tower_Boutmanbarrel_Statproperties [Heal=2(+1/lvl) Number/Default/hidden, Units=1 Number/Default/hidden, Vacantcurrent=1 Number/None/hidden, Speed=1 Number/Default/hidden, Range=6 Number/Default/hidden, Health=50(+25/lvl) Number/Default/hidden]
+      VISUAL Tower_Boutmanbarrel_Visualproperties | default Model prefab Tower_Boutmanbarrel sprite - 'Barrel' addvis [] addprefabs []
+    BEING Tower_Boutmanboat | block Tower_Boutmanboat_Block | notes ''
+      ENTITY Tower_Boutmanboat_Entity | name 'Boutboat' | display 'Boutboat' | desc 'Summon and command Boutdad, ranged'
+      tags [Tower, Boutboat, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Boutmanboat, Entity_Ai_General_Upgrade] | visscripts [Entity_Vis_Tower_Range, Entity_Vis_Tower]
+      costs [Redaura 100] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Boutmanboat_Hitproperties
+      upgrades [Tower_Boutmanboat_Speed2_Upgradeproperties, Tower_Boutmanboat_Boat2_Upgradeproperties] | upgradesinit []
+      STATS Tower_Boutmanboat_Statproperties [Landspeed=5 Number/Default/hidden, Damage=3(+2/lvl) Number/Default/hidden, Range=4.5 Number/Default/hidden, Attackspeed=2 Number/Default/hidden, Projspeed=10 Number/Default/hidden, Projectile=0'Mob_Boutmandadbait' String/Default/hidden, Projectilemom=0'Mob_Boutmanmomslur' String/Default/hidden, Health=75(+75/lvl) Number/Default/hidden, Callcooldown=5 Number/Default/hidden]
+      VISUAL Tower_Boutmanboat_Visualproperties | default Model prefab Tower_Boutmanboat sprite - 'Boutboat' addvis [] addprefabs []
+    BEING Tower_Boutmanhouse | block General_Neutraltower_Block_Height 2 | notes 'Will act like a normal tower towards team, but allows enemies to walk through aswell\n'
+      ENTITY Tower_Boutmanhouse_Entity | name 'Bouthouse' | display 'Bouthouse' | desc 'Upgrade Boutman, summon Boutbro to build and mine'
+      tags [Bouthouse, Herotower] | ais [Entity_Ai_Tower_General, Entity_Ai_Tower_Boutmanhouse, Entity_Ai_General_Upgrade] | visscripts []
+      costs [] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Boutmanhouse_Hitproperties
+      upgrades [Tower_Boutmanhouse_Aoe2_Upgradeproperties, Tower_Boutmanhouse_Life2_Upgradeproperties] | upgradesinit []
+      STATS Tower_Boutmanhouse_Statproperties [Respawn=10 Number/Default/hidden]
+      VISUAL Tower_Boutmanhouse_Visualproperties | default Model prefab Tower_Boutmanhouse sprite - 'Bouthouse' addvis [] addprefabs []
+        SKIN '2' Model prefab Tower_Boutmanhouse_Tier2 sprite - '' addvis [] addprefabs []
+        SKIN '3' Model prefab Tower_Boutmanhouse_Tier3 sprite - '' addvis [] addprefabs []
+        SKIN '4' Model prefab Tower_Boutmanhouse_Tier4 sprite - '' addvis [] addprefabs []
+        SKIN '5' Model prefab Tower_Boutmanhouse_Tier5 sprite - '' addvis [] addprefabs []
+    BEING Mob_Boutmandad | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Boutmandad_Entity | name 'Boutdad' | display 'Boutdad' | desc ''
+      tags [Mobfighter, Boutdad, Boutfamily] | ais [Entity_Ai_Mob_Boutmandad] | visscripts [Entity_Vis_Mob_Boutmandad]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Boutmandad_Statproperties []
+      VISUAL Mob_Boutmandad_Visualproperties | default Sprite prefab - sprite Mob_Boutmandad_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Attack(4x3 spd 1.5 reset prio 1 ->Idle), Fly(4x1 spd 1 loop prio 0)]
+    BEING Mob_Boutmanmom | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Boutmanmom_Entity | name 'Boutmom' | display 'Boutmom' | desc ''
+      tags [Mobfighter, Boutmom, Boutfamily] | ais [Entity_Ai_Mob_Boutmanmom] | visscripts [Entity_Vis_Mob_Boutmandad]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit [Mob_Boutmanmom_Tooltip_Upgradeproperties]
+      STATS Mob_Boutmanmom_Statproperties []
+      VISUAL Mob_Boutmanmom_Visualproperties | default Sprite prefab - sprite Mob_Boutmanmom_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Attack(4x4 spd 1 reset prio 1 ->Idle), Fly(4x1 spd 1 loop prio 0)]
+    BEING Tower_Boutmanhousepersistent | block General_Effect_Block_Height 1 | notes 'Acts as the container for the boutman upgrades as a file in case mr house gets destroyed\n\n'
+      ENTITY Tower_Boutmanhousepersistent_Entity | name 'Bouthousepersisent' | display 'Bouthousepersistent' | desc ''
+      tags [Bouthousepersistent] | ais [] | visscripts []
+      costs [] | drops [] | sellable False | controllable False | orientable False | targetable True | level 1 | selprio 0 | hit General_Effect_Hitproperties
+      upgrades [] | upgradesinit []
+    BEING Mob_Boutmanfishmini | block Mob_Boutmanfish_Block | notes ''
+      ENTITY Mob_Boutmanfishmini_Entity | name 'Boutmanfishmini' | display 'Buppy' | desc ''
+      tags [Mob, Mobfighter, Fish] | ais [Entity_Ai_Mob_Movement, Entity_Ai_Mob_Melee, Entity_Ai_Mob_Boutmanfishmini] | visscripts [Entity_Vis_Animator_Mob]
+      costs [] | drops [] | sellable True | controllable False | orientable True | targetable True | level 1 | selprio 0 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Boutmanfishmini_Statproperties [Health=200 Number/Default/hidden, Speed=1 Number/Default/hidden, Damage=25 Number/Default/hidden, Range=1.5 Number/Default/hidden, Attackspeed=1 Number/Default/hidden, Engagerange=1000 Number/Default/hidden, Live=1 Number/Default/hidden, Following=0 Number/None/hidden, Perhitdamage=25 Number/Default/hidden]
+      VISUAL Mob_Boutmanfishmini_Visualproperties | default Sprite prefab - sprite Mob_Boutmanfish_Buppy_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Evil' Sprite prefab - sprite Mob_Boutmanfish_Buppyevil_Sprite 'Evil Buppy' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+    BEING Mob_Boutmandadghost | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Boutmandadghost_Entity | name 'Boutdad?' | display 'Boutdad?' | desc ''
+      tags [Mobfighter, Boutfamily] | ais [Entity_Ai_General_Expire, Entity_Ai_Mob_Boutmandadghost] | visscripts [Entity_Vis_Mob_Boutmandad]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 0 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Boutmandadghost_Statproperties [Attackspeed=1 Number/Default/hidden, Damage=30 Number/Default/hidden, Range=8 Number/Default/hidden, Duration=8 Number/Default/hidden]
+      VISUAL Mob_Boutmandadghost_Visualproperties | default Sprite prefab - sprite Mob_Boutmandadghost_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Attack(4x3 spd 1.5 reset prio 1 ->Idle)]
+    BEING Tower_Boutmanboat_Cargo_Connector | block Tower_Boutmanboat_Cargo_Connector_Block | notes 'Add a Main_Tpgate_Link to this on generation and it'll try and link with another'
+      ENTITY Tower_Boutmanboat_Cargo_Connector_Entity | name 'Gate' | display '' | desc ''
+      tags [] | ais [Entity_Ai_Tower_Boutmanboat_Cargo_Connector] | visscripts []
+      costs [] | drops [] | sellable False | controllable False | orientable False | targetable True | level 1 | selprio 1 | hit -
+      upgrades [] | upgradesinit []
+    BEING Block_Noplacementfish | block General_Trap_Block_Height 1 | notes 'Uses General_Trap Block\nUsed to block placement on a particular spot'
+      ENTITY Block_Noplacementfish_Entity | name 'Noplacement' | display 'Fishnet' | desc ''
+      tags [] | ais [Entity_Ai_Entposition_Position, Entity_Ai_Trap_Fishnoplacement] | visscripts [Entity_Vis_Block_Noplacement, Entity_Vis_Select_Parent]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio -1 | hit Block_Noplacementfish_Hitproperties
+      upgrades [] | upgradesinit []
+      VISUAL Block_Noplacementfish_Visualproperties | default Model prefab Block_Noplacementfish_Vis sprite - '' addvis [] addprefabs []
+  LIST Projectile (18)
+    PROJECTILE Mob_Boutmandadbait | vis Baitball | hit Fishprojcollider | vfx Shoot_Worm/Impact_Worm | sfx 'Boutdad_Baitthrow'/'Boutdad_Baitimpact' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Interact=2; Radius=0.5; Count=4; Gravity=-5; Yvelocity=2; Vis=0}
+    PROJECTILE Mob_Boutmanmomslur | vis Profanity | hit - | vfx Shoot_Profane/Impact_Profane | sfx 'Boutmom_Slur'/'Boutmom_Slurimpact' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Interact=1}
+    PROJECTILE Mob_Boutmanmomslurlarge | vis Profanitylarge | hit - | vfx Shoot_Profane/Impact_Profane | sfx 'Boutmom_Slur'/'Boutmom_Slurimpact' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track, Projectile_Ai_Explosion] | params {Interact=0; Radius=0.5; Count=5}
+    PROJECTILE Mob_Boutmandadcannon | vis Cannonball | hit Fishprojcollider | vfx Shoot_Cannonballboutman/Impact_Cannonball | sfx 'Boutdad_Cannonballshoot'/'Boutdad_Cannonballimpact' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Explosion, Projectile_Ai_Simple] | params {Radius=1; Count=10; Gravity=-10; Pierce=50; Zvelocity=15}
+    PROJECTILE Mob_Boutmandadbaitlarge | vis Baitballlarge | hit Fishprojcollider | vfx Shoot_Worm/Impact_Wormlarge | sfx 'Boutdad_Baitthrow'/'Boutdad_Baitimpact' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Interact=2; Radius=1.5; Count=8; Gravity=-5; Yvelocity=2}
+    PROJECTILE Hero_Boutman_Range | vis Boutmanwave | hit - | vfx -/- | sfx ''/'Boutman_Aoe' | ray Spherecast r 0.3 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=12; Pierce=5; Lifetime=0.2; Collision=0}
+    PROJECTILE Hero_Boutman_Aoe | vis Boutmanaoe | hit - | vfx -/- | sfx 'Boutman_Aoe'/'' | ray Spherecast r 0.25 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=0.1; Pierce=5; Activetime=0.1; Lifetime=0.45}
+    PROJECTILE Mob_Boutmanfish_Bar | vis Barknifethrow | hit Fishprojcollider | vfx Shoot_Star/Impact_Simple | sfx 'Boutfish_Range'/'Boutfish_Range' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Home] | params {Accel=3; Yvelocity=4; Zvelocity=15; Speed=15}
+    PROJECTILE Mob_Boutmanfish_Baviar | vis Caviar | hit Fishprojcollider | vfx Shoot_Star/Impact_Caviar | sfx 'Boutfish_Range'/'Boutfish_Caviarimpact' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=8}
+    PROJECTILE Mob_Boutmanfish_Bwordfish | vis Bworddart | hit Fishprojcollider | vfx Shoot_Star/Impact_Simple | sfx 'Boutfish_Range'/'Boutfish_Range' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Accel=12; Speed=12; Zvelocity=12}
+    PROJECTILE Mob_Boutmanfish_Pubber | vis Pubberbubble | hit Fishprojcollider | vfx Shoot_Bubble/Impact_Poison | sfx 'Boutfish_Pubbershot'/'Boutfish_Range' | ray Spherecast r 0.05 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=1; Gravity=0.1; Pierce=2}
+    PROJECTILE Mob_Boutmanfish_Barstab | vis Stab | hit - | vfx -/- | sfx ''/'' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=1; Pierce=5; Lifetime=0.3}
+    PROJECTILE Hero_Boutman_Rangeaoe | vis Boutmanwaveaoe | hit - | vfx -/- | sfx ''/'' | ray Spherecast r 0.5 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=12; Pierce=5; Lifetime=0.2; Collision=0}
+    PROJECTILE Tower_Boutmanbarrel_Pulse | vis Barrelpulse | hit Barrelpulse_Collider | vfx -/- | sfx 'Tower_Snosnoheater_Firepulse'/'' | ray Regularphysics r 0 | replicate True | controllers [Projectile_Ai_Expand] | params {Radius=2; Initradius=1; Lifetime=2; Any=1; Pierce=30}
+    PROJECTILE Mob_Boutmandadbaitghost | vis Baitballghost | hit Fishprojcollider | vfx Shoot_Wormghost/Impact_Wormghost | sfx 'Boutdad_Baitthrow'/'Boutdad_Baitimpact' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Home, Projectile_Ai_Explosion] | params {Interact=0; Radius=0.5; Count=20; Speed=30; Accel=0.5; Collision=0; Zvelocity=1; Vis=0}
+    PROJECTILE Mob_Boutmandad_Aoe | vis - | hit - | vfx Boutdad_Baitexplosion_Aoe/- | sfx ''/'' | ray Spherecast r 0.75 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=12; Pierce=8; Lifetime=0.1; Collision=0}
+    PROJECTILE Mob_Boutmanmom_Aoe | vis - | hit - | vfx Boutmom_Baitexplosion_Aoe/- | sfx ''/'' | ray Spherecast r 0.75 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=12; Pierce=8; Lifetime=0.1; Collision=0}
+    PROJECTILE Mob_Boutmanfish_Bass | vis Bassshurken | hit Fishprojcollider | vfx Shoot_Star/Impact_Simple | sfx 'Boutfish_Range'/'Boutfish_Range' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=10; Pierce=10}
+  LIST Vfx (56)
+    ITEM World_Mob_Minion_Death : GameObject
+    ITEM World_Tower_Death : GameObject
+    ITEM Custom_Button_Command_Boutman_Fishfollow : GameObject
+    ITEM World_Tower_Boutmanbarrel_Range : GameObject
+    ITEM Boutdadbeam : GameObject
+    ITEM Impact_Wormlarge : GameObject
+    ITEM Impact_Worm : GameObject
+    ITEM Shoot_Worm : GameObject
+    ITEM Shoot_Wormghost : GameObject
+    ITEM Impact_Wormghost : GameObject
+    ITEM World_Uparrowbuff : GameObject
+    ITEM World_Uparrowbuffgreen : GameObject
+    ITEM Shoot_Profane : GameObject
+    ITEM Shoot_Bubble : GameObject
+    ITEM Impact_Simplefishhit : GameObject
+    ITEM Debuff_Boutcargomove : GameObject
+    ITEM Debuff_Boutman_Blue : GameObject
+    ITEM Debuff_Boutman_Red : GameObject
+    ITEM Debuff_Boutman_White : GameObject
+    ITEM Debuff_Boutman_Yellow : GameObject
+    ITEM Debuff_Poison : GameObject
+    ITEM World_Boutmanfishko : GameObject
+    ITEM Debuff_Stun : GameObject
+    ITEM Impact_Caviar : GameObject
+    ITEM Impact_Poison : GameObject
+    ITEM Impact_Profane : GameObject
+    ITEM Debuff_Boutmandowned : GameObject
+    ITEM Debuff_Boutmanrampdamage : GameObject
+    ITEM Debuff_Caviar : GameObject
+    ITEM Debuff_Fishready : GameObject
+    ITEM Debuff_Recruit : GameObject
+    ITEM Impact_Cannonball : GameObject
+    ITEM Shoot_Cannonballboutman : GameObject
+    ITEM World_Balibutexplode : GameObject
+    ITEM World_Bargestun : GameObject
+    ITEM World_Barrelenter : GameObject
+    ITEM World_Barrelexit : GameObject
+    ITEM World_Barrelexitspecial : GameObject
+    ITEM World_Boutbarrelgutterrevive : GameObject
+    ITEM World_Boutdadenter : GameObject
+    ITEM World_Boutdadleave : GameObject
+    ITEM World_Boutmanko : GameObject
+    ITEM World_Boutmanrally : GameObject
+    ITEM World_Fishrecruited : GameObject
+    ITEM World_Koiattackup : GameObject
+    ITEM World_Hero_Boutman_Death : GameObject
+    ITEM Boutdadghost_Appear : GameObject
+    ITEM Fishborder : GameObject
+    ITEM Debuff_Deathmarkedfish : GameObject
+    ITEM World_Boutmanteleport : GameObject
+    ITEM World_Boutmanteleportcat : GameObject
+    ITEM World_Boutmanteleportstart : GameObject
+    ITEM World_Mob_Boutmanfish_Execute : GameObject
+    ITEM World_Shrimbexplode : GameObject
+    ITEM Boutdad_Baitexplosion_Aoe : GameObject
+    ITEM Boutmom_Baitexplosion_Aoe : GameObject
+  LIST Command (8)
+    COMMAND Command_Boutman_Select_Bro | style Button | 'BUILD' | desc 'Select Boutbro to build stuff' | icon 'Build' | keys [4, 5, 6] | keystate 'Onpressed' | prio 3 | funcs [Entity_Command_Selectother] | ui -
+    COMMAND Command_Boutman_Select_House | style Button | 'BUFF' | desc 'BUFF' | icon 'Boutman_Buff' | keys [4, 5, 6] | keystate 'Onpressed' | prio 3 | funcs [Entity_Command_Selectother] | ui -
+    COMMAND Command_Boutman_Select_Bout | style Button | 'BOUT' | desc 'BUFF' | icon 'Boutman_Fight' | keys [4, 5, 6] | keystate 'Onpressed' | prio 3 | funcs [Entity_Command_Selectother] | ui -
+    COMMAND Command_Boutman_Fishfollow | style Custom | '' | desc '' | icon '' | keys [] | keystate 'Onpressed' | prio 1 | funcs [Entity_Command_Hero_Boutman_Fishfollow] | ui Custom_Button_Command_Boutman_Fishfollow
+    COMMAND Command_Boutman_Barge | style Button | 'Signal' | desc '' | icon 'Boutman_Fishcalldad' | keys [Quickaction] | keystate 'Onpressed' | prio 2 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+    COMMAND Command_Boutman_Recruit | style Button | 'Rally' | desc '' | icon 'Boutman_Fishrally' | keys [5, 6, 7] | keystate 'Onpressed' | prio 2 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+    COMMAND Command_Boutmanfish_Relocate | style Button | 'Move' | desc '' | icon 'Boutman_Fishmove' | keys [Quickaction, 5] | keystate 'Onrelease' | prio 2 | funcs [Entity_Command_Mob_Boutmanfish_Relocate] | ui -
+    COMMAND Command_Boutmanfish_Stand | style Button | 'Stand' | desc '' | icon 'Boutman_Fishstand' | keys [5] | keystate 'Onpressed' | prio 3 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+  LIST Other (5)
+    ITEM Mob_Boutmanfish_Block : Blockobject
+    ITEM Mob_Boutmanfish_Catfish_Block : Blockobject
+    ITEM Mob_Boutmanfish_Dead_Block : Blockobject
+    ITEM Tower_Boutmanboat_Block : Blockobject
+    ITEM Tower_Boutmanboat_Cargo_Block : Blockobject
+  LIST Sound (34)
+    ITEM Deathmarkexecute : AudioClip
+    ITEM Balibutburst : AudioClip
+    ITEM Bargehorn : AudioClip
+    ITEM Boutbaitimpact2 : AudioClip
+    ITEM Boutdadbaitthrow : AudioClip
+    ITEM Boutmanaoe : AudioClip
+    ITEM Boutmanbuff : AudioClip
+    ITEM Boutmanbuffminor : AudioClip
+    ITEM Boutmandadjump : AudioClip
+    ITEM Boutmandadland : AudioClip
+    ITEM Boutmanko : AudioClip
+    ITEM Boutmanmomjump : AudioClip
+    ITEM Boutmanmomslurimpact : AudioClip
+    ITEM Boutmanpunch : AudioClip
+    ITEM Boutmanrally : AudioClip
+    ITEM Boutmanrecruit : AudioClip
+    ITEM Boutmanrod : AudioClip
+    ITEM Boutmomyappin1 : AudioClip
+    ITEM Boutmomyappin2 : AudioClip
+    ITEM Boutmomyappin3 : AudioClip
+    ITEM Cannonballimpact : AudioClip
+    ITEM Cannonshotboutdad : AudioClip
+    ITEM Cargoboatlaunch : AudioClip
+    ITEM Caviarpop : AudioClip
+    ITEM Fishbarrelout : AudioClip
+    ITEM Fishdowned : AudioClip
+    ITEM Fishinbarrel : AudioClip
+    ITEM Fishready : AudioClip
+    ITEM Gutterrevive : AudioClip
+    ITEM Meleehitfish : AudioClip
+    ITEM Pufferfishbubble : AudioClip
+    ITEM Rangehitfish : AudioClip
+    ITEM Boutmangetup : AudioClip
+    ITEM Boutmanlanding2 : AudioClip
+  LIST Ui (1)
+    ITEM Ui_Command_Boutman_Fishfollow : GameObject
+
+HERO Hero_Fie | name 'Fie' | sub 'From the Walls' | skill 'Intermediate' | towers [Tower_Fiesilo, Tower_Fieshop, Tower_Fiekeep, Tower_Fiewall] | color RGBA(0.802, 0.276, 0.372, 1.000) | loads Hero_Fie | loadingsize (12.00, 1.00) landingsize (12.00, 1.00) idlesize (6.00, 1.00)
+  LOG title 'Fie' desc 'A humble ramen shop owner. Much taller than the others in the group, outside of Bout.\nShe feels. Connected deeply with the old structures above, we are forever grateful she wants to help!'
+  LIST Hero (1)
+    BEING Hero_Fie | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Hero_Fie_Entity | name 'Hero_Fie' | display 'Fie' | desc 'Fast, single-target melee'
+      tags [Mob, Hero] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Hero_Fie, Entity_Ai_Mob_Combat, Entity_Ai_Hero_Buildsell] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Hero]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 3 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Hero_Fie_Statproperties [Health=50 Number/Default/hidden, Speed=3 Number/Default/hidden, Damage=3 Number/Default/hidden, Range=2 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Buildrange=3 Number/Default/hidden, Sellrate=0.6 Number/Default/hidden]
+      VISUAL Hero_Fie_Visualproperties | default Sprite prefab - sprite Hero_Fie_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0 snd 2:General_Footstep/5:General_Footstep), Falling(1x6 spd 1 loop reset prio 2), Land(1x12 spd 1 reset prio 2 ->Idle), Landquick(1x1 spd 10 reset prio 2 ->Idle)]
+  LIST Upgrade (81)
+    UPGRADE Mob_Fieknight_Blue_Upgradeobject | tier -1 | 'Shotgun' | desc 'Deals a strong, close ranged attack' | costs [] | params {Attackspeed_Base=-0.25; Damage_Base=5; Speed_Base=0; Range_Base=2.25; Health_Base=20} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Green_Upgradeobject | tier -1 | 'Pistol' | desc 'Fast, single-target power' | costs [] | params {Attackspeed_Base=1; Damage_Base=3; Speed_Base=1.75; Range_Base=5; Health_Base=5} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Orange_Upgradeobject | tier -1 | 'Rifle' | desc 'Long-mid range shots that pierce' | costs [] | params {Attackspeed_Base=-0.15; Damage_Base=4; Speed_Base=0; Range_Base=5.5; Health_Base=5} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Purple_Upgradeobject | tier -1 | 'Grenade' | desc 'Powerful close range delayed explosions' | costs [] | params {Attackspeed_Base=-0.25; Damage_Base=5; Speed_Base=0; Range_Base=5; Health_Base=20} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Red_Upgradeobject | tier -1 | 'Sub-Machinegun' | desc 'Rapid, short range combat' | costs [] | params {Attackspeed_Base=2; Damage_Base=1; Speed_Base=0; Range_Base=4; Health_Base=10} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Yellow_Upgradeobject | tier -1 | 'Sniper' | desc 'High power, high range bullets' | costs [] | params {Attackspeed_Base=-0.5; Damage_Base=9; Speed_Base=0; Range_Base=7; Health_Base=0} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Green_Commander4_Upgradeobject | tier -1 | 'Pistol Whip' | desc 'Knight is much faster, and is untargetable' | costs [] | params {Speed_Pmulti=0.4; Effect_Add=0.5} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Blue_Commander4_Upgradeobject | tier -1 | 'Stunning' | desc 'Bullets now stun enemies' | costs [] | params {Stun_Duration=0.5; Effect_Add=0.5} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Orange_Commander4_Upgradeobject | tier -1 | 'Champ Bullets' | desc 'Now deals percent health damage, taking down the strongest' | costs [] | params {Damage_Perhealth=80; Damage_Max=75; Effect_Add=0.5} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Purple_Commander4_Upgradeobject | tier -1 | 'Bombing Expert' | desc 'Increased damage, drowned enemies also drop grenades' | costs [] | params {Damage_Base=2; Effect_Add=0.5} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Red_Commander4_Upgradeobject | tier -1 | 'Frenzied' | desc 'Shoots significantly faster' | costs [] | params {Attackspeed_Pmulti=0.75; Effect_Add=0.5} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Yellow_Commander4_Upgradeobject | tier -1 | 'Amplified' | desc 'Significantly increased range, deal more damage at a distance' | costs [] | params {Range_Pmulti=0.6; Effect_Add=0.5; Damageperrange_Base=0.04} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Battalion4_Upgradeobject | tier 4 | 'Battalion' | desc 'Gain increased damage when whole group is active' | costs [Redaura 350] | params {Damage_Multi=0.5} | ais [] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Commander4_Upgradeobject | tier 4 | 'Knight Commander' | desc 'Boost to stats and effects, all same color Knights gain enhanced effects' | costs [Redaura 675] | params {Attackspeed_Multi=0.15; Range_Multi=0.15; Damage_Multi=0.5; Health_Multi=1.5; Effect_Add=0.5} | ais [] | vis Mob_Fieknight_Commander4_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Convoy5_Upgradeobject | tier 5 | 'Convoy' | desc 'Knights will now automatically pursue enemies' | costs [Redaura 1000, Blueaura 1000, Yellowaura 1000] | params {} | ais [] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Lone2_Upgradeobject | tier 2 | 'Lone Knight' | desc 'Stronger than before' | costs [Redaura 55] | params {Health_Pmulti=2.5; Damage_Pmulti=0.35; Speed_Pmulti=0.5} | ais [] | vis Mob_Fieknight_Lone2_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Partner2_Upgradeobject | tier 2 | 'Partner' | desc 'Two is better than one' | costs [Redaura 55] | params {} | ais [] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Security3_Upgradeobject | tier 3 | 'Security Group' | desc 'Can now Block, significant increased health' | costs [Redaura 50, Blueaura 50] | params {Health_Multi=2.5} | ais [] | vis Mob_Fieknight_Security3_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Squad3_Upgradeobject | tier 3 | 'Squad' | desc 'Conquering the Walls together' | costs [Redaura 130] | params {} | ais [] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_Trailblazer3_Upgradeobject | tier 3 | 'Trailblazer' | desc 'Now has a special effect based on their weapon' | costs [Redaura 85] | params {Effect_Add=0.75} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Trailblazer3_Visualproperties | next []
+    UPGRADE Mob_Fieknight_True5_Upgradeobject | tier 5 | 'True Knight' | desc 'Thus the Walls are on our side, Knight.' | costs [Redaura 2750] | params {Attackspeed_Multi=1; Range_Multi=1.5} | ais [] | vis Mob_Fieknighttrue_Visualproperties | next [] | notes 'Removes visibility requirements from shooting enemies\nhypercharges attackspeed and range\n'
+    UPGRADE Tower_Fiekeep_Battalion4_Upgradeobject | tier 4 | 'Battalion' | desc 'Gain a final Knight and gain increased stats when all Knights are active' | costs [Redaura 350] | params {Units=1} | ais [] | vis Tower_Fiekeep_Battalion4_Visualproperties | next [Tower_Fiekeep_Convoy5_Upgradeobject]
+    UPGRADE Tower_Fiekeep_Commander4_Upgradeobject | tier 4 | 'Knight Commander' | desc 'Boost to stats and effects, all same color Knights gain enhanced effects' | costs [Redaura 650] | params {} | ais [] | vis Tower_Fiekeep_Commander4_Visualproperties | next [Tower_Fiekeep_Convoy5_Upgradeobject, Tower_Fiekeep_True5_Upgradeobject]
+    UPGRADE Tower_Fiekeep_Convoy5_Upgradeobject | tier 5 | 'Convoy' | desc 'Knights will now automatically pursue enemies' | costs [Redaura 1000, Blueaura 1000, Yellowaura 1000] | params {} | ais [] | vis Tower_Fiekeep_Convoy5_Visualproperties | next []
+    UPGRADE Tower_Fiekeep_Lone2_Upgradeobject | tier 2 | 'Lone Knight' | desc 'Knight gains increased health, speed, and damage' | costs [Redaura 55] | params {} | ais [] | vis Tower_Fiekeep_Lone2_Visualproperties | next [Tower_Fiekeep_Security3_Upgradeobject, Tower_Fiekeep_Trailblazer3_Upgradeobject]
+    UPGRADE Tower_Fiekeep_Partner2_Upgradeobject | tier 2 | 'Partner' | desc 'Hire another Knight' | costs [Redaura 55] | params {Units=1} | ais [] | vis Tower_Fiekeep_Partner2_Visualproperties | next [Tower_Fiekeep_Security3_Upgradeobject, Tower_Fiekeep_Squad3_Upgradeobject, Tower_Fiekeep_Trailblazer3_Upgradeobject]
+    UPGRADE Tower_Fiekeep_Security3_Upgradeobject | tier 3 | 'Security Group' | desc 'Knights can now Block, significant increased health' | costs [Redaura 50, Blueaura 50] | params {} | ais [] | vis Tower_Fiekeep_Security3_Visualproperties | next []
+    UPGRADE Tower_Fiekeep_Squad3_Upgradeobject | tier 3 | 'Squad' | desc 'Gain another Knight and lower respawn times' | costs [Redaura 130] | params {Respawn_Base=-4; Units=1} | ais [] | vis Tower_Fiekeep_Squad3_Visualproperties | next [Tower_Fiekeep_Battalion4_Upgradeobject, Tower_Fiekeep_Sword4_Upgradeobject]
+    UPGRADE Tower_Fiekeep_Trailblazer3_Upgradeobject | tier 3 | 'Trailblazer' | desc 'Knights gain special effects based on their weapon that can be enhanced' | costs [Redaura 85] | params {} | ais [] | vis Tower_Fiekeep_Trailblazer3_Visualproperties | next [Tower_Fiekeep_Commander4_Upgradeobject, Tower_Fiekeep_Sword4_Upgradeobject]
+    UPGRADE Tower_Fiekeep_True5_Upgradeobject | tier 5 | 'True Knight' | desc 'Thus the Walls are on our side, Knight.' | costs [Redaura 2750] | params {} | ais [] | vis Tower_Fiekeep_True5_Visualproperties | next []
+    UPGRADE Tower_Fieshop_Buffet5_Upgradeobject | tier 5 | 'All You Can Eat' | desc 'Buffs apply in a splash around the target' | costs [Yellowaura 3000] | params {} | ais [] | vis Tower_Fieshop_Buffet5_Visualproperties | next []
+    UPGRADE Tower_Fieshop_Calamari2_Upgradeobject | tier 2 | 'Spicy Calamari' | desc 'Effected units gain attack speed' | costs [Yellowaura 25, Redaura 50] | params {Attackspeed_Multi=0.1} | ais [] | vis Tower_Fieshop_Calamari2_Visualproperties | next [Tower_Fieshop_Ramen3_Upgradeobject, Tower_Fieshop_Sushi3_Upgradeobject, Tower_Fieshop_Portions3_Upgradeobject]
+    UPGRADE Tower_Fieshop_Calamari3_Upgradeobject | tier 3 | 'Side of Calamari' | desc 'Units effected will also now retaliate when damaged' | costs [Redaura 125] | params {} | ais [] | vis Tower_Fieshop_Calamari3_Visualproperties | next [Tower_Fieshop_Finish4_Upgradeobject, Tower_Fieshop_Regular4_Upgradeobject, Tower_Fieshop_Second4_Upgradeobject]
+    UPGRADE Tower_Fieshop_Finish4_Upgradeobject | tier 4 | 'Finish the Plate' | desc 'Buffs are longer, stronger, and occur more rapidly' | costs [Yellowaura 200] | params {Effect_Multi=0.5; Attackspeed_Multi=0.5; Duration_Multi=0.75} | ais [] | vis Tower_Fieshop_Finish4_Visualproperties | next [Tower_Fieshop_Buffet5_Upgradeobject, Tower_Fieshop_Specific5_Upgradeobject]
+    UPGRADE Tower_Fieshop_Portions3_Upgradeobject | tier 3 | 'Bigger Portions' | desc 'Improved effects' | costs [Blueaura 35, Redaura 35, Yellowaura 35] | params {Effect_Add=0.75} | ais [] | vis Tower_Fieshop_Portions3_Visualproperties | next [Tower_Fieshop_Finish4_Upgradeobject, Tower_Fieshop_Regular4_Upgradeobject, Tower_Fieshop_Second4_Upgradeobject]
+    UPGRADE Tower_Fieshop_Ramen2_Upgradeobject | tier 2 | 'Hearty Ramen' | desc 'Effected units gain additional max health' | costs [Yellowaura 25, Blueaura 50] | params {Health_Multi=0.4} | ais [] | vis Tower_Fieshop_Ramen2_Visualproperties | next [Tower_Fieshop_Calamari3_Upgradeobject, Tower_Fieshop_Sushi3_Upgradeobject, Tower_Fieshop_Portions3_Upgradeobject]
+    UPGRADE Tower_Fieshop_Ramen3_Upgradeobject | tier 3 | 'Side of Ramen' | desc 'Units effected will also now regenerate health' | costs [Yellowaura 125] | params {} | ais [] | vis Tower_Fieshop_Ramen3_Visualproperties | next [Tower_Fieshop_Finish4_Upgradeobject, Tower_Fieshop_Regular4_Upgradeobject, Tower_Fieshop_Second4_Upgradeobject]
+    UPGRADE Tower_Fieshop_Regular4_Upgradeobject | tier 4 | 'Regular Customer' | desc 'Up to four unit effects are permanent' | costs [Yellowaura 225] | params {Perm_Count=4} | ais [] | vis Tower_Fieshop_Regular4_Visualproperties | next []
+    UPGRADE Tower_Fieshop_Second4_Upgradeobject | tier 4 | 'Second Servings' | desc 'Effects now can target towers and Walls, which have a longer duration' | costs [Yellowaura 100, Redaura 75] | params {Duration_Multi=5} | ais [] | vis Tower_Fieshop_Second4_Visualproperties | next [Tower_Fieshop_Buffet5_Upgradeobject, Tower_Fieshop_Specific5_Upgradeobject]
+    UPGRADE Tower_Fieshop_Specific5_Upgradeobject | tier 5 | 'Specific Tastes' | desc 'Nearby enemies are debuffed, halving their health' | costs [Redaura 4000] | params {} | ais [Entity_Ai_Tower_Fieshop_Debuff] | vis Tower_Fieshop_Specific5_Visualproperties | next []
+    UPGRADE Tower_Fieshop_Sushi2_Upgradeobject | tier 2 | 'Fresh Sushi' | desc 'Effected units gain additional range' | costs [Yellowaura 25, Blueaura 50] | params {Range_Multi=0.25} | ais [] | vis Tower_Fieshop_Sushi2_Visualproperties | next [Tower_Fieshop_Calamari3_Upgradeobject, Tower_Fieshop_Ramen3_Upgradeobject, Tower_Fieshop_Portions3_Upgradeobject]
+    UPGRADE Tower_Fieshop_Sushi3_Upgradeobject | tier 3 | 'Side of Sushi' | desc 'Units deal critical damage on the first attack after some time' | costs [Blueaura 125] | params {} | ais [] | vis Tower_Fieshop_Sushi3_Visualproperties | next [Tower_Fieshop_Finish4_Upgradeobject, Tower_Fieshop_Regular4_Upgradeobject, Tower_Fieshop_Second4_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Arsenal3_Upgradeobject | tier 3 | 'Arsenal' | desc 'Gains the weapon command, can generate weapons regardless of ore' | costs [Redaura 50] | params {} | ais [] | vis Tower_Fiesilo_Arsenal3_Visualproperties | next [Tower_Fiesilo_Front4_Upgradeobject, Tower_Fiesilo_Circular4_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Circular4_Upgradeobject | tier 4 | 'Circular Routing' | desc 'Gain a percent sum of your current Aura each Tide' | costs [Yellowaura 300, Redaura 250] | params {Gain_Base=0.05; Gain_Max=50} | ais [] | vis Tower_Fiesilo_Circular4_Visualproperties | next []
+    UPGRADE Tower_Fiesilo_Dual5_Upgradeobject | tier 5 | 'Pipe Surge' | desc 'Knights can now dual wield weapons collecting from here' | costs [Redaura 2750, Yellowaura 2000] | params {} | ais [] | vis Tower_Fiesilo_Dual5_Visualproperties | next []
+    UPGRADE Tower_Fiesilo_Energized3_Upgradeobject | tier 3 | 'Rapid Response' | desc 'Weapons generate faster and buff Knight's initial speed and damage on pickup' | costs [Blueaura 25, Yellowaura 30] | params {Duration_Base=20; Amount_Base=2; Gunspeed_Add=0.2} | ais [] | vis Tower_Fiesilo_Energized3_Visualproperties | next [Tower_Fiesilo_Quick4_Upgradeobject, Tower_Fiesilo_Old4_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Flow2_Upgradeobject | tier 2 | 'High Flow' | desc 'Increased efficiency and gun generation' | costs [Yellowaura 30] | params {Damage_Add=0.25; Gunspeed_Add=0.05} | ais [] | vis Tower_Fiesilo_Flow2_Visualproperties | next [Tower_Fiesilo_Arsenal3_Upgradeobject, Tower_Fiesilo_Energized3_Upgradeobject, Tower_Fiesilo_Reroute3_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Front4_Upgradeobject | tier 4 | 'Front-Line Pipes' | desc 'Drowned enemies nearby a linked ore will grant aura and regenerate weapons' | costs [Redaura 125, Yellowaura 125] | params {Range_Base=7.5} | ais [] | vis Tower_Fiesilo_Front4_Visualproperties | next [Tower_Fiesilo_Hyper5_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Hyper5_Upgradeobject | tier 5 | 'Hyper Pipes' | desc 'A massive temporary boost to ALL aura production...' | costs [Yellowaura 3000] | params {Duration=600; Amount_Base=1; Attackspeed_Multi=1} | ais [] | vis Tower_Fiesilo_Hyper5_Visualproperties | next [] | notes '1800 total'
+    UPGRADE Tower_Fiesilo_Old4_Upgradeobject | tier 4 | 'Old Pipes' | desc 'You can now link to two separate ores' | costs [Yellowaura 225] | params {Attackspeed_Pmulti=0} | ais [Entity_Ai_Tower_Fiesilo_Second] | vis Tower_Fiesilo_Old4_Visualproperties | next [Tower_Fiesilo_Dual5_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Quick4_Upgradeobject | tier 4 | 'Quick Construct' | desc 'Improved connection times and efficiency' | costs [Yellowaura 100] | params {Attackspeed_Pmulti=0.5; Buildspeed_Add=0.5} | ais [] | vis Tower_Fiesilo_Quick4_Visualproperties | next [Tower_Fiesilo_Hyper5_Upgradeobject]
+    UPGRADE Tower_Fiesilo_Reroute3_Upgradeobject | tier 3 | 'Reroute' | desc 'Enables re-routing, connect to any resource' | costs [Yellowaura 25] | params {} | ais [] | vis Tower_Fiesilo_Reroute3_Visualproperties | next [Tower_Fiesilo_Quick4_Upgradeobject, Tower_Fiesilo_Circular4_Upgradeobject, Tower_Fiesilo_Old4_Upgradeobject]
+    UPGRADE Tower_Fiewall_Adjacent4_Upgradeobject | tier 4 | 'Shared Strength' | desc 'Adjacent buildings now gain any Wall propagations, propagate a second time' | costs [Blueaura 85, Yellowaura 25] | params {} | ais [] | vis Tower_Fiewall_Adjacent4_Visualproperties | next [Tower_Fiewall_True5_Upgradeobject]
+    UPGRADE Tower_Fiewall_Connect2_Upgradeobject | tier 2 | 'Flux' | desc 'Stronger, gains ability to grow' | costs [Blueaura 15] | params {Health_Add=30} | ais [] | vis Tower_Fiewall_Connect2_Visualproperties | next [Tower_Fiewall_Health3_Upgradeobject, Tower_Fiewall_Protect3_Upgradeobject, Tower_Fiewall_Shield3_Upgradeobject]
+    UPGRADE Tower_Fiewall_Explode4_Upgradeobject | tier 4 | 'Unstable Wall' | desc 'When drowned, deal massive damage and weaken enemies' | costs [Blueaura 125] | params {Damage_Base=45; Range_Base=2} | ais [] | vis Tower_Fiewall_Explode4_Visualproperties | next [Tower_Fiewall_Spread5_Upgradeobject]
+    UPGRADE Tower_Fiewall_Health3_Upgradeobject | tier 3 | 'Carbon Infused' | desc 'Increase health, effect propagates through Wall system' | costs [Blueaura 40] | params {Health_Pmulti=0.25} | ais [] | vis Tower_Fiewall_Health3_Visualproperties | next [Tower_Fiewall_Adjacent4_Upgradeobject, Tower_Fiewall_Explode4_Upgradeobject, Tower_Fiewall_Tower4_Upgradeobject]
+    UPGRADE Tower_Fiewall_Protect3_Upgradeobject | tier 3 | 'Lifeline' | desc 'Units can now be placed inside the wall, reducing damage' | costs [Blueaura 40] | params {} | ais [] | vis Tower_Fiewall_Protect3_Visualproperties | next []
+    UPGRADE Tower_Fiewall_Shield3_Upgradeobject | tier 3 | 'Invisible Forces' | desc 'Gain damage resistance, effect propagates through Wall system' | costs [Blueaura 30, Yellowaura 15] | params {Resistance_Add=0.05} | ais [] | vis Tower_Fiewall_Shield3_Visualproperties | next [Tower_Fiewall_Adjacent4_Upgradeobject, Tower_Fiewall_Explode4_Upgradeobject, Tower_Fiewall_Tower4_Upgradeobject]
+    UPGRADE Tower_Fiewall_Spread5_Upgradeobject | tier 5 | 'Fake Wall' | desc 'Walls spread... Automatically' | costs [Blueaura 3000] | params {} | ais [] | vis Tower_Fiewall_Spread5_Visualproperties | next []
+    UPGRADE Tower_Fiewall_Tower4_Upgradeobject | tier 4 | 'Living Wall' | desc 'Wall is now considered a tower and can now attack' | costs [Blueaura 150, Redaura 35] | params {Damage_Base=3; Attackspeed_Base=3; Range_Base=7} | ais [Entity_Ai_Tower_Fiewall_Turret] | vis Tower_Fiewall_Tower4_Visualproperties | next [Tower_Fiewall_True5_Upgradeobject, Tower_Fiewall_Spread5_Upgradeobject]
+    UPGRADE Tower_Fiewall_True5_Upgradeobject | tier 5 | 'True Wall' | desc 'Reset a single enemy upon damage, effect propagates through Wall system' | costs [Blueaura 2500] | params {True_Add=1} | ais [] | vis Tower_Fiewall_True5_Visualproperties | next []
+    UPGRADE Mob_Fieknight_All_Upgradeobject | tier -1 | 'Ex Rifle' | desc 'Strong, mid-range shots that hit twice in a small area' | costs [] | params {Attackspeed_Base=1.25; Damage_Base=1.5; Speed_Base=0; Range_Base=4; Health_Base=15} | ais [Entity_Ai_Mob_Fieknight_Shoot] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Mob_Fieknight_All_Commander4_Upgradeobject | tier -1 | 'Experience' | desc 'Gain additional damage on each enemy Drowned' | costs [] | params {Damageperkill_Add=0.0025; Effect_Add=0.5} | ais [Entity_Ai_Mob_Fieknight_Commander] | vis Mob_Fieknight_Visualproperties | next []
+    UPGRADE Tower_Fiekeep_Sword4_Upgradeobject | tier 4 | 'Sword Hand' | desc 'Knights gains a powerful slash attack upon close range' | costs [Redaura 250] | params {} | ais [] | vis Tower_Fiekeep_Sword4_Visualproperties | next [Tower_Fiekeep_Convoy5_Upgradeobject, Tower_Fiekeep_True5_Upgradeobject]
+    UPGRADE Mob_Fieknight_Sword4_Upgradeobject | tier 4 | 'Sword Hand' | desc 'Knights gain a powerful slash attack upon close range' | costs [Redaura 250] | params {Melee_Range=4; Melee_Attackspeed=0.2; Melee_Damage=25} | ais [Entity_Ai_Mob_Fieknight_Melee] | vis Mob_Fieknight_Sword4_Visualproperties | next [Tower_Fiekeep_Convoy5_Upgradeobject, Tower_Fiekeep_True5_Upgradeobject]
+    UPGRADE Effect_Tower_Fieshop_Calamari3_Upgradeobject | tier -1 | 'Side of Calamari' | desc 'Unit will also now retaliate when damaged' | costs [] | params {Damage_Base=8} | ais [Entity_Ai_Effect_Calamari3] | vis - | next []
+    UPGRADE Effect_Tower_Fieshop_Ramen3_Upgradeobject | tier -1 | 'Side of Ramen' | desc 'Unit will also now regenerate health' | costs [] | params {Heal_Base=3} | ais [Entity_Ai_Effect_Ramen3] | vis - | next []
+    UPGRADE Effect_Tower_Fieshop_Sushi3_Upgradeobject | tier -1 | 'Side of Sushi' | desc 'Unit can now deal critical damage on the first attack after some time' | costs [] | params {Damage_Multi=3; Cooldown_Base=1.5} | ais [Entity_Ai_Effect_Sushi3] | vis - | next []
+    UPGRADE Effect_Tower_Fieshop_Tastes5_Upgradeobject | tier -2 | 'Specific Taste' | desc 'UGH yuck!' | costs [] | params {Health_Multi=-0.5} | ais [Entity_Ai_Effect_Tastes] | vis - | next []
+    UPGRADE Mob_Fieknight_Dual_Upgradeobject | tier -1 | 'Dual Wielding' | desc 'Double the firepower, double the Knight' | costs [] | params {} | ais [] | vis - | next [] | notes 'Spawns a invisible following unit that takes shoots on the parent's behalf w/ the secondary weapon\n\n'
+    UPGRADE Effect_Fiewall_Protection_Upgradeobject | tier -1 | 'Protected' | desc 'Damage taken notably mitigated' | costs [] | params {Damage_Resist=0.75} | ais [Entity_Ai_Effect_Fiewall_Protection] | vis - | next []
+    UPGRADE Effect_Fiewall_Regen_Upgradeobject | tier -1 | 'Resistance' | desc 'Damage mitigated' | costs [] | params {} | ais [Entity_Ai_Effect_Fiewall_Regen] | vis - | next []
+    UPGRADE Effect_Fiewall_Weak_Upgradeobject | tier -2 | 'Weakened' | desc 'Reduced speed and damage' | costs [] | params {Damage_Multi=-0.25; Speed_Multi=-0.25} | ais [Entity_Ai_Effect_Fiewall_Weak] | vis - | next []
+    UPGRADE Effect_Fiewall_True_Upgradeobject | tier -1 | 'Afflicted' | desc 'Will reset and deal massive damage to the first enemy hit' | costs [] | params {Damage_Base=1000} | ais [Entity_Ai_Effect_Fiewall_True] | vis - | next []
+    UPGRADE Mob_Fieknight_All_Trailblazer3_Upgradeobject | tier -1 | 'Experience' | desc 'Gain additional damage on each enemy Drowned' | costs [] | params {} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+    UPGRADE Mob_Fieknight_Blue_Trailblazer3_Upgradeobject | tier -1 | 'Stunning' | desc 'Bullets now stun enemies' | costs [] | params {} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+    UPGRADE Mob_Fieknight_Green_Trailblazer3_Upgradeobject | tier -1 | 'Pistol Whip' | desc 'Knight is much faster, and is untargetable' | costs [] | params {} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+    UPGRADE Mob_Fieknight_Orange_Trailblazer3_Upgradeobject | tier -1 | 'Champ Bullets' | desc 'Now deals percent health damage, taking down the strongest' | costs [] | params {Effect_Add=0.5} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+    UPGRADE Mob_Fieknight_Purple_Trailblazer3_Upgradeobject | tier -1 | 'Bombing Expert' | desc 'Increased damage, drowned enemies also drop grenades' | costs [] | params {} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+    UPGRADE Mob_Fieknight_Red_Trailblazer3_Upgradeobject | tier -1 | 'Frenzied' | desc 'Shoots significantly faster' | costs [] | params {} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+    UPGRADE Mob_Fieknight_Yellow_Trailblazer3_Upgradeobject | tier -1 | 'Amplified' | desc 'Significantly increased range, deal more damage at a distance' | costs [] | params {} | ais [] | vis - | next [] | notes 'Simply tooltips for the same abilities, gets replaced if a commander upgrade is placed'
+  LIST Mob (7)
+    BEING Tower_Fiekeep | block General_Tower_Block_Height 2 | notes ''
+      ENTITY Tower_Fiekeep_Entity | name 'Keep' | display 'Knight's Keep' | desc 'Spawns unarmed Knights, commandable'
+      tags [Tower] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Fiekeep] | visscripts [Entity_Vis_Tower]
+      costs [Redaura 60] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Fiekeep_Hitproperties
+      upgrades [Tower_Fiekeep_Lone2_Upgradeobject, Tower_Fiekeep_Partner2_Upgradeobject] | upgradesinit []
+      STATS Tower_Fiekeep_Statproperties [Health=20(+20/lvl) Number/Default/hidden, Respawn=10 Number/Default/hidden, Units=1 Number/Default/hidden]
+      VISUAL Tower_Fiekeep_Visualproperties | default Model prefab Tower_Fiekeep sprite - '' addvis [] addprefabs []
+    BEING Mob_Fieknight | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Fieknight_Entity | name 'Knight' | display 'Knight' | desc ''
+      tags [Mob, Mobfighter, Knight] | ais [Entity_Ai_Mob_General, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Fieknight] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Mob_Range]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 1 | hit General_Mobmini_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Fieknight_Statproperties [Health=25 Number/Default/hidden, Damage=1(+0.5/lvl) Number/Default/hidden, Speed=1 Number/Default/hidden, Attackspeed=1 Number/Default/hidden, Range=1 Number/Default/hidden, Engagerange=1 Number/Default/hidden, Commander=0.25 Number/Default/hidden]
+      VISUAL Mob_Fieknight_Visualproperties | default Sprite prefab - sprite Mob_Fieknight_None_Sprite 'Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'All' Sprite prefab - sprite Mob_Fieknight_All_Sprite 'Assault Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Allshoot' Sprite prefab - sprite Mob_Fieknight_Allshoot_Sprite 'Assault Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Blue' Sprite prefab - sprite Mob_Fieknight_Blue_Sprite 'Shotgun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Blueshoot' Sprite prefab - sprite Mob_Fieknight_Blueshoot_Sprite 'Shotgun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Red' Sprite prefab - sprite Mob_Fieknight_Red_Sprite 'Machinegun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Redshoot' Sprite prefab - sprite Mob_Fieknight_Redshoot_Sprite 'Machinegun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Green' Sprite prefab - sprite Mob_Fieknight_Green_Sprite 'Short-Gun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Greenshoot' Sprite prefab - sprite Mob_Fieknight_Greenshoot_Sprite 'Short-Gun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Orange' Sprite prefab - sprite Mob_Fieknight_Orange_Sprite 'Rifle Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Orangeshoot' Sprite prefab - sprite Mob_Fieknight_Orangeshoot_Sprite 'Rifle Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Purple' Sprite prefab - sprite Mob_Fieknight_Purple_Sprite 'Explosive Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Purpleshoot' Sprite prefab - sprite Mob_Fieknight_Purpleshoot_Sprite 'Explosive Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+        SKIN 'Yellow' Sprite prefab - sprite Mob_Fieknight_Yellow_Sprite 'Long-Gun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Moveshoot(4x6 spd 1 loop prio 0)]
+        SKIN 'Yellowshoot' Sprite prefab - sprite Mob_Fieknight_Yellowshoot_Sprite 'Long-Gun Knight' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0)]
+    BEING Tower_Fiesilo | block General_Tower_Block_Height 1_Space 2 | notes ''
+      ENTITY Tower_Fiesilo_Entity | name 'Silo Pipes' | display 'Silo Pipes' | desc 'Siphons aura, generates guns'
+      tags [Tower, Gatherer, Silo] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Fiesilo] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Fiesilo]
+      costs [Yellowaura 35] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Fiesilo_Hitproperties
+      upgrades [Tower_Fiesilo_Flow2_Upgradeobject] | upgradesinit []
+      STATS Tower_Fiesilo_Statproperties [Health=20(+20/lvl) Number/Default/hidden, Gun=1 Number/None/hidden, Gunspeed=0.05 Number/Default/hidden, Buildspeed=0.25 Number/Default/hidden, Connect=1 Number/None/hidden, Damage=0.3 Number/Default/hidden, Attackspeed=0.25 Number/Default/hidden]
+      VISUAL Tower_Fiesilo_Visualproperties | default Model prefab Tower_Fiesilo sprite - '' addvis [] addprefabs []
+    BEING Tower_Fiewall | block Tower_Fiewall_Block | notes ''
+      ENTITY Tower_Fiewall_Entity | name 'The Wall' | display 'The Wall' | desc 'Strong, can be grown and share effects. Modular.'
+      tags [Tower, Fiewall, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Fiewall_Build, Entity_Ai_Tower_Fiewall] | visscripts [Entity_Vis_Tower, Entity_Vis_Branching]
+      costs [Blueaura 20] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Fiewall_Hitproperties
+      upgrades [Tower_Fiewall_Connect2_Upgradeobject] | upgradesinit []
+      STATS Tower_Fiewall_Statproperties [Health=40(+40/lvl) Number/Default/hidden, Post_NW=0 Number/Default/hidden, Post_N=0 Number/Default/hidden, Post_NE=0 Number/Default/hidden, Post_E=0 Number/Default/hidden, Post_SE=0 Number/Default/hidden, Post_S=0 Number/Default/hidden, Post_SW=0 Number/Default/hidden, Post_W=0 Number/Default/hidden, Healthadd=0 Number/Default/hidden]
+      VISUAL Tower_Fiewall_Visualproperties | default Model prefab Tower_Fiewall sprite - '' addvis [] addprefabs []
+    BEING Trap_Fierallypoint | block Trap_Fierallypoint_Block_Height 1 | notes 'Uses General_Trap Block\nUsed to block placement on a particular spot'
+      ENTITY Trap_Fierallypoint_Entity | name 'Rally' | display 'Rally Point' | desc ''
+      tags [Rallypoint] | ais [Entity_Ai_Entposition_Position, Entity_Ai_Trap_Fierally] | visscripts [Entity_Vis_Select_Parent, Entity_Vis_Block_Noplacement, Entity_Vis_Fierally_Clientvis]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 1 | hit Trap_Fierallypoint_Hitproperties
+      upgrades [] | upgradesinit []
+      VISUAL Trap_Fierallypoint_Visualproperties | default Model prefab Block_Fierallypoint_Vis sprite - '' addvis [] addprefabs []
+    BEING Tower_Fieshop | block General_Tower_Block_Height 1 | notes ''
+      ENTITY Tower_Fieshop_Entity | name 'Rest Stop' | display 'Rest Stop' | desc 'Buffs units, improves units damage'
+      tags [Tower] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Fieshop] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Range]
+      costs [Yellowaura 50] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Fieshop_Hitproperties
+      upgrades [Tower_Fieshop_Sushi2_Upgradeobject, Tower_Fieshop_Calamari2_Upgradeobject, Tower_Fieshop_Ramen2_Upgradeobject] | upgradesinit []
+      STATS Tower_Fieshop_Statproperties [Health=25(+25/lvl) Number/Default/hidden, Attackspeed=0.25 Number/Default/hidden, Range=4.5(+1/lvl) Number/Default/hidden, Projspeed=3 Number/Default/hidden, Effect=1 Number/Default/hidden, Duration=10 Number/Default/hidden, Damagemulti=0.15 Number/Default/hidden]
+      VISUAL Tower_Fieshop_Visualproperties | default Model prefab Tower_Fieshop sprite - '' addvis [] addprefabs []
+    BEING Mob_Fieknight_Dual | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Fieknight_Dual_Entity | name 'Knight Ghost' | display 'Knight Ghost' | desc ''
+      tags [] | ais [Entity_Ai_Mob_Fieknight_Dual] | visscripts [Entity_Vis_Mob_Enttrack]
+      costs [] | drops [] | sellable False | controllable False | orientable False | targetable False | level 1 | selprio 2 | hit -
+      upgrades [] | upgradesinit []
+      STATS Mob_Fieknight_Statproperties [Health=25 Number/Default/hidden, Damage=1(+0.5/lvl) Number/Default/hidden, Speed=1 Number/Default/hidden, Attackspeed=1 Number/Default/hidden, Range=1 Number/Default/hidden, Engagerange=1 Number/Default/hidden, Commander=0.25 Number/Default/hidden]
+      VISUAL Mob_Fieknight_Dual_Visualproperties | default Model prefab Alldrone sprite - '' addvis [] addprefabs []
+        SKIN 'Red' Model prefab Reddrone sprite - '' addvis [] addprefabs []
+        SKIN 'Orange' Model prefab Orangedrone sprite - '' addvis [] addprefabs []
+        SKIN 'Blue' Model prefab Bluedrone sprite - '' addvis [] addprefabs []
+        SKIN 'Yellow' Model prefab Yellowdrone sprite - '' addvis [] addprefabs []
+        SKIN 'Green' Model prefab Greendrone sprite - '' addvis [] addprefabs []
+        SKIN 'Purple' Model prefab Purpledrone sprite - '' addvis [] addprefabs []
+        SKIN 'All' Model prefab Alldrone sprite - '' addvis [] addprefabs []
+  LIST Projectile (21)
+    PROJECTILE Mob_Fieknight_All | vis Knight_Bulletmed | hit Bulletcollider | vfx Shot_Shootsmall/Shot_Shootimpact | sfx 'Knight_Shootmedium'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track, Projectile_Ai_Explosion] | params {Speed=25; Accel=25; Zvelocity=25; Radius=0.25; Count=2}
+    PROJECTILE Mob_Fieknight_Blue | vis Knight_Bulletshotgun | hit Bulletcollider | vfx Shot_Shootlarge/- | sfx 'Knight_Shootshotgun'/'' | ray Spherecast r 0.5 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=40; Collision=0; Lifetime=0.2; Pierce=5}
+    PROJECTILE Mob_Fieknight_Green | vis Knight_Bullet | hit Bulletcollider | vfx Shot_Shootsmall/Shot_Shootimpact | sfx 'Knight_Shoot'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=25; Accel=25; Zvelocity=25}
+    PROJECTILE Mob_Fieknight_Orange | vis Knight_Bulletmed | hit Bulletcollider | vfx Shot_Shootlarge/Shot_Shootimpact | sfx 'Knight_Shootmedium'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=30; Pierce=3}
+    PROJECTILE Mob_Fieknight_Purple | vis Knight_Grenade | hit Bulletcollider | vfx -/Knight_Grenadeexplosion | sfx 'Knight_Grenade'/'Knight_Grenadeexplosion' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Lob, Projectile_Ai_Explosion] | params {Delay=0.5; Flytime=1; Radius=0.5; Count=5; Gravity=-10; Interact=2}
+    PROJECTILE Mob_Fieknight_Red | vis Knight_Bullet | hit Bulletcollider | vfx Shot_Shootsmall/Shot_Shootimpact | sfx 'Knight_Shoot'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=25; Accel=25; Zvelocity=25}
+    PROJECTILE Mob_Fieknight_Yellow | vis Knight_Bulletlarge | hit Bulletcollider | vfx Shot_Shootlarge/Shot_Shootimpact | sfx 'Knight_Shootlong'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=30; Accel=30; Zvelocity=30}
+    PROJECTILE Tower_Fieshop_Buff | vis Fieshop_Buffsmall | hit Buffcollider | vfx Fieshop_Shot/- | sfx ''/'Fieshop_Buff' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=35; Accel=1; Yvelocity=20; Collision=0}
+    PROJECTILE Tower_Fieshop_Tastes | vis Fieshop_Tastes | hit Buffcollider | vfx Fieshop_Shot/- | sfx 'Fieshop_Buff'/'' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=15; Accel=1; Yvelocity=10; Count=5; Collision=0}
+    PROJECTILE Tower_Fieshop_Buff2 | vis Fieshop_Buff | hit Buffcollider | vfx Fieshop_Shot/- | sfx ''/'Fieshop_Buff' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=35; Accel=1; Yvelocity=20; Collision=0}
+    PROJECTILE Tower_Fieshop_Buff3 | vis Fieshop_Buffbig | hit Buffcollider | vfx Fieshop_Shot/- | sfx ''/'Fieshop_Buff' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=35; Accel=1; Yvelocity=20; Collision=0}
+    PROJECTILE Tower_Fieshop_Buff4 | vis Fieshop_Buffbig2 | hit Buffcollider | vfx Fieshop_Shot/- | sfx ''/'Fieshop_Buff' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=35; Accel=1; Yvelocity=20; Collision=0}
+    PROJECTILE Tower_Fieshop_Buff5_Buffet | vis Fieshop_Buffbig2 | hit Buffcollider | vfx Fieshop_Shot/Fieshop_Buffetexplosion | sfx ''/'Fieshop_Buff' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track, Projectile_Ai_Explosion_Any] | params {Speed=35; Accel=1; Yvelocity=20; Radius=1; Collision=0}
+    PROJECTILE Mob_Fieknight_Melee | vis Knight_Melee | hit Bulletcollider | vfx -/- | sfx 'Knight_Melee'/'' | ray Spherecast r 0.3 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=2; Lifetime=0.4; Pierce=8; Collision=0}
+    PROJECTILE Mob_Fieknight_True | vis Knight_Bullettrue | hit Bulletcollider | vfx Shot_Shootsmall/Shot_Shootimpact | sfx 'Knight_Shoot'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track] | params {Speed=25; Accel=25; Collision=0; Zvelocity=25}
+    PROJECTILE Mob_Fieknight_Trueblue | vis Knight_Bulletshotguntrue | hit Bulletcollider | vfx -/- | sfx 'Knight_Shootshotgun'/'' | ray Spherecast r 0.5 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=40; Collision=0; Lifetime=0.2; Pierce=10}
+    PROJECTILE Mob_Fieknight_Truepurple | vis Knight_Grenadetrue | hit Bulletcollider | vfx -/Knight_Grenadeexplosion | sfx 'Knight_Grenade'/'Knight_Grenadeexplosion' | ray Spherecast r 0.1 | replicate True | controllers [Projectile_Ai_Lob] | params {Delay=0.5; Flytime=1; Radius=0.5; Count=10; Gravity=-10; Interact=2}
+    PROJECTILE Mob_Fieknight_Trueorange | vis Knight_Bulletmedtrue | hit Bulletcollider | vfx Shot_Shootlarge/Shot_Shootimpact | sfx 'Knight_Shootmedium'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Simple] | params {Zvelocity=30; Collision=0; Pierce=10}
+    PROJECTILE Tower_Fiewall_Shot | vis Fiewall_Towerbeam | hit - | vfx -/- | sfx 'Fiewall_Shot'/'' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=0.25; Trackspeed=100; Tickrate=5}
+    PROJECTILE Mob_Fieknight_Trueall | vis Knight_Bulletmedtrue | hit Bulletcollider | vfx Shot_Shootsmall/Shot_Shootimpact | sfx 'Knight_Shootmedium'/'Knight_Bullethit' | ray Raycast r 0 | replicate True | controllers [Projectile_Ai_Track, Projectile_Ai_Explosion] | params {Speed=30; Accel=30; Zvelocity=30; Interact=1; Radius=0.25; Count=4}
+    PROJECTILE Mob_Fieknight_Purpledeath | vis Knight_Grenade | hit Bulletcollider | vfx -/Knight_Grenadeexplosion | sfx 'Knight_Grenade'/'Knight_Grenadeexplosion' | ray Spherecast r 0.25 | replicate True | controllers [Projectile_Ai_Simple, Projectile_Ai_Explosion] | params {Radius=0.5; Count=5; Gravity=-10; Yvelocity=10}
+  LIST Vfx (43)
+    ITEM Debuff_Stun : GameObject
+    ITEM World_Tower_Fiesilo_Fallpos : GameObject
+    ITEM Rerouteborder : GameObject
+    ITEM Debuff_Auragainhyper : GameObject
+    ITEM Debuff_Buffed : GameObject
+    ITEM Debuff_Buffed2 : GameObject
+    ITEM Debuff_Buffedperm : GameObject
+    ITEM Debuff_Commanderbuff : GameObject
+    ITEM Debuff_Tastes : GameObject
+    ITEM Debuff_Weakened : GameObject
+    ITEM Fieshop_Buffetexplosion : GameObject
+    ITEM Fieshop_Goodtaste : GameObject
+    ITEM Fieshop_Tastes : GameObject
+    ITEM Fiesilo_Circular : GameObject
+    ITEM Fiesilo_Energized : GameObject
+    ITEM Fiesilo_Equipblue : GameObject
+    ITEM Fiesilo_Equipgreen : GameObject
+    ITEM Fiesilo_Equiporange : GameObject
+    ITEM Fiesilo_Equippurple : GameObject
+    ITEM Fiesilo_Equipred : GameObject
+    ITEM Fiesilo_Equipwhite : GameObject
+    ITEM Fiesilo_Equipyellow : GameObject
+    ITEM Fiesilo_Oreconnect : GameObject
+    ITEM Fiesilo_Weapongenerate : GameObject
+    ITEM Fiewall_Fakegenerate : GameObject
+    ITEM Fiewall_Healthgain : GameObject
+    ITEM Fiewall_Resistancegain : GameObject
+    ITEM Fiewall_Trueedge : GameObject
+    ITEM Fiewall_Truegain : GameObject
+    ITEM Fiewall_Wallexplosion : GameObject
+    ITEM Knight_Grenadeexplosion : GameObject
+    ITEM Knight_Orangeassassin : GameObject
+    ITEM Shot_Shootimpact : GameObject
+    ITEM Shot_Shootlarge : GameObject
+    ITEM Shot_Shootsmall : GameObject
+    ITEM Fieshop_Shot : GameObject
+    ITEM Fieshop_Badtaste : GameObject
+    ITEM Fieshop_Spike : GameObject
+    ITEM Fieshop_Regen : GameObject
+    ITEM Fieknight_Experience : GameObject
+    ITEM World_Hero_Fie_Death : GameObject
+    ITEM Fiewall_Trueblast : GameObject
+    ITEM Shot_Shootimpactspecial : GameObject
+  LIST Command (5)
+    COMMAND Command_Build_Fiewall | style Bar | 'Grow Wall' | desc 'Place an adjacent Wall for 20 Blue Aura' | icon '' | keys [1, Quickaction] | keystate 'Onrelease' | prio 1 | funcs [Entity_Command_Tower_Fiewall_Build] | ui -
+    COMMAND Command_Tower_Fiekeep_Rally | style Button | 'Move' | desc '' | icon 'Fie_Rally' | keys [Quickaction, 5] | keystate 'Onrelease' | prio 2 | funcs [Entity_Command_Tower_Fiekeep_Command] | ui -
+    COMMAND Command_Tower_Fiesilo_Reroute | style Button | 'Reroute' | desc '' | icon 'Fie_Reroute' | keys [Quickaction] | keystate 'Onpressed' | prio 1 | funcs [Entity_Command_Tower_Fiesilo_Reroute] | ui Custom_Button_Command_Boutman_Fishfollow
+    COMMAND Command_Tower_Fiesilo_Convert | style Button | 'Red' | desc '' | icon 'Yellowaura' | keys [Quickaction] | keystate 'Onrelease' | prio 2 | funcs [Entity_Command_Tower_Fiesilo_Convert] | ui -
+    COMMAND Command_Mob_Fieknight_Retire | style Button | 'Retire' | desc '' | icon 'Fie_Retire' | keys [] | keystate 'Onpressed' | prio 1 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+  LIST Other (4)
+    ITEM Mob_Fieknight_Security_Block : Blockobject
+    ITEM Tower_Fiewall_Protect_Block : Blockobject
+    ITEM Tower_Fiewall_Block : Blockobject
+    ITEM Mob_Fieknight_Block : Blockobject
+  LIST Sound (21)
+    ITEM Armorpropagation : AudioClip
+    ITEM Bullethit : AudioClip
+    ITEM Bulletshootlong : AudioClip
+    ITEM Bulletshootmedium : AudioClip
+    ITEM Bulletshootshotgun : AudioClip
+    ITEM Bulletshootsmall : AudioClip
+    ITEM Fakepropagation : AudioClip
+    ITEM Fiebuff : AudioClip
+    ITEM Fiebuffexplosion : AudioClip
+    ITEM Grenadeexplosion : AudioClip
+    ITEM Grenadetoss : AudioClip
+    ITEM Healthpropagation : AudioClip
+    ITEM Knightmelee : AudioClip
+    ITEM Siloconnect : AudioClip
+    ITEM Siloweapon ready : AudioClip
+    ITEM SIloweaponequip : AudioClip
+    ITEM Truepropagation : AudioClip
+    ITEM Wallexplosion : AudioClip
+    ITEM Wallshot : AudioClip
+    ITEM Circularrouting : AudioClip
+    ITEM Fielanding : AudioClip
+  LIST Ui (2)
+    ITEM Ui_Command_Tower_Fiesilo_Reroute : GameObject
+    ITEM Knightconnection : GameObject
+
+HERO Hero_Buster | name 'Buster' | sub 'A Very Fast Dog' | skill 'Advanced' | towers [Trap_Bustercheckpoint, Tower_Bustertotem, Trap_Busterpad, Tower_Bustergarage] | color RGBA(1.000, 0.502, 0.502, 1.000) | loads Hero_Buster | loadingsize (12.00, 1.00) landingsize (12.00, 1.00) idlesize (6.00, 1.00)
+  LOG title 'Buster' desc 'Bark! Arf!'
+  LIST Hero (1)
+    BEING Hero_Buster | block General_Mob_Block_Height 1 | notes 'Uses the General_Mob preset\n'
+      ENTITY Hero_Buster_Entity | name 'Hero Buster' | display 'Buster' | desc 'Very fast, single-target melee. Can dash'
+      tags [Mob, Hero, Dog, Buster] | ais [Entity_Ai_Mob_Movementlinear, Entity_Ai_Mob_Movement, Entity_Ai_Mob_Combat, Entity_Ai_Hero_Buildsell, Entity_Ai_Mob_Dog, Entity_Ai_Hero_Buster] | visscripts [Entity_Vis_Animator_Mob, Entity_Vis_Hero, Entity_Vis_Movementlinear, Entity_Vis_Hero_Buster]
+      costs [] | drops [] | sellable False | controllable True | orientable True | targetable True | level 1 | selprio 3 | hit General_Mob_Hitproperties_Height 1
+      upgrades [] | upgradesinit [Hero_Buster_Tooltip_Upgradeproperties]
+      STATS Hero_Buster_Statproperties [Health=50 Number/Default/hidden, Damage=1.5 Number/Default/hidden, Range=1.5 Number/Default/hidden, Attackspeed=0.5 Number/Default/hidden, Buildrange=2.5 Number/Default/hidden, Sellrate=0.75 Number/Default/hidden, Speed=3.5 Number/Default/hidden, Speeddamage=1 Number/Float, Collisionspeed=-0.1 Number/Default/hidden, Speeddamagestartup=0 Number/Default/hidden]
+      VISUAL Hero_Buster_Visualproperties | default Sprite prefab - sprite Hero_Buster_Sprite '' addvis [] addprefabs [] anims [Idle(4x6 spd 1 loop prio 0), Move(4x6 spd 1 loop prio 0), Movelinear(4x6 spd 1 loop prio 0), Falling(1x6 spd 1 loop reset prio 2), Land(1x12 spd 1 reset prio 2 ->Idle), Landquick(4x1 spd 10 reset prio 2 ->Idle), Attack(4x2 spd 1 reset prio 1 ->Idle)]
+      UPGRADE Hero_Buster_Tooltip_Upgradeproperties | tier -3 | 'Good Dog' | desc 'Gains ability to Dash, dealing damage running in a straight line' | costs [] | params {} | ais [] | vis - | next []
+  LIST Upgrade (56)
+    UPGRADE Trap_Bustercheckpoint_Lap2_Upgradeobject | tier 2 | 'Lap 1' | desc 'Siphon rate and capacity increased' | costs [Yellowaura 30] | params {Attackspeed_Add=0.15; Healthresource_Pmulti=1.5} | ais [] | vis Trap_Bustercheckpoint_Lap2_Visualproperties | next [Trap_Bustercheckpoint_Lap3_Upgradeobject, Trap_Bustercheckpoint_Range3_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Bustercheckpoint_Lap3_Upgradeobject | tier 3 | 'Lap 2' | desc 'Further increased siphon rate and capacity' | costs [Yellowaura 125] | params {Attackspeed_Multi=0.5; Healthresource_Multi=0.75} | ais [] | vis Trap_Bustercheckpoint_Lap3_Visualproperties | next [Trap_Bustercheckpoint_Lap4_Upgradeobject, Trap_Bustercheckpoint_Start4_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Bustercheckpoint_Lap4_Upgradeobject | tier 4 | 'Lap 3' | desc 'Resource gain ramps with current capacity, can only be collected at half health' | costs [Yellowaura 250] | params {Gain_Perhealth=0.1; Healthresource_Base=2; Healthreq_Base=0.5} | ais [] | vis Trap_Bustercheckpoint_Lap4_Visualproperties | next [Trap_Bustercheckpoint_Lap5_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Bustercheckpoint_Lap5_Upgradeobject | tier 5 | 'Final Lap' | desc 'All nearby checkpoints' gain charge when collected' | costs [Yellowaura 4000] | params {Chargeratio_Add=0.33; Range_Base=2} | ais [] | vis Trap_Bustercheckpoint_Lap5_Visualproperties | next [] | notes 'Done'
+    UPGRADE Trap_Bustercheckpoint_Range3_Upgradeobject | tier 3 | 'Long Ranged' | desc 'Crystals can be collected from farther away' | costs [Blueaura 15, Yellowaura 50] | params {Range_Add=1.5} | ais [] | vis Trap_Bustercheckpoint_Range3_Visualproperties | next [Trap_Bustercheckpoint_Start4_Upgradeobject, Trap_Bustercheckpoint_Lap4_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Bustercheckpoint_Speed2_Upgradeobject | tier 2 | 'Quick Pass' | desc 'Increased effectiveness the faster the unit on pickup' | costs [Yellowaura 25] | params {Tickmultispeed_Base=0.15} | ais [] | vis Trap_Bustercheckpoint_Speed2_Visualproperties | next [Trap_Bustercheckpoint_Lap3_Upgradeobject, Trap_Bustercheckpoint_Range3_Upgradeobject, Trap_Bustercheckpoint_Support3_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Bustercheckpoint_Start4_Upgradeobject | tier 4 | 'Strong Start' | desc 'When empty, triple the generation' | costs [Yellowaura 300] | params {Health_Threshold=3; Attackspeed_Multi=2} | ais [] | vis Trap_Bustercheckpoint_Start4_Visualproperties | next [] | notes 'Yes\n'
+    UPGRADE Trap_Bustercheckpoint_Support3_Upgradeobject | tier 3 | 'Tune Up' | desc 'When collected,  the unit's next attack is stronger granting aura' | costs [Yellowaura 250, Redaura 250] | params {} | ais [] | vis Trap_Bustercheckpoint_Support3_Visualproperties | next [Trap_Bustercheckpoint_Support4_Upgradeobject, Trap_Bustercheckpoint_Start4_Upgradeobject] | notes 'Yes'
+    UPGRADE Trap_Bustercheckpoint_Support4_Upgradeobject | tier 4 | 'Marathon' | desc 'The buff now lasts an extended amount of time after the attack' | costs [Redaura 250, Yellowaura 500] | params {} | ais [] | vis Trap_Bustercheckpoint_Support4_Visualproperties | next [] | notes 'Yes'
+    UPGRADE Tower_Bustergarage_Damage4_Upgradeobject | tier 4 | 'Lap Dog' | desc 'Subsequent hits will deal increased damage' | costs [Redaura 250] | params {} | ais [] | vis Tower_Bustergarage_Damage4_Visualproperties | next [Tower_Bustergarage_Speed5_Upgradeobject]
+    UPGRADE Tower_Bustergarage_Fire4_Upgradeobject | tier 4 | 'Diesel Dog' | desc 'Leave a firey wake behind' | costs [Redaura 250] | params {Units_Add=1} | ais [] | vis Tower_Bustergarage_Fire4_Visualproperties | next [Tower_Bustergarage_Speed5_Upgradeobject]
+    UPGRADE Tower_Bustergarage_Health2_Upgradeobject | tier 2 | 'Jack Up' | desc 'Dog has increased health, respawns quicker' | costs [Blueaura 25, Redaura 15] | params {Health_Pmulti=2; Respawn_Base=-4.5} | ais [] | vis Tower_Bustergarage_Health2_Visualproperties | next [Tower_Bustergarage_Health3_Upgradeobject, Tower_Bustergarage_Speed3_Upgradeobject] | notes 'Yes'
+    UPGRADE Tower_Bustergarage_Health3_Upgradeobject | tier 3 | 'Big Dog' | desc 'Dog is stronger and keeps speed on collisions' | costs [Blueaura 65] | params {Health_Multi=2; Collisionspeed_Base=-0.8} | ais [] | vis Tower_Bustergarage_Health3_Visualproperties | next [Tower_Bustergarage_Support4_Upgradeobject, Tower_Bustergarage_Fire4_Upgradeobject, Tower_Bustergarage_Damage4_Upgradeobject] | notes 'Yes'
+    UPGRADE Tower_Bustergarage_Speed3_Upgradeobject | tier 3 | 'Up Dog' | desc 'Increased base speed' | costs [Redaura 60] | params {Speed_Base=2} | ais [] | vis Tower_Bustergarage_Speed3_Visualproperties | next [Tower_Bustergarage_Fire4_Upgradeobject, Tower_Bustergarage_Damage4_Upgradeobject, Tower_Bustergarage_Target4_Upgradeobject] | notes 'Yes'
+    UPGRADE Tower_Bustergarage_Speed5_Upgradeobject | tier 5 | 'Nitro Collar' | desc 'No longer can lose speed... Ever.' | costs [Redaura 4000] | params {} | ais [] | vis Tower_Bustergarage_Speed5_Visualproperties | next [] | notes 'Yes'
+    UPGRADE Tower_Bustergarage_Support4_Upgradeobject | tier 4 | 'Mechanic's Friend' | desc 'Towers passed by will increase in damage' | costs [Redaura 150, Blueaura 75] | params {} | ais [] | vis Tower_Bustergarage_Support4_Visualproperties | next []
+    UPGRADE Tower_Bustergarage_Target4_Upgradeobject | tier 4 | 'Rev Dog' | desc 'Dogs are no longer targetable' | costs [Redaura 125, Blueaura 125] | params {Units_Add=1} | ais [] | vis Tower_Bustergarage_Target4_Visualproperties | next [] | notes 'Yes'
+    UPGRADE Tower_Bustergarage_Unit2_Upgradeobject | tier 2 | 'Pit Crew' | desc 'Gain a second Dog' | costs [Redaura 55] | params {Unit=1} | ais [] | vis Tower_Bustergarage_Unit2_Visualproperties | next [Tower_Bustergarage_Health3_Upgradeobject, Tower_Bustergarage_Speed3_Upgradeobject] | notes 'Done'
+    UPGRADE Tower_Bustertotem_Blast4_Upgradeobject | tier 4 | 'Blast Maker' | desc 'Beams will now explode when they expire' | costs [Redaura 250] | params {} | ais [] | vis Tower_Bustertotem_Blast4_Visualproperties | next [Tower_Bustertotem_Blast5_Upgradeobject, Tower_Bustertotem_Blaze5_Upgradeobject] | notes 'ok'
+    UPGRADE Tower_Bustertotem_Blast5_Upgradeobject | tier 5 | 'Blast Extra Zed' | desc 'Explosions now can chain... Violently' | costs [Redaura 3000] | params {Damage_Add=2} | ais [] | vis Tower_Bustertotem_Blast5_Visualproperties | next [] | notes 'ok'
+    UPGRADE Tower_Bustertotem_Blaze4_Upgradeobject | tier 4 | 'Blaze Effector' | desc 'Causes targets to take ramping damage after not taking any' | costs [Redaura 300] | params {} | ais [] | vis Tower_Bustertotem_Blaze4_Visualproperties | next [Tower_Bustertotem_Blast5_Upgradeobject, Tower_Bustertotem_Blaze5_Upgradeobject] | notes 'ok'
+    UPGRADE Tower_Bustertotem_Blaze5_Upgradeobject | tier 5 | 'Pure Ex' | desc 'Enemies deal no damage if shot, purest form of racing' | costs [Redaura 1500, Blueaura 1500, Yellowaura 1500] | params {Duration_Base=1.75; Duration_Perhealth=1000; Duration_Min=0.5} | ais [] | vis Tower_Bustertotem_Blaze5_Visualproperties | next []
+    UPGRADE Tower_Bustertotem_Blink4_Upgradeobject | tier 4 | 'Blink Chain' | desc 'When firing, will chain to other Pedestals, also dealing increased damage' | costs [Redaura 250, Yellowaura 25] | params {Damage_Pmulti=0.35} | ais [] | vis Tower_Bustertotem_Blink4_Visualproperties | next [] | notes 'ok'
+    UPGRADE Tower_Bustertotem_Burn2_Upgradeobject | tier 2 | 'Improved Effector' | desc 'Increased range and duration' | costs [Redaura 25, Blueaura 25] | params {Range_Add=1.5} | ais [] | vis Tower_Bustertotem_Burn2_Visualproperties | next [Tower_Bustertotem_Capacity3_Upgradeobject, Tower_Bustertotem_Charge3_Upgradeobject, Tower_Bustertotem_Combo3_Upgradeobject] | notes 'ok Duration is in the projectile\n'
+    UPGRADE Tower_Bustertotem_Burst2_Upgradeobject | tier 2 | 'Burst Effector' | desc 'Fire periodically, dealing increased damage' | costs [Redaura 35] | params {Damage_Add=4} | ais [] | vis Tower_Bustertotem_Burst2_Visualproperties | next [Tower_Bustertotem_Capacity3_Upgradeobject, Tower_Bustertotem_Charge3_Upgradeobject, Tower_Bustertotem_Combo3_Upgradeobject] | notes 'ok'
+    UPGRADE Tower_Bustertotem_Capacity3_Upgradeobject | tier 3 | 'Inert Capacity' | desc 'Increased range' | costs [Blueaura 35] | params {Range_Multi=0.6} | ais [] | vis Tower_Bustertotem_Capacity3_Visualproperties | next [Tower_Bustertotem_Blink4_Upgradeobject, Tower_Bustertotem_Blaze4_Upgradeobject, Tower_Bustertotem_Blast4_Upgradeobject] | notes 'Done'
+    UPGRADE Tower_Bustertotem_Charge3_Upgradeobject | tier 3 | 'Stored Charge' | desc 'Increased damage, can hold charge when not firing' | costs [Redaura 30] | params {Damage_Multi=0.25; Damagemax_Multi=1.5; Tickrate_Base=0.05; Drainrate_Base=0.2} | ais [] | vis Tower_Bustertotem_Charge3_Visualproperties | next [Tower_Bustertotem_Blink4_Upgradeobject, Tower_Bustertotem_Blaze4_Upgradeobject, Tower_Bustertotem_Blast4_Upgradeobject] | notes 'Yes\n'
+    UPGRADE Tower_Bustertotem_Combo3_Upgradeobject | tier 3 | 'Combo'd' | desc 'Can now target a second enemy' | costs [Redaura 50] | params {} | ais [] | vis Tower_Bustertotem_Combo3_Visualproperties | next [Tower_Bustertotem_Blink4_Upgradeobject, Tower_Bustertotem_Blaze4_Upgradeobject] | notes 'yes synergistic with chain'
+    UPGRADE Trap_Busterpad_Airtime4_Upgradeobject | tier 4 | 'Airtime' | desc 'Gain ability to instantly fly to a location forward' | costs [Blueaura 175] | params {Units_Add=1} | ais [] | vis Trap_Busterpad_Airtime4_Visualproperties | next [Trap_Busterpad_Speed5_Upgradeobject] | notes 'relatively cheap to be able to create return paths. make deal a mild amount of damage'
+    UPGRADE Trap_Busterpad_Boost2_Upgradeobject | tier 2 | 'Charge Pad' | desc 'Now can heal. Dogs gain momentum, stacking speed on each pass' | costs [Blueaura 25, Yellowaura 25] | params {Speedup_Add=0.35; Heal_Base=25} | ais [] | vis Trap_Busterpad_Boost2_Visualproperties | next [Trap_Busterpad_Boost3_Upgradeobject, Trap_Busterpad_Tower3_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Busterpad_Boost3_Upgradeobject | tier 3 | 'Strong Finish' | desc 'Pad charges up when not in use, granting a larger effect' | costs [Blueaura 125] | params {Delay_Base=1; Effect_Add=0.5} | ais [] | vis Trap_Busterpad_Boost3_Visualproperties | next [Trap_Busterpad_Circuit4_Upgradeobject, Trap_Busterpad_Airtime4_Upgradeobject] | notes 'Good (needs visual side)'
+    UPGRADE Trap_Busterpad_Circuit4_Upgradeobject | tier 4 | 'Circuit' | desc 'All effects increased when not nearby other pads' | costs [Blueaura 250] | params {Effect_Multi=0.2; Effect_Range=5} | ais [] | vis Trap_Busterpad_Circuit4_Visualproperties | next [Trap_Busterpad_Speed5_Upgradeobject, Trap_Busterpad_Damage5_Upgradeobject] | notes 'Done Range is max power'
+    UPGRADE Trap_Busterpad_Damage3_Upgradeobject | tier 3 | 'Speed Bump' | desc 'Deals percent damage depending on the speed of the enemy' | costs [Redaura 50, Blueaura 75] | params {Damage_Base=5; Damage_Perspeed=4} | ais [] | vis Trap_Busterpad_Damage3_Visualproperties | next [Trap_Busterpad_Circuit4_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Busterpad_Damage5_Upgradeobject | tier 5 | 'Collision Course' | desc 'Effects Dogs, an accident waiting to happen...' | costs [Blueaura 2500, Redaura 1500] | params {} | ais [] | vis Trap_Busterpad_Damage5_Visualproperties | next [] | notes 'Done, need to add effect'
+    UPGRADE Trap_Busterpad_Speed2_Upgradeobject | tier 2 | 'Boost Pad' | desc 'Increased Speed effect, Slows enemies traveling opposite' | costs [Blueaura 50] | params {Speed_Pmulti=0.5; Decay_Base=4; Slow_Multi=-0.75} | ais [] | vis Trap_Busterpad_Speed2_Visualproperties | next [Trap_Busterpad_Boost3_Upgradeobject, Trap_Busterpad_Damage3_Upgradeobject, Trap_Busterpad_Stun3_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Busterpad_Speed5_Upgradeobject | tier 5 | 'Breakneck' | desc 'Removes internal speed limiter, greatly increased speeds' | costs [Blueaura 3000] | params {Speed_Multi=1; Dogspeed_Multi=1; Dogspeedmax_Base=15; Speedmax_Base=15} | ais [] | vis Trap_Busterpad_Speed5_Visualproperties | next [] | notes 'Done Multiplies speed, and multiplies dog speed too to a much much higher limit'
+    UPGRADE Trap_Busterpad_Stun3_Upgradeobject | tier 3 | 'Wrong Way' | desc 'Enemies are stunned briefly when passing' | costs [Blueaura 125, Yellowaura 75] | params {Stun_Base=2} | ais [] | vis Trap_Busterpad_Stun3_Visualproperties | next [Trap_Busterpad_Circuit4_Upgradeobject] | notes 'Done'
+    UPGRADE Trap_Busterpad_Tower3_Upgradeobject | tier 3 | 'Refuel' | desc 'Tower can now be placed on top, gaining attack speed' | costs [Blueaura 200] | params {} | ais [] | vis Trap_Busterpad_Tower3_Visualproperties | next [] | notes 'Done? Probably need to adjust visual so that we can still see the pad'
+    UPGRADE Effect_Busterpad_Towerbuff_Upgradeobject | tier -1 | 'Speedy' | desc 'Tower can shoot faster' | costs [] | params {Attackspeed_Pmulti=0.75} | ais [Entity_Ai_Effect_Busterpad_Towerbuff] | vis Effect_Busterpad_Towerbuff_Visualproperties | next []
+    UPGRADE Effect_Busterpad_Dogcollsion_Upgradeobject | tier -1 | 'Prone to collision' | desc 'Watch out!!' | costs [] | params {Damage_Base=50; Damageperspeed_Base=0.2; Range_Base=1.5} | ais [Entity_Ai_Effect_Busterpad_Collision] | vis - | next []
+    UPGRADE Effect_Bustercheckpoint_Attackaura_Upgradeobject | tier -1 | 'Rich Dash' | desc 'Stronger for an attack, grants some aura' | costs [] | params {Damage_Multi=2; Amount_Base=5} | ais [Entity_Ai_Effect_Bustercheckpoint_Attackaura] | vis - | next []
+    UPGRADE Effect_Bustercheckpoint_Attackaura2_Upgradeobject | tier -1 | 'Rich Rush' | desc 'Attacks deal more, and grant aura' | costs [] | params {Damage_Multi=4; Amount_Base=5; Duration_Base=0.5} | ais [Entity_Ai_Effect_Bustercheckpoint_Attackaura] | vis - | next []
+    UPGRADE Mob_Busterdog_Fire4_Upgradeobject | tier 4 | 'Diesel Dog' | desc 'Leave a firey wake behind' | costs [Redaura 250] | params {Fire_Tick=0.5; Damage_Base=8; Burntick_Base=0.5; Burncount_Base=4} | ais [] | vis Mob_Busterdog_Fire4_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Speed5_Upgradeobject | tier 5 | 'Nitro Collar' | desc 'No longer can lose speed... Ever.' | costs [Redaura 4000] | params {} | ais [] | vis Mob_Busterdog_Speed5_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Support4_Upgradeobject | tier 4 | 'Mechanic's Friend' | desc 'Towers passed by will increase in damage' | costs [Redaura 300, Blueaura 50] | params {} | ais [] | vis Mob_Busterdog_Support4_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Target4_Upgradeobject | tier 4 | 'Rev Dog' | desc 'Dogs are no longer targetable' | costs [Redaura 175, Blueaura 150] | params {Speed_Min=1000} | ais [] | vis Mob_Busterdog_Target4_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Damage4_Upgradeobject | tier 4 | 'Lap Dog' | desc 'Subsequent hits will deal increased damage' | costs [Redaura 300] | params {Damage_Add=5; Damage_Decay=-1; Damage_Max=50} | ais [] | vis Mob_Busterdog_Damage4_Visualproperties | next []
+    UPGRADE Effect_Busterdog_Towerboost_Upgradeobject | tier -1 | 'Adjusted' | desc 'Tower is temporarily improved' | costs [] | params {Damage_Multi=0.5; Range_Multi=0.45; Duration_Base=5} | ais [Entity_Ai_Effect_Busterdog_Towerboost] | vis - | next []
+    UPGRADE Effect_Tower_Bustertotem_Blazedebuff_Upgradeobject | tier -2 | 'Unstable Blazing Limits' | desc 'Ramped damage increases overtime. Destruction on expiry' | costs [] | params {Damagetick_Base=1.5; Damagetick_Ramp=0.2; Duration_Base=1; Damage_Max=1000; Damage_Base=0} | ais [Entity_Ai_Effect_Bustertotem_Blaze] | vis - | next []
+    UPGRADE Effect_Busterpad_Speed_Upgradeobject | tier -1 | 'Speedy' | desc 'Fast!' | costs [] | params {Decay_Base=0.5} | ais [Entity_Ai_Effect_Busterpad_Speed] | vis - | next [] | notes 'The general upgrade given to those that step on the pad. Refreshed using the "Speed" Interaction with a duration value'
+    UPGRADE Mob_Busterdog_Health2_Upgradeobject | tier 2 | 'Jack Up' | desc 'Dog has increased health, respawns quicker' | costs [Blueaura 25, Redaura 15] | params {} | ais [] | vis Mob_Busterdog_Health2_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Health3_Upgradeobject | tier 3 | 'Big Dog' | desc 'Dog is stronger and keeps speed on collisions' | costs [Blueaura 65] | params {} | ais [] | vis Mob_Busterdog_Health3_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Unit2_Upgradeobject | tier 2 | 'Pit Crew' | desc 'Gain a second Dog' | costs [Redaura 65] | params {} | ais [] | vis Mob_Busterdog_Unit2_Visualproperties | next []
+    UPGRADE Mob_Busterdog_Speed3_Upgradeobject | tier 3 | 'Up Dog' | desc 'Increased base speed' | costs [Redaura 65] | params {} | ais [] | vis Mob_Busterdog_Speed3_Visualproperties | next []
+    UPGRADE Effect_Tower_Bustertotem_Blazedebuff_Burst_Upgradeobject | tier -2 | 'Unstable Blazing Limits' | desc 'Ramped damage increases overtime. Destruction on expiry' | costs [] | params {Damagetick_Base=1.5; Damagetick_Ramp=0.2; Duration_Base=1; Damage_Max=1000; Damage_Base=25} | ais [Entity_Ai_Effect_Bustertotem_Blaze] | vis - | next []
+  LIST Mob (6)
+    BEING Trap_Bustercheckpoint | block Trap_Bustercheckpoint_Block | notes ''
+      ENTITY Trap_Bustercheckpoint_Entity | name 'Checkpoint' | display 'Checkpoint' | desc 'Links to ores, creates collectable crystals'
+      tags [Gatherer, Trap, Checkpoint] | ais [Entity_Ai_General_Upgrade, Entity_Ai_Trap_Bustercheckpoint] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Bustercheckpoint]
+      costs [Yellowaura 50] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Trap_Bustercheckpoint_Hitproperties
+      upgrades [Trap_Bustercheckpoint_Lap2_Upgradeobject, Trap_Bustercheckpoint_Speed2_Upgradeobject] | upgradesinit []
+      STATS Trap_Bustercheckpoint_Statproperties [Healthresource=3 Number/Default/hidden, Attackspeed=0.3 Number/Default/hidden, Damageresource=0.5 Number/Default/hidden, Efficiency=0 Number/Default/hidden, Mineffect=10 Number/Default/hidden, Maxeffect=100 Number/Default/hidden, Effectrange=2 Number/None/hidden, Range=10 Number/None/hidden, Collectrange=0.6 Number/Default/hidden]
+      VISUAL Trap_Bustercheckpoint_Visualproperties | default Model prefab Trap_Bustercheckpoint sprite - 'Checkpoint' addvis [] addprefabs []
+    BEING Tower_Bustergarage | block General_Tower_Block_Height 1 | notes ''
+      ENTITY Tower_Bustergarage_Entity | name 'Garage' | display 'Garage' | desc 'Directional, spawns dogs, multi-target'
+      tags [Tower, Towerfighter] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Bustergarage] | visscripts [Entity_Vis_Tower, Entity_Vis_Tower_Orientation]
+      costs [Redaura 60] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Bustergarage_Hitproperties
+      upgrades [Tower_Bustergarage_Unit2_Upgradeobject, Tower_Bustergarage_Health2_Upgradeobject] | upgradesinit []
+      STATS Tower_Bustergarage_Statproperties [Health=50(+50/lvl) Number/Default/hidden, Respawn=5 Number/Default/hidden, Units=1 Number/Default/hidden]
+      VISUAL Tower_Bustergarage_Visualproperties | default Model prefab Tower_Bustergarage sprite - '' addvis [] addprefabs []
+    BEING Tower_Bustertotem | block General_Tower_Block_Height 2 | notes ''
+      ENTITY Tower_Bustertotem_Entity | name 'Pedestal' | display 'Pedestal' | desc 'Sustained, single-target'
+      tags [Tower, Towerfighter, Totem] | ais [Entity_Ai_Tower_General, Entity_Ai_General_Upgrade, Entity_Ai_Tower_Bustertotem] | visscripts [Entity_Vis_Tower_Range, Entity_Vis_Tower]
+      costs [Redaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Tower_Bustertotem_Hitproperties
+      upgrades [Tower_Bustertotem_Burn2_Upgradeobject, Tower_Bustertotem_Burst2_Upgradeobject] | upgradesinit []
+      STATS Tower_Bustertotem_Statproperties [Health=25(+75/lvl) Number/Default/hidden, Attackspeed=0.4 Number/Default/hidden, Damage=2(+1/lvl) Number/Default/hidden, Range=5 Number/Default/hidden, Rangebreak=2 Number/Default/hidden]
+      VISUAL Tower_Bustertotem_Visualproperties | default Model prefab Tower_Bustertotem sprite Tower_Smackybomber_Spriteobject '' addvis [] addprefabs [] anims [Idle(4x1 spd 1 loop prio 0), Active(4x1 spd 1 loop prio 0), Attack(4x1 spd 1 reset prio 0 ->Active)]
+    BEING Trap_Busterpad | block Trap_Busterpad_Block | notes ''
+      ENTITY Trap_Busterpad_Entity | name 'Speed Pad' | display 'Speed Pad' | desc 'Directional, boosts units, redirects dogs'
+      tags [Trap, Pad] | ais [Entity_Ai_General_Upgrade, Entity_Ai_Trap_Busterpad] | visscripts [Entity_Vis_Trap_Busterpad, Entity_Vis_Tower_Orientation]
+      costs [Blueaura 25] | drops [] | sellable True | controllable True | orientable True | targetable True | level 1 | selprio 2 | hit Trap_Busterpad_Hitproperties
+      upgrades [Trap_Busterpad_Boost2_Upgradeobject, Trap_Busterpad_Speed2_Upgradeobject] | upgradesinit []
+      STATS Trap_Busterpad_Statproperties [Speed=2 Number/Default/hidden, Dogspeed=0 Number/Default/hidden, Maxdogspeed=2 Number/Default/hidden, Effect=1 Number/Default/hidden, Maxspeed=5 Number/Default/hidden]
+      VISUAL Trap_Busterpad_Visualproperties | default Model prefab Trap_Busterpad sprite - 'Speed Pad' addvis [] addprefabs []
+    BEING Mob_Busterdog | block General_Mob_Block_Height 1 | notes ''
+      ENTITY Mob_Busterdog_Entity | name 'Dog' | display 'Dog' | desc ''
+      tags [Mob, Mobfighter, Dog] | ais [Entity_Ai_Mob_Movementlinear, Entity_Ai_Mob_Dog] | visscripts [Entity_Vis_Animator_Basic, Entity_Vis_Movementlinear]
+      costs [] | drops [] | sellable False | controllable False | orientable True | targetable True | level 1 | selprio 0 | hit General_Mobminiwide_Hitproperties_Height 1
+      upgrades [] | upgradesinit []
+      STATS Mob_Busterdog_Statproperties [Health=50(+10/lvl) Number/Default/hidden, Damage=3 Number/Default/hidden, Speed=2 Number/Default/hidden, Speeddamage=1(+0.25/lvl) Number/Float, Collisionspeed=-1 Number/Default/hidden, Speeddamagestartup=0.2 Number/Default/hidden, Range=0.1 Number/Default/hidden]
+      VISUAL Mob_Busterdog_Visualproperties | default Sprite prefab - sprite Mob_Busterdog_Sprite 'Dog' addvis [] addprefabs [] anims [Movelinear(4x6 spd 1 loop prio 0)]
+    BEING Trap_Busterpad_Air_Connector | block Trap_Busterpad_Air_Connector_Block | notes 'Add a Main_Tpgate_Link to this on generation and it'll try and link with another'
+      ENTITY Trap_Busterpad_Air_Connector_Entity | name 'Gate' | display '' | desc ''
+      tags [] | ais [Entity_Ai_Trap_Busterpad_Air_Connector] | visscripts []
+      costs [] | drops [] | sellable False | controllable False | orientable False | targetable True | level 1 | selprio 1 | hit -
+      upgrades [] | upgradesinit []
+  LIST Projectile (12)
+    PROJECTILE Tower_Bustertotem_Beam | vis Bustertotembeam | hit - | vfx -/- | sfx 'Bustertotem_Burn'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=1; Trackspeed=10; Tickrate=3}
+    PROJECTILE Mob_Busterdog_Flame | vis Proj_Dogfire | hit Dogprojcollider | vfx -/- | sfx ''/'' | ray Raycast r 0.05 | replicate True | controllers [Projectile_Ai_Simple] | params {Pierce=2; Lifetime=1; Yvelocity=0.1}
+    PROJECTILE Tower_Bustertotem_Beamburn | vis Bustertotembeamburn | hit - | vfx -/- | sfx 'Bustertotem_Burn'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=1.5; Trackspeed=10; Tickrate=3; Killontarget=0}
+    PROJECTILE Tower_Bustertotem_Beamburnblast | vis Bustertotembeamblast | hit - | vfx -/Proj_Blastbombburn | sfx 'Bustertotem_Burn'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam, Projectile_Ai_Explosion] | params {Lifetime=1.5; Trackspeed=10; Tickrate=3; Killontarget=0; Radius=1.5; Count=12}
+    PROJECTILE Tower_Bustertotem_Beamburnblaze | vis Bustertotembeamblaze | hit - | vfx -/- | sfx 'Bustertotem_Burn'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=3; Trackspeed=0.25; Tickrate=3; Killontarget=0}
+    PROJECTILE Tower_Bustertotem_Beamburnblink | vis Bustertotemblink | hit - | vfx -/- | sfx 'Bustertotem_Burn'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=1.5; Trackspeed=10; Tickrate=3; Killontarget=0}
+    PROJECTILE Tower_Bustertotem_Beamburst | vis Bustertotemburst | hit - | vfx -/- | sfx 'Bustertotem_Burst'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=0.5; Trackspeed=1; Tickrate=5; Killontarget=0; Track=0}
+    PROJECTILE Tower_Bustertotem_Beamburstblast | vis Bustertotemburstblast | hit - | vfx -/Proj_Blastbomb | sfx 'Bustertotem_Burst'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam, Projectile_Ai_Explosion] | params {Lifetime=0.5; Trackspeed=1; Tickrate=5; Killontarget=0; Track=0; Radius=1; Count=14}
+    PROJECTILE Tower_Bustertotem_Beamburstblaze | vis Bustertotemburstblaze | hit - | vfx -/- | sfx 'Bustertotem_Burst'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=1; Trackspeed=1; Tickrate=4; Killontarget=0; Track=0}
+    PROJECTILE Tower_Bustertotem_Beamburstblink | vis Bustertotemburstblink | hit - | vfx -/- | sfx 'Bustertotem_Burst'/'' | ray Nocollision r 0.1 | replicate True | controllers [Projectile_Ai_Beam] | params {Lifetime=0.5; Trackspeed=1; Tickrate=5; Killontarget=0; Track=0}
+    PROJECTILE Tower_Bustertotem_Blastbombsmall | vis Emptybomb | hit Emptycollider | vfx -/Proj_Blastbombmini | sfx 'Bustertotem_Explodesmall'/'' | ray Nocollision r 0 | replicate True | controllers [Projectile_Ai_Explosion, Projectile_Ai_Delay, Projectile_Ai_Simple] | params {Radius=0.5; Count=5; Activetime=0.1; Zvelocity=0.1; Interact=0; Collision=0}
+    PROJECTILE Tower_Bustertotem_Blastbombsmallblaze | vis Emptybomb | hit Emptycollider | vfx -/Proj_Blastbombminiblaze | sfx 'Bustertotem_Explodesmall'/'' | ray Nocollision r 0 | replicate True | controllers [Projectile_Ai_Explosion, Projectile_Ai_Delay, Projectile_Ai_Simple] | params {Radius=0.25; Count=3; Activetime=0.1; Zvelocity=0.1; Interact=0; Collision=0}
+  LIST Vfx (34)
+    ITEM Debuff_Stun : GameObject
+    ITEM Debuff_Fire : GameObject
+    ITEM Tower_Bustercheckpoint_Spawncrystal : GameObject
+    ITEM Tower_Bustercheckpoint_Upcrystal : GameObject
+    ITEM World_Tower_Bustercheckpoint_Fallpos : GameObject
+    ITEM World_Hero_Buster_Death : GameObject
+    ITEM Debuff_Auragaincheckpoint : GameObject
+    ITEM Debuff_Auragaincheckpointbigger : GameObject
+    ITEM Debuff_Blaze : GameObject
+    ITEM Debuff_Dogairtime : GameObject
+    ITEM Debuff_Dogcollision : GameObject
+    ITEM Debuff_Dogelusive : GameObject
+    ITEM Debuff_Dogfast1 : GameObject
+    ITEM Debuff_Dogfast2 : GameObject
+    ITEM Dogfire_Shot : GameObject
+    ITEM World_Blazeexpiry : GameObject
+    ITEM World_Checkpointhitother : GameObject
+    ITEM World_Collectcheckpoint : GameObject
+    ITEM World_Collectcheckpointspeed : GameObject
+    ITEM World_Dogbigcollision : GameObject
+    ITEM World_Dogdespawn : GameObject
+    ITEM World_Effect_Busterdogborder : GameObject
+    ITEM World_Speedpadboost3 : GameObject
+    ITEM World_Speedpaddamage : GameObject
+    ITEM World_Speedpadslow : GameObject
+    ITEM World_Speeduppad : GameObject
+    ITEM World_Speeduppadboostmomentum : GameObject
+    ITEM World_Totemfullcharge : GameObject
+    ITEM Movebordercommandlinear : GameObject
+    ITEM Debuff_Pure : GameObject
+    ITEM Debuff_Slowspeedpad : GameObject
+    ITEM Airtimedistanceind : GameObject
+    ITEM Airtimedistanceactive : GameObject
+    ITEM World_Speeduppadrotate : GameObject
+  LIST Command (3)
+    COMMAND Command_Movelinear | style Button | 'Dash' | desc 'Throw Aura of each type' | icon 'Movelinear' | keys [6, 7] | keystate 'Onpressed' | prio 6 | funcs [Entity_Command_Movelinear] | ui -
+    COMMAND Command_Trap_Busterpad_Rotate | style Button | 'Spin' | desc '' | icon 'Buster_Rotate' | keys [Quickaction, 5] | keystate 'Onrelease' | prio 1 | funcs [Entity_Command_Tower_Simple_Toggle] | ui -
+    COMMAND Command_Trap_Busterpad_Air | style Button | 'Air' | desc '' | icon 'Buster_Air' | keys [5] | keystate 'Onrelease' | prio 3 | funcs [Entity_Command_Trap_Busterpad_Air] | ui -
+  LIST Other (2)
+    ITEM Trap_Busterpad_Block : Blockobject
+    ITEM Trap_Busterpad_Tower : Blockobject
+  LIST Sound (15)
+    ITEM Airlaunch : AudioClip
+    ITEM Auracollect : AudioClip
+    ITEM Beam1 : AudioClip
+    ITEM Beam2Burst : AudioClip
+    ITEM Beamexplode : AudioClip
+    ITEM Beamexplodesmall : AudioClip
+    ITEM Blazeexpire : AudioClip
+    ITEM Boost3Upgrade : AudioClip
+    ITEM Busterlanding : AudioClip
+    ITEM Dashcommand : AudioClip
+    ITEM Dogcollisionbig : AudioClip
+    ITEM Doghit : AudioClip
+    ITEM Gemappear : AudioClip
+    ITEM Speedpad : AudioClip
+    ITEM Speedpadslow : AudioClip
+
+ALL COMMANDS
+  COMMAND Command_Hero_Sprigg_Water | style Button | 'WATER' | desc 'Spend 1 Sap: the nearest thirsty plant gains a Ring' | icon 'Sprigg_Water' | keys [] | keystate 'Onrelease' | prio 2 | funcs [Entity_Command_Simple] | ui -
+END

@@ -1,0 +1,178 @@
+# 09 · Pitfalls: every error met so far, and its fix
+
+Each entry: **symptom** → cause → fix (where the fix lives in the template). All of these happened while building
+Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add new ones at the end of their section.
+
+## A. Compiling
+
+1. **Compiles in Unity / csc but fails in game** (`HashSet`, `System.Linq`, `JsonUtility`, `TextAnchor` not found) →
+   the game's compiler references a fixed list without `System.Core`, `JSONSerializeModule`, `TextRenderingModule` →
+   use `List` + `Contains`, hand-written JSON readers (`JsonString`, `JsonNumber`), no LINQ; the build script compiles
+   against exactly the game's list, so trust its result, not Unity's.
+2. **Mod refused/blocked** → `System.IO` or `System.Reflection` used (blocked by the code security settings) → the build
+   script rejects them; read files in the editor generator instead; call private game methods with
+   `GameObject.SendMessage(name)` when unavoidable.
+3. **C# features missing** → Roslyn 3.8 = C# 9: no file-scoped namespaces, no `record struct`, no global usings.
+4. **Duplicate type when two mods (or a mod and the kit) define the same class** → the build script renames the kit's
+   `ModKit` prefix to `<Name>Kit`; prefix your own classes with the vessel name. Renaming the kit once collided with the
+   vessel's own `MummerJournal` → keep kit and vessel names distinct (`MummerKitVesselJournal` vs `MummerJournal`).
+5. **"member names cannot be the same as their enclosing type" / ambiguous `Mark`** → a nested class and a method shared
+   a name (`MummerServer.Mark` class + `Mark()` method) → rename the class (`MarkInfo`).
+6. **`?.` on Unity objects lies** → a destroyed `UnityEngine.Object` is "== null" but `?.` doesn't see it → write explicit
+   `x != null` checks.
+7. **PowerShell `-File` breaks `-Define A,B`** → pass it with `-Command "& .\Build-X.ps1 -Define A,B"`.
+
+## B. Loading and data
+
+8. **Mod AI classes in `Aiscripts` never run** → the engine attaches scripts with `Type.GetType(name)` from the game's
+   assembly, and upgrade pruning compares type names → brains as MonoBehaviours added in `Game_Entity.Onspawn`; stock AIs
+   via name carriers (`Util.Script`).
+9. **A cloned tower behaves like Smacky's or throws** → copied vessel-specific scripts (`Entity_Ai_Tower_Smackyarcher`,
+   `Entity_Ai_General_Upgrade`) hard-code Smacky's objects → `Strip()` removes any script named after a shipped vessel,
+   and the building brain mirrors the upgrade AI.
+10. **Edits to `Visualproperties.Default` have no effect** → `Entry` is a struct → copy, change, assign back.
+11. **NRE in `Bl_Address_Group.OnEnable`** → `ScriptableObject.CreateInstance` leaves its item list null → `Instantiate`
+    an existing group (`template.Heroloads`) and retag it.
+12. **Another mod's object disappears / the wrong object loads** → two mods registered the same `Objectname` in the
+    global `Bl_Address.Groupsname` → every id contains the vessel name (the scaffold also renames the template's unit,
+    `Understudy`, whose ids carried no vessel name).
+13. **Names truncated on the network** → `FixedString64Bytes` holds 61 UTF-8 bytes → ids ≤ 60 chars (`Util.Clip`).
+14. **Leftover stats do nothing / confuse the panel** → cloning kept the template's stats (Projduration, Projcount) →
+    `Stats()` builds exactly the listed stats.
+15. **Borrowed piece missing (Curtain without Buster's pad)** → that vessel's group wasn't loaded → load it at boot
+    (`Data.ExtraGroups`), fall back to a Smacky piece if absent; groups are never unloaded, so it's safe all session.
+16. **An upgrade param buffs the wrong thing** (Method Acting's `Health_Multi` would have buffed the Stage itself) →
+    params named after a stat the building owns become modifiers on the building → name unit-stat params differently
+    (`Puppethealth_Multi`) and apply them to units yourself.
+
+## C. Menus, boat, icons
+
+17. **The vessel shows only as a shadow on the boat** → `Populatecharselect` locks vessels missing from the save and the
+    button's `Start` already sent "Locked" to its VFX → set `button.Locked = false`, then `SendMessage("Start")`
+    (`ModKitBoat.Unlock`).
+18. **No boat spot, or extra spots in a line off the stern** → one spot per vessel; the old code repeated the last gap →
+    `ModKitBoat` adds spots and lays extras on the deck between the shipped ones.
+18a. **Some vessels can't be clicked on a crowded boat** (10 vessels with kit 1.0-1.3) → a click picks the nearest
+    vessel box, and extras in the gaps 0.14 off the line covered their neighbours' boxes → kit 1.4 stands every vessel
+    in evenly spaced, staggered rows, back rows higher, with the boxes moved onto the sprites; the self-test's
+    `ModKitBoat.ClickReport` fires the game's own raycast over each box.
+19. **Sprite sheets drawn on the startup screen** → the game instantiates the mod prefab at startup and the library's
+    Sprites holder was active → save every library holder inactive.
+20. **Ability/resource icons blank or stock** → `Helper_Uitools` copies the icon table on the **first** `Geticon` and
+    never again; Sprigg 1.3 asked for an icon right after its build, freezing the table before other mods added
+    theirs → add icons at boot before any asset loading; never call `Geticon` while building; check 8 s later and fall
+    back to stock icon names (`CheckIcons`).
+21. **Picker shows no border/prompt or throws** → Fie's Reroute assets are only loaded when Fie is in the match → use
+    Sell's (`Sellborder`, `Sellfromborder`, `Ui_Command_Sell`); never hand the selection loop a null border (a hidden
+    placeholder object).
+22. **Risk when uninstalling a vessel** → at startup the game calls `Selectcharacter` with the save's
+    `Player_Heroselect`, which the self-test sets to the tested vessel; if that vessel is gone the selection points at
+    nothing (not observed, avoided) → before removing a vessel mod, select another vessel in game.
+
+## D. Journal
+
+23. **Smacky's tab missing on a vessel page** → `Instantiate` remaps a page's self-references, turning the template's own
+    tab into the clone's → `ModKitVesselTabs.Sync()` after building, and `Tick()` every frame.
+24. **New journal links/3D views don't draw** → brand-new `Link` + `Image3D` items lack fields the renderer expects →
+    reuse/deep-copy template items (`Fresh<T>`).
+25. **A stray page with its own tab row appears** → a scratch clone used for copying items was left alive → destroy
+    scratch pages.
+26. **The journal's 3D view frames only part of a tower** → it fits the model by its first renderer → a disabled
+    whole-model renderer on `Vis`.
+
+## E. Gameplay and engine
+
+27. **The vessel hits twice** (Sprigg: an invisible melee hit from 3.5 tiles plus its seed) → the cloned melee AI stayed
+    next to the ranged one → exactly one stock attack AI.
+28. **Custom animation cut off instantly** → `Animplaysoft` keeps the current priority, so Idle/Move replace it → 
+    `Animplay(name, Game_Sprite.Animationtype.Force)`.
+29. **Projectiles behave like the previous shot** → `Helper_Damagetools.Projectile` merges a shot's params into the
+    projectile's shared `Defaultparams` → pass every param every shot.
+30. **Pierce damage scales wrong / changes other hits** → pierce hits share one `Data` dictionary → copy before edit.
+31. **Status looks (Marked, held, tangled, slow) never appear** → sent with `Beingserver.Beingrefparallel`, a copy taken
+    before `Spawn` set its `Worldobject`, so clients can't resolve the target → `Vfxdebuffcheck(name,
+    target.Beingref.Value, s)` (`Util.Debuff`). Sprigg ≤ 1.4.0 and Argo 1.0 have this bug in their slows.
+32. **A tile lookup finds nothing** → `Getblock(pos)` matches the exact tile position (hundredths) → snap to the tile
+    centre and use the ground's `Surface` entity (`HeroBrain.Tile`), trying the same level, one down, one up.
+33. **A pulled enemy walks back to its fight** → its combat AI re-targets every slow tick → re-assert your Move each
+    frame for the pull window, then root it (`KeepReeling`).
+34. **A tower stopped aiming** → its bespoke AI (which turned the turret) was stripped → design attacks that don't
+    need aiming (Thornroot) or rotate the `Vis/<Part>` on the client from Vis events (Argo).
+35. **The first Tide halves a starting resource** → a "per Tide" rule fired when Tide 1 began → skip it when the previous
+    Tide is below 1.
+36. **A button re-runs its ability when its look changes** → `Updatecommand(m, link, json, server, run: true)` invokes
+    the command handlers → use `run: false` to only sync Goalstring/Goalvalue. (Argo 1.0's SONAR uses `true`,
+    probably warning "recharging" on every use.)
+37. **Enemy throws every tick** → spawned without a parent; `Approachgoal` reads its parent's Goal → spawn with
+    `Createlinkspawnparent(enemyCore.Beingserver)`.
+38. **A despawned foe reads 0 health** → stats are cleared → read base values from `Entity.Defaultstat`.
+39. **Armoured foes ignore damage numbers** → `Healtharmor` makes each hit count as 1 → expected; design around it.
+40. **A unit spawned for building A gets building B's settings** → several spawns in a row and `Onspawn` reading the wrong
+    context → `Onspawn` fires synchronously inside `Spawn`: set a static "pending" field right before and clear it
+    right after.
+40a. **A pull or test measured from a walking foe's tile acts a tile early** → `Beingserver.Currentblock` is the tile
+    the foe is stepping onto: `Entity_Ai_Mob_Movement` claims it as the step starts, then waits 1/Speed (a foe held at
+    the 0.05 floor sits on it for 20 s while it looks a tile back) → measure from it knowingly, and give test foes room
+    from the tile in front of them (Argo's `Lane`).
+40b. **"The first foe a piercing shot hits" is sometimes the one behind** → `Projectile_Master` sweeps each step with
+    `Physics.SphereCastAll` and calls `Collide` in the array's order, which isn't by distance → collect the hits of
+    that step (they all land in one frame) and pick the nearest yourself (Argo's `ReelNearest`).
+
+## F. Visuals and audio
+
+41. **Area effect smaller/larger than its real reach** → drawn at a fixed size → scale it to the radius
+    (`ParticleSystemScalingMode.Shape`, transform scale).
+42. **Dome bursts spray sideways** → Unity's Hemisphere shape faces +Z → rotate it (`HemisphereUp()`).
+43. **Effects float or sink** → `Entityposition.y` is ground + 0.5; debuffs attach at the target's feet (`Vis` origin) →
+    ground effects at y - 0.5; overhead markers ~1.4-1.7 up.
+44. **Marker hidden behind tall enemies** → placed at 1.15 → raise and enlarge (Mummer 1.0: 1.6, r 0.21).
+45. **Tower details invisible in game** → modelled on the far side (Mummer's quilt) → put them on the front (-z) and top.
+46. **Spindly towers** → parts thinner than ~0.05 → thicken.
+47. **Towers too small** (Sprigg 0.6) or overlapping neighbours → height 0.8-1.45, footprint inside the tile.
+48. **Sprite reads muddy** → noise texture (felt "nap" dots) → one sheen line; a limb behind the body → draw order; thin
+    thread lines invisible → 2 px or lighter colour.
+49. **String-drawn icon malformed** → rows of unequal length → check every row's length.
+50. **Splash parts look like pills** → drawn as separate shapes → one chained shape per limb.
+51. **Sounds ~20× too loud** → normalised clips at volume 1 → per-clip volumes from the measured game levels, mixer group
+    of the "Upgrade" sound.
+
+## G. Build, export, tools
+
+52. **Another mod's assets inside your bundle** → ModTool exports every prefab/ScriptableObject outside `/Editor/` →
+    Park Other Mods (to `Assets/_Parked/Editor`: the path contains `/Editor/`, so the exporter skips it, and every
+    vessel mod parks to the same place), Export, Restore. Parked editor scripts still compile; expect a recompile after
+    each park and restore.
+53. **Export Mod "times out" in UnityMCP and runs twice** → the bridge retries a slow menu call → wait for the .info
+    timestamp to settle before Restore.
+54. **The installed mod is disabled after an export** → the exporter writes `"_isEnabled": false` → `Deploy-Wait.ps1`.
+55. **Build All Assets produced the old art** → it ran before Unity recompiled the edited generator → check
+    `Library/ScriptAssemblies/Assembly-CSharp-Editor.dll` is newer than your edit.
+56. **A restore looked failed and a parallel cleanup deleted a folder** → never batch deletes with unverified steps;
+    verify file counts after every park/restore.
+57. **UnityMCP won't start** → HTTP mode collides with NVIDIA Broadcast on 8080, and letting it reinstall its server
+    pulls broken versions → stdio mode, pinned venv (`docs/11`).
+58. **PowerShell array garbles a scripted edit** → in `@('a', 'b' + $x)` the comma binds before `+` → parenthesise, or
+    write new text to a file and splice it. `Set-Content` defaults to ANSI: pass `-Encoding utf8`; reading a UTF-8 file
+    without BOM via `Get-Content -Raw` can mangle `▪`.
+59. **No decompiler** → read IL with the Cecil scripts (`tools/cecil`).
+59a. **A scripted rename changed nothing** → a PowerShell hashtable (`[ordered]@{}` too) treats `Mummer`, `MUMMER`
+    and `mummer` as one key, so only the last mapping survived → a list of pairs (`New-Vessel.ps1`).
+59b. **A new folder never imports** → UnityMCP `refresh_unity` didn't pick up a folder created outside Unity →
+    `execute_menu_item("Assets/Refresh")`, then wait for the `.meta` files and the editor assembly.
+
+## H. Testing
+
+60. **Tides never advance in the test** → `Time_Wave` set to a small positive number → set it ≤ 0.
+61. **Stat checks fail right after a spawn** → stats are filled a frame later → wait.
+62. **Spawn helpers find no tile** → only one height level searched → search `Surface` entities at y, y-1, y+1.
+63. **Checks on a destroyed foe** → Unity null vs C# reference → explicit spawned flags.
+64. **A totals check fails because the vessel killed the target first** → count events instead.
+65. **Desktop screenshot captured another game** → never screenshot the desktop; use in-mod captures only.
+66. **`Stop-Process TDS` does nothing** → the process is `TDSgame`; close with `CloseMainWindow()`.
+67. **Log evidence gone** → `Player.log` is overwritten each launch → copy it after every run.
+
+## I. Process
+
+68. Ask before launching TDS each session; the user may be playing something else.
+69. Don't change the user's concept silently: list every change and its reason in DESIGN.md and the final report.
+70. Report honestly: what was verified in game, what only compiled, and what is unverified.
