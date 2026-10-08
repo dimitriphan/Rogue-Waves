@@ -3,8 +3,8 @@
 // no voxels. Every Argo building stands on the same riveted stone-and-brass dock. Upgrades keep the silhouette and add
 // one clear feature. The Scatter Cannon and the Harpoon Tower keep their gun on a separate "Turret" part (the clients
 // swing it toward each shot); the Drill Rig's chuck is a "Spinner" part that turns while it bites. Deep Water (2.0) is
-// a walk-through pool in a stone frame with a small brass pump dome in its back corner; FLOOD pools are the frame and
-// water alone (Argo_Pool).
+// a walk-through pool in a stone frame with a small brass pump dome in its back corner, its water a "Swell" part the
+// clients bob; FLOOD pools are the frame and water alone (Argo_Pool).
 // Units: 1 = one tile; y measured up from the ground; the front faces -z; a turret's barrel points down -z.
 using System;
 using System.Collections.Generic;
@@ -70,9 +70,9 @@ namespace ArgoBuild
             for (int i = 0; i < WaterKeys.Length; i++)
             {
                 int v = i;
-                l.Add(new ModelDef { Group = "Water", Name = "Trap_Argowater" + WaterKeys[i], Build = () => Water(v, true) });
+                l.Add(new ModelDef { Group = "Water", Name = "Trap_Argowater" + WaterKeys[i], Build = () => Water(v, true), Part = () => Swell(v), PartName = "Swell", PartPivot = Vector3.zero });
             }
-            l.Add(new ModelDef { Group = "Water", Name = "Argo_Pool", Build = () => Water(0, false) });
+            l.Add(new ModelDef { Group = "Water", Name = "Argo_Pool", Build = () => Water(0, false), Part = () => Swell(0), PartName = "Swell", PartPivot = Vector3.zero });
             for (int f = 2; f <= 5; f++)
             {
                 int n = f;
@@ -536,21 +536,19 @@ namespace ArgoBuild
         // A pool in a low stone frame filling the tile (the trap template's footprint), flush enough to walk through. The
         // trap itself has a small brass pump dome with a porthole in its back-right corner (Argo's motif, on the top face);
         // FLOOD pools (pump = false) are the frame and water alone. Upgrades add one feature each; the water darkens from
-        // Crushing Depth on.
+        // Crushing Depth on. The frame stands still; the water and what floats on it are the "Swell" part, which the
+        // clients bob gently (DESIGN "Tower motion"). Its sides sit inside the rim, so a bob of ±0.012 never shows a gap.
+        const float WaterHalf = 0.4f, WaterRim = 0.07f, WaterRimH = 0.075f, WaterSurf = 0.055f;
+
         static Lp Water(int v, bool pump)
         {
             var m = new Lp();
-            const float half = 0.4f, rim = 0.07f, rimH = 0.075f, surf = 0.055f;
+            const float half = WaterHalf, rim = WaterRim, rimH = WaterRimH;
             float inner = half - rim;
             m.Block(V(0, 0, -half + rim / 2f), V(half * 2f, rimH, rim), 0.02f, Pal.StoneMid, Pal.Stone);
             m.Block(V(0, 0, half - rim / 2f), V(half * 2f, rimH, rim), 0.02f, Pal.StoneMid, Pal.Stone);
             m.Block(V(-half + rim / 2f, 0, 0), V(rim, rimH, inner * 2f), 0.02f, Pal.StoneMid, Pal.Stone);
             m.Block(V(half - rim / 2f, 0, 0), V(rim, rimH, inner * 2f), 0.02f, Pal.StoneMid, Pal.Stone);
-            int water = v == 7 ? Pal.SeaDeep : v == 6 ? Pal.SeaDark : Pal.Sea, waterSide = v >= 6 ? Pal.SeaDeep : Pal.SeaMid;
-            m.Block(V(0, 0, 0), V(inner * 2f + 0.01f, surf, inner * 2f + 0.01f), 0.005f, waterSide, water);
-            m.Disc(V(-0.12f, surf + 0.002f, -0.1f), 0.1f, 10, v >= 6 ? Pal.SeaMid : Pal.SeaLight, 0.002f);
-            m.Ball(V(0.1f, surf, -0.16f), V(0.022f, 0.01f, 0.022f), 6, 2, Pal.Bubble);
-            m.Ball(V(0.15f, surf, -0.12f), V(0.014f, 0.008f, 0.014f), 6, 2, Pal.Bubble);
             int cap = v == 7 ? Pal.Gold : Pal.BrassMid, capTop = v == 7 ? Pal.LampLight : Pal.Brass;
             for (int i = 0; i < 4; i++)
             {
@@ -571,6 +569,48 @@ namespace ArgoBuild
             }
             switch (v)
             {
+                case 2:                                                                                 // Brine: salt crusts on the rim
+                    Salt(m, V(-0.3f, rimH, -0.36f), 5, 21, false);
+                    Salt(m, V(0.36f, rimH, -0.1f), 4, 22, false);
+                    Salt(m, V(-0.36f, rimH, 0.18f), 4, 23, false);
+                    break;
+                case 4:                                                                                 // Salt Sting: crystal spikes along the front
+                    for (int i = 0; i < 6; i++)
+                        Salt(m, V(-0.3f + i * 0.12f, rimH, -0.365f), 3, 30 + i, true);
+                    break;
+                case 5:                                                                                 // Abyss: a second pump spout on the front
+                    if (pump)
+                    {
+                        m.Stem(new[] { V(0.27f, rimH + 0.05f, 0.2f), V(0.36f, rimH + 0.08f, 0f), V(0.36f, rimH + 0.08f, -0.25f), V(0.3f, rimH + 0.03f, -0.3f) }, 0.018f, 0.018f, 6, Pal.Copper);
+                        m.Tube(V(0.3f, rimH + 0.03f, -0.3f), V(0.27f, rimH - 0.01f, -0.27f), 0.018f, 0.03f, 8, Pal.Brass, Pal.Ink);
+                    }
+                    break;
+                case 6:                                                                                 // Crushing Depth: a pressure gauge
+                    if (pump)
+                    {
+                        Vector3 g = V(0.16f, rimH + 0.14f, 0.27f);
+                        m.Tube(V(0.2f, rimH + 0.06f, 0.27f), g + V(0.02f, -0.03f, 0), 0.008f, 0.008f, 4, Pal.SteelDark);
+                        m.Tube(g + V(0, 0, 0.015f), g + V(0, 0, -0.02f), 0.04f, 0.04f, 12, Pal.Brass, Pal.White, Pal.Brass);
+                        m.Spike(g + V(0, 0, -0.022f), V(0.7f, 0.7f, 0), 0.006f, 0.03f, Pal.Red);
+                    }
+                    break;
+            }
+            return m;
+        }
+
+        // The water (the frame's inside, from the ground to the surface) and what floats on or rises from it.
+        static Lp Swell(int v)
+        {
+            var m = new Lp();
+            const float surf = WaterSurf;
+            float inner = WaterHalf - WaterRim;
+            int water = v == 7 ? Pal.SeaDeep : v == 6 ? Pal.SeaDark : Pal.Sea, waterSide = v >= 6 ? Pal.SeaDeep : Pal.SeaMid;
+            m.Block(V(0, 0, 0), V(inner * 2f + 0.01f, surf, inner * 2f + 0.01f), 0.005f, waterSide, water);
+            m.Disc(V(-0.12f, surf + 0.002f, -0.1f), 0.1f, 10, v >= 6 ? Pal.SeaMid : Pal.SeaLight, 0.002f);
+            m.Ball(V(0.1f, surf, -0.16f), V(0.022f, 0.01f, 0.022f), 6, 2, Pal.Bubble);
+            m.Ball(V(0.15f, surf, -0.12f), V(0.014f, 0.008f, 0.014f), 6, 2, Pal.Bubble);
+            switch (v)
+            {
                 case 1:                                                                                 // Undercurrent: two swirling streaks
                     for (int k = 0; k < 2; k++)
                     {
@@ -583,11 +623,6 @@ namespace ArgoBuild
                         m.Stem(pts, 0.012f, 0.006f, 4, Pal.SeaLight);
                     }
                     break;
-                case 2:                                                                                 // Brine: salt crusts on the rim
-                    Salt(m, V(-0.3f, rimH, -0.36f), 5, 21, false);
-                    Salt(m, V(0.36f, rimH, -0.1f), 4, 22, false);
-                    Salt(m, V(-0.36f, rimH, 0.18f), 4, 23, false);
-                    break;
                 case 3:                                                                                 // Kelp Bed: fronds rise from the water
                     foreach (var k in new[] { V(-0.2f, surf, -0.05f), V(-0.05f, surf, 0.15f), V(0.12f, surf, -0.08f), V(-0.17f, surf, 0.2f) })
                     {
@@ -595,26 +630,10 @@ namespace ArgoBuild
                         m.Blade(k + V(0.02f, 0, 0.02f), k + V(-0.04f, 0.15f, 0.03f), V(0, 0, 1), 0.04f, Pal.Kelp, Pal.GreenDark);
                     }
                     break;
-                case 4:                                                                                 // Salt Sting: crystal spikes along the front
-                    for (int i = 0; i < 6; i++)
-                        Salt(m, V(-0.3f + i * 0.12f, rimH, -0.365f), 3, 30 + i, true);
-                    break;
-                case 5:                                                                                 // Abyss: a second pump spout on the front
-                    if (pump)
-                    {
-                        m.Stem(new[] { V(0.27f, rimH + 0.05f, 0.2f), V(0.36f, rimH + 0.08f, 0f), V(0.36f, rimH + 0.08f, -0.25f), V(0.3f, rimH + 0.03f, -0.3f) }, 0.018f, 0.018f, 6, Pal.Copper);
-                        m.Tube(V(0.3f, rimH + 0.03f, -0.3f), V(0.27f, rimH - 0.01f, -0.27f), 0.018f, 0.03f, 8, Pal.Brass, Pal.Ink);
-                    }
+                case 5:                                                                                 // Abyss: a ring on the water
                     m.Hoop(V(0f, surf + 0.003f, 0f), V(0, 1, 0), 0.18f, 0.004f, 0.02f, 16, Pal.SeaLight);
                     break;
-                case 6:                                                                                 // Crushing Depth: dark water and a pressure gauge
-                    if (pump)
-                    {
-                        Vector3 g = V(0.16f, rimH + 0.14f, 0.27f);
-                        m.Tube(V(0.2f, rimH + 0.06f, 0.27f), g + V(0.02f, -0.03f, 0), 0.008f, 0.008f, 4, Pal.SteelDark);
-                        m.Tube(g + V(0, 0, 0.015f), g + V(0, 0, -0.02f), 0.04f, 0.04f, 12, Pal.Brass, Pal.White, Pal.Brass);
-                        m.Spike(g + V(0, 0, -0.022f), V(0.7f, 0.7f, 0), 0.006f, 0.03f, Pal.Red);
-                    }
+                case 6:                                                                                 // Crushing Depth: dark water, rising bubbles
                     for (int i = 0; i < 4; i++)
                         m.Ball(V(-0.15f + i * 0.09f, surf, 0.05f - (i % 2) * 0.12f), V(0.016f, 0.008f, 0.016f), 6, 2, Pal.SeaLight);
                     break;

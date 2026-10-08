@@ -68,8 +68,13 @@ passed. Then the playable build (no defines, v0.1.0-dev) was built, boot-checked
 (every vessel logged its icons; 18 NullReferenceExceptions in the game's own ambient-sound teardown at close, no mod
 frame) and left **installed and enabled** for hand play. No zip, no publish.
 
-Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
-off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
+**Deep Water's bob (2026-10-08, after round 5): compiled here, not yet built or seen in game.** The water and what
+floats on it are a `Swell` part of every `Trap_Argowater*` model and of `Argo_Pool` (the frame and pump stay still;
+`ArgoModels.Swell`). `ArgoClient.Bob` raises and lowers it by ±0.012 over 3.2 s, phased by the tile so a row of pools
+rolls like one swell; parts are found again after an upgrade rebuilds the visual. The self-test checks it ("Deep
+Water's water bobs gently"). The model preview at rest matches the old one.
+
+SONAR's 1.4.0 code stays in the source, switched off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.
 
 Everything below is 1.4.0.
