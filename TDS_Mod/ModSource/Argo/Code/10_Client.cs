@@ -588,14 +588,17 @@ public static class ArgoClient
         radius = 0f;
         if (drill == null || drill.Commandlist == null)
             return false;
+        // The last "Aim" entry: Updatecommand moves the entry it updates to the end, so with a stale duplicate in the
+        // list (round 2 read 2.4 while the server sent 4.4) the last one is the newest.
+        bool found = false;
         foreach (Link_Commandref c in drill.Commandlist)
             if (c.Name.ToString() == ArgoData.AimLink && c.Goalvalue > 0f)
             {
                 center = c.Goalposition;
                 radius = c.Goalvalue;
-                return true;
+                found = true;
             }
-        return false;
+        return found;
     }
 
     // A ring drawn at radius 1, scaled to r whatever its parent's scale, its particles kept their designed size.

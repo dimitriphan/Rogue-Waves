@@ -281,6 +281,8 @@ public static class ArgoWater
     }
 
     // A free pool on a tile next to the network, picked at random among those that take one (Abyss, Trench).
+    public static int NoTile;
+
     public static bool FreePool(Net net)
     {
         Beingobject pool;
@@ -306,7 +308,10 @@ public static class ArgoWater
                         free.Add(block);
                 }
         if (free.Count == 0)
+        {
+            NoTile++;
             return false;
+        }
         Genitem at = free[UnityEngine.Random.Range(0, free.Count)];
         ArgoTowerBrain from = net.Lead ?? net.Parts[0];
         if (!Spawn(from, at, pool, 0f))

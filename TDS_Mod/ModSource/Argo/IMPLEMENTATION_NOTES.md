@@ -35,6 +35,19 @@ registry line `[RogueWaves:Argo] v0.1.0-dev kit 1.6`, journal tabs, no mod excep
   `ApplyFathom` now syncs the AIM link at once, and the check waits up to 2 s and logs what the server sent.
 - The PC's `Build-ArgoMod.ps1` was an older copy without the `MODKIT_TEST` line; round 2 replaces it.
 
+**PC round 2 (2026-10-08): 133 pass, 3 fail, 0 setup.** **The fifth build option works in game**: Argo clones
+`Command_Buildoption5` and FLOOD once the match loads the build commands (Player.log: "cloned from Command_Buildoption4
+(keys 4 -> 5, priority 6)", "FLOOD: keys 1"), the Miner's Base builds from it, its button goes while one stands and
+comes back after a sell, and FLOOD adds a pool for Blue 15. No mod exceptions, no "Could not retrieve" lines. The fails:
+
+- Brine read 12 a second: the guns were shooting the foe in the pool. The test now stops every gun and the vessel
+  while it measures (pinned read 1.15 a second, Brine doubled with Crushing Depth's 15%, as designed).
+- Trench (and Abyss, which only logged "no free tile") found no free tile beside the water. The test now puts Deep
+  Water where three tiles beside it are free, and both checks log what blocks each neighbour.
+- Fathom 7: clients still read the old Tremor radius (2.4) while the server sent 4.4. The synced command list most
+  likely held a stale second "Aim" entry (Updatecommand updates the first it finds and moves it to the end). The
+  server now keeps one entry and clients read the last one; the check logs how many it removed.
+
 Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
 off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.

@@ -184,12 +184,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3 (design, art, code on kit 1.6). PC round 1:
-  93 pass, 9 fail; the build commands aren't loaded at boot (`docs/09` #71), so no FLOOD or fifth button; the other
-  fails were the test's own. Fixed and compiled here (`Argo/IMPLEMENTATION_NOTES.md`).
-- **Next:** PC round 2 with handoff `Argo_round2`, on Dimitri's typed OK. First check: the fifth build option.
+- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3. PC round 1: 93/9 (build commands not loaded at boot,
+  `docs/09` #71). PC round 2: 133/3; the fifth build option and FLOOD work in game. The 3 fails are fixed here
+  (`Argo/IMPLEMENTATION_NOTES.md`).
+- **Next:** PC round 3 with handoff `Argo_round3`, on Dimitri's typed OK. Then step 5 (lessons, release).
   ArgoMod 1.4.0 is no longer installed on the PC (the dev build replaced it, disabled after the test).
-- **Blocked:** nothing; round 2 waits on Dimitri's OK.
+- **Blocked:** nothing; round 3 waits on Dimitri's OK.
 
 ### Decisions
 

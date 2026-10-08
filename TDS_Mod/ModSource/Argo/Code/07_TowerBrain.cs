@@ -765,6 +765,7 @@ public class ArgoTowerBrain : MonoBehaviour
     // The aim reaches every player through the AIM command's link (Updatecommand copies Goalposition, Goalvalue and
     // Goalstring into the synced Commandlist): the centre, the radius, and how far AIM reaches (for the picker).
     public float SyncedRadius { get { return syncedRadius; } }
+    public static int AimDupes;
     public bool AimSynced { get { return aimCommand != null; } }
 
     void SyncAim()
@@ -775,6 +776,15 @@ public class ArgoTowerBrain : MonoBehaviour
         aimCommand.Goalposition = AimCenter;
         aimCommand.Goalvalue = syncedRadius;
         aimCommand.Goalstring = (ArgoUtil.Stat(Master, "Range", 5f) + ArgoData.AimSlack).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+        // One "Aim" entry in the synced list: Updatecommand updates only the first it finds, so a duplicate (round 2: the
+        // radius stayed 2.4 for clients after the drill's upgrades) would keep a stale copy. The last one is kept.
+        int seen = 0;
+        for (int i = Master.Commandlist.Count - 1; i >= 0; i--)
+            if (Master.Commandlist[i].Name.ToString() == ArgoData.AimLink && ++seen > 1)
+            {
+                Master.Commandlist.RemoveAt(i);
+                AimDupes++;
+            }
         Helper_Entitytools.Updatecommand(Master, ArgoData.AimLink, "", false, false);
     }
 
