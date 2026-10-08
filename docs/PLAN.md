@@ -186,13 +186,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - **Done:** Phase 1 research (2026-10-08): `TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`, with a go / fallback /
   no table per scope feature (§1) and a PC list (§11); `docs/13` §10 and `docs/14` §6 updated from the code.
-- **Done:** the gate (user, 2026-10-08, see Decisions). The PC round's research mod `TDS_Mod/ModSource/RogueLab`
-  (compiled here, never run) plays §11 steps 1-9 by itself; handoff `RogueLab_round1` on branch `claude/phase-1-6lfnar`.
-- **Done:** Riptide (PR #1, Dimitri's earlier roguelike prototype, 70/70 PC probes) folded into `docs/15` §13: mode
-  entry, live Tide writes, mid-match artifacts and `Runprompt` choices are proven. Reuse its code in Phase 5.
-- **Next:** the PC round (`TDS_Mod/ModSource/RogueLab/README.md`): build, run, send back every `[RogueLab]` line.
-  Then fold the results into `docs/15` (each "untested" line becomes read or failed) and open Phase 2.
-- **Blocked:** on the user's one-sentence OK for the round and PC time.
+- **Done:** the gate (user, 2026-10-08, see Decisions) and the PC round: RogueLab round 1 passed 13 of 13
+  (`docs/15` §11, log in `TDS_Vessel_Creator/reference/roguelab_round1.txt`). The run's skeleton is proven in game:
+  mod mode, mod Cardinal from the lobby, chaining maps without the boat, host state across maps, leaving as a win,
+  rewinding a Tide, save writes. The PC now has kit 1.5's `ModKitTest.cs` and the Build Queue, and a fresh
+  `handoff\pc_manifest.txt` (pack the next handoff with `--manifest`).
+- **Done:** Riptide (PR #1, Dimitri's earlier roguelike prototype, 70/70 PC probes) folded into `docs/15` §13: live
+  Tide writes, mid-match artifacts and `Runprompt` choices are proven. Reuse its code in Phase 5.
+- **Next:** Phase 1 closes; Phase 2 (pack foundation) opens on the user's word. Small leftovers, by hand when
+  convenient: the F-key bug with a real Boutbro (§9), a save value across a restart, the Cardinal's look in the lobby
+  picker, and §11 steps 10-11 (custom-map slot, online with a friend).
+- **Blocked:** nothing.
 
 ### Decisions
 

@@ -11,7 +11,8 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Map 1 | checks the mode and Cardinal, grants a core upgrade mid-match, reproduces the F-key bug with Boutbro and checks the fix, rewinds a Tide, leaves between Tides as a win, chains straight into map 2 | §3, §5, §7, §9 |
 | Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (click one), `TEST DONE` | §3, §6 |
 
-Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Never run.
+Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
+2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
 
 ## PC round
 

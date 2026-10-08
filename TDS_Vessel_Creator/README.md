@@ -72,7 +72,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
 | `tools/New-Vessel.ps1` | Scaffolds a new vessel from the template |
 | `tools/cecil/` | Scripts that read the game's compiled code (IL, callers, string literals, API dump) |
-| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), and `maps/`: the self-test map's ground |
+| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), RogueLab round 1's log of the stock modes, Tide table, artifacts, elites and enemies (`roguelab_round1.txt`), and `maps/`: the self-test map's ground |
 | `examples/` | The design and implementation notes of the three vessels built so far; `examples/code/` holds Argo's and Sprigg's modules the docs cite (damage hooks, tower firing, turret aim/recoil/spin, a generator with moving parts, unit orders and a crew picker, ranged vessel, leftovers, data survey, base-vessel art dump) |
 
 ## Definition of done (every vessel)

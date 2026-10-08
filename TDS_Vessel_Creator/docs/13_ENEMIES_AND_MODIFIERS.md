@@ -300,19 +300,29 @@ without a stock bespoke AI reads as a plain melee foe to them.
    each `Enemy_*`. Sprigg's research build already logs this (`examples/code/Sprigg_95_Research.cs`, `Enemies()`);
    its output may still be in `C:\Users\Dimitri\TDS_Mod\ModSource\Sprigg\Research\dump`. *From the code
    (2026-10-08):* enemy AIs hold behaviour and fixed constants only; every number is a stat and every tag comes from
-   `Beingobject.Entity.Tags` (no enemy AI adds tags). There is no Dagger or Spear AI. Still needs the PC: the data.
+   `Beingobject.Entity.Tags` (no enemy AI adds tags). There is no Dagger or Spear AI. *Answered on the PC (2026-10-08, RogueLab round 1):* the 8 stock foes' AIs,
+   visuals, stats, drops, tags and skins are in `reference/roguelab_round1.txt` (ENEMY lines); none has
+   `Upgradesinit`, every one carries the six elite skins.
 2. **Stock elite values**: `Display_Name`, `Display_Desc` and `Defaultparams` of the six `Enemy_*_Upgradeobject`s and
    `Effect_Enemy_Weakened_Upgradeobject`. *From the code (2026-10-08):* none of it is in code. Each AI reads
    `Defaultparams["X"]` bare (a missing key throws, so a reused stock AI needs every param it reads); the only
-   constants are Tempered's 5 checks and 5 s `Redblocked`, Melting's `Enemyweaken` base 100 and 2 s debuff. PC only.
+   constants are Tempered's 5 checks and 5 s `Redblocked`, Melting's `Enemyweaken` base 100 and 2 s debuff. *Answered
+   for five (RogueLab round 1, ELITE lines):* Hardened `Health_Multi` 3; Tempered `Aggrorange_Base` 5, damage and
+   health ×1; Superheated health and damage ×2, speed ×1.25; Fractured health ×14, damage, speed and attack speed ×9;
+   Annealed `Healtharmor_Base` 4, `Healtharmor_Perhealth` 10. Explode and Weakened are not in Mode_Normal's group:
+   still open (another mode's or a map's group).
 3. **Tide tables**: for each mode, every `Waves` (Note, Wavetime, Wave) and `Wavecontent` (enemy, count, interval,
-   style, gate, upgrades); and confirm that two maps in one mode play the same table.
+   style, gate, upgrades); and confirm that two maps in one mode play the same table. *Mode_Normal answered*
+   (RogueLab round 1, TIDE lines: 60 entries, 30 Tides, 180 s each, 30 s breaks); the other modes are still open.
 4. **When the enemies are loaded**: which Addressables group holds `Enemy_Dagger` (search `Bl_Address.Loadedfolders`
    for the `Loadlist` whose `Items` has it) and whether it is loaded at boot or only in a match. That decides when a
    mod can clone a template enemy on every machine. *From the code (2026-10-08):* boot loads the groups named in
    `Database.Init` (`Bla_Addressables.cs:25-31`, data); a match loads `General_Default`, each hero's, artifact's, map's
    and mode's groups; nothing is ever unloaded. `Getload("Mob", name)` is null until its group loads. PC: log the
    `Init` names and `Bl_Address.Groups["Mob"]` (group and item names) at mod load and in a match (`15` §11 step 9).
+   *Answered (RogueLab round 1):* boot loads `General_Init` and `General_Ambientinit` (sounds and effects only); every
+   stock enemy is in the **mode's** group (`Mode_Normal`: Dagger, Spear, Aegis, Ballista, Excalibur, Maul, Onager,
+   Claymore), which a mod can load at boot with `Bl_Address.Load` (3.5 s).
 5. **Enemy art format**: sheet and frame size, PPU, animation names, and the elite skins' recolours (port
    `Sprigg_97_ArtDump.cs` to dump `Enemy_Dagger`'s sprite object and skins).
 6. **Journal**: whether the base journal has enemy pages a new enemy should join (`Logitems.TextImageBeing`, `Stats`
