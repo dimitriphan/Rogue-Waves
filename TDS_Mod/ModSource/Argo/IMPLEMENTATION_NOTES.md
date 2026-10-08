@@ -68,7 +68,7 @@ passed. Then the playable build (no defines, v0.1.0-dev) was built, boot-checked
 (every vessel logged its icons; 18 NullReferenceExceptions in the game's own ambient-sound teardown at close, no mod
 frame) and left **installed and enabled** for hand play. No zip, no publish.
 
-**Deep Water's bob (2026-10-08, after round 5): compiled here, not yet built or seen in game.** The water and what
+**Deep Water's bob (2026-10-08, after round 5; verified in round 6).** The water and what
 floats on it are a `Swell` part of every `Trap_Argowater*` model and of `Argo_Pool` (the frame and pump stay still;
 `ArgoModels.Swell`). `ArgoClient.Bob` raises and lowers it by ±0.012 over 3.2 s, phased by the tile so a row of pools
 rolls like one swell; parts are found again after an upgrade rebuilds the visual. The self-test checks it ("Deep
@@ -77,6 +77,16 @@ Water's water bobs gently"). The model preview at rest matches the old one.
 **Round 5's captures reviewed (2026-10-08, `Previews/round5/REVIEW.md`).** Everything reads as designed except Deep
 Water's 3D views in the journal and on the boat, where the flat pool is a line. The journal now gets a tipped
 two-sided copy (`ArgoAssets.JournalModel`): compiled, not yet seen. The boat's view is the game's and stays.
+
+**PC round 6 (2026-10-08): 139 pass, 0 fail, 0 setup** (handoff `Argo_round6`, a7f2322). The generator rebuilt every
+Deep Water model with its `Swell` part, and "Deep Water's water bobs gently" passed (rose and fell 0.0182, amplitude
+0.012). No mod exceptions. Then the playable build (no defines) was rebuilt and boot-checked with Crackpot, Mummer,
+Rustle, Sprigg (every vessel's icons line, 0 exception lines) and left **installed and enabled**. The journal's tipped
+Deep Water is in the round 6 captures on the PC (`selftest_logs\Argo_round6_shots`), not yet looked at here.
+
+**Argo 2.0 stands here (Phase 3 done).** Dimitri, 2026-10-08: Argo ships only inside the full `RogueWavesMod` pack (no
+ArgoMod 2.0 zip), and its balance waits for a later pass of his. Lessons went to kit `docs/09` #72-76 and `docs/03`
+§4a. Left for the pack: Argo's prefab joins `RogueWavesMod` (`docs/PACK.md`), and hand-play balance.
 
 SONAR's 1.4.0 code stays in the source, switched off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.

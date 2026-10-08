@@ -184,12 +184,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3; PC rounds 1-5, round 5 **138 pass, 0 fail** with
-  captures; the playable Argo 2.0 (v0.1.0-dev) is installed and enabled on the PC (`Argo/IMPLEMENTATION_NOTES.md`).
-- **Next:** thread "Argo, continued" (from `handoff/Argo_next.md`, branch `claude/project-thread-f7fmvc`, draft PR #7
-  into #3's branch): Deep Water's bob and its journal view fix are compiled, not yet in game; round 5's captures are
-  reviewed (`Argo/Previews/round5/REVIEW.md`). Then PC round 6 for both, step 5 (lessons, notes; no zip).
-- **Blocked:** round 6 (bob, journal view) waits on Dimitri's typed OK; balance waits on him (later).
+- **Done:** Phases 1 and 2 (2026-10-08). **Phase 3 Argo** (2026-10-08): steps 1-5; PC round 6 **139 pass, 0 fail**,
+  Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) is installed on the PC; lessons in kit `docs/09` #72-76. Work
+  is on `claude/project-thread-f7fmvc` (draft PR #7 into #3's branch). No release: Argo ships in the pack.
+- **Next:** the coordinator's next phase in Part B. Left on Argo: a look at round 6's journal capture, his balance pass
+  (later, his call).
+- **Blocked:** nothing.
 
 ### Decisions
 
