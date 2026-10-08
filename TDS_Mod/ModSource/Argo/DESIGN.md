@@ -96,13 +96,29 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 - **1.4.0's "loaded guns"** (a gun inside a Drill's Tremor gains a pellet or pierce per Fathom) is dropped. The Tremor
   is now aimed at the foes, not at Argo's guns, so the rule would ask the player to aim it at their own towers.
 
-## Visual effects and sounds
+## Art (step 2, generated; previews in `Previews/2.0/`)
 
-- Debuff looks: `Debuff_ArgoPinned` (a harpoon line to the foe), `Debuff_ArgoSlowed` (wet
-  drip, Deep Water and Tremor).
-- World effects: `World_Argo_Tremor` (dust ring drawn at the server's real radius), `World_Argo_Quake`,
-  `World_Argo_Reel` (line from gun to foe), `World_Argo_Charge`, `World_Argo_Flood` (a splash when a pool is added).
-- Sounds, quiet (`docs/03` §6): scatter blast, harpoon twang, reel winch, pool splash, drill hum, quake rumble.
+Everything is drawn by the editor generators (`Assets/ArgoMod/Editor`), as in 1.4.0. The vessel, units, Scatter base,
+Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's look; only what 2.0 adds is new.
+
+- **Models** (`ArgoModels.cs`): `Trap_Argowater` and its seven upgrades (`_Undercurrent2`, `_Brine2`, `_Kelp3`,
+  `_Salt3`, `_Abyss4`, `_Crushing4`, `_Trench5`): a pool in a low stone frame filling the tile, 0.27 high, with a small
+  brass pump dome and porthole in the back corner (Argo's motif on the top face); the water darkens from Crushing
+  Depth. `Argo_Pool` is a FLOOD pool: frame and water, no pump. New upgrade models: Scatter `_Ironclad4` (armour
+  skirt and gun shield), Harpoon `_Tether2` (a teal line from drum to head), `_Reel3` (red winch wheels; Twin Line and
+  Undertow keep them), `_Undertow5` (dark body with teal bands and a grapnel head), Drill `_Bedrock3` (a stone collar
+  with teeth round the bore).
+- **Effects** (`ArgoBuilder.cs`): `World_Argo_Flood` (splash), `World_Argo_Wet` (drips on a foe slowed by Deep
+  Water), `World_Argo_Pinned` (rope bits round the feet), `World_Argo_Stun` (stars, Anchor Line beside a building),
+  `World_Argo_Whirl` (Undertow's ring, scaled to its radius), `World_Argo_Kelp`, `World_Argo_Brine`,
+  `World_Argo_Dragunder`, `World_Argo_Bedrock`, `World_Argo_Faultburst`. Slowed keeps the game's `Debuff_Slow` too,
+  as 1.4.0 does.
+- **Sounds** (`ArgoAudio.cs`): `Argo_Splash` (pool placed, FLOOD), `Argo_Pin`, `Argo_Gurgle` (Trench). Reels keep
+  `Argo_Winch`, quakes `Argo_Quake`. Volumes go in `02_Data.cs` `SoundVolume` with the code (start near
+  `Argo_Harpoon`'s 0.004).
+- **Icons** (`03_Assets.cs`, 12×12): `FloodIcon` (a drop and a plus) and `AimIcon` (crosshairs on a ring).
+- Kept unused until step 3 removes them with their code: SONAR's sheet, icon, ring, ping and sound; Barbed's bleed;
+  the 1.4.0 upgrade keys that 2.0 replaced (Undertow4, Barbed2, Aftershock3 models are no longer generated).
 
 ## Changes from the concept, and from 1.4.0
 

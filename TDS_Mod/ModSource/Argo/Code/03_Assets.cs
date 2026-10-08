@@ -257,6 +257,19 @@ public static class ArgoAssets
         "......b.....", ".b....b....b", ".bb...b...bb", "..bb..b..bb.", "...bbbbbbb..", "............"
     };
 
+    // 2.0: Deep Water's FLOOD (a drop and a plus) and the Drill Rig's AIM (crosshairs on the Tremor's ring).
+    public static readonly string[] FloodIcon =
+    {
+        "............", "....c....w..", "...ccc..www.", "..ccccc..w..", ".ccwcccc....", ".cwccccc....",
+        ".cwcccCC....", ".ccccCCC....", "..cCCCC.....", "...CCC......", "............", "............"
+    };
+
+    public static readonly string[] AimIcon =
+    {
+        "............", ".....r......", "...BBrBB....", "..B..r..B...", ".B...r...B..", ".rrrr.rrrr..",
+        ".B...r...B..", "..B..r..B...", "...BBrBB....", ".....r......", "............", "............"
+    };
+
     public static string[] IconFor(Color crew)
     {
         return CrewIcon(crew.r > 0.8f && crew.g > 0.6f ? 'y' : crew.g > crew.r ? 's' : 'r');

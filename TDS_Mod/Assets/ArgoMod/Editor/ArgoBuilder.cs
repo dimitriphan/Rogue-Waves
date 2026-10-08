@@ -85,7 +85,7 @@ namespace ArgoBuild
             var mat = new Material(Shader.Find("Universal Render Pipeline/Lit"));
             mat.SetTexture("_BaseMap", pal);
             mat.SetFloat("_Smoothness", 0.05f);
-            foreach (var g in new[] { "Scatter", "Harpoon", "Bell", "Drill", "Extras", "Projectiles" })
+            foreach (var g in new[] { "Scatter", "Harpoon", "Bell", "Drill", "Water", "Extras", "Projectiles" })
             {
                 var defs = ArgoModels.All().Where(d => d.Group == g).ToList();
                 var go = new List<GameObject>();
@@ -458,6 +458,17 @@ namespace ArgoBuild
                 new VfxSpec { Name = "World_Hero_Argo_Death", Use = "Vessel death", Tex = "Px_Bubble", A = H("DFF5FA"), B = H("F2CF7A"), Burst = 30, Speed0 = 1f, Speed1 = 2.2f, Gravity = -0.2f, Life0 = 0.9f, Life1 = 1.5f, Size0 = 0.07f, Size1 = 0.13f, Hemisphere = true },
                 new VfxSpec { Name = "World_Argo_Tunespark", Use = "A Naut starts tuning or repairs a tower", Tex = "Px_Spark", A = H("FFF6C8"), B = H("F2CF7A"), Burst = 9, Speed0 = 0.6f, Speed1 = 1.3f, Gravity = 0.8f, Life0 = 0.25f, Life1 = 0.45f, Size0 = 0.04f, Size1 = 0.07f, Hemisphere = true },
                 new VfxSpec { Name = "World_Argo_Tuned", Use = "Looping sparks on a tower a Naut is tuning", Tex = "Px_Spark", A = H("FFE07A"), B = H("7AE6EF"), Burst = 0, Rate = 3f, Loop = true, Speed0 = 0.2f, Speed1 = 0.45f, Gravity = -0.1f, Life0 = 0.5f, Life1 = 0.8f, Size0 = 0.04f, Size1 = 0.06f, Radius = 0.22f },
+                // 2.0: Deep Water, pins, the reel path and the Drill Rig's new upgrades
+                new VfxSpec { Name = "World_Argo_Flood", Use = "FLOOD adds a pool; a Deep Water is placed", Tex = "Px_Drop", A = H("8FC6E0"), B = H("DFF5FA"), Burst = 28, Speed0 = 1f, Speed1 = 2f, Gravity = 1.4f, Life0 = 0.5f, Life1 = 0.8f, Size0 = 0.05f, Size1 = 0.09f, Radius = 0.3f, Hemisphere = true },
+                new VfxSpec { Name = "World_Argo_Wet", Use = "Looping drips on a foe slowed by Deep Water", Tex = "Px_Drop", A = H("8FC6E0"), B = H("5E9CC2"), Burst = 0, Rate = 4f, Loop = true, Speed0 = 0.05f, Speed1 = 0.1f, Gravity = 1f, Life0 = 0.3f, Life1 = 0.5f, Size0 = 0.03f, Size1 = 0.05f, Radius = 0.12f, Height = 0.5f },
+                new VfxSpec { Name = "World_Argo_Pinned", Use = "Looping rope bits round a pinned foe's feet", Tex = "Px_Square", A = H("D9C08A"), B = H("A47A4E"), Burst = 0, Rate = 10f, Loop = true, Speed0 = 0.02f, Speed1 = 0.05f, Life0 = 0.4f, Life1 = 0.6f, Size0 = 0.03f, Size1 = 0.05f, Radius = 0.22f, Edge = true },
+                new VfxSpec { Name = "World_Argo_Stun", Use = "Looping stars over a foe stunned beside a building (Anchor Line)", Tex = "Px_Spark", A = H("FFE07A"), B = H("FFF6C8"), Burst = 0, Rate = 5f, Loop = true, Speed0 = 0.02f, Speed1 = 0.05f, Life0 = 0.5f, Life1 = 0.7f, Size0 = 0.06f, Size1 = 0.08f, Radius = 0.15f, Edge = true },
+                new VfxSpec { Name = "World_Argo_Whirl", Use = "Undertow (Harpoon): the reel ring round the target (scaled to its radius)", Tex = "Px_Square", A = H("7AE6EF"), B = H("3A9C9A"), Burst = 50, Speed0 = -0.4f, Speed1 = -0.2f, Life0 = 0.6f, Life1 = 0.7f, Size0 = 0.05f, Size1 = 0.08f, Radius = 0.02f, Ring = true, Spin = true },
+                new VfxSpec { Name = "World_Argo_Kelp", Use = "Kelp Bed catches a foe", Tex = "Px_Square", A = H("5E8F4A"), B = H("3A8C50"), Burst = 12, Speed0 = 0.4f, Speed1 = 0.8f, Gravity = 0.5f, Life0 = 0.4f, Life1 = 0.6f, Size0 = 0.04f, Size1 = 0.07f, Radius = 0.12f, Hemisphere = true, Spin = true },
+                new VfxSpec { Name = "World_Argo_Brine", Use = "Brine stings a foe (damage tick)", Tex = "Px_Spark", A = H("F4F6F8"), B = H("DFF5FA"), Burst = 5, Speed0 = 0.3f, Speed1 = 0.6f, Gravity = 0.3f, Life0 = 0.25f, Life1 = 0.4f, Size0 = 0.03f, Size1 = 0.05f, Radius = 0.1f, Height = 0.3f },
+                new VfxSpec { Name = "World_Argo_Dragunder", Use = "Trench drags a foe under", Tex = "Px_Bubble", A = H("8FC6E0"), B = H("DFF5FA"), Burst = 20, Speed0 = 0.3f, Speed1 = 0.7f, Gravity = -0.4f, Life0 = 0.6f, Life1 = 1f, Size0 = 0.05f, Size1 = 0.09f, Radius = 0.2f },
+                new VfxSpec { Name = "World_Argo_Bedrock", Use = "Bedrock grinds a pinned foe in a Tremor (damage tick)", Tex = "Px_Square", A = H("8A7A5A"), B = H("64797F"), Burst = 6, Speed0 = 0.4f, Speed1 = 0.8f, Gravity = 1f, Life0 = 0.3f, Life1 = 0.5f, Size0 = 0.03f, Size1 = 0.05f, Radius = 0.1f, Hemisphere = true },
+                new VfxSpec { Name = "World_Argo_Faultburst", Use = "Fault Line: a foe reeled through a Tremor takes a burst", Tex = "Px_Square", A = H("D8C79A"), B = H("8A7A5A"), Burst = 26, Speed0 = 1.5f, Speed1 = 2.6f, Gravity = 1.5f, Life0 = 0.4f, Life1 = 0.7f, Size0 = 0.05f, Size1 = 0.09f, Radius = 0.1f, Hemisphere = true, Spin = true },
             };
             foreach (var s in specs)
             {
@@ -473,7 +484,7 @@ namespace ArgoBuild
                 main.startSize = new ParticleSystem.MinMaxCurve(s.Size0, s.Size1);
                 main.startColor = new ParticleSystem.MinMaxGradient(s.A, s.B);
                 main.gravityModifier = s.Gravity;
-                bool local = s.Ring || s.Edge || s.Name == "World_Argo_Ping" || s.Name == "World_Argo_Tuned";
+                bool local = s.Ring || s.Edge || s.Name == "World_Argo_Ping" || s.Name == "World_Argo_Tuned" || s.Name == "World_Argo_Wet";
                 main.simulationSpace = local ? ParticleSystemSimulationSpace.Local : ParticleSystemSimulationSpace.World;
                 if (s.Ring || s.Edge) main.scalingMode = ParticleSystemScalingMode.Hierarchy;
                 main.maxParticles = 128;
@@ -648,7 +659,7 @@ namespace ArgoBuild
                 for (int y = 0; y < tex.height; y++) for (int x = 0; x < tex.width; x++) px.C[y * tex.width + x] = data[(tex.height - 1 - y) * tex.width + x];
                 ArgoPreview.Save(dir, "sprite_" + s.Name, px, s.CellW);
             }
-            foreach (var g in new[] { "Scatter", "Harpoon", "Bell", "Drill", "Extras", "Projectiles" })
+            foreach (var g in new[] { "Scatter", "Harpoon", "Bell", "Drill", "Water", "Extras", "Projectiles" })
             {
                 var go = new List<GameObject>();
                 foreach (var d in ArgoModels.All().Where(d => d.Group == g))

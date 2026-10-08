@@ -2,7 +2,9 @@
 // like Sno Sno's and Buster's towers: a handful of clean solids per model, flat palette colours, readable silhouettes,
 // no voxels. Every Argo building stands on the same riveted stone-and-brass dock. Upgrades keep the silhouette and add
 // one clear feature. The Scatter Cannon and the Harpoon Tower keep their gun on a separate "Turret" part (the clients
-// swing it toward each shot); the Deep Drill's chuck is a "Spinner" part that turns while it bites.
+// swing it toward each shot); the Drill Rig's chuck is a "Spinner" part that turns while it bites. Deep Water (2.0) is
+// a walk-through pool in a stone frame with a small brass pump dome in its back corner; FLOOD pools are the frame and
+// water alone (Argo_Pool).
 // Units: 1 = one tile; y measured up from the ground; the front faces -z; a turret's barrel points down -z.
 using System;
 using System.Collections.Generic;
@@ -13,7 +15,7 @@ namespace ArgoBuild
     public class ModelDef
     {
         public string Name;
-        public string Group;            // Scatter, Harpoon, Bell, Drill, Extras, Projectiles
+        public string Group;            // Scatter, Harpoon, Bell, Drill, Water, Extras, Projectiles
         public bool Projectile;
         public Func<Lp> Build;
         public Func<Lp> Part;           // optional moving part, built in tower space
@@ -27,10 +29,11 @@ namespace ArgoBuild
         static Vector3 V(float x, float y, float z) { return new Vector3(x, y, z); }
         static Vector3 Dir(float deg, float y = 0f) { return new Vector3(Mathf.Cos(deg * Mathf.Deg2Rad), y, Mathf.Sin(deg * Mathf.Deg2Rad)); }
 
-        static readonly string[] ScatterKeys = { "", "_Widebore2", "_Double2", "_Grapeshot3", "_Barnacle3", "_Pressure4", "_Undertow4", "_Broadside5" };
-        static readonly string[] HarpoonKeys = { "", "_Longline2", "_Barbed2", "_Skewer3", "_Anchor3", "_Whaler4", "_Twinline4", "_Leviathan5" };
+        static readonly string[] ScatterKeys = { "", "_Widebore2", "_Double2", "_Grapeshot3", "_Barnacle3", "_Pressure4", "_Ironclad4", "_Broadside5" };
+        static readonly string[] HarpoonKeys = { "", "_Longline2", "_Tether2", "_Skewer3", "_Anchor3", "_Whaler4", "_Twinline4", "_Leviathan5", "_Reel3", "_Undertow5" };
         static readonly string[] BellKeys = { "", "_Flippers2", "_Salts2", "_Overhaul3", "_Calibrate3", "_Thirdmate4", "_Bulkhead4", "_Fullcrew5" };
-        static readonly string[] DrillKeys = { "", "_Paydirt2", "_Seismic2", "_Deepcore3", "_Aftershock3", "_Gusher4", "_Faultline4", "_Mantle5" };
+        static readonly string[] DrillKeys = { "", "_Paydirt2", "_Seismic2", "_Deepcore3", "_Bedrock3", "_Gusher4", "_Faultline4", "_Mantle5" };
+        static readonly string[] WaterKeys = { "", "_Undercurrent2", "_Brine2", "_Kelp3", "_Salt3", "_Abyss4", "_Crushing4", "_Trench5" };
 
         public static readonly Vector3 ScatterPivot = new Vector3(0f, 0.25f, 0f);
         public static readonly Vector3 HarpoonPivot = new Vector3(0f, 0.6f, 0f);
@@ -49,7 +52,7 @@ namespace ArgoBuild
                 int v = i;
                 l.Add(new ModelDef { Group = "Scatter", Name = "Tower_Argoscatter" + ScatterKeys[i], Build = () => ScatterBase(v), Part = () => ScatterTurret(v), PartName = "Turret", PartPivot = ScatterPivot, Scale = ScatterScale });
             }
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < HarpoonKeys.Length; i++)
             {
                 int v = i;
                 l.Add(new ModelDef { Group = "Harpoon", Name = "Tower_Argoharpoon" + HarpoonKeys[i], Build = () => HarpoonBase(v), Part = () => HarpoonTurret(v), PartName = "Turret", PartPivot = HarpoonPivot, Scale = HarpoonScale });
@@ -64,6 +67,12 @@ namespace ArgoBuild
                 int v = i;
                 l.Add(new ModelDef { Group = "Drill", Name = "Tower_Argodrill" + DrillKeys[i], Build = () => DrillBase(v), Part = () => DrillBit(v), PartName = "Spinner", PartPivot = DrillPivot, Scale = DrillScale });
             }
+            for (int i = 0; i < WaterKeys.Length; i++)
+            {
+                int v = i;
+                l.Add(new ModelDef { Group = "Water", Name = "Trap_Argowater" + WaterKeys[i], Build = () => Water(v, true) });
+            }
+            l.Add(new ModelDef { Group = "Water", Name = "Argo_Pool", Build = () => Water(0, false) });
             for (int f = 2; f <= 5; f++)
             {
                 int n = f;
@@ -111,6 +120,12 @@ namespace ArgoBuild
             m.Prism(V(0, Top, 0), r, r * 0.86f, 0.14f, 8, Pal.SteelMid, Pal.Steel, -1, 22.5f);
             m.Tube(V(0, Top + 0.12f, 0), V(0, Top + 0.15f, 0), r * 0.9f, r * 0.9f, 8, Pal.BrassMid, Pal.Brass, -1, 22.5f);
             if (v == 4) Barnacles(m, V(0, Top, 0), 0.21f, 9, 4);
+            if (v == 6)                                                                                // Ironclad: a riveted armour skirt
+            {
+                m.Prism(V(0, Top, 0), 0.235f, 0.215f, 0.11f, 8, Pal.SteelDark, Pal.SteelMid, -1, 22.5f);
+                for (int i = 0; i < 8; i++)
+                    m.Ball(Dir(i * 45f) * 0.228f + V(0, Top + 0.075f, 0), Vector3.one * 0.013f, 4, 2, Pal.Rivet);
+            }
             if (v == 5)
                 for (int s = -1; s <= 1; s += 2)
                     m.Stem(new[] { V(0.21f * s, Top, 0.1f), V(0.21f * s, Top + 0.08f, 0.1f), V(0.15f * s, Top + 0.12f, 0.07f) }, 0.02f, 0.02f, 6, Pal.Copper);
@@ -179,16 +194,12 @@ namespace ArgoBuild
                         m.Prism(V(0.14f * s, 0.425f, 0.06f), 0.025f, 0.025f, 0.012f, 8, Pal.Brass, Pal.White);
                     }
                     break;
-                case 6:                                                                                // Undertow
+                case 6:                                                                                // Ironclad: a riveted gun shield
                     ScatterBarrel(m, 0, 0.075f, 0.3f, 0.14f, 0.14f);
-                    m.Ball(V(0, 0.37f, 0.25f), V(0.035f, 0.035f, 0.035f), 6, 4, Pal.Brass);
-                    for (int i = 0; i < 3; i++)
-                    {
-                        float a = i * 120f + 15f;
-                        Vector3 tip = V(0, 0.37f, 0.255f) + new Vector3(Mathf.Cos(a * Mathf.Deg2Rad), Mathf.Sin(a * Mathf.Deg2Rad), 0) * 0.14f;
-                        m.Blade(V(0, 0.37f, 0.255f), tip, V(0, 0, 1), 0.06f, Pal.Brass, Pal.BrassDark);
-                    }
-                    m.Hoop(V(0, 0.37f, 0.23f), V(0, 0, 1), 0.15f, 0.01f, 0.025f, 12, Pal.SteelDark);
+                    m.Block(V(0, 0.27f, -0.03f), V(0.3f, 0.21f, 0.035f), 0.012f, Pal.SteelDark, Pal.SteelMid, Pal.Steel);
+                    for (int sx = -1; sx <= 1; sx += 2)
+                        for (int k = 0; k < 2; k++)
+                            m.Ball(V(0.12f * sx, 0.3f + k * 0.13f, -0.05f), Vector3.one * 0.012f, 4, 2, Pal.Rivet);
                     break;
                 case 7:                                                                                // Broadside
                     ScatterBarrel(m, 0, 0.085f, 0.32f, 0.2f, 0.16f);
@@ -215,7 +226,7 @@ namespace ArgoBuild
         {
             var m = new Lp();
             Dock(m, DockFor(HarpoonScale));
-            float leg = v == 5 || v == 7 ? 0.032f : 0.024f;
+            float leg = v == 5 || v == 7 || v == 9 ? 0.032f : 0.024f;
             for (int i = 0; i < 3; i++)
             {
                 Vector3 foot = Dir(90f + i * 120f) * 0.235f + V(0, Top, 0);
@@ -224,9 +235,9 @@ namespace ArgoBuild
             }
             m.Tube(V(0, Top, 0), V(0, 0.56f, 0), 0.04f, 0.035f, 8, Pal.SteelDark);
             m.Prism(V(0, 0.53f, 0), 0.075f, 0.065f, 0.07f, 8, Pal.Brass, Pal.BrassLight);
-            if (v == 7)
+            if (v == 7 || v == 9)
                 for (int k = 0; k < 3; k++)
-                    m.Hoop(V(0, 0.18f + k * 0.09f, 0), V(0, 1, 0), 0.04f, 0.012f, 0.025f, 8, Pal.Glow);
+                    m.Hoop(V(0, 0.18f + k * 0.09f, 0), V(0, 1, 0), 0.04f, 0.012f, 0.025f, 8, v == 9 ? Pal.Teal : Pal.Glow);
             if (v == 4)
             {
                 // the anchor hangs off the tripod
@@ -258,18 +269,38 @@ namespace ArgoBuild
             m.Push(V(0, 0.08f, 0));   // the gun rides 0.08 higher on the taller tripod
             // Barrel lengths keep the tip about 0.55-0.65 tiles from the centre once scaled (like the Scatter Cannon's
             // muzzle), so the gun stays near its own tile as it turns and the tip sits where the shot leaves.
-            float y = 0.6f, len = v == 1 ? 0.36f : v == 5 ? 0.31f : v == 7 ? 0.24f : 0.28f;
-            float bodyW = v == 5 ? 0.16f : v == 7 ? 0.17f : 0.12f, bodyH = v == 5 || v == 7 ? 0.13f : 0.1f;
-            int bodyCol = v == 7 ? Pal.Brass : Pal.SteelMid, bodyTop = v == 7 ? Pal.BrassLight : Pal.Steel;
+            float y = 0.6f, len = v == 1 ? 0.36f : v == 5 ? 0.31f : v == 7 ? 0.24f : v == 9 ? 0.26f : 0.28f;
+            float bodyW = v == 5 ? 0.16f : v == 7 || v == 9 ? 0.17f : 0.12f, bodyH = v == 5 || v == 7 || v == 9 ? 0.13f : 0.1f;
+            int bodyCol = v == 7 ? Pal.Brass : v == 9 ? Pal.SteelDark : Pal.SteelMid, bodyTop = v == 7 ? Pal.BrassLight : Pal.Steel;
+            bool crank = v == 6 || v == 8 || v == 9;   // the reel path (Reel, Twin Line, Undertow) carries the winch
             m.Block(V(0, 0.52f, 0.03f), V(bodyW, bodyH, 0.26f), 0.025f, bodyCol, bodyTop);
             // rope drum behind the gun
-            float drum = v == 1 ? 0.075f : 0.06f;
-            m.Tube(V(-0.09f, 0.56f, 0.15f), V(0.09f, 0.56f, 0.15f), drum, drum, 10, Pal.Rope, Pal.Wood, Pal.Wood);
-            m.Hoop(V(0, 0.56f, 0.15f), V(1, 0, 0), drum, 0.006f, 0.15f, 10, Pal.RopeDark);
+            float drum = v == 1 ? 0.075f : crank ? 0.08f : 0.06f;
+            int rope = v == 2 || v == 9 ? Pal.Teal : Pal.Rope, ropeDark = v == 2 || v == 9 ? Pal.TealDark : Pal.RopeDark;
+            m.Tube(V(-0.09f, 0.56f, 0.15f), V(0.09f, 0.56f, 0.15f), drum, drum, 10, rope, Pal.Wood, Pal.Wood);
+            m.Hoop(V(0, 0.56f, 0.15f), V(1, 0, 0), drum, 0.006f, 0.15f, 10, ropeDark);
+            if (crank)
+            {
+                // the winch: a spoked red wheel on each end of the drum, one with a handle
+                for (int sx = -1; sx <= 1; sx += 2)
+                {
+                    Vector3 hub = V(0.11f * sx, 0.56f, 0.15f);
+                    m.Hoop(hub, V(1, 0, 0), 0.095f, 0.014f, 0.02f, 12, Pal.Red);
+                    for (int k = 0; k < 3; k++)
+                    {
+                        float a = k * 60f * Mathf.Deg2Rad;
+                        Vector3 d = new Vector3(0f, Mathf.Sin(a), Mathf.Cos(a)) * 0.09f;
+                        m.Tube(hub - d, hub + d, 0.007f, 0.007f, 4, Pal.RedDark);
+                    }
+                    m.Ball(hub, Vector3.one * 0.022f, 6, 3, Pal.BrassLight);
+                    if (sx > 0)
+                        m.Stem(new[] { hub + V(0, 0.08f, -0.04f), hub + V(0.05f, 0.08f, -0.04f) }, 0.011f, 0.011f, 6, Pal.Brass);
+                }
+            }
             // stock grips
             for (int s = -1; s <= 1; s += 2)
                 m.Stem(new[] { V(0.04f * s, 0.55f, 0.13f), V(0.06f * s, 0.5f, 0.24f) }, 0.014f, 0.012f, 6, Pal.Wood);
-            float br = v == 5 ? 0.05f : v == 7 ? 0.06f : 0.035f;
+            float br = v == 5 ? 0.05f : v == 7 ? 0.06f : v == 9 ? 0.045f : 0.035f;
             float[] barrels = v == 6 ? new[] { -0.045f, 0.045f } : new[] { 0f };
             foreach (float bx in barrels)
             {
@@ -287,19 +318,37 @@ namespace ArgoBuild
                     for (int k = 0; k < 3; k++)
                         m.Hoop(V(bx, y + 0.005f, -0.11f - k * 0.055f), V(0, 0.02f, 1), br, 0.012f, 0.025f, 10, Pal.Glow);
                 }
+                else if (v == 9)
+                {
+                    // Undertow: a grapnel, four hooks curling back around a central spike
+                    m.Spike(V(bx, y + 0.01f, -len), V(0, 0, -1), 0.03f, 0.08f, Pal.SteelLight, 6);
+                    for (int k = 0; k < 4; k++)
+                    {
+                        float a = (k * 90f + 45f) * Mathf.Deg2Rad;
+                        Vector3 side = new Vector3(Mathf.Cos(a), Mathf.Sin(a), 0f);
+                        Vector3 root = V(bx, y + 0.01f, -len - 0.02f);
+                        m.Stem(new[] { root, root + side * 0.06f + V(0, 0, -0.03f), root + side * 0.075f + V(0, 0, 0.02f) }, 0.01f, 0.008f, 5, Pal.SteelLight);
+                        m.Spike(root + side * 0.075f + V(0, 0, 0.02f), side * -0.4f + V(0, 0, 1), 0.01f, 0.03f, Pal.SteelLight, 4);
+                    }
+                    for (int k = 0; k < 2; k++)
+                        m.Hoop(V(bx, y + 0.005f, -0.12f - k * 0.07f), V(0, 0.02f, 1), br, 0.012f, 0.025f, 10, Pal.Teal);
+                }
                 else
-                    Harpoonhead(m, bx, -len, y + 0.01f, v == 5 ? 0.045f : 0.032f, v == 2 ? 4 : 2);
+                    Harpoonhead(m, bx, -len, y + 0.01f, v == 5 ? 0.045f : 0.032f, 2);
             }
+            if (v == 2)
+                // Tether: a teal line runs from the drum over the gun to the harpoon's head
+                m.Stem(new[] { V(0.03f, 0.63f, 0.13f), V(0.06f, 0.67f, 0.0f), V(0.065f, 0.665f, -0.15f), V(0.04f, y + 0.035f, -len + 0.03f) }, 0.009f, 0.009f, 5, Pal.Teal);
             if (v == 1)
                 m.Tube(V(0, y + 0.065f, 0.02f), V(0, y + 0.065f, -0.16f), 0.02f, 0.02f, 8, Pal.Brass, Pal.Glass, Pal.Glass);
-            if (v == 5 || v == 7)
+            if (v == 5 || v == 7 || v == 9)
                 for (int k = 0; k < 2; k++)
-                    m.Hoop(V(0, 0.57f, -0.02f + k * 0.12f), V(0, 0, 1), bodyW * 0.62f, 0.01f, 0.03f, 8, Pal.BrassDark);
+                    m.Hoop(V(0, 0.57f, -0.02f + k * 0.12f), V(0, 0, 1), bodyW * 0.62f, 0.01f, 0.03f, 8, v == 9 ? Pal.Teal : Pal.BrassDark);
             m.Pop();
             return m;
         }
 
-        // ---------------------------------------------------------------- Diving Bell
+        // ---------------------------------------------------------------- Miner's Base (1.4.0's Diving Bell, same model)
 
         static Lp Bell(int v)
         {
@@ -382,7 +431,7 @@ namespace ArgoBuild
             m.Ball(at + V(0, 0.16f, 0), Vector3.one * 0.03f, 8, 4, col, Pal.LampLight, 0.8f);
         }
 
-        // ---------------------------------------------------------------- Deep Drill
+        // ---------------------------------------------------------------- Drill Rig (1.4.0's Deep Drill)
 
         static Lp DrillBase(int v)
         {
@@ -436,10 +485,13 @@ namespace ArgoBuild
                     for (int k = 0; k < 4; k++)
                         m.Hoop(V(0, 0.28f + k * 0.15f, 0), V(0, 1, 0), 0.024f, 0.012f, 0.03f, 8, Pal.Glow);
                     break;
-                case 4:                                                                                 // Aftershock: sprung legs
-                    for (int i = 0; i < 4; i++)
-                        for (int k = 0; k < 4; k++)
-                            m.Hoop(Vector3.Lerp(feet[i], tops[i], 0.08f + k * 0.04f), V(0, 1, 0), 0.026f, 0.008f, 0.012f, 6, Pal.Yellow);
+                case 4:                                                                                 // Bedrock: a dark stone collar with teeth around the bore
+                    m.Prism(V(0, Top, 0), 0.17f, 0.15f, 0.07f, 8, Pal.StoneDeep, Pal.StoneDark, -1, 22.5f);
+                    for (int i = 0; i < 8; i++)
+                    {
+                        Vector3 d = Dir(i * 45f + 22.5f);
+                        m.Spike(d * 0.14f + V(0, Top + 0.065f, 0), d * -0.5f + V(0, 1, 0), 0.03f, 0.11f, i % 2 == 0 ? Pal.Sand : Pal.StoneLight, 4);
+                    }
                     break;
                 case 5:                                                                                 // Gusher: a spout throwing up ore
                     m.Stem(new[] { V(-0.1f, Top, -0.12f), V(-0.2f, 0.35f, -0.2f), V(-0.24f, 0.52f, -0.14f) }, 0.03f, 0.025f, 8, Pal.SteelMid);
@@ -477,6 +529,119 @@ namespace ArgoBuild
             }
             m.Hoop(V(0, 0.17f, 0), V(0, 1, 0), r * 0.7f, 0.01f, 0.02f, 6, Pal.BrassDark);
             return m;
+        }
+
+        // ---------------------------------------------------------------- Deep Water (trap, walk-through)
+
+        // A pool in a low stone frame filling the tile (the trap template's footprint), flush enough to walk through. The
+        // trap itself has a small brass pump dome with a porthole in its back-right corner (Argo's motif, on the top face);
+        // FLOOD pools (pump = false) are the frame and water alone. Upgrades add one feature each; the water darkens from
+        // Crushing Depth on.
+        static Lp Water(int v, bool pump)
+        {
+            var m = new Lp();
+            const float half = 0.4f, rim = 0.07f, rimH = 0.075f, surf = 0.055f;
+            float inner = half - rim;
+            m.Block(V(0, 0, -half + rim / 2f), V(half * 2f, rimH, rim), 0.02f, Pal.StoneMid, Pal.Stone);
+            m.Block(V(0, 0, half - rim / 2f), V(half * 2f, rimH, rim), 0.02f, Pal.StoneMid, Pal.Stone);
+            m.Block(V(-half + rim / 2f, 0, 0), V(rim, rimH, inner * 2f), 0.02f, Pal.StoneMid, Pal.Stone);
+            m.Block(V(half - rim / 2f, 0, 0), V(rim, rimH, inner * 2f), 0.02f, Pal.StoneMid, Pal.Stone);
+            int water = v == 7 ? Pal.SeaDeep : v == 6 ? Pal.SeaDark : Pal.Sea, waterSide = v >= 6 ? Pal.SeaDeep : Pal.SeaMid;
+            m.Block(V(0, 0, 0), V(inner * 2f + 0.01f, surf, inner * 2f + 0.01f), 0.005f, waterSide, water);
+            m.Disc(V(-0.12f, surf + 0.002f, -0.1f), 0.1f, 10, v >= 6 ? Pal.SeaMid : Pal.SeaLight, 0.002f);
+            m.Ball(V(0.1f, surf, -0.16f), V(0.022f, 0.01f, 0.022f), 6, 2, Pal.Bubble);
+            m.Ball(V(0.15f, surf, -0.12f), V(0.014f, 0.008f, 0.014f), 6, 2, Pal.Bubble);
+            int cap = v == 7 ? Pal.Gold : Pal.BrassMid, capTop = v == 7 ? Pal.LampLight : Pal.Brass;
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 c = V(i % 2 == 0 ? -half + rim / 2f : half - rim / 2f, rimH, i < 2 ? -half + rim / 2f : half - rim / 2f);
+                m.Prism(c, 0.045f, 0.04f, 0.018f, 8, cap, capTop, -1, 22.5f);
+            }
+            if (pump)
+            {
+                Vector3 p = V(0.27f, rimH, 0.27f);
+                m.Prism(p, 0.1f, 0.095f, 0.04f, 10, Pal.BrassMid, Pal.Brass);
+                m.Dome(p + V(0, 0.04f, 0), V(0.085f, 0.11f, 0.085f), 10, 3, Pal.Brass, Pal.BrassLight, 0.7f);
+                m.Porthole(p + V(0, 0.085f, -0.075f), V(0, 0.2f, -1), 0.028f, Pal.Glass, Pal.BrassDark);
+                m.Tube(p + V(0, 0.15f, 0), p + V(0, 0.18f, 0), 0.012f, 0.012f, 6, Pal.SteelDark);
+                m.Hoop(p + V(0, 0.185f, 0), V(0, 1, 0), 0.035f, 0.008f, 0.01f, 10, Pal.Red);
+                m.Tube(p + V(-0.035f, 0.185f, 0), p + V(0.035f, 0.185f, 0), 0.005f, 0.005f, 4, Pal.RedDark);
+                // outflow spout into the pool
+                m.Stem(new[] { p + V(-0.07f, 0.05f, -0.03f), p + V(-0.12f, 0.05f, -0.06f), p + V(-0.14f, 0.0f, -0.08f) }, 0.016f, 0.016f, 6, Pal.Copper);
+            }
+            switch (v)
+            {
+                case 1:                                                                                 // Undercurrent: two swirling streaks
+                    for (int k = 0; k < 2; k++)
+                    {
+                        var pts = new List<Vector3>();
+                        for (int j = 0; j <= 6; j++)
+                        {
+                            float a = (k * 180f + j * 30f) * Mathf.Deg2Rad, r = 0.08f + j * 0.025f;
+                            pts.Add(V(Mathf.Cos(a) * r - 0.04f, surf + 0.004f, Mathf.Sin(a) * r - 0.04f));
+                        }
+                        m.Stem(pts, 0.012f, 0.006f, 4, Pal.SeaLight);
+                    }
+                    break;
+                case 2:                                                                                 // Brine: salt crusts on the rim
+                    Salt(m, V(-0.3f, rimH, -0.36f), 5, 21, false);
+                    Salt(m, V(0.36f, rimH, -0.1f), 4, 22, false);
+                    Salt(m, V(-0.36f, rimH, 0.18f), 4, 23, false);
+                    break;
+                case 3:                                                                                 // Kelp Bed: fronds rise from the water
+                    foreach (var k in new[] { V(-0.2f, surf, -0.05f), V(-0.05f, surf, 0.15f), V(0.12f, surf, -0.08f), V(-0.17f, surf, 0.2f) })
+                    {
+                        m.Blade(k, k + V(0.03f, 0.2f, -0.02f), V(1, 0, 0), 0.05f, Pal.Kelp, Pal.GreenDark);
+                        m.Blade(k + V(0.02f, 0, 0.02f), k + V(-0.04f, 0.15f, 0.03f), V(0, 0, 1), 0.04f, Pal.Kelp, Pal.GreenDark);
+                    }
+                    break;
+                case 4:                                                                                 // Salt Sting: crystal spikes along the front
+                    for (int i = 0; i < 6; i++)
+                        Salt(m, V(-0.3f + i * 0.12f, rimH, -0.365f), 3, 30 + i, true);
+                    break;
+                case 5:                                                                                 // Abyss: a second pump spout on the front
+                    if (pump)
+                    {
+                        m.Stem(new[] { V(0.27f, rimH + 0.05f, 0.2f), V(0.36f, rimH + 0.08f, 0f), V(0.36f, rimH + 0.08f, -0.25f), V(0.3f, rimH + 0.03f, -0.3f) }, 0.018f, 0.018f, 6, Pal.Copper);
+                        m.Tube(V(0.3f, rimH + 0.03f, -0.3f), V(0.27f, rimH - 0.01f, -0.27f), 0.018f, 0.03f, 8, Pal.Brass, Pal.Ink);
+                    }
+                    m.Hoop(V(0f, surf + 0.003f, 0f), V(0, 1, 0), 0.18f, 0.004f, 0.02f, 16, Pal.SeaLight);
+                    break;
+                case 6:                                                                                 // Crushing Depth: dark water and a pressure gauge
+                    if (pump)
+                    {
+                        Vector3 g = V(0.16f, rimH + 0.14f, 0.27f);
+                        m.Tube(V(0.2f, rimH + 0.06f, 0.27f), g + V(0.02f, -0.03f, 0), 0.008f, 0.008f, 4, Pal.SteelDark);
+                        m.Tube(g + V(0, 0, 0.015f), g + V(0, 0, -0.02f), 0.04f, 0.04f, 12, Pal.Brass, Pal.White, Pal.Brass);
+                        m.Spike(g + V(0, 0, -0.022f), V(0.7f, 0.7f, 0), 0.006f, 0.03f, Pal.Red);
+                    }
+                    for (int i = 0; i < 4; i++)
+                        m.Ball(V(-0.15f + i * 0.09f, surf, 0.05f - (i % 2) * 0.12f), V(0.016f, 0.008f, 0.016f), 6, 2, Pal.SeaLight);
+                    break;
+                case 7:                                                                                 // Trench: a whirlpool in the deep water
+                    for (int k = 0; k < 3; k++)
+                        m.Hoop(V(-0.03f, surf + 0.003f, -0.03f), V(0, 1, 0), 0.07f + k * 0.075f, 0.004f, 0.018f, 16, k == 0 ? Pal.Teal : Pal.SeaMid);
+                    m.Disc(V(-0.03f, surf + 0.004f, -0.03f), 0.05f, 10, Pal.Ink, 0.002f);
+                    m.Blade(V(-0.25f, surf, 0.2f), V(-0.22f, surf + 0.2f, 0.18f), V(1, 0, 0), 0.05f, Pal.Kelp, Pal.GreenDark);
+                    m.Blade(V(0.2f, surf, -0.24f), V(0.24f, surf + 0.16f, -0.26f), V(1, 0, 0), 0.045f, Pal.Kelp, Pal.GreenDark);
+                    break;
+            }
+            return m;
+        }
+
+        // A cluster of salt crystals: squat white prisms, or sharper spikes for Salt Sting.
+        static void Salt(Lp m, Vector3 c, int n, int seed, bool sharp)
+        {
+            var rng = new System.Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                Vector3 p = c + V(((float)rng.NextDouble() - 0.5f) * 0.07f, 0, ((float)rng.NextDouble() - 0.5f) * 0.04f);
+                float r = 0.012f + (float)rng.NextDouble() * 0.01f;
+                if (sharp)
+                    m.Spike(p, V(((float)rng.NextDouble() - 0.5f) * 0.6f, 1, ((float)rng.NextDouble() - 0.5f) * 0.4f), r * 1.2f, 0.05f + (float)rng.NextDouble() * 0.04f, i % 2 == 0 ? Pal.White : Pal.Bubble, 4);
+                else
+                    m.Prism(p, r * 1.3f, r, r * 1.6f, 4, Pal.White, Pal.Bubble, -1, (float)rng.NextDouble() * 90f);
+            }
         }
 
         // ---------------------------------------------------------------- Fathom overlays (added to the drill per Fathom)

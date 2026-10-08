@@ -1,5 +1,12 @@
 # Argo implementation notes (v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2.0 for Rogue Waves (in progress, 2026-10-08).** Design approved (`DESIGN.md`). Step 2, art: the generators make
+Deep Water, the FLOOD pool and 2.0's new upgrade models, effects, sounds and two icons (`DESIGN.md` "Art"). Checked
+here only: the mod and editor code compile (`check_mod.py`, `check_editor.sh`) and `lite/run_preview.sh` renders every
+model and sound (`Previews/2.0/`). Not built in Unity or seen in game. Until step 3, the 1.4.0 code still names the
+upgrade models 2.0 dropped (Scatter Undertow4, Harpoon Barbed2, Drill Aftershock3): build and test only after step 3.
+Everything below is 1.4.0.
+
 **1.4.0 (identity pass): ninth PC self-test 103 pass, 0 fail (2026-10-05); released and installed on the PC the same
 day with Crackpot 1.1.0, Rustle 1.1.0, Mummer 1.5.0, Sprigg 1.7.0 and Riptide 0.2.1 (boot clean, no mod exceptions).
 Not yet hand-played.** The design and the why are in `DESIGN.md` ("Changes in 1.4.0").

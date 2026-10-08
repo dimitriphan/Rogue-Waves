@@ -38,6 +38,9 @@ namespace ArgoBuild
                 new Sfx { Name = "Argo_Upgrade", Use = "Upgrade applied (on top of the game's own)", Make = Upgrade },
                 new Sfx { Name = "Argo_Build", Use = "A building is placed", Make = Build },
                 new Sfx { Name = "Argo_Winch", Use = "A harpoon reels its foe in; Double Barrel loads", Make = Winch },
+                new Sfx { Name = "Argo_Splash", Use = "Deep Water placed, FLOOD adds a pool", Make = Splash },
+                new Sfx { Name = "Argo_Pin", Use = "Anchor Line pins a foe (a stun beside a building rings brighter)", Make = Pin },
+                new Sfx { Name = "Argo_Gurgle", Use = "Trench drags a foe under", Make = Gurgle },
             };
         }
 
@@ -258,6 +261,33 @@ namespace ArgoBuild
         }
 
         // ---------------------------------------------------------------- WAV writer
+
+        // 2.0 (Deep Water, Anchor Line, Trench)
+        static float[] Splash()
+        {
+            var b = Buf(0.6f);
+            Hiss(b, 0f, 0.5f, 0.6f, 0.005f, 0.12f, 3500f, 700f, 250f);
+            Tone(b, 0f, 0.15f, 320f, 140f, 0.25f, 0.002f, 0.05f);
+            Bubbles(b, 0.08f, 0.45f, 7, 0.25f);
+            return Normalize(b, 0.7f);
+        }
+
+        static float[] Pin()
+        {
+            var b = Buf(0.45f);
+            Tone(b, 0f, 0.1f, 140f, 70f, 0.7f, 0.001f, 0.04f);
+            Tone(b, 0.01f, 0.4f, 620f, 600f, 0.3f, 0.002f, 0.12f, 0.4f, 0.2f);
+            Hiss(b, 0f, 0.06f, 0.3f, 0.001f, 0.02f, 6000f, 2500f, 400f);
+            return Normalize(b, 0.65f);
+        }
+
+        static float[] Gurgle()
+        {
+            var b = Buf(0.9f);
+            Tone(b, 0f, 0.8f, 160f, 60f, 0.4f, 0.05f, 0.3f);
+            Bubbles(b, 0f, 0.8f, 12, 0.35f);
+            return Normalize(b, 0.6f);
+        }
 
         public static void SaveWav(string path, float[] samples)
         {
