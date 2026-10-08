@@ -54,8 +54,7 @@ Close the scope's blanks with the user before anything is researched. Reads: `do
 
 Opening prompt:
 > Read `docs/SCOPE_v0.txt`. List every term it uses that the kit does not define and every item with no body
-> (candidates: Cardinals, Streamlined Economy Changes, Uloe's unnamed Defense building, which Argo is the baseline for
-> the rework, how many Directions a run offers, whether ascension persists across sessions). Write them to
+> (done 2026-10-08; see Part C Decisions). Write them to
 > `docs/PLAN.md` Part C "Open questions" with the default you would take for each. Ask the user once, in one message.
 
 Gate: every open question has an answer or an accepted default.
@@ -75,8 +74,9 @@ Opening prompt:
 > 1. Can a mod add a mode entry and a server mode script (`Mode_Base` subclass or a `Mode_Normal` wrapper), and have the
 >    host carry state (Pure Aura per player, chosen Directions, ascension) across three consecutive maps? What is the
 >    cheapest fallback if not (three matches with state kept by the host mod, or in the save)?
-> 2. How does the base game's shopkeeper (`Merchut`, bounties) and its Cardinal/Artifact system work, and can a mod add
->    shop items, bounties, Cardinals and Artifacts the same way the base game does?
+> 2. How does the base game's shopkeeper (`Merchut`, bounties) work, and how are Cardinals (the run-modifier effects:
+>    `Map_Cardinalconditions`, `Artifactentryobject`, `Game_Artifacts`) chosen and applied? Can a mod add shop items,
+>    bounties and Cardinals the same way the base game does? Scoring is out of scope: the mode does not count score.
 > 3. How are choices shown on every client (Direction pick, map vote, "leave or stay" between tides): is there a
 >    menu or command UI a mod can reuse (`Entity_Command_Itemselect_Base`, `Bl_Menus`), with the host as the authority?
 > 4. What may a mod write to the save without breaking it (`Bl_Save`, `Unlock_*`), for ascension and unlocks?
@@ -102,8 +102,8 @@ Gate: packaging and style approved; kit 1.6 scope listed.
 
 ### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds)
 
-Order and reason: **Argo** rework first (code and tests exist in `ModProjects`; the rework is the cheapest way to shake
-out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
+Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
+way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
 `docs/12`, and Mummer's Thread code is the nearest prior art), then **Uloe** (light levels are new engine territory:
 check feasibility of "light received" as a stat before designing the rest).
 
@@ -119,8 +119,8 @@ Each vessel runs the kit's loop; the reading list is `CLAUDE.md`'s reading-order
 Opening prompt (per vessel):
 > Build `<Vessel>` from its section of `docs/SCOPE_v0.txt` through the five steps in `docs/PLAN.md` Phase 3, one
 > step per session unless a step is small. Start with step 1 and stop at the design gate.
-> For Argo: copy `ModProjects/TDS_Mod/ModSource/Argo` and `Assets/ArgoMod` in first, read only its
-> `IMPLEMENTATION_NOTES.md` and `02_Data.cs`, then diff the scope against them.
+> For Argo: design from the scope text. Then copy `ModProjects/TDS_Mod/ModSource/Argo` and `Assets/ArgoMod` in,
+> read only its `IMPLEMENTATION_NOTES.md` and `02_Data.cs`, keep what matches the design and list the rest as changes.
 
 Gate per vessel: the kit's definition of done (`TDS_Vessel_Creator/README.md`).
 
@@ -150,8 +150,8 @@ Gate: a full three-map run completed on the PC, online once with a friend.
 
 ### Phase 6. Content passes (2-3 sessions)
 
-New Cardinals, the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), the streamlined
-economy changes once defined, the Boutman F-key fix. Each is data plus small code on finished systems.
+New Cardinals (run modifiers, built like the base game's), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), the streamlined
+the Boutman F-key fix. Each is data plus small code on finished systems.
 
 ### Phase 7. Hardening and release (2 sessions plus PC rounds)
 
@@ -164,8 +164,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** repository set up from `ModProjects` (2026-10-06); scope v0 and this plan written (2026-10-08).
-- **Next:** Phase 0, the open questions below, in one message to the user.
+- **Done:** repository set up from `ModProjects` (2026-10-06); scope v0 and this plan written; Phase 0 closed, the
+  user answered questions 1-4 and questions 5-8 take their defaults (2026-10-08).
+- **Next:** Phase 1, the opening prompt in Part B, research only.
 - **Blocked:** nothing.
 
 ### Decisions
@@ -174,19 +175,25 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   any vessel code.
 - 2026-10-08: Cardinals, bounties and the shopkeeper are built on the base game's own systems where Phase 1 finds
   them usable, never reinvented.
+- 2026-10-08 (user): **Cardinals are the base game's run-modifier effects.** A new Cardinal is a new run modifier.
+  **Score does not count** in the Rogue Wave mode, so leaderboards and the Cardinal score multiplier are out of scope.
+- 2026-10-08 (user): "Streamlined Economy Changes" means **aura sharing between players between tides**, which is the
+  scope's Fund Transfer. No separate design; it is one Phase 5 piece.
+- 2026-10-08 (user): Uloe's Defense building is **Mirror**.
+- 2026-10-08 (user): the scope text is **the planned version of every vessel, Argo included**. Argo is designed from
+  the scope text; its shipped 1.4.0 code in `ModProjects` is reused only where it already matches, and every
+  difference is listed in `DESIGN.md` as a change from 1.4.0, not from the scope.
+- 2026-10-08 (defaults taken): three Directions offered and one picked per map, extras bought at the shop; ascension
+  persists across sessions if Phase 1 finds save writes safe, else per session; online is 2-4 players,
+  host-authoritative, every player with the whole pack; the F-key respawn fix covers the new vessels, and Boutman if
+  it is the same code path.
 
-### Open questions (Phase 0)
+### Open questions
+
+Phase 0's eight questions are closed (see Decisions). New ones go here, with a default.
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | What is a **Cardinal** in the base game as you play it (the code has `Map_Cardinalconditions` and a leaderboard multiplier for them)? What should a *new* Cardinal be: a run condition, an artifact, or a reward? | A run condition with a score multiplier, like the base game's |
-| 2 | **Streamlined Economy Changes** has no body. What changes? | Deferred to Phase 6, no design until written |
-| 3 | Uloe's **Defense** building has no name. | Coordinator proposes three names at Uloe's design gate |
-| 4 | **Argo** baseline: rework from the shipped Argo 1.4.0 in `ModProjects`, or redesign from the scope text alone? | Rework from 1.4.0; the scope's changes listed as "Changes from the concept" |
-| 5 | How many **Directions** are offered per pick, and how many picks per run (one per map, plus shop)? | Three offered, one picked, per map; extra ones bought |
-| 6 | Does **ascension** persist across game sessions (save writes) or only across runs in one session? | Persist, if Phase 1 finds save writes safe; else per session |
-| 7 | **Online** target: 2 to 4 players, host-authoritative, every player with the whole pack? | Yes |
-| 8 | Is the Boutman **F-key bug** in scope for the pack (a fix to a base vessel), or only for the new vessels? | Fix for new vessels; Boutman if the same code path |
 
 ### Phase 5 pieces
 
