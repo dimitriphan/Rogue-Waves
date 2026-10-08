@@ -188,9 +188,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   captures; the playable Argo 2.0 (v0.1.0-dev) is installed and enabled on the PC (`Argo/IMPLEMENTATION_NOTES.md`).
 - **Next:** thread "Argo, continued" (from `handoff/Argo_next.md`, branch `claude/project-thread-f7fmvc`, draft PR #7
   into #3's branch): Deep Water's bob and its journal view fix are compiled, not yet in game; round 5's captures are
-  reviewed (`Argo/Previews/round5/REVIEW.md`). Then Dimitri's hand-play report, one PC round for all of it, step 5.
-- **Blocked:** on Dimitri: his hand-play report, and whether Argo ships now as a standalone ArgoMod 2.0 or waits for
-  the pack (`docs/PACK.md`).
+  reviewed (`Argo/Previews/round5/REVIEW.md`). Then PC round 6 for both, step 5 (lessons, notes; no zip).
+- **Blocked:** round 6 (bob, journal view) waits on Dimitri's typed OK; balance waits on him (later).
 
 ### Decisions
 
@@ -231,6 +230,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   vessel), parts developed and self-tested as their own dev mods, no load order, one pack version (`docs/PACK.md`).
   **Style approved** (`docs/STYLE.md`): the pack look lives in run pieces; vessels look as the user's concept art draws
   them, house-style departures kept as drawn until each vessel's design gate. Kit 1.6 = `docs/PACK.md` §3.
+- 2026-10-08 (user): **Argo ships only inside the full `RogueWavesMod` pack**, no standalone ArgoMod 2.0. Argo's
+  balance pass waits for a later session of his; step 5 is lessons and notes, no release zip.
 
 ### Open questions
 
@@ -238,7 +239,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | Argo's release: a standalone ArgoMod 2.0 now, or only inside the `RogueWavesMod` pack (Phase 7)? | Wait for the pack; keep the dev build on the PC |
+| - | none open | |
 
 ### Phase 5 pieces
 
