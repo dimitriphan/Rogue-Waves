@@ -12,6 +12,7 @@ with the TDS Vessel Creator (Unity 2022.3.41f1, TDS Mod Tools). Rogue Waves has 
 | `Tools/pc/` | A PC round: pack a handoff from git, fetch and apply it on the PC, build, self-test, release (`README.md`). `Get-Handoff.ps1` fetches from this repository |
 | `Tools/aseprite/` | Hand-edit any generated frame in Aseprite and keep the edit across builds (`README.md`) |
 | `ModSource/RogueLab/`, `Assets/RogueLabMod/Editor` | Phase 1 research mod, never released: tests the Rogue mode engine on the PC (`ModSource/RogueLab/README.md`) |
+| `ModSource/Riptide/`, `Assets/RiptideMod/Editor` | Riptide 0.2.3 (2026-10-05), a roguelike mode prototype from the PC, never in `ModProjects`: random Tides, a host director, a Salvage artifact pick on every client, a Setup-screen switch; its PC probes passed 70 of 70. Prior art for the Rogue Wave mode (`TDS_Vessel_Creator/docs/15`); read its `IMPLEMENTATION_NOTES.md` first. Its research report (`2026-10-04_roguelike_mode_research.md`) lived in the ModProjects Claude Project's files |
 
 Per vessel, once one exists: `ModSource/<Name>/` (`DESIGN.md`, `IMPLEMENTATION_NOTES.md`, `Concept/`, `Code/`,
 `Build-<Name>Mod.ps1`) and `Assets/<Name>Mod/Editor` (generates every sprite, model, sound and effect in Unity).
