@@ -1,6 +1,6 @@
 ---
 paths:
-  - "concepts/**"
+  - "docs/concepts/**"
   - "concept-tools/**"
 ---
 # Concept pages
@@ -8,7 +8,7 @@ paths:
 A concept is the design the kit redraws at the game's formats: `index.html` + sprite sheets + `manifest.json`, filling
 the sections of `TDS_Vessel_Creator/template/DESIGN_TEMPLATE.md`. Use the game's real formats (`docs/03`) so the redraw
 is a straight port, and design only what the engine can do or say what needs a substitute. Put new pages in
-`concepts/<vessel>/`.
+`docs/concepts/<vessel>/`.
 
 - Follow the pattern Broodie set in `ModProjects/tds-vessel-concepts/broodie` (made to the kit's rules from the
   start): an art script (sprites + manifest), a models script on `concept-tools/lowpoly.py` (a port of the kit's `Lp`),
