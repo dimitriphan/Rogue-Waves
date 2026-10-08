@@ -17,7 +17,7 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 ## One-time setup (Dimitri)
 
 1. On github.com: Settings > Developer settings > Personal access tokens > Fine-grained tokens > Generate new token.
-   Repository access: only `dimitriphan/ModProjects`. Permissions: Contents, Read-only. Expiry: 90 days.
+   Repository access: only `dimitriphan/Rogue-Waves` (a token made for ModProjects does not reach this repository). Permissions: Contents, Read-only. Expiry: 90 days.
 2. Save the token as the only line of `C:\Users\Dimitri\.modprojects_token`.
 3. The scripts reach the PC once in a handoff zip; after that every handoff carries the current copies.
 
@@ -28,7 +28,8 @@ it into `Desktop\ClaudeProjects\handoff\<Name>` and unpacks it there.
 
 Cloud thread:
 
-1. Take the PC lock (`/mnt/project-files/pc/QUEUE.md`).
+1. Take the PC lock: `pc/QUEUE.md` among the Claude Project's files (add it to the Rogue Waves project if it is
+   missing; only one session works in `TDS_Mod` at a time).
 2. Compile-check every vessel the round touches (`Tools/cloud-check`).
 3. Pack against what the PC has. Use `--manifest` with the newest `pc_manifest.txt` the PC sent, or else `--since`
    with the commit of the last handoff the PC applied:

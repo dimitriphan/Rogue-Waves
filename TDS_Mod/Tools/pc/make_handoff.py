@@ -133,7 +133,7 @@ def main():
         lines += ['', 'On the PC only (left alone): ' + ', '.join('`%s`' % r.replace('/', '\\') for r in pc_only[:30])
                   + (' and %d more' % (len(pc_only) - 30) if len(pc_only) > 30 else '')]
     lines += ['', '## Steps', '',
-              '1. Only one session works in TDS_Mod at a time (`/mnt/project-files/pc/QUEUE.md`).',
+              '1. Only one session works in TDS_Mod at a time (`pc/QUEUE.md` in the Claude Project\'s files).',
               '2. `Apply-Handoff.ps1` (check only). Anything "DIFFERS" means the PC has edits that aren\'t on GitHub: stop and report them.',
               '3. `Apply-Handoff.ps1 -Apply`, once Dimitri has OK\'d it in the thread in his own words. It backs up what it replaces',
               '   and writes a fresh `handoff\\pc_manifest.txt`.',

@@ -3,12 +3,12 @@
 # zip: README.md, HASHES.txt, PATCHES.json (from TDS_Mod\Handoff\<Name> on that branch), the handoff scripts, and every
 # file HASHES.txt lists. Nothing in TDS_Mod changes; Apply-Handoff.ps1 does that afterwards, once Dimitri OKs it.
 #   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Get-Handoff.ps1' -Ref claude/some-branch -Name Argo_round10"
-# Needs a fine-grained GitHub token that reaches only dimitriphan/ModProjects with Contents: Read-only, which Dimitri
+# Needs a fine-grained GitHub token that reaches only dimitriphan/Rogue-Waves with Contents: Read-only, which Dimitri
 # saves in %USERPROFILE%\.modprojects_token (TDS_Mod\Tools\pc\README.md). The script never prints or copies the token.
 param(
     [Parameter(Mandatory = $true)][string]$Ref,
     [Parameter(Mandatory = $true)][string]$Name,
-    [string]$Repo = "dimitriphan/ModProjects",
+    [string]$Repo = "dimitriphan/Rogue-Waves",
     [string]$TokenFile = (Join-Path $env:USERPROFILE ".modprojects_token")
 )
 $ErrorActionPreference = "Stop"

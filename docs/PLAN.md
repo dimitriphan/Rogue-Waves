@@ -82,7 +82,8 @@ kit has already read the mode chain (`docs/13` § 3) and the API dump names the 
 `Modeobject`, `Gameplandatabaseobject`, `Artifactobject` and `Game_Artifacts`, `Map_Cardinalconditions`
 (Cardinals are a base-game system), `Entity_Ai_Tower_Merchut.Activatebounty` (a base-game shopkeeper with bounties),
 `Bl_Save`, `Unlock_*`, `Entity_Ai_Main_Core.Addplayer.Respawn` (the F-key bug). Reads: `docs/13` § 3 and § 11,
-`docs/11`, `docs/01` § 1 and § 11.
+`docs/11`, `docs/01` § 1 and § 11. **Prerequisite:** the game's `Assembly-CSharp.dll` among this Claude Project's
+files (`docs/13` § 11); without it the session can only grep the API dump, and the questions below stay "read".
 
 Opening prompt:
 > Answer, with the decompiler setup in `docs/13` § 11 and subagents per Part D, these questions and write

@@ -1,0 +1,14 @@
+# written by TDS_Mod/Tools/cloud-check/setup.sh and build_stubs.sh (fetched packages, compiled stubs); never committed
+TDS_Mod/Tools/cloud-check/*.nupkg
+TDS_Mod/Tools/cloud-check/roslyn/
+TDS_Mod/Tools/cloud-check/unitymods/
+TDS_Mod/Tools/cloud-check/sdk/
+TDS_Mod/Tools/cloud-check/*.exe
+TDS_Mod/Tools/cloud-check/*.tsv
+TDS_Mod/Tools/cloud-check/stubs/*.dll
+TDS_Mod/Tools/cloud-check/lite/*.dll
+__pycache__/
+*.pyc
+# the game's binaries are never committed
+*.dll
+!TDS_Mod/Tools/cloud-check/stubs/*.cs

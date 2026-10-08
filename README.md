@@ -30,8 +30,11 @@ Start with `CLAUDE.md` (the map and reading order), then `TDS_Vessel_Creator/REA
 
 ## Loose ends to settle when the first vessel starts here
 
-- `TDS_Mod/Tools/pc/Get-Handoff.ps1` and its README still name `dimitriphan/ModProjects` as the repository the PC
-  fetches handoffs from. Point them at this repository (the `-Repo` parameter and the token's repository access).
+- `TDS_Mod/Tools/pc/Get-Handoff.ps1` now defaults to this repository, so the PC's read-only token
+  (`C:\Users\Dimitri\.modprojects_token`) must be regenerated with access to `dimitriphan/Rogue-Waves`.
+- The PC lock `pc/QUEUE.md` and the game's `Assembly-CSharp.dll` (needed by the decompiler in `docs/13` §11, so by
+  Phase 1) lived among the old Claude Project's files. Add both to the Rogue Waves Claude Project; the DLL is never
+  committed.
 - `TDS_Mod/Tools/cloud-check` needs its one-time `setup.sh` in each new container (`TDS_Mod/Tools/cloud-check/README.md`).
 - `TDS_Vessel_Creator/README.md` "Facts about this PC" lists the vessel mods installed on the PC; update it when the
   overhauled vessels are reinstalled.

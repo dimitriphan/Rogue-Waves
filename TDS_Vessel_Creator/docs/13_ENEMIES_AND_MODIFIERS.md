@@ -327,8 +327,9 @@ apt-get install -y mono-devel          # mono + mcs
 `dump.cs`, compiled with `mcs -r:bin/ICSharpCode.Decompiler.dll -r:bin/System.Reflection.Metadata.dll
 -r:bin/System.Collections.Immutable.dll -r:/usr/lib/mono/4.5/Facades/System.Runtime.dll
 -r:/usr/lib/mono/4.5/Facades/netstandard.dll -r:System.Core.dll`, writes one `.cs` per type (703 types, 5.3 MB, 15 s)
-from `/mnt/project-files/TDS/TDS/DATA/Managed/Assembly-CSharp.dll`; grep the folder instead of re-deriving IL with
-`tools/cecil`:
+from the game's `TDS\TDS\DATA\Managed\Assembly-CSharp.dll` (`docs/11` §4), which reached the container as a Claude Project file
+(`/mnt/project-files/...`; a new Claude Project needs it uploaded again, it is never committed); grep the folder instead
+of re-deriving IL with `tools/cecil`:
 
 ```csharp
 using System; using System.IO; using System.Linq;

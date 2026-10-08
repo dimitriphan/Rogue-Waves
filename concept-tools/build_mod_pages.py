@@ -6,16 +6,19 @@ TDS_Mod/Tools/cloud-check/lite/run_preview.sh.
     cd TDS_Mod/Assets/CrackpotMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . Crackpot /tmp/vessels/crackpot sm
     cd TDS_Mod/Assets/RustleMod/Editor   && ../../../Tools/cloud-check/lite/run_preview.sh . Rustle   /tmp/vessels/rustle sm
     cd TDS_Mod/Assets/BroodieMod/Editor  && ../../../Tools/cloud-check/lite/run_preview.sh . Broodie  /tmp/vessels/broodie sm
-    python3 tds-vessel-concepts/sprites/build_mod_pages.py /tmp/vessels [slug ...]
+    python3 concept-tools/build_mod_pages.py /tmp/vessels [slug ...]
+
+Rogue Waves: the VESSELS table below still lists the ModProjects vessels it was written for; replace its rows with
+the vessels of this repository as they are implemented.
 
 A vessel that already has a concept page of its own (Broodie) gets its mod page in a subfolder ('out'), so the concept
 page stays as it was drawn.
 """
 import html, os, re, shutil, sys
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(HERE)                                  # tds-vessel-concepts
-REPO = os.path.dirname(ROOT)
+HERE = os.path.dirname(os.path.abspath(__file__))             # <repo>/concept-tools
+REPO = os.path.dirname(HERE)                                  # the Rogue-Waves repository
+ROOT = os.path.join(REPO, 'concepts')                         # where the pages are written
 MOD = os.path.join(REPO, 'TDS_Mod', 'ModSource')
 
 AURA = {'Redaura': ('Red', 'r'), 'Blueaura': ('Blue', 'b'), 'Yellowaura': ('Yellow', 'y')}
