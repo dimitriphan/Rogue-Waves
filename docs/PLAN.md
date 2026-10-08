@@ -186,9 +186,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3; PC rounds 1-5, round 5 **138 pass, 0 fail** with
   captures; the playable Argo 2.0 (v0.1.0-dev) is installed and enabled on the PC (`Argo/IMPLEMENTATION_NOTES.md`).
-- **Next:** a new thread from `/mnt/project-files/handoff/Argo_next.md` (Dimitri, 2026-10-08): review round 5's
-  captures, Deep Water's bob, Dimitri's hand play, then step 5 (lessons, release zip).
-- **Blocked:** nothing.
+- **Next:** thread "Argo, continued" (from `handoff/Argo_next.md`, branch `claude/project-thread-f7fmvc`, draft PR #7
+  into #3's branch): Deep Water's bob is coded and compiled, not yet in game. Then round 5's captures (they must come
+  from the PC), Dimitri's hand-play report, step 5 (lessons, release zip).
+- **Blocked:** on Dimitri: his hand-play report, and whether Argo ships now as a standalone ArgoMod 2.0 or waits for
+  the pack (`docs/PACK.md`).
 
 ### Decisions
 
@@ -236,7 +238,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open | |
+| 1 | Argo's release: a standalone ArgoMod 2.0 now, or only inside the `RogueWavesMod` pack (Phase 7)? | Wait for the pack; keep the dev build on the PC |
 
 ### Phase 5 pieces
 
