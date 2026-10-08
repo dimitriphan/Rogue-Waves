@@ -4,7 +4,7 @@ Status 2026-10-08: two research rounds done (`docs/14`, rows 4 and 15; `docs/15`
 expansion-sized DLC for TDS has, what the kit already knows about each (from the game's code, read with Cecil and the
 cloud decompiler in `TDS_Vessel_Creator/docs/13` §11), and what a research session would still have to establish. Pick
 the rows that Rogue Waves should include; each approved row becomes a kit chapter (`docs/14+`) once studied, with its
-pitfalls in `docs/09`.
+pitfalls in `docs/09`. What the scope itself still needs researched is in `docs/RESEARCH_GAPS.md`.
 
 Legend for "Kit knows": **done** = verified in a shipping mod; **read** = read from the game's code, not tried;
 **none** = not looked at.
