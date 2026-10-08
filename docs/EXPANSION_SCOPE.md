@@ -1,6 +1,6 @@
 # Expansion scope: what Rogue Waves needs beyond vessels
 
-Status 2026-10-06: **nothing below has been researched for this repository.** This page lists the pieces an
+Status 2026-10-08: one research round done (`docs/14`, rows 4 and 15); the rest is unresearched. This page lists the pieces an
 expansion-sized DLC for TDS has, what the kit already knows about each (from the game's code, read with Cecil and the
 cloud decompiler in `TDS_Vessel_Creator/docs/13` §11), and what a research session would still have to establish. Pick
 the rows that Rogue Waves should include; each approved row becomes a kit chapter (`docs/14+`) once studied, with its
@@ -14,7 +14,7 @@ Legend for "Kit knows": **done** = verified in a shipping mod; **read** = read f
 | 1 | **Vessels** (heroes, 4 buildables, upgrade trees, units, abilities, journal, boat, online) | done | nothing new; overhaul pass on the six existing ones | low |
 | 2 | **New enemies and elites** | read (`docs/13`) | the 7 open questions of `docs/13` §10: stock enemy data, elite values, Tide tables, when enemies load, enemy art format, enemy journal pages, flying | medium: needs one PC research round |
 | 3 | **Tide tables and game modes** (`Modeobject`, `Wavesobject`, `Mode_Normal/Storm/Drought/Tsunami/Final/Tutorial`, `Clientmode_*`) | read (`docs/13` §3) | whether a mod can register a new mode entry or edit a `Wavesobject` on every machine; how the Gameplan picks mode, soundtrack and medals; how to add a mode button to the menu | medium |
-| 4 | **New maps** (`Mapobject`, `Mapentryobject`, `Mapworlddatabaseobject`, `Game_Grid.Generatemap`, `Map_Generationedit`, `Specialspots`, lightmaps) | none | the map prefab format and tiles, how a map joins the world/boat list, ore nodes, enemy cores, paths, lightmap data in a mod bundle, the medal and leaderboard tie-in | high: likely the biggest piece, and ModTool's bundle may not carry scenes |
+| 4 | **New maps** (`Mapobject`, `Mapentryobject`, `Mapworlddatabaseobject`, `Game_Grid.Generatemap`, `Map_Generationedit`, `Specialspots`, lightmaps) | read, container side (`docs/14` §2, §6) | the map prefab format and tiles, how a map joins the world/boat list, ore nodes, enemy cores, paths, lightmap data in a mod bundle, the medal and leaderboard tie-in | high: likely the biggest piece, and ModTool's bundle may not carry scenes |
 | 5 | **Bosses and the final mode** (`Mode_Final`, `Clientmode_Final`) | none | how the final fight is scripted, whether a boss is just a big `Beingobject` with its own AIs, phases, banners | medium-high |
 | 6 | **Artifacts and relics** (`Entity_Ai_Artifact_*`, `Wavebreaker`, `Teamapply`, scaling on `Totalwaves`) | none | what an artifact is, how it's granted, whether a mod can add one | medium |
 | 7 | **Enemy-side buildings and shops** (`Entity_Ai_Tower_Fieshop`, `Genitem`, `Entity_Command_Itemselect_Base`) | none | the item system behind Fie's shop: if generic, a source of expansion-level mechanics (items, consumables) | medium |
@@ -25,7 +25,7 @@ Legend for "Kit knows": **done** = verified in a shipping mod; **read** = read f
 | 12 | **Localization** (`Bla_Localization`, `Bla_Localization_Text`) | none (vessel text is English strings) | whether mod text can go through the game's localization table, and which languages the game ships | low |
 | 13 | **Tutorial and tips** (`Mode_Tutorial`, `Tds_Tutorialprompts`, `Tipthreshold`) | none | whether new mechanics can add tips, and how the base game teaches a vessel | low |
 | 14 | **Photo mode, cosmetics, skins** (`Tds_Photomode`, skins on beings) | partly read (enemy elite skins, boat visuals) | alternate vessel skins as an expansion extra | low |
-| 15 | **Packaging one expansion** (one or many mods, load order, shared kit, version, player README, Steam Workshop or zip) | done per vessel (`docs/04` §7) | whether one bundle can carry many vessels plus enemies and maps, or each stays its own `<Name>Mod`; a single installer; keeping mods of the pack in step; whether TDS has a Workshop at all | medium |
+| 15 | **Packaging one expansion** (one or many mods, load order, shared kit, version, player README, Steam Workshop or zip) | read (`docs/14` §1, §4, §5): no load order or dependencies in ModTool, no Workshop, two layouts weighed | whether one bundle can carry many vessels plus enemies and maps, or each stays its own `<Name>Mod`; a single installer; keeping mods of the pack in step; whether TDS has a Workshop at all | medium |
 | 16 | **Balance across a whole roster** (`docs/02` §7 is per vessel) | partly done | a pass that pits every vessel against every mode and map, with the self-test harness running the roster; telemetry from the self-test | medium |
 | 17 | **Online with many new pieces** (`docs/07` covers vessel sync) | done for vessels | sync rules for new enemies, modes and maps; a lobby check that every player has the whole pack | medium |
 | 18 | **Art direction of a pack** (`docs/03` is per vessel) | partly done | a shared theme (what "Rogue Waves" looks like: palette, motifs, naming), a style sheet every vessel, enemy and map follows, a reference strip so the pack reads as one | low, but decides the fantasy |

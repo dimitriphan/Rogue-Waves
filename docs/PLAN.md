@@ -87,7 +87,7 @@ files (`docs/13` § 11); without it the session can only grep the API dump, and 
 
 Opening prompt:
 > Answer, with the decompiler setup in `docs/13` § 11 and subagents per Part D, these questions and write
-> `TDS_Vessel_Creator/docs/14_ROGUE_MODE_ENGINE.md` in the kit's style (what is read vs untested):
+> `TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md` in the kit's style (what is read vs untested):
 > 1. Can a mod add a mode entry and a server mode script (`Mode_Base` subclass or a `Mode_Normal` wrapper), and have the
 >    host carry state (Pure Aura per player, chosen Directions, ascension) across three consecutive maps? What is the
 >    cheapest fallback if not (three matches with state kept by the host mod, or in the save)?
@@ -100,13 +100,16 @@ Opening prompt:
 > 5. Enemy modifiers: close `docs/13` § 10 questions 1, 2 and 4 from the code; list what needs the PC.
 > 6. The F-key respawn bug: where selection goes after a vessel respawn, and whether a mod can fix it for Boutman and
 >    for its own minion vessels.
+> 7. Add `docs/14` § 6 (ModTool scenes, `Bla_Mods` order, the RoslynCSharp settings, several `Default` prefabs) to
+>    the PC list; they decide maps and the pack's layout.
 > End with a go / fallback / no table per scope feature and a PC research list (one build, one launch).
 
 Gate: the user picks go / fallback per feature. This fixes the mode's design and the packaging.
 
 ### Phase 2. Pack foundation (1-2 sessions)
 
-Reads: `docs/14`, `docs/04` § 7, `kit/README.md`, `docs/03` § 1 and § 4, `docs/EXPANSION_SCOPE.md` rows 15 and 18.
+Reads: `docs/14` § 5 (the two pack layouts), `docs/15`, `docs/04` § 7, `kit/README.md`, `docs/03` § 1 and § 4,
+`docs/EXPANSION_SCOPE.md` rows 15 and 18.
 
 Opening prompt:
 > Decide and write down (a) packaging: one `RogueWavesMod` or one mod per vessel plus one for the mode, load order,
@@ -143,7 +146,7 @@ Gate per vessel: the kit's definition of done (`TDS_Vessel_Creator/README.md`).
 
 ### Phase 4. Enemies and modifiers (1-2 sessions plus one PC round)
 
-Reads: `docs/13`, `docs/14` § enemies. Cursed (an aura that lowers nearby towers' and units' attack) and Berserk
+Reads: `docs/13`, `docs/15` § enemies. Cursed (an aura that lowers nearby towers' and units' attack) and Berserk
 (damage and speed up as health drops) are the two modifiers; new enemy types come from the Phase 1 PC list.
 
 Opening prompt:
@@ -157,7 +160,7 @@ Gate: both modifiers seen in a self-test, 0 exceptions beside every installed mo
 Build in the order a run plays, each piece testable alone: Pure Aura (per-player counter, earned per tide) →
 objectives/bounties (reuse Merchut) → shopkeeper between tides → Directions (data, pick UI, application through
 upgrades) → Fund Transfer → map vote → leave-or-stay at Tide 15 and bonus tides → the three-map loop with rising
-difficulty → ascension unlock. Reads: `docs/14`, `docs/07` for every synced piece.
+difficulty → ascension unlock. Reads: `docs/15`, `docs/07` for every synced piece.
 
 Opening prompt:
 > Implement the next unchecked piece of the Phase 5 list in `docs/PLAN.md` Part C, host-authoritative per `docs/07`,
@@ -181,9 +184,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** repository set up from `ModProjects` (2026-10-06); scope v0 and this plan written; Phase 0 closed, the
-  user answered questions 1-4 and questions 5-8 take their defaults (2026-10-08).
-- **Next:** Phase 1, the opening prompt in Part B, research only.
+- **Done:** repository set up from `ModProjects` (2026-10-06); scope v0 and this plan written; Phase 0 closed
+  (2026-10-08); research round 1 written as `TDS_Vessel_Creator/docs/14_MODTOOL_AND_PACKAGING.md` (ModTool, scenes,
+  the code sandbox, no Workshop, pack layouts; 2026-10-08).
+- **Next:** the user names the next research round (candidates: base game's Cardinals, shopkeeper, bounties and
+  modes from public sources; roguelike-run design patterns), or Phase 1 once the game DLL is in the project files.
 - **Blocked:** nothing.
 
 ### Decisions
@@ -200,6 +205,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-08 (user): the scope text is **the planned version of every vessel, Argo included**. Argo is designed from
   the scope text; its shipped 1.4.0 code in `ModProjects` is reused only where it already matches, and every
   difference is listed in `DESIGN.md` as a change from 1.4.0, not from the scope.
+- 2026-10-08: the kit chapter for the mode engine is `docs/15` (`docs/14` went to ModTool and packaging).
 - 2026-10-08 (defaults taken): three Directions offered and one picked per map, extras bought at the shop; ascension
   persists across sessions if Phase 1 finds save writes safe, else per session; online is 2-4 players,
   host-authoritative, every player with the whole pack; the F-key respawn fix covers the new vessels, and Boutman if

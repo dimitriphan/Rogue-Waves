@@ -65,6 +65,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/11_TOOLING.md` | Reading the game's code (Cecil scripts, API dump), UnityMCP, PowerShell gotchas |
 | `docs/12_MINION_VESSELS.md` | Vessels built around units (like Fie, Boutman, Buster): spawners, respawn, upgrades reaching units, unit behaviour, player orders, rules, tests |
 | `docs/13_ENEMIES_AND_MODIFIERS.md` | Enemies and elites: the shipped roster, Tide tables and enemy cores, the six enemy modifiers, how a mod adds a new enemy or modifier, open questions for the PC |
+| `docs/14_MODTOOL_AND_PACKAGING.md` | The mod container: ModTool content types and scenes, the `.info`, no load order or dependencies, the RoslynCSharp sandbox, no Workshop, how a pack of several parts should ship, PC checks that decide maps |
 | `kit/Shared/` | The shared kit every vessel compiles (kit 1.5): journal, boat, tower ranges, combat hits, self-test helpers (`kit/README.md`) |
 | `template/Mummer/` | The reference vessel (Mummer 1.0.0): runtime code, editor generator, build scripts |
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
