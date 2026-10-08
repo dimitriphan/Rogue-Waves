@@ -38,14 +38,14 @@ public static class ArgoJournal
             ArgoContent.Beings.TryGetValue(b.Id, out being);
             ModKitJournalBuilding jb = new ModKitJournalBuilding
             {
-                Id = b.Id, Title = b.Display, Desc = b.Journal, Entity = being != null ? being.Entity : null, Model = ArgoAssets.Model(b.ModelName),
+                Id = b.Id, Title = b.Display, Desc = b.Journal, Entity = being != null ? being.Entity : null, Model = ArgoAssets.JournalModel(b.ModelName),
             };
             Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
             foreach (ArgoData.Upg u in b.Upgrades)
             {
                 Upgradeproperties up;
                 ArgoContent.Upgrades.TryGetValue(u.Id, out up);
-                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = up, Model = ArgoAssets.Model(u.Model) ?? jb.Model };
+                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = up, Model = ArgoAssets.JournalModel(u.Model) ?? jb.Model };
             }
             foreach (ArgoData.Upg u in b.Upgrades)
             {

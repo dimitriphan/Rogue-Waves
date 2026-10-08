@@ -1179,6 +1179,17 @@ public static class ArgoSelfTest
                 water.Master.Commandlistserver.TryGetValue(ArgoData.FloodLink, out flood) && flood.Goalstring == ArgoData.Pool && flood.Ref != null && water.Master.Commandlistserver.ContainsKey("Build"),
                 flood != null ? "goal " + flood.Goalstring + ", command " + (flood.Ref != null ? flood.Ref.Objectname : "none") : "no FLOOD");
             Check("Deep Water's being is Buster's Speed Pad (else the Perma-Wall fallback)", true, "ais " + ArgoUtil.Join(new List<string>(ArgoContent.Beings[ArgoData.Water].Entity.Aiscripts.ConvertAll(s => s.name))));
+            // Its water bobs: over half a swell the part rises or falls by at least one amplitude, never by more than two.
+            Transform swell = Extramethods.FindDeepChild(water.Master.transform, "Swell");
+            float low = float.MaxValue, high = float.MinValue;
+            for (int i = 0; i < 9 && swell != null; i++)
+            {
+                low = Mathf.Min(low, swell.localPosition.y);
+                high = Mathf.Max(high, swell.localPosition.y);
+                yield return Wait(ArgoClient.SwellPeriod / 16f);
+            }
+            Check("Deep Water's water bobs gently", swell != null && high - low > ArgoClient.SwellAmp * 0.5f && high - low <= ArgoClient.SwellAmp * 2f + 0.001f,
+                swell != null ? "rose and fell " + (high - low).ToString("F4") + " (amplitude " + ArgoClient.SwellAmp + ")" : "no Swell part");
         }
         // The Miner's Base limit: its button is gone while it stands, and a second can't be built.
         if (bell != null)

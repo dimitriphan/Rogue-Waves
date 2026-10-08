@@ -184,3 +184,22 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
     them when it lands) → clone them when they appear (Argo's `ArgoContent.LateClones`, once a second from `Update`),
     and look them up quietly: `Bl_Address.Getload` logs "Could not retrieve ... The GROUP exists, but item does not"
     on every miss.
+72. **Clients keep an old value a synced command carries** (Argo 2.0, PC rounds 1-3: the Tremor radius read 2.4 on
+    clients while the host sent 4.4) → the synced `Commandlist` held two entries of the same name, and
+    `Updatecommand` updates only the first it finds and moves it to the end → keep one entry on the host (remove the
+    rest before updating), and on clients read the **last** entry of that name (`ArgoClient.Aimed`). Verified in game
+    (round 3 removed one stale entry; the check passed).
+73. **A tower's effect check reads too high** (Argo 2.0, round 2: Brine measured 12 damage a second) → the vessel's
+    other guns were shooting the same foe → while measuring one building, stop every other gun and the vessel, and
+    clear the vessel's own debuffs on the dummy before each hit. Verified in game (rounds 2-5).
+74. **The self-test finds no tile for a building's neighbours** (Argo 2.0, round 3, Thehunt's hill: Deep Water on a
+    one-tile ridge left no room for its pools) → search for a spot by what the building needs around it (five tiles on
+    one level for Deep Water and its pools) and build it last, after the guns took their spots; log what blocks each
+    neighbour when the search fails. Verified in game (rounds 4-5).
+75. **The self-test summary is last launch's** (Argo 2.0, round 2) → a Steam Cloud "syncfailed" dialog held the launch,
+    TDS never ran, and `Run-SelfTests.ps1` summarized the old `Player.log` → it now refuses a Player.log the game didn't
+    write that launch (`Tools/pc`, 46e53bd); Steam logs the hold in `Steam\logs\console_log.txt`. Verified on the PC.
+76. **The Build Queue call over UnityMCP times out, then its result reads "still compiling"** (Argo 2.0, rounds 1-6) →
+    the call runs anyway; MCP replays it 2-5 times, each export restores the parked mods and forces a recompile, and the
+    replays overwrite `queue_status.txt` after a good run → make one call and trust the `[ModKit]` lines in
+    `%LOCALAPPDATA%\Unity\Editor\Editor.log` (and the `.info` file's time). Verified on the PC.

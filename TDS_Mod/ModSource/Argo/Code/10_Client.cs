@@ -1,10 +1,12 @@
 // Runs on every player (host included). Listens to the Vis RPCs the server sends through Argo's entities and plays
 // Argo's own particles, sounds and turret motion, keeps each Drill Rig's Tremor ring drawn where AIM put it at its real
-// radius, marks the towers Nauts are tuning, the foes Argo pins and soaks, and shows owner-only warnings. Projectiles
+// radius, marks the towers Nauts are tuning, the foes Argo pins and soaks, bobs Deep Water's swell, and shows owner-only
+// warnings. Projectiles
 // are the game's own and need nothing here.
 public static class ArgoClient
 {
     class Drillvis { public Entity_Master Master; public GameObject Ring; public float Radius; }
+    class Swellvis { public Transform Part; public Vector3 Rest; public float Phase; }
 
     static readonly List<Entity_Master_Client> hooked = new List<Entity_Master_Client>();
     static readonly List<Entity_Master> drills = new List<Entity_Master>();
@@ -12,6 +14,7 @@ public static class ArgoClient
     static readonly Dictionary<Entity_Master, Drillvis> rings = new Dictionary<Entity_Master, Drillvis>();
     static readonly Dictionary<Entity_Master, GameObject> tuneMarks = new Dictionary<Entity_Master, GameObject>();
     static readonly Dictionary<Transform, float> spinning = new Dictionary<Transform, float>();
+    static readonly Dictionary<Entity_Master, Swellvis> swells = new Dictionary<Entity_Master, Swellvis>();
     static Game_Entity seen;
     static float nextScan;
 
@@ -27,8 +30,10 @@ public static class ArgoClient
             rings.Clear();
             tuneMarks.Clear();
             spinning.Clear();
+            swells.Clear();
         }
         Spin();
+        Bob();
         if (ge == null || ge.Entityclient == null || Time.unscaledTime < nextScan)
             return;
         nextScan = Time.unscaledTime + 0.25f;
@@ -53,10 +58,12 @@ public static class ArgoClient
             master.Client.Vis += (type, position, number) => OnVis(m, type, position, number);
             hooked.Add(master.Client);
             if (being == ArgoData.Drill) drills.Add(master);
+            if (being == ArgoData.Water || being == ArgoData.Pool) swells[master] = new Swellvis();
             if (crew) nauts.Add(master);
         }
         foreach (Entity_Master d in drills)
             Tremor(d);
+        FindSwells();
         List<Entity_Master> gone = new List<Entity_Master>();
         foreach (KeyValuePair<Entity_Master, Drillvis> kv in rings)
             if (kv.Key == null) gone.Add(kv.Key);
@@ -484,6 +491,47 @@ public static class ArgoClient
         if (done != null)
             foreach (Transform t in done)
                 spinning.Remove(t);
+    }
+
+    // Deep Water and its FLOOD pools: the water ("Swell", the model's frame stands still) rises and falls a little. The
+    // phase follows the tile, so a row of pools rolls like one swell. The visual is rebuilt on every upgrade, so a part
+    // that went null is found again at the next scan, and its rest position read afresh.
+    public const float SwellAmp = 0.012f, SwellPeriod = 3.2f, SwellWave = 0.9f;
+
+    static void FindSwells()
+    {
+        List<Entity_Master> gone = null;
+        foreach (KeyValuePair<Entity_Master, Swellvis> kv in swells)
+        {
+            if (kv.Key == null)
+            {
+                if (gone == null) gone = new List<Entity_Master>();
+                gone.Add(kv.Key);
+                continue;
+            }
+            Swellvis sv = kv.Value;
+            if (sv.Part != null)
+                continue;
+            sv.Part = Part(kv.Key, "Swell");
+            if (sv.Part == null)
+                continue;
+            sv.Rest = sv.Part.localPosition;
+            Vector3 at = ArgoUtil.Pos(kv.Key);
+            sv.Phase = (at.x + at.z) * SwellWave;
+        }
+        if (gone != null)
+            foreach (Entity_Master g in gone)
+                swells.Remove(g);
+    }
+
+    static void Bob()
+    {
+        if (swells.Count == 0)
+            return;
+        float w = Time.time * (2f * Mathf.PI / SwellPeriod);
+        foreach (Swellvis sv in swells.Values)
+            if (sv.Part != null)
+                sv.Part.localPosition = sv.Rest + Vector3.up * (SwellAmp * Mathf.Sin(w + sv.Phase));
     }
 
     // ---------------------------------------------------------------- Tremor rings and tuning marks
