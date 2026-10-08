@@ -74,7 +74,10 @@ everything the run needs. The brain knows it is in a Rogue match by the mode's n
 (Tds_Multiplayer_Remote.cs:38-54, 84-240). The network session stays up.
 
 **Chaining maps.** Game code already changes scene from inside a mode: `Mode_Final` sends everyone to `Credits` with
-`Blm_Multiplayer_Remote.Instance.Changescene_ServerRpc(scene)` (Mode_Final.cs:237). The RPC runs only when its sender
+`Blm_Multiplayer_Remote.Instance.Changescene_ServerRpc(scene)` (Mode_Final.cs:237), and the developer tool
+`Game_Admin.Play` starts a Gameplan directly: it writes the four strings, sets every player's `Activeplayer` to 1 and
+changes scene to `Gameloading` with `Lobbystate` "Closed" (Game_Admin.cs:163-185). The game's own exit despawns
+everything first (`Game_Entity.Instance.Despawnall(true)`, Tds_Multiplayer_Remote.cs:30-54). The RPC runs only when its sender
 is the current leader (Blm_Multiplayer_Remote.cs:154). So the host's mod, after a won map, writes the next map's four
 strings on `Tds_Multiplayerinfo` and calls `Changescene_ServerRpc` with `Gameloading` (untested). Fallback: let the
 game return to the boat and have the host's mod select the next map and ready-check as usual.
@@ -136,7 +139,7 @@ Not usable as a menu: `Entity_Command_Itemselect_Base` is a "click a spot in the
 | Choice | Route | Verdict |
 |---|---|---|
 | Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (untested) | go |
-| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game before leaving with the same commands, the host sets the map; map 1 is the leader's pick on the boat | fallback |
+| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands, the host sets the map. Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads, the opening break is held while players pick Directions and vote, then the host chains to the voted map (§3) | fallback |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
 | Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
 
@@ -199,15 +202,19 @@ Always pass the typed third argument (two `Adddata` overloads with optional para
 - The "Focus" action calls `Game_Selection.Onfocus` (Game_Selection.cs:719). "My vessels" are the entities in
   `Game_Entity.Instance.Entityclienttags["Hero"]` owned by the local player, **in the order they were added**
   (`Getplayercharacter`, :575-597). Any minion whose data tags it `Hero` (Boutbro) is in that list.
-- `Onfocus` caches the list; when one entry is destroyed it rebuilds it and sets `Cycle = 0` (:638-657), then selects
-  `Heroselect[Cycle]` (:659-678).
+- `Onfocus` caches the list; when one entry is destroyed it rebuilds it and sets `Cycle = 0` (:638-657). Then, if the
+  current selection is a Hero it selects `Heroselect[Cycle]`; if nothing (or a non-Hero) is selected, which is the
+  usual case right after a death, it selects the Hero **nearest the camera's `Movepos`** (:659-678).
 - A respawn spawns a **new** vessel entity (Entity_Ai_Main_Core.cs:126-153); the dead one leaves the tag list
   (Entity_Master_Client.cs:120-125) and the new one is appended (:176-178). The list is now [Boutbro, vessel] and
-  `Cycle = 0` lands on the minion. The cause is order, not a stale reference (read).
+  `Cycle = 0` lands on the minion; with nothing selected, the minion wins whenever it is nearer the camera than the
+  fresh vessel at the Basin. Order or distance, not a stale reference (read).
 
-**Fix (untested):** a client-side script, after each local vessel spawn, moves the local player's main vessel (its
-`Being` equals `Getload("Hero", Tds_Clientinfo.Hero)`) to index 0 of `Entityclienttags["Hero"]`. It works for Boutman
-too, while the pack is loaded. It cannot be done in `Game_Entity.Onspawn` (server-side, Game_Entity.cs:294-296); the
+**Fix (untested):** a client-side handler added to `Bl_Inputs.Actions["Focus"].Function` after the game's own: on the
+first press after the local vessel respawned, it selects the main vessel (its `Being` equals
+`Getload("Hero", Tds_Clientinfo.Hero)`; `Game_Selection.Selected` and `Select()` are public) and moves it to index 0
+of `Entityclienttags["Hero"]` so later presses cycle from it. It works for Boutman too, while the pack is loaded
+(RogueLab's `RogueLabFocusFix`). It cannot be done in `Game_Entity.Onspawn` (server-side, Game_Entity.cs:294-296); the
 tag list is built on each client. For the pack's own minion vessels the same fix applies; dropping `Hero` from a
 minion's tags also removes it from F but costs hero artifacts (`Artifact_Heroapply`), Halberd's dive targeting and
 Drinkstand support (read), so keep the tag and reorder.
@@ -232,7 +239,8 @@ Drinkstand support (read), so keep the tag and reorder.
 
 ## 11. PC research list (one build, one launch, then one online check)
 
-One research module in a throwaway mod, run once on the boat and once in a match; log to `Player.log` with a prefix.
+Built as the throwaway mod `TDS_Mod/ModSource/RogueLab` (compiled here 2026-10-08, not yet run): it plays steps 1-9
+by itself on a solo host and logs `[RogueLab] TEST ...` lines (its `README.md`). Steps 10 and 11 stay manual.
 
 1. **Database:** keys and counts of `Tds_Masterdatabase.Items` for `Mode`, `Gameplan`, `Map`, `Artifact`, `Unlock`;
    every field of `Mode_Normal`'s `Modeobject` (`Defaultparams`, each `Waves` and `Wavecontent`) and of one Gameplan.

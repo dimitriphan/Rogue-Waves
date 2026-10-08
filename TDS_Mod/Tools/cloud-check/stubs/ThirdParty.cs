@@ -176,7 +176,20 @@ namespace TMPro
 
 namespace Cysharp.Threading.Tasks
 {
-    public struct UniTask { }
-    public struct UniTask<T> { }
+    public enum UniTaskStatus { Pending, Succeeded, Faulted, Canceled }
+    public struct UniTask
+    {
+        public UniTaskStatus Status { get { throw null; } }
+    }
+    public struct UniTask<T>
+    {
+        public UniTaskStatus Status { get { throw null; } }
+        public Awaiter GetAwaiter() { throw null; }
+        public struct Awaiter
+        {
+            public bool IsCompleted { get { throw null; } }
+            public T GetResult() { throw null; }
+        }
+    }
     public struct UniTaskVoid { }
 }

@@ -9,8 +9,9 @@ with the TDS Vessel Creator (Unity 2022.3.41f1, TDS Mod Tools). Rogue Waves has 
 | `ModSource/Shared/` | The shared vessel-mod kit (1.5), compiled into every vessel and renamed `<Name>Kit` per mod: journal, boat, tower ranges, combat hits, self-test helpers. Keep it equal to `TDS_Vessel_Creator/kit/Shared`; rules in `TDS_Vessel_Creator/kit/README.md` |
 | `Assets/ModKit/Editor/ModKitPipeline.cs` | Unity: Tools > ModKit > Build Queue, one Build All Assets, Build Mod Prefab, Export and Restore for every vessel in `handoff\queue.txt` |
 | `Tools/cloud-check/` | Compile a vessel against the game's API here (Roslyn 3.8, no `System.Core`), compile its editor code, preview its sprites, models and sounds, read self-test map snapshots. One-time `setup.sh` per container (`README.md`) |
-| `Tools/pc/` | A PC round: pack a handoff from git, fetch and apply it on the PC, build, self-test, release (`README.md`). `Get-Handoff.ps1` still points at `dimitriphan/ModProjects`; repoint it to this repository before the first round from here |
+| `Tools/pc/` | A PC round: pack a handoff from git, fetch and apply it on the PC, build, self-test, release (`README.md`). `Get-Handoff.ps1` fetches from this repository |
 | `Tools/aseprite/` | Hand-edit any generated frame in Aseprite and keep the edit across builds (`README.md`) |
+| `ModSource/RogueLab/`, `Assets/RogueLabMod/Editor` | Phase 1 research mod, never released: tests the Rogue mode engine on the PC (`ModSource/RogueLab/README.md`) |
 
 Per vessel, once one exists: `ModSource/<Name>/` (`DESIGN.md`, `IMPLEMENTATION_NOTES.md`, `Concept/`, `Code/`,
 `Build-<Name>Mod.ps1`) and `Assets/<Name>Mod/Editor` (generates every sprite, model, sound and effect in Unity).
