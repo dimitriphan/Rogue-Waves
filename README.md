@@ -12,10 +12,11 @@ Start with `CLAUDE.md` (the map and reading order), then `TDS_Vessel_Creator/REA
 
 | Path | What | Taken from `ModProjects` |
 | --- | --- | --- |
-| `TDS_Vessel_Creator/` | The kit: 13 docs (game model, design rules, art, pipeline, code cookbook, journal, online, testing, pitfalls, checklists, tooling, minion vessels, enemies and modifiers), the shared kit 1.5, the Mummer template, the scaffold script, the Cecil scripts, the API dump and base-vessel survey, and `examples/` (design and implementation notes, cited code) | as is |
+| `TDS_Vessel_Creator/` | The kit: 15 docs (game model, design rules, art, pipeline, code cookbook, journal, online, testing, pitfalls, checklists, tooling, minion vessels, enemies and modifiers, ModTool and packaging, the Rogue mode engine), the shared kit 1.5, the Mummer template, the scaffold script, the Cecil scripts, the API dump and base-vessel survey, and `examples/` (design and implementation notes, cited code) | as is |
 | `TDS_Mod/` | The parts of the Unity mod project that belong to every vessel: `ModSource/Shared` (kit 1.5, live copy), `Assets/ModKit/Editor/ModKitPipeline.cs` (Unity build queue), `Tools/cloud-check` (compile and preview without Unity), `Tools/pc` (PC rounds), `Tools/aseprite` (hand-edit frames) | without the six vessels |
-| `concept-tools/` | The generic Python used by concept pages: `sprites.py` (pixel rasteriser), `lowpoly.py` (port of the kit's mesh builder with a renderer), `pngout.py`, `build_mod_pages.py` (sheets drawn from a mod), `build.py` | without the per-vessel scripts and pages |
-| `docs/EXPANSION_SCOPE.md` | What an expansion needs beyond vessels, what the kit already knows about each piece, and what still has to be researched. **Nothing in it has been researched yet**; it is the list to approve first | new |
+| `concept-tools/` | The generic Python used by concept pages: `sprites.py` (pixel rasteriser), `lowpoly.py` (port of the kit's mesh builder with a renderer), `pngout.py`, `build_mod_pages.py` (sheets drawn from a mod) | without the per-vessel scripts and pages |
+| `docs/EXPANSION_SCOPE.md` | What an expansion needs beyond vessels, what the kit already knows about each piece, and what still has to be researched (Phase 1 answered rows 3, 6, 7 and 9 in `TDS_Vessel_Creator/docs/15`) | new |
+| `docs/` (the rest) | The user's scope (`SCOPE_v0.txt`), the prompt plan (`PLAN.md`), the Claude Project setup (`PROJECT_SETUP.md`) and vessel concept pages (`concepts/`); `CLAUDE.md` maps each | new |
 | `.claude/rules/` | Short path-scoped notes that load when the matching files are touched | paths updated |
 
 ## What was left behind, and why
@@ -30,11 +31,11 @@ Start with `CLAUDE.md` (the map and reading order), then `TDS_Vessel_Creator/REA
 
 ## Loose ends to settle when the first vessel starts here
 
-- `TDS_Mod/Tools/pc/Get-Handoff.ps1` now defaults to this repository, so the PC's read-only token
-  (`C:\Users\Dimitri\.modprojects_token`) must be regenerated with access to `dimitriphan/Rogue-Waves`.
-- The PC lock `pc/QUEUE.md` and the game's `Assembly-CSharp.dll` (needed by the decompiler in `docs/13` §11, so by
-  Phase 1) lived among the old Claude Project's files. Add both to the Rogue Waves Claude Project; the DLL is never
-  committed.
+- `TDS_Mod/Tools/pc/Get-Handoff.ps1` defaults to this repository. The PC has no read-only token
+  (`C:\Users\Dimitri\.modprojects_token`) yet; PC sessions fetch with the signed-in `gh` instead, so pack handoffs
+  with `make_handoff.py --manifest`. Make the token only if a PC round has to run without `gh`.
+- Done 2026-10-08: the PC lock `pc/QUEUE.md` and the game's `Assembly-CSharp.dll` are in the Rogue Waves Claude
+  Project's files (the DLL is never committed).
 - `TDS_Mod/Tools/cloud-check` needs its one-time `setup.sh` in each new container (`TDS_Mod/Tools/cloud-check/README.md`).
 - `TDS_Vessel_Creator/README.md` "Facts about this PC" lists the vessel mods installed on the PC; update it when the
   overhauled vessels are reinstalled.

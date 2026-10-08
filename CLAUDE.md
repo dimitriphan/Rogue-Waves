@@ -33,7 +33,7 @@ No vessel lives here yet. When one starts: `TDS_Mod/ModSource/<Name>` + `Assets/
 | Draw sprites, UI art, towers, effects, sounds | `docs/03_ART_AND_AUDIO.md` |
 | Write or change mod code | `docs/09_PITFALLS.md`, then `docs/05_CODE_COOKBOOK.md`; online: `docs/07` |
 | Enemies, elites, modifiers | `docs/13_ENEMIES_AND_MODIFIERS.md` |
-| Anything an expansion has that a vessel mod doesn't | `docs/EXPANSION_SCOPE.md`, then `docs/14_MODTOOL_AND_PACKAGING.md` (what a mod can carry, how a pack ships), `docs/13` §11 (how the game's code was read here) and `docs/11_TOOLING.md` |
+| Anything an expansion has that a vessel mod doesn't | `docs/EXPANSION_SCOPE.md`, then `docs/14_MODTOOL_AND_PACKAGING.md` (what a mod can carry, how a pack ships), `docs/15` (the Rogue mode engine), `docs/13` §11 (how the game's code was read here) and `docs/11_TOOLING.md` |
 | Check a mod without Unity | `TDS_Mod/Tools/cloud-check/README.md` |
 | Send code to the PC, build, self-test, release | `TDS_Mod/Tools/pc/README.md`; self-tests: `docs/08` |
 | Review or hand off | `docs/10_CHECKLISTS.md` |
