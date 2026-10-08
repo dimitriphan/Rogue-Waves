@@ -821,41 +821,64 @@ public static class ArgoSelfTest
 
     // ---------------------------------------------------------------- 2.0 helpers
 
-    // Deep Water where FLOOD has room: round 2's pump had one free tile beside it, so Abyss and Trench found none. A tile
-    // with three or more free neighbours on its level (pools join only on one level), else Spot's.
+    // Deep Water where FLOOD has room: the pump plus four pools (FLOOD, Abyss's two, Trench's one) on one level. Round 3
+    // put it on a one-tile ridge with two free tiles. Every level of each column out to 8 tiles; the most room wins.
     static Vector3 WaterSpot(Vector3 c, Beingobject being, int team)
     {
         Beingobject pool = ArgoContent.Beings[ArgoData.Pool];
         int best = -1;
         Genitem bestBlock = null;
-        for (int dx = -7; dx <= 7; dx++)
-            for (int dz = -7; dz <= 7; dz++)
+        Vector3 c0 = new Vector3(Mathf.Round(c.x), Mathf.Round(c.y), Mathf.Round(c.z));
+        for (int dx = -8; dx <= 8 && best < 5; dx++)
+            for (int dz = -8; dz <= 8 && best < 5; dz++)
             {
-                Vector3 p = new Vector3(c.x + dx, c.y, c.z + dz);
-                float d = ArgoUtil.Flat(p, c);
-                if (d < 2.5f || d > 7f)
+                float d = Mathf.Sqrt(dx * dx + dz * dz);
+                if (d < 2.5f || d > 8f)
                     continue;
-                Genitem block = ArgoUtil.Surface(p) ?? ArgoUtil.Surface(p + Vector3.up) ?? ArgoUtil.Surface(p + Vector3.down);
-                if (block == null || used.Contains(block.Position) || reserved.Contains(block.Position))
-                    continue;
-                bool ok = false;
-                try { ok = Helper_Gridtools.Checkifplaceable(block, being, 0, team); } catch (Exception) { }
-                if (!ok)
-                    continue;
-                int free = FreeAround(block.Position, pool, team, null);
-                if (free > best)
+                for (int dy = 2; dy >= -6; dy--)
                 {
-                    best = free;
-                    bestBlock = block;
+                    Genitem block = ArgoUtil.Surface(c0 + new Vector3(dx, dy, dz));
+                    if (block == null || Mathf.Abs(block.Position.y - (c0.y + dy)) > 0.5f || used.Contains(block.Position) || reserved.Contains(block.Position))
+                        continue;
+                    bool ok = false;
+                    try { ok = Helper_Gridtools.Checkifplaceable(block, being, 0, team); } catch (Exception) { }
+                    if (!ok)
+                        continue;
+                    int room = Room(block.Position, pool, team, 5);
+                    if (room > best)
+                    {
+                        best = room;
+                        bestBlock = block;
+                    }
                 }
-                if (free >= 3)
-                    break;
             }
-        Log("Deep Water spot: " + (bestBlock != null ? bestBlock.Position + " with " + best + " free tiles beside it" : "none with room, Spot's"));
-        if (bestBlock == null || best < 2)
+        Log("Deep Water spot: " + (bestBlock != null ? bestBlock.Position + " with room for " + best + " (pump and pools)" : "none, Spot's"));
+        if (bestBlock == null)
             return Spot(c, being, team, 3.5f, 6f);
         used.Add(bestBlock.Position);
         return bestBlock.Position;
+    }
+
+    // Tiles on 'at''s level joined to it (no diagonals) that take a pool, 'at' included, counted up to 'cap'.
+    static int Room(Vector3 at, Beingobject pool, int team, int cap)
+    {
+        List<Vector3> seen = new List<Vector3> { at };
+        for (int k = 0; k < seen.Count && seen.Count < cap; k++)
+            foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
+            {
+                Genitem b = ArgoUtil.Surface(seen[k] + d);
+                if (b == null || Mathf.Abs(b.Position.y - at.y) > 0.5f || used.Contains(b.Position) || reserved.Contains(b.Position))
+                    continue;
+                bool dup = false;
+                foreach (Vector3 o in seen) if (ArgoUtil.Flat(o, b.Position) < 0.3f) dup = true;
+                if (dup)
+                    continue;
+                bool ok = false;
+                try { ok = Helper_Gridtools.Checkifplaceable(b, pool, 0, team); } catch (Exception) { }
+                if (ok)
+                    seen.Add(b.Position);
+            }
+        return seen.Count;
     }
 
     // Free tiles beside 'at' on its level that take a pool; 'why' collects what blocks the others.
@@ -895,11 +918,11 @@ public static class ArgoSelfTest
 
     // Every gun and vessel near the water stops attacking while damage over time is measured (round 2: the guns shot the
     // brined foe, 12 a second).
-    static List<Link_Modifier> JamGuns()
+    static List<Link_Modifier> JamGuns(ArgoTowerBrain except = null)
     {
         List<Link_Modifier> jams = new List<Link_Modifier>();
         foreach (ArgoTowerBrain t in ArgoServer.Towers)
-            if (t != null && t.Master != null && (t.IsScatter || t.IsHarpoon))
+            if (t != null && t != except && t.Master != null && (t.IsScatter || t.IsHarpoon))
                 jams.Add(Helper_Entitytools.Addmod(t.Master, "Attackspeed", -0.99f, Helper_Entitytools.Modtypes.Multi, 0f));
         foreach (ArgoHeroBrain h in ArgoServer.Heroes)
             if (h != null && h.Master != null)
@@ -968,8 +991,17 @@ public static class ArgoSelfTest
     static IEnumerator FoeOn(Genitem block, List<Entity_Master> into, ArgoTowerBrain jam)
     {
         Entity_Master e = EnemyOn(block);
+        // Round 3: no foe would spawn on the pool tile; any tile of the same water will do.
+        ArgoWater.Net net = e == null && block != null ? ArgoWater.Nets.Find(n => n.Tiles.Exists(t => ArgoUtil.Flat(t, block.Position) < 0.3f)) : null;
+        if (net != null)
+            foreach (ArgoTowerBrain part in net.Parts)
+                if (e == null && part != null && part.Master != null && part.Master.Beingserver != null)
+                    e = EnemyOn(part.Master.Beingserver.Currentblock);
         if (e == null)
+        {
+            Log("no foe would spawn on the water at " + (block != null ? block.Position.ToString() : "-") + (net != null ? " or its " + net.Parts.Count + " parts" : ""));
             yield break;
+        }
         into.Add(e);
         List<Link_Modifier> holds = new List<Link_Modifier>();
         yield return Ready(jam, new List<Entity_Master> { e }, 200f, holds);
@@ -1089,8 +1121,22 @@ public static class ArgoSelfTest
             if (!float.IsNaN(drillAt.x)) { ore = o; break; }
         }
         Log(ores.Count + " ores; drilling " + (ore != null ? ArgoUtil.BeingName(ore) + " at " + ArgoUtil.Pos(ore) + ", " + F(ArgoUtil.Flat(ArgoUtil.Pos(ore), home)) + " from the vessel" : "none"));
-        foreach (string tower in ArgoData.Towers)
+        // Deep Water goes last, after the second Harpoon Gun ("hook"): round 3's water took the ridge the second gun's
+        // lanes needed.
+        ArgoTowerBrain hook = null;
+        foreach (string tower in new[] { ArgoData.Scatter, ArgoData.Harpoon, "hook", ArgoData.Drill, ArgoData.Bell, ArgoData.Water })
         {
+            if (tower == "hook")
+            {
+                Vector3 hat = HarpoonSpot(home, ArgoContent.Beings[ArgoData.Harpoon], team);
+                if (!float.IsNaN(hat.x))
+                {
+                    yield return Build(hm, ArgoData.Harpoon, hat, known, got);
+                    hook = got[0];
+                }
+                Check("a second Harpoon Gun for the crowd-control path", hook != null, "at " + hat);
+                continue;
+            }
             Beingobject being = ArgoContent.Beings[tower];
             Vector3 at = tower == ArgoData.Drill && ore != null ? drillAt
                 : tower == ArgoData.Harpoon ? HarpoonSpot(home, being, team)
@@ -1108,21 +1154,12 @@ public static class ArgoSelfTest
             Check(tower + " costs " + cost.Amount + " " + cost.Name, Mathf.Abs(spent - cost.Amount) < 0.01f, "spent " + spent);
             Check(tower + " visible to clients", got[0].Master.Client != null && got[0].Master.Client.Beingobject != null && got[0].Master.Client.Beingobject.Objectname == tower);
         }
-        ArgoTowerBrain scatter, harpoon, water, bell, drill, hook = null;
+        ArgoTowerBrain scatter, harpoon, water, bell, drill;
         towers.TryGetValue(ArgoData.Scatter, out scatter);
         towers.TryGetValue(ArgoData.Harpoon, out harpoon);
         towers.TryGetValue(ArgoData.Water, out water);
         towers.TryGetValue(ArgoData.Bell, out bell);
         towers.TryGetValue(ArgoData.Drill, out drill);
-        {
-            Vector3 at = HarpoonSpot(home, ArgoContent.Beings[ArgoData.Harpoon], team);
-            if (!float.IsNaN(at.x))
-            {
-                yield return Build(hm, ArgoData.Harpoon, at, known, got);
-                hook = got[0];
-            }
-            Check("a second Harpoon Gun for the crowd-control path", hook != null, "at " + at);
-        }
         if (scatter != null)
             Check("Scatter Cannon stats (+50% vs Slowed or Pinned)", Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Projcount", 0), 6f) && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Range", 0), 4.5f)
                 && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Debuffbonus", 0), 0.5f),
@@ -1274,12 +1311,14 @@ public static class ArgoSelfTest
                 Entity_Master a = lane[0], b = lane[1];
                 float lifeA = Life(a), lifeB = Life(b);
                 Vector3 a0 = ArgoUtil.Pos(a), b0 = ArgoUtil.Pos(b);
-                int reels = harpoon.Reels;
-                yield return Until(() => b == null || Life(b) < lifeB - 0.01f, 8f);
+                int reels = harpoon.Reels, shots = harpoon.Shots;
+                List<Link_Modifier> others = JamGuns(harpoon);
+                yield return Until(() => harpoon.Shots > shots, 8f);
                 yield return Wait(1f);
+                foreach (Link_Modifier j in others) ArgoUtil.Unmod(j);
                 Check("the base gun pierces both and moves neither", a != null && b != null && Life(a) < lifeA - 0.01f && Life(b) < lifeB - 0.01f && harpoon.Reels == reels
                     && ArgoUtil.Flat(ArgoUtil.Pos(a), a0) < 0.3f && ArgoUtil.Flat(ArgoUtil.Pos(b), b0) < 0.3f,
-                    "health " + F(lifeA) + "->" + (a != null ? F(Life(a)) : "felled") + " / " + F(lifeB) + "->" + (b != null ? F(Life(b)) : "felled") + ", reels " + (harpoon.Reels - reels)
+                    "health " + F(lifeA) + "->" + (a != null ? F(Life(a)) : "felled") + " / " + F(lifeB) + "->" + (b != null ? F(Life(b)) : "felled") + ", reels " + (harpoon.Reels - reels) + ", harpoons " + (harpoon.Shots - shots)
                     + ", moved " + (a != null ? F(ArgoUtil.Flat(ArgoUtil.Pos(a), a0)) : "-") + " / " + (b != null ? F(ArgoUtil.Flat(ArgoUtil.Pos(b), b0)) : "-"));
             }
             ClearEnemies();
@@ -1691,6 +1730,28 @@ public static class ArgoSelfTest
             Force(hook, "Twinline4");
             Force(hook, "Undertow5");
             lane = Lane(hp, 5f, reach, 2, true);
+            if (lane.Count < 2)
+            {
+                // Round 3: no lane of two had room to reel. Undertow only needs a second foe within its radius of the
+                // reeled one: one foe with room, and a neighbour beside it, across the lane.
+                ClearEnemies();
+                lane = Lane(hp, 5f, reach, 1, true);
+                if (lane.Count == 1)
+                {
+                    Vector3 f0 = ArgoUtil.Pos(lane[0]), along = f0 - hp;
+                    along.y = 0f;
+                    Vector3 side = Vector3.Cross(along.normalized, Vector3.up);
+                    side = Mathf.Abs(side.x) > Mathf.Abs(side.z) ? new Vector3(Mathf.Sign(side.x), 0f, 0f) : new Vector3(0f, 0f, Mathf.Sign(side.z));
+                    foreach (Vector3 sd in new[] { side, -side })
+                        if (lane.Count == 1)
+                            foreach (float dy in new[] { 0f, -1f, 1f })
+                            {
+                                Genitem g = lane.Count == 1 ? ArgoUtil.Surface(f0 + sd + Vector3.up * (dy - 1f)) : null;
+                                Entity_Master n = g != null ? EnemyOn(g) : null;
+                                if (n != null) lane.Add(n);
+                            }
+                }
+            }
             holds.Clear();
             if (lane.Count == 2) yield return Ready(hook, lane, 50f, holds);
             if (Check("two foes for Undertow", lane.Count == 2, lane.Count + " foes"))

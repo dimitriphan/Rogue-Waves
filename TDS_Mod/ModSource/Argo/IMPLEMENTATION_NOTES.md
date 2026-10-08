@@ -48,6 +48,15 @@ comes back after a sell, and FLOOD adds a pool for Blue 15. No mod exceptions, n
   likely held a stale second "Aim" entry (Updatecommand updates the first it finds and moves it to the end). The
   server now keeps one entry and clients read the last one; the check logs how many it removed.
 
+**PC round 3 (2026-10-08): 123 pass, 5 fail, 0 setup.** **The Tremor radius now reaches clients after a sink**
+(Fathom 7 passes; the server removed one stale "Aim" entry, which confirms round 2's cause). All 5 fails were the test's
+layout on Thehunt's hill: Deep Water went on a one-tile ridge (two free tiles beside it), so Abyss and Trench had no
+tile, no foe would spawn on its pool (so Brine never ran), and the second Harpoon Gun got the ridge's end with no lane of
+two for Undertow. The base gun check read a Scatter pellet's hit on the far foe as the harpoon's (the harpoon hadn't
+fired). Round 4's test: Deep Water is built last, where five tiles on one level take a pool; the second gun is built
+right after the first; foes for the water can stand on any tile of it; the other guns hold fire while the base harpoon
+is checked, which waits for its shot; Undertow takes one foe with room to reel and a second beside it.
+
 Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
 off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.
