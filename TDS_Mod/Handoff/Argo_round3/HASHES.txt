@@ -1,0 +1,7 @@
+# Handoff Argo_round3: commit 2089c1f of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit a0025e8.
+babb583906509eba  afa8ad3fb8b1dc57  ModSource\Argo\Code\07_TowerBrain.cs
+75853f664a4e7a24  a84eae4a1cd0ccbb  ModSource\Argo\Code\10_Client.cs
+af790eaddd647cf0  d410f1a8e790418f  ModSource\Argo\Code\11_Water.cs
+80028e5ee81beca2  ac4c3ee4ff67a42b  ModSource\Argo\Code\99_SelfTest.cs
+c02e81bf1d6dad72  71982b7be2974372  ModSource\Argo\IMPLEMENTATION_NOTES.md
