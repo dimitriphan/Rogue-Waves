@@ -12,3 +12,12 @@ __pycache__/
 # the game's binaries are never committed
 *.dll
 !TDS_Mod/Tools/cloud-check/stubs/*.cs
+# never committed: Unity-generated folders, packages and archives, the PC's token
+Library/
+Temp/
+Logs/
+UserSettings/
+obj/
+*.unitypackage
+*.zip
+.modprojects_token

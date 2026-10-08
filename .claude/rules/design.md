@@ -2,7 +2,7 @@
 paths:
   - "**/DESIGN.md"
   - "**/DESIGN_TEMPLATE.md"
-  - "concepts/*/index.html"
+  - "docs/concepts/**"
   - "TDS_Mod/ModSource/*/Code/02_Data.cs"
 ---
 # Designing a vessel
