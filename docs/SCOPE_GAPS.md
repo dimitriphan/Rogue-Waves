@@ -32,7 +32,7 @@ director, Salvage dialog), `ModSource/RogueLab` (chain, leave, save).
 
 | Asset | Exists | Missing |
 | --- | --- | --- |
-| Run start (how the host begins a Rogue Wave) | open again: Rogue Wave is the mod's name, not a Cardinal (user); default is Riptide's proven Setup-screen switch (PLAN open question 1) | the switch's text and look (the crest, `STYLE.md`) |
+| The mode's start Cardinal | route decided: the host equips it in the lobby (PLAN Decisions); a mod Cardinal proven in the colour slot (`docs/15` §11) | **its name** ("Rogue Wave" is the mod's, user), entry, icon (the crest, `STYLE.md`), lobby text; the picker's look by hand is unseen |
 | Vessel lock before the run | ready-up is the lock (`docs/15` §6) | nothing to build; one line of player-facing text |
 | Map 1 staging step | rule decided (every map voted, `docs/15` §6) | the hold, the banner, what players see while it waits |
 | Map vote (3 base-game maps) | route: in-game vote by vessel commands (`docs/15` §6) | **which maps can be offered** (pool per map 1/2/3, by difficulty?), the vote dialog, tie-break, timeout |

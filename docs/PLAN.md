@@ -222,10 +222,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pack vessel; minions keep the `Hero` tag (`docs/15` §9).
 - 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
   leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
-  map, `docs/15` §6). ~~A run starts when the host equips a "Rogue Wave" Cardinal in the lobby~~ (withdrawn, see the
-  next line). **The §11 PC round is approved.**
-- 2026-10-08 (user): **Rogue Wave is the expansion mod's name, not a Cardinal, and no new Cardinal is named yet.** The
-  start route is open again (Open questions #1); RogueLab's test Cardinal only proved that a mod Cardinal can be equipped.
+  map, `docs/15` §6). **A run starts when the host equips the mode's Cardinal in the lobby, name to be decided**
+  ("Rogue Wave" is the mod's name, user 2026-10-08; RogueLab tests the colour slot, which checks the name; the Mixed
+  slot takes any string). **The §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
 - 2026-10-08 (user, Phase 2 gate): **one `RogueWavesMod` bundle** with a `Default` prefab per part (mode, foes, each
@@ -239,7 +238,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | How does the host start a Rogue Wave run? | the Setup-screen switch, Riptide's proven route (`docs/15` §13) |
+| - | none open | |
 
 ### Phase 5 pieces
 

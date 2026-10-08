@@ -17,7 +17,7 @@ modifiers and the mode's UI.
 | Swatch | Hex | Used for |
 | --- | --- | --- |
 | Deep Swell | `2E4A62` | panels and shadows of the mode's UI, the dark side of pack icons |
-| Rogue Teal | `3F8F96` | the mode's main colour: the run's start switch, vote and shop frames |
+| Rogue Teal | `3F8F96` | the mode's main colour: the mode's start Cardinal, vote and shop frames |
 | Foam | `E9F1EE` | rims, highlights, the crest motif |
 | Pearl (Pure Aura) | `F4EEF8`, sheen `C9E4F2` / `F2D9E6` | Pure Aura only: a white that is none of the base auras (Red, Blue, Yellow, Green = all), with a faint two-tone sheen |
 | Storm Coral | `E2725B` | danger and the pack's new modifiers' accent (Cursed, Berserk), ascension marks |
@@ -29,7 +29,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 ## Motifs
 
 - **The crest**: one breaking curl with a Foam rim. It is the pack's mark: the mode icon, the corner of pack UI
-  frames, the run's start switch. Draw it as one clean shape, not a pattern.
+  frames, the mode's start Cardinal. Draw it as one clean shape, not a pattern.
 - **Washed ashore**: Cardinals and Directions are found objects, as in the base game (Red Coin, Rusty Pipe, Fish Bait).
   Pack Cardinals are flotsam, things the wave brought. None is named yet (user, 2026-10-08). One object per icon,
   readable at 12×12.
