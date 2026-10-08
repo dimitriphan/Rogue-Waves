@@ -1554,7 +1554,14 @@ public static class ArgoSelfTest
                 }
                 // Fault Line: a foe reeled across the Tremor bursts (the reel's own call, ArgoServer.Reeled).
                 Force(drill, "Faultline4");
-                if (e != null && ArgoUtil.Alive(e))
+                // Round 4: Bedrock felled the foe, and Fault Line's checks skipped without a word. A fresh, sturdy foe.
+                if (e == null || !ArgoUtil.Alive(e))
+                {
+                    e = FoeBetween(drill.AimCenter, 0f, 1f);
+                    if (e != null)
+                        yield return Ready(drill, new List<Entity_Master> { e }, 50f, new List<Link_Modifier>());
+                }
+                if (Check("a foe for Fault Line", e != null && ArgoUtil.Alive(e)))
                 {
                     float r = drill.TremorRadius;
                     float l0 = Life(e);

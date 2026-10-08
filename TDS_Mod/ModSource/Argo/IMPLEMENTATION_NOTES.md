@@ -57,6 +57,11 @@ fired). Round 4's test: Deep Water is built last, where five tiles on one level 
 right after the first; foes for the water can stand on any tile of it; the other guns hold fire while the base harpoon
 is checked, which waits for its shot; Undertow takes one foe with room to reel and a second beside it.
 
+**PC round 4 (2026-10-08): 134 pass, 0 fail, 0 setup.** Every 2.0 mechanic in DESIGN's test plan passed in game on
+Thehunt, with no mod exceptions. One gap: Bedrock felled the test foe, so the two Fault Line checks skipped without a
+line (they passed in round 3). The test now gives Fault Line its own foe and fails if it has none. Still to do: the
+captures (`ARGO_SHOTS`) for step 4's art review, Deep Water's bob, and hand play.
+
 Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
 off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.

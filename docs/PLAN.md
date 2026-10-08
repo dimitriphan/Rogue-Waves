@@ -184,12 +184,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3. PC round 1: 93/9 (build commands not loaded at boot,
-  `docs/09` #71). PC round 2: 133/3; the fifth build option and FLOOD work in game. Round 3: 123/5, the Tremor sync
-  fixed in game; the 5 fails were the test's layout, reworked here (`Argo/IMPLEMENTATION_NOTES.md`).
-- **Next:** PC round 4 with handoff `Argo_round4`, on Dimitri's typed OK. Then step 5 (lessons, release).
-  ArgoMod 1.4.0 is no longer installed on the PC (the dev build replaced it, disabled after the test).
-- **Blocked:** nothing; round 4 waits on Dimitri's OK.
+- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3; PC rounds 1-4, round 4 **134 pass, 0 fail**
+  (`Argo/IMPLEMENTATION_NOTES.md`; lesson in `docs/09` #71).
+- **Next:** round 5 (`Argo_round5`) on Dimitri's typed OK: self-test with captures (`ARGO_SHOTS`) for the art review,
+  then a playable build installed for hand play. Then step 5: lessons, release zip.
+- **Blocked:** nothing; round 5 waits on Dimitri's OK.
 
 ### Decisions
 
