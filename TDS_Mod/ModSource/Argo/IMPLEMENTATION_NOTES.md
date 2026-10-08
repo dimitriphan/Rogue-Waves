@@ -74,6 +74,10 @@ floats on it are a `Swell` part of every `Trap_Argowater*` model and of `Argo_Po
 rolls like one swell; parts are found again after an upgrade rebuilds the visual. The self-test checks it ("Deep
 Water's water bobs gently"). The model preview at rest matches the old one.
 
+**Round 5's captures reviewed (2026-10-08, `Previews/round5/REVIEW.md`).** Everything reads as designed except Deep
+Water's 3D views in the journal and on the boat, where the flat pool is a line. The journal now gets a tipped
+two-sided copy (`ArgoAssets.JournalModel`): compiled, not yet seen. The boat's view is the game's and stays.
+
 SONAR's 1.4.0 code stays in the source, switched off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.
 

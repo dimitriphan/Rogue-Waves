@@ -52,6 +52,34 @@ public static class ArgoAssets
         return t != null ? t.gameObject : null;
     }
 
+    // The journal's model, for its 3D views. Deep Water is flat and those views look at it level, so round 5's journal
+    // drew it as a line: its journal model is a coin instead, two pools back to back tipped toward the view, so a pool
+    // shows whichever way the view spins it. Made once, under the inactive Models holder like the rest.
+    public const float ShowcaseTilt = 40f;
+
+    public static GameObject JournalModel(string name)
+    {
+        GameObject m = Model(name);
+        if (m == null || !name.StartsWith(ArgoData.Water))
+            return m;
+        Transform have = Library.Find("Models/" + name + "_Showcase");
+        if (have != null)
+            return have.gameObject;
+        GameObject root = new GameObject(name + "_Showcase");
+        root.transform.SetParent(Library.Find("Models"), false);
+        Transform tilt = new GameObject("Tilt").transform;
+        tilt.SetParent(root.transform, false);
+        tilt.localRotation = Quaternion.Euler(-ShowcaseTilt, 0f, 0f);
+        // The models stand on y = -0.5 (the tile's ground); each copy is lifted so its pool's floor sits on the tilt's
+        // origin, the lower one turned over.
+        GameObject up = UnityEngine.Object.Instantiate(m, tilt, false);
+        up.transform.localPosition = new Vector3(0f, 0.5f, 0f);
+        GameObject down = UnityEngine.Object.Instantiate(m, tilt, false);
+        down.transform.localRotation = Quaternion.Euler(180f, 0f, 0f);
+        down.transform.localPosition = new Vector3(0f, -0.5f, 0f);
+        return root;
+    }
+
     public static GameObject Vfx(string name)
     {
         Transform t = Library.Find("VFX/" + name);
