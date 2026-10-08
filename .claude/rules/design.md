@@ -13,7 +13,9 @@ colour = job, 7-upgrade trees with 2 roots, crossover, an early end and a tier-5
 
 Shape language already taken (keep the new one distinct, carry it into the towers): Smacky square, Sno Sno round,
 Buster dog, Boutman cat in overalls, Fie knight, Sprigg bulb in a pot, Argo bulky dome diver, Mummer triangle costume,
-Crackpot cracked orb + spiral staff, Rustle horned mask + leaf cloak to the floor, Broodie forked crescent horn.
+Crackpot cracked orb + spiral staff, Rustle horned mask + leaf cloak to the floor, Broodie forked crescent horn,
+Yossele mossy menhir slab, Spool hourglass spool wound in thread, Uloe faceted diamond prism with a halo
+(`docs/STYLE.md` has the pack roster's references, colours and tower motifs).
 
 Shipped mod values to calibrate against: Mummer 45 HP / 2.75 speed / 3.5 dmg / range 2 / 0.6 atk; Argo 65 / 2.25 / 5 /
 1.75 / 0.4. A vessel's `DESIGN.md` must match its `Code/02_Data.cs`.
