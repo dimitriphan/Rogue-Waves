@@ -187,8 +187,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3; PC rounds 1-5, round 5 **138 pass, 0 fail** with
   captures; the playable Argo 2.0 (v0.1.0-dev) is installed and enabled on the PC (`Argo/IMPLEMENTATION_NOTES.md`).
 - **Next:** thread "Argo, continued" (from `handoff/Argo_next.md`, branch `claude/project-thread-f7fmvc`, draft PR #7
-  into #3's branch): Deep Water's bob is coded and compiled, not yet in game. Then round 5's captures (they must come
-  from the PC), Dimitri's hand-play report, step 5 (lessons, release zip).
+  into #3's branch): Deep Water's bob and its journal view fix are compiled, not yet in game; round 5's captures are
+  reviewed (`Argo/Previews/round5/REVIEW.md`). Then Dimitri's hand-play report, one PC round for all of it, step 5.
 - **Blocked:** on Dimitri: his hand-play report, and whether Argo ships now as a standalone ArgoMod 2.0 or waits for
   the pack (`docs/PACK.md`).
 
