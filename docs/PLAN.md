@@ -184,14 +184,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: step 1 design approved (`TDS_Mod/ModSource/Argo/DESIGN.md`);
-  step 2 art (`Previews/2.0/`); step 3 code: 2.0 on 1.4.0's modules plus kit 1.6 (`ModKitPack`, `Tides`, `Counter`,
-  `Directions`, `Focus`), self-test rewritten to DESIGN's test plan. Compiles here (release and test defines; RogueLab
-  too); not built in Unity or run. Handoff `Argo_round1` packed (`TDS_Mod/Handoff/Argo_round1`).
-- **Next:** Argo step 4, the PC round, on Dimitri's typed OK. First check: the fifth build option
-  (`Argo/IMPLEMENTATION_NOTES.md` lists the six assumptions in order). Building the dev Argo replaces ArgoMod 1.4.0 on
-  the PC. Phase 1's hand checks are still open (see Decisions).
-- **Blocked:** nothing; the PC round waits on Dimitri's OK.
+- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: steps 1-3 (design, art, code on kit 1.6). PC round 1:
+  93 pass, 9 fail; the build commands aren't loaded at boot (`docs/09` #71), so no FLOOD or fifth button; the other
+  fails were the test's own. Fixed and compiled here (`Argo/IMPLEMENTATION_NOTES.md`).
+- **Next:** PC round 2 with handoff `Argo_round2`, on Dimitri's typed OK. First check: the fifth build option.
+  ArgoMod 1.4.0 is no longer installed on the PC (the dev build replaced it, disabled after the test).
+- **Blocked:** nothing; round 2 waits on Dimitri's OK.
 
 ### Decisions
 

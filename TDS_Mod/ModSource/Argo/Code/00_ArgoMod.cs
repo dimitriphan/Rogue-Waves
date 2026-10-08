@@ -127,6 +127,7 @@ public class ArgoMod : MonoBehaviour
         if (!Ready)
             return;
         ModKitFocus.Update();
+        ArgoContent.LateClones();
         ArgoServer.Update();
         ArgoClient.Update();
         // Other modded vessels may finish loading after Argo; the sync is idempotent and runs every few seconds.

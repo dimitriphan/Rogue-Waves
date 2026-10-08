@@ -176,3 +176,11 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
 68. Ask before launching TDS each session; the user may be playing something else.
 69. Don't change the user's concept silently: list every change and its reason in DESIGN.md and the final report.
 70. Report honestly: what was verified in game, what only compiled, and what is unverified.
+
+## J. Added later
+
+71. **No `Command_Buildoption1`-`4` to clone at boot** (Argo 2.0, PC round 1, 2026-10-08) → the vessels' build
+    commands aren't in any group loaded when a mod boots (inferred: the match loads them, since every vessel creates
+    them when it lands) → clone them when they appear (Argo's `ArgoContent.LateClones`, once a second from `Update`),
+    and look them up quietly: `Bl_Address.Getload` logs "Could not retrieve ... The GROUP exists, but item does not"
+    on every miss.

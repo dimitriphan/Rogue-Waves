@@ -20,6 +20,21 @@ What the first PC round must show, in order (each is an assumption the code make
    sell or a death; `BaseHidden`/`BaseShown` count it.
 6. **Kit 1.6**: the registry line `[RogueWaves:Argo] v0.1.0-dev kit 1.6` (the pack version, `docs/PACK.md` §4) in Player.log; the F-key check.
 
+**PC round 1 (2026-10-08): 93 pass, 9 fail, 0 setup** (log summary in the thread; Thehunt). Boot is clean: the
+registry line `[RogueWaves:Argo] v0.1.0-dev kit 1.6`, journal tabs, no mod exceptions. The failures:
+
+- **Command_Buildoption1 and 4 aren't loaded when Argo boots** (`docs/09` #71), so no FLOOD and no fifth button; that
+  is 3 FLOOD checks plus the Miner's Base build. Fixed: `ArgoContent.LateClones` clones both once the match loads them,
+  a water built earlier gets FLOOD on its next frame, and the hero looks the command up quietly (the 314 "Could not
+  retrieve Command_Buildoption5" lines). So the fifth build option itself is still unproven.
+- Scatter bonus: the dummy stood in a Tremor or Deep Water, so its "clean" hit had the bonus too (3, 3, 2, 3). The test
+  now clears Argo's status before each hit.
+- Fault Line: the burst fired, but the foe had 5.5 health left; the check now accepts a burst that fells it.
+- Deep Core: the test forced Bedrock3 before buying Deep Core3 (one tier 3 per tree); it now buys Pay Dirt and Deep
+  Core first. Fathom 7 failed with it, and the client read a stale Tremor radius (2.4 vs 3.6) 0.8 s after a sink:
+  `ApplyFathom` now syncs the AIM link at once, and the check waits up to 2 s and logs what the server sent.
+- The PC's `Build-ArgoMod.ps1` was an older copy without the `MODKIT_TEST` line; round 2 replaces it.
+
 Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
 off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.

@@ -1207,16 +1207,20 @@ public static class ArgoSelfTest
             {
                 Helper_Entitytools.Addmod(dummy, "Health", 200f, Helper_Entitytools.Modtypes.Add, 0f);
                 yield return Wait(0.1f);
-                float plain = Hit(scatter.Master, dummy, 2f);
+                // Round 1: the dummy stood in a Tremor or Deep Water, so its "clean" hit already had the bonus. Each read
+                // now starts from a cleared status and runs in the same frame as the hit.
+                ArgoStatus.Clear(dummy);
                 int b0 = scatter.BonusHits;
+                float plain = Hit(scatter.Master, dummy, 2f);
                 ArgoUtil.Slow(hm, dummy, 0.1f, 3f, false);
                 float slowed = Hit(scatter.Master, dummy, 2f);
-                yield return Wait(3.2f);
+                ArgoStatus.Clear(dummy);
                 float clean = Hit(scatter.Master, dummy, 2f);
                 ArgoUtil.Pin(hm, dummy, 1f, false);
                 float pinned = Hit(scatter.Master, dummy, 2f);
+                ArgoStatus.Clear(dummy);
                 Check("Scatter Cannon: +50% to a Slowed and a Pinned foe, none to a clean one",
-                    Mathf.Abs(slowed - plain * 1.5f) < 0.05f && Mathf.Abs(pinned - plain * 1.5f) < 0.05f && Mathf.Abs(clean - plain) < 0.05f && scatter.BonusHits == b0 + 2,
+                    Mathf.Abs(slowed - plain * 1.5f) < 0.05f && Mathf.Abs(pinned - plain * 1.5f) < 0.05f && Mathf.Abs(clean - plain) < 0.05f && Mathf.Abs(plain - 2f) < 0.05f && scatter.BonusHits == b0 + 2,
                     "clean " + F(plain) + ", slowed " + F(slowed) + ", clean again " + F(clean) + ", pinned " + F(pinned) + ", bonus hits " + (scatter.BonusHits - b0));
             }
             ClearEnemies();
@@ -1403,6 +1407,10 @@ public static class ArgoSelfTest
                 drill.Quake(1f);
                 yield return Wait(0.2f);
                 Check("a quake pins the foes in the Tremor", drill.Quakes > q && e != null && ArgoStatus.IsPinned(e) && ArgoStatus.Pins > pins, "quakes " + (drill.Quakes - q) + ", pins " + (ArgoStatus.Pins - pins));
+                // Pay Dirt and Deep Core are bought first: a forced Bedrock takes the tree's tier 3 (round 1 found Deep Core
+                // refused after it).
+                yield return Upgrade(drill, "Paydirt2", owner);
+                yield return Upgrade(drill, "Deepcore3", owner);
                 // Bedrock: pinned foes in the Tremor take damage over time.
                 Force(drill, "Bedrock3");
                 if (e != null && ArgoUtil.Alive(e))
@@ -1421,7 +1429,8 @@ public static class ArgoSelfTest
                     float l0 = Life(e);
                     int f0 = drill.Faults;
                     ArgoServer.Reeled(e, drill.AimCenter + Vector3.right * (r + 1f), drill.AimCenter + Vector3.left * (r + 1f));
-                    Check("Fault Line: a foe reeled across the Tremor takes a burst", drill.Faults == f0 + 1 && l0 - Life(e) >= 11.9f, "bursts " + (drill.Faults - f0) + ", health " + F(l0) + "->" + F(Life(e)));
+                    float burst = l0 - (e != null && ArgoUtil.Alive(e) ? Life(e) : 0f);
+                    Check("Fault Line: a foe reeled across the Tremor takes a burst", drill.Faults == f0 + 1 && burst >= Mathf.Min(11.9f, l0 - 0.01f), "bursts " + (drill.Faults - f0) + ", health " + F(l0) + "->" + F(Life(e)));
                     f0 = drill.Faults;
                     ArgoServer.Reeled(e, drill.AimCenter + Vector3.right * (r + 3f), drill.AimCenter + Vector3.right * (r + 1.5f));
                     Check("Fault Line: a reel that misses the Tremor does nothing", drill.Faults == f0);
@@ -1602,8 +1611,6 @@ public static class ArgoSelfTest
         }
         if (drill != null)
         {
-            yield return Upgrade(drill, "Paydirt2", owner);
-            yield return Upgrade(drill, "Deepcore3", owner);
             Check("Pay Dirt -> Deep Core: sinks to 7", Has(drill, "Paydirt2") && Has(drill, "Deepcore3") && drill.FathomMax == ArgoData.FathomDeepest, "max Fathom " + drill.FathomMax);
             if (enemyType != null && drill.Ore(ArgoUtil.Pos(drill.Master)) != null)
             {
@@ -1629,13 +1636,13 @@ public static class ArgoSelfTest
                 ClearEnemies();
             }
             drill.SinkTo(ArgoData.FathomDeepest);
-            yield return Wait(0.8f);
-            Vector3 cc;
-            float cr;
+            Vector3 cc = Vector3.zero;
+            float cr = 0f;
+            yield return Until(() => ArgoClient.Aimed(drill.Master, out cc, out cr) && Mathf.Abs(cr - drill.TremorRadius) < 0.01f, 2f);
             ArgoClient.Aimed(drill.Master, out cc, out cr);
             Check("Fathom 7: its own look, and every player draws the right Tremor", drill.Fathom == ArgoData.FathomDeepest && drill.Master.Skin.Value.ToString() == "Fathom" + ArgoData.FathomDeepest
                 && Mathf.Abs(cr - drill.TremorRadius) < 0.01f && Mathf.Abs(ArgoClient.TremorRadius(drill.Master) - drill.TremorRadius) < 0.01f,
-                "Fathom " + drill.Fathom + ", skin '" + drill.Master.Skin.Value + "', Tremor synced " + F(cr) + ", rebuilt " + F(ArgoClient.TremorRadius(drill.Master)) + " vs " + F(drill.TremorRadius));
+                "Fathom " + drill.Fathom  + ", skin '" + drill.Master.Skin.Value + "', Tremor synced " + F(cr) + " (server sent " + F(drill.SyncedRadius) + ", AIM link " + drill.AimSynced + "), rebuilt " + F(ArgoClient.TremorRadius(drill.Master)) + " vs " + F(drill.TremorRadius));
         }
         if (bell != null)
         {

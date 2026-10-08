@@ -87,6 +87,8 @@ public class ArgoTowerBrain : MonoBehaviour
                 if (Master.Interact == null || Array.IndexOf(Master.Interact.GetInvocationList(), hitHandler) < 0)
                     Master.Interact += hitHandler;
             }
+            if ((IsWater || IsPool) && !Master.Commandlistserver.ContainsKey(ArgoData.FloodLink) && ArgoContent.Commands.ContainsKey(ArgoData.FloodKey))
+                AddFlood();
             if (IsScatter) Scatter();
             else if (IsHarpoon) Harpoon();
             else if (IsBell) KeepCrew();
@@ -132,18 +134,21 @@ public class ArgoTowerBrain : MonoBehaviour
         // FLOOD is the pool's build option, the game's own placement (Fie's Grow Wall pattern): the build command sends
         // "Build" to this entity, which needs a "Build" command (the vessels' own Command_Build) to accept it.
         if ((IsWater || IsPool) && ArgoContent.Commands.ContainsKey(ArgoData.FloodKey))
-        {
-            Link_Command flood = Helper_Entitytools.Createcommand(Master, ArgoData.FloodCommand, ArgoData.FloodLink, false, true);
-            flood.Goalstring = ArgoData.Pool;
-            flood.Goalvalue = 1f;
-            Helper_Entitytools.Updatecommand(Master, ArgoData.FloodLink, "", true, true);
-            Helper_Entitytools.Createcommand(Master, "Command_Build", "Build", false, true);
-        }
+            AddFlood();
         // Subscribed last: the Updatecommand calls above run each command once.
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         lastAttack = Time.fixedTime - 0.5f;
         ArgoUtil.Vis(Master, "Argo_Build", ArgoUtil.Pos(Master), 0);
+    }
+
+    void AddFlood()
+    {
+        Link_Command flood = Helper_Entitytools.Createcommand(Master, ArgoData.FloodCommand, ArgoData.FloodLink, false, true);
+        flood.Goalstring = ArgoData.Pool;
+        flood.Goalvalue = 1f;
+        Helper_Entitytools.Updatecommand(Master, ArgoData.FloodLink, "", true, true);
+        Helper_Entitytools.Createcommand(Master, "Command_Build", "Build", false, true);
     }
 
     // ---------------------------------------------------------------- shared targeting
@@ -759,6 +764,9 @@ public class ArgoTowerBrain : MonoBehaviour
 
     // The aim reaches every player through the AIM command's link (Updatecommand copies Goalposition, Goalvalue and
     // Goalstring into the synced Commandlist): the centre, the radius, and how far AIM reaches (for the picker).
+    public float SyncedRadius { get { return syncedRadius; } }
+    public bool AimSynced { get { return aimCommand != null; } }
+
     void SyncAim()
     {
         syncedRadius = TremorRadius;
@@ -851,6 +859,8 @@ public class ArgoTowerBrain : MonoBehaviour
         ArgoUtil.Skin(Master, Fathom > 1 ? "Fathom" + Mathf.Min(Fathom, ArgoData.FathomDeepest) : "");
         if (announce)
             ArgoUtil.Vis(Master, "Argo_Fathom", ArgoUtil.Pos(Master), Fathom);
+        // The new radius reaches clients now, not at the next Tremor tick (round 1 read a stale one after a sink).
+        SyncAim();
     }
 
     public void SinkTo(int fathom)

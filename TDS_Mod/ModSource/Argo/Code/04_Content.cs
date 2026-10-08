@@ -375,22 +375,46 @@ public static class ArgoContent
         Commands[ArgoData.AimLink] = aim;
         Register("Command", aim);
 
-        // FLOOD on Deep Water and its pools: the game's own build command (placement, cost, preview) for a pool, sent to
-        // the water instead of the vessel (Fie's Grow Wall pattern, 2.0).
+        FloodCommand();
+    }
+
+    // Command_Buildoption1-4 are not loaded when Argo boots (the PC round of 2026-10-08: "no Command_Buildoption1 to
+    // clone"); the game loads them with the match, before any vessel lands. So FLOOD and the fifth build option are
+    // cloned as soon as they appear: tried at boot, then once a second from Update (LateClones) until both are done.
+    // Every player clones the same objects under the same names, so the ids match online.
+    static bool floodDone, option5Done, clonesLogged;
+    static float nextClone;
+
+    public static void LateClones()
+    {
+        if ((floodDone && option5Done) || Time.unscaledTime < nextClone)
+            return;
+        nextClone = Time.unscaledTime + 1f;
+        if (!option5Done) BuildOption5();
+        if (!floodDone) FloodCommand();
+    }
+
+    // FLOOD on Deep Water and its pools: the game's own build command (placement, cost, preview) for a pool, sent to
+    // the water instead of the vessel (Fie's Grow Wall pattern, 2.0).
+    static void FloodCommand()
+    {
         Commandobject build1 = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption1");
         if (build1 == null)
-            ArgoLog.Warn("no Command_Buildoption1 to clone; FLOOD is disabled");
-        else
         {
-            Commandobject flood = ArgoUtil.Clone(build1, ArgoData.FloodCommand);
-            flood.Display_Name = ArgoData.FloodName;
-            flood.Display_Desc = ArgoData.FloodDesc;
-            flood.Color = new Color(0.3f, 0.66f, 0.82f, 1f);
-            flood.Icon = IconOr("Argo_Flood", build1.Icon);
-            Commands[ArgoData.FloodKey] = flood;
-            Register("Command", flood);
-            ArgoLog.Info("FLOOD: keys " + ArgoUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
+            if (!clonesLogged)
+                ArgoLog.Info("Command_Buildoption1 not loaded yet; FLOOD is cloned when the match loads it");
+            clonesLogged = true;
+            return;
         }
+        floodDone = true;
+        Commandobject flood = ArgoUtil.Clone(build1, ArgoData.FloodCommand);
+        flood.Display_Name = ArgoData.FloodName;
+        flood.Display_Desc = ArgoData.FloodDesc;
+        flood.Color = new Color(0.3f, 0.66f, 0.82f, 1f);
+        flood.Icon = IconOr("Argo_Flood", build1.Icon);
+        Commands[ArgoData.FloodKey] = flood;
+        Register("Command", flood);
+        ArgoLog.Info("FLOOD: keys " + ArgoUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
     }
 
     // The game's vessels have Buildoption1-4. Argo's fifth is Command_Buildoption4 cloned under the next name and key
@@ -402,16 +426,17 @@ public static class ArgoContent
     {
         if (ArgoUtil.Load<Commandobject>("Command", ArgoData.BuildOption5) != null)
         {
+            option5Done = true;
             Option5Note = "found";
             return;
         }
         Commandobject four = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption4");
         if (four == null)
         {
-            Option5Note = "no Command_Buildoption4 to clone";
-            ArgoLog.Warn("no Command_Buildoption4; Argo has four build buttons (no Miner's Base)");
+            Option5Note = "Command_Buildoption4 not loaded yet (cloned when the match loads it)";
             return;
         }
+        option5Done = true;
         Commandobject five = ArgoUtil.Clone(four, ArgoData.BuildOption5);
         List<string> keys = new List<string>();
         if (four.Keybind != null)

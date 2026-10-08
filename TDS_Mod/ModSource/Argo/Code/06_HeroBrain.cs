@@ -92,7 +92,8 @@ public class ArgoHeroBrain : MonoBehaviour
     void BuildOption(int i)
     {
         string link = "Buildoption" + (i + 1);
-        if (Bl_Address.Getload("Command", "Command_" + link) == null)
+        // Quiet lookup: CheckBase asks every half second, and Getload logs each miss.
+        if (ArgoUtil.Load<Commandobject>("Command", "Command_" + link) == null)
         {
             if (!missingOptions.Contains(link))
             {

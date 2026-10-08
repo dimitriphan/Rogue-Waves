@@ -582,6 +582,15 @@ public static class ArgoStatus
     public static bool IsWet(Entity_Master foe) { return Active(wet, foe); }
     public static bool Debuffed(Entity_Master foe) { return IsSlowed(foe) || IsPinned(foe); }
 
+    // Self-tests only need it: a foe read as clean whatever slowed it before (the game's own slow mods stay).
+    public static void Clear(Entity_Master foe)
+    {
+        if (foe == null) return;
+        slowed.Remove(foe);
+        pinned.Remove(foe);
+        wet.Remove(foe);
+    }
+
     static void Mark(Dictionary<Entity_Master, float> d, Entity_Master foe, float seconds)
     {
         if (foe == null || seconds <= 0f)
