@@ -1,0 +1,29 @@
+# Handoff Argo_round1: commit f8c97ca of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit bbbc77a.
+57231b8a0c457f00  bd4d550ecbb6ea94  Assets\ArgoMod\Editor\ArgoAudio.cs
+e271fa9e9f2c2851  66a29449909658fb  Assets\ArgoMod\Editor\ArgoBuilder.cs
+ec61a98f97d2999a  e197037c91b11b95  Assets\ArgoMod\Editor\ArgoModels.cs
+d50552036bc7d1fd  77cead8eb50cb3b3  ModSource\Argo\Code\00_ArgoMod.cs
+6b776c3e59b8b5a8  db5229a578106d0a  ModSource\Argo\Code\01_Util.cs
+3567151015b6f063  69af2c3c1d0da213  ModSource\Argo\Code\02_Data.cs
+47627bd05eabbeac  38c6a65bbcf74d0a  ModSource\Argo\Code\03_Assets.cs
+b77aa2e89fc7080e  8279ec92e3e751bc  ModSource\Argo\Code\04_Content.cs
+24d4bb18178ea151  931c66d984f79998  ModSource\Argo\Code\05_Server.cs
+a4837da3007072e7  e524775b7a8f1d97  ModSource\Argo\Code\06_HeroBrain.cs
+1dc5062b09c5f536  bee14259d61cafaa  ModSource\Argo\Code\07_TowerBrain.cs
+ea2b649ad1f65722  b90541d43ca77a4b  ModSource\Argo\Code\08_NautBrain.cs
+fd6a453088ee7c09  6298265b589da22f  ModSource\Argo\Code\09_Hooks.cs
+0c8e403d1050ead1  75853f664a4e7a24  ModSource\Argo\Code\10_Client.cs
+new  af790eaddd647cf0  ModSource\Argo\Code\11_Water.cs
+6105b8b900429a73  d6438e45b2a06906  ModSource\Argo\Code\12_Diagnostics.cs
+d5f00172d380a12b  f1dfc48aa3894536  ModSource\Argo\Code\13_Journal.cs
+54462ec656f19e31  70667ae644973026  ModSource\Argo\Code\14_CrewSelect.cs
+new  6cb9dcfdb8402d38  ModSource\Argo\Code\16_AimSelect.cs
+bd79dc31702c37a8  6a29ec8ffea329d4  ModSource\Argo\Code\99_SelfTest.cs
+699f4c7cc6959c8b  4cd3d03115447be7  ModSource\Argo\DESIGN.md
+7474ad4ece07829d  152fb82e30e05493  ModSource\Argo\IMPLEMENTATION_NOTES.md
+new  e045ffc360490c9c  ModSource\Shared\ModKitCounter.cs
+new  8e3d3164a5eebc0a  ModSource\Shared\ModKitDirections.cs
+new  abe305bac20df838  ModSource\Shared\ModKitFocus.cs
+new  76e7c4999d12cd88  ModSource\Shared\ModKitPack.cs
+new  9d319bb559484a73  ModSource\Shared\ModKitTides.cs
