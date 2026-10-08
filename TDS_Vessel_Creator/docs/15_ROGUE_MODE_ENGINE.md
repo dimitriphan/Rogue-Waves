@@ -12,22 +12,22 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 
 | Scope feature | Verdict | Route (section) |
 |---|---|---|
-| A new mode entry | **go** | a mod `Modeobject` whose script names are the stock `Mode_Normal` / `Clientmode_Normal` (§2) |
+| A new mode entry | **go, proven** | a mod `Modeobject` whose script names are the stock `Mode_Normal` / `Clientmode_Normal`, with Gameplan twins; Riptide runs on it (§2, §13) |
 | A mode script written in the mod | **no** | `Type.GetType` can't see mod types; run the mode's logic as a host brain beside `Mode_Normal` (§2) |
 | Host's campaign, vessel locked before the run | **go** | the boat's ready-up is the lock (§6) |
 | Three maps in a row | **go, untested** | host sets the next map and calls `Changescene_ServerRpc("Gameloading")`; fallback: back to the boat, the host picks the next node (§3) |
 | State across the three maps (Pure Aura, Directions, depth) | **go** on the host | the mod's `DontDestroyOnLoad` object, keyed by player (§3) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
-| Direction pick (one of three per player) | **go** | commands on the player's own vessel; optional `Runprompt` dialog (§6) |
+| Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13) |
 | Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; map 1 is the leader's pick (§6) |
 | Leave or stay between Tides from Tide 15 | **go** | the same vote; "leave" = the stock win path through public members (§4, §6) |
-| Bonus Tides | **go** | a longer Tide table in the mod's mode, or rewind `Game_Mapvars.Entry` (§4) |
+| Bonus Tides | **go** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry` (§4) |
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
 | Shopkeeper between Tides | **fallback** | the game has no shop; build one on Merchut's command-button pattern (§5) |
 | Fund Transfer (aura between players) | **go, untested** | a shop command; the host moves resources with `Helper_Resources` (§5) |
 | New Cardinals | **go, untested** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase` (§7) |
-| Buying a Cardinal mid-run | **fallback** | apply its core upgrades on the host; the HUD needs extra work (§7) |
+| Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own (§8) |
 | Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
 | The F-key respawn bug | **go** | client-side: put the main vessel first in the `Hero` tag list (§9) |
@@ -270,3 +270,26 @@ by itself on a solo host and logs `[RogueLab] TEST ...` lines (its `README.md`).
   base game's Addressables entry list in `AddressableAssetsData/AssetGroups/Default Local Group.asset`, saved as
   `reference/addressables_default_group.txt` (1436 asset paths: every mode, map, artifact, being and upgrade name).
 - `Player.log` of a modded launch, 2026-10-08.
+
+## 13. Already proven in game: Riptide
+
+Riptide (`TDS_Mod/ModSource/Riptide`, PR #1; Dimitri's 2026-10-04 prototype: one Basin, 30 random Tides, a Salvage of
+artifacts between them) passed 70 of 70 PC probes in round 3. Its `IMPLEMENTATION_NOTES.md` is the evidence; what it
+settles here:
+
+- A mode entry cloned from `Mode_Normal`'s, its `Modeobject` in a same-named `Bl_Address` group, and Gameplan twins
+  load and play like stock (probe 1). The end screen saves records under the twin's name.
+- `Mode_Normal` reads each Tide entry live on the host: a Tide written during the break before it is what spawns, and
+  elites through `Wavecontent.Upgrades` spawn with their upgrade and skin (probe 2).
+- An artifact granted mid-match (`Upgrade(core, up, Forced, art)` plus catch-up for apply-kinds), added to the synced
+  lobby list with `SendMessage("Updateartifactlist")`, acts like a lobby pick and shows on the HUD (probe 3).
+- `Runprompt` works from mod code; a per-vessel `Commandobject` button reopens it; the pick reaches the host through
+  `Command_ServerRpc`; holding `Time_Wave` keeps a break open (probe 4, round 2). The dialog needs re-centring for
+  three or more cards (`RiptideSalvage.Centre`).
+- `PlayerPrefs`, named messages and `OnClientConnectedCallback` pass the game's code security (probe 5).
+- A Setup-screen switch (a copy of the alternate-map toggle) is a working start route, the fallback if a mod Cardinal
+  does not show in the lobby.
+
+Still open after Riptide, and what RogueLab tests: the mod Cardinal in the lobby, chaining to a second map with host
+state surviving, leaving between Tides as a win, rewinding `Entry`, the F-key bug and its fix, the save keys.
+

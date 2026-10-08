@@ -188,6 +188,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   no table per scope feature (§1) and a PC list (§11); `docs/13` §10 and `docs/14` §6 updated from the code.
 - **Done:** the gate (user, 2026-10-08, see Decisions). The PC round's research mod `TDS_Mod/ModSource/RogueLab`
   (compiled here, never run) plays §11 steps 1-9 by itself; handoff `RogueLab_round1` on branch `claude/phase-1-6lfnar`.
+- **Done:** Riptide (PR #1, Dimitri's earlier roguelike prototype, 70/70 PC probes) folded into `docs/15` §13: mode
+  entry, live Tide writes, mid-match artifacts and `Runprompt` choices are proven. Reuse its code in Phase 5.
 - **Next:** the PC round (`TDS_Mod/ModSource/RogueLab/README.md`): build, run, send back every `[RogueLab]` line.
   Then fold the results into `docs/15` (each "untested" line becomes read or failed) and open Phase 2.
 - **Blocked:** on the user's one-sentence OK for the round and PC time.
