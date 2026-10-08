@@ -41,6 +41,22 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > **End of every session.** Update Part C "Now" (done / next / blocked, three lines), add decisions and open
 > questions, commit with a message under five lines, push to the working branch.
 
+### Model per role
+
+Fable 5.1 costs 2.5x Opus 5.5 per token (same 1M context); its edge is judgment on open-ended problems. The plan
+puts the judgment in the coordinator and the volume in the threads, so the models follow that split.
+
+| Role | Model | Why |
+| --- | --- | --- |
+| Coordinator at a gate (Phase 1 go/fallback, packaging, design gates, definition of done) | Fable 5.1 | Few tokens, costly if wrong |
+| Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
+| Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
+| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Uloe's light-level feasibility, Phase 5's three-map loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
+
+Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
+of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
+outcome and the constraints; the Part D templates stay as written for Opus threads.
+
 ---
 
 ## Part B. Phases and their opening prompts
