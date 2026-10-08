@@ -19,7 +19,7 @@ numbers; **routed** = the engine route is read or proven (`TDS_Vessel_Creator/do
 | Rogue Wave mode | routed (start, chain, leave, prompt, save proven) | nothing designed: no objective list, shop, prices, difficulty curve or ascension levels |
 | Directions | routed, kit file built | no catalogue at all; per-player grant is open |
 | Pure Aura, Fund Transfer | routed | amounts, limit, icon, counter art |
-| New Cardinals | routed and proven | none named except "Rogue Wave"; no effects |
+| New Cardinals | routed and proven | none named yet; no effects |
 | New enemy types | none | the scope names none |
 | Cursed, Berserk | routed | numbers, look, journal pages |
 | F-key bug fix | built (`ModKitFocus`) | never reproduced; needs a hand check with Boutbro |
@@ -32,7 +32,7 @@ director, Salvage dialog), `ModSource/RogueLab` (chain, leave, save).
 
 | Asset | Exists | Missing |
 | --- | --- | --- |
-| "Rogue Wave" start Cardinal | start route decided (PLAN Decisions); a mod Cardinal proven in the colour slot (`docs/15` §11) | its entry, icon (the crest, `STYLE.md`), lobby text; the picker's look by hand is unseen |
+| Run start (how the host begins a Rogue Wave) | open again: Rogue Wave is the mod's name, not a Cardinal (user); default is Riptide's proven Setup-screen switch (PLAN open question 1) | the switch's text and look (the crest, `STYLE.md`) |
 | Vessel lock before the run | ready-up is the lock (`docs/15` §6) | nothing to build; one line of player-facing text |
 | Map 1 staging step | rule decided (every map voted, `docs/15` §6) | the hold, the banner, what players see while it waits |
 | Map vote (3 base-game maps) | route: in-game vote by vessel commands (`docs/15` §6) | **which maps can be offered** (pool per map 1/2/3, by difficulty?), the vote dialog, tie-break, timeout |
@@ -119,7 +119,7 @@ and upgrade models; effects, sounds, icons; journal; self-test; a release. The c
 | Asset | Exists | Missing |
 | --- | --- | --- |
 | The system | data route proven, mid-run grant proven (`docs/15` §7, §13); Riptide's whitelist of 40 stock artifacts | nothing |
-| New Cardinals | voice and two example names, Cracked Buoy and Ship's Bell, with no effects (`STYLE.md`) | **the list**: how many, each effect, icons (12×12 flotsam), unlock rule, which are shop-only |
+| New Cardinals | the naming voice only (`STYLE.md`); none named yet (user) | **the list**: names, how many, each effect, icons (12×12 flotsam), unlock rule, which are shop-only |
 | Shop stock of Cardinals | none | which stock and new Cardinals the shop sells, prices in Pure Aura |
 
 ## 5. Enemies and modifiers (scope "New Enemy Types + Modifiers", "New Enemy Modifiers")
