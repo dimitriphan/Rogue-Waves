@@ -184,13 +184,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phase 1 (2026-10-08): `docs/15` (verdicts §1, PC round 1 results §11, Riptide §13), RogueLab 13/13 on the
-  PC. Phase 2 (2026-10-08, approved): `docs/PACK.md` and `docs/STYLE.md`; roster shapes in `.claude/rules/design.md`.
-- **Next:** Phase 3 with Argo, step 1 (`DESIGN.md` from the scope text), on the user's word; Argo also builds kit 1.6
-  (`docs/PACK.md` §3). Copying Argo's shipped code needs the `ModProjects` repository added to the session. Hand
-  checks left from Phase 1: the F-key bug with a real Boutbro, a save value across a restart, the mod Cardinal's look
-  in the lobby picker, `docs/15` §11 steps 10-11.
-- **Blocked:** nothing.
+- **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo step 1: `TDS_Mod/ModSource/Argo/DESIGN.md` (2.0 draft from the
+  scope, on 1.4.0's verified numbers), and 1.4.0's code and editor copied in from `ModProjects` (compiles here, 0
+  errors).
+- **Next:** Argo's design gate (Open question 6), then step 2 (art: only Deep Water and the renamed pieces are new)
+  and step 3 (code, with kit 1.6 from `docs/PACK.md` §3). Phase 1's hand checks are still open (see Decisions).
+- **Blocked:** on the design gate.
 
 ### Decisions
 
@@ -234,7 +233,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open (4-5 answered at the Phase 2 gate, see Decisions) | |
+| 6 | Argo 2.0 design (`TDS_Mod/ModSource/Argo/DESIGN.md`): five buildables with the new Deep Water; the Harpoon no longer reels by default and splits into damage or crowd-control paths; the Drill Rig's Tremor is aimed; the Miner's Base is limit 1; 1.4.0's "loaded guns" dropped? | yes |
 
 ### Phase 5 pieces
 

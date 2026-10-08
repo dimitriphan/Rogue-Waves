@@ -1,0 +1,143 @@
+{
+  "format": {
+    "vessel_cell": 32,
+    "unit_cell": 16,
+    "pixels_per_unit": 20,
+    "pivot": "bottom centre (0.5, 0)",
+    "filter": "point",
+    "compression": "none",
+    "note": "Formats from the Sprigg asset pack; look matched to the in-game vessel cards. Rows 0-1 and 2-3 of each vessel sheet are identical front / back pairs, matching that pack."
+  },
+  "sheets": {
+    "Hero_Argo_IdleMove": {
+      "file": "Hero_Argo_IdleMove.png",
+      "cell": 32,
+      "columns": 6,
+      "rows": 8,
+      "fps": 6,
+      "loop": true,
+      "rows_meaning": "rows 0-3 idle (breathes, bubbles from the valve, the lamp flickers), rows 4-7 move (lead-boot stomp); each block front, front, back, back",
+      "kind": "vessel"
+    },
+    "Hero_Argo_Attack": {
+      "file": "Hero_Argo_Attack.png",
+      "cell": 32,
+      "columns": 4,
+      "rows": 4,
+      "fps": 10,
+      "loop": false,
+      "rows_meaning": "Wrench Swing (basic attack); front, front, back, back",
+      "kind": "vessel"
+    },
+    "Hero_Argo_Sonar": {
+      "file": "Hero_Argo_Sonar.png",
+      "cell": 32,
+      "columns": 6,
+      "rows": 4,
+      "fps": 10,
+      "loop": false,
+      "rows_meaning": "Sonar Ping (vessel action); front, front, back, back",
+      "kind": "vessel"
+    },
+    "Hero_Argo_Land": {
+      "file": "Hero_Argo_Land.png",
+      "cell": 32,
+      "columns": 12,
+      "rows": 1,
+      "fps": 12,
+      "loop": false,
+      "rows_meaning": "sinks in trailing bubbles, thuds down in a puff of silt, switches its lamp on",
+      "kind": "vessel"
+    },
+    "Hero_Argo_Fall": {
+      "file": "Hero_Argo_Fall.png",
+      "cell": 32,
+      "columns": 12,
+      "rows": 1,
+      "fps": 12,
+      "loop": true,
+      "rows_meaning": "tumble loop",
+      "kind": "vessel"
+    },
+    "Hero_Argo_World": {
+      "file": "Hero_Argo_World.png",
+      "cell": 32,
+      "columns": 3,
+      "rows": 1,
+      "fps": 0,
+      "loop": false,
+      "rows_meaning": "world sprite, selected (eyes glow, hands up), locked (lamp off)",
+      "kind": "vessel"
+    },
+    "Hero_Argo_Menu": {
+      "file": "Hero_Argo_Menu.png",
+      "cell": 96,
+      "columns": 1,
+      "rows": 1,
+      "fps": 0,
+      "loop": false,
+      "rows_meaning": "character select portrait",
+      "kind": "ui"
+    },
+    "Hero_Argo_Icon": {
+      "file": "Hero_Argo_Icon.png",
+      "cell": 16,
+      "columns": 1,
+      "rows": 1,
+      "fps": 0,
+      "loop": false,
+      "rows_meaning": "UI icon",
+      "kind": "ui"
+    },
+    "Mob_Naut_Port": {
+      "file": "Mob_Naut_Port.png",
+      "cell": 16,
+      "columns": 6,
+      "rows": 4,
+      "fps": 8,
+      "loop": true,
+      "rows_meaning": "move; front, front, back, back",
+      "kind": "unit"
+    },
+    "Mob_Naut_Starboard": {
+      "file": "Mob_Naut_Starboard.png",
+      "cell": 16,
+      "columns": 6,
+      "rows": 4,
+      "fps": 8,
+      "loop": true,
+      "rows_meaning": "move; front, front, back, back",
+      "kind": "unit"
+    },
+    "Mob_Naut_Tune": {
+      "file": "Mob_Naut_Tune.png",
+      "cell": 16,
+      "columns": 6,
+      "rows": 2,
+      "fps": 8,
+      "loop": true,
+      "rows_meaning": "tending a tower; row 0 Port, row 1 Starboard",
+      "kind": "unit"
+    },
+    "UI_Argo_TowerIcons": {
+      "file": "UI_Argo_TowerIcons.png",
+      "cell": 16,
+      "columns": 4,
+      "rows": 1,
+      "fps": 0,
+      "loop": false,
+      "rows_meaning": "kit icons: Scatter Cannon, Harpoon Tower, Mining Base, Drilling Tower",
+      "kind": "ui"
+    },
+    "FX_Argo": {
+      "file": "FX_Argo.png",
+      "cell": 16,
+      "columns": 8,
+      "rows": 1,
+      "fps": 10,
+      "loop": false,
+      "rows_meaning": "scatter volley, pellet hit, harpoon, tremor x2, sonar x2, tuned",
+      "kind": "fx"
+    }
+  }
+}

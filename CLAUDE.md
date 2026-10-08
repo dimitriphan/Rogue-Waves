@@ -13,6 +13,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | --- | --- | --- |
 | `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
 | `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.5), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames. `ModSource/Riptide`: a tested roguelike-mode prototype, prior art for the mode | `TDS_Mod/README.md` |
+| `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo: 1.4.0's code from `ModProjects` (compiles), being redesigned from the scope as 2.0 | its `DESIGN.md` |
 | `TDS_Mod/ModSource/RogueLab` | Phase 1 research mod (never released): the PC round of `docs/15` §11 | its `README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
 | `docs/SCOPE_v0.txt` | The user's scope for the expansion (2026-10-08): mode, mechanics, four vessels, modifiers, a bug fix. The highest truth after the user's newest words | when a task touches its subject |
@@ -23,7 +24,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `docs/EXPANSION_SCOPE.md` | Beyond vessels: enemies, modes, maps, bosses, music, journal, unlocks, packaging. What is known, what is not, what to research | before any non-vessel work |
 | `docs/concepts/` | Vessel concept pages drafted from the user's sprite art and the scope (Yossele, Spool, Uloe), with the art in `art/` | before designing one of those vessels |
 
-No vessel lives here yet. When one starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold with
+When a vessel starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold with
 `TDS_Vessel_Creator/tools/New-Vessel.ps1` or `TDS_Mod/Tools/cloud-check/new_vessel.py`), add a row here and in
 `TDS_Mod/README.md`.
 

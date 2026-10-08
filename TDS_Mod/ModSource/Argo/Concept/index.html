@@ -1,0 +1,797 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Argo Vessel Concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Exo+2:wght@400;500;600&family=Nunito:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: the same card family as the Sprigg and MUMMER concept pages (warm paper, pixel display
+   type, art wells), in four sections: vessel card, kit and upgrade trees, the crew demo, asset pack.
+   Light-only on purpose, to match those pages. The accent is deep water and old brass. */
+:root {
+  color-scheme: light;
+  --bg: #eeebe5;
+  --card: #f7f6f2;
+  --line: #dcd6cc;
+  --well: #e2dcd2;
+  --check-a: #cec9c0;
+  --check-b: #c6c1b8;
+  --ink: #2f2a26;
+  --muted: #6b645c;
+  --sea: #1f5a78;
+  --sea-dark: #133d53;
+  --sea-soft: #e2edf1;
+  --sea-line: #b6cfda;
+  --brass: #b5852a;
+  --port: #c8383f;
+  --starboard: #2f9248;
+  --grass-a: #6eb64c;
+  --grass-b: #65aa46;
+  --path: #d8c79a;
+  --stone: #9aa3ad;
+  --stone-dark: #7b838c;
+  --f-pixel: "Silkscreen", "Courier New", monospace;
+  --f-body: "Nunito", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 16px; line-height: 1.55; }
+.page { max-width: 1200px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 72px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 88px; }
+.page > * { min-width: 0; }
+h1, h2, h3, .px { font-family: var(--f-pixel); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.eyebrow { font-family: var(--f-mono); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.eyebrow b { font-weight: 500; text-transform: none; letter-spacing: 0.04em; }
+.mono { font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+.well { background: var(--well); border-radius: 8px; }
+canvas, .sprite { image-rendering: pixelated; image-rendering: crisp-edges; display: block; }
+.checker { background: repeating-conic-gradient(var(--check-a) 0 25%, var(--check-b) 0 50%) 0 0 / var(--cell, 64px) var(--cell, 64px); }
+.section-head { display: grid; gap: 10px; max-width: 900px; }
+.section-head h2 { font-size: clamp(24px, 4vw, 40px); line-height: 1.1; }
+.section-head p { color: var(--muted); font-size: 17px; }
+
+/* ---------- 1. vessel card ---------- */
+.vessel { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 48px; align-items: start; }
+.hero { display: grid; gap: 18px; min-width: 0; }
+.hero .well { aspect-ratio: 1 / 1; display: grid; place-items: center; max-width: 100%; }
+.hero canvas { width: min(100%, 384px); height: auto; aspect-ratio: 1 / 1; }
+.hero h1 { font-size: clamp(56px, 9vw, 96px); line-height: 0.9; letter-spacing: 0.04em; }
+.title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.title-row .sub { font-size: 26px; font-weight: 600; }
+.shapes { display: flex; flex-wrap: wrap; gap: 8px 22px; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.shapes span { display: inline-flex; align-items: center; gap: 8px; }
+.shapes .me { color: var(--sea); font-weight: 500; }
+.shapes i { display: inline-block; width: 14px; height: 14px; background: currentColor; }
+.shapes .ci { border-radius: 50%; }
+.shapes .tr { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.shapes .dm { border-radius: 7px 7px 0 0; }
+.badge { font-family: var(--f-pixel); font-weight: 700; font-size: 12px; letter-spacing: 0.12em; color: #fff; background: var(--sea); border-radius: 4px; padding: 5px 10px; }
+.hero .pitch { color: var(--muted); font-size: 18px; max-width: 52ch; }
+.side { display: grid; gap: 24px; min-width: 0; }
+.rule { padding: 22px 26px; display: grid; gap: 10px; }
+.rule-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.rule h3 { font-size: 22px; }
+.rule p { font-size: 18px; }
+.rule .small { font-size: 15px; color: var(--muted); }
+.action { padding: 20px 26px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: center; }
+.btn { font-family: var(--f-pixel); font-weight: 700; letter-spacing: 0.12em; font-size: 15px; text-transform: uppercase; border-radius: 4px; padding: 12px 22px; border: 2px solid var(--sea); cursor: pointer; }
+.btn.solid { background: var(--sea); color: #fff; box-shadow: inset 0 -4px 0 var(--sea-dark); }
+.btn.ghost { background: transparent; color: var(--sea); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn:focus-visible, .link:focus-visible, .tw:focus-visible, .crew-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+.btn.badge-like { pointer-events: none; padding: 16px 26px; font-size: 18px; }
+.action p { font-size: 17px; }
+.action .small { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.block-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.block-head h3 { font-size: 20px; }
+.kit { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.kit .card { padding: 16px; display: grid; grid-template-columns: 80px minmax(0, 1fr); gap: 16px; align-items: center; }
+.kit .ico { width: 80px; height: 80px; display: grid; place-items: center; }
+.kit .ico canvas { width: 64px; height: 64px; }
+.kit h4 { font-family: var(--f-pixel); font-weight: 700; letter-spacing: 0.1em; font-size: 15px; margin: 0; }
+.kit p { font-size: 15px; }
+.crew { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.crew .card { padding: 14px 8px 12px; display: grid; justify-items: center; gap: 8px; text-align: center; font-weight: 700; font-size: 14px; }
+.crew canvas { width: 64px; height: 64px; }
+.crew .mono { font-weight: 400; font-size: 11px; }
+
+/* ---------- in-game card (mirrors the character select) ---------- */
+.ingame { display: grid; grid-template-columns: minmax(0, 500px) minmax(0, 1fr); gap: 40px; align-items: start; margin-top: 28px; }
+.gcard { position: relative; color: #fff; font-family: "Exo 2", "Trebuchet MS", sans-serif; background: #6f9fc4; overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5); }
+.gcard::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: repeating-linear-gradient(30deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 26px),
+              repeating-linear-gradient(-30deg, rgba(15, 50, 80, 0.07) 0 2px, transparent 2px 34px); }
+.gcard > * { position: relative; }
+.g-rule { height: 0; border-top: 2px solid rgba(255, 255, 255, 0.85); margin: 8px 0; box-shadow: 0 4px 0 -2px rgba(255, 255, 255, 0.45); }
+.g-top { display: grid; justify-items: center; gap: 18px; padding: 22px 20px 20px; }
+.g-frame { position: relative; width: 240px; height: 216px; display: grid; place-items: center; max-width: 100%; }
+.g-frame i { position: absolute; width: 22px; height: 22px; border: 0 solid rgba(255, 255, 255, 0.6); }
+.g-frame i:nth-child(1) { top: 0; left: 0; border-width: 3px 0 0 3px; }
+.g-frame i:nth-child(2) { top: 0; right: 0; border-width: 3px 3px 0 0; }
+.g-frame i:nth-child(3) { bottom: 0; left: 0; border-width: 0 0 3px 3px; }
+.g-frame i:nth-child(4) { bottom: 0; right: 0; border-width: 0 3px 3px 0; }
+.g-frame canvas { width: 192px; height: 192px; }
+.g-role { display: flex; align-items: center; gap: 16px; font-size: 20px; }
+.g-trait { margin: 4px 22px 22px; padding: 12px 18px; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 16px; align-items: center;
+  background: rgba(15, 50, 80, 0.22); border: 2px solid rgba(255, 255, 255, 0.55); outline: 2px solid rgba(255, 255, 255, 0.25); outline-offset: 3px; }
+.g-trait svg { grid-row: span 2; }
+.g-trait b { font-weight: 500; font-size: 30px; line-height: 1; letter-spacing: 0.01em; }
+.g-trait span { font-size: 13px; line-height: 1.45; }
+.g-stats { background: rgba(15, 50, 80, 0.26); border-top: 2px solid rgba(255, 255, 255, 0.5); border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  padding: 14px 22px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 10px; font-size: 19px; }
+.g-stats span { display: flex; align-items: center; gap: 12px; font-variant-numeric: tabular-nums; }
+.g-lore { padding: 18px 24px; text-align: center; font-size: 17px; line-height: 1.5; }
+.g-units { display: grid; justify-items: center; gap: 22px; padding: 6px 20px 28px; }
+.g-units h4 { margin: 0; font-weight: 400; font-size: 19px; letter-spacing: 0.04em; }
+.g-units canvas { width: 64px; height: 64px; }
+.notes-ig { display: grid; gap: 22px; min-width: 0; }
+.notes-ig h3 { font-size: 18px; }
+.notes-ig ul { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 8px; font-size: 16px; }
+.notes-ig .src { font-size: 13px; color: var(--muted); }
+@media (max-width: 1000px) { .ingame { grid-template-columns: minmax(0, 1fr); } .gcard { max-width: 500px; } }
+@media (max-width: 480px) { .g-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .g-trait b { font-size: 24px; } }
+
+/* ---------- 2. upgrade trees ---------- */
+.trees { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.tree { padding: 18px; display: grid; gap: 12px; align-content: start; }
+.tree-head { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; }
+.tree-head .ico { width: 64px; height: 64px; display: grid; place-items: center; }
+.tree-head canvas { width: 48px; height: 48px; }
+.tree-head h3 { font-size: 17px; }
+.tree-head p { font-size: 14px; }
+.tier-label { font-family: var(--f-pixel); font-weight: 700; font-size: 11px; letter-spacing: 0.12em; margin-top: 4px; }
+.opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.opt { background: #fbfaf7; border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; display: grid; gap: 4px; }
+.opt b { font-family: var(--f-pixel); font-weight: 700; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+.opt span { font-size: 13px; color: var(--muted); line-height: 1.4; }
+.opt.cap { grid-column: 1 / -1; background: var(--sea-soft); border-color: var(--sea-line); }
+.unit-row { margin-top: 16px; padding: 16px 20px; display: grid; grid-template-columns: 64px minmax(0, 220px) minmax(0, 1fr) minmax(0, 1fr); gap: 20px; align-items: center; }
+.unit-row .ico { width: 64px; height: 64px; display: grid; place-items: center; }
+.unit-row canvas { width: 48px; height: 48px; }
+.unit-row h3 { font-size: 17px; }
+.unit-row .note { font-size: 13px; color: var(--muted); }
+
+/* ---------- 3. crew demo ---------- */
+.loop { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.stage { padding: 20px; display: grid; gap: 16px; }
+.stage-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.stage-top h3 { font-size: 20px; }
+.crew-pick { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.crew-btn { display: inline-flex; align-items: center; gap: 8px; font-family: var(--f-pixel); font-weight: 700; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--card); color: var(--ink); border: 2px solid var(--line); border-radius: 6px; padding: 6px 12px 6px 6px; cursor: pointer; }
+.crew-btn canvas { width: 32px; height: 32px; }
+.crew-btn[aria-pressed="true"] { border-color: var(--sea); background: var(--sea-soft); }
+.crew-btn small { font-family: var(--f-mono); font-weight: 400; font-size: 11px; letter-spacing: 0; text-transform: none; color: var(--muted); }
+.board { position: relative; width: 100%; aspect-ratio: 12 / 8; border-radius: 6px; overflow: hidden;
+  background: repeating-conic-gradient(var(--grass-a) 0 25%, var(--grass-b) 0 50%) 0 0 / calc(100% / 6) calc(100% / 4); }
+.board > * { position: absolute; }
+.b-path { background: var(--path); }
+.b-wall { background: var(--stone); box-shadow: inset -3px -3px 0 var(--stone-dark); }
+.b-ore { background: radial-gradient(circle at 40% 40%, #9fdcf6 0 18%, #6ac7f0 19% 42%, transparent 43%); }
+.b-tremor { border-radius: 50%; border: 2px dashed rgba(107, 80, 52, 0.75); background: rgba(138, 106, 69, 0.12); transform: translate(-50%, -50%); transition: width 0.5s, height 0.5s; pointer-events: none; }
+.b-line { height: 0; border-top: 2px dashed rgba(195, 209, 221, 0.95); transform-origin: 0 0; pointer-events: none; }
+.b-cone { background: rgba(214, 168, 76, 0.28); clip-path: polygon(0 50%, 100% 0, 100% 100%); pointer-events: none; }
+.b-label { font-family: var(--f-mono); font-size: 10px; color: #23321a; background: rgba(255, 255, 255, 0.7); border-radius: 3px; padding: 0 4px; white-space: nowrap; transform: translateX(-50%); pointer-events: none; }
+.tw { padding: 0; border: 0; background: rgba(255, 255, 255, 0.0); cursor: pointer; border-radius: 4px; display: grid; place-items: center; }
+.tw canvas { width: 100%; height: 100%; }
+.tw.ally::after { content: "ally"; position: absolute; top: -2px; right: -6px; font-family: var(--f-mono); font-size: 9px; background: #fff; color: var(--ink); border-radius: 3px; padding: 0 3px; }
+.tw.tuned { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--tc, var(--sea)); }
+.tw.target { animation: pulse 1.1s ease-in-out infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9); } }
+.naut { transition: left 0.9s ease-in-out, top 0.9s ease-in-out; pointer-events: none; }
+.naut canvas { width: 100%; height: 100%; }
+.naut.sel { filter: drop-shadow(0 0 0 #fff) drop-shadow(0 -2px 0 #fff) drop-shadow(0 2px 0 #fff); }
+.ping { border-radius: 50%; border: 3px solid rgba(122, 230, 239, 0.95); transform: translate(-50%, -50%) scale(0.05); opacity: 0; pointer-events: none; }
+.ping.go { animation: ping 1.1s ease-out; }
+@keyframes ping { 0% { transform: translate(-50%, -50%) scale(0.05); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+.log { font-size: 16px; min-height: 3.2em; }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.controls .link { font-family: var(--f-pixel); font-weight: 700; font-size: 13px; letter-spacing: 0.1em; color: var(--ink); background: none; border: 0; text-decoration: underline; cursor: pointer; padding: 8px; }
+.right { display: grid; gap: 24px; min-width: 0; }
+.econ { padding: 22px 24px; display: grid; gap: 12px; min-width: 0; }
+.table-wrap { overflow-x: auto; }
+.econ table { width: 100%; border-collapse: collapse; font-size: 15px; }
+.econ td, .econ th { padding: 8px 14px 8px 0; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.econ th { font-family: var(--f-pixel); font-weight: 700; font-size: 11px; letter-spacing: 0.1em; color: var(--muted); }
+.econ td.n { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.econ tr:last-child td { border-bottom: 0; }
+.econ .who { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.chip { display: inline-block; font-family: var(--f-mono); font-size: 12px; border-radius: 3px; padding: 0 6px; color: #fff; }
+.chip.port { background: var(--port); } .chip.starboard { background: var(--starboard); }
+.depth { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; }
+.gauge { width: 54px; display: grid; gap: 3px; }
+.gauge i { display: block; height: 22px; border-radius: 3px; background: var(--well); position: relative; }
+.gauge i.on { background: var(--sea); }
+.gauge i:nth-child(2).on { background: #18495f; } .gauge i:nth-child(3).on { background: #10334a; }
+.depth b { font-family: var(--f-pixel); font-size: 22px; letter-spacing: 0.06em; }
+.depth .mono { display: block; }
+.aura { font-family: var(--f-mono); font-variant-numeric: tabular-nums; font-size: 28px; color: var(--sea-dark); }
+
+/* ---------- 4. asset pack ---------- */
+.pack-head { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; align-items: end; }
+.stats { display: grid; grid-template-columns: repeat(3, auto); gap: 6px 24px; font-size: 14px; }
+.stats b { font-family: var(--f-pixel); font-size: 18px; margin-right: 6px; }
+.assets { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 28px 20px; }
+.asset { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-content: start; min-width: 0; }
+.asset h3 { font-size: 14px; }
+.asset .row { display: flex; gap: 14px; align-items: start; flex-wrap: wrap; }
+.asset .live { flex: none; display: grid; gap: 6px; justify-items: center; }
+.asset .live canvas { width: 128px; height: 128px; border-radius: 6px; }
+.asset .live.small canvas { width: 96px; height: 96px; }
+.asset .live .mono { font-size: 11px; }
+.sheet-wrap { overflow-x: auto; border-radius: 6px; max-width: 100%; min-width: 0; }
+.sheet-wrap img { display: block; max-width: none; }
+.asset .row > .sheet-wrap { flex: 1 1 0; }
+.asset .row > .sheet-wrap:only-child, .asset .row > img + div .sheet-wrap { flex: none; }
+.asset .cap { font-size: 13px; color: var(--muted); }
+.span-7 { grid-column: span 7; } .span-5 { grid-column: span 5; } .span-12 { grid-column: span 12; } .span-4 { grid-column: span 4; } .span-8 { grid-column: span 8; }
+footer { font-size: 13px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+footer a { color: inherit; }
+
+@media (max-width: 1000px) {
+  .vessel, .loop { grid-template-columns: minmax(0, 1fr); }
+  .trees { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .unit-row { grid-template-columns: 64px minmax(0, 1fr); }
+  .unit-row > :nth-child(n+3) { grid-column: 1 / -1; }
+  .span-7, .span-5, .span-4, .span-8, .span-12 { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .kit, .trees { grid-template-columns: minmax(0, 1fr); }
+  .crew { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .action { grid-template-columns: minmax(0, 1fr); }
+  .stats { grid-template-columns: repeat(2, auto); }
+  .b-label { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .naut, .b-tremor { transition: none; }
+  .tw.target { animation: none; }
+  .ping.go { animation: none; }
+}
+</style>
+
+<main class="page">
+  <!-- ===================================================== 1. VESSEL CARD -->
+  <section class="vessel" aria-labelledby="name">
+    <div class="hero">
+      <p class="eyebrow">Vessel concept · <b>Hero_Argo</b></p>
+      <div class="well checker" style="--cell: 96px">
+        <canvas id="hero" width="384" height="384" data-anim="idle" data-scale="12" role="img" aria-label="ARGO idling: a small diver in a big brass dome helmet with a round porthole for a face, two cyan eyes in the dark glass, a lamp on top, a valve that lets out bubbles, a brass collar, a sea-blue suit with a weight belt, lead boots and floating orange rubber gloves"></canvas>
+      </div>
+      <h1 id="name">Argo</h1>
+      <div class="title-row"><span class="sub">Fathoms Below</span><span class="badge">Intermediate</span></div>
+      <p class="pitch">A small deep-sea diver in a brass helmet, a long way from the surface. ARGO drills the seabed for aura, shreds swarms with a scatter cannon, spears big targets down long lanes, and sends two deckhands to keep everyone's towers running, teammates' included.</p>
+      <div class="shapes" aria-label="Shape language">
+        <span><i></i>Smacky · square</span><span><i class="ci"></i>SnoSno · circle</span><span><i class="tr"></i>MUMMER · triangle</span><span class="me"><i class="dm"></i>ARGO · dome</span>
+      </div>
+    </div>
+
+    <div class="side">
+      <div class="card rule">
+        <div class="rule-head"><h3>Fathoms</h3><span class="mono">Vessel rule</span></div>
+        <p>A <strong>Drilling Tower</strong> on an Ore Node goes one <strong>Fathom</strong> deeper for every Tide it stays there, down to Fathom 3. Each Fathom adds 50% aura and widens its <strong>Tremors</strong> by a tile.</p>
+        <p class="small">Selling or moving a Drill brings it back to the surface. Deep nodes pay well, but only if you commit early: a Drill placed late in a run never reaches the bottom.</p>
+      </div>
+      <div class="card action">
+        <span class="btn solid badge-like">Sonar</span>
+        <div>
+          <p>Ping everything within 7 tiles. Enemies hit are <strong>Pinged</strong> for 6s and take 20% more damage. Drills in range quake at once, rooting every enemy in their Tremors for 1s. Cooldown 14s.</p>
+          <p class="small">Basic attack, Wrench Swing: a slow, heavy melee swing that hits up to 2 enemies in front.</p>
+        </div>
+      </div>
+
+      <div class="block-head"><h3>Kit</h3><span class="mono">4 buildables · 2 units</span></div>
+      <div class="kit">
+        <div class="card"><div class="ico well"><canvas width="16" height="16" data-icon="0"></canvas></div><div><h4>Scatter Cannon</h4><p class="mono">Tower_Argoscatter</p><p>Fires 7 pellets in a 50° cone. Shreds hordes of small enemies, wastes most pellets on one big one.</p></div></div>
+        <div class="card"><div class="ico well"><canvas width="16" height="16" data-icon="1"></canvas></div><div><h4>Harpoon Tower</h4><p class="mono">Tower_Argoharpoon</p><p>Long range, slow. Each harpoon pierces up to 3 enemies in a line, so it wants a long, straight lane.</p></div></div>
+        <div class="card"><div class="ico well"><canvas width="16" height="16" data-icon="2"></canvas></div><div><h4>Mining Base</h4><p class="mono">Tower_Argobase</p><p>Home to two Nauts. Select one and send it to any tower, a teammate's included, to tune it.</p></div></div>
+        <div class="card"><div class="ico well"><canvas width="16" height="16" data-icon="3"></canvas></div><div><h4>Drilling Tower</h4><p class="mono">Tower_Argodrill</p><p>Economy and defense. Mines an Ore Node for aura; its Tremors slow every enemy within 3 tiles.</p></div></div>
+      </div>
+
+      <div class="block-head"><h3>Crew</h3><span class="mono">unit sprites</span></div>
+      <div class="crew">
+        <div class="card"><canvas width="64" height="64" data-anim="n_port" data-scale="4"></canvas>Port<span class="mono">red light</span></div>
+        <div class="card"><canvas width="64" height="64" data-anim="n_star" data-scale="4"></canvas>Starboard<span class="mono">green light</span></div>
+        <div class="card"><canvas width="64" height="64" data-anim="t_port" data-scale="4"></canvas>Tuning<span class="mono">Port</span></div>
+        <div class="card"><canvas width="64" height="64" data-anim="t_star" data-scale="4"></canvas>Tuning<span class="mono">Starboard</span></div>
+        <div class="card"><canvas width="64" height="64" data-anim="fx_tuned" data-scale="4"></canvas>Tuned<span class="mono">+20% speed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== IN-GAME CARD -->
+  <section aria-labelledby="ig-h">
+    <div class="section-head">
+      <p class="eyebrow">Character select · matched to the game's own cards</p>
+      <h2 id="ig-h">How ARGO would look in game</h2>
+      <p>Laid out like the character-select cards for Smacky, Boutman, Buster and Fie: sprite at 6× between corner brackets, role line, trait box, stat row, a line of lore, then Towers &amp; Units.</p>
+    </div>
+    <div class="ingame">
+      <div class="gcard" aria-label="Mock character-select card for ARGO">
+        <div class="g-rule"></div>
+        <div class="g-top">
+          <div class="g-frame"><i></i><i></i><i></i><i></i><canvas width="192" height="192" data-anim="idle" data-scale="6" role="img" aria-label="ARGO idle sprite at 6 times scale"></canvas></div>
+          <div class="g-role"><span data-picon="role"></span><span>Sturdy, slow melee, hits 2 in front</span></div>
+        </div>
+        <div class="g-trait"><span data-picon="trait"></span><b>FATHOMS</b><span>Drills mine Ore Nodes and go a Fathom deeper each Tide they stay. Tremors slow enemies nearby. Nauts tune any tower, teammates' included</span></div>
+        <div class="g-stats">
+          <span><i data-picon="hp"></i>70</span><span><i data-picon="dmg"></i>4</span><span><i data-picon="rate"></i>0.9</span><span><i data-picon="unit"></i>2</span>
+          <span><i data-picon="move"></i>1.2</span><span><i data-picon="range"></i>1.5</span><span><i data-picon="cost"></i>0.5</span>
+        </div>
+        <p class="g-lore">Argo went down to find the bottom of the sea. It hasn't found it yet, but it has found a lot of ore.</p>
+        <div class="g-rule"></div>
+        <div class="g-units">
+          <h4>TOWERS &amp; UNITS</h4>
+          <canvas width="16" height="16" data-icon="0" aria-label="Scatter Cannon"></canvas>
+          <canvas width="16" height="16" data-icon="1" aria-label="Harpoon Tower"></canvas>
+          <canvas width="16" height="16" data-icon="2" aria-label="Mining Base"></canvas>
+          <canvas width="16" height="16" data-icon="3" aria-label="Drilling Tower"></canvas>
+          <canvas width="64" height="64" data-anim="n_port" data-scale="4" aria-label="Port, a Naut"></canvas>
+          <canvas width="64" height="64" data-anim="n_star" data-scale="4" aria-label="Starboard, a Naut"></canvas>
+        </div>
+      </div>
+      <div class="notes-ig">
+        <div>
+          <h3>House rules it follows</h3>
+          <ul>
+            <li>One art pixel is 6 screen pixels on the card. ARGO is 24 pixels wide and 28 tall, inside the 21 to 24 by 20 to 28 range of the shipped Vessels, in a 32×32 frame.</li>
+            <li>Crisp edges with no outline or soft rim. Each shape is a base colour with a stronger shade on its right and bottom edges and a near-base light on the left.</li>
+            <li>Eyes are 1×2 with the darker pixel on top. Pure white is kept for small accents: the glint on the porthole, the lamp, sparks.</li>
+            <li>Hands float at the sides; legs are 2 pixels wide. Units sit around 16 pixels, like Boutman's fish and SnoSno's Snoborne.</li>
+            <li>Towers are voxel models in the game, so they stay out of the sprite pack; the icons here stand in for them.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>How ARGO is drawn</h3>
+          <ul>
+            <li>Smacky is the square, SnoSno the circle and MUMMER the triangle, so ARGO is the dome: an old brass diving helmet, a half-circle on straight sides.</li>
+            <li>The face is the porthole. Dark glass, two cyan eyes and one white glint. When ARGO pings, the eyes light up.</li>
+            <li>Brass on top, a sea-blue suit below, then lead boots. The orange rubber gloves are the only warm colour below the collar, so the hands read at a glance.</li>
+            <li>It's heavy. Each step lifts a boot two pixels and lands with a bob, and when it stands still, bubbles rise from the valve on its helmet.</li>
+            <li>Port and Starboard wear smaller domes with a red and a green light on top, the colours of a ship's left and right running lights. You pick between them often, so they have to be told apart at 16 pixels.</li>
+          </ul>
+          <p class="src" style="margin-top:10px">Stats follow the card's order: health, damage, attack interval, unit count, move speed, range and the $ stat. Values are placeholders sized against Smacky and Fie. ARGO trades move speed for health.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== 2. KIT AND UPGRADE TREES -->
+  <section aria-labelledby="trees-h">
+    <div class="section-head">
+      <p class="eyebrow">Kit · 4 buildables + 2 units</p>
+      <h2 id="trees-h">Kit and upgrade trees</h2>
+      <p>Same shape as the shipped Vessels: each buildable branches through tiers 2 to 4 and ends in one tier 5 capstone. Costs are aura, as usual.</p>
+    </div>
+    <div class="trees" style="margin-top: 28px">
+      <article class="card tree">
+        <div class="tree-head"><div class="ico well"><canvas width="16" height="16" data-icon="0"></canvas></div><div><h3>Scatter Cannon</h3><p class="mono">Tower_Argoscatter</p><p>Horde clear. 7 pellets × 2 damage every 1.4s, range 4.</p></div></div>
+        <div class="tier-label">Tier 2</div>
+        <div class="opts"><div class="opt"><b>Wide Bore</b><span>Cone 50° to 75°</span></div><div class="opt"><b>Choke</b><span>Cone 50° to 30°, range +2</span></div></div>
+        <div class="tier-label">Tier 3</div>
+        <div class="opts"><div class="opt"><b>Grapeshot</b><span>9 pellets a shot</span></div><div class="opt"><b>Barnacle Shot</b><span>Each pellet slows 10% for 2s, stacking to 30%</span></div></div>
+        <div class="tier-label">Tier 4</div>
+        <div class="opts"><div class="opt"><b>Riptide</b><span>Pellets push small enemies back half a tile</span></div><div class="opt"><b>Pressure Rounds</b><span>A pellet that kills carries on to the next enemy</span></div></div>
+        <div class="tier-label">Tier 5</div>
+        <div class="opts"><div class="opt cap"><b>Broadside</b><span>Every 4th volley fires a full ring of 16 pellets all around the cannon.</span></div></div>
+      </article>
+      <article class="card tree">
+        <div class="tree-head"><div class="ico well"><canvas width="16" height="16" data-icon="1"></canvas></div><div><h3>Harpoon Tower</h3><p class="mono">Tower_Argoharpoon</p><p>Lane control. 14 damage every 3s, range 9, pierces 3.</p></div></div>
+        <div class="tier-label">Tier 2</div>
+        <div class="opts"><div class="opt"><b>Long Line</b><span>Range 9 to 11</span></div><div class="opt"><b>Barbed</b><span>Pierced enemies bleed 3 a second for 3s</span></div></div>
+        <div class="tier-label">Tier 3</div>
+        <div class="opts"><div class="opt"><b>Skewer</b><span>Pierces 6 enemies</span></div><div class="opt"><b>Reel In</b><span>The first enemy hit is dragged 1.5 tiles back up the lane</span></div></div>
+        <div class="tier-label">Tier 4</div>
+        <div class="opts"><div class="opt"><b>Whaler</b><span>Double damage to Aegis and bosses</span></div><div class="opt"><b>Twin Line</b><span>Fires two harpoons 0.3s apart</span></div></div>
+        <div class="tier-label">Tier 5</div>
+        <div class="opts"><div class="opt cap"><b>Leviathan Lance</b><span>Every 5th shot is a lance that pierces everything in its line, the length of the map.</span></div></div>
+      </article>
+      <article class="card tree">
+        <div class="tree-head"><div class="ico well"><canvas width="16" height="16" data-icon="2"></canvas></div><div><h3>Mining Base</h3><p class="mono">Tower_Argobase</p><p>Support. 2 Nauts; a tuned tower gets +20% attack speed or +20% aura.</p></div></div>
+        <div class="tier-label">Tier 2</div>
+        <div class="opts"><div class="opt"><b>Flippers</b><span>Nauts move 50% faster</span></div><div class="opt"><b>Hard Hats</b><span>Naut health 20 to 45</span></div></div>
+        <div class="tier-label">Tier 3</div>
+        <div class="opts"><div class="opt"><b>Overhaul</b><span>Tuning also repairs 2 health a second</span></div><div class="opt"><b>Calibrate</b><span>Tuning also gives +1 range</span></div></div>
+        <div class="tier-label">Tier 4</div>
+        <div class="opts"><div class="opt"><b>Third Mate</b><span>A third Naut, Bosun, with a yellow light</span></div><div class="opt"><b>Salvage</b><span>A Naut rebuilds the tower it tends at half health once per Tide</span></div></div>
+        <div class="tier-label">Tier 5</div>
+        <div class="opts"><div class="opt cap"><b>Full Crew</b><span>Tuning gives +40%. Nauts travel by diving bell: sent anywhere on the map in 1s, 10s cooldown each.</span></div></div>
+      </article>
+      <article class="card tree">
+        <div class="tree-head"><div class="ico well"><canvas width="16" height="16" data-icon="3"></canvas></div><div><h3>Drilling Tower</h3><p class="mono">Tower_Argodrill</p><p>Economy + defense. 8 aura a Tide; Tremors slow 25% within 3 tiles.</p></div></div>
+        <div class="tier-label">Tier 2</div>
+        <div class="opts"><div class="opt"><b>Rotary Bit</b><span>Mines 30% faster</span></div><div class="opt"><b>Seismic</b><span>Tremor slow 25% to 35%</span></div></div>
+        <div class="tier-label">Tier 3</div>
+        <div class="opts"><div class="opt"><b>Deep Core</b><span>Can drill down to Fathom 5</span></div><div class="opt"><b>Aftershock</b><span>Each Tremor pulse deals 2 damage</span></div></div>
+        <div class="tier-label">Tier 4</div>
+        <div class="opts"><div class="opt"><b>Gusher</b><span>At Fathom 3 or deeper, a 20-aura burst at the end of each Tide</span></div><div class="opt"><b>Fault Line</b><span>Tremors run as a 9-tile line along the nearest lane</span></div></div>
+        <div class="tier-label">Tier 5</div>
+        <div class="opts"><div class="opt cap"><b>Mantle Tap</b><span>Double aura. Once per Tide, a Quake stuns every enemy in its Tremors for 2s.</span></div></div>
+      </article>
+    </div>
+    <div class="card unit-row">
+      <div class="ico well"><canvas width="16" height="16" data-anim="n_port" data-scale="1"></canvas></div>
+      <div><h3>Nauts · Port and Starboard</h3><p class="mono">Mob_Naut · unit</p></div>
+      <p>Small divers who live in the Mining Base. Select one, then a tower: it walks there and tunes it, for +20% attack speed, or +20% aura on an economy building. 20 health; a Naut that's knocked out swims home and is back in 8s.</p>
+      <p class="note">One Naut per tower. They work on any player's towers, so a Mining Base helps the whole team. WICK's Lamppost also buffs teammates, but it's tethered in place; Nauts are units you keep moving.</p>
+    </div>
+  </section>
+
+  <!-- ===================================================== 3. CREW DEMO -->
+  <section aria-labelledby="loop-h">
+    <div class="section-head">
+      <p class="eyebrow">Nauts and Fathoms · core loop</p>
+      <h2 id="loop-h">Send the crew, sink the drill</h2>
+      <p>Pick a Naut, then a tower, to send it over. Tune your own Drill for more aura, or lend a Naut to a teammate's tower. Play a few Tides to watch the Drill go deeper. The lane here is walled off with Smacky's Walls, the way a team builds one on an open map.</p>
+    </div>
+    <div class="loop" style="margin-top: 28px">
+      <div class="well stage">
+        <div class="stage-top"><h3 id="tide-label">Before Tide 1</h3><span class="mono" id="sel-label">Pick a Naut</span></div>
+        <div class="crew-pick" role="group" aria-label="Pick a Naut">
+          <button class="crew-btn" id="pick-port" type="button" aria-pressed="false"><canvas width="32" height="32" data-anim="n_port" data-scale="2"></canvas>Port <small id="where-port">at base</small></button>
+          <button class="crew-btn" id="pick-star" type="button" aria-pressed="false"><canvas width="32" height="32" data-anim="n_star" data-scale="2"></canvas>Starboard <small id="where-star">at base</small></button>
+        </div>
+        <div class="board" id="board" aria-label="Map: a long lane walled off from left to right, turning down at the end. ARGO's Mining Base, Drilling Tower on an Ore Node, Scatter Cannon and Harpoon Tower, a teammate's Archer Tower and Sno Cannon."></div>
+        <p class="log" id="log" aria-live="polite">Pick Port or Starboard, then pick a tower to send it to.</p>
+        <div class="controls">
+          <button class="btn solid" id="next" type="button">Play Tide 1</button>
+          <button class="btn ghost" id="sonar" type="button">Sonar</button>
+          <button class="link" id="recall" type="button">Recall both</button>
+          <button class="link" id="reset" type="button">Reset</button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="card econ">
+          <div class="rule-head"><h3 class="px" style="font-size:18px">Drill depth</h3><span class="mono">1 fathom = 6 ft</span></div>
+          <div class="depth">
+            <div class="gauge" aria-hidden="true"><i id="g1"></i><i id="g2"></i><i id="g3"></i></div>
+            <div><b id="fathom">Fathom 1</b><span class="mono" id="fathom-note">8 aura a Tide · Tremors 3 tiles</span>
+              <span class="mono" style="margin-top:10px">Aura mined</span><span class="aura" id="aura">0</span></div>
+          </div>
+        </div>
+        <div class="card econ">
+          <div class="rule-head"><h3 class="px" style="font-size:18px">Towers on this map</h3><span class="mono">placeholder tuning</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Tower</th><th>Normally</th><th>Naut</th></tr></thead>
+              <tbody id="readout"></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card econ">
+          <div class="rule-head"><h3 class="px" style="font-size:18px">Scatter or Harpoon?</h3></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th></th><th>Scatter Cannon</th><th>Harpoon Tower</th></tr></thead>
+              <tbody>
+                <tr><td>Reach</td><td>4 tiles, a 50° cone</td><td>9 tiles, a straight line</td></tr>
+                <tr><td>Fires</td><td class="n">every 1.4s</td><td class="n">every 3.0s</td></tr>
+                <tr><td>Damage</td><td class="n">7 × 2</td><td class="n">14, pierces 3</td></tr>
+                <tr><td>Good against</td><td>Packs of small enemies close in, at bends where they bunch up</td><td>Aegis, bosses, and anything lined up in a long lane</td></tr>
+                <tr><td>Weak against</td><td>One tough enemy: most pellets miss</td><td>Swarms spread across open ground</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== 4. ASSET PACK -->
+  <section aria-labelledby="pack-h">
+    <div class="pack-head">
+      <div class="section-head">
+        <p class="eyebrow">Asset pack · in-game formats</p>
+        <h2 id="pack-h">Every sprite ARGO needs</h2>
+        <p>Formats from the Sprigg pack: 32×32 vessel frames at 20 PPU with a bottom-centre pivot, and 16×16 units, with Sprigg's row order of front, front, back, back. The look is matched to the in-game sprites of Smacky, Boutman, Buster and Fie. Towers are voxel models in the game and aren't in this pack.</p>
+      </div>
+      <div class="stats" aria-label="Pack contents">
+        <span><b>8</b>vessel sheets</span><span><b>3</b>unit sheets</span><span><b>2</b>UI and FX</span>
+        <span><b>189</b>frames</span><span><b>1</b>manifest</span>
+      </div>
+    </div>
+
+    <div class="assets" style="margin-top: 32px">
+      <div class="asset span-7">
+        <h3>Vessel · Idle + Move</h3>
+        <div class="row">
+          <div class="live"><canvas width="128" height="128" class="checker" data-anim="idle" data-scale="4"></canvas><span class="mono">idle · 6 fps</span></div>
+          <div class="live"><canvas width="128" height="128" class="checker" data-anim="move" data-scale="4"></canvas><span class="mono">move · 8 fps</span></div>
+          <div class="live"><canvas width="128" height="128" class="checker" data-anim="move_back" data-scale="4"></canvas><span class="mono">move, back</span></div>
+        </div>
+        <div class="sheet-wrap"><img class="sprite checker" style="--cell: 64px" src="assets/Hero_Argo_IdleMove.png" width="384" height="512" alt="Idle and move sheet: 6 frames by 8 rows, idle front, front, back, back, then move front, front, back, back"></div>
+        <p class="cap">Hero_Argo_IdleMove.png · 6×8 · idle: it breathes, bubbles rise from the helmet valve and the lamp flickers once. Move: a heavy stomp, each lead boot lifting two pixels.</p>
+      </div>
+      <div class="asset span-5">
+        <h3>Wrench Swing · attack</h3>
+        <div class="row"><div class="live"><canvas width="128" height="128" class="checker" data-anim="attack" data-scale="4"></canvas><span class="mono">attack · 10 fps</span></div></div>
+        <div class="sheet-wrap"><img class="sprite checker" style="--cell: 64px" src="assets/Hero_Argo_Attack.png" width="256" height="256" alt="Attack sheet: 4 frames by 4 rows. ARGO raises a steel wrench over its shoulder, swings it out flat to the right, sparks fly, and it recovers"></div>
+        <p class="cap">Hero_Argo_Attack.png · 4×4 · wind up over the shoulder, swing flat, clang.</p>
+      </div>
+      <div class="asset span-7">
+        <h3>Sonar · vessel action</h3>
+        <div class="row"><div class="live"><canvas width="128" height="128" class="checker" data-anim="sonar" data-scale="4"></canvas><span class="mono">sonar · 10 fps</span></div></div>
+        <div class="sheet-wrap"><img class="sprite checker" style="--cell: 64px" src="assets/Hero_Argo_Sonar.png" width="384" height="256" alt="Sonar sheet: 6 frames by 4 rows. A glove to the helmet, the eyes light up, a cyan ring grows out of the porthole past the frame edge, recover"></div>
+        <p class="cap">Hero_Argo_Sonar.png · 6×4 · the ring leaves the frame; the in-game ping and FX_Argo's sonar rings carry it out to 7 tiles.</p>
+      </div>
+      <div class="asset span-5">
+        <h3>Menu art, world sprite, icon</h3>
+        <div class="row">
+          <img class="sprite" src="assets/Hero_Argo_Menu.png" width="192" height="192" alt="Menu portrait: ARGO at double size standing on a dark seabed in a deep-water circle, light slanting down from the surface, bubbles and a glinting ore crystal">
+          <div style="display:grid; gap:10px">
+            <div class="sheet-wrap"><img class="sprite checker" style="--cell: 64px" src="assets/Hero_Argo_World.png" width="192" height="64" alt="World sprites: normal; selected, with glowing eyes and gloves raised; and locked in grey with the lamp off"></div>
+            <img class="sprite" src="assets/Hero_Argo_Icon.png" width="64" height="64" alt="16 by 16 icon: the brass dome helmet with its lamp and porthole face">
+          </div>
+        </div>
+        <p class="cap">Hero_Argo_Menu.png 96×96 · Hero_Argo_World.png normal, selected, locked · Hero_Argo_Icon.png 16×16. Selected, the eyes glow and the gloves go up. Locked, the lamp is off.</p>
+      </div>
+      <div class="asset span-12">
+        <h3>Landing · sinks in</h3>
+        <div class="row"><div class="live"><canvas width="128" height="128" class="checker" data-anim="land" data-scale="4"></canvas><span class="mono">land · 12 fps</span></div>
+          <div class="sheet-wrap" style="flex:1"><img class="sprite checker" style="--cell: 64px" src="assets/Hero_Argo_Land.png" width="768" height="64" alt="Landing strip, 12 frames: ARGO sinks in from above trailing bubbles, lands with a thud and a puff of silt, opens its eyes, reaches up and switches on its lamp"></div></div>
+        <p class="cap">Hero_Argo_Land.png · 12×1 · Sprigg plants itself and pops up. ARGO sinks in with its eyes shut, lands with a thud and a puff of silt, opens its eyes, then reaches up and switches its lamp on.</p>
+      </div>
+      <div class="asset span-12">
+        <h3>Falling · tumble loop</h3>
+        <div class="row"><div class="live"><canvas width="128" height="128" class="checker" data-anim="fall" data-scale="4"></canvas><span class="mono">fall · 12 fps</span></div>
+          <div class="sheet-wrap" style="flex:1"><img class="sprite checker" style="--cell: 64px" src="assets/Hero_Argo_Fall.png" width="768" height="64" alt="Falling strip, 12 frames: quarter turns with the gloves flailing"></div></div>
+        <p class="cap">Hero_Argo_Fall.png · 12×1 · pixel-exact quarter turns, gloves flail in three poses.</p>
+      </div>
+      <div class="asset span-8">
+        <h3>Units · Port and Starboard</h3>
+        <div class="row">
+          <div class="live small"><canvas width="96" height="96" class="checker" style="--cell: 48px" data-anim="n_port" data-scale="6"></canvas><span class="mono">Port</span></div>
+          <div class="live small"><canvas width="96" height="96" class="checker" style="--cell: 48px" data-anim="n_star" data-scale="6"></canvas><span class="mono">Starboard</span></div>
+          <div class="live small"><canvas width="96" height="96" class="checker" style="--cell: 48px" data-anim="n_star_back" data-scale="6"></canvas><span class="mono">back</span></div>
+          <div class="live small"><canvas width="96" height="96" class="checker" style="--cell: 48px" data-anim="t_port" data-scale="6"></canvas><span class="mono">tuning</span></div>
+        </div>
+        <div class="row">
+          <div class="sheet-wrap"><img class="sprite checker" style="--cell: 32px" src="assets/Mob_Naut_Port.png" width="192" height="128" alt="Port move sheet, 6 by 4"></div>
+          <div class="sheet-wrap"><img class="sprite checker" style="--cell: 32px" src="assets/Mob_Naut_Starboard.png" width="192" height="128" alt="Starboard move sheet, 6 by 4"></div>
+          <div class="sheet-wrap"><img class="sprite checker" style="--cell: 32px" src="assets/Mob_Naut_Tune.png" width="192" height="64" alt="Tuning sheet, 6 by 2: Port, then Starboard, tapping with a wrench"></div>
+        </div>
+        <p class="cap">Mob_Naut_Port / Starboard.png · 6×4 of 16×16 · Mob_Naut_Tune.png · 6×2, Port then Starboard: tap, tap, spark.</p>
+      </div>
+      <div class="asset span-4">
+        <h3>FX and kit icons</h3>
+        <div class="sheet-wrap"><img class="sprite checker" style="--cell: 32px" src="assets/FX_Argo.png" width="256" height="32" alt="FX: scatter volley, pellet hit, harpoon in flight, tremor ring small and large, sonar ring small and large, tuned"></div>
+        <div class="sheet-wrap"><img class="sprite checker" style="--cell: 32px" src="assets/UI_Argo_TowerIcons.png" width="128" height="32" alt="Kit icons: Scatter Cannon, Harpoon Tower, Mining Base, Drilling Tower"></div>
+        <p class="cap">FX_Argo.png: scatter volley, pellet hit, harpoon, Tremor ×2, sonar ×2, tuned · UI_Argo_TowerIcons.png: bell-mouthed cannon, harpoon gun, diving-bell base, derrick on an Ore Node.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Fan concept for TDS: Tower Defense Strategy. Sprite formats follow the measurements in the Sprigg asset pack; all numbers are placeholder tuning. The sheets, manifest and the generator script live in <span class="mono">tds-vessel-concepts/argo/assets</span> and <span class="mono">tds-vessel-concepts/sprites/tds_argo.py</span>.</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  // sheet: [file, cell, columns]; animation: [sheet, row, first col, frames, fps, loop]
+  var SHEETS = {
+    im: ['assets/Hero_Argo_IdleMove.png', 32, 6], at: ['assets/Hero_Argo_Attack.png', 32, 4],
+    so: ['assets/Hero_Argo_Sonar.png', 32, 6], ld: ['assets/Hero_Argo_Land.png', 32, 12],
+    fl: ['assets/Hero_Argo_Fall.png', 32, 12], np: ['assets/Mob_Naut_Port.png', 16, 6],
+    ns: ['assets/Mob_Naut_Starboard.png', 16, 6], nt: ['assets/Mob_Naut_Tune.png', 16, 6],
+    fx: ['assets/FX_Argo.png', 16, 8], ic: ['assets/UI_Argo_TowerIcons.png', 16, 4]
+  };
+  var ANIMS = {
+    idle: ['im', 0, 0, 6, 6, true], move: ['im', 4, 0, 6, 8, true], move_back: ['im', 6, 0, 6, 8, true],
+    attack: ['at', 0, 0, 4, 10, false], sonar: ['so', 0, 0, 6, 10, false], land: ['ld', 0, 0, 12, 12, false],
+    fall: ['fl', 0, 0, 12, 12, true], n_port: ['np', 0, 0, 6, 8, true], n_star: ['ns', 0, 0, 6, 8, true],
+    n_star_back: ['ns', 2, 0, 6, 8, true], t_port: ['nt', 0, 0, 6, 8, true], t_star: ['nt', 1, 0, 6, 8, true],
+    fx_tuned: ['fx', 0, 7, 1, 1, true]
+  };
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var images = {};
+  function img(key) {
+    if (!images[key]) { images[key] = new Image(); images[key].src = SHEETS[key][0]; }
+    return images[key];
+  }
+  var players = [];
+  function draw(cv, key, row, col, scale) {
+    var s = SHEETS[key], im = img(key), c = cv.getContext('2d'), cell = s[1];
+    c.imageSmoothingEnabled = false;
+    c.clearRect(0, 0, cv.width, cv.height);
+    var size = cell * scale, ox = Math.floor((cv.width - size) / 2), oy = cv.height - size;
+    if (im.complete && im.naturalWidth) c.drawImage(im, col * cell, row * cell, cell, cell, ox, oy, size, size);
+  }
+  function attach(cv) {
+    var a = ANIMS[cv.dataset.anim]; if (!a) return;
+    var p = { cv: cv, a: a, scale: +cv.dataset.scale || 1, t0: performance.now() };
+    players.push(p);
+    img(a[0]).addEventListener('load', function () { tick(performance.now(), true); });
+  }
+  function frameOf(p, now) {
+    var a = p.a, n = a[3], fps = a[4];
+    if (reduce || n === 1) return 0;
+    var f = Math.floor((now - p.t0) / 1000 * fps);
+    if (a[5]) return f % n;
+    var hold = Math.round(fps * 0.8);
+    return Math.min(f % (n + hold), n - 1);
+  }
+  function tick(now, once) {
+    players.forEach(function (p) {
+      var f = frameOf(p, now);
+      if (p.f === f && !once) return;
+      p.f = f;
+      draw(p.cv, p.a[0], p.a[1], p.a[2] + f, p.scale);
+    });
+    if (!once && !reduce) requestAnimationFrame(function (t) { tick(t, false); });
+  }
+  function icon(cv, i) {
+    var im = img('ic');
+    function go() { var c = cv.getContext('2d'); c.imageSmoothingEnabled = false; c.clearRect(0, 0, 16, 16); c.drawImage(im, i * 16, 0, 16, 16, 0, 0, 16, 16); }
+    if (im.complete && im.naturalWidth) go(); else im.addEventListener('load', go);
+  }
+  document.querySelectorAll('canvas[data-icon]').forEach(function (cv) { icon(cv, +cv.dataset.icon); });
+  document.querySelectorAll('canvas[data-anim]').forEach(attach);
+  requestAnimationFrame(function (t) { tick(t, false); });
+  tick(performance.now(), true);
+
+  // ---------------- crew demo
+  var $ = function (id) { return document.getElementById(id); };
+  var board = $('board'), COLS = 12, ROWS = 8;
+  function place(el, x, y, w, h) {
+    el.style.left = (x / COLS * 100) + '%'; el.style.top = (y / ROWS * 100) + '%';
+    if (w != null) el.style.width = (w / COLS * 100) + '%';
+    if (h != null) el.style.height = (h / ROWS * 100) + '%';
+  }
+  function add(cls, x, y, w, h) { var d = document.createElement('div'); d.className = cls; place(d, x, y, w, h); board.appendChild(d); return d; }
+  // a teammate's towers, drawn in their Vessel's shape: Smacky's square, SnoSno's circle
+  var ALLY = {
+    archer: ['................', '...s.s.s.s.s....', '...sssssssss....', '...sssssssSS....', '...ssmssmssS....', '...sssssssSS....',
+             '...ssssssssS....', '...sss..sssS....', '...sss..sssS....', '...ssssssssS....', '...SSSSSSSSS....', '................',
+             '................', '................', '................', '................'],
+    sno:    ['................', '................', '.....wwwww......', '....wwwwwwwW....', '...wwwwwwwwWkkk.', '...wwwwwwwwWkkk.',
+             '...wwwwwwwWW....', '....wwwwwWW.....', '.....WWWWW......', '....mmmmmmm.....', '....MMMMMMM.....', '................',
+             '................', '................', '................', '................']
+  };
+  var AC = { s: '#a9b2bb', S: '#7f8891', m: '#5a4632', M: '#3d2f22', w: '#f2f6fa', W: '#c5d3e0', k: '#4b5563' };
+  function allyIcon(cv, kind) {
+    var c = cv.getContext('2d'); ALLY[kind].forEach(function (r, y) { for (var x = 0; x < 16; x++) if (r[x] !== '.') { c.fillStyle = AC[r[x]]; c.fillRect(x, y, 1, 1); } });
+  }
+  // map: a long lane from the left, walled off, turning down at the far end
+  [[0, 3, 9, 1], [8, 4, 1, 4]].forEach(function (r) { add('b-path', r[0], r[1], r[2], r[3]); });
+  [[0, 2, 10, 1], [0, 4, 8, 1], [7, 5, 1, 3], [9, 4, 1, 4]].forEach(function (r) { add('b-wall', r[0], r[1], r[2], r[3]); });
+  add('b-label', 0.9, 3.25).textContent = 'enemies →';
+  var ore = add('b-ore', 2.55, 5.3, 1.2, 1.2);
+  var tremor = add('b-tremor', 3.55, 5.6, 6, 6);
+  var hline = add('b-line', 0.2, 3.5, 9.2, 0);
+  var cone = add('b-cone', 6.6, 4.3, 2.3, 2.6);
+  var TOWERS = [
+    { id: 'drill', name: 'Drilling Tower', who: 'yours', x: 3, y: 5.05, icon: 3, base: '8 aura a Tide', tuned: '+20% aura' },
+    { id: 'scatter', name: 'Scatter Cannon', who: 'yours', x: 5.7, y: 5.05, icon: 0, base: 'fires every 1.4s', tuned: 'every 1.17s' },
+    { id: 'harpoon', name: 'Harpoon Tower', who: 'yours', x: 9.6, y: 3, icon: 1, base: 'fires every 3.0s', tuned: 'every 2.5s' },
+    { id: 'archer', name: 'Archer Tower', who: "Smacky's · ally", x: 10.4, y: 5.6, ally: 'archer', base: 'its own rate', tuned: '+20% attack speed' },
+    { id: 'sno', name: 'Sno Cannon', who: "SnoSno's · ally", x: 4.2, y: 0.6, ally: 'sno', base: 'its own rate', tuned: '+20% attack speed' }
+  ];
+  var BASE = { x: 0.6, y: 6.2 };
+  var baseEl = document.createElement('div'); place(baseEl, BASE.x, BASE.y, 1.3, 1.3); baseEl.style.position = 'absolute';
+  var bcv = document.createElement('canvas'); bcv.width = 16; bcv.height = 16; bcv.style.width = '100%'; bcv.style.height = '100%';
+  bcv.setAttribute('role', 'img'); bcv.setAttribute('aria-label', 'Mining Base'); baseEl.appendChild(bcv); board.appendChild(baseEl); icon(bcv, 2);
+  var argoEl = document.createElement('div'); place(argoEl, 4.1, 6.05, 2, 2); argoEl.style.position = 'absolute';
+  var acv = document.createElement('canvas'); acv.width = 32; acv.height = 32; acv.dataset.anim = 'idle'; acv.dataset.scale = 1;
+  acv.style.width = '100%'; acv.style.height = '100%'; acv.setAttribute('role', 'img'); acv.setAttribute('aria-label', 'ARGO');
+  argoEl.appendChild(acv); board.appendChild(argoEl); attach(acv);
+  var ping = add('ping', 5.1, 7.2, 14, 14);
+  TOWERS.forEach(function (t) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'tw' + (t.ally ? ' ally' : ''); place(b, t.x, t.y, 1.1, 1.1);
+    var cv = document.createElement('canvas'); cv.width = 16; cv.height = 16; b.appendChild(cv);
+    if (t.ally) allyIcon(cv, t.ally); else icon(cv, t.icon);
+    b.addEventListener('click', function () { send(t.id); });
+    t.el = b; board.appendChild(b);
+  });
+  var NAUTS = { port: { name: 'Port', anim: 'n_port', color: 'var(--port)', home: [BASE.x + 0.1, BASE.y + 1.05] },
+                star: { name: 'Starboard', anim: 'n_star', color: 'var(--starboard)', home: [BASE.x + 0.95, BASE.y + 1.05] } };
+  Object.keys(NAUTS).forEach(function (k) {
+    var n = NAUTS[k], d = document.createElement('div'); d.className = 'naut';
+    var cv = document.createElement('canvas'); cv.width = 16; cv.height = 16; cv.dataset.anim = n.anim; cv.dataset.scale = 1;
+    cv.setAttribute('role', 'img'); cv.setAttribute('aria-label', n.name);
+    d.appendChild(cv); board.appendChild(d); attach(cv); n.el = d;
+  });
+  tick(performance.now(), true);
+
+  var st;
+  function fresh() { return { tide: 0, fathom: 1, aura: 0, sel: null, at: { port: null, star: null } }; }
+  function tower(id) { return TOWERS.filter(function (t) { return t.id === id; })[0]; }
+  function yieldFor(f, tuned) { var y = 8 * (1 + 0.5 * (f - 1)); return Math.round(tuned ? y * 1.2 : y); }
+  function who(towerId) { return st.at.port === towerId ? 'port' : st.at.star === towerId ? 'star' : null; }
+  function pick(k) { st.sel = st.sel === k ? null : k; render(st.sel ? 'Now pick a tower for ' + NAUTS[st.sel].name + '. Any tower works, a teammate\'s too.' : 'No Naut selected.'); }
+  function send(id) {
+    if (!st.sel) { render('Pick Port or Starboard first.'); return; }
+    var k = st.sel, other = k === 'port' ? 'star' : 'port', t = tower(id), msg;
+    if (st.at[k] === id) { st.at[k] = null; msg = NAUTS[k].name + ' heads back to the Mining Base.'; }
+    else {
+      var bumped = st.at[other] === id;
+      if (bumped) st.at[other] = null;
+      st.at[k] = id;
+      msg = NAUTS[k].name + ' walks over to ' + (t.ally ? 'the ' + t.who.split(' ·')[0] + ' ' : 'your ') + t.name + ': ' + t.tuned + '.';
+      if (bumped) msg += ' ' + NAUTS[other].name + ' goes home: one Naut per tower.';
+    }
+    st.sel = null; render(msg);
+  }
+  function playTide() {
+    st.tide += 1;
+    var tuned = who('drill'), got = yieldFor(st.fathom, tuned), msg = 'Tide ' + st.tide + ': the Drill mined ' + got + ' aura at Fathom ' + st.fathom;
+    if (tuned) msg += ' (' + NAUTS[tuned].name + ' added ' + (got - yieldFor(st.fathom, false)) + ')';
+    st.aura += got;
+    if (st.fathom < 3) { st.fathom += 1; msg += ' and dropped to Fathom ' + st.fathom + '. Tremors now reach ' + (st.fathom + 2) + ' tiles.'; }
+    else msg += '. It has hit bottom: Deep Core (tier 3) goes to Fathom 5.';
+    render(msg);
+  }
+  function sonar() {
+    ping.classList.remove('go'); void ping.offsetWidth; ping.classList.add('go');
+    render('Sonar: enemies within 7 tiles are Pinged and take 20% more damage for 6s. The Drill is in range, so it quakes and roots everything in its Tremors for 1s.');
+  }
+  function render(msg) {
+    $('tide-label').textContent = st.tide ? 'After Tide ' + st.tide : 'Before Tide 1';
+    $('next').textContent = 'Play Tide ' + (st.tide + 1);
+    $('sel-label').textContent = st.sel ? NAUTS[st.sel].name + ' selected' : 'Pick a Naut';
+    ['port', 'star'].forEach(function (k) {
+      var b = $('pick-' + (k === 'port' ? 'port' : 'star')), n = NAUTS[k], at = st.at[k];
+      b.setAttribute('aria-pressed', st.sel === k ? 'true' : 'false');
+      $('where-' + k).textContent = at ? 'at ' + tower(at).name : 'at base';
+      var pos = at ? [tower(at).x + 0.55, tower(at).y + 0.75] : n.home;
+      place(n.el, pos[0], pos[1], 0.75, 0.75);
+      n.el.classList.toggle('sel', st.sel === k);
+    });
+    TOWERS.forEach(function (t) {
+      var k = who(t.id);
+      t.el.classList.toggle('tuned', !!k);
+      t.el.style.setProperty('--tc', k ? NAUTS[k].color : '');
+      t.el.classList.toggle('target', !!st.sel);
+      t.el.setAttribute('aria-label', t.name + ', ' + t.who + (k ? ', tuned by ' + NAUTS[k].name : '') + (st.sel ? '. Send ' + NAUTS[st.sel].name + ' here' : ''));
+    });
+    var r = st.fathom + 2;
+    place(tremor, 3.55, 5.6, r * 2, r * 2);
+    [1, 2, 3].forEach(function (i) { $('g' + i).className = i <= st.fathom ? 'on' : ''; });
+    $('fathom').textContent = 'Fathom ' + st.fathom;
+    $('fathom-note').textContent = yieldFor(st.fathom, who('drill')) + ' aura next Tide · Tremors ' + r + ' tiles · ' + (st.fathom * 6) + ' ft down';
+    $('aura').textContent = st.aura;
+    $('readout').innerHTML = TOWERS.map(function (t) {
+      var k = who(t.id);
+      return '<tr><td>' + t.name + '<br><span class="who">' + t.who + '</span></td><td>' + t.base + '</td><td>' +
+        (k ? '<span class="chip ' + (k === 'port' ? 'port' : 'starboard') + '">' + NAUTS[k].name + '</span><br><span class="who">' + t.tuned + '</span>' : '<span class="who">none</span>') + '</td></tr>';
+    }).join('');
+    if (msg) $('log').textContent = msg;
+  }
+  $('pick-port').addEventListener('click', function () { pick('port'); });
+  $('pick-star').addEventListener('click', function () { pick('star'); });
+  $('next').addEventListener('click', playTide);
+  $('sonar').addEventListener('click', sonar);
+  $('recall').addEventListener('click', function () { st.at = { port: null, star: null }; st.sel = null; render('Port and Starboard head back to the Mining Base.'); });
+  $('reset').addEventListener('click', function () { st = fresh(); render('Pick Port or Starboard, then pick a tower to send it to.'); });
+  st = fresh();
+  st.at.star = 'archer';   // the demo opens with Starboard already helping a teammate
+  render('Starboard is tuning Smacky\'s Archer Tower. Pick Port, then a tower, to send it out too.');
+})();
+</script>
+
+<script>
+(function () {
+  // pixel icons for the mock character-select card, 9x9, drawn as crisp SVG
+  var C = { w: '#ffffff', g: '#93e88f', y: '#f2c96b', c: '#a8f0ec' };
+  var ICONS = {
+    hp:    ['...ggg...', '...ggg...', '...ggg...', 'ggggggggg', 'ggggggggg', 'ggggggggg', '...ggg...', '...ggg...', '...ggg...'],
+    dmg:   ['.......ww', '......www', '.....www.', '....www..', '.w.www...', '..www....', '..ww.....', '.w..w....', 'w........'],
+    rate:  ['.......ww', '......www', 'www..www.', '....www..', 'wwwwww...', '..www....', '..ww.....', '.w..w....', 'w........'],
+    move:  ['.....ww..', '.....ww..', '..wwww...', '.w.www.w.', '...wwwww.', '..ww.....', '.ww.ww...', 'ww....w..', '......w..'],
+    range: ['wwwwwwwww', 'w.......w', 'w.wwwww.w', 'w.w...w.w', 'w.w.w.w.w', 'w.w...w.w', 'w.wwwww.w', 'w.......w', 'wwwwwwwww'],
+    cost:  ['...yyy...', '.yyyyyyy.', 'yyy......', 'yyyyyyy..', '..yyyyyyy', '......yyy', '.yyyyyyy.', '...yyy...', '.........'],
+    unit:  ['....cc...', '....cc...', '.cccccc..', 'c..cc..c.', '...cccc..', '..cc..cc.', '.cc....c.', '.c.......', '.........'],
+    role:  ['...w.w...', '...www...', '...www...', '.........', '..wwwww..', '.w.www.w.', '...www...', '...w.w...', '...w.w...'],
+    trait: ['..wwww...', '..w..w...', '..wwww...', '.........', 'wwwwwwww.', '..wwww...', '..wwww...', '..w..w...', '..w..w...']
+  };
+  document.querySelectorAll('[data-picon]').forEach(function (el) {
+    var rows = ICONS[el.dataset.picon]; if (!rows) return;
+    var size = el.dataset.picon === 'trait' ? 36 : 27, rects = '';
+    rows.forEach(function (r, y) { for (var x = 0; x < r.length; x++) if (r[x] !== '.') rects += '<rect x="' + x + '" y="' + y + '" width="1" height="1" fill="' + C[r[x]] + '"/>'; });
+    el.outerHTML = '<svg width="' + size + '" height="' + size + '" viewBox="0 0 9 9" shape-rendering="crispEdges" aria-hidden="true" style="flex:none">' + rects + '</svg>';
+  });
+})();
+</script>
+
+</body></html>
