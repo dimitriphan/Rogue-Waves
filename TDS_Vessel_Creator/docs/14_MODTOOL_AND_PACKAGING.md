@@ -93,7 +93,8 @@ Rules that hold either way:
 4. Never give two parts the same assembly or scene name.
 5. Player install stays the zip into `TDS\Mods` plus enable in the Mods menu; one README for the pack.
 
-The plan's Phase 2 picks between the two columns once §6 is answered; the deciding question is whether the mode
+Rogue Waves' choice (2026-10-08, `docs/PACK.md` in that repository): one bundle with one `Default` prefab per part,
+since each prefab is its own assembly anyway (`15` §10). The plan's Phase 2 picked between the two columns once §6 was answered; the deciding question is whether the mode
 needs to reach into vessels (shared domain wins) or only observe them (separate folders stay possible).
 
 ## 6. Open questions for a PC session

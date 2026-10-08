@@ -1,0 +1,195 @@
+# RogueLab round 1 (2026-10-08, PC, solo host, Boutman on 3B_Thehunt then 0B_Hydragen): every "[RogueLab]" line of
+# Player.log, prefix removed. Self-test: pass 13, fail 0, setup 0, TEST DONE. Read by docs/15 §11 and §13; the TIDE,
+# ELITE and ENEMY lines are the stock data for docs/13 and Phase 4.
+loaded v0.1.0
+INFO database folders: Artifact, Atmosphere, Gameplan, Hero, Icons, Lighting, Map, Mode, Other, Soundtrack, Unlock, Vfx, World
+INFO folder Mode (6): Mode_Drought, Mode_Final, Mode_Normal, Mode_Storm, Mode_Tsunami, Mode_Tutorial
+INFO folder Gameplan (51): 0B_Hydragen, 1_Skyhook, 2_Galbass, 2_Gridhead, 2_Ulu, 2B_Maybeth, 2B_Monogrove, 2C_Blasthead, 2D_Mercs, 3_Manafold, 3_Opal, 3_Vultures, 3B_Thehunt, 3B_Woozy, 3BH_Kong, 4_Artrio, 4_Hydroplane, 4B_Brittle, 4B_Crimson, 4C_Oroboro, 5_Chrono, 5_Mini, 5_Snobound, 5B_Crescent, 5B_Final, 5B_Hold, 5B_Split, Alt_0_Tutorial, Alt_1_Skyhook, Alt_2_Galbass, Alt_2_Gridhead, Alt_2_Ulu, Alt_2B_Monogrove, Alt_2C_Blasthead, Alt_2D_Mercs, Alt_3_Opal, Alt_3_Vultures, Alt_3B_Woozy, Alt_4_Artrio, Alt_4B_Brittle, Alt_4B_Crimson, Alt_5_Chrono, Alt_5_Mini, Alt_5B_Crescent, Alt_5B_Split, Special_Custom, Special_Tutorial, Test_Brittle, Test_Manafold, Test_Seaside, Test_Vultures
+INFO folder Map (54): Map_Artrio, Map_Artrio_Alt, Map_Blasthead, Map_Blasthead_Alt, Map_Brittle, Map_Brittle_Alt, Map_Chrono, Map_Chrono_Alt, Map_Crescent, Map_Crescent_Alt, Map_Crimson, Map_Crimson_Alt, Map_Custom, Map_Estate, Map_Final, Map_Galbass, Map_Galbass_Alt, Map_Gridhead, Map_Gridhead_Alt, Map_Hold, Map_Hydraden, Map_Hydroplane, Map_Idk, Map_Kong, Map_Manafold, Map_Manafoldold, Map_Maybeth, Map_Mercs, Map_Mercs_Alt, Map_Mini, Map_Mini_Alt, Map_Monogrove, Map_Monogrove_Alt, Map_Oakjunction, Map_Oroboro, Map_Purlest, Map_Purlest_Alt, Map_Seasidevilla, Map_Skyhook, Map_Skyhook_Alt, Map_Snobound, Map_Split, Map_Split_Alt, Map_Test, Map_Testflat, Map_Thehunt, Map_Tutorial, Map_Tutorial_Alt, Map_Ulu, Map_Ulu_Alt, Map_Vultures, Map_Vultures_Alt, Map_Woozy, Map_Woozy_Alt
+INFO folder Artifact (40): Artifact_Badge, Artifact_Beastpelt, Artifact_Bird, Artifact_Bluecoin, Artifact_Bluepaint, Artifact_Blurryphoto, Artifact_Caffeine, Artifact_Checklist, Artifact_Chimera, Artifact_Computer, Artifact_Converter, Artifact_Cubeddrink, Artifact_Diorama, Artifact_Fishbait, Artifact_Fragment, Artifact_Gavel, Artifact_Glasscore, Artifact_Greatspear, Artifact_Greencoin, Artifact_Kippy, Artifact_Loop, Artifact_Moneybag, Artifact_Mooncore, Artifact_Opalcore, Artifact_Paper, Artifact_Pig, Artifact_Redcoin, Artifact_Rock, Artifact_Rustypipe, Artifact_Samedayshipping, Artifact_Sandbox, Artifact_Seeds, Artifact_Slippers, Artifact_Tackle, Artifact_Textbook, Artifact_Titan, Artifact_Vintage, Artifact_Voice, Artifact_Wavebreaker, Artifact_Yellowcoin
+INFO folder Unlock (105): 0B_Hydragenwaypoint, 1_Skyhookwaypoint, 2_Galbasswaypoint, 2_Gridheadwaypoint, 2_Uluwaypoint, 2B_Maybethwaypoint, 2B_Monogrovewaypoint, 2C_Blastheadwaypoint, 2D_Mercswaypoint, 3_Manafoldwaypoint, 3_Opalwaypoint, 3_Vultureswaypoint, 3B_Thehuntwaypoint, 3B_Woozywaypoint, 3BH_Kongwaypoint, 4_Artriowaypoint, 4_Hydroplanewaypoint, 4B_Brittlewaypoint, 4B_Crimsonwaypoint, 4C_Oroborowaypoint, 5_Chronowaypoint, 5_Miniwaypoint, 5_Snoboundwaypoint, 5B_Crescentwaypoint, 5B_Holdwaypoint, 5B_Splitwaypoint, Altmaps_Special, Artifact_<each of the 40 above>, Artifact_Special, Bird_Special, Drive_Blue, Drive_Red, Drive_Yellow, Drive_Yellowshow, Gate_Alph1, Gate_Alph2, Gate_Aquilla1, Gate_Aquilla2, Gate_Blasthead, Gate_Chrono, Gate_Crescent, Gate_Crescent_Beam, Gate_Final, Gate_Hold, Gate_Hold_Beam, Gate_Mini, Gate_Ometutorialpath, Gate_Snobound, Gate_Split, Gate_Split_Beam, Gate_Win, Gate_Yellowdrive, Gateview_Start, Hero_Unlockboutman, Hero_Unlockbuster, Hero_Unlockfie, Hero_Unlockfiecounter, Hero_Unlocksnono, Hero_Unlocksnonocounter, Leaderboard_Special, Playmode_Flood, Playmode_Normal, Playmode_Storm, Playmode_Tsunami, Playmode_Tutorial, Unlock_Firstartifact
+INFO folder Hero (5): Hero_Boutman, Hero_Buster, Hero_Fie, Hero_Smacky, Hero_Snosno
+INFO folder Soundtrack (6): Soundtrack_Blue, Soundtrack_Cyan, Soundtrack_Main, Soundtrack_Mainoriginal, Soundtrack_Red, Soundtrack_Yellow
+INFO mode entry Mode_Normal: display 'Downpour' loads Mode_Normal waves 30
+INFO mode entry Mode_Tutorial: display 'Still Waters' loads Mode_Tutorial waves 1
+INFO mode entry Mode_Storm: display 'High Tide' loads Mode_Storm waves 15
+INFO mode entry Mode_Drought: display 'Flood' loads Mode_Drought waves 20
+INFO mode entry Mode_Tsunami: display 'Tsunami' loads Mode_Tsunami waves 4
+INFO mode entry Mode_Final: display 'End' loads Mode_Final waves 1
+INFO cardinal Artifact_Redcoin: 'Red Coin' type Red mixed True unlocked True desc 'Gain additional Red aura at the start, and per Tide.'
+INFO cardinal Artifact_Yellowcoin: 'Yellow Coin' type Yellow mixed True unlocked True desc 'Gain additional Yellow aura at the start, and per Tide.'
+INFO cardinal Artifact_Greencoin: 'Green Coin' type Green mixed True unlocked True desc 'Gain all auras at the start, and per Tide.'
+INFO cardinal Artifact_Bluecoin: 'Blue Coin' type Blue mixed True unlocked True desc 'Gain additional Blue aura at the start, and per Tide.'
+INFO cardinal Artifact_Pig: 'Money Bag' type Yellow mixed True unlocked True desc 'Throwable Aura, enables donation'
+INFO cardinal Artifact_Kippy: 'Kippy' type Green mixed True unlocked False desc 'Cats like milk'
+INFO cardinal Artifact_Paper: 'Paper Tower' type Red mixed True unlocked True desc 'First offensive tower becomes paper with increased stats'
+INFO cardinal Artifact_Vintage: 'Vintage Watch' type Blue mixed False unlocked True desc 'Increase time between Tides and before'
+INFO cardinal Artifact_Blurryphoto: 'Blurry Photo' type Red mixed True unlocked True desc 'Vessels are split, stats altered'
+INFO cardinal Artifact_Caffeine: 'Sport Water' type Red mixed True unlocked True desc 'Vessels are boosted at the start of Tides and gain permanent stats'
+INFO cardinal Artifact_Converter: 'Processor Jr' type Yellow mixed True unlocked True desc 'Converts some Aura into one you have least of'
+INFO cardinal Artifact_Opalcore: 'Opal Core' type Blue mixed True unlocked True desc 'Basin gains notable health each Tide, deals damage when touched'
+INFO cardinal Artifact_Samedayshipping: 'Same Day Shipping' type Blue mixed False unlocked True desc 'Fast forward time between Tides, granting Aura'
+INFO cardinal Artifact_Seeds: 'Starter Seeds' type Yellow mixed True unlocked True desc 'Slightly increase aura gain from all mines'
+INFO cardinal Artifact_Textbook: '1st Grade Textbook' type Red mixed True unlocked False desc 'Replace Daggers with something more family friendly'
+INFO cardinal Artifact_Wavebreaker: 'Wave Breaker' type Blue mixed True unlocked True desc 'Enemies health is reduced significantly nearby a Basin'
+INFO cardinal Artifact_Glasscore: 'Glass Core' type Blue mixed True unlocked True desc 'Drowned Tone Sub-Basins will explode rather than cause a loss. Reducing aura'
+INFO cardinal Artifact_Beastpelt: 'Beast Tassle' type Green mixed True unlocked True desc 'Vessels become elusive'
+INFO cardinal Artifact_Fishbait: 'Fish Bait' type Blue mixed True unlocked False desc 'Recruit Gabby'
+INFO cardinal Artifact_Rustypipe: 'Rusty Pipe' type Red mixed True unlocked True desc 'Towers become stronger after some Tides'
+INFO cardinal Artifact_Slippers: 'Fluffy Slippers' type Green mixed True unlocked True desc 'Vessels move faster after continuously moving'
+INFO cardinal Artifact_Badge: 'Torrid Badge' type Red mixed True unlocked True desc 'Hired hands'
+INFO cardinal Artifact_Chimera: 'Chimera Crystals' type Yellow mixed False unlocked True desc 'Single ores are split and compound ores are merged'
+INFO cardinal Artifact_Gavel: 'Aura Gavel' type Red mixed True unlocked True desc 'Drowned units create homing bolts'
+INFO cardinal Artifact_Loop: 'Looped Mirror' type Green mixed False unlocked True desc 'Tide will repeat once if the Basin is touched'
+INFO cardinal Artifact_Titan: 'Frail Titan' type Blue mixed True unlocked True desc 'Towers have drastically low health, explode when drowned'
+INFO cardinal Artifact_Moneybag: 'Pig Named Bank' type Yellow mixed True unlocked False desc 'Buildings and Units appreciate in value overtime'
+INFO cardinal Artifact_Bluepaint: 'Blue Paint' type Blue mixed True unlocked True desc 'Enemies kept at very low health will eventually turn friendly'
+INFO cardinal Artifact_Fragment: 'Fragment' type Blue mixed True unlocked True desc 'A barrier appears around the enemy Basin'
+INFO cardinal Artifact_Mooncore: 'Moon Core' type Green mixed False unlocked True desc 'Skip the 3rd and every 7th Tide'
+INFO cardinal Artifact_Rock: 'Bottom Rock' type Yellow mixed True unlocked True desc 'Gain a tower limit and Aura gain greatly reduced, but no longer lower'
+INFO cardinal Artifact_Sandbox: 'Sand Filled Box' type Green mixed False unlocked True desc 'True power resides within the box (Sandbox mode! No Medals/Rewards)'
+INFO cardinal Artifact_Tackle: 'Tacklebox' type Yellow mixed True unlocked True desc 'Place hook traps, snared enemies grant red and blue aura if attacked'
+INFO cardinal Artifact_Voice: 'Voice in a Bottle' type Yellow mixed True unlocked True desc 'Upgrade costs decrease each Tide'
+INFO cardinal Artifact_Checklist: 'Checklist' type Yellow mixed True unlocked False desc 'Enemies drop additional resource drops'
+INFO cardinal Artifact_Computer: 'Frozen Computer' type Blue mixed True unlocked True desc 'Time slows with enemies near the Basin, glitching some enemies'
+INFO cardinal Artifact_Cubeddrink: 'Cubed Drink' type Red mixed True unlocked True desc 'Create a drink stand, increasing flat damage of towers and units'
+INFO cardinal Artifact_Diorama: 'Diorama' type Green mixed True unlocked True desc 'Vessels are tiny'
+INFO cardinal Artifact_Greatspear: 'Spear Point' type Red mixed True unlocked True desc 'Javelins are slowed significantly'
+INFO cardinal Artifact_Bird: 'Bendigo' type Yellow mixed True unlocked False desc 'Is a bird'
+(each cardinal "loads" its own name)
+INFO groups loaded at boot (Database.Init): General_Init, General_Ambientinit
+INFO group Mode_Normal loaded at boot: True after 3.469 s
+INFO group Hero_Boutman loaded at boot: True after 0.292 s
+INFO Mode_Normal object: name Mode_Normal, found by entry name too True, script Mode_Normal, client script Clientmode_Normal, special spots 4
+INFO Mode_Normal params: Startwait=10 Musicwave1=1 Musicwave2=10 Musicwave3=16 Musicwave4=25 Tipthreshold=10 Basinthreshold=10
+INFO Mode_Normal table: 60 entries, Totalwaves 30, start aura Redaura 50, Blueaura 50, Yellowaura 50
+# TIDE <entry> <break|tide> shown <wave> time <s> note | <style being xcount every s gate team [elite]> ; ...  (every break: empty content; "gate 0 team 0" dropped below)
+TIDE 1 break shown 0 time 45 note 'Best of Luck' | Wait - x0 every 0
+TIDE 2 tide 1 time 180 | Spread Enemy_Dagger x5 every 1
+TIDE 3 break time 30
+TIDE 4 tide 2 time 180 | Spread Enemy_Dagger x6 every 0.8 ; Wait every 10 ; Spread Enemy_Dagger x6 every 0.4
+TIDE 5 break time 30
+TIDE 6 tide 3 time 180 | Spread Enemy_Dagger x5 every 0.5 ; Wait every 2 ; Spread Enemy_Dagger x5 every 0.5 ; Wait every 3 ; Spread Enemy_Dagger x3 every 0.3 ; Wait every 2 ; Spread Enemy_Dagger x3 every 0.3
+TIDE 7 break time 30 note 'New enemy incoming'
+TIDE 8 tide 4 time 180 | Spread Enemy_Spear x4 every 0.5 ; Wait every 10 ; Spread Enemy_Dagger x15 every 0.4 ; Spread Enemy_Spear x4 every 0.5
+TIDE 9 break time 30
+TIDE 10 tide 5 time 180 | Spread Enemy_Dagger x30 every 0.2 ; Wait every 10 ; Spread Enemy_Spear x14 every 0.5
+TIDE 11 break time 30 note 'Hardened enemies incoming'
+TIDE 12 tide 6 time 180 | Spread Enemy_Dagger x22 every 0.5 [Health]
+TIDE 13 break time 30 note 'New enemy incoming'
+TIDE 14 tide 7 time 180 | Spread Enemy_Aegis x7 every 0.4 ; Wait every 15 ; Spread Enemy_Spear x15 every 0.1
+TIDE 15 break time 30
+TIDE 16 tide 8 time 180 | Spread Enemy_Dagger x30 every 0.1 ; Wait every 5 ; Spread Enemy_Aegis x10 every 0.2 ; Wait every 15 ; Spread Enemy_Spear x25 every 0.1
+TIDE 17 break time 30
+TIDE 18 tide 9 time 180 | Spread Enemy_Dagger x30 every 0.1 [Health] ; Wait every 15 ; Spread Enemy_Spear x18 every 0.25 [Red] ; Wait every 15 ; Spread Enemy_Dagger x20 every 0.1 [Health]
+TIDE 19 break time 30
+TIDE 20 tide 10 time 180 | Spread Enemy_Maul x1 every 0.1 ; Spread Enemy_Dagger x25 every 0.1 [Health] ; Spread Enemy_Spear x25 every 0.15 [Health]
+TIDE 21 break time 30
+TIDE 22 tide 11 time 180 | Spread Enemy_Aegis x15 every 0.2 [Red] ; Spread Enemy_Ballista x8 every 0.1
+TIDE 23 break time 30 note 'Javelin Rush'
+TIDE 24 tide 12 time 180 | Spread Enemy_Spear x60 every 0.1 [Health]
+TIDE 25 break time 30 note 'Lil bit of everything'
+TIDE 26 tide 13 time 180 | Spread Enemy_Aegis x25 every 0.1 [Health] ; Spread Enemy_Dagger x25 every 0.1 [Health] ; Spread Enemy_Spear x20 every 0.1 [Red] ; Spread Enemy_Ballista x15 every 0.15
+TIDE 27 break time 30 note 'Fast!'
+TIDE 28 tide 14 time 180 | Spread Enemy_Ballista x10 every 0.1 [Health] ; Spread Enemy_Dagger x35 every 0.25 [Hyper] ; Spread Enemy_Spear x35 every 0.5 [Hyper]
+TIDE 29 break time 30 note 'Pew pew'
+TIDE 30 tide 15 time 180 | Spread Enemy_Ballista x40 every 0.5 [Red]
+TIDE 31 break time 30
+TIDE 32 tide 16 time 180 | Spread Enemy_Maul x2 every 0.1 ; Spread Enemy_Aegis x45 every 0.1 [Red] ; Spread Enemy_Spear x45 every 0.1 [Hyper]
+TIDE 33 break time 30
+TIDE 34 tide 17 time 180 | Spread Enemy_Spear x25 every 0.2 [Red] ; Spread Enemy_Aegis x25 every 0.2 [Red] ; Spread Enemy_Dagger x25 every 0.2 [Red] ; Spread Enemy_Ballista x25 every 0.2 [Red]
+TIDE 35 break time 30
+TIDE 36 tide 18 time 180 | Spread Enemy_Dagger x9 every 0.3 ; Wait every 3 ; Spread Enemy_Dagger x1 every 0.1 [Chaos]
+TIDE 37 break time 10 note 'What is that????'
+TIDE 38 tide 19 time 180 | Spread Enemy_Maul x8 every 5 ; Wait every 15 ; Spread Enemy_Maul x1 every 0 [Health]
+TIDE 39 break time 30
+TIDE 40 tide 20 time 180 | Spread Enemy_Aegis x6 every 0.1 [Health] ; Wait every 1 ; Spread Enemy_Maul x6 every 5 ; Wait every 8 ; Spread Enemy_Spear x20 every 0.1 [Hyper] ; Spread Enemy_Ballista x35 every 0.1 [Hyper]
+TIDE 41 break time 30 note 'New enemy incoming'
+TIDE 42 tide 21 time 180 | Spread Enemy_Onager x10 every 1
+TIDE 43 break time 30
+TIDE 44 tide 22 time 180 | Spread Enemy_Aegis x50 every 0.1 [Health] ; Wait every 5 ; Spread Enemy_Spear x50 every 0.1 [Hyper]
+TIDE 45 break time 30
+TIDE 46 tide 23 time 180 | Spread Enemy_Aegis x9 every 3 [Red] ; Spread Enemy_Maul x9 every 3 [Red]
+TIDE 47 break time 30
+TIDE 48 tide 24 time 180 | Spread Enemy_Dagger x25 every 0.2 [Health] ; Wait every 5 ; Spread Enemy_Aegis x25 every 0.2 [Health] ; Wait every 5 ; Spread Enemy_Spear x25 every 0.2 [Health] ; Wait every 5 ; Spread Enemy_Maul x6 every 2 [Health] ; Wait every 5 ; Spread Enemy_Onager x25 every 1
+TIDE 49 break time 30
+TIDE 50 tide 25 time 180 | Spread Enemy_Maul x10 every 5 [Hyper]
+TIDE 51 break time 30
+TIDE 52 tide 26 time 180 | Spread Enemy_Ballista x45 every 0.4 [Hyper] ; Spread Enemy_Onager x45 every 0.5 [Health]
+TIDE 53 break time 30
+TIDE 54 tide 27 time 180 | Spread Enemy_Aegis x120 every 0.2 [Hyper]
+TIDE 55 break time 30 note 'The water runs cold...'
+TIDE 56 tide 28 time 180 | Wait every 8 ; Spread Enemy_Aegis x8 every 2 [Chaos] ; Wait every 8 ; Spread Enemy_Spear x5 every 2 [Chaos]
+TIDE 57 break time 30
+TIDE 58 tide 29 time 180 | Spread Enemy_Maul x30 every 1 [Health]
+TIDE 59 break time 30 note 'The Basin wakes...'
+TIDE 60 tide 30 time 9999 | Spread Enemy_Maul x10 every 2 [Hyper] ; Spread Enemy_Spear x20 every 0.2 [Hyper] ; Spread Enemy_Maul x10 every 0.2 [Hyper] ; Wait every 4 ; Spread Enemy_Excalibur x1 every 0 [Health]
+# [Health] = Enemy_Health_Upgradeobject, [Red] = Enemy_Red_..., [Hyper] = Enemy_Hyper_..., [Chaos] = Enemy_Chaos_...
+INFO Gameplan 3B_Thehunt: map Map_Thehunt, mode Mode_Normal, soundtrack Soundtrack_Red, par 2400, record True
+GROUP boot General_Ambientinit loaded True [Sound 3]
+GROUP boot General_Init loaded True [Sound 67, Vfx 11]
+GROUP boot Hero_Boutman loaded True [Hero 1, Upgrade 52, Mob 13, Projectile 18, Vfx 56, Command 8, Other 5, Sound 34, Ui 1]
+GROUP boot Mode_Normal loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 31, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore
+ELITE Enemy_Health_Upgradeobject name 'Hardened' desc 'Drastically increased health' priority -1 ais [Entity_Ai_Enemy_Health_Upgrade] params Health_Multi=3
+ELITE Enemy_Red_Upgradeobject name 'Tempered' desc 'Increased aggression and retaliation' priority -1 ais [Entity_Ai_Enemy_Red_Upgrade] params Aggrorange_Base=5 Damage_Multi=1 Health_Multi=1
+ELITE Enemy_Hyper_Upgradeobject name 'Superheated' desc 'Increased speed and attack' priority -1 ais [Entity_Ai_Enemy_Hyper_Upgrade] params Health_Multi=2 Damage_Multi=2 Speed_Multi=1.25 Attackspeed_Multi=1
+ELITE Enemy_Chaos_Upgradeobject name 'Fractured' desc 'Insane increased capabilities' priority -1 ais [Entity_Ai_Enemy_Chaos_Upgrade] params Health_Multi=14 Damage_Multi=9 Speed_Multi=9 Attackspeed_Multi=9
+ELITE Enemy_Armor_Upgradeobject name 'Annealed' desc 'Gains armor, blocking damage' priority -1 ais [Entity_Ai_Enemy_Armor_Upgrade] params Healtharmor_Base=4 Healtharmor_Perhealth=10
+ELITE Enemy_Explode_Upgradeobject not loaded
+ELITE Effect_Enemy_Weakened_Upgradeobject not loaded
+(the same 7 ELITE lines again in the match, identical)
+TEST PASS mod mode registered: table 6 entries / 3 Tides, params 7 (Startwait True, Basinthreshold True, Tipthreshold True), twins of 35 Gameplans
+TEST PASS mod Cardinal registered: copy of Artifact_Badge (Red), grant test uses Artifact_Beastpelt
+TEST PASS save write and read back: before none, after 1
+INFO save value survived a restart: first launch with RogueLab: the next launch answers this
+ready
+main menu: embarking
+in Setup: waiting for the world map
+map: the test map 3B_Thehunt; picked node 'Thehunt'
+INFO run plan: map 1 RogueLab_3B_Thehunt (Map_Thehunt), map 2 RogueLab_0B_Hydragen
+ready: starting the match
+map 1: RogueLab_3B_Thehunt on Map_Thehunt
+TEST PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+TEST PASS map 1 has the mod Cardinal from the lobby: equipped [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_RogueLab], mixed 'Artifact_Yellowcoin', artifacts loaded [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_Badge, Artifact_Yellowcoin], want Artifact_Badge
+GROUP match Artifact_Badge loaded True [Artifact 1, Upgrade 3, Mob 1, Projectile 1, Vfx 1]
+GROUP match Artifact_Bluecoin loaded True [Artifact 1, Upgrade 1]
+GROUP match Artifact_Greencoin loaded True [Artifact 1, Upgrade 1]
+GROUP match Artifact_Voice loaded True [Artifact 1, Upgrade 2, Vfx 1]
+GROUP match Artifact_Yellowcoin loaded True [Artifact 1, Upgrade 1]
+GROUP match General_Ambientinit loaded True [Sound 3]
+GROUP match General_Default loaded True [Mob 22, Vfx 27, Command 13, Ui 25, Other 2, Sound 12]
+GROUP match General_Init loaded True [Sound 67, Vfx 11]
+GROUP match Hero_Boutman loaded True [Hero 1, Upgrade 52, Mob 13, Projectile 18, Vfx 56, Command 8, Other 5, Sound 34, Ui 1]
+GROUP match Map_Thehunt loaded True [Map 1, Mob 5, Upgrade 3, Vfx 4]
+GROUP match Mode_Normal loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 31, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore
+GROUP match Mode_RogueLab loaded True [Mode 1]
+GROUP match Soundtrack_Red loaded True [Soundtrack 1, Sound 6]
+# ENEMY being 'name' tags ais vis stats drops init skins block; every one: tags [Mob,Enemy], init [], skins [Health,Hyper,Red,Chaos,Armor,Explode], block General_Mob_Block_Height 1, ais start Entity_Ai_Mob_General,Entity_Ai_Mob_Movement
+ENEMY Enemy_Dagger 'Dagger' ais [+Mob_Combat,Enemy_Basic] vis [Entity_Vis_Animator_Mob] stats [Health=10 Speed=1 Damage=3 Range=1.5 Attackspeed=0.5] drops [Redaura 1]
+ENEMY Enemy_Spear 'Javelin' ais [+Mob_Combat,Enemy_Basic] vis [Entity_Vis_Animator_Mob] stats [Health=10 Speed=2.5 Damage=5 Range=1.5 Attackspeed=1.4] drops [Redaura 1]
+ENEMY Enemy_Aegis 'Aegis' ais [+Mob_Combat,Enemy_Basic,Enemy_Aegis] vis [Entity_Vis_Animator_Mob] stats [Health=80 Speed=0.7 Damage=15 Range=1.5 Attackspeed=0.2 Heal=2 Healtime=5] drops [Redaura 3]
+ENEMY Enemy_Ballista 'Ballista' ais [+Enemy_Basic,Enemy_Ballista] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Ballista] stats [Health=50 Speed=0.8 Damage=5 Range=5 Attackspeed=0.25 Projspeed=35] drops [Redaura 3]
+ENEMY Enemy_Excalibur 'Excalibur' ais [+Enemy_Basic,Enemy_Excalibur] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Excalibur] stats [Health=10000 Speed=0.4 Damage=400 Range=13 Attackspeed=0.1 Projspeed=20(+10)] drops [Redaura 10]
+ENEMY Enemy_Maul 'Maul' ais [+Enemy_Basic,Enemy_Maul] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Maul] stats [Health=700 Speed=0.45 Damage=50 Range=2 Attackspeed=0.15 Projcount=50 Projradius=2.5] drops [Redaura 10]
+ENEMY Enemy_Onager 'Onager' ais [+Enemy_Basic,Enemy_Onager] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Ballista] stats [Health=90 Speed=0.5 Damage=4 Range=9 Attackspeed=0.1 Projcount=10 Projduration=3] drops [Redaura 10]
+ENEMY Enemy_Claymore 'Claymore' ais [+Enemy_Basic,Enemy_Claymore] vis [Entity_Vis_Animator_Mob,Entity_Vis_Claymore] stats [Health=10 Speed=4.25 Damage=15 Range=4 Deathlife=1.25 Death=0 Rangedetect=2] drops [Redaura 1]
+INFO enemy beings loaded in the match: 8
+TEST PASS Cardinal granted mid-match: Artifact_Beastpelt: 1/1 core upgrades on the core [Artifact_Beastpelt_Upgradeproperties]; the HUD was not told
+INFO Boutbro data tags: Mob,Hero,Boutfamily,Boutbro
+INFO F list before the death: Hero_Boutman#-83330; Boutbro spawned True
+INFO F list after the respawn: Hero_Boutman#-84334 after 10.003 s
+INFO F key without the fix: nothing selected -> Hero_Boutman, Boutbro selected -> Hero_Boutman; bug reproduced False
+TEST PASS F key selects the vessel after a respawn, with the fix: nothing selected -> Hero_Boutman, Boutbro selected -> Hero_Boutman, list Hero_Boutman#-84334
+TEST PASS bonus Tide by rewinding Entry: Wave 2, entry 2 (Tide 1 was 2), enemy core Tides left 2 -> 1
+TEST PASS leave between Tides as a win: Gamecomplete Win, Wave 2
+chain: despawned True, loading RogueLab_0B_Hydragen
+TEST PASS chained into map 2 without the boat: RogueLab_0B_Hydragen on Map_Hydraden
+TEST PASS run state survived the scene change: Pure Aura 7, same mod object True
+TEST PASS map 2 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_0B_Hydragen, Mode_Normal script True, table 6
+TEST PASS map 2 has the mod Cardinal from the lobby: (same line as map 1)
+INFO choice dialog: opened with 3 options
+INFO choice dialog returns the pick: no click within 30 s (status Faulted)
+TEST DONE pass 13, fail 0, setup 0
+# Exceptions (6): 1 OperationCanceledException in Macro_Setupui.Mapselected (UniTask DelayIgnoreTimeScale) at "Loading
+# 10%" right after the boat-side swap; 5 NullReferenceExceptions after TEST DONE while the game closed (Game_Load.OnDestroy,
+# Game_Ui.Warning, Game_Ui.OnDestroy, Bl_Sound.Stopgroup from Bla_Ambient.OnDisable/Turnoff).

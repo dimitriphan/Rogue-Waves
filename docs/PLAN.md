@@ -184,10 +184,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phase 1 research (2026-10-08): `TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`, with a go / fallback /
-  no table per scope feature (§1) and a PC list (§11); `docs/13` §10 and `docs/14` §6 updated from the code.
-- **Next:** Phase 1 gate: the user approves §1's table and answers Open questions 1-3; then the PC round of §11.
-- **Blocked:** on the gate.
+- **Done:** Phase 1 (2026-10-08): `docs/15` (verdicts §1, PC round 1 results §11, Riptide §13), RogueLab 13/13 on the
+  PC. Phase 2 (2026-10-08, approved): `docs/PACK.md` and `docs/STYLE.md`; roster shapes in `.claude/rules/design.md`.
+- **Next:** Phase 3 with Argo, step 1 (`DESIGN.md` from the scope text), on the user's word; Argo also builds kit 1.6
+  (`docs/PACK.md` §3). Copying Argo's shipped code needs the `ModProjects` repository added to the session. Hand
+  checks left from Phase 1: the F-key bug with a real Boutbro, a save value across a restart, the mod Cardinal's look
+  in the lobby picker, `docs/15` §11 steps 10-11.
+- **Blocked:** nothing.
 
 ### Decisions
 
@@ -214,8 +217,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   on each player's vessel; ascension is saved in `Bla_Data` folder `RogueWaves` (save writes are safe, `docs/15` §8).
 - 2026-10-08 (Phase 1, default): the F-key fix is a client-side reorder of the `Hero` tag list, for Boutman and every
   pack vessel; minions keep the `Hero` tag (`docs/15` §9).
+- 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
+  leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
+  map, `docs/15` §6). **A run starts when the host equips a "Rogue Wave" Cardinal in the lobby** (RogueLab tests the
+  colour slot, which checks the name; the Mixed slot takes any string). **The §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
+- 2026-10-08 (user, Phase 2 gate): **one `RogueWavesMod` bundle** with a `Default` prefab per part (mode, foes, each
+  vessel), parts developed and self-tested as their own dev mods, no load order, one pack version (`docs/PACK.md`).
+  **Style approved** (`docs/STYLE.md`): the pack look lives in run pieces; vessels look as the user's concept art draws
+  them, house-style departures kept as drawn until each vessel's design gate. Kit 1.6 = `docs/PACK.md` §3.
 
 ### Open questions
 
@@ -223,9 +234,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | Map vote: the game has no vote before a match. Map 1 picked by the host on the boat, maps 2 and 3 voted in game before leaving the previous map? | yes |
-| 2 | How a run starts on the boat: the host picks a base map and equips a "Rogue Wave" Cardinal in the lobby's Mixed slot, which turns the match into the run's first map? | yes, if the PC round shows mod Cardinals in the lobby; else a boat button |
-| 3 | Run the PC round of `docs/15` §11 (one research build, one launch, then one online check with a friend)? | yes, when the user has PC time |
+| - | none open (4-5 answered at the Phase 2 gate, see Decisions) | |
 
 ### Phase 5 pieces
 

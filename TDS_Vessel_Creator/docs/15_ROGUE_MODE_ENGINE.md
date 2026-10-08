@@ -3,8 +3,8 @@
 How the game starts, plays and ends a match, keeps players' choices, pays bounties, applies Cardinals and saves, read
 for the Rogue Wave mode (`docs/SCOPE_v0.txt` in the Rogue Waves repository). Everything here was **read from the
 game's code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod**
-or **untested**. `File.cs:line` points into that decompiled folder (never committed; rebuild it in a minute). Nothing
-in this chapter has been built yet: §11 is the PC list that turns the "untested" lines into facts.
+or **untested**, or was **proven in game** by RogueLab round 1 (§11) or Riptide (§13). `File.cs:line` points into
+that decompiled folder (never committed; rebuild it in a minute).
 
 Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 
@@ -12,25 +12,25 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 
 | Scope feature | Verdict | Route (section) |
 |---|---|---|
-| A new mode entry | **go** | a mod `Modeobject` whose script names are the stock `Mode_Normal` / `Clientmode_Normal` (§2) |
+| A new mode entry | **go, proven** | a mod `Modeobject` whose script names are the stock `Mode_Normal` / `Clientmode_Normal`, with Gameplan twins; Riptide runs on it (§2, §13) |
 | A mode script written in the mod | **no** | `Type.GetType` can't see mod types; run the mode's logic as a host brain beside `Mode_Normal` (§2) |
 | Host's campaign, vessel locked before the run | **go** | the boat's ready-up is the lock (§6) |
-| Three maps in a row | **go, untested** | host sets the next map and calls `Changescene_ServerRpc("Gameloading")`; fallback: back to the boat, the host picks the next node (§3) |
-| State across the three maps (Pure Aura, Directions, depth) | **go** on the host | the mod's `DontDestroyOnLoad` object, keyed by player (§3) |
+| Three maps in a row | **go, proven** | host sets the next map and calls `Changescene_ServerRpc("Gameloading")`; map 2 loaded without the boat (§3, §11) |
+| State across the three maps (Pure Aura, Directions, depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
-| Direction pick (one of three per player) | **go** | commands on the player's own vessel; optional `Runprompt` dialog (§6) |
+| Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13) |
 | Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; map 1 is the leader's pick (§6) |
-| Leave or stay between Tides from Tide 15 | **go** | the same vote; "leave" = the stock win path through public members (§4, §6) |
-| Bonus Tides | **go** | a longer Tide table in the mod's mode, or rewind `Game_Mapvars.Entry` (§4) |
+| Leave or stay between Tides from Tide 15 | **go, proven** | the same vote; "leave" = the stock win path through public members, proven between Tides (§4, §11) |
+| Bonus Tides | **go, proven** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry`, which also spends a core Tide (§4, §11) |
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
 | Shopkeeper between Tides | **fallback** | the game has no shop; build one on Merchut's command-button pattern (§5) |
 | Fund Transfer (aura between players) | **go, untested** | a shop command; the host moves resources with `Helper_Resources` (§5) |
-| New Cardinals | **go, untested** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase` (§7) |
-| Buying a Cardinal mid-run | **fallback** | apply its core upgrades on the host; the HUD needs extra work (§7) |
-| Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own (§8) |
+| New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
+| Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
+| Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write and read back proven, a restart not yet (§8, §11) |
 | Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
-| The F-key respawn bug | **go** | client-side: put the main vessel first in the `Hero` tag list (§9) |
+| The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
 | Maps from the base game | **go** | Gameplans resolve by name (§3); a mod can also ship maps as `Map` prefabs (§10) |
 
 ## 2. Modes and how a mod adds one
@@ -52,7 +52,7 @@ Mode_Base obj = (Mode_Base)gameObject.AddComponent(Type.GetType(Modegen.Modescri
 - `Game_Init` resolves the match's four names through `Tds_Masterdatabase.Getitem("Map" | "Mode" | "Soundtrack" |
   "Gameplan", name)` (Game_Init.cs:104-107) and waits for `Modeentry.Modeloads` and the map's groups. A mod adds its
   `Modeentryobject` and `Gameplandatabaseobject` to `Tds_Masterdatabase.Instance.Items["Mode"]` / `["Gameplan"]` on
-  every machine, exactly as vessels add `Items["Hero"]` (verified in a mod for heroes; untested for modes), and marks
+  every machine, exactly as vessels add `Items["Hero"]` (verified in a mod for heroes; proven for modes by Riptide and RogueLab), and marks
   its load group loaded (`01` §3).
 - A match always needs a Gameplan: the win path reads `Gameplan.Par` (Game_Rounds.cs:289) (read).
 - The base game has a sixth mode asset, `Mode_Downpour`, besides the five in `13` §3 (asset list, §12).
@@ -74,9 +74,12 @@ everything the run needs. The brain knows it is in a Rogue match by the mode's n
 (Tds_Multiplayer_Remote.cs:38-54, 84-240). The network session stays up.
 
 **Chaining maps.** Game code already changes scene from inside a mode: `Mode_Final` sends everyone to `Credits` with
-`Blm_Multiplayer_Remote.Instance.Changescene_ServerRpc(scene)` (Mode_Final.cs:237). The RPC runs only when its sender
+`Blm_Multiplayer_Remote.Instance.Changescene_ServerRpc(scene)` (Mode_Final.cs:237), and the developer tool
+`Game_Admin.Play` starts a Gameplan directly: it writes the four strings, sets every player's `Activeplayer` to 1 and
+changes scene to `Gameloading` with `Lobbystate` "Closed" (Game_Admin.cs:163-185). The game's own exit despawns
+everything first (`Game_Entity.Instance.Despawnall(true)`, Tds_Multiplayer_Remote.cs:30-54). The RPC runs only when its sender
 is the current leader (Blm_Multiplayer_Remote.cs:154). So the host's mod, after a won map, writes the next map's four
-strings on `Tds_Multiplayerinfo` and calls `Changescene_ServerRpc` with `Gameloading` (untested). Fallback: let the
+strings on `Tds_Multiplayerinfo` and calls `Changescene_ServerRpc` with `Gameloading` (**proven**, §11). Fallback: let the
 game return to the boat and have the host's mod select the next map and ready-check as usual.
 
 **What survives a scene change** (read): `Blm_Server` with `Tds_Multiplayerinfo` (spawned `Spawn(false)`,
@@ -94,8 +97,9 @@ for Mummer's Thread), restored by the host at each vessel spawn; Directions as v
 
 - `Mode_Normal.Run` counts the table's entries once (Mode_Normal.cs:315) but reads the networked `Entry` on every pass
   (:363,366). A mod's mode simply has a longer `Wavesobject` (Tides 16+ as the bonus Tides); or the host rewinds
-  `Entry` to replay entries while `Wave` keeps rising (read; untested in play).
-- The enemy core's `Healthresource` counts Tides left (`13` §3); with a rewind it would go below 0 (untested).
+  `Entry` to replay entries while `Wave` keeps rising (**proven**, §11).
+- The enemy core's `Healthresource` counts Tides left (`13` §3), and a rewound Tide still spends one (round 1: 2 -> 1
+  on a replay). Bonus Tides by rewind must top the core up, or the run ends before the table does.
 - **Leaving as a win** uses public members only: `Mode_Normal.Finished = true`, `Gamecomplete` and `Gamestate` =
   "Win", `Game_Rounds.Instance.Gamecompleted()` (read). The host's brain does it between Tides only (a `Wave` entry
   with `Wave = false` is playing), which is the scope's rule.
@@ -135,8 +139,8 @@ Not usable as a menu: `Entity_Command_Itemselect_Base` is a "click a spot in the
 
 | Choice | Route | Verdict |
 |---|---|---|
-| Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (untested) | go |
-| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game before leaving with the same commands, the host sets the map; map 1 is the leader's pick on the boat | fallback |
+| Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide, §13; an unanswered dialog ends Faulted, §11) | go |
+| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands, the host sets the map. Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads, the opening break is held while players pick Directions and vote, then the host chains to the voted map (§3) | fallback |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
 | Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
 
@@ -162,10 +166,12 @@ A mod builds itself, every time: one choice per player, the count, a timeout or 
 
 **A new Cardinal** is data: an `Artifactentryobject` in `Tds_Masterdatabase.Instance.Items["Artifact"]` (public,
 filled only from the game's database, Tds_Masterdatabase.cs:9,42-63), its `Artifactobject` in a loaded group, its
-upgrades, and the unlock key `Unlock/Unlock_Artifact_<name>` in the save so the lobby offers it (untested).
+upgrades, and the unlock key `Unlock/Unlock_Artifact_<name>` in the save so the lobby offers it (**proven** with the colour slot's RPC, which checks the name, and it carried to map 2;
+the picker's look by hand is still unseen, §11).
 **Mid-run:** the host applies the core upgrades itself with `Helper_Entitytools.Upgrade(core, up, Forced, artifact)`
 (Helper_Entitytools.cs:484), the call the start of a match uses; to show it, every machine also appends to
-`Artifactobjects`, within the 8 counter slots, and the HUD (private builder) must be redrawn (untested).
+`Artifactobjects`, within the 8 counter slots, and the HUD (private builder) must be redrawn (**proven** by Riptide
+with `SendMessage("Updateartifactlist")`, §13).
 
 ## 8. The save
 
@@ -186,7 +192,7 @@ upgrades, and the unlock key `Unlock/Unlock_Artifact_<name>` in the save so the 
   (Bla_Data_Steamachievements.cs:83-105): a key in the mod's own folder can't trip one.
 
 ```csharp
-// ascension (untested; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
+// ascension (write and read back proven, a restart not yet; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
 Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Ascension");
 int level = e.Loaded ? (int)e.Value : 0;
 Bla_Data.Playerdata.Adddata("RogueWaves", "RW_Ascension", (float)(level + 1), Bl_Tags.Addtype.Replace);
@@ -199,15 +205,19 @@ Always pass the typed third argument (two `Adddata` overloads with optional para
 - The "Focus" action calls `Game_Selection.Onfocus` (Game_Selection.cs:719). "My vessels" are the entities in
   `Game_Entity.Instance.Entityclienttags["Hero"]` owned by the local player, **in the order they were added**
   (`Getplayercharacter`, :575-597). Any minion whose data tags it `Hero` (Boutbro) is in that list.
-- `Onfocus` caches the list; when one entry is destroyed it rebuilds it and sets `Cycle = 0` (:638-657), then selects
-  `Heroselect[Cycle]` (:659-678).
+- `Onfocus` caches the list; when one entry is destroyed it rebuilds it and sets `Cycle = 0` (:638-657). Then, if the
+  current selection is a Hero it selects `Heroselect[Cycle]`; if nothing (or a non-Hero) is selected, which is the
+  usual case right after a death, it selects the Hero **nearest the camera's `Movepos`** (:659-678).
 - A respawn spawns a **new** vessel entity (Entity_Ai_Main_Core.cs:126-153); the dead one leaves the tag list
   (Entity_Master_Client.cs:120-125) and the new one is appended (:176-178). The list is now [Boutbro, vessel] and
-  `Cycle = 0` lands on the minion. The cause is order, not a stale reference (read).
+  `Cycle = 0` lands on the minion; with nothing selected, the minion wins whenever it is nearer the camera than the
+  fresh vessel at the Basin. Order or distance, not a stale reference (read).
 
-**Fix (untested):** a client-side script, after each local vessel spawn, moves the local player's main vessel (its
-`Being` equals `Getload("Hero", Tds_Clientinfo.Hero)`) to index 0 of `Entityclienttags["Hero"]`. It works for Boutman
-too, while the pack is loaded. It cannot be done in `Game_Entity.Onspawn` (server-side, Game_Entity.cs:294-296); the
+**Fix (compiled and run, but the bug did not reproduce, §11):** a client-side handler added to `Bl_Inputs.Actions["Focus"].Function` after the game's own: on the
+first press after the local vessel respawned, it selects the main vessel (its `Being` equals
+`Getload("Hero", Tds_Clientinfo.Hero)`; `Game_Selection.Selected` and `Select()` are public) and moves it to index 0
+of `Entityclienttags["Hero"]` so later presses cycle from it. It works for Boutman too, while the pack is loaded
+(RogueLab's `RogueLabFocusFix`). It cannot be done in `Game_Entity.Onspawn` (server-side, Game_Entity.cs:294-296); the
 tag list is built on each client. For the pack's own minion vessels the same fix applies; dropping `Hero` from a
 minion's tags also removes it from F but costs hero artifacts (`Artifact_Heroapply`), Halberd's dive targeting and
 Drinkstand support (read), so keep the tag and reorder.
@@ -232,7 +242,24 @@ Drinkstand support (read), so keep the tag and reorder.
 
 ## 11. PC research list (one build, one launch, then one online check)
 
-One research module in a throwaway mod, run once on the boat and once in a match; log to `Player.log` with a prefix.
+Built as the throwaway mod `TDS_Mod/ModSource/RogueLab`, which plays steps 1-9 by itself on a solo host (its
+`README.md`). **Round 1 ran on 2026-10-08: 13 pass, 0 fail, 0 setup**, Boutman on 3B_Thehunt chained into 0B_Hydragen.
+Every log line is in `reference/roguelab_round1.txt`. Results:
+
+| Step | Result |
+| --- | --- |
+| 1 Database | 6 modes (Mode_Normal shows as "Downpour", 30 Tides; Storm "High Tide" 15; Drought "Flood" 20; Tsunami 4), 51 Gameplans, 54 maps, 40 artifacts, 105 unlock keys; Mode_Normal's 60-entry table and params logged |
+| 2 Mode entry | **proven**: the match played `Mode_RogueLab` (stock scripts, 3-Tide table) on a `RogueLab_` twin Gameplan swapped in on the boat |
+| 3 Chain | **proven**: after a win, map 2 loaded straight from map 1 (`Despawnall`, four strings, `Gameloading`); the mod object and its dictionary survived, and the mode and Cardinal carried over |
+| 4 Leave, rewind | **proven**: the win path between Tides ends the map as "Win"; rewinding `Entry` replays a Tide, and the core still loses one (§4) |
+| 5 Save | write and read back **proven**; surviving a restart needs one more launch with RogueLab |
+| 6 Cardinal | **proven**: a mod `Artifactentryobject` (a copy of Torrid Badge) accepted by the colour slot's RPC, its group loaded, its core upgrades applied; a stock artifact granted mid-match too |
+| 7 Prompt | the dialog opened with 3 options; with no click it ended **Faulted** after 30 s, not with a result: the host's own timeout must pick and close it (Riptide's `Abandon`) |
+| 8 F key | **not reproduced**: the mod-spawned Boutbro was not counted as the player's (not in the owned `Hero` list), so F found only the vessel. Needs a hand check: play Boutman, let Boutbro spawn, die, press F |
+| 9 Enemies | 8 stock foes with stats and drops (Claymore is loaded but in no Tide); Hardened, Tempered, Superheated, Fractured, Annealed with params; Explode and Weakened are **not** in Mode_Normal's group |
+
+Exceptions: one `OperationCanceledException` in `Macro_Setupui.Mapselected` right after the boat-side swap (harmless,
+the match loaded) and five `NullReferenceException`s from the game's own teardown at quit. Steps 10 and 11 stay manual.
 
 1. **Database:** keys and counts of `Tds_Masterdatabase.Items` for `Mode`, `Gameplan`, `Map`, `Artifact`, `Unlock`;
    every field of `Mode_Normal`'s `Modeobject` (`Defaultparams`, each `Waves` and `Wavecontent`) and of one Gameplan.
@@ -262,3 +289,26 @@ One research module in a throwaway mod, run once on the boat and once in a match
   base game's Addressables entry list in `AddressableAssetsData/AssetGroups/Default Local Group.asset`, saved as
   `reference/addressables_default_group.txt` (1436 asset paths: every mode, map, artifact, being and upgrade name).
 - `Player.log` of a modded launch, 2026-10-08.
+
+## 13. Already proven in game: Riptide
+
+Riptide (`TDS_Mod/ModSource/Riptide`, PR #1; Dimitri's 2026-10-04 prototype: one Basin, 30 random Tides, a Salvage of
+artifacts between them) passed 70 of 70 PC probes in round 3. Its `IMPLEMENTATION_NOTES.md` is the evidence; what it
+settles here:
+
+- A mode entry cloned from `Mode_Normal`'s, its `Modeobject` in a same-named `Bl_Address` group, and Gameplan twins
+  load and play like stock (probe 1). The end screen saves records under the twin's name.
+- `Mode_Normal` reads each Tide entry live on the host: a Tide written during the break before it is what spawns, and
+  elites through `Wavecontent.Upgrades` spawn with their upgrade and skin (probe 2).
+- An artifact granted mid-match (`Upgrade(core, up, Forced, art)` plus catch-up for apply-kinds), added to the synced
+  lobby list with `SendMessage("Updateartifactlist")`, acts like a lobby pick and shows on the HUD (probe 3).
+- `Runprompt` works from mod code; a per-vessel `Commandobject` button reopens it; the pick reaches the host through
+  `Command_ServerRpc`; holding `Time_Wave` keeps a break open (probe 4, round 2). The dialog needs re-centring for
+  three or more cards (`RiptideSalvage.Centre`).
+- `PlayerPrefs`, named messages and `OnClientConnectedCallback` pass the game's code security (probe 5).
+- A Setup-screen switch (a copy of the alternate-map toggle) is a working start route, the fallback if a mod Cardinal
+  does not show in the lobby.
+
+RogueLab round 1 (§11) then proved the rest of the run's skeleton: the mod Cardinal from the lobby, the chain to a
+second map with host state, leaving between Tides as a win, rewinding `Entry`, the save keys.
+
