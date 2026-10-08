@@ -12,7 +12,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | Path | What | Read first |
 | --- | --- | --- |
 | `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
-| `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.5), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames | `TDS_Mod/README.md` |
+| `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.5), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames. `ModSource/Riptide`: a tested roguelike-mode prototype, prior art for the mode | `TDS_Mod/README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
 | `docs/SCOPE_v0.txt` | The user's scope for the expansion (2026-10-08): mode, mechanics, four vessels, modifiers, a bug fix. The highest truth after the user's newest words | when a task touches its subject |
 | `docs/PROJECT_SETUP.md` | What to hand the coordinator: repository, project instructions, project files, first message, PC chores | when setting up or re-creating the Claude Project |
