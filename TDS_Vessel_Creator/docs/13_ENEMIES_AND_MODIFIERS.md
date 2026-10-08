@@ -298,14 +298,21 @@ without a stock bespoke AI reads as a plain melee foe to them.
 
 1. **Stock enemy data**: the AIs, visual scripts, stats (with `Leveladd`), drops, tags, skins and `Upgradesinit` of
    each `Enemy_*`. Sprigg's research build already logs this (`examples/code/Sprigg_95_Research.cs`, `Enemies()`);
-   its output may still be in `C:\Users\Dimitri\TDS_Mod\ModSource\Sprigg\Research\dump`.
+   its output may still be in `C:\Users\Dimitri\TDS_Mod\ModSource\Sprigg\Research\dump`. *From the code
+   (2026-10-08):* enemy AIs hold behaviour and fixed constants only; every number is a stat and every tag comes from
+   `Beingobject.Entity.Tags` (no enemy AI adds tags). There is no Dagger or Spear AI. Still needs the PC: the data.
 2. **Stock elite values**: `Display_Name`, `Display_Desc` and `Defaultparams` of the six `Enemy_*_Upgradeobject`s and
-   `Effect_Enemy_Weakened_Upgradeobject`.
+   `Effect_Enemy_Weakened_Upgradeobject`. *From the code (2026-10-08):* none of it is in code. Each AI reads
+   `Defaultparams["X"]` bare (a missing key throws, so a reused stock AI needs every param it reads); the only
+   constants are Tempered's 5 checks and 5 s `Redblocked`, Melting's `Enemyweaken` base 100 and 2 s debuff. PC only.
 3. **Tide tables**: for each mode, every `Waves` (Note, Wavetime, Wave) and `Wavecontent` (enemy, count, interval,
    style, gate, upgrades); and confirm that two maps in one mode play the same table.
 4. **When the enemies are loaded**: which Addressables group holds `Enemy_Dagger` (search `Bl_Address.Loadedfolders`
    for the `Loadlist` whose `Items` has it) and whether it is loaded at boot or only in a match. That decides when a
-   mod can clone a template enemy on every machine.
+   mod can clone a template enemy on every machine. *From the code (2026-10-08):* boot loads the groups named in
+   `Database.Init` (`Bla_Addressables.cs:25-31`, data); a match loads `General_Default`, each hero's, artifact's, map's
+   and mode's groups; nothing is ever unloaded. `Getload("Mob", name)` is null until its group loads. PC: log the
+   `Init` names and `Bl_Address.Groups["Mob"]` (group and item names) at mod load and in a match (`15` §11 step 9).
 5. **Enemy art format**: sheet and frame size, PPU, animation names, and the elite skins' recolours (port
    `Sprigg_97_ArtDump.cs` to dump `Enemy_Dagger`'s sprite object and skins).
 6. **Journal**: whether the base journal has enemy pages a new enemy should join (`Logitems.TextImageBeing`, `Stats`

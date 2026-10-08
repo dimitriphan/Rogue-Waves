@@ -66,12 +66,13 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/12_MINION_VESSELS.md` | Vessels built around units (like Fie, Boutman, Buster): spawners, respawn, upgrades reaching units, unit behaviour, player orders, rules, tests |
 | `docs/13_ENEMIES_AND_MODIFIERS.md` | Enemies and elites: the shipped roster, Tide tables and enemy cores, the six enemy modifiers, how a mod adds a new enemy or modifier, open questions for the PC |
 | `docs/14_MODTOOL_AND_PACKAGING.md` | The mod container: ModTool content types and scenes, the `.info`, no load order or dependencies, the RoslynCSharp sandbox, no Workshop, how a pack of several parts should ship, PC checks that decide maps |
+| `docs/15_ROGUE_MODE_ENGINE.md` | The Rogue Wave mode's engine: modes and the three-map chain, what survives a scene change, Merchut and bounties, Cardinals (artifacts), client choices, the save, the F-key bug, mod loading; go / fallback / no per scope feature, PC list |
 | `kit/Shared/` | The shared kit every vessel compiles (kit 1.5): journal, boat, tower ranges, combat hits, self-test helpers (`kit/README.md`) |
 | `template/Mummer/` | The reference vessel (Mummer 1.0.0): runtime code, editor generator, build scripts |
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
 | `tools/New-Vessel.ps1` | Scaffolds a new vessel from the template |
 | `tools/cecil/` | Scripts that read the game's compiled code (IL, callers, string literals, API dump) |
-| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, and `maps/`: the self-test map's ground |
+| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), and `maps/`: the self-test map's ground |
 | `examples/` | The design and implementation notes of the three vessels built so far; `examples/code/` holds Argo's and Sprigg's modules the docs cite (damage hooks, tower firing, turret aim/recoil/spin, a generator with moving parts, unit orders and a crew picker, ranged vessel, leftovers, data survey, base-vessel art dump) |
 
 ## Definition of done (every vessel)

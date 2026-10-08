@@ -184,12 +184,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** repository set up from `ModProjects` (2026-10-06); scope v0 and this plan written; Phase 0 closed
-  (2026-10-08); research round 1 written as `TDS_Vessel_Creator/docs/14_MODTOOL_AND_PACKAGING.md` (ModTool, scenes,
-  the code sandbox, no Workshop, pack layouts; 2026-10-08).
-- **Next:** the user names the next research round (candidates: base game's Cardinals, shopkeeper, bounties and
-  modes from public sources; roguelike-run design patterns), or Phase 1 once the game DLL is in the project files.
-- **Blocked:** nothing.
+- **Done:** Phase 1 research (2026-10-08): `TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`, with a go / fallback /
+  no table per scope feature (§1) and a PC list (§11); `docs/13` §10 and `docs/14` §6 updated from the code.
+- **Next:** Phase 1 gate: the user approves §1's table and answers Open questions 1-3; then the PC round of §11.
+- **Blocked:** on the gate.
 
 ### Decisions
 
@@ -210,6 +208,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   persists across sessions if Phase 1 finds save writes safe, else per session; online is 2-4 players,
   host-authoritative, every player with the whole pack; the F-key respawn fix covers the new vessels, and Boutman if
   it is the same code path.
+- 2026-10-08 (Phase 1, default): the mode is the stock `Mode_Normal` loop (named by the mod's `Modeobject`) plus a
+  host brain in the pack's code; a mode class of our own is impossible (`docs/15` §2).
+- 2026-10-08 (Phase 1, default): run state lives on the host's `DontDestroyOnLoad` object; Pure Aura shows as a counter
+  on each player's vessel; ascension is saved in `Bla_Data` folder `RogueWaves` (save writes are safe, `docs/15` §8).
+- 2026-10-08 (Phase 1, default): the F-key fix is a client-side reorder of the `Hero` tag list, for Boutman and every
+  pack vessel; minions keep the `Hero` tag (`docs/15` §9).
+- 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
+  types (`docs/15` §10), which favours one pack mod carrying the mode.
 
 ### Open questions
 
@@ -217,6 +223,9 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
+| 1 | Map vote: the game has no vote before a match. Map 1 picked by the host on the boat, maps 2 and 3 voted in game before leaving the previous map? | yes |
+| 2 | How a run starts on the boat: the host picks a base map and equips a "Rogue Wave" Cardinal in the lobby's Mixed slot, which turns the match into the run's first map? | yes, if the PC round shows mod Cardinals in the lobby; else a boat button |
+| 3 | Run the PC round of `docs/15` §11 (one research build, one launch, then one online check with a friend)? | yes, when the user has PC time |
 
 ### Phase 5 pieces
 

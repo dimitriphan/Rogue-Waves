@@ -109,6 +109,13 @@ needs to reach into vessels (shared domain wins) or only observe them (separate 
    (decides the "one folder, many parts" layout).
 5. Blockage's Discord `#mods` channel: any documented limits or a Workshop plan.
 
+**Answered from the code and the Mod Tools package (2026-10-08, `15` §10):** Q1 partly: `supportedContent` is 7
+(assets, scenes, code), but the game never loads a mod's scenes (`Autoloadscenes` is never read); maps ship as `Map`
+prefabs with `Mods_Mapsettings`, picked up by `Custom_Map_Overworld`. Q2: every enabled mod loads at boot in ModTool's
+discovery order, never sorted (not alphabetical in a 2026-10-08 `Player.log`); `Toggle` loads or unloads at once.
+Q4: every prefab matching a keyword activates, in every mod, each compiled into its own assembly. Still on the PC: Q1's
+custom-map check, Q3, and Q5 (not a PC task).
+
 ## 7. Sources
 
 ModTool: github.com/Hello-Meow/ModTool (README, `ModTool.Shared/ModContent.cs`, `ModInfo.cs`, `ModToolSettings.cs`,
