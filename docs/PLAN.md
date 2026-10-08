@@ -205,6 +205,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-08 (user): the scope text is **the planned version of every vessel, Argo included**. Argo is designed from
   the scope text; its shipped 1.4.0 code in `ModProjects` is reused only where it already matches, and every
   difference is listed in `DESIGN.md` as a change from 1.4.0, not from the scope.
+- 2026-10-08 (user): **Argo is designed without SONAR for now.** No ability button and no Pinged debuff; 1.4.0's
+  SONAR code stays in the source, unused, until the user decides.
 - 2026-10-08: the kit chapter for the mode engine is `docs/15` (`docs/14` went to ModTool and packaging).
 - 2026-10-08 (defaults taken): three Directions offered and one picked per map, extras bought at the shop; ascension
   persists across sessions if Phase 1 finds save writes safe, else per session; online is 2-4 players,
@@ -233,7 +235,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 6 | Argo 2.0 design (`TDS_Mod/ModSource/Argo/DESIGN.md`): five buildables with the new Deep Water; the Harpoon no longer reels by default and splits into damage or crowd-control paths; the Drill Rig's Tremor is aimed; the Miner's Base is limit 1; 1.4.0's "loaded guns" dropped? | yes |
+| 6 | Argo 2.0 design (`TDS_Mod/ModSource/Argo/DESIGN.md`): five buildables with the new Deep Water; the Harpoon no longer reels by default and splits into damage or crowd-control paths; the Drill Rig's Tremor is aimed; the Miner's Base is limit 1; 1.4.0's "loaded guns" dropped; no SONAR (user)? | yes |
 
 ### Phase 5 pieces
 

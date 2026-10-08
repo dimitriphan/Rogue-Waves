@@ -33,13 +33,12 @@ ninth PC self-test (103/103).
 
 - **Display_Desc:** "Sturdy, slow melee, hits two at once" (1.4.0).
 - **Second hit:** every swing also hits a second foe within 1.25 tiles of the first for 60% (1.4.0).
-- **SONAR** (keys 6/7, instant, 15 s cooldown greyed on the button): every foe within 6 tiles is **Pinged** for 5 s
-  (takes 20% more damage). Drill Rigs whose Tremor it touches quake, holding the foes in it for a second (1.4.0).
-- **Special rule** ("Fathoms"): "Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed, pinned
-  and pinged foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never
+- **No SONAR** (user, 2026-10-08: not designed with SONAR for now). Argo has no ability button; nothing below needs one.
+- **Special rule** ("Fathoms"): "Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned
+  foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never
   traps."
-- **Debuffs the kit applies** (the Scatter's bonus reads any): Slowed (Deep Water, Tremor, Barnacle Shot, Tether),
-  Pinned (Anchor Line, quakes), Pinged (SONAR).
+- **Debuffs the kit applies** (the Scatter's bonus reads either): Slowed (Deep Water, Tremor, Barnacle Shot, Tether),
+  Pinned (Anchor Line, Mantle Tap's quake).
 
 ## Buildables (five, as the scope lists; see Changes)
 
@@ -99,12 +98,11 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 
 ## Visual effects and sounds
 
-- Debuff looks: `Debuff_ArgoPinged` (1.4.0), `Debuff_ArgoPinned` (a harpoon line to the foe), `Debuff_ArgoSlowed` (wet
+- Debuff looks: `Debuff_ArgoPinned` (a harpoon line to the foe), `Debuff_ArgoSlowed` (wet
   drip, Deep Water and Tremor).
 - World effects: `World_Argo_Tremor` (dust ring drawn at the server's real radius), `World_Argo_Quake`,
   `World_Argo_Reel` (line from gun to foe), `World_Argo_Charge`, `World_Argo_Flood` (a splash when a pool is added).
-- Sounds, quiet (`docs/03` §6): scatter blast, harpoon twang, reel winch, pool splash, drill hum, quake rumble, SONAR
-  ping.
+- Sounds, quiet (`docs/03` §6): scatter blast, harpoon twang, reel winch, pool splash, drill hum, quake rumble.
 
 ## Changes from the concept, and from 1.4.0
 
@@ -114,13 +112,14 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 | Five buildables | All five (Deep Water is new) | Four | The concept wins; the fifth build option is the PC check (above) |
 | Harpoon Gun: long-range damage **or** crowd control, "pin or reel depending on upgrade path" | Base gun pierces and doesn't reel; the tree splits into damage and CC paths, two capstones | Every harpoon reeled | As written; the reel (verified in 1.4.0) moves to Reel3 |
 | "Pinning against wall stuns" | Anchor Line pins the foe hit; beside any building it is stunned instead | Pinned the reeled foe | Argo has no walls, and the game has no knockback (`docs/05` §11) to pin a foe *against* something; "beside a building" reads the same on screen |
-| Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed, Pinned or Pinged foes | none | As written |
+| Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed or Pinned foes | none | As written; every debuff source is a tower, trap or upgrade |
 | Scatter: "% increases health greatly" | Ironclad4 (ends early) | Undertow4 | As written |
 | Deep Water: slowing trap, extends like Fie's wall, combines with Harpoon and Drill Rig | FLOOD extends it; pinned foes held twice as long; Tremors spread through pools | none | Gives "combines" two testable rules |
 | Drill Rig: "tremors in targeted location; tremor size increases per tide" | AIM picker places the Tremor; Fathoms widen it each Tide | Tremors ringed the drill | A target the player picks needs a picker (`docs/02` §2) |
 | Drill Rig %: pinned foes on tremors take DOT; pulled foes through tremors take burst | Bedrock3, Fault Line4 | Aftershock (Tremors hurt all), Fault Line (+range) | As written |
 | Miner's Base: like the Bouthouse, limit 1; Port & Starboard tune towers, not traps | As written, on 1.4.0's verified Nauts | Diving Bell, no limit | As written |
-| (the scope gives Argo no attack, ability or rule) | 1.4.0's melee, second hit and SONAR, kept | same | Keeps what players know; SONAR feeds the Scatter's bonus |
+| (the scope gives Argo no attack, ability or rule) | 1.4.0's melee and second hit, kept | same, plus SONAR | Keeps what players know |
+| (none) | No SONAR and no Pinged debuff | SONAR (keys 6/7) pinged foes for +20% damage and quaked Drills | User, 2026-10-08: don't design with SONAR for now. Its 1.4.0 code stays in the source, unused, until decided |
 
 ## Test plan (self-test, `docs/08`)
 
@@ -128,7 +127,7 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 
 1. **Five build options appear and each builds** (the engine check); the Miner's Base button goes once one stands and
    comes back after a sell.
-2. Scatter: +50% damage to a Slowed, a Pinned and a Pinged foe; Ironclad's health.
+2. Scatter: +50% damage to a Slowed and a Pinned foe, none to a clean one; Ironclad's health.
 3. Harpoon: the base gun pierces and doesn't move foes; Anchor Line pins the foe hit 1 s, stuns it beside a building;
    Reel moves it toward the gun (1.4.0's lane checks); Undertow reels the foes around a hit; a boss is never moved.
 4. Deep Water: slow inside; FLOOD adds an adjacent pool for Blue 15; a pinned foe in a pool is held 2 s; a Tremor
