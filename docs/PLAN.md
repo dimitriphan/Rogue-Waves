@@ -232,7 +232,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 4 | Packaging (`docs/PACK.md`): ship one `RogueWavesMod` (one zip, one toggle, one version) with a prefab per part, each part still developed and self-tested as its own dev mod? | yes |
-| 5 | Style (`docs/STYLE.md`): the pack look lives in run pieces (Pure Aura in Pearl, the crest, flotsam Cardinals), and the new vessels' shapes are Yossele a mossy menhir, Spool an hourglass spool, Uloe a faceted prism with a halo? | yes |
+| 5 | Style (`docs/STYLE.md`): the pack look lives in run pieces (Pure Aura in Pearl, the crest, flotsam Cardinals); vessels look as Dimitri's concept art draws them (`docs/concepts/YOSSELE_SPOOL_ULOE.md`), with towers carrying each one's motif? | yes |
 
 ### Phase 5 pieces
 

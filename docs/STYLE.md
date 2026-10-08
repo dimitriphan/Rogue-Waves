@@ -51,24 +51,31 @@ Text is plain and short, sentence case, and has no numbers in upgrade text (`doc
 
 ## The roster: shape language and sprite reference
 
-Each vessel owns one silhouette and carries it into its towers. Taken shapes are in `.claude/rules/design.md`.
+**Dimitri's sprite concepts decide each vessel's look.** They are described pixel by pixel in
+`docs/concepts/YOSSELE_SPOOL_ULOE.md` (PR #2), with the art in `docs/concepts/art/`. This table carries them into the
+pack and doesn't redraw them. Each vessel owns its silhouette and carries it into its towers. Taken shapes are in
+`.claude/rules/design.md`.
 
-| Vessel | Shape | Sprite reference (`docs/03` §1) | Main / accent | Signature | Towers carry |
-| --- | --- | --- | --- | --- | --- |
-| **Argo** | bulky dome diver, hands touching the body | as shipped in ArgoMod 1.4.0 (look unchanged) | as shipped | the dome helmet | brass domes and portholes, as shipped |
-| **Yossele** | **menhir**: a tall slab rounded at the top and wider at the base, clay with moss on the shoulders | Sno Sno (an object come alive), but heavier and still: small eyes low on the slab, short stubby arms | clay `B08A6A`, moss `7FA65A`; accent one small mushroom cap `D9654F` | a carved mark on the brow, and moss that grows a little across the idle loop | standing stones and roots. Each [Growth] stage is a **skin** that adds moss, mushrooms or leaves, never a motion |
-| **Spool** | **hourglass**: a wooden spool body (two flared rims, a waist wound in thread), stubby legs | Sno Sno (an object come alive) | wood `D9B07A`, thread `D9546B` | a needle held like a lance, a loose thread end that sways in idle | sewing things built on the spool's flared-rim cylinder: tin lids, a loom frame, a cushion bristling with pins |
-| **Uloe** | **prism**: a faceted diamond (rhombus) body with a thin halo ring above, floating, no legs | Fie (a small humanoid read by its head shape) | warm white `FFF1B8`, Foam rim; accent amber `F2A93B` | the halo, which brightens and dims across the idle loop | faceted prisms and lenses: an octahedron on a stem, a lens frame, the Flood Light's dish, the Mirror wall's panes |
+| Vessel | Shape (from the art) | Sprite reference for the full sheets (`docs/03` §1) | Colours (from the art) | Towers carry |
+| --- | --- | --- | --- | --- |
+| **Argo** | bulky dome diver, hands touching the body | as shipped in ArgoMod 1.4.0 (look unchanged) | as shipped | brass domes and portholes, as shipped |
+| **Yossele** | a round clay head with a see-through hole, a two-leaf sprout on a stalk, glowing green eyes, four long root-like limbs | Buster for the poses (big pose changes on long limbs), Smacky for the head-to-body weight | clay `864B41` to `733E35`, leaf `72CC35` / `6ABE30`, eyes `99E550`, collar `323C39` | round holes and root feet; each Growth stage is a **skin** that adds leaves or sprouts, never a motion |
+| **Spool** | a hooded purple plush whose face is a stitched opening, yellow eyes looking out, a pink tongue, white gloves, a tail with a white tip | Fie (a small humanoid read by its head and hood) | purple `7E4D90` to `633773`, stitches `B5B1B0` / `605F5B`, hollow `490F5F`, eyes `BFBA3F`, tongue `D77BBA` | stitches, pins and tins (the Cookie Tin, the Pin Cushion) |
+| **Uloe** | a glass light-bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow rays at the sides, a cord to a plug | Sno Sno (an object come alive; legless, it hops) | glass `DAE6FC` / `CBDBFC`, glints `F1EF72`, steel `9BADB7` to `595652`, rays `FBF236`, eyes `3F3F74` | glass, screw rings and cords: the Flood Light's lamp, the Magnifying Glass's lens, the Mirror's panes |
 
-Each must read at 1× zoom against the boat and the darkest map, and differ from every shape already taken: Yossele
-is not Smacky's square (it is taller, tapered and earthy), Spool is not Sno Sno's stacked balls (it is flat-topped
-with rims), and Uloe is not Crackpot's orb or Sprigg's bulb (it is angular and faceted).
+Each must read at 1× zoom against the boat and the darkest map. The concept page (§4) checks them against the taken
+shapes. Uloe is the only tall, thin, legless outline on the boat. Its bulb is glass on a post, not Sprigg's plant bulb.
+
+**Where the art departs from the house style**, kept as drawn until Dimitri says otherwise (each is decided at that
+vessel's design gate): Yossele's and Spool's eyes glow instead of being dark dots; Yossele's limbs are long (the style
+wants 2 px or none); Uloe's head is under half its height. Names that repeat a shipped mod's word for something else
+(Spool's Loom and Thread against Mummer's) are flagged at Spool's gate. The names stay the user's.
 
 ## Towers
 
 Low-poly sleek per `docs/03` §4, from each vessel's 8×8 palette. The silhouette rule: **every tower shows its
-vessel's primitive on the top or front face** (Yossele's rounded slab, Spool's flared rim, Uloe's facets, Argo's
-dome), so a player can tell whose tower it is from the game camera. Upgrades keep the silhouette and add one feature
+vessel's motif on the top or front face** (Yossele's round hole and roots, Spool's stitches and pins, Uloe's glass
+and screw rings, Argo's dome), so a player can tell whose tower it is from the game camera. Upgrades keep the silhouette and add one feature
 each. States (Growth, Light, a held seed count) show as skins or a counter, not as motion.
 
 ## Enemies
