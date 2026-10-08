@@ -1,6 +1,6 @@
 // Argo's journal pages, described for the shared kit's ModKitVesselJournal (ModSource/Shared/ModKitJournal.cs, which grew
 // out of Argo 1.0's own VesselJournal and VesselTabs): a vessel page with the rule banner, a page per building with its
-// upgrade tree, and the Nauts' pages (RELATED ITEMS on the Diving Bell's page). ModKitVesselTabs keeps every vessel
+// upgrade tree, and the Nauts' pages (RELATED ITEMS on the Miner's Base's page). ModKitVesselTabs keeps every vessel
 // page's tab row complete, in the same order as every other vessel mod.
 public static class ArgoJournal
 {
@@ -21,18 +21,24 @@ public static class ArgoJournal
             { "Projcount", "Pellets" }, { "Spread", "Cone" }, { "Pierce", "Pierce" }, { "Stagger", "Stagger" }, { "Broadside", "Broadside Every" },
             { "Bleedticks", "Bleed Ticks" }, { "Bleed", "Bleed Damage" }, { "Root", "Hold" }, { "Whaler", "Full Bonus At Health" }, { "Twin", "Second Harpoon After" },
             { "Lance", "Lance Every" }, { "Nautspeed", "Naut Speed" }, { "Repair", "Repair" }, { "Tunerange", "Tuned Range" },
-            { "Bulkhead", "Damage Taken Cut" }, { "Divebell", "Diving Bell" }, { "Tuneboost", "Tuning Boost" }, { "Fathommax", "Deepest Fathom" }, { "Pulse", "Tremor Damage" },
-            { "Gusher", "Gusher Strikes" }, { "Mantle", "Quake Hold" },
+            { "Bulkhead", "Damage Taken Cut" }, { "Divebell", "Dive" }, { "Tuneboost", "Tuning Boost" }, { "Fathommax", "Deepest Fathom" }, { "Tremor", "Tremor Radius" },
+            { "Gusher", "Gusher Strikes" }, { "Mantle", "Quake Pin" }, { "Debuffbonus", "Bonus vs Slowed or Pinned" },
+            { "Tetherslow", "Tether Slow" }, { "Pinstun", "Stun Beside Buildings" }, { "Reel", "Reel" }, { "Undertow", "Undertow" },
+            { "Brine", "Brine" }, { "Catch", "Kelp Hold" }, { "Brinepinned", "Brine on Pinned" }, { "Flood", "Extra Pools" },
+            { "Damagetaken", "Damage Taken" }, { "Spread_Per", "Pools Per Tide" }, { "Dragunder", "Drag Under" }, { "Bedrock", "Bedrock Damage" },
+            { "Fault", "Fault Burst" }, { "Healtharmor", "Armour" },
         })
             spec.Labels[kv.Key] = kv.Value;
 
         foreach (ArgoData.Build b in ArgoData.Builds)
         {
+            if (b.Hidden)
+                continue;
             Beingobject being;
             ArgoContent.Beings.TryGetValue(b.Id, out being);
             ModKitJournalBuilding jb = new ModKitJournalBuilding
             {
-                Id = b.Id, Title = b.Display, Desc = b.Journal, Entity = being != null ? being.Entity : null, Model = ArgoAssets.Model(b.Id),
+                Id = b.Id, Title = b.Display, Desc = b.Journal, Entity = being != null ? being.Entity : null, Model = ArgoAssets.Model(b.ModelName),
             };
             Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
             foreach (ArgoData.Upg u in b.Upgrades)

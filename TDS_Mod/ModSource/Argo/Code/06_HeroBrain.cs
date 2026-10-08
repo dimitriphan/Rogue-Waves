@@ -1,12 +1,15 @@
-// Server-side brain for the vessel: build options, SONAR and the second hit of each swing. It plays the part of a
+// Server-side brain for the vessel: build options (2.0: five, the fifth the Miner's Base, gone while one stands), SONAR
+// (switched off in 2.0) and the second hit of each swing. It plays the part of a
 // vessel's own AI (Entity_Ai_Hero_<Name>). Swinging is left to the stock Entity_Ai_Mob_Combat, exactly like Smacky:
 // this brain listens to the vessel's own hit event (Entity_Master.Interact) and carries each swing on to a neighbour.
 public class ArgoHeroBrain : MonoBehaviour
 {
     public Entity_Master Master;
     public float SonarReadyAt;
-    public int Sonars, Cleaves;
+    public int Sonars, Cleaves, BaseHidden, BaseShown;
     bool started;
+    float nextBase;
+    static readonly List<string> missingOptions = new List<string>();
     Link_Command sonarCommand;
     bool sonarOff;
     float nextHookCheck;
@@ -22,8 +25,11 @@ public class ArgoHeroBrain : MonoBehaviour
         "Pick a tower",
         "Sent {0}",
         "{0} is heading home",
-        "{0} is swimming back to the Diving Bell",
+        "{0} is swimming back to the Miner's Base",
         "That tower belongs to the other team",
+        "Nauts tune towers, never traps",
+        "Out of this Drill Rig's reach",
+        "FLOOD a tile next to this Deep Water or one of its pools",
     };
 
     void Update()
@@ -45,6 +51,8 @@ public class ArgoHeroBrain : MonoBehaviour
             }
             if (sonarOff && Time.time >= SonarReadyAt)
                 SetSonarButton(false);
+            if (Time.time >= nextBase)
+                CheckBase();
             // Helper_Entitytools.Updateinteract rebuilds Interact whenever an upgrade or effect lands on the vessel.
             if (Time.time >= nextHookCheck)
             {
@@ -65,14 +73,9 @@ public class ArgoHeroBrain : MonoBehaviour
         started = true;
         ArgoServer.Heroes.Add(this);
         for (int i = 0; i < ArgoData.Towers.Length; i++)
-        {
-            string link = "Buildoption" + (i + 1);
-            Link_Command c = Helper_Entitytools.Createcommand(Master, "Command_" + link, link, false, true);
-            c.Goalstring = ArgoData.Towers[i];
-            c.Goalvalue = 1f;
-            Helper_Entitytools.Updatecommand(Master, link, "", true, true);
-        }
-        if (ArgoContent.Commands.ContainsKey(ArgoData.SonarLink))
+            BuildOption(i);
+        CheckBase();
+        if (ArgoData.SonarEnabled && ArgoContent.Commands.ContainsKey(ArgoData.SonarLink))
         {
             sonarCommand = Helper_Entitytools.Createcommand(Master, ArgoData.SonarCommand, ArgoData.SonarLink, false, true);
             Helper_Entitytools.Updatecommand(Master, ArgoData.SonarLink, "", true, true);
@@ -82,6 +85,49 @@ public class ArgoHeroBrain : MonoBehaviour
         hitHandler = OnHit;
         Master.Interact += hitHandler;
         ArgoLog.Info("Argo landed for player " + ArgoUtil.Owner(Master));
+    }
+
+    // Build option i+1 builds Towers[i]. The fifth needs Command_Buildoption5 (ArgoContent registers it when the game
+    // has none); without it Argo keeps four buttons and logs why, rather than a button with no command behind it.
+    void BuildOption(int i)
+    {
+        string link = "Buildoption" + (i + 1);
+        if (Bl_Address.Getload("Command", "Command_" + link) == null)
+        {
+            if (!missingOptions.Contains(link))
+            {
+                missingOptions.Add(link);
+                ArgoLog.Warn("no Command_" + link + "; " + ArgoData.Towers[i] + " has no build button");
+            }
+            return;
+        }
+        Link_Command c = Helper_Entitytools.Createcommand(Master, "Command_" + link, link, false, true);
+        c.Goalstring = ArgoData.Towers[i];
+        c.Goalvalue = 1f;
+        Helper_Entitytools.Updatecommand(Master, link, "", true, true);
+    }
+
+    // The Miner's Base limit: its button goes while this player's Base stands and comes back when it is gone
+    // (Entity_Ai_Hero_Boutman.Checkbouthouses removes and recreates Buildoption1 the same way). The server checks build
+    // commands against the vessel's own build options, so a removed button can't be built from either.
+    public void CheckBase()
+    {
+        nextBase = Time.time + 0.5f;
+        if (!started || Master == null || Master.Commandlistserver == null)
+            return;
+        bool has = ArgoServer.HasBase(ArgoUtil.Owner(Master));
+        bool shown = Master.Commandlistserver.ContainsKey(ArgoData.BaseOption);
+        if (has && shown)
+        {
+            Helper_Entitytools.Removecommand(Master, ArgoData.BaseOption);
+            BaseHidden++;
+        }
+        else if (!has && !shown)
+        {
+            BuildOption(Array.IndexOf(ArgoData.Towers, ArgoData.Bell));
+            if (Master.Commandlistserver.ContainsKey(ArgoData.BaseOption))
+                BaseShown++;
+        }
     }
 
     // The button's look follows the command's Goalstring ("Off" while SONAR recharges), synced through Commandlist.
@@ -122,7 +168,7 @@ public class ArgoHeroBrain : MonoBehaviour
         foreach (Entity_Master e in ArgoUtil.Area(pos, ArgoData.SonarRadius, ArgoUtil.Enemies(Master)))
             if (e != null && ArgoUtil.Alive(e) && !ArgoUtil.HasTag(e, "Core") && !ArgoUtil.HasTag(e, "Enemycore"))
                 ArgoHooks.Ping(e, ArgoData.PingDuration);
-        // Every Deep Drill on Argo's team inside the ping quakes.
+        // Every Drill Rig on Argo's team inside the ping quakes.
         foreach (ArgoTowerBrain t in ArgoServer.Towers)
             if (t != null && t.IsDrill && t.Started && ArgoUtil.Team(t.Master) == ArgoUtil.Team(Master)
                 && ArgoUtil.Flat(ArgoUtil.Pos(t.Master), pos) <= ArgoData.SonarRadius)

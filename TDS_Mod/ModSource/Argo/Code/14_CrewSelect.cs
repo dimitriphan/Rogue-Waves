@@ -3,7 +3,7 @@ using Blockage.Menu;
 
 // PORT / STARBOARD / BOSUN pick a tower the way the game's own Reroute and Sell commands pick one: press the button,
 // point at any tower on your team (yours or a teammate's; it gets the selection border), click to send that Naut.
-// Pointing at the Diving Bell itself calls the Naut home. The server checks every pick.
+// Pointing at the Miner's Base itself calls the Naut home. The server checks every pick.
 public class ArgoCrewSelect : Entity_Command_Itemselect_Base
 {
     GameObject ui;
@@ -62,8 +62,10 @@ public class ArgoCrewSelect : Entity_Command_Itemselect_Base
         string name = c != null ? c.Name : "the Naut";
         if (home)
             Label("Desc", "Call " + name + " home");
+        else if (Trap(m))
+            Label("Desc", "Nauts tune towers, never traps");
         else if (!valid)
-            Label("Desc", "Point at a tower, or the Diving Bell to call " + name + " home");
+            Label("Desc", "Point at a tower, or the Miner's Base to call " + name + " home");
         else
         {
             string owner = m.Entitydata.Value.Owner == Master.Entitydata.Value.Owner ? "" : "  (a teammate's)";
@@ -115,6 +117,12 @@ public class ArgoCrewSelect : Entity_Command_Itemselect_Base
             return false;
         List<string> tags = m.Client.Beingobject.Entity.Tags;
         return tags != null && tags.Contains("Tower") && m.Entitydata.Value.Team == Master.Entitydata.Value.Team;
+    }
+
+    static bool Trap(Entity_Master m)
+    {
+        List<string> tags = m != null && m.Client != null && m.Client.Beingobject != null && m.Client.Beingobject.Entity != null ? m.Client.Beingobject.Entity.Tags : null;
+        return tags != null && tags.Contains("Trap");
     }
 
     static GameObject Load(string folder, params string[] names)

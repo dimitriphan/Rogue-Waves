@@ -1,9 +1,9 @@
-# Argo: design (v2.0.0 draft, 2026-10-08)
+# Argo: design (v2.0.0, approved 2026-10-08)
 
 Rogue Waves' Argo is **designed from the scope text** (`docs/SCOPE_v0.txt`, "Argo, Deep Sea Diver"), which the user calls
 the planned version of every vessel (`docs/PLAN.md` Part C). The shipped ArgoMod 1.4.0 (`ModProjects`) is reused only
 where it matches. "Changes from the concept, and from 1.4.0" lists every difference; 1.4.0's own design is `DESIGN_1.4.0.md`. Checked against `TDS_Vessel_Creator/docs/02`.
-Status: **draft at the Phase 3 design gate**; nothing below is built. Unmarked numbers are 1.4.0's, verified in its
+Status: **approved 2026-10-08; step 3 code compiles here (release and self-test builds), not yet built in Unity or tested**. Unmarked numbers are 1.4.0's, verified in its
 ninth PC self-test (103/103).
 
 ## Identity
@@ -70,21 +70,22 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 
 | Building | Upgrade | Status | Desc | Params | Cost | Next |
 |---|---|---|---|---|---|---|
-| Scatter | Ironclad4 | **new** (scope: "increases health greatly"), replaces Undertow4 | Health greatly increased | Health_Multi 1.5, Healtharmor_Add 2 | Red 250, Blue 150 | (ends) |
+| Scatter | Ironclad4 | **new** (scope: "increases health greatly"), replaces Undertow4 | Health greatly increased | Health_Multi 1.5 (health ×2.5), Healtharmor_Base 2 (the game's armour: each hit loses 1 to it first) | Red 250, Blue 150 | (ends) |
 | Harpoon | Tether2 | **new**, replaces Barbed2 | Harpooned foes are slowed | Tetherslow_Base 0.3, Tetherslow_Duration 2 | Red 30 | Anchor Line3, Reel3 |
 | Harpoon | Anchor Line3 | **changed**: pins the foe hit, stunned instead beside a building | Pins the foe it hits, stunned against a building | Root_Base 1, Pinstun_Base 1 | Red 60, Blue 50 | (ends) |
 | Harpoon | Reel3 | **new** (1.4.0's base reel moved here) | Reels the first foe hit toward the gun | Reel_Tiles 1.5 | Red 60, Blue 50 | Twin Line4 |
 | Harpoon | Twin Line4 | **changed**: next is Undertow5 | A second harpoon follows, reeling its own foe | Twin_Base 0.3 | Red 350 | Undertow5 |
-| Harpoon | Undertow5 | **new** CC capstone | Every harpoon reels the foes around its target | Undertow_Radius 1.5, Reel_Tiles 1.5 | Red 1750, Blue 1750 | |
+| Harpoon | Undertow5 | **new** CC capstone | Every harpoon reels the foes around its target | Undertow_Radius 1.5, Undertow_Tiles 1.5 | Red 1750, Blue 1750 | |
 | Deep Water | Undercurrent2 | **new** | Stronger slow | Slow_Add 0.1 | Blue 20 | Kelp Bed3, Salt Sting3 |
 | Deep Water | Brine2 | **new** | Foes inside take damage over time | Brine_Damage 0.5 | Blue 25 | Salt Sting3 |
 | Deep Water | Kelp Bed3 | **new** | Foes are caught for a moment on entering | Catch_Duration 0.75 | Blue 80 | Abyss4, Crushing Depth4 |
-| Deep Water | Salt Sting3 | **new** | Brine stings pinned foes harder | Brinepinned_Multi 1 | Blue 70, Red 30 | Crushing Depth4 |
+| Deep Water | Salt Sting3 | **new** | Brine stings pinned foes harder | Brinepinned_Multi 1 (without Brine, its sting is on a default 0.5 a second) | Blue 70, Red 30 | Crushing Depth4 |
 | Deep Water | Abyss4 | **new** | FLOOD fills two tiles at once | Flood_Add 1 | Blue 260 | (ends) |
 | Deep Water | Crushing Depth4 | **new** | Foes inside take more damage | Damagetaken_Multi 0.15 | Blue 300 | Trench5 |
 | Deep Water | Trench5 | **new** | Spreads by itself each Tide, and drags foes under now and then | Spread_Per_Tide 1, Dragunder_Every 6, Dragunder_Duration 1 | Blue 3000 | |
 | Drill Rig | Bedrock3 | **new** (scope), replaces Aftershock3 | Pinned foes in its Tremor take damage over time | Bedrock_Damage 1.5 | Blue 80, Red 30 | Fault Line4 |
 | Drill Rig | Fault Line4 | **changed** (scope): was +1.5 tiles | Foes reeled through its Tremor take a burst of damage | Fault_Damage 12 | Blue 300 | (ends) |
+| Drill Rig | Seismic2 | **changed**: reach in the Tremor stat | The Tremor slows harder and reaches farther | Slow_Add 0.1, Tremor_Add 0.5 | Blue 25, Yellow 10 | Bedrock3 |
 | Base | Old Salts2 | **changed**: Drill Rig's Tremor, never Deep Water | Nauts tune each kind of Argo tower its own way | Salts_Base 1 | Blue 30 | Overhaul3 |
 
 ## Choices this design makes
@@ -136,6 +137,20 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 | Miner's Base: like the Bouthouse, limit 1; Port & Starboard tune towers, not traps | As written, on 1.4.0's verified Nauts | Diving Bell, no limit | As written |
 | (the scope gives Argo no attack, ability or rule) | 1.4.0's melee and second hit, kept | same, plus SONAR | Keeps what players know |
 | (none) | No SONAR and no Pinged debuff | SONAR (keys 6/7) pinged foes for +20% damage and quaked Drills | User, 2026-10-08: don't design with SONAR for now. Its 1.4.0 code stays in the source, unused, until decided |
+
+### Step 3, code reality (2026-10-08)
+
+- **FLOOD** is the Deep Water's own build option: a clone of `Command_Buildoption1` aimed at `Trap_Argowater_Pool`
+  (Blue 15, hidden from the journal and the hero's buttons), sent as the game's `Build` command to the trap, which the
+  server checks for adjacency (no diagonals) before spawning it Fie's way. Abyss adds `Flood_Add` free pools beside it.
+- **Water networks**: the pump and every pool touching it (or touching a pool that does) are one network, rebuilt every
+  0.25 s; the most-upgraded pump in it leads, so its upgrades work in every pool.
+- **AIM** is an item-select picker (the crew buttons' pattern) on the ground under the mouse; the server refuses a tile
+  past Range + 0.5. Clients read the Tremor's centre and radius from the AIM command's Goal fields.
+- **Tremor reach** is a stat (`Tremor`, 2 at Fathom 1, +0.4 a Fathom, Seismic +0.5), so the game shows it.
+- **Kit 1.6** comes in with Argo: `ModKitPack.Join` at start, `ModKitTides` for the Tide, `ModKitCounter` for Fathom,
+  `ModKitFocus` for the F-key fix. A standalone Argo already loaded makes the pack's Argo stand down.
+- Deep Water does not bob yet (step 3 left the tower motion for the PC round).
 
 ## Test plan (self-test, `docs/08`)
 

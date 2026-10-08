@@ -1,10 +1,29 @@
-# Argo implementation notes (v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
+# Argo implementation notes (2.0.0 in progress; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
-**2.0 for Rogue Waves (in progress, 2026-10-08).** Design approved (`DESIGN.md`). Step 2, art: the generators make
-Deep Water, the FLOOD pool and 2.0's new upgrade models, effects, sounds and two icons (`DESIGN.md` "Art"). Checked
-here only: the mod and editor code compile (`check_mod.py`, `check_editor.sh`) and `lite/run_preview.sh` renders every
-model and sound (`Previews/2.0/`). Not built in Unity or seen in game. Until step 3, the 1.4.0 code still names the
-upgrade models 2.0 dropped (Scatter Undertow4, Harpoon Barbed2, Drill Aftershock3): build and test only after step 3.
+**2.0 for Rogue Waves (step 3 code done, 2026-10-08).** Design approved (`DESIGN.md`, "Step 3, code reality" lists
+how the code does it). Art from step 2 (`Previews/2.0/`). **Checked here only:** `check_mod.py` compiles the mod with
+kit 1.6 at 0 errors in release, `ARGO_SELFTEST` and `ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE`; `check_editor.sh` passes.
+**Not built in Unity, not run, not seen in game.** The self-test (`99_SelfTest.cs`) follows DESIGN's 2.0 test plan.
+
+What the first PC round must show, in order (each is an assumption the code makes):
+
+1. **The fifth build option.** `Command_Buildoption5` is a clone of `Command_Buildoption4` with key 5. If the hero's
+   build bar or select screen shows only four, or the button does nothing, take DESIGN's fallback (Deep Water as a
+   FLOOD-like command). `Diagnostics` logs `Option5Note` and every command's keys.
+2. **Deep Water on Buster's Speed Pad** (`Trap_Busterpad`; else `Trap_Smackywall_Perma`). Its Health and upgrade tiers
+   are assumed; Smacky's hut tiers are lent when the template has none.
+3. **FLOOD** goes through `Command_ServerRpc`, which needs a `Build` command (`Command_Build`) on the trap; the server
+   checks adjacency and pays Blue 15 scaled like a build. Refusals log `Refused` and warn 11.
+4. **AIM**: the picker sends the surface position; the drill converts it with its own offset
+   (`Pos(Master) - Currentblock.Position`). If the Tremor ring sits a level off, that offset is the cause.
+5. **The Miner's Base limit** removes `Buildoption5` while one stands (Boutman's pattern) and re-creates it after a
+   sell or a death; `BaseHidden`/`BaseShown` count it.
+6. **Kit 1.6**: the registry line `[RogueWaves:Argo] v0.1.0-dev kit 1.6` (the pack version, `docs/PACK.md` §4) in Player.log; the F-key check.
+
+Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
+off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
+put back from its export if needed.
+
 Everything below is 1.4.0.
 
 **1.4.0 (identity pass): ninth PC self-test 103 pass, 0 fail (2026-10-05); released and installed on the PC the same

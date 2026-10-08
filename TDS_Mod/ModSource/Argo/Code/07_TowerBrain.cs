@@ -1,24 +1,29 @@
 // Server-side brain for every Argo buildable. Replaces the template tower AIs (which hard-code Smacky's projectiles and
 // upgrades) and Entity_Ai_General_Upgrade (mirrored exactly, so the game's upgrade panel works unchanged).
-//   Scatter Cannon  volleys of real pellets (Projectile_Ai_Simple) fanned across a cone; each pellet hits what it meets.
-//   Harpoon Tower   one piercing harpoon down the line that holds the most enemies (the Heavy Bow's native Pierce);
-//                   the first enemy each harpoon hits is reeled toward the tower (1.4).
-//   Diving Bell     keeps its Nauts alive and takes the PORT / STARBOARD / BOSUN orders.
-//   Deep Drill      bites the nearest ore (the game's own mining, like the Sno Box), sinks a Fathom each Tide, and
-//                   slows enemies inside its Tremors. Argo's guns inside a Drill's Tremors are loaded by its depth
-//                   (Pressure, 1.4).
+//   Scatter Cannon  volleys of real pellets (Projectile_Ai_Simple) fanned across a cone; each pellet hits what it meets,
+//                   50% harder on a Slowed or Pinned foe (2.0).
+//   Harpoon Gun     one piercing harpoon down the line that holds the most enemies (the Heavy Bow's native Pierce).
+//                   2.0: the base gun moves nobody; Tether slows, Anchor Line pins the first foe hit, Reel reels it
+//                   (1.4's reel), Undertow reels the foes around it.
+//   Deep Water      (and FLOOD's pools) the water itself is ArgoWater's; this brain takes the upgrades and FLOOD.
+//   Miner's Base    keeps its Nauts alive and takes the PORT / STARBOARD / BOSUN orders (1.4's Diving Bell).
+//   Drill Rig       bites the nearest ore (the game's own mining, like the Sno Box), sinks a Fathom each Tide, and
+//                   slows enemies inside its Tremor, which AIM places (2.0) and which spreads through any Deep Water
+//                   it touches. 1.4's "Pressure" (loaded guns) is gone.
 public class ArgoTowerBrain : MonoBehaviour
 {
     public Entity_Master Master;
     public ArgoData.Build Def;
     public bool Started;
-    public int Shots, Volleys, Bites, Quakes, Pulses, Fathom = 1;
+    public int Shots, Volleys, Bites, Quakes, Fathom = 1;
     public float LastGusher;
-    // 1.4: Pressure on a gun from the deepest Drill around it; Double Barrel's stored volley; the reel; Pay Dirt.
-    public int Pressure, Stored, Reels, BossHits, PaydirtBites;
-    public float TunedReel, LastReelDone;
+    // Double Barrel's stored volley; the reel; Pay Dirt. 2.0: the debuff bonus, Tether, Anchor Line, Undertow, the aim,
+    // Bedrock and Fault Line.
+    public int Stored, Reels, BossHits, PaydirtBites, BonusHits, Tethers, Anchors, Undertows, Aims, Bedrocks, Faults;
+    public float TunedReel, LastReelDone, NextDrag;
+    public Vector3 AimCenter;
 
-    float lastAttack, nextScan, upgradeThrottle, nextTremor, nextPulse, nextHookCheck, dryWarned = -99f;
+    float lastAttack, nextScan, upgradeThrottle, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f;
     int shotSerial, mantleTide = -1;
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
@@ -27,13 +32,11 @@ public class ArgoTowerBrain : MonoBehaviour
     readonly List<float> reelShots = new List<float>();   // shots whose first hit is still to come
     // Each reel shot's nearest foe hit in the step it first hits, and how far it stood from the tower.
     readonly Dictionary<float, KeyValuePair<Entity_Master, float>> reelFirst = new Dictionary<float, KeyValuePair<Entity_Master, float>>();
-    Link_Modifier fathomCounter, pressureMod;
-    float nextPressure;
-    Link_Command upgradeCommand;
+    Link_Command upgradeCommand, aimCommand;
     Entity_Master.Interacts hitHandler;
     readonly ArgoFaults faults = new ArgoFaults();
 
-    // Diving Bell: one slot per crew member (Port, Starboard, Bosun).
+    // Miner's Base: one slot per crew member (Port, Starboard, Bosun).
     public readonly ArgoNautBrain[] Crew = new ArgoNautBrain[3];
     public readonly Entity_Master[] Posts = new Entity_Master[3];
     readonly float[] respawnAt = new float[3];
@@ -53,8 +56,12 @@ public class ArgoTowerBrain : MonoBehaviour
     public bool IsHarpoon { get { return Def.Id == ArgoData.Harpoon; } }
     public bool IsBell { get { return Def.Id == ArgoData.Bell; } }
     public bool IsDrill { get { return Def.Id == ArgoData.Drill; } }
+    public bool IsWater { get { return Def.Id == ArgoData.Water; } }
+    public bool IsPool { get { return Def.Id == ArgoData.Pool; } }
+    public int UpgradeCount { get { return keys.Count; } }
     public int FathomMax { get { return Mathf.RoundToInt(Param("Fathommax_Base", ArgoData.FathomMax)); } }
-    public float TremorRadius { get { return ArgoUtil.Stat(Master, "Range", 2f); } }
+    // 2.0: the Tremor's radius is its own stat (Range is how far AIM reaches).
+    public float TremorRadius { get { return ArgoUtil.Stat(Master, "Tremor", 2f); } }
 
     void Update()
     {
@@ -80,11 +87,6 @@ public class ArgoTowerBrain : MonoBehaviour
                 if (Master.Interact == null || Array.IndexOf(Master.Interact.GetInvocationList(), hitHandler) < 0)
                     Master.Interact += hitHandler;
             }
-            if ((IsScatter || IsHarpoon) && Time.time >= nextPressure)
-            {
-                nextPressure = Time.time + 1f;
-                CheckPressure();
-            }
             if (IsScatter) Scatter();
             else if (IsHarpoon) Harpoon();
             else if (IsBell) KeepCrew();
@@ -102,23 +104,40 @@ public class ArgoTowerBrain : MonoBehaviour
         Started = true;
         hitHandler = OnHit;
         // Same upgrade commands Entity_Ai_General_Upgrade creates, so the game's upgrade panel works unchanged.
-        upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
-        for (int i = 1; i <= 4; i++)
+        // FLOOD's pools have no tree of their own.
+        if (Def.Upgrades.Length > 0)
         {
-            Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
-            option.Goalvalue = i - 1;
-            Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
+            upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
+            for (int i = 1; i <= 4; i++)
+            {
+                Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
+                option.Goalvalue = i - 1;
+                Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
+            }
+            upgradeCommand.Goalvalue = 1f;
+            Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
         }
-        upgradeCommand.Goalvalue = 1f;
-        Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         if (IsBell)
             EnsureCrewCommands(false);
         if (IsDrill)
         {
-            fathomCounter = ArgoUtil.Counter(Master, "Fathom", Fathom);
             ApplyFathom(false);
+            AimCenter = ArgoUtil.Pos(Master);
+            if (ArgoContent.Commands.ContainsKey(ArgoData.AimLink))
+                aimCommand = Helper_Entitytools.Createcommand(Master, ArgoData.AimCommand, ArgoData.AimLink, false, true);
+            SyncAim();
+        }
+        // FLOOD is the pool's build option, the game's own placement (Fie's Grow Wall pattern): the build command sends
+        // "Build" to this entity, which needs a "Build" command (the vessels' own Command_Build) to accept it.
+        if ((IsWater || IsPool) && ArgoContent.Commands.ContainsKey(ArgoData.FloodKey))
+        {
+            Link_Command flood = Helper_Entitytools.Createcommand(Master, ArgoData.FloodCommand, ArgoData.FloodLink, false, true);
+            flood.Goalstring = ArgoData.Pool;
+            flood.Goalvalue = 1f;
+            Helper_Entitytools.Updatecommand(Master, ArgoData.FloodLink, "", true, true);
+            Helper_Entitytools.Createcommand(Master, "Command_Build", "Build", false, true);
         }
         // Subscribed last: the Updatecommand calls above run each command once.
         Master.Command += OnCommand;
@@ -316,8 +335,8 @@ public class ArgoTowerBrain : MonoBehaviour
         Vector3 from = ArgoUtil.Pos(Master) + Vector3.up * 0.3f + Flat(dir) * 0.35f;
         float speed = ArgoUtil.Stat(Master, "Projspeed", 18f);
         Dictionary<string, float> data = ShotData();
-        // Every harpoon but the lance reels the first foe it hits.
-        if (!lance)
+        // 2.0: only Reel and Anchor Line act on the first foe a harpoon hits (never the lance's).
+        if (!lance && (Param("Reel_Tiles", 0f) > 0f || Param("Root_Base", 0f) > 0f))
         {
             reelShots.Add(data["Argoshot"]);
             if (reelShots.Count > 8) reelShots.RemoveAt(0);
@@ -347,6 +366,16 @@ public class ArgoTowerBrain : MonoBehaviour
             ModKitCombat.Mark(to, Master);
             if (IsScatter)
             {
+                // 2.0: the scope's "bonus damage to enemies affected by debuffs", read before the pellet's own slow.
+                float bonus = ArgoUtil.Stat(Master, "Debuffbonus", 0f);
+                float m;
+                if (bonus > 0f && ArgoStatus.Debuffed(to) && hit.Data.TryGetValue("Damagemulti", out m))
+                {
+                    // A copy: the projectile hands the same dictionary to every enemy it pierces.
+                    hit.Data = new Dictionary<string, float>(hit.Data);
+                    hit.Data["Damagemulti"] = m * (1f + bonus);
+                    BonusHits++;
+                }
                 float slow = Param("Slow_Base", 0f);
                 if (slow > 0f)
                     ArgoUtil.Slow(Master, to, slow, Param("Duration_Base", 1.5f), true);
@@ -355,7 +384,13 @@ public class ArgoTowerBrain : MonoBehaviour
                     ArgoUtil.Root(Master, to, stagger);
                 return;
             }
-            // Harpoon.
+            // Harpoon. Tether slows every foe a harpoon hits.
+            float tether = Param("Tetherslow_Base", 0f);
+            if (tether > 0f)
+            {
+                ArgoUtil.Slow(Master, to, tether, Param("Tetherslow_Duration", 2f), true);
+                Tethers++;
+            }
             float whale = Param("Whaler_Base", 0f);
             float multi;
             if (whale > 0f && hit.Data.TryGetValue("Damagemulti", out multi))
@@ -380,9 +415,6 @@ public class ArgoTowerBrain : MonoBehaviour
                 else if (reelFirst.TryGetValue(shot, out near) && d < near.Value)
                     reelFirst[shot] = new KeyValuePair<Entity_Master, float>(to, d);
             }
-            int ticks = Mathf.RoundToInt(Param("Bleedticks_Base", 0f));
-            if (ticks > 0)
-                StartCoroutine(Bleed(to, ticks, ArgoUtil.Stat(Master, "Damage", 5f) * Param("Bleed_Multi", 0.2f)));
         }
         catch (Exception e)
         {
@@ -401,7 +433,7 @@ public class ArgoTowerBrain : MonoBehaviour
         try
         {
             if (Master != null && near.Key != null)
-                ReelIn(near.Key);
+                FirstHit(near.Key);
         }
         catch (Exception e)
         {
@@ -409,54 +441,54 @@ public class ArgoTowerBrain : MonoBehaviour
         }
     }
 
-    // The harpoon's reel: the first foe a harpoon hits walks 1.5 tiles toward the tower (a tile farther when an Old
-    // Salts Naut tunes it); Anchor Line pins it where it lands. A Boss-weight foe is pinned where it stands.
+    // The first foe a harpoon hits: Reel walks it toward the gun, Anchor Line pins it (the two are on separate branches).
+    void FirstHit(Entity_Master foe)
+    {
+        if (Param("Reel_Tiles", 0f) > 0f)
+            ReelIn(foe);
+        else if (Param("Root_Base", 0f) > 0f)
+        {
+            ArgoUtil.Pin(Master, foe, Param("Root_Base", 1f), Param("Pinstun_Base", 0f) > 0f);
+            Anchors++;
+        }
+    }
+
+    // Reel: the foe walks Reel_Tiles toward the gun (a tile farther when an Old Salts Naut tunes it). Undertow then reels
+    // every other foe within its radius of where the first one stood. A Boss-weight foe is never moved.
     void ReelIn(Entity_Master foe)
     {
         if (ArgoUtil.MaxHealth(foe) >= ArgoData.BossHealth)
             BossHits++;
-        float root = Param("Root_Base", 0f);
-        Action<Entity_Master> pin = f =>
+        Vector3 from = ArgoUtil.Pos(foe);
+        Action<Entity_Master> done = f => { LastReelDone = Time.time; };
+        Vector3? to = ArgoUtil.Reel(this, foe, ArgoUtil.Pos(Master), Param("Reel_Tiles", ArgoData.ReelTiles) + TunedReel, ArgoData.ReelTime, ArgoData.ReelMinDist, done);
+        if (to != null)
         {
-            LastReelDone = Time.time;
-            if (root > 0f && Master != null) ArgoUtil.Root(Master, f, root);
-        };
-        Vector3? to = ArgoUtil.Reel(this, foe, ArgoUtil.Pos(Master), ArgoData.ReelTiles + TunedReel, ArgoData.ReelTime, ArgoData.ReelMinDist, pin);
-        if (to == null)
+            Reels++;
+            Master.Radio.Vis_ClientRpc("Argo_Reel", to.Value, (float)foe.NetworkObjectId);
+        }
+        float radius = Param("Undertow_Radius", 0f);
+        if (radius <= 0f)
             return;
-        Reels++;
-        Master.Radio.Vis_ClientRpc("Argo_Reel", to.Value, (float)foe.NetworkObjectId);
+        ArgoUtil.Vis(Master, "Argo_Whirl", from, radius);
+        foreach (Entity_Master e in ArgoUtil.Area(from, radius, ArgoUtil.Enemies(Master)))
+        {
+            if (e == null || e == foe || !ArgoUtil.Alive(e) || !ArgoUtil.HasTag(e, "Mob") || ArgoUtil.Flat(ArgoUtil.Pos(e), from) > radius)
+                continue;
+            Vector3? t = ArgoUtil.Reel(this, e, ArgoUtil.Pos(Master), Param("Undertow_Tiles", ArgoData.ReelTiles), ArgoData.ReelTime, ArgoData.ReelMinDist, null);
+            if (t != null)
+            {
+                Undertows++;
+                Master.Radio.Vis_ClientRpc("Argo_Reel", t.Value, (float)e.NetworkObjectId);
+            }
+        }
     }
 
-    // Pressure: every second, the deepest started Deep Drill on this team whose Tremors reach this gun loads it, +1
-    // pellet (Scatter) or +1 pierce (Harpoon) per Fathom below the first. The modifier is swapped when the depth changes.
-    void CheckPressure()
-    {
-        Vector3 pos = ArgoUtil.Pos(Master);
-        int team = ArgoUtil.Team(Master), depth = 0;
-        foreach (ArgoTowerBrain t in ArgoServer.Towers)
-            if (t != null && t.IsDrill && t.Started && t.Master != null && ArgoUtil.Team(t.Master) == team
-                && ArgoUtil.Flat(ArgoUtil.Pos(t.Master), pos) <= t.TremorRadius)
-                depth = Mathf.Max(depth, t.Fathom - 1);
-        if (depth == Pressure)
-            return;
-        bool rose = depth > Pressure;
-        ArgoUtil.Unmod(pressureMod);
-        pressureMod = null;
-        Pressure = depth;
-        if (depth > 0)
-            pressureMod = IsScatter
-                ? Helper_Entitytools.Addmod(Master, "Projcount", depth * ArgoData.PressurePellets, Helper_Entitytools.Modtypes.Add, 0f)
-                : Helper_Entitytools.Addmod(Master, "Pierce", depth * ArgoData.PressurePierce, Helper_Entitytools.Modtypes.Add, 0f);
-        if (rose)
-            ArgoUtil.Vis(Master, "Argo_Pressure", pos, depth);
-    }
-
-    // Pay Dirt: a foe felled inside the Tremors is dug up, PaydirtBase mining strikes on the nearest ore.
+    // Pay Dirt: a foe felled inside the Tremor is dug up, PaydirtBase mining strikes on the nearest ore.
     public void PayDirt(Entity_Master foe, Vector3 at)
     {
         int n = Mathf.RoundToInt(Param("Paydirt_Base", 0f));
-        if (n <= 0 || !Started || ArgoUtil.Flat(at, ArgoUtil.Pos(Master)) > TremorRadius || ArgoUtil.Team(foe) == ArgoUtil.Team(Master))
+        if (n <= 0 || !Started || ArgoUtil.Team(foe) == ArgoUtil.Team(Master) || !InTremor(at))
             return;
         Entity_Master ore = Ore(ArgoUtil.Pos(Master));
         if (ore == null)
@@ -467,19 +499,7 @@ public class ArgoTowerBrain : MonoBehaviour
         PaydirtBites += n;
     }
 
-    IEnumerator Bleed(Entity_Master target, int ticks, float damage)
-    {
-        for (int i = 0; i < ticks; i++)
-        {
-            yield return new WaitForSeconds(1f);
-            if (target == null || !ArgoUtil.Alive(target) || Master == null)
-                yield break;
-            ModKitCombat.Hurt(Master, target, damage, 1f, null, ArgoUtil.Data("Argodot", 1f));
-            ArgoUtil.Vis(Master, "Argo_Bleed", ArgoUtil.Pos(target), 0);
-        }
-    }
-
-    // ---------------------------------------------------------------- Diving Bell and the crew
+    // ---------------------------------------------------------------- Miner's Base and the crew
 
     public int CrewSize { get { return Mathf.Clamp(Mathf.RoundToInt(ArgoUtil.Stat(Master, "Units", 2f)), 0, ArgoData.Nauts.Length); } }
 
@@ -559,7 +579,7 @@ public class ArgoTowerBrain : MonoBehaviour
         if (killed)
         {
             respawnAt[i] = Time.time + ArgoUtil.Stat(Master, "Respawn", ArgoData.NautRespawn);
-            ArgoUtil.Warn(Master, 700 + i);   // "{0} is swimming back to the Diving Bell"
+            ArgoUtil.Warn(Master, 700 + i);   // "{0} is swimming back to the Miner's Base"
         }
     }
 
@@ -599,6 +619,12 @@ public class ArgoTowerBrain : MonoBehaviour
             ArgoUtil.Warn(Master, 600 + i);
             return;
         }
+        // 2.0: Nauts tune towers, never traps (Deep Water and its pools carry no "Tower" tag).
+        if (ArgoUtil.HasTag(target, "Trap"))
+        {
+            ArgoUtil.Warn(Master, 9);
+            return;
+        }
         if (!ArgoUtil.Alive(target) || !ArgoUtil.HasTag(target, "Tower"))
         {
             ArgoUtil.Warn(Master, 4);
@@ -626,7 +652,7 @@ public class ArgoTowerBrain : MonoBehaviour
         ArgoUtil.Warn(Master, 500 + i);
     }
 
-    // ---------------------------------------------------------------- Deep Drill
+    // ---------------------------------------------------------------- Drill Rig
 
     void DrillTick()
     {
@@ -645,17 +671,16 @@ public class ArgoTowerBrain : MonoBehaviour
                 ArgoUtil.Vis(Master, "Argo_Dry", pos, 0);
             }
         }
-        // Tremors: a light slow on every enemy inside, refreshed a little longer than each tick.
+        // Tremor: a light slow on every enemy inside, refreshed a little longer than each tick.
         if (Time.time >= nextTremor)
         {
             nextTremor = Time.time + ArgoData.TremorTick;
-            float radius = TremorRadius, slow = Mathf.Min(ArgoData.SlowCap, ArgoUtil.Stat(Master, "Slow", 0.2f));
-            bool any = false;
-            foreach (Entity_Master e in ArgoUtil.Area(pos, radius, ArgoUtil.Enemies(Master)))
+            if (Mathf.Abs(TremorRadius - syncedRadius) > 0.01f)
+                SyncAim();
+            float slow = Mathf.Min(ArgoData.SlowCap, ArgoUtil.Stat(Master, "Slow", 0.2f));
+            List<Entity_Master> foes = TremorFoes();
+            foreach (Entity_Master e in foes)
             {
-                if (e == null || !ArgoUtil.Alive(e) || !ArgoUtil.HasTag(e, "Mob"))
-                    continue;
-                any = true;
                 float last;
                 bool vfx = !slowVfx.TryGetValue(e, out last) || Time.time - last > 1.5f;
                 if (vfx) slowVfx[e] = Time.time;
@@ -663,30 +688,107 @@ public class ArgoTowerBrain : MonoBehaviour
             }
             if (slowVfx.Count > 64)
                 slowVfx.Clear();
-            // Mantle Tap: the first enemy into the Tremors each Tide sets off a quake.
-            if (any && Param("Mantle_Base", 0f) > 0f && mantleTide != ArgoServer.Tide)
+            // Mantle Tap: the first enemy into the Tremor each Tide sets off a quake.
+            if (foes.Count > 0 && Param("Mantle_Base", 0f) > 0f && mantleTide != ArgoServer.Tide)
             {
                 mantleTide = ArgoServer.Tide;
                 Quake(Param("Mantle_Base", 2f));
             }
         }
-        float pulse = Param("Pulse_Base", 0f);
-        if (pulse > 0f && Time.time >= nextPulse)
+        // Bedrock: pinned foes in the Tremor take damage over time.
+        float bedrock = Param("Bedrock_Damage", 0f);
+        if (bedrock > 0f && Time.time >= nextBedrock)
         {
-            nextPulse = Time.time + ArgoData.AftershockEvery;
-            bool hitAny = false;
-            foreach (Entity_Master e in ArgoUtil.Area(pos, TremorRadius, ArgoUtil.Enemies(Master)))
-                if (e != null && ArgoUtil.Alive(e) && ArgoUtil.HasTag(e, "Mob"))
+            nextBedrock = Time.time + ArgoData.BedrockEvery;
+            foreach (Entity_Master e in TremorFoes())
+                if (ArgoStatus.IsPinned(e))
                 {
-                    ModKitCombat.Hurt(Master, e, pulse, 1f, null, ArgoUtil.Data("Argodot", 1f));
-                    hitAny = true;
+                    ModKitCombat.Hurt(Master, e, bedrock * ArgoData.BedrockEvery, 1f, null, ArgoUtil.Data("Argodot", 1f));
+                    Bedrocks++;
+                    ArgoUtil.Vis(Master, "Argo_Bedrock", ArgoUtil.Pos(e), 0);
                 }
-            if (hitAny)
-            {
-                Pulses++;
-                ArgoUtil.Vis(Master, "Argo_Pulse", pos, TremorRadius);
-            }
         }
+    }
+
+    // Every enemy in the Tremor: inside its circle, or wading in Deep Water connected to a pool the circle touches.
+    public List<Entity_Master> TremorFoes()
+    {
+        List<Entity_Master> foes = new List<Entity_Master>();
+        float radius = TremorRadius;
+        foreach (Entity_Master e in ArgoUtil.Area(AimCenter, radius, ArgoUtil.Enemies(Master)))
+            if (e != null && ArgoUtil.Alive(e) && ArgoUtil.HasTag(e, "Mob") && ArgoUtil.Flat(ArgoUtil.Pos(e), AimCenter) <= radius)
+                foes.Add(e);
+        foreach (ArgoWater.Net net in ArgoWater.Shaken(this))
+            foreach (Entity_Master e in net.Foes)
+                if (e != null && ArgoUtil.Alive(e) && !foes.Contains(e))
+                    foes.Add(e);
+        return foes;
+    }
+
+    public bool InTremor(Vector3 at)
+    {
+        if (ArgoUtil.Flat(at, AimCenter) <= TremorRadius)
+            return true;
+        foreach (ArgoWater.Net net in ArgoWater.Shaken(this))
+            if (net.Holds(at))
+                return true;
+        return false;
+    }
+
+    // AIM: {"X":..,"Y":..,"Z":..}, the surface the player picked. The Tremor moves there when it is within Range.
+    void Aim(string json)
+    {
+        Vector3 surface = new Vector3((float)ArgoUtil.JsonNumber(json, "X"), (float)ArgoUtil.JsonNumber(json, "Y"), (float)ArgoUtil.JsonNumber(json, "Z"));
+        // Entities stand a tile above the surface block they are on: keep the drill's own offset, so the aimed centre
+        // reads like an entity position everywhere (flat distances, the client's ring at Ground()).
+        Vector3 offset = Vector3.up;
+        if (Master.Beingserver != null && Master.Beingserver.Currentblock != null)
+            offset = ArgoUtil.Pos(Master) - Master.Beingserver.Currentblock.Position;
+        Vector3 at = surface + offset;
+        float reach = ArgoUtil.Stat(Master, "Range", 5f) + ArgoData.AimSlack;
+        if (ArgoUtil.Flat(at, ArgoUtil.Pos(Master)) > reach)
+        {
+            ArgoUtil.Warn(Master, 10);
+            return;
+        }
+        AimCenter = at;
+        Aims++;
+        SyncAim();
+        ArgoUtil.Vis(Master, "Argo_Aim", at, TremorRadius);
+    }
+
+    // The aim reaches every player through the AIM command's link (Updatecommand copies Goalposition, Goalvalue and
+    // Goalstring into the synced Commandlist): the centre, the radius, and how far AIM reaches (for the picker).
+    void SyncAim()
+    {
+        syncedRadius = TremorRadius;
+        if (aimCommand == null)
+            return;
+        aimCommand.Goalposition = AimCenter;
+        aimCommand.Goalvalue = syncedRadius;
+        aimCommand.Goalstring = (ArgoUtil.Stat(Master, "Range", 5f) + ArgoData.AimSlack).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+        Helper_Entitytools.Updatecommand(Master, ArgoData.AimLink, "", false, false);
+    }
+
+    // Fault Line: a foe reeled into or across the Tremor takes a burst.
+    public void Reeled(Entity_Master foe, Vector3 from, Vector3 to)
+    {
+        float burst = Param("Fault_Damage", 0f);
+        if (burst <= 0f || !Started || foe == null || ArgoUtil.Team(foe) == ArgoUtil.Team(Master))
+            return;
+        if (!InTremor(to) && !InTremor(from) && SegmentDistance(AimCenter, from, to) > TremorRadius)
+            return;
+        ModKitCombat.Hurt(Master, foe, burst, 1f, null, ArgoUtil.Data("Argodot", 1f));
+        Faults++;
+        ArgoUtil.Vis(Master, "Argo_Faultburst", to, 0);
+    }
+
+    static float SegmentDistance(Vector3 p, Vector3 a, Vector3 b)
+    {
+        Vector2 P = new Vector2(p.x, p.z), A = new Vector2(a.x, a.z), B = new Vector2(b.x, b.z);
+        Vector2 ab = B - A;
+        float t = ab.sqrMagnitude > 0.0001f ? Mathf.Clamp01(Vector2.Dot(P - A, ab) / ab.sqrMagnitude) : 0f;
+        return Vector2.Distance(P, A + ab * t);
     }
 
     public Entity_Master Ore(Vector3 pos)
@@ -717,20 +819,18 @@ public class ArgoTowerBrain : MonoBehaviour
         ArgoUtil.Vis(Master, "Argo_Mine", ArgoUtil.Pos(ore), Fathom);
     }
 
-    // SONAR's quake (and Mantle Tap's): everything inside the Tremors is held in place.
+    // Mantle Tap's quake (and SONAR's, switched off): every foe in the Tremor is Pinned (2.0; twice as long in water).
     public void Quake(float seconds)
     {
         if (Master == null)
             return;
         Quakes++;
-        Vector3 pos = ArgoUtil.Pos(Master);
         float radius = TremorRadius;
-        foreach (Entity_Master e in ArgoUtil.Area(pos, radius, ArgoUtil.Enemies(Master)))
-            if (e != null && ArgoUtil.Alive(e) && ArgoUtil.HasTag(e, "Mob"))
-                ArgoUtil.Root(Master, e, seconds);
-        ArgoUtil.Vis(Master, "Argo_Quake", pos, radius);
-        // The game's own camera shake, felt by players near the drill.
-        Master.Radio.Vfxshake_ClientRpc(pos, Vector3.up, 0.3f, radius + 4f);
+        foreach (Entity_Master e in TremorFoes())
+            ArgoUtil.Pin(Master, e, seconds, false);
+        ArgoUtil.Vis(Master, "Argo_Quake", AimCenter, radius);
+        // The game's own camera shake, felt by players near the Tremor.
+        Master.Radio.Vfxshake_ClientRpc(AimCenter, Vector3.up, 0.3f, radius + 4f);
     }
 
     void ApplyFathom(bool announce)
@@ -743,10 +843,10 @@ public class ArgoTowerBrain : MonoBehaviour
         {
             fathomMods.Add(Helper_Entitytools.Addmod(Master, "Damage", ArgoData.FathomYield * below, Helper_Entitytools.Modtypes.Multi, 0f));
             fathomMods.Add(Helper_Entitytools.Addmod(Master, "Attackspeed", ArgoData.FathomSpeed * below, Helper_Entitytools.Modtypes.Multi, 0f));
-            fathomMods.Add(Helper_Entitytools.Addmod(Master, "Range", ArgoData.FathomTremor * below, Helper_Entitytools.Modtypes.Add, 0f));
+            fathomMods.Add(Helper_Entitytools.Addmod(Master, "Tremor", ArgoData.FathomTremor * below, Helper_Entitytools.Modtypes.Add, 0f));
             fathomMods.Add(Helper_Entitytools.Addmod(Master, "Slow", ArgoData.FathomSlow * below, Helper_Entitytools.Modtypes.Add, 0f));
         }
-        ArgoUtil.SetCounter(Master, fathomCounter, "Fathom", Fathom);
+        ModKitCounter.Set(Master, "Fathom", Fathom);
         // The skin carries the Fathom to every player: the pipe stack it shows, and the Tremor ring clients draw.
         ArgoUtil.Skin(Master, Fathom > 1 ? "Fathom" + Mathf.Min(Fathom, ArgoData.FathomDeepest) : "");
         if (announce)
@@ -763,9 +863,6 @@ public class ArgoTowerBrain : MonoBehaviour
     {
         if (Master == null || !Started)
             return;
-        // The guns check their Pressure right after every Drill has sunk.
-        if (IsScatter || IsHarpoon)
-            nextPressure = 0f;
         if (!IsDrill)
             return;
         // Gusher: a deep drill throws up a burst of ore as the Tide turns.
@@ -797,6 +894,18 @@ public class ArgoTowerBrain : MonoBehaviour
                     try { CrewOrder(i, json); }
                     catch (Exception e) { ArgoLog.Warn("crew order: " + e.Message); }
                 }
+            return;
+        }
+        if (IsDrill && command == ArgoData.AimLink)
+        {
+            try { Aim(json ?? ""); }
+            catch (Exception e) { ArgoLog.Warn("aim: " + e.Message); }
+            return;
+        }
+        if ((IsWater || IsPool) && command == "Build")
+        {
+            try { ArgoWater.Flood(this, json ?? ""); }
+            catch (Exception e) { ArgoLog.Warn("flood: " + e.Message); }
             return;
         }
         if (command != "Upgrade" || string.IsNullOrEmpty(json))
@@ -865,6 +974,18 @@ public class ArgoTowerBrain : MonoBehaviour
                 float old;
                 param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Every") && !kv.Key.EndsWith("_Count") ? old + kv.Value : kv.Value;
             }
+        }
+        // Ironclad: the game's armour stat, added like Sno Sno's Brain Freeze adds it to his wall.
+        float armor = Param("Healtharmor_Base", 0f);
+        if (armor > 0f && !Master.Statsserver.ContainsKey("Healtharmor"))
+        {
+            Link_Stats s = new Link_Stats();
+            s.Name = "Healtharmor";
+            s.Value_Base = armor;
+            s.Style = Statproperties.Defaultstatgroup.Styles.Number;
+            s.Display_Type = Statproperties.Displaytypes.Float;
+            s.Value_Type = Statproperties.Stattype.Variabletrue;
+            Helper_Entitytools.Addstat(Master, s, 0f);
         }
         if (Started && IsBell)
         {

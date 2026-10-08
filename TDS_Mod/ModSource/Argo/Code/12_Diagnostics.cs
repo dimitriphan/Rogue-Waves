@@ -35,10 +35,11 @@ public static class ArgoDiagnostics
             if (!ArgoContent.Projectiles.ContainsKey(p[0])) missing.Add(p[0]);
         foreach (ArgoData.Build b in ArgoData.Builds)
         {
-            if (ArgoAssets.Model(b.Id) == null) missing.Add(b.Id);
+            if (ArgoAssets.Model(b.ModelName) == null) missing.Add(b.ModelName);
             foreach (ArgoData.Upg u in b.Upgrades)
                 if (ArgoAssets.Model(u.Model) == null) missing.Add(u.Model);
         }
+        ArgoLog.Info("Command_Buildoption5: " + ArgoContent.Option5Note + "; commands " + ArgoUtil.Join(ArgoContent.Commands.Keys));
         if (missing.Count > 0)
             ArgoLog.Warn("missing: " + ArgoUtil.Join(missing));
     }

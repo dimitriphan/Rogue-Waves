@@ -273,36 +273,6 @@ public static class ArgoUtil
         return carrier;
     }
 
-    // A counter stat shown in the entity's stat panel (like the archer's Deathmarkkill), driven through a Base modifier.
-    public static Link_Modifier Counter(Entity_Master master, string name, float value)
-    {
-        if (!master.Statsserver.ContainsKey(name))
-        {
-            Link_Stats stat = new Link_Stats();
-            stat.Name = name;
-            stat.Value_Base = 0f;
-            stat.Style = Statproperties.Defaultstatgroup.Styles.Counter;
-            stat.Display_Type = Statproperties.Displaytypes.Int;
-            stat.Display_Exposed = true;
-            Helper_Entitytools.Addstat(master, stat, 0f);
-        }
-        Link_Modifier mod = Helper_Entitytools.Addmod(master, name, value, Helper_Entitytools.Modtypes.Base, 0f);
-        Link_Stats s;
-        if (master.Statsserver.TryGetValue(name, out s))
-            s.Value = s.Value_Calc;
-        return mod;
-    }
-
-    public static void SetCounter(Entity_Master master, Link_Modifier mod, string name, float value)
-    {
-        if (mod == null)
-            return;
-        mod.Value_Base = value;
-        Link_Stats s;
-        if (master != null && master.Statsserver.TryGetValue(name, out s))
-            s.Value = s.Value_Calc;
-    }
-
     public static void Unmod(Link_Modifier mod)
     {
         if (mod != null && !mod.Dead && mod.Remove != null)
@@ -415,10 +385,43 @@ public static class ArgoUtil
         if (target == null || !Alive(target) || seconds <= 0f || Speed(target) == null)
             return;
         Helper_Entitytools.Addmod(target, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, seconds);
+        ArgoStatus.Slowed(target, seconds);
         Debuff(by, target, "Debuff_Slow", seconds);
     }
 
-    // ---------------------------------------------------------------- the harpoon's reel (1.4)
+    // 2.0 Pinned: a hold that counts as Pinned for the Scatter Cannon, Bedrock and Salt Sting. Twice as long in Deep
+    // Water; with stun (Anchor Line) a foe beside any building is also stunned, unable to attack while held (the
+    // concept's "pinning against a wall stuns": Argo has no walls and the game no knockback). Clients draw the rope bits
+    // or the stars on the foe (Argo_Pin: x = the foe's id, y = seconds, z = 1 for a stun). Returns the seconds applied.
+    public static float Pin(Entity_Master by, Entity_Master target, float seconds, bool stun)
+    {
+        if (target == null || !Alive(target) || seconds <= 0f || Speed(target) == null)
+            return 0f;
+        if (ArgoStatus.IsWet(target))
+            seconds *= ArgoData.WaterPinMulti;
+        stun = stun && Beside(target);
+        Root(by, target, seconds);
+        ArgoStatus.Pinned(target, seconds);
+        if (stun && target.Statsserver.ContainsKey("Attackspeed"))
+            Helper_Entitytools.Addmod(target, "Attackspeed", -0.95f, Helper_Entitytools.Modtypes.Multi, seconds);
+        if (stun)
+            ArgoStatus.Stuns++;
+        ArgoStatus.Pins++;
+        Vis(by, "Argo_Pin", new Vector3((float)target.NetworkObjectId, seconds, stun ? 1f : 0f), seconds);
+        return seconds;
+    }
+
+    // A building (any team's tower, Argo's or not) within StunReach of the foe.
+    public static bool Beside(Entity_Master foe)
+    {
+        Vector3 at = Pos(foe);
+        foreach (Entity_Master b in Area(at, ArgoData.StunReach + 0.5f, Tagged("Tower")))
+            if (b != null && b != foe && Alive(b) && Flat(Pos(b), at) <= ArgoData.StunReach)
+                return true;
+        return false;
+    }
+
+    // ---------------------------------------------------------------- the harpoon's reel (1.4; 2.0: Reel and Undertow)
 
     // Foes being reeled, with when their reel gives up: a foe is reeled by one harpoon at a time.
     static readonly Dictionary<Entity_Master, float> reeling = new Dictionary<Entity_Master, float>();
@@ -455,6 +458,8 @@ public static class ArgoUtil
         }
         Link_Modifier boost = Helper_Entitytools.Addmod(foe, "Speed", 5f, Helper_Entitytools.Modtypes.Multi, seconds);
         host.StartCoroutine(ReelRun(foe, to.Value, seconds, boost, onDone));
+        // 2.0 Fault Line: a Drill Rig whose Tremor the reel crosses bursts the foe.
+        ArgoServer.Reeled(foe, Pos(foe), to.Value);
         return to;
     }
 
@@ -533,6 +538,7 @@ public static class ArgoUtil
         Link_Stats s = Speed(target);
         if (s == null)
             return;
+        ArgoStatus.Slowed(target, seconds);
         float cut = Mathf.Min(Mathf.Clamp01(amount), s.Value_Multi - 0.1f);
         if (cut >= 0.01f)
             Helper_Entitytools.Addmod(target, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, seconds);
@@ -547,5 +553,53 @@ public static class ArgoUtil
     {
         if (by != null && by.Radio != null && target != null && target.Beingref != null)
             by.Radio.Vfxdebuffcheck(vfx, target.Beingref.Value, seconds);
+    }
+}
+
+// 2.0: which foes are Slowed, Pinned or in Deep Water right now (host only). The Scatter Cannon's bonus reads Slowed or
+// Pinned; Bedrock and Salt Sting read Pinned; a pin lasts twice as long on a Wet foe. Every slow and hold Argo applies
+// goes through ArgoUtil.Slow, Root or Pin, which record it here.
+public static class ArgoStatus
+{
+    static readonly Dictionary<Entity_Master, float> slowed = new Dictionary<Entity_Master, float>();
+    static readonly Dictionary<Entity_Master, float> pinned = new Dictionary<Entity_Master, float>();
+    static readonly Dictionary<Entity_Master, float> wet = new Dictionary<Entity_Master, float>();
+    public static int Pins, Stuns;
+
+    public static void Reset()
+    {
+        slowed.Clear();
+        pinned.Clear();
+        wet.Clear();
+    }
+
+    public static void Slowed(Entity_Master foe, float seconds) { Mark(slowed, foe, seconds); }
+    public static void Pinned(Entity_Master foe, float seconds) { Mark(pinned, foe, seconds); }
+    public static void Wet(Entity_Master foe, float seconds) { Mark(wet, foe, seconds); }
+
+    public static bool IsSlowed(Entity_Master foe) { return Active(slowed, foe); }
+    public static bool IsPinned(Entity_Master foe) { return Active(pinned, foe); }
+    public static bool IsWet(Entity_Master foe) { return Active(wet, foe); }
+    public static bool Debuffed(Entity_Master foe) { return IsSlowed(foe) || IsPinned(foe); }
+
+    static void Mark(Dictionary<Entity_Master, float> d, Entity_Master foe, float seconds)
+    {
+        if (foe == null || seconds <= 0f)
+            return;
+        float until;
+        d[foe] = Mathf.Max(d.TryGetValue(foe, out until) ? until : 0f, Time.time + seconds);
+        if (d.Count > 128)
+        {
+            List<Entity_Master> stale = new List<Entity_Master>();
+            foreach (KeyValuePair<Entity_Master, float> kv in d)
+                if (kv.Key == null || kv.Value < Time.time) stale.Add(kv.Key);
+            foreach (Entity_Master e in stale) d.Remove(e);
+        }
+    }
+
+    static bool Active(Dictionary<Entity_Master, float> d, Entity_Master foe)
+    {
+        float until;
+        return foe != null && d.TryGetValue(foe, out until) && until > Time.time;
     }
 }

@@ -1,4 +1,5 @@
-// Argo ("Fathoms Below ▪ Intermediate"): a new vessel for TDS - Tower Defense Strategy.
+// Argo ("Deep Sea Diver ▪ Intermediate"): a vessel of the Rogue Waves pack for TDS - Tower Defense Strategy (2.0 design,
+// ModSource/Argo/DESIGN.md; 1.4.0 was the standalone ArgoMod).
 //
 // The game compiles this mod with Roslyn when it loads. Build-ArgoMod.ps1 joins every file in this folder
 // (in name order, this one first) into the Code string of the Mods_Gamescript on
@@ -10,11 +11,14 @@
 //                 Smacky's and swapping in the asset pack, then registers it the way the game's loader would.
 //   ArgoServer    runs on the host: attaches brains to Argo entities, Tides (Fathoms), the Naut roster.
 //   *Brain        per-entity server logic (vessel, buildables, Nauts).
-//   ArgoHooks     damage modifiers that ride on the game's own hit events (Pinged, Bulkhead, Whaler, cleave).
+//   ArgoHooks     damage modifiers that ride on the game's own hit events (Bulkhead, Crushing Depth; Pinged unused).
+//   ArgoWater     Deep Water and FLOOD's pools as networks (2.0); ArgoStatus who is Slowed, Pinned or Wet.
 //   ArgoClient    runs on every player: turret aiming, effects, sounds, Tremor rings, owner-only warnings.
 //   ArgoJournal   the journal pages, built by the shared kit (ModSource/Shared): ModKitVesselJournal, plus
 //                 ModKitVesselTabs (one tab per vessel on every vessel page), ModKitBoat (a boat spot, the button
 //                 unlocked) and ModKitTowers (each tower's range centred on it). The build renames ModKit to ArgoKit.
+//   Kit 1.6       ModKitPack (the pack registry, the stand-down), ModKitTides (Tides), ModKitCounter (Fathom),
+//                 ModKitFocus (the F-key fix), ModKitDirections (unused by Argo yet).
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,6 +37,7 @@ public class ArgoMod : MonoBehaviour
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         ArgoLog.Info("loaded v" + ArgoData.Version);
+        ModKitPack.Join(ArgoData.Part, ArgoData.Version);
         StartCoroutine(Boot());
     }
 
@@ -46,6 +51,14 @@ public class ArgoMod : MonoBehaviour
                 yield return new WaitForSecondsRealtime(0.5f);
         }
 
+        // docs/PACK.md 2.3: a standalone ArgoMod (1.4.0) registers Hero_Argo too. Whoever is first keeps it; the pack's
+        // Argo stands down rather than overwrite it.
+        if (ModKitPack.Taken(ArgoData.Hero))
+        {
+            ModKitPack.Notice(this, ArgoData.Part, "Another Argo mod is loaded: disable ArgoMod while Rogue Waves is on");
+            yield break;
+        }
+
         if (!ArgoAssets.Find())
         {
             ArgoLog.Error("ArgoAssets_Library is missing from the mod; Argo is disabled");
@@ -57,22 +70,34 @@ public class ArgoMod : MonoBehaviour
         while (Bla_Addressables.Instance == null)
             yield return new WaitForSecondsRealtime(0.5f);
 
-        Bl_Address.Loadgroup group = Bl_Address.Load(template.Heroloads.Objectname);
-        if (group == null)
+        // Smacky's group (the template), then the other vessels' groups Argo clones from (Mummer's pattern).
+        List<string> folders = new List<string> { template.Heroloads.Objectname };
+        foreach (string hero in ArgoData.ExtraGroups)
         {
-            ArgoLog.Error("could not load " + template.Heroloads.Objectname + "; Argo is disabled");
-            yield break;
+            Heroentryobject h = ArgoUtil.Heroentry(hero);
+            if (h != null && h.Heroloads != null) folders.Add(h.Heroloads.Objectname);
+            else ArgoLog.Warn("no entry for " + hero + "; its pieces fall back to Smacky's");
         }
-        float waited = 0f;
-        while (!group.Loaded)
+        foreach (string folder in folders)
         {
-            waited += Time.unscaledDeltaTime;
-            if (waited > 180f)
+            Bl_Address.Loadgroup group = null;
+            try { group = Bl_Address.Load(folder); }
+            catch (Exception e) { ArgoLog.Warn("loading " + folder + ": " + e.Message); }
+            float waited = 0f;
+            while (group != null && !group.Loaded && waited < 180f)
             {
-                ArgoLog.Error("timed out loading " + template.Heroloads.Objectname + "; Argo is disabled");
-                yield break;
+                waited += Time.unscaledDeltaTime;
+                yield return null;
             }
-            yield return null;
+            if (group == null || !group.Loaded)
+            {
+                if (folder == template.Heroloads.Objectname)
+                {
+                    ArgoLog.Error("could not load " + folder + "; Argo is disabled");
+                    yield break;
+                }
+                ArgoLog.Warn("could not load " + folder + "; its pieces fall back to Smacky's");
+            }
         }
 
         try
@@ -101,6 +126,7 @@ public class ArgoMod : MonoBehaviour
     {
         if (!Ready)
             return;
+        ModKitFocus.Update();
         ArgoServer.Update();
         ArgoClient.Update();
         // Other modded vessels may finish loading after Argo; the sync is idempotent and runs every few seconds.

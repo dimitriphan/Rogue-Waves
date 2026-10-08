@@ -7,9 +7,9 @@ public static class ArgoServer
     public static readonly List<ArgoTowerBrain> Towers = new List<ArgoTowerBrain>();
     public static readonly List<ArgoNautBrain> Nauts = new List<ArgoNautBrain>();
     static Game_Entity hookedEntity;
-    static Game_Mapvars hookedMapvars;
+    static bool tidesHooked;
 
-    // Set by a Diving Bell just before it spawns a Naut (Onspawn fires synchronously inside the spawn call).
+    // Set by a Miner's Base just before it spawns a Naut (Onspawn fires synchronously inside the spawn call).
     public static ArgoTowerBrain PendingBell;
     public static Entity_Master PendingPost;
 
@@ -23,28 +23,29 @@ public static class ArgoServer
             Towers.Clear();
             Nauts.Clear();
             ArgoHooks.Reset();
+            ArgoStatus.Reset();
+            ArgoWater.Reset();
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;
                 ge.Ondespawn += OnDespawn;
             }
         }
+        // Tides come from the kit's one poll of Game_Mapvars (kit 1.6, ModKitTides; host only).
+        if (!tidesHooked)
+        {
+            tidesHooked = true;
+            ModKitTides.Tide += OnTide;
+            ModKitTides.MapStart += () => { Tide = ModKitTides.Wave; };
+        }
+        ModKitTides.Update();
         if (ge == null || !ge.IsServer)
             return;
-        Game_Mapvars mv = Game_Mapvars.Instance;
-        if (mv != hookedMapvars)
-        {
-            hookedMapvars = mv;
-            if (mv != null)
-            {
-                Tide = mv.Wave.Value;
-                mv.Wave.OnValueChanged += OnWave;
-            }
-        }
         Heroes.RemoveAll(h => h == null);
         Towers.RemoveAll(t => t == null);
         Nauts.RemoveAll(n => n == null);
         ArgoHooks.Update();
+        ArgoWater.Update();
     }
 
     // ---------------------------------------------------------------- spawns
@@ -68,6 +69,8 @@ public static class ArgoServer
                 brain.Master = master;
                 brain.Def = build;
                 Towers.Add(brain);
+                if (build.Id == ArgoData.Bell)
+                    BaseLimit(ArgoUtil.Owner(master));
                 return;
             }
             ArgoData.Crew crew = ArgoData.CrewFor(being);
@@ -108,10 +111,13 @@ public static class ArgoServer
                 Towers.Remove(tower);
                 if (killed)
                     ArgoUtil.Vis(master, "Argo_Towerdown", ArgoUtil.Pos(master), 0);
+                // The Miner's Base button comes back once its owner's Base is gone (sold or destroyed).
+                if (tower.IsBell)
+                    BaseLimit(ArgoUtil.Owner(master));
             }
             if (killed && master.GetComponent<ArgoHeroBrain>() != null)
                 ArgoUtil.Vis(master, "Argo_Herodeath", ArgoUtil.Pos(master), 0);
-            // Pay Dirt: every Drill whose Tremors hold a felled foe digs it up for ore.
+            // Pay Dirt: every Drill Rig whose Tremor holds a felled foe digs it up for ore.
             if (killed && tower == null && master.Taglistserver != null && master.Taglistserver.Contains("Enemy"))
             {
                 Vector3 at = ArgoUtil.Pos(master);
@@ -132,18 +138,17 @@ public static class ArgoServer
 
     // ---------------------------------------------------------------- Tides
 
-    static void OnWave(int previous, int current)
+    static void OnTide(int current)
     {
-        if (!ArgoUtil.IsServer || current <= previous)
-        {
-            Tide = current;
-            return;
-        }
         Tide = current;
+        if (!ArgoUtil.IsServer)
+            return;
         try
         {
             foreach (ArgoTowerBrain t in Towers.ToArray())
                 if (t != null) t.OnTide(current);
+            // Trench spreads after every Drill has sunk.
+            ArgoWater.OnTide();
         }
         catch (Exception e)
         {
@@ -151,9 +156,39 @@ public static class ArgoServer
         }
     }
 
+    // ---------------------------------------------------------------- 2.0 rules across buildings
+
+    // The Miner's Base limit (one per player, Boutman's Bouthouse pattern): every Argo of that owner shows or hides its
+    // fifth build option now, rather than at its next check.
+    public static void BaseLimit(long owner)
+    {
+        foreach (ArgoHeroBrain h in Heroes)
+            if (h != null && h.Master != null && ArgoUtil.Owner(h.Master) == owner)
+                h.CheckBase();
+    }
+
+    public static bool HasBase(long owner)
+    {
+        foreach (ArgoTowerBrain t in Towers)
+            if (t != null && t.IsBell && t.Master != null && ArgoUtil.Alive(t.Master) && ArgoUtil.Owner(t.Master) == owner)
+                return true;
+        return false;
+    }
+
+    // Fault Line: every Drill Rig hears about every reel (ArgoUtil.Reel).
+    public static void Reeled(Entity_Master foe, Vector3 from, Vector3 to)
+    {
+        foreach (ArgoTowerBrain t in Towers.ToArray())
+            if (t != null && t.IsDrill && t.Started)
+            {
+                try { t.Reeled(foe, from, to); }
+                catch (Exception e) { ArgoLog.Warn("fault line: " + e.Message); }
+            }
+    }
+
     // ---------------------------------------------------------------- lookups
 
-    // The Naut already working on this tower (one per tower, across every Diving Bell on the team).
+    // The Naut already working on this tower (one per tower, across every Miner's Base on the team).
     public static ArgoNautBrain TunerOf(Entity_Master tower)
     {
         foreach (ArgoNautBrain n in Nauts)

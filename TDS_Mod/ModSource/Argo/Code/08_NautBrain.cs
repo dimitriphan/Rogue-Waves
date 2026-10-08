@@ -1,6 +1,6 @@
 // Server-side brain for a Naut (Port, Starboard, Bosun). It walks with the stock Entity_Ai_Mob_Movement, given a goal
 // entity the way the Mining Hut's miners are sent to ore (Move command, Goalobject = the tower), and tunes the tower it
-// was sent to: faster attacks and a slow repair, plus the Diving Bell's upgrades (range, armour, double tuning).
+// was sent to: faster attacks and a slow repair, plus the Miner's Base's upgrades (range, armour, double tuning).
 public class ArgoNautBrain : MonoBehaviour
 {
     public Entity_Master Master;

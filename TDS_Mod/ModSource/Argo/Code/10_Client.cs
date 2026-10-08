@@ -1,6 +1,7 @@
 // Runs on every player (host included). Listens to the Vis RPCs the server sends through Argo's entities and plays
-// Argo's own particles, sounds and turret motion, keeps each Deep Drill's Tremor ring drawn at its real radius, marks
-// the towers Nauts are tuning, and shows owner-only warnings. Projectiles are the game's own and need nothing here.
+// Argo's own particles, sounds and turret motion, keeps each Drill Rig's Tremor ring drawn where AIM put it at its real
+// radius, marks the towers Nauts are tuning, the foes Argo pins and soaks, and shows owner-only warnings. Projectiles
+// are the game's own and need nothing here.
 public static class ArgoClient
 {
     class Drillvis { public Entity_Master Master; public GameObject Ring; public float Radius; }
@@ -126,10 +127,6 @@ public static class ArgoClient
                     ArgoAssets.Play("Argo_Winch", at);
                     Run(Rope(master, (ulong)number, position, ArgoData.ReelTime + 0.1f));
                     break;
-                case "Argo_Pressure":
-                    // the gun is loaded deeper: a few bubbles rise up it (no sound)
-                    ArgoAssets.Effect("World_Argo_Bubbles", Ground(at), 1.5f);
-                    break;
                 case "Argo_Loaded":
                     ArgoAssets.Play("Argo_Winch", at, 0.5f);
                     break;
@@ -160,13 +157,40 @@ public static class ArgoClient
                     Ring("World_Argo_Quake", at, number, 1.4f);
                     ArgoAssets.Play("Argo_Quake", at);
                     break;
-                case "Argo_Pulse":
-                    Ring("World_Argo_Pulse", at, number, 1.2f);
-                    ArgoAssets.Play("Argo_Quake", at, 0.35f);
+                // ---- 2.0
+                case "Argo_Pin":
+                    // x = the foe's id, y = seconds, z = 1 for a stun (Anchor Line beside a building)
+                    OnFoe(position.z > 0.5f ? "World_Argo_Stun" : "World_Argo_Pinned", position, position.z > 0.5f ? 0.75f : 0.05f);
+                    ArgoAssets.Play("Argo_Pin", FoePos(position, at));
+                    break;
+                case "Argo_Wet": OnFoe("World_Argo_Wet", position, 0.45f); break;
+                case "Argo_Kelp": OnFoe("World_Argo_Kelp", position, 0.05f); break;
+                case "Argo_Dragunder":
+                    OnFoe("World_Argo_Dragunder", position, 0.05f);
+                    ArgoAssets.Play("Argo_Gurgle", FoePos(position, at));
+                    break;
+                case "Argo_Brine": ArgoAssets.Effect("World_Argo_Brine", position + Vector3.up * 0.2f, 1.2f); break;
+                case "Argo_Whirl":
+                    Ring("World_Argo_Whirl", position, number, 1f);
+                    break;
+                case "Argo_Bedrock": ArgoAssets.Effect("World_Argo_Bedrock", Ground(position) + Vector3.up * 0.05f, 1f); break;
+                case "Argo_Faultburst":
+                    ArgoAssets.Effect("World_Argo_Faultburst", Ground(position) + Vector3.up * 0.05f, 1.2f);
+                    ArgoAssets.Play("Argo_Quake", position, 0.4f);
+                    break;
+                case "Argo_Flood":
+                    ArgoAssets.Effect("World_Argo_Flood", Ground(position) + Vector3.up * 0.1f, 1.5f);
+                    ArgoAssets.Play("Argo_Splash", position);
+                    break;
+                case "Argo_Aim":
+                    Ring("World_Argo_Quake", position, number, 1f);
+                    ArgoAssets.Play("Argo_Drill", at, 0.6f);
+                    if (master != null) Tremor(master);
                     break;
                 case "Argo_Build":
                     ArgoAssets.Effect("World_Argo_Bubbles", Ground(at), 2f);
-                    ArgoAssets.Play("Argo_Build", at);
+                    bool water = master != null && ArgoData.BuildFor(master.Being.Value.ToString()) != null && ArgoData.BuildFor(master.Being.Value.ToString()).Trap;
+                    ArgoAssets.Play(water ? "Argo_Splash" : "Argo_Build", at);
                     break;
                 case "Argo_Upgrade": ArgoAssets.Play("Argo_Upgrade", at); break;
                 case "Argo_Towerdown":
@@ -189,7 +213,7 @@ public static class ArgoClient
                 case "Argo_Repair": ArgoAssets.Effect("World_Argo_Tunespark", position + Vector3.up * 0.5f, 1f); break;
                 case "Argo_Dry":
                     if (ArgoUtil.OwnedLocally(master))
-                        Helper_Uitools.Warning("This Deep Drill has no ore within 2 tiles to mine", "", 3f);
+                        Helper_Uitools.Warning("This Drill Rig has no ore within 2 tiles to mine", "", 3f);
                     break;
                 case "Argo_Warn":
                     Warn(master, Mathf.RoundToInt(number));
@@ -200,6 +224,23 @@ public static class ArgoClient
         {
             ArgoLog.Warn("client vis " + type + ": " + e.Message);
         }
+    }
+
+    // An effect that rides on a foe for a while: the server sends (foe id, seconds, flag) as the position.
+    static void OnFoe(string vfx, Vector3 code, float height)
+    {
+        Entity_Master foe = ArgoUtil.ById((ulong)Mathf.RoundToInt(code.x));
+        if (foe == null)
+            return;
+        GameObject fx = ArgoAssets.Effect(vfx, ArgoUtil.Pos(foe) + Vector3.up * height, Mathf.Max(0.3f, code.y));
+        if (fx != null)
+            fx.transform.SetParent(foe.transform, true);
+    }
+
+    static Vector3 FoePos(Vector3 code, Vector3 fallback)
+    {
+        Entity_Master foe = ArgoUtil.ById((ulong)Mathf.RoundToInt(code.x));
+        return foe != null ? ArgoUtil.Pos(foe) : fallback;
     }
 
     static void Warn(Entity_Master master, int code)
@@ -389,7 +430,7 @@ public static class ArgoClient
         if (go != null) UnityEngine.Object.Destroy(go);
     }
 
-    // A jagged brass crack along the ground from the Deep Drill to the ore it bites, fading out.
+    // A jagged brass crack along the ground from the Drill Rig to the ore it bites, fading out.
     static IEnumerator Tether(Vector3 from, Vector3 to, float seconds)
     {
         GameObject go = new GameObject("Argo_Tether");
@@ -417,7 +458,7 @@ public static class ArgoClient
         if (go != null) UnityEngine.Object.Destroy(go);
     }
 
-    // The Deep Drill's bit ("Spinner") turns while it bites.
+    // The Drill Rig's bit ("Spinner") turns while it bites.
     static void SpinFor(Entity_Master master, float seconds)
     {
         Transform s = Part(master, "Spinner");
@@ -449,7 +490,7 @@ public static class ArgoClient
 
     // The Tremor radius and slow each client knows: the same sums the server uses (the Range and Slow stats), rebuilt
     // from what every client has - the drill's Fathom skin and its upgrade list.
-    public static float TremorRadius(Entity_Master drill) { return DrillStat(drill, "Range", 2f) + ArgoData.FathomTremor * (Fathom(drill) - 1); }
+    public static float TremorRadius(Entity_Master drill) { return DrillStat(drill, "Tremor", 2f) + ArgoData.FathomTremor * (Fathom(drill) - 1); }
 
     public static float TremorSlow(Entity_Master drill)
     {
@@ -503,14 +544,17 @@ public static class ArgoClient
         // From the Fathom in the message, not the skin: the skin's new value may reach this player a moment later.
         int below = fathom - 1;
         float pace = (1f + ArgoData.FathomYield * below) * (1f + ArgoData.FathomSpeed * below);
-        float radius = DrillStat(drill, "Range", 2f) + ArgoData.FathomTremor * below;
+        float radius = DrillStat(drill, "Tremor", 2f) + ArgoData.FathomTremor * below;
         float slow = Mathf.Min(ArgoData.SlowCap, DrillStat(drill, "Slow", 0.2f) + ArgoData.FathomSlow * below);
         int deepest = DrillHas(drill, "Deepcore") ? ArgoData.FathomDeepest : ArgoData.FathomMax;
-        string text = "Deep Drill sank to Fathom " + fathom + (fathom >= deepest ? " (its deepest)" : "") + ": mines " + pace.ToString("0.#") + "x as fast as at first, Tremors "
+        string text = "Drill Rig sank to Fathom " + fathom + (fathom >= deepest ? " (its deepest)" : "") + ": mines " + pace.ToString("0.#") + "x as fast as at first, Tremor "
             + radius.ToString("0.#") + " tiles, " + Mathf.RoundToInt(slow * 100f) + "% slow";
         Helper_Uitools.Warning(text, "", 4f);
     }
 
+    // 2.0: the ring stands where AIM put the Tremor. The server syncs the centre and radius in the drill's AIM command
+    // (Commandlist, so late joiners have it too); before the first sync it rings the drill at the radius each client
+    // can work out from the drill's Fathom skin and upgrades.
     static void Tremor(Entity_Master drill)
     {
         Drillvis v;
@@ -521,18 +565,48 @@ public static class ArgoClient
             v.Ring = ArgoAssets.Effect("World_Argo_Tremor", Ground(ArgoUtil.Pos(drill)) + Vector3.up * 0.04f, 0f);
             if (v.Ring == null)
                 return;
-            v.Ring.transform.SetParent(drill.transform, true);
             v.Radius = -1f;
         }
-        float r = TremorRadius(drill);
+        Vector3 center;
+        float r;
+        if (!Aimed(drill, out center, out r))
+        {
+            center = ArgoUtil.Pos(drill);
+            r = TremorRadius(drill);
+        }
+        v.Ring.transform.position = Ground(center) + Vector3.up * 0.04f;
         if (!Mathf.Approximately(r, v.Radius))
         {
             v.Radius = r;
-            v.Ring.transform.localScale = Vector3.one;
-            Vector3 lossy = v.Ring.transform.lossyScale;
-            v.Ring.transform.localScale = new Vector3(r / Mathf.Max(0.01f, lossy.x), r / Mathf.Max(0.01f, lossy.y), r / Mathf.Max(0.01f, lossy.z));
-            Unscale(v.Ring, "World_Argo_Tremor", r);
+            Size(v.Ring, "World_Argo_Tremor", r);
         }
+    }
+
+    public static bool Aimed(Entity_Master drill, out Vector3 center, out float radius)
+    {
+        center = Vector3.zero;
+        radius = 0f;
+        if (drill == null || drill.Commandlist == null)
+            return false;
+        foreach (Link_Commandref c in drill.Commandlist)
+            if (c.Name.ToString() == ArgoData.AimLink && c.Goalvalue > 0f)
+            {
+                center = c.Goalposition;
+                radius = c.Goalvalue;
+                return true;
+            }
+        return false;
+    }
+
+    // A ring drawn at radius 1, scaled to r whatever its parent's scale, its particles kept their designed size.
+    public static void Size(GameObject ring, string vfx, float r)
+    {
+        if (ring == null)
+            return;
+        ring.transform.localScale = Vector3.one;
+        Vector3 lossy = ring.transform.lossyScale;
+        ring.transform.localScale = new Vector3(r / Mathf.Max(0.01f, lossy.x), r / Mathf.Max(0.01f, lossy.y), r / Mathf.Max(0.01f, lossy.z));
+        Unscale(ring, vfx, r);
     }
 
     // A Naut in its "Tune" skin marks the tower it works on with a few rising sparks.

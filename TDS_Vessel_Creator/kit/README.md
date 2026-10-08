@@ -9,6 +9,11 @@ prefix to `<Name>Kit`, so every mod gets its own copy of the types and none coll
 | `ModKitBoat.cs` | `ModKitBoat.LateUpdate(heroId)`: one boat spot per vessel, every vessel clickable on a crowded deck (staggered rows), the vessel's button unlocked; `ClickReport` for self-tests | call it from the mod's `LateUpdate` |
 | `ModKitTowers.cs` | `ModKitTowers.Fit`: a tower's hit prefab and range anchor at the brain's eye height, so the game draws one centred range; `RangePreview` | once per buildable, where its template is set up |
 | `ModKitCombat.cs` | `ModKitCombat.Hurt`/`Mark`: hits from the mod's own code that deal damage and count as hits (kills, Aegis regen) | for every hit the mod deals itself |
+| `ModKitPack.cs` | Kit 1.6, the pack: `Join(part, version)` registers a part in one `RogueWaves_Registry` object and warns on a kit mismatch; `Taken(heroId)` (a standalone copy already loaded), `Mark(job)` (one part does a pack-wide job), `Notice` (an error the player sees) | `docs/PACK.md` |
+| `ModKitTides.cs` | Kit 1.6: `MapStart`, `Tide(n)` and `MapEnd(result)` events, host only, polled from `Game_Mapvars` (a rewind resets without firing) | call `Update()` from the part's `Update` |
+| `ModKitCounter.cs` | Kit 1.6: a number shown on an entity as a stat (`Set`/`Get`), e.g. Argo's Fathom | |
+| `ModKitDirections.cs` | Kit 1.6: Directions, the Rogue mode's per-vessel upgrade picks: ids, `Make`, `Has`, `Grant` (host, on the team's Core) | `docs/15` |
+| `ModKitFocus.cs` | Kit 1.6: the F-key fix (the first F after a respawn selects the vessel again), installed once per pack | call `Update()` from the part's `Update`; `docs/15` §9 |
 | `ModKitTest.cs` | Self-test builds only (`MODKIT_TEST`, set by the build scripts with any `<NAME>_SELFTEST`): the pinned test map (`PickNode`), the map snapshot (`MapDump`), placement searches that log why and a picture of the ground (`Spot`, `FoeTile`, `SpawnFoe`, `Picture`), and the `TEST SETUP` outcome | `docs/08` |
 
 ## Versions
@@ -21,6 +26,7 @@ prefix to `<Name>Kit`, so every mod gets its own copy of the types and none coll
 | 1.3 | 2026-10-03 | `ModKitCombat` (hits that deal damage and count as hits, after Sprigg's towers were seen to "heal" foes); journal upgrades take hand-written EFFECTS lines (`ModKitJournalUpgrade.Effects`) | Mummer 1.2.0, Argo 1.2.0, Sprigg 1.6.0 |
 | 1.4 | 2026-10-04 | Boat: with more vessels than shipped spots, every vessel stands in evenly spaced, staggered rows (2 rows to 11 vessels, 3 to 16, then smaller), back rows a little higher and click boxes moved onto the sprites, after 10 vessels left some unclickable; shipped spots' first positions kept on `Charselect/Spots_Home`; extras named like the shipped spots so 1.0-1.3 copies stand down; `ClickReport` self-test helper | |
 | 1.5 | 2026-10-05 | `ModKitTest` (self-test builds only): every self-test plays one pinned map (Thehunt) and logs its ground once, placement searches every level and logs a picture of the ground when it fails, and a check whose scene can't be set up is `TEST SETUP`, not FAIL; after Argo 1.4.0 took nine PC rounds, seven for the test's own placement. Build scripts add `MODKIT_TEST` to any `_SELFTEST` build | compile-checked; first PC run pending |
+| 1.6 | 2026-10-08 | The pack (`docs/PACK.md` §3): `ModKitPack` (registry, version check, one-copy jobs, player notices), `ModKitTides`, `ModKitCounter` (Argo's own counter moved here), `ModKitDirections`, `ModKitFocus` (the F-key fix RogueLab proved). Nothing in 1.0-1.5 changed, so tab order and boat layout are unchanged | Argo 2.0.0 (compile-checked; first PC run pending) |
 
 ## Compatibility rules (several mods run the kit at once)
 

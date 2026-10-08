@@ -3,6 +3,7 @@
 // in that chain lets it scale the hit before anyone applies it, whoever dealt it:
 //   Pinged   (SONAR)   enemies take 20% more damage from every source, teammates' towers included.
 //   Bulkhead (Nauts)   a tuned tower takes 25% less.
+//   Soak     (2.0)     a foe in Crushing Depth water takes 15% more from every source.
 // Helper_Entitytools.Updateinteract rebuilds the chain whenever an upgrade or effect lands on the entity, so the
 // handler is checked and moved back to the front a few times a second while it is needed.
 public static class ArgoHooks
@@ -10,12 +11,14 @@ public static class ArgoHooks
     static readonly Dictionary<Entity_Master, float> pinged = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, List<ArgoNautBrain>> armored = new Dictionary<Entity_Master, List<ArgoNautBrain>>();
     static readonly Dictionary<Entity_Master, float> armorAmount = new Dictionary<Entity_Master, float>();
+    static readonly Dictionary<Entity_Master, Vector2> soaked = new Dictionary<Entity_Master, Vector2>();   // (amount, until)
     static readonly Entity_Master.Oninteracts handler = OnHurt;
     static float nextCheck;
-    public static int Boosted, Softened;
+    public static int Boosted, Softened, Crushed;
 
     public static void Reset()
     {
+        soaked.Clear();
         pinged.Clear();
         armored.Clear();
         armorAmount.Clear();
@@ -39,6 +42,20 @@ public static class ArgoHooks
             return;
         float until;
         pinged[e] = Mathf.Max(pinged.TryGetValue(e, out until) ? until : 0f, Time.time + seconds);
+        First(e);
+    }
+
+    public static float SoakOf(Entity_Master e)
+    {
+        Vector2 s;
+        return e != null && soaked.TryGetValue(e, out s) && Time.time < s.y ? s.x : 0f;
+    }
+
+    public static void Soak(Entity_Master e, float amount, float seconds)
+    {
+        if (e == null || amount <= 0f)
+            return;
+        soaked[e] = new Vector2(Mathf.Max(amount, SoakOf(e)), Time.time + seconds);
         First(e);
     }
 
@@ -87,6 +104,20 @@ public static class ArgoHooks
             foreach (Entity_Master e in drop)
                 pinged.Remove(e);
         drop = null;
+        foreach (KeyValuePair<Entity_Master, Vector2> kv in soaked)
+        {
+            if (kv.Key == null || Time.time >= kv.Value.y || !ArgoUtil.Alive(kv.Key))
+            {
+                if (drop == null) drop = new List<Entity_Master>();
+                drop.Add(kv.Key);
+            }
+            else
+                First(kv.Key);
+        }
+        if (drop != null)
+            foreach (Entity_Master e in drop)
+                soaked.Remove(e);
+        drop = null;
         foreach (Entity_Master t in armored.Keys)
         {
             if (t == null || !ArgoUtil.Alive(t))
@@ -130,6 +161,12 @@ public static class ArgoHooks
             {
                 scale *= 1f + ArgoData.PingBonus;
                 Boosted++;
+            }
+            float soak = SoakOf(hit.To);
+            if (soak > 0f)
+            {
+                scale *= 1f + soak;
+                Crushed++;
             }
             float armor = ArgoHooks.ArmorOf(hit.To);
             if (armor > 0f)

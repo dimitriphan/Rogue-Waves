@@ -7,12 +7,22 @@
 // trade of speed for health but stays inside the roster's band (speed 2.25, not 1.2); the Scatter Cannon's volley was
 // about 3.5x an Archer Tower's damage and is now ~1.6x against a crowd and below it against one target; Tremors were
 // 3-5 tiles of 25% slow on an economy building and are now 2-3 tiles of 20%; Sonar is a little smaller and slower.
+//
+// 2.0 (Rogue Waves, DESIGN.md): five buildables (Deep Water is new), the Harpoon Gun's damage or crowd-control paths,
+// an aimed Tremor, a limit-1 Miner's Base, no "loaded guns", and no SONAR for now (its code stays, switched off).
 public static class ArgoData
 {
-    public const string Version = "1.4.0";
+    // The Rogue Waves pack version, "-dev" for the dev mod (docs/PACK.md section 4); 1.4.0 was the standalone release.
+    public const string Version = "0.1.0-dev";
+    public const string Part = "Argo";
+    public const bool SonarEnabled = false;   // the user, 2026-10-08: no SONAR in this design for now
     public const bool Diagnostics = true;
 
     public const string TemplateHero = "Hero_Smacky";
+    // Other vessels' groups Argo's data clones from: Buster's Speed Pad is Deep Water's walk-through template (Mummer's
+    // Curtain pattern; without it the traps fall back to Smacky's Perma-Wall block).
+    public static readonly string[] ExtraGroups = { "Hero_Buster" };
+    public const string TrapFallback = "Trap_Smackywall_Perma";
     public const string Hero = "Hero_Argo";
     public const string HeroEntity = "Hero_Argo_Entity";
 
@@ -20,11 +30,21 @@ public static class ArgoData
     public const string Harpoon = "Tower_Argoharpoon";
     public const string Bell = "Tower_Argobell";
     public const string Drill = "Tower_Argodrill";
-    public static readonly string[] Towers = { Scatter, Harpoon, Bell, Drill };
+    public const string Water = "Trap_Argowater";
+    public const string Pool = "Trap_Argowater_Pool";   // a FLOOD pool: Deep Water's frame and water, no pump
+    // The five build options, in button order. The fifth is Argo's own Command_Buildoption5 (ArgoContent).
+    public static readonly string[] Towers = { Scatter, Harpoon, Water, Drill, Bell };
+    public const string BaseOption = "Buildoption5";     // the Miner's Base button, gone while one stands
 
     public const string HeroTooltip = "Hero_Argo_Tooltip_Upgradeproperties";
     public const string SonarCommand = "Command_Hero_Argo_Sonar";
     public const string SonarLink = "Sonar";
+    public const string BuildOption5 = "Command_Buildoption5";
+    public const string FloodCommand = "Command_Trap_Argowater_Flood";
+    public const string FloodLink = "Buildoption1";      // FLOOD is Deep Water's build option: the game's placement
+    public const string FloodKey = "Flood";              // its key in ArgoContent.Commands
+    public const string AimCommand = "Command_Tower_Argodrill_Aim";
+    public const string AimLink = "Aim";
 
     public const string Pellet = "Tower_Argoscatter_Pellet";
     public const string HarpoonShot = "Tower_Argoharpoon_Harpoon";
@@ -76,22 +96,26 @@ public static class ArgoData
         { "Argo_Sonar", 0.011f }, { "Argo_Scatter", 0.0045f }, { "Argo_Harpoon", 0.004f }, { "Argo_Lance", 0.008f },
         { "Argo_Drill", 0.0014f }, { "Argo_Fathom", 0.009f }, { "Argo_Quake", 0.011f }, { "Argo_Tune", 0.0014f },
         { "Argo_Naut", 0.002f }, { "Argo_Dive", 0.004f }, { "Argo_Death", 0.012f }, { "Argo_Upgrade", 0.006f },
-        { "Argo_Build", 0.006f }, { "Argo_Winch", 0.0012f },
+        { "Argo_Build", 0.006f }, { "Argo_Winch", 0.0012f }, { "Argo_Splash", 0.004f }, { "Argo_Pin", 0.003f }, { "Argo_Gurgle", 0.004f },
     };
 
     // ---------------------------------------------------------------- vessel texts (the game uses English text as the key)
 
     public const string Displayname = "Argo";
-    public const string Displaysub = "Fathoms Below";
+    public const string Displaysub = "Deep Sea Diver";
     public const string Displayskill = "Intermediate";
     public const string HeroDesc = "Sturdy, slow melee, hits two at once";
     public const string TooltipName = "Fathoms";
-    public const string TooltipDesc = "Swings hit two enemies, Deep Drills sink a Fathom each Tide: every Fathom mines faster, widens their Tremors and loads the guns inside them, Nauts tune any tower, teammates' too";
+    public const string TooltipDesc = "Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never traps";
     public const string LogTitle = "Argo";
     public const string LogDesc = "Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough.";
     public const string SonarName = "SONAR";
-    public const string SonarDesc = "Ping every foe around Argo: for a few seconds they take more damage from everything, and Deep Drills inside the ping quake, holding foes in their Tremors. The button greys out while it recharges";
+    public const string SonarDesc = "Ping every foe around Argo: for a few seconds they take more damage from everything, and Drill Rigs inside the ping quake, holding foes in their Tremors. The button greys out while it recharges";
     public const string CrewSelectTitle = "SEND {0}";
+    public const string FloodName = "FLOOD";
+    public const string FloodDesc = "Add a pool next to this Deep Water or one of its pools";
+    public const string AimName = "AIM";
+    public const string AimDesc = "Pick where this Drill Rig's Tremor shakes the ground";
 
     public static readonly Color Color = new Color(0.27f, 0.56f, 0.76f, 1f);
     public static readonly Color Brass = new Color(0.84f, 0.65f, 0.3f, 1f);
@@ -115,9 +139,9 @@ public static class ArgoData
     public const float PingBonus = 0.2f;        // pinged enemies take 20% more damage from everyone
     public const float QuakeRoot = 1f;
 
-    // ---------------------------------------------------------------- Fathoms (Deep Drill)
+    // ---------------------------------------------------------------- Fathoms (Drill Rig)
 
-    // A Deep Drill sinks a Fathom at the start of every Tide it stands through, down to Fathom 5 (7 with Deep Core).
+    // A Drill Rig sinks a Fathom at the start of every Tide it stands through, down to Fathom 5 (7 with Deep Core).
     // Every Fathom below the first adds the four lines below, so its ore per second grows about 1.9x, 3x, 4.2x, 5.6x
     // (8.8x at 7) and its Tremors widen and bite harder. 1.1 sank only to Fathom 3 and gave +50% ore and +0.5 tiles a
     // Fathom (2x ore at most): playtesters felt it barely grew from Tide to Tide. The base game's miners mine about 0.25
@@ -132,14 +156,27 @@ public static class ArgoData
     public const float TremorTick = 0.5f;
     public const float AftershockEvery = 2f;
     public const float OreReach = 2.1f;         // ore within this flat distance can be drilled (the next tile, diagonals too)
+    public const float BedrockEvery = 1f;       // 2.0 Bedrock: a tick of damage on each pinned foe in the Tremor
 
-    // 1.4 Pressure: Argo's guns inside a Deep Drill's Tremors gain per Fathom below the first (the deepest Drill counts).
-    public const float PressurePellets = 1f, PressurePierce = 1f;
+    // ---------------------------------------------------------------- 2.0: debuffs, pins, Deep Water
+
+    // Pinned foes are held in place (Anchor Line, Mantle Tap's quake); beside a building Anchor Line stuns instead (held
+    // and unable to attack). A foe pinned in Deep Water is held twice as long.
+    public const float StunReach = 1.25f;       // a building this close to the pinned foe makes it a stun
+    public const float WaterPinMulti = 2f;
+    public const float PoolReach = 0.55f;       // a foe this close (flat) to a pool's tile centre is in the water
+    public const float WaterTick = 0.25f;
+    public const float CatchMemory = 3f;        // Kelp Bed catches a foe again only after it was out of the water this long
+    public const float FloodLinkReach = 1.1f;   // pools join a network when their tiles touch (no diagonals)
+    public const float WaterSlow = 0.3f;        // pools whose pump was sold keep Deep Water's base slow
+    public const float SaltBrine = 0.5f;        // Salt Sting's brine on pinned foes when Brine wasn't taken (doubled)
+    public const float AimSlack = 0.5f;         // AIM accepts a tile this far past the Range (tile centres)
 
     // ---------------------------------------------------------------- the harpoon's reel (1.4)
 
-    // The first foe each harpoon hits walks itself ReelTiles toward the tower on its own Move command (Mummer's HOOK
-    // reel), never closer than ReelMinDist. Foes this tough (max health) are hit but not moved.
+    // 2.0: only the reel path reels (Reel, Twin Line, Undertow). The first foe each harpoon hits walks itself Reel_Tiles
+    // toward the gun on its own Move command (Mummer's HOOK reel), never closer than ReelMinDist. Foes this tough (max
+    // health) are hit but not moved.
     public const float ReelTiles = 1.5f, ReelTime = 0.4f, ReelMinDist = 1.2f, BossHealth = 600f;
     public const float DoubleDelay = 0.15f;     // Double Barrel: the stored volley follows this long after the first
 
@@ -164,6 +201,10 @@ public static class ArgoData
         public Upg[] Upgrades;
         public bool Turret;       // the model has a "Turret" part the clients swing toward each shot
         public float Eye;         // height of the range centre above the tower's position (its "Detect" point)
+        public bool Trap;         // walk-through: no "Tower" tag, never tuned by Nauts
+        public bool Hidden;       // no build button and no journal page (FLOOD's pools)
+        public string Model;      // the library model, when it isn't named after the Id
+        public string ModelName { get { return string.IsNullOrEmpty(Model) ? Id : Model; } }
     }
 
     // costs: "Redaura=30;Blueaura=15"; next: keys of the next tier's options ("Grapeshot3,Barnacle3"), empty for a final upgrade.
@@ -186,69 +227,126 @@ public static class ArgoData
     {
         new Build
         {
-            Id = Scatter, Template = "Tower_Smackybomber", Display = "Scatter Cannon", Desc = "Short range, sprays a cone of pellets", Family = "Argoscatter",
+            Id = Scatter, Template = "Tower_Smackybomber", Display = "Scatter Cannon", Desc = "Short range, sprays a cone of pellets, hits slowed and pinned foes harder", Family = "Argoscatter",
             Tags = new[] { "Towerfighter" }, Costs = "Redaura=30", Projectile = Pellet, Turret = true, Eye = 0.12f,
-            Stats = new[] { "Health=40+25", "Damage=1.25+0.25", "Attackspeed=0.6", "Range=4.5", "Projspeed=16", "Projcount=6", "Spread=50", "Pierce=1" },
-            Journal = "A bell-mouthed blunderbuss that sprays lead in a cone. Shreds a crowd up close, wastes most of a volley on one big target.",
+            // 2.0: Debuffbonus, the scope's "bonus damage to enemies affected by debuffs" (Slowed or Pinned, ArgoStatus).
+            Stats = new[] { "Health=40+25", "Damage=1.25+0.25", "Attackspeed=0.6", "Range=4.5", "Projspeed=16", "Projcount=6", "Spread=50", "Pierce=1", "Debuffbonus=0.5" },
+            Journal = "A bell-mouthed blunderbuss that sprays lead in a cone. Shreds a crowd up close, wastes most of a volley on one big target. Every pellet hits 50% harder on a foe that is slowed or pinned.",
             Upgrades = new[]
             {
                 U(Scatter, "Widebore", 2, "Wide Bore", "A wider cone with two more pellets", "Projcount_Add=2;Spread_Add=25", "Redaura=30", "Grapeshot3,Barnacle3")
                     .Fx("+2 pellets", "Cone +25 degrees"),
                 U(Scatter, "Double", 2, "Double Barrel", "Loads a second volley while idle, and fires both at once", "Double_Base=1", "Redaura=30", "Barnacle3,Grapeshot3")
                     .Fx("Stores 1 volley while no foe is in range"),
-                U(Scatter, "Grapeshot", 3, "Grapeshot", "Three more pellets in every volley", "Projcount_Add=3", "Redaura=90", "Pressure4,Undertow4")
+                U(Scatter, "Grapeshot", 3, "Grapeshot", "Three more pellets in every volley", "Projcount_Add=3", "Redaura=90", "Pressure4,Ironclad4")
                     .Fx("+3 pellets"),
-                U(Scatter, "Barnacle", 3, "Barnacle Shot", "Pellets stick and slow what they hit", "Slow_Base=0.25;Duration_Base=1.5", "Redaura=60;Blueaura=40", "Undertow4")
+                U(Scatter, "Barnacle", 3, "Barnacle Shot", "Pellets stick and slow what they hit", "Slow_Base=0.25;Duration_Base=1.5", "Redaura=60;Blueaura=40", "Ironclad4")
                     .Fx("Slows by 25% for 1.5s"),
                 U(Scatter, "Pressure", 4, "Pressure Rounds", "Harder pellets that punch through one more enemy", "Pierce_Add=1;Damage_Add=0.5", "Redaura=350", "Broadside5")
                     .Fx("Pierce +1", "Pellet damage +0.5"),
-                U(Scatter, "Undertow", 4, "Undertow", "Fires faster, and every pellet stops its enemy for a moment", "Attackspeed_Multi=0.2;Stagger_Base=0.35", "Redaura=250;Blueaura=150", "")
-                    .Fx("Fires 20% faster", "Each hit holds for 0.35s"),
+                // 2.0: the scope's "increases health greatly", in place of 1.4.0's Undertow. Healtharmor is the game's
+                // armour (each hit takes 1 from it before health; healing refills it, as on Sno Sno's Brain Freeze).
+                U(Scatter, "Ironclad", 4, "Ironclad", "Health greatly increased", "Health_Multi=1.5;Healtharmor_Base=2", "Redaura=250;Blueaura=150", "")
+                    .Fx("Health x2.5", "Armour: the next 2 hits take 1 each"),
                 U(Scatter, "Broadside", 5, "Broadside", "Every few volleys, a full ring of pellets all around", "Broadside_Every=4;Broadside_Count=16;Damage_Add=0.5", "Redaura=3000", "")
                     .Fx("Ring of 16 every 4th volley", "Pellet damage +0.5"),
             }
         },
         new Build
         {
-            Id = Harpoon, Template = "Tower_Smackyarcher", Display = "Harpoon Tower", Desc = "Long range, harpoons pierce a line and reel the first foe in", Family = "Argoharpoon",
+            Id = Harpoon, Template = "Tower_Smackyarcher", Display = "Harpoon Gun", Desc = "Long range, harpoons pierce a line; its upgrades pick damage or crowd control", Family = "Argoharpoon",
             Tags = new[] { "Towerfighter" }, Costs = "Redaura=35", Projectile = HarpoonShot, Turret = true, Eye = 0.3f,
-            // 1.3: Damage 9+3 -> 5+2 and Range 8 -> 6.5, the top of the shipped tower bands (Damage 0.3-5, Range 3-6.5);
-            // the slow, piercing shot stays (Attackspeed 0.35, Pierce 3, Projspeed 18).
             Stats = new[] { "Health=40+25", "Damage=5+2", "Attackspeed=0.35", "Range=6.5", "Projspeed=18", "Pierce=3" },
-            Journal = "A whaling gun on a tripod. Slow to reload, but every harpoon runs straight through the first few enemies in a lane, and reels the first one 1.5 tiles closer. Bosses are not moved.",
+            Journal = "A whaling gun on a tripod. Slow to reload, but every harpoon runs straight through the first few enemies in a lane. Its upgrades choose the job: Long Line, Skewer, Whaler and the Leviathan Lance for damage; Tether, Anchor Line, Reel and Undertow to slow, pin and reel foes in. Bosses are never moved.",
             Upgrades = new[]
             {
                 U(Harpoon, "Longline", 2, "Long Line", "Reaches farther, and harpoons fly faster", "Range_Add=2;Projspeed_Add=4", "Redaura=25", "Skewer3,Anchor3")
                     .Fx("Range +2 tiles", "Harpoon speed +4"),
-                U(Harpoon, "Barbed", 2, "Barbed", "Harpooned enemies keep bleeding after the hit", "Bleedticks_Base=4;Bleed_Multi=0.2", "Redaura=30", "Anchor3")
-                    .Fx("Bleed: 20% damage a second for 4s"),
-                U(Harpoon, "Skewer", 3, "Skewer", "Harpoons run through three more enemies", "Pierce_Add=3", "Redaura=100", "Whaler4,Twinline4")
+                U(Harpoon, "Tether", 2, "Tether", "Harpooned foes are slowed", "Tetherslow_Base=0.3;Tetherslow_Duration=2", "Redaura=30", "Anchor3,Reel3")
+                    .Fx("Slows every foe hit by 30% for 2s"),
+                U(Harpoon, "Skewer", 3, "Skewer", "Harpoons run through three more enemies", "Pierce_Add=3", "Redaura=100", "Whaler4")
                     .Fx("Pierce +3"),
-                U(Harpoon, "Anchor", 3, "Anchor Line", "The foe each harpoon reels in is pinned where it lands", "Root_Base=1", "Redaura=60;Blueaura=50", "Twinline4")
-                    .Fx("Holds for 1s after the reel"),
+                U(Harpoon, "Anchor", 3, "Anchor Line", "Pins the foe it hits, stunned against a building", "Root_Base=1;Pinstun_Base=1", "Redaura=60;Blueaura=50", "")
+                    .Fx("Pins the first foe hit for 1s", "Beside a building: stunned for 1s instead", "Twice as long in Deep Water"),
+                U(Harpoon, "Reel", 3, "Reel", "Reels the first foe hit toward the gun", "Reel_Tiles=1.5", "Redaura=60;Blueaura=50", "Twinline4")
+                    .Fx("Reels the first foe hit 1.5 tiles closer"),
                 U(Harpoon, "Whaler", 4, "Whaler", "Hits harder, and up to twice as hard against tough enemies", "Whaler_Base=200;Damage_Add=4", "Redaura=450", "Leviathan5")
                     .Fx("Damage +4", "Up to x2 on big health pools"),
-                U(Harpoon, "Twinline", 4, "Twin Line", "A second harpoon follows right after each shot", "Twin_Base=0.3", "Redaura=350", "")
-                    .Fx("2 harpoons per shot"),
+                U(Harpoon, "Twinline", 4, "Twin Line", "A second harpoon follows, reeling its own foe", "Twin_Base=0.3", "Redaura=350", "Undertow5")
+                    .Fx("2 harpoons per shot, each reels"),
                 U(Harpoon, "Leviathan", 5, "Leviathan Lance", "Every few shots, a huge lance that runs through everything in its path", "Lance_Every=5;Lance_Multi=2.5;Lance_Range=2", "Redaura=3500", "")
                     .Fx("Every 5th shot: x2.5 damage", "Pierces all, twice the range"),
+                U(Harpoon, "Undertow", 5, "Undertow", "Every harpoon reels the foes around its target", "Undertow_Radius=1.5;Undertow_Tiles=1.5", "Redaura=1750;Blueaura=1750", "")
+                    .Fx("Foes within 1.5 tiles of the reeled one are reeled 1.5 tiles too"),
             }
         },
         new Build
         {
-            Id = Bell, Template = "Tower_Smackyhut", Display = "Diving Bell", Desc = "Houses Nauts: press PORT or STARBOARD, then click a tower to tune it", Family = "Argobell",
+            // Buster's Speed Pad is the template: a walk-through block (Mummer's Curtain proved it, falling back to
+            // Perma-Wall's when Buster's group isn't loaded).
+            Id = Water, Template = "Trap_Busterpad", Display = "Deep Water", Desc = "Walk-through pool that slows foes inside. FLOOD adds a pool next to it", Family = "Argowater",
+            Tags = new[] { "Trap" }, Costs = "Blueaura=20", Trap = true,
+            Stats = new[] { "Health=30+15", "Slow=0.3+0.05" },
+            Journal = "A flooded pit with a brass pump. Foes wade through it slowed. FLOOD adds a pool on a tile next to it or next to one of its pools; connected pools act as one. A foe pinned in the water is held twice as long, and a Drill Rig's Tremor that touches a pool shakes every pool connected to it.",
+            Upgrades = new[]
+            {
+                U(Water, "Undercurrent", 2, "Undercurrent", "Stronger slow", "Slow_Add=0.1", "Blueaura=20", "Kelp3,Salt3")
+                    .Fx("Slow +10%"),
+                U(Water, "Brine", 2, "Brine", "Foes inside take damage over time", "Brine_Damage=0.5", "Blueaura=25", "Salt3")
+                    .Fx("0.5 damage a second"),
+                U(Water, "Kelp", 3, "Kelp Bed", "Foes are caught for a moment on entering", "Catch_Duration=0.75", "Blueaura=80", "Abyss4,Crushing4")
+                    .Fx("Holds a foe 0.75s as it wades in"),
+                U(Water, "Salt", 3, "Salt Sting", "Brine stings pinned foes harder", "Brinepinned_Multi=1", "Blueaura=70;Redaura=30", "Crushing4")
+                    .Fx("Pinned foes take double brine (0.5 a second without Brine)"),
+                U(Water, "Abyss", 4, "Abyss", "FLOOD fills two tiles at once", "Flood_Add=1", "Blueaura=260", "")
+                    .Fx("FLOOD adds a second pool for free"),
+                U(Water, "Crushing", 4, "Crushing Depth", "Foes inside take more damage", "Damagetaken_Multi=0.15", "Blueaura=300", "Trench5")
+                    .Fx("+15% damage taken from everything"),
+                U(Water, "Trench", 5, "Trench", "Spreads by itself each Tide, and drags foes under now and then", "Spread_Per_Tide=1;Dragunder_Every=6;Dragunder_Duration=1", "Blueaura=3000", "")
+                    .Fx("A free pool each Tide", "Every 6s a foe inside is held 1s"),
+            }
+        },
+        new Build
+        {
+            Id = Drill, Template = "Tower_Smackyarcher", Display = "Drill Rig", Desc = "Mines ore nearby and sinks deeper each Tide; AIM places its Tremor, which slows foes", Family = "Argodrill",
+            Tags = new[] { "Gatherer" }, Costs = "Yellowaura=35",
+            // Damage is how hard it mines ore (Sno Box 0.4 every 5 s). 2.0: Range is how far AIM can place the Tremor
+            // (shown while placing and when selected); Tremor is its radius (2 at Fathom 1, +0.4 a Fathom). The drill
+            // mines ore up to 2 tiles away (OreReach), with a visible tether. Mantle Tap multiplies the base rate (Pmulti).
+            Stats = new[] { "Health=40+25", "Damage=0.5", "Attackspeed=0.25", "Range=5", "Tremor=2", "Slow=0.2" },
+            Journal = "A derrick that mines ore up to 2 tiles away. AIM places its Tremor anywhere within 5 tiles: every foe in it is slowed. Every Tide it stands through it sinks a Fathom, down to Fathom 5: each one mines faster and harder, and widens and strengthens the Tremor. A Tremor that touches Deep Water shakes every pool connected to it.",
+            Upgrades = new[]
+            {
+                U(Drill, "Paydirt", 2, "Pay Dirt", "Foes that fall in its Tremor are dug up for ore", "Paydirt_Base=2", "Yellowaura=30", "Deepcore3,Bedrock3")
+                    .Fx("2 mining strikes per foe felled in its Tremor"),
+                U(Drill, "Seismic", 2, "Seismic", "The Tremor slows harder and reaches farther", "Slow_Add=0.1;Tremor_Add=0.5", "Blueaura=25;Yellowaura=10", "Bedrock3")
+                    .Fx("Tremor slow +10%", "Tremor +0.5 tiles"),
+                U(Drill, "Deepcore", 3, "Deep Core", "Keeps sinking two Fathoms past the usual bottom", "Fathommax_Base=7", "Yellowaura=120", "Gusher4,Faultline4")
+                    .Fx("Deepest Fathom 7"),
+                U(Drill, "Bedrock", 3, "Bedrock", "Pinned foes in its Tremor take damage over time", "Bedrock_Damage=1.5", "Blueaura=80;Redaura=30", "Faultline4")
+                    .Fx("1.5 damage a second to each pinned foe"),
+                U(Drill, "Gusher", 4, "Gusher", "Once it is deep enough, a gush of ore bursts up at each Tide", "Gusher_Base=12", "Yellowaura=275", "Mantle5")
+                    .Fx("12 mining strikes at once, each Tide", "From Fathom 3 down"),
+                U(Drill, "Faultline", 4, "Fault Line", "Foes reeled through its Tremor take a burst of damage", "Fault_Damage=12", "Blueaura=300", "")
+                    .Fx("12 damage to a foe reeled into or across the Tremor"),
+                U(Drill, "Mantle", 5, "Mantle Tap", "Mines twice as hard, and once a Tide a quake pins every foe in its Tremor", "Damage_Pmulti=1;Mantle_Base=2", "Yellowaura=3000", "")
+                    .Fx("Ore per strike x2", "Quake pins foes for 2s, once a Tide"),
+            }
+        },
+        new Build
+        {
+            Id = Bell, Template = "Tower_Smackyhut", Display = "Miner's Base", Desc = "One per player. Houses Nauts: press PORT or STARBOARD, then click a tower to tune it", Family = "Argobell",
             Tags = new string[0], Costs = "Blueaura=35",
             Stats = new[] { "Health=50+25", "Units=2", "Respawn=8" },
-            Journal = "Home of the Nauts. Pick PORT or STARBOARD, then any tower, a teammate's too: the Naut walks over and tunes it for faster attacks.",
-            // 1.3: the tree is priced in the Bell's own Blue (support, like its tuning, repair and armour), with Yellow
-            // only as a smaller second colour from tier 3; 1.2 priced five of the seven upgrades mostly in Yellow. Every
-            // upgrade keeps its total.
+            Journal = "Home of the Nauts, one per player like Boutman's house. Pick PORT or STARBOARD, then any tower, a teammate's too: the Naut walks over and tunes it for faster attacks. Nauts tune towers, never traps.",
+            // 1.3: the tree is priced in the Base's own Blue (support, like its tuning, repair and armour), with Yellow
+            // only as a smaller second colour from tier 3.
             Upgrades = new[]
             {
                 U(Bell, "Flippers", 2, "Flippers", "Nauts get to their towers much faster", "Nautspeed_Multi=0.5", "Blueaura=30", "Overhaul3,Calibrate3")
                     .Fx("Naut speed +50%"),
                 U(Bell, "Salts", 2, "Old Salts", "Nauts tune each kind of Argo tower its own way", "Salts_Base=1", "Blueaura=30", "Overhaul3")
-                    .Fx("Scatter Cannon: +2 pellets", "Harpoon Tower: +2 pierce, reels 1 tile farther", "Deep Drill: Tremor slow +10%"),
+                    .Fx("Scatter Cannon: +2 pellets", "Harpoon Gun: +2 pierce, reels 1 tile farther", "Drill Rig: Tremor slow +10%"),
                 U(Bell, "Overhaul", 3, "Overhaul", "Nauts patch up the towers they tune", "Repair_Base=2", "Blueaura=90;Yellowaura=30", "Thirdmate4,Bulkhead4")
                     .Fx("Repairs 2.5 health a second"),
                 U(Bell, "Calibrate", 3, "Calibrate", "Tuned towers reach a tile farther", "Tunerange_Base=1", "Blueaura=80;Yellowaura=30", "Thirdmate4")
@@ -263,31 +361,13 @@ public static class ArgoData
         },
         new Build
         {
-            Id = Drill, Template = "Tower_Smackyarcher", Display = "Deep Drill", Desc = "Mines ore nearby, its Tremors slow foes and load the guns in range, sinks deeper each Tide", Family = "Argodrill",
-            Tags = new[] { "Gatherer" }, Costs = "Yellowaura=35",
-            // Damage is how hard it mines ore (Sno Box 0.4 every 5 s). Range is the Tremor radius (2 at Fathom 1, +0.4 a
-            // Fathom), shown while placing and when selected; the drill mines ore up to 2 tiles away (OreReach), with a
-            // visible tether. Mantle Tap multiplies the base rate (Pmulti), so it keeps its full value at every Fathom (as
-            // Multi it was added to the Fathom bonus and shrank with depth).
-            Stats = new[] { "Health=40+25", "Damage=0.5", "Attackspeed=0.25", "Range=2", "Slow=0.2" },
-            Journal = "A derrick that mines ore up to 2 tiles away, and whose Tremors slow every foe in its range. Every Tide it stands through it sinks a Fathom, down to Fathom 5: each one mines faster and harder, and widens and strengthens its Tremors. Argo's guns inside its Tremors are loaded too: +1 pellet for a Scatter Cannon, +1 pierce for a Harpoon Tower, for each Fathom below the first.",
-            Upgrades = new[]
-            {
-                U(Drill, "Paydirt", 2, "Pay Dirt", "Foes that fall in its Tremors are dug up for ore", "Paydirt_Base=2", "Yellowaura=30", "Deepcore3,Aftershock3")
-                    .Fx("2 mining strikes per foe felled in its Tremors"),
-                U(Drill, "Seismic", 2, "Seismic", "Tremors slow harder and reach farther", "Slow_Add=0.1;Range_Add=0.5", "Blueaura=25;Yellowaura=10", "Aftershock3")
-                    .Fx("Tremor slow +10%", "Tremors +0.5 tiles"),
-                U(Drill, "Deepcore", 3, "Deep Core", "Keeps sinking two Fathoms past the usual bottom", "Fathommax_Base=7", "Yellowaura=120", "Gusher4,Faultline4")
-                    .Fx("Deepest Fathom 7"),
-                U(Drill, "Aftershock", 3, "Aftershock", "Tremors also hurt every foe in range", "Pulse_Base=1.5", "Blueaura=80;Redaura=30", "Faultline4")
-                    .Fx("1.5 damage every 2s"),
-                U(Drill, "Gusher", 4, "Gusher", "Once it is deep enough, a gush of ore bursts up at each Tide", "Gusher_Base=12", "Yellowaura=275", "Mantle5")
-                    .Fx("12 mining strikes at once, each Tide", "From Fathom 3 down"),
-                U(Drill, "Faultline", 4, "Fault Line", "Tremors reach much farther", "Range_Add=1.5", "Blueaura=300", "")
-                    .Fx("Tremors +1.5 tiles"),
-                U(Drill, "Mantle", 5, "Mantle Tap", "Mines twice as hard, and once a Tide a quake pins every foe in its Tremors", "Damage_Pmulti=1;Mantle_Base=2", "Yellowaura=3000", "")
-                    .Fx("Ore per strike x2", "Quake holds foes for 2s, once a Tide"),
-            }
+            // FLOOD's pool: Deep Water without its pump. It has no upgrades of its own; the pump it is connected to
+            // decides what the water does (ArgoWater).
+            Id = Pool, Template = "Trap_Busterpad", Display = "Deep Water Pool", Desc = "A pool FLOOD added; acts with the Deep Water it is connected to", Family = "Argowater",
+            Tags = new[] { "Trap" }, Costs = "Blueaura=15", Trap = true, Hidden = true, Model = "Argo_Pool",
+            Stats = new[] { "Health=30+15" },
+            Journal = "",
+            Upgrades = new Upg[0],
         },
     };
 
@@ -308,5 +388,5 @@ public static class ArgoData
     };
 
     // The units the journal lists with Argo's buildings.
-    public const string NautJournal = "Small divers from the Diving Bell. Sent to a tower, a Naut tunes it: faster attacks and a slow repair. Knocked out, it swims home and is back in 8 seconds.";
+    public const string NautJournal = "Small divers from the Miner's Base. Sent to a tower, a Naut tunes it: faster attacks and a slow repair. Knocked out, it swims home and is back in 8 seconds.";
 }

@@ -88,14 +88,15 @@ public static class ArgoContent
         return r != null ? r.sharedMaterial : null;
     }
 
-    // Keeps the engine's generic scripts and drops the ones written for Smacky (they hard-code Smacky's names).
+    // Keeps the engine's generic scripts and drops the ones written for Smacky or Buster (they hard-code their names;
+    // Deep Water is cloned from Buster's Speed Pad).
     static List<UnityEngine.Object> Strip(List<UnityEngine.Object> scripts)
     {
         List<UnityEngine.Object> kept = new List<UnityEngine.Object>();
         if (scripts == null)
             return kept;
         foreach (UnityEngine.Object s in scripts)
-            if (s != null && !s.name.Contains("Smacky") && s.name != "Entity_Ai_General_Upgrade")
+            if (s != null && !s.name.Contains("Smacky") && !s.name.Contains("Buster") && s.name != "Entity_Ai_General_Upgrade")
                 kept.Add(s);
         return kept;
     }
@@ -120,7 +121,7 @@ public static class ArgoContent
         return e;
     }
 
-    // A buildable's look: its model, plus (Deep Drill only) one skin per Fathom that adds the pipe stack sunk beside it.
+    // A buildable's look: its model, plus (Drill Rig only) one skin per Fathom that adds the pipe stack sunk beside it.
     // The stack has four sizes (Fathom 2-5); deeper Fathoms keep the biggest, but get their own skin, which is how every
     // player knows the drill's Fathom (ArgoClient.TremorRadius).
     static Visualproperties TowerVisual(Visualproperties template, string name, string model, string display, bool fathoms)
@@ -212,7 +213,10 @@ public static class ArgoContent
             Iconobject.Icon like = null;
             if (types != null && types.Icons != null)
                 foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
-            AddIcon(types, "Argo_Sonar", ArgoAssets.SonarIcon, "Sonar", like);
+            if (ArgoData.SonarEnabled)
+                AddIcon(types, "Argo_Sonar", ArgoAssets.SonarIcon, "Sonar", like);
+            AddIcon(types, "Argo_Flood", ArgoAssets.FloodIcon, "Flood", like);
+            AddIcon(types, "Argo_Aim", ArgoAssets.AimIcon, "Aim", like);
             foreach (ArgoData.Crew c in ArgoData.Nauts)
                 AddIcon(types, "Argo_Crew_" + c.Name, ArgoAssets.IconFor(c.Color), c.Name, like);
             AddIcon(stats, "Fathom", ArgoAssets.FathomIcon, "Fathom", like);
@@ -229,7 +233,7 @@ public static class ArgoContent
     public static void CheckIcons()
     {
         bool ok = false;
-        try { ok = Helper_Uitools.Geticon("Argo_Sonar") != null; } catch (Exception) { }
+        try { ok = Helper_Uitools.Geticon("Argo_Flood") != null; } catch (Exception) { }
         IconsReady = ok;
         if (ok)
         {
@@ -316,33 +320,37 @@ public static class ArgoContent
 
     static void BuildCommands()
     {
+        BuildOption5();
         Commandobject template = commandTemplate = CommandTemplate();
         if (template == null)
         {
-            ArgoLog.Warn("no command template; SONAR and the crew buttons are disabled");
+            ArgoLog.Warn("no command template; AIM and the crew buttons are disabled");
             return;
         }
-        // SONAR: a vessel ability on Buster's Dash keys (Command_Movelinear); one press, no target.
-        Commandobject sonar = ArgoUtil.Clone(template, ArgoData.SonarCommand);
-        sonar.Style = Commandobject.Styles.Button;
-        sonar.Display_Name = ArgoData.SonarName;
-        sonar.Display_Desc = ArgoData.SonarDesc;
-        sonar.Color = new Color(0.48f, 0.9f, 0.94f, 1f);
-        sonar.Keybind = new List<string> { "6", "7" };
-        sonar.Keybindstate = "Onpressed";
-        sonar.Priority = 6;
-        sonar.Commandfuncts = new List<Entity_Command_Base> { new ArgoSonarButton() };
-        sonar.Icon = IconOr("Argo_Sonar", template.Icon);
-        Commands[ArgoData.SonarLink] = sonar;
-        Register("Command", sonar);
+        if (ArgoData.SonarEnabled)
+        {
+            // SONAR: a vessel ability on Buster's Dash keys (Command_Movelinear); one press, no target.
+            Commandobject sonar = ArgoUtil.Clone(template, ArgoData.SonarCommand);
+            sonar.Style = Commandobject.Styles.Button;
+            sonar.Display_Name = ArgoData.SonarName;
+            sonar.Display_Desc = ArgoData.SonarDesc;
+            sonar.Color = new Color(0.48f, 0.9f, 0.94f, 1f);
+            sonar.Keybind = new List<string> { "6", "7" };
+            sonar.Keybindstate = "Onpressed";
+            sonar.Priority = 6;
+            sonar.Commandfuncts = new List<Entity_Command_Base> { new ArgoSonarButton() };
+            sonar.Icon = IconOr("Argo_Sonar", template.Icon);
+            Commands[ArgoData.SonarLink] = sonar;
+            Register("Command", sonar);
+        }
 
-        // PORT / STARBOARD / BOSUN on the Diving Bell: pick a tower, like Fie's Reroute picks a silo.
+        // PORT / STARBOARD / BOSUN on the Miner's Base: pick a tower, like Fie's Reroute picks a silo.
         foreach (ArgoData.Crew c in ArgoData.Nauts)
         {
             Commandobject cmd = ArgoUtil.Clone(template, c.Command);
             cmd.Style = Commandobject.Styles.Button;
             cmd.Display_Name = c.Display;
-            cmd.Display_Desc = "Send " + c.Name + " to tune a tower, any player's. Pick the Diving Bell to call " + c.Name + " home";
+            cmd.Display_Desc = "Send " + c.Name + " to tune a tower, any player's (never a trap). Pick the Miner's Base to call " + c.Name + " home";
             cmd.Color = c.Color;
             cmd.Keybind = new List<string>();
             cmd.Keybindstate = template.Keybindstate;
@@ -352,6 +360,68 @@ public static class ArgoContent
             Commands[c.Link] = cmd;
             Register("Command", cmd);
         }
+
+        // AIM on the Drill Rig: pick a spot on the ground within its Range, like the crew pick a tower (2.0).
+        Commandobject aim = ArgoUtil.Clone(template, ArgoData.AimCommand);
+        aim.Style = Commandobject.Styles.Button;
+        aim.Display_Name = ArgoData.AimName;
+        aim.Display_Desc = ArgoData.AimDesc;
+        aim.Color = ArgoData.Brass;
+        aim.Keybind = new List<string>();
+        aim.Keybindstate = template.Keybindstate;
+        aim.Priority = template.Priority;
+        aim.Commandfuncts = new List<Entity_Command_Base> { new ArgoAimSelect() };
+        aim.Icon = IconOr("Argo_Aim", template.Icon);
+        Commands[ArgoData.AimLink] = aim;
+        Register("Command", aim);
+
+        // FLOOD on Deep Water and its pools: the game's own build command (placement, cost, preview) for a pool, sent to
+        // the water instead of the vessel (Fie's Grow Wall pattern, 2.0).
+        Commandobject build1 = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption1");
+        if (build1 == null)
+            ArgoLog.Warn("no Command_Buildoption1 to clone; FLOOD is disabled");
+        else
+        {
+            Commandobject flood = ArgoUtil.Clone(build1, ArgoData.FloodCommand);
+            flood.Display_Name = ArgoData.FloodName;
+            flood.Display_Desc = ArgoData.FloodDesc;
+            flood.Color = new Color(0.3f, 0.66f, 0.82f, 1f);
+            flood.Icon = IconOr("Argo_Flood", build1.Icon);
+            Commands[ArgoData.FloodKey] = flood;
+            Register("Command", flood);
+            ArgoLog.Info("FLOOD: keys " + ArgoUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
+        }
+    }
+
+    // The game's vessels have Buildoption1-4. Argo's fifth is Command_Buildoption4 cloned under the next name and key
+    // (2.0's first PC check: the server accepts any "Build*" command whose Goalstring is the tower, read in
+    // Entity_Ai_Hero_Buildsell). Another mod may already have added one; then Argo uses it.
+    public static string Option5Note = "";
+
+    static void BuildOption5()
+    {
+        if (ArgoUtil.Load<Commandobject>("Command", ArgoData.BuildOption5) != null)
+        {
+            Option5Note = "found";
+            return;
+        }
+        Commandobject four = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption4");
+        if (four == null)
+        {
+            Option5Note = "no Command_Buildoption4 to clone";
+            ArgoLog.Warn("no Command_Buildoption4; Argo has four build buttons (no Miner's Base)");
+            return;
+        }
+        Commandobject five = ArgoUtil.Clone(four, ArgoData.BuildOption5);
+        List<string> keys = new List<string>();
+        if (four.Keybind != null)
+            foreach (string k in four.Keybind)
+                keys.Add(k.Replace("4", "5"));
+        five.Keybind = keys;
+        five.Priority = four.Priority + 1;
+        Register("Command", five);
+        Option5Note = "cloned from Command_Buildoption4 (keys " + ArgoUtil.Join(four.Keybind ?? new List<string>()) + " -> " + ArgoUtil.Join(keys) + ", priority " + five.Priority + ")";
+        ArgoLog.Info("Command_Buildoption5 " + Option5Note);
     }
 
     // ---------------------------------------------------------------- buildables
@@ -359,6 +429,11 @@ public static class ArgoContent
     static void BuildTower(ArgoData.Build b)
     {
         Beingobject tb = ArgoUtil.Load<Beingobject>("Mob", b.Template);
+        if ((tb == null || tb.Entity == null) && b.Trap)
+        {
+            ArgoLog.Warn(b.Template + " not loaded; " + b.Id + " uses " + ArgoData.TrapFallback + "'s walk-through block");
+            tb = ArgoUtil.Load<Beingobject>("Mob", ArgoData.TrapFallback);
+        }
         if (tb == null || tb.Entity == null)
         {
             ArgoLog.Error("tower template " + b.Template + " not found; " + b.Id + " skipped");
@@ -371,27 +446,42 @@ public static class ArgoContent
         ent.Display_Name = b.Display;
         ent.Display_Desc = b.Desc;
         ent.Aiscripts = Strip(te.Aiscripts);
-        if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
+        if (!b.Trap && !ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
             ent.Aiscripts.Insert(0, ArgoUtil.Script("Entity_Ai_Tower_General"));
         ent.Visualscripts = Strip(te.Visualscripts);
         // Its own hit prefab: the range the game draws (while placing, when selected) centred on the tower at the point
         // its brain measures from (Def.Eye), and a collider the size of the model. Argo 1.0 kept the templates': the
         // Scatter Cannon's range sat 2 tiles underground (Smacky's Bomb Tower lobs), the others 0.75 above the tower.
+        // Traps keep the template's walk-through hit prefab (Mummer's Curtain).
         bool ranged = Array.Exists(b.Stats, s => s.StartsWith("Range="));
-        ModKitTowers.Fit(ent, b.Id, ArgoAssets.Model(b.Id), b.Eye, b.Eye + 0.05f, ranged);
+        if (!b.Trap)
+            ModKitTowers.Fit(ent, b.Id, ArgoAssets.Model(b.ModelName), b.Eye, b.Eye + 0.05f, ranged);
         ent.Costs = ArgoUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
-        ent.Tags = new List<string> { "Tower", b.Family };
-        ent.Tags.AddRange(b.Tags);
+        // 2.0: traps carry no "Tower" tag (Nauts tune towers, never traps; foes don't target them).
+        ent.Tags = b.Trap ? new List<string> { b.Family } : new List<string> { "Tower", b.Family };
+        foreach (string tag in b.Tags)
+            if (!ent.Tags.Contains(tag)) ent.Tags.Add(tag);
+        if (b.Trap)
+        {
+            ent.Sellable = true;
+            ent.Controllable = true;
+        }
         ent.Defaultstat = Stats(te.Defaultstat, b.Id + "_Statproperties", b.Stats);
         Register("Mob", ent.Defaultstat);
         bool fathoms = b.Id == ArgoData.Drill;
-        ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display, fathoms);
+        ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.ModelName, b.Display, fathoms);
         Register("Mob", ent.Defaultvisual);
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from ArgoData.
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
         CollectUpgrades(te.Upgrades, templateTiers);
+        if (templateTiers.Count == 0 && b.Upgrades.Length > 0)
+        {
+            Beingobject hut = ArgoUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
+            if (hut != null && hut.Entity != null)
+                CollectUpgrades(hut.Entity.Upgrades, templateTiers);
+        }
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
         foreach (ArgoData.Upg u in b.Upgrades)

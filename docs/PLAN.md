@@ -185,12 +185,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **Done:** Phases 1 and 2 (2026-10-08). Phase 3 Argo: step 1 design approved (`TDS_Mod/ModSource/Argo/DESIGN.md`);
-  step 2 art generated and previewed here (Deep Water, the FLOOD pool, 2.0's new upgrade models, effects, sounds,
-  FLOOD and AIM icons; `DESIGN.md` "Art", `Previews/2.0/`). Compiles here; not built in Unity.
-- **Next:** Argo step 3: code 2.0 on 1.4.0's modules, with kit 1.6 from `docs/PACK.md` §3, clean in release and test
-  defines; then step 4, the PC round (first check: a fifth build option). Phase 1's hand checks are still open (see
-  Decisions).
-- **Blocked:** nothing.
+  step 2 art (`Previews/2.0/`); step 3 code: 2.0 on 1.4.0's modules plus kit 1.6 (`ModKitPack`, `Tides`, `Counter`,
+  `Directions`, `Focus`), self-test rewritten to DESIGN's test plan. Compiles here (release and test defines; RogueLab
+  too); not built in Unity or run. Handoff `Argo_round1` packed (`TDS_Mod/Handoff/Argo_round1`).
+- **Next:** Argo step 4, the PC round, on Dimitri's typed OK. First check: the fifth build option
+  (`Argo/IMPLEMENTATION_NOTES.md` lists the six assumptions in order). Building the dev Argo replaces ArgoMod 1.4.0 on
+  the PC. Phase 1's hand checks are still open (see Decisions).
+- **Blocked:** nothing; the PC round waits on Dimitri's OK.
 
 ### Decisions
 
