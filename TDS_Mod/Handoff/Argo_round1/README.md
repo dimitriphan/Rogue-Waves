@@ -1,8 +1,8 @@
 # Handoff Argo_round1 (2026-10-08)
 
-Commit `f8c97ca` (`HEAD`). Made by `TDS_Mod/Tools/pc/make_handoff.py`; the folders mirror `C:\Users\Dimitri\TDS_Mod`.
+Commit `a8f739d` (`HEAD`). Made by `TDS_Mod/Tools/pc/make_handoff.py`; the folders mirror `C:\Users\Dimitri\TDS_Mod`.
 
-Argo 2.0 first PC round: build Argo with -Define ARGO_SELFTEST, queue line Argo, then Run-SelfTests.ps1 -Vessels Argo. Replaces the installed ArgoMod 1.4.0 with the dev build. Base: commit bbbc77a (Argo 1.4.0 as copied from ModProjects); anything DIFFERS means the PC's 1.4.0 copy differs from it: stop and report.
+Argo 2.0 first PC round: build Argo with -Define ARGO_SELFTEST, queue line Argo, then Run-SelfTests.ps1 -Vessels Argo. Replaces the installed ArgoMod 1.4.0 with the dev build. Base: commit bbbc77a (Argo 1.4.0 as copied from ModProjects). The PC's 99_SelfTest.cs, DESIGN.md and IMPLEMENTATION_NOTES.md are older 1.4.0 copies (2026-10-04), so they are forced (base *); Apply-Handoff backs them up.
 
 `Apply-Handoff.ps1` (check only) should list:
 
@@ -25,9 +25,9 @@ Argo 2.0 first PC round: build Argo with -Define ARGO_SELFTEST, queue line Argo,
 - will copy: `ModSource\Argo\Code\13_Journal.cs`
 - will copy: `ModSource\Argo\Code\14_CrewSelect.cs`
 - will add: `ModSource\Argo\Code\16_AimSelect.cs`
-- will copy: `ModSource\Argo\Code\99_SelfTest.cs`
-- will copy: `ModSource\Argo\DESIGN.md`
-- will copy: `ModSource\Argo\IMPLEMENTATION_NOTES.md`
+- will replace: `ModSource\Argo\Code\99_SelfTest.cs`
+- will replace: `ModSource\Argo\DESIGN.md`
+- will replace: `ModSource\Argo\IMPLEMENTATION_NOTES.md`
 - will add: `ModSource\Shared\ModKitCounter.cs`
 - will add: `ModSource\Shared\ModKitDirections.cs`
 - will add: `ModSource\Shared\ModKitFocus.cs`
