@@ -821,6 +821,92 @@ public static class ArgoSelfTest
 
     // ---------------------------------------------------------------- 2.0 helpers
 
+    // Deep Water where FLOOD has room: round 2's pump had one free tile beside it, so Abyss and Trench found none. A tile
+    // with three or more free neighbours on its level (pools join only on one level), else Spot's.
+    static Vector3 WaterSpot(Vector3 c, Beingobject being, int team)
+    {
+        Beingobject pool = ArgoContent.Beings[ArgoData.Pool];
+        int best = -1;
+        Genitem bestBlock = null;
+        for (int dx = -7; dx <= 7; dx++)
+            for (int dz = -7; dz <= 7; dz++)
+            {
+                Vector3 p = new Vector3(c.x + dx, c.y, c.z + dz);
+                float d = ArgoUtil.Flat(p, c);
+                if (d < 2.5f || d > 7f)
+                    continue;
+                Genitem block = ArgoUtil.Surface(p) ?? ArgoUtil.Surface(p + Vector3.up) ?? ArgoUtil.Surface(p + Vector3.down);
+                if (block == null || used.Contains(block.Position) || reserved.Contains(block.Position))
+                    continue;
+                bool ok = false;
+                try { ok = Helper_Gridtools.Checkifplaceable(block, being, 0, team); } catch (Exception) { }
+                if (!ok)
+                    continue;
+                int free = FreeAround(block.Position, pool, team, null);
+                if (free > best)
+                {
+                    best = free;
+                    bestBlock = block;
+                }
+                if (free >= 3)
+                    break;
+            }
+        Log("Deep Water spot: " + (bestBlock != null ? bestBlock.Position + " with " + best + " free tiles beside it" : "none with room, Spot's"));
+        if (bestBlock == null || best < 2)
+            return Spot(c, being, team, 3.5f, 6f);
+        used.Add(bestBlock.Position);
+        return bestBlock.Position;
+    }
+
+    // Free tiles beside 'at' on its level that take a pool; 'why' collects what blocks the others.
+    static int FreeAround(Vector3 at, Beingobject pool, int team, List<string> why)
+    {
+        int free = 0;
+        foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
+        {
+            Genitem b = ArgoUtil.Surface(at + d);
+            string no = null;
+            if (b == null) no = "no ground";
+            else if (Mathf.Abs(b.Position.y - at.y) > 0.5f) no = "another level";
+            else if (used.Contains(b.Position)) no = "used";
+            else if (reserved.Contains(b.Position)) no = "a test lane";
+            else
+            {
+                bool ok = false;
+                try { ok = Helper_Gridtools.Checkifplaceable(b, pool, 0, team); } catch (Exception) { }
+                if (!ok) no = "not placeable";
+            }
+            if (no == null) free++;
+            else if (why != null) why.Add((at + d).ToString("F0") + " " + no);
+        }
+        return free;
+    }
+
+    static string WhyNoFlood(ArgoTowerBrain water, int team)
+    {
+        ArgoWater.Net net = ArgoWater.NetOf(water);
+        if (net == null)
+            return "no network";
+        List<string> why = new List<string>();
+        foreach (Vector3 t in net.Tiles)
+            FreeAround(t, ArgoContent.Beings[ArgoData.Pool], team, why);
+        return net.Tiles.Count + " tiles: " + string.Join("; ", why.ToArray());
+    }
+
+    // Every gun and vessel near the water stops attacking while damage over time is measured (round 2: the guns shot the
+    // brined foe, 12 a second).
+    static List<Link_Modifier> JamGuns()
+    {
+        List<Link_Modifier> jams = new List<Link_Modifier>();
+        foreach (ArgoTowerBrain t in ArgoServer.Towers)
+            if (t != null && t.Master != null && (t.IsScatter || t.IsHarpoon))
+                jams.Add(Helper_Entitytools.Addmod(t.Master, "Attackspeed", -0.99f, Helper_Entitytools.Modtypes.Multi, 0f));
+        foreach (ArgoHeroBrain h in ArgoServer.Heroes)
+            if (h != null && h.Master != null)
+                jams.Add(Helper_Entitytools.Addmod(h.Master, "Attackspeed", -0.99f, Helper_Entitytools.Modtypes.Multi, 0f));
+        return jams;
+    }
+
     static ArgoTowerBrain NewestPool(List<ArgoTowerBrain> known)
     {
         foreach (ArgoTowerBrain t in ArgoServer.Towers)
@@ -1007,7 +1093,9 @@ public static class ArgoSelfTest
         {
             Beingobject being = ArgoContent.Beings[tower];
             Vector3 at = tower == ArgoData.Drill && ore != null ? drillAt
-                : tower == ArgoData.Harpoon ? HarpoonSpot(home, being, team) : Spot(home, being, team, tower == ArgoData.Bell ? 1.5f : tower == ArgoData.Water ? 3.5f : 2.5f, 6f);
+                : tower == ArgoData.Harpoon ? HarpoonSpot(home, being, team)
+                : tower == ArgoData.Water ? WaterSpot(home, being, team)
+                : Spot(home, being, team, tower == ArgoData.Bell ? 1.5f : 2.5f, 6f);
             if (float.IsNaN(at.x)) { Check("build " + tower, false, "no free tile"); continue; }
             Link_Resourceset cost = being.Entity.Costs[0];
             float before = Res(owner, cost.Name);
@@ -1301,6 +1389,7 @@ public static class ArgoSelfTest
                 Force(water, "Brine2");
                 Force(water, "Salt3");
                 Force(water, "Crushing4");
+                List<Link_Modifier> quiet = JamGuns();
                 yield return Wait(0.5f);
                 if (e != null && ArgoUtil.Alive(e))
                 {
@@ -1311,11 +1400,13 @@ public static class ArgoSelfTest
                     float l1 = Life(e);
                     yield return Wait(1f);
                     float stung = l1 - Life(e);
-                    Check("Brine: 0.5 a second in the water; Salt Sting doubles it on a pinned foe", plain > 0.3f && plain < 0.8f && stung > plain * 1.6f,
+                    // Crushing Depth is on too: 0.5 x 1.15 unpinned, twice that pinned.
+                    Check("Brine: 0.5 a second in the water; Salt Sting doubles it on a pinned foe", plain > 0.4f && plain < 0.8f && stung > plain * 1.6f && stung < plain * 2.4f,
                         "unpinned " + F(plain) + "/s, pinned " + F(stung) + "/s");
                     float dealt = Hit(water.Master, e, 2f);
                     Check("Crushing Depth: foes in the water take 15% more", Mathf.Abs(dealt - 2.3f) < 0.05f && ArgoHooks.Crushed > 0, "2 -> " + F(dealt));
                 }
+                foreach (Link_Modifier j in quiet) ArgoUtil.Unmod(j);
                 ClearEnemies();
                 // Abyss: FLOOD fills two tiles at once.
                 Force(water, "Abyss4");
@@ -1324,7 +1415,7 @@ public static class ArgoSelfTest
                 if (more != null)
                     yield return Flood(water, more.Position, owner, known, got);
                 yield return Wait(0.5f);
-                Check("Abyss: FLOOD adds a second pool for free", more == null || PoolCount() == n0 + 2, more == null ? "no free tile (skipped)" : "pools " + n0 + "->" + PoolCount() + ", free " + ArgoWater.Freepools);
+                Check("Abyss: FLOOD adds a second pool for free", more != null && PoolCount() == n0 + 2, more == null ? "no free tile beside the water: " + WhyNoFlood(water, team) : "pools " + n0 + "->" + PoolCount() + ", free " + ArgoWater.Freepools);
                 Force(water, "Trench5");
             }
         }
@@ -1345,7 +1436,8 @@ public static class ArgoSelfTest
                 "Fathom " + drill.Fathom + ", skin '" + drill.Master.Skin.Value + "', Tremor " + F(range0) + "->" + F(drill.TremorRadius));
             Check("Fathom stat on the drill (kit counter)", Mathf.Approximately(ModKitCounter.Get(drill.Master, "Fathom"), 2f));
             if (water != null && Has(water, "Trench5"))
-                Check("Trench: Deep Water spreads a pool by itself at the Tide", ArgoWater.Freepools > free0, "free pools " + free0 + "->" + ArgoWater.Freepools);
+                Check("Trench: Deep Water spreads a pool by itself at the Tide", ArgoWater.Freepools > free0, "free pools " + free0 + "->" + ArgoWater.Freepools
+                    + (ArgoWater.Freepools > free0 ? "" : ", no tile " + ArgoWater.NoTile + "x: " + WhyNoFlood(water, team)));
             float dmg2 = ArgoUtil.Stat(drill.Master, "Damage", 0f), aspd2 = ArgoUtil.Stat(drill.Master, "Attackspeed", 0f), slow2 = ArgoUtil.Stat(drill.Master, "Slow", 0f);
             Check("Fathom 2 mines harder and faster and slows more", Mathf.Abs(dmg2 - 0.5f * (1f + ArgoData.FathomYield)) < 0.01f && Mathf.Abs(aspd2 - 0.25f * (1f + ArgoData.FathomSpeed)) < 0.01f
                 && Mathf.Abs(slow2 - 0.2f - ArgoData.FathomSlow) < 0.01f, "ore per strike " + F(dmg2) + ", strikes/s " + F(aspd2) + ", slow " + F(slow2));
@@ -1642,7 +1734,7 @@ public static class ArgoSelfTest
             ArgoClient.Aimed(drill.Master, out cc, out cr);
             Check("Fathom 7: its own look, and every player draws the right Tremor", drill.Fathom == ArgoData.FathomDeepest && drill.Master.Skin.Value.ToString() == "Fathom" + ArgoData.FathomDeepest
                 && Mathf.Abs(cr - drill.TremorRadius) < 0.01f && Mathf.Abs(ArgoClient.TremorRadius(drill.Master) - drill.TremorRadius) < 0.01f,
-                "Fathom " + drill.Fathom  + ", skin '" + drill.Master.Skin.Value + "', Tremor synced " + F(cr) + " (server sent " + F(drill.SyncedRadius) + ", AIM link " + drill.AimSynced + "), rebuilt " + F(ArgoClient.TremorRadius(drill.Master)) + " vs " + F(drill.TremorRadius));
+                "Fathom " + drill.Fathom  + ", skin '" + drill.Master.Skin.Value + "', Tremor synced " + F(cr) + " (server sent " + F(drill.SyncedRadius) + ", AIM link " + drill.AimSynced + ", stale Aim entries removed " + ArgoTowerBrain.AimDupes + "), rebuilt " + F(ArgoClient.TremorRadius(drill.Master)) + " vs " + F(drill.TremorRadius));
         }
         if (bell != null)
         {

@@ -51,11 +51,13 @@ function ReadFrom($path, [ref]$from) {
 function Launch($until, $what) {
     if (Get-Process TDSgame -ErrorAction SilentlyContinue) { throw "TDS is already running: it must be closed before a test (it may be Dimitri playing)" }
     $start = Get-Date
+    $script:LogFresh = $false
     Start-Process "steam://rungameid/2392280"
     $pos = 0; $seen = ""; $done = $false
     while (((Get-Date) - $start).TotalMinutes -lt $TimeoutMinutes) {
         Start-Sleep 5
         if (-not (Test-Path -LiteralPath $log) -or (Get-Item -LiteralPath $log).LastWriteTime -lt $start) { continue }
+        $script:LogFresh = $true
         $seen += ReadFrom $log ([ref]$pos)
         if (& $until $seen) { $done = $true; break }
         if ($seen.Length -gt 200000) { $seen = $seen.Substring($seen.Length - 100000) }
@@ -66,6 +68,9 @@ function Launch($until, $what) {
     while ((Get-Process TDSgame -ErrorAction SilentlyContinue) -and $t -lt 60) { Start-Sleep 2; $t += 2 }
     if (Get-Process TDSgame -ErrorAction SilentlyContinue) { "WARNING: TDS did not close within 60 s; it is still running" }
     if (-not $done) { "WARNING: no $what within $TimeoutMinutes minutes" }
+    # Argo round 2 (2026-10-08): a Steam Cloud dialog held the launch, the game never started, and the old Player.log
+    # was summarized as if it were this run's. Nothing is summarized from a log the game did not write this launch.
+    if (-not $script:LogFresh) { "WARNING: TDS never wrote Player.log after the launch (a Steam dialog waiting? check Steam's console_log); nothing from this launch to summarize" }
     return $done
 }
 
@@ -81,6 +86,7 @@ if (Test-Path -LiteralPath $data) {
 if ($BootCheck) {
     foreach ($v in $Vessels) { SetEnabled $v $true }
     $ok = Launch { param($s) $all = $true; foreach ($v in $Vessels) { if ($s -notmatch [regex]::Escape("[$v] icons:")) { $all = $false } }; $all } "icons line from every vessel"
+    if (-not $script:LogFresh) { "BOOT CHECK $($stamp): the game never started; nothing summarized"; exit 1 }
     $copy = Join-Path $out "boot_$stamp.log"
     Copy-Item -LiteralPath $log -Destination $copy -Force
     $lines = Get-Content -LiteralPath $copy | Where-Object { $_ -notmatch 'Dump\] ' }
@@ -100,6 +106,12 @@ foreach ($v in $Vessels) {
     foreach ($w in $Vessels) { SetEnabled $w ($w -eq $v) }
     $ok = Launch { param($s) $s -match [regex]::Escape("[$v] TEST DONE") } "TEST DONE"
     $t = Get-Date -Format "yyyyMMdd_HHmmss"
+    if (-not $script:LogFresh) {
+        SetEnabled $v $false
+        "SELF-TEST $v $($t): the game never started; nothing summarized (the old Player.log is not this run's)"
+        ""
+        continue
+    }
     $copy = Join-Path $out "$($v)_$t.log"
     Copy-Item -LiteralPath $log -Destination $copy -Force
     SetEnabled $v $false
