@@ -5,9 +5,9 @@ repository, the project instructions, the project files, the first message, and 
 
 ## 1. The repository
 
-Connect `dimitriphan/Rogue-Waves`. All work so far is on branch `claude/rogue-waves-mod-setup-ngfuv3`; the remote has
-no `main` yet. Before connecting, make that branch the default (GitHub: Settings > General > Default branch) or
-merge it into a new `main`, so the project's sessions start from it. Do not connect `ModProjects`: the coordinator
+Connect `dimitriphan/Rogue-Waves`. All work so far is on branch `claude/rogue-waves-mod-setup-ngfuv3`, which is
+already the repository's default branch because no `main` exists. Sessions will start from it as is; rename it to
+`main` (GitHub: Settings > General > Default branch, or Branches > rename) whenever you want the clean name. Do not connect `ModProjects`: the coordinator
 needs it only once, when Argo's phase copies the shipped Argo in, and the plan says so at that step.
 
 ## 2. Project instructions (paste as the project's instructions)
