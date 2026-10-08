@@ -185,13 +185,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **Done:** Phase 1 (2026-10-08): `docs/15` (verdicts §1, PC round 1 results §11, Riptide §13), RogueLab 13/13 on the
-  PC. Phase 2 drafted the same day: `docs/PACK.md` (one `RogueWavesMod` bundle, a prefab per part, no load order,
-  kit 1.6 scope, versions) and `docs/STYLE.md` (theme, palette, motifs, naming voice, roster shapes); the roster's
-  shapes are in `.claude/rules/design.md`.
-- **Next:** the Phase 2 gate: the user approves packaging and style (Open questions 4-5). Then Phase 3 with Argo,
-  which builds kit 1.6 (`docs/PACK.md` §3) on the way. Hand checks left from Phase 1: the F-key bug with a real
-  Boutbro, a save value across a restart, the mod Cardinal's look in the lobby picker, `docs/15` §11 steps 10-11.
-- **Blocked:** on the gate.
+  PC. Phase 2 (2026-10-08, approved): `docs/PACK.md` and `docs/STYLE.md`; roster shapes in `.claude/rules/design.md`.
+- **Next:** Phase 3 with Argo, step 1 (`DESIGN.md` from the scope text), on the user's word; Argo also builds kit 1.6
+  (`docs/PACK.md` §3). Copying Argo's shipped code needs the `ModProjects` repository added to the session. Hand
+  checks left from Phase 1: the F-key bug with a real Boutbro, a save value across a restart, the mod Cardinal's look
+  in the lobby picker, `docs/15` §11 steps 10-11.
+- **Blocked:** nothing.
 
 ### Decisions
 
@@ -224,6 +223,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   colour slot, which checks the name; the Mixed slot takes any string). **The §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
+- 2026-10-08 (user, Phase 2 gate): **one `RogueWavesMod` bundle** with a `Default` prefab per part (mode, foes, each
+  vessel), parts developed and self-tested as their own dev mods, no load order, one pack version (`docs/PACK.md`).
+  **Style approved** (`docs/STYLE.md`): the pack look lives in run pieces; vessels look as the user's concept art draws
+  them, house-style departures kept as drawn until each vessel's design gate. Kit 1.6 = `docs/PACK.md` §3.
 
 ### Open questions
 
@@ -231,8 +234,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 4 | Packaging (`docs/PACK.md`): ship one `RogueWavesMod` (one zip, one toggle, one version) with a prefab per part, each part still developed and self-tested as its own dev mod? | yes |
-| 5 | Style (`docs/STYLE.md`): the pack look lives in run pieces (Pure Aura in Pearl, the crest, flotsam Cardinals); vessels look as Dimitri's concept art draws them (`docs/concepts/YOSSELE_SPOOL_ULOE.md`), with towers carrying each one's motif? | yes |
+| - | none open (4-5 answered at the Phase 2 gate, see Decisions) | |
 
 ### Phase 5 pieces
 

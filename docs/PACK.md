@@ -1,6 +1,6 @@
 # Rogue Waves: how the pack is built and shipped
 
-Phase 2 decision (2026-10-08, waiting on the user's gate). It is built on `TDS_Vessel_Creator/docs/14` §5 (the two
+Phase 2 decision (2026-10-08, approved by the user). It is built on `TDS_Vessel_Creator/docs/14` §5 (the two
 layouts) and `docs/15` §10 (how the game loads mods). The style is in `docs/STYLE.md`.
 
 ## 1. Layout: one bundle, one part per prefab

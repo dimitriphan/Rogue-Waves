@@ -2,7 +2,7 @@
 
 One page every vessel, enemy, Cardinal, UI piece and text of the pack follows. The game's own rules come first:
 sprites `TDS_Vessel_Creator/docs/03` §1 (house style), towers §4 (low-poly sleek, never voxel). This page only adds
-what makes the pack read as one. Phase 2 draft, 2026-10-08, waiting on the user's gate.
+what makes the pack read as one. Phase 2 draft, 2026-10-08, approved by the user.
 
 ## The theme
 
