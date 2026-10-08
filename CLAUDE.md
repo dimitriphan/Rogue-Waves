@@ -14,6 +14,8 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
 | `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.5), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames | `TDS_Mod/README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
+| `docs/SCOPE_v0.txt` | The user's scope for the expansion (2026-10-08): mode, mechanics, four vessels, modifiers, a bug fix. The highest truth after the user's newest words | when a task touches its subject |
+| `docs/PLAN.md` | The prompt plan: the coordinator's operating rules (Part A), phases and their opening prompts (B), state and open questions (C), prompt templates (D) | **every session**: Part C "Now" |
 | `docs/EXPANSION_SCOPE.md` | Beyond vessels: enemies, modes, maps, bosses, music, journal, unlocks, packaging. What is known, what is not, what to research | before any non-vessel work |
 
 No vessel lives here yet. When one starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold with
@@ -24,6 +26,7 @@ No vessel lives here yet. When one starts: `TDS_Mod/ModSource/<Name>` + `Assets/
 
 | Task | Read before starting |
 | --- | --- |
+| Any session on this project | `docs/PLAN.md` Part C "Now", then the phase's reads in Part B; nothing else until the task sends you there |
 | Design a vessel, building, upgrade tree, unit | `docs/02_DESIGN_RULES.md`; units: `docs/12`; the engine's limits: `docs/01`, `docs/05` and `examples/Mummer_DESIGN.md` ("Changes from the concept") |
 | Draw sprites, UI art, towers, effects, sounds | `docs/03_ART_AND_AUDIO.md` |
 | Write or change mod code | `docs/09_PITFALLS.md`, then `docs/05_CODE_COOKBOOK.md`; online: `docs/07` |
