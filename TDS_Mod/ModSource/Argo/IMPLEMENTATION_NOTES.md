@@ -62,6 +62,12 @@ Thehunt, with no mod exceptions. One gap: Bedrock felled the test foe, so the tw
 line (they passed in round 3). The test now gives Fault Line its own foe and fails if it has none. Still to do: the
 captures (`ARGO_SHOTS`) for step 4's art review, Deep Water's bob, and hand play.
 
+**PC round 5 (2026-10-08): 138 pass, 0 fail, 0 setup, with captures** (`ARGO_SHOTS`, 19 PNGs on the PC in
+`handoff\selftest_logs\Argo_round5_shots`, attached in the thread; not yet reviewed here). Fault Line's checks ran and
+passed. Then the playable build (no defines, v0.1.0-dev) was built, boot-checked with Crackpot, Mummer, Rustle, Sprigg
+(every vessel logged its icons; 18 NullReferenceExceptions in the game's own ambient-sound teardown at close, no mod
+frame) and left **installed and enabled** for hand play. No zip, no publish.
+
 Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
 off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.

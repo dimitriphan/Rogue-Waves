@@ -1,0 +1,63 @@
+# Handoff: finish Argo 2.0 (Phase 3, steps 4-5)
+
+Written 2026-10-08 by the "Phase 1 kickoff" thread, on Dimitri's ask, so a new thread can carry Argo to done.
+Repository `dimitriphan/Rogue-Waves`, branch `claude/phase-1-6lfnar` (PR #3, into `claude/rogue-waves-mod-setup-ngfuv3`).
+Read `CLAUDE.md`, then `docs/PLAN.md` Part C "Now"; Argo's state is in `TDS_Mod/ModSource/Argo/IMPLEMENTATION_NOTES.md`
+(top section, "2.0 for Rogue Waves") and its rules in `TDS_Mod/ModSource/Argo/DESIGN.md`.
+
+## Where Argo stands
+
+- Design approved by Dimitri (no SONAR for now, his rule). Art generated (step 2). Code on kit 1.6 (step 3).
+- PC self-test, five rounds on Thehunt: 93/9, 133/3, 123/5, 134/0, **138/0** (round 5, with captures). Every mechanic
+  in DESIGN's test plan passed in game: five build options (the fifth is a clone of `Command_Buildoption4`, made when
+  the match loads it), Deep Water, FLOOD and its pools, Abyss, Trench, Brine, Crushing Depth, AIM and the synced Tremor,
+  Fathoms to 7, Bedrock, Fault Line, both Harpoon paths (Tether, Anchor Line pin and stun, Reel, Undertow, bosses never
+  moved), the Miner's Base limit, Nauts tuning towers only, Old Salts, the journal, the F-key fix.
+- Bugs the rounds found and fixed: build commands not loaded at boot (kit `docs/09` #71); a stale duplicate "Aim"
+  entry in the synced command list kept clients on an old Tremor radius.
+- The PC now has the **playable build** (no defines, v0.1.0-dev) installed and enabled beside Crackpot, Mummer, Rustle,
+  Sprigg and Riptide; the boot check passed. ArgoMod 1.4.0 is no longer installed. No zip or publish was made.
+
+## What the new thread does
+
+1. **Review round 5's captures** (step 4 asks for it). 19 PNGs are on the PC in
+   `Desktop\ClaudeProjects\handoff\selftest_logs\Argo_round5_shots` and were attached in the old thread; a cloud
+   session can't open them, so ask the PC session to push them to the branch under
+   `TDS_Mod/ModSource/Argo/Previews/round5/` (or have Dimitri upload them). Check Deep Water and its pools, the new
+   upgrade models, the AIM ring, effects, the journal pages, against `DESIGN.md` "Art" and `docs/STYLE.md`.
+2. **Deep Water's bob** (DESIGN "Tower motion"): not built yet; small, client-side.
+3. **Dimitri's hand play** of the installed build: ask what he saw; fix what he reports (each fix: cloud-check, then a
+   PC round on his typed OK).
+4. **Step 5**: lessons to `TDS_Vessel_Creator/docs/09`, `IMPLEMENTATION_NOTES.md` final, release zip as `docs/04`
+   says, on Dimitri's OK. Note `docs/PACK.md`: the pack ships as one `RogueWavesMod` bundle later (Phase 7); ask
+   Dimitri whether Argo's release is a standalone ArgoMod 2.0 now or waits for the pack.
+
+## How a PC round goes here (learned in rounds 1-5)
+
+- Lock: `/mnt/project-files/pc/QUEUE.md` (`free` / `taken: ...`); free it when the round ends.
+- Compile here first: from `TDS_Mod/ModSource`, `check_mod.py Argo/Code Shared Argo ""` and with
+  `"ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE"`; `check_editor.sh ../Assets/ArgoMod/Editor`. RogueLab also uses Shared.
+- Pack: `python3 TDS_Mod/Tools/pc/make_handoff.py Argo_roundN --since a31e78c --only Argo,Shared --zip
+  /mnt/project-files/handoff/Argo_roundN.zip` (`a31e78c` is what the PC applied last; use `--manifest` if a
+  `pc_manifest.txt` reaches the cloud). Commit and push the `TDS_Mod/Handoff/` folder.
+- Dimitri types one sentence per round ("Fetch and apply handoff Argo_roundN, build Argo with ARGO_SELFTEST, run the
+  queue and Run-SelfTests -Vessels Argo, and launch TDS for it"). Start the PC session with `start_rc_session` in
+  `C:\Users\Dimitri\TDS_Mod` (an existing session in the thread resumes on the next message).
+- One `Tools/ModKit/Build Queue` call is enough even when MCP reports a timeout; confirm with Editor.log's
+  `[ModKit]` lines. A Steam Cloud "sync failed" dialog can hold the launch; `Run-SelfTests.ps1` (46e53bd, on the PC)
+  no longer summarizes an old Player.log when that happens.
+- Ask the PC session for the summary plus every `[Argo] TEST` line it needs; the summary lists only fails.
+- The PC keeps its own state file, `Desktop\ClaudeProjects\handoff\HANDOFF_Argo2_PC_state_2026-10-08.md` (also attached
+  in the old thread): rounds table, the Argo and Shared lines of `pc_manifest.txt` to pack the next handoff against, and
+  where every log, summary, PNG and backup sits. Ask the next PC session to read it first. Its notes: the PC has no
+  token file (it fetches with `gh`); Build Queue replays over MCP overwrite `queue_status.txt` after a good run, so
+  trust Editor.log; keep Riptide out of `-BootCheck`; the round 2 `*_STALE_round1_log` files are not real results.
+- Small `Tools/pc` fixes worth making: a `gh` fallback when no token file exists, and stop replays overwriting
+  `queue_status.txt`.
+
+## Open items not Argo's
+
+- Phase 1 hand checks: the F-key bug with a real Boutman death, an unanswered choice dialog, a save surviving restart.
+- Naming (Dimitri, 2026-10-08): "Rogue Wave" is the expansion's name, **not** a Cardinal; new Cardinals are unnamed.
+  Draft PR #6 (based on this branch) fixes the docs that said otherwise (`docs/PLAN.md`, `docs/PACK.md`,
+  `docs/STYLE.md`); don't reintroduce the old name.
