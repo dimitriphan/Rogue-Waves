@@ -4,7 +4,7 @@ public static class RogueLabBoot
     public static Modeobject ModeObject;
     public static string GrantArtifact = "";      // a stock Cardinal granted mid-match in map 1
     static readonly List<string> planNames = new List<string>();
-    public static List<string> Plans { get { return planNames; } }   // stock Mode_Normal Gameplans with a twin, by name
+    public static List<string> Plans { get { return planNames; } }   // stock Gameplans with a twin (any mode), by name
 
     // docs/15 §11 step 1: what the game's database holds.
     public static void Database()
@@ -131,7 +131,7 @@ public static class RogueLabBoot
         foreach (UnityEngine.Object o in stockPlans)
         {
             Gameplandatabaseobject g = o as Gameplandatabaseobject;
-            if (g == null || g.Mode != normal || g.Map == null) continue;
+            if (g == null || g.Map == null || g.Objectname.StartsWith("Special_") || g.Objectname.StartsWith("Test_")) continue;   // Special_Custom hangs the load (round 2)
             Gameplandatabaseobject twin = RogueLabUtil.Clone(g, RogueLabUtil.Clip(RogueLabData.PlanPrefix + g.Objectname));
             twin.Mode = entry;
             plans[twin.Objectname] = twin;
@@ -155,7 +155,7 @@ public static class RogueLabBoot
         foreach (string n in planNames)
         {
             Gameplandatabaseobject g = plans[n] as Gameplandatabaseobject;
-            if (n != not && g != null && (first == null || g.Map != first.Map) && !n.Contains("Tutorial") && !n.Contains("Test"))
+            if (n != not && g != null && g.Mode != null && g.Mode.Objectname == RogueLabData.StockMode && (first == null || g.Map != first.Map) && !n.Contains("Tutorial") && !n.Contains("Test"))
                 return n;
         }
         return "";

@@ -1,6 +1,6 @@
 public static class RogueLabData
 {
-    public const string Version = "0.2.0";            // 0.2: round 2 (docs/RESEARCH_GAPS.md)
+    public const string Version = "0.3.0";            // 0.2: round 2, 0.3: round 3 (docs/RESEARCH_GAPS.md)
     public const string Mode = "Mode_RogueLab";          // the mod mode's entry, group and Modeobject name
     public const string StockMode = "Mode_Normal";
     public const string PlanPrefix = "RogueLab_";        // + the stock Gameplan's name

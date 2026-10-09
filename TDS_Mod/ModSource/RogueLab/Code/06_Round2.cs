@@ -5,6 +5,9 @@
 //   map 2     the choice dialog with eight long entries: where its cards land (A6)
 //   the tour  after map 2, every other base map the vote could offer, played as a twin of the mod's mode: does it start
 //             with a vessel, a core and an enemy core, does the game warn about the mode's spots, does leaving work (A4)
+// Round 3 (0.3.0) keeps all of it and changes two things round 2 left open (docs/15 §15):
+//   map 2     the dialog opens only once its menu is up (round 2's threw after one card), then is clicked by the mod
+//   the tour  only the maps round 2 could not reach: every Gameplan whose stock mode isn't Mode_Normal, now twinned
 // Every answer is one "[RogueLab] TEST ..." line; the raw data lines are MAP, PLAN, MODE, TIDE2, TOUR.
 using System.Globalization;
 
@@ -191,6 +194,7 @@ public static class RogueLabRound2
     {
         Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
         if (dialog == null) { RogueLabProbe.Setup("eight-card dialog", "no Bla_Ui_Confirmation"); yield break; }
+        yield return MenuUp(dialog);
         List<Bla_Ui_Confirmation.Entry> options = new List<Bla_Ui_Confirmation.Entry>();
         for (int i = 1; i <= 8; i++)
         {
@@ -221,8 +225,42 @@ public static class RogueLabRound2
         float t = 0f;
         while (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Pending && t < 5f) { t += Time.unscaledDeltaTime; yield return null; }
         RogueLabProbe.Check("eight-card dialog closes when the mod clicks a card", task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded,
-            "status " + task.Status + (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded ? ", pick " + task.GetAwaiter().GetResult().Name : ""));
+            "status " + task.Status + (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded ? ", pick " + task.GetAwaiter().GetResult().Name : Fault(task)));
         if (grid != null) { grid.constraint = UnityEngine.UI.GridLayoutGroup.Constraint.FixedColumnCount; grid.constraintCount = 2; }
+    }
+
+    // Runprompt hands each card to its parent menu handler's gamepad focus (Bla_Ui_Confirmation.cs:190), and
+    // GetComponentInParent skips inactive objects: with the menu down it throws after the first card (round 2).
+    static Blockage.Menu.Blu2_Menu_Handler Handler(Bla_Ui_Confirmation dialog)
+    {
+        return dialog.GetComponentInParent<Blockage.Menu.Blu2_Menu_Handler>();
+    }
+
+    static string MenuState(Bla_Ui_Confirmation dialog)
+    {
+        Blockage.Menu.Blu2_Menu_Handler active = Handler(dialog);
+        Blockage.Menu.Blu2_Menu_Handler[] any = dialog.GetComponentsInParent<Blockage.Menu.Blu2_Menu_Handler>(true);
+        string name = dialog.gameObject.name;
+        return "dialog '" + name + "' active " + dialog.gameObject.activeInHierarchy + ", handler " + (active != null ? "'" + active.gameObject.name + "'" : "none active")
+            + (any.Length > 0 ? " (nearest, active or not: '" + any[0].gameObject.name + "')" : " (none at all)") + ", menu of that name registered " + Blockage.Menu.Bl_Menus.Menus.ContainsKey(name);
+    }
+
+    // Brings the dialog's menu up before Runprompt, the way the pause menu's own prompts find it (already up).
+    static IEnumerator MenuUp(Bla_Ui_Confirmation dialog)
+    {
+        string before = MenuState(dialog);
+        if (Handler(dialog) != null) { RogueLabProbe.Info("dialog menu", "up already: " + before); yield break; }
+        Blockage.Menu.Bl_Menus.Changemenu(dialog.gameObject.name);
+        float t = 0f;
+        while (Handler(dialog) == null && t < 10f) { t += Time.unscaledDeltaTime; yield return null; }
+        RogueLabProbe.Info("dialog menu", "before: " + before + "; " + RogueLabUtil.F(t) + " s after Changemenu: " + MenuState(dialog));
+    }
+
+    static string Fault(Cysharp.Threading.Tasks.UniTask<Bla_Ui_Confirmation.Entry> task)
+    {
+        if (task.Status != Cysharp.Threading.Tasks.UniTaskStatus.Faulted) return "";
+        try { task.GetAwaiter().GetResult(); return ""; }
+        catch (Exception e) { return ", " + e.GetType().Name + ": " + e.Message + " " + e.StackTrace; }
     }
 
     static List<RectTransform> Cards(Bla_Ui_Confirmation dialog)
@@ -296,13 +334,23 @@ public static class RogueLabRound2
             + (ModeWarnings - warningsBefore));
     }
 
-    // The tour's plans: every stock Mode_Normal Gameplan (with a twin) not yet played, no tutorials or test maps.
+    // The tour's plans (round 3): every twinned Gameplan whose stock mode is not Mode_Normal (round 2 toured those), not
+    // yet played. Alt_0_Tutorial is a real map (Ome Drydock δ) and is in; Special_ and Test_ plans have no twin.
     public static void PlanTour(List<string> played)
     {
         Tour.Clear();
+        Dictionary<string, UnityEngine.Object> plans = RogueLabUtil.Folder("Gameplan");
         foreach (string n in RogueLabBoot.Plans)
-            if (!played.Contains(n) && !n.Contains("Tutorial") && !n.StartsWith("Test_"))
+        {
+            Gameplandatabaseobject g = plans.ContainsKey(n) ? plans[n] as Gameplandatabaseobject : null;
+            bool toured = g != null && g.Mode != null && g.Mode.Objectname == RogueLabData.StockMode;   // round 2 played all 28 of these
+            if (!played.Contains(n) && !toured && !n.StartsWith("Special_") && !n.StartsWith("Test_"))
                 Tour.Add(n);
+        }
+        // The Final map last: its stock plan has a special intro, and a map that hangs ends the tour (TourTimeout).
+        List<string> last = Tour.FindAll(n => n.Contains("Final"));
+        Tour.RemoveAll(n => n.Contains("Final"));
+        Tour.AddRange(last);
         RogueLabProbe.Info("map tour", Tour.Count + " maps: " + string.Join(", ", Tour.ToArray()));
     }
 }

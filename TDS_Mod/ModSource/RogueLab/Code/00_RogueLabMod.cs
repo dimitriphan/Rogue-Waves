@@ -72,7 +72,6 @@ public class RogueLabMod : MonoBehaviour
         try { RogueLabBoot.RegisterCardinal(); } catch (Exception e) { RogueLabProbe.Check("mod Cardinal registered", false, e.ToString()); }
         try { RogueLabBoot.Save(); } catch (Exception e) { RogueLabProbe.Check("save write", false, e.ToString()); }
         yield return RogueLabRound2.Boot();
-        yield return RogueLabRound2.Boot();
         Ready = true;
         RogueLabLog.Info("ready");
     }

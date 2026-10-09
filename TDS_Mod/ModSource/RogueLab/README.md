@@ -9,11 +9,21 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Boot | dumps the database folders, `Mode_Normal`'s Tide table and the enemy groups; registers `Mode_RogueLab` (stock scripts by name, 3 Tides) with a `RogueLab_` twin of every `Mode_Normal` Gameplan, and the Cardinal `Artifact_RogueLab`; writes and reads a save key | §2, §7, §8, §11.9 |
 | Boat | picks Boutman and the test map, equips the mod Cardinal in its colour slot, swaps the match to the twin Gameplan | §3, §7 |
 | Map 1 | checks the mode and Cardinal, grants a core upgrade mid-match, reproduces the F-key bug with Boutbro and checks the fix, rewinds a Tide, leaves between Tides as a win, chains straight into map 2 | §3, §5, §7, §9 |
-| Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (click one) | §3, §6 |
-| Round 2 (0.2.0, `06_Round2.cs`) | at boot every map's and Gameplan's data, every other mode's Tide table, the elites again, the hard setting's upgrade; in map 1 the bundle's second prefab (`Second/RogueLabSecond.cs`, built into `RogueLabMod_Second_Default`) and the frame cost of 50/100/200 extra units; in map 2 an eight-card dialog; then a **tour** of every other base map the vote could offer, each left as a win as soon as it starts; `TEST DONE` | `docs/RESEARCH_GAPS.md` A3, A4, A6, A7, A9, B5, C1, C2 |
+| Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (round 3: the eight-card dialog instead) | §3, §6 |
+| Round 2 (0.2.0, `06_Round2.cs`) | at boot every map's and Gameplan's data, every other mode's Tide table, the elites again, the easier setting's upgrade; in map 1 the bundle's second prefab (`Second/RogueLabSecond.cs`, built into `RogueLabMod_Second_Default`) and the frame cost of 50/100/200 extra units; in map 2 an eight-card dialog; then a **tour** of every other base map the vote could offer, each left as a win as soon as it starts; `TEST DONE` | `docs/RESEARCH_GAPS.md` A3, A4, A6, A7, A9, B5, C1, C2 |
+| Round 3 (0.3.0) | the same, with two changes after round 2 (`docs/15` §15): map 2's dialog opens only once its menu is up, then the mod clicks a card; the tour plays only the 15 maps whose stock Gameplan uses another mode (now twinned too), the Final map last; Special_ plans are never twinned, and a map that hangs while loading ends the run after 150 s | `docs/RESEARCH_GAPS.md` A4, A6 |
 
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
+Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a hang on Special_Custom; results in
+`docs/15` §15, every line in `TDS_Vessel_Creator/reference/roguelab_round2.txt`.
+
+## Round 3 (2026-10-09)
+
+Same steps as round 1 below, with handoff `RogueLab_round3` and `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes
+40`: maps 1 and 2 as before, then 15 tour maps of about a minute each. Nothing needs a click. Raw lines to send back:
+`TOUR` and every `TEST` line (the boot dumps repeat round 2's and can be skipped), plus any `Runprompt` exception in
+the log. **Afterwards remove `RogueLabMod` from the game's Mods folder** (kept empty until the pack ships).
 
 ## Round 2 (2026-10-09)
 

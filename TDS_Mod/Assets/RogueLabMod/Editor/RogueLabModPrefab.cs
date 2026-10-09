@@ -125,6 +125,6 @@ namespace RogueLabBuild
             ModTool.Editor.Exporting.ModExporter.ExportMod();
         }
 
-        const string RogueLabVersion = "0.2";
+        const string RogueLabVersion = "0.3";
     }
 }
