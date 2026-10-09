@@ -67,6 +67,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/13_ENEMIES_AND_MODIFIERS.md` | Enemies and elites: the shipped roster, Tide tables and enemy cores, the six enemy modifiers, how a mod adds a new enemy or modifier, open questions for the PC |
 | `docs/14_MODTOOL_AND_PACKAGING.md` | The mod container: ModTool content types and scenes, the `.info`, no load order or dependencies, the RoslynCSharp sandbox, no Workshop, how a pack of several parts should ship, PC checks that decide maps |
 | `docs/15_ROGUE_MODE_ENGINE.md` | The Rogue Wave mode's engine: modes and the three-map chain, what survives a scene change, Merchut and bounties, Cardinals (artifacts), client choices, the save, the F-key bug, mod loading; go / fallback / no per scope feature, PC list |
+| `docs/16_MAPS_AND_ECONOMY.md` | Inside a map: the grid, placement and enemy paths, the base game's map-special objects (flood, clock, nests, dens, gates), aura nodes and mining, the wallet and colour conversion, game speed, lighting; what a run can change mid-map |
 | `kit/Shared/` | The shared kit every vessel compiles (kit 1.6): journal, boat, tower ranges, combat hits, self-test helpers, and the pack's registry, Tides, counter, Directions and F-key fix (`kit/README.md`) |
 | `template/Mummer/` | The reference vessel (Mummer 1.0.0): runtime code, editor generator, build scripts |
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |

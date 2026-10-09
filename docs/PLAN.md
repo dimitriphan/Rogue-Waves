@@ -235,6 +235,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and map loading work on it. Prototype generator `concept-tools/sea_chart.py`. **Dimitri adopted it with V1 (22:23Z)**:
   the vote is held in the map and the boat sails the chart to the winner; `docs/scope/05` updated. Probes C1-C7 join
   the next RogueLab round (C8 dropped with V2).
+- **Also (2026-10-09 23:30Z):** a deeper read of the game (Dimitri's ask): new kit chapter `docs/16` (grid, paths,
+  the base game's map objects, aura nodes, the wallet, game speed, lighting) and `docs/15` §18 (the stock Cardinals'
+  patterns, messages to every client, the final map, chart decorations, unlocks); ideas for him to pick from in
+  `docs/MECHANIC_IDEAS.md` (sea weather on chart nodes, objectives, Directions, Cardinals), scope untouched. Read
+  only; its PC checks (`docs/16` §9) can ride with the sea chart's C1-C7.
 - **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
