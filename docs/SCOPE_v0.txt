@@ -1,13 +1,13 @@
 | Rogue Wave Expansion |
-	# Roguelike Expansion Mod
-	# 4 New Vessels
-	# New Enemy Types + Modifiers
+	# Roguelike Expansion Mod / Ships as one mod pack, RogueWavesMod, with every part inside it and no load order \
+	# 4 New Vessels / Yossele, Spool, Argo, Uloe \
+	# New Enemy Types + Modifiers / Cursed and Berserk so far \
 	# New Mechanics
-	# New Roguelike Gamemode
-	# Online Compatibility
+	# New Roguelike Gamemode / The Rogue Wave mode \
+	# Online Compatibility / 2 to 4 players, the host runs the run, everyone needs the same pack version \
 	# Upgrade System [Direction]
-	# Streamlined Economy Changes
-	# New Cardinals
+	# Streamlined Economy Changes / Means aura sharing between players between tides, which is [Fund Transfer] \
+	# New Cardinals / A new Cardinal is a new run modifier \
 
 | Formatting |
 	[Name of Mechanic]
@@ -17,76 +17,123 @@
 	% Upgrade Idea
 	- Description
 	: Connector
+	! NEEDS SOMETHING ! / Information still missing that needs to be added \
+
+| Progress |
+	# Phase 1, research the game's code for the mode: done. Every piece of the mode has a known route, and the PC test round passed 13 of 13.
+	# Phase 2, pack layout and style sheet: done and approved. / docs/PACK.md and docs/STYLE.md \
+	# Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. Its work is merged. / PR #7 and PR #10 \
+	# Next: Yossele, then Spool, then Uloe, each one starting with a design to approve. Then enemies and modifiers, then the Rogue Wave mode, then content and release.
+	# Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
+	# Sonar is left out of every design for now.
+	# Every mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once. / Backed up in ClaudeProjects\handoff\mods_removed_20261008 \
 
 | Bug Fix |
 	Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
+	/ Fix is built into the pack's shared code and runs with Argo. Not yet seen working in game: play Boutman, let Boutbro spawn, die, then press F after respawn. \
 
 
 | Rogue Wave Mode |
-	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and complete 3 maps in a row with increasing difficulty and new modifiers / enemies that change with each run. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a run unlocks a harder difficulty modifier for future runs.
-	
+	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and complete 3 maps in a row with increasing difficulty and new modifiers / enemies that change with each run. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a run unlocks a harder difficulty modifier for future runs. Score does not count in this mode.
+	/ Ascension levels are named Swell 1, Swell 2, and so on, and are meant to carry over between sessions \
+	! NEEDS HOW MANY ASCENSION LEVELS THERE ARE AND WHAT EACH ONE ADDS !
+	! NEEDS WHAT MAKES MAP 2 AND MAP 3 HARDER THAN MAP 1 !
+	! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM RUN TO RUN !
+
 | Gameplay Rundown |
-	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. After all players are ready, the host then selects the option to begin the Rogue Wave, where each player is given a choice of new upgrades called [Direction]. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to a shopkeeper inbetween waves for [Cardinals] or [Directions]. After successfully reaching Tide 15, the map gives the players the option to leave. However, staying bonus tides allows the player to accumulate more [Pure Aura]. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues 2 more times of choosing a direction, playing the map, and escaping for a total of 3 maps with increasing difficulty. If the players are able to stay until the final tide on the final map, they succeed in their run and a new ascension level is unlocked.
+	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. After all players are ready, the host begins the Rogue Wave by equipping the mode's Cardinal in the lobby, and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to a shopkeeper inbetween waves for [Cardinals] or [Directions]. After successfully reaching Tide 15, the map gives the players the option to leave. However, staying bonus tides allows the player to accumulate more [Pure Aura]. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues 2 more times of choosing a direction, playing the map, and escaping for a total of 3 maps with increasing difficulty. If the players are able to stay until the final tide on the final map, they succeed in their run and a new ascension level is unlocked.
+	! NEEDS NAME FOR THE CARDINAL THAT STARTS A RUN !
+	! NEEDS WHICH BASE GAME MAPS CAN BE OFFERED IN THE VOTE FOR MAP 1, 2 AND 3 !
+	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS !
+	! NEEDS SHOPKEEPER: WHO OR WHAT IT IS, WHERE IT STANDS, WHAT IT SELLS AND FOR HOW MUCH !
+	! NEEDS HOW THE LEAVE CHOICE IS MADE AFTER TIDE 15 (ONE VOTE, MAJORITY, HOST ONLY) !
+	! NEEDS HOW MANY BONUS TIDES THERE ARE AND WHICH TIDE IS THE FINAL TIDE OF MAP 3 !
+	! NEEDS WHAT A FAILED RUN KEEPS, IF ANYTHING !
 
 
 | New Mechanics |
 	[Directions]
 		A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
+		- 3 are offered and 1 is picked before each map. More can be bought at the shop.
+		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
+		! NEEDS LIST OF DIRECTIONS FOR EACH VESSEL (ARGO, YOSSELE, SPOOL, ULOE) AND ANY THAT WORK FOR EVERY VESSEL !
+		! NEEDS DECISION: DO BASE GAME VESSELS GET THEIR OWN DIRECTIONS !
 
 	[Pure Aura]
 		A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
-	
+		- Shown as a pearl white counter on each player's vessel, a colour none of the base auras use.
+		! NEEDS HOW MUCH PURE AURA EACH TIDE AND EACH BONUS TIDE PAYS !
+
 	[Fund Transfer]
 		Players are able to send each other a limited amount of aura inbetween waves with the shopkeeper, allowing for more cooperative play and specialization into roles.
+		- This is the expansion's "Streamlined Economy Changes".
+		! NEEDS THE LIMIT: HOW MUCH CAN BE SENT, PER BREAK OR PER MAP !
+		! NEEDS WHICH AURA CAN BE SENT: BASE AURA, PURE AURA, OR BOTH !
 
 
 | New Vessels |
+	! NEEDS FULL SPRITE SHEET FOR YOSSELE, SPOOL AND ULOE: IDLE, MOVE, BACK VIEW, FALL, LAND, ATTACK / Each has one front facing concept frame so far, in sprites \ !
 
 	Yossele, The Patient Golem
-	# Keeping your towers alive grants bonuses to them, with a "growing defense" gameplay style. Scaling archetype
-	# Yossele is slightly more powerful statwise, which allows them to defend their base as their towers ramp up in effectiveness. / More health, damage, and health regen \
-	# Can gain fertilizer that allows Yossele to speed up growth of a tower.
-	# Gameplay loops plays around time management and slow growth, and keeping your important buildings safe.
-	
-	(Offense 1):{Mushroom Cannon}
-		# Slowly stacks spores on enemies, dealing DOT. Long range cannon
-		- Lobs long range spore bombs that deal AOE damage and stack spores
-		- DOT increases as spores stack
-		- As {Mushroom Cannon} experiences [Growth], its attack speed and explosion AOE increases.
-		- Full [Growth] causes spores to bounce once after landing, exploding twice.
-	(Offense 2):{Primordial Dandelion Tree} / Limit of 1 \
-		# Stacks dandelion seeds that burst down enemies that get close enough
-		- As {Primordial Dandelion Tree} experiences [Growth], its max amount of seeds and range increase. / Can only make 1, so limits for seeds and range are very high \
-		- Dandelion seeds float around tower, slowly stacking in quantity. Seeds target enemy all at once
-			% Can set seeds to 'hold' or 'strike', so you can stack them and use them on a tougher enemy instead of wasting on a weaker enemy
-			% Killing an enemy with a seed refunds a seed
-			% Stacks faster when you have lower seeds at the ready
-			% Dandelion Storm, final upgrade that greatly increases its range and spawn rate + quantity
-	(Defense):{Overgrown Stonehenge}
-		# Vines extends out with debuffing / buffing effects
-		- As {Overgrown Stonehenge} experiences [Growth], vines spread out further from source location.
-		- Defensive wall that spreads vines with tides
-		- Vines from wall can extend forward with debuffs
-			% Vines extend much further
-			% At the beginning of every tide, a weak vine wall spawns infront of the stonehenge if possible
-			% Vines heal buildings slowly
-			% Final upgrade creates a stonehenge portal that massively spreads its vines everywhere
-	(Economy):{Pachira Sapling} / Money Tree Sapling \
-		# Economy sapling that mines nodes through its roots
-		- As {Pachira Sapling} experiences [Growth], its mining speed and range increase.
-		- Full [Growth] drops aura fruits on the ground that can be picked up for aura.
-		- Collects every aura node in a range through its roots / Similar to Sno Sno \
-			% Collects aura much faster, but can only select 1 node
-			% Aura fruit's aura color can be selected
-	
+		# Keeping your towers alive grants bonuses to them, with a "growing defense" gameplay style. Scaling archetype
+		# Yossele is slightly more powerful statwise, which allows them to defend their base as their towers ramp up in effectiveness. / More health, damage, and health regen \
+		# Can gain fertilizer that allows Yossele to speed up growth of a tower.
+		# Gameplay loops plays around time management and slow growth, and keeping your important buildings safe.
+		# Look: round clay head with a see-through hole, a two-leaf sprout, glowing green eyes, four long root-like limbs. Towers carry round holes and root feet, and each [Growth] stage adds leaves or sprouts.
+		# Status: concept page done. Next up after Argo. / Difficulty default: Intermediate \
+		! NEEDS YOSSELE'S ATTACK (MELEE OR RANGED), ABILITY OR NONE, AND LORE !
+		! NEEDS HOW [GROWTH] WORKS: TIME ALIVE OR TIDES SURVIVED, AND WHAT RESETS IT !
+		! NEEDS HOW FERTILIZER IS EARNED !
+		! NEEDS WHAT THE HOLE IN YOSSELE'S HEAD MEANS, IF ANYTHING !
+
+		(Offense 1):{Mushroom Cannon}
+			# Slowly stacks spores on enemies, dealing DOT. Long range cannon
+			- Lobs long range spore bombs that deal AOE damage and stack spores
+			- DOT increases as spores stack
+			- As {Mushroom Cannon} experiences [Growth], its attack speed and explosion AOE increases.
+			- Full [Growth] causes spores to bounce once after landing, exploding twice.
+			! NEEDS UPGRADE IDEAS !
+		(Offense 2):{Primordial Dandelion Tree} / Limit of 1 \
+			# Stacks dandelion seeds that burst down enemies that get close enough
+			- As {Primordial Dandelion Tree} experiences [Growth], its max amount of seeds and range increase. / Can only make 1, so limits for seeds and range are very high \
+			- Dandelion seeds float around tower, slowly stacking in quantity. Seeds target enemy all at once
+				% Can set seeds to 'hold' or 'strike', so you can stack them and use them on a tougher enemy instead of wasting on a weaker enemy
+				% Killing an enemy with a seed refunds a seed
+				% Stacks faster when you have lower seeds at the ready
+				% Dandelion Storm, final upgrade that greatly increases its range and spawn rate + quantity
+		(Defense):{Overgrown Stonehenge}
+			# Vines extends out with debuffing / buffing effects
+			- As {Overgrown Stonehenge} experiences [Growth], vines spread out further from source location.
+			- Defensive wall that spreads vines with tides
+			- Vines from wall can extend forward with debuffs
+				% Vines extend much further
+				% At the beginning of every tide, a weak vine wall spawns infront of the stonehenge if possible
+				% Vines heal buildings slowly
+				% Final upgrade creates a stonehenge portal that massively spreads its vines everywhere
+			! NEEDS WHICH DEBUFFS AND BUFFS THE VINES GIVE !
+		(Economy):{Pachira Sapling} / Money Tree Sapling \
+			# Economy sapling that mines nodes through its roots
+			- As {Pachira Sapling} experiences [Growth], its mining speed and range increase.
+			- Full [Growth] drops aura fruits on the ground that can be picked up for aura.
+			- Collects every aura node in a range through its roots / Similar to Sno Sno \
+				% Collects aura much faster, but can only select 1 node
+				% Aura fruit's aura color can be selected
+			! NEEDS WHO CAN PICK UP AURA FRUIT: ONLY YOSSELE, ANY VESSEL, OR MINIONS TOO !
+
 	Spool, Crafty Crafted Crafter
 		# Commands a disposable minion army
 		# Uses a [Thread] currency system, where units are crafted using [Thread] dropped from enemies or mined from nodes. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets \
 		# Minions are able to be directed upon spawn. Have some minions be thread gatherers and some minions be attackers.
 		# Can be very mobile depending on skill level, maybe add an upgrade that allows {Crafted} to follow them around?
-		
+		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a tail with a white tip. Towers carry stitches, pins and tins.
+		# Status: concept page done. Comes after Yossele. / Difficulty default: Advanced \
+		! NEEDS SPOOL'S ATTACK (MELEE OR RANGED), ABILITY OR NONE, AND LORE !
+		! NEEDS DECISION: CAN {CRAFTED} FOLLOW SPOOL, IN OR OUT !
+		! NEEDS DECISION: KEEP THE NAMES LOOM AND THREAD / Mummer already has a Loom and a Thread that work differently \ !
+
 		(Minion):{Crafted}
 			# Refers to units spawned by {Repurposed Cookie Tin}, {Loom}, and {Pin Cushion}
+			! NEEDS LIST OF CRAFTED TYPES AND WHAT EACH COSTS IN THREAD !
 		(Tower 1):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
 			# Main source of damage, versatile in that you can create a disposable army or a stronger but smaller strike team
 			- Similar to garages, sends multiple {Crafted} to run down lane until they land at targeted location where they then idle until seeing an enemy.
@@ -98,55 +145,69 @@
 		(Support):{Thread Head}
 			# Controller minion, manages thread throughout towers. Can use thread for buffs, or for creating {Crafted}
 			- Single larger minion, more controllable / Think Fie's soldiers level of controllability or Boutman's Fish \
-			- Buffs minions nearby, also can collect thread from slain enemies nearby. 
+			- Buffs minions nearby, also can collect thread from slain enemies nearby.
 			- Once it's at max thread capacity, can return to {Repurposed Cookie Tin} to resupply thread.
 			- Can be used as either a buffer or a thread porter.
 				% Collects thread from fallen minions as well as fallen enemies
 				% Can use thread to heal allies / towers
+			! NEEDS DECISION: IS {THREAD HEAD} A BUILDING THAT MAKES ONE MINION, OR A MINION MADE BY ANOTHER BUILDING / Spool needs 4 buildings \ !
 		(Defense):{Pin Cushion}
 			- Wall that reflects damage done by melee units
 			- When damaged, spins thread and potentially {Crafted} depending on player choices.
 			- {Crafted} can either spec into being tankier, or more aggressive
-					% Reflects more damage using pins, then eventually reflects ranged damage
-					% Spreads damage taken over time / Take half damage now, half damage later. Doubles thread creation and allows for heals to heal though some damage. \
+				% Reflects more damage using pins, then eventually reflects ranged damage
+				% Spreads damage taken over time / Take half damage now, half damage later. Doubles thread creation and allows for heals to heal though some damage. \
 		(Economy):{Loom}
 			- Connects to nodes to mine aura
 			- Spins thread for {Thread Head} to port to {Repurposed Cookie Tin}, or for support uses.
 				% Can directly connect to {Repurposed Cookie Tin}.
 				% Creates {Crafted} that can attack nearby nodes, and can also defend nearby from enemies.
-		
+
 	Argo, Deep Sea Diver
 		# Immobilization and Slows
 		# Has no dedicated wall for defenses, and relies on crowd control to control the battlefield
 		# Harpoon Gun is offensive mixed with crowd control / pulling in or pinning back \
 		# Drill rig is economy mixed with crowd control / Slowing designated areas \
-		
+		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. / No sonar \
+		# Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Ships only inside the Rogue Waves pack. / Difficulty: Intermediate \
+		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
+		! NEEDS ARGO'S DIRECTIONS !
+
 		(Offense 1):{Scatter Cannon}
-			- Shoots close range blasts that are effective against hordes
-			- Deals bonus damage to enemies affected by debuffs
-				% Increases health greatly
+			- Shoots close range blasts that are effective against hordes / Cone of 6 pellets \
+			- Deals bonus damage to enemies affected by debuffs / +50% to slowed or pinned enemies \
+				% Increases health greatly / Ironclad \
 		(Offense 2):{Harpoon Gun}
-			- Can spec into long range pure damage, or crowd control
+			- Can spec into long range pure damage, or crowd control / Base harpoon pierces a lane and does not pull \
 			- Pin or Reel depending on upgrade path / Pinning against wall stuns \
-		
+				% Damage path: Long Line, Skewer, Whaler, Leviathan Lance
+				% Crowd control path: Tether slows, Anchor Line pins and stuns beside a building, Reel pulls in, Undertow reels every enemy around the target
+
 		(Trap):{Deep Water}
-			- Slowing trap that can combine with harpoon gun or drill rig
-			- Can be extended like Fie's wall
-		
+			- Slowing trap that can combine with harpoon gun or drill rig / A pinned enemy in Deep Water is held twice as long. A tremor touching a pool spreads through every connected pool \
+			- Can be extended like Fie's wall / FLOOD adds a pool next to it \
+				% Stronger slow, damage over time, catch enemies on entering, more damage taken
+				% Trench, final upgrade that spreads the water each tide and drags enemies under
+
 		(Economy/Defense):{Drill Rig}
-			- Mines ore while also creating slowing tremors in targeted location. Tremor size increases per tide.
-				% Pinning enemies to tremors cause them to take damage over time
-				% Pulling enemies through tremors cause them to take large burst damage
-		
+			- Mines ore while also creating slowing tremors in targeted location. Tremor size increases per tide. / AIM picks where the tremor goes. Each tide sinks a Fathom, up to 5 \
+				% Pinning enemies to tremors cause them to take damage over time / Bedrock \
+				% Pulling enemies through tremors cause them to take large burst damage / Fault Line \
+
 		(Support):{Miner's Base} / Works similar to Boutman's bouthouse with a limit of 1 \
 			- Summons 2 units / Port & Starboard \ that tune towers, repairing and enhancing them. / Can only enhance towers, not traps \
-	
+
 	Uloe, Light Personified
 		# Uses {Light} as a mechanic
 		# Uses wandering minions named {Photons}, similar to Sno Sno, that interact with towers.
 		# {Photons} can illuminate enemies, increasing their damage taken. Can also blind enemies to reduce their damage.
 		# Towers have increased effects based on how much light they're receiving. {Photons} and Uloe provide light around them.
-		
+		# Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow rays at the sides, a cord to a plug. Towers carry glass, screw rings and cords.
+		# Status: concept page done. Comes last; a check that the game can measure light comes before its design. / Difficulty default: Advanced \
+		! NEEDS ULOE'S ATTACK (DOES ULOE ATTACK AT ALL), ABILITY OR NONE, AND LORE !
+		! NEEDS WHAT THE YELLOW STROKES ARE: LIGHT RAYS OR FLOATING ARMS !
+		! NEEDS WHETHER ULOE'S OWN PLUG AND CORD DO ANYTHING !
+
 		(Minions):{Photons}
 			# Refers to minion units
 		(Offense):{Magnifying Glass}
@@ -158,15 +219,25 @@
 			- {Photons} wander around aimlessly where they spawn, but will follow light paths from {Flood Light}s if they're being directed.
 			- Can attack enemies for very little damage, but apply illumination and blinding.
 				% Photons explode on death, dealing damage and applying blind + illumination
-		(Defense):{}
+		(Defense):{Mirror}
 			- Wall that can be empowered by {Light} to blind enemies, reducing their damage.
+			! NEEDS UPGRADE IDEAS !
 		(Economy):{Flood Light}
 			- Plugs into nodes and provides light. Can be directed towards towers to focus their light benefits.
 				% Grants light in a radius around itself. Can no longer be directed.
 				% Allows to redirect its light in a straight line towards towers.
+
+| New Cardinals |
+	# A new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals.
+	# Found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
+	# Bought from the shopkeeper with [Pure Aura]
+	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
+	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
 
 | New Enemy Modifiers |
 	[Cursed]
 		# Reduces the attack of all nearby Towers and Units
 	[Berserk]
 		# Damage and speed increases as health lowers
+	! NEEDS NEW ENEMY TYPES, OR CONFIRM THE EXPANSION ONLY ADDS THESE MODIFIERS !
+	! NEEDS DECISION: SHOW MODIFIERS AS AN EFFECT ON THE ENEMY, OR A NEW SKIN FOR EVERY ENEMY !
