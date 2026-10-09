@@ -265,7 +265,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   50 x tide per break (default: the coming tide, so 50 before Tide 1). Pure Aura 3 a tide (default: 4 a bonus tide).
   Leave by **majority**; **bonus tides never end** until that vote; a failed campaign keeps nothing; 3 retries; every
   base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Swell levels (still on hold).
-  Model Lighthouse kept as a name; the main-menu button stays the start rule unless Dimitri says otherwise.
+  Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
 
 ### Open questions
 
