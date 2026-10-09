@@ -185,8 +185,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **Done:** Phases 1 and 2 (2026-10-08). **Phase 3 Argo** (2026-10-08): steps 1-5; PC round 6 **139 pass, 0 fail**,
-  Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) is installed on the PC; lessons in kit `docs/09` #72-76. Work
-  is on `claude/project-thread-f7fmvc` (draft PR #7 into #3's branch). No release: Argo ships in the pack.
+  Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) was installed on the PC; lessons in kit `docs/09` #72-76. Work is
+  merged into #3's branch (PR #7, PR #10). No release: Argo ships in the pack.
+- **Also done:** `docs/SCOPE_v0.txt` (the user's roguewave.txt) rewritten in its own format with the current state;
+  every item only the user can supply is marked `! NEEDS ... !` there (2026-10-08, branch
+  `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`. The game's `TDS\Mods` folder
+  was emptied at the user's ask (the pack will carry everything); the 7 mods sit in the PC's
+  `ClaudeProjects\handoff\mods_removed_20261008`, so the playable Argo is no longer installed.
 - **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` answered from the decompiled game (kit
   `docs/15` §14) and RogueLab round 2 on the PC (15 pass, 1 fail; kit `docs/15` §15): 14 of 18 items answered.
   RogueLab 0.3.0 built for the rest (handoff `RogueLab_round3`, compile-checked).
@@ -225,8 +230,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pack vessel; minions keep the `Hero` tag (`docs/15` §9).
 - 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
   leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
-  map, `docs/15` §6). **A run starts when the host equips a "Rogue Wave" Cardinal in the lobby** (RogueLab tests the
-  colour slot, which checks the name; the Mixed slot takes any string). **The §11 PC round is approved.**
+  map, `docs/15` §6). **A run starts when the host equips the mode's Cardinal in the lobby**; it is not named yet,
+  since "Rogue Wave" is the expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed
+  slot takes any string. **The §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
 - 2026-10-08 (user, Phase 2 gate): **one `RogueWavesMod` bundle** with a `Default` prefab per part (mode, foes, each
