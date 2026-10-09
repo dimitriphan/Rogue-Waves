@@ -200,6 +200,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Blocked:** round 3 waits on Dimitri's OK for the PC session.
 - **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); Dimitri
   adopted it; its probes M1-M7 join the next RogueLab round.
+- **Also (2026-10-09 evening):** Dimitri's roguewaveWIP.txt answers folded into `docs/SCOPE_v0.txt` (PR #15: VENDCINT,
+  Fund Transfer limits, vote rules, vessel abilities, Crafted types, Aging and Dazzling, an optional-objective
+  template). Every new mechanic checked (`docs/MECHANICS_CHECK.md`, kit `docs/15` §16): all go; eight need the game.
+  RogueLab 0.4.0 (round 4, compiled here) runs them with M1-M5 and M7 in one solo launch; handoff `RogueLab_round4`.
+  Round 4 ran: 11 pass, 5 fail, 1 setup; VENDCINT's ownership and fall-in, Fund Transfer's moves, a minion's owner
+  and kill tracking are proven; the failures were probe bugs. Round 5 (0.4.1): 20 pass, 2 fail; every
+  mechanic is now proven in game (`docs/MECHANICS_CHECK.md` §3). M1 and M4 of the main-menu button failed on probe
+  bugs. Round 6 (0.4.2): **22 pass, 0 fail**; the main-menu button's probes passed too. Left by hand: how the button
+  looks beside Play (the automated run never shows the Main menu). RogueLab is out of the Mods folder.
 
 ### Decisions
 
@@ -255,6 +264,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
 - 2026-10-09 (user): **a campaign starts from a Rogue Wave button on the main menu** (New / Continue), which takes the
   host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
+- 2026-10-09 (user, roguewaveWIP.txt): shopkeeper **VENDCINT** drops in near the vessels' spawn each break and leaves at
+  its end; sells Cardinals and **only the next rank of Directions a vessel holds**. **Fund Transfer: base aura only**,
+  50 x the coming tide per break (50 before Tide 1). Pure Aura 3 a tide, **2 a bonus tide** (both confirmed 19:47Z).
+  Leave by **majority**; **bonus tides never end** until that vote; a failed campaign keeps nothing; 3 retries; every
+  base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Swell levels (still on hold).
+  Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
 
 ### Open questions
 

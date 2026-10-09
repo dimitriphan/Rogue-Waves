@@ -87,6 +87,28 @@ Solo, automated, one launch (RogueLab's driver already embarks and starts a matc
 | M6 | Back to the main menu, then the stock Play | flag cleared, the boat keeps the stock mode on a picked node |
 | M7 | Dump `Blm_Multiplayer.Instance`: `Joinablescenes`, `Client_Canjoin`, `Clientjoinscene`, `Serverclosescene`, `Maxplayers`, lobby id after the boat opens | logged (data, not in code) |
 
+**Round 4 (PC, 2026-10-09):** M7 logged `Joinablescenes` [Setup, Mainmenu, Mainmenudemo, Setupdemo],
+`Client_Canjoin` 0, `Clientjoinscene` Joining, `Serverclosescene` Mainmenu, `Maxplayers` 4. M1-M4 never ran: the probe
+waited for the Main menu's `Active` flag, which stayed false for 20 s on the title screen, so it embarked with the
+stock Play. M5: the boat took `Mode_RogueLab` with the Setup panel open, but `Artifact_RogueLab` was still equipped from
+rounds 1-3's save, and the type line read the map's own (RogueLab doesn't rewrite it; Riptide's does). Round 5
+(RogueLab 0.4.1) waits for the menu's items instead and unequips the leftover first.
+
+**Round 5 (PC, 2026-10-09):** M2 passed (the clone's click ran the mod's handler, not Play). M3 passed (three cards on
+the main menu, `RogueLab_New` picked by the mod). M5 passed (the boat took `Mode_RogueLab` and Gameplan
+`RogueLab_3B_Thehunt` with no mode Cardinal). M1 failed only on "active": the clone was built and registered beside
+Play (rect 0,-83, under `Buttons`, which has no layout group) while the Main menu was still hidden behind the title
+screen (`Active` false for the whole run). M4 failed because the probe itself threw after M3 (it read a finished
+`UniTask`'s `Status`), so the flag was never set. Round 6 (RogueLab 0.4.2) fixes both and logs M4b, whether the
+button shows beside Play once the Main menu is up.
+
+**Round 6 (PC, 2026-10-09): 22 pass, 0 fail.** M1-M5 and M7 passed: the clone is built, registered and shown whenever
+Play is; its click runs the mod's handler, not Play; the New / Continue / Back dialog works on the main menu; the flag
+reaches the boat; the boat takes the mod's mode with no Cardinal. M4b: the Main menu never showed during the
+automated run (`Active` false, Play and the clone both hidden, the title screen still up), so whether the button
+**looks** right beside Play is left to Dimitri's by-hand look below. M6 (back to the menu, then the stock Play) was not
+run.
+
 By hand, by Dimitri: look at the button on the main menu (placement, hover tip, gamepad focus). **Online evening**
 (already planned, `docs/RESEARCH_GAPS.md`): a friend with the pack joins by invite after step 4, sees the panel and the
 ROGUE WAVE line, readies, and both load map 1. No PC session is started for this until Dimitri asks.

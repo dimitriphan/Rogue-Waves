@@ -1,7 +1,7 @@
 | Rogue Wave Expansion |
 	# Roguelike Expansion Mod / Ships as one mod pack, RogueWavesMod, with every part inside it and no load order \
 	# 4 New Vessels / Yossele, Spool, Argo, Uloe \
-	# New Enemy Types + Modifiers / Cursed and Berserk so far \
+	# New Enemy Types + Modifiers / Modifiers Cursed, Berserk, Aging and Dazzling so far; new enemy types come later \
 	# New Mechanics
 	# New Roguelike Gamemode / The Rogue Wave mode \
 	# Online Compatibility / 2 to 4 players, the host runs the run, everyone needs the same pack version \
@@ -18,6 +18,7 @@
 	- Description
 	: Connector
 	! NEEDS SOMETHING ! / Information still missing that needs to be added \
+	< Answer > / Your answer after a NEEDS line. Claude folds it into the file in the format above \
 
 | Progress |
 	# Phase 1, research the game's code for the mode: done. Every piece of the mode has a known route, and the PC test round passed 13 of 13.
@@ -27,6 +28,7 @@
 	# Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
 	# Sonar is left out of every design for now.
 	# Every mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once. / Backed up in ClaudeProjects\handoff\mods_removed_20261008 \
+	# 2026-10-09: your answers from roguewaveWIP.txt are folded in below. Every new mechanic was checked against the game's code; the ones only the game can answer go to a PC test round. / docs/MECHANICS_CHECK.md \
 
 | Bug Fix |
 	Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
@@ -36,58 +38,69 @@
 | Rogue Wave Mode |
 	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 15 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
 	/ Ascension levels are named Swell 1, Swell 2, and so on, and are meant to carry over between sessions \
-	/ Swell is on hold until the core gameplay loop is settled (2026-10-09) \
-	! NEEDS HOW MANY ASCENSION LEVELS THERE ARE AND WHAT EACH ONE ADDS !
-	! NEEDS WHAT MAKES EACH MAP HARDER THAN THE ONE BEFORE !
+	# 5 Swell levels. Each one adds a new enemy modifier and lowers aura gain.
+	/ Swell's design still waits until the core gameplay loop is settled (2026-10-09) \
+	# Each map is harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health.
 	! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
 	# Losing a map uses one of a limited number of retries: the team replays that map from the last save. With no retries left, a lost map ends the campaign. Quitting during a map counts as losing it.
-	! NEEDS HOW MANY RETRIES A CAMPAIGN GETS / Default 3 until decided \ !
+	# A campaign gets 3 retries.
 
 | Gameplay Rundown |
-	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. The host starts a campaign from the Rogue Wave button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there. After all players are ready, the Rogue Wave begins and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to a shopkeeper inbetween waves for [Cardinals] or [Directions]. After successfully reaching Tide 15, the map gives the players the option to leave. However, staying bonus tides allows the player to accumulate more [Pure Aura]. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 15 maps with increasing difficulty. Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again with Continue on the main menu's Rogue Wave button each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. If the players are able to stay until the final tide on the final map, they complete the campaign and a new ascension level is unlocked.
-	! NEEDS WHICH BASE GAME MAPS CAN BE OFFERED IN THE VOTE FOR EACH OF THE 15 MAPS !
-	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS !
-	! NEEDS SHOPKEEPER: WHO OR WHAT IT IS, WHERE IT STANDS, WHAT IT SELLS AND FOR HOW MUCH !
-	! NEEDS HOW THE LEAVE CHOICE IS MADE AFTER TIDE 15 (ONE VOTE, MAJORITY, HOST ONLY) !
-	! NEEDS HOW MANY BONUS TIDES THERE ARE AND WHICH TIDE IS THE FINAL TIDE OF MAP 15 !
-	! NEEDS WHAT A FAILED CAMPAIGN KEEPS, IF ANYTHING !
+	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. The host starts a campaign from the Rogue Wave button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there. After all players are ready, the Rogue Wave begins and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to the shopkeeper {VENDCINT} inbetween waves for [Cardinals] or ranks of [Directions] they already hold. After successfully reaching Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to. However, staying bonus tides allows the player to accumulate more [Pure Aura], and bonus tides go on, each one harder, until a majority votes to leave. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 15 maps with increasing difficulty. Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again with Continue on the main menu's Rogue Wave button each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. If the players clear Tide 15 on the final map and leave it, they complete the campaign and a new ascension level is unlocked. A failed campaign keeps nothing.
+	/ Model Lighthouse, your name for the old start Cardinal, is kept for a later Cardinal or item \
+	# Every base game map can be offered in the vote. / Never the custom map slot, which hangs while loading \
+	# Leaving after Tide 15 is a majority vote, taken between tides.
+	# Bonus tides have no limit. They go on, each one harder, until a majority votes to leave. Map 15 ends the same way, so the campaign is won by leaving map 15 after Tide 15 or later.
+	# A failed campaign keeps nothing.
+	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS / Use the New Optional Objective template at the bottom of this file \ !
 
 
 | New Mechanics |
 	[Directions]
 		A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
-		- 3 are offered and 1 is picked before each map. More can be bought at the shop.
+		- 3 are offered and 1 is picked before each map. The shop sells only the next rank of a Direction the vessel already holds.
 		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 10 for every vessel and 6 per new vessel last a 15-map campaign \
 		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
-		! NEEDS LIST OF DIRECTIONS FOR EACH VESSEL (ARGO, YOSSELE, SPOOL, ULOE) AND ANY THAT WORK FOR EVERY VESSEL !
-		! NEEDS DECISION: DO BASE GAME VESSELS GET THEIR OWN DIRECTIONS !
+		- Each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign.
+		/ Use the New Direction template at the bottom of this file to add one \
+		/ The list of Directions for each vessel lives in Directions by Vessel at the bottom \
+		- Base game vessels get their own Directions too, besides the Any ones.
 
 	[Pure Aura]
 		A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
 		- Shown as a pearl white counter on each player's vessel, a colour none of the base auras use.
-		! NEEDS HOW MUCH PURE AURA EACH TIDE AND EACH BONUS TIDE PAYS !
+		- Every tide pays 3 [Pure Aura]. A bonus tide pays 2.
 
 	[Fund Transfer]
-		Players are able to send each other a limited amount of aura inbetween waves with the shopkeeper, allowing for more cooperative play and specialization into roles.
+		Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
 		- This is the expansion's "Streamlined Economy Changes".
-		! NEEDS THE LIMIT: HOW MUCH CAN BE SENT, PER BREAK OR PER MAP !
-		! NEEDS WHICH AURA CAN BE SENT: BASE AURA, PURE AURA, OR BOTH !
+		- Only base aura can be sent, never [Pure Aura].
+		- Each player can send up to 50 times the coming tide's number per break, in any mix of colours: 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue).
+
+	[Shopkeeper]
+		{VENDCINT} / A sentient vending machine \
+		- A unit that falls from the sky near the vessels' spawn point at the start of every break between tides, the way the vessels land.
+		- At the end of the break it jumps into the sky and disappears.
+		- Sells [Cardinals], and the next rank of [Directions] the vessel already holds, for [Pure Aura]. [Fund Transfer] is done at it too.
+		! NEEDS PRICES FOR DIRECTION RANKS / A Cardinal's price is on its own template \ !
 
 
 | New Vessels |
-	! NEEDS FULL SPRITE SHEET FOR YOSSELE, SPOOL AND ULOE: IDLE, MOVE, BACK VIEW, FALL, LAND, ATTACK / Each has one front facing concept frame so far, in sprites \ !
+	# Full sprite sheets for Yossele, Spool and Uloe (idle, move, back view, fall, land, attack) come once each vessel's design is past drafting. / Each has one front facing concept frame so far, in sprites \
 
 	Yossele, The Patient Golem
 		# Keeping your towers alive grants bonuses to them, with a "growing defense" gameplay style. Scaling archetype
 		# Yossele is slightly more powerful statwise, which allows them to defend their base as their towers ramp up in effectiveness. / More health, damage, and health regen \
-		# Can gain fertilizer that allows Yossele to speed up growth of a tower.
+		# Can gain fertilizer that allows Yossele to speed up growth of a tower. Fertilizer is only unlocked if a [Direction] is picked that includes it.
 		# Gameplay loops plays around time management and slow growth, and keeping your important buildings safe.
-		# Look: round clay head with a see-through hole, a two-leaf sprout, glowing green eyes, four long root-like limbs. Towers carry round holes and root feet, and each [Growth] stage adds leaves or sprouts.
+		# Look: round clay head with a see-through hole for a mouth, a two-leaf sprout, glowing green eyes, four long root-like limbs. Towers carry round holes and root feet, and each [Growth] stage adds leaves or sprouts.
 		# Status: concept page done. Next up after Argo. / Difficulty default: Intermediate \
-		! NEEDS YOSSELE'S ATTACK (MELEE OR RANGED), ABILITY OR NONE, AND LORE !
-		! NEEDS HOW [GROWTH] WORKS: TIME ALIVE OR TIDES SURVIVED, AND WHAT RESETS IT !
-		! NEEDS HOW FERTILIZER IS EARNED !
-		! NEEDS WHAT THE HOLE IN YOSSELE'S HEAD MEANS, IF ANYTHING !
+		# Attack: melee.
+		# Ability: {Fertilize}, which spends fertilizer to speed up a tower's [Growth]. It is unlocked by a [Direction], and its button doesn't show until Yossele has it.
+		# [Growth] rises with each tide a tower survives, and resets if the tower is destroyed.
+		# Fertilizer is earned through the requirements of Yossele's own [Directions]. / Compost Bin, at the bottom, is the first \
+		# The hole in Yossele's head is their mouth.
+		/ Lore comes once every character is fully realized \
 
 		(Offense 1):{Mushroom Cannon}
 			# Slowly stacks spores on enemies, dealing DOT. Long range cannon
@@ -95,7 +108,9 @@
 			- DOT increases as spores stack
 			- As {Mushroom Cannon} experiences [Growth], its attack speed and explosion AOE increases.
 			- Full [Growth] causes spores to bounce once after landing, exploding twice.
-			! NEEDS UPGRADE IDEAS !
+				% Increases damage over time effect from spores, but reduces maximum amount of stacks.
+				% Reaching max stacks of spores slows enemies by a percentage.
+				% Enemies that die with max stacks of spores have a chance to explode with a spore bomb.
 		(Offense 2):{Primordial Dandelion Tree} / Limit of 1 \
 			# Stacks dandelion seeds that burst down enemies that get close enough
 			- As {Primordial Dandelion Tree} experiences [Growth], its max amount of seeds and range increase. / Can only make 1, so limits for seeds and range are very high \
@@ -113,7 +128,8 @@
 				% At the beginning of every tide, a weak vine wall spawns infront of the stonehenge if possible
 				% Vines heal buildings slowly
 				% Final upgrade creates a stonehenge portal that massively spreads its vines everywhere
-			! NEEDS WHICH DEBUFFS AND BUFFS THE VINES GIVE !
+			- Vines siphon health from enemies standing on them, slowly healing {Overgrown Stonehenge}.
+			- Vines can also heal buildings if its upgrade path leads to that specialization.
 		(Economy):{Pachira Sapling} / Money Tree Sapling \
 			# Economy sapling that mines nodes through its roots
 			- As {Pachira Sapling} experiences [Growth], its mining speed and range increase.
@@ -121,31 +137,37 @@
 			- Collects every aura node in a range through its roots / Similar to Sno Sno \
 				% Collects aura much faster, but can only select 1 node
 				% Aura fruit's aura color can be selected
-			! NEEDS WHO CAN PICK UP AURA FRUIT: ONLY YOSSELE, ANY VESSEL, OR MINIONS TOO !
+			- Any vessel or minion can pick up aura fruit.
 
 	Spool, Crafty Crafted Crafter
 		# Commands a disposable minion army
 		# Uses a [Thread] currency system, where units are crafted using [Thread] dropped from enemies or mined from nodes. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets \
 		# Minions are able to be directed upon spawn. Have some minions be thread gatherers and some minions be attackers.
-		# Can be very mobile depending on skill level, maybe add an upgrade that allows {Crafted} to follow them around?
-		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a tail with a white tip. Towers carry stitches, pins and tins.
+		# Can be very mobile depending on skill level. {Crafted} never follow Spool.
+		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \. Towers carry stitches, pins and tins.
 		# Status: concept page done. Comes after Yossele. / Difficulty default: Advanced \
-		! NEEDS SPOOL'S ATTACK (MELEE OR RANGED), ABILITY OR NONE, AND LORE !
-		! NEEDS DECISION: CAN {CRAFTED} FOLLOW SPOOL, IN OR OUT !
-		! NEEDS DECISION: KEEP THE NAMES LOOM AND THREAD / Mummer already has a Loom and a Thread that work differently \ !
+		# Attack: melee.
+		# Ability: {Unthread}, which removes one of Spool's minions and refunds a portion of the [Thread] it cost.
+		# Keeps the names {Loom} and [Thread]: Mummer was a prototype version of Spool.
+		# 3 buildings. {Thread Head} is a minion, and takes the fourth place the way Boutman's fish do.
+		/ Lore comes once the vessel is finalized \
 
 		(Minion):{Crafted}
 			# Refers to units spawned by {Repurposed Cookie Tin}, {Loom}, and {Pin Cushion}
-			! NEEDS LIST OF CRAFTED TYPES AND WHAT EACH COSTS IN THREAD !
+			- {Stitched}: melee, from {Repurposed Cookie Tin}.
+			- {Dart}: ranged, from {Repurposed Cookie Tin}.
+			- {Seam}: melee, weaker than a {Stitched}, mines nodes for aura. From {Loom} once upgraded.
+			- {Mangled}: melee, made by {Pin Cushion} when it is attacked, if upgraded down that path. Specializes into explosive suicidal units, or tanky blockers that jump forward to take damage.
+			! NEEDS WHAT EACH CRAFTED COSTS IN THREAD !
 		(Tower 1):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
 			# Main source of damage, versatile in that you can create a disposable army or a stronger but smaller strike team
 			- Similar to garages, sends multiple {Crafted} to run down lane until they land at targeted location where they then idle until seeing an enemy.
 			- Different upgrade paths stem from one building / Similar to Boutman's fish \
 			- Buildings and upgrades cost aura, but minions cost thread.
-			- Not very smart, once they're set to a location they stay there until death. Can manually unthread by [Spool].
+			- Not very smart, once they're set to a location they stay there until death. Can manually be {Unthread} by [Spool].
 				% Aggressive and cheaper melee minions, or squishy but expensive ranged minions
 				% Can detonate themselves on death, creating an AOE explosion
-		(Support):{Thread Head}
+		(Minion):{Thread Head} / Works like Boutman's fish \
 			# Controller minion, manages thread throughout towers. Can use thread for buffs, or for creating {Crafted}
 			- Single larger minion, more controllable / Think Fie's soldiers level of controllability or Boutman's Fish \
 			- Buffs minions nearby, also can collect thread from slain enemies nearby.
@@ -153,18 +175,17 @@
 			- Can be used as either a buffer or a thread porter.
 				% Collects thread from fallen minions as well as fallen enemies
 				% Can use thread to heal allies / towers
-			! NEEDS DECISION: IS {THREAD HEAD} A BUILDING THAT MAKES ONE MINION, OR A MINION MADE BY ANOTHER BUILDING / Spool needs 4 buildings \ !
 		(Defense):{Pin Cushion}
 			- Wall that reflects damage done by melee units
-			- When damaged, spins thread and potentially {Crafted} depending on player choices.
-			- {Crafted} can either spec into being tankier, or more aggressive
+			- When damaged, spins thread and potentially {Mangled} depending on player choices.
+			- {Mangled} can either spec into being tankier, or more aggressive suicidal bombers.
 				% Reflects more damage using pins, then eventually reflects ranged damage
 				% Spreads damage taken over time / Take half damage now, half damage later. Doubles thread creation and allows for heals to heal though some damage. \
 		(Economy):{Loom}
 			- Connects to nodes to mine aura
 			- Spins thread for {Thread Head} to port to {Repurposed Cookie Tin}, or for support uses.
 				% Can directly connect to {Repurposed Cookie Tin}.
-				% Creates {Crafted} that can attack nearby nodes, and can also defend nearby from enemies.
+				% Creates {Seams} that can attack nearby nodes, and can also defend nearby from enemies.
 
 	Argo, Deep Sea Diver
 		# Immobilization and Slows
@@ -174,7 +195,7 @@
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. / No sonar \
 		# Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Ships only inside the Rogue Waves pack. / Difficulty: Intermediate \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
-		! NEEDS ARGO'S DIRECTIONS !
+		/ Argo's Directions go in the Directions by Vessel list at the bottom \
 
 		(Offense 1):{Scatter Cannon}
 			- Shoots close range blasts that are effective against hordes / Cone of 6 pellets \
@@ -203,13 +224,15 @@
 	Uloe, Light Personified
 		# Uses {Light} as a mechanic
 		# Uses wandering minions named {Photons}, similar to Sno Sno, that interact with towers.
-		# {Photons} can illuminate enemies, increasing their damage taken. Can also blind enemies to reduce their damage.
+		# {Photons} can {Illuminate} enemies, increasing their damage taken. Can also {Blind} enemies, reducing their damage. {Illuminate} and {Blind} have different levels of strength depending on its source.
 		# Towers have increased effects based on how much light they're receiving. {Photons} and Uloe provide light around them.
-		# Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow rays at the sides, a cord to a plug. Towers carry glass, screw rings and cords.
+		# Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms made of electricity at the sides, a cord to a plug. Towers carry glass, screw rings and cords.
 		# Status: concept page done. Comes last; a check that the game can measure light comes before its design. / Difficulty default: Advanced \
-		! NEEDS ULOE'S ATTACK (DOES ULOE ATTACK AT ALL), ABILITY OR NONE, AND LORE !
-		! NEEDS WHAT THE YELLOW STROKES ARE: LIGHT RAYS OR FLOATING ARMS !
-		! NEEDS WHETHER ULOE'S OWN PLUG AND CORD DO ANYTHING !
+		# Attack: ranged.
+		# Ability: {Plug In}. Uloe plugs into a node or a {Power Bank} and gives off high levels of {Light} in a radius around them, as long as they stay in range of what they plugged into. / The level of {Light} depends on the node's total aura or the {Power Bank}'s upgrades \
+		# The plug and cord are the {Plug In} ability's: they move with Uloe, like a cord in real life.
+		# The yellow strokes are floating arms made of electricity.
+		/ Lore comes once the character is finalized \
 
 		(Minions):{Photons}
 			# Refers to minion units
@@ -224,7 +247,9 @@
 				% Photons explode on death, dealing damage and applying blind + illumination
 		(Defense):{Mirror}
 			- Wall that can be empowered by {Light} to blind enemies, reducing their damage.
-			! NEEDS UPGRADE IDEAS !
+				% {Blind} or {Illuminate} enemies based on upgrade path.
+				% Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
+				% A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
 		(Economy):{Flood Light}
 			- Plugs into nodes and provides light. Can be directed towards towers to focus their light benefits.
 				% Grants light in a radius around itself. Can no longer be directed.
@@ -234,14 +259,154 @@
 	# A new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals.
 	# Found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
 	# Bought from the shopkeeper with [Pure Aura]
-	/ Most stock Cardinals can be made to act for one player only; see docs/SCOPE_VS_LOOP.md §F (research, 2026-10-09) \
+	# Two kinds. A Personal Cardinal belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel. A Team Cardinal acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen.
+	/ Personal wherever the game allows it. The Cardinal row holds 8, lobby picks included, so a campaign can hold at most 8 Team Cardinals. About 24 of the 40 stock Cardinals can be made Personal; see docs/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
+	# Personal Cardinals and Directions are saved with the campaign for each player and come back when it continues.
+	/ Use the New Cardinal template at the bottom of this file to add one \
+	/ Model Lighthouse is a name kept for later \
 	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
 
 | New Enemy Modifiers |
 	[Cursed]
-		# Reduces the attack of all nearby Towers and Units
+		# Reduces the attack of all nearby towers and units
 	[Berserk]
 		# Damage and speed increases as health lowers
-	! NEEDS NEW ENEMY TYPES, OR CONFIRM THE EXPANSION ONLY ADDS THESE MODIFIERS !
-	! NEEDS DECISION: SHOW MODIFIERS AS AN EFFECT ON THE ENEMY, OR A NEW SKIN FOR EVERY ENEMY !
+	[Aging]
+		# Speed is reduced by 30%, but health and damage increase by up to 100% as it stays alive. / Reaches max value after surviving for 50 seconds. Health is not added, but scaled. An enemy at 50% health will stay at 50% health, just with a higher max health. \
+	[Dazzling]
+		# {Blinds} and {Illuminates} nearby vessels, towers, and units.
+	# Modifiers show as an effect on the enemy, not a new skin.
+	/ New enemy types will be added later, when ready \
+
+
+| Templates |
+	# Copy a template into the right place below, replace every line, and delete the / \ notes that only explain the template.
+	# Leave a line as ! NEEDS ... ! when you don't know it yet. Claude proposes a default at the design gate and says which.
+	# Names follow docs/STYLE.md: a Direction is named like a heading or a course, a Cardinal is two plain words for a found object.
+
+	[New Direction]
+		{Name of Direction} / Short and active, like a heading or a course \
+			- Vessel: / Argo, Yossele, Spool, Uloe, or Any. Any works on every vessel, base game vessels included \
+			- Kind: / Boost (a stat bonus) or Shift (changes how the vessel plays) \
+			- Touches: / The vessel itself, one building (name it), all its buildings, its units or minions, or its aura income \
+			- Rank I: / One line the player reads on the pick card \
+			- Rank II: / What it adds when it is offered again \
+			- Rank III: / The last rank \
+			- Numbers: / Exact values for each rank. Leave blank and the design gate proposes them \
+			- Look: / One found object for its icon, readable at 12x12. It shows on the card in the pick dialog \
+			- Clashes: / Any Direction or Cardinal it should not be held with, or none \
+
+	[Directions by Vessel]
+		/ Paste one New Direction block per Direction under its vessel. About 10 Any and 6 per new vessel last a 15-map campaign with ranks \
+		(Any)
+			! NEEDS DIRECTIONS FOR EVERY VESSEL !
+		(Argo)
+			! NEEDS ARGO'S DIRECTIONS !
+		(Yossele)
+			! NEEDS YOSSELE'S DIRECTIONS !
+			{Deep Roots} / Example only, not a decision \
+				- Vessel: Yossele
+				- Kind: Boost
+				- Touches: All its buildings
+				- Rank I: Your towers start one [Growth] stage up.
+				- Rank II: Your towers start two [Growth] stages up.
+				- Rank III: Your towers start fully grown.
+				- Numbers: / Blank: the design gate proposes them \
+				- Look: A seed with a root curling out of it
+				- Clashes: None
+			{Compost Bin}
+				- Vessel: Yossele
+				- Kind: Shift
+				- Touches: The vessel itself
+				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives 1 stack of fertilizer per 30 enemies killed in a radius around Yossele.
+				- Rank II: Gives 1 stack of fertilizer per 25 enemies killed in a radius around Yossele
+				- Rank III: Gives 1 stack of fertilizer per 20 enemies killed in a much larger radius around Yossele
+				- Numbers:
+				- Look: A small gray bin with dirt inside and stink lines emanating from the top.
+				- Clashes: None
+		(Spool)
+			! NEEDS SPOOL'S DIRECTIONS !
+			{Efficient Recycler}
+				- Vessel: Spool
+				- Kind: Boost
+				- Touches: The vessel itself
+				- Rank I: {Unthread} increases amount of {Thread} gained from minions
+				- Rank II: {Unthread} further increases amount of {Thread} gained from minions
+				- Rank III: {Unthread} increases the amount of {Thread} gained from minions greatly, and heals units and towers in an area around the minion that had been {Unthreaded}
+				- Numbers:
+				- Look: A recycling icon made of a string of yarn
+				- Clashes: None
+		(Uloe)
+			! NEEDS ULOE'S DIRECTIONS !
+		(Base Game Vessels)
+			/ Base game vessels get their own Directions as well as the Any ones. Put the vessel's name in Vessel \
+
+	[New Cardinal]
+		{Name of Cardinal} / Two plain words, a found object the wave washed up \
+			- Effect: / One line as the game shows it, no numbers, like the base game's Cardinals \
+			- Numbers: / Exact values. Leave blank and the design gate proposes them \
+			- Kind: / Personal or Team. Personal acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, and takes one of the 8 Team slots for the whole campaign \
+			- Lasts: / The rest of the campaign, this map only, or a number of Tides \
+			- Stacks: / Yes if a player (or the team) can own two, no if it leaves the shop once owned \
+			- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
+			- Price: / In [Pure Aura] \
+			- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \
+			- Look: / The object for its icon, readable at 12x12, in the pack's palette \
+			- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \
+
+	[Cardinal List]
+		/ Paste one New Cardinal block per Cardinal here \
+		! NEEDS LIST OF NEW CARDINALS !
+		{Cracked Buoy} / Example only, not a decision \
+			- Effect: Your towers start every map with more health.
+			- Numbers: / Blank: the design gate proposes them \
+			- Kind: Personal
+			- Lasts: The rest of the campaign
+			- Stacks: No
+			- Where from: Shop
+			- Price: ! NEEDS !
+			- Colour: Blue
+			- Look: A red and white buoy with a crack down one side
+			- Clashes: None
+		{Vampire Dentures}
+			- Effect: Your vessel attacks heal themselves for a portion of damage dealt.
+			- Numbers:
+			- Kind: Personal
+			- Lasts: The rest of the campaign
+			- Stacks: Yes
+			- Where from: Shop
+			- Price: 15 [Pure Aura]
+			- Colour: Red
+			- Look: Fake vampire dentures that could be found at a halloween dollar store.
+			- Clashes: None
+
+	[New Optional Objective]
+		{Name of Objective} / A short order, like a bounty on a notice board \
+			- Task: / One line the player reads when it is offered: what to do, no numbers \
+			- Kind: / Hunt (kill a number of one enemy, maybe with a modifier), Guard (keep the core or a building from harm), Hold (no enemy reaches a spot), Rush (finish before a time runs out), or something new \
+			- Numbers: / The count, time or limit. Leave blank and the design gate proposes them \
+			- Taken by: / One player, who alone is paid, or the team, which splits the pay \
+			- Offered: / When it can be taken: every break at {VENDCINT}, once a map, or from a set tide \
+			- Lasts: / The next tide, a number of tides, or the rest of the map \
+			- Pays: / In [Pure Aura], and any base aura on top \
+			- If failed: / Nothing, or a cost: say what \
+			- Later maps: / How it gets harder on later maps: bigger counts, a modifier on the targets, a shorter time \
+			- Look: / One found object for its icon, readable at 12x12 \
+			- Clashes: / Any Cardinal, Direction or modifier it should not be offered with, or none \
+
+	[Optional Objective List]
+		/ Paste one New Optional Objective block per objective here \
+		! NEEDS LIST OF OPTIONAL OBJECTIVES !
+		{Net the Shoal} / Example only, not a decision \
+			- Task: Defeat a pack of marked enemies before they reach the core.
+			- Kind: Hunt
+			- Numbers: / Blank: the design gate proposes them \
+			- Taken by: One player
+			- Offered: Every break at {VENDCINT}
+			- Lasts: The next tide
+			- Pays: ! NEEDS !
+			- If failed: Nothing
+			- Later maps: More enemies in the pack, and they carry a modifier
+			- Look: A torn fishing net with a cork float
+			- Clashes: None
