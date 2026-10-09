@@ -38,7 +38,7 @@ added are in PR #11 until it merges.
 | 15 | Four minion vessels multiply unit counts | A unit cap per player | default |
 | 16 | The game forgets who a player is between launches | Key the saved campaign by Steam id | default |
 | 17 | A saved campaign needs a home and a way back in | The host's save holds it; resume from the lobby | default |
-| 18 | Quitting mid-map could undo a loss | A rule for losing a map and for quitting mid-map | **Dimitri** |
+| 18 | Quitting mid-map could undo a loss | **Decided:** limited retries; quitting mid-map spends one | done |
 | 19 | Who may join a campaign later | Anyone; saved players get their things back | default |
 | 20 | 15 maps need a shape | Three stretches of five, a Breaker map closing each | default |
 
@@ -179,10 +179,10 @@ campaign in progress per slot), and only the host who started it can continue it
 can host, would need each client to write its own save (untested); not recommended for the first version.
 
 **18. Losing a map, and quitting mid-map.** Saves happen only between maps, so a team that quits during a map it is
-losing would resume before that map: a free retry. **Dimitri:** what does losing a map do? (a) the campaign ends,
-roguelike style, and the mod marks the save "in a map" at each map's start so quitting counts as a loss (recommended, it
-keeps the roguelike stakes); (b) the team retries that map from the last save, and quitting is the same as losing; or
-(c) a limited number of retries per campaign.
+losing would resume before that map: a free retry. *Decided by Dimitri (2026-10-09): limited retries.* A lost map uses
+one retry and the team replays it from the last save; with none left, a lost map ends the campaign. The mod marks the
+save "in a map" at each map's start, so quitting mid-map counts as a loss and spends a retry. The retries left are saved
+with the campaign. **Default:** 3 per campaign (the count is Dimitri's, still a `! NEEDS !` in the scope).
 
 **19. Who can join a campaign later.** Saved state is per Steam id (finding 16), so a friend who missed a session loses
 nothing, and someone new can join. **Add:** anyone can join a resumed campaign; a saved player gets their vessel, Pure
@@ -237,8 +237,8 @@ dropped silently. Personal Cardinals therefore show as upgrades on the owner's v
 
 ## What happens next
 
-Dimitri's open call: 18 (losing a map); 14 is decided (ranks); finding 6 now has a default from §F. Every default stands
-until he vetoes it. Accepted rows go into `docs/SCOPE_v0.txt` in his format, and they join PLAN Phase 5's piece list
-where they add work (campaign save and resume, player scaling, the shop break, the drop rule). The Phase 5 gate in
-`docs/PLAN.md` still says "a full three-map run"; it becomes "a campaign saved, resumed and finished" once PR #12's edit
-to that section has merged.
+Findings 14 (ranks) and 18 (limited retries, 3 by default) are decided; finding 6 now has a default from §F. Every
+default stands until he vetoes it. Accepted rows go into `docs/SCOPE_v0.txt` in his format, and they join PLAN Phase 5's
+piece list where they add work (campaign save and resume, player scaling, the shop break, the drop rule). The Phase 5
+gate in `docs/PLAN.md` still says "a full three-map run"; it becomes "a campaign saved, resumed and finished" once PR
+#12's edit to that section has merged.
