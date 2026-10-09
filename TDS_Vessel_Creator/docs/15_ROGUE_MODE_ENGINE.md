@@ -529,3 +529,97 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`
 - **The only client-written networked value on the boat** is the player's own `Blm_Player.Displayname` (owner write,
   Blm_Player.cs:30; set from the Steam name at spawn, :98). `Changeartifact_ServerRpc` has no leader check
   (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.
+
+## 18. Fourth reading: Cardinal patterns, messages, the final map, chart decorations, unlocks (2026-10-09, read)
+
+Read for "what else can the run use" (Dimitri, 2026-10-09). Map objects, nodes, grid and wallet went to `16`; ideas
+built on both are in the Rogue Waves repository's `docs/MECHANIC_IDEAS.md`. All **read**, nothing tried in game.
+
+### 18.1 How the stock Cardinals work, and patterns to copy
+
+- **The HUD counter** is written by `Helper_Entitytools.Editartifact(name, value)` into `Artifacttrack[index]`
+  (Helper_Entitytools.cs:450-459). Almost every Cardinal passes `Time.fixedTime` ("last fired", which flashes the
+  icon); Coin passes the Tide number (Entity_Ai_Artifact_Coin.cs:63).
+- **Checklist is not a quest system:** every killed `Enemy` drops a `Special_Aurapickup` that pays the first vessel
+  or unit to touch it 0.5 of each aura within 8 s (Entity_Ai_Artifact_Checklist.cs:9-27; `_Special_Pickup`.cs:13-63).
+- **Fie's Rest Stop is not an item system** (`docs/EXPANSION_SCOPE.md` row 7): it throws timed buffs, a modifier with a
+  duration plus a debuff look (`Addmod(.., duration)`, `Vfxdebuffcheck`) (Entity_Ai_Tower_Fieshop.cs:76-160). A
+  consumable a mod sells is the same two calls.
+
+| Pattern | Stock Cardinals that show it (read) |
+| --- | --- |
+| Upgrade every unit that spawns, filtered by tag, name or parent (+ a sweep at `Starting` for those already there) | Mobapply, Voiceapply (units whose parent is a vessel), Paint, Greatspear (`Enemy_Spear` only), Chimera and Seeds (every `Resource` node) (`Game_Entity.Onspawn`) |
+| React to a kill or a death | Checklist (drop a pickup), Gavel (a friendly unit's death fires a bolt, stronger by its level), Titan (bursts on its own death), Money Bag (old) on `Reason == "Sell"` (`Game_Entity.Ondespawn`) |
+| Count down Tides, then fire and remove itself | Rusty Pipe ("Age" counter on the unit) |
+| Grow every Tide | Caffeine, Opal Core, Coin, Money Bag (old) (`Wave.OnValueChanged`) |
+| Bend the Tide clock | Vintage (+`Time_Base` to each break), Same Day Shipping (shorter breaks, pays aura), Mooncore (skips Tides 3, 7, 14, 21, 28: `Entry` +2, `Wave` +1, "THE MOON ALIGNS WITH YOUR CHOICE"; hooks `Entry`), Loop (first hit on the core clears the field and replays the Tide, once) |
+| A free build that comes back | Onetimebuild (button removed while its unit lives, back when it dies); Build (a permanent fifth build slot, range 1000, sells for 0) |
+| One special unit at a time | Paper (the first Towerfighter built becomes a buffed paper one), Computer (a static lock) |
+| Delayed delivery | Heroapply_Delay (upgrade name → seconds), Paint (charm after a timer), Snare, Greatspear's look |
+| A trade-off | Glass Core (a sub-core that takes no damage; when it breaks, everyone loses `Aura_Base` of their wallet), Wavebreaker (foes in range get a health multiplier), Computer (enemies near a core slow time and stun), Bottom Rock (`16` §5) |
+| Swap a unit type | Textbook (every Dagger becomes a training dagger) |
+| Change a unit's team | Blue Paint's charm: team set to the core's, `Enemy` tag removed (Entity_Ai_Effect_Artifact_Bluepaintcharm.cs:19-35) |
+
+Bugs not to copy: Mobapply, Voiceapply and Money Bag compare a team with itself, so their team filter never filters
+(Entity_Ai_Artifact_Mobapply.cs:14); Paper's tower and Rusty Pipe's buff remove the same modifier four times
+(Entity_Ai_Effect_Artifact_Paper_Tower.cs:34-42); most never unsubscribe from `Onspawn`/`Ondespawn` (Gavel does it
+right, Entity_Ai_Artifact_Gavel.cs:71-76), harmless only because the map ends.
+
+### 18.2 Messages on every client
+
+- **Warning popup:** any entity's `Radio.Uiwarning_ClientRpc(text, icon, seconds)` shows an icon, the upper-cased
+  text and the "Warning" sound on every machine (Entity_Master_Radio.cs:864-907; Game_Ui.cs:1582-1617). The stock map
+  events use it ("THE CLOCK QUICKENS", "THE LAND SHIFTS"). The icon is a name from the game's icon table (add one the
+  way Argo does, `16` §5).
+- **Banner and note:** `Game_Mapvars.Instance.Display` (networked: `Display_Wave`, `Display_Note`, `Display_State`,
+  `Display_Endgame`, Game_Mapvars.cs:11-19, 70). A new non-empty `Display_Note` slides in under the banner for 5 s
+  (Game_Ui.cs:1541-1555); `Mode_Normal` writes the Tide entry's `Note` there. Writing "TIDE CLEARED" / "APPROACHES" /
+  "APPROACHING" also muffles the music (Clientmode_Normal.cs:84-95).
+- **Music stages** advance at the mode's `Musicwave1..4` params (Clientmode_Normal.cs:22-83): a mod's `Modeobject`
+  sets where the music builds. **Tips** show only on the end screen, from the `Earlygame_Funfacts` list
+  (Clientmode_Normal.cs:106-131).
+- **Tutorial prompts** (`Tds_Tutorialmenu.Instance.Descprompt`, `Highlightprompt`, `Imageprompt`,
+  Tds_Tutorialmenu.cs:67-175) are client-local and exist only where the tutorial menu does: untested outside it.
+- **`Radio.Dataadd_ClientRpc(folder, name, value)`** writes into every client's own save
+  (Entity_Master_Radio.cs:815-826): the host can mark a campaign milestone or an unlock in each player's save.
+
+### 18.3 The final map has no boss; every Basin has a last stand
+
+`Mode_Final` shows "SURVIVE", counts down 6:00, plays only `Wave[0]`'s content once, pays `Resourcesinit` every second
+and wins when the timer ends **or a core dies** (Mode_Final.cs:230-308), then goes to `Credits` after 15 s.
+`Clientmode_Final` swaps the music for a waterfall loop and fades out (Clientmode_Final.cs:17-31). In every
+mode, not only the final map, each Basin (`Main_Core`) and sub-core survives its **first lethal hit of the match at 1
+HP** with the `World_Core_Oneshot` effect (`Finalhit`, Entity_Ai_Main_Core.cs:36-45; Entity_Ai_Main_Subcore.cs:18-27),
+so a map is lost on the second killing blow. There is no boss
+being anywhere: a Breaker map's boss would be the pack's own enemy, spawned through an enemy core's `Spawn` command
+(`13` §3), with the map ended by the host on its `Despawn` (the win path, §4).
+
+### 18.4 Chart decorations, unlocks, Discoveries, the journal
+
+- **Node addons are hover effects.** When the leader hovers a node, every client calls `Show` on each active
+  `Macro_Addon_Base` whose GameObject name equals the node's (Macro_Main.cs:609-616; Tds_Multiplayer_Radio.cs:138-160),
+  and `Hide` on the next hover. `Macro_Addon_Nodeshowbillboardlink` needs only a sprite: a billboard image above the
+  node for `Expiry` s (Nodeshowbillboardlink.cs:27-41): a sea-chart node's modifier or reward icon on hover.
+  `Nodeshowblipprogress` (pips from an `Unlock_Tracker_Additive`) needs an unlock entry; `Nodeshowcine` needs a
+  `PlayableDirector`; `Nodeshowdebuff` plays a debuff look on the boat when it sails to listed nodes. A permanent
+  "cleared" mark is a child object of the mod's own (§17's nodes are built in code anyway).
+- **Unlocks** are `Unlockentryobject`s in `Items["Unlock"]` (`Dataadd`, `Livetracker` list), checked by
+  `Tds_Data.Checkunlocks`, which writes `Unlock/<key>` and `Unlock_Notif/<key>` (Tds_Data.cs:26-61). Trackers:
+  `Additive` (a `<key>_Counter` toward `Unlockam`), `Conditions` (compare save keys), `Matchreader` (the last match's
+  JSON). The boat's unlock screen shows an artifact panel for `Unlock_Artifact_<name>` and a vessel panel for
+  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826). A Depth unlock = the mod writes its key, a `Conditions`
+  tracker on it, and the boat announces it like a stock unlock (untested).
+- **Discoveries** (`Macro_Discoveriesui.Items`, a list of `Discoverycont`: Map or Milestone, name, text, sprite,
+  condition) light the boat's "New" badge when more are unlocked than the saved count (Macro_Discoveriesui.cs:25-157;
+  Macro_Extraui.cs:85-105): a mod can append Milestones ("Campaign cleared at Depth 1").
+- **Journal:** the only live item is `TextTotalComplete` (unlocked vs total linked pages,
+  Logitems.TextTotalComplete.cs:41-104); `TextMapStats` is the map's static text. Pages lock on `Unlock/` keys
+  (Logobject.cs:77-88).
+
+### 18.5 Dev tools and presence
+
+- `Game_Admin` (public: `Setartifact`, `Getmoney`, `Setlighting`, `Spawnenemy`, `Spawnhero`, `Lose`, `Settimescale`;
+  Game_Admin.cs:39-131) is reached in release only through the Sandbox Cardinal's buttons, which null-check it
+  (Entity_Ai_Tower_Sandbox.cs:107-150): useful in self-tests, not a console.
+- **Discord presence can't be set by a mod:** the game sets one random "Details" line at start and keeps the client
+  private (Bla_Discordpresence.cs:27, 47-71); reaching it needs reflection, which mod code can't use (§10).
