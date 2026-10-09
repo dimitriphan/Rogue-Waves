@@ -188,10 +188,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) is installed on the PC; lessons in kit `docs/09` #72-76. Work
   is on `claude/project-thread-f7fmvc` (draft PR #7 into #3's branch). No release: Argo ships in the pack.
 - **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` answered from the decompiled game (kit
-  `docs/15` §14); RogueLab 0.2.0 built for what only the game can show (handoff `RogueLab_round2`, compile-checked).
-- **Next:** RogueLab round 2 on the PC (Dimitri's OK asked 2026-10-09), then the F-key check by hand and one online
-  evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (later, his call).
-- **Blocked:** round 2 waits on Dimitri's OK for the PC session.
+  `docs/15` §14) and RogueLab round 2 on the PC (15 pass, 1 fail; kit `docs/15` §15): 14 of 18 items answered.
+  RogueLab 0.3.0 built for the rest (handoff `RogueLab_round3`, compile-checked).
+- **Next:** RogueLab round 3 on the PC (15 untoured maps, the choice dialog with its menu up), then the F-key check by
+  hand and one online evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
+- **Blocked:** round 3 waits on Dimitri's OK for the PC session.
 
 ### Decisions
 
