@@ -482,11 +482,18 @@ proved the ones marked so:
 - **A heal's amount is its data's `Damage`** (times `Damagemulti`), not a `Heal` key: `Interactheal` with no
   `Damage` throws `KeyNotFoundException` in `Helper_Damagetools.Doheal` (**proven**, round 4).
 - **`Damagedone`** on the attacker rises after each hit (Entity_Master.cs:208, Helper_Damagetools.cs:21-70): the only
-  measure of damage actually dealt (lifesteal).
+  measure of damage actually dealt (lifesteal). **Proven** (round 5: 0 -> 4 on a hit of 4).
 - **`Game_Mapvars.Wave` is 0 in the opening break** (**proven**) and rises as each Tide starts (Mode_Normal.cs:318, 371-376).
 - **`Resourcegainmultiplier` doesn't touch Tide pay**: `Mode_Normal` sets it to 1 around its own payouts
   (Mode_Normal.cs:359-362), so a lower-pay setting changes start aura or drops instead.
 - **Health** is the `Health` stat: `Value` now, `Value_Calc` the max; whether a max change keeps the fraction depends
-  on the stat's type in data (`Variable` keeps it, `Fixed` refills, `Variabletrue` keeps the amount; Link_Stats.cs:46-103).
+  on the stat's type in data (`Variable` keeps it, `Fixed` refills, `Variabletrue` keeps the amount; Link_Stats.cs:46-103). **Proven** for Boutbro (`Variable`): a +100% max took
+  5/10 to 10/20, and `Speed`/`Damage` modifiers added mid-match apply at once (round 5).
+- **`Radio.Vfxdebuffcheck(name)` puts a stock debuff's look on any unit** (**proven**, round 5: 2 children under a
+  foe's look), the route for showing modifiers as effects.
+- **A `Button`-style command added mid-match shows on the selected unit's bar and goes when removed** (**proven**, round
+  5, on the vessel and on a neutral unit for its subowner).
+- **UniTask: read a task's `Status` once.** After `GetResult()`, reading `Status` throws "Token version is not matched,
+  can not await twice" (round 5); keep the status in a local.
 - **The game's own aura pickup** pays the owner of the first same-team `Mob` within 1 unit
   (Entity_Ai_Artifact_Checklist_Special_Pickup.cs:20-51): vessels and kit minions qualify.

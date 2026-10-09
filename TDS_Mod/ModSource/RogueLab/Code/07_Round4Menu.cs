@@ -64,8 +64,10 @@ public static class RogueLabMenu
             copy.SetActive(true);
             yield return null;
             GameObject registered;
-            bool ok = clone != null && copy.activeInHierarchy && main.Items.TryGetValue(ItemName, out registered) && registered == copy;
-            RogueLabProbe.Check("M1 Rogue Wave button cloned from Main/Play", ok, "active " + copy.activeInHierarchy + ", Blu3_Button " + (clone != null)
+            // Round 5: the clone was inactive in the hierarchy because the whole Main menu was (the title screen was still
+            // up): pass when the clone is shown exactly when Play is. M4b looks again once the menu is up.
+            bool ok = clone != null && copy.activeSelf && copy.activeInHierarchy == play.activeInHierarchy && main.Items.TryGetValue(ItemName, out registered) && registered == copy;
+            RogueLabProbe.Check("M1 Rogue Wave button cloned from Main/Play", ok, "active " + copy.activeInHierarchy + " (self " + copy.activeSelf + ", Play " + play.activeInHierarchy + "), Blu3_Button " + (clone != null)
                 + ", registered " + main.Items.ContainsKey(ItemName) + ", menu of the clone " + (clone != null && clone.Menu != null ? clone.Menu.gameObject.name : "none")
                 + "; Play rect " + Rect(from) + ", clone rect " + Rect(to) + ", parent layout " + Layout(play.transform.parent));
         }
@@ -80,10 +82,24 @@ public static class RogueLabMenu
         RogueLabProbe.Check("M2 the clone's click runs the mod's handler and not the stock Play", handlerRan && !stockPlayAfterClick
             && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == sceneBefore, "handler ran " + handlerRan + ", stock Play menu active " + stockPlayAfterClick);
 
-        // M3: the New / Continue / Back dialog on the main menu, clicked by the mod.
-        yield return Prompt();
+        // M3: the New / Continue / Back dialog on the main menu, clicked by the mod. An exception in it must not cost M4.
+        IEnumerator prompt = Prompt();
+        while (true)
+        {
+            object cur;
+            try { if (!prompt.MoveNext()) break; cur = prompt.Current; }
+            catch (Exception e) { RogueLabProbe.Check("M3 dialog finished cleanly", false, e.GetType().Name + ": " + e.Message); break; }
+            yield return cur;
+        }
 
-        // M4: the flag, then the stock embark.
+        // M4: the flag, then the stock embark. M4b: is the clone shown beside Play once the Main menu is up?
+        if (clone != null)
+        {
+            GameObject p4;
+            main.Items.TryGetValue("Play", out p4);
+            RogueLabProbe.Info("M4b button beside Play with the Main menu up", "Main active " + main.Active + ", Play shown " + (p4 != null && p4.activeInHierarchy)
+                + ", clone shown " + clone.gameObject.activeInHierarchy + ", canvas " + (main.GetComponent<Canvas>() != null && main.GetComponent<Canvas>().enabled));
+        }
         Flag = true;
         Embark(menu);
     }
@@ -134,11 +150,15 @@ public static class RogueLabMenu
                 if (c.name.StartsWith("RogueLab_")) { cards++; if (c.name == "RogueLab_New") first = c; }
         Blu3_Button button = first != null ? first.GetComponent<Blu3_Button>() : null;
         if (button != null && button.Buttonclick != null) button.Buttonclick();
+        // A UniTask's Status can't be read after GetResult ("can not await twice", round 5): read it once, then the result.
         float t = 0f;
-        while (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Pending && t < 5f) { t += Time.unscaledDeltaTime; yield return null; }
-        string pick = task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded ? task.GetAwaiter().GetResult().Name : task.Status.ToString();
+        Cysharp.Threading.Tasks.UniTaskStatus status = task.Status;
+        while (status == Cysharp.Threading.Tasks.UniTaskStatus.Pending && t < 5f) { t += Time.unscaledDeltaTime; yield return null; status = task.Status; }
+        string pick = status.ToString();
+        if (status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded)
+            try { pick = task.GetAwaiter().GetResult().Name; } catch (Exception e) { pick = "result threw " + e.Message; }
         RogueLabProbe.Check("M3 New / Continue / Back dialog on the main menu", cards == 3 && pick == "RogueLab_New", before + "; cards " + cards + ", pick " + pick);
-        if (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Pending)
+        if (status == Cysharp.Threading.Tasks.UniTaskStatus.Pending)
             Blockage.Menu.Bl_Menus.Closemenu(dialog.gameObject, true);
         Blockage.Menu.Bl_Menus.Changemenu("Main");
         yield return new WaitForSecondsRealtime(1f);

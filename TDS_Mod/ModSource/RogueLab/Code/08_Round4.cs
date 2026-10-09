@@ -215,7 +215,7 @@ public static class RogueLabRound4
             float hh1 = Health(hero);
             RogueLabProbe.Check("D1 the vessel's Damagedone counts its hit", dd1 - dd0 > 0f, "Damagedone " + RogueLabUtil.F(dd0) + " -> " + RogueLabUtil.F(dd1) + ", foe health "
                 + RogueLabUtil.F(h0) + " -> " + RogueLabUtil.F(h1) + ", vessel Damage stat " + RogueLabUtil.F(Stat(hero, "Damage")));
-            RogueLabProbe.Info("D1 heal on the vessel", "after a 5 hit " + RogueLabUtil.F(hh0) + ", after Interactheal Heal 3 " + RogueLabUtil.F(hh1));
+            RogueLabProbe.Info("D1 heal on the vessel", "after a 5 hit " + RogueLabUtil.F(hh0) + ", after Interactheal 3 " + RogueLabUtil.F(hh1));
 
             // A1 and E1 on foe b.
             Aging(b);
