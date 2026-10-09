@@ -216,6 +216,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   minions), Dandelion Season and Mother of Mushrooms (Yossele), Sewing Machine (Spool); objective Mind the Meteor
   (3 Pure Aura); Thread Head sends Stitched, its paths turn them into Darts. Compost Bin's counts are now x, for
   Yossele's design gate. Map-count knock-ons in `docs/SCOPE_VS_LOOP.md` (#3, #14, #20, §E).
+- **Also (2026-10-09 22:00Z):** Dimitri asked whether the boat could sail a generated Slay the Spire style map to
+  choose maps. Yes, read from code (`docs/SEA_CHART.md`, kit `docs/15` §17): the base campaign map is a world of nodes
+  with `Links`, which a mod can build from a seed and register as its own world; the stock boat, arrows, Setup panel
+  and map loading work on it. Only the leader steers, so the vote needs a route (V1-V3). Prototype generator
+  `concept-tools/sea_chart.py`. Nothing in the scope changed; probes C1-C8 wait for Dimitri's decision.
 - **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
@@ -291,7 +296,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open | |
+| 1 | Sea chart for choosing maps (`docs/SEA_CHART.md` §6): adopt it, and who chooses (V1 vote in the map, V2 vote on the boat, V3 the leader steers)? | not adopted until Dimitri says; if adopted, V1 first and V2 probed in the same PC round |
 
 ### Phase 5 pieces
 
