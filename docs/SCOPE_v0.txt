@@ -22,10 +22,11 @@
 | Progress |
 	# Phase 1, research the game's code for the mode: done. Every piece of the mode has a known route, and the PC test round passed 13 of 13.
 	# Phase 2, pack layout and style sheet: done and approved. / docs/PACK.md and docs/STYLE.md \
-	# Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. The playable build v0.1.0-dev is installed. / Waiting on review in PR #7 \
+	# Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. Its work is merged. / PR #7 and PR #10 \
 	# Next: Yossele, then Spool, then Uloe, each one starting with a design to approve. Then enemies and modifiers, then the Rogue Wave mode, then content and release.
 	# Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
 	# Sonar is left out of every design for now.
+	# Every mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once. / Backed up in ClaudeProjects\handoff\mods_removed_20261008 \
 
 | Bug Fix |
 	Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
@@ -168,7 +169,7 @@
 		# Harpoon Gun is offensive mixed with crowd control / pulling in or pinning back \
 		# Drill rig is economy mixed with crowd control / Slowing designated areas \
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. / No sonar \
-		# Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Playable build v0.1.0-dev installed. Ships only inside the Rogue Waves pack. / Difficulty: Intermediate \
+		# Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Ships only inside the Rogue Waves pack. / Difficulty: Intermediate \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
 		! NEEDS ARGO'S DIRECTIONS !
 

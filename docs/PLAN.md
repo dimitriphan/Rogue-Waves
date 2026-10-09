@@ -185,13 +185,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **Done:** Phases 1 and 2 (2026-10-08). **Phase 3 Argo** (2026-10-08): steps 1-5; PC round 6 **139 pass, 0 fail**,
-  Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) is installed on the PC; lessons in kit `docs/09` #72-76. Work
-  is on `claude/project-thread-f7fmvc` (draft PR #7 into #3's branch). No release: Argo ships in the pack.
+  Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) was installed on the PC; lessons in kit `docs/09` #72-76. Work is
+  merged into #3's branch (PR #7, PR #10). No release: Argo ships in the pack.
 - **Also done:** `docs/SCOPE_v0.txt` (the user's roguewave.txt) rewritten in its own format with the current state;
   every item only the user can supply is marked `! NEEDS ... !` there (2026-10-08, branch
-  `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`.
-- **Next:** the coordinator's next phase in Part B. Left on Argo: a look at round 6's journal capture, his balance pass
-  (later, his call).
+  `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`. The game's `TDS\Mods` folder
+  was emptied at the user's ask (the pack will carry everything); the 7 mods sit in the PC's
+  `ClaudeProjects\handoff\mods_removed_20261008`, so the playable Argo is no longer installed.
+- **Next:** the coordinator's next phase in Part B. Left on Argo: his balance pass (later, his call).
 - **Blocked:** nothing.
 
 ### Decisions
