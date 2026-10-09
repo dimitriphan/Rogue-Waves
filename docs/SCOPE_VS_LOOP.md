@@ -34,7 +34,7 @@ added are in PR #11 until it merges.
 | 11 | A dropped friend can't rejoin a running map; the campaign lives on the host | Drop and host-quit rules | default |
 | 12 | A won map would count toward stock records and medals | Runs keep their own records | default |
 | 13 | Yossele's Growth resets with every map | Note for Yossele's design gate | default |
-| 14 | 15 Direction picks per player per campaign, with stock vessels too | Directions that rank up when offered again | **Dimitri** |
+| 14 | 15 Direction picks per player per campaign, with stock vessels too | **Decided:** Directions rank up when offered again | done |
 | 15 | Four minion vessels multiply unit counts | A unit cap per player | default |
 | 16 | The game forgets who a player is between launches | Key the saved campaign by Steam id | default |
 | 17 | A saved campaign needs a home and a way back in | The host's save holds it; resume from the lobby | default |
@@ -143,9 +143,8 @@ gate:** a Direction such as "towers start one Growth stage up" rather than Growt
 vessel, stock ones included (`docs/PACK.md` §2: the mode runs with stock vessels, which have only the Any pool unless
 base vessels get their own, a `! NEEDS !`). Riptide cut its picks to six a run for the same reason: four players picking
 every Tide would empty its 40 Cardinals by Tide 10 (Riptide `DESIGN.md` "Changes"). A Direction is an upgrade on the
-vessel (`docs/15` §14.1), and a stronger rank is just another upgrade. **Dimitri:** (a) a held Direction can be offered
-again as its next rank (II, III), so about 10 Any and 6 per pack vessel cover a campaign (recommended); (b) a catalogue
-of 18 or more per vessel with no ranks; or (c) fewer picks, one Direction every few maps.
+vessel (`docs/15` §14.1), and a stronger rank is just another upgrade. *Decided by Dimitri (2026-10-09): ranks.* A held
+Direction can be offered again as its next rank (II, III), so about 10 Any and 6 per pack vessel cover a campaign.
 
 **15. Minions times four.** On the host, 200 extra units cost about 3.5 ms a frame (`docs/15` §15); the client's cost is
 unmeasured. Four Spools or Uloes in one run multiply Crafted and Photons. **Add:** a unit cap per player for Spool's
@@ -160,10 +159,10 @@ with their edits to that chapter.
 **16. Who a player is between launches.** The in-session player key, `Sessionid`, is handed out in join order
 (`Blm_Multiplayer.cs:457-466`) from a `Player_Guid` each client keeps in the save's `Metadata` folder
 (`Blm_Player.cs:82-89`), and the game wipes that folder on every load (`Blockage.Tags.Bla_Data.cs:57, 199-208`). So
-after a restart the same friend gets a new GUID and maybe a different `Sessionid`. The Steam id is stable (Steam builds, `Blm_Multiplayer.Steam`): each client
-sends it on joining (`Blm_Player.cs:77`) and every machine stores it on that player's `Blm_Player.Steamid`
-(`Blm_Server.cs:399`; `Blm_Player.cs:34`). **Add:** the saved campaign keys each player by Steam id; the live state
-stays keyed by `Sessionid` and is matched to the saved one when a player joins.
+after a restart the same friend gets a new GUID and maybe a different `Sessionid`. The Steam id is stable (Steam builds,
+`Blm_Multiplayer.Steam`): each client sends it on joining (`Blm_Player.cs:77`) and every machine stores it on that
+player's `Blm_Player.Steamid` (`Blm_Server.cs:399`; `Blm_Player.cs:34`). **Add:** the saved campaign keys each player by
+Steam id; the live state stays keyed by `Sessionid` and is matched to the saved one when a player joins.
 
 **17. Where the campaign is saved, and how it comes back.** The host writes the campaign to its own save in the pack's
 folder (`RogueWaves`) the moment a map is won, before chaining to the next one: the map number, the seed, the maps
@@ -174,11 +173,10 @@ Cardinal as usual; the mod finds the saved campaign and asks "Continue or start 
 host can put each returning player back on their saved vessel: `Tds_Clientinfo.Hero` is a networked string only the
 server writes (`Tds_Clientinfo.cs:17`), the same one the game's own `Changehero_ServerRpc` sets
 (`Tds_Multiplayer_Remote.cs:245-280`) (read; untested from a mod). The next map loads by swapping the match's strings on
-the boat, as RogueLab and Riptide already do for the mode and Gameplan (`docs/15` §11, §13; swapping the map itself there
-is untested), so a resumed session needs no staging map.
-**Add:** the campaign lives in the host's save slot (one campaign in progress per slot), and only the host who started
-it can continue it. Giving every player a copy, so anyone can host, would need each client to write its own save
-(untested); not recommended for the first version.
+the boat, as RogueLab and Riptide already do for the mode and Gameplan (`docs/15` §11, §13; swapping the map itself
+there is untested), so a resumed session needs no staging map. **Add:** the campaign lives in the host's save slot (one
+campaign in progress per slot), and only the host who started it can continue it. Giving every player a copy, so anyone
+can host, would need each client to write its own save (untested); not recommended for the first version.
 
 **18. Losing a map, and quitting mid-map.** Saves happen only between maps, so a team that quits during a map it is
 losing would resume before that map: a free retry. **Dimitri:** what does losing a map do? (a) the campaign ends,
@@ -194,8 +192,9 @@ The 4-player cap still holds per session.
 **20. The shape of 15 maps.** Riptide split 30 Tides into three stretches with a Breaker closing each (Riptide
 `DESIGN.md` "The run"), and the 45 offerable maps carry difficulty labels 1-9 (`docs/15` §15; labels scale nothing,
 §14.3). **Add:** three stretches of five maps; the vote offers maps whose label fits the stretch (low labels first, the
-δ maps last); the fifth map of each stretch ends with a Breaker Tide and a richer shop. 45 maps leave three fresh choices
-for every one of the 15 votes without replaying a map. Stretch names need to avoid "Swell", which the scope keeps for ascension.
+δ maps last); the fifth map of each stretch ends with a Breaker Tide and a richer shop. 45 maps leave three fresh
+choices for every one of the 15 votes without replaying a map. Stretch names need to avoid "Swell", which the scope
+keeps for ascension.
 
 ## F. Cardinals for one player (Dimitri's question, 2026-10-09)
 
@@ -238,8 +237,8 @@ dropped silently. Personal Cardinals therefore show as upgrades on the owner's v
 
 ## What happens next
 
-Dimitri's open calls: 14 (Direction ranks) and 18 (losing a map); finding 6 now has a default from §F. Every default
-stands until he vetoes it. Accepted rows go into `docs/SCOPE_v0.txt` in his format, and they join PLAN Phase 5's piece
-list where they add work (campaign save and resume, player scaling, the shop break, the drop rule). The Phase 5 gate in
+Dimitri's open call: 18 (losing a map); 14 is decided (ranks); finding 6 now has a default from §F. Every default stands
+until he vetoes it. Accepted rows go into `docs/SCOPE_v0.txt` in his format, and they join PLAN Phase 5's piece list
+where they add work (campaign save and resume, player scaling, the shop break, the drop rule). The Phase 5 gate in
 `docs/PLAN.md` still says "a full three-map run"; it becomes "a campaign saved, resumed and finished" once PR #12's edit
 to that section has merged.

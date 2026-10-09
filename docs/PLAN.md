@@ -248,7 +248,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - 2026-10-09 (user): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
   save holds it, keyed per player by Steam id (`docs/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
-  core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal.
+  core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
+  up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel.
 
 ### Open questions
 

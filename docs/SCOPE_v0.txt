@@ -57,6 +57,7 @@
 	[Directions]
 		A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
 		- 3 are offered and 1 is picked before each map. More can be bought at the shop.
+		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 10 for every vessel and 6 per new vessel last a 15-map campaign \
 		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
 		! NEEDS LIST OF DIRECTIONS FOR EACH VESSEL (ARGO, YOSSELE, SPOOL, ULOE) AND ANY THAT WORK FOR EVERY VESSEL !
 		! NEEDS DECISION: DO BASE GAME VESSELS GET THEIR OWN DIRECTIONS !
