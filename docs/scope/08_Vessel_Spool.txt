@@ -1,0 +1,49 @@
+| New Vessel: Spool |
+	Spool, Crafty Crafted Crafter
+		# Commands a disposable minion army
+		# Uses a [Thread] currency system, where units are crafted using [Thread] dropped from enemies or mined from nodes. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets \
+		# Minions are able to be directed upon spawn. Have some minions be thread gatherers and some minions be attackers.
+		# Can be very mobile depending on skill level. {Crafted} never follow Spool.
+		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \. Towers carry stitches, pins and tins.
+		# Status: concept page done. Comes after Yossele. / Difficulty default: Advanced \
+		# Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. / One front facing concept frame so far, in sprites \
+		# Attack: melee.
+		# Ability: {Unthread}, which removes one of Spool's minions and refunds a portion of the [Thread] it cost.
+		# Keeps the names {Loom} and [Thread]: Mummer was a prototype version of Spool.
+		# 3 buildings. {Thread Head} is a minion, and takes the fourth place the way Boutman's fish do.
+		/ Lore comes once the vessel is finalized \
+
+		(Minion):{Crafted}
+			# Refers to units spawned by {Repurposed Cookie Tin}, {Loom}, and {Pin Cushion}
+			- {Stitched}: melee, from {Repurposed Cookie Tin}.
+			- {Dart}: ranged, from {Repurposed Cookie Tin}.
+			- {Seam}: melee, weaker than a {Stitched}, mines nodes for aura. From {Loom} once upgraded.
+			- {Mangled}: melee, made by {Pin Cushion} when it is attacked, if upgraded down that path. Specializes into explosive suicidal units, or tanky blockers that jump forward to take damage.
+			! NEEDS WHAT EACH CRAFTED COSTS IN THREAD !
+		(Tower 1):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
+			# Main source of damage, versatile in that you can create a disposable army or a stronger but smaller strike team
+			- Similar to garages, sends multiple {Stitched} to run down lane until they land at targeted location where they then idle until seeing an enemy.
+			- Different upgrade paths stem from one building, turning {Stitched} into {Darts} / Similar to Boutman's fish \
+			- Buildings and upgrades cost aura, but minions cost thread.
+			- Not very smart, once they're set to a location they stay there until death. Can manually be {Unthread} by [Spool].
+				% Aggressive and cheaper melee minions, or squishy but expensive ranged minions
+				% Can detonate themselves on death, creating an AOE explosion
+		(Minion):{Thread Head} / Works like Boutman's fish \
+			# Controller minion, manages thread throughout towers. Can use thread for buffs, or for creating {Crafted}
+			- Single larger minion, more controllable / Think Fie's soldiers level of controllability or Boutman's Fish \
+			- Buffs minions nearby, also can collect thread from slain enemies nearby.
+			- Once it's at max thread capacity, can return to {Repurposed Cookie Tin} to resupply thread.
+			- Can be used as either a buffer or a thread porter.
+				% Collects thread from fallen minions as well as fallen enemies
+				% Can use thread to heal allies / towers
+		(Defense):{Pin Cushion}
+			- Wall that reflects damage done by melee units
+			- When damaged, spins thread and potentially {Mangled} depending on player choices.
+			- {Mangled} can either spec into being tankier, or more aggressive suicidal bombers.
+				% Reflects more damage using pins, then eventually reflects ranged damage
+				% Spreads damage taken over time / Take half damage now, half damage later. Doubles thread creation and allows for heals to heal though some damage. \
+		(Economy):{Loom}
+			- Connects to nodes to mine aura
+			- Spins thread for {Thread Head} to port to {Repurposed Cookie Tin}, or for support uses.
+				% Can directly connect to {Repurposed Cookie Tin}.
+				% Creates {Seams} that can attack nearby nodes, and can also defend nearby from enemies.

@@ -1,6 +1,6 @@
 # Research gaps: what the expansion still needs to learn about the game
 
-Engine facts the scope (`docs/SCOPE_v0.txt`) depends on that Phase 1 left open. Listed 2026-10-08, against
+Engine facts the scope (`docs/scope/`) depends on that Phase 1 left open. Listed 2026-10-08, against
 `TDS_Vessel_Creator/docs/13`, `14`, `15`, RogueLab round 1, Riptide's notes and Argo's six PC rounds; **answered from
 the decompiled game 2026-10-09** (the facts, with `file:line`, are in kit `docs/15` §14). This is the research half of
 `docs/SCOPE_GAPS.md`, which lists the **design** gaps; nothing here repeats it. Sonar is out of scope (user).

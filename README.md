@@ -16,7 +16,7 @@ Start with `CLAUDE.md` (the map and reading order), then `TDS_Vessel_Creator/REA
 | `TDS_Mod/` | The parts of the Unity mod project that belong to every vessel: `ModSource/Shared` (kit 1.6, live copy), `Assets/ModKit/Editor/ModKitPipeline.cs` (Unity build queue), `Tools/cloud-check` (compile and preview without Unity), `Tools/pc` (PC rounds), `Tools/aseprite` (hand-edit frames) | without the six vessels |
 | `concept-tools/` | The generic Python used by concept pages: `sprites.py` (pixel rasteriser), `lowpoly.py` (port of the kit's mesh builder with a renderer), `pngout.py`, `build_mod_pages.py` (sheets drawn from a mod) | without the per-vessel scripts and pages |
 | `docs/EXPANSION_SCOPE.md` | What an expansion needs beyond vessels, what the kit already knows about each piece, and what still has to be researched (Phase 1 answered rows 3, 6, 7, 9 and 10 in `TDS_Vessel_Creator/docs/15`) | new |
-| `docs/` (the rest) | The user's scope (`SCOPE_v0.txt`), the prompt plan (`PLAN.md`), the Claude Project setup (`PROJECT_SETUP.md`) and vessel concept pages (`concepts/`); `CLAUDE.md` maps each | new |
+| `docs/` (the rest) | The user's scope (`scope/`, one file per category), the prompt plan (`PLAN.md`), the Claude Project setup (`PROJECT_SETUP.md`) and vessel concept pages (`concepts/`); `CLAUDE.md` maps each | new |
 | `.claude/rules/` | Short path-scoped notes that load when the matching files are touched | paths updated |
 
 ## What was left behind, and why

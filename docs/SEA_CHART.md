@@ -2,8 +2,8 @@
 
 Dimitri asked (2026-10-09 21:52Z) whether, when the players choose a map, their boat could sail around a generated
 map the way it sails the base game's campaign map, with movement points generated in game like Slay the Spire's.
-This page answers it from the game's code and proposes a route. **It changes nothing yet**: the scope's vote flow
-stays as it is until Dimitri decides (§6).
+This page answers it from the game's code and proposes a route. **Adopted by Dimitri 2026-10-09 22:23Z with
+route V1** (§4, §6); the scope's rundown (`docs/scope/05_Gameplay_Rundown.txt`) says so.
 
 Tags: **proven** = shown in game by Riptide or RogueLab; **read** = from the decompiled `Assembly-CSharp.dll` (kit
 `docs/13` §11), file:line into that folder; **untested** = needs the PC (§5). Kit paths: `docs/NN` =
@@ -68,7 +68,7 @@ Things the code reading turned up that the build must respect:
   64-byte string: `RW_Chart_` + a 10-digit seed + one digit per row is 29 bytes.
 - Hide the stock "Warp" (waypoint) button on the chart and give no node `Waypointspot`.
 
-**What it replaces in the vote flow** (if adopted; nothing changes until then):
+**What it replaces in the vote flow** (adopted):
 
 - The vote offers the linked nodes of the next row (usually 2, sometimes 1 or 3), not 3 random maps. Players see the
   whole chart ahead, so they plan a route, as in Slay the Spire. A chart can't give every node 3 choices without
@@ -91,8 +91,8 @@ The base game lets only the leader steer (§2). Three ways to keep the scope's "
 | V2 | **Vote on the boat.** Each client's mod opens a `Runprompt` of the choices on the boat and writes the pick into its own player's `Displayname`, the one networked value a client may write (Blm_Player.cs:30, owner write) and every machine sees; the host counts, sails, and puts the names back. Map 1 is voted the same way | best to play; **untested**, and a name with a vote mark shows in chat for a moment |
 | V3 | **The leader steers.** As in the base game; the others talk | no work; drops the scope's vote |
 
-Default if Dimitri says nothing: **V1** to build first, with **V2** probed in the same PC round (it needs a second
-machine to prove, since it is a client-to-host channel). Rejected: carrying votes in `Changeartifact_ServerRpc` (any
+**Chosen: V1** (Dimitri, 22:23Z). Map 1 (default taken): the vote is held in the staging map's opening break, as
+today, then the party returns to the boat and sails from the harbour to the winner, so map 1 gets its trip too. Rejected: carrying votes in `Changeartifact_ServerRpc` (any
 client may add to the shared Cardinal list, Tds_Multiplayer_Remote.cs:296, but it doesn't say who) or in
 `Changehero_ServerRpc` (it swaps the voter's vessel).
 
@@ -102,7 +102,7 @@ spread over several worlds joined by warps, a choice can't span two of them, and
 
 ## 5. What only the PC can prove: a RogueLab round
 
-Solo, automated, one launch, then one online check for C7-C8:
+Solo, automated, one launch, then one online check for C7 (C8 stays here in case V2 is wanted later):
 
 | # | Probe | Pass when |
 | --- | --- | --- |
@@ -118,8 +118,8 @@ Solo, automated, one launch, then one online check for C7-C8:
 Art for the chart (a sea, islands, route lines, a node marker for the Breaker rows) is separate work for
 `docs/STYLE.md`; the round can use plain shapes.
 
-## 6. For Dimitri to decide
+## 6. Decided
 
-1. **Adopt the sea chart?** Yes means the vote picks among the next row's linked maps (1-3), the campaign's maps are
-   fixed by the seed, and the party returns to the boat between maps.
-2. **Who chooses?** V1 (vote in the map), V2 (vote on the boat, if the round proves it) or V3 (the leader steers).
+1. **The sea chart is adopted** (Dimitri, 2026-10-09 22:23Z): the vote picks among the next row's linked maps (1-3),
+   the campaign's maps are fixed by the seed, and the party returns to the boat between maps.
+2. **V1**: the vote is held in the map; the boat sails to the winner on its own.

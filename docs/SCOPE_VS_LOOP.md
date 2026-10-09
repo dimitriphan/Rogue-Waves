@@ -244,6 +244,6 @@ dropped silently. Personal Cardinals therefore show as upgrades on the owner's v
 ## What happens next
 
 Findings 14 (ranks) and 18 (limited retries, 3 by default) are decided; finding 6 now has a default from §F. Every
-default stands until he vetoes it. Accepted rows go into `docs/SCOPE_v0.txt` in his format, and they join PLAN Phase 5's
+default stands until he vetoes it. Accepted rows go into the matching `docs/scope/` file in his format, and they join PLAN Phase 5's
 piece list where they add work (campaign save and resume, player scaling, the shop break, the drop rule). The Phase 5
 gate in `docs/PLAN.md` now reads "a full 10-map campaign completed on the PC (saved and continued at least once)".

@@ -1,0 +1,3 @@
+| Bug Fix |
+	Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
+	/ Fix is built into the pack's shared code and runs with Argo. Not yet seen working in game: play Boutman, let Boutbro spawn, die, then press F after respawn. \

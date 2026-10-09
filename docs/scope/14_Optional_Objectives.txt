@@ -1,0 +1,46 @@
+| Optional Objectives |
+	# Copy the New Optional Objective template into the Optional Objective List below, replace every line, and delete the / \ notes that only explain the template.
+	# Leave a line as ! NEEDS ... ! when you don't know it yet. Claude proposes a default at the design gate and says which.
+	# Names are a short order, like a bounty on a notice board.
+
+	[New Optional Objective]
+		{Name of Objective} / A short order, like a bounty on a notice board \
+			- Task: / One line the player reads when it is offered: what to do, no numbers \
+			- Kind: / Hunt (kill a number of one enemy, maybe with a modifier), Guard (keep the core or a building from harm), Hold (no enemy reaches a spot), Rush (finish before a time runs out), or something new \
+			- Numbers: / The count, time or limit. Leave blank and the design gate proposes them \
+			- Taken by: / One player, who alone is paid, or the team, which splits the pay \
+			- Offered: / When it can be taken: every break at {VENDCINT}, once a map, or from a set tide \
+			- Lasts: / The next tide, a number of tides, or the rest of the map \
+			- Pays: / In [Pure Aura], and any base aura on top \
+			- If failed: / Nothing, or a cost: say what \
+			- Later maps: / How it gets harder on later maps: bigger counts, a modifier on the targets, a shorter time \
+			- Look: / One found object for its icon, readable at 12x12 \
+			- Clashes: / Any Cardinal, Direction or modifier it should not be offered with, or none \
+
+	[Optional Objective List]
+		/ Paste one New Optional Objective block per objective here \
+		! NEEDS LIST OF OPTIONAL OBJECTIVES !
+		{Net the Shoal} / Example only, not a decision \
+			- Task: Defeat a pack of marked enemies before they reach the core.
+			- Kind: Hunt
+			- Numbers: / Blank: the design gate proposes them \
+			- Taken by: One player
+			- Offered: Every break at {VENDCINT}
+			- Lasts: The next tide
+			- Pays: ! NEEDS !
+			- If failed: Nothing
+			- Later maps: More enemies in the pack, and they carry a modifier
+			- Look: A torn fishing net with a cork float
+			- Clashes: None
+		{Mind the Meteor}
+			- Task: Fully mine a node that spawns in a random location on the map.
+			- Kind: Mining
+			- Numbers:
+			- Taken by: All players
+			- Offered: Every break at {VENDCINT}
+			- Lasts: The next tide
+			- Pays: 3 [Pure Aura]
+			- If failed: Nothing
+			- Later maps: Node has more health and spawns further from player's spawn point
+			- Look: A node with a white crystal
+			- Clashes: None
