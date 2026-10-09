@@ -2,7 +2,8 @@
 
 Every asset `docs/SCOPE_v0.txt` names or implies, checked against branch `claude/phase-1-6lfnar` (PR #3) on
 2026-10-08: what exists and what is still missing. It is a to-do list, not a design; each gap goes to the phase in
-`docs/PLAN.md` Part B that owns it. Sonar is out of every design for now (user, 2026-10-08).
+`docs/PLAN.md` Part B that owns it. Sonar is out of every design for now (user, 2026-10-08). Items only Dimitri can
+supply are also marked `! NEEDS ... !` in `docs/SCOPE_v0.txt` itself; Argo's rows were updated on 2026-10-09.
 
 **Status:** **none** = only the scope's words; **concept** = described in a concept page or `docs/STYLE.md`, no
 numbers; **routed** = the engine route is read or proven (`TDS_Vessel_Creator/docs/15`), nothing designed;
@@ -12,7 +13,7 @@ numbers; **routed** = the engine route is read or proven (`TDS_Vessel_Creator/do
 
 | Area | Status | Biggest gap |
 | --- | --- | --- |
-| Argo | designed, built, PC round 1 93/102 | round 2: the fifth build option is still unproven; Argo's Directions |
+| Argo | tested: PC round 6 139/0, Phase 3 closed (PLAN Part C) | Argo's Directions; Dimitri's balance pass |
 | Yossele | concept | design gate; Growth and fertilizer rules; Mushroom Cannon has no upgrade ideas |
 | Spool | concept | design gate; Thread Head building or minion; minion orders UI; Mummer name clash |
 | Uloe | concept | "light received" feasibility before any design; Mirror has no upgrades |
@@ -65,14 +66,13 @@ attack, ability or none, difficulty, lore and upgrade trees tiers 2-5; the full 
 and upgrade models; effects, sounds, icons; journal; self-test; a release. The concept page
 `docs/concepts/YOSSELE_SPOOL_ULOE.md` §5 lists eleven art-versus-scope mismatches for its three vessels' design gates.
 
-### Argo, Deep Sea Diver: designed, built, in PC testing
+### Argo, Deep Sea Diver: tested, Phase 3 closed
 
 | Asset | Exists | Missing |
 | --- | --- | --- |
-| All five buildables, trees, Nauts | `Argo/DESIGN.md` 2.0 approved; art step 2 (`Previews/2.0`); code step 3 compiles | **PC round 2** (`Argo_round2`, waits on Dimitri's OK): the fifth build option, FLOOD, Miner's Base limit, AIM offset |
-| Deep Water motion | model done | the bob (step 3 left it for the PC) |
+| All five buildables, trees, Nauts, Deep Water's bob | `Argo/DESIGN.md` 2.0; steps 1-5 done; PC round 6 139 pass, 0 fail (`Argo/IMPLEMENTATION_NOTES.md`) | nothing |
 | Argo's Directions | none | Argo's entries in the catalogue (§2) |
-| Release | none | step 5: notes, `docs/09` lessons, zip; SONAR's unused 1.4.0 code waits on the user |
+| Balance and release | ships in the pack, no release of its own (PLAN Part C) | Dimitri's balance pass (his call); SONAR's unused 1.4.0 code waits on the user |
 
 ### Yossele, The Patient Golem: concept only
 

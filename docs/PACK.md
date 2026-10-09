@@ -73,7 +73,7 @@ its own group, so they exist on every machine that has the pack.
 
 ## 5. Ship
 
-One zip, `RogueWaves-<version>.zip`, holding the `RogueWavesMod` folder and `README.txt`. That README covers installing
-(unzip into `TDS\Mods`, enable in the Mods menu, disable standalone vessel mods of the same name), how the mode starts
-(the host equips the mode's Cardinal on the boat; its name is still to be decided) and online play (everyone needs the
-same version). There is no Workshop (`docs/14` §1).
+One zip, `RogueWaves-<version>.zip`, holding the `RogueWavesMod` folder and `README.txt`. That README covers
+installing (unzip into `TDS\Mods`, enable in the Mods menu, disable standalone vessel mods of the same name), how the
+mode starts (the host equips the mode's Cardinal on the boat, not named yet) and online play (everyone needs the same
+version). There is no Workshop (`docs/14` §1).

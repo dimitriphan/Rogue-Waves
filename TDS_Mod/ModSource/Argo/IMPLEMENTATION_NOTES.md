@@ -48,8 +48,47 @@ comes back after a sell, and FLOOD adds a pool for Blue 15. No mod exceptions, n
   likely held a stale second "Aim" entry (Updatecommand updates the first it finds and moves it to the end). The
   server now keeps one entry and clients read the last one; the check logs how many it removed.
 
-Not done in step 3: Deep Water's gentle bob (DESIGN tower motion); SONAR's 1.4.0 code stays in the source, switched
-off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
+**PC round 3 (2026-10-08): 123 pass, 5 fail, 0 setup.** **The Tremor radius now reaches clients after a sink**
+(Fathom 7 passes; the server removed one stale "Aim" entry, which confirms round 2's cause). All 5 fails were the test's
+layout on Thehunt's hill: Deep Water went on a one-tile ridge (two free tiles beside it), so Abyss and Trench had no
+tile, no foe would spawn on its pool (so Brine never ran), and the second Harpoon Gun got the ridge's end with no lane of
+two for Undertow. The base gun check read a Scatter pellet's hit on the far foe as the harpoon's (the harpoon hadn't
+fired). Round 4's test: Deep Water is built last, where five tiles on one level take a pool; the second gun is built
+right after the first; foes for the water can stand on any tile of it; the other guns hold fire while the base harpoon
+is checked, which waits for its shot; Undertow takes one foe with room to reel and a second beside it.
+
+**PC round 4 (2026-10-08): 134 pass, 0 fail, 0 setup.** Every 2.0 mechanic in DESIGN's test plan passed in game on
+Thehunt, with no mod exceptions. One gap: Bedrock felled the test foe, so the two Fault Line checks skipped without a
+line (they passed in round 3). The test now gives Fault Line its own foe and fails if it has none. Still to do: the
+captures (`ARGO_SHOTS`) for step 4's art review, Deep Water's bob, and hand play.
+
+**PC round 5 (2026-10-08): 138 pass, 0 fail, 0 setup, with captures** (`ARGO_SHOTS`, 19 PNGs on the PC in
+`handoff\selftest_logs\Argo_round5_shots`, attached in the thread; not yet reviewed here). Fault Line's checks ran and
+passed. Then the playable build (no defines, v0.1.0-dev) was built, boot-checked with Crackpot, Mummer, Rustle, Sprigg
+(every vessel logged its icons; 18 NullReferenceExceptions in the game's own ambient-sound teardown at close, no mod
+frame) and left **installed and enabled** for hand play. No zip, no publish.
+
+**Deep Water's bob (2026-10-08, after round 5; verified in round 6).** The water and what
+floats on it are a `Swell` part of every `Trap_Argowater*` model and of `Argo_Pool` (the frame and pump stay still;
+`ArgoModels.Swell`). `ArgoClient.Bob` raises and lowers it by ±0.012 over 3.2 s, phased by the tile so a row of pools
+rolls like one swell; parts are found again after an upgrade rebuilds the visual. The self-test checks it ("Deep
+Water's water bobs gently"). The model preview at rest matches the old one.
+
+**Round 5's captures reviewed (2026-10-08, `Previews/round5/REVIEW.md`).** Everything reads as designed except Deep
+Water's 3D views in the journal and on the boat, where the flat pool is a line. The journal now gets a tipped
+two-sided copy (`ArgoAssets.JournalModel`): compiled, not yet seen. The boat's view is the game's and stays.
+
+**PC round 6 (2026-10-08): 139 pass, 0 fail, 0 setup** (handoff `Argo_round6`, a7f2322). The generator rebuilt every
+Deep Water model with its `Swell` part, and "Deep Water's water bobs gently" passed (rose and fell 0.0182, amplitude
+0.012). No mod exceptions. Then the playable build (no defines) was rebuilt and boot-checked with Crackpot, Mummer,
+Rustle, Sprigg (every vessel's icons line, 0 exception lines) and left **installed and enabled**. The journal's tipped
+Deep Water now reads as a small tipped pool in the journal (`Previews/round6/`), no longer a line.
+
+**Argo 2.0 stands here (Phase 3 done).** Dimitri, 2026-10-08: Argo ships only inside the full `RogueWavesMod` pack (no
+ArgoMod 2.0 zip), and its balance waits for a later pass of his. Lessons went to kit `docs/09` #72-76 and `docs/03`
+§4a. Left for the pack: Argo's prefab joins `RogueWavesMod` (`docs/PACK.md`), and hand-play balance.
+
+SONAR's 1.4.0 code stays in the source, switched off by `SonarEnabled = false`. Installing the dev build replaces ArgoMod 1.4.0 on the PC; the 1.4.0 release can be
 put back from its export if needed.
 
 Everything below is 1.4.0.

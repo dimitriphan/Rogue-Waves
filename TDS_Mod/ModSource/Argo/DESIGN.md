@@ -150,7 +150,7 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 - **Tremor reach** is a stat (`Tremor`, 2 at Fathom 1, +0.4 a Fathom, Seismic +0.5), so the game shows it.
 - **Kit 1.6** comes in with Argo: `ModKitPack.Join` at start, `ModKitTides` for the Tide, `ModKitCounter` for Fathom,
   `ModKitFocus` for the F-key fix. A standalone Argo already loaded makes the pack's Argo stand down.
-- Deep Water does not bob yet (step 3 left the tower motion for the PC round).
+- Deep Water bobs: its water is a `Swell` part the clients raise and lower ±0.012 over 3.2 s; the frame stays still.
 
 ## Test plan (self-test, `docs/08`)
 
