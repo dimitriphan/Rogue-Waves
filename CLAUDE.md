@@ -16,7 +16,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo 2.0, designed from the scope and built; PC round 6 passed 139/0; ships only inside the pack | its `DESIGN.md` |
 | `TDS_Mod/ModSource/RogueLab` | Phase 1 research mod (never released): the PC round of `docs/15` §11 | its `README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
-| `docs/SCOPE_v0.txt` | The user's scope for the expansion (2026-10-08, his roguewave.txt): mode, mechanics, four vessels, modifiers, a bug fix, progress. `! NEEDS ... !` marks what only he can supply. The highest truth after the user's newest words | when a task touches its subject |
+| `docs/scope/` | The user's scope for the expansion (ex roguewave.txt, split 2026-10-09): one `.txt` per category (mode, mechanics, each vessel, Directions, Cardinals, modifiers, objectives); he sends back only the files he edits. `! NEEDS ... !` marks what only he can supply. The highest truth after the user's newest words | `00_Read_Me.txt`, then the file the task touches |
 | `docs/PACK.md` | How the pack is built and shipped: one `RogueWavesMod` bundle, a prefab per part, no load order, kit 1.6 scope, versions | before packaging or kit work |
 | `docs/STYLE.md` | The pack's style sheet: theme, palette, motifs, naming voice, each new vessel's shape and sprite reference | before drawing or naming anything for the pack |
 | `docs/PROJECT_SETUP.md` | What to hand the coordinator: repository, project instructions, project files, first message, PC chores | when setting up or re-creating the Claude Project |

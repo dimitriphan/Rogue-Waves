@@ -1,0 +1,35 @@
+| New Vessel: Uloe |
+	Uloe, Light Personified
+		# Uses {Light} as a mechanic
+		# Uses wandering minions named {Photons}, similar to Sno Sno, that interact with towers.
+		# {Photons} can {Illuminate} enemies, increasing their damage taken. Can also {Blind} enemies, reducing their damage. {Illuminate} and {Blind} have different levels of strength depending on its source.
+		# Towers have increased effects based on how much light they're receiving. {Photons} and Uloe provide light around them.
+		# Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms made of electricity at the sides, a cord to a plug. Towers carry glass, screw rings and cords.
+		# Status: concept page done. Comes last; a check that the game can measure light comes before its design. / Difficulty default: Advanced \
+		# Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. / One front facing concept frame so far, in sprites \
+		# Attack: ranged.
+		# Ability: {Plug In}. Uloe plugs into a node or a {Power Bank} and gives off high levels of {Light} in a radius around them, as long as they stay in range of what they plugged into. / The level of {Light} depends on the node's total aura or the {Power Bank}'s upgrades \
+		# The plug and cord are the {Plug In} ability's: they move with Uloe, like a cord in real life.
+		# The yellow strokes are floating arms made of electricity.
+		/ Lore comes once the character is finalized \
+
+		(Minions):{Photons}
+			# Refers to minion units
+		(Offense):{Magnifying Glass}
+			- Focuses beams of light to deal damage to enemies.
+			- Damage dependent on how much {Light} it is receiving
+				% Damage increases as it attacks the same target
+		(Support):{Power Bank}
+			- Spawns {Photons} which are light minions that provide benefits to towers.
+			- {Photons} wander around aimlessly where they spawn, but will follow light paths from {Flood Light}s if they're being directed.
+			- Can attack enemies for very little damage, but apply illumination and blinding.
+				% Photons explode on death, dealing damage and applying blind + illumination
+		(Defense):{Mirror}
+			- Wall that can be empowered by {Light} to blind enemies, reducing their damage.
+				% {Blind} or {Illuminate} enemies based on upgrade path.
+				% Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
+				% A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
+		(Economy):{Flood Light}
+			- Plugs into nodes and provides light. Can be directed towards towers to focus their light benefits.
+				% Grants light in a radius around itself. Can no longer be directed.
+				% Allows to redirect its light in a straight line towards towers.

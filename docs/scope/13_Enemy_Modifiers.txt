@@ -1,0 +1,11 @@
+| New Enemy Modifiers |
+	[Cursed]
+		# Reduces the attack of all nearby towers and units
+	[Berserk]
+		# Damage and speed increases as health lowers
+	[Aging]
+		# Speed is reduced by 30%, but health and damage increase by up to 100% as it stays alive. / Reaches max value after surviving for 50 seconds. Health is not added, but scaled. An enemy at 50% health will stay at 50% health, just with a higher max health. \
+	[Dazzling]
+		# {Blinds} and {Illuminates} nearby vessels, towers, and units.
+	# Modifiers show as an effect on the enemy, not a new skin.
+	/ New enemy types will be added later, when ready \

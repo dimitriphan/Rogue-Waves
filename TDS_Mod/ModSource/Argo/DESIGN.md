@@ -1,6 +1,6 @@
 # Argo: design (v2.0.0, approved 2026-10-08)
 
-Rogue Waves' Argo is **designed from the scope text** (`docs/SCOPE_v0.txt`, "Argo, Deep Sea Diver"), which the user calls
+Rogue Waves' Argo is **designed from the scope text** (`docs/scope/09_Vessel_Argo.txt`, "Argo, Deep Sea Diver"), which the user calls
 the planned version of every vessel (`docs/PLAN.md` Part C). The shipped ArgoMod 1.4.0 (`ModProjects`) is reused only
 where it matches. "Changes from the concept, and from 1.4.0" lists every difference; 1.4.0's own design is `DESIGN_1.4.0.md`. Checked against `TDS_Vessel_Creator/docs/02`.
 Status: **approved 2026-10-08; built and self-tested on the PC (round 6: 139 pass, 0 fail, `IMPLEMENTATION_NOTES.md`)**. Unmarked numbers are 1.4.0's, verified in its

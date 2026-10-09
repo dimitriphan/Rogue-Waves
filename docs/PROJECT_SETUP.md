@@ -15,7 +15,7 @@ needs it only once, when Argo's phase copies the shipped Argo in, and the plan s
 > You coordinate the Rogue Waves expansion mod for *TDS - Tower Defense Strategy*. Open `CLAUDE.md` first; it is the
 > map. Then read `docs/PLAN.md` Part A and follow it as your operating rules, and Part C "Now" for where the work
 > stands. Read nothing else until the current phase's reads in Part B send you there. Rules about the game live in
-> `TDS_Vessel_Creator/`; the user's scope is `docs/SCOPE_v0.txt`. Write findings to files, keep chat replies under
+> `TDS_Vessel_Creator/`; the user's scope is `docs/scope/`. Write findings to files, keep chat replies under
 > 150 words, ask questions only at gates, and update Part C before you end a session.
 
 Set the project's model to Fable 5.1; Part A's "Model per role" table says when a thread should drop to Opus 5.5.

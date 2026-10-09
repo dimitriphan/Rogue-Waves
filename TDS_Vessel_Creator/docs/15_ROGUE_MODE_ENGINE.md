@@ -1,7 +1,7 @@
 # 15 · The Rogue Wave mode engine: what a mod can build a roguelike run on
 
 How the game starts, plays and ends a match, keeps players' choices, pays bounties, applies Cardinals and saves, read
-for the Rogue Wave mode (`docs/SCOPE_v0.txt` in the Rogue Waves repository). Everything here was **read from the game's
+for the Rogue Wave mode (`docs/scope/` in the Rogue Waves repository). Everything here was **read from the game's
 code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod** or
 **untested**, or was **proven in game** by RogueLab rounds 1-3 (§11, §15) or Riptide (§13). `File.cs:line` points
 into that decompiled folder (never committed; rebuild it in a minute).
