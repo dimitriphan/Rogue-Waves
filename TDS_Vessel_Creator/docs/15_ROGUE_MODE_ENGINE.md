@@ -18,7 +18,7 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | Three maps in a row | **go, proven** | host sets the next map and calls `Changescene_ServerRpc("Gameloading")`; map 2 loaded without the boat (§3, §11) |
 | State across the three maps (Pure Aura, Directions, depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
-| Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13). Open it only while its menu is up: from a timer it faulted (§15) |
+| Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13). Bring its menu up first (`Bl_Menus.Changemenu`), then it takes eight cards and returns the pick (§15) |
 | Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; map 1 is the leader's pick (§6) |
 | Leave or stay between Tides from Tide 15 | **go, proven** | the same vote; "leave" = the stock win path through public members, proven between Tides (§4, §11) |
 | Bonus Tides | **go, proven** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry`, which also spends a core Tide (§4, §11) |
@@ -32,7 +32,7 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
 | The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
-| Maps from the base game | **go, 30 proven** | Gameplans resolve by name (§3); 30 base maps played clean in the mod's mode, 15 still to tour, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10) |
+| Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10) |
 
 ## 2. Modes and how a mod adds one
 
@@ -140,7 +140,7 @@ Not usable as a menu: `Entity_Command_Itemselect_Base` is a "click a spot in the
 
 | Choice | Route | Verdict |
 |---|---|---|
-| Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13; opened while its menu isn't up it throws after one card, §15) | go |
+| Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13, and by RogueLab with eight cards once its menu is up, §15) | go |
 | Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands, the host sets the map. Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads, the opening break is held while players pick Directions and vote, then the host chains to the voted map (§3) | fallback |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
 | Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
@@ -354,7 +354,8 @@ questions. All **read**; RogueLab round 2's results are §15.
   its AI scales the start aura and adds drops, and marks the match `Mode_Treated` (Entity_Ai_Main_Core_Treated.cs:19-30,
   136). Its params (verified): `Aura_Base` 2, `Aura_Drop` 4, `Aura_Basemax` 500, `Extra_Time` 3, `Extra_Wavetime` 30,
   `Health_Base` 200: an extra twice the mode's start aura split among the players (at most 500), enemy drops ×4, 3 s
-  more before the first Tide and 30 s more per Tide, +200 base health on every core (:29-30, 63, 70, 145-154). The setting is only ever 0 or 1 (Macro_Gamecore.cs:56, 72): there is no harder one.
+  more before the first Tide and 30 s more per Tide, +200 base health on every core (:29-30, 63, 70, 145-154). The
+  setting is only ever 0 or 1 (Macro_Gamecore.cs:56, 72): there is no harder one.
 - So a run gets harder only through what the mod writes: the Tide table (counts, intervals, more entries, elites, all
   proven live), the Treated upgrade forced on the core (to ease), `Resourcegainmultiplier`, and run modifiers of its
   own. A 4-player run faces the same Tides as a solo one unless the mode scales them.
@@ -366,7 +367,7 @@ questions. All **read**; RogueLab round 2's results are §15.
   logs "Mode might not work properly" (Game_Rounds.cs:72-98); map buildings (Merchut, gates) come from the map's own
   `Entities` whatever the mode (Game_Grid.cs:275-311). No code names a map except `Special_Custom` (no records). Alt
   maps are a Gameplan swap behind `Unlock_Altmaps` (Tds_Multiplayer_Remote.cs:662-664). RogueLab round 2 played 28
-  maps in the mod's mode, all clean (§15).
+  maps in the mod's mode and round 3 the other 15, all clean (§15).
 
 ### 14.5 Players who drop
 
@@ -408,26 +409,27 @@ hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must o
 - **Journal:** pages are `Logobject` assets (Logobject.cs:8-55); no code lists enemies, so the pack's foe pages are its
   own (`06`).
 
-## 15. RogueLab round 2 (2026-10-09)
+## 15. RogueLab rounds 2 and 3 (2026-10-09)
 
-RogueLab 0.2.0 on the PC, solo host, Boutman on 3B_Thehunt and 0B_Hydragen, then a tour of the base maps: **15 pass, 1
-fail, 0 setup**. The tour hung loading Special_Custom and the 75-minute timeout ended the run. Every line is in
-`reference/roguelab_round2.txt`; all **verified** unless marked read.
+RogueLab on the PC, solo host, Boutman on 3B_Thehunt and 0B_Hydragen, then a tour of the base maps. **Round 2** (0.2.0):
+15 pass, 1 fail, 0 setup; the tour hung loading Special_Custom and the 75-minute timeout ended the run. **Round 3**
+(0.3.0, the dialog with its menu up and the 15 maps round 2 left): **16 pass, 0 fail, 0 setup**, `TEST DONE`. Every
+line is in `reference/roguelab_round2.txt` and `roguelab_round3.txt`; all **verified** unless marked read.
 
 | Question | Result |
 | --- | --- |
-| Save across a restart | **proven**: the counter round 1 wrote read 2 on the next launch |
+| Save across a restart | **proven**: the counter round 1 wrote read 2 on the next launch, 3 on the one after |
 | Several `Default` prefabs in one bundle | **proven**: `RogueLabMod_Second_Default` (its own code) started at boot and its marker was found in the match. A pack can split its code over prefabs, each compiled alone (`14`) |
 | Loading another mode's group | `Bl_Address.Load` on each mode's folder at boot loaded all five in seconds; their elites and tables are in `13` §10 Q2-Q3 |
 | Other modes | Storm, Drought and Tsunami run the `Mode_Normal` script with their own params and tables; Final and Tutorial have their own scripts. Start aura: Normal, Storm, Drought 50 of each; Tsunami 500; Final 100; Tutorial none |
 | Treated | the easier setting, params in §14.3 (off on this PC: `Difficultysetting` 0) |
-| Map tour | **28 maps clean** in the mod's mode (every `Mode_Normal` Gameplan but the two played, which were clean in round 1): each loaded in 15-19 s with the vessel, one core (two on Splithead and Splithead δ), 1-4 enemy cores, subcores on Artrio (2) and Elgu Bounde (1), no Merchut, and no "might not work properly" warning |
+| Map tour | **all 45 base maps clean** in the mod's mode: 28 in round 2 (every `Mode_Normal` Gameplan but the two played, clean in round 1), the 15 whose Gameplan names Storm, Drought, Tsunami or Final in round 3 (now twinned too). Each loaded in 14-20 s with the vessel, one core (two on Splithead and Splithead δ), 1-4 enemy cores, subcores on Artrio (2), Hold (2), Elgu Bounde, Crimson Lythe δ and Crescent Valeur δ (1), and no "might not work properly" warning. The probe found no Merchut on any map (it looks for a `Tower`-tagged `Merchut` being; untested whether that's how the map places it) |
 | Special_Custom | **never offer it**: loading Map_Custom (six sub-loads, the player's custom-map slot) threw `InvalidKeyException` for two keys and a `NullReferenceException` in `Bl_Address.Load` and never finished |
-| Not toured yet | the 15 maps whose stock Gameplan names another mode: Skyhook, Bountyward (Mercs, the likely Merchut map), Auraboro Cycler, Great Rapid, Crescent Valeur, Hold, the Final map, and the δ of Ome Drydock, Monogrove, Bountyward, Purlest, Crimson Lythe, Woozy, Artrio, Crescent Valeur. Round 3 twins every Gameplan |
 | Map labels | `Mapentryobject.Difficulty` runs 1-9 (Ome Drydock δ 9, Thanh Bitterfield δ 8, most 4-6), Final and Custom 0: the MAP lines are a ready table for a vote's danger label (it still scales nothing, §14.3) |
-| Swarm cost (host) | Boutbros added on the host, frame time over 5 s: 0 → 8.8 ms mean (114 fps), 50 → 10.7 ms, 100 → 10.9 ms, 200 → 12.1 ms (82 fps), worst frame 35 ms. 200 extra units cost about 3 ms here; the client half needs the online evening |
-| Choice dialog | **failed again**: the 3-card and the 8-card `Runprompt` both faulted with a `NullReferenceException` inside `Runprompt` after building **one** card (2-column grid, cell 60×60, spacing -5). *Read:* for each card it sets `GetComponentInParent<Blu2_Menu_Handler>().Gamepadstartbutton` (Bla_Ui_Confirmation.cs:190), and `GetComponentInParent` skips inactive objects; opened by a coroutine 3 s into map 2 the dialog's menu wasn't up, so the handler was null. Riptide opened it from a vessel command with the HUD up and it worked (§13). Rule until round 3 confirms: open it only when that lookup is not null, from a command or a break |
+| Swarm cost (host) | Boutbros added on the host, frame time over 5 s. Round 2: 0 → 8.8 ms mean (114 fps), 50 → 10.7, 100 → 10.9, 200 → 12.1 ms (82 fps), worst 35 ms. Round 3: 0 → 7.0 ms (143 fps), 50 → 8.3, 100 → 9.5, 200 → 10.4 ms (97 fps), worst 21 ms. 200 extra units cost about 3.5 ms here; the client half needs the online evening |
+| Choice dialog | Round 2 **failed**: the 3-card and the 8-card `Runprompt` both threw a `NullReferenceException` inside `Runprompt` after building **one** card. For each card it sets `GetComponentInParent<Blu2_Menu_Handler>().Gamepadstartbutton` (Bla_Ui_Confirmation.cs:190), and `GetComponentInParent` skips inactive objects: opened by a coroutine 3 s into map 2, the dialog (its own menu, `Confirmation`) was inactive. Round 3 **proved the fix**: `Bl_Menus.Changemenu("Confirmation")`, wait until that lookup is not null (1.3 s), then `Runprompt` built all 8 cards and a click on card 1 returned it (`Succeeded`, no exception in the log) |
+| Eight cards on screen | the cards are 180×180 px on a 2560×1440 screen. The stock grid (2 per row) stacks 8 cards in 4 rows and the last 2 rows fall off the screen; set the grid's `constraintCount` to 4 and all 8 fit (two rows). Put the price and the gist in the name; the description shows on hover |
 | F key | not reproduced again: the mod-spawned Boutbro has owner -1 (the player is 1), so it is never in F's list. Still a hand check |
-| Exceptions | per map change an `OperationCanceledException` in `Blu2_Menu_Handler.Animin` (the game's own), the two `Runprompt` errors, and Special_Custom's load errors |
+| Exceptions | per map change an `OperationCanceledException` in `Blu2_Menu_Handler.Animin` (the game's own); round 2 also the two `Runprompt` errors and Special_Custom's load errors; round 3 only one more, `Game_Ui.OnDestroy` at quit |
 
 0.2.0 ran its boot dumps twice (a doubled call); the reference file keeps one copy.

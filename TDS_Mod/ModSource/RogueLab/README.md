@@ -16,7 +16,9 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
 Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a hang on Special_Custom; results in
-`docs/15` §15, every line in `TDS_Vessel_Creator/reference/roguelab_round2.txt`.
+`docs/15` §15, every line in `TDS_Vessel_Creator/reference/roguelab_round2.txt`. Round 3 ran the same day: **16 pass,
+0 fail**, the eight-card dialog worked with its menu up, all 15 tour maps loaded; lines in `roguelab_round3.txt`.
+RogueLab's research is done; it stays in the repository as the record and is never released.
 
 ## Round 3 (2026-10-09)
 

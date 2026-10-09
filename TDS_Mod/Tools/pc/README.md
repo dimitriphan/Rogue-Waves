@@ -58,3 +58,14 @@ PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 9. Run `Get-PcManifest.ps1` if anything changed after step 3. Report, release the lock, and stop the session.
 
 Only one session works in TDS_Mod at a time: an export parks the other vessels' folders.
+
+**The PC's permission guard and Dimitri's one OK** (RogueLab round 3, 2026-10-09): the PC session's auto mode refused
+`Apply-Handoff.ps1 -Apply` (a downloaded script writing into `TDS_Mod`) while his sentence was only the session's
+starting task; it went through once his thread message reached the session as a turn of its own. So one sentence
+does cover the round: a blocked PC session waits for that message (or asks the thread to forward it) and the cloud
+thread never asks Dimitri for a second phrase. To stop the prompt altogether, Dimitri can allow `Apply-Handoff.ps1`
+and `Run-SelfTests.ps1` in the PC folder's Claude Code permission settings.
+
+**Results reach the cloud thread as messages.** While a PC session runs, the thread's own folder tools are paused, and
+after it ends they can stay missing for the rest of that turn. So the PC session sends the round's lines back with
+`send_message` (each message under 50 KB, `<NAME> part i/n`), and the thread saves them from its own transcript.

@@ -203,3 +203,13 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
     the call runs anyway; MCP replays it 2-5 times, each export restores the parked mods and forces a recompile, and the
     replays overwrite `queue_status.txt` after a good run → make one call and trust the `[ModKit]` lines in
     `%LOCALAPPDATA%\Unity\Editor\Editor.log` (and the `.info` file's time). Verified on the PC.
+77. **The game's choice dialog shows one card, then the mod's prompt ends "Faulted"** (RogueLab, rounds 1-2) →
+    `Runprompt` gives each card to `GetComponentInParent<Blu2_Menu_Handler>()`, which skips inactive objects; opened
+    from code while its menu (`Confirmation`) was down, the lookup was null and it threw after the first card → call
+    `Bl_Menus.Changemenu("Confirmation")`, wait until that lookup is not null (1.3 s), then `Runprompt`; for more than
+    four cards set its grid's `constraintCount` to 4 or the bottom rows fall off the screen. Verified in game (round 3,
+    `15` §15).
+78. **A chained map never finishes loading and the mod's timeout never fires** (RogueLab round 2, Special_Custom) →
+    Map_Custom (the player's custom-map slot) fails in `Bl_Address.Load` with `InvalidKeyException`s; the timeout sat
+    behind a "no `Game_Mapvars`, not in a match" return → never chain into `Special_` Gameplans, and check a load
+    timeout before any in-match test. Verified in game (round 3 toured the last 15 maps with the fix).

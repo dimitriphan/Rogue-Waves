@@ -192,12 +192,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`. The game's `TDS\Mods` folder
   was emptied at the user's ask (the pack will carry everything); the 7 mods sit in the PC's
   `ClaudeProjects\handoff\mods_removed_20261008`, so the playable Argo is no longer installed.
-- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` answered from the decompiled game (kit
-  `docs/15` §14) and RogueLab round 2 on the PC (15 pass, 1 fail; kit `docs/15` §15): 14 of 18 items answered.
-  RogueLab 0.3.0 built for the rest (handoff `RogueLab_round3`, compile-checked).
-- **Next:** RogueLab round 3 on the PC (15 untoured maps, the choice dialog with its menu up), then the F-key check by
-  hand and one online evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
-- **Blocked:** round 3 waits on Dimitri's OK for the PC session.
+- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` (PR #8, merged): answered from the decompiled
+  game (kit `docs/15` §14) and RogueLab rounds 2 and 3 on the PC (round 3: 16 pass, 0 fail; kit `docs/15` §15, `09`
+  #77-78): 16 of 18 items answered, all 45 base maps run in a mod's mode, the choice dialog takes eight cards.
+- **Next:** the F-key check by hand and one online evening (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then
+  the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
+- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Decisions
 
