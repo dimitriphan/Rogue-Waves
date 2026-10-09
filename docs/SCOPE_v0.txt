@@ -60,7 +60,9 @@
 		- 3 are offered and 1 is picked before each map. More can be bought at the shop.
 		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 10 for every vessel and 6 per new vessel last a 15-map campaign \
 		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
-		! NEEDS LIST OF DIRECTIONS FOR EACH VESSEL (ARGO, YOSSELE, SPOOL, ULOE) AND ANY THAT WORK FOR EVERY VESSEL !
+		- Each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign.
+		/ Use the New Direction template at the bottom of this file to add one \
+		/ The list of Directions for each vessel lives in Directions by Vessel at the bottom \
 		! NEEDS DECISION: DO BASE GAME VESSELS GET THEIR OWN DIRECTIONS !
 
 	[Pure Aura]
@@ -175,7 +177,7 @@
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. / No sonar \
 		# Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Ships only inside the Rogue Waves pack. / Difficulty: Intermediate \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
-		! NEEDS ARGO'S DIRECTIONS !
+		/ Argo's Directions go in the Directions by Vessel list at the bottom \
 
 		(Offense 1):{Scatter Cannon}
 			- Shoots close range blasts that are effective against hordes / Cone of 6 pellets \
@@ -235,7 +237,10 @@
 	# A new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals.
 	# Found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
 	# Bought from the shopkeeper with [Pure Aura]
-	/ Most stock Cardinals can be made to act for one player only; see docs/SCOPE_VS_LOOP.md §F (research, 2026-10-09) \
+	# Two kinds. A Personal Cardinal belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel. A Team Cardinal acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen.
+	/ Personal wherever the game allows it. The Cardinal row holds 8, lobby picks included, so a campaign can hold at most 8 Team Cardinals. About 24 of the 40 stock Cardinals can be made Personal; see docs/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
+	# Personal Cardinals and Directions are saved with the campaign for each player and come back when it continues.
+	/ Use the New Cardinal template at the bottom of this file to add one \
 	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
 
@@ -246,3 +251,76 @@
 		# Damage and speed increases as health lowers
 	! NEEDS NEW ENEMY TYPES, OR CONFIRM THE EXPANSION ONLY ADDS THESE MODIFIERS !
 	! NEEDS DECISION: SHOW MODIFIERS AS AN EFFECT ON THE ENEMY, OR A NEW SKIN FOR EVERY ENEMY !
+
+
+| Templates |
+	# Copy a template into the right place below, replace every line, and delete the / \ notes that only explain the template.
+	# Leave a line as ! NEEDS ... ! when you don't know it yet. Claude proposes a default at the design gate and says which.
+	# Names follow docs/STYLE.md: a Direction is named like a heading or a course, a Cardinal is two plain words for a found object.
+
+	[New Direction]
+		{Name of Direction} / Short and active, like a heading or a course \
+			- Vessel: / Argo, Yossele, Spool, Uloe, or Any. Any works on every vessel, base game vessels included \
+			- Kind: / Boost (a stat bonus) or Shift (changes how the vessel plays) \
+			- Touches: / The vessel itself, one building (name it), all its buildings, its units or minions, or its aura income \
+			- Rank I: / One line the player reads on the pick card \
+			- Rank II: / What it adds when it is offered again \
+			- Rank III: / The last rank \
+			- Numbers: / Exact values for each rank. Leave blank and the design gate proposes them \
+			- Look: / One found object for its icon, readable at 12x12. It shows on the card in the pick dialog \
+			- Shop: / Yes if the shopkeeper can sell it, no if it can only be picked before a map \
+			- Clashes: / Any Direction or Cardinal it should not be held with, or none \
+
+	[Directions by Vessel]
+		/ Paste one New Direction block per Direction under its vessel. About 10 Any and 6 per new vessel last a 15-map campaign with ranks \
+		(Any)
+			! NEEDS DIRECTIONS FOR EVERY VESSEL !
+		(Argo)
+			! NEEDS ARGO'S DIRECTIONS !
+		(Yossele)
+			! NEEDS YOSSELE'S DIRECTIONS !
+			{Deep Roots} / Example only, not a decision \
+				- Vessel: Yossele
+				- Kind: Boost
+				- Touches: All its buildings
+				- Rank I: Your towers start one [Growth] stage up.
+				- Rank II: Your towers start two [Growth] stages up.
+				- Rank III: Your towers start fully grown.
+				- Numbers: / Blank: the design gate proposes them \
+				- Look: A seed with a root curling out of it
+				- Shop: Yes
+				- Clashes: None
+		(Spool)
+			! NEEDS SPOOL'S DIRECTIONS !
+		(Uloe)
+			! NEEDS ULOE'S DIRECTIONS !
+		(Base Game Vessels)
+			/ Only if you decide base game vessels get their own Directions; until then they get the Any ones \
+
+	[New Cardinal]
+		{Name of Cardinal} / Two plain words, a found object the wave washed up \
+			- Effect: / One line as the game shows it, no numbers, like the base game's Cardinals \
+			- Numbers: / Exact values. Leave blank and the design gate proposes them \
+			- Kind: / Personal or Team. Personal acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, and takes one of the 8 Team slots for the whole campaign \
+			- Lasts: / The rest of the campaign, this map only, or a number of Tides \
+			- Stacks: / Yes if a player (or the team) can own two, no if it leaves the shop once owned \
+			- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
+			- Price: / In [Pure Aura] \
+			- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \
+			- Look: / The object for its icon, readable at 12x12, in the pack's palette \
+			- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \
+
+	[Cardinal List]
+		/ Paste one New Cardinal block per Cardinal here \
+		! NEEDS LIST OF NEW CARDINALS !
+		{Cracked Buoy} / Example only, not a decision \
+			- Effect: Your towers start every map with more health.
+			- Numbers: / Blank: the design gate proposes them \
+			- Kind: Personal
+			- Lasts: The rest of the campaign
+			- Stacks: No
+			- Where from: Shop
+			- Price: ! NEEDS !
+			- Colour: Blue
+			- Look: A red and white buoy with a crack down one side
+			- Clashes: None
