@@ -37,7 +37,7 @@ choice dialog's menu up before opening it** (A6), and one map to never offer, Sp
 | # | Gap | Answer | Status |
 | --- | --- | --- | --- |
 | B1 | Light received (Uloe) | The game has no gameplay light; lighting is rendering only. Light is a number the mod sums from sources in range with the game's own area query, on a slow tick. Feasible; its cost goes with B5's numbers (§14.7) | answered |
-| B2 | Changing damage as it lands (Pin Cushion, Illuminated, Blinded, Mirror) | Every hit passes through the target's AIs in priority order before the target's own AI applies it, carrying the attacker: an AI can scale or cancel it (Fie's wall does), hurt the attacker back (Smacky's spiked wall does) or hold half for later. All four mechanics are go (§14.7) | answered |
+| B2 | Changing damage as it lands (Pin Cushion, Illuminated, Blinded, Mirror) | Every hit passes through the target's AIs in priority order before the target's own AI applies it, carrying the attacker: an AI can scale or cancel it (Fie's wall does), hurt the attacker back (Smacky's spiked wall does) or hold half for later. A shot's hit names its shooter as the attacker, not the shot (Projectile_Master.cs:316, 394; read 2026-10-09), so a reflect reaches ranged foes too (Pin Cushion's later upgrade). All four mechanics are go (§14.7) | answered |
 | B3 | Ground pickups (aura fruit, Thread) | The game's own aura pickup is the pattern: it checks for a nearby same-team unit, pays its owner and expires. Enemy drops never touch the ground (paid to everyone at death), so Thread drops are the pack's own pickups; Boutman's fish carry nothing (§14.7) | answered |
 | B4 | Directions that change a stock vessel | An upgrade adds AIs (it can't remove one by data), and an added AI's code can change what a tower does. Possible if the catalogue wants it (a SCOPE_GAPS decision) (§14.7) | answered |
 | B5 | A swarm's cost | On the host, two runs: 7.0-8.8 ms a frame with none, 10.4-12.1 ms with 200 extra units (82-97 fps); 200 units cost about 3.5 ms (§15) | answered (host); online (client) |
@@ -62,6 +62,8 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
 
 1. **By hand:** the F-key bug with Boutman (`docs/15` §11 step 8; the mod could not reproduce it in three rounds,
    because the mod-spawned Boutbro is not the player's): let Boutbro spawn, die, press F after respawning.
-2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half.
-3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1).
+2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, and A2's
+   Fund Transfer moving aura to the other player (read only; a solo host has no one to send to).
+3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). Its first PC round also
+   checks that a respawn keeps a granted Direction (read from the code, not yet seen).
 4. **C3** when the scope decides on new enemy types or elite skins.
