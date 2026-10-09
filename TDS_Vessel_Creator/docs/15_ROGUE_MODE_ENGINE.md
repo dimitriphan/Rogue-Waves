@@ -25,7 +25,8 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
 | Shopkeeper between Tides | **fallback** | the game has no shop; build one on Merchut's command-button pattern (§5) |
-| Fund Transfer (aura between players) | **go, untested** | a shop command; the host moves resources with `Helper_Resources` (§5) |
+| Fund Transfer (aura between players) | **go** | a shop command; the host takes with `Useresources` and gives with `Giveresources(list, owner)`, both per player (§5, §14.2) |
+| Directions held per player | **fallback** | the core is the team's: grant on the player's vessel and re-grant at each spawn (§14.1) |
 | New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write and read back proven, a restart not yet (§8, §11) |
@@ -312,3 +313,93 @@ settles here:
 RogueLab round 1 (§11) then proved the rest of the run's skeleton: the mod Cardinal from the lobby, the chain to a
 second map with host state, leaving between Tides as a win, rewinding `Entry`, the save keys.
 
+## 14. Second reading (2026-10-09)
+
+The research list in the Rogue Waves repository (`docs/RESEARCH_GAPS.md`) asked the decompiled game a second set of
+questions. All **read**; PC checks are RogueLab round 2.
+
+### 14.1 Cores and per-player upgrades
+
+- The map places the cores; `Mode_Normal` finds them by the `Core` tag (Mode_Normal.cs:350-358) and any core's death
+  loses the match (:236-260). One core spawns a vessel for every active player of its team, with `Owner` = that player's
+  `Sessionid` and the core as parent (Entity_Ai_Main_Core.cs:95-97, 184-195). The core has no owner.
+- `Artifact_Heroapply` upgrades every hero child of the core, so every player's vessel (Entity_Master.cs:333-335,
+  Entity_Ai_Artifact_Heroapply.cs:7-17). `Artifact_Towerapply` hooks `Game_Entity.Onspawn` and its team check compares
+  the artifact's entity with itself (Entity_Ai_Artifact_Towerapply.cs:14), so it upgrades **every** new `Tower`.
+- So a per-player Direction can't sit on the core. Put it on the player's vessel (owner = `Sessionid`), re-grant it from
+  host state at each vessel spawn, and give tower Directions through the mod's own `Onspawn` hook filtered by owner.
+  `ModKitDirections` (kit 1.6) grants on the core and needs this change before the mode uses it.
+
+### 14.2 Resources and moving aura
+
+- Aura is per player: `Helper_Resources.Give` adds to `Game_Players.Prevsessionlist[Owner].Resources`
+  (Helper_Resources.cs:16-29); `Owner = -1` pays every active player, `Split` divides first (:50-70). `Give` scales by
+  `Game_Mapvars.Resourcegainmultiplier` (:21), which Cardinals change (`Artifact_Bottomrock`); `Mode_Normal` sets it to
+  1 around its own payouts (Mode_Normal.cs:359-362). Do the same for a transfer.
+- The stock **Money Bag** (`Artifact_Pig`, "enables donation") already moves aura: its button needs 25 of each aura
+  (Entity_Command_Artifact_Pig_Launch.cs:30-47), the host spends it from the thrower and throws a bag; a same-team
+  entity with an owner that it hits pays that owner `Amount - 1` of each (Entity_Ai_Effect_Artifact_Pig.cs:72-165). Its
+  logic is private; a mod transfers directly with the public `Useresources` and `Giveresources(list, owner)`.
+- Enemy `Drops` are paid on a death despawn to every player, split (Game_Entity.cs:413-415); no object lands on the
+  ground.
+
+### 14.3 Difficulty levers
+
+- Nothing scales foes with the player count or the map: `Mapentryobject.Difficulty` only draws icons and the "TYPE"
+  label (Macro_Worldui.cs:101-115, Macro_Setupui.cs:187); `Gameplan.Par` feeds the par time, leaderboard points and the
+  par medal. A foe's level is the highest `Priority` among its upgrades (Helper_Entitytools.cs:528-532), and foes get
+  upgrades only from the Tide entry's `Content.Upgrades` (Mode_Normal.cs:118-142). `Levelmod` = `Leveladd × (Level-1)`.
+- The game's own hard setting: with `Difficultysetting` = 1 (Macro_Gamecore.cs:72) the core gets
+  `Special_Treated_Upgradeproperties` at spawn (Entity_Ai_Main_Core.cs:174-178); its AI scales the start aura and adds
+  drops, and marks the match `Mode_Treated` (Entity_Ai_Main_Core_Treated.cs:19-30, 136).
+- So a run gets harder only through what the mod writes: the Tide table (counts, intervals, more entries, elites, all
+  proven live), the Treated upgrade forced on the core, `Resourcegainmultiplier`, and run modifiers of its own. A
+  4-player run faces the same Tides as a solo one unless the mode scales them.
+
+### 14.4 Maps and modes
+
+- Map, mode and soundtrack are three strings loaded separately (Game_Init.cs:96-119): any map takes any mode. The
+  coupling is data: the mode's `Specialspots` go to named children of the map's `Mode` transform, and a missing one only
+  logs "Mode might not work properly" (Game_Rounds.cs:72-98); map buildings (Merchut, gates) come from the map's own
+  `Entities` whatever the mode (Game_Grid.cs:275-311). No code names a map except `Special_Custom` (no records). Alt
+  maps are a Gameplan swap behind `Unlock_Altmaps` (Tds_Multiplayer_Remote.cs:662-664). RogueLab round 2 plays every
+  candidate map once.
+
+### 14.5 Players who drop
+
+- The stable player key is the `Sessionid` (long): the host maps each client's saved GUID to a number and reuses it on a
+  rejoin (Blm_Player.cs:79-92, Blm_Multiplayer.cs:457-466). Netcode client ids, Steam ids and `Tds_Clientinfo` are not
+  stable. Run state is keyed by `Sessionid` (RogueLab and Riptide already do).
+- A drop despawns nothing: teammates become subowners of the dropped player's entities, and lose that on a rejoin
+  (Game_Players.cs:24-88). A rejoin gets a fresh `Tds_Clientinfo` with `Activeplayer` 0 and no aura
+  (Tds_Clientinfo.cs:25,37).
+- A match closes the lobby (`Lobbystate` "Closed", which the chain also sends), and a closed Steam lobby refuses joins
+  (Blm_Multiplayer.cs:67-77, Blm_Multiplayer_Remote.cs:278-297): a dropped friend can't rejoin a running map.
+
+### 14.6 The choice dialog
+
+`Runprompt(entries, title, sub, Forcedisplaymenu)` (Bla_Ui_Confirmation.cs:342). An entry has `Name`, `Display_Name`,
+`Display_Color`, `Display_Desc` (shown on hover), `Display_Image`, `Display_Imagecolor`, `Tomenu` (:16-31): no price, no
+disabled state, so a shop writes the price in the name and refuses on the host. One card per entry with no limit and no
+scrolling in code (:149); the list is a two-column grid (Riptide). The first click wins; no timeout (:196-231).
+
+### 14.7 Damage, pickups, light, changing towers (vessel mechanics)
+
+- **Hurt path:** `Interacthurt` puts the attacker's `Damage` and `Damagemulti` = 1 in the data and sets `Lasthit`
+  (Helper_Entitytools.cs:166-170), then the attacker's AIs' `Interact`, then the target's AIs' `Oninteract` in
+  `Priority` order (:138-151). The target's own general AI applies it at priority 10 (Entity_Ai_Tower_General.cs:15,28;
+  Entity_Ai_Mob_General.cs:28), so an AI below 10 can scale or zero `Damagemulti` first (Fiewall protection at 9,
+  Entity_Ai_Effect_Fiewall_Protection.cs:7,14; Subcore zeroes it). `Dodamage` drains `Healtharmor` (1 per hit),
+  `Healthover`, `Healthresource`, then `Health` (Helper_Damagetools.cs:17-64). There is no damage-taken stat;
+  `Entity_Master.Damagetaken` is a running total. **Reflect** = hurt `Interact.From` back (Smackywall's Spike does,
+  Entity_Ai_Tower_Smackywall.cs:173-177); **delayed damage** = cut `Damagemulti` and deal the rest later;
+  **Illuminated** = a debuff AI below 10 that raises `Damagemulti`; **Blinded** = a modifier on the foe's `Damage`.
+- **Pickups:** the stock aura pickup (`Special_Aurapickup`) checks each slow tick for a same-team `Mob`-tagged entity
+  within 1 unit, pays its owner with `Giveresources`, and expires after 8 s
+  (Entity_Ai_Artifact_Checklist_Special_Pickup.cs:20-51). Boutman's fish carry no resources.
+- **Light:** no gameplay light exists (lighting is rendering only). A tower's light is a number the mod sums from
+  sources in range with `Helper_Entityquerytools.Entityarea(pos, radius, query, sort)` (Helper_Entityquerytools.cs:217).
+- **Changing a stock tower:** an upgrade adds AIs and fires `Master.Upgrade` (Helper_Entitytools.cs:504-550); data can't
+  remove a base AI, code in an added AI can change what the tower does.
+- **Journal:** pages are `Logobject` assets (Logobject.cs:8-55); no code lists enemies, so the pack's foe pages are its
+  own (`06`).

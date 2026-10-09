@@ -187,10 +187,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Done:** Phases 1 and 2 (2026-10-08). **Phase 3 Argo** (2026-10-08): steps 1-5; PC round 6 **139 pass, 0 fail**,
   Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) is installed on the PC; lessons in kit `docs/09` #72-76. Work
   is on `claude/project-thread-f7fmvc` (draft PR #7 into #3's branch). No release: Argo ships in the pack.
-- **Next:** the coordinator's next phase in Part B. Left on Argo: his balance pass (later, his call). Research still
-  owed before Phase 5 and the next design gates: `docs/RESEARCH_GAPS.md` (one cloud session, one PC round "RogueLab
-  round 2", one online evening; 2026-10-08).
-- **Blocked:** nothing.
+- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` answered from the decompiled game (kit
+  `docs/15` §14); RogueLab 0.2.0 built for what only the game can show (handoff `RogueLab_round2`, compile-checked).
+- **Next:** RogueLab round 2 on the PC (Dimitri's OK asked 2026-10-09), then the F-key check by hand and one online
+  evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (later, his call).
+- **Blocked:** round 2 waits on Dimitri's OK for the PC session.
 
 ### Decisions
 
@@ -233,6 +234,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   them, house-style departures kept as drawn until each vessel's design gate. Kit 1.6 = `docs/PACK.md` §3.
 - 2026-10-08 (user): **Argo ships only inside the full `RogueWavesMod` pack**, no standalone ArgoMod 2.0. Argo's
   balance pass waits for a later session of his; step 5 is lessons and notes, no release zip.
+
+- 2026-10-09 (research): **Directions are held per player on the vessel, not on the core** (the core is the team's,
+  `docs/15` §14.1); `ModKitDirections` changes to that as kit 1.7 when Phase 5 starts. Per-player run state is keyed
+  by `Sessionid`. The base game scales nothing by player count or map, so the mode's difficulty is its own (§14.3).
 
 ### Open questions
 
