@@ -1,9 +1,10 @@
 # Rogue Waves: the prompt plan
 
-The plan for building the expansion in `docs/SCOPE_v0.txt` (the user's scope, 2026-10-08, the highest truth after the
-user's newest words). It has three parts: how the **coordinator** (the Claude session that runs this project) works so
-it stays cheap and good, the **phases** with the prompt that opens each one, and the **state** every session reads first
-and updates last. Rules about the game live in the kit; this page only says what to do next and how to do it cheaply.
+The plan for building the expansion in `docs/scope/` (the user's scope, 2026-10-08, one file per category since
+2026-10-09, the highest truth after the user's newest words). It has three parts: how the **coordinator** (the Claude
+session that runs this project) works so it stays cheap and good, the **phases** with the prompt that opens each
+one, and the **state** every session reads first and updates last. Rules about the game live in the kit; this page
+only says what to do next and how to do it cheaply.
 
 ---
 
@@ -34,6 +35,13 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > **One thing at a time.** One vessel, one system, one gate. Design before code (`DESIGN.md`, checked against
 > `docs/02` by its design script), `cloud-check` before any handoff, a handoff only when it is worth the user's PC
 > time, and batched: several fixes per round, never one. Compile is not a test; say which it was.
+>
+> **The user's scope.** `docs/scope/` is the scope as one `.txt` per category (`00_Read_Me.txt` lists them), and
+> `/mnt/project-files/scope/` is his copy; keep the two equal. He sends back only the files he edited. An upload
+> arrives without its name: its first line (`| Directions |`, `| New Vessel: Yossele |`) says which file it is. Fold in
+> just that file: diff it against the repo copy, keep his wording, put each `< answer >` into the line above it in his
+> format, and update both copies. Touch another scope file only where his edit contradicts it, and name that file in
+> the reply.
 >
 > **Ask only at gates.** Questions for the user are collected in Part C "Open questions" and asked together when a
 > gate is reached or the work cannot continue without them. Defaults you can take yourself are taken and logged.
@@ -66,10 +74,10 @@ cheap and decide the shape of everything after them, so nothing else starts befo
 
 ### Phase 0. Definitions (half a session)
 
-Close the scope's blanks with the user before anything is researched. Reads: `docs/SCOPE_v0.txt` once, this section.
+Close the scope's blanks with the user before anything is researched. Reads: `docs/scope/` once, this section.
 
 Opening prompt:
-> Read `docs/SCOPE_v0.txt`. List every term it uses that the kit does not define and every item with no body
+> Read `docs/scope/`. List every term it uses that the kit does not define and every item with no body
 > (done 2026-10-08; see Part C Decisions). Write them to
 > `docs/PLAN.md` Part C "Open questions" with the default you would take for each. Ask the user once, in one message.
 
@@ -137,8 +145,8 @@ Each vessel runs the kit's loop; the reading list is `CLAUDE.md`'s reading-order
 5. `IMPLEMENTATION_NOTES.md`, lessons to `docs/09`, release zip.
 
 Opening prompt (per vessel):
-> Build `<Vessel>` from its section of `docs/SCOPE_v0.txt` through the five steps in `docs/PLAN.md` Phase 3, one
-> step per session unless a step is small. Start with step 1 and stop at the design gate.
+> Build `<Vessel>` from its file in `docs/scope/` (its Directions are in `11_Directions.txt`) through the five steps
+> in `docs/PLAN.md` Phase 3, one step per session unless a step is small. Start with step 1 and stop at the design gate.
 > For Argo: design from the scope text. Then copy `ModProjects/TDS_Mod/ModSource/Argo` and `Assets/ArgoMod` in,
 > read only its `IMPLEMENTATION_NOTES.md` and `02_Data.cs`, keep what matches the design and list the rest as changes.
 
@@ -216,6 +224,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   minions), Dandelion Season and Mother of Mushrooms (Yossele), Sewing Machine (Spool); objective Mind the Meteor
   (3 Pure Aura); Thread Head sends Stitched, its paths turn them into Darts. Compost Bin's counts are now x, for
   Yossele's design gate. Map-count knock-ons in `docs/SCOPE_VS_LOOP.md` (#3, #14, #20, §E).
+- **Also (2026-10-09 21:50Z):** the scope is split into `docs/scope/`, one file per category (15 files: read-me,
+  expansion, progress, bug fix, mode, rundown, mechanics, one per vessel, Directions, Cardinals, modifiers,
+  objectives); copy at `/mnt/project-files/scope/` (replaces `roguewave.txt`) and on the PC in
+  `Desktop\RogueWave\scope`. `docs/SCOPE_v0.txt` is a pointer. Dimitri now sends back only the files he edits; the
+  fold-in rule is in Part A.
 - **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
@@ -284,6 +297,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Leave by **majority**; **bonus tides never end** until that vote; a failed campaign keeps nothing; 3 retries; every
   base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Swell levels (still on hold).
   Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
+
+- 2026-10-09 (user): **the scope is one file per category** (`docs/scope/`); he sends back only what he edits.
 
 ### Open questions
 

@@ -1,0 +1,34 @@
+| New Vessel: Argo |
+	Argo, Deep Sea Diver
+		# Immobilization and Slows
+		# Has no dedicated wall for defenses, and relies on crowd control to control the battlefield
+		# Harpoon Gun is offensive mixed with crowd control / pulling in or pinning back \
+		# Drill rig is economy mixed with crowd control / Slowing designated areas \
+		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. / No sonar \
+		# Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Ships only inside the Rogue Waves pack. / Difficulty: Intermediate \
+		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
+		/ Argo's Directions go in the Directions by Vessel list in 11_Directions.txt \
+
+		(Offense 1):{Scatter Cannon}
+			- Shoots close range blasts that are effective against hordes / Cone of 6 pellets \
+			- Deals bonus damage to enemies affected by debuffs / +50% to slowed or pinned enemies \
+				% Increases health greatly / Ironclad \
+		(Offense 2):{Harpoon Gun}
+			- Can spec into long range pure damage, or crowd control / Base harpoon pierces a lane and does not pull \
+			- Pin or Reel depending on upgrade path / Pinning against wall stuns \
+				% Damage path: Long Line, Skewer, Whaler, Leviathan Lance
+				% Crowd control path: Tether slows, Anchor Line pins and stuns beside a building, Reel pulls in, Undertow reels every enemy around the target
+
+		(Trap):{Deep Water}
+			- Slowing trap that can combine with harpoon gun or drill rig / A pinned enemy in Deep Water is held twice as long. A tremor touching a pool spreads through every connected pool \
+			- Can be extended like Fie's wall / FLOOD adds a pool next to it \
+				% Stronger slow, damage over time, catch enemies on entering, more damage taken
+				% Trench, final upgrade that spreads the water each tide and drags enemies under
+
+		(Economy/Defense):{Drill Rig}
+			- Mines ore while also creating slowing tremors in targeted location. Tremor size increases per tide. / AIM picks where the tremor goes. Each tide sinks a Fathom, up to 5 \
+				% Pinning enemies to tremors cause them to take damage over time / Bedrock \
+				% Pulling enemies through tremors cause them to take large burst damage / Fault Line \
+
+		(Support):{Miner's Base} / Works similar to Boutman's bouthouse with a limit of 1 \
+			- Summons 2 units / Port & Starboard \ that tune towers, repairing and enhancing them. / Can only enhance towers, not traps \

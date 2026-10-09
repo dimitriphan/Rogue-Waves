@@ -1,0 +1,28 @@
+| New Mechanics |
+	[Directions]
+		A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
+		- 3 are offered and 1 is picked before each map. The shop sells only the next rank of a Direction the vessel already holds.
+		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 7 for every vessel and 4 per new vessel last a 10-map campaign \
+		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
+		- Each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign.
+		/ Use the New Direction template in 11_Directions.txt to add one \
+		/ The list of Directions for each vessel lives in Directions by Vessel, in 11_Directions.txt \
+		- Base game vessels get their own Directions too, besides the Any ones.
+
+	[Pure Aura]
+		A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
+		- Shown as a pearl white counter on each player's vessel, a colour none of the base auras use.
+		- Every tide pays 3 [Pure Aura]. A bonus tide pays 2.
+
+	[Fund Transfer]
+		Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
+		- This is the expansion's "Streamlined Economy Changes".
+		- Only base aura can be sent, never [Pure Aura].
+		- Each player can send up to 50 times the coming tide's number per break, in any mix of colours: 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue).
+
+	[Shopkeeper]
+		{VENDCINT} / A sentient vending machine \
+		- A unit that falls from the sky near the vessels' spawn point at the start of every break between tides, the way the vessels land.
+		- At the end of the break it jumps into the sky and disappears.
+		- Sells [Cardinals], and the next rank of [Directions] the vessel already holds, for [Pure Aura]. [Fund Transfer] is done at it too.
+		! NEEDS PRICES FOR DIRECTION RANKS / A Cardinal's price is on its own template \ !

@@ -1,7 +1,7 @@
 # Yossele, Spool, Uloe: concept page (draft, 2026-10-08)
 
 A first concept for three of the scope's four vessels, built from two sources and nothing else: the user's sprite
-concepts (`art/`, copied from `Desktop\RogueWave\sprites` on 2026-10-08) and the vessel text in `docs/SCOPE_v0.txt`,
+concepts (`art/`, copied from `Desktop\RogueWave\sprites` on 2026-10-08) and the vessel text in `docs/scope/` (one file per vessel),
 plus the user's decisions in `docs/PLAN.md` Part C. It is not a design: numbers, upgrade trees and ids come at each
 vessel's Phase 3 design gate (`DESIGN.md` from `TDS_Vessel_Creator/template/DESIGN_TEMPLATE.md`). Where the art and the
 text disagree, this page says so (§5) instead of choosing. Every name below is the user's.

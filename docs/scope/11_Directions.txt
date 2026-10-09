@@ -1,0 +1,101 @@
+| Directions |
+	# Copy the New Direction template into its vessel's list below, replace every line, and delete the / \ notes that only explain the template.
+	# Leave a line as ! NEEDS ... ! when you don't know it yet. Claude proposes a default at the design gate and says which.
+	# Names follow docs/STYLE.md: a Direction is named like a heading or a course.
+
+	[New Direction]
+		{Name of Direction} / Short and active, like a heading or a course \
+			- Vessel: / Argo, Yossele, Spool, Uloe, or Any. Any works on every vessel, base game vessels included \
+			- Kind: / Boost (a stat bonus) or Shift (changes how the vessel plays) \
+			- Touches: / The vessel itself, one building (name it), all its buildings, its units or minions, or its aura income \
+			- Rank I: / One line the player reads on the pick card \
+			- Rank II: / What it adds when it is offered again \
+			- Rank III: / The last rank \
+			- Numbers: / Exact values for each rank. Leave blank and the design gate proposes them \
+			- Look: / One found object for its icon, readable at 12x12. It shows on the card in the pick dialog \
+			- Clashes: / Any Direction or Cardinal it should not be held with, or none \
+
+	[Directions by Vessel]
+		/ Paste one New Direction block per Direction under its vessel. About 7 Any and 4 per new vessel last a 10-map campaign with ranks \
+		(Any)
+			! NEEDS DIRECTIONS FOR EVERY VESSEL !
+			{Made of Tougher Stuff}
+				- Vessel: Any Vessel with (Minions)
+				- Kind: Boost
+				- Touches: (Minions)
+				- Rank I: Your (Minions) take reduced damage from attacks.
+				- Rank II: Your (Minions) take further reduced damage from attacks.
+				- Rank III: Your (Minions) take further reduced damage, and can only take a max amount of damage per each hit.
+				- Numbers:
+				- Look: A {Stitched} with a bandaid on its face, holding back tears.
+				- Clashes: Any Vessel without (Minion)
+		(Argo)
+			! NEEDS ARGO'S DIRECTIONS !
+		(Yossele)
+			! NEEDS YOSSELE'S DIRECTIONS !
+			{Deep Roots} / Example only, not a decision \
+				- Vessel: Yossele
+				- Kind: Boost
+				- Touches: All its buildings
+				- Rank I: Your towers start one [Growth] stage up.
+				- Rank II: Your towers start two [Growth] stages up.
+				- Rank III: Your towers start fully grown.
+				- Numbers: / Blank: the design gate proposes them \
+				- Look: A seed with a root curling out of it
+				- Clashes: None
+			{Compost Bin}
+				- Vessel: Yossele
+				- Kind: Shift
+				- Touches: The vessel itself
+				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives stack of fertilizer per x enemies killed in a radius around Yossele. / x is a number \
+				- Rank II: Gives stack of fertilizer per x enemies killed in a radius around Yossele / x is a number \
+				- Rank III: Gives stack of fertilizer per x enemies killed in a much larger radius around Yossele / x is a number \
+				- Numbers:
+				- Look: A small gray bin with dirt inside and stink lines emanating from the top.
+				- Clashes: None
+			{Dandelion Season}
+				- Vessel: Yossele
+				- Kind: Shift
+				- Touches: {Primordial Dandelion Tree}
+				- Rank I: Your {Primordial Dandelion Tree} becomes {Dandelion Sapling}. {Dandelion Sapling} have no limit. / {Dandelion Saplings} are slightly weaker statwise and don't scale as well as {Primordial Dandelion Tree} \
+				- Rank II: {Dandelion Sapling's} [Growth] scaling increases.
+				- Rank III: {Dandelion Sapling's} damage and range increase based on number of {Dandelion Saplings} at max [Growth] level.
+				- Numbers:
+				- Look: A dandelion
+				- Clashes: Other {Primordial Dandelion Tree} [Directions]
+			{Mother of Mushrooms}
+				- Vessel: Yossele
+				- Kind: Shift
+				- Touches: {Primordial Dandelion Tree}
+				- Rank I: {Primordial Dandelion Tree} is replaced by {Primordial Mushboom}. The {Primordial Mushboom} is a large mushroom tower that explodes in a large radius around it, dealing damage based on spore stacks on enemies, consuming the spore stacks. / [Growth] increases the {Primordial Mushboom's} range \
+				- Rank II: {Primordial Mushboom's} range is increased.
+				- Rank III: {Primordial Mushboom's} explosion only consumes half of the spore stacks on an enemy, while dealing the full damage.
+				- Numbers:
+				- Look: A mushroom growth starter kit
+				- Clashes: Other {Primordial Dandelion Tree} [Directions]
+		(Spool)
+			! NEEDS SPOOL'S DIRECTIONS !
+			{Efficient Recycler}
+				- Vessel: Spool
+				- Kind: Boost
+				- Touches: The vessel itself
+				- Rank I: {Unthread} increases amount of {Thread} gained from minions
+				- Rank II: {Unthread} further increases amount of {Thread} gained from minions
+				- Rank III: {Unthread} increases the amount of {Thread} gained from minions greatly, and heals units and towers in an area around the minion that had been {Unthreaded}
+				- Numbers:
+				- Look: A recycling icon made of a string of yarn
+				- Clashes: None
+			{Sewing Machine}
+				- Vessel: Spool
+				- Kind: Shift
+				- Touches: {Loom}
+				- Rank I: {Loom} is replaced by {Sewing Machine}, generating aura quicker and healing nearby buildings and units, but cannot generate {Thread}.
+				- Rank II: {Sewing Machine's} healing is increased.
+				- Rank III: {Sewing Machine's} healing radius is greatly increased.
+				- Numbers:
+				- Look: A classic light blue sewing machine
+				- Clashes: Other {Loom} [Directions]
+		(Uloe)
+			! NEEDS ULOE'S DIRECTIONS !
+		(Base Game Vessels)
+			/ Base game vessels get their own Directions as well as the Any ones. Put the vessel's name in Vessel \
