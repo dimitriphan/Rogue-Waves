@@ -246,6 +246,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/15` §14.1); `ModKitDirections` changes to that as kit 1.7 when Phase 5 starts. Per-player run state is keyed
   by `Sessionid`. The base game scales nothing by player count or map, so the mode's difficulty is its own (§14.3).
 
+- 2026-10-09 (user): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
+  save holds it, keyed per player by Steam id (`docs/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
+  core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
+  up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
+  default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
+
 ### Open questions
 
 Phase 0's eight questions are closed (see Decisions). New ones go here, with a default.
