@@ -18,8 +18,8 @@ they join the online evening that was already planned.
 **Update after round 5 (2026-10-09):** all eight are now confirmed in game (§3). The main-menu button's checks all
 passed in round 6.
 
-Four points need Dimitri's eye (§4): the Fund Transfer cap is 0 in the opening break as written; what a bonus tide pays;
-the shop selling only ranks; and that "reduced aura gain" can't use the game's own multiplier for Tide pay.
+Four points needed Dimitri's eye (§4); he settled three on 2026-10-09 (first cap 50, a bonus tide pays 2, the shop sells
+only ranks). Left: that "reduced aura gain" can't use the game's own multiplier for Tide pay.
 
 ## 2. Mechanic by mechanic
 
@@ -31,7 +31,7 @@ the shop selling only ranks; and that "reduced aura gain" can't use the game's o
 | VENDCINT's menu | go, proven | A button opens a `Runprompt` dialog on the presser's machine with its menu up; the pick goes to the host as a command on the player's own vessel (Riptide's Salvage, `docs/15` §6, §13). The dialog has no price field: the price goes in the card's name, and the host refuses what a player can't afford | - |
 | Shop sells Cardinals and the next rank of held Directions | go | Host-side check of the buyer's Directions (`docs/15` §14.1). Cardinals bought mid-run: proven (§7) | - |
 | **Fund Transfer, base aura only, 50 x tide per break** | go | Per colour, `Useresources` from the sender then `Giveresources` to the receiver, with `Resourcegainmultiplier` and `Resourcelossmultiplier` set to 1 around it (Helper_Resources.cs:21, 121-131, read). The cap is a host counter per player reset at each break. Amounts come as preset cards (25, 50, 100, all), since the dialog has no number entry. The game counts a transfer in the end screen's Gained and Spent (read; harmless) | F1 |
-| Pure Aura, 3 a tide and more on bonus tides | go | A host counter per player, paid when `Wave` rises (`docs/15` §3) | - |
+| Pure Aura, 3 a tide and 2 a bonus tide | go | A host counter per player, paid when `Wave` rises (`docs/15` §3) | - |
 | **Leave by majority vote; endless bonus tides, each harder** | go, proven pieces | Votes are commands on each player's vessel (proven, Riptide). Count the voters as the players in `Game_Players.Prevsessionlist` with `Activeplayer > 0` (Helper_Resources.cs:53-60, read); recount when someone drops (online). Bonus tides: the mod writes the next Tide entry during each break, with bigger counts and elites (live writes proven, `docs/15` §13), and tops up the enemy core's Tides-left so the map doesn't end (§4, proven) | online |
 | Every base map in the vote | go, proven | RogueLab rounds 2 and 3 played the base maps in the mod's mode; never the custom map slot (`docs/15` §15, PR #11) | - |
 | Each map harder: modifiers, spawn rate, health, objectives | go, proven | Tide entries' counts, intervals and elite upgrades (proven); a health upgrade added at spawn (`docs/13` §4, §6.5, read) | A1 |
@@ -115,10 +115,13 @@ and jump look, and whether foes go for it (default: it stands off the lanes and 
 
 ## 4. For Dimitri
 
+Dimitri answered the first three on 2026-10-09 19:47Z: the first cap is 50, a bonus tide pays **2**, the shop sells
+only ranks.
+
 | Point | Default taken in the scope |
 | --- | --- |
-| The cap is 50 x the tide number, and the tide number is 0 in the opening break (Mode_Normal.cs:318, read), so nothing could be sent before Tide 1 | Count the tide that is coming: 50 before Tide 1, 250 in the break before Tide 5 |
-| "Bonus tides paying an additional 1 Pure Aura per tide" | Each bonus tide pays 4 (3 + 1). If it should climb (4, 5, 6, ...), say so |
-| The shop sells only ranks of Directions a vessel already holds | New Directions come only from the pick before each map; the Directions template lost its Shop line, as in your file |
+| The cap is 50 x the tide number, and the tide number is 0 in the opening break (Mode_Normal.cs:318, read), so nothing could be sent before Tide 1 | **Confirmed**: count the tide that is coming: 50 before Tide 1, 250 in the break before Tide 5 |
+| "Bonus tides paying an additional 1 Pure Aura per tide" | **Answered**: a bonus tide pays 2 |
+| The shop sells only ranks of Directions a vessel already holds | **Confirmed**: new Directions come only from the pick before each map; the Directions template lost its Shop line, as in your file |
 | Fund Transfer is base aura only | Replaces `docs/SCOPE_VS_LOOP.md` #6's idea that the team pools Pure Aura through it |
 | "Reduced aura gain" per Swell level | The game's gain multiplier doesn't touch Tide pay, so a Swell lowers start aura and drops instead. Decided at Swell's design, which stays on hold |

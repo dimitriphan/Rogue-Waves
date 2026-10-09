@@ -69,13 +69,13 @@
 	[Pure Aura]
 		A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
 		- Shown as a pearl white counter on each player's vessel, a colour none of the base auras use.
-		- Every tide pays 3 [Pure Aura]. A bonus tide pays 1 more, so 4. / Read from your answer; say so if bonus tides should climb by 1 each \
+		- Every tide pays 3 [Pure Aura]. A bonus tide pays 2.
 
 	[Fund Transfer]
 		Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
 		- This is the expansion's "Streamlined Economy Changes".
 		- Only base aura can be sent, never [Pure Aura].
-		- Each player can send up to 50 times the tide number per break, in any mix of colours. / The tide number is the coming tide, so 50 before Tide 1. In the break before tide 5 a player can send 250 in all: 125 red and 125 blue, or 250 blue \
+		- Each player can send up to 50 times the coming tide's number per break, in any mix of colours: 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue).
 
 	[Shopkeeper]
 		{VENDCINT} / A sentient vending machine \

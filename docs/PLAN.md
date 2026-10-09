@@ -266,7 +266,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
 - 2026-10-09 (user, roguewaveWIP.txt): shopkeeper **VENDCINT** drops in near the vessels' spawn each break and leaves at
   its end; sells Cardinals and **only the next rank of Directions a vessel holds**. **Fund Transfer: base aura only**,
-  50 x tide per break (default: the coming tide, so 50 before Tide 1). Pure Aura 3 a tide (default: 4 a bonus tide).
+  50 x the coming tide per break (50 before Tide 1). Pure Aura 3 a tide, **2 a bonus tide** (both confirmed 19:47Z).
   Leave by **majority**; **bonus tides never end** until that vote; a failed campaign keeps nothing; 3 retries; every
   base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Swell levels (still on hold).
   Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
