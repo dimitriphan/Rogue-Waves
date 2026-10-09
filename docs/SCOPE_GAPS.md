@@ -37,12 +37,12 @@ director, Salvage dialog), `ModSource/RogueLab` (chain, leave, save).
 | Vessel lock before the run | ready-up is the lock (`docs/15` §6) | nothing to build; one line of player-facing text |
 | Map 1 staging step | rule decided (every map voted, `docs/15` §6) | the hold, the banner, what players see while it waits |
 | Map vote (3 base-game maps) | route: in-game vote by vessel commands (`docs/15` §6) | **which maps can be offered** (pool per map 1/2/3, by difficulty?), the vote dialog, tie-break, timeout |
-| Three maps with increasing difficulty | chain proven (RogueLab) | **what "harder" means per map**: Tide table or budget curve per map (Riptide's curve is the model), modifiers per map |
+| Maps with increasing difficulty (now a 10-map campaign) | chain proven (RogueLab) | **what "harder" means per map**: Tide table or budget curve per map (Riptide's curve is the model), modifiers per map |
 | "Modifiers / enemies that change with each run" | Riptide's seeded director picks foes and elites | which pool is randomised (stock foes, Cursed, Berserk, new types), per-run seed rules |
 | Tide 15 leave-or-stay | win path between Tides proven (`docs/15` §4) | the vote's UI, timer, majority rule; what leaving pays |
-| Bonus Tides past 15 | longer table or rewind proven | how many, how they scale, Pure Aura per bonus Tide, the final Tide of map 3 (the scope's win condition) |
+| Bonus Tides past 15 | longer table or rewind proven | how many, how they scale, Pure Aura per bonus Tide, the final Tide of the last map (the scope's win condition) |
 | Run success / failure | stock win and lose screens | run summary (maps, Tides, Pure Aura), what a loss keeps (nothing?) |
-| Ascension levels | save key route (`RW_Ascension`, `docs/15` §8); naming "Swell 1, 2, ..." (`STYLE.md`) | **what each level adds** ("a harder difficulty modifier"), how many, how it's picked at the start, restart persistence check |
+| Ascension levels | save key route (`RW_Ascension`, `docs/15` §8); naming "Depth 1, 2, ..." (`STYLE.md`) | **what each level adds** ("a harder difficulty modifier"), how many, how it's picked at the start, restart persistence check |
 | Mode journal page, tips, banners | banner voice in `STYLE.md` ("A rogue wave rises") | every string; a journal page per mechanic (Phase 5 asks for one per piece) |
 | Mode UI art | palette and crest motif (`STYLE.md`) | frames for the vote, shop, Direction cards, leave prompt |
 | Music, stings | none (`EXPANSION_SCOPE.md` row 8, not named in the scope) | decide whether the mode has any |

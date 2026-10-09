@@ -10,6 +10,10 @@ changed `docs/SCOPE_v0.txt` that way; this PR carries the edit), so findings 2, 
 asked whether Cardinals can belong to one player: §F answers it and finding 6 changed. **Swell is on hold** until the
 core loop is settled, so findings 9 and 10 are parked. Everything else still recommends and stays his to veto.
 
+**Updated 2026-10-09 20:48Z (roguewave 2.txt):** a campaign is now **10 maps**, and ascension levels are now named
+**Depth** (was Swell). Findings 3, 14 and 20 and §E changed with it; Tide numbers (leave after Tide 15, the 30-Tide
+table) are per map and did not.
+
 It builds on two lists and repeats neither: `docs/SCOPE_GAPS.md` (what the scope names but hasn't expanded) and
 `docs/RESEARCH_GAPS.md` (engine facts). Existing `! NEEDS ... !` markers are only mentioned where a finding gives them
 an evidence-based default. Kit paths: `docs/NN` = `TDS_Vessel_Creator/docs/`. RogueLab round 3 and the §15 facts it
@@ -22,25 +26,25 @@ added are in PR #11 until it merges.
 | # | Where the loop outgrows the scope | Recommend adding to the scope | Call |
 | --- | --- | --- | --- |
 | 1 | Every map is a fresh match; the scope never says what carries over | A "carries over / resets" line | default |
-| 2 | A run can last close to three hours, in one sitting | **Decided:** a 15-map campaign, saved between maps (§E) | done |
+| 2 | A run can last close to three hours, in one sitting | **Decided:** a 10-map campaign (was 15), saved between maps (§E) | done |
 | 3 | Stock Cardinals scale by the Tide table's length | A 30-Tide table: leave from 15, bonus 16-30 | default |
 | 4 | Nothing in the game makes Tides vary or harden | Riptide's director as the Tide source, each map deeper on its curve | default |
 | 5 | Foes don't scale with the number of players | Tides scale with player count | default |
 | 6 | Cardinals are team-wide, Pure Aura is per player, the HUD holds 8 | Personal Cardinals for one player, team ones capped at 8 (§F) | default |
 | 7 | Some stock Cardinals fight the run's own rules | A shop list that leaves them out | default |
 | 8 | A stock break is 30 s, too short to shop | Shop breaks that hold the clock | default |
-| 9 | Swell has no way to be picked, and saves are per machine | parked: Swell is on hold (Dimitri) | parked |
-| 10 | The game's easier setting ("Treated") still works in a run | parked with Swell | parked |
+| 9 | Depth (was Swell) has no way to be picked, and saves are per machine | parked: Depth is on hold (Dimitri) | parked |
+| 10 | The game's easier setting ("Treated") still works in a run | parked with Depth | parked |
 | 11 | A dropped friend can't rejoin a running map; the campaign lives on the host | Drop and host-quit rules | default |
 | 12 | A won map would count toward stock records and medals | Runs keep their own records | default |
 | 13 | Yossele's Growth resets with every map | Note for Yossele's design gate | default |
-| 14 | 15 Direction picks per player per campaign, with stock vessels too | **Decided:** Directions rank up when offered again | done |
+| 14 | 10 Direction picks per player per campaign, with stock vessels too | **Decided:** Directions rank up when offered again | done |
 | 15 | Four minion vessels multiply unit counts | A unit cap per player | default |
 | 16 | The game forgets who a player is between launches | Key the saved campaign by Steam id | default |
 | 17 | A saved campaign needs a home and a way back in | The host's save holds it; resume from the lobby | default |
 | 18 | Quitting mid-map could undo a loss | **Decided:** limited retries; quitting mid-map spends one | done |
 | 19 | Who may join a campaign later | Anyone; saved players get their things back | default |
-| 20 | 15 maps need a shape | Three stretches of five, a Breaker map closing each | default |
+| 20 | 10 maps need a shape | Two stretches of five, a Breaker map closing each | default |
 
 ## A. The run's shape
 
@@ -52,12 +56,12 @@ map. **Add:** carries over: the vessel, Pure Aura, Directions, Cardinals bought;
 resources. An option for Dimitri: leftover base aura turns into a little Pure Aura when the team leaves, which gives
 staying for bonus Tides a second reason.
 
-**2. Run length.** *Decided by Dimitri: a 15-map campaign, saved between maps (§E).* What led there: the stock table
+**2. Run length.** *Decided by Dimitri: a 10-map campaign (15 until 2026-10-09 20:48Z), saved between maps (§E).* What led there: the stock table
 gives each Tide up to 180 s and each break 30 s, with a 45 s opening (`roguelab_round1.txt` lines 67-91); a Tide ends
 early only when its foes are gone (`docs/13` §3). Fifteen Tides at full timers is about 53 minutes, so three maps can
 approach 2 h 40 min before bonus Tides, the map-1 staging load and three 14-20 s loads (`docs/15` §15). The run can't be
 saved mid-way (state is in the host's memory, §3) and a dropped player can't come back into a running map (§14.5). At
-the same full timers, 15 maps would be up to about 13 hours, so saving between maps is what makes the campaign playable.
+the same full timers, 10 maps would be up to about 9 hours, so saving between maps is what makes the campaign playable.
 Real Tide lengths are unmeasured; the first Phase 5 PC round logs them. If a map feels long, the levers are the leave
 Tide, the Tide timers and the break length.
 
@@ -65,7 +69,7 @@ Tide, the Tide timers and the break length.
 Sport Water, Opal Core, Pig Named Bank, Voice in a Bottle; Riptide `DESIGN.md` "The reward pool"). A 15-Tide table would
 double them; 20 would round to 1. Bonus Tides by rewinding `Entry` also spend one of the enemy core's Tides left
 (`docs/15` §4). **Add** (gives two `! NEEDS !` a default): every map's table has 30 Tides like Mode_Normal; leaving
-opens after Tide 15; Tides 16-30 are the bonus Tides; Tide 30 of map 15 is the campaign's final Tide. The enemy core's
+opens after Tide 15; Tides 16-30 are the bonus Tides; Tide 30 of map 10 is the campaign's final Tide. The enemy core's
 "Tides left" counter then reads true.
 
 **4. Where the Tides come from.** The scope wants "modifiers / enemies that change with each run" and "increasing
@@ -86,7 +90,7 @@ Tides by player count; 0.35 per extra player is the starting value.
 Cardinal's upgrades go on the core, which is the team's (`docs/15` §7, §14.1), but the scope buys them with Pure Aura,
 which is per player. The HUD tracks exactly 8 Cardinals (`Artifacttrack`, §7), and the lobby already offers five slots
 (one per colour plus Mixed), one of them taken by the start Cardinal. Four players buying freely would hit 8 within a
-map, and a 15-map campaign far sooner. **Add:** two kinds. **Personal Cardinals** belong to the player who bought them
+map, and a 10-map campaign far sooner. **Add:** two kinds. **Personal Cardinals** belong to the player who bought them
 with their own Pure Aura, act only on that player's things and show on their vessel's panel, not the HUD row (§F).
 **Team Cardinals** (the ones that can only act on the core, the foes or the clock) go on the core and the HUD row, at
 most 8 a campaign counting lobby picks; any player can pay, and Fund Transfer of Pure Aura lets the team pool (which
@@ -105,20 +109,20 @@ is open every break, and shop breaks after Tides 5, 10 and 15 hold the clock up 
 
 ## C. Progression and online
 
-*Findings 9 and 10 are parked: Dimitri put Swell on hold until the core loop is settled (2026-10-09). Kept for when he
+*Findings 9 and 10 are parked: Dimitri put Depth (then named Swell) on hold until the core loop is settled (2026-10-09). Kept for when he
 picks it up.*
 
-**9. Picking a Swell level.** Swell levels must "carry over between sessions", but the scope has no way to pick one, and
+**9. Picking a Depth level.** Depth levels must "carry over between sessions", but the scope has no way to pick one, and
 the save is local to each machine and slot (`docs/15` §8) while the run lives on the host (§3). The lobby already offers
 only the Cardinals a player's save unlocks, and a mod Cardinal there is proven (§7, §11). **Add:** one start Cardinal
-per Swell level, each unlocked in the save by clearing the level below; the host equips the highest they hold or a lower
-one, which both starts the run and sets its Swell. Each finisher's own save records the next level (a client write,
+per Depth level, each unlocked in the save by clearing the level below; the host equips the highest they hold or a lower
+one, which both starts the run and sets its Depth. Each finisher's own save records the next level (a client write,
 untested: the online evening checks it). **Dimitri:** this turns the one unnamed start Cardinal into a family of them (a
-level-0 one plus one per Swell); the alternative is one start Cardinal and a Swell pick in the staging step.
+level-0 one plus one per Depth); the alternative is one start Cardinal and a Depth pick in the staging step.
 
 **10. The easier setting.** The game's only difficulty option, Treated, still applies in a mod mode: more start aura,
 drops ×4, +30 s a Tide, +200 core health, and it marks the match `Mode_Treated` (`docs/15` §14.3). **Add:** Treated is
-allowed, but a Treated run unlocks no Swell level (the mark makes the check cheap).
+allowed, but a Treated run unlocks no Depth level (the mark makes the check cheap).
 
 **11. Drops and the host.** A dropped friend can't rejoin a running map and a rejoin comes back with no aura; within a
 session, run state is keyed by `Sessionid`, which a rejoin keeps (`docs/15` §14.5). The live campaign is on the host
@@ -139,18 +143,20 @@ within a map, but the "scaling archetype" can't carry across a run unless a Dire
 gate:** a Direction such as "towers start one Growth stage up" rather than Growth that survives maps.
 
 **14. Direction catalogue size.** One Direction is picked per map and more are bought, so a campaign gives each player
-15 or more. With no repeats, the last offer needs three a player doesn't hold yet: about 18 Directions visible to every
+10 or more. With no repeats, the last offer needs three a player doesn't hold yet: about 12 Directions visible to every
 vessel, stock ones included (`docs/PACK.md` §2: the mode runs with stock vessels, which have only the Any pool unless
 base vessels get their own, a `! NEEDS !`). Riptide cut its picks to six a run for the same reason: four players picking
 every Tide would empty its 40 Cardinals by Tide 10 (Riptide `DESIGN.md` "Changes"). A Direction is an upgrade on the
 vessel (`docs/15` §14.1), and a stronger rank is just another upgrade. *Decided by Dimitri (2026-10-09): ranks.* A held
-Direction can be offered again as its next rank (II, III), so about 10 Any and 6 per pack vessel cover a campaign.
+Direction can be offered again as its next rank (II, III), so about 7 Any and 4 per pack vessel cover a 10-map
+campaign (10 and 6 were sized for 15 maps; each Direction takes up to three picks, so 10 picks need at least four a
+player can draw from, with three left to choose from at the last pick).
 
 **15. Minions times four.** On the host, 200 extra units cost about 3.5 ms a frame (`docs/15` §15); the client's cost is
 unmeasured. Four Spools or Uloes in one run multiply Crafted and Photons. **Add:** a unit cap per player for Spool's
 Crafted and Uloe's Photons, 50 to start, so a full team stays within the measured 200.
 
-## E. The 15-map campaign (Dimitri, 2026-10-09)
+## E. The 10-map campaign (Dimitri, 2026-10-09; 15 maps until 20:48Z)
 
 Engine facts below were read from the decompiled game on 2026-10-09 (`docs/13` §11 setup; files are the game's, cited as
 `File.cs:line`). They belong in kit `docs/15` as a new section once PRs #11 and #12 merge, so this PR doesn't collide
@@ -189,12 +195,12 @@ nothing, and someone new can join. **Add:** anyone can join a resumed campaign; 
 Aura, Directions and Cardinals back, and a new player starts with none and picks a Direction at the next map's start.
 The 4-player cap still holds per session.
 
-**20. The shape of 15 maps.** Riptide split 30 Tides into three stretches with a Breaker closing each (Riptide
+**20. The shape of 10 maps.** Riptide split 30 Tides into three stretches with a Breaker closing each (Riptide
 `DESIGN.md` "The run"), and the 45 offerable maps carry difficulty labels 1-9 (`docs/15` §15; labels scale nothing,
-§14.3). **Add:** three stretches of five maps; the vote offers maps whose label fits the stretch (low labels first, the
+§14.3). **Add:** two stretches of five maps; the vote offers maps whose label fits the stretch (low labels first, the
 δ maps last); the fifth map of each stretch ends with a Breaker Tide and a richer shop. 45 maps leave three fresh
-choices for every one of the 15 votes without replaying a map. Stretch names need to avoid "Swell", which the scope
-keeps for ascension.
+choices for every one of the 10 votes without replaying a map, with 15 to spare. Stretch names need to avoid "Depth",
+which the scope now uses for ascension (it was "Swell").
 
 ## F. Cardinals for one player (Dimitri's question, 2026-10-09)
 
@@ -240,5 +246,4 @@ dropped silently. Personal Cardinals therefore show as upgrades on the owner's v
 Findings 14 (ranks) and 18 (limited retries, 3 by default) are decided; finding 6 now has a default from §F. Every
 default stands until he vetoes it. Accepted rows go into `docs/SCOPE_v0.txt` in his format, and they join PLAN Phase 5's
 piece list where they add work (campaign save and resume, player scaling, the shop break, the drop rule). The Phase 5
-gate in `docs/PLAN.md` still says "a full three-map run"; it becomes "a campaign saved, resumed and finished" once PR
-#12's edit to that section has merged.
+gate in `docs/PLAN.md` now reads "a full 10-map campaign completed on the PC (saved and continued at least once)".
