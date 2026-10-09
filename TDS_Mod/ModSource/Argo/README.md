@@ -1,5 +1,8 @@
 # Argo — Fathoms Below ▪ Intermediate (v1.4.0)
 
+> History: this is the player README of the standalone 1.4.0 release from `ModProjects`. Argo 2.0 (`DESIGN.md`) has
+> no SONAR and ships only inside the Rogue Waves pack (`docs/PACK.md`), never as its own `ArgoMod`.
+
 A new vessel for **TDS - Tower Defense Strategy**: a bulky deep-sea diver in a brass helmet, with a crew of Nauts,
 a scatter cannon, a harpoon tower and a drill that sinks deeper every Tide.
 

@@ -38,8 +38,9 @@ the content.
 **House style: what all five base vessels share** (any of them can be the reference; the user's rule):
 - **Chibi proportions**: the head (or head-shaped body) is half the height or more; the body is small; hands are
   small (floating or stubby) and legs short (2 px) or absent. Clear silhouette at 1× zoom.
-- **No black outline.** Edges are darker or half-transparent shades of the fill (the fill colour at alpha 127 makes
-  the soft rim); details inside the body use darker tones of the same colour.
+- **No black outline.** Edges are darker shades of the fill, fully opaque; details inside the body use darker tones of
+  the same colour. Only Smacky has a soft half-alpha rim (the fill at alpha 127), so use it only when Smacky is the
+  reference (the user, 2026-10-09).
 - **Dark dot eyes** (`4A4949` / `333232`), a tiny mouth or none; expression through eye position and squash.
 - **Palette**: soft pastel or muted main colours with one or two saturated accents (Boutman's red overalls, Fie's
   orange hair, Buster's teal collar, Smacky's blue overalls), light shading on one side.
@@ -60,7 +61,8 @@ the content.
 
 Reference images (game art, keep them local, don't ship them): menu art of all five (icon, idle strip, landing and
 loading strips, splash, boat mini) and full sheets of Sno Sno and Buster are in
-`C:\Users\Dimitri\TDS_Mod\ModSource\Sprigg\Research\dump`. To dump the full sheets of any other vessel, port
+Sprigg's `Research\dump` folder, which moved with Sprigg into `C:\Users\Dimitri\TDS_Mod\Prototype Mods\Sprigg`
+(2026-10-08). To dump the full sheets of any other vessel, port
 `examples/code/Sprigg_97_ArtDump.cs` into your mod under a `<NAME>_ARTDUMP` define, put that vessel's id in its
 `foreach (string want in new[] { ... })` list, export, launch, and decode the dump lines (`docs/08`).
 

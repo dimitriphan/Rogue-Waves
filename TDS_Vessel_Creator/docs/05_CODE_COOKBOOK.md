@@ -259,10 +259,11 @@ Foes near a point: `MummerUtil.FoesNear(from, pos, radius)` (tag `Enemy`, not `C
 
 ## 13. Projectiles
 
-Clone `Tower_Smackyarcher_Arrow` (or the Heavy Bow arrow for native pierce), swap `Vis` for your model, register.
-Fire from a brain with `Helper_Damagetools.Projectile(master, projectileId, from, projdata, "Hurt")`, passing **every**
-param each shot (`Xvelocity`, `Yvelocity`, `Zvelocity`, `Gravity`, `Pierce`, `Lifetime`, `Interact`, `Collision`):
-the game merges them into the projectile's shared dictionary (`examples/code/Argo_07_TowerBrain.cs`, `Fire`).
+Clone `Tower_Smackyarcher_Arrow` (or the Heavy Bow arrow for native pierce), swap `Vis` for your model, register. Fire
+from a brain with `Helper_Damagetools.Projectile(master, projectileId, from, projdata, "Hurt")`, passing the params each
+shot needs (`Xvelocity`, `Yvelocity`, `Zvelocity`, `Gravity`, `Pierce`, `Lifetime`, `Interact`, `Collision`): the game
+copies the projectile's `Defaultparams` per shot and overrides the keys you pass; give each shot a fresh `Data`
+dictionary, which is kept by reference (`examples/code/Argo_07_TowerBrain.cs`, `Fire`).
 
 ## 14. Building brains and upgrades (07)
 

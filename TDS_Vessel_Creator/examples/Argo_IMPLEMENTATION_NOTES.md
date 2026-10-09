@@ -3,7 +3,7 @@
 Argo, **Fathoms Below ▪ Intermediate**: a bulky deep-sea diver (built in the spirit of League's Nautilus) with a
 crew of Nauts, a scatter cannon, a harpoon tower and a drill that sinks deeper every Tide. Built from the concept in
 `Concept/` (the user's "Argo Vessel Concept.zip") on Sprigg's proven scaffolding. Read
-`../Sprigg/Research/VESSEL_SURVEY.md` for how the shipped vessels are built.
+`../reference/VESSEL_SURVEY.md` for how the shipped vessels are built.
 
 ## Layout
 

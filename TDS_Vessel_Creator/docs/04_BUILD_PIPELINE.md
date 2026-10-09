@@ -94,6 +94,9 @@ Never delete or clean up anything in the same step as a park/restore whose resul
 
 ## 5. Release
 
+A Rogue Waves part ships inside the pack instead: one version and one `RogueWaves-<version>.zip` (`docs/PACK.md` §4-5
+in that repository) replace step 4 and §6.
+
 1. Rebuild **without** `-Define`, check `Build/<Name>Mod_Code.cs` has no `#define` line.
 2. Build Mod Prefab, Park, Export (wait for both passes), Restore, `Deploy-Wait.ps1` without `-Launch`.
 3. Boot check: launch, wait for `[<Name>] ready` and `[<Name>] icons: <Name>'s own`, count `Exception` lines (0 from
@@ -116,7 +119,8 @@ Any number of vessel mods can coexist, in the project and in the game:
 
 - **Names**: every id, class, icon, effect and sound carries the vessel name; the build script renames the kit's
   classes per mod (`<Name>Kit...`), so two mods never define the same type.
-- **Export**: each mod's Export refuses to run while another `Assets/*Mod` folder is live; park, export, restore.
+- **Export**: the Mummer template's Export refuses to run while another `Assets/*Mod` folder is live (park, export,
+  restore); Argo's Export parks the other folders itself (`ArgoModPrefab.cs`); restore afterwards either way.
 - **Boat**: `ModKitBoat` (kit 1.4) adds one spot per vessel. While the vessels fit on the 6 shipped spots they stand
   there; past that, every vessel stands in staggered rows across the deck, evenly spaced in spot order from just past
   one outer shipped spot to the other (2 rows to 11 vessels, 3 rows to 16, then they shrink a little), each row behind

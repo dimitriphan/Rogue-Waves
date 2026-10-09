@@ -1,0 +1,93 @@
+# RogueLab round 3 (2026-10-09, PC, solo host, Boutman on 3B_Thehunt, 0B_Hydragen, then the 15 maps round 2 left):
+# every "[RogueLab]" line of Player.log, prefix removed, without the boot dumps (MAP, PLAN, MODE, TIDE2, ELITE, ENEMY,
+# GROUP, folder and cardinal lines repeat round 2's, in roguelab_round2.txt). Self-test: pass 16, fail 0, setup 0,
+# TEST DONE. Read by docs/15 §15.
+
+loaded v0.3.0
+TEST INFO database folders: Artifact, Atmosphere, Gameplan, Hero, Icons, Lighting, Map, Mode, Other, Soundtrack, Unlock, Vfx, World
+TEST INFO mode entry Mode_Normal: display 'Downpour' loads Mode_Normal waves 30
+TEST INFO mode entry Mode_Tutorial: display 'Still Waters' loads Mode_Tutorial waves 1
+TEST INFO mode entry Mode_Storm: display 'High Tide' loads Mode_Storm waves 15
+TEST INFO mode entry Mode_Drought: display 'Flood' loads Mode_Drought waves 20
+TEST INFO mode entry Mode_Tsunami: display 'Tsunami' loads Mode_Tsunami waves 4
+TEST INFO mode entry Mode_Final: display 'End' loads Mode_Final waves 1
+TEST INFO groups loaded at boot (Database.Init): General_Init, General_Ambientinit
+TEST INFO second prefab: RogueLabMod_Second_Default started
+TEST INFO group Mode_Normal loaded at boot: True after 3.573 s
+TEST INFO group Hero_Boutman loaded at boot: True after 0.271 s
+TEST INFO Mode_Normal object: name Mode_Normal, found by entry name too True, script Mode_Normal, client script Clientmode_Normal, special spots 4
+TEST INFO Mode_Normal params: Startwait=10 Musicwave1=1 Musicwave2=10 Musicwave3=16 Musicwave4=25 Tipthreshold=10 Basinthreshold=10
+TEST INFO Mode_Normal table: 60 entries, Totalwaves 30, start aura Redaura 50, Blueaura 50, Yellowaura 50
+TEST INFO Gameplan 3B_Thehunt: map Map_Thehunt, mode Mode_Normal, soundtrack Soundtrack_Red, par 2400, record True
+TEST PASS mod mode registered: table 6 entries / 3 Tides, params 7 (Startwait True, Basinthreshold True, Tipthreshold True), twins of 45 Gameplans
+TEST PASS mod Cardinal registered: copy of Artifact_Badge (Red), grant test uses Artifact_Beastpelt
+TEST PASS save write and read back: before 2, after 3
+TEST PASS save value survived a restart: launch 3
+TEST INFO hard setting (boot): Difficultysetting 0, 'Treated' desc 'The water is calmer than normal' ais [Entity_Ai_Main_Core_Treated] params Aura_Base=2 Extra_Time=3 Extra_Wavetime=30 Aura_Drop=4 Aura_Basemax=500 Health_Base=200
+ready
+TEST main menu: embarking
+TEST in Setup: waiting for the world map
+TEST map: the test map 3B_Thehunt; picked node 'Thehunt'
+TEST INFO run plan: map 1 RogueLab_3B_Thehunt (Map_Thehunt), map 2 RogueLab_0B_Hydragen
+TEST ready: starting the match
+TEST map 1: RogueLab_3B_Thehunt on Map_Thehunt
+TEST PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+TEST PASS map 1 has the mod Cardinal from the lobby: equipped [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_RogueLab], mixed 'Artifact_Yellowcoin', artifacts loaded [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_Badge, Artifact_Yellowcoin], want Artifact_Badge
+TEST INFO enemy beings loaded in the match: 10
+TEST PASS Cardinal granted mid-match: Artifact_Beastpelt: 1/1 core upgrades on the core [Artifact_Beastpelt_Upgradeproperties]; the HUD was not told
+TEST INFO Boutbro data tags: Mob,Hero,Boutfamily,Boutbro
+TEST INFO F list before the death: Hero_Boutman#-83358; Boutbro spawned True, its owner -1 (local 1), tags [Mob,Hero,Boutfamily,Boutbro]
+TEST INFO F list after the respawn: Hero_Boutman#-84362 after 10.003 s
+TEST INFO F key without the fix: nothing selected -> Hero_Boutman, Boutbro selected -> Hero_Boutman; bug reproduced False
+TEST PASS F key selects the vessel after a respawn, with the fix: nothing selected -> Hero_Boutman, Boutbro selected -> Hero_Boutman, list Hero_Boutman#-84362
+TEST PASS a second Default prefab in the same mod started: marker found
+TEST INFO hard setting (match): Difficultysetting 0, 'Treated' desc 'The water is calmer than normal' ais [Entity_Ai_Main_Core_Treated] params Aura_Base=2 Extra_Time=3 Extra_Wavetime=30 Aura_Drop=4 Aura_Basemax=500 Health_Base=200
+TEST INFO swarm 0: 0 alive of 0 made: mean frame 6.99 ms, worst 13.913 ms, 143.056 fps (host, solo)
+TEST INFO swarm 50: 50 alive of 50 made: mean frame 8.314 ms, worst 13.917 ms, 120.279 fps (host, solo)
+TEST INFO swarm 100: 100 alive of 100 made: mean frame 9.528 ms, worst 13.92 ms, 104.949 fps (host, solo)
+TEST INFO swarm 200: 200 alive of 200 made: mean frame 10.362 ms, worst 20.86 ms, 96.503 fps (host, solo)
+TEST PASS bonus Tide by rewinding Entry: Wave 2, entry 2 (Tide 1 was 2), enemy core Tides left 2 -> 1
+TEST PASS leave between Tides as a win: Gamecomplete Win, Wave 2
+TEST chain: despawned True, loading RogueLab_0B_Hydragen
+TEST PASS chained into map 2 without the boat: RogueLab_0B_Hydragen on Map_Hydraden
+TEST PASS run state survived the scene change: Pure Aura 7, same mod object True
+TEST PASS map 2 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_0B_Hydragen, Mode_Normal script True, table 6
+TEST PASS map 2 has the mod Cardinal from the lobby: equipped [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_RogueLab], mixed 'Artifact_Yellowcoin', artifacts loaded [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_Badge, Artifact_Yellowcoin], want Artifact_Badge
+TEST INFO dialog menu: before: dialog 'Confirmation' active False, handler none active (nearest, active or not: 'Confirmation'), menu of that name registered True; 1.328 s after Changemenu: dialog 'Confirmation' active True, handler 'Confirmation' (nearest, active or not: 'Confirmation'), menu of that name registered True
+TEST INFO eight-card dialog, game layout: screen 2560x1440, 8 cards, grid FixedColumnCount 2 cell (60.00, 60.00) spacing (-5.00, -5.00), scroll False, all on screen False | 2248.001,288 180x180 ; 2248.001,123 180x180 ; 2248.001,-42 180x180 ; 2248.001,-207 180x180 ; 2083.001,288 180x180 ; 2083.001,123 180x180 ; 2083.001,-42 180x180 ; 2083.001,-207 180x180
+TEST INFO eight-card dialog, four per row: screen 2560x1440, 8 cards, grid FixedColumnCount 4 cell (60.00, 60.00) spacing (-5.00, -5.00), scroll False, all on screen True | 2248.001,288 180x180 ; 2248.001,123 180x180 ; 2083.001,288 180x180 ; 2083.001,123 180x180 ; 1918.001,288 180x180 ; 1918.001,123 180x180 ; 1753.001,288 180x180 ; 1753.001,123 180x180
+TEST INFO eight-card dialog fits on screen (four per row): True
+TEST PASS eight-card dialog closes when the mod clicks a card: status Succeeded, pick RogueLab_Card1
+TEST INFO map tour: 15 maps: 1_Skyhook, 2D_Mercs, 4C_Oroboro, 5_Chrono, 5B_Crescent, 5B_Hold, Alt_0_Tutorial, Alt_2B_Monogrove, Alt_2D_Mercs, Alt_3_Opal, Alt_3B_Woozy, Alt_4_Artrio, Alt_4B_Crimson, Alt_5B_Crescent, 5B_Final
+TEST chain: despawned True, loading RogueLab_1_Skyhook
+TEST TOUR 1_Skyhook map Map_Skyhook loaded in 15.148 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_2D_Mercs
+TEST TOUR 2D_Mercs map Map_Mercs loaded in 16.893 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_4C_Oroboro
+TEST TOUR 4C_Oroboro map Map_Oroboro loaded in 17.4 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5_Chrono
+TEST TOUR 5_Chrono map Map_Chrono loaded in 16.295 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5B_Crescent
+TEST TOUR 5B_Crescent map Map_Crescent loaded in 17.254 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5B_Hold
+TEST TOUR 5B_Hold map Map_Hold loaded in 19.924 s: mod mode True, vessel True, cores 1, subcores 2, enemy cores 4, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_0_Tutorial
+TEST TOUR Alt_0_Tutorial map Map_Tutorial_Alt loaded in 14.035 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_2B_Monogrove
+TEST TOUR Alt_2B_Monogrove map Map_Monogrove_Alt loaded in 14.64 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_2D_Mercs
+TEST TOUR Alt_2D_Mercs map Map_Mercs_Alt loaded in 16.997 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_3_Opal
+TEST TOUR Alt_3_Opal map Map_Purlest_Alt loaded in 15.864 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 3, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_3B_Woozy
+TEST TOUR Alt_3B_Woozy map Map_Woozy_Alt loaded in 16.17 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 3, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_4_Artrio
+TEST TOUR Alt_4_Artrio map Map_Artrio_Alt loaded in 16.413 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 4, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_4B_Crimson
+TEST TOUR Alt_4B_Crimson map Map_Crimson_Alt loaded in 15.398 s: mod mode True, vessel True, cores 1, subcores 1, enemy cores 3, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_5B_Crescent
+TEST TOUR Alt_5B_Crescent map Map_Crescent_Alt loaded in 17.24 s: mod mode True, vessel True, cores 1, subcores 1, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5B_Final
+TEST TOUR 5B_Final map Map_Final loaded in 15.113 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST INFO map tour: done after 17 maps in this run
+TEST DONE pass 16, fail 0, setup 0

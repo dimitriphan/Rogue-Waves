@@ -9,8 +9,9 @@ method's body with `tools/cecil/il.ps1` (`docs/11_TOOLING.md`). If the game upda
 - A mod is a folder in `TDS\Mods\<Name>Mod` (`<Name>Mod.info` JSON + `Windows\<name>mod.assets` bundle), exported by
   the **TDS Mod Tools** (ModTool) Unity package from a Unity 2022.3.41f1 project, and enabled in the game's Mods menu
   (`"_isEnabled": true` in the .info).
-- A prefab whose name contains **`Default`** (`<Name>Mod_Default.prefab`) is instantiated at startup
-  (`Bla_Mods.Activateprefabs`). Ours carries:
+- A prefab whose name contains **`Default`** (`<Name>Mod_Default.prefab`) is instantiated when the mod loads
+  (`Bla_Mods.OnModLoaded`; `Activateprefabs` later does the same for `Mainmenu`, `Loading`, `World`, `Gameserver`,
+  `Gameclient` prefabs). Ours carries:
   - a `Mods_Gamescript` component whose `Code` string is the whole mod's C#, compiled by the game at load with
     **RoslynCSharp (Roslyn 3.8, C# 9)**; the first type in the string is added to the prefab instance and is the entry
     point;
@@ -46,7 +47,8 @@ Bl_Address.Groups["Hero"] -> Beingobject  Hero_<Name>                    (a plac
 `Defaultvisual`, `Upgrades` (tier-2 roots), `Upgradesinit` (applied at spawn; holds the special-rule tooltip),
 `Costs` (`List<Link_Resourceset>{Name, Amount}`), `Drops`, `Tags`, `Sellable`, `Controllable`.
 
-Everything is a `Bl_ScriptableObject` with `name`, `Objectname` (the id the network sends) and `Id` (unique string).
+Almost everything is a `Bl_ScriptableObject` (not `Logobject` or `Spriteobject`) with `name`, `Objectname` (the id the
+network sends) and `Id` (unique string).
 
 ## 3. Loading and the global name table
 
@@ -107,7 +109,8 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
   named in `Commandlistserver["Attack"].Goalstring`, sends "Shoot"), `Entity_Ai_Tower_General`. Visual scripts:
   `Entity_Vis_Animator_Mob`, `Entity_Vis_Hero`, `Entity_Vis_Mob_Attack` (plays the Attack animation on "Attack"/"Shoot").
 - Scripts named after a shipped vessel (`*_Smacky*`, `*_Snosno*`, `*_Fie*`, `*_Buster*`, `*_Boutman*`) hard-code that
-  vessel's objects: strip them from cloned data. So is `Entity_Ai_General_Upgrade` (the brain mirrors it, `docs/05`).
+  vessel's objects: strip them from cloned data. Strip `Entity_Ai_General_Upgrade` too: it is generic, but the brain
+  replaces its upgrade flow (`docs/05`).
 - Enemies: `Entity_Ai_Enemy_Basic` walks to its parent core's Goal whenever it is Idle (`Approachgoal`), and
   `Helper_Entityai.Checkenemymelee` re-targets "Attack" every slow tick when something is in range. An enemy spawned
   without a parent throws a NullReferenceException every tick.
@@ -156,8 +159,8 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 - Ore (`Healthresource`): each hit removes `clamp(Damage, 0, 1) + Data["Damageresource"]`; it pays out (aura) when
   emptied. Heroes mine with their normal attack.
 - Projectiles: `Projectileobject` (clone `Tower_Smackyarcher_Arrow` or the Heavy Bow's arrow for pierce);
-  `Helper_Damagetools.Projectile` **merges** a shot's params into the projectile's shared `Defaultparams`, so pass every
-  param on every shot; pierce hits share one `Data` dictionary (copy it before editing).
+  `Helper_Damagetools.Projectile` copies the projectile's `Defaultparams` per shot and lays the shot's params over the
+  copy; the shot's `Data` dictionary is kept by reference, so give each shot its own (copy it before editing).
 
 ## 10. Visuals
 
@@ -169,8 +172,9 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
   Custom animations play with `Entity_Vis_Animator_Base.Animplay(name, Game_Sprite.Animationtype.Force)`.
 - Effects by name: `Radio.Vfxoneshotcheck(name, pos, dir)`; debuffs `Radio.Vfxdebuffcheck(name, target.Beingref.Value,
   seconds)` → `Helper_Vfxtools.Debuff` instantiates `Getload("Vfx", name)` under the target's `Vis` child (local
-  position 0), adds `Vfx_Debuff` (destroys it after the duration); sending it again refreshes the duration. At most 50
-  such RPCs per frame (`Game_Mapvars.Clientsendstack`).
+  position 0), adds `Vfx_Debuff` (destroys it after the duration); sending it again refreshes the duration. All `*check`
+  RPCs share one budget (`Game_Mapvars.Clientsendstack`): a burst of 50, refilled by 4 per FixedUpdate online (10 solo);
+  RPCs over it are dropped silently.
 - Icons: `Tds_Masterdatabase` folder `Icons` → `Iconobject` `Icon_Types` / `Icon_Stats`; `Helper_Uitools` copies them
   into a private table **on the first `Geticon` call and never again**.
 - Sounds: the game's sound table is private and built once, so mods play their own `AudioSource`s routed to the game's

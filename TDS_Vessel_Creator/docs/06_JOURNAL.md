@@ -64,8 +64,8 @@ journal failure must not stop the vessel loading.
 
 Shipped vessels first in the game's order (`Hero_Smacky`, `Hero_Snosno`, `Hero_Buster`, `Hero_Boutman`, `Hero_Fie`),
 then every other vessel sorted by id (ordinal). The sync only adds missing tabs, removes duplicates and sorts, so it is
-idempotent and any number of mods can run it in any load order. Argo 1.0 has its own copy (`VesselTabs`) with the same
-rule.
+idempotent and any number of mods can run it in any load order. (Argo 1.0's own copy, `VesselTabs`, became this kit
+file.)
 
 Why it's needed: `Instantiate` remaps a page's references to itself, so a vessel page cloned from Smacky's turns
 Smacky's own tab into a tab pointing at the clone (Sprigg 1.3 shipped with Smacky's tab missing).

@@ -42,8 +42,9 @@ project files, then stop." That one needs only the unitypackage.
 
 ## 5. PC-side chores (before the first PC round, after Phase 2)
 
-- Regenerate the read-only GitHub token for `dimitriphan/Rogue-Waves` and save it as `C:\Users\Dimitri\.modprojects_token`
-  (`TDS_Mod/Tools/pc/README.md`, one-time setup).
+- Optional: a read-only GitHub token for `dimitriphan/Rogue-Waves` saved as `C:\Users\Dimitri\.modprojects_token`
+  (`TDS_Mod/Tools/pc/README.md`). PC sessions fetch with the signed-in `gh` instead; make the token only if a round must
+  run without `gh`.
 - Nothing else changes on the PC: `C:\Users\Dimitri\TDS_Mod` stays the Unity project, and handoffs arrive the same way.
 
 ## What the coordinator will do on its own

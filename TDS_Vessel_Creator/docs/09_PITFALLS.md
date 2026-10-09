@@ -1,7 +1,8 @@
 # 09 · Pitfalls: every error met so far, and its fix
 
-Each entry: **symptom** → cause → fix (where the fix lives in the template). All of these happened while building
-Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add new ones at the end of their section.
+Each entry: **symptom** → cause → fix (where the fix lives in the template). All of these happened while building Smocky
+(the first test clone), Sprigg 1.0-1.4.1, Argo 1.0, Mummer 1.0, the kit 1.4 boat work, Argo 2.0 and RogueLab. Add new
+ones at the end of their section.
 
 ## A. Compiling
 
@@ -27,9 +28,9 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
 8. **Mod AI classes in `Aiscripts` never run** → the engine attaches scripts with `Type.GetType(name)` from the game's
    assembly, and upgrade pruning compares type names → brains as MonoBehaviours added in `Game_Entity.Onspawn`; stock AIs
    via name carriers (`Util.Script`).
-9. **A cloned tower behaves like Smacky's or throws** → copied vessel-specific scripts (`Entity_Ai_Tower_Smackyarcher`,
-   `Entity_Ai_General_Upgrade`) hard-code Smacky's objects → `Strip()` removes any script named after a shipped vessel,
-   and the building brain mirrors the upgrade AI.
+9. **A cloned tower behaves like Smacky's or throws** → copied vessel-specific scripts (`Entity_Ai_Tower_Smackyarcher`
+   hard-codes Smacky's objects; the generic `Entity_Ai_General_Upgrade` runs the stock upgrade flow) → `Strip()` removes
+   any script named after a shipped vessel, and the building brain mirrors the upgrade AI.
 10. **Edits to `Visualproperties.Default` have no effect** → `Entry` is a struct → copy, change, assign back.
 11. **NRE in `Bl_Address_Group.OnEnable`** → `ScriptableObject.CreateInstance` leaves its item list null → `Instantiate`
     an existing group (`template.Heroloads`) and retag it.
@@ -86,9 +87,12 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
     next to the ranged one → exactly one stock attack AI.
 28. **Custom animation cut off instantly** → `Animplaysoft` keeps the current priority, so Idle/Move replace it → 
     `Animplay(name, Game_Sprite.Animationtype.Force)`.
-29. **Projectiles behave like the previous shot** → `Helper_Damagetools.Projectile` merges a shot's params into the
-    projectile's shared `Defaultparams` → pass every param every shot.
-30. **Pierce damage scales wrong / changes other hits** → pierce hits share one `Data` dictionary → copy before edit.
+29. **Projectiles behave like the previous shot** → each shot starts from a copy of the projectile's `Defaultparams` and
+    only the params passed override it, but `Projdata.Data` is kept by reference (Helper_Damagetools.cs:262, 305) →
+    pass every param the shot needs and a fresh `Data` dictionary every shot.
+30. **Pierce damage scales wrong / changes other hits** → each hit gets a copy of the projectile's `Data`, but handlers
+    later in that hit's `Oninteract` chain see an edit, and some AIs reuse one dictionary across hits → copy before
+    edit.
 31. **Status looks (Marked, held, tangled, slow) never appear** → sent with `Beingserver.Beingrefparallel`, a copy taken
     before `Spawn` set its `Worldobject`, so clients can't resolve the target → `Vfxdebuffcheck(name,
     target.Beingref.Value, s)` (`Util.Debuff`). Sprigg ≤ 1.4.0 and Argo 1.0 have this bug in their slows.
@@ -106,7 +110,8 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
 37. **Enemy throws every tick** → spawned without a parent; `Approachgoal` reads its parent's Goal → spawn with
     `Createlinkspawnparent(enemyCore.Beingserver)`.
 38. **A despawned foe reads 0 health** → stats are cleared → read base values from `Entity.Defaultstat`.
-39. **Armoured foes ignore damage numbers** → `Healtharmor` makes each hit count as 1 → expected; design around it.
+39. **Armoured foes ignore damage numbers** → `Healtharmor` makes each hit count as its `Damagemulti` (1 by default),
+    whatever its Damage → expected; design around it.
 40. **A unit spawned for building A gets building B's settings** → several spawns in a row and `Onspawn` reading the wrong
     context → `Onspawn` fires synchronously inside `Spawn`: set a static "pending" field right before and clear it
     right after.
@@ -203,3 +208,13 @@ Smocky (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0 and Mummer 1.0. Add ne
     the call runs anyway; MCP replays it 2-5 times, each export restores the parked mods and forces a recompile, and the
     replays overwrite `queue_status.txt` after a good run → make one call and trust the `[ModKit]` lines in
     `%LOCALAPPDATA%\Unity\Editor\Editor.log` (and the `.info` file's time). Verified on the PC.
+77. **The game's choice dialog shows one card, then the mod's prompt ends "Faulted"** (RogueLab, rounds 1-2) →
+    `Runprompt` gives each card to `GetComponentInParent<Blu2_Menu_Handler>()`, which skips inactive objects; opened
+    from code while its menu (`Confirmation`) was down, the lookup was null and it threw after the first card → call
+    `Bl_Menus.Changemenu("Confirmation")`, wait until that lookup is not null (1.3 s), then `Runprompt`; for more than
+    four cards set its grid's `constraintCount` to 4 or the bottom rows fall off the screen. Verified in game (round 3,
+    `15` §15).
+78. **A chained map never finishes loading and the mod's timeout never fires** (RogueLab round 2, Special_Custom) →
+    Map_Custom (the player's custom-map slot) fails in `Bl_Address.Load` with `InvalidKeyException`s; the timeout sat
+    behind a "no `Game_Mapvars`, not in a match" return → never chain into `Special_` Gameplans, and check a load
+    timeout before any in-match test. Verified in game (round 3 toured the last 15 maps with the fix).

@@ -14,7 +14,8 @@ Formats, house style, reference vessels, UI art, units, towers, effects and soun
 
 Corrections to older work in this repo (the kit is right, the old pages were wrong):
 
-- Sprites need the half-alpha rim on the lit upper-left edge and a soft ground patch; crisp edges with no patch were wrong.
+- Sprites are fully opaque, edges in darker tones of the fill. The half-alpha rim is Smacky's alone and the ground patch
+  is Sno Sno's snow: use them only when that vessel is the reference (the user, 2026-10-09).
 - Towers are **always low-poly sleek, never voxel**. Pages that say "towers are voxel in the game" are wrong.
 - Unit sheets are 10×4 of 16 px (move 0-5, attack 6-9), not 6×4. UI art is the game's set (12×12 ready-up, 128×128
   splash, 32×32 end icons and journal tab), not a 16×16 icon + 96×96 portrait.

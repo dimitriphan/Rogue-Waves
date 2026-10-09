@@ -51,7 +51,7 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 | Coordinator at a gate (Phase 1 go/fallback, packaging, design gates, definition of done) | Fable 5.1 | Few tokens, costly if wrong |
 | Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
 | Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
-| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Uloe's light-level feasibility, Phase 5's three-map loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
+| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's three-map loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
 
 Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
 of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
@@ -125,7 +125,7 @@ Gate: packaging and style approved; kit 1.6 scope listed.
 Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
 way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
 `docs/12`, and Mummer's Thread code is the nearest prior art), then **Uloe** (light levels are new engine territory:
-check feasibility of "light received" as a stat before designing the rest).
+"light received" is feasible: the mod sums light sources itself, `docs/RESEARCH_GAPS.md` B1).
 
 Each vessel runs the kit's loop; the reading list is `CLAUDE.md`'s reading-order table, not more:
 
@@ -146,7 +146,7 @@ Gate per vessel: the kit's definition of done (`TDS_Vessel_Creator/README.md`).
 
 ### Phase 4. Enemies and modifiers (1-2 sessions plus one PC round)
 
-Reads: `docs/13`, `docs/15` § enemies. Cursed (an aura that lowers nearby towers' and units' attack) and Berserk
+Reads: `docs/13`, `docs/15` §1. Cursed (an aura that lowers nearby towers' and units' attack) and Berserk
 (damage and speed up as health drops) are the two modifiers; new enemy types come from the Phase 1 PC list.
 
 Opening prompt:
@@ -158,7 +158,7 @@ Gate: both modifiers seen in a self-test, 0 exceptions beside every installed mo
 ### Phase 5. The Rogue Wave Mode (4-8 sessions, several PC rounds)
 
 Build in the order a run plays, each piece testable alone: Pure Aura (per-player counter, earned per tide) →
-objectives/bounties (reuse Merchut) → shopkeeper between tides → Directions (data, pick UI, application through
+objectives/bounties (Merchut's pattern in a mod brain; its contracts are hardcoded, `docs/15` §5) → shopkeeper between tides → Directions (data, pick UI, application through
 upgrades) → Fund Transfer → map vote → leave-or-stay at Tide 15 and bonus tides → the three-map loop with rising
 difficulty → ascension unlock. Reads: `docs/15`, `docs/07` for every synced piece.
 
@@ -170,8 +170,8 @@ Gate: a full three-map run completed on the PC, online once with a friend.
 
 ### Phase 6. Content passes (2-3 sessions)
 
-New Cardinals (run modifiers, built like the base game's), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), the streamlined
-the Boutman F-key fix. Each is data plus small code on finished systems.
+New Cardinals (run modifiers, built like the base game's), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), and the
+Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6). Each is data plus small code on finished systems.
 
 ### Phase 7. Hardening and release (2 sessions plus PC rounds)
 
@@ -192,12 +192,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`. The game's `TDS\Mods` folder
   was emptied at the user's ask (the pack will carry everything); the 7 mods sit in the PC's
   `ClaudeProjects\handoff\mods_removed_20261008`, so the playable Argo is no longer installed.
-- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` answered from the decompiled game (kit
-  `docs/15` §14) and RogueLab round 2 on the PC (15 pass, 1 fail; kit `docs/15` §15): 14 of 18 items answered.
-  RogueLab 0.3.0 built for the rest (handoff `RogueLab_round3`, compile-checked).
-- **Next:** RogueLab round 3 on the PC (15 untoured maps, the choice dialog with its menu up), then the F-key check by
-  hand and one online evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
-- **Blocked:** round 3 waits on Dimitri's OK for the PC session.
+- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` (PR #8, merged): answered from the decompiled
+  game (kit `docs/15` §14) and RogueLab rounds 2 and 3 on the PC (round 3: 16 pass, 0 fail; kit `docs/15` §15, `09`
+  #77-78): 16 of 18 items answered, all 45 base maps run in a mod's mode, the choice dialog takes eight cards.
+- **Also done (2026-10-09):** an accuracy review of the kit and the project docs against the decompiled game and the
+  round logs (branch `claude/kit-accuracy-review-k0ej7d`, its PR lists every fix). Worth knowing before Phase 4 and 5:
+  elite `*_Multi` params add to 1 (Hardened `Health_Multi` 3 = health ×4, `docs/13` §10); a respawn keeps the vessel's
+  upgrades, so Directions on the vessel need a re-grant only when a map starts (`docs/15` §14.1).
 - **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); Dimitri
   adopted it; its probes M1-M7 join the next RogueLab round.
 - **Also (2026-10-09 evening):** Dimitri's roguewaveWIP.txt answers folded into `docs/SCOPE_v0.txt` (PR #15: VENDCINT,
@@ -209,6 +210,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   mechanic is now proven in game (`docs/MECHANICS_CHECK.md` §3). M1 and M4 of the main-menu button failed on probe
   bugs. Round 6 (0.4.2): **22 pass, 0 fail**; the main-menu button's probes passed too. Left by hand: how the button
   looks beside Play (the automated run never shows the Main menu). RogueLab is out of the Mods folder.
+- **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+  (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
+- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Decisions
 

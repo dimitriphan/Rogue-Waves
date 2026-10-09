@@ -20,9 +20,11 @@ This is the reference for making a vessel that feels like the developers made it
 
 **Hero (vessel) entity**
 - AIs:
-  - Always `Entity_Ai_Mob_General`, `Entity_Ai_Mob_Movement` and `Entity_Ai_Hero_Buildsell`.
+  - Always `Entity_Ai_Mob_Movement` and `Entity_Ai_Hero_Buildsell`, and `Entity_Ai_Mob_General` (Buster has
+    `Entity_Ai_Mob_Movementlinear` instead).
   - Plus one generic attack AI.
-  - Plus a `Entity_Ai_Hero_<Name>` AI, which creates `Buildoption1..4` (Goalstring = buildable, Goalvalue 1) in Spawn and owns the vessel's special behaviour.
+  - Plus a `Entity_Ai_Hero_<Name>` AI, which creates `Buildoption1..4` (Goalstring = buildable, Goalvalue 1) in Spawn (Boutman's creates only
+    `Buildoption1`, the Bouthouse; Boutbro's AI creates 1-3) and owns the vessel's special behaviour.
 - Ranged heroes use the stock `Entity_Ai_Mob_Ranged`:
   - In its Starting, the hero AI sets `Commandlistserver["Attack"].Goalstring` to the projectile (Sno Sno: `Hero_Snosno_Snoball`) and adds the projectile's Data tag to `Hurtdict`.
   - The stock AI then targets Mob, Tower and Resource. Shooting ore is how heroes mine.
@@ -43,19 +45,20 @@ This is the reference for making a vessel that feels like the developers made it
   - The bespoke AI applies every upgrade by name in Upgrade/Downgrade via `Addmod`, reading the upgrade's params.
 - Tags: Tower plus a role. Towerfighter = attacks, Gatherer = economy, and a family tag (Smackywall, Fiewall, Boutbarrel...) that the bespoke AI uses to find siblings.
 - Base costs:
-  - Single aura colour, 10–60 (bomb towers mix two).
+  - Single aura colour, 10–60 (bomb towers and the Sno Box mix two; the Boutboat costs Red 100).
   - Red = offence, Blue = defence, Yellow = economy.
 - Stats use **Leveladd**, e.g. Health 25 (+25/lvl). Level = the highest applied upgrade tier, set by `Helper_Entitytools.Upgrade`.
 - Upgrade trees:
   - 1–3 tier-2 roots, then curated `next` lists.
   - Branches often end early: Cannons (tier 3) and Perma-Wall (tier 4) have no next.
-  - 7–11 upgrades per buildable.
+  - 8–12 upgrades per buildable.
   - Exactly one tier-5 capstone per line, sometimes two.
 - Upgrade costs:
   - tier 2: 15–75
-  - tier 3: 45–450
-  - tier 4: 100–1750
-  - tier 5: 1500–5000, sometimes split across colours
+  - tier 3: 25–500
+  - tier 4: 75–750
+  - tier 5: 1500–5025, sometimes split across colours
+  - (Boutman's trees go higher: 700, 1950 and 7500)
 - Upgrade names follow `<Being>_<Key><Tier>_Upgradeobject`. Each upgrade has its own `Ent_Visual` (`..._Visualproperties`). Descriptions are short comma phrases ("Increased damage, dealt over time").
 - Param naming: `Stat_Add`, `Stat_Multi`, `Stat_Pmulti`, `X_Base`, `X_Max`, `X_Percent`, `X_Duration`. Bespoke AIs read them, and the engine never applies them on its own.
 - An upgrade can carry its own AI (Smackywall Regen3 adds `Entity_Ai_Effect_Smackywall_Regen`; Fiewall Tower4 adds `Entity_Ai_Tower_Fiewall_Turret`).

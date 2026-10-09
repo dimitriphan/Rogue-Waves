@@ -3,7 +3,7 @@
 Rogue Waves' Argo is **designed from the scope text** (`docs/SCOPE_v0.txt`, "Argo, Deep Sea Diver"), which the user calls
 the planned version of every vessel (`docs/PLAN.md` Part C). The shipped ArgoMod 1.4.0 (`ModProjects`) is reused only
 where it matches. "Changes from the concept, and from 1.4.0" lists every difference; 1.4.0's own design is `DESIGN_1.4.0.md`. Checked against `TDS_Vessel_Creator/docs/02`.
-Status: **approved 2026-10-08; step 3 code compiles here (release and self-test builds), not yet built in Unity or tested**. Unmarked numbers are 1.4.0's, verified in its
+Status: **approved 2026-10-08; built and self-tested on the PC (round 6: 139 pass, 0 fail, `IMPLEMENTATION_NOTES.md`)**. Unmarked numbers are 1.4.0's, verified in its
 ninth PC self-test (103/103).
 
 ## Identity
@@ -91,7 +91,7 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 ## Choices this design makes
 
 - **Five buildables.** The game's vessels create `Buildoption1..4`; a fifth is a `Command_Buildoption4` clone with
-  its own key (**untested**, the first PC check). Artifacts that walk the build options (Bottom Rock) only know 1-4.
+  its own key (works in game, PC round 2). Artifacts that walk the build options (Bottom Rock) only know 1-4.
   Fallback if it fails: Deep Water becomes the Drill Rig's FLOOD command (four build buttons, nothing lost but free
   placement).
 - **1.4.0's "loaded guns"** (a gun inside a Drill's Tremor gains a pellet or pierce per Fathom) is dropped. The Tremor
@@ -118,7 +118,7 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
   `Argo_Winch`, quakes `Argo_Quake`. Volumes go in `02_Data.cs` `SoundVolume` with the code (start near
   `Argo_Harpoon`'s 0.004).
 - **Icons** (`03_Assets.cs`, 12×12): `FloodIcon` (a drop and a plus) and `AimIcon` (crosshairs on a ring).
-- Kept unused until step 3 removes them with their code: SONAR's sheet, icon, ring, ping and sound; Barbed's bleed;
+- Kept unused in the source (SONAR is switched off by `SonarEnabled = false`): SONAR's sheet, icon, ring, ping and sound; Barbed's bleed;
   the 1.4.0 upgrade keys that 2.0 replaced (Undertow4, Barbed2, Aftershock3 models are no longer generated).
 
 ## Changes from the concept, and from 1.4.0
@@ -126,7 +126,7 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 | Concept (scope) | Argo 2.0 | 1.4.0 had | Why |
 |---|---|---|---|
 | "Argo, Deep Sea Diver" | Title "Deep Sea Diver" | "Fathoms Below" | The scope's words |
-| Five buildables | All five (Deep Water is new) | Four | The concept wins; the fifth build option is the PC check (above) |
+| Five buildables | All five (Deep Water is new) | Four | The concept wins; the fifth build option works in game (PC round 2) |
 | Harpoon Gun: long-range damage **or** crowd control, "pin or reel depending on upgrade path" | Base gun pierces and doesn't reel; the tree splits into damage and CC paths, two capstones | Every harpoon reeled | As written; the reel (verified in 1.4.0) moves to Reel3 |
 | "Pinning against wall stuns" | Anchor Line pins the foe hit; beside any building it is stunned instead | Pinned the reeled foe | Argo has no walls, and the game has no knockback (`docs/05` §11) to pin a foe *against* something; "beside a building" reads the same on screen |
 | Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed or Pinned foes | none | As written; every debuff source is a tower, trap or upgrade |

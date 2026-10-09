@@ -13,7 +13,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | --- | --- | --- |
 | `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
 | `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.6), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames. `ModSource/Riptide`: a tested roguelike-mode prototype, prior art for the mode | `TDS_Mod/README.md` |
-| `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo: 1.4.0's code from `ModProjects` (compiles), being redesigned from the scope as 2.0 | its `DESIGN.md` |
+| `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo 2.0, designed from the scope and built; PC round 6 passed 139/0; ships only inside the pack | its `DESIGN.md` |
 | `TDS_Mod/ModSource/RogueLab` | Phase 1 research mod (never released): the PC round of `docs/15` §11 | its `README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
 | `docs/SCOPE_v0.txt` | The user's scope for the expansion (2026-10-08, his roguewave.txt): mode, mechanics, four vessels, modifiers, a bug fix, progress. `! NEEDS ... !` marks what only he can supply. The highest truth after the user's newest words | when a task touches its subject |
@@ -23,7 +23,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `docs/PLAN.md` | The prompt plan: the coordinator's operating rules (Part A), phases and their opening prompts (B), state and open questions (C), prompt templates (D) | **every session**: Part C "Now" |
 | `docs/EXPANSION_SCOPE.md` | Beyond vessels: enemies, modes, maps, bosses, music, journal, unlocks, packaging. What is known, what is not, what to research | before any non-vessel work |
 | `docs/SCOPE_GAPS.md` | Every asset the scope names or implies, with what exists and what is still missing (2026-10-08) | before picking the next piece of work |
-| `docs/RESEARCH_GAPS.md` | Engine facts the scope still needs researched (2026-10-08): mode blockers, vessel blockers, the order to answer them | before Phase 5 or a vessel design gate |
+| `docs/RESEARCH_GAPS.md` | Engine facts the scope needed researched: 16 of 18 answered 2026-10-09, what is left and the order to answer it | before Phase 5 or a vessel design gate |
 | `docs/concepts/` | Vessel concept pages drafted from the user's sprite art and the scope (Yossele, Spool, Uloe), with the art in `art/` | before designing one of those vessels |
 
 When a vessel starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold with
