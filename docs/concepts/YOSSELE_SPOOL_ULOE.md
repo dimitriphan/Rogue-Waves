@@ -64,7 +64,8 @@ the game, and should fly to their target like Boutman's fish to buckets.
 - A **pink tongue** (`D77BBA`) hangs from the right of the opening; one grey pixel pokes out at the top right like a
   pin.
 - Two white, glove-like hands (`DDDDDD` / `CFCEDF`) held out at the sides.
-- Short legs, and a **tail** curling to the left that ends in a white tip, which could be a loose thread end.
+- Short legs, and a **severed arm** on the floor to the left with white cotton stuffing spilling from the wound (the
+  user, 2026-10-09: it is not a tail).
 
 **The kit, from the scope.** Buildings and upgrades cost aura; Crafted cost Thread.
 
@@ -103,11 +104,12 @@ light around them. Photons are wandering minions (like Sno Sno's) that **illumin
 | --- | --- | --- | --- |
 | Offence | **Magnifying Glass** | Focuses beams of light on foes; damage depends on the light it receives | damage rises while it keeps hitting the same target |
 | Support | **Power Bank** | Spawns Photons; they wander near where they spawn, or follow a Flood Light's beam when one directs them; they hit for very little but illuminate and blind | Photons explode on death: damage plus blind and illuminate |
-| Defence | **Mirror** (the user's name, PLAN Part C; the scope leaves it blank) | A wall that light empowers to blind foes, lowering their damage | (none in the scope) |
+| Defence | **Mirror** (the user's name, PLAN Part C and the scope) | A wall that light empowers to blind foes, lowering their damage | (none in the scope) |
 | Economy | **Flood Light** | Plugs into nodes and gives off light; can be aimed at towers to focus its light on them | two paths: light in a radius around it (can no longer be aimed), or a straight beam redirected at towers |
 
 **Feasibility first.** PLAN Phase 3 orders Uloe last because "light received" as a stat is new engine territory, to be
-checked before the rest of the design. Nothing in the kit has measured light yet.
+checked before the rest of the design. Answered 2026-10-09 (`docs/RESEARCH_GAPS.md` B1): the game has no gameplay
+light, so the mod sums light sources in range itself with the game's area query; feasible.
 
 ---
 
@@ -120,7 +122,7 @@ Rustle horned mask + leaf cloak, Broodie forked crescent horn.
 | Vessel | Shape the art gives it | Closest taken shape | Read |
 | --- | --- | --- | --- |
 | Yossele | round holed head on four root-like limbs | Smacky's **sprout** (his signature prop, `docs/03` §1); Sprigg and Rustle are also plant vessels | The holed head and the four limbs are distinct; the head sprout echoes Smacky |
-| Spool | hooded plush with a stitched face opening and a tail | Mummer, a **hand-sewn costume** with something peeking out from the dark | Different outline (hood and tail, not a triangle), same sewn-thing idea |
+| Spool | hooded plush with a stitched face opening and a severed, stuffing-spilling arm | Mummer, a **hand-sewn costume** with something peeking out from the dark | Different outline (hood and severed arm, not a triangle), same sewn-thing idea |
 | Uloe | bulb on a tall post, corded | Sprigg's "bulb in a pot" (a plant bulb); Argo's glass dome | Distinct: the only tall, thin, legless silhouette on the boat |
 
 Candidate tower shape languages, carried from the art: Yossele round holes and root feet; Spool stitches, pins and
@@ -147,7 +149,7 @@ The art is the user's; nothing below changes it. Each point goes to that vessel'
    golem of legend, or be only a face. Not assumed.
 6. **Yossele's sprouts** fit the plant kit, but the scope calls Yossele a golem first and gives it no plant trait of its
    own. The art makes it half golem, half plant.
-7. **Spool's name and art.** Nothing in the sprite is a spool or thread, unless the tail's white tip is a loose end.
+7. **Spool's name and art.** Nothing in the sprite is a spool or thread; the white tip on the floor is cotton stuffing from the severed arm.
    The stitches say "crafted"; the Thread fantasy has no visible carrier yet.
 8. **Spool's Thread Head** is listed as a Support building but described as "a single larger minion". Whether it is a
    building that makes one minion (like Buster's Garage) or a minion made by another building decides whether Spool

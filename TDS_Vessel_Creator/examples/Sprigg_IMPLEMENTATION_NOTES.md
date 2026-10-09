@@ -1,7 +1,7 @@
 # Sprigg implementation notes (v1.4.1, 2026-10-02)
 
-Read `Research/VESSEL_SURVEY.md` first. It records how the five shipped vessels are built and the decisions taken for
-Sprigg from that study.
+Read `../reference/VESSEL_SURVEY.md` first. It records how the five shipped vessels are built and the decisions taken
+for Sprigg from that study.
 
 ## Layout
 

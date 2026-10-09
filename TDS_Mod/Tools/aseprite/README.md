@@ -49,5 +49,5 @@ python3 ase_sheets.py unpack sheets out/*.aseprite
 
 Checked in the cloud: the builder's C# writer and `ase_sheets.py` produce the same tags, CRCs, frames and palette for
 Crackpot, Rustle and Broodie; files re-read by `ase_sheets.py` and the npm `ase-parser` match the sheets pixel for
-pixel; edited frames, mirrors, extra layers, raw cels and hidden layers merge as described. Not yet run inside Unity or
-opened in Aseprite.
+pixel; edited frames, mirrors, extra layers, raw cels and hidden layers merge as described. In Unity it runs inside Argo's Build All
+Assets (Argo's PC rounds, 2026-10-08); the written files have not been opened in Aseprite yet.

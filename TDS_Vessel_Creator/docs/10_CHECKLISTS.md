@@ -55,8 +55,9 @@ Copy the relevant list into your notes and tick it honestly.
       `_Parked` gone).
 - [ ] `_isEnabled: true` for every installed vessel mod.
 - [ ] Boot check: every vessel mod `ready` + own icons, 0 exceptions; game closed.
-- [ ] Version equal in Data, ModPrefab and zip name.
-- [ ] Zip: `README - <Name>.txt` + `Mods/<Name>Mod/...`; sent to the user.
+- [ ] Version equal in Data, ModPrefab and zip name (a Rogue Waves part: the pack version, `docs/PACK.md` §4).
+- [ ] Zip: `README - <Name>.txt` + `Mods/<Name>Mod/...` (a Rogue Waves part: the pack's zip, `docs/PACK.md` §5); sent to
+      the user.
 - [ ] `IMPLEMENTATION_NOTES.md` + `DESIGN.md` up to date; new lessons added to `docs/09_PITFALLS.md`.
 
 ## Hand-off / final report to the user

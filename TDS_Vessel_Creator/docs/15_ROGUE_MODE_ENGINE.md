@@ -3,7 +3,7 @@
 How the game starts, plays and ends a match, keeps players' choices, pays bounties, applies Cardinals and saves, read
 for the Rogue Wave mode (`docs/SCOPE_v0.txt` in the Rogue Waves repository). Everything here was **read from the game's
 code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod** or
-**untested**, or was **proven in game** by RogueLab rounds 1 and 2 (§11, §15) or Riptide (§13). `File.cs:line` points
+**untested**, or was **proven in game** by RogueLab rounds 1-3 (§11, §15) or Riptide (§13). `File.cs:line` points
 into that decompiled folder (never committed; rebuild it in a minute).
 
 Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
@@ -19,20 +19,20 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | State across the three maps (Pure Aura, Directions, depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
 | Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13). Bring its menu up first (`Bl_Menus.Changemenu`), then it takes eight cards and returns the pick (§15) |
-| Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; map 1 is the leader's pick (§6) |
+| Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; every map is voted, map 1 through a staging step (§6) |
 | Leave or stay between Tides from Tide 15 | **go, proven** | the same vote; "leave" = the stock win path through public members, proven between Tides (§4, §11) |
 | Bonus Tides | **go, proven** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry`, which also spends a core Tide (§4, §11) |
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
 | Shopkeeper between Tides | **fallback** | the game has no shop; build one on Merchut's command-button pattern (§5) |
 | Fund Transfer (aura between players) | **go** | a shop command; the host takes with `Useresources` and gives with `Giveresources(list, owner)`, both per player (§5, §14.2) |
-| Directions held per player | **fallback** | the core is the team's: grant on the player's vessel and re-grant at each spawn (§14.1) |
+| Directions held per player | **fallback** | the core is the team's: grant on the player's vessel and re-grant when each map starts (§14.1) |
 | New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
 | The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
-| Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10) |
+| Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10; untested, and they load through the custom-map slot whose stock map hung, §15) |
 
 ## 2. Modes and how a mod adds one
 
@@ -56,7 +56,8 @@ Mode_Base obj = (Mode_Base)gameObject.AddComponent(Type.GetType(Modegen.Modescri
   every machine, exactly as vessels add `Items["Hero"]` (verified in a mod for heroes; proven for modes by Riptide and RogueLab), and marks
   its load group loaded (`01` §3).
 - A match always needs a Gameplan: the win path reads `Gameplan.Par` (Game_Rounds.cs:289) (read).
-- The base game has a sixth mode asset, `Mode_Downpour`, besides the five in `13` §3 (asset list, §12).
+- The base game has a seventh mode asset, `Mode_Downpour`, besides the six in `13` §3 (asset list, §12); it is not in
+  the database's Mode folder, and "Downpour" is `Mode_Normal`'s display name (RogueLab round 1).
 
 **So the Rogue Wave mode is:** the stock `Mode_Normal` loop playing the mod's own `Wavesobject`, plus a host brain
 (the mod's `Default` prefab code, as kit 1.5's server module) that listens to `Game_Mapvars.Wave` / `Entry` and adds
@@ -67,7 +68,7 @@ everything the run needs. The brain knows it is in a Rogue match by the mode's n
 **How a match starts** (read): only the leader picks a map (`Tds_Multiplayer_Remote.Selectmap_ServerRpc`, :648 checks
 `Blm_Server.Currentleader`), which writes the networked strings `Map`, `Mode`, `Soundtrack`, `Gameplan` on
 `Tds_Multiplayerinfo` (:672-675); any change un-readies everyone (:683). When all are ready, the server loads
-`Gameloading` (:594), then `Game`, whose `Game_Init` reads the strings back (Game_Init.cs:164).
+`Gameloading` (:594), then `Game`, whose `Game_Init` reads the strings back (Game_Init.cs:96-103).
 
 **How it ends** (read): a win sets `Gamecomplete`/`Gamestate` to "Win" and calls `Game_Rounds.Instance.Gamecompleted()`
 (Mode_Normal.cs:300-309). The end screen's buttons call `Returnmap_ServerRpc` (Game_Endscreen.cs:541,549), a vote with a
@@ -88,11 +89,11 @@ Blm_Multiplayer.cs:279-282), `Bla_Mods` (`DontDestroyOnLoad`, :33), and the mod'
 kit already marks `DontDestroyOnLoad` (`05` §1, Boot; verified in a mod). `Game_Init`, `Game_Rounds` and `Game_Mapvars` are
 rebuilt per map. Statics in prefab code stay (one compile per activation, §10).
 
-**Where run state lives:** a host dictionary on the `Default` object keyed by client id: Pure Aura, Directions owned,
-map number, ascension. Clients can't get a new `NetworkVariable` (a mod can't add networked behaviours). Show it
-through what already syncs: a counter stat on each player's vessel (`Addstat` + `Style = Counter`, `01` §6, verified
-for Mummer's Thread), restored by the host at each vessel spawn; Directions as visible upgrades on the vessel
-(`Upgradelist` shows on the panel); one-off messages as Vis RPCs.
+**Where run state lives:** a host dictionary on the `Default` object keyed by `Sessionid` (client ids change on a
+rejoin, §14.5): Pure Aura, Directions owned, map number, ascension. Clients can't get a new `NetworkVariable` (a mod
+can't add networked behaviours). Show it through what already syncs: a counter stat on each player's vessel (`Addstat` +
+`Style = Counter`, `01` §6, verified for Mummer's Thread), restored by the host at each vessel spawn; Directions as
+visible upgrades on the vessel (`Upgradelist` shows on the panel); one-off messages as Vis RPCs.
 
 ## 4. Tides: bonus Tides and leaving
 
@@ -156,10 +157,11 @@ A mod builds itself, every time: one choice per player, the count, a timeout or 
 - **Loaded** on every machine at match start: each `Artifactentryobject.Artifactloads` group, then the
   `Artifactobject` into `Game_Mapvars.Artifactobjects`, a plain local list (Game_Init.cs:72-92;
   Game_Client_Init.cs:81-89) (read).
-- **Applied once**, when the player core spawns: `Applyartifacts` force-applies each artifact's `Coreupgrades` to the
-  core (Entity_Ai_Main_Core.cs:181; Helper_Entityai.cs:242-250). Those upgrades' AIs do the work:
-  `Entity_Ai_Artifact_Teamapply` / `Towerapply` add upgrades to new towers and units at `Game_Entity.Onspawn`,
-  `Heroapply` to heroes, `Coreapply` to cores, each naming its upgrades in `Defaultparams` (read).
+- **Applied once**, when the player core gets its "Spawn" command (sent by the mode after `Startwait`): `Applyartifacts`
+  force-applies each artifact's `Coreupgrades` to the core (Entity_Ai_Main_Core.cs:181; Helper_Entityai.cs:242-250).
+  Those upgrades' AIs do the work: `Entity_Ai_Artifact_Teamapply` / `Towerapply` add upgrades to new towers and units at
+  `Game_Entity.Onspawn`, `Heroapply` to heroes, `Coreapply` to cores, each naming its upgrades in `Defaultparams`
+  (read).
 - **HUD:** `Game_Mapvars.Artifacttrack` is a networked list of exactly 8 floats indexed by artifact position
   (Game_Mapvars.cs:125-127); `Game_Artifacts` builds the icons once at init (:120-134) (read).
 - `Map_Cardinalconditions` is only a list on the Discoveries screen (Macro_Discoveriesui.cs:43,168).
@@ -327,7 +329,8 @@ questions. All **read**; RogueLab round 2's results are §15.
   Entity_Ai_Artifact_Heroapply.cs:7-17). `Artifact_Towerapply` hooks `Game_Entity.Onspawn` and its team check compares
   the artifact's entity with itself (Entity_Ai_Artifact_Towerapply.cs:14), so it upgrades **every** new `Tower`.
 - So a per-player Direction can't sit on the core. Put it on the player's vessel (owner = `Sessionid`), re-grant it from
-  host state at each vessel spawn, and give tower Directions through the mod's own `Onspawn` hook filtered by owner.
+  host state at each map's first spawn (a respawn copies the dead vessel's upgrades, Entity_Ai_Main_Core.cs:137-144; a
+  repeat grant is ignored), and give tower Directions through the mod's own `Onspawn` hook filtered by owner.
   `ModKitDirections` (kit 1.6) grants on the core and needs this change before the mode uses it.
 
 ### 14.2 Resources and moving aura
@@ -350,12 +353,13 @@ questions. All **read**; RogueLab round 2's results are §15.
   par medal. A foe's level is the highest `Priority` among its upgrades (Helper_Entitytools.cs:528-532), and foes get
   upgrades only from the Tide entry's `Content.Upgrades` (Mode_Normal.cs:118-142). `Levelmod` = `Leveladd × (Level-1)`.
 - The game's own **easier** setting ("Treated", "The water is calmer than normal"; round 2): with `Difficultysetting` =
-  1 (Macro_Gamecore.cs:72) the core gets `Special_Treated_Upgradeproperties` at spawn (Entity_Ai_Main_Core.cs:174-178);
-  its AI scales the start aura and adds drops, and marks the match `Mode_Treated` (Entity_Ai_Main_Core_Treated.cs:19-30,
-  136). Its params (verified): `Aura_Base` 2, `Aura_Drop` 4, `Aura_Basemax` 500, `Extra_Time` 3, `Extra_Wavetime` 30,
-  `Health_Base` 200: an extra twice the mode's start aura split among the players (at most 500), enemy drops ×4, 3 s
-  more before the first Tide and 30 s more per Tide, +200 base health on every core (:29-30, 63, 70, 145-154). The
-  setting is only ever 0 or 1 (Macro_Gamecore.cs:56, 72): there is no harder one.
+  1 (Macro_Gamecore.cs:72) the core gets `Special_Treated_Upgradeproperties` with its "Spawn" command
+  (Entity_Ai_Main_Core.cs:174-178); its AI scales the start aura and adds drops, and marks the match `Mode_Treated`
+  (Entity_Ai_Main_Core_Treated.cs:19-30, 136). Its params (verified): `Aura_Base` 2, `Aura_Drop` 4, `Aura_Basemax` 500,
+  `Extra_Time` 3, `Extra_Wavetime` 30, `Health_Base` 200: an extra twice the mode's start aura split among the players
+  (at most 500), each kill paying its drops ×4 plus 4× in each aura it doesn't drop (split), 3 s more in every break and
+  30 s more per Tide, +200 base health on every core (:29-30, 63, 70, 145-154). The setting is only ever 0 or 1
+  (Macro_Gamecore.cs:56, 72): there is no harder one.
 - So a run gets harder only through what the mod writes: the Tide table (counts, intervals, more entries, elites, all
   proven live), the Treated upgrade forced on the core (to ease), `Resourcegainmultiplier`, and run modifiers of its
   own. A 4-player run faces the same Tides as a solo one unless the mode scales them.

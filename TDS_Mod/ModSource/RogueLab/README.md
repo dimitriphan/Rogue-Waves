@@ -41,7 +41,7 @@ record under each `RogueLab_` twin's name in the save (harmless; the save is bac
 1. Fetch and apply handoff `RogueLab_round1` from branch `claude/phase-1-6lfnar` (`TDS_Mod/Tools/pc/README.md`).
 2. `Build-RogueLabMod.ps1 -Define ROGUELAB_SELFTEST` (always with the define: without it the code stops on `#error`).
 3. `handoff\queue.txt` = one line `RogueLab`, then Tools > ModKit > Build Queue once, until `QUEUE DONE`.
-4. `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes 20`. Disable other mods in the game's Mods folder first if
+4. `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes 20`. The game's Mods folder is otherwise empty (kept so between rounds); disable any other mod there first if
    they are enabled; the runner only toggles the mods it is given.
 5. Send back the summary **and every `[RogueLab]` line** of the copied log in `handoff\selftest_logs`
    (`Select-String -Path <log> -Pattern '\[RogueLab\]'` into a file): the summary keeps only PASS/FAIL/SETUP lines.

@@ -16,9 +16,9 @@ numbers; **routed** = the engine route is read or proven (`TDS_Vessel_Creator/do
 | Argo | tested: PC round 6 139/0, Phase 3 closed (PLAN Part C) | Argo's Directions; Dimitri's balance pass |
 | Yossele | concept | design gate; Growth and fertilizer rules; Mushroom Cannon has no upgrade ideas |
 | Spool | concept | design gate; Thread Head building or minion; minion orders UI; Mummer name clash |
-| Uloe | concept | "light received" feasibility before any design; Mirror has no upgrades |
+| Uloe | concept | design gate (light received is feasible, `RESEARCH_GAPS.md` B1); Mirror has no upgrades |
 | Rogue Wave mode | routed (start, chain, leave, prompt, save proven) | nothing designed: no objective list, shop, prices, difficulty curve or ascension levels |
-| Directions | routed, kit file built | no catalogue at all; per-player grant is open |
+| Directions | routed, kit file built | no catalogue at all; per-player grant decided (on the vessel, kit 1.7) |
 | Pure Aura, Fund Transfer | routed | amounts, limit, icon, counter art |
 | New Cardinals | routed and proven | none named yet; no effects |
 | New enemy types | none | the scope names none |
@@ -51,7 +51,7 @@ director, Salvage dialog), `ModSource/RogueLab` (chain, leave, save).
 
 | Asset | Exists | Missing |
 | --- | --- | --- |
-| **Directions** (mechanic) | `ModKitDirections.cs` (kit 1.6): Directions as upgrades on the core; pick dialog proven (Riptide Salvage); default: 3 offered, 1 picked per map, extras at the shop (PLAN) | **per-player grant**: the core is the team's, so a Direction there is team-wide (the kit file's own open note); a decision before the catalogue |
+| **Directions** (mechanic) | `ModKitDirections.cs` (kit 1.6): Directions as upgrades, granted on the core in 1.6; pick dialog proven (Riptide Salvage); default: 3 offered, 1 picked per map, extras at the shop (PLAN) | **per-player grant**: decided (`RESEARCH_GAPS.md` A1): the core is the team's, so a Direction goes on the player's vessel, re-granted when each map starts; kit 1.7 makes the change at Phase 5 |
 | **Direction catalogue** | names' voice only ("Deep Roots, Loose Threads, Hard to Port", `STYLE.md`) | every Direction: stat bonuses and "fundamental changes" per vessel (Argo, Yossele, Spool, Uloe), generic `Any` ones, and **whether stock vessels get their own** (the mode runs with stock vessels, `PACK.md` §2); icons, text, prices |
 | **Pure Aura** | counter route (`ModKitCounter`), host state proven across maps; Pearl colour and drop motif (`STYLE.md`) | earn rate per Tide, bonus Tide rate, the counter's icon, the pickup/reward effect, sound |
 | **Objectives** (bounty-like, optional, "accepting") | route: a mod brain on Merchut's pattern, with a kill check (`docs/15` §5) | **the objective list** (kill X with elite Y, protect, no leaks...?), how one is offered and accepted, rewards, failure, the button and its art |
@@ -105,20 +105,20 @@ and upgrade models; effects, sounds, icons; journal; self-test; a release. The c
 
 | Asset (scope) | Exists | Missing |
 | --- | --- | --- |
-| **Light** ("light received" as a stat) | PLAN Phase 3 orders a feasibility check first | **the feasibility read** (Fable thread per PLAN Part A), then the rule: sources, falloff, cap, how a tower shows its light |
+| **Light** ("light received" as a stat) | feasible (`RESEARCH_GAPS.md` B1): no gameplay light exists, so the mod sums sources in range with the game's area query | the rule: sources, falloff, cap, how a tower shows its light |
 | The vessel | one frame, concept §3, STYLE row; Mirror named by the user | stats, whether Uloe attacks (§5 item 9), ability, difficulty (default Advanced), lore, the plug and cord (§5 item 10) |
 | **Photons** (minions) | none | wander rule, following a Flood Light beam, damage, lifetime, the sprite |
 | **Illuminated** and **Blinded** debuffs | none | values, durations, their effect visuals |
 | Magnifying Glass (Offense) | one idea (ramp on the same target) | the beam visual and light-to-damage curve; the rest of the tree |
 | Power Bank (Support) | one idea (Photons explode) | spawn rate, cap, the rest of the tree |
-| Mirror (Defense) | name only (user) | **everything**: the scope's slot has no name, ideas or numbers beyond "empowered by light to blind" |
+| Mirror (Defense) | name only (user) | **everything**: the scope names it but gives no ideas or numbers beyond "empowered by light to blind" |
 | Flood Light (Economy) | two exclusive paths (radius, or redirected beam) | the aiming UI (Argo's AIM picker is prior art), the beam visual, node mining |
 
 ## 4. Cardinals (scope "New Cardinals")
 
 | Asset | Exists | Missing |
 | --- | --- | --- |
-| The system | data route proven, mid-run grant proven (`docs/15` §7, §13); Riptide's whitelist of 40 stock artifacts | nothing |
+| The system | data route proven, mid-run grant proven (`docs/15` §7, §13); Riptide's pick from the 40 stock artifacts (its whitelist is empty, not wired yet) | nothing |
 | New Cardinals | the naming voice only (`STYLE.md`); none named yet (user) | **the list**: names, how many, each effect, icons (12×12 flotsam), unlock rule, which are shop-only |
 | Shop stock of Cardinals | none | which stock and new Cardinals the shop sells, prices in Pure Aura |
 

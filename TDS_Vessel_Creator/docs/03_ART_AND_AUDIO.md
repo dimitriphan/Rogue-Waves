@@ -60,7 +60,8 @@ the content.
 
 Reference images (game art, keep them local, don't ship them): menu art of all five (icon, idle strip, landing and
 loading strips, splash, boat mini) and full sheets of Sno Sno and Buster are in
-`C:\Users\Dimitri\TDS_Mod\ModSource\Sprigg\Research\dump`. To dump the full sheets of any other vessel, port
+Sprigg's `Research\dump` folder, which moved with Sprigg into `C:\Users\Dimitri\TDS_Mod\Prototype Mods\Sprigg`
+(2026-10-08). To dump the full sheets of any other vessel, port
 `examples/code/Sprigg_97_ArtDump.cs` into your mod under a `<NAME>_ARTDUMP` define, put that vessel's id in its
 `foreach (string want in new[] { ... })` list, export, launch, and decode the dump lines (`docs/08`).
 

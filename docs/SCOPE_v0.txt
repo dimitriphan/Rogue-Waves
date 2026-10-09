@@ -125,7 +125,7 @@
 		# Uses a [Thread] currency system, where units are crafted using [Thread] dropped from enemies or mined from nodes. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets \
 		# Minions are able to be directed upon spawn. Have some minions be thread gatherers and some minions be attackers.
 		# Can be very mobile depending on skill level, maybe add an upgrade that allows {Crafted} to follow them around?
-		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a tail with a white tip. Towers carry stitches, pins and tins.
+		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing spilling from the wound. Towers carry stitches, pins and tins.
 		# Status: concept page done. Comes after Yossele. / Difficulty default: Advanced \
 		! NEEDS SPOOL'S ATTACK (MELEE OR RANGED), ABILITY OR NONE, AND LORE !
 		! NEEDS DECISION: CAN {CRAFTED} FOLLOW SPOOL, IN OR OUT !

@@ -84,7 +84,7 @@ built around units follows `docs/12_MINION_VESSELS.md` as well. Shipped mixes:
 
 Per buildable, like the shipped ones (counts and costs measured from the game's data):
 
-- **7-11 upgrades** (shipped 7-12; mods use 7), tiers 2, 3, 4, 5.
+- **7-11 upgrades** (shipped 8-12; mods use 7), tiers 2, 3, 4, 5.
 - **1-3 tier-2 roots** (use 2), curated `next` lists that **cross over** (a tier-2 can lead to both tier-3s),
   at least one branch that **ends early** (a tier-3 or tier-4 with no next), and **one tier-5 capstone** (sometimes two).
 - **Costs by tier** (sum of aura), in the building's colour, a second colour allowed from tier 3:
@@ -92,7 +92,7 @@ Per buildable, like the shipped ones (counts and costs measured from the game's 
   | Tier | Shipped range | Median | Mods used |
   |---|---|---|---|
   | 2 | 15-75 | 40 | 20-35 |
-  | 3 | 25-400 | 100 | 60-150 |
+  | 3 | 25-500 | 100 | 60-150 |
   | 4 | 75-750 | 300 | 260-450 |
   | 5 | 1500-5025 | 3000 | 2800-3500 |
 
