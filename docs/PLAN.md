@@ -199,8 +199,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   round logs (branch `claude/kit-accuracy-review-k0ej7d`, its PR lists every fix). Worth knowing before Phase 4 and 5:
   elite `*_Multi` params add to 1 (Hardened `Health_Multi` 3 = health ×4, `docs/13` §10); a respawn keeps the vessel's
   upgrades, so Directions on the vessel need a re-grant only when a map starts (`docs/15` §14.1).
-- **Next:** the F-key check by hand and one online evening (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then
-  the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
+- **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); Dimitri
+  adopted it; its probes M1-M7 join the next RogueLab round.
+- **Also (2026-10-09 evening):** Dimitri's roguewaveWIP.txt answers folded into `docs/SCOPE_v0.txt` (PR #15: VENDCINT,
+  Fund Transfer limits, vote rules, vessel abilities, Crafted types, Aging and Dazzling, an optional-objective
+  template). Every new mechanic checked (`docs/MECHANICS_CHECK.md`, kit `docs/15` §16): all go; eight need the game.
+  RogueLab 0.4.0 (round 4, compiled here) runs them with M1-M5 and M7 in one solo launch; handoff `RogueLab_round4`.
+  Round 4 ran: 11 pass, 5 fail, 1 setup; VENDCINT's ownership and fall-in, Fund Transfer's moves, a minion's owner
+  and kill tracking are proven; the failures were probe bugs. Round 5 (0.4.1): 20 pass, 2 fail; every
+  mechanic is now proven in game (`docs/MECHANICS_CHECK.md` §3). M1 and M4 of the main-menu button failed on probe
+  bugs. Round 6 (0.4.2): **22 pass, 0 fail**; the main-menu button's probes passed too. Left by hand: how the button
+  looks beside Play (the automated run never shows the Main menu). RogueLab is out of the Mods folder.
+- **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+  (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Decisions
@@ -234,8 +245,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pack vessel; minions keep the `Hero` tag (`docs/15` §9).
 - 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
   leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
-  map, `docs/15` §6). **A run starts when the host equips the mode's Cardinal in the lobby**; it is not named yet,
-  since "Rogue Wave" is the expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed
+  map, `docs/15` §6). The start rule (the host equips the mode's Cardinal) was **replaced 2026-10-09** (below); it was
+  never named, since "Rogue Wave" is the expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed
   slot takes any string. **The §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
@@ -249,6 +260,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-09 (research): **Directions are held per player on the vessel, not on the core** (the core is the team's,
   `docs/15` §14.1); `ModKitDirections` changes to that as kit 1.7 when Phase 5 starts. Per-player run state is keyed
   by `Sessionid`. The base game scales nothing by player count or map, so the mode's difficulty is its own (§14.3).
+
+- 2026-10-09 (user): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
+  save holds it, keyed per player by Steam id (`docs/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
+  core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
+  up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
+  default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
+- 2026-10-09 (user): **a campaign starts from a Rogue Wave button on the main menu** (New / Continue), which takes the
+  host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
+- 2026-10-09 (user, roguewaveWIP.txt): shopkeeper **VENDCINT** drops in near the vessels' spawn each break and leaves at
+  its end; sells Cardinals and **only the next rank of Directions a vessel holds**. **Fund Transfer: base aura only**,
+  50 x the coming tide per break (50 before Tide 1). Pure Aura 3 a tide, **2 a bonus tide** (both confirmed 19:47Z).
+  Leave by **majority**; **bonus tides never end** until that vote; a failed campaign keeps nothing; 3 retries; every
+  base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Swell levels (still on hold).
+  Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
 
 ### Open questions
 

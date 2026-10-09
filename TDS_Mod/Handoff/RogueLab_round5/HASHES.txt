@@ -1,0 +1,7 @@
+# Handoff RogueLab_round5: commit b68827c of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit 03ec57e.
+e4579354829a4a89  1414027b75040a09  ModSource\RogueLab\Code\01_Util.cs
+862817365e6ecaf3  49353edfac4b25a1  ModSource\RogueLab\Code\03_Run.cs
+a6edd112bb52c72b  c864a6afc794c4cc  ModSource\RogueLab\Code\07_Round4Menu.cs
+24606fe62d610db3  117268ba4509652d  ModSource\RogueLab\Code\08_Round4.cs
+753f0569fb20e637  f329d5628ed0a63d  ModSource\RogueLab\README.md

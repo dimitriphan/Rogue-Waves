@@ -12,6 +12,9 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (round 3: the eight-card dialog instead) | §3, §6 |
 | Round 2 (0.2.0, `06_Round2.cs`) | at boot every map's and Gameplan's data, every other mode's Tide table, the elites again, the easier setting's upgrade; in map 1 the bundle's second prefab (`Second/RogueLabSecond.cs`, built into `RogueLabMod_Second_Default`) and the frame cost of 50/100/200 extra units; in map 2 an eight-card dialog; then a **tour** of every other base map the vote could offer, each left as a win as soon as it starts; `TEST DONE` | `docs/RESEARCH_GAPS.md` A3, A4, A6, A7, A9, B5, C1, C2 |
 | Round 3 (0.3.0) | the same, with two changes after round 2 (`docs/15` §15): map 2's dialog opens only once its menu is up, then the mod clicks a card; the tour plays only the 15 maps whose stock Gameplan uses another mode (now twinned too), the Final map last; Special_ plans are never twinned, and a map that hangs while loading ends the run after 150 s | `docs/RESEARCH_GAPS.md` A4, A6 |
+| Round 6 (0.4.2) | round 5 again with the menu probes fixed, plus M4b | `docs/MAIN_MENU_START.md` §5 |
+| Round 5 (0.4.1) | round 4 again with its probe bugs fixed | `docs/MECHANICS_CHECK.md` §3 |
+| Round 4 (0.4.0) | starts from a cloned main menu button with no Cardinal (M1-M5, M7), then map 1's mechanic probes V1, V2, F1, O1 in the opening break and K1, D1, A1, E1 in Tide 1; leaves as a win and stops | `docs/MAIN_MENU_START.md` §5, `docs/MECHANICS_CHECK.md` §3 |
 
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
@@ -19,6 +22,38 @@ Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a ha
 `docs/15` §15, every line in `TDS_Vessel_Creator/reference/roguelab_round2.txt`. Round 3 ran the same day: **16 pass,
 0 fail**, the eight-card dialog worked with its menu up, all 15 tour maps loaded; lines in `roguelab_round3.txt`.
 RogueLab's research is done; it stays in the repository as the record and is never released.
+
+## Round 6 (2026-10-09)
+
+Ran 2026-10-09: 22 pass, 0 fail, 0 setup.
+
+RogueLab 0.4.2: round 5 again with its two menu probe bugs fixed (M1 judged against Play's state, M3's result read
+once so M4 keeps its flag) and a new M4b line. Same steps with handoff `RogueLab_round6`. **Afterwards remove
+`RogueLabMod` from the game's Mods folder.**
+
+## Round 5 (2026-10-09)
+
+Ran 2026-10-09: 20 pass, 2 fail, 0 setup; every mechanic probe passed, M1 and M4 failed on probe bugs
+(`docs/MECHANICS_CHECK.md` §3).
+
+RogueLab 0.4.1: round 4's probes again, with round 4's four probe bugs fixed (the menu wait, the button name, the heal
+data, the leftover Cardinal; `docs/MECHANICS_CHECK.md` §3). Same steps as round 4 with handoff `RogueLab_round5`.
+**Afterwards remove `RogueLabMod` from the game's Mods folder.**
+
+## Round 4 (2026-10-09)
+
+Ran 2026-10-09: 11 pass, 5 fail, 1 setup, all failures the probe's own (`docs/MECHANICS_CHECK.md` §3).
+
+RogueLab 0.4.0 (`07_Round4Menu.cs`, `08_Round4.cs`, `RogueLabData.Round = 4`) checks two things in one short launch:
+the main menu start (probes M1-M5 and M7 of `docs/MAIN_MENU_START.md` §5: the run starts from a cloned "Rogue Wave"
+button and its New / Continue / Back dialog, and the boat takes the mod's mode with no Cardinal) and the mechanics of
+the 2026-10-09 scope that only the game can answer (`docs/MECHANICS_CHECK.md` §3: a vessel button added mid-match, a
+neutral shop unit with a fall-in, Fund Transfer's moves, a minion's owner, an enemy's death data, the vessel's damage
+count, Aging's stat changes, a look on an enemy). Map 1 only: no Cardinal grant, F key, swarm, map 2 or tour.
+
+Same steps as round 1 below, with handoff `RogueLab_round4` and `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes
+15`. Nothing needs a click. Raw lines to send back: every `[RogueLab] TEST` line from `main menu` on (the boot dumps
+repeat round 2's and can be skipped). **Afterwards remove `RogueLabMod` from the game's Mods folder.**
 
 ## Round 3 (2026-10-09)
 

@@ -62,8 +62,9 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
 
 1. **By hand:** the F-key bug with Boutman (`docs/15` §11 step 8; the mod could not reproduce it in three rounds,
    because the mod-spawned Boutbro is not the player's): let Boutbro spawn, die, press F after respawning.
-2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, and A2's
-   Fund Transfer moving aura to the other player (read only; a solo host has no one to send to).
+2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, and the client
+   checks `docs/MECHANICS_CHECK.md` §3 lists (a Fund Transfer between two players among them; its moves are proven
+   solo).
 3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). Its first PC round also
    checks that a respawn keeps a granted Direction (read from the code, not yet seen).
 4. **C3** when the scope decides on new enemy types or elite skins.

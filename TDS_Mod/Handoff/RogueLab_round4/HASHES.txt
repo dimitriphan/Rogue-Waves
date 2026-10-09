@@ -1,0 +1,9 @@
+# Handoff RogueLab_round4: commit 03ec57e of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from the PC manifest (PC manifest of C:\Users\Dimitri\TDS_Mod, 2026-10-09 01:35, 87 files).
+632ff9796caaac7f  69af691bb8c29fbd  ModSource\RogueLab\Code\00_RogueLabMod.cs
+2f3084fffa00212b  e4579354829a4a89  ModSource\RogueLab\Code\01_Util.cs
+6f1d4dc0d4e90b1a  862817365e6ecaf3  ModSource\RogueLab\Code\03_Run.cs
+6778240864e8851e  2d72edd38a14e56e  ModSource\RogueLab\Code\04_Match.cs
+new  a6edd112bb52c72b  ModSource\RogueLab\Code\07_Round4Menu.cs
+new  24606fe62d610db3  ModSource\RogueLab\Code\08_Round4.cs
+fee43c6f493d015a  753f0569fb20e637  ModSource\RogueLab\README.md
