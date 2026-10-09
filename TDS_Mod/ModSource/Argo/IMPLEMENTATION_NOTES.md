@@ -82,7 +82,7 @@ two-sided copy (`ArgoAssets.JournalModel`): compiled, not yet seen. The boat's v
 Deep Water model with its `Swell` part, and "Deep Water's water bobs gently" passed (rose and fell 0.0182, amplitude
 0.012). No mod exceptions. Then the playable build (no defines) was rebuilt and boot-checked with Crackpot, Mummer,
 Rustle, Sprigg (every vessel's icons line, 0 exception lines) and left **installed and enabled**. The journal's tipped
-Deep Water is in the round 6 captures on the PC (`selftest_logs\Argo_round6_shots`), not yet looked at here.
+Deep Water now reads as a small tipped pool in the journal (`Previews/round6/`), no longer a line.
 
 **Argo 2.0 stands here (Phase 3 done).** Dimitri, 2026-10-08: Argo ships only inside the full `RogueWavesMod` pack (no
 ArgoMod 2.0 zip), and its balance waits for a later pass of his. Lessons went to kit `docs/09` #72-76 and `docs/03`
