@@ -29,6 +29,7 @@
 	# Sonar is left out of every design for now.
 	# Every mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once. / Backed up in ClaudeProjects\handoff\mods_removed_20261008 \
 	# 2026-10-09: your answers from roguewaveWIP.txt are folded in below. Every new mechanic was checked against the game's code; the ones only the game can answer go to a PC test round. / docs/MECHANICS_CHECK.md \
+	# 2026-10-09: roguewave 2.txt is folded in: a campaign is 10 maps, ascension levels are now Depth, and the new Directions, Vampire Dentures and Mind the Meteor are below. / The bonus tide pay (2) and the Fund Transfer line keep the numbers you settled at 19:47Z \
 
 | Bug Fix |
 	Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
@@ -36,21 +37,21 @@
 
 
 | Rogue Wave Mode |
-	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 15 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
-	/ Ascension levels are named Swell 1, Swell 2, and so on, and are meant to carry over between sessions \
-	# 5 Swell levels. Each one adds a new enemy modifier and lowers aura gain.
-	/ Swell's design still waits until the core gameplay loop is settled (2026-10-09) \
+	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 10 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
+	/ Ascension levels are named Depth 1, Depth 2 and so on, and are meant to carry over between sessions \
+	# 5 Depth levels. Each one adds a change along with the previous depth levels.
+	/ Depth's design still waits until the core gameplay loop is settled (2026-10-09) \
 	# Each map is harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health.
 	! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
 	# Losing a map uses one of a limited number of retries: the team replays that map from the last save. With no retries left, a lost map ends the campaign. Quitting during a map counts as losing it.
 	# A campaign gets 3 retries.
 
 | Gameplay Rundown |
-	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. The host starts a campaign from the Rogue Wave button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there. After all players are ready, the Rogue Wave begins and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to the shopkeeper {VENDCINT} inbetween waves for [Cardinals] or ranks of [Directions] they already hold. After successfully reaching Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to. However, staying bonus tides allows the player to accumulate more [Pure Aura], and bonus tides go on, each one harder, until a majority votes to leave. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 15 maps with increasing difficulty. Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again with Continue on the main menu's Rogue Wave button each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. If the players clear Tide 15 on the final map and leave it, they complete the campaign and a new ascension level is unlocked. A failed campaign keeps nothing.
+	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. The host starts a campaign from the Rogue Wave button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there. After all players are ready, the Rogue Wave begins and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to the shopkeeper {VENDCINT} inbetween waves for [Cardinals] or ranks of [Directions] they already hold. After successfully reaching Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to. However, staying bonus tides allows the player to accumulate more [Pure Aura], and bonus tides go on, each one harder, until a majority votes to leave. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 10 maps with increasing difficulty. Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again with Continue on the main menu's Rogue Wave button each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. If the players clear Tide 15 on the final map and leave it, they complete the campaign and a new ascension level is unlocked. A failed campaign keeps nothing.
 	/ Model Lighthouse, your name for the old start Cardinal, is kept for a later Cardinal or item \
 	# Every base game map can be offered in the vote. / Never the custom map slot, which hangs while loading \
 	# Leaving after Tide 15 is a majority vote, taken between tides.
-	# Bonus tides have no limit. They go on, each one harder, until a majority votes to leave. Map 15 ends the same way, so the campaign is won by leaving map 15 after Tide 15 or later.
+	# Bonus tides have no limit. They go on, each one harder, until a majority votes to leave. Map 10 ends the same way, so the campaign is won by leaving map 10 after Tide 15 or later.
 	# A failed campaign keeps nothing.
 	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS / Use the New Optional Objective template at the bottom of this file \ !
 
@@ -59,7 +60,7 @@
 	[Directions]
 		A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
 		- 3 are offered and 1 is picked before each map. The shop sells only the next rank of a Direction the vessel already holds.
-		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 10 for every vessel and 6 per new vessel last a 15-map campaign \
+		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 7 for every vessel and 4 per new vessel last a 10-map campaign \
 		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
 		- Each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign.
 		/ Use the New Direction template at the bottom of this file to add one \
@@ -161,8 +162,8 @@
 			! NEEDS WHAT EACH CRAFTED COSTS IN THREAD !
 		(Tower 1):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
 			# Main source of damage, versatile in that you can create a disposable army or a stronger but smaller strike team
-			- Similar to garages, sends multiple {Crafted} to run down lane until they land at targeted location where they then idle until seeing an enemy.
-			- Different upgrade paths stem from one building / Similar to Boutman's fish \
+			- Similar to garages, sends multiple {Stitched} to run down lane until they land at targeted location where they then idle until seeing an enemy.
+			- Different upgrade paths stem from one building, turning {Stitched} into {Darts} / Similar to Boutman's fish \
 			- Buildings and upgrades cost aura, but minions cost thread.
 			- Not very smart, once they're set to a location they stay there until death. Can manually be {Unthread} by [Spool].
 				% Aggressive and cheaper melee minions, or squishy but expensive ranged minions
@@ -298,9 +299,19 @@
 			- Clashes: / Any Direction or Cardinal it should not be held with, or none \
 
 	[Directions by Vessel]
-		/ Paste one New Direction block per Direction under its vessel. About 10 Any and 6 per new vessel last a 15-map campaign with ranks \
+		/ Paste one New Direction block per Direction under its vessel. About 7 Any and 4 per new vessel last a 10-map campaign with ranks \
 		(Any)
 			! NEEDS DIRECTIONS FOR EVERY VESSEL !
+			{Made of Tougher Stuff}
+				- Vessel: Any Vessel with (Minions)
+				- Kind: Boost
+				- Touches: (Minions)
+				- Rank I: Your (Minions) take reduced damage from attacks.
+				- Rank II: Your (Minions) take further reduced damage from attacks.
+				- Rank III: Your (Minions) take further reduced damage, and can only take a max amount of damage per each hit.
+				- Numbers:
+				- Look: A {Stitched} with a bandaid on its face, holding back tears.
+				- Clashes: Any Vessel without (Minion)
 		(Argo)
 			! NEEDS ARGO'S DIRECTIONS !
 		(Yossele)
@@ -319,12 +330,32 @@
 				- Vessel: Yossele
 				- Kind: Shift
 				- Touches: The vessel itself
-				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives 1 stack of fertilizer per 30 enemies killed in a radius around Yossele.
-				- Rank II: Gives 1 stack of fertilizer per 25 enemies killed in a radius around Yossele
-				- Rank III: Gives 1 stack of fertilizer per 20 enemies killed in a much larger radius around Yossele
+				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives stack of fertilizer per x enemies killed in a radius around Yossele. / x is a number \
+				- Rank II: Gives stack of fertilizer per x enemies killed in a radius around Yossele / x is a number \
+				- Rank III: Gives stack of fertilizer per x enemies killed in a much larger radius around Yossele / x is a number \
 				- Numbers:
 				- Look: A small gray bin with dirt inside and stink lines emanating from the top.
 				- Clashes: None
+			{Dandelion Season}
+				- Vessel: Yossele
+				- Kind: Shift
+				- Touches: {Primordial Dandelion Tree}
+				- Rank I: Your {Primordial Dandelion Tree} becomes {Dandelion Sapling}. {Dandelion Sapling} have no limit. / {Dandelion Saplings} are slightly weaker statwise and don't scale as well as {Primordial Dandelion Tree} \
+				- Rank II: {Dandelion Sapling's} [Growth] scaling increases.
+				- Rank III: {Dandelion Sapling's} damage and range increase based on number of {Dandelion Saplings} at max [Growth] level.
+				- Numbers:
+				- Look: A dandelion
+				- Clashes: Other {Primordial Dandelion Tree} [Directions]
+			{Mother of Mushrooms}
+				- Vessel: Yossele
+				- Kind: Shift
+				- Touches: {Primordial Dandelion Tree}
+				- Rank I: {Primordial Dandelion Tree} is replaced by {Primordial Mushboom}. The {Primordial Mushboom} is a large mushroom tower that explodes in a large radius around it, dealing damage based on spore stacks on enemies, consuming the spore stacks. / [Growth] increases the {Primordial Mushboom's} range \
+				- Rank II: {Primordial Mushboom's} range is increased.
+				- Rank III: {Primordial Mushboom's} explosion only consumes half of the spore stacks on an enemy, while dealing the full damage.
+				- Numbers:
+				- Look: A mushroom growth starter kit
+				- Clashes: Other {Primordial Dandelion Tree} [Directions]
 		(Spool)
 			! NEEDS SPOOL'S DIRECTIONS !
 			{Efficient Recycler}
@@ -337,6 +368,16 @@
 				- Numbers:
 				- Look: A recycling icon made of a string of yarn
 				- Clashes: None
+			{Sewing Machine}
+				- Vessel: Spool
+				- Kind: Shift
+				- Touches: {Loom}
+				- Rank I: {Loom} is replaced by {Sewing Machine}, generating aura quicker and healing nearby buildings and units, but cannot generate {Thread}.
+				- Rank II: {Sewing Machine's} healing is increased.
+				- Rank III: {Sewing Machine's} healing radius is greatly increased.
+				- Numbers:
+				- Look: A classic light blue sewing machine
+				- Clashes: Other {Loom} [Directions]
 		(Uloe)
 			! NEEDS ULOE'S DIRECTIONS !
 		(Base Game Vessels)
@@ -409,4 +450,16 @@
 			- If failed: Nothing
 			- Later maps: More enemies in the pack, and they carry a modifier
 			- Look: A torn fishing net with a cork float
+			- Clashes: None
+		{Mind the Meteor}
+			- Task: Fully mine a node that spawns in a random location on the map.
+			- Kind: Mining
+			- Numbers:
+			- Taken by: All players
+			- Offered: Every break at {VENDCINT}
+			- Lasts: The next tide
+			- Pays: 3 [Pure Aura]
+			- If failed: Nothing
+			- Later maps: Node has more health and spawns further from player's spawn point
+			- Look: A node with a white crystal
 			- Clashes: None

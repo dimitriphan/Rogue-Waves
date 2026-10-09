@@ -51,7 +51,7 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 | Coordinator at a gate (Phase 1 go/fallback, packaging, design gates, definition of done) | Fable 5.1 | Few tokens, costly if wrong |
 | Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
 | Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
-| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's three-map loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
+| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's 10-map campaign loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
 
 Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
 of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
@@ -159,14 +159,14 @@ Gate: both modifiers seen in a self-test, 0 exceptions beside every installed mo
 
 Build in the order a run plays, each piece testable alone: Pure Aura (per-player counter, earned per tide) →
 objectives/bounties (Merchut's pattern in a mod brain; its contracts are hardcoded, `docs/15` §5) → shopkeeper between tides → Directions (data, pick UI, application through
-upgrades) → Fund Transfer → map vote → leave-or-stay at Tide 15 and bonus tides → the three-map loop with rising
-difficulty → ascension unlock. Reads: `docs/15`, `docs/07` for every synced piece.
+upgrades) → Fund Transfer → map vote → leave-or-stay at Tide 15 and bonus tides → the 10-map campaign loop with rising
+difficulty, saved between maps → ascension (Depth) unlock. Reads: `docs/15`, `docs/07` for every synced piece.
 
 Opening prompt:
 > Implement the next unchecked piece of the Phase 5 list in `docs/PLAN.md` Part C, host-authoritative per `docs/07`,
 > with a self-test section and a journal page. Stop when it compiles and the handoff is packed.
 
-Gate: a full three-map run completed on the PC, online once with a friend.
+Gate: a full 10-map campaign completed on the PC (saved and continued at least once), online once with a friend.
 
 ### Phase 6. Content passes (2-3 sessions)
 
@@ -210,6 +210,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   mechanic is now proven in game (`docs/MECHANICS_CHECK.md` §3). M1 and M4 of the main-menu button failed on probe
   bugs. Round 6 (0.4.2): **22 pass, 0 fail**; the main-menu button's probes passed too. Left by hand: how the button
   looks beside Play (the automated run never shows the Main menu). RogueLab is out of the Mods folder.
+- **Also (2026-10-09 20:48Z):** Dimitri's roguewave 2.txt folded into `docs/SCOPE_v0.txt` (branch
+  `claude/scope-10-maps-lecoiw`): a campaign is **10 maps** (was 15); ascension levels are named **Depth** (was
+  Swell), each adding a change on top of the ones before; new Directions Made of Tougher Stuff (Any vessel with
+  minions), Dandelion Season and Mother of Mushrooms (Yossele), Sewing Machine (Spool); objective Mind the Meteor
+  (3 Pure Aura); Thread Head sends Stitched, its paths turn them into Darts. Compost Bin's counts are now x, for
+  Yossele's design gate. Map-count knock-ons in `docs/SCOPE_VS_LOOP.md` (#3, #14, #20, §E).
 - **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
@@ -268,6 +274,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
 - 2026-10-09 (user): **a campaign starts from a Rogue Wave button on the main menu** (New / Continue), which takes the
   host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
+- 2026-10-09 20:48Z (user, roguewave 2.txt): **a campaign is 10 maps** (replaces 15), won by leaving map 10 after
+  Tide 15 or later; the Direction catalogue target drops to about 7 Any and 4 per new vessel; the map shape default is
+  two stretches of five. **Ascension levels are Depth 1-5** (was Swell), still on hold. Bonus tide pay stays 2 and the
+  Fund line keeps the 19:47Z wording, though the uploaded file still had the older text.
 - 2026-10-09 (user, roguewaveWIP.txt): shopkeeper **VENDCINT** drops in near the vessels' spawn each break and leaves at
   its end; sells Cardinals and **only the next rank of Directions a vessel holds**. **Fund Transfer: base aura only**,
   50 x the coming tide per break (50 before Tide 1). Pure Aura 3 a tide, **2 a bonus tide** (both confirmed 19:47Z).
@@ -286,7 +296,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 ### Phase 5 pieces
 
 - [ ] Pure Aura  - [ ] objectives/bounties  - [ ] shopkeeper  - [ ] Directions  - [ ] Fund Transfer  - [ ] map vote
-- [ ] leave-or-stay and bonus tides  - [ ] three-map loop  - [ ] ascension
+- [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth)
 
 ---
 

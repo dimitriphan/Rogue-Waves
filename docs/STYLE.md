@@ -44,7 +44,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 | Buildings, units | the everyday object named plainly, with a twist; the scope's names stay | Repurposed Cookie Tin, Pin Cushion, Flood Light |
 | Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | none named yet (base: Red Coin, Rusty Pipe) |
 | Directions | a heading or a course, short and active | Deep Roots, Loose Threads, Hard to Port |
-| Mode, ascension, events | sea weather | Rogue Wave; ascension levels "Swell 1, 2, ..."; banners "A rogue wave rises" |
+| Mode, ascension, events | sea weather | Rogue Wave; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |
 | Enemy modifiers | the scope's names (Cursed, Berserk). Base elites are named like metalwork (Hardened, Tempered, Superheated, Fractured, Annealed), for reference |
 
 Text is plain and short, sentence case, and has no numbers in upgrade text (`docs/02`).
