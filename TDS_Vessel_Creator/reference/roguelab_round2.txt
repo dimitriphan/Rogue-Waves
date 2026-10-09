@@ -1,0 +1,483 @@
+# RogueLab round 2 (2026-10-09, PC, solo host, Boutman on 3B_Thehunt, 0B_Hydragen, then a tour of 28 base maps): every
+# "[RogueLab]" line of Player.log, prefix removed. Self-test: pass 15, fail 1 (the eight-card dialog), setup 0; the run
+# hung loading Special_Custom and ended on the 75-minute timeout (no TEST DONE). 0.2.0 ran the boot dumps twice (a
+# doubled call); the second, identical copy of the MAP to "hard setting" block is left out. Read by docs/15
+# §15; the MODE, TIDE2, ELITE and ENEMY lines are the stock data for docs/13 and Phase 4.
+loaded v0.2.0
+TEST INFO database folders: Artifact, Atmosphere, Gameplan, Hero, Icons, Lighting, Map, Mode, Other, Soundtrack, Unlock, Vfx, World
+TEST INFO folder Mode (6): Mode_Drought, Mode_Final, Mode_Normal, Mode_Storm, Mode_Tsunami, Mode_Tutorial
+TEST INFO folder Gameplan (51): 0B_Hydragen, 1_Skyhook, 2_Galbass, 2_Gridhead, 2_Ulu, 2B_Maybeth, 2B_Monogrove, 2C_Blasthead, 2D_Mercs, 3_Manafold, 3_Opal, 3_Vultures, 3B_Thehunt, 3B_Woozy, 3BH_Kong, 4_Artrio, 4_Hydroplane, 4B_Brittle, 4B_Crimson, 4C_Oroboro, 5_Chrono, 5_Mini, 5_Snobound, 5B_Crescent, 5B_Final, 5B_Hold, 5B_Split, Alt_0_Tutorial, Alt_1_Skyhook, Alt_2_Galbass, Alt_2_Gridhead, Alt_2_Ulu, Alt_2B_Monogrove, Alt_2C_Blasthead, Alt_2D_Mercs, Alt_3_Opal, Alt_3_Vultures, Alt_3B_Woozy, Alt_4_Artrio, Alt_4B_Brittle, Alt_4B_Crimson, Alt_5_Chrono, Alt_5_Mini, Alt_5B_Crescent, Alt_5B_Split, Special_Custom, Special_Tutorial, Test_Brittle, Test_Manafold, Test_Seaside, Test_Vultures
+TEST INFO folder Map (54): Map_Artrio, Map_Artrio_Alt, Map_Blasthead, Map_Blasthead_Alt, Map_Brittle, Map_Brittle_Alt, Map_Chrono, Map_Chrono_Alt, Map_Crescent, Map_Crescent_Alt, Map_Crimson, Map_Crimson_Alt, Map_Custom, Map_Estate, Map_Final, Map_Galbass, Map_Galbass_Alt, Map_Gridhead, Map_Gridhead_Alt, Map_Hold, Map_Hydraden, Map_Hydroplane, Map_Idk, Map_Kong, Map_Manafold, Map_Manafoldold, Map_Maybeth, Map_Mercs, Map_Mercs_Alt, Map_Mini, Map_Mini_Alt, Map_Monogrove, Map_Monogrove_Alt, Map_Oakjunction, Map_Oroboro, Map_Purlest, Map_Purlest_Alt, Map_Seasidevilla, Map_Skyhook, Map_Skyhook_Alt, Map_Snobound, Map_Split, Map_Split_Alt, Map_Test, Map_Testflat, Map_Thehunt, Map_Tutorial, Map_Tutorial_Alt, Map_Ulu, Map_Ulu_Alt, Map_Vultures, Map_Vultures_Alt, Map_Woozy, Map_Woozy_Alt
+TEST INFO folder Artifact (40): Artifact_Badge, Artifact_Beastpelt, Artifact_Bird, Artifact_Bluecoin, Artifact_Bluepaint, Artifact_Blurryphoto, Artifact_Caffeine, Artifact_Checklist, Artifact_Chimera, Artifact_Computer, Artifact_Converter, Artifact_Cubeddrink, Artifact_Diorama, Artifact_Fishbait, Artifact_Fragment, Artifact_Gavel, Artifact_Glasscore, Artifact_Greatspear, Artifact_Greencoin, Artifact_Kippy, Artifact_Loop, Artifact_Moneybag, Artifact_Mooncore, Artifact_Opalcore, Artifact_Paper, Artifact_Pig, Artifact_Redcoin, Artifact_Rock, Artifact_Rustypipe, Artifact_Samedayshipping, Artifact_Sandbox, Artifact_Seeds, Artifact_Slippers, Artifact_Tackle, Artifact_Textbook, Artifact_Titan, Artifact_Vintage, Artifact_Voice, Artifact_Wavebreaker, Artifact_Yellowcoin
+TEST INFO folder Unlock (105): 0B_Hydragenwaypoint, 1_Skyhookwaypoint, 2_Galbasswaypoint, 2_Gridheadwaypoint, 2_Uluwaypoint, 2B_Maybethwaypoint, 2B_Monogrovewaypoint, 2C_Blastheadwaypoint, 2D_Mercswaypoint, 3_Manafoldwaypoint, 3_Opalwaypoint, 3_Vultureswaypoint, 3B_Thehuntwaypoint, 3B_Woozywaypoint, 3BH_Kongwaypoint, 4_Artriowaypoint, 4_Hydroplanewaypoint, 4B_Brittlewaypoint, 4B_Crimsonwaypoint, 4C_Oroborowaypoint, 5_Chronowaypoint, 5_Miniwaypoint, 5_Snoboundwaypoint, 5B_Crescentwaypoint, 5B_Holdwaypoint, 5B_Splitwaypoint, Altmaps_Special, Artifact_Badge, Artifact_Beastpelt, Artifact_Bird, Artifact_Bluecoin, Artifact_Bluepaint, Artifact_Blurryphoto, Artifact_Caffeine, Artifact_Checklist, Artifact_Chimera, Artifact_Computer, Artifact_Converter, Artifact_Cubeddrink, Artifact_Diorama, Artifact_Fishbait, Artifact_Fragment, Artifact_Gavel, Artifact_Glasscore, Artifact_Greatspear, Artifact_Greencoin, Artifact_Kippy, Artifact_Loop, Artifact_Moneybag, Artifact_Mooncore, Artifact_Opalcore, Artifact_Paper, Artifact_Pig, Artifact_Redcoin, Artifact_Rock, Artifact_Rustypipe, Artifact_Samedayshipping, Artifact_Sandbox, Artifact_Seeds, Artifact_Slippers, Artifact_Special, Artifact_Tackle, Artifact_Textbook, Artifact_Titan, Artifact_Vintage, Artifact_Voice, Artifact_Wavebreaker, Artifact_Yellowcoin, Bird_Special, Drive_Blue, Drive_Red, Drive_Yellow, Drive_Yellowshow, Gate_Alph1, Gate_Alph2, Gate_Aquilla1, Gate_Aquilla2, Gate_Blasthead, Gate_Chrono, Gate_Crescent, Gate_Crescent_Beam, Gate_Final, Gate_Hold, Gate_Hold_Beam, Gate_Mini, Gate_Ometutorialpath, Gate_Snobound, Gate_Split, Gate_Split_Beam, Gate_Win, Gate_Yellowdrive, Gateview_Start, Hero_Unlockboutman, Hero_Unlockbuster, Hero_Unlockfie, Hero_Unlockfiecounter, Hero_Unlocksnono, Hero_Unlocksnonocounter, Leaderboard_Special, Playmode_Flood, Playmode_Normal, Playmode_Storm, Playmode_Tsunami, Playmode_Tutorial, Unlock_Firstartifact
+TEST INFO folder Hero (5): Hero_Boutman, Hero_Buster, Hero_Fie, Hero_Smacky, Hero_Snosno
+TEST INFO folder Soundtrack (6): Soundtrack_Blue, Soundtrack_Cyan, Soundtrack_Main, Soundtrack_Mainoriginal, Soundtrack_Red, Soundtrack_Yellow
+TEST INFO mode entry Mode_Normal: display 'Downpour' loads Mode_Normal waves 30
+TEST INFO mode entry Mode_Tutorial: display 'Still Waters' loads Mode_Tutorial waves 1
+TEST INFO mode entry Mode_Storm: display 'High Tide' loads Mode_Storm waves 15
+TEST INFO mode entry Mode_Drought: display 'Flood' loads Mode_Drought waves 20
+TEST INFO mode entry Mode_Tsunami: display 'Tsunami' loads Mode_Tsunami waves 4
+TEST INFO mode entry Mode_Final: display 'End' loads Mode_Final waves 1
+TEST INFO cardinal Artifact_Redcoin: 'Red Coin' type Red mixed True loads Artifact_Redcoin unlocked True desc 'Gain additional Red aura at the start, and per Tide.'
+TEST INFO cardinal Artifact_Yellowcoin: 'Yellow Coin' type Yellow mixed True loads Artifact_Yellowcoin unlocked True desc 'Gain additional Yellow aura at the start, and per Tide.'
+TEST INFO cardinal Artifact_Greencoin: 'Green Coin' type Green mixed True loads Artifact_Greencoin unlocked True desc 'Gain all auras at the start, and per Tide.'
+TEST INFO cardinal Artifact_Bluecoin: 'Blue Coin' type Blue mixed True loads Artifact_Bluecoin unlocked True desc 'Gain additional Blue aura at the start, and per Tide.'
+TEST INFO cardinal Artifact_Pig: 'Money Bag' type Yellow mixed True loads Artifact_Pig unlocked True desc 'Throwable Aura, enables donation'
+TEST INFO cardinal Artifact_Kippy: 'Kippy' type Green mixed True loads Artifact_Kippy unlocked False desc 'Cats like milk'
+TEST INFO cardinal Artifact_Paper: 'Paper Tower' type Red mixed True loads Artifact_Paper unlocked True desc 'First offensive tower becomes paper with increased stats'
+TEST INFO cardinal Artifact_Vintage: 'Vintage Watch' type Blue mixed False loads Artifact_Vintage unlocked True desc 'Increase time between Tides and before'
+TEST INFO cardinal Artifact_Blurryphoto: 'Blurry Photo' type Red mixed True loads Artifact_Blurryphoto unlocked True desc 'Vessels are split, stats altered'
+TEST INFO cardinal Artifact_Caffeine: 'Sport Water' type Red mixed True loads Artifact_Caffeine unlocked True desc 'Vessels are boosted at the start of Tides and gain permanent stats'
+TEST INFO cardinal Artifact_Converter: 'Processor Jr' type Yellow mixed True loads Artifact_Converter unlocked True desc 'Converts some Aura into one you have least of'
+TEST INFO cardinal Artifact_Opalcore: 'Opal Core' type Blue mixed True loads Artifact_Opalcore unlocked True desc 'Basin gains notable health each Tide, deals damage when touched'
+TEST INFO cardinal Artifact_Samedayshipping: 'Same Day Shipping' type Blue mixed False loads Artifact_Samedayshipping unlocked True desc 'Fast forward time between Tides, granting Aura'
+TEST INFO cardinal Artifact_Seeds: 'Starter Seeds' type Yellow mixed True loads Artifact_Seeds unlocked True desc 'Slightly increase aura gain from all mines'
+TEST INFO cardinal Artifact_Textbook: '1st Grade Textbook' type Red mixed True loads Artifact_Textbook unlocked False desc 'Replace Daggers with something more family friendly'
+TEST INFO cardinal Artifact_Wavebreaker: 'Wave Breaker' type Blue mixed True loads Artifact_Wavebreaker unlocked True desc 'Enemies health is reduced significantly nearby a Basin'
+TEST INFO cardinal Artifact_Glasscore: 'Glass Core' type Blue mixed True loads Artifact_Glasscore unlocked True desc 'Drowned Tone Sub-Basins will explode rather than cause a loss. Reducing aura'
+TEST INFO cardinal Artifact_Beastpelt: 'Beast Tassle' type Green mixed True loads Artifact_Beastpelt unlocked True desc 'Vessels become elusive'
+TEST INFO cardinal Artifact_Fishbait: 'Fish Bait' type Blue mixed True loads Artifact_Fishbait unlocked False desc 'Recruit Gabby'
+TEST INFO cardinal Artifact_Rustypipe: 'Rusty Pipe' type Red mixed True loads Artifact_Rustypipe unlocked True desc 'Towers become stronger after some Tides'
+TEST INFO cardinal Artifact_Slippers: 'Fluffy Slippers' type Green mixed True loads Artifact_Slippers unlocked True desc 'Vessels move faster after continuously moving'
+TEST INFO cardinal Artifact_Badge: 'Torrid Badge' type Red mixed True loads Artifact_Badge unlocked True desc 'Hired hands'
+TEST INFO cardinal Artifact_Chimera: 'Chimera Crystals' type Yellow mixed False loads Artifact_Chimera unlocked True desc 'Single ores are split and compound ores are merged'
+TEST INFO cardinal Artifact_Gavel: 'Aura Gavel' type Red mixed True loads Artifact_Gavel unlocked True desc 'Drowned units create homing bolts'
+TEST INFO cardinal Artifact_Loop: 'Looped Mirror' type Green mixed False loads Artifact_Loop unlocked True desc 'Tide will repeat once if the Basin is touched'
+TEST INFO cardinal Artifact_Titan: 'Frail Titan' type Blue mixed True loads Artifact_Titan unlocked True desc 'Towers have drastically low health, explode when drowned'
+TEST INFO cardinal Artifact_Moneybag: 'Pig Named Bank' type Yellow mixed True loads Artifact_Moneybag unlocked False desc 'Buildings and Units appreciate in value overtime'
+TEST INFO cardinal Artifact_Bluepaint: 'Blue Paint' type Blue mixed True loads Artifact_Bluepaint unlocked True desc 'Enemies kept at very low health will eventually turn friendly'
+TEST INFO cardinal Artifact_Fragment: 'Fragment' type Blue mixed True loads Artifact_Fragment unlocked True desc 'A barrier appears around the enemy Basin'
+TEST INFO cardinal Artifact_Mooncore: 'Moon Core' type Green mixed False loads Artifact_Mooncore unlocked True desc 'Skip the 3rd and every 7th Tide'
+TEST INFO cardinal Artifact_Rock: 'Bottom Rock' type Yellow mixed True loads Artifact_Rock unlocked True desc 'Gain a tower limit and Aura gain greatly reduced, but no longer lower'
+TEST INFO cardinal Artifact_Sandbox: 'Sand Filled Box' type Green mixed False loads Artifact_Sandbox unlocked True desc 'True power resides within the box (Sandbox mode! No Medals/Rewards)'
+TEST INFO cardinal Artifact_Tackle: 'Tacklebox' type Yellow mixed True loads Artifact_Tackle unlocked True desc 'Place hook traps, snared enemies grant red and blue aura if attacked'
+TEST INFO cardinal Artifact_Voice: 'Voice in a Bottle' type Yellow mixed True loads Artifact_Voice unlocked True desc 'Upgrade costs decrease each Tide'
+TEST INFO cardinal Artifact_Checklist: 'Checklist' type Yellow mixed True loads Artifact_Checklist unlocked False desc 'Enemies drop additional resource drops'
+TEST INFO cardinal Artifact_Computer: 'Frozen Computer' type Blue mixed True loads Artifact_Computer unlocked True desc 'Time slows with enemies near the Basin, glitching some enemies'
+TEST INFO cardinal Artifact_Cubeddrink: 'Cubed Drink' type Red mixed True loads Artifact_Cubeddrink unlocked True desc 'Create a drink stand, increasing flat damage of towers and units'
+TEST INFO cardinal Artifact_Diorama: 'Diorama' type Green mixed True loads Artifact_Diorama unlocked True desc 'Vessels are tiny'
+TEST INFO cardinal Artifact_Greatspear: 'Spear Point' type Red mixed True loads Artifact_Greatspear unlocked True desc 'Javelins are slowed significantly'
+TEST INFO cardinal Artifact_Bird: 'Bendigo' type Yellow mixed True loads Artifact_Bird unlocked False desc 'Is a bird'
+TEST INFO groups loaded at boot (Database.Init): General_Init, General_Ambientinit
+TEST INFO second prefab: RogueLabMod_Second_Default started
+TEST INFO group Mode_Normal loaded at boot: True after 4.699 s
+TEST INFO group Hero_Boutman loaded at boot: True after 0.361 s
+TEST INFO Mode_Normal object: name Mode_Normal, found by entry name too True, script Mode_Normal, client script Clientmode_Normal, special spots 4
+TEST INFO Mode_Normal params: Startwait=10 Musicwave1=1 Musicwave2=10 Musicwave3=16 Musicwave4=25 Tipthreshold=10 Basinthreshold=10
+TEST INFO Mode_Normal table: 60 entries, Totalwaves 30, start aura Redaura 50, Blueaura 50, Yellowaura 50
+TEST TIDE 1 break shown 0 time 45 note 'Best of Luck' | Wait - x0 every 0 gate 0 team 0
+TEST TIDE 2 tide shown 1 time 180 note '' | Spread Enemy_Dagger x5 every 1 gate 0 team 0
+TEST TIDE 3 break shown 0 time 30 note '' |
+TEST TIDE 4 tide shown 2 time 180 note '' | Spread Enemy_Dagger x6 every 0.8 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Dagger x6 every 0.4 gate 0 team 0
+TEST TIDE 5 break shown 0 time 30 note '' |
+TEST TIDE 6 tide shown 3 time 180 note '' | Spread Enemy_Dagger x5 every 0.5 gate 0 team 0 ; Wait - x0 every 2 gate 0 team 0 ; Spread Enemy_Dagger x5 every 0.5 gate 0 team 0 ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Dagger x3 every 0.3 gate 0 team 0 ; Wait - x0 every 2 gate 0 team 0 ; Spread Enemy_Dagger x3 every 0.3 gate 0 team 0
+TEST TIDE 7 break shown 0 time 30 note 'New enemy incoming' |
+TEST TIDE 8 tide shown 4 time 180 note '' | Spread Enemy_Spear x4 every 0.5 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Dagger x15 every 0.4 gate 0 team 0 ; Spread Enemy_Spear x4 every 0.5 gate 0 team 0
+TEST TIDE 9 break shown 0 time 30 note '' |
+TEST TIDE 10 tide shown 5 time 180 note '' | Spread Enemy_Dagger x30 every 0.2 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Spear x14 every 0.5 gate 0 team 0
+TEST TIDE 11 break shown 0 time 30 note 'Hardened enemies incoming' |
+TEST TIDE 12 tide shown 6 time 180 note '' | Spread Enemy_Dagger x22 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 13 break shown 0 time 30 note 'New enemy incoming' |
+TEST TIDE 14 tide shown 7 time 180 note '' | Spread Enemy_Aegis x7 every 0.4 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x15 every 0.1 gate 0 team 0
+TEST TIDE 15 break shown 0 time 30 note '' |
+TEST TIDE 16 tide shown 8 time 180 note '' | Spread Enemy_Dagger x30 every 0.1 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Aegis x10 every 0.2 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x25 every 0.1 gate 0 team 0
+TEST TIDE 17 break shown 0 time 30 note '' |
+TEST TIDE 18 tide shown 9 time 180 note '' | Spread Enemy_Dagger x30 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x18 every 0.25 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Dagger x20 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 19 break shown 0 time 30 note '' |
+TEST TIDE 20 tide shown 10 time 180 note '' | Spread Enemy_Maul x1 every 0.1 gate 0 team 0 ; Spread Enemy_Dagger x25 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x25 every 0.15 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 21 break shown 0 time 30 note '' |
+TEST TIDE 22 tide shown 11 time 180 note '' | Spread Enemy_Aegis x15 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Ballista x8 every 0.1 gate 0 team 0
+TEST TIDE 23 break shown 0 time 30 note 'Javelin Rush' |
+TEST TIDE 24 tide shown 12 time 180 note '' | Spread Enemy_Spear x60 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 25 break shown 0 time 30 note 'Lil bit of everything' |
+TEST TIDE 26 tide shown 13 time 180 note '' | Spread Enemy_Aegis x25 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Dagger x25 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x20 every 0.1 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Ballista x15 every 0.15 gate 0 team 0
+TEST TIDE 27 break shown 0 time 30 note 'Fast!' |
+TEST TIDE 28 tide shown 14 time 180 note '' | Spread Enemy_Ballista x10 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Dagger x35 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Spear x35 every 0.5 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE 29 break shown 0 time 30 note 'Pew pew' |
+TEST TIDE 30 tide shown 15 time 180 note '' | Spread Enemy_Ballista x40 every 0.5 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE 31 break shown 0 time 30 note '' |
+TEST TIDE 32 tide shown 16 time 180 note '' | Spread Enemy_Maul x2 every 0.1 gate 0 team 0 ; Spread Enemy_Aegis x45 every 0.1 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Spear x45 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE 33 break shown 0 time 30 note '' |
+TEST TIDE 34 tide shown 17 time 180 note '' | Spread Enemy_Spear x25 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Aegis x25 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Dagger x25 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Ballista x25 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE 35 break shown 0 time 30 note '' |
+TEST TIDE 36 tide shown 18 time 180 note '' | Spread Enemy_Dagger x9 every 0.3 gate 0 team 0 ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Dagger x1 every 0.1 gate 0 team 0 [Enemy_Chaos_Upgradeobject]
+TEST TIDE 37 break shown 0 time 10 note 'What is that????' |
+TEST TIDE 38 tide shown 19 time 180 note '' | Spread Enemy_Maul x8 every 5 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Maul x1 every 0 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 39 break shown 0 time 30 note '' |
+TEST TIDE 40 tide shown 20 time 180 note '' | Spread Enemy_Aegis x6 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 1 gate 0 team 0 ; Spread Enemy_Maul x6 every 5 gate 0 team 0 ; Wait - x0 every 8 gate 0 team 0 ; Spread Enemy_Spear x20 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Ballista x35 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE 41 break shown 0 time 30 note 'New enemy incoming' |
+TEST TIDE 42 tide shown 21 time 180 note '' | Spread Enemy_Onager x10 every 1 gate 0 team 0
+TEST TIDE 43 break shown 0 time 30 note '' |
+TEST TIDE 44 tide shown 22 time 180 note '' | Spread Enemy_Aegis x50 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x50 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE 45 break shown 0 time 30 note '' |
+TEST TIDE 46 tide shown 23 time 180 note '' | Spread Enemy_Aegis x9 every 3 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Maul x9 every 3 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE 47 break shown 0 time 30 note '' |
+TEST TIDE 48 tide shown 24 time 180 note '' | Spread Enemy_Dagger x25 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Aegis x25 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x25 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Maul x6 every 2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Onager x25 every 1 gate 0 team 0
+TEST TIDE 49 break shown 0 time 30 note '' |
+TEST TIDE 50 tide shown 25 time 180 note '' | Spread Enemy_Maul x10 every 5 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE 51 break shown 0 time 30 note '' |
+TEST TIDE 52 tide shown 26 time 180 note '' | Spread Enemy_Ballista x45 every 0.4 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Onager x45 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 53 break shown 0 time 30 note '' |
+TEST TIDE 54 tide shown 27 time 180 note '' | Spread Enemy_Aegis x120 every 0.2 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE 55 break shown 0 time 30 note 'The water runs cold...' |
+TEST TIDE 56 tide shown 28 time 180 note '' | Wait - x0 every 8 gate 0 team 0 ; Spread Enemy_Aegis x8 every 2 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Wait - x0 every 8 gate 0 team 0 ; Spread Enemy_Spear x5 every 2 gate 0 team 0 [Enemy_Chaos_Upgradeobject]
+TEST TIDE 57 break shown 0 time 30 note '' |
+TEST TIDE 58 tide shown 29 time 180 note '' | Spread Enemy_Maul x30 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE 59 break shown 0 time 30 note 'The Basin wakes...' |
+TEST TIDE 60 tide shown 30 time 9999 note '' | Spread Enemy_Maul x10 every 2 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Spear x20 every 0.2 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Maul x10 every 0.2 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait - x0 every 4 gate 0 team 0 ; Spread Enemy_Excalibur x1 every 0 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST INFO Gameplan 3B_Thehunt: map Map_Thehunt, mode Mode_Normal, soundtrack Soundtrack_Red, par 2400, record True
+TEST GROUP boot General_Ambientinit loaded True [Sound 3]
+TEST GROUP boot General_Init loaded True [Sound 67, Vfx 11]
+TEST GROUP boot Hero_Boutman loaded True [Hero 1, Upgrade 52, Mob 13, Projectile 18, Vfx 56, Command 8, Other 5, Sound 34, Ui 1]
+TEST GROUP boot Mode_Normal loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 31, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore
+TEST ELITE boot Enemy_Health_Upgradeobject name 'Hardened' desc 'Drastically increased health' priority -1 ais [Entity_Ai_Enemy_Health_Upgrade] params Health_Multi=3
+TEST ELITE boot Enemy_Red_Upgradeobject name 'Tempered' desc 'Increased aggression and retaliation' priority -1 ais [Entity_Ai_Enemy_Red_Upgrade] params Aggrorange_Base=5 Damage_Multi=1 Health_Multi=1
+TEST ELITE boot Enemy_Hyper_Upgradeobject name 'Superheated' desc 'Increased speed and attack' priority -1 ais [Entity_Ai_Enemy_Hyper_Upgrade] params Health_Multi=2 Damage_Multi=2 Speed_Multi=1.25 Attackspeed_Multi=1
+TEST ELITE boot Enemy_Chaos_Upgradeobject name 'Fractured' desc 'Insane increased capabilities' priority -1 ais [Entity_Ai_Enemy_Chaos_Upgrade] params Health_Multi=14 Damage_Multi=9 Speed_Multi=9 Attackspeed_Multi=9
+TEST ELITE boot Enemy_Armor_Upgradeobject name 'Annealed' desc 'Gains armor, blocking damage' priority -1 ais [Entity_Ai_Enemy_Armor_Upgrade] params Healtharmor_Base=4 Healtharmor_Perhealth=10
+TEST ELITE boot Enemy_Explode_Upgradeobject not loaded
+TEST ELITE boot Effect_Enemy_Weakened_Upgradeobject not loaded
+TEST PASS mod mode registered: table 6 entries / 3 Tides, params 7 (Startwait True, Basinthreshold True, Tipthreshold True), twins of 35 Gameplans
+TEST PASS mod Cardinal registered: copy of Artifact_Badge (Red), grant test uses Artifact_Beastpelt
+TEST PASS save write and read back: before 1, after 2
+TEST PASS save value survived a restart: launch 2
+TEST MAP Map_Test 'Default' difficulty 1 loads Map_Test subloads 0
+TEST MAP Map_Testflat 'Default' difficulty 1 loads Map_Testflat subloads 0
+TEST MAP Map_Gridhead 'Gridhead' difficulty 3 loads Map_Gridhead subloads 0
+TEST MAP Map_Monogrove 'Monogrove' difficulty 5 loads Map_Monogrove subloads 0
+TEST MAP Map_Idk 'Default' difficulty 1 loads Map_Idk subloads 0
+TEST MAP Map_Galbass 'Galbass's Scaffold' difficulty 3 loads Map_Galbass subloads 0
+TEST MAP Map_Estate 'Estate on the Clouds' difficulty 1 loads Map_Estate subloads 0
+TEST MAP Map_Oakjunction 'Oak Junction' difficulty 1 loads Map_Oakjunction subloads 0
+TEST MAP Map_Seasidevilla 'Seaside Villa' difficulty 1 loads Map_Seasidevilla subloads 0
+TEST MAP Map_Maybeth 'Maybeth' difficulty 5 loads Map_Maybeth subloads 0
+TEST MAP Map_Manafold 'Manafold' difficulty 5 loads Map_Manafold subloads 1
+TEST MAP Map_Ulu 'Ulu Bästack | Fracture' difficulty 3 loads Map_Ulu subloads 0
+TEST MAP Map_Woozy 'Woozy' difficulty 5 loads Map_Woozy subloads 0
+TEST MAP Map_Artrio 'Artrio Watermark' difficulty 5 loads Map_Artrio subloads 0
+TEST MAP Map_Brittle 'Thanh Bitterfield' difficulty 7 loads Map_Brittle subloads 0
+TEST MAP Map_Purlest 'Purlest' difficulty 4 loads Map_Purlest subloads 0
+TEST MAP Map_Thehunt 'The Hunt | Fold' difficulty 7 loads Map_Thehunt subloads 0
+TEST MAP Map_Vultures 'Teri Tori' difficulty 5 loads Map_Vultures subloads 0
+TEST MAP Map_Tutorial 'Ome Drydock' difficulty 1 loads Map_Tutorial subloads 0
+TEST MAP Map_Skyhook 'Skyhook' difficulty 2 loads Map_Skyhook subloads 0
+TEST MAP Map_Manafoldold 'Manafold' difficulty 1 loads Map_Manafoldold subloads 0
+TEST MAP Map_Kong 'Kong' difficulty 5 loads Map_Kong subloads 0
+TEST MAP Map_Blasthead 'Blasthead' difficulty 4 loads Map_Blasthead subloads 0
+TEST MAP Map_Hydroplane 'Hydroplane - IX' difficulty 5 loads Map_Hydroplane subloads 0
+TEST MAP Map_Mercs 'Bountyward' difficulty 4 loads Map_Mercs subloads 0
+TEST MAP Map_Oroboro 'Auraboro Cycler' difficulty 6 loads Map_Oroboro subloads 0
+TEST MAP Map_Chrono 'Great Rapid | Tension' difficulty 6 loads Map_Chrono subloads 0
+TEST MAP Map_Crescent 'Crescent Valeur' difficulty 5 loads Map_Crescent subloads 0
+TEST MAP Map_Crimson 'Crimson Lythe' difficulty 4 loads Map_Crimson subloads 0
+TEST MAP Map_Hold 'Hold' difficulty 7 loads Map_Hold subloads 0
+TEST MAP Map_Mini 'Miniature' difficulty 5 loads Map_Mini subloads 0
+TEST MAP Map_Snobound 'Elgu Bounde' difficulty 4 loads Map_Snobound subloads 0
+TEST MAP Map_Split 'Splithead' difficulty 6 loads Map_Split subloads 0
+TEST MAP Map_Hydraden 'Hydraden' difficulty 7 loads Map_Hydraden subloads 0
+TEST MAP Map_Final '???' difficulty 0 loads Map_Final subloads 0
+TEST MAP Map_Artrio_Alt 'Artrio Watermark δ' difficulty 5 loads Map_Artrio_Alt subloads 0
+TEST MAP Map_Blasthead_Alt 'Blasthead δ' difficulty 5 loads Map_Blasthead_Alt subloads 0
+TEST MAP Map_Brittle_Alt 'Thanh Bitterfield δ' difficulty 8 loads Map_Brittle_Alt subloads 0
+TEST MAP Map_Chrono_Alt 'Great Rapid δ | Tension' difficulty 6 loads Map_Chrono_Alt subloads 0
+TEST MAP Map_Crescent_Alt 'Crescent Valeur δ' difficulty 6 loads Map_Crescent_Alt subloads 0
+TEST MAP Map_Crimson_Alt 'Crimson Lythe δ' difficulty 5 loads Map_Crimson_Alt subloads 0
+TEST MAP Map_Galbass_Alt 'Galbass's Scaffold δ' difficulty 5 loads Map_Galbass_Alt subloads 0
+TEST MAP Map_Gridhead_Alt 'Gridhead δ' difficulty 4 loads Map_Gridhead_Alt subloads 0
+TEST MAP Map_Mercs_Alt 'Bountyward δ' difficulty 5 loads Map_Mercs_Alt subloads 0
+TEST MAP Map_Mini_Alt 'Miniature δ' difficulty 6 loads Map_Mini_Alt subloads 0
+TEST MAP Map_Monogrove_Alt 'Monogrove δ' difficulty 5 loads Map_Monogrove_Alt subloads 0
+TEST MAP Map_Purlest_Alt 'Purlest δ' difficulty 4 loads Map_Purlest_Alt subloads 0
+TEST MAP Map_Skyhook_Alt 'Skyhook δ' difficulty 4 loads Map_Skyhook_Alt subloads 0
+TEST MAP Map_Split_Alt 'Splithead δ' difficulty 6 loads Map_Split_Alt subloads 0
+TEST MAP Map_Tutorial_Alt 'Ome Drydock δ' difficulty 9 loads Map_Tutorial_Alt subloads 0
+TEST MAP Map_Ulu_Alt 'Ulu Bästack δ | Fracture' difficulty 4 loads Map_Ulu_Alt subloads 0
+TEST MAP Map_Vultures_Alt 'Teri Tori δ' difficulty 5 loads Map_Vultures_Alt subloads 0
+TEST MAP Map_Woozy_Alt 'Woozy δ' difficulty 6 loads Map_Woozy_Alt subloads 0
+TEST MAP Map_Custom 'Custom' difficulty 0 loads Map_Custom subloads 6
+TEST PLAN 2B_Maybeth map Map_Maybeth mode Mode_Normal soundtrack Soundtrack_Yellow par 2460 record True altintro False prediscover False medals 0
+TEST PLAN 2_Gridhead map Map_Gridhead mode Mode_Normal soundtrack Soundtrack_Yellow par 2460 record True altintro False prediscover False medals 0
+TEST PLAN 2B_Monogrove map Map_Monogrove mode Mode_Normal soundtrack Soundtrack_Main par 2460 record True altintro False prediscover False medals 0
+TEST PLAN Test_Seaside map Map_Seasidevilla mode Mode_Normal soundtrack Soundtrack_Blue par 100 record True altintro False prediscover False medals 0
+TEST PLAN 2_Galbass map Map_Galbass mode Mode_Normal soundtrack Soundtrack_Main par 2520 record True altintro False prediscover False medals 0
+TEST PLAN 4_Artrio map Map_Artrio mode Mode_Normal soundtrack Soundtrack_Red par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 3B_Woozy map Map_Woozy mode Mode_Normal soundtrack Soundtrack_Main par 2520 record True altintro False prediscover False medals 0
+TEST PLAN Test_Manafold map Map_Manafold mode Mode_Normal soundtrack Soundtrack_Blue par 5000 record True altintro False prediscover False medals 0
+TEST PLAN 2_Ulu map Map_Ulu mode Mode_Normal soundtrack Soundtrack_Blue par 2460 record True altintro False prediscover False medals 0
+TEST PLAN Test_Brittle map Map_Brittle mode Mode_Normal soundtrack Soundtrack_Cyan par 100 record True altintro False prediscover False medals 0
+TEST PLAN 3_Opal map Map_Purlest mode Mode_Normal soundtrack Soundtrack_Yellow par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 3B_Thehunt map Map_Thehunt mode Mode_Normal soundtrack Soundtrack_Red par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Test_Vultures map Map_Vultures mode Mode_Normal soundtrack Soundtrack_Blue par 100 record True altintro False prediscover False medals 0
+TEST PLAN Special_Tutorial map Map_Tutorial mode Mode_Tutorial soundtrack Soundtrack_Yellow par -1 record False altintro True prediscover True medals 0
+TEST PLAN 1_Skyhook map Map_Skyhook mode Mode_Storm soundtrack Soundtrack_Yellow par 1200 record True altintro False prediscover False medals 0
+TEST PLAN 3_Manafold map Map_Manafold mode Mode_Normal soundtrack Soundtrack_Main par 2460 record True altintro False prediscover False medals 0
+TEST PLAN 3_Vultures map Map_Vultures mode Mode_Normal soundtrack Soundtrack_Blue par 2460 record True altintro False prediscover False medals 0
+TEST PLAN 3BH_Kong map Map_Kong mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 2C_Blasthead map Map_Blasthead mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 2D_Mercs map Map_Mercs mode Mode_Drought soundtrack Soundtrack_Red par 1200 record True altintro False prediscover False medals 0
+TEST PLAN 4B_Brittle map Map_Brittle mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 4_Hydroplane map Map_Hydroplane mode Mode_Normal soundtrack Soundtrack_Main par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 4C_Oroboro map Map_Oroboro mode Mode_Drought soundtrack Soundtrack_Red par 1500 record True altintro False prediscover False medals 0
+TEST PLAN 0B_Hydragen map Map_Hydraden mode Mode_Normal soundtrack Soundtrack_Mainoriginal par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 4B_Crimson map Map_Crimson mode Mode_Normal soundtrack Soundtrack_Main par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 5_Chrono map Map_Chrono mode Mode_Drought soundtrack Soundtrack_Yellow par 1200 record True altintro False prediscover False medals 0
+TEST PLAN 5_Mini map Map_Mini mode Mode_Normal soundtrack Soundtrack_Red par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 5_Snobound map Map_Snobound mode Mode_Normal soundtrack Soundtrack_Cyan par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 5B_Crescent map Map_Crescent mode Mode_Tsunami soundtrack Soundtrack_Cyan par 2760 record True altintro False prediscover False medals 0
+TEST PLAN 5B_Hold map Map_Hold mode Mode_Tsunami soundtrack Soundtrack_Cyan par 2760 record True altintro False prediscover False medals 0
+TEST PLAN 5B_Split map Map_Split mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN 5B_Final map Map_Final mode Mode_Final soundtrack Soundtrack_Cyan par 0 record True altintro True prediscover False medals 0
+TEST PLAN Alt_0_Tutorial map Map_Tutorial_Alt mode Mode_Drought soundtrack Soundtrack_Cyan par 1200 record True altintro False prediscover False medals 0
+TEST PLAN Alt_1_Skyhook map Map_Skyhook_Alt mode Mode_Normal soundtrack Soundtrack_Yellow par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Alt_2_Galbass map Map_Galbass_Alt mode Mode_Normal soundtrack Soundtrack_Main par 2520 record True altintro False prediscover False medals 0
+TEST PLAN Alt_2_Gridhead map Map_Gridhead_Alt mode Mode_Normal soundtrack Soundtrack_Yellow par 2460 record True altintro False prediscover False medals 0
+TEST PLAN Alt_2_Ulu map Map_Ulu_Alt mode Mode_Normal soundtrack Soundtrack_Blue par 2460 record True altintro False prediscover False medals 0
+TEST PLAN Alt_2B_Monogrove map Map_Monogrove_Alt mode Mode_Drought soundtrack Soundtrack_Mainoriginal par 1200 record True altintro False prediscover False medals 0
+TEST PLAN Alt_2C_Blasthead map Map_Blasthead_Alt mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Alt_2D_Mercs map Map_Mercs_Alt mode Mode_Drought soundtrack Soundtrack_Red par 1200 record True altintro False prediscover False medals 0
+TEST PLAN Alt_3_Opal map Map_Purlest_Alt mode Mode_Drought soundtrack Soundtrack_Yellow par 1200 record True altintro False prediscover False medals 0
+TEST PLAN Alt_3_Vultures map Map_Vultures_Alt mode Mode_Normal soundtrack Soundtrack_Blue par 2460 record True altintro False prediscover False medals 0
+TEST PLAN Alt_3B_Woozy map Map_Woozy_Alt mode Mode_Tsunami soundtrack Soundtrack_Cyan par 2820 record True altintro False prediscover False medals 0
+TEST PLAN Alt_4_Artrio map Map_Artrio_Alt mode Mode_Tsunami soundtrack Soundtrack_Red par 2820 record True altintro False prediscover False medals 0
+TEST PLAN Alt_4B_Brittle map Map_Brittle_Alt mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Alt_4B_Crimson map Map_Crimson_Alt mode Mode_Drought soundtrack Soundtrack_Cyan par 1200 record True altintro False prediscover False medals 0
+TEST PLAN Alt_5_Chrono map Map_Chrono_Alt mode Mode_Normal soundtrack Soundtrack_Yellow par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Alt_5_Mini map Map_Mini_Alt mode Mode_Normal soundtrack Soundtrack_Red par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Alt_5B_Crescent map Map_Crescent_Alt mode Mode_Tsunami soundtrack Soundtrack_Cyan par 2760 record True altintro False prediscover False medals 0
+TEST PLAN Alt_5B_Split map Map_Split_Alt mode Mode_Normal soundtrack Soundtrack_Blue par 2400 record True altintro False prediscover False medals 0
+TEST PLAN Special_Custom map Map_Custom mode Mode_Normal soundtrack Soundtrack_Red par -1 record False altintro False prediscover True medals 0
+TEST MODE Mode_Tutorial script Mode_Tutorial client Clientmode_Tutorial spots 2 params [Musicwave1=2] entries 4 Totalwaves 3 start aura []
+TEST TIDE2 Mode_Tutorial 1 break shown 0 time 0 note '' | Wait - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Tutorial 2 tide shown 1 time 0 note '' | Spread Enemy_Trainingdagger x1 every 0 gate 0 team 0
+TEST TIDE2 Mode_Tutorial 3 tide shown 2 time 0 note '' | Spread Enemy_Trainingdagger x5 every 1 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE2 Mode_Tutorial 4 tide shown 3 time 0 note '' | Spread Enemy_Trainingdagger x15 every 0.75 gate 0 team 0
+TEST MODE Mode_Storm script Mode_Normal client Clientmode_Normal spots 4 params [Startwait=10 Musicwave1=1 Musicwave2=8 Musicwave3=99 Musicwave4=99 Tipthreshold=8 Basinthreshold=5] entries 30 Totalwaves 15 start aura [Redaura 50, Blueaura 50, Yellowaura 50]
+TEST TIDE2 Mode_Storm 1 break shown 0 time 45 note 'Gather resources, the Tides approach...' | Wait - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Storm 2 tide shown 1 time 180 note '' | Spread Enemy_Dagger x5 every 1 gate 0 team 0
+TEST TIDE2 Mode_Storm 3 break shown 0 time 30 note '' |
+TEST TIDE2 Mode_Storm 4 tide shown 2 time 180 note '' | Spread Enemy_Dagger x8 every 1 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Dagger x5 every 0.5 gate 0 team 0
+TEST TIDE2 Mode_Storm 5 break shown 0 time 30 note 'New enemy incoming' |
+TEST TIDE2 Mode_Storm 6 tide shown 3 time 180 note '' | Spread Enemy_Dagger x15 every 0.5 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x10 every 0.75 gate 0 team 0
+TEST TIDE2 Mode_Storm 7 break shown 0 time 30 note '' |
+TEST TIDE2 Mode_Storm 8 tide shown 4 time 180 note '' | Spread Enemy_Dagger x30 every 0.2 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Spear x20 every 0.5 gate 0 team 0
+TEST TIDE2 Mode_Storm 9 break shown 0 time 30 note 'Hardened enemies approach' |
+TEST TIDE2 Mode_Storm 10 tide shown 5 time 180 note '' | Spread Enemy_Dagger x25 every 0.7 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE2 Mode_Storm 11 break shown 0 time 30 note 'New enemy incoming' |
+TEST TIDE2 Mode_Storm 12 tide shown 6 time 180 note '' | Spread Enemy_Aegis x8 every 0.5 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x15 every 0.1 gate 0 team 0
+TEST TIDE2 Mode_Storm 13 break shown 0 time 30 note '' |
+TEST TIDE2 Mode_Storm 14 tide shown 7 time 180 note '' | Spread Enemy_Dagger x30 every 0.1 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Aegis x10 every 0.5 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x20 every 0.3 gate 0 team 0 ; Spread Enemy_Dagger x10 every 0.1 gate 0 team 0
+TEST TIDE2 Mode_Storm 15 break shown 0 time 30 note 'Large enemy approaches...' |
+TEST TIDE2 Mode_Storm 16 tide shown 8 time 180 note '' | Spread Enemy_Maul x1 every 0.1 gate 0 team 0 ; Spread Enemy_Dagger x25 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x25 every 1 gate 0 team 0
+TEST TIDE2 Mode_Storm 17 break shown 0 time 30 note 'They feel... Aggressive.' |
+TEST TIDE2 Mode_Storm 18 tide shown 9 time 180 note '' | Spread Enemy_Dagger x30 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x18 every 0.5 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Dagger x20 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE2 Mode_Storm 19 break shown 0 time 30 note '' |
+TEST TIDE2 Mode_Storm 20 tide shown 10 time 180 note '' | Spread Enemy_Aegis x25 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x35 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE2 Mode_Storm 21 break shown 0 time 30 note 'New enemy approaches.' |
+TEST TIDE2 Mode_Storm 22 tide shown 11 time 180 note '' | Spread Enemy_Spear x40 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Ballista x15 every 0.5 gate 0 team 0
+TEST TIDE2 Mode_Storm 23 break shown 0 time 30 note 'Lil bit of everything' |
+TEST TIDE2 Mode_Storm 24 tide shown 12 time 180 note '' | Spread Enemy_Aegis x25 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 2 gate 0 team 0 ; Spread Enemy_Dagger x25 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x20 every 0.1 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Ballista x15 every 0.3 gate 0 team 0
+TEST TIDE2 Mode_Storm 25 break shown 0 time 30 note '' |
+TEST TIDE2 Mode_Storm 26 tide shown 13 time 180 note '' | Spread Enemy_Ballista x40 every 0.5 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE2 Mode_Storm 27 break shown 0 time 30 note 'They are fast' |
+TEST TIDE2 Mode_Storm 28 tide shown 14 time 180 note '' | Spread Enemy_Ballista x10 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Dagger x25 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Spear x25 every 0.5 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE2 Mode_Storm 29 break shown 0 time 30 note 'The Basin pulses...' |
+TEST TIDE2 Mode_Storm 30 tide shown 15 time 9999 note '' | Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Ballista x15 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Maul x4 every 2.5 gate 0 team 0 ; Spread Enemy_Maul x1 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x30 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST MODE Mode_Drought script Mode_Normal client Clientmode_Normal spots 4 params [Startwait=10 Musicwave1=1 Musicwave2=5 Musicwave3=10 Musicwave4=15 Tipthreshold=7 Basinthreshold=7] entries 40 Totalwaves 20 start aura [Redaura 50, Blueaura 50, Yellowaura 50]
+TEST TIDE2 Mode_Drought 1 break shown 0 time 60 note 'The Tides grow short' |
+TEST TIDE2 Mode_Drought 2 tide shown 1 time 120 note '' | Spread Enemy_Dagger x5 every 1 gate 0 team 0
+TEST TIDE2 Mode_Drought 3 break shown 0 time 20 note 'Gain additional aura after each Tide!' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 4 tide shown 2 time 120 note '' | Spread Enemy_Dagger x10 every 1 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x4 every 0.5 gate 0 team 0
+TEST TIDE2 Mode_Drought 5 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 6 tide shown 3 time 120 note '' | Spread Enemy_Dagger x15 every 0.5 gate 0 team 0 ; Spread Enemy_Aegis x5 every 2.5 gate 0 team 0 ; Spread Enemy_Spear x5 every 1 gate 0 team 0
+TEST TIDE2 Mode_Drought 7 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 8 tide shown 4 time 120 note '' | Spread Enemy_Spear x5 every 0.5 gate 0 team 0 ; Spread Enemy_Aegis x5 every 0.5 gate 0 team 0 ; Wait - x0 every 4 gate 0 team 0 ; Spread Enemy_Spear x5 every 0.3 gate 0 team 0 ; Spread Enemy_Aegis x5 every 0.3 gate 0 team 0
+TEST TIDE2 Mode_Drought 9 break shown 0 time 20 note 'Many Daggers' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 10 tide shown 5 time 120 note '' | Spread Enemy_Dagger x60 every 0.3 gate 0 team 0
+TEST TIDE2 Mode_Drought 11 break shown 0 time 20 note 'Annealed Enemies' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 12 tide shown 6 time 120 note '' | Spread Enemy_Spear x20 every 0.5 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 13 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 14 tide shown 7 time 120 note '' | Spread Enemy_Aegis x15 every 0.25 gate 0 team 0 ; Spread Enemy_Spear x5 every 0.5 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x5 every 1 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 15 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 16 tide shown 8 time 120 note '' | Spread Enemy_Aegis x10 every 0.5 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Ballista x20 every 1 gate 0 team 0
+TEST TIDE2 Mode_Drought 17 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 18 tide shown 9 time 120 note '' | Spread Enemy_Claymore x10 every 0.7 gate 0 team 0 ; Wait - x0 every 2.5 gate 0 team 0 ; Spread Enemy_Claymore x10 every 0.5 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.1 gate 0 team 0
+TEST TIDE2 Mode_Drought 19 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 20 tide shown 10 time 120 note '' | Spread Enemy_Dagger x30 every 0.25 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Wait - x0 every 2 gate 0 team 0 ; Spread Enemy_Maul x1 every 0 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x20 every 1 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 21 break shown 0 time 20 note 'They feel aggressive' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 22 tide shown 11 time 120 note '' | Spread Enemy_Ballista x30 every 0.25 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE2 Mode_Drought 23 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 24 tide shown 12 time 120 note '' | Spread Enemy_Dagger x60 every 0.2 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Spread Enemy_Spear x60 every 0.2 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 25 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 26 tide shown 13 time 120 note '' | Spread Enemy_Dagger x30 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Spear x30 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Aegis x30 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Ballista x10 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Maul x1 every 0 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE2 Mode_Drought 27 break shown 0 time 20 note 'Feel the rush!' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 28 tide shown 14 time 120 note '' | Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Aegis x15 every 0.25 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Ballista x20 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST TIDE2 Mode_Drought 29 break shown 0 time 20 note 'Bombardment' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 30 tide shown 15 time 120 note '' | Spread Enemy_Spear x25 every 0.2 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Spread Enemy_Claymore x20 every 0.3 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.2 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.1 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 31 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 32 tide shown 16 time 120 note '' | Spread Enemy_Aegis x25 every 0.2 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Maul x1 every 1 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Aegis x25 every 0.2 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 33 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 34 tide shown 17 time 120 note '' | Spread Enemy_Aegis x30 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Ballista x30 every 0.1 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.1 gate 0 team 0 ; Wait - x0 every 1 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.1 gate 0 team 0 ; Wait - x0 every 1 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.1 gate 0 team 0 ; Wait - x0 every 1 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.1 gate 0 team 0
+TEST TIDE2 Mode_Drought 35 break shown 0 time 20 note 'Trace amounts of water freezes over.' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 36 tide shown 18 time 120 note '' | Spread Enemy_Dagger x1 every 0 gate 0 team 0 ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Dagger x2 every 0.25 gate 0 team 0 [Enemy_Armor_Upgradeobject] ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Dagger x3 every 0.25 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 3 gate 0 team 0 ; Spread Enemy_Dagger x4 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Dagger x5 every 3 gate 0 team 0 [Enemy_Chaos_Upgradeobject]
+TEST TIDE2 Mode_Drought 37 break shown 0 time 20 note '' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 38 tide shown 19 time 120 note '' | Spread Enemy_Maul x6 every 1 gate 0 team 0 ; Spread Enemy_Maul x6 every 1 gate 0 team 0 [Enemy_Armor_Upgradeobject]
+TEST TIDE2 Mode_Drought 39 break shown 0 time 20 note 'The Basin cries' | Spread - x0 every 0 gate 0 team 0
+TEST TIDE2 Mode_Drought 40 tide shown 20 time 9999 note '' | Spread Enemy_Excalibur x1 every 0 gate 0 team 0 ; Spread Enemy_Claymore x60 every 0.5 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST MODE Mode_Tsunami script Mode_Normal client Clientmode_Normal spots 4 params [Startwait=10 Musicwave1=1 Musicwave2=2 Musicwave3=3 Musicwave4=4 Tipthreshold=2 Basinthreshold=2] entries 8 Totalwaves 4 start aura [Redaura 500, Blueaura 500, Yellowaura 500]
+TEST TIDE2 Mode_Tsunami 1 break shown 0 time 240 note 'The Tides are large. Prepare well.' |
+TEST TIDE2 Mode_Tsunami 2 tide shown 1 time 180 note '' | Spread Enemy_Dagger x60 every 1 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Dagger x60 every 0.5 gate 0 team 0 ; Wait - x0 every 20 gate 0 team 0 ; Spread Enemy_Aegis x10 every 1 gate 0 team 0 ; Spread Enemy_Spear x20 every 1 gate 0 team 0 ; Spread Enemy_Aegis x10 every 0.5 gate 0 team 0 ; Spread Enemy_Spear x20 every 0.5 gate 0 team 0 ; Wait - x1 every 30 gate 0 team 0 ; Spread Enemy_Dagger x20 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Aegis x5 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Dagger x20 every 0.5 gate 0 team 0 ; Wait - x0 every 20 gate 0 team 0 ; Spread Enemy_Ballista x1 every 1 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Ballista x20 every 0.5 gate 0 team 0 ; Spread Enemy_Spear x20 every 0.2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Dagger x10 every 0.2 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Dagger x10 every 0.1 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x20 every 0.1 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Maul x1 every 1 gate 0 team 0 ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Aegis x10 every 1 gate 0 team 0 [Enemy_Red_Upgradeobject] ; Spread Enemy_Ballista x15 every 0.5 gate 0 team 0 [Enemy_Red_Upgradeobject]
+TEST TIDE2 Mode_Tsunami 3 break shown 0 time 180 note 'The Tides breathe of molten. Care for your defense.' |
+TEST TIDE2 Mode_Tsunami 4 tide shown 2 time 180 note '' | Spread Enemy_Dagger x60 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Claymore x10 every 0.2 gate 0 team 0 ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Dagger x30 every 1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x60 every 0.25 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 25 gate 0 team 0 ; Spread Enemy_Aegis x15 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Onager x10 every 2 gate 0 team 0 ; Spread Enemy_Claymore x20 every 0.2 gate 0 team 0 ; Spread Enemy_Claymore x10 every 1 gate 0 team 0 ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Dagger x26 every 1 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Spread Enemy_Aegis x15 every 1 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Spear x35 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait - x0 every 0 gate 0 team 0 ; Spread Enemy_Onager x10 every 1 gate 0 team 0 ; Wait - x0 every 15 gate 0 team 0 ; Spread Enemy_Dagger x30 every 1 gate 0 team 0 ; Spread Enemy_Maul x5 every 2 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Spear x40 every 0.25 gate 0 team 0 [Enemy_Explode_Upgradeobject]
+TEST TIDE2 Mode_Tsunami 5 break shown 0 time 180 note 'The Tides strike cold and with volatility.' |
+TEST TIDE2 Mode_Tsunami 6 tide shown 3 time 180 note '' | Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Aegis x20 every 0.2 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Spread Enemy_Dagger x10 every 1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Dagger x20 every 0.5 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Dagger x20 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Aegis x20 every 0.1 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Maul x5 every 1 gate 0 team 0 ; Spread Enemy_Maul x5 every 0.5 gate 0 team 0 ; Spread Enemy_Maul x5 every 0.1 gate 0 team 0 ; Spread Enemy_Dagger x1 every 1 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Wait - x0 every 40 gate 0 team 0 ; Spread Enemy_Onager x10 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Maul x3 every 4 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Spread Enemy_Claymore x20 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Spear x50 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Dagger x30 every 1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Dagger x25 every 1 gate 0 team 0 ; Spread Enemy_Dagger x5 every 2 gate 0 team 0 ; Spread Enemy_Maul x4 every 2.5 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 60 gate 0 team 0 ; Spread Enemy_Dagger x5 every 1 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Spread Enemy_Dagger x5 every 4 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Spread Enemy_Ballista x10 every 4 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Spread Enemy_Dagger x25 every 2 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Spread Enemy_Claymore x1 every 1 gate 0 team 0 [Enemy_Chaos_Upgradeobject] ; Wait - x0 every 50 gate 0 team 0 ; Spread Enemy_Excalibur x1 every 1 gate 0 team 0 ; Spread Enemy_Aegis x20 every 0.5 gate 0 team 0 [Enemy_Health_Upgradeobject]
+TEST TIDE2 Mode_Tsunami 7 break shown 0 time 180 note 'The Basin pulses... This is the last stand!' |
+TEST TIDE2 Mode_Tsunami 8 tide shown 4 time 9999 note '' | Spread Enemy_Dagger x30 every 1 gate 0 team 0 ; Spread Enemy_Spear x50 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x50 every 0.1 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Wait - x0 every 40 gate 0 team 0 ; Spread Enemy_Spear x100 every 0.2 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Ballista x50 every 1 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Wait - x0 every 40 gate 0 team 0 ; Spread Enemy_Aegis x30 every 0.5 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Spread Enemy_Maul x25 every 0.2 gate 0 team 0 ; Spread Enemy_Maul x10 every 1 gate 0 team 0 [Enemy_Explode_Upgradeobject] ; Wait - x0 every 40 gate 0 team 0 ; Spread Enemy_Spear x100 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Aegis x1 every 15 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Bulwark x1 every 1 gate 0 team 0 ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Aegis x30 every 0.25 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Excalibur x2 every 20 gate 0 team 0 ; Spread Enemy_Maul x15 every 2 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Aegis x40 every 1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait - x0 every 30 gate 0 team 0 ; Spread Enemy_Dagger x1 every 1 gate 0 team 0 [Enemy_Chaos_Upgradeobject]
+TEST MODE Mode_Final script Mode_Final client Clientmode_Final spots 4 params [Startwait=10] entries 1 Totalwaves 1 start aura [Redaura 100, Blueaura 100, Yellowaura 100]
+TEST TIDE2 Mode_Final 1 tide shown 1 time 9999 note '' | Wait - x0 every 20 gate 0 team 0 ; Spread Enemy_Dagger x60 every 0.1 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Spear x60 every 0.1 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Aegis x30 every 0.25 gate 0 team 0 ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Dagger x60 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Spear x60 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Aegis x60 every 0.1 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Wait - x0 every 10 gate 0 team 0 ; Spread Enemy_Maul x10 every 2 gate 0 team 0 ; Spread Enemy_Maul x20 every 0.5 gate 0 team 0 ; Spread Enemy_Maul x40 every 0.25 gate 0 team 0 ; Spread Enemy_Dagger x100 every 0.1 gate 0 team 0 ; Wait - x0 every 5 gate 0 team 0 ; Spread Enemy_Maul x40 every 0.33 gate 0 team 0 [Enemy_Health_Upgradeobject] ; Spread Enemy_Spear x100 every 0.1 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Wait Enemy_Maul x0 every 20 gate 0 team 0 [Enemy_Hyper_Upgradeobject] ; Spread Enemy_Bulwark x3 every 5 gate 0 team 0 ; Spread Enemy_Excalibur x3 every 5 gate 0 team 0 ; Spread Enemy_Maul x100 every 1 gate 0 team 0 [Enemy_Hyper_Upgradeobject]
+TEST INFO other modes dumped: 5 (MODE and TIDE2 lines)
+TEST GROUP modes General_Ambientinit loaded True [Sound 3]
+TEST GROUP modes General_Init loaded True [Sound 67, Vfx 11]
+TEST GROUP modes Hero_Boutman loaded True [Hero 1, Upgrade 52, Mob 13, Projectile 18, Vfx 56, Command 8, Other 5, Sound 34, Ui 1]
+TEST GROUP modes Mode_Drought loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 29, Sound 27] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Claymore,Enemy_Onager
+TEST GROUP modes Mode_Final loaded True [Mode 1, Mob 13, Upgrade 10, Projectile 10, Vfx 37, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore,Enemy_Bulwark
+TEST GROUP modes Mode_Normal loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 31, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore
+TEST GROUP modes Mode_RogueLab loaded True [Mode 1]
+TEST GROUP modes Mode_Storm loaded True [Mode 1, Mob 9, Upgrade 7, Projectile 8, Vfx 24, Sound 22] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Maul
+TEST GROUP modes Mode_Tsunami loaded True [Mode 1, Mob 13, Upgrade 10, Projectile 10, Vfx 37, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore,Enemy_Bulwark
+TEST GROUP modes Mode_Tutorial loaded True [Mode 1, Mob 4, Upgrade 4, Projectile 1, Vfx 15, Sound 17] enemies Enemy_Trainingdagger
+TEST ELITE modes Enemy_Health_Upgradeobject name 'Hardened' desc 'Drastically increased health' priority -1 ais [Entity_Ai_Enemy_Health_Upgrade] params Health_Multi=3
+TEST ELITE modes Enemy_Red_Upgradeobject name 'Tempered' desc 'Increased aggression and retaliation' priority -1 ais [Entity_Ai_Enemy_Red_Upgrade] params Aggrorange_Base=5 Damage_Multi=1 Health_Multi=1
+TEST ELITE modes Enemy_Hyper_Upgradeobject name 'Superheated' desc 'Increased speed and attack' priority -1 ais [Entity_Ai_Enemy_Hyper_Upgrade] params Health_Multi=2 Damage_Multi=2 Speed_Multi=1.25 Attackspeed_Multi=1
+TEST ELITE modes Enemy_Chaos_Upgradeobject name 'Fractured' desc 'Insane increased capabilities' priority -1 ais [Entity_Ai_Enemy_Chaos_Upgrade] params Health_Multi=14 Damage_Multi=9 Speed_Multi=9 Attackspeed_Multi=9
+TEST ELITE modes Enemy_Armor_Upgradeobject name 'Annealed' desc 'Gains armor, blocking damage' priority -1 ais [Entity_Ai_Enemy_Armor_Upgrade] params Healtharmor_Base=4 Healtharmor_Perhealth=10
+TEST ELITE modes Enemy_Explode_Upgradeobject name 'Molten' desc 'Explodes upon being Drowned, melting targets' priority -1 ais [Entity_Ai_Enemy_Explode_Upgrade] params Health_Multi=3 Radius_Base=2.2 Damage_Base=10 Damage_Count=5 Speed_Multi=0.15
+TEST ELITE modes Effect_Enemy_Weakened_Upgradeobject name 'Melting' desc 'Permanent stacking weakness... Wears off eventually' priority -1 ais [Entity_Ai_Effect_Enemy_Weaken] params Health_Drain=-0.001 Attackspeed_Drain=-0.001 Damage_Drain=-0.001 Speed_Drain=-0.001 Duration_Base=60
+TEST INFO hard setting (boot): Difficultysetting 0, 'Treated' desc 'The water is calmer than normal' ais [Entity_Ai_Main_Core_Treated] params Aura_Base=2 Extra_Time=3 Extra_Wavetime=30 Aura_Drop=4 Aura_Basemax=500 Health_Base=200
+ready
+TEST main menu: embarking
+TEST in Setup: waiting for the world map
+TEST map: the test map 3B_Thehunt; picked node 'Thehunt'
+TEST INFO run plan: map 1 RogueLab_3B_Thehunt (Map_Thehunt), map 2 RogueLab_0B_Hydragen
+TEST ready: starting the match
+TEST map 1: RogueLab_3B_Thehunt on Map_Thehunt
+TEST PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+TEST PASS map 1 has the mod Cardinal from the lobby: equipped [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_RogueLab], mixed 'Artifact_Yellowcoin', artifacts loaded [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_Badge, Artifact_Yellowcoin], want Artifact_Badge
+TEST GROUP match Artifact_Badge loaded True [Artifact 1, Upgrade 3, Mob 1, Projectile 1, Vfx 1]
+TEST GROUP match Artifact_Bluecoin loaded True [Artifact 1, Upgrade 1]
+TEST GROUP match Artifact_Greencoin loaded True [Artifact 1, Upgrade 1]
+TEST GROUP match Artifact_Voice loaded True [Artifact 1, Upgrade 2, Vfx 1]
+TEST GROUP match Artifact_Yellowcoin loaded True [Artifact 1, Upgrade 1]
+TEST GROUP match General_Ambientinit loaded True [Sound 3]
+TEST GROUP match General_Default loaded True [Mob 22, Vfx 27, Command 13, Ui 25, Other 2, Sound 12]
+TEST GROUP match General_Init loaded True [Sound 67, Vfx 11]
+TEST GROUP match Hero_Boutman loaded True [Hero 1, Upgrade 52, Mob 13, Projectile 18, Vfx 56, Command 8, Other 5, Sound 34, Ui 1]
+TEST GROUP match Map_Thehunt loaded True [Map 1, Mob 5, Upgrade 3, Vfx 4]
+TEST GROUP match Mode_Drought loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 29, Sound 27] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Claymore,Enemy_Onager
+TEST GROUP match Mode_Final loaded True [Mode 1, Mob 13, Upgrade 10, Projectile 10, Vfx 37, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore,Enemy_Bulwark
+TEST GROUP match Mode_Normal loaded True [Mode 1, Mob 12, Upgrade 8, Projectile 9, Vfx 31, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore
+TEST GROUP match Mode_RogueLab loaded True [Mode 1]
+TEST GROUP match Mode_Storm loaded True [Mode 1, Mob 9, Upgrade 7, Projectile 8, Vfx 24, Sound 22] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Maul
+TEST GROUP match Mode_Tsunami loaded True [Mode 1, Mob 13, Upgrade 10, Projectile 10, Vfx 37, Sound 29] enemies Enemy_Dagger,Enemy_Spear,Enemy_Aegis,Enemy_Ballista,Enemy_Excalibur,Enemy_Maul,Enemy_Onager,Enemy_Claymore,Enemy_Bulwark
+TEST GROUP match Mode_Tutorial loaded True [Mode 1, Mob 4, Upgrade 4, Projectile 1, Vfx 15, Sound 17] enemies Enemy_Trainingdagger
+TEST GROUP match Soundtrack_Red loaded True [Soundtrack 1, Sound 6]
+TEST ELITE match Enemy_Health_Upgradeobject name 'Hardened' desc 'Drastically increased health' priority -1 ais [Entity_Ai_Enemy_Health_Upgrade] params Health_Multi=3
+TEST ELITE match Enemy_Red_Upgradeobject name 'Tempered' desc 'Increased aggression and retaliation' priority -1 ais [Entity_Ai_Enemy_Red_Upgrade] params Aggrorange_Base=5 Damage_Multi=1 Health_Multi=1
+TEST ELITE match Enemy_Hyper_Upgradeobject name 'Superheated' desc 'Increased speed and attack' priority -1 ais [Entity_Ai_Enemy_Hyper_Upgrade] params Health_Multi=2 Damage_Multi=2 Speed_Multi=1.25 Attackspeed_Multi=1
+TEST ELITE match Enemy_Chaos_Upgradeobject name 'Fractured' desc 'Insane increased capabilities' priority -1 ais [Entity_Ai_Enemy_Chaos_Upgrade] params Health_Multi=14 Damage_Multi=9 Speed_Multi=9 Attackspeed_Multi=9
+TEST ELITE match Enemy_Armor_Upgradeobject name 'Annealed' desc 'Gains armor, blocking damage' priority -1 ais [Entity_Ai_Enemy_Armor_Upgrade] params Healtharmor_Base=4 Healtharmor_Perhealth=10
+TEST ELITE match Enemy_Explode_Upgradeobject name 'Molten' desc 'Explodes upon being Drowned, melting targets' priority -1 ais [Entity_Ai_Enemy_Explode_Upgrade] params Health_Multi=3 Radius_Base=2.2 Damage_Base=10 Damage_Count=5 Speed_Multi=0.15
+TEST ELITE match Effect_Enemy_Weakened_Upgradeobject name 'Melting' desc 'Permanent stacking weakness... Wears off eventually' priority -1 ais [Entity_Ai_Effect_Enemy_Weaken] params Health_Drain=-0.001 Attackspeed_Drain=-0.001 Damage_Drain=-0.001 Speed_Drain=-0.001 Duration_Base=60
+TEST ENEMY Enemy_Dagger 'Dagger' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Mob_Combat,Entity_Ai_Enemy_Basic] vis [Entity_Vis_Animator_Mob] stats [Health=10 Speed=1 Damage=3 Range=1.5 Attackspeed=0.5] drops [Redaura 1] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Spear 'Javelin' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Mob_Combat,Entity_Ai_Enemy_Basic] vis [Entity_Vis_Animator_Mob] stats [Health=10 Speed=2.5 Damage=5 Range=1.5 Attackspeed=1.4] drops [Redaura 1] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Aegis 'Aegis' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Mob_Combat,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Aegis] vis [Entity_Vis_Animator_Mob] stats [Health=80 Speed=0.7 Damage=15 Range=1.5 Attackspeed=0.2 Heal=2 Healtime=5] drops [Redaura 3] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Ballista 'Ballista' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Ballista] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Ballista] stats [Health=50 Speed=0.8 Damage=5 Range=5 Attackspeed=0.25 Projspeed=35] drops [Redaura 3] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Excalibur 'Excalibur' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Excalibur] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Excalibur] stats [Health=10000 Speed=0.4 Damage=400 Range=13 Attackspeed=0.1 Projspeed=20(+10)] drops [Redaura 10] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Maul 'Maul' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Maul] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Maul] stats [Health=700 Speed=0.45 Damage=50 Range=2 Attackspeed=0.15 Projcount=50 Projradius=2.5] drops [Redaura 10] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Onager 'Onager' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Onager] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Ballista] stats [Health=90 Speed=0.5 Damage=4 Range=9 Attackspeed=0.1 Projcount=10 Projduration=3] drops [Redaura 10] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Claymore 'Claymore' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Claymore] vis [Entity_Vis_Animator_Mob,Entity_Vis_Claymore] stats [Health=10 Speed=4.25 Damage=15 Range=4 Deathlife=1.25 Death=0 Rangedetect=2] drops [Redaura 1] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Trainingdagger 'Training Dagger' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Mob_Combat,Entity_Ai_Enemy_Basic] vis [Entity_Vis_Animator_Mob] stats [Health=10(+10) Speed=0.75 Damage=0.5(+3) Range=1.5 Attackspeed=0.25] drops [Redaura 1] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST ENEMY Enemy_Bulwark 'Bulwark' tags [Mob,Enemy] ais [Entity_Ai_Mob_General,Entity_Ai_Mob_Movement,Entity_Ai_Enemy_Basic,Entity_Ai_Enemy_Bulwark] vis [Entity_Vis_Animator_Mob,Entity_Vis_Enemy_Bulwark] stats [Health=30000 Speed=0.3 Damage=25 Range=10 Attackspeed=0.025 Projradius=3 Closerange=1.5 Closedamage=1000 Closecount=10 Projcount=3 Stunduration=10 Maxrange=30] drops [Redaura 10] init [] skins [Health,Hyper,Red,Chaos,Armor,Explode] block General_Mob_Block_Height 1
+TEST INFO enemy beings loaded in the match: 10
+TEST PASS Cardinal granted mid-match: Artifact_Beastpelt: 1/1 core upgrades on the core [Artifact_Beastpelt_Upgradeproperties]; the HUD was not told
+TEST INFO Boutbro data tags: Mob,Hero,Boutfamily,Boutbro
+TEST INFO F list before the death: Hero_Boutman#-83258; Boutbro spawned True, its owner -1 (local 1), tags [Mob,Hero,Boutfamily,Boutbro]
+TEST INFO F list after the respawn: Hero_Boutman#-84262 after 10.003 s
+TEST INFO F key without the fix: nothing selected -> Hero_Boutman, Boutbro selected -> Hero_Boutman; bug reproduced False
+TEST PASS F key selects the vessel after a respawn, with the fix: nothing selected -> Hero_Boutman, Boutbro selected -> Hero_Boutman, list Hero_Boutman#-84262
+TEST PASS a second Default prefab in the same mod started: marker found
+TEST INFO hard setting (match): Difficultysetting 0, 'Treated' desc 'The water is calmer than normal' ais [Entity_Ai_Main_Core_Treated] params Aura_Base=2 Extra_Time=3 Extra_Wavetime=30 Aura_Drop=4 Aura_Basemax=500 Health_Base=200
+TEST INFO swarm 0: 0 alive of 0 made: mean frame 8.781 ms, worst 20.883 ms, 113.886 fps (host, solo)
+TEST INFO swarm 50: 50 alive of 50 made: mean frame 10.672 ms, worst 27.819 ms, 93.706 fps (host, solo)
+TEST INFO swarm 100: 100 alive of 100 made: mean frame 10.896 ms, worst 20.931 ms, 91.78 fps (host, solo)
+TEST INFO swarm 200: 200 alive of 200 made: mean frame 12.148 ms, worst 34.758 ms, 82.317 fps (host, solo)
+TEST PASS bonus Tide by rewinding Entry: Wave 2, entry 2 (Tide 1 was 2), enemy core Tides left 2 -> 1
+TEST PASS leave between Tides as a win: Gamecomplete Win, Wave 2
+TEST chain: despawned True, loading RogueLab_0B_Hydragen
+TEST PASS chained into map 2 without the boat: RogueLab_0B_Hydragen on Map_Hydraden
+TEST PASS run state survived the scene change: Pure Aura 7, same mod object True
+TEST PASS map 2 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_0B_Hydragen, Mode_Normal script True, table 6
+TEST PASS map 2 has the mod Cardinal from the lobby: equipped [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_RogueLab], mixed 'Artifact_Yellowcoin', artifacts loaded [Artifact_Voice, Artifact_Greencoin, Artifact_Bluecoin, Artifact_Badge, Artifact_Yellowcoin], want Artifact_Badge
+TEST INFO choice dialog: opened with 3 options
+TEST INFO choice dialog returns the pick: no click within 30 s (status Faulted)
+TEST INFO eight-card dialog, game layout: screen 2560x1440, 1 cards, grid FixedColumnCount 2 cell (60.00, 60.00) spacing (-5.00, -5.00), scroll False, all on screen False | -5.833,-0.212 1.19x0.809
+TEST INFO eight-card dialog, four per row: screen 2560x1440, 1 cards, grid FixedColumnCount 4 cell (60.00, 60.00) spacing (-5.00, -5.00), scroll False, all on screen False | -5.833,-0.212 1.19x0.809
+TEST INFO eight-card dialog fits on screen (four per row): False
+TEST FAIL eight-card dialog closes when the mod clicks a card: status Faulted
+TEST INFO map tour: 29 maps: 2_Galbass, 2_Gridhead, 2_Ulu, 2B_Maybeth, 2B_Monogrove, 2C_Blasthead, 3_Manafold, 3_Opal, 3_Vultures, 3B_Woozy, 3BH_Kong, 4_Artrio, 4_Hydroplane, 4B_Brittle, 4B_Crimson, 5_Mini, 5_Snobound, 5B_Split, Alt_1_Skyhook, Alt_2_Galbass, Alt_2_Gridhead, Alt_2_Ulu, Alt_2C_Blasthead, Alt_3_Vultures, Alt_4B_Brittle, Alt_5_Chrono, Alt_5_Mini, Alt_5B_Split, Special_Custom
+TEST chain: despawned True, loading RogueLab_2_Galbass
+TEST TOUR 2_Galbass map Map_Galbass loaded in 15.432 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_2_Gridhead
+TEST TOUR 2_Gridhead map Map_Gridhead loaded in 16.384 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_2_Ulu
+TEST TOUR 2_Ulu map Map_Ulu loaded in 15.261 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_2B_Maybeth
+TEST TOUR 2B_Maybeth map Map_Maybeth loaded in 15.169 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_2B_Monogrove
+TEST TOUR 2B_Monogrove map Map_Monogrove loaded in 14.987 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_2C_Blasthead
+TEST TOUR 2C_Blasthead map Map_Blasthead loaded in 16.457 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_3_Manafold
+TEST TOUR 3_Manafold map Map_Manafold loaded in 16.184 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_3_Opal
+TEST TOUR 3_Opal map Map_Purlest loaded in 16.392 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 3, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_3_Vultures
+TEST TOUR 3_Vultures map Map_Vultures loaded in 15.878 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_3B_Woozy
+TEST TOUR 3B_Woozy map Map_Woozy loaded in 16.641 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_3BH_Kong
+TEST TOUR 3BH_Kong map Map_Kong loaded in 15.766 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_4_Artrio
+TEST TOUR 4_Artrio map Map_Artrio loaded in 17.125 s: mod mode True, vessel True, cores 1, subcores 2, enemy cores 3, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_4_Hydroplane
+TEST TOUR 4_Hydroplane map Map_Hydroplane loaded in 16.281 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_4B_Brittle
+TEST TOUR 4B_Brittle map Map_Brittle loaded in 17.276 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_4B_Crimson
+TEST TOUR 4B_Crimson map Map_Crimson loaded in 15.676 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5_Mini
+TEST TOUR 5_Mini map Map_Mini loaded in 18.394 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 3, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5_Snobound
+TEST TOUR 5_Snobound map Map_Snobound loaded in 17.57 s: mod mode True, vessel True, cores 1, subcores 1, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_5B_Split
+TEST TOUR 5B_Split map Map_Split loaded in 18.957 s: mod mode True, vessel True, cores 2, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_1_Skyhook
+TEST TOUR Alt_1_Skyhook map Map_Skyhook_Alt loaded in 15.532 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_2_Galbass
+TEST TOUR Alt_2_Galbass map Map_Galbass_Alt loaded in 15.395 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_2_Gridhead
+TEST TOUR Alt_2_Gridhead map Map_Gridhead_Alt loaded in 16.472 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_2_Ulu
+TEST TOUR Alt_2_Ulu map Map_Ulu_Alt loaded in 15.419 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_2C_Blasthead
+TEST TOUR Alt_2C_Blasthead map Map_Blasthead_Alt loaded in 16.4 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_3_Vultures
+TEST TOUR Alt_3_Vultures map Map_Vultures_Alt loaded in 15.787 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_4B_Brittle
+TEST TOUR Alt_4B_Brittle map Map_Brittle_Alt loaded in 17.413 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 1, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_5_Chrono
+TEST TOUR Alt_5_Chrono map Map_Chrono_Alt loaded in 17.06 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_5_Mini
+TEST TOUR Alt_5_Mini map Map_Mini_Alt loaded in 18.301 s: mod mode True, vessel True, cores 1, subcores 0, enemy cores 4, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Alt_5B_Split
+TEST TOUR Alt_5B_Split map Map_Split_Alt loaded in 15.411 s: mod mode True, vessel True, cores 2, subcores 0, enemy cores 2, Merchut 0, mode-spot warnings 0
+TEST chain: despawned True, loading RogueLab_Special_Custom

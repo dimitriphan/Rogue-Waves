@@ -1,10 +1,10 @@
 # 15 · The Rogue Wave mode engine: what a mod can build a roguelike run on
 
 How the game starts, plays and ends a match, keeps players' choices, pays bounties, applies Cardinals and saves, read
-for the Rogue Wave mode (`docs/SCOPE_v0.txt` in the Rogue Waves repository). Everything here was **read from the
-game's code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod**
-or **untested**, or was **proven in game** by RogueLab round 1 (§11) or Riptide (§13). `File.cs:line` points into
-that decompiled folder (never committed; rebuild it in a minute).
+for the Rogue Wave mode (`docs/SCOPE_v0.txt` in the Rogue Waves repository). Everything here was **read from the game's
+code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod** or
+**untested**, or was **proven in game** by RogueLab rounds 1 and 2 (§11, §15) or Riptide (§13). `File.cs:line` points
+into that decompiled folder (never committed; rebuild it in a minute).
 
 Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 
@@ -18,20 +18,21 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | Three maps in a row | **go, proven** | host sets the next map and calls `Changescene_ServerRpc("Gameloading")`; map 2 loaded without the boat (§3, §11) |
 | State across the three maps (Pure Aura, Directions, depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
-| Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13) |
+| Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13). Open it only while its menu is up: from a timer it faulted (§15) |
 | Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; map 1 is the leader's pick (§6) |
 | Leave or stay between Tides from Tide 15 | **go, proven** | the same vote; "leave" = the stock win path through public members, proven between Tides (§4, §11) |
 | Bonus Tides | **go, proven** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry`, which also spends a core Tide (§4, §11) |
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
 | Shopkeeper between Tides | **fallback** | the game has no shop; build one on Merchut's command-button pattern (§5) |
-| Fund Transfer (aura between players) | **go, untested** | a shop command; the host moves resources with `Helper_Resources` (§5) |
+| Fund Transfer (aura between players) | **go** | a shop command; the host takes with `Useresources` and gives with `Giveresources(list, owner)`, both per player (§5, §14.2) |
+| Directions held per player | **fallback** | the core is the team's: grant on the player's vessel and re-grant at each spawn (§14.1) |
 | New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
-| Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write and read back proven, a restart not yet (§8, §11) |
+| Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
 | The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
-| Maps from the base game | **go** | Gameplans resolve by name (§3); a mod can also ship maps as `Map` prefabs (§10) |
+| Maps from the base game | **go, 30 proven** | Gameplans resolve by name (§3); 30 base maps played clean in the mod's mode, 15 still to tour, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10) |
 
 ## 2. Modes and how a mod adds one
 
@@ -139,7 +140,7 @@ Not usable as a menu: `Entity_Command_Itemselect_Base` is a "click a spot in the
 
 | Choice | Route | Verdict |
 |---|---|---|
-| Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide, §13; an unanswered dialog ends Faulted, §11) | go |
+| Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13; opened while its menu isn't up it throws after one card, §15) | go |
 | Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands, the host sets the map. Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads, the opening break is held while players pick Directions and vote, then the host chains to the voted map (§3) | fallback |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
 | Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
@@ -192,7 +193,7 @@ with `SendMessage("Updateartifactlist")`, §13).
   (Bla_Data_Steamachievements.cs:83-105): a key in the mod's own folder can't trip one.
 
 ```csharp
-// ascension (write and read back proven, a restart not yet; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
+// ascension (write, read back and a restart proven; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
 Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Ascension");
 int level = e.Loaded ? (int)e.Value : 0;
 Bla_Data.Playerdata.Adddata("RogueWaves", "RW_Ascension", (float)(level + 1), Bl_Tags.Addtype.Replace);
@@ -252,9 +253,9 @@ Every log line is in `reference/roguelab_round1.txt`. Results:
 | 2 Mode entry | **proven**: the match played `Mode_RogueLab` (stock scripts, 3-Tide table) on a `RogueLab_` twin Gameplan swapped in on the boat |
 | 3 Chain | **proven**: after a win, map 2 loaded straight from map 1 (`Despawnall`, four strings, `Gameloading`); the mod object and its dictionary survived, and the mode and Cardinal carried over |
 | 4 Leave, rewind | **proven**: the win path between Tides ends the map as "Win"; rewinding `Entry` replays a Tide, and the core still loses one (§4) |
-| 5 Save | write and read back **proven**; surviving a restart needs one more launch with RogueLab |
+| 5 Save | write and read back **proven**; surviving a restart **proven** in round 2 (§15) |
 | 6 Cardinal | **proven**: a mod `Artifactentryobject` (a copy of Torrid Badge) accepted by the colour slot's RPC, its group loaded, its core upgrades applied; a stock artifact granted mid-match too |
-| 7 Prompt | the dialog opened with 3 options; with no click it ended **Faulted** after 30 s, not with a result: the host's own timeout must pick and close it (Riptide's `Abandon`) |
+| 7 Prompt | the dialog ended **Faulted**: round 2's log shows `Runprompt` threw a `NullReferenceException` after building one card, not a timeout (§15). The host still needs its own timeout to pick and close an unanswered one (Riptide's `Abandon`) |
 | 8 F key | **not reproduced**: the mod-spawned Boutbro was not counted as the player's (not in the owned `Hero` list), so F found only the vessel. Needs a hand check: play Boutman, let Boutbro spawn, die, press F |
 | 9 Enemies | 8 stock foes with stats and drops (Claymore is loaded but in no Tide); Hardened, Tempered, Superheated, Fractured, Annealed with params; Explode and Weakened are **not** in Mode_Normal's group |
 
@@ -312,3 +313,121 @@ settles here:
 RogueLab round 1 (§11) then proved the rest of the run's skeleton: the mod Cardinal from the lobby, the chain to a
 second map with host state, leaving between Tides as a win, rewinding `Entry`, the save keys.
 
+## 14. Second reading (2026-10-09)
+
+The research list in the Rogue Waves repository (`docs/RESEARCH_GAPS.md`) asked the decompiled game a second set of
+questions. All **read**; RogueLab round 2's results are §15.
+
+### 14.1 Cores and per-player upgrades
+
+- The map places the cores; `Mode_Normal` finds them by the `Core` tag (Mode_Normal.cs:350-358) and any core's death
+  loses the match (:236-260). One core spawns a vessel for every active player of its team, with `Owner` = that player's
+  `Sessionid` and the core as parent (Entity_Ai_Main_Core.cs:95-97, 184-195). The core has no owner.
+- `Artifact_Heroapply` upgrades every hero child of the core, so every player's vessel (Entity_Master.cs:333-335,
+  Entity_Ai_Artifact_Heroapply.cs:7-17). `Artifact_Towerapply` hooks `Game_Entity.Onspawn` and its team check compares
+  the artifact's entity with itself (Entity_Ai_Artifact_Towerapply.cs:14), so it upgrades **every** new `Tower`.
+- So a per-player Direction can't sit on the core. Put it on the player's vessel (owner = `Sessionid`), re-grant it from
+  host state at each vessel spawn, and give tower Directions through the mod's own `Onspawn` hook filtered by owner.
+  `ModKitDirections` (kit 1.6) grants on the core and needs this change before the mode uses it.
+
+### 14.2 Resources and moving aura
+
+- Aura is per player: `Helper_Resources.Give` adds to `Game_Players.Prevsessionlist[Owner].Resources`
+  (Helper_Resources.cs:16-29); `Owner = -1` pays every active player, `Split` divides first (:50-70). `Give` scales by
+  `Game_Mapvars.Resourcegainmultiplier` (:21), which Cardinals change (`Artifact_Bottomrock`); `Mode_Normal` sets it to
+  1 around its own payouts (Mode_Normal.cs:359-362). Do the same for a transfer.
+- The stock **Money Bag** (`Artifact_Pig`, "enables donation") already moves aura: its button needs 25 of each aura
+  (Entity_Command_Artifact_Pig_Launch.cs:30-47), the host spends it from the thrower and throws a bag; a same-team
+  entity with an owner that it hits pays that owner `Amount - 1` of each (Entity_Ai_Effect_Artifact_Pig.cs:72-165). Its
+  logic is private; a mod transfers directly with the public `Useresources` and `Giveresources(list, owner)`.
+- Enemy `Drops` are paid on a death despawn to every player, split (Game_Entity.cs:413-415); no object lands on the
+  ground.
+
+### 14.3 Difficulty levers
+
+- Nothing scales foes with the player count or the map: `Mapentryobject.Difficulty` only draws icons and the "TYPE"
+  label (Macro_Worldui.cs:101-115, Macro_Setupui.cs:187); `Gameplan.Par` feeds the par time, leaderboard points and the
+  par medal. A foe's level is the highest `Priority` among its upgrades (Helper_Entitytools.cs:528-532), and foes get
+  upgrades only from the Tide entry's `Content.Upgrades` (Mode_Normal.cs:118-142). `Levelmod` = `Leveladd × (Level-1)`.
+- The game's own **easier** setting ("Treated", "The water is calmer than normal"; round 2): with `Difficultysetting` =
+  1 (Macro_Gamecore.cs:72) the core gets `Special_Treated_Upgradeproperties` at spawn (Entity_Ai_Main_Core.cs:174-178);
+  its AI scales the start aura and adds drops, and marks the match `Mode_Treated` (Entity_Ai_Main_Core_Treated.cs:19-30,
+  136). Its params (verified): `Aura_Base` 2, `Aura_Drop` 4, `Aura_Basemax` 500, `Extra_Time` 3, `Extra_Wavetime` 30,
+  `Health_Base` 200: an extra twice the mode's start aura split among the players (at most 500), enemy drops ×4, 3 s
+  more before the first Tide and 30 s more per Tide, +200 base health on every core (:29-30, 63, 70, 145-154). The setting is only ever 0 or 1 (Macro_Gamecore.cs:56, 72): there is no harder one.
+- So a run gets harder only through what the mod writes: the Tide table (counts, intervals, more entries, elites, all
+  proven live), the Treated upgrade forced on the core (to ease), `Resourcegainmultiplier`, and run modifiers of its
+  own. A 4-player run faces the same Tides as a solo one unless the mode scales them.
+
+### 14.4 Maps and modes
+
+- Map, mode and soundtrack are three strings loaded separately (Game_Init.cs:96-119): any map takes any mode. The
+  coupling is data: the mode's `Specialspots` go to named children of the map's `Mode` transform, and a missing one only
+  logs "Mode might not work properly" (Game_Rounds.cs:72-98); map buildings (Merchut, gates) come from the map's own
+  `Entities` whatever the mode (Game_Grid.cs:275-311). No code names a map except `Special_Custom` (no records). Alt
+  maps are a Gameplan swap behind `Unlock_Altmaps` (Tds_Multiplayer_Remote.cs:662-664). RogueLab round 2 played 28
+  maps in the mod's mode, all clean (§15).
+
+### 14.5 Players who drop
+
+- The stable player key is the `Sessionid` (long): the host maps each client's saved GUID to a number and reuses it on a
+  rejoin (Blm_Player.cs:79-92, Blm_Multiplayer.cs:457-466). Netcode client ids, Steam ids and `Tds_Clientinfo` are not
+  stable. Run state is keyed by `Sessionid` (RogueLab and Riptide already do).
+- A drop despawns nothing: teammates become subowners of the dropped player's entities, and lose that on a rejoin
+  (Game_Players.cs:24-88). A rejoin gets a fresh `Tds_Clientinfo` with `Activeplayer` 0 and no aura
+  (Tds_Clientinfo.cs:25,37).
+- A match closes the lobby (`Lobbystate` "Closed", which the chain also sends), and a closed Steam lobby refuses joins
+  (Blm_Multiplayer.cs:67-77, Blm_Multiplayer_Remote.cs:278-297): a dropped friend can't rejoin a running map.
+
+### 14.6 The choice dialog
+
+`Runprompt(entries, title, sub, Forcedisplaymenu)` (Bla_Ui_Confirmation.cs:342). An entry has `Name`, `Display_Name`,
+`Display_Color`, `Display_Desc` (shown on hover), `Display_Image`, `Display_Imagecolor`, `Tomenu` (:16-31): no price, no
+disabled state, so a shop writes the price in the name and refuses on the host. One card per entry with no limit and no
+scrolling in code (:149); the list is a two-column grid (Riptide). The first click wins; no timeout (:196-231). It
+hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must open while that menu is up (§15).
+
+### 14.7 Damage, pickups, light, changing towers (vessel mechanics)
+
+- **Hurt path:** `Interacthurt` puts the attacker's `Damage` and `Damagemulti` = 1 in the data and sets `Lasthit`
+  (Helper_Entitytools.cs:166-170), then the attacker's AIs' `Interact`, then the target's AIs' `Oninteract` in
+  `Priority` order (:138-151). The target's own general AI applies it at priority 10 (Entity_Ai_Tower_General.cs:15,28;
+  Entity_Ai_Mob_General.cs:28), so an AI below 10 can scale or zero `Damagemulti` first (Fiewall protection at 9,
+  Entity_Ai_Effect_Fiewall_Protection.cs:7,14; Subcore zeroes it). `Dodamage` drains `Healtharmor` (1 per hit),
+  `Healthover`, `Healthresource`, then `Health` (Helper_Damagetools.cs:17-64). There is no damage-taken stat;
+  `Entity_Master.Damagetaken` is a running total. **Reflect** = hurt `Interact.From` back (Smackywall's Spike does,
+  Entity_Ai_Tower_Smackywall.cs:173-177); **delayed damage** = cut `Damagemulti` and deal the rest later;
+  **Illuminated** = a debuff AI below 10 that raises `Damagemulti`; **Blinded** = a modifier on the foe's `Damage`.
+- **Pickups:** the stock aura pickup (`Special_Aurapickup`) checks each slow tick for a same-team `Mob`-tagged entity
+  within 1 unit, pays its owner with `Giveresources`, and expires after 8 s
+  (Entity_Ai_Artifact_Checklist_Special_Pickup.cs:20-51). Boutman's fish carry no resources.
+- **Light:** no gameplay light exists (lighting is rendering only). A tower's light is a number the mod sums from
+  sources in range with `Helper_Entityquerytools.Entityarea(pos, radius, query, sort)` (Helper_Entityquerytools.cs:217).
+- **Changing a stock tower:** an upgrade adds AIs and fires `Master.Upgrade` (Helper_Entitytools.cs:504-550); data can't
+  remove a base AI, code in an added AI can change what the tower does.
+- **Journal:** pages are `Logobject` assets (Logobject.cs:8-55); no code lists enemies, so the pack's foe pages are its
+  own (`06`).
+
+## 15. RogueLab round 2 (2026-10-09)
+
+RogueLab 0.2.0 on the PC, solo host, Boutman on 3B_Thehunt and 0B_Hydragen, then a tour of the base maps: **15 pass, 1
+fail, 0 setup**. The tour hung loading Special_Custom and the 75-minute timeout ended the run. Every line is in
+`reference/roguelab_round2.txt`; all **verified** unless marked read.
+
+| Question | Result |
+| --- | --- |
+| Save across a restart | **proven**: the counter round 1 wrote read 2 on the next launch |
+| Several `Default` prefabs in one bundle | **proven**: `RogueLabMod_Second_Default` (its own code) started at boot and its marker was found in the match. A pack can split its code over prefabs, each compiled alone (`14`) |
+| Loading another mode's group | `Bl_Address.Load` on each mode's folder at boot loaded all five in seconds; their elites and tables are in `13` §10 Q2-Q3 |
+| Other modes | Storm, Drought and Tsunami run the `Mode_Normal` script with their own params and tables; Final and Tutorial have their own scripts. Start aura: Normal, Storm, Drought 50 of each; Tsunami 500; Final 100; Tutorial none |
+| Treated | the easier setting, params in §14.3 (off on this PC: `Difficultysetting` 0) |
+| Map tour | **28 maps clean** in the mod's mode (every `Mode_Normal` Gameplan but the two played, which were clean in round 1): each loaded in 15-19 s with the vessel, one core (two on Splithead and Splithead δ), 1-4 enemy cores, subcores on Artrio (2) and Elgu Bounde (1), no Merchut, and no "might not work properly" warning |
+| Special_Custom | **never offer it**: loading Map_Custom (six sub-loads, the player's custom-map slot) threw `InvalidKeyException` for two keys and a `NullReferenceException` in `Bl_Address.Load` and never finished |
+| Not toured yet | the 15 maps whose stock Gameplan names another mode: Skyhook, Bountyward (Mercs, the likely Merchut map), Auraboro Cycler, Great Rapid, Crescent Valeur, Hold, the Final map, and the δ of Ome Drydock, Monogrove, Bountyward, Purlest, Crimson Lythe, Woozy, Artrio, Crescent Valeur. Round 3 twins every Gameplan |
+| Map labels | `Mapentryobject.Difficulty` runs 1-9 (Ome Drydock δ 9, Thanh Bitterfield δ 8, most 4-6), Final and Custom 0: the MAP lines are a ready table for a vote's danger label (it still scales nothing, §14.3) |
+| Swarm cost (host) | Boutbros added on the host, frame time over 5 s: 0 → 8.8 ms mean (114 fps), 50 → 10.7 ms, 100 → 10.9 ms, 200 → 12.1 ms (82 fps), worst frame 35 ms. 200 extra units cost about 3 ms here; the client half needs the online evening |
+| Choice dialog | **failed again**: the 3-card and the 8-card `Runprompt` both faulted with a `NullReferenceException` inside `Runprompt` after building **one** card (2-column grid, cell 60×60, spacing -5). *Read:* for each card it sets `GetComponentInParent<Blu2_Menu_Handler>().Gamepadstartbutton` (Bla_Ui_Confirmation.cs:190), and `GetComponentInParent` skips inactive objects; opened by a coroutine 3 s into map 2 the dialog's menu wasn't up, so the handler was null. Riptide opened it from a vessel command with the HUD up and it worked (§13). Rule until round 3 confirms: open it only when that lookup is not null, from a command or a break |
+| F key | not reproduced again: the mod-spawned Boutbro has owner -1 (the player is 1), so it is never in F's list. Still a hand check |
+| Exceptions | per map change an `OperationCanceledException` in `Blu2_Menu_Handler.Animin` (the game's own), the two `Runprompt` errors, and Special_Custom's load errors |
+
+0.2.0 ran its boot dumps twice (a doubled call); the reference file keeps one copy.

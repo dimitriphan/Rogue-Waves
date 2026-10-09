@@ -192,8 +192,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`. The game's `TDS\Mods` folder
   was emptied at the user's ask (the pack will carry everything); the 7 mods sit in the PC's
   `ClaudeProjects\handoff\mods_removed_20261008`, so the playable Argo is no longer installed.
-- **Next:** the coordinator's next phase in Part B. Left on Argo: his balance pass (later, his call).
-- **Blocked:** nothing.
+- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` answered from the decompiled game (kit
+  `docs/15` §14) and RogueLab round 2 on the PC (15 pass, 1 fail; kit `docs/15` §15): 14 of 18 items answered.
+  RogueLab 0.3.0 built for the rest (handoff `RogueLab_round3`, compile-checked).
+- **Next:** RogueLab round 3 on the PC (15 untoured maps, the choice dialog with its menu up), then the F-key check by
+  hand and one online evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
+- **Blocked:** round 3 waits on Dimitri's OK for the PC session.
 
 ### Decisions
 
@@ -237,6 +241,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   them, house-style departures kept as drawn until each vessel's design gate. Kit 1.6 = `docs/PACK.md` §3.
 - 2026-10-08 (user): **Argo ships only inside the full `RogueWavesMod` pack**, no standalone ArgoMod 2.0. Argo's
   balance pass waits for a later session of his; step 5 is lessons and notes, no release zip.
+
+- 2026-10-09 (research): **Directions are held per player on the vessel, not on the core** (the core is the team's,
+  `docs/15` §14.1); `ModKitDirections` changes to that as kit 1.7 when Phase 5 starts. Per-player run state is keyed
+  by `Sessionid`. The base game scales nothing by player count or map, so the mode's difficulty is its own (§14.3).
 
 ### Open questions
 

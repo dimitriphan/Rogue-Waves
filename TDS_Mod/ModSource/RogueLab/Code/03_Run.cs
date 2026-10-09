@@ -6,9 +6,13 @@ using Unity.Netcode;
 // DontDestroyOnLoad object, which is what docs/15 §3 says carries a run across maps.
 public static class RogueLabRun
 {
-    public static int Phase;                 // 0 menu, 1 boat, 2 loading map 1, 3 map 1, 4 loading map 2, 5 map 2, 9 done
+    public static int Phase;                 // 0 menu, 1 boat, 2 loading map 1, 3 map 1, 4 loading map 2, 5 map 2,
+                                             // 6 loading a tour map, 7 in a tour map, 9 done
+    public static float Chained;             // realtime of the last chain (the tour's timeout)
+    public static string Loading = "";       // stock Gameplan the last chain loads
     public static int Map;                   // maps entered in this run
     public static string NextPlan = "";      // stock Gameplan of map 2
+    public static string First = "";         // stock Gameplan of map 1
     public static readonly Dictionary<long, float> PureAura = new Dictionary<long, float>();
     public static int ObjectId;              // the mod object's instance id when map 1 started
     static float seen = -1f, step = -1f;
@@ -104,15 +108,16 @@ public static class RogueLabRun
         Tds_Multiplayerinfo.Instance.Mode.Value = new FixedString64Bytes(RogueLabData.Mode);
         Tds_Multiplayerinfo.Instance.Gameplan.Value = new FixedString64Bytes(twin);
         NextPlan = RogueLabBoot.OtherPlan(plan);
+        First = plan;
         RogueLabProbe.Info("run plan", "map 1 " + twin + " (" + Tds_Multiplayerinfo.Instance.Map.Value + "), map 2 " + RogueLabBoot.Twin(NextPlan));
     }
 
     // docs/15 §3: the host sends everyone from a finished map straight into the next one, as Game_Admin.Play does:
     // the four match strings, everyone ready, then Gameloading. Despawning first copies the game's own Gotomap.
-    public static IEnumerator Chain()
+    public static IEnumerator Chain(string stockPlan, int phase)
     {
-        Gameplandatabaseobject next = Tds_Masterdatabase.Instance.Getitem("Gameplan", RogueLabBoot.Twin(NextPlan)) as Gameplandatabaseobject;
-        if (next == null) { RogueLabProbe.Setup("chain to map 2", "no second Gameplan"); Done(); yield break; }
+        Gameplandatabaseobject next = Tds_Masterdatabase.Instance.Getitem("Gameplan", RogueLabBoot.Twin(stockPlan)) as Gameplandatabaseobject;
+        if (next == null) { RogueLabProbe.Setup("chain to " + stockPlan, "no twin Gameplan"); Done(); yield break; }
         yield return new WaitForSeconds(6f);
         System.Threading.Tasks.Task despawn = Game_Entity.Instance.Despawnall(true);
         float t = 0f;
@@ -128,7 +133,9 @@ public static class RogueLabRun
         scene.Scene = "Gameloading";
         scene.Lobbystate = "Closed";
         RogueLabLog.Test("chain: despawned " + despawn.IsCompleted + ", loading " + next.Objectname);
-        Phase = 4;
+        Phase = phase;
+        Loading = stockPlan;
+        Chained = Time.realtimeSinceStartup;
         Blm_Multiplayer_Remote.Instance.Changescene_ServerRpc(scene, default(ServerRpcParams));
     }
 

@@ -4,10 +4,18 @@ using Unity.Netcode;
 public static class RogueLabMatch
 {
     static bool freeze, forcing;
-    static Game_Mapvars map1;
+    static Game_Mapvars map1, last;
+    static int warnings;
 
     public static void Tick()
     {
+        if (RogueLabRun.Phase == 6 && Time.realtimeSinceStartup - RogueLabRun.Chained > RogueLabData.TourTimeout)
+        {
+            // Checked before the match test: a map that hangs while loading has no Game_Mapvars (round 2's Special_Custom).
+            RogueLabProbe.Check("tour map " + RogueLabRun.Loading + " starts", false, "no vessel in the match " + RogueLabUtil.F(RogueLabData.TourTimeout) + " s after the chain; the tour stops here");
+            RogueLabRun.Done();
+            return;
+        }
         Game_Mapvars vars = Game_Mapvars.Instance;
         if (vars == null || !RogueLabUtil.IsServer)
             return;
@@ -24,7 +32,14 @@ public static class RogueLabMatch
         if (RogueLabRun.Phase == 4 && started && vars != map1)
         {
             RogueLabRun.Phase = 5;
+            last = vars;
             RogueLabMod.Instance.StartCoroutine(Map2());
+        }
+        if (RogueLabRun.Phase == 6 && started && vars != last)
+        {
+            RogueLabRun.Phase = 7;
+            last = vars;
+            RogueLabMod.Instance.StartCoroutine(TourMap());
         }
     }
 
@@ -42,6 +57,9 @@ public static class RogueLabMatch
         try { RogueLabEnemies.Dump("match"); } catch (Exception e) { RogueLabLog.Test("INFO enemy dump failed: " + e); }
         yield return Grant();
         yield return FKey();
+        Guard("second prefab", RogueLabRound2.SecondPrefab);
+        Guard("hard setting", () => RogueLabRound2.Treated("match"));
+        yield return RogueLabRound2.Swarm(PlayerCore());
         yield return Tides();
         yield return Leave();
     }
@@ -58,9 +76,39 @@ public static class RogueLabMatch
             && RogueLabMod.Instance != null && RogueLabMod.Instance.gameObject.GetInstanceID() == RogueLabRun.ObjectId, "Pure Aura " + RogueLabUtil.F(aura) + ", same mod object " + (RogueLabMod.Instance != null && RogueLabMod.Instance.gameObject.GetInstanceID() == RogueLabRun.ObjectId));
         Guard("mode check", ModeCheck);
         Guard("Cardinal check", CardinalCheck);
-        yield return Prompt();
-        freeze = false;
-        RogueLabRun.Done();
+        yield return RogueLabRound2.Prompt8();   // round 3: replaces round 1's three-card prompt
+        List<string> played = new List<string>();
+        played.Add(RogueLabRun.NextPlan);
+        played.Add(RogueLabRun.First);
+        RogueLabRound2.PlanTour(played);
+        yield return NextTourMap();
+    }
+
+    // A4: the tour, one base map after another, each left as a win between Tides as soon as it has started.
+    static IEnumerator TourMap()
+    {
+        freeze = true;
+        RogueLabRun.Map++;
+        yield return new WaitForSeconds(3f);
+        try { RogueLabRound2.TourMap(RogueLabRun.Loading, Time.realtimeSinceStartup - RogueLabRun.Chained, warnings); }
+        catch (Exception e) { RogueLabLog.Test("TOUR " + RogueLabRun.Loading + " check threw " + e.Message); }
+        yield return NextTourMap();
+    }
+
+    static IEnumerator NextTourMap()
+    {
+        warnings = RogueLabRound2.ModeWarnings;
+        if (RogueLabRound2.Tour.Count == 0)
+        {
+            RogueLabProbe.Info("map tour", "done after " + RogueLabRun.Map + " maps in this run");
+            freeze = false;
+            RogueLabRun.Done();
+            yield break;
+        }
+        string next = RogueLabRound2.Tour[0];
+        RogueLabRound2.Tour.RemoveAt(0);
+        yield return Win();
+        yield return RogueLabRun.Chain(next, 6);
     }
 
     static void Guard(string name, Action probe)
@@ -157,7 +205,8 @@ public static class RogueLabMatch
         catch (Exception e) { RogueLabProbe.Setup("F key", "Boutbro spawn threw " + e.Message); yield break; }
         yield return new WaitForSeconds(2f);
         Entity_Master minion = made != null ? made.Worldobject : null;
-        RogueLabProbe.Info("F list before the death", RogueLabUtil.Names(RogueLabUtil.Heroes()) + "; Boutbro spawned " + (minion != null));
+        RogueLabProbe.Info("F list before the death", RogueLabUtil.Names(RogueLabUtil.Heroes()) + "; Boutbro spawned " + (minion != null)
+            + (minion != null ? ", its owner " + RogueLabUtil.Owner(minion) + " (local " + RogueLabUtil.LocalId + "), tags [" + string.Join(",", minion.Taglistserver.ToArray()) + "]" : ""));
 
         Game_Entity.Instance.Despawn(hero.Beingserver, true, "RogueLab");
         Entity_Master again = null;
@@ -283,6 +332,13 @@ public static class RogueLabMatch
     {
         yield return new WaitForSeconds(2f);
         if (InTide()) { RogueLabProbe.Setup("leave between Tides", "still in a Tide"); RogueLabRun.Done(); yield break; }
+        yield return Win();
+        RogueLabProbe.Check("leave between Tides as a win", Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", "Gamecomplete " + Game_Mapvars.Instance.Gamecomplete.Value + ", Wave " + Game_Mapvars.Instance.Wave.Value);
+        yield return RogueLabRun.Chain(RogueLabRun.NextPlan, 4);
+    }
+
+    static IEnumerator Win()
+    {
         Mode_Normal mode = Game_Rounds.Instance.GetComponent<Mode_Normal>();
         mode.Finished = true;
         Tds_Multiplayerinfo.Instance.Gamestate.Value = new FixedString64Bytes("Win");
@@ -290,32 +346,6 @@ public static class RogueLabMatch
         Game_Rounds.Instance.Gamecompleted();
         freeze = false;
         yield return new WaitForSeconds(3f);
-        RogueLabProbe.Check("leave between Tides as a win", Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", "Gamecomplete " + Game_Mapvars.Instance.Gamecomplete.Value + ", Wave " + Game_Mapvars.Instance.Wave.Value);
-        yield return RogueLabRun.Chain();
-    }
-
-    // docs/15 §6: the game's choice dialog, opened by the mod. Left open for Dimitri to click (the game ignores injected
-    // clicks); the run ends either way after 30 s.
-    static IEnumerator Prompt()
-    {
-        if (Bla_Ui_Confirmation.Instance == null) { RogueLabProbe.Setup("choice dialog", "no Bla_Ui_Confirmation"); yield break; }
-        List<Bla_Ui_Confirmation.Entry> options = new List<Bla_Ui_Confirmation.Entry>();
-        foreach (string n in new[] { "Direction A", "Direction B", "Direction C" })
-        {
-            Bla_Ui_Confirmation.Entry e = new Bla_Ui_Confirmation.Entry();
-            e.Name = n;
-            e.Display_Name = n;
-            e.Display_Color = new Color(0.3568f, 0.3647f, 0.4117f, 1f);
-            options.Add(e);
-        }
-        Cysharp.Threading.Tasks.UniTask<Bla_Ui_Confirmation.Entry> task = Bla_Ui_Confirmation.Instance.Runprompt(options, "RogueLab", "Pick one (Dimitri: click any)", true);
-        RogueLabProbe.Info("choice dialog", "opened with 3 options");
-        float t = 0f;
-        while (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Pending && t < 30f) { t += Time.deltaTime; yield return null; }
-        if (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded)
-            RogueLabProbe.Check("choice dialog returns the pick", true, task.GetAwaiter().GetResult().Name);
-        else
-            RogueLabProbe.Info("choice dialog returns the pick", "no click within 30 s (status " + task.Status + ")");
     }
 }
 

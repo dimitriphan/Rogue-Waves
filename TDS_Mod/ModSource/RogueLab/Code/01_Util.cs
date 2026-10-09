@@ -1,6 +1,6 @@
 public static class RogueLabData
 {
-    public const string Version = "0.1.0";
+    public const string Version = "0.3.0";            // 0.2: round 2, 0.3: round 3 (docs/RESEARCH_GAPS.md)
     public const string Mode = "Mode_RogueLab";          // the mod mode's entry, group and Modeobject name
     public const string StockMode = "Mode_Normal";
     public const string PlanPrefix = "RogueLab_";        // + the stock Gameplan's name
@@ -9,6 +9,8 @@ public static class RogueLabData
     public const string Bro = "Mob_Boutmanbro";
     public const string SaveFolder = "RogueLab";
     public const int Tides = 3;                          // Tides kept from Mode_Normal's table
+    public const string SecondMarker = "RogueLab_SecondAlive";   // left by the bundle's second prefab (Second/RogueLabSecond.cs)
+    public const float TourTimeout = 150f;               // seconds a tour map may take to start before the run stops
 }
 
 public static class RogueLabLog

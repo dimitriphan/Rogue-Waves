@@ -1,8 +1,10 @@
 // Tools > RogueLab: the research mod's build steps, named as Tools > ModKit > Build Queue expects. RogueLab has no art,
 // so Build All Assets only records that there is nothing to build; Build Mod Prefab packs the compile-checked code
 // (ModSource/RogueLab/Build/RogueLabMod_Code.cs, from Build-RogueLabMod.ps1 -Define ROGUELAB_SELFTEST) into
-// Assets/RogueLabMod/RogueLabMod_Default.prefab; Export Mod parks every other Assets/*Mod folder, then exports RogueLab
-// alone ("Default" in the prefab name makes the game load it at startup). Restore Parked Mods puts the others back.
+// Assets/RogueLabMod/RogueLabMod_Default.prefab, and (round 2) ModSource/RogueLab/Second/RogueLabSecond.cs, as it is,
+// into a second prefab in the same mod, RogueLabMod_Second_Default; Export Mod parks every other Assets/*Mod folder,
+// then exports RogueLab alone ("Default" in the prefab names makes the game load them at startup). Restore Parked Mods
+// puts the others back.
 using System;
 using System.IO;
 using UnityEditor;
@@ -13,6 +15,7 @@ namespace RogueLabBuild
     public static class RogueLabModPrefab
     {
         const string PrefabPath = "Assets/RogueLabMod/RogueLabMod_Default.prefab";
+        const string SecondPath = "Assets/RogueLabMod/RogueLabMod_Second_Default.prefab";
         const string Parked = "Assets/_Parked/Editor";
         const string Own = "RogueLabMod";
 
@@ -39,15 +42,13 @@ namespace RogueLabBuild
                     throw new Exception("Mods_Gamescript type not found (is the TDS mod tools package imported?)");
                 if (!AssetDatabase.IsValidFolder("Assets/RogueLabMod"))
                     AssetDatabase.CreateFolder("Assets", "RogueLabMod");
-                var root = new GameObject("RogueLabMod_Default");
-                var script = (MonoBehaviour)root.AddComponent(gamescript);
-                var so = new SerializedObject(script);
-                so.FindProperty("Code").stringValue = File.ReadAllText(codePath);
-                so.ApplyModifiedPropertiesWithoutUndo();
-                PrefabUtility.SaveAsPrefabAsset(root, PrefabPath);
-                UnityEngine.Object.DestroyImmediate(root);
+                Save(gamescript, "RogueLabMod_Default", File.ReadAllText(codePath), PrefabPath);
+                string secondPath = Path.Combine(Source, "Second/RogueLabSecond.cs");
+                if (!File.Exists(secondPath))
+                    throw new Exception("missing " + secondPath);
+                Save(gamescript, "RogueLabMod_Second_Default", File.ReadAllText(secondPath).Replace("\r\n", "\n"), SecondPath);
                 AssetDatabase.SaveAssets();
-                File.WriteAllText(log, "OK " + DateTime.Now.ToString("s") + " code " + new FileInfo(codePath).Length + " bytes");
+                File.WriteAllText(log, "OK " + DateTime.Now.ToString("s") + " code " + new FileInfo(codePath).Length + " bytes, second prefab " + new FileInfo(secondPath).Length + " bytes");
                 Debug.Log("[RogueLab] built " + PrefabPath);
             }
             catch (Exception e)
@@ -56,6 +57,17 @@ namespace RogueLabBuild
                 File.WriteAllText(log, "FAILED " + e);
                 Debug.LogError("[RogueLab] " + e);
             }
+        }
+
+        static void Save(Type gamescript, string name, string code, string path)
+        {
+            var root = new GameObject(name);
+            var script = (MonoBehaviour)root.AddComponent(gamescript);
+            var so = new SerializedObject(script);
+            so.FindProperty("Code").stringValue = code;
+            so.ApplyModifiedPropertiesWithoutUndo();
+            PrefabUtility.SaveAsPrefabAsset(root, path);
+            UnityEngine.Object.DestroyImmediate(root);
         }
 
         [MenuItem("Tools/RogueLab/Park Other Mods")]
@@ -113,6 +125,6 @@ namespace RogueLabBuild
             ModTool.Editor.Exporting.ModExporter.ExportMod();
         }
 
-        const string RogueLabVersion = "0.1";
+        const string RogueLabVersion = "0.3";
     }
 }
