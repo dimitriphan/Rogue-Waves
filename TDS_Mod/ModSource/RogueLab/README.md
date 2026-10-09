@@ -9,10 +9,20 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Boot | dumps the database folders, `Mode_Normal`'s Tide table and the enemy groups; registers `Mode_RogueLab` (stock scripts by name, 3 Tides) with a `RogueLab_` twin of every `Mode_Normal` Gameplan, and the Cardinal `Artifact_RogueLab`; writes and reads a save key | §2, §7, §8, §11.9 |
 | Boat | picks Boutman and the test map, equips the mod Cardinal in its colour slot, swaps the match to the twin Gameplan | §3, §7 |
 | Map 1 | checks the mode and Cardinal, grants a core upgrade mid-match, reproduces the F-key bug with Boutbro and checks the fix, rewinds a Tide, leaves between Tides as a win, chains straight into map 2 | §3, §5, §7, §9 |
-| Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (click one), `TEST DONE` | §3, §6 |
+| Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (click one) | §3, §6 |
+| Round 2 (0.2.0, `06_Round2.cs`) | at boot every map's and Gameplan's data, every other mode's Tide table, the elites again, the hard setting's upgrade; in map 1 the bundle's second prefab (`Second/RogueLabSecond.cs`, built into `RogueLabMod_Second_Default`) and the frame cost of 50/100/200 extra units; in map 2 an eight-card dialog; then a **tour** of every other base map the vote could offer, each left as a win as soon as it starts; `TEST DONE` | `docs/RESEARCH_GAPS.md` A3, A4, A6, A7, A9, B5, C1, C2 |
 
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
+
+## Round 2 (2026-10-09)
+
+Same steps as round 1 below, with handoff `RogueLab_round2` and `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes
+75`: the tour plays about forty maps, each about a minute. Nothing needs a click. The save-restart check (A7) reads the
+launch counter round 1 left in the save, so run it on the same save slot. Raw lines to send back: `MAP`, `PLAN`, `MODE`,
+`TIDE2`, `TOUR`, `ELITE`, `GROUP`, plus every `TEST` line. Each tour map ends as a win, so the end screen writes a
+record under each `RogueLab_` twin's name in the save (harmless; the save is backed up first). **Afterwards remove
+`RogueLabMod` from the game's Mods folder**: the folder is kept empty until the pack ships (2026-10-08).
 
 ## PC round
 

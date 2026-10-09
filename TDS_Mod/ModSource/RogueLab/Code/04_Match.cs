@@ -4,7 +4,8 @@ using Unity.Netcode;
 public static class RogueLabMatch
 {
     static bool freeze, forcing;
-    static Game_Mapvars map1;
+    static Game_Mapvars map1, last;
+    static int warnings;
 
     public static void Tick()
     {
@@ -24,7 +25,19 @@ public static class RogueLabMatch
         if (RogueLabRun.Phase == 4 && started && vars != map1)
         {
             RogueLabRun.Phase = 5;
+            last = vars;
             RogueLabMod.Instance.StartCoroutine(Map2());
+        }
+        if (RogueLabRun.Phase == 6 && started && vars != last)
+        {
+            RogueLabRun.Phase = 7;
+            last = vars;
+            RogueLabMod.Instance.StartCoroutine(TourMap());
+        }
+        else if (RogueLabRun.Phase == 6 && Time.realtimeSinceStartup - RogueLabRun.Chained > RogueLabData.TourTimeout)
+        {
+            RogueLabProbe.Check("tour map " + RogueLabRun.Loading + " starts", false, "no vessel in the match " + RogueLabUtil.F(RogueLabData.TourTimeout) + " s after the chain; the tour stops here");
+            RogueLabRun.Done();
         }
     }
 
@@ -42,6 +55,9 @@ public static class RogueLabMatch
         try { RogueLabEnemies.Dump("match"); } catch (Exception e) { RogueLabLog.Test("INFO enemy dump failed: " + e); }
         yield return Grant();
         yield return FKey();
+        Guard("second prefab", RogueLabRound2.SecondPrefab);
+        Guard("hard setting", () => RogueLabRound2.Treated("match"));
+        yield return RogueLabRound2.Swarm(PlayerCore());
         yield return Tides();
         yield return Leave();
     }
@@ -59,8 +75,39 @@ public static class RogueLabMatch
         Guard("mode check", ModeCheck);
         Guard("Cardinal check", CardinalCheck);
         yield return Prompt();
-        freeze = false;
-        RogueLabRun.Done();
+        yield return RogueLabRound2.Prompt8();
+        List<string> played = new List<string>();
+        played.Add(RogueLabRun.NextPlan);
+        played.Add(RogueLabRun.First);
+        RogueLabRound2.PlanTour(played);
+        yield return NextTourMap();
+    }
+
+    // A4: the tour, one base map after another, each left as a win between Tides as soon as it has started.
+    static IEnumerator TourMap()
+    {
+        freeze = true;
+        RogueLabRun.Map++;
+        yield return new WaitForSeconds(3f);
+        try { RogueLabRound2.TourMap(RogueLabRun.Loading, Time.realtimeSinceStartup - RogueLabRun.Chained, warnings); }
+        catch (Exception e) { RogueLabLog.Test("TOUR " + RogueLabRun.Loading + " check threw " + e.Message); }
+        yield return NextTourMap();
+    }
+
+    static IEnumerator NextTourMap()
+    {
+        warnings = RogueLabRound2.ModeWarnings;
+        if (RogueLabRound2.Tour.Count == 0)
+        {
+            RogueLabProbe.Info("map tour", "done after " + RogueLabRun.Map + " maps in this run");
+            freeze = false;
+            RogueLabRun.Done();
+            yield break;
+        }
+        string next = RogueLabRound2.Tour[0];
+        RogueLabRound2.Tour.RemoveAt(0);
+        yield return Win();
+        yield return RogueLabRun.Chain(next, 6);
     }
 
     static void Guard(string name, Action probe)
@@ -157,7 +204,8 @@ public static class RogueLabMatch
         catch (Exception e) { RogueLabProbe.Setup("F key", "Boutbro spawn threw " + e.Message); yield break; }
         yield return new WaitForSeconds(2f);
         Entity_Master minion = made != null ? made.Worldobject : null;
-        RogueLabProbe.Info("F list before the death", RogueLabUtil.Names(RogueLabUtil.Heroes()) + "; Boutbro spawned " + (minion != null));
+        RogueLabProbe.Info("F list before the death", RogueLabUtil.Names(RogueLabUtil.Heroes()) + "; Boutbro spawned " + (minion != null)
+            + (minion != null ? ", its owner " + RogueLabUtil.Owner(minion) + " (local " + RogueLabUtil.LocalId + "), tags [" + string.Join(",", minion.Taglistserver.ToArray()) + "]" : ""));
 
         Game_Entity.Instance.Despawn(hero.Beingserver, true, "RogueLab");
         Entity_Master again = null;
@@ -283,6 +331,13 @@ public static class RogueLabMatch
     {
         yield return new WaitForSeconds(2f);
         if (InTide()) { RogueLabProbe.Setup("leave between Tides", "still in a Tide"); RogueLabRun.Done(); yield break; }
+        yield return Win();
+        RogueLabProbe.Check("leave between Tides as a win", Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", "Gamecomplete " + Game_Mapvars.Instance.Gamecomplete.Value + ", Wave " + Game_Mapvars.Instance.Wave.Value);
+        yield return RogueLabRun.Chain(RogueLabRun.NextPlan, 4);
+    }
+
+    static IEnumerator Win()
+    {
         Mode_Normal mode = Game_Rounds.Instance.GetComponent<Mode_Normal>();
         mode.Finished = true;
         Tds_Multiplayerinfo.Instance.Gamestate.Value = new FixedString64Bytes("Win");
@@ -290,8 +345,6 @@ public static class RogueLabMatch
         Game_Rounds.Instance.Gamecompleted();
         freeze = false;
         yield return new WaitForSeconds(3f);
-        RogueLabProbe.Check("leave between Tides as a win", Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", "Gamecomplete " + Game_Mapvars.Instance.Gamecomplete.Value + ", Wave " + Game_Mapvars.Instance.Wave.Value);
-        yield return RogueLabRun.Chain();
     }
 
     // docs/15 §6: the game's choice dialog, opened by the mod. Left open for Dimitri to click (the game ignores injected

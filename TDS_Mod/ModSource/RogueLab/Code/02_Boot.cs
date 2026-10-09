@@ -4,6 +4,7 @@ public static class RogueLabBoot
     public static Modeobject ModeObject;
     public static string GrantArtifact = "";      // a stock Cardinal granted mid-match in map 1
     static readonly List<string> planNames = new List<string>();
+    public static List<string> Plans { get { return planNames; } }   // stock Mode_Normal Gameplans with a twin, by name
 
     // docs/15 §11 step 1: what the game's database holds.
     public static void Database()

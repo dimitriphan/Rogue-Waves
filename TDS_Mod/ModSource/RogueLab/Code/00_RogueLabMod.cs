@@ -7,7 +7,9 @@
 //   on the boat  picks Boutman and the test map, equips the mod Cardinal, swaps the match to Mode_RogueLab
 //   map 1        the mode, the Cardinal, a Cardinal granted mid-match, the F-key bug and its fix, a rewound Tide,
 //                leaving between Tides as a win, then the host chains straight into map 2
-//   map 2        what survived the scene change; a Runprompt dialog left open for Dimitri to click; TEST DONE
+//   map 2        what survived the scene change; a Runprompt dialog left open for Dimitri to click
+//   round 2      (06_Round2.cs) boot dumps, a second prefab, a swarm's cost, an eight-card dialog, then a tour of every
+//                other base map the vote could offer; TEST DONE
 // Build: Build-RogueLabMod.ps1 -Define ROGUELAB_SELFTEST (the define also switches on the kit's ModKitTest).
 #if !ROGUELAB_SELFTEST
 #error RogueLab is a research build: build it with -Define ROGUELAB_SELFTEST
@@ -69,6 +71,8 @@ public class RogueLabMod : MonoBehaviour
         try { RogueLabBoot.RegisterMode(normal); } catch (Exception e) { RogueLabProbe.Check("mod mode registered", false, e.ToString()); }
         try { RogueLabBoot.RegisterCardinal(); } catch (Exception e) { RogueLabProbe.Check("mod Cardinal registered", false, e.ToString()); }
         try { RogueLabBoot.Save(); } catch (Exception e) { RogueLabProbe.Check("save write", false, e.ToString()); }
+        yield return RogueLabRound2.Boot();
+        yield return RogueLabRound2.Boot();
         Ready = true;
         RogueLabLog.Info("ready");
     }

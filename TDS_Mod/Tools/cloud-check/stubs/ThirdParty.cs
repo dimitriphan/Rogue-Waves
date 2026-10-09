@@ -152,7 +152,15 @@ namespace UnityEngine.UI
     public class LayoutElement : UnityEngine.EventSystems.UIBehaviour { }
     public class HorizontalLayoutGroup : UnityEngine.EventSystems.UIBehaviour { }
     public class VerticalLayoutGroup : UnityEngine.EventSystems.UIBehaviour { }
-    public class GridLayoutGroup : UnityEngine.EventSystems.UIBehaviour { }
+    public class GridLayoutGroup : UnityEngine.EventSystems.UIBehaviour
+    {
+        public enum Constraint { Flexible, FixedColumnCount, FixedRowCount }
+        public Constraint constraint { get { throw null; } set { } }
+        public int constraintCount { get { throw null; } set { } }
+        public UnityEngine.Vector2 cellSize { get { throw null; } set { } }
+        public UnityEngine.Vector2 spacing { get { throw null; } set { } }
+        public UnityEngine.RectOffset padding { get { throw null; } set { } }
+    }
     public class ContentSizeFitter : UnityEngine.EventSystems.UIBehaviour { }
     public class Mask : UnityEngine.EventSystems.UIBehaviour { }
     public class RectMask2D : UnityEngine.EventSystems.UIBehaviour { }
