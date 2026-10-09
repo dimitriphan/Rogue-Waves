@@ -187,8 +187,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Done:** Phases 1 and 2 (2026-10-08). **Phase 3 Argo** (2026-10-08): steps 1-5; PC round 6 **139 pass, 0 fail**,
   Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) is installed on the PC; lessons in kit `docs/09` #72-76. Work
   is on `claude/project-thread-f7fmvc` (draft PR #7 into #3's branch). No release: Argo ships in the pack.
-- **Next:** the coordinator's next phase in Part B. Left on Argo: a look at round 6's journal capture, his balance pass
-  (later, his call).
+- **Next:** the coordinator's next phase in Part B. Left on Argo: his balance pass (later, his call).
 - **Blocked:** nothing.
 
 ### Decisions
