@@ -10,6 +10,8 @@
 //   map 2        what survived the scene change; a Runprompt dialog left open for Dimitri to click
 //   round 2      (06_Round2.cs) boot dumps, a second prefab, a swarm's cost, an eight-card dialog, then a tour of every
 //                other base map the vote could offer; TEST DONE
+//   round 4      (07_Round4Menu.cs, 08_Round4.cs) starts from a cloned main menu button with no Cardinal, then map 1's
+//                mechanic probes for the 2026-10-09 scope, and stops (RogueLabData.Round)
 // Build: Build-RogueLabMod.ps1 -Define ROGUELAB_SELFTEST (the define also switches on the kit's ModKitTest).
 #if !ROGUELAB_SELFTEST
 #error RogueLab is a research build: build it with -Define ROGUELAB_SELFTEST

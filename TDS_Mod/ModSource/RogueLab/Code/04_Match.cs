@@ -3,7 +3,7 @@ using Unity.Netcode;
 // The in-match probes of docs/15 §11, steps 2-8, on the host.
 public static class RogueLabMatch
 {
-    static bool freeze, forcing;
+    public static bool freeze, forcing;
     static Game_Mapvars map1, last;
     static int warnings;
 
@@ -51,6 +51,14 @@ public static class RogueLabMatch
         yield return new WaitForSeconds(3f);
         RogueLabLog.Test("map 1: " + Tds_Multiplayerinfo.Instance.Gameplan.Value + " on " + Tds_Multiplayerinfo.Instance.Map.Value);
         Guard("mode check", ModeCheck);
+        if (RogueLabData.Round == 4)
+        {
+            // Round 4: the mechanics of the 2026-10-09 scope (08_Round4.cs), then leave as a win and stop: no map 2, no tour.
+            yield return RogueLabRound4.Map1();
+            yield return Win();
+            RogueLabRun.Done();
+            yield break;
+        }
         Guard("Cardinal check", CardinalCheck);
         RogueLabRun.ObjectId = RogueLabMod.Instance.gameObject.GetInstanceID();
         RogueLabRun.PureAura[RogueLabUtil.LocalId] = 7f;
@@ -111,14 +119,14 @@ public static class RogueLabMatch
         yield return RogueLabRun.Chain(next, 6);
     }
 
-    static void Guard(string name, Action probe)
+    public static void Guard(string name, Action probe)
     {
         try { probe(); }
         catch (Exception e) { RogueLabProbe.Check(name, false, e.ToString()); }
     }
 
     // docs/15 §2: the match plays the mod's mode with the stock script.
-    static void ModeCheck()
+    public static void ModeCheck()
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
         Mode_Normal script = Game_Rounds.Instance.GetComponent<Mode_Normal>();
@@ -140,7 +148,7 @@ public static class RogueLabMatch
             "equipped [" + string.Join(", ", equipped.ToArray()) + "], mixed '" + Tds_Multiplayerinfo.Instance.Mixedart.Value + "', artifacts loaded [" + string.Join(", ", loaded.ToArray()) + "], want " + want);
     }
 
-    static Entity_Master PlayerCore()
+    public static Entity_Master PlayerCore()
     {
         List<Entity_Master> cores;
         if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Core", out cores))
@@ -254,7 +262,7 @@ public static class RogueLabMatch
         return RogueLabUtil.BeingName(sel.Selected);
     }
 
-    static bool InTide()
+    public static bool InTide()
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
         int e = vars.Entry.Value;
@@ -269,7 +277,7 @@ public static class RogueLabMatch
         return core != null && core.Statsserver.TryGetValue("Healthresource", out s) ? s.Value : -99f;
     }
 
-    static void ClearFoes()
+    public static void ClearFoes()
     {
         List<Entity_Master> foes;
         if (!Game_Entity.Instance.Entityclienttags.TryGetValue("Enemy", out foes)) return;
@@ -278,7 +286,7 @@ public static class RogueLabMatch
                 Game_Entity.Instance.Despawn(e.Beingserver, false, "RogueLab");
     }
 
-    static IEnumerator Until(Func<bool> done, float timeout)
+    public static IEnumerator Until(Func<bool> done, float timeout)
     {
         float t = 0f;
         while (!done() && t < timeout) { t += Time.deltaTime; yield return null; }
@@ -286,7 +294,7 @@ public static class RogueLabMatch
 
     // Ends the running Tide: its content keeps spawning until it has all been sent, so clear foes as they come and
     // hold the timer at zero until the next entry starts.
-    static IEnumerator EndTide(int entry)
+    public static IEnumerator EndTide(int entry)
     {
         float t = 0f, cleared = 0f;
         forcing = true;
@@ -337,7 +345,7 @@ public static class RogueLabMatch
         yield return RogueLabRun.Chain(RogueLabRun.NextPlan, 4);
     }
 
-    static IEnumerator Win()
+    public static IEnumerator Win()
     {
         Mode_Normal mode = Game_Rounds.Instance.GetComponent<Mode_Normal>();
         mode.Finished = true;

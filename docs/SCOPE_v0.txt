@@ -75,7 +75,7 @@
 		Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
 		- This is the expansion's "Streamlined Economy Changes".
 		- Only base aura can be sent, never [Pure Aura].
-		- Each player can send up to 50 times the tide number per break, in any mix of colours. / On tide 5 a player can send 250 in all: 125 red and 125 blue, or 250 blue \
+		- Each player can send up to 50 times the tide number per break, in any mix of colours. / The tide number is the coming tide, so 50 before Tide 1. In the break before tide 5 a player can send 250 in all: 125 red and 125 blue, or 250 blue \
 
 	[Shopkeeper]
 		{VENDCINT} / A sentient vending machine \
