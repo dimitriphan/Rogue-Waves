@@ -503,3 +503,29 @@ proved the ones marked so:
   can not await twice" (round 5); keep the status in a local.
 - **The game's own aura pickup** pays the owner of the first same-team `Mob` within 1 unit
   (Entity_Ai_Artifact_Checklist_Special_Pickup.cs:20-51): vessels and kit minions qualify.
+
+## 17. The world map and the boat (2026-10-09, read)
+
+Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`, which has the route and the probes):
+
+- **A world is data plus a prefab.** `Mapworlddatabaseobject` (folder `"World"`): `Worldobj`, `Defaultlighting`,
+  `Defaultnode`, `Display_Name`/`Desc`/`Sound`/`Soundtrack` (Mapworlddatabaseobject.cs). Its nodes are
+  `Macro_Link_Add_Base` children: `Links`, `Unlockcondition`, `Cameraposition`, `Boat_Radius`, `Boat_Warp`,
+  `Node_Hidden`, `Waypointspot`; kinds `Macro_Maplink_Add` (`Gameplan`, `Altgameplan`), `Macro_Nodelink_Add`,
+  `Macro_Warplink_Add` (`Toworld`, `Landingspot`). Nodes are found by GameObject name with `GetComponentsInChildren`
+  at use time, so nodes added in code count.
+- **Routing is `Links` only.** The hovered node shows one "go to" arrow per unlocked link (Macro_Worldui.cs:428-470);
+  the boat sails straight at the target's nearest `Dock` child, 2 to 10 units/s (Macro_Worldvisual.cs:71-77,
+  1409-1760). The leader's code reads `Prevhovering.Cameraposition` with no null check (:1694): every node needs one.
+- **Only the leader steers.** Clicks (Macro_Main.cs:599), `Selectmap_ServerRpc`, `Waypointmap`, `Pingnode` and
+  `Selectworld` (Tds_Multiplayer_Remote.cs:648, 741, 809, 867) check `Currentleader`. The boat's pose reaches clients
+  through `Moveboat_ServerRpc` (no ownership or leader check) into networked `Boatpos`/`Boatdir`/`Campos`/`Camdir`.
+- **The world name is networked, the world is not.** Each machine resolves `Tds_Multiplayerinfo.World` through
+  `Getitem("World", name)` and instantiates `Worldobj` itself. `Startup` waits for it with no timeout
+  (Macro_Main.cs:404), and the host takes it from its save's `Player_Worldselect`, which the leader's map click
+  rewrites (:633): a mod world in that key hangs the boat once the mod is gone. A warp (`Selectworld_ServerRpc`,
+  :827-885) sets `World`, `Selected` and `Worlded`; every machine's `Moveworld` swaps worlds with the title card, and
+  `Macro_Worldvisual.Update` re-swaps any machine whose world differs from `Worlded`.
+- **The only client-written networked value on the boat** is the player's own `Blm_Player.Displayname` (owner write,
+  Blm_Player.cs:30; set from the Steam name at spawn, :98). `Changeartifact_ServerRpc` has no leader check
+  (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.

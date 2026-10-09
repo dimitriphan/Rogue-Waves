@@ -229,6 +229,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   objectives); copy at `/mnt/project-files/scope/` (replaces `roguewave.txt`) and on the PC in
   `Desktop\RogueWave\scope`. `docs/SCOPE_v0.txt` is a pointer. Dimitri now sends back only the files he edits; the
   fold-in rule is in Part A.
+- **Also (2026-10-09 22:00Z):** Dimitri asked whether the boat could sail a generated Slay the Spire style map to
+  choose maps. Yes, read from code (`docs/SEA_CHART.md`, kit `docs/15` §17): the base campaign map is a world of nodes
+  with `Links`, which a mod can build from a seed and register as its own world; the stock boat, arrows, Setup panel
+  and map loading work on it. Prototype generator `concept-tools/sea_chart.py`. **Dimitri adopted it with V1 (22:23Z)**:
+  the vote is held in the map and the boat sails the chart to the winner; `docs/scope/05` updated. Probes C1-C7 join
+  the next RogueLab round (C8 dropped with V2).
 - **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
@@ -299,6 +305,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
 
 - 2026-10-09 (user): **the scope is one file per category** (`docs/scope/`); he sends back only what he edits.
+- 2026-10-09 22:23Z (user): **maps are chosen on a sea chart** (`docs/SEA_CHART.md`): a seeded Slay the Spire style
+  map of 10 rows the boat sails across; the vote offers the maps linked to the last one (1-3), is held in the map
+  (route **V1**) and the boat then sails to the winner; the party returns to the boat between maps. Default taken:
+  map 1 is voted in the staging map's opening break, then the party sails from the harbour to it.
 
 ### Open questions
 
