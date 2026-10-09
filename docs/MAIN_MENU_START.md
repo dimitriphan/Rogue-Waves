@@ -102,6 +102,13 @@ screen (`Active` false for the whole run). M4 failed because the probe itself th
 `UniTask`'s `Status`), so the flag was never set. Round 6 (RogueLab 0.4.2) fixes both and logs M4b, whether the
 button shows beside Play once the Main menu is up.
 
+**Round 6 (PC, 2026-10-09): 22 pass, 0 fail.** M1-M5 and M7 passed: the clone is built, registered and shown whenever
+Play is; its click runs the mod's handler, not Play; the New / Continue / Back dialog works on the main menu; the flag
+reaches the boat; the boat takes the mod's mode with no Cardinal. M4b: the Main menu never showed during the
+automated run (`Active` false, Play and the clone both hidden, the title screen still up), so whether the button
+**looks** right beside Play is left to Dimitri's by-hand look below. M6 (back to the menu, then the stock Play) was not
+run.
+
 By hand, by Dimitri: look at the button on the main menu (placement, hover tip, gamepad focus). **Online evening**
 (already planned, `docs/RESEARCH_GAPS.md`): a friend with the pack joins by invite after step 4, sees the panel and the
 ROGUE WAVE line, readies, and both load map 1. No PC session is started for this until Dimitri asks.

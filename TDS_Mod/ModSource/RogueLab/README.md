@@ -23,6 +23,8 @@ Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a ha
 
 ## Round 6 (2026-10-09)
 
+Ran 2026-10-09: 22 pass, 0 fail, 0 setup.
+
 RogueLab 0.4.2: round 5 again with its two menu probe bugs fixed (M1 judged against Play's state, M3's result read
 once so M4 keeps its flag) and a new M4b line. Same steps with handoff `RogueLab_round6`. **Afterwards remove
 `RogueLabMod` from the game's Mods folder.**

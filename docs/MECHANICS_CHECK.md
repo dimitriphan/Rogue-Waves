@@ -15,8 +15,8 @@ already proven by Argo, Riptide or RogueLab. Eight things can only be confirmed 
 all eight in one short solo launch, together with the main-menu button's probes. Seven more need a second player, so
 they join the online evening that was already planned.
 
-**Update after round 5 (2026-10-09):** all eight are now confirmed in game (§3). The main-menu button's last two
-checks were held up by the probe's own bugs and go to round 6.
+**Update after round 5 (2026-10-09):** all eight are now confirmed in game (§3). The main-menu button's checks all
+passed in round 6.
 
 Four points need Dimitri's eye (§4): the Fund Transfer cap is 0 in the opening break as written; what a bonus tide pays;
 the shop selling only ranks; and that "reduced aura gain" can't use the game's own multiplier for Tide pay.
@@ -102,6 +102,10 @@ in for VENDCINT.
 RogueLab 0.4.2 (round 6, compiled here with 0 errors, handoff `RogueLab_round6`) reruns everything with M1 judged
 against Play's own state, a new M4b line showing whether the button sits beside Play once the Main menu is up, and
 the dialog's result read once.
+
+**Round 6 results** (PC, 2026-10-09, RogueLab 0.4.2): **22 pass, 0 fail, 0 setup**; every mechanic probe passed
+again and M1-M5 and M7 all passed (`docs/MAIN_MENU_START.md` §5). Full log on the PC in
+`handoff\selftest_logs\roguelab_round6.txt`. No exception named RogueLab; the rest are the game's own (`docs/08` §6).
 
 **Online evening** (already planned, `docs/RESEARCH_GAPS.md`): a client sees VENDCINT's button and its press reaches
 the host; a client's bar gets the Fertilize button; the fall-in and Uloe's cord show on a client and for a late
