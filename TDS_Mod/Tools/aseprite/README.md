@@ -16,7 +16,7 @@ any frame in Aseprite without losing the edit on the next build.
    | `<Name>_readyup.aseprite` | 12×12 | `readyup` |
 
    v0 faces the camera, v1 is v0 mirrored, v2 is the back, v3 is v2 mirrored. Sprigg's tags start with the growth stage.
-   The palette holds every colour the vessel uses, translucent rim and ground-patch tones last.
+   The palette holds every colour the vessel uses, translucent tones (a Smacky-style rim, a ground patch) last, if it has any.
 2. Copy the file you want to change up one folder, into `ModSource/<Name>/Aseprite/`, and edit it. Keep the colour mode
    RGB, the canvas size and each tag's frame count. Extra layers are fine; hidden layers are ignored.
 3. Run Build All Assets again, then export as usual. `ModSource/<Name>/build_log.txt` lists every sheet that used

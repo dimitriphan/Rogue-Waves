@@ -38,8 +38,9 @@ the content.
 **House style: what all five base vessels share** (any of them can be the reference; the user's rule):
 - **Chibi proportions**: the head (or head-shaped body) is half the height or more; the body is small; hands are
   small (floating or stubby) and legs short (2 px) or absent. Clear silhouette at 1× zoom.
-- **No black outline.** Edges are darker or half-transparent shades of the fill (the fill colour at alpha 127 makes
-  the soft rim); details inside the body use darker tones of the same colour.
+- **No black outline.** Edges are darker shades of the fill, fully opaque; details inside the body use darker tones of
+  the same colour. Only Smacky has a soft half-alpha rim (the fill at alpha 127), so use it only when Smacky is the
+  reference (the user, 2026-10-09).
 - **Dark dot eyes** (`4A4949` / `333232`), a tiny mouth or none; expression through eye position and squash.
 - **Palette**: soft pastel or muted main colours with one or two saturated accents (Boutman's red overalls, Fie's
   orange hair, Buster's teal collar, Smacky's blue overalls), light shading on one side.

@@ -23,7 +23,8 @@ Copy the relevant list into your notes and tick it honestly.
 ## Art review (previews and in-game captures)
 
 - [ ] Sprites: matched to the chosen base vessel (named in DESIGN.md) and the shared conventions: chibi proportions,
-      no black outline, soft rim, dark dot eyes, pastel palette with one or two accents, one signature feature, live idle.
+      no black outline, opaque edges in darker tones (a soft rim only after Smacky), dark dot eyes, pastel palette with
+      one or two accents, one signature feature, live idle.
 - [ ] All sheets at the exact sizes/layouts; back variants drawn, not mirrored.
 - [ ] UI: 12×12 ready-up, 128 line-art splash, 32 end icons, 16 px mini, 32 white line tab icon; rows checked.
 - [ ] Towers: low-poly sleek like Sno Sno's/Buster's, never voxel (no exceptions); 0.8-1.45 tall, inside the tile; details on front/top; no spindly parts;
