@@ -22,7 +22,7 @@ choice dialog's menu up before opening it** (A6), and one map to never offer, Sp
 
 | # | Gap | Answer | Status |
 | --- | --- | --- | --- |
-| A1 | Per-player Directions | The core is the team's: it spawns every player's vessel and has no owner; `Heroapply` reaches every vessel and `Towerapply` every new tower. A Direction must go on the player's vessel, re-granted from host state at each spawn, and tower Directions through the mod's own spawn hook filtered by owner. **`ModKitDirections` (kit 1.6) needs that change** before Phase 5 uses it (§14.1) | answered |
+| A1 | Per-player Directions | The core is the team's: it spawns every player's vessel and has no owner; `Heroapply` reaches every vessel and `Towerapply` every new tower. A Direction must go on the player's vessel, re-granted from host state at each map's first spawn (a respawn copies the vessel's upgrades), and tower Directions through the mod's own spawn hook filtered by owner. **`ModKitDirections` (kit 1.6) needs that change** before Phase 5 uses it (§14.1) | answered |
 | A2 | Fund Transfer's route | Aura is per player. The host moves it with the public `Useresources` and `Giveresources(list, owner)`, with the gain multiplier held at 1 (Cardinals change it). The stock Money Bag Cardinal already donates aura, lossily and by a thrown bag; its code is private, so it's prior art, not a reusable piece. Which aura moves stays Dimitri's call (scope `! NEEDS !`) (§14.2) | answered |
 | A3 | Difficulty levers | The game has none to borrow: no scaling by player count or map; a map's `Difficulty` is only a label. Levers a mod has: the Tide table (counts, intervals, elites, extra entries; proven live), the game's **easier** setting's upgrade forced on the core (`Special_Treated`: an extra twice the mode's start aura, enemy drops ×4, +30 s per Tide, +200 core health; there is no harder setting), the aura gain multiplier, and modifiers of its own. The other modes' tables are logged: Tsunami starts at 500 aura with four long Tides, Drought has 20 short ones (§14.3, §15) | answered |
 | A4 | The map pool | Any map takes any mode; the coupling is data (§14.4). **All 45 base maps played clean** in the mod's mode (vessel, cores, no warnings, 14-20 s loads), the Final map and the δ maps included. **Special_Custom hangs the load: never offer it.** Each map's difficulty label (1-9) is logged for a vote (§15) | answered |
@@ -46,7 +46,7 @@ choice dialog's menu up before opening it** (A6), and one map to never offer, Sp
 
 | # | Gap | Answer | Status |
 | --- | --- | --- | --- |
-| C1 | Explode and Weakened elite values | Molten: health ×3, speed ×0.15, on drowning 10 damage to 5 targets in 2.2; Melting: -0.001 drains for 60 s. They ship in the Tsunami and Final groups (`docs/13` §10) | answered |
+| C1 | Explode and Weakened elite values | Molten: health ×4, speed ×1.15 (`Multi` params add to 1: 3 and 0.15), on drowning 10 damage to 5 targets in 2.2; Melting: -0.001 drains for 60 s. They ship in the Tsunami and Final groups (`docs/13` §10) | answered |
 | C2 | The other modes' Tide tables | Logged: Storm 15 Tides, Drought 20, Tsunami 4, Final 1, Tutorial 3 (`docs/13` §10, TIDE2 lines) | answered |
 | C3 | Enemy sprite format and elite skins | Needed only for new enemy types or skins (both `! NEEDS !` in the scope) | waits on that decision |
 | C4 | Enemy pages in the journal | Journal pages are data assets; no code lists enemies, so the pack's foe pages are its own, as vessels' are (`docs/06`) | answered |

@@ -2,8 +2,8 @@
 
 How the game defines its enemies, fills its Tides and makes "elite" enemies, and how a mod would add a new enemy type
 and a new enemy modifier. Everything here was **read from the game's code** (`Assembly-CSharp.dll`, decompiled in a
-cloud thread on 2026-10-04, see §11) unless it says **verified in a mod**. Nothing in this chapter has been built yet:
-test each recipe in game before relying on it, and answer the open questions in §10 first (they need the PC).
+cloud thread on 2026-10-04, see §11) unless it says **verified in a mod**. Riptide built the Tide-table
+route (`15` §13) and §10 Q1-Q4 and Q6 are answered; test every other recipe in game before relying on it.
 
 Read `01_GAME_MODEL.md` (§4-9: entities, AIs and brains, stats, upgrades, damage) and `12_MINION_VESSELS.md` (units
 are the closest thing a mod has built to an enemy) before this one.
@@ -16,8 +16,8 @@ Enemy ids live in the `Mob` label like towers and units. The Sandbox artifact's 
 | Being id | Bespoke AI | What its code does | Stats its code reads (besides Health, Speed, Damage, Range, Attackspeed) |
 |---|---|---|---|
 | `Enemy_Dagger` | none | plain melee: walks to the Basin, hits what is in range | - |
-| `Enemy_Spear` | none | same code as Dagger; the difference must be in its data (reach? speed?) | - |
-| `Enemy_Aegis` | `Entity_Ai_Enemy_Aegis` | heals itself (`Heal` per slow tick, debuff look `Debuff_Aegisheal`) once nothing has hit it for `Healtime` s (`Master.Lasthittime`) | `Healtime`, `Heal` |
+| `Enemy_Spear` | none | same code as Dagger; the difference is data: 'Javelin', Speed 2.5, Damage 5, Attackspeed 1.4 (Dagger 1, 3, 0.5; RogueLab round 1) | - |
+| `Enemy_Aegis` | `Entity_Ai_Enemy_Aegis` | heals itself (`Heal` once a second on the really-slow tick, debuff look `Debuff_Aegisheal`) once nothing has hit it for `Healtime` s (`Master.Lasthittime`) | `Healtime`, `Heal` |
 | `Enemy_Ballista` | `Entity_Ai_Enemy_Ballista` | ranged: fires `Enemy_Ballista_Bolt` at the nearest target it can see, steps 0.3 forward, then slows itself 50% until its next shot | `Projspeed` |
 | `Enemy_Maul` | `Entity_Ai_Enemy_Maul` | melee slam: Vis "Attack", 1.3 s wind-up, then hurts up to `Projcount` targets within `Projradius` (shake, `Maul_Explosion`) | `Projcount`, `Projradius` |
 | `Enemy_Onager` | `Entity_Ai_Enemy_Onager` | lobs `Enemy_Onager_Bomb` at the **farthest** target it can see in range | `Projduration`, `Projcount` |
@@ -82,7 +82,7 @@ Waves     {Displayedwave, Note (shown under the Tide banner), Wavetime (s), Wave
 Wavecontent {Style, Interval, Count, Team, Enemy (Beingobject), Gate, Upgrades (List<Upgradeproperties>), Resources}
 ```
 
-So the Tide table belongs to the **mode**, not the map: maps played in the same mode appear to share it (confirm,
+So the Tide table belongs to the **mode**, not the map: maps played in the same mode share it (confirmed,
 §10). Maps add their own enemy-side pieces through `Specialspots` and `Map_Generationedit` (team, skin, `Preupgrade`
 list) on placed objects.
 
@@ -129,7 +129,7 @@ each with a stock AI that reads its params and sets the enemy's skin. The names 
 | Name | Upgrade id | AI | Effect (from its code) | Params it reads | Skin |
 |---|---|---|---|---|---|
 | Hardened | `Enemy_Health_Upgradeobject` | `Entity_Ai_Enemy_Health_Upgrade` | more health | `Health_Multi` | `Health` |
-| Tempered | `Enemy_Red_Upgradeobject` | `Entity_Ai_Enemy_Red_Upgrade` | more health and damage; **aggressive**: chases whatever hurts it or the nearest Mob/Tower within `Aggrorange_Base` instead of the Basin, shown with `Debuff_Redangry` on itself and `Debuff_Redtarget` on its target; gives up after 5 blocked checks and marks that target `Redblocked` for 5 s | `Health_Multi`, `Damage_Multi`, `Aggrorange_Base` | `Red` |
+| Tempered | `Enemy_Red_Upgradeobject` | `Entity_Ai_Enemy_Red_Upgrade` | more health and damage; **aggressive**: chases whatever hurts it or the farthest unblocked Mob/Tower within `Aggrorange_Base` (the last of a nearest-first list) instead of the Basin, shown with `Debuff_Redangry` on itself and `Debuff_Redtarget` on its target; gives up on the 6th blocked check and marks that target `Redblocked` for 5 s | `Health_Multi`, `Damage_Multi`, `Aggrorange_Base` | `Red` |
 | Superheated | `Enemy_Hyper_Upgradeobject` | `Entity_Ai_Enemy_Hyper_Upgrade` | health, speed, damage and attack speed changed | `Health_Multi`, `Speed_Multi`, `Damage_Multi`, `Attackspeed_Multi` | `Hyper` |
 | Fractured | `Enemy_Chaos_Upgradeobject` | `Entity_Ai_Enemy_Chaos_Upgrade` | same four multipliers as Superheated (the values differ in data) | same | `Chaos` |
 | Annealed | `Enemy_Armor_Upgradeobject` | `Entity_Ai_Enemy_Armor_Upgrade` | adds `Healtharmor` = `Healtharmor_Base` + base Health / `Healtharmor_Perhealth`: armour that loses 1 per hit whatever the damage, so it takes that many hits before health drops (fast towers beat it) | `Healtharmor_Base`, `Healtharmor_Perhealth` | `Armor` |
@@ -159,8 +159,8 @@ modifier's name and description are its tooltip.
 
 - An entity has **one** skin. Two modifiers that both set one: the last applied wins, and removing either resets it
   to "". A skin the enemy's visual doesn't have falls back to the default look (`Entity_Master_Client`).
-- Stat changes are `Multi` modifiers, so two elites' `Health_Multi` add, they don't multiply (kit pitfall: use `Pmulti`
-  for a true ×2).
+- Stat changes are `Multi` modifiers, so two elites' `Health_Multi` add, they don't multiply (a `Multi` and a `Pmulti`
+  multiply: `(Base × Pmulti + Add) × Multi`, Helper_Entitytools.cs:661).
 - The stock `Downgrade` of Superheated, Fractured and Tempered removes `Mod1` several times and never the others.
   Elites are never removed in play so it doesn't show, but don't copy that code.
 
@@ -247,7 +247,7 @@ without a stock bespoke AI reads as a plain melee foe to them.
 5. **Who gets it**: list it in a `Wavecontent.Upgrades` (Tide table route above), in the `Upgrades` array of a
    `Spawn` command, or pick enemies at `Onspawn` and add it to their `Initupgradelistserver` (for "every fifth foe
    from Tide 8"). Skip `Enemycore`/`Core` and anything not tagged `Enemy`.
-6. **Balance** against the stock elites' param values once they are surveyed (§10, question 2): a modifier is one
+6. **Balance** against the stock elites' param values (surveyed, §10 question 2): a modifier is one
    twist on an existing enemy, not a new enemy.
 
 ## 7. Online
@@ -292,27 +292,30 @@ without a stock bespoke AI reads as a plain melee foe to them.
     remove each modifier you added.
 11. **A `*Gameserver*` prefab's code can't see the main mod's statics** → the game compiles each activated mod prefab's
     code separately (`Bla_Mods.Activatemodprefab`; keywords `Default`, `Mainmenu`, `World`, `Loading`, `Gameserver`,
-    `Gameclient`) → keep one `Default` prefab and hook `Onspawn`/`Wave` as the kit does.
+    `Gameclient`) → put code that shares statics in one `Default` prefab (a bundle may hold several, each compiled
+    alone, `15` §15) and hook `Onspawn`/`Wave` as the kit does.
 
 ## 10. Open questions for a PC session
 
-1. **Stock enemy data**: the AIs, visual scripts, stats (with `Leveladd`), drops, tags, skins and `Upgradesinit` of
-   each `Enemy_*`. Sprigg's research build already logs this (`examples/code/Sprigg_95_Research.cs`, `Enemies()`);
-   its output may still be in `C:\Users\Dimitri\TDS_Mod\ModSource\Sprigg\Research\dump`. *From the code
+1. **Stock enemy data**: the AIs, visual scripts, stats (with `Leveladd`), drops, tags, skins and `Upgradesinit` of each
+   `Enemy_*`. Sprigg's research build already logs this (`examples/code/Sprigg_95_Research.cs`, `Enemies()`); its output
+   may still be in Sprigg's `Research\dump` (now under `C:\Users\Dimitri\TDS_Mod\Prototype Mods\Sprigg`). *From the code
    (2026-10-08):* enemy AIs hold behaviour and fixed constants only; every number is a stat and every tag comes from
-   `Beingobject.Entity.Tags` (no enemy AI adds tags). There is no Dagger or Spear AI. *Answered on the PC (2026-10-08, RogueLab round 1):* the 8 stock foes' AIs,
-   visuals, stats, drops, tags and skins are in `reference/roguelab_round1.txt` (ENEMY lines); none has
-   `Upgradesinit`, every one carries the six elite skins.
+   `Beingobject.Entity.Tags` (no enemy AI adds tags). There is no Dagger or Spear AI. *Answered on the PC (2026-10-08,
+   RogueLab round 1):* the 8 stock foes' AIs, visuals, stats, drops, tags and skins are in
+   `reference/roguelab_round1.txt` (ENEMY lines); none has `Upgradesinit`, every one carries the six elite skins.
 2. **Stock elite values**: `Display_Name`, `Display_Desc` and `Defaultparams` of the six `Enemy_*_Upgradeobject`s and
    `Effect_Enemy_Weakened_Upgradeobject`. *From the code (2026-10-08):* none of it is in code. Each AI reads
    `Defaultparams["X"]` bare (a missing key throws, so a reused stock AI needs every param it reads); the only constants
    are Tempered's 5 checks and 5 s `Redblocked`, Melting's `Enemyweaken` base 100 and 2 s debuff. *Answered for five
-   (RogueLab round 1, ELITE lines):* Hardened `Health_Multi` 3; Tempered `Aggrorange_Base` 5, damage and health ×1;
-   Superheated health and damage ×2, speed ×1.25; Fractured health ×14, damage, speed and attack speed ×9; Annealed
-   `Healtharmor_Base` 4, `Healtharmor_Perhealth` 10. *The last two answered (round 2, 2026-10-09; they ship in the
-   Tsunami and Final groups):* Molten health ×3, speed ×0.15 (the same `Multi` mods as Superheated's), on drowning hurts
-   up to `Damage_Count` 5 within `Radius_Base` 2.2 for `Damage_Base` 10; Melting drains health, damage, speed and attack
-   speed at -0.001 each for `Duration_Base` 60 s.
+   (RogueLab round 1, ELITE lines):* Hardened `Health_Multi` 3; Tempered `Aggrorange_Base` 5, `Health_Multi` and
+   `Damage_Multi` 1; Superheated health and damage 2, speed 1.25; Fractured health 14, damage, speed and attack speed 9
+   (each a `Multi` modifier, which adds to a multiplier that starts at 1: Hardened health ×4, Tempered ×2, Superheated
+   ×3 and speed ×2.25, Fractured ×15 and ×10); Annealed `Healtharmor_Base` 4, `Healtharmor_Perhealth` 10. *The last two
+   answered (round 2, 2026-10-09; they ship in the Tsunami and Final groups):* Molten `Health_Multi` 3, `Speed_Multi`
+   0.15 (health ×4, speed ×1.15: the same `Multi` mods as Superheated's), on drowning hurts up to `Damage_Count` 5
+   within `Radius_Base` 2.2 for `Damage_Base` 10; Melting drains health, damage, speed and attack speed at -0.001 each
+   for `Duration_Base` 60 s.
 3. **Tide tables**: for each mode, every `Waves` (Note, Wavetime, Wave) and `Wavecontent` (enemy, count, interval,
    style, gate, upgrades); and confirm that two maps in one mode play the same table. *Mode_Normal answered*
    (RogueLab round 1, TIDE lines: 60 entries, 30 Tides, 180 s each, 30 s breaks). *The others answered (round 2,
@@ -332,7 +335,8 @@ without a stock bespoke AI reads as a plain melee foe to them.
 5. **Enemy art format**: sheet and frame size, PPU, animation names, and the elite skins' recolours (port
    `Sprigg_97_ArtDump.cs` to dump `Enemy_Dagger`'s sprite object and skins).
 6. **Journal**: whether the base journal has enemy pages a new enemy should join (`Logitems.TextImageBeing`, `Stats`
-   and `Drops` can show one).
+   and `Drops` can show one). *Answered (`docs/RESEARCH_GAPS.md` C4):* pages are data assets and no code lists enemies,
+   so the pack's foe pages are its own.
 7. **Flying**: how Halberd's flight interacts with walls and towers, if a flying enemy is ever wanted.
 
 ## 11. How this was read (cloud decompiling)

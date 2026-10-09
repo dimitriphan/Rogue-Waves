@@ -18,7 +18,7 @@ Yossele holed round clay head on root limbs, Spool hooded plush with a stitched 
 on a corded lamp post (Dimitri's concept art, `docs/concepts/YOSSELE_SPOOL_ULOE.md`)
 (`docs/STYLE.md` has the pack roster's references, colours and tower motifs).
 
-Shipped mod values to calibrate against: Mummer 45 HP / 2.75 speed / 3.5 dmg / range 2 / 0.6 atk; Argo 65 / 2.25 / 5 /
+Shipped mod values to calibrate against: Mummer 45 HP / 2.75 speed / 3.5 dmg / range 2 / 0.6 atk; Argo 65 / 2.25 / 4 /
 1.75 / 0.4. A vessel's `DESIGN.md` must match its `Code/02_Data.cs`.
 
 Respect the user's concept: keep its fantasy and names, change only what is infeasible, unreadable or unbalanced, and

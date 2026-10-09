@@ -36,7 +36,7 @@ Cloud thread:
    `python3 TDS_Mod/Tools/pc/make_handoff.py <Name> --manifest pc_manifest.txt --only Argo,Shared`
 4. Commit and push `TDS_Mod/Handoff/<Name>/`.
 5. Ask Dimitri for one typed sentence covering the whole round, for example: "Fetch and apply handoff Argo_round10,
-   build and self-test Argo, and if it passes, release and install Argo."
+   build and self-test Argo, then remove it from the Mods folder."
 6. Start the PC session with a short brief: "Follow handoff\<Name>\README.md; Dimitri's OK is in the thread."
 
 PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
@@ -54,7 +54,8 @@ PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
    too; they hold the map snapshot.
 8. Release, if the tests pass (0 FAIL; SETUP lines only under the release rule in `docs/08` section 5) and Dimitri's
    sentence covers it: `Build-<Name>Mod.ps1` with no `-Define`, the queue again, then
-   `Run-SelfTests.ps1 -Vessels <all installed vessel mods> -BootCheck`, then zip as `docs/04` says.
+   `Run-SelfTests.ps1 -Vessels <the released parts> -BootCheck`, then zip as `docs/PACK.md` §5 says (the pack's
+   zip; no part ships alone). Leave the game's Mods folder empty afterwards.
 9. Run `Get-PcManifest.ps1` if anything changed after step 3. Report, release the lock, and stop the session.
 
 Only one session works in TDS_Mod at a time: an export parks the other vessels' folders.

@@ -10,7 +10,7 @@ it was **verified in a mod** or is **read from the game's code** (then test it f
 | Vessel | Unit source | Units | Count / respawn | Orders | Upgrades reach units by |
 |---|---|---|---|---|---|
 | Smacky | Mining Hut (Yellow 35) | miner: 5 HP (+5/lvl), speed 1, dmg 0.5, mines ore | `Units` 1, `Respawn` 10 s | none (they mine near the hut); Convert button changes what ore pays | hut upgrades ("Mining Operation: hire another miner"); miners' level = hut level |
-| Buster | Garage (Red 60) | dog: 50 HP (+10/lvl), dmg 3, speed 2, damage from speed | 1, 5 s | none | garage upgrades mirrored as `Mob_Busterdog_<Key><Tier>` upgrades (Jack Up: health ×2, respawn -4.5 s) |
+| Buster | Garage (Red 60) | dog: 50 HP (+10/lvl), dmg 3, speed 2, damage from speed | 1, 5 s | none | garage upgrades mirrored as `Mob_Busterdog_<Key><Tier>` upgrades (Jack Up: `Health_Pmulti` 2, so health ×3, respawn -4.5 s) |
 | Fie | Knight's Keep (Red 60) | knight: 25 HP, dmg 1 (+0.5/lvl), speed 1, engage 1; weapons from Fie's Silo | 1, 10 s; Partner/Squad add knights | **Rally**: click a tile, knights defend that spot | keep upgrades mirrored as `Mob_Fieknight_<Key><Tier>` (Partner, Squad, Commander, Convoy...) |
 | Boutman | fish (`Mob_Boutmanfish`, Yellow 25 each) recruited through Boutman himself (his fishing and Fish/Fishfollow commands; read `Entity_Ai_Hero_Boutman` before copying the exact flow); Barrel (Blue 25) houses and heals them; Bouthouse carries Boutman's own upgrades | fish: 50 HP (+75/lvl), dmg 10 (+10), engage 3; get knocked out (Deadarmor) instead of dying and recover in a barrel | per fish | each fish guards its spot (`Engagerange`); **Relocate** (upgrade) moves a fish's spot; the vessel can make a fish **follow** him; **Rally** | each fish has its own upgrade tree (Barp, Batfish, Bwordfish, Bass...) |
 | Mummer (mod) | Puppet Stage (Red 50), paid in Thread | Understudy 24/16/70 HP by costume | 2 (+1/+2), 6 s | leashed to the stage, step out to meet foes (Marked first); COSTUME picks the next one | stage params applied by the stage brain (Puppethealth_Multi...) |
@@ -39,8 +39,9 @@ Every shipped unit building (`Entity_Ai_Tower_Smackyhut`, `_Bustergarage`, `_Fie
 5. **Upgrades reach units** two ways: the building's upgrade `Tower_X_Key2` adds the matching unit upgrade
    `Mob_Y_Key2_Upgradeobject` to `New.Preupgrades` (future units) and applies it to every live unit with
    `Helper_Entitytools.Upgrade(unit, up, ..., null)` (`Removeupgrade` undoes it); and the unit's **level** follows the
-   building's (`unit.Option_Defaultlevel = building.Entitydata.Value.Level`), so the unit's `Leveladd` stats grow with
-   the building.
+   building's: the Hut sets `unit.Option_Defaultlevel = building.Entitydata.Value.Level`; the Garage's and Keep's units
+   level through the mirrored upgrades (an upgrade sets Level to its highest Priority). Either way the unit's
+   `Leveladd` stats grow with the building.
 6. **Unit AI**: a bespoke `Entity_Ai_Mob_<Unit>` on top of `Mob_General` + `Mob_Movement` decides what the unit does
    (mine, defend a spot, follow, use a silo weapon). Some are generic enough to reuse: Sprigg's Sproutlings run the
    game's own `Entity_Ai_Mob_Smackyminer` (it never names Smacky's objects). The knight and fish AIs are tied to Fie's
@@ -118,13 +119,13 @@ around home so they don't stack on one tile.
 
 | Order | UI (client) | Server | Status |
 |---|---|---|---|
-| **Rally point** (Fie's Keep, Boutman's Relocate) | a building command whose `Commandfuncts` is a subclass of the game's `Entity_Command_Move`: press, click a ground tile. Its `Send()` takes `Game_Client_Mouseobject.Surfacemaster.Position.Value`, plays `Helper_Vfxtools.Oneshot("Movebordercommand", pos, Vector3.forward)` and sends `Command_ServerRpc(Link.Name.ToString(), "{\"Position\":{\"x\":..,\"y\":..,\"z\":..}}")` (the game's `Relocatedata` JSON; build it by hand, no JsonUtility) | the building's `Command("Rally", json)`: parse x/y/z, nearest `Surface` tile within 0.5, check range from the building, `Checkifstandable(tile, unitBeing)`, `Helper_Navtools.Getpath(building tile, tile, ...)`.Valid; then set every unit's home to the tile. Fie also moves a rally-marker being there (`Helper_Gridtools.Moveblock(tile, rallyBeing, false)` + `Position.Value = tile.Position`) shown only to its owner (`Entity_Vis_Fierally_Clientvis` compares owner and local session) | read from the game's code; not yet used by a mod |
+| **Rally point** (Fie's Keep, Boutman's Relocate) | a building command whose `Commandfuncts` is a subclass of the game's `Entity_Command_Move`: press, click a ground tile. Its `Send()` takes `Game_Client_Mouseobject.Surfacemaster.Position.Value`, plays `Helper_Vfxtools.Oneshot("Movebordercommand", pos, Vector3.forward)` and sends `Command_ServerRpc(Link.Name.ToString(), "{\"Position\":{\"x\":..,\"y\":..,\"z\":..}}")` (the game's `Relocatedata` JSON; build it by hand, no JsonUtility) | the building's `Command("Rally", json)`: parse x/y/z, nearest `Surface` tile within 0.25 with no rally point already there (no range check), `Checkifstandable(tile, rallyBeing)`, `Helper_Navtools.Getpath(building tile, tile, ...)`.Valid; then Fie moves its rally-marker being there (`Helper_Gridtools.Moveblock(tile, rallyBeing)`) and points the Keep's own "Rally" command's `Defendhome.Goalposition` at it shown only to its owner (`Entity_Vis_Fierally_Clientvis` compares owner and local session) | read from the game's code; not yet used by a mod |
 | **Send one unit to a target** | picker (`Entity_Command_Itemselect_Base`): Sell's border and prompt, sends `{"Ref":id}` | validate owner, team, range; set that unit's goal | verified (Argo crew, Mummer HOOK) |
 | **Mode** (what units do / what gets made) | one-click `Entity_Command_Simple` showing the mode from `Link.Goalstring` | cycle the mode, sync with `Updatecommand(m, link, "", false, false)` | verified (Mummer COSTUME; Smacky's Convert) |
 | **All units follow / rally to the vessel** | a vessel ability (keys 6/7) | every unit of the owner: follow the hero for N seconds | pattern (Boutman's Rally) |
 
-Show the order: a marker effect at the rally tile for the owner (Vis + `OwnedLocally`), lines from the building to its
-units while selected (the Keep draws "Knightconnection" lines in `Render`), a sound.
+Show the order: a marker effect at the rally tile for the owner (Vis + `OwnedLocally`), a line from the building to its
+rally point while selected (the Keep draws one "Knightconnection" line in `Render`), a sound.
 
 ## 6. Units as buildables (Boutman-style, advanced)
 

@@ -67,7 +67,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/13_ENEMIES_AND_MODIFIERS.md` | Enemies and elites: the shipped roster, Tide tables and enemy cores, the six enemy modifiers, how a mod adds a new enemy or modifier, open questions for the PC |
 | `docs/14_MODTOOL_AND_PACKAGING.md` | The mod container: ModTool content types and scenes, the `.info`, no load order or dependencies, the RoslynCSharp sandbox, no Workshop, how a pack of several parts should ship, PC checks that decide maps |
 | `docs/15_ROGUE_MODE_ENGINE.md` | The Rogue Wave mode's engine: modes and the three-map chain, what survives a scene change, Merchut and bounties, Cardinals (artifacts), client choices, the save, the F-key bug, mod loading; go / fallback / no per scope feature, PC list |
-| `kit/Shared/` | The shared kit every vessel compiles (kit 1.5): journal, boat, tower ranges, combat hits, self-test helpers (`kit/README.md`) |
+| `kit/Shared/` | The shared kit every vessel compiles (kit 1.6): journal, boat, tower ranges, combat hits, self-test helpers, and the pack's registry, Tides, counter, Directions and F-key fix (`kit/README.md`) |
 | `template/Mummer/` | The reference vessel (Mummer 1.0.0): runtime code, editor generator, build scripts |
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
 | `tools/New-Vessel.ps1` | Scaffolds a new vessel from the template |
@@ -92,4 +92,4 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | Mods folder | `D:\Steam\steamapps\common\TDS\Mods\<Name>Mod` |
 | Unity project | `C:\Users\Dimitri\TDS_Mod` (Unity 2022.3.41f1, URP 14, TDS Mod Tools imported) |
 | Game log | `%USERPROFILE%\AppData\LocalLow\Blockage\TDS\Player.log` (overwritten each launch; `Player-prev.log` keeps the last) |
-| Installed vessel mods | Sprigg 1.4.1, Argo 1.0.0, Mummer 1.0.0 |
+| Installed mods | none: the Mods folder is kept empty between PC rounds (2026-10-08); a round installs its dev build and removes it after. The older vessel mods' sources sit in `C:\Users\Dimitri\TDS_Mod\Prototype Mods\<Name>`, outside Unity's `Assets` |

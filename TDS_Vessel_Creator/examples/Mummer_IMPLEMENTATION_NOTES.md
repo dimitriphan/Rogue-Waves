@@ -2,7 +2,7 @@
 
 Mummer, **Strings Attached ▪ Advanced**: a hand-sewn costume vessel that sews the Tide into a cast of puppets. The
 design, the balance numbers and every change from the concept (`Concept/`, the user's "Mummer Vessel Concept.zip")
-are in `DESIGN.md`. Built on the scaffolding of Sprigg and Argo; `../Sprigg/Research/VESSEL_SURVEY.md` covers how the
+are in `DESIGN.md`. Built on the scaffolding of Sprigg and Argo; `../reference/VESSEL_SURVEY.md` covers how the
 shipped vessels work.
 
 ## Layout

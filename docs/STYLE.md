@@ -60,7 +60,7 @@ pack and doesn't redraw them. Each vessel owns its silhouette and carries it int
 | --- | --- | --- | --- | --- |
 | **Argo** | bulky dome diver, hands touching the body | as shipped in ArgoMod 1.4.0 (look unchanged) | as shipped | brass domes and portholes, as shipped |
 | **Yossele** | a round clay head with a see-through hole, a two-leaf sprout on a stalk, glowing green eyes, four long root-like limbs | Buster for the poses (big pose changes on long limbs), Smacky for the head-to-body weight | clay `864B41` to `733E35`, leaf `72CC35` / `6ABE30`, eyes `99E550`, collar `323C39` | round holes and root feet; each Growth stage is a **skin** that adds leaves or sprouts, never a motion |
-| **Spool** | a hooded purple plush whose face is a stitched opening, yellow eyes looking out, a pink tongue, white gloves, a tail with a white tip | Fie (a small humanoid read by its head and hood) | purple `7E4D90` to `633773`, stitches `B5B1B0` / `605F5B`, hollow `490F5F`, eyes `BFBA3F`, tongue `D77BBA` | stitches, pins and tins (the Cookie Tin, the Pin Cushion) |
+| **Spool** | a hooded purple plush whose face is a stitched opening, yellow eyes looking out, a pink tongue, white gloves, a severed arm on the floor with cotton stuffing spilling from the wound | Fie (a small humanoid read by its head and hood) | purple `7E4D90` to `633773`, stitches `B5B1B0` / `605F5B`, hollow `490F5F`, eyes `BFBA3F`, tongue `D77BBA` | stitches, pins and tins (the Cookie Tin, the Pin Cushion) |
 | **Uloe** | a glass light-bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow rays at the sides, a cord to a plug | Sno Sno (an object come alive; legless, it hops) | glass `DAE6FC` / `CBDBFC`, glints `F1EF72`, steel `9BADB7` to `595652`, rays `FBF236`, eyes `3F3F74` | glass, screw rings and cords: the Flood Light's lamp, the Magnifying Glass's lens, the Mirror's panes |
 
 Each must read at 1× zoom against the boat and the darkest map. The concept page (§4) checks them against the taken
@@ -80,5 +80,6 @@ each. States (Growth, Light, a held seed count) show as skins or a counter, not 
 
 ## Enemies
 
-New foes follow the base foes' sprite style (one colour family per foe, red aura drops). New modifiers ship a skin
-for every stock foe, as the base elites do (Health, Hyper, Red, Chaos, Armor, Explode), tinted with Storm Coral.
+New foes follow the base foes' sprite style (one colour family per foe, red aura drops). If new modifiers ship
+skins (undecided: the scope leaves it open, and `docs/13` §6 shows a modifier with an effect on the foe instead), they
+cover every stock foe, as the base elites do (Health, Hyper, Red, Chaos, Armor, Explode), tinted with Storm Coral.

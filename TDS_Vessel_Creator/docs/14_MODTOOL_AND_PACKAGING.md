@@ -24,7 +24,7 @@ on the PC.
 | Mods inherit the game's project settings: no new tags, layers or input axes | read | ModTool README |
 | Mods are discovered by `*.info` under `<working dir>/Mods`, loaded asynchronously; a mod whose `_platforms` lacks the running platform fails with "Platform not supported" | read | `ModManager.cs` |
 | **No dependencies, no load order, no priority** anywhere in ModTool. The only inter-mod relation is a *conflict*: two mods sharing an assembly name or a scene name refuse to load together | read | `Mod.UpdateConflicts`, `ModManager.AddMod` |
-| TDS: `Bla_Mods` holds `List<ModTool.Mod> Mods` / `Loadedmods`, a `Toggle(mod)` and an `Autoloadscenes` list of strings; `Activateprefabs(prefabCheck)` instantiates every prefab whose name contains the check (`"Default"`) | read | `reference/api_assembly_csharp.txt` (`Bla_Mods`) |
+| TDS: `Bla_Mods` holds `List<ModTool.Mod> Mods` / `Loadedmods`, a `Toggle(mod)` and an `Autoloadscenes` list of strings; `Activateprefabs(prefabCheck)` instantiates every prefab whose name contains the check (the game passes `"Mainmenu"`, `"Loading"`, `"World"`, `"Gameserver"`, `"Gameclient"`; a mod's `"Default"` prefabs activate when the mod loads) | read | `reference/api_assembly_csharp.txt` (`Bla_Mods`) |
 | TDS: the Mods menu (`Bla_Ui_Mods`, plus ModTool's example `ModMenu`/`ModItem`) shows name, type and a toggle per mod; nothing in the API dump names an order | read | API dump |
 
 ## 2. Scenes, so maps
@@ -34,18 +34,19 @@ ModTool in general treats scenes as first-class content: `Mod.scenes` is a list 
 **never automatically**: host or mod code must call `ModScene.Load()`. Lightmaps travel inside the `.scenes` bundle.
 (read: `ModScene.cs`, `Mod.cs`.)
 
-What this means for a new map in TDS, all **untested**:
+What this meant for a new map in TDS (superseded: §6 and `15` §10 answer it from the code):
 
 - A mod can probably ship a scene if the exporter is asked to (`ExportSettings.content` including `Scenes`, and the
   fork's `ModToolSettings.supportedContent` still allowing it).
 - Loading it is the hard part: TDS builds its maps with `Game_Grid.Generatemap` from a map prefab and
-  `Mapobject`/`Mapentryobject` data (`docs/13` §3), not by loading a scene per map. `Bla_Mods.Autoloadscenes` shows
-  the game has *some* notion of auto-loaded mod scenes, but what it does with them is unknown. The likely route to a
+  `Mapobject`/`Mapentryobject` data (`docs/13` §3), not by loading a scene per map. `Bla_Mods.Autoloadscenes` is
+  never read, so the game never loads a mod's scenes (§6). The likely route to a
   new map is therefore a **map prefab plus map data registered the way the game registers its own**, not a scene.
 - Whichever route, a mod scene layered on the running game's scenes would have to be unloaded and reloaded by the
   host's own flow, which no mod code reaches today.
 
-Scope row 4 (maps) stays **high risk**; §6 lists the PC checks that decide it.
+Scope row 4 (maps) stays **high risk**: maps ship as `Map` prefabs with `Mods_Mapsettings`, picked up by
+`Custom_Map_Overworld` (§6), not yet tried in game.
 
 ## 3. The code sandbox: RoslynCSharp
 
@@ -79,7 +80,7 @@ Given §1-§4, the choices for a pack of several vessels plus a mode:
 
 | Choice | For | Against |
 |---|---|---|
-| **One mod folder** (`RogueWavesMod`): one bundle, one `Default` prefab per part or one that boots all parts | One toggle, one version, no cross-part order problem, parts share one compiled domain (shared static state, one copy of the kit) | All or nothing for the player; one bundle to rebuild for any change; the park/export dance (`docs/04` §7) becomes moot but the bundle grows |
+| **One mod folder** (`RogueWavesMod`): one bundle, one `Default` prefab per part or one that boots all parts | One toggle, one version, no cross-part order problem (parts still don't share types or statics: each prefab's code compiles into its own assembly, `15` §10) | All or nothing for the player; one bundle to rebuild for any change; the park/export dance (`docs/04` §7) becomes moot but the bundle grows |
 | **Several mod folders** (one per vessel + one for the mode) | Players enable parts independently; each part keeps its own release cycle, as today | ModTool can't express "needs the mode part"; order is undefined; each part compiles its own copy of shared code (today's `<Name>Kit` rename), so parts can't share types or static state and must find each other through the game's own objects at run time; same-named assemblies or scenes would block loading |
 
 Rules that hold either way:
@@ -94,8 +95,8 @@ Rules that hold either way:
 5. Player install stays the zip into `TDS\Mods` plus enable in the Mods menu; one README for the pack.
 
 Rogue Waves' choice (2026-10-08, `docs/PACK.md` in that repository): one bundle with one `Default` prefab per part,
-since each prefab is its own assembly anyway (`15` §10). The plan's Phase 2 picked between the two columns once §6 was answered; the deciding question is whether the mode
-needs to reach into vessels (shared domain wins) or only observe them (separate folders stay possible).
+since each prefab is its own assembly anyway (`15` §10). Parts find each other through the game's own objects (the pack
+registry, `kit/README.md`).
 
 ## 6. Open questions for a PC session
 
