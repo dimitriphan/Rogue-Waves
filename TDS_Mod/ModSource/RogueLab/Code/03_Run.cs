@@ -38,6 +38,13 @@ public static class RogueLabRun
             if (seen < 0f) seen = now;
             if (now - seen > 8f && step < 0f)
             {
+                if (RogueLabData.Round == 4)
+                {
+                    // Round 4: the Rogue Wave button (07_Round4Menu.cs) embarks; the retry below covers a menu that never came up.
+                    RogueLabMod.Instance.StartCoroutine(RogueLabMenu.Run(menu));
+                    step = now + 30f;
+                    return;
+                }
                 RogueLabLog.Test("main menu: embarking");
                 menu.SendMessage("Play", SendMessageOptions.DontRequireReceiver);
                 step = now;
@@ -55,7 +62,11 @@ public static class RogueLabRun
         Macro_Main macro = Macro_Main.Instance;
         if (Phase <= 1 && macro != null && macro.IsSpawned && Tds_Multiplayer_Remote.Instance != null && Blm_Server.Instance != null && Blm_Server.Instance.Localplayer != null)
         {
-            if (Phase == 0) { Phase = 1; seen = now; step = -1f; RogueLabLog.Test("in " + scene + ": waiting for the world map"); }
+            if (Phase == 0)
+            {
+                Phase = 1; seen = now; step = -1f; RogueLabLog.Test("in " + scene + ": waiting for the world map");
+                if (RogueLabData.Round == 4) { try { RogueLabMenu.Boat(); } catch (Exception e) { RogueLabProbe.Check("M4/M7 on the boat", false, e.ToString()); } }
+            }
             if (now - seen < 8f)
                 return;
             if (step < 0f)
@@ -73,6 +84,7 @@ public static class RogueLabRun
             if (now - step > 3f && now - step < 4f)
             {
                 Lobby();
+                if (RogueLabData.Round == 4) { try { RogueLabMenu.Setup(); } catch (Exception e) { RogueLabProbe.Check("M5 boat takes the mod mode with no Cardinal", false, e.ToString()); } }
                 macro.Playgame(true);
                 step = now - 5f;
                 RogueLabLog.Test("ready: starting the match");
@@ -96,7 +108,11 @@ public static class RogueLabRun
         if (hero != RogueLabData.Hero)
             RogueLabProbe.Setup("Boutman picked", "the vessel is " + hero + " (Boutman locked or missing): the F-key test spawns Boutbro anyway");
         // The colour-slot route, which checks the name against the database (the Mixed route takes any string).
-        Tds_Multiplayer_Remote.Instance.Changeartifact_ServerRpc(RogueLabData.Cardinal, false, default(ServerRpcParams));
+        // Round 4 starts with no Cardinal: the main menu button is the start rule (docs/MAIN_MENU_START.md).
+        if (RogueLabData.Round < 4)
+            Tds_Multiplayer_Remote.Instance.Changeartifact_ServerRpc(RogueLabData.Cardinal, false, default(ServerRpcParams));
+        else
+            Tds_Multiplayerinfo.Instance.Artifacts.Remove(new FixedString64Bytes(RogueLabData.Cardinal));   // round 3 left it equipped in the save
 
         string plan = Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString();
         string twin = RogueLabBoot.Twin(plan);

@@ -408,6 +408,26 @@ hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must o
 - **Journal:** pages are `Logobject` assets (Logobject.cs:8-55); no code lists enemies, so the pack's foe pages are its
   own (`06`).
 
+### 14.8 The main menu and the boat lobby (2026-10-09, read)
+
+- **The boat is the lobby.** Main menu Play loads `Setup` (Mainmenu_Main.cs:49-80; a save without
+  `Tutorial_New_Game` gets the tutorial prompt first, :51). On the boat, `Macro_Init` starts the host when not already
+  connected: `Starthost(4)`, then `Macro_Main.Startup` (Macro_Init.cs:17-22,39-46). `Starthost` creates the Steam lobby,
+  public and joinable (Blm_Multiplayer.cs:370-417, 218-236). The boat's Invite button opens Steam's overlay
+  (Macro_Main.cs:558; Blm_Multiplayer.cs:468). The game also hosts from the main menu once: the tutorial, straight into
+  `Gameloading` (Mainmenu_Main.cs:133-163).
+- **Joining:** a Steam join request is taken when `Client_Canjoin` is 1, or 0 and the joiner's scene is in
+  `Joinablescenes` (data); the joiner loads `Clientjoinscene` and starts the client (Blm_Multiplayer.cs:149-196,321-353).
+  A late joiner whose host has a node picked opens the Setup panel on it (Macro_Main.cs:445-453).
+- **Start:** each player's ready sets `Activeplayer`; when all are ready the server closes the lobby and loads
+  `Gameloading` from `Setup` with whatever four strings are set (Tds_Multiplayer_Remote.cs:509-598). Picking a node
+  writes them from the node's Gameplan and unreadies everyone (:600-660); a mod rewrites them after (§3, Riptide).
+- **Prefab keywords:** `Mainmenu` activates at each main menu (Mainmenu_Main.cs:362); `World` only on the host's boat
+  (Macro_Main.cs:395, inside the host branch), so client-side boat UI runs from the `Default` prefab's `Update`.
+- A client without the match's mode or Gameplan entry stops loading on a null entry, and the host waits for every
+  client's `Loaded` (Game_Client_Init.cs:101-104; Game_Init.cs:123-134). The start-from-main-menu route built on these
+  facts: `docs/MAIN_MENU_START.md` in the Rogue Waves repository.
+
 ## 15. RogueLab round 2 (2026-10-09)
 
 RogueLab 0.2.0 on the PC, solo host, Boutman on 3B_Thehunt and 0B_Hydragen, then a tour of the base maps: **15 pass, 1
@@ -431,3 +451,49 @@ fail, 0 setup**. The tour hung loading Special_Custom and the 75-minute timeout 
 | Exceptions | per map change an `OperationCanceledException` in `Blu2_Menu_Handler.Animin` (the game's own), the two `Runprompt` errors, and Special_Custom's load errors |
 
 0.2.0 ran its boot dumps twice (a doubled call); the reference file keeps one copy.
+
+## 16. Third reading: the 2026-10-09 scope's mechanics (read)
+
+The mechanics Dimitri's 2026-10-09 scope adds (shopkeeper VENDCINT, Fund Transfer limits, Fertilize, aura fruit,
+Aging, Dazzling, Vampire Dentures), checked one by one in the Rogue Waves repository's `docs/MECHANICS_CHECK.md`.
+The engine facts it found that weren't in the kit, **read** unless marked; RogueLab round 4 (0.4.0, 2026-10-09)
+proved the ones marked so:
+
+- **The vessel's fall is client code.** `Entity_Vis_Hero.Spawn` calls `Landing()` unless the entity has the
+  `Prespawn` tag: it sets the sprite shader's `_Offset` to (-10, 200, -10, 0), tweens it to 0 over 3 s and plays
+  `Falling`, then `Land` (Entity_Vis_Hero.cs:33-82, 171-178). **Proven** that a non-vessel unit's sprite materials carry `_Offset` and
+  follow the tween (Boutbro: 2 of 2); Boutbro has only `Idle` and `Move` animations, so a unit without `Falling` and
+  `Land` just drops. Another unit falls the same way if the mod's client code
+  copies it; listing `Entity_Vis_Hero` on a non-vessel also brings the player arrow and the "VESSEL DROWNED" alert
+  (Entity_Master_Client.cs:115, 166-169). The game has no leave-upwards code.
+- **`Spawn(..., Sameasparent: true)` overwrites the spawn's Owner, Team and Subowners with the parent's**
+  (Helper_Entitytools.cs:77-93): spawn a neutral unit with `false`, a player's minion with the player's building or
+  vessel as the parent. A shop every player can use: Owner -1, every `Blm_Server.Sessionids` key as a subowner
+  (Merchut uses 0..9, Entity_Ai_Tower_Merchut.cs:59-61). **Proven** both ways: a parented minion took the local
+  player as owner; a neutral unit kept owner -1 with the player as subowner.
+- **Buttons show only on the selected entity** and only to its owner or a subowner on its team (Game_Ui.cs:298); the
+  bar rebuilds when the selected entity's `Commandlist` changes (Game_Ui.cs:1334-1342, 1387), and `Createcommand` /
+  `Removecommand` change it on the host at any time (Helper_Entitytools.cs:264-293, 409). A `Button`-style command's
+  UI object is named its link plus its `Priority`; other styles use the link alone.
+- **`Lasthit` is set only when the hit's data has no `Damage`** (Helper_Entitytools.cs:166-171): a vessel's or unit's
+  own attack sets it (**proven**: a kill by `Interacthurt` with no data left the vessel as `Lasthit`), a hit with its
+  own data (projectiles, Projectile_Master.cs:394, and any mod `Hurt` that passes
+  `Damage`) doesn't. Count kills by place through `Ondespawn`, not by killer.
+- **A heal's amount is its data's `Damage`** (times `Damagemulti`), not a `Heal` key: `Interactheal` with no
+  `Damage` throws `KeyNotFoundException` in `Helper_Damagetools.Doheal` (**proven**, round 4).
+- **`Damagedone`** on the attacker rises after each hit (Entity_Master.cs:208, Helper_Damagetools.cs:21-70): the only
+  measure of damage actually dealt (lifesteal). **Proven** (round 5: 0 -> 4 on a hit of 4).
+- **`Game_Mapvars.Wave` is 0 in the opening break** (**proven**) and rises as each Tide starts (Mode_Normal.cs:318, 371-376).
+- **`Resourcegainmultiplier` doesn't touch Tide pay**: `Mode_Normal` sets it to 1 around its own payouts
+  (Mode_Normal.cs:359-362), so a lower-pay setting changes start aura or drops instead.
+- **Health** is the `Health` stat: `Value` now, `Value_Calc` the max; whether a max change keeps the fraction depends
+  on the stat's type in data (`Variable` keeps it, `Fixed` refills, `Variabletrue` keeps the amount; Link_Stats.cs:46-103). **Proven** for Boutbro (`Variable`): a +100% max took
+  5/10 to 10/20, and `Speed`/`Damage` modifiers added mid-match apply at once (round 5).
+- **`Radio.Vfxdebuffcheck(name)` puts a stock debuff's look on any unit** (**proven**, round 5: 2 children under a
+  foe's look), the route for showing modifiers as effects.
+- **A `Button`-style command added mid-match shows on the selected unit's bar and goes when removed** (**proven**, round
+  5, on the vessel and on a neutral unit for its subowner).
+- **UniTask: read a task's `Status` once.** After `GetResult()`, reading `Status` throws "Token version is not matched,
+  can not await twice" (round 5); keep the status in a local.
+- **The game's own aura pickup** pays the owner of the first same-team `Mob` within 1 unit
+  (Entity_Ai_Artifact_Checklist_Special_Pickup.cs:20-51): vessels and kit minions qualify.
