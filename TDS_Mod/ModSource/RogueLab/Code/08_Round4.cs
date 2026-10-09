@@ -211,7 +211,7 @@ public static class RogueLabRound4
             float dd1 = hero.Damagedone, h1 = Health(a);
             Helper_Entitytools.Interacthurt(b, hero, new Dictionary<string, float> { { "Damage", 5f }, { "Damagemulti", 1f } });
             float hh0 = Health(hero);
-            Helper_Entitytools.Interactheal(hero, hero, new Dictionary<string, float> { { "Heal", 3f } });
+            Helper_Entitytools.Interactheal(hero, hero, new Dictionary<string, float> { { "Damage", 3f }, { "Damagemulti", 1f } });   // a heal's amount is "Damage" (Helper_Damagetools.Doheal)
             float hh1 = Health(hero);
             RogueLabProbe.Check("D1 the vessel's Damagedone counts its hit", dd1 - dd0 > 0f, "Damagedone " + RogueLabUtil.F(dd0) + " -> " + RogueLabUtil.F(dd1) + ", foe health "
                 + RogueLabUtil.F(h0) + " -> " + RogueLabUtil.F(h1) + ", vessel Damage stat " + RogueLabUtil.F(Stat(hero, "Damage")));
@@ -299,8 +299,9 @@ public static class RogueLabRound4
     {
         Blockage.Menu.Blu2_Menu_Handler main;
         if (!Blockage.Menu.Bl_Menus.Menus.TryGetValue("Main", out main) || main == null) return false;
+        // A Button-style command's object is named link + the command's priority (Game_Ui.Updatecommands); the others link.
         foreach (Transform t in main.GetComponentsInChildren<Transform>(true))
-            if (t.name == link) return true;
+            if (t.name.StartsWith(link) && t.gameObject.activeInHierarchy) return true;
         return false;
     }
 

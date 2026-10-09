@@ -111,6 +111,8 @@ public static class RogueLabRun
         // Round 4 starts with no Cardinal: the main menu button is the start rule (docs/MAIN_MENU_START.md).
         if (RogueLabData.Round < 4)
             Tds_Multiplayer_Remote.Instance.Changeartifact_ServerRpc(RogueLabData.Cardinal, false, default(ServerRpcParams));
+        else
+            Tds_Multiplayerinfo.Instance.Artifacts.Remove(new FixedString64Bytes(RogueLabData.Cardinal));   // round 3 left it equipped in the save
 
         string plan = Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString();
         string twin = RogueLabBoot.Twin(plan);

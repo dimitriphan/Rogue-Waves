@@ -456,26 +456,34 @@ fail, 0 setup**. The tour hung loading Special_Custom and the 75-minute timeout 
 
 The mechanics Dimitri's 2026-10-09 scope adds (shopkeeper VENDCINT, Fund Transfer limits, Fertilize, aura fruit,
 Aging, Dazzling, Vampire Dentures), checked one by one in the Rogue Waves repository's `docs/MECHANICS_CHECK.md`.
-The engine facts it found that weren't in the kit, all **read** until RogueLab round 4 (0.4.0) reports:
+The engine facts it found that weren't in the kit, **read** unless marked; RogueLab round 4 (0.4.0, 2026-10-09)
+proved the ones marked so:
 
 - **The vessel's fall is client code.** `Entity_Vis_Hero.Spawn` calls `Landing()` unless the entity has the
   `Prespawn` tag: it sets the sprite shader's `_Offset` to (-10, 200, -10, 0), tweens it to 0 over 3 s and plays
-  `Falling`, then `Land` (Entity_Vis_Hero.cs:33-82, 171-178). Another unit falls the same way if the mod's client code
+  `Falling`, then `Land` (Entity_Vis_Hero.cs:33-82, 171-178). **Proven** that a non-vessel unit's sprite materials carry `_Offset` and
+  follow the tween (Boutbro: 2 of 2); Boutbro has only `Idle` and `Move` animations, so a unit without `Falling` and
+  `Land` just drops. Another unit falls the same way if the mod's client code
   copies it; listing `Entity_Vis_Hero` on a non-vessel also brings the player arrow and the "VESSEL DROWNED" alert
   (Entity_Master_Client.cs:115, 166-169). The game has no leave-upwards code.
 - **`Spawn(..., Sameasparent: true)` overwrites the spawn's Owner, Team and Subowners with the parent's**
   (Helper_Entitytools.cs:77-93): spawn a neutral unit with `false`, a player's minion with the player's building or
   vessel as the parent. A shop every player can use: Owner -1, every `Blm_Server.Sessionids` key as a subowner
-  (Merchut uses 0..9, Entity_Ai_Tower_Merchut.cs:59-61).
+  (Merchut uses 0..9, Entity_Ai_Tower_Merchut.cs:59-61). **Proven** both ways: a parented minion took the local
+  player as owner; a neutral unit kept owner -1 with the player as subowner.
 - **Buttons show only on the selected entity** and only to its owner or a subowner on its team (Game_Ui.cs:298); the
   bar rebuilds when the selected entity's `Commandlist` changes (Game_Ui.cs:1334-1342, 1387), and `Createcommand` /
-  `Removecommand` change it on the host at any time (Helper_Entitytools.cs:264-293, 409).
+  `Removecommand` change it on the host at any time (Helper_Entitytools.cs:264-293, 409). A `Button`-style command's
+  UI object is named its link plus its `Priority`; other styles use the link alone.
 - **`Lasthit` is set only when the hit's data has no `Damage`** (Helper_Entitytools.cs:166-171): a vessel's or unit's
-  own attack sets it, a hit with its own data (projectiles, Projectile_Master.cs:394, and any mod `Hurt` that passes
+  own attack sets it (**proven**: a kill by `Interacthurt` with no data left the vessel as `Lasthit`), a hit with its
+  own data (projectiles, Projectile_Master.cs:394, and any mod `Hurt` that passes
   `Damage`) doesn't. Count kills by place through `Ondespawn`, not by killer.
+- **A heal's amount is its data's `Damage`** (times `Damagemulti`), not a `Heal` key: `Interactheal` with no
+  `Damage` throws `KeyNotFoundException` in `Helper_Damagetools.Doheal` (**proven**, round 4).
 - **`Damagedone`** on the attacker rises after each hit (Entity_Master.cs:208, Helper_Damagetools.cs:21-70): the only
   measure of damage actually dealt (lifesteal).
-- **`Game_Mapvars.Wave` is 0 in the opening break** and rises as each Tide starts (Mode_Normal.cs:318, 371-376).
+- **`Game_Mapvars.Wave` is 0 in the opening break** (**proven**) and rises as each Tide starts (Mode_Normal.cs:318, 371-376).
 - **`Resourcegainmultiplier` doesn't touch Tide pay**: `Mode_Normal` sets it to 1 around its own payouts
   (Mode_Normal.cs:359-362), so a lower-pay setting changes start aura or drops instead.
 - **Health** is the `Health` stat: `Value` now, `Value_Calc` the max; whether a max change keeps the fraction depends

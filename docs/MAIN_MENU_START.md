@@ -87,6 +87,13 @@ Solo, automated, one launch (RogueLab's driver already embarks and starts a matc
 | M6 | Back to the main menu, then the stock Play | flag cleared, the boat keeps the stock mode on a picked node |
 | M7 | Dump `Blm_Multiplayer.Instance`: `Joinablescenes`, `Client_Canjoin`, `Clientjoinscene`, `Serverclosescene`, `Maxplayers`, lobby id after the boat opens | logged (data, not in code) |
 
+**Round 4 (PC, 2026-10-09):** M7 logged `Joinablescenes` [Setup, Mainmenu, Mainmenudemo, Setupdemo],
+`Client_Canjoin` 0, `Clientjoinscene` Joining, `Serverclosescene` Mainmenu, `Maxplayers` 4. M1-M4 never ran: the probe
+waited for the Main menu's `Active` flag, which stayed false for 20 s on the title screen, so it embarked with the
+stock Play. M5: the boat took `Mode_RogueLab` with the Setup panel open, but `Artifact_RogueLab` was still equipped from
+rounds 1-3's save, and the type line read the map's own (RogueLab doesn't rewrite it; Riptide's does). Round 5
+(RogueLab 0.4.1) waits for the menu's items instead and unequips the leftover first.
+
 By hand, by Dimitri: look at the button on the main menu (placement, hover tip, gamepad focus). **Online evening**
 (already planned, `docs/RESEARCH_GAPS.md`): a friend with the pack joins by invite after step 4, sees the panel and the
 ROGUE WAVE line, readies, and both load map 1. No PC session is started for this until Dimitri asks.

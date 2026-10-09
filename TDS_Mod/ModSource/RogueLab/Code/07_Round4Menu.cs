@@ -16,21 +16,27 @@ public static class RogueLabMenu
     {
         if (running) { Embark(menu); yield break; }   // the driver's retry: the menu is still up, use the stock Play
         running = true;
-        Blockage.Menu.Blu2_Menu_Handler main;
+        // Round 4 waited for Main's Active flag, which never rose in 20 s on the title screen: now it leaves the title
+        // the way the Start menu's Play does (Transitiontomain), waits for the menu's items, and goes on either way.
+        Blockage.Menu.Blu2_Menu_Handler main = null;
+        GameObject probePlay = null;
+        menu.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
         float t = 0f;
-        while ((!Blockage.Menu.Bl_Menus.Menus.TryGetValue("Main", out main) || main == null || !main.Active) && t < 20f)
+        while (t < 20f && (main == null || !main.Items.TryGetValue("Play", out probePlay) || probePlay == null))
         {
-            if (t == 0f) menu.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
+            Blockage.Menu.Bl_Menus.Menus.TryGetValue("Main", out main);
             t += Time.unscaledDeltaTime;
             yield return null;
         }
-        if (main == null || !main.Active)
+        yield return new WaitForSecondsRealtime(6f);       // Transitiontomain's camera move and its 5 s title delay
+        if (main == null)
         {
-            RogueLabProbe.Setup("M1 main menu button", "the Main menu never came up (" + RogueLabUtil.F(t) + " s); embarking with the stock Play");
+            RogueLabProbe.Setup("M1 main menu button", "no Main menu after " + RogueLabUtil.F(t) + " s; embarking with the stock Play");
             Embark(menu);
             yield break;
         }
-        yield return new WaitForSecondsRealtime(1f);
+        RogueLabProbe.Info("M1 main menu state", "Main active " + main.Active + ", layer " + main.Layer + ", active layer " + (Blockage.Menu.Bl_Menus.Ui != null ? Blockage.Menu.Bl_Menus.Ui.Activelayer.ToString() : "-")
+            + ", Play item " + (probePlay != null) + " after " + RogueLabUtil.F(t) + " s");
 
         // M1: the clone.
         GameObject play;

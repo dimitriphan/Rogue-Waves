@@ -1,6 +1,6 @@
 public static class RogueLabData
 {
-    public const string Version = "0.4.0";            // 0.2: round 2, 0.3: round 3 (docs/RESEARCH_GAPS.md), 0.4: round 4 (docs/MECHANICS_CHECK.md)
+    public const string Version = "0.4.1";            // 0.2: round 2, 0.3: round 3 (docs/RESEARCH_GAPS.md), 0.4: round 4, 0.4.1: round 5 (docs/MECHANICS_CHECK.md)
     public const int Round = 4;                          // 4: start from the cloned main menu button, no Cardinal, map 1's mechanic probes only
     public const string Mode = "Mode_RogueLab";          // the mod mode's entry, group and Modeobject name
     public const string StockMode = "Mode_Normal";

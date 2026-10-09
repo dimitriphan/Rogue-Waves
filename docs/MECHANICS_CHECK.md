@@ -69,6 +69,22 @@ in for VENDCINT.
 | E1 | Tide 1 | `Vfxdebuffcheck("Debuff_Boutman_Red")` on a foe | a child appears under the foe's look |
 | K1 | Tide 1 | The vessel hits a foe until it dies | `Ondespawn` gets it killed, with its place and the vessel as its last hitter; logs other deaths' killers |
 
+**Round 4 results** (PC, 2026-10-09, 11 pass, 5 fail, 1 setup; the full log is on the PC in
+`handoff\selftest_logs\roguelab_round4.txt`). Every failure was the probe's, not the game's:
+
+| # | Result |
+| --- | --- |
+| V1 | **proven**: owner -1, subowner [1], kept out of the player list, 3.7 from the core; 2 of 2 sprite materials have `_Offset` and moved (y 99.9 halfway); removed cleanly. Boutbro has only `Idle` and `Move`; the vessel has `Falling`, `Land`, `Landquick`, `Ko` and more. Button: probe bug (below) |
+| F1 | **proven**: each colour moved by exactly 40; `Wave` is 0 in the opening break |
+| O1 | **proven**: owner 1 (the local player), tags `Mob, Hero, Boutfamily, Boutbro` |
+| K1 | **proven**: `Ondespawn` gave the death and its place; `Lasthit` was the vessel |
+| V2, V1 button | probe bug: a `Button`-style command's object is named the link plus its priority, so the exact-name search missed it. Round 5 matches the prefix |
+| D1, A1, E1 | never ran: the heal probe threw `KeyNotFoundException 'Damage'` (a heal's amount is its data's `Damage`, `Helper_Damagetools.Doheal`), ending the Tide probes. Round 5 passes `Damage` and `Damagemulti` |
+| M1-M5, M7 | see `docs/MAIN_MENU_START.md` §5: M7 passed; the clone never ran because the probe waited for the Main menu's `Active` flag, which stayed false for 20 s on the title screen. Round 5 waits for the menu's items instead. M5's leftover `Artifact_RogueLab` came from the save of rounds 1-3; round 5 unequips it first |
+
+RogueLab 0.4.1 (round 5, compiled here with 0 errors, handoff `RogueLab_round5`) reruns the same probes with those
+four fixes.
+
 **Online evening** (already planned, `docs/RESEARCH_GAPS.md`): a client sees VENDCINT's button and its press reaches
 the host; a client's bar gets the Fertilize button; the fall-in and Uloe's cord show on a client and for a late
 joiner; Aging's health shows right on a client's panel; the modifier look shows on a client; a Fund Transfer between

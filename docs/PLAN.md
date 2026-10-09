@@ -204,7 +204,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Fund Transfer limits, vote rules, vessel abilities, Crafted types, Aging and Dazzling, an optional-objective
   template). Every new mechanic checked (`docs/MECHANICS_CHECK.md`, kit `docs/15` §16): all go; eight need the game.
   RogueLab 0.4.0 (round 4, compiled here) runs them with M1-M5 and M7 in one solo launch; handoff `RogueLab_round4`.
-  **Next:** round 4 on the PC once Dimitri sends the OK sentence.
+  Round 4 ran: 11 pass, 5 fail, 1 setup; VENDCINT's ownership and fall-in, Fund Transfer's moves, a minion's owner
+  and kill tracking are proven; the failures were probe bugs. **Next:** round 5 (RogueLab 0.4.1, handoff
+  `RogueLab_round5`) on the PC once Dimitri sends the OK sentence.
 
 ### Decisions
 
