@@ -408,6 +408,26 @@ hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must o
 - **Journal:** pages are `Logobject` assets (Logobject.cs:8-55); no code lists enemies, so the pack's foe pages are its
   own (`06`).
 
+### 14.8 The main menu and the boat lobby (2026-10-09, read)
+
+- **The boat is the lobby.** Main menu Play loads `Setup` (Mainmenu_Main.cs:49-80; a save without
+  `Tutorial_New_Game` gets the tutorial prompt first, :51). On the boat, `Macro_Init` starts the host when not already
+  connected: `Starthost(4)`, then `Macro_Main.Startup` (Macro_Init.cs:17-22,39-46). `Starthost` creates the Steam lobby,
+  public and joinable (Blm_Multiplayer.cs:370-417, 218-236). The boat's Invite button opens Steam's overlay
+  (Macro_Main.cs:558; Blm_Multiplayer.cs:468). The game also hosts from the main menu once: the tutorial, straight into
+  `Gameloading` (Mainmenu_Main.cs:133-163).
+- **Joining:** a Steam join request is taken when `Client_Canjoin` is 1, or 0 and the joiner's scene is in
+  `Joinablescenes` (data); the joiner loads `Clientjoinscene` and starts the client (Blm_Multiplayer.cs:149-196,321-353).
+  A late joiner whose host has a node picked opens the Setup panel on it (Macro_Main.cs:445-453).
+- **Start:** each player's ready sets `Activeplayer`; when all are ready the server closes the lobby and loads
+  `Gameloading` from `Setup` with whatever four strings are set (Tds_Multiplayer_Remote.cs:509-598). Picking a node
+  writes them from the node's Gameplan and unreadies everyone (:600-660); a mod rewrites them after (§3, Riptide).
+- **Prefab keywords:** `Mainmenu` activates at each main menu (Mainmenu_Main.cs:362); `World` only on the host's boat
+  (Macro_Main.cs:395, inside the host branch), so client-side boat UI runs from the `Default` prefab's `Update`.
+- A client without the match's mode or Gameplan entry stops loading on a null entry, and the host waits for every
+  client's `Loaded` (Game_Client_Init.cs:101-104; Game_Init.cs:123-134). The start-from-main-menu route built on these
+  facts: `docs/MAIN_MENU_START.md` in the Rogue Waves repository.
+
 ## 15. RogueLab round 2 (2026-10-09)
 
 RogueLab 0.2.0 on the PC, solo host, Boutman on 3B_Thehunt and 0B_Hydragen, then a tour of the base maps: **15 pass, 1

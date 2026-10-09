@@ -198,6 +198,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Next:** RogueLab round 3 on the PC (15 untoured maps, the choice dialog with its menu up), then the F-key check by
   hand and one online evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** round 3 waits on Dimitri's OK for the PC session.
+- **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); open
+  question 1 asks Dimitri to adopt it; its probes M1-M7 join the next RogueLab round.
 
 ### Decisions
 
@@ -258,7 +260,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open | |
+| 1 | Start a campaign from a main-menu "Rogue Wave" button (New / Continue) instead of the mode's lobby Cardinal? (`docs/MAIN_MENU_START.md`) | Adopt; Riptide's Setup-screen switch stays the fallback |
 
 ### Phase 5 pieces
 
