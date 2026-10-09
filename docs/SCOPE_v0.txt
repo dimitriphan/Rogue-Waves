@@ -34,21 +34,23 @@
 
 
 | Rogue Wave Mode |
-	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and complete 3 maps in a row with increasing difficulty and new modifiers / enemies that change with each run. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a run unlocks a harder difficulty modifier for future runs. Score does not count in this mode.
+	The Rogue Wave is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 15 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency found in game from doing objectives given to the player. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
 	/ Ascension levels are named Swell 1, Swell 2, and so on, and are meant to carry over between sessions \
+	/ Swell is on hold until the core gameplay loop is settled (2026-10-09) \
 	! NEEDS HOW MANY ASCENSION LEVELS THERE ARE AND WHAT EACH ONE ADDS !
-	! NEEDS WHAT MAKES MAP 2 AND MAP 3 HARDER THAN MAP 1 !
-	! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM RUN TO RUN !
+	! NEEDS WHAT MAKES EACH MAP HARDER THAN THE ONE BEFORE !
+	! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
+	! NEEDS WHAT LOSING A MAP DOES: END THE CAMPAIGN, OR RETRY THAT MAP FROM THE LAST SAVE !
 
 | Gameplay Rundown |
-	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. After all players are ready, the host begins the Rogue Wave by equipping the mode's Cardinal in the lobby, and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to a shopkeeper inbetween waves for [Cardinals] or [Directions]. After successfully reaching Tide 15, the map gives the players the option to leave. However, staying bonus tides allows the player to accumulate more [Pure Aura]. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues 2 more times of choosing a direction, playing the map, and escaping for a total of 3 maps with increasing difficulty. If the players are able to stay until the final tide on the final map, they succeed in their run and a new ascension level is unlocked.
+	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Wave begins as they are locked into their choice. After all players are ready, the host begins the Rogue Wave by equipping the mode's Cardinal in the lobby, and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players are then given a choice of 3 maps from the base game which are then voted on. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to a shopkeeper inbetween waves for [Cardinals] or [Directions]. After successfully reaching Tide 15, the map gives the players the option to leave. However, staying bonus tides allows the player to accumulate more [Pure Aura]. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 15 maps with increasing difficulty. Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again from the lobby each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. If the players are able to stay until the final tide on the final map, they complete the campaign and a new ascension level is unlocked.
 	! NEEDS NAME FOR THE CARDINAL THAT STARTS A RUN !
-	! NEEDS WHICH BASE GAME MAPS CAN BE OFFERED IN THE VOTE FOR MAP 1, 2 AND 3 !
+	! NEEDS WHICH BASE GAME MAPS CAN BE OFFERED IN THE VOTE FOR EACH OF THE 15 MAPS !
 	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS !
 	! NEEDS SHOPKEEPER: WHO OR WHAT IT IS, WHERE IT STANDS, WHAT IT SELLS AND FOR HOW MUCH !
 	! NEEDS HOW THE LEAVE CHOICE IS MADE AFTER TIDE 15 (ONE VOTE, MAJORITY, HOST ONLY) !
-	! NEEDS HOW MANY BONUS TIDES THERE ARE AND WHICH TIDE IS THE FINAL TIDE OF MAP 3 !
-	! NEEDS WHAT A FAILED RUN KEEPS, IF ANYTHING !
+	! NEEDS HOW MANY BONUS TIDES THERE ARE AND WHICH TIDE IS THE FINAL TIDE OF MAP 15 !
+	! NEEDS WHAT A FAILED CAMPAIGN KEEPS, IF ANYTHING !
 
 
 | New Mechanics |
@@ -231,6 +233,7 @@
 	# A new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals.
 	# Found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
 	# Bought from the shopkeeper with [Pure Aura]
+	/ Most stock Cardinals can be made to act for one player only; see docs/SCOPE_VS_LOOP.md §F (research, 2026-10-09) \
 	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
 
