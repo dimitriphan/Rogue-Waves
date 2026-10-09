@@ -3,8 +3,7 @@
 Dimitri asked (2026-10-09 16:29Z) whether, instead of equipping a Cardinal to enter the mode, the host could press a
 button on the main menu, pick the mode, invite friends and start from there. This page answers it from the game's code
 and the proven mods (Riptide, RogueLab), and proposes the route. It **replaces the Phase 1 gate rule** "a run starts
-when the host equips the mode's Cardinal in the lobby" only if Dimitri adopts it (§6); until then `docs/SCOPE_v0.txt`
-and `docs/PLAN.md` Decisions stand as they are.
+when the host equips the mode's Cardinal in the lobby". **Adopted by Dimitri 2026-10-09 16:37Z**; the edits in §6 are made.
 
 Tags: **proven** = shown in game by Riptide (kit `docs/15` §13) or RogueLab (§11, §15); **read** = from the decompiled
 `Assembly-CSharp.dll` (kit `docs/13` §11), file:line into that folder; **untested** = needs the PC (§5). Kit paths:
@@ -94,11 +93,11 @@ ROGUE WAVE line, readies, and both load map 1. No PC session is started for this
 
 ## 6. Recommendation and the gate
 
-**Adopt the main-menu button as the way a campaign starts**, with New and Continue, and drop the mode's lobby Cardinal.
+**Adopted (Dimitri, 2026-10-09).** Adopt the main-menu button as the way a campaign starts**, with New and Continue, and drop the mode's lobby Cardinal.
 It is built from pieces already proven (the embark, the mode swap, the Setup-screen line); only the main-menu clone
 and the dialog there are new, and probes M1-M3 settle them in one solo round.
 
-If adopted, the edits are: `docs/SCOPE_v0.txt` line 47 ("the host begins the Rogue Wave by equipping the mode's
+The edits made on adoption: `docs/SCOPE_v0.txt` line 47 ("the host begins the Rogue Wave by equipping the mode's
 Cardinal in the lobby" becomes "the host starts a Rogue Wave from the main menu's Rogue Wave button, New or Continue,
 and invites friends to the boat"), line 48's NEEDS marker removed, the same in `/mnt/project-files/roguewave.txt`;
 `docs/PLAN.md` Decisions gets the new rule; `docs/PACK.md` line 78 follows. Riptide's Setup-screen switch stays the

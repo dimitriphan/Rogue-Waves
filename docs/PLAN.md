@@ -198,8 +198,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Next:** RogueLab round 3 on the PC (15 untoured maps, the choice dialog with its menu up), then the F-key check by
   hand and one online evening; then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** round 3 waits on Dimitri's OK for the PC session.
-- **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); open
-  question 1 asks Dimitri to adopt it; its probes M1-M7 join the next RogueLab round.
+- **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); Dimitri
+  adopted it; its probes M1-M7 join the next RogueLab round.
 
 ### Decisions
 
@@ -232,8 +232,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pack vessel; minions keep the `Hero` tag (`docs/15` §9).
 - 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
   leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
-  map, `docs/15` §6). **A run starts when the host equips the mode's Cardinal in the lobby**; it is not named yet,
-  since "Rogue Wave" is the expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed
+  map, `docs/15` §6). The start rule (the host equips the mode's Cardinal) was **replaced 2026-10-09** (below); it was
+  never named, since "Rogue Wave" is the expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed
   slot takes any string. **The §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
@@ -253,6 +253,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
   up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
+- 2026-10-09 (user): **a campaign starts from a Rogue Wave button on the main menu** (New / Continue), which takes the
+  host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
 
 ### Open questions
 
@@ -260,7 +262,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | Start a campaign from a main-menu "Rogue Wave" button (New / Continue) instead of the mode's lobby Cardinal? (`docs/MAIN_MENU_START.md`) | Adopt; Riptide's Setup-screen switch stays the fallback |
+| - | none open | |
 
 ### Phase 5 pieces
 
