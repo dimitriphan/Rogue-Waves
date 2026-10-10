@@ -530,6 +530,19 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`
   Blm_Player.cs:30; set from the Steam name at spawn, :98). `Changeartifact_ServerRpc` has no leader check
   (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.
 
+- **Building a world in code** (read while writing the mode part's chart, 2026-10-10; untested until its PC round,
+  Rogue Waves `docs/SEA_CHART.md` §7): `Changeworld` instantiates `Worldobj` and names the copy after it, and
+  `Macro_Worldvisual.Update` swaps any machine whose world's GameObject name differs from `Worlded`, so **the prefab's
+  name must be the world's database name** or every machine swaps forever. `Selectworld` writes the landing node into
+  `Selected`, and a non-leader with a non-empty `Selected` opens the Setup panel on that node (Macro_Main.cs, end of
+  `Update`): land a party through the world's `Defaultnode` with `Selected` empty. `Showhover` walks the hovered
+  node's `Links` with no null check: give every node a list. The node components have no `Awake`, and
+  `Selectmap_ServerRpc` finds nodes with `FindObjectsByType` (active objects only), so a template kept under an inactive
+  `DontDestroyOnLoad` holder is never picked by mistake. A client's `Startup` waits for the world item before the boat
+  is `Ready`: a mod that registers worlds must not wait for `Macro_Main.Ready`. `Macro_Main.Blacklist` stops a node
+  being picked but not hovered; the arrows only follow `Links`. A Gameplan the player hasn't played shows
+  "UNCLASSIFIED" in the Setup panel unless `Prediscover` is set (Macro_Setupui.cs `Mapselected`).
+
 ## 18. Fourth reading: Cardinal patterns, messages, the final map, chart decorations, unlocks (2026-10-09, read)
 
 Read for "what else can the run use" (Dimitri, 2026-10-09). Map objects, nodes, grid and wallet went to `16`; ideas
