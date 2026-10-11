@@ -35,7 +35,7 @@ file back).
 
 | Short-list item | Answer | Where |
 | --- | --- | --- |
-| Dying in a bonus tide | "Keep as 2 Pure Aura for now": a bonus tide still pays 2; whether dying in one is a lost map is asked again | `04` (open) |
+| Dying in a bonus tide | A bonus tide still pays 2; dying in one counts as a won map (his card, 16:43Z): no retry spent, only the tide in progress pays nothing | `04` |
 | The boat between maps | Players can't swap their Cardinals there | `05` |
 | Fertilize | Stays an ability unlocked by a Direction, for now | `07` unchanged |
 | Whose quit spends a retry | Only the host's | `04` |
