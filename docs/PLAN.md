@@ -249,11 +249,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/scope/05` with its numbers as a NEEDS line. Compiled here, **not run in game**: its PC round (C1-C6, W0-W3,
   `docs/SEA_CHART.md` §9) is handoff `RogueWavesMode_round1`, waiting on Dimitri's OK sentence. Until the in-map vote
   exists, the leader steers with the boat's arrows (only the linked maps can be picked).
-- **Also (2026-10-10):** a review of the 15 scope files against the decisions and the kit, at Dimitri's ask
-  (`docs/SCOPE_REVIEW_2026-10-10.md`): 57 findings by file, eight decisions for him on its short list (dying in a
-  bonus tide, the boat's pickers between maps, Fertilize outside the mode, whose quit spends a retry, break length,
-  objective pay, Team Cardinal pay, rank prices); scope files untouched until he answers.
-- **Next:** the sea chart's PC round (`RogueWavesMode_round1`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+- **Also (2026-10-11 04:15Z):** PC round 1 ran on Dimitri's "Go": **34 pass, 0 fail**. The chart, the boat's sailing,
+  the pick, the map loading in the mode, the return one row on and the save all work in game. One bug: Rising Water's
+  deter blocks were never loaded, so the water rose but flooded nothing. Fixed in 0.1.1 (every needed being is
+  loaded; W1 checks flooded tiles); handoff `RogueWavesMode_round2` waits on his OK. PC scope copy synced.
+  Round 2 (05:17Z): 35 pass, 3 fail, all Rising Water: `Block_Flood_Deter` is in no group the game loads for
+  Manafold or any mode. 0.1.2 stands in a copy of a stock no-build block; handoff `RogueWavesMode_round3`.
+  Round 3 (05:42Z): 35/3 again, no no-build block is loaded on the boat. 0.1.3 makes the stand-in in the map and
+  spawns no flood without it (the flood's throw would break the Tide loop); handoff `RogueWavesMode_round4`.
+  **Round 4 (06:01Z): 38 pass, 0 fail**: the sea chart and all three sea weathers work in game (solo). PR #22.
+  Not seen yet: the chart's and the flooded tiles' look by eye, and any of it online.
+- **Next:** Dimitri eyes the chart and a Rising Water map by hand when he likes; the in-map vote is the chart's next
+  piece (Phase 5); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
