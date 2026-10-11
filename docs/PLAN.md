@@ -351,6 +351,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   between maps; **breaks last 60 s**; Direction **rank II 20, rank III 30** Pure Aura; Team Cardinals work for everyone,
   **Cardinals stack with no limit**; a **new objective every break**, team objectives pay every player in full;
   Fertilize stays Direction-only; a bonus tide still pays 2 (`docs/SCOPE_REVIEW_2026-10-10.md`).
+- 2026-10-11 (user, card): **dying in a bonus tide counts as a won map**: no retry spent, the tide in progress pays nothing.
 
 ### Open questions
 
