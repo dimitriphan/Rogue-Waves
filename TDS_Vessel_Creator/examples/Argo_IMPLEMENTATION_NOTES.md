@@ -1,5 +1,8 @@
 # Argo implementation notes (v1.0.0, 2026-10-02)
 
+> History: Argo 1.0. Argo 2.0 has no SONAR (`TDS_Mod/ModSource/Argo/DESIGN.md`), and the journal is now the kit's
+> `ModKitJournal` (`docs/06`), not its own `13_Journal.cs`.
+
 Argo, **Fathoms Below ▪ Intermediate**: a bulky deep-sea diver (built in the spirit of League's Nautilus) with a
 crew of Nauts, a scatter cannon, a harpoon tower and a drill that sinks deeper every Tide. Built from the concept in
 `Concept/` (the user's "Argo Vessel Concept.zip") on Sprigg's proven scaffolding. Read

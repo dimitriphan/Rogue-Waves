@@ -2,7 +2,7 @@
 
 Each entry: **symptom** → cause → fix (where the fix lives in the template). All of these happened while building Smocky
 (the first test clone), Sprigg 1.0-1.4.1, Argo 1.0, Mummer 1.0, the kit 1.4 boat work, Argo 2.0 and RogueLab. Add new
-ones at the end of their section.
+ones as the next number in §J (older entries kept suffixes such as 18a and 40a).
 
 ## A. Compiling
 
@@ -218,3 +218,13 @@ ones at the end of their section.
     Map_Custom (the player's custom-map slot) fails in `Bl_Address.Load` with `InvalidKeyException`s; the timeout sat
     behind a "no `Game_Mapvars`, not in a match" return → never chain into `Special_` Gameplans, and check a load
     timeout before any in-match test. Verified in game (round 3 toured the last 15 maps with the fix).
+79. **Overlapping slows crawl a foe at the game's own Speed floor, and a "root" of -0.9 never holds it** (Argo 1.3.0,
+    carried from ModProjects' 40j) → raw `Speed` Multi mods stack, and enemy `Speed` has Limits 0.05..99999 (read in
+    game), so two full Tremor ticks or a slow on a rooted foe left it crawling, never stopped → make a root -1 (Speed at
+    its floor), cut slows so slows alone stop at 10% of a foe's speed and skip them on a held foe, and raise a
+    `Speed.Value_Bounds.x` under 0 to 0 (`ArgoUtil.Speed`, `TDS_Mod/ModSource/Argo`). Seen in game in Argo 1.x; the fix
+    is in Argo 2.0.
+80. **One exception silences a tower or a unit for the whole match** (Argo 1.3.0, carried from ModProjects' 40k) → the
+    brain's catch logged and set `enabled = false` on its first exception → skip the failing tick and stop the brain
+    only after it throws on every frame for 600 frames (~10 s) (`ArgoFaults`, `TDS_Mod/ModSource/Argo`). Seen in game in
+    Argo 1.x; the fix is in Argo 2.0.

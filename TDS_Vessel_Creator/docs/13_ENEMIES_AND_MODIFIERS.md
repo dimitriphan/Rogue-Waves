@@ -309,20 +309,20 @@ without a stock bespoke AI reads as a plain melee foe to them.
    `Defaultparams["X"]` bare (a missing key throws, so a reused stock AI needs every param it reads); the only constants
    are Tempered's 5 checks and 5 s `Redblocked`, Melting's `Enemyweaken` base 100 and 2 s debuff. *Answered for five
    (RogueLab round 1, ELITE lines):* Hardened `Health_Multi` 3; Tempered `Aggrorange_Base` 5, `Health_Multi` and
-   `Damage_Multi` 1; Superheated health and damage 2, speed 1.25; Fractured health 14, damage, speed and attack speed 9
-   (each a `Multi` modifier, which adds to a multiplier that starts at 1: Hardened health ×4, Tempered ×2, Superheated
-   ×3 and speed ×2.25, Fractured ×15 and ×10); Annealed `Healtharmor_Base` 4, `Healtharmor_Perhealth` 10. *The last two
-   answered (round 2, 2026-10-09; they ship in the Tsunami and Final groups):* Molten `Health_Multi` 3, `Speed_Multi`
-   0.15 (health ×4, speed ×1.15: the same `Multi` mods as Superheated's), on drowning hurts up to `Damage_Count` 5
-   within `Radius_Base` 2.2 for `Damage_Base` 10; Melting drains health, damage, speed and attack speed at -0.001 each
-   for `Duration_Base` 60 s.
+   `Damage_Multi` 1; Superheated health and damage 2, speed 1.25, attack speed 1; Fractured health 14, damage, speed and
+   attack speed 9 (each a `Multi` modifier, which adds to a multiplier that starts at 1: Hardened health ×4, Tempered
+   ×2, Superheated ×3, speed ×2.25 and attack speed ×2, Fractured ×15 and ×10); Annealed `Healtharmor_Base` 4,
+   `Healtharmor_Perhealth` 10. *The last two answered (round 2, 2026-10-09; they ship in the Tsunami and Final groups):*
+   Molten `Health_Multi` 3, `Speed_Multi` 0.15 (health ×4, speed ×1.15: the same `Multi` mods as Superheated's), on
+   drowning hurts up to `Damage_Count` 5 within `Radius_Base` 2.2 for `Damage_Base` 10; Melting drains health, damage,
+   speed and attack speed at -0.001 each for `Duration_Base` 60 s.
 3. **Tide tables**: for each mode, every `Waves` (Note, Wavetime, Wave) and `Wavecontent` (enemy, count, interval,
-   style, gate, upgrades); and confirm that two maps in one mode play the same table. *Mode_Normal answered*
-   (RogueLab round 1, TIDE lines: 60 entries, 30 Tides, 180 s each, 30 s breaks). *The others answered (round 2,
-   TIDE2 lines in `reference/roguelab_round2.txt`):* Storm 15 Tides (180 s, 30 s breaks, 50 aura each), Drought 20
-   (120 s, 20 s breaks, Annealed and Claymore rushes), Tsunami 4 long Tides (240 s first break, 500 aura each, Molten
-   and Bulwark), Final 1 Tide (100 aura, three Bulwarks and Excaliburs), Tutorial 3 Training Dagger Tides. A Gameplan
-   names its mode, so two maps on one mode play one table.
+   style, gate, upgrades); and confirm that two maps in one mode play the same table. *Mode_Normal answered* (RogueLab
+   round 1, TIDE lines: 60 entries, 30 Tides, 180 s each, 30 s breaks). *The others answered (round 2, TIDE2 lines in
+   `reference/roguelab_round2.txt`):* Storm 15 Tides (180 s, 30 s breaks, 50 aura each), Drought 20 (120 s, 20 s breaks,
+   Annealed and Claymore rushes), Tsunami 4 Tides (180 s, the last 9999 s; long breaks of 240 s then 180 s; 500 aura
+   each, Molten and Bulwark), Final 1 Tide (100 aura, three Bulwarks and Excaliburs), Tutorial 3 Training Dagger Tides.
+   A Gameplan names its mode, so two maps on one mode play one table.
 4. **When the enemies are loaded**: which Addressables group holds `Enemy_Dagger` (search `Bl_Address.Loadedfolders`
    for the `Loadlist` whose `Items` has it) and whether it is loaded at boot or only in a match. That decides when a
    mod can clone a template enemy on every machine. *From the code (2026-10-08):* boot loads the groups named in

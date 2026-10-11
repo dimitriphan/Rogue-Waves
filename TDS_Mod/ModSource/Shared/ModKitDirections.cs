@@ -2,10 +2,10 @@
 // Shared kit: Directions as data (docs/PACK.md section 3). A Direction is an Upgradeproperties named
 // "Direction_<Vessel>_<Name>_Upgradeobject" (or "Direction_Any_<Name>_Upgradeobject"). The part that owns the mechanic
 // registers it with its own load group, so it exists on every machine with the pack; the mode lists them all by the
-// "Direction_" prefix, offers them, and grants the pick on the core (Helper_Entitytools.Upgrade, Forced), where a
-// vessel respawn can't drop it (docs/15 section 9). The upgrade is game state, synced to every client by the engine.
+// "Direction_" prefix, offers them, and grants the pick on the core (Helper_Entitytools.Upgrade, Forced). A respawn
+// keeps a vessel's upgrades too (docs/15 section 14.1). The upgrade is game state, synced to every client by the engine.
 // A vessel asks Has(vessel, name) and reacts. Open (mode phase): the game's "Core" is the team's, so a Direction granted
-// there is team-wide; per-player Directions would need the owner in the name.
+// there is team-wide; per-player Directions go on the vessel instead (kit 1.7, docs/15 section 14.1).
 public static class ModKitDirections
 {
     public const string Prefix = "Direction_";

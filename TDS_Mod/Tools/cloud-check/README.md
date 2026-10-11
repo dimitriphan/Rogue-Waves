@@ -1,7 +1,8 @@
 # cloud-check: compile and preview vessel mods without Unity or the game
 
-Crackpot and Rustle were written on a Linux machine with no Windows, Unity or copy of TDS. These scripts are how their
-code was checked and their art reviewed there. They don't replace a build in Unity and a test in the game: they catch
+Crackpot and Rustle (in ModProjects) were written on a Linux machine with no Windows, Unity or copy of TDS; Argo 2.0,
+RogueLab and RogueWavesMode were checked the same way here. These scripts are how such code is checked and its art
+reviewed. They don't replace a build in Unity and a test in the game: they catch
 compile errors early and let you look at the generated sprites, models and sounds.
 
 ## What it checks
@@ -14,26 +15,27 @@ compile errors early and let you look at the generated sprites, models and sound
 | `new_vessel.py <TDS_Vessel_Creator> <TDS_Mod> <Name>` | Port of `tools/New-Vessel.ps1`. | New-Vessel.ps1 |
 | `map_view.py save\|near\|spots ...` | Reads the self-test's map snapshot (`TEST MAP` lines, kit 1.5): saves it with a top-down PNG, prints the ground around a tile, or lists the tiles `ModKitTest.Spot` would try. | Seeing the test map before a PC round |
 
-Debug builds: pass the defines like the PowerShell script, e.g. `"RUSTLE_SELFTEST,RUSTLE_SHOTS,RUSTLE_PROBE"`.
+Debug builds: pass the defines like the PowerShell script, e.g. `"ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE"`.
 
 ## Setup (once)
 
-Needs `mono-devel`, `python3`, `curl` and `unzip`, plus your unzipped copy of the TDS Vessel Creator (its
-`reference/api_assembly_csharp.txt` dump is turned into stubs of the game's API; the stubs are not committed).
+Needs `mono-devel`, `python3`, `curl` and `unzip`, plus the TDS Vessel Creator (`TDS_Vessel_Creator/` in this
+repository) (its `reference/api_assembly_csharp.txt` dump is turned into stubs of the game's API; the stubs are not
+committed).
 
 ```bash
 cd TDS_Mod/Tools/cloud-check
-./setup.sh /path/to/TDS_Vessel_Creator     # NuGet: Microsoft.Net.Compilers 3.8.0, UnityEngine.Modules 2021.3.33, Unity3D.SDK 2021.1.14.1
+./setup.sh ../../../TDS_Vessel_Creator       # NuGet: Microsoft.Net.Compilers 3.8.0, UnityEngine.Modules 2021.3.33, Unity3D.SDK 2021.1.14.1
 ```
 
 ## Use
 
 ```bash
 cd TDS_Mod/ModSource
-python3 ../Tools/cloud-check/check_mod.py Rustle/Code Shared Rustle ""
-python3 ../Tools/cloud-check/check_mod.py Rustle/Code Shared Rustle "RUSTLE_SELFTEST,RUSTLE_SHOTS,RUSTLE_PROBE"
-../Tools/cloud-check/check_editor.sh ../Assets/RustleMod/Editor
-cd ../Assets/RustleMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . Rustle /tmp/rustle sma
+python3 ../Tools/cloud-check/check_mod.py Argo/Code Shared Argo ""
+python3 ../Tools/cloud-check/check_mod.py Argo/Code Shared Argo "ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE"
+../Tools/cloud-check/check_editor.sh ../Assets/ArgoMod/Editor
+cd ../Assets/ArgoMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . Argo /tmp/argo sma
 ```
 
 ## Limits

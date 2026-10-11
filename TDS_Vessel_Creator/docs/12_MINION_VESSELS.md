@@ -14,7 +14,7 @@ it was **verified in a mod** or is **read from the game's code** (then test it f
 | Fie | Knight's Keep (Red 60) | knight: 25 HP, dmg 1 (+0.5/lvl), speed 1, engage 1; weapons from Fie's Silo | 1, 10 s; Partner/Squad add knights | **Rally**: click a tile, knights defend that spot | keep upgrades mirrored as `Mob_Fieknight_<Key><Tier>` (Partner, Squad, Commander, Convoy...) |
 | Boutman | fish (`Mob_Boutmanfish`, Yellow 25 each) recruited through Boutman himself (his fishing and Fish/Fishfollow commands; read `Entity_Ai_Hero_Boutman` before copying the exact flow); Barrel (Blue 25) houses and heals them; Bouthouse carries Boutman's own upgrades | fish: 50 HP (+75/lvl), dmg 10 (+10), engage 3; get knocked out (Deadarmor) instead of dying and recover in a barrel | per fish | each fish guards its spot (`Engagerange`); **Relocate** (upgrade) moves a fish's spot; the vessel can make a fish **follow** him; **Rally** | each fish has its own upgrade tree (Barp, Batfish, Bwordfish, Bass...) |
 | Mummer (mod) | Puppet Stage (Red 50), paid in Thread | Understudy 24/16/70 HP by costume | 2 (+1/+2), 6 s | leashed to the stage, step out to meet foes (Marked first); COSTUME picks the next one | stage params applied by the stage brain (Puppethealth_Multi...) |
-| Argo (mod) | Diving Bell (Blue 35) | Nauts (Port, Starboard, Bosun) | 2, 8 s | **PORT/STARBOARD**: pick a tower, the Naut walks there and tunes it | bell upgrades read by the Naut brain |
+| Argo (mod) | Miner's Base, 1.4.0's Diving Bell (Blue 35; limit 1 in 2.0) | Nauts (Port, Starboard, Bosun) | 2, 8 s | **PORT/STARBOARD**: pick a tower, the Naut walks there and tunes it | bell upgrades read by the Naut brain |
 | Sprigg (mod) | Root (Yellow 21) | Sproutling: a miner clone using the game's own miner AI | 1, 10 s | none | — |
 
 Boutman lists only three buildables (Fish Barrel, Boutboat, Bouthouse): his fish take the place of a fourth. A minion
@@ -47,7 +47,7 @@ Every shipped unit building (`Entity_Ai_Tower_Smackyhut`, `_Bustergarage`, `_Fie
    game's own `Entity_Ai_Mob_Smackyminer` (it never names Smacky's objects). The knight and fish AIs are tied to Fie's
    and Boutman's objects; don't reuse those.
 
-## 3. A unit building in a mod (verified: Mummer's Stage, Argo's Bell, Sprigg's Root)
+## 3. A unit building in a mod (verified: Mummer's Stage, Argo's Miner's Base, Sprigg's Root)
 
 Mod classes can't be AIs, so the building's **brain** does the spawner loop and each unit gets a **unit brain**
 (`docs/05` §6, §10). Template: `template/Mummer/Code/08_Stage.cs` (`MummerStageBrain`) and `09_Puppet.cs`.
@@ -131,7 +131,7 @@ rally point while selected (the Keep draws one "Knightconnection" line in `Rende
 
 The unit itself is placed and paid for like a building (a `Buildoption` whose Goalstring is the unit id, the unit
 entity has `Costs`), guards the tile it was placed on, has its own upgrade tree and can be sold. Boutman's fish add a
-knocked-out state (health 0 → "Dead" with `Deadarmor`, revived in a barrel) instead of despawning. None of the three mod
+knocked-out state (health 0 → "Dead" with `Deadarmor`, revived in a barrel) instead of despawning. No mod
 vessels has done this yet: build it on the unit-building recipe, give the unit brain the building's upgrade flow
 (`MummerBuilding` works on any entity it creates the Upgrade commands on), and test selection, the upgrade panel,
 selling and the journal page in game before relying on it.

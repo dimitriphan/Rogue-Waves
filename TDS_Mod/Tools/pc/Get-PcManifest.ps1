@@ -4,7 +4,7 @@
 # Covers ModSource\** (not Build, Research, Previews or Aseprite\generated) and Assets\<X>\Editor\*.cs. Text files are
 # hashed as UTF-8 with any BOM and every CR removed, so line endings don't count; other files as their bytes.
 # Output: Desktop\ClaudeProjects\handoff\pc_manifest.txt ("<16 hex>  <path under TDS_Mod>" per line). Paste it to the
-# cloud thread, or send it with Send-ToCloud.ps1 where that is set up.
+# cloud thread.
 param([string]$Root = "C:\Users\Dimitri\TDS_Mod", [string]$Out = "")
 . (Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "HandoffHash.ps1")
 if (-not $Out) { $Out = Join-Path ([Environment]::GetFolderPath("Desktop")) "ClaudeProjects\handoff\pc_manifest.txt" }

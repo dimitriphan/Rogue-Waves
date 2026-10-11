@@ -1,5 +1,11 @@
 # Scope vs the proven loop: where the run outgrows `SCOPE_v0.txt` (2026-10-09)
 
+> **Superseded in part (note added 2026-10-11).** Since this page: 10 maps (not 15) and Depth (not Swell); bonus tides
+> have no limit; Fund Transfer moves base aura only; Cardinals stack with no limit; breaks are 60 s; the start is a
+> main-menu button, not a start Cardinal; a dropped player can rejoin the running map (`docs/REJOIN.md`); only the
+> host's quit spends a retry, and a campaign has 3. Personal Cardinals are now **Vessel Cardinals**, and there is no cap of
+> 8 Team Cardinals: Cardinals scale without limit (2026-10-11). `docs/scope/` and `docs/PLAN.md` Part C "Decisions" win.
+
 Dimitri asked (2026-10-09) whether the scope needs expanding, given the gameplay loop as it stands. The loop as proven
 so far: Riptide (`TDS_Mod/ModSource/Riptide`, 70 of 70 on the PC), RogueLab rounds 1-3 (kit `docs/15` §11, §15) and Argo
 2.0 (`TDS_Mod/ModSource/Argo/DESIGN.md`). This page lists what that loop does or needs that the scope says nothing

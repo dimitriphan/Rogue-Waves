@@ -8,7 +8,7 @@
 	[New Optional Objective]
 		{Name of Objective} / A short order, like a bounty on a notice board \
 			- Task: / One line the player reads when it is offered: what to do, no numbers \
-			- Kind: / Hunt (kill a number of one enemy, maybe with a modifier), Guard (keep the core or a building from harm), Hold (no enemy reaches a spot), Rush (finish before a time runs out), or something new \
+			- Kind: / Hunt (kill a number of one enemy, maybe with a modifier), Guard (keep the core or a building from harm), Hold (no enemy reaches a spot), Rush (finish before a time runs out), Mining (fully mine a node), or something new \
 			- Numbers: / The count, time or limit. Leave blank and the design gate proposes them \
 			- Taken by: / One player, who alone is paid, or the team, where every player earns the full pay \
 			- Offered: / When it can be taken: every break at {VENDCINT}, once a map, or from a set tide \
@@ -38,7 +38,7 @@
 			- Task: Fully mine a node that spawns in a random location on the map.
 			- Kind: Mining
 			- Numbers:
-			- Taken by: All players
+			- Taken by: The team
 			- Offered: Every break at {VENDCINT}
 			- Lasts: The next tide
 			- Pays: 3 [Pure Aura]

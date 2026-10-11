@@ -13,4 +13,5 @@ python3 TDS_Mod/Tools/cloud-check/map_view.py spots TDS_Vessel_Creator/reference
 would try in order. The map's prefab is fixed (`Game_Grid.Generatemap` has no randomness), so one snapshot holds until
 the game updates the map.
 
-No snapshot yet: the first self-test run with kit 1.5 writes one.
+No snapshot committed yet: every kit 1.5+ self-test run (Argo 2.0, RogueLab, RogueWavesMode) writes one; save one
+here when a placement problem needs it.

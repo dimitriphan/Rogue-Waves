@@ -1,5 +1,9 @@
 # Mechanic ideas from the game's own systems (2026-10-09)
 
+> Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/05`, built in
+> `RogueWavesMode` and passed PC round 4 (38/0, `docs/SEA_CHART.md` §8-9). The other ideas are still unpicked and
+> untested; the text below is as written on 2026-10-09. "Personal" Cardinals are now called Vessel Cardinals.
+
 Dimitri asked (2026-10-09 23:04Z) for a deeper look at how TDS works, the important topics written into the research
 lessons, and mechanics that would fit his current plan. The lessons are in the kit: **`docs/16`** (new: inside a map:
 grid, paths, map objects, aura nodes, the wallet, game speed, lighting) and **`docs/15` §18** (the stock Cardinals'

@@ -3,8 +3,9 @@
 How a map is built into a grid, how placement and enemy paths work, what the base game's map-special objects do, how
 aura nodes pay and how the wallet works, read on 2026-10-09 for the Rogue Wave mode's in-map events, objectives and
 Directions. Everything here was **read from the game's code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in
-`13` §11) unless it says otherwise; `File.cs:line` points into that decompiled folder (never committed). Nothing in
-this chapter was tried in game yet: §9 is the PC list. Ideas built on these facts are in the Rogue Waves repository's
+`13` §11) unless it says otherwise; `File.cs:line` points into that decompiled folder (never committed). Most of
+this chapter was not tried in game yet (§9 is the PC list); §3's flood and nest and §6's host `Time_Scale` were
+verified by RogueWavesMode PC rounds 1-4 (2026-10-11). Ideas built on these facts are in the Rogue Waves repository's
 `docs/MECHANIC_IDEAS.md`.
 
 Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
@@ -98,18 +99,19 @@ Each is a being placed by a map; its team and skin come from data (`Modeobject.S
 **How they reach a map:** the map prefab's `Entities` / `Object` children, or the mode's `Specialspots` placed at named
 children of the map's `Mode` transform (Game_Rounds.cs:72-157). No game code spawns a map special mid-match, but each
 one subscribes to `Wave` in `Spawn` (Game_Entity.cs:303) and reads its stats from data, so **a host spawning one with
-`Helper_Entitytools.Spawn` mid-match should work from the next Tide on** (read, untested). Caveats: `Main_Tpgate` pairs
-only at `Starting`, so spawn both gates together; the flood starts at whatever height it spawns; `Main_Flood`,
-`Tower_Halberdnest` and `Main_Enemycoresplit` never unsubscribe from `Wave`, so despawning one leaks its handler until
-the map ends. **Verified** (RogueWavesMode round 1, 2026-10-11): `Main_Flood` and `Tower_Halberdnest` spawned on
-Skyhook and Blasthead rise and send a Halberd at the next Tide. A map object's being and the beings it spawns can sit
-in different groups: the flood fetches `Block_Flood_Deter` by name at each Tide and throws in
-`Helper_Gridtools.Checkifplaceable` if that is not loaded, so load every being the object spawns, not just its own.
-`Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six stock modes load
-(round 2), so it may not ship. The throw unwinds through the `Wave` setter into `Mode_Normal.Run`, which drives the
-Tides, so never leave a flood on a map without it. `Block_Noplacement` is not loaded on the boat (round 3);
-RogueWavesMode 0.1.3 registers a copy of `Block_Noplacementfish` (loaded with `Hero_Boutman`, one of Manafold's
-sub-loads) under that name; **verified** in round 4: 67 tiles flooded at the first Tide, no error.
+`Helper_Entitytools.Spawn` mid-match works from the next Tide on** (verified for `Main_Flood` and `Tower_Halberdnest`,
+below; read for the rest). Caveats: `Main_Tpgate` pairs only at `Starting`, so spawn both gates together; the flood
+starts at whatever height it spawns; `Main_Flood`, `Tower_Halberdnest` and `Main_Enemycoresplit` never unsubscribe from
+`Wave`, so despawning one leaks its handler until the map ends. **Verified** (RogueWavesMode round 1, 2026-10-11):
+`Main_Flood` and `Tower_Halberdnest` spawned on Skyhook and Blasthead rise and send a Halberd at the next Tide. A map
+object's being and the beings it spawns can sit in different groups: the flood fetches `Block_Flood_Deter` by name at
+each Tide and throws in `Helper_Gridtools.Checkifplaceable` if that is not loaded, so load every being the object
+spawns, not just its own. `Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six
+stock modes load (round 2): the game ships no flood block. The throw unwinds through the `Wave` setter into
+`Mode_Normal.Run`, which drives the Tides, so never leave a flood on a map without it. `Block_Noplacement` is not loaded
+on the boat (round 3); RogueWavesMode 0.1.3 registers a copy of Boutman's `Block_Noplacementfish` (loaded with
+`Hero_Boutman`, one of Manafold's sub-loads) under the name `Block_Flood_Deter`, once the map has loaded; **verified**
+in round 4: 67 tiles flooded at the first Tide, no error.
 
 ## 4. Aura nodes and mining
 
@@ -192,12 +194,13 @@ sub-loads) under that name; **verified** in round 4: 67 tiles flooded at the fir
 
 ## 9. PC list (for the next RogueLab round)
 
-1. Spawn `Main_Flood`, `Tower_Den`, `Tower_Halberdnest` and a stock mine node mid-match on a map that has none; log that
-   each reacts at the next Tide and that miners use the node.
+1. Spawn `Tower_Den` and a stock mine node mid-match on a map that has none; log that each reacts at the next Tide and
+   that miners use the node (`Main_Flood` and `Tower_Halberdnest` done, RogueWavesMode rounds 1-4, §3).
 2. Spawn a `Block_Noplacement`-style block on a path tile, clear `Savedpaths`, log that foes re-route.
 3. Set a vessel's `Buildoption1` `Goalvalue` to 0.8 and an `Upgrade` `Goalvalue` to 0.8; log the shown and the spent
    price.
-4. Write `Time_Scale` = 1.25 on the host; log the client's Tide timer (online evening).
+4. Write `Time_Scale` = 1.25 on the host; log the client's Tide timer (online evening; the host half is verified,
+   RogueWavesMode W2: 1, 1.25, 1.5).
 5. Call `Uiwarning_ClientRpc` (`15` §18.2) with a mod icon; check it on a client.
 
 ## 10. Sources

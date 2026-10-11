@@ -43,7 +43,7 @@ bridge port 6400.
 
 | Tool | Use |
 |---|---|
-| `execute_menu_item` | `Tools/<Name>/Build All Assets`, `Build Mod Prefab`, `Park Other Mods`, `Export Mod`, `Restore Parked Mods`, `Preview Sprites`, `Preview Models` |
+| `execute_menu_item` | `Tools/<Name>/Build All Assets`, `Build Mod Prefab`, `Park Other Mods`, `Export Mod`, `Restore Parked Mods`, `Preview Sprites`, `Preview Models`; `Tools/ModKit/Build Queue` for several mods in one call (`TDS_Mod/Tools/pc/README.md` step 6, `09` #76) |
 | `refresh_unity` (`compile: request`) | make Unity import and compile edited scripts; for a **new folder** run `execute_menu_item("Assets/Refresh")` too (refresh_unity alone left a new folder unimported) |
 | `read_console` (`types: ["error"]`) | compile errors and the generator's logs |
 
