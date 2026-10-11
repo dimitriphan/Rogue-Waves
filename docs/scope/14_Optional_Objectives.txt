@@ -2,13 +2,15 @@
 	# Copy the New Optional Objective template into the Optional Objective List below, replace every line, and delete the / \ notes that only explain the template.
 	# Leave a line as ! NEEDS ... ! when you don't know it yet. Claude proposes a default at the design gate and says which.
 	# Names are a short order, like a bounty on a notice board.
+	# A new objective is offered at {VENDCINT} in every break between tides.
+	# An objective the team takes pays every player the same, full amount.
 
 	[New Optional Objective]
 		{Name of Objective} / A short order, like a bounty on a notice board \
 			- Task: / One line the player reads when it is offered: what to do, no numbers \
 			- Kind: / Hunt (kill a number of one enemy, maybe with a modifier), Guard (keep the core or a building from harm), Hold (no enemy reaches a spot), Rush (finish before a time runs out), or something new \
 			- Numbers: / The count, time or limit. Leave blank and the design gate proposes them \
-			- Taken by: / One player, who alone is paid, or the team, which splits the pay \
+			- Taken by: / One player, who alone is paid, or the team, where every player earns the full pay \
 			- Offered: / When it can be taken: every break at {VENDCINT}, once a map, or from a set tide \
 			- Lasts: / The next tide, a number of tides, or the rest of the map \
 			- Pays: / In [Pure Aura], and any base aura on top \

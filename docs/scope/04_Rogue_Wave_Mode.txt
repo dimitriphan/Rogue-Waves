@@ -6,4 +6,6 @@
 	# Each map is harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health.
 	! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
 	# Losing a map uses one of a limited number of retries: the team replays that map from the last save. With no retries left, a lost map ends the campaign. Quitting during a map counts as losing it.
+	# Only the host quitting during a map spends a retry. A friend who drops or quits doesn't: they sit out the rest of that map and come back on the boat.
 	# A campaign gets 3 retries.
+	! NEEDS WHETHER DYING IN A BONUS TIDE LOSES THE MAP / Proposed: no, the map counts as won once Tide 15 is cleared, and only the tide in progress pays nothing. Otherwise a retry and the whole map's [Pure Aura] are at stake for 2 a tide \ !

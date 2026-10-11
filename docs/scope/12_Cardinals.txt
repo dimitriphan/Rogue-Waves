@@ -4,6 +4,8 @@
 	# Bought from the shopkeeper with [Pure Aura]
 	# Two kinds. A Personal Cardinal belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel. A Team Cardinal acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen.
 	/ Personal wherever the game allows it. The Cardinal row holds 8, lobby picks included, so a campaign can hold at most 8 Team Cardinals. About 24 of the 40 stock Cardinals can be made Personal; see docs/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
+	# A Team Cardinal is bought by one player and works for everyone.
+	# Cardinals stack with no limit: a Cardinal that stacks can be bought again as many times as a player can pay for it.
 	# Personal Cardinals and Directions are saved with the campaign for each player and come back when it continues.
 	/ Use the New Cardinal template below to add one \
 	/ Model Lighthouse is a name kept for later \
@@ -20,7 +22,7 @@
 			- Numbers: / Exact values. Leave blank and the design gate proposes them \
 			- Kind: / Personal or Team. Personal acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, and takes one of the 8 Team slots for the whole campaign \
 			- Lasts: / The rest of the campaign, this map only, or a number of Tides \
-			- Stacks: / Yes if a player (or the team) can own two, no if it leaves the shop once owned \
+			- Stacks: / Yes if a player (or the team) can own more than one, with no limit; no if it leaves the shop once owned \
 			- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
 			- Price: / In [Pure Aura] \
 			- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \

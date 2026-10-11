@@ -31,6 +31,19 @@ file back).
 | 40-41 | **Team Cardinals** paid by one player's Pure Aura; **Vampire Dentures** stacking without limit | Any one player pays; stacks capped at 3 |
 | 20 | **Rank prices** for Directions (the open `! NEEDS !`) | Rank II 15, rank III 25 Pure Aura, one rule for all |
 
+## Dimitri's answers (2026-10-11 06:11Z), folded into the scope
+
+| Short-list item | Answer | Where |
+| --- | --- | --- |
+| Dying in a bonus tide | "Keep as 2 Pure Aura for now": a bonus tide still pays 2; whether dying in one is a lost map is asked again | `04` (open) |
+| The boat between maps | Players can't swap their Cardinals there | `05` |
+| Fertilize | Stays an ability unlocked by a Direction, for now | `07` unchanged |
+| Whose quit spends a retry | Only the host's | `04` |
+| Breaks | 60 seconds in the mode | `05`, `06` |
+| Team objectives | Every player earns the same, full pay; a new objective is offered in every break | `14` |
+| Team Cardinals, stacking | Team Cardinals work for everyone; Cardinals stack with no limit | `12` |
+| Rank prices | Rank II 20 Pure Aura, rank III 30 | `06` |
+
 ## By file
 
 ### 00_Read_Me.txt
