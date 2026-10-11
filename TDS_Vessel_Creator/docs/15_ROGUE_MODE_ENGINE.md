@@ -383,6 +383,23 @@ questions. All **read**; RogueLab round 2's results are §15.
   (Tds_Clientinfo.cs:25,37).
 - A match closes the lobby (`Lobbystate` "Closed", which the chain also sends), and a closed Steam lobby refuses joins
   (Blm_Multiplayer.cs:67-77, Blm_Multiplayer_Remote.cs:278-297): a dropped friend can't rejoin a running map.
+- **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0, `docs/REJOIN.md` in the project):
+  `Blm_Multiplayer_Remote.Instance.Changelobbystatus_ServerOnly("Open")` is public and takes a string, so it needs no
+  Steamworks type (mods can't reference Steamworks); `Blm_Multiplayer.Instance.Server_Serveropen` is the public flag
+  the connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:311), so a
+  mod that keeps it open re-checks.
+- **A late joiner** gets the running `Game` scene and every networked thing from Netcode, and the map's client start
+  runs by itself (`Game_Client_Init.Initalize`, Game_Client_Init.cs:39-177: groups, local `Loaded`, the mode's client
+  script). Each thing's client side waits for that `Loaded` (Entity_Master_Client.cs:138) and then 10 s for its being's
+  group; the HUD reads the current wallet and Tide (Game_Ui.cs:1745). Only `Game_Client_Init.Startvisuals` (camera
+  fly-in, HUD start, game-speed hook, the mods' `Gameclient` prefabs) is missed: just the loading scene calls it
+  (Game_Load.cs:245, :293), so a mod calls it (public) once the local `Loaded` is true. Nothing on the host waits for
+  clients after the first Tide's start check (Game_Init.cs:123). A late joiner is a client whose `Game_Init` spawns
+  with `Gameloaded` already true.
+- The host can restore a rejoin's `Tds_Clientinfo` (all server-written): `Hero`, `Team`, `Activeplayer` (set 1 before
+  `Activeplayerdata`: a change to 0 resets it), `Activeplayerdata`, `Playerstatsjson`, `Resources`. A host chat line:
+  `Blm_Ui_Chat.Instance.Chat.Add(new Link_Chatcontainer { Sender, Text })` (a server-written `NetworkList`). The main
+  menu's error box shows the last line of `Blm_Multiplayer.Instance.Multiplayererror`.
 
 ### 14.6 The choice dialog
 

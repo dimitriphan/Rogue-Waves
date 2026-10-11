@@ -1,5 +1,33 @@
 # RogueWavesMode: implementation notes
 
+## 0.2.0 (2026-10-11): rejoining a running map
+
+Dimitri asked for a way back into a running map for a player whose connection drops. Design, what comes back and the
+online checks: `docs/REJOIN.md`. Engine facts: kit `docs/15` §14.5. **State:** compiled here (release and
+`ROGUEWAVESMODE_SELFTEST`: 0 errors; editor builder unchanged and clean). **Not run in game.** Solo PC round
+`RogueWavesMode_round5` (the round-4 run plus R1-R6 in the first map); the drop and rejoin themselves need a friend
+online (`REJOIN.md` §6, O1-O8).
+
+`Code/09_Rejoin.cs` (`RWRejoin`), every frame:
+
+- **Host:** a `Seat` per `Sessionid` in the map once `Gameloaded` is true (vessel name, team, aura, stats, name;
+  copied every 0.25 s). A seat missing from `Blm_Server.Sessionids` is away: a chat line, and the lobby opens
+  (`Changelobbystatus_ServerOnly("Open")` plus `Server_Serveropen`, re-checked every second because `Game_Load` shuts
+  it at the end of its loading screen). A seat's `Sessionid` back with a new `Tds_Clientinfo` gets `Restore`. The lobby
+  shuts when every seat is filled or `Gamecomplete` leaves "Running"; when the map is simply gone the boat's own scene
+  change has opened it, so nothing is shut then. A `Sessionid` with no seat is kicked (`Kickclient`) with a chat line.
+- **Rejoiner:** late if `Game_Init` spawns with `Gameloaded` already true. Preloads the map's weather
+  (`MapWeather`: chart name + Gameplan), loads each player's vessel group once its `Hero` is known (its own arrives with the seat), and once the local
+  `Loaded` is true calls `Setintroposition` and `Startvisuals(false)`. If `Gametimescale` is still false 15 s later it
+  frees the camera and HUD by hand and follows the game speed itself (`Bl_Camera` is internal, so the camera can't be
+  switched from a mod).
+- **Dropped client:** a connection that ends while `Gamecomplete` is "Running" adds a "Lost the map ... Join Game"
+  line to `Multiplayererror` a frame after the game's own "Disconnected", so the main menu shows it.
+
+What only the game can tell: whether Steam's Join Game reaches a lobby reopened mid-map (O2), the rejoiner's vessel and
+weather visuals inside the 10 s group window (O3, O7), and any hitch for the others while Netcode sends the map (O6).
+
+
 ## 0.1.3 (2026-10-11): the stand-in is made in the map, and no flood without it
 
 **PC round 4** (0.1.3 self-test, 2026-10-11): **38 pass, 0 fail, 0 setup.** The broader "Block_No..." match found
