@@ -262,9 +262,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Also (2026-10-11 06:12Z):** Dimitri asked for a way back into a running map after a dropped connection. Built as
   `RogueWavesMode` 0.2.0 (`docs/REJOIN.md`, kit `docs/15` §14.5): the game already keeps a dropped player's things and
   gives them back on return; the mod reopens the lobby while a seat is empty, gives the seat back (aura, vessel,
-  stats) and starts the rejoiner's camera and HUD. Every map, any mode. PC round 5 passed 45/1: the game's loading
-  screen shut the lobby the mod had just opened; 0.2.1 reopens it every frame, solo round `RogueWavesMode_round6`
-  (R1-R6, R2b) next; the rejoin itself needs a friend online (`REJOIN.md` §6, O1-O8).
+  stats) and starts the rejoiner's camera and HUD. Every map, any mode. 0.2.1 passed solo PC round 6, 47/0 (round 5's
+  one failure: the game's loading screen shut the lobby; now reopened every frame). PR #24 ready for Dimitri; the
+  rejoin itself needs a friend online (`REJOIN.md` §6, O1-O8, part of the online evening).
 - **Next:** Dimitri eyes the chart and a Rising Water map by hand when he likes; the in-map vote is the chart's next
   piece (Phase 5); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).

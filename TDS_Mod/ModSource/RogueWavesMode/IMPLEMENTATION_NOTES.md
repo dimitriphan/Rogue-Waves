@@ -2,6 +2,10 @@
 
 ## 0.2.1 (2026-10-11): the lobby is reopened every frame
 
+**PC round 6** (0.2.1 self-test, 2026-10-11): **47 pass, 0 fail, 0 setup.** R2 "Server_Serveropen False -> True";
+R2b open again two frames after the game's close; R1, R3-R6 and every round-4 check pass. The same six game-only
+exception lines as round 5. Still only online: O1-O8 (`docs/REJOIN.md` §6).
+
 **PC round 5** (0.2.0 self-test, 2026-10-11): **45 pass, 1 fail, 0 setup.** Every round-4 check passed again, and R1,
 R3, R4, R5, R6 and the second half of R2 passed. R2 failed: the mod opened the lobby ("rejoin: lobby opened"), then
 the game's loading screen ended ("Loading 90%", `Game_Load` removing the Gameloading scene with `Lobbystate` "Closed",
@@ -10,7 +14,7 @@ the lobby shut for up to a second. 0.2.1 checks the door every frame; the probe 
 new R2b shuts the lobby the way the game does and checks it is open two frames later. Six exception lines, all with
 only game frames in their stacks: 3 `Macro_Setupui.Mapselected` `OperationCanceledException` (just after a map is
 picked) and 3 `Blu2_Menu_Handler.Animin` `NullReferenceException` (just after a won map is sailed). Game `Assembly-CSharp.dll` on the PC matches the cloud copy
-(SHA256 fb80f939...). Compiled here (release and self-test: 0 errors). Round 6: `RogueWavesMode_round6`.
+(SHA256 fb80f939...). Compiled here (release and self-test: 0 errors).
 
 ## 0.2.0 (2026-10-11): rejoining a running map
 

@@ -6,8 +6,8 @@ to rejoin mid-game without interrupting the others.
 **Answer: a true mid-map rejoin works in this engine.** The game already keeps a dropped player's things and hands them
 back on return; the one hard block is that it shuts the lobby for the whole map. `RogueWavesMode` 0.2.0
 (`TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs`) opens it while a seat is empty and catches the rejoiner up.
-**State:** solo PC round 5 passed 45 of 46 (R2: the game's loading screen shut the lobby the mod had just opened; 0.2.1 reopens it on the next frame); round 6 is handoff
-`RogueWavesMode_round6`, and the real test needs a friend online (§6).
+**State:** 0.2.1 passed the solo PC round 6, 47 of 47 (2026-10-11; round 5's one failure is in §6). The drop and
+rejoin themselves need a friend online (§6, O1-O8).
 
 ## 1. What the game does today
 
@@ -101,6 +101,7 @@ the synced names; R6 the lobby is shut once the map ends.
 Round 5 (0.2.0, 2026-10-11): 45 pass, 1 fail. R2 failed because the probe ran inside the first map's loading screen,
 whose end (`Game_Load`, "Loading 90%", about 10 s after the fly-in) shut the lobby less than a second after the mod opened
 it, and 0.2.0 only looked again a second later. 0.2.1 looks every frame and the probe waits for the loading screen.
+Round 6 (0.2.1, 2026-10-11): 47 pass, 0 fail.
 
 **Online, with a friend** (joins the online evening, `docs/RESEARCH_GAPS.md` §E):
 
