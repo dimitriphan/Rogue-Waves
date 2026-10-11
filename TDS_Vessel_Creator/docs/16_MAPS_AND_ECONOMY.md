@@ -106,7 +106,9 @@ Skyhook and Blasthead rise and send a Halberd at the next Tide. A map object's b
 in different groups: the flood fetches `Block_Flood_Deter` by name at each Tide and throws in
 `Helper_Gridtools.Checkifplaceable` if that is not loaded, so load every being the object spawns, not just its own.
 `Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six stock modes load
-(round 2), so it may not ship; RogueWavesMode 0.1.2 registers a copy of `Block_Noplacement` under that name.
+(round 2), so it may not ship. The throw unwinds through the `Wave` setter into `Mode_Normal.Run`, which drives the
+Tides, so never leave a flood on a map without it. `Block_Noplacement` is not loaded on the boat (round 3);
+RogueWavesMode 0.1.3 registers a copy of a no-build block under that name once the map has loaded.
 
 ## 4. Aura nodes and mining
 

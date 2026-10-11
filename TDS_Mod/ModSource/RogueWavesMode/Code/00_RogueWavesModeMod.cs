@@ -75,6 +75,7 @@ public class RogueWavesModeMod : MonoBehaviour
             return;
         try { ModKitTides.Update(); } catch (Exception e) { RWLog.Once("tides", "tides: " + e); }
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
+        try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }
 #if ROGUEWAVESMODE_SELFTEST
         try { RWTest.Update(); } catch (Exception e) { RWLog.Once("test", "self-test: " + e); }
 #endif
@@ -84,7 +85,7 @@ public class RogueWavesModeMod : MonoBehaviour
 public static class RWData
 {
     public const string Part = "Mode";
-    public const string Version = "0.1.2";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather
+    public const string Version = "0.1.3";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather
     public const string Mode = "Mode_RogueWave";         // the mode's entry, group and Modeobject name
     public const string ModeDisplay = "Rogue Wave";
     public const string StockMode = "Mode_Normal";

@@ -39,13 +39,14 @@ public static class RWWeather
     static string Being(int w) { return w == RWChart.RisingWater ? "Main_Flood" : w == RWChart.NestingGround ? "Tower_Halberdnest" : ""; }
     static string Home(int w) { return w == RWChart.RisingWater ? "3_Manafold" : w == RWChart.NestingGround ? "3_Vultures" : ""; }
 
-    // Every being the weather's map object spawns must be loaded too: the flood fetches Block_Flood_Deter by name at
-    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1: water rose, no tile flooded).
+    // Every being the weather's map object spawns must be loaded too. The flood fetches Block_Flood_Deter by name at
+    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1), but no group holds it, so it
+    // is made in the map instead (StandIn) and is not listed here.
     static string[] Needs(int w)
     {
         switch (w)
         {
-            case RWChart.RisingWater: return new string[] { "Main_Flood", "Block_Flood_Deter" };
+            case RWChart.RisingWater: return new string[] { "Main_Flood" };   // its deter: see StandIn
             case RWChart.NestingGround: return new string[] { "Tower_Halberdnest", "Enemy_Halberd" };
         }
         return new string[0];
@@ -114,50 +115,11 @@ public static class RWWeather
             string after = Missing(w);
             from += (from == "" ? "" : ", ") + g + (group != null && group.Loaded ? "" : " (not loaded)") + (after != before ? " [found " + Found(before, after) + "]" : "");
         }
-        if (w == RWChart.RisingWater && RWUtil.Load<Beingobject>("Mob", Deter) == null)
+        if (w == RWChart.RisingWater && !HasDeter)
             from += ", " + StandIn();
         string missing = Missing(w);
         RWLog.Info("weather " + Display(w) + ": " + (missing == "" ? "ready" : "MISSING " + missing) + " after loading " + (from == "" ? "nothing" : from));
         loading.Remove(w);
-    }
-
-    // Block_Flood_Deter is in none of the groups Manafold, its hero or any stock mode loads (round 2), yet the flood
-    // asks for it by name at each Tide. Stand in a copy of a stock no-build block under that name, registered where
-    // Bl_Address.Getload looks (Groups["Mob"]) and where a spawn is matched by id and name (Groupsids, Groupsname).
-    // Every machine runs this from the boat, so the copy has the same id everywhere.
-    const string Deter = "Block_Flood_Deter";
-    static readonly string[] DeterLike = { "Block_Noplacement", "Block_Nobuild_Brittle" };
-
-    static string StandIn()
-    {
-        Beingobject like = null;
-        string from = "";
-        foreach (string n in DeterLike)
-        {
-            like = RWUtil.Load<Beingobject>("Mob", n);
-            if (like == null)
-            {
-                Bl_ScriptableObject named;
-                try { named = Bl_Address.Getload(new FixedString64Bytes(n)) as Bl_ScriptableObject; } catch (Exception) { named = null; }
-                like = named as Beingobject;
-            }
-            if (like != null) { from = n; break; }
-        }
-        if (like == null)
-            return "no stand-in for " + Deter + " (none of " + string.Join(", ", DeterLike) + " is loaded)";
-        Beingobject copy = RWUtil.Clone(like, Deter);
-        Bl_Address.Loadlist list = new Bl_Address.Loadlist();
-        list.Loaded = true;
-        list.Percent = 100;
-        list.Items[Deter] = copy;
-        list.Uids[new FixedString64Bytes(copy.Id)] = copy;
-        list.Index.Add(copy);
-        List<Bl_Address.Loadlist> mob;
-        if (!Bl_Address.Groups.TryGetValue("Mob", out mob)) { mob = new List<Bl_Address.Loadlist>(); Bl_Address.Groups["Mob"] = mob; }
-        mob.Add(list);
-        Bl_Address.Groupsids[new FixedString64Bytes(copy.Id)] = copy;
-        Bl_Address.Groupsname[new FixedString64Bytes(Deter)] = copy;
-        return Deter + " stood in by a copy of " + from;
     }
 
     static string Found(string before, string after)
@@ -166,6 +128,73 @@ public static class RWWeather
         foreach (string b in before.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries))
             if (("," + after.Replace(" ", "") + ",").IndexOf("," + b + ",") < 0) f += (f == "" ? "" : " ") + b;
         return f;
+    }
+
+    // Block_Flood_Deter is in none of the groups Manafold, its hero or any stock mode loads (round 2), yet the flood
+    // asks for it by name at each Tide, and the throw unwinds into Mode_Normal.Run, which set the Tide. Stand in a copy
+    // of a stock no-build block under that name, registered where Bl_Address.Getload looks (Groups["Mob"]) and where a
+    // spawn is matched by id and name (Groupsids, Groupsname). Neither preferred block is loaded on the boat (round 3),
+    // so every machine tries again once per map (DeterUpdate), and any loaded "Block_No..." being will do.
+    const string Deter = "Block_Flood_Deter";
+    static readonly string[] DeterLike = { "Block_Noplacement", "Block_Nobuild_Brittle" };
+    static Game_Mapvars deterMap;
+    static float deterSince, deterNext;
+    static bool deterDone;
+
+    public static bool HasDeter { get { return RWUtil.Load<Beingobject>("Mob", Deter) != null; } }
+
+    // Every machine, every frame: in each map, once a second for its first 30 s (its groups are still loading), until
+    // the stand-in exists; logs once.
+    public static void DeterUpdate()
+    {
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        if (vars == null)
+            return;
+        float now = Time.realtimeSinceStartup;
+        if (vars != deterMap) { deterMap = vars; deterSince = now; deterNext = now; deterDone = false; }
+        if (deterDone || now < deterNext)
+            return;
+        deterNext = now + 1f;
+        if (HasDeter) { deterDone = true; return; }
+        string got = StandIn();
+        if (HasDeter || now - deterSince > 30f)
+        {
+            deterDone = true;
+            RWLog.Info("on the map after " + RWUtil.F(now - deterSince) + " s: " + got);
+        }
+    }
+
+    static string StandIn()
+    {
+        if (HasDeter)
+            return Deter + " already loaded";
+        List<Bl_Address.Loadlist> mob;
+        if (!Bl_Address.Groups.TryGetValue("Mob", out mob))
+            return "no stand-in for " + Deter + " (no Mob items loaded)";
+        Beingobject like = null;
+        string seen = "";
+        foreach (string n in DeterLike)
+            if (like == null) like = RWUtil.Load<Beingobject>("Mob", n);
+        foreach (Bl_Address.Loadlist l in mob)
+            foreach (KeyValuePair<string, UnityEngine.Object> kv in l.Items)
+            {
+                if (!kv.Key.StartsWith("Block_")) continue;
+                if (seen.IndexOf(kv.Key + " ") < 0) seen += kv.Key + " ";
+                if (like == null && kv.Key.StartsWith("Block_No") && kv.Value is Beingobject) like = (Beingobject)kv.Value;
+            }
+        if (like == null)
+            return "no stand-in for " + Deter + " (loaded Block_ beings: " + (seen == "" ? "none" : RWUtil.Clip(seen.Trim())) + ")";
+        Beingobject copy = RWUtil.Clone(like, Deter);
+        Bl_Address.Loadlist list = new Bl_Address.Loadlist();
+        list.Loaded = true;
+        list.Percent = 100;
+        list.Items[Deter] = copy;
+        list.Uids[new FixedString64Bytes(copy.Id)] = copy;
+        list.Index.Add(copy);
+        mob.Add(list);
+        Bl_Address.Groupsids[new FixedString64Bytes(copy.Id)] = copy;
+        Bl_Address.Groupsname[new FixedString64Bytes(Deter)] = copy;
+        return Deter + " stood in by a copy of " + like.Objectname;
     }
 
     // ---------------------------------------------------------------- the map (host)
@@ -193,10 +222,14 @@ public static class RWWeather
         Preload(w);
         for (float t = 0f; !Loaded(w) && t < 60f; t += 0.5f)
             yield return new WaitForSecondsRealtime(0.5f);
+        while (w == RWChart.RisingWater && !HasDeter && !deterDone)
+            yield return new WaitForSecondsRealtime(0.5f);
         try
         {
             Announce(w, Display(w).ToUpperInvariant() + " ROLLS IN", 10f);
-            if (w == RWChart.RisingWater) Flood = SpawnFlood();
+            if (w == RWChart.RisingWater && !HasDeter)
+                RWLog.Warn("Rising Water: no " + Deter + " on this machine, so no flood (it would throw at every Tide and break the Tide loop)");
+            else if (w == RWChart.RisingWater) Flood = SpawnFlood();
             else if (w == RWChart.NestingGround) Nest = SpawnNest();
             RWLog.Info("weather " + Display(w) + " on " + node.Name + " (" + node.Plan + "): " + (w == RWChart.RisingWater ? "flood " + (Flood != null) : w == RWChart.NestingGround ? "nest " + (Nest != null) : "game speed from Tide " + QuickTide)
                 + ", +" + PureAuraPerTide + " Pure Aura a tide");

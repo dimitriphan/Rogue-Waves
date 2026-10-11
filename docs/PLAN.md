@@ -255,7 +255,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   loaded; W1 checks flooded tiles); handoff `RogueWavesMode_round2` waits on his OK. PC scope copy synced.
   Round 2 (05:17Z): 35 pass, 3 fail, all Rising Water: `Block_Flood_Deter` is in no group the game loads for
   Manafold or any mode. 0.1.2 stands in a copy of a stock no-build block; handoff `RogueWavesMode_round3`.
-- **Next:** the sea chart's PC round 3 (`RogueWavesMode_round3`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+  Round 3 (05:42Z): 35/3 again, no no-build block is loaded on the boat. 0.1.3 makes the stand-in in the map and
+  spawns no flood without it (the flood's throw would break the Tide loop); handoff `RogueWavesMode_round4`.
+- **Next:** the sea chart's PC round 4 (`RogueWavesMode_round4`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 

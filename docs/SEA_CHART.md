@@ -205,3 +205,6 @@ tile (W1 only checked the height then). Fixed in 0.1.1 with a stricter W1; round
 
 **Round 2 (0.1.1, 2026-10-11): 35 pass, 3 fail**, all Rising Water: `Block_Flood_Deter` is in no group Manafold or any
 stock mode loads. 0.1.2 stands a copy of a stock no-build block in under that name; round 3 checks it.
+
+**Round 3 (0.1.2): 35 pass, 3 fail**, the same three: no stock no-build block is loaded on the boat either. 0.1.3 makes
+the stand-in in the map and spawns no flood without one; round 4 checks it.

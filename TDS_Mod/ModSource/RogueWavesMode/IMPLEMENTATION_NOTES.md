@@ -1,5 +1,23 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.3 (2026-10-11): the stand-in is made in the map, and no flood without it
+
+**PC round 3** (0.1.2 self-test): **35 pass, 3 fail**, the same three Rising Water failures. The load now runs once
+(1 log line, was 192), but neither `Block_Noplacement` nor `Block_Nobuild_Brittle` is loaded on the boat, so no
+stand-in was made and the flood threw again. That throw unwinds through the `Wave` setter into `Mode_Normal.Run`,
+which drives the Tides, so a flood without its deter is not safe to leave on a map.
+
+0.1.3:
+
+- Every machine retries the stand-in once a second for each map's first 30 s, while the map's groups finish loading
+  (`RWWeather.DeterUpdate`), and takes any loaded `Block_No...` being if neither preferred one is there. It logs once:
+  "on the map after N s: Block_Flood_Deter stood in by a copy of ...", or the `Block_` beings it saw.
+- The host waits for that before spawning the flood, and **does not spawn it** if there is still no deter.
+- W0 for Rising Water now checks only `Main_Flood` (the deter can only exist in the map); W1 checks the flooding.
+
+If round 4 also finds no `Block_No...` being, the log lists the loaded `Block_` beings to build one from.
+
+
 ## 0.1.2 (2026-10-11): a stand-in for the flood's deter block
 
 **PC round 2** (0.1.1 self-test): **35 pass, 3 fail.** Every chart, save, Quickening and Nesting check passed (Nesting

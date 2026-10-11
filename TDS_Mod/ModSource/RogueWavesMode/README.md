@@ -2,8 +2,8 @@
 
 The Rogue Wave mode as a part of the pack (`docs/PACK.md`): prefab `RogueWaves_Mode_Default`, built and self-tested as
 the dev mod `RogueWavesModeMod`. It grows piece by piece (`docs/PLAN.md` Part C, Phase 5 pieces). **0.1.0
-(2026-10-10): the sea chart and sea weather** (`docs/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.2
-fix Rising Water's flooded tiles, which round 1 found missing (round 2: 35/3, all Rising Water; round 3 is next).
+(2026-10-10): the sea chart and sea weather** (`docs/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.3
+work on Rising Water's flooded tiles, which round 1 found missing (rounds 2-3: 35/3, all Rising Water; round 4 next).
 
 | File | What |
 | --- | --- |
