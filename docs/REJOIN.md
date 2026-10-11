@@ -6,8 +6,8 @@ to rejoin mid-game without interrupting the others.
 **Answer: a true mid-map rejoin works in this engine.** The game already keeps a dropped player's things and hands them
 back on return; the one hard block is that it shuts the lobby for the whole map. `RogueWavesMode` 0.2.0
 (`TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs`) opens it while a seat is empty and catches the rejoiner up.
-**State:** compiled here (release and self-test builds, 0 errors). Not run in game; the solo PC round is handoff
-`RogueWavesMode_round5`, and the real test needs a friend online (§6).
+**State:** solo PC round 5 passed 45 of 46 (R2: the game's loading screen shut the lobby the mod had just opened; 0.2.1 reopens it on the next frame); round 6 is handoff
+`RogueWavesMode_round6`, and the real test needs a friend online (§6).
 
 ## 1. What the game does today
 
@@ -34,7 +34,7 @@ Read from the decompiled game (kit `docs/13` §11; file names are its types, lin
   copied four times a second.
 - When a seat empties it says in chat: "*Name* lost the connection. Their vessel and towers wait for them: in Steam,
   right-click *Host* and pick Join Game." and **opens the lobby** (the game's own switch). The game's loading screen
-  can shut it again; the host checks every second.
+  can shut it again; the host checks every frame and opens it again (the loading screen ends about 10 s after the fly-in).
 - When the player comes back with the same `Sessionid`, it gives the seat back (vessel name, team, `Activeplayer` 1,
   stats, aura) and says "*Name* is back." The game itself hands their things back (`Playerconnected`).
 - Once every seat is filled, or the map ends, it **shuts the lobby** again. Someone who wasn't in the map is turned
@@ -88,14 +88,19 @@ cosmetic change the base game already makes on any drop: player colours follow j
 ## 5. Where the code is
 
 `TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs`, driven every frame from `00_RogueWavesModeMod.cs`; self-test
-probes R1-R6 in `99_SelfTest.cs`. Engine facts in kit `docs/15` §14.5.
+probes R1-R6 and R2b in `99_SelfTest.cs`. Engine facts in kit `docs/15` §14.5.
 
 ## 6. Tests
 
-**Solo PC round** (`RogueWavesMode_round5`, the round-4 run plus these, in the first map): R1 the host keeps a seat for
-each player; R2 a pretend empty seat opens the lobby, and filling it shuts it; R3 the drop is said in chat; R4 a seat
-given back restores aura, vessel name and `Activeplayer`; R5 a rejoiner finds the map's weather from the synced names;
-R6 the lobby is shut once the map ends.
+**Solo PC round** (`RogueWavesMode_round6`, the round-4 run plus these, in the first map once its loading screen has
+ended): R1 the host keeps a seat for each player; R2 a pretend empty seat opens the lobby, and filling it shuts it; R2b
+the lobby opens again on the next frame after the game shuts it (as its loading screen does); R3 the drop is said in
+chat; R4 a seat given back restores aura, vessel name and `Activeplayer`; R5 a rejoiner finds the map's weather from
+the synced names; R6 the lobby is shut once the map ends.
+
+Round 5 (0.2.0, 2026-10-11): 45 pass, 1 fail. R2 failed because the probe ran inside the first map's loading screen,
+whose end (`Game_Load`, "Loading 90%", about 10 s after the fly-in) shut the lobby less than a second after the mod opened
+it, and 0.2.0 only looked again a second later. 0.2.1 looks every frame and the probe waits for the loading screen.
 
 **Online, with a friend** (joins the online evening, `docs/RESEARCH_GAPS.md` §E):
 

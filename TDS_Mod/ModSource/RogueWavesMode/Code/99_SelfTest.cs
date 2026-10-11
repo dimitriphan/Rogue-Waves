@@ -1,6 +1,6 @@
 #if ROGUEWAVESMODE_SELFTEST
 // The PC round for the sea chart and sea weather (docs/SEA_CHART.md §5, probes C1-C6 and W1-W3) and the rejoin's solo
-// probes (docs/REJOIN.md §6, R1-R6), one launch,
+// probes (docs/REJOIN.md §6, R1-R6, R2b), one launch,
 // logged as "[RogueWavesMode] TEST PASS|FAIL|SETUP|INFO ..." and "TEST DONE" for Run-SelfTests.ps1:
 //   menu   presses Play like the player would (the game ignores injected input)
 //   boat   starts campaign Seed with three maps' weather forced (Rising Water, then Quickening Current, then Nesting
@@ -8,7 +8,7 @@
 //          chosen node by itself, C4 the node is picked and its map loads in Mode_RogueWave
 //   map    W1/W2/W3 the weather's object or speed reacts at the next Tide (forced), then the map is won and the party
 //          returns: C5 back on the chart with the route one longer, C6 the save holds no chart name; in the first map
-//          also R1-R5 the rejoin's host side with a pretend missing friend, and R6 the lobby shut once the map ends
+//          also R1-R5 and R2b the rejoin's host side with a pretend missing friend, and R6 the lobby shut once the map ends
 //   end    the campaign save round-trips through Continue, then the campaign is stopped and its keys removed
 public static class RWTest
 {
@@ -310,6 +310,11 @@ public static class RWTest
     {
         RWChart.Node node = RWCampaign.Chart.At(m + 1, route[m]);
         yield return new WaitForSecondsRealtime(1f);
+        // The loading screen shuts the lobby when it ends (Game_Load, "Loading 90%", 10 s after the fly-in; round 5
+        // probed inside that window). R2b plays that close on purpose; the rest wait until it has happened.
+        float t0 = Time.realtimeSinceStartup;
+        while (UnityEngine.Object.FindObjectOfType<Game_Load>() != null && Time.realtimeSinceStartup - t0 < 30f)
+            yield return null;
         int e0 = errors;
         Blm_Player me = Blm_Server.Instance.Localplayer;
         Tds_Clientinfo info = me.GetComponent<Tds_Clientinfo>();
@@ -323,8 +328,13 @@ public static class RWTest
         int lines0 = Blm_Ui_Chat.Instance != null && Blm_Ui_Chat.Instance.Chat != null ? Blm_Ui_Chat.Instance.Chat.Count : -1;
         const long Pretend = 990001;
         RWRejoin.Seats[Pretend] = new RWRejoin.Seat { Session = Pretend, Name = "Test friend", Hero = info.Hero.Value.ToString(), Info = info };
-        yield return new WaitForSecondsRealtime(2.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
         Check("R2 an empty seat opens the lobby", RWRejoin.DoorOpen && Blm_Multiplayer.Instance.Server_Serveropen, "Server_Serveropen " + open0 + " -> " + Blm_Multiplayer.Instance.Server_Serveropen);
+        Blm_Multiplayer_Remote.Instance.Changelobbystatus_ServerOnly("Closed");
+        Blm_Multiplayer.Instance.Server_Serveropen = false;
+        yield return null;
+        yield return null;
+        Check("R2b the lobby opens again after the game shuts it (as its loading screen does)", RWRejoin.DoorOpen && Blm_Multiplayer.Instance.Server_Serveropen, "Server_Serveropen " + Blm_Multiplayer.Instance.Server_Serveropen + " two frames after the game's close");
         int lines1 = Blm_Ui_Chat.Instance != null && Blm_Ui_Chat.Instance.Chat != null ? Blm_Ui_Chat.Instance.Chat.Count : -1;
         if (lines0 < 0) Setup("R3 the drop is said in chat", "no chat in the map");
         else Check("R3 the drop is said in chat", lines1 == lines0 + 1, "chat lines " + lines0 + " -> " + lines1 + (lines1 > 0 ? ": '" + Blm_Ui_Chat.Instance.Chat[lines1 - 1].Text + "'" : ""));

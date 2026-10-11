@@ -4,8 +4,8 @@ The Rogue Wave mode as a part of the pack (`docs/PACK.md`): prefab `RogueWaves_M
 the dev mod `RogueWavesModeMod`. It grows piece by piece (`docs/PLAN.md` Part C, Phase 5 pieces). **0.1.0
 (2026-10-10): the sea chart and sea weather** (`docs/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.3
 fix Rising Water's flooded tiles, which round 1 found missing; **round 4 passed 38/0** (2026-10-11). **0.2.0
-(2026-10-11): rejoining a running map** (`docs/REJOIN.md`), in every map while the pack is on; compiled, not run in
-game yet.
+(2026-10-11): rejoining a running map** (`docs/REJOIN.md`), in every map while the pack is on; PC round 5 passed 45/1 (2026-10-11), 0.2.1
+fixes the one failure (the lobby is reopened every frame); the drop and rejoin themselves wait for an online test.
 
 | File | What |
 | --- | --- |

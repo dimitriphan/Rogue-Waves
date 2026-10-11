@@ -386,8 +386,9 @@ questions. All **read**; RogueLab round 2's results are §15.
 - **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0, `docs/REJOIN.md` in the project):
   `Blm_Multiplayer_Remote.Instance.Changelobbystatus_ServerOnly("Open")` is public and takes a string, so it needs no
   Steamworks type (mods can't reference Steamworks); `Blm_Multiplayer.Instance.Server_Serveropen` is the public flag
-  the connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:311), so a
-  mod that keeps it open re-checks.
+  the connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:261,
+  "Loading 90%"), about 10 s after the fly-in and well after `Gameloaded` is true: verified on the PC (round 5,
+  2026-10-11), where it shut a lobby the mod had opened a moment before. A mod that keeps it open re-checks every frame.
 - **A late joiner** gets the running `Game` scene and every networked thing from Netcode, and the map's client start
   runs by itself (`Game_Client_Init.Initalize`, Game_Client_Init.cs:39-177: groups, local `Loaded`, the mode's client
   script). Each thing's client side waits for that `Loaded` (Entity_Master_Client.cs:138) and then 10 s for its being's

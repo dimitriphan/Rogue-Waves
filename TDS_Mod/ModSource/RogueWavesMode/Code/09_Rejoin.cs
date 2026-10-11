@@ -4,7 +4,7 @@
 // map, in any mode, while the pack is on:
 //   host       keeps a seat for each player who was in the map when it started, with their vessel, team and aura
 //              (copied four times a second). While a seat is empty, keeps the lobby open (the game's own loading
-//              screen shuts it again, so this checks every second); shuts it once everyone is back or the map ends.
+//              screen shuts it again, so this checks every frame); shuts it once everyone is back or the map ends.
 //              A returning player gets their seat back; anyone who wasn't in the map is turned away (they join on the
 //              boat). Says in chat who dropped and who is back.
 //   rejoiner   the game loads the running map and its things on its own (Game_Client_Init), but only the loading
@@ -53,7 +53,7 @@ public static class RWRejoin
 
     static Game_Mapvars hostMap;
     static bool hostRunning;
-    static float nextCopy, nextDoor;
+    static float nextCopy;
     static readonly List<long> turnedAway = new List<long>();
 
     static void Host()
@@ -135,9 +135,8 @@ public static class RWRejoin
             RWLog.Info("rejoin: " + seat.Name + " (session " + seat.Session + ") dropped, holding " + seat.Hero + ", " + Aura(seat.Aura));
         }
 
-        if (now < nextDoor)
-            return;
-        nextDoor = now + 1f;
+        // Checked every frame: the game's own loading screen shuts the lobby when it ends (Game_Load at "Loading 90%",
+        // 10 s after the fly-in, PC round 5), so a door opened early in a map is reopened on the next frame.
         bool want = false;
         foreach (Seat seat in Seats.Values) if (seat.Away) want = true;
         if (want && !Blm_Multiplayer.Instance.Server_Serveropen) Door(true, "a seat is empty");
