@@ -7,6 +7,7 @@
 //   06_Campaign.cs  the host's campaign: seed and route, in its save
 //   07_Weather.cs   Rising Water, Quickening Current, Nesting Ground: the stock map objects, put on chart maps
 //   08_Icons.cs     the weather icons
+//   09_Rejoin.cs    a player who drops can rejoin the running map (docs/REJOIN.md), in every map while the pack is on
 // Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button piece
 // (docs/MAIN_MENU_START.md, not built yet) or, in a self-test build, by 99_SelfTest.cs.
 // Build: Build-RogueWavesModeMod.ps1 [-Define ROGUEWAVESMODE_SELFTEST].
@@ -76,6 +77,7 @@ public class RogueWavesModeMod : MonoBehaviour
         try { ModKitTides.Update(); } catch (Exception e) { RWLog.Once("tides", "tides: " + e); }
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
         try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }
+        try { RWRejoin.Update(); } catch (Exception e) { RWLog.Once("rejoin", "rejoin: " + e); }
 #if ROGUEWAVESMODE_SELFTEST
         try { RWTest.Update(); } catch (Exception e) { RWLog.Once("test", "self-test: " + e); }
 #endif
@@ -85,7 +87,7 @@ public class RogueWavesModeMod : MonoBehaviour
 public static class RWData
 {
     public const string Part = "Mode";
-    public const string Version = "0.1.3";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather
+    public const string Version = "0.2.1";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather; 0.2: rejoin
     public const string Mode = "Mode_RogueWave";         // the mode's entry, group and Modeobject name
     public const string ModeDisplay = "Rogue Wave";
     public const string StockMode = "Mode_Normal";

@@ -1,3 +1,5 @@
 | Bug Fix |
 	Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
 	/ Fix is built into the pack's shared code and runs with Argo. Not yet seen working in game: play Boutman, let Boutbro spawn, die, then press F after respawn. \
+	A player who loses the connection during a map has no way back in: the game shuts the lobby for the whole map. Rejoining mid-map must not interrupt the others. (Dimitri, 2026-10-11)
+	/ Fix is built into the pack's mode part (docs/REJOIN.md): the host keeps each player's seat (vessel, towers, aura) and opens the lobby while a seat is empty; the dropped player comes back with Join Game on the host in Steam. Not yet seen working in game: needs a friend online. \

@@ -1,5 +1,49 @@
 # RogueWavesMode: implementation notes
 
+## 0.2.1 (2026-10-11): the lobby is reopened every frame
+
+**PC round 6** (0.2.1 self-test, 2026-10-11): **47 pass, 0 fail, 0 setup.** R2 "Server_Serveropen False -> True";
+R2b open again two frames after the game's close; R1, R3-R6 and every round-4 check pass. The same six game-only
+exception lines as round 5. Still only online: O1-O8 (`docs/REJOIN.md` §6).
+
+**PC round 5** (0.2.0 self-test, 2026-10-11): **45 pass, 1 fail, 0 setup.** Every round-4 check passed again, and R1,
+R3, R4, R5, R6 and the second half of R2 passed. R2 failed: the mod opened the lobby ("rejoin: lobby opened"), then
+the game's loading screen ended ("Loading 90%", `Game_Load` removing the Gameloading scene with `Lobbystate` "Closed",
+about 10 s after the fly-in) and shut it, and 0.2.0 only looked again a second later. So a drop early in a map left
+the lobby shut for up to a second. 0.2.1 checks the door every frame; the probe waits until `Game_Load` is gone, and a
+new R2b shuts the lobby the way the game does and checks it is open two frames later. Six exception lines, all with
+only game frames in their stacks: 3 `Macro_Setupui.Mapselected` `OperationCanceledException` (just after a map is
+picked) and 3 `Blu2_Menu_Handler.Animin` `NullReferenceException` (just after a won map is sailed). Game `Assembly-CSharp.dll` on the PC matches the cloud copy
+(SHA256 fb80f939...). Compiled here (release and self-test: 0 errors).
+
+## 0.2.0 (2026-10-11): rejoining a running map
+
+Dimitri asked for a way back into a running map for a player whose connection drops. Design, what comes back and the
+online checks: `docs/REJOIN.md`. Engine facts: kit `docs/15` §14.5. **State:** compiled here (release and
+`ROGUEWAVESMODE_SELFTEST`: 0 errors; editor builder unchanged and clean). **Not run in game.** Solo PC round
+`RogueWavesMode_round5` (the round-4 run plus R1-R6 in the first map); the drop and rejoin themselves need a friend
+online (`REJOIN.md` §6, O1-O8).
+
+`Code/09_Rejoin.cs` (`RWRejoin`), every frame:
+
+- **Host:** a `Seat` per `Sessionid` in the map once `Gameloaded` is true (vessel name, team, aura, stats, name;
+  copied every 0.25 s). A seat missing from `Blm_Server.Sessionids` is away: a chat line, and the lobby opens
+  (`Changelobbystatus_ServerOnly("Open")` plus `Server_Serveropen`, re-checked every second because `Game_Load` shuts
+  it at the end of its loading screen). A seat's `Sessionid` back with a new `Tds_Clientinfo` gets `Restore`. The lobby
+  shuts when every seat is filled or `Gamecomplete` leaves "Running"; when the map is simply gone the boat's own scene
+  change has opened it, so nothing is shut then. A `Sessionid` with no seat is kicked (`Kickclient`) with a chat line.
+- **Rejoiner:** late if `Game_Init` spawns with `Gameloaded` already true. Preloads the map's weather
+  (`MapWeather`: chart name + Gameplan), loads each player's vessel group once its `Hero` is known (its own arrives with the seat), and once the local
+  `Loaded` is true calls `Setintroposition` and `Startvisuals(false)`. If `Gametimescale` is still false 15 s later it
+  frees the camera and HUD by hand and follows the game speed itself (`Bl_Camera` is internal, so the camera can't be
+  switched from a mod).
+- **Dropped client:** a connection that ends while `Gamecomplete` is "Running" adds a "Lost the map ... Join Game"
+  line to `Multiplayererror` a frame after the game's own "Disconnected", so the main menu shows it.
+
+What only the game can tell: whether Steam's Join Game reaches a lobby reopened mid-map (O2), the rejoiner's vessel and
+weather visuals inside the 10 s group window (O3, O7), and any hitch for the others while Netcode sends the map (O6).
+
+
 ## 0.1.3 (2026-10-11): the stand-in is made in the map, and no flood without it
 
 **PC round 4** (0.1.3 self-test, 2026-10-11): **38 pass, 0 fail, 0 setup.** The broader "Block_No..." match found

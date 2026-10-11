@@ -3,7 +3,9 @@
 The Rogue Wave mode as a part of the pack (`docs/PACK.md`): prefab `RogueWaves_Mode_Default`, built and self-tested as
 the dev mod `RogueWavesModeMod`. It grows piece by piece (`docs/PLAN.md` Part C, Phase 5 pieces). **0.1.0
 (2026-10-10): the sea chart and sea weather** (`docs/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.3
-fix Rising Water's flooded tiles, which round 1 found missing; **round 4 passed 38/0** (2026-10-11).
+fix Rising Water's flooded tiles, which round 1 found missing; **round 4 passed 38/0** (2026-10-11). **0.2.0
+(2026-10-11): rejoining a running map** (`docs/REJOIN.md`), in every map while the pack is on; **0.2.1 PC round 6 passed 47/0** (2026-10-11; round 5's one
+failure fixed: the lobby is reopened every frame); the drop and rejoin themselves wait for an online test.
 
 | File | What |
 | --- | --- |
@@ -16,6 +18,7 @@ fix Rising Water's flooded tiles, which round 1 found missing; **round 4 passed 
 | `Code/06_Campaign.cs` | the host's campaign: seed and route in the save; `New`, `Continue`, `Stop` |
 | `Code/07_Weather.cs` | Rising Water, Quickening Current, Nesting Ground |
 | `Code/08_Icons.cs` | the weather icons for the warning popup |
+| `Code/09_Rejoin.cs` | a dropped player rejoins the running map: the host keeps seats and opens the lobby while one is empty; the rejoiner starts its camera, HUD, vessel and weather |
 | `Code/99_SelfTest.cs` | the PC round (`ROGUEWAVESMODE_SELFTEST` only) |
 | `Build-RogueWavesModeMod.ps1` | joins the code with the kit (`RogueWavesModeKit`), compile-checks it on the PC |
 | `../../Assets/RogueWavesModeMod/Editor/RogueWavesModeModPrefab.cs` | Tools > RogueWavesMode: Build Mod Prefab, Export Mod |
