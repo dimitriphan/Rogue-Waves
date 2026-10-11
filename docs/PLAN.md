@@ -195,9 +195,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
   rounds passed). A quality check of every lesson and resource (2026-10-11, `docs/QUALITY_CHECK_2026-10-11.md`) fixed
   the stale and wrong lines in place. Older entries are in "Log" below.
-- **Next:** Dimitri answers the three scope questions below (Q1-Q3); the in-map vote and the main-menu button are
-  Phase 5's next pieces; by hand, the F-key check, the button's look and the chart's and a flooded map's look; one
-  online evening (`RESEARCH_GAPS.md` §E). Left on Argo: his balance pass (his call).
+- **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
+  F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
+  Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -361,6 +361,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   **Cardinals stack with no limit**; a **new objective every break**, team objectives pay every player in full;
   Fertilize stays Direction-only; a bonus tide still pays 2 (`docs/SCOPE_REVIEW_2026-10-10.md`).
 - 2026-10-11 (user, card): **dying in a bonus tide counts as a won map**: no retry spent, the tide in progress pays nothing.
+- 2026-10-11 (user, quality check Q1-Q3): **Cardinals scale forever**: no limit on Team or Vessel Cardinals (no cap of 8;
+  past the HUD row's 8 counters the mode shows Team Cardinals another way, settled when the shop is built); Cardinals
+  split into **Team** and **Vessel** (was Personal). A dropped friend can rejoin the running map (`04`). The scope
+  review's six wording fixes are folded in (#8, #17, #21, #30, #32, #52).
 
 ### Open questions
 
@@ -368,9 +372,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| Q1 | `12_Cardinals`: Team Cardinals hold "at most 8" slots, but Cardinals "stack with no limit". Does each copy of a stacked Team Cardinal take a slot? | Copies share one slot, so at most 8 different Team Cardinals |
-| Q2 | `04_Rogue_Wave_Mode` line 9: a dropped friend "sits out the rest of that map", but the rejoin (`03`, `docs/REJOIN.md`) brings them back in | Reword: they can rejoin the running map; a drop while it loads comes back on the boat |
-| Q3 | Fold the scope review's six wording fixes into the scope files (`SCOPE_REVIEW_2026-10-10.md` #8, #17, #21, #30, #32, #52)? | Yes |
+| - | none open | |
 
 ### Phase 5 pieces
 

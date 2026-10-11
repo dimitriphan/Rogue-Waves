@@ -25,7 +25,7 @@
 			- Similar to garages, sends multiple {Stitched} to run down lane until they land at targeted location where they then idle until seeing an enemy.
 			- Different upgrade paths stem from one building, turning {Stitched} into {Darts} / Similar to Boutman's fish \
 			- Buildings and upgrades cost aura, but minions cost thread.
-			- Not very smart, once they're set to a location they stay there until death. Can manually be {Unthread} by [Spool].
+			- Not very smart, once they're set to a location they stay there until death. Can manually be {Unthread} by Spool.
 				% Aggressive and cheaper melee minions, or squishy but expensive ranged minions
 				% Can detonate themselves on death, creating an AOE explosion
 		(Minion):{Thread Head} / Works like Boutman's fish \

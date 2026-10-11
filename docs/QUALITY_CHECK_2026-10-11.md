@@ -48,7 +48,11 @@ below. Three scope questions need Dimitri (§3); a few calls are left for later 
   as unused code or 1.4.0 history.
 - Kit 1.6 everywhere; every `kit/Shared` header matches the version table.
 
-## 3. Questions for Dimitri (also `docs/PLAN.md` Part C "Open questions")
+## 3. Questions for Dimitri (answered 2026-10-11 21:54Z, folded in)
+
+His answers: (1) Cardinals scale forever without limit, split into Team Cardinals and Vessel Cardinals (was
+"Personal"); (2) yes; (3) yes. `docs/scope/04`, `05`, `06`, `08`, `10`, `12` and `14` now carry them, and the smaller
+wording below too.
 
 | # | Question | Default |
 | --- | --- | --- |
