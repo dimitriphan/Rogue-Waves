@@ -1,14 +1,14 @@
 // Sea weather (docs/scope/05 [Sea Weather]; docs/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
 // the chart, shown on its island and in the Setup panel, announced when the map starts, and paid for in extra Pure Aura.
 // Each rides on a stock map object the game only puts on one map (kit docs/16 §3), spawned by the host at map start:
-//   Rising Water        Main_Flood (Map_Manafold's): the water climbs each Tide, flooded tiles can't be built on
+//   Rising Water        Main_Flood (3_Manafold's): the water climbs each Tide, flooded tiles can't be built on
 //                       (Block_Flood_Deter), shots through the water slow
 //   Quickening Current  the host sets the networked game speed (Game_Mapvars.Time_Scale) to x1.25 from Tide 5 and x1.5
 //                       from Tide 10, as Main_Chrono does on Map_Chrono, with the same warning popup
-//   Nesting Ground      Tower_Halberdnest (Map_Vultures'): a nest near an enemy core that grows each Tide and sends a
+//   Nesting Ground      Tower_Halberdnest (3_Vultures'): a nest near an enemy core that grows each Tide and sends a
 //                       Halberd every few Tides
-// A map object's being lives in its map's groups, which only that map loads: every machine loads the group from the
-// boat once the weather's map is picked (RWBoat), and a map object never unsubscribes from Tides (docs/16 §3), so it
+// A map object's being (and every being it spawns, Needs) lives in its home Gameplan's groups, which only that map
+// loads: every machine loads those groups from the boat once the weather's map is picked (RWBoat), and a map object never unsubscribes from Tides (docs/16 §3), so it
 // stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); the Pure Aura counter is a later piece.
 public static class RWWeather
 {
@@ -36,9 +36,28 @@ public static class RWWeather
     }
 
     static string Being(int w) { return w == RWChart.RisingWater ? "Main_Flood" : w == RWChart.NestingGround ? "Tower_Halberdnest" : ""; }
-    static string Home(int w) { return w == RWChart.RisingWater ? "Map_Manafold" : w == RWChart.NestingGround ? "Map_Vultures" : ""; }
+    static string Home(int w) { return w == RWChart.RisingWater ? "3_Manafold" : w == RWChart.NestingGround ? "3_Vultures" : ""; }
 
-    public static bool Loaded(int w) { string b = Being(w); return b == "" || RWUtil.Load<Beingobject>("Mob", b) != null; }
+    // Every being the weather's map object spawns must be loaded too: the flood fetches Block_Flood_Deter by name at
+    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1: water rose, no tile flooded).
+    static string[] Needs(int w)
+    {
+        switch (w)
+        {
+            case RWChart.RisingWater: return new string[] { "Main_Flood", "Block_Flood_Deter" };
+            case RWChart.NestingGround: return new string[] { "Tower_Halberdnest", "Enemy_Halberd" };
+        }
+        return new string[0];
+    }
+
+    static string Missing(int w)
+    {
+        string m = "";
+        foreach (string b in Needs(w)) if (RWUtil.Load<Beingobject>("Mob", b) == null) m += (m == "" ? "" : ", ") + b;
+        return m;
+    }
+
+    public static bool Loaded(int w) { return Missing(w) == ""; }
 
     // ---------------------------------------------------------------- loading (every machine)
 
@@ -50,20 +69,35 @@ public static class RWWeather
         RogueWavesModeMod.Instance.StartCoroutine(Load(w));
     }
 
-    static IEnumerator Load(int w)
+    // The groups the home Gameplan loads, in the game's order: the map's sub-loads, the map, then its mode (the game
+    // loads the mode's group with the map, and a stock mode's group can hold beings too); last, every stock mode's.
+    static List<string> Groups(int w)
     {
-        string being = Being(w);
-        Mapentryobject map = RWUtil.Item<Mapentryobject>("Map", Home(w));
         List<string> groups = new List<string>();
+        Gameplandatabaseobject plan = RWUtil.Item<Gameplandatabaseobject>("Gameplan", Home(w));
+        Mapentryobject map = plan != null ? plan.Map : null;
         if (map != null)
         {
-            foreach (Bl_Address_Group g in map.Subloads) if (g != null) groups.Add(g.Objectname);
-            if (map.Maploads != null) groups.Add(map.Maploads.Objectname);
+            foreach (Bl_Address_Group g in map.Subloads) if (g != null && !groups.Contains(g.Objectname)) groups.Add(g.Objectname);
+            if (map.Maploads != null && !groups.Contains(map.Maploads.Objectname)) groups.Add(map.Maploads.Objectname);
         }
-        string from = "";
-        foreach (string g in groups)
+        if (plan != null && plan.Mode != null && plan.Mode.Modeloads != null && !groups.Contains(plan.Mode.Modeloads.Objectname))
+            groups.Add(plan.Mode.Modeloads.Objectname);
+        foreach (string m in RWMode.StockModes)
         {
-            if (Loaded(w)) break;
+            Modeentryobject mode = RWUtil.Item<Modeentryobject>("Mode", m);
+            if (mode != null && mode.Modeloads != null && !groups.Contains(mode.Modeloads.Objectname)) groups.Add(mode.Modeloads.Objectname);
+        }
+        return groups;
+    }
+
+    static IEnumerator Load(int w)
+    {
+        string from = "";
+        foreach (string g in Groups(w))
+        {
+            string before = Missing(w);
+            if (before == "") break;
             Bl_Address.Loadgroup group = null;
             try { group = Bl_Address.Load(g); }
             catch (Exception e) { RWLog.Warn("loading " + g + ": " + e.Message); }
@@ -73,10 +107,20 @@ public static class RWWeather
                 waited += Time.unscaledDeltaTime;
                 yield return null;
             }
-            from += (from == "" ? "" : ", ") + g + (group != null && group.Loaded ? "" : " (not loaded)");
+            string after = Missing(w);
+            from += (from == "" ? "" : ", ") + g + (group != null && group.Loaded ? "" : " (not loaded)") + (after != before ? " [found " + Found(before, after) + "]" : "");
         }
-        RWLog.Info("weather " + Display(w) + ": " + being + " " + (Loaded(w) ? "ready" : "MISSING") + " after loading " + (from == "" ? "nothing" : from));
+        string missing = Missing(w);
+        RWLog.Info("weather " + Display(w) + ": " + (missing == "" ? "ready" : "MISSING " + missing) + " after loading " + (from == "" ? "nothing" : from));
         loading.Remove(w);
+    }
+
+    static string Found(string before, string after)
+    {
+        string f = "";
+        foreach (string b in before.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries))
+            if (("," + after.Replace(" ", "") + ",").IndexOf("," + b + ",") < 0) f += (f == "" ? "" : " ") + b;
+        return f;
     }
 
     // ---------------------------------------------------------------- the map (host)
@@ -207,7 +251,7 @@ public static class RWWeather
         return null;
     }
 
-    static string Stats(Entity_Master e, params string[] names)
+    public static string Stats(Entity_Master e, params string[] names)
     {
         string s = "";
         foreach (string n in names)

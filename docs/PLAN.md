@@ -249,7 +249,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/scope/05` with its numbers as a NEEDS line. Compiled here, **not run in game**: its PC round (C1-C6, W0-W3,
   `docs/SEA_CHART.md` §9) is handoff `RogueWavesMode_round1`, waiting on Dimitri's OK sentence. Until the in-map vote
   exists, the leader steers with the boat's arrows (only the linked maps can be picked).
-- **Next:** the sea chart's PC round (`RogueWavesMode_round1`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+- **Also (2026-10-11 04:15Z):** PC round 1 ran on Dimitri's "Go": **34 pass, 0 fail**. The chart, the boat's sailing,
+  the pick, the map loading in the mode, the return one row on and the save all work in game. One bug: Rising Water's
+  deter blocks were never loaded, so the water rose but flooded nothing. Fixed in 0.1.1 (every needed being is
+  loaded; W1 checks flooded tiles); handoff `RogueWavesMode_round2` waits on his OK. PC scope copy synced.
+- **Next:** the sea chart's PC round 2 (`RogueWavesMode_round2`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 

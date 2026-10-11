@@ -187,12 +187,18 @@ lowers Quickening to Tides 1 and 2. Every boat probe of §5 but C7 (online) and 
 | C3 | after `RWCampaign.Choice` is set, the boat sails to the node by itself and stops at its dock (time logged) |
 | C4 | the node is picked, the Setup panel opens with its `RW_` twin in `Mode_RogueWave`, and Start loads the map in that mode |
 | W0 | the weather's objects are loaded from the boat |
-| W1 | Rising Water spawns and the water climbs at the next Tide (height and flooded tiles logged) |
+| W1 | Rising Water spawns, the water climbs at the next Tide and floods the low tiles (`Block_Flood_Deter` appears) |
 | W2 | Quickening Current sets the game speed to 1.25, then 1.5 |
 | W3 | Nesting Ground spawns and sends a Halberd at the next Tide |
+| W | no error is logged while each weather runs |
 | C5 | a won map is sailed; back on the boat the party is on the next chart, the boat at the node just won |
 | C6 | after a map click's save write, the save holds no chart name |
 | save | the campaign's seed and route are in the save, `Continue` reads them back, `Stop` removes them |
 
 The boot log also prints every chart line (`CHART ...`) and the map pool (`POOL ...`): `python3
 concept-tools/sea_chart.py --check 20261009` must print the same chart lines.
+
+**Round 1 (0.1.0, 2026-10-11): 34 pass, 0 fail.** Every boat probe and the save passed in game, and the chart lines
+matched the Python. It found one bug: Rising Water's deter blocks were never loaded, so the water rose but flooded no
+tile (W1 only checked the height then). Fixed in 0.1.1 with a stricter W1; round 2 checks it
+(`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`).

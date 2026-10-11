@@ -118,7 +118,8 @@ one section per mechanic, each check a single measurable fact with the measured 
 - `Could not retrieve <label>/<name> The GROUP exists, but item does not`: a name you use isn't registered.
 - Exceptions: group by stack trace; anything mentioning your classes is yours.
 - Baseline noise (not from mods): UniTask `OperationCanceledException` in `Macro_Setupui.Mapselected` (the harness
-  leaves map select early) or `Mode_Normal.Run`, NRE in `Tds_Clientinfo.Newscene` on disconnect, `Bla_Ambient` NREs at
+  leaves map select early) or `Mode_Normal.Run`, NRE in `Blu2_Menu_Handler.Animin` on the way back to the boat
+  after a won map (RogueWavesMode round 1), NRE in `Tds_Clientinfo.Newscene` on disconnect, `Bla_Ambient` NREs at
   quit, "Empty Load List!!", a missing Music System script, DOTween safe mode, `Bla_Ui_Mods.Populate` cancel when the
   Mods menu opens.
 

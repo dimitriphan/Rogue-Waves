@@ -77,10 +77,9 @@ public static class RWMode
     }
 
     // The game's six modes (RogueLab round 1); Gameplans in other mods' modes are left alone.
-    static bool IsStockMode(string mode)
-    {
-        return mode == "Mode_Normal" || mode == "Mode_Storm" || mode == "Mode_Drought" || mode == "Mode_Tsunami" || mode == "Mode_Final" || mode == "Mode_Tutorial";
-    }
+    public static readonly string[] StockModes = { "Mode_Normal", "Mode_Storm", "Mode_Drought", "Mode_Tsunami", "Mode_Final", "Mode_Tutorial" };
+
+    static bool IsStockMode(string mode) { return Array.IndexOf(StockModes, mode) >= 0; }
 
     public static string Twin(string stockPlan) { return RWUtil.Clip(RWData.PlanPrefix + stockPlan); }
 

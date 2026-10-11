@@ -256,6 +256,7 @@ public static class RWTest
         Game_Mapvars vars = Game_Mapvars.Instance;
         yield return Until(() => RWWeather.Current == node.Weather && (node.Weather == RWChart.QuickeningCurrent || RWWeather.Flood != null || RWWeather.Nest != null), 75f);
         yield return new WaitForSeconds(1f);
+        int e0 = errors;
         switch (node.Weather)
         {
             case RWChart.RisingWater:
@@ -267,7 +268,9 @@ public static class RWTest
                 yield return Tide(vars, 1);
                 yield return new WaitForSeconds(6.5f);
                 float y1 = flood != null ? flood.Entityposition.Value.y : y0;
-                Check("W1 the water climbs at the next Tide", y1 > y0 + 0.05f, "y " + RWUtil.F(y0) + " -> " + RWUtil.F(y1) + ", flooded tiles " + d0 + " -> " + RWUtil.Count("Block_Flood_Deter") + ", Wave " + vars.Wave.Value);
+                int d1 = RWUtil.Count("Block_Flood_Deter");
+                Check("W1 the water climbs at the next Tide", y1 > y0 + 0.05f, "y " + RWUtil.F(y0) + " -> " + RWUtil.F(y1) + ", Wave " + vars.Wave.Value + (flood != null ? RWWeather.Stats(flood, "Maxheight", "Heightspeed", "Projslow") : ""));
+                Check("W1 the risen water floods the low tiles", d1 > d0, "flooded tiles " + d0 + " -> " + d1);
                 break;
             }
             case RWChart.QuickeningCurrent:
@@ -294,6 +297,7 @@ public static class RWTest
                 break;
             }
         }
+        Check("W map " + (m + 1) + ": no error while " + RWWeather.Display(node.Weather) + " ran", errors == e0, (errors - e0) + " error lines");
     }
 
     // Runs the timer out until the game reaches Wave 'wave', then holds it.
