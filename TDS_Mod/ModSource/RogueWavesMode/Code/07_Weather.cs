@@ -1,0 +1,220 @@
+// Sea weather (docs/scope/05 [Sea Weather]; docs/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
+// the chart, shown on its island and in the Setup panel, announced when the map starts, and paid for in extra Pure Aura.
+// Each rides on a stock map object the game only puts on one map (kit docs/16 §3), spawned by the host at map start:
+//   Rising Water        Main_Flood (Map_Manafold's): the water climbs each Tide, flooded tiles can't be built on
+//                       (Block_Flood_Deter), shots through the water slow
+//   Quickening Current  the host sets the networked game speed (Game_Mapvars.Time_Scale) to x1.25 from Tide 5 and x1.5
+//                       from Tide 10, as Main_Chrono does on Map_Chrono, with the same warning popup
+//   Nesting Ground      Tower_Halberdnest (Map_Vultures'): a nest near an enemy core that grows each Tide and sends a
+//                       Halberd every few Tides
+// A map object's being lives in its map's groups, which only that map loads: every machine loads the group from the
+// boat once the weather's map is picked (RWBoat), and a map object never unsubscribes from Tides (docs/16 §3), so it
+// stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); the Pure Aura counter is a later piece.
+public static class RWWeather
+{
+    public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/05)
+    public static int QuickTide = 5, QuickerTide = 10;   // the self-test lowers them
+    public const float Quick = 1.25f, Quicker = 1.5f;
+
+    public static int Current;                  // the weather of the map being played (host), Calm otherwise
+    public static Entity_Master Flood, Nest;
+    public static float FloodStart;
+    static int speedStep;
+    static readonly Dictionary<int, string> loading = new Dictionary<int, string>();
+
+    public static string Display(int w) { return w >= 0 && w < RWChart.WeatherNames.Length ? RWChart.WeatherNames[w] : "?"; }
+
+    public static string Short(int w)
+    {
+        switch (w)
+        {
+            case RWChart.RisingWater: return "the water climbs each tide. More Pure Aura";
+            case RWChart.QuickeningCurrent: return "the tides run faster later on. More Pure Aura";
+            case RWChart.NestingGround: return "a halberd nest grows by the enemy. More Pure Aura";
+        }
+        return "";
+    }
+
+    static string Being(int w) { return w == RWChart.RisingWater ? "Main_Flood" : w == RWChart.NestingGround ? "Tower_Halberdnest" : ""; }
+    static string Home(int w) { return w == RWChart.RisingWater ? "Map_Manafold" : w == RWChart.NestingGround ? "Map_Vultures" : ""; }
+
+    public static bool Loaded(int w) { string b = Being(w); return b == "" || RWUtil.Load<Beingobject>("Mob", b) != null; }
+
+    // ---------------------------------------------------------------- loading (every machine)
+
+    public static void Preload(int w)
+    {
+        if (Loaded(w) || loading.ContainsKey(w) || RogueWavesModeMod.Instance == null)
+            return;
+        loading[w] = "";
+        RogueWavesModeMod.Instance.StartCoroutine(Load(w));
+    }
+
+    static IEnumerator Load(int w)
+    {
+        string being = Being(w);
+        Mapentryobject map = RWUtil.Item<Mapentryobject>("Map", Home(w));
+        List<string> groups = new List<string>();
+        if (map != null)
+        {
+            foreach (Bl_Address_Group g in map.Subloads) if (g != null) groups.Add(g.Objectname);
+            if (map.Maploads != null) groups.Add(map.Maploads.Objectname);
+        }
+        string from = "";
+        foreach (string g in groups)
+        {
+            if (Loaded(w)) break;
+            Bl_Address.Loadgroup group = null;
+            try { group = Bl_Address.Load(g); }
+            catch (Exception e) { RWLog.Warn("loading " + g + ": " + e.Message); }
+            float waited = 0f;
+            while (group != null && !group.Loaded && waited < 120f)
+            {
+                waited += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            from += (from == "" ? "" : ", ") + g + (group != null && group.Loaded ? "" : " (not loaded)");
+        }
+        RWLog.Info("weather " + Display(w) + ": " + being + " " + (Loaded(w) ? "ready" : "MISSING") + " after loading " + (from == "" ? "nothing" : from));
+        loading.Remove(w);
+    }
+
+    // ---------------------------------------------------------------- the map (host)
+
+    public static void MapStart()
+    {
+        Current = RWChart.Calm;
+        Flood = Nest = null;
+        speedStep = 0;
+        RWChart.Node node = RWCampaign.Next;
+        if (!RWCampaign.Active || node == null)
+            return;
+        string plan = Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString();
+        if (plan != RWMode.Twin(node.Plan)) { RWLog.Warn("map " + plan + " is not the chart's " + RWMode.Twin(node.Plan) + ": no weather"); return; }
+        if (node.Weather == RWChart.Calm)
+            return;
+        Current = node.Weather;
+        RogueWavesModeMod.Instance.StartCoroutine(Begin(node));
+    }
+
+    static IEnumerator Begin(RWChart.Node node)
+    {
+        int w = node.Weather;
+        yield return new WaitForSeconds(2f);
+        Preload(w);
+        for (float t = 0f; !Loaded(w) && t < 60f; t += 0.5f)
+            yield return new WaitForSecondsRealtime(0.5f);
+        try
+        {
+            Announce(w, Display(w).ToUpperInvariant() + " ROLLS IN", 10f);
+            if (w == RWChart.RisingWater) Flood = SpawnFlood();
+            else if (w == RWChart.NestingGround) Nest = SpawnNest();
+            RWLog.Info("weather " + Display(w) + " on " + node.Name + " (" + node.Plan + "): " + (w == RWChart.RisingWater ? "flood " + (Flood != null) : w == RWChart.NestingGround ? "nest " + (Nest != null) : "game speed from Tide " + QuickTide)
+                + ", +" + PureAuraPerTide + " Pure Aura a tide");
+        }
+        catch (Exception e) { RWLog.Warn("weather " + Display(w) + ": " + e); }
+    }
+
+    public static void Tide(int wave)
+    {
+        if (Current != RWChart.QuickeningCurrent || Game_Mapvars.Instance == null)
+            return;
+        if (wave >= QuickerTide && speedStep < 2)
+        {
+            speedStep = 2;
+            Game_Mapvars.Instance.Time_Scale.Value = Quicker;
+            Announce(RWChart.QuickeningCurrent, "THE CURRENT RACES", 10f);
+        }
+        else if (wave >= QuickTide && speedStep < 1)
+        {
+            speedStep = 1;
+            Game_Mapvars.Instance.Time_Scale.Value = Quick;
+            Announce(RWChart.QuickeningCurrent, "THE CURRENT QUICKENS", 10f);
+        }
+    }
+
+    public static void MapEnd(string result)
+    {
+        if (Current == RWChart.QuickeningCurrent && Game_Mapvars.Instance != null)
+            Game_Mapvars.Instance.Time_Scale.Value = 1f;
+        Current = RWChart.Calm;
+    }
+
+    // The warning popup on every machine, through an entity's radio (kit docs/15 §18.2).
+    static void Announce(int w, string text, float seconds)
+    {
+        Entity_Master by = null;
+        foreach (Entity_Master e in RWUtil.EnemyCores()) { by = e; break; }
+        if (by == null || by.Radio == null) { RWLog.Warn("no enemy core to announce '" + text + "'"); return; }
+        by.Radio.Uiwarning_ClientRpc(text, RWIcons.For(w), seconds);
+    }
+
+    // The water starts just under the map's lowest ground, in the middle of the map, and climbs from there.
+    static Entity_Master SpawnFlood()
+    {
+        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Main_Flood");
+        List<Genitem> ground = RWUtil.Ground();
+        if (being == null || ground.Count == 0) { RWLog.Warn("Rising Water: being " + (being != null) + ", " + ground.Count + " ground tiles"); return null; }
+        float minY = float.MaxValue;
+        Vector3 lo = new Vector3(float.MaxValue, 0f, float.MaxValue), hi = new Vector3(float.MinValue, 0f, float.MinValue);
+        foreach (Genitem g in ground)
+        {
+            minY = Mathf.Min(minY, g.Position.y);
+            lo = Vector3.Min(lo, g.Position);
+            hi = Vector3.Max(hi, g.Position);
+        }
+        Vector3 at = new Vector3((lo.x + hi.x) / 2f, minY - 1f, (lo.z + hi.z) / 2f);
+        Link_Being made = Helper_Entitytools.Spawn(being, at, null, false, Link_Spawn.Spawnstyles.Forced, null);
+        Entity_Master flood = made != null ? made.Worldobject : null;
+        FloodStart = at.y;
+        if (flood != null)
+            RWLog.Info("Rising Water at " + RWUtil.V(at) + " (map " + RWUtil.V(lo) + " to " + RWUtil.V(hi) + "), team " + flood.Entitydata.Value.Team + Stats(flood, "Maxheight", "Halfheight", "Quarterheight", "Heightspeed", "Halfheightspeed", "Quarterheightspeed", "Projslow"));
+        return flood;
+    }
+
+    // A nest on a free tile 3 to 7 tiles from an enemy core, on the core's team, as a child of the core like Tide foes.
+    static Entity_Master SpawnNest()
+    {
+        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
+        List<Entity_Master> cores = RWUtil.EnemyCores();
+        if (being == null || cores.Count == 0) { RWLog.Warn("Nesting Ground: being " + (being != null) + ", " + cores.Count + " enemy cores"); return null; }
+        Entity_Master core = cores[0];
+        Vector3 c = core.Entityposition.Value;
+        int team = core.Entitydata.Value.Team;
+        List<Genitem> ground = RWUtil.Ground();
+        ground.Sort((a, b) => Mathf.Abs(RWUtil.Flat(a.Position, c) - 5f).CompareTo(Mathf.Abs(RWUtil.Flat(b.Position, c) - 5f)));
+        foreach (Genitem g in ground)
+        {
+            float d = RWUtil.Flat(g.Position, c);
+            if (d < 3f || d > 7f || Mathf.Abs(g.Position.y - c.y) > 2.5f)
+                continue;
+            bool ok = false;
+            try { ok = Helper_Gridtools.Checkifplaceable(g, being, 0, team); } catch (Exception) { }
+            if (!ok)
+                continue;
+            Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(core.Beingserver);
+            spawn.Being = being;
+            spawn.Genadd = g;
+            spawn.Skin = "";
+            spawn.Spawnstyle = Link_Spawn.Spawnstyles.Forced;
+            Link_Being made = Helper_Entitytools.Spawn(spawn, g.Position, core.Beingserver, true, null);
+            Entity_Master nest = made != null ? made.Worldobject : null;
+            if (nest != null)
+                RWLog.Info("Nesting Ground at " + RWUtil.V(g.Position) + ", " + RWUtil.F(d) + " from the enemy core, team " + team + Stats(nest, "Healthperwave", "Waveperunit", "Respawn"));
+            return nest;
+        }
+        RWLog.Warn("Nesting Ground: no free tile 3-7 from the enemy core at " + RWUtil.V(c));
+        return null;
+    }
+
+    static string Stats(Entity_Master e, params string[] names)
+    {
+        string s = "";
+        foreach (string n in names)
+        {
+            try { s += ", " + n + " " + RWUtil.F(e.Statsserver[n].Value); }
+            catch (Exception) { s += ", " + n + " -"; }
+        }
+        return s;
+    }
+}

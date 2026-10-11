@@ -8,8 +8,8 @@ file was changed**: Dimitri decides and sends back the files he edits.
 
 Not reopened: the 10-map campaign saved between maps and keyed by Steam id, 3 retries, the main-menu start, the sea
 chart with the vote in the map (V1), VENDCINT selling Cardinals and ranks only, 2 Pure Aura per bonus tide, the first
-Fund Transfer cap of 50, Depth on hold, no sonar, Argo's numbers. The "Sea chart and sea weather build" thread is adding
-Sea Weather to `05` and `02`; nothing here duplicates that edit.
+Fund Transfer cap of 50, Depth on hold, no sonar, Argo's numbers. The "Sea chart and sea weather build" thread added
+Sea Weather to `05` and `02` (PR #21, merged); nothing here duplicates that edit, and its numbers are its own NEEDS line.
 
 The repository copy, the project files copy and the PC copy (`Desktop\RogueWave\scope`) are all equal today (same
 sizes, checked 2026-10-10).
@@ -52,7 +52,7 @@ file back).
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
 | 5 | Line 9 says mechanics the game must answer "go to a PC test round"; they went: RogueLab rounds 4-6 proved every mechanic and the main-menu button (round 6, 22 of 22) | Update the line | fix |
-| 6 | Missing: the deep code dive and `docs/MECHANIC_IDEAS.md` (waiting on his picks), and this review | One line each, after the Sea Weather thread's edit to this file lands | fix |
+| 6 | Missing: the deep code dive and `docs/MECHANIC_IDEAS.md` (waiting on his picks), and this review | One line each (the Sea Weather line of 2026-10-10 is already in) | fix |
 
 ### 03_Bug_Fix.txt
 
@@ -69,14 +69,14 @@ file back).
 | 10 | "Quitting during a map counts as losing it." A dropped friend doesn't end a map (the match goes on, `docs/15` §14.5), so only the host's quit truly ends it. If a friend's crash also spends a team retry, one bad connection costs everyone | Only the host leaving, or the whole team, spends a retry; a friend who drops sits out the map and rejoins on the boat | Dimitri |
 | 11 | A retry replays "from the last save", which is before the map's opening break, where Directions are picked. If the three offers are drawn fresh, losing a map rerolls them | Seed each player's offers per map, so a retry shows the same three (and the same objectives) | default |
 | 12 | After Tide 15 the team may stay for bonus tides at 2 Pure Aura each. If dying in one is a lost map, the retry and the whole map's Pure Aura (3 × 15 and more) are at stake for 2 a tide, so nobody would stay | A map counts as won once Tide 15 is cleared; dying in a bonus tide ends it as a win, and only the tide in progress pays nothing | Dimitri |
-| 13 | `! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE !` | The Sea Weather thread's entry is a candidate answer once it lands; nothing added here | - |
+| 13 | `! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE !` | Sea Weather (now in `05`, merged in PR #21) answers part of it for maps; enemy pools per campaign are still open | - |
 
 ### 05_Gameplay_Rundown.txt
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
 | 14 | Between maps the party returns to the boat, which is the game's lobby (`docs/MAIN_MENU_START.md` §1). Its vessel picker and Cardinal slots work there, and lobby Cardinals load at every match start (`docs/15` §7). Without a rule, a player can change vessel every map, and swap stock Cardinals for free instead of buying them | The mod puts each player's saved vessel back, and lobby Cardinals lock after map 1. The alternative: no lobby Cardinals in the mode at all, every Cardinal comes from VENDCINT | Dimitri |
-| 15 | "The 5th and 10th rows close a stretch": the scope never says what a closing map does. The base game has no boss (`docs/15` §18.3), so a boss is new enemy work | `SCOPE_VS_LOOP.md` #20's default: a Breaker Tide closes the map and VENDCINT carries more stock | Dimitri |
+| 15 | "The 5th and 10th rows close a stretch": the scope (with PR #21's line) says the hardest map closes each stretch, but not what else a closing map does. The base game has no boss (`docs/15` §18.3), so a boss is new enemy work | `SCOPE_VS_LOOP.md` #20's default: a Breaker Tide closes the map and VENDCINT carries more stock | Dimitri |
 | 16 | A stock break is 30 s (the opening break 45 s). In it each player builds, clicks VENDCINT, shops, sends aura and takes an objective. The scope sets no break length; `SCOPE_VS_LOOP.md` #8 (hold the clock at shop breaks) never landed | Mode breaks of 45 s, or the clock waits until every player presses Ready (with a cap) | Dimitri |
 | 17 | Three wordings for the same moment: "reaching Tide 15" (line 2), "clear Tide 15" (line 2, end), "after Tide 15" (line 10). Also "ascension level" for Depth level, "waves" for tides | "after clearing Tide 15" everywhere; "Depth level"; "tides" | fix |
 | 18 | `! NEEDS LIST OF OPTIONAL OBJECTIVES !` | `docs/MECHANIC_IDEAS.md` §3 has six that fit the template (Raze the Nest, Bag the Beast, Clean Hull, Beat the Clock, Light Purse, Steady Hands) | Dimitri (pick) |
@@ -86,7 +86,7 @@ file back).
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
 | 19 | What fills the three offered Directions isn't said: which pools, and whether rank-ups can fill all three | Three different Directions from Any plus the vessel's own list; a held one shows only as its next rank; a rank III never comes back | default |
-| 20 | `! NEEDS PRICES FOR DIRECTION RANKS !` needs an anchor. A player earns about 45 Pure Aura a map (15 tides × 3), plus 2 per bonus tide and objectives, so roughly 450-600 a campaign; Vampire Dentures costs 15 | One rule for every Direction: rank II 15, rank III 25 | Dimitri |
+| 20 | `! NEEDS PRICES FOR DIRECTION RANKS !` needs an anchor. A player earns about 45 Pure Aura a map (15 tides × 3), plus 1 a tide on a weather map, 2 per bonus tide and objectives, so roughly 450-600 a campaign; Vampire Dentures costs 15 | One rule for every Direction: rank II 15, rank III 25 | Dimitri |
 | 21 | VENDCINT comes "at the start of every break between tides", but Fund Transfer allows 50 "before Tide 1", so it must also come in the opening break | "every break, the opening one included" | fix |
 | 22 | Must a vessel walk to VENDCINT? The game doesn't check distance (`docs/MECHANICS_CHECK.md` §2): a player clicks it and shops from anywhere on the map | Within a few tiles, since its drop-in is the point; or anywhere, if the walk only costs break time | Dimitri |
 

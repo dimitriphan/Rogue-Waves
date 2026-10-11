@@ -10,3 +10,4 @@
 	# 2026-10-09: roguewave 2.txt is folded in: a campaign is 10 maps, ascension levels are now Depth, and the new Directions, Vampire Dentures and Mind the Meteor are below. / The bonus tide pay (2) and the Fund Transfer line keep the numbers you settled at 19:47Z \
 	# 2026-10-09: roguewave.txt is split into one file per category, so you only send back the files you change. / 00_Read_Me.txt lists them \
 	# 2026-10-09: maps are now chosen on a sea chart the boat sails across, Slay the Spire style, with the vote held in the map (your V1). The engine route is read from the game's code; a PC round will prove it. / docs/SEA_CHART.md, 05_Gameplay_Rundown.txt \
+	# 2026-10-10: the sea chart and sea weather are built in the mode part and compile; a PC test round proves them next. Until the in-map vote is built, the leader steers to one of the linked maps with the boat's own arrows. / docs/SEA_CHART.md section 6, TDS_Mod/ModSource/RogueWavesMode \
