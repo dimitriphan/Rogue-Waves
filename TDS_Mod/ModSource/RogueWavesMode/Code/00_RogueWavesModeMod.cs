@@ -84,7 +84,7 @@ public class RogueWavesModeMod : MonoBehaviour
 public static class RWData
 {
     public const string Part = "Mode";
-    public const string Version = "0.1.1";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather
+    public const string Version = "0.1.2";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather
     public const string Mode = "Mode_RogueWave";         // the mode's entry, group and Modeobject name
     public const string ModeDisplay = "Rogue Wave";
     public const string StockMode = "Mode_Normal";

@@ -253,7 +253,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the pick, the map loading in the mode, the return one row on and the save all work in game. One bug: Rising Water's
   deter blocks were never loaded, so the water rose but flooded nothing. Fixed in 0.1.1 (every needed being is
   loaded; W1 checks flooded tiles); handoff `RogueWavesMode_round2` waits on his OK. PC scope copy synced.
-- **Next:** the sea chart's PC round 2 (`RogueWavesMode_round2`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+  Round 2 (05:17Z): 35 pass, 3 fail, all Rising Water: `Block_Flood_Deter` is in no group the game loads for
+  Manafold or any mode. 0.1.2 stands in a copy of a stock no-build block; handoff `RogueWavesMode_round3`.
+- **Next:** the sea chart's PC round 3 (`RogueWavesMode_round3`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 

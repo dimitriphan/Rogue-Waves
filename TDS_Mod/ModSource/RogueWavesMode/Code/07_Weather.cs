@@ -21,6 +21,7 @@ public static class RWWeather
     public static float FloodStart;
     static int speedStep;
     static readonly Dictionary<int, string> loading = new Dictionary<int, string>();
+    static readonly Dictionary<int, bool> tried = new Dictionary<int, bool>();
 
     public static string Display(int w) { return w >= 0 && w < RWChart.WeatherNames.Length ? RWChart.WeatherNames[w] : "?"; }
 
@@ -61,11 +62,14 @@ public static class RWWeather
 
     // ---------------------------------------------------------------- loading (every machine)
 
+    // Once per weather per launch: a group that is loaded stays loaded, so a second pass finds nothing new (round 2
+    // retried every half second while the deter was missing).
     public static void Preload(int w)
     {
-        if (Loaded(w) || loading.ContainsKey(w) || RogueWavesModeMod.Instance == null)
+        if (Loaded(w) || loading.ContainsKey(w) || tried.ContainsKey(w) || RogueWavesModeMod.Instance == null)
             return;
         loading[w] = "";
+        tried[w] = true;
         RogueWavesModeMod.Instance.StartCoroutine(Load(w));
     }
 
@@ -110,9 +114,50 @@ public static class RWWeather
             string after = Missing(w);
             from += (from == "" ? "" : ", ") + g + (group != null && group.Loaded ? "" : " (not loaded)") + (after != before ? " [found " + Found(before, after) + "]" : "");
         }
+        if (w == RWChart.RisingWater && RWUtil.Load<Beingobject>("Mob", Deter) == null)
+            from += ", " + StandIn();
         string missing = Missing(w);
         RWLog.Info("weather " + Display(w) + ": " + (missing == "" ? "ready" : "MISSING " + missing) + " after loading " + (from == "" ? "nothing" : from));
         loading.Remove(w);
+    }
+
+    // Block_Flood_Deter is in none of the groups Manafold, its hero or any stock mode loads (round 2), yet the flood
+    // asks for it by name at each Tide. Stand in a copy of a stock no-build block under that name, registered where
+    // Bl_Address.Getload looks (Groups["Mob"]) and where a spawn is matched by id and name (Groupsids, Groupsname).
+    // Every machine runs this from the boat, so the copy has the same id everywhere.
+    const string Deter = "Block_Flood_Deter";
+    static readonly string[] DeterLike = { "Block_Noplacement", "Block_Nobuild_Brittle" };
+
+    static string StandIn()
+    {
+        Beingobject like = null;
+        string from = "";
+        foreach (string n in DeterLike)
+        {
+            like = RWUtil.Load<Beingobject>("Mob", n);
+            if (like == null)
+            {
+                Bl_ScriptableObject named;
+                try { named = Bl_Address.Getload(new FixedString64Bytes(n)) as Bl_ScriptableObject; } catch (Exception) { named = null; }
+                like = named as Beingobject;
+            }
+            if (like != null) { from = n; break; }
+        }
+        if (like == null)
+            return "no stand-in for " + Deter + " (none of " + string.Join(", ", DeterLike) + " is loaded)";
+        Beingobject copy = RWUtil.Clone(like, Deter);
+        Bl_Address.Loadlist list = new Bl_Address.Loadlist();
+        list.Loaded = true;
+        list.Percent = 100;
+        list.Items[Deter] = copy;
+        list.Uids[new FixedString64Bytes(copy.Id)] = copy;
+        list.Index.Add(copy);
+        List<Bl_Address.Loadlist> mob;
+        if (!Bl_Address.Groups.TryGetValue("Mob", out mob)) { mob = new List<Bl_Address.Loadlist>(); Bl_Address.Groups["Mob"] = mob; }
+        mob.Add(list);
+        Bl_Address.Groupsids[new FixedString64Bytes(copy.Id)] = copy;
+        Bl_Address.Groupsname[new FixedString64Bytes(Deter)] = copy;
+        return Deter + " stood in by a copy of " + from;
     }
 
     static string Found(string before, string after)

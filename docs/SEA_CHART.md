@@ -202,3 +202,6 @@ concept-tools/sea_chart.py --check 20261009` must print the same chart lines.
 matched the Python. It found one bug: Rising Water's deter blocks were never loaded, so the water rose but flooded no
 tile (W1 only checked the height then). Fixed in 0.1.1 with a stricter W1; round 2 checks it
 (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`).
+
+**Round 2 (0.1.1, 2026-10-11): 35 pass, 3 fail**, all Rising Water: `Block_Flood_Deter` is in no group Manafold or any
+stock mode loads. 0.1.2 stands a copy of a stock no-build block in under that name; round 3 checks it.

@@ -1,6 +1,21 @@
 # RogueWavesMode: implementation notes
 
-## 0.1.1 (2026-10-11): Rising Water's flooded tiles
+## 0.1.2 (2026-10-11): a stand-in for the flood's deter block
+
+**PC round 2** (0.1.1 self-test): **35 pass, 3 fail.** Every chart, save, Quickening and Nesting check passed (Nesting
+now logs `[found Tower_Halberdnest Enemy_Halberd]` from `Map_Vultures`). The three failures are all Rising Water:
+`Block_Flood_Deter` is in **none** of the groups loaded (`Hero_Boutman`, `Map_Manafold`, which holds `Main_Flood`,
+and all six stock modes' groups), so the flood still threw at its Tide and flooded nothing. The game itself asks for it
+by name and finds nothing, so it may not ship at all. The loader also retried every half second (192 log lines).
+
+0.1.2: when the deter is still missing after the groups, the boat registers a copy of a stock no-build block
+(`Block_Noplacement`, else `Block_Nobuild_Brittle`) named `Block_Flood_Deter`, where `Bl_Address.Getload` and a
+spawn's id lookup find it (`Groups["Mob"]`, `Groupsids`, `Groupsname`), on every machine. The log line ends
+"Block_Flood_Deter stood in by a copy of ...". Each weather is now loaded once per launch. Round 3 checks that the
+flooded tiles appear; what the stand-in looks like on a flooded tile is unseen.
+
+
+## 0.1.1 (2026-10-11): Rising Water's flooded tiles (incomplete, see 0.1.2)
 
 **PC round 1** (0.1.0 self-test, 2026-10-11): **34 pass, 0 fail, 0 setup.** Proven in game: the chart world built in
 code loads and is warped onto; the arrows match the links; the boat sails to a chosen island by itself (2.5-3.3 s) and

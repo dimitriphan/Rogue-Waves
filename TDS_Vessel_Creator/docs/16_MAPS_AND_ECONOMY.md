@@ -105,6 +105,8 @@ the map ends. **Verified** (RogueWavesMode round 1, 2026-10-11): `Main_Flood` an
 Skyhook and Blasthead rise and send a Halberd at the next Tide. A map object's being and the beings it spawns can sit
 in different groups: the flood fetches `Block_Flood_Deter` by name at each Tide and throws in
 `Helper_Gridtools.Checkifplaceable` if that is not loaded, so load every being the object spawns, not just its own.
+`Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six stock modes load
+(round 2), so it may not ship; RogueWavesMode 0.1.2 registers a copy of `Block_Noplacement` under that name.
 
 ## 4. Aura nodes and mining
 
