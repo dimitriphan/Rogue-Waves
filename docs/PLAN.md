@@ -240,7 +240,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   patterns, messages to every client, the final map, chart decorations, unlocks); ideas for him to pick from in
   `docs/MECHANIC_IDEAS.md` (sea weather on chart nodes, objectives, Directions, Cardinals), scope untouched. Read
   only; its PC checks (`docs/16` §9) can ride with the sea chart's C1-C7.
-- **Next:** by hand, the F-key check and how the main-menu button looks beside Play; one online evening
+- **Also (2026-10-10 23:00Z):** Dimitri asked to **begin the sea chart and sea weather**. Built as the first slice of
+  the pack's mode part, `TDS_Mod/ModSource/RogueWavesMode` 0.1.0 (dev mod `RogueWavesModeMod`, prefab
+  `RogueWaves_Mode_Default`): `Mode_RogueWave` with `RW_` twins of the 45 base Gameplans; the seeded chart (C# port of
+  `concept-tools/sea_chart.py`, identical on 400 seeds; maps by row difficulty, weather per node); the chart as a
+  world built in code on every machine; the host's warp, auto-sail and pick; the campaign's seed and route in the save;
+  three weathers (Rising Water, Quickening Current, Nesting Ground) on stock map objects. Sea Weather is in
+  `docs/scope/05` with its numbers as a NEEDS line. Compiled here, **not run in game**: its PC round (C1-C6, W0-W3,
+  `docs/SEA_CHART.md` §9) is handoff `RogueWavesMode_round1`, waiting on Dimitri's OK sentence. Until the in-map vote
+  exists, the leader steers with the boat's arrows (only the linked maps can be picked).
+- **Next:** the sea chart's PC round (`RogueWavesMode_round1`, Dimitri's OK); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
   (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
@@ -315,6 +324,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (route **V1**) and the boat then sails to the winner; the party returns to the boat between maps. Default taken:
   map 1 is voted in the staging map's opening break, then the party sails from the harbour to it.
 
+- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], `docs/SEA_CHART.md` §8).
+  Defaults taken: three weathers (Rising Water, Quickening Current, Nesting Ground); rows 1, 5, 10 calm, 1 in 3 then 1
+  in 2 elsewhere; +1 Pure Aura a Tide; Quickening x1.25 from Tide 5, x1.5 from Tide 10. Maps spread by row difficulty
+  (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is `RogueWavesMode`; nothing starts a campaign
+  until the main-menu button piece calls `RWCampaign.New`/`Continue`.
+
 ### Open questions
 
 Phase 0's eight questions are closed (see Decisions). New ones go here, with a default.
@@ -326,6 +341,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 ### Phase 5 pieces
 
 - [ ] Pure Aura  - [ ] objectives/bounties  - [ ] shopkeeper  - [ ] Directions  - [ ] Fund Transfer  - [ ] map vote
+  (sea chart and boat trip built 2026-10-10, PC round pending; the in-map vote still to build)  - [ ] sea weather (built, PC round pending)
 - [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth)
 
 ---
