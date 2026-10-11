@@ -1,0 +1,7 @@
+# Handoff RogueWavesMode_round5: commit ee413d7 of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from the PC manifest (PC manifest of C:\Users\Dimitri\TDS_Mod, 2026-10-11 02:01, 104 files).
+e29054af8582ad9f  026558c1b60c7faf  ModSource\RogueWavesMode\Code\00_RogueWavesModeMod.cs
+new  c72405b5c6b7f3c2  ModSource\RogueWavesMode\Code\09_Rejoin.cs
+bb51d20860e2dd7f  c412565d1f957c2e  ModSource\RogueWavesMode\Code\99_SelfTest.cs
+def61e639f106960  d0b30cada705019f  ModSource\RogueWavesMode\IMPLEMENTATION_NOTES.md
+f20aa5997e2a9d71  cda4755fca18e082  ModSource\RogueWavesMode\README.md
