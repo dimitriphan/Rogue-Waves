@@ -347,6 +347,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is `RogueWavesMode`; nothing starts a campaign
   until the main-menu button piece calls `RWCampaign.New`/`Continue`.
 
+- 2026-10-11 (user, scope review): only the **host's** mid-map quit spends a retry; **no Cardinal swaps** on the boat
+  between maps; **breaks last 60 s**; Direction **rank II 20, rank III 30** Pure Aura; Team Cardinals work for everyone,
+  **Cardinals stack with no limit**; a **new objective every break**, team objectives pay every player in full;
+  Fertilize stays Direction-only; a bonus tide still pays 2 (`docs/SCOPE_REVIEW_2026-10-10.md`).
+
 ### Open questions
 
 Phase 0's eight questions are closed (see Decisions). New ones go here, with a default.

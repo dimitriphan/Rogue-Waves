@@ -23,6 +23,6 @@
 	[Shopkeeper]
 		{VENDCINT} / A sentient vending machine \
 		- A unit that falls from the sky near the vessels' spawn point at the start of every break between tides, the way the vessels land.
-		- At the end of the break it jumps into the sky and disappears.
+		- At the end of the break it jumps into the sky and disappears. A break lasts 60 seconds.
 		- Sells [Cardinals], and the next rank of [Directions] the vessel already holds, for [Pure Aura]. [Fund Transfer] is done at it too.
-		! NEEDS PRICES FOR DIRECTION RANKS / A Cardinal's price is on its own template \ !
+		- A Direction's rank II costs 20 [Pure Aura], and its final rank, III, costs 30. / A Cardinal's price is on its own template \
