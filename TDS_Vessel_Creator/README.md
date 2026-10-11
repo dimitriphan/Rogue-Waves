@@ -66,14 +66,14 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/12_MINION_VESSELS.md` | Vessels built around units (like Fie, Boutman, Buster): spawners, respawn, upgrades reaching units, unit behaviour, player orders, rules, tests |
 | `docs/13_ENEMIES_AND_MODIFIERS.md` | Enemies and elites: the shipped roster, Tide tables and enemy cores, the six enemy modifiers, how a mod adds a new enemy or modifier, open questions for the PC |
 | `docs/14_MODTOOL_AND_PACKAGING.md` | The mod container: ModTool content types and scenes, the `.info`, no load order or dependencies, the RoslynCSharp sandbox, no Workshop, how a pack of several parts should ship, PC checks that decide maps |
-| `docs/15_ROGUE_MODE_ENGINE.md` | The Rogue Wave mode's engine: modes and the three-map chain, what survives a scene change, Merchut and bounties, Cardinals (artifacts), client choices, the save, the F-key bug, mod loading; go / fallback / no per scope feature, PC list |
+| `docs/15_ROGUE_MODE_ENGINE.md` | The Rogue Wave mode's engine: modes and chaining maps (proven on a 3-map test chain), what survives a scene change, Merchut and bounties, Cardinals (artifacts), client choices, the save, the F-key bug, mod loading; go / fallback / no per scope feature, PC list |
 | `docs/16_MAPS_AND_ECONOMY.md` | Inside a map: the grid, placement and enemy paths, the base game's map-special objects (flood, clock, nests, dens, gates), aura nodes and mining, the wallet and colour conversion, game speed, lighting; what a run can change mid-map |
 | `kit/Shared/` | The shared kit every vessel compiles (kit 1.6): journal, boat, tower ranges, combat hits, self-test helpers, and the pack's registry, Tides, counter, Directions and F-key fix (`kit/README.md`) |
 | `template/Mummer/` | The reference vessel (Mummer 1.0.0): runtime code, editor generator, build scripts |
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
 | `tools/New-Vessel.ps1` | Scaffolds a new vessel from the template |
 | `tools/cecil/` | Scripts that read the game's compiled code (IL, callers, string literals, API dump) |
-| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), RogueLab round 1's log of the stock modes, Tide table, artifacts, elites and enemies (`roguelab_round1.txt`), and `maps/`: the self-test map's ground |
+| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), RogueLab's round logs of the stock modes, Tide tables, artifacts, elites and enemies (`roguelab_round1.txt`-`roguelab_round3.txt`), and `maps/`: where the self-test map's ground snapshots go (none committed yet) |
 | `examples/` | The design and implementation notes of the three vessels built so far; `examples/code/` holds Argo's and Sprigg's modules the docs cite (damage hooks, tower firing, turret aim/recoil/spin, a generator with moving parts, unit orders and a crew picker, ranged vessel, leftovers, data survey, base-vessel art dump) |
 
 ## Definition of done (every vessel)

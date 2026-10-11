@@ -59,9 +59,9 @@ show state with a skin.
 | Building | Key+Tier | Display | Desc (short comma phrase) | Params (Stat_Add / _Multi / X_Base ...) | Cost | Next |
 |---|---|---|---|---|---|---|
 | | 2 | | | | 15-75 | |
-| | 3 | | | | 45-450 | |
-| | 4 | | | | 100-1750 | |
-| | 5 | | | | 1500-5000 | |
+| | 3 | | | | 25-500 | |
+| | 4 | | | | 75-750 | |
+| | 5 | | | | 1500-5025 | |
 
 ## Visual effects and sounds
 

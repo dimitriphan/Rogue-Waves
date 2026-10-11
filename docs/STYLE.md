@@ -31,8 +31,8 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 - **The crest**: one breaking curl with a Foam rim. It is the pack's mark: the mode icon, the corner of pack UI
   frames, the main menu's Rogue Wave button. Draw it as one clean shape, not a pattern.
 - **Washed ashore**: Cardinals and Directions are found objects, as in the base game (Red Coin, Rusty Pipe, Fish Bait).
-  Pack Cardinals are flotsam, things the wave brought. None is named yet (user, 2026-10-08). One object per icon,
-  readable at 12×12.
+  Pack Cardinals are flotsam, things the wave brought. The first ones are named in `docs/scope/12_Cardinals.txt`
+  (Vampire Dentures; Cracked Buoy and Ship's Bell as examples). One object per icon, readable at 12×12.
 - **Pearl drops** for Pure Aura: a small teardrop, Pearl with its sheen, used in the counter, the shop and rewards.
 - No skulls, gore or horror for the harder modifiers. Danger reads through Storm Coral and the shape.
 
@@ -42,7 +42,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 | --- | --- | --- |
 | Vessel | one soft name + an epithet, as the scope writes them | Yossele, The Patient Golem; Spool, Crafty Crafted Crafter |
 | Buildings, units | the everyday object named plainly, with a twist; the scope's names stay | Repurposed Cookie Tin, Pin Cushion, Flood Light |
-| Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | none named yet (base: Red Coin, Rusty Pipe) |
+| Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | Vampire Dentures, Cracked Buoy, Ship's Bell (base: Red Coin, Rusty Pipe) |
 | Directions | a heading or a course, short and active | Deep Roots, Loose Threads, Hard to Port |
 | Mode, ascension, events | sea weather | Rogue Wave; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |
 | Enemy modifiers | the scope's names (Cursed, Berserk). Base elites are named like metalwork (Hardened, Tempered, Superheated, Fractured, Annealed), for reference |
@@ -80,6 +80,7 @@ each. States (Growth, Light, a held seed count) show as skins or a counter, not 
 
 ## Enemies
 
-New foes follow the base foes' sprite style (one colour family per foe, red aura drops). If new modifiers ship
-skins (undecided: the scope leaves it open, and `docs/13` §6 shows a modifier with an effect on the foe instead), they
-cover every stock foe, as the base elites do (Health, Hyper, Red, Chaos, Armor, Explode), tinted with Storm Coral.
+New foes follow the base foes' sprite style (one colour family per foe, red aura drops). New modifiers ship no skins:
+they show as an effect on the foe (`docs/scope/13_Enemy_Modifiers.txt`, decided 2026-10-09; `docs/13` §6). If a later
+piece ever adds skins, they cover every stock foe, as the base elites do (Health, Hyper, Red, Chaos, Armor, Explode),
+tinted with Storm Coral.

@@ -52,7 +52,7 @@ the enemy core), `Ground(c, maxDist, up, down)`, `Picture(c, r, used)` (the grou
 When `Spot` or `SpawnFoe` finds nothing they log why and a picture of the ground, so one PC round shows the whole
 problem. The template uses them; older vessels keep their own copies until their self-test next changes.
 
-Helpers worth reusing: `Send(master, link, json)` (a real `Command_ServerRpc`), `Build(hero, tower, at, known,
+Template helpers worth reusing (note `SpawnFoe`'s argument order differs from the kit's): `Send(master, link, json)` (a real `Command_ServerRpc`), `Build(hero, tower, at, known,
 result)` (a real "Build" command, then waits for the new building's brain), `Spot(hero, being, ring)` (a placeable
 tile at a distance), `SpawnFoe(being, near, maxDist, minDist, onBuildings)` (spawns an enemy **as a child of the enemy
 core**, on a standable `Surface` tile searched at 3 heights), `Kill(e)` (despawn as a kill: drops and stats),

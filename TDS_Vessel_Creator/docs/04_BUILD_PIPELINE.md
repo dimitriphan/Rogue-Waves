@@ -94,8 +94,8 @@ Never delete or clean up anything in the same step as a park/restore whose resul
 
 ## 5. Release
 
-A Rogue Waves part ships inside the pack instead: one version and one `RogueWaves-<version>.zip` (`docs/PACK.md` §4-5
-in that repository) replace step 4 and §6.
+A Rogue Waves part ships inside the pack instead: one version and one `RogueWaves-<version>.zip` (the repository's
+`docs/PACK.md` §4-5) replace step 4 and §6.
 
 1. Rebuild **without** `-Define`, check `Build/<Name>Mod_Code.cs` has no `#define` line.
 2. Build Mod Prefab, Park, Export (wait for both passes), Restore, `Deploy-Wait.ps1` without `-Launch`.

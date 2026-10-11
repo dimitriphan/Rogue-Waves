@@ -8,7 +8,7 @@
 	- The party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps.
 	- On the boat between maps, players can't swap their Cardinals.
 	# The chart spreads maps by difficulty: easier maps in the first rows, harder and δ maps later, the hardest closing each stretch. No map is on a chart twice.
-	[Sea Weather] / Picked 2026-10-10, docs/SEA_CHART.md section 7 \
+	[Sea Weather] / Picked 2026-10-10, docs/SEA_CHART.md section 8 \
 		- Some maps on the chart carry a weather, rolled with the chart. The first row and the rows closing a stretch are calm; about 1 map in 3 has weather in the first stretch, 1 in 2 in the second.
 		- A weather map pays 1 extra [Pure Aura] each tide, on top of the usual 3.
 		- The weather shows on its island on the chart and in the boat's map panel, and is announced when the map starts.

@@ -12,15 +12,17 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (round 3: the eight-card dialog instead) | §3, §6 |
 | Round 2 (0.2.0, `06_Round2.cs`) | at boot every map's and Gameplan's data, every other mode's Tide table, the elites again, the easier setting's upgrade; in map 1 the bundle's second prefab (`Second/RogueLabSecond.cs`, built into `RogueLabMod_Second_Default`) and the frame cost of 50/100/200 extra units; in map 2 an eight-card dialog; then a **tour** of every other base map the vote could offer, each left as a win as soon as it starts; `TEST DONE` | `docs/RESEARCH_GAPS.md` A3, A4, A6, A7, A9, B5, C1, C2 |
 | Round 3 (0.3.0) | the same, with two changes after round 2 (`docs/15` §15): map 2's dialog opens only once its menu is up, then the mod clicks a card; the tour plays only the 15 maps whose stock Gameplan uses another mode (now twinned too), the Final map last; Special_ plans are never twinned, and a map that hangs while loading ends the run after 150 s | `docs/RESEARCH_GAPS.md` A4, A6 |
-| Round 6 (0.4.2) | round 5 again with the menu probes fixed, plus M4b | `docs/MAIN_MENU_START.md` §5 |
-| Round 5 (0.4.1) | round 4 again with its probe bugs fixed | `docs/MECHANICS_CHECK.md` §3 |
 | Round 4 (0.4.0) | starts from a cloned main menu button with no Cardinal (M1-M5, M7), then map 1's mechanic probes V1, V2, F1, O1 in the opening break and K1, D1, A1, E1 in Tide 1; leaves as a win and stops | `docs/MAIN_MENU_START.md` §5, `docs/MECHANICS_CHECK.md` §3 |
+| Round 5 (0.4.1) | round 4 again with its probe bugs fixed | `docs/MECHANICS_CHECK.md` §3 |
+| Round 6 (0.4.2) | round 5 again with the menu probes fixed, plus M4b | `docs/MAIN_MENU_START.md` §5 |
 
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
 Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a hang on Special_Custom; results in
 `docs/15` §15, every line in `TDS_Vessel_Creator/reference/roguelab_round2.txt`. Round 3 ran the same day: **16 pass,
 0 fail**, the eight-card dialog worked with its menu up, all 15 tour maps loaded; lines in `roguelab_round3.txt`.
+Rounds 4-6 (2026-10-09) checked the scope's new mechanics and the main-menu button: 11 pass, 5 fail, 1 setup; then
+20 pass, 2 fail; then **22 pass, 0 fail** (the failures were probe bugs; `docs/MECHANICS_CHECK.md` §3).
 RogueLab's research is done; it stays in the repository as the record and is never released.
 
 ## Round 6 (2026-10-09)

@@ -1,10 +1,10 @@
 # 15 · The Rogue Wave mode engine: what a mod can build a roguelike run on
 
 How the game starts, plays and ends a match, keeps players' choices, pays bounties, applies Cardinals and saves, read
-for the Rogue Wave mode (`docs/scope/` in the Rogue Waves repository). Everything here was **read from the game's
-code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod** or
-**untested**, or was **proven in game** by RogueLab rounds 1-3 (§11, §15) or Riptide (§13). `File.cs:line` points
-into that decompiled folder (never committed; rebuild it in a minute).
+for the Rogue Wave mode (`docs/scope/` in the Rogue Waves repository). Everything here was **read from the game's code**
+(`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod** or **untested**,
+or was **proven in game** by RogueLab rounds 1-6 (§11, §15, §16), RogueWavesMode rounds 1-6 (§14.5, §17) or Riptide
+(§13). `File.cs:line` points into that decompiled folder (never committed; rebuild it in a minute).
 
 Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 
@@ -15,21 +15,21 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | A new mode entry | **go, proven** | a mod `Modeobject` whose script names are the stock `Mode_Normal` / `Clientmode_Normal`, with Gameplan twins; Riptide runs on it (§2, §13) |
 | A mode script written in the mod | **no** | `Type.GetType` can't see mod types; run the mode's logic as a host brain beside `Mode_Normal` (§2) |
 | Host's campaign, vessel locked before the run | **go** | the boat's ready-up is the lock (§6) |
-| Three maps in a row | **go, proven** | host sets the next map and calls `Changescene_ServerRpc("Gameloading")`; map 2 loaded without the boat (§3, §11) |
-| State across the three maps (Pure Aura, Directions, depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
+| Maps in a row (the campaign's 10) | **go, proven** | the party returns to the boat between maps and the boat sails the sea chart to the next one (§17; RogueWavesMode round 1). Chaining straight to the next map with `Changescene_ServerRpc("Gameloading")` is proven too (§3, §11) |
+| State across the campaign's maps (Pure Aura, Directions, Depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
 | Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13). Bring its menu up first (`Bl_Menus.Changemenu`), then it takes eight cards and returns the pick (§15) |
-| Map vote (one of three) | **fallback** | no boat-side vote exists: vote in game before leaving the map, with the same commands; every map is voted, map 1 through a staging step (§6) |
+| Map vote (one of the 1-3 chart nodes linked to the last map) | **go** (route V1) | no boat-side vote exists: vote in game before leaving the map, with the same commands, then the boat sails to the winner (§6, §17); the in-map vote is not built yet |
 | Leave or stay between Tides from Tide 15 | **go, proven** | the same vote; "leave" = the stock win path through public members, proven between Tides (§4, §11) |
 | Bonus Tides | **go, proven** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry`, which also spends a core Tide (§4, §11) |
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
-| Shopkeeper between Tides | **fallback** | the game has no shop; build one on Merchut's command-button pattern (§5) |
+| Shopkeeper between Tides | **go, proven solo** | the game has no shop; VENDCINT is a neutral unit with buttons on Merchut's command-button pattern (§5; RogueLab rounds 4-5, §16); another player's click needs the online evening |
 | Fund Transfer (aura between players) | **go** | a shop command; the host takes with `Useresources` and gives with `Giveresources(list, owner)`, both per player (§5, §14.2) |
 | Directions held per player | **fallback** | the core is the team's: grant on the player's vessel and re-grant when each map starts (§14.1) |
 | New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
-| Ascension and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
+| Depth (ascension, on hold), the campaign and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
 | The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
 | Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10; untested, and they load through the custom-map slot whose stock map hung, §15) |
@@ -63,7 +63,7 @@ Mode_Base obj = (Mode_Base)gameObject.AddComponent(Type.GetType(Modegen.Modescri
 (the mod's `Default` prefab code, as kit 1.5's server module) that listens to `Game_Mapvars.Wave` / `Entry` and adds
 everything the run needs. The brain knows it is in a Rogue match by the mode's name in `Tds_Multiplayerinfo.Mode`.
 
-## 3. A run across three maps, and what survives
+## 3. A run across several maps, and what survives
 
 **How a match starts** (read): only the leader picks a map (`Tds_Multiplayer_Remote.Selectmap_ServerRpc`, :648 checks
 `Blm_Server.Currentleader`), which writes the networked strings `Map`, `Mode`, `Soundtrack`, `Gameplan` on
@@ -81,8 +81,9 @@ everything the run needs. The brain knows it is in a Rogue match by the mode's n
 changes scene to `Gameloading` with `Lobbystate` "Closed" (Game_Admin.cs:163-185). The game's own exit despawns
 everything first (`Game_Entity.Instance.Despawnall(true)`, Tds_Multiplayer_Remote.cs:30-54). The RPC runs only when its sender
 is the current leader (Blm_Multiplayer_Remote.cs:154). So the host's mod, after a won map, writes the next map's four
-strings on `Tds_Multiplayerinfo` and calls `Changescene_ServerRpc` with `Gameloading` (**proven**, §11). Fallback: let the
-game return to the boat and have the host's mod select the next map and ready-check as usual.
+strings on `Tds_Multiplayerinfo` and calls `Changescene_ServerRpc` with `Gameloading` (**proven**, §11). The pack does
+not chain: with the sea chart (§17) the game returns to the boat after each map and the boat sails to the next one
+(RogueWavesMode round 1, proven).
 
 **What survives a scene change** (read): `Blm_Server` with `Tds_Multiplayerinfo` (spawned `Spawn(false)`,
 Blm_Multiplayer.cs:279-282), `Bla_Mods` (`DontDestroyOnLoad`, :33), and the mod's `Default` prefab instance, which the
@@ -90,10 +91,11 @@ kit already marks `DontDestroyOnLoad` (`05` §1, Boot; verified in a mod). `Game
 rebuilt per map. Statics in prefab code stay (one compile per activation, §10).
 
 **Where run state lives:** a host dictionary on the `Default` object keyed by `Sessionid` (client ids change on a
-rejoin, §14.5): Pure Aura, Directions owned, map number, ascension. Clients can't get a new `NetworkVariable` (a mod
-can't add networked behaviours). Show it through what already syncs: a counter stat on each player's vessel (`Addstat` +
-`Style = Counter`, `01` §6, verified for Mummer's Thread), restored by the host at each vessel spawn; Directions as
-visible upgrades on the vessel (`Upgradelist` shows on the panel); one-off messages as Vis RPCs.
+rejoin, §14.5): Pure Aura, Directions owned, map number, Depth level (on hold). Clients can't get a new
+`NetworkVariable` (a mod can't add networked behaviours). Show it through what already syncs: a counter stat on each
+player's vessel (`Addstat` + `Style = Counter`, `01` §6, verified for Mummer's Thread), restored by the host at each
+vessel spawn; Directions as visible upgrades on the vessel (`Upgradelist` shows on the panel); one-off messages as Vis
+RPCs.
 
 ## 4. Tides: bonus Tides and leaving
 
@@ -125,7 +127,8 @@ host-side (read).
 `Spawndata` (Entity_Ai_Main_Enemycore.cs:10-15,68), `Helper_Resources.Giveresources` (Helper_Resources.cs:75), command buttons any
 player can press. A mod brain runs its own objectives (with a kill check) and its own shop (commands on a shop
 building or on each vessel, priced in Pure Aura). Fund Transfer is a shop command that moves resources from one
-player to another on the host (untested: resources are per player, as the split reward shows).
+player to another on the host (proven solo: each colour moved by exactly 40, RogueLab round 5 probe F1; between two
+players it waits for the online evening).
 
 ## 6. Choices on every client
 
@@ -142,7 +145,7 @@ Not usable as a menu: `Entity_Command_Itemselect_Base` is a "click a spot in the
 | Choice | Route | Verdict |
 |---|---|---|
 | Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13, and by RogueLab with eight cards once its menu is up, §15) | go |
-| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands, the host sets the map. Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads, the opening break is held while players pick Directions and vote, then the host chains to the voted map (§3) | fallback |
+| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands over the 1-3 chart nodes linked to this map, then the party returns to the boat and it sails to the winner (route V1, §17). Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads and the opening break is held while players pick Directions and vote | go (in-map vote not built yet) |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
 | Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
 
@@ -195,10 +198,10 @@ with `SendMessage("Updateartifactlist")`, §13).
   (Bla_Data_Steamachievements.cs:83-105): a key in the mod's own folder can't trip one.
 
 ```csharp
-// ascension (write, read back and a restart proven; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
-Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Ascension");
+// Depth, the ascension level (on hold; write, read back and a restart proven; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
+Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Depth");
 int level = e.Loaded ? (int)e.Value : 0;
-Bla_Data.Playerdata.Adddata("RogueWaves", "RW_Ascension", (float)(level + 1), Bl_Tags.Addtype.Replace);
+Bla_Data.Playerdata.Adddata("RogueWaves", "RW_Depth", (float)(level + 1), Bl_Tags.Addtype.Replace);
 ```
 
 Always pass the typed third argument (two `Adddata` overloads with optional parameters).
@@ -216,14 +219,15 @@ Always pass the typed third argument (two `Adddata` overloads with optional para
   `Cycle = 0` lands on the minion; with nothing selected, the minion wins whenever it is nearer the camera than the
   fresh vessel at the Basin. Order or distance, not a stale reference (read).
 
-**Fix (compiled and run, but the bug did not reproduce, §11):** a client-side handler added to `Bl_Inputs.Actions["Focus"].Function` after the game's own: on the
-first press after the local vessel respawned, it selects the main vessel (its `Being` equals
-`Getload("Hero", Tds_Clientinfo.Hero)`; `Game_Selection.Selected` and `Select()` are public) and moves it to index 0
-of `Entityclienttags["Hero"]` so later presses cycle from it. It works for Boutman too, while the pack is loaded
-(RogueLab's `RogueLabFocusFix`). It cannot be done in `Game_Entity.Onspawn` (server-side, Game_Entity.cs:294-296); the
-tag list is built on each client. For the pack's own minion vessels the same fix applies; dropping `Hero` from a
-minion's tags also removes it from F but costs hero artifacts (`Artifact_Heroapply`), Halberd's dive targeting and
-Drinkstand support (read), so keep the tag and reorder.
+**Fix (compiled and run, but the bug did not reproduce, §11):** a client-side handler added to
+`Bl_Inputs.Actions["Focus"].Function` after the game's own: on the first press after the local vessel respawned, it
+selects the main vessel (its `Being` equals `Getload("Hero", Tds_Clientinfo.Hero)`; `Game_Selection.Selected` and
+`Select()` are public) and moves it to index 0 of `Entityclienttags["Hero"]` so later presses cycle from it. It works
+for Boutman too, while the pack is loaded (RogueLab's `RogueLabFocusFix`, now kit 1.6's `ModKitFocus`). It cannot be
+done in `Game_Entity.Onspawn` (server-side, Game_Entity.cs:294-296); the tag list is built on each client. For the
+pack's own minion vessels the same fix applies; dropping `Hero` from a minion's tags also removes it from F but costs
+hero artifacts (`Artifact_Heroapply`), Halberd's dive targeting and Drinkstand support (read), so keep the tag and
+reorder.
 
 ## 10. Mod loading facts that shape the pack
 
@@ -266,7 +270,7 @@ the match loaded) and five `NullReferenceException`s from the game's own teardow
 
 1. **Database:** keys and counts of `Tds_Masterdatabase.Items` for `Mode`, `Gameplan`, `Map`, `Artifact`, `Unlock`;
    every field of `Mode_Normal`'s `Modeobject` (`Defaultparams`, each `Waves` and `Wavecontent`) and of one Gameplan.
-2. **Mode entry:** register `Mode_RogueTest` (scripts named `Mode_Normal`/`Clientmode_Normal`, a 3-Tide table) with a
+2. **Mode entry:** register `Mode_RogueLab` (scripts named `Mode_Normal`/`Clientmode_Normal`, a 3-Tide table) with a
    Modeentry and Gameplan; after the leader picks a base map, the host overwrites `Tds_Multiplayerinfo.Mode` and
    `Gameplan`; the match must start and play the test table.
 3. **Chain:** on that match's win, the host writes the next map's strings and calls `Changescene_ServerRpc`
@@ -309,8 +313,8 @@ settles here:
   `Command_ServerRpc`; holding `Time_Wave` keeps a break open (probe 4, round 2). The dialog needs re-centring for
   three or more cards (`RiptideSalvage.Centre`).
 - `PlayerPrefs`, named messages and `OnClientConnectedCallback` pass the game's code security (probe 5).
-- A Setup-screen switch (a copy of the alternate-map toggle) is a working start route, the fallback if a mod Cardinal
-  does not show in the lobby.
+- A Setup-screen switch (a copy of the alternate-map toggle) is a working start route, a fallback if the main-menu
+  button (§14.8, `docs/MAIN_MENU_START.md` in the project) ever fails.
 
 RogueLab round 1 (§11) then proved the rest of the run's skeleton: the mod Cardinal from the lobby, the chain to a
 second map with host state, leaving between Tides as a win, rewinding `Entry`, the save keys.
@@ -383,12 +387,13 @@ questions. All **read**; RogueLab round 2's results are §15.
   (Tds_Clientinfo.cs:25,37).
 - A match closes the lobby (`Lobbystate` "Closed", which the chain also sends), and a closed Steam lobby refuses joins
   (Blm_Multiplayer.cs:67-77, Blm_Multiplayer_Remote.cs:278-297): a dropped friend can't rejoin a running map.
-- **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0, `docs/REJOIN.md` in the project):
+- **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0-0.2.1, `docs/REJOIN.md` in the project;
+  0.2.1 passed solo PC round 6, 47/0, and the real drop and rejoin waits for the online evening, `REJOIN.md` §6):
   `Blm_Multiplayer_Remote.Instance.Changelobbystatus_ServerOnly("Open")` is public and takes a string, so it needs no
-  Steamworks type (mods can't reference Steamworks); `Blm_Multiplayer.Instance.Server_Serveropen` is the public flag
-  the connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:261,
-  "Loading 90%"), about 10 s after the fly-in and well after `Gameloaded` is true: verified on the PC (round 5,
-  2026-10-11), where it shut a lobby the mod had opened a moment before. A mod that keeps it open re-checks every frame.
+  Steamworks type (mods can't reference Steamworks); `Blm_Multiplayer.Instance.Server_Serveropen` is the public flag the
+  connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:261, "Loading
+  90%"), about 10 s after the fly-in and well after `Gameloaded` is true: verified on the PC (round 5, 2026-10-11),
+  where it shut a lobby the mod had opened a moment before. A mod that keeps it open re-checks every frame.
 - **A late joiner** gets the running `Game` scene and every networked thing from Netcode, and the map's client start
   runs by itself (`Game_Client_Init.Initalize`, Game_Client_Init.cs:39-177: groups, local `Loaded`, the mode's client
   script). Each thing's client side waits for that `Loaded` (Entity_Master_Client.cs:138) and then 10 s for its being's
@@ -480,8 +485,8 @@ line is in `reference/roguelab_round2.txt` and `roguelab_round3.txt`; all **veri
 
 The mechanics Dimitri's 2026-10-09 scope adds (shopkeeper VENDCINT, Fund Transfer limits, Fertilize, aura fruit,
 Aging, Dazzling, Vampire Dentures), checked one by one in the Rogue Waves repository's `docs/MECHANICS_CHECK.md`.
-The engine facts it found that weren't in the kit, **read** unless marked; RogueLab round 4 (0.4.0, 2026-10-09)
-proved the ones marked so:
+The engine facts it found that weren't in the kit, **read** unless marked; RogueLab rounds 4 and 5 (0.4.0-0.4.1,
+2026-10-09) proved the ones marked so, and round 6 passed them all again:
 
 - **The vessel's fall is client code.** `Entity_Vis_Hero.Spawn` calls `Landing()` unless the entity has the
   `Prespawn` tag: it sets the sprite shader's `_Offset` to (-10, 200, -10, 0), tweens it to 0 over 3 s and plays
@@ -548,18 +553,18 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`
   Blm_Player.cs:30; set from the Steam name at spawn, :98). `Changeartifact_ServerRpc` has no leader check
   (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.
 
-- **Building a world in code** (read while writing the mode part's chart, 2026-10-10; untested until its PC round,
-  Rogue Waves `docs/SEA_CHART.md` §7): `Changeworld` instantiates `Worldobj` and names the copy after it, and
+- **Building a world in code** (read while writing the mode part's chart, 2026-10-10; proven by RogueWavesMode PC round
+  1, 34/0, Rogue Waves `docs/SEA_CHART.md` §9): `Changeworld` instantiates `Worldobj` and names the copy after it, and
   `Macro_Worldvisual.Update` swaps any machine whose world's GameObject name differs from `Worlded`, so **the prefab's
   name must be the world's database name** or every machine swaps forever. `Selectworld` writes the landing node into
   `Selected`, and a non-leader with a non-empty `Selected` opens the Setup panel on that node (Macro_Main.cs, end of
-  `Update`): land a party through the world's `Defaultnode` with `Selected` empty. `Showhover` walks the hovered
-  node's `Links` with no null check: give every node a list. The node components have no `Awake`, and
-  `Selectmap_ServerRpc` finds nodes with `FindObjectsByType` (active objects only), so a template kept under an inactive
-  `DontDestroyOnLoad` holder is never picked by mistake. A client's `Startup` waits for the world item before the boat
-  is `Ready`: a mod that registers worlds must not wait for `Macro_Main.Ready`. `Macro_Main.Blacklist` stops a node
-  being picked but not hovered; the arrows only follow `Links`. A Gameplan the player hasn't played shows
-  "UNCLASSIFIED" in the Setup panel unless `Prediscover` is set (Macro_Setupui.cs `Mapselected`).
+  `Update`): land a party through the world's `Defaultnode` with `Selected` empty. `Showhover` walks the hovered node's
+  `Links` with no null check: give every node a list. The node components have no `Awake`, and `Selectmap_ServerRpc`
+  finds nodes with `FindObjectsByType` (active objects only), so a template kept under an inactive `DontDestroyOnLoad`
+  holder is never picked by mistake. A client's `Startup` waits for the world item before the boat is `Ready`: a mod
+  that registers worlds must not wait for `Macro_Main.Ready`. `Macro_Main.Blacklist` stops a node being picked but not
+  hovered; the arrows only follow `Links`. A Gameplan the player hasn't played shows "UNCLASSIFIED" in the Setup panel
+  unless `Prediscover` is set (Macro_Setupui.cs `Mapselected`).
 
 ## 18. Fourth reading: Cardinal patterns, messages, the final map, chart decorations, unlocks (2026-10-09, read)
 

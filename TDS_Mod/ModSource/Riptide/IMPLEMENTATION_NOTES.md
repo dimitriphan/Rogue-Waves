@@ -1,7 +1,7 @@
 # Riptide implementation notes (v0.2.3, 2026-10-05)
 
 **RIPTIDE**, a roguelike game mode: one Basin, thirty random Tides and a Salvage of artifacts between them. The design
-is `DESIGN.md`; the research behind it is `/mnt/project-files/reports/2026-10-04_roguelike_mode_research.md`.
+is `DESIGN.md`; the research behind it is `reports/2026-10-04_roguelike_mode_research.md` in the ModProjects Claude Project's files, not this one's.
 
 ## Status
 

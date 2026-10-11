@@ -192,18 +192,28 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1 and 2 (2026-10-08). **Phase 3 Argo** (2026-10-08): steps 1-5; PC round 6 **139 pass, 0 fail**,
+- **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
+  rounds passed). A quality check of every lesson and resource (2026-10-11, `docs/QUALITY_CHECK_2026-10-11.md`) fixed
+  the stale and wrong lines in place. Older entries are in "Log" below.
+- **Next:** Dimitri answers the three scope questions below (Q1-Q3); the in-map vote and the main-menu button are
+  Phase 5's next pieces; by hand, the F-key check, the button's look and the chart's and a flooded map's look; one
+  online evening (`RESEARCH_GAPS.md` §E). Left on Argo: his balance pass (his call).
+- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
+
+### Log (newest last; was "Now" until 2026-10-11)
+
+- **2026-10-08:** Phases 1 and 2 done. **Phase 3 Argo**: steps 1-5; PC round 6 **139 pass, 0 fail**,
   Deep Water bobs; the playable Argo 2.0 (v0.1.0-dev) was installed on the PC; lessons in kit `docs/09` #72-76. Work is
   merged into #3's branch (PR #7, PR #10). No release: Argo ships in the pack.
-- **Also done:** `docs/SCOPE_v0.txt` (the user's roguewave.txt) rewritten in its own format with the current state;
+- **2026-10-08:** `docs/SCOPE_v0.txt` (the user's roguewave.txt) rewritten in its own format with the current state;
   every item only the user can supply is marked `! NEEDS ... !` there (2026-10-08, branch
   `claude/roguewave-txt-update-aiqiql`). Copy at `/mnt/project-files/roguewave.txt`. The game's `TDS\Mods` folder
   was emptied at the user's ask (the pack will carry everything); the 7 mods sit in the PC's
   `ClaudeProjects\handoff\mods_removed_20261008`, so the playable Argo is no longer installed.
-- **Also done (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` (PR #8, merged): answered from the decompiled
+- **Also (2026-10-09):** the research list `docs/RESEARCH_GAPS.md` (PR #8, merged): answered from the decompiled
   game (kit `docs/15` §14) and RogueLab rounds 2 and 3 on the PC (round 3: 16 pass, 0 fail; kit `docs/15` §15, `09`
   #77-78): 16 of 18 items answered, all 45 base maps run in a mod's mode, the choice dialog takes eight cards.
-- **Also done (2026-10-09):** an accuracy review of the kit and the project docs against the decompiled game and the
+- **Also (2026-10-09):** an accuracy review of the kit and the project docs against the decompiled game and the
   round logs (branch `claude/kit-accuracy-review-k0ej7d`, its PR lists every fix). Worth knowing before Phase 4 and 5:
   elite `*_Multi` params add to 1 (Hardened `Health_Multi` 3 = health ×4, `docs/13` §10); a respawn keeps the vessel's
   upgrades, so Directions on the vessel need a re-grant only when a map starts (`docs/15` §14.1).
@@ -263,12 +273,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `RogueWavesMode` 0.2.0 (`docs/REJOIN.md`, kit `docs/15` §14.5): the game already keeps a dropped player's things and
   gives them back on return; the mod reopens the lobby while a seat is empty, gives the seat back (aura, vessel,
   stats) and starts the rejoiner's camera and HUD. Every map, any mode. 0.2.1 passed solo PC round 6, 47/0 (round 5's
-  one failure: the game's loading screen shut the lobby; now reopened every frame). PR #24 ready for Dimitri; the
+  one failure: the game's loading screen shut the lobby; now reopened every frame). PR #24 merged; the
   rejoin itself needs a friend online (`REJOIN.md` §6, O1-O8, part of the online evening).
-- **Next:** Dimitri eyes the chart and a Rising Water map by hand when he likes; the in-map vote is the chart's next
-  piece (Phase 5); by hand, the F-key check and how the main-menu button looks beside Play; one online evening
-  (`RESEARCH_GAPS.md` §E, whenever Dimitri has them); then the coordinator's next phase in Part B. Left on Argo: his balance pass (his call).
-- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Decisions
 
@@ -289,10 +295,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-08 (user): **Argo is designed without SONAR for now.** No ability button and no Pinged debuff; 1.4.0's
   SONAR code stays in the source, unused, until the user decides.
 - 2026-10-08: the kit chapter for the mode engine is `docs/15` (`docs/14` went to ModTool and packaging).
-- 2026-10-08 (defaults taken): three Directions offered and one picked per map, extras bought at the shop; ascension
-  persists across sessions if Phase 1 finds save writes safe, else per session; online is 2-4 players,
-  host-authoritative, every player with the whole pack; the F-key respawn fix covers the new vessels, and Boutman if
-  it is the same code path.
+- 2026-10-08 (defaults taken): three Directions offered and one picked per map, extras bought at the shop (superseded
+  2026-10-09: the shop sells only the next rank of a Direction already held); ascension persists across sessions if
+  Phase 1 finds save writes safe, else per session; online is 2-4 players, host-authoritative, every player with the
+  whole pack; the F-key respawn fix covers the new vessels, and Boutman if it is the same code path.
 - 2026-10-08 (Phase 1, default): the mode is the stock `Mode_Normal` loop (named by the mod's `Modeobject`) plus a
   host brain in the pack's code; a mode class of our own is impossible (`docs/15` §2).
 - 2026-10-08 (Phase 1, default): run state lives on the host's `DontDestroyOnLoad` object; Pure Aura shows as a counter
@@ -301,9 +307,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pack vessel; minions keep the `Hero` tag (`docs/15` §9).
 - 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
   leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
-  map, `docs/15` §6). The start rule (the host equips the mode's Cardinal) was **replaced 2026-10-09** (below); it was
-  never named, since "Rogue Wave" is the expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed
-  slot takes any string. **The §11 PC round is approved.**
+  map, `docs/15` §6; the chaining was superseded 2026-10-09 22:23Z by the sea chart, below). The start rule (the host
+  equips the mode's Cardinal) was **replaced 2026-10-09** (below); it was never named, since "Rogue Wave" is the
+  expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed slot takes any string. **The
+  §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
   types (`docs/15` §10), which favours one pack mod carrying the mode.
 - 2026-10-08 (user, Phase 2 gate): **one `RogueWavesMod` bundle** with a `Default` prefab per part (mode, foes, each
@@ -317,7 +324,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/15` §14.1); `ModKitDirections` changes to that as kit 1.7 when Phase 5 starts. Per-player run state is keyed
   by `Sessionid`. The base game scales nothing by player count or map, so the mode's difficulty is its own (§14.3).
 
-- 2026-10-09 (user): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
+- 2026-10-09 (user; superseded below: 10 maps, Depth, about 7 Any and 4 per new vessel, only the host's quit spends
+  a retry): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
   save holds it, keyed per player by Steam id (`docs/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
   core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
   up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
@@ -332,8 +340,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   its end; sells Cardinals and **only the next rank of Directions a vessel holds**. **Fund Transfer: base aura only**,
   50 x the coming tide per break (50 before Tide 1). Pure Aura 3 a tide, **2 a bonus tide** (both confirmed 19:47Z).
   Leave by **majority**; **bonus tides never end** until that vote; a failed campaign keeps nothing; 3 retries; every
-  base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Swell levels (still on hold).
-  Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card 18:20Z).
+  base map in the vote; base vessels get Directions; modifiers show as an effect. 5 Depth levels (then called Swell;
+  still on hold). Model Lighthouse kept as a name; the main-menu button stays the start rule (confirmed on a card
+  18:20Z).
 
 - 2026-10-09 (user): **the scope is one file per category** (`docs/scope/`); he sends back only what he edits.
 - 2026-10-09 22:23Z (user): **maps are chosen on a sea chart** (`docs/SEA_CHART.md`): a seeded Slay the Spire style
@@ -359,13 +368,18 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open | |
+| Q1 | `12_Cardinals`: Team Cardinals hold "at most 8" slots, but Cardinals "stack with no limit". Does each copy of a stacked Team Cardinal take a slot? | Copies share one slot, so at most 8 different Team Cardinals |
+| Q2 | `04_Rogue_Wave_Mode` line 9: a dropped friend "sits out the rest of that map", but the rejoin (`03`, `docs/REJOIN.md`) brings them back in | Reword: they can rejoin the running map; a drop while it loads comes back on the boat |
+| Q3 | Fold the scope review's six wording fixes into the scope files (`SCOPE_REVIEW_2026-10-10.md` #8, #17, #21, #30, #32, #52)? | Yes |
 
 ### Phase 5 pieces
 
+- [ ] main-menu Rogue Wave button (calls `RWCampaign.New`/`Continue`; nothing starts a campaign until it exists)
 - [ ] Pure Aura  - [ ] objectives/bounties  - [ ] shopkeeper  - [ ] Directions  - [ ] Fund Transfer  - [ ] map vote
-  (sea chart and boat trip built 2026-10-10, PC round pending; the in-map vote still to build)  - [ ] sea weather (built, PC round pending)
-- [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth)
+  (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)
+- [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;
+  online O1-O8 left)
+- [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth, on hold)
 
 ---
 

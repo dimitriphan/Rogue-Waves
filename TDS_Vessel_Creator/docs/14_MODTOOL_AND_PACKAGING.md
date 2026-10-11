@@ -1,11 +1,11 @@
 # 14 · ModTool and packaging: what a mod can carry, and how an expansion ships
 
-What the mod container itself allows: content types, scenes, mod folders, load order, the code sandbox, and how a
-pack of several parts should be packaged. Written 2026-10-08 from a sourced research round (upstream ModTool code,
-RoslynCSharp's shipped settings, Blockage's Patch 0.4 note) plus the game's API dump; nothing here was tried in the
-game yet. Tags: **verified** = seen in a shipping mod, **read** = read from code, **untested** = inferred or from a
-secondary source. The rest of the pipeline (export, park, deploy, release) is `docs/04`; the mod prefab and the
-compiler's reference list, `docs/01` §1.
+What the mod container itself allows: content types, scenes, mod folders, load order, the code sandbox, and how a pack
+of several parts should be packaged. Written 2026-10-08 from a sourced research round (upstream ModTool code,
+RoslynCSharp's shipped settings, Blockage's Patch 0.4 note) plus the game's API dump; nothing here was tried in the game
+yet except the load order (§6). Tags: **verified** = seen in a shipping mod, **read** = read from code, **untested** =
+inferred or from a secondary source. The rest of the pipeline (export, park, deploy, release) is `docs/04`; the mod
+prefab and the compiler's reference list, `docs/01` §1.
 
 ## 1. The container: ModTool, as TDS uses it
 
@@ -94,7 +94,7 @@ Rules that hold either way:
 4. Never give two parts the same assembly or scene name.
 5. Player install stays the zip into `TDS\Mods` plus enable in the Mods menu; one README for the pack.
 
-Rogue Waves' choice (2026-10-08, `docs/PACK.md` in that repository): one bundle with one `Default` prefab per part,
+Rogue Waves' choice (2026-10-08, the repository's `docs/PACK.md`): one bundle with one `Default` prefab per part,
 since each prefab is its own assembly anyway (`15` §10). Parts find each other through the game's own objects (the pack
 registry, `kit/README.md`).
 

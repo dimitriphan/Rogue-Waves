@@ -18,7 +18,7 @@ already a Slay the Spire map; the base game's is just hand-made. A mod can build
 register them as a world of its own, and the game's own boat, camera, arrows, Setup panel and map loading work on
 them unchanged. Three things are not free: the chart needs its own sea art, the clients must build the identical
 chart (a seed carried in the world's name does it), and **only the leader can steer**, so the vote needs a route
-(§4). None of it has been tried in game; §5 is the PC round that would prove it.
+(§4). Built and proven solo since (RogueWavesMode PC rounds 1-4, 2026-10-11, §9); online is still to try.
 
 A preview from the prototype generator (`concept-tools/sea_chart.py`, seed 20261009): the harbour at the bottom, ten
 rows of 3-4 maps, red rows close each stretch of five.
@@ -127,9 +127,9 @@ Art for the chart (a sea, islands, route lines, a node marker for the Breaker ro
 
 ## 7. Built (2026-10-10): the mode part, `TDS_Mod/ModSource/RogueWavesMode`
 
-The chart and the weather are the first slice of the pack's mode part (`docs/PACK.md`: prefab
-`RogueWaves_Mode_Default`, dev mod `RogueWavesModeMod`). **Compiled here, not yet run in game**: the PC round below
-proves it. The part's `README.md` maps its files; `IMPLEMENTATION_NOTES.md` lists what to check.
+The chart and the weather are the first slice of the pack's mode part (`docs/PACK.md`: prefab `RogueWaves_Mode_Default`,
+dev mod `RogueWavesModeMod`). **Proven solo in game** (PC round 1 34/0, round 4 38/0, 2026-10-11): the PC round below.
+The part's `README.md` maps its files; `IMPLEMENTATION_NOTES.md` lists what to check.
 
 | Step (§3) | How it is built |
 | --- | --- |
@@ -158,7 +158,7 @@ map object or effect the game puts on one map only (kit `docs/16` §3), started 
 
 | Weather | What the host does | Marker on the island | Never on |
 | --- | --- | --- | --- |
-| Rising Water | spawns `Main_Flood` a tile under the map's lowest ground, in its middle: it rises each Tide by its own stats, floods tiles (`Block_Flood_Deter`, no building) and slows shots in the water | a teal swell with a foam crest | Map_Manafold |
+| Rising Water | spawns `Main_Flood` a tile under the map's lowest ground, in its middle: it rises each Tide by its own stats, floods tiles (no building; the game ships no flood block, so the mod makes `Block_Flood_Deter` from Boutman's no-build fish block once the map has loaded, kit `docs/16` §3) and slows shots in the water | a teal swell with a foam crest | Map_Manafold |
 | Quickening Current | sets `Game_Mapvars.Time_Scale` to 1.25 from Tide 5 and 1.5 from Tide 10, with the warning popup, as `Main_Chrono` does; back to 1 when the map ends | three foam chevrons | Map_Chrono, Map_Chrono_Alt |
 | Nesting Ground | spawns `Tower_Halberdnest` on a free tile 3-7 from an enemy core, on its team, as the core's child: it gains health each Tide and sends a Halberd every few | a coral egg in a sand nest | Map_Vultures, Map_Vultures_Alt |
 

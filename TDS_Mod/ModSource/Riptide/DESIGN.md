@@ -4,7 +4,7 @@
 harder, and a Salvage between them where each player picks one of three washed-up artifacts. It ends when the Basin
 drowns or after Tide 30.
 
-This is the mode's design. It follows the research report (`/mnt/project-files/reports/2026-10-04_roguelike_mode_research.md`,
+This is the mode's design. It follows the research report (`reports/2026-10-04_roguelike_mode_research.md` in the ModProjects Claude Project's files, not this one's,
 section 4) and the kit's rules where they apply to a mode. Probes 1 to 5 ran on the PC on 2026-10-04 (45 of 48 checks
 passed; the 3 fails were test mistakes). The Tide curve, foe arrivals and elites are fitted to the stock table they
 logged. v0.2.0 wires up what the probes cleared: the Salvage end to end, Driftwood and the RIPTIDE switch; round 2

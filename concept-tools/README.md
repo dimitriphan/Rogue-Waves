@@ -1,7 +1,8 @@
 # Concept tools
 
-The generic Python behind the concept pages in `ModProjects/tds-vessel-concepts`, without the per-vessel scripts.
-Each file's docstring says how to run it. All need Pillow (`pip install pillow`), which is not preinstalled here.
+The generic Python behind the concept pages in `ModProjects/tds-vessel-concepts`, without the per-vessel scripts. Each
+file's docstring says how to run it. Only `sea_chart.py`'s PNG needs Pillow (`pip install pillow`, not preinstalled
+here); the rest use the standard library.
 
 | File | What |
 | --- | --- |

@@ -79,18 +79,18 @@ file back).
 | --- | --- | --- | --- |
 | 8 | Line 2 says upgrades are "purchasable with a new currency found in game from doing objectives". Pure Aura mostly comes from tides (3 each), Directions are free picks, the shop sells ranks | "earned each tide and from optional objectives"; "Directions picked before each map, ranks bought at VENDCINT" | fix |
 | 9 | "Each map is harder" has no mechanism in the scope. The defaults in `SCOPE_VS_LOOP.md` never landed: #4 Riptide's seeded Tide director, each map deeper on its curve; #5 Tides scaled ×(1 + 0.35 per extra player); #20 the stretch shape | Add them as three lines | default |
-| 10 | "Quitting during a map counts as losing it." A dropped friend doesn't end a map (the match goes on, `docs/15` §14.5), so only the host's quit truly ends it. If a friend's crash also spends a team retry, one bad connection costs everyone | Only the host leaving, or the whole team, spends a retry; a friend who drops sits out the map and rejoins on the boat | Dimitri |
+| 10 | "Quitting during a map counts as losing it." A dropped friend doesn't end a map (the match goes on, `docs/15` §14.5), so only the host's quit truly ends it. If a friend's crash also spends a team retry, one bad connection costs everyone | Only the host leaving, or the whole team, spends a retry; a friend who drops sits out the map and rejoins on the boat | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 11 | A retry replays "from the last save", which is before the map's opening break, where Directions are picked. If the three offers are drawn fresh, losing a map rerolls them | Seed each player's offers per map, so a retry shows the same three (and the same objectives) | default |
-| 12 | After Tide 15 the team may stay for bonus tides at 2 Pure Aura each. If dying in one is a lost map, the retry and the whole map's Pure Aura (3 × 15 and more) are at stake for 2 a tide, so nobody would stay | A map counts as won once Tide 15 is cleared; dying in a bonus tide ends it as a win, and only the tide in progress pays nothing | Dimitri |
+| 12 | After Tide 15 the team may stay for bonus tides at 2 Pure Aura each. If dying in one is a lost map, the retry and the whole map's Pure Aura (3 × 15 and more) are at stake for 2 a tide, so nobody would stay | A map counts as won once Tide 15 is cleared; dying in a bonus tide ends it as a win, and only the tide in progress pays nothing | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 13 | `! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE !` | Sea Weather (now in `05`, merged in PR #21) answers part of it for maps; enemy pools per campaign are still open | - |
 
 ### 05_Gameplay_Rundown.txt
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
-| 14 | Between maps the party returns to the boat, which is the game's lobby (`docs/MAIN_MENU_START.md` §1). Its vessel picker and Cardinal slots work there, and lobby Cardinals load at every match start (`docs/15` §7). Without a rule, a player can change vessel every map, and swap stock Cardinals for free instead of buying them | The mod puts each player's saved vessel back, and lobby Cardinals lock after map 1. The alternative: no lobby Cardinals in the mode at all, every Cardinal comes from VENDCINT | Dimitri |
+| 14 | Between maps the party returns to the boat, which is the game's lobby (`docs/MAIN_MENU_START.md` §1). Its vessel picker and Cardinal slots work there, and lobby Cardinals load at every match start (`docs/15` §7). Without a rule, a player can change vessel every map, and swap stock Cardinals for free instead of buying them | The mod puts each player's saved vessel back, and lobby Cardinals lock after map 1. The alternative: no lobby Cardinals in the mode at all, every Cardinal comes from VENDCINT | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 15 | "The 5th and 10th rows close a stretch": the scope (with PR #21's line) says the hardest map closes each stretch, but not what else a closing map does. The base game has no boss (`docs/15` §18.3), so a boss is new enemy work | `SCOPE_VS_LOOP.md` #20's default: a Breaker Tide closes the map and VENDCINT carries more stock | Dimitri |
-| 16 | A stock break is 30 s (the opening break 45 s). In it each player builds, clicks VENDCINT, shops, sends aura and takes an objective. The scope sets no break length; `SCOPE_VS_LOOP.md` #8 (hold the clock at shop breaks) never landed | Mode breaks of 45 s, or the clock waits until every player presses Ready (with a cap) | Dimitri |
+| 16 | A stock break is 30 s (the opening break 45 s). In it each player builds, clicks VENDCINT, shops, sends aura and takes an objective. The scope sets no break length; `SCOPE_VS_LOOP.md` #8 (hold the clock at shop breaks) never landed | Mode breaks of 45 s, or the clock waits until every player presses Ready (with a cap) | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 17 | Three wordings for the same moment: "reaching Tide 15" (line 2), "clear Tide 15" (line 2, end), "after Tide 15" (line 10). Also "ascension level" for Depth level, "waves" for tides | "after clearing Tide 15" everywhere; "Depth level"; "tides" | fix |
 | 18 | `! NEEDS LIST OF OPTIONAL OBJECTIVES !` | `docs/MECHANIC_IDEAS.md` §3 has six that fit the template (Raze the Nest, Bag the Beast, Clean Hull, Beat the Clock, Light Purse, Steady Hands) | Dimitri (pick) |
 
@@ -99,7 +99,7 @@ file back).
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
 | 19 | What fills the three offered Directions isn't said: which pools, and whether rank-ups can fill all three | Three different Directions from Any plus the vessel's own list; a held one shows only as its next rank; a rank III never comes back | default |
-| 20 | `! NEEDS PRICES FOR DIRECTION RANKS !` needs an anchor. A player earns about 45 Pure Aura a map (15 tides × 3), plus 1 a tide on a weather map, 2 per bonus tide and objectives, so roughly 450-600 a campaign; Vampire Dentures costs 15 | One rule for every Direction: rank II 15, rank III 25 | Dimitri |
+| 20 | `! NEEDS PRICES FOR DIRECTION RANKS !` needs an anchor. A player earns about 45 Pure Aura a map (15 tides × 3), plus 1 a tide on a weather map, 2 per bonus tide and objectives, so roughly 450-600 a campaign; Vampire Dentures costs 15 | One rule for every Direction: rank II 15, rank III 25 | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 21 | VENDCINT comes "at the start of every break between tides", but Fund Transfer allows 50 "before Tide 1", so it must also come in the opening break | "every break, the opening one included" | fix |
 | 22 | Must a vessel walk to VENDCINT? The game doesn't check distance (`docs/MECHANICS_CHECK.md` §2): a player clicks it and shops from anywhere on the map | Within a few tiles, since its drop-in is the point; or anywhere, if the walk only costs break time | Dimitri |
 
@@ -107,7 +107,7 @@ file back).
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
-| 23 | Fertilize "is only unlocked if a Direction is picked that includes it". Directions exist only in the mode, and the pack's vessels must play as normal vessels outside it (`docs/PACK.md` §2 rule 1), so in a normal game Yossele's ability never shows. In the mode it shows only if Compost Bin turns up in a random three | Fertilize works from the start with a slow base fertilizer rule; Compost Bin makes fertilizer come faster | Dimitri |
+| 23 | Fertilize "is only unlocked if a Direction is picked that includes it". Directions exist only in the mode, and the pack's vessels must play as normal vessels outside it (`docs/PACK.md` §2 rule 1), so in a normal game Yossele's ability never shows. In the mode it shows only if Compost Bin turns up in a random three | Fertilize works from the start with a slow base fertilizer rule; Compost Bin makes fertilizer come faster | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 24 | Growth "resets if the tower is destroyed": it also resets at every new map, since towers don't carry over (`SCOPE_VS_LOOP.md` #1, #13) | Add "and at the start of each map" | fix |
 | 25 | Aura fruit: "any vessel or minion can pick up". The game pays the picker's owner (`docs/15` §14.7), so a teammate takes Yossele's aura | Decide: the picker keeps it (a way to share), or it always pays Yossele's player | Dimitri |
 | 26 | Overgrown Stonehenge spawns "a weak vine wall in front ... if possible" each tide. The game never checks that a path stays open (`docs/16` §2), so an automatic wall could seal a lane | The vine wall spawns only off the enemy path, or foes walk through it slowly | default |
@@ -149,8 +149,8 @@ file back).
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
-| 40 | A Team Cardinal helps everyone but is paid from one player's Pure Aura, which can't be sent | Any one player pays, or the price is split among those who chip in | Dimitri |
-| 41 | Vampire Dentures stacks without limit at 15; with about 500 Pure Aura a campaign, a player could hold 20 or more | Cap at 3 stacks, or the price rises per copy | Dimitri |
+| 40 | A Team Cardinal helps everyone but is paid from one player's Pure Aura, which can't be sent | Any one player pays, or the price is split among those who chip in | **Answered 2026-10-11, see the answers table.** Dimitri |
+| 41 | Vampire Dentures stacks without limit at 15; with about 500 Pure Aura a campaign, a player could hold 20 or more | Cap at 3 stacks, or the price rises per copy | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 42 | `! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !` | `SCOPE_VS_LOOP.md` #7: all but Moon Core, Looped Mirror, Vintage Watch, Same Day Shipping, Money Bag (it duplicates Fund Transfer), Sand Filled Box, Blurry Photo, Checklist, Computer. Bottom Rock only with the transfer guard (it zeroes the spend multiplier, `docs/MECHANIC_IDEAS.md` §7) | default |
 | 43 | Every Basin already survives its first killing blow each map (`docs/15` §18.3) | A "survive a killing blow" Cardinal adds one more save, it doesn't create the first | default |
 | 44 | Line 6 counts "lobby picks" in the 8 Team slots; whether lobby Cardinals exist in the mode at all is #14 | Follows #14 | - |
@@ -168,8 +168,8 @@ file back).
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
-| 49 | Mind the Meteor is "Taken by: All players" for 3 Pure Aura, but the template says a team splits the pay: 3 split four ways is under 1 each | Each player on the team gets the full pay; or price team objectives per player | Dimitri |
-| 50 | Every objective is "Offered: every break", with no limit on how many run at once. A meteor every break could add up to 45 a map, as much as the tides | VENDCINT offers 2 per break; one active objective per player (and one team one) at a time | Dimitri |
+| 49 | Mind the Meteor is "Taken by: All players" for 3 Pure Aura, but the template says a team splits the pay: 3 split four ways is under 1 each | Each player on the team gets the full pay; or price team objectives per player | **Answered 2026-10-11, see the answers table.** Dimitri |
+| 50 | Every objective is "Offered: every break", with no limit on how many run at once. A meteor every break could add up to 45 a map, as much as the tides | VENDCINT offers 2 per break; one active objective per player (and one team one) at a time | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 51 | Who accepts a team objective? | Any player takes it for the team | default |
 | 52 | "Kind: Mining" is not in the template's kinds. And a stock mine never runs out, so "fully mine" needs the one-shot node that dies when emptied (`docs/MECHANIC_IDEAS.md` §3) | Add Mining to the kinds; the one-shot node is for its design gate | fix |
 

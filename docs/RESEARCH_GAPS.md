@@ -12,18 +12,19 @@ player; **by hand** = Dimitri plays it. Nothing waits on the PC any more.
 
 ## Summary
 
-Of the 18 items, 16 are answered (A5 and B5 keep a half for the online evening), 1 needs an online evening with a
-friend and 1 waits on a scope decision; the F-key check by hand is still open too. Three answers change plans:
-**Directions can't be per player on the core** (A1), **nothing in the game scales foes for more players or harder
-maps** (A3), and **a friend who drops can't rejoin a running map** (A5). The PC rounds added one rule, **bring the
-choice dialog's menu up before opening it** (A6), and one map to never offer, Special_Custom (A4).
+Of the 18 items, 16 are answered (A5 and B5 keep a half for the online evening), 1 needs an online evening with a friend
+and 1 waits on a scope decision; the F-key check by hand is still open too. Three answers change plans: **Directions
+can't be per player on the core** (A1), **nothing in the game scales foes for more players or harder maps** (A3), and
+**a friend who drops can't rejoin a running map** in the base game (A5; the pack now reopens it, `docs/REJOIN.md`). The
+PC rounds added one rule, **bring the choice dialog's menu up before opening it** (A6), and one map to never offer,
+Special_Custom (A4).
 
 ## A. Before Phase 5 designs the mode
 
 | # | Gap | Answer | Status |
 | --- | --- | --- | --- |
 | A1 | Per-player Directions | The core is the team's: it spawns every player's vessel and has no owner; `Heroapply` reaches every vessel and `Towerapply` every new tower. A Direction must go on the player's vessel, re-granted from host state at each map's first spawn (a respawn copies the vessel's upgrades), and tower Directions through the mod's own spawn hook filtered by owner. **`ModKitDirections` (kit 1.6) needs that change** before Phase 5 uses it (§14.1) | answered |
-| A2 | Fund Transfer's route | Aura is per player. The host moves it with the public `Useresources` and `Giveresources(list, owner)`, with the gain multiplier held at 1 (Cardinals change it). The stock Money Bag Cardinal already donates aura, lossily and by a thrown bag; its code is private, so it's prior art, not a reusable piece. Which aura moves stays Dimitri's call (scope `! NEEDS !`) (§14.2) | answered |
+| A2 | Fund Transfer's route | Aura is per player. The host moves it with the public `Useresources` and `Giveresources(list, owner)`, with the gain multiplier held at 1 (Cardinals change it). The stock Money Bag Cardinal already donates aura, lossily and by a thrown bag; its code is private, so it's prior art, not a reusable piece. Dimitri settled it: base aura only (`docs/scope/06`) (§14.2) | answered |
 | A3 | Difficulty levers | The game has none to borrow: no scaling by player count or map; a map's `Difficulty` is only a label. Levers a mod has: the Tide table (counts, intervals, elites, extra entries; proven live), the game's **easier** setting's upgrade forced on the core (`Special_Treated`: an extra twice the mode's start aura, enemy drops ×4, +30 s per Tide, +200 core health; there is no harder setting), the aura gain multiplier, and modifiers of its own. The other modes' tables are logged: Tsunami starts at 500 aura with four long Tides, Drought has 20 short ones (§14.3, §15) | answered |
 | A4 | The map pool | Any map takes any mode; the coupling is data (§14.4). **All 45 base maps played clean** in the mod's mode (vessel, cores, no warnings, 14-20 s loads), the Final map and the δ maps included. **Special_Custom hangs the load: never offer it.** Each map's difficulty label (1-9) is logged for a vote (§15) | answered |
 | A5 | Drop and rejoin | Key run state by `Sessionid` (stable on a rejoin; RogueLab and Riptide already do). A drop despawns nothing; teammates can command the dropped player's things. **A running map refuses joins** (closed lobby), and a rejoin comes back with no aura. So a dropped friend rejoins only between runs, unless the host reopens the lobby between maps (§14.5). **2026-10-11:** a mod can reopen it mid-map and a late joiner catches up; built, solo PC round 6 passed 47/0, `docs/REJOIN.md` | answered; rejoin built, needs online (`REJOIN.md` §6) |
@@ -62,9 +63,11 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
 
 1. **By hand:** the F-key bug with Boutman (`docs/15` §11 step 8; the mod could not reproduce it in three rounds,
    because the mod-spawned Boutbro is not the player's): let Boutbro spawn, die, press F after respawning.
-2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, and the client
+2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, the client
    checks `docs/MECHANICS_CHECK.md` §3 lists (a Fund Transfer between two players among them; its moves are proven
-   solo).
+   solo), the real drop and rejoin (`docs/REJOIN.md` §6, O1-O8), the sea chart on a client (`docs/SEA_CHART.md` C7),
+   a friend joining the host's boat after the main-menu button, and Quickening's `Time_Scale` and Rising Water's
+   flood on a client (kit `docs/16` §9 item 4).
 3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). Its first PC round also
    checks that a respawn keeps a granted Direction (read from the code, not yet seen).
-4. **C3** when the scope decides on new enemy types or elite skins.
+4. **C3** when the scope decides on new enemy types (modifiers show as an effect, not a skin: `docs/scope/13`).
