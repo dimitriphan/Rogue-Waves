@@ -194,7 +194,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
   rounds passed). A quality check of every lesson and resource (2026-10-11, `docs/QUALITY_CHECK_2026-10-11.md`) fixed
-  the stale and wrong lines in place. Older entries are in "Log" below.
+  the stale and wrong lines in place. A full re-test of every probe set on one build (2026-10-11 22:25Z,
+  `docs/FULL_TEST_2026-10-11.md`): Argo 139/0, RogueLab 22/0, RogueWavesMode 47/0, nothing regressed. Older entries
+  are in "Log" below.
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call).
@@ -275,6 +277,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   stats) and starts the rejoiner's camera and HUD. Every map, any mode. 0.2.1 passed solo PC round 6, 47/0 (round 5's
   one failure: the game's loading screen shut the lobby; now reopened every frame). PR #24 merged; the
   rejoin itself needs a friend online (`REJOIN.md` §6, O1-O8, part of the online evening).
+- **Also (2026-10-11 22:25Z):** Dimitri asked to test every implemented mechanic. All three probe sets ran again on the
+  PC on one build of `27591bc` (the PC already matched it; no handoff): **208 pass, 0 fail** (Argo 139, RogueLab 22,
+  RogueWavesMode 47), every exception the game's own; Argo's steep-shot check can skip when its test foe fails to
+  spawn (passed on a second launch). Mods folder empty again. `docs/FULL_TEST_2026-10-11.md`.
 
 ### Decisions
 
