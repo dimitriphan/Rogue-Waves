@@ -208,3 +208,6 @@ stock mode loads. 0.1.2 stands a copy of a stock no-build block in under that na
 
 **Round 3 (0.1.2): 35 pass, 3 fail**, the same three: no stock no-build block is loaded on the boat either. 0.1.3 makes
 the stand-in in the map and spawns no flood without one; round 4 checks it.
+
+**Round 4 (0.1.3): 38 pass, 0 fail.** The stand-in is a copy of `Block_Noplacementfish` (Boutman's, loaded with
+Manafold's groups); the water flooded 67 tiles at the first Tide with no error. Every probe of this section passes.

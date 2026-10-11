@@ -2,6 +2,12 @@
 
 ## 0.1.3 (2026-10-11): the stand-in is made in the map, and no flood without it
 
+**PC round 4** (0.1.3 self-test, 2026-10-11): **38 pass, 0 fail, 0 setup.** The broader "Block_No..." match found
+`Block_Noplacementfish` (Boutman's, loaded with `Hero_Boutman`, which Manafold's sub-loads bring) already on the boat,
+so the stand-in was made there: "Block_Flood_Deter stood in by a copy of Block_Noplacementfish". The water climbed
+(y 2 -> 3.6) and flooded 67 tiles at the first Tide with no error, and the flood's throw is gone. Not yet seen: what
+the stand-in looks like on a flooded tile (it borrows the fish block's look), and Rising Water online.
+
 **PC round 3** (0.1.2 self-test): **35 pass, 3 fail**, the same three Rising Water failures. The load now runs once
 (1 log line, was 192), but neither `Block_Noplacement` nor `Block_Nobuild_Brittle` is loaded on the boat, so no
 stand-in was made and the flood threw again. That throw unwinds through the `Wave` setter into `Mode_Normal.Run`,

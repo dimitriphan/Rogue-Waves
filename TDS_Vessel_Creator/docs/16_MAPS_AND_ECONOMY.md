@@ -108,7 +108,8 @@ in different groups: the flood fetches `Block_Flood_Deter` by name at each Tide 
 `Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six stock modes load
 (round 2), so it may not ship. The throw unwinds through the `Wave` setter into `Mode_Normal.Run`, which drives the
 Tides, so never leave a flood on a map without it. `Block_Noplacement` is not loaded on the boat (round 3);
-RogueWavesMode 0.1.3 registers a copy of a no-build block under that name once the map has loaded.
+RogueWavesMode 0.1.3 registers a copy of `Block_Noplacementfish` (loaded with `Hero_Boutman`, one of Manafold's
+sub-loads) under that name; **verified** in round 4: 67 tiles flooded at the first Tide, no error.
 
 ## 4. Aura nodes and mining
 
