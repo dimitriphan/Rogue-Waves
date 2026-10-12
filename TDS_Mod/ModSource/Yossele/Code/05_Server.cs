@@ -192,6 +192,7 @@ public static class YosseleServer
             if (building != null)
             {
                 Buildings.Remove(building);
+                YosseleLog.Info(building.Def.Id + " at " + building.Pos.ToString("F0") + " gone: " + (killed ? "destroyed" : "removed") + " (" + reason + "), Growth " + building.Growth);
                 building.Gone(killed);
                 if (killed)
                     YosseleUtil.Vis(master, "Yossele_Towerdown", YosseleUtil.Pos(master), 0);

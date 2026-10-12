@@ -79,3 +79,9 @@ Connected Roots (cannon lost 3.5, Sapling 6.5); the far-foes Compost check ran (
   found from the log; round 4's check waits up to 4 s and logs the limit, the Seedlimit stat, brain and strikes.
 - SETUP: Seed Packets (this time no seed felled the foe; a chance of the test, not a bug) and Spaghetti Roots (the
   rooted foe still never stayed 7 s; round 4 moves its start back once it counts as on the vines, and logs it).
+
+**Round 4 (2026-10-12): 58 pass, 0 fail, 1 setup, then the test itself stopped** on a NullReferenceException reading
+the Dandelion Tree's brain: the tree had been removed by then (its brain destroys itself when its entity goes). Most
+likely Tide foes felled it (they keep marching while the test holds the Tide clock), which also explains round 3's
+"0 seeds" read. Round 5: every building logs when it goes and why, each test section clears Tide foes first, and a
+felled building turns its checks into setup lines instead of stopping the run.

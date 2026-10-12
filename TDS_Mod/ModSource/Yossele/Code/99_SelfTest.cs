@@ -353,6 +353,15 @@ public static class YosseleSelfTest
         return best;
     }
 
+    // Tide foes keep coming while the test runs and can fell a building; each section starts by saying which still stand.
+    static void Standing(Dictionary<string, YosseleBuilding> built)
+    {
+        List<string> gone = new List<string>();
+        foreach (KeyValuePair<string, YosseleBuilding> kv in built)
+            if (kv.Value == null || !YosseleUtil.Alive(kv.Value.Master)) gone.Add(kv.Key);
+        if (gone.Count > 0) Log("buildings gone before this step: " + YosseleUtil.Join(gone));
+    }
+
     static Entity_Master NearestOre(Vector3 at, float reach)
     {
         Entity_Master best = null;
@@ -538,6 +547,8 @@ public static class YosseleSelfTest
             hero.ShowFertilizer();
         }
 
+        ClearFoes();
+        Standing(built);
         // 6. Mushroom Cannon: lobs land, spore stacks build to their cap and rot foes; fully grown, the lobs bounce.
         if (cannon != null)
         {
@@ -599,6 +610,8 @@ public static class YosseleSelfTest
             Log("cannon: Viral bursts so far " + YosseleSpores.Virals + " (a 30% chance, not checked)");
         }
 
+        ClearFoes();
+        Standing(built);
         // 7. A second Cannon down the other branch: Farout Fungus -> Deathcap Training (fewer, deadlier stacks) ->
         // Hallucinogen.
         {
@@ -633,8 +646,10 @@ public static class YosseleSelfTest
                 ModKitTest.Setup("second Cannon", "could not build one");
         }
 
+        ClearFoes();
+        Standing(built);
         // 8. Primordial Dandelion Tree: seeds grow, all strike one foe at once; Growth adds seeds and range.
-        if (tree != null)
+        if (tree != null && YosseleUtil.Alive(tree.Master))
         {
             tree.SetGrowth(0);
             yield return Wait(0.3f);
@@ -661,16 +676,21 @@ public static class YosseleSelfTest
             float r0 = tree.Rate;
             int strikes1 = tree.Strikes;
             tree.Ready = 0f;
-            yield return Until(() => tree.Ready >= 0.5f || tree.Strikes > strikes1, 4f);
+            yield return Until(() => tree == null || tree.Ready >= 0.5f || tree.Strikes > strikes1, 4f);
+            if (tree == null) { ModKitTest.Setup("seed regrow", "the Tree was felled during the check"); }
+            else {
             Link_Stats lim;
             tree.Master.Statsserver.TryGetValue("Seedlimit", out lim);
             Check("seeds grow back over time", tree.Ready >= 0.5f || tree.Strikes > strikes1, "ready " + F(tree.Ready) + ", rate " + F(r0) + ", limit " + tree.Limit
                 + " (Seedlimit " + (lim != null ? F(lim.Value) + "/" + F(lim.Value_Calc) : "none") + "), brain on " + tree.enabled + ", alive " + YosseleUtil.Alive(tree.Master)
                 + ", strikes " + strikes1 + "->" + tree.Strikes);
+            }
         }
 
+        ClearFoes();
+        Standing(built);
         // 9. Overgrown Stonehenge: vines creep the way it faces, one tile per two stages, and slow foes on them.
-        if (henge != null)
+        if (henge != null && YosseleUtil.Alive(henge.Master))
         {
             Vector3 hp = henge.Master.Beingserver.Currentblock != null ? henge.Master.Beingserver.Currentblock.Position : henge.Pos;
             henge.SetGrowth(0);
@@ -731,6 +751,8 @@ public static class YosseleSelfTest
             Kill(foe);
         }
 
+        ClearFoes();
+        Standing(built);
         // 10. A second Stonehenge down the other branch: Vine Blockade's barrier each Tide, Natural Remedy.
         {
             Beingobject being = YosseleContent.Beings[YosseleData.Henge];
@@ -766,9 +788,11 @@ public static class YosseleSelfTest
                 ModKitTest.Setup("second Stonehenge", "could not build one");
         }
 
+        ClearFoes();
+        Standing(built);
         // 11. Pachira Sapling: its roots mine every node in reach; fully grown, a node mined out drops an aura fruit, and
         // walking over it pays.
-        if (sapling != null)
+        if (sapling != null && YosseleUtil.Alive(sapling.Master))
         {
             int strikes = sapling.Strikes;
             yield return Wait(4.5f);
@@ -839,8 +863,10 @@ public static class YosseleSelfTest
                 ModKitTest.Setup("Connected Roots", "no tile for a building in the Sapling's range");
         }
 
+        ClearFoes();
+        Standing(built);
         // 12. Gone is gone: a destroyed building's replacement starts at Growth 0, and the Tree's button comes back.
-        if (tree != null)
+        if (tree != null && YosseleUtil.Alive(tree.Master))
         {
             Kill(tree.Master);
             yield return Until(() => hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption), 3f);
