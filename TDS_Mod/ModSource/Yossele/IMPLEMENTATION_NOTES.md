@@ -113,3 +113,8 @@ faces and grows its vines that way with the model turned once, the Tree's range 
 - FAIL: the vine tiles had no texture. Boot puts every library model onto one copy of the game's tower material with
   the palette texture (`YosseleAssets.ApplyTowerMaterial`), the vine quad included. Round 7 leaves `*_Ground`
   materials alone and logs what a live vine tile and Sno Sno's snow draw with.
+
+**Round 7 (2026-10-12): 97 pass, 0 fail, 0 setup**, then the play build installed for Dimitri. The vine tiles draw
+their own texture (URP Lit, cut out, 0.01 above the tile). Sno Sno's snow is a 0.8 x 0.1 x 0.8 mesh on the game's
+`Shader Graphs/General Block` material with no texture: if the vines should be lit exactly like it, that shader is
+the one to copy with the vine texture. Waiting on Dimitri's look by eye.
