@@ -71,3 +71,11 @@ Remedy, the Sapling's mining, fruit drop and pickup (30 of each), Grafted Colors
 - Not reached: the hit hook (armour, barrier, Connected Roots) saw no hit (`softened 0, soaked 0, shared 0, skipped
   0`); round 3 adds a real hit on each. The "far foes" check spawned none (it aimed off the hill); fixed.
 - The slice warnings came from round 1's stale .meta on the first import; the meta is right now (48 slices).
+
+**Round 3 (2026-10-12): 86 pass, 1 fail, 2 setup.** No slice warnings. Now proven in game: the stock slow look on the
+vines, Growth's armour (a hit of 10 costs 6), Vine Blockade's barrier soaking a hit (72 -> 62, health untouched),
+Connected Roots (cannon lost 3.5, Sapling 6.5); the far-foes Compost check ran (0 after 3).
+- FAIL: "seeds grow back over time" read 0 seeds 1.5 s after emptying (it passed in round 2 with 0.75). Cause not
+  found from the log; round 4's check waits up to 4 s and logs the limit, the Seedlimit stat, brain and strikes.
+- SETUP: Seed Packets (this time no seed felled the foe; a chance of the test, not a bug) and Spaghetti Roots (the
+  rooted foe still never stayed 7 s; round 4 moves its start back once it counts as on the vines, and logs it).

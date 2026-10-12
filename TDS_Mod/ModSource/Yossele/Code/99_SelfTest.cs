@@ -346,6 +346,13 @@ public static class YosseleSelfTest
         yield return Wait(0.4f);
     }
 
+    static float NearestVine(YosseleHengeBrain henge, Vector3 at)
+    {
+        float best = 99f;
+        foreach (Genitem g in henge.Tiles) best = Mathf.Min(best, YosseleUtil.Flat(g.Position, at));
+        return best;
+    }
+
     static Entity_Master NearestOre(Vector3 at, float reach)
     {
         Entity_Master best = null;
@@ -652,9 +659,14 @@ public static class YosseleSelfTest
             else ModKitTest.Setup("Seed Packets", "no seed felled a foe this time (refunded 0)");
             Kill(foe);
             float r0 = tree.Rate;
+            int strikes1 = tree.Strikes;
             tree.Ready = 0f;
-            yield return Wait(1.5f);
-            Check("seeds grow back over time", tree.Ready > 0f, "ready " + F(tree.Ready) + ", rate " + F(r0));
+            yield return Until(() => tree.Ready >= 0.5f || tree.Strikes > strikes1, 4f);
+            Link_Stats lim;
+            tree.Master.Statsserver.TryGetValue("Seedlimit", out lim);
+            Check("seeds grow back over time", tree.Ready >= 0.5f || tree.Strikes > strikes1, "ready " + F(tree.Ready) + ", rate " + F(r0) + ", limit " + tree.Limit
+                + " (Seedlimit " + (lim != null ? F(lim.Value) + "/" + F(lim.Value_Calc) : "none") + "), brain on " + tree.enabled + ", alive " + YosseleUtil.Alive(tree.Master)
+                + ", strikes " + strikes1 + "->" + tree.Strikes);
         }
 
         // 9. Overgrown Stonehenge: vines creep the way it faces, one tile per two stages, and slow foes on them.
@@ -707,7 +719,13 @@ public static class YosseleSelfTest
             if (foe != null) YosseleUtil.Root(henge.Master, foe, 10f, false, "");
             yield return Until(() => foe == null || henge.Drained > drained, 3f);
             Check("Opportunistic Carnivore drains a foe on the vines", foe != null && henge.Drained > drained, "drains " + drained + "->" + henge.Drained);
-            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || henge.Snares > snares, 9f);
+            // The 7 s wait is cut short: once the foe counts as on the vines, its start is moved back 6.5 s.
+            yield return Until(() => foe == null || henge.OnSince.ContainsKey(foe), 2f);
+            float since0;
+            bool counted = foe != null && henge.OnSince.TryGetValue(foe, out since0);
+            Log("Spaghetti: foe on the vines " + counted + ", nearest vine " + (foe != null ? F(NearestVine(henge, YosseleUtil.Pos(foe))) : "-") + " tiles, speed " + F(SpeedOf(foe)));
+            if (counted) henge.OnSince[foe] = Time.time - (henge.Param("Spaghetti_After", 7f) - 0.5f);
+            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || henge.Snares > snares, 4f);
             if (henge.Snares > snares) Check("Entangling Spaghetti Roots snare a lingering foe", true, "snares " + henge.Snares);
             else ModKitTest.Setup("Spaghetti Roots", "the foe left the vines before " + F(henge.Param("Spaghetti_After", 7f)) + " s (on since: " + henge.OnSince.Count + ")");
             Kill(foe);
