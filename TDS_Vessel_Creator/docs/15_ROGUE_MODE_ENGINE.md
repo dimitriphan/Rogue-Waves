@@ -1,7 +1,7 @@
-# 15 · The Rogue Wave mode engine: what a mod can build a roguelike run on
+# 15 · The Rogue Waves mode engine: what a mod can build a roguelike run on
 
 How the game starts, plays and ends a match, keeps players' choices, pays bounties, applies Cardinals and saves, read
-for the Rogue Wave mode (`docs/scope/` in the Rogue Waves repository). Everything here was **read from the game's code**
+for the Rogue Waves mode (`docs/scope/` in the Rogue Waves repository). Everything here was **read from the game's code**
 (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) unless it says **verified in a mod** or **untested**,
 or was **proven in game** by RogueLab rounds 1-6 (§11, §15, §16), RogueWavesMode rounds 1-6 (§14.5, §17) or Riptide
 (§13). `File.cs:line` points into that decompiled folder (never committed; rebuild it in a minute).
@@ -59,7 +59,7 @@ Mode_Base obj = (Mode_Base)gameObject.AddComponent(Type.GetType(Modegen.Modescri
 - The base game has a seventh mode asset, `Mode_Downpour`, besides the six in `13` §3 (asset list, §12); it is not in
   the database's Mode folder, and "Downpour" is `Mode_Normal`'s display name (RogueLab round 1).
 
-**So the Rogue Wave mode is:** the stock `Mode_Normal` loop playing the mod's own `Wavesobject`, plus a host brain
+**So the Rogue Waves mode is:** the stock `Mode_Normal` loop playing the mod's own `Wavesobject`, plus a host brain
 (the mod's `Default` prefab code, as kit 1.5's server module) that listens to `Game_Mapvars.Wave` / `Entry` and adds
 everything the run needs. The brain knows it is in a Rogue match by the mode's name in `Tds_Multiplayerinfo.Mode`.
 

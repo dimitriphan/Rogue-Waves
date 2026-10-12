@@ -1,5 +1,5 @@
 // Round 4 (0.4.0), the main menu half: probes M1-M5 and M7 of docs/MAIN_MENU_START.md §5 in the Rogue Waves repository.
-// The run starts from a "Rogue Wave" button the mod clones from the main menu's Play, not from Play itself, and the
+// The run starts from a "Rogue Waves" button the mod clones from the main menu's Play, not from Play itself, and the
 // boat takes the mod's mode with no Cardinal equipped. M6 (the flag clears when the main menu comes back) is the mod's
 // own code and is not run: getting back to the main menu from a match is not something RogueLab has done yet.
 using System.Globalization;
@@ -67,7 +67,7 @@ public static class RogueLabMenu
             // Round 5: the clone was inactive in the hierarchy because the whole Main menu was (the title screen was still
             // up): pass when the clone is shown exactly when Play is. M4b looks again once the menu is up.
             bool ok = clone != null && copy.activeSelf && copy.activeInHierarchy == play.activeInHierarchy && main.Items.TryGetValue(ItemName, out registered) && registered == copy;
-            RogueLabProbe.Check("M1 Rogue Wave button cloned from Main/Play", ok, "active " + copy.activeInHierarchy + " (self " + copy.activeSelf + ", Play " + play.activeInHierarchy + "), Blu3_Button " + (clone != null)
+            RogueLabProbe.Check("M1 Rogue Waves button cloned from Main/Play", ok, "active " + copy.activeInHierarchy + " (self " + copy.activeSelf + ", Play " + play.activeInHierarchy + "), Blu3_Button " + (clone != null)
                 + ", registered " + main.Items.ContainsKey(ItemName) + ", menu of the clone " + (clone != null && clone.Menu != null ? clone.Menu.gameObject.name : "none")
                 + "; Play rect " + Rect(from) + ", clone rect " + Rect(to) + ", parent layout " + Layout(play.transform.parent));
         }
@@ -104,7 +104,7 @@ public static class RogueLabMenu
         Embark(menu);
     }
 
-    static void Clicked() { handlerRan = true; RogueLabLog.Test("M2 handler: Rogue Wave button clicked"); }
+    static void Clicked() { handlerRan = true; RogueLabLog.Test("M2 handler: Rogue Waves button clicked"); }
 
     static void Embark(Mainmenu_Main menu)
     {
@@ -134,13 +134,13 @@ public static class RogueLabMenu
             Bla_Ui_Confirmation.Entry e = new Bla_Ui_Confirmation.Entry();
             e.Name = "RogueLab_" + names[i];
             e.Display_Name = shown[i];
-            e.Display_Desc = i == 0 ? "Start a new Rogue Wave campaign" : i == 1 ? "Pick up the saved campaign" : "";
+            e.Display_Desc = i == 0 ? "Start a new Rogue Waves campaign" : i == 1 ? "Pick up the saved campaign" : "";
             e.Display_Color = new Color(0.247f, 0.561f, 0.588f, 1f);   // Rogue Teal
             if (i == 2) e.Tomenu = "Main";
             options.Add(e);
         }
         Cysharp.Threading.Tasks.UniTask<Bla_Ui_Confirmation.Entry> task;
-        try { task = dialog.Runprompt(options, "ROGUE WAVE", "RogueLab round 4 (no click needed)", true); }
+        try { task = dialog.Runprompt(options, "ROGUE WAVES", "RogueLab round 4 (no click needed)", true); }
         catch (Exception e) { RogueLabProbe.Check("M3 dialog on the main menu", false, before + "; Runprompt threw " + e.Message); yield break; }
         yield return new WaitForSecondsRealtime(2f);
         int cards = 0;

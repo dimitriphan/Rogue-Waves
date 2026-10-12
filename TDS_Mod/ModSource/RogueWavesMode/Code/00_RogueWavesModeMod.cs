@@ -89,7 +89,7 @@ public static class RWData
     public const string Part = "Mode";
     public const string Version = "0.2.1";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather; 0.2: rejoin
     public const string Mode = "Mode_RogueWave";         // the mode's entry, group and Modeobject name
-    public const string ModeDisplay = "Rogue Wave";
+    public const string ModeDisplay = "Rogue Waves";
     public const string StockMode = "Mode_Normal";
     public const string PlanPrefix = "RW_";              // + the base Gameplan's name: its twin in Mode_RogueWave
     public const string SaveFolder = "RogueWaves";

@@ -1,5 +1,5 @@
 | Scope Files |
-	# The Rogue Wave scope, one file per category. Together they are what roguewave.txt used to be.
+	# The Rogue Waves scope, one file per category. Together they are what roguewave.txt used to be.
 	# Edit a file the way you edited roguewave.txt, then send back only the files you changed. Claude folds just those in.
 	# Every file uses the formatting below. A ! NEEDS ! line is waiting on you, and your < Answer > goes right under it.
 	/ The repository copy is docs/scope/ and the project files copy is scope/. Both are kept the same \

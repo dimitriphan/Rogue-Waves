@@ -10,7 +10,7 @@ The release is **one mod folder, `RogueWavesMod`**: one zip, one toggle in the M
 
 | Part | Prefab | Dev mod (own build, own self-test) |
 | --- | --- | --- |
-| The mode (Rogue Wave run, Pure Aura, shop, objectives, Directions catalogue, Cardinals, map vote, ascension) | `RogueWaves_Mode_Default` | `RogueWavesModeMod` (grows out of RogueLab and Riptide) |
+| The mode (Rogue Waves run, Pure Aura, shop, objectives, Directions catalogue, Cardinals, map vote, ascension) | `RogueWaves_Mode_Default` | `RogueWavesModeMod` (grows out of RogueLab and Riptide) |
 | Enemies and modifiers (Cursed, Berserk, new foes) | `RogueWaves_Foes_Default` | `RogueWavesFoesMod` |
 | Argo, Yossele, Spool, Uloe (one part each) | `RogueWaves_<Vessel>_Default` | `<Vessel>Mod`, as in the kit today |
 
@@ -75,5 +75,5 @@ its own group, so they exist on every machine that has the pack.
 
 One zip, `RogueWaves-<version>.zip`, holding the `RogueWavesMod` folder and `README.txt`. That README covers
 installing (unzip into `TDS\Mods`, enable in the Mods menu, disable standalone vessel mods of the same name), how the
-mode starts (the host presses the Rogue Wave button on the main menu, `docs/MAIN_MENU_START.md`) and online play
+mode starts (the host presses the Rogue Waves button on the main menu, `docs/MAIN_MENU_START.md`) and online play
 (everyone needs the same version). There is no Workshop (`docs/14` §4).

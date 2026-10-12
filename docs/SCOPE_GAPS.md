@@ -23,7 +23,7 @@ numbers; **routed** = the engine route is read or proven (`TDS_Vessel_Creator/do
 | Yossele | concept | design gate; Growth and fertilizer rules; Mushroom Cannon has no upgrade ideas |
 | Spool | concept | design gate; Thread Head building or minion; minion orders UI; Mummer name clash |
 | Uloe | concept | design gate (light received is feasible, `RESEARCH_GAPS.md` B1); Mirror has no upgrades |
-| Rogue Wave mode | routed (start, chain, leave, prompt, save proven) | nothing designed: no objective list, shop, prices, difficulty curve or ascension levels |
+| Rogue Waves mode | routed (start, chain, leave, prompt, save proven) | nothing designed: no objective list, shop, prices, difficulty curve or ascension levels |
 | Directions | routed, kit file built | no catalogue at all; per-player grant decided (on the vessel, kit 1.7) |
 | Pure Aura, Fund Transfer | routed | amounts, limit, icon, counter art |
 | New Cardinals | routed and proven | none named yet; no effects |
@@ -32,14 +32,14 @@ numbers; **routed** = the engine route is read or proven (`TDS_Vessel_Creator/do
 | F-key bug fix | built (`ModKitFocus`) | never reproduced; needs a hand check with Boutbro |
 | Online | routed | never played online; the friend check is manual |
 
-## 1. The Rogue Wave mode (scope "Rogue Wave Mode", "Gameplay Rundown")
+## 1. The Rogue Waves mode (scope "Rogue Waves Mode", "Gameplay Rundown")
 
 Engine verdicts: `TDS_Vessel_Creator/docs/15` §1. Build order: PLAN Phase 5. Prior art: `ModSource/Riptide` (Tide
 director, Salvage dialog), `ModSource/RogueLab` (chain, leave, save).
 
 | Asset | Exists | Missing |
 | --- | --- | --- |
-| The mode's start Cardinal | route decided: the host equips it in the lobby (PLAN Decisions); a mod Cardinal proven in the colour slot (`docs/15` §11) | **its name** ("Rogue Wave" is the mod's, user), entry, icon (the crest, `STYLE.md`), lobby text; the picker's look by hand is unseen |
+| The mode's start Cardinal | route decided: the host equips it in the lobby (PLAN Decisions); a mod Cardinal proven in the colour slot (`docs/15` §11) | **its name** ("Rogue Waves" is the mod's, user), entry, icon (the crest, `STYLE.md`), lobby text; the picker's look by hand is unseen |
 | Vessel lock before the run | ready-up is the lock (`docs/15` §6) | nothing to build; one line of player-facing text |
 | Map 1 staging step | rule decided (every map voted, `docs/15` §6) | the hold, the banner, what players see while it waits |
 | Map vote (3 base-game maps) | route: in-game vote by vessel commands (`docs/15` §6) | **which maps can be offered** (pool per map 1/2/3, by difficulty?), the vote dialog, tie-break, timeout |

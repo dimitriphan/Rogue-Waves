@@ -1,7 +1,7 @@
 # 16 · Maps, map objects and the economy underneath (what a run can change inside a map)
 
 How a map is built into a grid, how placement and enemy paths work, what the base game's map-special objects do, how
-aura nodes pay and how the wallet works, read on 2026-10-09 for the Rogue Wave mode's in-map events, objectives and
+aura nodes pay and how the wallet works, read on 2026-10-09 for the Rogue Waves mode's in-map events, objectives and
 Directions. Everything here was **read from the game's code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in
 `13` §11) unless it says otherwise; `File.cs:line` points into that decompiled folder (never committed). Most of
 this chapter was not tried in game yet (§9 is the PC list); §3's flood and nest and §6's host `Time_Scale` were

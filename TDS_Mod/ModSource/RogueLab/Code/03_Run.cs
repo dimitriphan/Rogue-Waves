@@ -40,7 +40,7 @@ public static class RogueLabRun
             {
                 if (RogueLabData.Round == 4)
                 {
-                    // Round 4: the Rogue Wave button (07_Round4Menu.cs) embarks; the retry below covers a menu that never came up.
+                    // Round 4: the Rogue Waves button (07_Round4Menu.cs) embarks; the retry below covers a menu that never came up.
                     RogueLabMod.Instance.StartCoroutine(RogueLabMenu.Run(menu));
                     step = now + 30f;
                     return;

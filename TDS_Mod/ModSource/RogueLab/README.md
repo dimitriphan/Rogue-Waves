@@ -47,7 +47,7 @@ data, the leftover Cardinal; `docs/MECHANICS_CHECK.md` §3). Same steps as round
 Ran 2026-10-09: 11 pass, 5 fail, 1 setup, all failures the probe's own (`docs/MECHANICS_CHECK.md` §3).
 
 RogueLab 0.4.0 (`07_Round4Menu.cs`, `08_Round4.cs`, `RogueLabData.Round = 4`) checks two things in one short launch:
-the main menu start (probes M1-M5 and M7 of `docs/MAIN_MENU_START.md` §5: the run starts from a cloned "Rogue Wave"
+the main menu start (probes M1-M5 and M7 of `docs/MAIN_MENU_START.md` §5: the run starts from a cloned "Rogue Waves"
 button and its New / Continue / Back dialog, and the boat takes the mod's mode with no Cardinal) and the mechanics of
 the 2026-10-09 scope that only the game can answer (`docs/MECHANICS_CHECK.md` §3: a vessel button added mid-match, a
 neutral shop unit with a fall-in, Fund Transfer's moves, a minion's owner, an enemy's death data, the vessel's damage

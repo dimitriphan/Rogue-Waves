@@ -118,7 +118,7 @@ namespace RogueLabBuild
             }
             ModTool.Editor.Exporting.ExportSettings.name = "RogueLabMod";
             ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
-            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves research build: runs a scripted solo test of the Rogue Wave mode's engine and logs the results. Not for play.";
+            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves research build: runs a scripted solo test of the Rogue Waves mode's engine and logs the results. Not for play.";
             ModTool.Editor.Exporting.ExportSettings.version = RogueLabVersion;
             ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
             AssetDatabase.SaveAssets();
