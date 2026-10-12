@@ -1,12 +1,13 @@
 # Handoff Yossele_round2 (2026-10-12)
 
-Commit `ec0fa5a` (`HEAD`). Made by `TDS_Mod/Tools/pc/make_handoff.py`; the folders mirror `C:\Users\Dimitri\TDS_Mod`.
+Commit `0f6a41f` (`HEAD`). Made by `TDS_Mod/Tools/pc/make_handoff.py`; the folders mirror `C:\Users\Dimitri\TDS_Mod`.
 
 Round 2 of Yossele 0.1.0-dev: round 1 stopped at the export. Export() now parks the other mods first, and sheets 192 wide are sliced against the PNG's own size. Same steps as round 1 from Apply on: Build-YosseleMod.ps1 -Define YOSSELE_SELFTEST, queue.txt line 'Yossele', Build Queue once, Run-SelfTests.ps1 -Vessels Yossele -TimeoutMinutes 20. Report the summary, the map file, every [Yossele] line and every exception with its stack. Afterwards the Mods folder is empty and the other mods are back in Assets.
 
 `Apply-Handoff.ps1` (check only) should list:
 
-- nothing: the PC is up to date
+- will copy: `Assets\YosseleMod\Editor\YosseleBuilder.cs`
+- will copy: `Assets\YosseleMod\Editor\YosseleModPrefab.cs`
 
 ## Steps
 

@@ -1,2 +1,4 @@
-# Handoff Yossele_round2: commit ec0fa5a of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Handoff Yossele_round2: commit 0f6a41f of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
 # Bases from commit ec0fa5a.
+1edbc2d429ad2b66  6a02af0fe8419030  Assets\YosseleMod\Editor\YosseleBuilder.cs
+2fd73399d7b754c4  15f8248b0ddcaafc  Assets\YosseleMod\Editor\YosseleModPrefab.cs
