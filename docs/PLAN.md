@@ -199,6 +199,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
+  2026-10-12: RogueLab round 7 ran `17` §12 and `16` §9 items 1-3 on the PC: every check answered, with three new
+  rules (Direction params apply nothing, unit counts need the building's count check, a respawn cut made at the death
+  is too late); `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call).
@@ -288,6 +291,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   kit `docs/17_BASE_VESSELS.md`, pitfalls #81-86, and fixes to `docs/12` §1 (Boutbro builds the fish), `docs/13` §6
   (Multi and Pmulti add up) and `SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
   the PC list, worth a probe round before the first Direction is built.
+- **Also (2026-10-12 06:10Z):** Dimitri asked to test every PC check possible. RogueLab 0.5.x (round 7, built and run
+  on the PC in three launches: 24/2/1, 7/2, 7/0; every failure the probe's own) checked `17` §12 and `16` §9 items 1-3.
+  Verified: percentages add, outside mods outlive upgrades, a −3 upgrade leaves Level and panel alone and the
+  Bouthouse leaks it onto Boutman, the Bout Way's prices, price scales, unit counts, the `Sno` grab, a re-routed
+  path, a den and an ore node spawned mid-match, a respawn keeping a −3 upgrade. New: an upgrade's params apply nothing
+  by themselves; Health raises keep the health fraction; a respawn cut made at the death is too late (`09` #87-89).
+  Left: a Blurry Photo clone and the house's upgrades. Mods folder empty again. `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
 
 ### Decisions
 

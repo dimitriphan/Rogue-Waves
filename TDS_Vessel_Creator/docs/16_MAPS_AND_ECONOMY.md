@@ -58,7 +58,7 @@ Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
 - **Goal core:** the enemy core lists the `Core` entities it has a path to, hands them out round-robin per spawn and
   rebuilds the list only when its current goal is gone (Entity_Ai_Main_Enemycore.cs:39-94). Flying uses the same graph
   in a straight line (`Getpathlinear`, Helper_Navtools.cs:221-305); there is no separate air pathing.
-- **Changing the map mid-match** (read; untested):
+- **Changing the map mid-match** (read; a spawned wall verified, below):
   - mark a tile unbuildable or unwalkable by spawning a block entity on its node (`Link_Spawn.Genadd`): the spawn runs
     `Movebeing` and `Updatefunct`, which re-fold the node's flags (Game_Entity.cs:126-128, 299-301). This is how the
     stock flood works (§3);
@@ -66,6 +66,8 @@ Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
     `Removeconnection` (Helper_Gridtools.cs:140-212). A new node is not linked by itself; Boutboat links its own
     (Entity_Ai_Tower_Boutmanboat.cs:252);
   - paths follow after the 10 s cache expiry, or at once if the host clears `Game_Grid.Instance.Savedpaths`.
+    **Verified** (RogueLab round 7, 2026-10-12): a wall spawned on tile 21 of the foes' 61-tile path was still crossed
+    by the cached path; after the clear a 60-tile path went round it.
 
 ## 3. The base game's map-special objects
 
@@ -81,7 +83,7 @@ Each is a being placed by a map; its team and skin come from data (`Modeobject.S
 | `Main_Enemycoresplit` (+ `_Effect`) | at Tide 1 upgrades every enemy core so its spawns fan out to the other enemy cores ("Spawnsplit") (Entity_Ai_Main_Enemycoresplit.cs:11-29; `_Effect`.cs:61-123) | Wave = 1 |
 | `Oroboro` | at Tide `Path2`, then `Path3`, moves the cores and enemy cores to `Tp` / `Tpe` markers, kills every vessel, vessel building and enemy, warns "THE LAND SHIFTS" (Entity_Ai_Oroboro.cs:30-172) | Wave |
 | `Tower_Halberdnest` | gains `Healthperwave` max health per Tide; every `Waveperunit` Tides spawns an `Enemy_Halberd`, respawned after `Respawn` s while the nest stands (Entity_Ai_Tower_Halberdnest.cs:27-69) | Wave |
-| `Tower_Den` | keeps up to `Maxunits` `Mob_Aurabeast` (one more every `Addperwave` Tides, `Respawn` s); hit, it sends its beasts at the attacker (Entity_Ai_Tower_Den.cs:40-144) | Wave |
+| `Tower_Den` | keeps up to `Maxunits` `Mob_Aurabeast`, adding one each time its Tide counter passes `Addperwave` (5 on Thehunt, so not before Tide 6), `Respawn` s; hit, it sends its beasts at the attacker (Entity_Ai_Tower_Den.cs:40-144). Tagged `Resource`, team 3 on Thehunt | Wave |
 | `Mob_Aurabeast` | wanders surface tiles; a vessel or gatherer that hurts it makes it aggressive; on death splits its `Redauramine`/`Blueauramine`/`Yellowauramine` among all players (Entity_Ai_Mob_Aurabeast.cs:81-190) | death |
 | `Blastheadore` | each Tide grows its own payout and spawns `Resource_Branchrock_<colour>` nodes on free neighbours (Entity_Ai_Blastheadore.cs:68-137) | Wave |
 | `Tower_Artriobarrier` | barriers sharing a tag share damage and healing; one dying removes them all and their placements (Entity_Ai_Tower_Artriobarrier.cs:17-71) | death |
@@ -103,7 +105,8 @@ one subscribes to `Wave` in `Spawn` (Game_Entity.cs:303) and reads its stats fro
 below; read for the rest). Caveats: `Main_Tpgate` pairs only at `Starting`, so spawn both gates together; the flood
 starts at whatever height it spawns; `Main_Flood`, `Tower_Halberdnest` and `Main_Enemycoresplit` never unsubscribe from
 `Wave`, so despawning one leaks its handler until the map ends. **Verified** (RogueWavesMode round 1, 2026-10-11):
-`Main_Flood` and `Tower_Halberdnest` spawned on Skyhook and Blasthead rise and send a Halberd at the next Tide. A map
+`Main_Flood` and `Tower_Halberdnest` spawned on Skyhook and Blasthead rise and send a Halberd at the next Tide; a
+second `Tower_Den` spawned on Thehunt (with `Addperwave` cut to 0) added 2 beasts at Tide 1 (RogueLab round 7). A map
 object's being and the beings it spawns can sit in different groups: the flood fetches `Block_Flood_Deter` by name at
 each Tide and throws in `Helper_Gridtools.Checkifplaceable` if that is not loaded, so load every being the object
 spawns, not just its own. `Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six
@@ -133,7 +136,9 @@ in round 4: 67 tiles flooded at the first Tide, no error.
 - **A mod can make nodes mid-match:** Farmland and Blastheadore already spawn nodes at run time
   (Entity_Ai_Resource_Farmland.cs:51-56; Entity_Ai_Blastheadore.cs:97). A spawned stock node (or a being with the tag,
   the stat and the Mine AI) is found by every miner by tag (Entity_Ai_Tower_Fiesilo.cs:124). A silo already linked
-  elsewhere won't switch to it on its own.
+  elsewhere won't switch to it on its own. **Verified** (RogueLab round 7): a `Resource_Red` spawned beside a Smacky
+  Hut paid 5 Red when hit, but the Hut's miner kept mining its old ore for 40 s, so only miners picking a new target
+  find it.
 
 ## 5. The wallet, aura colours and conversion
 
@@ -194,11 +199,10 @@ in round 4: 67 tiles flooded at the first Tide, no error.
 
 ## 9. PC list (for the next RogueLab round)
 
-1. Spawn `Tower_Den` and a stock mine node mid-match on a map that has none; log that each reacts at the next Tide and
-   that miners use the node (`Main_Flood` and `Tower_Halberdnest` done, RogueWavesMode rounds 1-4, §3).
-2. Spawn a `Block_Noplacement`-style block on a path tile, clear `Savedpaths`, log that foes re-route.
-3. Set a vessel's `Buildoption1` `Goalvalue` to 0.8 and an `Upgrade` `Goalvalue` to 0.8; log the shown and the spent
-   price.
+1. Done (RogueLab round 7, 2026-10-12): a den and a mine node spawned mid-match work (§3, §4).
+2. Done: a wall on a path tile re-routes foes once `Savedpaths` is cleared (§2).
+3. Done: 0.8 on a `Buildoption` and on an `Upgrade` command cut the paid price to 0.8 (`17` §2.7). The shown price
+   was not read.
 4. Write `Time_Scale` = 1.25 on the host; log the client's Tide timer (online evening; the host half is verified,
    RogueWavesMode W2: 1, 1.25, 1.5).
 5. Call `Uiwarning_ClientRpc` (`15` §18.2) with a mod icon; check it on a client.
