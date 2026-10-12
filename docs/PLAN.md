@@ -199,7 +199,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
-- **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
+  2026-10-12: **Yossele 0.1.0-dev** built from Dimitri's updated `docs/scope/07` (design, temporary art from his
+  reshade, code, self-test; compiled here only). New assets and every default value: `docs/YOSSELE_BUILD_NOTES.md`.
+- **Next:** Yossele's first PC round (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`), started by the
+  coordinator on Dimitri's word. the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.

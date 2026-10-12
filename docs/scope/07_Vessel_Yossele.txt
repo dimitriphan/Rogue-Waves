@@ -16,37 +16,56 @@
 
 		(Offense 1):{Mushroom Cannon}
 			# Slowly stacks spores on enemies, dealing DOT. Long range cannon
-			- Lobs long range spore bombs that deal AOE damage and stack spores
-			- DOT increases as spores stack
-			- As {Mushroom Cannon} experiences [Growth], its attack speed and explosion AOE increases.
-			- Full [Growth] causes spores to bounce once after landing, exploding twice.
-				% Increases damage over time effect from spores, but reduces maximum amount of stacks.
-				% Reaching max stacks of spores slows enemies by a percentage.
-				% Enemies that die with max stacks of spores have a chance to explode with a spore bomb.
+			- Lobs long range spore bombs that deal AOE damage and stack spores / Uses arcs, similar to Smacky's bomb towers. \
+			- DOT increases as spores stack. / Default maximum stacks of spores is 10 \
+			- As {Mushroom Cannon} experiences [Growth], its attack speed and explosion AOE increases. / Max [Growth] is 5, attack speed per growth and AOE radius per growth are to be determined. \
+			- Full [Growth] causes spores to bounce once after landing, exploding again in the same spot 1 second later at half effectiveness. / Half AOE range and half damage for the bouncing spore bomb. \
+				% 1:{Sticky Spores} Reaching max stacks of spores slows enemies by a percentage. / 25% speed reduction \
+				% 1:{Farout Fungus} Range increases, with spore bombs increases in explosion AOE depending on how long the projectile is in the air.
+				
+				% 2:{Viral Outbreak} Enemies that die with max stacks of spores have a chance to explode with a spore bomb. / 30% chance \
+				% 2:{Deathcap Training} Increases damage over time effect from spores, and reduces maximum amount of stacks. / DOT increased by 25%, while maximum spore stacks is reduced to 8 \
+				
+				% 3:{Explosive Finish} When reaching maximum spore stacks, enemies explode with spores, consuming spore stacks and dealing AOE damage based on how many spore stacks were reached. This explosion also can apply spore stacks.
+				% 3:{Hallucinogen} Enemies that have maximum spore stacks have a chance to attack their allies for a small period of time. / While at max spore stacks, every 5 seconds has a 20% chance to attack their allies for 2 seconds. \
+				
+				
 		(Offense 2):{Primordial Dandelion Tree} / Limit of 1 \
 			# Stacks dandelion seeds that burst down enemies that get close enough
-			- As {Primordial Dandelion Tree} experiences [Growth], its max amount of seeds and range increase. / Can only make 1, so limits for seeds and range are very high \
-			- Dandelion seeds float around tower, slowly stacking in quantity. Seeds target enemy all at once
-				% Can set seeds to 'hold' or 'strike', so you can stack them and use them on a tougher enemy instead of wasting on a weaker enemy
-				% Killing an enemy with a seed refunds a seed
-				% Stacks faster when you have lower seeds at the ready
-				% Dandelion Storm, final upgrade that greatly increases its range and spawn rate + quantity
+			- As {Primordial Dandelion Tree} experiences [Growth], its max amount of seeds and range increase. / Can only make 1, so limits for seeds and range are very high. Max [Growth] is 10, seed limit increases by 3 per [Growth], and range increases by 40% of its original range per [Growth] \
+			- Dandelion seeds float around tower, slowly stacking in quantity. Seeds target enemy all at once.
+				% 1:{Seed Packets} Killing an enemy with a seed refunds 2 seeds
+				% 1:{Demand and Supply} Stacks faster when you have lower seeds at the ready
+				
+				% 2:{Picky Placement} Seeds will target enemies on a priority of maximum health. Seeds also do a percentage of maximum health. / Deal 1% of maximum health of enemy. \
+				% 2:{Garden Weeds} Enemies that die soon after being attacked by a seed will grant a stacking buff that grants increased seed spawn rate. / Maximum stacks are equal to current [Growth], with each stack increasing seed spawn rate by 10%. \ 
+				
+				% 3:{Dandelion Storm} Greatly increases its range, maximum seed limit, and seed spawn rate. / Range increases by 50%, seed limit increased by 10, seed spawn rate increased by 50% \
+				
 		(Defense):{Overgrown Stonehenge}
-			# Vines extends out with debuffing / buffing effects
-			- As {Overgrown Stonehenge} experiences [Growth], vines spread out further from source location.
-			- Defensive wall that spreads vines with tides
-			- Vines from wall can extend forward with debuffs
-				% Vines extend much further
-				% At the beginning of every tide, a weak vine wall spawns infront of the stonehenge if possible
-				% Vines heal buildings slowly
-				% Final upgrade creates a stonehenge portal that massively spreads its vines everywhere
-			- Vines siphon health from enemies standing on them, slowly healing {Overgrown Stonehenge}.
-			- Vines can also heal buildings if its upgrade path leads to that specialization.
+			# Vines extends out with debuffing / buffing effects / Spreads on top of tiles like Sno Sno's snow. \
+			- As {Overgrown Stonehenge} experiences [Growth], damage reduction increases and vines spread out further from source location. / Max [Growth] is 8, vine length from {Stonehenge} increases by 1 every 2 [Growth] and damage reduction increases by 10% every [Growth] \
+			- Vines can expand onto already existing building's tiles.
+			- Defensive wall that spreads vines with tides / Directional wall like Sno Sno, vines extend forwards if possible. \
+			- Vines from wall can extend forward with debuffs, with a slowing effect by default and additional debuffs depending on upgrade paths. / Debuffs include slows or self healing depending on upgrade path \
+				% 1:{Verdant Spread} Vines extend all around. / Allows for support vine upgrades to affect nearby buildings \
+				% 1:{Vine Blockade} At the beginning of every tide, a vine barrier forms on the {Overgrown Stonehenge}, taking some damage before breaking. Maximum health also increases. / Barrier should work as a shield, tanking some damage but not allowing itself to heal past that amount. \
+				
+				% 2:{Natural Remedy} Vines heal buildings slowly / 10 health per second. \
+				% 2:{Opportunistic Carnivore} Vines siphon health from enemies standing on them, slowly healing {Overgrown Stonehenge}. / 10 health per second per enemy, with a limit of 5 enemies. \
+				
+				% 3:{Entangling Spaghetti Roots} Enemies spending at least 7 seconds on vines are briefly stunned, taking a percent of their maximum health as damage and healing {Overgrown Stonehenge} by the same amount.
+				
 		(Economy):{Pachira Sapling} / Money Tree Sapling \
 			# Economy sapling that mines nodes through its roots
-			- As {Pachira Sapling} experiences [Growth], its mining speed and range increase.
-			- Full [Growth] drops aura fruits on the ground that can be picked up for aura.
+			- As {Pachira Sapling} experiences [Growth], its mining speed and range increase. / Max [Growth] is 5, mining speed and range values are to be determined. \
+			- Full [Growth] drops aura fruits on the ground after fully mining a node that can be picked up for aura. By default, aura fruit gives a small bonus to all auras. / Any vessel or minion can pick up aura fruit. \
 			- Collects every aura node in a range through its roots / Similar to Sno Sno \
-				% Collects aura much faster, but can only select 1 node
-				% Aura fruit's aura color can be selected
-			- Any vessel or minion can pick up aura fruit.
+				% 1:{Focused Roots} Collects aura much faster, but can only select 1 node
+				% 1:{Sustaining Practices} Heals itself slowly based on how many mining nodes are in range, as well as [Growth] level.
+				
+				% 2:{Grafted Colors} Aura fruit's aura color can be selected, with 70% efficiency. / If a default aura fruit gives 30 of each aura, then player can select a color and receive 63 of that aura type. \
+				% 2:{Selfish Sapling} Aura mining speed increases when no other {Pachira Saplings} are built nearby. 
+				
+				% 3:{Connected Roots} If {Pachira Sapling}'s health is above 50%, a portion of the damage taken by nearby buildings is received by {Pachira Sapling} instead. / 65% of damage taken is received by {Pachira Sapling} if {Pachira Sapling} is healthy enough. \
+				% 3:{Harvesting Season} Aura fruit's value is increased by 100%.
