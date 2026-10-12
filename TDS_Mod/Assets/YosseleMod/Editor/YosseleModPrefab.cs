@@ -94,6 +94,7 @@ namespace YosseleBuild
         [MenuItem("Tools/Yossele/Export Mod")]
         public static void Export()
         {
+            ParkOthers();
             foreach (string dir in AssetDatabase.GetSubFolders("Assets"))
             {
                 string name = Path.GetFileName(dir);
