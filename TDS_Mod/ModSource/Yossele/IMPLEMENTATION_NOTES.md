@@ -123,3 +123,8 @@ the one to copy with the vine texture. Waiting on Dimitri's look by eye.
 like a tower (the vine being at y 11, Yossele at 11, the ground at 10.5); the quad sat at the being's own height.
 Round 8 puts it at the tower convention's ground (y -0.49) and checks the drawn tile against the being and the ground
 block's top. (Note 3 above guessed the ground at the vine model's origin; the fruit, in the tower convention, was right.)
+
+**Round 8 (2026-10-12): 98 pass, 0 fail, 0 setup** on the second build, then the play build installed for Dimitri.
+The vine tile now draws at y 9.51 for a being at 10 (on the ground). The first build used the old editor code
+(pitfall #89) and failed that one check. The ground block's top wasn't found by the check's lookup, so it passes on
+the half-tile rule; Dimitri's eye is the real check.

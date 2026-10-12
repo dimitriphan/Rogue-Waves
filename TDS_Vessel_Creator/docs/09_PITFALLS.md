@@ -253,3 +253,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 88. **"FAILED Export Mod finished but ... .info wasn't written"** (Yossele round 1) → the vessel's `Export()` refused
     because other `<Name>Mod` folders were still in Assets; the Build Queue doesn't park them → `Export()` calls its own
     park step first (`ParkOthers()`/`Park()`), as Argo, RogueLab and RogueWavesMode do.
+89. **A handoff changed an Editor script, but the Build Queue built with the old one** (Yossele round 8, 2026-10-12)
+    → `Assets/Refresh` reloaded the domain without compiling ("compile time=0 ms"), since `Apply-Handoff` keeps the
+    zip's file times, older than the last compile; the editor assembly only recompiled later, during the export's
+    park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
+    Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
+    check a generated asset the change should alter.
