@@ -299,6 +299,9 @@ public static class YosseleAssets
             Transform h = Library.Find(holder);
             if (h != null) all.AddRange(h.GetComponentsInChildren<MeshRenderer>(true));
         }
+        // Flat ground tiles (the vines, Yossele_Vine_Ground) keep their own cut-out material and texture: the tower
+        // material carries one texture, the palette (round 6 drew the vines with it).
+        all.RemoveAll(r => r.sharedMaterial != null && r.sharedMaterial.name.EndsWith("_Ground"));
         foreach (Renderer r in all)
         {
             Material m = r.sharedMaterial;

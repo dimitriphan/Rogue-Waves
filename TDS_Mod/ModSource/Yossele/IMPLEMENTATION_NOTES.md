@@ -106,3 +106,10 @@ balance pass, and online play.
 - The Dandelion Tree's range is 6 at Growth 0 (was 3); each stage still adds 40% of it.
 - Selfish Sapling is reversed: +20% mining speed for each other Sapling within 4 tiles, up to +100%.
 - Not seen yet by eye: the two arrows, the vine texture's look and height.
+
+**Round 6 (2026-10-12): 96 pass, 1 fail, 0 setup.** Proven in game: the Stonehenge's facing arrows (the Ice Wall has
+the same two: `Entity_Vis_Tower_Orientation` and a `Forward` marker at the tile centre), a Stonehenge turned 90 degrees
+faces and grows its vines that way with the model turned once, the Tree's range 6 (10.8 at Growth 2), Selfish's rule.
+- FAIL: the vine tiles had no texture. Boot puts every library model onto one copy of the game's tower material with
+  the palette texture (`YosseleAssets.ApplyTowerMaterial`), the vine quad included. Round 7 leaves `*_Ground`
+  materials alone and logs what a live vine tile and Sno Sno's snow draw with.

@@ -722,7 +722,23 @@ public static class YosseleSelfTest
                 Texture tex = mr != null && mr.sharedMaterial != null && mr.sharedMaterial.HasProperty("_BaseMap") ? mr.sharedMaterial.GetTexture("_BaseMap") : null;
                 bool flat = mf != null && mf.sharedMesh != null && mf.sharedMesh.bounds.size.y < 0.01f && mf.sharedMesh.vertexCount == 4;
                 Check("vine tiles are a flat pixel texture on the ground, like Sno Sno's snow", flat && tex != null,
-                    mf == null || mf.sharedMesh == null ? "no mesh" : "verts " + mf.sharedMesh.vertexCount + ", height " + F(mf.sharedMesh.bounds.size.y) + ", texture " + (tex != null ? tex.name : "none"));
+                    mf == null || mf.sharedMesh == null ? "no mesh" : "verts " + mf.sharedMesh.vertexCount + ", height " + F(mf.sharedMesh.bounds.size.y) + ", texture " + (tex != null ? tex.name : "none")
+                    + ", material " + (mr != null && mr.sharedMaterial != null ? mr.sharedMaterial.name + " / " + mr.sharedMaterial.shader.name : "none"));
+                // What a live vine tile draws with, next to Sno Sno's snow (to match its look by eye later).
+                foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+                    if (e != null && e.Being.Value.ToString() == YosseleData.Vine)
+                    {
+                        foreach (Renderer r in e.GetComponentsInChildren<Renderer>(true))
+                            Log("vine tile renderer " + r.name + " enabled " + r.enabled + " material " + (r.sharedMaterial != null ? r.sharedMaterial.name + " / " + r.sharedMaterial.shader.name : "none") + " y " + F(r.bounds.min.y) + ".." + F(r.bounds.max.y) + ", tile y " + F(YosseleUtil.Pos(e).y));
+                        break;
+                    }
+                Beingobject snow = YosseleUtil.Load<Beingobject>("Mob", "Effect_Snosnosnow");
+                GameObject sv = snow != null && snow.Entity != null && snow.Entity.Defaultvisual != null ? snow.Entity.Defaultvisual.Default.Visprefab : null;
+                if (sv != null)
+                    foreach (Renderer r in sv.GetComponentsInChildren<Renderer>(true))
+                        Log("snow renderer " + r.name + " " + r.GetType().Name + " material " + (r.sharedMaterial != null ? r.sharedMaterial.name + " / " + r.sharedMaterial.shader.name + " / texture " + (r.sharedMaterial.mainTexture != null ? r.sharedMaterial.mainTexture.name : "none") : "none") + " size " + r.bounds.size.ToString("F2"));
+                else
+                    Log("snow visual not found");
             }
             Genitem vine = henge.Tiles.Count > 0 ? henge.Tiles[henge.Tiles.Count - 1] : null;
             Entity_Master foe = vine != null ? SpawnFoe("Enemy_Aegis", vine.Position, 0.6f, 0f, true) : null;
