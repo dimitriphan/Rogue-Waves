@@ -122,6 +122,34 @@ public static class YosseleContent
         return false;
     }
 
+    // The game's two facing arrows, as Sno Sno's Ice Wall (Tower_Snosnowall) has them: the build command draws an arrow
+    // on the placement border when the tower's hit prefab has a "Forward" child (Entity_Command_Build), and
+    // Entity_Vis_Tower_Orientation shows one under the turned model while it is selected. The marker copies the Ice
+    // Wall's own place when it can be read. Call after ModKitTowers.Fit (the hit prefab is then the Stonehenge's own).
+    public static string ForwardFrom = "not set";
+
+    static void ShowFacing(Entityobject ent)
+    {
+        GameObject hit = ent.Defaulthit != null ? ent.Defaulthit.Default.Entityprefab : null;
+        if (hit != null && Extramethods.FindDeepChild(hit.transform, "Forward") == null)
+        {
+            Transform mark = new GameObject("Forward").transform;
+            mark.SetParent(hit.transform, false);
+            Beingobject wall = YosseleUtil.Load<Beingobject>("Mob", "Tower_Snosnowall");
+            GameObject wallHit = wall != null && wall.Entity != null && wall.Entity.Defaulthit != null ? wall.Entity.Defaulthit.Default.Entityprefab : null;
+            Transform theirs = wallHit != null ? Extramethods.FindDeepChild(wallHit.transform, "Forward") : null;
+            if (theirs != null)
+            {
+                mark.localPosition = theirs.localPosition;
+                mark.localRotation = theirs.localRotation;
+            }
+            ForwardFrom = theirs != null ? "the Ice Wall's at " + theirs.localPosition.ToString("F2") : "the tile centre (the Ice Wall has none)";
+        }
+        if (!ent.Visualscripts.Exists(s => s != null && s.name == "Entity_Vis_Tower_Orientation"))
+            ent.Visualscripts.Add(YosseleUtil.Script("Entity_Vis_Tower_Orientation"));
+        YosseleLog.Info("Stonehenge facing arrows: Forward from " + ForwardFrom);
+    }
+
     static List<UnityEngine.Object> Strip(List<UnityEngine.Object> scripts)
     {
         List<UnityEngine.Object> kept = new List<UnityEngine.Object>();
@@ -386,9 +414,13 @@ public static class YosseleContent
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Sellable = true;
         ent.Controllable = true;
-        // The Stonehenge faces the way the player turns it while placing it (every shipped tower can be turned).
+        // The Stonehenge faces the way the player turns it while placing it (every shipped tower can be turned), and
+        // shows that facing the way Sno Sno's Ice Wall does.
         if (b.Id == YosseleData.Henge)
+        {
             ent.Orientable = true;
+            ShowFacing(ent);
+        }
         ent.Tags = new List<string>(b.Tags);
         ent.Tags.Add(b.Tag);
         ent.Defaultstat = Stats(te.Defaultstat, b.Id + "_Statproperties", b.Stats);

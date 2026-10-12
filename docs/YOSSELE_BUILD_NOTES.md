@@ -25,7 +25,7 @@ PNGs, 8x previews, `.aseprite` files, model renders). Full list with description
 | Aseprite files | `Yossele.aseprite`, `Yossele_16px.aseprite`, `Yossele_splash.aseprite`, `Yossele_readyup.aseprite` |
 | Tower models | `Tower_Yosselecannon` + 6 upgrade looks, `Tower_Yosseledandelion` + 5, `Tower_Yosselehenge` + 5, `Tower_Yosselepachira` + 6 |
 | Growth skins | `Yossele_Growth1` to `Yossele_Growth10` (sprouts round a tower's foot, one set per stage) |
-| Other models | `Yossele_Vine` (one vine tile), `Yossele_Fruit`, `Yossele_Fruit_Red`, `_Blue`, `_Yellow`, `Yossele_Sporebomb`, `Yossele_Seed`, debuff meshes `Yossele_Toadstool`, `Yossele_Swirl`, `Yossele_Tangle`, `Yossele_Blockade` |
+| Other models | `Yossele_Vine` (one flat vine tile, texture `Yossele_Vine_Ground.png`, since 2026-10-12), `Yossele_Fruit`, `Yossele_Fruit_Red`, `_Blue`, `_Yellow`, `Yossele_Sporebomb`, `Yossele_Seed`, debuff meshes `Yossele_Toadstool`, `Yossele_Swirl`, `Yossele_Tangle`, `Yossele_Blockade` |
 | Effects | `Debuff_Yossele_Spores`, `_Sporefull`, `_Daze`, `_Tangle`, `_Blockade`; `World_Yossele_Sporeblast`, `_Seedhit`, `_Grow`, `_Fertilize`, `_Compost`, `_Fruitpick`, `_Mend`, `_Drain`, `_Dig`, `_Towerdown`, `World_Hero_Yossele_Death`; particle textures `Px_Plus`, `Px_Leaf` |
 | Sounds | `Yossele_Thud`, `_Lob`, `_Pop`, `_Seeds`, `_Creak`, `_Rustle`, `_Fertilize`, `_Pick`, `_Dig`, `_Mend`, `_Landing`, `_Death`, `_Footstep` (synthesised) |
 | UI icons (drawn in code, `Code/03_Assets.cs`) | FERTILIZE and COLOUR buttons; Fertilizer, Growth and Seeds counters |
@@ -79,7 +79,7 @@ Every number the scope gives is used as written (bold in `DESIGN.md`). These are
 
 | What | Default |
 |---|---|
-| Cost, stats | Red 50; Health 50+25, Damage 2+0.5 a seed, Range 3, 6 seeds at stage 0, a seed every 2 s |
+| Cost, stats | Red 50; Health 50+25, Damage 2+0.5 a seed, 6 seeds at stage 0, a seed every 2 s (Range is now Dimitri's: 6, twice the first default of 3) |
 | Seed flight | 0.3 s; seeds are shared so each foe in range gets enough to fell it, nearest first |
 | Demand and Supply | up to twice as fast when no seed is ready, scaling with how few are |
 | Garden Weeds | "soon after" = 3 s; a stack lasts 15 s |
@@ -110,7 +110,7 @@ Every number the scope gives is used as written (bold in `DESIGN.md`). These are
 | Which node drops a fruit | one the Sapling struck within the last 2 s before it ran out |
 | Focused Roots | x2.5 mining speed (+150%) |
 | Sustaining Practices | 0.25 health a second per node in range per Growth stage (at least stage 1) |
-| Selfish Sapling | +50% mining speed with no other Sapling within 4 tiles |
+| Selfish Sapling | Dimitri's since 2026-10-12: +20% mining speed per other Sapling, up to +100%. Default left: "nearby" = within 4 tiles, anyone's Saplings |
 | Connected Roots | covers your Tower-tagged buildings in the Sapling's Range, other Saplings excluded |
 | Upgrade costs | Focused Yellow 30; Sustaining Yellow 25 + Blue 10; Grafted Yellow 100; Selfish Yellow 90; Connected Yellow 350 + Blue 80; Harvest Yellow 400 |
 

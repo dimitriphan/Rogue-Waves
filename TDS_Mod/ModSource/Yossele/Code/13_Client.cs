@@ -1,7 +1,7 @@
 // Runs on every player (host included). Listens to the Vis RPCs the server sends through Yossele's entities and plays
 // Yossele's own sounds and moving pieces (spore bombs in their arc, seeds flying, the ready seeds floating round each
-// Dandelion Tree), turns the Mushroom Cannon's cap toward each lob and each Stonehenge toward the way it was placed,
-// and shows owner-only messages. Spore, daze, tangle and barrier looks are not here: the game attaches those itself
+// Dandelion Tree), turns the Mushroom Cannon's cap toward each lob, and shows owner-only messages. The Stonehenge's
+// facing needs nothing here: the game turns every placed tower's Vis by its orientation (Entity_Master_Client). Spore, daze, tangle and barrier looks are not here: the game attaches those itself
 // (Vfxdebuffcheck by name). Clients read only synced state (Stats, Skin, Extrapositiondata).
 public static class YosseleClient
 {
@@ -9,11 +9,9 @@ public static class YosseleClient
 
     static readonly List<Entity_Master_Client> hooked = new List<Entity_Master_Client>();
     static readonly List<Tree> trees = new List<Tree>();
-    static readonly List<Entity_Master> henges = new List<Entity_Master>();
-    static readonly Dictionary<Transform, int> faced = new Dictionary<Transform, int>();
     static Game_Entity seen;
     static float nextScan;
-    public static int Faced, Lobs, Seedruns;
+    public static int Lobs, Seedruns;
 
     public static void Update()
     {
@@ -24,8 +22,6 @@ public static class YosseleClient
             hooked.Clear();
             foreach (Tree t in trees) Clear(t);
             trees.Clear();
-            henges.Clear();
-            faced.Clear();
         }
         try { Orbit(); }
         catch (Exception e) { YosseleLog.Warn("client seeds: " + e.Message); }
@@ -45,7 +41,6 @@ public static class YosseleClient
                 Clear(trees[i]);
                 trees.RemoveAt(i);
             }
-        henges.RemoveAll(h => h == null);
         foreach (Entity_Master master in ge.Entityclient)
         {
             if (master == null || master.Client == null || hooked.Contains(master.Client))
@@ -57,11 +52,7 @@ public static class YosseleClient
             master.Client.Vis += (type, position, number) => OnVis(m, type, position, number);
             hooked.Add(master.Client);
             if (being == YosseleData.Dandelion) trees.Add(new Tree { Master = master });
-            if (being == YosseleData.Henge) henges.Add(master);
         }
-        // An upgrade swaps the model, so the facing is checked again on every scan.
-        foreach (Entity_Master h in henges)
-            Face(h);
     }
 
     static void OnVis(Entity_Master master, string type, Vector3 position, float number)
@@ -352,29 +343,5 @@ public static class YosseleClient
         }
         foreach (GameObject g in flying)
             if (g != null) UnityEngine.Object.Destroy(g);
-    }
-
-    // ---------------------------------------------------------------- the Stonehenge's facing
-
-    // The placement orientation is synced in Extrapositiondata; the model's "Facing" part (front on +z) is turned the
-    // way the game turns Buster's pad (Helper_Gridtools.Rotateorientation).
-    static void Face(Entity_Master henge)
-    {
-        Transform t = Part(henge, "Facing");
-        if (t == null)
-            return;
-        int o = henge.Extrapositiondata.Value.Orientation;
-        int had;
-        if (faced.TryGetValue(t, out had) && had == o)
-            return;
-        Helper_Gridtools.Rotateorientation(t, o);
-        faced[t] = o;
-        Faced++;
-        if (faced.Count > 64)
-        {
-            List<Transform> gone = new List<Transform>();
-            foreach (Transform k in faced.Keys) if (k == null) gone.Add(k);
-            foreach (Transform k in gone) faced.Remove(k);
-        }
     }
 }

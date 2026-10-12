@@ -221,10 +221,10 @@ public static class YosseleSelfTest
         return null;
     }
 
-    static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<YosseleBuilding> known, YosseleBuilding[] result)
+    static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<YosseleBuilding> known, YosseleBuilding[] result, int orientation = 0)
     {
         result[0] = null;
-        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + YosseleUtil.Owner(hero) + "}";
+        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":" + orientation + ",\"Owner\":" + YosseleUtil.Owner(hero) + "}";
         Send(hero, "Build", json);
         float t = 0f;
         while (t < 20f && result[0] == null)
@@ -654,6 +654,7 @@ public static class YosseleSelfTest
             tree.SetGrowth(0);
             yield return Wait(0.3f);
             Check("the Tree holds " + 6 + " seeds at Growth 0", tree.Limit == 6, "limit " + tree.Limit);
+            Check("the Tree's range at Growth 0 is 6 tiles (twice the first build's)", Mathf.Abs(tree.Stat("Range", 0f) - 6f) < 0.01f, "range " + F(tree.Stat("Range", 0f)));
             float range0 = tree.Stat("Range", 0f);
             tree.SetGrowth(2);
             yield return Wait(0.3f);
@@ -689,7 +690,17 @@ public static class YosseleSelfTest
 
         ClearFoes();
         Standing(built);
-        // 9. Overgrown Stonehenge: vines creep the way it faces, one tile per two stages, and slow foes on them.
+        // 9. Overgrown Stonehenge: shows its facing like the Ice Wall, vines creep the way it faces, one tile per two
+        // stages, and slow foes on them.
+        {
+            Entityobject he = YosseleContent.Beings[YosseleData.Henge].Entity;
+            GameObject hit = he.Defaulthit != null ? he.Defaulthit.Default.Entityprefab : null;
+            bool marker = hit != null && Extramethods.FindDeepChild(hit.transform, "Forward") != null;
+            bool arrow = he.Visualscripts.Exists(x => x != null && x.name == "Entity_Vis_Tower_Orientation");
+            Beingobject wall = YosseleUtil.Load<Beingobject>("Mob", "Tower_Snosnowall");
+            string theirs = wall == null || wall.Entity == null ? "Ice Wall not found" : "Ice Wall scripts: " + YosseleUtil.Join(wall.Entity.Visualscripts.FindAll(x => x != null).ConvertAll(x => x.name));
+            Check("the Stonehenge shows its facing like the Ice Wall (placing arrow, selected arrow)", he.Orientable && marker && arrow, "Forward from " + YosseleContent.ForwardFrom + "; " + theirs);
+        }
         if (henge != null && YosseleUtil.Alive(henge.Master))
         {
             Vector3 hp = henge.Master.Beingserver.Currentblock != null ? henge.Master.Beingserver.Currentblock.Position : henge.Pos;
@@ -704,6 +715,15 @@ public static class YosseleSelfTest
             Check("Growth lengthens the vines (1 + Growth/2 tiles)", henge.Length == 3 && henge.Tiles.Count > t0, "length " + henge.Length + ", tiles " + t0 + "->" + henge.Tiles.Count);
             Check("Growth hardens the stones", Mathf.Abs(YosseleHooks.ArmorOf(henge.Master) - 4 * YosseleData.HengeArmorPerStage) < 0.01f, "armor " + F(YosseleHooks.ArmorOf(henge.Master)));
             Check("vine tiles are networked beings", YosseleVines.Count >= henge.Tiles.Count, YosseleVines.Count + " vines");
+            {
+                GameObject vm = YosseleAssets.Model("Yossele_Vine");
+                MeshFilter mf = vm != null ? vm.GetComponentInChildren<MeshFilter>(true) : null;
+                MeshRenderer mr = mf != null ? mf.GetComponent<MeshRenderer>() : null;
+                Texture tex = mr != null && mr.sharedMaterial != null && mr.sharedMaterial.HasProperty("_BaseMap") ? mr.sharedMaterial.GetTexture("_BaseMap") : null;
+                bool flat = mf != null && mf.sharedMesh != null && mf.sharedMesh.bounds.size.y < 0.01f && mf.sharedMesh.vertexCount == 4;
+                Check("vine tiles are a flat pixel texture on the ground, like Sno Sno's snow", flat && tex != null,
+                    mf == null || mf.sharedMesh == null ? "no mesh" : "verts " + mf.sharedMesh.vertexCount + ", height " + F(mf.sharedMesh.bounds.size.y) + ", texture " + (tex != null ? tex.name : "none"));
+            }
             Genitem vine = henge.Tiles.Count > 0 ? henge.Tiles[henge.Tiles.Count - 1] : null;
             Entity_Master foe = vine != null ? SpawnFoe("Enemy_Aegis", vine.Position, 0.6f, 0f, true) : null;
             float s0 = foe != null ? BaseStat(foe, "Speed") : 1f;
@@ -753,18 +773,30 @@ public static class YosseleSelfTest
 
         ClearFoes();
         Standing(built);
-        // 10. A second Stonehenge down the other branch: Vine Blockade's barrier each Tide, Natural Remedy.
+        // 10. A second Stonehenge, turned a quarter while placing, down the other branch: its model and vines face the turn
+        // once (the game turns the model), Vine Blockade's barrier each Tide, Natural Remedy.
         {
             Beingobject being = YosseleContent.Beings[YosseleData.Henge];
             Vector3 at = Spot(hm, being, 4f);
             YosseleHengeBrain second = null;
             if (!float.IsNaN(at.x))
             {
-                yield return Build(hm, YosseleData.Henge, at, known, got);
+                yield return Build(hm, YosseleData.Henge, at, known, got, 90);
                 second = got[0] as YosseleHengeBrain;
             }
             if (second != null)
             {
+                yield return Wait(0.6f);
+                Vector3 sp = second.Master.Beingserver.Currentblock != null ? second.Master.Beingserver.Currentblock.Position : second.Pos;
+                bool ahead = second.Tiles.Count > 0;
+                foreach (Genitem g in second.Tiles) if (Vector3.Dot(g.Position - sp, second.Facing) <= 0.1f) ahead = false;
+                Check("a Stonehenge turned while placing faces the turn, vines ahead", second.Orientation == 90 && Mathf.Abs(second.Facing.x) > 0.9f && ahead,
+                    "orientation " + second.Orientation + ", facing " + second.Facing + ", " + second.Tiles.Count + " tiles");
+                Transform front = Extramethods.FindDeepChild(second.Master.transform, "Facing");
+                Vector3 look = front != null ? Vector3.ProjectOnPlane(front.forward, Vector3.up).normalized : Vector3.zero;
+                Check("the turned model's front points along its vines (turned once, not twice)", front != null && Vector3.Dot(look, second.Facing) > 0.9f,
+                    front == null ? "no Facing part" : "model front " + look.ToString("F2") + ", vines " + second.Facing);
+
                 float max0 = YosseleUtil.MaxHealth(second.Master);
                 yield return Upgrade(second, "Blockade2", owner);
                 yield return Upgrade(second, "Remedy3", owner);
@@ -839,6 +871,11 @@ public static class YosseleSelfTest
             yield return Upgrade(sapling, "Connected4", owner);
             yield return Wait(0.4f);
             Check("Connected Roots bought", Has(sapling, "Connected4"));
+            // Selfish Sapling sits on the other tier-3 branch, so only its rule is checked (Dimitri, 2026-10-12: +20% a
+            // nearby Sapling, up to +100%).
+            Check("Selfish Sapling: +20% mining speed per nearby Sapling, up to +100%",
+                Mathf.Approximately(YosselePachiraBrain.Selfish(0, 0.2f, 1f), 0f) && Mathf.Approximately(YosselePachiraBrain.Selfish(2, 0.2f, 1f), 0.4f) && Mathf.Approximately(YosselePachiraBrain.Selfish(7, 0.2f, 1f), 1f),
+                "0 -> " + F(YosselePachiraBrain.Selfish(0, 0.2f, 1f)) + ", 2 -> " + F(YosselePachiraBrain.Selfish(2, 0.2f, 1f)) + ", 7 -> " + F(YosselePachiraBrain.Selfish(7, 0.2f, 1f)));
             Beingobject guardBeing = YosseleContent.Beings[YosseleData.Cannon];
             Vector3 gat = ModKitTest.Spot(YosseleUtil.Pos(sapling.Master), guardBeing, team, 1.2f, sapling.Stat("Range", 2f), used, "guarded cannon");
             YosseleCannonBrain guarded = null;

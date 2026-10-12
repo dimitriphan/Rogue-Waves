@@ -124,7 +124,7 @@ namespace YosseleBuild
                 var sheet = new Texture2D(cell * defs.Count, cell, TextureFormat.RGBA32, false);
                 for (int i = 0; i < defs.Count; i++)
                 {
-                    var go = Assemble(defs[i], mat, null);
+                    var go = Assemble(defs[i], defs[i].Flat != null ? FlatMat(defs[i], null) : mat, null);
                     var img = Render(go, cell, defs[i].Projectile ? 0.25f : 0.9f, defs[i].Projectile ? 0f : 0.05f);
                     sheet.SetPixels(i * cell, 0, cell, cell, img.GetPixels());
                     UnityEngine.Object.DestroyImmediate(img);
@@ -297,7 +297,7 @@ namespace YosseleBuild
                     log.AppendLine("model " + def.Name + " size=" + dm.bounds.size.ToString("F2") + " (debuff mesh)");
                     continue;
                 }
-                var root = Assemble(def, paletteMat, folder);
+                var root = Assemble(def, def.Flat != null ? FlatMat(def, folder) : paletteMat, folder);
                 meshes[def.Name] = folder + "/" + def.Name + ".asset";
                 string prefabPath = Root + "/Prefabs/" + (def.Projectile ? "Projectiles" : "Towers/" + def.Group) + "/" + def.Name + ".prefab";
                 Directory.CreateDirectory(Path.GetDirectoryName(Abs(prefabPath)));
@@ -306,6 +306,57 @@ namespace YosseleBuild
                 modelPrefabs[def.Name] = prefabPath;
             }
             AssetDatabase.SaveAssets();
+        }
+
+        // A flat ground tile's material: its own pixel texture, lit like the models, cut out where the texture is clear
+        // (Sno Sno's snow is a flat texture on the ground too). 'folder' null: in memory only, for previews.
+        static Material FlatMat(ModelDef def, string folder)
+        {
+            var sh = Shader.Find("Universal Render Pipeline/Lit");
+            Texture2D tex;
+            Material m;
+            if (folder == null)
+            {
+                tex = def.Flat().ToTexture();
+                m = new Material(sh);
+            }
+            else
+            {
+                string texPath = folder + "/" + def.Name + "_Ground.png";
+                def.Flat().Save(Abs(texPath));
+                ConfigurePlain(texPath);
+                tex = AssetDatabase.LoadAssetAtPath<Texture2D>(texPath);
+                string matPath = folder + "/" + def.Name + "_Ground.mat";
+                m = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+                if (m == null) { m = new Material(sh); AssetDatabase.CreateAsset(m, matPath); }
+                m.shader = sh;
+            }
+            m.SetTexture("_BaseMap", tex);
+            m.SetTexture("_MainTex", tex);
+            m.SetFloat("_Smoothness", 0.05f);
+            m.SetFloat("_SpecularHighlights", 0f);
+            m.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
+            m.SetFloat("_AlphaClip", 1f);
+            m.SetFloat("_Cutoff", 0.5f);
+            m.EnableKeyword("_ALPHATEST_ON");
+            m.SetOverrideTag("RenderType", "TransparentCutout");
+            m.renderQueue = (int)RenderQueue.AlphaTest;
+            if (folder != null) EditorUtility.SetDirty(m);
+            return m;
+        }
+
+        // One tile, face up, 0.01 above the ground (y = 0 at a ground model's origin), UVs over the whole texture with its
+        // top row on the far side (+z).
+        static Mesh FlatTile(string name)
+        {
+            const float h = 0.5f, y = 0.01f;
+            var mesh = new Mesh { name = name };
+            mesh.SetVertices(new List<Vector3> { new Vector3(-h, y, -h), new Vector3(-h, y, h), new Vector3(h, y, h), new Vector3(h, y, -h) });
+            mesh.SetNormals(new List<Vector3> { Vector3.up, Vector3.up, Vector3.up, Vector3.up });
+            mesh.SetUVs(0, new List<Vector2> { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) });
+            mesh.SetTriangles(new[] { 0, 1, 2, 0, 2, 3 }, 0);
+            mesh.RecalculateBounds();
+            return mesh;
         }
 
         static Mesh SaveMesh(Mesh mesh, string meshPath)
@@ -335,17 +386,19 @@ namespace YosseleBuild
             var vis = new GameObject("Vis");
             vis.transform.SetParent(root.transform, false);
             var lp = def.Build();
-            var mesh = lp.ToMesh(def.Name);
+            var mesh = def.Flat != null ? FlatTile(def.Name) : lp.ToMesh(def.Name);
             if (def.Projectile) Recenter(mesh);
             if (save != null) mesh = SaveMesh(mesh, save + "/" + def.Name + ".asset");
-            if (lp.Triangles > 0)
+            int tris = def.Flat != null ? 2 : lp.Triangles;
+            if (tris > 0)
             {
                 var exp = new GameObject(def.Name + "_Export");
                 exp.transform.SetParent(vis.transform, false);
                 exp.AddComponent<MeshFilter>().sharedMesh = mesh;
-                exp.AddComponent<MeshRenderer>().sharedMaterial = mat;
+                var r = exp.AddComponent<MeshRenderer>();
+                r.sharedMaterial = mat;
+                if (def.Flat != null) r.shadowCastingMode = ShadowCastingMode.Off;
             }
-            int tris = lp.Triangles;
             Mesh partMesh = null;
             Vector3 partPivot = Vector3.zero;
             if (def.Part != null)
@@ -369,7 +422,7 @@ namespace YosseleBuild
             {
                 var whole = new Mesh { name = def.Name + "_Whole" };
                 var parts = new List<CombineInstance>();
-                if (lp.Triangles > 0) parts.Add(new CombineInstance { mesh = mesh, transform = Matrix4x4.identity });
+                if (def.Flat != null || lp.Triangles > 0) parts.Add(new CombineInstance { mesh = mesh, transform = Matrix4x4.identity });
                 if (partMesh != null) parts.Add(new CombineInstance { mesh = partMesh, transform = Matrix4x4.Translate(partPivot) });
                 whole.CombineMeshes(parts.ToArray(), true, true);
                 whole.RecalculateBounds();

@@ -186,7 +186,7 @@ public static class YosseleData
             Id = Dandelion, Template = "Tower_Smackyarcher", Display = "Primordial Dandelion Tree", Tag = "Yosseledandelion", Tags = new[] { "Tower", "Towerfighter" },
             Desc = "Grows seeds that all strike at once, one per player", Costs = "Redaura=50", Max = 10, Muzzle = 1.1f,
             Lore = "The oldest dandelion there is. It keeps its seeds close until something walks too near, then lets them all go.",
-            Stats = new[] { "Health=50+25", "Damage=2+0.5", "Range=3", "Seedlimit=6", "Seedrate=0.5" },
+            Stats = new[] { "Health=50+25", "Damage=2+0.5", "Range=6", "Seedlimit=6", "Seedrate=0.5" },
             Upgrades = new[]
             {
                 U(Dandelion, "Packets", 2, "Seed Packets", "Seeds that fell a foe come back", "Packets_Refund=2", "Redaura=30", "Picky3,Weeds3"),
@@ -222,7 +222,7 @@ public static class YosseleData
                 U(Pachira, "Focused", 2, "Focused Roots", "Mines one node much faster", "Focused_Multi=1.5", "Yellowaura=30", "Grafted3,Selfish3"),
                 U(Pachira, "Sustaining", 2, "Sustaining Practices", "Mends itself from the ore around it", "Sustain_Heal=0.25", "Yellowaura=25;Blueaura=10", "Grafted3,Selfish3"),
                 U(Pachira, "Grafted", 3, "Grafted Colors", "Pick the colour of its fruit", "Grafted_Efficiency=0.7", "Yellowaura=100", "Connected4,Harvest4"),
-                U(Pachira, "Selfish", 3, "Selfish Sapling", "Mines faster with no other Sapling nearby", "Selfish_Multi=0.5;Selfish_Range=4", "Yellowaura=90", "Connected4,Harvest4"),
+                U(Pachira, "Selfish", 3, "Selfish Sapling", "Mines 20% faster for each other Sapling nearby, up to double", "Selfish_Per=0.2;Selfish_Max=1;Selfish_Range=4", "Yellowaura=90", "Connected4,Harvest4"),
                 U(Pachira, "Connected", 4, "Connected Roots", "Takes hits for buildings nearby while healthy", "Connected_Share=0.65;Connected_Above=0.5", "Yellowaura=350;Blueaura=80", ""),
                 U(Pachira, "Harvest", 4, "Harvesting Season", "Fruit is worth double", "Harvest_Multi=1", "Yellowaura=400", ""),
             }

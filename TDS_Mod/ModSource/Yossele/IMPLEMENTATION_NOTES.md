@@ -39,8 +39,9 @@ setup.** Not yet seen by eye or played online; Viral Outbreak and Hallucinogen (
    building stands on, and whether the snow's model origin matches `Yossele_Vine` (ground at y 0) and the fruit
    (tower convention, ground at y -0.5); one of them may sit half a tile off. Fallback template: Smacky's Bramble.
 4. **Stonehenge facing.** Read from `Beingserver.Orientation` through `Helper_Gridtools.Orientationdir` (logged as
-   "Stonehenge at ... faces ..."); the client turns the model's `Facing` part from the synced orientation. If the game
-   already turns the whole tower, the model turns twice: drop the client turn.
+   "Stonehenge at ... faces ..."). The game turns every placed tower's `Vis` by its orientation
+   (`Entity_Master_Client`, read from the game's code 2026-10-12), so the client's own turn was dropped: it would have
+   turned the model twice. Round 6 builds the second Stonehenge turned 90 degrees and checks model and vines agree.
 5. **The hit hook.** `YosseleHooks` reads `Damage` and `Damagemulti` from each hit at the front of `Oninteract`; hits
    without them are counted as `Skipped` (logged in the self-test's counters). Armour, barrier and Connected Roots do
    nothing if every hit is skipped.
@@ -94,3 +95,14 @@ grow back (0.5 a second, ready 0.501 at limit 12), Seed Packets (2 refunded), En
 every hit-hook check again. Not checked: Viral Outbreak's 30% burst and Hallucinogen's 20% daze (0 of each this run).
 Left for Dimitri: the look by eye (temporary art, debuff heights, the Stonehenge's turn, vine and fruit placement), the
 balance pass, and online play.
+
+**Dimitri's notes from playing (2026-10-12), changed for round 6:**
+- The Stonehenge now shows its facing like Sno Sno's Ice Wall. Read from the game's code: the build command draws an
+  arrow on the placement border when a tower's hit prefab has a `Forward` child, and `Entity_Vis_Tower_Orientation`
+  draws one while it is selected. The Stonehenge gets both; the marker copies the Ice Wall's own `Forward` when it can
+  be read (`YosseleContent.ShowFacing`, logged at boot).
+- Vine tiles are a flat 20 x 20 pixel texture on the ground like Sno Sno's snow (`YosseleModels.VineGround`, a
+  cut-out quad), not a low-poly mat.
+- The Dandelion Tree's range is 6 at Growth 0 (was 3); each stage still adds 40% of it.
+- Selfish Sapling is reversed: +20% mining speed for each other Sapling within 4 tiles, up to +100%.
+- Not seen yet by eye: the two arrows, the vine texture's look and height.

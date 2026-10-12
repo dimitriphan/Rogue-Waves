@@ -64,8 +64,10 @@ Removed from the template: the unit and doll sheets, the hangers, and every Mumm
 - `Yossele_Growth1` .. `Yossele_Growth10`: sprouts and flat leaf rosettes round the tower's foot. There are 2 pieces at
   stage 1 and 24 at stage 10, plus tiny white and yellow flowers from stage 6. Each prop is at most 0.21 tall and stays
   inside |x|,|z| <= 0.45. The front sector (+-42 degrees of -z) is kept clear. Tower origin convention.
-- `Yossele_Vine`: a flat mat of vines and leaves covering one tile, 0.03 tall. **Its origin is on the ground** (y = 0 is
-  the ground top).
+- `Yossele_Vine`: one flat tile 0.01 above the ground, textured with `Yossele_Vine_Ground.png` (20 x 20 pixels: two
+  vine stems crossing opposite edges at the same places, so neighbouring tiles join, with leaves and moss; cut-out
+  material `Yossele_Vine_Ground.mat`, no shadow). Like Sno Sno's snow (Dimitri, 2026-10-12; it was a low-poly mat).
+  **Its origin is on the ground** (y = 0 is the ground top).
 - `Yossele_Fruit`: a round pod about 0.3 wide, banded red, blue and yellow, with a stem and leaf.
   `Yossele_Fruit_Red`, `Yossele_Fruit_Blue` and `Yossele_Fruit_Yellow` are single-colour versions. They use the tower
   origin convention (ground at y = -0.5).
@@ -83,12 +85,12 @@ Removed from the template: the unit and doll sheets, the hangers, and every Mumm
    local -z. The swing stays within 0.41 of the axis.
 2. **Stonehenge:** every henge model has `Tower_Yosselehenge*/Vis/Facing` at the tile's ground centre (localPosition y
    -0.5). It holds the whole model, with the front (holed stone and vines) on **+z**. There is no static `_Export`
-   mesh. At rest the front therefore faces away from the camera until the client turns Facing. `models_Henge_front.png`
-   shows it turned toward the camera.
+   mesh. At rest the front faces away from the camera; the game turns the whole model by the placement orientation.
+   `models_Henge_front.png` shows it turned toward the camera.
 3. **Fruit:** `Yossele_Fruit` (all colours), `_Red`, `_Blue`, `_Yellow`.
 4. **Seed and sporebomb:** `Yossele_Seed` is about 0.12 with its pivot at the centre. `Yossele_Sporebomb` is about 0.19
    with its pivot at the centre.
-5. **Vine:** `Yossele_Vine` has its pivot at the tile centre on the ground and is under 0.06 high.
+5. **Vine:** `Yossele_Vine` has its pivot at the tile centre on the ground and is a flat quad 0.01 above it.
 6. **Sheets:** layouts as listed above. `World_Yossele_Dig` is in the effect list.
 
 ## Effects (`VfxSpec` in YosseleBuilder; heights follow Mummer 1.0's verified convention)

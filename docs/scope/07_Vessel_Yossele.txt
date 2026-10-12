@@ -65,7 +65,7 @@
 				% 1:{Sustaining Practices} Heals itself slowly based on how many mining nodes are in range, as well as [Growth] level.
 				
 				% 2:{Grafted Colors} Aura fruit's aura color can be selected, with 70% efficiency. / If a default aura fruit gives 30 of each aura, then player can select a color and receive 63 of that aura type. \
-				% 2:{Selfish Sapling} Aura mining speed increases when no other {Pachira Saplings} are built nearby. 
+				% 2:{Selfish Sapling} Aura mining speed increases for every other {Pachira Sapling} built nearby. / 20% increased mining speed per nearby {Pachira Sapling}, up to 100% 
 				
 				% 3:{Connected Roots} If {Pachira Sapling}'s health is above 50%, a portion of the damage taken by nearby buildings is received by {Pachira Sapling} instead. / 65% of damage taken is received by {Pachira Sapling} if {Pachira Sapling} is healthy enough. \
 				% 3:{Harvesting Season} Aura fruit's value is increased by 100%.

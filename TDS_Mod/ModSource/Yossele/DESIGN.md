@@ -61,8 +61,8 @@ Status: **step 1-3 drafted together (design, temporary art, code), compiled in t
 | # | Name | Id | Role tag | Template | Cost | Stats (+per level) | What it does |
 |---|---|---|---|---|---|---|---|
 | 1 | Mushroom Cannon | `Tower_Yosselecannon` | Towerfighter | Bomb Tower | Red 35 | Health 35+25, Damage 1.5+0.5, Attackspeed 0.3, Range 6, Radius 1, Spores 2 | Lobs a spore bomb in an arc (Smacky's Bomb Tower's lob): impact damage in Radius, and 2 spore stacks on every foe hit. Each stack deals 0.3 a second; stacks fall off 4 s after the last new one; max 10 (scope) |
-| 2 | Primordial Dandelion Tree | `Tower_Yosseledandelion` | Towerfighter | Archer Tower | Red 50 | Health 50+25, Damage 2+0.5, Range 3, Seedlimit 6, Seedrate 0.5 | **Limit 1** (scope; Argo's Miner's Base pattern: its button goes while one stands). Grows a seed every 2 s up to its limit, the seeds floating round it; when a foe comes in range every ready seed strikes at once, shared out so each foe gets enough to fell it (nearest first) |
-| 3 | Overgrown Stonehenge | `Tower_Yosselehenge` | none | Mining Hut (orientable) | Blue 25 | Health 80+40, Slow 0.25 | Directional stones (the player turns it while placing, like Buster's pad; the Hut's one-tile block, since Smacky's wall needs two tiles and posts). Each Tide its vines creep forward over the ground, over building tiles too (scope); foes on vines are slowed by 25% |
+| 2 | Primordial Dandelion Tree | `Tower_Yosseledandelion` | Towerfighter | Archer Tower | Red 50 | Health 50+25, Damage 2+0.5, Range **6** (Dimitri 2026-10-12: twice the first build's 3), Seedlimit 6, Seedrate 0.5 | **Limit 1** (scope; Argo's Miner's Base pattern: its button goes while one stands). Grows a seed every 2 s up to its limit, the seeds floating round it; when a foe comes in range every ready seed strikes at once, shared out so each foe gets enough to fell it (nearest first) |
+| 3 | Overgrown Stonehenge | `Tower_Yosselehenge` | none | Mining Hut (orientable) | Blue 25 | Health 80+40, Slow 0.25 | Directional stones (the player turns it while placing; the Hut's one-tile block, since Smacky's wall needs two tiles and posts). It shows its facing like Sno Sno's Ice Wall: an arrow on the placement border and one while selected (Dimitri 2026-10-12). Each Tide its vines creep forward over the ground, over building tiles too (scope); foes on vines are slowed by 25% |
 | 4 | Pachira Sapling | `Tower_Yosselepachira` | Gatherer | Mining Hut | Yellow 35 | Health 30+20, Damage 1, Attackspeed 0.25, Range 2 | Its roots mine **every** ore node in Range at once (scope: "like Sno Sno's" Sno Box). At full Growth a node it mines out drops an **aura fruit** |
 
 Growth per building (scope numbers bold, defaults plain):
@@ -77,7 +77,7 @@ Growth per building (scope numbers bold, defaults plain):
 - **Aura fruit** (scope: "a small bonus to all auras", Grafted Colors' example uses 30 of each): **30 Red, 30 Blue, 30
   Yellow**, paid to the owner of the vessel or minion that picks it up (any player's, scope). It sits on the node's
   tile until picked up or the map ends; a picker must come within 0.75 tiles.
-- **Vines** are networked ground beings (`Effect_Yosselevine`, cloned from Sno Sno's snow without its tag or AI, so
+- **Vines** are a flat pixel texture on each tile, like Sno Sno's snow (Dimitri 2026-10-12; was a low-poly mat), drawn by networked ground beings (`Effect_Yosselevine`, cloned from Sno Sno's snow without its tag or AI, so
   the cannon never eats them) on each tile they cover; they grow when the Stonehenge does, at the start of a Tide, and
   die with it. "Forward" is the direction the player turned it to; "forwards if possible": the line stops at a cliff
   or a gap (one level up or down is fine).
@@ -121,7 +121,7 @@ Pachira Sapling:  Focused Roots2 / Sustaining Practices2 -> Grafted Colors3 / Se
 | Sapling | Focused Roots (Focused2) | Mines one node much faster | Focused_Multi 1.5 (x2.5 speed) | Yellow 30 |
 | Sapling | Sustaining Practices (Sustaining2) | Mends itself from the ore around it | Sustain_Heal 0.25 (a second, per node in range, per Growth stage, at least stage 1) | Yellow 25, Blue 10 |
 | Sapling | Grafted Colors (Grafted3) | Pick the colour of its fruit | Grafted_Efficiency **0.7**; a COLOUR button | Yellow 100 |
-| Sapling | Selfish Sapling (Selfish3) | Mines faster with no other Sapling nearby | Selfish_Multi 0.5; Selfish_Range 4 | Yellow 90 |
+| Sapling | Selfish Sapling (Selfish3) | Mines faster for each other Sapling nearby | Selfish_Per **0.2** (a Sapling within Selfish_Range 4); Selfish_Max **1** (Dimitri 2026-10-12, reversed from "faster with none nearby") | Yellow 90 |
 | Sapling | Connected Roots (Connected4) | Takes hits for buildings nearby while healthy | Connected_Share **0.65**; Connected_Above **0.5** | Yellow 350, Blue 80 |
 | Sapling | Harvesting Season (Harvest4) | Fruit is worth double | Harvest_Multi **1** | Yellow 400 |
 
@@ -166,7 +166,7 @@ Bold params are the scope's numbers; the rest are defaults (all listed in `docs/
 | Dandelion Season, Mother of Mushrooms (`11_Directions.txt`) | Not built | They replace the Dandelion Tree with new buildings; they come with the Direction catalogue (Phase 5/6) |
 | "Growth rises with each tide a tower survives" | A stage when a Tide begins, for buildings that stood through the whole Tide before | Makes "survived" exact; the game has no break event yet (`ModKitTides`) |
 | Aura fruit "a small bonus to all auras" | 30 of each colour | The scope's own Grafted Colors example |
-| Stonehenge "directional wall like Sno Sno" | A one-tile orientable building (Mining Hut template), turned while placing; vines go the way it faces | Sno Sno's buildings have no facing in code (`docs/17` §4); the game's placement turn is the native way; Smacky's wall is a two-tile post wall |
+| Stonehenge "directional wall like Sno Sno" | A one-tile orientable building (Mining Hut template), turned while placing, with the Ice Wall's two facing arrows; vines go the way it faces | The game's placement turn is the native way (the Ice Wall's too); Smacky's wall is a two-tile post wall |
 
 ## Test plan (self-test, `docs/08`, `99_SelfTest.cs`)
 

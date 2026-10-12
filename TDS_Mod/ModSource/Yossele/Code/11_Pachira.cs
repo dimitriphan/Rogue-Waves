@@ -5,7 +5,8 @@
 //   Focused Roots        x2.5 mining speed, but only the nearest node.
 //   Sustaining Practices mends 0.25 a second per node in range per Growth stage (at least stage 1).
 //   Grafted Colors       a COLOUR button picks the fruit's colour: one colour pays 3 x 30 x 70% = 63 of it.
-//   Selfish Sapling      +50% mining speed while no other Pachira Sapling stands within 4 tiles.
+//   Selfish Sapling      +20% mining speed for each other Pachira Sapling within 4 tiles, up to +100% (Dimitri,
+//                        2026-10-12: reversed from "faster when alone").
 //   Connected Roots      while above half health it takes 65% of each hit on your buildings within its Range
 //                        (YosseleHooks).
 //   Harvesting Season    fruit is worth double.
@@ -48,21 +49,25 @@ public class YosselePachiraBrain : YosseleBuilding
         float bonus = YosseleData.PachiraGrowSpeed * Growth;
         if (Has("Focused"))
             bonus += Param("Focused_Multi", 1.5f);
-        if (Has("Selfish") && Alone())
-            bonus += Param("Selfish_Multi", 0.5f);
+        if (Has("Selfish"))
+            bonus += Selfish(Neighbours(), Param("Selfish_Per", 0.2f), Param("Selfish_Max", 1f));
         if (Mathf.Approximately(bonus, lastBonus) && speedMod != null && !speedMod.Dead)
             return;
         lastBonus = bonus;
         speedMod = YosseleUtil.Keep(Master, speedMod, "Attackspeed", Helper_Entitytools.Modtypes.Multi, bonus);
     }
 
-    public bool Alone()
+    public static float Selfish(int neighbours, float per, float max) { return Mathf.Min(neighbours * per, max); }
+
+    // Other Pachira Saplings within Selfish_Range, anyone's.
+    public int Neighbours()
     {
         float reach = Param("Selfish_Range", 4f);
+        int n = 0;
         foreach (YosseleBuilding b in YosseleServer.Buildings)
             if (b != this && b is YosselePachiraBrain && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Flat(b.Pos, Pos) <= reach)
-                return false;
-        return true;
+                n++;
+        return n;
     }
 
     // Ore nodes within Range, nearest first.

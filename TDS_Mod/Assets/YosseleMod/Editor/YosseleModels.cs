@@ -21,6 +21,7 @@ namespace YosseleBuild
         public Func<Lp> Part;           // optional moving part, built in tower space around PartPivot
         public string PartName;         // "Turret"
         public Vector3 PartPivot;       // tower space, y up from the ground
+        public Func<Px> Flat;           // a flat ground tile drawn with this pixel texture instead of a mesh (vines)
     }
 
     public static class YosseleModels
@@ -48,8 +49,8 @@ namespace YosseleBuild
                 l.Add(new ModelDef { Group = "Cannon", Name = Full(Cannon, key), Build = () => CannonBase(key), Part = () => CannonTurret(key), PartName = "Turret", PartPivot = CannonPivot });
             }
             foreach (var k in DandelionKeys) { string key = k; Add("Dandelion", Full(Dandelion, key), () => DandelionTree(key)); }
-            // The Stonehenge turns with its placement: everything sits in one part, "Facing", built with the henge's front
-            // (where the vines creep out) on +z; the client turns Facing with Helper_Gridtools.Rotateorientation.
+            // The Stonehenge is built with its front (where the vines creep out) on +z, all in one part, "Facing"; the game
+            // turns the whole model by the placement orientation (Entity_Master_Client), so nothing turns the part.
             foreach (var k in HengeKeys)
             {
                 string key = k;
@@ -57,7 +58,7 @@ namespace YosseleBuild
             }
             foreach (var k in PachiraKeys) { string key = k; Add("Pachira", Full(Pachira, key), () => Sapling(key)); }
             for (int s = 1; s <= 10; s++) { int st = s; Add("Growth", "Yossele_Growth" + st, () => Growth(st)); }
-            Add("Extras", "Yossele_Vine", VineMat);
+            l.Add(new ModelDef { Group = "Extras", Name = "Yossele_Vine", Build = () => new Lp(), Flat = VineGround });
             Add("Extras", "Yossele_Fruit", () => Fruit(new[] { Pal.FruitRed, Pal.FruitBlue, Pal.FruitYellow }));
             Add("Extras", "Yossele_Fruit_Red", () => Fruit(new[] { Pal.FruitRed }));
             Add("Extras", "Yossele_Fruit_Blue", () => Fruit(new[] { Pal.FruitBlue }));
@@ -603,28 +604,40 @@ namespace YosseleBuild
             return m;
         }
 
-        // The ground the Stonehenge spreads: a flat mat of vines and leaves over one tile, <= 0.06 tall. Unlike the towers its
-        // origin is the ground itself (the runtime places it at the tile's entity position - 0.5).
-        static Lp VineMat()
+        // The ground the Stonehenge spreads, a flat pixel texture like Sno Sno's snow (Dimitri, 2026-10-12): 20 px a tile
+        // (the sprites' 20 pixels per unit), opaque pixels only, shade on the stems' lower and right edges. One stem
+        // crosses each pair of opposite edges at the same place, so a line of tiles reads as one vine.
+        public static Px VineGround()
         {
-            var m = new Lp();
-            m.Push(V(0, -Lp.Ground, 0));   // origin on the ground at the tile centre (y = 0 is the ground top)
-            float[,] lines = { { -0.46f, -0.3f, 0.46f, -0.22f }, { -0.42f, 0.32f, 0.44f, 0.12f }, { -0.3f, -0.46f, -0.15f, 0.46f }, { 0.2f, -0.46f, 0.3f, 0.46f }, { -0.46f, 0.05f, 0.1f, 0.45f } };
-            for (int i = 0; i < lines.GetLength(0); i++)
+            string[] rows =
             {
-                var pts = Wiggle(V(lines[i, 0], 0.012f, lines[i, 1]), V(lines[i, 2], 0.012f, lines[i, 3]), 8, 0.05f, i * 1.3f);
-                m.Stem(pts, 0.016f, 0.012f, 4, Pal.Vine);
-                for (int k = 1; k < pts.Count; k++)
-                {
-                    Vector3 dir = pts[k] - pts[k - 1];
-                    Vector3 side = Vector3.Cross(Vector3.up, dir).normalized * (k % 2 == 0 ? 1f : -1f);
-                    m.Leaf(pts[k] + V(0, 0.004f, 0), side + dir.normalized * 0.4f, 0.075f, 0.045f, k % 3 == 0 ? Pal.Leaf2 : Pal.Leaf, Pal.LeafDark, 0.12f, 0.05f);
-                }
-            }
-            foreach (var q in new[] { V(0.05f, 0, 0.0f), V(-0.32f, 0, 0.2f), V(0.35f, 0, -0.35f) })
-                m.Dome(q, V(0.06f, 0.025f, 0.055f), 6, 1, Pal.Moss1, Pal.Moss0, 0.3f);
-            m.Pop();
-            return m;
+                "..........klvd......",
+                "..........k.vd......",
+                "............vdlk....",
+                "...lk.......vdllk...",
+                "..llk........vd.k...",
+                "...k.mm.....kvd.....",
+                "vv....vvv..kll.vd...",
+                "ddvvvvdddvv.k..vdvvv",
+                "..dddd.lkddvvvvddddd",
+                "......llk..dddvd....",
+                ".......k......vdlk..",
+                "..............vdllk.",
+                ".....m.......vd.k...",
+                ".............vd.....",
+                ".......kl...vd......",
+                "......kll..lvd......",
+                ".......k...kvdlk....",
+                "....mm......vdllk...",
+                "...lk.......vd.k....",
+                "..llk.......vd......",
+            };
+            var pal = new Dictionary<char, Color32>
+            {
+                { 'v', Pal.Color(Pal.Vine) }, { 'd', Pal.Color(Pal.VineDark) }, { 'l', Pal.Color(Pal.Leaf) },
+                { 'k', Pal.Color(Pal.LeafDark) }, { 'm', Pal.Color(Pal.Moss1) },
+            };
+            return Px.FromRows(rows, pal);
         }
 
         // An aura fruit lying on the ground: a round pod banded in its colours, a stub of stem and a leaf.
