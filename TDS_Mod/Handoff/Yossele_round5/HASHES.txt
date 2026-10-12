@@ -1,0 +1,5 @@
+# Handoff Yossele_round5: commit 32ad4ae of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit 98adfe6.
+d1bdc8e074369def  653b59b3ed7cc6ed  ModSource\Yossele\Code\05_Server.cs
+7014f6742a79714e  21fd63e8616bae0e  ModSource\Yossele\Code\99_SelfTest.cs
+18bb5ec7b932766e  8d79240661bc4641  ModSource\Yossele\IMPLEMENTATION_NOTES.md
