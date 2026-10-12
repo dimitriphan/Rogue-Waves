@@ -1,4 +1,4 @@
-"""Seeded sea chart for the Rogue Wave campaign: a Slay the Spire style node map the boat sails across, one row per
+"""Seeded sea chart for the Rogue Waves campaign: a Slay the Spire style node map the boat sails across, one row per
 map (docs/SEA_CHART.md), with each node's base map and its sea weather. This is the reference for the mod's C# port
 (TDS_Mod/ModSource/RogueWavesMode/Code/03_Chart.cs): same PRNG, same steps, same order of draws, so the host, every
 client and this script build the same chart from one seed. `--check` prints the lines the port prints, for a diff.

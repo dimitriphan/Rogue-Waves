@@ -65,7 +65,7 @@ cosmetic change the base game already makes on any drop: player colours follow j
 
 ## 3. Defaults picked (Dimitri can change any)
 
-- **Every map, any mode**, not only Rogue Wave maps: a drop is the same everywhere.
+- **Every map, any mode**, not only Rogue Waves maps: a drop is the same everywhere.
 - **Only players who were in the map** come back in; anyone else is turned away and joins on the boat. Letting a new
   friend in mid-map would need a vessel spawned for them, which the game only does at map start.
 - **The way back is Steam's own Join Game** on the host. A mod can't call Steam (Steamworks is not in the mod

@@ -15,7 +15,7 @@ public static class RWMode
     public static void Register(Modeentryobject normal)
     {
         Modeobject stock = normal != null && normal.Modeloads != null ? Bl_Address.Getload("Mode", normal.Modeloads.Objectname) as Modeobject : null;
-        if (stock == null) { RWLog.Warn("Mode_Normal's Modeobject is not loaded: no Rogue Wave mode"); return; }
+        if (stock == null) { RWLog.Warn("Mode_Normal's Modeobject is not loaded: no Rogue Waves mode"); return; }
 
         Wavesobject waves = RWUtil.Clone(stock.Enemies, RWData.Mode + "_Waves");
         waves.Wave = new List<Wavesobject.Waves>(stock.Enemies.Wave);

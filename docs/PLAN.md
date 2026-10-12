@@ -83,7 +83,7 @@ Opening prompt:
 
 Gate: every open question has an answer or an accepted default.
 
-### Phase 1. Feasibility of the Rogue Wave Mode (2-3 sessions, research only)
+### Phase 1. Feasibility of the Rogue Waves Mode (2-3 sessions, research only)
 
 The mode is the riskiest piece and decides whether the expansion is one mod, several, or a mode-less vessel pack. The
 kit has already read the mode chain (`docs/13` § 3) and the API dump names the pieces the scope needs: `Mode_Base`,
@@ -163,7 +163,7 @@ Opening prompt:
 
 Gate: both modifiers seen in a self-test, 0 exceptions beside every installed mod.
 
-### Phase 5. The Rogue Wave Mode (4-8 sessions, several PC rounds)
+### Phase 5. The Rogue Waves Mode (4-8 sessions, several PC rounds)
 
 Build in the order a run plays, each piece testable alone: Pure Aura (per-player counter, earned per tide) →
 objectives/bounties (Merchut's pattern in a mod brain; its contracts are hardcoded, `docs/15` §5) → shopkeeper between tides → Directions (data, pick UI, application through
@@ -196,7 +196,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   rounds passed). A quality check of every lesson and resource (2026-10-11, `docs/QUALITY_CHECK_2026-10-11.md`) fixed
   the stale and wrong lines in place. A full re-test of every probe set on one build (2026-10-11 22:25Z,
   `docs/FULL_TEST_2026-10-11.md`): Argo 139/0, RogueLab 22/0, RogueWavesMode 47/0, nothing regressed. Older entries
-  are in "Log" below.
+  are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call).
@@ -289,7 +289,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-08: Cardinals, bounties and the shopkeeper are built on the base game's own systems where Phase 1 finds
   them usable, never reinvented.
 - 2026-10-08 (user): **Cardinals are the base game's run-modifier effects.** A new Cardinal is a new run modifier.
-  **Score does not count** in the Rogue Wave mode, so leaderboards and the Cardinal score multiplier are out of scope.
+  **Score does not count** in the Rogue Waves mode, so leaderboards and the Cardinal score multiplier are out of scope.
 - 2026-10-08 (user): "Streamlined Economy Changes" means **aura sharing between players between tides**, which is the
   scope's Fund Transfer. No separate design; it is one Phase 5 piece.
 - 2026-10-08 (user): Uloe's Defense building is **Mirror**.
@@ -314,7 +314,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-08 (user, Phase 1 gate): **every map is voted on, map 1 included**, so map 1 opens with a staging step (the
   leader's pick loads, the opening break is held for Direction picks and the vote, then the host chains to the voted
   map, `docs/15` §6; the chaining was superseded 2026-10-09 22:23Z by the sea chart, below). The start rule (the host
-  equips the mode's Cardinal) was **replaced 2026-10-09** (below); it was never named, since "Rogue Wave" is the
+  equips the mode's Cardinal) was **replaced 2026-10-09** (below); it was never named, since "Rogue Waves" is the
   expansion's name (user). RogueLab tests the colour slot, which checks the name; the Mixed slot takes any string. **The
   §11 PC round is approved.**
 - 2026-10-08 (Phase 1, input to Phase 2): each prefab's code is its own assembly and mods can't see each other's
@@ -336,7 +336,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
   up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
-- 2026-10-09 (user): **a campaign starts from a Rogue Wave button on the main menu** (New / Continue), which takes the
+- 2026-10-09 (user): **a campaign starts from a Rogue Waves button on the main menu** (New / Continue), which takes the
   host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
 - 2026-10-09 20:48Z (user, roguewave 2.txt): **a campaign is 10 maps** (replaces 15), won by leaving map 10 after
   Tide 15 or later; the Direction catalogue target drops to about 7 Any and 4 per new vessel; the map shape default is
@@ -371,6 +371,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   past the HUD row's 8 counters the mode shows Team Cardinals another way, settled when the shop is built); Cardinals
   split into **Team** and **Vessel** (was Personal). A dropped friend can rejoin the running map (`04`). The scope
   review's six wording fixes are folded in (#8, #17, #21, #30, #32, #52).
+- 2026-10-12 (user): the name is spelled **Rogue Waves** everywhere, the mode and its main-menu button included
+  (was "Rogue Wave"). Identifiers (`Mode_RogueWave`, `RW_` save keys), file names (`04_Rogue_Wave_Mode.txt`) and the
+  PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid.
 
 ### Open questions
 
@@ -382,7 +385,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 ### Phase 5 pieces
 
-- [ ] main-menu Rogue Wave button (calls `RWCampaign.New`/`Continue`; nothing starts a campaign until it exists)
+- [ ] main-menu Rogue Waves button (calls `RWCampaign.New`/`Continue`; nothing starts a campaign until it exists)
 - [ ] Pure Aura  - [ ] objectives/bounties  - [ ] shopkeeper  - [ ] Directions  - [ ] Fund Transfer  - [ ] map vote
   (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)
 - [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;

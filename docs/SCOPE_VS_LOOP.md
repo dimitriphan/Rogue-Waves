@@ -81,7 +81,7 @@ opens after Tide 15; Tides 16-30 are the bonus Tides; Tide 30 of map 10 is the c
 **4. Where the Tides come from.** The scope wants "modifiers / enemies that change with each run" and "increasing
 difficulty", but the game scales nothing by map and has no harder setting (`docs/15` §14.3). Riptide's seeded director
 already writes random Tides live, from a budget curve fitted to the stock table, with packs, elites, Breakers and
-banners, and passed 70 of 70 (Riptide `DESIGN.md` "Tide budget curve", `docs/15` §13). **Add:** Rogue Wave's Tides come
+banners, and passed 70 of 70 (Riptide `DESIGN.md` "Tide budget curve", `docs/15` §13). **Add:** Rogue Waves' Tides come
 from Riptide's director, seeded per campaign (the seed goes in the save); each map starts deeper on its curve than the
 one before (finding 20 gives the shape); Cursed and Berserk join its elite pool. This gives "what makes each map harder
 than the one before" a mechanism; the numbers stay Dimitri's.

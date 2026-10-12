@@ -58,6 +58,6 @@ Read `CLAUDE.md`, then `docs/PLAN.md` Part C "Now"; Argo's state is in `TDS_Mod/
 ## Open items not Argo's
 
 - Phase 1 hand checks: the F-key bug with a real Boutman death, an unanswered choice dialog, a save surviving restart.
-- Naming (Dimitri, 2026-10-08): "Rogue Wave" is the expansion's name, **not** a Cardinal; new Cardinals are unnamed.
+- Naming (Dimitri, 2026-10-08): "Rogue Waves" is the expansion's name, **not** a Cardinal; new Cardinals are unnamed.
   Draft PR #6 (based on this branch) fixes the docs that said otherwise (`docs/PLAN.md`, `docs/PACK.md`,
   `docs/STYLE.md`); don't reintroduce the old name.

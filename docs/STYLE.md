@@ -17,7 +17,7 @@ modifiers and the mode's UI.
 | Swatch | Hex | Used for |
 | --- | --- | --- |
 | Deep Swell | `2E4A62` | panels and shadows of the mode's UI, the dark side of pack icons |
-| Rogue Teal | `3F8F96` | the mode's main colour: the main menu's Rogue Wave button, vote and shop frames |
+| Rogue Teal | `3F8F96` | the mode's main colour: the main menu's Rogue Waves button, vote and shop frames |
 | Foam | `E9F1EE` | rims, highlights, the crest motif |
 | Pearl (Pure Aura) | `F4EEF8`, sheen `C9E4F2` / `F2D9E6` | Pure Aura only: a white that is none of the base auras (Red, Blue, Yellow, Green = all), with a faint two-tone sheen |
 | Storm Coral | `E2725B` | danger and the pack's new modifiers' accent (Cursed, Berserk), ascension marks |
@@ -29,7 +29,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 ## Motifs
 
 - **The crest**: one breaking curl with a Foam rim. It is the pack's mark: the mode icon, the corner of pack UI
-  frames, the main menu's Rogue Wave button. Draw it as one clean shape, not a pattern.
+  frames, the main menu's Rogue Waves button. Draw it as one clean shape, not a pattern.
 - **Washed ashore**: Cardinals and Directions are found objects, as in the base game (Red Coin, Rusty Pipe, Fish Bait).
   Pack Cardinals are flotsam, things the wave brought. The first ones are named in `docs/scope/12_Cardinals.txt`
   (Vampire Dentures; Cracked Buoy and Ship's Bell as examples). One object per icon, readable at 12×12.
@@ -44,7 +44,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 | Buildings, units | the everyday object named plainly, with a twist; the scope's names stay | Repurposed Cookie Tin, Pin Cushion, Flood Light |
 | Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | Vampire Dentures, Cracked Buoy, Ship's Bell (base: Red Coin, Rusty Pipe) |
 | Directions | a heading or a course, short and active | Deep Roots, Loose Threads, Hard to Port |
-| Mode, ascension, events | sea weather | Rogue Wave; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |
+| Mode, ascension, events | sea weather | Rogue Waves; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |
 | Enemy modifiers | the scope's names (Cursed, Berserk). Base elites are named like metalwork (Hardened, Tempered, Superheated, Fractured, Annealed), for reference |
 
 Text is plain and short, sentence case, and has no numbers in upgrade text (`docs/02`).

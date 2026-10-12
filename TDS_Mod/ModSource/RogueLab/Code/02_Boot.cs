@@ -123,7 +123,7 @@ public static class RogueLabBoot
 
         Modeentryobject entry = RogueLabUtil.Clone(normal, RogueLabData.Mode);
         entry.Modeloads = RogueLabUtil.Clone(normal.Modeloads, RogueLabData.Mode);
-        entry.Display_Name = "Rogue Wave (lab)";
+        entry.Display_Name = "Rogue Waves (lab)";
         RogueLabUtil.Folder("Mode")[RogueLabData.Mode] = entry;
 
         Dictionary<string, UnityEngine.Object> plans = RogueLabUtil.Folder("Gameplan");

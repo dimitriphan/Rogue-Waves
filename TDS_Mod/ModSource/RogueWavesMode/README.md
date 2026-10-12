@@ -1,6 +1,6 @@
 # RogueWavesMode: the pack's mode part
 
-The Rogue Wave mode as a part of the pack (`docs/PACK.md`): prefab `RogueWaves_Mode_Default`, built and self-tested as
+The Rogue Waves mode as a part of the pack (`docs/PACK.md`): prefab `RogueWaves_Mode_Default`, built and self-tested as
 the dev mod `RogueWavesModeMod`. It grows piece by piece (`docs/PLAN.md` Part C, Phase 5 pieces). **0.1.0
 (2026-10-10): the sea chart and sea weather** (`docs/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.3
 fix Rising Water's flooded tiles, which round 1 found missing; **round 4 passed 38/0** (2026-10-11). **0.2.0
@@ -23,7 +23,7 @@ failure fixed: the lobby is reopened every frame); the drop and rejoin themselve
 | `Build-RogueWavesModeMod.ps1` | joins the code with the kit (`RogueWavesModeKit`), compile-checks it on the PC |
 | `../../Assets/RogueWavesModeMod/Editor/RogueWavesModeModPrefab.cs` | Tools > RogueWavesMode: Build Mod Prefab, Export Mod |
 
-Nothing starts a campaign on its own yet: the main menu's Rogue Wave button (`docs/MAIN_MENU_START.md`) will call
+Nothing starts a campaign on its own yet: the main menu's Rogue Waves button (`docs/MAIN_MENU_START.md`) will call
 `RWCampaign.New(0)` or `RWCampaign.Continue()`. Until then a release build only registers the mode and its twins.
 
 Check here (`TDS_Mod/Tools/cloud-check/README.md`):

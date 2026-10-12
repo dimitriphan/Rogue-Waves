@@ -2,7 +2,7 @@
 	# Phase 1, research the game's code for the mode: done. Every piece of the mode has a known route, and the PC test round passed 13 of 13.
 	# Phase 2, pack layout and style sheet: done and approved. / docs/PACK.md and docs/STYLE.md \
 	# Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. Its work is merged. / PR #7 and PR #10 \
-	# Next: Yossele, then Spool, then Uloe, each one starting with a design to approve. Then enemies and modifiers, then the Rogue Wave mode, then content and release.
+	# Next: Yossele, then Spool, then Uloe, each one starting with a design to approve. Then enemies and modifiers, then the Rogue Waves mode, then content and release.
 	# Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
 	# Sonar is left out of every design for now.
 	# Every mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once. / Backed up in ClaudeProjects\handoff\mods_removed_20261008 \

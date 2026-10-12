@@ -21,11 +21,11 @@ pick vessels and ready up as they do today. No Cardinal is needed.
 
 | Step | Who | What the mod does | Evidence |
 | --- | --- | --- | --- |
-| 1. Button | host's main menu | The pack's `Default` prefab code, each time a `Mainmenu_Main` appears, clones the main menu's `Play` button (`Bl_Menus.Menus["Main"].Items["Play"]`) into a "Rogue Wave" button with its own click and tooltip | cloning a menu item and wiring `Blu3_Button`: **proven** (Riptide's Setup switch; the journal tabs, `docs/09` #25). The main menu itself: **untested** |
+| 1. Button | host's main menu | The pack's `Default` prefab code, each time a `Mainmenu_Main` appears, clones the main menu's `Play` button (`Bl_Menus.Menus["Main"].Items["Play"]`) into a "Rogue Waves" button with its own click and tooltip | cloning a menu item and wiring `Blu3_Button`: **proven** (Riptide's Setup switch; the journal tabs, `docs/09` #25). The main menu itself: **untested** |
 | 2. Choice | host | Click opens a `Runprompt`: **New campaign**, **Continue campaign** (only when the host's save holds one), **Back** | the game opens `Runprompt` on the main menu itself (its Exit dialog, Mainmenu_Main.cs:186-211): **read** |
 | 3. Embark | host | Sets the "Rogue" flag on the `Default` object and calls `Mainmenu_Main.Play` (`SendMessage("Play")`), which loads the boat | `SendMessage("Play")` reaching the boat: **proven** (RogueLab, every round) |
 | 4. Mode on the boat | host's mod | When the boat is up, picks the staging node (`Selectmap_ServerRpc`) and swaps `Mode` and `Gameplan` to the Rogue twin; re-swaps if the host clicks another node | **proven** (RogueLab's `Lobby()`, Riptide's switch) |
-| 5. Show it | every machine | The Setup panel opens on the picked node for everyone, joiners included; a "TYPE 3 ROGUE WAVE" line on it, as Riptide's "TYPE 3 RIPTIDE" | panel for late joiners: **read** (Macro_Main.cs:445-453); the type line: **proven** (Riptide) |
+| 5. Show it | every machine | The Setup panel opens on the picked node for everyone, joiners included; a "TYPE 3 ROGUE WAVES" line on it, as Riptide's "TYPE 3 RIPTIDE" | panel for late joiners: **read** (Macro_Main.cs:445-453); the type line: **proven** (Riptide) |
 | 6. Friends | host, then friends | Host presses the boat's Invite button; friends accept in Steam and land on the boat with the panel open | **read** (Macro_Main.cs:558; Blm_Multiplayer.cs:149-196, 321) |
 | 7. Start | everyone | Each picks a vessel and readies; the game starts when all are ready; the mode's own staging step (map 1 vote) follows | ready-up and start: **read** (Tds_Multiplayer_Remote.cs:509-598); map 1 in the mod's mode: **proven** |
 
@@ -49,7 +49,7 @@ map loads. The button is also where a campaign that has ended (no retries left) 
   up in its own database (Game_Client_Init.cs:101-104). A friend without the pack gets nothing back, the client's
   loading stops on a null `Modeentry`, and the host's loading waits for every client (Game_Init.cs:123-134): the whole
   team hangs at the loading screen (read; not tried, and not worth trying).
-- **With the pack they see the mode** before starting: the Setup panel and the Rogue Wave type line read the networked
+- **With the pack they see the mode** before starting: the Setup panel and the Rogue Waves type line read the networked
   mode string on every machine. They don't need the button: only the host presses it. A friend who presses it too
   just hosts their own lobby, like pressing Play.
 - **Joining works only on the boat.** The lobby closes when the match starts and stays closed through the map chain
@@ -83,7 +83,7 @@ Solo, automated, one launch (RogueLab's driver already embarks and starts a matc
 | M2 | Invoke the clone's `Buttonclick` from code (the game ignores injected input) | the mod's handler runs and the stock `Play` handler does not (no second scene load) |
 | M3 | `Runprompt` with three entries on the main menu, auto-answered | three cards built, no exception (the `docs/15` §14.6 rule) |
 | M4 | Handler sets the flag and sends `Play` | `Setup` loads; the flag read on the boat is still set |
-| M5 | On the boat, staging node plus Rogue twin, no Cardinal equipped | Setup panel open on the host, Mode reads the mod's mode, the type line reads ROGUE WAVE; Start loads map 1 in the mod's mode |
+| M5 | On the boat, staging node plus Rogue twin, no Cardinal equipped | Setup panel open on the host, Mode reads the mod's mode, the type line reads ROGUE WAVES; Start loads map 1 in the mod's mode |
 | M6 | Back to the main menu, then the stock Play | flag cleared, the boat keeps the stock mode on a picked node |
 | M7 | Dump `Blm_Multiplayer.Instance`: `Joinablescenes`, `Client_Canjoin`, `Clientjoinscene`, `Serverclosescene`, `Maxplayers`, lobby id after the boat opens | logged (data, not in code) |
 
@@ -111,7 +111,7 @@ run.
 
 By hand, by Dimitri: look at the button on the main menu (placement, hover tip, gamepad focus). **Online evening**
 (already planned, `docs/RESEARCH_GAPS.md`): a friend with the pack joins by invite after step 4, sees the panel and the
-ROGUE WAVE line, readies, and both load map 1. No PC session is started for this until Dimitri asks.
+ROGUE WAVES line, readies, and both load map 1. No PC session is started for this until Dimitri asks.
 
 ## 6. Recommendation and the gate
 
@@ -119,8 +119,8 @@ ROGUE WAVE line, readies, and both load map 1. No PC session is started for this
 It is built from pieces already proven (the embark, the mode swap, the Setup-screen line); only the main-menu clone
 and the dialog there are new, and probes M1-M3 settle them in one solo round.
 
-The edits made on adoption: `docs/SCOPE_v0.txt` line 47 ("the host begins the Rogue Wave by equipping the mode's
-Cardinal in the lobby" becomes "the host starts a Rogue Wave from the main menu's Rogue Wave button, New or Continue,
+The edits made on adoption: `docs/SCOPE_v0.txt` line 47 ("the host begins the Rogue Waves by equipping the mode's
+Cardinal in the lobby" becomes "the host starts a Rogue Waves from the main menu's Rogue Waves button, New or Continue,
 and invites friends to the boat"), line 48's NEEDS marker removed, the same in `/mnt/project-files/roguewave.txt`;
 `docs/PLAN.md` Decisions gets the new rule; `docs/PACK.md` line 78 follows. Riptide's Setup-screen switch stays the
 fallback if the main-menu clone fails on the PC.
