@@ -301,6 +301,7 @@ public static class YosseleVines
         nextTick = Time.time + YosseleData.VineTick;
         Ticks++;
         Dictionary<Entity_Master, float> want = new Dictionary<Entity_Master, float>();
+        Dictionary<Entity_Master, Entity_Master> by = new Dictionary<Entity_Master, Entity_Master>();
         foreach (YosseleBuilding b in buildings.ToArray())
         {
             YosseleHengeBrain henge = b as YosseleHengeBrain;
@@ -315,6 +316,7 @@ public static class YosseleVines
             {
                 float had;
                 want[foe] = want.TryGetValue(foe, out had) ? Mathf.Max(had, slow) : slow;
+                by[foe] = henge.Master;
             }
             try { henge.Work(on, YosseleData.VineTick); }
             catch (Exception e) { YosseleLog.Warn("vines: " + e.Message); }
@@ -322,6 +324,8 @@ public static class YosseleVines
         // One slow per foe, re-made only when its strength changes.
         foreach (KeyValuePair<Entity_Master, float> kv in want)
         {
+            // A modifier draws nothing: the stock slow look, renewed every tick while the foe stays on the vines.
+            YosseleUtil.Debuff(by[kv.Key], kv.Key, YosseleData.VfxSlow, YosseleData.VineTick + 0.3f);
             float had;
             Link_Modifier mod;
             if (slowAmount.TryGetValue(kv.Key, out had) && Mathf.Approximately(had, kv.Value) && slowed.TryGetValue(kv.Key, out mod) && mod != null && !mod.Dead)

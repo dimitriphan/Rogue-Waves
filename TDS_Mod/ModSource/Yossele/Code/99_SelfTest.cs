@@ -331,12 +331,12 @@ public static class YosseleSelfTest
 
     static float SpeedOf(Entity_Master e) { return YosseleUtil.Stat(e, "Speed", 1f); }
 
-    static IEnumerator Fell(string being, Vector3 near, float maxDist, int count, int[] felled)
+    static IEnumerator Fell(string being, Vector3 near, float maxDist, float minDist, int count, int[] felled)
     {
         felled[0] = 0;
         for (int i = 0; i < count; i++)
         {
-            Entity_Master foe = SpawnFoe(being, near, maxDist);
+            Entity_Master foe = SpawnFoe(being, near, maxDist, minDist);
             if (foe == null) continue;
             yield return Wait(0.3f);
             Kill(foe);
@@ -501,11 +501,13 @@ public static class YosseleSelfTest
             }
             int need = YosseleData.Compostbins[0].Kills;
             int[] felled = new int[1];
-            yield return Fell("Enemy_Dagger", YosseleUtil.Pos(hm), 2.5f, need, felled);
+            yield return Fell("Enemy_Dagger", YosseleUtil.Pos(hm), 2.5f, 0f, need, felled);
             Check(need + " foes felled near Yossele make a fertilizer", felled[0] == need && player.Fertilizer == 1 && Mathf.Approximately(YosseleUtil.Stat(hm, YosseleData.FertilizerStat, -1f), 1f),
                 felled[0] + " felled, fertilizer " + player.Fertilizer + ", counter " + YosseleUtil.Stat(hm, YosseleData.FertilizerStat, -1f));
-            yield return Fell("Enemy_Dagger", YosseleUtil.Pos(hm) + Vector3.right * 10f, 3f, 3, felled);
-            Check("foes felled far from Yossele make none", player.Compost == 0, "compost " + player.Compost + " after " + felled[0]);
+            float radius = YosseleData.Compostbins[0].Radius;
+            yield return Fell("Enemy_Dagger", YosseleUtil.Pos(hm), radius + 8f, radius + 1.5f, 3, felled);
+            if (felled[0] > 0) Check("foes felled far from Yossele make none", player.Compost == 0, "compost " + player.Compost + " after " + felled[0]);
+            else ModKitTest.Setup("far foes", "no ground for a foe " + F(radius + 1.5f) + "-" + F(radius + 8f) + " tiles from Yossele");
             if (target != null && player.Fertilizer > 0)
             {
                 int g0 = target.Growth;
@@ -679,6 +681,15 @@ public static class YosseleSelfTest
 #if YOSSELE_SHOTS
             yield return YosseleShots.Close("henge", hp + henge.Facing * 1.5f, 5f);
 #endif
+            // A real hit through the hit hook: 40% armour at Growth 4.
+            Entity_Master hitter = foe != null && YosseleUtil.Alive(foe) ? foe : hm;
+            SetHealth(henge.Master, YosseleUtil.MaxHealth(henge.Master));
+            float hh0 = YosseleUtil.Health(henge.Master);
+            int softened = YosseleHooks.Softened;
+            YosseleUtil.Hurt(hitter, henge.Master, 10f);
+            yield return Wait(0.3f);
+            float lost = hh0 - YosseleUtil.Health(henge.Master);
+            Check("Growth's armour softens a real hit (10 -> 6)", YosseleHooks.Softened > softened && lost > 5.5f && lost < 6.5f, "lost " + F(lost) + ", softened " + softened + "->" + YosseleHooks.Softened + ", skipped " + YosseleHooks.Skipped);
             Kill(foe);
             yield return Wait(0.6f);
 
@@ -692,6 +703,8 @@ public static class YosseleSelfTest
             vine = henge.Tiles.Count > 0 ? henge.Tiles[0] : null;
             foe = vine != null ? SpawnFoe("Enemy_Aegis", vine.Position, 0.6f, 0f, true) : null;
             int drained = henge.Drained, snares = henge.Snares;
+            // Held on the vines (no stun, no look) so it lingers the 7 s Spaghetti Roots waits for.
+            if (foe != null) YosseleUtil.Root(henge.Master, foe, 10f, false, "");
             yield return Until(() => foe == null || henge.Drained > drained, 3f);
             Check("Opportunistic Carnivore drains a foe on the vines", foe != null && henge.Drained > drained, "drains " + drained + "->" + henge.Drained);
             yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || henge.Snares > snares, 9f);
@@ -720,6 +733,12 @@ public static class YosseleSelfTest
                 yield return ForceTide(reached);
                 Check("Vine Blockade raises a barrier each Tide", second.Barrier > 0f && YosseleHooks.ShieldOf(second.Master) > 0f, "barrier " + F(second.Barrier));
                 yield return DebuffReport(second.Master, YosseleData.VfxBlockade);
+                float shield0 = YosseleHooks.ShieldOf(second.Master), sh0 = YosseleUtil.Health(second.Master);
+                int soaked = YosseleHooks.Soaked;
+                YosseleUtil.Hurt(hm, second.Master, 10f);
+                yield return Wait(0.3f);
+                Check("the barrier soaks a real hit before the stones", YosseleHooks.Soaked > soaked && YosseleHooks.ShieldOf(second.Master) < shield0 - 1f && YosseleUtil.Health(second.Master) >= sh0 - 0.01f,
+                    "barrier " + F(shield0) + "->" + F(YosseleHooks.ShieldOf(second.Master)) + ", health " + F(sh0) + "->" + F(YosseleUtil.Health(second.Master)));
                 SetHealth(second.Master, YosseleUtil.MaxHealth(second.Master) * 0.5f);
                 float h0 = YosseleUtil.Health(second.Master);
                 yield return Wait(1.6f);
@@ -778,7 +797,28 @@ public static class YosseleSelfTest
             yield return Upgrade(sapling, "Connected4", owner);
             yield return Wait(0.4f);
             Check("Connected Roots bought", Has(sapling, "Connected4"));
-            Log("Connected Roots guards " + (henge != null && YosseleHooks.GuardOf(henge.Master) == sapling ? "the Stonehenge" : "nothing near it") + "; shared " + YosseleHooks.Shared + " hits so far");
+            Beingobject guardBeing = YosseleContent.Beings[YosseleData.Cannon];
+            Vector3 gat = ModKitTest.Spot(YosseleUtil.Pos(sapling.Master), guardBeing, team, 1.2f, sapling.Stat("Range", 2f), used, "guarded cannon");
+            YosseleCannonBrain guarded = null;
+            if (!float.IsNaN(gat.x))
+            {
+                yield return Build(hm, YosseleData.Cannon, gat, known, got);
+                guarded = got[0] as YosseleCannonBrain;
+            }
+            if (guarded != null)
+            {
+                yield return Wait(0.4f);
+                SetHealth(sapling.Master, YosseleUtil.MaxHealth(sapling.Master));
+                float g0 = YosseleUtil.Health(guarded.Master), s0 = YosseleUtil.Health(sapling.Master);
+                int shared = YosseleHooks.Shared;
+                YosseleUtil.Hurt(hm, guarded.Master, 10f);
+                yield return Wait(0.3f);
+                float gl = g0 - YosseleUtil.Health(guarded.Master), sl = s0 - YosseleUtil.Health(sapling.Master);
+                Check("Connected Roots: the Sapling takes 65% of a nearby building's hit", YosseleHooks.GuardOf(guarded.Master) == sapling && YosseleHooks.Shared > shared && gl > 3f && gl < 4f && sl > 6f && sl < 7f,
+                    "cannon lost " + F(gl) + ", Sapling lost " + F(sl) + ", shared " + shared + "->" + YosseleHooks.Shared);
+            }
+            else
+                ModKitTest.Setup("Connected Roots", "no tile for a building in the Sapling's range");
         }
 
         // 12. Gone is gone: a destroyed building's replacement starts at Growth 0, and the Tree's button comes back.

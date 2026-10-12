@@ -55,4 +55,19 @@ preview renders every sheet and model. **Not built in Unity, not run, not seen i
 
 ## PC rounds
 
-None yet.
+**Round 1 (2026-10-12):** applied, Unity compiled the editor code clean, the code build passed; stopped at the export
+(it didn't park the other mods, pitfall #88) and the sheet slicing read a scaled width (pitfall #87). Both fixed.
+
+**Round 2 (2026-10-12, 3B_Thehunt): 86 pass, 1 fail, 1 setup.** Boot clean (`ready: 6 beings, 22 upgrades, 3
+Directions, 16 effects, icons ok, ground from Effect_Snosnosnow`), no Yossele exceptions (11 lines, all the game's own
+sound and setup ones). Proven in game: stats and regen, building, costs, the Tree's limit and its return, Growth on
+forced Tides (counter and skin, stops at the max, no growth in the Tide built), Compost Bin unlocks FERTILIZE and pays
+1 per 10 kills, FERTILIZE grows a stage and refuses a full building, every Cannon mechanic but the chance-based Viral
+and Hallucinogen, the Dandelion's seeds, limit, range and Seed Packets, vines along the facing (orientation 0 faces
++z), longer with Growth, Verdant 3 -> 14 tiles, the vine slow, Carnivore, Blockade's health and barrier, Natural
+Remedy, the Sapling's mining, fruit drop and pickup (30 of each), Grafted Colors (63 Blue), the journal and tabs.
+- FAIL: "the game attaches Debuff_Slow": a modifier draws nothing; the vines now put the stock slow look on.
+- SETUP: Spaghetti Roots' foe walked off the vines before 7 s; the test now holds it there.
+- Not reached: the hit hook (armour, barrier, Connected Roots) saw no hit (`softened 0, soaked 0, shared 0, skipped
+  0`); round 3 adds a real hit on each. The "far foes" check spawned none (it aimed off the hill); fixed.
+- The slice warnings came from round 1's stale .meta on the first import; the meta is right now (48 slices).
