@@ -6,8 +6,8 @@ did not exist before and every value the document left open**. This file is thos
 disagree on. The design is `TDS_Mod/ModSource/Yossele/DESIGN.md`; the numbers live in `Code/02_Data.cs`.
 
 **State:** designed, temporary art generated, code written. Compiled in the cloud (0 errors in the release build and
-with `YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; the editor code passes `check_editor.sh`). **Not built in Unity,
-not run, not seen in game.** A PC round is the next step (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`).
+with `YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; the editor code passes `check_editor.sh`). **Built in Unity and
+run in game: PC round 5 passed 91/0** (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`). Not yet seen by eye.
 
 ## 1. Assets generated new (none existed before except Dimitri's own sprites)
 

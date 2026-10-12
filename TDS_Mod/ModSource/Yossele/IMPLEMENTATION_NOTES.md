@@ -7,7 +7,8 @@ Mummer's scaffold; every Mummer mechanic, sheet, model, effect and sound is gone
 
 **Checked here only:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release and with
 `YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud
-preview renders every sheet and model. **Not built in Unity, not run, not seen in game.**
+preview renders every sheet and model. **Built in Unity and run in game (PC round 5, 2026-10-12): 91 pass, 0 fail, 0
+setup.** Not yet seen by eye or played online; Viral Outbreak and Hallucinogen (chance-based) are not checked.
 
 ## Code map
 
@@ -85,3 +86,11 @@ the Dandelion Tree's brain: the tree had been removed by then (its brain destroy
 likely Tide foes felled it (they keep marching while the test holds the Tide clock), which also explains round 3's
 "0 seeds" read. Round 5: every building logs when it goes and why, each test section clears Tide foes first, and a
 felled building turns its checks into setup lines instead of stopping the run.
+
+**Round 5 (2026-10-12): 91 pass, 0 fail, 0 setup.** Export clean, 0 slice warnings, no Yossele exceptions (the game's
+own `Game_Ui.OnDestroy` and `Game_Init.OnDestroy` NREs at shutdown, also in earlier Argo and RogueLab logs). The only
+building lost was the Tree the test fells on purpose, so clearing Tide foes per section was the fix. Newly proven: seeds
+grow back (0.5 a second, ready 0.501 at limit 12), Seed Packets (2 refunded), Entangling Spaghetti Roots (1 snare),
+every hit-hook check again. Not checked: Viral Outbreak's 30% burst and Hallucinogen's 20% daze (0 of each this run).
+Left for Dimitri: the look by eye (temporary art, debuff heights, the Stonehenge's turn, vine and fruit placement), the
+balance pass, and online play.

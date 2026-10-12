@@ -1,8 +1,8 @@
 # Yossele, The Patient Golem ▪ Intermediate (0.1.0-dev)
 
 A vessel for the Rogue Waves pack (*TDS - Tower Defense Strategy*): a round clay golem on root limbs whose buildings
-grow stronger for every Tide they survive. Ships only inside the pack (`docs/PACK.md`). **Temporary art; not yet run
-in game** (`IMPLEMENTATION_NOTES.md`).
+grow stronger for every Tide they survive. Ships only inside the pack (`docs/PACK.md`). **Temporary art; passes its
+in-game self-test (91/0), not yet played online** (`IMPLEMENTATION_NOTES.md`).
 
 ## The vessel
 

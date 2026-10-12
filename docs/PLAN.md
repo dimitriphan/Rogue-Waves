@@ -200,9 +200,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
   2026-10-12: **Yossele 0.1.0-dev** built from Dimitri's updated `docs/scope/07` (design, temporary art from his
-  reshade, code, self-test; compiled here only). New assets and every default value: `docs/YOSSELE_BUILD_NOTES.md`.
-- **Next:** Yossele's first PC round (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`), started by the
-  coordinator on Dimitri's word. the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
+  reshade, code, self-test). New assets and every default value: `docs/YOSSELE_BUILD_NOTES.md`. PC round 5 the same
+  day: **91 pass, 0 fail, 0 setup** on 3B_Thehunt (rounds and fixes in its `IMPLEMENTATION_NOTES.md`; PR #30).
+- **Next:** on Yossele, Dimitri's look by eye (temporary art), his balance pass, and the Compost Bin numbers in scope
+  `11`; Viral Outbreak and Hallucinogen (chance-based) are unchecked. The in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
