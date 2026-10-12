@@ -228,3 +228,21 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     brain's catch logged and set `enabled = false` on its first exception → skip the failing tick and stop the brain
     only after it throws on every frame for 600 frames (~10 s) (`ArgoFaults`, `TDS_Mod/ModSource/Argo`). Seen in game in
     Argo 1.x; the fix is in Argo 2.0.
+81. **A stat stays at 0 after an Override mod was changed and then removed** (base-vessel dive, `17` §2.1) →
+    `Editstat` adds `Value_Override_On` again on every change of an Override mod and takes it off once on removal →
+    never edit an Override mod: remove it and add a new one; use 0.01, not 0, for a stun. Read from code.
+82. **A Direction's `Addmod` does nothing on a fresh building or a stat that comes later** (`17` §2.1, §2.3) → stats
+    are built after `Onspawn` (`Entity_Master.Start`), and a mod on a missing stat is listed but never applied, even
+    when `Addstat` makes the stat later → add the upgrade to `Initupgradelistserver` in `Onspawn`, `Addmod` at
+    `Loaded` or later, check `Statsserver.ContainsKey`, and re-apply when an upgrade adds the stat. Read from code.
+83. **A run upgrade changes a building's panel, model or `Leveladd` stats, or pays money back on sell** (`17` §2.2) →
+    the highest `Priority` ≥ 0 sets `Level` and `Mainupgrade`, and sell refunds every applied upgrade's `Costs` → give
+    effect upgrades Priority −3 and empty `Costs` (`ModKitDirections.Make` does). Read from code.
+84. **An entity tagged at run time is never found by `Entitiesserver[tag]`** (`17` §2.5) → the tag lists are filled
+    once from the data's `Entity.Tags` → put the tag in the being's data, or keep the mod's own list. Read from code.
+85. **A building upgrade lands on Boutman himself** (`17` §5.1) → the Bouthouse forwards every upgrade it holds to the
+    hero (`Askforupgrades`) → never give the Bouthouse a run upgrade; skip the tag `Bouthouse` in "all buildings"
+    effects. Read from code.
+86. **A Sno Sno cannon throws or eats a modded entity** (`17` §4) → it takes ammo from the nearest entity tagged
+    `Sno` or `Snoble` of any team and picks its shot by that entity's GameObject name → never tag pack things `Sno`
+    or `Snoble` (nor other base-vessel family tags, `17` §11.1 rule 12). Read from code.

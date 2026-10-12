@@ -197,6 +197,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the stale and wrong lines in place. A full re-test of every probe set on one build (2026-10-11 22:25Z,
   `docs/FULL_TEST_2026-10-11.md`): Argo 139/0, RogueLab 22/0, RogueWavesMode 47/0, nothing regressed. Older entries
   are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
+  2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
+  each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call).
@@ -281,6 +283,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   PC on one build of `27591bc` (the PC already matched it; no handoff): **208 pass, 0 fail** (Argo 139, RogueLab 22,
   RogueWavesMode 47), every exception the game's own; Argo's steep-shot check can skip when its test foe fails to
   spawn (passed on a second launch). Mods folder empty again. `docs/FULL_TEST_2026-10-11.md`.
+- **Also (2026-10-12):** Dimitri asked for a deep dive into every base vessel so modded assets, Directions and
+  Cardinals work for every vessel. The game's code was decompiled (scratchpad only) and read per vessel; the result is
+  kit `docs/17_BASE_VESSELS.md`, pitfalls #81-86, and fixes to `docs/12` §1 (Boutbro builds the fish), `docs/13` §6
+  (Multi and Pmulti add up) and `SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
+  the PC list, worth a probe round before the first Direction is built.
 
 ### Decisions
 

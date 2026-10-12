@@ -237,8 +237,9 @@ without a stock bespoke AI reads as a plain melee foe to them.
    stock modifier AI can be listed instead (name carrier) when its effect is exactly right, but each one also sets its
    own skin. Read stats from the `Loaded` event or the next tick, not in `Onspawn` (stats are empty on the spawn
    frame).
-3. **Its effect**, with what the engine already does: stat modifiers (`Addmod`; `Pmulti` for true multipliers);
-   reactions to hits taken (`Oninteract`, first in the chain, `05` §9) or dealt (`Interact`); a death effect
+3. **Its effect**, with what the engine already does: stat modifiers (`Addmod`; `Pmulti` scales only the base and
+   compounds with `Multi`, but mods of one kind add up, `17` §2.1); reactions to hits taken (`Oninteract`, first in
+   the chain, `05` §9) or dealt (`Interact`); a death effect
    (`Despawn` with Death = true, like Molten); a lingering debuff on others (an `Effect_*` upgrade like Melting); an
    overshield (`Healthover` stat, absorbs damage) or hit armour (`Healtharmor`, absorbs hits).
 4. **Its look on every screen**: base enemies have no skin for a new modifier (and adding skins means redrawing every
