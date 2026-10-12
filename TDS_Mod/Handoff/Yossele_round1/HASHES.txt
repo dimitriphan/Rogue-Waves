@@ -1,0 +1,34 @@
+# Handoff Yossele_round1: commit f464c7a of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit 9f85ec9.
+new  8f8d4a8792b56633  Assets\YosseleMod\Editor\YosseleAseprite.cs
+new  f0dfa3cfd771df6c  Assets\YosseleMod\Editor\YosseleAudio.cs
+new  1edbc2d429ad2b66  Assets\YosseleMod\Editor\YosseleBuilder.cs
+new  6e2ec269d8ef1e56  Assets\YosseleMod\Editor\YosseleCharacter.cs
+new  aa696564672859ad  Assets\YosseleMod\Editor\YosseleLowpoly.cs
+new  2fd73399d7b754c4  Assets\YosseleMod\Editor\YosseleModPrefab.cs
+new  f73092a28ae83ec9  Assets\YosseleMod\Editor\YosseleModels.cs
+new  2fe2fb602d60cce7  Assets\YosseleMod\Editor\YosselePx.cs
+new  51e33ce22a0d1c47  ModSource\Yossele\Build-YosseleMod.ps1
+new  acc5b4baad870da2  ModSource\Yossele\Code\00_YosseleMod.cs
+new  3363dee871df1cc1  ModSource\Yossele\Code\01_Util.cs
+new  7f18bc41960615c5  ModSource\Yossele\Code\02_Data.cs
+new  4eb220c5832b7b9f  ModSource\Yossele\Code\03_Assets.cs
+new  920f2180d8a06620  ModSource\Yossele\Code\04_Content.cs
+new  d1bdc8e074369def  ModSource\Yossele\Code\05_Server.cs
+new  eb692bd137b9990f  ModSource\Yossele\Code\06_HeroBrain.cs
+new  c308a79a5ebe2140  ModSource\Yossele\Code\07_Building.cs
+new  dcb859c21cc924b3  ModSource\Yossele\Code\08_Cannon.cs
+new  6d8ca73b3ee3c1da  ModSource\Yossele\Code\09_Dandelion.cs
+new  3d8949c6966a1c02  ModSource\Yossele\Code\10_Henge.cs
+new  ebcb88f8c03f725c  ModSource\Yossele\Code\11_Pachira.cs
+new  5c16ed09b7941487  ModSource\Yossele\Code\12_Hooks.cs
+new  ceb29033902109a6  ModSource\Yossele\Code\13_Client.cs
+new  1592eec00a8907d6  ModSource\Yossele\Code\14_Commands.cs
+new  42f5cce1638791dd  ModSource\Yossele\Code\15_Journal.cs
+new  8939b40c667e80c1  ModSource\Yossele\Code\97_Shots.cs
+new  ea674f5927df588d  ModSource\Yossele\Code\99_SelfTest.cs
+new  c6631dc9613c7ef9  ModSource\Yossele\DESIGN.md
+new  7d6a6b3b82e87d56  ModSource\Yossele\Deploy-Wait.ps1
+new  739beb98890b69fa  ModSource\Yossele\IMPLEMENTATION_NOTES.md
+new  9e29b3e83c156aec  ModSource\Yossele\README.md
+new  e1019fd0e144ece0  ModSource\Yossele\Tools\Decode-Dump.ps1
