@@ -67,7 +67,8 @@ Removed from the template: the unit and doll sheets, the hangers, and every Mumm
 - `Yossele_Vine`: one flat tile 0.01 above the ground, textured with `Yossele_Vine_Ground.png` (20 x 20 pixels: two
   vine stems crossing opposite edges at the same places, so neighbouring tiles join, with leaves and moss; cut-out
   material `Yossele_Vine_Ground.mat`, no shadow). Like Sno Sno's snow (Dimitri, 2026-10-12; it was a low-poly mat).
-  **Its origin is on the ground** (y = 0 is the ground top).
+  Tower origin convention: the ground is at y -0.5 (a ground being stands half a tile above the ground; round 7's tile
+  at y 0 floated).
 - `Yossele_Fruit`: a round pod about 0.3 wide, banded red, blue and yellow, with a stem and leaf.
   `Yossele_Fruit_Red`, `Yossele_Fruit_Blue` and `Yossele_Fruit_Yellow` are single-colour versions. They use the tower
   origin convention (ground at y = -0.5).
@@ -90,7 +91,7 @@ Removed from the template: the unit and doll sheets, the hangers, and every Mumm
 3. **Fruit:** `Yossele_Fruit` (all colours), `_Red`, `_Blue`, `_Yellow`.
 4. **Seed and sporebomb:** `Yossele_Seed` is about 0.12 with its pivot at the centre. `Yossele_Sporebomb` is about 0.19
    with its pivot at the centre.
-5. **Vine:** `Yossele_Vine` has its pivot at the tile centre on the ground and is a flat quad 0.01 above it.
+5. **Vine:** `Yossele_Vine` is a flat quad at y -0.49, 0.01 above the ground in the tower convention.
 6. **Sheets:** layouts as listed above. `World_Yossele_Dig` is in the effect list.
 
 ## Effects (`VfxSpec` in YosseleBuilder; heights follow Mummer 1.0's verified convention)

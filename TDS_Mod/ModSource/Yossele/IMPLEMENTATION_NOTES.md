@@ -118,3 +118,8 @@ faces and grows its vines that way with the model turned once, the Tree's range 
 their own texture (URP Lit, cut out, 0.01 above the tile). Sno Sno's snow is a 0.8 x 0.1 x 0.8 mesh on the game's
 `Shader Graphs/General Block` material with no texture: if the vines should be lit exactly like it, that shader is
 the one to copy with the vine texture. Waiting on Dimitri's look by eye.
+
+**Dimitri, playing round 7's build (2026-10-12): the vines float.** A ground being stands half a tile above the ground
+like a tower (the vine being at y 11, Yossele at 11, the ground at 10.5); the quad sat at the being's own height.
+Round 8 puts it at the tower convention's ground (y -0.49) and checks the drawn tile against the being and the ground
+block's top. (Note 3 above guessed the ground at the vine model's origin; the fruit, in the tower convention, was right.)

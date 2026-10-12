@@ -728,8 +728,20 @@ public static class YosseleSelfTest
                 foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
                     if (e != null && e.Being.Value.ToString() == YosseleData.Vine)
                     {
+                        float vy = YosseleUtil.Pos(e).y, low = float.NaN;
                         foreach (Renderer r in e.GetComponentsInChildren<Renderer>(true))
-                            Log("vine tile renderer " + r.name + " enabled " + r.enabled + " material " + (r.sharedMaterial != null ? r.sharedMaterial.name + " / " + r.sharedMaterial.shader.name : "none") + " y " + F(r.bounds.min.y) + ".." + F(r.bounds.max.y) + ", tile y " + F(YosseleUtil.Pos(e).y));
+                        {
+                            Log("vine tile renderer " + r.name + " enabled " + r.enabled + " material " + (r.sharedMaterial != null ? r.sharedMaterial.name + " / " + r.sharedMaterial.shader.name : "none") + " y " + F(r.bounds.min.y) + ".." + F(r.bounds.max.y) + ", tile y " + F(vy));
+                            if (r.enabled) low = r.bounds.min.y;
+                        }
+                        // The ground's top, from the block the vine stands on (its renderers' highest point).
+                        float top = float.NaN;
+                        Entity_Master ground = Helper_Entityquerytools.Entitynearest(YosseleUtil.Pos(e), 0.75f, YosseleUtil.Tagged("Surface"));
+                        if (ground != null)
+                            foreach (Renderer r in ground.GetComponentsInChildren<Renderer>(true))
+                                if (r.enabled) top = float.IsNaN(top) ? r.bounds.max.y : Mathf.Max(top, r.bounds.max.y);
+                        Check("vine tiles lie on the ground (half a tile under the being, like a tower's foot)", !float.IsNaN(low) && Mathf.Abs(low - (vy - 0.5f)) < 0.05f,
+                            "vine y " + F(low) + ", being y " + F(vy) + ", ground block top " + (float.IsNaN(top) ? "not found" : F(top)));
                         break;
                     }
                 Beingobject snow = YosseleUtil.Load<Beingobject>("Mob", "Effect_Snosnosnow");

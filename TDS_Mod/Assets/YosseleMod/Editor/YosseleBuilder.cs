@@ -345,11 +345,12 @@ namespace YosseleBuild
             return m;
         }
 
-        // One tile, face up, 0.01 above the ground (y = 0 at a ground model's origin), UVs over the whole texture with its
-        // top row on the far side (+z).
+        // One tile, face up, 0.01 above the ground, UVs over the whole texture with its top row on the far side (+z). A
+        // ground being stands half a tile above the ground like a tower (round 7: the vine at y 11 on ground at 10.5
+        // floated), so the ground is at Lp.Ground.
         static Mesh FlatTile(string name)
         {
-            const float h = 0.5f, y = 0.01f;
+            const float h = 0.5f, y = Lp.Ground + 0.01f;
             var mesh = new Mesh { name = name };
             mesh.SetVertices(new List<Vector3> { new Vector3(-h, y, -h), new Vector3(-h, y, h), new Vector3(h, y, h), new Vector3(h, y, -h) });
             mesh.SetNormals(new List<Vector3> { Vector3.up, Vector3.up, Vector3.up, Vector3.up });
