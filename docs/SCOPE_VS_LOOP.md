@@ -230,7 +230,8 @@ which the scope now uses for ascension (it was "Swell").
   owner), Money Bag (already per player), Checklist (its orb already pays one owner), Torrid Badge, Bendigo, Kippy and
   Fish Bait (spawned mobs take their host's owner, `Helper_Entitytools.cs:88`, so the mod hosts the spawner on the
   owner's vessel), Tacklebox's aura; Paper Tower only with a mod version (one static paper tower per game,
-  `Entity_Ai_Effect_Artifact_Paper.cs:13`); Bottom Rock's tower limit is already per owner, its gain multiplier is not.
+  `Entity_Ai_Effect_Artifact_Paper.cs:13`); Bottom Rock's tower limit is keyed by owner but counts the whole team's
+  towers (`17` §9), and its gain multiplier is not per owner.
 - **Team only by nature (about 14):** Opal Core, Looped Mirror, Glass Core (the core), Frozen Computer (game speed),
   Moon Core, Vintage Watch, Same Day Shipping's clock (the Tide clock), Chimera Crystals, Starter Seeds (the map's ore),
   Spear Point, 1st Grade Textbook, Blue Paint, Wave Breaker (the foes), Fragment (unclear, barriers by the enemy core).
