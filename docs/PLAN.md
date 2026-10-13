@@ -199,9 +199,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
+  2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
-  Left on Argo: his balance pass (his call).
+  Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -288,6 +289,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   kit `docs/17_BASE_VESSELS.md`, pitfalls #81-86, and fixes to `docs/12` §1 (Boutbro builds the fish), `docs/13` §6
   (Multi and Pmulti add up) and `SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
   the PC list, worth a probe round before the first Direction is built.
+- **Also (2026-10-13):** Dimitri asked for a vessel template with a slot for every value. New scope file
+  `docs/scope/15_Vessel_Template.txt`; his edited `07` (Yossele) and `08` (Spool) are folded in and re-laid in it. A
+  value written `~like this` is a default Claude picked (Yossele's come from the 2026-10-12 build, Spool's are new);
+  each sheet ends with its open questions. Yossele's sheet now asks for a ranged laser and a slower speed, which the
+  build (PR #30) doesn't have yet.
 
 ### Decisions
 
@@ -381,6 +387,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-12 (user): the name is spelled **Rogue Waves** everywhere, the mode and its main-menu button included
   (was "Rogue Wave"). Identifiers (`Mode_RogueWave`, `RW_` save keys), file names (`04_Rogue_Wave_Mode.txt`) and the
   PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid.
+- 2026-10-13 (user): every vessel sheet follows `docs/scope/15_Vessel_Template.txt`; `~` marks a Claude default.
+  Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
+  Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
+  heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
 
 ### Open questions
 
@@ -388,7 +398,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open | |
+| 1 | Yossele and Spool sheets: the `! NEEDS !` lines under `[Questions]` in `docs/scope/07` and `08` | the default each line names |
 
 ### Phase 5 pieces
 
