@@ -15,6 +15,8 @@
 	# 12_Cardinals.txt / What a new Cardinal is, the New Cardinal template and the Cardinal List \
 	# 13_Enemy_Modifiers.txt / Cursed, Berserk, Aging, Dazzling \
 	# 14_Optional_Objectives.txt / The New Optional Objective template and the objective list \
+	# 15_Vessel_Template.txt / The New Vessel template: every stat, building, minion and upgrade has a slot for its value. 07 and 08 use it \
+	# 16_Base_Vessels.txt / Smacky, Sno Sno, Boutman, Fie and Buster in the same template with the game's own numbers, and every vessel's stats side by side \
 
 | Formatting |
 	[Name of Mechanic]
@@ -26,3 +28,4 @@
 	: Connector
 	! NEEDS SOMETHING ! / Information still missing that needs to be added \
 	< Answer > / Your answer after a NEEDS line. Claude folds it into the file in the format above \
+	~Value / A default Claude picked. Change it, or delete the ~ to keep it as yours. A value without ~ is your own \
