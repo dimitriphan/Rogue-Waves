@@ -16,6 +16,7 @@
 	# 13_Enemy_Modifiers.txt / Cursed, Berserk, Aging, Dazzling \
 	# 14_Optional_Objectives.txt / The New Optional Objective template and the objective list \
 	# 15_Vessel_Template.txt / The New Vessel template: every stat, building, minion and upgrade has a slot for its value. 07 and 08 use it \
+	# 16_Base_Vessels.txt / Smacky, Sno Sno, Boutman, Fie and Buster in the same template with the game's own numbers, and every vessel's stats side by side \
 
 | Formatting |
 	[Name of Mechanic]

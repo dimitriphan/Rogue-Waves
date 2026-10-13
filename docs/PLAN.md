@@ -293,7 +293,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/scope/15_Vessel_Template.txt`; his edited `07` (Yossele) and `08` (Spool) are folded in and re-laid in it. A
   value written `~like this` is a default Claude picked (Yossele's come from the 2026-10-12 build, Spool's are new);
   each sheet ends with its open questions. Yossele's sheet now asks for a ranged laser and a slower speed, which the
-  build (PR #30) doesn't have yet.
+  build (PR #30) doesn't have yet. Then, at his ask, `docs/scope/16_Base_Vessels.txt`: the five base vessels in the same
+  template from the game's data (kit `reference/vessel_data_survey.txt`, `docs/17`), with a side-by-side stat table.
 
 ### Decisions
 

@@ -3,8 +3,9 @@
 	# Every value has a slot. A value written ~like this is a default Claude picked: change it, or delete the ~ to keep it as yours. A value without ~ is your own.
 	# A line Claude can't default (a name of yours, a look, a new idea) stays as ! NEEDS ... ! until you fill it.
 	# Units: distance in tiles, time in seconds, rates per second, changes in %. The / \ note after a stat gives the base game's range for it (kit docs/02), so a value can be checked at a glance.
-	# Upgrades come in three levels, 1, 2 and 3, with at most two choices per level. Every choice of one level leads to every choice of the next unless an upgrade says otherwise. / In game they are tiers 2, 3 and 4 \
-	# Write an upgrade's effect in words on its % line, and its values on the - Numbers line under it. Upgrade text in game carries no numbers; the journal shows them.
+	# Upgrades come in levels 1, 2 and 3, usually two choices each, and an optional level 4 capstone. Every choice of one level leads to every choice of the next unless its - Leads to line says otherwise. / In game they are tiers 2 to 5 \
+	# Write an upgrade's effect in words on its % line, and its values on the - Numbers line under it. The - In-game line is the short tooltip players read, with no numbers; the journal shows them.
+	# 16_Base_Vessels.txt lays the five base vessels out the same way, with the game's own numbers, for comparison.
 	# A vessel's [Directions] live in 11_Directions.txt. The sheet only lists their names.
 	# Delete any block the vessel doesn't use (no ability, no resource, no minions).
 
@@ -16,6 +17,7 @@
 			- Title: / The words after the comma above \
 			- Difficulty: ~Intermediate / Beginner, Intermediate or Advanced \
 			- Archetype: / One line: what the player does all game \
+			- In-game line: ~Regular, single-target melee / The line on the select screen, like Smacky's "Fast, single-target melee" \
 			- Look: / The sprite in a line or two. docs/STYLE.md lists the shapes already taken \
 			- Towers look: / The motif every building carries, and what its upgrades add \
 			- Accent colour: ~ / Its buttons, journal page and colour in game \
@@ -58,10 +60,11 @@
 			- Rule:
 			- Details: / Edge cases: what counts, what resets it \
 
-		(Slot):{Name of Building} / Slots: Offense, Defense, Economy, Support, Minion Summoner. Four buildings, or three and a minion like Boutman's fish \
+		(Slot):{Name of Building} / Slots: Offense, Defense, Economy, Support, Units, Trap, Minion Summoner. Four buildings, or three and a minion like Boutman's fish \
 			# Design notes for this building.
 			- What it does, one - line per mechanic. / Your extra info goes in a note like this one \
 			[Stats]
+				- In-game line: ~ / Its short description, like the Archer Tower's "Precise, single-target" \
 				- Cost: ~Red 30 / Red offense, Blue defense, Yellow economy. 10-60 aura, a second colour for a hybrid \
 				- Limit: ~none / How many one player can build \
 				- Health: ~50, +~25 per level / 20-100, +25 to +150 per level \
@@ -75,8 +78,10 @@
 				- At max:
 			[Upgrades]
 				% 1:{Name} What it does, in words.
+					- In-game line: ~ / A short comma phrase, like "Increased damage, dealt over time" \
 					- Numbers: / Blank or ~ and the design gate proposes them \
-					- Cost: ~Red 30 / Level 1: 20-40, level 2: 60-150, level 3: 260-450 aura \
+					- Cost: ~Red 30 / Level 1: 20-40, level 2: 60-150, level 3: 260-450, level 4: 1500-5000 aura \
+					- Leads to: / Only when it doesn't lead to every choice of the next level \
 				% 1:{Name}
 					- Numbers:
 					- Cost: ~Red 30
@@ -94,6 +99,10 @@
 				% 3:{Name}
 					- Numbers:
 					- Cost: ~Red 400
+
+				% 4:{Name} / Optional capstone that changes how the building plays \
+					- Numbers:
+					- Cost: ~Red 3000
 
 		(Minion):{Name of Minion} / One block per kind of unit \
 			# Design notes for this minion.
