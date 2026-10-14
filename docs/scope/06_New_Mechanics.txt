@@ -1,28 +1,38 @@
 | New Mechanics |
+	# The systems the expansion adds to every map of the Rogue Waves mode: [Directions], [Pure Aura], [Fund Transfer] and the [Shopkeeper].
+	# Cardinal rules live in 12_Cardinals.txt, and the mode's own rules in 04_Rogue_Waves_Mode.txt.
+
 	[Directions]
-		A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
-		- 3 are offered and 1 is picked before each map. The shop sells only the next rank of a Direction the vessel already holds.
-		- A Direction a player already holds can be offered again as its next rank (II, III) / So about 7 for any vessel and 4 per new vessel last a 10-map campaign \
-		- Named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
-		- Each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign.
-		/ Use the New Direction template in 11_Directions.txt to add one \
-		/ The list of Directions for each vessel lives in Directions by Vessel, in 11_Directions.txt \
-		- Base game vessels get their own Directions too, besides the Any ones.
+		# A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
+		- Offered: 3 are offered and 1 is picked before each map
+		- Ranks: a Direction a player already holds can be offered again as its next rank (II, III) / So about 7 for any vessel and 4 per new vessel last a 10-map campaign \
+		- Rank costs: rank II costs Pure Aura 20, and its final rank, III, costs Pure Aura 30 / Bought at {VENDCINT} \
+		- Shop: the shop sells only the next rank of a Direction the vessel already holds
+		- Kept: each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign
+		- Base game vessels: get their own Directions too, besides the Any ones
+		- Names: named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
+		- List: -> 11_Directions.txt, one Direction template per Direction, under its vessel
 
 	[Pure Aura]
-		A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
-		- Shown as a pearl white counter on each player's vessel, a colour none of the base auras use.
-		- Every tide pays 3 [Pure Aura]. A bonus tide pays 2.
+		# A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
+		- Per tide: 3
+		- Per bonus tide: 2
+		- Weather map: +1 each tide -> 04_Rogue_Waves_Mode.txt [Sea Weather]
+		- Objectives: each pays its own amount -> 14_Optional_Objectives.txt
+		- Shown as: a pearl white counter on each player's vessel, a colour none of the base auras use
+		- Spent on: [Cardinals] and ranks of [Directions], at {VENDCINT}
 
 	[Fund Transfer]
-		Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
-		- This is the expansion's "Streamlined Economy Changes".
-		- Only base aura can be sent, never [Pure Aura].
-		- Each player can send up to 50 times the coming tide's number per break, in any mix of colours: 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue).
+		# Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
+		- This is the expansion's "Streamlined Economy Changes"
+		- What can be sent: only base aura, never [Pure Aura]
+		- Limit: each player can send up to 50 times the coming tide's number per break, in any mix of colours / 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue) \
+		- Where: at {VENDCINT}
 
 	[Shopkeeper]
 		{VENDCINT} / A sentient vending machine \
-		- A unit that falls from the sky near the vessels' spawn point at the start of every break, the opening one before Tide 1 included, the way the vessels land.
-		- At the end of the break it jumps into the sky and disappears. A break lasts 60 seconds.
-		- Sells [Cardinals], and the next rank of [Directions] the vessel already holds, for [Pure Aura]. [Fund Transfer] is done at it too.
-		- A Direction's rank II costs 20 [Pure Aura], and its final rank, III, costs 30. / A Cardinal's price is on its own template \
+			- Arrives: a unit that falls from the sky near the vessels' spawn point at the start of every break, the opening one before Tide 1 included, the way the vessels land
+			- Leaves: at the end of the break it jumps into the sky and disappears / A break lasts 60 seconds -> 04_Rogue_Waves_Mode.txt [Tides and Leaving] \
+			- Sells: [Cardinals], and the next rank of [Directions] the vessel already holds, for [Pure Aura] / A Cardinal's cost is on its own sheet in 12_Cardinals.txt \
+			- Also: [Fund Transfer] is done at it too
+			- Objectives: a new optional objective is offered at it in every break -> 14_Optional_Objectives.txt

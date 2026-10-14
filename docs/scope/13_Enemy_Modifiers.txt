@@ -1,11 +1,45 @@
 | New Enemy Modifiers |
-	[Cursed]
-		# Reduces the attack of all nearby towers and units
-	[Berserk]
-		# Damage and speed increases as health lowers
-	[Aging]
-		# Speed is reduced by 30%, but health and damage increase by up to 100% as it stays alive. / Reaches max value after surviving for 50 seconds. Health is not added, but scaled. An enemy at 50% health will stay at 50% health, just with a higher max health. \
-	[Dazzling]
-		# {Blinds} and {Illuminates} nearby vessels, towers, and units.
+	# New enemy modifiers, each in the Enemy Modifier template from 15_Templates.txt.
 	# Modifiers show as an effect on the enemy, not a new skin.
 	/ New enemy types will be added later, when ready \
+
+	[Modifier List]
+		{Cursed}
+			- Kind: ~Aura
+			- In-game line: ~
+			- Does: Reduces the attack of all nearby towers and units
+			- Numbers:
+			- Shows as:
+			- Later maps:
+			- Look:
+			- Clashes:
+
+		{Berserk}
+			- Kind: ~Self
+			- In-game line: ~
+			- Does: Damage and speed increases as health lowers
+			- Numbers:
+			- Shows as:
+			- Later maps:
+			- Look:
+			- Clashes:
+
+		{Aging}
+			- Kind: ~Self
+			- In-game line: ~
+			- Does: Speed is reduced by 30%, but health and damage increase by up to 100% as it stays alive. / Health is not added, but scaled. An enemy at 50% health will stay at 50% health, just with a higher max health. \
+			- Numbers: speed -30%; health and damage up to +100%; reaches max value after surviving for 50 seconds
+			- Shows as:
+			- Later maps:
+			- Look:
+			- Clashes:
+
+		{Dazzling}
+			- Kind: ~Aura
+			- In-game line: ~
+			- Does: {Blind}s and {Illuminate}s nearby vessels, towers, and units. -> 10_Vessel_Uloe.txt [Light]
+			- Numbers:
+			- Shows as:
+			- Later maps:
+			- Look:
+			- Clashes:

@@ -1,10 +1,19 @@
 | Rogue Waves Expansion |
-	# Roguelike Expansion Mod / Ships as one mod pack, RogueWavesMod, with every part inside it and no load order \
-	# 4 New Vessels / Yossele, Spool, Argo, Uloe \
-	# New Enemy Types + Modifiers / Modifiers Cursed, Berserk, Aging and Dazzling so far; new enemy types come later \
-	# New Mechanics
-	# New Roguelike Gamemode / The Rogue Waves mode \
-	# Online Compatibility / 2 to 4 players, the host runs the run, everyone needs the same pack version \
-	# Upgrade System [Direction]
-	# Streamlined Economy Changes / Means aura sharing between players between tides, which is [Fund Transfer] \
-	# New Cardinals / A new Cardinal is a new run modifier \
+	# What the pack is. Each part points to the file that details it.
+
+	[Parts]
+		- Roguelike Expansion Mod / Ships as one mod pack, RogueWavesMod, with every part inside it and no load order \
+		- 4 New Vessels: {Yossele}, {Spool}, {Argo}, {Uloe} -> 07 to 10
+		- New Enemy Types + Modifiers: modifiers {Cursed}, {Berserk}, {Aging} and {Dazzling} so far; new enemy types come later -> 13_Enemy_Modifiers.txt
+		- New Mechanics -> 06_New_Mechanics.txt
+		- New Roguelike Gamemode: the Rogue Waves mode -> 04_Rogue_Waves_Mode.txt, 05_Gameplay_Rundown.txt
+		- Online Compatibility -> [Online]
+		- Upgrade System [Direction] -> 06_New_Mechanics.txt, 11_Directions.txt
+		- Streamlined Economy Changes: aura sharing between players between tides, which is [Fund Transfer] -> 06_New_Mechanics.txt
+		- New Cardinals: a new Cardinal is a new run modifier -> 12_Cardinals.txt
+		- Bug fixes -> 03_Bug_Fix.txt
+
+	[Online]
+		- Players: 2 to 4
+		- Host: the host runs the run
+		- Pack version: everyone needs the same pack version

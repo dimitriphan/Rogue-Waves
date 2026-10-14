@@ -1,19 +1,19 @@
 | Base Game Vessels |
-	# The five base vessels laid out in 15_Vessel_Template.txt, so they read side by side with the new ones.
-	# Every number is the game's own data (read from the game in 2026-10-01, kit reference/vessel_data_survey.txt). Nothing here is a default, so nothing carries a ~.
+	# The five base vessels laid out in the Vessel template, 15_Templates.txt, so they read side by side with the new ones.
+	# Every number is the game's own data (kit reference/vessel_data_survey.txt). Nothing here is a default, so nothing carries a ~.
 	# The - lines saying what a building does are Claude's summary of the game's code (kit docs/17_BASE_VESSELS.md). An upgrade's % line is its in-game text.
 	# Levels follow the template: level 1 is the game's tier 2, and level 4 is its tier-5 capstone. Each upgrade says what it leads to, since the game's trees cross over.
 	# Numbers: +50% adds to every other % bonus on that stat; "of base" scales only the base value. Range is in tiles, time in seconds.
 
 | Side by Side |
-	/ Vessel stats. Argo, Yossele and Spool are from their own sheets; a ~ value there is a default \
+	/~ Vessel stats. Argo, Yossele and Spool are from their own sheets; a ~ value there is a default \
 	         Difficulty    Attack  Health  Speed  Damage  Range  Atk speed  Build rng  Sell rate
 	Smacky   Basic         melee   50      3      4       1.5    0.5        2          0.5
 	Sno Sno  Intermediate  ranged  25      2      3       3      0.5        2          0.5
 	Boutman  Advanced      melee   50      3      4       2      0.75       2          0.5
 	Fie      Intermediate  melee   50      3      3       2      0.5        3          0.6
 	Buster   Advanced      melee   50      3.5    1.5     1.5    0.5        2.5        0.75
-	Argo     Intermediate  melee   65      2.25   4       1.75   0.4        2.5        0.5
+	Argo     ~Intermediate melee   ~65     ~2.25  ~4      ~1.75  ~0.4       ~2         ~0.5
 	Yossele  Intermediate  ranged  ~60     ~2.25  ~4.5    ~3     ~0.5       ~2.5       ~0.5
 	Spool    Advanced      melee   ~45     ~2.75  ~2.5    ~1.5   ~0.6       ~2.5       ~0.5
 
@@ -45,233 +45,233 @@
 			- Shoots tracking arrows at one foe.
 			[Stats]
 				- In-game line: Precise, single-target
-				- Cost: Red 25
 				- Health: 25, +25 per level
 				- Damage: 4, +1 per level
 				- Attack speed: 0.7
 				- Range: 6 tiles
 				- Projectile speed: 20
+				- Cost: Red 25
 			[Upgrades]
 				% 1:{Long Bow} Greatly increased range
 					- Numbers: range +2.5
-					- Cost: Blue 25
 					- Leads to: {Auto Bow}, {Heavy Bow}, {Eagle Eyes}
+					- Cost: Blue 25
 				% 1:{Rapid Fire} Increased firing speed
 					- Numbers: attack speed +0.5
-					- Cost: Red 35
 					- Leads to: {Auto Bow}, {Eagle Eyes}
+					- Cost: Red 35
 				% 1:{Fire Arrows} Increased damage, dealt over time
 					- Numbers: damage +60%; burn ticks +5; burn ticks for 1 second
-					- Cost: Red 35
 					- Leads to: {Auto Bow}, {Heavy Bow}
+					- Cost: Red 35
 
 				% 2:{Eagle Eyes} Shoot with great precision and distance
 					- Numbers: range +50%; projectile speed +50% of base
-					- Cost: Red 30 + Blue 25
 					- Leads to: {Bow Squad}, {Assassin Shots}
+					- Cost: Red 30 + Blue 25
 				% 2:{Auto Bow} Shoot even faster
 					- Numbers: attack speed +50%
+					- Leads to: {Bow Squad}, {Explosive Arrows}
 					- Cost: Red 45
-					- Leads to: {Bow Squad}, {Explosive Arrows}
 				% 2:{Heavy Bow} Fire heavy arrows that pierce
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 50
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Bow Squad}, {Explosive Arrows}
+					- Cost: Red 50
 
 				% 3:{Bow Squad} Tower now supports two archers, increased damage
 					- Numbers: attack speed +100%; damage +4
-					- Cost: Red 500 + Blue 50
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 500 + Blue 50
 				% 3:{Explosive Arrows} Arrows deal damage in a small radius
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 325 + Blue 10
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Death Mark}
+					- Cost: Red 325 + Blue 10
 				% 3:{Assassin Shots} The more health they have. The harder they fall.
 					- Numbers: +1 damage per 35 health the target has, on foes above 500 health, up to +100
-					- Cost: Red 650
 					- Leads to: {Death Mark}
+					- Cost: Red 650
 
 				% 4:{Death Mark} Execute targets, grows stronger overtime
 					- Numbers: executes foes below 15% health; +0.25 damage per kill
-					- Cost: Red 4500
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 4500
 
 		(Offense 2):{Bomb Tower}
 			- Lobs bombs whose blast hits up to its projectile count of foes.
 			[Stats]
 				- In-game line: Powerful, splash damage
-				- Cost: Red 25 + Blue 25
 				- Health: 50, +25 per level
 				- Damage: 3, +2 per level
 				- Attack speed: 0.35
 				- Range: 5 tiles
 				- Projectile flight: 1
 				- Projectile count: 5
+				- Cost: Red 25 + Blue 25
 			[Upgrades]
 				% 1:{Quick Bombs} Throw bombs faster
 					- Numbers: attack speed +0.15
-					- Cost: Red 50
 					- Leads to: {Cannons}
+					- Cost: Red 50
 				% 1:{Bomb Launcher} Increases the range greatly, reduced the tossing speed
 					- Numbers: range +3; attack speed -0.1
-					- Cost: Red 25 + Blue 5
 					- Leads to: {Staggering Bombs}, {Dynamite}
+					- Cost: Red 25 + Blue 5
 				% 1:{Bigger Bombs} Increase the explosive power of bombs
 					- Numbers: count +5
-					- Cost: Red 20 + Blue 20
 					- Leads to: {Staggering Bombs}, {Dynamite}
+					- Cost: Red 20 + Blue 20
 
 				% 2:{Cannons} Adds an extra layer of boom!
 					- Numbers: attack speed +20%
-					- Cost: Red 175
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 175
 				% 2:{Dynamite} Vastly increased range and travel time, larger explosions
 					- Numbers: range +50%; projectile flight +1; count +10
-					- Cost: Red 100 + Blue 100
 					- Leads to: {Splitting Bombs}, {Bouncing Bombs}
+					- Cost: Red 100 + Blue 100
 				% 2:{Staggering Bombs} Slows enemies down on contact
 					- Numbers: slow -50%; duration 4 seconds
-					- Cost: Blue 100 + Yellow 100
 					- Leads to: {Splitting Bombs}, {Bouncing Bombs}
+					- Cost: Blue 100 + Yellow 100
 
 				% 3:{Bouncing Bombs} How does it work? Don't ask.
 					- Numbers: damage +4
-					- Cost: Red 600
 					- Leads to: {Detonate}
+					- Cost: Red 600
 				% 3:{Splitting Bombs} Smaller bombs on contact, stronger bombs
 					- Numbers: damage +2.5
-					- Cost: Red 250 + Blue 250
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 250 + Blue 250
 
 				% 4:{Detonate} Take down everything in sight when drowned
 					- Numbers: when drowned, 1000 damage to every foe on the map; damage +50%; attack speed +0.25
-					- Cost: Red 2500
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 2500
 
 		(Defense):{Wall}
 			- A wall whose posts link to the Walls beside it; its upgrades add spikes, healing, tile auras or a wall that rebuilds.
 			[Stats]
 				- In-game line: Strong, blocks advances
-				- Cost: Blue 20
 				- Health: 50, +150 per level
+				- Cost: Blue 20
 			[Upgrades]
 				% 1:{Reinforced} Increased health
 					- Numbers: health +100% of base
-					- Cost: Blue 25
 					- Leads to: {Stone Wall}, {Rejuvenate}, {Hidden Surprise}
+					- Cost: Blue 25
 				% 1:{Repair Team} Regen health overtime
 					- Numbers: effect +7.5
-					- Cost: Blue 20
 					- Leads to: {Stone Wall}, {Rejuvenate}
+					- Cost: Blue 20
 				% 1:{Spikes} Hurt enemies that attack this building
 					- Numbers: damage 3
-					- Cost: Red 10 + Blue 15
 					- Leads to: {Hidden Surprise}
+					- Cost: Red 10 + Blue 15
 
 				% 2:{Stone Wall} Health greatly increased
 					- Numbers: health +150% of base
-					- Cost: Blue 75
 					- Leads to: {Steel Wall}, {Perma-Wall}
+					- Cost: Blue 75
 				% 2:{Rejuvenate} Heal nearby towers and units each tide
 					- Numbers: effect +100; range 2.5
-					- Cost: Blue 15 + Yellow 10
 					- Leads to: {Steel Wall}, {Perma-Wall}
+					- Cost: Blue 15 + Yellow 10
 				% 2:{Hidden Surprise} leave lingering spikes when drowned
 					- Numbers: damage 5
-					- Cost: Red 80
 					- Leads to: {Bramble}
+					- Cost: Red 80
 
 				% 3:{Steel Wall} Health increased drastically
 					- Numbers: health +350% of base
-					- Cost: Blue 325
 					- Leads to: {Beacon}
+					- Cost: Blue 325
 				% 3:{Perma-Wall} Wall will respawn if destroyed
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: nothing, the branch ends here
 					- Cost: Blue 500 + Yellow 150
-					- Leads to: nothing, the branch ends here
 				% 3:{Bramble} Adjacent towers will also do damage when attacked
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 250 + Yellow 50
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 250 + Yellow 50
 
 				% 4:{Beacon} Increases adjacent buildings' defense each tide permanently
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 2750
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 2750
 
 		(Economy):{Mining Hut}
 			- Spawns miners that walk to ore and hit it once per round trip; Support Team turns them into engineers.
 			[Stats]
 				- In-game line: Collects ores, spawns miners
-				- Cost: Yellow 35
 				- Health: 25, +25 per level
 				- Respawn: 10 seconds
 				- Units: 1
+				- Cost: Yellow 35
 			[Upgrades]
 				% 1:{Mining Operation} Hire another miner
 					- Numbers: units +1
-					- Cost: Yellow 30
 					- Leads to: {Mining Union}, {Ore Scraps}
+					- Cost: Yellow 30
 				% 1:{Overtime} Increased miner speed
 					- Numbers: effect +75%
-					- Cost: Yellow 30
 					- Leads to: {Mining Union}, {Ore Scraps}
+					- Cost: Yellow 30
 
 				% 2:{Ore Scraps} Miners gain additional scraps of resources they hit
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 75 + Yellow 125
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Processing Plant}, {Marketplace}
+					- Cost: Red 75 + Yellow 125
 				% 2:{Mining Union} Hire another miner
 					- Numbers: units +1
-					- Cost: Yellow 100
 					- Leads to: {Processing Plant}, {Marketplace}, {Support Team}
+					- Cost: Yellow 100
 
 				% 3:{Processing Plant} Enables conversion, convert some resource to another
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 250
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Excavation Facility}
+					- Cost: Yellow 250
 				% 3:{Marketplace} Gain all resources across the world when miners pass
 					- Numbers: visits 4; damage 1
-					- Cost: Yellow 275
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 275
 				% 3:{Support Team} Engineers now increase the stats of nearby towers
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 300
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Engineering Firm}
+					- Cost: Yellow 300
 
 				% 4:{Excavation Facility} Rough n' Tough Miners!
 					- Numbers: units +1
-					- Cost: Yellow 2000
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 2000
 				% 4:{Engineering Firm} Drastically increase the effectiveness of engineers
 					- Numbers: effect +100%
-					- Cost: Yellow 3000
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 3000
 
 		(Minion):{Miner}
 			- Made by: {Mining Hut}
-			- Cost: free
-			- How many: 1 per Mining Hut, more with upgrades
-			- Respawn: 10 seconds
 			- Health: 5, +5 per level
 			- Damage: 0.5
 			- Range: 1.5 tiles
 			- Attack speed: 0.5
 			- Speed: 1
 			- Distancewait: 0.15
+			- How many: 1 per Mining Hut, more with upgrades
+			- Respawn: 10 seconds
 			- Orders: mines: walks to ore, hits it once and walks back
+			- Cost: free
 
 		(Minion):{Engineer}
 			- Made by: {Mining Hut} after Support Team
-			- Cost: free
-			- How many: replaces the miners
-			- Respawn: 10 seconds
 			- Health: 5, +5 per level
 			- Range: 1.5 tiles
 			- Attack speed: 0.5
 			- Speed: 1
 			- Effect: 1
+			- How many: replaces the miners
+			- Respawn: 10 seconds
 			- Orders: walks to the nearest attacking tower of any player on the team that lacks the buff and tunes it (range +25%, attack speed +50%, damage +25% for 8 seconds)
+			- Cost: free
 
 | Base Vessel: Sno Sno |
 	Sno Sno, Destroyer of Worlds
@@ -307,7 +307,7 @@
 			- Between maps: resets
 			- On the vessel's death: stays on the ground
 
-		[Vessel Mechanic] {Snoborne}
+		[Vessel Mechanic] [Snoborne]
 			- Rule: Leaves Sno when walking, and moves 75% faster on thick Sno (above Level 20)
 			- Details: Thin Sno he walks over is refilled to Level 20
 
@@ -316,7 +316,6 @@
 			- Never fires without Sno until Permasno.
 			[Stats]
 				- In-game line: Fires Snoballs, uses Sno
-				- Cost: Red 30
 				- Health: 50, +25 per level
 				- Damage: 5, +1 per level
 				- Attack speed: 0.7
@@ -324,60 +323,60 @@
 				- Projectile speed: 15
 				- Sno range: 2 tiles, +0.25 tiles per level
 				- Ammo: 10
+				- Cost: Red 30
 			[Upgrades]
 				% 1:{Sno Blower} Fire a stream of short ranged Sno
 					- Numbers: range -45% of base; attack speed +300% of base; ammo -6; damage -75% of base; projectile speed -8
-					- Cost: Red 30 + Blue 15
 					- Leads to: {Extra Frosty}, {Sno Sucker}
+					- Cost: Red 30 + Blue 15
 				% 1:{Sno Chomper} Uses more Sno, Sno on hit
 					- Numbers: ammo +5; sno +20
-					- Cost: Red 20
 					- Leads to: {Sno Boulder}, {Snopowder}
+					- Cost: Red 20
 
 				% 2:{Sno Boulder} Sno chunks are much larger and explode
 					- Numbers: ammo +5; damage +100%; sno +10
-					- Cost: Red 100
 					- Leads to: {Hypercool}, {Icicle Shot}, {Permasno}
+					- Cost: Red 100
 				% 2:{Extra Frosty} Sno applies a slowing effect that can stack
 					- Numbers: slow -10%; duration 0.75 seconds
-					- Cost: Blue 30 + Yellow 30
 					- Leads to: {Hypercool}, {Permasno}
+					- Cost: Blue 30 + Yellow 30
 				% 2:{Snopowder} Sno increases range, increase damage on distant targets
 					- Numbers: Sno per tile of range 15; Sno projectile speed 5; damage per tile of distance 0.04
-					- Cost: Red 5 + Blue 25
 					- Leads to: {Hypercool}, {Icicle Shot}
+					- Cost: Red 5 + Blue 25
 				% 2:{Sno Sucker} Can use Sno from notably farther away
 					- Numbers: Sno range +200%
-					- Cost: Red 50 + Blue 15
 					- Leads to: {Hypercool}, {Permasno}
+					- Cost: Red 50 + Blue 15
 
 				% 3:{Hypercool} Shoot Sno drastically faster on continuous fire
 					- Numbers: attack speed 0.5; attack speed +10%; effect 1.5
-					- Cost: Red 150 + Yellow 100
 					- Leads to: {Snoble Alert}, {Snoblaster 7A+}
+					- Cost: Red 150 + Yellow 100
 				% 3:{Icicle Shot} Sno explodes into icicles on impact
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 75
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 75
 				% 3:{Permasno} Can fire without Sno, additional Sno increases damage
 					- Numbers: damage +5%; sno 0.5
-					- Cost: Red 75 + Blue 75 + Yellow 50
 					- Leads to: {Snoble Alert}, {Snoblaster 7A+}
+					- Cost: Red 75 + Blue 75 + Yellow 50
 
 				% 4:{Snoble Alert} Shot Snobles deal massive damage. Go you little stinkers!
 					- Numbers: damage +400%
-					- Cost: Red 1500
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 1500
 				% 4:{Snoblaster 7A+} Rapidly stores Sno, manually activate for massive damage
 					- Numbers: duration +0.2%; damage +0.12%; sno 1000; sno up to 5000
-					- Cost: Red 2500 + Blue 50
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 2500 + Blue 50
 
 		(Offense 2):{Heater}
 			- Burns up to 5 foes in range and melts Sno around it.
 			[Stats]
 				- In-game line: Heats surrounding area, melts Sno
-				- Cost: Red 60
 				- Health: 100, +100 per level
 				- Damage: 1, +0.5 per level
 				- Attack speed: 1
@@ -386,179 +385,177 @@
 				- Projectile count: 10
 				- Sno range: 3 tiles
 				- Pulse attack speed: 0.25
+				- Cost: Red 60
 			[Upgrades]
 				% 1:{Double Burn} Heat is twice as strong
 					- Numbers: attack speed +100% of base
-					- Cost: Red 60
 					- Leads to: {Cookin' Eggs}, {Temperature Shock}
+					- Cost: Red 60
 				% 1:{Burning Up} Radius is larger, does not melt at farther range
 					- Numbers: range +50% of base
-					- Cost: Red 25 + Blue 25
 					- Leads to: {Cookin' Eggs}, {Temperature Shock}, {Heat Treat}
+					- Cost: Red 25 + Blue 25
 
 				% 2:{Cookin' Eggs} Pulses heat for high damage, converts Snobles hit
 					- Numbers: damage 20
+					- Leads to: {134° - 57°}, {Scorcher}
 					- Cost: Red 300
-					- Leads to: {134° - 57°}, {Scorcher}
 				% 2:{Temperature Shock} Heated enemies take more damage from Sno
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 100 + Yellow 150
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {134° - 57°}, {Scorcher}
+					- Cost: Red 100 + Yellow 150
 				% 2:{Heat Treat} Units will heal nearby the heater
 					- Numbers: effect +10
-					- Cost: Blue 200 + Yellow 100
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 200 + Yellow 100
 
 				% 3:{134° - 57°} Melts Sno extremely fast, extremely high damage
 					- Numbers: attack speed +100%; damage +100%; Sno melt speed +300%
-					- Cost: Red 600
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 600
 				% 3:{Scorcher} Enemies will burst into flames if heated continuously, ramping in intensity
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 400 + Blue 100
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Cold Sweats}
+					- Cost: Red 400 + Blue 100
 
 				% 4:{Cold Sweats} Have the best of both worlds!
 					- Numbers: time 20 seconds; recovery 5 seconds; spread 1.5; sno 100
-					- Cost: Red 2000 + Blue 2000
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 2000 + Blue 2000
 
 		(Defense):{Ice Brick}
 			- Directional brick that heals from the Sno on its tile, then builds an overshield.
 			[Stats]
 				- In-game line: Directional, strong, uses Sno to heal
-				- Cost: Blue 15
 				- Health: 50, +50 per level
 				- Healthover: 0
 				- Overmax: 1
 				- Heal: 1
 				- Heal delay: 1
+				- Cost: Blue 15
 			[Upgrades]
 				% 1:{A Cold One} Reduce damage taken
 					- Numbers: reduction 0.15
+					- Leads to: {Cold Shoulder}, {On The Rocks}
 					- Cost: Blue 30
-					- Leads to: {Cold Shoulder}, {On The Rocks}
 				% 1:{Snoball Effect} Generate Sno infront and behind when hurt
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 25
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Cold Shoulder}, {On The Rocks}
+					- Cost: Blue 25
 				% 1:{Thin Ice} Untargeted when broken, can reform
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 25 + Yellow 25
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Brain Freeze}
+					- Cost: Blue 25 + Yellow 25
 
 				% 2:{Cold Shoulder} Maximum possible health increased drastically
 					- Numbers: max health +3.5; heal +2
-					- Cost: Blue 200
 					- Leads to: {Cold Feet}, {Tip of the Iceberg}, {Ice Breaker}
+					- Cost: Blue 200
 				% 2:{On The Rocks} Increased health, when destroyed leave a strong rock
 					- Numbers: health +125%
-					- Cost: Blue 150
 					- Leads to: {Cold Feet}, {Tip of the Iceberg}, {Ice Breaker}
+					- Cost: Blue 150
 				% 2:{Brain Freeze} Withstand heavy hits, heals much slower
 					- Numbers: heal -90%; health armour 3
-					- Cost: Blue 400
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 400
 
 				% 3:{Ice Breaker} When broken, permanently weaken enemies in front
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 300
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Take the Heat}
+					- Cost: Blue 300
 				% 3:{Cold Feet} Gain the ability to heal while being hurt, can self heal faster
 					- Numbers: heal +1; heal delay -0.9
-					- Cost: Blue 200 + Yellow 250
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 200 + Yellow 250
 				% 3:{Tip of the Iceberg} Fire piercing icicles forward and back when healed
 					- Numbers: damage 15
-					- Cost: Red 75 + Blue 225
 					- Leads to: {Take the Heat}
+					- Cost: Red 75 + Blue 225
 
 				% 4:{Take the Heat} Massive health potential, scorched and shocked enemies will fall
 					- Numbers: max health +400%; damage 200; damage to shocked foes 35
-					- Cost: Red 250 + Blue 1500
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 250 + Blue 1500
 
 		(Economy):{Sno Box}
 			- Hurts every ore in range at once and makes Sno on its tile, or where it throws it after Sno Fall.
 			[Stats]
 				- In-game line: Siphons nearby ores, generates Sno
-				- Cost: Blue 10 + Yellow 25
 				- Health: 25, +25 per level
 				- Damage: 0.4
 				- Attack speed: 0.2
 				- Range: 3 tiles, +1 tiles per level
 				- Heal: 15
 				- Projectile flight: 2
+				- Cost: Blue 10 + Yellow 25
 			[Upgrades]
 				% 1:{Sno Fall} Enables Sno launch, redirect Sno elsewhere
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 25
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Hard Sno}, {Soft Sno}
+					- Cost: Blue 25
 				% 1:{Slush} Increased siphon rate and Sno generation
 					- Numbers: attack speed +100% of base; heal amount +10; damage +0.1
-					- Cost: Yellow 35
 					- Leads to: {Sno Bank}, {Soft Sno}
+					- Cost: Yellow 35
 
 				% 2:{Sno Bank} Sno spreads much further, generates in large amounts
 					- Numbers: heal +40; spread 1.25; Sno rate 2
-					- Cost: Yellow 200
 					- Leads to: {Black Sno}, {Rich Sno}, {Snobles}
+					- Cost: Yellow 200
 				% 2:{Hard Sno} Launched Sno will deal some damage
 					- Numbers: damage +5000%
-					- Cost: Red 80
 					- Leads to: {Black Sno}, {Snobles}
+					- Cost: Red 80
 				% 2:{Soft Sno} Siphon rate boosted when covered in less Sno
 					- Numbers: attack speed +175%; attack speed +0.2
-					- Cost: Blue 25 + Yellow 250
 					- Leads to: {Black Sno}, {Rich Sno}
+					- Cost: Blue 25 + Yellow 250
 
 				% 3:{Black Sno} Generate heat resistant Sno
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: nothing, the branch ends here
 					- Cost: Red 200 + Blue 100
-					- Leads to: nothing, the branch ends here
 				% 3:{Rich Sno} Generate aura infused Sno giving resources on use
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 300
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 300
 				% 3:{Snobles} The Sno lives!
 					- Numbers: units 3
-					- Cost: Red 100 + Blue 100 + Yellow 100
 					- Leads to: {BFS}
+					- Cost: Red 100 + Blue 100 + Yellow 100
 
 				% 4:{BFS} Summon the Snoble Mother... Feed it.
 					- Numbers: duration 10 seconds
-					- Cost: Blue 25 + Yellow 5000
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 25 + Yellow 5000
 
 		(Minion):{Snoble}
 			- Made by: {Sno Box} after Snobles, and the {Sno Cannon}
-			- Cost: free
-			- How many: made all map long
-			- Respawn: none
 			- Health: 100
 			- Damage: 25
 			- Range: 2 tiles
 			- Attack speed: 0.2
 			- Drain: 0.02
+			- How many: made all map long
+			- Respawn: none
 			- Orders: stands still and blocks; its health drains faster and faster
+			- Cost: free
 
 		(Minion):{Mini Snoble}
 			- Made by: {Sno Cannon} after Snoble Alert
-			- Cost: free
-			- How many: made all map long
-			- Respawn: none
 			- Health: 50
 			- Damage: 15
 			- Range: 2 tiles
 			- Attack speed: 0.5
 			- Drain: 0.01
+			- How many: made all map long
+			- Respawn: none
 			- Orders: stands still and blocks
+			- Cost: free
 
 		(Minion):{Snoble Mother}
 			- Made by: {Sno Box} after BFS
-			- Cost: free
-			- How many: 1
-			- Respawn: none
 			- Health: 250
 			- Damage: 25
 			- Range: 3 tiles
@@ -567,7 +564,10 @@
 			- Rankup1: 2500
 			- Rankup2: 7500
 			- Deathdamage: 150
+			- How many: 1
+			- Respawn: none
 			- Orders: walks toward the enemy core, eats Sno to rank up, bursts when it dies
+			- Cost: free
 
 | Base Vessel: Boutman |
 	Boutman, Fisher Extraordinaire
@@ -584,7 +584,7 @@
 		[Vessel Stats]
 			- Attack: melee; ranged after Shao-min
 			- Health: 50, +50 per level
-			- Health regen: 0 per second / Heals after Enter the Boutman \
+			- Health regen: 0 per second /~ Heals after Enter the Boutman \
 			- Speed: 3, +0.25 per level
 			- Damage: 4, +2 per level
 			- Range: 2 tiles
@@ -600,12 +600,12 @@
 			- Does: Recruits a fish to follow Boutman; he also fishes KO'd fish out of barrels
 			- Target: one of your fish
 			- Range: his fishing range
-			- Cost: none
 			- Cooldown: none
 			- Keys: its own button
 			- Unlocked: from the start
+			- Cost: none
 
-		[Vessel Mechanic] {The Bout Way}
+		[Vessel Mechanic] [The Bout Way]
 			- Rule: Boutman builds only the Bouthouse, and every upgrade on it lands on him. Boutbro builds the rest: the first fish and barrel are free, then each costs more than the last (fish n costs (n-1) x Yellow 25)
 			- Details: Boutman can't mine until Fishbender. After Enter the Boutman he never drowns, he is KO'd until healed
 
@@ -614,114 +614,113 @@
 			- Summons Boutbro.
 			[Stats]
 				- In-game line: Upgrade Boutman, summon Boutbro to build and mine
-				- Cost: free
 				- Respawn: 10 seconds
+				- Cost: free
 			[Upgrades]
 				% 1:{Fish of Fury} Boutman can now hit multiple enemies at once
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 150
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Shao-min}, {Fight Blub}
+					- Cost: Red 150
 				% 1:{Enter the Boutman} Boutman can no longer Drown, get KO'd instead
 					- Numbers: heal +3
-					- Cost: Blue 60 + Red 75
 					- Leads to: {Shao-min}, {Fight Blub}, {The Way of the Bout}
+					- Cost: Blue 60 + Red 75
 
 				% 2:{The Way of the Bout} Boutman regenerates health rapidly, even when KO'd
 					- Numbers: heal +6
+					- Leads to: {1 Inch Bout}, {Fishbender}
 					- Cost: Blue 400
-					- Leads to: {1 Inch Bout}, {Fishbender}
 				% 2:{Shao-min} Boutman has a long range attack
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 450 + Yellow 250
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {1 Inch Bout}, {Fishbender}
+					- Cost: Red 450 + Yellow 250
 				% 2:{Fight Blub} Boutman can recruit more fish, increased capacity per tier
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 125 + Red 125 + Blue 125
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Iron Fish}, {Fishbender}
+					- Cost: Yellow 125 + Red 125 + Blue 125
 
 				% 3:{1 Inch Bout} Boutman will ramp up in damage the longer he fights, including recruited fish
 					- Numbers: damage +3.5%; decay +200%
-					- Cost: Red 1500
 					- Leads to: {Ip Man-of-War}
+					- Cost: Red 1500
 				% 3:{Iron Fish} Recruited fish are exceptionally buffed
 					- Numbers: attack speed +25%; damage +150%; range +25%
-					- Cost: Red 650 + Yellow 650 + Blue 650
 					- Leads to: {Ip Man-of-War}, {Kung Fu Tackle}
+					- Cost: Red 650 + Yellow 650 + Blue 650
 				% 3:{Fishbender} Boutman and recruited fish can mine, increased damage to ore
 					- Numbers: damage to ore 0.5
-					- Cost: Yellow 1750
 					- Leads to: {Ip Man-of-War}, {Kung Fu Tackle}
+					- Cost: Yellow 1750
 
 				% 4:{Ip Man-of-War} The Bout family gains new abilities.
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3500 + Blue 3500
-					- Leads to: nothing, the branch ends here
 				% 4:{Kung Fu Tackle} Boutman can recruit all nearby fish for a time, healing them
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 2500 + Yellow 2500 + Blue 2500
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 2500 + Yellow 2500 + Blue 2500
 
 		(Defense):{Fish Barrel}
 			- Holds KO'd fish and heals them until Boutman fishes them out.
 			[Stats]
 				- In-game line: Saves dried fish, grants buffs
-				- Cost: Blue 25
 				- Health: 50, +25 per level
 				- Range: 6 tiles
 				- Heal: 2, +1 per level
 				- Units: 1
 				- Free slots: 1
 				- Speed: 1
+				- Cost: Blue 25
 			[Upgrades]
 				% 1:{Pond} Increased collection effect and heal speed
 					- Numbers: speed +0.75; range +2; heal +1.5
-					- Cost: Blue 50
 					- Leads to: {Farmingbed}, {Drybed}
+					- Cost: Blue 50
 				% 1:{Pool} Increased fish capacity, fish gain half of their health instantly
 					- Numbers: threshold 0.5; cap +1
-					- Cost: Yellow 25 + Blue 40
 					- Leads to: {Spawnbed}, {Drybed}
+					- Cost: Yellow 25 + Blue 40
 				% 1:{Tank} Fish gain permanent health when fished
 					- Numbers: health +25
-					- Cost: Blue 75 + Yellow 25
 					- Leads to: {Farmingbed}, {Drybed}
+					- Cost: Blue 75 + Yellow 25
 
 				% 2:{Drybed} Fish will automatically revive after healing
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 150 + Blue 250
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Janitorial Bucket}, {Country Gutter}
+					- Cost: Yellow 150 + Blue 250
 				% 2:{Farmingbed} Fish give back some of their worth in aura when fished
 					- Numbers: percent +5%
-					- Cost: Yellow 325
 					- Leads to: {Janitorial Bucket}, {Country Gutter}, {IT Watercooler}
+					- Cost: Yellow 325
 				% 2:{Spawnbed} Increased fish capacity, fish are powerful temporarily when fished
 					- Numbers: cap +1
-					- Cost: Blue 150 + Red 150
 					- Leads to: {Janitorial Bucket}, {Country Gutter}, {IT Watercooler}
+					- Cost: Blue 150 + Red 150
 
 				% 3:{Janitorial Bucket} Fish can be 'fished' much earlier and are immune temporarily
 					- Numbers: threshold 0.4
-					- Cost: Blue 500
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 500
 				% 3:{Country Gutter} If vacant, Drowned fish will reappear here without upgrades
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: {Bout Inc Watertower}
 					- Cost: Blue 400
-					- Leads to: {Bout Inc Watertower}
 				% 3:{IT Watercooler} Pulses any barrel 'effects' to surrounding units each tide
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 300 + Blue 300 + Yellow 300
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Bout Inc Watertower}
+					- Cost: Red 300 + Blue 300 + Yellow 300
 
 				% 4:{Bout Inc Watertower} More fish! MORE FISH!
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 3500 + Red 1000
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 3500 + Red 1000
 
 		(Offense):{Boutboat}
 			- Summons Boutdad, who lands on it and shoots with the boat's own damage, attack speed and range.
 			[Stats]
 				- In-game line: Summon and command Boutdad, ranged
-				- Cost: Red 100
 				- Health: 75, +75 per level
 				- Damage: 3, +2 per level
 				- Attack speed: 2
@@ -729,52 +728,50 @@
 				- Landing speed: 5
 				- Projectile speed: 10
 				- Callcooldown: 5
+				- Cost: Red 100
 			[Upgrades]
 				% 1:{Bigger Boat} Gain extended range at this position
 					- Numbers: range +3.5
-					- Cost: Red 50 + Blue 25
 					- Leads to: {Bout Brig}, {Bout Raft}, {Bout Barge}
+					- Cost: Red 50 + Blue 25
 				% 1:{Speed Boat} Attack faster and travel faster to this position
 					- Numbers: landing speed +3; attack speed +1
-					- Cost: Red 50 + Blue 10
 					- Leads to: {Bout Brig}, {Bout Raft}
+					- Cost: Red 50 + Blue 10
 
 				% 2:{Bout Barge} Increased health, stun enemies on arrival
 					- Numbers: health +400% of base; stun 2.5
-					- Cost: Blue 175 + Yellow 175
 					- Leads to: {Bout Yacht}, {Bout Cargo Inc}
+					- Cost: Blue 175 + Yellow 175
 				% 2:{Bout Brig} Boutdad throws bait in massive chunks
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 175 + Yellow 75
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Bout Yacht}, {Bout Battleship}
+					- Cost: Red 175 + Yellow 75
 				% 2:{Bout Raft} Does something...
 					- Numbers: threshold 4
-					- Cost: Red 50
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 50
 
 				% 3:{Bout Battleship} Boutdad now owns an unregistered cannon!
 					- Numbers: attack speed +50%
-					- Cost: Red 500
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 500
 				% 3:{Bout Cargo Inc} Units can now travel to other boats instantly from here
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: {Boutanic}
 					- Cost: Yellow 1250
-					- Leads to: {Boutanic}
 				% 3:{Bout Yacht} Buff all units nearby when Boutdad lands here
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 250 + Red 100
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Boutanic}
+					- Cost: Yellow 250 + Red 100
 
 				% 4:{Boutanic} Boutdad afterimages appear on all boats when he lands here
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 3500
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 3500
 
 		(Minion):{Gubby}
 			- Made by: Boutbro
-			- Cost: Yellow 25, rising per fish
-			- How many: as many as you buy
-			- Respawn: none: a KO'd fish waits in a barrel
 			- Health: 50, +75 per level
 			- Damage: 10, +10 per level
 			- Range: 1.75 tiles
@@ -784,61 +781,61 @@
 			- Live: 0
 			- Deadarmor: 10, +5 per level
 			- Following: 0
+			- How many: as many as you buy
+			- Respawn: none: a KO'd fish waits in a barrel
 			- Orders: guards the tile it was built on; KO'd at 0 health instead of drowning
+			- Cost: Yellow 25, rising per fish
 			[Upgrades]
 				% 1:{Barp} Faster, targets in a larger radius
 					- Numbers: speed +75% of base; engage range +50% of base
-					- Cost: Red 50
 					- Leads to: {Boi}, {Bwordfish}
+					- Cost: Red 50
 				% 1:{Batfish} Tougher, gains ability to stand still
 					- Numbers: health +150% of base
-					- Cost: Blue 50
 					- Leads to: {Balibut}, {Bwordfish}
+					- Cost: Blue 50
 				% 1:{Boldfish} Can attack resources, dries fish
 					- Numbers: damage while dried 5
-					- Cost: Yellow 50
 					- Leads to: {Boi}, {Bbetta}
+					- Cost: Yellow 50
 
 				% 2:{Balibut} Even tougher, damage taken is reflected upon KO
 					- Numbers: damage +50%; range 1.5; health +100%
-					- Cost: Red 85 + Blue 150
 					- Leads to: {Baviar}, {Pubberfish}
+					- Cost: Red 85 + Blue 150
 				% 2:{Boi} Attack speed increased each Tide
 					- Numbers: attack speed +5% of base
-					- Cost: Yellow 250 + Red 50
 					- Leads to: {Baviar}, {Bar}
+					- Cost: Yellow 250 + Red 50
 				% 2:{Bwordfish} Can also attack at range, enables relocation
 					- Numbers: range 0
-					- Cost: Red 200
 					- Leads to: {Baviar}, {Bar}, {Pubberfish}
+					- Cost: Red 200
 				% 2:{Bbetta} When dried, will completely mine resources nearby
 					- Numbers: range 1
-					- Cost: Yellow 300
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 300
 
 				% 3:{Bar} Faster, aggressive, unhinged, insane.
 					- Numbers: attack speed +150%; speed +100%; range +15%
+					- Leads to: {Bass}
 					- Cost: Red 750
-					- Leads to: {Bass}
 				% 3:{Baviar} Things hit become valuable, granting aura on destruction
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 500
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Bass}
+					- Cost: Yellow 500
 				% 3:{Pubberfish} Now deals poison, deals massive damage to healthy enemies
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 475 + Blue 75
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 475 + Blue 75
 
 				% 4:{Bass} Can teleport, marks enemies for death
 					- Numbers: damage +100%
-					- Cost: Red 4000
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 4000
 
 		(Minion):{Boutbro}
 			- Made by: the {Bouthouse}
-			- Cost: free
-			- How many: 1
-			- Respawn: with the Bouthouse
 			- Health: 10
 			- Damage: 3
 			- Range: 1.5 tiles
@@ -849,13 +846,13 @@
 			- Fish cost multiplier: 1
 			- Barrel cost multiplier: 1
 			- Boat cost multiplier: 1
+			- How many: 1
+			- Respawn: with the Bouthouse
 			- Orders: builds and mines
+			- Cost: free
 
 		(Minion):{Buppy}
 			- Made by: the {Fish Barrel}
-			- Cost: free
-			- How many: per barrel
-			- Respawn: none
 			- Health: 200
 			- Damage: 25
 			- Range: 1.5 tiles
@@ -865,23 +862,26 @@
 			- Live: 1
 			- Following: 0
 			- Damage per hit: 25
+			- How many: per barrel
+			- Respawn: none
 			- Orders: fights anything near
+			- Cost: free
 
 		(Minion):{Boutdad}
 			- Made by: the {Boutboat}
-			- Cost: free
+			- Stats: none of its own /~ Uses the building's \
 			- How many: 1 per map, whatever the team
 			- Respawn: none
-			- Stats: none of its own / Uses the building's \
 			- Orders: lands on a boat and shoots with its stats
+			- Cost: free
 
 		(Minion):{Boutmom}
 			- Made by: the {Boutboat} after 4 Bout Rafts
-			- Cost: free
+			- Stats: none of its own /~ Uses the building's \
 			- How many: 1 per map
 			- Respawn: none
-			- Stats: none of its own / Uses the building's \
 			- Orders: aggravates foes it hits
+			- Cost: free
 
 | Base Vessel: Fie |
 	Fie, From the Walls
@@ -907,7 +907,7 @@
 			- Sell rate: 60%
 			- Special rule: none
 
-		[Vessel Mechanic] {The Wall}
+		[Vessel Mechanic] [The Wall]
 			- Rule: Her Wall grows tile by tile (Grow Wall, 20 Blue each) and its upgrades spread through every connected Wall
 			- Details: Shared Strength spreads them to the buildings beside the Wall too
 
@@ -916,55 +916,54 @@
 			- Living Wall turns it into a turret.
 			[Stats]
 				- In-game line: Strong, can be grown and share effects. Modular.
-				- Cost: Blue 20
 				- Health: 40, +40 per level
 				- Healthadd: 0
+				- Cost: Blue 20
 			[Upgrades]
 				% 1:{Flux} Stronger, gains ability to grow
 					- Numbers: health +30
-					- Cost: Blue 15
 					- Leads to: {Carbon Infused}, {Lifeline}, {Invisible Forces}
+					- Cost: Blue 15
 
 				% 2:{Carbon Infused} Increase health, effect propagates through Wall system
 					- Numbers: health +25% of base
-					- Cost: Blue 40
 					- Leads to: {Shared Strength}, {Unstable Wall}, {Living Wall}
-				% 2:{Lifeline} Units can now be placed inside the wall, reducing damage
-					- Numbers: / None in the data; its effect is in the building's code \
 					- Cost: Blue 40
+				% 2:{Lifeline} Units can now be placed inside the wall, reducing damage
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 40
 				% 2:{Invisible Forces} Gain damage resistance, effect propagates through Wall system
 					- Numbers: resistance +0.05
-					- Cost: Blue 30 + Yellow 15
 					- Leads to: {Shared Strength}, {Unstable Wall}, {Living Wall}
+					- Cost: Blue 30 + Yellow 15
 
 				% 3:{Shared Strength} Adjacent buildings now gain any Wall propagations, propagate a second time
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 85 + Yellow 25
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {True Wall}
+					- Cost: Blue 85 + Yellow 25
 				% 3:{Unstable Wall} When drowned, deal massive damage and weaken enemies
 					- Numbers: damage 45; range 2
-					- Cost: Blue 125
 					- Leads to: {Fake Wall}
+					- Cost: Blue 125
 				% 3:{Living Wall} Wall is now considered a tower and can now attack
 					- Numbers: damage 3; attack speed 3; range 7
-					- Cost: Blue 150 + Red 35
 					- Leads to: {True Wall}, {Fake Wall}
+					- Cost: Blue 150 + Red 35
 
 				% 4:{Fake Wall} Walls spread... Automatically
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 3000
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 3000
 				% 4:{True Wall} Reset a single enemy upon damage, effect propagates through Wall system
 					- Numbers: true +1
-					- Cost: Blue 2500
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 2500
 
 		(Economy):{Silo Pipes}
 			- Pipes to the nearest ore and mines it, filling a gun for a knight to pick up.
 			[Stats]
 				- In-game line: Siphons aura, generates guns
-				- Cost: Yellow 35
 				- Health: 20, +20 per level
 				- Damage: 0.3
 				- Attack speed: 0.25
@@ -972,109 +971,109 @@
 				- Gun speed: 0.05
 				- Build speed: 0.25
 				- Connect: 1
+				- Cost: Yellow 35
 			[Upgrades]
 				% 1:{High Flow} Increased efficiency and gun generation
 					- Numbers: damage +0.25; gun speed +0.05
-					- Cost: Yellow 30
 					- Leads to: {Arsenal}, {Rapid Response}, {Reroute}
+					- Cost: Yellow 30
 
 				% 2:{Arsenal} Gains the weapon command, can generate weapons regardless of ore
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 50
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Front-Line Pipes}, {Circular Routing}
+					- Cost: Red 50
 				% 2:{Rapid Response} Weapons generate faster and buff Knight's initial speed and damage on pickup
 					- Numbers: duration 20 seconds; amount 2; gun speed +0.2
-					- Cost: Blue 25 + Yellow 30
 					- Leads to: {Quick Construct}, {Old Pipes}
+					- Cost: Blue 25 + Yellow 30
 				% 2:{Reroute} Enables re-routing, connect to any resource
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 25
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Quick Construct}, {Circular Routing}, {Old Pipes}
+					- Cost: Yellow 25
 
 				% 3:{Circular Routing} Gain a percent sum of your current Aura each Tide
 					- Numbers: gain 0.05; gain up to 50
-					- Cost: Yellow 300 + Red 250
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 300 + Red 250
 				% 3:{Front-Line Pipes} Drowned enemies nearby a linked ore will grant aura and regenerate weapons
 					- Numbers: range 7.5
-					- Cost: Red 125 + Yellow 125
 					- Leads to: {Hyper Pipes}
+					- Cost: Red 125 + Yellow 125
 				% 3:{Old Pipes} You can now link to two separate ores
 					- Numbers: attack speed +0% of base
-					- Cost: Yellow 225
 					- Leads to: {Pipe Surge}
+					- Cost: Yellow 225
 				% 3:{Quick Construct} Improved connection times and efficiency
 					- Numbers: attack speed +50% of base; build speed +0.5
-					- Cost: Yellow 100
 					- Leads to: {Hyper Pipes}
+					- Cost: Yellow 100
 
 				% 4:{Pipe Surge} Knights can now dual wield weapons collecting from here
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 2750 + Yellow 2000
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 2750 + Yellow 2000
 				% 4:{Hyper Pipes} A massive temporary boost to ALL aura production...
 					- Numbers: duration 600 seconds; amount 1; attack speed +100%
-					- Cost: Yellow 3000
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 3000
 
 		(Units):{Knight's Keep}
 			- Spawns unarmed knights that fetch a gun from the nearest Silo Pipes and guard the rally point.
 			[Stats]
 				- In-game line: Spawns unarmed Knights, commandable
-				- Cost: Red 60
 				- Health: 20, +20 per level
 				- Respawn: 10 seconds
 				- Units: 1
+				- Cost: Red 60
 			[Upgrades]
 				% 1:{Lone Knight} Knight gains increased health, speed, and damage
-					- Numbers: health +250% of base; damage +35% of base; speed +50% of base / On the units \
-					- Cost: Red 55
+					- Numbers: health +250% of base; damage +35% of base; speed +50% of base /~ On the units \
 					- Leads to: {Security Group}, {Trailblazer}
+					- Cost: Red 55
 				% 1:{Partner} Hire another Knight
 					- Numbers: units 1
-					- Cost: Red 55
 					- Leads to: {Security Group}, {Squad}, {Trailblazer}
+					- Cost: Red 55
 
 				% 2:{Security Group} Knights can now Block, significant increased health
-					- Numbers: health +250% / On the units \
-					- Cost: Red 50 + Blue 50
+					- Numbers: health +250% /~ On the units \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 50 + Blue 50
 				% 2:{Squad} Gain another Knight and lower respawn times
 					- Numbers: respawn -4 seconds; units 1
-					- Cost: Red 130
 					- Leads to: {Battalion}, {Sword Hand}
+					- Cost: Red 130
 				% 2:{Trailblazer} Knights gain special effects based on their weapon that can be enhanced
 					- Numbers: effect +0.75 / On the units \
-					- Cost: Red 85
 					- Leads to: {Knight Commander}, {Sword Hand}
+					- Cost: Red 85
 
 				% 3:{Battalion} Gain a final Knight and gain increased stats when all Knights are active
 					- Numbers: units 1
-					- Cost: Red 350
 					- Leads to: {Convoy}
+					- Cost: Red 350
 				% 3:{Knight Commander} Boost to stats and effects, all same color Knights gain enhanced effects
 					- Numbers: speed +40% of base; effect +0.5 / On the units \
-					- Cost: Red 650
 					- Leads to: {Convoy}, {True Knight}
+					- Cost: Red 650
 				% 3:{Sword Hand} Knights gains a powerful slash attack upon close range
 					- Numbers: melee range 4; melee attack speed 0.2; melee damage 25 / On the units \
-					- Cost: Red 250
 					- Leads to: {Convoy}, {True Knight}
+					- Cost: Red 250
 
 				% 4:{Convoy} Knights will now automatically pursue enemies
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: nothing, the branch ends here
 					- Cost: Red 1000 + Blue 1000 + Yellow 1000
-					- Leads to: nothing, the branch ends here
 				% 4:{True Knight} Thus the Walls are on our side, Knight.
-					- Numbers: attack speed +100%; range +150% / On the units \
-					- Cost: Red 2750
+					- Numbers: attack speed +100%; range +150% /~ On the units \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 2750
 
 		(Support):{Rest Stop}
 			- Throws a food buff at an ally in range: more damage plus the food's own stat.
 			[Stats]
 				- In-game line: Buffs units, improves units damage
-				- Cost: Yellow 50
 				- Health: 25, +25 per level
 				- Attack speed: 0.25
 				- Range: 4.5 tiles, +1 tiles per level
@@ -1082,64 +1081,62 @@
 				- Effect: 1
 				- Duration: 10 seconds
 				- Damagemulti: 0.15
+				- Cost: Yellow 50
 			[Upgrades]
 				% 1:{Spicy Calamari} Effected units gain attack speed
 					- Numbers: attack speed +10%
-					- Cost: Yellow 25 + Red 50
 					- Leads to: {Side of Ramen}, {Side of Sushi}, {Bigger Portions}
+					- Cost: Yellow 25 + Red 50
 				% 1:{Hearty Ramen} Effected units gain additional max health
 					- Numbers: health +40%
-					- Cost: Yellow 25 + Blue 50
 					- Leads to: {Side of Calamari}, {Side of Sushi}, {Bigger Portions}
+					- Cost: Yellow 25 + Blue 50
 				% 1:{Fresh Sushi} Effected units gain additional range
 					- Numbers: range +25%
-					- Cost: Yellow 25 + Blue 50
 					- Leads to: {Side of Calamari}, {Side of Ramen}, {Bigger Portions}
+					- Cost: Yellow 25 + Blue 50
 
 				% 2:{Side of Calamari} Units effected will also now retaliate when damaged
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 125
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
+					- Cost: Red 125
 				% 2:{Bigger Portions} Improved effects
 					- Numbers: effect +0.75
+					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
 					- Cost: Blue 35 + Red 35 + Yellow 35
-					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
 				% 2:{Side of Ramen} Units effected will also now regenerate health
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
 					- Cost: Yellow 125
-					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
 				% 2:{Side of Sushi} Units deal critical damage on the first attack after some time
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 125
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
+					- Cost: Blue 125
 
 				% 3:{Finish the Plate} Buffs are longer, stronger, and occur more rapidly
 					- Numbers: effect +50%; attack speed +50%; duration +75%
-					- Cost: Yellow 200
 					- Leads to: {All You Can Eat}, {Specific Tastes}
+					- Cost: Yellow 200
 				% 3:{Regular Customer} Up to four unit effects are permanent
 					- Numbers: permanent count 4
-					- Cost: Yellow 225
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 225
 				% 3:{Second Servings} Effects now can target towers and Walls, which have a longer duration
 					- Numbers: duration +500%
-					- Cost: Yellow 100 + Red 75
 					- Leads to: {All You Can Eat}, {Specific Tastes}
+					- Cost: Yellow 100 + Red 75
 
 				% 4:{All You Can Eat} Buffs apply in a splash around the target
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3000
-					- Leads to: nothing, the branch ends here
 				% 4:{Specific Tastes} Nearby enemies are debuffed, halving their health
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 4000
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 4000
 
 		(Minion):{Knight}
 			- Made by: {Knight's Keep}
-			- Cost: free
-			- How many: 1 per Keep, more with upgrades
-			- Respawn: 10 seconds
 			- Health: 25
 			- Damage: 1, +0.5 per level
 			- Range: 1 tiles
@@ -1147,15 +1144,18 @@
 			- Speed: 1
 			- Engage range: 1 tiles
 			- Commander: 0.25
+			- How many: 1 per Keep, more with upgrades
+			- Respawn: 10 seconds
 			- Orders: fetches a gun, then guards the Keep's rally point (Move button)
-			[Weapons] / Picked up from Silo Pipes; the gun's colour comes from the ore it mines \
-				- Red: {Sub-Machinegun} Rapid, short range combat / attack speed 2; damage 1; speed 0; range 4; health 10 \
-				- Blue: {Shotgun} Deals a strong, close ranged attack / attack speed -0.25; damage 5; speed 0; range 2.25; health 20 \
-				- Yellow: {Sniper} High power, high range bullets / attack speed -0.5; damage 9; speed 0; range 7; health 0 \
-				- Green: {Pistol} Fast, single-target power / attack speed 1; damage 3; speed 1.75; range 5; health 5 \
-				- Orange: {Rifle} Long-mid range shots that pierce / attack speed -0.15; damage 4; speed 0; range 5.5; health 5 \
-				- Purple: {Grenade} Powerful close range delayed explosions / attack speed -0.25; damage 5; speed 0; range 5; health 20 \
-				- All: {Ex Rifle} Strong, mid-range shots that hit twice in a small area / attack speed 1.25; damage 1.5; speed 0; range 4; health 15 \
+			- Cost: free
+			[Weapons] /~ Picked up from Silo Pipes; the gun's colour comes from the ore it mines \
+				- Red: {Sub-Machinegun} Rapid, short range combat /~ attack speed 2; damage 1; speed 0; range 4; health 10 \
+				- Blue: {Shotgun} Deals a strong, close ranged attack /~ attack speed -0.25; damage 5; speed 0; range 2.25; health 20 \
+				- Yellow: {Sniper} High power, high range bullets /~ attack speed -0.5; damage 9; speed 0; range 7; health 0 \
+				- Green: {Pistol} Fast, single-target power /~ attack speed 1; damage 3; speed 1.75; range 5; health 5 \
+				- Orange: {Rifle} Long-mid range shots that pierce /~ attack speed -0.15; damage 4; speed 0; range 5.5; health 5 \
+				- Purple: {Grenade} Powerful close range delayed explosions /~ attack speed -0.25; damage 5; speed 0; range 5; health 20 \
+				- All: {Ex Rifle} Strong, mid-range shots that hit twice in a small area /~ attack speed 1.25; damage 1.5; speed 0; range 4; health 15 \
 
 | Base Vessel: Buster |
 	Buster, A Very Fast Dog
@@ -1188,176 +1188,175 @@
 			- Does: Runs in a straight line until something blocks the way, hurting every foe it runs into
 			- Target: a direction (snapped to 90 degrees)
 			- Range: no limit
-			- Cost: none
 			- Cooldown: 0.5 seconds
 			- Keys: 6 / 7
 			- Unlocked: from the start
+			- Cost: none
 
 		(Offense):{Pedestal}
 			- Fires a tracking beam that deals its damage per tick.
 			- Blink chains the beam through other Pedestals.
 			[Stats]
 				- In-game line: Sustained, single-target
-				- Cost: Red 25
 				- Health: 25, +75 per level
 				- Damage: 2, +1 per level
 				- Attack speed: 0.4
 				- Range: 5 tiles
 				- Beam break range: 2 tiles
+				- Cost: Red 25
 			[Upgrades]
 				% 1:{Improved Effector} Increased range and duration
 					- Numbers: range +1.5
-					- Cost: Red 25 + Blue 25
 					- Leads to: {Inert Capacity}, {Stored Charge}, {Combo'd}
+					- Cost: Red 25 + Blue 25
 				% 1:{Burst Effector} Fire periodically, dealing increased damage
 					- Numbers: damage +4
-					- Cost: Red 35
 					- Leads to: {Inert Capacity}, {Stored Charge}, {Combo'd}
+					- Cost: Red 35
 
 				% 2:{Inert Capacity} Increased range
 					- Numbers: range +60%
-					- Cost: Blue 35
 					- Leads to: {Blink Chain}, {Blaze Effector}, {Blast Maker}
+					- Cost: Blue 35
 				% 2:{Stored Charge} Increased damage, can hold charge when not firing
 					- Numbers: damage +25%; top damage +150%; tick rate 0.05; drain rate 0.2
-					- Cost: Red 30
 					- Leads to: {Blink Chain}, {Blaze Effector}, {Blast Maker}
+					- Cost: Red 30
 				% 2:{Combo'd} Can now target a second enemy
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 50
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Blink Chain}, {Blaze Effector}
+					- Cost: Red 50
 
 				% 3:{Blast Maker} Beams will now explode when they expire
-					- Numbers: / None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Leads to: {Blast Extra Zed}, {Pure Ex}
 					- Cost: Red 250
-					- Leads to: {Blast Extra Zed}, {Pure Ex}
 				% 3:{Blaze Effector} Causes targets to take ramping damage after not taking any
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 300
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Blast Extra Zed}, {Pure Ex}
+					- Cost: Red 300
 				% 3:{Blink Chain} When firing, will chain to other Pedestals, also dealing increased damage
 					- Numbers: damage +35% of base
-					- Cost: Red 250 + Yellow 25
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 250 + Yellow 25
 
 				% 4:{Blast Extra Zed} Explosions now can chain... Violently
 					- Numbers: damage +2
-					- Cost: Red 3000
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 3000
 				% 4:{Pure Ex} Enemies deal no damage if shot, purest form of racing
 					- Numbers: duration 1.75 seconds; duration per health 1000; duration at least 0.5
-					- Cost: Red 1500 + Blue 1500 + Yellow 1500
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 1500 + Blue 1500 + Yellow 1500
 
 		(Units):{Garage}
 			- Spawns dogs that run one straight lap, then vanish; a new dog comes after the respawn time.
 			[Stats]
 				- In-game line: Directional, spawns dogs, multi-target
-				- Cost: Red 60
 				- Health: 50, +50 per level
 				- Respawn: 5 seconds
 				- Units: 1
+				- Cost: Red 60
 			[Upgrades]
 				% 1:{Jack Up} Dog has increased health, respawns quicker
 					- Numbers: health +200% of base; respawn -4.5 seconds
-					- Cost: Blue 25 + Red 15
 					- Leads to: {Big Dog}, {Up Dog}
+					- Cost: Blue 25 + Red 15
 				% 1:{Pit Crew} Gain a second Dog
 					- Numbers: unit 1
-					- Cost: Red 55
 					- Leads to: {Big Dog}, {Up Dog}
+					- Cost: Red 55
 
 				% 2:{Big Dog} Dog is stronger and keeps speed on collisions
 					- Numbers: health +200%; speed after a collision -0.8
-					- Cost: Blue 65
 					- Leads to: {Mechanic's Friend}, {Diesel Dog}, {Lap Dog}
+					- Cost: Blue 65
 				% 2:{Up Dog} Increased base speed
 					- Numbers: speed 2
-					- Cost: Red 60
 					- Leads to: {Diesel Dog}, {Lap Dog}, {Rev Dog}
+					- Cost: Red 60
 
 				% 3:{Lap Dog} Subsequent hits will deal increased damage
 					- Numbers: damage +5; damage decay -1; damage up to 50 / On the units \
-					- Cost: Red 250
 					- Leads to: {Nitro Collar}
+					- Cost: Red 250
 				% 3:{Diesel Dog} Leave a firey wake behind
 					- Numbers: units +1
-					- Cost: Red 250
 					- Leads to: {Nitro Collar}
+					- Cost: Red 250
 				% 3:{Mechanic's Friend} Towers passed by will increase in damage
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 150 + Blue 75
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 150 + Blue 75
 				% 3:{Rev Dog} Dogs are no longer targetable
 					- Numbers: units +1
-					- Cost: Red 125 + Blue 125
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 125 + Blue 125
 
 				% 4:{Nitro Collar} No longer can lose speed... Ever.
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 4000
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 4000
 
 		(Trap):{Speed Pad}
 			- Walk-through pad: allies running over it get a burst of speed that fades; dashes are redirected.
 			[Stats]
 				- In-game line: Directional, boosts units, redirects dogs
-				- Cost: Blue 25
 				- Speed: 2
 				- Dog speed: 0
 				- Maxdogspeed: 2
 				- Effect: 1
 				- Maxspeed: 5
+				- Cost: Blue 25
 			[Upgrades]
 				% 1:{Charge Pad} Now can heal. Dogs gain momentum, stacking speed on each pass
 					- Numbers: speed up +0.35; heal 25
-					- Cost: Blue 25 + Yellow 25
 					- Leads to: {Strong Finish}, {Refuel}
+					- Cost: Blue 25 + Yellow 25
 				% 1:{Boost Pad} Increased Speed effect, Slows enemies traveling opposite
 					- Numbers: speed +50% of base; decay 4; slow -75%
-					- Cost: Blue 50
 					- Leads to: {Strong Finish}, {Speed Bump}, {Wrong Way}
+					- Cost: Blue 50
 
 				% 2:{Strong Finish} Pad charges up when not in use, granting a larger effect
 					- Numbers: delay 1 second; effect +0.5
-					- Cost: Blue 125
 					- Leads to: {Circuit}, {Airtime}
+					- Cost: Blue 125
 				% 2:{Speed Bump} Deals percent damage depending on the speed of the enemy
 					- Numbers: damage 5; damage per speed 4
-					- Cost: Red 50 + Blue 75
 					- Leads to: {Circuit}
+					- Cost: Red 50 + Blue 75
 				% 2:{Wrong Way} Enemies are stunned briefly when passing
 					- Numbers: stun 2
-					- Cost: Blue 125 + Yellow 75
 					- Leads to: {Circuit}
+					- Cost: Blue 125 + Yellow 75
 				% 2:{Refuel} Tower can now be placed on top, gaining attack speed
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 200
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 200
 
 				% 3:{Airtime} Gain ability to instantly fly to a location forward
 					- Numbers: units +1
-					- Cost: Blue 175
 					- Leads to: {Breakneck}
+					- Cost: Blue 175
 				% 3:{Circuit} All effects increased when not nearby other pads
 					- Numbers: effect +20%; effect range 5
-					- Cost: Blue 250
 					- Leads to: {Breakneck}, {Collision Course}
+					- Cost: Blue 250
 
 				% 4:{Collision Course} Effects Dogs, an accident waiting to happen...
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Blue 2500 + Red 1500
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 2500 + Red 1500
 				% 4:{Breakneck} Removes internal speed limiter, greatly increased speeds
 					- Numbers: speed +100%; dog speed +100%; dog top speed 15; top speed 15
-					- Cost: Blue 3000
 					- Leads to: nothing, the branch ends here
+					- Cost: Blue 3000
 
 		(Economy):{Checkpoint}
 			- Charges from its linked ore by distance; any ally touching it collects the charge and the ore is hit.
 			[Stats]
 				- In-game line: Links to ores, creates collectable crystals
-				- Cost: Yellow 50
 				- Attack speed: 0.3
 				- Range: 10 tiles
 				- Charge capacity: 3
@@ -1367,52 +1366,50 @@
 				- Most effect: 100
 				- Effect range: 2
 				- Collect range: 0.6 tiles
+				- Cost: Yellow 50
 			[Upgrades]
 				% 1:{Lap 1} Siphon rate and capacity increased
 					- Numbers: attack speed +0.15; charge capacity +150% of base
-					- Cost: Yellow 30
 					- Leads to: {Lap 2}, {Long Ranged}
+					- Cost: Yellow 30
 				% 1:{Quick Pass} Increased effectiveness the faster the unit on pickup
 					- Numbers: tick speed 0.15
-					- Cost: Yellow 25
 					- Leads to: {Lap 2}, {Long Ranged}, {Tune Up}
+					- Cost: Yellow 25
 
 				% 2:{Lap 2} Further increased siphon rate and capacity
 					- Numbers: attack speed +50%; charge capacity +75%
-					- Cost: Yellow 125
 					- Leads to: {Lap 3}, {Strong Start}
+					- Cost: Yellow 125
 				% 2:{Long Ranged} Crystals can be collected from farther away
 					- Numbers: range +1.5
-					- Cost: Blue 15 + Yellow 50
 					- Leads to: {Strong Start}, {Lap 3}
+					- Cost: Blue 15 + Yellow 50
 				% 2:{Tune Up} When collected,  the unit's next attack is stronger granting aura
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Yellow 250 + Red 250
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: {Marathon}, {Strong Start}
+					- Cost: Yellow 250 + Red 250
 
 				% 3:{Lap 3} Resource gain ramps with current capacity, can only be collected at half health
 					- Numbers: gain per health 0.1; charge capacity 2; health needed to collect 0.5
-					- Cost: Yellow 250
 					- Leads to: {Final Lap}
+					- Cost: Yellow 250
 				% 3:{Strong Start} When empty, triple the generation
 					- Numbers: health threshold 3; attack speed +200%
+					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 300
-					- Leads to: nothing, the branch ends here
 				% 3:{Marathon} The buff now lasts an extended amount of time after the attack
-					- Numbers: / None in the data; its effect is in the building's code \
-					- Cost: Red 250 + Yellow 500
+					- Numbers: /~ None in the data; its effect is in the building's code \
 					- Leads to: nothing, the branch ends here
+					- Cost: Red 250 + Yellow 500
 
 				% 4:{Final Lap} All nearby checkpoints' gain charge when collected
 					- Numbers: charge shared +0.33; range 2
-					- Cost: Yellow 4000
 					- Leads to: nothing, the branch ends here
+					- Cost: Yellow 4000
 
 		(Minion):{Dog}
 			- Made by: {Garage}
-			- Cost: free
-			- How many: 1 per Garage
-			- Respawn: 5 seconds
 			- Health: 50, +10 per level
 			- Damage: 3
 			- Range: 0.1 tiles
@@ -1420,4 +1417,7 @@
 			- Speed damage: 1, +0.25 per level
 			- Speed after a collision: -1
 			- Speed damage at start: 0.2
+			- How many: 1 per Garage
+			- Respawn: 5 seconds
 			- Orders: runs one straight lap, ramming foes, then vanishes
+			- Cost: free
