@@ -1,0 +1,90 @@
+| Rogue Waves Mode |
+	# The mode's rules: the campaign, map difficulty, retries, Depth, tides and leaving, the sea chart and sea weather.
+	# 05_Gameplay_Rundown.txt walks through a campaign step by step and points back here.
+
+	[Summary]
+		The Rogue Waves is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 10 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency earned each tide and from optional objectives given to the player: [Directions] are picked before each map, and their ranks are bought at {VENDCINT}. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
+
+	[Campaign]
+		- Maps: 10 in a row, with increasing difficulty
+		- Stretches: 2 of 5 maps / The 5th and 10th rows of the sea chart close a stretch \
+		- Vessels: players must select their vessel first before the Rogue Waves begins, as they are locked into their choice
+		- Start: the host starts a campaign from the Rogue Waves button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there
+		- Saving: progress is saved between maps, so a campaign can be played over several sessions
+		- Continue: when the host picks the campaign up again with Continue on the main menu's Rogue Waves button, each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]
+		- Won: if the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked / Map 10 ends like every map, so the campaign is won by leaving map 10 after Tide 15 or later \
+		- Lost: a failed campaign keeps nothing
+		- Score: does not count in this mode
+		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
+
+	[Difficulty]
+		- Each map: harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health
+		- Numbers: / Blank: the design gate proposes them \
+
+	[Retries]
+		- Per campaign: 3
+		- Losing a map: uses one of a limited number of retries: the team replays that map from the last save. With no retries left, a lost map ends the campaign
+		- The host quitting: the host quitting during a map counts as losing it. Only the host quitting during a map spends a retry
+		- A friend quitting: a friend who drops or quits doesn't spend one: they can rejoin the running map (-> 03_Bug_Fix.txt), and a friend who drops while the map loads comes back on the boat
+		- Dying in a bonus tide: doesn't lose the map: a map counts as won once Tide 15 is cleared, no retry is spent, and only the tide in progress pays nothing
+
+	[Depth] / Ascension levels \
+		- Levels: 5
+		- Each level: adds a change along with the previous depth levels
+		- Named: Depth 1, Depth 2 and so on
+		- Between sessions: meant to carry over
+		- Unlocked by: completing a campaign -> [Campaign] Won
+		- Changes: / Blank until Depth is designed \
+		- Status: on hold until the core gameplay loop is settled
+
+	[Tides and Leaving]
+		- Breaks: 60 seconds between tides
+		- Map won: once Tide 15 is cleared
+		- Leaving: after clearing Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to
+		- Only between tides: the players are only able to leave between tides, so they are not able to exit right before their demise
+		- Bonus tides: no limit. They go on, each one harder, until a majority votes to leave. Staying bonus tides allows the player to accumulate more [Pure Aura] -> 06_New_Mechanics.txt [Pure Aura]
+
+	[Sea Chart] / Slay the Spire's map \
+		- Chart: a campaign's maps sit on a sea chart generated when the campaign starts, like Slay the Spire's map: a harbour, then 10 rows of 3 or 4 base game maps
+		- Links: each map links to 1 to 3 maps in the next row, and the 5th and 10th rows close a stretch
+		- Maps offered: every base game map can be offered in the vote / Never the custom map slot, which hangs while loading \
+		- No repeats: no map is on a chart twice
+		- Spread: the chart spreads maps by difficulty: easier maps in the first rows, harder and δ maps later, the hardest closing each stretch
+		- Every map is voted on, the first map included
+		- Vote: the vote offers the maps linked to the one just played (the first row for map 1). It is held in the map, after the vote to leave; map 1's vote is held in the opening break of a staging map
+		- Sailing: the party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps
+		- On the boat: between maps, players can't swap their Cardinals
+		- Status: built, and passed its PC round. Until the in-map vote is built, the leader steers to one of the linked maps with the boat's own arrows. How the chart looks is yours to check by eye /~ docs/SEA_CHART.md sections 7-9 \
+
+	[Sea Weather]
+		- Which maps: some maps on the chart carry a weather, rolled with the chart
+		- Calm rows: the first row and the rows closing a stretch are calm
+		- Odds: about ~1 map in 3 has weather in the first stretch, ~1 in 2 in the second
+		- Pays: ~1 extra [Pure Aura] each tide, on top of the usual 3
+		- Shown: the weather shows on its island on the chart and in the boat's map panel, and is announced when the map starts
+		- Never twice: a map never gets the weather it already has: Manafold already floods, Chrono already speeds up, Vultures already has a nest
+		- Status: built, and passed its PC round. How a flooded map looks is yours to check by eye
+
+		{Rising Water}
+			- In-game line: ~Rising Water: the water climbs each tide. More Pure Aura
+			- Does: the water climbs each tide. Flooded tiles can't be built on, and shots through the water slow down.
+			- Numbers: ~the water rises each tide by its own stats, as on Manafold
+			- Never on: Manafold
+			- Look: ~a teal swell with a foam crest
+
+		{Quickening Current}
+			- In-game line: ~Quickening Current: the game runs faster from Tide 5. More Pure Aura
+			- Does: from Tide 5 the whole game runs faster, and faster again from Tide 10.
+			- Numbers: ~x1.25 from Tide 5, ~x1.5 from Tide 10
+			- Never on: Chrono
+			- Look: ~three foam chevrons
+
+		{Nesting Ground}
+			- In-game line: ~Nesting Ground: a halberd nest grows near the foes. More Pure Aura
+			- Does: a halberd nest sits near where the enemies come from. It grows each tide and sends out a halberd every few tides.
+			- Numbers: ~placed 3 to 7 tiles from an enemy core
+			- Never on: Vultures
+			- Look: ~a coral egg in a sand nest
+
+	[Questions]
+		- 1. The weather numbers are defaults: the odds, the extra Pure Aura and Quickening's speeds. Change any of them in their slots. ~As written

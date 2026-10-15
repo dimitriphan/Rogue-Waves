@@ -1,35 +1,118 @@
-| New Vessel: Uloe |
+| Vessel: Uloe |
 	Uloe, Light Personified
 		# Uses {Light} as a mechanic
-		# Uses wandering minions named {Photons}, similar to Sno Sno, that interact with towers.
-		# {Photons} can {Illuminate} enemies, increasing their damage taken. Can also {Blind} enemies, reducing their damage. {Illuminate} and {Blind} have different levels of strength depending on its source.
-		# Towers have increased effects based on how much light they're receiving. {Photons} and Uloe provide light around them.
-		# Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms made of electricity at the sides, a cord to a plug. Towers carry glass, screw rings and cords.
-		# Status: concept page done. Comes last. The game has no light for gameplay, so the mod adds up the light from sources in range (docs/RESEARCH_GAPS.md B1). / Difficulty default: Advanced \
-		# Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. / One front facing concept frame so far, in sprites \
-		# Attack: ranged.
-		# Ability: {Plug In}. Uloe plugs into a node or a {Power Bank} and gives off high levels of {Light} in a radius around them, as long as they stay in range of what they plugged into. / The level of {Light} depends on the node's total aura or the {Power Bank}'s upgrades \
-		# The plug and cord are the {Plug In} ability's: they move with Uloe, like a cord in real life.
-		# The yellow strokes are floating arms made of electricity.
-		/ Lore comes once the character is finalized \
+		# Uses wandering minions named {Photon}s, similar to Sno Sno, that interact with towers.
+		/~ Laid out in the Vessel template, 15_Templates.txt. Uloe hasn't reached its design gate, so most slots are blank: the design gate proposes ~ values for them \
 
-		(Minions):{Photons}
-			# Refers to minion units
+		[Identity]
+			- Title: Light Personified
+			- Difficulty: ~Advanced
+			- Archetype:
+			- In-game line: ~
+			- Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms made of electricity at the sides, a cord to a plug. / The yellow strokes are floating arms made of electricity. \
+			- Towers look: Towers carry glass, screw rings and cords.
+			- Accent colour: ~
+			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites \
+			- Lore: / Lore comes once the character is finalized \
+			- Status: concept page done. Comes last.
+
+		[Vessel Stats]
+			- Attack: ranged.
+			- Health:
+			- Health regen:
+			- Speed:
+			- Damage:
+			- Range:
+			- Projectile speed:
+			- Attack speed:
+			- Build range:
+			- Sell rate:
+			- Special rule:
+
+		[Ability] {Plug In}
+			- Does: Uloe plugs into a node or a {Power Bank} and gives off high levels of {Light} in a radius around them, as long as they stay in range of what they plugged into. / The level of {Light} depends on the node's total aura or the {Power Bank}'s upgrades \
+			- The plug and cord are the {Plug In} ability's: they move with Uloe, like a cord in real life.
+			- Numbers:
+			- Target: a node or a {Power Bank}
+			- Range:
+			- Cooldown:
+			- Keys: ~6 / 7
+			- Unlocked: ~from the start
+			- Cost:
+
+		[Vessel Mechanic] [Light]
+			- Rule: Towers have increased effects based on how much light they're receiving. {Photon}s and Uloe provide light around them.
+			- {Illuminate}: {Photon}s can {Illuminate} enemies, increasing their damage taken.
+			- {Blind}: Can also {Blind} enemies, reducing their damage.
+			- Strength: {Illuminate} and {Blind} have different levels of strength depending on its source.
+			- Details: /~ The game has no light for gameplay, so the mod adds up the light from sources in range (docs/RESEARCH_GAPS.md B1) \
+
 		(Offense):{Magnifying Glass}
 			- Focuses beams of light to deal damage to enemies.
 			- Damage dependent on how much {Light} it is receiving
-				% Damage increases as it attacks the same target
+			[Stats]
+				- In-game line:
+				- Health:
+				- Damage:
+				- Attack speed:
+				- Range:
+				- Limit:
+				- Cost:
+			[Upgrades]
+				% ~1:{} Damage increases as it attacks the same target
+
 		(Support):{Power Bank}
-			- Spawns {Photons} which are light minions that provide benefits to towers.
-			- {Photons} wander around aimlessly where they spawn, but will follow light paths from {Flood Light}s if they're being directed.
-			- Can attack enemies for very little damage, but apply illumination and blinding.
-				% Photons explode on death, dealing damage and applying blind + illumination
+			- Spawns {Photon}s which are light minions that provide benefits to towers.
+			[Stats]
+				- In-game line:
+				- Health:
+				- Units:
+				- Limit:
+				- Cost:
+			[Upgrades]
+				% ~1:{} Photons explode on death, dealing damage and applying blind + illumination
+
 		(Defense):{Mirror}
 			- Wall that can be empowered by {Light} to blind enemies, reducing their damage.
-				% {Blind} or {Illuminate} enemies based on upgrade path.
-				% Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
-				% A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
+			[Stats]
+				- In-game line:
+				- Health:
+				- Limit:
+				- Cost:
+			[Upgrades]
+				% ~1:{} {Blind} or {Illuminate} enemies based on upgrade path.
+				% ~2:{} Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
+				% ~2:{} A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
+
 		(Economy):{Flood Light}
 			- Plugs into nodes and provides light. Can be directed towards towers to focus their light benefits.
-				% Grants light in a radius around itself. Can no longer be directed.
-				% Allows to redirect its light in a straight line towards towers.
+			[Stats]
+				- In-game line:
+				- Health:
+				- Range:
+				- Limit:
+				- Cost:
+			[Upgrades]
+				% ~1:{} Grants light in a radius around itself. Can no longer be directed.
+				% ~1:{} Allows to redirect its light in a straight line towards towers.
+
+		(Minion):{Photon}
+			# Refers to minion units
+			- Made by: {Power Bank}
+			- Attack: Can attack enemies for very little damage, but apply illumination and blinding.
+			- Health:
+			- Damage:
+			- Range:
+			- Attack speed:
+			- Speed:
+			- How many:
+			- Respawn:
+			- Orders: {Photon}s wander around aimlessly where they spawn, but will follow light paths from {Flood Light}s if they're being directed.
+			- Leash:
+			- Cost:
+
+		[Directions] / Written in 11_Directions.txt under Uloe \
+			- none yet
+
+		[Questions]
+			- 1. Your upgrade ideas have no names or levels yet, so each sits at a level Claude guessed, with an empty name {} for you to fill. ~Levels as placed
