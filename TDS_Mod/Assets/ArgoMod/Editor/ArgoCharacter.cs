@@ -647,7 +647,7 @@ namespace ArgoBuild
                 }
             if (tap > 0 && !back)
             {
-                // the wrench in the near mitt: raised (1), half (2), tapping down with a spark (3)
+                // the wrench in the near mitt: raised (1), half (2), down (4), down with a spark (3)
                 int hx = 10, hy = oy + 6 + dy;
                 if (tap == 1) { c.Set(hx + 1, hy - 1, C('F')); c.Set(hx + 2, hy - 2, C('F')); c.Set(hx + 2, hy - 3, C('S')); c.Set(hx + 3, hy - 3, C('S')); c.Set(hx + 3, hy - 2, C('F')); }
                 else if (tap == 2) { c.Set(hx + 1, hy - 1, C('F')); c.Set(hx + 2, hy - 1, C('F')); c.Set(hx + 3, hy - 2, C('S')); c.Set(hx + 3, hy - 1, C('S')); c.Set(hx + 4, hy - 1, C('F')); }

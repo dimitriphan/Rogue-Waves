@@ -45,6 +45,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 | Buildings, units | the everyday object named plainly, with a twist; the scope's names stay | Repurposed Cookie Tin, Pin Cushion, Flood Light |
 | Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | Vampire Dentures, Cracked Buoy, Ship's Bell (base: Red Coin, Rusty Pipe) |
 | Directions | a plain name that matches its Look line; a heading or a course, short and active, is optional (`docs/PLAN.md` Decisions 2026-10-15) | Compost Bin, Sewing Machine; Deep Roots, Loose Threads, Hard to Port |
+| Optional objectives | a short order, like a bounty on a notice board (`docs/scope/14_Optional_Objectives.txt`) | Mind the Meteor |
 | Mode, ascension, events | sea weather | Rogue Waves; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |
 | Enemy modifiers | the scope's names (Cursed, Berserk, Aging, Dazzling; `docs/scope/13`). Base elites are named like metalwork (Hardened, Tempered, Superheated, Fractured, Annealed, Molten), for reference |
 

@@ -65,7 +65,7 @@ Things the code reading turned up that the build must respect:
   its loading screen. The leader's map click writes `Player_Worldselect` (Macro_Main.cs:633), so the mod rewrites it
   to the stock world after every select. Warping in after the boat opens (step 4) keeps the chart out of the save.
 - **The world's name is the only channel to clients on the boat** (no entities there, `docs/15` §6), and it is a
-  64-byte string: `RW_Chart_` + a 10-digit seed + one digit per row is 29 bytes.
+  64-byte string: `RW_Chart_` + a 10-digit seed + `_` + one digit per row is 30 bytes.
 - Hide the stock "Warp" (waypoint) button on the chart and give no node `Waypointspot`.
 
 **What it replaces in the vote flow** (adopted):

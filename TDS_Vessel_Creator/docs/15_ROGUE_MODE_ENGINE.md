@@ -529,9 +529,10 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
   `Removecommand` change it on the host at any time (Helper_Entitytools.cs:264-293, 409). A `Button`-style command's
   UI object is named its link plus its `Priority`; other styles use the link alone.
 - **`Lasthit` is set only when the hit's data has no `Damage`** (Helper_Entitytools.cs:166-171): a vessel's or unit's
-  own attack sets it (**proven**: a kill by `Interacthurt` with no data left the vessel as `Lasthit`), a hit with its
-  own data (projectiles, Projectile_Master.cs:394, and any mod `Hurt` that passes
-  `Damage`) doesn't. Count kills by place through `Ondespawn`, not by killer.
+  own attack sets it (**proven**: a kill by `Interacthurt` with no data left the vessel as `Lasthit`), and so does a
+  projectile whose shooter put no `Damage` in its data (Projectile_Master.cs:394 passes that data on; the stock
+  shooters' arrows and shots carry none); a hit whose data carries `Damage` (burn ticks, pulses, any mod `Hurt` that
+  passes it) doesn't (`17` §2.6, §8). Count kills by place through `Ondespawn`, not by killer.
 - **A heal's amount is its data's `Damage`** (times `Damagemulti`), not a `Heal` key: `Interactheal` with no
   `Damage` throws `KeyNotFoundException` in `Helper_Damagetools.Doheal` (**proven**, round 4).
 - **`Damagedone`** on the attacker rises after each hit (Entity_Master.cs:208, Helper_Damagetools.cs:21-70): the only

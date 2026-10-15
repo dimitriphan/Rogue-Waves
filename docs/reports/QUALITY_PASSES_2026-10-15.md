@@ -206,6 +206,43 @@ other four found 7 issues, all fixed, none high:
 Because survey comparison missed three lines, pass 9 reads every Numbers line of scope `16` against its code branch
 in the decompile.
 
+## Pass 9: 39 issues
+
+Not clean. Five areas came back clean (A3, B1, B3, B4, C). All 39 issues are fixed, none high, and 28 of them are in
+scope `16`.
+
+**Scope `16`.** Three extra readers read every one of `16`'s 195 Numbers lines, its unit lines and its stat blocks
+against the code branch that uses them. They found 28 lines that gave the data's names or left out what the code does.
+Some examples:
+- Cannons adds a second gun.
+- Excavation makes every miner Real Tough.
+- Brain Freeze's armour soaks 3 whole hits.
+- Take the Heat hurts the Scorched foes that hit it.
+- Snobles counts siphons, not Sno.
+- Boutmom stays only from the 5th Bout Raft.
+- Fish Follow has no range.
+- A Buppy hurts itself 25 per hit.
+- Hyper Pipes pays a flat 1 of each aura a second.
+- Knight Commander reaches every same-gun Knight on the map.
+- Pure Ex's silence is shorter on tougher foes.
+- A collision only takes speed the pads gave.
+- "Speed damage at start" is a ram delay.
+
+Two of the 28 had been left on purpose for a reason the code does not bear out: the knight gun note and Stored
+Charge. The `02` log now counts 62 upgrade lines. Every value the scope gives as the game's own is now checked against
+the game's code.
+
+**Kit chapters and project docs (11).**
+- **Kit `15` §16 (M).** Stock projectiles do credit kills.
+- **Kit `17`.** The Garage passes on all nine upgrades. Collisions take only pad speed. The Sno Cannon takes a whole
+  Snoble first.
+- **Kit `02`.** It names the Boutboat's cost of Red 100.
+- **Kit `05` §16.** It points to the enemy ids and stats that exist.
+- **The crowded boat (kit `README`, `04`, `ModKitBoat.cs` in both copies).** It keeps full size through 17 vessels,
+  not 16.
+- **Smaller fixes.** An `ArgoCharacter.cs` pose comment. `SEA_CHART.md`'s longest world name is 30 bytes. `STYLE.md`
+  gains the objectives' naming row that scope `00` points to.
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".

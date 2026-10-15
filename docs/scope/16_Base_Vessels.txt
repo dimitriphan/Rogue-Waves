@@ -122,7 +122,7 @@
 					- Cost: Red 20 + Blue 20
 
 				% 2:{Cannons} Adds an extra layer of boom!
-					- Numbers: attack speed +20%
+					- Numbers: attack speed +20%; a cannon joins the tower and fires its own bomb at the tower's target 1.5 times as often as the tower /~ Read from the game's code: the data names only attack speed +20% \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 175
 				% 2:{Dynamite} Vastly increased range and travel time, larger explosions
@@ -144,7 +144,7 @@
 					- Cost: Red 250 + Blue 250
 
 				% 4:{Detonate} Take down everything in sight when drowned
-					- Numbers: when drowned, 1000 damage to every foe on the map; damage +50%; attack speed +0.25
+					- Numbers: when drowned, 1000 damage to every foe on the map, and a new Bomb Tower with no upgrades is built in its place; damage +50%; attack speed +0.25 /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 2500
 
@@ -240,7 +240,7 @@
 					- Cost: Yellow 300
 
 				% 4:{Excavation Facility} Rough n' Tough Miners!
-					- Numbers: units +1
+					- Numbers: units +1; every miner, and each one made after, becomes Real Tough: health +900%, speed +100%, attack speed +200%, damage +1, and each hit takes 2 from an ore instead of 0.5 /~ Read from the game's code: the data names only units +1; the rest is the miners' Real Tough upgrade \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 2000
 				% 4:{Engineering Firm} Drastically increase the effectiveness of engineers
@@ -312,7 +312,7 @@
 			- Details: Thin Sno he walks over is refilled to Level 20
 
 		(Offense 1):{Sno Cannon}
-			- Eats ammo from the nearest Sno or Snoble within its Sno range, then fires a Snoball.
+			- Eats the nearest Snoble within its Sno range first (the whole Snoble), else ammo from the nearest Sno, then fires a Snoball (or the Snoble).
 			- Never fires without Sno until Permasno.
 			[Stats]
 				- In-game line: Fires Snoballs, uses Sno
@@ -343,7 +343,7 @@
 					- Leads to: {Hypercool}, {Permasno}
 					- Cost: Blue 30 + Yellow 30
 				% 2:{Snopowder} Sno increases range, increase damage on distant targets
-					- Numbers: range +1 tile for every 15 Sno on its own tile; projectile speed +1 for every 5; damage +4% for each tile between it and the foe /~ Read from the game's code \
+					- Numbers: range +1 tile for every 15 Sno on its own tile; projectile speed +1 for every 5; each hit's damage x(1 + 0.04 for each tile between it and the foe), after its other bonuses /~ Read from the game's code \
 					- Leads to: {Hypercool}, {Icicle Shot}
 					- Cost: Red 5 + Blue 25
 				% 2:{Sno Sucker} Can use Sno from notably farther away
@@ -374,7 +374,7 @@
 					- Cost: Red 2500 + Blue 50
 
 		(Offense 2):{Heater}
-			- Burns up to 5 foes in range and melts Sno around it.
+			- Burns up to 5 foes in range and melts the nearest Sno within its Sno range.
 			[Stats]
 				- In-game line: Heats surrounding area, melts Sno
 				- Health: 100, +100 per level
@@ -419,7 +419,7 @@
 					- Cost: Red 400 + Blue 100
 
 				% 4:{Cold Sweats} Have the best of both worlds!
-					- Numbers: time 20 seconds; recovery 5 seconds; spread 1.5; sno 100
+					- Numbers: every 20 seconds, the team's attacking towers in its range get attack speed +100% of base for 10 seconds, it makes 100 Sno on its own tile three times (spreading to the tiles around, spread 1.5), and its own range and Sno range drop to 0 and come back over 5 seconds /~ Read from the game's code: the data names it time 20, recovery 5, spread 1.5, sno 100 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 2000 + Blue 2000
 
@@ -456,7 +456,7 @@
 					- Leads to: {Cold Feet}, {Tip of the Iceberg}, {Ice Breaker}
 					- Cost: Blue 150
 				% 2:{Brain Freeze} Withstand heavy hits, heals much slower
-					- Numbers: heal -90%; health armour 3
+					- Numbers: heal -90%; armour 3: a hit of any size takes 1 from the armour and none from health; healing refills it /~ Read from the game's code: the data names it health armour 3 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 400
 
@@ -474,7 +474,7 @@
 					- Cost: Red 75 + Blue 225
 
 				% 4:{Take the Heat} Massive health potential, scorched and shocked enemies will fall
-					- Numbers: overshield cap (Overmax) +400%; damage 200; damage to shocked foes 35 /~ Read from the game's code: the data names it max health \
+					- Numbers: overshield cap (Overmax) +400%; each time a Scorched foe hurts it, that foe takes 200 damage (a Temperature-Shocked one 35) /~ Read from the game's code: the data names them max health, damage 200 and damage to shocked foes 35 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 250 + Blue 1500
 
@@ -513,7 +513,7 @@
 					- Cost: Blue 25 + Yellow 250
 
 				% 3:{Black Sno} Generate heat resistant Sno
-					- Numbers: the Heater melts it at a fifth of the speed; a Snoble or Mini Snoble landing on it turns Burning (attack speed +50%, damage +50%, drain +100%); the Sno Cannon fires black shots from it, and Mini Snobles fired in black shots burn with attack speed +100%, drain +75% /~ Read from the game's code \
+					- Numbers: the Heater melts it at a fifth of the speed; a Snoble or Mini Snoble landing on it turns Burning (attack speed +50%, damage +50%, drain +100%); the Sno Cannon fires black shots from it, which hit twice as hard (a Snoble x3 instead of x1.5, a Mini x4 instead of x2), and Mini Snobles fired in black shots burn with attack speed +100%, drain +75% /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 200 + Blue 100
 				% 3:{Rich Sno} Generate aura infused Sno giving resources on use
@@ -521,7 +521,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 300
 				% 3:{Snobles} The Sno lives!
-					- Numbers: every 5th Sno the Box makes also throws a Snoble; after Sno Fall, every 5th launch is a Snoble /~ Read from the game's code; the data's units 3 is never read \
+					- Numbers: every 5th siphon also throws a Snoble, whether or not it made Sno (with Sno Bank, Sno comes every 2nd); after Sno Fall, every 5th launch is a Snoble /~ Read from the game's code; the data's units 3 is never read \
 					- Leads to: {BFS}
 					- Cost: Red 100 + Blue 100 + Yellow 100
 
@@ -599,7 +599,7 @@
 		[Ability] {Fish Follow}
 			- Does: Recruits a fish to follow Boutman; he also fishes KO'd fish out of barrels
 			- Target: one of your fish
-			- Range: his fishing range
+			- Range: any distance to recruit; fishing a fish out of a barrel needs it within his fishing range /~ Read from the game's code \
 			- Cooldown: none
 			- Keys: its own button
 			- Unlocked: from the start
@@ -607,7 +607,7 @@
 
 		[Vessel Mechanic] [The Bout Way]
 			- Rule: Boutman builds only the Bouthouse, and every upgrade on it lands on him. Boutbro builds the rest: the first fish and barrel are free, then each costs more than the last (fish n costs (n-1) x Yellow 25)
-			- Details: Boutman can't mine until Fishbender. After Enter the Boutman he never drowns, he is KO'd until healed
+			- Details: Boutman can't mine until Fishbender. After Enter the Boutman he never drowns, he is KO'd until healed to full health
 
 		(Support):{Bouthouse}
 			- Boutman's upgrade panel: every upgrade bought here goes onto Boutman, and comes back if the house falls.
@@ -748,7 +748,7 @@
 					- Leads to: {Bout Yacht}, {Bout Battleship}
 					- Cost: Red 175 + Yellow 75
 				% 2:{Bout Raft} Does something...
-					- Numbers: threshold 4
+					- Numbers: once 4 of the team's boats have Bout Raft, buying one calls Boutmom (one per map), but she leaves at once while fewer than 5 have it, so she stays from the 5th /~ Read from the game's code: the data names it threshold 4 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 50
 
@@ -847,12 +847,12 @@
 			- Barrel cost multiplier: 1
 			- Boat cost multiplier: 1
 			- How many: 1
-			- Respawn: with the Bouthouse
+			- Respawn: 10 seconds after he falls (the Bouthouse's Respawn), while the Bouthouse stands; a new Bouthouse sends a new one
 			- Orders: builds and mines
 			- Cost: free
 
 		(Minion):{Buppy}
-			- Made by: the {Fish Barrel}
+			- Made by: the {Fish Barrel} after Bout Inc Watertower
 			- Health: 200
 			- Damage: 25
 			- Range: 1.5 tiles
@@ -861,10 +861,10 @@
 			- Engage range: 1000 tiles
 			- Live: 1
 			- Following: 0
-			- Damage per hit: 25
-			- How many: per barrel
+			- Self-damage per hit: 25 /~ Read from the game's code: each hit it lands costs it 25 health, so it falls after 8; the data names it Perhitdamage \
+			- How many: one each time a fish leaves the barrel, with no limit /~ Read from the game's code \
 			- Respawn: none
-			- Orders: fights anything near
+			- Orders: heads for the farthest enemy within its engage range (in effect anywhere), fighting what it meets on the way /~ Read from the game's code \
 			- Cost: free
 
 		(Minion):{Boutdad}
@@ -876,7 +876,7 @@
 			- Cost: free
 
 		(Minion):{Boutmom}
-			- Made by: the {Boutboat} after 4 Bout Rafts
+			- Made by: the {Boutboat} once 5 of the team's boats have Bout Raft /~ Read from the game's code: she comes at the 4th and leaves at once below 5 \
 			- Stats: none of its own /~ Uses the building's \
 			- How many: 1 per map
 			- Respawn: none
@@ -1013,7 +1013,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 2750 + Yellow 2000
 				% 4:{Hyper Pipes} A massive temporary boost to ALL aura production...
-					- Numbers: duration 600 seconds; amount 1; damage (its mining) +100% for those 600 seconds /~ Read from the game's code: the data names it attack speed \
+					- Numbers: for 600 seconds, gives its owner 1 Red, 1 Blue and 1 Yellow aura each second (1800 in all); damage (its mining) +100% for those 600 seconds /~ Read from the game's code: the data names them duration 600; amount 1; attack speed \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3000
 
@@ -1053,7 +1053,7 @@
 					- Leads to: {Convoy}
 					- Cost: Red 350
 				% 3:{Knight Commander} Boost to stats and effects, all same color Knights gain enhanced effects
-					- Numbers: health +150%; damage +50%; attack speed +15%; range +15%; effect +0.5; Knights nearby with the same weapon gain its enhanced effect /~ On the units \
+					- Numbers: health +150%; damage +50%; attack speed +15%; range +15%; effect +0.5; every Knight on the map with the same weapon gains its enhanced effect /~ On the units; the reach read from the game's code \
 					- Leads to: {Convoy}, {True Knight}
 					- Cost: Red 650
 				% 3:{Sword Hand} Knights gains a powerful slash attack upon close range
@@ -1148,7 +1148,7 @@
 			- Respawn: 10 seconds
 			- Orders: fetches a gun, then guards the Keep's rally point (Move button)
 			- Cost: free
-			[Weapons] /~ Picked up from Silo Pipes; the gun's colour comes from the ore it mines \
+			[Weapons] /~ Picked up from Silo Pipes; the gun's colour comes from the ore it mines; each gun's numbers add to the Knight's own \
 				- Red: {Sub-Machinegun} Rapid, short range combat /~ attack speed 2; damage 1; speed 0; range 4; health 10 \
 				- Blue: {Shotgun} Deals a strong, close ranged attack /~ attack speed -0.25; damage 5; speed 0; range 2.25; health 20 \
 				- Yellow: {Sniper} High power, high range bullets /~ attack speed -0.5; damage 9; speed 0; range 7; health 0 \
@@ -1180,8 +1180,8 @@
 			- Build range: 2.5 tiles
 			- Sell rate: 75%
 			- Speed damage: 1
-			- Speed after a collision: -0.1
-			- Speed damage at start: 0
+			- Speed after a collision: -0.1, taken only from speed the Speed Pads gave him, never his own /~ Read from the game's code \
+			- Ram delay: 0 seconds /~ Read from the game's code: the data names it speed damage at start; no ram damage this soon after a dash starts or a pad turns it \
 			- Special rule: {Good Dog} Gains ability to Dash, dealing damage running in a straight line
 
 		[Ability] {Dash}
@@ -1219,7 +1219,7 @@
 					- Leads to: {Blink Chain}, {Blaze Effector}, {Blast Maker}
 					- Cost: Blue 35
 				% 2:{Stored Charge} Increased damage, can hold charge when not firing
-					- Numbers: damage +25%; top damage +150%; tick rate 0.05; drain rate 0.2
+					- Numbers: damage +25%, rising by 5% each second it is not firing up to +150%, and falling by 20% each second while firing /~ Read from the game's code: the data names it damage +25%; top damage +150%; tick rate 0.05; drain rate 0.2 \
 					- Leads to: {Blink Chain}, {Blaze Effector}, {Blast Maker}
 					- Cost: Red 30
 				% 2:{Combo'd} Can now target a second enemy
@@ -1245,7 +1245,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 3000
 				% 4:{Pure Ex} Enemies deal no damage if shot, purest form of racing
-					- Numbers: duration 1.75 seconds; duration per health 1000; duration at least 0.5
+					- Numbers: a foe the beam hits deals no damage for 1.75 seconds, 1 second less for each 1000 of its current health, at least 0.5 /~ Read from the game's code: the data names it duration 1.75; duration per health 1000; duration at least 0.5 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 1500 + Blue 1500 + Yellow 1500
 
@@ -1268,7 +1268,7 @@
 					- Cost: Red 55
 
 				% 2:{Big Dog} Dog is stronger and keeps speed on collisions
-					- Numbers: health +200%; speed after a collision +0.8, so a collision costs 0.2 speed instead of 1 /~ Read from the game's code: the data's -0.8 is subtracted \
+					- Numbers: health +200%; speed after a collision +0.8, so a collision costs 0.2 speed instead of 1 /~ Read from the game's code: the data's -0.8 is subtracted; a collision only takes speed the pads gave, never the dog's own \
 					- Leads to: {Mechanic's Friend}, {Diesel Dog}, {Lap Dog}
 					- Cost: Blue 65
 				% 2:{Up Dog} Increased base speed
@@ -1373,7 +1373,7 @@
 					- Leads to: {Lap 2}, {Long Ranged}
 					- Cost: Yellow 30
 				% 1:{Quick Pass} Increased effectiveness the faster the unit on pickup
-					- Numbers: each pickup collects 1 more, plus 0.15 for each point of the collector's speed above 2 /~ Read from the game's code: the data names it tick speed 0.15 \
+					- Numbers: each pickup takes 1 more charge, plus 0.15 for each point of the collector's speed above 2, and hits the ore once for each whole or part charge taken; the charge can drop below 0, so the next pickup waits for it /~ Read from the game's code: the data names it tick speed 0.15 \
 					- Leads to: {Lap 2}, {Long Ranged}, {Tune Up}
 					- Cost: Yellow 25
 
@@ -1415,8 +1415,8 @@
 			- Range: 0.1 tiles
 			- Speed: 2
 			- Speed damage: 1, +0.25 per level
-			- Speed after a collision: -1
-			- Speed damage at start: 0.2
+			- Speed after a collision: -1, taken only from speed the Speed Pads gave it, never its own /~ Read from the game's code \
+			- Ram delay: 0.2 seconds /~ Read from the game's code: the data names it speed damage at start; no ram damage this soon after a run starts or a pad turns it \
 			- How many: 1 per Garage
 			- Respawn: 5 seconds
 			- Orders: runs one straight lap, ramming foes, then vanishes

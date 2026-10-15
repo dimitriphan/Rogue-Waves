@@ -204,7 +204,7 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |
-| Sno Cannon (Red 30, `Tower, Towerfighter`) | eats `Ammo` Level from the nearest **`Snoble`- or `Sno`-tagged entity of any team** within `Rangesno`, then fires; Snoblaster laser drains snow to 5000 and fires a ×6 beam | Damage, Attackspeed, Range, Rangesno, Ammo, Projspeed | splash, slow, Hypercool, Permasno, laser and Snoble numbers |
+| Sno Cannon (Red 30, `Tower, Towerfighter`) | eats the nearest **`Snoble`** within `Rangesno` whole, or else `Ammo` Level from the nearest **`Sno`-tagged entity** (both **of any team**), then fires; Snoblaster laser drains snow to 5000 and fires a ×6 beam | Damage, Attackspeed, Range, Rangesno, Ammo, Projspeed | splash, slow, Hypercool, Permasno, laser and Snoble numbers |
 | Sno Box (Blue 10 Yellow 25, `Tower, Gatherer`) | hurts every ore in Range (no `Lasthit`) and makes snow (`Heal` Level) on its tile or, with Sno Fall, where it throws it (no range limit); all its hurts on `Mob`s ×20 (×50 Hard Sno) | Damage, Attackspeed, Range, Heal | ×20/×50, Snoble every 5th, Snoaddrate |
 | Heater (Red 60, `Tower, Towerfighter`) | burns up to 5 foes in Range, melts snow; Cookin' Eggs pulse, Heat Treat heals allies, Cold Sweats gives every same-team `Towerfighter` in its Range +100 % attack speed | Damage, Attackspeed, Range, Snomeltspeed, Rangesno | pulse 20, heals 10/3.3, Shock +15 %, Scorch ramp |
 | Ice Brick (Blue 15, `Tower`) | heals from the snow on its tile, then an overshield (`Healthover`) up to `Health × Overmax`; leftovers Thin Ice (rebuilds) and Rock | Health, Heal, Healtime, Overmax | ×0.85 resist, bursts 200/35, snow lob 20 |
@@ -344,14 +344,16 @@ Landquick, Attack 4×2.
 **The Dash**, a reusable hero ability: `Entity_Ai_Mob_Movementlinear.Spawn` creates `Command_Movelinear` (Button, keys
 6/7, Onpressed, priority 6, Statechange). The client sends a unit direction snapped to 90°; the host runs tile by tile
 along `Helper_Navtools.Getpathlinear` until nothing lies ahead (no range limit), one tile per `1/Speed` s
-(Entity_Ai_Mob_Movementlinear.cs:9-152). `Mob_Dog` hits each foe it runs into with `Interacthurt` (credited) and slows
-on collisions. A server-side dash must set `Commandlistserver["Movelinear"].Goalposition` and `Updatecommand`, as the
-pads do; the AI ignores server-issued commands.
+(Entity_Ai_Mob_Movementlinear.cs:9-152). `Mob_Dog` hits each foe it runs into with `Interacthurt` (credited); a
+collision adds the negative `Collisionspeed` (Buster −0.1, a dog −1) to the speed pads gave it, floored at 0, so it
+never cuts the runner's own Speed (Entity_Ai_Mob_Dog.cs:97-149; Entity_Ai_Effect_Busterpad_Speed.cs:34). A
+server-side dash must set `Commandlistserver["Movelinear"].Goalposition` and `Updatecommand`, as the pads do; the AI
+ignores server-issued commands.
 
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |
 | Pedestal (Red 25, `Tower, Towerfighter, Totem`) | tracking beam, Damage per beam tick; Blink chains through same-team `Totem`s; Pure Ex: beam targets deal no damage | Damage, Attackspeed, Range, Rangebreak | projectile name |
-| Garage (Red 60, `Tower, Towerfighter`) | spawns dogs; mirrors tier 2-3 upgrades onto dogs by name | Respawn, Health | **`Units`** (only `Addressdogcount` on a downgrade reads it; the `Units_Add` params are never read) |
+| Garage (Red 60, `Tower, Towerfighter`) | spawns dogs; mirrors each of its upgrades onto its dogs as the same-named `Mob_Busterdog_*` upgrade (tiers 2-3 also as stat mods and a skin) | Respawn, Health | **`Units`** (only `Addressdogcount` on a downgrade reads it; the `Units_Add` params are never read) |
 | Speed Pad (Blue 25, trap, `Trap, Pad`) | same-team `Mob`s running with it get a decaying Speed Add; dash runners are redirected; Refuel lets a tower stand on it (+75 % attack speed) | Speed, Effect, Maxspeed, Dogspeed, Damage after Speed Bump | — |
 | Checkpoint (Yellow 50, trap, `Gatherer, Trap, Checkpoint`) | charges by distance to its linked ore; any same-team `Mob` touching it collects and the checkpoint hurts the ore (pays everyone); Tune Up's aura: next hit ×3 and **5 of each colour to the collector's owner** | Attackspeed, Damageresource, Healthresource, Collectrange, Range | aura payout |
 

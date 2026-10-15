@@ -124,7 +124,7 @@ Any number of vessel mods can coexist, in the project and in the game:
   and refuses to run if one is still live (pitfall #103); restore afterwards.
 - **Boat**: `ModKitBoat` (kit 1.4) adds one spot per vessel. While the vessels fit on the 6 shipped spots they stand
   there; past that, every vessel stands in staggered rows across the deck, evenly spaced in spot order from just past
-  one outer shipped spot to the other (2 rows to 11 vessels, 3 rows to 16, then they shrink a little), each row behind
+  one outer shipped spot to the other (2 rows to 11 vessels, 3 rows to 17, then they shrink a little), each row behind
   standing a little higher so its heads show over the row in front, and the click boxes are moved up onto the sprites
   and trimmed to their width, so each vessel can be clicked where it's drawn. Kits 1.0-1.3 put extras in the gaps and
   by 10 vessels some couldn't be clicked. Every mod runs the layout every frame from the shipped spots' first
