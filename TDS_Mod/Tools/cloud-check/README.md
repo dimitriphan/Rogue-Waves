@@ -19,9 +19,9 @@ Debug builds: pass the defines like the PowerShell script, e.g. `"ARGO_SELFTEST,
 
 ## Setup (once)
 
-Needs `mono-devel`, `python3`, `curl` and `unzip`, plus the TDS Vessel Creator (`TDS_Vessel_Creator/` in this
-repository) (its `reference/api_assembly_csharp.txt` dump is turned into stubs of the game's API; the stubs are not
-committed).
+Needs `mono-devel` (`apt-get update` first in a fresh container), `python3`, `curl` and `unzip`, plus the TDS Vessel
+Creator (`TDS_Vessel_Creator/` in this repository) (its `reference/api_assembly_csharp.txt` dump is turned into stubs of
+the game's API; the stubs are not committed).
 
 ```bash
 cd TDS_Mod/Tools/cloud-check
@@ -35,6 +35,7 @@ cd TDS_Mod/ModSource
 python3 ../Tools/cloud-check/check_mod.py Argo/Code Shared Argo ""
 python3 ../Tools/cloud-check/check_mod.py Argo/Code Shared Argo "ARGO_SELFTEST,ARGO_SHOTS"
 ../Tools/cloud-check/check_editor.sh ../Assets/ArgoMod/Editor
+python3 ../Tools/cloud-check/check_mod.py ../../TDS_Vessel_Creator/examples/recipes none Recipe ""   # the recipes
 cd ../Assets/ArgoMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . Argo /tmp/argo sma
 ```
 
@@ -47,5 +48,11 @@ cd ../Assets/ArgoMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . 
   2021.1. APIs the vessels use exist in both; an API added after 2021 would show up as a false error.
 - The preview renderer is flat-shaded and orthographic, close to the builder's preview camera but not the game's
   lighting or materials.
+- Types from assemblies outside the game's reference list are stubbed loosely: `Blm_Player.Steamid` (Steamworks) is an
+  `object` here, so code touching it compiles here and fails in game. Keep to the reference list in
+  `Build-<Name>Mod.ps1`.
+- `stubs/ThirdParty.cs` (Netcode, TMP, UniTask stand-ins) is hand-written: add a member when real code needs it
+  (`ClientRpcParams.Send.TargetClientIds` and `NetworkManager.ServerClientId`, 2026-10-14), then rerun
+  `build_stubs.sh <TDS_Vessel_Creator>`.
 - Validated against the unmodified Mummer template: 0 errors in release and with every debug define, and a seeded
   `HashSet` (missing `System.Core`) is reported as CS1069, as the game would.

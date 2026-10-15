@@ -8,8 +8,11 @@
 //          chosen node by itself, C4 the node is picked and its map loads in Mode_RogueWave
 //   map    W1/W2/W3 the weather's object or speed reacts at the next Tide (forced), then the map is won and the party
 //          returns: C5 back on the chart with the route one longer, C6 the save holds no chart name; in the first map
-//          also R1-R5 and R2b the rejoin's host side with a pretend missing friend, and R6 the lobby shut once the map ends
-//   end    the campaign save round-trips through Continue, then the campaign is stopped and its keys removed
+//          also R1-R5 and R2b the rejoin's host side with a pretend missing friend, R6 the lobby shut once the map ends,
+//          and L1 the load watch saw the loading screen and sent nobody back
+//   end    the campaign save round-trips through Continue; S1/S2 a slot switch leaves the campaign behind (pretended),
+//          the same save keeps it; then the campaign is stopped and its keys removed. I1 (on the boat) the player's id
+//          is kept for a restart, and says whether this launch put one back
 public static class RWTest
 {
     public const uint Seed = 20261009;
@@ -114,6 +117,10 @@ public static class RWTest
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("boat", "never reached the boat"); yield break; }
         yield return new WaitForSecondsRealtime(4f);
         if (!RWUtil.IsHost || !RWUtil.IsLeader) { Setup("boat", "not the host and leader"); yield break; }
+        string kept = RWUtil.ReadString(RWData.SaveFolder, "Player_Guid");
+        Check("I1 this player's id is kept for a restart", kept != "" && RWUtil.ReadString("Metadata", "Player_Guid") == kept
+            && RWUtil.ReadString(RWData.SaveFolder, "Player_Device") == RWIdentity.Device(),
+            (RWIdentity.Restored ? "put back from the last launch" : "first kept this launch") + ", session " + (Blm_Server.Instance.Localplayer != null ? Blm_Server.Instance.Localplayer.Sessionid.Value.ToString() : "-"));
         if (RWMode.Pool.Count == 0) { Check("C0 chart pool", false, "no base maps found"); yield break; }
         if (!Plan()) yield break;
 
@@ -137,6 +144,7 @@ public static class RWTest
             if (Game_Mapvars.Instance == null || !Game_Mapvars.Instance.Maploaded.Value) yield break;
             yield return Weather(m);
             if (m == 0) yield return Rejoin(m);
+            if (m == 0) Check("L1 the load watch saw the loading screen and sent nobody back", RWLoad.Loads >= 1 && RWLoad.Kicked == 0, "loading screens " + RWLoad.Loads + ", sent back " + RWLoad.Kicked);
             yield return Win();
             if (m == 0) Check("R6 the lobby is shut once the map ends", !RWRejoin.DoorOpen && !Blm_Multiplayer.Instance.Server_Serveropen, "Server_Serveropen " + Blm_Multiplayer.Instance.Server_Serveropen);
             yield return Return(m);
@@ -150,6 +158,12 @@ public static class RWTest
         RWCampaign.Route.Clear();
         bool back = RWCampaign.Continue();
         Check("Continue reads the campaign back", back && RWCampaign.Seed == Seed && Same(RWCampaign.Route, route), "route " + Digits(RWCampaign.Route) + ", expected " + Digits(route));
+        RWCampaign.SlotChanged();
+        Check("S1 the same save keeps the campaign", RWCampaign.Active && RWCampaign.Live, "");
+        RWCampaign.PretendOtherSave();
+        RWCampaign.SlotChanged();
+        Check("S2 another save leaves the campaign behind, in its own slot", !RWCampaign.Active && RWCampaign.Route.Count == 0
+            && RWCampaign.Saved(out seed, out saved) && seed == Seed, "saved " + seed + " " + Digits(saved));
         RWCampaign.Stop();
         Check("Stop removes the campaign from the save", !RWCampaign.Saved(out seed, out saved), "");
     }

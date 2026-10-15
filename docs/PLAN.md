@@ -202,15 +202,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels; RogueLab
   round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
   Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
-  template in `15_Templates.txt`. 2026-10-15: two quality passes and a reorganisation (`docs/reports/`, `docs/mode/`;
-  `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
-- **Next:** merge the open PRs in the order #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
-  §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions
-  2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
+  template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
+  RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
+  a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in
+  "Log" below.
+- **Next:** merge the open PR #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md` §6. Then Phase 5's next
+  pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
   (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Numbers held by open PRs:** kit chapters 19-24 (#34); pitfalls #93-101 (#34), #102-104 (#30), #92 unused. Next
-  free: chapter 25, pitfall #105.
+- **Numbers held by open PRs:** pitfalls #102-104 (#30); #92 is unused. Next free: chapter 25, pitfall #105.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -315,6 +315,25 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Objective, Enemy Modifier, Sea Weather, Bug) in `15_Templates.txt` (was `15_Vessel_Template.txt`); `04` renamed
   `04_Rogue_Waves_Mode.txt` and given the sea chart and sea weather from `05`, which is now a numbered walkthrough;
   Argo (built numbers, `~`) and Uloe (blank slots) laid into the vessel template; dates only in `02`.
+- **Also (2026-10-14):** Dimitri asked to decompile the game and turn it into kits and lessons. The whole
+  `Assembly-CSharp.dll` was decompiled into the thread's scratchpad (never committed) and six areas the kit was thin
+  on were read in parallel and spot-checked by hand. Result: kit chapters `docs/19_NETWORKING.md` (with
+  `reference/network_surface.md`), `20_UI_AND_HUD`, `21_MUSIC_SOUND_TEXT`, `22_NEW_MAPS`, `23_SAVE_UNLOCKS_LOADER`,
+  `24_ENEMY_BODIES_AND_BOSSES`; five recipes in `examples/recipes/` that compile with cloud-check; pitfalls #93-101;
+  corrections in `docs/01`, `03`, `05`, `07`, `13`, `14`, `15`, `docs/mode/REJOIN.md`, `docs/PACK.md`,
+  `docs/mode/SEA_CHART.md` and `docs/EXPANSION_SCOPE.md`. Findings for the pack's own code: a friend who **restarts**
+  the game gets a new `Sessionid` and RogueWavesMode turns them away (`docs/mode/REJOIN.md` O3b); one client that
+  can't load a map sends **every** machine to the main menu after 120 s; debuff looks and stock effects drop silently
+  in a busy online fight; campaign statics survive a save-slot switch. Each chapter ends with a PC list; the online
+  evening list is `docs/19` §8.
+- **Also (2026-10-15):** Dimitri said "fix those". **RogueWavesMode 0.3.0** (`Code/10_Online.cs`, `06_Campaign.cs`):
+  every machine keeps its player GUID in the pack's save folder and puts it back after the game wipes it, so a
+  restarted friend keeps their `Sessionid` and seat (`RWIdentity`); the host sends back a player still loading 75 s
+  into the loading screen (`RWLoad`); the campaign leaves itself behind when the save slot changes
+  (`RWCampaign.Live`). **Argo 2.0.1**: its slow look and refused-flood mark go past the effect throttle. Compiled (0
+  errors, release and self-test); **not run**. Next PC round of the mode adds I1, L1, S1/S2; online:
+  `docs/mode/REJOIN.md` O3b, O3c, `docs/19` §8 N4, N9, N14. Yossele (PR #30) still sends its looks through the
+  throttled call; its thread can copy Argo's `ArgoUtil.Debuff`.
 - **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
   new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
   and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey

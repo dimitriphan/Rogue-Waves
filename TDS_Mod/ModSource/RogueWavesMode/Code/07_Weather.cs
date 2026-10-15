@@ -205,7 +205,7 @@ public static class RWWeather
         Flood = Nest = null;
         speedStep = 0;
         RWChart.Node node = RWCampaign.Next;
-        if (!RWCampaign.Active || node == null)
+        if (!RWCampaign.Live || node == null)
             return;
         string plan = Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString();
         if (plan != RWMode.Twin(node.Plan)) { RWLog.Warn("map " + plan + " is not the chart's " + RWMode.Twin(node.Plan) + ": no weather"); return; }

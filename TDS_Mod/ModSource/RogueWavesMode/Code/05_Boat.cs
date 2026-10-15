@@ -115,7 +115,7 @@ public static class RWBoat
     {
         if (slow)
             Guard();
-        if (!RWCampaign.Active)
+        if (!RWCampaign.Live)
             return;
         string target = RWCampaign.WorldName();
         if (main.Worlded.Value.ToString() != target && Warped != target && !vis.Inworldtransition && Time.realtimeSinceStartup - upAt > 1.5f)

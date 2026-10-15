@@ -7,7 +7,9 @@ to rejoin mid-game without interrupting the others.
 back on return; the one hard block is that it shuts the lobby for the whole map. `RogueWavesMode` 0.2.0
 (`TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs`) opens it while a seat is empty and catches the rejoiner up.
 **State:** 0.2.1 passed the solo PC round 6, 47 of 47 (2026-10-11; round 5's one failure is in §6). The drop and
-rejoin themselves need a friend online (§6, O1-O8).
+rejoin themselves need a friend online (§6, O1-O8). 0.3.0 (2026-10-15, compiled, not run) adds what the decompile
+showed was missing: a friend who restarts the game keeps their `Sessionid` (`RWIdentity`, O3b), and one player who
+can't load a map no longer sends everyone to the main menu (`RWLoad`, O3c); both in `Code/10_Online.cs`.
 
 ## 1. What the game does today
 
@@ -76,7 +78,11 @@ cosmetic change the base game already makes on any drop: player colours follow j
 ## 4. Limits and risks
 
 - A player who drops **during the loading screen**, before the map starts, has no seat (the game never spawned their
-  vessel) and is turned away; they rejoin on the boat.
+  vessel) and is turned away; they rejoin on the boat. So is one the host sends back for not loading (O3c).
+- A restart keeps the seat only with the same save slot on the same computer (the kept id lives in that slot and is
+  tied to the PC), and only once the host has noticed the old connection is gone: rejoining while the host still holds
+  the old player object would give two objects one `Sessionid`. A restart takes longer than Steam's disconnect, so
+  this is not expected (O3b).
 - The Steam side (Join Game shows on a host whose lobby was reopened mid-map) is unverified until an online evening.
 - The rejoiner's own vessel: its group is loaded after the seat comes back, and the game gives a thing's client side
   10 s after the map loads to find its group (`Bl_Address.Waitforload`). Likely enough; checked online (O3).
@@ -87,8 +93,9 @@ cosmetic change the base game already makes on any drop: player colours follow j
 
 ## 5. Where the code is
 
-`TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs`, driven every frame from `00_RogueWavesModeMod.cs`; self-test
-probes R1-R6 and R2b in `99_SelfTest.cs`. Engine facts in kit `docs/15` §14.5.
+`TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs` and `10_Online.cs`, driven every frame from
+`00_RogueWavesModeMod.cs`; self-test probes R1-R6, R2b, I1 and L1 in `99_SelfTest.cs`. Engine facts in kit `docs/15`
+§14.5 and `docs/19` §3, §5.
 
 ## 6. Tests
 
@@ -107,9 +114,11 @@ Round 6 (0.2.1, 2026-10-11): 47 pass, 0 fail.
 
 | # | Do | Expect |
 | --- | --- | --- |
-| O1 | The friend ends their game (Task Manager or pulled cable) mid-Tide | The host's chat says they lost the connection; the Tide goes on, nothing pauses |
-| O2 | The friend starts the game and opens the Steam friends list | Join Game on the host; their main menu showed the "Lost the map" line |
+| O1 | The friend pulls their network cable (or turns Wi-Fi off) mid-Tide, **game left open** | The host's chat says they lost the connection; the Tide goes on, nothing pauses |
+| O2 | The friend reconnects and opens the Steam friends list | Join Game on the host; their main menu showed the "Lost the map" line |
 | O3 | Join Game | The running map loads, the fly-in plays, then their HUD; their vessel where it stood, their towers sellable and upgradable, their aura as before |
+| O3b | Repeat O1-O3, but the friend ends the game in Task Manager and starts it again (same save slot) | As O3. Since 0.3.0 the friend's pack puts the id from their last launch back (kit `docs/19` §5, `RWIdentity`), so the host gives them the same `Sessionid`; their log says "identity: this player's id from the last launch is back". With 0.2.1 they were turned away like a stranger (O5) |
+| O3c | A friend with the pack turned off joins on the boat, and the host starts a chart map (the friend can't load it) | Since 0.3.0: 75 s into the loading screen the host sends that friend back with a chat line and the others start the map (`RWLoad`); before, everyone went to the main menu at 120 s |
 | O4 | Play a Tide | Tide pay and kill drops reach them again |
 | O5 | A third friend not in the map tries Join Game | Turned away with a chat line; back on their main menu |
 | O6 | Watch the others' screens while the friend joins | No stutter worth noting (note any, and the host's log time of the join) |

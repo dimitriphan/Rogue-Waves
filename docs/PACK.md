@@ -20,7 +20,9 @@ Why this layout:
   shared domain unless every line goes into one code string. That would mean four vessels and the mode compiled on
   every launch, where one compile error takes the whole pack down, and the kit, build scripts and self-tests are all
   per vessel. So parts stay separate in code and meet through game state, which they can do in one bundle as well as
-  in several.
+  in several. One limit read from the loader since (kit `docs/23` §4.3, 2026-10-14): a compile error in one
+  `Default` prefab skips the bundle's `Default` prefabs after it, so every part is compiled alone (cloud-check)
+  before a pack build.
 - One bundle beats several mod folders for players. There is one thing to install and enable, and an online lobby
   can't end up with mismatched part versions (every player needs the whole pack, a Phase 1 decision).
 - Development doesn't change. Each part is built, exported and self-tested as its own dev mod with the kit pipeline.

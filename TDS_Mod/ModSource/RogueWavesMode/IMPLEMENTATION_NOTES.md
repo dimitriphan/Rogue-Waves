@@ -1,5 +1,29 @@
 # RogueWavesMode: implementation notes
 
+## 0.3.0 (2026-10-15): fixes from the decompile
+
+Dimitri asked to fix the four problems the decompile found in the pack (kit `docs/19` §3-5, `23` §6; pitfalls
+#93-95, #99). **State:** compiled here (release and `ROGUEWAVESMODE_SELFTEST`: 0 errors; editor builder unchanged and
+clean). **Not run in game, not tried online.**
+
+- **Restart rejoin** (`10_Online.cs`, `RWIdentity`, every machine, every 0.5 s from launch): the player's GUID is
+  kept in `RogueWaves/Player_Guid` (with `Player_Device`, a hash of this PC's id) and written back into
+  `Metadata/Player_Guid`, which the game wipes on launch and reads on joining. The host then gives the same
+  `Sessionid`, so `RWRejoin` and the game's own hand-back work as for a pulled cable. While connected, the GUID in use
+  is the one kept. Online check: `docs/mode/REJOIN.md` O3b.
+- **One failed load** (`RWLoad`, host, once a second while a `Game_Load` exists): 75 s into the loading screen, once
+  the host has loaded, every player whose `Loaded` is still false is kicked with a chat line. Online check: O3c.
+- **Hidden effects:** the mode sends none; Argo's slow look and refused-flood mark go past the throttle (Argo 2.0.1,
+  its notes). Yossele (PR #30, its own branch) still sends its looks through `Vfxdebuffcheck` (`Yossele/Code/01_Util.cs`).
+- **Slot switch** (`06_Campaign.cs`): the campaign remembers the `Bla_Data.Playerdata` object it was started or
+  continued in; `RWCampaign.Live` (boat, weather, map end, every save) and the `Onslotchanged` / `Onslotremoved`
+  hooks forget it from memory when that object changed. Its own slot keeps it for Continue.
+
+New self-test checks for the next PC round: **I1** (on the boat: the kept GUID equals `Metadata`'s and this PC's; says
+whether this launch put one back, so a second launch should say "put back"), **L1** (first map: the load watch saw
+the loading screen and kicked nobody), **S1/S2** (end: the same save keeps the campaign; a pretended other save
+leaves it behind while its slot still holds it).
+
 ## 0.2.1 (2026-10-11): the lobby is reopened every frame
 
 **PC round 6** (0.2.1 self-test, 2026-10-11): **47 pass, 0 fail, 0 setup.** R2 "Server_Serveropen False -> True";

@@ -1,5 +1,14 @@
 # Argo implementation notes (2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2.0.1 (2026-10-15, compiled, not run): looks that must show online.** The decompile showed the game drops
+`Vfxdebuffcheck` and `Vfxoneshotcheck` sends while 50 effects wait (kit `docs/19` §4, pitfall #95), which happens in
+busy online fights. `ArgoUtil.Debuff` (the slow look on every slow, root and pin) now calls `Vfxdebuff_ClientRpc`
+itself, counts it in `Clientsendstack`, and skips a look already showing until the new one's end (cleared per map,
+pruned at 256 foes); the refused-flood mark goes through `ArgoUtil.MustSee`. The upgrade and placement borders stay
+on the throttled path (flavour; Argo's own `Vis` looks carry the news). Compiled with kit 1.6 at 0 errors in release
+and `ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE`. Check online: a slowed foe shows its slow look on the friend's screen in a
+big fight (kit `docs/19` §8 N4).
+
 **2.0 for Rogue Waves, before its first PC round (step 3 code done, 2026-10-08; the rounds below then ran).** Design approved (`DESIGN.md`, "Step 3, code reality" lists
 how the code does it). Art from step 2 (`Previews/2.0/`). **Checked here only:** `check_mod.py` compiles the mod with
 kit 1.6 at 0 errors in release, `ARGO_SELFTEST` and `ARGO_SELFTEST,ARGO_SHOTS`; `check_editor.sh` passes.

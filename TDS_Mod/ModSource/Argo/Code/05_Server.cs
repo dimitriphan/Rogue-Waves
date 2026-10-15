@@ -24,6 +24,7 @@ public static class ArgoServer
             Nauts.Clear();
             ArgoHooks.Reset();
             ArgoStatus.Reset();
+            ArgoUtil.ForgetLooks(true);
             ArgoWater.Reset();
             if (ge != null)
             {

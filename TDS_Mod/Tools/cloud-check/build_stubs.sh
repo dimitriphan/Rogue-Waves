@@ -5,6 +5,7 @@
 set -e
 H=$(cd "$(dirname "$0")" && pwd)
 VC=${1:?usage: build_stubs.sh <path to the unzipped TDS_Vessel_Creator>}
+VC=$(cd "$VC" && pwd)   # absolute: the script cds into stubs/ below, which broke a relative path (2026-10-14)
 CSC="mono $H/roslyn/tools/csc.exe"
 MONO=/usr/lib/mono/4.5
 UREFS=""; for f in $H/unitymods/lib/net45/*.dll; do UREFS="$UREFS -r:$f"; done

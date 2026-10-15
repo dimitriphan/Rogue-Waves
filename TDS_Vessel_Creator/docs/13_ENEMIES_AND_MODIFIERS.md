@@ -21,10 +21,10 @@ Enemy ids live in the `Mob` label like towers and units. The Sandbox artifact's 
 | `Enemy_Ballista` | `Entity_Ai_Enemy_Ballista` | ranged: fires `Enemy_Ballista_Bolt` at the nearest target it can see, steps 0.3 forward, then slows itself 50% until its next shot | `Projspeed` |
 | `Enemy_Maul` | `Entity_Ai_Enemy_Maul` | melee slam: Vis "Attack", 1.3 s wind-up, then hurts up to `Projcount` targets within `Projradius` (shake, `Maul_Explosion`) | `Projcount`, `Projradius` |
 | `Enemy_Onager` | `Entity_Ai_Enemy_Onager` | lobs `Enemy_Onager_Bomb` at the **farthest** target it can see in range | `Projduration`, `Projcount` |
-| `Enemy_Claymore` | `Entity_Ai_Enemy_Claymore` | when a tower is within `Rangedetect`, launches itself as `Enemy_Claymore_Bomb` at the farthest tower in `Range`. When "killed" it lingers untargetable for `Deathlife` s, then launches anyway if anything is near | `Rangedetect`, `Deathlife` |
+| `Enemy_Claymore` | `Entity_Ai_Enemy_Claymore` | when a tower is within `Rangedetect`, launches itself as `Enemy_Claymore_Bomb` at the farthest tower in `Range`. When "killed" it lingers untargetable for `Deathlife` s, then launches anyway if anything is near (the launch is a despawn, not a death: a Claymore killed near towers pays no drops and gives no kill, `24` §3) | `Rangedetect`, `Deathlife` |
 | `Enemy_Excalibur` | `Entity_Ai_Enemy_Excalibur` | 1.3 s wind-up, then a straight bolt `Enemy_Excalibur_Bolt` | `Projspeed` |
-| `Enemy_Bulwark` | `Entity_Ai_Enemy_Bulwark` | its hits stun (Damage, Speed, Attackspeed overridden to 0.01 for `Stunduration`, look `Debuff_Disabled`); attack = 1.6 s wind-up, close slam (`Closedamage` to `Closecount` targets in `Closerange`), then 5 s later drops `Enemy_Bulwark_Bomb` on up to `Projcount` spots out to `Maxrange` | `Stunduration`, `Projcount`, `Projradius`, `Maxrange`, `Closecount`, `Closerange`, `Closedamage` |
-| (Halberd) | `Entity_Ai_Enemy_Halberd` | flying ore guard: flies to a resource, dives on Gatherers and vessels near it, retreats to its enemy core below `Scarepercent` health, heals | `Protectrange`, `Scarepercent`, `Speedfly`, `Heal` |
+| `Enemy_Bulwark` | `Entity_Ai_Enemy_Bulwark` | its hits stun (Damage, Speed, Attackspeed overridden to 0.01 for `Stunduration`, look `Debuff_Disabled`); attack = 1.6 s wind-up, close slam (`Closedamage` to `Closecount` targets in `Closerange`), then 5 s later drops `Enemy_Bulwark_Bomb` on up to `Projcount` spots out to `Maxrange` (target spots taken **before** the wind-up, each at least `Projradius` farther than the last; the slam never sets `Lasthit`) | `Stunduration`, `Projcount`, `Projradius`, `Maxrange`, `Closecount`, `Closerange`, `Closedamage` |
+| (Halberd) | `Entity_Ai_Enemy_Halberd` | flying ore guard: flies to a resource, dives on Gatherers and vessels near it, retreats to its `Parent` (the `Halberdnest` tower that spawned it) below `Scarepercent` health and heals there; at full health it picks the nearest resource (`24` §2) | `Protectrange`, `Scarepercent`, `Speedfly`, `Heal` |
 | `Enemy_Boutman` | `Entity_Ai_Enemy_Boutman` | the sleeping Boutman on Artrio: wakes on `Awaketide`, spawns fish (`Enemy_Reallystrongfish`), is knocked out to recruit him | - |
 
 What the enemies share:
@@ -71,7 +71,8 @@ the same name, before the map is generated:
 Modeobject                     (label Mode)
   .Enemies        Wavesobject  the Tide table
   .Modescript     name of the server script: Mode_Normal (also Storm/Drought/Tsunami), Mode_Final, Mode_Tutorial
-  .Clientmodescript            Clientmode_*: music, stings, tips on every machine
+  .Clientmodescript            Clientmode_*: music, tips on every machine (the Tide stings come from the host's
+                               Mode_Normal through Tds_Multiplayer_Radio, so a mode on Mode_Normal gets them, `21` §1.2)
   .Specialspots   List<Entry{Location, Team, Optional, Item}>  beings placed at named spots of the map's "Mode" object
   .Defaultparams  Startwait, Basinthreshold, Tipthreshold...
 Wavesobject
@@ -98,6 +99,8 @@ list) on placed objects.
    - `Wait`: no spawn, just waits `Interval` once;
    - `Resources` are handed out when the content starts.
 4. The Tide then lasts until `Time_Wave` (set to `Wavetime`) runs out **or** no targetable team-0 `Enemy` is left.
+   `Time_Wave` only starts counting once every content has finished spawning (Mode_Normal.cs:384-403), so "ending on
+   time" means the whole entry, spawning included, took longer than `Wavetime` (decompile 2026-10-14, `24` §4).
    Ending on time plays "Tide_Completetime"; whatever is still alive keeps walking into the next entry.
 5. A break entry counts `Wavetime` down; when the next entry is a Tide, the cores fire hint projectiles at the enemy
    cores and the banner reads "TIDE APPROACHES" under 3 s.
@@ -343,14 +346,16 @@ without a stock bespoke AI reads as a plain melee foe to them.
 6. **Journal**: whether the base journal has enemy pages a new enemy should join (`Logitems.TextImageBeing`, `Stats`
    and `Drops` can show one). *Answered (`docs/RESEARCH_GAPS.md` C4):* pages are data assets and no code lists enemies,
    so the pack's foe pages are its own.
-7. **Flying**: how Halberd's flight interacts with walls and towers, if a flying enemy is ever wanted.
+7. **Flying**: how Halberd's flight interacts with walls and towers, if a flying enemy is ever wanted. *Answered from
+   code (2026-10-14):* `24` §2.
 
 ## 11. How this was read (cloud decompiling)
 
 The game's code can be read as C# in a cloud thread in about a minute, with no Windows:
 
 ```bash
-apt-get install -y mono-devel          # mono + mcs
+apt-get update && apt-get install -y mono-devel   # mono + mcs; without the update a fresh container
+                                                  # says "Unable to locate package" (2026-10-14)
 # NuGet packages (api.nuget.org is reachable; dot.net downloads are not):
 #   ICSharpCode.Decompiler 8.2.0.7535 (netstandard2.0), System.Collections.Immutable 6.0.0,
 #   System.Reflection.Metadata 6.0.0, System.Memory 4.5.4, System.Runtime.CompilerServices.Unsafe 6.0.0,
