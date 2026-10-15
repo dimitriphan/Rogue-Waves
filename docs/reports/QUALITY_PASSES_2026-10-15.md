@@ -177,6 +177,14 @@ fixed: pass 5's Claymore line was itself wrong (its Attack folder is one blank 1
 the body while the bomb flies, not a still of the body), and `17` named an upgrade "Tank Bed" (it is Tank). Every pass 5
 fix held; scope `16` had 59 more lines checked against the game's code, all right.
 
+## Pass 7: 0 issues (clean)
+
+All ten areas came back clean, with nothing fixed and nothing new listed. A2 confirmed pass 6's two fixes against the
+art survey, the data survey and the decompile. E checked about 250 more stat and unit lines of scope `16` against the
+game's code; all were right. Scope `16` and kit `17` agree. All 21 builds compile with 0 errors. The two `Shared`
+copies are equal, the path and pitfall check shows no new candidates, and `/mnt/project-files/scope/` equals
+`docs/scope/`.
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".
