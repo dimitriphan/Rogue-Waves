@@ -1,7 +1,7 @@
 #!/bin/bash
 # run_preview.sh <EditorDir> <Prefix> <OutDir> [s|m|a flags]
-# Compiles the vessel's editor generators (all Editor/*.cs except the builder and mod-prefab menus, which need
-# UnityEditor) with UnityLite, and runs them.
+# Compiles the vessel's editor generators (all Editor/*.cs except the builder, mod-prefab and preview menus, which
+# need UnityEditor) with UnityLite, and runs them.
 set -e
 H=$(cd "$(dirname "$0")" && pwd)
 ED=$1; P=$2; OUT=$3; FLAGS=${4:-sma}

@@ -5,9 +5,10 @@ using Blockage.Menu;
 using UnityEngine;
 
 // The choice dialog, a timed vote and a HUD line (docs/20 §2, §5). Read from the game's code on 2026-10-14 and
-// compiled with cloud-check; NEVER RUN IN GAME. The command half of a vote (the host writes the offers into a None
-// command on each vessel, the pick returns through Command_ServerRpc) is proven in Riptide:
-// TDS_Mod/ModSource/Riptide/Code/06_Salvage.cs.
+// compiled with cloud-check; NEVER RUN IN GAME. The command half of a vote (the host writes the offers into the
+// Goalstring/Goalvalue of a command on each vessel, the pick returns through Command_ServerRpc) is proven in Riptide,
+// on its SALVAGE Button command: TDS_Mod/ModSource/Riptide/Code/06_Salvage.cs. A None command is the same channel,
+// just not drawn.
 public static class RecipeUi
 {
     // ---------------------------------------------------------------- the choice dialog
@@ -96,27 +97,33 @@ public static class RecipeUi
     // Picks per Sessionid, from each vessel's command (identify the voter by the vessel's Owner, never by the Json).
     public static readonly Dictionary<long, string> Votes = new Dictionary<long, string>();
 
-    // The winner once everyone voted or the time ran out; ties and no votes go to the first option (the leader's
-    // fallback). Players who left are not waited for: count only Sessionids still in Blm_Server.
+    // The winner once everyone voted or the time ran out; no votes go to the first option (the leader's fallback) and
+    // a tie to the first-listed of the tied options. Players who left are neither waited for nor counted: only the
+    // votes of Sessionids still in Blm_Server count (Votes keeps the pick of a player who left).
     public static string Tally(List<string> options, float deadline, out bool closed)
     {
+        Dictionary<string, int> counts = new Dictionary<string, int>();
         int present = 0, voted = 0;
         if (Blm_Server.Instance != null)
             foreach (long s in Blm_Server.Instance.Sessionidsplayer.Keys)
             {
                 present++;
-                if (Votes.ContainsKey(s))
+                string pick;
+                if (Votes.TryGetValue(s, out pick))
+                {
                     voted++;
+                    int c;
+                    counts.TryGetValue(pick, out c);
+                    counts[pick] = c + 1;
+                }
             }
         closed = voted >= present || RecipeNet.Now >= deadline;
         string best = options.Count > 0 ? options[0] : "";
         int bestCount = 0;
         foreach (string o in options)
         {
-            int n = 0;
-            foreach (string v in Votes.Values)
-                if (v == o)
-                    n++;
+            int n;
+            counts.TryGetValue(o, out n);
             if (n > bestCount)
             {
                 best = o;

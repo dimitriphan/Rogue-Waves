@@ -124,7 +124,7 @@ This corrects `14` §2 and `15` §10 ("maps ship as `Map` prefabs with `Mods_Map
 
 ### 3.2 Own registration (the pack's route)
 
-The same pattern RogueLab used for its mode, which played 43 stock maps cleanly (`15` §15;
+The same pattern RogueLab used for its mode, which played all 45 base maps cleanly (`15` §15;
 `TDS_Mod/ModSource/RogueLab/Code/02_Boot.cs`), on **every machine**, at boot:
 
 1. **`Mapobject`**: `ScriptableObject.CreateInstance<Mapobject>()`, `name` and `Objectname` `RW_Map_<Name>`;

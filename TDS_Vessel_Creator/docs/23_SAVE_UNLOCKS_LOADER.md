@@ -73,7 +73,7 @@ host equips (Macro_Main.cs:157-191, 337-394, 509-511).
    `Metadata_Persistent`, or stock folders for stock content.
 3. **Prefix every key** (`RW_`): stock trackers with folder `"Any"` search every folder, so a pack key named like a
    stock key could advance a stock unlock. Never put `Unlock_Hero` or `Unlock_Artifact` in a pack key that is not a
-   vessel or Cardinal unlock (the boat opens a panel on the substring, §3.3).
+   vessel or Cardinal unlock (the boat opens a panel on the substring, §3.2).
 4. **Floats hold whole numbers exactly only up to 16 777 216:** seeds and big counters go in strings. Guard
    against NaN (a `Divide` by 0 makes one).
 5. **Never keep a reference** to `Bla_Data.Playerdata`: re-read state after `Onslotchanged` **and** `Onslotremoved`, and

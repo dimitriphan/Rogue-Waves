@@ -119,8 +119,8 @@ Any number of vessel mods can coexist, in the project and in the game:
 
 - **Names**: every id, class, icon, effect and sound carries the vessel name; the build script renames the kit's
   classes per mod (`<Name>Kit...`), so two mods never define the same type.
-- **Export**: the Mummer template's Export refuses to run while another `Assets/*Mod` folder is live (park, export,
-  restore); Argo's Export parks the other folders itself (`ArgoModPrefab.cs`); restore afterwards either way.
+- **Export**: every vessel's Export (the template's since 2026-10-15) parks the other `Assets/*Mod` folders itself
+  and refuses to run if one is still live (pitfall #103); restore afterwards.
 - **Boat**: `ModKitBoat` (kit 1.4) adds one spot per vessel. While the vessels fit on the 6 shipped spots they stand
   there; past that, every vessel stands in staggered rows across the deck, evenly spaced in spot order from just past
   one outer shipped spot to the other (2 rows to 11 vessels, 3 rows to 16, then they shrink a little), each row behind

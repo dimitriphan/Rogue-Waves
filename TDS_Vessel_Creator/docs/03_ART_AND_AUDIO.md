@@ -14,6 +14,7 @@ the content.
 | `<Name>Audio.cs` | synthesised sound effects (`Tone`, `Hiss`, `Ding`, envelopes) written as WAV |
 | `<Name>Builder.cs` | Build All Assets, Preview Sprites, Preview Models; imports, VFX prefabs, the library prefab, manifest and localization CSV (a translator's sheet: the game never reads it, `21` §3.1) |
 | `<Name>ModPrefab.cs` | Build Mod Prefab, Park Other Mods, Export Mod, Restore Parked Mods |
+| `<Name>Aseprite.cs` | hand-editable Aseprite copies of the sheets, written each build; frames edited in a copy replace the code's (`TDS_Mod/Tools/aseprite/README.md`) |
 
 ## 1. The vessel sprite
 
@@ -35,7 +36,7 @@ the content.
 - Animation table (`<Name>Assets.Hero`): Idle and Move loop (priority 0); Falling loops (reset, priority 2); Land
   and Landquick go to Idle (priority 2); Attack and abilities priority 1, speed ~3 and ~1.6, go to Idle. Put the
   template's footstep sound (`General_Footstep`) on the Move frame where the vessel lands its hop.
-- The vessel body is 15-27 px wide and 20-28 px tall inside the 32 px frame, feet on the bottom row (`18` §2).
+- The vessel body is 15-27 px wide and 19-28 px tall inside the 32 px frame, feet on the bottom row (`18` §2).
 
 **House style: what all five base vessels share** (any of them can be the reference; the user's rule):
 - **Chibi proportions**: the head (or head-shaped body) is half the height or more; the body is small; hands are
@@ -136,7 +137,7 @@ All motion is client-side and cosmetic; the server only sends the events.
 | **Spin while working** | The server's work event (`"Argo_Mine"`) makes the client spin a `"Spinner"` part for N seconds: a dictionary part → until-time, rotated each frame with `Rotate(0, 540·dt, 0, Space.Self)` (`Argo_10_Client.cs`, `SpinFor`/`Spin`). | in game (Argo 1.0) |
 | **Idle motion** (a wheel turning, a flag waving, a bob) | Client loop: every 0.25 s collect the vessel's towers from `Game_Entity.Instance.Entityclient` (by being name), each frame rotate/offset their named part a little; re-find parts that became null. Keep it slow and subtle; base towers are mostly still. Argo 2.0's Deep Water: the water is a `Swell` part (the frame stays still) raised ±0.012 over 3.2 s, phased by tile so neighbouring pools roll (`ArgoClient.Bob`, `ArgoModels.Swell`). | in game (Argo 2.0 round 6: the self-test measured the bob) |
 | **A held or switched state** (open/closed, loaded, a costume shown) | A skin (`<Name>Util.Skin(master, "Open")` + `Visualproperties.Skinoverrides`) or the upgrade's model: synced to every player and correct for anyone who joins later, unlike a client-side rotation. | in game (Mummer's Stage costume hangers) |
-| **Facing chosen by the player** (directional traps, walls) | The building's placement orientation (`Builddata.Orientation`, `Link_Spawn.Orientation`, `Entity_Master.Extrapositiondata`). **The game already turns every placed being's `Vis` by it** (`Entity_Master_Client`, `Helper_Gridtools.Rotateorientation`): build the model's front on +z and don't turn it again. Read the orientation on the server to apply direction-dependent effects. **Show the facing like Sno Sno's Ice Wall:** a child named `Forward` in the tower's hit prefab makes the build command draw an arrow on the placement border (`Entity_Command_Build`, Vfx `Buildborderforward`), and the visual script `Entity_Vis_Tower_Orientation` shows the `Directioncontainer` arrow while it is selected (Yossele's Stonehenge, `YosseleContent.ShowFacing`). | read from the game's code 2026-10-12; Yossele round 6 checks it |
+| **Facing chosen by the player** (directional traps, walls) | The building's placement orientation (`Builddata.Orientation`, `Link_Spawn.Orientation`, `Entity_Master.Extrapositiondata`). **The game already turns every placed being's `Vis` by it** (`Entity_Master_Client`, `Helper_Gridtools.Rotateorientation`): build the model's front on +z and don't turn it again. Read the orientation on the server to apply direction-dependent effects. **Show the facing like Sno Sno's Ice Wall:** a child named `Forward` in the tower's hit prefab makes the build command draw an arrow on the placement border (`Entity_Command_Build`, Vfx `Buildborderforward`), and the visual script `Entity_Vis_Tower_Orientation` shows the `Directioncontainer` arrow while it is selected (Yossele's Stonehenge, `YosseleContent.ShowFacing`). | read from the game's code 2026-10-12; in game (Yossele round 6: both arrows, a Stonehenge turned 90°) |
 | **Sprite towers / units facing** | The game's sprite towers flip and turn sprites toward targets with `Helper_Entityvis.Rotatesprite` (`Entity_Vis_Animator_Tower_Smackyarcher`). Units use `Entity_Vis_Animator_Mob`, which faces their movement. | game code |
 
 **Building moving parts in the generator**: the template's builder (Mummer) makes one static mesh per model. Argo's

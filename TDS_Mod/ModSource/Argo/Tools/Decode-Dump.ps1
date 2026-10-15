@@ -1,5 +1,5 @@
 ﻿# Turns "[ArgoDump] <name> <w>x<h> <part>/<parts> <base64 RGBA>" lines from Player.log (written by the
-# ARGO_ARTDUMP build, Code/97_ArtDump.cs) back into PNG files. Rows arrive bottom first (Unity order).
+# ARGO_SHOTS build, Code/97_Shot.cs) back into PNG files. Rows arrive bottom first (Unity order).
 # Run:  powershell -ExecutionPolicy Bypass -File Tools\Decode-Dump.ps1 [-Log <Player.log>] [-Out <folder>]
 param(
     [string]$Log = "$env:USERPROFILE\AppData\LocalLow\Blockage\TDS\Player.log",

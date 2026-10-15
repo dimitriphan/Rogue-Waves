@@ -1,4 +1,4 @@
-// Round 2 (docs/RESEARCH_GAPS.md §E step 2): the questions the decompiled code could not settle.
+// Round 2 (the docs/RESEARCH_GAPS.md gaps named below): the questions the decompiled code could not settle.
 //   at boot   every map's and Gameplan's data (A4), every other mode's Tide table and params (A3, C2), the elites
 //             again once those groups are loaded (C1), the game's hard setting ("Treated") and its upgrade (A3)
 //   map 1     a second Default prefab in the same bundle started (A9), a swarm's frame cost on the host (B5)

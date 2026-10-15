@@ -14,7 +14,7 @@ clean). **Not run in game, not tried online.**
 - **One failed load** (`RWLoad`, host, once a second while a `Game_Load` exists): 75 s into the loading screen, once
   the host has loaded, every player whose `Loaded` is still false is kicked with a chat line. Online check: O3c.
 - **Hidden effects:** the mode sends none; Argo's slow look and refused-flood mark go past the throttle (Argo 2.0.1,
-  its notes). Yossele (PR #30, its own branch) still sends its looks through `Vfxdebuffcheck` (`Yossele/Code/01_Util.cs`).
+  its notes). Yossele 0.1.0-dev still sends its looks through `Vfxdebuffcheck` (`Yossele/Code/01_Util.cs`; its next build).
 - **Slot switch** (`06_Campaign.cs`): the campaign remembers the `Bla_Data.Playerdata` object it was started or
   continued in; `RWCampaign.Live` (boat, weather, map end, every save) and the `Onslotchanged` / `Onslotremoved`
   hooks forget it from memory when that object changed. Its own slot keeps it for Continue.
@@ -148,7 +148,7 @@ What only the game can tell, and what the self-test logs for it:
   sea's top at -0.4 and the docks at y 0; if the boat floats in the wrong place or the camera is off, change
   `RWWorld` (Scale 0.6, `Cameraposition` 5 north of each island) from the logged numbers.
 - Whether the stock arrows and boat behave on code-built nodes (C2, C3).
-- Whether `Main_Flood` and `Tower_Halberdnest` work off their home maps (W1, W3; kit `docs/16` §9 item 1). The flood
+- Whether `Main_Flood` and `Tower_Halberdnest` work off their home maps (W1, W3; kit `docs/16` §3). The flood
   spawns a tile under the lowest ground and its height stats are Manafold's: W1 logs them with the map's extent, for
   tuning. The flood's water mesh is sized for Manafold and may not cover a larger map.
 - Quickening's `Time_Scale` reaching clients is an online check (kit `docs/16` §9 item 4); solo, W2 reads it on the host.

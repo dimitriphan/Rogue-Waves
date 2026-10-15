@@ -1,6 +1,5 @@
 | Directions |
 	# Every vessel's Directions, each in the Direction template from 15_Templates.txt, under its vessel.
-	# About 7 Any and 4 per new vessel last a 10-map campaign with ranks.
 	# How Directions are offered, ranked and bought: -> 06_New_Mechanics.txt [Directions]
 
 	[Directions by Vessel]

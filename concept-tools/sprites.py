@@ -1,4 +1,7 @@
-"""Tiny pixel-sprite rasteriser: shapes -> parts with z-order, auto shading, inner + outer outlines, then detail pixels."""
+"""Tiny pixel-sprite rasteriser: shapes -> parts with z-order, auto shading, inner + outer outlines, then detail pixels.
+
+    python3 concept-tools/sprites.py grubb|wick|mummer [scale]   -> the sample sprite as SVG <rect>s on stdout (scale 7)
+"""
 import math, json, sys
 
 OUT = "#2a2230"

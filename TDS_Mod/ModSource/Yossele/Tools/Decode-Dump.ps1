@@ -1,5 +1,5 @@
 # Turns "[<Tag>] <name> <w>x<h> <part>/<parts> <base64 RGBA>" lines from Player.log (written by the
-# debug builds' Shot() captures) back into PNG files. -Tag picks the mod: SpriggDump (default) or YosseleDump. Rows arrive bottom first (Unity order).
+# debug builds' Shot() captures) back into PNG files. -Tag picks the mod: YosseleDump (default) or SpriggDump. Rows arrive bottom first (Unity order).
 # Run:  powershell -ExecutionPolicy Bypass -File Tools\Decode-Dump.ps1 [-Log <Player.log>] [-Out <folder>]
 param(
     [string]$Log = "$env:USERPROFILE\AppData\LocalLow\Blockage\TDS\Player.log",

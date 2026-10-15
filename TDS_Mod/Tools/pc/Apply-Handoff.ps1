@@ -19,7 +19,8 @@ $name = Split-Path -Leaf $here
 $rows = Get-Content -LiteralPath (Join-Path $here "HASHES.txt") | Where-Object { $_ -and -not $_.StartsWith("#") }
 $patches = @()
 $pf = Join-Path $here "PATCHES.json"
-if (Test-Path -LiteralPath $pf) { $patches = @([IO.File]::ReadAllText($pf) | ConvertFrom-Json | ForEach-Object { $_ })   # PS 5.1 passes a JSON array on as one item }
+# PS 5.1's ConvertFrom-Json passes a JSON array on as one item: ForEach-Object unrolls it.
+if (Test-Path -LiteralPath $pf) { $patches = @([IO.File]::ReadAllText($pf) | ConvertFrom-Json | ForEach-Object { $_ }) }
 function Fit($dst, $p) {
     $text = [IO.File]::ReadAllText($dst)
     $nl = "`n"

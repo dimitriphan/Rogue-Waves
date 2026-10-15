@@ -1,5 +1,5 @@
 #if ROGUEWAVESMODE_SELFTEST
-// The PC round for the sea chart and sea weather (docs/mode/SEA_CHART.md §5, probes C1-C6 and W1-W3) and the rejoin's solo
+// The PC round for the sea chart and sea weather (docs/mode/SEA_CHART.md §9, probes C1-C6 and W0-W3) and the rejoin's solo
 // probes (docs/mode/REJOIN.md §6, R1-R6, R2b), one launch,
 // logged as "[RogueWavesMode] TEST PASS|FAIL|SETUP|INFO ..." and "TEST DONE" for Run-SelfTests.ps1:
 //   menu   presses Play like the player would (the game ignores injected input)

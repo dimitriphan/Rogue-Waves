@@ -489,7 +489,7 @@ public class ArgoTowerBrain : MonoBehaviour
         }
     }
 
-    // Pay Dirt: a foe felled inside the Tremor is dug up, PaydirtBase mining strikes on the nearest ore.
+    // Pay Dirt: a foe felled inside the Tremor is dug up, Paydirt_Base mining strikes on the nearest ore.
     public void PayDirt(Entity_Master foe, Vector3 at)
     {
         int n = Mathf.RoundToInt(Param("Paydirt_Base", 0f));

@@ -20,7 +20,7 @@ projectiles and impacts, the six elite overlay textures) and line-ups sit in the
 |---|---|---|
 | `<Being>_Visualproperties` | `Default` (and one `Skinoverride` per skin): `Style` (0 Model, 1 Sprite, 2 Both, 3 Overlay), `Spriteobject`, `Additionalmaterials`, `Displaycolor`, `Sfxend` (death sound) | asset |
 | `<Being>_Sprite` (`Spriteobject`) | named folders (`Idle`, `Move`, `Attack`...), each a list of **variants** (facings), each a list of frames; per folder `Loop`, `Reset`, `Priority`, `Speed`, `Spriteto`; per frame an optional `Sound` | asset |
-| Frame rate | a folder plays at `Speed × Defaultspeedmulti` frames a second; the animator ticks every `1 / (2 × Defaultspeedmulti)` s and skips frames while the sprite is off screen | `Entity_Vis_Animator_Base` |
+| Frame rate | the animator ticks every `1 / (2 × Defaultspeedmulti)` s and a frame lasts `ceil(2 / Speed)` ticks, so a folder plays at `Defaultspeedmulti` frames a second at `Speed` 1, twice that at `Speed` 2 or more (the cap), and a `Speed` between 1 and 2 plays as 1 (`24` §1); frames advance only while the sprite is visible | `Entity_Vis_Animator_Base` |
 | Facing | `Helper_Entityvis.Rotatesprite` picks the variant from the move direction against the camera: **v0 toward the camera heading screen-right, v1 toward the camera heading screen-left, v2 away heading right, v3 away heading left**. Toward/away switches at a dot of 0.4 with the camera's forward, left/right at ±0.2 with its right, so small turns don't flicker. Sprites are never flipped in code: every facing is drawn in the sheet | code |
 | Sprite import | pixels per unit **20**, pivot **bottom centre** (0.5, 0) on every vessel, unit and enemy sheet. One exception: Bulwark's 64 px cells pivot at 0.35 or 0.65 so the body, not the crystal, stands on the spot | asset |
 | Elite looks | a skin keeps the foe's own sprite object and adds **one material** (`Character <Key> Effect`, shader `Character Billboard Gradient Batchless`) as a second pass over the sprite: a tint gradient plus a scrolling 32×32 pattern (§5.5). Nothing is redrawn | asset, `Entity_Master_Client` |
@@ -44,9 +44,10 @@ front idle frames; "fps" is `Speed × Defaultspeedmulti` for Idle and Move.
 | Unit | 16 (Snobles 12) | 6-12 × 8-12 | Move 6 (Idle often 1 frame), `Movelinear` for dogs | 4-8 | miner, knight, dog, Boutbro |
 
 So: **a 32 px cell holds anything up to about 28 px tall; bigger foes move to 48 or 64 px cells, never to a
-stretched sprite**. Feet always touch the bottom row of the cell (no gap measured on any sheet) and the body's box is
-centred on column 16 (±1). Attack sheets are separate textures when their frame count differs (Boutman 3, Buster 2,
-Sno Sno 4); foes keep Idle, Move and Attack on one sheet (Ballista 192 × 384 = 12 rows).
+stretched sprite**. Feet always touch the bottom row of the cell (no gap on any vessel or foe sheet; the 16 px
+units bob 1-3 px) and the body's box is centred on column 16 (±1). Attack sheets are separate textures when their
+frame count differs (Boutman 3, Buster 2, Sno Sno 4); foes keep Idle, Move and Attack on one sheet (Ballista
+192 × 384 = 12 rows).
 
 ## 3. The house rules both share
 
@@ -54,22 +55,27 @@ Measured on all five base vessels and all ten foes (the nine Tide foes and Halbe
 
 1. **Opaque, no outline.** No sheet has a dark line round the body. The silhouette edge is the fill colour itself,
    darkened only where that side is in shade (§4.2). Half-transparent pixels: Smacky 33% (alpha 63 and 127, his
-   rim), Sno Sno 9% (alpha 126, the snow patch), Buster 1%, every other vessel, unit and foe 0%.
+   rim), Sno Sno 9% (alpha 126, the snow patch), Buster 1%, every other vessel and foe 0% (units and minions:
+   Smacky's miner 5%, alpha 126; the Aurabeast 16%).
 2. **Light from the upper left.** Vessels: 32-45% of right-edge pixels and 20-57% of bottom-edge pixels are darker
    than the pixel inside them, against 5-13% on the left. Foes: the light crystal tones sit left and top, the two dark
    ones right and bottom (mean x 0.6-0.9 of the box).
-3. **Shade keeps the hue.** Every ramp in the game holds its hue within 2°; a shade is the same hue with 8-15 points
-   more saturation and 7-12 points less value (Boutman fur `ADCDE5` h206 > `91B7D4` h206 > `859EB0` h205; Fie's hair
-   `FFA76D` > `FF8F44` > `FF7D25`, all h24; Buster `F0E5C1` > `E8D392`, both h45). The one exception is white, which
-   shades to a pale cold blue (Sno Sno `FFFFFF` > `C7E0F2` > `ADCDE5`).
+3. **Shade keeps the hue.** Every ramp in the game holds its hue within 2°; a shade is the same hue, usually with more
+   saturation (up to 23 points) and less value (up to 25 points) over §4.1's ramps (Boutman fur `ADCDE5` h206 >
+   `91B7D4` h206 > `859EB0` h205; Fie's hair `FFA76D` > `FF8F44` > `FF7D25`, all h24, only gains saturation; Buster
+   `F0E5C1` > `E8D392`, both h45). The one exception is white, which shades to a pale cold blue (Sno Sno `FFFFFF` >
+   `C7E0F2` > `ADCDE5`).
 4. **Two or three tones per material**, rarely a fourth; a whole vessel uses 10-21 colours, a foe 8.
 5. **Darks are never pure black.** Eyes and the darkest details use warm or neutral near-blacks: `2B2922`, `333232`,
-   `4A4949`, `3F3E3E`, `161616` (Boutman's pupils); Fie is the exception, with mid-grey eyes (`828282` over `B1B1B1`, §4.1). One stray `000000` exists on Buster's sheet; don't copy it.
+   `4A4949`, `3F3E3E`, `161616` (Boutman's pupils); Fie is the exception, with mid-grey eyes (`828282` over `B1B1B1`,
+   §4.1). A few `000000` pixels sit on Buster's and Boutman's parents' sheets (`Buster-Sheet`, `Busterrun`,
+   `Boutdad`, `Boutmom`, `Dadair`), which is why `tds_shared.gpl` lists it; don't copy them.
 6. **A shared world palette.** 53 colours recur in three or more character families (`reference/palettes/
    tds_shared.gpl`): the whites and greys (`FFFFFF`, `DEDEDE`, `939292`), wood `826D60` / `64544A` / `5A4C42`, skin
    `DA867A`, sand `DFC9A8` / `C5B294`, Smacky's blues `4764A4` / `364E82` / `97AFE5`, the red `D63A44` / `BE2D36` /
-   `A12D37`, the leaf greens `7BCF80` / `65AD69`, the yellows `F6E43B` / `FFF48B`. A new character that takes its
-   neutrals, wood, skin and accents from this list looks like it lives in the same world.
+   `A12D37`, the leaf green `7BCF80` (its shade `65AD69` is only Smacky's and Sno Sno's), the yellows `F6E43B` /
+   `FFF48B`. A new character that takes its neutrals, wood, skin and accents from this list looks like it lives in the
+   same world.
 7. **Every facing is drawn.** The code never flips a sprite. v1 is v0 heading the other way: the stock foes' v1 is an
    exact mirror (Dagger, Maul: 0 pixels differ from the mirror), but vessels redraw what must not swap (Boutman keeps
    his rod and his shaded side, so his v1 differs from v0's mirror in 112 of 280 pixels; Buster's is a near mirror,
@@ -151,7 +157,8 @@ h267 (`9677BB`, `8764B0`). The tutorial's Training Dagger is the same shape in w
   flash), frame 5 settles. Only foes with a bespoke wind-up AI have an Attack folder (Ballista, Onager, Maul,
   Excalibur, Bulwark); Dagger, Spear and Aegis fight with Idle and Move alone. Time the folder to the AI: a slam
   plays 1.5-2.3 s (Maul and Excalibur 6 frames at 4 fps, Bulwark 7 at 3), about the AI's wind-up (`13` §1: 1.3-1.6
-  s), so the flash lands with the hit; a shooter's plays 0.6-0.8 s (Ballista `Speed` 2, Onager 1.5).
+  s), so the flash lands with the hit; a shooter's plays 0.6-1.2 s (Ballista `Speed` 2: 6 frames at 10 fps; Onager
+  `Speed` 1.5 plays as 1: 6 frames at 5 fps, §1).
 - Death: `Enemy_Death`, or `Enemy_Deathlarge` for the 48 px foes. Projectiles and impacts are their own small strips
   in the same palette (`Ballistabolt-Sheet` 96 × 16, `Maulimpact-Sheet` 160 × 32, `ClaymoreExplosion-Sheet` 224 × 32).
 
@@ -178,8 +185,8 @@ For the art this means:
 
 - **Must** be a crystal foe: a grey stone body (`8C8C8C` / `6D6C6C` / `646464`) carrying one magenta crystal weapon in
   the five crystal colours, nothing else (a boss may add one 3-tone band, like Bulwark's).
-- **Must** take its name from the armoury (`13` §1) and its silhouette from that weapon, distinct from the ten taken
-  shapes in §5.2.
+- **Must** take its name from the armoury (`13` §1) and its silhouette from that weapon, distinct from the nine taken
+  shapes in §5.2 and Halberd's.
 - **Must** pick its cell by tier: 32 px up to about 28 px tall, 48 px for a heavy, 64 px for a boss; bottom-centre
   pivot unless the body stands off-centre (Bulwark).
 - **Must** draw Idle and Move in all four facings (v1 may be v0's exact mirror), and, if it winds up, an Attack folder
@@ -199,7 +206,7 @@ For the art this means:
 | Face | eyes of 2-4 near-black pixels, expression by eye position | a 2 × 2 crystal socket, no expression |
 | Proportions | chibi: head half the height or more | small stick body, the weapon is 54-76% of the sprite |
 | Light | a shade band on the right and under overlaps; almost no highlights | faceted: light top and left faces, a pale ridge, dark far side |
-| Size | always a 32 px cell, 20-28 px tall | 32, 48 or 64 px by tier |
+| Size | always a 32 px cell, 19-28 px tall | 32, 48 or 64 px by tier |
 | Speed | 8-10 fps | 3-12 fps by weight |
 | Folders | Idle, Move, Falling, Land, Landquick, attacks, abilities | Idle, Move, Attack if it winds up |
 | UI colour | its main colour | `D168E0` |
@@ -207,7 +214,7 @@ For the art this means:
 
 ## 7. Pack notes (Rogue Waves)
 
-- **Spool's purple sits in the foes' band.** The concept and walk sheets use `7E4D90` / `9363AE` / `784B94` (h278-283,
+- **Spool's purple sits in the foes' band.** The concept and walk sheets use `7E4D90` / `9363AE` / `784B94` (h277-284,
   measured on `SpoolWalk-Sheet`), next to the crystal's h292 and past the friendly purple's h267. It is darker and
   greyer than the crystal and Spool has a face, so it may still read. **Dimitri, 2026-10-15: leave Spool's colours as
   they are for now.** The exception is his; the magenta rule still binds every other new design.
@@ -224,7 +231,7 @@ For the art this means:
 | Where | Was | Now |
 |---|---|---|
 | `03` §1 | v0 and v1 "near-identical" front views | v1 is v0 heading screen-left (§1, §3.7) |
-| `03` §1 | body about 16 px wide and 20-24 px tall | 15-27 × 20-28 (§2) |
+| `03` §1 | body about 16 px wide and 20-24 px tall | 15-27 × 19-28 (§2) |
 | `03` §1 | "Edges are darker shades of the fill" | only the right and bottom edges, where the shade falls (§3.2) |
 | `13` §5 step 4, §6 step 4 | a new foe's art needs the six elite skins drawn; a new skin means redrawing every enemy | elite skins are material overlays: no drawing (§5.5) |
 | `13` §10 question 5 | enemy art format unknown | answered (§2, §5) |

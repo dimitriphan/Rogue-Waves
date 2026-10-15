@@ -91,7 +91,7 @@ upgrade must have empty `Costs`.
 | `Game_Entity.Ondespawn(m, killed, reason)` | yes, `Lasthit` still set | kills, sells (`"Sell"`), deaths |
 | an upgrade AI's `Interact` / `Oninteract` / `Kill` | — | per hit dealt or taken, per kill; survives `Updateinteract` because it is in `Ais` |
 
-The kit's brains already wait for `Statsserver.Count > 0` (`05` §5). Two engine sweeps remove outside hooks:
+The kit's brains already wait for `Statsserver.Count > 0` (`05` §6). Two engine sweeps remove outside hooks:
 `Helper_Entitytools.Upgrade`/`Removeupgrade` **destroy every `Entity_Ai_Base` whose type is not listed** by the entity
 or its upgrades (:540-547, 600-607), and `Updateinteract` rebuilds the `Interact`/`Oninteract` chains from `Ais`
 (:138-151). Both run each time anything gives the entity an upgrade, and the base vessels do that constantly: Buster's
@@ -412,7 +412,7 @@ one exception. Each row says what a **pack vessel** needs for the Cardinal to wo
 | Towerapply (Rusty Pipe, Frail Titan) | data tag `Tower` | `Tower` on every building (traps and the Bouthouse are skipped) |
 | Mobapply, Aura Gavel, Kippy, Checklist | data tag `Mob` | `Mob` on the vessel and every unit (Boutdad has none, so it is skipped) |
 | Cubed Drink | `Mobfighter`/`Towerfighter`/`Hero` **with a Damage stat** | the tags and a `Damage` stat |
-| Onetime Build, Build (Processor Jr, Starter Seeds, Cubed Drink, Sand Filled Box, Tacklebox) | put `Entity_Ai_Hero_Buildsell` and a build AI with a `Buildslot` param on the **core** (verified, the PC dump) | — |
+| Onetime Build, Build (Processor Jr, Starter Seeds, Cubed Drink, Sand Filled Box, Tacklebox) | put `Entity_Ai_Hero_Buildsell` and a build AI on the **core**, with a `Buildslot` param (Tacklebox's `Entity_Ai_Artifact_Build` has none: always `Buildoption4`) (verified, the PC dump) | — |
 | Coins, clock, core, ore and foe Cardinals | no vessel | — |
 
 `15` §18.1 has each Cardinal's pattern and the stock bugs. Each Cardinal's core upgrades, AIs and params were dumped

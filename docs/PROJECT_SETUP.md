@@ -1,7 +1,8 @@
 # Setting up the Rogue Waves Claude Project
 
-What to hand the coordinator so its first session starts at Phase 1 with nothing missing. Five things: the
-repository, the project instructions, the project files, the first message, and two PC-side chores.
+What to hand the coordinator so a new or re-created project starts with nothing missing (first used 2026-10-08, at
+Phase 1). Five things: the repository, the project instructions, the project files, the first message, and two PC-side
+chores.
 
 ## 1. The repository
 
@@ -36,10 +37,11 @@ everything else in the Steam folder; nothing here can open them.
 
 ## 4. The first message
 
-> Start Phase 1 from `docs/PLAN.md` Part B. The game DLL and the TDS Mod Tools package are in the project files.
+> Read `docs/PLAN.md` Part C "Now" and carry on with its "Next". The game DLL and the TDS Mod Tools package are in
+> the project files.
 
-If the DLL is not uploaded yet, send instead: "Run `docs/14` §6 question 1 from the TDS Mod Tools package in the
-project files, then stop." That one needs only the unitypackage.
+The first project (2026-10-08) started with "Start Phase 1 from `docs/PLAN.md` Part B"; Phases 0-2 are done since.
+Upload the DLL first: without it a session can only grep the API dump (`docs/13` §11).
 
 ## 5. PC-side chores (before the first PC round, after Phase 2)
 
@@ -50,5 +52,5 @@ project files, then stop." That one needs only the unitypackage.
 
 ## What the coordinator will do on its own
 
-Run `TDS_Mod/Tools/cloud-check/setup.sh` once per container when it first needs a compile check, write kit chapter
-`docs/15` from Phase 1, collect questions for the Phase 1 gate, and keep Part C current.
+Run `TDS_Mod/Tools/cloud-check/setup.sh` once per container when it first needs a compile check, follow Part A (one
+gate at a time, questions collected for the next gate), and keep Part C current.

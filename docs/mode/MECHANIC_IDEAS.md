@@ -1,8 +1,11 @@
 # Mechanic ideas from the game's own systems (2026-10-09)
 
-> Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/05`, built in
-> `RogueWavesMode` and passed PC round 4 (38/0, `docs/mode/SEA_CHART.md` §8-9). The other ideas are still unpicked and
-> untested; the text below is as written on 2026-10-09. "Personal" Cardinals are now called Vessel Cardinals.
+> Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/04` [Sea Weather]
+> (in `05` until 2026-10-14), built in `RogueWavesMode` and passed PC round 4 (38/0, `docs/mode/SEA_CHART.md` §8-9).
+> The other ideas are still unpicked and untested; the text below is as written on 2026-10-09. "Personal" Cardinals are
+> now called Vessel Cardinals. **2026-10-15:** the scope pointers below are as of 2026-10-09: since 2026-10-14 the sea
+> chart is in `04` and every template in `15_Templates.txt`. Kit `docs/16` §9 items 1-3 (§2's "untested", §8) ran in
+> RogueLab round 7 (`docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).
 
 Dimitri asked (2026-10-09 23:04Z) for a deeper look at how TDS works, the important topics written into the research
 lessons, and mechanics that would fit his current plan. The lessons are in the kit: **`docs/16`** (new: inside a map:

@@ -1,7 +1,7 @@
 | Base Game Vessels |
 	# The five base vessels laid out in the Vessel template, 15_Templates.txt, so they read side by side with the new ones.
-	# Every number is the game's own data (kit reference/vessel_data_survey.txt). Nothing here is a default, so nothing carries a ~.
-	# The - lines saying what a building does are Claude's summary of the game's code (kit docs/17_BASE_VESSELS.md). An upgrade's % line is its in-game text.
+	# Every number is the game's own data, or its code where a note says so. Nothing here is a default, so nothing carries a ~. /~ kit reference/vessel_data_survey.txt \
+	# The - lines saying what a building does are Claude's summary of the game's code. An upgrade's % line is its in-game text. /~ kit docs/17_BASE_VESSELS.md \
 	# Levels follow the template: level 1 is the game's tier 2, and level 4 is its tier-5 capstone. Each upgrade says what it leads to, since the game's trees cross over.
 	# Numbers: +50% adds to every other % bonus on that stat; "of base" scales only the base value. Range is in tiles, time in seconds.
 
@@ -13,7 +13,7 @@
 	Boutman  Advanced      melee   50      3      4       2      0.75       2          0.5
 	Fie      Intermediate  melee   50      3      3       2      0.5        3          0.6
 	Buster   Advanced      melee   50      3.5    1.5     1.5    0.5        2.5        0.75
-	Argo     ~Intermediate melee   ~65     ~2.25  ~4      ~1.75  ~0.4       ~2         ~0.5
+	Argo     ~Intermediate ~melee  ~65     ~2.25  ~4      ~1.75  ~0.4       ~2         ~0.5
 	Yossele  Intermediate  ranged  ~60     ~2.25  ~4.5    ~3     ~0.5       ~2.5       ~0.5
 	Spool    Advanced      melee   ~45     ~2.75  ~2.5    ~1.5   ~0.6       ~2.5       ~0.5
 
@@ -270,7 +270,7 @@
 			- Effect: 1
 			- How many: replaces the miners
 			- Respawn: 10 seconds
-			- Orders: walks to the nearest attacking tower of any player on the team that lacks the buff and tunes it (range +25%, attack speed +50%, damage +25% for 8 seconds)
+			- Orders: walks to the nearest attacking tower of any player on the team that lacks the buff and tunes it (range +25% of base, attack speed +50% of base, damage +25% of base, for 8 seconds)
 			- Cost: free
 
 | Base Vessel: Sno Sno |
@@ -513,7 +513,7 @@
 					- Cost: Blue 25 + Yellow 250
 
 				% 3:{Black Sno} Generate heat resistant Sno
-					- Numbers: the Heater melts it at a fifth of the speed; a Snoble landing on it turns Burning (attack speed +50%, damage +50%, drain +100%; a Mini Snoble: attack speed +100%, drain +75%); the Sno Cannon fires black shots from it /~ Read from the building's code \
+					- Numbers: the Heater melts it at a fifth of the speed; a Snoble or Mini Snoble landing on it turns Burning (attack speed +50%, damage +50%, drain +100%); the Sno Cannon fires black shots from it, and Mini Snobles fired in black shots burn with attack speed +100%, drain +75% /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 200 + Blue 100
 				% 3:{Rich Sno} Generate aura infused Sno giving resources on use
@@ -564,7 +564,7 @@
 			- Rankup1: 2500
 			- Rankup2: 7500
 			- Deathdamage: 150
-			- How many: 1
+			- How many: 1 per Sno Box at a time
 			- Respawn: none
 			- Orders: walks toward the enemy core, eats Sno to rank up, bursts when it dies
 			- Cost: free
@@ -908,7 +908,7 @@
 			- Special rule: none
 
 		[Vessel Mechanic] [The Wall]
-			- Rule: Her Wall grows tile by tile (Grow Wall, 20 Blue each) and its upgrades spread through every connected Wall
+			- Rule: Her Wall grows tile by tile (Grow Wall, Blue 20 each) and its upgrades spread through every connected Wall
 			- Details: Shared Strength spreads them to the buildings beside the Wall too
 
 		(Defense):{The Wall}

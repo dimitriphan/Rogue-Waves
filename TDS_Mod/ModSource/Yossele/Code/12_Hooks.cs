@@ -3,7 +3,8 @@
 // it scale the hit before anyone applies it, whoever dealt it:
 //   Stonehenge armour   10% less damage per Growth stage.
 //   Vine Blockade       a barrier soaks hits until it is spent (no healing past it; a new one each Tide).
-//   Connected Roots     65% of a hit on one of your buildings within a healthy Sapling's Range goes to the Sapling.
+//   Connected Roots     65% of a hit on a Tower-tagged building of the Sapling's team within a healthy Sapling's
+//                       Range goes to the Sapling.
 // Helper_Entitytools.Updateinteract rebuilds the chain whenever an upgrade or effect lands on the entity, so the handler
 // is checked and moved back to the front ten times a second while it is needed.
 public static class YosseleHooks

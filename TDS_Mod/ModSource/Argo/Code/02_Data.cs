@@ -78,7 +78,7 @@ public static class ArgoData
     public const float TuneReach = 1.75f;       // a Naut tunes a tower from this far (flat distance)
     public const float TuneAttackspeed = 0.2f;  // +20% attack speed; Full Crew adds another 0.2 (Tuneboost_Base)
     public const float TuneHeal = 0.5f;         // health a second on any tuned tower; Overhaul adds Repair_Base
-    public const float GiveUpAfter = 12f;       // a Naut that can't get to its tower comes home
+    public const float GiveUpAfter = 12f;       // unused: ArgoNautBrain.Travel sends a Naut home after 6 s without progress
     // 1.4 Old Salts: a Naut tunes each kind of Argo tower its own way (teammates' towers get the attack speed only).
     public const float SaltsPellets = 2f, SaltsPierce = 2f, SaltsReel = 1f, SaltsSlow = 0.1f;
 

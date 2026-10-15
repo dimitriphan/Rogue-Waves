@@ -3,11 +3,15 @@
 Dimitri asked (2026-10-12): build Yossele from the updated `docs/scope/07_Vessel_Yossele.txt`, generate temporary art
 where none exists from the reshade, give every missing balance value a default, and **list every generated asset that
 did not exist before and every value the document left open**. This file is those two lists, plus what the scope files
-disagree on. The design is `TDS_Mod/ModSource/Yossele/DESIGN.md`; the numbers live in `Code/02_Data.cs`.
+disagree on. The design is `TDS_Mod/ModSource/Yossele/DESIGN.md`; the numbers live in
+`TDS_Mod/ModSource/Yossele/Code/02_Data.cs`.
 
 **State:** designed, temporary art generated, code written. Compiled in the cloud (0 errors in the release build and
 with `YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; the editor code passes `check_editor.sh`). **Built in Unity and
-run in game: PC round 5 passed 91/0** (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`). Not yet seen by eye.
+run in game: PC round 8 passed 98/0** (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`); Dimitri played the round 5
+and round 7 builds, and the look by eye of round 8's is still open. The scope's 2026-10-13 edit is not in this build yet
+(a ranged mouth laser, slower speed; Selfish Sapling, Grafted Colors and Entangling Spaghetti Roots renamed Forest
+Project, Grafted and Entangling Roots): the tables below keep the build's names (`DESIGN.md` Status).
 
 ## 1. Assets generated new (none existed before except Dimitri's own sprites)
 
@@ -28,7 +32,7 @@ PNGs, 8x previews, `.aseprite` files, model renders). Full list with description
 | Other models | `Yossele_Vine` (one flat vine tile, texture `Yossele_Vine_Ground.png`, since 2026-10-12), `Yossele_Fruit`, `Yossele_Fruit_Red`, `_Blue`, `_Yellow`, `Yossele_Sporebomb`, `Yossele_Seed`, debuff meshes `Yossele_Toadstool`, `Yossele_Swirl`, `Yossele_Tangle`, `Yossele_Blockade` |
 | Effects | `Debuff_Yossele_Spores`, `_Sporefull`, `_Daze`, `_Tangle`, `_Blockade`; `World_Yossele_Sporeblast`, `_Seedhit`, `_Grow`, `_Fertilize`, `_Compost`, `_Fruitpick`, `_Mend`, `_Drain`, `_Dig`, `_Towerdown`, `World_Hero_Yossele_Death`; particle textures `Px_Plus`, `Px_Leaf` |
 | Sounds | `Yossele_Thud`, `_Lob`, `_Pop`, `_Seeds`, `_Creak`, `_Rustle`, `_Fertilize`, `_Pick`, `_Dig`, `_Mend`, `_Landing`, `_Death`, `_Footstep` (synthesised) |
-| UI icons (drawn in code, `Code/03_Assets.cs`) | FERTILIZE and COLOUR buttons; Fertilizer, Growth and Seeds counters |
+| UI icons (drawn in code, `TDS_Mod/ModSource/Yossele/Code/03_Assets.cs`) | FERTILIZE and COLOUR buttons; Fertilizer, Growth and Seeds counters |
 | Game objects (data, no art of their own) | `Effect_Yosselevine` and `Effect_Yosselefruit` (ground beings cloned from Sno Sno's snow, tag stripped); Directions `Compostbin`, `Compostbin2`, `Compostbin3` |
 
 ## 2. Values the document left open, and the default picked
@@ -70,7 +74,7 @@ Every number the scope gives is used as written (bold in `DESIGN.md`). These are
 | Lob flight | 0.6 s + 0.08 s per tile; leads a walking foe up to 2 tiles |
 | Bounce (full Growth) | 1 spore stack (the scope gives 1 s, half radius, half damage) |
 | Farout Fungus | Range +2; blast radius +50% per second of flight, up to +75% |
-| Explosive Finish | 1 damage per stack consumed, to every foe within 1.25 tiles, who get 2 stacks; a foe can't burst again for 1 s |
+| Explosive Finish | 1 damage per stack consumed, to every foe within 1.25 tiles (the bursting foe included); the others get 2 stacks; a foe can't burst again for 1 s |
 | Hallucinogen "attack their allies" | the foe is held 2 s and hits the nearest other foe within 1.7 tiles with its own Damage once a second (the engine can't change a foe's side) |
 | Viral Outbreak's burst | one spore bomb with the cannon's own damage and spores |
 | Upgrade costs | Sticky Red 30; Farout Red 25 + Blue 10; Viral Red 90; Deathcap Red 100; Finish Red 420; Hallucinogen Red 360 + Blue 60 |
@@ -81,6 +85,7 @@ Every number the scope gives is used as written (bold in `DESIGN.md`). These are
 |---|---|
 | Cost, stats | Red 50; Health 50+25, Damage 2+0.5 a seed, 6 seeds at stage 0, a seed every 2 s (Range is now Dimitri's: 6, twice the first default of 3) |
 | Seed flight | 0.3 s; seeds are shared so each foe in range gets enough to fell it, nearest first |
+| Seed Packets "felled by a seed" | the foe falls within 0.6 s of a seed hit |
 | Demand and Supply | up to twice as fast when no seed is ready, scaling with how few are |
 | Garden Weeds | "soon after" = 3 s; a stack lasts 15 s |
 | Upgrade costs | Packets Red 30; Demand Red 30; Picky Red 100; Weeds Red 90 + Yellow 30; Storm Red 450 |
@@ -119,17 +124,18 @@ every choice of the next. No tier 5.
 
 ## 3. Where the scope files disagree or leave a gap (not resolved here)
 
-1. **Compost Bin's numbers** (`11_Directions.txt`): "x" and the radii are blank. The defaults above fill them; when
-   Dimitri picks numbers they go into `11` and `Code/02_Data.cs`.
+1. **Compost Bin's numbers** (`11_Directions.txt`): Dimitri's "x" and radii are open; the defaults above fill them
+   (written into `11` as `~` defaults); when Dimitri picks numbers they go into `11` and
+   `TDS_Mod/ModSource/Yossele/Code/02_Data.cs`.
 2. **Compost Bin is per player in the scope, per team in kit 1.6.** `05_Gameplay_Rundown.txt` and `12_Cardinals.txt`
    treat Directions as each player's own, but kit 1.6 grants Directions on the team's core, so one Compost Bin would
    unlock FERTILIZE for every Yossele on the team. The code already reads a rank held on the vessel too, ready for kit
    1.7's per-player Directions (Phase 5).
 3. **Fertilizer between maps.** `12_Cardinals.txt` saves Directions and Cardinals with the campaign, but says nothing
    about fertilizer. Default: it resets each map.
-4. **`07` status lines are out of date**: "concept page done. Next up after Argo" and "One front facing concept frame
-   so far". Left as Dimitri wrote them.
-5. **Deep Roots** (`11`) is marked "Example only, not a decision": not built.
+4. **`07` status lines were out of date** when this was written ("concept page done. Next up after Argo", "One front
+   facing concept frame so far"). Resolved since: `07`'s Status line now names this build.
+5. **Deep Roots** (now the example in `15_Templates.txt`) is marked "Example only, not a decision": not built.
 6. **Dandelion Season and Mother of Mushrooms** (`11`) replace the Dandelion Tree with new buildings: not built, they
    belong to the Direction catalogue (Phase 5/6).
 7. **Ranks.** Kit 1.6 has no Direction ranks, so Compost Bin is three Directions (`Compostbin`, `2`, `3`); the vessel

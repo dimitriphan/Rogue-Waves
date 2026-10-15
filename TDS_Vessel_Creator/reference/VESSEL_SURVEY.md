@@ -59,7 +59,7 @@ This is the reference for making a vessel that feels like the developers made it
   - tier 3: 25–500
   - tier 4: 75–750
   - tier 5: 1500–5025, sometimes split across colours
-  - (Boutman's trees go higher: 700, 1950 and 7500)
+  - (Boutman's trees go higher: 150, 700, 1950 and 7500)
 - Upgrade names follow `<Being>_<Key><Tier>_Upgradeobject`. Each upgrade has its own `Ent_Visual` (`..._Visualproperties`). Descriptions are short comma phrases ("Increased damage, dealt over time").
 - Param naming: `Stat_Add`, `Stat_Multi`, `Stat_Pmulti`, `X_Base`, `X_Max`, `X_Percent`, `X_Duration`. Bespoke AIs read them, and the engine never applies them on its own.
 - An upgrade can carry its own AI (Smackywall Regen3 adds `Entity_Ai_Effect_Smackywall_Regen`; Fiewall Tower4 adds `Entity_Ai_Tower_Fiewall_Turret`).

@@ -12,12 +12,12 @@ player; **by hand** = Dimitri plays it. Nothing waits on the PC any more.
 
 ## Summary
 
-Of the 18 items, 16 are answered (A5 and B5 keep a half for the online evening), 1 needs an online evening with a friend
-and 1 waits on a scope decision; the F-key check by hand is still open too. Three answers change plans: **Directions
-can't be per player on the core** (A1), **nothing in the game scales foes for more players or harder maps** (A3), and
-**a friend who drops can't rejoin a running map** in the base game (A5; the pack now reopens it, `docs/mode/REJOIN.md`). The
-PC rounds added one rule, **bring the choice dialog's menu up before opening it** (A6), and one map to never offer,
-Special_Custom (A4).
+Of the 18 items, 17 are answered (A5 and B5 keep a half for the online evening; C3's answer waits on the scope's new
+enemy types) and 1 needs an online evening with a friend (A8); the F-key check by hand is still open too. Three
+answers change plans: **Directions can't be per player on the core** (A1), **nothing in the game scales foes for more
+players or harder maps** (A3), and **a friend who drops can't rejoin a running map** in the base game (A5; the pack
+now reopens it, `docs/mode/REJOIN.md`). The PC rounds added one rule, **bring the choice dialog's menu up before
+opening it** (A6), and one map to never offer, Special_Custom (A4).
 
 ## A. Before Phase 5 designs the mode
 
@@ -67,7 +67,8 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
    checks `docs/reports/MECHANICS_CHECK.md` §3 lists (a Fund Transfer between two players among them; its moves are proven
    solo), the real drop and rejoin (`docs/mode/REJOIN.md` §6, O1-O8), the sea chart on a client (`docs/mode/SEA_CHART.md` C7),
    a friend joining the host's boat after the main-menu button, and Quickening's `Time_Scale` and Rising Water's
-   flood on a client (kit `docs/16` §9 item 4).
+   flood on a client (kit `docs/16` §9 item 4). Kit `docs/19` §8 (N1-N14) is the evening's full list and extends
+   this one.
 3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). A respawn keeping a
    granted −3 upgrade was seen in RogueLab round 7 (2026-10-12, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).
 4. **C3** when the scope decides on new enemy types (modifiers show as an effect, not a skin: `docs/scope/13`).

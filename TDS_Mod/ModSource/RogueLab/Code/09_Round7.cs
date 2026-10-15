@@ -6,7 +6,7 @@
 //           mod survives an upgrade (17 §2.1), U1 a Priority -3 upgrade on an archer, a Sno Cannon and the Bouthouse
 //           (17 §12.5), W1 the Bout Way's prices (17 §12.3), P1 a blocked path tile re-routes (16 §9.2),
 //           N1 unit counts on the Hut, Keep and Garage (17 §12.4), M1 a mine node and a den spawned mid-match (16 §9.1)
-//   Tide 1  M1 reacts, T1 a Sno-tagged foe near a Sno Cannon (17 §4, §11.12)
+//   Tide 1  M1 reacts, T1 a Sno-tagged foe near a Sno Cannon (17 §4, §11.1 rule 12)
 //   break   R1 a respawn keeps a Priority -3 upgrade (17 §2.4), R2 a faster respawn per player (17 §12.6)
 public static class RogueLabRound7
 {

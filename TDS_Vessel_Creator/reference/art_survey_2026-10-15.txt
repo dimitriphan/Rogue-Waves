@@ -4,7 +4,8 @@
 #
 # PART 1. Animation tables: every <Being>_Visualproperties of a Hero_, Mob_ or Enemy_ with a sprite object.
 #   style 0 Model, 1 Sprite, 2 Both, 3 Overlay. color = Displaycolor (UI tint). skins = Skinoverride names.
-#   speedmulti = Spriteobject.Defaultspeedmulti; a folder plays at Speed x speedmulti frames per second.
+#   speedmulti = Spriteobject.Defaultspeedmulti; a folder plays at speedmulti frames per second at Speed 1, twice that
+#   at Speed 2 or more, and a Speed between 1 and 2 plays as 1 (corrected 2026-10-15: kit docs/18 §1, docs/24 §1).
 #   var = variants (facings), frames = frames per variant, prio = priority, to = Spriteto after a non-looping folder.
 #   size = (cell w, cell h, pixels per unit, pivot x, pivot y). snd = sounds keyed on frames.
 ## Mob_Boutmandad style=1 color=9F9F9F skins=[] vfxend=None sfxend=

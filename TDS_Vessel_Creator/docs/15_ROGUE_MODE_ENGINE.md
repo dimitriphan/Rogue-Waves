@@ -91,9 +91,10 @@ kit already marks `DontDestroyOnLoad` (`05` §1, Boot; verified in a mod). `Game
 rebuilt per map. Statics in prefab code stay (one compile per activation, §10).
 
 **Where run state lives:** a host dictionary on the `Default` object keyed by `Sessionid` (client ids change on a
-rejoin, §14.5; a client restart changes the `Sessionid` too, so what outlives one host session keys on `Displayname`,
-`19` §5): Pure Aura, Directions owned, map number, Depth level (on hold). Clients can't get a new
-`NetworkVariable` (a mod can't add networked behaviours). Show it through what already syncs: a counter stat on each
+rejoin, §14.5; a client restart changes the `Sessionid` too unless the pack keeps the GUID, RogueWavesMode 0.3.0, so
+what outlives one host session keys on `Displayname` or the kept GUID, `19` §5): Pure Aura, Directions owned, map
+number, Depth level (on hold). Clients can't get a new `NetworkVariable` (a mod can't add networked behaviours).
+Show it through what already syncs: a counter stat on each
 player's vessel (`Addstat` + `Style = Counter`, `01` §6, verified for Mummer's Thread), restored by the host at each
 vessel spawn; Directions as visible upgrades on the vessel (`Upgradelist` shows on the panel); one-off messages as Vis
 RPCs.
@@ -205,7 +206,7 @@ with `SendMessage("Updateartifactlist")`, §13).
 
 ```csharp
 // Depth, the ascension level (on hold; write, read back and a restart proven; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
-Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Depth");
+Bl_Tags.Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Depth");
 int level = e.Loaded ? (int)e.Value : 0;
 Bla_Data.Playerdata.Adddata("RogueWaves", "RW_Depth", (float)(level + 1), Bl_Tags.Addtype.Replace);
 ```
@@ -606,9 +607,9 @@ built on both are in the Rogue Waves repository's `docs/mode/MECHANIC_IDEAS.md`.
 | Pattern | Stock Cardinals that show it (read) |
 | --- | --- |
 | Upgrade every unit that spawns, filtered by tag, name or parent (+ a sweep at `Starting` for those already there) | Mobapply, Voiceapply (units whose parent is a vessel), Paint, Greatspear (`Enemy_Spear` only), Chimera and Seeds (every `Resource` node) (`Game_Entity.Onspawn`) |
-| React to a kill or a death | Checklist (drop a pickup), Gavel (a friendly unit's death fires a bolt, stronger by its level), Titan (bursts on its own death), Money Bag (old) on `Reason == "Sell"` (`Game_Entity.Ondespawn`) |
+| React to a kill or a death | Checklist (drop a pickup), Gavel (a friendly unit's death fires a bolt, stronger by its level), Titan (bursts on its own death), Pig Named Bank (`Artifact_Moneybag`) on `Reason == "Sell"` (`Game_Entity.Ondespawn`) |
 | Count down Tides, then fire and remove itself | Rusty Pipe ("Age" counter on the unit) |
-| Grow every Tide | Caffeine, Opal Core, Coin, Money Bag (old) (`Wave.OnValueChanged`) |
+| Grow every Tide | Caffeine, Opal Core, Coin, Pig Named Bank (each building's sell value) (`Wave.OnValueChanged`) |
 | Bend the Tide clock | Vintage (+`Time_Base` to each break), Same Day Shipping (shorter breaks, pays aura), Mooncore (skips Tides 3, 7, 14, 21, 28: `Entry` +2, `Wave` +1, "THE MOON ALIGNS WITH YOUR CHOICE"; hooks `Entry`), Loop (first hit on the core clears the field and replays the Tide, once) |
 | A free build that comes back | Onetimebuild (button removed while its unit lives, back when it dies); Build (a permanent fifth build slot, range 1000, sells for 0) |
 | One special unit at a time | Paper (the first Towerfighter built becomes a buffed paper one), Computer (a static lock) |
@@ -617,8 +618,8 @@ built on both are in the Rogue Waves repository's `docs/mode/MECHANIC_IDEAS.md`.
 | Swap a unit type | Textbook (every Dagger becomes a training dagger) |
 | Change a unit's team | Blue Paint's charm: team set to the core's, `Enemy` tag removed (Entity_Ai_Effect_Artifact_Bluepaintcharm.cs:19-35) |
 
-Bugs not to copy: Mobapply, Voiceapply and Money Bag compare a team with itself, so their team filter never filters
-(Entity_Ai_Artifact_Mobapply.cs:14); Paper's tower and Rusty Pipe's buff remove the same modifier four times
+Bugs not to copy: Mobapply, Voiceapply and Pig Named Bank compare a team with itself, so their team filter never
+filters (Entity_Ai_Artifact_Mobapply.cs:14); Paper's tower and Rusty Pipe's buff remove the same modifier four times
 (Entity_Ai_Effect_Artifact_Paper_Tower.cs:34-42); most never unsubscribe from `Onspawn`/`Ondespawn` (Gavel does it
 right, Entity_Ai_Artifact_Gavel.cs:71-76), harmless only because the map ends.
 

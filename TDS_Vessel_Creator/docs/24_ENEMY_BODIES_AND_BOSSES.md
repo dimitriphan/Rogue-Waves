@@ -3,8 +3,8 @@
 The second reading of the enemy side, for Phase 4 and a possible pack boss. `13` stays the enemies chapter (data,
 Tide tables, elites, how to add a foe); this one answers its §10 questions 5 (art format) and 7 (flying) from code,
 details movement per enemy kind, and plans a boss. Everything here was **read from the game's code** (decompiled as in
-`13` §11) on 2026-10-14 unless it says otherwise; nothing was tried in game. Stock numbers (sheet sizes, PPU, frame
-counts, block flags) are data: §8 is the PC list.
+`13` §11) on 2026-10-14 unless it says otherwise; nothing was tried in game. Stock numbers are data: sheet sizes, PPU,
+frame counts and elite skins were read from the asset bundle on 2026-10-15 (`18` §2, §5.5); the rest is §8's PC list.
 
 Read `13` §1-6 first.
 
@@ -106,7 +106,7 @@ multi-tile foe can plan a route its body cannot walk**: keep big foes on a one-t
 | Enemy | Rule beyond the walker loop |
 | --- | --- |
 | Aegis | heals `Heal` per second once not hit for `Healtime` |
-| Ballista | bolt at `Projspeed`; steps back 0.3 and is slowed 50% until the next shot |
+| Ballista | bolt at `Projspeed`; steps 0.3 toward its target as it fires and is slowed 50% until the next shot |
 | Maul | fights on the move; 1.3 s wind-up; hurts up to `Projcount` in `Projradius` |
 | Onager | lobs at the ground under the **farthest** visible target |
 | Claymore | launches at the farthest tower in `Range` once one is within `Rangedetect`; at 0 health lingers for `Deathlife`. The launch is `Despawn(Death: false)`: no drops, no kill credit |
@@ -195,10 +195,11 @@ destroyed Basin wins the final map**. A pack mode built on `Mode_Final` wires it
 
 ## 8. PC list (one enemy probe round)
 
-1. For each `Enemy_*`: `Visualproperties.Default` (`Style`, `Spriteobject`, `Defaultspeedmulti`, `Vfxend`/`Sfxend`);
-   per animation `Name`, `Loop`, `Priority`, `Speed`, `Spriteto`, variant and frame counts; frame 0's texture size,
-   rect, PPU and pivot.
-2. Each elite skin entry: `Spriteobject` null or not, `Additionalmaterials` and shader.
+1. Answered 2026-10-15 (`18` §2, `reference/art_survey_2026-10-15.txt` part 1): for each `Enemy_*`,
+   `Visualproperties.Default` (`Style`, `Spriteobject`, `Defaultspeedmulti`, `Vfxend`/`Sfxend`); per animation `Name`,
+   `Loop`, `Priority`, `Speed`, `Spriteto`, variant and frame counts; frame 0's texture size, rect, PPU and pivot.
+2. Answered 2026-10-15 (`18` §5.5, the survey's part 3): each elite skin entry's `Spriteobject`,
+   `Additionalmaterials` and shader.
 3. `Defaulthit` collider size for Dagger, Bulwark, Halberd.
 4. `Enemy_Halberd`: group, AIs, visual children (`Flying`, `Flyingend`), which map places a nest.
 5. Block flags (`Genproperties`) of `General_Mob_Block_Height`, a wall, a tower and the Basin.

@@ -1,5 +1,10 @@
 # Scope review (2026-10-10)
 
+> **Note (added 2026-10-15):** the answered rows say so. The scope was re-laid on 2026-10-14
+> (`docs/scope/00_Read_Me.txt`): `04_Rogue_Wave_Mode.txt` is now `04_Rogue_Waves_Mode.txt`, the sea chart and sea
+> weather moved from `05` to `04`, every template is in `15_Templates.txt`, and the line numbers below no longer
+> match. Check `docs/scope/` before acting on a row.
+
 Dimitri asked (2026-10-10 22:36Z) for a look through the current text files and scopes, pointing out anything that
 might need improvement or reconsideration. This page reads the 15 files in `docs/scope/` against each other, against
 the settled decisions (`docs/PLAN.md` Part C, `docs/reports/SCOPE_VS_LOOP.md`, `docs/mode/MAIN_MENU_START.md`, `docs/mode/SEA_CHART.md`,

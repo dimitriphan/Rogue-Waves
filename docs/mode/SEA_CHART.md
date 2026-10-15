@@ -3,7 +3,7 @@
 Dimitri asked (2026-10-09 21:52Z) whether, when the players choose a map, their boat could sail around a generated
 map the way it sails the base game's campaign map, with movement points generated in game like Slay the Spire's.
 This page answers it from the game's code and proposes a route. **Adopted by Dimitri 2026-10-09 22:23Z with
-route V1** (§4, §6); the scope's rundown (`docs/scope/05_Gameplay_Rundown.txt`) says so.
+route V1** (§4, §6); the scope has it (`docs/scope/04_Rogue_Waves_Mode.txt` [Sea Chart]).
 
 Tags: **proven** = shown in game by Riptide or RogueLab; **read** = from the decompiled `Assembly-CSharp.dll` (kit
 `docs/13` §11), file:line into that folder; **untested** = needs the PC (§5). Kit paths: `docs/NN` =
@@ -133,7 +133,7 @@ The part's `README.md` maps its files; `IMPLEMENTATION_NOTES.md` lists what to c
 
 | Step (§3) | How it is built |
 | --- | --- |
-| 1. Generate | `03_Chart.cs`, an exact port of `concept-tools/sea_chart.py` (same xorshift32 draws in the same order; 400 seeds give identical charts, checked here with mono). The generator now also gives each node its base map and its weather (§8). **Maps:** row r aims at label 2 + (r-1)/2 (labels are the maps' `Difficulty`, the final map's 0 counted as 10), a Breaker row two higher; a node draws one of the five unused maps nearest its row's aim, so no map is on a chart twice. Seed 20261009: row 1 averages label 3.2, row 5 6, row 10 7.7 over 2,000 charts |
+| 1. Generate | `03_Chart.cs`, an exact port of `concept-tools/sea_chart.py` (same xorshift32 draws in the same order; 400 seeds give identical charts, checked here with mono). The generator now also gives each node its base map and its weather (§8). **Maps:** row r aims at label 2 + (r-1)/2 (labels are the maps' `Difficulty`, the final map's 0 counted as 10), a Breaker row two higher; a node draws one of the five unused maps nearest its row's aim, so no map is on a chart twice. Over 2,000 charts row 1 averages label 3.2, row 5 6, row 10 7.7 (seed 20261009: 2.7, 6, 7.3) |
 | 2. Save | `06_Campaign.cs`: host save folder `RogueWaves`, keys `Campaign_Seed` and `Campaign_Route` (one column digit per map won); `New(seed)`, `Continue()`, `Stop()`. A lost or left map leaves the route as it was |
 | 3. Build the world | `04_World.cs`: a `Mapworlddatabaseobject` named `RW_Chart_<seed>_<route>` per route, built on every machine from its name; islands of primitives in the `docs/STYLE.md` palette, a `Macro_Maplink_Add` per map node playing its `RW_` twin Gameplan in `Mode_RogueWave` (`02_Mode.cs`), each with a `Cameraposition` and a `Dock`; route lines; a flag on sailed islands; a weather marker. Only the node the party stands on has `Links` (to its choices), so the stock arrows offer exactly the choices |
 | 4. Sail in | `05_Boat.cs`, host: once the boat is up and a campaign is on, sets `Tds_Multiplayerinfo.World`, clears `Selected`, and sets `Worlded` ("" then the name) as `Selectworld_ServerRpc` does. The landing node is the world's `Defaultnode`, not `Selected`, so no client opens a Setup panel on landing |

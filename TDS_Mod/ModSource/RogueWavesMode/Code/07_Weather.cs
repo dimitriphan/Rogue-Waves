@@ -1,4 +1,4 @@
-// Sea weather (docs/scope/05 [Sea Weather]; docs/mode/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
+// Sea weather (docs/scope/04 [Sea Weather]; docs/mode/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
 // the chart, shown on its island and in the Setup panel, announced when the map starts, and paid for in extra Pure Aura.
 // Each rides on a stock map object the game only puts on one map (kit docs/16 §3), spawned by the host at map start:
 //   Rising Water        Main_Flood (3_Manafold's): the water climbs each Tide, flooded tiles can't be built on
@@ -12,7 +12,7 @@
 // stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); the Pure Aura counter is a later piece.
 public static class RWWeather
 {
-    public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/05)
+    public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/06 [Pure Aura])
     public static int QuickTide = 5, QuickerTide = 10;   // the self-test lowers them
     public const float Quick = 1.25f, Quicker = 1.5f;
 

@@ -5,7 +5,8 @@ aura nodes pay and how the wallet works, read on 2026-10-09 for the Rogue Waves 
 Directions. Everything here was **read from the game's code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in
 `13` §11) unless it says otherwise; `File.cs:line` points into that decompiled folder (never committed). Most of
 this chapter was not tried in game yet (§9 is the PC list); §3's flood and nest and §6's host `Time_Scale` were
-verified by RogueWavesMode PC rounds 1-4 (2026-10-11). Ideas built on these facts are in the Rogue Waves repository's
+verified by RogueWavesMode PC rounds 1-4 (2026-10-11), §2's spawned wall, §3's den and §4's mine node by RogueLab
+round 7 (2026-10-12). Ideas built on these facts are in the Rogue Waves repository's
 `docs/mode/MECHANIC_IDEAS.md`.
 
 Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
@@ -56,8 +57,9 @@ Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
   re-checks only Moveblock per step; blocked, it goes `Idleblocked` and `Enemy_Basic` re-issues Move every slow tick
   (Entity_Ai_Mob_Movement.cs:210-245; Entity_Ai_Enemy_Basic.cs:32-53).
 - **Goal core:** the enemy core lists the `Core` entities it has a path to, hands them out round-robin per spawn and
-  rebuilds the list only when its current goal is gone (Entity_Ai_Main_Enemycore.cs:39-94). Flying uses the same graph
-  in a straight line (`Getpathlinear`, Helper_Navtools.cs:221-305); there is no separate air pathing.
+  rebuilds the list only when its current goal is gone (Entity_Ai_Main_Enemycore.cs:39-94). There is no air pathing:
+  the Halberd ignores paths only under open sky, by moving its grid tile (`24` §2); `Getpathlinear`
+  (Helper_Navtools.cs:221-305) serves only `Entity_Ai_Mob_Movementlinear`'s straight movers.
 - **Changing the map mid-match** (read; a spawned wall verified, below):
   - mark a tile unbuildable or unwalkable by spawning a block entity on its node (`Link_Spawn.Genadd`): the spawn runs
     `Movebeing` and `Updatefunct`, which re-fold the node's flags (Game_Entity.cs:126-128, 299-301). This is how the
@@ -112,9 +114,11 @@ each Tide and throws in `Helper_Gridtools.Checkifplaceable` if that is not loade
 spawns, not just its own. `Block_Flood_Deter` itself is in none of the groups `Map_Manafold`, `Hero_Boutman` or the six
 stock modes load (round 2): the game ships no flood block. The throw unwinds through the `Wave` setter into
 `Mode_Normal.Run`, which drives the Tides, so never leave a flood on a map without it. `Block_Noplacement` is not loaded
-on the boat (round 3); RogueWavesMode 0.1.3 registers a copy of Boutman's `Block_Noplacementfish` (loaded with
-`Hero_Boutman`, one of Manafold's sub-loads) under the name `Block_Flood_Deter`, once the map has loaded; **verified**
-in round 4: 67 tiles flooded at the first Tide, no error.
+on the boat (round 3); RogueWavesMode (since 0.1.3) registers a copy of the first loaded `Block_Noplacement`,
+`Block_Nobuild_Brittle` or other `Block_No...` being under the name `Block_Flood_Deter`, retried once a second for each
+map's first 30 s (`TDS_Mod/ModSource/RogueWavesMode/Code/07_Weather.cs`); on the boat that is Boutman's
+`Block_Noplacementfish` (loaded with `Hero_Boutman`, one of Manafold's sub-loads); **verified** in round 4: 67 tiles
+flooded at the first Tide, no error.
 
 ## 4. Aura nodes and mining
 
@@ -192,7 +196,8 @@ in round 4: 67 tiles flooded at the first Tide, no error.
   three small bombs on landing, = 2 re-fires itself once at the farthest foe within `Bouncerange`
   (Projectile_Ai_Splitbounce.cs:20-100; Entity_Ai_Tower_Smackybomber.cs:199, 324-329). Per-shot params override the
   projectile's `Defaultparams` (Helper_Damagetools.cs:262-277), and the bounce shot doesn't pass `Splitbounce` on, so
-  it bounces exactly once: Yossele's full-Growth spore bomb.
+  it bounces exactly once. (Yossele's full-Growth bounce is its own same-spot second blast,
+  `TDS_Mod/ModSource/Yossele/Code/08_Cannon.cs`, not this.)
 - Others with params a mod can set per shot: `Beam` (`Trackspeed`, `Tickrate`, `Maxrange`, `Track`, `Lifetime`),
   `Expand` (`Radius`, `Initradius`, `Any`), `Delay` (`Activetime`), `Corebomb` (`Time`, `Style`, `Hurt`)
   (the files' `Spawn`).

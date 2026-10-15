@@ -1,6 +1,7 @@
-// Mummer asset generator: the vessel's pixel art, drawn with Sno Sno's rendering rules (the style the shipped vessels
-// share): one main colour, a shade on the side the vessel faces, a deeper band at the bottom, a half-alpha rim on the
-// lit upper-left edge, a soft ground patch, no outlines; it hops to move.
+// Mummer asset generator: the vessel's pixel art, drawn with Sno Sno as the reference (before the kit's art survey):
+// one main colour, a shade on the side the vessel faces, a deeper band at the bottom, a half-alpha rim on the lit
+// upper-left edge, a soft ground patch, no outlines; it hops to move. The rim is Smacky's alone and the patch is Sno
+// Sno's snow (docs/18 §3, §4.2): a new vessel draws by docs/18 §4.2, not by this file.
 // Mummer is a costume: a soft lilac triangle (Smacky is the square, Sno Sno the circle) with a floppy point and a brass
 // bell, a happy face drawn on the front (crooked eyes - the far one a pixel low - blush and a zigzag grin) and a hem cut
 // with pinking shears. Under the hem is the dark, and two small white eyes in it. Its hands are floating shadows with

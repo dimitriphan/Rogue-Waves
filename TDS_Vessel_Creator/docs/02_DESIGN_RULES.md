@@ -96,6 +96,9 @@ Per buildable, like the shipped ones (counts and costs measured from the game's 
   | 4 | 75-750 | 300 | 260-450 |
   | 5 | 1500-5025 | 3000 | 2800-3500 |
 
+  Shipped ranges leave out Boutman, whose trees go higher (up to 150, 700, 1950 and 7500 by tier;
+  `reference/vessel_data_survey.txt`).
+
 - **Ids**: `<Being>_<Key><Tier>_Upgradeobject` (`Tower_Mummerloom_Golden5_Upgradeobject`); each upgrade has its own
   model (`<Being>_<Key><Tier>`) that keeps the base silhouette and adds one clear feature.
 - **Names** are puns or flavourful two-word names ("Long Bow", "Eagle Eyes", "Rapid Fire", "Mining Operation",

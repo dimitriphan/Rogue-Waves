@@ -6,7 +6,8 @@
 > the first named Cardinal, and modifiers show as an effect, not a skin (`docs/scope/13`). Since then: the
 > mode part `RogueWavesMode` exists (2026-10-10: sea chart, sea weather, rejoin), Yossele and Spool have full sheets in the vessel
 > template (`docs/scope/07`, `08`), Spool's ability is Patch and a Yarn Stash holds the Thread (Thread Heads come from it by
-> default), and Yossele is built in draft PR #30. Check `docs/scope/` before acting on a row.
+> default), and Yossele 0.1.0-dev is built (PC round 8 98/0; merged in PR #30 on 2026-10-15). Check `docs/scope/`
+> before acting on a row.
 
 Every asset `docs/SCOPE_v0.txt` names or implies, checked against branch `claude/phase-1-6lfnar` (PR #3) on
 2026-10-08: what exists and what is still missing. It is a to-do list, not a design; each gap goes to the phase in

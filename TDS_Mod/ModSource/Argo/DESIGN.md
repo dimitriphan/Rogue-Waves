@@ -115,7 +115,7 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
   `World_Argo_Dragunder`, `World_Argo_Bedrock`, `World_Argo_Faultburst`. Slowed keeps the game's `Debuff_Slow` too,
   as 1.4.0 does.
 - **Sounds** (`ArgoAudio.cs`): `Argo_Splash` (pool placed, FLOOD), `Argo_Pin`, `Argo_Gurgle` (Trench). Reels keep
-  `Argo_Winch`, quakes `Argo_Quake`. Volumes go in `02_Data.cs` `SoundVolume` with the code (start near
+  `Argo_Winch`, quakes `Argo_Quake`. Loudness targets go in `02_Data.cs` `SoundTarget` with the code (start near
   `Argo_Harpoon`'s 0.004).
 - **Icons** (`03_Assets.cs`, 12×12): `FloodIcon` (a drop and a plus) and `AimIcon` (crosshairs on a ring).
 - Kept unused in the source (SONAR is switched off by `SonarEnabled = false`): SONAR's sheet, icon, ring, ping and sound; Barbed's bleed;

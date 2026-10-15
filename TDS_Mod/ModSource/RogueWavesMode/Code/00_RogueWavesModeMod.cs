@@ -1,5 +1,5 @@
 // RogueWavesMode: the mode part of the Rogue Waves pack (docs/PACK.md; prefab RogueWaves_Mode_Default, dev mod
-// RogueWavesModeMod). This first slice carries the campaign's sea chart and its sea weather (docs/mode/SEA_CHART.md):
+// RogueWavesModeMod). It carries the campaign's sea chart and sea weather (docs/mode/SEA_CHART.md) and the rejoin:
 //   02_Mode.cs      Mode_RogueWave (Mode_Normal's scripts and Tide table) and an RW_ twin of every base Gameplan
 //   03_Chart.cs     the seeded chart as data, an exact port of concept-tools/sea_chart.py
 //   04_World.cs     the chart as a world of the game's own: islands with map nodes, built on every machine from its name

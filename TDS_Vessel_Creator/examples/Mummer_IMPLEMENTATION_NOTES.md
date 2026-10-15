@@ -7,7 +7,7 @@ shipped vessels work.
 
 ## Layout
 
-`Build-MummerMod.ps1` joins `Code/*.cs` (name order) and `../Shared/*.cs` into one Roslyn string, renaming the shared
+`Build-MummerMod.ps1` joins `Code/*.cs` (name order) and `ModSource/Shared/*.cs` into one Roslyn string, renaming the shared
 kit's `ModKit` prefix to `MummerKit` (each mod gets its own copy, so mods never collide), rejects the namespaces the
 game's compiler refuses, and compile-checks the result with Unity's csc against the game's own references.
 
@@ -29,7 +29,7 @@ game's compiler refuses, and compile-checks the result with Unity's csc against 
 | 97_Shots | `-Define MUMMER_SHOTS`: full-frame and close-up captures as `[MummerDump]` log lines |
 | 99_SelfTest | `-Define MUMMER_SELFTEST`: starts a solo match and checks every mechanic (72 checks) |
 
-Shared kit (`../Shared`, used by Mummer and Sprigg 1.4.1, the same design as Argo's): `ModKitJournal` (vessel-agnostic
+Shared kit (`ModSource/Shared`, used by Mummer and Sprigg 1.4.1, the same design as Argo's): `ModKitJournal` (vessel-agnostic
 journal pages and the vessel-tab sync) and `ModKitBoat` (a boat spot per vessel, laid out on the deck, button
 unlocked).
 

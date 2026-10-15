@@ -39,7 +39,7 @@ What this meant for a new map in TDS (superseded: §6 and `15` §10 answer it fr
 - A mod can probably ship a scene if the exporter is asked to (`ExportSettings.content` including `Scenes`, and the
   fork's `ModToolSettings.supportedContent` still allowing it).
 - Loading it is the hard part: TDS builds its maps with `Game_Grid.Generatemap` from a map prefab and
-  `Mapobject`/`Mapentryobject` data (`docs/13` §3), not by loading a scene per map. `Bla_Mods.Autoloadscenes` is
+  `Mapobject`/`Mapentryobject` data (`16` §1), not by loading a scene per map. `Bla_Mods.Autoloadscenes` is
   never read, so the game never loads a mod's scenes (§6). The likely route to a
   new map is therefore a **map prefab plus map data registered the way the game registers its own**, not a scene.
 - Whichever route, a mod scene layered on the running game's scenes would have to be unloaded and reloaded by the
@@ -58,9 +58,10 @@ member) plus a global P/Invoke switch, and a failed check reports every illegal 
 deny list is: namespaces `System.IO.*`, `System.Reflection.*`; type `System.AppDomain`; member
 `UnityEngine.Application.Quit`; assemblies `UnityEditor.dll`, `Mono.Cecil.dll`; P/Invoke off. TDS's observed blocks
 (`docs/09` §A: System.IO, System.Reflection) match these defaults exactly, so expect the rest of the list to be
-blocked too (untested: TDS's own `RoslynCSharpSettings` in `resources.assets` was not dumped). The check is a
-pre-load filter, not a sandbox: anything it lets through runs with the game's full rights. (read, from the asset's
-settings file as shipped in public projects; the store page could not be fetched.)
+blocked too (untested: the deny lists of TDS's own `RoslynCSharpSettings` in `resources.assets` were not dumped; only
+its reference list was read, the one in `Build-<Name>Mod.ps1`). The check is a pre-load filter, not a sandbox:
+anything it lets through runs with the game's full rights. (read, from the asset's settings file as shipped in public
+projects; the store page could not be fetched.)
 
 Known from the kit and unchanged: the fixed reference list in `Build-<Name>Mod.ps1` (no `System.Core`, no
 `JsonUtility`), compile errors surface only in `Player.log` (`docs/09` §A), one string per mod.
@@ -107,8 +108,8 @@ registry, `kit/README.md`).
 2. `Bla_Mods`: what `Autoloadscenes` does, the order mods load in (list order, alphabetical, `.info`-driven), whether
    all enabled mods load at boot, and what `Toggle` writes. Read with the Cecil scripts (`docs/11`) or the decompiler
    (`docs/13` §11).
-3. TDS's `RoslynCSharpSettings` instance in `TDS\DATA\resources.assets`: the full deny lists, P/Invoke, and the
-   reference list, against the defaults in §3.
+3. TDS's `RoslynCSharpSettings` instance in `TDS\DATA\resources.assets`: the full deny lists and P/Invoke, against the
+   defaults in §3 (its reference list is already in `Build-<Name>Mod.ps1`).
 4. Whether two mods with a `Default` prefab of the same name, or one mod with several `Default` prefabs, all activate
    (decides the "one folder, many parts" layout).
 5. Blockage's Discord `#mods` channel: any documented limits or a Workshop plan.

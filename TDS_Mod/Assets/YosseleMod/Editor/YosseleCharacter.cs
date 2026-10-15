@@ -302,7 +302,7 @@ namespace YosseleBuild
         }
 
         // Four root legs in two pairs (outer left with inner right, then the others), the top bobbing. Contact frames 0
-        // and 3 (the footstep).
+        // and 3 (the mod's Code/03_Assets.cs plays its one footstep on frame 2).
         public static List<Pose> Move()
         {
             return new List<Pose>

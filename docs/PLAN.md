@@ -72,7 +72,7 @@ outcome and the constraints; the Part D templates stay as written for Opus threa
 Each phase ends at a gate. A gate is a short written result the user can approve in a minute. Phases 1 and 2 are
 cheap and decide the shape of everything after them, so nothing else starts before they close.
 
-### Phase 0. Definitions (half a session)
+### Phase 0. Definitions (half a session; done 2026-10-08)
 
 Close the scope's blanks with the user before anything is researched. Reads: `docs/scope/` once, this section.
 
@@ -128,7 +128,7 @@ Opening prompt:
 
 Gate: packaging and style approved; kit 1.6 scope listed.
 
-### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele in draft PR #30)
+### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele built 2026-10-12 and merged, PR #30)
 
 Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
 way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
@@ -204,13 +204,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
   RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
-  a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in
-  "Log" below.
-- **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15).
-  By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
-  (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed;
-  also left on Yossele: his look by eye (temporary art), his balance pass, the Compost Bin numbers in scope `11`, and
-  the chance-based Viral Outbreak and Hallucinogen, still unchecked.
+  a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
+  file until three in a row came back clean (`docs/reports/QUALITY_PASSES_2026-10-15.md`). Older entries are in "Log"
+  below.
+- **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
+  the mode's next change also takes `RW_` save keys, scope `04`'s weather lines and the rejoin's host name
+  (`QUALITY_PASSES_2026-10-15.md` A3-9, B4-11, B4-12). By hand: the F-key check, the button's and the chart's look, a
+  flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E, kit `docs/19` §8). Left on Argo: his balance pass
+  (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Yossele's next build takes the ranged laser and speed, Argo's
+  unthrottled debuff looks, the 2026-10-13 names and lines, its footstep frames and two small leaks (B3-24 to B3-30);
+  also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
+  (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
+  unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  and the unit-sheet Aseprite fix (B10, B1-3, B1-4).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
 
@@ -428,11 +434,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (route **V1**) and the boat then sails to the winner; the party returns to the boat between maps. Default taken:
   map 1 is voted in the staging map's opening break, then the party sails from the harbour to it.
 
-- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], `docs/mode/SEA_CHART.md` §8).
-  Defaults taken: three weathers (Rising Water, Quickening Current, Nesting Ground); rows 1, 5, 10 calm, 1 in 3 then 1
-  in 2 elsewhere; +1 Pure Aura a Tide; Quickening x1.25 from Tide 5, x1.5 from Tide 10. Maps spread by row difficulty
-  (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is `RogueWavesMode`; nothing starts a campaign
-  until the main-menu button piece calls `RWCampaign.New`/`Continue`.
+- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], in `04` since 2026-10-14;
+  `docs/mode/SEA_CHART.md` §8). Defaults taken: three weathers (Rising Water, Quickening Current, Nesting Ground);
+  rows 1, 5, 10 calm, 1 in 3 then 1 in 2 elsewhere; +1 Pure Aura a Tide; Quickening x1.25 from Tide 5, x1.5 from Tide
+  10. Maps spread by row difficulty (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is
+  `RogueWavesMode`; nothing starts a campaign until the main-menu button piece calls `RWCampaign.New`/`Continue`.
 
 - 2026-10-11 (user, scope review): only the **host's** mid-map quit spends a retry; **no Cardinal swaps** on the boat
   between maps; **breaks last 60 s**; Direction **rank II 20, rank III 30** Pure Aura; Team Cardinals work for everyone,
@@ -445,11 +451,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   review's six wording fixes are folded in (#8, #17, #21, #30, #32, #52).
 - 2026-10-12 (user): the name is spelled **Rogue Waves** everywhere, the mode and its main-menu button included
   (was "Rogue Wave"). Identifiers (`Mode_RogueWave`, `RW_` save keys), file names (`04_Rogue_Wave_Mode.txt`) and the
-  PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid.
-- 2026-10-13 (user): every vessel sheet follows `docs/scope/15_Vessel_Template.txt`; `~` marks a Claude default.
-  Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
-  Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
-  heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+  PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid (the scope file
+  was renamed after all on 2026-10-14: `04_Rogue_Waves_Mode.txt`, below).
+- 2026-10-13 (user): every vessel sheet follows `docs/scope/15_Vessel_Template.txt` (`15_Templates.txt` since
+  2026-10-14); `~` marks a Claude default. Yossele attacks at range (a green laser from the mouth) and moves slower;
+  Selfish Sapling is now Forest Project and Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots.
+  Spool's ability is **Patch** (20 Thread heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the
+  start, like the Bouthouse) holds the Thread.
 - 2026-10-14 (user): the scope follows `docs/scope/00_Read_Me.txt`'s rules: one meaning per symbol, every number
   on a `- Field: value` slot, `/~ \` for Claude's notes, `->` to point at another file, each fact in one file, dates
   only in `02`, and every template in `15_Templates.txt`. `04_Rogue_Wave_Mode.txt` is renamed `04_Rogue_Waves_Mode.txt`.
