@@ -205,16 +205,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
   RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
-  file until three in a row came back clean (`docs/reports/QUALITY_PASSES_2026-10-15.md`). Older entries are in "Log"
+  file until two in a row came back clean (`docs/reports/QUALITY_PASSES_2026-10-15.md`). Older entries are in "Log"
   below.
 - **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
   the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
   turned-away player who gets in on a second try (`QUALITY_PASSES_2026-10-15.md` A3-9, B4-11, B4-12, B4-14), and
   its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
-  kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his balance pass
-  (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Yossele's next build takes the ranged laser and speed, Argo's
-  unthrottled debuff looks, the 2026-10-13 names and lines, its footstep frames and two small leaks (B3-24 to B3-30);
+  kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
+  balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Yossele's next build takes the ranged laser and speed,
+  Argo's unthrottled debuff looks, the 2026-10-13 names and lines, its footstep frames, two small leaks and the vine
+  stem's 1 px step at tile joints (B3-24 to B3-30, B3-36);
   also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
   (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
   unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,

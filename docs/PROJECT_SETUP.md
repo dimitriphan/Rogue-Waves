@@ -6,10 +6,9 @@ chores.
 
 ## 1. The repository
 
-Connect `dimitriphan/Rogue-Waves`. The repository's default branch is `claude/rogue-waves-mod-setup-ngfuv3` (no `main`
-exists), but it stopped at PR #3: all work since lands on **`claude/phase-1-6lfnar`**, and every thread branches from
-and opens its PR against that branch. Making `claude/phase-1-6lfnar` the default (or merging it into the default and
-renaming that `main`, GitHub: Settings > General > Default branch) is Dimitri's call; until then, name it in each brief. Do not connect `ModProjects`: the coordinator
+Connect `dimitriphan/Rogue-Waves`. Its default branch is **`claude/phase-1-6lfnar`** (switched from the old
+`claude/rogue-waves-mod-setup-ngfuv3`, which stopped at PR #3, per Decisions 2026-10-15; no `main` exists): all work
+lands there, and every thread branches from and opens its PR against it. Do not connect `ModProjects`: the coordinator
 needs it only once, when Argo's phase copies the shipped Argo in, and the plan says so at that step.
 
 ## 2. Project instructions (paste as the project's instructions)

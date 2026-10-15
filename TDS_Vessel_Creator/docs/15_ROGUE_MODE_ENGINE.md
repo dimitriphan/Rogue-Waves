@@ -151,7 +151,7 @@ host can write a line for everyone (`Chat.Add`) and read every player's lines (`
 | Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13, and by RogueLab with eight cards once its menu is up, §15) | go |
 | Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands over the 1-3 chart nodes linked to this map, then the party returns to the boat and it sails to the winner (route V1, §17). Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads and the opening break is held while players pick Directions and vote | go (in-map vote not built yet) |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
-| Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
+| Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (Tds_Multiplayer_Remote.cs:542-569). `Changehero_ServerRpc` itself checks nothing | go |
 
 A mod builds itself, every time: one choice per player, the count, a timeout or host override, and the shared display.
 
@@ -357,7 +357,7 @@ questions. All **read**; RogueLab round 2's results are §15.
 - Aura is per player: `Helper_Resources.Give` adds to `Game_Players.Prevsessionlist[Owner].Resources`
   (Helper_Resources.cs:16-29); `Owner = -1` pays every active player, `Split` divides first (:50-70). `Give` scales by
   `Game_Mapvars.Resourcegainmultiplier` (:21), which Cardinals change (`Artifact_Bottomrock`); `Mode_Normal` sets it to
-  1 around its own payouts (Mode_Normal.cs:359-362). Do the same for a transfer.
+  1 only around the start aura (Mode_Normal.cs:359-362), so Tide pay (:66) is scaled. Set it to 1 around a transfer.
 - The stock **Money Bag** (`Artifact_Pig`, "enables donation") already moves aura: its button needs 25 of each aura
   (Entity_Command_Artifact_Pig_Launch.cs:30-47), the host spends it from the thrower and throws a bag; a same-team
   entity with an owner that it hits pays that owner `Amount - 1` of each (Entity_Ai_Effect_Artifact_Pig.cs:72-165). Its
@@ -472,7 +472,7 @@ then call with `Forcedisplaymenu: false` (`20` §2, `examples/recipes/RecipeUi.c
   A late joiner whose host has a node picked opens the Setup panel on it (Macro_Main.cs:445-453).
 - **Start:** each player's ready sets `Activeplayer`; when all are ready the server closes the lobby and loads
   `Gameloading` from `Setup` with whatever four strings are set (Tds_Multiplayer_Remote.cs:509-598). Picking a node
-  writes them from the node's Gameplan and unreadies everyone (:600-660); a mod rewrites them after (§3, Riptide).
+  writes them from the node's Gameplan and unreadies everyone (:600-696); a mod rewrites them after (§3, Riptide).
 - **Prefab keywords:** `Mainmenu` activates at each main menu (Mainmenu_Main.cs:362); `World` only on the host's boat
   (Macro_Main.cs:395, inside the host branch), so client-side boat UI runs from the `Default` prefab's `Update`.
 - A client without the match's mode or Gameplan entry stops loading on a null entry, and the host waits for every
@@ -518,7 +518,7 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
   follow the tween (Boutbro: 2 of 2); Boutbro has only `Idle` and `Move` animations, so a unit without `Falling` and
   `Land` just drops. Another unit falls the same way if the mod's client code
   copies it; listing `Entity_Vis_Hero` on a non-vessel also brings the player arrow and the "VESSEL DROWNED" alert
-  (Entity_Master_Client.cs:115, 166-169). The game has no leave-upwards code.
+  (Entity_Vis_Hero.cs:84-120, 166-169). The game has no leave-upwards code.
 - **`Spawn(..., Sameasparent: true)` overwrites the spawn's Owner, Team and Subowners with the parent's**
   (Helper_Entitytools.cs:77-93): spawn a neutral unit with `false`, a player's minion with the player's building or
   vessel as the parent. A shop every player can use: Owner -1, every `Blm_Server.Sessionids` key as a subowner
@@ -537,8 +537,8 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
 - **`Damagedone`** on the attacker rises after each hit (Entity_Master.cs:208, Helper_Damagetools.cs:21-70): the only
   measure of damage actually dealt (lifesteal). **Proven** (round 5: 0 -> 4 on a hit of 4).
 - **`Game_Mapvars.Wave` is 0 in the opening break** (**proven**) and rises as each Tide starts (Mode_Normal.cs:318, 371-376).
-- **`Resourcegainmultiplier` doesn't touch Tide pay**: `Mode_Normal` sets it to 1 around its own payouts
-  (Mode_Normal.cs:359-362), so a lower-pay setting changes start aura or drops instead.
+- **`Resourcegainmultiplier` scales Tide pay and drops, not the start aura**: `Mode_Normal` sets it to 1 only around
+  the start aura (Mode_Normal.cs:359-362); Tide pay goes through `Give` (:66, Helper_Resources.cs:21).
 - **Health** is the `Health` stat: `Value` now, `Value_Calc` the max; whether a max change keeps the fraction depends
   on the stat's type in data (`Variable` keeps it, `Fixed` refills, `Variabletrue` keeps the amount; Link_Stats.cs:46-103). **Proven** for Boutbro (`Variable`): a +100% max took
   5/10 to 10/20, and `Speed`/`Damage` modifiers added mid-match apply at once (round 5).
@@ -571,8 +571,8 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/mode/SEA_CHAR
   `Getitem("World", name)` and instantiates `Worldobj` itself. `Startup` waits for it with no timeout
   (Macro_Main.cs:404), and the host takes it from its save's `Player_Worldselect`, which the leader's map click
   rewrites (:633): a mod world in that key hangs the boat once the mod is gone. A warp (`Selectworld_ServerRpc`,
-  :827-885) sets `World`, `Selected` and `Worlded`; every machine's `Moveworld` swaps worlds with the title card, and
-  `Macro_Worldvisual.Update` re-swaps any machine whose world differs from `Worlded`.
+  Tds_Multiplayer_Remote.cs:827-885) sets `World`, `Selected` and `Worlded`; every machine's `Moveworld` swaps worlds
+  with the title card, and `Macro_Worldvisual.Update` re-swaps any machine whose world differs from `Worlded`.
 - **The only client-written networked value on the boat** is the player's own `Blm_Player.Displayname` (owner write,
   Blm_Player.cs:30; set from the Steam name at spawn, :98). `Changeartifact_ServerRpc` has no leader check
   (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.

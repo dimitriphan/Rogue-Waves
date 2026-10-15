@@ -1,9 +1,9 @@
 # 23 · The save, unlocks and the mod loader (what a pack may write, gate and expect at boot)
 
 Expansion rows 9 (unlocks), 10 (save compatibility) and 15 (packaging, the loader side). Everything here was **read
-from the game's code** (decompiled as in `13` §11) on 2026-10-14; three overload questions were settled from the IL
-(marked *IL*). Easy Save 3, ModTool, RoslynCSharp and Steamworks are not in that assembly, so claims about them say
-*untested*. A mistake here costs the player's save, so §8 is worth a PC round before the pack writes anything new.
+from the game's code** (decompiled as in `13` §11) on 2026-10-14; the `Adddata` overload question was settled from
+the IL (marked *IL*). Easy Save 3, ModTool, RoslynCSharp and Steamworks are not in that assembly, so claims about them
+say *untested*. A mistake here costs the player's save, so §8 is worth a PC round before the pack writes anything new.
 Files of the `Blockage.Tags` namespace are cited without the prefix (`Bla_Data.cs`).
 
 Read `15` §3, §8, §10, §18.4 and `14` first.

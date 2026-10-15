@@ -160,7 +160,7 @@
 					- Leads to: {Stone Wall}, {Rejuvenate}, {Hidden Surprise}
 					- Cost: Blue 25
 				% 1:{Repair Team} Regen health overtime
-					- Numbers: effect +7.5
+					- Numbers: heals itself 7.5 health every second /~ Read from the game's code: the data names it effect +7.5 \
 					- Leads to: {Stone Wall}, {Rejuvenate}
 					- Cost: Blue 20
 				% 1:{Spikes} Hurt enemies that attack this building
@@ -173,11 +173,11 @@
 					- Leads to: {Steel Wall}, {Perma-Wall}
 					- Cost: Blue 75
 				% 2:{Rejuvenate} Heal nearby towers and units each tide
-					- Numbers: effect +100; range 2.5
+					- Numbers: each Tide, heals the team's units and buildings within 2.5 tiles for 100 x the Wall's level when it was bought (200) /~ Read from the game's code: the data names it effect +100 \
 					- Leads to: {Steel Wall}, {Perma-Wall}
 					- Cost: Blue 15 + Yellow 10
 				% 2:{Hidden Surprise} leave lingering spikes when drowned
-					- Numbers: damage +5 to its base (8 with Spikes' 3) /~ Read from the game's code \
+					- Numbers: damage +5 to the Wall's own base (8 with Spikes' 3); the spikes it leaves are a trap of their own, dealing 15 to each foe that steps on them /~ Read from the game's code \
 					- Leads to: {Bramble}
 					- Cost: Red 80
 
@@ -213,7 +213,7 @@
 					- Leads to: {Mining Union}, {Ore Scraps}
 					- Cost: Yellow 30
 				% 1:{Overtime} Increased miner speed
-					- Numbers: effect +75%
+					- Numbers: miners' speed +75% and attack speed +75% /~ Read from the game's code: the data names it effect +75% \
 					- Leads to: {Mining Union}, {Ore Scraps}
 					- Cost: Yellow 30
 
@@ -231,7 +231,7 @@
 					- Leads to: {Excavation Facility}
 					- Cost: Yellow 250
 				% 3:{Marketplace} Gain all resources across the world when miners pass
-					- Numbers: visits 4; damage 1
+					- Numbers: every 4th time a unit of the team steps onto the Hut's tile, every ore on the map is hit, sharing 1 damage evenly /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 275
 				% 3:{Support Team} Engineers now increase the stats of nearby towers
@@ -244,7 +244,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 2000
 				% 4:{Engineering Firm} Drastically increase the effectiveness of engineers
-					- Numbers: effect +100%
+					- Numbers: engineers' attack speed +100%, and their tune becomes range +50% of base, attack speed +200% of base, damage +25% of base, for 14 seconds /~ Read from the game's code: the data names it effect +100% \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3000
 
@@ -343,7 +343,7 @@
 					- Leads to: {Hypercool}, {Permasno}
 					- Cost: Blue 30 + Yellow 30
 				% 2:{Snopowder} Sno increases range, increase damage on distant targets
-					- Numbers: Sno per tile of range 15; Sno projectile speed 5; damage per tile of distance 0.04
+					- Numbers: range +1 tile for every 15 Sno on its own tile; projectile speed +1 for every 5; damage +4% for each tile between it and the foe /~ Read from the game's code \
 					- Leads to: {Hypercool}, {Icicle Shot}
 					- Cost: Red 5 + Blue 25
 				% 2:{Sno Sucker} Can use Sno from notably farther away
@@ -360,12 +360,12 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 75
 				% 3:{Permasno} Can fire without Sno, additional Sno increases damage
-					- Numbers: damage +0.05 for each Sno pooled for the shot (a flat bonus, not a %); sno 0.5 /~ Read from the game's code \
+					- Numbers: a shot needs half its ammo in Sno (sno 0.5), and after each shot the pool refills to twice its ammo for free, so it always fires; damage +0.05 for each Sno in the last shot's pool, the free part included (a flat bonus, not a %) /~ Read from the game's code \
 					- Leads to: {Snoble Alert}, {Snoblaster 7A+}
 					- Cost: Red 75 + Blue 75 + Yellow 50
 
 				% 4:{Snoble Alert} Shot Snobles deal massive damage. Go you little stinkers!
-					- Numbers: damage +400%
+					- Numbers: a shot Snoble (not a Mini) hits for +400%, and each such hit throws a Mini Snoble, at most one every 0.1 seconds /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 1500
 				% 4:{Snoblaster 7A+} Rapidly stores Sno, manually activate for massive damage
@@ -397,7 +397,7 @@
 					- Cost: Red 25 + Blue 25
 
 				% 2:{Cookin' Eggs} Pulses heat for high damage, converts Snobles hit
-					- Numbers: damage 20
+					- Numbers: each pulse (pulse attack speed 0.25, so every 4 seconds) hurts up to 10 foes for 20 each; the Heater's own damage is unchanged /~ Read from the game's code \
 					- Leads to: {134° - 57°}, {Scorcher}
 					- Cost: Red 300
 				% 2:{Temperature Shock} Heated enemies take more damage from Sno
@@ -405,7 +405,7 @@
 					- Leads to: {134° - 57°}, {Scorcher}
 					- Cost: Red 100 + Yellow 150
 				% 2:{Heat Treat} Units will heal nearby the heater
-					- Numbers: effect +10
+					- Numbers: each pulse (every 4 seconds) heals the team's units for 10 and buildings for 3.33 /~ Read from the game's code: the data names it effect +10 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 200 + Yellow 100
 
@@ -486,7 +486,7 @@
 				- Damage: 0.4
 				- Attack speed: 0.2
 				- Range: 3 tiles, +1 tiles per level
-				- Heal: 15
+				- Heal: 15 /~ Read from the game's code: the Sno Level it makes each time \
 				- Projectile flight: 2
 				- Cost: Blue 10 + Yellow 25
 			[Upgrades]
@@ -495,12 +495,12 @@
 					- Leads to: {Hard Sno}, {Soft Sno}
 					- Cost: Blue 25
 				% 1:{Slush} Increased siphon rate and Sno generation
-					- Numbers: attack speed +100% of base; heal amount +10; damage +0.1
+					- Numbers: attack speed +100% of base; Sno made each time +10 (the data's heal amount); damage +0.1 /~ Read from the game's code \
 					- Leads to: {Sno Bank}, {Soft Sno}
 					- Cost: Yellow 35
 
 				% 2:{Sno Bank} Sno spreads much further, generates in large amounts
-					- Numbers: heal +40; spread 1.25; Sno rate 2
+					- Numbers: Sno made each time +40 (the data's heal), but only every 2nd siphon (Sno rate 2); spread 1.25 /~ Read from the game's code \
 					- Leads to: {Black Sno}, {Rich Sno}, {Snobles}
 					- Cost: Yellow 200
 				% 2:{Hard Sno} Launched Sno will deal some damage
@@ -640,7 +640,7 @@
 					- Cost: Yellow 125 + Red 125 + Blue 125
 
 				% 3:{1 Inch Bout} Boutman will ramp up in damage the longer he fights, including recruited fish
-					- Numbers: damage +3.5%; decay +200%
+					- Numbers: damage +3.5% for each second he keeps attacking, for him and his recruited fish, with no cap; when he stops, the bonus goes and its count falls 2 seconds' worth each second /~ Read from the game's code: the data names it decay +200% \
 					- Leads to: {Ip Man-of-War}
 					- Cost: Red 1500
 				% 3:{Iron Fish} Recruited fish are exceptionally buffed
@@ -648,7 +648,7 @@
 					- Leads to: {Ip Man-of-War}, {Kung Fu Tackle}
 					- Cost: Red 650 + Yellow 650 + Blue 650
 				% 3:{Fishbender} Boutman and recruited fish can mine, increased damage to ore
-					- Numbers: damage to ore 0.5
+					- Numbers: each hit on ore +0.5 (a hit on ore counts at most 1, so up to 1.5), for him and his recruited fish /~ Read from the game's code \
 					- Leads to: {Ip Man-of-War}, {Kung Fu Tackle}
 					- Cost: Yellow 1750
 
@@ -682,7 +682,7 @@
 					- Leads to: {Spawnbed}, {Drybed}
 					- Cost: Yellow 25 + Blue 40
 				% 1:{Tank} Fish gain permanent health when fished
-					- Numbers: health +25
+					- Numbers: each time a fish lands in this barrel, its overshield cap grows by 25, with no limit /~ Read from the game's code: the data names it health +25 \
 					- Leads to: {Farmingbed}, {Drybed}
 					- Cost: Blue 75 + Yellow 25
 
@@ -691,7 +691,7 @@
 					- Leads to: {Janitorial Bucket}, {Country Gutter}
 					- Cost: Yellow 150 + Blue 250
 				% 2:{Farmingbed} Fish give back some of their worth in aura when fished
-					- Numbers: percent +5%
+					- Numbers: pays back 5% of the fish's worth (its cost and its upgrades') each time it leaves the barrel alive /~ Read from the game's code \
 					- Leads to: {Janitorial Bucket}, {Country Gutter}, {IT Watercooler}
 					- Cost: Yellow 325
 				% 2:{Spawnbed} Increased fish capacity, fish are powerful temporarily when fished
@@ -795,7 +795,7 @@
 					- Leads to: {Balibut}, {Bwordfish}
 					- Cost: Blue 50
 				% 1:{Boldfish} Can attack resources, dries fish
-					- Numbers: damage while dried 5
+					- Numbers: each hit on ore costs the fish 5 health /~ Read from the game's code: the data names it damage while dried 5 \
 					- Leads to: {Boi}, {Bbetta}
 					- Cost: Yellow 50
 
@@ -983,7 +983,7 @@
 					- Leads to: {Front-Line Pipes}, {Circular Routing}
 					- Cost: Red 50
 				% 2:{Rapid Response} Weapons generate faster and buff Knight's initial speed and damage on pickup
-					- Numbers: duration 20 seconds; amount 2; gun speed +0.2
+					- Numbers: a knight taking a gun here gets speed +200% and damage +200% for 20 seconds; gun speed +0.2 /~ Read from the game's code \
 					- Leads to: {Quick Construct}, {Old Pipes}
 					- Cost: Blue 25 + Yellow 30
 				% 2:{Reroute} Enables re-routing, connect to any resource
@@ -992,7 +992,7 @@
 					- Cost: Yellow 25
 
 				% 3:{Circular Routing} Gain a percent sum of your current Aura each Tide
-					- Numbers: gain 0.05; gain up to 50
+					- Numbers: each Tide, pays its owner 5% of each aura they hold, at most 50 of each /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 300 + Red 250
 				% 3:{Front-Line Pipes} Drowned enemies nearby a linked ore will grant aura and regenerate weapons
@@ -1241,7 +1241,7 @@
 					- Cost: Red 250 + Yellow 25
 
 				% 4:{Blast Extra Zed} Explosions now can chain... Violently
-					- Numbers: damage +2
+					- Numbers: damage +2 to its base /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 3000
 				% 4:{Pure Ex} Enemies deal no damage if shot, purest form of racing

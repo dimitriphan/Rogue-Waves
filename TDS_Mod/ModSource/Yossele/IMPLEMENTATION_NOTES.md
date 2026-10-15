@@ -48,7 +48,7 @@ scope's 2026-10-13 edit (ranged mouth laser, slower speed, three renames) is not
    without them are counted as `Skipped` (logged in the self-test's counters). Armour, barrier and Connected Roots do
    nothing if every hit is skipped.
 6. **Ore and fruit.** The Sapling mines with the miner's `Hurt` (`Damageresource`); a node emptied within 2 s of its
-   strike drops a fruit. The pickup looks for Hero- or Mob-tagged beings within 0.75 tiles each frame.
+   strike drops a fruit. The pickup looks for Hero- or Mob-tagged beings within 0.75 tiles five times a second.
 7. **FERTILIZE.** The button only appears once a Compost Bin is held (the self-test grants one with
    `ModKitDirections.Grant`). The picker is Mummer's HOOK picker on your own buildings; check it shows and that its
    border lands on the building.

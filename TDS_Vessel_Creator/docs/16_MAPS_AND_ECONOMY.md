@@ -164,7 +164,7 @@ flooded at the first Tide, no error.
   (Helper_Resources.cs:121-132), just as `Give` scales by `Resourcegainmultiplier`. The stock Cardinal Bottom Rock sets
   the loss multiplier to 0 (everything free, gains cut) (Entity_Ai_Artifact_Bottomrock.cs:14-17). So a Fund Transfer
   that takes with `Useresources` under Bottom Rock costs the sender nothing: set it to 1 around the transfer, as
-  `Mode_Normal` does for gains (`15` §14.2).
+  `Mode_Normal` does for the start aura (`15` §14.2).
 - **Match statistics** per player (kills, deaths, vessel deaths, placed, upgraded, sold, spent and gained per colour)
   are in `Tds_Clientinfo.Activeplayerdata` on the host, reset only when `Activeplayer` drops to 0, not per scene
   (Tds_Clientinfo.cs:31, 67-75; Game_Entity.cs:389-395; Helper_Resources.cs:33-40, 142-145). Kills are credited to the

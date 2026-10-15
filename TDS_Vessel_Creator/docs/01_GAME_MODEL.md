@@ -158,7 +158,8 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 ## 9. Damage, healing, ore, projectiles
 
 - `Helper_Entitytools.Interact(from, to, "Hurt", data)`; `Helper_Damagetools.Dodamage` reads `Data["Damage"] ×
-  Data["Damagemulti"]`. `Healtharmor` makes each hit count as 1. Healing: type `"Heal"`.
+  Data["Damagemulti"]`. `Healtharmor` makes each hit count as its
+  `Damagemulti` (1 by default), whatever its Damage (`09` #39). Healing: type `"Heal"`.
 - Ore (`Healthresource`): each hit removes `clamp(Damage, 0, 1) + Data["Damageresource"]`; it pays out (aura) when
   emptied. Heroes mine with their normal attack.
 - Projectiles: `Projectileobject` (clone `Tower_Smackyarcher_Arrow` or the Heavy Bow's arrow for pierce);

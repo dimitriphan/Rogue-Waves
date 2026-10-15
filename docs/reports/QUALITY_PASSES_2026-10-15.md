@@ -1,8 +1,9 @@
-# Quality passes until three clean (2026-10-15)
+# Quality passes until two clean (2026-10-15)
 
 Dimitri asked (2026-10-15 05:18Z): "Do another check on every asset in the repository now. Continue until there are no
-noticeable issues 3 times in a row." Base: `claude/phase-1-6lfnar` at f455c37 (PRs #2-#36 merged). Everything here
-was read, compiled or run as a script in the cloud; nothing was run in game.
+noticeable issues 3 times in a row." At 13:23Z he cut it to two clean passes in a row. Base: `claude/phase-1-6lfnar`
+at f455c37 (PRs #2-#36 merged). Everything here was read, compiled or run as a script in the cloud; nothing was run in
+game.
 
 ## How each pass works
 
@@ -117,6 +118,35 @@ Every pass 2 fix held. Nothing new for Dimitri. **Heaviest finds** (all fixed):
   two-argument `Adddata` picks the float version (in mod code it doesn't compile); RogueLab called the easier
   "Treated" setting the hard one.
 
+## Pass 4: 37 issues
+
+| Area | Found | Fixed by its reader | Fixed by the lead | Listed |
+| --- | --- | --- | --- | --- |
+| A1 kit 01-12 | 2 | 2 | 0 | 0 |
+| A2 kit 13-18 | 4 | 4 | 0 | 0 |
+| A3 kit 19-24, reference, recipes | 2 | 2 | 0 | 0 |
+| B1 template, examples, tools | 0 | 0 | 0 | 0 |
+| B2 Argo, shared kit | 0 | 0 | 0 | 0 |
+| B3 Yossele | 2 | 1 | 0 | 1 |
+| B4 mode, RogueLab, Riptide, handoffs | 0 | 0 | 0 | 0 |
+| C tools, settings | 1 | 1 | 0 | 0 |
+| D project docs | 4 | 3 | 1 | 0 |
+| E scope | 22 | 22 | 0 | 0 |
+
+This pass checked every decompile line cite by script (over 500, in kit `13`-`24`, `reference/` and the project docs)
+and every Numbers line of scope `16` against the game's code, to close those two classes instead of finding a few more
+each pass. Every pass 3 fix held. **Heaviest finds** (fixed unless listed):
+
+- Scope `16`: the line-by-line check found 21 more upgrade lines and the Sno Box's Heal line of the same kind
+  (Rejuvenate, Engineering Firm, Marketplace, Snoble Alert, Tank among them); all 195 upgrades are now checked.
+- Kit `15` §14.2 and §16 had `Resourcegainmultiplier` backwards: `Mode_Normal` holds it at 1 only for the start aura,
+  so it scales Tide pay and drops (`MECHANICS_CHECK.md`'s Depth rows had the same, now noted).
+- `docs/PROJECT_SETUP.md` still named the old default branch; GitHub's default is `claude/phase-1-6lfnar` now.
+- `TDS_Mod/Tools/pc/README.md`'s release step zipped "the pack", which the Build Queue can't make yet (no Pack step).
+- Kit `19` said `Commandlist` entries compare by name (the struct compares every field but `Goalobject`); kit `15` cited
+  the player arrow in the wrong file; kit `01` said armour counts each hit as 1 (it is `Damagemulti`).
+- Listed: B3-36 (Yossele's vine stems step 1 px at tile joints).
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".
@@ -127,6 +157,7 @@ Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.
 | B3-25, B3-26 | Yossele's display names are the pre-2026-10-13 ones (Selfish Sapling, Grafted Colors, Entangling Spaghetti Roots), and Selfish's in-game line has numbers | Rename strings, comments and tables to the scope's names and lines in the next build |
 | B3-27, B3-30 | Yossele's footstep plays on the peak-lift frame; the Mend effect and three sounds are built but never played | Footstep on frames 0 and 3; play or drop the unused assets, next build |
 | B3-28, B3-29 | Two small leaks in Yossele: `incoming` keeps a foe that died before its seeds landed; `LastHit` statics are never cleared per map | Fix in the next build |
+| B3-36 | Yossele's vine ground texture: the horizontal stem enters a tile on rows 6-7 and leaves on rows 7-8, so a vine line along x steps 1 px at every joint (the comment and `ASSETS.md` say the edges match) | Shift one end by a row in the next build |
 | B3-31 | Connected Roots guards the whole team's buildings; the scope says "yours" | Ask at the next Yossele build: own or team |
 | B4-14 | `09_Rejoin.cs` turns a player away once per session id and keeps the list all map; the game gives a returning player the same session id, so a second Join Game gets them in, seatless, while a seat is empty | Forget a session once it leaves; add a second try to `docs/mode/REJOIN.md` §6 O5; next mode change |
 | B4-11, B4-13 | Two weather lines in code differ from scope `04`'s in-game lines; the mode's dev-export description omits the rejoin | Take scope `04`'s lines at the next mode change; the description with the one pack version |

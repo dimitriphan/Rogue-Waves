@@ -61,8 +61,8 @@ Game_Mapvars.cs:131-162):
 The self-test runs as host, where all of these are filled, so **it cannot catch a client reading host-only data**.
 
 **Struct traps** (reference §2): `Entitydata.Subowner` is compared by reference, so editing the array in place never
-syncs (build a new array); `Stats`, `Commandlist` and `Resources` entries compare by name and are updated by remove +
-add, so an updated entry moves to the end of the list on clients.
+syncs (build a new array); `Stats` and `Resources` entries compare by name only, `Commandlist` entries by every field
+but `Goalobject`; all three are updated by remove + add, so an updated entry moves to the end of the list on clients.
 
 ## 3. Loading a map, and the 120 s kick
 

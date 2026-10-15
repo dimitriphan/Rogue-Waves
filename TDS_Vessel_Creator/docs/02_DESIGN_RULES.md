@@ -69,7 +69,8 @@ built around units follows `docs/12_MINION_VESSELS.md` as well. Shipped mixes:
 - **Cost colour = job**: Red offence, Blue defence/control, Yellow economy. Base cost 10-60 aura, one colour (two for
   a hybrid). Unit producers cost the most (60).
 - **Stats** list only what the building uses, with `Leveladd` on Health (+20 to +150 per level) and the main damage
-  stat (+0.5 to +2). Shipped bands: Health 20-100, Damage 0.3-5, Range 3-6.5 (towers), Attackspeed 0.2-1.
+  stat (+0.5 to +2). Shipped bands: Health 20-100, Damage 0.3-5, Range 3-6.5 (towers), Attackspeed 0.2-1 (the
+  Boutboat 2).
 - **Tags**: `Tower` (or `Trap`) + a role (`Towerfighter` attacks, `Gatherer` economy) + a family tag
   (`<Name><building>`) the brains use to find siblings.
 - **Units** (from a unit building): stats like the miner (5 HP), knight (25 HP), dog (50 HP); stock fighter AIs; leashed

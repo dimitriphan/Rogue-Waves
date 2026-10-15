@@ -62,7 +62,9 @@ PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 8. Release, if the tests pass (0 FAIL; SETUP lines only under the release rule in `docs/08` section 5) and Dimitri's
    sentence covers it: `Build-<Name>Mod.ps1` with no `-Define`, the queue again, then
    `Run-SelfTests.ps1 -Vessels <the released parts> -BootCheck`, then zip as `docs/PACK.md` §5 says (the pack's
-   zip; no part ships alone). Leave the game's Mods folder empty afterwards, except for that play build.
+   zip; no part ships alone). The Build Queue has no `Pack` step yet (`docs/PACK.md` §1), so it exports each part as
+   its own dev mod and no pack zip can be made until it gets one. Leave the game's Mods folder empty afterwards, except
+   for that play build.
 9. Run `Get-PcManifest.ps1` if anything changed after step 3. Report, release the lock, and stop the session.
 
 Only one session works in TDS_Mod at a time: an export parks the other vessels' folders.
