@@ -1,7 +1,7 @@
 # 09 · Pitfalls: every error met so far, and its fix
 
-Each entry: **symptom** → cause → fix (where the fix lives in the template). All of these happened while building Smocky
-(the first test clone), Sprigg 1.0-1.4.1, Argo 1.0, Mummer 1.0, the kit 1.4 boat work, Argo 2.0 and RogueLab. Add new
+Each entry: **symptom** → cause → fix (where the fix lives in the template). Most of these happened while building Smocky
+(the first test clone), Sprigg 1.0-1.4.1, Argo 1.0, Mummer 1.0, the kit 1.4 boat work, Argo 2.0 and RogueLab; the later ones ending "Read from code" or "Read from the game's assets" were read, not hit. Add new
 ones as the next number in §J (older entries kept suffixes such as 18a and 40a).
 
 ## A. Compiling

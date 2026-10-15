@@ -3,11 +3,13 @@
 3.8 against stand-ins of the game's reference list (no System.dll, no System.Core)."""
 import sys, os, re, subprocess, glob
 H = os.path.dirname(os.path.abspath(__file__))
-code_dir, shared_dir, prefix = sys.argv[1], sys.argv[2], sys.argv[3]
-defines = [d for d in (sys.argv[4].split(',') if len(sys.argv) > 4 else []) if d]
+show_warnings = '-w' in sys.argv[1:]   # -w (anywhere): print warnings too
+argv = [sys.argv[0]] + [a for a in sys.argv[1:] if a != '-w']
+code_dir, shared_dir, prefix = argv[1], argv[2], argv[3]
+defines = [d for d in (argv[4].split(',') if len(argv) > 4 else []) if d]
 # Like the build scripts: a <NAME>_SELFTEST define also switches on the kit's self-test helpers (ModKitTest).
 if any(d.endswith('_SELFTEST') for d in defines): defines.append('MODKIT_TEST')
-out_dir = sys.argv[5] if len(sys.argv) > 5 else os.path.join(H, 'out')
+out_dir = argv[5] if len(argv) > 5 else os.path.join(H, 'out')
 os.makedirs(out_dir, exist_ok=True)
 usings, bodies, origin = [], [], []
 files = sorted(glob.glob(os.path.join(code_dir, '*.cs')), key=lambda p: os.path.basename(p))
@@ -45,7 +47,7 @@ def where(n):
     i = n - head - 1
     if 0 <= i < len(origin): return '%s:%d' % origin[i]
     return 'joined:%d' % n
-for l in errs + (warns if '-w' in sys.argv else []):
+for l in errs + (warns if show_warnings else []):
     m = re.search(r'\((\d+),(\d+)\)', l)
     print((where(int(m.group(1))) + ' ' if m else '') + l.split(': ', 1)[-1])
 print('%s: %d errors, %d warnings, %d bytes' % (prefix, len(errs), len(warns), len(code)))

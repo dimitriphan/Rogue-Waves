@@ -3,7 +3,7 @@
 How the game defines its enemies, fills its Tides and makes "elite" enemies, and how a mod would add a new enemy type
 and a new enemy modifier. Everything here was **read from the game's code** (`Assembly-CSharp.dll`, decompiled in a
 cloud thread on 2026-10-04, see §11) unless it says **verified in a mod**. Riptide built the Tide-table
-route (`15` §13) and §10 Q1-Q4 and Q6 are answered; test every other recipe in game before relying on it.
+route (`15` §13) and §10 Q1-Q6 are answered (Q5 by `18`); test every other recipe in game before relying on it.
 
 Read `01_GAME_MODEL.md` (§4-9: entities, AIs and brains, stats, upgrades, damage) and `12_MINION_VESSELS.md` (units
 are the closest thing a mod has built to an enemy) before this one.
@@ -324,9 +324,9 @@ without a stock bespoke AI reads as a plain melee foe to them.
 3. **Tide tables**: for each mode, every `Waves` (Note, Wavetime, Wave) and `Wavecontent` (enemy, count, interval,
    style, gate, upgrades); and confirm that two maps in one mode play the same table. *Mode_Normal answered* (RogueLab
    round 1, TIDE lines: 60 entries, 30 Tides, 180 s each, 30 s breaks). *The others answered (round 2, TIDE2 lines in
-   `reference/roguelab_round2.txt`):* Storm 15 Tides (180 s, 30 s breaks, 50 aura each), Drought 20 (120 s, 20 s breaks,
-   Annealed and Claymore rushes), Tsunami 4 Tides (180 s, the last 9999 s; long breaks of 240 s then 180 s; 500 aura
-   each, Molten and Bulwark), Final 1 Tide (100 aura, three Bulwarks and Excaliburs), Tutorial 3 Training Dagger Tides.
+   `reference/roguelab_round2.txt`):* Storm 15 Tides (180 s, 30 s breaks, start 50 of each aura), Drought 20 (120 s, 20 s breaks,
+   Annealed and Claymore rushes), Tsunami 4 Tides (180 s, the last 9999 s; long breaks of 240 s then 180 s; start 500
+   of each aura, Molten and Bulwark), Final 1 Tide (start 100 of each aura, three Bulwarks and Excaliburs), Tutorial 3 Training Dagger Tides.
    A Gameplan names its mode, so two maps on one mode play one table.
 4. **When the enemies are loaded**: which Addressables group holds `Enemy_Dagger` (search `Bl_Address.Loadedfolders`
    for the `Loadlist` whose `Items` has it) and whether it is loaded at boot or only in a match. That decides when a

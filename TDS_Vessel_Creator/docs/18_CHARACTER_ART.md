@@ -34,7 +34,7 @@ front idle frames; "fps" is `Speed × Defaultspeedmulti` for Idle and Move.
 
 | Kind | Cell | Body (w × h) | Folders (frames per variant) | fps | Examples |
 |---|---|---|---|---|---|
-| Vessel | 32 | 15-27 × 20-28 | Idle 6, Move 6, Falling 6 or 12 (1-2 variants), Land 12-15 (1 variant), Landquick 1, Attack 2-4 (or Attack1-3 of 3) | 8-10 | Smacky 15-18 × 23-26, Sno Sno 19-25 × 20, Boutman 24-27 × 24-26 (rod included), Fie 21 × 27-28, Buster 16-27 × 19-20 |
+| Vessel | 32 | 15-27 × 19-28 | Idle 6, Move 6, Falling 6 or 12 (1-2 variants), Land 12-15 (1 variant), Landquick 1, Attack 2-4 (or Attack1-3 of 3) | 8-10 | Smacky 15-18 × 23-26, Sno Sno 19-25 × 20, Boutman 24-27 × 24-26 (rod included), Fie 21 × 27-28, Buster 16-27 × 19-20 |
 | Small foe | 32 | 8-19 × 9-17 | Idle 6, Move 6 | 7-12 | Claymore 9 × 10 (a bomb), Spear 19 × 17 |
 | Standard foe | 32 | 18-25 × 20-28 | Idle 6, Move 6, Attack 6 when it winds up | 3-6 | Dagger 18 × 22, Aegis 21 × 28, Ballista 25 × 23, Onager 24 × 24 |
 | Heavy foe | 48 | 30-35 × 33-40 | Idle 6, Move 6, Attack 6 | 4 | Maul 30 × 36, Excalibur 35 × 40 |
@@ -50,7 +50,7 @@ Sno Sno 4); foes keep Idle, Move and Attack on one sheet (Ballista 192 × 384 = 
 
 ## 3. The house rules both share
 
-Measured on all five base vessels and all ten Tide foes; `03` §1 has the vessel-side wording.
+Measured on all five base vessels and all ten foes (the nine Tide foes and Halberd); `03` §1 has the vessel-side wording.
 
 1. **Opaque, no outline.** No sheet has a dark line round the body. The silhouette edge is the fill colour itself,
    darkened only where that side is in shade (§4.2). Half-transparent pixels: Smacky 33% (alpha 63 and 127, his
@@ -64,7 +64,7 @@ Measured on all five base vessels and all ten Tide foes; `03` §1 has the vessel
    shades to a pale cold blue (Sno Sno `FFFFFF` > `C7E0F2` > `ADCDE5`).
 4. **Two or three tones per material**, rarely a fourth; a whole vessel uses 10-21 colours, a foe 8.
 5. **Darks are never pure black.** Eyes and the darkest details use warm or neutral near-blacks: `2B2922`, `333232`,
-   `4A4949`, `3F3E3E`, `161616` (Boutman's pupils). One stray `000000` exists on Buster's sheet; don't copy it.
+   `4A4949`, `3F3E3E`, `161616` (Boutman's pupils); Fie is the exception, with mid-grey eyes (`828282` over `B1B1B1`, §4.1). One stray `000000` exists on Buster's sheet; don't copy it.
 6. **A shared world palette.** 53 colours recur in three or more character families (`reference/palettes/
    tds_shared.gpl`): the whites and greys (`FFFFFF`, `DEDEDE`, `939292`), wood `826D60` / `64544A` / `5A4C42`, skin
    `DA867A`, sand `DFC9A8` / `C5B294`, Smacky's blues `4764A4` / `364E82` / `97AFE5`, the red `D63A44` / `BE2D36` /
@@ -82,7 +82,7 @@ Measured on all five base vessels and all ten Tide foes; `03` §1 has the vessel
 
 ### 4.1 What a vessel is made of
 
-| Vessel | Main ramp (light > shade > dark) | Accent | Eyes | Signature | Colours |
+| Vessel | Main ramp (light > shade > dark) | Accent | Eyes | Signature | Colours (opaque, whole main sheet; the `.gpl` lists fewer) |
 |---|---|---|---|---|---|
 | Smacky | head `FDE791` > `F2D76B` | overalls `97AFE5` > `4764A4` > `364E82`, sprout `7BCF80` / `65AD69` | 1 × 2, `4A4949` / `333232` | sprout, square head, half-alpha rim | 20 |
 | Sno Sno | `FFFFFF` > `C7E0F2` > `ADCDE5` | stick arms `826D60` / `64544A` / `5A4C42` | 1 × 2 dots | two snowballs, snow patch | 10 |
@@ -95,7 +95,7 @@ colour's saturation stays under 60% (Fie's hair is the most saturated at 57%).
 
 ### 4.2 Rules for a vessel (new or redrawn)
 
-- **Must** be chibi: head or head-mass half the height or more, 20-28 px tall, 15-27 px wide inside a 32 px cell,
+- **Must** be chibi: head or head-mass half the height or more, 19-28 px tall (Buster's sit 19-20), 15-27 px wide inside a 32 px cell,
   feet on the bottom row, centred on column 16.
 - **Must** use one light main colour (value 90-100%) with a 2-3 step same-hue ramp, one saturated accent, near-black
   eyes of 2-4 pixels, and take neutrals, wood and skin from the shared palette (§3.6).
@@ -115,7 +115,7 @@ colour's saturation stays under 60% (Fie's hair is the most saturated at 57%).
 
 Every Tide foe (Dagger, Spear, Aegis, Ballista, Onager, Claymore, Maul, Excalibur, Bulwark, and Halberd off the Tide
 tables) is the same creature: a **small grey stone body carrying a magenta crystal that is its weapon**, and the
-whole family shares **one 8-colour palette** (`reference/palettes/tds_foes.gpl`):
+whole family shares **one 8-colour palette** (Claymore's bomb adds three greys and a darker rim; Bulwark a bronze band) (`reference/palettes/tds_foes.gpl`):
 
 | Role | Colours |
 |---|---|
@@ -229,7 +229,7 @@ For the art this means:
 | `13` §5 step 4, §6 step 4 | a new foe's art needs the six elite skins drawn; a new skin means redrawing every enemy | elite skins are material overlays: no drawing (§5.5) |
 | `13` §10 question 5 | enemy art format unknown | answered (§2, §5) |
 | `docs/STYLE.md` "Enemies" | one colour family per foe; future skins tinted Storm Coral | one palette for every foe; Storm Coral is close to two elites (§7) |
-| shading guide of 2026-10-09 (concept page, point 4) | "shift the hue, not just the value" | the game keeps the hue and adds saturation; only white shades toward blue (§3.3) |
+| shading guide of 2026-10-09 (point 4 of the concept-art page made in the project's "Vessel concept art" thread; not in the repository) | "shift the hue, not just the value" | the game keeps the hue and adds saturation; only white shades toward blue (§3.3) |
 
 ## 9. How this was read (repeatable)
 

@@ -1,4 +1,4 @@
-// Sea weather (docs/scope/05 [Sea Weather]; docs/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
+// Sea weather (docs/scope/05 [Sea Weather]; docs/mode/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
 // the chart, shown on its island and in the Setup panel, announced when the map starts, and paid for in extra Pure Aura.
 // Each rides on a stock map object the game only puts on one map (kit docs/16 §3), spawned by the host at map start:
 //   Rising Water        Main_Flood (3_Manafold's): the water climbs each Tide, flooded tiles can't be built on

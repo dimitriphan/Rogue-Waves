@@ -1,4 +1,4 @@
-﻿# After Tools > Sprigg > Export Mod: waits for the export to land in the game's Mods folder, then marks the mod
+﻿# After Tools > Argo > Export Mod: waits for the export to land in the game's Mods folder, then marks the mod
 # enabled (the exporter writes _isEnabled: false). Optionally launches the game.
 param([switch]$Launch, [int]$TimeoutSeconds = 240)
 $mod = "D:\Steam\steamapps\common\TDS\Mods\ArgoMod"

@@ -21,7 +21,7 @@ recipes, `docs/07_ONLINE.md` for anything that changes state (host decides, engi
   ```bash
   cd TDS_Mod/ModSource
   python3 ../Tools/cloud-check/check_mod.py <Name>/Code Shared <Name> ""
-  python3 ../Tools/cloud-check/check_mod.py <Name>/Code Shared <Name> "<NAME>_SELFTEST,<NAME>_SHOTS,<NAME>_PROBE"
+  python3 ../Tools/cloud-check/check_mod.py <Name>/Code Shared <Name> "<NAME>_SELFTEST,<NAME>_SHOTS"
   ../Tools/cloud-check/check_editor.sh ../Assets/<Name>Mod/Editor
   ```
 

@@ -1,5 +1,5 @@
 // Round 4 (0.4.0), map 1: the mechanics Dimitri's 2026-10-09 scope adds that the game's code alone can't settle
-// (docs/MECHANICS_CHECK.md in the Rogue Waves repository). Solo host; one line per question, as rounds 1-3.
+// (docs/reports/MECHANICS_CHECK.md in the Rogue Waves repository). Solo host; one line per question, as rounds 1-3.
 //   break   V2 a button added to the vessel mid-match shows on the selected vessel's bar, and goes again
 //           V1 a neutral stand-in for the shopkeeper VENDCINT: spawned near the core with owner -1 and every player as a
 //              subowner, its button shows for the local player, its sprites take the vessels' fall-in (_Offset), then

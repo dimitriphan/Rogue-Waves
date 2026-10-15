@@ -30,7 +30,7 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Depth (ascension, on hold), the campaign and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
-| Enemy modifiers Cursed, Berserk | **go** | `13` §6, unchanged |
+| Enemy modifiers Cursed, Berserk, Aging, Dazzling | **go** | `13` §6 (the recipe); Aging and Dazzling checked in §16 |
 | The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
 | Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10; untested, and they load through the custom-map slot whose stock map hung, §15) |
 
@@ -60,7 +60,7 @@ Mode_Base obj = (Mode_Base)gameObject.AddComponent(Type.GetType(Modegen.Modescri
   the database's Mode folder, and "Downpour" is `Mode_Normal`'s display name (RogueLab round 1).
 
 **So the Rogue Waves mode is:** the stock `Mode_Normal` loop playing the mod's own `Wavesobject`, plus a host brain
-(the mod's `Default` prefab code, as kit 1.5's server module) that listens to `Game_Mapvars.Wave` / `Entry` and adds
+(the mod's `Default` prefab code, as the template's server module `05_Server`) that listens to `Game_Mapvars.Wave` / `Entry` and adds
 everything the run needs. The brain knows it is in a Rogue match by the mode's name in `Tds_Multiplayerinfo.Mode`.
 
 ## 3. A run across several maps, and what survives
@@ -314,7 +314,7 @@ settles here:
   three or more cards (`RiptideSalvage.Centre`).
 - `PlayerPrefs`, named messages and `OnClientConnectedCallback` pass the game's code security (probe 5).
 - A Setup-screen switch (a copy of the alternate-map toggle) is a working start route, a fallback if the main-menu
-  button (§14.8, `docs/MAIN_MENU_START.md` in the project) ever fails.
+  button (§14.8, `docs/mode/MAIN_MENU_START.md` in the project) ever fails.
 
 RogueLab round 1 (§11) then proved the rest of the run's skeleton: the mod Cardinal from the lobby, the chain to a
 second map with host state, leaving between Tides as a win, rewinding `Entry`, the save keys.
@@ -387,8 +387,8 @@ questions. All **read**; RogueLab round 2's results are §15.
   (Tds_Clientinfo.cs:25,37).
 - A match closes the lobby (`Lobbystate` "Closed", which the chain also sends), and a closed Steam lobby refuses joins
   (Blm_Multiplayer.cs:67-77, Blm_Multiplayer_Remote.cs:278-297): a dropped friend can't rejoin a running map.
-- **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0-0.2.1, `docs/REJOIN.md` in the project;
-  0.2.1 passed solo PC round 6, 47/0, and the real drop and rejoin waits for the online evening, `REJOIN.md` §6):
+- **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0-0.2.1, `docs/mode/REJOIN.md` in the project;
+  0.2.1 passed solo PC round 6, 47/0, and the real drop and rejoin waits for the online evening, `docs/mode/REJOIN.md` §6):
   `Blm_Multiplayer_Remote.Instance.Changelobbystatus_ServerOnly("Open")` is public and takes a string, so it needs no
   Steamworks type (mods can't reference Steamworks); `Blm_Multiplayer.Instance.Server_Serveropen` is the public flag the
   connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:261, "Loading
@@ -454,7 +454,7 @@ hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must o
   (Macro_Main.cs:395, inside the host branch), so client-side boat UI runs from the `Default` prefab's `Update`.
 - A client without the match's mode or Gameplan entry stops loading on a null entry, and the host waits for every
   client's `Loaded` (Game_Client_Init.cs:101-104; Game_Init.cs:123-134). The start-from-main-menu route built on these
-  facts: `docs/MAIN_MENU_START.md` in the Rogue Waves repository.
+  facts: `docs/mode/MAIN_MENU_START.md` in the Rogue Waves repository.
 
 ## 15. RogueLab rounds 2 and 3 (2026-10-09)
 
@@ -484,7 +484,7 @@ line is in `reference/roguelab_round2.txt` and `roguelab_round3.txt`; all **veri
 ## 16. Third reading: the 2026-10-09 scope's mechanics (read)
 
 The mechanics Dimitri's 2026-10-09 scope adds (shopkeeper VENDCINT, Fund Transfer limits, Fertilize, aura fruit,
-Aging, Dazzling, Vampire Dentures), checked one by one in the Rogue Waves repository's `docs/MECHANICS_CHECK.md`.
+Aging, Dazzling, Vampire Dentures), checked one by one in the Rogue Waves repository's `docs/reports/MECHANICS_CHECK.md`.
 The engine facts it found that weren't in the kit, **read** unless marked; RogueLab rounds 4 and 5 (0.4.0-0.4.1,
 2026-10-09) proved the ones marked so, and round 6 passed them all again:
 
@@ -529,7 +529,7 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
 
 ## 17. The world map and the boat (2026-10-09, read)
 
-Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`, which has the route and the probes):
+Read for a generated sea chart (the Rogue Waves repository's `docs/mode/SEA_CHART.md`, which has the route and the probes):
 
 - **A world is data plus a prefab.** `Mapworlddatabaseobject` (folder `"World"`): `Worldobj`, `Defaultlighting`,
   `Defaultnode`, `Display_Name`/`Desc`/`Sound`/`Soundtrack` (Mapworlddatabaseobject.cs). Its nodes are
@@ -554,7 +554,7 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`
   (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.
 
 - **Building a world in code** (read while writing the mode part's chart, 2026-10-10; proven by RogueWavesMode PC round
-  1, 34/0, Rogue Waves `docs/SEA_CHART.md` §9): `Changeworld` instantiates `Worldobj` and names the copy after it, and
+  1, 34/0, Rogue Waves `docs/mode/SEA_CHART.md` §9): `Changeworld` instantiates `Worldobj` and names the copy after it, and
   `Macro_Worldvisual.Update` swaps any machine whose world's GameObject name differs from `Worlded`, so **the prefab's
   name must be the world's database name** or every machine swaps forever. `Selectworld` writes the landing node into
   `Selected`, and a non-leader with a non-empty `Selected` opens the Setup panel on that node (Macro_Main.cs, end of
@@ -569,7 +569,7 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/SEA_CHART.md`
 ## 18. Fourth reading: Cardinal patterns, messages, the final map, chart decorations, unlocks (2026-10-09, read)
 
 Read for "what else can the run use" (Dimitri, 2026-10-09). Map objects, nodes, grid and wallet went to `16`; ideas
-built on both are in the Rogue Waves repository's `docs/MECHANIC_IDEAS.md`. All **read**, nothing tried in game.
+built on both are in the Rogue Waves repository's `docs/mode/MECHANIC_IDEAS.md`. All **read**, nothing tried in game.
 
 ### 18.1 How the stock Cardinals work, and patterns to copy
 

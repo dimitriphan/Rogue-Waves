@@ -53,7 +53,7 @@ map loads. The button is also where a campaign that has ended (no retries left) 
   mode string on every machine. They don't need the button: only the host presses it. A friend who presses it too
   just hosts their own lobby, like pressing Play.
 - **Joining works only on the boat.** The lobby closes when the match starts and stays closed through the map chain
-  (`docs/15` §14.5) in the base game; the pack reopens it only for a player who dropped (`docs/REJOIN.md`). Between campaign sessions, the host presses the button again (Continue), friends join on the boat,
+  (`docs/15` §14.5) in the base game; the pack reopens it only for a player who dropped (`docs/mode/REJOIN.md`). Between campaign sessions, the host presses the button again (Continue), friends join on the boat,
   and new friends can join then too.
 - The host can't yet tell whether a friend has the pack: no networked value a mod can add says so. A handshake is a
   Phase 7 polish item, not needed for this.
@@ -71,7 +71,7 @@ loads the join scene (Blm_Multiplayer.cs:321-325) while the host has no boat sce
 mean rebuilding the vessel picker, the ready-up and the player list the boat already has.
 
 **Later, optional:** a mod "World" (`Tds_Masterdatabase` item of type `World`, Macro_Main.cs:209-245) could give the
-campaign its own sea chart on the boat instead of the stock world map. Since built and proven: `docs/SEA_CHART.md`.
+campaign its own sea chart on the boat instead of the stock world map. Since built and proven: `docs/mode/SEA_CHART.md`.
 
 ## 5. What only the PC can confirm: RogueLab round 4 probe spec
 
@@ -115,11 +115,11 @@ ROGUE WAVES line, readies, and both load map 1. No PC session is started for thi
 
 ## 6. Recommendation and the gate
 
-**Adopted (Dimitri, 2026-10-09).** Adopt the main-menu button as the way a campaign starts,** with New and Continue, and drop the mode's lobby Cardinal.
+**Adopted (Dimitri, 2026-10-09).** Adopt the main-menu button as the way a campaign starts, with New and Continue, and drop the mode's lobby Cardinal.
 It is built from pieces already proven (the embark, the mode swap, the Setup-screen line); only the main-menu clone
 and the dialog there are new, and probes M1-M3 settle them in one solo round.
 
-The edits made on adoption: `docs/SCOPE_v0.txt` line 47 ("the host begins the Rogue Waves by equipping the mode's
+The edits made on adoption (history: the scope is now `docs/scope/`, this rule in its mode file): `docs/SCOPE_v0.txt` line 47 ("the host begins the Rogue Waves by equipping the mode's
 Cardinal in the lobby" becomes "the host starts a Rogue Waves from the main menu's Rogue Waves button, New or Continue,
 and invites friends to the boat"), line 48's NEEDS marker removed, the same in `/mnt/project-files/roguewave.txt`;
 `docs/PLAN.md` Decisions gets the new rule; `docs/PACK.md` line 78 follows. Riptide's Setup-screen switch stays the

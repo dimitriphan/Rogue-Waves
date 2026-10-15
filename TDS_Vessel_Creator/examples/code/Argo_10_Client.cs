@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
+// TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
 // Runs on every player (host included). Listens to the Vis RPCs the server sends through Argo's entities and plays
 // Argo's own particles, sounds and turret motion, keeps each Deep Drill's Tremor ring drawn at its real radius, marks
 // the towers Nauts are tuning, and shows owner-only warnings. Projectiles are the game's own and need nothing here.

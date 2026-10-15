@@ -1,4 +1,4 @@
-// Rejoining a running map (docs/REJOIN.md). The base game shuts the Steam lobby for the whole map (kit docs/15 §14.5),
+// Rejoining a running map (docs/mode/REJOIN.md). The base game shuts the Steam lobby for the whole map (kit docs/15 §14.5),
 // so a player whose connection drops can't get back in, although the game keeps their vessel and towers (owned by
 // their Sessionid, which a rejoin gets back) and hands them back on return (Game_Players.Playerconnected). In every
 // map, in any mode, while the pack is on:
@@ -61,7 +61,7 @@ public static class RWRejoin
         Game_Mapvars mv = Game_Mapvars.Instance;
         if (mv != hostMap)
         {
-            // A new map, or back on the boat. The boat's own scene change opens the lobby (Tds_Multiplayer_Remote),
+            // A new map (on the boat, Instance is still the old map's destroyed object, which reads as null). The boat's own scene change opens the lobby (Tds_Multiplayer_Remote),
             // so a door left open here is not shut after the map is gone.
             hostMap = mv;
             Seats.Clear();

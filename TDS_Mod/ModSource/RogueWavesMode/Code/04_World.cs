@@ -1,4 +1,4 @@
-// The chart as a world of the game's own (docs/SEA_CHART.md §3 steps 3 and 5; kit docs/15 §17): a
+// The chart as a world of the game's own (docs/mode/SEA_CHART.md §3 steps 3 and 5; kit docs/15 §17): a
 // Mapworlddatabaseobject in Items["World"] whose Worldobj is built here from the seed, so the stock boat, camera, arrows,
 // Setup panel and map loading work on it unchanged. The world's name carries everything a client needs:
 // "RW_Chart_<seed>_<one column digit per row sailed>". Each machine builds the same world from the name when it first
@@ -15,7 +15,7 @@ public static class RWWorld
     static readonly Dictionary<string, Material> paints = new Dictionary<string, Material>();
     static bool sourceLogged;
 
-    // Docs/STYLE.md palette.
+    // docs/STYLE.md palette.
     static readonly Color32 DeepSwell = new Color32(0x2E, 0x4A, 0x62, 255), RogueTeal = new Color32(0x3F, 0x8F, 0x96, 255),
         Foam = new Color32(0xE9, 0xF1, 0xEE, 255), StormCoral = new Color32(0xE2, 0x72, 0x5B, 255), WetSand = new Color32(0xD8, 0xC4, 0x9A, 255),
         Sailed = new Color32(0xA8, 0x9A, 0x78, 255), DeepSwellDark = new Color32(0x22, 0x38, 0x4B, 255);

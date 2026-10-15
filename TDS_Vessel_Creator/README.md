@@ -30,7 +30,9 @@ follow it too. **Read this file fully, then the docs in order.** Don't skip `doc
    ignores injected input, and desktop screenshots are forbidden (they once captured another game the user was playing).
 10. **Ask the user before launching TDS** unless they have already said yes for the session. Close it with
     `CloseMainWindow()` on process `TDSgame`.
-11. **Ship the release build** (no `-Define`), packaged as `<Name>_TDS_Mod_v<x.y.z>.zip` with a player README, and
+11. **Ship the release build** (no `-Define`), packaged as `<Name>_TDS_Mod_v<x.y.z>.zip` with a player README (a
+    Rogue Waves vessel ships instead as a prefab inside the one pack bundle, `docs/04` §5 and the repository's
+    `docs/PACK.md`), and
     record what you learned (`docs/10_CHECKLISTS.md`).
 
 ## Quick start
@@ -75,8 +77,8 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
 | `tools/New-Vessel.ps1` | Scaffolds a new vessel from the template |
 | `tools/cecil/` | Scripts that read the game's compiled code (IL, callers, string literals, API dump) |
-| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), RogueLab's round logs of the stock modes, Tide tables, artifacts, elites and enemies (`roguelab_round1.txt`-`roguelab_round3.txt`), and `maps/`: where the self-test map's ground snapshots go (none committed yet) |
-| `examples/` | The design and implementation notes of the three vessels built so far; `examples/code/` holds Argo's and Sprigg's modules the docs cite (damage hooks, tower firing, turret aim/recoil/spin, a generator with moving parts, unit orders and a crew picker, ranged vessel, leftovers, data survey, base-vessel art dump) |
+| `reference/` | Base-vessel survey (conventions + full data dump), the game API dump, the base game's Addressables asset list (`addressables_default_group.txt`), RogueLab's round logs of the stock modes, Tide tables, artifacts, elites and enemies (`roguelab_round1.txt`-`roguelab_round3.txt`), `maps/`: where the self-test map's ground snapshots go (none committed yet), and the art survey of the base game's sprites (`art_survey_2026-10-15.txt`) with its palettes (`palettes/*.gpl`, `docs/18` §9) |
+| `examples/` | The design and implementation notes of the three vessels built first (Sprigg, Argo 1.x, Mummer); `examples/code/` holds frozen Argo 1.x and Sprigg 1.x modules the docs cite (damage hooks, tower firing, turret aim/recoil/spin, a generator with moving parts, unit orders and a crew picker, ranged vessel, leftovers, data survey, base-vessel art dump) |
 
 ## Definition of done (every vessel)
 
@@ -85,7 +87,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
   tabs on every vessel page). Captures reviewed: boat, buildings, every effect, journal pages.
 - Release build boots alongside every other installed vessel mod: `[<Name>] ready`, own icons, **0 exceptions**.
 - Online checklist (`docs/07_ONLINE.md`) passed; ask the user to try it with a friend if it adds new kinds of sync.
-- Zip, player README, `IMPLEMENTATION_NOTES.md`, and any new lesson added to `docs/09_PITFALLS.md`.
+- Zip and player README (a pack vessel: its prefab in the pack, `docs/04` §5), `IMPLEMENTATION_NOTES.md`, and any new lesson added to `docs/09_PITFALLS.md`.
 
 ## Facts about this PC (adjust for another one)
 
@@ -96,4 +98,4 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | Game assets | `D:\Steam\steamapps\common\TDS\TDS\DATA\StreamingAssets\aa\StandaloneWindows64\defaultlocalgroup_assets_all_*.bundle` (one ~300 MB Addressables bundle with every sprite, model and data asset; read it with UnityPy, `docs/18` §9) |
 | Unity project | `C:\Users\Dimitri\TDS_Mod` (Unity 2022.3.41f1, URP 14, TDS Mod Tools imported) |
 | Game log | `%USERPROFILE%\AppData\LocalLow\Blockage\TDS\Player.log` (overwritten each launch; `Player-prev.log` keeps the last) |
-| Installed mods | none: the Mods folder is kept empty between PC rounds (2026-10-08); a round installs its dev build and removes it after. The older vessel mods' sources sit in `C:\Users\Dimitri\TDS_Mod\Prototype Mods\<Name>`, outside Unity's `Assets` |
+| Installed mods | normally none: the Mods folder is kept empty between PC rounds (2026-10-08); a round installs its dev build and removes it after. Exception since 2026-10-12: Yossele's play build (draft PR #30) stays installed for Dimitri's own play test, and a new round moves it out of `TDS\Mods` by hand and puts it back after (no script does this). The older vessel mods' sources sit in `C:\Users\Dimitri\TDS_Mod\Prototype Mods\<Name>`, outside Unity's `Assets` |

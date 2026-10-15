@@ -1,6 +1,6 @@
 # Shared vessel-mod kit
 
-Compiled into every vessel mod of the project (`TDS_Mod/ModSource/Shared/`); each build script renames the `ModKit`
+Compiled into every vessel mod of the project and every part of the Rogue Waves pack (`TDS_Mod/ModSource/Shared/`); each build script renames the `ModKit`
 prefix to `<Name>Kit`, so every mod gets its own copy of the types and none collide.
 
 | File | Provides | Used as |

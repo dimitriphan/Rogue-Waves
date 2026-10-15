@@ -3,7 +3,7 @@
 What the mod container itself allows: content types, scenes, mod folders, load order, the code sandbox, and how a pack
 of several parts should be packaged. Written 2026-10-08 from a sourced research round (upstream ModTool code,
 RoslynCSharp's shipped settings, Blockage's Patch 0.4 note) plus the game's API dump; nothing here was tried in the game
-yet except the load order (§6). Tags: **verified** = seen in a shipping mod, **read** = read from code, **untested** =
+yet except the load order (§6) and Q4 (several `Default` prefabs in one bundle all activate: RogueLab round 2, `15` §15). Tags: **verified** = seen in a shipping mod, **read** = read from code, **untested** =
 inferred or from a secondary source. The rest of the pipeline (export, park, deploy, release) is `docs/04`; the mod
 prefab and the compiler's reference list, `docs/01` §1.
 
@@ -115,7 +115,8 @@ registry, `kit/README.md`).
 (assets, scenes, code), but the game never loads a mod's scenes (`Autoloadscenes` is never read); maps ship as `Map`
 prefabs with `Mods_Mapsettings`, picked up by `Custom_Map_Overworld`. Q2: every enabled mod loads at boot in ModTool's
 discovery order, never sorted (not alphabetical in a 2026-10-08 `Player.log`); `Toggle` loads or unloads at once.
-Q4: every prefab matching a keyword activates, in every mod, each compiled into its own assembly. Still on the PC: Q1's
+Q4: every prefab matching a keyword activates, in every mod, each compiled into its own assembly (**verified** for
+several `Default` prefabs in one bundle: RogueLab round 2, `15` §15). Still on the PC: Q1's
 custom-map check, Q3, and Q5 (not a PC task).
 
 ## 7. Sources

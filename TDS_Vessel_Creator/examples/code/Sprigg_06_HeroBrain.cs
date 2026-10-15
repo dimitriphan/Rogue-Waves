@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Sprigg 1.x code from ModProjects (Sprigg itself waits there for its overhaul), kept because the
+// kit docs cite it.
 // Server-side brain for the vessel: build options, WATER, Sap and blooming over the run. It plays the part of a
 // vessel's own AI (Entity_Ai_Hero_<Name>). Attacking is left to the stock Entity_Ai_Mob_Ranged, exactly like Sno Sno:
 // this brain only names the projectile it fires. Movement, building and selling are the engine's generic hero AIs.

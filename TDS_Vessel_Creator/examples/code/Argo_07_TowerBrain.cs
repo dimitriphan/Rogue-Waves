@@ -1,3 +1,7 @@
+// EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
+// TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
+// Fire() below is the early one that aims level and spreads the height over the flight (the steep-shot bug, fixed in 1.1:
+// TDS_Mod/ModSource/Argo/IMPLEMENTATION_NOTES.md, "Changes in 1.1", Steep shots).
 // Server-side brain for every Argo buildable. Replaces the template tower AIs (which hard-code Smacky's projectiles and
 // upgrades) and Entity_Ai_General_Upgrade (mirrored exactly, so the game's upgrade panel works unchanged).
 //   Scatter Cannon  volleys of real pellets (Projectile_Ai_Simple) fanned across a cone; each pellet hits what it meets.

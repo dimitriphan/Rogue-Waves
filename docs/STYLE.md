@@ -20,7 +20,7 @@ modifiers and the mode's UI.
 | Rogue Teal | `3F8F96` | the mode's main colour: the main menu's Rogue Waves button, vote and shop frames |
 | Foam | `E9F1EE` | rims, highlights, the crest motif |
 | Pearl (Pure Aura) | `F4EEF8`, sheen `C9E4F2` / `F2D9E6` | Pure Aura only: a white that is none of the base auras (Red, Blue, Yellow, Green = all), with a faint two-tone sheen |
-| Storm Coral | `E2725B` | danger and the pack's new modifiers' accent (Cursed, Berserk), ascension marks |
+| Storm Coral | `E2725B` | danger and ascension marks (not a modifier's colour: see Enemies below) |
 | Wet Sand | `D8C49A` | the shopkeeper's stall and washed-up things |
 
 Rules: pastel or muted mains with one saturated accent (the house style). Never put pure black or a black outline on
@@ -34,7 +34,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
   Pack Cardinals are flotsam, things the wave brought. The first ones are named in `docs/scope/12_Cardinals.txt`
   (Vampire Dentures; Cracked Buoy and Ship's Bell as examples). One object per icon, readable at 12×12.
 - **Pearl drops** for Pure Aura: a small teardrop, Pearl with its sheen, used in the counter, the shop and rewards.
-- No skulls, gore or horror for the harder modifiers. Danger reads through Storm Coral and the shape.
+- No skulls, gore or horror for the harder modifiers. Danger reads through the shape (and Storm Coral on danger marks; a modifier takes its own colour, see Enemies).
 
 ## Naming voice
 
@@ -45,7 +45,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 | Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | Vampire Dentures, Cracked Buoy, Ship's Bell (base: Red Coin, Rusty Pipe) |
 | Directions | a heading or a course, short and active | Deep Roots, Loose Threads, Hard to Port |
 | Mode, ascension, events | sea weather | Rogue Waves; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |
-| Enemy modifiers | the scope's names (Cursed, Berserk). Base elites are named like metalwork (Hardened, Tempered, Superheated, Fractured, Annealed), for reference |
+| Enemy modifiers | the scope's names (Cursed, Berserk, Aging, Dazzling; `docs/scope/13`). Base elites are named like metalwork (Hardened, Tempered, Superheated, Fractured, Annealed, Molten), for reference |
 
 Text is plain and short, sentence case, and has no numbers in upgrade text (`docs/02`).
 
@@ -61,15 +61,15 @@ pack and doesn't redraw them. Each vessel owns its silhouette and carries it int
 | **Argo** | bulky dome diver, hands touching the body | as shipped in ArgoMod 1.4.0 (look unchanged) | as shipped | brass domes and portholes, as shipped |
 | **Yossele** | a round clay head with a see-through hole, a two-leaf sprout on a stalk, glowing green eyes, four long root-like limbs | Buster for the poses (big pose changes on long limbs), Smacky for the head-to-body weight | clay `864B41` to `733E35`, leaf `72CC35` / `6ABE30`, eyes `99E550`, collar `323C39` | round holes and root feet; each Growth stage is a **skin** that adds leaves or sprouts, never a motion |
 | **Spool** | a hooded purple plush whose face is a stitched opening, yellow eyes looking out, a pink tongue, white gloves, a severed arm on the floor with cotton stuffing spilling from the wound | Fie (a small humanoid read by its head and hood) | purple `7E4D90` to `633773`, stitches `B5B1B0` / `605F5B`, hollow `490F5F`, eyes `BFBA3F`, tongue `D77BBA` | stitches, pins and tins (the Cookie Tin, the Pin Cushion) |
-| **Uloe** | a glass light-bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow rays at the sides, a cord to a plug | Sno Sno (an object come alive; legless, it hops) | glass `DAE6FC` / `CBDBFC`, glints `F1EF72`, steel `9BADB7` to `595652`, rays `FBF236`, eyes `3F3F74` | glass, screw rings and cords: the Flood Light's lamp, the Magnifying Glass's lens, the Mirror's panes |
+| **Uloe** | a glass light-bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms of electricity at the sides, a cord to a plug | Sno Sno (an object come alive; legless, it hops) | glass `DAE6FC` / `CBDBFC`, glints `F1EF72`, steel `9BADB7` to `595652`, arms `FBF236`, eyes `3F3F74` | glass, screw rings and cords: the Flood Light's lamp, the Magnifying Glass's lens, the Mirror's panes |
 
 Each must read at 1× zoom against the boat and the darkest map. The concept page (§4) checks them against the taken
 shapes. Uloe is the only tall, thin, legless outline on the boat. Its bulb is glass on a post, not Sprigg's plant bulb.
 
 **Where the art departs from the house style**, kept as drawn until Dimitri says otherwise (each is decided at that
 vessel's design gate): Yossele's and Spool's eyes glow instead of being dark dots; Yossele's limbs are long (the style
-wants 2 px or none); Uloe's head is under half its height. Names that repeat a shipped mod's word for something else
-(Spool's Loom and Thread against Mummer's) are flagged at Spool's gate. The names stay the user's.
+wants 2 px or none); Uloe's head is under half its height. Spool keeps Loom and Thread although Mummer used them: Mummer was
+Spool's prototype (`docs/scope/08`). The names stay the user's.
 
 ## Towers
 

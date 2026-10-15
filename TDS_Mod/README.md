@@ -13,7 +13,7 @@ with the TDS Vessel Creator (Unity 2022.3.41f1, TDS Mod Tools). Argo is the firs
 | `Tools/aseprite/` | Hand-edit any generated frame in Aseprite and keep the edit across builds (`README.md`) |
 | `Handoff/` | One folder per PC round (`<Part>_round<N>`): what was sent, its hashes and the round's notes (`Tools/pc/README.md`) |
 | `ModSource/Argo/`, `Assets/ArgoMod/Editor` | Argo, copied from `ModProjects` at 1.4.0 (2026-10-08) and redesigned from the scope as 2.0, built and self-tested (PC round 6: 139 pass, 0 fail); ships only inside the pack (`ModSource/Argo/DESIGN.md`; 1.4.0's in `DESIGN_1.4.0.md`) |
-| `ModSource/RogueWavesMode/`, `Assets/RogueWavesModeMod/Editor` | The pack's mode part, prefab `RogueWaves_Mode_Default`, dev mod `RogueWavesModeMod`: 0.2.1 holds the campaign's sea chart and sea weather (PC round 4, 38/0) and rejoining a running map (PC round 6, 47/0; the online test is still to do) (`ModSource/RogueWavesMode/README.md`, `docs/SEA_CHART.md` §7-9, `docs/REJOIN.md`) |
+| `ModSource/RogueWavesMode/`, `Assets/RogueWavesModeMod/Editor` | The pack's mode part, prefab `RogueWaves_Mode_Default`, dev mod `RogueWavesModeMod`: 0.2.1 holds the campaign's sea chart and sea weather (PC round 4, 38/0) and rejoining a running map (PC round 6, 47/0; the online test is still to do) (`ModSource/RogueWavesMode/README.md`, `docs/mode/SEA_CHART.md` §7-9, `docs/mode/REJOIN.md`) |
 | `ModSource/RogueLab/`, `Assets/RogueLabMod/Editor` | Phase 1 research mod, never released: tests the Rogue mode engine on the PC (`ModSource/RogueLab/README.md`) |
 | `ModSource/Riptide/`, `Assets/RiptideMod/Editor` | Riptide 0.2.3 (2026-10-05), a roguelike mode prototype from the PC, never in `ModProjects`: random Tides, a host director, a Salvage artifact pick on every client, a Setup-screen switch; its PC probes passed 70 of 70 (0.2.1; 0.2.2-0.2.3 are untested tweaks). Prior art for the Rogue Waves mode (`TDS_Vessel_Creator/docs/15`); read its `IMPLEMENTATION_NOTES.md` first. Its research report (`2026-10-04_roguelike_mode_research.md`) lived in the ModProjects Claude Project's files. On the PC it now sits in `Prototype Mods\Riptide`, outside `Assets` (2026-10-08) |
 
@@ -25,8 +25,11 @@ pushing:
 ```bash
 cd TDS_Mod/ModSource
 python3 ../Tools/cloud-check/check_mod.py <Name>/Code Shared <Name> ""
-python3 ../Tools/cloud-check/check_mod.py <Name>/Code Shared <Name> "<NAME>_SELFTEST,<NAME>_SHOTS,<NAME>_PROBE"
+python3 ../Tools/cloud-check/check_mod.py <Name>/Code Shared <Name> "<NAME>_SELFTEST,<NAME>_SHOTS"
 ../Tools/cloud-check/check_editor.sh ../Assets/<Name>Mod/Editor
 ```
+
+Riptide carries no kit: pass an empty folder in place of `Shared`. RogueLab's release build stops on a deliberate
+`#error` (research only): check it with `ROGUELAB_SELFTEST`.
 
 A clean compile is not a test: self-test and play happen on the PC (`TDS_Vessel_Creator/docs/08_TESTING.md`).

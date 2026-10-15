@@ -18,7 +18,7 @@ import html, os, re, shutil, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))             # <repo>/concept-tools
 REPO = os.path.dirname(HERE)                                  # the Rogue-Waves repository
-ROOT = os.path.join(REPO, 'concepts')                         # where the pages are written
+ROOT = os.path.join(REPO, 'docs', 'concepts')                 # where the pages are written
 MOD = os.path.join(REPO, 'TDS_Mod', 'ModSource')
 
 AURA = {'Redaura': ('Red', 'r'), 'Blueaura': ('Blue', 'b'), 'Yellowaura': ('Yellow', 'y')}

@@ -3,6 +3,7 @@ paths:
   - "TDS_Mod/Assets/**"
   - "TDS_Vessel_Creator/template/Mummer/Editor/**"
   - "concept-tools/**"
+  - "docs/concepts/art/**"
   - "docs/concepts/**/art/**"
   - "TDS_Mod/ModSource/*/Aseprite/**"
   - "TDS_Mod/Tools/aseprite/**"

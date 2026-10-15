@@ -6,7 +6,7 @@ Directions. Everything here was **read from the game's code** (`Assembly-CSharp.
 `13` §11) unless it says otherwise; `File.cs:line` points into that decompiled folder (never committed). Most of
 this chapter was not tried in game yet (§9 is the PC list); §3's flood and nest and §6's host `Time_Scale` were
 verified by RogueWavesMode PC rounds 1-4 (2026-10-11). Ideas built on these facts are in the Rogue Waves repository's
-`docs/MECHANIC_IDEAS.md`.
+`docs/mode/MECHANIC_IDEAS.md`.
 
 Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
 

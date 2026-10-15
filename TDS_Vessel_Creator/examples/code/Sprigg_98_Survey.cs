@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Sprigg 1.x code from ModProjects (Sprigg itself waits there for its overhaul), kept because the
+// kit docs cite it.
 #if SPRIGG_SURVEY
 // Debug build only (Build-SpriggMod.ps1 -Define SPRIGG_SURVEY): loads every vessel's asset group at the main menu and
 // writes its data (beings, AIs, stats, upgrade trees and params, commands, projectiles, visuals) to Player.log, one

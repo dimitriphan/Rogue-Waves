@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
+// TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
 using Blockage;
 using Blockage.Menu;
 

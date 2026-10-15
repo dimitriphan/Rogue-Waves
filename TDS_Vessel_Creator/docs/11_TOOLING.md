@@ -75,7 +75,7 @@ Gotchas:
 | | |
 |---|---|
 | Game DLLs | `D:\Steam\steamapps\common\TDS\TDS\DATA\Managed` |
-| Game assets (one Addressables bundle) | `TDS\DATA\StreamingAssets\aa\StandaloneWindows64\defaultlocalgroup_assets_all_*.bundle` (~300 MB). To look at shipped art, load it in the TDS_Mod editor with stub ScriptableObject classes named like the game's types (typetrees bind by field name); delete the stubs before exporting. In practice an in-game dump (`Shot`, art dump) is easier. |
+| Game assets (one Addressables bundle) | `TDS\DATA\StreamingAssets\aa\StandaloneWindows64\defaultlocalgroup_assets_all_*.bundle` (~300 MB). To look at shipped art, read it with UnityPy as `18` §9 did (2026-10-15: every character sheet extracted in ~20 s). Fallbacks: load it in the TDS_Mod editor with stub ScriptableObject classes named like the game's types (typetrees bind by field name; delete the stubs before exporting), or an in-game dump (`Shot`, art dump). |
 | Localization (readable text) | `TDS\DATA\resources.assets` (English key, translations) |
 | Mod tools package | `TDS\TDS Mod Tools.unitypackage` (newer than the copy in `Desktop\ClaudeProjects`) |
 | Claude CLI | not on PATH; bundled under `%APPDATA%\Claude\claude-code\<ver>\claude.exe` |

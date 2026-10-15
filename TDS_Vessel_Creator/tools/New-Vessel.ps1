@@ -7,7 +7,7 @@
 #   ModSource\<Name>\Build-<Name>Mod.ps1    build + compile check;  Deploy-Wait.ps1;  Tools\Decode-Dump.ps1
 #   ModSource\<Name>\DESIGN.md              the design form to fill in first (docs\02_DESIGN_RULES.md)
 #   Assets\<Name>Mod\Editor\*.cs            asset generator + Tools/<Name>/... menu (Build All Assets, Build Mod Prefab, Export...)
-#   ModSource\Shared\*.cs                   the shared kit (journal + boat), only if the project has none yet
+#   ModSource\Shared\*.cs                   the shared kit (TDS_Vessel_Creator\kit\README.md), only if the project has none yet
 #
 # Every identifier is renamed: Mummer -> <Name>, mummer -> <name>, MUMMER -> <NAME>, and the reference vessel's unit
 # (Understudy, whose ids carry no vessel name) -> <Name>unit, so nothing the new vessel registers collides with Mummer
@@ -108,7 +108,7 @@ foreach ($p in $written) {
     $hits = Select-String -Path $p -Pattern $Template, $TemplateUnit -SimpleMatch -CaseSensitive
     if ($hits) { $left += $hits }
 }
-if ($left.Count -gt 0) { Write-Warning ("template names left behind: " + ($left | ForEach-Object { $_.Filename + ":" + $_.LineNumber } | Select-Object -First 10) -join ", ") }
+if ($left.Count -gt 0) { Write-Warning ("template names left behind: " + (($left | ForEach-Object { $_.Filename + ":" + $_.LineNumber } | Select-Object -First 10) -join ", ")) }
 
 "Scaffolded $Name from $Template ($($written.Count) files)."
 "  code:   $modSource"

@@ -83,7 +83,7 @@ Opening prompt:
 
 Gate: every open question has an answer or an accepted default.
 
-### Phase 1. Feasibility of the Rogue Waves Mode (2-3 sessions, research only)
+### Phase 1. Feasibility of the Rogue Waves Mode (2-3 sessions, research only; done 2026-10-08)
 
 The mode is the riskiest piece and decides whether the expansion is one mod, several, or a mode-less vessel pack. The
 kit has already read the mode chain (`docs/13` § 3) and the API dump names the pieces the scope needs: `Mode_Base`,
@@ -114,7 +114,7 @@ Opening prompt:
 
 Gate: the user picks go / fallback per feature. This fixes the mode's design and the packaging.
 
-### Phase 2. Pack foundation (1-2 sessions)
+### Phase 2. Pack foundation (1-2 sessions; done 2026-10-08)
 
 Reads: `docs/14` § 5 (the two pack layouts), `docs/15`, `docs/04` § 7, `kit/README.md`, `docs/03` § 1 and § 4,
 `docs/EXPANSION_SCOPE.md` rows 15 and 18.
@@ -128,7 +128,7 @@ Opening prompt:
 
 Gate: packaging and style approved; kit 1.6 scope listed.
 
-### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds)
+### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele in draft PR #30)
 
 Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
 way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
@@ -142,7 +142,8 @@ Each vessel runs the kit's loop; the reading list is `CLAUDE.md`'s reading-order
 2. Concept art at the game's formats (`docs/03`), style sheet from Phase 2.
 3. Scaffold (`new_vessel.py`), code module by module (`docs/05`), `cloud-check` clean in release and test defines.
 4. Handoff and PC round (`TDS_Mod/Tools/pc/README.md`); self-test 0 failures; captures reviewed.
-5. `IMPLEMENTATION_NOTES.md`, lessons to `docs/09`, release zip.
+5. `IMPLEMENTATION_NOTES.md`, lessons to `docs/09`; no zip of its own: the vessel ships as its prefab in the pack
+   (`docs/PACK.md`).
 
 Opening prompt (per vessel):
 > Build `<Vessel>` from its file in `docs/scope/` (its Directions are in `11_Directions.txt`) through the five steps
@@ -154,21 +155,25 @@ Gate per vessel: the kit's definition of done (`TDS_Vessel_Creator/README.md`).
 
 ### Phase 4. Enemies and modifiers (1-2 sessions plus one PC round)
 
-Reads: `docs/13`, `docs/15` §1. Cursed (an aura that lowers nearby towers' and units' attack) and Berserk
-(damage and speed up as health drops) are the two modifiers; new enemy types come from the Phase 1 PC list.
+Reads: `docs/13`, `docs/15` §1, `docs/18` (foe art). The modifiers are the scope's four (`docs/scope/13`): Cursed (an
+aura that lowers nearby towers' and units' attack), Berserk (damage and speed up as health drops), Aging and Dazzling;
+they show as an effect on the foe, not a new skin. New enemy types: crystal foes per `docs/18` §5.6, when the scope
+names them.
 
 Opening prompt:
-> Implement `Enemy_RogueCursed` and `Enemy_RogueBerserk` as modifiers per `docs/13` § 6, with honest visuals and
-> journal pages, and the elite skins the PC research returned. Then the new enemy types the mode needs, one each.
+> Implement the scope's four modifiers (`docs/scope/13`) per `docs/13` § 6, each shown as an effect on the foe (no skins;
+> colours per `docs/18` §5.5 and §7), with journal pages. Then the new enemy types the mode needs, one each.
 
-Gate: both modifiers seen in a self-test, 0 exceptions beside every installed mod.
+Gate: the four modifiers seen in a self-test, 0 exceptions with the whole pack loaded.
 
 ### Phase 5. The Rogue Waves Mode (4-8 sessions, several PC rounds)
 
-Build in the order a run plays, each piece testable alone: Pure Aura (per-player counter, earned per tide) →
-objectives/bounties (Merchut's pattern in a mod brain; its contracts are hardcoded, `docs/15` §5) → shopkeeper between tides → Directions (data, pick UI, application through
-upgrades) → Fund Transfer → map vote → leave-or-stay at Tide 15 and bonus tides → the 10-map campaign loop with rising
-difficulty, saved between maps → ascension (Depth) unlock. Reads: `docs/15`, `docs/07` for every synced piece.
+Build in the order a run plays, each piece testable alone: the main-menu button → Pure Aura (per-player counter, earned
+per tide) → objectives/bounties (Merchut's pattern in a mod brain; its contracts are hardcoded, `docs/15` §5) → VENDCINT
+between tides → Directions (data, pick UI, application through upgrades) → Fund Transfer → the in-map vote on the sea
+chart (chart, weather and rejoin are built) → leave-or-stay at Tide 15 and bonus tides → the 10-map campaign loop with
+rising difficulty, saved between maps → Depth (on hold). Part C "Phase 5 pieces" is the live list. Reads: `docs/15`,
+`docs/07` for every synced piece.
 
 Opening prompt:
 > Implement the next unchecked piece of the Phase 5 list in `docs/PLAN.md` Part C, host-authoritative per `docs/07`,
@@ -193,19 +198,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
-  rounds passed). A quality check of every lesson and resource (2026-10-11, `docs/QUALITY_CHECK_2026-10-11.md`) fixed
-  the stale and wrong lines in place. A full re-test of every probe set on one build (2026-10-11 22:25Z,
-  `docs/FULL_TEST_2026-10-11.md`): Argo 139/0, RogueLab 22/0, RogueWavesMode 47/0, nothing regressed. Older entries
-  are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
-  2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
-  each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
-  2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
-  2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
-  (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
-- **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
-  F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
-  Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
+  rounds passed; full re-test 2026-10-11, 208/0). Yossele is built in draft PR #30 (PC round 8, 98/0, Dimitri's play
+  notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels) and 18
+  (character art). 2026-10-15: two quality passes and a reorganisation (`docs/reports/`, `docs/mode/`;
+  `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
+- **Next:** merge the open PRs in the order #32, #29, #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
+  §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (fix kit 1.7's "Leave" first, Open question
+  3). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
+  (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
+- **Numbers held by open PRs:** kit chapters 19-24 (#34); pitfalls #89-91 (#29), #93-101 (#34), #102-104 (#30), #92
+  unused. Next free: chapter 25, pitfall #105.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -224,15 +227,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   round logs (branch `claude/kit-accuracy-review-k0ej7d`, its PR lists every fix). Worth knowing before Phase 4 and 5:
   elite `*_Multi` params add to 1 (Hardened `Health_Multi` 3 = health ×4, `docs/13` §10); a respawn keeps the vessel's
   upgrades, so Directions on the vessel need a re-grant only when a map starts (`docs/15` §14.1).
-- **Also (2026-10-09):** a main-menu start button is feasible (`docs/MAIN_MENU_START.md`, kit `docs/15` §14.8); Dimitri
+- **Also (2026-10-09):** a main-menu start button is feasible (`docs/mode/MAIN_MENU_START.md`, kit `docs/15` §14.8); Dimitri
   adopted it; its probes M1-M7 join the next RogueLab round.
 - **Also (2026-10-09 evening):** Dimitri's roguewaveWIP.txt answers folded into `docs/SCOPE_v0.txt` (PR #15: VENDCINT,
   Fund Transfer limits, vote rules, vessel abilities, Crafted types, Aging and Dazzling, an optional-objective
-  template). Every new mechanic checked (`docs/MECHANICS_CHECK.md`, kit `docs/15` §16): all go; eight need the game.
+  template). Every new mechanic checked (`docs/reports/MECHANICS_CHECK.md`, kit `docs/15` §16): all go; eight need the game.
   RogueLab 0.4.0 (round 4, compiled here) runs them with M1-M5 and M7 in one solo launch; handoff `RogueLab_round4`.
   Round 4 ran: 11 pass, 5 fail, 1 setup; VENDCINT's ownership and fall-in, Fund Transfer's moves, a minion's owner
   and kill tracking are proven; the failures were probe bugs. Round 5 (0.4.1): 20 pass, 2 fail; every
-  mechanic is now proven in game (`docs/MECHANICS_CHECK.md` §3). M1 and M4 of the main-menu button failed on probe
+  mechanic is now proven in game (`docs/reports/MECHANICS_CHECK.md` §3). M1 and M4 of the main-menu button failed on probe
   bugs. Round 6 (0.4.2): **22 pass, 0 fail**; the main-menu button's probes passed too. Left by hand: how the button
   looks beside Play (the automated run never shows the Main menu). RogueLab is out of the Mods folder.
 - **Also (2026-10-09 20:48Z):** Dimitri's roguewave 2.txt folded into `docs/SCOPE_v0.txt` (branch
@@ -240,14 +243,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Swell), each adding a change on top of the ones before; new Directions Made of Tougher Stuff (Any vessel with
   minions), Dandelion Season and Mother of Mushrooms (Yossele), Sewing Machine (Spool); objective Mind the Meteor
   (3 Pure Aura); Thread Head sends Stitched, its paths turn them into Darts. Compost Bin's counts are now x, for
-  Yossele's design gate. Map-count knock-ons in `docs/SCOPE_VS_LOOP.md` (#3, #14, #20, §E).
+  Yossele's design gate. Map-count knock-ons in `docs/reports/SCOPE_VS_LOOP.md` (#3, #14, #20, §E).
 - **Also (2026-10-09 21:50Z):** the scope is split into `docs/scope/`, one file per category (15 files: read-me,
   expansion, progress, bug fix, mode, rundown, mechanics, one per vessel, Directions, Cardinals, modifiers,
   objectives); copy at `/mnt/project-files/scope/` (replaces `roguewave.txt`) and on the PC in
   `Desktop\RogueWave\scope`. `docs/SCOPE_v0.txt` is a pointer. Dimitri now sends back only the files he edits; the
   fold-in rule is in Part A.
 - **Also (2026-10-09 22:00Z):** Dimitri asked whether the boat could sail a generated Slay the Spire style map to
-  choose maps. Yes, read from code (`docs/SEA_CHART.md`, kit `docs/15` §17): the base campaign map is a world of nodes
+  choose maps. Yes, read from code (`docs/mode/SEA_CHART.md`, kit `docs/15` §17): the base campaign map is a world of nodes
   with `Links`, which a mod can build from a seed and register as its own world; the stock boat, arrows, Setup panel
   and map loading work on it. Prototype generator `concept-tools/sea_chart.py`. **Dimitri adopted it with V1 (22:23Z)**:
   the vote is held in the map and the boat sails the chart to the winner; `docs/scope/05` updated. Probes C1-C7 join
@@ -255,7 +258,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Also (2026-10-09 23:30Z):** a deeper read of the game (Dimitri's ask): new kit chapter `docs/16` (grid, paths,
   the base game's map objects, aura nodes, the wallet, game speed, lighting) and `docs/15` §18 (the stock Cardinals'
   patterns, messages to every client, the final map, chart decorations, unlocks); ideas for him to pick from in
-  `docs/MECHANIC_IDEAS.md` (sea weather on chart nodes, objectives, Directions, Cardinals), scope untouched. Read
+  `docs/mode/MECHANIC_IDEAS.md` (sea weather on chart nodes, objectives, Directions, Cardinals), scope untouched. Read
   only; its PC checks (`docs/16` §9) can ride with the sea chart's C1-C7.
 - **Also (2026-10-10 23:00Z):** Dimitri asked to **begin the sea chart and sea weather**. Built as the first slice of
   the pack's mode part, `TDS_Mod/ModSource/RogueWavesMode` 0.1.0 (dev mod `RogueWavesModeMod`, prefab
@@ -264,7 +267,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   world built in code on every machine; the host's warp, auto-sail and pick; the campaign's seed and route in the save;
   three weathers (Rising Water, Quickening Current, Nesting Ground) on stock map objects. Sea Weather is in
   `docs/scope/05` with its numbers as a NEEDS line. Compiled here, **not run in game**: its PC round (C1-C6, W0-W3,
-  `docs/SEA_CHART.md` §9) is handoff `RogueWavesMode_round1`, waiting on Dimitri's OK sentence. Until the in-map vote
+  `docs/mode/SEA_CHART.md` §9) is handoff `RogueWavesMode_round1`, waiting on Dimitri's OK sentence. Until the in-map vote
   exists, the leader steers with the boat's arrows (only the linked maps can be picked).
 - **Also (2026-10-11 04:15Z):** PC round 1 ran on Dimitri's "Go": **34 pass, 0 fail**. The chart, the boat's sailing,
   the pick, the map loading in the mode, the return one row on and the save all work in game. One bug: Rising Water's
@@ -277,19 +280,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   **Round 4 (06:01Z): 38 pass, 0 fail**: the sea chart and all three sea weathers work in game (solo). PR #22.
   Not seen yet: the chart's and the flooded tiles' look by eye, and any of it online.
 - **Also (2026-10-11 06:12Z):** Dimitri asked for a way back into a running map after a dropped connection. Built as
-  `RogueWavesMode` 0.2.0 (`docs/REJOIN.md`, kit `docs/15` §14.5): the game already keeps a dropped player's things and
+  `RogueWavesMode` 0.2.0 (`docs/mode/REJOIN.md`, kit `docs/15` §14.5): the game already keeps a dropped player's things and
   gives them back on return; the mod reopens the lobby while a seat is empty, gives the seat back (aura, vessel,
   stats) and starts the rejoiner's camera and HUD. Every map, any mode. 0.2.1 passed solo PC round 6, 47/0 (round 5's
   one failure: the game's loading screen shut the lobby; now reopened every frame). PR #24 merged; the
-  rejoin itself needs a friend online (`REJOIN.md` §6, O1-O8, part of the online evening).
+  rejoin itself needs a friend online (`docs/mode/REJOIN.md` §6, O1-O8, part of the online evening).
 - **Also (2026-10-11 22:25Z):** Dimitri asked to test every implemented mechanic. All three probe sets ran again on the
   PC on one build of `27591bc` (the PC already matched it; no handoff): **208 pass, 0 fail** (Argo 139, RogueLab 22,
   RogueWavesMode 47), every exception the game's own; Argo's steep-shot check can skip when its test foe fails to
-  spawn (passed on a second launch). Mods folder empty again. `docs/FULL_TEST_2026-10-11.md`.
+  spawn (passed on a second launch). Mods folder empty again. `docs/reports/FULL_TEST_2026-10-11.md`.
 - **Also (2026-10-12):** Dimitri asked for a deep dive into every base vessel so modded assets, Directions and
   Cardinals work for every vessel. The game's code was decompiled (scratchpad only) and read per vessel; the result is
   kit `docs/17_BASE_VESSELS.md`, pitfalls #81-86, and fixes to `docs/12` §1 (Boutbro builds the fish), `docs/13` §6
-  (Multi and Pmulti add up) and `SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
+  (Multi and Pmulti add up) and `docs/reports/SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
   the PC list, worth a probe round before the first Direction is built.
 - **Also (2026-10-13):** Dimitri asked for a vessel template with a slot for every value. New scope file
   `docs/scope/15_Vessel_Template.txt`; his edited `07` (Yossele) and `08` (Spool) are folded in and re-laid in it. A
@@ -304,6 +307,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
   (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
   Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
+
+- **Also (2026-10-15):** Dimitri asked for two quality checks of every asset and a cleaner layout. Five readers per
+  pass (kit, code, tools, docs and scope, open PRs); 128 findings, then 49 more. Fixed in place where no game behaviour
+  changes; dated reports moved to `docs/reports/`, the mode's design pages to `docs/mode/`, `README.md` rewritten,
+  Riptide compiles here again. What is left for Dimitri, for each open PR, and how to merge them:
+  `docs/reports/QUALITY_CHECK_2026-10-15.md`.
 
 ### Decisions
 
@@ -355,12 +364,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - 2026-10-09 (user; superseded below: 10 maps, Depth, about 7 Any and 4 per new vessel, only the host's quit spends
   a retry): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
-  save holds it, keyed per player by Steam id (`docs/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
+  save holds it, keyed per player by Steam id (`docs/reports/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
   core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
   up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
 - 2026-10-09 (user): **a campaign starts from a Rogue Waves button on the main menu** (New / Continue), which takes the
-  host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/MAIN_MENU_START.md`).
+  host to the boat with the mode set; friends join there by invite. No mode Cardinal (`docs/mode/MAIN_MENU_START.md`).
 - 2026-10-09 20:48Z (user, roguewave 2.txt): **a campaign is 10 maps** (replaces 15), won by leaving map 10 after
   Tide 15 or later; the Direction catalogue target drops to about 7 Any and 4 per new vessel; the map shape default is
   two stretches of five. **Ascension levels are Depth 1-5** (was Swell), still on hold. Bonus tide pay stays 2 and the
@@ -374,12 +383,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   18:20Z).
 
 - 2026-10-09 (user): **the scope is one file per category** (`docs/scope/`); he sends back only what he edits.
-- 2026-10-09 22:23Z (user): **maps are chosen on a sea chart** (`docs/SEA_CHART.md`): a seeded Slay the Spire style
+- 2026-10-09 22:23Z (user): **maps are chosen on a sea chart** (`docs/mode/SEA_CHART.md`): a seeded Slay the Spire style
   map of 10 rows the boat sails across; the vote offers the maps linked to the last one (1-3), is held in the map
   (route **V1**) and the boat then sails to the winner; the party returns to the boat between maps. Default taken:
   map 1 is voted in the staging map's opening break, then the party sails from the harbour to it.
 
-- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], `docs/SEA_CHART.md` §8).
+- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], `docs/mode/SEA_CHART.md` §8).
   Defaults taken: three weathers (Rising Water, Quickening Current, Nesting Ground); rows 1, 5, 10 calm, 1 in 3 then 1
   in 2 elsewhere; +1 Pure Aura a Tide; Quickening x1.25 from Tide 5, x1.5 from Tide 10. Maps spread by row difficulty
   (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is `RogueWavesMode`; nothing starts a campaign
@@ -388,7 +397,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-11 (user, scope review): only the **host's** mid-map quit spends a retry; **no Cardinal swaps** on the boat
   between maps; **breaks last 60 s**; Direction **rank II 20, rank III 30** Pure Aura; Team Cardinals work for everyone,
   **Cardinals stack with no limit**; a **new objective every break**, team objectives pay every player in full;
-  Fertilize stays Direction-only; a bonus tide still pays 2 (`docs/SCOPE_REVIEW_2026-10-10.md`).
+  Fertilize stays Direction-only; a bonus tide still pays 2 (`docs/reports/SCOPE_REVIEW_2026-10-10.md`).
 - 2026-10-11 (user, card): **dying in a bonus tide counts as a won map**: no retry spent, the tide in progress pays nothing.
 - 2026-10-11 (user, quality check Q1-Q3): **Cardinals scale forever**: no limit on Team or Vessel Cardinals (no cap of 8;
   past the HUD row's 8 counters the mode shows Team Cardinals another way, settled when the shop is built); Cardinals
@@ -404,6 +413,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
   `docs/18` §7); every other new design keeps magenta for foes only.
 
+- 2026-10-15 (default): `docs/` holds living pages only; dated reports go to `docs/reports/` (frozen, a note on top
+  when something changed since), the mode's design pages to `docs/mode/`. Handoff folders hold only round packs.
+
 ### Open questions
 
 Phase 0's eight questions are closed (see Decisions). New ones go here, with a default.
@@ -411,6 +423,10 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Yossele and Spool sheets: the `! NEEDS !` lines under `[Questions]` in `docs/scope/07` and `08` | the default each line names |
+| 2 | Relax "a Direction is named like a heading or a course" (`docs/reports/SCOPE_REVIEW_2026-10-10.md` #37)? | names match the Look line; heading style optional |
+| 3 | Kit 1.7: fix `ModKitTides` "Leave" firing late (`QUALITY_CHECK_2026-10-15.md` §4 B1) and the per-part focus mark (B2) | fixed before the main-menu button ships |
+| 4 | One pack version for every part and prefab (§4 B3, B5) | one version, read by data and prefab, set when the pack is first built |
+| 5 | Switch the GitHub default branch to `claude/phase-1-6lfnar` | Dimitri switches it in GitHub's settings |
 
 ### Phase 5 pieces
 

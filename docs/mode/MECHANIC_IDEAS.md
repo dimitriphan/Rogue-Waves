@@ -1,7 +1,7 @@
 # Mechanic ideas from the game's own systems (2026-10-09)
 
 > Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/05`, built in
-> `RogueWavesMode` and passed PC round 4 (38/0, `docs/SEA_CHART.md` §8-9). The other ideas are still unpicked and
+> `RogueWavesMode` and passed PC round 4 (38/0, `docs/mode/SEA_CHART.md` §8-9). The other ideas are still unpicked and
 > untested; the text below is as written on 2026-10-09. "Personal" Cardinals are now called Vessel Cardinals.
 
 Dimitri asked (2026-10-09 23:04Z) for a deeper look at how TDS works, the important topics written into the research
@@ -103,7 +103,7 @@ along.
 ## 5. Cardinals from the stock patterns (`12` "list of new Cardinals")
 
 Names follow the style sheet (two plain words, a found object the wave washed up). Each copies a stock Cardinal's
-pattern (`docs/15` §18.1); Personal or Team as `docs/SCOPE_VS_LOOP.md` §F defines.
+pattern (`docs/15` §18.1); Personal or Team as `docs/reports/SCOPE_VS_LOOP.md` §F defines.
 
 | Cardinal | Kind | Effect (base style, no numbers) | Pattern it copies |
 | --- | --- | --- | --- |
@@ -112,7 +112,7 @@ pattern (`docs/15` §18.1); Personal or Team as `docs/SCOPE_VS_LOOP.md` §F defi
 | **Piggy Float** | Personal | your unspent base aura earns a little each Tide | Fie's silo interest |
 | **Ship's Hourglass** | Team | breaks last longer (more shop time) | Vintage (Entity_Ai_Artifact_Vintage.cs:26-58); answers `SCOPE_VS_LOOP` #8 without holding the clock by hand |
 | **Cork Lifebuoy** | Team | the Basin survives one extra killing blow each map | the Basin's `Finalhit`, granted again |
-| **Message Bottle** | Team | each map, the vote shows one more map | the chart (`docs/SEA_CHART.md`): offer a fourth link |
+| **Message Bottle** | Team | each map, the vote shows one more map | the chart (`docs/mode/SEA_CHART.md`): offer a fourth link |
 
 **Vampire Dentures** (in the scope) rides on `Damagedone` (proven, `docs/15` §16); nothing new needed.
 

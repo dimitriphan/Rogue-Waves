@@ -42,14 +42,17 @@ Cloud thread:
 PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 
 1. Fetch the handoff: `Get-Handoff.ps1 -Ref <branch> -Name <Name>`. Without the token, use the saved zip.
-2. Check it: `<h>\<Name>\Apply-Handoff.ps1`. Every line must read up to date, will copy, will add or patch done.
-   Anything else: stop and report.
+2. Check it: `<h>\<Name>\Apply-Handoff.ps1`. Stop and report if any line reads `DIFFERS`, `MISSING FROM HANDOFF`,
+   `HANDOFF COPY DAMAGED`, `MISSING` or `PATCH DOESN'T FIT`, or the script exits non-zero (it does on any of them).
+   Up to date, will copy, will add, will replace, will delete, already gone, will patch and patch done are all fine.
 3. Apply it: `Apply-Handoff.ps1 -Apply`. This backs up what it replaces and writes a fresh `pc_manifest.txt`.
 4. Let Unity compile: `execute_menu_item("Assets/Refresh")`, then wait until it has finished.
 5. Build the code: `Build-<Name>Mod.ps1 -Define <NAME>_SELFTEST` for each vessel. Then write `<h>\queue.txt`, one
    vessel per line, adding ` twice` for Sprigg.
-6. Build and export: `execute_menu_item("Tools/ModKit/Build Queue")`, once. Then read `<h>\queue_status.txt` until it
-   ends in `QUEUE DONE`. Don't run the menu item again if the MCP call times out.
+6. Build and export: `execute_menu_item("Tools/ModKit/Build Queue")`, once. Then read the `[ModKit]` lines in
+   `%LOCALAPPDATA%\Unity\Editor\Editor.log` (and the `.info` file's time) until the queue is done: MCP replays can
+   overwrite `<h>\queue_status.txt` after a good run (kit `docs/09` #76). Don't run the menu item again if the MCP call
+   times out.
 7. Self-test: `Run-SelfTests.ps1 -Vessels <A>,<B>`. Report each `*_summary.txt` in full. Send the `*_map.txt` files
    too; they hold the map snapshot.
 8. Release, if the tests pass (0 FAIL; SETUP lines only under the release rule in `docs/08` section 5) and Dimitri's

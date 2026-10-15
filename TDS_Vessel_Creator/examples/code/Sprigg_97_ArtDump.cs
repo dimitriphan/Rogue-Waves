@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Sprigg 1.x code from ModProjects (Sprigg itself waits there for its overhaul), kept because the
+// kit docs cite it.
 #if SPRIGG_ARTDUMP || SPRIGG_SHOTS
 // Debug build only (Build-SpriggMod.ps1 -Define SPRIGG_ARTDUMP; SPRIGG_SHOTS alone just provides Shot() to the self-test). Writes reference art to Player.log so new art can be
 // matched to the shipped vessels: every vessel's boat Worldsprite (as a 6-column atlas), menu art, and Sno Sno's full

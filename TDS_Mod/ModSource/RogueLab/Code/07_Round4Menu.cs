@@ -1,4 +1,4 @@
-// Round 4 (0.4.0), the main menu half: probes M1-M5 and M7 of docs/MAIN_MENU_START.md §5 in the Rogue Waves repository.
+// Round 4 (0.4.0), the main menu half: probes M1-M5 and M7 of docs/mode/MAIN_MENU_START.md §5 in the Rogue Waves repository.
 // The run starts from a "Rogue Waves" button the mod clones from the main menu's Play, not from Play itself, and the
 // boat takes the mod's mode with no Cardinal equipped. M6 (the flag clears when the main menu comes back) is the mod's
 // own code and is not run: getting back to the main menu from a match is not something RogueLab has done yet.

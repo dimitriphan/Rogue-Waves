@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
+// TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
 // Argo asset generator: every tower model (buildables, upgrades, Fathom overlays, projectiles), built low-poly and sleek
 // like Sno Sno's and Buster's towers: a handful of clean solids per model, flat palette colours, readable silhouettes,
 // no voxels. Every Argo building stands on the same riveted stone-and-brass dock. Upgrades keep the silhouette and add

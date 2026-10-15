@@ -1,6 +1,6 @@
 #if ROGUEWAVESMODE_SELFTEST
-// The PC round for the sea chart and sea weather (docs/SEA_CHART.md §5, probes C1-C6 and W1-W3) and the rejoin's solo
-// probes (docs/REJOIN.md §6, R1-R6, R2b), one launch,
+// The PC round for the sea chart and sea weather (docs/mode/SEA_CHART.md §5, probes C1-C6 and W1-W3) and the rejoin's solo
+// probes (docs/mode/REJOIN.md §6, R1-R6, R2b), one launch,
 // logged as "[RogueWavesMode] TEST PASS|FAIL|SETUP|INFO ..." and "TEST DONE" for Run-SelfTests.ps1:
 //   menu   presses Play like the player would (the game ignores injected input)
 //   boat   starts campaign Seed with three maps' weather forced (Rising Water, then Quickening Current, then Nesting
@@ -305,7 +305,7 @@ public static class RWTest
     }
 
     // R1-R5: the rejoin's host side, solo. A pretend friend's seat stands in for a drop; a real drop and rejoin need
-    // a second player (docs/REJOIN.md §6, O1-O8).
+    // a second player (docs/mode/REJOIN.md §6, O1-O8).
     static IEnumerator Rejoin(int m)
     {
         RWChart.Node node = RWCampaign.Chart.At(m + 1, route[m]);

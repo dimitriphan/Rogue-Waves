@@ -2,9 +2,11 @@
 
 > **Superseded in part (note added 2026-10-11).** Since this page: 10 maps (not 15) and Depth (not Swell); bonus tides
 > have no limit; Fund Transfer moves base aura only; Cardinals stack with no limit; breaks are 60 s; the start is a
-> main-menu button, not a start Cardinal; a dropped player can rejoin the running map (`docs/REJOIN.md`); only the
+> main-menu button, not a start Cardinal; a dropped player can rejoin the running map (`docs/mode/REJOIN.md`); only the
 > host's quit spends a retry, and a campaign has 3. Personal Cardinals are now **Vessel Cardinals**, and there is no cap of
-> 8 Team Cardinals: Cardinals scale without limit (2026-10-11). `docs/scope/` and `docs/PLAN.md` Part C "Decisions" win.
+> 8 Team Cardinals: Cardinals scale without limit (2026-10-11). Maps are now sailed on the sea chart (`docs/mode/SEA_CHART.md`), so #17's chaining and staging map and the
+> "start Cardinal" resume are gone, and #3's "Tide 30 of map 10" is moot (bonus tides never end). §E's engine facts were never moved into kit `docs/15`;
+> they stay here. `docs/scope/` and `docs/PLAN.md` Part C "Decisions" win.
 
 Dimitri asked (2026-10-09) whether the scope needs expanding, given the gameplay loop as it stands. The loop as proven
 so far: Riptide (`TDS_Mod/ModSource/Riptide`, 70 of 70 on the PC), RogueLab rounds 1-3 (kit `docs/15` §11, §15) and Argo
@@ -20,7 +22,7 @@ core loop is settled, so findings 9 and 10 are parked. Everything else still rec
 **Depth** (was Swell). Findings 3, 14 and 20 and §E changed with it; Tide numbers (leave after Tide 15, the 30-Tide
 table) are per map and did not.
 
-It builds on two lists and repeats neither: `docs/SCOPE_GAPS.md` (what the scope names but hasn't expanded) and
+It builds on two lists and repeats neither: `docs/reports/SCOPE_GAPS.md` (what the scope names but hasn't expanded) and
 `docs/RESEARCH_GAPS.md` (engine facts). Existing `! NEEDS ... !` markers are only mentioned where a finding gives them
 an evidence-based default. Kit paths: `docs/NN` = `TDS_Vessel_Creator/docs/`. RogueLab round 3 and the §15 facts it
 added are in PR #11 until it merges.

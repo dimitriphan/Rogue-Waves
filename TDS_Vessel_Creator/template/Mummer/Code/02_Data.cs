@@ -1,5 +1,5 @@
 // Every name, text and tuning number for Mummer in one place. Structure and numbers follow the shipped vessels (see
-// ModSource/Sprigg/Research/VESSEL_SURVEY.md and ModSource/Mummer/DESIGN.md): a melee vessel with reach like Smacky,
+// TDS_Vessel_Creator/reference/VESSEL_SURVEY.md and ModSource/Mummer/DESIGN.md): a melee vessel with reach like Smacky,
 // four buildables with curated upgrade trees on the base game's cost curve, a vessel ability on Buster's Dash keys,
 // and the special rule shown as a tooltip upgrade.
 public static class MummerData

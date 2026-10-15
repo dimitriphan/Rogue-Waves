@@ -1,23 +1,20 @@
-# written by TDS_Mod/Tools/cloud-check/setup.sh and build_stubs.sh (fetched packages, compiled stubs); never committed
-TDS_Mod/Tools/cloud-check/*.nupkg
-TDS_Mod/Tools/cloud-check/roslyn/
-TDS_Mod/Tools/cloud-check/unitymods/
-TDS_Mod/Tools/cloud-check/sdk/
-TDS_Mod/Tools/cloud-check/*.exe
-TDS_Mod/Tools/cloud-check/*.tsv
-TDS_Mod/Tools/cloud-check/stubs/*.dll
-TDS_Mod/Tools/cloud-check/lite/*.dll
+# cloud-check's downloads and generated stubs are ignored by TDS_Mod/Tools/cloud-check/.gitignore
 __pycache__/
 *.pyc
 # the game's binaries are never committed
 *.dll
-!TDS_Mod/Tools/cloud-check/stubs/*.cs
-# never committed: Unity-generated folders, packages and archives, the PC's token
+# never committed: Unity-generated folders and files, packages and archives, the PC's token, local Claude settings
 Library/
 Temp/
 Logs/
 UserSettings/
 obj/
+*.meta
 *.unitypackage
 *.zip
 .modprojects_token
+.claude/settings.local.json
+# written on the PC by the build scripts and builders (the handoff tools skip them too)
+TDS_Mod/ModSource/*/Build/
+TDS_Mod/ModSource/*/build_log.txt
+TDS_Mod/ModSource/*/Aseprite/generated/

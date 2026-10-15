@@ -108,7 +108,7 @@ public static class RogueLabRun
         if (hero != RogueLabData.Hero)
             RogueLabProbe.Setup("Boutman picked", "the vessel is " + hero + " (Boutman locked or missing): the F-key test spawns Boutbro anyway");
         // The colour-slot route, which checks the name against the database (the Mixed route takes any string).
-        // Round 4 starts with no Cardinal: the main menu button is the start rule (docs/MAIN_MENU_START.md).
+        // Round 4 starts with no Cardinal: the main menu button is the start rule (docs/mode/MAIN_MENU_START.md).
         if (RogueLabData.Round < 4)
             Tds_Multiplayer_Remote.Instance.Changeartifact_ServerRpc(RogueLabData.Cardinal, false, default(ServerRpcParams));
         else
