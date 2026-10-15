@@ -199,18 +199,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
   rounds passed; full re-test 2026-10-11, 208/0). Yossele is built in draft PR #30 (PC round 8, 98/0, Dimitri's play
-  notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels) and 18
-  (character art); the Vessel Spotlight pages (Log). 2026-10-14: every scope file follows one rule set
-  (`docs/scope/00_Read_Me.txt`), with every template in `15_Templates.txt`. 2026-10-15: two quality passes and a
-  reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in
-  "Log" below.
-- **Next:** merge the open PRs in the order #29, #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
+  notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels; RogueLab
+  round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
+  Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
+  template in `15_Templates.txt`. 2026-10-15: two quality passes and a reorganisation (`docs/reports/`, `docs/mode/`;
+  `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
+- **Next:** merge the open PRs in the order #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
   §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions
   2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
   (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Numbers held by open PRs:** kit chapters 19-24 (#34); pitfalls #89-91 (#29), #93-101 (#34), #102-104 (#30), #92
-  unused. Next free: chapter 25, pitfall #105.
+- **Numbers held by open PRs:** kit chapters 19-24 (#34); pitfalls #93-101 (#34), #102-104 (#30), #92 unused. Next
+  free: chapter 25, pitfall #105.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -296,6 +296,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   kit `docs/17_BASE_VESSELS.md`, pitfalls #81-86, and fixes to `docs/12` §1 (Boutbro builds the fish), `docs/13` §6
   (Multi and Pmulti add up) and `docs/reports/SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
   the PC list, worth a probe round before the first Direction is built.
+- **Also (2026-10-12 06:10Z):** Dimitri asked to test every PC check possible. RogueLab 0.5.x (round 7, built and run
+  on the PC in three launches: 24/2/1, 7/2, 7/0; every failure the probe's own) checked `17` §12 and `16` §9 items 1-3.
+  Verified: percentages add, outside mods outlive upgrades, a −3 upgrade leaves Level and panel alone and the
+  Bouthouse leaks it onto Boutman, the Bout Way's prices, price scales, unit counts, the `Sno` grab, a re-routed
+  path, a den and an ore node spawned mid-match, a respawn keeping a −3 upgrade. New: an upgrade's params apply nothing
+  by themselves; Health raises keep the health fraction; a respawn cut made at the death is too late (`09` #89-91).
+  Left: a Blurry Photo clone and the house's upgrades. Mods folder empty again. `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`.
 - **Also (2026-10-13):** Dimitri asked for a vessel template with a slot for every value. New scope file
   `docs/scope/15_Vessel_Template.txt`; his edited `07` (Yossele) and `08` (Spool) are folded in and re-laid in it. A
   value written `~like this` is a default Claude picked (Yossele's come from the 2026-10-12 build, Spool's are new);

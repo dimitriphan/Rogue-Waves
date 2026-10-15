@@ -15,6 +15,7 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Round 4 (0.4.0) | starts from a cloned main menu button with no Cardinal (M1-M5, M7), then map 1's mechanic probes V1, V2, F1, O1 in the opening break and K1, D1, A1, E1 in Tide 1; leaves as a win and stops | `docs/mode/MAIN_MENU_START.md` §5, `docs/reports/MECHANICS_CHECK.md` §3 |
 | Round 5 (0.4.1) | round 4 again with its probe bugs fixed | `docs/reports/MECHANICS_CHECK.md` §3 |
 | Round 6 (0.4.2) | round 5 again with the menu probes fixed, plus M4b | `docs/mode/MAIN_MENU_START.md` §5 |
+| Round 7 (0.5.x, `09_Round7.cs`) | the stock Cardinals' core upgrades at boot; in map 1 price scales, summed percentages, a −3 upgrade on three buildings, the Bout Way's prices, a re-routed path, unit counts on the Hut, Keep and Garage, a den and an ore node spawned mid-match, the `Sno` tag grab, and four timed respawns | kit `docs/17` §12, `docs/16` §9 |
 
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
@@ -24,6 +25,17 @@ Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a ha
 Rounds 4-6 (2026-10-09) checked the scope's new mechanics and the main-menu button: 11 pass, 5 fail, 1 setup; then
 20 pass, 2 fail; then **22 pass, 0 fail** (the failures were probe bugs; `docs/reports/MECHANICS_CHECK.md` §3).
 RogueLab's research is done; it stays in the repository as the record and is never released.
+
+## Round 7 (2026-10-12)
+
+RogueLab 0.5.x (`09_Round7.cs`, `RogueLabData.Round = 7`) checks kit `docs/17` §12 (the base vessels) and `docs/16` §9
+items 1-3 (maps). It starts with Play and no Cardinal, plays Boutman on 3B_Thehunt, and loads the other four vessels'
+groups to place their buildings for the player. At boot it dumps every Cardinal's core upgrades (`CARD` lines).
+`RogueLabData.Rerun` (0.5.1 and 0.5.2) reruns only the probes a launch left open. It ran on the PC from this folder
+(no handoff) in three launches: 24 pass, 2 fail, 1 setup; then 7/2; then 7/0. Every failure was the probe's own;
+`docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md` has the results, `TDS_Vessel_Creator/reference/roguelab_round7.txt` every line.
+`Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes 25`; the round takes about 3 minutes. **Afterwards remove
+`RogueLabMod` from the game's Mods folder.**
 
 ## Round 6 (2026-10-09)
 

@@ -1,7 +1,8 @@
 public static class RogueLabData
 {
-    public const string Version = "0.4.2";            // 0.2: round 2, 0.3: round 3 (docs/RESEARCH_GAPS.md), 0.4: round 4, 0.4.1: round 5, 0.4.2: round 6 (docs/reports/MECHANICS_CHECK.md)
-    public const int Round = 4;                          // 4: start from the cloned main menu button, no Cardinal, map 1's mechanic probes only
+    public const string Version = "0.5.2";            // 0.2: round 2, 0.3: round 3 (docs/RESEARCH_GAPS.md), 0.4: round 4, 0.4.1: round 5, 0.4.2: round 6 (docs/reports/MECHANICS_CHECK.md), 0.5: round 7 (kit docs/17 §12, docs/16 §9)
+    public const bool Rerun = false;                     // true: round 7's second and third launches (0.5.1, 0.5.2) reran only what was left open
+    public const int Round = 7;                          // 4: start from the cloned main menu button, no Cardinal, map 1's mechanic probes only; 7: Play, no Cardinal, round 7's probes
     public const string Mode = "Mode_RogueLab";          // the mod mode's entry, group and Modeobject name
     public const string StockMode = "Mode_Normal";
     public const string PlanPrefix = "RogueLab_";        // + the stock Gameplan's name

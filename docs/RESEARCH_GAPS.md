@@ -68,6 +68,6 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
    solo), the real drop and rejoin (`docs/mode/REJOIN.md` §6, O1-O8), the sea chart on a client (`docs/mode/SEA_CHART.md` C7),
    a friend joining the host's boat after the main-menu button, and Quickening's `Time_Scale` and Rising Water's
    flood on a client (kit `docs/16` §9 item 4).
-3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). Its first PC round also
-   checks that a respawn keeps a granted Direction (read from the code, not yet seen).
+3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). A respawn keeping a
+   granted −3 upgrade was seen in RogueLab round 7 (2026-10-12, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).
 4. **C3** when the scope decides on new enemy types (modifiers show as an effect, not a skin: `docs/scope/13`).

@@ -5,8 +5,9 @@ for the Rogue Waves pack: a **Direction** or a **Vessel Cardinal** must work on 
 vessels, and a new vessel may borrow their assets. Read on 2026-10-12 (Dimitri: "get a clear understanding of each
 character's mechanics so modded assets and characters integrate smoothly"). Everything is **read from the game's code**
 (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11; `File.cs:line` points into that folder, never
-committed) or **data** (`reference/vessel_data_survey.txt`), unless it says **guess**. Nothing here was tried in game
-yet; §12 is the PC list.
+committed) or **data** (`reference/vessel_data_survey.txt`), unless it says **guess**. RogueLab round 7 (2026-10-12)
+tried §12's list in game; lines marked **verified** were seen there (`docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md` in the
+Rogue Waves repository, every line in `reference/roguelab_round7.txt`).
 
 Read `01` §4-9, `reference/VESSEL_SURVEY.md` (each vessel's data and the conventions they share) and `12` §1-2 first.
 This chapter adds behaviour, not data: the survey keeps the stats, costs and upgrade params.
@@ -43,13 +44,22 @@ Value_Calc = (ΣBase × ΣPmulti + ΣAdd) × ΣMulti × (1 − clamp01(OverrideO
 
 - **Multi and Pmulti are summed percentages.** Two `Multi +0.5` give ×2, not ×2.25. A Direction's `Multi +0.25` is ×1.25
   on a fresh archer but about ×1.1 on one already at Multi 2.5 (Fire Arrows + Auto Bow + Bow Squad). Pmulti scales only
-  the base (and `Leveladd`), Multi scales everything; a Pmulti and a Multi do compound with each other.
+  the base (and `Leveladd`), Multi scales everything; a Pmulti and a Multi do compound with each other. **Verified**:
+  archer Damage 4 went to 8 with two Multi +0.5, to 8 with two Pmulti +0.5, to 9 with one of each.
+- **An upgrade's params apply nothing by themselves.** Each stock AI reads the `Defaultparams` of its own upgrades by
+  name (`Entity_Ai_Tower_Smackyarcher` reads `Range_Add` off Long Bow); no engine code turns params into mods.
+  **Verified**: a −3 upgrade carrying `Range_Add 0.5` left an archer, a Sno Cannon and Boutman at the same Range. A
+  Direction's code calls `Addmod` itself.
 - **`Addmod` on a stat the entity does not have yet is listed but never applied**, and a later `Addstat` ignores it
   (:632-651, 709-778). Stats that appear mid-match: the Wall turret's Damage/Attackspeed/Range (Fie, Living Wall), the
   Silo's Range (Front-Line Pipes), the Ice Brick's Damage (Tip of the Iceberg), the Speed Pad's Damage (Speed Bump),
   Smacky's wall Damage (Spikes), every counter. `Removestat` on their downgrade drops outside mods with them.
 - **No base vessel resets a stat.** Every vessel AI removes only its own `Link_Modifier` by handle; an outside mod
-  survives their upgrades, downgrades and level changes (all five readers agree).
+  survives their upgrades, downgrades and level changes (all five readers agree). **Verified** on an archer: Range 7
+  with an outside +1, 9.5 with Long Bow, 7 again after `Removeupgrade`, the mod listed throughout.
+- **Health is `Variable`** on vessels and the core (every other hero stat, and the core's `Respawn`, is `Fixed`): a
+  change of max Health keeps the health fraction. **Verified**: 50/50 +20 gave 70/70, 30/50 +20 gave 42/70. A Health
+  Cardinal or Direction refills nothing on a hurt vessel; heal it separately if the design wants that.
 - An Override mod replaces the stat; live overrides sum; `Value_Override = 0` switches it off, so stuns use 0.01.
   `Editstat` adds `Value_Override_On` again on **every** change of an Override mod and subtracts it once on removal
   (:665, 703): never edit an Override mod, remove and re-add it (`09` #81).
@@ -63,7 +73,10 @@ Value_Calc = (ΣBase × ΣPmulti + ΣAdd) × ΣMulti × (1 − clamp01(OverrideO
 `Option_Defaultlevel`) and makes that upgrade the `Mainupgrade`, whose next options fill the building's upgrade panel
 and whose `Ent_Visual` replaces its model (Helper_Entitytools.cs:494, 526-540, 562-564). **An effect upgrade with
 Priority ≥ 0 hijacks the panel, the model and every `Leveladd` stat.** Stock effects use −1/−2, the tooltip −3, and
-`ModKitDirections.Make` −3: keep it that way. `Removeupgrade` recomputes neither (:567-609).
+`ModKitDirections.Make` −3: keep it that way. `Removeupgrade` recomputes neither (:567-609). **Verified**: a −3
+upgrade left Level and main upgrade alone on an archer at Level 2, a Sno Cannon and the Bouthouse; a Priority 0 one
+became a fresh archer's main upgrade and stayed it after `Removeupgrade`. The Bouthouse sets its `Skin` to its Level
+on any upgrade (`'1'` has no override, so its model stays).
 
 Sell refunds the costs of **every** applied upgrade (Entity_Ai_Hero_Buildsell.cs:242-253), so a Direction or Cardinal
 upgrade must have empty `Costs`.
@@ -95,7 +108,13 @@ pickups. A delegate a mod adds to `Master.Interact` directly is gone after the n
 | Detonate's fresh bomber, Gutter's fresh fish | lost | none | Entity_Ai_Tower_Smackybomber.cs:279; Entity_Ai_Mob_Boutmanfish.cs:870-878 |
 
 So an effect that must outlive a death is **an upgrade on the entity**, and anything per-entity is re-applied at
-`Onspawn` for every respawn, rebuild and replacement.
+`Onspawn` for every respawn, rebuild and replacement. **Verified**: a respawned Boutman kept a −3 upgrade.
+
+**Respawn time** is the core's `Respawn` stat (10, Fixed), read by the core's own handler on the vessel's `Despawn`
+the moment it dies. **Verified**: 10.0 s plain, 5.0 s with `Respawn −50 %` put on the core before the death, 10.0 s
+when the same cut was made in the vessel's `Despawn` handler or in `Game_Entity.Ondespawn` (both run after the core's).
+The core is the team's, so a faster respawn for one player has to be on the core before that death and speeds everyone
+dying meanwhile (**guess**: a handler subscribed in the vessel's `Onspawn`, before the core's, would run first).
 
 ### 2.5 Owner, parent, tags: finding a player's things
 
@@ -137,9 +156,10 @@ So an effect that must outlive a death is **an upgrade on the entity**, and anyt
 ### 2.7 Costs
 
 - Build price scale = the vessel's `BuildoptionN.Goalvalue` × `Resourcelossmultiplier` (Buildsell.cs:76-89; `16` §5). It
-  is also the building's `Sellvalue`, so a discount also cuts its refund.
+  is also the building's `Sellvalue`, so a discount also cuts its refund. **Verified**: a `Buildoption` at 0.8 built a
+  Red 25 archer for 20 with `Sellvalue` 0.8.
 - Upgrade price scale = the building's own `Upgrade` command `Goalvalue` (Entity_Ai_General_Upgrade.cs:31, 73-75);
-  Voice in a Bottle lowers it. The kit's buildings have no `Entity_Ai_General_Upgrade` (`05` §14), so Voice removes
+  Voice in a Bottle lowers it. **Verified**: at 0.8 Long Bow (Blue 25) cost 20. The kit's buildings have no `Entity_Ai_General_Upgrade` (`05` §14), so Voice removes
   itself from them (Entity_Ai_Effect_Artifact_Voice.cs:49, 68).
 - Boutbro rewrites his own `Goalvalue`s on every spawn, child and despawn (§5.1): write his cost stats instead.
 
@@ -195,7 +215,9 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
   filters never see it; the cannon, laser, Mother and Heater take snow and Snobles of **any** player.
 - **Never tag a mod entity `Sno` or `Snoble`.** The cannon despawns a `Sno`-tagged `Mob` as ammo, throws on a non-Mob
   without `Level`, and picks its shot by GameObject name (`Projectiles[name]`, Entity_Ai_Tower_Snosnocannon.cs:241-259):
-  any other name is a `KeyNotFoundException`.
+  any other name is a `KeyNotFoundException`. **Verified**: a Dagger copy whose data tags add `Sno`, beside a cannon,
+  was despawned in 0.17 s (`killed False`, reason `''`: `Shootsnow` eats a `Mob`); a stock Dagger on the same tile
+  stayed. No exception showed.
 - **Snobles** (`Mob, Sno, Snoble, Mobfighter`) are stationary melee blockers thrown by the Box (Snobles upgrade) and the
   cannon; no movement, no respawn, made all match long. Their health **drains faster and faster by direct stat edit**
   (Entity_Ai_Mob_Snoble.cs:57-69), bypassing damage reduction: "minions take less damage" must also cut `Drain` or raise
@@ -233,14 +255,16 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
 - **The Bouthouse is his upgrade panel.** Every upgrade on the house is copied onto the hero by `Askforupgrades`
   (house upgrades, hero respawn) and parked on the persistent object when the house dies
   (Entity_Ai_Tower_Boutmanhouse.cs:56-116). **Any upgrade put on the Bouthouse leaks onto Boutman**: never give it a
-  building Direction as an upgrade.
+  building Direction as an upgrade. **Verified**: on Boutman 1.5 s after the house got it.
 - After Enter the Boutman he **never dies**: at 0 HP he goes `Ko` (Health 1, untargetable) until healed to full; his AI
   then applies damage itself and zeroes `Damagemulti` for `Mob_General` (:127-203). A damage-reduction AI must run at
   priority ≤ 8 to act on him. "On vessel death" effects must also watch the `Ko` command.
 - **The Bout Way's price**: Boutbro sets each `BuildoptionN.Goalvalue` = fish `#Fishmain × Fishcost`, barrel
   `#Boutbarrel × Barrelcost`, boat `(#Boutboat + 1) × Boatcost`, recounted team-wide on spawn, child and despawn
-  (Entity_Ai_Mob_Boutbro.cs:130, 167, 204). So fish 1 and barrel 1 cost 0, fish n costs (n−1) × Yellow 25 (**guess** in
-  game). A discount Direction mods Boutbro's `Fishcost`/`Barrelcost`/`Boatcost` (re-applied on each Boutbro spawn).
+  (Entity_Ai_Mob_Boutbro.cs:130, 167, 204). So fish 1 and barrel 1 cost 0, fish n costs (n−1) × Yellow 25. **Verified**:
+  fish 1 and barrel 1 free, fish 2 cost 25. A discount Direction mods Boutbro's `Fishcost`/`Barrelcost`/`Boatcost`
+  (re-applied on each Boutbro spawn), and the price follows at the **next recount**: **verified**, a `Fishcost −20 %`
+  made after fish 2 left fish 3 at 50, then fish 4 cost 60 (3 × 0.8 × 25).
 - Boutbro calls every core's `Child` at `Starting` (:74-83), so `Heroapply` Cardinals reach him; his `Hero` tag also
   puts him in the F-key list (`15` §9).
 - The Shao-min ranged attack AI only fires on a GameObject named "Hero Boutman" (Entity_Ai_Hero_Boutman_Shoot.cs:75):
@@ -360,7 +384,7 @@ kind of entity with the player's owner, after its stats exist (§2.3).
 | Towers' health | all four; re-apply on Perma-Wall and Detonate rebuilds | all four (also raises the Ice Brick's overshield cap); Thin Ice trap is `Trap` | Barrel, Boat; **Bouthouse has no Health and must never get an upgrade** | all four; walls grown mid-match have a wall as parent | Pedestal, Garage; traps have no Health |
 | Minion stats | miners, engineers (never touch `Effect`) | Snobles, Mother (made all match) | Boutbro, fish, Buppy; Dad and Mom: buff the boat | knights (+ drones, no tags) | dogs (every lap) |
 | Minions take less damage | AI < 10 | **Drain bypasses it**: also cut `Drain` | fish ≤ 9; Dad, Mom have no health | AI < 10, as an upgrade | AI < 10 |
-| More units | `Units` alone does nothing: `SendMessage("Addressminercount")` on the hut after the mod (**guess**) | no unit count to raise | barrel `Vacantcurrent`, not `Units` | `Units` + `SendMessage("Add")` on the keep (**guess**) | `Units` + `SendMessage("Add")` on the garage (**guess**) |
+| More units | `Units` alone does nothing: `SendMessage("Addressminercount")` on the hut after the mod (**verified**) | no unit count to raise | barrel `Vacantcurrent`, not `Units` | `Units` + `SendMessage("Addressmobcount")` on the keep (**verified**) | `Units` + `SendMessage("Addressdogcount")` on the garage (**verified**) |
 | Units respawn faster | Hut `Respawn` | — | Bouthouse `Respawn` (Boutbro) | Keep `Respawn` | Garage `Respawn` |
 | Build discount | `Buildoption` Goalvalue | same | Boutbro's `Fishcost`/`Barrelcost`/`Boatcost` (Goalvalues are rewritten) | same | same |
 | Per-kill effect (credit by `Lasthit` owner) | misses Detonate, Bramble | misses black/Snoble shots, laser, pulses, Scorch, bursts | misses Dad, Mom, ghosts, poison | misses Sword, wall blasts | misses Speed Bump, Collision, Diesel flames |
@@ -388,10 +412,13 @@ one exception. Each row says what a **pack vessel** needs for the Cardinal to wo
 | Towerapply (Rusty Pipe, Frail Titan) | data tag `Tower` | `Tower` on every building (traps and the Bouthouse are skipped) |
 | Mobapply, Aura Gavel, Kippy, Checklist | data tag `Mob` | `Mob` on the vessel and every unit (Boutdad has none, so it is skipped) |
 | Cubed Drink | `Mobfighter`/`Towerfighter`/`Hero` **with a Damage stat** | the tags and a `Damage` stat |
-| Onetime Build, Build | add `Buildoption<N>` on the entity they sit on (**guess**: the core, not the vessel) | — |
+| Onetime Build, Build (Processor Jr, Starter Seeds, Cubed Drink, Sand Filled Box, Tacklebox) | put `Entity_Ai_Hero_Buildsell` and a build AI with a `Buildslot` param on the **core** (verified, the PC dump) | — |
 | Coins, clock, core, ore and foe Cardinals | no vessel | — |
 
-`15` §18.1 has each Cardinal's pattern and the stock bugs. The Cardinals' core-upgrade scripts are not dumped yet (§12).
+`15` §18.1 has each Cardinal's pattern and the stock bugs. Each Cardinal's core upgrades, AIs and params were dumped
+in game (`CARD` lines of `reference/roguelab_round7.txt`): every row above matches its AI (`Heroapply`, `Towerapply`,
+`Coreapply`, `Voiceapply`, `General_Spawnmobs` for Torrid Badge, Bendigo, Fish Bait, Kippy). All use Priority −1
+except Frozen Computer and Wave Breaker (1), which therefore set the core's Level and main upgrade.
 
 ## 10. Assets a new vessel can borrow
 
@@ -432,7 +459,7 @@ the engineer, the Boutman family boosts, `Hero_Boutman_Shoot`) are name-locked: 
 4. **Stick to the generic stats** every stock AI reads live: `Damage, Attackspeed, Range, Speed, Health, Projspeed,
    Buildrange, Sellrate, Respawn` (on unit buildings). Check `Statsserver.ContainsKey` first, and watch `Master.Upgrade`
    for stats that appear later (§2.1). A vessel's own counters (Snow, Thread, Units, Gun) work only where its code
-   reads them.
+   reads them. The upgrade's `Defaultparams` apply nothing by themselves: the Direction's code adds the mods (verified).
 5. **Size percentages for the summed buckets**: a "+x %" is `Pmulti` for the base, `Multi` for everything; neither
    compounds with its own kind. Use `Add` for flat bonuses.
 6. **Keep each `Link_Modifier`** and remove it yourself; use marker mods for "already applied". Never edit an Override.
@@ -441,8 +468,9 @@ the engineer, the Boutman family boosts, `Hero_Boutman_Shoot`) are name-locked: 
 8. **Per-hit effects** live in a stock-AI upgrade's `Interact` or a handler the brain re-inserts after each upgrade
    (§2.3); **per-kill** effects use `Ondespawn` + `Lasthit.Entitydata.Value.Owner` and accept §8's gaps.
 9. **Income pays the player directly** with `Giveresources(list, owner)`; never `−1`.
-10. **Unit counts need the building's own spawn call**, never `Units` alone (Hut, Keep, Garage); Boutman's barrels use
-    `Vacantcurrent`.
+10. **Unit counts need the building's own count check**, never `Units` alone: after the mod, `SendMessage` the Hut's
+    `Addressminercount`, the Keep's `Addressmobcount` or the Garage's `Addressdogcount` (verified); Boutman's barrels
+    use `Vacantcurrent`.
 11. **Never upgrade the Bouthouse** (leaks onto Boutman); act on Boutman at priority ≤ 8; buff the boat for Dad and Mom.
 12. **Never put the tags `Sno`, `Snoble`, `Buster`, `Fish`, `Boutfamily`, `Knight`, `Silo`, `Fiewall` on pack things**
     unless the pack wants that base vessel's code to grab them.
@@ -468,15 +496,17 @@ the engineer, the Boutman family boosts, `Hero_Boutman_Shoot`) are name-locked: 
 
 ## 12. PC list
 
-1. Dump each stock `Artifactobject.Coreupgrades` with its `Aiscripts` and `Defaultparams` (settles §9's reach).
-2. `Stats_Default`: the `Value_Type` of `Health` and the hero stats (does a Health Cardinal refill?).
-3. Boutman: is fish 1 and barrel 1 free in play? Does a Blurry Photo clone take the house's upgrades?
-4. `SendMessage("Add")` on a Keep and a Garage, `SendMessage("Addressminercount")` on a Hut after a `Units` mod: does a
-   unit appear?
-5. A Priority −3 test upgrade on a Smacky archer, a Sno Sno cannon and a Bouthouse: Level, panel and model unchanged
-   (house: the hero receives it).
-6. Respawn faster per player: a timed mod on the core's `Respawn` from the vessel's `Despawn` handler (order read,
-   untested).
+RogueLab round 7 (2026-10-12, three launches) ran items 1-6; the results are folded into the sections named.
+
+1. Each stock Cardinal's core upgrades: dumped (§9). Done.
+2. `Value_Type` of Health and the hero stats: Health is `Variable` and keeps its fraction; a Health raise refills
+   nothing on a hurt vessel (§2.1). Done.
+3. Boutman's first fish and barrel are free, and a cost mod waits for a recount (§5.1). Done. **Open**: does a
+   Blurry Photo clone take the house's upgrades (needs that Cardinal equipped)?
+4. More units: the count check after a `Units` mod spawns one on the Hut, Keep and Garage; `Units` alone spawns
+   nothing (§8, rule 10). Done.
+5. A −3 upgrade leaves Level, panel and model alone; on the house it reaches Boutman (§2.2, §5.1). Done.
+6. Respawn faster per player: a cut made at the death comes too late (§2.4). Done; the `Onspawn` route is untested.
 
 ## 13. Sources
 
