@@ -1,5 +1,5 @@
 """Seeded sea chart for the Rogue Waves campaign: a Slay the Spire style node map the boat sails across, one row per
-map (docs/SEA_CHART.md), with each node's base map and its sea weather. This is the reference for the mod's C# port
+map (docs/mode/SEA_CHART.md), with each node's base map and its sea weather. This is the reference for the mod's C# port
 (TDS_Mod/ModSource/RogueWavesMode/Code/03_Chart.cs): same PRNG, same steps, same order of draws, so the host, every
 client and this script build the same chart from one seed. `--check` prints the lines the port prints, for a diff.
 
@@ -8,7 +8,7 @@ client and this script build the same chart from one seed. `--check` prints the 
 
 Rules: a harbour (the start, no map), then ROWS rows of 3-4 map nodes; each node links to 1-3 neighbouring nodes in
 the next row (2 most often), every node has a parent, and links never cross. Rows 5 and 10 close a stretch (Breaker maps,
-docs/SCOPE_VS_LOOP.md #20). The PRNG is xorshift32, not System.Random, so the C# port is exact on every machine.
+docs/reports/SCOPE_VS_LOOP.md #20). The PRNG is xorshift32, not System.Random, so the C# port is exact on every machine.
 
 Maps: every node gets a base map from POOL, never one twice. Row r aims at the label 2 + (r-1)/2 (labels are the
 game's Mapentryobject.Difficulty, 1-9; the final map's 0 counts as 10), a Breaker row two labels higher; the node draws

@@ -58,7 +58,7 @@ only ranks). Left: that "reduced aura gain" can't use the game's own multiplier 
 ## 3. RogueLab round 4
 
 RogueLab 0.4.0 (`TDS_Mod/ModSource/RogueLab`, compiled here with 0 errors): solo host, Boutman, one map. It starts from
-the main menu button (probes M1-M5 and M7 of `docs/MAIN_MENU_START.md` §5), then runs these in map 1. Boutbro stands
+the main menu button (probes M1-M5 and M7 of `docs/mode/MAIN_MENU_START.md` §5), then runs these in map 1. Boutbro stands
 in for VENDCINT.
 
 | # | When | Probe | Pass when |
@@ -83,7 +83,7 @@ in for VENDCINT.
 | K1 | **proven**: `Ondespawn` gave the death and its place; `Lasthit` was the vessel |
 | V2, V1 button | probe bug: a `Button`-style command's object is named the link plus its priority, so the exact-name search missed it. Round 5 matches the prefix |
 | D1, A1, E1 | never ran: the heal probe threw `KeyNotFoundException 'Damage'` (a heal's amount is its data's `Damage`, `Helper_Damagetools.Doheal`), ending the Tide probes. Round 5 passes `Damage` and `Damagemulti` |
-| M1-M5, M7 | see `docs/MAIN_MENU_START.md` §5: M7 passed; the clone never ran because the probe waited for the Main menu's `Active` flag, which stayed false for 20 s on the title screen. Round 5 waits for the menu's items instead. M5's leftover `Artifact_RogueLab` came from the save of rounds 1-3; round 5 unequips it first |
+| M1-M5, M7 | see `docs/mode/MAIN_MENU_START.md` §5: M7 passed; the clone never ran because the probe waited for the Main menu's `Active` flag, which stayed false for 20 s on the title screen. Round 5 waits for the menu's items instead. M5's leftover `Artifact_RogueLab` came from the save of rounds 1-3; round 5 unequips it first |
 
 **Round 5 results** (PC, 2026-10-09, RogueLab 0.4.1: 20 pass, 2 fail, 0 setup; full log on the PC in
 `handoff\selftest_logs\roguelab_round5.txt`). Every mechanic probe passed:
@@ -96,7 +96,7 @@ in for VENDCINT.
 | A1 | **proven**: Boutbro's `Health` is `Variable`: max x2 took 5/10 to 10/20, the game kept the fraction; Speed 1 -> 0.7 and Damage 3 -> 6 at runtime |
 | E1 | **proven**: `Vfxdebuffcheck("Debuff_Boutman_Red")` added 2 children under the foe's look |
 | K1, F1, O1 | **proven** again |
-| M2, M3, M5, M7 | passed (`docs/MAIN_MENU_START.md` §5) |
+| M2, M3, M5, M7 | passed (`docs/mode/MAIN_MENU_START.md` §5) |
 | M1, M4 | probe bugs, round 6: M1 required the clone to be shown while the whole Main menu was still hidden; M4 lost its flag because the probe read a finished `UniTask`'s `Status` (UniTask throws "can not await twice"), which ended the menu coroutine before it set the flag |
 
 RogueLab 0.4.2 (round 6, compiled here with 0 errors, handoff `RogueLab_round6`) reruns everything with M1 judged
@@ -104,7 +104,7 @@ against Play's own state, a new M4b line showing whether the button sits beside 
 the dialog's result read once.
 
 **Round 6 results** (PC, 2026-10-09, RogueLab 0.4.2): **22 pass, 0 fail, 0 setup**; every mechanic probe passed
-again and M1-M5 and M7 all passed (`docs/MAIN_MENU_START.md` §5). Full log on the PC in
+again and M1-M5 and M7 all passed (`docs/mode/MAIN_MENU_START.md` §5). Full log on the PC in
 `handoff\selftest_logs\roguelab_round6.txt`. No exception named RogueLab; the rest are the game's own (`docs/08` §6).
 
 **Online evening** (already planned, `docs/RESEARCH_GAPS.md`): a client sees VENDCINT's button and its press reaches
@@ -123,5 +123,5 @@ only ranks.
 | The cap is 50 x the tide number, and the tide number is 0 in the opening break (Mode_Normal.cs:318, read), so nothing could be sent before Tide 1 | **Confirmed**: count the tide that is coming: 50 before Tide 1, 250 in the break before Tide 5 |
 | "Bonus tides paying an additional 1 Pure Aura per tide" | **Answered**: a bonus tide pays 2 |
 | The shop sells only ranks of Directions a vessel already holds | **Confirmed**: new Directions come only from the pick before each map; the Directions template lost its Shop line, as in your file |
-| Fund Transfer is base aura only | Replaces `docs/SCOPE_VS_LOOP.md` #6's idea that the team pools Pure Aura through it |
+| Fund Transfer is base aura only | Replaces `docs/reports/SCOPE_VS_LOOP.md` #6's idea that the team pools Pure Aura through it |
 | "Reduced aura gain" per Depth level (was Swell) | The game's gain multiplier doesn't touch Tide pay, so a Depth level lowers start aura and drops instead, if a level still lowers aura. Decided at Depth's design, which stays on hold |

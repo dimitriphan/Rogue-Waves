@@ -43,7 +43,7 @@ function ReadFrom($path, [ref]$from) {
         [void]$fs.Seek($from.Value, [IO.SeekOrigin]::Begin)
         $sr = New-Object IO.StreamReader($fs)
         $text = $sr.ReadToEnd()
-        $from.Value = $fs.Length
+        $from.Value = $fs.Position   # what was read, not the length now: lines written meanwhile are read next time
         return $text
     } finally { $fs.Dispose() }
 }

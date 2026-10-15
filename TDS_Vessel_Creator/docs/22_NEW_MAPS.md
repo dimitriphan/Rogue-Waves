@@ -6,7 +6,7 @@ Everything here was **read from the game's code** (decompiled as in `13` §11) a
 2026-10-14 unless it says otherwise. **No mod map has been loaded yet**: §7 is the PC list, starting with a dump of a
 stock map's hierarchy, which settles every "inferred" below.
 
-Read `16` §1-3, `15` §2, §10, §14.4, §17 and the repository's `docs/SEA_CHART.md` first.
+Read `16` §1-3, `15` §2, §10, §14.4, §17 and the repository's `docs/mode/SEA_CHART.md` first.
 
 ## 1. The chain from a chart node to the prefab
 

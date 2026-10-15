@@ -161,7 +161,7 @@ any foe: stock AIs for walking and hitting, plus a host brain for phases** (answ
 | a priority-9 `Oninteract` that zeroes damage | invulnerable windows while staying targetable |
 
 **Plan** (working id `Enemy_RogueBreaker`, the headline of the Breaker Tide that closes maps 5 and 10, the Rogue
-Waves `docs/SCOPE_VS_LOOP.md` #20):
+Waves `docs/reports/SCOPE_VS_LOOP.md` #20):
 
 1. Data: clone `Enemy_Bulwark` (Health 30000, Speed 0.3, stun slam and bomb rain); big sprite art per §1 with
    `Phase2`/`Phase3` skin entries reusing the sprites with a material; a big `Defaulthit` on a **one-tile** block;

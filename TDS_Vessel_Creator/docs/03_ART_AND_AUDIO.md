@@ -62,10 +62,10 @@ the content.
 | Fie | small human: huge orange spiky hair covering one eye, red shirt, dark trousers | human or humanoid characters, hair/hat silhouettes |
 | Buster | cream dog sitting, big head and ear, teal collar, wagging tail, poses change a lot | animals, energetic characters with big pose changes |
 
-Reference images (game art, keep them local, don't ship them): menu art of all five (icon, idle strip, landing and
+Reference images (game art, keep them local, don't ship them): the game's own character sheets, read straight from its asset bundle on 2026-10-15, are in the project files (`research/art_dump_2026-10-15/`; how, and what they show: `18` §9). Older, from a game run: menu art of all five (icon, idle strip, landing and
 loading strips, splash, boat mini) and full sheets of Sno Sno and Buster are in
 Sprigg's `Research\dump` folder, which moved with Sprigg into `C:\Users\Dimitri\TDS_Mod\Prototype Mods\Sprigg`
-(2026-10-08). To dump the full sheets of any other vessel, port
+(2026-10-08). Only for in-game captures (menu art at runtime, a modded vessel), port
 `examples/code/Sprigg_97_ArtDump.cs` into your mod under a `<NAME>_ARTDUMP` define, put that vessel's id in its
 `foreach (string want in new[] { ... })` list, export, launch, and decode the dump lines (`docs/08`).
 
@@ -88,7 +88,8 @@ Check every row of a string-drawn image has the same length (a malformed ReadyUp
 
 ## 3. Units
 
-16 px cells, 4 rows (v0-v3), 10 columns: Move in 0-5 (Idle = column 0), Attack in 6-9 (`<Name>Assets.Puppet`).
+16 px cells, 4 rows (v0-v3), 10 columns: Move in 0-5 (Idle = column 0), Attack in 6-9 (`<Name>Assets.Puppet`; the
+template's own layout, not the game's: game sheets are in `18` §2).
 Same style as the vessel, smaller (the miner, knight and dog are 6-10 px tall). Variants per costume or skin get
 their own sheet.
 

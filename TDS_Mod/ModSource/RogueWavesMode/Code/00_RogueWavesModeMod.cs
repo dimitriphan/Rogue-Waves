@@ -1,5 +1,5 @@
 // RogueWavesMode: the mode part of the Rogue Waves pack (docs/PACK.md; prefab RogueWaves_Mode_Default, dev mod
-// RogueWavesModeMod). This first slice carries the campaign's sea chart and its sea weather (docs/SEA_CHART.md):
+// RogueWavesModeMod). This first slice carries the campaign's sea chart and its sea weather (docs/mode/SEA_CHART.md):
 //   02_Mode.cs      Mode_RogueWave (Mode_Normal's scripts and Tide table) and an RW_ twin of every base Gameplan
 //   03_Chart.cs     the seeded chart as data, an exact port of concept-tools/sea_chart.py
 //   04_World.cs     the chart as a world of the game's own: islands with map nodes, built on every machine from its name
@@ -7,10 +7,10 @@
 //   06_Campaign.cs  the host's campaign: seed and route, in its save
 //   07_Weather.cs   Rising Water, Quickening Current, Nesting Ground: the stock map objects, put on chart maps
 //   08_Icons.cs     the weather icons
-//   09_Rejoin.cs    a player who drops can rejoin the running map (docs/REJOIN.md), in every map while the pack is on
+//   09_Rejoin.cs    a player who drops can rejoin the running map (docs/mode/REJOIN.md), in every map while the pack is on
 //   10_Online.cs    a restarted friend keeps their Sessionid; a player whose map never loads is sent back, not everyone
 // Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button piece
-// (docs/MAIN_MENU_START.md, not built yet) or, in a self-test build, by 99_SelfTest.cs.
+// (docs/mode/MAIN_MENU_START.md, not built yet) or, in a self-test build, by 99_SelfTest.cs.
 // Build: Build-RogueWavesModeMod.ps1 [-Define ROGUEWAVESMODE_SELFTEST].
 using System;
 using System.Collections;
@@ -92,7 +92,7 @@ public class RogueWavesModeMod : MonoBehaviour
 public static class RWData
 {
     public const string Part = "Mode";
-    public const string Version = "0.3.0";               // pack version (docs/PACK.md §5); 0.1: sea chart and sea weather; 0.2: rejoin; 0.3: restart rejoin, load watch, slot guard
+    public const string Version = "0.3.0";               // pack version (docs/PACK.md §4); 0.1: sea chart and sea weather; 0.2: rejoin; 0.3: restart rejoin, load watch, slot guard
     public const string Mode = "Mode_RogueWave";         // the mode's entry, group and Modeobject name
     public const string ModeDisplay = "Rogue Waves";
     public const string StockMode = "Mode_Normal";

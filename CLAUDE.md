@@ -14,20 +14,18 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
 | `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.6), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames. `ModSource/Riptide`: a tested roguelike-mode prototype, prior art for the mode | `TDS_Mod/README.md` |
 | `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo 2.0, designed from the scope and built; PC round 6 passed 139/0; ships only inside the pack | its `DESIGN.md` |
-| `TDS_Mod/ModSource/RogueWavesMode` | The pack's mode part (0.3.0: sea chart, sea weather, rejoin after a drop or a restart), dev mod `RogueWavesModeMod` | its `README.md`, then `docs/SEA_CHART.md` §7-9 or `docs/REJOIN.md` |
+| `TDS_Mod/ModSource/RogueWavesMode` | The pack's mode part (0.3.0: sea chart, sea weather, rejoin after a drop or a restart), dev mod `RogueWavesModeMod` | its `README.md`, then `docs/mode/SEA_CHART.md` §7-9 or `docs/mode/REJOIN.md` |
 | `TDS_Mod/ModSource/Yossele` | Yossele 0.1.0-dev, built from `docs/scope/07` with temporary art; PC round 8 passed 98/0 | `DESIGN.md`, `IMPLEMENTATION_NOTES.md`, `docs/YOSSELE_BUILD_NOTES.md` |
 | `TDS_Mod/ModSource/RogueLab` | Phase 1 research mod (never released): the PC round of `docs/15` §11 | its `README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
-| `docs/scope/` | The user's scope for the expansion (ex roguewave.txt, split 2026-10-09): one `.txt` per category (mode, mechanics, each vessel, Directions, Cardinals, modifiers, objectives); he sends back only the files he edits. `! NEEDS ... !` marks what only he can supply. The highest truth after the user's newest words | `00_Read_Me.txt`, then the file the task touches |
+| `docs/scope/` | The user's scope for the expansion (ex roguewave.txt, split 2026-10-09): one `.txt` per category (mode, mechanics, each vessel, Directions, Cardinals, modifiers, objectives); he sends back only the files he edits (`docs/SCOPE_v0.txt` only points here). `! NEEDS ... !` marks what only he can supply. The highest truth after the user's newest words | `00_Read_Me.txt`, then the file the task touches |
 | `docs/PACK.md` | How the pack is built and shipped: one `RogueWavesMod` bundle, a prefab per part, no load order, kit 1.6 scope, versions | before packaging or kit work |
 | `docs/STYLE.md` | The pack's style sheet: theme, palette, motifs, naming voice, each new vessel's shape and sprite reference | before drawing or naming anything for the pack |
 | `docs/PROJECT_SETUP.md` | What to hand the coordinator: repository, project instructions, project files, first message, PC chores | when setting up or re-creating the Claude Project |
 | `docs/PLAN.md` | The prompt plan: the coordinator's operating rules (Part A), phases and their opening prompts (B), state and open questions (C), prompt templates (D) | **every session**: Part C "Now" |
 | `docs/EXPANSION_SCOPE.md` | Beyond vessels: enemies, modes, maps, bosses, music, journal, unlocks, packaging. What is known, what is not, what to research | before any non-vessel work |
-| `docs/SCOPE_GAPS.md` | Every asset the scope names or implies, with what exists and what is still missing (2026-10-08; partly superseded, see its note) | before picking the next piece of work |
-| `docs/SEA_CHART.md`, `docs/REJOIN.md`, `docs/MAIN_MENU_START.md` | How maps are picked on the sea chart (and sea weather), rejoining a running map, the main-menu start button | before touching that piece |
-| `docs/MECHANICS_CHECK.md`, `docs/MECHANIC_IDEAS.md` | Every scope mechanic checked against the game (all proven); ideas Dimitri can pick from | before designing a mechanic |
-| `docs/SCOPE_REVIEW_2026-10-10.md`, `SCOPE_VS_LOOP.md`, `QUALITY_CHECK_2026-10-11.md`, `REPO_SCAN_2026-10-08.md` | Dated reviews (newest first); their notes say what was decided since | when a review item comes up |
+| `docs/mode/` | Design pages of the mode's pieces: sea chart and sea weather (`SEA_CHART.md`), rejoining a running map (`REJOIN.md`), the main-menu start (`MAIN_MENU_START.md`), mechanic ideas Dimitri can pick from (`MECHANIC_IDEAS.md`) | before touching that piece |
+| `docs/reports/` | Dated reports, frozen (a note on top says what changed since): quality checks, the full PC re-test, scope reviews, `SCOPE_GAPS.md` (every asset the scope names), `MECHANICS_CHECK.md` (every scope mechanic, all proven) | its `README.md`; `SCOPE_GAPS.md` for what the first scope named (check `docs/scope/` first) |
 | `docs/RESEARCH_GAPS.md` | Engine facts the scope needed researched: 16 of 18 answered 2026-10-09, what is left and the order to answer it | before Phase 5 or a vessel design gate |
 | `docs/concepts/` | Vessel concept pages drafted from the user's sprite art and the scope (Yossele, Spool, Uloe), with the art in `art/` | before designing one of those vessels |
 
@@ -65,7 +63,8 @@ previews). Never launch TDS or take desktop screenshots. Report what compiled vs
 New knowledge goes where the next reader will look for it, once:
 
 - A new engine fact or error → `docs/09_PITFALLS.md` (numbered) or the matching `docs/` chapter; a fact about a
-  non-vessel system → the chapter `docs/EXPANSION_SCOPE.md` says it belongs to (new chapters take the next number, 14+).
+  non-vessel system → the chapter `docs/EXPANSION_SCOPE.md` says it belongs to (new chapters take the next free number;
+  open PRs may hold some, see `docs/PLAN.md` Part C "Now").
 - A vessel's numbers, rules and every change from its concept → that vessel's `DESIGN.md`; build state and what to
   verify in game → its `IMPLEMENTATION_NOTES.md`.
 - A kit change → bump the version in `TDS_Vessel_Creator/kit/README.md` and the file headers, and keep

@@ -1,6 +1,6 @@
 // Every name, text and tuning number for Argo in one place. Structure and numbers follow the shipped vessels
-// (ModSource/Sprigg/Research/VESSEL_SURVEY.md): a melee vessel like Smacky and Fie with a hero ability like Buster's
-// Dash, four buildables with curated upgrade trees whose costs follow the base game's tier curve, a unit tower like the
+// (TDS_Vessel_Creator/reference/VESSEL_SURVEY.md). 1.x was a melee vessel like Smacky and Fie with a hero ability like
+// Buster's Dash, four buildables with curated upgrade trees whose costs follow the base game's tier curve, a unit tower like the
 // Mining Hut and Knight's Keep, and the special rule shown as a tooltip upgrade.
 //
 // Balance notes against the concept (ModSource/Argo/Concept): the concept's numbers were placeholders. Argo keeps the

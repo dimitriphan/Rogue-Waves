@@ -1,4 +1,4 @@
-// On the boat (the Setup scene, the game's lobby), every frame (docs/SEA_CHART.md §3 steps 4-8):
+// On the boat (the Setup scene, the game's lobby), every frame (docs/mode/SEA_CHART.md §3 steps 4-8):
 //   every machine  registers the chart world named by Tds_Multiplayerinfo.World or Macro_Main.Worlded (Startup waits
 //                  for it with no timeout, so this must not wait for Macro_Main.Ready); on the chart, blacklists every
 //                  node but the next choices, hides the Warp button, writes the picked node's weather into the Setup
@@ -7,7 +7,7 @@
 //                  does; notes the node picked (Selected) for the map about to load; keeps chart names out of the save
 //   leader (host)  when RWCampaign.Choice names a column (the vote's winner, or a self-test), hovers that node so the
 //                  stock boat sails there, and picks it on arrival (Selectmap_ServerRpc), which opens the Setup panel
-// Until the vote piece exists (docs/SCOPE_VS_LOOP.md, the in-map vote), the leader may also steer with the stock
+// Until the vote piece exists (docs/mode/SEA_CHART.md §4, route V1: the in-map vote), the leader may also steer with the stock
 // arrows: they only offer the next row's linked maps, and only those can be picked.
 public static class RWBoat
 {

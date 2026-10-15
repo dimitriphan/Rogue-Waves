@@ -23,7 +23,7 @@ chart (a seed carried in the world's name does it), and **only the leader can st
 A preview from the prototype generator (`concept-tools/sea_chart.py`, seed 20261009): the harbour at the bottom, ten
 rows of 3-4 maps, red rows close each stretch of five.
 
-![sea chart preview](concepts/art/sea_chart_20261009.png)
+![sea chart preview](../concepts/art/sea_chart_20261009.png)
 
 ## 2. How the base campaign map works (read)
 
@@ -47,7 +47,7 @@ node's `Links`. A mod that writes `Links` decides where the boat may go next.
 
 | Step | Who | What the mod does | Evidence |
 | --- | --- | --- | --- |
-| 1. Generate | host, at New campaign | Picks a seed; builds the chart: a harbour, then 10 rows of 3-4 nodes, non-crossing links (`concept-tools/sea_chart.py`, xorshift32 so the C# port is exact); assigns each node a base map by the stretch rule (`docs/SCOPE_VS_LOOP.md` #20: low labels early, δ late, a Breaker map closing rows 5 and 10, no map twice) | plain code |
+| 1. Generate | host, at New campaign | Picks a seed; builds the chart: a harbour, then 10 rows of 3-4 nodes, non-crossing links (`concept-tools/sea_chart.py`, xorshift32 so the C# port is exact); assigns each node a base map by the stretch rule (`docs/reports/SCOPE_VS_LOOP.md` #20: low labels early, δ late, a Breaker map closing rows 5 and 10, no map twice) | plain code |
 | 2. Save | host | The campaign save gains the seed and the route so far (one column per row) | the save: **proven** (`docs/15` §8) |
 | 3. Build the world | every machine | A `Mapworlddatabaseobject` made in code (`ScriptableObject.CreateInstance`), named `RW_Chart_<seed>_<route>`, with a `Worldobj` built from the seed: a sea, one island per node with a `Macro_Maplink_Add` (its `Gameplan` the map's Rogue twin, `Links` set, a `Cameraposition` and `Dock` child), and route lines; registered in `Items["World"]` | registering database items: **proven** for Mode, Gameplan, Artifact (RogueLab); a World item and a code-built `Worldobj`: **untested** |
 | 4. Sail in | host's mod, on the boat | After the boat opens, warps the party to the chart the way `Selectworld` does: sets `Tds_Multiplayerinfo.World` and `Worlded` to the chart's name and `Selected` empty; the chart's `Defaultnode` is the node the party stands on | the warp path: **read**; doing it from a mod: **untested** |
@@ -152,7 +152,7 @@ check; a map the player hasn't played shows "UNCLASSIFIED" in the Setup panel un
 
 ## 8. Sea weather (2026-10-10)
 
-From `docs/MECHANIC_IDEAS.md` §2; the scope entry is `docs/scope/04` [Sea Weather]. Three weathers, each a stock
+From `docs/mode/MECHANIC_IDEAS.md` §2; the scope entry is `docs/scope/04` [Sea Weather]. Three weathers, each a stock
 map object or effect the game puts on one map only (kit `docs/16` §3), started by the host when the map starts
 (`07_Weather.cs`):
 

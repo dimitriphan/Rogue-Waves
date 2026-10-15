@@ -11,7 +11,7 @@ big fight (kit `docs/19` §8 N4).
 
 **2.0 for Rogue Waves, before its first PC round (step 3 code done, 2026-10-08; the rounds below then ran).** Design approved (`DESIGN.md`, "Step 3, code reality" lists
 how the code does it). Art from step 2 (`Previews/2.0/`). **Checked here only:** `check_mod.py` compiles the mod with
-kit 1.6 at 0 errors in release, `ARGO_SELFTEST` and `ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE`; `check_editor.sh` passes.
+kit 1.6 at 0 errors in release, `ARGO_SELFTEST` and `ARGO_SELFTEST,ARGO_SHOTS`; `check_editor.sh` passes.
 **Not built in Unity, not run, not seen in game.** The self-test (`99_SelfTest.cs`) follows DESIGN's 2.0 test plan.
 
 What the first PC round must show, in order (each is an assumption the code makes):
@@ -214,11 +214,14 @@ mostly Yellow; stacked slows and roots are Multi mods that can sum past -100% (n
 Argo, **Fathoms Below ▪ Intermediate**: a bulky deep-sea diver (built in the spirit of League's Nautilus) with a
 crew of Nauts, a scatter cannon, a harpoon tower and a drill that sinks deeper every Tide. Built from the concept in
 `Concept/` (the user's "Argo Vessel Concept.zip") on Sprigg's proven scaffolding. Read
-`../Sprigg/Research/VESSEL_SURVEY.md` for how the shipped vessels are built.
+`TDS_Vessel_Creator/reference/VESSEL_SURVEY.md` for how the shipped vessels are built.
 
 ## Layout
 
-All code lives in `Code/*.cs` plus the shared kit in `../Shared` (kit 1.3). `Build-ArgoMod.ps1` joins the files in name
+2.0 (current): the table below is 1.4.0's. 2.0 builds against kit 1.6, adds `11_Water` (Deep Water) and
+`16_AimSelect` (AIM: the Drill Rig's aimed Tremor), keeps SONAR's files switched off, and `99_SelfTest` has 139 checks (PC round 6).
+
+All code lives in `Code/*.cs` plus the shared kit in `../Shared` (kit 1.3 at 1.4.0). `Build-ArgoMod.ps1` joins the files in name
 order, then the kit with its `ModKit` prefix renamed to `ArgoKit`, into one Roslyn string; the first type is the entry
 point.
 
@@ -281,7 +284,7 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
   the moment the database exists (before any asset loading) and checks 8 s after boot; if the table was already
   frozen, the buttons fall back to stock icons (never blank).
 
-## The journal, for every future vessel
+## The journal, for every future vessel (1.0, history: since kit 1.1 this is `ModKitVesselJournal`, kit `README.md`)
 
 `13_Journal.cs` is vessel-agnostic:
 

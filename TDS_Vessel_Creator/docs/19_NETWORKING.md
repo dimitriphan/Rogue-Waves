@@ -110,7 +110,7 @@ stage (`15` §14.5, `21` §1.2). §6 rule 5 is the hook to re-send them.
 
 **A drop** (Game_Players.cs:53-120; Blm_Player.cs:113-127): the player object goes; teammates become sub-owners of the
 dropped player's things (only if their `Activeplayer > 0`); their `Tds_Clientinfo` (wallet, hero, stats) is destroyed
-unless a mod copied it (RogueWavesMode does, `docs/REJOIN.md`).
+unless a mod copied it (RogueWavesMode does, `docs/mode/REJOIN.md`).
 
 **Identity across a drop: the `Sessionid` survives only while the friend's game stays open.**
 
@@ -139,7 +139,7 @@ RogueWavesMode 0.3.0 (`RWIdentity`, `Code/10_Online.cs`) does this every half se
   to a friend's PC would give two players one GUID, and the host's `Populatesessionid` would `Add` the same
   `Sessionid` twice and throw.
 - It lasts per save slot and per PC. A rejoin while the host still holds the old player object would collide the same
-  way; a restart takes longer than Steam's disconnect, so this is not expected (`docs/REJOIN.md` §4, O3b).
+  way; a restart takes longer than Steam's disconnect, so this is not expected (`docs/mode/REJOIN.md` §4, O3b).
 
 The host can also read a player's kept GUID back from `Blm_Multiplayer.Instance.Sessionids` (GUID → `Sessionid`): a
 key that survives sessions and Steam renames, but not a new PC or another save slot. Read from code; compiled, not
@@ -198,7 +198,7 @@ run.
 ## 8. The online evening (host + one friend; both send `Player.log`)
 
 Before starting, compare the `Loaded Mod: <name>` lines (Bla_Mods.cs:111) in both logs. Every machine logs
-`MY CLIENT IS<clientid> AND MY SESSION IS<session>` per player (Blm_Player.cs:105). These extend `docs/REJOIN.md`
+`MY CLIENT IS<clientid> AND MY SESSION IS<session>` per player (Blm_Player.cs:105). These extend `docs/mode/REJOIN.md`
 §6 (O1-O8) and `RESEARCH_GAPS.md` §E.
 
 | # | Do | Expect (from code) | Log signs |

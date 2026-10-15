@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Sprigg 1.x code from ModProjects (Sprigg itself waits there for its overhaul), kept because the
+// kit docs cite it.
 #if SPRIGG_RESEARCH
 // Research build (-Define SPRIGG_RESEARCH, usually with SPRIGG_SELFTEST so it also runs inside a match): logs the data
 // the next vessel (Mummer) is designed from, one "[SpriggResearch]" line per item:

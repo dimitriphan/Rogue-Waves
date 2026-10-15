@@ -1,5 +1,5 @@
 // The weather icons for the warning popup, 12x12 in the pack's palette (docs/STYLE.md), added to the game's "Icon_Types"
-// table the way Argo adds its own (kit docs/16 §5): early, before the table is first read, since it freezes then. If
+// table the way Argo adds its own (kit docs/09 #20): early, before the table is first read, since it freezes then. If
 // they didn't make it, For() falls back to a stock icon so the popup is never blank.
 public static class RWIcons
 {
@@ -102,6 +102,7 @@ public static class RWIcons
             Add(types, RWChart.RisingWater, Rising, like);
             Add(types, RWChart.QuickeningCurrent, Quickening, like);
             Add(types, RWChart.NestingGround, Nesting, like);
+            RWLog.Info("icons: three weathers");   // Run-SelfTests.ps1 -BootCheck waits for this line
         }
         catch (Exception e) { RWLog.Warn("icons: " + e.Message); }
     }

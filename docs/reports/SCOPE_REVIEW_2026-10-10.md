@@ -2,8 +2,8 @@
 
 Dimitri asked (2026-10-10 22:36Z) for a look through the current text files and scopes, pointing out anything that
 might need improvement or reconsideration. This page reads the 15 files in `docs/scope/` against each other, against
-the settled decisions (`docs/PLAN.md` Part C, `docs/SCOPE_VS_LOOP.md`, `docs/MAIN_MENU_START.md`, `docs/SEA_CHART.md`,
-`docs/MECHANICS_CHECK.md`) and against the engine facts in the kit (`docs/NN` = `TDS_Vessel_Creator/docs/`). **No scope
+the settled decisions (`docs/PLAN.md` Part C, `docs/reports/SCOPE_VS_LOOP.md`, `docs/mode/MAIN_MENU_START.md`, `docs/mode/SEA_CHART.md`,
+`docs/reports/MECHANICS_CHECK.md`) and against the engine facts in the kit (`docs/NN` = `TDS_Vessel_Creator/docs/`). **No scope
 file was changed**: Dimitri decides and sends back the files he edits.
 
 Not reopened: the 10-map campaign saved between maps and keyed by Steam id, 3 retries, the main-menu start, the sea
@@ -65,7 +65,7 @@ file back).
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
 | 5 | Line 9 says mechanics the game must answer "go to a PC test round"; they went: RogueLab rounds 4-6 proved every mechanic and the main-menu button (round 6, 22 of 22) | Update the line | fix |
-| 6 | Missing: the deep code dive and `docs/MECHANIC_IDEAS.md` (waiting on his picks), and this review | One line each (the Sea Weather line of 2026-10-10 is already in) | fix |
+| 6 | Missing: the deep code dive and `docs/mode/MECHANIC_IDEAS.md` (waiting on his picks), and this review | One line each (the Sea Weather line of 2026-10-10 is already in) | fix |
 
 ### 03_Bug_Fix.txt
 
@@ -88,11 +88,11 @@ file back).
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
-| 14 | Between maps the party returns to the boat, which is the game's lobby (`docs/MAIN_MENU_START.md` §1). Its vessel picker and Cardinal slots work there, and lobby Cardinals load at every match start (`docs/15` §7). Without a rule, a player can change vessel every map, and swap stock Cardinals for free instead of buying them | The mod puts each player's saved vessel back, and lobby Cardinals lock after map 1. The alternative: no lobby Cardinals in the mode at all, every Cardinal comes from VENDCINT | **Answered 2026-10-11, see the answers table.** Dimitri |
+| 14 | Between maps the party returns to the boat, which is the game's lobby (`docs/mode/MAIN_MENU_START.md` §1). Its vessel picker and Cardinal slots work there, and lobby Cardinals load at every match start (`docs/15` §7). Without a rule, a player can change vessel every map, and swap stock Cardinals for free instead of buying them | The mod puts each player's saved vessel back, and lobby Cardinals lock after map 1. The alternative: no lobby Cardinals in the mode at all, every Cardinal comes from VENDCINT | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 15 | "The 5th and 10th rows close a stretch": the scope (with PR #21's line) says the hardest map closes each stretch, but not what else a closing map does. The base game has no boss (`docs/15` §18.3), so a boss is new enemy work | `SCOPE_VS_LOOP.md` #20's default: a Breaker Tide closes the map and VENDCINT carries more stock | Dimitri |
 | 16 | A stock break is 30 s (the opening break 45 s). In it each player builds, clicks VENDCINT, shops, sends aura and takes an objective. The scope sets no break length; `SCOPE_VS_LOOP.md` #8 (hold the clock at shop breaks) never landed | Mode breaks of 45 s, or the clock waits until every player presses Ready (with a cap) | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 17 | Three wordings for the same moment: "reaching Tide 15" (line 2), "clear Tide 15" (line 2, end), "after Tide 15" (line 10). Also "ascension level" for Depth level, "waves" for tides | "after clearing Tide 15" everywhere; "Depth level"; "tides" | fix |
-| 18 | `! NEEDS LIST OF OPTIONAL OBJECTIVES !` | `docs/MECHANIC_IDEAS.md` §3 has six that fit the template (Raze the Nest, Bag the Beast, Clean Hull, Beat the Clock, Light Purse, Steady Hands) | Dimitri (pick) |
+| 18 | `! NEEDS LIST OF OPTIONAL OBJECTIVES !` | `docs/mode/MECHANIC_IDEAS.md` §3 has six that fit the template (Raze the Nest, Bag the Beast, Clean Hull, Beat the Clock, Light Purse, Steady Hands) | Dimitri (pick) |
 
 ### 06_New_Mechanics.txt
 
@@ -101,7 +101,7 @@ file back).
 | 19 | What fills the three offered Directions isn't said: which pools, and whether rank-ups can fill all three | Three different Directions from Any plus the vessel's own list; a held one shows only as its next rank; a rank III never comes back | default |
 | 20 | `! NEEDS PRICES FOR DIRECTION RANKS !` needs an anchor. A player earns about 45 Pure Aura a map (15 tides × 3), plus 1 a tide on a weather map, 2 per bonus tide and objectives, so roughly 450-600 a campaign; Vampire Dentures costs 15 | One rule for every Direction: rank II 15, rank III 25 | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 21 | VENDCINT comes "at the start of every break between tides", but Fund Transfer allows 50 "before Tide 1", so it must also come in the opening break | "every break, the opening one included" | fix |
-| 22 | Must a vessel walk to VENDCINT? The game doesn't check distance (`docs/MECHANICS_CHECK.md` §2): a player clicks it and shops from anywhere on the map | Within a few tiles, since its drop-in is the point; or anywhere, if the walk only costs break time | Dimitri |
+| 22 | Must a vessel walk to VENDCINT? The game doesn't check distance (`docs/reports/MECHANICS_CHECK.md` §2): a player clicks it and shops from anywhere on the map | Within a few tiles, since its drop-in is the point; or anywhere, if the walk only costs break time | Dimitri |
 
 ### 07_Vessel_Yossele.txt
 
@@ -139,11 +139,11 @@ file back).
 
 | # | Finding | Recommend | Call |
 | --- | --- | --- | --- |
-| 35 | Count against the target (about 7 Any, 4 per new vessel): Any 1, Argo 0, Yossele 3 (plus the Deep Roots example), Spool 2, Uloe 0, base vessels none. The one Any needs minions, so a vessel without minions has no Any Direction yet | `docs/MECHANIC_IDEAS.md` §4 has six Any and five base-vessel Directions to pick from | Dimitri (pick) |
+| 35 | Count against the target (about 7 Any, 4 per new vessel): Any 1, Argo 0, Yossele 3 (plus the Deep Roots example), Spool 2, Uloe 0, base vessels none. The one Any needs minions, so a vessel without minions has no Any Direction yet | `docs/mode/MECHANIC_IDEAS.md` §4 has six Any and five base-vessel Directions to pick from | Dimitri (pick) |
 | 36 | "Vessel: Any Vessel with (Minions)" isn't a template value, and Clashes is used to say who can't take it. "Minions" isn't defined: Crafted, Thread Head, Photons, Nauts, Boutman's fish, Fie's regulars? | Add a `- Needs:` line to the template (e.g. "a vessel with minions"), and list which units count | Dimitri |
 | 37 | `docs/STYLE.md` says a Direction is "named like a heading or a course". Only Deep Roots fits; Compost Bin, Sewing Machine, Mother of Mushrooms, Efficient Recycler, Dandelion Season, Made of Tougher Stuff don't, and they read well | Relax the style rule to his naming (plain names that match the Look line) | Dimitri |
 | 38 | Three Directions replace a building (Dandelion Season, Mother of Mushrooms, Sewing Machine), and each lists the others by hand in Clashes | A `- Replaces:` line in the template; two Directions that replace the same building never go together | default |
-| 39 | Base vessels "get their own Directions", with no count. A Shift on a stock vessel is new code per vessel; a Boost is cheap (`docs/MECHANICS_CHECK.md` §2) | Two Boosts per base vessel to start | Dimitri |
+| 39 | Base vessels "get their own Directions", with no count. A Shift on a stock vessel is new code per vessel; a Boost is cheap (`docs/reports/MECHANICS_CHECK.md` §2) | Two Boosts per base vessel to start | Dimitri |
 
 ### 12_Cardinals.txt
 
@@ -151,7 +151,7 @@ file back).
 | --- | --- | --- | --- |
 | 40 | A Team Cardinal helps everyone but is paid from one player's Pure Aura, which can't be sent | Any one player pays, or the price is split among those who chip in | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 41 | Vampire Dentures stacks without limit at 15; with about 500 Pure Aura a campaign, a player could hold 20 or more | Cap at 3 stacks, or the price rises per copy | **Answered 2026-10-11, see the answers table.** Dimitri |
-| 42 | `! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !` | `SCOPE_VS_LOOP.md` #7: all but Moon Core, Looped Mirror, Vintage Watch, Same Day Shipping, Money Bag (it duplicates Fund Transfer), Sand Filled Box, Blurry Photo, Checklist, Computer. Bottom Rock only with the transfer guard (it zeroes the spend multiplier, `docs/MECHANIC_IDEAS.md` §7) | default |
+| 42 | `! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !` | `SCOPE_VS_LOOP.md` #7: all but Moon Core, Looped Mirror, Vintage Watch, Same Day Shipping, Money Bag (it duplicates Fund Transfer), Sand Filled Box, Blurry Photo, Checklist, Computer. Bottom Rock only with the transfer guard (it zeroes the spend multiplier, `docs/mode/MECHANIC_IDEAS.md` §7) | default |
 | 43 | Every Basin already survives its first killing blow each map (`docs/15` §18.3) | A "survive a killing blow" Cardinal adds one more save, it doesn't create the first | default |
 | 44 | Line 6 counts "lobby picks" in the 8 Team slots; whether lobby Cardinals exist in the mode at all is #14 | Follows #14 | - |
 | 45 | Wording: "Your vessel attacks heal themselves"; Cracked Buoy's "towers start every map with more health" (towers are built during the map) | "Your vessel heals for part of the damage it deals"; "Your towers have more health" | fix |
@@ -171,14 +171,14 @@ file back).
 | 49 | Mind the Meteor is "Taken by: All players" for 3 Pure Aura, but the template says a team splits the pay: 3 split four ways is under 1 each | Each player on the team gets the full pay; or price team objectives per player | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 50 | Every objective is "Offered: every break", with no limit on how many run at once. A meteor every break could add up to 45 a map, as much as the tides | VENDCINT offers 2 per break; one active objective per player (and one team one) at a time | **Answered 2026-10-11, see the answers table.** Dimitri |
 | 51 | Who accepts a team objective? | Any player takes it for the team | default |
-| 52 | "Kind: Mining" is not in the template's kinds. And a stock mine never runs out, so "fully mine" needs the one-shot node that dies when emptied (`docs/MECHANIC_IDEAS.md` §3) | Add Mining to the kinds; the one-shot node is for its design gate | fix |
+| 52 | "Kind: Mining" is not in the template's kinds. And a stock mine never runs out, so "fully mine" needs the one-shot node that dies when emptied (`docs/mode/MECHANIC_IDEAS.md` §3) | Add Mining to the kinds; the one-shot node is for its design gate | fix |
 
 ## Other text files that are now stale
 
 | # | File | Stale text | Recommend | Call |
 | --- | --- | --- | --- | --- |
-| 53 | `docs/SCOPE_GAPS.md` (2026-10-08) | still lists the mode's start Cardinal, a vote of 3 random maps, the shopkeeper's "who and where", the Fund cap, Thread Head "building or minion", "no upgrade ideas" for Mushroom Cannon and Mirror; `CLAUDE.md` sends readers to it "before picking the next piece of work" | Refresh it, or a banner pointing to the scope and this page | fix |
-| 54 | `docs/SCOPE_VS_LOOP.md` | #3 makes Tide 30 of map 10 the campaign's last (the scope: bonus tides never end); #6 pools Pure Aura through Fund Transfer (decided: base aura only); #9, #17 and §B6 use a start Cardinal (replaced by the main-menu button); #17 resumes by chaining maps with no staging map (the sea chart returns to the boat) | A dated note at the top naming the superseded findings | fix |
+| 53 | `docs/reports/SCOPE_GAPS.md` (2026-10-08) | still lists the mode's start Cardinal, a vote of 3 random maps, the shopkeeper's "who and where", the Fund cap, Thread Head "building or minion", "no upgrade ideas" for Mushroom Cannon and Mirror; `CLAUDE.md` sends readers to it "before picking the next piece of work" | Refresh it, or a banner pointing to the scope and this page | fix |
+| 54 | `docs/reports/SCOPE_VS_LOOP.md` | #3 makes Tide 30 of map 10 the campaign's last (the scope: bonus tides never end); #6 pools Pure Aura through Fund Transfer (decided: base aura only); #9, #17 and §B6 use a start Cardinal (replaced by the main-menu button); #17 resumes by chaining maps with no staging map (the sea chart returns to the boat) | A dated note at the top naming the superseded findings | fix |
 | 55 | `docs/STYLE.md` | lines 34 and 45 say no Cardinal is named yet (Vampire Dentures is); the Direction naming rule (#37) | Update with #37's answer | fix |
 | 56 | The project's instructions (Project settings) | "the user's scope is `docs/SCOPE_v0.txt`", which is now a pointer to `docs/scope/` | Point them at `docs/scope/00_Read_Me.txt` | Dimitri |
 | 57 | `docs/EXPANSION_SCOPE.md` row 3, `docs/PLAN.md` Decisions (the 2026-10-09 "15 maps, 10 Any and 6" line), kit `docs/15` §1 and §3 ("three maps") | answered or superseded: the menu button exists; 10 maps, 7 and 4; the three-map chain was a test | Mark superseded where a reader could take it as current | fix |

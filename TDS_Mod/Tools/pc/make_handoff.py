@@ -9,7 +9,8 @@ README.md and the PC scripts), for a PC without the token: Dimitri saves it into
 unpacks it.
 
 What goes in: every file under TDS_Mod/ModSource and TDS_Mod/Assets/*/Editor at --ref (or only the vessels and
-folders --only names) whose hash differs from what the PC has.
+folders --only names) whose hash differs from what the PC has. Retired parts (RETIRED, below: Riptide, which sits
+outside the PC's project) go in only when --only names them.
   --manifest: the PC's own pc_manifest.txt (Get-PcManifest.ps1, written again by every Apply-Handoff -Apply). Exact:
               each file's base is the hash the PC has, "new" where it has none.
   --since:    a git ref the PC is known to match (the last handoff's commit). Bases are that ref's hashes.
@@ -22,6 +23,7 @@ import argparse, hashlib, os, subprocess, sys, zipfile, datetime
 TEXT = {'.cs', '.ps1', '.md', '.txt', '.json', '.lua', '.py', '.sh', '.html', '.csv', '.xml', '.asmdef'}
 HERE = os.path.dirname(os.path.abspath(__file__))
 SKIP = ('/Build/', '/Research/', '/Previews/', '/bin/', '/obj/', '/Aseprite/generated/')
+RETIRED = {'Riptide'}   # parts moved out of the PC's Unity project; packed only when --only names them
 
 def h16(path, data):
     if os.path.splitext(path)[1].lower() in TEXT:
@@ -43,10 +45,11 @@ def tree(ref, only):
         parts = rel.split('/')
         if parts[0] == 'Assets' and (len(parts) < 4 or parts[2] != 'Editor'):
             continue
-        if only:
-            vessel = parts[1][:-3] if parts[0] == 'Assets' and parts[1].endswith('Mod') else parts[1]
-            if vessel not in only:
-                continue
+        vessel = parts[1][:-3] if parts[0] == 'Assets' and parts[1].endswith('Mod') else parts[1]
+        if only and vessel not in only:
+            continue
+        if not only and vessel in RETIRED:   # moved out of the PC's project (TDS_Mod/README.md): never sent back unasked
+            continue
         out.append(rel)
     return out
 
@@ -111,7 +114,8 @@ def main():
             continue
         rows.append((base, new, rel))
         files[rel] = data
-    pc_only = sorted(r for r in pc if r not in set(tree(a.ref, only)) and (not only or any(
+    in_tree = set(tree(a.ref, only))
+    pc_only = sorted(r for r in pc if r not in in_tree and (not only or any(
         ('/' + v + '/') in ('/' + r) or ('/' + v + 'Mod/') in ('/' + r) for v in only))) if a.manifest else []
     out = os.path.join('TDS_Mod', 'Handoff', a.name)
     os.makedirs(out, exist_ok=True)
@@ -134,7 +138,7 @@ def main():
                   + (' and %d more' % (len(pc_only) - 30) if len(pc_only) > 30 else '')]
     lines += ['', '## Steps', '',
               '1. Only one session works in TDS_Mod at a time (`pc/QUEUE.md` in the Claude Project\'s files).',
-              '2. `Apply-Handoff.ps1` (check only). Anything "DIFFERS" means the PC has edits that aren\'t on GitHub: stop and report them.',
+              '2. `Apply-Handoff.ps1` (check only). Stop and report on DIFFERS (the PC has edits that aren\'t on GitHub), MISSING, a damaged copy, a patch that doesn\'t fit, or a non-zero exit.',
               '3. `Apply-Handoff.ps1 -Apply`, once Dimitri has OK\'d it in the thread in his own words. It backs up what it replaces',
               '   and writes a fresh `handoff\\pc_manifest.txt`.',
               '4. Build, test and release as the thread\'s brief says (`TDS_Mod/Tools/pc/README.md`).', '']

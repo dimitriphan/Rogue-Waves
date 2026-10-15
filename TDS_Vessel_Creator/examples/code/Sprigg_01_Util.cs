@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Sprigg 1.x code from ModProjects (Sprigg itself waits there for its overhaul), kept because the
+// kit docs cite it.
 public static class SpriggLog
 {
     const string Tag = "[Sprigg] ";

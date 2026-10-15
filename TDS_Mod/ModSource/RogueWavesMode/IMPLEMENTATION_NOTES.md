@@ -10,7 +10,7 @@ clean). **Not run in game, not tried online.**
   kept in `RogueWaves/Player_Guid` (with `Player_Device`, a hash of this PC's id) and written back into
   `Metadata/Player_Guid`, which the game wipes on launch and reads on joining. The host then gives the same
   `Sessionid`, so `RWRejoin` and the game's own hand-back work as for a pulled cable. While connected, the GUID in use
-  is the one kept. Online check: `docs/REJOIN.md` O3b.
+  is the one kept. Online check: `docs/mode/REJOIN.md` O3b.
 - **One failed load** (`RWLoad`, host, once a second while a `Game_Load` exists): 75 s into the loading screen, once
   the host has loaded, every player whose `Loaded` is still false is kicked with a chat line. Online check: O3c.
 - **Hidden effects:** the mode sends none; Argo's slow look and refused-flood mark go past the throttle (Argo 2.0.1,
@@ -28,7 +28,10 @@ leaves it behind while its slot still holds it).
 
 **PC round 6** (0.2.1 self-test, 2026-10-11): **47 pass, 0 fail, 0 setup.** R2 "Server_Serveropen False -> True";
 R2b open again two frames after the game's close; R1, R3-R6 and every round-4 check pass. The same six game-only
-exception lines as round 5. Still only online: O1-O8 (`docs/REJOIN.md` §6).
+exception lines as round 5. Still only online: O1-O8 (`docs/mode/REJOIN.md` §6).
+
+Since (2026-10-15, compiled here, not run): `08_Icons.cs` logs `icons: three weathers` on success, so
+`Run-SelfTests.ps1 -BootCheck` sees the mode part ready (it only logged `icons:` on a failure before).
 
 **PC round 5** (0.2.0 self-test, 2026-10-11): **45 pass, 1 fail, 0 setup.** Every round-4 check passed again, and R1,
 R3, R4, R5, R6 and the second half of R2 passed. R2 failed: the mod opened the lobby ("rejoin: lobby opened"), then
@@ -43,10 +46,10 @@ picked) and 3 `Blu2_Menu_Handler.Animin` `NullReferenceException` (just after a 
 ## 0.2.0 (2026-10-11): rejoining a running map
 
 Dimitri asked for a way back into a running map for a player whose connection drops. Design, what comes back and the
-online checks: `docs/REJOIN.md`. Engine facts: kit `docs/15` §14.5. **State:** compiled here (release and
-`ROGUEWAVESMODE_SELFTEST`: 0 errors; editor builder unchanged and clean). **Not run in game.** Solo PC round
-`RogueWavesMode_round5` (the round-4 run plus R1-R6 in the first map); the drop and rejoin themselves need a friend
-online (`REJOIN.md` §6, O1-O8).
+online checks: `docs/mode/REJOIN.md`. Engine facts: kit `docs/15` §14.5. **State:** compiled here (release and
+`ROGUEWAVESMODE_SELFTEST`: 0 errors; editor builder unchanged and clean). Then run in game: solo PC round
+`RogueWavesMode_round5` (the round-4 run plus R1-R6 in the first map) gave 45/1, round 6 47/0 on 0.2.1 (above); the
+drop and rejoin themselves need a friend online (`docs/mode/REJOIN.md` §6, O1-O8).
 
 `Code/09_Rejoin.cs` (`RWRejoin`), every frame:
 
@@ -136,7 +139,7 @@ to the boat after a won map.
 
 **State:** compiled here (release and `ROGUEWAVESMODE_SELFTEST`: 0 errors; editor builder: clean). The chart generator
 matches `concept-tools/sea_chart.py` on 400 seeds. PC round 1 (above) ran it in game. The PC round is
-`docs/SEA_CHART.md` §9.
+`docs/mode/SEA_CHART.md` §9.
 
 What only the game can tell, and what the self-test logs for it:
 

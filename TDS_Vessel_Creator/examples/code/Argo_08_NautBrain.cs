@@ -1,3 +1,5 @@
+// EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
+// TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
 // Server-side brain for a Naut (Port, Starboard, Bosun). It walks with the stock Entity_Ai_Mob_Movement, given a goal
 // entity the way the Mining Hut's miners are sent to ore (Move command, Goalobject = the tower), and tunes the tower it
 // was sent to: faster attacks and a slow repair, plus the Diving Bell's upgrades (range, armour, double tuning).

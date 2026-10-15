@@ -646,7 +646,7 @@ public static class ArgoContent
         ent.Display_Name = ArgoData.Displayname;
         ent.Display_Desc = ArgoData.HeroDesc;
         // A melee vessel like Smacky and Fie: the stock Entity_Ai_Mob_Combat swings, ArgoHeroBrain adds the second hit
-        // and SONAR. Entity_Vis_Mob_Attack turns each swing's "Attack" into the wrench animation.
+        // (and SONAR when it is switched on). Entity_Vis_Mob_Attack turns each swing's "Attack" into the wrench animation.
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Combat" || s.name == "Entity_Ai_Mob_Melee"))
             ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), ArgoUtil.Script("Entity_Ai_Mob_Combat"));

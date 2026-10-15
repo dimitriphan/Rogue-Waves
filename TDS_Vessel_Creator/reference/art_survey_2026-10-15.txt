@@ -309,7 +309,7 @@
    Wakeup         var=4 frames=[15, 15, 15, 15] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'EnemyboutmanawakenR-Sheet': 60} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
 
 # PART 2. Measurements on rows 0-1 (Idle, front facings) of each sheet: opaque bounding box per frame, the gap under
-#   the feet, the box centre, distinct opaque colours, share of half-transparent pixels and their alpha values, share
+#   the feet, the box centre, distinct colours (alpha > 0), share of half-transparent pixels and their alpha values, share
 #   of silhouette-edge pixels darker than the pixel inside them ("edge darker", 100% would be a dark outline), mean
 #   luminance of the left half minus the right half, the darkest colour, the ten most used colours.
 Smacky4-Sheet: cell 32 rows [0, 1] | bbox w 15-18 h 23-26 | feet gap 0-0 | centre x 15.0-16.0 | colours 17 | semi-alpha 33.2% [63, 127] | edge darker 18% | L-R lum -8.2 | darkest 2B2922 | top [('FDE791', 2208), ('F2D76B', 156), ('4764A4', 114), ('364E82', 78), ('65AD69', 70), ('7BCF80', 56), ('97AFE5', 54), ('F6E43B', 36), ('939292', 28), ('BBDA88', 24)]

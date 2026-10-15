@@ -6,7 +6,7 @@ vessels, and a new vessel may borrow their assets. Read on 2026-10-12 (Dimitri: 
 character's mechanics so modded assets and characters integrate smoothly"). Everything is **read from the game's code**
 (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11; `File.cs:line` points into that folder, never
 committed) or **data** (`reference/vessel_data_survey.txt`), unless it says **guess**. RogueLab round 7 (2026-10-12)
-tried §12's list in game; lines marked **verified** were seen there (`docs/BASE_VESSEL_CHECKS_2026-10-12.md` in the
+tried §12's list in game; lines marked **verified** were seen there (`docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md` in the
 Rogue Waves repository, every line in `reference/roguelab_round7.txt`).
 
 Read `01` §4-9, `reference/VESSEL_SURVEY.md` (each vessel's data and the conventions they share) and `12` §1-2 first.
@@ -22,7 +22,7 @@ This chapter adds behaviour, not data: the survey keeps the stats, costs and upg
 | Buildables | Archer, Bomber, Mining Hut, Wall | Sno Cannon, Sno Box, Heater, Ice Brick | Bouthouse (him); Fish, Barrel, Boutboat (Boutbro) | Knight's Keep, Rest Stop, Wall, Silo Pipes | Pedestal, Garage, Speed Pad (trap), Checkpoint (trap) |
 | Units | miners → engineers (Hut) | Snobles (decay), Snoble Mother | Boutbro, fish, Buppy, Boutdad, Boutmom, ghosts | knights (+ drones) | dogs (one lap each) |
 | His own upgrade tree | none | none | on the Bouthouse, forwarded to him | none | none |
-| Income that pays **only his player** | Ore Scraps, Convert | Rich Sno | Farmingbed, Caviar | Circular Routing, Hyper Pipes | Checkpoint attack aura |
+| Income that pays **only his player** | Ore Scraps, Convert | Rich Sno | Farmingbed, Baviar (effect `Caviarbuff`) | Circular Routing, Hyper Pipes | Checkpoint attack aura |
 | Death | normal respawn | normal | normal; after Enter the Boutman: KO, never dies | normal | normal |
 
 Build-button order in code differs from the data's tower list for Smacky (wall 3, hut 4) and Sno Sno (Heater 3, Ice

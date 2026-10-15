@@ -2,9 +2,9 @@
 
 The Rogue Waves mode as a part of the pack (`docs/PACK.md`): prefab `RogueWaves_Mode_Default`, built and self-tested as
 the dev mod `RogueWavesModeMod`. It grows piece by piece (`docs/PLAN.md` Part C, Phase 5 pieces). **0.1.0
-(2026-10-10): the sea chart and sea weather** (`docs/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.3
+(2026-10-10): the sea chart and sea weather** (`docs/mode/SEA_CHART.md` §7-9); PC round 1 passed 34/0 (2026-10-11). 0.1.1-0.1.3
 fix Rising Water's flooded tiles, which round 1 found missing; **round 4 passed 38/0** (2026-10-11). **0.2.0
-(2026-10-11): rejoining a running map** (`docs/REJOIN.md`), in every map while the pack is on; **0.2.1 PC round 6 passed 47/0** (2026-10-11; round 5's one
+(2026-10-11): rejoining a running map** (`docs/mode/REJOIN.md`), in every map while the pack is on; **0.2.1 PC round 6 passed 47/0** (2026-10-11; round 5's one
 failure fixed: the lobby is reopened every frame); the drop and rejoin themselves wait for an online test. **0.3.0
 (2026-10-15, compiled, not run): fixes from the decompile** (kit `docs/19`, `23` §6): a friend who restarts the game
 keeps their `Sessionid` and gets their seat back, one player who can't load a map is sent back instead of everyone
@@ -27,7 +27,7 @@ going to the main menu at 120 s, and a save-slot switch leaves the campaign in i
 | `Build-RogueWavesModeMod.ps1` | joins the code with the kit (`RogueWavesModeKit`), compile-checks it on the PC |
 | `../../Assets/RogueWavesModeMod/Editor/RogueWavesModeModPrefab.cs` | Tools > RogueWavesMode: Build Mod Prefab, Export Mod |
 
-Nothing starts a campaign on its own yet: the main menu's Rogue Waves button (`docs/MAIN_MENU_START.md`) will call
+Nothing starts a campaign on its own yet: the main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) will call
 `RWCampaign.New(0)` or `RWCampaign.Continue()`. Until then a release build only registers the mode and its twins.
 
 Check here (`TDS_Mod/Tools/cloud-check/README.md`):

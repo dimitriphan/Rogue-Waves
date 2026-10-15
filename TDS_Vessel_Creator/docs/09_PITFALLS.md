@@ -1,7 +1,7 @@
 # 09 · Pitfalls: every error met so far, and its fix
 
-Each entry: **symptom** → cause → fix (where the fix lives in the template). All of these happened while building Smocky
-(the first test clone), Sprigg 1.0-1.4.1, Argo 1.0, Mummer 1.0, the kit 1.4 boat work, Argo 2.0 and RogueLab. Add new
+Each entry: **symptom** → cause → fix (where the fix lives in the template). Most of these happened while building Smocky
+(the first test clone), Sprigg 1.0-1.4.1, Argo 1.0, Mummer 1.0, the kit 1.4 boat work, Argo 2.0 and RogueLab; the later ones ending "Read from code" or "Read from the game's assets" were read, not hit. Add new
 ones as the next number in §J (older entries kept suffixes such as 18a and 40a).
 
 ## A. Compiling
@@ -278,7 +278,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     misses → keep the GUID in the pack's own save folder and put it back into `Metadata` before the game reads it on
     joining; the host maps a GUID it has seen to the same `Sessionid` (`Blm_Multiplayer.Getsessionid`) and the stock
     reconnect does the rest (RogueWavesMode 0.3.0 `RWIdentity`, tied to the computer so a copied save can't give two
-    players one id). Test a pulled cable and a restart apart (`docs/REJOIN.md` O1-O3b). Read from code; compiled, not
+    players one id). Test a pulled cable and a restart apart (`docs/mode/REJOIN.md` O1-O3b). Read from code; compiled, not
     run.
 95. **Effects show solo but not in a busy online fight** (decompile, `19` §4) → `Projectilecheck`, `Vfxoneshotcheck`,
     `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step

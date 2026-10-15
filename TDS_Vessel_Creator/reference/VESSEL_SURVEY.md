@@ -20,8 +20,9 @@ This is the reference for making a vessel that feels like the developers made it
 
 **Hero (vessel) entity**
 - AIs:
-  - Always `Entity_Ai_Mob_Movement` and `Entity_Ai_Hero_Buildsell`, and `Entity_Ai_Mob_General` (Buster has
-    `Entity_Ai_Mob_Movementlinear` instead).
+  - Always `Entity_Ai_Hero_Buildsell` and `Entity_Ai_Mob_Movement`; `Entity_Ai_Mob_General` on every vessel but Buster,
+    who has `Entity_Ai_Mob_Dog` in its place and adds `Entity_Ai_Mob_Movementlinear` (`vessel_data_survey.txt`, Buster
+    block; `docs/17` §7).
   - Plus one generic attack AI.
   - Plus a `Entity_Ai_Hero_<Name>` AI, which creates `Buildoption1..4` (Goalstring = buildable, Goalvalue 1) in Spawn (Boutman's creates only
     `Buildoption1`, the Bouthouse; Boutbro's AI creates 1-3) and owns the vessel's special behaviour.

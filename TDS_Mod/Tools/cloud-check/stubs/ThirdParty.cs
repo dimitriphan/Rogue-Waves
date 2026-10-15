@@ -64,7 +64,7 @@ namespace Unity.Netcode
         public virtual void OnNetworkSpawn() { }
         public virtual void OnNetworkDespawn() { }
     }
-    public class NetworkManager : UnityEngine.MonoBehaviour
+    public partial class NetworkManager : UnityEngine.MonoBehaviour
     {
         public static NetworkManager Singleton { get { throw null; } }
         public bool IsServer { get { throw null; } }
@@ -147,24 +147,35 @@ namespace UnityEngine.UI
     public class RawImage : MaskableGraphic { public UnityEngine.Texture texture { get { throw null; } set { } } }
     public class Text : MaskableGraphic { public string text { get { throw null; } set { } } }
     public class Selectable : UnityEngine.EventSystems.UIBehaviour { public bool interactable { get { throw null; } set { } } }
-    public class Button : Selectable { }
+    public class Button : Selectable
+    {
+        public class ButtonClickedEvent : UnityEngine.Events.UnityEvent { }
+        public ButtonClickedEvent onClick { get { throw null; } set { } }
+    }
     public class Toggle : Selectable { public bool isOn { get { throw null; } set { } } }
     public class Slider : Selectable { public float value { get { throw null; } set { } } }
     public class Scrollbar : Selectable { }
     public class ScrollRect : UnityEngine.EventSystems.UIBehaviour { public float verticalNormalizedPosition { get { throw null; } set { } } public float horizontalNormalizedPosition { get { throw null; } set { } } }
     public class LayoutElement : UnityEngine.EventSystems.UIBehaviour { }
-    public class HorizontalLayoutGroup : UnityEngine.EventSystems.UIBehaviour { }
-    public class VerticalLayoutGroup : UnityEngine.EventSystems.UIBehaviour { }
-    public class GridLayoutGroup : UnityEngine.EventSystems.UIBehaviour
+    public abstract class LayoutGroup : UnityEngine.EventSystems.UIBehaviour { public UnityEngine.RectOffset padding { get { throw null; } set { } } }
+    public abstract class HorizontalOrVerticalLayoutGroup : LayoutGroup { public float spacing { get { throw null; } set { } } }
+    public class HorizontalLayoutGroup : HorizontalOrVerticalLayoutGroup { }
+    public class VerticalLayoutGroup : HorizontalOrVerticalLayoutGroup { }
+    public class GridLayoutGroup : LayoutGroup
     {
         public enum Constraint { Flexible, FixedColumnCount, FixedRowCount }
         public Constraint constraint { get { throw null; } set { } }
         public int constraintCount { get { throw null; } set { } }
         public UnityEngine.Vector2 cellSize { get { throw null; } set { } }
         public UnityEngine.Vector2 spacing { get { throw null; } set { } }
-        public UnityEngine.RectOffset padding { get { throw null; } set { } }
     }
-    public class ContentSizeFitter : UnityEngine.EventSystems.UIBehaviour { }
+    public class ContentSizeFitter : UnityEngine.EventSystems.UIBehaviour
+    {
+        public enum FitMode { Unconstrained, MinSize, PreferredSize }
+        public FitMode horizontalFit { get { throw null; } set { } }
+        public FitMode verticalFit { get { throw null; } set { } }
+    }
+    public class LayoutRebuilder { public static void ForceRebuildLayoutImmediate(UnityEngine.RectTransform layoutRoot) { } }
     public class Mask : UnityEngine.EventSystems.UIBehaviour { }
     public class RectMask2D : UnityEngine.EventSystems.UIBehaviour { }
     public class Outline : UnityEngine.EventSystems.UIBehaviour { }
@@ -177,7 +188,7 @@ namespace UnityEngine.UI
 
 namespace TMPro
 {
-    public class TMP_Text : UnityEngine.UI.MaskableGraphic { public string text { get { throw null; } set { } } public float fontSize { get { throw null; } set { } } }
+    public abstract class TMP_Text : UnityEngine.UI.MaskableGraphic { public string text { get { throw null; } set { } } public float fontSize { get { throw null; } set { } } public UnityEngine.Bounds textBounds { get { throw null; } } }
     public class TextMeshProUGUI : TMP_Text { }
     public class TextMeshPro : TMP_Text { }
     public class TMP_InputField : UnityEngine.UI.Selectable { }
@@ -203,4 +214,34 @@ namespace Cysharp.Threading.Tasks
         }
     }
     public struct UniTaskVoid { }
+}
+
+// Added 2026-10-15 for Riptide's sandbox probe (98_Sandbox.cs): named messages. Kept in their own block so the Netcode
+// block above stays as other branches edit it.
+namespace Unity.Netcode
+{
+    public partial class NetworkManager
+    {
+        public CustomMessagingManager CustomMessagingManager { get { throw null; } }
+        public event Action<ulong> OnClientConnectedCallback;
+    }
+    public enum NetworkDelivery { Unreliable, UnreliableSequenced, Reliable, ReliableSequenced, ReliableFragmentedSequenced }
+    public class CustomMessagingManager
+    {
+        public delegate void HandleNamedMessageDelegate(ulong senderClientId, FastBufferReader messagePayload);
+        public void RegisterNamedMessageHandler(string name, HandleNamedMessageDelegate callback) { }
+        public void UnregisterNamedMessageHandler(string name) { }
+        public void SendNamedMessageToAll(string messageName, FastBufferWriter messageStream, NetworkDelivery networkDelivery = NetworkDelivery.ReliableSequenced) { }
+    }
+    public struct FastBufferWriter : IDisposable
+    {
+        public FastBufferWriter(int size, Unity.Collections.Allocator allocator, int maxSize = -1) { }
+        public void WriteValueSafe(string s, bool oneByteChars = false) { }
+        public void Dispose() { }
+    }
+    public struct FastBufferReader : IDisposable
+    {
+        public void ReadValueSafe(out string s, bool oneByteChars = false) { throw null; }
+        public void Dispose() { }
+    }
 }

@@ -54,7 +54,7 @@
 		- Vote: the vote offers the maps linked to the one just played (the first row for map 1). It is held in the map, after the vote to leave; map 1's vote is held in the opening break of a staging map
 		- Sailing: the party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps
 		- On the boat: between maps, players can't swap their Cardinals
-		- Status: built, and passed its PC round. Until the in-map vote is built, the leader steers to one of the linked maps with the boat's own arrows. How the chart looks is yours to check by eye /~ docs/SEA_CHART.md sections 7-9 \
+		- Status: built, and passed its PC round. Until the in-map vote is built, the leader steers to one of the linked maps with the boat's own arrows. How the chart looks is yours to check by eye /~ docs/mode/SEA_CHART.md sections 7-9 \
 
 	[Sea Weather]
 		- Which maps: some maps on the chart carry a weather, rolled with the chart
