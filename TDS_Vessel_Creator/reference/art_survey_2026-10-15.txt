@@ -1,0 +1,351 @@
+# Art survey of TDS's own sprites, 2026-10-15 (kit docs/18). Read from the game's Addressables bundle
+# (StreamingAssets/aa/StandaloneWindows64/defaultlocalgroup_assets_all_*.bundle) with UnityPy; no game art is in this
+# file. The extracted sheets live outside the repository: /mnt/project-files/research/art_dump_2026-10-15/.
+#
+# PART 1. Animation tables: every <Being>_Visualproperties of a Hero_, Mob_ or Enemy_ with a sprite object.
+#   style 0 Model, 1 Sprite, 2 Both, 3 Overlay. color = Displaycolor (UI tint). skins = Skinoverride names.
+#   speedmulti = Spriteobject.Defaultspeedmulti; a folder plays at Speed x speedmulti frames per second.
+#   var = variants (facings), frames = frames per variant, prio = priority, to = Spriteto after a non-looping folder.
+#   size = (cell w, cell h, pixels per unit, pivot x, pivot y). snd = sounds keyed on frames.
+## Mob_Boutmandad style=1 color=9F9F9F skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmandad_Sprite speedmulti=5.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutdad-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=1 speed=1.5 to='Idle' tex={'Boutdadattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Fly            var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dadair-Sheet': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Maul style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Deathlarge
+   spriteobj Enemy_Maul_Sprite speedmulti=4.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'MaulSheet': 24} size={(48.0, 48.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'MaulSheet': 24} size={(48.0, 48.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[6, 6, 6, 6] loop=0 reset=1 prio=1 speed=1.0 to='Idle' tex={'MaulSheet': 24} size={(48.0, 48.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog_Support4 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Support4_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog8-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknight_Lone2 style=3 color=9C9C9C skins=[] vfxend=None sfxend=
+   (no sprite object)
+## Mob_Smackyengineer style=1 color=DA867A skins=['Firm'] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Smackyengineer_Sprite speedmulti=4.0 default=Idle
+   Idle           var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SmackyConstruction-Sheet': 4} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SmackyConstruction-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Barp2 style=1 color=C5B4A8 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Barp_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Barpw-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Barpw-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Kippy style=1 color=DEDEDE skins=[] vfxend=None sfxend=
+   spriteobj Mob_Kippy_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Kippy-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Kippy-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog_Damage4 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Damage4_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog7-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Aurabeast style=1 color=FFFFFF skins=[] vfxend=None sfxend=Enemy_Death
+   spriteobj Mob_Aurabeast_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Aurabeast-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Aurabeast-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Pubberfish4 style=1 color=E9C555 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Bufferfish_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bufferfishz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bufferfishz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Localbuddy style=0 color=FFFFFF skins=[] vfxend=None sfxend=
+   (no sprite object)
+## Mob_Boutmanbro style=1 color=9F9F9F skins=[] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Boutmanbro_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutbro-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutbro-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknight_Commander4 style=3 color=9C9C9C skins=[] vfxend=None sfxend=
+   (no sprite object)
+## Mob_Fieknight_Security3 style=3 color=9C9C9C skins=[] vfxend=None sfxend=
+   (no sprite object)
+## Mob_Boutmanfish_Baviar4 style=1 color=54504D skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Baviar_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Baviarz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Baviarz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog_Target4 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Target4_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog6-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Snobleminiblack style=1 color=333232 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Snobleminiblack_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SnobleminiblackIdle-Sheet': 24} size={(12.0, 12.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Batfish2 style=1 color=94C096 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Batfish_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Batfishz': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Batfishz': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog1-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Trainingdagger style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=General_Miniondowned
+   spriteobj Enemy_Trainingdagger_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Daggertraining-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Daggertraining-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Aegis style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Aegis_Sprite speedmulti=3.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'AegisSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'AegisSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmandadghost style=1 color=9F9F9F skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmandadghost_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutdad-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=1 speed=1.5 to='Idle' tex={'Boutdadattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknight_Trailblazer3 style=3 color=9C9C9C skins=[] vfxend=None sfxend=
+   (no sprite object)
+## Mob_Busterdog_Speed5 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Speed5_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog10-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Hero_Buster style=1 color=FF8080 skins=[] vfxend=None sfxend=General_Herodeath
+   spriteobj Hero_Buster_Sprite speedmulti=10.0 default=Falling
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Buster-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Buster-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Busterrun-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Falling        var=1 frames=[6] loop=1 reset=1 prio=2 speed=1.0 to='' tex={'BusterIntroIdleR-Sheet': 6} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Land           var=1 frames=[12] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'BusterIntroActiveR-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Landquick      var=4 frames=[1, 1, 1, 1] loop=0 reset=1 prio=2 speed=10.0 to='Idle' tex={'Buster-Sheet': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[2, 2, 2, 2] loop=0 reset=1 prio=1 speed=1.0 to='Idle' tex={'Busterattack-Sheet': 8} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Shrimb3 style=1 color=557AB2 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Shrimb_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bbetta-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bbetta-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog_Health3 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Health3_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog3-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknight_Sword4 style=3 color=9C9C9C skins=[] vfxend=None sfxend=
+   (no sprite object)
+## Enemy_Bulwark style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Bulwark_Sprite speedmulti=3.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bulwark-Sheet': 24} size={(64.0, 64.0, 20.0, 0.35, 0.0), (64.0, 64.0, 20.0, 0.65, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bulwark-Sheet': 24} size={(64.0, 64.0, 20.0, 0.35, 0.0), (64.0, 64.0, 20.0, 0.65, 0.0)} snd=
+   Attack         var=4 frames=[7, 7, 7, 7] loop=0 reset=1 prio=1 speed=1.0 to='Idle' tex={'Bulwark-Sheet': 24, 'Attackendframe': 4} size={(64.0, 64.0, 20.0, 0.35, 0.0), (64.0, 64.0, 20.0, 0.65, 0.0)} snd={'Enemy_Bulwark_Charge'}
+## Mob_Busterdog_Fire4 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Fire4_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog9-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Bass5 style=1 color=505380 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Bass_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bass-Sheet2': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bass-Sheet2': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Bar4 style=1 color=C5AE9A skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Bar_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BariwZ-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BariwZ-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Smackyminer style=1 color=DA867A skins=['Buff'] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Smackyminer_Sprite speedmulti=4.0 default=Idle
+   Idle           var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SmackyMiner-Sheet': 4} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SmackyMiner-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Boi3 style=1 color=F1A95C skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Boi_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boiz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boiz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Hero_Smacky style=1 color=80B3FF skins=[] vfxend=None sfxend=General_Herodeath
+   spriteobj Hero_Smacky_Sprite speedmulti=8.0 default=Falling
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Smacky4-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Smacky4-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'General_Footstep'}
+   Falling        var=1 frames=[12] loop=1 reset=1 prio=2 speed=1.0 to='' tex={'Smackyfallr-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Land           var=1 frames=[12] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'SmackyIntroR-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Landquick      var=4 frames=[1, 1, 1, 1] loop=0 reset=1 prio=2 speed=10.0 to='Idle' tex={'Smacky4-Sheet': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Snoble style=1 color=DEDEDE skins=[] vfxend=None sfxend=
+   spriteobj Mob_Snoble_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SnobleGruntIdle-Sheet': 24} size={(12.0, 12.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Boldfish2 style=1 color=E5B78B skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Boldfish_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boldfishz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boldfishz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Merchant style=1 color=DEDEDE skins=[] vfxend=None sfxend=
+   spriteobj Mob_Merchant_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Merchant-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Merchant-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Dagger style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Dagger_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'DaggerSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'DaggerSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Hero_Fie style=1 color=FFA76D skins=[] vfxend=None sfxend=General_Herodeath
+   spriteobj Hero_Fie_Sprite speedmulti=8.0 default=Falling
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Fie-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Fie-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'General_Footstep'}
+   Falling        var=1 frames=[6] loop=1 reset=1 prio=2 speed=1.0 to='' tex={'FieIntroIdleR-Sheet': 6} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Land           var=1 frames=[12] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'FieIntroR2-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Landquick      var=1 frames=[1] loop=0 reset=1 prio=2 speed=10.0 to='Idle' tex={'Fie-Sheet': 1} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Gabby style=1 color=DEDEDE skins=[] vfxend=None sfxend=
+   spriteobj Mob_Gabby_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gabby-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gabby-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Largeaurabeast style=1 color=FFFFFF skins=[] vfxend=None sfxend=Enemy_Death
+   spriteobj Mob_Largeaurabeast_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Aurabeastlarge-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Aurabeastlarge-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Ballista style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Ballista_Sprite speedmulti=5.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BallistaSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BallistaSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[6, 6, 6, 6] loop=0 reset=1 prio=1 speed=2.0 to='Idle' tex={'BallistaSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Claymore style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Claymore_Sprite speedmulti=12.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Claymore-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Claymore-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Empty': 1} size={(1.0, 1.0, 100.0, 0.5, 0.5)} snd=
+## Mob_Busterdog_Health2 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Health2_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog2-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog_Unit2 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Unit2_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog4-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknighttrue style=1 color=9C9C9C skins=['All', 'Allshoot', 'Blue', 'Blueshoot', 'Red', 'Redshoot', 'Green', 'Greenshoot', 'Orange', 'Orangeshoot', 'Purple', 'Purpleshoot', 'Yellow', 'Yellowshoot'] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Fieknight_None_Sprite speedmulti=8.0 default=Idle
+   Idle           var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gray-Sheet': 4} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gray-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Moveshoot      var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gray-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Halberd style=2 color=D168E0 skins=[] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Halberd_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Vulture-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Vulture-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Flying         var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Empty': 4} size={(1.0, 1.0, 100.0, 0.5, 0.5)} snd=
+## Mob_Boutmanfish_Bwordfish3 style=1 color=898989 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Bwordfish_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bwordfishz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bwordfishz-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish style=1 color=9F9F9F skins=[] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Boutmanfish_Gubby_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gubbyzmainz-sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gubbyzmainz-sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Hero_Snosno style=1 color=DEDEDE skins=[] vfxend=None sfxend=General_Herodeath
+   spriteobj Hero_Snosno_Sprite speedmulti=8.0 default=Falling
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Snosnoidle-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Snosnoidle-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Falling        var=2 frames=[6, 6] loop=1 reset=1 prio=2 speed=1.0 to='' tex={'SnosnoIntroIdleR-Sheet': 6, 'SnosnoIntroIdleL-Sheet': 6} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Land           var=1 frames=[12] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'SnosnoIntroActiveR-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[4, 4, 4, 4] loop=0 reset=1 prio=1 speed=3.0 to='Idle' tex={'SnosnoAttack-Sheet': 16} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Landquick      var=4 frames=[1, 1, 1, 1] loop=0 reset=0 prio=2 speed=10.0 to='Idle' tex={'Snosnoidle-Sheet': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Onager style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Onager_Sprite speedmulti=5.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'OnagerSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'OnagerSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[6, 6, 6, 6] loop=0 reset=1 prio=1 speed=1.5 to='Idle' tex={'OnagerSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Hero_Boutman style=1 color=FFC34C skins=[] vfxend=None sfxend=General_Herodeath
+   spriteobj Hero_Boutman_Sprite speedmulti=9.0 default=Falling
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutman-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutman-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'General_Footstep'}
+   Falling        var=1 frames=[6] loop=1 reset=1 prio=2 speed=1.0 to='' tex={'BoutIntroIdle-Sheet': 6} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Land           var=1 frames=[15] loop=0 reset=1 prio=2 speed=1.600000023841858 to='Idle' tex={'Boutintro-Sheet': 15} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack1        var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'Boutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'Boutman_Punch'}
+   Attack2        var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'Boutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'Boutman_Punch'}
+   Attack3        var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'Boutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'Boutman_Rod'}
+   Landquick      var=4 frames=[1, 1, 1, 1] loop=0 reset=0 prio=2 speed=10.0 to='Idle' tex={'Boutman-Sheet': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Fishthrow      var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'Boutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd={'Boutman_Rod'}
+   Fish           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutmanfish-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Ko             var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BoutKo-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Snoblemega style=1 color=DEDEDE skins=['Level1Black', 'Level2', 'Level2Black', 'Level3', 'Level3Black'] vfxend=None sfxend=Tower_Snosnobox_Bigdeath
+   spriteobj Mob_Snoblemega1_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Megasnoble1-Sheet': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Megasnoble1-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknight style=1 color=9C9C9C skins=['All', 'Allshoot', 'Blue', 'Blueshoot', 'Red', 'Redshoot', 'Green', 'Greenshoot', 'Orange', 'Orangeshoot', 'Purple', 'Purpleshoot', 'Yellow', 'Yellowshoot'] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Fieknight_None_Sprite speedmulti=8.0 default=Idle
+   Idle           var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gray-Sheet': 4} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gray-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Moveshoot      var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gray-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Snoblemini style=1 color=DEDEDE skins=[] vfxend=None sfxend=
+   spriteobj Mob_Snoblemini_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SnobleminiIdle-Sheet': 24} size={(12.0, 12.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Bird style=1 color=DEDEDE skins=[] vfxend=None sfxend=
+   spriteobj Mob_Bird_Sprite speedmulti=6.0 default=Idle
+   Idle           var=2 frames=[0, 23] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Bird1_Idle_0': 23} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+   Hit            var=1 frames=[20] loop=0 reset=1 prio=1 speed=2.0 to='Idle' tex={'Bird1_Interact_0_Sheet': 20} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd={'Special_Birdpop'}
+   Attack         var=1 frames=[1] loop=1 reset=0 prio=2 speed=1.0 to='' tex={'Empty': 1} size={(1.0, 1.0, 100.0, 0.5, 0.5)} snd=
+## Mob_Boutmanfishmini style=1 color=9F9F9F skins=['Evil'] vfxend=None sfxend=General_Miniondeath
+   spriteobj Mob_Boutmanfish_Buppy_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gubbyzmainz-sheet - Copy 1': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gubbyzmainz-sheet - Copy 1': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Snobleblack style=1 color=333232 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Snobleblack_Sprite speedmulti=6.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SnobleblackIdle-Sheet': 24} size={(12.0, 12.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Busterdog_Speed3 style=1 color=FFFFFF skins=[] vfxend=None sfxend=
+   spriteobj Mob_Busterdog_Speed3_Sprite speedmulti=8.0 default=Movelinear
+   Movelinear     var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dog5-Sheet': 24} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Fieknight_Dual style=0 color=FFFFFF skins=['Red', 'Orange', 'Blue', 'Yellow', 'Green', 'Purple', 'All'] vfxend=None sfxend=
+   (no sprite object)
+## Mob_Boutmanmom style=1 color=5073BC skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanmom_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutmom-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[4, 4, 4, 4] loop=0 reset=1 prio=1 speed=1.0 to='Idle' tex={'Boutmomattack-Sheet': 16} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Fly            var=4 frames=[1, 1, 1, 1] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Dadair-Sheet 1': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Mob_Boutmanfish_Balibut3 style=1 color=C06565 skins=[] vfxend=None sfxend=
+   spriteobj Mob_Boutmanfish_Balibut_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BalibutZheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BalibutZheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Dead           var=1 frames=[1] loop=1 reset=0 prio=1 speed=1.0 to='' tex={'Fishdead-Sheet': 1} size={(16.0, 16.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Reallystrongfish style=1 color=FF8080 skins=['Sleeping'] vfxend=None sfxend=
+   spriteobj Enemy_Reallystrongfish_Sprite speedmulti=6.0 default=Sleeping
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'EvilGubbyzmainz-sheet 1': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'EvilGubbyzmainz-sheet 1': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack1        var=4 frames=[1, 1, 1, 1] loop=0 reset=0 prio=2 speed=1.0 to='Idle' tex={'EvilGubbyzmainz-sheet 1': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack2        var=4 frames=[1, 1, 1, 1] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'EvilGubbyzmainz-sheet 1': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack3        var=4 frames=[1, 1, 1, 1] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'EvilGubbyzmainz-sheet 1': 4} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Ko             var=4 frames=[1, 1, 1, 1] loop=0 reset=0 prio=0 speed=1.0 to='' tex={'Deadevilgubby': 4} size={(32.0, 32.0, 20.0, 0.5, 0.5)} snd=
+   Wakeup         var=4 frames=[15, 15, 15, 15] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'Gubbywakeup-Sheet': 60} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Sleeping       var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Gubbysleep-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Excalibur style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Deathlarge
+   spriteobj Enemy_Excalibur_Sprite speedmulti=4.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'ExcaliburSheet': 24} size={(48.0, 48.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'ExcaliburSheet': 24} size={(48.0, 48.0, 20.0, 0.5, 0.0)} snd=
+   Attack         var=4 frames=[6, 6, 6, 6] loop=0 reset=1 prio=1 speed=1.0 to='Idle' tex={'ExcaliburSheet': 24} size={(48.0, 48.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Spear style=1 color=D168E0 skins=['Health', 'Hyper', 'Red', 'Chaos', 'Armor', 'Explode'] vfxend=None sfxend=Enemy_Death
+   spriteobj Enemy_Spear_Sprite speedmulti=7.0 default=Idle
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SpearSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'SpearSheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+## Enemy_Boutman style=1 color=FF8080 skins=['Sleeping'] vfxend=None sfxend=
+   spriteobj Enemy_Boutman_Sprite speedmulti=5.0 default=Sleeping
+   Idle           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'enemyBoutman-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Move           var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'enemyBoutman-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack1        var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'enemyBoutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack2        var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'enemyBoutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Attack3        var=4 frames=[3, 3, 3, 3] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'enemyBoutmanattack-Sheet': 12} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Ko             var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'BoutKo-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Sleeping       var=4 frames=[6, 6, 6, 6] loop=1 reset=0 prio=0 speed=1.0 to='' tex={'Boutmansleep-Sheet': 24} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+   Wakeup         var=4 frames=[15, 15, 15, 15] loop=0 reset=1 prio=2 speed=1.0 to='Idle' tex={'EnemyboutmanawakenR-Sheet': 60} size={(32.0, 32.0, 20.0, 0.5, 0.0)} snd=
+
+# PART 2. Measurements on rows 0-1 (Idle, front facings) of each sheet: opaque bounding box per frame, the gap under
+#   the feet, the box centre, distinct opaque colours, share of half-transparent pixels and their alpha values, share
+#   of silhouette-edge pixels darker than the pixel inside them ("edge darker", 100% would be a dark outline), mean
+#   luminance of the left half minus the right half, the darkest colour, the ten most used colours.
+Smacky4-Sheet: cell 32 rows [0, 1] | bbox w 15-18 h 23-26 | feet gap 0-0 | centre x 15.0-16.0 | colours 17 | semi-alpha 33.2% [63, 127] | edge darker 18% | L-R lum -8.2 | darkest 2B2922 | top [('FDE791', 2208), ('F2D76B', 156), ('4764A4', 114), ('364E82', 78), ('65AD69', 70), ('7BCF80', 56), ('97AFE5', 54), ('F6E43B', 36), ('939292', 28), ('BBDA88', 24)]
+Snosnoidle-Sheet: cell 32 rows [0, 1] | bbox w 19-25 h 20-20 | feet gap 0-0 | centre x 13.5-17.5 | colours 10 | semi-alpha 9.4% [126] | edge darker 15% | L-R lum +3.9 | darkest 333232 | top [('FFFFFF', 2041), ('C7E0F2', 312), ('ADCDE5', 167), ('64544A', 96), ('4A4949', 60), ('826D60', 48), ('5A4C42', 48), ('65AD69', 18), ('333232', 12), ('7BCF80', 6)]
+Boutman-Sheet: cell 32 rows [0, 1] | bbox w 24-27 h 24-26 | feet gap 0-0 | centre x 13.5-15.0 | colours 18 | semi-alpha 0.0% [] | edge darker 8% | L-R lum +13.7 | darkest 161616 | top [('ADCDE5', 745), ('DFC9A8', 522), ('91B7D4', 497), ('826D60', 322), ('FFFFFF', 300), ('C5B294', 246), ('D63A44', 204), ('BE2D36', 132), ('859EB0', 120), ('939292', 60)]
+Fie-Sheet: cell 32 rows [0, 1] | bbox w 21-21 h 27-28 | feet gap 0-0 | centre x 15.5-15.5 | colours 18 | semi-alpha 0.0% [] | edge darker 12% | L-R lum +3.5 | darkest 3F3E3E | top [('FFA76D', 1327), ('FFDFC1', 874), ('FF8F44', 559), ('FF7D25', 383), ('D63A44', 224), ('FFCA99', 164), ('494949', 90), ('FFFFFF', 72), ('A12D37', 60), ('FFC7A2', 56)]
+Buster-Sheet: cell 32 rows [0, 1] | bbox w 16-27 h 19-20 | feet gap 0-0 | centre x 13.5-18.5 | colours 18 | semi-alpha 1.1% [126] | edge darker 4% | L-R lum +1.0 | darkest 000000 | top [('F0E5C1', 2025), ('E8D392', 572), ('F4ECD3', 138), ('9FF3E9', 68), ('64544A', 56), ('F6E43B', 46), ('D4FFFB', 44), ('19DFCE', 43), ('826D60', 36), ('2B2922', 24)]
+DaggerSheet: cell 32 rows [0, 1] | bbox w 18-18 h 20-22 | feet gap 0-0 | centre x 16.0-16.0 | colours 8 | semi-alpha 0.0% [] | edge darker 2% | L-R lum +0.0 | darkest 8D4497 | top [('D168E0', 1002), ('DA89E6', 484), ('8C8C8C', 340), ('6D6C6C', 288), ('8D4497', 280), ('A54FB1', 256), ('F6BAFF', 240), ('646464', 82)]
+SpearSheet: cell 32 rows [0, 1] | bbox w 19-19 h 16-17 | feet gap 0-0 | centre x 15.5-16.5 | colours 8 | semi-alpha 0.0% [] | edge darker 6% | L-R lum -1.4 | darkest 8D4497 | top [('D168E0', 606), ('DA89E6', 358), ('8D4497', 348), ('A54FB1', 304), ('8C8C8C', 264), ('F6BAFF', 168), ('6D6C6C', 132), ('646464', 84)]
+AegisSheet: cell 32 rows [0, 1] | bbox w 18-21 h 27-28 | feet gap 0-0 | centre x 16.0-16.5 | colours 8 | semi-alpha 0.0% [] | edge darker 2% | L-R lum +23.1 | darkest 8D4497 | top [('D168E0', 1774), ('DA89E6', 1326), ('6D6C6C', 658), ('8C8C8C', 422), ('F6BAFF', 414), ('8D4497', 331), ('A54FB1', 252), ('646464', 63)]
+BallistaSheet: cell 32 rows [0, 1] | bbox w 25-25 h 21-23 | feet gap 0-0 | centre x 15.5-16.5 | colours 8 | semi-alpha 0.0% [] | edge darker 4% | L-R lum +8.2 | darkest 8D4497 | top [('6D6C6C', 758), ('A54FB1', 394), ('8D4497', 377), ('DA89E6', 361), ('8C8C8C', 300), ('D168E0', 210), ('646464', 182), ('F6BAFF', 108)]
+OnagerSheet: cell 32 rows [0, 1] | bbox w 24-24 h 23-24 | feet gap 0-0 | centre x 15.0-17.0 | colours 8 | semi-alpha 0.0% [] | edge darker 4% | L-R lum +0.0 | darkest 8D4497 | top [('D168E0', 864), ('A54FB1', 732), ('8C8C8C', 584), ('DA89E6', 540), ('6D6C6C', 372), ('F6BAFF', 252), ('646464', 32), ('8D4497', 12)]
+Claymore-Sheet: cell 32 rows [0, 1] | bbox w 8-10 h 9-11 | feet gap 0-0 | centre x 16.0-16.0 | colours 10 | semi-alpha 0.0% [] | edge darker 14% | L-R lum +0.1 | darkest 646464 | top [('D168E0', 156), ('DA89E6', 120), ('F6BAFF', 72), ('8C8C8C', 54), ('8F8F8F', 54), ('6D6C6C', 50), ('737373', 50), ('646464', 42), ('666666', 42), ('A54FB1', 12)]
+Vulture-Sheet: cell 32 rows [0, 1] | bbox w 22-24 h 12-12 | feet gap 0-0 | centre x 15.5-16.5 | colours 8 | semi-alpha 0.0% [] | edge darker 3% | L-R lum +0.0 | darkest 8D4497 | top [('D168E0', 816), ('8D4497', 312), ('8C8C8C', 300), ('A54FB1', 240), ('6D6C6C', 232), ('DA89E6', 168), ('F6BAFF', 108), ('646464', 92)]
+MaulSheet: cell 48 rows [0, 1] | bbox w 30-30 h 33-36 | feet gap 0-0 | centre x 23.0-25.0 | colours 8 | semi-alpha 0.0% [] | edge darker 0% | L-R lum +0.0 | darkest 8D4497 | top [('D168E0', 2652), ('6D6C6C', 1801), ('8C8C8C', 1553), ('8D4497', 1276), ('DA89E6', 1104), ('A54FB1', 1059), ('F6BAFF', 468), ('646464', 414)]
+ExcaliburSheet: cell 48 rows [0, 1] | bbox w 35-35 h 36-40 | feet gap 0-0 | centre x 23.5-24.5 | colours 8 | semi-alpha 0.0% [] | edge darker 0% | L-R lum +0.4 | darkest 8D4497 | top [('D168E0', 2080), ('DA89E6', 1452), ('8C8C8C', 1130), ('6D6C6C', 656), ('F6BAFF', 528), ('A54FB1', 408), ('8D4497', 308), ('646464', 72)]
+Bulwark-Sheet: cell 64 rows [0, 1] | bbox w 42-42 h 63-64 | feet gap 0-0 | centre x 30.0-34.0 | colours 11 | semi-alpha 0.0% [] | edge darker 1% | L-R lum +12.2 | darkest 8D4497 | top [('8C8C8C', 4804), ('D168E0', 4648), ('DA89E6', 4142), ('6D6C6C', 2324), ('F6BAFF', 2002), ('646464', 1700), ('A54FB1', 1589), ('8D4497', 1244), ('AB9B98', 918), ('C3B0AD', 434)]
+SmackyMiner-Sheet: cell 16 rows [0, 1] | bbox w 6-6 h 9-9 | feet gap 0-1 | centre x 8.0-8.0 | colours 11 | semi-alpha 5.3% [126] | edge darker 17% | L-R lum -4.9 | darkest 2B2922 | top [('FDE791', 108), ('6D6C6C', 84), ('4764A4', 72), ('826D60', 36), ('F2D76B', 36), ('364E82', 36), ('2B2922', 24), ('97AFE5', 24), ('EDEAEA', 12), ('FFA76D', 12)]
+Gray-Sheet: cell 16 rows [0, 1] | bbox w 6-6 h 9-10 | feet gap 0-1 | centre x 8.0-8.0 | colours 10 | semi-alpha 0.0% [] | edge darker 9% | L-R lum +1.2 | darkest 3F3E3E | top [('FFDFC1', 180), ('FFFFFF', 144), ('DEDEDE', 48), ('3F3E3E', 39), ('434343', 24), ('FFCA99', 24), ('494949', 24), ('939292', 13), ('6D6C6C', 11), ('6D6D6D', 1)]
+Dog1-Sheet: cell 16 rows [0, 1] | bbox w 9-12 h 8-9 | feet gap 0-3 | centre x 7.0-9.0 | colours 7 | semi-alpha 0.0% [] | edge darker 14% | L-R lum +0.4 | darkest 2B2922 | top [('B09482', 438), ('826D60', 40), ('B3B3B3', 36), ('4E4B3E', 24), ('64544A', 22), ('2B2922', 12), ('DEDEDE', 12)]
+Boutbro-Sheet: cell 16 rows [0, 1] | bbox w 8-12 h 11-12 | feet gap 0-0 | centre x 7.0-7.0 | colours 17 | semi-alpha 0.0% [] | edge darker 17% | L-R lum -24.2 | darkest 333232 | top [('ADCDE5', 232), ('91B7D4', 131), ('BE2D36', 114), ('4F7291', 103), ('FFFFFF', 71), ('A12D37', 54), ('DEDEDE', 42), ('333232', 34), ('4764A4', 30), ('939292', 24)]
+Gubbyzmainz-sheet: cell 32 rows [0, 1] | bbox w 13-15 h 16-17 | feet gap 0-0 | centre x 15.5-16.5 | colours 10 | semi-alpha 0.0% [] | edge darker 3% | L-R lum +2.4 | darkest 2B2922 | top [('7E8088', 476), ('9FA1AC', 284), ('A34B4B', 216), ('BE6862', 120), ('DFC9A8', 72), ('5B5D69', 48), ('C5B294', 44), ('2B2922', 24), ('DA867A', 24), ('DEDEDE', 12)]
+EvilGubbyzmainz-sheet 1: cell 32 rows [0, 1] | bbox w 13-15 h 16-17 | feet gap 0-0 | centre x 15.5-16.5 | colours 10 | semi-alpha 0.0% [] | edge darker 3% | L-R lum +2.1 | darkest 5B5D69 | top [('7E8088', 476), ('9FA1AC', 284), ('A34B4B', 216), ('BE6862', 120), ('DFC9A8', 72), ('5B5D69', 48), ('C5B294', 44), ('D63A44', 24), ('DA867A', 24), ('DEDEDE', 12)]
+enemyBoutman-Sheet: cell 32 rows [0, 1] | bbox w 24-27 h 24-26 | feet gap 0-0 | centre x 13.5-15.0 | colours 16 | semi-alpha 0.0% [] | edge darker 8% | L-R lum +14.3 | darkest 5A4C42 | top [('ADCDE5', 745), ('DFC9A8', 522), ('91B7D4', 497), ('826D60', 322), ('FFFFFF', 300), ('D63A44', 252), ('C5B294', 246), ('BE2D36', 172), ('859EB0', 120), ('939292', 60)]
+Kippy-Sheet: cell 32 rows [0, 1] | bbox w 15-15 h 18-19 | feet gap 0-0 | centre x 15.5-16.5 | colours 9 | semi-alpha 0.0% [] | edge darker 12% | L-R lum -4.1 | darkest 2B2922 | top [('FFFFFF', 1478), ('EDEAEA', 298), ('DEDEDE', 148), ('596268', 102), ('4D555A', 48), ('4E4B3E', 24), ('2B2922', 24), ('B3B3B3', 24), ('BE6862', 12)]
+Aurabeast-Sheet: cell 32 rows [0, 1] | bbox w 16-16 h 16-17 | feet gap 0-0 | centre x 15.0-17.0 | colours 14 | semi-alpha 16.3% [101, 102] | edge darker 4% | L-R lum -1.9 | darkest 646464 | top [('F1F7FF', 426), ('4B9CFF', 280), ('8C8C8C', 228), ('6D6C6C', 228), ('FF4141', 179), ('FFC34C', 145), ('DEDEDE', 138), ('646464', 134), ('FF8080', 118), ('B3B3B3', 106)]
+Daggertraining-Sheet: cell 32 rows [0, 1] | bbox w 13-13 h 24-25 | feet gap 0-0 | centre x 15.5-16.5 | colours 14 | semi-alpha 0.0% [] | edge darker 2% | L-R lum +8.0 | darkest 4A4949 | top [('826D60', 1344), ('6F5D52', 576), ('D168E0', 378), ('8C8C8C', 276), ('B09482', 258), ('A12D37', 204), ('DA89E6', 168), ('8D4497', 156), ('6D6C6C', 32), ('364E82', 28)]
+
+# PART 3. Elite skins (every Tide foe carries all six): each Skinoverride keeps the foe's sprite object and adds ONE
+#   material, "Character <Key> Effect", shader "Shader Graphs/Character Billboard Gradient Batchless", drawn as a second
+#   pass over the SpriteRenderer (Entity_Master_Client, Additionalmaterials). Values read from Enemy_Dagger's skins;
+#   the materials are shared by every foe.
+#   Health  Hardened     _Tintcolor (1.75, 11.98, 1.75, a 1.00) green  _Overlaytex R Tex    _Overlayspeed (0, -0.1)  _Tintoffset 0.5
+#   Hyper   Superheated  _Tintcolor (135.6 x3, a 0.31)        white  _Overlaytex Speedtex _Overlayspeed (-2, -0.5) _Tintoffset 0.5
+#   Red     Tempered     _Tintcolor (72.5, 0, 2.8, a 0.55)     red    _Overlaytex X Tex    _Overlayspeed (0, 0.05)  _Tintoffset 0.5
+#   Chaos   Fractured    _Tintcolor (0.12 x3, a 1.00)          dark   _Overlaytex Messytex _Overlayspeed (-1, -1)   _Tintoffset -0.5
+#   Armor   Annealed     _Tintcolor (47.9, 35.6, 28.3, a 0.06) bronze _Overlaytex Gridtext _Overlayspeed (0, -0.1)  _Tintoffset 0.5
+#   Explode Molten       _Tintcolor (24.0, 1.9, 0, a 0.63)     orange _Overlaytex Messytex1 _Overlayspeed (0, -0.1) _Tintoffset -0.1
+#   Displayname of each skin = "<Elite> <Foe>" (e.g. "Hardened Dagger").

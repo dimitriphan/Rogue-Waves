@@ -202,6 +202,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
   2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`); every template is in
   `15_Templates.txt`; Argo and Uloe are in the vessel template; `04_Rogue_Waves_Mode.txt` holds the sea chart and weather.
+  2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
+  (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
@@ -303,6 +305,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Objective, Enemy Modifier, Sea Weather, Bug) in `15_Templates.txt` (was `15_Vessel_Template.txt`); `04` renamed
   `04_Rogue_Waves_Mode.txt` and given the sea chart and sea weather from `05`, which is now a numbered walkthrough;
   Argo (built numbers, `~`) and Uloe (blank slots) laid into the vessel template; dates only in `02`.
+- **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
+  new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
+  and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey
+  `reference/art_survey_2026-10-15.txt`, palettes `reference/palettes/*.gpl`, pitfalls #87-88, fixes to `docs/03` §1
+  (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
+  (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
+  Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
 
 ### Decisions
 
@@ -403,6 +412,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-14 (user): the scope follows `docs/scope/00_Read_Me.txt`'s rules: one meaning per symbol, every number
   on a `- Field: value` slot, `/~ \` for Claude's notes, `->` to point at another file, each fact in one file, dates
   only in `02`, and every template in `15_Templates.txt`. `04_Rogue_Wave_Mode.txt` is renamed `04_Rogue_Waves_Mode.txt`.
+- 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
+  `docs/18` §7); every other new design keeps magenta for foes only.
 
 ### Open questions
 

@@ -1,0 +1,57 @@
+GIMP Palette
+Name: TDS shared colours (in 3 or more character families)
+Columns: 8
+# Read from the game's own sheets (TDS asset bundle, 2026-10-15). Kit docs/18.
+255 255 255	shared FFFFFF
+222 222 222	shared DEDEDE
+ 43  41  34	shared 2B2922
+218 134 122	shared DA867A
+ 51  50  50	shared 333232
+ 74  73  73	shared 4A4949
+130 109  96	shared 826D60
+197 178 148	shared C5B294
+223 201 168	shared DFC9A8
+255 167 109	shared FFA76D
+173 205 229	shared ADCDE5
+179 179 179	shared B3B3B3
+109 108 108	shared 6D6C6C
+ 71 100 164	shared 4764A4
+190 104  98	shared BE6862
+147 146 146	shared 939292
+100  84  74	shared 64544A
+145 183 212	shared 91B7D4
+ 54  78 130	shared 364E82
+151 175 229	shared 97AFE5
+214  58  68	shared D63A44
+ 78  75  62	shared 4E4B3E
+255 244 139	shared FFF48B
+100 100 100	shared 646464
+237 234 234	shared EDEAEA
+ 73  73  73	shared 494949
+199 224 242	shared C7E0F2
+253 231 145	shared FDE791
+133 158 176	shared 859EB0
+140 140 140	shared 8C8C8C
+255 215 128	shared FFD780
+131 153 199	shared 8399C7
+242 215 107	shared F2D76B
+161  45  55	shared A12D37
+163  75  75	shared A34B4B
+159 161 172	shared 9FA1AC
+255 125  37	shared FF7D25
+ 90  76  66	shared 5A4C42
+190  45  54	shared BE2D36
+225 225 225	shared E1E1E1
+123 207 128	shared 7BCF80
+246 228  59	shared F6E43B
+195 176 173	shared C3B0AD
+147 132 130	shared 938482
+171 155 152	shared AB9B98
+ 79 114 145	shared 4F7291
+  0   0   0	shared 000000
+170 143 116	shared AA8F74
+213 184 143	shared D5B88F
+ 83  75  74	shared 534B4A
+126 128 136	shared 7E8088
+ 91  93 105	shared 5B5D69
+255 199 162	shared FFC7A2
