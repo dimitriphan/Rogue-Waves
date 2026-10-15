@@ -303,7 +303,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `reference/art_survey_2026-10-15.txt`, palettes `reference/palettes/*.gpl`, pitfalls #87-88, fixes to `docs/03` §1
   (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
   (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
-  Flagged for Spool's gate: his purple sits next to the foes' magenta.
+  Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
 
 ### Decisions
 
@@ -401,6 +401,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
   Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
   heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+- 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
+  `docs/18` §7); every other new design keeps magenta for foes only.
 
 ### Open questions
 
@@ -409,7 +411,6 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Yossele and Spool sheets: the `! NEEDS !` lines under `[Questions]` in `docs/scope/07` and `08` | the default each line names |
-| 2 | Spool's purple (h278-283) sits beside the foes' magenta (h292): keep it, or move it toward blue or red (kit `docs/18` §7) | keep it; check on the boat beside a Dagger before the full sheets |
 
 ### Phase 5 pieces
 

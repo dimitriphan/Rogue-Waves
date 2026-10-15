@@ -209,8 +209,8 @@ For the art this means:
 
 - **Spool's purple sits in the foes' band.** The concept and walk sheets use `7E4D90` / `9363AE` / `784B94` (h278-283,
   measured on `SpoolWalk-Sheet`), next to the crystal's h292 and past the friendly purple's h267. It is darker and
-  greyer than the crystal and Spool has a face, so it may still read; check it on the boat beside a Dagger at Spool's
-  design gate before the full sheets.
+  greyer than the crystal and Spool has a face, so it may still read. **Dimitri, 2026-10-15: leave Spool's colours as
+  they are for now.** The exception is his; the magenta rule still binds every other new design.
 - **New modifiers' look.** Scope 13 says modifiers show as an effect, not a new skin. Kept: an entity holds one skin,
   so a modifier skin would hide a stock elite's look on a foe that has both. A third way the game's code allows is to
   add a cloned elite material straight to the foe's SpriteRenderer from the client, as `Entity_Master_Client` does for
@@ -251,4 +251,4 @@ Keep the extracted art in the scratchpad or the project files, never in the repo
 - How the elite overlays look on a sprite that is not a stock foe (expected identical: the material only reads the
   sprite's alpha and colour).
 - Whether a material added to a foe's SpriteRenderer from a mod (§7) survives the game's own skin changes.
-- How Spool's purple reads next to the crystal foes at the game's camera distance.
+- How Spool's purple (kept, §7) reads next to the crystal foes at the game's camera distance.
