@@ -80,7 +80,9 @@ each. States (Growth, Light, a held seed count) show as skins or a counter, not 
 
 ## Enemies
 
-New foes follow the base foes' sprite style (one colour family per foe, red aura drops). New modifiers ship no skins:
-they show as an effect on the foe (`docs/scope/13_Enemy_Modifiers.txt`, decided 2026-10-09; `docs/13` §6). If a later
-piece ever adds skins, they cover every stock foe, as the base elites do (Health, Hyper, Red, Chaos, Armor, Explode),
-tinted with Storm Coral.
+New foes are crystal foes like every base foe: a grey stone body carrying one magenta crystal weapon, in the one
+8-colour palette all base foes share, named from the armoury (kit `docs/18` §5-6, measured 2026-10-15; this replaces
+"one colour family per foe"). The pack's own palette stays off foes. New modifiers ship no skins: they show as an
+effect on the foe (`docs/scope/13_Enemy_Modifiers.txt`, decided 2026-10-09; `docs/13` §6). The base elites' looks are
+overlay materials in green, white, red, near-black, bronze and orange (`docs/18` §5.5), so a modifier's effect takes a
+colour none of them uses; Storm Coral sits between Tempered's red and Molten's orange, so it is not that colour.

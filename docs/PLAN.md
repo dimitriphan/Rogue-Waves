@@ -200,6 +200,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
+  2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
+  (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
@@ -295,6 +297,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   each sheet ends with its open questions. Yossele's sheet now asks for a ranged laser and a slower speed, which the
   build (PR #30) doesn't have yet. Then, at his ask, `docs/scope/16_Base_Vessels.txt`: the five base vessels in the same
   template from the game's data (kit `reference/vessel_data_survey.txt`, `docs/17`), with a side-by-side stat table.
+- **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
+  new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
+  and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey
+  `reference/art_survey_2026-10-15.txt`, palettes `reference/palettes/*.gpl`, pitfalls #87-88, fixes to `docs/03` §1
+  (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
+  (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
+  Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
 
 ### Decisions
 
@@ -392,6 +401,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
   Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
   heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+- 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
+  `docs/18` §7); every other new design keeps magenta for foes only.
 
 ### Open questions
 
