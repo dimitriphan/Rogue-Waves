@@ -295,8 +295,8 @@ public static class ArgoContent
             proj.Vfxstart = null;
             if (p[0] == ArgoData.Pellet)
                 proj.Sfxend = "";
-            // Straight flight (Projectile_Ai_Simple). The brains pass every parameter with each shot: the game merges
-            // a shot's parameters into this shared dictionary, so anything left out would carry over from the last one.
+            // Straight flight (Projectile_Ai_Simple). Each shot starts from a copy of these Defaultparams with its own
+            // parameters laid over them (pitfall #29); the brains pass every parameter with each shot anyway.
             proj.Defaultparams = new Dictionary<string, float> { { "Gravity", 0f }, { "Pierce", 1f }, { "Lifetime", 1f } };
             Projectiles[p[0]] = proj;
             Register("Projectile", proj);

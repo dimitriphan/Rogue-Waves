@@ -258,7 +258,7 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
 - **SONAR** (keys 6/7 like Buster's Dash): ping radius 6, Pinged 5 s, 15 s cooldown. The button's Goalstring is "Off"
   while recharging (synced through `Entity_Master.Commandlist`, the way the game's on/off toggles work).
 - **Pinged / Bulkhead.** `ArgoHooks` puts its handler first in the target's `Oninteract` chain and scales
-  `Damagemulti` on a *copy* of the hit's Data (projectiles reuse one dictionary for every pierce).
+  `Damagemulti` on a *copy* of the hit's Data (some AIs reuse one dictionary across hits, pitfall #30).
   `Helper_Entitytools.Updateinteract` rebuilds the chains on every upgrade or effect, so handlers are re-checked
   every 0.1 s (targets) / 0.25 s (towers, vessel).
 - **Scatter Cannon / Harpoon Tower** fire the game's own projectiles (clones of the Heavy Bow arrow,

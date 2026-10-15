@@ -229,7 +229,7 @@ Some examples:
 - "Speed damage at start" is a ram delay.
 
 Two of the 28 had been left on purpose for a reason the code does not bear out: the knight gun note and Stored
-Charge. The `02` log now counts 62 upgrade lines. Every value the scope gives as the game's own is now checked against
+Charge. The `02` log now counts 59 upgrade lines. Every value the scope gives as the game's own is now checked against
 the game's code.
 
 **Kit chapters and project docs (11).**
@@ -242,6 +242,47 @@ the game's code.
   not 16.
 - **Smaller fixes.** An `ArgoCharacter.cs` pose comment. `SEA_CHART.md`'s longest world name is 30 bytes. `STYLE.md`
   gains the objectives' naming row that scope `00` points to.
+
+## Pass 10: 37 issues
+
+Not clean. Two areas came back clean (B1, C). All 37 issues are fixed, and none is high.
+
+**Scope `16` (19).** The second full read against the code found these:
+- **Lines that left out how an upgrade plays.**
+  - Ice Brick heals by eating Sno after 1 s without a hit.
+  - Tip of the Iceberg fires only at those heal checks.
+  - Hidden Surprise reflects nothing without Spikes.
+  - Bouncing Bombs throws a second bomb.
+  - The Heater melts once per attack.
+  - Shao-min's wave flies 2.4 tiles at foes within his fishing range.
+  - Ip Man-of-War gives Boutbro +800% damage, more range and a teleport.
+  - Kung Fu Tackle's Rally has a 20 s cooldown.
+  - Bout Battleship's cannon fires only with Dad or Mom aboard.
+  - Bout Barge's "stun" is a slow.
+  - Gubby Deadarmor counts hits.
+  - Boutmom gains +25% damage per Raft boat past 5.
+  - Lap 3's tick and pickup cost were wrong.
+- **Corrections to passes 8 and 9.**
+  - A Commander Knight counts itself.
+  - Stored Charge never falls below +25%.
+  - Boutmom is one on the map at a time.
+- **The `02` log.** It counts 59 upgrade lines, not 62, and names pass 9's unit-line changes.
+
+Kit `17` was changed to match in four places: the Heater is a `Towerfighter`, plus the unit tags, the drowning hit and
+Boutmom's limit.
+
+**Elsewhere (18).**
+- **Kit `24` §6 (M).** The boss plan now fits Rogue Waves' own win rule (map won at Tide 15).
+- **Comments that claimed projectiles reuse one damage dictionary.** They were wrong (pitfall #30) and are fixed in
+  Argo `04`/`07`/`09`, Yossele `12_Hooks.cs` and both Argo implementation notes.
+- **Kit `02`.** The unit-producer cost line no longer contradicts the Boutboat.
+- **Smaller fixes.**
+  - `VESSEL_SURVEY.md`: only 13 of 36 effects time out.
+  - Yossele's `DESIGN.md`: the vines creep 1 tile per 2 Growth stages.
+  - RogueLab's `README` step 10 is packaging.
+  - `RESEARCH_GAPS.md`: Tsunami's Tides are large, not long.
+
+Every one of pass 9's other fixes held.
 
 ## Listed for Dimitri
 

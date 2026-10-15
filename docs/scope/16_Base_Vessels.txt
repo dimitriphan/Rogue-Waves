@@ -135,7 +135,7 @@
 					- Cost: Blue 100 + Yellow 100
 
 				% 3:{Bouncing Bombs} How does it work? Don't ask.
-					- Numbers: damage +4
+					- Numbers: damage +4; where each bomb lands, it throws one more of the same bomb at the farthest foe within 5 tiles (6 after Bigger Bombs, 9 after Dynamite), which blasts again /~ Read from the game's code: the data names only damage +4 \
 					- Leads to: {Detonate}
 					- Cost: Red 600
 				% 3:{Splitting Bombs} Smaller bombs on contact, stronger bombs
@@ -177,7 +177,7 @@
 					- Leads to: {Steel Wall}, {Perma-Wall}
 					- Cost: Blue 15 + Yellow 10
 				% 2:{Hidden Surprise} leave lingering spikes when drowned
-					- Numbers: damage +5 to the Wall's own base (8 with Spikes' 3); the spikes it leaves are a trap of their own, dealing 15 to each foe that steps on them /~ Read from the game's code \
+					- Numbers: damage +5 to the Wall's own base, so Spikes hurt for 8 (after Reinforced, with no Spikes, the +5 does nothing); the spikes it leaves are a trap of their own, dealing 15 to each foe that steps on them /~ Read from the game's code \
 					- Leads to: {Bramble}
 					- Cost: Red 80
 
@@ -374,7 +374,7 @@
 					- Cost: Red 2500 + Blue 50
 
 		(Offense 2):{Heater}
-			- Burns up to 5 foes in range and melts the nearest Sno within its Sno range.
+			- On each attack, burns up to 5 foes in range and melts the nearest Sno within its Sno range by its melt speed.
 			[Stats]
 				- In-game line: Heats surrounding area, melts Sno
 				- Health: 100, +100 per level
@@ -424,7 +424,7 @@
 					- Cost: Red 2000 + Blue 2000
 
 		(Defense):{Ice Brick}
-			- Directional brick that heals from the Sno on its tile, then builds an overshield.
+			- Directional brick: each time it goes its heal delay (1 second) without a hit, it eats Sno on its tile for health, its heal (1) per Sno Level, then builds an overshield from more of it.
 			[Stats]
 				- In-game line: Directional, strong, uses Sno to heal
 				- Health: 50, +50 per level
@@ -469,7 +469,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 200 + Yellow 250
 				% 3:{Tip of the Iceberg} Fire piercing icicles forward and back when healed
-					- Numbers: damage 15
+					- Numbers: damage 15, on icicles it fires forward and back at each heal check (each heal delay without a hit) while Sno is on its tile, whether or not it needs healing /~ Read from the game's code: the data names it damage 15 \
 					- Leads to: {Take the Heat}
 					- Cost: Red 75 + Blue 225
 
@@ -631,7 +631,7 @@
 					- Leads to: {1 Inch Bout}, {Fishbender}
 					- Cost: Blue 400
 				% 2:{Shao-min} Boutman has a long range attack
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: on top of his melee, and even while he walks, he shoots the nearest foe within his fishing range (3 tiles, +0.5 per level) at his attack speed; the shot is a wave that flies 2.4 tiles and hits up to 5 foes on its way /~ Read from the game's code and the shot's data; none in the upgrade's data \
 					- Leads to: {1 Inch Bout}, {Fishbender}
 					- Cost: Red 450 + Yellow 250
 				% 2:{Fight Blub} Boutman can recruit more fish, increased capacity per tier
@@ -653,11 +653,11 @@
 					- Cost: Yellow 1750
 
 				% 4:{Ip Man-of-War} The Bout family gains new abilities.
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: the team's Bout family is buffed for good (a new member within 12 seconds): Boutbro damage +800% and range +50%, and he teleports when sent over 3 tiles or where he has no path; each hit of Boutdad or Boutmom also splashes its damage on up to 8 foes around the target; an afterimage there at the time deals +100% damage /~ Read from the game's code; the numbers are the Bout Family effect's \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3500 + Blue 3500
 				% 4:{Kung Fu Tackle} Boutman can recruit all nearby fish for a time, healing them
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: a Rally button: every fish of the team within his fishing range is healed to full, gets up if KO'd (in a barrel or not), and follows him for 15 seconds with his recruits' buffs; ready again 20 seconds after use /~ Read from the game's code; none in the data \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 2500 + Yellow 2500 + Blue 2500
 
@@ -740,7 +740,7 @@
 					- Cost: Red 50 + Blue 10
 
 				% 2:{Bout Barge} Increased health, stun enemies on arrival
-					- Numbers: health +400% of base; stun 2.5
+					- Numbers: health +400% of base; each time Boutdad or Boutmom lands here, foes within the boat's range drop to speed 0.1 for 2.5 seconds but keep attacking /~ Read from the game's code: the data names it stun 2.5 \
 					- Leads to: {Bout Yacht}, {Bout Cargo Inc}
 					- Cost: Blue 175 + Yellow 175
 				% 2:{Bout Brig} Boutdad throws bait in massive chunks
@@ -748,12 +748,12 @@
 					- Leads to: {Bout Yacht}, {Bout Battleship}
 					- Cost: Red 175 + Yellow 75
 				% 2:{Bout Raft} Does something...
-					- Numbers: once 4 of the team's boats have Bout Raft, buying one calls Boutmom (one per map), but she leaves at once while fewer than 5 have it, so she stays from the 5th /~ Read from the game's code: the data names it threshold 4 \
+					- Numbers: once 4 of the team's boats have Bout Raft, buying one calls Boutmom (one on the map at a time), but she leaves at once while fewer than 5 have it, so she stays from the 5th /~ Read from the game's code: the data names it threshold 4 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 50
 
 				% 3:{Bout Battleship} Boutdad now owns an unregistered cannon!
-					- Numbers: the boat gets a cannon of its own, firing at half the boat's attack speed /~ Read from the game's code: the data names it attack speed +50% \
+					- Numbers: the boat gets a cannon that fires at Boutdad's or Boutmom's target only while one of them is on this boat, at half the boat's attack speed /~ Read from the game's code: the data names it attack speed +50% \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 500
 				% 3:{Bout Cargo Inc} Units can now travel to other boats instantly from here
@@ -779,7 +779,7 @@
 			- Speed: 1.25, +0.25 per level
 			- Engage range: 3 tiles, +0.5 tiles per level
 			- Live: 0
-			- Deadarmor: 10, +5 per level
+			- Deadarmor: 10, +5 per level /~ Read from the game's code: while KO'd, each hit of any size takes 1 from it and none from health; the hit that empties it drowns the fish, unless a barrel has begun healing it \
 			- Following: 0
 			- How many: as many as you buy
 			- Respawn: none: a KO'd fish waits in a barrel
@@ -878,9 +878,9 @@
 		(Minion):{Boutmom}
 			- Made by: the {Boutboat} once 5 of the team's boats have Bout Raft /~ Read from the game's code: she comes at the 4th and leaves at once below 5 \
 			- Stats: none of its own /~ Uses the building's \
-			- How many: 1 per map
+			- How many: 1 on the map at a time, whatever the team
 			- Respawn: none
-			- Orders: aggravates foes it hits
+			- Orders: aggravates foes it hits; its damage +25% for each of the team's boats with Bout Raft past 5 /~ Read from the game's code \
 			- Cost: free
 
 | Base Vessel: Fie |
@@ -1053,7 +1053,7 @@
 					- Leads to: {Convoy}
 					- Cost: Red 350
 				% 3:{Knight Commander} Boost to stats and effects, all same color Knights gain enhanced effects
-					- Numbers: health +150%; damage +50%; attack speed +15%; range +15%; effect +0.5; every Knight on the map with the same weapon gains its enhanced effect /~ On the units; the reach read from the game's code \
+					- Numbers: health +150%; damage +50%; attack speed +15%; range +15%; effect +0.5; every Knight on the map holding the same weapon as one of these Knights, these included, gets effect +0.5 more (so this Keep's armed Knights get +1 in all), and one without Trailblazer also gains that weapon's enhanced effect /~ On the units; the reach read from the game's code \
 					- Leads to: {Convoy}, {True Knight}
 					- Cost: Red 650
 				% 3:{Sword Hand} Knights gains a powerful slash attack upon close range
@@ -1219,7 +1219,7 @@
 					- Leads to: {Blink Chain}, {Blaze Effector}, {Blast Maker}
 					- Cost: Blue 35
 				% 2:{Stored Charge} Increased damage, can hold charge when not firing
-					- Numbers: damage +25%, rising by 5% each second it is not firing up to +150%, and falling by 20% each second while firing /~ Read from the game's code: the data names it damage +25%; top damage +150%; tick rate 0.05; drain rate 0.2 \
+					- Numbers: damage +25%, rising by 5% each second it is not firing up to +150%, and falling by 20% each second while firing, back to +25% /~ Read from the game's code: the data names it damage +25%; top damage +150%; tick rate 0.05; drain rate 0.2 \
 					- Leads to: {Blink Chain}, {Blaze Effector}, {Blast Maker}
 					- Cost: Red 30
 				% 2:{Combo'd} Can now target a second enemy
@@ -1391,7 +1391,7 @@
 					- Cost: Yellow 250 + Red 250
 
 				% 3:{Lap 3} Resource gain ramps with current capacity, can only be collected at half health
-					- Numbers: gain per health 0.1; charge capacity +2 to its base; health needed to collect 0.5 /~ Read from the game's code \
+					- Numbers: each charge tick also adds 10% of the charge it holds; charge capacity +2 to its base; a pickup needs a charge of at least 1 plus half the capacity /~ Read from the game's code: the data names them gain per health 0.1; health needed to collect 0.5 \
 					- Leads to: {Final Lap}
 					- Cost: Yellow 250
 				% 3:{Strong Start} When empty, triple the generation

@@ -136,9 +136,9 @@ dying meanwhile (**guess**: a handler subscribed in the vessel's `Onspawn`, befo
 | Vessel | `Mob, Hero` (Buster adds `Dog, Buster`) |
 | Attack building | `Tower, Towerfighter` (+ family: `Boutboat`, `Fiewall`, `Totem`) |
 | Economy | `Tower, Gatherer` (Hut, Silo `+Silo`, Sno Box); Checkpoint `Gatherer, Trap, Checkpoint` |
-| Other building | `Tower` (+ `Smackywall`, `Boutbarrel`): Ice Brick, Heater, Keep, Rest Stop |
+| Other building | `Tower` (+ `Smackywall`, `Boutbarrel`): Ice Brick, Keep, Rest Stop |
 | Trap | `Trap` (+ `Pad`, `Checkpoint`); no Health stat, so nothing can hurt it |
-| Units | `Mob, Mobfighter` (+ `Fish`, `Knight`, `Dog`, `Snoble`); miner `Mob, Gatherer` |
+| Units | `Mob, Mobfighter` (+ `Fish`, `Knight`, `Dog`, `Snoble`); miner `Mob, Gatherer`; engineer `Mob` only |
 | Odd ones | Bouthouse `Bouthouse, Herotower` (**no `Tower`**); Boutdad, Boutmom `Mobfighter, Boutfamily` (**no `Mob`**, no stats); Fie's Wall drops `Towerfighter` at spawn until Living Wall; Fie's drones have no tags |
 
 ### 2.6 Kill credit and income
@@ -240,9 +240,9 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 ```
 Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthouse, Herotower; no Tower, no Health)
   ├ Tower_Boutmanhousepersistent (keeps the house's upgrades if it falls)
-  └ Mob_Boutmanbro "Boutbro" (Mob, Hero, Boutfamily): builds and mines
+  └ Mob_Boutmanbro "Boutbro" (Mob, Hero, Boutfamily, Boutbro): builds and mines
       ├ Mob_Boutmanfish (Mob, Mobfighter, Fish, Fishmain) + its no-build tile
-      ├ Tower_Boutmanbarrel (Tower, Boutbarrel) ── Buppy (Mob, Fish)
+      ├ Tower_Boutmanbarrel (Tower, Boutbarrel) ── Buppy (Mob, Mobfighter, Fish)
       └ Tower_Boutmanboat (Tower, Towerfighter, Boutboat)
           └ Boutdad / Boutmom / ghosts (Mobfighter, Boutfamily; no Mob, no stats)
 ```
@@ -269,20 +269,21 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
 - Boutbro calls every core's `Child` at `Starting` (:74-83), so `Heroapply` Cardinals reach him; his `Hero` tag also
   puts him in the F-key list (`15` §9).
 - The Shao-min ranged attack AI only fires on a GameObject named "Hero Boutman" (Entity_Ai_Hero_Boutman_Shoot.cs:75):
-  **giving it to another vessel does nothing.** His ranged reach is `Fishingrange`, not `Range`.
+  **giving it to another vessel does nothing.** It aims within `Fishingrange`, not `Range`; the wave itself flies 2.4
+  tiles (`Hero_Boutman_Range`: Zvelocity 12, Lifetime 0.2).
 
 ### 5.2 Fish, barrels, the boat
 
 - A fish guards the tile it was built on (its `Block_Noplacementfish` keeps others off), fights within `Engagerange`,
   goes **KO** at 0 HP (`Dead` state, `Healtharmor` = `Deadarmor`) instead of dying, flies to a same-team barrel with a
-  free slot, is healed by the barrel's live `Heal`, and is fished out by Boutman. It drowns only when hit again after
-  the armour is gone. Fish handle their own hurt at priority 10: reduce at ≤ 9.
+  free slot, is healed by the barrel's live `Heal`, and is fished out by Boutman. The hit that empties the armour
+  drowns it, unless a barrel has begun healing it. Fish handle their own hurt at priority 10: reduce at ≤ 9.
 - Barrel capacity is `Vacantcurrent`; **`Units` is only displayed** (Entity_Ai_Tower_Boutmanbarrel.cs:361-368).
   Farmingbed pays the **fish's owner** 5 % of the fish's worth each time it leaves (:208-264).
 - **The boat does not shoot: Boutdad does, with the boat's live `Damage`, `Attackspeed`, `Range`, `Projspeed`**
   (Entity_Ai_Mob_Boutmandad.cs:79-141). Buff the boat to buff Dad, Mom and the Battleship cannon. Dad and Mom are
-  **one per map, whatever the team** (tag-only query, Entity_Ai_Tower_Boutmanboat.cs:80-101). Mom appears at 4 Raft
-  boats but leaves below 5.
+  **one on the map at a time, whatever the team** (tag-only query, Entity_Ai_Tower_Boutmanboat.cs:80-101). Mom appears
+  at 4 Raft boats but leaves below 5.
 - Read live: hero Damage/Attackspeed/Range/Health/Fishingspeed/Fishingrange; fish Damage/Attackspeed/Range/Speed/
   Engagerange/Health; barrel Heal/Range/Speed/Vacantcurrent; boat everything. **Not**: the hero's `Heal` stat
   (overwritten by params before use), Iron Fish's own params (never read), Boutbro's cost stats outside a recount.

@@ -169,8 +169,10 @@ Waves `docs/reports/SCOPE_VS_LOOP.md` #20):
 2. Brain (attached in `Onspawn` when the being is the boss): on each slow tick compare health with 66% and 33%; at a
    threshold set the level and skin, warn, shake, call adds from the parent core, and open a short invulnerable window.
    Optional bar: write `Display_Wave = "<NAME> <percent>"` at most once a second, restore `TIDE n` at its death.
-3. Ending: make the Breaker Tide the map's last entry with a long `Wavetime` (Tsunami's last Tide uses 9999 s). The
-   Tide lasts until no targetable team-0 enemy is left, then the map is won by the stock loop: **no win code**.
+3. Ending: on a stock table, make the Breaker Tide the map's last entry with a long `Wavetime` (Tsunami's last Tide
+   uses 9999 s). The Tide lasts until no targetable team-0 enemy is left, then the map is won by the stock loop: **no
+   win code**. In Rogue Waves a map is won once Tide 15 is cleared and bonus Tides run until a vote to leave
+   (`docs/scope/04_Rogue_Waves_Mode.txt`), so there the mode's own Tide code, still to be built, places the Breaker.
 4. Never make it untargetable (the Tide would end, `13` §9.1) and never shield it with `Healthover` (a hit larger
    than the shield passes in full, Helper_Damagetools.cs:28-46).
 

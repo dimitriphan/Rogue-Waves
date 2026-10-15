@@ -376,7 +376,7 @@ public class ArgoTowerBrain : MonoBehaviour
                 float m;
                 if (bonus > 0f && ArgoStatus.Debuffed(to) && hit.Data.TryGetValue("Damagemulti", out m))
                 {
-                    // A copy: the projectile hands the same dictionary to every enemy it pierces.
+                    // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
                     hit.Data = new Dictionary<string, float>(hit.Data);
                     hit.Data["Damagemulti"] = m * (1f + bonus);
                     BonusHits++;
@@ -400,7 +400,7 @@ public class ArgoTowerBrain : MonoBehaviour
             float multi;
             if (whale > 0f && hit.Data.TryGetValue("Damagemulti", out multi))
             {
-                // A copy: the projectile hands the same dictionary to every enemy it pierces.
+                // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
                 hit.Data = new Dictionary<string, float>(hit.Data);
                 hit.Data["Damagemulti"] = multi * (1f + Mathf.Clamp01(ArgoUtil.MaxHealth(to) / whale));
             }

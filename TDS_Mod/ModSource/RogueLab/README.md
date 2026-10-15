@@ -97,4 +97,5 @@ record under each `RogueLab_` twin's name in the save (harmless; the save is bac
 6. Tools > RogueLab > Restore Parked Mods if the queue didn't, then disable `RogueLabMod` in the game.
 
 A run that crashes before `TEST DONE` can leave the save key `Unlock/Unlock_Artifact_Artifact_RogueLab`: harmless, it
-names an artifact that exists only while RogueLab is loaded. Steps 10 and 11 of §11 (online, by hand) are not here.
+names an artifact that exists only while RogueLab is loaded. Steps 10 (packaging) and 11 (online) of §11 are by hand
+and not here.

@@ -67,7 +67,8 @@ built around units follows `docs/12_MINION_VESSELS.md` as well. Shipped mixes:
 | Mummer (mod) | Marionette Cross (Blue 30 + Red 15) | Curtain (trap, Blue 20) | Loom (Yellow 40) | Puppet Stage (Red 50, units) |
 
 - **Cost colour = job**: Red offence, Blue defence/control, Yellow economy. Base cost 10-60 aura (the
-  Boutboat Red 100), one colour (two for a hybrid). Unit producers cost the most (60).
+  Boutboat Red 100), one colour (two for a hybrid). Fie's and Buster's unit producers sit at the top of the band
+  (60; Smacky's Mining Hut 35).
 - **Stats** list only what the building uses, with `Leveladd` on Health (+20 to +150 per level) and the main damage
   stat (+0.5 to +2). Shipped bands: Health 20-100, Damage 0.3-5, Range 3-6.5 (towers), Attackspeed 0.2-1 (the
   Boutboat 2).

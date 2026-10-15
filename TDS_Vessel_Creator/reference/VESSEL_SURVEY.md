@@ -64,7 +64,7 @@ This is the reference for making a vessel that feels like the developers made it
 - Param naming: `Stat_Add`, `Stat_Multi`, `Stat_Pmulti`, `X_Base`, `X_Max`, `X_Percent`, `X_Duration`. Bespoke AIs read them, and the engine never applies them on its own.
 - An upgrade can carry its own AI (Smackywall Regen3 adds `Entity_Ai_Effect_Smackywall_Regen`; Fiewall Tower4 adds `Entity_Ai_Tower_Fiewall_Turret`).
 - **Buffs and debuffs** are `Effect_*_Upgradeobject` upgrades applied to the target with `Helper_Entitytools.Upgrade`:
-  - Each has its own effect AI that reads `Duration_Base` and removes itself.
+  - Each has its own effect AI. The timed ones (13 of the survey's 36 `Effect_*` upgrades) carry `Duration_Base`, which that AI reads to remove itself.
   - Visual state shows through `Radio.Vfxdebuffcheck("Debuff_*")`.
 - **Ground effects** are networked beings on a tile: Sno (`Effect_Snosnosnow`, General_Effectground block, Level stat plus skins '2'..'10'), Bramble and Beacon zones (General_Effect block, `Entity_Ai_Tower_Tilebuff`).
 - **Death leftovers** are trap beings: Perma-Wall leaves `Trap_Smackywall_Perma`, which heals over time and respawns the wall; Hidden Surprise leaves `Trap_Smackywall_Spikes`; Thin Ice leaves `Trap_Snosnowall_Thin`.

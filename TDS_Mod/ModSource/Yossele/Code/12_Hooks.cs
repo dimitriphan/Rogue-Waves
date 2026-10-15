@@ -178,7 +178,7 @@ public static class YosseleHooks
             }
             if (Mathf.Approximately(scale, 1f))
                 return;
-            // A copy: projectiles and some AIs reuse one dictionary for several hits.
+            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
             hit.Data = new Dictionary<string, float>(hit.Data);
             hit.Data["Damagemulti"] = multi * Mathf.Max(0f, scale);
         }
