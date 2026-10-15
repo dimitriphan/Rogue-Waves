@@ -68,7 +68,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     placeholder object).
 22. **Risk when uninstalling a vessel** → at startup the game calls `Selectcharacter` with the save's
     `Player_Heroselect`, which the self-test sets to the tested vessel; if that vessel is gone the selection points at
-    nothing (not observed, avoided) → before removing a vessel mod, select another vessel in game.
+    nothing (not observed, avoided) → before removing a vessel mod, select another vessel in game. Read from code
+    since (`23` §2.1): the host ignores the unknown hero and the player picks one by hand; a saved pack *world* is
+    worse (the boat never loads), which RogueWavesMode guards.
 
 ## D. Journal
 
@@ -246,3 +248,39 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 86. **A Sno Sno cannon throws or eats a modded entity** (`17` §4) → it takes ammo from the nearest entity tagged
     `Sno` or `Snoble` of any team and picks its shot by that entity's GameObject name → never tag pack things `Sno`
     or `Snoble` (nor other base-vessel family tags, `17` §11.1 rule 12). Read from code.
+93. **Every machine drops to the main menu 120 s into a map load** (decompile, `19` §3) → one client that can't load
+    the map (pack missing, a `Subloads` group name `Waitload` never finds) never sets `Loaded`; the host waits for it
+    with no timeout, and each machine's `Game_Load` kicks itself out at 120 s → every player runs the same pack; a host
+    watchdog can kick a client still not loaded after about 60 s (`RecipeNet.LoadWatchdog`, untested). Read from code.
+    (87-92 are left to the open PRs #29 and #33.)
+94. **A friend who restarted the game is turned away on rejoin** (decompile, `19` §5) → the client's GUID lives in the
+    save's `Metadata`, which every load wipes, so a restart brings a new `Sessionid` and RogueWavesMode's seat check
+    misses → test a pulled cable and a restart apart (`docs/REJOIN.md` O1-O3); a seat fallback on `Displayname` would
+    seat it (not built). Read from code.
+95. **Effects show solo but not in a busy online fight** (decompile, `19` §4) → `Projectilecheck`, `Vfxoneshotcheck`,
+    `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
+    solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being.
+    Read from code.
+96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
+    table is built once, before mods load, and never takes a new key; an unknown, empty or null key throws wherever the
+    game plays it; `Random.Range(0, Count - 1)` never picks the last variant → check every key the pack writes at boot
+    (`RecipeSound.Exists`), play own clips on own sources, replace a `Soundpair.val` list instead of appending. Read
+    from code.
+97. **The vessel's `<Name>_Localization.csv` changes nothing in game** (decompile, `21` §3.1) → the game reads only its
+    own `Resources/Localization` and its dev file → keep the CSV as a translator's sheet and write the rows into
+    `Bla_Localization.translations` after each language load (`RecipeText`). Read from code.
+98. **The next launch loads an empty profile that never saves** (decompile, `23` §2) → `Initialize` rebuilds the
+    save's dictionaries with `Add`, so a duplicate or null folder or key name (from editing `Folders`, `Data` or
+    `Datalist` directly) throws, and the load isn't caught → only `Readdata`, `Adddata` with its typed third argument,
+    `Removedata` and `Removefolder`. Read from code.
+99. **A slot switch writes one slot's campaign into the other** (decompile, `23` §6) → the pack's statics outlive
+    `Bla_Data.Playerdata`, which a switch replaces → rebuild pack state on `Onslotchanged` and `Onslotremoved`, in a
+    handler that never throws (`RecipeSave.Install`). Read from code.
+100. **One part's compile error silently drops the parts after it** (decompile, `23` §4.3) → the loader activates a
+     bundle's `Default` prefabs in one loop, and a compile failure leaves the loop → compile each part alone with
+     cloud-check before a build, and ship `Default` prefabs only (a broken keyword prefab stops a game scene for every
+     mod). Read from code.
+101. **A map's cores or buildings vanish at load** (decompile, `22` §2) → `Despawnanonblock` removes every being
+     without a grid node, and beings under the map's `Entities` child get none unless their block adds one → put them
+     under `Object`, one tile above the ground, on a tile centre (`Maxbound` is the grid's minimum corner). Read from
+     code.

@@ -200,6 +200,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
+  2026-10-14: a full decompile gave kit chapters `docs/19`-`24` (online, UI and HUD, music and text, new maps, save and
+  loader, enemy bodies and bosses), compiled recipes in `examples/recipes/`, pitfalls #93-101; read from code, untested.
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
@@ -295,6 +297,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   each sheet ends with its open questions. Yossele's sheet now asks for a ranged laser and a slower speed, which the
   build (PR #30) doesn't have yet. Then, at his ask, `docs/scope/16_Base_Vessels.txt`: the five base vessels in the same
   template from the game's data (kit `reference/vessel_data_survey.txt`, `docs/17`), with a side-by-side stat table.
+- **Also (2026-10-14):** Dimitri asked to decompile the game and turn it into kits and lessons. The whole
+  `Assembly-CSharp.dll` was decompiled into the thread's scratchpad (never committed) and six areas the kit was thin on
+  were read in parallel and spot-checked by hand. Result: kit chapters `docs/19_NETWORKING.md` (with
+  `reference/network_surface.md`), `20_UI_AND_HUD`, `21_MUSIC_SOUND_TEXT`, `22_NEW_MAPS`, `23_SAVE_UNLOCKS_LOADER`,
+  `24_ENEMY_BODIES_AND_BOSSES`; five recipes in `examples/recipes/` that compile with cloud-check; pitfalls #93-101;
+  corrections in `docs/01`, `03`, `05`, `07`, `13`, `14`, `15`, `REJOIN.md`, `PACK.md`, `SEA_CHART.md` and
+  `EXPANSION_SCOPE.md`. Findings for the pack's own code, not fixed yet: a friend who **restarts** the game gets a new
+  `Sessionid` and RogueWavesMode turns them away (`REJOIN.md` O3b); one client that can't load a map sends **every**
+  machine to the main menu after 120 s; debuff looks and stock effects drop silently in a busy online fight; campaign
+  statics survive a save-slot switch. Each chapter ends with a PC list; the online evening list is `docs/19` §8.
 
 ### Decisions
 

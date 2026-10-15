@@ -107,9 +107,10 @@ Round 6 (0.2.1, 2026-10-11): 47 pass, 0 fail.
 
 | # | Do | Expect |
 | --- | --- | --- |
-| O1 | The friend ends their game (Task Manager or pulled cable) mid-Tide | The host's chat says they lost the connection; the Tide goes on, nothing pauses |
-| O2 | The friend starts the game and opens the Steam friends list | Join Game on the host; their main menu showed the "Lost the map" line |
+| O1 | The friend pulls their network cable (or turns Wi-Fi off) mid-Tide, **game left open** | The host's chat says they lost the connection; the Tide goes on, nothing pauses |
+| O2 | The friend reconnects and opens the Steam friends list | Join Game on the host; their main menu showed the "Lost the map" line |
 | O3 | Join Game | The running map loads, the fly-in plays, then their HUD; their vessel where it stood, their towers sellable and upgradable, their aura as before |
+| O3b | Repeat O1-O3, but the friend ends the game in Task Manager and starts it again | Read from code (kit `docs/19` §5): the restart wipes the save's `Metadata` GUID, so the friend gets a new `Sessionid` and 0.2.1 turns them away like a stranger (O5). Expected to fail until a seat fallback on `Displayname` is built; note what happens |
 | O4 | Play a Tide | Tide pay and kill drops reach them again |
 | O5 | A third friend not in the map tries Join Game | Turned away with a chat line; back on their main menu |
 | O6 | Watch the others' screens while the friend joins | No stutter worth noting (note any, and the host's log time of the join) |

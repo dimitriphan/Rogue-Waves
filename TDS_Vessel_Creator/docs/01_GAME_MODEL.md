@@ -19,8 +19,9 @@ method's body with `tools/cecil/il.ps1` (`docs/11_TOOLING.md`). If the game upda
 - The game's compiler references a **fixed list** of assemblies (in `Build-<Name>Mod.ps1`). **Not available:**
   `System.Core` (no `HashSet`, no LINQ), `UnityEngine.JSONSerializeModule` (no `JsonUtility`), `System.IO`,
   `System.Reflection` (blocked by the code security settings), `UnityEngine.TextRenderingModule` (no `TextAnchor`).
-- Being modded only switches off leaderboard validation (`Game_Endscreen.Validate`). Lobbies are not blocked, but every
-  player must have the same mods enabled.
+- Being modded switches off leaderboard records (`Game_Endscreen.Validate`), for the whole lobby when one player is
+  modded; stats, unlocks, medals and achievements still count (`23` §5). Lobbies are not blocked (no version or mod
+  check, `19` §1), but every player must have the same mods enabled.
 - ModTool's export puts **every prefab and ScriptableObject in the project** outside paths containing `/Editor/`,
   `/ModTool/` or `Packages/` into the bundle. Several mods in one project must be parked during an export (`docs/04`).
 
@@ -65,7 +66,9 @@ network sends) and `Id` (unique string).
 - `Bl_Address.Getload(label, name)` searches `Groups[label]`; it logs "Could not retrieve ... The GROUP exists, but item
   does not" when the item is missing.
 - Names travel as `FixedString64Bytes`: keep ids ≤ 60 characters.
-- English text is the localization key, and unknown keys display as-is, so English strings just work.
+- English text is the localization key, and unknown keys display as-is, so English strings just work. An English
+  string equal to a stock key gets the stock translation; a mod translates by writing `Bla_Localization.translations`
+  on each machine after every language load (`21` §3).
 
 ## 4. Entities at run time
 
@@ -81,7 +84,7 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 | `Upgradelistserver` / `Upgradelist` | applied upgrades (server dict / synced names) |
 | `Taglistserver` / `Taglist` | tags (server list / synced list; clients only have `Taglist`) |
 | `Entityposition`, `Entitydirection` | synced position (y = ground + 0.5 for towers, units, vessels) and facing |
-| `Entitydata` | synced `{Owner (session id, long), Team, Level}` |
+| `Entitydata` | synced `{Owner (session id, long), Subowner (long[], compared by reference: assign a new array), Level, Team, Sellvalue, Upgradesellvalue}` (`19` §2) |
 | `State`, `Skin`, `Beingref` | synced state name ("Idle", "Move", "Attack"...), skin name, a `Link_Beingref` to itself |
 | `Radio` (`Entity_Master_Radio`) | RPCs: `Vis_ClientRpc(type, pos, number)`, `Vfxdebuffcheck`, `Vfxoneshotcheck`, `Vfxremovedebuff_ClientRpc`, `Uiwarning_ClientRpc` |
 | `Remote` (`Entity_Master_Remote`) | `Command_ServerRpc(link, json)`: a client asks the server to run a command |
@@ -89,8 +92,8 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 | events | `Command(command, json, server)`, `Upgrade(Upgradeproperties)`, `Interact` (outgoing hits), `Oninteract` (incoming hits) |
 
 - `Game_Entity.Instance`: `IsServer`, `Entityclient` (every entity on this machine), events `Onspawn(Entity_Master)`
-  (fires synchronously inside `Spawn`) and `Ondespawn(Entity_Master, bool killed, string reason)`, `Despawn(being,
-  killed, reason)`.
+  (fires synchronously inside `Spawn`, **host only**: a client has no spawn event and polls `Entityclient`, `19` §2) and
+  `Ondespawn(Entity_Master, bool killed, string reason)`, `Despawn(being, killed, reason)`.
 - `Game_Mapvars.Instance`: `Wave` (the Tide number, `NetworkVariable<int>`, subscribe to `OnValueChanged`), `Time_Wave`
   (seconds to the next Tide; the game advances only when it is **≤ 0**).
 - Ground tiles are entities tagged `Surface`; a tile is 1 unit; `Helper_Gridtools.Getblock(pos)` needs the **exact**
@@ -166,7 +169,8 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 
 - `Visualproperties.Default` is an `Entry` **struct** (copy, modify, assign back): `Style` (Sprite / Model / Both),
   `Spriteobject`, `Visprefab`, `Displayname`, `Displaycolor`, `Additionalprefabs`, `Additionalvisualscripts`, `Vfxend`
-  (death effect), `Rootvisualproperty`. Skins: `Skinoverride` list + `Skinoverrides` dict, selected by `Master.Skin`.
+  (death effect), `Sfxstart`/`Sfxend` (stock sound keys played on every machine at spawn and at a real death, `21`
+  §2.2), `Rootvisualproperty`. Skins: `Skinoverride` list + `Skinoverrides` dict, selected by `Master.Skin`.
 - `Spriteobject`: `Items` (name → `Spritesinlist {Name, Sprites (variants), Loop, Reset, Priority, Speed, Spriteto,
   Dumpsplit}`), `Itemslist`, `Defaultspeedmulti`, `Defaultfolder`, `Preview`. Variant 0-1 face front, 2-3 face back.
   Custom animations play with `Entity_Vis_Animator_Base.Animplay(name, Game_Sprite.Animationtype.Force)`.
@@ -177,14 +181,16 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
   RPCs over it are dropped silently.
 - Icons: `Tds_Masterdatabase` folder `Icons` → `Iconobject` `Icon_Types` / `Icon_Stats`; `Helper_Uitools` copies them
   into a private table **on the first `Geticon` call and never again**.
-- Sounds: the game's sound table is private and built once, so mods play their own `AudioSource`s routed to the game's
-  mixer group (the one the "Upgrade" sound uses, `General_Main`).
+- Sounds: the game's player is internal and its table is built once, before mods load, so mod clips play on their
+  own `AudioSource`s routed to the game's mixer group (the one the "Upgrade" sound uses, `General_Main`). Stock keys
+  play from mod code (`Helper_Vfxtools.Playsound`, host `Tds_Multiplayer_Radio.Instance.Sfx_ClientRpc`), and an
+  unknown key throws (`21` §2).
 
 ## 11. Menus, boat, save
 
-- Vessel select is on the boat: `Macro_Worldvisual.Populatecharselect` lays heroes onto `Boat/Charselect/Spots`
-  children (6 shipped spots, all named "Spot"), one per hero, and marks heroes missing from the save as locked
-  (`Macro_Characterselect_Click {Character, Locked}`).
+- Vessel select is on the boat: `Macro_Worldvisual.Populatecharselect` lays heroes onto `Boat/Charselect/Spots` children
+  (6 shipped spots, all named "Spot"), one per hero, and marks heroes without `Unlock/Unlock_Hero_<Objectname>` as
+  locked (`Macro_Characterselect_Click {Character, Locked}`); the lock only blocks the mouse (`23` §3.3).
 - A click on the boat is one `Physics.Raycast` from `Camera.main` on the UI layer (`Boatclick`), and the nearest
   vessel box wins, so a vessel whose box its neighbours cover can't be picked with the mouse (the Left/Right vessel
   arrows still cycle every vessel). The select camera looks straight across the deck, level with the vessels, so

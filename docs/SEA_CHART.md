@@ -88,7 +88,7 @@ The base game lets only the leader steer (§2). Three ways to keep the scope's "
 | | Route | Verdict |
 | --- | --- | --- |
 | V1 | **Vote in the map, sail on the boat.** The map's last vote (leave) is followed by the "where next" vote in the same dialog, over the proven channel (vessel commands and `Runprompt`, `docs/15` §6). On the boat the host's mod sails to the winner by itself. Map 1 keeps today's staging step, or the leader picks map 1 on the chart | works with proven pieces; the chart is a display for every map but the first |
-| V2 | **Vote on the boat.** Each client's mod opens a `Runprompt` of the choices on the boat and writes the pick into its own player's `Displayname`, the one networked value a client may write (Blm_Player.cs:30, owner write) and every machine sees; the host counts, sails, and puts the names back. Map 1 is voted the same way | best to play; **untested**, and a name with a vote mark shows in chat for a moment |
+| V2 | **Vote on the boat.** Each client's mod opens a `Runprompt` of the choices on the boat and writes the pick into its own player's `Displayname`, the best of the three networked values a client may write (Blm_Player.cs:30, owner write; `Tds_Clientinfo.Loaded` and `Mods` are the others, and writing them could disturb the game's load and mod checks, kit `docs/19` §7) and every machine sees; the host counts, sails, and puts the names back. Map 1 is voted the same way | best to play; **untested**, and a name with a vote mark shows in chat for a moment |
 | V3 | **The leader steers.** As in the base game; the others talk | no work; drops the scope's vote |
 
 **Chosen: V1** (Dimitri, 22:23Z). Map 1 (default taken): the vote is held in the staging map's opening break, as

@@ -25,7 +25,7 @@ on the PC.
 | Mods are discovered by `*.info` under `<working dir>/Mods`, loaded asynchronously; a mod whose `_platforms` lacks the running platform fails with "Platform not supported" | read | `ModManager.cs` |
 | **No dependencies, no load order, no priority** anywhere in ModTool. The only inter-mod relation is a *conflict*: two mods sharing an assembly name or a scene name refuse to load together | read | `Mod.UpdateConflicts`, `ModManager.AddMod` |
 | TDS: `Bla_Mods` holds `List<ModTool.Mod> Mods` / `Loadedmods`, a `Toggle(mod)` and an `Autoloadscenes` list of strings; `Activateprefabs(prefabCheck)` instantiates every prefab whose name contains the check (the game passes `"Mainmenu"`, `"Loading"`, `"World"`, `"Gameserver"`, `"Gameclient"`; a mod's `"Default"` prefabs activate when the mod loads) | read | `reference/api_assembly_csharp.txt` (`Bla_Mods`) |
-| TDS: the Mods menu (`Bla_Ui_Mods`, plus ModTool's example `ModMenu`/`ModItem`) shows name, type and a toggle per mod; nothing in the API dump names an order | read | API dump |
+| TDS: the Mods menu (`Bla_Ui_Mods`) shows title, author, description, version, image, state and a toggle per mod, plus Refresh; ModTool's example `ModMenu`/`ModItem` is unused (`23` §4.3); nothing in the API dump names an order | read | API dump, decompile |
 
 ## 2. Scenes, so maps
 
@@ -45,8 +45,10 @@ What this meant for a new map in TDS (superseded: §6 and `15` §10 answer it fr
 - Whichever route, a mod scene layered on the running game's scenes would have to be unloaded and reloaded by the
   host's own flow, which no mod code reaches today.
 
-Scope row 4 (maps) stays **high risk**: maps ship as `Map` prefabs with `Mods_Mapsettings`, picked up by
-`Custom_Map_Overworld` (§6), not yet tried in game.
+Scope row 4 (maps) stays **high risk**, but the route changed (decompile, 2026-10-14): the custom-map slot
+(`Map` prefabs with `Mods_Mapsettings`, picked up by `Custom_Map_Overworld`, §6) is per machine, unrecorded, edits
+stock data and hung in RogueLab (`09` #78). Pack maps register like the mode: their own `Mapentryobject`, group,
+`Mapobject` and `Gameplan` on every machine (`22` §3). Not yet tried in game.
 
 ## 3. The code sandbox: RoslynCSharp
 
@@ -113,8 +115,10 @@ registry, `kit/README.md`).
 
 **Answered from the code and the Mod Tools package (2026-10-08, `15` §10):** Q1 partly: `supportedContent` is 7
 (assets, scenes, code), but the game never loads a mod's scenes (`Autoloadscenes` is never read); maps ship as `Map`
-prefabs with `Mods_Mapsettings`, picked up by `Custom_Map_Overworld`. Q2: every enabled mod loads at boot in ModTool's
-discovery order, never sorted (not alphabetical in a 2026-10-08 `Player.log`); `Toggle` loads or unloads at once.
+prefabs with `Mods_Mapsettings`, picked up by `Custom_Map_Overworld` (not the pack's route, see above). Q2: every
+enabled mod loads at boot in ModTool's discovery order, never sorted (not alphabetical in a 2026-10-08 `Player.log`);
+`Toggle` loads or unloads at once, but unloading undoes nothing of the mod's code, registrations or hooks, so players
+restart after enabling or disabling the pack (`23` §4.3).
 Q4: every prefab matching a keyword activates, in every mod, each compiled into its own assembly. Still on the PC: Q1's
 custom-map check, Q3, and Q5 (not a PC task).
 

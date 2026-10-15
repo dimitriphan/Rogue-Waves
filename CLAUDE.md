@@ -45,6 +45,7 @@ When a vessel starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold 
 | Enemies, elites, modifiers | `docs/13_ENEMIES_AND_MODIFIERS.md` |
 | Directions or Cardinals that must work on every vessel; reusing a base vessel's assets | `docs/17_BASE_VESSELS.md` (§8, §11) |
 | Anything an expansion has that a vessel mod doesn't | `docs/EXPANSION_SCOPE.md`, then `docs/14_MODTOOL_AND_PACKAGING.md` (what a mod can carry, how a pack ships), `docs/15` (the Rogue mode engine), `docs/16` (inside a map: grid, map objects, nodes, wallet), `docs/13` §11 (how the game's code was read here) and `docs/11_TOOLING.md` |
+| A mode's host brain, its UI, music, text, maps, the save, a boss; anything online beyond a vessel | `docs/19`-`24` (online, UI and HUD, music and text, new maps, save and loader, enemy bodies and bosses; read from the decompiled game, untested), sketches in `TDS_Vessel_Creator/examples/recipes/` |
 | Check a mod without Unity | `TDS_Mod/Tools/cloud-check/README.md` |
 | Send code to the PC, build, self-test, release | `TDS_Mod/Tools/pc/README.md`; self-tests: `docs/08` |
 | Review or hand off | `docs/10_CHECKLISTS.md` |

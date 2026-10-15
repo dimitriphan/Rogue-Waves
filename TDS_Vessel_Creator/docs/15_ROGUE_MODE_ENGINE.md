@@ -91,7 +91,8 @@ kit already marks `DontDestroyOnLoad` (`05` §1, Boot; verified in a mod). `Game
 rebuilt per map. Statics in prefab code stay (one compile per activation, §10).
 
 **Where run state lives:** a host dictionary on the `Default` object keyed by `Sessionid` (client ids change on a
-rejoin, §14.5): Pure Aura, Directions owned, map number, Depth level (on hold). Clients can't get a new
+rejoin, §14.5; a client restart changes the `Sessionid` too, so what outlives one host session keys on `Displayname`,
+`19` §5): Pure Aura, Directions owned, map number, Depth level (on hold). Clients can't get a new
 `NetworkVariable` (a mod can't add networked behaviours). Show it through what already syncs: a counter stat on each
 player's vessel (`Addstat` + `Style = Counter`, `01` §6, verified for Mummer's Thread), restored by the host at each
 vessel spawn; Directions as visible upgrades on the vessel (`Upgradelist` shows on the panel); one-off messages as Vis
@@ -132,7 +133,8 @@ players it waits for the online evening).
 
 ## 6. Choices on every client
 
-**The only general client→host channel a mod can use is an entity command** (read):
+**The only client→host channel with a payload and an owner check is an entity command** (read; the payload-free ones
+are `19` §6 rules 5-6):
 `Entity_Master_Remote.Command_ServerRpc(string Link, string Json)` (Entity_Master_Remote.cs:43) is accepted when the
 sender is the entity's owner or a subowner, the link is in `Commandlistserver` and the command is `Controllable`, and
 then calls the entity's `Command(Link, Json, Server)` (:84; Helper_Entitytools.cs:342). The handler isn't told who
@@ -140,7 +142,8 @@ sent it: identify the voter by the entity's owner (a command on the player's own
 only to an owner or subowner on the same team (Game_Ui.cs:298); the host can set `Subowner` (Game_Players.cs:77-84).
 
 Not usable as a menu: `Entity_Command_Itemselect_Base` is a "click a spot in the world" helper; `Selectother` and
-`Blurryphoto_Select` only change the local selection (read). Chat is private (`Blm_Ui_Chat.Sendchat_ServerRpc`).
+`Blurryphoto_Select` only change the local selection (read). Chat's RPC is private, but its `Chat` list is public: the
+host can write a line for everyone (`Chat.Add`) and read every player's lines (`20` §2).
 
 | Choice | Route | Verdict |
 |---|---|---|
@@ -189,8 +192,10 @@ with `SendMessage("Updateartifactlist")`, §13).
   `Readdata(folder, name)` → `Entry {Value, Valuestring, Loaded}` (Datacontainer.cs:33,77,121).
 - Unknown folders and keys survive a load and save; no checksum or version check (Datacontainer.cs:15-31;
   Bla_Data.cs:324-327). The `Metadata` folder is wiped on every load (:57,199-208): never write there.
-- A slot switch replaces `Playerdata`: never cache it; re-read after `Bla_Data.Instance.Onslotchanged` (:316).
-- The game saves at match end, on the boat and on quit (Game_Endscreen.cs:514, Macro_Main.cs:516, Bla_Data.cs:150).
+- A slot switch replaces `Playerdata`: never cache it; re-read after `Bla_Data.Instance.Onslotchanged` and
+  `Onslotremoved`, which a clear fires instead (:271-274, 317, 339-342).
+- The game saves at match end, on the boat and on quit (Game_Endscreen.cs:514, Macro_Main.cs:516, Bla_Data.cs:150),
+  and on a slot switch or clear; the match-end save comes before the match's stats are written (`23` §1.2).
 - Unlocks: `Tds_Data.Checkunlocks` runs every `Items["Unlock"]` entry's trackers and writes `Unlock/<Dataadd>` = 1 and
   `Unlock_Notif/<Dataadd>` (Tds_Data.cs:23-63). `Unlock_Tracker_Conditions` can test any folder and key;
   `Unlock_Tracker_Matchreader` reads only the game's own last-match JSON; `Unlock_Tracker_Monobehaviour` finds its type
@@ -234,7 +239,8 @@ reorder.
 - All enabled mods load at boot, 5 s after `Bla_Mods.Start`, in ModTool's discovery order; the game never sorts them
   (Bla_Mods.cs:60-70,112,135-144) (read). A modded launch on 2026-10-08 loaded Crackpot, Rustle, Sprigg, Mummer,
   Riptide, Argo: not alphabetical (verified, Player.log). No mod can count on running after another.
-- Prefab keywords activate by `IndexOf` on the name: `Default` when the mod loads, `Mainmenu` at each main menu,
+- Prefab keywords activate by `IndexOf` on the name: `Default` when the mod loads, `Mainmenu` at each main menu (most
+  likely not the first one after launch, `23` §4.1),
   `World` on the boat, `Loading`, `Gameserver` (server, after `Startgame`), `Gameclient` (Bla_Mods.cs:40,113 and the
   callers) (read). Every match of every mod activates, and **each instance's code is compiled again into its own
   assembly**: statics are per prefab per activation, and no mod sees another's types (read; reflection is blocked).
@@ -244,8 +250,13 @@ reorder.
   `Custom_Map_Overworld` collects every loaded mod prefab whose name contains `Map`, sorted by name, and fills a map
   slot from its `Mods_Mapsettings` (`Gamemode` by name, lighting, atmosphere, `Mapdata`, `Mapvisuals`, difficulty,
   name, colour, image) (Custom_Map_Overworld.cs:19-90; the component ships in the Mod Tools package's
-  `Assets/Exporteradds`). The package's `ModToolSettings.supportedContent` is 7 (assets, scenes and code) (read).
-- Being modded switches off leaderboard records (Game_Endscreen.cs:57).
+  `Assets/Exporteradds`). That slot is per machine, unrecorded and edits stock data, and its load hung (`09` #78):
+  **pack maps register like the mode instead** (`22` §3, decompile 2026-10-14). The package's
+  `ModToolSettings.supportedContent` is 7 (assets, scenes and code) (read).
+- Being modded switches off leaderboard records (Game_Endscreen.cs:57), for the whole lobby when one player is modded;
+  stats, unlocks and medals still count (`23` §5).
+- A compile error in one `Default` prefab skips that mod's later `Default` prefabs, and **`Toggle` undoes nothing**
+  (code, hooks and statics stay): players restart the game after enabling or disabling the pack (`23` §4.3).
 
 ## 11. PC research list (one build, one launch, then one online check)
 
@@ -372,16 +383,20 @@ questions. All **read**; RogueLab round 2's results are §15.
 
 - Map, mode and soundtrack are three strings loaded separately (Game_Init.cs:96-119): any map takes any mode. The
   coupling is data: the mode's `Specialspots` go to named children of the map's `Mode` transform, and a missing one only
-  logs "Mode might not work properly" (Game_Rounds.cs:72-98); map buildings (Merchut, gates) come from the map's own
-  `Entities` whatever the mode (Game_Grid.cs:275-311). No code names a map except `Special_Custom` (no records). Alt
-  maps are a Gameplan swap behind `Unlock_Altmaps` (Tds_Multiplayer_Remote.cs:662-664). RogueLab round 2 played 28
-  maps in the mod's mode and round 3 the other 15, all clean (§15).
+  logs "Mode might not work properly" (Game_Rounds.cs:72-98); map buildings (Merchut, gates) come from the map's
+  `Object` child whatever the mode (Game_Grid.cs:656-735); beings under `Entities` are swept by `Despawnanonblock`
+  unless their block adds a node (corrected by the decompile, `22` §2). No code names a map except `Special_Custom` (no
+  records). Alt maps are a Gameplan swap behind `Unlock_Altmaps` (Tds_Multiplayer_Remote.cs:662-664). RogueLab round 2
+  played 28 maps in the mod's mode and round 3 the other 15, all clean (§15).
 
 ### 14.5 Players who drop
 
-- The stable player key is the `Sessionid` (long): the host maps each client's saved GUID to a number and reuses it on a
-  rejoin (Blm_Player.cs:79-92, Blm_Multiplayer.cs:457-466). Netcode client ids, Steam ids and `Tds_Clientinfo` are not
-  stable. Run state is keyed by `Sessionid` (RogueLab and Riptide already do).
+- The player key within one host session is the `Sessionid` (long): the host maps each client's saved GUID to a
+  number and reuses it on a rejoin (Blm_Player.cs:79-92, Blm_Multiplayer.cs:457-466). The GUID sits in the save's
+  `Metadata`, which every load wipes, so **a friend who restarts the game comes back with a new `Sessionid`**; only a
+  drop with the game still open keeps it (decompile 2026-10-14, `19` §5). Netcode client ids and `Tds_Clientinfo` are
+  not stable; the Steam id is stable but out of reach for mod code; `Displayname` survives a restart. Run state is
+  keyed by `Sessionid` (RogueLab and Riptide already do).
 - A drop despawns nothing: teammates become subowners of the dropped player's entities, and lose that on a rejoin
   (Game_Players.cs:24-88). A rejoin gets a fresh `Tds_Clientinfo` with `Activeplayer` 0 and no aura
   (Tds_Clientinfo.cs:25,37).
@@ -397,11 +412,11 @@ questions. All **read**; RogueLab round 2's results are §15.
 - **A late joiner** gets the running `Game` scene and every networked thing from Netcode, and the map's client start
   runs by itself (`Game_Client_Init.Initalize`, Game_Client_Init.cs:39-177: groups, local `Loaded`, the mode's client
   script). Each thing's client side waits for that `Loaded` (Entity_Master_Client.cs:138) and then 10 s for its being's
-  group; the HUD reads the current wallet and Tide (Game_Ui.cs:1745). Only `Game_Client_Init.Startvisuals` (camera
-  fly-in, HUD start, game-speed hook, the mods' `Gameclient` prefabs) is missed: just the loading scene calls it
-  (Game_Load.cs:245, :293), so a mod calls it (public) once the local `Loaded` is true. Nothing on the host waits for
-  clients after the first Tide's start check (Game_Init.cs:123). A late joiner is a client whose `Game_Init` spawns
-  with `Gameloaded` already true.
+  group; the HUD reads the current wallet and Tide (Game_Ui.cs:1745). Of the start, only `Game_Client_Init.Startvisuals`
+  (camera fly-in, HUD start, game-speed hook, the mods' `Gameclient` prefabs) is missed (with every state sent by RPC,
+  `19` §5): just the loading scene calls it (Game_Load.cs:245, :293), so a mod calls it (public) once the local `Loaded`
+  is true. Nothing on the host waits for clients after the first Tide's start check (Game_Init.cs:123). A late joiner is
+  a client whose `Game_Init` spawns with `Gameloaded` already true.
 - The host can restore a rejoin's `Tds_Clientinfo` (all server-written): `Hero`, `Team`, `Activeplayer` (set 1 before
   `Activeplayerdata`: a change to 0 resets it), `Activeplayerdata`, `Playerstatsjson`, `Resources`. A host chat line:
   `Blm_Ui_Chat.Instance.Chat.Add(new Link_Chatcontainer { Sender, Text })` (a server-written `NetworkList`). The main
@@ -412,8 +427,11 @@ questions. All **read**; RogueLab round 2's results are §15.
 `Runprompt(entries, title, sub, Forcedisplaymenu)` (Bla_Ui_Confirmation.cs:342). An entry has `Name`, `Display_Name`,
 `Display_Color`, `Display_Desc` (shown on hover), `Display_Image`, `Display_Imagecolor`, `Tomenu` (:16-31): no price, no
 disabled state, so a shop writes the price in the name and refuses on the host. One card per entry with no limit and no
-scrolling in code (:149); the list is a two-column grid (Riptide). The first click wins; no timeout (:196-231). It
-hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must open while that menu is up (§15).
+scrolling in code (:149); the list's `GridLayoutGroup` is a mod-adjustable default (Riptide and RogueLab use up to
+4 per row). The first click wins; no timeout and no cancel (:196-231). It hands the gamepad focus to its parent
+`Blu2_Menu_Handler` per card (the **last** card becomes the pad's start button), so it must open while that menu is up
+(§15); its own `Changemenu` isn't forced and is dropped during a transition, so open the menu with `Force`, wait,
+then call with `Forcedisplaymenu: false` (`20` §2, `examples/recipes/RecipeUi.cs`).
 
 ### 14.7 Damage, pickups, light, changing towers (vessel mechanics)
 
@@ -453,7 +471,8 @@ hands the gamepad focus to its parent `Blu2_Menu_Handler` per card, so it must o
 - **Prefab keywords:** `Mainmenu` activates at each main menu (Mainmenu_Main.cs:362); `World` only on the host's boat
   (Macro_Main.cs:395, inside the host branch), so client-side boat UI runs from the `Default` prefab's `Update`.
 - A client without the match's mode or Gameplan entry stops loading on a null entry, and the host waits for every
-  client's `Loaded` (Game_Client_Init.cs:101-104; Game_Init.cs:123-134). The start-from-main-menu route built on these
+  client's `Loaded` (Game_Client_Init.cs:101-104; Game_Init.cs:123-134); after 120 s every machine, the host too,
+  leaves for the main menu (Game_Load.cs:36-70; `19` §3). The start-from-main-menu route built on these
   facts: `docs/MAIN_MENU_START.md` in the Rogue Waves repository.
 
 ## 15. RogueLab rounds 2 and 3 (2026-10-09)
@@ -609,25 +628,29 @@ right, Entity_Ai_Artifact_Gavel.cs:71-76), harmless only because the map ends.
   way Argo does, `16` §5).
 - **Banner and note:** `Game_Mapvars.Instance.Display` (networked: `Display_Wave`, `Display_Note`, `Display_State`,
   `Display_Endgame`, Game_Mapvars.cs:11-19, 70). A new non-empty `Display_Note` slides in under the banner for 5 s
-  (Game_Ui.cs:1541-1555); `Mode_Normal` writes the Tide entry's `Note` there. Writing "TIDE CLEARED" / "APPROACHES" /
+  when it differs from the last note shown (Game_Ui.cs:1541-1555), and `Mode_Normal` rewrites the whole struct from
+  its own copy (`20` §2); `Mode_Normal` writes the Tide entry's `Note` there. Writing "TIDE CLEARED" / "APPROACHES" /
   "APPROACHING" also muffles the music (Clientmode_Normal.cs:84-95).
 - **Music stages** advance at the mode's `Musicwave1..4` params (Clientmode_Normal.cs:22-83): a mod's `Modeobject`
-  sets where the music builds. **Tips** show only on the end screen, from the `Earlygame_Funfacts` list
+  sets where the music builds. A stage plays only at exactly its Tide with the one before reached, so a skipped Tide or
+  a rejoin freezes the music (`21` §1.2). **Tips** show only on the end screen, from the `Earlygame_Funfacts` list
   (Clientmode_Normal.cs:106-131).
 - **Tutorial prompts** (`Tds_Tutorialmenu.Instance.Descprompt`, `Highlightprompt`, `Imageprompt`,
-  Tds_Tutorialmenu.cs:67-175) are client-local and exist only where the tutorial menu does: untested outside it.
+  Tds_Tutorialmenu.cs:67-175) are client-local; the tutorial menu exists in ordinary matches too (the rotate and
+  Cardinal hints use it, `20` §2). Untested from a mod.
 - **`Radio.Dataadd_ClientRpc(folder, name, value)`** writes into every client's own save
   (Entity_Master_Radio.cs:815-826): the host can mark a campaign milestone or an unlock in each player's save.
 
 ### 18.3 The final map has no boss; every Basin has a last stand
 
-`Mode_Final` shows "SURVIVE", counts down 6:00, plays only `Wave[0]`'s content once, pays `Resourcesinit` every second
-and wins when the timer ends **or a core dies** (Mode_Final.cs:230-308), then goes to `Credits` after 15 s.
-`Clientmode_Final` swaps the music for a waterfall loop and fades out (Clientmode_Final.cs:17-31). In every
-mode, not only the final map, each Basin (`Main_Core`) and sub-core survives its **first lethal hit of the match at 1
-HP** with the `World_Core_Oneshot` effect (`Finalhit`, Entity_Ai_Main_Core.cs:36-45; Entity_Ai_Main_Subcore.cs:18-27),
-so a map is lost on the second killing blow. There is no boss
-being anywhere: a Breaker map's boss would be the pack's own enemy, spawned through an enemy core's `Spawn` command
+`Mode_Final` shows "SURVIVE", counts down 6:00, plays only `Wave[0]`'s content once, pays `Resourcesinit` every real
+second (so fast-forward lowers income per game second, Mode_Final.cs:290-296) and wins when the timer ends **or a core
+dies** (Mode_Final.cs:230-308), then goes to `Credits` after 15 s. `Clientmode_Final` swaps the music for a waterfall
+loop (15 s delayed fade-in) and fades it out at `Gamecomplete` (Clientmode_Final.cs:17-31); the final Gameplan's
+`Soundtrack_Cyan` loads but never plays. In every mode, not only the final map, each Basin (`Main_Core`) and sub-core
+survives its **first lethal hit of the match at 1 HP** with the `World_Core_Oneshot` effect (`Finalhit`,
+Entity_Ai_Main_Core.cs:36-45; Entity_Ai_Main_Subcore.cs:18-27), so a map is lost on the second killing blow. There is no
+boss being anywhere: a Breaker map's boss would be the pack's own enemy, spawned through an enemy core's `Spawn` command
 (`13` §3), with the map ended by the host on its `Despawn` (the win path, §4).
 
 ### 18.4 Chart decorations, unlocks, Discoveries, the journal
@@ -643,8 +666,9 @@ being anywhere: a Breaker map's boss would be the pack's own enemy, spawned thro
   `Tds_Data.Checkunlocks`, which writes `Unlock/<key>` and `Unlock_Notif/<key>` (Tds_Data.cs:26-61). Trackers:
   `Additive` (a `<key>_Counter` toward `Unlockam`), `Conditions` (compare save keys), `Matchreader` (the last match's
   JSON). The boat's unlock screen shows an artifact panel for `Unlock_Artifact_<name>` and a vessel panel for
-  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826). A Depth unlock = the mod writes its key, a `Conditions`
-  tracker on it, and the boat announces it like a stock unlock (untested).
+  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826). The match is a substring, and **any other key is marked
+  seen with no announcement**, so a Depth unlock through the stock system is silent: announce it with a Milestone or
+  the pack's own message (decompile 2026-10-14, `23` §3.2).
 - **Discoveries** (`Macro_Discoveriesui.Items`, a list of `Discoverycont`: Map or Milestone, name, text, sprite,
   condition) light the boat's "New" badge when more are unlocked than the saved count (Macro_Discoveriesui.cs:25-157;
   Macro_Extraui.cs:85-105): a mod can append Milestones ("Campaign cleared at Depth 1").
