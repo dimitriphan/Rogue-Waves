@@ -1,61 +1,33 @@
 | New Cardinals |
-	# A new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals.
-	# Found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
-	# Bought from the shopkeeper with [Pure Aura]
-	# Two kinds, kept apart in the shop and in the Cardinal List: a Vessel Cardinal belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel. A Team Cardinal acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen.
-	/ Vessel wherever the game allows it. About 24 of the 40 stock Cardinals can be made Vessel Cardinals; see docs/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
-	# Cardinals scale forever: there is no limit on how many Team or Vessel Cardinals a campaign holds. (Dimitri, 2026-10-11)
-	/ The game's Cardinal row keeps a counter for only 8, lobby picks included. Past 8, Team Cardinals still work, and the mode shows them another way; that is settled when the shop is built \
-	# A Team Cardinal is bought by one player and works for everyone.
-	# Cardinals stack with no limit: a Cardinal that stacks can be bought again as many times as a player can pay for it.
-	# Vessel Cardinals and Directions are saved with the campaign for each player and come back when it continues.
-	/ Use the New Cardinal template below to add one \
-	/ Model Lighthouse is a name kept for later \
+	# The rules for new Cardinals, and the Cardinal List: each Cardinal in the Cardinal template from 15_Templates.txt, under its kind.
 	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
 
-	# Copy the New Cardinal template into the Cardinal List below, replace every line, and delete the / \ notes that only explain the template.
-	# Leave a line as ! NEEDS ... ! when you don't know it yet. Claude proposes a default at the design gate and says which.
-	# Names follow docs/STYLE.md: a Cardinal is two plain words for a found object.
-
-	[New Cardinal]
-		{Name of Cardinal} / Two plain words, a found object the wave washed up \
-			- Effect: / One line as the game shows it, no numbers, like the base game's Cardinals \
-			- Numbers: / Exact values. Leave blank and the design gate proposes them \
-			- Kind: / Vessel or Team. Vessel acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, for every player \
-			- Lasts: / The rest of the campaign, this map only, or a number of Tides \
-			- Stacks: / Yes if a player (or the team) can own more than one, with no limit; no if it leaves the shop once owned \
-			- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
-			- Price: / In [Pure Aura] \
-			- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \
-			- Look: / The object for its icon, readable at 12x12, in the pack's palette \
-			- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \
+	[Rules]
+		- What: a new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals
+		- Names: found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
+		- Bought: from the shopkeeper with [Pure Aura] -> 06_New_Mechanics.txt [Shopkeeper]
+		- Two kinds: kept apart in the shop and in the Cardinal List
+		- Vessel Cardinal: belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel /~ Vessel wherever the game allows it. About 24 of the 40 stock Cardinals can be made Vessel Cardinals; see docs/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
+		- Team Cardinal: acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen. A Team Cardinal is bought by one player and works for everyone
+		- No limit: Cardinals scale forever: there is no limit on how many Team or Vessel Cardinals a campaign holds /~ The game's Cardinal row keeps a counter for only 8, lobby picks included. Past 8, Team Cardinals still work, and the mode shows them another way; that is settled when the shop is built \
+		- Stacking: Cardinals stack with no limit: a Cardinal that stacks can be bought again as many times as a player can pay for it
+		- Saved: Vessel Cardinals and Directions are saved with the campaign for each player and come back when it continues
+		- On the boat: no Cardinal swaps between maps -> 04_Rogue_Waves_Mode.txt [Sea Chart]
+		- Kept names: Model Lighthouse, your name for the old start Cardinal, is kept for a later Cardinal or item
 
 	[Cardinal List]
-		/ Paste one New Cardinal block per Cardinal here, under its kind \
-		! NEEDS LIST OF NEW CARDINALS !
 		(Vessel Cardinals)
-		{Cracked Buoy} / Example only, not a decision \
-			- Effect: Your towers start every map with more health.
-			- Numbers: / Blank: the design gate proposes them \
-			- Kind: Vessel
-			- Lasts: The rest of the campaign
-			- Stacks: No
-			- Where from: Shop
-			- Price: ! NEEDS !
-			- Colour: Blue
-			- Look: A red and white buoy with a crack down one side
-			- Clashes: None
-		{Vampire Dentures}
-			- Effect: Your vessel attacks heal themselves for a portion of damage dealt.
-			- Numbers:
-			- Kind: Vessel
-			- Lasts: The rest of the campaign
-			- Stacks: Yes
-			- Where from: Shop
-			- Price: 15 [Pure Aura]
-			- Colour: Red
-			- Look: Fake vampire dentures that could be found at a halloween dollar store.
-			- Clashes: None
+			{Vampire Dentures}
+				- Kind: Vessel
+				- In-game line: Your vessel attacks heal themselves for a portion of damage dealt.
+				- Numbers:
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Red
+				- Cost: Pure Aura 15
+				- Look: Fake vampire dentures that could be found at a halloween dollar store.
+				- Clashes: None
 		(Team Cardinals)
-		! NEEDS TEAM CARDINALS !
+			! NEEDS TEAM CARDINALS !
