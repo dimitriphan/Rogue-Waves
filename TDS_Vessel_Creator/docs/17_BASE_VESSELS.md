@@ -147,7 +147,7 @@ dying meanwhile (**guess**: a handler subscribed in the vessel's `Onspawn`, befo
   At a death `Lasthit.Kill(dead)` fires and `Lasthit`'s owner gets the kill (Game_Entity.cs:376-391). Every hit that
   carries an explicit `Damage` is uncredited (table in §8).
 - **Enemy drops and ore pay every player** (`Giveresources(..., −1, Split)`, Game_Entity.cs:413-416;
-  Entity_Ai_Resource_Mine.cs:116), and ore never records who broke it. A hit removes at most `1 + Damageresource` ore
+  Entity_Ai_Resource_Mine.cs:136), and ore never records who broke it. A hit removes at most `1 + Damageresource` ore
   health (Helper_Damagetools.cs:47-58), so mining speed is attack rate, not Damage. The only payments to one player are
   the vessel-specific ones in §1's table, sell refunds and a few Cardinals.
 - `Helper_Resources.Giveresources(list, ownerId)` pays one player × `Resourcegainmultiplier`; `−1` with `Default` pays
@@ -257,8 +257,9 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
   (Entity_Ai_Tower_Boutmanhouse.cs:56-116). **Any upgrade put on the Bouthouse leaks onto Boutman**: never give it a
   building Direction as an upgrade. **Verified**: on Boutman 1.5 s after the house got it.
 - After Enter the Boutman he **never dies**: at 0 HP he goes `Ko` (Health 1, untargetable) until healed to full; his AI
-  then applies damage itself and zeroes `Damagemulti` for `Mob_General` (:127-203). A damage-reduction AI must run at
-  priority ≤ 8 to act on him. "On vessel death" effects must also watch the `Ko` command.
+  then applies damage itself and zeroes `Damagemulti` for `Mob_General` (Entity_Ai_Hero_Boutman.cs:127-203). A
+  damage-reduction AI must run at priority ≤ 8 to act on him. "On vessel death" effects must also watch the `Ko`
+  command.
 - **The Bout Way's price**: Boutbro sets each `BuildoptionN.Goalvalue` = fish `#Fishmain × Fishcost`, barrel
   `#Boutbarrel × Barrelcost`, boat `(#Boutboat + 1) × Boatcost`, recounted team-wide on spawn, child and despawn
   (Entity_Ai_Mob_Boutbro.cs:130, 167, 204). So fish 1 and barrel 1 cost 0, fish n costs (n−1) × Yellow 25. **Verified**:

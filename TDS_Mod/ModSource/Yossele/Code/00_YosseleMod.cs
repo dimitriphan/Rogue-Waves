@@ -14,7 +14,8 @@
 //   YosseleSpores    the cannon's spore stacks on foes (DOT, Sticky, Explosive Finish, Hallucinogen, Viral Outbreak).
 //   YosseleVines     the Stonehenges' vine tiles (one networked ground being per tile).
 //   YosseleHooks     damage modifiers on the game's own hit event (Stonehenge armour and barrier, Connected Roots).
-//   YosseleClient    runs on every player: lobs, seeds, turret aim, Stonehenge facing, effects, sounds, warnings.
+//   YosseleClient    runs on every player: lobs, seeds, turret aim, effects, sounds, warnings (the game turns the
+//                    Stonehenge's model by its placement orientation; YosseleContent.ShowFacing adds its arrows).
 //   YosseleJournal   the journal pages through the shared ModKitVesselJournal.
 //   Kit 1.6          ModKitPack, ModKitTides (Growth on each Tide), ModKitCounter (Growth, Seeds, fertilizer),
 //                    ModKitDirections (Compost Bin), ModKitFocus, ModKitTowers, ModKitBoat. The build renames ModKit.

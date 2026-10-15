@@ -46,7 +46,7 @@ Read `01` §4-9, `13` §3 and `15` §14.2-14.4 first.
   (Entity_Ai_General_Adjacentblocker.cs:6-20).
 - **The build check accepts any command whose key contains "Build"** (not `Build` itself) and takes that command's
   `Goalvalue` as the **cost scale** of the building: it checks and spends `Costs × Goalvalue` and stores it as the
-  building's sell value (Entity_Ai_Hero_Buildsell.cs:76-87, 146-170). The button shows the scaled price
+  building's sell value (Entity_Ai_Hero_Buildsell.cs:76-87, 179-202). The button shows the scaled price
   (Entity_Command_Build.cs:70-93). With `01` §7 (an upgrade's price scale is the `Upgrade` command's `Goalvalue`),
   **build and upgrade discounts are per vessel, so per player, and the UI already shows them.**
 - **Paths** are a greedy A*-like search over `Connections` (Helper_Navtools.cs:18-172): distance so far + straight

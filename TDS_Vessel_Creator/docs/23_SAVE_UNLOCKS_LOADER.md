@@ -20,8 +20,9 @@ Read `15` §3, §8, §10, §18.4 and `14` first.
   `Oldversionbackup.es3` (Bla_Data.cs:36-142, 225).
 - The data is `folder + key → Entry { Item, Valuestring, Value (float), Loaded }`; one entry holds both a float and a
   string, and each `Adddata` overload changes only its own half (Datacontainer.cs:33-119; Bl_Tags.cs:24-40).
-- *IL:* a two-argument `Adddata(folder, key)` compiles to the **float** overload with 0 and `Replace`. The kit's rule
-  "always pass the typed third argument" stands.
+- *IL:* the game's own two-argument `Adddata(folder, key)` calls (as the decompile prints them) are the **float**
+  overload with 0 and `Replace`. In mod code a two-argument call does not compile (both overloads match: CS0121 with
+  Roslyn 3.8), so the kit's rule "always pass the typed third argument" stands.
 - `Readdata(folder, key)` returns `Loaded = false` when missing; `Readdata(key)` searches **every** folder.
 
 Stock folders: `Player` (selections, the last match), `Map` (per Gameplan: `Clear_`, `Time_`, `Wave_`, medals,

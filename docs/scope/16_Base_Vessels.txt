@@ -61,7 +61,7 @@
 					- Leads to: {Auto Bow}, {Eagle Eyes}
 					- Cost: Red 35
 				% 1:{Fire Arrows} Increased damage, dealt over time
-					- Numbers: damage +60%; burn ticks +5; burn ticks for 1 second
+					- Numbers: damage +60%, dealt in 5 equal parts 1 second apart, the first on hit /~ Read from the game's code \
 					- Leads to: {Auto Bow}, {Heavy Bow}
 					- Cost: Red 35
 
@@ -87,7 +87,7 @@
 					- Leads to: {Death Mark}
 					- Cost: Red 325 + Blue 10
 				% 3:{Assassin Shots} The more health they have. The harder they fall.
-					- Numbers: +1 damage per 35 health the target has, on foes above 500 health, up to +100
+					- Numbers: +1 damage per 35 health the target has left, up to +100, on every arrow /~ Read from the game's code; the data's 500 health only decides when the hit effect shows \
 					- Leads to: {Death Mark}
 					- Cost: Red 650
 
@@ -622,12 +622,12 @@
 					- Leads to: {Shao-min}, {Fight Blub}
 					- Cost: Red 150
 				% 1:{Enter the Boutman} Boutman can no longer Drown, get KO'd instead
-					- Numbers: heal +3
+					- Numbers: while KO'd, heals 3 health every 0.2 seconds /~ Read from the game's code \
 					- Leads to: {Shao-min}, {Fight Blub}, {The Way of the Bout}
 					- Cost: Blue 60 + Red 75
 
 				% 2:{The Way of the Bout} Boutman regenerates health rapidly, even when KO'd
-					- Numbers: heal +6
+					- Numbers: heals 6 health every second, KO'd or not /~ Read from the game's code \
 					- Leads to: {1 Inch Bout}, {Fishbender}
 					- Cost: Blue 400
 				% 2:{Shao-min} Boutman has a long range attack
@@ -753,7 +753,7 @@
 					- Cost: Red 50
 
 				% 3:{Bout Battleship} Boutdad now owns an unregistered cannon!
-					- Numbers: attack speed +50%
+					- Numbers: the boat gets a cannon of its own, firing at half the boat's attack speed /~ Read from the game's code: the data names it attack speed +50% \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 500
 				% 3:{Bout Cargo Inc} Units can now travel to other boats instantly from here
@@ -1122,7 +1122,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 225
 				% 3:{Second Servings} Effects now can target towers and Walls, which have a longer duration
-					- Numbers: duration +500%
+					- Numbers: a buff on a tower lasts x5 as long; on a unit, as before /~ Read from the game's code: the data names it duration +500% \
 					- Leads to: {All You Can Eat}, {Specific Tastes}
 					- Cost: Yellow 100 + Red 75
 
@@ -1314,7 +1314,7 @@
 					- Leads to: {Strong Finish}, {Refuel}
 					- Cost: Blue 25 + Yellow 25
 				% 1:{Boost Pad} Increased Speed effect, Slows enemies traveling opposite
-					- Numbers: speed +50% of base; decay 4; slow -75%
+					- Numbers: foes going the other way are slowed 75% for 4 seconds; its speed +50% goes to dog speed, which only Charge Pad uses, so it adds nothing /~ Read from the game's code \
 					- Leads to: {Strong Finish}, {Speed Bump}, {Wrong Way}
 					- Cost: Blue 50
 

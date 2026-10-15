@@ -16,7 +16,7 @@ Read `13` §1-6 first.
 | `Entry` | `Style` {Model, Sprite, Both, Overlay}, `Visprefab`, `Spriteobject`, `Additionalvisualscripts`, `Additionalmaterials`, `Additionalprefabs`, `Vfxstart/Vfxend`, `Sfxstart/Sfxend`, `Drawtransparent`, `Spritealwayson` | |
 | `Spriteobject` | `Defaultspeedmulti` (1), `Defaultfolder`, `Itemslist` → `Items` by name | Spriteobject.cs:7-54 |
 | `Spritesinlist` (one animation) | `Name`, `Sprites` (one list per direction), `Loop`, `Reset`, `Priority`, `Speed` (1), `Spriteto` | Spritesinlist.cs:9-32 |
-| `Spritecont` (one frame) | `Item` (the Sprite), `Sound` (played on that frame) | Spritecont.cs:15-17 |
+| `Spritecont` (one frame) | `Item` (the Sprite), `Sound` (played on that frame) | Spritecont.cs:7-9 |
 
 - **Sprite enemies all share one body:** the client loads `Getload("Vfx", "Mobbase")` and adds the `Spriteobject`;
   `Visprefab` is used only when `Style` is not `Sprite` (Entity_Master_Client.cs:136, 578).

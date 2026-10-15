@@ -1,5 +1,11 @@
 # The 2026-10-09 scope's new mechanics, checked against the game (2026-10-09)
 
+> **Note (added 2026-10-15):** every verdict below stands. One route is narrower since the full decompile
+> (2026-10-14): `Vfxdebuffcheck` drops a look while 50 effects wait to be sent, so in a busy online fight the
+> "Modifiers as an effect" row's look (E1, proven solo) can fail to show. A look players must see goes past the
+> throttle, as Argo 2.0.1's `ArgoUtil.Debuff` does; Argo no longer uses `Vfxdebuffcheck` (kit `docs/19` §4,
+> pitfall #95).
+
 Dimitri's roguewaveWIP.txt (folded into `docs/SCOPE_v0.txt` on PR #15) adds a shopkeeper, Fund Transfer limits, vote
 rules, vessel abilities, minion types and two enemy modifiers. This page says, for each, whether the game's code and the
 mods already built settle it, or whether it needs the game, and which RogueLab round 4 probe answers it.

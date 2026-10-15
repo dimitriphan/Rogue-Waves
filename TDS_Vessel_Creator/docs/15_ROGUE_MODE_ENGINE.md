@@ -117,11 +117,11 @@ There is **no shop** in the base game (no Buy/Shop/Purchase code besides Fie's s
 **Merchut** (`Tower_Merchut`, a map building; `Entity_Ai_Tower_Merchut`): a fixed run of 20 contracts in order, each
 an enemy type, a count, an elite upgrade and a reward, from private hardcoded lists (Entity_Ai_Tower_Merchut.cs:10-32).
 Its button `Command_Tower_Merchut` ("Contracted") can be pressed by any player (`Subowner` 0..9, :60) and shows the
-enemy's sprite, count, elite and reward (Entity_Command_Tower_Merchut.cs:308-342). On the next Tide it spawns the
+enemy's sprite, count, elite and reward (Entity_Command_Tower_Merchut.cs:53-87). On the next Tide it spawns the
 foes through the enemy core's `Spawn` command, one per second, each with the elite and
-`Tower_Merchut_Boost_Upgradeobject` (takes more damage, "Targeted" mark) (:73-110; Entity_Ai_Effect_Tower_Merchut.cs:351-366). The reward (red, blue,
-yellow aura) is split across players in the next break; **it never checks that the foes died** (:216-243). All
-host-side (read).
+`Tower_Merchut_Boost_Upgradeobject` (takes more damage, "Targeted" mark) (Entity_Ai_Tower_Merchut.cs:73-110;
+Entity_Ai_Effect_Tower_Merchut.cs:6-21). The reward (red, blue, yellow aura) is split across players in the next
+break; **it never checks that the foes died** (Entity_Ai_Tower_Merchut.cs:216-243). All host-side (read).
 
 `Entity_Ai_Mob_Merchant` is a different unit (shoots unboosted foes, gives Buster an artifact badge) (read).
 

@@ -23,13 +23,14 @@ Read `01` §8, §11, `05` §7-8 and `15` §6, §14.6, §18.2 first.
 - **A mod cannot add a menu.** A `Blu2_Menu_Handler` created later joins only `Ui.Menus` in `Start`, never
   `Bl_Menus.Menus` or the layers (Blu2_Menu_Handler.cs:301-312), so `Changemenu` cannot reach it.
 
-### 1.1 `Changemenu` fails silently three ways
+### 1.1 `Changemenu` refuses a call three ways, two of them silently
 
 `Bl_Menus.Changemenu(name, Force = false, Source = null, Refresh = false)` (Blu1_Ui_Handler.cs:360-587):
 
 - **Throttle:** without `Force`, a call while a transition runs is **dropped** (:362-365).
 - **Unknown name:** ignored without a log (:394-397). Same menu already active: nothing unless `Refresh`.
-- **Standalone menus** are refused (:583-586); `Changemenustandalone(name, state)` toggles them (no stock caller).
+- **Standalone menus** are refused, with only the log line "`<name>` is a Standalone menu and cannot use this method"
+  (:583-586); `Changemenustandalone(name, state)` toggles them (no stock caller).
 - `"Back"` and `"Close"` are pseudo-names for the layer history (:379-393).
 - Layers: a menu replaces the active menu of its layer; only the **active layer** is interactable; lower layers stay
   visible (:447-551). While a higher layer (the choice dialog) is up, HUD buttons cannot be clicked.

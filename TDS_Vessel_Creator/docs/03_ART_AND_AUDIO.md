@@ -91,7 +91,7 @@ Check every row of a string-drawn image has the same length (a malformed ReadyUp
 
 16 px cells, 4 rows (v0-v3), 10 columns: Move in 0-5 (Idle = column 0), Attack in 6-9 (`<Name>Assets.Puppet`; the
 template's own layout, not the game's: game sheets are in `18` §2).
-Same style as the vessel, smaller (the miner, knight and dog are 6-10 px tall). Variants per costume or skin get
+Same style as the vessel, smaller (the miner, knight and dog are 8-10 px tall). Variants per costume or skin get
 their own sheet.
 
 ## 4. Towers: low-poly sleek, never voxel

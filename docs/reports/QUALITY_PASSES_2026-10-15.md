@@ -74,7 +74,7 @@ was read, compiled or run as a script in the cloud; nothing was run in game.
 
 Every pass 1 fix was re-checked in place and held. **Heaviest finds** (fixed unless listed):
 
-- Scope `16_Base_Vessels.txt`: 23 upgrade lines gave the data's parameter names, but the game's code uses those numbers
+- Scope `16_Base_Vessels.txt`: 22 upgrade lines (and the Heater's stat line) gave the data's parameter names, but the game's code uses those numbers
   differently. Hyper Pipes raises damage, not attack speed; Big Dog's collision speed goes up 0.8, not down; Hard Sno
   makes the Box's hurt x50 instead of x20; Iron Fish's real buff is the recruit buff; Snobles' unit count is never
   read. Each line now says what the code does, with a `/~ Read from the game's code \` note.
@@ -88,6 +88,34 @@ Every pass 1 fix was re-checked in place and held. **Heaviest finds** (fixed unl
   sheet; `_PROBE` defines that no code reads came back in two notes through a merge.
 - Listed: B4-14 (a turned-away player gets in on a second try), B1-22 (the template's throttled looks), C2-6 (with
   B1-4).
+
+## Pass 3: 27 issues
+
+| Area | Found | Fixed by its reader | Fixed by the lead | Listed |
+| --- | --- | --- | --- | --- |
+| A1 kit 01-12 | 2 | 2 | 0 | 0 |
+| A2 kit 13-18 | 4 | 4 | 0 | 0 |
+| A3 kit 19-24, reference, recipes | 5 | 4 | 1 | 0 |
+| B1 template, examples, tools | 0 | 0 | 0 | 0 |
+| B2 Argo, shared kit | 0 | 0 | 0 | 0 |
+| B3 Yossele | 1 | 1 | 0 | 0 |
+| B4 mode, RogueLab, Riptide, handoffs | 1 | 1 | 0 | 0 |
+| C tools, settings | 2 | 2 | 0 | 0 |
+| D project docs | 3 | 1 | 2 | 0 |
+| E scope | 9 | 8 | 1 | 0 |
+
+Every pass 2 fix held. Nothing new for Dimitri. **Heaviest finds** (all fixed):
+
+- Scope `16`: seven more upgrade lines of pass 2's kind (Assassin Shots, Fire Arrows, Bout Battleship, Boost Pad, Second
+  Servings, Boutman's two heals); `02`'s log line now counts 29 and the Heater's note.
+- Kit `19` said a command's `Goalobject` never reaches clients; it does, through `Updatecommandclientobject` (Fie's silos
+  and Buster's pads use it). Kit `13` §6.4 told a modifier to send its look through the throttled `Vfxdebuffcheck`
+  with no word of the throttle; it now points at `19` §4 and #95.
+- `TDS_Mod/Tools/pc/README.md` never had the round move Dimitri's Yossele play build out of `TDS\Mods` and back;
+  `.claude/rules/mod-code.md` still gave kit 1.1's "first 10 boat positions" rule (since 1.4 the whole layout).
+- Code line cites past the end of their files in kit `15`, `16`, `17` and `24`; kit `23` and `RecipeSave.cs` said a
+  two-argument `Adddata` picks the float version (in mod code it doesn't compile); RogueLab called the easier
+  "Treated" setting the hard one.
 
 ## Listed for Dimitri
 

@@ -1,8 +1,9 @@
 """map_view.py: the self-test's map snapshot, readable in the cloud.
 
-Every self-test build (kit 1.5, ModKitTest.MapDump) logs the test map's ground once as "TEST MAP" lines in Player.log:
-each ground tile as x,y,z plus a flag (b: a 1x1 building and a foe can stand there, B: a building only, f: a foe only,
--: neither), then the core, the vessel and everything of the vessel's team.
+A vessel's self-test build (the template's, Argo's and Yossele's call kit 1.5's ModKitTest.MapDump) logs the test
+map's ground once as "TEST MAP" lines in Player.log: each ground tile as x,y,z plus a flag (b: a 1x1 building and a foe
+can stand there, B: a building only, f: a foe only, -: neither), then the core, the vessel and everything of the
+vessel's team.
 
   python3 map_view.py save <Player.log or an excerpt> <out dir>     -> <plan>.txt (the snapshot) and <plan>.png
   python3 map_view.py near <snapshot.txt> <x,y,z> [radius]          -> text picture around a tile, like ModKitTest.Picture
