@@ -198,19 +198,21 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
-  rounds passed; full re-test 2026-10-11, 208/0). Yossele is built in draft PR #30 (PC round 8, 98/0, Dimitri's play
-  notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels; RogueLab
+  rounds passed; full re-test 2026-10-11, 208/0). Yossele 0.1.0-dev is built (PC round 8, 98/0, Dimitri's play notes
+  folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels; RogueLab
   round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
   Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
   RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in
   "Log" below.
-- **Next:** merge the open PR #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md` §6. Then Phase 5's next
-  pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
-  (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed.
+- **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15).
+  By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
+  (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed;
+  also left on Yossele: his look by eye (temporary art), his balance pass, the Compost Bin numbers in scope `11`, and
+  the chance-based Viral Outbreak and Hallucinogen, still unchecked.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Numbers held by open PRs:** pitfalls #102-104 (#30); #92 is unused. Next free: chapter 25, pitfall #105.
+- **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

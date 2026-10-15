@@ -311,3 +311,16 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      without a grid node, and beings under the map's `Entities` child get none unless their block adds one → put them
      under `Object`, one tile above the ground, on a tile centre (`Maxbound` is the grid's minimum corner). Read from
      code.
+102. **"Slices 6, 7, 14, 15 ... lie outside the texture" on a sheet 192 wide** (Yossele round 1, 2026-10-12) → the
+     builder sliced against `tex.width` read right after the first import, which scales a sheet that isn't a power of
+     two up to 256 → read the PNG's own size from its header (`YosseleBuilder.PngSize`). Argo's and the template's
+     builders have the same line; they were safe only because their sheets are powers of two.
+103. **"FAILED Export Mod finished but ... .info wasn't written"** (Yossele round 1) → the vessel's `Export()` refused
+     because other `<Name>Mod` folders were still in Assets; the Build Queue doesn't park them → `Export()` calls its own
+     park step first (`ParkOthers()`/`Park()`), as Argo, RogueLab and RogueWavesMode do.
+104. **A handoff changed an Editor script, but the Build Queue built with the old one** (Yossele round 8, 2026-10-12)
+     → `Assets/Refresh` reloaded the domain without compiling ("compile time=0 ms"), since `Apply-Handoff` keeps the
+     zip's file times, older than the last compile; the editor assembly only recompiled later, during the export's
+     park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
+     Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
+     check a generated asset the change should alter.
