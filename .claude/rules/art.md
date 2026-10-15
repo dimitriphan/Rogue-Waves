@@ -10,7 +10,9 @@ paths:
 # Drawing for TDS
 
 Formats, house style, reference vessels, UI art, units, towers, effects and sound: `TDS_Vessel_Creator/docs/03_ART_AND_AUDIO.md`
-(§1 sprites, §2 UI, §3 units, §4 towers, §6 sound). Name the base vessel the sprite follows.
+(§1 sprites, §2 UI, §3 units, §4 towers, §6 sound). Name the base vessel the sprite follows. What the game's own
+vessel and enemy sprites measure (facings, sizes, palettes, the crystal foes, vessel vs foe, must/must-not):
+`TDS_Vessel_Creator/docs/18_CHARACTER_ART.md`.
 
 Corrections to older work in this repo (the kit is right, the old pages were wrong):
 

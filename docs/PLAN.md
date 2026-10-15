@@ -202,9 +202,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-12: RogueLab round 7 ran `17` §12 and `16` §9 items 1-3 on the PC: every check answered, with three new
   rules (Direction params apply nothing, unit counts need the building's count check, a respawn cut made at the death
   is too late); `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
+  2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
+  2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
+  (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
-  Left on Argo: his balance pass (his call).
+  Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -296,8 +299,21 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Verified: percentages add, outside mods outlive upgrades, a −3 upgrade leaves Level and panel alone and the
   Bouthouse leaks it onto Boutman, the Bout Way's prices, price scales, unit counts, the `Sno` grab, a re-routed
   path, a den and an ore node spawned mid-match, a respawn keeping a −3 upgrade. New: an upgrade's params apply nothing
-  by themselves; Health raises keep the health fraction; a respawn cut made at the death is too late (`09` #87-89).
+  by themselves; Health raises keep the health fraction; a respawn cut made at the death is too late (`09` #89-91).
   Left: a Blurry Photo clone and the house's upgrades. Mods folder empty again. `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
+- **Also (2026-10-13):** Dimitri asked for a vessel template with a slot for every value. New scope file
+  `docs/scope/15_Vessel_Template.txt`; his edited `07` (Yossele) and `08` (Spool) are folded in and re-laid in it. A
+  value written `~like this` is a default Claude picked (Yossele's come from the 2026-10-12 build, Spool's are new);
+  each sheet ends with its open questions. Yossele's sheet now asks for a ranged laser and a slower speed, which the
+  build (PR #30) doesn't have yet. Then, at his ask, `docs/scope/16_Base_Vessels.txt`: the five base vessels in the same
+  template from the game's data (kit `reference/vessel_data_survey.txt`, `docs/17`), with a side-by-side stat table.
+- **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
+  new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
+  and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey
+  `reference/art_survey_2026-10-15.txt`, palettes `reference/palettes/*.gpl`, pitfalls #87-88, fixes to `docs/03` §1
+  (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
+  (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
+  Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
 
 ### Decisions
 
@@ -391,6 +407,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-12 (user): the name is spelled **Rogue Waves** everywhere, the mode and its main-menu button included
   (was "Rogue Wave"). Identifiers (`Mode_RogueWave`, `RW_` save keys), file names (`04_Rogue_Wave_Mode.txt`) and the
   PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid.
+- 2026-10-13 (user): every vessel sheet follows `docs/scope/15_Vessel_Template.txt`; `~` marks a Claude default.
+  Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
+  Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
+  heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+- 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
+  `docs/18` §7); every other new design keeps magenta for foes only.
 
 ### Open questions
 
@@ -398,7 +420,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| - | none open | |
+| 1 | Yossele and Spool sheets: the `! NEEDS !` lines under `[Questions]` in `docs/scope/07` and `08` | the default each line names |
 
 ### Phase 5 pieces
 

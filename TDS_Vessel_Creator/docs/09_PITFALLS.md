@@ -248,14 +248,20 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Snoble` of any team and despawns a `Mob` it takes → never tag pack things `Sno` or `Snoble` (nor other
     base-vessel family tags, `17` §11.1 rule 12). Seen in game (RogueLab round 7): a foe tagged `Sno` beside a cannon
     was gone in 0.17 s. The throw on an unknown shot name read from code was not seen.
-87. **A Direction's params change nothing** (RogueLab round 7, `17` §2.1) → no engine code turns an upgrade's
+87. **A sprite faces the wrong way when it walks left** (expected from the code, `18` §1) → the game never flips a
+    sprite; it switches to v1 (toward the camera, heading screen-left) or v3 (away, heading left) → draw v1 and v3 as
+    the left-heading views, not as copies of v0 and v2. Read from code.
+88. **A drawn elite sheet, or a foe that vanishes under Fractured** (`18` §5.5) → elite looks are one overlay material
+    added over the foe's own sprite (Fractured tints near-black) → draw no elite sheets, keep the six cloned
+    `Skinoverride`s, and keep the foe mid-to-light. Read from the game's assets.
+89. **A Direction's params change nothing** (RogueLab round 7, `17` §2.1) → no engine code turns an upgrade's
     `Defaultparams` into stat mods; each stock AI reads the params of its own upgrades by name → the Direction's code
     calls `Addmod` itself. Seen in game: `Range_Add 0.5` on a −3 upgrade left an archer, a cannon and Boutman as
     they were.
-88. **`Units +1` spawns nothing** (`17` §12.4) → the Hut, Keep and Garage read `Units` only in their count checks →
+90. **`Units +1` spawns nothing** (`17` §12.4) → the Hut, Keep and Garage read `Units` only in their count checks →
     after the mod, `SendMessage` the building's check (`Addressminercount`, `Addressmobcount`, `Addressdogcount`); it
     spawns or removes units to match `Units`. Seen in game (RogueLab round 7).
-89. **A faster respawn set at the vessel's death does nothing** (`17` §12.6) → the core reads its `Respawn` stat in
+91. **A faster respawn set at the vessel's death does nothing** (`17` §12.6) → the core reads its `Respawn` stat in
     its own handler on the vessel's `Despawn`, which runs before a mod's handler and before `Game_Entity.Ondespawn` →
     the mod must be on the core before the death (the core is the team's, so it speeds every player). Seen in game:
     10 s plain, 5 s with the cut made before, 10 s with it made in either handler.
