@@ -1,0 +1,12 @@
+GIMP Palette
+Name: TDS crystal foes (all Tide enemies)
+Columns: 8
+# Read from the game's own sheets (TDS asset bundle, 2026-10-15). Kit docs/18.
+246 186 255	crystal F6BAFF
+218 137 230	crystal DA89E6
+209 104 224	crystal D168E0
+165  79 177	crystal A54FB1
+141  68 151	crystal 8D4497
+140 140 140	stone 8C8C8C
+109 108 108	stone 6D6C6C
+100 100 100	stone 646464
