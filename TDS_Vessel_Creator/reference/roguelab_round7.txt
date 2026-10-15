@@ -1,0 +1,124 @@
+RogueLab round 7 (2026-10-12), every round-7 line of three launches on Dimitri's PC (boot dumps of rounds 2-6 left out).
+
+== Launch 1 (0.5.0, 05:55Z local 01:55): the full round, 24 pass, 2 fail, 1 setup
+PASS mod mode registered: table 6 entries / 3 Tides, params 7 (Startwait True, Basinthreshold True, Tipthreshold True), twins of 45 Gameplans
+PASS mod Cardinal registered: copy of Artifact_Badge (Red), grant test uses Artifact_Beastpelt
+PASS save write and read back: before 7, after 8
+PASS save value survived a restart: launch 8
+CARD Artifact_Badge 'Torrid Badge' type Red | Artifact_Badge_Upgradeproperties prio -1 ais [Entity_Ai_General_Spawnmobs] {Mob_Merchant=10}
+CARD Artifact_Beastpelt 'Beast Tassle' type Green | Artifact_Beastpelt_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply] {Effect_Artifact_Beastpelt_Upgradeproperties=0}
+CARD Artifact_Bird 'Bendigo' type Yellow | Artifact_Bird_Upgradeproperties prio -1 ais [Entity_Ai_General_Spawnmobs] {Mob_Bird=0}
+CARD Artifact_Bluecoin 'Blue Coin' type Blue | Artifact_Bluecoin_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coin] {Red_Base=0; Yellow_Base=0; Blue_Base=25; Red_Add=0; Yellow_Add=0; Blue_Add=5}
+CARD Artifact_Bluepaint 'Blue Paint' type Blue | Artifact_Bluepaint_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Paint] {}
+CARD Artifact_Blurryphoto 'Blurry Photo' type Red | Artifact_Blurryphoto_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply] {Effect_Artifact_Blurryphoto_Upgradeproperties=0}
+CARD Artifact_Caffeine 'Sport Water' type Red | Artifact_Caffeine_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply] {Effect_Artifact_Caffeine_Upgradeproperties=0}
+CARD Artifact_Checklist 'Checklist' type Yellow | Artifact_Checklist_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Checklist] {}
+CARD Artifact_Chimera 'Chimera Crystals' type Yellow | Artifact_Chimera_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Chimera] {}
+CARD Artifact_Computer 'Frozen Computer' type Blue | Artifact_Computer_Upgradeproperties prio 1 ais [Entity_Ai_Artifact_Computer] {Range_Base=7.5; Range_Base2=4; Stun_Count=5; Stun_Count2=10; Timescale_Base=0.75; Timescale_Base2=0.5; Stun_Base=10}
+CARD Artifact_Converter 'Processor Jr' type Yellow | Artifact_Converter_Upgradeproperties prio -1 ais [Entity_Ai_Hero_Buildsell,Entity_Ai_Artifact_Onetimebuild] {Tower_Converter=0; Buildslot=1}
+CARD Artifact_Cubeddrink 'Cubed Drink' type Red | Artifact_Cubeddrink_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Onetimebuild2,Entity_Ai_Hero_Buildsell] {Tower_Drinkstand=1; Buildslot=2}
+CARD Artifact_Diorama 'Diorama' type Green | Artifact_Diorama_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply_Delay] {Effect_Artifact_Diorama_Upgradeproperties=5}
+CARD Artifact_Fishbait 'Fish Bait' type Blue | Artifact_Fishbait_Upgradeproperties prio -1 ais [Entity_Ai_General_Spawnmobs] {Mob_Gabby=10}
+CARD Artifact_Fragment 'Fragment' type Blue | Artifact_Fragment_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coreapply] {Enemy=0; Effect_Artifact_Fragment_Upgradeproperties=0}
+CARD Artifact_Gavel 'Aura Gavel' type Red | Artifact_Gavel_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Gavel] {Range_Base=12; Damage_Base=5; Damage2_Base=10; Damage3_Base=15; Damage4_Base=20; Damage5_Base=25}
+CARD Artifact_Glasscore 'Glass Core' type Blue | Artifact_Glasscore_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coreapply] {Artifact_Sub_Glasscore_Upgradeproperties=0}
+CARD Artifact_Greatspear 'Spear Point' type Red | Artifact_Greatspear_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Greatspear] {}
+CARD Artifact_Greencoin 'Green Coin' type Green | Artifact_Greencoin_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coin] {Red_Base=6; Yellow_Base=6; Blue_Base=6; Red_Add=2; Yellow_Add=2; Blue_Add=2}
+CARD Artifact_Kippy 'Kippy' type Green | Artifact_Kippy_Upgradeproperties prio -1 ais [Entity_Ai_General_Spawnmobs] {Mob_Kippy=0}
+CARD Artifact_Loop 'Looped Mirror' type Green | Artifact_Loop_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coreapply] {Artifact_Loop_Effect_Upgradeproperties=0}
+CARD Artifact_Moneybag 'Pig Named Bank' type Yellow | Artifact_Moneybag_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Moneybag] {}
+CARD Artifact_Mooncore 'Moon Core' type Green | Artifact_Mooncore_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Mooncore] {}
+CARD Artifact_Opalcore 'Opal Core' type Blue | Artifact_Opalcore_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coreapply] {Artifact_Sub_Opalcore_Upgradeproperties=0}
+CARD Artifact_Paper 'Paper Tower' type Red | Artifact_Paper_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply] {Effect_Artifact_Paper_Upgradeproperties=0}
+CARD Artifact_Pig 'Money Bag' type Yellow | Artifact_Pig_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply] {Artifact_Effect_Pig_Upgradeproperties=1}
+CARD Artifact_Redcoin 'Red Coin' type Red | Artifact_Redcoin_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coin] {Red_Base=25; Yellow_Base=0; Blue_Base=0; Red_Add=5; Yellow_Add=0; Blue_Add=0}
+CARD Artifact_Rock 'Bottom Rock' type Yellow | Artifact_Rock_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Bottomrock] {Gainmultiplier=0.01}
+CARD Artifact_Rustypipe 'Rusty Pipe' type Red | Artifact_Rustypipe_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Towerapply] {Effect_Artifact_Rustypipe_Upgradeproperties=0}
+CARD Artifact_Samedayshipping 'Same Day Shipping' type Blue | Artifact_Samedayshipping_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Samedayshipping] {Red_Add=15; Blue_Add=15; Yellow_Add=15; Time_Base=3}
+CARD Artifact_Sandbox 'Sand Filled Box' type Green | Artifact_Sandbox_Upgradeproperties prio -1 ais [Entity_Ai_Hero_Buildsell,Entity_Ai_Artifact_Onetimebuild3] {Tower_Sandbox=1; Buildslot=3}
+CARD Artifact_Seeds 'Starter Seeds' type Yellow | Artifact_Converter_Upgradeproperties prio -1 ais [Entity_Ai_Hero_Buildsell,Entity_Ai_Artifact_Onetimebuild] {Tower_Converter=0; Buildslot=1} ; Artifact_Seeds_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Seeds] {}
+CARD Artifact_Slippers 'Fluffy Slippers' type Green | Artifact_Slippers_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Heroapply] {Effect_Artifact_Slippers_Upgradeproperties=0}
+CARD Artifact_Tackle 'Tacklebox' type Yellow | Artifact_Tackle_Upgradeproperties prio -1 ais [Entity_Ai_Hero_Buildsell,Entity_Ai_Artifact_Build] {Tower_Snare=1}
+CARD Artifact_Textbook '1st Grade Textbook' type Red | Artifact_Textbook_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Textbook] {}
+CARD Artifact_Titan 'Frail Titan' type Blue | Artifact_Titan_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Towerapply] {Effect_Artifact_Titan_Upgradeproperties=0}
+CARD Artifact_Vintage 'Vintage Watch' type Blue | Artifact_Vintage_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Vintage] {Time_Base=5; Timeinit_Base=20}
+CARD Artifact_Voice 'Voice in a Bottle' type Yellow | Artifact_Voice_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Voiceapply] {Effect_Artifact_Voice_Upgradeproperties=0}
+CARD Artifact_Wavebreaker 'Wave Breaker' type Blue | Artifact_Wavebreaker_Upgradeproperties prio 1 ais [Entity_Ai_Artifact_Wavebreaker] {Range_Base=6; Debuff_Base=-0.5}
+CARD Artifact_Yellowcoin 'Yellow Coin' type Yellow | Artifact_Yellowcoin_Upgradeproperties prio -1 ais [Entity_Ai_Artifact_Coin] {Red_Base=0; Yellow_Base=25; Blue_Base=0; Red_Add=0; Yellow_Add=5; Blue_Add=0}
+INFO C1 Cardinal core upgrades: 40 of 41 Cardinals dumped (CARD lines)
+map: the test map 3B_Thehunt; picked node 'Thehunt'
+PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+INFO round 7 setup: groups [Hero_Smacky True 0.097 s, Hero_Snosno True 0.132 s, Hero_Fie True 0.167 s, Hero_Buster True 0.132 s], probe upgrades True, vessel Hero_Boutman, aura R1056 B1081 Y1081, loss multiplier 1, gain 1
+INFO S1 vessel stats: Health=50/50 Variable, Speed=3/3 Fixed, Damage=4/4 Fixed, Range=2/2 Fixed, Attackspeed=0.75/0.75 Fixed, Buildrange=2/2 Fixed, Sellrate=0.5/0.5 Fixed, Fishingspeed=0.3/0.3 Fixed, Fishingrange=3/3 Fixed, Heal=1/1 Fixed
+INFO S1 core stats: Health=100/100 Variable, Respawn=10/10 Fixed
+INFO S1 health raise on a full vessel: type Variable: 50/50 -> Add +20 -> 70/70 -> removed -> 50/50 (current follows max: refills)
+PASS B1 a build option's Goalvalue scales the build price: archer Red 25, loss multiplier 1: paid 25 at 1, 20 at 0.8; built True, True, second archer's Sellvalue 0.8
+PASS B1 an Upgrade command's Goalvalue scales the upgrade price: Long Bow Blue 25: paid 20 at 0.8, bought True
+PASS S3 an outside mod survives a stock upgrade and its removal: Range with the outside +1: 7 -> Long Bow 9.5 -> removed 7; mod listed True, True
+PASS S2 two Multi +0.5 sum to x2 (not x2.25): archer Damage 4 -> 6 -> 8 (x2), back to 4
+PASS S2 two Pmulti +0.5 sum too, and a Pmulti and a Multi compound: Pmulti x2 8, Pmulti +0.5 with Multi +0.5 9 (x2.25)
+PASS U1 a Priority -3 upgrade leaves Tower_Smackyarcher's Level, main upgrade and skin alone: before Level 2 main 'Tower_Smackyarcher_Range2_Upgradeobject' skin '' option1 '', after Level 2 main 'Tower_Smackyarcher_Range2_Upgradeobject' skin '' option1 '', listed True, Range 8.5 -> 8.5
+PASS U1 a Priority -3 upgrade leaves Tower_Snosnocannon's Level, main upgrade and skin alone: before Level 1 main '' skin '' option1 '', after Level 1 main '' skin '' option1 '', listed True, Range 6.5 -> 6.5
+FAIL U1 a Priority -3 upgrade leaves Tower_Boutmanhouse's Level, main upgrade and skin alone: before Level 1 main '' skin '' option1 '', after Level 1 main '' skin '1' option1 '', listed True, Range -1 -> -1
+PASS U1 an upgrade on the Bouthouse lands on Boutman: vessel has it True, vessel Range 2 -> 2
+INFO U1 control: a Priority 0 upgrade on a fresh archer: before Level 1 main '' skin '' option1 '', after Level 1 main 'Direction_RogueLab_Main_Upgradeobject' skin '' option1 ''; Upgradeoption1 ''
+INFO U1 control removed: Level 1 main 'Direction_RogueLab_Main_Upgradeobject' skin '' option1 '' (Removeupgrade recomputes neither, 17 §2.2)
+INFO W1 Boutbro's build options at the start: Buildoption1=Mob_Boutmanfish x0, Buildoption2=Tower_Boutmanbarrel x0, Buildoption3=Tower_Boutmanboat x1; Fishcost 1
+PASS W1 Boutbro's first fish and first barrel are free: fish 1 at x0 paid Yellow 0; fish 2 at x1 paid Yellow 25; Fishcost -20% (option now x2); fish 3 at x2 paid Yellow 50; fish 4 at x2.4 paid Yellow 60; barrel 1 at x0 paid Blue 0
+PASS W1 fish 2 costs one fish price: fish Yellow 25, paid 25
+INFO W1 a Fishcost mod and Boutbro's recount: fish 3 paid 50 (2 x 25 = 50 if the mod waits for a recount, 40 if read at once), fish 4 paid 60 (3 x 0.8 x 25 = 60 after the recount)
+SETUP P1 path re-route: no path from the enemy core (valid False, 0 tiles)
+PASS N1 Tower_Smackyhut: a Units mod alone spawns nothing: Units 1 -> 2; spawned in the mod's frame 0; spawns from it so far 1 -> 1 in the next 4 s
+PASS N1 Tower_Smackyhut: Addressminercount after a Units mod spawns one: spawned in the call's frame 1, spawns from it 1 -> 2; its spawns: 10460 Mob_Smackyminer Tower_Smackyhut#-86006; 11756 Mob_Smackyminer Tower_Smackyhut#-86006
+PASS N1 Tower_Fiekeep: a Units mod alone spawns nothing: Units 1 -> 2; spawned in the mod's frame 0; spawns from it so far 2 -> 2 in the next 4 s
+PASS N1 Tower_Fiekeep: Addressmobcount after a Units mod spawns one: spawned in the call's frame 1, spawns from it 2 -> 3; its spawns: 12323 Trap_Fierallypoint Tower_Fiekeep#-86302; 12323 Mob_Fieknight Tower_Fiekeep#-86302; 13615 Mob_Fieknight Tower_Fiekeep#-86302
+PASS N1 Tower_Bustergarage: a Units mod alone spawns nothing: Units 1 -> 2; spawned in the mod's frame 0; spawns from it so far 1 -> 2 in the next 4 s
+PASS N1 Tower_Bustergarage: Addressdogcount after a Units mod spawns one: spawned in the call's frame 1, spawns from it 2 -> 3; its spawns: 14176 Mob_Busterdog Tower_Bustergarage#-86740; 15363 Mob_Busterdog Tower_Bustergarage#-86740; 15470 Mob_Busterdog Tower_Bustergarage#-86740
+INFO M1 ore node spawned: Resource_Red, node True team 3, -1 Healthresource, tags [], 2 from the Hut; a stock node Tower_Den team 3
+INFO M1 den spawned: den True team 1, 0 beasts after 5 s; Maxunits 4, Addperwave 5, Respawn 10; the map's own den none
+PASS T1 the Sno Cannon takes a foe tagged Sno as ammo: foe spawned False with tags [-] 1 from the cannon (Rangesno 2); despawned after 0.049 s, killed False, reason '', last hit none; cannon Ammo 10 -> 10
+INFO T1 errors logged meanwhile: OperationCanceledException: The operation was canceled. @ Cysharp.Threading.Tasks.UniTask+DelayPromise.GetResult (Syst | OperationCanceledException: The operation was canceled. @ Cysharp.Threading.Tasks.UniTask+DelayPromise.GetResult (Syst
+FAIL M1 a den spawned mid-match keeps beasts and grows at the next Tide: beasts 0 in the break -> 0 in Tide 1
+INFO M1 the ore node during the break and Tide 1: node alive True, Healthresource 4 -> 4; wallet R1511 B1541 Y1446 -> R1531 B1611 Y1516; miners of the Hut 2
+INFO R2 the core's Respawn stat: 10 (Fixed)
+PASS R1 a respawned vessel keeps a Priority -3 upgrade: Direction_RogueLab_Vessel_Upgradeobject
+PASS R2 control: a cut on the core's Respawn before the death speeds the respawn: plain 10.003 s; core Respawn -50% before the death 5.005 s; added in the vessel's Despawn handler 10.003 s; added in Game_Entity.Ondespawn 10.003 s
+INFO R2 a cut made in the vessel's Despawn handler counts: False; in Game_Entity.Ondespawn False
+DONE pass 24, fail 2, setup 1
+
+== Launch 2 (0.5.1): P1, M1, T1 again with probe fixes, plus S1 on a hurt vessel; 7 pass, 2 fail
+PASS mod mode registered: table 6 entries / 3 Tides, params 7 (Startwait True, Basinthreshold True, Tipthreshold True), twins of 45 Gameplans
+PASS mod Cardinal registered: copy of Artifact_Badge (Red), grant test uses Artifact_Beastpelt
+PASS save write and read back: before 8, after 9
+PASS save value survived a restart: launch 9
+map: the test map 3B_Thehunt; picked node 'Thehunt'
+PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+INFO round 7 setup: groups [Hero_Smacky True 0.111 s, Hero_Snosno True 0.139 s, Hero_Fie True 0.174 s, Hero_Buster True 0.139 s], probe upgrades True, vessel Hero_Boutman, aura R1056 B1081 Y1081, loss multiplier 1, gain 1
+INFO S1 health raise on a hurt vessel: type Variable: 30/50 -> Add +20 -> 42/70 -> Multi +0.5 -> 63/105 -> Multi removed -> 42/70 -> Add removed -> 30/50
+INFO P1 the foes' path: start (-30, 9, -10), end (-3, 11, -26), force False, valid True, 61 tiles
+PASS P1 a wall spawned on a path tile re-routes foes once Savedpaths is cleared: tile (-8, 9, -19) (21 of 61); before the clear the cached path still crossed it (61 tiles); after: valid True, 60 tiles, crosses it False
+INFO M1 ore node spawned: Resource_Red, node True team 3, -1 Healthresource, tags [], 1 from the Hut; a stock node Resource_Orange team 3
+FAIL M1 a mine node spawned mid-match is mined by a Hut's miners: node True tags [Resource], Healthresource 4, Redauramine 5, Blueauramine -, Yellowauramine -; in 40 s: 0 hits, 0 refills; Hut miners 1
+INFO M1 den spawned: den True team 3, tags [Resource], 0 beasts after 40 s; Maxunits 4, Addperwave 5, Respawn 10; the map's own den team 3, 0 beasts, Maxunits 4, Addperwave 5, Respawn 10; Aurabeasts on the map 3
+INFO T1 control: a stock Dagger beside the Sno Cannon: Enemy_Dagger spawned True, tags []: still there after 12 s; cannon Ammo 10 -> 10, damage done 0
+PASS T1 the Sno Cannon takes a foe tagged Sno as ammo (despawned, not killed): RogueLab_Snodagger spawned False, tags []: despawned after 0.174 s, killed False, reason '', last hit none; cannon Ammo 10 -> 10, damage done 0; 1 from the cannon (Rangesno 2)
+INFO T1 errors logged meanwhile: none
+FAIL M1 a den spawned mid-match has beasts by Tide 1: beasts 0 in the break -> 0 in Tide 1
+INFO M1 the ore node during the break and Tide 1: node alive True, Healthresource 4 -> 4; wallet R1059 B1081 Y1086 -> R1082 B1151 Y1161; miners of the Hut 1
+DONE pass 7, fail 2, setup 0
+
+== Launch 3 (0.5.2): M1 with the den's Addperwave cut to 0 and the node hit by hand; 7 pass, 0 fail
+PASS mod mode registered: table 6 entries / 3 Tides, params 7 (Startwait True, Basinthreshold True, Tipthreshold True), twins of 45 Gameplans
+PASS mod Cardinal registered: copy of Artifact_Badge (Red), grant test uses Artifact_Beastpelt
+PASS save write and read back: before 9, after 10
+PASS save value survived a restart: launch 10
+map: the test map 3B_Thehunt; picked node 'Thehunt'
+PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+INFO round 7 setup: groups [Hero_Smacky True 0.118 s, Hero_Snosno True 0.139 s, Hero_Fie True 0.174 s, Hero_Buster True 0.139 s], probe upgrades True, vessel Hero_Boutman, aura R1056 B1081 Y1081, loss multiplier 1, gain 1
+INFO M1 ore node spawned: Resource_Red, node True team 3, -1 Healthresource, tags [], 1 from the Hut; a stock node Resource_Orange team 3
+PASS M1 a mine node spawned mid-match takes hits and pays: Healthresource 4 -> 4, wallet R1056 B1081 Y1081 -> R1061 B1081 Y1081
+INFO M1 a mine node spawned mid-match is mined by a Hut's miners: node True tags [Resource], Healthresource 4, Redauramine 5, Blueauramine -, Yellowauramine -; in 40 s: 0 hits, 0 refills; Hut miners 1, mining [Resource_Orange]
+INFO M1 den spawned: den True team 3, tags [Resource], 0 beasts after 40 s; Maxunits 4, Addperwave 0, Respawn 10; the map's own den team 3, 0 beasts, Maxunits 4, Addperwave 5, Respawn 10; Aurabeasts on the map 3
+PASS M1 a den spawned mid-match has beasts by Tide 1: beasts 0 in the break -> 2 in Tide 1
+INFO M1 the ore node during the break and Tide 1: node alive True, Healthresource 4 -> 4; wallet R1064 B1081 Y1086 -> R1084 B1151 Y1156; miners of the Hut 1
+DONE pass 7, fail 0, setup 0

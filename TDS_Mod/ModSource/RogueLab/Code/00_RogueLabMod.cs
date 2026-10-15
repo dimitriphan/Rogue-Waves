@@ -12,6 +12,8 @@
 //                other base map the vote could offer; TEST DONE
 //   round 4      (07_Round4Menu.cs, 08_Round4.cs) starts from a cloned main menu button with no Cardinal, then map 1's
 //                mechanic probes for the 2026-10-09 scope, and stops (RogueLabData.Round)
+//   round 7      (09_Round7.cs) the stock Cardinals' core upgrades at boot, then map 1's base-vessel and map checks
+//                of kit docs/17 §12 and docs/16 §9, and stops
 // Build: Build-RogueLabMod.ps1 -Define ROGUELAB_SELFTEST (the define also switches on the kit's ModKitTest).
 #if !ROGUELAB_SELFTEST
 #error RogueLab is a research build: build it with -Define ROGUELAB_SELFTEST
@@ -74,6 +76,7 @@ public class RogueLabMod : MonoBehaviour
         try { RogueLabBoot.RegisterCardinal(); } catch (Exception e) { RogueLabProbe.Check("mod Cardinal registered", false, e.ToString()); }
         try { RogueLabBoot.Save(); } catch (Exception e) { RogueLabProbe.Check("save write", false, e.ToString()); }
         yield return RogueLabRound2.Boot();
+        if (RogueLabData.Round == 7 && !RogueLabData.Rerun) yield return RogueLabRound7.Cardinals();
         Ready = true;
         RogueLabLog.Info("ready");
     }
