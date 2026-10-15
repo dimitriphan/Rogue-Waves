@@ -332,7 +332,8 @@ without a stock bespoke AI reads as a plain melee foe to them.
    `reference/roguelab_round2.txt`):* Storm 15 Tides (180 s, 30 s breaks, start 50 of each aura), Drought 20 (120 s, 20 s breaks,
    Annealed and Claymore rushes), Tsunami 4 Tides (180 s, the last 9999 s; long breaks of 240 s then 180 s; start 500
    of each aura, Molten and Bulwark), Final 1 Tide (start 100 of each aura, three Bulwarks and Excaliburs), Tutorial 3 Training Dagger Tides.
-   A Gameplan names its mode, so two maps on one mode play one table.
+   A Gameplan names its mode, so two maps on one mode play one table. In every `Mode_Normal`-script mode the last
+   Tide's `Wavetime` is 9999 s (Normal's 30th, Storm's 15th, Drought's 20th, Tsunami's 4th): it ends only when cleared.
 4. **When the enemies are loaded**: which Addressables group holds `Enemy_Dagger` (search `Bl_Address.Loadedfolders`
    for the `Loadlist` whose `Items` has it) and whether it is loaded at boot or only in a match. That decides when a
    mod can clone a template enemy on every machine. *From the code (2026-10-08):* boot loads the groups named in

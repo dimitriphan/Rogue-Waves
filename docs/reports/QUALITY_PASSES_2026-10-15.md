@@ -185,6 +185,27 @@ game's code; all were right. Scope `16` and kit `17` agree. All 21 builds compil
 copies are equal, the path and pitfall check shows no new candidates, and `/mnt/project-files/scope/` equals
 `docs/scope/`.
 
+## Pass 8: 7 issues
+
+Not clean, so pass 7 does not count toward the two in a row. Six areas came back clean (A1, A3, B1, B3, B4, C). The
+other four found 7 issues, all fixed, none high:
+
+- **Scope `16` (4).** Three Buster upgrade lines gave the data's parameter names where the game's code uses the
+  number another way. Passes 4 and 5 had marked them right after comparing them with the data survey rather than the
+  code:
+  - Circuit is +20% per tile to the nearest team pad within 5 tiles, so +100% for a lone pad.
+  - Speed Bump hurts 5% of the foe's current health, +4% per point of its speed.
+  - Quick Pass collects 1 more per pickup, plus 0.15 per point of speed above 2.
+
+  Diesel Dog's four burn hits land at 0, 0, 0.5 and 1 s, not 0.5 s apart. The `02` log now counts 51 upgrade lines.
+- **Kit `13` §10 Q3 (1).** It now says every `Mode_Normal`-script mode's last Tide runs 9999 s, ending only when
+  cleared, not only Tsunami's.
+- **`docs/mode/MECHANIC_IDEAS.md` (1).** The page now says kit `15` §18.1 has 11 patterns, not 12.
+- **`ArgoModels.cs` (1).** A comment now names "Swell" among the part names.
+
+Because survey comparison missed three lines, pass 9 reads every Numbers line of scope `16` against its code branch
+in the decompile.
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".

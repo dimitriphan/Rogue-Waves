@@ -1281,7 +1281,7 @@
 					- Leads to: {Nitro Collar}
 					- Cost: Red 250
 				% 3:{Diesel Dog} Leave a firey wake behind
-					- Numbers: a flame every 0.5 seconds behind each dog; a foe it touches takes 8 damage 4 times, 0.5 seconds apart /~ On the units \
+					- Numbers: a flame every 0.5 seconds behind each dog; a foe it touches takes 8 damage 4 times: twice at once, then once every 0.5 seconds /~ On the units; the timing read from the game's code \
 					- Leads to: {Nitro Collar}
 					- Cost: Red 250
 				% 3:{Mechanic's Friend} Towers passed by will increase in damage
@@ -1323,7 +1323,7 @@
 					- Leads to: {Circuit}, {Airtime}
 					- Cost: Blue 125
 				% 2:{Speed Bump} Deals percent damage depending on the speed of the enemy
-					- Numbers: damage 5; damage per speed 4
+					- Numbers: a foe going the other way takes 5% of its current health, +4% for each point of its speed (that part times the pad's effect) /~ Read from the game's code: the data names it damage 5; damage per speed 4 \
 					- Leads to: {Circuit}
 					- Cost: Red 50 + Blue 75
 				% 2:{Wrong Way} Enemies are stunned briefly when passing
@@ -1340,7 +1340,7 @@
 					- Leads to: {Breakneck}
 					- Cost: Blue 175
 				% 3:{Circuit} All effects increased when not nearby other pads
-					- Numbers: effect +20%; effect range 5
+					- Numbers: effect +20% for each tile to the nearest pad of the team within 5 tiles, so +100% with none that close /~ Read from the game's code: the data names it effect +20%; effect range 5 \
 					- Leads to: {Breakneck}, {Collision Course}
 					- Cost: Blue 250
 
@@ -1373,7 +1373,7 @@
 					- Leads to: {Lap 2}, {Long Ranged}
 					- Cost: Yellow 30
 				% 1:{Quick Pass} Increased effectiveness the faster the unit on pickup
-					- Numbers: tick speed 0.15
+					- Numbers: each pickup collects 1 more, plus 0.15 for each point of the collector's speed above 2 /~ Read from the game's code: the data names it tick speed 0.15 \
 					- Leads to: {Lap 2}, {Long Ranged}, {Tune Up}
 					- Cost: Yellow 25
 

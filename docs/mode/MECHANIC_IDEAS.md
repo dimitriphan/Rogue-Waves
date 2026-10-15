@@ -28,7 +28,7 @@ If only five go further, these fill the scope's open `! NEEDS !` lines with the 
 | 2 | **Five objectives from stock pieces**: Raze the Nest, Bag the Beast, Clean Hull, Beat the Clock, plus the existing Mind the Meteor on a one-shot node | `14` "list of optional objectives" | Halberd nest, aura beast, core damage, the Tide timer, `Resource_Death` (`docs/16` §3-4) |
 | 3 | **Cost Directions** (Any): build and upgrade discounts for one player, already shown on the buttons | `11` "Directions for every vessel" | a build button's `Goalvalue` is that building's price scale (`docs/16` §2) |
 | 4 | **Base-vessel Directions** from each stock vessel's own numbers (Buster's dash range, Fie's regulars, Boutman's rally, Sno Sno's trail, Smacky's bombs) | `11` "(Base Game Vessels)" | the hero and tower AIs' params (§4) |
-| 5 | **Cardinals from the stock patterns**: a countdown Cardinal, a free-build Cardinal, an interest Cardinal, a last-stand Cardinal, a break-length Cardinal | `12` "list of new Cardinals" | the 12 patterns in `docs/15` §18.1 |
+| 5 | **Cardinals from the stock patterns**: a countdown Cardinal, a free-build Cardinal, an interest Cardinal, a last-stand Cardinal, a break-length Cardinal | `12` "list of new Cardinals" | the 11 patterns in `docs/15` §18.1 |
 
 ## 2. Sea weather on the chart (per-map conditions)
 
