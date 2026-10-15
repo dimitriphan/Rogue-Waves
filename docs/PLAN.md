@@ -200,8 +200,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
   rounds passed; full re-test 2026-10-11, 208/0). Yossele is built in draft PR #30 (PC round 8, 98/0, Dimitri's play
   notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels) and 18
-  (character art). 2026-10-15: two quality passes and a reorganisation (`docs/reports/`, `docs/mode/`;
-  `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
+  (character art); the Vessel Spotlight pages (Log). 2026-10-15: two quality passes and a reorganisation
+  (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
 - **Next:** merge the open PRs in the order #32, #29, #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
   §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions
   2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
@@ -307,6 +307,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
   (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
   Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
+- **Also (2026-10-15):** Vessel Spotlight artifact (https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw), journal-style
+  pages for the base five and for Spool and Yossele from Dimitri's own art and sheets only; WIP covers show what they
+  still lack (every sprite but one front frame, all UI art, tower models, numbers, costs, lore). Source and rebuild:
+  project files `concepts/vessel_spotlight_2026-10-15/`.
 
 - **Also (2026-10-15):** Dimitri asked for two quality checks of every asset and a cleaner layout. Five readers per
   pass (kit, code, tools, docs and scope, open PRs); 128 findings, then 49 more. Fixed in place where no game behaviour
