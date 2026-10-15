@@ -1,0 +1,215 @@
+// Server-side base for every Yossele buildable. Replaces the template's own AIs (which hard-code Smacky's objects) and
+// Entity_Ai_General_Upgrade, whose upgrade flow it mirrors exactly: the same Upgrade/Upgradeoption commands, throttle,
+// costs, Forced/Normal checks, Upgradeborder effect and the owner's Upgraded end-screen stat. Upgrade parameters on the
+// building's own stats become modifiers; the rest are read by the subclass through Param() and Has().
+//
+// Growth (the scope's rule): a building gains a stage when a Tide begins if it stood through the whole Tide before it,
+// up to its maximum; FERTILIZE adds one at once. The stage is shown as the "Growth" counter (ModKitCounter) and the
+// skin "Growth<n>" (sprouts round its foot), both synced by the engine. Destroyed or sold, it is gone: a new one
+// starts at 0.
+public abstract class YosseleBuilding : MonoBehaviour
+{
+    public Entity_Master Master;
+    public YosseleData.Build Def;
+    public bool Started;
+    public int Growth, BuiltWave = -1, Grown, Fertilized;
+
+    readonly Dictionary<string, float> param = new Dictionary<string, float>();
+    readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
+    readonly YosseleFaults faults = new YosseleFaults();
+    Link_Command upgradeCommand;
+    float upgradeThrottle;
+
+    // Stats the buildings own: an upgrade param named after one of these (Range_Add, Seedlimit_Add...) is a modifier.
+    static readonly string[] StatNames = { "Damage", "Attackspeed", "Range", "Health", "Radius", "Spores", "Seedlimit", "Seedrate", "Slow" };
+
+    public bool Has(string key) { return keys.Contains(key); }
+
+    public float Param(string name, float fallback)
+    {
+        float v;
+        return param.TryGetValue(name, out v) ? v : fallback;
+    }
+
+    public float Stat(string name, float fallback) { return YosseleUtil.Stat(Master, name, fallback); }
+    public long Owner { get { return YosseleUtil.Owner(Master); } }
+    public int Team { get { return YosseleUtil.Team(Master); } }
+    public Vector3 Pos { get { return YosseleUtil.Pos(Master); } }
+    public int Max { get { return Def != null ? Def.Max : 0; } }
+    public bool FullGrown { get { return Growth >= Max; } }
+
+    void Update()
+    {
+        if (Master == null)
+        {
+            Destroy(this);
+            return;
+        }
+        if (!YosseleUtil.IsServer)
+            return;
+        try
+        {
+            if (!Started)
+            {
+                if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
+                    return;
+                Begin();
+            }
+            if (YosseleUtil.Alive(Master))
+                Tick();
+        }
+        catch (Exception e)
+        {
+            if (faults.Fail(Def.Id + " brain", e))
+                enabled = false;
+        }
+    }
+
+    void Begin()
+    {
+        Started = true;
+        upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
+        for (int i = 1; i <= 4; i++)
+        {
+            Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
+            option.Goalvalue = i - 1;
+            Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
+        }
+        upgradeCommand.Goalvalue = 1f;
+        Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
+        Master.Command += OnCommand;
+        Master.Upgrade += OnUpgrade;
+        BuiltWave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
+        SetGrowth(0);
+        foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
+            OnUpgrade(u);
+        Started2();
+        YosseleUtil.Vis(Master, "Yossele_Built", Pos, 0);
+    }
+
+    protected virtual void Started2() { }
+    protected abstract void Tick();
+    protected virtual void OnTide(int wave) { }
+    protected virtual void Command(string command, string json, bool server) { }
+    protected virtual void Upgraded(YosseleData.Upg def) { }
+    protected virtual void OnGrowth() { }
+    public virtual void Gone(bool killed) { }
+
+    // ---------------------------------------------------------------- Growth
+
+    // A Tide began (YosseleServer, from ModKitTides). Built during Tide N (or the break after it) it first grows when
+    // Tide N+2 begins: it has then stood through all of Tide N+1.
+    public void TideBegan(int wave)
+    {
+        if (!Started)
+            return;
+        if (Growth < Max && BuiltWave <= wave - 2)
+        {
+            Grow(1, false);
+            Grown++;
+        }
+        OnTide(wave);
+    }
+
+    public bool Grow(int stages, bool fertilizer)
+    {
+        if (!Started || Growth >= Max || stages <= 0)
+            return false;
+        SetGrowth(Mathf.Min(Max, Growth + stages));
+        if (fertilizer)
+            Fertilized++;
+        YosseleUtil.Vis(Master, "Yossele_Grow", Pos, Growth + (fertilizer ? 100 : 0));
+        return true;
+    }
+
+    public void SetGrowth(int stages)
+    {
+        Growth = Mathf.Clamp(stages, 0, Max);
+        ModKitCounter.Set(Master, YosseleData.GrowthStat, Growth);
+        YosseleUtil.Skin(Master, Growth > 0 ? YosseleData.GrowthStat + Growth : "");
+        OnGrowth();
+    }
+
+    // ---------------------------------------------------------------- upgrades (Entity_Ai_General_Upgrade's flow)
+
+    void OnCommand(string command, string json, bool server)
+    {
+        if (command != "Upgrade")
+        {
+            try { Command(command, json, server); }
+            catch (Exception e) { YosseleLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
+            return;
+        }
+        if (string.IsNullOrEmpty(json))
+            return;
+        try
+        {
+            // {"Upgrade":"<name>","Upgrader":<session>} (Entity_Ai_General_Upgrade.Upgradedata), read by hand because
+            // JsonUtility isn't available to mod code.
+            string upgradeName = YosseleUtil.JsonString(json, "Upgrade");
+            long upgrader = (long)YosseleUtil.JsonNumber(json, "Upgrader");
+            Upgradeproperties up = Bl_Address.Getload("Upgrade", upgradeName) as Upgradeproperties;
+            if (up == null)
+                return;
+            if (!server)
+            {
+                List<Upgradeproperties> available = new List<Upgradeproperties>(Master.Beingserver.Entity.Upgrades);
+                foreach (Upgradeproperties applied in Master.Upgradelistserver.Values)
+                    if (applied.Priority == Master.Entitydata.Value.Level)
+                        available.AddRange(applied.Upgrades);
+                if (!available.Contains(up) || Time.time - upgradeThrottle <= 0.05f)
+                    return;
+                upgradeThrottle = Time.time;
+            }
+            float scale = upgradeCommand != null ? upgradeCommand.Goalvalue : 1f;
+            if (!Helper_Resources.Checkresources(up.Costs, upgrader, scale))
+                return;
+            Helper_Resources.Useresources(up.Costs, upgrader, scale);
+            Helper_Entitytools.Upgrade(Master, up, server ? Helper_Entitytools.Upgradecheck.Forced : Helper_Entitytools.Upgradecheck.Normal, null);
+            Master.Radio.Vfxoneshotcheck("Upgradeborder", Pos, Vector3.forward);
+            GameObject player;
+            Tds_Clientinfo info;
+            if (Blm_Server.Instance != null && Blm_Server.Instance.Sessionids.TryGetValue(Owner, out player)
+                && player != null && player.TryGetComponent(out info) && info.Activeplayerdata != null)
+                info.Activeplayerdata.Upgraded++;
+        }
+        catch (Exception e)
+        {
+            YosseleLog.Warn("upgrade command: " + e.Message);
+        }
+    }
+
+    void OnUpgrade(Upgradeproperties up)
+    {
+        YosseleData.Upg def;
+        if (up == null || !YosseleContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
+            return;
+        keys.Add(def.Key);
+        if (up.Defaultparams != null)
+            foreach (KeyValuePair<string, float> kv in up.Defaultparams)
+            {
+                int cut = kv.Key.LastIndexOf('_');
+                string stat = cut > 0 ? kv.Key.Substring(0, cut) : kv.Key;
+                string type = cut > 0 ? kv.Key.Substring(cut + 1) : "";
+                bool own = Array.IndexOf(StatNames, stat) >= 0 && Master.Statsserver.ContainsKey(stat);
+                if (own && (type == "Add" || type == "Multi" || type == "Pmulti"))
+                {
+                    Helper_Entitytools.Modtypes mt = type == "Add" ? Helper_Entitytools.Modtypes.Add : type == "Multi" ? Helper_Entitytools.Modtypes.Multi : Helper_Entitytools.Modtypes.Pmulti;
+                    Helper_Entitytools.Addmod(Master, stat, kv.Value, mt, 0f);
+                }
+                else
+                {
+                    float old;
+                    param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Max") ? old + kv.Value : kv.Value;
+                }
+            }
+        if (Started)
+        {
+            YosseleUtil.Vis(Master, "Yossele_Upgrade", Pos, def.Tier);
+            Upgraded(def);
+        }
+    }
+
+    // Foes near this building, nearest first.
+    protected List<Entity_Master> Foes(float range) { return YosseleUtil.FoesNear(Master, Pos, range); }
+}

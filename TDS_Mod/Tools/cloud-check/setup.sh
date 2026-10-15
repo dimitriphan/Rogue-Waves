@@ -4,7 +4,7 @@
 # reference assemblies from NuGet, lists which module holds each Unity type, builds the stubs and UnityLite.
 set -e
 H=$(cd "$(dirname "$0")" && pwd)
-VC=${1:?usage: setup.sh <path to the unzipped TDS_Vessel_Creator>}
+VC=$(cd "${1:?usage: setup.sh <path to the unzipped TDS_Vessel_Creator>}" && pwd)
 command -v mono >/dev/null || { echo "mono is missing: apt-get install mono-devel"; exit 1; }
 fetch() {   # <package id> <version> <folder>
   local lower; lower=$(echo "$1" | tr 'A-Z' 'a-z')

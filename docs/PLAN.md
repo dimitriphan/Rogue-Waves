@@ -202,6 +202,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-12: RogueLab round 7 ran `17` §12 and `16` §9 items 1-3 on the PC: every check answered, with three new
   rules (Direction params apply nothing, unit counts need the building's count check, a respawn cut made at the death
   is too late); `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
+  2026-10-12: **Yossele 0.1.0-dev** built from Dimitri's updated `docs/scope/07` (design, temporary art from his
+  reshade, code, self-test). New assets and every default value: `docs/YOSSELE_BUILD_NOTES.md`. PC rounds the same
+  day, the last (round 8) **98 pass, 0 fail, 0 setup** on 3B_Thehunt (rounds and fixes in its
+  `IMPLEMENTATION_NOTES.md`; PR #30).
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
   2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`); every template is in
   `15_Templates.txt`; Argo and Uloe are in the vessel template; `04_Rogue_Waves_Mode.txt` holds the sea chart and weather.
@@ -216,7 +220,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   project files `concepts/vessel_spotlight_2026-10-15/`.
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
-  Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
+  Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed;
+  also left on Yossele: his look by eye (temporary art), his balance pass, the Compost Bin numbers in scope `11`, and
+  the chance-based Viral Outbreak and Hallucinogen, still unchecked.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 
 ### Log (newest last; was "Now" until 2026-10-11)
