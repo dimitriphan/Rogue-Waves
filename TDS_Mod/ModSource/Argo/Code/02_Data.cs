@@ -245,7 +245,8 @@ public static class ArgoData
                 U(Scatter, "Pressure", 4, "Pressure Rounds", "Harder pellets that punch through one more enemy", "Pierce_Add=1;Damage_Add=0.5", "Redaura=350", "Broadside5")
                     .Fx("Pierce +1", "Pellet damage +0.5"),
                 // 2.0: the scope's "increases health greatly", in place of 1.4.0's Undertow. Healtharmor is the game's
-                // armour (each hit takes 1 from it before health; healing refills it, as on Sno Sno's Brain Freeze).
+                // armour: each hit, whatever its Damage, takes its Damagemulti (1 by default) from it and none from
+                // health (kit docs/01); healing refills it, as on Sno Sno's Brain Freeze.
                 U(Scatter, "Ironclad", 4, "Ironclad", "Health greatly increased", "Health_Multi=1.5;Healtharmor_Base=2", "Redaura=250;Blueaura=150", "")
                     .Fx("Health x2.5", "Armour: the next 2 hits take 1 each"),
                 U(Scatter, "Broadside", 5, "Broadside", "Every few volleys, a full ring of pellets all around", "Broadside_Every=4;Broadside_Count=16;Damage_Add=0.5", "Redaura=3000", "")

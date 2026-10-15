@@ -5,7 +5,8 @@
 // can pick again.
 // The campaign belongs to the save it was started or continued in: switching or clearing the save slot on the main
 // menu gives the game a new Bla_Data.Playerdata (nothing else replaces it after launch), and the campaign in memory is
-// then left behind (still in its own slot), so the next win never writes it into another slot (kit docs/23, #99).
+// then left behind (after a switch its own slot still holds it; clearing that slot erased it), so the next win never
+// writes it into another slot (kit docs/23, #99).
 public static class RWCampaign
 {
     public static bool Active;
@@ -114,7 +115,7 @@ public static class RWCampaign
         catch (Exception e) { RWLog.Warn("campaign: slot change: " + e.Message); }
     }
 
-    // Forgets the campaign here without touching any save: its own slot still holds it for Continue.
+    // Forgets the campaign here without touching any save: after a switch its own slot still holds it for Continue.
     static void LeaveBehind(string why)
     {
         Active = false;

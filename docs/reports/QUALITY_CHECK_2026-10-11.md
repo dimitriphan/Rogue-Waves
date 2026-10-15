@@ -2,7 +2,7 @@
 
 > **Note (added 2026-10-15):** the kit has 24 chapters now, and the scope was re-laid on 2026-10-14
 > (`docs/scope/00_Read_Me.txt`), so §3's scope line numbers no longer match. The next check is
-> `QUALITY_CHECK_2026-10-15.md`.
+> `QUALITY_CHECK_2026-10-15.md`. §4's default-branch row is done: GitHub's default branch is `claude/phase-1-6lfnar`.
 
 Dimitri asked (2026-10-11 21:22Z) for a quality check of every lesson and resource made so far. This pass builds on
 the kit accuracy review of 2026-10-09 (PR #12, commit 0ad9c04) and checks what was written or left stale since,

@@ -206,7 +206,7 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 | --- | --- | --- | --- |
 | Sno Cannon (Red 30, `Tower, Towerfighter`) | eats `Ammo` Level from the nearest **`Snoble`- or `Sno`-tagged entity of any team** within `Rangesno`, then fires; Snoblaster laser drains snow to 5000 and fires a ×6 beam | Damage, Attackspeed, Range, Rangesno, Ammo, Projspeed | splash, slow, Hypercool, Permasno, laser and Snoble numbers |
 | Sno Box (Blue 10 Yellow 25, `Tower, Gatherer`) | hurts every ore in Range (no `Lasthit`) and makes snow (`Heal` Level) on its tile or, with Sno Fall, where it throws it (no range limit); all its hurts on `Mob`s ×20 (×50 Hard Sno) | Damage, Attackspeed, Range, Heal | ×20/×50, Snoble every 5th, Snoaddrate |
-| Heater (Red 60, `Tower, Towerfighter`) | burns up to 5 foes in Range, melts snow; Cookin' Eggs pulse, Heat Treat heals allies, Cold Sweats gives every same-team `Towerfighter` +100 % attack speed | Damage, Attackspeed, Range, Snomeltspeed, Rangesno | pulse 20, heals 10/3.3, Shock +15 %, Scorch ramp |
+| Heater (Red 60, `Tower, Towerfighter`) | burns up to 5 foes in Range, melts snow; Cookin' Eggs pulse, Heat Treat heals allies, Cold Sweats gives every same-team `Towerfighter` in its Range +100 % attack speed | Damage, Attackspeed, Range, Snomeltspeed, Rangesno | pulse 20, heals 10/3.3, Shock +15 %, Scorch ramp |
 | Ice Brick (Blue 15, `Tower`) | heals from the snow on its tile, then an overshield (`Healthover`) up to `Health × Overmax`; leftovers Thin Ice (rebuilds) and Rock | Health, Heal, Healtime, Overmax | ×0.85 resist, bursts 200/35, snow lob 20 |
 
 - **Snow** (`Effect_Snosnosnow`, Entity name `Sno`, tag `Sno`, Level 0-100, skins 2-10) is a networked being any mod

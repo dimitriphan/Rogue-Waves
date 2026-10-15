@@ -70,7 +70,7 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 
 | Building | Upgrade | Status | Desc | Params | Cost | Next |
 |---|---|---|---|---|---|---|
-| Scatter | Ironclad4 | **new** (scope: "increases health greatly"), replaces Undertow4 | Health greatly increased | Health_Multi 1.5 (health ×2.5), Healtharmor_Base 2 (the game's armour: each hit loses 1 to it first) | Red 250, Blue 150 | (ends) |
+| Scatter | Ironclad4 | **new** (scope: "increases health greatly"), replaces Undertow4 | Health greatly increased | Health_Multi 1.5 (health ×2.5), Healtharmor_Base 2 (the game's armour: each hit, whatever its damage, takes its Damagemulti, 1 by default, from it first) | Red 250, Blue 150 | (ends) |
 | Harpoon | Tether2 | **new**, replaces Barbed2 | Harpooned foes are slowed | Tetherslow_Base 0.3, Tetherslow_Duration 2 | Red 30 | Anchor Line3, Reel3 |
 | Harpoon | Anchor Line3 | **changed**: pins the foe hit, stunned instead beside a building | Pins the foe it hits, stunned against a building | Root_Base 1, Pinstun_Base 1 | Red 60, Blue 50 | (ends) |
 | Harpoon | Reel3 | **new** (1.4.0's base reel moved here) | Reels the first foe hit toward the gun | Reel_Tiles 1.5 | Red 60, Blue 50 | Twin Line4 |
@@ -103,12 +103,12 @@ Everything is drawn by the editor generators (`Assets/ArgoMod/Editor`), as in 1.
 Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's look; only what 2.0 adds is new.
 
 - **Models** (`ArgoModels.cs`): `Trap_Argowater` and its seven upgrades (`_Undercurrent2`, `_Brine2`, `_Kelp3`,
-  `_Salt3`, `_Abyss4`, `_Crushing4`, `_Trench5`): a pool in a low stone frame filling the tile, 0.27 high, with a small
-  brass pump dome and porthole in the back corner (Argo's motif on the top face); the water darkens from Crushing
-  Depth. `Argo_Pool` is a FLOOD pool: frame and water, no pump. New upgrade models: Scatter `_Ironclad4` (armour
-  skirt and gun shield), Harpoon `_Tether2` (a teal line from drum to head), `_Reel3` (red winch wheels; Twin Line and
-  Undertow keep them), `_Undertow5` (dark body with teal bands and a grapnel head), Drill `_Bedrock3` (a stone collar
-  with teeth round the bore).
+  `_Salt3`, `_Abyss4`, `_Crushing4`, `_Trench5`): a pool in a low stone frame filling the tile (the frame 0.075 high,
+  0.27 to the top of the pump), with a small brass pump dome and porthole in the back corner (Argo's motif on the top
+  face); the water darkens from Crushing Depth. `Argo_Pool` is a FLOOD pool: frame and water, no pump. New upgrade
+  models: Scatter `_Ironclad4` (armour skirt and gun shield), Harpoon `_Tether2` (a teal line from drum to head),
+  `_Reel3` (red winch wheels; Twin Line and Undertow keep them), `_Undertow5` (dark body with teal bands and a grapnel
+  head), Drill `_Bedrock3` (a stone collar with teeth round the bore).
 - **Effects** (`ArgoBuilder.cs`): `World_Argo_Flood` (splash), `World_Argo_Wet` (drips on a foe slowed by Deep
   Water), `World_Argo_Pinned` (rope bits round the feet), `World_Argo_Stun` (stars, Anchor Line beside a building),
   `World_Argo_Whirl` (Undertow's ring, scaled to its radius), `World_Argo_Kelp`, `World_Argo_Brine`,

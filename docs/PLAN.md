@@ -481,13 +481,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   - The vessel template gets kit 1.6's pack calls before Spool is scaffolded (B10). Argo's four plain skips become
     `TEST SETUP` at its next round (B12); Salt Sting's text and the unused Stagger wait for its balance pass (B14, B15).
   - Tools: `api-dump.ps1` is brought up to the dump's format at the next PC session (C2); `setup.sh` unzips into a
-    temporary folder after PR #30 merges (C23); the API dump gets a header line at the next dump (A19); old Argo notes
+    temporary folder after PR #30 merges (C23, done); the API dump gets a header line at the next dump (A19); old Argo notes
     stay as history (A17). Done in PR #36: `gh` before the token (C6), BootCheck's `icons:` line (C5), PS 5.1 patch
     lists (C10), the log read race (C2-3), the allowlist (C19).
   - Scope: PR #32's thread fixes scope 16 (Knight Commander, Diesel Dog, Rev Dog, Battalion, Black Sno) and the
     wording items D20-D22, D26, D27; after #32 merges, the repo's `docs/scope/` is copied over the project files (D1).
   - Directions: names match the Look line; the heading or course style is optional (`SCOPE_REVIEW_2026-10-10` #37).
-  - The GitHub default branch becomes `claude/phase-1-6lfnar`; only Dimitri can switch it (GitHub settings).
+  - The GitHub default branch becomes `claude/phase-1-6lfnar`; only Dimitri can switch it (GitHub settings). Done:
+    it is the default now (`docs/PROJECT_SETUP.md` §1).
 
 ### Open questions
 

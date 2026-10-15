@@ -682,7 +682,7 @@
 					- Leads to: {Spawnbed}, {Drybed}
 					- Cost: Yellow 25 + Blue 40
 				% 1:{Tank} Fish gain permanent health when fished
-					- Numbers: each time a fish lands in this barrel, its overshield cap grows by 25, with no limit /~ Read from the game's code: the data names it health +25 \
+					- Numbers: each time a fish leaves this barrel, its overshield cap grows by 25, with no limit /~ Read from the game's code: the data names it health +25 \
 					- Leads to: {Farmingbed}, {Drybed}
 					- Cost: Blue 75 + Yellow 25
 
@@ -1391,7 +1391,7 @@
 					- Cost: Yellow 250 + Red 250
 
 				% 3:{Lap 3} Resource gain ramps with current capacity, can only be collected at half health
-					- Numbers: gain per health 0.1; charge capacity +2; health needed to collect 0.5
+					- Numbers: gain per health 0.1; charge capacity +2 to its base; health needed to collect 0.5 /~ Read from the game's code \
 					- Leads to: {Final Lap}
 					- Cost: Yellow 250
 				% 3:{Strong Start} When empty, triple the generation

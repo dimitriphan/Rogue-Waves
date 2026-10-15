@@ -147,6 +147,29 @@ each pass. Every pass 3 fix held. **Heaviest finds** (fixed unless listed):
   the player arrow in the wrong file; kit `01` said armour counts each hit as 1 (it is `Damagemulti`).
 - Listed: B3-36 (Yossele's vine stems step 1 px at tile joints).
 
+## Pass 5: 16 issues
+
+| Area | Found | Fixed by its reader | Fixed by the lead | Listed |
+| --- | --- | --- | --- | --- |
+| A1 kit 01-12 | 0 | 0 | 0 | 0 |
+| A2 kit 13-18 | 2 | 2 | 0 | 0 |
+| A3 kit 19-24, reference, recipes | 1 | 1 | 0 | 0 |
+| B1 template, examples, tools | 1 | 1 | 0 | 0 |
+| B2 Argo, shared kit | 4 | 4 | 0 | 0 |
+| B3 Yossele | 1 | 1 | 0 | 0 |
+| B4 mode, RogueLab, Riptide, handoffs | 1 | 1 | 0 | 0 |
+| C tools, settings | 0 | 0 | 0 | 0 |
+| D project docs | 3 | 3 | 0 | 0 |
+| E scope | 3 | 3 | 0 | 0 |
+
+All low or middling, all fixed, nothing new for Dimitri. Most came from following pass 4's corrections into the places
+that repeated the old rule: Argo's Ironclad comment and DESIGN row and scope `09` still gave the old armour rule; scope
+`16`'s Tank line (a pass 4 fix) had the wrong trigger (a fish leaving, not landing) and Lap 3's +2 is a base mod;
+`PLAN.md` Decisions still read the default branch and C23 as pending; two older reports got top notes (default branch,
+Steam id). Smaller: kit `17` Cold Sweats is within its Range, kit `18` Claymore's attack frame, the kit's Tide number
+is 1-based, a Sprigg note named the wrong prefab call, a recipe comment on the language-change order, Yossele's client
+header, and the campaign comments (clearing a slot erases the campaign; a switch keeps it).
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".
@@ -166,7 +189,7 @@ Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.
 | B1-3 | The template never wires kit 1.3 `ModKitCombat` (kill credit) or kit 1.2 `ModKitTowers.Fit` | Add them with the 1.6 pack calls (B10), before Spool is scaffolded |
 | B1-22 | The template's `MummerUtil.Debuff` sends its looks through the throttled `Vfxdebuffcheck` (B3-24's problem), so Spool and Uloe would inherit it | Port Argo 2.0.1's `ArgoUtil.Debuff` into the template with B10, before Spool is scaffolded |
 | B1-4, C2-6 | `<Name>Aseprite.cs` (template, Argo, Yossele) and `ase_sheets.py` name unit sheets so the unit branch skips them: no `.aseprite` for units | Fix both writers together with B10 |
-| B2-X1, B2-X6 | Argo's DESIGN gives FLOOD "1/Quickaction", the code key 1 only; `GiveUpAfter` (12 s) is unused, the Naut gives up after 6 s | At Argo's balance pass |
+| B2-X1, B2-X6 | Argo's DESIGN gives FLOOD "1/Quickaction", the code key 1 only; `GiveUpAfter` (12 s) is unused, the Naut gives up after 6 s | At Argo's balance pass; then also the Ironclad line "the next 2 hits take 1 each", which a Bulkhead Naut stretches to 3 hits |
 | C10 | `.claude/settings.json` lacks `apt-get update` and `python3 -m pip install UnityPy`, which the docs tell sessions to run | Add them (permissions are yours) |
 
 ## Left on purpose

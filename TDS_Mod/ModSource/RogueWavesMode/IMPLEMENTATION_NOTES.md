@@ -17,7 +17,8 @@ clean). **Not run in game, not tried online.**
   its notes). Yossele 0.1.0-dev still sends its looks through `Vfxdebuffcheck` (`Yossele/Code/01_Util.cs`; its next build).
 - **Slot switch** (`06_Campaign.cs`): the campaign remembers the `Bla_Data.Playerdata` object it was started or
   continued in; `RWCampaign.Live` (boat, weather, map end, every save) and the `Onslotchanged` / `Onslotremoved`
-  hooks forget it from memory when that object changed. Its own slot keeps it for Continue.
+  hooks forget it from memory when that object changed. After a switch its own slot keeps it for Continue; clearing
+  the slot it lives in erases it (the game reloads that slot from its default save).
 
 New self-test checks for the next PC round: **I1** (on the boat: the kept GUID equals `Metadata`'s and this PC's; says
 whether this launch put one back, so a second launch should say "put back"), **L1** (first map: the load watch saw

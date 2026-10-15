@@ -35,8 +35,9 @@ public static class RecipeText
         rows[english] = text;
     }
 
-    // Runs after every settings change (Bl_Settings.cs:799-886); the language load itself happened just before.
-    // Never throws: Settingschanged is invoked without a try.
+    // Runs on every Settingschanged (Bl_Settings.cs:799-886). A language change fires it several times: first from
+    // Getsavedsettings, before the new language is loaded, then after each Applysettingssoft, which loads it
+    // (:838-850); the last call puts the rows in the new table. Never throws: Settingschanged is invoked without a try.
     public static void Apply()
     {
         try
