@@ -102,6 +102,7 @@ public static class RWIcons
             Add(types, RWChart.RisingWater, Rising, like);
             Add(types, RWChart.QuickeningCurrent, Quickening, like);
             Add(types, RWChart.NestingGround, Nesting, like);
+            RWLog.Info("icons: three weathers");   // Run-SelfTests.ps1 -BootCheck waits for this line
         }
         catch (Exception e) { RWLog.Warn("icons: " + e.Message); }
     }

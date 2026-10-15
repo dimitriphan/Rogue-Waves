@@ -6,6 +6,9 @@
 R2b open again two frames after the game's close; R1, R3-R6 and every round-4 check pass. The same six game-only
 exception lines as round 5. Still only online: O1-O8 (`docs/mode/REJOIN.md` §6).
 
+Since (2026-10-15, compiled here, not run): `08_Icons.cs` logs `icons: three weathers` on success, so
+`Run-SelfTests.ps1 -BootCheck` sees the mode part ready (it only logged `icons:` on a failure before).
+
 **PC round 5** (0.2.0 self-test, 2026-10-11): **45 pass, 1 fail, 0 setup.** Every round-4 check passed again, and R1,
 R3, R4, R5, R6 and the second half of R2 passed. R2 failed: the mod opened the lobby ("rejoin: lobby opened"), then
 the game's loading screen ended ("Loading 90%", `Game_Load` removing the Gameloading scene with `Lobbystate` "Closed",

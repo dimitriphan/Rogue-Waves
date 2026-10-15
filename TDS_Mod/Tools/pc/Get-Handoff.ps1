@@ -3,8 +3,9 @@
 # zip: README.md, HASHES.txt, PATCHES.json (from TDS_Mod\Handoff\<Name> on that branch), the handoff scripts, and every
 # file HASHES.txt lists. Nothing in TDS_Mod changes; Apply-Handoff.ps1 does that afterwards, once Dimitri OKs it.
 #   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Get-Handoff.ps1' -Ref claude/some-branch -Name Argo_round10"
-# Needs a fine-grained GitHub token that reaches only dimitriphan/Rogue-Waves with Contents: Read-only, which Dimitri
-# saves in %USERPROFILE%\.modprojects_token (TDS_Mod\Tools\pc\README.md). The script never prints or copies the token.
+# Uses the signed-in GitHub CLI (`gh auth token`) when there is one; otherwise a fine-grained token that reaches only
+# dimitriphan/Rogue-Waves with Contents: Read-only, saved in %USERPROFILE%\.modprojects_token (TDS_Mod\Tools\pc\README.md).
+# The script never prints or copies the token.
 param(
     [Parameter(Mandatory = $true)][string]$Ref,
     [Parameter(Mandatory = $true)][string]$Name,
@@ -14,8 +15,12 @@ param(
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Add-Type -AssemblyName System.IO.Compression.FileSystem
-if (-not (Test-Path -LiteralPath $TokenFile)) { throw "No token at $TokenFile. See TDS_Mod\Tools\pc\README.md." }
-$token = ([IO.File]::ReadAllText($TokenFile)).Trim()
+$token = $null
+if (Get-Command gh -ErrorAction SilentlyContinue) { try { $token = (& gh auth token 2>$null | Out-String).Trim() } catch { $token = $null } }
+if (-not $token) {
+    if (-not (Test-Path -LiteralPath $TokenFile)) { throw "No signed-in gh and no token at $TokenFile. See TDS_Mod\Tools\pc\README.md." }
+    $token = ([IO.File]::ReadAllText($TokenFile)).Trim()
+}
 $headers = @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json"; "User-Agent" = "ModProjects-Get-Handoff"; "X-GitHub-Api-Version" = "2022-11-28" }
 $sha = (Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/commits/$Ref" -Headers $headers).sha
 $short = $sha.Substring(0, 7)

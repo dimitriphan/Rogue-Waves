@@ -203,8 +203,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (character art). 2026-10-15: two quality passes and a reorganisation (`docs/reports/`, `docs/mode/`;
   `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
 - **Next:** merge the open PRs in the order #32, #29, #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
-  §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (fix kit 1.7's "Leave" first, Open question
-  3). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
+  §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions
+  2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
   (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Numbers held by open PRs:** kit chapters 19-24 (#34); pitfalls #89-91 (#29), #93-101 (#34), #102-104 (#30), #92
@@ -416,6 +416,22 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-15 (default): `docs/` holds living pages only; dated reports go to `docs/reports/` (frozen, a note on top
   when something changed since), the mode's design pages to `docs/mode/`. Handoff folders hold only round packs.
 
+- 2026-10-15 (user: "Use defaults for all", on `docs/reports/QUALITY_CHECK_2026-10-15.md` §4 and the open questions):
+  - **Kit 1.7 before the main-menu button ships**: "Leave" fires when the map object is gone (B1), the focus mark
+    survives the build's rename (B2), `ModKitTides`' rewind comment and `ModKitCombat`'s header (B17, B18).
+  - **One pack version** for every part, read by its data and its prefab, set when the pack is first built (B3, B5);
+    the mode warns on the main menu on a mismatch, built with the pack (B6).
+  - The vessel template gets kit 1.6's pack calls before Spool is scaffolded (B10). Argo's four plain skips become
+    `TEST SETUP` at its next round (B12); Salt Sting's text and the unused Stagger wait for its balance pass (B14, B15).
+  - Tools: `api-dump.ps1` is brought up to the dump's format at the next PC session (C2); `setup.sh` unzips into a
+    temporary folder after PR #30 merges (C23); the API dump gets a header line at the next dump (A19); old Argo notes
+    stay as history (A17). Done in PR #36: `gh` before the token (C6), BootCheck's `icons:` line (C5), PS 5.1 patch
+    lists (C10), the log read race (C2-3), the allowlist (C19).
+  - Scope: PR #32's thread fixes scope 16 (Knight Commander, Diesel Dog, Rev Dog, Battalion, Black Sno) and the
+    wording items D20-D22, D26, D27; after #32 merges, the repo's `docs/scope/` is copied over the project files (D1).
+  - Directions: names match the Look line; the heading or course style is optional (`SCOPE_REVIEW_2026-10-10` #37).
+  - The GitHub default branch becomes `claude/phase-1-6lfnar`; only Dimitri can switch it (GitHub settings).
+
 ### Open questions
 
 Phase 0's eight questions are closed (see Decisions). New ones go here, with a default.
@@ -423,13 +439,10 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Yossele and Spool sheets: the `! NEEDS !` lines under `[Questions]` in `docs/scope/07` and `08` | the default each line names |
-| 2 | Relax "a Direction is named like a heading or a course" (`docs/reports/SCOPE_REVIEW_2026-10-10.md` #37)? | names match the Look line; heading style optional |
-| 3 | Kit 1.7: fix `ModKitTides` "Leave" firing late (`QUALITY_CHECK_2026-10-15.md` §4 B1) and the per-part focus mark (B2) | fixed before the main-menu button ships |
-| 4 | One pack version for every part and prefab (§4 B3, B5) | one version, read by data and prefab, set when the pack is first built |
-| 5 | Switch the GitHub default branch to `claude/phase-1-6lfnar` | Dimitri switches it in GitHub's settings |
 
 ### Phase 5 pieces
 
+- [ ] kit 1.7 (Decisions 2026-10-15), before the button
 - [ ] main-menu Rogue Waves button (calls `RWCampaign.New`/`Continue`; nothing starts a campaign until it exists)
 - [ ] Pure Aura  - [ ] objectives/bounties  - [ ] shopkeeper  - [ ] Directions  - [ ] Fund Transfer  - [ ] map vote
   (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)

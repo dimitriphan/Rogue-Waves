@@ -67,6 +67,9 @@ numbering 00-16 are unchanged.
 
 ## 4. For Dimitri (changes to game behaviour, the kit's rules, or settings; not made)
 
+**Answered 2026-10-15 04:18Z: "Use defaults for all."** The schedule is in `docs/PLAN.md` Part C Decisions
+(2026-10-15); C5, C6, C10, C2-3 and C19 were done in this PR.
+
 | # | What | Default if you say nothing |
 | --- | --- | --- |
 | B1 | **Kit bug, latent:** `ModKitTides` fires "Leave" only when the next map wakes, because `Game_Mapvars.Instance` still points at the destroyed map on the boat. After a mid-map leave the next map's end sees no next node, so the route doesn't grow and the map after gets no weather (B2-1). Nothing hits it yet: no campaign starts outside the self-test. | Fix it as kit 1.7 (`ReferenceEquals` check, fire Leave when the map object is gone) before the main-menu button ships |

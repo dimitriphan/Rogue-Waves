@@ -7,7 +7,7 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 | Script | Where it runs | Does |
 | --- | --- | --- |
 | `make_handoff.py` | cloud | Packs a handoff from git: `TDS_Mod/Handoff/<Name>/` (HASHES.txt, README.md) to commit, and optionally the same as a zip |
-| `Get-Handoff.ps1` | PC | Fetches a handoff from a branch (needs the read-only token below), laid out like an unpacked zip |
+| `Get-Handoff.ps1` | PC | Fetches a handoff from a branch (with the signed-in `gh`, else the read-only token below), laid out like an unpacked zip |
 | `Apply-Handoff.ps1` | PC | Checks (default) or applies (`-Apply`) a handoff into `C:\Users\Dimitri\TDS_Mod`, with a backup |
 | `Get-PcManifest.ps1` | PC | Writes `handoff\pc_manifest.txt`, the hash of every source file on the PC (`-Apply` runs it too) |
 | `HandoffHash.ps1` | PC | The shared hash: sha256 of text with BOM and CRs removed, first 16 hex digits |
@@ -16,12 +16,14 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 
 ## One-time setup (Dimitri)
 
+None if the PC's GitHub CLI is signed in (`gh auth status`): `Get-Handoff.ps1` uses it. Otherwise:
+
 1. On github.com: Settings > Developer settings > Personal access tokens > Fine-grained tokens > Generate new token.
    Repository access: only `dimitriphan/Rogue-Waves` (a token made for ModProjects does not reach this repository). Permissions: Contents, Read-only. Expiry: 90 days.
 2. Save the token as the only line of `C:\Users\Dimitri\.modprojects_token`.
 3. The scripts reach the PC once in a handoff zip; after that every handoff carries the current copies.
 
-Without the token, everything still works with a zip: the thread packs `make_handoff.py ... --zip`, and Dimitri saves
+Without `gh` or the token, everything still works with a zip: the thread packs `make_handoff.py ... --zip`, and Dimitri saves
 it into `Desktop\ClaudeProjects\handoff\<Name>` and unpacks it there.
 
 ## A round
@@ -41,7 +43,7 @@ Cloud thread:
 
 PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 
-1. Fetch the handoff: `Get-Handoff.ps1 -Ref <branch> -Name <Name>`. Without the token, use the saved zip.
+1. Fetch the handoff: `Get-Handoff.ps1 -Ref <branch> -Name <Name>`. Without `gh` or the token, use the saved zip.
 2. Check it: `<h>\<Name>\Apply-Handoff.ps1`. Stop and report if any line reads `DIFFERS`, `MISSING FROM HANDOFF`,
    `HANDOFF COPY DAMAGED`, `MISSING` or `PATCH DOESN'T FIT`, or the script exits non-zero (it does on any of them).
    Up to date, will copy, will add, will replace, will delete, already gone, will patch and patch done are all fine.
