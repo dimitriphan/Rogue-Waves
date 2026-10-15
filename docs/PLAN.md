@@ -202,6 +202,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
   2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
   (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
+  2026-10-15: Vessel Spotlight artifact (https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw), journal-style pages for
+  the base five and for Spool and Yossele from Dimitri's own art and sheets only; WIP covers show what they still
+  lack (every sprite but one front frame, all UI art, tower models, numbers, costs, lore). Source and rebuild:
+  project files `concepts/vessel_spotlight_2026-10-15/`.
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
