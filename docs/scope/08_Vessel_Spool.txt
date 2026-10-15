@@ -1,49 +1,254 @@
 | New Vessel: Spool |
 	Spool, Crafty Crafted Crafter
-		# Commands a disposable minion army
-		# Uses a [Thread] currency system, where units are crafted using [Thread] dropped from enemies or mined from nodes. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets \
-		# Minions are able to be directed upon spawn. Have some minions be thread gatherers and some minions be attackers.
-		# Can be very mobile depending on skill level. {Crafted} never follow Spool.
-		# Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \. Towers carry stitches, pins and tins.
-		# Status: concept page done. Comes after Yossele. / Difficulty default: Advanced \
-		# Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. / One front facing concept frame so far, in sprites \
-		# Attack: melee.
-		# Ability: {Unthread}, which removes one of Spool's minions and refunds a portion of the [Thread] it cost.
+		# Fulfills a similar niche to Fie, but with more automation and more disposable troops. Is a mix between Buster sending dogs towards enemies and Fie's minions.
 		# Keeps the names {Loom} and [Thread]: Mummer was a prototype version of Spool.
-		# 3 buildings. {Thread Head} is a minion, and takes the fourth place the way Boutman's fish do.
-		/ Lore comes once the vessel is finalized \
+		/ Laid out in 15_Vessel_Template.txt. A value written ~like this is a default Claude picked; nothing of Spool is built yet, so every ~ is open \
+
+		[Identity]
+			- Title: Crafty Crafted Crafter
+			- Difficulty: Advanced
+			- Archetype: Commands a disposable minion army
+			- In-game line: ~Crafty melee, commands a stitched army
+			- Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \
+			- Towers look: ~stitches, pins and tins / Your earlier sheet said this and the new one leaves it out, so it is a default now \
+			- Accent colour: ~plush purple
+			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. / One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \
+			- Status: concept page done. Comes after Yossele. / Difficulty default: Advanced \
+			- Lore: / Lore comes once the vessel is finalized \
+
+		[Vessel Stats]
+			- Attack: melee.
+			- Health: ~45 / Mummer, its prototype, had 45 \
+			- Health regen: ~0 per second
+			- Speed: ~2.75 / Mummer's \
+			- Damage: ~2.5 / Low: the {Crafted} do the damage \
+			- Range: ~1.5 tiles
+			- Attack speed: ~0.6
+			- Build range: ~2.5 tiles
+			- Sell rate: ~50%
+			- Special rule: {~Hand Stitched} ~Melee, foes drop Thread that Spool or a Thread Head carries to the Yarn Stash, Crafted cost Thread, PATCH mends a unit or building
+
+		[Ability] {Patch}
+			- Does: uses 20 [Thread] to heal a unit or building by 20% of its maximum health. / Unthread is just the sell mechanic now. \
+			- Target: ~one of your units or buildings
+			- Range: ~4 tiles
+			- Cost: 20 [Thread] / ~Taken from the {Yarn Stash} \
+			- Cooldown: ~5 seconds
+			- Keys: ~6 / 7
+			- Unlocked: ~from the start
+
+		[Resource] {Thread}
+			- Does: units are crafted using [Thread] dropped from enemies or mined from nodes.
+			- Start: ~10 in the {Yarn Stash} each map
+			- Cap: 50 in the {Yarn Stash}, more as it is upgraded / ~Spool and a {Thread Head} each carry up to 20 \
+			- Earned by: Smaller enemies drop 1 [Thread], while larger elite enemies drop up to 5 [Thread]. / Mined from nodes by the {Loom}, and spun by the {Pin Cushion} when it is damaged \
+			- On the ground: [Thread] lasts on the ground for 15 seconds before despawning unless collected. / ~Picked up by walking within 1 tile of it \
+			- Collected by: Thread must be collected by Spool or a {Threadhead}. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets. \
+			- Delivered: [Thread] must be moved to main base building in order to be used by Spool's buildings, either by Spool itself or by a {Threadhead}. / {Threadheads}'s' porting ability works similar to worker units from RTS games like Starcraft. ~Spool drops off what it carries by walking within 1.5 tiles of the {Yarn Stash} \
+			- Spent on: {Crafted} and {Patch}
+			- Sold back: ~selling (Unthread) a {Crafted} refunds half its [Thread], rounded down
+			- Between maps: ~resets
+			- On the vessel's death: ~kept
+
+		(Support):{Yarn Stash}
+			# Holds the yarn gathered by Spool or by {Thread Heads}.
+			# Placed in the beginning, similar to Boutman's Bouthouse.
+			[Stats]
+				- In-game line: ~Holds Spool's Thread, the Crafted draw from it
+				- Cost: ~free, placed at the start of the map
+				- Limit: ~1
+				- Health: ~100, +~50 per level
+				- Thread cap: Holds a limit of 50 [Thread] by default, but number increases as {Yarn Stash} is upgraded. / ~+25 per upgrade \
+			[Upgrades]
+				! NEEDS YARN STASH UPGRADES / Each one raises its cap by ~25 unless you say otherwise \ !
 
 		(Minion):{Crafted}
 			# Refers to units spawned by {Repurposed Cookie Tin}, {Loom}, and {Pin Cushion}
-			- {Stitched}: melee, from {Repurposed Cookie Tin}.
-			- {Dart}: ranged, from {Repurposed Cookie Tin}.
-			- {Seam}: melee, weaker than a {Stitched}, mines nodes for aura. From {Loom} once upgraded.
-			- {Mangled}: melee, made by {Pin Cushion} when it is attacked, if upgraded down that path. Specializes into explosive suicidal units, or tanky blockers that jump forward to take damage.
-			! NEEDS WHAT EACH CRAFTED COSTS IN THREAD !
-		(Tower 1):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
+			{Stitched} / Short and stubby plushie \
+				- Made by: {Repurposed Cookie Tin}
+				- Cost: 10 [Thread]
+				- Attack: melee
+				- Health: ~20
+				- Damage: ~2
+				- Range: ~1.5 tiles
+				- Attack speed: ~0.8
+				- Speed: ~1.8
+				- Orders: runs to the spot the {Repurposed Cookie Tin} targets and idles there until seeing an enemy
+				- Leash: ~2 tiles
+			{Dart} / Thin and small plushie \
+				- Made by: {Repurposed Cookie Tin} once upgraded with {New Design}
+				- Cost: 15 [Thread]
+				- Attack: ranged, thrown needles
+				- Health: ~12
+				- Damage: ~2.5
+				- Range: ~3.5 tiles
+				- Attack speed: ~0.6
+				- Speed: ~1.6
+				- Orders: stays closer to its fortified point
+				- Leash: ~1 tile
+			{Seam} / Round plushie, similar to Snobles \
+				- Made by: {Loom} once upgraded
+				- Cost: free / Does not cost or refund [Thread] \
+				- How many: ~1 per {Loom}
+				- Respawn: ~10 seconds
+				- Attack: melee, weaker than a {Stitched}
+				- Health: ~10
+				- Damage: ~1
+				- Range: ~1.5 tiles
+				- Attack speed: ~0.8
+				- Speed: ~1.5
+				- Orders: mines nodes for aura, and defends nearby from enemies / ~Mines like Smacky's miners \
+				- Leash: ~2.5 tiles from its {Loom}
+			{Mangled} / Round plushie, similar to Snobles but much more jagged \
+				- Made by: {Pin Cushion} when it is attacked, if upgraded down that path
+				- Cost: free / Does not cost or refund [Thread] \
+				- How many: ~1 for every 40 damage the {Pin Cushion} takes, up to ~3 alive per {Pin Cushion}
+				- Attack: melee
+				- Health: ~15 / ~45 once tanky \
+				- Damage: ~1.5
+				- Range: ~1.5 tiles
+				- Attack speed: ~0.8
+				- Speed: ~2
+				- Orders: Specializes into explosive suicidal units, or tanky blockers that jump forward to take damage.
+				- Leash: ~2 tiles from its {Pin Cushion}
+
+		(Minion Summoner):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
 			# Main source of damage, versatile in that you can create a disposable army or a stronger but smaller strike team
-			- Similar to garages, sends multiple {Stitched} to run down lane until they land at targeted location where they then idle until seeing an enemy.
-			- Different upgrade paths stem from one building, turning {Stitched} into {Darts} / Similar to Boutman's fish \
-			- Buildings and upgrades cost aura, but minions cost thread.
-			- Not very smart, once they're set to a location they stay there until death. Can manually be {Unthread} by Spool.
-				% Aggressive and cheaper melee minions, or squishy but expensive ranged minions
-				% Can detonate themselves on death, creating an AOE explosion
+			- Sends multiple {Stitched} to run down a path until they land at targeted location, where they then idle until seeing an enemy.
+			- Different upgrade paths stem from one building, potentially turning {Stitched} into {Darts} / Similar to Boutman's fish \
+			- Buildings and upgrades cost aura, but minions cost [Thread].
+			- Not very smart, once they're set to a location they stay there until death. Can manually be sold by Spool.
+			[Stats]
+				- In-game line: ~Stitches Crafted from Thread, sends them where you point
+				- Cost: ~Red 50
+				- Limit: ~none
+				- Health: ~60, +~25 per level
+				- Crafted alive at once: ~4 per {Repurposed Cookie Tin}
+				- Crafting rate: ~1 every 4 seconds, while the {Yarn Stash} has the [Thread]
+				- Target spot: ~picked like Fie's rally point, on a path within 8 tiles
+			[Upgrades]
+				% 1:{Reuse Reduce Recycle} {Crafted} that are killed drop [Thread] equal to half of its cost, rounded up.
+					- In-game line: ~Fallen Crafted leave Thread behind
+					- Numbers: half the cost, rounded up
+					- Cost: ~Red 30
+				% 1:{Woolen Lining} Health is increased.
+					- In-game line: ~Sturdier Crafted
+					- Numbers: Increases health by 50%
+					- Cost: ~Red 30
+
+				% 2:{Discounted Material} {Stitched} cost 8 [Thread] and are 30% faster.
+					- In-game line: ~Cheaper, faster Stitched
+					- Numbers: 8 [Thread]; 30% faster
+					- Cost: ~Red 90
+				% 2:{New Design} Now spawns {Darts}, which stay closer to their fortified point and attack with ranged thrown needles.
+					- In-game line: ~Stitches Darts that throw needles
+					- Numbers: / {Dart}'s stats are under {Crafted} \
+					- Cost: ~Red 100
+
+				% 3:{One Last Surprise} Can detonate themselves on death, creating an AOE explosion. Explosion radius is determined by attack range. / Allows for {Darts} to deal high damage as well. \
+					- In-game line: ~Crafted burst when they fall
+					- Numbers: radius = the {Crafted}'s attack range; ~damage 3 times the {Crafted}'s damage
+					- Cost: ~Red 400
+
 		(Minion):{Thread Head} / Works like Boutman's fish \
-			# Controller minion, manages thread throughout towers. Can use thread for buffs, or for creating {Crafted}
-			- Single larger minion, more controllable / Think Fie's soldiers level of controllability or Boutman's Fish \
-			- Buffs minions nearby, also can collect thread from slain enemies nearby.
-			- Once it's at max thread capacity, can return to {Repurposed Cookie Tin} to resupply thread.
-			- Can be used as either a buffer or a thread porter.
-				% Collects thread from fallen minions as well as fallen enemies
-				% Can use thread to heal allies / towers
+			# Controller minion, can manage [Thread] throughout towers or can use [Thread] for support.
+			- Single larger minion, more controllable / Can choose its main position, similar to Boutman's Fish's reposition ability \
+			- Collects [Thread] from slain enemies nearby, with the potential to buff nearby units based on upgrade path.
+			- Once it's at max thread capacity, can return to {Repurposed Cookie Tin} to resupply thread. / Has a toggle to automatically drop off [Thread]. \
+			- Can be specialized as either a buffer or a thread porter.
+			- Made by: ~{Yarn Stash}
+			- Cost: ~Red 40
+			- How many: ~1 per player
+			- Respawn: ~15 seconds, at the {Yarn Stash}
+			- Attack: ~melee
+			- Health: ~60
+			- Damage: ~2
+			- Range: ~1.5 tiles
+			- Attack speed: ~0.6
+			- Speed: ~2.25
+			- Carries: Has a maximum of 20 [Thread] by default.
+			- Collects from: ~3 tiles around it
+			- Orders: guards the spot you choose
+			- Leash: ~3 tiles
+			[Upgrades]
+				% 1:{Threaded Delivery} Gains the ability to automatically run back to drop collected [Thread] off at {Yarn Stash} when at max capacity. Returns to original position afterwards.
+					- In-game line: ~Carries Thread home on its own
+					- Numbers: / None needed \
+					- Cost: ~Red 30
+				% 1:{Patchwork Job} Gains a toggle ability to heal nearby units using [Thread] in its inventory.
+					- In-game line: ~Mends nearby units with Thread
+					- Numbers: ~2 health per second to each unit within 2 tiles; ~1 [Thread] for every 5 health healed
+					- Cost: ~Red 30
+
+				! NEEDS THREAD HEAD LEVEL 2 AND 3 UPGRADES !
+
 		(Defense):{Pin Cushion}
-			- Wall that reflects damage done by melee units
+			# A wall that reflects damage done by melee units. This is Spool's main line of defense
 			- When damaged, spins thread and potentially {Mangled} depending on player choices.
 			- {Mangled} can either spec into being tankier, or more aggressive suicidal bombers.
-				% Reflects more damage using pins, then eventually reflects ranged damage
-				% Spreads damage taken over time / Take half damage now, half damage later. Doubles thread creation and allows for heals to heal though some damage. \
+			[Stats]
+				- In-game line: ~Sturdy, pricks melee attackers, spins Thread when hit
+				- Cost: ~Blue 20
+				- Limit: ~none
+				- Health: ~100, +~40 per level
+				- Melee damage reflected: ~20%
+				- Thread spun: ~1 [Thread] for every 25 damage taken, dropped beside it for pickup
+			[Upgrades] / Your two ideas plus the {Mangled} paths, laid into levels. Every name with ~ is a placeholder for yours \
+				% 1:{~Sharper Pins} Reflects more damage using pins
+					- In-game line: ~Pricks melee attackers harder
+					- Numbers: ~40% of melee damage reflected
+					- Cost: ~Blue 30
+				% 1:{~Slow Unravel} Spreads damage taken over time / Take half damage now, half damage later. Doubles thread creation and allows for heals to heal though some damage. \
+					- In-game line: ~Takes half its damage later, spins more Thread
+					- Numbers: half now, ~half over the next 4 seconds; thread spun x2
+					- Cost: ~Blue 30
+
+				% 2:{~Pin Barrage} Eventually reflects ranged damage
+					- In-game line: ~Pricks ranged attackers too
+					- Numbers: ~20% of ranged damage reflected too
+					- Cost: ~Blue 100
+				% 2:{~Loose Stuffing} When damaged, spins {Mangled}.
+					- In-game line: ~Spills Mangled when hit
+					- Numbers: / {Mangled}'s stats are under {Crafted} \
+					- Cost: ~Blue 90
+
+				% 3:{~Overstuffed} {Mangled} become tanky blockers that jump forward to take damage.
+					- In-game line: ~Mangled leap in to block
+					- Numbers: ~health x3; ~jumps 2 tiles forward and blocks the path like a Snoble
+					- Cost: ~Blue 400
+				% 3:{~Burst Seams} {Mangled} become explosive suicidal units.
+					- In-game line: ~Mangled burst on foes
+					- Numbers: ~5 damage to every enemy within 1.25 tiles when it reaches one
+					- Cost: ~Blue 400
+
 		(Economy):{Loom}
 			- Connects to nodes to mine aura
 			- Spins thread for {Thread Head} to port to {Repurposed Cookie Tin}, or for support uses.
-				% Can directly connect to {Repurposed Cookie Tin}.
-				% Creates {Seams} that can attack nearby nodes, and can also defend nearby from enemies.
+			[Stats]
+				- In-game line: ~Mines aura, spins Thread
+				- Cost: ~Yellow 40 / Mummer's Loom \
+				- Limit: ~none
+				- Health: ~40, +~20 per level
+				- Range: ~2.5 tiles / The nodes it connects to \
+				- Mining: ~like Smacky's Mining Hut
+				- Thread spun: ~1 [Thread] every 6 seconds, held at the {Loom} up to ~10 for pickup
+			[Upgrades]
+				% 1:{~Direct Line} Can directly connect to {Repurposed Cookie Tin}.
+					- In-game line: ~Thread goes straight home
+					- Numbers: ~its [Thread] goes straight to the {Yarn Stash}, no carrying needed
+					- Cost: ~Yellow 30
+				% 1:{~Seam Allowance} Creates {Seams} that can attack nearby nodes, and can also defend nearby from enemies.
+					- In-game line: ~Makes Seams that mine and guard
+					- Numbers: / {Seam}'s stats are under {Crafted} \
+					- Cost: ~Yellow 30
+
+				! NEEDS LOOM LEVEL 2 AND 3 UPGRADES !
+
+		[Directions] / Written in 11_Directions.txt under Spool \
+			- {Efficient Recycler}, {Sewing Machine} / And {Made of Tougher Stuff}, for any vessel with minions \
+
+		[Questions]
+			! NEEDS: The {Thread Head} and the {Loom} send [Thread] to the {Repurposed Cookie Tin}, but [Thread] and {Threaded Delivery} send it to the {Yarn Stash}. Default: the {Yarn Stash} everywhere. !
+			! NEEDS: The {Thread Head} has a toggle to drop off [Thread] automatically, and {Threaded Delivery} grants the same thing. Default: without the upgrade you send it back yourself. !
+			! NEEDS: Where does the {Thread Head} come from, and how many? Default: one per player, bought from the {Yarn Stash}. !
+			! NEEDS: {Efficient Recycler} in 11_Directions.txt is built on {Unthread}, which is now just selling. Default: it raises the [Thread] refunded when you sell a {Crafted}. !

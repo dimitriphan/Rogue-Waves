@@ -246,16 +246,23 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 86. **A Sno Sno cannon throws or eats a modded entity** (`17` §4) → it takes ammo from the nearest entity tagged
     `Sno` or `Snoble` of any team and picks its shot by that entity's GameObject name → never tag pack things `Sno`
     or `Snoble` (nor other base-vessel family tags, `17` §11.1 rule 12). Read from code.
-87. **"Slices 6, 7, 14, 15 ... lie outside the texture" on a sheet 192 wide** (Yossele round 1, 2026-10-12) → the
-    builder sliced against `tex.width` read right after the first import, which scales a sheet that isn't a power of
-    two up to 256 → read the PNG's own size from its header (`YosseleBuilder.PngSize`). Argo's and the template's
-    builders have the same line; they were safe only because their sheets are powers of two.
-88. **"FAILED Export Mod finished but ... .info wasn't written"** (Yossele round 1) → the vessel's `Export()` refused
-    because other `<Name>Mod` folders were still in Assets; the Build Queue doesn't park them → `Export()` calls its own
-    park step first (`ParkOthers()`/`Park()`), as Argo, RogueLab and RogueWavesMode do.
-89. **A handoff changed an Editor script, but the Build Queue built with the old one** (Yossele round 8, 2026-10-12)
-    → `Assets/Refresh` reloaded the domain without compiling ("compile time=0 ms"), since `Apply-Handoff` keeps the
-    zip's file times, older than the last compile; the editor assembly only recompiled later, during the export's
-    park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
-    Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
-    check a generated asset the change should alter.
+87. **A sprite faces the wrong way when it walks left** (expected from the code, `18` §1) → the game never flips a
+    sprite; it switches to v1 (toward the camera, heading screen-left) or v3 (away, heading left) → draw v1 and v3 as
+    the left-heading views, not as copies of v0 and v2. Read from code.
+88. **A drawn elite sheet, or a foe that vanishes under Fractured** (`18` §5.5) → elite looks are one overlay material
+    added over the foe's own sprite (Fractured tints near-black) → draw no elite sheets, keep the six cloned
+    `Skinoverride`s, and keep the foe mid-to-light. Read from the game's assets.
+102. **"Slices 6, 7, 14, 15 ... lie outside the texture" on a sheet 192 wide** (Yossele round 1, 2026-10-12) → the
+     builder sliced against `tex.width` read right after the first import, which scales a sheet that isn't a power of
+     two up to 256 → read the PNG's own size from its header (`YosseleBuilder.PngSize`). Argo's and the template's
+     builders have the same line; they were safe only because their sheets are powers of two.
+     (89-101 are PRs #29's and #34's.)
+103. **"FAILED Export Mod finished but ... .info wasn't written"** (Yossele round 1) → the vessel's `Export()` refused
+     because other `<Name>Mod` folders were still in Assets; the Build Queue doesn't park them → `Export()` calls its own
+     park step first (`ParkOthers()`/`Park()`), as Argo, RogueLab and RogueWavesMode do.
+104. **A handoff changed an Editor script, but the Build Queue built with the old one** (Yossele round 8, 2026-10-12)
+     → `Assets/Refresh` reloaded the domain without compiling ("compile time=0 ms"), since `Apply-Handoff` keeps the
+     zip's file times, older than the last compile; the editor assembly only recompiled later, during the export's
+     park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
+     Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
+     check a generated asset the change should alter.

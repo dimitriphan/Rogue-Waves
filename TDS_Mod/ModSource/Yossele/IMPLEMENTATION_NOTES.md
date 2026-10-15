@@ -58,7 +58,7 @@ setup.** Not yet seen by eye or played online; Viral Outbreak and Hallucinogen (
 ## PC rounds
 
 **Round 1 (2026-10-12):** applied, Unity compiled the editor code clean, the code build passed; stopped at the export
-(it didn't park the other mods, pitfall #88) and the sheet slicing read a scaled width (pitfall #87). Both fixed.
+(it didn't park the other mods, pitfall #103) and the sheet slicing read a scaled width (pitfall #102). Both fixed.
 
 **Round 2 (2026-10-12, 3B_Thehunt): 86 pass, 1 fail, 1 setup.** Boot clean (`ready: 6 beings, 22 upgrades, 3
 Directions, 16 effects, icons ok, ground from Effect_Snosnosnow`), no Yossele exceptions (11 lines, all the game's own
@@ -126,5 +126,5 @@ block's top. (Note 3 above guessed the ground at the vine model's origin; the fr
 
 **Round 8 (2026-10-12): 98 pass, 0 fail, 0 setup** on the second build, then the play build installed for Dimitri.
 The vine tile now draws at y 9.51 for a being at 10 (on the ground). The first build used the old editor code
-(pitfall #89) and failed that one check. The ground block's top wasn't found by the check's lookup, so it passes on
+(pitfall #104) and failed that one check. The ground block's top wasn't found by the check's lookup, so it passes on
 the half-tile rule; Dimitri's eye is the real check.

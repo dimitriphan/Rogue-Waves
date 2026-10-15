@@ -181,8 +181,10 @@ brains and self-test kept. (Default chosen here; a vessel that summons its own f
    `Entity_Ai_Enemy_<X>` only if you want exactly that attack; otherwise strip it and write the attack in a brain.
 3. **Stats**: Health, Speed, Damage, Range, Attackspeed (+ Projspeed for ranged), plus any stat your brain reads (stock
    enemies use `Projcount`, `Projradius`, `Stunduration`...: reuse those names). **Drops** decide the aura it is worth.
-4. **Art**: sprite sheets in the stock enemies' format (§10, question 5), in their style, with skins named `Health`,
-   `Red`, `Hyper`, `Chaos`, `Armor` and `Explode` so Tide elites look right on it. Wind-ups need an "Attack" animation
+4. **Art**: sprite sheets in the stock enemies' format and style (`18` §2, §5: a grey stone body carrying a magenta
+   crystal weapon, the 8 foe colours). Keep the six `Skinoverride`s `Health`, `Red`, `Hyper`, `Chaos`, `Armor` and
+   `Explode` of the cloned `Visualproperties`: each adds a shared overlay material to the foe's own sprite, so no
+   elite sheet is drawn (`18` §5.5). Wind-ups need an "Attack" animation
    played on Vis "Attack" (`Entity_Vis_Mob_Attack`, or a client hook like `Entity_Vis_Enemy_Maul`).
 5. **Behaviour** in a server brain attached in `Game_Entity.Onspawn` when `Beingserver.Being.Objectname` is yours. Copy
    the stock patterns: an `Attack` command and `Lastattack` vs `1 / Attackspeed`; wind-up then Vis "Shoot"; hits through
@@ -242,9 +244,11 @@ without a stock bespoke AI reads as a plain melee foe to them.
    the chain, `05` §9) or dealt (`Interact`); a death effect
    (`Despawn` with Death = true, like Molten); a lingering debuff on others (an `Effect_*` upgrade like Melting); an
    overshield (`Healthover` stat, absorbs damage) or hit armour (`Healtharmor`, absorbs hits).
-4. **Its look on every screen**: base enemies have no skin for a new modifier (and adding skins means redrawing every
-   enemy), so show it with an effect parented to the enemy and refreshed (`Radio.Vfxdebuffcheck(name,
-   master.Beingref.Value, seconds)` every couple of seconds, as Tempered does). Leave the skin to the stock elites.
+4. **Its look on every screen**: base enemies have no skin for a new modifier, and an entity holds one skin (a modifier
+   skin would hide a stock elite's look; the stock skins are overlay materials, not redrawn sprites, `18` §5.5), so
+   show it with an effect parented to the enemy and refreshed (`Radio.Vfxdebuffcheck(name, master.Beingref.Value,
+   seconds)` every couple of seconds, as Tempered does). Leave the skin to the stock elites. Give it a colour no elite
+   uses (taken: green, white, red, near-black, bronze, orange; `18` §5.5, §7).
 5. **Who gets it**: list it in a `Wavecontent.Upgrades` (Tide table route above), in the `Upgrades` array of a
    `Spawn` command, or pick enemies at `Onspawn` and add it to their `Initupgradelistserver` (for "every fifth foe
    from Tide 8"). Skip `Enemycore`/`Core` and anything not tagged `Enemy`.
@@ -333,8 +337,9 @@ without a stock bespoke AI reads as a plain melee foe to them.
    *Answered (RogueLab round 1):* boot loads `General_Init` and `General_Ambientinit` (sounds and effects only); every
    stock enemy is in the **mode's** group (`Mode_Normal`: Dagger, Spear, Aegis, Ballista, Excalibur, Maul, Onager,
    Claymore), which a mod can load at boot with `Bl_Address.Load` (3.5 s).
-5. **Enemy art format**: sheet and frame size, PPU, animation names, and the elite skins' recolours (port
-   `Sprigg_97_ArtDump.cs` to dump `Enemy_Dagger`'s sprite object and skins).
+5. **Enemy art format**: sheet and frame size, PPU, animation names, and the elite skins' recolours. *Answered
+   (2026-10-15, read from the game's asset bundle):* `18` §1-2 and §5; elite looks are overlay materials, part 3 of
+   `reference/art_survey_2026-10-15.txt`.
 6. **Journal**: whether the base journal has enemy pages a new enemy should join (`Logitems.TextImageBeing`, `Stats`
    and `Drops` can show one). *Answered (`docs/RESEARCH_GAPS.md` C4):* pages are data assets and no code lists enemies,
    so the pack's foe pages are its own.

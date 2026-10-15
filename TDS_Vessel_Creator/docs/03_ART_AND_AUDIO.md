@@ -29,17 +29,20 @@ the content.
 | ability sheet (`<Name>Hook-Sheet`) | 192×128 | 4 variants × 6 frames | the ability's animation |
 
 - Pixels per unit **20**, pivot **bottom-centre** (16, 0), Point filtering, no compression.
-- Variants: v0 and v1 face the camera (near-identical), v2 and v3 face away (drawn, **not mirrored**).
+- Variants: v0 faces the camera heading screen-right, v1 the camera heading screen-left, v2 and v3 face away heading
+  right and left. The code never flips a sprite: draw all four (v1 redrawn where a prop or the shaded side must not
+  swap; v2 and v3 drawn, **not mirrored**). Measured rules for every facing, size and palette: `18`.
 - Animation table (`<Name>Assets.Hero`): Idle and Move loop (priority 0); Falling loops (reset, priority 2); Land
   and Landquick go to Idle (priority 2); Attack and abilities priority 1, speed ~3 and ~1.6, go to Idle. Put the
   template's footstep sound (`General_Footstep`) on the Move frame where the vessel lands its hop.
-- The vessel body is about 16 px wide and 20-24 px tall inside the 32 px frame.
+- The vessel body is 15-27 px wide and 20-28 px tall inside the 32 px frame, feet on the bottom row (`18` §2).
 
 **House style: what all five base vessels share** (any of them can be the reference; the user's rule):
 - **Chibi proportions**: the head (or head-shaped body) is half the height or more; the body is small; hands are
   small (floating or stubby) and legs short (2 px) or absent. Clear silhouette at 1× zoom.
-- **No black outline.** Edges are darker shades of the fill, fully opaque; details inside the body use darker tones of
-  the same colour. Only Smacky has a soft half-alpha rim (the fill at alpha 127), so use it only when Smacky is the
+- **No black outline.** Fully opaque; the right and bottom edges take the shade tone of the fill (light comes from the
+  upper left), the left and top edges stay the fill; details inside the body use darker tones of the same hue
+  (`18` §3). Only Smacky has a soft half-alpha rim (the fill at alpha 127), so use it only when Smacky is the
   reference (the user, 2026-10-09).
 - **Dark dot eyes** (`4A4949` / `333232`), a tiny mouth or none; expression through eye position and squash.
 - **Palette**: soft pastel or muted main colours with one or two saturated accents (Boutman's red overalls, Fie's
