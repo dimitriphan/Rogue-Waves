@@ -292,7 +292,7 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
   foe dies, to the **foe's** owner field, Effect_Boutmanfish_Caviarbuff.cs:28; who receives it in play is **guess**).
 - Bugs: the ghost reads `Attackspeed` as seconds between shots; Watertower divides by zero with one free tile beside the
   barrel; Fishfollow and Boutbro's cost counts check team, not owner; Mine buffs use `Data.Add("Damageresource")`, so a
-  mod that adds the key first makes them throw (write `Data[key] = …`); Tank Bed's overshield stacks forever.
+  mod that adds the key first makes them throw (write `Data[key] = …`); Tank's overshield stacks forever.
 - Borrow: `Block_Noplacementfish` (no-build tile whose click selects its parent; already Rising Water's flood block,
   `16` §3), `Tower_Boutmanhousepersistent` (an invisible upgrade container), `Tower_Boutmanbarrel_Pulse`, the generic
   effect AIs `Entity_Ai_Effect_Boutmanspawnbed_Boost` (timed Damage Multi), `_Bucket_Boost` (timed immunity at

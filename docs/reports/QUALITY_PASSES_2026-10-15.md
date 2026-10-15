@@ -170,6 +170,13 @@ Steam id). Smaller: kit `17` Cold Sweats is within its Range, kit `18` Claymore'
 is 1-based, a Sprigg note named the wrong prefab call, a recipe comment on the language-change order, Yossele's client
 header, and the campaign comments (clearing a slot erases the campaign; a switch keeps it).
 
+## Pass 6: 2 issues
+
+Nine areas came back clean (A1, A3, B1, B2, B3, B4, C, D, E: 0 each). A2 found two low ones in kit `18` and `17`, both
+fixed: pass 5's Claymore line was itself wrong (its Attack folder is one blank 1x1 frame played on `Launch`, which hides
+the body while the bomb flies, not a still of the body), and `17` named an upgrade "Tank Bed" (it is Tank). Every pass 5
+fix held; scope `16` had 59 more lines checked against the game's code, all right.
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".

@@ -155,10 +155,11 @@ h267 (`9677BB`, `8764B0`). The tutorial's Training Dagger is the same shape in w
 - **An attack is a wind-up and a flash**: frames 0-3 lift or draw back the weapon, frame 4 is the hit, drawn into the
   sprite as a pale `F6BAFF` and white burst with shards (Maul's slam lines, Excalibur's ring beam, Ballista's bolt
   flash), frame 5 settles. Only foes with a bespoke wind-up AI have a drawn Attack folder (Ballista, Onager, Maul,
-  Excalibur, Bulwark; Claymore's is one still frame shown while it launches); Dagger, Spear and Aegis fight with Idle
-  and Move alone. Time the folder to the AI: a slam plays 1.5-2.3 s (Maul and Excalibur 6 frames at 4 fps, Bulwark 7 at 3), about the AI's wind-up (`13` §1: 1.3-1.6
-  s), so the flash lands with the hit; a shooter's plays 0.6-1.2 s (Ballista `Speed` 2: 6 frames at 10 fps; Onager
-  `Speed` 1.5 plays as 1: 6 frames at 5 fps, §1).
+  Excalibur, Bulwark; Claymore's holds one 1 px `Empty` frame that hides its body while its bomb flies); Dagger, Spear
+  and Aegis fight with Idle and Move alone. Time the folder to the AI: a slam plays 1.5-2.3 s (Maul and Excalibur 6
+  frames at 4 fps, Bulwark 7 at 3), about the AI's wind-up (`13` §1: 1.3-1.6 s), so the flash lands with the hit; a
+  shooter's plays 0.6-1.2 s (Ballista `Speed` 2: 6 frames at 10 fps; Onager `Speed` 1.5 plays as 1: 6 frames at 5 fps,
+  §1).
 - Death: `Enemy_Death`, or `Enemy_Deathlarge` for the 48 px foes. Projectiles and impacts are their own small strips
   in the same palette (`Ballistabolt-Sheet` 96 × 16, `Maulimpact-Sheet` 160 × 32, `ClaymoreExplosion-Sheet` 224 × 32).
 
