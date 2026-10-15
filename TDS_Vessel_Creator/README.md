@@ -69,6 +69,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/15_ROGUE_MODE_ENGINE.md` | The Rogue Waves mode's engine: modes and chaining maps (proven on a 3-map test chain), what survives a scene change, Merchut and bounties, Cardinals (artifacts), client choices, the save, the F-key bug, mod loading; go / fallback / no per scope feature, PC list |
 | `docs/16_MAPS_AND_ECONOMY.md` | Inside a map: the grid, placement and enemy paths, the base game's map-special objects (flood, clock, nests, dens, gates), aura nodes and mining, the wallet and colour conversion, game speed, lighting; what a run can change mid-map |
 | `docs/17_BASE_VESSELS.md` | The five base vessels in code (Smacky, Sno Sno, Boutman, Fie, Buster): the shared stat, upgrade, respawn and ownership rules, each vessel's buildings and units (what reads stats live), quirks and bugs, what each run upgrade needs per vessel, the stock Cardinals on any vessel, assets to borrow, integration rules for Directions, Cardinals and new vessels |
+| `docs/18_CHARACTER_ART.md` | Vessel and enemy art measured on the game's own sheets: how sprites are drawn (facings, frame rate, pivots, elite overlays), sheet formats by kind and tier, the shared palette, the crystal foe family, what separates a vessel from a foe, must/must-not rules for new designs |
 | `docs/19_NETWORKING.md` | The engine under online play, read from the decompiled game: transport and lobby, every RPC and synced field (`reference/network_surface.md`), the map load and its 120 s kick, the effect throttle, late join, drops and identity (a restart changes the `Sessionid`), rules for a mode's host brain, the online-evening list |
 | `docs/20_UI_AND_HUD.md` | Menus, the choice dialog and other prompts, the HUD and what a mod can feed it without building UI, building new UI, input and pad focus, recipes for the in-map vote, shop and run line |
 | `docs/21_MUSIC_SOUND_TEXT.md` | Soundtracks and music stages, the sound table (never takes a mod key; an unknown key throws), playing stock sounds, the pack's own music, the localization table and how a pack translates |
@@ -98,6 +99,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 |---|---|
 | Game | `D:\Steam\steamapps\common\TDS` (exe `TDS\TDSgame.exe`, process `TDSgame`, Steam app 2392280) |
 | Mods folder | `D:\Steam\steamapps\common\TDS\Mods\<Name>Mod` |
+| Game assets | `D:\Steam\steamapps\common\TDS\TDS\DATA\StreamingAssets\aa\StandaloneWindows64\defaultlocalgroup_assets_all_*.bundle` (one ~300 MB Addressables bundle with every sprite, model and data asset; read it with UnityPy, `docs/18` §9) |
 | Unity project | `C:\Users\Dimitri\TDS_Mod` (Unity 2022.3.41f1, URP 14, TDS Mod Tools imported) |
 | Game log | `%USERPROFILE%\AppData\LocalLow\Blockage\TDS\Player.log` (overwritten each launch; `Player-prev.log` keeps the last) |
 | Installed mods | none: the Mods folder is kept empty between PC rounds (2026-10-08); a round installs its dev build and removes it after. The older vessel mods' sources sit in `C:\Users\Dimitri\TDS_Mod\Prototype Mods\<Name>`, outside Unity's `Assets` |

@@ -203,6 +203,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-14: a full decompile gave kit chapters `docs/19`-`24` (online, UI and HUD, music and text, new maps, save and
   loader, enemy bodies and bosses), compiled recipes in `examples/recipes/`, pitfalls #93-101; read from code, untested.
   2026-10-15: RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log below).
+  2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
+  (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
@@ -316,6 +318,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   self-test); **not run**. Next PC round of the mode adds I1, L1, S1/S2; online: `REJOIN.md` O3b, O3c, `docs/19` §8
   N4, N9, N14. Yossele (PR #30) still sends its looks through the throttled call; its thread can copy Argo's
   `ArgoUtil.Debuff`.
+- **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
+  new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
+  and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey
+  `reference/art_survey_2026-10-15.txt`, palettes `reference/palettes/*.gpl`, pitfalls #87-88, fixes to `docs/03` §1
+  (facings, size, edges), `docs/13` §5-6 and §10 Q5 (elite looks are overlay materials), `docs/STYLE.md` "Enemies"
+  (all foes share one palette). Extracted sheets (not committed): `/mnt/project-files/research/art_dump_2026-10-15/`.
+  Spool's purple sits next to the foes' magenta; Dimitri: leave it as is for now (Decisions).
 
 ### Decisions
 
@@ -413,6 +422,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
   Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
   heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+- 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
+  `docs/18` §7); every other new design keeps magenta for foes only.
 
 ### Open questions
 

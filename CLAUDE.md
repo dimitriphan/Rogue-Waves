@@ -40,7 +40,7 @@ When a vessel starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold 
 | --- | --- |
 | Any session on this project | `docs/PLAN.md` Part C "Now", then the phase's reads in Part B; nothing else until the task sends you there |
 | Design a vessel, building, upgrade tree, unit | `docs/02_DESIGN_RULES.md`; units: `docs/12`; the engine's limits: `docs/01`, `docs/05` and `examples/Mummer_DESIGN.md` ("Changes from the concept") |
-| Draw sprites, UI art, towers, effects, sounds | `docs/03_ART_AND_AUDIO.md` |
+| Draw sprites, UI art, towers, effects, sounds | `docs/03_ART_AND_AUDIO.md`; a vessel's or an enemy's look: `docs/18_CHARACTER_ART.md` |
 | Write or change mod code | `docs/09_PITFALLS.md`, then `docs/05_CODE_COOKBOOK.md`; online: `docs/07` |
 | Enemies, elites, modifiers | `docs/13_ENEMIES_AND_MODIFIERS.md` |
 | Directions or Cardinals that must work on every vessel; reusing a base vessel's assets | `docs/17_BASE_VESSELS.md` (§8, §11) |
