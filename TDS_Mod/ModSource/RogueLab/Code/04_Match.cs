@@ -59,6 +59,14 @@ public static class RogueLabMatch
             RogueLabRun.Done();
             yield break;
         }
+        if (RogueLabData.Round == 7)
+        {
+            // Round 7: the base-vessel and map checks (09_Round7.cs), then leave as a win and stop.
+            yield return RogueLabRound7.Map1();
+            yield return Win();
+            RogueLabRun.Done();
+            yield break;
+        }
         Guard("Cardinal check", CardinalCheck);
         RogueLabRun.ObjectId = RogueLabMod.Instance.gameObject.GetInstanceID();
         RogueLabRun.PureAura[RogueLabUtil.LocalId] = 7f;

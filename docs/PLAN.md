@@ -199,6 +199,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   are in "Log" below. 2026-10-12: "Rogue Wave" renamed "Rogue Waves" in every doc, scope file and string (Decisions).
   2026-10-12: a code dive into the five base vessels gave kit `docs/17_BASE_VESSELS.md` (per-vessel mechanics, what
   each run upgrade needs per vessel, integration rules for Directions, Cardinals and new vessels; read from code).
+  2026-10-12: RogueLab round 7 ran `17` §12 and `16` §9 items 1-3 on the PC: every check answered, with three new
+  rules (Direction params apply nothing, unit counts need the building's count check, a respawn cut made at the death
+  is too late); `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
   2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`); every template is in
   `15_Templates.txt`; Argo and Uloe are in the vessel template; `04_Rogue_Waves_Mode.txt` holds the sea chart and weather.
@@ -300,6 +303,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   kit `docs/17_BASE_VESSELS.md`, pitfalls #81-86, and fixes to `docs/12` §1 (Boutbro builds the fish), `docs/13` §6
   (Multi and Pmulti add up) and `SCOPE_VS_LOOP.md` (Bottom Rock counts the team). Nothing tried in game; `17` §12 is
   the PC list, worth a probe round before the first Direction is built.
+- **Also (2026-10-12 06:10Z):** Dimitri asked to test every PC check possible. RogueLab 0.5.x (round 7, built and run
+  on the PC in three launches: 24/2/1, 7/2, 7/0; every failure the probe's own) checked `17` §12 and `16` §9 items 1-3.
+  Verified: percentages add, outside mods outlive upgrades, a −3 upgrade leaves Level and panel alone and the
+  Bouthouse leaks it onto Boutman, the Bout Way's prices, price scales, unit counts, the `Sno` grab, a re-routed
+  path, a den and an ore node spawned mid-match, a respawn keeping a −3 upgrade. New: an upgrade's params apply nothing
+  by themselves; Health raises keep the health fraction; a respawn cut made at the death is too late (`09` #89-91).
+  Left: a Blurry Photo clone and the house's upgrades. Mods folder empty again. `docs/BASE_VESSEL_CHECKS_2026-10-12.md`.
 - **Also (2026-10-13):** Dimitri asked for a vessel template with a slot for every value. New scope file
   `docs/scope/15_Vessel_Template.txt`; his edited `07` (Yossele) and `08` (Spool) are folded in and re-laid in it. A
   value written `~like this` is a default Claude picked (Yossele's come from the 2026-10-12 build, Spool's are new);
