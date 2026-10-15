@@ -1,27 +1,13 @@
 | Gameplay Rundown |
-	Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Waves begins as they are locked into their choice. The host starts a campaign from the Rogue Waves button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there. After all players are ready, the Rogue Waves begins and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. Once each player selects their [Direction], players vote on the next map, and their boat sails across a sea chart to it. Every map is voted on, the first map included. Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. By completing these objectives, players earn extra [Pure Aura] which can be traded with to the shopkeeper {VENDCINT} in between tides for [Cardinals] or ranks of [Directions] they already hold. After clearing Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to. However, staying bonus tides allows the player to accumulate more [Pure Aura], and bonus tides go on, each one harder, until a majority votes to leave. The players are only able to leave between tides, so they are not able to exit right before their demise. The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 10 maps with increasing difficulty. Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again with Continue on the main menu's Rogue Waves button each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. If the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked. A failed campaign keeps nothing.
-	/ Model Lighthouse, your name for the old start Cardinal, is kept for a later Cardinal or item \
-	# Every base game map can be offered in the vote. / Never the custom map slot, which hangs while loading \
-	[Sea Chart] / Adopted 2026-10-09, docs/SEA_CHART.md \
-	- A campaign's maps sit on a sea chart generated when the campaign starts, like Slay the Spire's map: a harbour, then 10 rows of 3 or 4 base game maps. Each map links to 1 to 3 maps in the next row, and the 5th and 10th rows close a stretch.
-	- The vote offers the maps linked to the one just played (the first row for map 1). It is held in the map, after the vote to leave; map 1's vote is held in the opening break of a staging map.
-	- The party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps.
-	- On the boat between maps, players can't swap their Cardinals.
-	# The chart spreads maps by difficulty: easier maps in the first rows, harder and δ maps later, the hardest closing each stretch. No map is on a chart twice.
-	[Sea Weather] / Picked 2026-10-10, docs/SEA_CHART.md section 8 \
-		- Some maps on the chart carry a weather, rolled with the chart. The first row and the rows closing a stretch are calm; about 1 map in 3 has weather in the first stretch, 1 in 2 in the second.
-		- A weather map pays 1 extra [Pure Aura] each tide, on top of the usual 3.
-		- The weather shows on its island on the chart and in the boat's map panel, and is announced when the map starts.
-		{Rising Water}
-			# The water climbs each tide. Flooded tiles can't be built on, and shots through the water slow down.
-		{Quickening Current}
-			# From Tide 5 the whole game runs faster, and faster again from Tide 10.
-		{Nesting Ground}
-			# A halberd nest sits near where the enemies come from. It grows each tide and sends out a halberd every few tides.
-		# A map never gets the weather it already has: Manafold already floods, Chrono already speeds up, Vultures already has a nest.
-		! NEEDS YOUR CALL ON THE WEATHER NUMBERS / Defaults in use: 1 extra Pure Aura a tide, the 1 in 3 and 1 in 2 odds, Quickening at x1.25 from Tide 5 and x1.5 from Tide 10. Change any of them here \ !
-	# Breaks between tides last 60 seconds in the Rogue Waves mode.
-	# Leaving after Tide 15 is a majority vote, taken between tides.
-	# Bonus tides have no limit. They go on, each one harder, until a majority votes to leave. Map 10 ends the same way, so the campaign is won by leaving map 10 after Tide 15 or later.
-	# A failed campaign keeps nothing.
-	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS / Use the New Optional Objective template in 14_Optional_Objectives.txt \ !
+	# A campaign step by step, from the main menu to the last map. Each step points to the file holding its rules.
+
+	[Steps]
+		- 1. Lobby: Players are first grouped together in a host's campaign, where players must select their vessel first before the Rogue Waves begins as they are locked into their choice. The host starts a campaign from the Rogue Waves button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there. -> 04_Rogue_Waves_Mode.txt [Campaign]
+		- 2. Direction: After all players are ready, the Rogue Waves begins and each player is given a choice of 3 new upgrades called [Direction] and picks 1. These upgrades range from tower stat increases, to major gameplay alternations that fundamentally change how a Vessel plays. -> 06_New_Mechanics.txt [Directions]
+		- 3. Vote: Once each player selects their [Direction], players vote on the next map, and their boat sails across a sea chart to it. Every map is voted on, the first map included. -> 04_Rogue_Waves_Mode.txt [Sea Chart]
+		- 4. In the map: Once in game, gameplay remains similar with new objectives that tie into the new currency [Pure Aura] and shop mechanic. [Pure Aura] is earned each tide, with optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game. -> 06_New_Mechanics.txt [Pure Aura], 14_Optional_Objectives.txt
+		- 5. Breaks: By completing these objectives, players earn extra [Pure Aura] which can be traded with to the shopkeeper {VENDCINT} in between tides for [Cardinals] or ranks of [Directions] they already hold. -> 06_New_Mechanics.txt [Shopkeeper], 12_Cardinals.txt
+		- 6. Leaving: After clearing Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to. However, staying bonus tides allows the player to accumulate more [Pure Aura], and bonus tides go on, each one harder, until a majority votes to leave. The players are only able to leave between tides, so they are not able to exit right before their demise. -> 04_Rogue_Waves_Mode.txt [Tides and Leaving]
+		- 7. Next map: The loop then continues map after map of choosing a direction, playing the map, and escaping for a total of 10 maps with increasing difficulty. -> 04_Rogue_Waves_Mode.txt [Difficulty]
+		- 8. Between maps: Between maps the campaign is saved: the players can stop there and continue later, and when the host picks the campaign up again with Continue on the main menu's Rogue Waves button each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]. -> 04_Rogue_Waves_Mode.txt [Campaign]
+		- 9. The end: If the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked. A failed campaign keeps nothing. -> 04_Rogue_Waves_Mode.txt [Campaign], [Depth]

@@ -200,9 +200,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
   rounds passed; full re-test 2026-10-11, 208/0). Yossele is built in draft PR #30 (PC round 8, 98/0, Dimitri's play
   notes folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels) and 18
-  (character art); the Vessel Spotlight pages (Log). 2026-10-15: two quality passes and a reorganisation
-  (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in "Log" below.
-- **Next:** merge the open PRs in the order #32, #29, #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
+  (character art); the Vessel Spotlight pages (Log). 2026-10-14: every scope file follows one rule set
+  (`docs/scope/00_Read_Me.txt`), with every template in `15_Templates.txt`. 2026-10-15: two quality passes and a
+  reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in
+  "Log" below.
+- **Next:** merge the open PRs in the order #29, #34, #30, resolving conflicts per `QUALITY_CHECK_2026-10-15.md`
   §6. Then Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions
   2026-10-15). By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
   (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed.
@@ -300,6 +302,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   each sheet ends with its open questions. Yossele's sheet now asks for a ranged laser and a slower speed, which the
   build (PR #30) doesn't have yet. Then, at his ask, `docs/scope/16_Base_Vessels.txt`: the five base vessels in the same
   template from the game's data (kit `reference/vessel_data_survey.txt`, `docs/17`), with a side-by-side stat table.
+- **Also (2026-10-14):** Dimitri asked for one rule set for every scope file, approved the proposal
+  (`/mnt/project-files/research/SCOPE_RULES_PROPOSAL_2026-10-14.txt`) as written, and asked for every file reformatted
+  in his own words. Rules now in `docs/scope/00_Read_Me.txt`; every template (Vessel, Direction, Cardinal, Optional
+  Objective, Enemy Modifier, Sea Weather, Bug) in `15_Templates.txt` (was `15_Vessel_Template.txt`); `04` renamed
+  `04_Rogue_Waves_Mode.txt` and given the sea chart and sea weather from `05`, which is now a numbered walkthrough;
+  Argo (built numbers, `~`) and Uloe (blank slots) laid into the vessel template; dates only in `02`.
 - **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
   new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
   and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey
@@ -414,6 +422,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
   Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
   heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+- 2026-10-14 (user): the scope follows `docs/scope/00_Read_Me.txt`'s rules: one meaning per symbol, every number
+  on a `- Field: value` slot, `/~ \` for Claude's notes, `->` to point at another file, each fact in one file, dates
+  only in `02`, and every template in `15_Templates.txt`. `04_Rogue_Wave_Mode.txt` is renamed `04_Rogue_Waves_Mode.txt`.
 - 2026-10-15 (user): Spool's purple stays as it is for now, though it sits near the crystal foes' magenta (kit
   `docs/18` §7); every other new design keeps magenta for foes only.
 
@@ -442,7 +453,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | Yossele and Spool sheets: the `! NEEDS !` lines under `[Questions]` in `docs/scope/07` and `08` | the default each line names |
+| 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `07`, `08`, `09` and `10` | the `~` default each line names |
 
 ### Phase 5 pieces
 

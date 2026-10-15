@@ -1,0 +1,254 @@
+| Templates |
+	# Every repeatable thing in the scope has its template here: a vessel, a Direction, a Cardinal, an optional objective, an enemy modifier, a sea weather and a bug.
+	# To add one: copy its template into the file its - Goes in: line names, replace every line, and delete the / \ notes that only explain the template.
+	# Leave a slot blank when you don't know it yet: the design gate proposes a ~ value and says which. Write ! NEEDS ! in a slot only you can fill.
+	# Units: distance in tiles, time in seconds, rates per second, a change in % and a multiplier with x. Money is the colour, then the amount: Red 30, Pure Aura 20.
+	# The rules for every symbol are in 00_Read_Me.txt.
+
+| Template: Vessel |
+	- Goes in: its own file, NN_Vessel_Name.txt, under the header | Vessel: Name |
+	# Every value has a slot. A value written ~like this is a default Claude picked: change it, or delete the ~ to keep it as yours. A value without ~ is your own.
+	# The / \ note after a stat gives the base game's range for it (kit docs/02), so a value can be checked at a glance. 16_Base_Vessels.txt lays the five base vessels out the same way, with the game's own numbers.
+	# Upgrades come in levels 1, 2 and 3, usually two choices each, and an optional level 4 capstone. Every choice of one level leads to every choice of the next unless its - Leads to: line says otherwise. / In game they are tiers 2 to 5 \
+	# Write an upgrade's effect in words on its % line, and its values on the - Numbers: line under it. The - In-game line: is the short tooltip players read, with no numbers; the journal shows them.
+	# A vessel's Directions live in 11_Directions.txt. The sheet only lists their names.
+	# Delete any block the vessel doesn't use (no ability, no resource, no minions).
+
+	Name, Title
+		# Design notes: the fantasy, how a game with this vessel plays, what it's like next to the base vessels. As many # lines as you like.
+
+		[Identity]
+			- Title: / The words after the comma above \
+			- Difficulty: ~Intermediate / Beginner, Intermediate or Advanced \
+			- Archetype: / One line: what the player does all game \
+			- In-game line: ~Regular, single-target melee / The line on the select screen, like Smacky's "Fast, single-target melee" \
+			- Look: / The sprite in a line or two. docs/STYLE.md lists the shapes already taken \
+			- Towers look: / The motif every building carries, and what its upgrades add \
+			- Accent colour: ~ / Its buttons, journal page and colour in game \
+			- Sprites: / What exists and where \
+			- Lore: / Or "comes later" \
+			- Status: / Claude keeps this line current \
+
+		[Vessel Stats]
+			- Attack: ~melee / Melee or ranged, and what it looks like \
+			- Health: ~50 / 25-65. Ranged low, bulky melee high \
+			- Health regen: ~0 per second / No base vessel regenerates \
+			- Speed: ~2.5 / 2-3.5 \
+			- Damage: ~3 / 1.5-5. Lower when buildings or minions do the damage \
+			- Range: ~1.5 tiles / Melee 1.5-2, ranged about 3 \
+			- Projectile speed: ~15 / Ranged only \
+			- Attack speed: ~0.6 / 0.4-0.75, higher is faster \
+			- Build range: ~2.5 tiles / 2-3 \
+			- Sell rate: ~50% / 50-75% of what was spent comes back \
+			- Special rule: {~Name} ~One comma line covering every rule of the vessel / The tooltip, like Sno Sno's "Snoborne" \
+
+		[Ability] {Name of Ability}
+			- Does: / One line \
+			- Numbers: / Exact values \
+			- Target: ~one of your buildings / Nothing, a spot, a foe, or one of your buildings or units \
+			- Range: ~5 tiles
+			- Cooldown: ~0.5 seconds
+			- Keys: ~6 / 7 / Buster's Dash keys; every new vessel uses them \
+			- Unlocked: ~from the start / Or the Direction that unlocks it \
+			- Cost: ~none / Aura, the vessel's resource, or none \
+
+		[Resource] {Name of Resource}
+			- Does: / What it's for, one line \
+			- Start: ~0 each map
+			- Cap: ~
+			- Earned by:
+			- Spent on:
+			- Between maps: ~resets / Kept or resets \
+			- On the vessel's death: ~kept
+
+		[Vessel Mechanic] [Name of Mechanic] / A rule every building of this vessel follows, like Yossele's [Growth] \
+			- Rule:
+			- Details: / Edge cases: what counts, what resets it \
+
+		(Slot):{Name of Building} / Slots: Offense, Defense, Economy, Support, Units, Trap, Minion Summoner. Four buildings, or three and a minion like Boutman's fish \
+			# Design notes for this building.
+			- What it does, one - line per mechanic. / Your extra info goes in a note like this one \
+			[Stats]
+				- In-game line: ~ / Its short description, like the Archer Tower's "Precise, single-target" \
+				- Health: ~50, +~25 per level / 20-100, +25 to +150 per level \
+				- Damage: ~2, +~0.5 per level / 0.3-5 \
+				- Attack speed: ~0.5 / 0.2-1 \
+				- Range: ~4 tiles / Towers 3-6.5 \
+				- Other: / One - line for anything else it counts: radius, stacks, slow, mining speed, units \
+				- Limit: ~none / How many one player can build \
+				- Cost: ~Red 30 / Red offense, Blue defense, Yellow economy. 10-60 aura, a second colour for a hybrid \
+			[Growth] / Only for a vessel mechanic that changes buildings stage by stage \
+				- Max: ~5
+				- Each stage:
+				- Numbers: / The values of each stage \
+				- At max:
+			[Upgrades]
+				% 1:{Name} What it does, in words.
+					- In-game line: ~ / A short comma phrase, like "Increased damage, dealt over time" \
+					- Numbers: / Blank or ~ and the design gate proposes them \
+					- Leads to: / Only when it doesn't lead to every choice of the next level \
+					- Cost: ~Red 30 / Level 1: 20-40, level 2: 60-150, level 3: 260-450, level 4: 1500-5000 aura \
+				% 1:{Name}
+					- In-game line: ~
+					- Numbers:
+					- Cost: ~Red 30
+
+				% 2:{Name}
+					- In-game line: ~
+					- Numbers:
+					- Cost: ~Red 100
+				% 2:{Name}
+					- In-game line: ~
+					- Numbers:
+					- Cost: ~Red 100
+
+				% 3:{Name}
+					- In-game line: ~
+					- Numbers:
+					- Cost: ~Red 400
+				% 3:{Name}
+					- In-game line: ~
+					- Numbers:
+					- Cost: ~Red 400
+
+				% 4:{Name} / Optional capstone that changes how the building plays \
+					- In-game line: ~
+					- Numbers:
+					- Cost: ~Red 3000
+
+		(Minion):{Name of Minion} / One block per kind of unit \
+			# Design notes for this minion.
+			- Made by: {Name of Building}
+			- Attack: ~melee
+			- Health: ~25 / Smacky's miner 5, Fie's knight 25, Buster's dog 50 \
+			- Damage: ~1.5
+			- Range: ~1.5 tiles
+			- Attack speed: ~0.8
+			- Speed: ~1.5 / Miner and knight 1, dog 2 \
+			- How many: ~2 at a time per building
+			- Respawn: ~8 seconds / 5-10 \
+			- Orders: ~guards a spot / Guards a spot, follows the vessel, goes where you point, or works a node \
+			- Leash: ~3 tiles / How far it leaves its spot to fight \
+			- Cost: ~free / Aura, the vessel's resource, or free \
+
+		[Directions] / Written in 11_Directions.txt under this vessel \
+			- {Name of Direction}
+
+		[Questions] / Claude lists what the sheet leaves open or where it disagrees with another file, each with the default in use. Answer with < > under the line \
+
+| Template: Direction |
+	- Goes in: 11_Directions.txt, under its vessel
+	# Names follow docs/STYLE.md: a Direction is named like a heading or a course.
+
+	{Name of Direction} / Short and active, like a heading or a course \
+		- Kind: / Boost (a stat bonus) or Shift (changes how the vessel plays) \
+		- Vessel: / Argo, Yossele, Spool, Uloe, a base game vessel, or Any. Any works on every vessel, base game vessels included \
+		- Touches: / The vessel itself, one building (name it), all its buildings, its units or minions, or its aura income \
+		- Rank I: / One line the player reads on the pick card \
+		- Rank II: / What it adds when it is offered again \
+		- Rank III: / The last rank \
+		- Numbers: / Exact values for each rank. Leave blank and the design gate proposes them \
+		- Look: / One found object for its icon, readable at 12x12. It shows on the card in the pick dialog \
+		- Clashes: / Any Direction or Cardinal it should not be held with, or none \
+
+	{Deep Roots} / Example only, not a decision \
+		- Kind: Boost
+		- Vessel: Yossele
+		- Touches: All its buildings
+		- Rank I: Your towers start one [Growth] stage up.
+		- Rank II: Your towers start two [Growth] stages up.
+		- Rank III: Your towers start fully grown.
+		- Numbers: / Blank: the design gate proposes them \
+		- Look: A seed with a root curling out of it
+		- Clashes: None
+
+| Template: Cardinal |
+	- Goes in: 12_Cardinals.txt, under its kind
+	# Names follow docs/STYLE.md: a Cardinal is two plain words for a found object.
+
+	{Name of Cardinal} / Two plain words, a found object the wave washed up \
+		- Kind: / Vessel or Team. Vessel acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, for every player \
+		- In-game line: / One line as the game shows it, no numbers, like the base game's Cardinals \
+		- Numbers: / Exact values. Leave blank and the design gate proposes them \
+		- Lasts: / The rest of the campaign, this map only, or a number of Tides \
+		- Stacks: / Yes if a player (or the team) can own more than one, with no limit; no if it leaves the shop once owned \
+		- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
+		- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \
+		- Cost: / In Pure Aura \
+		- Look: / The object for its icon, readable at 12x12, in the pack's palette \
+		- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \
+
+	{Cracked Buoy} / Example only, not a decision \
+		- Kind: Vessel
+		- In-game line: Your towers start every map with more health.
+		- Numbers: / Blank: the design gate proposes them \
+		- Lasts: The rest of the campaign
+		- Stacks: No
+		- Where from: Shop
+		- Colour: Blue
+		- Cost: ! NEEDS !
+		- Look: A red and white buoy with a crack down one side
+		- Clashes: None
+
+| Template: Optional Objective |
+	- Goes in: 14_Optional_Objectives.txt
+	# Names are a short order, like a bounty on a notice board.
+
+	{Name of Objective} / A short order, like a bounty on a notice board \
+		- Kind: / Hunt (kill a number of one enemy, maybe with a modifier), Guard (keep the core or a building from harm), Hold (no enemy reaches a spot), Rush (finish before a time runs out), Mining (fully mine a node), or something new \
+		- In-game line: / One line the player reads when it is offered: what to do, no numbers \
+		- Numbers: / The count, time or limit. Leave blank and the design gate proposes them \
+		- Taken by: / One player, who alone is paid, or the team, where every player earns the full pay \
+		- Offered: / When it can be taken: every break at {VENDCINT}, once a map, or from a set tide \
+		- Lasts: / The next tide, a number of tides, or the rest of the map \
+		- If failed: / Nothing, or a cost: say what \
+		- Later maps: / How it gets harder on later maps: bigger counts, a modifier on the targets, a shorter time \
+		- Pays: / In Pure Aura, and any base aura on top \
+		- Look: / One found object for its icon, readable at 12x12 \
+		- Clashes: / Any Cardinal, Direction or modifier it should not be offered with, or none \
+
+	{Net the Shoal} / Example only, not a decision \
+		- Kind: Hunt
+		- In-game line: Defeat a pack of marked enemies before they reach the core.
+		- Numbers: / Blank: the design gate proposes them \
+		- Taken by: One player
+		- Offered: Every break at {VENDCINT}
+		- Lasts: The next tide
+		- If failed: Nothing
+		- Later maps: More enemies in the pack, and they carry a modifier
+		- Pays: ! NEEDS !
+		- Look: A torn fishing net with a cork float
+		- Clashes: None
+
+| Template: Enemy Modifier |
+	- Goes in: 13_Enemy_Modifiers.txt
+	# A modifier shows as an effect on the enemy, not a new skin.
+
+	{Name of Modifier}
+		- Kind: / Aura (acts on what is near the enemy) or Self (changes the enemy itself) \
+		- In-game line: / The short line the game shows for it, no numbers \
+		- Does: / What it does, in words \
+		- Numbers: / Exact values. Leave blank and the design gate proposes them \
+		- Shows as: / The effect on the enemy \
+		- Later maps: / How it gets stronger on later maps, or nothing \
+		- Look: / The effect's look, or an icon \
+		- Clashes: / Any modifier, weather or map it should not come with, or none \
+
+| Template: Sea Weather |
+	- Goes in: 04_Rogue_Waves_Mode.txt, under [Sea Weather]
+
+	{Name of Weather}
+		- In-game line: / The line announced when the map starts \
+		- Does: / What it changes on the map, in words \
+		- Numbers: / Exact values \
+		- Never on: / Maps that already have it built in \
+		- Look: / How it shows on its island on the chart and in the map \
+
+| Template: Bug |
+	- Goes in: 03_Bug_Fix.txt
+
+	{Name of Bug}
+		- Problem: / What goes wrong, in your words \
+		- How to see it: / The steps that show it in game \
+		- Fix: / Claude fills this in \
+		- Status: / Claude keeps this line current \

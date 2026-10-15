@@ -152,7 +152,7 @@ check; a map the player hasn't played shows "UNCLASSIFIED" in the Setup panel un
 
 ## 8. Sea weather (2026-10-10)
 
-From `docs/mode/MECHANIC_IDEAS.md` §2; the scope entry is `docs/scope/05` [Sea Weather]. Three weathers, each a stock
+From `docs/mode/MECHANIC_IDEAS.md` §2; the scope entry is `docs/scope/04` [Sea Weather]. Three weathers, each a stock
 map object or effect the game puts on one map only (kit `docs/16` §3), started by the host when the map starts
 (`07_Weather.cs`):
 
