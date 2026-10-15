@@ -549,10 +549,62 @@ public static class ArgoUtil
     // The game's own debuff look on the target, on every player. The target goes by its synced Beingref, as the game's
     // own debuffs do: Link_Being.Beingrefparallel is copied before the spawn sets its Worldobject, so clients can't
     // resolve it and nothing showed (Argo 1.0's slows were invisible this way).
+    // 2.0.1: sent with the ClientRpc itself. The game's Vfxdebuffcheck drops a look while 50 effects wait to be sent,
+    // which happens in busy online fights (kit docs/19 §4, pitfall #95), and a slow is something players need to see.
+    // The send still counts in the game's queue, so stock effects make room for it, and a look already showing until
+    // this one's end is not sent again.
+    static readonly Dictionary<Entity_Master, Dictionary<string, float>> shown = new Dictionary<Entity_Master, Dictionary<string, float>>();
+
     public static void Debuff(Entity_Master by, Entity_Master target, string vfx, float seconds)
     {
-        if (by != null && by.Radio != null && target != null && target.Beingref != null)
-            by.Radio.Vfxdebuffcheck(vfx, target.Beingref.Value, seconds);
+        if (by == null || by.Radio == null || target == null || target.Beingref == null)
+            return;
+        float end = Time.fixedTime + seconds, until;
+        Dictionary<string, float> looks;
+        if (!shown.TryGetValue(target, out looks))
+        {
+            if (shown.Count >= 256)
+                ForgetLooks(false);
+            shown[target] = looks = new Dictionary<string, float>();
+        }
+        if (looks.TryGetValue(vfx, out until) && until >= end - 0.1f)
+            return;
+        looks[vfx] = end;
+        if (Game_Mapvars.Instance != null)
+            Game_Mapvars.Instance.Clientsendstack++;
+        by.Radio.Vfxdebuff_ClientRpc(vfx, target.Beingref.Value, seconds);
+    }
+
+    // A one-off look a player must see (a refused build), past the same queue.
+    public static void MustSee(Entity_Master by, string vfx, Vector3 at, Vector3 direction)
+    {
+        if (by == null || by.Radio == null)
+            return;
+        if (Game_Mapvars.Instance != null)
+            Game_Mapvars.Instance.Clientsendstack++;
+        by.Radio.Vfxoneshot_ClientRpc(vfx, at, direction);
+    }
+
+    // All (a new map) or only the gone and the finished.
+    public static void ForgetLooks(bool all)
+    {
+        if (all)
+        {
+            shown.Clear();
+            return;
+        }
+        float now = Time.fixedTime;
+        List<Entity_Master> gone = new List<Entity_Master>();
+        foreach (KeyValuePair<Entity_Master, Dictionary<string, float>> kv in shown)
+        {
+            bool showing = false;
+            foreach (float until in kv.Value.Values)
+                if (until > now) showing = true;
+            if (kv.Key == null || !showing)
+                gone.Add(kv.Key);
+        }
+        foreach (Entity_Master e in gone)
+            shown.Remove(e);
     }
 }
 

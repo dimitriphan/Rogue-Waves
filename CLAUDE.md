@@ -14,7 +14,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
 | `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.6), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames. `ModSource/Riptide`: a tested roguelike-mode prototype, prior art for the mode | `TDS_Mod/README.md` |
 | `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo 2.0, designed from the scope and built; PC round 6 passed 139/0; ships only inside the pack | its `DESIGN.md` |
-| `TDS_Mod/ModSource/RogueWavesMode` | The pack's mode part (0.2.1: sea chart, sea weather, rejoin after a drop), dev mod `RogueWavesModeMod` | its `README.md`, then `docs/SEA_CHART.md` §7-9 or `docs/REJOIN.md` |
+| `TDS_Mod/ModSource/RogueWavesMode` | The pack's mode part (0.3.0: sea chart, sea weather, rejoin after a drop or a restart), dev mod `RogueWavesModeMod` | its `README.md`, then `docs/SEA_CHART.md` §7-9 or `docs/REJOIN.md` |
 | `TDS_Mod/ModSource/RogueLab` | Phase 1 research mod (never released): the PC round of `docs/15` §11 | its `README.md` |
 | `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, mod-page builder | the docstring at the top of each file |
 | `docs/scope/` | The user's scope for the expansion (ex roguewave.txt, split 2026-10-09): one `.txt` per category (mode, mechanics, each vessel, Directions, Cardinals, modifiers, objectives); he sends back only the files he edits. `! NEEDS ... !` marks what only he can supply. The highest truth after the user's newest words | `00_Read_Me.txt`, then the file the task touches |
@@ -45,6 +45,7 @@ When a vessel starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold 
 | Enemies, elites, modifiers | `docs/13_ENEMIES_AND_MODIFIERS.md` |
 | Directions or Cardinals that must work on every vessel; reusing a base vessel's assets | `docs/17_BASE_VESSELS.md` (§8, §11) |
 | Anything an expansion has that a vessel mod doesn't | `docs/EXPANSION_SCOPE.md`, then `docs/14_MODTOOL_AND_PACKAGING.md` (what a mod can carry, how a pack ships), `docs/15` (the Rogue mode engine), `docs/16` (inside a map: grid, map objects, nodes, wallet), `docs/13` §11 (how the game's code was read here) and `docs/11_TOOLING.md` |
+| A mode's host brain, its UI, music, text, maps, the save, a boss; anything online beyond a vessel | `docs/19`-`24` (online, UI and HUD, music and text, new maps, save and loader, enemy bodies and bosses; read from the decompiled game, untested), sketches in `TDS_Vessel_Creator/examples/recipes/` |
 | Check a mod without Unity | `TDS_Mod/Tools/cloud-check/README.md` |
 | Send code to the PC, build, self-test, release | `TDS_Mod/Tools/pc/README.md`; self-tests: `docs/08` |
 | Review or hand off | `docs/10_CHECKLISTS.md` |
