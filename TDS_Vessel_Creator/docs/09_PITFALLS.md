@@ -68,7 +68,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     placeholder object).
 22. **Risk when uninstalling a vessel** → at startup the game calls `Selectcharacter` with the save's
     `Player_Heroselect`, which the self-test sets to the tested vessel; if that vessel is gone the selection points at
-    nothing (not observed, avoided) → before removing a vessel mod, select another vessel in game.
+    nothing (not observed, avoided) → before removing a vessel mod, select another vessel in game. Read from code
+    since (`23` §2.1): the host ignores the unknown hero and the player picks one by hand; a saved pack *world* is
+    worse (the boat never loads), which RogueWavesMode guards.
 
 ## D. Journal
 
@@ -265,11 +267,54 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     its own handler on the vessel's `Despawn`, which runs before a mod's handler and before `Game_Entity.Ondespawn` →
     the mod must be on the core before the death (the core is the team's, so it speeds every player). Seen in game:
     10 s plain, 5 s with the cut made before, 10 s with it made in either handler.
+93. **Every machine drops to the main menu 120 s into a map load** (decompile, `19` §3) → one client that can't load
+    the map (pack missing, a `Subloads` group name `Waitload` never finds) never sets `Loaded`; the host waits for it
+    with no timeout, and each machine's `Game_Load` kicks itself out at 120 s → every player runs the same pack; the
+    host sends back a client still not loaded 75 s into the loading screen, once the host itself has loaded
+    (RogueWavesMode 0.3.0 `RWLoad`; `RecipeNet.LoadWatchdog` is the bare recipe). Read from code; compiled, not run.
+    (92 is not used.)
+94. **A friend who restarted the game is turned away on rejoin** (decompile, `19` §5) → the client's GUID lives in the
+    save's `Metadata`, which every launch wipes, so a restart brings a new `Sessionid` and RogueWavesMode's seat check
+    misses → keep the GUID in the pack's own save folder and put it back into `Metadata` before the game reads it on
+    joining; the host maps a GUID it has seen to the same `Sessionid` (`Blm_Multiplayer.Getsessionid`) and the stock
+    reconnect does the rest (RogueWavesMode 0.3.0 `RWIdentity`, tied to the computer so a copied save can't give two
+    players one id). Test a pulled cable and a restart apart (`docs/REJOIN.md` O1-O3b). Read from code; compiled, not
+    run.
+95. **Effects show solo but not in a busy online fight** (decompile, `19` §4) → `Projectilecheck`, `Vfxoneshotcheck`,
+    `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
+    solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
+    calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
+    look again only when it would end sooner (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`). Read from code; compiled, not
+    run.
+96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
+    table is built once, before mods load, and never takes a new key; an unknown, empty or null key throws wherever the
+    game plays it; `Random.Range(0, Count - 1)` never picks the last variant → check every key the pack writes at boot
+    (`RecipeSound.Exists`), play own clips on own sources, replace a `Soundpair.val` list instead of appending. Read
+    from code.
+97. **The vessel's `<Name>_Localization.csv` changes nothing in game** (decompile, `21` §3.1) → the game reads only its
+    own `Resources/Localization` and its dev file → keep the CSV as a translator's sheet and write the rows into
+    `Bla_Localization.translations` after each language load (`RecipeText`). Read from code.
+98. **The next launch loads an empty profile that never saves** (decompile, `23` §2) → `Initialize` rebuilds the
+    save's dictionaries with `Add`, so a duplicate or null folder or key name (from editing `Folders`, `Data` or
+    `Datalist` directly) throws, and the load isn't caught → only `Readdata`, `Adddata` with its typed third argument,
+    `Removedata` and `Removefolder`. Read from code.
+99. **A slot switch writes one slot's campaign into the other** (decompile, `23` §6) → the pack's statics outlive
+    `Bla_Data.Playerdata`, which a switch or a clear of the current slot replaces (nothing else does after launch) →
+    remember the `Playerdata` object the state came from, check it before every write, and drop the state on
+    `Onslotchanged` and `Onslotremoved`, in a handler that never throws (RogueWavesMode 0.3.0 `RWCampaign.Live`;
+    `RecipeSave.Install`). Read from code; compiled, not run.
+100. **One part's compile error silently drops the parts after it** (decompile, `23` §4.3) → the loader activates a
+     bundle's `Default` prefabs in one loop, and a compile failure leaves the loop → compile each part alone with
+     cloud-check before a build, and ship `Default` prefabs only (a broken keyword prefab stops a game scene for every
+     mod). Read from code.
+101. **A map's cores or buildings vanish at load** (decompile, `22` §2) → `Despawnanonblock` removes every being
+     without a grid node, and beings under the map's `Entities` child get none unless their block adds one → put them
+     under `Object`, one tile above the ground, on a tile centre (`Maxbound` is the grid's minimum corner). Read from
+     code.
 102. **"Slices 6, 7, 14, 15 ... lie outside the texture" on a sheet 192 wide** (Yossele round 1, 2026-10-12) → the
      builder sliced against `tex.width` read right after the first import, which scales a sheet that isn't a power of
      two up to 256 → read the PNG's own size from its header (`YosseleBuilder.PngSize`). Argo's and the template's
      builders have the same line; they were safe only because their sheets are powers of two.
-     (92 is not used; 93-101 are PR #34's.)
 103. **"FAILED Export Mod finished but ... .info wasn't written"** (Yossele round 1) → the vessel's `Export()` refused
      because other `<Name>Mod` folders were still in Assets; the Build Queue doesn't park them → `Export()` calls its own
      park step first (`ParkOthers()`/`Park()`), as Argo, RogueLab and RogueWavesMode do.

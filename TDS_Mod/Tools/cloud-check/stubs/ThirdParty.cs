@@ -71,6 +71,7 @@ namespace Unity.Netcode
         public bool IsClient { get { throw null; } }
         public bool IsHost { get { throw null; } }
         public ulong LocalClientId { get { throw null; } }
+        public const ulong ServerClientId = 0;
     }
     public abstract class NetworkVariableBase : IDisposable
     {
@@ -112,7 +113,9 @@ namespace Unity.Netcode
     }
     public struct ServerRpcParams { public ServerRpcReceiveParams Receive; }
     public struct ServerRpcReceiveParams { public ulong SenderClientId; }
-    public struct ClientRpcParams { }
+    public struct ClientRpcParams { public ClientRpcSendParams Send; public ClientRpcReceiveParams Receive; }
+    public struct ClientRpcSendParams { public System.Collections.Generic.IReadOnlyList<ulong> TargetClientIds; }
+    public struct ClientRpcReceiveParams { }
     public interface INetworkSerializable { }
     public struct BufferSerializer<T> { }
     [AttributeUsage(AttributeTargets.Method)] public class ServerRpcAttribute : Attribute { public bool RequireOwnership = true; }

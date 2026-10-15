@@ -12,7 +12,7 @@ the content.
 | `<Name>Lowpoly.cs` | `Lp` mesh builder (flat-shaded primitives on an 8×8 palette): `Block`, `Tube`, `Prism`, `Stem`, `Ball`, `Dome`, `Spike`, `Leaf`, `Disc`, `Flower`, `Tri`, `Quad`, `Push/Pop` transforms |
 | `<Name>Models.cs` | every tower model, upgrade model, unit prop, projectile and debuff mesh |
 | `<Name>Audio.cs` | synthesised sound effects (`Tone`, `Hiss`, `Ding`, envelopes) written as WAV |
-| `<Name>Builder.cs` | Build All Assets, Preview Sprites, Preview Models; imports, VFX prefabs, the library prefab, manifest and localization CSV |
+| `<Name>Builder.cs` | Build All Assets, Preview Sprites, Preview Models; imports, VFX prefabs, the library prefab, manifest and localization CSV (a translator's sheet: the game never reads it, `21` §3.1) |
 | `<Name>ModPrefab.cs` | Build Mod Prefab, Park Other Mods, Export Mod, Restore Parked Mods |
 
 ## 1. The vessel sprite
@@ -167,9 +167,12 @@ Particle prefabs built from `VfxSpec` entries in the builder (mesh and/or partic
 
 ## 6. Sound
 
-Synthesised (`<Name>Audio.cs`): 44.1 kHz, 16-bit, mono, normalised. The game's sound table is private, so the mod
-plays its own `AudioSource`s (`<Name>Assets.Play`): spatial blend 1, linear rolloff, the game's `Mindist`/`Maxdist`,
-pitch ±6 %, routed to the **mixer group of the game's "Upgrade" sound** (`General_Main`) so the volume sliders apply.
+Synthesised (`<Name>Audio.cs`): 44.1 kHz, 16-bit, mono, normalised. The game's sound table never takes a new key, so the
+mod plays its own clips on its own `AudioSource`s (`<Name>Assets.Play`): spatial blend 1, linear rolloff, the game's
+`Mindist`/`Maxdist`, pitch ±6 %, routed to the **mixer group of the game's "Upgrade" sound** (`General_Main`) so the
+volume sliders apply. The game's code defaults for `Mindist`/`Maxdist` are 0 and 100 (the live values are data). A
+**stock** sound plays by key from mod code, here or on every machine, and a being's `Sfxstart`/`Sfxend` play stock keys
+at spawn and death; an unknown key throws (`21` §2).
 
 **Levels**: clip rms × volume measured on the game's own sounds: tower shots ~0.004, hits ~0.0015, Upgrade ~0.013,
 vessel landings ~0.015. Set each clip's volume in `<Name>Data.SoundVolume` (Mummer: 0.008 footstep - 0.1 landing).

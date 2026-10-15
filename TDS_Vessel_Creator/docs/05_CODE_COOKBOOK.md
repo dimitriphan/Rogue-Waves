@@ -179,6 +179,10 @@ cooldown, cost. Clients only have `Taglist` (not `Taglistserver`).
 **Use `target.Beingref.Value`**, never `target.Beingserver.Beingrefparallel` (a copy made before the spawn set its
 network reference: clients can't find the target and nothing shows).
 
+`Vfxdebuffcheck` and `Vfxoneshotcheck` share a throttle: in a busy online fight they are dropped silently (`19` §4).
+Keep them for flavour; a look the player must see goes through `Vis`, a skin or a networked being. A message to one
+machine (not one owner's vessel) is `Radio.Pongload_ClientRpc` with a target client id (`19` §6 rule 4).
+
 `number` in Vis is a float: entity network ids fit exactly below 2^24, so `(float)foe.NetworkObjectId` round-trips.
 Animations: `Entity_Vis_Animator_Base.Animplay("Hook", Game_Sprite.Animationtype.Force)` on the entity's animators
 (`Animplaysoft` gets overridden by Idle/Move immediately). The stock attack AIs send "Attack" (melee) and "Shoot"
@@ -191,7 +195,7 @@ Helper_Entitytools.Addmod(foe, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, 
 Helper_Entitytools.Addmod(foe, "Attackspeed", -0.95f, Helper_Entitytools.Modtypes.Multi, s);   // can't attack
 Link_Modifier m = Helper_Entitytools.Addmod(tower, "Range", 1.5f, Helper_Entitytools.Modtypes.Add, 0f); // permanent
 m.Remove.Invoke();                                                                             // undo early
-MummerUtil.Counter(hero, "Thread", 4); MummerUtil.SetCounter(hero, mod, "Thread", 7);          // shown counter
+MummerUtil.Counter(hero, "Thread", 4); MummerUtil.SetCounter(hero, mod, "Thread", 7);          // shown while selected
 MummerUtil.Hurt(from, to, 5f);   // Interact "Hurt" with Damage 5, Damagemulti 1
 MummerUtil.Heal(from, to, 3f);   // Interact "Heal"
 // ore: strike for 1 + bonus; it pays aura to the team when emptied (like the Sno Box, Mummer's Loom)

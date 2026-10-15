@@ -209,6 +209,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
   2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`); every template is in
   `15_Templates.txt`; Argo and Uloe are in the vessel template; `04_Rogue_Waves_Mode.txt` holds the sea chart and weather.
+  2026-10-14: a full decompile gave kit chapters `docs/19`-`24` (online, UI and HUD, music and text, new maps, save and
+  loader, enemy bodies and bosses), compiled recipes in `examples/recipes/`, pitfalls #93-101; read from code, untested.
+  2026-10-15: RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log below).
   2026-10-15: the game's own vessel and enemy sprites measured from its asset bundle: kit `docs/18_CHARACTER_ART.md`
   (formats, palettes, the crystal foe family, vessel vs foe, must/must-not rules for new designs).
   2026-10-15: Vessel Spotlight artifact (https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw), journal-style pages for
@@ -325,6 +328,24 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Objective, Enemy Modifier, Sea Weather, Bug) in `15_Templates.txt` (was `15_Vessel_Template.txt`); `04` renamed
   `04_Rogue_Waves_Mode.txt` and given the sea chart and sea weather from `05`, which is now a numbered walkthrough;
   Argo (built numbers, `~`) and Uloe (blank slots) laid into the vessel template; dates only in `02`.
+- **Also (2026-10-14):** Dimitri asked to decompile the game and turn it into kits and lessons. The whole
+  `Assembly-CSharp.dll` was decompiled into the thread's scratchpad (never committed) and six areas the kit was thin on
+  were read in parallel and spot-checked by hand. Result: kit chapters `docs/19_NETWORKING.md` (with
+  `reference/network_surface.md`), `20_UI_AND_HUD`, `21_MUSIC_SOUND_TEXT`, `22_NEW_MAPS`, `23_SAVE_UNLOCKS_LOADER`,
+  `24_ENEMY_BODIES_AND_BOSSES`; five recipes in `examples/recipes/` that compile with cloud-check; pitfalls #93-101;
+  corrections in `docs/01`, `03`, `05`, `07`, `13`, `14`, `15`, `REJOIN.md`, `PACK.md`, `SEA_CHART.md` and
+  `EXPANSION_SCOPE.md`. Findings for the pack's own code: a friend who **restarts** the game gets a new `Sessionid`
+  and RogueWavesMode turns them away (`REJOIN.md` O3b); one client that can't load a map sends **every** machine to
+  the main menu after 120 s; debuff looks and stock effects drop silently in a busy online fight; campaign statics
+  survive a save-slot switch. Each chapter ends with a PC list; the online evening list is `docs/19` §8.
+- **Also (2026-10-15):** Dimitri said "fix those". **RogueWavesMode 0.3.0** (`Code/10_Online.cs`, `06_Campaign.cs`):
+  every machine keeps its player GUID in the pack's save folder and puts it back after the game wipes it, so a
+  restarted friend keeps their `Sessionid` and seat (`RWIdentity`); the host sends back a player still loading 75 s
+  into the loading screen (`RWLoad`); the campaign leaves itself behind when the save slot changes (`RWCampaign.Live`).
+  **Argo 2.0.1**: its slow look and refused-flood mark go past the effect throttle. Compiled (0 errors, release and
+  self-test); **not run**. Next PC round of the mode adds I1, L1, S1/S2; online: `REJOIN.md` O3b, O3c, `docs/19` §8
+  N4, N9, N14. Yossele (PR #30) still sends its looks through the throttled call; its thread can copy Argo's
+  `ArgoUtil.Debuff`.
 - **Also (2026-10-15):** Dimitri asked for a deep dive into the art of the game's vessels and enemies, with rules for
   new designs. The game's asset bundle was copied read-only from the PC (`StreamingAssets` connected in the thread)
   and read with UnityPy; the drawing code was decompiled. Result: kit `docs/18_CHARACTER_ART.md`, survey

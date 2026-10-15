@@ -1,8 +1,9 @@
 # 07 · Online play
 
 TDS uses Unity Netcode for GameObjects over Steam, host + clients. A vessel mod works online when every player builds
-the **same content under the same names**, and the **host decides** everything while clients only draw. Sprigg 1.1
-was played online by the user and a friend and worked; Argo and Mummer use the same architecture.
+the **same content under the same names**, and the **host decides** everything while clients only draw. Sprigg 1.1 was
+played online by the user and a friend and worked; Argo and Mummer use the same architecture. The engine underneath
+(RPCs, the load, late join, identity, the effect throttle) is `19`, read from the decompiled game.
 
 ## 1. Why a mod vessel can work online at all
 
@@ -22,7 +23,9 @@ was played online by the user and a friend and worked; Argo and Mummer use the s
    timers, resources and decisions run there.
 4. **Change state only through networked channels**: spawn/despawn beings, stat modifiers, skins (`Master.Skin`),
    upgrades, commands (`Commandlist`), debuff looks (`Vfxdebuffcheck`), Vis RPCs. A field on a brain is invisible to
-   clients.
+   clients. `Vfxdebuffcheck`, `Vfxoneshotcheck`, `Vfxemittercheck` and look-alike projectiles are **throttled**: in a
+   busy online fight they are dropped silently, so what a player must see goes through `Vis`, a skin, a stat or a
+   networked being (`19` §4).
 5. **Clients draw.** `<Name>Client` (runs everywhere, host too) only reacts to Vis events and synced values: sounds,
    particles, lines, animations, warnings. It never changes stats, spawns, or decides anything.
 6. **Client input = a command to the host.** Buttons and pickers send `Remote.Command_ServerRpc(link, json)`; the host
@@ -37,7 +40,8 @@ was played online by the user and a friend and worked; Argo and Mummer use the s
     vessel; one player's resource or unlocks must never leak to the other.
 11. **Owner-only messages**: send a Vis code; the client shows it only if `OwnedLocally(master)`.
 12. **No timing assumptions across machines**: `Time.time` differs per machine; the host's timers decide, clients
-    animate with their own clocks.
+    animate with their own clocks. A countdown every client must show alike reads the shared
+    `Game_Mapvars.Instance.Time_Synced` (the host's map clock, synced; `19` §6 rule 8).
 13. **Teammates**: decide whether abilities affect teammates' entities (Argo's Nauts tune any tower on the team;
     Mummer's Scraps go to the owner of the best Loom in range). Make it explicit in the design.
 
@@ -51,7 +55,9 @@ was played online by the user and a friend and worked; Argo and Mummer use the s
 - [ ] Button state is in the command's Goalstring/Goalvalue, synced with `Updatecommand(..., false, false)`.
 - [ ] Per-player dictionaries keyed by owner; nothing global per vessel type.
 - [ ] Debuffs use `Beingref.Value`.
-- [ ] The self-test passes (it runs as host, which also runs the client code).
+- [ ] The self-test passes (it runs as host, which also runs the client code). It can't catch a client reading
+      host-only data (host lists, `Onspawn`) or the online throttle, which drains 2.5 times slower with two players
+      (`19` §2, §4).
 - [ ] If the vessel adds a new kind of sync (a new channel or a client-driven picker), ask the user to try a match with
       a friend and send both Player.log files.
 
