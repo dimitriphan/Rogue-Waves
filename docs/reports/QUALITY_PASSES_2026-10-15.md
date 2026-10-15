@@ -57,7 +57,41 @@ was read, compiled or run as a script in the cloud; nothing was run in game.
 - `setup.sh` now unzips into a temporary folder (Decisions 2026-10-15 C23, due once PR #30 merged), and
   `new_vessel.py` adds missing kit files and warns on differing ones like `New-Vessel.ps1`.
 
-**Listed for Dimitri** (code that changes behaviour in game or a choice; defaults in `docs/PLAN.md` Part C "Next"):
+## Pass 2: 61 issues
+
+| Area | Found | Fixed by its reader | Fixed by the lead | Listed |
+| --- | --- | --- | --- | --- |
+| A1 kit 01-12 | 2 | 2 | 0 | 0 |
+| A2 kit 13-18 | 4 | 4 | 0 | 0 |
+| A3 kit 19-24, reference, recipes | 2 | 2 | 0 | 0 |
+| B1 template, examples, tools | 9 | 6 | 2 | 1 |
+| B2 Argo, shared kit | 4 | 2 | 2 | 0 |
+| B3 Yossele | 1 | 1 | 0 | 0 |
+| B4 mode, RogueLab, Riptide, handoffs | 1 | 0 | 0 | 1 |
+| C tools, settings | 6 | 5 | 0 | 1 |
+| D project docs | 11 | 9 | 2 | 0 |
+| E scope | 21 | 20 | 1 | 0 |
+
+Every pass 1 fix was re-checked in place and held. **Heaviest finds** (fixed unless listed):
+
+- Scope `16_Base_Vessels.txt`: 23 upgrade lines gave the data's parameter names, but the game's code uses those numbers
+  differently. Hyper Pipes raises damage, not attack speed; Big Dog's collision speed goes up 0.8, not down; Hard Sno
+  makes the Box's hurt x50 instead of x20; Iron Fish's real buff is the recruit buff; Snobles' unit count is never
+  read. Each line now says what the code does, with a `/~ Read from the game's code \` note.
+- Kit `03`: a native turret's `Pivot/Gun` child is required, not optional (the game's cannon looks call `Gun.LookAt`
+  with no null check, so a model without it throws on every shot). Kit `13`'s Boutman row named the wrong spawn and
+  wake rule.
+- `docs/PLAN.md` Part D's handoff template gave a `make_handoff.py` command that exits at once; three living pages
+  still keyed players by Steam id, which kit `19` §5 says a mod can't read.
+- The cloud preview skipped every sheet named in a loop without a word (Argo's six Naut sheets); it now warns.
+- Pitfall #95 read backwards on when a look is sent again; the builders' localization comment said the game reads the
+  sheet; `_PROBE` defines that no code reads came back in two notes through a merge.
+- Listed: B4-14 (a turned-away player gets in on a second try), B1-22 (the template's throttled looks), C2-6 (with
+  B1-4).
+
+## Listed for Dimitri
+
+Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".
 
 | # | What | Default |
 | --- | --- | --- |
@@ -66,13 +100,17 @@ was read, compiled or run as a script in the cloud; nothing was run in game.
 | B3-27, B3-30 | Yossele's footstep plays on the peak-lift frame; the Mend effect and three sounds are built but never played | Footstep on frames 0 and 3; play or drop the unused assets, next build |
 | B3-28, B3-29 | Two small leaks in Yossele: `incoming` keeps a foe that died before its seeds landed; `LastHit` statics are never cleared per map | Fix in the next build |
 | B3-31 | Connected Roots guards the whole team's buildings; the scope says "yours" | Ask at the next Yossele build: own or team |
+| B4-14 | `09_Rejoin.cs` turns a player away once per session id and keeps the list all map; the game gives a returning player the same session id, so a second Join Game gets them in, seatless, while a seat is empty | Forget a session once it leaves; add a second try to `docs/mode/REJOIN.md` §6 O5; next mode change |
 | B4-11, B4-13 | Two weather lines in code differ from scope `04`'s in-game lines; the mode's dev-export description omits the rejoin | Take scope `04`'s lines at the next mode change; the description with the one pack version |
 | B4-12 | `09_Rejoin.cs` keeps the first host's name for the "Lost the map" line all launch | Clear it on leaving a map, next mode change |
 | A3-9 | The mode's save keys (`Campaign_Seed`, `Stock_World`, ...) lack the `RW_` prefix kit `23` §2 rule 3 asks for | Rename at the next mode change; no campaign has been saved outside the self-test, so no migration |
 | B1-3 | The template never wires kit 1.3 `ModKitCombat` (kill credit) or kit 1.2 `ModKitTowers.Fit` | Add them with the 1.6 pack calls (B10), before Spool is scaffolded |
-| B1-4 | `<Name>Aseprite.cs` names unit sheets so the unit branch skips them (logged, no `.aseprite` for units) in the template, Argo and Yossele | Fix with B10 |
+| B1-22 | The template's `MummerUtil.Debuff` sends its looks through the throttled `Vfxdebuffcheck` (B3-24's problem), so Spool and Uloe would inherit it | Port Argo 2.0.1's `ArgoUtil.Debuff` into the template with B10, before Spool is scaffolded |
+| B1-4, C2-6 | `<Name>Aseprite.cs` (template, Argo, Yossele) and `ase_sheets.py` name unit sheets so the unit branch skips them: no `.aseprite` for units | Fix both writers together with B10 |
 | B2-X1, B2-X6 | Argo's DESIGN gives FLOOD "1/Quickaction", the code key 1 only; `GiveUpAfter` (12 s) is unused, the Naut gives up after 6 s | At Argo's balance pass |
 | C10 | `.claude/settings.json` lacks `apt-get update` and `python3 -m pip install UnityPy`, which the docs tell sessions to run | Add them (permissions are yours) |
 
-Left on purpose: `docs/YOSSELE_BUILD_NOTES.md` stays in `docs/` (a living page for the current Yossele build, kept
+## Left on purpose
+
+`docs/YOSSELE_BUILD_NOTES.md` stays in `docs/` (a living page for the current Yossele build, kept
 current in this pass); old Argo notes and the Handoff READMEs stay as history.

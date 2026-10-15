@@ -260,8 +260,6 @@ namespace ArgoBuild
             return Normalize(b, 0.75f);
         }
 
-        // ---------------------------------------------------------------- WAV writer
-
         // 2.0 (Deep Water, Anchor Line, Trench)
         static float[] Splash()
         {
@@ -288,6 +286,8 @@ namespace ArgoBuild
             Bubbles(b, 0f, 0.8f, 12, 0.35f);
             return Normalize(b, 0.6f);
         }
+
+        // ---------------------------------------------------------------- WAV writer
 
         public static void SaveWav(string path, float[] samples)
         {

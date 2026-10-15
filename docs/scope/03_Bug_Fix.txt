@@ -11,4 +11,4 @@
 		- Problem: A player who loses the connection during a map has no way back in: the game shuts the lobby for the whole map. Rejoining mid-map must not interrupt the others.
 		- How to see it: a friend drops out during a map and tries to come back.
 		- Fix: built into the pack's mode part: the host keeps each player's seat (vessel, towers, aura) and opens the lobby while a seat is empty; the dropped player comes back with Join Game on the host in Steam. /~ docs/mode/REJOIN.md \
-		- Status: built and passed its solo PC round; not yet seen working in game, since it needs a friend online.
+		- Status: built and passed its solo PC round; 0.3.0 adds coming back after a game restart, built but not yet run; not yet seen working in game, since it needs a friend online.

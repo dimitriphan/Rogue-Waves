@@ -35,8 +35,9 @@ powershell -ExecutionPolicy Bypass -File <resource>\tools\New-Vessel.ps1 -Name B
 
 Copies the template (Mummer 1.0.0) into `ModSource/Bramble` and `Assets/BrambleMod/Editor`, renaming
 `Mummer/mummer/MUMMER` → `Bramble/bramble/BRAMBLE` and the template unit `Understudy` → `Brambleunit`, adds the shared
-kit if the project has none, and writes `DESIGN.md` from the form. Right after scaffolding the vessel **is Mummer under
-a new name**: it compiles, builds and passes Mummer's self-test. Then:
+kit if the project has none (else only the kit files it lacks, with a warning for each one that differs), and writes
+`DESIGN.md` from the form. Right after scaffolding the vessel **is Mummer under a new name**: it compiles, builds and
+passes Mummer's self-test. Then:
 
 1. Make Unity import and compile the new folder: UnityMCP `execute_menu_item("Assets/Refresh")` (a `refresh_unity`
    call alone did not import a brand-new folder), then wait until `Library/ScriptAssemblies/Assembly-CSharp-Editor.dll`

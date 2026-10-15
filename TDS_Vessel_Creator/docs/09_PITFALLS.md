@@ -284,8 +284,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
     solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
     calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
-    look again only when it would end sooner (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`). Read from code; compiled, not
-    run.
+    look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`).
+    Read from code; compiled, not run.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
     table is built once, before mods load, and never takes a new key; an unknown, empty or null key throws wherever the
     game plays it; `Random.Range(0, Count - 1)` never picks the last variant → check every key the pack writes at boot

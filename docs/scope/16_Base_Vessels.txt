@@ -177,7 +177,7 @@
 					- Leads to: {Steel Wall}, {Perma-Wall}
 					- Cost: Blue 15 + Yellow 10
 				% 2:{Hidden Surprise} leave lingering spikes when drowned
-					- Numbers: damage 5
+					- Numbers: damage +5 to its base (8 with Spikes' 3) /~ Read from the game's code \
 					- Leads to: {Bramble}
 					- Cost: Red 80
 
@@ -352,7 +352,7 @@
 					- Cost: Red 50 + Blue 15
 
 				% 3:{Hypercool} Shoot Sno drastically faster on continuous fire
-					- Numbers: attack speed 0.5; attack speed +10%; effect 1.5
+					- Numbers: attack speed +50%, then +10% more for each shot in a row, up to +150%; back to +50% when idle or out of Sno /~ Read from the game's code \
 					- Leads to: {Snoble Alert}, {Snoblaster 7A+}
 					- Cost: Red 150 + Yellow 100
 				% 3:{Icicle Shot} Sno explodes into icicles on impact
@@ -360,7 +360,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 75
 				% 3:{Permasno} Can fire without Sno, additional Sno increases damage
-					- Numbers: damage +5%; sno 0.5
+					- Numbers: damage +0.05 for each Sno pooled for the shot (a flat bonus, not a %); sno 0.5 /~ Read from the game's code \
 					- Leads to: {Snoble Alert}, {Snoblaster 7A+}
 					- Cost: Red 75 + Blue 75 + Yellow 50
 
@@ -369,7 +369,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 1500
 				% 4:{Snoblaster 7A+} Rapidly stores Sno, manually activate for massive damage
-					- Numbers: duration +0.2%; damage +0.12%; sno 1000; sno up to 5000
+					- Numbers: stores up to 5000 Sno and can fire above 1000; the beam's damage multiplier is 0.0012 per Sno stored (x6 at 5000) and it lasts 0.002 seconds per Sno (10 seconds at 5000) /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 2500 + Blue 50
 
@@ -382,7 +382,7 @@
 				- Attack speed: 1
 				- Range: 3.5 tiles
 				- Sno melt speed: 10
-				- Projectile count: 10
+				- Projectile count: 10 /~ Never read: the Heater burns up to 5 foes \
 				- Sno range: 3 tiles
 				- Pulse attack speed: 0.25
 				- Cost: Red 60
@@ -448,7 +448,7 @@
 					- Cost: Blue 25 + Yellow 25
 
 				% 2:{Cold Shoulder} Maximum possible health increased drastically
-					- Numbers: max health +3.5; heal +2
+					- Numbers: overshield cap +3.5 x health (Overmax 1 to 4.5); heal +2 /~ Read from the game's code: the data names it max health \
 					- Leads to: {Cold Feet}, {Tip of the Iceberg}, {Ice Breaker}
 					- Cost: Blue 200
 				% 2:{On The Rocks} Increased health, when destroyed leave a strong rock
@@ -474,7 +474,7 @@
 					- Cost: Red 75 + Blue 225
 
 				% 4:{Take the Heat} Massive health potential, scorched and shocked enemies will fall
-					- Numbers: max health +400%; damage 200; damage to shocked foes 35
+					- Numbers: overshield cap (Overmax) +400%; damage 200; damage to shocked foes 35 /~ Read from the game's code: the data names it max health \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 250 + Blue 1500
 
@@ -504,11 +504,11 @@
 					- Leads to: {Black Sno}, {Rich Sno}, {Snobles}
 					- Cost: Yellow 200
 				% 2:{Hard Sno} Launched Sno will deal some damage
-					- Numbers: damage +5000%
+					- Numbers: the Box's hurts on foes x50 instead of x20 /~ Read from the game's code \
 					- Leads to: {Black Sno}, {Snobles}
 					- Cost: Red 80
 				% 2:{Soft Sno} Siphon rate boosted when covered in less Sno
-					- Numbers: attack speed +175%; attack speed +0.2
+					- Numbers: attack speed up to +175% (the less Sno on its tile, the more); attack speed +0.2 /~ Read from the game's code \
 					- Leads to: {Black Sno}, {Rich Sno}
 					- Cost: Blue 25 + Yellow 250
 
@@ -521,12 +521,12 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 300
 				% 3:{Snobles} The Sno lives!
-					- Numbers: units 3
+					- Numbers: every 5th Sno the Box makes also throws a Snoble; after Sno Fall, every 5th launch is a Snoble /~ Read from the game's code; the data's units 3 is never read \
 					- Leads to: {BFS}
 					- Cost: Red 100 + Blue 100 + Yellow 100
 
 				% 4:{BFS} Summon the Snoble Mother... Feed it.
-					- Numbers: duration 10 seconds
+					- Numbers: the Mother lands 10 seconds after the launch /~ Read from the game's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 25 + Yellow 5000
 
@@ -644,7 +644,7 @@
 					- Leads to: {Ip Man-of-War}
 					- Cost: Red 1500
 				% 3:{Iron Fish} Recruited fish are exceptionally buffed
-					- Numbers: attack speed +25%; damage +150%; range +25%
+					- Numbers: recruited fish, while following: damage +150% of base, attack speed +10% of base, range +25% of base /~ Read from the game's code; the upgrade's own numbers are never read \
 					- Leads to: {Ip Man-of-War}, {Kung Fu Tackle}
 					- Cost: Red 650 + Yellow 650 + Blue 650
 				% 3:{Fishbender} Boutman and recruited fish can mine, increased damage to ore
@@ -800,7 +800,7 @@
 					- Cost: Yellow 50
 
 				% 2:{Balibut} Even tougher, damage taken is reflected upon KO
-					- Numbers: damage +50%; range 1.5; health +100%
+					- Numbers: on KO, hurts foes within 1.5 tiles for 50% of the damage it took since its last KO; health +100% /~ Read from the game's code \
 					- Leads to: {Baviar}, {Pubberfish}
 					- Cost: Red 85 + Blue 150
 				% 2:{Boi} Attack speed increased each Tide
@@ -808,7 +808,7 @@
 					- Leads to: {Baviar}, {Bar}
 					- Cost: Yellow 250 + Red 50
 				% 2:{Bwordfish} Can also attack at range, enables relocation
-					- Numbers: range 0
+					- Numbers: /~ None the game reads (the data's range 0 is unused); its effect is in the fish's code \
 					- Leads to: {Baviar}, {Bar}, {Pubberfish}
 					- Cost: Red 200
 				% 2:{Bbetta} When dried, will completely mine resources nearby
@@ -1013,7 +1013,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 2750 + Yellow 2000
 				% 4:{Hyper Pipes} A massive temporary boost to ALL aura production...
-					- Numbers: duration 600 seconds; amount 1; attack speed +100%
+					- Numbers: duration 600 seconds; amount 1; damage (its mining) +100% for those 600 seconds /~ Read from the game's code: the data names it attack speed \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3000
 
@@ -1031,7 +1031,7 @@
 					- Leads to: {Security Group}, {Trailblazer}
 					- Cost: Red 55
 				% 1:{Partner} Hire another Knight
-					- Numbers: units 1
+					- Numbers: units +1
 					- Leads to: {Security Group}, {Squad}, {Trailblazer}
 					- Cost: Red 55
 
@@ -1040,7 +1040,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 50 + Blue 50
 				% 2:{Squad} Gain another Knight and lower respawn times
-					- Numbers: respawn -4 seconds; units 1
+					- Numbers: respawn -4 seconds; units +1
 					- Leads to: {Battalion}, {Sword Hand}
 					- Cost: Red 130
 				% 2:{Trailblazer} Knights gain special effects based on their weapon that can be enhanced
@@ -1263,16 +1263,16 @@
 					- Leads to: {Big Dog}, {Up Dog}
 					- Cost: Blue 25 + Red 15
 				% 1:{Pit Crew} Gain a second Dog
-					- Numbers: unit 1
+					- Numbers: units +1
 					- Leads to: {Big Dog}, {Up Dog}
 					- Cost: Red 55
 
 				% 2:{Big Dog} Dog is stronger and keeps speed on collisions
-					- Numbers: health +200%; speed after a collision -0.8
+					- Numbers: health +200%; speed after a collision +0.8, so a collision costs 0.2 speed instead of 1 /~ Read from the game's code: the data's -0.8 is subtracted \
 					- Leads to: {Mechanic's Friend}, {Diesel Dog}, {Lap Dog}
 					- Cost: Blue 65
 				% 2:{Up Dog} Increased base speed
-					- Numbers: speed 2
+					- Numbers: base speed +2
 					- Leads to: {Diesel Dog}, {Lap Dog}, {Rev Dog}
 					- Cost: Red 60
 
@@ -1336,7 +1336,7 @@
 					- Cost: Blue 200
 
 				% 3:{Airtime} Gain ability to instantly fly to a location forward
-					- Numbers: units +1
+					- Numbers: /~ None the game reads (the data's units +1 is unused); its effect is in the building's code \
 					- Leads to: {Breakneck}
 					- Cost: Blue 175
 				% 3:{Circuit} All effects increased when not nearby other pads
@@ -1382,7 +1382,7 @@
 					- Leads to: {Lap 3}, {Strong Start}
 					- Cost: Yellow 125
 				% 2:{Long Ranged} Crystals can be collected from farther away
-					- Numbers: range +1.5
+					- Numbers: collect range +1.5
 					- Leads to: {Strong Start}, {Lap 3}
 					- Cost: Blue 15 + Yellow 50
 				% 2:{Tune Up} When collected,  the unit's next attack is stronger granting aura
@@ -1391,7 +1391,7 @@
 					- Cost: Yellow 250 + Red 250
 
 				% 3:{Lap 3} Resource gain ramps with current capacity, can only be collected at half health
-					- Numbers: gain per health 0.1; charge capacity 2; health needed to collect 0.5
+					- Numbers: gain per health 0.1; charge capacity +2; health needed to collect 0.5
 					- Leads to: {Final Lap}
 					- Cost: Yellow 250
 				% 3:{Strong Start} When empty, triple the generation

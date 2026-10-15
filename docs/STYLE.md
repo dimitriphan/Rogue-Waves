@@ -31,8 +31,9 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 - **The crest**: one breaking curl with a Foam rim. It is the pack's mark: the mode icon, the corner of pack UI
   frames, the main menu's Rogue Waves button. Draw it as one clean shape, not a pattern.
 - **Washed ashore**: Cardinals and Directions are found objects, as in the base game (Red Coin, Rusty Pipe, Fish Bait).
-  Pack Cardinals are flotsam, things the wave brought. The first ones are named in `docs/scope/12_Cardinals.txt`
-  (Vampire Dentures; Cracked Buoy and Ship's Bell as examples). One object per icon, readable at 12×12.
+  Pack Cardinals are flotsam, things the wave brought. The first is named in `docs/scope/12_Cardinals.txt` (Vampire
+  Dentures); Cracked Buoy and Ship's Bell are examples only (`15_Templates.txt` uses Cracked Buoy). One object per
+  icon, readable at 12×12.
 - **Pearl drops** for Pure Aura: a small teardrop, Pearl with its sheen, used in the counter, the shop and rewards.
 - No skulls, gore or horror for the harder modifiers. Danger reads through the shape (and Storm Coral on danger marks; a modifier takes its own colour, see Enemies).
 

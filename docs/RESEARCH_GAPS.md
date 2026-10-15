@@ -52,7 +52,8 @@ opening it** (A6), and one map to never offer, Special_Custom (A4).
 | C3 | Enemy sprite format and elite skins | Needed only for new enemy types or skins (both `! NEEDS !` in the scope) | **answered** 2026-10-15 from the game's own sheets (kit `docs/18` §2, §5); new types still wait on the scope |
 | C4 | Enemy pages in the journal | Journal pages are data assets; no code lists enemies, so the pack's foe pages are its own, as vessels' are (`docs/06`) | answered |
 
-Flying waits for a flying enemy.
+Flying (`docs/13` §10 Q7) is read from the game's code since 2026-10-14 (kit `docs/24` §2); it matters only if the
+pack adds a flying enemy.
 
 ## D. Pieces the scope doesn't ask for
 

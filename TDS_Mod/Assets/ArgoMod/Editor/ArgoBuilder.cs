@@ -638,7 +638,8 @@ namespace ArgoBuild
             Directory.CreateDirectory(Path.GetDirectoryName(Abs(manifest)));
             File.WriteAllText(Abs(manifest), j.ToString());
 
-            // Localization: the game uses the English text as the key, so English rows are enough to show correctly.
+            // Localization sheet for translators: the game never reads this file (docs/21 §3.1, pitfall #97). The
+            // English text is the key and an unknown key shows unchanged, so the English names show in every language.
             var csv = new StringBuilder();
             csv.AppendLine("Note,Key,English");
             void Row(string note, string text) { csv.AppendLine(Csv(note) + "," + Csv(text) + "," + Csv(text)); }

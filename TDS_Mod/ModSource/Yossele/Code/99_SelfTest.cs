@@ -260,8 +260,8 @@ public static class YosseleSelfTest
     }
 
     // Spawned as a child of the enemy core, like Tide foes (kit ModKitTest.SpawnFoe): the nearest ground tile between minDist
-    // and maxDist from 'near' where the foe can stand; building tiles are skipped unless asked for (the Curtain test spawns
-    // right on it).
+    // and maxDist from 'near' where the foe can stand; building tiles are skipped unless asked for (the vine tests ask, to spawn
+    // the foe right on a vine tile).
     static Entity_Master SpawnFoe(string being, Vector3 near, float maxDist, float minDist = 0f, bool onBuildings = false)
     {
         return ModKitTest.SpawnFoe(being, near, minDist, maxDist, onBuildings ? null : used);

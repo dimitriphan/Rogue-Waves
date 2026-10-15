@@ -6,7 +6,10 @@
 > host's quit spends a retry, and a campaign has 3. Personal Cardinals are now **Vessel Cardinals**, and there is no cap of
 > 8 Team Cardinals: Cardinals scale without limit (2026-10-11). Maps are now sailed on the sea chart (`docs/mode/SEA_CHART.md`), so #17's chaining and staging map and the
 > "start Cardinal" resume are gone, and #3's "Tide 30 of map 10" is moot (bonus tides never end). §E's engine facts were never moved into kit `docs/15`;
-> they stay here. `docs/scope/` and `docs/PLAN.md` Part C "Decisions" win.
+> they stay here. `docs/scope/` and `docs/PLAN.md` Part C "Decisions" win. **2026-10-15:** the full decompile
+> (2026-10-14) found `Blm_Player.Steamid` out of a mod's reach (Steamworks is not in the game's compiler references,
+> kit `docs/19` §5), so #16, #17, #19 and §F can't key players by Steam id: per-player rows key on the Steam name or
+> the GUID the pack keeps (kit `docs/23` §2.3, `docs/19` §5).
 
 Dimitri asked (2026-10-09) whether the scope needs expanding, given the gameplay loop as it stands. The loop as proven
 so far: Riptide (`TDS_Mod/ModSource/Riptide`, 70 of 70 on the PC), RogueLab rounds 1-3 (kit `docs/15` §11, §15) and Argo

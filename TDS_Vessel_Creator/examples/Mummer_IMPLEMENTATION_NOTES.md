@@ -2,7 +2,7 @@
 
 Mummer, **Strings Attached ▪ Advanced**: a hand-sewn costume vessel that sews the Tide into a cast of puppets. The
 design, the balance numbers and every change from the concept (`Concept/`, the user's "Mummer Vessel Concept.zip")
-are in `DESIGN.md`. Built on the scaffolding of Sprigg and Argo; `../reference/VESSEL_SURVEY.md` covers how the
+are in `Mummer_DESIGN.md`. Built on the scaffolding of Sprigg and Argo; `../reference/VESSEL_SURVEY.md` covers how the
 shipped vessels work.
 
 ## Layout
@@ -55,12 +55,12 @@ debuff meshes), `MummerAudio` (synthesised SFX), `MummerBuilder` (Tools > Mummer
   within its Scrap range pays when a foe falls (`Game_Entity.Ondespawn`).
 - **Understudies** are clones of Smacky's miner with `Mob_General` + `Mob_Movement` + the stock melee or ranged combat
   AI. The brain only moves them (`Move` with `Goalobject`/`Goalposition`, `Goalstring` "Idle"); the stock AIs fight.
-  The Ballista costume fires `Mob_Understudy_Bolt` (a clone of the Heavy Bow arrow); the Aegis costume stands on Sno
-  Sno's mob-blocker block.
+  The Ballista costume fires `Mob_Understudy_Bolt` (a clone of the archer's arrow, `Tower_Smackyarcher_Arrow`); the
+  Aegis costume stands on Sno Sno's mob-blocker block.
 - **Marionette Cross** holds with modifiers (speed -100%, attack speed -95%), released on time, death or the Cross
   being destroyed; the held foe's flail is a real hit from it to its nearest neighbour.
-- **Curtain** is a clone of Buster's pad (Smacky's wall if Buster's group is missing): walkable, so foes pass through
-  and get tangled.
+- **Curtain** is a clone of Buster's pad (Perma-Wall's stump, `Trap_Smackywall_Perma`, if Buster's group is missing):
+  walkable, so foes pass through and get tangled.
 - **Buttons.** Updating a command with `Updatecommand(m, link, "", false, false)` syncs the button's
   `Goalstring`/`Goalvalue` to every player without running the command again (with `run = true` it re-runs the
   handler).

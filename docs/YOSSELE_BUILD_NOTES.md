@@ -7,7 +7,7 @@ disagree on. The design is `TDS_Mod/ModSource/Yossele/DESIGN.md`; the numbers li
 `TDS_Mod/ModSource/Yossele/Code/02_Data.cs`.
 
 **State:** designed, temporary art generated, code written. Compiled in the cloud (0 errors in the release build and
-with `YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; the editor code passes `check_editor.sh`). **Built in Unity and
+with `YOSSELE_SELFTEST,YOSSELE_SHOTS`; the editor code passes `check_editor.sh`). **Built in Unity and
 run in game: PC round 8 passed 98/0** (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`); Dimitri played the round 5
 and round 7 builds, and the look by eye of round 8's is still open. The scope's 2026-10-13 edit is not in this build yet
 (a ranged mouth laser, slower speed; Selfish Sapling, Grafted Colors and Entangling Spaghetti Roots renamed Forest

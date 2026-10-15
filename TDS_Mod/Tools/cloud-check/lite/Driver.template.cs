@@ -122,7 +122,7 @@ namespace {NS}
             var depth = new float[S * S];
             var col = new Color[S * S];
             for (int i = 0; i < depth.Length; i++) { depth[i] = float.MaxValue; col[i] = new Color(0.86f, 0.84f, 0.80f, 1f); }
-            // ground grid: the tile's footprint
+            // every triangle, flat-shaded and depth-tested (the tile outline is drawn after, below)
             for (int t = 0; t + 2 < m.Tris.Count; t += 3)
             {
                 Vector3 a = m.V[m.Tris[t]], b = m.V[m.Tris[t + 1]], c = m.V[m.Tris[t + 2]];

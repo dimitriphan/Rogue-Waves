@@ -165,8 +165,9 @@ h267 (`9677BB`, `8764B0`). The tutorial's Training Dagger is the same shape in w
 ### 5.4 Foes made from friends
 
 The game's foe versions of its friendly characters (sleeping Boutman on Artrio `enemyBoutman-Sheet`, his fish
-`EvilGubbyzmainz-sheet`) are **the same sprite with red eyes**: the eye pixels become `D63A44` and nothing else
-changes; their `Displaycolor` is `FF8080`. That is the house way to turn anything hostile.
+`EvilGubbyzmainz-sheet`) are **the same sprite with red eyes**: the eye pixels become `D63A44` (Boutman's darker
+pupils `BE2D36`) and nothing else changes; their `Displaycolor` is `FF8080`. That is the house way to turn anything
+hostile.
 
 ### 5.5 Elites are overlays, not drawings
 
@@ -210,7 +211,7 @@ For the art this means:
 | Speed | 8-10 fps | 3-12 fps by weight |
 | Folders | Idle, Move, Falling, Land, Landquick, attacks, abilities | Idle, Move, Attack if it winds up |
 | UI colour | its main colour | `D168E0` |
-| Hostile version | red eyes `D63A44` (§5.4) | - |
+| Hostile version | red eyes `D63A44`, darker pupils `BE2D36` (§5.4) | - |
 
 ## 7. Pack notes (Rogue Waves)
 

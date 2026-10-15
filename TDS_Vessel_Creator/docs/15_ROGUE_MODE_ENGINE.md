@@ -299,7 +299,8 @@ the match loaded) and five `NullReferenceException`s from the game's own teardow
    the seven elite upgrades; `Database.Init` group names and `Bl_Address.Groups["Mob"]` (each list's group and item
    names) at mod load and again in a match.
 10. **Packaging** (`14` §6 Q1, Q3): a `Map_Test` prefab with `Mods_Mapsettings` shows in the custom-map slot; log the
-    game's `RoslynCSharpSettings` reference list.
+    deny lists and P/Invoke switch of the game's `RoslynCSharpSettings` (its reference list is already in
+    `Build-<Name>Mod.ps1`).
 11. **Online, with a friend:** steps 2, 3, 7 and 8 on the client side.
 
 ## 12. Sources
@@ -307,7 +308,8 @@ the match loaded) and five `NullReferenceException`s from the game's own teardow
 - The decompiled `Assembly-CSharp.dll` (703 types; `13` §11). Paths above are its files.
 - `TDS Mod Tools.unitypackage` (2026-10-08 copy): `Assets/Exporteradds/*.cs`, `ModTool/Resources/*.asset`, and the
   base game's Addressables entry list in `AddressableAssetsData/AssetGroups/Default Local Group.asset`, saved as
-  `reference/addressables_default_group.txt` (1436 asset paths: every mode, map, artifact, being and upgrade name).
+  `reference/addressables_default_group.txt` (1436 asset paths: the mode, map, artifact, being and upgrade names of
+  that copy; `Mode_Tsunami` and `Map_Manafoldold` are not in it).
 - `Player.log` of a modded launch, 2026-10-08.
 
 ## 13. Already proven in game: Riptide

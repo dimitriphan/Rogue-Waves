@@ -208,15 +208,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   file until three in a row came back clean (`docs/reports/QUALITY_PASSES_2026-10-15.md`). Older entries are in "Log"
   below.
 - **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
-  the mode's next change also takes `RW_` save keys, scope `04`'s weather lines and the rejoin's host name
-  (`QUALITY_PASSES_2026-10-15.md` A3-9, B4-11, B4-12). By hand: the F-key check, the button's and the chart's look, a
-  flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E, kit `docs/19` §8). Left on Argo: his balance pass
+  the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
+  turned-away player who gets in on a second try (`QUALITY_PASSES_2026-10-15.md` A3-9, B4-11, B4-12, B4-14). By hand:
+  the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
+  kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his balance pass
   (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Yossele's next build takes the ranged laser and speed, Argo's
   unthrottled debuff looks, the 2026-10-13 names and lines, its footstep frames and two small leaks (B3-24 to B3-30);
   also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
   (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
   unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
-  and the unit-sheet Aseprite fix (B10, B1-3, B1-4).
+  Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
+  B1-22, B1-4, C2-6).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
 
@@ -410,7 +412,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - 2026-10-09 (user; superseded below: 10 maps, Depth, about 7 Any and 4 per new vessel, only the host's quit spends
   a retry): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
-  save holds it, keyed per player by Steam id (`docs/reports/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
+  save holds it, keyed per player by Steam id (`docs/reports/SCOPE_VS_LOOP.md` §E; since 2026-10-14 the Steam id is
+  known to be out of a mod's reach, so per-player rows key on the Steam name or the GUID the pack keeps, kit `docs/23`
+  §2.3, `docs/19` §5). **Swell (ascension) is on hold** until the
   core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
   up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
@@ -520,7 +524,8 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 > `TDS_Mod/README.md` and report pass/fail only.
 
 **Handoff for the PC:**
-> Pack `make_handoff.py <Name> --only <Name>,Shared` with every fix since the last round, write the one-sentence
+> Pack `make_handoff.py <Name>_round<N> --manifest <pc_manifest.txt> --only <Name>,Shared` (or `--since` the commit
+> the PC last applied) with every fix since the last round (`TDS_Mod/Tools/pc/README.md` step 3), write the one-sentence
 > request for the user (`TDS_Mod/Tools/pc/README.md` step 5), and list what the round must verify in
 > `IMPLEMENTATION_NOTES.md`.
 

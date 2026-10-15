@@ -2,8 +2,10 @@
 // Desktop\ClaudeProjects\handoff\queue.txt, in order: Build All Assets (twice on a line ending in " twice", as Sprigg
 // needs), Build Mod Prefab, Export Mod (which parks the other vessels) and Restore Parked Mods. Build each vessel's code
 // first (Build-<Name>Mod.ps1, with or without -Define), and let Unity finish compiling after a handoff is applied.
-// Every step is written to handoff\queue_status.txt as it happens, ending in "QUEUE DONE ok=N failed=M": read that file
-// rather than waiting on the MCP call, which can time out on a long export (and must not be run a second time).
+// Every step is written to handoff\queue_status.txt as it happens, ending in "QUEUE DONE ok=N failed=M", and logged as a
+// "[ModKit]" line in Editor.log. Read the Editor.log lines (and the .info file's time) rather than waiting on the MCP
+// call, which can time out on a long export (and must not be run a second time): MCP replays a timed-out call, and a
+// replay can overwrite queue_status.txt after a good run (kit docs/09 #76).
 // queue.txt, one vessel per line:   Argo
 //                                   Sprigg twice
 // Then Run-SelfTests.ps1 (self-test builds) or Run-SelfTests.ps1 -BootCheck (release builds).

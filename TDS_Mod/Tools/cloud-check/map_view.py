@@ -9,8 +9,8 @@ each ground tile as x,y,z plus a flag (b: a 1x1 building and a foe can stand the
   python3 map_view.py spots <snapshot.txt> <x,y,z> <ring> <maxDist> -> the tiles ModKitTest.Spot would try, in order
 
 Snapshots live in TDS_Vessel_Creator/reference/maps/. The PNG is top-down, north (+z) up, one 6 px cell per column,
-shaded by the top tile's height; tiles a building can't take are hatched, the core is red, the vessel blue, the vessel's
-team black. Stdlib only.
+shaded by the top tile's height; tiles a building can't take are tinted brown (f), and hatched too where no foe can stand
+either (-); the core is red, the vessel blue, the vessel's team black. Stdlib only.
 """
 import sys, os, re, struct, zlib
 

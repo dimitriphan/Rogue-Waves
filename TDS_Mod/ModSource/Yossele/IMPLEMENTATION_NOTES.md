@@ -6,7 +6,7 @@ Mummer's scaffold; every Mummer mechanic, sheet, model, effect and sound is gone
 `docs/YOSSELE_BUILD_NOTES.md`.
 
 **Checked here only:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release and with
-`YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud
+`YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud
 preview renders every sheet and model. **Built in Unity and run in game (PC round 8, 2026-10-12): 98 pass, 0 fail, 0
 setup**; Dimitri played the round 5 and round 7 builds (his notes below). Left: the look by eye of round 8's build
 (temporary art), the balance pass, online play; Viral Outbreak and Hallucinogen (chance-based) are not checked. The

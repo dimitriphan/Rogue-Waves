@@ -4,7 +4,8 @@
 > this check's own PR #36; §5 and §6 are the record of how. §4's defaults are scheduled in `docs/PLAN.md` Part C
 > "Decisions" (2026-10-15). Not every §5 item was applied before its PR merged: #30's (E7, E12, E22, E2-6, E2-10,
 > E23-E27) and #34's E2-7, E2-8 and E20 were taken up by `QUALITY_PASSES_2026-10-15.md`, which fixed the docs, the
-> builders and the recipes and carried the code items into Part C "Next".
+> builders and the recipes and carried the code items into Part C "Next". #34's E19 (`RWCampaign.Stop()` has no `Live`
+> check) was left: only the self-test calls `Stop()` today.
 
 Dimitri asked (2026-10-15 03:24Z): "Quality check every asset made so far in the repository, then do it again.
 Organize the repository in a way that makes it cleaner and more organized." This page is both passes, what was fixed,

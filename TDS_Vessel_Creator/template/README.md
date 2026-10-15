@@ -1,10 +1,12 @@
 # The reference vessel
 
 `Mummer/` is Mummer 1.0.0 as shipped (2026-10-02; self-test 72/72, release boot clean alongside Sprigg 1.4.1 and Argo
-1.0.0), with three later changes: the builder carries the Aseprite hook every vessel got in `ModProjects`
+1.0.0), with later changes: the builder carries the Aseprite hook every vessel got in `ModProjects`
 (`MummerAseprite.cs`, `TDS_Mod/Tools/aseprite/README.md`), the self-test checks kit 1.4's boat layout
-(`ModKitBoat.ClickReport`), and it uses kit 1.5's `ModKitTest` for the map, placement, foe spawning and the SETUP
-outcome (`docs/08`). They compile here; the template with them has not been played on the PC yet.
+(`ModKitBoat.ClickReport`) and uses kit 1.5's `ModKitTest` for the map, placement, foe spawning and the SETUP outcome
+(`docs/08`), and since 2026-10-15 the builder slices each sheet by the PNG's own size (`PngSize`, `docs/09` #102) and
+Export Mod parks the other mods itself (#103), as Yossele's do. They compile here; the template with them has not been
+played on the PC yet.
 `tools/New-Vessel.ps1` copies it into the mod project under a new name. Don't edit it here to build a vessel; scaffold,
 then edit the copy.
 
