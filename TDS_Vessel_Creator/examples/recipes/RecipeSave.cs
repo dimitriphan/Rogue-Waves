@@ -68,7 +68,7 @@ public static class RecipeSave
         // from 0: nothing older exists. Each later schema adds a step: if (from < 2) { rename a key, convert a value }.
     }
 
-    // An unreadable save leaves Loaded false and the game running on an empty profile that never saves (22 §1.4).
+    // An unreadable save leaves Loaded false and the game running on an empty profile that never saves (23 §1.4).
     public static bool Ready { get { return Bla_Data.Playerdata != null && Bla_Data.Playerdata.Loaded; } }
 
     // ---------------------------------------------------------------- typed reads and writes
@@ -97,7 +97,7 @@ public static class RecipeSave
     }
 
     // Keys start with RW_ (stock trackers search every folder) and never contain Unlock_Hero or Unlock_Artifact
-    // unless they are that unlock (the boat opens a panel on the substring, 22 §3.2).
+    // unless they are that unlock (the boat opens a panel on the substring, 23 §3.2).
     static bool Writable(string key)
     {
         if (ReadOnly || !Ready || key == null || !key.StartsWith("RW_"))
@@ -124,7 +124,7 @@ public static class RecipeSave
     public static void Remove(string key) { if (Writable(key)) Bla_Data.Playerdata.Removedata(Folder, key); }
 
     // At state changes, never per frame: each save serializes the whole profile on the main thread. Not the auto
-    // slot: "Restore auto save" rolls pack data back to the last stock autosave (22 §1.4).
+    // slot: "Restore auto save" rolls pack data back to the last stock autosave (23 §1.4).
     public static void Flush()
     {
         if (!ReadOnly && Ready && Bla_Data.Instance != null)
@@ -132,7 +132,7 @@ public static class RecipeSave
     }
 
     // "Forget Rogue Waves": the folder only. Stock keys that point at pack content are cleaned by their own guards
-    // (22 §2.1: the saved world, vessel and Cardinal).
+    // (23 §2.1: the saved world, vessel and Cardinal).
     public static void Forget()
     {
         if (!Ready)
@@ -143,7 +143,7 @@ public static class RecipeSave
         Check();
     }
 
-    // ---------------------------------------------------------------- per player, across sessions (22 §2.3)
+    // ---------------------------------------------------------------- per player, across sessions (23 §2.3)
 
     // The host keeps one row per player keyed by the synced Steam name (RecipeNet.DurableName): the Sessionid lasts
     // one host session and changes when a friend restarts. Names are cleaned to letters and digits for the key.

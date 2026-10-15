@@ -76,7 +76,10 @@ add, so an updated entry moves to the end of the list on clients.
 
 So **one client that cannot load the map** (missing pack, missing map entry, a wrong group name that hangs
 `Waitload`) stalls the host at "Loading 50%", and after 120 s **every machine, the host too, drops to the main
-menu**. A pack defends itself in §6 rule 10.
+menu**. A pack defends itself in §6 rule 10. Timing for a watchdog: after `Gameloaded` the loading screen still takes
+about 15 s (`Minloadtime` 5 s, a 3 s fade, a 10 s fly-in, Game_Load.cs:173-263) before its own timer stops, so a
+client must be sent back well before 105 s; RogueWavesMode 0.3.0 does it at 75 s (`RWLoad`). A kicked player object
+leaves `Blm_Server.Players` on despawn (Blm_Player.cs:113-127), which is what `Game_Init`'s wait loop reads.
 
 ## 4. The effect throttle
 
@@ -89,6 +92,12 @@ they send only while it is under 50 and **drop** the send otherwise. It drains b
 - Not throttled: `Vis_ClientRpc`, `Uiwarning_ClientRpc`, `Kill_ClientRpc`, `Vfxremovedebuff_ClientRpc`,
   `Vfxshake_ClientRpc`. **What a player must see goes through `Vis`, a skin, a stat or a networked being**; throttled
   channels are for flavour. (This narrows `07` rule 9 and `05` §8.)
+- Or past the throttle: the `*check` methods are only the gate, and the ClientRpcs behind them are public. A must-see
+  look calls `Vfxdebuff_ClientRpc(item, beingref, seconds)` or `Vfxoneshot_ClientRpc(item, position, direction)`
+  itself and adds one to `Clientsendstack`, so stock effects make room. Send a debuff look again only when the new
+  one would end later than the one showing (`Helper_Vfxtools.Debuff` resets `Duration` on a look already attached).
+  Argo 2.0.1 does this for its slow look and its refused-flood mark (`ArgoUtil.Debuff`, `MustSee`). Compiled, not
+  run.
 
 ## 5. Late join, drops and identity
 
@@ -119,18 +128,32 @@ unless a mod copied it (RogueWavesMode does, `docs/REJOIN.md`).
   list (`Build-<Name>Mod.ps1`), so code that touches the field doesn't compile in game (cloud-check stubs it as
   `object` and can't tell). `Blm_Player.Steamname` is a plain string copy, but only on machines that saw the ClientRpc.
 
-Consequence for the pack: `docs/REJOIN.md`'s O1-O3 treat "Task Manager" and "pulled cable" as one case; per the code
-the restart case is turned away by RogueWavesMode's seat check (`09_Rejoin.cs` keys seats by `Sessionid`). A seat
-fallback on `Displayname` would fix it (not built).
+**The fix: keep the GUID.** The pack is on every machine, so each keeps its GUID in the pack's own save folder and
+writes it back into `Metadata/Player_Guid` before the game reads it on joining (`Blm_Player.Start`); the host then maps
+it to the same `Sessionid`, and the stock hand-back and RogueWavesMode's seats work as for a pulled cable.
+RogueWavesMode 0.3.0 (`RWIdentity`, `Code/10_Online.cs`) does this every half second, on the main menu too:
+
+- `Metadata` already holds a GUID while connected, or nothing is kept yet: that one is kept (the host may know it).
+- Otherwise the kept GUID goes back (a new launch, another save slot); with neither, a new one is made.
+- The kept GUID is tied to the computer (a hash of `SystemInfo.deviceUniqueIdentifier`). Without that, a save copied
+  to a friend's PC would give two players one GUID, and the host's `Populatesessionid` would `Add` the same
+  `Sessionid` twice and throw.
+- It lasts per save slot and per PC. A rejoin while the host still holds the old player object would collide the same
+  way; a restart takes longer than Steam's disconnect, so this is not expected (`docs/REJOIN.md` §4, O3b).
+
+The host can also read a player's kept GUID back from `Blm_Multiplayer.Instance.Sessionids` (GUID → `Sessionid`): a
+key that survives sessions and Steam renames, but not a new PC or another save slot. Read from code; compiled, not
+run.
 
 ## 6. Rules for mode code (what `07` doesn't cover)
 
-1. **Run state lives on the host, keyed by `Sessionid` within one host session.** Anything that must survive a
-   session or a client restart (the campaign's per-player things) keys on `Displayname` (`RecipeNet.DurableName`).
+1. **Run state lives on the host, keyed by `Sessionid` within one host session.** With the GUID kept (§5) that also
+   covers a client restart. Anything that must survive the host's session (the campaign's per-player things) keys on
+   `Displayname` (`RecipeNet.DurableName`) or the kept GUID (§5), each with its limits.
 2. **What every client must see goes into a synced carrier:** `Display` (banner, note), a Counter stat, a command's
    `Goalstring`/`Goalvalue`, `Skin`, the wallet, a chat line written by the host. RPC-only state must be re-sent to late
    joiners (rule 5).
-3. **Effects that must show** use `Vis` (unthrottled), a skin or a networked being (§4).
+3. **Effects that must show** use `Vis` (unthrottled), a skin, a networked being, or the ClientRpc itself (§4).
 4. **One client, not all:** `master.Radio.Pongload_ClientRpc(type, msg, rpcParams)` with
    `rpcParams.Send.TargetClientIds = new ulong[]{ id }` reaches `Entity_Master_Client.Pingpongclient(type, msg)` on
    that machine only (Entity_Master_Radio.cs:14-59; the stock `Block_Surface` does exactly this,
@@ -155,8 +178,9 @@ fallback on `Displayname` would fix it (not built).
 9. **Struct writes:** a new `Subowner` array; commands through `Updatecommand`, never by editing `Goalobject`.
 10. **Pack handshake (none in the game):** the host posts the pack's name and version as a chat line at the boat
     (late joiners get the whole chat list) and flags a player whose `Tds_Clientinfo.Mods` is false. During a map
-    load a host-side watchdog can `Blm_Multiplayer.Instance.Kickclient(id)` a player whose `Loaded` is still false
-    after about 60 s, so one broken client no longer sends everyone to the main menu at 120 s (§3). Both untested.
+    load a host-side watchdog can `Blm_Multiplayer.Instance.Kickclient(id)` a player whose `Loaded` is still false,
+    so one broken client no longer sends everyone to the main menu at 120 s (§3; RogueWavesMode 0.3.0 `RWLoad`, 75 s).
+    Both untested.
 11. **The host's save and mod list decide:** `Selectmap` reads node unlocks from the host's save and `Changehero`
     accepts only heroes in the host's database (Tds_Multiplayer_Remote.cs:280, 670).
 
@@ -187,12 +211,12 @@ Before starting, compare the `Loaded Mod: <name>` lines (Bla_Mods.cs:111) in bot
 | N6 | An owner-only message (Vis + `OwnedLocally`, or a targeted `Pongload`) | only the owner sees it | the mod's lines |
 | N7 | The client toggles speed and opens the pause menu | speed changes for all; nothing pauses | — |
 | N8 | Friend pulls the cable mid-Tide, rejoins **without closing the game** | seat restored | host `PLAYER DISCONNECTED …`, later `PLAYER CONNECTED …`; **same** `MY SESSION IS` number |
-| N9 | Friend ends the game in Task Manager, restarts, rejoins | per code a **new** session number; RogueWavesMode turns them away (§5) | **new** `MY SESSION IS`; the mod's turn-away line |
+| N9 | Friend ends the game in Task Manager, restarts, rejoins (same save slot) | with RogueWavesMode 0.3.0 on both, the **same** session number and the seat back (§5); the stock game gives a new one | client `identity: this player's id from the last launch is back`; **same** `MY SESSION IS` |
 | N10 | A late joiner while a debuff look is on a foe | the look is missing on the joiner (§5) | — |
 | N11 | A third player tries to join a running map | refused (closed lobby) | joiner `STEAM LOBBY ERROR`; no `APPROVED CONNECTION` |
 | N12 | Finish the map, vote, sail on | everyone back on the boat | no `Disconnected` |
 | N13 | Last: the host quits to the main menu mid-map | the client lands on the error screen | client `Disconnected` |
-| N14 | Optional: friend joins with the pack disabled and starts a map | approved, then the start stalls and both leave after 120 s | `Loading 50%` then nothing for 120 s; client `Could not retrieve` |
+| N14 | Optional: friend joins with the pack disabled and the host starts a chart map | approved, then the start stalls; with RogueWavesMode 0.3.0 the host sends the friend back at 75 s and starts alone, without it both leave after 120 s | `Loading 50%`; host `load: … sent back so the others can play` |
 
 Copy any `[Netcode]` warning into `09_PITFALLS.md` with what was being done at that moment.
 

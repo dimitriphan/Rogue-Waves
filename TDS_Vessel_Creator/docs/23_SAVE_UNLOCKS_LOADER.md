@@ -221,9 +221,13 @@ network variable's `OnValueChanged`.
 ## 6. Findings for the pack's existing code
 
 1. **Rejoin after a restart** gets a new `Sessionid` and RogueWavesMode turns it away (`19` §5); `docs/REJOIN.md`
-   O1-O3 should test the two cases apart.
+   O1-O3 should test the two cases apart. **Fixed in RogueWavesMode 0.3.0** (2026-10-15, compiled, not run): the pack
+   keeps the GUID in its `RogueWaves` folder and puts it back into `Metadata` (`RWIdentity`, `19` §5).
 2. **Campaign statics survive a slot switch:** after a switch the next `Save()` would write slot A's campaign into
-   slot B. Reset the campaign on `Onslotchanged`, `Onslotremoved` and each main menu, and let New/Continue re-read.
+   slot B. **Fixed in 0.3.0:** `Bla_Data.Playerdata` is replaced only at launch, on `Switchslot` and on `Cleardata`
+   of the current slot (Blockage.Tags.Bla_Data.cs:173-343), so the campaign remembers the `Playerdata` object it came
+   from; `RWCampaign.Live` leaves it behind (in its own slot) when that object changed, checked on `Onslotchanged`,
+   `Onslotremoved`, before each save and at each map start. New/Continue re-read.
 3. **"Restore auto save" rolls pack data back** to the last stock autosave (pack flushes use `Savedata(false)`).
    Acceptable; worth a README line.
 
@@ -246,8 +250,9 @@ network variable's `OnValueChanged`.
 2. **Uninstall:** with a campaign on the chart, a pack vessel selected and a pack key in `Unlock`, quit, disable the
    pack, launch, Play: the boat loads, a stock vessel can be picked, no exception. Re-enable: Continue finds the
    campaign.
-3. **Slots:** with a campaign active, switch slot on the main menu and embark: does the old campaign leak into the new
-   slot (§6.2)?
+3. **Slots:** with a campaign active, switch slot on the main menu and embark: the log says "campaign left behind",
+   the boat shows the stock world, and the new slot's save has no `RogueWaves/Campaign_Seed` (§6.2; the self-test's
+   S2 pretends the switch).
 4. **First main menu:** a dev `Mainmenu` prefab that logs on `Awake`: does it log at the first main menu?
 5. **Compile failure:** a dev bundle with two `Default` prefabs, the first with a compile error: does the second start?
 6. **Toggle mid-session:** exceptions, two instances after re-enabling?

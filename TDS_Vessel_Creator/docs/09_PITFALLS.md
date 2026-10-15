@@ -250,17 +250,23 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     or `Snoble` (nor other base-vessel family tags, `17` §11.1 rule 12). Read from code.
 93. **Every machine drops to the main menu 120 s into a map load** (decompile, `19` §3) → one client that can't load
     the map (pack missing, a `Subloads` group name `Waitload` never finds) never sets `Loaded`; the host waits for it
-    with no timeout, and each machine's `Game_Load` kicks itself out at 120 s → every player runs the same pack; a host
-    watchdog can kick a client still not loaded after about 60 s (`RecipeNet.LoadWatchdog`, untested). Read from code.
+    with no timeout, and each machine's `Game_Load` kicks itself out at 120 s → every player runs the same pack; the
+    host sends back a client still not loaded 75 s into the loading screen, once the host itself has loaded
+    (RogueWavesMode 0.3.0 `RWLoad`; `RecipeNet.LoadWatchdog` is the bare recipe). Read from code; compiled, not run.
     (87-92 are left to the open PRs #29 and #33.)
 94. **A friend who restarted the game is turned away on rejoin** (decompile, `19` §5) → the client's GUID lives in the
-    save's `Metadata`, which every load wipes, so a restart brings a new `Sessionid` and RogueWavesMode's seat check
-    misses → test a pulled cable and a restart apart (`docs/REJOIN.md` O1-O3); a seat fallback on `Displayname` would
-    seat it (not built). Read from code.
+    save's `Metadata`, which every launch wipes, so a restart brings a new `Sessionid` and RogueWavesMode's seat check
+    misses → keep the GUID in the pack's own save folder and put it back into `Metadata` before the game reads it on
+    joining; the host maps a GUID it has seen to the same `Sessionid` (`Blm_Multiplayer.Getsessionid`) and the stock
+    reconnect does the rest (RogueWavesMode 0.3.0 `RWIdentity`, tied to the computer so a copied save can't give two
+    players one id). Test a pulled cable and a restart apart (`docs/REJOIN.md` O1-O3b). Read from code; compiled, not
+    run.
 95. **Effects show solo but not in a busy online fight** (decompile, `19` §4) → `Projectilecheck`, `Vfxoneshotcheck`,
     `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
-    solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being.
-    Read from code.
+    solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
+    calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
+    look again only when it would end sooner (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`). Read from code; compiled, not
+    run.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
     table is built once, before mods load, and never takes a new key; an unknown, empty or null key throws wherever the
     game plays it; `Random.Range(0, Count - 1)` never picks the last variant → check every key the pack writes at boot
@@ -274,8 +280,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Datalist` directly) throws, and the load isn't caught → only `Readdata`, `Adddata` with its typed third argument,
     `Removedata` and `Removefolder`. Read from code.
 99. **A slot switch writes one slot's campaign into the other** (decompile, `23` §6) → the pack's statics outlive
-    `Bla_Data.Playerdata`, which a switch replaces → rebuild pack state on `Onslotchanged` and `Onslotremoved`, in a
-    handler that never throws (`RecipeSave.Install`). Read from code.
+    `Bla_Data.Playerdata`, which a switch or a clear of the current slot replaces (nothing else does after launch) →
+    remember the `Playerdata` object the state came from, check it before every write, and drop the state on
+    `Onslotchanged` and `Onslotremoved`, in a handler that never throws (RogueWavesMode 0.3.0 `RWCampaign.Live`;
+    `RecipeSave.Install`). Read from code; compiled, not run.
 100. **One part's compile error silently drops the parts after it** (decompile, `23` §4.3) → the loader activates a
      bundle's `Default` prefabs in one loop, and a compile failure leaves the loop → compile each part alone with
      cloud-check before a build, and ship `Default` prefabs only (a broken keyword prefab stops a game scene for every

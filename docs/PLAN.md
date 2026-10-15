@@ -202,6 +202,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-13: vessel template `docs/scope/15`; Yossele's and Spool's sheets re-laid in it with a value in every slot.
   2026-10-14: a full decompile gave kit chapters `docs/19`-`24` (online, UI and HUD, music and text, new maps, save and
   loader, enemy bodies and bosses), compiled recipes in `examples/recipes/`, pitfalls #93-101; read from code, untested.
+  2026-10-15: RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log below).
 - **Next:** the in-map vote and the main-menu button are Phase 5's next pieces (Q1-Q3 answered 2026-10-11); by hand, the
   F-key check, the button's look and the chart's and a flooded map's look; one online evening (`RESEARCH_GAPS.md` §E).
   Left on Argo: his balance pass (his call). Yossele's next build takes the sheet's ranged laser and slower speed.
@@ -303,10 +304,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `reference/network_surface.md`), `20_UI_AND_HUD`, `21_MUSIC_SOUND_TEXT`, `22_NEW_MAPS`, `23_SAVE_UNLOCKS_LOADER`,
   `24_ENEMY_BODIES_AND_BOSSES`; five recipes in `examples/recipes/` that compile with cloud-check; pitfalls #93-101;
   corrections in `docs/01`, `03`, `05`, `07`, `13`, `14`, `15`, `REJOIN.md`, `PACK.md`, `SEA_CHART.md` and
-  `EXPANSION_SCOPE.md`. Findings for the pack's own code, not fixed yet: a friend who **restarts** the game gets a new
-  `Sessionid` and RogueWavesMode turns them away (`REJOIN.md` O3b); one client that can't load a map sends **every**
-  machine to the main menu after 120 s; debuff looks and stock effects drop silently in a busy online fight; campaign
-  statics survive a save-slot switch. Each chapter ends with a PC list; the online evening list is `docs/19` §8.
+  `EXPANSION_SCOPE.md`. Findings for the pack's own code: a friend who **restarts** the game gets a new `Sessionid`
+  and RogueWavesMode turns them away (`REJOIN.md` O3b); one client that can't load a map sends **every** machine to
+  the main menu after 120 s; debuff looks and stock effects drop silently in a busy online fight; campaign statics
+  survive a save-slot switch. Each chapter ends with a PC list; the online evening list is `docs/19` §8.
+- **Also (2026-10-15):** Dimitri said "fix those". **RogueWavesMode 0.3.0** (`Code/10_Online.cs`, `06_Campaign.cs`):
+  every machine keeps its player GUID in the pack's save folder and puts it back after the game wipes it, so a
+  restarted friend keeps their `Sessionid` and seat (`RWIdentity`); the host sends back a player still loading 75 s
+  into the loading screen (`RWLoad`); the campaign leaves itself behind when the save slot changes (`RWCampaign.Live`).
+  **Argo 2.0.1**: its slow look and refused-flood mark go past the effect throttle. Compiled (0 errors, release and
+  self-test); **not run**. Next PC round of the mode adds I1, L1, S1/S2; online: `REJOIN.md` O3b, O3c, `docs/19` §8
+  N4, N9, N14. Yossele (PR #30) still sends its looks through the throttled call; its thread can copy Argo's
+  `ArgoUtil.Debuff`.
 
 ### Decisions
 

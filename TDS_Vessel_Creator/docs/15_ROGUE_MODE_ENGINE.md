@@ -191,7 +191,8 @@ with `SendMessage("Updateartifactlist")`, §13).
 - Folder + key → float or string: `Adddata(folder, name, float, Addtype)`, `Adddata(folder, name, string)`,
   `Readdata(folder, name)` → `Entry {Value, Valuestring, Loaded}` (Datacontainer.cs:33,77,121).
 - Unknown folders and keys survive a load and save; no checksum or version check (Datacontainer.cs:15-31;
-  Bla_Data.cs:324-327). The `Metadata` folder is wiped on every load (:57,199-208): never write there.
+  Bla_Data.cs:324-327). The `Metadata` folder is wiped on every load (:57,199-208): never keep pack data there (the
+  one write that makes sense is putting the player's own GUID back, `19` §5).
 - A slot switch replaces `Playerdata`: never cache it; re-read after `Bla_Data.Instance.Onslotchanged` and
   `Onslotremoved`, which a clear fires instead (:271-274, 317, 339-342).
 - The game saves at match end, on the boat and on quit (Game_Endscreen.cs:514, Macro_Main.cs:516, Bla_Data.cs:150),
@@ -394,7 +395,8 @@ questions. All **read**; RogueLab round 2's results are §15.
 - The player key within one host session is the `Sessionid` (long): the host maps each client's saved GUID to a
   number and reuses it on a rejoin (Blm_Player.cs:79-92, Blm_Multiplayer.cs:457-466). The GUID sits in the save's
   `Metadata`, which every load wipes, so **a friend who restarts the game comes back with a new `Sessionid`**; only a
-  drop with the game still open keeps it (decompile 2026-10-14, `19` §5). Netcode client ids and `Tds_Clientinfo` are
+  drop with the game still open keeps it (decompile 2026-10-14, `19` §5), unless the pack keeps the GUID and puts it
+  back (RogueWavesMode 0.3.0, `19` §5). Netcode client ids and `Tds_Clientinfo` are
   not stable; the Steam id is stable but out of reach for mod code; `Displayname` survives a restart. Run state is
   keyed by `Sessionid` (RogueLab and Riptide already do).
 - A drop despawns nothing: teammates become subowners of the dropped player's entities, and lose that on a rejoin

@@ -38,7 +38,7 @@ public static class RecipeSound
     }
 
     // The mixer group a stock key plays on (its own, else its table group's default): a pack AudioSource on it obeys
-    // the volume sliders and the break muffle. A source with no group ignores the sliders (20 §2.3).
+    // the volume sliders and the break muffle. A source with no group ignores the sliders (21 §2.3).
     public static UnityEngine.Audio.AudioMixerGroup Group(string stockKey)
     {
         if (Bla_Audio.Instance == null || Bla_Audio.Instance.Database == null)
@@ -58,7 +58,7 @@ public static class RecipeSound
 
     public static void StockAt(Vector3 at, string key) { if (Exists(key)) Helper_Vfxtools.Playsound(at, key); }
 
-    // Host: every machine plays it (not throttled, 20 §2.2). A late joiner misses it.
+    // Host: every machine plays it (not throttled, 21 §2.2). A late joiner misses it.
     public static void StockForAll(string key)
     {
         if (Exists(key) && Tds_Multiplayer_Radio.Instance != null && RecipeNet.IsServer)

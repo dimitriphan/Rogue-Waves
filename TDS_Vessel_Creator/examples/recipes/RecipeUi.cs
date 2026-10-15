@@ -67,7 +67,7 @@ public static class RecipeUi
             done(null);
             yield break;
         }
-        // Unscaled: the dialog doesn't pause the game online (18 §6 rule 8), and a solo pause must not stretch a vote.
+        // Unscaled: the dialog doesn't pause the game online (19 §6 rule 8), and a solo pause must not stretch a vote.
         float end = Time.unscaledTime + seconds;
         while (task.Status == Cysharp.Threading.Tasks.UniTaskStatus.Pending && ask == asks && DialogUp()
             && Time.unscaledTime < end)

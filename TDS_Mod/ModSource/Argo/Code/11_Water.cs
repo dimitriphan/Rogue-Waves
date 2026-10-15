@@ -253,7 +253,7 @@ public static class ArgoWater
         if (!next || !Helper_Gridtools.Checkifplaceable(block, pool, 0, ArgoUtil.Team(from.Master)))
         {
             Refused++;
-            from.Master.Radio.Vfxoneshotcheck("Cannotbuild", block.Position, block.Direction);
+            ArgoUtil.MustSee(from.Master, "Cannotbuild", block.Position, block.Direction);
             if (!next)
                 ArgoUtil.Warn(from.Master, 11);
             return;

@@ -72,6 +72,6 @@ public static class RecipeText
     }
 
     // A translated string for code that builds text itself. Keys are fixed strings: dynamic text as a key gets
-    // appended to the dev file once per variant (20 §3.1); put the number in with string.Format after the lookup.
+    // appended to the dev file once per variant (21 §3.1); put the number in with string.Format after the lookup.
     public static string T(string english) { return Bla_Localization.GetText(english); }
 }

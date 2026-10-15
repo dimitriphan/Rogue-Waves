@@ -33,9 +33,9 @@ public static class RecipeNet
         return p;
     }
 
-    // The name that survives a client restart (the Sessionid doesn't, 18 §5). Synced, owner-written, not unique: two
-    // friends with one Steam name share it. The Steam id itself is out of reach (Steamworks is not in the reference
-    // list).
+    // The name that survives a client restart (the Sessionid doesn't, 19 §5, unless the pack keeps the player's GUID as
+    // RogueWavesMode 0.3.0's RWIdentity does). Synced, owner-written, not unique: two friends with one Steam name share
+    // it. The Steam id itself is out of reach (Steamworks is not in the reference list).
     public static string DurableName(long session)
     {
         Blm_Player p = Player(session);
@@ -126,7 +126,9 @@ public static class RecipeNet
     // ---------------------------------------------------------------- one map load can't kick everyone (rule 10)
 
     // Host only, called once a second while the map loads. A client still not Loaded after `grace` seconds is kicked
-    // so the others don't all drop to the main menu at 120 s (Game_Load.cs:36-70). Untested; the grace is a guess.
+    // so the others don't all drop to the main menu at 120 s (Game_Load.cs:36-70). Untested. The loading screen needs
+    // about 15 s after the last load, so count from its start and stay well under 105 s; the pack's version
+    // (RogueWavesMode RWLoad) waits 75 s from the Game_Load object and kicks only once the host itself has loaded.
     static readonly Dictionary<ulong, float> waiting = new Dictionary<ulong, float>();
 
     public static void LoadWatchdog(float grace)
