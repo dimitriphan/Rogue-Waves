@@ -376,7 +376,7 @@ public class ArgoTowerBrain : MonoBehaviour
                 float m;
                 if (bonus > 0f && ArgoStatus.Debuffed(to) && hit.Data.TryGetValue("Damagemulti", out m))
                 {
-                    // A copy: the projectile hands the same dictionary to every enemy it pierces.
+                    // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
                     hit.Data = new Dictionary<string, float>(hit.Data);
                     hit.Data["Damagemulti"] = m * (1f + bonus);
                     BonusHits++;
@@ -400,7 +400,7 @@ public class ArgoTowerBrain : MonoBehaviour
             float multi;
             if (whale > 0f && hit.Data.TryGetValue("Damagemulti", out multi))
             {
-                // A copy: the projectile hands the same dictionary to every enemy it pierces.
+                // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
                 hit.Data = new Dictionary<string, float>(hit.Data);
                 hit.Data["Damagemulti"] = multi * (1f + Mathf.Clamp01(ArgoUtil.MaxHealth(to) / whale));
             }
@@ -489,7 +489,7 @@ public class ArgoTowerBrain : MonoBehaviour
         }
     }
 
-    // Pay Dirt: a foe felled inside the Tremor is dug up, PaydirtBase mining strikes on the nearest ore.
+    // Pay Dirt: a foe felled inside the Tremor is dug up, Paydirt_Base mining strikes on the nearest ore.
     public void PayDirt(Entity_Master foe, Vector3 at)
     {
         int n = Mathf.RoundToInt(Param("Paydirt_Base", 0f));

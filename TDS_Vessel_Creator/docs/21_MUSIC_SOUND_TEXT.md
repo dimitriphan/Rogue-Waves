@@ -104,7 +104,7 @@ positive = fade the old one out over f, then the new one in over f (Bl_Sound.cs:
 | --- | --- | --- |
 | `Helper_Vfxtools.Playsound(pos, key)` / `Playsoundui(key)` | positional / 2D | this machine |
 | `Tds_Multiplayer_Radio.Instance.Sfx_ClientRpc(pos, key)` / `Sfxui_ClientRpc(key)` | the two above | host calls, every client plays; not throttled |
-| `Visualproperties` entry `Sfxstart` / `Sfxend` | at spawn / at a real death | every machine (`01` §10 omits these two fields) |
+| `Visualproperties` entry `Sfxstart` / `Sfxend` | at spawn / at a real death | every machine (`01` §10) |
 | `Spritecont.Sound` | on that animation frame | every machine (the kit's footstep) |
 | `Bla_Soundoneshot`, `Vfx_Sound`, `Vfx_Soundui` | when enabled, inside an effect | where enabled |
 

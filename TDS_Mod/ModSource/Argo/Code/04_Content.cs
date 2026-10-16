@@ -161,7 +161,7 @@ public static class ArgoContent
     }
 
     // Stats like the shipped data: "Health=40+25" is Health 40, +25 per level (Leveladd). Unknown stats are added with the
-    // display settings of the first existing one (hidden numbers, like every shipped stat).
+    // display settings of the first existing one (shown only to its own team, like nearly every shipped stat).
     public static Statproperties Stats(Statproperties template, string name, string[] specs)
     {
         Statproperties stats = UnityEngine.Object.Instantiate(template);
@@ -295,8 +295,8 @@ public static class ArgoContent
             proj.Vfxstart = null;
             if (p[0] == ArgoData.Pellet)
                 proj.Sfxend = "";
-            // Straight flight (Projectile_Ai_Simple). The brains pass every parameter with each shot: the game merges
-            // a shot's parameters into this shared dictionary, so anything left out would carry over from the last one.
+            // Straight flight (Projectile_Ai_Simple). Each shot starts from a copy of these Defaultparams with its own
+            // parameters laid over them (pitfall #29); the brains pass every parameter with each shot anyway.
             proj.Defaultparams = new Dictionary<string, float> { { "Gravity", 0f }, { "Pierce", 1f }, { "Lifetime", 1f } };
             Projectiles[p[0]] = proj;
             Register("Projectile", proj);
@@ -344,7 +344,7 @@ public static class ArgoContent
             Register("Command", sonar);
         }
 
-        // PORT / STARBOARD / BOSUN on the Miner's Base: pick a tower, like Fie's Reroute picks a silo.
+        // PORT / STARBOARD / BOSUN on the Miner's Base: pick a tower, like Fie's Reroute picks an ore.
         foreach (ArgoData.Crew c in ArgoData.Nauts)
         {
             Commandobject cmd = ArgoUtil.Clone(template, c.Command);

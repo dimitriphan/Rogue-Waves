@@ -39,7 +39,8 @@ writing code.
 - Attack AI: **melee** = `Entity_Ai_Mob_Combat` like Smacky; **ranged** = `Entity_Ai_Mob_Ranged` with the projectile
   named in the Attack command, like Sno Sno (never both: Sprigg once hit twice, melee from 3.5 tiles plus its seed).
 - `Display_Desc` follows the pattern "Fast, single-target melee", "Regular, single-target ranged".
-- All hero stats stay hidden (copy the template's stat styles).
+- Hero stats copy the template's stat styles: `Display_Exposed` off hides them from other teams only; the owner's
+  panel shows each one that has a display type and an icon (Game_Ui.cs:146-174).
 - **Special rule** (optional but recommended; Sno Sno, Boutman, Buster have one): a tier -3 upgrade
   `Hero_<Name>_Tooltip_Upgradeproperties` in `Upgradesinit`, named like "Snoborne", "Good Dog", "The Show Must Go On",
   with one comma-phrase line summarising every rule of the vessel ("Melee with reach, foes felled near a Loom leave
@@ -66,10 +67,12 @@ built around units follows `docs/12_MINION_VESSELS.md` as well. Shipped mixes:
 | Buster | Pedestal (Red 25) | Speed Pad (trap, Blue 25) | Checkpoint (trap, Yellow 50) | Garage (Red 60, dog) |
 | Mummer (mod) | Marionette Cross (Blue 30 + Red 15) | Curtain (trap, Blue 20) | Loom (Yellow 40) | Puppet Stage (Red 50, units) |
 
-- **Cost colour = job**: Red offence, Blue defence/control, Yellow economy. Base cost 10-60 aura, one colour (two for
-  a hybrid). Unit producers cost the most (60).
+- **Cost colour = job**: Red offence, Blue defence/control, Yellow economy. Base cost 10-60 aura (the
+  Boutboat Red 100), one colour (two for a hybrid). Fie's and Buster's unit producers sit at the top of the band
+  (60; Smacky's Mining Hut 35).
 - **Stats** list only what the building uses, with `Leveladd` on Health (+20 to +150 per level) and the main damage
-  stat (+0.5 to +2). Shipped bands: Health 20-100, Damage 0.3-5, Range 3-6.5 (towers), Attackspeed 0.2-1.
+  stat (+0.5 to +2). Shipped bands: Health 20-100, Damage 0.3-5, Range 3-6.5 (towers), Attackspeed 0.2-1 (the
+  Boutboat 2).
 - **Tags**: `Tower` (or `Trap`) + a role (`Towerfighter` attacks, `Gatherer` economy) + a family tag
   (`<Name><building>`) the brains use to find siblings.
 - **Units** (from a unit building): stats like the miner (5 HP), knight (25 HP), dog (50 HP); stock fighter AIs; leashed
@@ -95,6 +98,9 @@ Per buildable, like the shipped ones (counts and costs measured from the game's 
   | 3 | 25-500 | 100 | 60-150 |
   | 4 | 75-750 | 300 | 260-450 |
   | 5 | 1500-5025 | 3000 | 2800-3500 |
+
+  Shipped ranges leave out Boutman, whose trees go higher (up to 150, 700, 1950 and 7500 by tier;
+  `reference/vessel_data_survey.txt`).
 
 - **Ids**: `<Being>_<Key><Tier>_Upgradeobject` (`Tower_Mummerloom_Golden5_Upgradeobject`); each upgrade has its own
   model (`<Being>_<Key><Tier>`) that keeps the base silhouette and adds one clear feature.

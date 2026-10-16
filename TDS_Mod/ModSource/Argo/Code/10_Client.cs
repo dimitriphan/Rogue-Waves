@@ -536,7 +536,7 @@ public static class ArgoClient
 
     // ---------------------------------------------------------------- Tremor rings and tuning marks
 
-    // The Tremor radius and slow each client knows: the same sums the server uses (the Range and Slow stats), rebuilt
+    // The Tremor radius and slow each client knows: the same sums the server uses (the Tremor and Slow stats), rebuilt
     // from what every client has - the drill's Fathom skin and its upgrade list.
     public static float TremorRadius(Entity_Master drill) { return DrillStat(drill, "Tremor", 2f) + ArgoData.FathomTremor * (Fathom(drill) - 1); }
 

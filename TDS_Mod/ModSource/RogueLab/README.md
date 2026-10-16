@@ -8,7 +8,7 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | --- | --- | --- |
 | Boot | dumps the database folders, `Mode_Normal`'s Tide table and the enemy groups; registers `Mode_RogueLab` (stock scripts by name, 3 Tides) with a `RogueLab_` twin of every `Mode_Normal` Gameplan, and the Cardinal `Artifact_RogueLab`; writes and reads a save key | §2, §7, §8, §11.9 |
 | Boat | picks Boutman and the test map, equips the mod Cardinal in its colour slot, swaps the match to the twin Gameplan | §3, §7 |
-| Map 1 | checks the mode and Cardinal, grants a core upgrade mid-match, reproduces the F-key bug with Boutbro and checks the fix, rewinds a Tide, leaves between Tides as a win, chains straight into map 2 | §3, §5, §7, §9 |
+| Map 1 | checks the mode and Cardinal, grants a core upgrade mid-match, reproduces the F-key bug with Boutbro and checks the fix, rewinds a Tide, leaves between Tides as a win, chains straight into map 2 | §2, §3, §4, §7, §9 |
 | Map 2 | checks what survived the scene change, opens a 3-option `Runprompt` for 30 s (round 3: the eight-card dialog instead) | §3, §6 |
 | Round 2 (0.2.0, `06_Round2.cs`) | at boot every map's and Gameplan's data, every other mode's Tide table, the elites again, the easier setting's upgrade; in map 1 the bundle's second prefab (`Second/RogueLabSecond.cs`, built into `RogueLabMod_Second_Default`) and the frame cost of 50/100/200 extra units; in map 2 an eight-card dialog; then a **tour** of every other base map the vote could offer, each left as a win as soon as it starts; `TEST DONE` | `docs/RESEARCH_GAPS.md` A3, A4, A6, A7, A9, B5, C1, C2 |
 | Round 3 (0.3.0) | the same, with two changes after round 2 (`docs/15` §15): map 2's dialog opens only once its menu is up, then the mod clicks a card; the tour plays only the 15 maps whose stock Gameplan uses another mode (now twinned too), the Final map last; Special_ plans are never twinned, and a map that hangs while loading ends the run after 150 s | `docs/RESEARCH_GAPS.md` A4, A6 |
@@ -97,4 +97,5 @@ record under each `RogueLab_` twin's name in the save (harmless; the save is bac
 6. Tools > RogueLab > Restore Parked Mods if the queue didn't, then disable `RogueLabMod` in the game.
 
 A run that crashes before `TEST DONE` can leave the save key `Unlock/Unlock_Artifact_Artifact_RogueLab`: harmless, it
-names an artifact that exists only while RogueLab is loaded. Steps 10 and 11 of §11 (online, by hand) are not here.
+names an artifact that exists only while RogueLab is loaded. Steps 10 (packaging) and 11 (online) of §11 are by hand
+and not here.

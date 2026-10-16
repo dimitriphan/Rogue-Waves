@@ -328,9 +328,6 @@ public static class ArgoSelfTest
             }
     }
 
-    // A Dagger (else the Tide's own enemy type) about 'dist' tiles from 'near' (then 2 closer, 2 farther, 3), spawned as
-    // a child of the enemy core like Tide enemies, on the first standable tile of the ring. Not an Aegis: a held Aegis
-    // reads 0.05 (Mummer's Cross check; see SpeedInfo).
     // How a foe's Speed is made up: (Base x Pmulti + Add) x Multi, clamped to Bounds.
     static string SpeedInfo(Entity_Master foe)
     {
@@ -341,6 +338,9 @@ public static class ArgoSelfTest
             + " bounds " + F(s.Value_Bounds.x) + ".." + F(s.Value_Bounds.y) + " calc " + F(s.Value_Calc) + " value " + F(s.Value);
     }
 
+    // A Dagger (else the Tide's own enemy type) about 'dist' tiles from 'near' (then 2 closer, 2 farther, 3), spawned as
+    // a child of the enemy core like Tide enemies, on the first standable tile of the ring. Not an Aegis: a held Aegis
+    // reads 0.05 (Mummer's Cross check; see SpeedInfo).
     static Entity_Master SpeedFoe(Vector3 near, float dist)
     {
         Beingobject being = ArgoUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType;
@@ -1072,7 +1072,7 @@ public static class ArgoSelfTest
             Check("Miner's Base upgrades are priced in Blue (tier 2 Blue only)", off.Count == 0, off.Count == 0 ? "7 upgrades" : string.Join("; ", off.ToArray()));
         }
 
-        // 1b. Speed floor (1.2.3): stacked slows never take a foe under a tenth of its speed, a hold stops it at its floor
+        // 1b. Speed floor (1.3.0): stacked slows never take a foe under a tenth of its speed, a hold stops it at its floor
         // whatever slows it carries, and the foe gets its full speed back when they expire. Before anything is built.
         {
             Entity_Master foe = SpeedFoe(ArgoUtil.Pos(hm), 6f);

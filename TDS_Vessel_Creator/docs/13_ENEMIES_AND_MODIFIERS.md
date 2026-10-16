@@ -25,7 +25,7 @@ Enemy ids live in the `Mob` label like towers and units. The Sandbox artifact's 
 | `Enemy_Excalibur` | `Entity_Ai_Enemy_Excalibur` | 1.3 s wind-up, then a straight bolt `Enemy_Excalibur_Bolt` | `Projspeed` |
 | `Enemy_Bulwark` | `Entity_Ai_Enemy_Bulwark` | its hits stun (Damage, Speed, Attackspeed overridden to 0.01 for `Stunduration`, look `Debuff_Disabled`); attack = 1.6 s wind-up, close slam (`Closedamage` to `Closecount` targets in `Closerange`), then 5 s later drops `Enemy_Bulwark_Bomb` on up to `Projcount` spots out to `Maxrange` (target spots taken **before** the wind-up, each at least `Projradius` farther than the last; the slam never sets `Lasthit`) | `Stunduration`, `Projcount`, `Projradius`, `Maxrange`, `Closecount`, `Closerange`, `Closedamage` |
 | (Halberd) | `Entity_Ai_Enemy_Halberd` | flying ore guard: flies to a resource, dives on Gatherers and vessels near it, retreats to its `Parent` (the `Halberdnest` tower that spawned it) below `Scarepercent` health and heals there; at full health it picks the nearest resource (`24` §2) | `Protectrange`, `Scarepercent`, `Speedfly`, `Heal` |
-| `Enemy_Boutman` | `Entity_Ai_Enemy_Boutman` | the sleeping Boutman on Artrio: wakes on `Awaketide`, spawns fish (`Enemy_Reallystrongfish`), is knocked out to recruit him | - |
+| `Enemy_Boutman` | `Entity_Ai_Enemy_Boutman` | the sleeping Boutman on Artrio: wakes at `Awaketide` or when no `Artriobarrier` is left; awake, spawns an `Evil`-skinned `Mob_Boutmanfishmini` every `Fishspawninterval` s and his Damage grows by `Damageincrease` a second; knocked out, a `Hero_Boutman` joins the players 5 s later; if a player already plays Boutman, an `Enemy_Reallystrongfish` spawns in his place | `Awaketide`, `Fishspawninterval`, `Fishhealthmulti`, `Damageincrease` |
 
 What the enemies share:
 
@@ -250,7 +250,9 @@ without a stock bespoke AI reads as a plain melee foe to them.
 4. **Its look on every screen**: base enemies have no skin for a new modifier, and an entity holds one skin (a modifier
    skin would hide a stock elite's look; the stock skins are overlay materials, not redrawn sprites, `18` §5.5), so
    show it with an effect parented to the enemy and refreshed (`Radio.Vfxdebuffcheck(name, master.Beingref.Value,
-   seconds)` every couple of seconds, as Tempered does). Leave the skin to the stock elites. Give it a colour no elite
+   seconds)` every couple of seconds, as Tempered does). That call is dropped while 50 sends are in flight, which a busy
+   online fight reaches: a look every player must see goes out the way Argo 2.0.1's `ArgoUtil.Debuff` sends it (`19`
+   §4, `09` #95). Leave the skin to the stock elites. Give it a colour no elite
    uses (taken: green, white, red, near-black, bronze, orange; `18` §5.5, §7).
 5. **Who gets it**: list it in a `Wavecontent.Upgrades` (Tide table route above), in the `Upgrades` array of a
    `Spawn` command, or pick enemies at `Onspawn` and add it to their `Initupgradelistserver` (for "every fifth foe
@@ -330,7 +332,8 @@ without a stock bespoke AI reads as a plain melee foe to them.
    `reference/roguelab_round2.txt`):* Storm 15 Tides (180 s, 30 s breaks, start 50 of each aura), Drought 20 (120 s, 20 s breaks,
    Annealed and Claymore rushes), Tsunami 4 Tides (180 s, the last 9999 s; long breaks of 240 s then 180 s; start 500
    of each aura, Molten and Bulwark), Final 1 Tide (start 100 of each aura, three Bulwarks and Excaliburs), Tutorial 3 Training Dagger Tides.
-   A Gameplan names its mode, so two maps on one mode play one table.
+   A Gameplan names its mode, so two maps on one mode play one table. In every `Mode_Normal`-script mode the last
+   Tide's `Wavetime` is 9999 s (Normal's 30th, Storm's 15th, Drought's 20th, Tsunami's 4th): it ends only when cleared.
 4. **When the enemies are loaded**: which Addressables group holds `Enemy_Dagger` (search `Bl_Address.Loadedfolders`
    for the `Loadlist` whose `Items` has it) and whether it is loaded at boot or only in a match. That decides when a
    mod can clone a template enemy on every machine. *From the code (2026-10-08):* boot loads the groups named in

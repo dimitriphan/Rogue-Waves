@@ -78,7 +78,7 @@ public static class ArgoData
     public const float TuneReach = 1.75f;       // a Naut tunes a tower from this far (flat distance)
     public const float TuneAttackspeed = 0.2f;  // +20% attack speed; Full Crew adds another 0.2 (Tuneboost_Base)
     public const float TuneHeal = 0.5f;         // health a second on any tuned tower; Overhaul adds Repair_Base
-    public const float GiveUpAfter = 12f;       // a Naut that can't get to its tower comes home
+    public const float GiveUpAfter = 12f;       // unused: ArgoNautBrain.Travel sends a Naut home after 6 s without progress
     // 1.4 Old Salts: a Naut tunes each kind of Argo tower its own way (teammates' towers get the attack speed only).
     public const float SaltsPellets = 2f, SaltsPierce = 2f, SaltsReel = 1f, SaltsSlow = 0.1f;
 
@@ -155,7 +155,7 @@ public static class ArgoData
     public const float SlowCap = 0.6f;          // Tremors never slow more than this
     public const float TremorTick = 0.5f;
     public const float AftershockEvery = 2f;
-    public const float OreReach = 2.1f;         // ore within this flat distance can be drilled (the next tile, diagonals too)
+    public const float OreReach = 2.1f;         // ore within this flat distance can be drilled (2 tiles straight out, 1 diagonally)
     public const float BedrockEvery = 1f;       // 2.0 Bedrock: a tick of damage on each pinned foe in the Tremor
 
     // ---------------------------------------------------------------- 2.0: debuffs, pins, Deep Water
@@ -245,7 +245,8 @@ public static class ArgoData
                 U(Scatter, "Pressure", 4, "Pressure Rounds", "Harder pellets that punch through one more enemy", "Pierce_Add=1;Damage_Add=0.5", "Redaura=350", "Broadside5")
                     .Fx("Pierce +1", "Pellet damage +0.5"),
                 // 2.0: the scope's "increases health greatly", in place of 1.4.0's Undertow. Healtharmor is the game's
-                // armour (each hit takes 1 from it before health; healing refills it, as on Sno Sno's Brain Freeze).
+                // armour: each hit, whatever its Damage, takes its Damagemulti (1 by default) from it and none from
+                // health (kit docs/01); healing refills it, as on Sno Sno's Brain Freeze.
                 U(Scatter, "Ironclad", 4, "Ironclad", "Health greatly increased", "Health_Multi=1.5;Healtharmor_Base=2", "Redaura=250;Blueaura=150", "")
                     .Fx("Health x2.5", "Armour: the next 2 hits take 1 each"),
                 U(Scatter, "Broadside", 5, "Broadside", "Every few volleys, a full ring of pellets all around", "Broadside_Every=4;Broadside_Count=16;Damage_Add=0.5", "Redaura=3000", "")

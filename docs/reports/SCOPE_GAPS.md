@@ -1,12 +1,14 @@
 # Scope gaps: what `SCOPE_v0.txt` names that is not yet expanded (2026-10-08)
 
 > **Partly superseded (note added 2026-10-11, `docs/reports/QUALITY_CHECK_2026-10-11.md`).** Settled since: the campaign starts
-> from a main-menu button (no start Cardinal), maps are voted on the sea chart among the 1-3 linked nodes, VENDCINT is
+> from a main-menu button (no start Cardinal), maps are voted on the sea chart among the linked nodes (1-3; for map 1
+> the whole first row, 3 or 4), VENDCINT is
 > the shopkeeper and the Fund Transfer cap is 50 x the coming tide, Thread Head is Spool's minion, Vampire Dentures is
 > the first named Cardinal, and modifiers show as an effect, not a skin (`docs/scope/13`). Since then: the
 > mode part `RogueWavesMode` exists (2026-10-10: sea chart, sea weather, rejoin), Yossele and Spool have full sheets in the vessel
 > template (`docs/scope/07`, `08`), Spool's ability is Patch and a Yarn Stash holds the Thread (Thread Heads come from it by
-> default), and Yossele is built in draft PR #30. Check `docs/scope/` before acting on a row.
+> default), and Yossele 0.1.0-dev is built (PC round 8 98/0; merged in PR #30 on 2026-10-15). Check `docs/scope/`
+> before acting on a row.
 
 Every asset `docs/SCOPE_v0.txt` names or implies, checked against branch `claude/phase-1-6lfnar` (PR #3) on
 2026-10-08: what exists and what is still missing. It is a to-do list, not a design; each gap goes to the phase in

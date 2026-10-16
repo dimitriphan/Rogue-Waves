@@ -1,16 +1,17 @@
 """map_view.py: the self-test's map snapshot, readable in the cloud.
 
-Every self-test build (kit 1.5, ModKitTest.MapDump) logs the test map's ground once as "TEST MAP" lines in Player.log:
-each ground tile as x,y,z plus a flag (b: a 1x1 building and a foe can stand there, B: a building only, f: a foe only,
--: neither), then the core, the vessel and everything of the vessel's team.
+A vessel's self-test build (the template's, Argo's and Yossele's call kit 1.5's ModKitTest.MapDump) logs the test
+map's ground once as "TEST MAP" lines in Player.log: each ground tile as x,y,z plus a flag (b: a 1x1 building and a foe
+can stand there, B: a building only, f: a foe only, -: neither), then the core, the vessel and everything of the
+vessel's team.
 
   python3 map_view.py save <Player.log or an excerpt> <out dir>     -> <plan>.txt (the snapshot) and <plan>.png
   python3 map_view.py near <snapshot.txt> <x,y,z> [radius]          -> text picture around a tile, like ModKitTest.Picture
   python3 map_view.py spots <snapshot.txt> <x,y,z> <ring> <maxDist> -> the tiles ModKitTest.Spot would try, in order
 
 Snapshots live in TDS_Vessel_Creator/reference/maps/. The PNG is top-down, north (+z) up, one 6 px cell per column,
-shaded by the top tile's height; tiles a building can't take are hatched, the core is red, the vessel blue, the vessel's
-team black. Stdlib only.
+shaded by the top tile's height; tiles a building can't take are tinted brown (f), and hatched too where no foe can stand
+either (-); the core is red, the vessel blue, the vessel's team black. Stdlib only.
 """
 import sys, os, re, struct, zlib
 

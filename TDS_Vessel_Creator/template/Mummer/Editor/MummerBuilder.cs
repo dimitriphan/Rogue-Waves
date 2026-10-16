@@ -190,8 +190,10 @@ namespace MummerBuild
             {
                 AssetDatabase.ImportAsset(s.Path, ImportAssetOptions.ForceSynchronousImport);
                 var ti = (TextureImporter)AssetImporter.GetAtPath(s.Path);
-                var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(s.Path);
-                int w = tex.width, h = tex.height;
+                // The PNG's own size: a first import scales a sheet that isn't a power of two (192 wide -> 256), so the
+                // loaded texture's width would slice cells that aren't there (pitfall #102).
+                int w, h;
+                PngSize(s.Path, out w, out h);
                 ti.textureType = TextureImporterType.Sprite;
                 ti.spritePixelsPerUnit = 20;
                 ti.filterMode = FilterMode.Point;
@@ -241,6 +243,15 @@ namespace MummerBuild
                 ai.forceToMono = true;
                 ai.SaveAndReimport();
             }
+        }
+
+        static void PngSize(string path, out int w, out int h)
+        {
+            byte[] head = new byte[24];
+            using (var f = File.OpenRead(path))
+                f.Read(head, 0, 24);
+            w = (head[16] << 24) | (head[17] << 16) | (head[18] << 8) | head[19];
+            h = (head[20] << 24) | (head[21] << 16) | (head[22] << 8) | head[23];
         }
 
         static void ConfigurePlain(string p)
@@ -617,7 +628,8 @@ namespace MummerBuild
             Directory.CreateDirectory(Path.GetDirectoryName(Abs(manifest)));
             File.WriteAllText(Abs(manifest), j.ToString());
 
-            // Localization: the game uses the English text as the key, so English rows are enough to show correctly.
+            // Localization sheet for translators: the game never reads this file (docs/21 §3.1, pitfall #97). The
+            // English text is the key and an unknown key shows unchanged, so the English names show in every language.
             var csv = new StringBuilder();
             csv.AppendLine("Note,Key,English");
             void Row(string note, string text) { csv.AppendLine(Csv(note) + "," + Csv(text) + "," + Csv(text)); }

@@ -1,5 +1,7 @@
 // EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
 // TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
+// ConfigureImports() below slices by tex.width read after the first import, which scales a sheet 192 wide to 256
+// (pitfall #102); the live builders read the PNG's own size (PngSize).
 // Argo asset generator - entry point: Tools > Argo > Build All Assets.
 // Writes every Argo asset into Assets/ArgoMod (exported with the mod) and review material into ModSource/Argo
 // (previews; not exported). Safe to re-run: outputs are overwritten in place so GUIDs and references stay stable.

@@ -91,7 +91,7 @@ upgrade must have empty `Costs`.
 | `Game_Entity.Ondespawn(m, killed, reason)` | yes, `Lasthit` still set | kills, sells (`"Sell"`), deaths |
 | an upgrade AI's `Interact` / `Oninteract` / `Kill` | — | per hit dealt or taken, per kill; survives `Updateinteract` because it is in `Ais` |
 
-The kit's brains already wait for `Statsserver.Count > 0` (`05` §5). Two engine sweeps remove outside hooks:
+The kit's brains already wait for `Statsserver.Count > 0` (`05` §6). Two engine sweeps remove outside hooks:
 `Helper_Entitytools.Upgrade`/`Removeupgrade` **destroy every `Entity_Ai_Base` whose type is not listed** by the entity
 or its upgrades (:540-547, 600-607), and `Updateinteract` rebuilds the `Interact`/`Oninteract` chains from `Ais`
 (:138-151). Both run each time anything gives the entity an upgrade, and the base vessels do that constantly: Buster's
@@ -136,9 +136,9 @@ dying meanwhile (**guess**: a handler subscribed in the vessel's `Onspawn`, befo
 | Vessel | `Mob, Hero` (Buster adds `Dog, Buster`) |
 | Attack building | `Tower, Towerfighter` (+ family: `Boutboat`, `Fiewall`, `Totem`) |
 | Economy | `Tower, Gatherer` (Hut, Silo `+Silo`, Sno Box); Checkpoint `Gatherer, Trap, Checkpoint` |
-| Other building | `Tower` (+ `Smackywall`, `Boutbarrel`): Ice Brick, Heater, Keep, Rest Stop |
+| Other building | `Tower` (+ `Smackywall`, `Boutbarrel`): Ice Brick, Keep, Rest Stop |
 | Trap | `Trap` (+ `Pad`, `Checkpoint`); no Health stat, so nothing can hurt it |
-| Units | `Mob, Mobfighter` (+ `Fish`, `Knight`, `Dog`, `Snoble`); miner `Mob, Gatherer` |
+| Units | `Mob, Mobfighter` (+ `Fish`, `Knight`, `Dog`, `Snoble`); miner `Mob, Gatherer`; engineer `Mob` only |
 | Odd ones | Bouthouse `Bouthouse, Herotower` (**no `Tower`**); Boutdad, Boutmom `Mobfighter, Boutfamily` (**no `Mob`**, no stats); Fie's Wall drops `Towerfighter` at spawn until Living Wall; Fie's drones have no tags |
 
 ### 2.6 Kill credit and income
@@ -147,7 +147,7 @@ dying meanwhile (**guess**: a handler subscribed in the vessel's `Onspawn`, befo
   At a death `Lasthit.Kill(dead)` fires and `Lasthit`'s owner gets the kill (Game_Entity.cs:376-391). Every hit that
   carries an explicit `Damage` is uncredited (table in §8).
 - **Enemy drops and ore pay every player** (`Giveresources(..., −1, Split)`, Game_Entity.cs:413-416;
-  Entity_Ai_Resource_Mine.cs:116), and ore never records who broke it. A hit removes at most `1 + Damageresource` ore
+  Entity_Ai_Resource_Mine.cs:136), and ore never records who broke it. A hit removes at most `1 + Damageresource` ore
   health (Helper_Damagetools.cs:47-58), so mining speed is attack rate, not Damage. The only payments to one player are
   the vessel-specific ones in §1's table, sell refunds and a few Cardinals.
 - `Helper_Resources.Giveresources(list, ownerId)` pays one player × `Resourcegainmultiplier`; `−1` with `Default` pays
@@ -177,17 +177,21 @@ Landquick 4×1. The tutorial forces Smacky.
 | Mining Hut (Yellow 35, `Tower, Gatherer`) | spawns miners (one ore hit per round trip) or engineers (Support Team) | Respawn, Health | **`Units`**: only `Addressminercount` (on a downgrade) reads it; Starting spawns exactly one (Entity_Ai_Tower_Smackyhut.cs:70-132) |
 | Wall (Blue 20, `Tower, Smackywall`) | posts link to `Smackywall` neighbours; Spikes reflect; Bramble and Beacon tile auras; Perma-Wall rebuilds | Health, Damage once Spikes made it | regen 7.5/s, Rejuvenate `100 × Level`, Bramble 15, Beacon 750/÷1.5 |
 
-- **Engineers** walk to the nearest same-team `Towerfighter` of **any** player that lacks their buff and give it
-  `Effect_Smackyhut_Buff` (Range +25 %, Attackspeed +50 %, Damage +25 % Pmulti, 8 s) or, when their `Effect` stat is
-  not exactly 1, `…Buff2` (×3 attack speed, 14 s) (Entity_Ai_Mob_Smackyengineer.cs:42, 95-162). **Any outside change
-  to an engineer's `Effect` switches it to the Firm buff.**
-- Ore Scraps (`Mob_Smackyminer_Chips`) pays the **unit's owner** 1 of each colour per ore hit; Convert trades −0.5/−0.5
-  for +1 on every gain of the owner's (Entity_Ai_Effect_Smackyhut_Scrap.cs:8-40; Entity_Ai_Tower_Smackyhut.cs:258-364).
+- **Engineers** walk to the same-team `Towerfighter` of **any** player nearest their **Hut** (sorted from
+  `Master.Parent`, no range limit) that lacks their buff and give it `Effect_Smackyhut_Buff` (Range +25 %,
+  Attackspeed +50 %, Damage +25 % Pmulti, 8 s) or, when their `Effect` stat is not exactly 1, `…Buff2` (×3 attack
+  speed, 14 s) (Entity_Ai_Mob_Smackyengineer.cs:42, 69, 95-162). **Any outside change to an engineer's `Effect`
+  switches it to the Firm buff.**
+- Ore Scraps (`Mob_Smackyminer_Chips`) pays the **unit's owner** 1 of each colour the hit ore yields, per ore hit;
+  Convert trades −0.5/−0.5 for +1 on a gain of the owner's, at most once a second (`Convertcooldown`)
+  (Entity_Ai_Effect_Smackyhut_Scrap.cs:8-40; Entity_Ai_Tower_Smackyhut.cs:196-208, 258-364).
 - Kill credit: hero, miners, all projectiles incl. explosions and split children, Spikes, the Spikes trap. **Not**:
   Detonate, Bramble, Marketplace, burn ticks (the first arrow already credited).
-- Bugs: Bomb Launcher's downgrade removes Quick Bombs' mod; Convert and Marketplace never unsubscribe; units removed by
-  lowering `Units` come back; live miners lag one level; Rejuvenate heals for the previous tier; a drowned wall leaves
-  its Bramble and Beacon tiles buffing; engineers whose hut died throw every tick (no null check on `Parent`).
+- Bugs: Bomb Launcher's downgrade removes Quick Bombs' mod; Convert and Marketplace keep running after their
+  downgrade (it clears the flag before testing it to unsubscribe, Entity_Ai_Tower_Smackyhut.cs:526-544; the hut's
+  despawn does unsubscribe them, :168-195); units removed by lowering `Units` come back; live miners lag one level;
+  Rejuvenate heals for the previous tier; a drowned wall leaves its Bramble and Beacon tiles buffing; engineers whose
+  hut died throw every tick (no null check on `Parent`).
 - Borrow: `Entity_Ai_Mob_Smackyminer` (generic miner, already Sprigg's), `Entity_Ai_Tower_Tilebuff` (a tile aura that
   force-applies the being's first upgrade to same-team towers on its tile), `Projectile_Ai_Splitbounce`, the archer
   arrows (the kit's default projectile clones, `01` §9), `Effect_Smackyhut_Buff/Buff2` (timed tower buff, removes
@@ -204,15 +208,17 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |
-| Sno Cannon (Red 30, `Tower, Towerfighter`) | eats `Ammo` Level from the nearest **`Snoble`- or `Sno`-tagged entity of any team** within `Rangesno`, then fires; Snoblaster laser drains snow to 5000 and fires a ×6 beam | Damage, Attackspeed, Range, Rangesno, Ammo, Projspeed | splash, slow, Hypercool, Permasno, laser and Snoble numbers |
-| Sno Box (Blue 10 Yellow 25, `Tower, Gatherer`) | hurts every ore in Range (no `Lasthit`) and makes snow (`Heal` Level) on its tile or, with Sno Fall, where it throws it (no range limit); all its hurts on `Mob`s ×20 (×50 Hard Sno) | Damage, Attackspeed, Range, Heal | ×20/×50, Snoble every 5th, Snoaddrate |
-| Heater (Red 60, `Tower, Towerfighter`) | burns up to 5 foes in Range, melts snow; Cookin' Eggs pulse, Heat Treat heals allies, Cold Sweats gives every same-team `Towerfighter` +100 % attack speed | Damage, Attackspeed, Range, Snomeltspeed, Rangesno | pulse 20, heals 10/3.3, Shock +15 %, Scorch ramp |
+| Sno Cannon (Red 30, `Tower, Towerfighter`) | eats the nearest **`Snoble`** within `Rangesno` whole, or else `Ammo` Level from the nearest **`Sno`-tagged entity** (both **of any team**), then fires; Snoblaster laser drains snow to 5000 and fires a ×6 beam | Damage, Attackspeed, Range, Rangesno, Ammo, Projspeed | splash, slow, Hypercool, Permasno, laser and Snoble numbers |
+| Sno Box (Blue 10 Yellow 25, `Tower, Gatherer`) | hurts every ore in Range (no `Lasthit`) and makes snow (`Heal` Level), only when an ore is in Range, on its tile or, with Sno Fall, where it throws it (no range limit); all its hurts on `Mob`s ×20 (×50 Hard Sno) | Damage, Attackspeed, Range, Heal | ×20/×50, Snoble every 5th, Snoaddrate |
+| Heater (Red 60, `Tower, Towerfighter`) | burns up to 5 foes in Range, melts snow; Cookin' Eggs pulse, Heat Treat heals allies, Cold Sweats gives every same-team `Towerfighter` in its Range +100 % attack speed | Damage, Attackspeed, Range, Snomeltspeed, Rangesno | pulse 20, heals 10/3.3, Shock +15 %, Scorch ramp |
 | Ice Brick (Blue 15, `Tower`) | heals from the snow on its tile, then an overshield (`Healthover`) up to `Health × Overmax`; leftovers Thin Ice (rebuilds) and Rock | Health, Heal, Healtime, Overmax | ×0.85 resist, bursts 200/35, snow lob 20 |
 
 - **Snow** (`Effect_Snosnosnow`, Entity name `Sno`, tag `Sno`, Level 0-100, skins 2-10) is a networked being any mod
   can make: spawn it on a `Surface` with Initstats `{Level}`, or send `Interact(from, snow, "Grow", {Amount, Spread})`
-  (Projectile_Ai_Sno.cs:35-57). Snow does nothing to foes; Sno Sno's things read it. His snow is team −2, so team
-  filters never see it; the cannon, laser, Mother and Heater take snow and Snobles of **any** player.
+  (Projectile_Ai_Sno.cs:35-57). Snow does nothing to foes; Sno Sno's things read it. His snow is team −2: own-team
+  filters and `Mob`/`Tower` tag queries never see it, but a team-only foe query (`Styles.Team`, `Teamfor = false`)
+  does, since it leaves out only its own team and −1 (Helper_Entityquerytools.cs:18-29, 56-61); the cannon, laser,
+  Mother and Heater take snow and Snobles of **any** player.
 - **Never tag a mod entity `Sno` or `Snoble`.** The cannon despawns a `Sno`-tagged `Mob` as ammo, throws on a non-Mob
   without `Level`, and picks its shot by GameObject name (`Projectiles[name]`, Entity_Ai_Tower_Snosnocannon.cs:241-259):
   any other name is a `KeyNotFoundException`. **Verified**: a Dagger copy whose data tags add `Sno`, beside a cannon,
@@ -240,9 +246,9 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 ```
 Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthouse, Herotower; no Tower, no Health)
   ├ Tower_Boutmanhousepersistent (keeps the house's upgrades if it falls)
-  └ Mob_Boutmanbro "Boutbro" (Mob, Hero, Boutfamily): builds and mines
+  └ Mob_Boutmanbro "Boutbro" (Mob, Hero, Boutfamily, Boutbro): builds and mines
       ├ Mob_Boutmanfish (Mob, Mobfighter, Fish, Fishmain) + its no-build tile
-      ├ Tower_Boutmanbarrel (Tower, Boutbarrel) ── Buppy (Mob, Fish)
+      ├ Tower_Boutmanbarrel (Tower, Boutbarrel) ── Buppy (Mob, Mobfighter, Fish)
       └ Tower_Boutmanboat (Tower, Towerfighter, Boutboat)
           └ Boutdad / Boutmom / ghosts (Mobfighter, Boutfamily; no Mob, no stats)
 ```
@@ -257,8 +263,9 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
   (Entity_Ai_Tower_Boutmanhouse.cs:56-116). **Any upgrade put on the Bouthouse leaks onto Boutman**: never give it a
   building Direction as an upgrade. **Verified**: on Boutman 1.5 s after the house got it.
 - After Enter the Boutman he **never dies**: at 0 HP he goes `Ko` (Health 1, untargetable) until healed to full; his AI
-  then applies damage itself and zeroes `Damagemulti` for `Mob_General` (:127-203). A damage-reduction AI must run at
-  priority ≤ 8 to act on him. "On vessel death" effects must also watch the `Ko` command.
+  then applies damage itself and zeroes `Damagemulti` for `Mob_General` (Entity_Ai_Hero_Boutman.cs:127-203). A
+  damage-reduction AI must run at priority ≤ 8 to act on him. "On vessel death" effects must also watch the `Ko`
+  command.
 - **The Bout Way's price**: Boutbro sets each `BuildoptionN.Goalvalue` = fish `#Fishmain × Fishcost`, barrel
   `#Boutbarrel × Barrelcost`, boat `(#Boutboat + 1) × Boatcost`, recounted team-wide on spawn, child and despawn
   (Entity_Ai_Mob_Boutbro.cs:130, 167, 204). So fish 1 and barrel 1 cost 0, fish n costs (n−1) × Yellow 25. **Verified**:
@@ -268,20 +275,21 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
 - Boutbro calls every core's `Child` at `Starting` (:74-83), so `Heroapply` Cardinals reach him; his `Hero` tag also
   puts him in the F-key list (`15` §9).
 - The Shao-min ranged attack AI only fires on a GameObject named "Hero Boutman" (Entity_Ai_Hero_Boutman_Shoot.cs:75):
-  **giving it to another vessel does nothing.** His ranged reach is `Fishingrange`, not `Range`.
+  **giving it to another vessel does nothing.** It aims within `Fishingrange`, not `Range`; the wave itself flies 2.4
+  tiles (`Hero_Boutman_Range`: Zvelocity 12, Lifetime 0.2).
 
 ### 5.2 Fish, barrels, the boat
 
 - A fish guards the tile it was built on (its `Block_Noplacementfish` keeps others off), fights within `Engagerange`,
   goes **KO** at 0 HP (`Dead` state, `Healtharmor` = `Deadarmor`) instead of dying, flies to a same-team barrel with a
-  free slot, is healed by the barrel's live `Heal`, and is fished out by Boutman. It drowns only when hit again after
-  the armour is gone. Fish handle their own hurt at priority 10: reduce at ≤ 9.
+  free slot, is healed by the barrel's live `Heal`, and is fished out by Boutman. The hit that empties the armour
+  drowns it, unless a barrel has begun healing it. Fish handle their own hurt at priority 10: reduce at ≤ 9.
 - Barrel capacity is `Vacantcurrent`; **`Units` is only displayed** (Entity_Ai_Tower_Boutmanbarrel.cs:361-368).
   Farmingbed pays the **fish's owner** 5 % of the fish's worth each time it leaves (:208-264).
 - **The boat does not shoot: Boutdad does, with the boat's live `Damage`, `Attackspeed`, `Range`, `Projspeed`**
   (Entity_Ai_Mob_Boutmandad.cs:79-141). Buff the boat to buff Dad, Mom and the Battleship cannon. Dad and Mom are
-  **one per map, whatever the team** (tag-only query, Entity_Ai_Tower_Boutmanboat.cs:80-101). Mom appears at 4 Raft
-  boats but leaves below 5.
+  **one on the map at a time, whatever the team** (tag-only query, Entity_Ai_Tower_Boutmanboat.cs:80-101). Mom appears
+  at 4 Raft boats but leaves below 5.
 - Read live: hero Damage/Attackspeed/Range/Health/Fishingspeed/Fishingrange; fish Damage/Attackspeed/Range/Speed/
   Engagerange/Health; barrel Heal/Range/Speed/Vacantcurrent; boat everything. **Not**: the hero's `Heal` stat
   (overwritten by params before use), Iron Fish's own params (never read), Boutbro's cost stats outside a recount.
@@ -291,7 +299,7 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
   foe dies, to the **foe's** owner field, Effect_Boutmanfish_Caviarbuff.cs:28; who receives it in play is **guess**).
 - Bugs: the ghost reads `Attackspeed` as seconds between shots; Watertower divides by zero with one free tile beside the
   barrel; Fishfollow and Boutbro's cost counts check team, not owner; Mine buffs use `Data.Add("Damageresource")`, so a
-  mod that adds the key first makes them throw (write `Data[key] = …`); Tank Bed's overshield stacks forever.
+  mod that adds the key first makes them throw (write `Data[key] = …`); Tank's overshield stacks forever.
 - Borrow: `Block_Noplacementfish` (no-build tile whose click selects its parent; already Rising Water's flood block,
   `16` §3), `Tower_Boutmanhousepersistent` (an invisible upgrade container), `Tower_Boutmanbarrel_Pulse`, the generic
   effect AIs `Entity_Ai_Effect_Boutmanspawnbed_Boost` (timed Damage Multi), `_Bucket_Boost` (timed immunity at
@@ -301,7 +309,8 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
 ## 6. Fie (From the Walls, Intermediate)
 
 **Hero.** Health 50, Speed 3, Damage 3, Range 2, Attackspeed 0.5, Buildrange 3, Sellrate 0.6. No ability, no tooltip,
-no Attack animation; `Entity_Ai_Hero_Fie` only makes the build buttons (Entity_Ai_Hero_Fie.cs:8-44).
+no Attack animation; `Entity_Ai_Hero_Fie` only makes the build buttons and re-runs melee targeting
+(Entity_Ai_Hero_Fie.cs:8-44).
 
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |
@@ -343,14 +352,16 @@ Landquick, Attack 4×2.
 **The Dash**, a reusable hero ability: `Entity_Ai_Mob_Movementlinear.Spawn` creates `Command_Movelinear` (Button, keys
 6/7, Onpressed, priority 6, Statechange). The client sends a unit direction snapped to 90°; the host runs tile by tile
 along `Helper_Navtools.Getpathlinear` until nothing lies ahead (no range limit), one tile per `1/Speed` s
-(Entity_Ai_Mob_Movementlinear.cs:9-152). `Mob_Dog` hits each foe it runs into with `Interacthurt` (credited) and slows
-on collisions. A server-side dash must set `Commandlistserver["Movelinear"].Goalposition` and `Updatecommand`, as the
-pads do; the AI ignores server-issued commands.
+(Entity_Ai_Mob_Movementlinear.cs:9-152). `Mob_Dog` hits each foe it runs into with `Interacthurt` (credited); a
+collision adds the negative `Collisionspeed` (Buster −0.1, a dog −1) to the speed pads gave it, floored at 0, so it
+never cuts the runner's own Speed (Entity_Ai_Mob_Dog.cs:97-149; Entity_Ai_Effect_Busterpad_Speed.cs:34). A
+server-side dash must set `Commandlistserver["Movelinear"].Goalposition` and `Updatecommand`, as the pads do; the AI
+ignores server-issued commands.
 
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |
 | Pedestal (Red 25, `Tower, Towerfighter, Totem`) | tracking beam, Damage per beam tick; Blink chains through same-team `Totem`s; Pure Ex: beam targets deal no damage | Damage, Attackspeed, Range, Rangebreak | projectile name |
-| Garage (Red 60, `Tower, Towerfighter`) | spawns dogs; mirrors tier 2-3 upgrades onto dogs by name | Respawn, Health | **`Units`** (only `Addressdogcount` on a downgrade reads it; the `Units_Add` params are never read) |
+| Garage (Red 60, `Tower, Towerfighter`) | spawns dogs; mirrors each of its upgrades onto its dogs as the same-named `Mob_Busterdog_*` upgrade (tiers 2-3 also as stat mods and a skin) | Respawn, Health | **`Units`** (only `Addressdogcount` on a downgrade reads it; the `Units_Add` params are never read) |
 | Speed Pad (Blue 25, trap, `Trap, Pad`) | same-team `Mob`s running with it get a decaying Speed Add; dash runners are redirected; Refuel lets a tower stand on it (+75 % attack speed) | Speed, Effect, Maxspeed, Dogspeed, Damage after Speed Bump | — |
 | Checkpoint (Yellow 50, trap, `Gatherer, Trap, Checkpoint`) | charges by distance to its linked ore; any same-team `Mob` touching it collects and the checkpoint hurts the ore (pays everyone); Tune Up's aura: next hit ×3 and **5 of each colour to the collector's owner** | Attackspeed, Damageresource, Healthresource, Collectrange, Range | aura payout |
 
@@ -412,7 +423,7 @@ one exception. Each row says what a **pack vessel** needs for the Cardinal to wo
 | Towerapply (Rusty Pipe, Frail Titan) | data tag `Tower` | `Tower` on every building (traps and the Bouthouse are skipped) |
 | Mobapply, Aura Gavel, Kippy, Checklist | data tag `Mob` | `Mob` on the vessel and every unit (Boutdad has none, so it is skipped) |
 | Cubed Drink | `Mobfighter`/`Towerfighter`/`Hero` **with a Damage stat** | the tags and a `Damage` stat |
-| Onetime Build, Build (Processor Jr, Starter Seeds, Cubed Drink, Sand Filled Box, Tacklebox) | put `Entity_Ai_Hero_Buildsell` and a build AI with a `Buildslot` param on the **core** (verified, the PC dump) | — |
+| Onetime Build, Build (Processor Jr, Starter Seeds, Cubed Drink, Sand Filled Box, Tacklebox) | put `Entity_Ai_Hero_Buildsell` and a build AI on the **core**, with a `Buildslot` param (Tacklebox's `Entity_Ai_Artifact_Build` has none: always `Buildoption4`) (verified, the PC dump) | — |
 | Coins, clock, core, ore and foe Cardinals | no vessel | — |
 
 `15` §18.1 has each Cardinal's pattern and the stock bugs. Each Cardinal's core upgrades, AIs and params were dumped

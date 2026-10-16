@@ -1,8 +1,9 @@
 // Runs on every player (host included). Listens to the Vis RPCs the server sends through Yossele's entities and plays
 // Yossele's own sounds and moving pieces (spore bombs in their arc, seeds flying, the ready seeds floating round each
 // Dandelion Tree), turns the Mushroom Cannon's cap toward each lob, and shows owner-only messages. The Stonehenge's
-// facing needs nothing here: the game turns every placed tower's Vis by its orientation (Entity_Master_Client). Spore, daze, tangle and barrier looks are not here: the game attaches those itself
-// (Vfxdebuffcheck by name). Clients read only synced state (Stats, Skin, Extrapositiondata).
+// facing needs nothing here: the game turns every placed tower's Vis by its orientation (Entity_Master_Client). Spore,
+// daze, tangle and barrier looks are not here: the game attaches those itself (Vfxdebuffcheck by name). Clients read
+// only synced state (each entity's being name, owner, position and Stats counters).
 public static class YosseleClient
 {
     class Tree { public Entity_Master Master; public readonly List<GameObject> Seeds = new List<GameObject>(); }

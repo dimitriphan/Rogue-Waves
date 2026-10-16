@@ -6,9 +6,11 @@ Mummer's scaffold; every Mummer mechanic, sheet, model, effect and sound is gone
 `docs/YOSSELE_BUILD_NOTES.md`.
 
 **Checked here only:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release and with
-`YOSSELE_SELFTEST,YOSSELE_SHOTS,YOSSELE_PROBE`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud
-preview renders every sheet and model. **Built in Unity and run in game (PC round 5, 2026-10-12): 91 pass, 0 fail, 0
-setup.** Not yet seen by eye or played online; Viral Outbreak and Hallucinogen (chance-based) are not checked.
+`YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud
+preview renders every sheet and model. **Built in Unity and run in game (PC round 8, 2026-10-12): 98 pass, 0 fail, 0
+setup**; Dimitri played the round 5 and round 7 builds (his notes below). Left: the look by eye of round 8's build
+(temporary art), the balance pass, online play; Viral Outbreak and Hallucinogen (chance-based) are not checked. The
+scope's 2026-10-13 edit (ranged mouth laser, slower speed, three renames) is not in this build yet (`DESIGN.md` Status).
 
 ## Code map
 
@@ -46,13 +48,13 @@ setup.** Not yet seen by eye or played online; Viral Outbreak and Hallucinogen (
    without them are counted as `Skipped` (logged in the self-test's counters). Armour, barrier and Connected Roots do
    nothing if every hit is skipped.
 6. **Ore and fruit.** The Sapling mines with the miner's `Hurt` (`Damageresource`); a node emptied within 2 s of its
-   strike drops a fruit. The pickup looks for Hero- or Mob-tagged beings within 0.75 tiles each frame.
+   strike drops a fruit. The pickup looks for Hero- or Mob-tagged beings within 0.75 tiles five times a second.
 7. **FERTILIZE.** The button only appears once a Compost Bin is held (the self-test grants one with
    `ModKitDirections.Grant`). The picker is Mummer's HOOK picker on your own buildings; check it shows and that its
    border lands on the building.
 8. **The Tree's limit** removes `Buildoption2` while one stands and re-creates it after; check the bar's order.
 9. **Debuff heights.** Overhead markers follow Mummer 1.0's verified heights; if they sit at the foe's feet, raise
-   them 0.5 (`ASSETS.md`).
+   them 0.5 (`Previews/0.1/ASSETS.md`).
 10. **Cannon turret.** `Vis/Turret` aims its mouth (local -z) at each lob's landing spot.
 
 ## PC rounds

@@ -91,9 +91,10 @@ kit already marks `DontDestroyOnLoad` (`05` §1, Boot; verified in a mod). `Game
 rebuilt per map. Statics in prefab code stay (one compile per activation, §10).
 
 **Where run state lives:** a host dictionary on the `Default` object keyed by `Sessionid` (client ids change on a
-rejoin, §14.5; a client restart changes the `Sessionid` too, so what outlives one host session keys on `Displayname`,
-`19` §5): Pure Aura, Directions owned, map number, Depth level (on hold). Clients can't get a new
-`NetworkVariable` (a mod can't add networked behaviours). Show it through what already syncs: a counter stat on each
+rejoin, §14.5; a client restart changes the `Sessionid` too unless the pack keeps the GUID, RogueWavesMode 0.3.0, so
+what outlives one host session keys on `Displayname` or the kept GUID, `19` §5): Pure Aura, Directions owned, map
+number, Depth level (on hold). Clients can't get a new `NetworkVariable` (a mod can't add networked behaviours).
+Show it through what already syncs: a counter stat on each
 player's vessel (`Addstat` + `Style = Counter`, `01` §6, verified for Mummer's Thread), restored by the host at each
 vessel spawn; Directions as visible upgrades on the vessel (`Upgradelist` shows on the panel); one-off messages as Vis
 RPCs.
@@ -116,11 +117,11 @@ There is **no shop** in the base game (no Buy/Shop/Purchase code besides Fie's s
 **Merchut** (`Tower_Merchut`, a map building; `Entity_Ai_Tower_Merchut`): a fixed run of 20 contracts in order, each
 an enemy type, a count, an elite upgrade and a reward, from private hardcoded lists (Entity_Ai_Tower_Merchut.cs:10-32).
 Its button `Command_Tower_Merchut` ("Contracted") can be pressed by any player (`Subowner` 0..9, :60) and shows the
-enemy's sprite, count, elite and reward (Entity_Command_Tower_Merchut.cs:308-342). On the next Tide it spawns the
+enemy's sprite, count, elite and reward (Entity_Command_Tower_Merchut.cs:53-87). On the next Tide it spawns the
 foes through the enemy core's `Spawn` command, one per second, each with the elite and
-`Tower_Merchut_Boost_Upgradeobject` (takes more damage, "Targeted" mark) (:73-110; Entity_Ai_Effect_Tower_Merchut.cs:351-366). The reward (red, blue,
-yellow aura) is split across players in the next break; **it never checks that the foes died** (:216-243). All
-host-side (read).
+`Tower_Merchut_Boost_Upgradeobject` (takes more damage, "Targeted" mark) (Entity_Ai_Tower_Merchut.cs:73-110;
+Entity_Ai_Effect_Tower_Merchut.cs:6-21). The reward (red, blue, yellow aura) is split across players in the next
+break; **it never checks that the foes died** (Entity_Ai_Tower_Merchut.cs:216-243). All host-side (read).
 
 `Entity_Ai_Mob_Merchant` is a different unit (shoots unboosted foes, gives Buster an artifact badge) (read).
 
@@ -150,7 +151,7 @@ host can write a line for everyone (`Chat.Add`) and read every player's lines (`
 | Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13, and by RogueLab with eight cards once its menu is up, §15) | go |
 | Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands over the 1-3 chart nodes linked to this map, then the party returns to the boat and it sails to the winner (route V1, §17). Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads and the opening break is held while players pick Directions and vote | go (in-map vote not built yet) |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
-| Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (:542-569). `Changehero_ServerRpc` itself checks nothing | go |
+| Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (Tds_Multiplayer_Remote.cs:542-569). `Changehero_ServerRpc` itself checks nothing | go |
 
 A mod builds itself, every time: one choice per player, the count, a timeout or host override, and the shared display.
 
@@ -205,7 +206,7 @@ with `SendMessage("Updateartifactlist")`, §13).
 
 ```csharp
 // Depth, the ascension level (on hold; write, read back and a restart proven; folder and key names are the pack's, globally unique: Readdata(name) searches every folder)
-Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Depth");
+Bl_Tags.Entry e = Bla_Data.Playerdata.Readdata("RogueWaves", "RW_Depth");
 int level = e.Loaded ? (int)e.Value : 0;
 Bla_Data.Playerdata.Adddata("RogueWaves", "RW_Depth", (float)(level + 1), Bl_Tags.Addtype.Replace);
 ```
@@ -298,7 +299,8 @@ the match loaded) and five `NullReferenceException`s from the game's own teardow
    the seven elite upgrades; `Database.Init` group names and `Bl_Address.Groups["Mob"]` (each list's group and item
    names) at mod load and again in a match.
 10. **Packaging** (`14` §6 Q1, Q3): a `Map_Test` prefab with `Mods_Mapsettings` shows in the custom-map slot; log the
-    game's `RoslynCSharpSettings` reference list.
+    deny lists and P/Invoke switch of the game's `RoslynCSharpSettings` (its reference list is already in
+    `Build-<Name>Mod.ps1`).
 11. **Online, with a friend:** steps 2, 3, 7 and 8 on the client side.
 
 ## 12. Sources
@@ -306,7 +308,8 @@ the match loaded) and five `NullReferenceException`s from the game's own teardow
 - The decompiled `Assembly-CSharp.dll` (703 types; `13` §11). Paths above are its files.
 - `TDS Mod Tools.unitypackage` (2026-10-08 copy): `Assets/Exporteradds/*.cs`, `ModTool/Resources/*.asset`, and the
   base game's Addressables entry list in `AddressableAssetsData/AssetGroups/Default Local Group.asset`, saved as
-  `reference/addressables_default_group.txt` (1436 asset paths: every mode, map, artifact, being and upgrade name).
+  `reference/addressables_default_group.txt` (1436 asset paths: the mode, map, artifact, being and upgrade names of
+  that copy; `Mode_Tsunami` and `Map_Manafoldold` are not in it).
 - `Player.log` of a modded launch, 2026-10-08.
 
 ## 13. Already proven in game: Riptide
@@ -354,7 +357,7 @@ questions. All **read**; RogueLab round 2's results are §15.
 - Aura is per player: `Helper_Resources.Give` adds to `Game_Players.Prevsessionlist[Owner].Resources`
   (Helper_Resources.cs:16-29); `Owner = -1` pays every active player, `Split` divides first (:50-70). `Give` scales by
   `Game_Mapvars.Resourcegainmultiplier` (:21), which Cardinals change (`Artifact_Bottomrock`); `Mode_Normal` sets it to
-  1 around its own payouts (Mode_Normal.cs:359-362). Do the same for a transfer.
+  1 only around the start aura (Mode_Normal.cs:359-362), so Tide pay (:66) is scaled. Set it to 1 around a transfer.
 - The stock **Money Bag** (`Artifact_Pig`, "enables donation") already moves aura: its button needs 25 of each aura
   (Entity_Command_Artifact_Pig_Launch.cs:30-47), the host spends it from the thrower and throws a bag; a same-team
   entity with an owner that it hits pays that owner `Amount - 1` of each (Entity_Ai_Effect_Artifact_Pig.cs:72-165). Its
@@ -469,7 +472,7 @@ then call with `Forcedisplaymenu: false` (`20` §2, `examples/recipes/RecipeUi.c
   A late joiner whose host has a node picked opens the Setup panel on it (Macro_Main.cs:445-453).
 - **Start:** each player's ready sets `Activeplayer`; when all are ready the server closes the lobby and loads
   `Gameloading` from `Setup` with whatever four strings are set (Tds_Multiplayer_Remote.cs:509-598). Picking a node
-  writes them from the node's Gameplan and unreadies everyone (:600-660); a mod rewrites them after (§3, Riptide).
+  writes them from the node's Gameplan and unreadies everyone (:600-696); a mod rewrites them after (§3, Riptide).
 - **Prefab keywords:** `Mainmenu` activates at each main menu (Mainmenu_Main.cs:362); `World` only on the host's boat
   (Macro_Main.cs:395, inside the host branch), so client-side boat UI runs from the `Default` prefab's `Update`.
 - A client without the match's mode or Gameplan entry stops loading on a null entry, and the host waits for every
@@ -515,7 +518,7 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
   follow the tween (Boutbro: 2 of 2); Boutbro has only `Idle` and `Move` animations, so a unit without `Falling` and
   `Land` just drops. Another unit falls the same way if the mod's client code
   copies it; listing `Entity_Vis_Hero` on a non-vessel also brings the player arrow and the "VESSEL DROWNED" alert
-  (Entity_Master_Client.cs:115, 166-169). The game has no leave-upwards code.
+  (Entity_Vis_Hero.cs:84-120, 166-169). The game has no leave-upwards code.
 - **`Spawn(..., Sameasparent: true)` overwrites the spawn's Owner, Team and Subowners with the parent's**
   (Helper_Entitytools.cs:77-93): spawn a neutral unit with `false`, a player's minion with the player's building or
   vessel as the parent. A shop every player can use: Owner -1, every `Blm_Server.Sessionids` key as a subowner
@@ -526,16 +529,17 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
   `Removecommand` change it on the host at any time (Helper_Entitytools.cs:264-293, 409). A `Button`-style command's
   UI object is named its link plus its `Priority`; other styles use the link alone.
 - **`Lasthit` is set only when the hit's data has no `Damage`** (Helper_Entitytools.cs:166-171): a vessel's or unit's
-  own attack sets it (**proven**: a kill by `Interacthurt` with no data left the vessel as `Lasthit`), a hit with its
-  own data (projectiles, Projectile_Master.cs:394, and any mod `Hurt` that passes
-  `Damage`) doesn't. Count kills by place through `Ondespawn`, not by killer.
+  own attack sets it (**proven**: a kill by `Interacthurt` with no data left the vessel as `Lasthit`), and so does a
+  projectile whose shooter put no `Damage` in its data (Projectile_Master.cs:394 passes that data on; the stock
+  shooters' arrows and shots carry none); a hit whose data carries `Damage` (burn ticks, pulses, any mod `Hurt` that
+  passes it) doesn't (`17` §2.6, §8). Count kills by place through `Ondespawn`, not by killer.
 - **A heal's amount is its data's `Damage`** (times `Damagemulti`), not a `Heal` key: `Interactheal` with no
   `Damage` throws `KeyNotFoundException` in `Helper_Damagetools.Doheal` (**proven**, round 4).
 - **`Damagedone`** on the attacker rises after each hit (Entity_Master.cs:208, Helper_Damagetools.cs:21-70): the only
   measure of damage actually dealt (lifesteal). **Proven** (round 5: 0 -> 4 on a hit of 4).
 - **`Game_Mapvars.Wave` is 0 in the opening break** (**proven**) and rises as each Tide starts (Mode_Normal.cs:318, 371-376).
-- **`Resourcegainmultiplier` doesn't touch Tide pay**: `Mode_Normal` sets it to 1 around its own payouts
-  (Mode_Normal.cs:359-362), so a lower-pay setting changes start aura or drops instead.
+- **`Resourcegainmultiplier` scales Tide pay and drops, not the start aura**: `Mode_Normal` sets it to 1 only around
+  the start aura (Mode_Normal.cs:359-362); Tide pay goes through `Give` (:66, Helper_Resources.cs:21).
 - **Health** is the `Health` stat: `Value` now, `Value_Calc` the max; whether a max change keeps the fraction depends
   on the stat's type in data (`Variable` keeps it, `Fixed` refills, `Variabletrue` keeps the amount; Link_Stats.cs:46-103). **Proven** for Boutbro (`Variable`): a +100% max took
   5/10 to 10/20, and `Speed`/`Damage` modifiers added mid-match apply at once (round 5).
@@ -568,8 +572,8 @@ Read for a generated sea chart (the Rogue Waves repository's `docs/mode/SEA_CHAR
   `Getitem("World", name)` and instantiates `Worldobj` itself. `Startup` waits for it with no timeout
   (Macro_Main.cs:404), and the host takes it from its save's `Player_Worldselect`, which the leader's map click
   rewrites (:633): a mod world in that key hangs the boat once the mod is gone. A warp (`Selectworld_ServerRpc`,
-  :827-885) sets `World`, `Selected` and `Worlded`; every machine's `Moveworld` swaps worlds with the title card, and
-  `Macro_Worldvisual.Update` re-swaps any machine whose world differs from `Worlded`.
+  Tds_Multiplayer_Remote.cs:827-885) sets `World`, `Selected` and `Worlded`; every machine's `Moveworld` swaps worlds
+  with the title card, and `Macro_Worldvisual.Update` re-swaps any machine whose world differs from `Worlded`.
 - **The only client-written networked value on the boat** is the player's own `Blm_Player.Displayname` (owner write,
   Blm_Player.cs:30; set from the Steam name at spawn, :98). `Changeartifact_ServerRpc` has no leader check
   (Tds_Multiplayer_Remote.cs:296) but doesn't say who sent it.
@@ -606,19 +610,19 @@ built on both are in the Rogue Waves repository's `docs/mode/MECHANIC_IDEAS.md`.
 | Pattern | Stock Cardinals that show it (read) |
 | --- | --- |
 | Upgrade every unit that spawns, filtered by tag, name or parent (+ a sweep at `Starting` for those already there) | Mobapply, Voiceapply (units whose parent is a vessel), Paint, Greatspear (`Enemy_Spear` only), Chimera and Seeds (every `Resource` node) (`Game_Entity.Onspawn`) |
-| React to a kill or a death | Checklist (drop a pickup), Gavel (a friendly unit's death fires a bolt, stronger by its level), Titan (bursts on its own death), Money Bag (old) on `Reason == "Sell"` (`Game_Entity.Ondespawn`) |
+| React to a kill or a death | Checklist (drop a pickup), Gavel (a friendly unit's death fires a bolt, stronger by its level), Titan (bursts on its own death), Pig Named Bank (`Artifact_Moneybag`) on `Reason == "Sell"` (`Game_Entity.Ondespawn`) |
 | Count down Tides, then fire and remove itself | Rusty Pipe ("Age" counter on the unit) |
-| Grow every Tide | Caffeine, Opal Core, Coin, Money Bag (old) (`Wave.OnValueChanged`) |
+| Grow every Tide | Caffeine, Opal Core, Coin, Pig Named Bank (each building's sell value) (`Wave.OnValueChanged`) |
 | Bend the Tide clock | Vintage (+`Time_Base` to each break), Same Day Shipping (shorter breaks, pays aura), Mooncore (skips Tides 3, 7, 14, 21, 28: `Entry` +2, `Wave` +1, "THE MOON ALIGNS WITH YOUR CHOICE"; hooks `Entry`), Loop (first hit on the core clears the field and replays the Tide, once) |
 | A free build that comes back | Onetimebuild (button removed while its unit lives, back when it dies); Build (a permanent fifth build slot, range 1000, sells for 0) |
 | One special unit at a time | Paper (the first Towerfighter built becomes a buffed paper one), Computer (a static lock) |
 | Delayed delivery | Heroapply_Delay (upgrade name → seconds), Paint (charm after a timer), Snare, Greatspear's look |
-| A trade-off | Glass Core (a sub-core that takes no damage; when it breaks, everyone loses `Aura_Base` of their wallet), Wavebreaker (foes in range get a health multiplier), Computer (enemies near a core slow time and stun), Bottom Rock (`16` §5) |
+| A trade-off | Glass Core (each sub-core takes its own hits through it, the main core drops it; a sub-core that breaks hurts every foe instead of losing the map, and everyone loses `Aura_Base` of their wallet; Entity_Ai_Effect_Artifact_Glasscore.cs:14-29, 32-93, 97-110), Wavebreaker (foes in range get a health multiplier), Computer (enemies near a core slow time and stun), Bottom Rock (`16` §5) |
 | Swap a unit type | Textbook (every Dagger becomes a training dagger) |
 | Change a unit's team | Blue Paint's charm: team set to the core's, `Enemy` tag removed (Entity_Ai_Effect_Artifact_Bluepaintcharm.cs:19-35) |
 
-Bugs not to copy: Mobapply, Voiceapply and Money Bag compare a team with itself, so their team filter never filters
-(Entity_Ai_Artifact_Mobapply.cs:14); Paper's tower and Rusty Pipe's buff remove the same modifier four times
+Bugs not to copy: Mobapply, Voiceapply and Pig Named Bank compare a team with itself, so their team filter never
+filters (Entity_Ai_Artifact_Mobapply.cs:14); Paper's tower and Rusty Pipe's buff remove the same modifier four times
 (Entity_Ai_Effect_Artifact_Paper_Tower.cs:34-42); most never unsubscribe from `Onspawn`/`Ondespawn` (Gavel does it
 right, Entity_Ai_Artifact_Gavel.cs:71-76), harmless only because the map ends.
 
@@ -668,9 +672,10 @@ boss being anywhere: a Breaker map's boss would be the pack's own enemy, spawned
   `Tds_Data.Checkunlocks`, which writes `Unlock/<key>` and `Unlock_Notif/<key>` (Tds_Data.cs:26-61). Trackers:
   `Additive` (a `<key>_Counter` toward `Unlockam`), `Conditions` (compare save keys), `Matchreader` (the last match's
   JSON). The boat's unlock screen shows an artifact panel for `Unlock_Artifact_<name>` and a vessel panel for
-  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826). The match is a substring, and **any other key is marked
-  seen with no announcement**, so a Depth unlock through the stock system is silent: announce it with a Milestone or
-  the pack's own message (decompile 2026-10-14, `23` §3.2).
+  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826); a key that a world's `Macro_Unlocklink_Add` carries plays
+  that link's cine instead (Macro_Unlock.cs:409-490). The match is a substring, and **any other key is marked seen
+  with no announcement**, so a Depth unlock through the stock system is silent: announce it with a Milestone or the
+  pack's own message (decompile 2026-10-14, `23` §3.2).
 - **Discoveries** (`Macro_Discoveriesui.Items`, a list of `Discoverycont`: Map or Milestone, name, text, sprite,
   condition) light the boat's "New" badge when more are unlocked than the saved count (Macro_Discoveriesui.cs:25-157;
   Macro_Extraui.cs:85-105): a mod can append Milestones ("Campaign cleared at Depth 1").

@@ -2,7 +2,7 @@
 // Shared kit: host-side map events, from one poll of Game_Mapvars (docs/PACK.md section 3). The part calls Update()
 // every frame; listeners subscribe once at boot.
 //   MapStart        a map's Game_Mapvars appeared and finished loading (Maploaded)
-//   Tide(wave)      Game_Mapvars.Wave rose (a Tide starts; the argument is the new Wave, 0-based like the game's)
+//   Tide(wave)      Game_Mapvars.Wave rose (a Tide starts; the argument is the new Wave, 1 at the game's TIDE 1)
 //   MapEnd(result)  Gamecomplete left "Running" ("Win", "Lose"...), or the map went away while running ("Leave")
 // Breaks between Tides are not an event yet: which Game_Mapvars value marks one is still to read (docs/15 section 4).
 // Events fire on the host only (IsServer); clients read synced state instead.

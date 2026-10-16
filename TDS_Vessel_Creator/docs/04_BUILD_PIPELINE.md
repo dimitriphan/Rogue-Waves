@@ -35,8 +35,9 @@ powershell -ExecutionPolicy Bypass -File <resource>\tools\New-Vessel.ps1 -Name B
 
 Copies the template (Mummer 1.0.0) into `ModSource/Bramble` and `Assets/BrambleMod/Editor`, renaming
 `Mummer/mummer/MUMMER` → `Bramble/bramble/BRAMBLE` and the template unit `Understudy` → `Brambleunit`, adds the shared
-kit if the project has none, and writes `DESIGN.md` from the form. Right after scaffolding the vessel **is Mummer under
-a new name**: it compiles, builds and passes Mummer's self-test. Then:
+kit if the project has none (else only the kit files it lacks, with a warning for each one that differs), and writes
+`DESIGN.md` from the form. Right after scaffolding the vessel **is Mummer under a new name**: it compiles, builds and
+passes Mummer's self-test. Then:
 
 1. Make Unity import and compile the new folder: UnityMCP `execute_menu_item("Assets/Refresh")` (a `refresh_unity`
    call alone did not import a brand-new folder), then wait until `Library/ScriptAssemblies/Assembly-CSharp-Editor.dll`
@@ -119,11 +120,11 @@ Any number of vessel mods can coexist, in the project and in the game:
 
 - **Names**: every id, class, icon, effect and sound carries the vessel name; the build script renames the kit's
   classes per mod (`<Name>Kit...`), so two mods never define the same type.
-- **Export**: the Mummer template's Export refuses to run while another `Assets/*Mod` folder is live (park, export,
-  restore); Argo's Export parks the other folders itself (`ArgoModPrefab.cs`); restore afterwards either way.
+- **Export**: every vessel's Export (the template's since 2026-10-15) parks the other `Assets/*Mod` folders itself
+  and refuses to run if one is still live (pitfall #103); restore afterwards.
 - **Boat**: `ModKitBoat` (kit 1.4) adds one spot per vessel. While the vessels fit on the 6 shipped spots they stand
   there; past that, every vessel stands in staggered rows across the deck, evenly spaced in spot order from just past
-  one outer shipped spot to the other (2 rows to 11 vessels, 3 rows to 16, then they shrink a little), each row behind
+  one outer shipped spot to the other (2 rows to 11 vessels, 3 rows to 17, then they shrink a little), each row behind
   standing a little higher so its heads show over the row in front, and the click boxes are moved up onto the sprites
   and trimmed to their width, so each vessel can be clicked where it's drawn. Kits 1.0-1.3 put extras in the gaps and
   by 10 vessels some couldn't be clicked. Every mod runs the layout every frame from the shipped spots' first

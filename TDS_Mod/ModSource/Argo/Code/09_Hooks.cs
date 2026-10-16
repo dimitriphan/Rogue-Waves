@@ -177,7 +177,7 @@ public static class ArgoHooks
             float multi;
             if (Mathf.Approximately(scale, 1f) || !hit.Data.TryGetValue("Damagemulti", out multi))
                 return;
-            // A copy: projectiles and some AIs reuse one dictionary for several hits.
+            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
             hit.Data = new Dictionary<string, float>(hit.Data);
             hit.Data["Damagemulti"] = multi * scale;
         }

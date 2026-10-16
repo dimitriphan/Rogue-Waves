@@ -48,7 +48,7 @@
 		- Title Case inside { } and [ ]. Base game names are spelled as the game spells them / Sno Sno, Boutman, Bouthouse \
 		- A name is singular inside the braces. Plurals and possessives go outside / {Photon}s, {Loom}'s range \
 		- A thing has one name everywhere. A renamed thing is renamed in every file at once
-		- Name styles stay as docs/STYLE.md sets them: a Direction like a heading or a course, a Cardinal two plain words for a found object, an objective a short order
+		- Name styles stay as the pack's style sheet sets them: a Direction a plain name that matches its Look line (a heading or a course is optional), a Cardinal two plain words for a found object, an objective a short order /~ docs/STYLE.md \
 
 	[Layout]
 		- Tabs indent, one tab per level: | Title | at 0, sections and sheets at 1, slots at 2, details of a slot at 3

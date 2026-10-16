@@ -10,14 +10,14 @@
 		- Shop: the shop sells only the next rank of a Direction the vessel already holds
 		- Kept: each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign
 		- Base game vessels: get their own Directions too, besides the Any ones
-		- Names: named like a heading or a course / Deep Roots, Loose Threads, Hard to Port \
+		- Names: a plain name that matches its Look line; a heading or a course is optional
 		- List: -> 11_Directions.txt, one Direction template per Direction, under its vessel
 
 	[Pure Aura]
 		# A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
 		- Per tide: 3
 		- Per bonus tide: 2
-		- Weather map: +1 each tide -> 04_Rogue_Waves_Mode.txt [Sea Weather]
+		- Weather map: pays extra each tide -> 04_Rogue_Waves_Mode.txt [Sea Weather]
 		- Objectives: each pays its own amount -> 14_Optional_Objectives.txt
 		- Shown as: a pearl white counter on each player's vessel, a colour none of the base auras use
 		- Spent on: [Cardinals] and ranks of [Directions], at {VENDCINT}

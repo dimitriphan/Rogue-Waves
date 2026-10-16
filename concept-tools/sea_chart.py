@@ -6,9 +6,10 @@ client and this script build the same chart from one seed. `--check` prints the 
     python3 concept-tools/sea_chart.py [seed ...]           -> docs/concepts/art/sea_chart_<seed>.png and the node list
     python3 concept-tools/sea_chart.py --check [seed ...]   -> CHART lines only (compare with RWChart.Dump)
 
-Rules: a harbour (the start, no map), then ROWS rows of 3-4 map nodes; each node links to 1-3 neighbouring nodes in
-the next row (2 most often), every node has a parent, and links never cross. Rows 5 and 10 close a stretch (Breaker maps,
-docs/reports/SCOPE_VS_LOOP.md #20). The PRNG is xorshift32, not System.Random, so the C# port is exact on every machine.
+Rules: a harbour (the start, no map) linked to every node of row 1, then ROWS rows of 3-4 map nodes; each map node
+links to 1-3 neighbouring nodes in the next row (2 most often), every node has a parent, and links never cross. Rows 5
+and 10 close a stretch (Breaker maps, docs/reports/SCOPE_VS_LOOP.md #20). The PRNG is xorshift32, not System.Random,
+so the C# port is exact on every machine.
 
 Maps: every node gets a base map from POOL, never one twice. Row r aims at the label 2 + (r-1)/2 (labels are the
 game's Mapentryobject.Difficulty, 1-9; the final map's 0 counts as 10), a Breaker row two labels higher; the node draws
@@ -70,9 +71,11 @@ def links_between(rng, w, nw):
     """Non-crossing links from a row of w nodes to a row of nw: a staircase walk from (first, first) to (last, last).
     Each step adds a child to the current node (k+1), hands the current child on to the next node (i+1), or moves both
     on (i+1, k+1); every cell it visits is a link. So links never cross and every node in both rows is linked. A node
-    with one child so far takes a second five times in six; one with two moves on, sharing its last child with the next
-    node unless the next row has spare nodes to reach. Without crossings, a node can't
-    always have two children (rows of equal width need some single links), so a vote offers 1-3 maps."""
+    with one child so far takes a second five times in six; one with two shares its last child with the next node, or,
+    when the next row has spare nodes to reach, moves on to a new child half the time, takes a third a quarter of the
+    time and shares a quarter of the time. The row's last node takes every child left. Without crossings, a node can't
+    always have two children (rows of equal width need some single links), so a vote after a map offers 1-3 maps (map
+    1's vote offers the whole first row, 3 or 4)."""
     i = k = 0
     kids = [[0]] + [[] for _ in range(w - 1)]
     while (i, k) != (w - 1, nw - 1):

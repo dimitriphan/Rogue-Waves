@@ -3,7 +3,7 @@
 Dimitri asked (2026-10-09 21:52Z) whether, when the players choose a map, their boat could sail around a generated
 map the way it sails the base game's campaign map, with movement points generated in game like Slay the Spire's.
 This page answers it from the game's code and proposes a route. **Adopted by Dimitri 2026-10-09 22:23Z with
-route V1** (§4, §6); the scope's rundown (`docs/scope/05_Gameplay_Rundown.txt`) says so.
+route V1** (§4, §6); the scope has it (`docs/scope/04_Rogue_Waves_Mode.txt` [Sea Chart]).
 
 Tags: **proven** = shown in game by Riptide or RogueLab; **read** = from the decompiled `Assembly-CSharp.dll` (kit
 `docs/13` §11), file:line into that folder; **untested** = needs the PC (§5). Kit paths: `docs/NN` =
@@ -52,7 +52,7 @@ node's `Links`. A mod that writes `Links` decides where the boat may go next.
 | 3. Build the world | every machine | A `Mapworlddatabaseobject` made in code (`ScriptableObject.CreateInstance`), named `RW_Chart_<seed>_<route>`, with a `Worldobj` built from the seed: a sea, one island per node with a `Macro_Maplink_Add` (its `Gameplan` the map's Rogue twin, `Links` set, a `Cameraposition` and `Dock` child), and route lines; registered in `Items["World"]` | registering database items: **proven** for Mode, Gameplan, Artifact (RogueLab); a World item and a code-built `Worldobj`: **untested** |
 | 4. Sail in | host's mod, on the boat | After the boat opens, warps the party to the chart the way `Selectworld` does: sets `Tds_Multiplayerinfo.World` and `Worlded` to the chart's name and `Selected` empty; the chart's `Defaultnode` is the node the party stands on | the warp path: **read**; doing it from a mod: **untested** |
 | 5. Clients | each client's mod | Sees `Tds_Multiplayerinfo.World` start with `RW_Chart_`, builds the same chart from the seed and route in the name and registers it; the game's own fallback swaps the world once the item exists | **read** (fallback in `Macro_Worldvisual.Update`); **untested** |
-| 6. Choose | see §4 | The next row's linked nodes are the choices (1-3) | |
+| 6. Choose | see §4 | The next row's linked nodes are the choices (1-3; for map 1, the harbour's: the whole first row, 3 or 4) | |
 | 7. Sail and load | host's mod | Sets the chosen node as the leader's `Hovering`: the stock boat sails there; on arrival calls `Selectmap_ServerRpc(node)`; the Setup panel opens on everyone's screen; players ready up and the map loads in the mod's mode | `Selectmap_ServerRpc` from a mod: **proven** (RogueLab, Riptide); the sail: **read** |
 | 8. Come back | host | After the map is left (or lost), returns everyone to the boat (the stock return), then step 4 again with the route one longer | return to the boat: **read** |
 
@@ -65,12 +65,12 @@ Things the code reading turned up that the build must respect:
   its loading screen. The leader's map click writes `Player_Worldselect` (Macro_Main.cs:633), so the mod rewrites it
   to the stock world after every select. Warping in after the boat opens (step 4) keeps the chart out of the save.
 - **The world's name is the only channel to clients on the boat** (no entities there, `docs/15` §6), and it is a
-  64-byte string: `RW_Chart_` + a 10-digit seed + one digit per row is 29 bytes.
+  64-byte string: `RW_Chart_` + a 10-digit seed + `_` + one digit per row is 30 bytes.
 - Hide the stock "Warp" (waypoint) button on the chart and give no node `Waypointspot`.
 
 **What it replaces in the vote flow** (adopted):
 
-- The vote offers the linked nodes of the next row (usually 2, sometimes 1 or 3), not 3 random maps. Players see the
+- The vote offers the linked nodes of the next row (usually 2, sometimes 1 or 3; for map 1 the whole first row, 3 or 4), not 3 random maps. Players see the
   whole chart ahead, so they plan a route, as in Slay the Spire. A chart can't give every node 3 choices without
   crossing lines; the generator could be told to, at the cost of the look.
 - The maps of a campaign are fixed by the seed when it starts, by the stretch rule, instead of drawn at each vote.
@@ -133,7 +133,7 @@ The part's `README.md` maps its files; `IMPLEMENTATION_NOTES.md` lists what to c
 
 | Step (§3) | How it is built |
 | --- | --- |
-| 1. Generate | `03_Chart.cs`, an exact port of `concept-tools/sea_chart.py` (same xorshift32 draws in the same order; 400 seeds give identical charts, checked here with mono). The generator now also gives each node its base map and its weather (§8). **Maps:** row r aims at label 2 + (r-1)/2 (labels are the maps' `Difficulty`, the final map's 0 counted as 10), a Breaker row two higher; a node draws one of the five unused maps nearest its row's aim, so no map is on a chart twice. Seed 20261009: row 1 averages label 3.2, row 5 6, row 10 7.7 over 2,000 charts |
+| 1. Generate | `03_Chart.cs`, an exact port of `concept-tools/sea_chart.py` (same xorshift32 draws in the same order; 400 seeds give identical charts, checked here with mono). The generator now also gives each node its base map and its weather (§8). **Maps:** row r aims at label 2 + (r-1)/2 (labels are the maps' `Difficulty`, the final map's 0 counted as 10), a Breaker row two higher; a node draws one of the five unused maps nearest its row's aim, so no map is on a chart twice. Over 2,000 charts row 1 averages label 3.2, row 5 6, row 10 7.7 (seed 20261009: 2.7, 6, 7.3) |
 | 2. Save | `06_Campaign.cs`: host save folder `RogueWaves`, keys `Campaign_Seed` and `Campaign_Route` (one column digit per map won); `New(seed)`, `Continue()`, `Stop()`. A lost or left map leaves the route as it was |
 | 3. Build the world | `04_World.cs`: a `Mapworlddatabaseobject` named `RW_Chart_<seed>_<route>` per route, built on every machine from its name; islands of primitives in the `docs/STYLE.md` palette, a `Macro_Maplink_Add` per map node playing its `RW_` twin Gameplan in `Mode_RogueWave` (`02_Mode.cs`), each with a `Cameraposition` and a `Dock`; route lines; a flag on sailed islands; a weather marker. Only the node the party stands on has `Links` (to its choices), so the stock arrows offer exactly the choices |
 | 4. Sail in | `05_Boat.cs`, host: once the boat is up and a campaign is on, sets `Tds_Multiplayerinfo.World`, clears `Selected`, and sets `Worlded` ("" then the name) as `Selectworld_ServerRpc` does. The landing node is the world's `Defaultnode`, not `Selected`, so no client opens a Setup panel on landing |
@@ -158,7 +158,7 @@ map object or effect the game puts on one map only (kit `docs/16` §3), started 
 
 | Weather | What the host does | Marker on the island | Never on |
 | --- | --- | --- | --- |
-| Rising Water | spawns `Main_Flood` a tile under the map's lowest ground, in its middle: it rises each Tide by its own stats, floods tiles (no building; the game ships no flood block, so the mod makes `Block_Flood_Deter` from Boutman's no-build fish block once the map has loaded, kit `docs/16` §3) and slows shots in the water | a teal swell with a foam crest | Map_Manafold |
+| Rising Water | spawns `Main_Flood` a tile under the map's lowest ground, in its middle: it rises each Tide by its own stats, floods tiles (no building; the game ships no flood block, so the mod makes `Block_Flood_Deter` from Boutman's no-build fish block on the boat once Manafold's groups are loaded, retried in the map's first 30 s, kit `docs/16` §3) and slows shots in the water | a teal swell with a foam crest | Map_Manafold |
 | Quickening Current | sets `Game_Mapvars.Time_Scale` to 1.25 from Tide 5 and 1.5 from Tide 10, with the warning popup, as `Main_Chrono` does; back to 1 when the map ends | three foam chevrons | Map_Chrono, Map_Chrono_Alt |
 | Nesting Ground | spawns `Tower_Halberdnest` on a free tile 3-7 from an enemy core, on its team, as the core's child: it gains health each Tide and sends a Halberd every few | a coral egg in a sand nest | Map_Vultures, Map_Vultures_Alt |
 

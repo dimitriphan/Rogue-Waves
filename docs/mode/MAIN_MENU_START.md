@@ -40,15 +40,18 @@ Two details that shape the build:
   menu, :85).
 
 **Continue campaign** fits here naturally: the campaign lives in the host's save (core loop decision 1, 2026-10-09),
-the host chooses it before anyone joins, and the host's mod restores each player's things by Steam id when the first
-map loads. The button is also where a campaign that has ended (no retries left) says so.
+the host chooses it before anyone joins, and the host's mod restores each player's things when the first map loads,
+by the Steam name or the GUID the pack keeps (the Steam id is out of a mod's reach: kit `docs/19` §5, `docs/23`
+§2.3). The button is also where a campaign that has ended (no retries left) says so.
 
 ## 3. Friends who join
 
 - **They need the pack, same version** (`docs/07` rule 1). The match's mode and Gameplan are names each machine looks
   up in its own database (Game_Client_Init.cs:101-104). A friend without the pack gets nothing back, the client's
   loading stops on a null `Modeentry`, and the host's loading waits for every client (Game_Init.cs:123-134): the whole
-  team hangs at the loading screen (read; not tried, and not worth trying).
+  team hangs at the loading screen, and after 120 s every machine drops to the main menu (kit `docs/19` §3; read; not
+  tried, and not worth trying). Since RogueWavesMode 0.3.0 the host sends that friend back at 75 s instead (`RWLoad`,
+  `docs/mode/REJOIN.md` O3c).
 - **With the pack they see the mode** before starting: the Setup panel and the Rogue Waves type line read the networked
   mode string on every machine. They don't need the button: only the host presses it. A friend who presses it too
   just hosts their own lobby, like pressing Play.

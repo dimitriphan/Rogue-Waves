@@ -127,9 +127,12 @@ public static class RecipeNet
 
     // Host only, called once a second while the map loads. A client still not Loaded after `grace` seconds is kicked
     // so the others don't all drop to the main menu at 120 s (Game_Load.cs:36-70). Untested. The loading screen needs
-    // about 15 s after the last load, so count from its start and stay well under 105 s; the pack's version
-    // (RogueWavesMode RWLoad) waits 75 s from the Game_Load object and kicks only once the host itself has loaded.
+    // about 15 s after the last load, so count from its start (call ResetWatchdog when a load begins, so no entry
+    // from the last map carries over) and stay well under 105 s; the pack's version (RogueWavesMode RWLoad) waits
+    // 75 s from the Game_Load object and kicks only once the host itself has loaded.
     static readonly Dictionary<ulong, float> waiting = new Dictionary<ulong, float>();
+
+    public static void ResetWatchdog() { waiting.Clear(); }
 
     public static void LoadWatchdog(float grace)
     {

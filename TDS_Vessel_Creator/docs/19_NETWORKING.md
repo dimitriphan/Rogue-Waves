@@ -40,7 +40,7 @@ Read `07`, `01` §3-4 and `15` §6, §14.5 first.
 | --- | --- | --- |
 | An entity | NGO spawns the generic prefab; the client's `Entity_Master_Client.Start` waits `Clientready` and `Being`, loads the being **by name** from its own address book, builds the look from `Mainupgrade`, `Upgradelist`, `Skin`, `State` | Entity_Master_Client.cs:129-233 |
 | Stats | `Modifiers` stay on the host; the computed value goes into the `Stats` list | Link_Stats.cs:105-117 |
-| Commands | `Commandlist`: `Goalstring` (61 bytes), `Goalvalue`, `Goalposition`, `Controllable`; **not `Goalobject`**; a command with no name is never listed | Helper_Entitytools.cs:264-431 |
+| Commands | `Commandlist`: `Goalstring` (61 bytes), `Goalvalue`, `Goalposition`, `Controllable`; **`Goalobject` only through `Updatecommandclientobject`** (Fie's silos, Buster's pads; `Updatecommand` resends the last one); a command created without a command object (`Createcommand(m, "", link)`) is never listed | Helper_Entitytools.cs:264-431 |
 | Tags, upgrades | `Taglist`, `Upgradelist` (written with the host lists) | Helper_Entitytools.cs:433-496 |
 | Tide | `Wave`, `Entry`, `Time_Wave`, `Display`, `Gamecomplete` on `Game_Mapvars` | Game_Mapvars.cs:60-70 |
 | Wallet | each player's `Tds_Clientinfo.Resources` list | Helper_Resources.cs:12-73 |
@@ -61,8 +61,8 @@ Game_Mapvars.cs:131-162):
 The self-test runs as host, where all of these are filled, so **it cannot catch a client reading host-only data**.
 
 **Struct traps** (reference §2): `Entitydata.Subowner` is compared by reference, so editing the array in place never
-syncs (build a new array); `Stats`, `Commandlist` and `Resources` entries compare by name and are updated by remove +
-add, so an updated entry moves to the end of the list on clients.
+syncs (build a new array); `Stats` and `Resources` entries compare by name only, `Commandlist` entries by every field
+but `Goalobject`; all three are updated by remove + add, so an updated entry moves to the end of the list on clients.
 
 ## 3. Loading a map, and the 120 s kick
 
@@ -175,7 +175,8 @@ run.
    12). There is **no pause online** (the pause menu stops time only when one player is in, Tds_Pausemenu.cs:187-189),
    so a dialog runs while the Tide runs, unless the mode holds the Tide itself. Never write `Time_Scale` 0: the client
    hook ignores changes while `Time.timeScale` is 0, so every machine would stay frozen (Game_Client_Init.cs:236-250).
-9. **Struct writes:** a new `Subowner` array; commands through `Updatecommand`, never by editing `Goalobject`.
+9. **Struct writes:** a new `Subowner` array; commands through `Updatecommand`; a host edit of `Goalobject` reaches
+   clients only through `Updatecommandclientobject` (§2).
 10. **Pack handshake (none in the game):** the host posts the pack's name and version as a chat line at the boat
     (late joiners get the whole chat list) and flags a player whose `Tds_Clientinfo.Mods` is false. During a map
     load a host-side watchdog can `Blm_Multiplayer.Instance.Kickclient(id)` a player whose `Loaded` is still false,

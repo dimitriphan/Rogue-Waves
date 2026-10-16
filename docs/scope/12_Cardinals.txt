@@ -5,7 +5,7 @@
 
 	[Rules]
 		- What: a new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals
-		- Names: found objects the wave washed up, two plain words each / Cracked Buoy, Ship's Bell \
+		- Names: found objects the wave washed up, two plain words each
 		- Bought: from the shopkeeper with [Pure Aura] -> 06_New_Mechanics.txt [Shopkeeper]
 		- Two kinds: kept apart in the shop and in the Cardinal List
 		- Vessel Cardinal: belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel /~ Vessel wherever the game allows it. About 24 of the 40 stock Cardinals can be made Vessel Cardinals; see docs/reports/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \

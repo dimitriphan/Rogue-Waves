@@ -1,9 +1,9 @@
 # 23 · The save, unlocks and the mod loader (what a pack may write, gate and expect at boot)
 
 Expansion rows 9 (unlocks), 10 (save compatibility) and 15 (packaging, the loader side). Everything here was **read
-from the game's code** (decompiled as in `13` §11) on 2026-10-14; three overload questions were settled from the IL
-(marked *IL*). Easy Save 3, ModTool, RoslynCSharp and Steamworks are not in that assembly, so claims about them say
-*untested*. A mistake here costs the player's save, so §8 is worth a PC round before the pack writes anything new.
+from the game's code** (decompiled as in `13` §11) on 2026-10-14; the `Adddata` overload question was settled from
+the IL (marked *IL*). Easy Save 3, ModTool, RoslynCSharp and Steamworks are not in that assembly, so claims about them
+say *untested*. A mistake here costs the player's save, so §8 is worth a PC round before the pack writes anything new.
 Files of the `Blockage.Tags` namespace are cited without the prefix (`Bla_Data.cs`).
 
 Read `15` §3, §8, §10, §18.4 and `14` first.
@@ -20,8 +20,9 @@ Read `15` §3, §8, §10, §18.4 and `14` first.
   `Oldversionbackup.es3` (Bla_Data.cs:36-142, 225).
 - The data is `folder + key → Entry { Item, Valuestring, Value (float), Loaded }`; one entry holds both a float and a
   string, and each `Adddata` overload changes only its own half (Datacontainer.cs:33-119; Bl_Tags.cs:24-40).
-- *IL:* a two-argument `Adddata(folder, key)` compiles to the **float** overload with 0 and `Replace`. The kit's rule
-  "always pass the typed third argument" stands.
+- *IL:* the game's own two-argument `Adddata(folder, key)` calls (as the decompile prints them) are the **float**
+  overload with 0 and `Replace`. In mod code a two-argument call does not compile (both overloads match: CS0121 with
+  Roslyn 3.8), so the kit's rule "always pass the typed third argument" stands.
 - `Readdata(folder, key)` returns `Loaded = false` when missing; `Readdata(key)` searches **every** folder.
 
 Stock folders: `Player` (selections, the last match), `Map` (per Gameplan: `Clear_`, `Time_`, `Wave_`, medals,
@@ -73,7 +74,7 @@ host equips (Macro_Main.cs:157-191, 337-394, 509-511).
    `Metadata_Persistent`, or stock folders for stock content.
 3. **Prefix every key** (`RW_`): stock trackers with folder `"Any"` search every folder, so a pack key named like a
    stock key could advance a stock unlock. Never put `Unlock_Hero` or `Unlock_Artifact` in a pack key that is not a
-   vessel or Cardinal unlock (the boat opens a panel on the substring, §3.3).
+   vessel or Cardinal unlock (the boat opens a panel on the substring, §3.2).
 4. **Floats hold whole numbers exactly only up to 16 777 216:** seeds and big counters go in strings. Guard
    against NaN (a `Divide` by 0 makes one).
 5. **Never keep a reference** to `Bla_Data.Playerdata`: re-read state after `Onslotchanged` **and** `Onslotremoved`, and

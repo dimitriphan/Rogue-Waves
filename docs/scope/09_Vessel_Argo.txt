@@ -18,7 +18,7 @@
 			- Accent colour: ~sea blue
 			- Sprites: ~as shipped in the earlier ArgoMod
 			- Lore: ~Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough.
-			- Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139. Ships only inside the Rogue Waves pack.
+			- Status: Argo 2.0 designed, built and passed its PC self-test 139 of 139; 2.0.1's fix for its looks online is built but not yet run. Ships only inside the Rogue Waves pack.
 
 		[Vessel Stats]
 			- Attack: ~melee, with reach
@@ -73,7 +73,7 @@
 					- Cost: ~Red 350
 				% 3:{Ironclad} Increases health greatly
 					- In-game line: ~Health greatly increased
-					- Numbers: ~health x2.5; ~armour: the next 2 hits take 1 each
+					- Numbers: ~health x2.5; ~armour 2: while it lasts, a hit of any size takes 1 from the armour and none from health; healing refills it
 					- Leads to: nothing, the branch ends here
 					- Cost: ~Red 250 + Blue 150
 

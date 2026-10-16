@@ -114,7 +114,8 @@ public static class RecipeSave
 
     public static void WriteLong(string key, long value) { WriteString(key, value.ToString()); }
 
-    // Always the typed overload: a two-argument Adddata is the float one with 0 and Replace.
+    // Always the typed overload: a two-argument Adddata doesn't compile in mod code (both overloads match, CS0121);
+    // the game's own two-argument calls are the float one with 0 and Replace.
     public static void WriteFloat(string key, float value)
     {
         if (Writable(key) && !float.IsNaN(value) && !float.IsInfinity(value))

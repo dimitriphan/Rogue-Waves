@@ -37,8 +37,10 @@ public static class RecipeSound
         return missing;
     }
 
-    // The mixer group a stock key plays on (its own, else its table group's default): a pack AudioSource on it obeys
-    // the volume sliders and the break muffle. A source with no group ignores the sliders (21 §2.3).
+    // The mixer group a stock key plays on (its Soundpair.group): a pack AudioSource on it obeys the volume sliders and
+    // the break muffle. A key with no group plays on none in game (Bl_Sound.cs:291-295); this then falls back to its
+    // table group's Defaultgroup, which the game itself never reads. A source with no group ignores the sliders
+    // (21 §2.3).
     public static UnityEngine.Audio.AudioMixerGroup Group(string stockKey)
     {
         if (Bla_Audio.Instance == null || Bla_Audio.Instance.Database == null)

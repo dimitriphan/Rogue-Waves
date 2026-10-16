@@ -5,13 +5,13 @@
 	[Now]
 		- Phase 1, research the game's code for the mode: done. Every piece of the mode has a known route, and the PC test round passed 13 of 13.
 		- Phase 2, pack layout and style sheet: done and approved. /~ docs/PACK.md and docs/STYLE.md \
-		- Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. Its work is merged. /~ PR #7 and PR #10 \
+		- Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. Its work is merged. 2.0.1, a fix for its looks online, is built but not yet run. /~ PR #7, PR #10 and PR #34 \
 		- Yossele: built with temporary art and passed its self-test 98 of 98 on the PC; the play build is installed for your test. The ranged laser and slower speed in 07 are not in that build yet.
-		- Mode part: the sea chart, sea weather and rejoining after a drop are built and passed their PC rounds. How they look is yours to check by eye; rejoining needs a friend online.
-		- Next: Spool, then Uloe, each one starting with a design to approve. Then enemies and modifiers, then the rest of the Rogue Waves mode, then content and release.
+		- Mode part: the sea chart, sea weather and rejoining after a drop are built and passed their PC rounds. Version 0.3.0 adds fixes for online play (a friend who restarts the game keeps their seat) that are built but not yet run. How they look is yours to check by eye; rejoining needs a friend online.
+		- Next: the mode's next pieces: a kit update first, then the main-menu Rogue Waves button and the vote held in the map. Yossele's next build takes the ranged laser and slower speed. Then Spool and Uloe, each one starting with a design to approve, enemies and modifiers, the rest of the Rogue Waves mode, then content and release.
 		- Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
 		- Sonar is left out of every design for now.
-		- Every mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once. /~ Backed up in ClaudeProjects\handoff\mods_removed_20261008 \
+		- Every older mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once; only the Yossele play build is in it now, for your test. /~ Backed up in ClaudeProjects\handoff\mods_removed_20261008 \
 
 	[Log] / Newest last \
 		- 2026-10-08: Phases 1 and 2 done, and Argo 2.0 built and passed its self-test 139 of 139.
@@ -30,3 +30,5 @@
 		- 2026-10-13: your Yossele and Spool edits are folded in, and both sheets are laid out in the new vessel template. Every value has a slot; a value written ~like this is Claude's default for you to change. Each sheet ends with its open questions.
 		- 2026-10-13: the five base vessels are laid out in the same template, with the game's own numbers and every upgrade tree, plus a side-by-side table of all vessels' stats. The template gained in-game lines, a level 4 capstone and a Leads to line for trees that cross over. -> 16_Base_Vessels.txt
 		- 2026-10-14: every scope file is reformatted to one set of rules (00_Read_Me.txt) and every repeatable thing has a template (15_Templates.txt, was 15_Vessel_Template.txt). 04 is renamed 04_Rogue_Waves_Mode.txt. Argo and Uloe are laid into the vessel template; the sea chart and sea weather moved from 05 to 04; 05 is now a step-by-step walkthrough. Dates moved here from the other files.
+		- 2026-10-15: the base vessels' Knight Commander, Battalion, Black Sno, Diesel Dog and Rev Dog numbers are corrected from the game's code, then a few smaller ones (Engineer tuning, Snoble Mother, Black Sno's Burning, then Boutmom, Buppy, Boutbro's respawn, Fish Follow's range, and Buster's and the dogs' collisions, then how the Heater and the Ice Brick work and a KO'd fish's Deadarmor, then the Engineer's target, the Sno Box with no ore in range, how Fie's Wall upgrades spread and the Checkpoint's charge per tick), then 66 upgrade lines whose numbers the code uses differently from what the data's names say (Iron Fish, Hyper Pipes, Big Dog, Boost Pad and Engineering Firm among them), what Shao-min, Ip Man-of-War and Kung Fu Tackle do, which their data leaves out, and notes that the Heater's projectile count is never read, that the Sno Box's heal is the Sno it makes, and that a game bug keeps Side of Sushi's critical hit from firing. -> 16_Base_Vessels.txt
+		- 2026-10-15: your "use defaults for all": a Direction's name only has to match its Look line; a heading or a course is optional. -> 00_Read_Me.txt [Names]

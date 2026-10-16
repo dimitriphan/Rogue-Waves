@@ -14,7 +14,7 @@
 // keeps the shipped layout while the vessels fit on it; past that, every vessel, shipped ones too, stands in staggered
 // rows, evenly spaced in spot order from a little past one end of the shipped spots to the other, at their heights along
 // the deck, each row behind standing a little higher than its neighbours in front so its heads show over them; the
-// click boxes are moved onto the sprites and trimmed to their bodies. Past 16 vessels they also shrink a little. Every
+// click boxes are moved onto the sprites and trimmed to their bodies. Past 17 vessels they also shrink a little. Every
 // mod computes this from the same numbers: the shipped spots' first positions, which whichever mod sees the boat first
 // copies to Charselect/Spots_Home. Extra spots are named like the shipped ones, so kit 1.0-1.3 copies still running in
 // older builds (they only move spots named differently from the first) leave every spot alone.

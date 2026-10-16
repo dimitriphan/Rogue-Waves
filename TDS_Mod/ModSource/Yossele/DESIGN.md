@@ -3,7 +3,11 @@
 Rogue Waves' Yossele is **designed from the scope text** (`docs/scope/07_Vessel_Yossele.txt`, Dimitri's 2026-10-12
 edit), checked against `TDS_Vessel_Creator/docs/02`. Where the scope gives a number it is used as written; every number
 it leaves open is a **default** picked here and listed in `docs/YOSSELE_BUILD_NOTES.md` (Dimitri asked for that list).
-Status: **step 1-3 drafted together (design, temporary art, code), compiled in the cloud, not run in game.**
+Status: **built (0.1.0-dev, temporary art) and passed its in-game self-test, PC round 8, 98/0**
+(`IMPLEMENTATION_NOTES.md`). This page describes that build. The scope's 2026-10-13 edit is not in it yet
+(`docs/PLAN.md` Part C): a ranged green laser from the mouth (Range ~3, projectile speed ~15) and Speed ~2.25 in place
+of the melee attack, Range 1.5 and Speed 2.5 below; Selfish Sapling renamed Forest Project, Grafted Colors renamed
+Grafted, Entangling Spaghetti Roots renamed Entangling Roots (same rules and numbers).
 
 ## Identity
 
@@ -13,8 +17,10 @@ Status: **step 1-3 drafted together (design, temporary art, code), compiled in t
 - **Silhouette:** a round clay head with a see-through hole for a mouth, a two-leaf sprout, glowing green eyes, four
   long root-like limbs (taken shape, `docs/STYLE.md`). The hole is its mouth (scope).
 - **Sprite baseline:** Dimitri's reshade, `concepts/vessels_2026-10-09/v3_flat/yossele_reshade` (flat finish: opaque,
-  one shade band down the right edge, cast shadow, no half-alpha rim). Every frame is his pixels moved, squashed or
-  added to, never redrawn. Back views start from `concepts/vessels_2026-10-09/back/yossele_back`.
+  one shade band down the right edge, cast shadow, no half-alpha rim). Every 32 px frame is his pixels moved, squashed
+  or added to, never redrawn (the 16 px boat mini is drawn new at 10 x 13, the 32 px journal tab icon is a line
+  drawing of the splash's shapes). Back views start from
+  `concepts/vessels_2026-10-09/back/yossele_back`.
 - **Palette:** clay `864B41` to `733E35` (the reshade's `945743`), leaf `72CC35` / `6ABE30`, eyes `99E550`, collar
   `323C39`. Accent (hero `Color`, buttons, journal): leaf green `72CC35`.
 - **Towers:** low-poly sleek, never voxel. Motif on the top and front faces: round holes and root feet in clay, with
@@ -27,7 +33,7 @@ Status: **step 1-3 drafted together (design, temporary art, code), compiled in t
 
 | Stat | Value | Band (docs/02) | Note |
 |---|---|---|---|
-| Attack | melee (Mob_Combat) | | scope |
+| Attack | melee (Mob_Combat) | | the scope's 2026-10-12 edit (now a ranged laser, see Status) |
 | Health | 60 | 25-65 | "more health": Smacky 50, Argo 65 |
 | Speed | 2.5 | 2-3.5 | default |
 | Damage | 4.5 | 1.5-5 | "more damage": Smacky 4 |
@@ -62,7 +68,7 @@ Status: **step 1-3 drafted together (design, temporary art, code), compiled in t
 |---|---|---|---|---|---|---|---|
 | 1 | Mushroom Cannon | `Tower_Yosselecannon` | Towerfighter | Bomb Tower | Red 35 | Health 35+25, Damage 1.5+0.5, Attackspeed 0.3, Range 6, Radius 1, Spores 2 | Lobs a spore bomb in an arc (Smacky's Bomb Tower's lob): impact damage in Radius, and 2 spore stacks on every foe hit. Each stack deals 0.3 a second; stacks fall off 4 s after the last new one; max 10 (scope) |
 | 2 | Primordial Dandelion Tree | `Tower_Yosseledandelion` | Towerfighter | Archer Tower | Red 50 | Health 50+25, Damage 2+0.5, Range **6** (Dimitri 2026-10-12: twice the first build's 3), Seedlimit 6, Seedrate 0.5 | **Limit 1** (scope; Argo's Miner's Base pattern: its button goes while one stands). Grows a seed every 2 s up to its limit, the seeds floating round it; when a foe comes in range every ready seed strikes at once, shared out so each foe gets enough to fell it (nearest first) |
-| 3 | Overgrown Stonehenge | `Tower_Yosselehenge` | none | Mining Hut (orientable) | Blue 25 | Health 80+40, Slow 0.25 | Directional stones (the player turns it while placing; the Hut's one-tile block, since Smacky's wall needs two tiles and posts). It shows its facing like Sno Sno's Ice Wall: an arrow on the placement border and one while selected (Dimitri 2026-10-12). Each Tide its vines creep forward over the ground, over building tiles too (scope); foes on vines are slowed by 25% |
+| 3 | Overgrown Stonehenge | `Tower_Yosselehenge` | none | Mining Hut (orientable) | Blue 25 | Health 80+40, Slow 0.25 | Directional stones (the player turns it while placing; the Hut's one-tile block, since Smacky's wall needs two tiles and posts). It shows its facing like Sno Sno's Ice Wall: an arrow on the placement border and one while selected (Dimitri 2026-10-12). As it grows its vines creep forward over the ground (+1 tile every 2 Growth stages, below), over building tiles too (scope); foes on vines are slowed by 25% |
 | 4 | Pachira Sapling | `Tower_Yosselepachira` | Gatherer | Mining Hut | Yellow 35 | Health 30+20, Damage 1, Attackspeed 0.25, Range 2 | Its roots mine **every** ore node in Range at once (scope: "like Sno Sno's" Sno Box). At full Growth a node it mines out drops an **aura fruit** |
 
 Growth per building (scope numbers bold, defaults plain):
@@ -70,7 +76,7 @@ Growth per building (scope numbers bold, defaults plain):
 | Building | Max | Per stage | Full Growth |
 |---|---|---|---|
 | Mushroom Cannon | **5** | attack speed +8%, blast radius +0.1 | spores **bounce once**: a second blast at the same spot **1 s** later, **half radius, half damage**, 1 stack |
-| Dandelion Tree | **10** | seed limit **+3**, range **+40% of its base** (+1.2) | (none in the scope) |
+| Dandelion Tree | **10** | seed limit **+3**, range **+40% of its base** (+2.4) | (none in the scope) |
 | Overgrown Stonehenge | **8** | damage taken **-10%**; vines **+1 tile every 2 stages** (1 at stage 0-1, 5 at stage 8) | (none in the scope) |
 | Pachira Sapling | **5** | mining speed +10%, range +0.3 | **aura fruit** from every node it mines out |
 
@@ -131,8 +137,8 @@ Bold params are the scope's numbers; the rest are defaults (all listed in `docs/
   for 2 s and hits the nearest other foe within 1.7 tiles with its own Damage once a second, as Mummer's Smoke and
   Mirrors does (verified pattern in the template). A purple swirl marks it.
 - **Explosive Finish**: the burst consumes the foe's stacks, deals 1 per stack consumed to every foe within 1.25 tiles
-  (the bursting foe included), and gives them 2 stacks; a foe that bursts can't burst again for 1 s (no chains in one
-  frame).
+  (the bursting foe included), and gives the others 2 stacks; a foe that bursts can't burst again for 1 s (no chains
+  in one frame).
 - **Viral Outbreak**: a full-stack foe that dies has a 30% chance to burst as one spore bomb (the cannon's impact damage
   and spores) where it fell.
 - **Connected Roots**: 65% of each hit a building of yours within the Sapling's Range takes goes to the Sapling instead,
@@ -145,16 +151,17 @@ Bold params are the scope's numbers; the rest are defaults (all listed in `docs/
 - Debuff looks (the game attaches them): `Debuff_Yossele_Spores` (green-brown puffs, the stack count isn't drawn),
   `Debuff_Yossele_Sporefull` (a toadstool cap over the head at full stacks), `Debuff_Yossele_Daze` (Hallucinogen's
   swirl), `Debuff_Yossele_Tangle` (vines round the feet, Spaghetti Roots' snare), `Debuff_Yossele_Blockade` (a vine
-  barrier ring on the Stonehenge); stock `Debuff_Slow` for slows.
+  barrier ring on the Stonehenge); stock `Debuff_Slow` for the vines' slow.
 - World effects: `World_Yossele_Sporeblast` (scaled to the real radius), `World_Yossele_Seedhit`, `World_Yossele_Grow`
   (a burst of leaves when a building gains a stage), `World_Yossele_Fertilize`, `World_Yossele_Compost`,
-  `World_Yossele_Fruitpick`, `World_Yossele_Mend`, `World_Yossele_Drain`, `World_Hero_Yossele_Death`,
-  `World_Yossele_Towerdown`.
+  `World_Yossele_Fruitpick`, `World_Yossele_Mend` (generated, not played yet), `World_Yossele_Drain`,
+  `World_Yossele_Dig`, `World_Hero_Yossele_Death`, `World_Yossele_Towerdown`.
 - Client-drawn moving pieces: the spore bomb's arc (model `Yossele_Sporebomb`), seeds flying (`Yossele_Seed`), the
   orbiting ready seeds.
 - Sounds: `Yossele_Thud` (attack), `Yossele_Lob`, `Yossele_Pop` (blast), `Yossele_Seeds`, `Yossele_Creak` (vines
   grow), `Yossele_Rustle` (a building grows), `Yossele_Fertilize`, `Yossele_Pick` (fruit), `Yossele_Dig` (mining),
-  `Yossele_Mend`, `Yossele_Landing`, `Yossele_Death`, `Yossele_Footstep`.
+  `Yossele_Mend`, `Yossele_Landing`, `Yossele_Death`, `Yossele_Footstep` (`Yossele_Mend`, `_Landing` and `_Footstep`
+  are generated but no code plays them yet; the walk uses the template's footstep).
 
 ## Changes from the concept, and why
 
@@ -177,7 +184,7 @@ Bold params are the scope's numbers; the rest are defaults (all listed in `docs/
    maximum; a rebuilt building is back to 0.
 4. Mushroom Cannon: a lob lands, hurts and spores foes in its radius; stacks cap at 10 (8 with Deathcap); DOT ticks;
    full Growth bounces at half radius 1 s later; Sticky slows a full-stack foe; Explosive Finish consumes stacks;
-   Hallucinogen holds a foe.
+   Hallucinogen is bought (its daze is chance-based: the test logs it, doesn't check it).
 5. Dandelion Tree: seeds grow to the limit; all strike when a foe enters range; limit and range grow with Growth;
    Seed Packets refunds; the build button goes while one stands.
 6. Stonehenge: vines along its facing, longer with Growth, all around with Verdant; foes on vines slowed; damage taken

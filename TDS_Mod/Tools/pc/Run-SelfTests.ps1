@@ -66,11 +66,13 @@ function Launch($until, $what) {
     foreach ($p in @(Get-Process TDSgame -ErrorAction SilentlyContinue)) { [void]$p.CloseMainWindow() }
     $t = 0
     while ((Get-Process TDSgame -ErrorAction SilentlyContinue) -and $t -lt 60) { Start-Sleep 2; $t += 2 }
-    if (Get-Process TDSgame -ErrorAction SilentlyContinue) { "WARNING: TDS did not close within 60 s; it is still running" }
-    if (-not $done) { "WARNING: no $what within $TimeoutMinutes minutes" }
+    # Warnings go to the host: a bare string would join the function's output, so "$ok = Launch ..." would get an
+    # array (always true) instead of $done, and the warning would never print.
+    if (Get-Process TDSgame -ErrorAction SilentlyContinue) { Write-Host "WARNING: TDS did not close within 60 s; it is still running" }
+    if (-not $done) { Write-Host "WARNING: no $what within $TimeoutMinutes minutes" }
     # Argo round 2 (2026-10-08): a Steam Cloud dialog held the launch, the game never started, and the old Player.log
     # was summarized as if it were this run's. Nothing is summarized from a log the game did not write this launch.
-    if (-not $script:LogFresh) { "WARNING: TDS never wrote Player.log after the launch (a Steam dialog waiting? check Steam's console_log); nothing from this launch to summarize" }
+    if (-not $script:LogFresh) { Write-Host "WARNING: TDS never wrote Player.log after the launch (a Steam dialog waiting? check Steam's console_log); nothing from this launch to summarize" }
     return $done
 }
 

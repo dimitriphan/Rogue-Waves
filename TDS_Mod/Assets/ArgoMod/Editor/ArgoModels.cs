@@ -19,7 +19,7 @@ namespace ArgoBuild
         public bool Projectile;
         public Func<Lp> Build;
         public Func<Lp> Part;           // optional moving part, built in tower space
-        public string PartName;         // "Turret" or "Spinner"
+        public string PartName;         // "Turret", "Spinner" or "Swell"
         public Vector3 PartPivot;       // tower space, y up from the ground
         public float Scale = 1f;        // baked into the mesh about the ground point (matched to the shipped towers' sizes)
     }

@@ -6,7 +6,7 @@ busy online fights. `ArgoUtil.Debuff` (the slow look on every slow, root and pin
 itself, counts it in `Clientsendstack`, and skips a look already showing until the new one's end (cleared per map,
 pruned at 256 foes); the refused-flood mark goes through `ArgoUtil.MustSee`. The upgrade and placement borders stay
 on the throttled path (flavour; Argo's own `Vis` looks carry the news). Compiled with kit 1.6 at 0 errors in release
-and `ARGO_SELFTEST,ARGO_SHOTS,ARGO_PROBE`. Check online: a slowed foe shows its slow look on the friend's screen in a
+and `ARGO_SELFTEST,ARGO_SHOTS`. Check online: a slowed foe shows its slow look on the friend's screen in a
 big fight (kit `docs/19` §8 N4).
 
 **2.0 for Rogue Waves, before its first PC round (step 3 code done, 2026-10-08; the rounds below then ran).** Design approved (`DESIGN.md`, "Step 3, code reality" lists
@@ -258,13 +258,13 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
 - **SONAR** (keys 6/7 like Buster's Dash): ping radius 6, Pinged 5 s, 15 s cooldown. The button's Goalstring is "Off"
   while recharging (synced through `Entity_Master.Commandlist`, the way the game's on/off toggles work).
 - **Pinged / Bulkhead.** `ArgoHooks` puts its handler first in the target's `Oninteract` chain and scales
-  `Damagemulti` on a *copy* of the hit's Data (projectiles reuse one dictionary for every pierce).
+  `Damagemulti` on a *copy* of the hit's Data (some AIs reuse one dictionary across hits, pitfall #30).
   `Helper_Entitytools.Updateinteract` rebuilds the chains on every upgrade or effect, so handlers are re-checked
   every 0.1 s (targets) / 0.25 s (towers, vessel).
 - **Scatter Cannon / Harpoon Tower** fire the game's own projectiles (clones of the Heavy Bow arrow,
-  `Projectile_Ai_Simple`, native `Pierce`). Each shot passes *every* parameter: the game merges a shot's parameters into
-  the Projectileobject's shared `Defaultparams`. Clients swing the model's `Turret` part toward each target
-  (`Argo_Scatter`/`Argo_Harpoon` Vis) - the bespoke turret AIs are gone, so aiming is ours.
+  `Projectile_Ai_Simple`, native `Pierce`). Each shot passes *every* parameter (each shot starts from a copy of the
+  Projectileobject's `Defaultparams` with its own laid over them, pitfall #29). Clients swing the model's `Turret`
+  part toward each target (`Argo_Scatter`/`Argo_Harpoon` Vis) - the bespoke turret AIs are gone, so aiming is ours.
 - **Deep Drill** mines ore with the game's own ore damage (`Interacthurt` on the nearest `Resource` within 2.1 tiles,
   like the Sno Box), so the aura it digs out goes to the team exactly as mining does. Fathom 1 -> 5 (7 with Deep
   Core), one per Tide; each Fathom adds +75% ore per strike and +10% strikes a second (Multi mods), +0.4 tiles of

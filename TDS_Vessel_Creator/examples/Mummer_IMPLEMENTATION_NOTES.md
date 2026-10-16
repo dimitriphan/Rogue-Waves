@@ -2,12 +2,12 @@
 
 Mummer, **Strings Attached ▪ Advanced**: a hand-sewn costume vessel that sews the Tide into a cast of puppets. The
 design, the balance numbers and every change from the concept (`Concept/`, the user's "Mummer Vessel Concept.zip")
-are in `DESIGN.md`. Built on the scaffolding of Sprigg and Argo; `../reference/VESSEL_SURVEY.md` covers how the
+are in `Mummer_DESIGN.md`. Built on the scaffolding of Sprigg and Argo; `../reference/VESSEL_SURVEY.md` covers how the
 shipped vessels work.
 
 ## Layout
 
-`Build-MummerMod.ps1` joins `Code/*.cs` (name order) and `../Shared/*.cs` into one Roslyn string, renaming the shared
+`Build-MummerMod.ps1` joins `Code/*.cs` (name order) and `ModSource/Shared/*.cs` into one Roslyn string, renaming the shared
 kit's `ModKit` prefix to `MummerKit` (each mod gets its own copy, so mods never collide), rejects the namespaces the
 game's compiler refuses, and compile-checks the result with Unity's csc against the game's own references.
 
@@ -29,7 +29,7 @@ game's compiler refuses, and compile-checks the result with Unity's csc against 
 | 97_Shots | `-Define MUMMER_SHOTS`: full-frame and close-up captures as `[MummerDump]` log lines |
 | 99_SelfTest | `-Define MUMMER_SELFTEST`: starts a solo match and checks every mechanic (72 checks) |
 
-Shared kit (`../Shared`, used by Mummer and Sprigg 1.4.1, the same design as Argo's): `ModKitJournal` (vessel-agnostic
+Shared kit (`ModSource/Shared`, used by Mummer and Sprigg 1.4.1, the same design as Argo's): `ModKitJournal` (vessel-agnostic
 journal pages and the vessel-tab sync) and `ModKitBoat` (a boat spot per vessel, laid out on the deck, button
 unlocked).
 
@@ -55,12 +55,12 @@ debuff meshes), `MummerAudio` (synthesised SFX), `MummerBuilder` (Tools > Mummer
   within its Scrap range pays when a foe falls (`Game_Entity.Ondespawn`).
 - **Understudies** are clones of Smacky's miner with `Mob_General` + `Mob_Movement` + the stock melee or ranged combat
   AI. The brain only moves them (`Move` with `Goalobject`/`Goalposition`, `Goalstring` "Idle"); the stock AIs fight.
-  The Ballista costume fires `Mob_Understudy_Bolt` (a clone of the Heavy Bow arrow); the Aegis costume stands on Sno
-  Sno's mob-blocker block.
+  The Ballista costume fires `Mob_Understudy_Bolt` (a clone of the archer's arrow, `Tower_Smackyarcher_Arrow`); the
+  Aegis costume stands on Sno Sno's mob-blocker block.
 - **Marionette Cross** holds with modifiers (speed -100%, attack speed -95%), released on time, death or the Cross
   being destroyed; the held foe's flail is a real hit from it to its nearest neighbour.
-- **Curtain** is a clone of Buster's pad (Smacky's wall if Buster's group is missing): walkable, so foes pass through
-  and get tangled.
+- **Curtain** is a clone of Buster's pad (Perma-Wall's stump, `Trap_Smackywall_Perma`, if Buster's group is missing):
+  walkable, so foes pass through and get tangled.
 - **Buttons.** Updating a command with `Updatecommand(m, link, "", false, false)` syncs the button's
   `Goalstring`/`Goalvalue` to every player without running the command again (with `run = true` it re-runs the
   handler).

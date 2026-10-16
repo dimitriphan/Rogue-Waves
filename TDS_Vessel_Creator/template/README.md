@@ -1,11 +1,14 @@
 # The reference vessel
 
 `Mummer/` is Mummer 1.0.0 as shipped (2026-10-02; self-test 72/72, release boot clean alongside Sprigg 1.4.1 and Argo
-1.0.0), with two later kit changes: the builder carries the Aseprite hook every vessel got in PR #9
-(`MummerAseprite.cs`, `TDS_Mod/Tools/aseprite/README.md`), and the self-test uses kit 1.5's `ModKitTest` for the map,
-placement, foe spawning and the SETUP outcome (`docs/08`). Both compile here; the template with them has not been
-played on the PC yet. `tools/New-Vessel.ps1` copies it into the mod project under a new name. Don't edit it here to build
-a vessel; scaffold, then edit the copy.
+1.0.0), with later changes: the builder carries the Aseprite hook every vessel got in `ModProjects`
+(`MummerAseprite.cs`, `TDS_Mod/Tools/aseprite/README.md`), the self-test checks kit 1.4's boat layout
+(`ModKitBoat.ClickReport`) and uses kit 1.5's `ModKitTest` for the map, placement, foe spawning and the SETUP outcome
+(`docs/08`), and since 2026-10-15 the builder slices each sheet by the PNG's own size (`PngSize`, `docs/09` #102) and
+Export Mod parks the other mods itself (#103), as Yossele's do. They compile here; the template with them has not been
+played on the PC yet.
+`tools/New-Vessel.ps1` copies it into the mod project under a new name. Don't edit it here to build a vessel; scaffold,
+then edit the copy.
 
 | Path | Goes to | What |
 |---|---|---|
@@ -29,4 +32,4 @@ What the template already does for any vessel: boots after the template vessel, 
 names, builds the hero entry (all menu art), four buildables with curated upgrade trees, units, a projectile, an
 ability with a picker and a cooldown button, a stateful building button, game-attached debuff looks, client effects
 and quiet sounds, owner-only warnings, the full journal with tabs, the boat spot, diagnostics, in-game captures and a
-72-check self-test.
+self-test of 69 checks (73 with `<NAME>_SHOTS`, which adds the boat checks).

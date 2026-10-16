@@ -101,6 +101,6 @@ Struct equality (what NGO compares before it sends a change):
 - `Link_Entitydataref.Equals` compares `Subowner` **by reference** (Entity_Master.cs:25): edit a copy of the array,
   never the array in place (`Game_Players.Playerdisconnected` builds a new one, Game_Players.cs:53-88).
 - `Link_Statsref` and `Link_Resource` compare by name only (Link_Statsref.cs:21-24, Link_Resource.cs:12-15);
-  `Link_Commandref` ignores `Goalobject` (Link_Commandref.cs:22-31). Updates are `RemoveAt` + `Add`, so an updated entry
-  moves to the end of the list on clients.
+  `Link_Commandref` compares every field but `Goalobject`, which it still serializes (Link_Commandref.cs:22-53; `19` §2).
+  Updates are a remove + `Add`, so an updated entry moves to the end of the list on clients.
 - `FixedString64Bytes` holds 61 UTF-8 bytes, `FixedString512Bytes` 509 (Unity.Collections); "▪" costs three.

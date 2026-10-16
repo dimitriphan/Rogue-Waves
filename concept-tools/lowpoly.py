@@ -32,7 +32,8 @@ def yaw_rot(p, deg):
 
 
 class Lp:
-    """Same primitives as the kit's Lp. Colours are palette indices (0-63, row * 8 + column)."""
+    """Same primitives as the kit's Lp, except Flower and the Quaternion Push. Colours are palette indices (0-63,
+    row * 8 + column)."""
 
     def __init__(self):
         self.tris = []                       # (a, b, c, normal, col)

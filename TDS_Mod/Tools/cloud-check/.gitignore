@@ -3,6 +3,7 @@
 roslyn/
 unitymods/
 sdk/
+*.tmp/
 out/
 listtypes.exe
 unitytypes.tsv

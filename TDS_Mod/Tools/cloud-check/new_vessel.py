@@ -1,6 +1,6 @@
 """Port of tools/New-Vessel.ps1: copies the reference vessel (Mummer) into <project>/ModSource/<Name> and
-<project>/Assets/<Name>Mod/Editor with the same case-sensitive rename pairs, adds the shared kit if missing, and
-writes DESIGN.md from the form."""
+<project>/Assets/<Name>Mod/Editor with the same case-sensitive rename pairs, adds the shared kit (or the kit files the
+project lacks, warning on any that differ), and writes DESIGN.md from the form."""
 import os, re, sys, shutil, datetime
 resource, project, name = sys.argv[1], sys.argv[2], sys.argv[3]
 template, unit = 'Mummer', 'Understudy'
@@ -33,9 +33,17 @@ for f in sorted(os.listdir(src)):
     if f.endswith('.ps1'): copy(os.path.join(src, f), mod_source)
 form = open(os.path.join(resource, 'template', 'DESIGN_TEMPLATE.md'), encoding='utf-8').read()
 open(os.path.join(mod_source, 'DESIGN.md'), 'w', encoding='utf-8').write(form.replace('{{NAME}}', name).replace('{{DATE}}', datetime.date.today().isoformat()))
-shared = os.path.join(project, 'ModSource', 'Shared')
+shared, kit = os.path.join(project, 'ModSource', 'Shared'), os.path.join(resource, 'kit', 'Shared')
 if not os.path.exists(shared):
-    shutil.copytree(os.path.join(resource, 'kit', 'Shared'), shared)
+    shutil.copytree(kit, shared)
+else:   # like New-Vessel.ps1: add the kit files the project lacks, warn on each that differs
+    for f in sorted(os.listdir(kit)):
+        if not f.endswith('.cs'): continue
+        there = os.path.join(shared, f)
+        if not os.path.exists(there): shutil.copy(os.path.join(kit, f), there); print('added ' + there)
+        elif open(there, 'rb').read() != open(os.path.join(kit, f), 'rb').read():
+            print('WARNING: ModSource/Shared/%s differs from the kit. Keep the newer one (read both headers); every mod '
+                  'in the project compiles the same Shared folder.' % f)
 left = []
 for p in written:
     for i, l in enumerate(open(p, encoding='utf-8')):

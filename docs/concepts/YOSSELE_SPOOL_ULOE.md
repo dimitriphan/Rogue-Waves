@@ -1,12 +1,12 @@
 # Yossele, Spool, Uloe: concept page (draft, 2026-10-08)
 
 > **Note 2026-10-11:** the scope has since answered much of §5 and the "missing" list: Yossele's mouth (`07`), Thread
-> Head is Spool's minion and Loom/Thread stay (`08`), Crafted never follow Spool (`08`), Uloe is ranged and the plug is
-> Plug In's (`10`), and each vessel's attack, ability, difficulty and upgrade ideas are in its scope file. Where this
-> page and `docs/scope/` differ, the scope wins. **2026-10-13:** Yossele's and Spool's sheets in `docs/scope/07`
-> and `08` (vessel template, a value in every slot) replace §1-2's tables: Yossele is ranged (a mouth laser; the 0.1.0-dev
-> build in draft PR #30 is still melee); Spool's ability is Patch and a Yarn Stash holds the Thread (Thread Heads come
-> from it by default).
+> Head is Spool's minion and Loom/Thread stay (`08`), Crafted never follow Spool (`08`), Uloe is ranged and the plug
+> is Plug In's (`10`), and each vessel's attack, ability, difficulty and upgrade ideas are in its scope file. Where
+> this page and `docs/scope/` differ, the scope wins. **2026-10-13:** Yossele's and Spool's sheets in `docs/scope/07`
+> and `08` (vessel template, a value in every slot) replace §1-2's tables: Yossele is ranged (a mouth laser; the
+> 0.1.0-dev build, merged in PR #30 on 2026-10-15, is still melee); Spool's ability is Patch and a Yarn Stash holds
+> the Thread (Thread Heads come from it by default).
 
 A first concept for three of the scope's four vessels, built from two sources and nothing else: the user's sprite
 concepts (`art/`, copied from `Desktop\RogueWave\sprites` on 2026-10-08) and the vessel text in `docs/scope/` (one file per vessel),

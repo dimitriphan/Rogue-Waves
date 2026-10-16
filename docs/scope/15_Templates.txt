@@ -8,7 +8,7 @@
 | Template: Vessel |
 	- Goes in: its own file, NN_Vessel_Name.txt, under the header | Vessel: Name |
 	# Every value has a slot. A value written ~like this is a default Claude picked: change it, or delete the ~ to keep it as yours. A value without ~ is your own.
-	# The / \ note after a stat gives the base game's range for it (kit docs/02), so a value can be checked at a glance. 16_Base_Vessels.txt lays the five base vessels out the same way, with the game's own numbers.
+	# The / \ note after a stat gives the base game's range for it, so a value can be checked at a glance. 16_Base_Vessels.txt lays the five base vessels out the same way, with the game's own numbers. /~ The ranges are kit docs/02's \
 	# Upgrades come in levels 1, 2 and 3, usually two choices each, and an optional level 4 capstone. Every choice of one level leads to every choice of the next unless its - Leads to: line says otherwise. / In game they are tiers 2 to 5 \
 	# Write an upgrade's effect in words on its % line, and its values on the - Numbers: line under it. The - In-game line: is the short tooltip players read, with no numbers; the journal shows them.
 	# A vessel's Directions live in 11_Directions.txt. The sheet only lists their names.
@@ -22,7 +22,7 @@
 			- Difficulty: ~Intermediate / Beginner, Intermediate or Advanced \
 			- Archetype: / One line: what the player does all game \
 			- In-game line: ~Regular, single-target melee / The line on the select screen, like Smacky's "Fast, single-target melee" \
-			- Look: / The sprite in a line or two. docs/STYLE.md lists the shapes already taken \
+			- Look: / The sprite in a line or two, in a shape no vessel has taken \
 			- Towers look: / The motif every building carries, and what its upgrades add \
 			- Accent colour: ~ / Its buttons, journal page and colour in game \
 			- Sprites: / What exists and where \
@@ -70,7 +70,7 @@
 			- What it does, one - line per mechanic. / Your extra info goes in a note like this one \
 			[Stats]
 				- In-game line: ~ / Its short description, like the Archer Tower's "Precise, single-target" \
-				- Health: ~50, +~25 per level / 20-100, +25 to +150 per level \
+				- Health: ~50, +~25 per level / 20-100, +20 to +150 per level \
 				- Damage: ~2, +~0.5 per level / 0.3-5 \
 				- Attack speed: ~0.5 / 0.2-1 \
 				- Range: ~4 tiles / Towers 3-6.5 \
@@ -138,9 +138,9 @@
 
 | Template: Direction |
 	- Goes in: 11_Directions.txt, under its vessel
-	# Names follow docs/STYLE.md: a Direction is named like a heading or a course.
+	# Names follow the pack's style sheet: a Direction's name matches its Look line; a heading or a course is optional. /~ docs/STYLE.md \
 
-	{Name of Direction} / Short and active, like a heading or a course \
+	{Name of Direction} / Short, and matches its Look line \
 		- Kind: / Boost (a stat bonus) or Shift (changes how the vessel plays) \
 		- Vessel: / Argo, Yossele, Spool, Uloe, a base game vessel, or Any. Any works on every vessel, base game vessels included \
 		- Touches: / The vessel itself, one building (name it), all its buildings, its units or minions, or its aura income \
@@ -164,7 +164,7 @@
 
 | Template: Cardinal |
 	- Goes in: 12_Cardinals.txt, under its kind
-	# Names follow docs/STYLE.md: a Cardinal is two plain words for a found object.
+	# Names follow the pack's style sheet: a Cardinal is two plain words for a found object. /~ docs/STYLE.md \
 
 	{Name of Cardinal} / Two plain words, a found object the wave washed up \
 		- Kind: / Vessel or Team. Vessel acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, for every player \

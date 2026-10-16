@@ -13,8 +13,8 @@ recipes, `docs/07_ONLINE.md` for anything that changes state (host decides, engi
 
 - Every id carries the vessel name (`Hero_<Name>`, `Tower_<Name>x`, `Mob_<Name>x`, `Debuff_<Name>x`). One global table.
 - `ModSource/Shared` is the live kit (1.6; `TDS_Vessel_Creator/kit/Shared` is a copy, keep them equal). Changing it:
-  keep tab order and the first 10 boat positions, bump the version in `TDS_Vessel_Creator/kit/README.md` and the file
-  headers, compile every vessel.
+  keep tab order and the boat layout (the two compatibility rules in `TDS_Vessel_Creator/kit/README.md`), bump the
+  version there and in the file headers, compile every vessel.
 - The game compiles with Roslyn 3.8, no `System.dll`/`System.Core`, no `System.IO`/`System.Reflection`.
 - Check here before pushing (setup once per container, `TDS_Mod/Tools/cloud-check/README.md`):
 

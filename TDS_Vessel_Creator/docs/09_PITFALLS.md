@@ -260,10 +260,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Defaultparams` into stat mods; each stock AI reads the params of its own upgrades by name → the Direction's code
     calls `Addmod` itself. Seen in game: `Range_Add 0.5` on a −3 upgrade left an archer, a cannon and Boutman as
     they were.
-90. **`Units +1` spawns nothing** (`17` §12.4) → the Hut, Keep and Garage read `Units` only in their count checks →
+90. **`Units +1` spawns nothing** (`17` §8) → the Hut, Keep and Garage read `Units` only in their count checks →
     after the mod, `SendMessage` the building's check (`Addressminercount`, `Addressmobcount`, `Addressdogcount`); it
     spawns or removes units to match `Units`. Seen in game (RogueLab round 7).
-91. **A faster respawn set at the vessel's death does nothing** (`17` §12.6) → the core reads its `Respawn` stat in
+91. **A faster respawn set at the vessel's death does nothing** (`17` §2.4) → the core reads its `Respawn` stat in
     its own handler on the vessel's `Despawn`, which runs before a mod's handler and before `Game_Entity.Ondespawn` →
     the mod must be on the core before the death (the core is the team's, so it speeds every player). Seen in game:
     10 s plain, 5 s with the cut made before, 10 s with it made in either handler.
@@ -284,8 +284,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
     solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
     calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
-    look again only when it would end sooner (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`). Read from code; compiled, not
-    run.
+    look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`).
+    Read from code; compiled, not run.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
     table is built once, before mods load, and never takes a new key; an unknown, empty or null key throws wherever the
     game plays it; `Random.Range(0, Count - 1)` never picks the last variant → check every key the pack writes at boot
@@ -314,10 +314,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 102. **"Slices 6, 7, 14, 15 ... lie outside the texture" on a sheet 192 wide** (Yossele round 1, 2026-10-12) → the
      builder sliced against `tex.width` read right after the first import, which scales a sheet that isn't a power of
      two up to 256 → read the PNG's own size from its header (`YosseleBuilder.PngSize`). Argo's and the template's
-     builders have the same line; they were safe only because their sheets are powers of two.
+     builders, whose main sheets are 192 wide too (6 frames of 32), took the same `PngSize` on 2026-10-15.
 103. **"FAILED Export Mod finished but ... .info wasn't written"** (Yossele round 1) → the vessel's `Export()` refused
      because other `<Name>Mod` folders were still in Assets; the Build Queue doesn't park them → `Export()` calls its own
-     park step first (`ParkOthers()`/`Park()`), as Argo, RogueLab and RogueWavesMode do.
+     park step first (`ParkOthers()`/`Park()`), as Argo, Yossele, RogueLab, RogueWavesMode and (since 2026-10-15) the template do.
 104. **A handoff changed an Editor script, but the Build Queue built with the old one** (Yossele round 8, 2026-10-12)
      → `Assets/Refresh` reloaded the domain without compiling ("compile time=0 ms"), since `Apply-Handoff` keeps the
      zip's file times, older than the last compile; the editor assembly only recompiled later, during the export's

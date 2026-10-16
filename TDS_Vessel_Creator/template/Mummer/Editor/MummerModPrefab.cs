@@ -94,6 +94,7 @@ namespace MummerBuild
         [MenuItem("Tools/Mummer/Export Mod")]
         public static void Export()
         {
+            ParkOthers();   // the Build Queue doesn't park the other mods (pitfall #103)
             foreach (string dir in AssetDatabase.GetSubFolders("Assets"))
             {
                 string name = Path.GetFileName(dir);

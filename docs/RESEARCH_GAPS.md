@@ -12,12 +12,12 @@ player; **by hand** = Dimitri plays it. Nothing waits on the PC any more.
 
 ## Summary
 
-Of the 18 items, 16 are answered (A5 and B5 keep a half for the online evening), 1 needs an online evening with a friend
-and 1 waits on a scope decision; the F-key check by hand is still open too. Three answers change plans: **Directions
-can't be per player on the core** (A1), **nothing in the game scales foes for more players or harder maps** (A3), and
-**a friend who drops can't rejoin a running map** in the base game (A5; the pack now reopens it, `docs/mode/REJOIN.md`). The
-PC rounds added one rule, **bring the choice dialog's menu up before opening it** (A6), and one map to never offer,
-Special_Custom (A4).
+Of the 18 items, 17 are answered (A5 and B5 keep a half for the online evening; C3's answer waits on the scope's new
+enemy types) and 1 needs an online evening with a friend (A8); the F-key check by hand is still open too. Three
+answers change plans: **Directions can't be per player on the core** (A1), **nothing in the game scales foes for more
+players or harder maps** (A3), and **a friend who drops can't rejoin a running map** in the base game (A5; the pack
+now reopens it, `docs/mode/REJOIN.md`). The PC rounds added one rule, **bring the choice dialog's menu up before
+opening it** (A6), and one map to never offer, Special_Custom (A4).
 
 ## A. Before Phase 5 designs the mode
 
@@ -25,7 +25,7 @@ Special_Custom (A4).
 | --- | --- | --- | --- |
 | A1 | Per-player Directions | The core is the team's: it spawns every player's vessel and has no owner; `Heroapply` reaches every vessel and `Towerapply` every new tower. A Direction must go on the player's vessel, re-granted from host state at each map's first spawn (a respawn copies the vessel's upgrades), and tower Directions through the mod's own spawn hook filtered by owner. **`ModKitDirections` (kit 1.6) needs that change** before Phase 5 uses it (§14.1) | answered |
 | A2 | Fund Transfer's route | Aura is per player. The host moves it with the public `Useresources` and `Giveresources(list, owner)`, with the gain multiplier held at 1 (Cardinals change it). The stock Money Bag Cardinal already donates aura, lossily and by a thrown bag; its code is private, so it's prior art, not a reusable piece. Dimitri settled it: base aura only (`docs/scope/06`) (§14.2) | answered |
-| A3 | Difficulty levers | The game has none to borrow: no scaling by player count or map; a map's `Difficulty` is only a label. Levers a mod has: the Tide table (counts, intervals, elites, extra entries; proven live), the game's **easier** setting's upgrade forced on the core (`Special_Treated`: an extra twice the mode's start aura, enemy drops ×4, +30 s per Tide, +200 core health; there is no harder setting), the aura gain multiplier, and modifiers of its own. The other modes' tables are logged: Tsunami starts at 500 aura with four long Tides, Drought has 20 short ones (§14.3, §15) | answered |
+| A3 | Difficulty levers | The game has none to borrow: no scaling by player count or map; a map's `Difficulty` is only a label. Levers a mod has: the Tide table (counts, intervals, elites, extra entries; proven live), the game's **easier** setting's upgrade forced on the core (`Special_Treated`: an extra twice the mode's start aura, enemy drops ×4, +30 s per Tide, +200 core health; there is no harder setting), the aura gain multiplier, and modifiers of its own. The other modes' tables are logged: Tsunami starts at 500 aura with four large Tides and long breaks (240 s, then 180 s), Drought has 20 short ones (120 s) (§14.3, §15) | answered |
 | A4 | The map pool | Any map takes any mode; the coupling is data (§14.4). **All 45 base maps played clean** in the mod's mode (vessel, cores, no warnings, 14-20 s loads), the Final map and the δ maps included. **Special_Custom hangs the load: never offer it.** Each map's difficulty label (1-9) is logged for a vote (§15) | answered |
 | A5 | Drop and rejoin | Key run state by `Sessionid` (stable on a rejoin; RogueLab and Riptide already do). A drop despawns nothing; teammates can command the dropped player's things. **A running map refuses joins** (closed lobby), and a rejoin comes back with no aura. So a dropped friend rejoins only between runs, unless the host reopens the lobby between maps (§14.5). **2026-10-11:** a mod can reopen it mid-map and a late joiner catches up; built, solo PC round 6 passed 47/0, `docs/mode/REJOIN.md` | answered; rejoin built, needs online (`REJOIN.md` §6) |
 | A6 | A shop and a vote showing more than three things | The dialog takes any number of entries, two per row, with title, colour, image and a hover description; no price or disabled field, so prices go in the name and the host refuses a short purse. The shop is the vessel-command route Riptide proved; no building needed (§14.6). Round 3: with its menu brought up first (`Bl_Menus.Changemenu`, 1.3 s) it took eight cards and returned the clicked one; the stock two-per-row grid pushes rows 3-4 off the screen, four per row fits all eight (§15) | answered |
@@ -52,7 +52,8 @@ Special_Custom (A4).
 | C3 | Enemy sprite format and elite skins | Needed only for new enemy types or skins (both `! NEEDS !` in the scope) | **answered** 2026-10-15 from the game's own sheets (kit `docs/18` §2, §5); new types still wait on the scope |
 | C4 | Enemy pages in the journal | Journal pages are data assets; no code lists enemies, so the pack's foe pages are its own, as vessels' are (`docs/06`) | answered |
 
-Flying waits for a flying enemy.
+Flying (`docs/13` §10 Q7) is read from the game's code since 2026-10-14 (kit `docs/24` §2); it matters only if the
+pack adds a flying enemy.
 
 ## D. Pieces the scope doesn't ask for
 
@@ -67,7 +68,8 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
    checks `docs/reports/MECHANICS_CHECK.md` §3 lists (a Fund Transfer between two players among them; its moves are proven
    solo), the real drop and rejoin (`docs/mode/REJOIN.md` §6, O1-O8), the sea chart on a client (`docs/mode/SEA_CHART.md` C7),
    a friend joining the host's boat after the main-menu button, and Quickening's `Time_Scale` and Rising Water's
-   flood on a client (kit `docs/16` §9 item 4).
+   flood on a client (kit `docs/16` §9 item 4). Kit `docs/19` §8 (N1-N14) is the evening's full list and extends
+   this one.
 3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). A respawn keeping a
    granted −3 upgrade was seen in RogueLab round 7 (2026-10-12, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).
 4. **C3** when the scope decides on new enemy types (modifiers show as an effect, not a skin: `docs/scope/13`).

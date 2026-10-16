@@ -72,7 +72,7 @@ outcome and the constraints; the Part D templates stay as written for Opus threa
 Each phase ends at a gate. A gate is a short written result the user can approve in a minute. Phases 1 and 2 are
 cheap and decide the shape of everything after them, so nothing else starts before they close.
 
-### Phase 0. Definitions (half a session)
+### Phase 0. Definitions (half a session; done 2026-10-08)
 
 Close the scope's blanks with the user before anything is researched. Reads: `docs/scope/` once, this section.
 
@@ -128,7 +128,7 @@ Opening prompt:
 
 Gate: packaging and style approved; kit 1.6 scope listed.
 
-### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele in draft PR #30)
+### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele built 2026-10-12 and merged, PR #30)
 
 Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
 way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
@@ -204,13 +204,25 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
   RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
-  a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`). Older entries are in
-  "Log" below.
-- **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15).
-  By hand: the F-key check, the button's and the chart's look, a flooded map; one online evening
-  (`docs/RESEARCH_GAPS.md` §E). Left on Argo: his balance pass. Yossele's next build takes the ranged laser and speed;
-  also left on Yossele: his look by eye (temporary art), his balance pass, the Compost Bin numbers in scope `11`, and
-  the chance-based Viral Outbreak and Hallucinogen, still unchecked.
+  a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
+  file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
+  clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
+  Older entries are in "Log" below.
+- **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
+  the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
+  turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
+  A3-9, B4-11, B4-12, B4-14, C2), and
+  its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
+  the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
+  kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
+  balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Yossele's next build takes the ranged laser and speed,
+  Argo's unthrottled debuff looks, the 2026-10-13 names and lines (with the Stonehenge's Lore line), its footstep
+  frames, two small leaks and the vine stem's 1 px step at tile joints (B3-24 to B3-30, B3-36, B3-39);
+  also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
+  (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
+  unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
+  B1-22, B1-4, C2-6).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
 
@@ -353,6 +365,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   changes; dated reports moved to `docs/reports/`, the mode's design pages to `docs/mode/`, `README.md` rewritten,
   Riptide compiles here again. What is left for Dimitri, for each open PR, and how to merge them:
   `docs/reports/QUALITY_CHECK_2026-10-15.md`.
+- **2026-10-15/16, quality passes:** 23 passes over every file, ten readers each through pass 8 and thirteen from
+  pass 9 (179, 61, 27, 37, 16, 2, 0, 7, 39, 37, 18 and 8 issues; then, counting only wrong facts, 8, 10, 16, 4, 1, 4,
+  3, 0, 2, 5 and 2). Fixes changed no game behaviour; scope `16`'s base-vessel lines now say what the game's code
+  does. Dimitri stopped the run after pass 22 (pass 23 had already finished, its two fixes kept); why the counts
+  stayed up, and what is listed for him: `docs/reports/QUALITY_PASSES_2026-10-15.md`.
 
 ### Decisions
 
@@ -404,7 +421,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 - 2026-10-09 (user; superseded below: 10 maps, Depth, about 7 Any and 4 per new vessel, only the host's quit spends
   a retry): **a run is a campaign of 15 maps, saved between maps** (was 3 maps in one sitting); the host's
-  save holds it, keyed per player by Steam id (`docs/reports/SCOPE_VS_LOOP.md` §E). **Swell (ascension) is on hold** until the
+  save holds it, keyed per player by Steam id (`docs/reports/SCOPE_VS_LOOP.md` §E; since 2026-10-14 the Steam id is
+  known to be out of a mod's reach, so per-player rows key on the Steam name or the GUID the pack keeps, kit `docs/23`
+  §2.3, `docs/19` §5). **Swell (ascension) is on hold** until the
   core loop is settled. Per-player Cardinals researched (§F): most stock ones can be made personal. **Directions rank
   up** (II, III) when offered again to a player who holds them, so the catalogue stays about 10 Any and 6 per vessel. **A lost map spends one of a few retries** (3 by
   default) and replays from the last save; quitting mid-map counts as a loss; with none left the campaign ends.
@@ -428,11 +447,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (route **V1**) and the boat then sails to the winner; the party returns to the boat between maps. Default taken:
   map 1 is voted in the staging map's opening break, then the party sails from the harbour to it.
 
-- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], `docs/mode/SEA_CHART.md` §8).
-  Defaults taken: three weathers (Rising Water, Quickening Current, Nesting Ground); rows 1, 5, 10 calm, 1 in 3 then 1
-  in 2 elsewhere; +1 Pure Aura a Tide; Quickening x1.25 from Tide 5, x1.5 from Tide 10. Maps spread by row difficulty
-  (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is `RogueWavesMode`; nothing starts a campaign
-  until the main-menu button piece calls `RWCampaign.New`/`Continue`.
+- 2026-10-10 (user): **sea weather is in the scope** (`docs/scope/05` [Sea Weather], in `04` since 2026-10-14;
+  `docs/mode/SEA_CHART.md` §8). Defaults taken: three weathers (Rising Water, Quickening Current, Nesting Ground);
+  rows 1, 5, 10 calm, 1 in 3 then 1 in 2 elsewhere; +1 Pure Aura a Tide; Quickening x1.25 from Tide 5, x1.5 from Tide
+  10. Maps spread by row difficulty (aim 2 + (row-1)/2, Breaker rows +2), none twice. The mode part is
+  `RogueWavesMode`; nothing starts a campaign until the main-menu button piece calls `RWCampaign.New`/`Continue`.
 
 - 2026-10-11 (user, scope review): only the **host's** mid-map quit spends a retry; **no Cardinal swaps** on the boat
   between maps; **breaks last 60 s**; Direction **rank II 20, rank III 30** Pure Aura; Team Cardinals work for everyone,
@@ -445,11 +464,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   review's six wording fixes are folded in (#8, #17, #21, #30, #32, #52).
 - 2026-10-12 (user): the name is spelled **Rogue Waves** everywhere, the mode and its main-menu button included
   (was "Rogue Wave"). Identifiers (`Mode_RogueWave`, `RW_` save keys), file names (`04_Rogue_Wave_Mode.txt`) and the
-  PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid.
-- 2026-10-13 (user): every vessel sheet follows `docs/scope/15_Vessel_Template.txt`; `~` marks a Claude default.
-  Yossele attacks at range (a green laser from the mouth) and moves slower; Selfish Sapling is now Forest Project and
-  Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots. Spool's ability is **Patch** (20 Thread
-  heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the start, like the Bouthouse) holds the Thread.
+  PC folder `Desktop\RogueWave` keep their old spelling, so saves and the scope's file names stay valid (the scope file
+  was renamed after all on 2026-10-14: `04_Rogue_Waves_Mode.txt`, below).
+- 2026-10-13 (user): every vessel sheet follows `docs/scope/15_Vessel_Template.txt` (`15_Templates.txt` since
+  2026-10-14); `~` marks a Claude default. Yossele attacks at range (a green laser from the mouth) and moves slower;
+  Selfish Sapling is now Forest Project and Grafted Colors is Grafted, Entangling Spaghetti Roots is Entangling Roots.
+  Spool's ability is **Patch** (20 Thread heals 20%), Unthread is just selling, and a **Yarn Stash** (placed at the
+  start, like the Bouthouse) holds the Thread.
 - 2026-10-14 (user): the scope follows `docs/scope/00_Read_Me.txt`'s rules: one meaning per symbol, every number
   on a `- Field: value` slot, `/~ \` for Claude's notes, `->` to point at another file, each fact in one file, dates
   only in `02`, and every template in `15_Templates.txt`. `04_Rogue_Wave_Mode.txt` is renamed `04_Rogue_Waves_Mode.txt`.
@@ -467,13 +488,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   - The vessel template gets kit 1.6's pack calls before Spool is scaffolded (B10). Argo's four plain skips become
     `TEST SETUP` at its next round (B12); Salt Sting's text and the unused Stagger wait for its balance pass (B14, B15).
   - Tools: `api-dump.ps1` is brought up to the dump's format at the next PC session (C2); `setup.sh` unzips into a
-    temporary folder after PR #30 merges (C23); the API dump gets a header line at the next dump (A19); old Argo notes
+    temporary folder after PR #30 merges (C23, done); the API dump gets a header line at the next dump (A19); old Argo notes
     stay as history (A17). Done in PR #36: `gh` before the token (C6), BootCheck's `icons:` line (C5), PS 5.1 patch
     lists (C10), the log read race (C2-3), the allowlist (C19).
   - Scope: PR #32's thread fixes scope 16 (Knight Commander, Diesel Dog, Rev Dog, Battalion, Black Sno) and the
     wording items D20-D22, D26, D27; after #32 merges, the repo's `docs/scope/` is copied over the project files (D1).
   - Directions: names match the Look line; the heading or course style is optional (`SCOPE_REVIEW_2026-10-10` #37).
-  - The GitHub default branch becomes `claude/phase-1-6lfnar`; only Dimitri can switch it (GitHub settings).
+  - The GitHub default branch becomes `claude/phase-1-6lfnar`; only Dimitri can switch it (GitHub settings). Done:
+    it is the default now (`docs/PROJECT_SETUP.md` §1).
 
 ### Open questions
 
@@ -512,7 +534,8 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 > `TDS_Mod/README.md` and report pass/fail only.
 
 **Handoff for the PC:**
-> Pack `make_handoff.py <Name> --only <Name>,Shared` with every fix since the last round, write the one-sentence
+> Pack `make_handoff.py <Name>_round<N> --manifest <pc_manifest.txt> --only <Name>,Shared` (or `--since` the commit
+> the PC last applied) with every fix since the last round (`TDS_Mod/Tools/pc/README.md` step 3), write the one-sentence
 > request for the user (`TDS_Mod/Tools/pc/README.md` step 5), and list what the round must verify in
 > `IMPLEMENTATION_NOTES.md`.
 

@@ -1,6 +1,6 @@
-// Round 2 (docs/RESEARCH_GAPS.md §E step 2): the questions the decompiled code could not settle.
+// Round 2 (the docs/RESEARCH_GAPS.md gaps named below): the questions the decompiled code could not settle.
 //   at boot   every map's and Gameplan's data (A4), every other mode's Tide table and params (A3, C2), the elites
-//             again once those groups are loaded (C1), the game's hard setting ("Treated") and its upgrade (A3)
+//             again once those groups are loaded (C1), the game's easier setting ("Treated") and its upgrade (A3)
 //   map 1     a second Default prefab in the same bundle started (A9), a swarm's frame cost on the host (B5)
 //   map 2     the choice dialog with eight long entries: where its cards land (A6)
 //   the tour  after map 2, every other base map the vote could offer, played as a twin of the mod's mode: does it start
@@ -112,7 +112,7 @@ public static class RogueLabRound2
         }
     }
 
-    // A3: the game's own hard setting force-applies this upgrade to the player core (Entity_Ai_Main_Core, "Spawn").
+    // A3: the game's own easier setting force-applies this upgrade to the player core (Entity_Ai_Main_Core, "Spawn").
     public static void Treated(string when)
     {
         float setting = Blockage.Settings.Bl_Settings.Readcustomsetting("Difficultysetting");

@@ -10,7 +10,8 @@ fetch() {   # <package id> <version> <folder>
   local lower; lower=$(echo "$1" | tr 'A-Z' 'a-z')
   [ -d "$H/$3" ] && return 0
   curl -sSfL -o "$H/$3.nupkg" "https://api.nuget.org/v3-flatcontainer/$lower/$2/$lower.$2.nupkg"
-  mkdir -p "$H/$3" && (cd "$H/$3" && unzip -q "../$3.nupkg")
+  # Unzip into a temporary folder and rename it at the end, so a half-unzipped folder never counts as done.
+  rm -rf "$H/$3.tmp" && mkdir -p "$H/$3.tmp" && (cd "$H/$3.tmp" && unzip -q "../$3.nupkg") && mv "$H/$3.tmp" "$H/$3"
 }
 fetch Microsoft.Net.Compilers 3.8.0 roslyn
 fetch UnityEngine.Modules 2021.3.33 unitymods

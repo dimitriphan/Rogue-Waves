@@ -1,4 +1,4 @@
-// Sea weather (docs/scope/05 [Sea Weather]; docs/mode/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
+// Sea weather (docs/scope/04 [Sea Weather]; docs/mode/MECHANIC_IDEAS.md §2): some chart maps carry a weather, rolled with
 // the chart, shown on its island and in the Setup panel, announced when the map starts, and paid for in extra Pure Aura.
 // Each rides on a stock map object the game only puts on one map (kit docs/16 §3), spawned by the host at map start:
 //   Rising Water        Main_Flood (3_Manafold's): the water climbs each Tide, flooded tiles can't be built on
@@ -12,7 +12,7 @@
 // stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); the Pure Aura counter is a later piece.
 public static class RWWeather
 {
-    public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/05)
+    public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/06 [Pure Aura])
     public static int QuickTide = 5, QuickerTide = 10;   // the self-test lowers them
     public const float Quick = 1.25f, Quicker = 1.5f;
 
@@ -40,8 +40,9 @@ public static class RWWeather
     static string Home(int w) { return w == RWChart.RisingWater ? "3_Manafold" : w == RWChart.NestingGround ? "3_Vultures" : ""; }
 
     // Every being the weather's map object spawns must be loaded too. The flood fetches Block_Flood_Deter by name at
-    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1), but no group holds it, so it
-    // is made in the map instead (StandIn) and is not listed here.
+    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1), but no group holds it, so the
+    // mod makes a stand-in instead (StandIn: on the boat once the groups are loaded, else in the map's first 30 s) and
+    // does not list it here.
     static string[] Needs(int w)
     {
         switch (w)
@@ -134,7 +135,8 @@ public static class RWWeather
     // asks for it by name at each Tide, and the throw unwinds into Mode_Normal.Run, which set the Tide. Stand in a copy
     // of a stock no-build block under that name, registered where Bl_Address.Getload looks (Groups["Mob"]) and where a
     // spawn is matched by id and name (Groupsids, Groupsname). Neither preferred block is loaded on the boat (round 3),
-    // so every machine tries again once per map (DeterUpdate), and any loaded "Block_No..." being will do.
+    // so every machine tries again in each map, once a second for its first 30 s (DeterUpdate), and any loaded
+    // "Block_No..." being will do.
     const string Deter = "Block_Flood_Deter";
     static readonly string[] DeterLike = { "Block_Noplacement", "Block_Nobuild_Brittle" };
     static Game_Mapvars deterMap;

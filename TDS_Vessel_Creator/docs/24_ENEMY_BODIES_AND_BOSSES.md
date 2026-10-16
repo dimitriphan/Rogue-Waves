@@ -3,8 +3,8 @@
 The second reading of the enemy side, for Phase 4 and a possible pack boss. `13` stays the enemies chapter (data,
 Tide tables, elites, how to add a foe); this one answers its §10 questions 5 (art format) and 7 (flying) from code,
 details movement per enemy kind, and plans a boss. Everything here was **read from the game's code** (decompiled as in
-`13` §11) on 2026-10-14 unless it says otherwise; nothing was tried in game. Stock numbers (sheet sizes, PPU, frame
-counts, block flags) are data: §8 is the PC list.
+`13` §11) on 2026-10-14 unless it says otherwise; nothing was tried in game. Stock numbers are data: sheet sizes, PPU,
+frame counts and elite skins were read from the asset bundle on 2026-10-15 (`18` §2, §5.5); the rest is §8's PC list.
 
 Read `13` §1-6 first.
 
@@ -16,7 +16,7 @@ Read `13` §1-6 first.
 | `Entry` | `Style` {Model, Sprite, Both, Overlay}, `Visprefab`, `Spriteobject`, `Additionalvisualscripts`, `Additionalmaterials`, `Additionalprefabs`, `Vfxstart/Vfxend`, `Sfxstart/Sfxend`, `Drawtransparent`, `Spritealwayson` | |
 | `Spriteobject` | `Defaultspeedmulti` (1), `Defaultfolder`, `Itemslist` → `Items` by name | Spriteobject.cs:7-54 |
 | `Spritesinlist` (one animation) | `Name`, `Sprites` (one list per direction), `Loop`, `Reset`, `Priority`, `Speed` (1), `Spriteto` | Spritesinlist.cs:9-32 |
-| `Spritecont` (one frame) | `Item` (the Sprite), `Sound` (played on that frame) | Spritecont.cs:15-17 |
+| `Spritecont` (one frame) | `Item` (the Sprite), `Sound` (played on that frame) | Spritecont.cs:7-9 |
 
 - **Sprite enemies all share one body:** the client loads `Getload("Vfx", "Mobbase")` and adds the `Spriteobject`;
   `Visprefab` is used only when `Style` is not `Sprite` (Entity_Master_Client.cs:136, 578).
@@ -106,7 +106,7 @@ multi-tile foe can plan a route its body cannot walk**: keep big foes on a one-t
 | Enemy | Rule beyond the walker loop |
 | --- | --- |
 | Aegis | heals `Heal` per second once not hit for `Healtime` |
-| Ballista | bolt at `Projspeed`; steps back 0.3 and is slowed 50% until the next shot |
+| Ballista | bolt at `Projspeed`; steps 0.3 toward its target as it fires and is slowed 50% until the next shot |
 | Maul | fights on the move; 1.3 s wind-up; hurts up to `Projcount` in `Projradius` |
 | Onager | lobs at the ground under the **farthest** visible target |
 | Claymore | launches at the farthest tower in `Range` once one is within `Rangedetect`; at 0 health lingers for `Deathlife`. The launch is `Despawn(Death: false)`: no drops, no kill credit |
@@ -169,8 +169,10 @@ Waves `docs/reports/SCOPE_VS_LOOP.md` #20):
 2. Brain (attached in `Onspawn` when the being is the boss): on each slow tick compare health with 66% and 33%; at a
    threshold set the level and skin, warn, shake, call adds from the parent core, and open a short invulnerable window.
    Optional bar: write `Display_Wave = "<NAME> <percent>"` at most once a second, restore `TIDE n` at its death.
-3. Ending: make the Breaker Tide the map's last entry with a long `Wavetime` (Tsunami's last Tide uses 9999 s). The
-   Tide lasts until no targetable team-0 enemy is left, then the map is won by the stock loop: **no win code**.
+3. Ending: on a stock table, make the Breaker Tide the map's last entry with a long `Wavetime` (Tsunami's last Tide
+   uses 9999 s). The Tide lasts until no targetable team-0 enemy is left, then the map is won by the stock loop: **no
+   win code**. In Rogue Waves a map is won once Tide 15 is cleared and bonus Tides run until a vote to leave
+   (`docs/scope/04_Rogue_Waves_Mode.txt`), so there the mode's own Tide code, still to be built, places the Breaker.
 4. Never make it untargetable (the Tide would end, `13` §9.1) and never shield it with `Healthover` (a hit larger
    than the shield passes in full, Helper_Damagetools.cs:28-46).
 
@@ -195,10 +197,11 @@ destroyed Basin wins the final map**. A pack mode built on `Mode_Final` wires it
 
 ## 8. PC list (one enemy probe round)
 
-1. For each `Enemy_*`: `Visualproperties.Default` (`Style`, `Spriteobject`, `Defaultspeedmulti`, `Vfxend`/`Sfxend`);
-   per animation `Name`, `Loop`, `Priority`, `Speed`, `Spriteto`, variant and frame counts; frame 0's texture size,
-   rect, PPU and pivot.
-2. Each elite skin entry: `Spriteobject` null or not, `Additionalmaterials` and shader.
+1. Answered 2026-10-15 (`18` §2, `reference/art_survey_2026-10-15.txt` part 1): for each `Enemy_*`,
+   `Visualproperties.Default` (`Style`, `Spriteobject`, `Defaultspeedmulti`, `Vfxend`/`Sfxend`); per animation `Name`,
+   `Loop`, `Priority`, `Speed`, `Spriteto`, variant and frame counts; frame 0's texture size, rect, PPU and pivot.
+2. Answered 2026-10-15 (`18` §5.5, the survey's part 3): each elite skin entry's `Spriteobject`,
+   `Additionalmaterials` and shader.
 3. `Defaulthit` collider size for Dagger, Bulwark, Halberd.
 4. `Enemy_Halberd`: group, AIs, visual children (`Flying`, `Flyingend`), which map places a nest.
 5. Block flags (`Genproperties`) of `General_Mob_Block_Height`, a wall, a tower and the Basin.

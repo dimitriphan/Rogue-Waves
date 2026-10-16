@@ -50,7 +50,9 @@ PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 3. Apply it: `Apply-Handoff.ps1 -Apply`. This backs up what it replaces and writes a fresh `pc_manifest.txt`.
 4. Let Unity compile: `execute_menu_item("Assets/Refresh")`, then wait until it has finished.
 5. Build the code: `Build-<Name>Mod.ps1 -Define <NAME>_SELFTEST` for each vessel. Then write `<h>\queue.txt`, one
-   vessel per line, adding ` twice` for Sprigg.
+   vessel per line, adding ` twice` for Sprigg. If Dimitri keeps a play build in the game's Mods folder (kit
+   `TDS_Vessel_Creator/README.md`, "Facts about this PC": Yossele's since 2026-10-12), move it out of `TDS\Mods` now
+   and put it back when the round is done (no script does either).
 6. Build and export: `execute_menu_item("Tools/ModKit/Build Queue")`, once. Then read the `[ModKit]` lines in
    `%LOCALAPPDATA%\Unity\Editor\Editor.log` (and the `.info` file's time) until the queue is done: MCP replays can
    overwrite `<h>\queue_status.txt` after a good run (kit `docs/09` #76). Don't run the menu item again if the MCP call
@@ -60,7 +62,9 @@ PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 8. Release, if the tests pass (0 FAIL; SETUP lines only under the release rule in `docs/08` section 5) and Dimitri's
    sentence covers it: `Build-<Name>Mod.ps1` with no `-Define`, the queue again, then
    `Run-SelfTests.ps1 -Vessels <the released parts> -BootCheck`, then zip as `docs/PACK.md` §5 says (the pack's
-   zip; no part ships alone). Leave the game's Mods folder empty afterwards.
+   zip; no part ships alone). The Build Queue has no `Pack` step yet (`docs/PACK.md` §1), so it exports each part as
+   its own dev mod and no pack zip can be made until it gets one. Leave the game's Mods folder empty afterwards, except
+   for that play build.
 9. Run `Get-PcManifest.ps1` if anything changed after step 3. Report, release the lock, and stop the session.
 
 Only one session works in TDS_Mod at a time: an export parks the other vessels' folders.

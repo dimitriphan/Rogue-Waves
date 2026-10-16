@@ -1,12 +1,14 @@
-// Argo asset generator: the vessel's pixel art (2.0, redesigned with the user 2026-10-04). Argo is a sturdy deep-sea
-// diver: a round brass helmet with a dark porthole and two light eyes inside it, seated on a riveted brass breastplate
-// that flares a pixel a row into the blue suit's rounded shoulders, big brass mitts on the hips (they touch the body,
-// per the user's note on 1.0) and dark boots. A brass valve on the helmet's crown lets out a bubble now and then. He
-// stands three-quarter on like Boutman and Fie: the porthole sits on the near half of the dome.
-// Drawn to the shipped vessels' rules (docs/03 §1) and the user's palette note (Boutman's and Fie's economy): three
-// tones of brass and of suit, the glass, the eyes and the boots, a half-alpha rim on the lit upper-left, shade on the
-// facing side, a soft ground patch, a live 6-frame idle. The standing frame is hand-placed from string rows; posed arms,
-// the wrench and the effects are drawn from a few points.
+// Argo asset generator: the vessel's pixel art (redesigned with the user 2026-10-04 for 1.4.0; Argo 2.0 keeps it).
+// Argo is a sturdy deep-sea diver: a round brass helmet with a dark porthole and two light eyes inside it, seated on a
+// riveted brass breastplate that flares a pixel a row into the blue suit's rounded shoulders, big brass mitts on the
+// hips (they touch the body, per the user's note on 1.0) and dark boots. A brass valve on the helmet's crown lets out a
+// bubble now and then. He stands three-quarter on like Boutman and Fie: the porthole sits on the near half of the dome.
+// Drawn to the shipped vessels' rules as kit docs/03 §1 gave them on 2026-10-04 and the user's palette note (Boutman's
+// and Fie's economy): three tones of brass and of suit, the glass, the eyes and the boots, a half-alpha rim on the lit
+// upper-left, shade on the facing side, a soft ground patch, a live 6-frame idle. The kit's later art survey made the
+// rim Smacky's alone and the patch Sno Sno's (docs/18 §4.2): Argo keeps this 1.4.0 look (docs/STYLE.md), and a new
+// vessel draws by docs/18 §4.2, not by this file. The standing frame is hand-placed from string rows; posed arms, the
+// wrench and the effects are drawn from a few points.
 // 32x32 frames, PPU 20, bottom-centre pivot. Variants: v0 front facing right, v1 front mirrored, v2 back, v3 back
 // mirrored - the shipped layout. Authoring coordinates are x right, y down (row 0 = top).
 using System;
@@ -62,7 +64,7 @@ namespace ArgoBuild
 
         static Color32 C(char k) { return P[k]; }
 
-        // The soft rims: the lit colour at half alpha on the upper-left edges (docs/03 §1).
+        // The soft rims: the lit colour at half alpha on the upper-left edges (the 2026-10-04 rule; see the header).
         static readonly Color32 BrassRim = Col.A(Col.H("F2C77A"), 150), SuitRim = Col.A(Col.H("9CC3E0"), 150);
 
         static Color32 Ink(char k) { return k == 's' ? BrassRim : k == 't' ? SuitRim : C(k); }
@@ -645,7 +647,7 @@ namespace ArgoBuild
                 }
             if (tap > 0 && !back)
             {
-                // the wrench in the near mitt: raised (1), half (2), tapping down with a spark (3)
+                // the wrench in the near mitt: raised (1), half (2), down (4), down with a spark (3)
                 int hx = 10, hy = oy + 6 + dy;
                 if (tap == 1) { c.Set(hx + 1, hy - 1, C('F')); c.Set(hx + 2, hy - 2, C('F')); c.Set(hx + 2, hy - 3, C('S')); c.Set(hx + 3, hy - 3, C('S')); c.Set(hx + 3, hy - 2, C('F')); }
                 else if (tap == 2) { c.Set(hx + 1, hy - 1, C('F')); c.Set(hx + 2, hy - 1, C('F')); c.Set(hx + 3, hy - 2, C('S')); c.Set(hx + 3, hy - 1, C('S')); c.Set(hx + 4, hy - 1, C('F')); }

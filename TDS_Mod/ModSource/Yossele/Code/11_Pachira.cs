@@ -7,8 +7,8 @@
 //   Grafted Colors       a COLOUR button picks the fruit's colour: one colour pays 3 x 30 x 70% = 63 of it.
 //   Selfish Sapling      +20% mining speed for each other Pachira Sapling within 4 tiles, up to +100% (Dimitri,
 //                        2026-10-12: reversed from "faster when alone").
-//   Connected Roots      while above half health it takes 65% of each hit on your buildings within its Range
-//                        (YosseleHooks).
+//   Connected Roots      while above half health it takes 65% of each hit on its team's Tower-tagged buildings within
+//                        its Range, other Saplings excluded (YosseleHooks).
 //   Harvesting Season    fruit is worth double.
 // Speed bonuses (Growth, Focused, Selfish) add up in one Multi modifier, as the game's own percentages do.
 public class YosselePachiraBrain : YosseleBuilding

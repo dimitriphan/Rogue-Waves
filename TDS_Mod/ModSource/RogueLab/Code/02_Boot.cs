@@ -78,7 +78,7 @@ public static class RogueLabBoot
 
     // docs/15 §2: a mode a mod adds. Its Modeobject is a copy of Mode_Normal's (so its script names are the stock ones)
     // playing the first three Tides; it is found by Game_Init under the entry's name and by Game_Rounds under the
-    // group's name, so all three share one name. Every stock Gameplan in Mode_Normal gets a twin in this mode.
+    // group's name, so all three share one name. Every stock Gameplan with a map (but Special_ and Test_) gets a twin.
     public static void RegisterMode(Modeentryobject normal)
     {
         Modeobject stock = normal != null && normal.Modeloads != null ? Bl_Address.Getload("Mode", normal.Modeloads.Objectname) as Modeobject : null;

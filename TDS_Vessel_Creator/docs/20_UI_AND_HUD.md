@@ -16,20 +16,21 @@ Read `01` §8, §11, `05` §7-8 and `15` §6, §14.6, §18.2 first.
 | `Blu1_Ui_Handler` | one per scene: canvases, layers, EventSystem, throttle, gamepad reselect, UI scale | Blu1_Ui_Handler.cs:70-700 |
 | `Blu2_Menu_Handler` | one menu: `Layer`, `Historical`, `Overlay`, `Standalone`, transitions, `Defaults`, `Gamepadstartbutton`, `In_Sinkinputs`, `Items` (child name → GameObject) | Blu2_Menu_Handler.cs:46-114 |
 | `Blu3_Item` (+ Button, Toggle, List, Options, Slider) | registers in its parent menu's `Items` under its **GameObject name**; hover and click only on the active layer | Blu3_Item.cs:27-93 |
-| `Blu4_*` | `Scaler` (anchor placement, tweens), `Tooltip`, `Group` (show/hide), `Menu_Change`, `Sound`, `Input_Buttonkeybind`, `Externalcanvaslinker`, `Button_Unregistered` | §3 |
+| `Blu4_*` | `Scaler` (anchor placement, tweens), `Tooltip`, `Group` (show/hide), `Menu_Change`, `Sound`, `Input_Buttonkeybind`, `Externalcanvaslinker`, `Button_Unregistered` | §4, §6 |
 
 - **Menus are rebuilt per scene.** Each scene's `Blu1_Ui_Handler.Awake` replaces `Bl_Menus.Menus` with that scene's
   menus (Blu1_Ui_Handler.cs:84-127). A reference kept across a scene change points at a destroyed object.
 - **A mod cannot add a menu.** A `Blu2_Menu_Handler` created later joins only `Ui.Menus` in `Start`, never
   `Bl_Menus.Menus` or the layers (Blu2_Menu_Handler.cs:301-312), so `Changemenu` cannot reach it.
 
-### 1.1 `Changemenu` fails silently three ways
+### 1.1 `Changemenu` refuses a call three ways, two of them silently
 
 `Bl_Menus.Changemenu(name, Force = false, Source = null, Refresh = false)` (Blu1_Ui_Handler.cs:360-587):
 
 - **Throttle:** without `Force`, a call while a transition runs is **dropped** (:362-365).
 - **Unknown name:** ignored without a log (:394-397). Same menu already active: nothing unless `Refresh`.
-- **Standalone menus** are refused (:583-586); `Changemenustandalone(name, state)` toggles them (no stock caller).
+- **Standalone menus** are refused, with only the log line "`<name>` is a Standalone menu and cannot use this method"
+  (:583-586); `Changemenustandalone(name, state)` toggles them (no stock caller).
 - `"Back"` and `"Close"` are pseudo-names for the layer history (:379-393).
 - Layers: a menu replaces the active menu of its layer; only the **active layer** is interactable; lower layers stay
   visible (:447-551). While a higher layer (the choice dialog) is up, HUD buttons cannot be clicked.
@@ -119,7 +120,7 @@ Each drawn command's `Render(button)` runs on every refresh and may draw from it
 | Need | Route | Seen by | Limits |
 | --- | --- | --- | --- |
 | A number on the vessel | a `Counter` stat with a registered icon (`05` §9) | anyone who selects it | hidden unless selected; a row without an icon is skipped (Game_Ui.cs:166-205) |
-| A per-player value for client code | a `None` command on the player's vessel; host writes `Goalstring`/`Goalvalue`, syncs with `Updatecommand(m, link, "", false, false)` | every client; the mod picks the owner | 61 bytes + one float per command (Riptide's offers ride this way) |
+| A per-player value for client code | a `None` command on the player's vessel; host writes `Goalstring`/`Goalvalue`, syncs with `Updatecommand(m, link, "", false, false)` | every client; the mod picks the owner | 61 bytes + one float per command (Riptide's offers ride this way, on its SALVAGE `Button` command) |
 | A line for everyone | `Display_Note` or `Uiwarning_ClientRpc` | all | §2 |
 | A resource in the wallet | `Helper_Resources.Giveresource` with a registered resource icon | its owner | no icon → exception in `Updateresource` (Game_Ui.cs:1449-1452) |
 | A text in chat | host `Chat.Add` | all, kept in the log | 509 bytes; rich text works; not localized |

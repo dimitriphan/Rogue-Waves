@@ -1,8 +1,11 @@
 # Mechanic ideas from the game's own systems (2026-10-09)
 
-> Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/05`, built in
-> `RogueWavesMode` and passed PC round 4 (38/0, `docs/mode/SEA_CHART.md` §8-9). The other ideas are still unpicked and
-> untested; the text below is as written on 2026-10-09. "Personal" Cardinals are now called Vessel Cardinals.
+> Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/04` [Sea Weather]
+> (in `05` until 2026-10-14), built in `RogueWavesMode` and passed PC round 4 (38/0, `docs/mode/SEA_CHART.md` §8-9).
+> The other ideas are still unpicked and untested; the text below is as written on 2026-10-09. "Personal" Cardinals are
+> now called Vessel Cardinals. **2026-10-15:** the scope pointers below are as of 2026-10-09: since 2026-10-14 the sea
+> chart is in `04` and every template in `15_Templates.txt`. Kit `docs/16` §9 items 1-3 (§2's "untested", §8) ran in
+> RogueLab round 7 (`docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).
 
 Dimitri asked (2026-10-09 23:04Z) for a deeper look at how TDS works, the important topics written into the research
 lessons, and mechanics that would fit his current plan. The lessons are in the kit: **`docs/16`** (new: inside a map:
@@ -25,7 +28,7 @@ If only five go further, these fill the scope's open `! NEEDS !` lines with the 
 | 2 | **Five objectives from stock pieces**: Raze the Nest, Bag the Beast, Clean Hull, Beat the Clock, plus the existing Mind the Meteor on a one-shot node | `14` "list of optional objectives" | Halberd nest, aura beast, core damage, the Tide timer, `Resource_Death` (`docs/16` §3-4) |
 | 3 | **Cost Directions** (Any): build and upgrade discounts for one player, already shown on the buttons | `11` "Directions for every vessel" | a build button's `Goalvalue` is that building's price scale (`docs/16` §2) |
 | 4 | **Base-vessel Directions** from each stock vessel's own numbers (Buster's dash range, Fie's regulars, Boutman's rally, Sno Sno's trail, Smacky's bombs) | `11` "(Base Game Vessels)" | the hero and tower AIs' params (§4) |
-| 5 | **Cardinals from the stock patterns**: a countdown Cardinal, a free-build Cardinal, an interest Cardinal, a last-stand Cardinal, a break-length Cardinal | `12` "list of new Cardinals" | the 12 patterns in `docs/15` §18.1 |
+| 5 | **Cardinals from the stock patterns**: a countdown Cardinal, a free-build Cardinal, an interest Cardinal, a last-stand Cardinal, a break-length Cardinal | `12` "list of new Cardinals" | the 11 patterns in `docs/15` §18.1 |
 
 ## 2. Sea weather on the chart (per-map conditions)
 
@@ -93,7 +96,7 @@ honest on screen. They also answer "what does a base vessel get" for every vesse
 | --- | --- | --- |
 | Buster | **Full Gallop**: keeps his full reach while dashing (today -1 range in the dash) | `Entity_Ai_Hero_Buster` `Rangemod` = -1 while `Movelinear` (Entity_Ai_Hero_Buster.cs:44-55) |
 | Fie | **House Regulars**: the Rest Stop keeps more permanent regulars (stock 4) | `Permcount`, 4 until an upgrade sets `Perm_Count` (Entity_Ai_Tower_Fieshop.cs:36, 174-190, 243) |
-| Boutman | **Long Line**: rally reaches farther and lasts longer | `Fishingrange` stat and `Rallyduration` (Entity_Ai_Hero_Boutman.cs:269-310) |
+| Boutman | **Long Line**: rally reaches farther and lasts longer | `Fishingrange` stat, the rally's reach (Entity_Ai_Hero_Boutman.cs:269-310); its `Rallyduration` is a private field fixed at 15 s that no upgrade or param sets (:81, 306), so "lasts longer" needs the pack's own code |
 | Sno Sno | **Packed Snow**: the snow he leaves starts deeper, so he runs fast on it sooner | each step spawns snow at `Level` 20; on snow above 20 he gets +75% speed (Entity_Ai_Hero_Snosno.cs:56-82); the Direction raises the level of his snow as it spawns |
 | Smacky | **Skipping Stones**: Bomb Tower shells bounce once more | `Splitbounce` per shot (`docs/16` §8) |
 

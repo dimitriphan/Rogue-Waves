@@ -34,7 +34,9 @@ This is the reference for making a vessel that feels like the developers made it
 - Hero stats:
   - Health 25–50, Speed 2–3.5, Damage 1.5–4, Range 1.5–3, Attackspeed 0.5–0.75, Buildrange 2–3, Sellrate 0.5–0.75.
   - Ranged heroes add Projspeed (15).
-  - All stats are hidden from the stat panel.
+  - Every stat but Buster's Speeddamage has `Display_Exposed` off (the data survey's `/hidden`), which hides it only
+    from a player of another team. The owner's panel shows each stat whose `Display_Type` is not None and that has
+    an icon; health stats go to the bar (Game_Ui.cs:146-174, 965-982).
 - Special rule: an `Upgradeproperties` named `Hero_<Name>_Tooltip_Upgradeproperties`, tier (Priority) −3, no costs, params or AIs, placed in the entity's `Upgradesinit`. Display_Name is the rule's name, Display_Desc the rule.
 - Entity Display_Desc follows the pattern "Regular, single-target ranged" / "Fast, single-target melee".
 - Log: Title is the name. Maindesc is one or two lines of **lore**, not mechanics.
@@ -59,12 +61,12 @@ This is the reference for making a vessel that feels like the developers made it
   - tier 3: 25–500
   - tier 4: 75–750
   - tier 5: 1500–5025, sometimes split across colours
-  - (Boutman's trees go higher: 700, 1950 and 7500)
+  - (Boutman's trees go higher: 150, 700, 1950 and 7500)
 - Upgrade names follow `<Being>_<Key><Tier>_Upgradeobject`. Each upgrade has its own `Ent_Visual` (`..._Visualproperties`). Descriptions are short comma phrases ("Increased damage, dealt over time").
 - Param naming: `Stat_Add`, `Stat_Multi`, `Stat_Pmulti`, `X_Base`, `X_Max`, `X_Percent`, `X_Duration`. Bespoke AIs read them, and the engine never applies them on its own.
 - An upgrade can carry its own AI (Smackywall Regen3 adds `Entity_Ai_Effect_Smackywall_Regen`; Fiewall Tower4 adds `Entity_Ai_Tower_Fiewall_Turret`).
 - **Buffs and debuffs** are `Effect_*_Upgradeobject` upgrades applied to the target with `Helper_Entitytools.Upgrade`:
-  - Each has its own effect AI that reads `Duration_Base` and removes itself.
+  - Each has its own effect AI. The timed ones (13 of the survey's 36 `Effect_*` upgrades) carry `Duration_Base`, which that AI reads to remove itself.
   - Visual state shows through `Radio.Vfxdebuffcheck("Debuff_*")`.
 - **Ground effects** are networked beings on a tile: Sno (`Effect_Snosnosnow`, General_Effectground block, Level stat plus skins '2'..'10'), Bramble and Beacon zones (General_Effect block, `Entity_Ai_Tower_Tilebuff`).
 - **Death leftovers** are trap beings: Perma-Wall leaves `Trap_Smackywall_Perma`, which heals over time and respawns the wall; Hidden Surprise leaves `Trap_Smackywall_Spikes`; Thin Ice leaves `Trap_Snosnowall_Thin`.

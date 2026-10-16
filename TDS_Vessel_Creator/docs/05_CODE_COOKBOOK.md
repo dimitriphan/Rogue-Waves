@@ -79,7 +79,7 @@ Smacky/Snosno/Boutman/Fie/Buster, and `Entity_Ai_General_Upgrade`).
 ## 3. Stats (04)
 
 `Stats(template, name, new[] { "Health=25+25", "Damage=1", "Range=2.5" })` builds a `Statproperties` with exactly
-these stats (`+x` = Leveladd), copying display style from the template's same-named stat (hidden numbers). List only
+these stats (`+x` = Leveladd), copying display style from the template's same-named stat (`Display_Exposed` off: shown to the owner's team only). List only
 the stats the entity uses: leftovers like Projcount mean nothing on your building.
 
 ## 4. Buildables and upgrade trees (04: `BuildTower`)
@@ -291,8 +291,8 @@ later with `Helper_Entityai.Getfirstonblock(tile, entityName)`.
 ## 16. Reading enemies
 
 Tell enemy families apart by their AI component (`foe.GetComponent<Entity_Ai_Enemy_Ballista>() != null`), with the
-being name as a fallback. Bosses: base Health ≥ ~600. Enemy ids: `reference/vessel_data_survey.txt` and the game's
-`Entity_Ai_Enemy_*` classes in the API dump.
+being name as a fallback. Bosses: base Health ≥ ~600. Enemy ids: `13` §1 and the game's `Entity_Ai_Enemy_*`
+classes in the API dump; their stats: the `ENEMY` lines of `reference/roguelab_round1.txt`.
 
 ## 17. JSON, numbers, misc
 
