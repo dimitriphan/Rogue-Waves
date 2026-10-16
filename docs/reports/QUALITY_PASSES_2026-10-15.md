@@ -445,13 +445,28 @@ streak does restart then, and the first shot after keeps the last speed for one 
 
 ## Pass 21: 2 issues
 
-Not clean, which restarts the count of clean passes in a row. Eleven of the thirteen readers came back clean. Both
-wrong statements are fixed, and neither is high.
+Not clean, which restarts the count of clean passes in a row. Twelve of the thirteen readers came back clean; the
+second item is one B1 had left as a judgement call, which the lead counted as wrong. Both are fixed, and neither is
+high.
 - **Kit `15` (`TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`), the trade-off row.** It said the Glass Core takes no
-  damage. It takes the core's hits itself, and when it breaks it hurts every foe instead of losing the map
-  (Entity_Ai_Effect_Artifact_Glasscore.cs).
+  damage. Each sub-core takes its own hits through it (the main core drops it), and a sub-core that breaks hurts every
+  foe instead of losing the map (Entity_Ai_Effect_Artifact_Glasscore.cs; this wording is pass 22's correction).
 - **Kit `03` (`TDS_Vessel_Creator/docs/03_ART_AND_AUDIO.md`), the custom aim row.** It said Argo 1.0 passed 64/64 in
   game. The only recorded run is 63/64, and the miss was in the test harness (Argo `IMPLEMENTATION_NOTES.md`).
+
+## Pass 22: 5 issues
+
+Not clean. Nine of the thirteen readers came back clean. All 5 wrong statements are fixed, and none is high; two of
+them were in pass 21's own fix and its write-up.
+- **Kit `15` (`TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`), the trade-off row.** Pass 21's text read as if the
+  Glass Core shields the main core. The main core drops it (Entity_Ai_Effect_Artifact_Glasscore.cs); only sub-cores
+  keep it. The row now says so.
+- **This report, the Pass 21 section.** It repeated that wording and counted eleven clean readers; twelve were.
+- **`.gitignore`, a comment.** It said the handoff tools skip everything the PC writes. `Get-PcManifest.ps1` lists
+  `build_log.txt`, which `make_handoff.py` reports as "On the PC only (left alone)"; the comment now says so.
+- **Argo (`TDS_Mod/Assets/ArgoMod/Editor/ArgoBuilder.cs`, an effect's description).** It said `World_Argo_Flood`
+  plays when a Deep Water is placed. Placing one plays the bubbles; the flood splash comes from FLOOD and from Abyss or
+  Trench adding a free pool.
 
 ## Why every pass found issues
 

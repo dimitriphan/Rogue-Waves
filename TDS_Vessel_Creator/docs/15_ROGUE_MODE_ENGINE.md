@@ -617,7 +617,7 @@ built on both are in the Rogue Waves repository's `docs/mode/MECHANIC_IDEAS.md`.
 | A free build that comes back | Onetimebuild (button removed while its unit lives, back when it dies); Build (a permanent fifth build slot, range 1000, sells for 0) |
 | One special unit at a time | Paper (the first Towerfighter built becomes a buffed paper one), Computer (a static lock) |
 | Delayed delivery | Heroapply_Delay (upgrade name → seconds), Paint (charm after a timer), Snare, Greatspear's look |
-| A trade-off | Glass Core (it takes the core's hits itself; when it breaks it hurts every foe instead of losing the map, and everyone loses `Aura_Base` of their wallet; Entity_Ai_Effect_Artifact_Glasscore.cs:14-29, 32-93), Wavebreaker (foes in range get a health multiplier), Computer (enemies near a core slow time and stun), Bottom Rock (`16` §5) |
+| A trade-off | Glass Core (each sub-core takes its own hits through it, the main core drops it; a sub-core that breaks hurts every foe instead of losing the map, and everyone loses `Aura_Base` of their wallet; Entity_Ai_Effect_Artifact_Glasscore.cs:14-29, 32-93, 97-110), Wavebreaker (foes in range get a health multiplier), Computer (enemies near a core slow time and stun), Bottom Rock (`16` §5) |
 | Swap a unit type | Textbook (every Dagger becomes a training dagger) |
 | Change a unit's team | Blue Paint's charm: team set to the core's, `Enemy` tag removed (Entity_Ai_Effect_Artifact_Bluepaintcharm.cs:19-35) |
 

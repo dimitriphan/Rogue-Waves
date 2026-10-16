@@ -14,7 +14,8 @@ obj/
 *.zip
 .modprojects_token
 .claude/settings.local.json
-# written on the PC by the build scripts and builders (the handoff tools skip them too)
+# written on the PC by the build scripts and builders (the handoff tools skip them too, except that Get-PcManifest.ps1
+# lists build_log.txt, which make_handoff.py then reports as "On the PC only (left alone)")
 TDS_Mod/ModSource/*/Build/
 TDS_Mod/ModSource/*/build_log.txt
 TDS_Mod/ModSource/*/Aseprite/generated/
