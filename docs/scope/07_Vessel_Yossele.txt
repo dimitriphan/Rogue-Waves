@@ -97,7 +97,7 @@
 
 				% 3:{Explosive Finish} When reaching maximum spore stacks, enemies explode with spores, consuming spore stacks and dealing AOE damage based on how many spore stacks were reached. This explosion also can apply spore stacks.
 					- In-game line: ~Full spores burst, spreading the rot
-					- Numbers: ~1 damage per stack consumed, to every enemy within ~1.25 tiles, who get ~2 stacks; ~an enemy can't explode again for 1 second
+					- Numbers: ~1 damage per stack consumed, to every enemy within ~1.25 tiles (the exploding one included), and the others get ~2 stacks; ~an enemy can't explode again for 1 second
 					- Cost: ~Red 420
 				% 3:{Hallucinogen} Enemies that have maximum spore stacks have a chance to attack their allies for a small period of time.
 					- In-game line: ~Fully spored foes may turn on their friends

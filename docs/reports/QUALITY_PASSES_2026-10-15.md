@@ -456,8 +456,8 @@ high.
 
 ## Pass 22: 5 issues
 
-Not clean. Nine of the thirteen readers came back clean. All 5 wrong statements are fixed, and none is high; two of
-them were in pass 21's own fix and its write-up.
+Not clean. Nine of the thirteen readers came back clean. All 5 wrong statements are fixed, and none is high; three of
+them were in pass 21's own fix and its write-up (the kit `15` row, and the Pass 21 section's wording and its count).
 - **Kit `15` (`TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`), the trade-off row.** Pass 21's text read as if the
   Glass Core shields the main core. The main core drops it (Entity_Ai_Effect_Artifact_Glasscore.cs); only sub-cores
   keep it. The row now says so.
@@ -467,6 +467,15 @@ them were in pass 21's own fix and its write-up.
 - **Argo (`TDS_Mod/Assets/ArgoMod/Editor/ArgoBuilder.cs`, an effect's description).** It said `World_Argo_Flood`
   plays when a Deep Water is placed. Placing one plays the bubbles; the flood splash comes from FLOOD and from Abyss or
   Trench adding a free pool.
+
+## Pass 23: 2 issues
+
+Not clean. Eleven of the thirteen readers came back clean. Both wrong statements are fixed, and neither is high.
+- **This report, the Pass 22 section.** It said two of pass 22's five finds were in pass 21's own fix and write-up;
+  three were.
+- **Scope `07` (`docs/scope/07_Vessel_Yossele.txt`), Explosive Finish's Numbers line (a Claude default).** It read as
+  if every foe the burst hits gets 2 stacks. The bursting foe takes the damage but gets no stacks
+  (`TDS_Mod/ModSource/Yossele/Code/08_Cannon.cs`), as Yossele's `DESIGN.md` says; the line now says so.
 
 ## Why every pass found issues
 
