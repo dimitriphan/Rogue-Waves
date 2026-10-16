@@ -443,6 +443,16 @@ All thirteen readers came back clean, with nothing fixed and nothing new listed.
 area. One judgement call is left as it is: scope `16`'s Hypercool line says the cannon is back to +50% when idle; the
 streak does restart then, and the first shot after keeps the last speed for one shot, a detail rather than a wrong fact.
 
+## Pass 21: 2 issues
+
+Not clean, which restarts the count of clean passes in a row. Eleven of the thirteen readers came back clean. Both
+wrong statements are fixed, and neither is high.
+- **Kit `15` (`TDS_Vessel_Creator/docs/15_ROGUE_MODE_ENGINE.md`), the trade-off row.** It said the Glass Core takes no
+  damage. It takes the core's hits itself, and when it breaks it hurts every foe instead of losing the map
+  (Entity_Ai_Effect_Artifact_Glasscore.cs).
+- **Kit `03` (`TDS_Vessel_Creator/docs/03_ART_AND_AUDIO.md`), the custom aim row.** It said Argo 1.0 passed 64/64 in
+  game. The only recorded run is 63/64, and the miss was in the test harness (Argo `IMPLEMENTATION_NOTES.md`).
+
 ## Why every pass found issues
 
 The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository
