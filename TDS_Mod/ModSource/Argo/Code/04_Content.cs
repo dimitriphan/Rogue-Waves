@@ -161,7 +161,7 @@ public static class ArgoContent
     }
 
     // Stats like the shipped data: "Health=40+25" is Health 40, +25 per level (Leveladd). Unknown stats are added with the
-    // display settings of the first existing one (hidden numbers, like every shipped stat).
+    // display settings of the first existing one (shown only to its own team, like nearly every shipped stat).
     public static Statproperties Stats(Statproperties template, string name, string[] specs)
     {
         Statproperties stats = UnityEngine.Object.Instantiate(template);

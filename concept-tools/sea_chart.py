@@ -70,8 +70,9 @@ def links_between(rng, w, nw):
     """Non-crossing links from a row of w nodes to a row of nw: a staircase walk from (first, first) to (last, last).
     Each step adds a child to the current node (k+1), hands the current child on to the next node (i+1), or moves both
     on (i+1, k+1); every cell it visits is a link. So links never cross and every node in both rows is linked. A node
-    with one child so far takes a second five times in six; one with two moves on, sharing its last child with the next
-    node unless the next row has spare nodes to reach. Without crossings, a node can't
+    with one child so far takes a second five times in six; one with two shares its last child with the next node, or,
+    when the next row has spare nodes to reach, moves on to a new child half the time, takes a third a quarter of the
+    time and shares a quarter of the time. The row's last node takes every child left. Without crossings, a node can't
     always have two children (rows of equal width need some single links), so a vote offers 1-3 maps."""
     i = k = 0
     kids = [[0]] + [[] for _ in range(w - 1)]

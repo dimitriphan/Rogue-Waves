@@ -79,7 +79,7 @@ Smacky/Snosno/Boutman/Fie/Buster, and `Entity_Ai_General_Upgrade`).
 ## 3. Stats (04)
 
 `Stats(template, name, new[] { "Health=25+25", "Damage=1", "Range=2.5" })` builds a `Statproperties` with exactly
-these stats (`+x` = Leveladd), copying display style from the template's same-named stat (hidden numbers). List only
+these stats (`+x` = Leveladd), copying display style from the template's same-named stat (`Display_Exposed` off: shown to the owner's team only). List only
 the stats the entity uses: leftovers like Projcount mean nothing on your building.
 
 ## 4. Buildables and upgrade trees (04: `BuildTower`)

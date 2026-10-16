@@ -351,8 +351,8 @@ finds issues; that is the next section.
 
 ## Pass 13: 8 issues (only wrong facts count from here)
 
-Not clean. Dimitri chose to go on with a narrower bar: only wrong facts count. Eight of the thirteen readers came back
-clean, including all three readers of scope `16` against the code: none of its lines is wrong. The 8 wrong statements
+Not clean. Dimitri chose to go on with a narrower bar: only wrong facts count. Seven of the thirteen readers came back
+clean, and none of the three readers of scope `16` found a wrong line in it (one found a wrong line in kit `17`). The 8 wrong statements
 are all fixed; none is high.
 - **Kit `16` and `17` (4).** Ore Scraps pays 1 of each colour the hit ore yields, not of every colour; the Mining
   Hut's Convert trades at most once a second, not on every gain (both chapters); Fie's hero script also re-runs her
@@ -363,6 +363,24 @@ are all fixed; none is high.
 - **cloud-check's preview driver (comment).** It renders at the builders' preview angle; the game camera has no
   fixed angle.
 - **This report.** Scope `16` was 28 of pass 9's 39 issues, not 31.
+
+## Pass 14: 10 issues
+
+Not clean. Seven of the thirteen readers came back clean, among them all three readers of scope `16`. Nine wrong
+statements are fixed and one code problem is listed; none is high.
+- **"Hidden" stats (kit `02`, `05`, `VESSEL_SURVEY.md`, and comments in Argo, Yossele and the template).** These said
+  every shipped stat is hidden. `Display_Exposed` off hides a stat only from other teams; the owner's panel shows it
+  (`Game_Ui.cs` 146-174).
+- **Kit `17` §3.** Convert and Marketplace do unsubscribe when the hut goes; the bug is their downgrade, which clears
+  the flag before testing it.
+- **RogueWavesMode `07_Weather.cs` (comment).** The flood's stand-in block is made on the boat, as pass 13 fixed in
+  `SEA_CHART.md`.
+- **Comments and docstrings.** The template's Marked look is velvet, not plum; `sea_chart.py`'s `links_between`
+  docstring now says what the walk does.
+- **This report.** Pass 13 had seven clean readers, not eight.
+- **The sea chart's links (listed, C2).** Scope `04` says each map links to 1 to 3 maps. The walk that draws the chart
+  (`sea_chart.py` and the mode's `03_Chart.cs`) gives a row's last map every child left, so in about 7 seeds in 100 one
+  map links to 4 and the vote offers 4. This changes the game, so it is listed with a default below.
 
 ## Why every pass found issues
 
@@ -406,6 +424,7 @@ Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.
 | B3-31 | Connected Roots guards the whole team's buildings; the scope says "yours" | Ask at the next Yossele build: own or team |
 | B4-14 | `09_Rejoin.cs` turns a player away once per session id and keeps the list all map; the game gives a returning player the same session id, so a second Join Game gets them in, seatless, while a seat is empty | Forget a session once it leaves; add a second try to `docs/mode/REJOIN.md` §6 O5; next mode change |
 | B4-11, B4-13 | Two weather lines in code differ from scope `04`'s in-game lines; the mode's dev-export description omits the rejoin | Take scope `04`'s lines at the next mode change; the description with the one pack version |
+| C2 (pass 14) | The chart's link walk (`concept-tools/sea_chart.py`, `RogueWavesMode/Code/03_Chart.cs`) can give a row's last map 4 links (about 7 seeds in 100); scope `04` says 1 to 3 | Cap the last map at 3 in both at the next mode change, keeping scope `04` |
 | B4-12 | `09_Rejoin.cs` keeps the first host's name for the "Lost the map" line all launch | Clear it on leaving a map, next mode change |
 | A3-9 | The mode's save keys (`Campaign_Seed`, `Stock_World`, ...) lack the `RW_` prefix kit `23` §2 rule 3 asks for | Rename at the next mode change; no campaign has been saved outside the self-test, so no migration |
 | B1-3 | The template never wires kit 1.3 `ModKitCombat` (kill credit) or kit 1.2 `ModKitTowers.Fit` | Add them with the 1.6 pack calls (B10), before Spool is scaffolded |

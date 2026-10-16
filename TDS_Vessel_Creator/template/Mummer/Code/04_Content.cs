@@ -193,7 +193,7 @@ public static class MummerContent
     }
 
     // "Health=25+25" -> value 25, +25 per level. Builds a stat block holding exactly these stats, styled like the
-    // template's first stat (hidden numbers, like every shipped tower).
+    // template's first stat (shown only to its own team, like every shipped tower).
     static Statproperties Stats(Statproperties template, string name, string[] spec)
     {
         Statproperties stats = UnityEngine.Object.Instantiate(template);

@@ -209,7 +209,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/QUALITY_PASSES_2026-10-15.md`. Older entries are in "Log" below.
 - **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
   the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
-  turned-away player who gets in on a second try (`QUALITY_PASSES_2026-10-15.md` A3-9, B4-11, B4-12, B4-14), and
+  turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
+  A3-9, B4-11, B4-12, B4-14, C2), and
   its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his

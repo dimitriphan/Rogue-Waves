@@ -40,8 +40,9 @@ public static class RWWeather
     static string Home(int w) { return w == RWChart.RisingWater ? "3_Manafold" : w == RWChart.NestingGround ? "3_Vultures" : ""; }
 
     // Every being the weather's map object spawns must be loaded too. The flood fetches Block_Flood_Deter by name at
-    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1), but no group holds it, so it
-    // is made in the map instead (StandIn) and is not listed here.
+    // each Tide (Entity_Ai_Main_Flood.Rise) and throws when it is missing (PC round 1), but no group holds it, so the
+    // mod makes a stand-in instead (StandIn: on the boat once the groups are loaded, else in the map's first 30 s) and
+    // does not list it here.
     static string[] Needs(int w)
     {
         switch (w)

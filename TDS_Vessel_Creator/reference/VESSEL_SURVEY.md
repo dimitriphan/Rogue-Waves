@@ -34,7 +34,9 @@ This is the reference for making a vessel that feels like the developers made it
 - Hero stats:
   - Health 25–50, Speed 2–3.5, Damage 1.5–4, Range 1.5–3, Attackspeed 0.5–0.75, Buildrange 2–3, Sellrate 0.5–0.75.
   - Ranged heroes add Projspeed (15).
-  - All stats are hidden from the stat panel.
+  - Every stat but Buster's Speeddamage has `Display_Exposed` off (the data survey's `/hidden`), which hides it only
+    from a player of another team. The owner's panel shows each stat whose `Display_Type` is not None and that has
+    an icon; health stats go to the bar (Game_Ui.cs:146-174, 965-982).
 - Special rule: an `Upgradeproperties` named `Hero_<Name>_Tooltip_Upgradeproperties`, tier (Priority) −3, no costs, params or AIs, placed in the entity's `Upgradesinit`. Display_Name is the rule's name, Display_Desc the rule.
 - Entity Display_Desc follows the pattern "Regular, single-target ranged" / "Fast, single-target melee".
 - Log: Title is the name. Maindesc is one or two lines of **lore**, not mechanics.

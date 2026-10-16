@@ -187,9 +187,11 @@ Landquick 4×1. The tutorial forces Smacky.
   (Entity_Ai_Effect_Smackyhut_Scrap.cs:8-40; Entity_Ai_Tower_Smackyhut.cs:196-208, 258-364).
 - Kill credit: hero, miners, all projectiles incl. explosions and split children, Spikes, the Spikes trap. **Not**:
   Detonate, Bramble, Marketplace, burn ticks (the first arrow already credited).
-- Bugs: Bomb Launcher's downgrade removes Quick Bombs' mod; Convert and Marketplace never unsubscribe; units removed by
-  lowering `Units` come back; live miners lag one level; Rejuvenate heals for the previous tier; a drowned wall leaves
-  its Bramble and Beacon tiles buffing; engineers whose hut died throw every tick (no null check on `Parent`).
+- Bugs: Bomb Launcher's downgrade removes Quick Bombs' mod; Convert and Marketplace keep running after their
+  downgrade (it clears the flag before testing it to unsubscribe, Entity_Ai_Tower_Smackyhut.cs:526-544; the hut's
+  despawn does unsubscribe them, :168-195); units removed by lowering `Units` come back; live miners lag one level;
+  Rejuvenate heals for the previous tier; a drowned wall leaves its Bramble and Beacon tiles buffing; engineers whose
+  hut died throw every tick (no null check on `Parent`).
 - Borrow: `Entity_Ai_Mob_Smackyminer` (generic miner, already Sprigg's), `Entity_Ai_Tower_Tilebuff` (a tile aura that
   force-applies the being's first upgrade to same-team towers on its tile), `Projectile_Ai_Splitbounce`, the archer
   arrows (the kit's default projectile clones, `01` §9), `Effect_Smackyhut_Buff/Buff2` (timed tower buff, removes

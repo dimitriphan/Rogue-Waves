@@ -39,7 +39,8 @@ writing code.
 - Attack AI: **melee** = `Entity_Ai_Mob_Combat` like Smacky; **ranged** = `Entity_Ai_Mob_Ranged` with the projectile
   named in the Attack command, like Sno Sno (never both: Sprigg once hit twice, melee from 3.5 tiles plus its seed).
 - `Display_Desc` follows the pattern "Fast, single-target melee", "Regular, single-target ranged".
-- All hero stats stay hidden (copy the template's stat styles).
+- Hero stats copy the template's stat styles: `Display_Exposed` off hides them from other teams only; the owner's
+  panel shows each one that has a display type and an icon (Game_Ui.cs:146-174).
 - **Special rule** (optional but recommended; Sno Sno, Boutman, Buster have one): a tier -3 upgrade
   `Hero_<Name>_Tooltip_Upgradeproperties` in `Upgradesinit`, named like "Snoborne", "Good Dog", "The Show Must Go On",
   with one comma-phrase line summarising every rule of the vessel ("Melee with reach, foes felled near a Loom leave

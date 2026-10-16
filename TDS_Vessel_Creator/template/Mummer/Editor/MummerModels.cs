@@ -478,7 +478,7 @@ namespace MummerBuild
 
         // ---------------------------------------------------------------- debuff meshes (attached to foes by the game)
 
-        // Marked: a plum downward triangle floating over the foe, clear of tall foe sprites (run 4 close-up: at 1.15 it
+        // Marked: a velvet (rose-red) downward triangle floating over the foe, clear of tall foe sprites (run 4 close-up: at 1.15 it
         // hid behind a Dagger's head).
         static Lp Marker()
         {
