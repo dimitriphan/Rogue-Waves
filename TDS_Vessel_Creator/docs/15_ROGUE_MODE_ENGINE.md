@@ -672,9 +672,10 @@ boss being anywhere: a Breaker map's boss would be the pack's own enemy, spawned
   `Tds_Data.Checkunlocks`, which writes `Unlock/<key>` and `Unlock_Notif/<key>` (Tds_Data.cs:26-61). Trackers:
   `Additive` (a `<key>_Counter` toward `Unlockam`), `Conditions` (compare save keys), `Matchreader` (the last match's
   JSON). The boat's unlock screen shows an artifact panel for `Unlock_Artifact_<name>` and a vessel panel for
-  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826). The match is a substring, and **any other key is marked
-  seen with no announcement**, so a Depth unlock through the stock system is silent: announce it with a Milestone or
-  the pack's own message (decompile 2026-10-14, `23` §3.2).
+  `Unlock_Hero_<name>` (Macro_Unlock.cs:641-672, 795-826); a key that a world's `Macro_Unlocklink_Add` carries plays
+  that link's cine instead (Macro_Unlock.cs:409-490). The match is a substring, and **any other key is marked seen
+  with no announcement**, so a Depth unlock through the stock system is silent: announce it with a Milestone or the
+  pack's own message (decompile 2026-10-14, `23` §3.2).
 - **Discoveries** (`Macro_Discoveriesui.Items`, a list of `Discoverycont`: Map or Milestone, name, text, sprite,
   condition) light the boat's "New" badge when more are unlocked than the saved count (Macro_Discoveriesui.cs:25-157;
   Macro_Extraui.cs:85-105): a mod can append Milestones ("Campaign cleared at Depth 1").

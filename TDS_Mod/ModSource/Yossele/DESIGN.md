@@ -17,8 +17,9 @@ Grafted, Entangling Spaghetti Roots renamed Entangling Roots (same rules and num
 - **Silhouette:** a round clay head with a see-through hole for a mouth, a two-leaf sprout, glowing green eyes, four
   long root-like limbs (taken shape, `docs/STYLE.md`). The hole is its mouth (scope).
 - **Sprite baseline:** Dimitri's reshade, `concepts/vessels_2026-10-09/v3_flat/yossele_reshade` (flat finish: opaque,
-  one shade band down the right edge, cast shadow, no half-alpha rim). Every frame is his pixels moved, squashed or
-  added to, never redrawn. Back views start from `concepts/vessels_2026-10-09/back/yossele_back`.
+  one shade band down the right edge, cast shadow, no half-alpha rim). Every 32 px frame is his pixels moved, squashed
+  or added to, never redrawn (the 16 px boat mini is drawn new at 10 x 13). Back views start from
+  `concepts/vessels_2026-10-09/back/yossele_back`.
 - **Palette:** clay `864B41` to `733E35` (the reshade's `945743`), leaf `72CC35` / `6ABE30`, eyes `99E550`, collar
   `323C39`. Accent (hero `Color`, buttons, journal): leaf green `72CC35`.
 - **Towers:** low-poly sleek, never voxel. Motif on the top and front faces: round holes and root feet in clay, with
@@ -149,7 +150,7 @@ Bold params are the scope's numbers; the rest are defaults (all listed in `docs/
 - Debuff looks (the game attaches them): `Debuff_Yossele_Spores` (green-brown puffs, the stack count isn't drawn),
   `Debuff_Yossele_Sporefull` (a toadstool cap over the head at full stacks), `Debuff_Yossele_Daze` (Hallucinogen's
   swirl), `Debuff_Yossele_Tangle` (vines round the feet, Spaghetti Roots' snare), `Debuff_Yossele_Blockade` (a vine
-  barrier ring on the Stonehenge); stock `Debuff_Slow` for slows.
+  barrier ring on the Stonehenge); stock `Debuff_Slow` for the vines' slow.
 - World effects: `World_Yossele_Sporeblast` (scaled to the real radius), `World_Yossele_Seedhit`, `World_Yossele_Grow`
   (a burst of leaves when a building gains a stage), `World_Yossele_Fertilize`, `World_Yossele_Compost`,
   `World_Yossele_Fruitpick`, `World_Yossele_Mend` (generated, not played yet), `World_Yossele_Drain`,

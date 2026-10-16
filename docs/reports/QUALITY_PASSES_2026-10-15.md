@@ -417,6 +417,16 @@ Not clean. Twelve of the thirteen readers came back clean. The one wrong stateme
 `docs/reports/README.md`'s row for `MECHANICS_CHECK.md` said every mechanic was proven on the PC, the same claim pass
 16 fixed in `CLAUDE.md`. Only the eight that needed the game were.
 
+## Pass 18: 4 issues
+
+Not clean. Eleven of the thirteen readers came back clean. All 4 wrong statements are fixed, and none is high.
+- **Unlocks (`docs/EXPANSION_SCOPE.md` row 9, kit `15` §18.4).** They said only vessel and Cardinal unlocks are
+  announced. A world-link unlock plays its link's cine on the world map (`Macro_Unlock.cs` 409-490), as kit `23` §3.2
+  already said.
+- **Yossele (`DESIGN.md`, `docs/YOSSELE_BUILD_NOTES.md`, a `YosseleCharacter.cs` comment).** Stock `Debuff_Slow` shows
+  only for the vines' slow, not Sticky Spores'. Every 32 px frame is Dimitri's pixels, but the 16 px boat mini, the
+  splash, the ready-up face and the tab icon are drawn new; the pages said none was.
+
 ## Why every pass found issues
 
 The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository
