@@ -5,7 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
-| `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | Passes over every file until two in a row came back clean; what was fixed and what is left for Dimitri |
+| `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | Twelve passes over every file (stopped at Dimitri's word); what was fixed, why each pass found issues, what is left for Dimitri |
 | `QUALITY_CHECK_2026-10-15.md` | 2026-10-15 | Two quality passes over every file, the open PRs included, and the repository's reorganisation |
 | `BASE_VESSEL_CHECKS_2026-10-12.md` | 2026-10-12 | Kit `17` §12 and `16` §9 checked in game by RogueLab round 7 |
 | `FULL_TEST_2026-10-11.md` | 2026-10-11 | Every probe set re-run on one build in game: 208 pass, 0 fail |

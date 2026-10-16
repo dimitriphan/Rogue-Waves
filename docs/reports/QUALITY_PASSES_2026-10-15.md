@@ -1,9 +1,10 @@
-# Quality passes until two clean (2026-10-15)
+# Quality passes (2026-10-15)
 
 Dimitri asked (2026-10-15 05:18Z): "Do another check on every asset in the repository now. Continue until there are no
-noticeable issues 3 times in a row." At 13:23Z he cut it to two clean passes in a row. Base: `claude/phase-1-6lfnar`
-at f455c37 (PRs #2-#36 merged). Everything here was read, compiled or run as a script in the cloud; nothing was run in
-game.
+noticeable issues 3 times in a row." At 13:23Z he cut it to two clean passes in a row, and on 2026-10-16 at 00:17Z
+he asked to stop after pass 12 and say why every pass finds issues ("Why every pass found issues" below). Base:
+`claude/phase-1-6lfnar` at f455c37 (PRs #2-#36 merged). Everything here was read, compiled or run as a script in the
+cloud; nothing was run in game.
 
 ## How each pass works
 
@@ -327,6 +328,52 @@ fix below was checked against the decompiled game.
 
 Every one of pass 10's fixes held.
 
+## Pass 12: 8 issues
+
+Not clean. Nine of the thirteen readers came back clean (A1, A2, A3, B1, B2, B3, B4, C, and Boutman's part of scope
+`16`). All 8 issues are fixed; none is high. Every scope `16` fix was checked against the decompiled game.
+
+**Scope `16` (6).**
+- Sno Boulder: a new Sno Cannon offers it first, and bought there it makes no Sno at all (a game bug, kit `17` §4).
+- Permasno: a shot that finds Sno takes the whole pool off its tile, up to 3 times its ammo.
+- Tip of the Iceberg: each heal check that fires eats all the Sno on its tile.
+- The Heater melts and burns on its own timer, whether foes are near or not.
+- Second Servings: a Rest Stop holding its buff stops buffing until the buff ends (a game bug, kit `17` §6).
+- Living Wall: each shot's beam hits twice, so 6 damage, not 3, except on a foe more than 5 tiles away.
+
+**Bookkeeping from pass 11 (2).** The `02` log's count of changed upgrade lines (now 66) and `docs/PLAN.md` Part C
+"Next", which did not yet carry pass 11's listed B3-39.
+
+Every one of pass 11's fixes held. At 00:17Z on 2026-10-16 Dimitri asked to stop after this pass and say why every pass
+finds issues; that is the next section.
+
+## Why every pass found issues
+
+The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository
+has been close to clean since pass 6. Four things kept the count up.
+
+1. **One file, scope `16`, has no floor.** It is a 1,400-line summary of the five base vessels that Claude wrote
+   from the game's data, and since pass 8 it has been most of every count: 4 of 7, 31 of 39, 19 of 37, 11 of 18 and
+   6 of 8. A summary can always say more. Each pass read it one layer deeper (the data survey, then the code branch
+   for each upgrade, then every place a value is used, then how upgrades interact and where the game's own code is
+   buggy), and each layer found lines the one before could not see. Pass 7 was clean only because it still compared
+   `16` with the data survey; pass 8 compared it with the code. The finds are shrinking (28, 19, 11, 6) but still
+   come.
+2. **The bar moved.** "Noticeable" first meant wrong; from pass 9 it also meant leaving out something the code does.
+   That roughly doubled what counted in `16`. Pass 11 narrowed it to omissions that would change how a player plays,
+   and the count halved.
+3. **Fixes made follow-ups.** Each fix in `16` changes the count in the `02` log, sometimes a matching line in kit
+   `17`, this report and the plan's list of what is left. One to three issues a pass (pass 10's three corrections to
+   passes 8 and 9; the `02` count in passes 9 to 12) came from the passes themselves.
+4. **Each pass uses fresh readers.** Thirteen new readers go over about 400 files with no memory of the last pass.
+   They don't miss the same things twice, so a few small finds a pass is expected even in good files: pass 12's areas
+   outside `16` found nothing new of their own.
+
+What this means: the code, tools, kit chapters, mode and vessel pages are settled; nothing in passes 11 or 12 was a
+code bug or a high item. Scope `16` will keep giving a few lines a pass for as long as it is read against the code
+this closely. It is reference for the base vessels (what Directions and Cardinals must work with), not something the
+pack builds from.
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".
@@ -334,7 +381,7 @@ Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.
 | # | What | Default |
 | --- | --- | --- |
 | B3-24 | Yossele's debuff looks still go through the throttled `Vfxdebuffcheck`, and the vines renew the slow look every 0.5 s per foe | Copy Argo 2.0.1's `ArgoUtil.Debuff`, renew the slow look only near its expiry; next Yossele build |
-| B3-39 | Yossele's Stonehenge Lore (`Code/02_Data.cs:203`) says the vines creep further each Tide; they grow 1 tile per 2 Growth stages | Fix the string with B3-25/B3-26 in the next build |
+| B3-39 | Yossele's Stonehenge Lore (`TDS_Mod/ModSource/Yossele/Code/02_Data.cs:203`) says the vines creep further each Tide; they grow 1 tile per 2 Growth stages | Fix the string with B3-25/B3-26 in the next build |
 | B3-25, B3-26 | Yossele's display names are the pre-2026-10-13 ones (Selfish Sapling, Grafted Colors, Entangling Spaghetti Roots), and Selfish's in-game line has numbers | Rename strings, comments and tables to the scope's names and lines in the next build |
 | B3-27, B3-30 | Yossele's footstep plays on the peak-lift frame; the Mend effect and three sounds are built but never played | Footstep on frames 0 and 3; play or drop the unused assets, next build |
 | B3-28, B3-29 | Two small leaks in Yossele: `incoming` keeps a foe that died before its seeds landed; `LastHit` statics are never cleared per map | Fix in the next build |

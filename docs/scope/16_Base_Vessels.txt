@@ -337,6 +337,7 @@
 				% 2:{Sno Boulder} Sno chunks are much larger and explode
 					- Numbers: ammo +5; damage +100%; sno +10
 					- Leads to: {Hypercool}, {Icicle Shot}, {Permasno}
+					- Also offered: on a new Sno Cannon, beside Sno Blower and Sno Chomper; bought there, it skips level 1 and Sno Chomper, and its sno +10 then does nothing (no Sno on hit) /~ Read from the game's data and code: the Cannon's own upgrade list holds it, a game bug (kit 17 §4) \
 					- Cost: Red 100
 				% 2:{Extra Frosty} Sno applies a slowing effect that can stack
 					- Numbers: slow -10%; duration 0.75 seconds
@@ -360,7 +361,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 75
 				% 3:{Permasno} Can fire without Sno, additional Sno increases damage
-					- Numbers: a shot needs half its ammo in Sno (sno 0.5), and after each shot the pool refills to twice its ammo for free, so it always fires; damage +0.05 for each Sno in the last shot's pool, the free part included (a flat bonus, not a %) /~ Read from the game's code \
+					- Numbers: a shot needs half its ammo in Sno (sno 0.5), and after each shot the pool refills to twice its ammo, so it always fires; but a shot that finds Sno takes the whole pool off that tile, up to 3 x its ammo, not just its ammo; damage +0.05 for each Sno in the last shot's pool, the refilled part included (a flat bonus, not a %) /~ Read from the game's code \
 					- Leads to: {Snoble Alert}, {Snoblaster 7A+}
 					- Cost: Red 75 + Blue 75 + Yellow 50
 
@@ -374,7 +375,7 @@
 					- Cost: Red 2500 + Blue 50
 
 		(Offense 2):{Heater}
-			- On each attack, burns up to 5 foes in range and melts the nearest Sno within its Sno range by its melt speed.
+			- Every 1 / attack speed seconds, foes near or not, burns up to 5 foes in range and melts the nearest Sno within its Sno range by its melt speed.
 			[Stats]
 				- In-game line: Heats surrounding area, melts Sno
 				- Health: 100, +100 per level
@@ -469,7 +470,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 200 + Yellow 250
 				% 3:{Tip of the Iceberg} Fire piercing icicles forward and back when healed
-					- Numbers: damage 15, on icicles it fires forward and back at each heal check (each heal delay without a hit) while Sno is on its tile, whether or not it needs healing /~ Read from the game's code: the data names it damage 15 \
+					- Numbers: damage 15, on icicles it fires forward and back at each heal check (each heal delay without a hit) that finds Sno on its tile, whether or not it needs healing; each such check also eats all the Sno on its tile, so the next pair waits for new Sno there /~ Read from the game's code: the data names it damage 15 \
 					- Leads to: {Take the Heat}
 					- Cost: Red 75 + Blue 225
 
@@ -947,7 +948,7 @@
 					- Leads to: {Fake Wall}
 					- Cost: Blue 125
 				% 3:{Living Wall} Wall is now considered a tower and can now attack
-					- Numbers: damage 3; attack speed 3; range 7
+					- Numbers: damage 3 per beam tick, and each shot's beam ticks twice, 0.2 seconds apart (only once on a foe more than 5 tiles away); attack speed 3; range 7 /~ Read from the game's code \
 					- Leads to: {True Wall}, {Fake Wall}
 					- Cost: Blue 150 + Red 35
 
@@ -1122,7 +1123,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 225
 				% 3:{Second Servings} Effects now can target towers and Walls, which have a longer duration
-					- Numbers: a buff on a tower lasts x5 as long; on a unit, as before /~ Read from the game's code: the data names it duration +500% \
+					- Numbers: a buff on a tower lasts x5 as long; on a unit, as before; a Rest Stop holding one of these buffs stops buffing until it ends /~ Read from the game's code: the data names it duration +500%; the stop is a game bug (kit 17 §6) \
 					- Leads to: {All You Can Eat}, {Specific Tastes}
 					- Cost: Yellow 100 + Red 75
 
