@@ -177,10 +177,11 @@ Landquick 4×1. The tutorial forces Smacky.
 | Mining Hut (Yellow 35, `Tower, Gatherer`) | spawns miners (one ore hit per round trip) or engineers (Support Team) | Respawn, Health | **`Units`**: only `Addressminercount` (on a downgrade) reads it; Starting spawns exactly one (Entity_Ai_Tower_Smackyhut.cs:70-132) |
 | Wall (Blue 20, `Tower, Smackywall`) | posts link to `Smackywall` neighbours; Spikes reflect; Bramble and Beacon tile auras; Perma-Wall rebuilds | Health, Damage once Spikes made it | regen 7.5/s, Rejuvenate `100 × Level`, Bramble 15, Beacon 750/÷1.5 |
 
-- **Engineers** walk to the nearest same-team `Towerfighter` of **any** player that lacks their buff and give it
-  `Effect_Smackyhut_Buff` (Range +25 %, Attackspeed +50 %, Damage +25 % Pmulti, 8 s) or, when their `Effect` stat is
-  not exactly 1, `…Buff2` (×3 attack speed, 14 s) (Entity_Ai_Mob_Smackyengineer.cs:42, 95-162). **Any outside change
-  to an engineer's `Effect` switches it to the Firm buff.**
+- **Engineers** walk to the same-team `Towerfighter` of **any** player nearest their **Hut** (sorted from
+  `Master.Parent`, no range limit) that lacks their buff and give it `Effect_Smackyhut_Buff` (Range +25 %,
+  Attackspeed +50 %, Damage +25 % Pmulti, 8 s) or, when their `Effect` stat is not exactly 1, `…Buff2` (×3 attack
+  speed, 14 s) (Entity_Ai_Mob_Smackyengineer.cs:42, 69, 95-162). **Any outside change to an engineer's `Effect`
+  switches it to the Firm buff.**
 - Ore Scraps (`Mob_Smackyminer_Chips`) pays the **unit's owner** 1 of each colour per ore hit; Convert trades −0.5/−0.5
   for +1 on every gain of the owner's (Entity_Ai_Effect_Smackyhut_Scrap.cs:8-40; Entity_Ai_Tower_Smackyhut.cs:258-364).
 - Kill credit: hero, miners, all projectiles incl. explosions and split children, Spikes, the Spikes trap. **Not**:
@@ -205,7 +206,7 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |
 | Sno Cannon (Red 30, `Tower, Towerfighter`) | eats the nearest **`Snoble`** within `Rangesno` whole, or else `Ammo` Level from the nearest **`Sno`-tagged entity** (both **of any team**), then fires; Snoblaster laser drains snow to 5000 and fires a ×6 beam | Damage, Attackspeed, Range, Rangesno, Ammo, Projspeed | splash, slow, Hypercool, Permasno, laser and Snoble numbers |
-| Sno Box (Blue 10 Yellow 25, `Tower, Gatherer`) | hurts every ore in Range (no `Lasthit`) and makes snow (`Heal` Level) on its tile or, with Sno Fall, where it throws it (no range limit); all its hurts on `Mob`s ×20 (×50 Hard Sno) | Damage, Attackspeed, Range, Heal | ×20/×50, Snoble every 5th, Snoaddrate |
+| Sno Box (Blue 10 Yellow 25, `Tower, Gatherer`) | hurts every ore in Range (no `Lasthit`) and makes snow (`Heal` Level), only when an ore is in Range, on its tile or, with Sno Fall, where it throws it (no range limit); all its hurts on `Mob`s ×20 (×50 Hard Sno) | Damage, Attackspeed, Range, Heal | ×20/×50, Snoble every 5th, Snoaddrate |
 | Heater (Red 60, `Tower, Towerfighter`) | burns up to 5 foes in Range, melts snow; Cookin' Eggs pulse, Heat Treat heals allies, Cold Sweats gives every same-team `Towerfighter` in its Range +100 % attack speed | Damage, Attackspeed, Range, Snomeltspeed, Rangesno | pulse 20, heals 10/3.3, Shock +15 %, Scorch ramp |
 | Ice Brick (Blue 15, `Tower`) | heals from the snow on its tile, then an overshield (`Healthover`) up to `Health × Overmax`; leftovers Thin Ice (rebuilds) and Rock | Health, Heal, Healtime, Overmax | ×0.85 resist, bursts 200/35, snow lob 20 |
 

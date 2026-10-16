@@ -270,7 +270,7 @@
 			- Effect: 1
 			- How many: replaces the miners
 			- Respawn: 10 seconds
-			- Orders: walks to the nearest attacking tower of any player on the team that lacks the buff and tunes it (range +25% of base, attack speed +50% of base, damage +25% of base, for 8 seconds)
+			- Orders: walks to the attacking tower nearest its Hut, of any player on the team, that lacks the buff and tunes it (range +25% of base, attack speed +50% of base, damage +25% of base, for 8 seconds)
 			- Cost: free
 
 | Base Vessel: Sno Sno |
@@ -479,7 +479,7 @@
 					- Cost: Red 250 + Blue 1500
 
 		(Economy):{Sno Box}
-			- Hurts every ore in range at once and makes Sno on its tile, or where it throws it after Sno Fall.
+			- Hurts every ore in range at once and makes Sno on its tile, or where it throws it after Sno Fall; with no ore in range it makes no Sno.
 			[Stats]
 				- In-game line: Siphons nearby ores, generates Sno
 				- Health: 25, +25 per level
@@ -640,7 +640,7 @@
 					- Cost: Yellow 125 + Red 125 + Blue 125
 
 				% 3:{1 Inch Bout} Boutman will ramp up in damage the longer he fights, including recruited fish
-					- Numbers: damage +3.5% for each second he keeps attacking, for him and his recruited fish, with no cap; when he stops, the bonus goes and its count falls 2 seconds' worth each second /~ Read from the game's code: the data names it decay +200% \
+					- Numbers: damage +3.5% for each second he keeps up a melee attack (Shao-min's shots alone don't count), for him and his recruited fish, with no cap; when he stops, the bonus goes and its count falls 2 seconds' worth each second /~ Read from the game's code: the data names it decay +200% \
 					- Leads to: {Ip Man-of-War}
 					- Cost: Red 1500
 				% 3:{Iron Fish} Recruited fish are exceptionally buffed
@@ -653,7 +653,7 @@
 					- Cost: Yellow 1750
 
 				% 4:{Ip Man-of-War} The Bout family gains new abilities.
-					- Numbers: the team's Bout family is buffed for good (a new member within 12 seconds): Boutbro damage +800% and range +50%, and he teleports when sent over 3 tiles or where he has no path; each hit of Boutdad or Boutmom also splashes its damage on up to 8 foes around the target; an afterimage there at the time deals +100% damage /~ Read from the game's code; the numbers are the Bout Family effect's \
+					- Numbers: the team's Bout family is buffed for good (a new member within 12 seconds): Boutbro damage +800% and range +50%, each of his hits then doubled (18 times his base damage in all), and he teleports when sent over 3 tiles or where he has no path; each hit of Boutdad or Boutmom also splashes its damage on up to 8 foes around the target; an afterimage there at the time deals +100% damage /~ Read from the game's code; the numbers are the Bout Family effect's \
 					- Leads to: nothing, the branch ends here
 					- Cost: Yellow 3500 + Blue 3500
 				% 4:{Kung Fu Tackle} Boutman can recruit all nearby fish for a time, healing them
@@ -908,11 +908,11 @@
 			- Special rule: none
 
 		[Vessel Mechanic] [The Wall]
-			- Rule: Her Wall grows tile by tile (Grow Wall, Blue 20 each) and its upgrades spread through every connected Wall
-			- Details: Shared Strength spreads them to the buildings beside the Wall too
+			- Rule: Her Wall grows tile by tile (Grow Wall, Blue 20 each); each piece has its own upgrades, and Carbon Infused, Invisible Forces and True Wall each spread, when bought, to every piece then connected (a piece grown later gets none of it, but Fake Wall's new pieces copy the health and resistance)
+			- Details: Shared Strength also spreads them to the buildings beside the piece that has it
 
 		(Defense):{The Wall}
-			- Grows by its Grow Wall button; effects spread through every connected Wall.
+			- Grows by its Grow Wall button; three upgrades spread, when bought, through every connected piece.
 			- Living Wall turns it into a turret.
 			[Stats]
 				- In-game line: Strong, can be grown and share effects. Modular.
@@ -943,7 +943,7 @@
 					- Leads to: {True Wall}
 					- Cost: Blue 85 + Yellow 25
 				% 3:{Unstable Wall} When drowned, deal massive damage and weaken enemies
-					- Numbers: damage 45; range 2
+					- Numbers: when this piece is drowned, every foe within 2 tiles takes 45 damage and loses 25% of its speed and damage for good /~ Read from the game's code: the data names them damage 45; range 2 \
 					- Leads to: {Fake Wall}
 					- Cost: Blue 125
 				% 3:{Living Wall} Wall is now considered a tower and can now attack
@@ -956,7 +956,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 3000
 				% 4:{True Wall} Reset a single enemy upon damage, effect propagates through Wall system
-					- Numbers: true +1
+					- Numbers: every piece then connected gets 1 charge: the first foe to hurt it takes 1000 damage and is moved back beside what spawned it; a used charge does not come back /~ Read from the game's code: the data names it true +1 \
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 2500
 
@@ -1109,7 +1109,7 @@
 					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
 					- Cost: Yellow 125
 				% 2:{Side of Sushi} Units deal critical damage on the first attack after some time
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the building's code, but a bug there means the critical hit never fires (kit 17 §6) \
 					- Leads to: {Finish the Plate}, {Regular Customer}, {Second Servings}
 					- Cost: Blue 125
 
@@ -1327,7 +1327,7 @@
 					- Leads to: {Circuit}
 					- Cost: Red 50 + Blue 75
 				% 2:{Wrong Way} Enemies are stunned briefly when passing
-					- Numbers: stun 2
+					- Numbers: a foe going the other way is stunned for 2 seconds, and Boost Pad's slow on it lasts 2 seconds longer /~ Read from the game's code: the data names it stun 2 \
 					- Leads to: {Circuit}
 					- Cost: Blue 125 + Yellow 75
 				% 2:{Refuel} Tower can now be placed on top, gaining attack speed
@@ -1360,7 +1360,7 @@
 				- Attack speed: 0.3
 				- Range: 10 tiles
 				- Charge capacity: 3
-				- Damage to ore: 0.5
+				- Charge per tick: 0.5, times the efficiency /~ Read from the game's code: the data names it damage to ore \
 				- Efficiency: 0
 				- Least effect: 10
 				- Most effect: 100
@@ -1373,7 +1373,7 @@
 					- Leads to: {Lap 2}, {Long Ranged}
 					- Cost: Yellow 30
 				% 1:{Quick Pass} Increased effectiveness the faster the unit on pickup
-					- Numbers: each pickup takes 1 more charge, plus 0.15 for each point of the collector's speed above 2, and hits the ore once for each whole or part charge taken; the charge can drop below 0, so the next pickup waits for it /~ Read from the game's code: the data names it tick speed 0.15 \
+					- Numbers: each pickup takes 1 more charge, plus 0.15 for each point of the collector's speed above 2, and hits the ore once for each whole or part charge taken; the charge can drop below 0, so the next pickup waits for it; a game bug drops all of this once Tune Up or Final Lap is bought /~ Read from the game's code: the data names it tick speed 0.15 \
 					- Leads to: {Lap 2}, {Long Ranged}, {Tune Up}
 					- Cost: Yellow 25
 

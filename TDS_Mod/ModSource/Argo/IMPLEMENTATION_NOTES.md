@@ -262,9 +262,9 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
   `Helper_Entitytools.Updateinteract` rebuilds the chains on every upgrade or effect, so handlers are re-checked
   every 0.1 s (targets) / 0.25 s (towers, vessel).
 - **Scatter Cannon / Harpoon Tower** fire the game's own projectiles (clones of the Heavy Bow arrow,
-  `Projectile_Ai_Simple`, native `Pierce`). Each shot passes *every* parameter: the game merges a shot's parameters into
-  the Projectileobject's shared `Defaultparams`. Clients swing the model's `Turret` part toward each target
-  (`Argo_Scatter`/`Argo_Harpoon` Vis) - the bespoke turret AIs are gone, so aiming is ours.
+  `Projectile_Ai_Simple`, native `Pierce`). Each shot passes *every* parameter (each shot starts from a copy of the
+  Projectileobject's `Defaultparams` with its own laid over them, pitfall #29). Clients swing the model's `Turret`
+  part toward each target (`Argo_Scatter`/`Argo_Harpoon` Vis) - the bespoke turret AIs are gone, so aiming is ours.
 - **Deep Drill** mines ore with the game's own ore damage (`Interacthurt` on the nearest `Resource` within 2.1 tiles,
   like the Sno Box), so the aura it digs out goes to the team exactly as mining does. Fathom 1 -> 5 (7 with Deep
   Core), one per Tide; each Fathom adds +75% ore per strike and +10% strikes a second (Multi mods), +0.4 tiles of

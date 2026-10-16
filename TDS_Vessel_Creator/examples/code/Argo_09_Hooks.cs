@@ -1,5 +1,7 @@
 // EXAMPLE, frozen: Argo 1.x code from ModProjects, kept because the kit docs cite it. The live Argo 2.0 is
 // TDS_Mod/ModSource/Argo (and Assets/ArgoMod/Editor); copy from there, not from here.
+// OnHurt's "A copy" comment is half wrong: projectiles give each hit its own copy of Data; some AIs do reuse one
+// dictionary across hits (pitfall #30).
 // Damage modifiers that ride on the game's own hit event. Helper_Entitytools.Interacthurt hands each hit to the
 // target's Oninteract chain; Entity_Ai_Mob_General (or the tower's AI) applies it there. Putting Argo's handler first
 // in that chain lets it scale the hit before anyone applies it, whoever dealt it:

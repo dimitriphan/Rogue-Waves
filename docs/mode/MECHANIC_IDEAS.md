@@ -96,7 +96,7 @@ honest on screen. They also answer "what does a base vessel get" for every vesse
 | --- | --- | --- |
 | Buster | **Full Gallop**: keeps his full reach while dashing (today -1 range in the dash) | `Entity_Ai_Hero_Buster` `Rangemod` = -1 while `Movelinear` (Entity_Ai_Hero_Buster.cs:44-55) |
 | Fie | **House Regulars**: the Rest Stop keeps more permanent regulars (stock 4) | `Permcount`, 4 until an upgrade sets `Perm_Count` (Entity_Ai_Tower_Fieshop.cs:36, 174-190, 243) |
-| Boutman | **Long Line**: rally reaches farther and lasts longer | `Fishingrange` stat and `Rallyduration` (Entity_Ai_Hero_Boutman.cs:269-310) |
+| Boutman | **Long Line**: rally reaches farther and lasts longer | `Fishingrange` stat, the rally's reach (Entity_Ai_Hero_Boutman.cs:269-310); its `Rallyduration` is a private field fixed at 15 s that no upgrade or param sets (:81, 306), so "lasts longer" needs the pack's own code |
 | Sno Sno | **Packed Snow**: the snow he leaves starts deeper, so he runs fast on it sooner | each step spawns snow at `Level` 20; on snow above 20 he gets +75% speed (Entity_Ai_Hero_Snosno.cs:56-82); the Direction raises the level of his snow as it spawns |
 | Smacky | **Skipping Stones**: Bomb Tower shells bounce once more | `Splitbounce` per shot (`docs/16` §8) |
 

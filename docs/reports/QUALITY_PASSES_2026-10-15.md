@@ -11,14 +11,18 @@ game.
   `README`s and chapters 01-12; A2 chapters 13-18; A3 chapters 19-24, `reference/`, `examples/recipes/`; B1 the
   vessel template, `examples/`, kit `tools/`; B2 Argo and the shared kit (both copies); B3 Yossele; B4 RogueWavesMode,
   RogueLab, Riptide, `Handoff/`; C `TDS_Mod/Tools`, `TDS_Mod/README.md`, `concept-tools/`, `.claude/`, `.gitignore`;
-  D `CLAUDE.md`, `README.md`, `docs/` pages, `docs/mode/`, `docs/reports/`, `docs/concepts/`; E `docs/scope/`.
+  D `CLAUDE.md`, `README.md`, `docs/` pages, `docs/mode/`, `docs/reports/`, `docs/concepts/`; E `docs/scope/`. From
+  pass 9, three more readers check scope `16` line by line against the game's code (Smacky and Sno Sno, Boutman, Fie
+  and Buster), so a pass has thirteen.
 - **Checks.** Each claim against the code, the game's API dump and data survey, the decompiled game, the round logs and
   the other living pages. Then every mod, define set, recipe folder and editor folder compiled with cloud-check (21
   builds), and a script checks every repository path and pitfall number named anywhere.
 - **What counts.** A noticeable issue is one a reader or a tool would trip on: a wrong fact, a pointer that leads
   nowhere, stale state on a living page, two copies that differ, a code or script bug, a missing piece a rule requires.
   Wording taste, history in frozen reports and dated log lines, and items already decided or scheduled
-  (`docs/PLAN.md` Part C Decisions 2026-10-15) do not count.
+  (`docs/PLAN.md` Part C Decisions 2026-10-15) do not count. From pass 11, a line that leaves something out counts
+  only when what it leaves out would make a player choose or play differently; a missing size of a small effect it
+  already names does not.
 - **Fixes.** Applied when they change no game behaviour or balance, no kit rule and none of Dimitri's words or choices:
   docs, comments, tools, editor builders, the compile-only recipes. Anything else is listed below for Dimitri, with the
   default it gets. A pass is **clean** when it finds nothing beyond what it chose to leave with a stated reason.
@@ -284,6 +288,45 @@ Boutmom's limit.
 
 Every one of pass 9's other fixes held.
 
+## Pass 11: 18 issues
+
+Not clean. Four areas came back clean (A1, A2, A3, C). 17 issues are fixed and 1 is listed; none is high. Every
+fix below was checked against the decompiled game.
+
+**Scope `16` (11).** The third read against the code found these:
+- **Lines that left out how an upgrade or unit plays.**
+  - Smacky's engineers pick the tower nearest their Hut, so where the Hut stands decides which towers get tuned.
+  - The Sno Box makes Sno only while an ore is in its range.
+  - 1 Inch Bout's ramp grows only in melee; Shao-min's shots alone don't feed it.
+  - Ip Man-of-War also doubles each of Boutbro's hits, so he deals 18 times his base damage, not 9.
+  - Fie's Wall: each piece has its own upgrades. Only Carbon Infused, Invisible Forces and True Wall spread, when
+    bought, to the pieces connected then (three lines).
+  - True Wall's charge deals 1000 damage and sends the foe back to its spawn, once per piece.
+  - Unstable Wall's weaken is -25% speed and damage, for good.
+  - Side of Sushi's critical hit never fires (a game bug, already in kit `17` §6).
+  - Quick Pass stops working once Tune Up or Final Lap is bought (a game bug).
+  - Wrong Way stuns only foes going the other way, and lengthens Boost Pad's slow on them.
+  - The Checkpoint's "damage to ore" is the charge it gains each tick.
+- Kit `17` was changed to match for the engineers and the Sno Box. The `02` log now counts 66 upgrade lines and names
+  pass 10's Heater, Ice Brick and Deadarmor lines.
+
+**Elsewhere (7).**
+- **The frozen Argo examples (2, M).** `examples/code/Argo_07_TowerBrain.cs` and `Argo_09_Hooks.cs` still said
+  projectiles share one damage dictionary, and kit `05` sends readers to both. Each now has a header line giving the
+  truth (pitfall #30); their bodies are untouched.
+- **Argo's implementation notes.** They said a shot's parameters merge into the shared `Defaultparams`; each shot
+  starts from a copy (pitfall #29). The old Argo 1.0 notes in `examples/` keep the old sentence as history (decision
+  A17).
+- **RogueLab's `README`.** Map 1's row cited kit `15` §5 (the shop), which it never touches; it now cites the sections
+  its code uses.
+- **`docs/mode/MECHANIC_IDEAS.md`.** The "Long Line" idea for Boutman changed `Rallyduration`, a private 15 s field
+  nothing sets; "lasts longer" now says it needs the pack's own code.
+- **The `02` log** did not yet cover pass 10's changes to `16`.
+- **Yossele's Stonehenge text (listed, B3-39).** The in-game Lore still says the vines creep "a little further" each
+  Tide; they grow one tile per two Growth stages. It is game text, so it waits for the next Yossele build.
+
+Every one of pass 10's fixes held.
+
 ## Listed for Dimitri
 
 Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.md` Part C "Next".
@@ -291,6 +334,7 @@ Code that changes behaviour in game, or a choice; each default is in `docs/PLAN.
 | # | What | Default |
 | --- | --- | --- |
 | B3-24 | Yossele's debuff looks still go through the throttled `Vfxdebuffcheck`, and the vines renew the slow look every 0.5 s per foe | Copy Argo 2.0.1's `ArgoUtil.Debuff`, renew the slow look only near its expiry; next Yossele build |
+| B3-39 | Yossele's Stonehenge Lore (`Code/02_Data.cs:203`) says the vines creep further each Tide; they grow 1 tile per 2 Growth stages | Fix the string with B3-25/B3-26 in the next build |
 | B3-25, B3-26 | Yossele's display names are the pre-2026-10-13 ones (Selfish Sapling, Grafted Colors, Entangling Spaghetti Roots), and Selfish's in-game line has numbers | Rename strings, comments and tables to the scope's names and lines in the next build |
 | B3-27, B3-30 | Yossele's footstep plays on the peak-lift frame; the Mend effect and three sounds are built but never played | Footstep on frames 0 and 3; play or drop the unused assets, next build |
 | B3-28, B3-29 | Two small leaks in Yossele: `incoming` keeps a foe that died before its seeds landed; `LastHit` statics are never cleared per map | Fix in the next build |
