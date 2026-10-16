@@ -59,32 +59,32 @@
 	[Sea Weather]
 		- Which maps: some maps on the chart carry a weather, rolled with the chart
 		- Calm rows: the first row and the rows closing a stretch are calm
-		- Odds: about ~1 map in 3 has weather in the first stretch, ~1 in 2 in the second
-		- Pays: ~1 extra [Pure Aura] each tide, on top of the usual 3
+		- Odds: about ~1 map in 3~ has weather in the first stretch, ~1 in 2~ in the second
+		- Pays: ~1~ extra [Pure Aura] each tide, on top of the usual 3
 		- Shown: the weather shows on its island on the chart and in the boat's map panel, and is announced when the map starts
 		- Never twice: a map never gets the weather it already has: Manafold already floods, Chrono already speeds up, Vultures already has a nest
 		- Status: built, and passed its PC round. How a flooded map looks is yours to check by eye
 
 		{Rising Water}
-			- In-game line: ~Rising Water: the water climbs each tide. More Pure Aura
+			- In-game line: ~Rising Water: the water climbs each tide. More Pure Aura~
 			- Does: the water climbs each tide. Flooded tiles can't be built on, and shots through the water slow down.
-			- Numbers: ~the water rises each tide by its own stats, as on Manafold
+			- Numbers: ~the water rises each tide by its own stats, as on Manafold~
 			- Never on: Manafold
-			- Look: ~a teal swell with a foam crest
+			- Look: ~a teal swell with a foam crest~
 
 		{Quickening Current}
-			- In-game line: ~Quickening Current: the game runs faster from Tide 5. More Pure Aura
+			- In-game line: ~Quickening Current: the game runs faster from Tide 5. More Pure Aura~
 			- Does: from Tide 5 the whole game runs faster, and faster again from Tide 10.
-			- Numbers: ~x1.25 from Tide 5, ~x1.5 from Tide 10
+			- Numbers: ~x1.25 from Tide 5~, ~x1.5 from Tide 10~
 			- Never on: Chrono
-			- Look: ~three foam chevrons
+			- Look: ~three foam chevrons~
 
 		{Nesting Ground}
-			- In-game line: ~Nesting Ground: a halberd nest grows near the foes. More Pure Aura
+			- In-game line: ~Nesting Ground: a halberd nest grows near the foes. More Pure Aura~
 			- Does: a halberd nest sits near where the enemies come from. It grows each tide and sends out a halberd every few tides.
-			- Numbers: ~placed 3 to 7 tiles from an enemy core
+			- Numbers: ~placed 3 to 7 tiles from an enemy core~
 			- Never on: Vultures
-			- Look: ~a coral egg in a sand nest
+			- Look: ~a coral egg in a sand nest~
 
 	[Questions]
-		- 1. The weather numbers are defaults: the odds, the extra Pure Aura and Quickening's speeds. Change any of them in their slots. ~As written
+		- 1. The weather numbers are defaults: the odds, the extra Pure Aura and Quickening's speeds. Change any of them in their slots. ~As written~

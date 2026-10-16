@@ -207,7 +207,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
-  Older entries are in "Log" below.
+  2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
 - **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
   the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
   turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
@@ -371,6 +371,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   does. Dimitri stopped the run after pass 22 (pass 23 had already finished, its two fixes kept); why the counts
   stayed up, and what is listed for him: `docs/reports/QUALITY_PASSES_2026-10-15.md`.
 
+- **2026-10-16, scope default marker:** at Dimitri's ask a Claude default in the scope is written `~value~` (a `~`
+  on each side) instead of `~value`; every marker in `docs/scope/` was closed (rule in `00_Read_Me.txt` [Symbols]).
+  The spotlight's `parse.py` (project files) reads both forms; its rebuilt output is unchanged.
+
 ### Decisions
 
 - 2026-10-08: vessels arrive one at a time through the kit loop; Argo first. Mode feasibility (Phase 1) closes before
@@ -496,6 +500,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   - Directions: names match the Look line; the heading or course style is optional (`SCOPE_REVIEW_2026-10-10` #37).
   - The GitHub default branch becomes `claude/phase-1-6lfnar`; only Dimitri can switch it (GitHub settings). Done:
     it is the default now (`docs/PROJECT_SETUP.md` §1).
+- 2026-10-16 (user): a Claude default in the scope is surrounded by `~`, `~value~`, not only prefixed. Claude's
+  default: the closing `~` goes right after the value, before its unit or punctuation (`~3~ tiles`); a phrase or a cost is
+  closed at its end (`~Red 25 + Blue 10~`); an empty `~~` is a slot Claude will fill.
 
 ### Open questions
 

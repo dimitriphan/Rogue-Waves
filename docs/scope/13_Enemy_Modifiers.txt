@@ -5,8 +5,8 @@
 
 	[Modifier List]
 		{Cursed}
-			- Kind: ~Aura
-			- In-game line: ~
+			- Kind: ~Aura~
+			- In-game line: ~~
 			- Does: Reduces the attack of all nearby towers and units
 			- Numbers:
 			- Shows as:
@@ -15,8 +15,8 @@
 			- Clashes:
 
 		{Berserk}
-			- Kind: ~Self
-			- In-game line: ~
+			- Kind: ~Self~
+			- In-game line: ~~
 			- Does: Damage and speed increases as health lowers
 			- Numbers:
 			- Shows as:
@@ -25,8 +25,8 @@
 			- Clashes:
 
 		{Aging}
-			- Kind: ~Self
-			- In-game line: ~
+			- Kind: ~Self~
+			- In-game line: ~~
 			- Does: Speed is reduced by 30%, but health and damage increase by up to 100% as it stays alive. / Health is not added, but scaled. An enemy at 50% health will stay at 50% health, just with a higher max health. \
 			- Numbers: speed -30%; health and damage up to +100%; reaches max value after surviving for 50 seconds
 			- Shows as:
@@ -35,8 +35,8 @@
 			- Clashes:
 
 		{Dazzling}
-			- Kind: ~Aura
-			- In-game line: ~
+			- Kind: ~Aura~
+			- In-game line: ~~
 			- Does: {Blind}s and {Illuminate}s nearby vessels, towers, and units. -> 10_Vessel_Uloe.txt [Light]
 			- Numbers:
 			- Shows as:

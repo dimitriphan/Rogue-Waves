@@ -32,7 +32,7 @@
 		- - line: something to build. With a colon it is a slot: - Field: value. Without one it is a detail of the line above it \
 		- / note \: extra info at the end of a line, one per line \
 		- /~ note \: a note Claude wrote, so yours and Claude's never mix \
-		- ~value: a default Claude picked. Delete the ~ to make it yours. Works on names too: {~Sharper Pins} \
+		- ~value~: a default Claude picked, with a ~ on each side. The closing ~ goes right after the value, before its unit or any punctuation, so the default is exactly what sits between them: Range: ~3~ tiles. A phrase or a cost is closed at its end: ~Red 25 + Blue 10~. Delete both ~ to make it yours. Works on names too: {~Sharper Pins~}. An empty ~~ is a slot Claude will fill \
 		- ! NEEDS ... !: something only you can supply. It sits in the slot it fills: - Cost: ! NEEDS ! \
 		- < answer >: your answer, under a NEEDS line or a question. Claude folds it in and deletes both \
 		- ->: points to another file or sheet / -> 11_Directions.txt \
@@ -41,7 +41,7 @@
 		- Every number sits on a - Field: value line with its unit. A sentence may repeat it, never hold it alone
 		- Units: distance in tiles, time in seconds, rates per second, a change in % (+20%) and a multiplier with x (x1.25)
 		- Money: the colour or currency, then the amount / Red 30, Blue 20 + Yellow 10, Pure Aura 20 \
-		- A blank slot means not decided yet, and the design gate proposes a ~ value. ! NEEDS ! means Claude can't pick it for you
+		- A blank slot means not decided yet, and the design gate proposes a ~value~. ! NEEDS ! means Claude can't pick it for you
 		- A value Claude read from the game (the base vessels) carries no ~: it is the game's, not a default
 
 	[Names]
@@ -67,7 +67,7 @@
 	[Questions and Needs]
 		- ! NEEDS ! sits in the slot it fills. A NEEDS that belongs to no slot sits at the top of its file
 		- Claude's questions go in a [Questions] block at the end of the sheet or file they concern, each naming the default in use
-		- A NEEDS line never carries a / \ note with defaults in it. The defaults go in their own slots as ~ values
+		- A NEEDS line never carries a / \ note with defaults in it. The defaults go in their own slots written ~value~
 
 	[File Names]
 		- Named NN_Name.txt, numbered as in the list above. Claude keeps that list current
