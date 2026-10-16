@@ -430,8 +430,8 @@ Not clean. Eleven of the thirteen readers came back clean. All 4 wrong statement
 ## Pass 19: 3 issues
 
 Not clean. Ten of the thirteen readers came back clean. All 3 wrong statements are fixed, and none is high.
-- **Argo (`TDS_Mod/ModSource/Argo/Code/02_Data.cs`, a comment).** `OreReach = 2.1f` reaches 2 tiles straight out and 1 diagonally, as `DESIGN.md`
-  and the journal say; the comment said the next tile, diagonals too.
+- **Argo (`TDS_Mod/ModSource/Argo/Code/02_Data.cs`, a comment).** `OreReach = 2.1f` reaches 2 tiles straight out
+  and 1 diagonally, as `DESIGN.md` and the journal say; the comment said the next tile, diagonals too.
 - **Yossele (`DESIGN.md`, a `YosseleCharacter.cs` comment).** Pass 18's fix named only the boat mini as drawn new; the
   32 px tab icon is drawn new too.
 - **`docs/EXPANSION_SCOPE.md` row 3.** RogueLab round 1 chained two maps, not three; rounds 2 and 3 chained through
