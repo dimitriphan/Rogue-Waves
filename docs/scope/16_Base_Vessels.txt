@@ -754,7 +754,7 @@
 					- Cost: Red 50
 
 				% 3:{Bout Battleship} Boutdad now owns an unregistered cannon!
-					- Numbers: the boat gets a cannon that fires at half the boat's attack speed at the target Boutdad or Boutmom gives it while on this boat; after they fly off it keeps firing at that target until it is gone, out of range or out of sight /~ Read from the game's code: the data names it attack speed +50% \
+					- Numbers: the boat gets a cannon that fires at half the boat's attack speed at the target Boutdad or Boutmom gives it while on this boat; after they fly off it may keep firing at that target (whether it does depends on which of their alternating orders came last) until it is gone, out of range or out of sight /~ Read from the game's code: the data names it attack speed +50% \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 500
 				% 3:{Bout Cargo Inc} Units can now travel to other boats instantly from here

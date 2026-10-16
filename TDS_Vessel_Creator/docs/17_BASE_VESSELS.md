@@ -215,8 +215,10 @@ Animations: Idle 4×6, Move 4×6, Falling 2×6, Land 1×12, **Attack 4×4** (pla
 
 - **Snow** (`Effect_Snosnosnow`, Entity name `Sno`, tag `Sno`, Level 0-100, skins 2-10) is a networked being any mod
   can make: spawn it on a `Surface` with Initstats `{Level}`, or send `Interact(from, snow, "Grow", {Amount, Spread})`
-  (Projectile_Ai_Sno.cs:35-57). Snow does nothing to foes; Sno Sno's things read it. His snow is team −2, so team
-  filters never see it; the cannon, laser, Mother and Heater take snow and Snobles of **any** player.
+  (Projectile_Ai_Sno.cs:35-57). Snow does nothing to foes; Sno Sno's things read it. His snow is team −2: own-team
+  filters and `Mob`/`Tower` tag queries never see it, but a team-only foe query (`Styles.Team`, `Teamfor = false`)
+  does, since it leaves out only its own team and −1 (Helper_Entityquerytools.cs:18-29, 56-61); the cannon, laser,
+  Mother and Heater take snow and Snobles of **any** player.
 - **Never tag a mod entity `Sno` or `Snoble`.** The cannon despawns a `Sno`-tagged `Mob` as ammo, throws on a non-Mob
   without `Level`, and picks its shot by GameObject name (`Projectiles[name]`, Entity_Ai_Tower_Snosnocannon.cs:241-259):
   any other name is a `KeyNotFoundException`. **Verified**: a Dagger copy whose data tags add `Sno`, beside a cannon,

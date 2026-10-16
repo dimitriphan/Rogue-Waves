@@ -399,6 +399,18 @@ Buster's part of scope `16`). All 16 wrong statements are fixed, and none is hig
   stand-in retries once a second in each map's first 30 s, not once per map.
 - **This report.** Pass 14 had six clean readers, not seven.
 
+## Pass 16: 4 issues
+
+Not clean. Ten of the thirteen readers came back clean (A1, A2, A3, B1, B2, B3, B4, C, E, and Fie's and Buster's part
+of scope `16`). All 4 wrong statements are fixed, and none is high.
+- **Scope `16`, Bout Battleship (a pass 15 fix).** Pass 15 said the cannon keeps firing after Boutdad or Boutmom fly
+  off. A landed Dad or Mom re-orders the boat every 0.2 s and the orders alternate between starting the firing loop
+  and stopping it, so it keeps firing only if the last one started it. The line now says it may.
+- **Kit `17` §4 (snow).** It said team filters never see Sno Sno's snow. A team-only foe query does; only own-team
+  filters and `Mob`/`Tower` tag queries skip it.
+- **`CLAUDE.md` and `SCOPE_GAPS.md`'s top note.** `MECHANICS_CHECK.md` proved in game only the eight mechanics that
+  needed the game, not all of them; map 1's vote is the whole first row, as pass 15 fixed in `SEA_CHART.md`.
+
 ## Why every pass found issues
 
 The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository
