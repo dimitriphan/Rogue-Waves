@@ -182,8 +182,9 @@ Landquick 4×1. The tutorial forces Smacky.
   Attackspeed +50 %, Damage +25 % Pmulti, 8 s) or, when their `Effect` stat is not exactly 1, `…Buff2` (×3 attack
   speed, 14 s) (Entity_Ai_Mob_Smackyengineer.cs:42, 69, 95-162). **Any outside change to an engineer's `Effect`
   switches it to the Firm buff.**
-- Ore Scraps (`Mob_Smackyminer_Chips`) pays the **unit's owner** 1 of each colour per ore hit; Convert trades −0.5/−0.5
-  for +1 on every gain of the owner's (Entity_Ai_Effect_Smackyhut_Scrap.cs:8-40; Entity_Ai_Tower_Smackyhut.cs:258-364).
+- Ore Scraps (`Mob_Smackyminer_Chips`) pays the **unit's owner** 1 of each colour the hit ore yields, per ore hit;
+  Convert trades −0.5/−0.5 for +1 on a gain of the owner's, at most once a second (`Convertcooldown`)
+  (Entity_Ai_Effect_Smackyhut_Scrap.cs:8-40; Entity_Ai_Tower_Smackyhut.cs:196-208, 258-364).
 - Kill credit: hero, miners, all projectiles incl. explosions and split children, Spikes, the Spikes trap. **Not**:
   Detonate, Bramble, Marketplace, burn ticks (the first arrow already credited).
 - Bugs: Bomb Launcher's downgrade removes Quick Bombs' mod; Convert and Marketplace never unsubscribe; units removed by
@@ -304,7 +305,8 @@ Hero_Boutman (Mob, Hero) ── builds only ──> Tower_Boutmanhouse (Bouthous
 ## 6. Fie (From the Walls, Intermediate)
 
 **Hero.** Health 50, Speed 3, Damage 3, Range 2, Attackspeed 0.5, Buildrange 3, Sellrate 0.6. No ability, no tooltip,
-no Attack animation; `Entity_Ai_Hero_Fie` only makes the build buttons (Entity_Ai_Hero_Fie.cs:8-44).
+no Attack animation; `Entity_Ai_Hero_Fie` only makes the build buttons and re-runs melee targeting
+(Entity_Ai_Hero_Fie.cs:8-44).
 
 | Building | What it does | Read live | Fixed |
 | --- | --- | --- | --- |

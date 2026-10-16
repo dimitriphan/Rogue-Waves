@@ -344,7 +344,7 @@ public static class ArgoContent
             Register("Command", sonar);
         }
 
-        // PORT / STARBOARD / BOSUN on the Miner's Base: pick a tower, like Fie's Reroute picks a silo.
+        // PORT / STARBOARD / BOSUN on the Miner's Base: pick a tower, like Fie's Reroute picks an ore.
         foreach (ArgoData.Crew c in ArgoData.Nauts)
         {
             Commandobject cmd = ArgoUtil.Clone(template, c.Command);

@@ -158,7 +158,7 @@ map object or effect the game puts on one map only (kit `docs/16` §3), started 
 
 | Weather | What the host does | Marker on the island | Never on |
 | --- | --- | --- | --- |
-| Rising Water | spawns `Main_Flood` a tile under the map's lowest ground, in its middle: it rises each Tide by its own stats, floods tiles (no building; the game ships no flood block, so the mod makes `Block_Flood_Deter` from Boutman's no-build fish block once the map has loaded, kit `docs/16` §3) and slows shots in the water | a teal swell with a foam crest | Map_Manafold |
+| Rising Water | spawns `Main_Flood` a tile under the map's lowest ground, in its middle: it rises each Tide by its own stats, floods tiles (no building; the game ships no flood block, so the mod makes `Block_Flood_Deter` from Boutman's no-build fish block on the boat once Manafold's groups are loaded, retried in the map's first 30 s, kit `docs/16` §3) and slows shots in the water | a teal swell with a foam crest | Map_Manafold |
 | Quickening Current | sets `Game_Mapvars.Time_Scale` to 1.25 from Tide 5 and 1.5 from Tide 10, with the warning popup, as `Main_Chrono` does; back to 1 when the map ends | three foam chevrons | Map_Chrono, Map_Chrono_Alt |
 | Nesting Ground | spawns `Tower_Halberdnest` on a free tile 3-7 from an enemy core, on its team, as the core's child: it gains health each Tide and sends a Halberd every few | a coral egg in a sand nest | Map_Vultures, Map_Vultures_Alt |
 

@@ -158,8 +158,9 @@ flooded at the first Tide, no error.
   unknown name, pays the previous player's conversion (Entity_Ai_Tower_Converter.cs:116-134); a Fie silo upgrade pays a
   share of every entry each Tide (Entity_Ai_Tower_Fiesilo.cs:356-362). **Pure Aura stays off the wallet** (the counter
   on the vessel, `15` §3), or every one of these needs handling.
-- **Conversion:** Smacky's Mining Hut button cycles a target colour and, on each gain, trades 0.5 of each other colour
-  for 1 of it (Entity_Ai_Tower_Smackyhut.cs:196-311); the Converter is the timed version above.
+- **Conversion:** Smacky's Mining Hut button cycles a target colour and, on a gain of its owner's (at most once a
+  second), trades 0.5 of each other colour for 1 of it (Entity_Ai_Tower_Smackyhut.cs:196-311); the Converter is the
+  timed version above.
 - **Spending scales by `Game_Mapvars.Resourcelossmultiplier`** as well as the call's `Scale`
   (Helper_Resources.cs:121-132), just as `Give` scales by `Resourcegainmultiplier`. The stock Cardinal Bottom Rock sets
   the loss multiplier to 0 (everything free, gains cut) (Entity_Ai_Artifact_Bottomrock.cs:14-17). So a Fund Transfer

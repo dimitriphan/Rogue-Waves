@@ -23,7 +23,9 @@ cloud; nothing was run in game.
   Wording taste, history in frozen reports and dated log lines, and items already decided or scheduled
   (`docs/PLAN.md` Part C Decisions 2026-10-15) do not count. From pass 11, a line that leaves something out counts
   only when what it leaves out would make a player choose or play differently; a missing size of a small effect it
-  already names does not.
+  already names does not. From pass 13 (Dimitri, 2026-10-16 00:31Z, "Only wrong facts"), only a false statement, a
+  pointer that leads nowhere, a code or tool bug, or two copies that differ count; a true line that leaves something
+  out never does.
 - **Fixes.** Applied when they change no game behaviour or balance, no kit rule and none of Dimitri's words or choices:
   docs, comments, tools, editor builders, the compile-only recipes. Anything else is listed below for Dimitri, with the
   default it gets. A pass is **clean** when it finds nothing beyond what it chose to leave with a stated reason.
@@ -347,13 +349,28 @@ Not clean. Nine of the thirteen readers came back clean (A1, A2, A3, B1, B2, B3,
 Every one of pass 11's fixes held. At 00:17Z on 2026-10-16 Dimitri asked to stop after this pass and say why every pass
 finds issues; that is the next section.
 
+## Pass 13: 8 issues (only wrong facts count from here)
+
+Not clean. Dimitri chose to go on with a narrower bar: only wrong facts count. Eight of the thirteen readers came back
+clean, including all three readers of scope `16` against the code: none of its lines is wrong. The 8 wrong statements
+are all fixed; none is high.
+- **Kit `16` and `17` (4).** Ore Scraps pays 1 of each colour the hit ore yields, not of every colour; the Mining
+  Hut's Convert trades at most once a second, not on every gain (both chapters); Fie's hero script also re-runs her
+  melee targeting.
+- **`docs/mode/SEA_CHART.md`.** The flood's stand-in block is made on the boat once Manafold's groups load, then
+  retried in the map's first 30 s, not "once the map has loaded".
+- **Argo `04_Content.cs` (comment).** Fie's Reroute picks an ore, not a silo.
+- **cloud-check's preview driver (comment).** It renders at the builders' preview angle; the game camera has no
+  fixed angle.
+- **This report.** Scope `16` was 28 of pass 9's 39 issues, not 31.
+
 ## Why every pass found issues
 
 The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository
 has been close to clean since pass 6. Four things kept the count up.
 
 1. **One file, scope `16`, has no floor.** It is a 1,400-line summary of the five base vessels that Claude wrote
-   from the game's data, and since pass 8 it has been most of every count: 4 of 7, 31 of 39, 19 of 37, 11 of 18 and
+   from the game's data, and since pass 8 it has been most of every count: 4 of 7, 28 of 39, 19 of 37, 11 of 18 and
    6 of 8. A summary can always say more. Each pass read it one layer deeper (the data survey, then the code branch
    for each upgrade, then every place a value is used, then how upgrades interact and where the game's own code is
    buggy), and each layer found lines the one before could not see. Pass 7 was clean only because it still compared

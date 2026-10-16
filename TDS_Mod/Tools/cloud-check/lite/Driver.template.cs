@@ -1,5 +1,5 @@
 // Runs {P}'s editor generators outside Unity: writes the sprite sheets (1x, as Build All Assets would) and previews
-// (scaled, on a checker), and renders every low-poly model at the game camera's angle with a small rasterizer.
+// (scaled, on a checker), and renders every low-poly model at the builders' preview camera angle with a rasterizer.
 using System;
 using System.Collections.Generic;
 using System.IO;
