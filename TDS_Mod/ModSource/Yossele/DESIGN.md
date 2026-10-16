@@ -18,7 +18,8 @@ Grafted, Entangling Spaghetti Roots renamed Entangling Roots (same rules and num
   long root-like limbs (taken shape, `docs/STYLE.md`). The hole is its mouth (scope).
 - **Sprite baseline:** Dimitri's reshade, `concepts/vessels_2026-10-09/v3_flat/yossele_reshade` (flat finish: opaque,
   one shade band down the right edge, cast shadow, no half-alpha rim). Every 32 px frame is his pixels moved, squashed
-  or added to, never redrawn (the 16 px boat mini is drawn new at 10 x 13). Back views start from
+  or added to, never redrawn (the 16 px boat mini is drawn new at 10 x 13, the 32 px journal tab icon is a line
+  drawing of the splash's shapes). Back views start from
   `concepts/vessels_2026-10-09/back/yossele_back`.
 - **Palette:** clay `864B41` to `733E35` (the reshade's `945743`), leaf `72CC35` / `6ABE30`, eyes `99E550`, collar
   `323C39`. Accent (hero `Color`, buttons, journal): leaf green `72CC35`.

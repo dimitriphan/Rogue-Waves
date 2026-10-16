@@ -155,7 +155,7 @@ public static class ArgoData
     public const float SlowCap = 0.6f;          // Tremors never slow more than this
     public const float TremorTick = 0.5f;
     public const float AftershockEvery = 2f;
-    public const float OreReach = 2.1f;         // ore within this flat distance can be drilled (the next tile, diagonals too)
+    public const float OreReach = 2.1f;         // ore within this flat distance can be drilled (2 tiles straight out, 1 diagonally)
     public const float BedrockEvery = 1f;       // 2.0 Bedrock: a tick of damage on each pinned foe in the Tremor
 
     // ---------------------------------------------------------------- 2.0: debuffs, pins, Deep Water

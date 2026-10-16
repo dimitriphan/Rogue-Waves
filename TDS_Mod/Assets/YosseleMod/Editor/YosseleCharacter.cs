@@ -2,8 +2,9 @@
 // Baseline: his reshade (concepts/vessels_2026-10-09/v3_flat/game_size/yossele_reshade.png) and its back view
 // (concepts/vessels_2026-10-09/back/game_size/yossele_back.png), embedded below pixel for pixel as Front / Back.
 // Every 32 px frame is those pixels moved, squashed, with limbs shifted, or with pixels added (dust, compost, leaves):
-// the sprite is never redrawn (the 16 px boat mini below is drawn new at 10 x 13). Finish (round 3 "flat"): fully
-// opaque, one shade band down the right edge, no half-alpha rim, no ground patch, no highlights.
+// the sprite is never redrawn (the 16 px boat mini below is drawn new at 10 x 13, and the 32 px journal tab icon is a
+// line drawing of the splash's shapes). Finish (round 3 "flat"): fully opaque, one shade band down the right edge, no
+// half-alpha rim, no ground patch, no highlights.
 // Yossele: a round clay head with a see-through hole for a mouth, a two-leaf sprout on a stalk, glowing green eyes, a dark
 // collar, and four long root-like limbs. The outer two limbs double as arms (the slam, the compost).
 // 32x32 frames, PPU 20, bottom-centre pivot. Variants: v0 front, v1 front mirrored, v2 back, v3 back mirrored.
