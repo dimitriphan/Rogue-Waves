@@ -437,6 +437,12 @@ Not clean. Ten of the thirteen readers came back clean. All 3 wrong statements a
 - **`docs/EXPANSION_SCOPE.md` row 3.** RogueLab round 1 chained two maps, not three; rounds 2 and 3 chained through
   every base map.
 
+## Pass 20: 0 issues (clean)
+
+All thirteen readers came back clean, with nothing fixed and nothing new listed. Each checked pass 19's fixes in its
+area. One judgement call is left as it is: scope `16`'s Hypercool line says the cannon is back to +50% when idle; the
+streak does restart then, and the first shot after keeps the last speed for one shot, a detail rather than a wrong fact.
+
 ## Why every pass found issues
 
 The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository
