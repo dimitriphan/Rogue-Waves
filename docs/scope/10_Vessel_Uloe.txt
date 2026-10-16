@@ -6,12 +6,12 @@
 
 		[Identity]
 			- Title: Light Personified
-			- Difficulty: ~Advanced
+			- Difficulty: ~Advanced~
 			- Archetype:
-			- In-game line: ~
+			- In-game line: ~~
 			- Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms made of electricity at the sides, a cord to a plug. / The yellow strokes are floating arms made of electricity. \
 			- Towers look: Towers carry glass, screw rings and cords.
-			- Accent colour: ~
+			- Accent colour: ~~
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites \
 			- Lore: / Lore comes once the character is finalized \
 			- Status: concept page done. Comes last.
@@ -36,8 +36,8 @@
 			- Target: a node or a {Power Bank}
 			- Range:
 			- Cooldown:
-			- Keys: ~6 / 7
-			- Unlocked: ~from the start
+			- Keys: ~6 / 7~
+			- Unlocked: ~from the start~
 			- Cost:
 
 		[Vessel Mechanic] [Light]
@@ -59,7 +59,7 @@
 				- Limit:
 				- Cost:
 			[Upgrades]
-				% ~1:{} Damage increases as it attacks the same target
+				% ~1~:{} Damage increases as it attacks the same target
 
 		(Support):{Power Bank}
 			- Spawns {Photon}s which are light minions that provide benefits to towers.
@@ -70,7 +70,7 @@
 				- Limit:
 				- Cost:
 			[Upgrades]
-				% ~1:{} Photons explode on death, dealing damage and applying blind + illumination
+				% ~1~:{} Photons explode on death, dealing damage and applying blind + illumination
 
 		(Defense):{Mirror}
 			- Wall that can be empowered by {Light} to blind enemies, reducing their damage.
@@ -80,9 +80,9 @@
 				- Limit:
 				- Cost:
 			[Upgrades]
-				% ~1:{} {Blind} or {Illuminate} enemies based on upgrade path.
-				% ~2:{} Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
-				% ~2:{} A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
+				% ~1~:{} {Blind} or {Illuminate} enemies based on upgrade path.
+				% ~2~:{} Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
+				% ~2~:{} A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
 
 		(Economy):{Flood Light}
 			- Plugs into nodes and provides light. Can be directed towards towers to focus their light benefits.
@@ -93,8 +93,8 @@
 				- Limit:
 				- Cost:
 			[Upgrades]
-				% ~1:{} Grants light in a radius around itself. Can no longer be directed.
-				% ~1:{} Allows to redirect its light in a straight line towards towers.
+				% ~1~:{} Grants light in a radius around itself. Can no longer be directed.
+				% ~1~:{} Allows to redirect its light in a straight line towards towers.
 
 		(Minion):{Photon}
 			# Refers to minion units
@@ -115,4 +115,4 @@
 			- none yet
 
 		[Questions]
-			- 1. Your upgrade ideas have no names or levels yet, so each sits at a level Claude guessed, with an empty name {} for you to fill. ~Levels as placed
+			- 1. Your upgrade ideas have no names or levels yet, so each sits at a level Claude guessed, with an empty name {} for you to fill. ~Levels as placed~

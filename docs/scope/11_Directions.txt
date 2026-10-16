@@ -26,7 +26,7 @@
 				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives stack of fertilizer per x enemies killed in a radius around Yossele. / x is a number \
 				- Rank II: Gives stack of fertilizer per x enemies killed in a radius around Yossele / x is a number \
 				- Rank III: Gives stack of fertilizer per x enemies killed in a much larger radius around Yossele / x is a number \
-				- Numbers: ~rank I: 1 fertilizer per 10 enemies killed within 4 tiles of Yossele; ~rank II: per 6 within 4 tiles; ~rank III: per 6 within 7 tiles /~ What the Yossele build uses \
+				- Numbers: ~rank I: 1 fertilizer per 10 enemies killed within 4 tiles of Yossele~; ~rank II: per 6 within 4 tiles~; ~rank III: per 6 within 7 tiles~ /~ What the Yossele build uses \
 				- Look: A small gray bin with dirt inside and stink lines emanating from the top.
 				- Clashes: None
 			{Dandelion Season}
