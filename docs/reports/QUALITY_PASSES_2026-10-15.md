@@ -411,6 +411,12 @@ of scope `16`). All 4 wrong statements are fixed, and none is high.
 - **`CLAUDE.md` and `SCOPE_GAPS.md`'s top note.** `MECHANICS_CHECK.md` proved in game only the eight mechanics that
   needed the game, not all of them; map 1's vote is the whole first row, as pass 15 fixed in `SEA_CHART.md`.
 
+## Pass 17: 1 issue
+
+Not clean. Twelve of the thirteen readers came back clean. The one wrong statement is fixed and is not high:
+`docs/reports/README.md`'s row for `MECHANICS_CHECK.md` said every mechanic was proven on the PC, the same claim pass
+16 fixed in `CLAUDE.md`. Only the eight that needed the game were.
+
 ## Why every pass found issues
 
 The counts fell from 179 to 0 by pass 7, then rose again: 7, 39, 37, 18, 8. Outside the base vessels the repository

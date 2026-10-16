@@ -12,7 +12,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 | `QUALITY_CHECK_2026-10-11.md` | 2026-10-11 | Quality check of the lessons and resources; fixes made in place |
 | `SCOPE_REVIEW_2026-10-10.md` | 2026-10-10 | The scope files read against each other and the game; Dimitri's answers folded in |
 | `SCOPE_VS_LOOP.md` | 2026-10-09 | Where the run outgrows the first scope: campaign, save, per-player Cardinals (§E, §F) |
-| `MECHANICS_CHECK.md` | 2026-10-09 | The 2026-10-09 scope's new mechanics checked against the game's code, then proven on the PC |
+| `MECHANICS_CHECK.md` | 2026-10-09 | The 2026-10-09 scope's new mechanics checked against the game's code (all go); the eight that needed the game proven on the PC |
 | `SCOPE_GAPS.md` | 2026-10-08 | Every asset the scope names or implies, with what exists and what is missing |
 | `REPO_SCAN_2026-10-08.md` | 2026-10-08 | The first scan of this repository |
 | `ARGO_NEXT_2026-10-08.md` | 2026-10-08 | The handoff that carried Argo 2.0 to done (was `TDS_Mod/Handoff/Argo_next/`) |
