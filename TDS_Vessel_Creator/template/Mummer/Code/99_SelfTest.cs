@@ -493,7 +493,8 @@ public static class MummerSelfTest
             yield return Wait(0.5f);
         }
 
-        // 7. HOOK: a foe about four tiles away is reeled toward Mummer and Marked; felled Marked, it pays extra Thread.
+        // 7. HOOK: a foe on the nearest standable tile 2.6 to 5.2 tiles out (about three on open ground) is reeled toward
+        // Mummer and Marked; felled Marked, it pays extra Thread.
         {
             Entity_Master foe = SpawnFoe("Enemy_Dagger", MummerUtil.Pos(hm), 5.2f, 2.6f);
             yield return Wait(0.6f);

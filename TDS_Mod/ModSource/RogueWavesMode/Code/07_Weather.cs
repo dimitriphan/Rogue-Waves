@@ -135,7 +135,8 @@ public static class RWWeather
     // asks for it by name at each Tide, and the throw unwinds into Mode_Normal.Run, which set the Tide. Stand in a copy
     // of a stock no-build block under that name, registered where Bl_Address.Getload looks (Groups["Mob"]) and where a
     // spawn is matched by id and name (Groupsids, Groupsname). Neither preferred block is loaded on the boat (round 3),
-    // so every machine tries again once per map (DeterUpdate), and any loaded "Block_No..." being will do.
+    // so every machine tries again in each map, once a second for its first 30 s (DeterUpdate), and any loaded
+    // "Block_No..." being will do.
     const string Deter = "Block_Flood_Deter";
     static readonly string[] DeterLike = { "Block_Noplacement", "Block_Nobuild_Brittle" };
     static Game_Mapvars deterMap;

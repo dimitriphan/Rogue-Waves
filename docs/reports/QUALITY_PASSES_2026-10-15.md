@@ -366,7 +366,7 @@ are all fixed; none is high.
 
 ## Pass 14: 10 issues
 
-Not clean. Seven of the thirteen readers came back clean, among them all three readers of scope `16`. Nine wrong
+Not clean. Six of the thirteen readers came back clean (B2, B3, E and all three readers of scope `16`). Nine wrong
 statements are fixed and one code problem is listed; none is high.
 - **"Hidden" stats (kit `02`, `05`, `VESSEL_SURVEY.md`, and comments in Argo, Yossele and the template).** These said
   every shipped stat is hidden. `Display_Exposed` off hides a stat only from other teams; the owner's panel shows it
@@ -381,6 +381,23 @@ statements are fixed and one code problem is listed; none is high.
 - **The sea chart's links (listed, C2).** Scope `04` says each map links to 1 to 3 maps. The walk that draws the chart
   (`sea_chart.py` and the mode's `03_Chart.cs`) gives a row's last map every child left, so in about 7 seeds in 100 one
   map links to 4 and the vote offers 4. This changes the game, so it is listed with a default below.
+
+## Pass 15: 16 issues
+
+Not clean. Seven of the thirteen readers came back clean (A1, A2, A3, B2, E, and Smacky's, Sno Sno's, Fie's and
+Buster's part of scope `16`). All 16 wrong statements are fixed, and none is high.
+- **Scope `16`, Boutman (7, Claude-made lines only).** Four "its effect is in the building's code" notes now point to
+  Boutman's or the fish's code (Fish of Fury, Fight Blub, Baviar, Pubberfish). Three lines said more than the code
+  does: the Bout Battleship cannon keeps firing at its last target after Dad or Mom flies off; Boutmom keeps her last
+  bonus when the Raft count falls back to 5; Buppy comes only when 2 tiles beside the barrel are free (kit `17`'s
+  bug list already had this). Passes 10 and 11 had left four of these as too small, which no longer counts.
+- **Map 1's vote (`SEA_CHART.md`, `sea_chart.py` docstring).** They said a vote offers 1 to 3 maps. Map 1's vote is
+  the whole first row, 3 or 4 maps, as scope `04` says. This is not C2.
+- **Comments (Yossele, the template, the mode).** `Stats()` styles each stat like the template's stat of the same
+  name, not its first stat (Yossele and the template); Hallucinogen4's little caps sit on the big cap; Yossele's
+  low-poly header named Mummer's drapes; the template's HOOK test foe stands about 3 tiles away, not 4; the flood's
+  stand-in retries once a second in each map's first 30 s, not once per map.
+- **This report.** Pass 14 had six clean readers, not seven.
 
 ## Why every pass found issues
 

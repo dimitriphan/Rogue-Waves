@@ -619,7 +619,7 @@
 				- Cost: free
 			[Upgrades]
 				% 1:{Fish of Fury} Boutman can now hit multiple enemies at once
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in Boutman's code \
 					- Leads to: {Shao-min}, {Fight Blub}
 					- Cost: Red 150
 				% 1:{Enter the Boutman} Boutman can no longer Drown, get KO'd instead
@@ -636,7 +636,7 @@
 					- Leads to: {1 Inch Bout}, {Fishbender}
 					- Cost: Red 450 + Yellow 250
 				% 2:{Fight Blub} Boutman can recruit more fish, increased capacity per tier
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in Boutman's code \
 					- Leads to: {Iron Fish}, {Fishbender}
 					- Cost: Yellow 125 + Red 125 + Blue 125
 
@@ -754,7 +754,7 @@
 					- Cost: Red 50
 
 				% 3:{Bout Battleship} Boutdad now owns an unregistered cannon!
-					- Numbers: the boat gets a cannon that fires at Boutdad's or Boutmom's target only while one of them is on this boat, at half the boat's attack speed /~ Read from the game's code: the data names it attack speed +50% \
+					- Numbers: the boat gets a cannon that fires at half the boat's attack speed at the target Boutdad or Boutmom gives it while on this boat; after they fly off it keeps firing at that target until it is gone, out of range or out of sight /~ Read from the game's code: the data names it attack speed +50% \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 500
 				% 3:{Bout Cargo Inc} Units can now travel to other boats instantly from here
@@ -822,11 +822,11 @@
 					- Leads to: {Bass}
 					- Cost: Red 750
 				% 3:{Baviar} Things hit become valuable, granting aura on destruction
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the fish's code \
 					- Leads to: {Bass}
 					- Cost: Yellow 500
 				% 3:{Pubberfish} Now deals poison, deals massive damage to healthy enemies
-					- Numbers: /~ None in the data; its effect is in the building's code \
+					- Numbers: /~ None in the data; its effect is in the fish's code \
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 475 + Blue 75
 
@@ -863,7 +863,7 @@
 			- Live: 1
 			- Following: 0
 			- Self-damage per hit: 25 /~ Read from the game's code: each hit it lands costs it 25 health, so it falls after 8; the data names it Perhitdamage \
-			- How many: one each time a fish leaves the barrel, with no limit /~ Read from the game's code \
+			- How many: one each time a fish leaves the barrel, with no limit, when at least 2 tiles beside the barrel are free (with only 1 the game throws and none comes) /~ Read from the game's code \
 			- Respawn: none
 			- Orders: heads for the farthest enemy within its engage range (in effect anywhere), fighting what it meets on the way /~ Read from the game's code \
 			- Cost: free
@@ -881,7 +881,7 @@
 			- Stats: none of its own /~ Uses the building's \
 			- How many: 1 on the map at a time, whatever the team
 			- Respawn: none
-			- Orders: aggravates foes it hits; its damage +25% for each of the team's boats with Bout Raft past 5 /~ Read from the game's code \
+			- Orders: aggravates foes it hits; its damage +25% for each of the team's boats with Bout Raft past 5, and it keeps its last bonus if that count falls back to 5 /~ Read from the game's code \
 			- Cost: free
 
 | Base Vessel: Fie |

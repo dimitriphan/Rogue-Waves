@@ -225,8 +225,8 @@ public static class YosseleContent
         }
     }
 
-    // "Health=25+25" -> value 25, +25 per level. Builds a stat block holding exactly these stats, styled like the
-    // template's first stat (shown only to its own team, like every shipped tower).
+    // "Health=25+25" -> value 25, +25 per level. Builds a stat block holding exactly these stats, each styled like the
+    // template's stat of the same name, else its first stat (shown only to its own team, like every shipped tower).
     static Statproperties Stats(Statproperties template, string name, string[] spec)
     {
         Statproperties stats = UnityEngine.Object.Instantiate(template);

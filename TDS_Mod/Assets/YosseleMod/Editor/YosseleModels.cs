@@ -271,7 +271,7 @@ namespace YosseleBuild
                     m.Spike(p + V(0, 0.07f, 0), Vector3.up, 0.02f, 0.05f, Pal.Cap2, 5);
                 }
             if (up == "Hallucinogen4")
-                // a ring of little purple caps round the stem: the trip spreads
+                // a ring of little purple caps on top of the big cap: the trip spreads
                 for (int i = 0; i < 3; i++)
                 {
                     float a = (60f + i * 120f) * Mathf.Deg2Rad;

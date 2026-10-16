@@ -52,7 +52,7 @@ node's `Links`. A mod that writes `Links` decides where the boat may go next.
 | 3. Build the world | every machine | A `Mapworlddatabaseobject` made in code (`ScriptableObject.CreateInstance`), named `RW_Chart_<seed>_<route>`, with a `Worldobj` built from the seed: a sea, one island per node with a `Macro_Maplink_Add` (its `Gameplan` the map's Rogue twin, `Links` set, a `Cameraposition` and `Dock` child), and route lines; registered in `Items["World"]` | registering database items: **proven** for Mode, Gameplan, Artifact (RogueLab); a World item and a code-built `Worldobj`: **untested** |
 | 4. Sail in | host's mod, on the boat | After the boat opens, warps the party to the chart the way `Selectworld` does: sets `Tds_Multiplayerinfo.World` and `Worlded` to the chart's name and `Selected` empty; the chart's `Defaultnode` is the node the party stands on | the warp path: **read**; doing it from a mod: **untested** |
 | 5. Clients | each client's mod | Sees `Tds_Multiplayerinfo.World` start with `RW_Chart_`, builds the same chart from the seed and route in the name and registers it; the game's own fallback swaps the world once the item exists | **read** (fallback in `Macro_Worldvisual.Update`); **untested** |
-| 6. Choose | see §4 | The next row's linked nodes are the choices (1-3) | |
+| 6. Choose | see §4 | The next row's linked nodes are the choices (1-3; for map 1, the harbour's: the whole first row, 3 or 4) | |
 | 7. Sail and load | host's mod | Sets the chosen node as the leader's `Hovering`: the stock boat sails there; on arrival calls `Selectmap_ServerRpc(node)`; the Setup panel opens on everyone's screen; players ready up and the map loads in the mod's mode | `Selectmap_ServerRpc` from a mod: **proven** (RogueLab, Riptide); the sail: **read** |
 | 8. Come back | host | After the map is left (or lost), returns everyone to the boat (the stock return), then step 4 again with the route one longer | return to the boat: **read** |
 
@@ -70,7 +70,7 @@ Things the code reading turned up that the build must respect:
 
 **What it replaces in the vote flow** (adopted):
 
-- The vote offers the linked nodes of the next row (usually 2, sometimes 1 or 3), not 3 random maps. Players see the
+- The vote offers the linked nodes of the next row (usually 2, sometimes 1 or 3; for map 1 the whole first row, 3 or 4), not 3 random maps. Players see the
   whole chart ahead, so they plan a route, as in Slay the Spire. A chart can't give every node 3 choices without
   crossing lines; the generator could be told to, at the cost of the look.
 - The maps of a campaign are fixed by the seed when it starts, by the stretch rule, instead of drawn at each vote.
