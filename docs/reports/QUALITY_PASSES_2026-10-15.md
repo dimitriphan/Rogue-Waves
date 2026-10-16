@@ -2,7 +2,9 @@
 
 Dimitri asked (2026-10-15 05:18Z): "Do another check on every asset in the repository now. Continue until there are no
 noticeable issues 3 times in a row." At 13:23Z he cut it to two clean passes in a row, and on 2026-10-16 at 00:17Z
-he asked to stop after pass 12 and say why every pass finds issues ("Why every pass found issues" below). Base:
+he asked to stop after pass 12 and say why every pass finds issues ("Why every pass found issues" below). At 00:31Z
+he chose to go on counting only wrong facts, and at 15:15Z he stopped the run "after pass 22"; pass 23 had already
+finished, and its two fixes are kept. Pass 20 was the one clean pass after that; two in a row never came. Base:
 `claude/phase-1-6lfnar` at f455c37 (PRs #2-#36 merged). Everything here was read, compiled or run as a script in the
 cloud; nothing was run in game.
 
@@ -503,6 +505,11 @@ What this means: the code, tools, kit chapters, mode and vessel pages are settle
 code bug or a high item. Scope `16` will keep giving a few lines a pass for as long as it is read against the code
 this closely. It is reference for the base vessels (what Directions and Cardinals must work with), not something the
 pack builds from.
+
+Passes 13 to 23 bear this out. Scope `16` gave its last find in pass 16. Of the nine finds in passes 21 to 23, four
+were in the pass before's own fixes or in this report's own counts; the other five were old lines (two kit rows, a
+`.gitignore` comment, an effect's description, a scope default) that a fresh reader saw for the first time. None was a
+code bug or a high item.
 
 ## Listed for Dimitri
 

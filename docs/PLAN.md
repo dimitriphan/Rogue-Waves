@@ -205,8 +205,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
   RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
-  file, stopped after pass 12 at Dimitri's word with scope `16` still giving a few lines a pass; why is in
-  `docs/reports/QUALITY_PASSES_2026-10-15.md`. Older entries are in "Log" below.
+  file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
+  clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
+  Older entries are in "Log" below.
 - **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
   the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
   turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
@@ -364,10 +365,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   changes; dated reports moved to `docs/reports/`, the mode's design pages to `docs/mode/`, `README.md` rewritten,
   Riptide compiles here again. What is left for Dimitri, for each open PR, and how to merge them:
   `docs/reports/QUALITY_CHECK_2026-10-15.md`.
-- **2026-10-15/16, quality passes:** twelve passes over every file by thirteen readers (179, 61, 27, 37, 16, 2, 0, 7,
-  39, 37, 18 and 8 issues). Fixes changed no game behaviour; scope `16`'s base-vessel lines now say what the game's
-  code does. Dimitri asked to stop after pass 12; why the counts stayed up, and what is listed for him:
-  `docs/reports/QUALITY_PASSES_2026-10-15.md`.
+- **2026-10-15/16, quality passes:** 23 passes over every file, ten readers each through pass 8 and thirteen from
+  pass 9 (179, 61, 27, 37, 16, 2, 0, 7, 39, 37, 18 and 8 issues; then, counting only wrong facts, 8, 10, 16, 4, 1, 4,
+  3, 0, 2, 5 and 2). Fixes changed no game behaviour; scope `16`'s base-vessel lines now say what the game's code
+  does. Dimitri stopped the run after pass 22 (pass 23 had already finished, its two fixes kept); why the counts
+  stayed up, and what is listed for him: `docs/reports/QUALITY_PASSES_2026-10-15.md`.
 
 ### Decisions
 
