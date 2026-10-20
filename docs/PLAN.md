@@ -72,6 +72,12 @@ outcome and the constraints; the Part D templates stay as written for Opus threa
 Each phase ends at a gate. A gate is a short written result the user can approve in a minute. Phases 1 and 2 are
 cheap and decide the shape of everything after them, so nothing else starts before they close.
 
+**Release order (user, 2026-10-20).** The first release is **Yossele alone** ("Release 1" below, after Phase 3). Everything
+else comes afterwards: Spool and Uloe (the rest of Phase 3), enemies and modifiers (Phase 4), the Rogue Waves mode with
+its sea chart (Phase 5), content (Phase 6), and Argo, built and waiting, inside the pack. Phases keep their numbers; Release
+1 takes Yossele through Phase 3 and a one-part Phase 7, and nothing in Phases 4-6 starts before Release 1 ships unless
+Release 1 is blocked on the PC or on Dimitri.
+
 ### Phase 0. Definitions (half a session; done 2026-10-08)
 
 Close the scope's blanks with the user before anything is researched. Reads: `docs/scope/` once, this section.
@@ -128,10 +134,11 @@ Opening prompt:
 
 Gate: packaging and style approved; kit 1.6 scope listed.
 
-### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele built 2026-10-12 and merged, PR #30)
+### Phase 3. Vessels, one at a time (3-5 sessions each, plus PC rounds; Argo done 2026-10-08, Yossele built 2026-10-12 and merged, PR #30; Yossele is finished first, for Release 1)
 
 Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
-way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse), then **Spool** (minion-heavy:
+way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse; finished to
+Dimitri's 2026-10-20 sheet and released alone, Release 1 below), then **Spool** (minion-heavy:
 `docs/12`, and Mummer's Thread code is the nearest prior art), then **Uloe** (light levels are new engine territory:
 "light received" is feasible: the mod sums light sources itself, `docs/RESEARCH_GAPS.md` B1).
 
@@ -152,6 +159,27 @@ Opening prompt (per vessel):
 > read only its `IMPLEMENTATION_NOTES.md` and `02_Data.cs`, keep what matches the design and list the rest as changes.
 
 Gate per vessel: the kit's definition of done (`TDS_Vessel_Creator/README.md`).
+
+### Release 1. Yossele alone (user, 2026-10-20; several sessions plus PC rounds)
+
+What ships: the `RogueWavesMod` bundle (`docs/PACK.md`) holding **only Yossele's part**, pack version 0.1.0, as a zip
+with its README. Yossele works in a normal game: a vessel part works without the mode (`docs/PACK.md` §2 rule 1). It
+carries the F-key fix (`ModKitFocus`, run by every vessel part). It does not carry the mode, Argo, Spool, Uloe or the
+foes. Kit 1.7 is not needed: its "Leave" fix is the mode's, and its focus-mark fix only matters once two parts install
+the handler (`docs/reports/QUALITY_CHECK_2026-10-15.md` B1, B2).
+
+Steps, in order:
+
+1. Dimitri's answers to the questions in scope `07` and `01` (defaults hold until he answers).
+2. `DESIGN.md` updated to the 2026-10-20 sheet; the gap is listed in Yossele's `IMPLEMENTATION_NOTES.md` ("Gap to the
+   2026-10-20 sheet"). Research first what the engine may refuse: D-MDS's projectile interception, Monument's "no
+   debuffs", Cordyfriend raised from a dying foe. Design gate.
+3. Code it (Phase 3 step 3), with the fixes carried over in Part C "Next", and Dimitri's own sprites when he sends
+   them (`docs/03`, `docs/18`). PC round: self-test 0 failures, then his play test and his balance pass.
+4. The pack build with one part: the Build Queue's `Pack` step (`docs/PACK.md` §1, not built yet), the one pack version
+   in every place `docs/PACK.md` §4 names, the README of §5, the Mods-folder install checked on the PC with no dev mods
+   in it.
+5. `docs/10` hand-off; `RogueWaves-0.1.0.zip` to Dimitri. Gate: Dimitri says ship.
 
 ### Phase 4. Enemies and modifiers (1-2 sessions plus one PC round)
 
@@ -186,7 +214,7 @@ Gate: a full 10-map campaign completed on the PC (saved and continued at least o
 New Cardinals (run modifiers, built like the base game's), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), and the
 Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6). Each is data plus small code on finished systems.
 
-### Phase 7. Hardening and release (2 sessions plus PC rounds)
+### Phase 7. Hardening and release (2 sessions plus PC rounds; Release 1 runs its pack steps for Yossele alone)
 
 Roster balance (`docs/02` § 7 across all vessels and ascension levels), online checklist for every new sync, the pack
 README, versioned zips, and `docs/10` hand-off. Gate: release.
@@ -208,8 +236,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
   2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
-- **Next:** Phase 5's next pieces, the main-menu button and the in-map vote (kit 1.7 first, Decisions 2026-10-15);
-  the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
+- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20): Dimitri's answers to scope `07`'s and `01`'s
+  questions, then Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
+  round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
+  and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
   turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
   A3-9, B4-11, B4-12, B4-14, C2), and
   its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
@@ -379,6 +409,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   where he changed them inside `~ ~`, Cordyfriend in the minion template, the template's `- Numbers:` slot where only
   prose held a number); five questions at its end. The gap between the sheet and the 0.1.0-dev build is listed in
   `TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md` ("Gap to the 2026-10-20 sheet").
+- **2026-10-20, release order:** at Dimitri's word the first release is Yossele alone and everything else follows.
+  Part B gained "Release order" and "Release 1"; `docs/PACK.md` §5 and scope `01`, `02` and `04` say the same; four
+  release questions with defaults in scope `01`.
 
 ### Decisions
 
@@ -422,7 +455,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   **Style approved** (`docs/STYLE.md`): the pack look lives in run pieces; vessels look as the user's concept art draws
   them, house-style departures kept as drawn until each vessel's design gate. Kit 1.6 = `docs/PACK.md` §3.
 - 2026-10-08 (user): **Argo ships only inside the full `RogueWavesMod` pack**, no standalone ArgoMod 2.0. Argo's
-  balance pass waits for a later session of his; step 5 is lessons and notes, no release zip.
+  balance pass waits for a later session of his; step 5 is lessons and notes, no release zip. (Release order
+  superseded 2026-10-20: Yossele is released first, alone; Argo still ships only inside the pack, later.)
 
 - 2026-10-09 (research): **Directions are held per player on the vessel, not on the core** (the core is the team's,
   `docs/15` §14.1); `ModKitDirections` changes to that as kit 1.7 when Phase 5 starts. Per-player run state is keyed
@@ -508,6 +542,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-16 (user): a Claude default in the scope is surrounded by `~`, `~value~`, not only prefixed. Claude's
   default: the closing `~` goes right after the value, before its unit or punctuation (`~3~ tiles`); a phrase or a cost is
   closed at its end (`~Red 25 + Blue 10~`); an empty `~~` is a slot Claude will fill.
+- 2026-10-20 (user): **the first release is Yossele alone; everything else comes afterwards** (the mode and its sea
+  chart, Argo, Spool, Uloe, the foes). Part B "Release order" and "Release 1". Defaults taken, his to overrule (scope
+  `01` [Questions]): the release is the `RogueWavesMod` bundle holding only Yossele's part, version 0.1.0, a zip he
+  shares (the game has no Workshop, `docs/14` §4), so later releases update the same mod; outside the mode there are
+  no Directions, so Release 1 has no Fertilize; it waits for his own sprites.
 
 ### Open questions
 
@@ -515,7 +554,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `07`, `08`, `09` and `10` | the `~` default each line names |
+| 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/01`, `04`, `07`, `08`, `09` and `10` (`01` and `07` gate Release 1) | the `~` default each line names |
 
 ### Phase 5 pieces
 
