@@ -130,3 +130,32 @@ block's top. (Note 3 above guessed the ground at the vine model's origin; the fr
 The vine tile now draws at y 9.51 for a being at 10 (on the ground). The first build used the old editor code
 (pitfall #104) and failed that one check. The ground block's top wasn't found by the check's lookup, so it passes on
 the half-tile rule; Dimitri's eye is the real check.
+
+## Gap to the 2026-10-20 sheet (Yossele's first release)
+
+Dimitri's sheet of 2026-10-20 (`docs/scope/07_Vessel_Yossele.txt`) is the target for the release build; this build
+(0.1.0-dev, rounds 1-8) was made from the 2026-10-12 sheet. Scope only so far: nothing below is designed or built.
+`DESIGN.md` takes each line at the next build's design gate, with its change from the sheet if the engine forces one.
+
+- **Vessel:** ranged green mouth laser, projectile speed 15; Health 70, Speed 1.75, Damage 5.5, Range 4 tiles (build:
+  melee, 60 / 2.5 / 4.5 / 1.5).
+- **Growth:** 5 stages a Tide on maps with long Tides (3 or 4 Tides; which maps count is sheet question 4).
+- **Level 4 capstones (tier 5), none in the build:** Cordyceps (Cannon; raises the new minion **Cordyfriend**, a
+  Snoble-like tank), Dandelion Season (Tree; the name clashes with a Direction, sheet question 3), Monument (Stonehenge,
+  "cannot receive debuffs from foes"), Fortifying Roots and Softening Roots (Sapling; a node's `Healthresource` is hits
+  per payout, kit `docs/16` §4, so lowering it is a stat change, read only).
+- **New level 2-3 upgrades:** D-MDS (Tree, seeds intercept foe projectiles; what counts as a projectile and bosses are
+  open, research before design), Bonsai (Tree copies at 40%, sells for 0%; limit and price are sheet question 5),
+  Rubbery Shell (seed bounces), Easy Target and Obsidian (Stonehenge), Spontaneous Mulch (Sapling). Three choices at
+  one tier and the `Leads to` lines change the tree shape in `02_Data.cs`.
+- **Changed rules:** Hallucinogen is now a 2 s stun (was turning on allies); Viral Outbreak's burst is 15 damage in 2
+  tiles with 1 spore stack; Deathcap keeps stacks above 8; Garden Weeds is a 3 s debuff with a 40% chance; Entangling
+  Roots once per foe; Verdant Spread 2 tiles, 3 at full Growth; Natural Remedy 0.5 per Growth; Grafted converts the
+  fruit's total at 70%; Forest Project 10% per Sapling with no cap; the fruit's value is attack speed x damage x 15;
+  fully spored foes show a fungal effect; Tree seeds start full each Tide.
+- **Changed numbers** on most lines (Cannon, Tree, Stonehenge, Sapling stats, Growth steps and costs): the sheet's
+  values without `~` are Dimitri's; diff them against `02_Data.cs` at the design gate.
+- **Names in code still from before 2026-10-13:** Grafted Colors, Selfish Sapling, Entangling Spaghetti Roots (Part C
+  "Next" of `docs/PLAN.md` lists the other carried-over fixes).
+- **Fertilize** stays Direction-only; whether the first release (outside the mode) has it is
+  `docs/scope/01_Expansion.txt` question 2.

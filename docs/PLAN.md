@@ -375,6 +375,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   on each side) instead of `~value`; every marker in `docs/scope/` was closed (rule in `00_Read_Me.txt` [Symbols]).
   The spotlight's `parse.py` (project files) reads both forms; its rebuilt output is unchanged.
 
+- **2026-10-20, Yossele sheet:** Dimitri's new `07_Vessel_Yossele.txt` folded in (layout, markers, his values made his
+  where he changed them inside `~ ~`, Cordyfriend in the minion template, the template's `- Numbers:` slot where only
+  prose held a number); five questions at its end. The gap between the sheet and the 0.1.0-dev build is listed in
+  `TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md` ("Gap to the 2026-10-20 sheet").
+
 ### Decisions
 
 - 2026-10-08: vessels arrive one at a time through the kit loop; Argo first. Mode feasibility (Phase 1) closes before
