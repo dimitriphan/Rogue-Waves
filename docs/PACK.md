@@ -80,3 +80,8 @@ installing (unzip into `TDS\Mods`, enable in the Mods menu, disable standalone v
 the game after enabling or disabling the pack: the Mods menu's toggle undoes nothing, kit `docs/23` §4.3), how the
 mode starts (the host presses the Rogue Waves button on the main menu, `docs/mode/MAIN_MENU_START.md`) and online play
 (everyone needs the same version). There is no Workshop (`docs/14` §4).
+
+**Release order (user, 2026-10-20).** The first release is this same bundle holding **only Yossele's part**
+(`RogueWaves_Yossele_Default`), version 0.1.0, built with the `Pack` step above. Each later release adds parts to the
+same bundle (the mode, Argo, Spool, Uloe, the foes) and bumps the one version, so a player only ever updates one mod and
+no standalone vessel mod has to be swapped out; the full pack is 1.0.0. The plan is `docs/PLAN.md` Part B "Release 1".

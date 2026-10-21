@@ -6,7 +6,7 @@
 
 	[Files]
 		- 00_Read_Me.txt: this list and the rules
-		- 01_Expansion.txt: what the pack is, each part pointing to its file
+		- 01_Expansion.txt: what the pack is, each part pointing to its file, and the order the parts are released in
 		- 02_Progress.txt: where the work stands, and the log of every change. Claude keeps this one current
 		- 03_Bug_Fix.txt: the bugs the pack fixes, in the Bug template
 		- 04_Rogue_Waves_Mode.txt: the mode's rules: campaign, retries, difficulty, Depth, tides and leaving, the sea chart and sea weather
