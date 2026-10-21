@@ -21,14 +21,8 @@
 	[Releases]
 		- First release: {Yossele} alone
 		- After it: everything else: the Rogue Waves mode with its sea chart and sea weather, {Argo}, {Spool}, {Uloe}, the new enemies and modifiers, [Directions], [Cardinals] and the rest of the parts above
-		- Download: ~the RogueWavesMod pack holding only Yossele, version 0.1.0~ /~ Each later release adds parts to the same pack, so players update one mod. docs/PACK.md \
-		- Where: ~a zip you share yourself~ /~ The game has no Steam Workshop. Kit docs/14 section 4 \
-		- Yossele outside the mode: Yossele plays in a normal game. ~No {Fertilize} in the first release~, since it is unlocked only by a [Direction] and [Directions] exist only in the mode -> 07_Vessel_Yossele.txt [Ability]
-		- Ready when: Yossele matches 07_Vessel_Yossele.txt, ~carries your own sprites~, passes its PC self-test and your play test, and you say ship
-		- Status: waiting on your answers below; then Yossele's next build from the newest 07. /~ docs/PLAN.md Part B "Release 1" \
-
-	[Questions]
-		- 1. "Released" means a zip you share yourself (Discord, a mod page), since the game has no Workshop. Right? ~Yes~
-		- 2. Yossele's first release plays in normal games, where there are no Directions, so no {Fertilize}. Ship it without {Fertilize}, or unlock {Fertilize} from the start outside the mode? ~Without~
-		- 3. The download is the Rogue Waves pack holding only Yossele, so later releases update the same mod. Or a separate Yossele mod? ~The pack~
-		- 4. Does the first release wait for your own sprite sheet (idle, move, back view, fall, land, attack)? ~Yes~
+		- Download: the RogueWavesMod pack holding only Yossele, version 0.1.0 /~ Each later release adds parts to the same pack, so players update one mod. docs/PACK.md \
+		- Where: a zip you share yourself /~ The game has no Steam Workshop. Kit docs/14 section 4 \
+		- Yossele outside the mode: Yossele plays in a normal game. No {Fertilize} in the first release, since it is unlocked only by a [Direction] and [Directions] exist only in the mode -> 07_Vessel_Yossele.txt [Ability]
+		- Ready when: Yossele matches 07_Vessel_Yossele.txt, carries your own sprites, passes its PC self-test and your play test, and you say ship
+		- Status: Yossele's next build from the newest 07 comes next. /~ docs/PLAN.md Part B "Release 1" \

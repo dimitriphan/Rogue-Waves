@@ -45,13 +45,13 @@
 			- Cap: ~10~
 			- Earned by: the requirements of Yossele's own [Directions]. -> 11_Directions.txt {Compost Bin}, the first, which carries its numbers
 			- Spent on: {Fertilize}
-			- Between maps: ~resets~
+			- Between maps: resets
 			- On the vessel's death: ~kept~
 
 		[Vessel Mechanic] [Growth]
 			- Rule: [Growth] rises with each tide a tower survives, and resets if the tower is destroyed.
 			- Details: Buildings gain a stack of [Growth] after surviving a tide, gaining more [Growth] depending on tide strength. / Some maps have long lasting tides, with only 3 or 4 tides total. In these cases, each tide grants 5 stacks of [Growth]. \
-			- Per tide: ~1~ stack; 5 on a map with ~4 tides or fewer~
+			- Per tide: ~1~ stack; 5 on a map with 4 tides or fewer
 
 		(Offense 1):{Mushroom Cannon}
 			# Slowly stacks spores on enemies, dealing DOT. Long range cannon
@@ -155,14 +155,14 @@
 
 				% 3:{Bonsai} Allows Yossele to plant a smaller dandelion shrub, with the same upgrades as the {Primordial Dandelion Tree} with reduced effects.
 					- In-game line: Plant a copy of the {Primordial Dandelion Tree} with reduced effects.
-					- Numbers: 40% effectiveness and stats of {Primordial Dandelion Tree}. Sells for 0% efficiency.
+					- Numbers: 40% effectiveness and stats of {Primordial Dandelion Tree}. Sells for 0% efficiency. Limit 1, planted at the {Primordial Dandelion Tree}'s own cost.
 					- Cost: Red 300 + Blue 300 + Yellow 300
 				% 3:{Rubbery Shell} Seeds bounce from target to target. {D-MDS} allows a seed to jump from projectiles within range.
 					- In-game line: Seeds bounce between targets.
 					- Numbers: Bounces 2 times, within 2 tiles
 					- Cost: Red 450 + Blue 600
 
-				% 4:{Dandelion Season} Greatly increases its range, maximum seed limit, and seed spawn rate.
+				% 4:{Dandelion Storm} Greatly increases its range, maximum seed limit, and seed spawn rate.
 					- In-game line: ~Huge range, many more seeds, grown faster~
 					- Numbers: Range increases by 100%, seed limit increased by 20, seed spawn rate increased by 100%
 					- Cost: Red 1050 + Blue 800 + Yellow 2400
@@ -288,7 +288,7 @@
 			- Attack: ~melee~
 			- Health: 75
 			- Damage: 2
-			- Range: 1.5 tiles /~ Your sheet also had a second Range: 2 tiles. See [Questions] \
+			- Range: 1.5 tiles
 			- Attack speed: 0.5
 			- Speed: 2.25
 			- How many: ~one for each foe that rises, no cap~
@@ -300,10 +300,3 @@
 
 		[Directions] / Written in 11_Directions.txt under Yossele \
 			- {Compost Bin}, {Dandelion Season}, {Mother of Mushrooms}
-
-		[Questions]
-			- 1. Does fertilizer carry over to the next map? ~It resets each map~
-			- 2. {Cordyfriend} had two Range lines, 1.5 tiles and 2 tiles. Which one is its range? ~1.5 tiles~
-			- 3. {Dandelion Season} is now both the {Primordial Dandelion Tree}'s level 4 upgrade and one of Yossele's Directions in 11_Directions.txt, and a thing has one name. Which one gets a new name? ~The upgrade, back to {Dandelion Storm}, its name before~
-			- 4. "Some maps have long lasting tides": which maps count, the ones with 4 tides or fewer? ~Yes~
-			- 5. How many {Bonsai} can one player plant, and what does each cost? ~No limit, each at the Tree's own cost~

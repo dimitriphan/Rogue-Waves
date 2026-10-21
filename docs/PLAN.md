@@ -170,7 +170,7 @@ the handler (`docs/reports/QUALITY_CHECK_2026-10-15.md` B1, B2).
 
 Steps, in order:
 
-1. Dimitri's answers to the questions in scope `07` and `01` (defaults hold until he answers).
+1. Dimitri's answers to the questions in scope `07` and `01`: done 2026-10-21 (Decisions).
 2. `DESIGN.md` updated to the 2026-10-20 sheet; the gap is listed in Yossele's `IMPLEMENTATION_NOTES.md` ("Gap to the
    2026-10-20 sheet"). Research first what the engine may refuse: D-MDS's projectile interception, Monument's "no
    debuffs", Cordyfriend raised from a dying foe. Design gate.
@@ -236,8 +236,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
   2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20): Dimitri's answers to scope `07`'s and `01`'s
-  questions, then Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
+- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
   round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
   turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
@@ -412,6 +411,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-10-20, release order:** at Dimitri's word the first release is Yossele alone and everything else follows.
   Part B gained "Release order" and "Release 1"; `docs/PACK.md` §5 and scope `01`, `02` and `04` say the same; four
   release questions with defaults in scope `01`.
+- **2026-10-21, answers:** Dimitri answered scope `01`'s and `07`'s questions: every default kept except Bonsai, limit
+  1 (planted at the Tree's cost). The Tree's level 4 upgrade is Dandelion Storm again; Dandelion Season is only the
+  Direction. Both `[Questions]` blocks are gone.
 
 ### Decisions
 
@@ -544,9 +546,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   closed at its end (`~Red 25 + Blue 10~`); an empty `~~` is a slot Claude will fill.
 - 2026-10-20 (user): **the first release is Yossele alone; everything else comes afterwards** (the mode and its sea
   chart, Argo, Spool, Uloe, the foes). Part B "Release order" and "Release 1". Defaults taken, his to overrule (scope
-  `01` [Questions]): the release is the `RogueWavesMod` bundle holding only Yossele's part, version 0.1.0, a zip he
+  `01`, confirmed 2026-10-21): the release is the `RogueWavesMod` bundle holding only Yossele's part, version 0.1.0, a zip he
   shares (the game has no Workshop, `docs/14` §4), so later releases update the same mod; outside the mode there are
   no Directions, so Release 1 has no Fertilize; it waits for his own sprites.
+- 2026-10-21 (user): Release 1's four defaults confirmed; Yossele's sheet answers: fertilizer resets each map,
+  Cordyfriend's range 1.5 tiles, the Tree's capstone is Dandelion Storm, "long tide" maps have 4 Tides or fewer, one
+  Bonsai per player.
 
 ### Open questions
 
@@ -554,7 +559,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 | # | Question | Default if unanswered |
 | --- | --- | --- |
-| 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/01`, `04`, `07`, `08`, `09` and `10` (`01` and `07` gate Release 1) | the `~` default each line names |
+| 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
 
 ### Phase 5 pieces
 

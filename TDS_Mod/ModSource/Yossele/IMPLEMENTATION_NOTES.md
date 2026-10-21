@@ -139,13 +139,13 @@ Dimitri's sheet of 2026-10-20 (`docs/scope/07_Vessel_Yossele.txt`) is the target
 
 - **Vessel:** ranged green mouth laser, projectile speed 15; Health 70, Speed 1.75, Damage 5.5, Range 4 tiles (build:
   melee, 60 / 2.5 / 4.5 / 1.5).
-- **Growth:** 5 stages a Tide on maps with long Tides (3 or 4 Tides; which maps count is sheet question 4).
+- **Growth:** 5 stages a Tide on a map with 4 Tides or fewer (Dimitri 2026-10-21).
 - **Level 4 capstones (tier 5), none in the build:** Cordyceps (Cannon; raises the new minion **Cordyfriend**, a
-  Snoble-like tank), Dandelion Season (Tree; the name clashes with a Direction, sheet question 3), Monument (Stonehenge,
+  Snoble-like tank), Dandelion Storm (Tree; named Dandelion Season on the sheet until 2026-10-21, a Direction's name), Monument (Stonehenge,
   "cannot receive debuffs from foes"), Fortifying Roots and Softening Roots (Sapling; a node's `Healthresource` is hits
   per payout, kit `docs/16` §4, so lowering it is a stat change, read only).
 - **New level 2-3 upgrades:** D-MDS (Tree, seeds intercept foe projectiles; what counts as a projectile and bosses are
-  open, research before design), Bonsai (Tree copies at 40%, sells for 0%; limit and price are sheet question 5),
+  open, research before design), Bonsai (Tree copies at 40%, sells for 0%; limit 1, planted at the Tree's cost),
   Rubbery Shell (seed bounces), Easy Target and Obsidian (Stonehenge), Spontaneous Mulch (Sapling). Three choices at
   one tier and the `Leads to` lines change the tree shape in `02_Data.cs`.
 - **Changed rules:** Hallucinogen is now a 2 s stun (was turning on allies); Viral Outbreak's burst is 15 damage in 2
@@ -157,5 +157,4 @@ Dimitri's sheet of 2026-10-20 (`docs/scope/07_Vessel_Yossele.txt`) is the target
   values without `~` are Dimitri's; diff them against `02_Data.cs` at the design gate.
 - **Names in code still from before 2026-10-13:** Grafted Colors, Selfish Sapling, Entangling Spaghetti Roots (Part C
   "Next" of `docs/PLAN.md` lists the other carried-over fixes).
-- **Fertilize** stays Direction-only; whether the first release (outside the mode) has it is
-  `docs/scope/01_Expansion.txt` question 2.
+- **Fertilize** stays Direction-only, so the first release (outside the mode) has none (Dimitri 2026-10-21).
