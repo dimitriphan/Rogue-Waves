@@ -46,7 +46,7 @@ public static class YosseleData
     // Debuff looks the game attaches itself (Vfxdebuffcheck by name, registered under "Vfx").
     public const string VfxSpores = "Debuff_Yossele_Spores", VfxSporefull = "Debuff_Yossele_Sporefull";
     public const string VfxTangle = "Debuff_Yossele_Tangle", VfxBlockade = "Debuff_Yossele_Blockade";
-    public const string VfxSlow = "Debuff_Slow", VfxStun = "Debuff_Stun", VfxWeakened = "Debuff_Weakened", VfxDisabled = "Debuff_Disabled";
+    public const string VfxSlow = "Debuff_Slow", VfxStun = "Debuff_Stun", VfxMarked = "Debuff_Yossele_Marked", VfxDisabled = "Debuff_Disabled";
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
 

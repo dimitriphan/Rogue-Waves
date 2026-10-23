@@ -345,3 +345,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 109. **CS7036 calling `Helper_Damagetools.Projectile` in cloud-check, though the game's code compiles without the last
      argument** → the stubs drop default parameter values, so `Interactiontype` (default `"Hurt"`) must be passed
      explicitly; the game's Roslyn accepts it either way.
+110. **"Could not retrieve Vfx/Debuff_Weakened The GROUP exists, but item does not"** (Yossele round 9, 2026-10-23,
+     solo on 3B_Thehunt) → `Debuff_Weakened` is only named by the Fiewall's code and isn't in the Vfx group in a normal
+     game, though kit `17` §10 listed it → give the look your own effect (`Debuff_Yossele_Marked`), or check a stock
+     debuff name with the self-test's `DebuffReport` before relying on it.

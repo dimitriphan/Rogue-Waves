@@ -254,7 +254,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #110 (#92 is unused).
+- **Next free numbers:** kit chapter 25, pitfall #111 (#92 is unused).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

@@ -449,11 +449,12 @@ public static class YosseleSelfTest
             SetHealth(hm, max);
         }
         {
-            // A foe 2.5-3.5 tiles off: Yossele, standing idle, shoots it (the stock AI's own targeting).
-            Entity_Master foe = SpawnFoe("Enemy_Aegis", YosseleUtil.Pos(hm), 3.5f, 2.5f);
+            // A foe 2.5-3.5 tiles off: Yossele, standing idle, shoots it (the stock AI's own targeting). Its health is
+            // read against its maximum: right after the spawn its health stat isn't filled in yet (round 9 read 0).
+            Entity_Master foe = SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(hm), 3.5f, 2.5f);
             int zaps = YosseleClient.Zaps;
-            float h0 = foe != null ? YosseleUtil.Health(foe) : 0f;
-            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || YosseleUtil.Health(foe) < h0 - 0.01f, 8f);
+            float h0 = foe != null ? YosseleUtil.MaxHealth(foe) : 0f;
+            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || (h0 > 0f && YosseleUtil.Health(foe) < h0 - 0.01f), 8f);
             float lost = foe != null ? h0 - YosseleUtil.Health(foe) : 0f;
             Check("Yossele's laser hurts a foe in range", foe != null && (lost > 0.01f || !YosseleUtil.Alive(foe)) && YosseleClient.Zaps > zaps,
                 foe == null ? "no foe" : "first loss " + F(lost) + " (Damage 5.5 before the foe's own armour), zaps " + zaps + "->" + YosseleClient.Zaps + ", last hit by " + YosseleUtil.BeingName(foe.Lasthit));
@@ -463,6 +464,9 @@ public static class YosseleSelfTest
             Kill(foe);
             yield return Wait(0.4f);
         }
+        // From here on Yossele holds its fire (no foe within its Range), so the laser doesn't fell the foes the building
+        // checks set up (round 9 lost two that way). Taken off before the journal.
+        Link_Modifier holdFire = Helper_Entitytools.Addmod(hm, "Range", 0.01f, Helper_Entitytools.Modtypes.Override, 0f);
 
         // 2. Building all four through the vessel's real Build command; they start at Growth 0.
         Helper_Resources.Giveresources(YosseleUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
@@ -780,7 +784,8 @@ public static class YosseleSelfTest
                     int stuns = YosseleSpores.Stuns;
                     YosseleSpores.Stun(foe, second);
                     yield return Wait(0.3f);
-                    Check("Hallucinogen's stun holds the foe", YosseleSpores.Stuns > stuns && SpeedOf(foe) < 0.05f, "speed " + F(s0) + "->" + F(SpeedOf(foe)));
+                    // Speed bottoms out at its lower bound (0.05 in round 9); the game's own stun leaves 0.1 (the Boutman boat's).
+                    Check("Hallucinogen's stun holds the foe", YosseleSpores.Stuns > stuns && SpeedOf(foe) <= 0.1f, "speed " + F(s0) + "->" + F(SpeedOf(foe)));
                     yield return DebuffReport(foe, YosseleData.VfxStun);
                 }
                 Kill(foe);
@@ -874,7 +879,11 @@ public static class YosseleSelfTest
         if (henge != null && YosseleUtil.Alive(henge.Master))
         {
             Vector3 hp = henge.Master.Beingserver.Currentblock != null ? henge.Master.Beingserver.Currentblock.Position : henge.Pos;
+            // Section 4's Tides grew it already, and in play Growth never falls, so its vines are laid again from Growth 0.
             henge.SetGrowth(0);
+            YosseleVines.Release(henge);
+            henge.Tiles.Clear();
+            henge.Spread();
             yield return Wait(0.6f);
             int t0 = henge.Tiles.Count;
             bool ahead = true;
@@ -956,7 +965,7 @@ public static class YosseleSelfTest
                         Check("a marked foe takes 15% more from a real hit", Mathf.Abs(marked - plain * 1.15f) < 0.02f + 0.02f * plain, "plain " + F(plain) + ", marked " + F(marked));
                     else
                         ModKitTest.Setup("Easy Target hit", "a hit didn't show on the foe's health in the same frame (" + F(plain) + ")");
-                    yield return DebuffReport(foe, YosseleData.VfxWeakened);
+                    yield return DebuffReport(foe, YosseleData.VfxMarked);
                 }
                 yield return Upgrade(henge, "Roots4", owner);
                 Check("Easy Target -> Entangling Roots", Has(henge, "Roots4"));
@@ -1268,11 +1277,12 @@ public static class YosseleSelfTest
                 Check("Focused Roots -> Spontaneous Mulch", Has(third, "Mulch3"));
                 int mulched = third.Mulched;
                 Entity_Master foe = SpawnFoe("Enemy_Dagger", third.Pos, third.Stat("Range", 2.5f) - 0.3f, 0f);
+                bool spawned = foe != null;   // a felled foe's object is gone afterwards
                 yield return Wait(0.3f);
                 Kill(foe);
                 yield return Wait(0.5f);
                 float mulch = 0.25f * (1f + YosseleData.PachiraGrowSpeed * third.Growth + 0.8f + 0.2f);
-                Check("Spontaneous Mulch: a foe falling in range gives +20% mining speed", foe != null && third.Mulched > mulched && third.Mulching && Mathf.Abs(third.Stat("Attackspeed", 0f) - mulch) < 0.01f,
+                Check("Spontaneous Mulch: a foe falling in range gives +20% mining speed", spawned && third.Mulched > mulched && third.Mulching && Mathf.Abs(third.Stat("Attackspeed", 0f) - mulch) < 0.01f,
                     "mulched " + mulched + "->" + third.Mulched + ", mining speed " + F(third.Stat("Attackspeed", 0f)) + " (want " + F(mulch) + ")");
             }
             else
@@ -1446,6 +1456,8 @@ public static class YosseleSelfTest
         yield return Wait(1f);
         yield return YosseleShots.Shot("upgraded");
 #endif
+
+        YosseleUtil.Unmod(holdFire);
 
         // 13. The journal: Yossele's pages, and every vessel page with exactly one tab per vessel (Smacky included).
         {

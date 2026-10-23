@@ -93,10 +93,10 @@ public static class YosseleHooks
         if (fresh)
         {
             Marked++;
-            YosseleUtil.Debuff(by, foe, YosseleData.VfxWeakened, seconds);
+            YosseleUtil.Debuff(by, foe, YosseleData.VfxMarked, seconds);
         }
         else
-            YosseleUtil.Debuff(by, foe, YosseleData.VfxWeakened, markUntil[foe] - Time.time);
+            YosseleUtil.Debuff(by, foe, YosseleData.VfxMarked, markUntil[foe] - Time.time);
     }
 
     public static float MarkOf(Entity_Master foe)

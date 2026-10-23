@@ -32,6 +32,12 @@ and `lite/run_preview.sh ... sma` runs clean. None of this has been built in Uni
   where it enters the left one and a row of vine tiles joins up. The preview renderer does not draw textures, so
   `models_Extras.png` shows the vine tile empty; check the join by eye in game.
 
+## Effects
+
+- `Debuff_Yossele_Marked` (new): Easy Target's mark, red and gold sparks circling over the foe's head. The stock
+  `Debuff_Weakened` the code first used isn't loaded in a normal game (PC round 9).
+- `Debuff_Yossele_Daze` is still generated but unused: Hallucinogen is a plain stun with the stock look.
+
 ## The Cordyfriend
 
 No art of its own yet: it wears the Snoble's sprite, tinted fungus green on every client (`Code/13_Client.cs`

@@ -56,7 +56,8 @@ Each line is an assumption the new code makes from the decompiled game, not yet 
 8. **Growth on short maps.** `Totalwaves` of the map's mode gives the Tide count (as the coin artifact reads it);
    check it is 4 or fewer on a short map and that buildings grow 5 stages a Tide there, 1 elsewhere. The host logs one
    line a Tide with the map's Tide count, the stages given and the chance-based counters (`OnTide`).
-9. **Easy Target** shows the stock `Debuff_Weakened` mark on a foe that lingers 5 s on the vines.
+9. **Easy Target** shows its own `Debuff_Yossele_Marked` look on a foe that lingers 5 s on the vines (round 9: the
+   stock `Debuff_Weakened` isn't loaded).
 10. **Carried-over fixes** (`docs/reports/QUALITY_PASSES_2026-10-15.md`, B3-24 to B3-39): debuff looks sent once per
     target and cleared at a map's end, the footstep on frames 0 and 3, the Mend look and sound, the vine texture's join,
     Connected Roots on the owner's buildings only, the fruit's last pick cleared per map.
@@ -134,6 +135,26 @@ block's top. (Note 3 above guessed the ground at the vine model's origin; the fr
 The vine tile now draws at y 9.51 for a being at 10 (on the ground). The first build used the old editor code
 (pitfall #104) and failed that one check. The ground block's top wasn't found by the check's lookup, so it passes on
 the half-tile rule; Dimitri's eye is the real check.
+
+**Round 9 (2026-10-23, 0.2.0-dev, 3B_Thehunt): 154 pass, 6 fail, 0 setup.** Apply clean, editor assembly rebuilt after
+the apply, Build Queue ok, no Yossele warnings, the three exceptions the game's own. Proven in game: the ranged AI armed
+with the laser (77 client zaps), the stats, 5 Growth stages a Tide on a 4-Tide map, Cordyceps raising Cordyfriends (4
+raised, stats, stock melee AI, Snoble block, walking to a foe; 8 sprite renderers tinted), Viral and Explosive Finish,
+Deathcap's cap, Rubbery Shell, Dandelion Storm, Easy Target's +15%, Entangling Roots once per foe, Monument's armour and
+its strip, Obsidian, fruit from real payouts (12 dropped), Grafted, Connected and Fortifying Roots, Forest Project,
+Harvesting Season, Softening Roots (4 -> 3 hits), D-MDS shooting down a ballista bolt, every Bonsai check, Garden Weeds.
+The 0.1.0-dev play build went back into the Mods folder. The six failures, fixed for round 9b:
+- "the laser hurts a foe": the foe's health was read right after its spawn, before it was filled in (0, then 58); the
+  check now reads against its maximum, on a Dagger.
+- "Hallucinogen's stun holds the foe": speed 0.525 -> 0.05, the Speed stat's lower bound; the game's own stun leaves
+  0.1 (the Boutman boat's Override), so the check takes 0.1 or less.
+- "Growth lengthens the vines": section 4's long Tide had grown the Stonehenge already and vines never shrink (Growth
+  never falls in play); the check lays them again from Growth 0.
+- "Debuff_Weakened attached": that stock look isn't loaded (pitfall #110); Easy Target has its own
+  `Debuff_Yossele_Marked`.
+- "Debuff_Yossele_Tangle attached" (no foe) and "Spontaneous Mulch" (`foe != null` after its fall): the first foe was
+  most likely felled by Yossele's laser, which shoots anything in range while the test waits; Yossele now holds its fire
+  (a Range override) from section 2 to the journal. The Mulch check keeps whether its foe spawned before felling it.
 
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 
