@@ -3,8 +3,8 @@
 // costs, Forced/Normal checks, Upgradeborder effect and the owner's Upgraded end-screen stat. Upgrade parameters on the
 // building's own stats become modifiers; the rest are read by the subclass through Param() and Has().
 //
-// Growth (the scope's rule): a building gains a stage when a Tide begins if it stood through the whole Tide before it,
-// up to its maximum; FERTILIZE adds one at once. The stage is shown as the "Growth" counter (ModKitCounter) and the
+// Growth (the scope's rule): a building gains a stage when a Tide begins if it stood through the whole Tide before it
+// (5 stages on a map of 4 Tides or fewer), up to its maximum; FERTILIZE adds one at once. The stage is shown as the "Growth" counter (ModKitCounter) and the
 // skin "Growth<n>" (sprouts round its foot), both synced by the engine. Destroyed or sold, it is gone: a new one
 // starts at 0.
 public abstract class YosseleBuilding : MonoBehaviour
@@ -16,6 +16,7 @@ public abstract class YosseleBuilding : MonoBehaviour
 
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
+    readonly List<Link_Modifier> upgradeMods = new List<Link_Modifier>();
     readonly YosseleFaults faults = new YosseleFaults();
     Link_Command upgradeCommand;
     float upgradeThrottle;
@@ -24,6 +25,7 @@ public abstract class YosseleBuilding : MonoBehaviour
     static readonly string[] StatNames = { "Damage", "Attackspeed", "Range", "Health", "Radius", "Spores", "Seedlimit", "Seedrate", "Slow" };
 
     public bool Has(string key) { return keys.Contains(key); }
+    public List<string> Keys { get { return keys; } }
 
     public float Param(string name, float fallback)
     {
@@ -98,14 +100,14 @@ public abstract class YosseleBuilding : MonoBehaviour
     // ---------------------------------------------------------------- Growth
 
     // A Tide began (YosseleServer, from ModKitTides). Built during Tide N (or the break after it) it first grows when
-    // Tide N+2 begins: it has then stood through all of Tide N+1.
-    public void TideBegan(int wave)
+    // Tide N+2 begins: it has then stood through all of Tide N+1. 'stages': 1, or 5 on a map with long Tides.
+    public void TideBegan(int wave, int stages)
     {
         if (!Started)
             return;
         if (Growth < Max && BuiltWave <= wave - 2)
         {
-            Grow(1, false);
+            Grow(stages, false);
             Grown++;
         }
         OnTide(wave);
@@ -181,13 +183,29 @@ public abstract class YosseleBuilding : MonoBehaviour
 
     void OnUpgrade(Upgradeproperties up)
     {
+        YosseleData.Upg def = Apply(up, 1f);
+        if (def != null && Started)
+        {
+            YosseleUtil.Vis(Master, "Yossele_Upgrade", Pos, def.Tier);
+            Upgraded(def);
+        }
+    }
+
+    // One upgrade's params: those on the building's own stats become modifiers, the rest are read through Param(). A
+    // share under 1 is the Bonsai copying its Tree (YosseleBonsaiBrain): effects are scaled, YosseleData.BonsaiKept
+    // and penalties are not, counts are rounded and never under 1.
+    protected YosseleData.Upg Apply(Upgradeproperties up, float share)
+    {
         YosseleData.Upg def;
         if (up == null || !YosseleContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
-            return;
+            return null;
         keys.Add(def.Key);
         if (up.Defaultparams != null)
             foreach (KeyValuePair<string, float> kv in up.Defaultparams)
             {
+                float value = kv.Value;
+                if (share < 1f && value > 0f && Array.IndexOf(YosseleData.BonsaiKept, kv.Key) < 0)
+                    value = Array.IndexOf(YosseleData.BonsaiCounts, kv.Key) >= 0 ? Mathf.Max(1f, Mathf.Round(value * share)) : value * share;
                 int cut = kv.Key.LastIndexOf('_');
                 string stat = cut > 0 ? kv.Key.Substring(0, cut) : kv.Key;
                 string type = cut > 0 ? kv.Key.Substring(cut + 1) : "";
@@ -195,19 +213,25 @@ public abstract class YosseleBuilding : MonoBehaviour
                 if (own && (type == "Add" || type == "Multi" || type == "Pmulti"))
                 {
                     Helper_Entitytools.Modtypes mt = type == "Add" ? Helper_Entitytools.Modtypes.Add : type == "Multi" ? Helper_Entitytools.Modtypes.Multi : Helper_Entitytools.Modtypes.Pmulti;
-                    Helper_Entitytools.Addmod(Master, stat, kv.Value, mt, 0f);
+                    upgradeMods.Add(Helper_Entitytools.Addmod(Master, stat, value, mt, 0f));
                 }
                 else
                 {
                     float old;
-                    param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Max") ? old + kv.Value : kv.Value;
+                    param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Max") ? old + value : value;
                 }
             }
-        if (Started)
-        {
-            YosseleUtil.Vis(Master, "Yossele_Upgrade", Pos, def.Tier);
-            Upgraded(def);
-        }
+        return def;
+    }
+
+    // Drops every upgrade's params and modifiers (the Bonsai, before it copies a different Tree).
+    protected void ClearUpgrades()
+    {
+        foreach (Link_Modifier m in upgradeMods)
+            YosseleUtil.Unmod(m);
+        upgradeMods.Clear();
+        keys.Clear();
+        param.Clear();
     }
 
     // Foes near this building, nearest first.

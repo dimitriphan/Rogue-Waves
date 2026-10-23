@@ -14,15 +14,15 @@
 			- Accent colour: ~leaf green~
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ Temporary sheets made from your reshade are in concepts\yossele_2026-10-12, and a walk cycle in concepts\walk_2026-10-12 \
 			- Lore: / Lore comes once every character is fully realized \
-			- Status: Built as 0.1.0-dev with temporary art; it passed its PC self-test 98 of 98 and is installed for your play test. That build is older than this sheet: the ranged laser, the new stats, {Cordyfriend} and the new upgrades below are not in it yet. /~ The full list is in TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md \
+			- Status: Built as 0.2.0-dev from this sheet with temporary art, compiled but not yet run in game. The build installed for your play test is still the older 0.1.0-dev (melee, no {Cordyfriend}). /~ What was built and what each default is: TDS_Mod/ModSource/Yossele/DESIGN.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
 
 		[Vessel Stats]
 			- Attack: ranged, shoots a green laser from their mouth.
 			- Health: 70 /~ More than Smacky's 50 \
 			- Health regen: 1 per second, only while hurt
-			- Speed: 1.75 /~ Slower than the usual 2.5. The build still has 2.5 \
+			- Speed: 1.75 /~ Slower than the usual 2.5 \
 			- Damage: 5.5 /~ More than Smacky's 4 \
-			- Range: 4 tiles /~ The build is still melee at 1.5 \
+			- Range: 4 tiles
 			- Projectile speed: ~15~
 			- Attack speed: 0.5
 			- Build range: 2.5 tiles
@@ -150,7 +150,7 @@
 					- Cost: ~Red 90 + Yellow 30~
 				% 2:{D-MDS} Seeds no longer attack foes, but can now intercept enemy projectiles within range. Seed spawn rate reduced to 1 seed every 4 seconds.
 					- In-game line: Can no longer damage foes, but now intercepts enemy projectiles. / Figure out what counts as projectiles. Boss projectiles cannot be intercepted, or must use many seeds to intercept? \
-					- Numbers: 1 seed every 4 seconds
+					- Numbers: 1 seed every 4 seconds; ~1~ seed per projectile, ~5~ for a boss's (a foe of ~600~ base health or more) /~ Counts as a projectile: every foe's shot in range that hurts \
 					- Cost: Blue 150 + Yellow 40
 
 				% 3:{Bonsai} Allows Yossele to plant a smaller dandelion shrub, with the same upgrades as the {Primordial Dandelion Tree} with reduced effects.
@@ -278,9 +278,9 @@
 					- Numbers: Increases health by 100%, damage reduction aura 30%.
 					- Cost: Blue 2300 + Yellow 1000
 				% 4:{Softening Roots} Reduces the health of nearby nodes by 1 point. / See if game's code can handle this? \
-					- In-game line: ~~
-					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code, not tried yet) \
-					- Cost: ~~
+					- In-game line: ~Softens the ore around it~
+					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; built, not run in game yet) \
+					- Cost: ~Yellow 2300 + Red 1000~
 
 		(Minion):{Cordyfriend}
 			# Tanky minion that spawns from fallen foes
@@ -291,12 +291,12 @@
 			- Range: 1.5 tiles
 			- Attack speed: 0.5
 			- Speed: 2.25
-			- How many: ~one for each foe that rises, no cap~
+			- How many: ~up to 30 at once per player~
 			- Respawn: ~none: each one rises from a fallen foe~
-			- Orders: ~~
-			- Leash: ~~
+			- Orders: ~walks to the nearest foe within 4 tiles, else back to where it rose~
+			- Leash: ~5 tiles from where it rose~
 			- Cost: ~free~
-			- Look: resembles a {Snoble}
+			- Look: resembles a {Snoble} /~ Until its own sprite: the Snoble's, tinted fungus green \
 
 		[Directions] / Written in 11_Directions.txt under Yossele \
 			- {Compost Bin}, {Dandelion Season}, {Mother of Mushrooms}

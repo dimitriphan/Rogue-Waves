@@ -324,3 +324,24 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
      Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
      check a generated asset the change should alter.
+105. **A foe's shot that a building "shot down" still explodes on the host, or keeps flying on a client** (Yossele
+     D-MDS, decompile 2026-10-23) → projectiles aren't networked entities: the host keeps pooled ones per name in
+     `Game_Entity.Projectiles` and only its copy deals damage; `Kill(true)` runs the death handlers, where a bomb's
+     explosion lives (`Projectile_Ai_Explosion`) → put the host's copy out with `Kill(false)` and send a Vis so each
+     client puts out its look-only copy (`YosseleDandelionBrain.Threats`, `YosseleClient`). Read from code; compiled,
+     not run.
+106. **"When a node is mined out" never fires** (Yossele's aura fruit, 2026-10-23) → stock ore nodes never run out: at
+     0 `Healthresource` a node refills and pays out on the spot (`Entity_Ai_Resource_Mine`; kit `16` §4) → to act on a
+     payout your own strike caused, read the node's `Healthresource` before and after the strike. Read from code;
+     compiled, not run.
+107. **Stripping a debuff a foe's hit puts on your building seems to need a timer after the hit** → it doesn't:
+     `Helper_Entitytools.Interacthurt` runs the attacker's `Interact` before the target's `Oninteract` chain, so the
+     debuff (the Bulwark's stun: Override modifiers and the Disabled look) is already on when a handler at the front of
+     the chain sees the hit → strip it there, and sweep ten times a second for debuffs that come without a hit
+     (Yossele's Monument, `YosseleHooks`). Read from code; compiled, not run.
+108. **Code that needs the map's Tide count finds no field for it** → the map's mode holds it:
+     `Game_Mapvars.Instance.Mode.Enemies.Totalwaves` (as `Entity_Ai_Artifact_Coin` reads it); guard each step against
+     null (`YosseleServer.TidesOnMap`). Read from code; compiled, not run.
+109. **CS7036 calling `Helper_Damagetools.Projectile` in cloud-check, though the game's code compiles without the last
+     argument** → the stubs drop default parameter values, so `Interactiontype` (default `"Hurt"`) must be passed
+     explicitly; the game's Roslyn accepts it either way.

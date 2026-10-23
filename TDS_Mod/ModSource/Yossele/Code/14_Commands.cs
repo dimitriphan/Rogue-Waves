@@ -145,7 +145,7 @@ public class YosseleFertilizeSelect : Entity_Command_Itemselect_Base
     }
 }
 
-// COLOUR on a Pachira Sapling with Grafted Colors: a one-click button like the Mining Hut's Convert. The Sapling keeps
+// COLOUR on a Pachira Sapling with Grafted: a one-click button like the Mining Hut's Convert. The Sapling keeps
 // the colour its fruit pays in the command's Goalstring (synced to every player), and the button draws it: label and
 // tint.
 public class YosseleColourButton : Entity_Command_Simple

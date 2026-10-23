@@ -1,6 +1,7 @@
 // Runs on every player (host included). Listens to the Vis RPCs the server sends through Yossele's entities and plays
 // Yossele's own sounds and moving pieces (spore bombs in their arc, seeds flying, the ready seeds floating round each
-// Dandelion Tree), turns the Mushroom Cannon's cap toward each lob, and shows owner-only messages. The Stonehenge's
+// Dandelion Tree and Bonsai), turns the Mushroom Cannon's cap toward each lob, puts out a client's copy of a projectile
+// D-MDS shot down, tints the Cordyfriends, and shows owner-only messages. The Stonehenge's
 // facing needs nothing here: the game turns every placed tower's Vis by its orientation (Entity_Master_Client). Spore,
 // daze, tangle and barrier looks are not here: the game attaches those itself (Vfxdebuffcheck by name). Clients read
 // only synced state (each entity's being name, owner, position and Stats counters).
@@ -12,7 +13,7 @@ public static class YosseleClient
     static readonly List<Tree> trees = new List<Tree>();
     static Game_Entity seen;
     static float nextScan;
-    public static int Lobs, Seedruns;
+    public static int Lobs, Seedruns, Zaps, Intercepts, Tinted;
 
     public static void Update()
     {
@@ -47,12 +48,29 @@ public static class YosseleClient
             if (master == null || master.Client == null || hooked.Contains(master.Client))
                 continue;
             string being = master.Being.Value.ToString();
-            if (being != YosseleData.Hero && YosseleData.BuildFor(being) == null && being != YosseleData.Vine && being != YosseleData.Fruit)
+            if (being != YosseleData.Hero && YosseleData.BuildFor(being) == null && being != YosseleData.Vine && being != YosseleData.Fruit && being != YosseleData.Friend)
                 continue;
             Entity_Master m = master;
             master.Client.Vis += (type, position, number) => OnVis(m, type, position, number);
             hooked.Add(master.Client);
-            if (being == YosseleData.Dandelion) trees.Add(new Tree { Master = master });
+            if (being == YosseleData.Dandelion || being == YosseleData.Bonsai) trees.Add(new Tree { Master = master });
+        }
+        Tint(ge);
+    }
+
+    // The Cordyfriend wears the Snoble's own sprite (temporary art): tinted fungus green, kept so as the sprite changes.
+    static void Tint(Game_Entity ge)
+    {
+        foreach (Entity_Master master in ge.Entityclient)
+        {
+            if (master == null || master.Being.Value.ToString() != YosseleData.Friend)
+                continue;
+            foreach (SpriteRenderer r in master.GetComponentsInChildren<SpriteRenderer>(true))
+                if (r != null && r.color != YosseleData.FriendTint)
+                {
+                    r.color = YosseleData.FriendTint;
+                    Tinted++;
+                }
         }
     }
 
@@ -63,10 +81,16 @@ public static class YosseleClient
         try
         {
             Vector3 at = master != null ? YosseleUtil.Pos(master) : position;
-            // The stock melee AI announces each swing with "Attack".
+            // The stock ranged AI announces each laser with "Shoot"; the Cordyfriend's melee AI each swing with "Attack".
+            if (type == "Shoot")
+            {
+                Zaps++;
+                YosseleAssets.Play("Yossele_Zap", at);
+                return;
+            }
             if (type == "Attack")
             {
-                YosseleAssets.Play("Yossele_Thud", at);
+                YosseleAssets.Play("Yossele_Thud", at, 0.7f);
                 return;
             }
             if (!type.StartsWith("Yossele_"))
@@ -88,8 +112,28 @@ public static class YosseleClient
                     YosseleAssets.Play("Yossele_Pop", position, 1.3f);
                     Scaled("World_Yossele_Sporeblast", Ground(position), number, 1.5f);
                     break;
-                case "Yossele_Dazehit":
-                    YosseleAssets.Play("Yossele_Thud", position, 0.5f);
+                case "Yossele_Seedbounce":
+                    Entity_Master next = YosseleUtil.ById((ulong)Mathf.Max(0f, number));
+                    if (next != null)
+                        Run(SeedHop(position, YosseleUtil.Pos(next)));
+                    break;
+                case "Yossele_Intercept":
+                    Intercepts++;
+                    if (!YosseleUtil.IsServer)
+                        PutOut(position, number);
+                    YosseleAssets.Play("Yossele_Seeds", at, 1.2f);
+                    Run(SeedHop(Crown(master), position));
+                    break;
+                case "Yossele_Rise":
+                    YosseleAssets.Play("Yossele_Rustle", position, 0.8f);
+                    YosseleAssets.Effect("World_Yossele_Sporeblast", Ground(position), 1.5f);
+                    break;
+                case "Yossele_Friendfell":
+                    YosseleAssets.Play("Yossele_Pop", position, 0.8f);
+                    YosseleAssets.Effect("World_Yossele_Sporeblast", Ground(position), 1.2f);
+                    break;
+                case "Yossele_Cleanse":
+                    YosseleAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 1.5f);
                     break;
                 case "Yossele_Seeds":
                     Seedruns++;
@@ -129,6 +173,10 @@ public static class YosseleClient
                 case "Yossele_Fruitpick":
                     YosseleAssets.Play("Yossele_Pick", position);
                     YosseleAssets.Effect("World_Yossele_Fruitpick", position + Vector3.up * 0.2f, 2f);
+                    break;
+                case "Yossele_Mend":
+                    YosseleAssets.Effect("World_Yossele_Mend", position + Vector3.up * 0.3f, 1.5f);
+                    YosseleAssets.Play("Yossele_Mend", position, 0.6f);
                     break;
                 case "Yossele_Drain":
                     YosseleAssets.Effect("World_Yossele_Drain", at + Vector3.up * 0.3f, 1.5f);
@@ -266,8 +314,62 @@ public static class YosseleClient
 
     static Vector3 Crown(Entity_Master tree)
     {
-        YosseleData.Build b = YosseleData.BuildFor(YosseleData.Dandelion);
+        if (tree == null)
+            return Vector3.zero;
+        YosseleData.Build b = YosseleData.BuildFor(tree.Being.Value.ToString()) ?? YosseleData.BuildFor(YosseleData.Dandelion);
         return YosseleUtil.Pos(tree) + Vector3.up * (b != null ? b.Muzzle : 1.1f);
+    }
+
+    // D-MDS shot a foe's projectile down on the host: put out this client's look-only copy of it, the nearest active
+    // one the same shooter fired (clients get copies through Projectile_ClientRpc; only the host's deals damage).
+    static void PutOut(Vector3 at, float shooter)
+    {
+        Game_Entity ge = Game_Entity.Instance;
+        if (ge == null || ge.Projectiles == null || shooter < 0f)
+            return;
+        ulong id = (ulong)shooter;
+        Projectile_Master best = null;
+        float bestD = 2f;
+        foreach (KeyValuePair<string, List<GameObject>> kv in ge.Projectiles)
+        {
+            if (kv.Value == null)
+                continue;
+            foreach (GameObject go in kv.Value)
+            {
+                if (go == null || !go.activeInHierarchy)
+                    continue;
+                Projectile_Master p = go.GetComponent<Projectile_Master>();
+                if (p == null || p.Master == null || p.Master.NetworkObjectId != id || p.Ais == null || p.Ais.Count == 0)
+                    continue;
+                float d = Vector3.Distance(go.transform.position, at);
+                if (d < bestD)
+                {
+                    bestD = d;
+                    best = p;
+                }
+            }
+        }
+        if (best != null)
+            best.Kill(false);
+    }
+
+    // One seed flying from one spot to another (a bounce, an intercept), then the seed-hit puff.
+    static IEnumerator SeedHop(Vector3 from, Vector3 to)
+    {
+        GameObject model = YosseleAssets.Model("Yossele_Seed");
+        GameObject g = model != null ? UnityEngine.Object.Instantiate(model, from, Quaternion.identity) : null;
+        if (g != null)
+            g.SetActive(true);
+        float time = YosseleData.SeedFlight * 0.6f;
+        for (float e = 0f; e < time && g != null; e += Time.deltaTime)
+        {
+            float k = e / time;
+            g.transform.position = Vector3.Lerp(from, to, k) + Vector3.up * Mathf.Sin(k * Mathf.PI) * 0.25f;
+            yield return null;
+        }
+        if (g != null)
+            UnityEngine.Object.Destroy(g);
+        YosseleAssets.Effect("World_Yossele_Seedhit", to + Vector3.up * 0.1f, 1.2f);
     }
 
     // The ready seeds float round the crown: as many as its synced "Seeds" counter (up to SeedsDrawn).

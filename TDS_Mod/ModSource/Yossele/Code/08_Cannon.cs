@@ -1,8 +1,9 @@
 // Mushroom Cannon: lobs a spore bomb in an arc (Smacky's Bomb Tower's lob) at the nearest foe in Range, leading it by
 // its walk. On landing, every foe within Radius takes Damage and Spores stacks (YosseleSpores). The flight is drawn by
 // every client from one Vis ("Yossele_Lob": where it lands, how long it flies); the blast is a second Vis when it lands,
-// so the hit and the look stay in step. Growth: attack speed +8% and radius +0.1 a stage; full Growth bounces each bomb
-// once, a second blast at the same spot 1 s later at half radius and damage, with 1 stack.
+// so the hit and the look stay in step. Growth: attack speed +10% and radius +0.1 a stage; full Growth bounces each bomb
+// once, a second blast at the same spot 1 s later at half radius and damage, with 1 stack. Cordyceps (tier 5) raises a
+// foe that falls with spores as a Cordyfriend (YosseleFriends).
 public class YosseleCannonBrain : YosseleBuilding
 {
     class Lob { public Vector3 At; public float Lands, Radius, Damage; public int Spores; public bool Bounce, IsBounce; }
@@ -86,13 +87,17 @@ public class YosseleCannonBrain : YosseleBuilding
 
     // The upgrades' spore rules, read by YosseleSpores from the cannon whose bomb landed last on a foe.
     public int SporeMax { get { return Has("Deathcap") ? Mathf.RoundToInt(Param("Sporemax_Base", 8f)) : YosseleData.SporeMax; } }
+
+    // Cordyceps: the chance a foe falling with this many stacks rises as a Cordyfriend.
+    public float CordyChance(int stacks) { return Has("Cordyceps") ? Param("Cordy_Chance", 0.2f) + Param("Cordy_Per", 0.05f) * stacks : 0f; }
     public float SporeDps { get { return YosseleData.SporeDps * (1f + Param("Deathcap_Multi", 0f)); } }
 }
 
-// Spore stacks on foes (host only). Each new stack refreshes the 4 s fade; every 0.5 s each spored foe takes
+// Spore stacks on foes (host only). Each new stack refreshes the 6 s fade; every 0.5 s each spored foe takes
 // stacks x 0.3 a second (x1.25 with Deathcap) from the cannon that spored it last. At full stacks (10, 8 with
-// Deathcap): Sticky Spores slows it while full, Explosive Finish bursts it, Hallucinogen may turn it on its friends
-// every 5 s, and a full foe that falls may burst as a spore bomb (Viral Outbreak).
+// Deathcap, which keeps a foe already above 8 where it is): Sticky Spores slows it while full, Explosive Finish bursts
+// it, Hallucinogen may stun it every 5 s, and a full foe that falls may burst as a spore bomb (Viral Outbreak). A foe
+// that falls with any stacks may rise as a Cordyfriend (Cordyceps).
 public static class YosseleSpores
 {
     public class State
@@ -107,7 +112,7 @@ public static class YosseleSpores
     static readonly Dictionary<Entity_Master, State> spored = new Dictionary<Entity_Master, State>();
     static readonly List<Entity_Master> bursts = new List<Entity_Master>();
     static float nextTick;
-    public static int Ticks, Fulls, Finishes, Dazes, Virals, Stuck;
+    public static int Ticks, Fulls, Finishes, Stuns, Virals, Stuck, Rises;
 
     public static void Reset()
     {
@@ -143,7 +148,9 @@ public static class YosseleSpores
         s.Cannon = cannon;
         s.Last = Time.time;
         int max = cannon.SporeMax;
-        s.Stacks = Mathf.Min(max, s.Stacks + stacks);
+        // Deathcap's lower cap never takes stacks away: a foe above it keeps its stacks (the sheet).
+        if (s.Stacks < max)
+            s.Stacks = Mathf.Min(max, s.Stacks + stacks);
         YosseleUtil.Debuff(cannon.Master, foe, YosseleData.VfxSpores, YosseleData.SporeFade);
         if (s.Stacks >= max)
         {
@@ -196,7 +203,7 @@ public static class YosseleSpores
             {
                 s.NextHallu = Time.time + s.Cannon.Param("Hallu_Every", 5f);
                 if (UnityEngine.Random.value < s.Cannon.Param("Hallu_Chance", 0.2f))
-                    Daze(foe, s.Cannon);
+                    Stun(foe, s.Cannon);
             }
         }
         if (drop != null)
@@ -246,41 +253,15 @@ public static class YosseleSpores
         }
     }
 
-    // Hallucinogen (the engine can't switch a foe's side, docs/02 section 3): held in place, the foe swings at the
-    // nearest other foe within reach with its own Damage once a second (Mummer's Smoke and Mirrors).
-    static void Daze(Entity_Master foe, YosseleCannonBrain cannon)
+    // Hallucinogen: stunned (held, no attacks) for Hallu_Stun seconds, with the stock stun look.
+    public static void Stun(Entity_Master foe, YosseleCannonBrain cannon)
     {
-        float seconds = cannon.Param("Hallu_Duration", 2f);
-        YosseleUtil.Root(cannon.Master, foe, seconds, true, YosseleData.VfxDaze);
-        Dazes++;
-        if (YosseleMod.Instance != null)
-            YosseleMod.Instance.StartCoroutine(Dazed(foe, cannon, seconds));
+        YosseleUtil.Root(cannon.Master, foe, cannon.Param("Hallu_Stun", 2f), true, YosseleData.VfxStun);
+        Stuns++;
     }
 
-    public static int DazeHits;
-
-    static IEnumerator Dazed(Entity_Master foe, YosseleCannonBrain cannon, float seconds)
-    {
-        float until = Time.time + seconds;
-        while (Time.time < until)
-        {
-            yield return new WaitForSeconds(1f);
-            if (foe == null || !YosseleUtil.Alive(foe) || cannon == null || cannon.Master == null)
-                yield break;
-            Entity_Master victim = null;
-            foreach (Entity_Master other in YosseleUtil.FoesNear(cannon.Master, YosseleUtil.Pos(foe), YosseleData.HalluReach))
-                if (other != foe && victim == null)
-                    victim = other;
-            if (victim == null)
-                continue;
-            // The dazed foe deals the hit; the cannon's player gets the kill.
-            ModKitCombat.Hurt(foe, victim, YosseleUtil.Stat(foe, "Damage", 1f), 1f, cannon.Master, null);
-            DazeHits++;
-            YosseleUtil.Vis(cannon.Master, "Yossele_Dazehit", YosseleUtil.Pos(victim), 0f);
-        }
-    }
-
-    // A spored foe fell (YosseleServer): Viral Outbreak may burst it as a spore bomb.
+    // A spored foe fell (YosseleServer): Viral Outbreak may burst it as a spore bomb (15 damage within 2 tiles, 1
+    // stack), and Cordyceps may raise it as a Cordyfriend.
     public static void Fell(Entity_Master foe, Vector3 at)
     {
         State s;
@@ -288,11 +269,14 @@ public static class YosseleSpores
             return;
         spored.Remove(foe);
         YosseleCannonBrain cannon = s.Cannon;
-        if (!s.Full || cannon == null || cannon.Master == null || !cannon.Has("Viral"))
+        if (cannon == null || cannon.Master == null || s.Stacks <= 0)
             return;
-        if (UnityEngine.Random.value >= cannon.Param("Viral_Chance", 0.3f))
-            return;
-        Virals++;
-        cannon.Blast(at, cannon.Stat("Radius", 1f), cannon.Stat("Damage", 1.5f), Mathf.RoundToInt(cannon.Stat("Spores", 2f)));
+        if (s.Full && cannon.Has("Viral") && UnityEngine.Random.value < cannon.Param("Viral_Chance", 0.3f))
+        {
+            Virals++;
+            cannon.Blast(at, cannon.Param("Viral_Radius", 2f), cannon.Param("Viral_Damage", 15f), Mathf.RoundToInt(cannon.Param("Viral_Spores", 1f)));
+        }
+        if (UnityEngine.Random.value < cannon.CordyChance(s.Stacks) && YosseleFriends.Raise(cannon, at))
+            Rises++;
     }
 }

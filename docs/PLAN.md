@@ -173,9 +173,12 @@ Steps, in order:
 1. Dimitri's answers to the questions in scope `07` and `01`: done 2026-10-21 (Decisions).
 2. `DESIGN.md` updated to the 2026-10-20 sheet; the gap is listed in Yossele's `IMPLEMENTATION_NOTES.md` ("Gap to the
    2026-10-20 sheet"). Research first what the engine may refuse: D-MDS's projectile interception, Monument's "no
-   debuffs", Cordyfriend raised from a dying foe. Design gate.
+   debuffs", Cordyfriend raised from a dying foe. Design gate. Done 2026-10-23 at Dimitri's ask to update the mod to
+   the sheet: all three read as possible in the decompiled game; every default is in Yossele's `DESIGN.md`.
 3. Code it (Phase 3 step 3), with the fixes carried over in Part C "Next", and Dimitri's own sprites when he sends
-   them (`docs/03`, `docs/18`). PC round: self-test 0 failures, then his play test and his balance pass.
+   them (`docs/03`, `docs/18`). PC round: self-test 0 failures, then his play test and his balance pass. Coded
+   2026-10-23 as 0.2.0-dev with the carried-over fixes (compiled only); PC round 9 next, with what it and the play test
+   must show in `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
 4. The pack build with one part: the Build Queue's `Pack` step (`docs/PACK.md` §1, not built yet), the one pack version
    in every place `docs/PACK.md` §4 names, the README of §5, the Mods-folder install checked on the PC with no dev mods
    in it.
@@ -235,25 +238,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
-  2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
-  round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
+  2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
+  sheet, compiled only (Log). Older entries are in "Log" below.
+- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): PC round 9 of Yossele
+  0.2.0-dev (self-test, then his play build swapped to it; `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`), his play
+  test, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
   turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
   A3-9, B4-11, B4-12, B4-14, C2), and
   its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
-  balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Yossele's next build takes the ranged laser and speed,
-  Argo's unthrottled debuff looks, the 2026-10-13 names and lines (with the Stonehenge's Lore line), its footstep
-  frames, two small leaks and the vine stem's 1 px step at tile joints (B3-24 to B3-30, B3-36, B3-39);
-  also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
-  (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
-  unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
+  art), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
+- **Next free numbers:** kit chapter 25, pitfall #110 (#92 is unused).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -414,6 +415,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-10-21, answers:** Dimitri answered scope `01`'s and `07`'s questions: every default kept except Bonsai, limit
   1 (planted at the Tree's cost). The Tree's level 4 upgrade is Dandelion Storm again; Dandelion Season is only the
   Direction. Both `[Questions]` blocks are gone.
+- **2026-10-23, Yossele 0.2.0-dev:** at Dimitri's ask the mod was brought up to the 2026-10-20 sheet: the ranged mouth
+  laser (Sno Sno's ranged AI, a clone of its snowball), the new stats, 5 Growth stages a Tide on maps of 4 Tides or
+  fewer, Cordyceps and the Cordyfriend (the Snoble's look, tinted, cap 30), D-MDS, Bonsai, Rubbery Shell, Easy Target,
+  Obsidian, Monument, Spontaneous Mulch, Fortifying and Softening Roots, the changed rules and names, art for each,
+  and the carried-over fixes B3-24 to B3-31, B3-36 and B3-39 (Connected Roots: the owner's buildings, as the sheet
+  says). Compiled 0 errors in all three builds; nothing run in game. Pitfalls #105-109. What is left to check and
+  where: `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
 
 ### Decisions
 
