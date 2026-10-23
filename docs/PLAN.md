@@ -235,7 +235,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
-  2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
+  2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Spool's answers folded into scope `08`; the
+  Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports the sheet (Log).
+  Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
   round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -414,6 +416,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-10-21, answers:** Dimitri answered scope `01`'s and `07`'s questions: every default kept except Bonsai, limit
   1 (planted at the Tree's cost). The Tree's level 4 upgrade is Dandelion Storm again; Dandelion Season is only the
   Direction. Both `[Questions]` blocks are gone.
+- **2026-10-23, Spool answers and the Vessel Editor:** Dimitri's `08_Vessel_Spool1.txt` folded into scope `08` (the
+  Yarn Stash is the one supply base, the Cookie Tin uses its Thread, the Thread Head returns there and is bought from
+  the build menu with no limit, Patch heals up to 500; Questions 1-3 gone). His `07_Vessel_Yossele2.txt` equals scope
+  `07` already. The Vessel Spotlight (version 3, same link) shows his reshade frames and reads the sheets with a new
+  JS parser; the new **Vessel Editor** (https://claude.ai/artifact/JiVvnHii85Fg9c1DBMC6wj) edits Spool and Yossele or
+  a new vessel from the template, saves in the page, and exports the `.txt` byte for byte with `~defaults~` (tested:
+  07, 08, 09, 10, 16 and both uploads round-trip unchanged). Its source and README are in project files
+  `concepts/vessel_spotlight_2026-10-15/`.
 
 ### Decisions
 
