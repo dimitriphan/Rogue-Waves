@@ -163,10 +163,22 @@ Resource), which holding its fire now stops. Not checked: whether that mining by
 - "the laser hurts a foe: no foe": one shot felled the Dagger and its object was gone. The check keeps whether the foe
   spawned, and a felled foe passes when the server saw Yossele's hit last (`YosseleServer.LastFelledBy`).
 - "a fully grown Sapling drops a fruit when its strike pays a node out: payouts 9 -> 9": no payout of the Sapling's in
-  6 s after the node was set one hit from paying out. The game pays out and refills in the same strike
-  (`Entity_Ai_Resource_Mine`), so the Sapling's own reading holds; something else most likely hit the node first and
-  refilled it. The check now holds the node at 1 until the Sapling's next strike lands, and logs the strikes, the
-  node's value and how many times another hit refilled it.
+  6 s after the node was set one hit from paying out. Round 9d (below) showed why.
+
+**Round 9c (2026-10-23): stopped at the apply check**, nothing changed: the handoff was made from round 9's commit, so
+two files the PC already had in their 9b versions read DIFFERS. Remade from 9b's commit as round 9d. A follow-up
+handoff in the same round is made `--since` the previous handoff's commit.
+
+**Round 9d (2026-10-23, same map): 157 pass, 2 fail, 0 setup**, the same two checks, now with their details:
+- "the laser hurts a foe: felled (1 fell), last hit by Hero_Yossele, zaps 0 -> 2": the laser works; the check wanted
+  a health loss read against the foe's maximum, which was still 0 right after the spawn. A felled foe now passes on
+  who felled it, and a living one is read live.
+- "drops a fruit: strikes 46 -> 47, payouts 9 -> 9, node now 0/4, refilled by another hit 0x": the Sapling's strike
+  took the node from 1 to 0 and it did NOT pay out. A node pays only when every health stat is at 0
+  (`Helper_Damagetools.Addressdamage`), so it most likely has another (a `Health` of its own) that the next hit
+  empties, and pays then; round 9 passed because Yossele's laser had taken the node to 0 first. In play the Sapling
+  counts that later payout too (the node refills, so after > before). The check now gives the Sapling up to three
+  strikes and logs the node's other health stats.
 
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 

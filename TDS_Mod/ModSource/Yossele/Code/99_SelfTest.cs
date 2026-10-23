@@ -305,6 +305,20 @@ public static class YosseleSelfTest
                 if (g.Name == name) return g.Value;
         return 1f;
     }
+    // An entity's health stats other than Healthresource, as value/max (Helper_Damagetools takes a hit from Healtharmor,
+    // Healthover, Healthresource, then Health, and a node pays out only once all four are at 0).
+    static string Pools(Entity_Master e)
+    {
+        List<string> parts = new List<string>();
+        foreach (string name in new string[] { "Health", "Healthover", "Healtharmor" })
+        {
+            Link_Stats st;
+            if (e != null && e.Statsserver != null && e.Statsserver.TryGetValue(name, out st))
+                parts.Add(name + " " + F(st.Value) + "/" + F(st.Value_Calc));
+        }
+        return parts.Count > 0 ? string.Join(", ", parts.ToArray()) : "none";
+    }
+
     static void Kill(Entity_Master e) { if (e != null && e.Beingserver != null) Game_Entity.Instance.Despawn(e.Beingserver, true, "Selftest"); }
 
     static IEnumerator Upgrade(YosseleBuilding b, string key, long owner)
@@ -449,19 +463,18 @@ public static class YosseleSelfTest
             SetHealth(hm, max);
         }
         {
-            // A foe 2.5-3.5 tiles off: Yossele, standing idle, shoots it (the stock AI's own targeting). Its health is
-            // read against its maximum: right after the spawn its health stat isn't filled in yet (round 9 read 0). One
-            // shot can fell it (round 9b), and a felled foe's object is gone, so who felled it comes from the server.
+            // A foe 2.5-3.5 tiles off: Yossele, standing idle, shoots it (the stock AI's own targeting). Right after the
+            // spawn its health and maximum aren't filled in yet (both read 0 in rounds 9 and 9d), so they are read live.
+            // One shot can fell it (round 9b), and a felled foe's object is gone, so who felled it comes from the server.
             Entity_Master foe = SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(hm), 3.5f, 2.5f);
             bool spawned = foe != null;
             int zaps = YosseleClient.Zaps, felled = YosseleServer.FoesFelled;
-            float h0 = spawned ? YosseleUtil.MaxHealth(foe) : 0f;
-            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || (h0 > 0f && YosseleUtil.Health(foe) < h0 - 0.01f), 8f);
+            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || (YosseleUtil.MaxHealth(foe) > 0f && YosseleUtil.Health(foe) < YosseleUtil.MaxHealth(foe) - 0.01f), 8f);
             bool gone = foe == null || !YosseleUtil.Alive(foe);
-            float lost = gone ? h0 : h0 - YosseleUtil.Health(foe);
+            float lost = gone ? 0f : YosseleUtil.MaxHealth(foe) - YosseleUtil.Health(foe);
             string by = gone ? YosseleServer.LastFelledBy : YosseleUtil.BeingName(foe.Lasthit);
-            Check("Yossele's laser hurts a foe in range", spawned && lost > 0.01f && by == YosseleData.Hero && YosseleClient.Zaps > zaps,
-                !spawned ? "no foe spawned" : (gone ? "felled (" + (YosseleServer.FoesFelled - felled) + " fell, health " + F(h0) + ")" : "first loss " + F(lost) + " (Damage 5.5 before the foe's own armour)")
+            Check("Yossele's laser hurts a foe in range", spawned && (gone || lost > 0.01f) && by == YosseleData.Hero && YosseleClient.Zaps > zaps,
+                !spawned ? "no foe spawned" : (gone ? "felled (" + (YosseleServer.FoesFelled - felled) + " fell)" : "first loss " + F(lost) + " (Damage 5.5 before the foe's own armour)")
                 + ", zaps " + zaps + "->" + YosseleClient.Zaps + ", last hit by " + by);
 #if YOSSELE_SHOTS
             yield return YosseleShots.Close("laser", YosseleUtil.Pos(hm), 4f);
@@ -1123,15 +1136,17 @@ public static class YosseleSelfTest
                 Link_Stats hr;
                 ore.Statsserver.TryGetValue("Healthresource", out hr);
                 Log("ore node " + YosseleUtil.BeingName(ore) + ": Healthresource " + F(hr.Value) + "/" + F(hr.Value_Calc));
-                // The node is held one hit from paying out until the Sapling's next strike lands, so another hit on it in
-                // between can't pay it out and refill it first (round 9b: no payout in 6 s). Each refill seen is counted.
+                // The node is held at most one hit from empty, and the Sapling gets up to three strikes to pay it out:
+                // round 9d's strike took it 1 -> 0 and it didn't pay until a later hit (its other health stats are logged
+                // to see why). Another hit that pays it out and refills it first is counted, and the node held again.
                 int payouts = sapling.Payouts, fruits = sapling.Fruits, strikes0 = sapling.Strikes, others = 0;
                 Vector3 op = YosseleUtil.Pos(ore);
+                Log("ore node's other health: " + Pools(ore));
                 hr.Value = 1f;
                 List<Entity_Master> lying = YosseleFruit.All();
                 Entity_Master fruit = null;
-                float until = Time.time + 8f;
-                while (Time.time < until && sapling.Strikes == strikes0)
+                float until = Time.time + 14f;
+                while (Time.time < until && sapling.Payouts == payouts && sapling.Strikes < strikes0 + 3)
                 {
                     if (hr.Value > 1.001f) { others++; hr.Value = 1f; }
                     yield return null;
@@ -1140,7 +1155,7 @@ public static class YosseleSelfTest
                     if (!lying.Contains(f)) fruit = f;
                 Check("a fully grown Sapling drops a fruit when its strike pays a node out", sapling.Payouts > payouts && sapling.Fruits > fruits,
                     "strikes " + strikes0 + "->" + sapling.Strikes + ", payouts " + payouts + "->" + sapling.Payouts + ", fruits " + fruits + "->" + sapling.Fruits + ", failed " + YosseleFruit.Failed
-                    + ", node now " + F(hr.Value) + "/" + F(hr.Value_Calc) + ", refilled by another hit " + others + "x, Attackspeed " + F(sapling.Stat("Attackspeed", 0f)));
+                    + ", node now " + F(hr.Value) + "/" + F(hr.Value_Calc) + " (" + Pools(ore) + "), refilled by another hit " + others + "x, Attackspeed " + F(sapling.Stat("Attackspeed", 0f)));
                 if (fruit != null)
                     Check("the fruit lies beside the node, off its tile", YosseleUtil.Flat(YosseleUtil.Pos(fruit), op) >= 0.9f, F(YosseleUtil.Flat(YosseleUtil.Pos(fruit), op)) + " tiles from the node");
                 else if (sapling.Fruits > fruits)
