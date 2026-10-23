@@ -16,6 +16,7 @@ public static class YosseleServer
     static Game_Entity hookedEntity;
     static bool subscribed;
     public static int Tides, Grown, FoesFelled;
+    public static string LastFelledBy = "";   // the being that dealt the last foe felled its last hit (the self-test)
 
     public static void Update()
     {
@@ -265,6 +266,7 @@ public static class YosseleServer
                 if (killed)
                 {
                     FoesFelled++;
+                    LastFelledBy = YosseleUtil.BeingName(master.Lasthit);
                     YosseleSpores.Fell(master, at);
                     foreach (YosseleBuilding b in Buildings.ToArray())
                     {

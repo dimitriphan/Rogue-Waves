@@ -156,6 +156,18 @@ The 0.1.0-dev play build went back into the Mods folder. The six failures, fixed
   most likely felled by Yossele's laser, which shoots anything in range while the test waits; Yossele now holds its fire
   (a Range override) from section 2 to the journal. The Mulch check keeps whether its foe spawned before felling it.
 
+**Round 9b (2026-10-23, same map): 157 pass, 2 fail, 0 setup.** The four fixed checks pass, `Debuff_Yossele_Marked`
+is generated and attached, and the "Could not retrieve Vfx/Debuff_Weakened" line is gone. Client zaps fell from 77 to
+2: in round 9 Yossele most likely spent the round shooting the ore node near it (the stock ranged AI also targets
+Resource), which holding its fire now stops. Not checked: whether that mining by laser is wanted in play. The two failures, fixed for round 9c:
+- "the laser hurts a foe: no foe": one shot felled the Dagger and its object was gone. The check keeps whether the foe
+  spawned, and a felled foe passes when the server saw Yossele's hit last (`YosseleServer.LastFelledBy`).
+- "a fully grown Sapling drops a fruit when its strike pays a node out: payouts 9 -> 9": no payout of the Sapling's in
+  6 s after the node was set one hit from paying out. The game pays out and refills in the same strike
+  (`Entity_Ai_Resource_Mine`), so the Sapling's own reading holds; something else most likely hit the node first and
+  refilled it. The check now holds the node at 1 until the Sapling's next strike lands, and logs the strikes, the
+  node's value and how many times another hit refilled it.
+
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 
 Everything the gap list named is built (`DESIGN.md` has each rule and default): the ranged mouth laser and the new
