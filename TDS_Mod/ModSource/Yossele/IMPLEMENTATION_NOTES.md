@@ -6,10 +6,11 @@
 code in `Code/`, self-test in `Code/99_SelfTest.cs`. The 0.1 asset list and its defaults are in
 `docs/YOSSELE_BUILD_NOTES.md` and `Previews/0.1/ASSETS.md`.
 
-**Checked here only:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with
-`YOSSELE_SELFTEST` and with `YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`;
-the cloud preview renders every sheet and model. **Nothing new has been built in Unity or run in game.** The build in
-Dimitri's Mods folder is still 0.1.0-dev (melee, no Cordyfriend). What is left to check, and how:
+**State: PC round 9 passed on its fifth try (9e, 2026-10-23): self-test 160 pass, 0 fail, 0 setup; release boot
+check clean; 0.2.0-dev is Dimitri's play build** (`Mods\YosseleMod`, the only mod; 0.1.0-dev parked on the PC). Here:
+`check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with
+`YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud preview renders
+every sheet and model. Not seen yet: the look by eye, a played map, online. What is left to check, and how:
 `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
 
 ## Code map
@@ -179,6 +180,16 @@ handoff in the same round is made `--since` the previous handoff's commit.
   empties, and pays then; round 9 passed because Yossele's laser had taken the node to 0 first. In play the Sapling
   counts that later payout too (the node refills, so after > before). The check now gives the Sapling up to three
   strikes and logs the node's other health stats.
+
+**Round 9e (2026-10-23, same map): 160 pass, 0 fail, 0 setup.** The laser's first loss was 5.5 (Yossele's hit, read
+live). `Resource_Orange` logged `Health 1/1` beside its `Healthresource`: the Sapling's first strike took the node to
+0, its second paid out and refilled it (payouts 9 -> 10, fruits 4 -> 5), so a node pays on the hit after its
+`Healthresource` reaches 0 (kit `docs/09` #106, corrected). Exceptions: the game's own three. Then the release build
+(no defines), boot check ("loaded v0.2.0-dev", "ready: 8 beings, 32 upgrades, 3 Directions, 17 effects, icons ok",
+the 18 shutdown sound NREs round 8 had too), installed as the play build. The mod's `.info` still says `"_version":
+"1.0"`; the version is set once for the pack (`docs/PACK.md` §4). Client zaps in a self-test are now 1 or 2: with its
+fire held from section 2, Yossele no longer shoots the ore node beside it (the stock ranged AI targets `Resource`, so
+in play the laser most likely mines any node in range too; worth a look on a played map).
 
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 

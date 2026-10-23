@@ -2,8 +2,8 @@
 // times a second, each strike Damage like a miner's (Helper_Damagetools: min(Damage, 1) + Damageresource). Growth:
 // mining speed +10% and range +0.4 a stage. Fully grown, each payout one of its strikes brings about drops an aura fruit
 // (YosseleFruit) beside the node, worth Attackspeed x Damage x 15 of each aura colour. The game's nodes never run out:
-// at 0 a node refills and pays out on the spot (Entity_Ai_Resource_Mine), so the Sapling reads the node's
-// Healthresource before and after each strike to know whether that strike paid out.
+// a node pays out and refills on the hit after its Healthresource reaches 0, the one that takes its Health of 1 (kit
+// docs/09 #106), so the Sapling reads the node's Healthresource before and after each strike: a refill means it paid.
 //   Focused Roots        x1.8 mining speed, but only the nearest node.
 //   Sustaining Practices mends 0.5 a second per node in range per Growth stage (at least stage 1).
 //   Grafted              a COLOUR button picks the fruit's colour: one colour pays 70% of the fruit's three in it.
@@ -234,8 +234,9 @@ public class YosselePachiraBrain : YosseleBuilding
 }
 
 // Softening Roots (host only): one Add -1 modifier on the Healthresource of every node within a Softening Sapling's
-// Range whose maximum is 2 or more (a node's Healthresource is hits per payout, kit docs/16 section 4), so it pays one
-// hit sooner for every miner. One per node however many Saplings reach it; taken off when none does.
+// Range whose maximum is 2 or more (a node's Healthresource counts its hits before the paying one, kit docs/16
+// section 4), so it pays one hit sooner for every miner. One per node however many Saplings reach it; taken off when
+// none does.
 public static class YosseleSoftening
 {
     static readonly Dictionary<Entity_Master, Link_Modifier> softened = new Dictionary<Entity_Master, Link_Modifier>();

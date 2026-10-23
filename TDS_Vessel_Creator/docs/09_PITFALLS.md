@@ -330,10 +330,18 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      explosion lives (`Projectile_Ai_Explosion`) → put the host's copy out with `Kill(false)` and send a Vis so each
      client puts out its look-only copy (`YosseleDandelionBrain.Threats`, `YosseleClient`). Read from code; compiled,
      not run.
-106. **"When a node is mined out" never fires** (Yossele's aura fruit, 2026-10-23) → stock ore nodes never run out: at
-     0 `Healthresource` a node refills and pays out on the spot (`Entity_Ai_Resource_Mine`; kit `16` §4) → to act on a
-     payout your own strike caused, read the node's `Healthresource` before and after the strike. Read from code;
-     compiled, not run.
+106. **"When a node is mined out" never fires, and a node at 0 `Healthresource` doesn't pay yet** (Yossele's aura
+     fruit, 2026-10-23) → stock ore nodes never run out and pay only once every health stat is at 0
+     (`Helper_Damagetools.Addressdamage`): `Resource_Orange` also has `Health` 1/1, so the hit that takes
+     `Healthresource` to 0 pays nothing and the next hit, which takes `Health`, pays and refills both
+     (`Entity_Ai_Resource_Mine`; kit `16` §4) → to act on a payout your own strike caused, read the node's
+     `Healthresource` before and after the strike (a refill means it paid); to set a node up to pay on the next hit,
+     put `Healthresource` at 0, not 1. **Verified** on `Resource_Orange` (Yossele round 9e: `Health 1/1`, the third
+     strike paid); other node kinds not checked.
+111. **A foe's `Health` and its maximum both read 0 right after it spawns** (Yossele rounds 9 and 9d) → its stats fill
+     in a little later, so a loss measured from a reading taken at the spawn is wrong (round 9 got -58) → read health
+     live once its maximum is above 0, and for a foe one hit can fell, take who felled it from your despawn hook
+     (`master.Lasthit` while `killed`): its object compares equal to null afterwards. **Verified** in game.
 107. **Stripping a debuff a foe's hit puts on your building seems to need a timer after the hit** → it doesn't:
      `Helper_Entitytools.Interacthurt` runs the attacker's `Interact` before the target's `Oninteract` chain, so the
      debuff (the Bulwark's stun: Override modifiers and the Disabled look) is already on when a handler at the front of

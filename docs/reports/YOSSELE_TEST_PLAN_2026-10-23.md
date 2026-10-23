@@ -1,5 +1,13 @@
 # Yossele 0.2.0-dev: test plan for what has not run yet (2026-10-23)
 
+> **Since written (2026-10-23, evening):** §2 ran. PC round 9 passed on its fifth try, 9e: 160 pass, 0 fail, 0 setup,
+> and 0.2.0-dev is Dimitri's play build. Every failure on the way was the test itself, a stock look the game doesn't
+> load (kit `docs/09` #110) or a handoff made from the wrong base; none was a rule of the sheet. Two engine facts came
+> out of it: a node pays on the hit after its `Healthresource` reaches 0 (#106, corrected) and a foe's health reads 0
+> right after its spawn (#111). Rounds in Yossele's `IMPLEMENTATION_NOTES.md`. Sections 3-7 are still open, plus one
+> new item for a played map: the laser most likely mines any ore node in range (the stock ranged AI targets
+> `Resource`).
+
 Dimitri asked (2026-10-23): update Yossele's mod to the current vessel documentation, then begin testing the cases that
 need testing but haven't had a chance yet. The update is 0.2.0-dev (`TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md`,
 "Build of 2026-10-23"). This page lists every case that has not been seen running, says which check covers it, and

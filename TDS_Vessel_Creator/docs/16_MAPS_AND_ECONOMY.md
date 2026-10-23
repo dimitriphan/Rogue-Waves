@@ -124,7 +124,10 @@ flooded at the first Tide, no error.
 
 - **A node** is an entity tagged `Resource` with a `Healthresource` stat and one or more of `Redauramine`,
   `Blueauramine`, `Yellowauramine` (Entity_Ai_Resource_Mine.cs:41-64). Damage to `Healthresource` is clamped to 0-1 per
-  hit plus any `Damageresource` bonus (Helper_Damagetools.cs:47-60), so `Healthresource` is "hits per payout".
+  hit plus any `Damageresource` bonus (Helper_Damagetools.cs:47-60), so `Healthresource` counts the hits before the
+  paying one. **Verified** (Yossele round 9e): `Resource_Orange` also has `Health` 1/1, and a node pays only once every
+  health stat is at 0 (Helper_Damagetools.cs:148-171), so its paying hit is the one after `Healthresource` reaches 0
+  (`docs/09` #106).
 - **Mine and Opal never run out:** at 0 the node refills and pays every colour it has to **all players, split**
   (Owner -1) (Entity_Ai_Resource_Mine.cs:106-138). Opal cycles Red, Blue, All, Yellow, one per Tide
   (Entity_Ai_Resource_Opal.cs:75-124). `Resource_Death` is one-shot: it dies and pays on despawn

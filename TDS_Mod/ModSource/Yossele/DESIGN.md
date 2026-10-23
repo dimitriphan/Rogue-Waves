@@ -179,8 +179,8 @@ How the new rules work (read from the game's code, 2026-10-23; untested):
   shows the Tree while you have none, the Bonsai while your Tree has the upgrade and no Bonsai stands, and nothing
   otherwise (no fifth slot needed). Sells for 0%: its sell values are set to 0 when it spawns (the Bottom Rock
   artifact's way, Entity_Ai_Artifact_Bottomrock.cs).
-- **Softening Roots.** A node's `Healthresource` is hits per payout (kit `docs/16` §4). The Sapling puts one `Add -1`
-  modifier on each node in its Range whose maximum is 2 or more, and takes them off when it goes.
+- **Softening Roots.** A node's `Healthresource` counts its hits before the paying one (kit `docs/16` §4). The Sapling
+  puts one `Add -1` modifier on each node in its Range whose maximum is 2 or more, and takes them off when it goes.
 - **Damage reduction stacks by adding** (the engine's percentages add): Stonehenge Growth, Monument and Fortifying Roots'
   aura add up, capped at 90%.
 - **Easy Target** puts Yossele's front hit hook on the foe: every hit on it is scaled by 1.15 while it is marked (the
