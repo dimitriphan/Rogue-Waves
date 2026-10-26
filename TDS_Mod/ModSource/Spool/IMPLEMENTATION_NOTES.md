@@ -6,12 +6,12 @@ implementing Spools mechanics" (2026-10-26) from the kit's template (Mummer's sc
 `ModKitCombat` kill credit, `ModKitTowers.Fit` and unthrottled looks added to the template first). Every Mummer
 mechanic, sheet, model, effect and sound is gone. The sheet is `docs/scope/08_Vessel_Spool.txt` as PR #40 leaves it.
 
-**Checked here only:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with
+**Checked here first:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with
 `SPOOL_SELFTEST` and with `SPOOL_SELFTEST,SPOOL_SHOTS`; `check_editor.sh` passes on `Assets/SpoolMod/Editor`; the cloud
 preview (`lite/run_preview.sh ... sma`) renders every sheet and model and synthesises every sound. The walk (Move rows)
-equals the concept's `SpoolWalk-Sheet.png` pixel for pixel, and the rest frame equals Dimitri's reshade. **Not built in
-Unity, not run in game: no PC round yet.** Every line below that says how the game behaves is read from its code, not
-seen.
+equals the concept's `SpoolWalk-Sheet.png` pixel for pixel, and the rest frame equals Dimitri's reshade. PC round 1
+(below) built it in Unity and ran the self-test in game; what it proved is listed there, and the rest of what this page
+says about the game is read from its code, not seen.
 
 ## Code map
 
@@ -84,9 +84,29 @@ These become pitfalls (`docs/09`) or kit text once a PC round proves them:
 
 ## PC rounds
 
-None yet. Round 1: build in Unity (Tools > Spool > Build All Assets, then the Build Queue), the self-test with
-`SPOOL_SELFTEST`, captures with `SPOOL_SHOTS`; Spool must be the only dev mod in the Mods folder for the round
-(Yossele 0.2.0-dev is Dimitri's play build there now: park it and put it back after).
+Spool must be the only dev mod in the Mods folder for a round (Yossele 0.2.0-dev is Dimitri's play build there now:
+park it and put it back after). Build: the Build Queue (Build All Assets, Build Mod Prefab, Export); the self-test with
+`SPOOL_SELFTEST`; captures with `SPOOL_SHOTS` (none taken yet).
+
+- **Round 1 (2026-10-26, handoff `Spool_round1`, map 3B_Thehunt): 95 pass, 22 fail, 1 setup.** First build ever: Unity
+  compiled the editor code at 0 errors, the queue built and exported it, the game loaded it (`v0.1.0-dev kit 1.6`), every
+  being, upgrade, effect and icon registered, and none of the 11 exceptions in Player.log came from Spool (the game's
+  own: a UniTask cancel during map load, `Bla_Ambient` at shutdown). Proven in game: the Stash-first menu (11 menu
+  changes), the Thread Head token swap on Buster's pad block, TARGET's pin, the stock Sell picker finding walking units
+  (the fallback was never needed), the Dart's needle, the Seam's comeback, MEND, PATCH and its refusals, the Stash's
+  spill, the journal pages. Of the 22 fails, 21 were the self-test tripping over itself, fixed in the test for round 1b:
+  - a foe is not tagged "Enemy" and has no stats in the frame it spawns (`Entity_Master.Start` adds them), so a foe
+    killed in that frame drops nothing; the test now waits for both;
+  - the vessel and the Crafted felled the Daggers the Cushion checks hit with, and a hit from a fallen foe lands
+    nowhere; those foes now stand by the enemy core and hit from afar, and the checks read the Cushion's own counts;
+  - the Tins kept stitching from the Stash, and the Thread Heads pulled in Thread lying about (from earlier checks, the
+    Cushion's spin and the Looms) mid-check; the checks now net out the Stash's other traffic (`Traffic`), clear old
+    drops, and remove the Thread Heads before the Cushion and Loom checks;
+  - the comeback check looked for the returned Thread Head before its brain had started.
+  One real slip: Slow Unravel's delayed half began on the next frame instead of half a second after the hit (5.625 taken
+  at once instead of 5); fixed in `10_Cushion.cs`. Also gone: the never-assigned `forcing` flag (warning CS0649). Editor
+  side, harmless: ModTool's restore after export logged "Missing Nested Prefab Asset" for `Spool_Needle` in
+  `SpoolAssets_Library.prefab` and for the library in `SpoolMod_Default.prefab`; the exported mod loaded fine.
 
 ## Open in the sheet (Dimitri's)
 

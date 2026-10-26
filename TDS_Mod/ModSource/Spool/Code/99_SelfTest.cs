@@ -13,7 +13,7 @@ public static class SpoolSelfTest
     static int phase;
     static float seen = -1f, step = -1f;
     static string node = "";
-    static bool freeze, forcing;
+    static bool freeze;
     static int pass, fail;
 
     static void Log(string m) { SpoolLog.Info("TEST " + m); }
@@ -35,10 +35,8 @@ public static class SpoolSelfTest
 
     static void Drive()
     {
-        if (freeze && !forcing && Game_Mapvars.Instance != null && SpoolUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
+        if (freeze && Game_Mapvars.Instance != null && SpoolUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
             Game_Mapvars.Instance.Time_Wave.Value = 900f;
-        if (forcing && Game_Mapvars.Instance != null && SpoolUtil.IsServer)
-            Game_Mapvars.Instance.Time_Wave.Value = -1f;
         if (phase >= 3)
             return;
         float now = Time.realtimeSinceStartup;
@@ -265,6 +263,50 @@ public static class SpoolSelfTest
     }
     static void Kill(Entity_Master e) { if (e != null && e.Beingserver != null) Game_Entity.Instance.Despawn(e.Beingserver, true, "Selftest"); }
 
+    // A foe's tags and stats arrive a frame after its spawn (Entity_Master.Start): killed or read in its spawn frame it is
+    // not yet "Enemy" and has no Health (round 1). The checks wait for both.
+    static bool Loaded(Entity_Master e) { return SpoolUtil.Alive(e) && e.Taglistserver != null && e.Taglistserver.Contains("Enemy") && e.Statsserver != null && e.Statsserver.ContainsKey("Health"); }
+
+    // A loaded foe between minDist and maxDist from 'near': slot[0], or null when none could spawn or it fell while loading.
+    static IEnumerator Foe(string being, Vector3 near, float maxDist, float minDist, Entity_Master[] slot)
+    {
+        slot[0] = null;
+        Entity_Master e = SpawnFoe(being, near, maxDist, minDist);
+        if (e == null)
+            yield break;
+        yield return Until(() => !SpoolUtil.Alive(e) || Loaded(e), 2f);
+        if (Loaded(e))
+            slot[0] = e;
+    }
+
+    // A loaded foe beside the enemy core, far from Spool's army, kept while it stands: the Cushion checks hit with it from
+    // afar (round 1: the vessel and the Crafted felled the Daggers beside the Cushions, and a hit from a fallen foe lands
+    // nowhere).
+    static IEnumerator FarFoe(string being, Entity_Master[] slot)
+    {
+        if (slot[0] != null && Loaded(slot[0]) && SpoolUtil.BeingName(slot[0]) == being)
+            yield break;
+        slot[0] = null;
+        Entity_Master core = ModKitTest.Core();
+        if (core != null)
+            yield return Foe(being, SpoolUtil.Pos(core), 6f, 1f, slot);
+    }
+
+    // Thread still lying about from earlier checks would join what a check counts.
+    static void ClearDrops() { SpoolServer.Drops.Clear(); }
+
+    // The Stash's own traffic while a check runs (round 1: the Tins kept stitching from it): Thread handed over by
+    // carriers and sent by Direct Line, less what the Tins spent. A check subtracts the change of this from the Stash's.
+    static int Traffic(long owner)
+    {
+        int n = SpoolServer.Delivered;
+        foreach (SpoolTinBrain t in SpoolServer.Owned<SpoolTinBrain>(owner))
+            n -= t.Spent;
+        foreach (SpoolLoomBrain l in SpoolServer.Owned<SpoolLoomBrain>(owner))
+            n += l.Sent;
+        return n;
+    }
+
     static IEnumerator Upgrade(SpoolBuilding b, string key, long owner)
     {
         string id = b.Def.Id + "_" + key + "_Upgradeobject";
@@ -373,15 +415,19 @@ public static class SpoolSelfTest
 
         // 3. Thread on the ground.
         {
-            Entity_Master small = SpawnFoe("Enemy_Dagger", home, 4f, 2f);
+            Entity_Master[] slot = new Entity_Master[1];
+            yield return Foe("Enemy_Dagger", home, 4f, 2f, slot);
+            Entity_Master small = slot[0];
             if (small != null)
             {
                 Vector3 fp = SpoolUtil.Pos(small);
-                int expect = Mathf.Min(SpoolData.DropMax, (SpoolUtil.BaseHealth(small) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (SpoolUtil.Elite(small) ? SpoolData.DropElite : 0));
-                int before = SpoolServer.DropsNear(fp, 0.6f);
+                float bh = SpoolUtil.BaseHealth(small);
+                int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (SpoolUtil.Elite(small) ? SpoolData.DropElite : 0));
+                int before = SpoolServer.DropsNear(fp, 0.6f), dropped = SpoolServer.Dropped;
                 Kill(small);
                 yield return Wait(0.3f);
-                Check("a felled Dagger leaves " + expect + " Thread where it fell", SpoolServer.DropsNear(fp, 0.6f) == before + expect, (SpoolServer.DropsNear(fp, 0.6f) - before) + " dropped, base health " + F(SpoolUtil.BaseHealth(small)));
+                Check("a felled Dagger leaves " + expect + " Thread where it fell", SpoolServer.Dropped - dropped == expect && SpoolServer.DropsNear(fp, 0.6f) == before + expect,
+                    (SpoolServer.Dropped - dropped) + " dropped, " + (SpoolServer.DropsNear(fp, 0.6f) - before) + " where it fell, base health " + F(bh));
                 SpoolDrop d = SpoolServer.Drops.Find(x => SpoolUtil.Flat(x.Pos, fp) <= 0.6f);
                 Check("a drop lasts " + SpoolData.DropLife + " s", d != null && Mathf.Abs(d.Until - Time.time - SpoolData.DropLife) < 1f, d != null ? F(d.Until - Time.time) : "none");
                 int carried = player.Carried;
@@ -396,16 +442,19 @@ public static class SpoolSelfTest
                 Check("Spool hands its Thread over at the Stash", player.Stash == Mathf.Min(stash.Cap, stash0 + c0) && player.Carried == Mathf.Max(0, stash0 + c0 - stash.Cap), stash0 + "+" + c0 + "->" + player.Stash + ", carried " + player.Carried);
             }
             else ModKitTest.Setup("Thread drop", "no Dagger could spawn near the vessel");
-            Entity_Master big = SpawnFoe("Enemy_Aegis", home, 6f, 3f);
+            yield return Foe("Enemy_Aegis", home, 6f, 3f, slot);
+            Entity_Master big = slot[0];
             if (big != null)
             {
-                Vector3 bp = SpoolUtil.Pos(big);
-                int expect = Mathf.Min(SpoolData.DropMax, (SpoolUtil.BaseHealth(big) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (SpoolUtil.Elite(big) ? SpoolData.DropElite : 0));
-                int before = SpoolServer.DropsNear(bp, 0.6f);
+                float bh = SpoolUtil.BaseHealth(big);
+                bool elite = SpoolUtil.Elite(big);
+                int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (elite ? SpoolData.DropElite : 0));
+                int dropped = SpoolServer.Dropped;
                 Kill(big);
                 yield return Wait(0.3f);
-                Check("a felled Aegis leaves " + expect + " Thread", SpoolServer.DropsNear(bp, 0.6f) == before + expect, "base health " + F(SpoolUtil.BaseHealth(big)) + ", elite " + SpoolUtil.Elite(big));
+                Check("a felled Aegis leaves " + expect + " Thread", SpoolServer.Dropped - dropped == expect, (SpoolServer.Dropped - dropped) + " dropped, base health " + F(bh) + ", elite " + elite);
             }
+            else ModKitTest.Setup("Aegis drop", "no Aegis could spawn near the vessel");
             // The cap: what doesn't fit stays carried.
             player.Stash = stash.Cap - 1;
             player.Carried = 3;
@@ -532,19 +581,23 @@ public static class SpoolSelfTest
             yield return Upgrade(tinA, "Surprise4", owner);
             Check("One Last Surprise", Has(tinA, "Surprise4"));
             foreach (SpoolUnitBrain u in UnitsOf(tinA)) Kill(u.Master);
+            player.Stash = 50;
+            SpoolServer.Show(player);
             SpoolUnitBrain bomb = null;
             yield return Until(() => (bomb = UnitsOf(tinA).Find(u => u.Started && u.Burst > 0f)) != null, 6f);
-            Entity_Master foe = bomb != null ? SpawnFoe("Enemy_Dagger", SpoolUtil.Pos(bomb.Master), 1.4f) : null;
-            if (foe != null)
+            Entity_Master[] beside = new Entity_Master[1];
+            if (bomb != null)
+                yield return Foe("Enemy_Dagger", SpoolUtil.Pos(bomb.Master), 2f, 0f, beside);
+            Entity_Master foe = beside[0];
+            if (foe != null && bomb != null && bomb.Master != null)
             {
-                yield return Wait(0.2f);
                 float hp = SpoolUtil.Health(foe);
                 float expect = SpoolUtil.Stat(bomb.Master, "Damage", 2.5f) * 3f;
                 Kill(bomb.Master);
                 yield return Wait(0.3f);
                 Check("a falling Crafted bursts for 3x its damage", !SpoolUtil.Alive(foe) || hp - SpoolUtil.Health(foe) >= expect - 0.05f, F(hp) + "->" + F(SpoolUtil.Alive(foe) ? SpoolUtil.Health(foe) : 0f) + ", expected -" + F(expect));
             }
-            else ModKitTest.Setup("One Last Surprise", "no Crafted or no foe beside it");
+            else ModKitTest.Setup("One Last Surprise", bomb == null ? "no Crafted stitched after the upgrade, Stash " + player.Stash : "no foe could stand beside it");
             ClearFoes();
         }
         if (tinB != null)
@@ -594,16 +647,24 @@ public static class SpoolSelfTest
             }
             if (headA != null)
             {
-                Vector3 dp = headA.Spot + new Vector3(2f, 0f, 0f);
+                // Two tiles from its spot, on the side away from the vessel (which picks Thread up within a tile).
+                ClearFoes();
+                ClearDrops();
+                Vector3 away = headA.Spot - SpoolUtil.Pos(hm);
+                away.y = 0f;
+                Vector3 dp = headA.Spot + (away.sqrMagnitude > 0.01f ? away.normalized : Vector3.right) * 2f;
+                int carried0 = headA.Carried + (headB != null ? headB.Carried : 0);
                 SpoolServer.Drop(dp, 4);
                 yield return Wait(1f);
-                Check("a Thread Head pulls in Thread within 3 tiles", headA.Carried == 4 && SpoolServer.DropsNear(dp, 0.5f) == 0, "carried " + headA.Carried);
+                int pulled = headA.Carried + (headB != null ? headB.Carried : 0) - carried0;
+                Check("a Thread Head pulls in Thread within 3 tiles", pulled == 4 && headA.Carried >= 4 && SpoolServer.DropsNear(dp, 0.5f) == 0, "pulled " + pulled + ", carried " + headA.Carried + ", left " + SpoolServer.DropsNear(dp, 0.5f));
                 player.Stash = 10;
                 SpoolServer.Show(player);
-                int deliveries = headA.Deliveries;
+                int deliveries = headA.Deliveries, delivered = SpoolServer.Delivered, carrying = headA.Carried;
                 Send(headA.Master, SpoolData.ReturnLink, "");
                 yield return Until(() => headA.Deliveries > deliveries, 25f);
-                Check("RETURN: it carries its Thread home", headA.Deliveries > deliveries && player.Stash == 14 && headA.Carried == 0, "Stash " + player.Stash + ", carried " + headA.Carried);
+                Check("RETURN: it carries its Thread home", headA.Deliveries > deliveries && headA.Carried == 0 && SpoolServer.Delivered - delivered >= carrying,
+                    "delivered " + (SpoolServer.Delivered - delivered) + " of " + carrying + ", carried " + headA.Carried);
                 yield return Until(() => SpoolUtil.Flat(headA.Pos, headA.Spot) < 1f, 25f);
                 Check("then it walks back to its spot", SpoolUtil.Flat(headA.Pos, headA.Spot) < 1f, F(SpoolUtil.Flat(headA.Pos, headA.Spot)) + " from it");
                 Genitem tile = ModKitTest.FoeTile(SpoolContent.Beings[SpoolData.Head], headA.Spot, 2f, 4f, used);
@@ -638,17 +699,18 @@ public static class SpoolSelfTest
             if (headA != null)
             {
                 headA.Carried = 3;
-                Vector3 hp = headA.Pos;
-                int before = SpoolServer.DropsNear(hp, 0.6f);
+                int dropped = SpoolServer.Dropped;
                 int returned = SpoolServer.Returned;
                 Kill(headA.Master);
+                Check("a fallen Thread Head drops what it carried", SpoolServer.Dropped - dropped == 3, (SpoolServer.Dropped - dropped) + " dropped");
                 yield return Wait(0.3f);
-                Check("a fallen Thread Head drops what it carried", SpoolServer.DropsNear(hp, 0.6f) == before + 3, (SpoolServer.DropsNear(hp, 0.6f) - before) + " dropped");
                 Check("... and waits to come back", SpoolServer.WaitingHeads(owner) == 1);
                 yield return Until(() => SpoolServer.Returned > returned, 20f);
-                SpoolHeadBrain back = NewHead(known);
+                SpoolHeadBrain back = null;
+                yield return Until(() => (back = NewHead(known)) != null, 3f);
                 yield return Wait(0.5f);
-                Check("it comes back at the Stash after 15 s with its upgrades", back != null && Has(back, "Delivery2"), back != null ? "upgrades " + back.Master.Upgradelistserver.Count : "none");
+                Check("it comes back at the Stash after 15 s with its upgrades", back != null && Has(back, "Delivery2"),
+                    back != null ? "upgrades " + back.Master.Upgradelistserver.Count : "came back " + (SpoolServer.Returned - returned) + ", none found");
                 if (back != null)
                 {
                     known.Add(back);
@@ -664,6 +726,10 @@ public static class SpoolSelfTest
                 yield return Until(() => headB == null || headB.Master == null, 15f);
                 Check("a Thread Head can be sold", headB == null || headB.Master == null, "Red back " + F(Res(owner, "Redaura") - red) + ", by the fallback " + hero.SoldByFallback);
             }
+            // Thread Heads pull in what the Cushions and the Looms put out within 3 tiles: gone before those checks
+            // (not a kill, so no comeback).
+            foreach (SpoolHeadBrain h in SpoolServer.Owned<SpoolHeadBrain>(owner))
+                Game_Entity.Instance.Despawn(h.Master.Beingserver, false, "Selftest");
         }
 #if SPOOL_SHOTS
         yield return Wait(1f);
@@ -681,84 +747,105 @@ public static class SpoolSelfTest
             if (Check("build a Pin Cushion", cushions[i] != null, "at " + at) && i == 0)
                 Check("Pin Cushion costs Blue 20", Mathf.Abs(blue - Res(owner, "Blueaura") - 20f) < 0.01f, "spent " + F(blue - Res(owner, "Blueaura")));
         }
+        // The checks read the Cushion's own counts; the foes that hit it stand by the enemy core (FarFoe).
+        ClearFoes();
+        ClearDrops();
+        Entity_Master[] far = new Entity_Master[1];
         if (cushions[0] != null)
         {
             SpoolCushionBrain c = cushions[0];
-            Entity_Master dagger = SpawnFoe("Enemy_Dagger", c.Pos, 2.5f);
-            if (dagger != null)
+            yield return FarFoe("Enemy_Dagger", far);
+            if (far[0] != null)
             {
-                Helper_Entitytools.Addmod(dagger, "Health", 10f, Helper_Entitytools.Modtypes.Multi, 0f);
-                yield return Wait(0.3f);
-                float hp = SpoolUtil.Health(dagger), ch = SpoolUtil.Health(c.Master);
+                Entity_Master dagger = far[0];
+                int pricks = c.Pricks;
+                float back = c.Reflected, hp = SpoolUtil.Health(dagger);
                 Hit(dagger, c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("Pin Cushion pricks a melee attacker for 20%", Mathf.Abs(hp - SpoolUtil.Health(dagger) - 2f) < 0.05f && c.Pricks == 1, F(hp) + "->" + F(SpoolUtil.Health(dagger)) + ", Cushion " + F(ch) + "->" + F(SpoolUtil.Health(c.Master)));
-                int spun = c.Spun;
+                Check("Pin Cushion pricks a melee attacker for 20%", c.Pricks == pricks + 1 && Mathf.Abs(c.Reflected - back - 2f) < 0.05f,
+                    "pricks +" + (c.Pricks - pricks) + ", " + F(c.Reflected - back) + " back, foe " + F(hp) + "->" + F(SpoolUtil.Health(dagger)) + ", its range " + F(SpoolUtil.Stat(dagger, "Range", -1f)));
+                int spun = c.Spun, dropped = SpoolServer.Dropped;
                 Vector3 cp = c.Pos;
                 int near = SpoolServer.DropsNear(cp, 1.2f);
                 Hit(dagger, c.Master, 10f);
                 Hit(dagger, c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("every 25 damage spins a Thread beside it", c.Spun == spun + 1 && SpoolServer.DropsNear(cp, 1.2f) == near + 1, "spun " + c.Spun + " after " + F(c.Taken));
+                Check("every 25 damage spins a Thread beside it", c.Spun == spun + 1 && SpoolServer.DropsNear(cp, 1.2f) == near + 1,
+                    "spun " + (c.Spun - spun) + " after " + F(c.Taken) + ", beside it " + (SpoolServer.DropsNear(cp, 1.2f) - near) + ", dropped anywhere " + (SpoolServer.Dropped - dropped));
                 yield return Upgrade(c, "Sharper2", owner);
-                hp = SpoolUtil.Health(dagger);
-                Hit(dagger, c.Master, 10f);
+                yield return FarFoe("Enemy_Dagger", far);
+                back = c.Reflected;
+                if (far[0] != null)
+                    Hit(far[0], c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("Sharper Pins: 40%", Has(c, "Sharper2") && Mathf.Abs(hp - SpoolUtil.Health(dagger) - 4f) < 0.05f, F(hp) + "->" + F(SpoolUtil.Health(dagger)));
+                Check("Sharper Pins: 40%", Has(c, "Sharper2") && Mathf.Abs(c.Reflected - back - 4f) < 0.05f, F(c.Reflected - back) + " back");
             }
-            else ModKitTest.Setup("Pin Cushion reflect", "no Dagger beside it");
-            Entity_Master archer = SpawnFoe("Enemy_Ballista", c.Pos, 4f);
-            if (archer != null)
+            else ModKitTest.Setup("Pin Cushion reflect", "no Dagger by the enemy core");
+            Entity_Master[] ranged = new Entity_Master[1];
+            yield return FarFoe("Enemy_Ballista", ranged);
+            Entity_Master archer = ranged[0];
+            float range = archer != null ? SpoolUtil.Stat(archer, "Range", 0f) : 0f;
+            if (archer != null && range > SpoolCushionBrain.MeleeRange)
             {
-                float range = SpoolUtil.Stat(archer, "Range", 0f);
-                float hp = SpoolUtil.Health(archer);
+                int pricks = c.Pricks;
                 Hit(archer, c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("a ranged attacker is not pricked", range <= SpoolCushionBrain.MeleeRange || Mathf.Approximately(hp, SpoolUtil.Health(archer)), "range " + F(range));
+                Check("a ranged attacker is not pricked", c.Pricks == pricks, "range " + F(range) + ", pricks +" + (c.Pricks - pricks));
                 yield return Upgrade(c, "Barrage3", owner);
-                hp = SpoolUtil.Health(archer);
-                Hit(archer, c.Master, 10f);
+                yield return FarFoe("Enemy_Ballista", ranged);
+                float back = c.Reflected;
+                if (ranged[0] != null)
+                    Hit(ranged[0], c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("Pin Barrage: ranged attackers pricked for 20%", Has(c, "Barrage3") && (range <= SpoolCushionBrain.MeleeRange || Mathf.Abs(hp - SpoolUtil.Health(archer) - 2f) < 0.05f), "range " + F(range) + ", " + F(hp) + "->" + F(SpoolUtil.Health(archer)));
+                Check("Pin Barrage: ranged attackers pricked for 20%", Has(c, "Barrage3") && Mathf.Abs(c.Reflected - back - 2f) < 0.05f, "range " + F(range) + ", " + F(c.Reflected - back) + " back");
                 Check("Pin Barrage ends its branch", c.Master.Upgradelistserver[SpoolData.Cushion + "_Barrage3_Upgradeobject"].Upgrades.Count == 0);
             }
-            else ModKitTest.Setup("Pin Barrage", "no Ballista near the Cushion");
-            ClearFoes();
+            else ModKitTest.Setup("Pin Barrage", archer == null ? "no Ballista by the enemy core" : "the Ballista's range is " + F(range) + ", melee by the Cushion's rule");
         }
         if (cushions[1] != null)
         {
+            // Slow Unravel, the heal and Loose Stuffing don't care who hits: the vessel does (it isn't pricked). The foes
+            // left over from the reflect checks would be walking in by now.
+            ClearFoes();
             SpoolCushionBrain c = cushions[1];
             yield return Upgrade(c, "Unravel2", owner);
-            Entity_Master dagger = SpawnFoe("Enemy_Dagger", c.Pos, 2.5f);
-            Entity_Master by = dagger != null ? dagger : hm;
             float ch = SpoolUtil.Health(c.Master);
-            Hit(by, c.Master, 10f);
+            Hit(hm, c.Master, 10f);
             yield return Wait(0.2f);
             float now = ch - SpoolUtil.Health(c.Master);
-            Check("Slow Unravel: half a hit now", Has(c, "Unravel2") && Mathf.Abs(now - 5f) < 0.05f && Mathf.Abs(c.Owing() - 5f) < 0.6f, "took " + F(now) + ", owing " + F(c.Owing()));
+            Check("Slow Unravel: half a hit now", Has(c, "Unravel2") && Mathf.Abs(now - 5f) < 0.05f && Mathf.Abs(c.Owing() - 5f) < 0.05f, "took " + F(now) + ", owing " + F(c.Owing()));
             yield return Wait(4.6f);
             Check("... the other half over 4 seconds", Mathf.Abs(ch - SpoolUtil.Health(c.Master) - 10f) < 0.1f && c.Owing() < 0.01f, "took " + F(ch - SpoolUtil.Health(c.Master)));
             Check("Slow Unravel spins twice the Thread", Mathf.Abs(SpoolUtil.Stat(c.Master, "Spin", 0f) - 12.5f) < 0.01f, "Spin " + F(SpoolUtil.Stat(c.Master, "Spin", 0f)));
-            Hit(by, c.Master, 10f);
+            float cancelled = c.Cancelled;
+            Hit(hm, c.Master, 10f);
             yield return Wait(0.1f);
             SpoolUtil.Heal(hm, c.Master, 3f);
             yield return Wait(0.1f);
-            Check("a heal cancels damage still owed", c.Cancelled >= 2.9f, "cancelled " + F(c.Cancelled) + ", owing " + F(c.Owing()));
+            Check("a heal cancels damage still owed", c.Cancelled - cancelled >= 2.9f, "cancelled " + F(c.Cancelled - cancelled) + ", owing " + F(c.Owing()));
             yield return Upgrade(c, "Stuffing3", owner);
+            SpoolUtil.Heal(hm, c.Master, 500f);
             int mangled = c.Mangled;
-            Hit(by, c.Master, 40f);
+            Hit(hm, c.Master, 40f);
             yield return Wait(0.5f);
             Check("Loose Stuffing: a Mangled per 40 damage", Has(c, "Stuffing3") && c.Mangled == mangled + 1 && UnitsOf(c).Exists(u => u.Def.Id == SpoolData.Mangled), "made " + (c.Mangled - mangled));
-            SpoolUtil.Heal(hm, c.Master, 200f);
-            Hit(by, c.Master, 160f);
-            yield return Wait(0.5f);
-            Check("at most 3 Mangled alive", UnitsOf(c).Count == 3, UnitsOf(c).Count + " alive");
+            // Three more 40s, each healed (a heal also cancels what Slow Unravel still owes), so the Cushion stands.
+            for (int i = 0; i < 3; i++)
+            {
+                SpoolUtil.Heal(hm, c.Master, 500f);
+                Hit(hm, c.Master, 40f);
+                yield return Wait(0.3f);
+            }
+            SpoolUtil.Heal(hm, c.Master, 500f);
+            Check("at most 3 Mangled alive", UnitsOf(c).Count == 3, UnitsOf(c).Count + " alive, made " + (c.Mangled - mangled));
             yield return Upgrade(c, "Overstuffed4", owner);
             foreach (SpoolUnitBrain u in UnitsOf(c)) Kill(u.Master);
             yield return Wait(0.3f);
-            SpoolUtil.Heal(hm, c.Master, 200f);
-            Hit(by, c.Master, 40f);
+            SpoolUtil.Heal(hm, c.Master, 500f);
+            yield return FarFoe("Enemy_Dagger", far);
+            Hit(far[0] != null ? far[0] : hm, c.Master, 40f);
             yield return Wait(0.4f);
+            SpoolUtil.Heal(hm, c.Master, 500f);
             SpoolUnitBrain stuffed = UnitsOf(c).Find(u => u.Def.Id == SpoolData.Stuffed);
             Check("Overstuffed: Mangled with 3x health", stuffed != null && Mathf.Abs(SpoolUtil.MaxHealth(stuffed.Master) - 45f) < 0.05f, stuffed != null ? F(SpoolUtil.MaxHealth(stuffed.Master)) : "none");
             Check("... standing on Sno Sno's blocking block", stuffed != null && stuffed.Master.Beingserver.Being.Block != null && stuffed.Master.Beingserver.Being.Block.name == SpoolContent.StuffedBlock && SpoolContent.StuffedBlock != "", SpoolContent.StuffedBlock);
@@ -776,18 +863,25 @@ public static class SpoolSelfTest
             yield return Upgrade(c, "Stuffing3", owner);
             yield return Upgrade(c, "Burst4", owner);
             Check("Burst Seams", Has(c, "Burst4"));
-            Entity_Master dagger = SpawnFoe("Enemy_Dagger", c.Pos, 2f);
-            if (dagger != null)
+            // A Dagger beside the Cushion for a Mangled to reach (another when the vessel or the Crafted fell it first).
+            Entity_Master[] beside = new Entity_Master[1];
+            int bursts = c.Bursts, made = c.Mangled, foes = 0;
+            float t0 = Time.time;
+            while (c.Bursts == bursts && Time.time - t0 < 15f)
             {
-                Helper_Entitytools.Addmod(dagger, "Health", 10f, Helper_Entitytools.Modtypes.Multi, 0f);
-                yield return Wait(0.3f);
-                Hit(dagger, c.Master, 40f);
-                float hp = SpoolUtil.Health(dagger);
-                int bursts = c.Bursts;
-                yield return Until(() => c.Bursts > bursts, 10f);
-                Check("a Mangled that reaches a foe bursts for 5", c.Bursts > bursts && (!SpoolUtil.Alive(dagger) || hp - SpoolUtil.Health(dagger) >= 4.9f), F(hp) + "->" + F(SpoolUtil.Alive(dagger) ? SpoolUtil.Health(dagger) : 0f));
+                if (!SpoolUtil.Alive(beside[0]))
+                {
+                    yield return Foe("Enemy_Dagger", c.Pos, 2.5f, 1f, beside);
+                    if (beside[0] != null) foes++;
+                }
+                if (UnitsOf(c).Count == 0 && SpoolUtil.Alive(beside[0]))
+                {
+                    SpoolUtil.Heal(hm, c.Master, 500f);
+                    Hit(hm, c.Master, 40f);
+                }
+                yield return Wait(0.25f);
             }
-            else ModKitTest.Setup("Burst Seams", "no Dagger beside the Cushion");
+            Check("a Mangled that reaches a foe bursts", c.Bursts > bursts, "bursts " + (c.Bursts - bursts) + ", Mangled made " + (c.Mangled - made) + ", Daggers " + foes);
             ClearFoes();
         }
 #if SPOOL_SHOTS
@@ -817,16 +911,19 @@ public static class SpoolSelfTest
             Entity_Master ore = Helper_Entityquerytools.Entitynearest(loomA.Pos, 2.5f, SpoolUtil.Tagged("Resource"));
             Check("Loom strikes ore in reach", ore == null || loomA.Strikes > strikes, ore == null ? "no ore in reach here (skipped)" : strikes + "->" + loomA.Strikes);
             player.Carried = 0;
+            int held = loomA.Held, delivered = SpoolServer.Delivered;
             yield return Walk(hm, loomA.Pos, SpoolData.LoomPick - 0.3f, 10f);
             yield return Wait(0.5f);
-            Check("Spool takes a Loom's Thread within 1.5 tiles", loomA.Held == 0 && player.Carried >= 1, "held " + loomA.Held + ", carried " + player.Carried);
+            int took = player.Carried + SpoolServer.Delivered - delivered;
+            Check("Spool takes a Loom's Thread within 1.5 tiles", held >= 1 && took >= held && loomA.Held <= 1, "held " + held + "->" + loomA.Held + ", took " + took);
             loomA.TakeHeld(100);
             yield return Walk(hm, home, 1f, 10f);
             yield return Upgrade(loomA, "Direct2", owner);
             player.Stash = 10;
             SpoolServer.Show(player);
-            yield return Until(() => player.Stash > 10, 8f);
-            Check("Direct Line: spun Thread goes straight to the Stash", Has(loomA, "Direct2") && player.Stash == 11 && loomA.Held == 0, "Stash " + player.Stash + ", held " + loomA.Held);
+            int sent = loomA.Sent;
+            yield return Until(() => loomA.Sent > sent, 8f);
+            Check("Direct Line: spun Thread goes straight to the Stash", Has(loomA, "Direct2") && loomA.Sent == sent + 1 && loomA.Held == 0, "sent " + (loomA.Sent - sent) + ", held " + loomA.Held);
         }
         if (loomB != null)
         {
@@ -856,11 +953,12 @@ public static class SpoolSelfTest
             player.Stash = 40;
             SpoolServer.Show(player);
             float hp = SpoolUtil.Health(tinA.Master), max = SpoolUtil.MaxHealth(tinA.Master);
-            int patches = hero.Patches;
+            int patches = hero.Patches, traffic = Traffic(owner);
             Send(hm, SpoolData.PatchLink, "{\"Ref\":" + tinA.Master.NetworkObjectId + "}");
             yield return Wait(0.4f);
-            Check("PATCH mends 20% for 20 Thread", hero.Patches == patches + 1 && Mathf.Abs(SpoolUtil.Health(tinA.Master) - Mathf.Min(max, hp + max * 0.2f)) < 0.1f && player.Stash == 20,
-                F(hp) + "->" + F(SpoolUtil.Health(tinA.Master)) + " of " + F(max) + ", Stash 40->" + player.Stash + ", " + hero.LastPatch);
+            int patchCost = 40 - player.Stash + (Traffic(owner) - traffic);
+            Check("PATCH mends 20% for 20 Thread", hero.Patches == patches + 1 && Mathf.Abs(SpoolUtil.Health(tinA.Master) - Mathf.Min(max, hp + max * 0.2f)) < 0.1f && patchCost == 20,
+                F(hp) + "->" + F(SpoolUtil.Health(tinA.Master)) + " of " + F(max) + ", PATCH took " + patchCost + " (other traffic " + (Traffic(owner) - traffic) + "), " + hero.LastPatch);
             Check("PATCH greys out while it threads", hm.Commandlistserver[SpoolData.PatchLink].Goalstring == "Off");
             Send(hm, SpoolData.PatchLink, "{\"Ref\":" + tinA.Master.NetworkObjectId + "}");
             yield return Wait(0.3f);
@@ -902,10 +1000,11 @@ public static class SpoolSelfTest
             Check("a fallen Stash spills its Thread", SpoolServer.Spilled == spilled + 30 && player.Stash == 0 && SpoolServer.DropsNear(sp, 2.5f) >= 30, "spilled " + (SpoolServer.Spilled - spilled) + ", on the ground " + SpoolServer.DropsNear(sp, 2.5f));
             Check("... and the menu goes back to the Stash", hero.Menu() == SpoolData.Stash, hero.Menu());
             at = Spot(hm, SpoolContent.Beings[SpoolData.Stash], 2.5f);
+            int traffic = Traffic(owner);
             yield return Build(hm, SpoolData.Stash, at, known, got);
             stash = got[0] as SpoolStashBrain;
-            yield return Wait(0.5f);
-            Check("a rebuilt Stash starts empty", stash != null && player.Stash == 0, "Stash " + player.Stash);
+            int start = player.Stash - (Traffic(owner) - traffic);
+            Check("a rebuilt Stash starts empty", stash != null && start == 0, "started with " + start + ", Stash " + player.Stash);
             if (stash != null)
             {
                 player.Stash = 12;

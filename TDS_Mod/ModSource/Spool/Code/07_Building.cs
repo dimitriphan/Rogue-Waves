@@ -242,7 +242,7 @@ public class SpoolStashBrain : SpoolBuilding
 // straight to the Yarn Stash; Seam Allowance keeps one Seam mining and guarding beside it.
 public class SpoolLoomBrain : SpoolBuilding
 {
-    public int Held, Spun, Strikes, Seams;
+    public int Held, Spun, Sent, Strikes, Seams;
     float lastStrike, nextSpin, seamAt = -1f;
     SpoolUnitBrain seam;
 
@@ -287,6 +287,7 @@ public class SpoolLoomBrain : SpoolBuilding
         if (Has("Direct") && Player.Home != null && SpoolServer.AddStash(Owner, 1) == 0)
         {
             Spun++;
+            Sent++;
             SpoolUtil.Vis(Master, "Spool_Spin", Pos, 1f);
             return;
         }

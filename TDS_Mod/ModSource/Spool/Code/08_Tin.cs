@@ -6,7 +6,7 @@ public class SpoolTinBrain : SpoolBuilding
     public bool HasSpot;
     public Vector3 Spot;
     public Entity_Master Pin;
-    public int Stitched, Targets;
+    public int Stitched, Spent, Targets;
     public string LastTarget = "";
     float nextStitch;
     bool shortWarned;
@@ -58,6 +58,7 @@ public class SpoolTinBrain : SpoolBuilding
         }
         u.Spot = HasSpot ? Spot : Pos;
         u.Cost = cost;
+        Spent += cost;
         u.Recycle = Has("Recycle") ? Param("Recycle_Base", 0.5f) : 0f;
         u.Burst = Has("Surprise") ? Param("Burst_Times", 3f) : 0f;
         u.HealthMulti = Param("Craftedhealth_Multi", 0f);
