@@ -69,9 +69,10 @@ says about the game is read from its code, not seen.
 13. **The look** (temporary art): sprite pivots, the Crafted at 16 px and the Head at 24 px against the game's units,
     the towers' size on a tile, the tufts' colour.
 
-## Read from the game's code for this build (not yet seen in game)
+## Read from the game's code for this build
 
-These become pitfalls (`docs/09`) or kit text once a PC round proves them:
+Round 1 ran each of these on the server side (the self-test sends the JSON itself), and each worked as read; what the
+pickers send when clicked is still unseen:
 
 - `Entity_Ai_Hero_Buildsell`: a build command is `{Tower, Position, Orientation, Owner}`; the server checks the hero's
   `Build` command for the being (`Goalstring`) and the price scale (`Goalvalue`); the built thing's parent is the hero
@@ -113,6 +114,16 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
   up within the Stash's reach and handed it over in the same tick; both Thread Heads were already full (20) from
   earlier checks' Thread; One Last Surprise's foe was killed next to before its hit box had joined the physics scene
   that `Entityarea` searches (a guess; round 1c logs the foes in reach). No exception from Spool.
+- **Round 1c (handoff `Spool_round1c`): 120 pass, 0 fail, 0 setup.** The burst found its foe once the test waited
+  0.3 s (10 -> 2.5, the 7.5 expected; pitfall #112). No warning and no exception from Spool; Yossele 0.2.0-dev is back as
+  the only mod.
+
+What the self-test can't show, left for Dimitri's play test (numbers from the list above): it sends the Build, Sell,
+TARGET, SPOT, RETURN, MEND and PATCH commands itself, so the clicking is unseen: the build bar's order and the Stash-only
+bar (1), placing a Thread Head on a path tile by hand and foes walking past it (2), the pickers opening from a Tin and a
+Thread Head (3), selling by clicking (4); also the tufts' look in URP (5), the Crafted running past foes to their spot
+(6), the needle's flight (7), foes stopping at an Overstuffed Mangled (9), the Loom striking ore (12; no ore stood in
+its reach on 3B_Thehunt) and the whole look (13).
 
 ## Open in the sheet (Dimitri's)
 

@@ -236,7 +236,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
   2026-10-16: scope defaults are written `~value~` (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from
-  scope `08` with temporary art, compiled in the cloud and not yet run (Log). Older entries are in "Log" below.
+  scope `08` with temporary art; its first PC round passed its self-test 120/0 on round 1c (Log). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
   round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -250,11 +250,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   frames, two small leaks and the vine stem's 1 px step at tile joints (B3-24 to B3-30, B3-36, B3-39);
   also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
   (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
-  unchecked. Spool (beside Release 1, at Dimitri's ask): its first PC round when he asks for one (Spool the only dev
-  mod; `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` lists what it must show), his answers to the sheet's open items
-  and to the defaults in its `DESIGN.md`, then his sprites.
+  unchecked. Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
+  `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
+  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
+- **Next free numbers:** kit chapter 25, pitfall #113 (#92 is unused; #105-#111 are Yossele's in PR #41, #112 Spool's).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -425,8 +425,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Delivery, MEND, comeback with its upgrades), the Pin Cushion's hit hook (reflect, spin, Slow Unravel, Mangled), the
   Loom (spins Thread, Direct Line, Seams), PATCH; every upgrade the sheet names. Temporary art from Dimitri's reshade
   (the walk is the 2026-10-12 concept, pixel for pixel), 19 models, 6 effects, 14 sounds. `check_mod.py` 0 errors in
-  release and both test builds, `check_editor.sh` clean; nothing built in Unity or run in game. Defaults:
-  `TDS_Mod/ModSource/Spool/DESIGN.md` "Defaults picked here".
+  release and both test builds, `check_editor.sh` clean. Defaults: `TDS_Mod/ModSource/Spool/DESIGN.md` "Defaults
+  picked here".
+- **2026-10-26, Spool PC round 1** (Dimitri: "Go ahead"; Yossele parked and put back each time): 1 = 95/22, 1b =
+  117/3, 1c = **120/0**. All but one fail were the self-test tripping over itself (foes killed in their spawn frame,
+  pitfall #112; Spool's own army felling the test's foes; Tins and Thread Heads moving Thread mid-check); the one real
+  slip, Slow Unravel's delayed half starting a frame early, is fixed. No exception from Spool. The self-test sends the
+  build, sell, TARGET and SPOT commands itself, so the clicking (pickers, build menu) waits for Dimitri's play test.
 
 ### Decisions
 

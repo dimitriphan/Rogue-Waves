@@ -324,3 +324,11 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
      Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
      check a generated asset the change should alter.
+112. **A foe killed in the frame it spawned leaves nothing your despawn hook keys on, and an area search two frames
+     later misses it** (Spool round 1, 2026-10-26; #105-#111 are Yossele's, PR #41) → `Entity_Master.Start` adds a
+     being's tags (`Taglistserver`) and stats a frame after `Game_Entity` spawns it, so a hook that checks the "Enemy"
+     tag skips a foe despawned in its spawn frame (no Thread dropped), and `Helper_Entityquerytools.Entityarea` (a
+     `Physics.OverlapSphere`) didn't find a foe that had just got its tags → in a self-test, wait until a spawned foe is
+     tagged and has `Health` before killing or reading it (#111 for its health), and about 0.3 s more before an area
+     search around it. Real Tide foes live long enough for neither to matter. **Verified** in game (the area search: missed
+     at two frames, found after 0.3 s; not timed more finely).
