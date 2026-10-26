@@ -430,10 +430,12 @@ public static class SpoolSelfTest
                     (SpoolServer.Dropped - dropped) + " dropped, " + (SpoolServer.DropsNear(fp, 0.6f) - before) + " where it fell, base health " + F(bh));
                 SpoolDrop d = SpoolServer.Drops.Find(x => SpoolUtil.Flat(x.Pos, fp) <= 0.6f);
                 Check("a drop lasts " + SpoolData.DropLife + " s", d != null && Mathf.Abs(d.Until - Time.time - SpoolData.DropLife) < 1f, d != null ? F(d.Until - Time.time) : "none");
-                int carried = player.Carried;
+                int carried = player.Carried, delivered = SpoolServer.Delivered;
                 yield return Walk(hm, fp, 0.6f, 12f);
                 yield return Wait(0.6f);
-                Check("Spool picks Thread up within a tile", player.Carried >= carried + expect && SpoolServer.DropsNear(fp, 0.6f) == 0, carried + "->" + player.Carried);
+                // Within reach of the Stash it hands what it picked up over in the same tick (round 1b).
+                int took = player.Carried - carried + SpoolServer.Delivered - delivered;
+                Check("Spool picks Thread up within a tile", took >= expect && SpoolServer.DropsNear(fp, 0.6f) == 0, "took " + took + ", carried " + carried + "->" + player.Carried);
                 Check("Carried shows on the vessel", Mathf.Approximately(SpoolUtil.Stat(hm, "Carried", -1f), player.Carried), F(SpoolUtil.Stat(hm, "Carried", -1f)));
                 int stash0 = player.Stash;
                 int c0 = player.Carried;
@@ -589,15 +591,20 @@ public static class SpoolSelfTest
             if (bomb != null)
                 yield return Foe("Enemy_Dagger", SpoolUtil.Pos(bomb.Master), 2f, 0f, beside);
             Entity_Master foe = beside[0];
-            if (foe != null && bomb != null && bomb.Master != null)
+            if (foe != null)
+                yield return Wait(0.3f);   // its hit box reaches the physics scene that Entityarea searches (round 1b)
+            float apart = foe != null && bomb != null && bomb.Master != null && SpoolUtil.Alive(foe) ? SpoolUtil.Flat(SpoolUtil.Pos(foe), SpoolUtil.Pos(bomb.Master)) : -1f;
+            if (apart >= 0f && apart <= SpoolUtil.Stat(bomb.Master, "Range", 1.5f) - 0.2f)
             {
                 float hp = SpoolUtil.Health(foe);
                 float expect = SpoolUtil.Stat(bomb.Master, "Damage", 2.5f) * 3f;
+                int seen = SpoolUtil.FoesNear(tinA.Master, SpoolUtil.Pos(bomb.Master), SpoolUtil.Stat(bomb.Master, "Range", 1.5f)).Count;
                 Kill(bomb.Master);
                 yield return Wait(0.3f);
-                Check("a falling Crafted bursts for 3x its damage", !SpoolUtil.Alive(foe) || hp - SpoolUtil.Health(foe) >= expect - 0.05f, F(hp) + "->" + F(SpoolUtil.Alive(foe) ? SpoolUtil.Health(foe) : 0f) + ", expected -" + F(expect));
+                Check("a falling Crafted bursts for 3x its damage", !SpoolUtil.Alive(foe) || hp - SpoolUtil.Health(foe) >= expect - 0.05f,
+                    F(hp) + "->" + F(SpoolUtil.Alive(foe) ? SpoolUtil.Health(foe) : 0f) + ", expected -" + F(expect) + ", " + F(apart) + " apart, foes in its reach " + seen);
             }
-            else ModKitTest.Setup("One Last Surprise", bomb == null ? "no Crafted stitched after the upgrade, Stash " + player.Stash : "no foe could stand beside it");
+            else ModKitTest.Setup("One Last Surprise", bomb == null ? "no Crafted stitched after the upgrade, Stash " + player.Stash : foe == null ? "no foe could stand beside it" : "the foe was " + F(apart) + " from it");
             ClearFoes();
         }
         if (tinB != null)
@@ -653,7 +660,9 @@ public static class SpoolSelfTest
                 Vector3 away = headA.Spot - SpoolUtil.Pos(hm);
                 away.y = 0f;
                 Vector3 dp = headA.Spot + (away.sqrMagnitude > 0.01f ? away.normalized : Vector3.right) * 2f;
-                int carried0 = headA.Carried + (headB != null ? headB.Carried : 0);
+                headA.Carried = 0;   // both had filled up on earlier checks' Thread (round 1b: carried 20)
+                if (headB != null) headB.Carried = 0;
+                int carried0 = 0;
                 SpoolServer.Drop(dp, 4);
                 yield return Wait(1f);
                 int pulled = headA.Carried + (headB != null ? headB.Carried : 0) - carried0;

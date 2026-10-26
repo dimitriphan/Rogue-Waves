@@ -107,6 +107,12 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
   at once instead of 5); fixed in `10_Cushion.cs`. Also gone: the never-assigned `forcing` flag (warning CS0649). Editor
   side, harmless: ModTool's restore after export logged "Missing Nested Prefab Asset" for `Spool_Needle` in
   `SpoolAssets_Library.prefab` and for the library in `SpoolMod_Default.prefab`; the exported mod loaded fine.
+- **Round 1b (handoff `Spool_round1b`): 117 pass, 3 fail, 0 setup.** Every Cushion, Loom, PATCH, Stash and comeback
+  check passes, with the game's own numbers: a Dagger's base health 10 (1 Thread), an Aegis's 80 (3), a Ballista's
+  range 5 (not pricked until Pin Barrage). The three left were the test again: the vessel picked the Dagger's Thread
+  up within the Stash's reach and handed it over in the same tick; both Thread Heads were already full (20) from
+  earlier checks' Thread; One Last Surprise's foe was killed next to before its hit box had joined the physics scene
+  that `Entityarea` searches (a guess; round 1c logs the foes in reach). No exception from Spool.
 
 ## Open in the sheet (Dimitri's)
 
