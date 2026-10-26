@@ -235,7 +235,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
-  2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
+  2026-10-16: scope defaults are written `~value~` (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from
+  scope `08` with temporary art, compiled in the cloud and not yet run (Log). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
   round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -249,9 +250,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   frames, two small leaks and the vine stem's 1 px step at tile joints (B3-24 to B3-30, B3-36, B3-39);
   also left on Yossele: his look by eye (temporary art), his balance pass, Connected Roots' own-or-team question
   (B3-31), the Compost Bin numbers in scope `11`, and the chance-based Viral Outbreak and Hallucinogen, still
-  unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
-  Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6).
+  unchecked. Spool (beside Release 1, at Dimitri's ask): its first PC round when he asks for one (Spool the only dev
+  mod; `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` lists what it must show), his answers to the sheet's open items
+  and to the defaults in its `DESIGN.md`, then his sprites.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
 
@@ -414,6 +415,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-10-21, answers:** Dimitri answered scope `01`'s and `07`'s questions: every default kept except Bonsai, limit
   1 (planted at the Tree's cost). The Tree's level 4 upgrade is Dandelion Storm again; Dandelion Season is only the
   Direction. Both `[Questions]` blocks are gone.
+- **2026-10-26, template before Spool:** the kit template (Mummer's scaffold) took the 1.6 pack calls, `ModKitCombat`
+  kill credit, `ModKitTowers.Fit` tower ranges and unthrottled debuff looks; the Aseprite writers keep unit sheets named
+  after the vessel (B10, B1-3, B1-22, B1-4, C2-6). Compiled, not run.
+- **2026-10-26, Spool 0.1.0-dev:** Dimitri: "Begin implementing Spools mechanics." Built from scope `08` as PR #40 leaves
+  it: the Yarn Stash first (the menu holds only it until it stands), Thread dropped by foes and carried home by Spool
+  and Thread Heads (ground Thread is a host list drawn by each client, not network entities), the Cookie Tin and its
+  Crafted (TARGET with the fish's picker), the Thread Head (placed through a walk-through token; SPOT, RETURN, Threaded
+  Delivery, MEND, comeback with its upgrades), the Pin Cushion's hit hook (reflect, spin, Slow Unravel, Mangled), the
+  Loom (spins Thread, Direct Line, Seams), PATCH; every upgrade the sheet names. Temporary art from Dimitri's reshade
+  (the walk is the 2026-10-12 concept, pixel for pixel), 19 models, 6 effects, 14 sounds. `check_mod.py` 0 errors in
+  release and both test builds, `check_editor.sh` clean; nothing built in Unity or run in game. Defaults:
+  `TDS_Mod/ModSource/Spool/DESIGN.md` "Defaults picked here".
 
 ### Decisions
 
@@ -560,6 +573,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
+| 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
 
 ### Phase 5 pieces
 
