@@ -131,6 +131,9 @@ public class SpoolMod : MonoBehaviour
 #if SPOOL_SELFTEST
         SpoolSelfTest.Update();
 #endif
+#if SPOOL_PLAY
+        SpoolPlay.Update();
+#endif
     }
 
     void LateUpdate()

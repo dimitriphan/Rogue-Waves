@@ -437,9 +437,12 @@ public static class SpoolContent
         Spot = Command(template, SpoolData.SpotCommand, SpoolData.SpotName, SpoolData.SpotDesc, "Spool_Spot", new Entity_Command_Mob_Boutmanfish_Relocate(), false);
         // RETURN and MEND: one-click buttons like the Mining Hut's Convert; MEND shows ON or OFF.
         Return = Command(template, SpoolData.ReturnCommand, SpoolData.ReturnName, SpoolData.ReturnDesc, "Spool_Return", new SpoolButton(), false);
-        Return.Keybind = new List<string> { "Quickaction2", "4" };
+        // Keybinds must be the game's own input actions: Game_Selection.Addcommand looks each one up in Bl_Inputs.Actions,
+        // and an unknown name ("Quickaction2") threw on every click on a Thread Head, so its panel never drew (play test
+        // 2026-10-26).
+        Return.Keybind = new List<string> { "4" };
         Mend = Command(template, SpoolData.MendCommand, SpoolData.MendName, SpoolData.MendDesc, "Spool_Mend", new SpoolButton(), false);
-        Mend.Keybind = new List<string> { "Quickaction3", "3" };
+        Mend.Keybind = new List<string> { "3" };
     }
 
     // ---------------------------------------------------------------- buildables

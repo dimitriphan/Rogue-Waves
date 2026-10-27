@@ -117,6 +117,15 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
 - **Round 1c (handoff `Spool_round1c`): 120 pass, 0 fail, 0 setup.** The burst found its foe once the test waited
   0.3 s (10 -> 2.5, the 7.5 expected; pitfall #112). No warning and no exception from Spool; Yossele 0.2.0-dev is back as
   the only mod.
+- **Play test (2026-10-26, no handoff; `docs/reports/PLAYTEST_2026-10-26.md`).** A debug-only virtual player
+  (`Code/98_Play.cs` with kit `ModKitPlay`, play builds only) played Purlest on its own income and Woozy with sandbox
+  money, clicking the HUD: the Stash-only bar and then the four, a Thread Head placed on a path tile by hand, TARGET,
+  SPOT, RETURN, MEND and PATCH picked or pressed on the map, all 15 upgrades bought by clicking, Thread Heads sold through
+  SELL (a walking Stitched never: the aim couldn't land on the moving 16 px unit). One bug, fixed: every click on
+  a Thread Head threw `KeyNotFoundException` "Quickaction2" in `Game_Selection.Addcommand`, which looks each keybind up
+  in `Bl_Inputs.Actions` (only `Quickaction` and `1`-`8` exist), so the Head's panel never drew; RETURN's keybinds are
+  now `{"4"}` and MEND's `{"3"}`, and the Head's SPOT, RETURN, MEND and upgrades were then used by hand. Balance: Purlest was
+  lost at Tides 4, 1 and 2 (one Stitched from the 10 starting Thread holds the first Tide), Woozy at Tide 4 twice.
 
 What the self-test can't show, left for Dimitri's play test (numbers from the list above): it sends the Build, Sell,
 TARGET, SPOT, RETURN, MEND and PATCH commands itself, so the clicking is unseen: the build bar's order and the Stash-only
