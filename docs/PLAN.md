@@ -235,7 +235,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
-  2026-10-16: scope defaults are written `~value~` (Log). Older entries are in "Log" below.
+  2026-10-16: scope defaults are written `~value~` (Log). 2026-10-26: Yossele 0.2.0-dev and Spool 0.1.0-dev played
+  through the HUD by a virtual player on three maps; two bugs fixed on PRs #41 and #42 and seen fixed in game; Spool's first
+  Tide is too thin (`docs/reports/PLAYTEST_2026-10-26.md`). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): Yossele's design gate on the 2026-10-20 sheet (gap in its `IMPLEMENTATION_NOTES.md`), the build, a PC
   round, his sprites and balance, the one-part pack build. After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -252,7 +254,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   unchecked. Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6).
-- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
+- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
+  (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
+  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE.
 - **Next free numbers:** kit chapter 25, pitfall #105 (#92 is unused).
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -414,6 +418,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-10-21, answers:** Dimitri answered scope `01`'s and `07`'s questions: every default kept except Bonsai, limit
   1 (planted at the Tree's cost). The Tree's level 4 upgrade is Dandelion Storm again; Dandelion Season is only the
   Direction. Both `[Questions]` blocks are gone.
+- **2026-10-26, play test:** at Dimitri's "Do a test run of Yossele and Spool as if you were a player testing these
+  characters", a debug-only virtual player (kit `ModKitPlay`, play builds only; Input System events on the game's own
+  mouse and keyboard, so the HUD, the map and the keys get a hand's input) played 12 runs on Purlest, Woozy and The Hunt.
+  Found and fixed: the Thread Head's panel never drew (RETURN's and MEND's keybinds named input actions the game doesn't
+  have; PR #42, pitfall #113) and Hallucinogen's stun look is a stock effect Woozy doesn't load (PR #41, pitfall #114).
+  Balance, what was clicked and what needs Dimitri: `docs/reports/PLAYTEST_2026-10-26.md`.
 
 ### Decisions
 
