@@ -22,10 +22,12 @@ public static class SpoolClient
         public float Until, Seed;
     }
 
-    // A small tuft of purple thread (8x8, drawn here so ground Thread needs nothing from the asset pack).
+    // Temporary art (ModSource/Spool/Art/Temporary/README.md): a fluffed tuft of lilac thread with a loose end, lit
+    // from the upper left (12x12, drawn here so ground Thread needs nothing from the asset pack).
     static readonly string[] TuftPixels =
     {
-        "........", "...LL...", "..LlLL..", ".LlLlLL.", ".LLlLlL.", "..LLLL..", "...LL.l.", "......l.",
+        "............", "....jjx.....", "..jjjxjxj...", ".jxjjxxjxx..", ".jjxjxjxxX..", "jxjjxxjxXX..",
+        ".jxjxxxXxX..", ".xjxxXxXXX..", "..XxXXXXX...", "...XXXX..X..", ".........X..", "..........X.",
     };
 
     public static void Update()
@@ -236,7 +238,7 @@ public static class SpoolClient
         t.Amount = amount;
         if (fresh)
             t.Until = Time.time + SpoolData.DropLife;
-        float size = Mathf.Lerp(0.8f, 1.6f, Mathf.Clamp01((amount - 1) / 6f));
+        float size = Mathf.Lerp(0.7f, 1.3f, Mathf.Clamp01((amount - 1) / 6f));   // 0.42 to 0.78 wide: the 8 px tuft was 0.32 to 0.64 and hard to see
         t.Go.transform.localScale = Vector3.one * size;
     }
 

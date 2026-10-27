@@ -406,14 +406,17 @@ namespace SpoolBuild
             return m;
         }
 
-        // The Dart's thrown needle (along z, point forward), a short lilac thread trailing from its eye.
+        // The Dart's thrown needle (along z, point forward). Temporary art (ModSource/Spool/Art/Temporary/README.md): a
+        // needle that reads in flight, 0.42 long and about 0.05 thick, a white point, a dark collar at the eye and a
+        // purple thread tail.
         static Lp Needle()
         {
             var m = new Lp();
-            m.Tube(V(0, 0.5f, -0.1f), V(0, 0.5f, 0.1f), 0.01f, 0.01f, 5, Pal.Steel);
-            m.Tube(V(0, 0.5f, 0.1f), V(0, 0.5f, 0.16f), 0.01f, 0f, 5, Pal.Iron0);
-            Thread(m, V(0, 0.5f, -0.1f), V(0.02f, 0.52f, -0.16f), Pal.Felt2, 0.006f);
-            Thread(m, V(0.02f, 0.52f, -0.16f), V(-0.01f, 0.5f, -0.21f), Pal.Felt2, 0.006f);
+            m.Tube(V(0, 0.5f, -0.2f), V(0, 0.5f, 0.14f), 0.026f, 0.022f, 6, Pal.Steel);
+            m.Tube(V(0, 0.5f, 0.14f), V(0, 0.5f, 0.22f), 0.022f, 0f, 6, Pal.White);
+            m.Tube(V(0, 0.5f, -0.21f), V(0, 0.5f, -0.17f), 0.031f, 0.031f, 6, Pal.SteelDark);
+            Thread(m, V(0, 0.5f, -0.2f), V(0.035f, 0.53f, -0.3f), Pal.Felt2, 0.013f);
+            Thread(m, V(0.035f, 0.53f, -0.3f), V(-0.02f, 0.5f, -0.41f), Pal.Felt2, 0.013f);
             return m;
         }
     }

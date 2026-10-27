@@ -246,6 +246,7 @@ public static class SpoolAssets
         { 'l', new Color32(213, 190, 236, 255) }, { 'L', new Color32(178, 146, 214, 255) }, { 'm', new Color32(130, 96, 170, 255) },
         { 'b', new Color32(232, 196, 108, 255) }, { 'B', new Color32(196, 156, 70, 255) }, { 'w', new Color32(245, 240, 250, 255) },
         { 'd', new Color32(58, 40, 64, 255) }, { 'r', new Color32(228, 104, 128, 255) }, { 's', new Color32(176, 182, 196, 255) },
+        { 'j', new Color32(181, 139, 201, 255) }, { 'x', new Color32(148, 93, 173, 255) }, { 'X', new Color32(122, 74, 143, 255) },
     };
 
     // A spool of thread.

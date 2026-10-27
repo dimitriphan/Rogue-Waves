@@ -52,7 +52,14 @@ been built in Unity or seen in game yet.
   a pick at its foot. `_Direct2` a tall post with a reel and the thread running off home; `_Seam2` patches sewn on and
   a needle left in.
 - `Spool_Pin`: the Cookie Tin's spot, a red-headed dressmaker's pin on a cross-stitch.
-- `Spool_Needle`: the Dart's thrown needle with a lilac thread tail.
+- `Spool_Needle`: the Dart's thrown needle, 0.42 long and about 0.05 thick so it reads in flight: a white point, a dark
+  collar at the eye and a purple thread tail (2026-10-27, from `Art/Temporary/README.md`; was 0.26 x 0.02).
+
+## Drawn in code (`Code/11_Client.cs`)
+
+Ground Thread: a 12 x 12 fluffed tuft of lilac thread with a loose end, lit from the upper left (`TuftPixels`, three
+colours in `SpoolAssets.IconPalette`; 2026-10-27, from `Art/Temporary/README.md`; was 8 x 8). It shows 0.42 to 0.78
+wide as the tuft holds 1 to 7 or more Thread.
 
 ## Effects (`World_*`, played by `Code/11_Client.cs`)
 
