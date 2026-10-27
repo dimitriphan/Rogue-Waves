@@ -2,15 +2,15 @@
 
 **Everything in this folder is temporary.** It fills a slot until Dimitri's own art replaces it. The rest of Spool's
 temporary art is drawn by code in `Assets/SpoolMod/Editor` (Spool's `Previews/0.1/ASSETS.md`, PR #42); the pack's whole
-list is `docs/TEMP_ART.md`. Spool 0.1.0-dev lives on PR #42's branch, so nothing here is wired yet: the Spool thread
-takes these in (below).
+list is `docs/TEMP_ART.md`. Spool 0.1.0-dev lives on PR #42's branch, where the Spool thread wired both pieces at
+`e0d2bf6` (2026-10-27; compiled and editor-checked, not yet seen in game).
 
 | File | Size | Fills | Replaces | In game |
 | --- | --- | --- | --- | --- |
-| `game_size/Spool_Tuft.png` | 12 x 12, PPU 20, centre pivot | ground Thread: a fluffed tuft of lilac thread with a loose end, lit from the upper left | the 8 x 8 `TuftPixels` in `Code/11_Client.cs` (the play test never caught one in a capture) | not wired |
-| `preview_8x/models_Needle.png` | render only | the Dart's thrown needle (`Spool_Needle`): 0.42 long and about 0.05 thick, a white point, a dark collar, a purple thread tail | the 0.26 x 0.02 needle, too thin to see in flight | not wired; the code is below |
+| `game_size/Spool_Tuft.png` | 12 x 12, PPU 20, centre pivot | ground Thread: a fluffed tuft of lilac thread with a loose end, lit from the upper left | the 8 x 8 `TuftPixels` in `Code/11_Client.cs` (the play test never caught one in a capture) | wired on PR #42 (`e0d2bf6`): 0.42 to 0.78 wide on the ground |
+| `preview_8x/models_Needle.png` | render only | the Dart's thrown needle (`Spool_Needle`): 0.42 long and about 0.05 thick, a white point, a dark collar, a purple thread tail | the 0.26 x 0.02 needle, too thin to see in flight | wired on PR #42 (`e0d2bf6`), the code below |
 
-## Wiring (for the Spool thread)
+## Wiring (done on PR #42; kept for reference)
 
 **Tuft.** Replace `TuftPixels` with these rows and add the three colours to `SpoolAssets.IconPalette` (or load the PNG):
 `j` `B58BC9` (lilac light), `x` `945DAD` (`SpoolClient.ThreadColor`), `X` `7A4A8F` (shade). The sprite is 12 px where the
