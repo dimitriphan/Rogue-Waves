@@ -217,3 +217,18 @@ def write_sheet(base, name, cells, cols, cell, tags, game_dir='game_size', k=Non
                       'TEMP;sheet=%s.png;row=%d;col=%d;cols=%d;rows=%d' % (name, row, col, cols, rows)))
     save_ase(os.path.join(base, 'aseprite', name + '.aseprite'), cell, frames, atags)
     return s
+
+
+def gif(cells_by_row, path, k=6, ms=120):
+    """Animated preview: one strip per variant side by side on the grass colour, k times size (needs PIL)."""
+    from PIL import Image
+    w, h = cells_by_row[0][0].w, cells_by_row[0][0].h
+    frames = []
+    for i in range(len(cells_by_row[0])):
+        im = Image.new('RGB', (w * k * len(cells_by_row), h * k), (140, 155, 140))
+        for r, row in enumerate(cells_by_row):
+            c = row[i].scaled(k)
+            tile = Image.frombytes('RGBA', (c.w, c.h), c.rgba())
+            im.paste(tile, (r * w * k, 0), tile)
+        frames.append(im)
+    frames[0].save(path, save_all=True, append_images=frames[1:], duration=ms, loop=0)

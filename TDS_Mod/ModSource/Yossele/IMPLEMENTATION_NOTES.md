@@ -211,6 +211,15 @@ sheet it falls back to the tinted Snoble (`YosseleContent.FriendOwnLook`, logged
 next PC round: the build log names `Yosselefriend-Sheet.png from Art/Temporary/`, the self-test's "Cordyfriend look: its own
 sheet" line, and by eye that it faces and animates right (the miner's animator plays Idle, Move and Attack).
 
+**2026-10-27, temporary animations** (Dimitri: "Create the temporary animations for Yossele and Spool as well"):
+`YosseleBuilder.FileArt` lets a PNG of the same name and size replace any sheet the code draws (`Art/<name>.png` final
+wins over `Art/Temporary/game_size/<name>.png`, either over the code; Aseprite frames still merge on top).
+`Yossele-Sheet.png` keeps the code's idle and takes the knuckle walk (`concepts/walk_2026-10-12`) as Move;
+`YosseleAttack-Sheet.png` redraws the laser as squat, charge, fire with a flash, recover with smoke. Compiled
+(`check_editor.sh` clean); to verify at the next PC round: the build log lines `Yossele-Sheet.png from Art/Temporary/`
+and `YosseleAttack-Sheet.png from Art/Temporary/`, footsteps on Move frames 0 and 3 still landing on the plants, and by
+eye the walk and the shot in all four facings.
+
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 
 Everything the gap list named is built (`DESIGN.md` has each rule and default): the ranged mouth laser and the new

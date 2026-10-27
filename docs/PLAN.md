@@ -242,7 +242,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-27: a temporary art pass
   (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
-  and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42). Older entries are in "Log" below.
+  and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
+  knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
+  redrawn (files; PR #42 wires them). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button

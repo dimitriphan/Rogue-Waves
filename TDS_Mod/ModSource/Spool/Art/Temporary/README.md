@@ -2,15 +2,29 @@
 
 **Everything in this folder is temporary.** It fills a slot until Dimitri's own art replaces it. The rest of Spool's
 temporary art is drawn by code in `Assets/SpoolMod/Editor` (Spool's `Previews/0.1/ASSETS.md`, PR #42); the pack's whole
-list is `docs/TEMP_ART.md`. Spool 0.1.0-dev lives on PR #42's branch, where the Spool thread wired both pieces at
-`e0d2bf6` (2026-10-27; compiled and editor-checked, not yet seen in game).
+list is `docs/TEMP_ART.md`. Spool 0.1.0-dev lives on PR #42's branch, where the Spool thread wired the tuft and the
+needle at `e0d2bf6` (2026-10-27; compiled and editor-checked, not yet seen in game). The animation sheets below came
+after and are not wired yet.
 
 | File | Size | Fills | Replaces | In game |
 | --- | --- | --- | --- | --- |
 | `game_size/Spool_Tuft.png` | 12 x 12, PPU 20, centre pivot | ground Thread: a fluffed tuft of lilac thread with a loose end, lit from the upper left | the 8 x 8 `TuftPixels` in `Code/11_Client.cs` (the play test never caught one in a capture) | wired on PR #42 (`e0d2bf6`): 0.42 to 0.78 wide on the ground |
+| `game_size/Spoolhead-Sheet.png` | 240 x 96, 24 px cells, bottom-centre pivot; rows v0-v3, columns 0-5 Move (0 = Idle), 6-9 Attack | the Thread Head: a clean lilac ball of yarn with three wraps, Spool's zipper mouth, teeth, eyes and tongue, white gloves, a loose end that swings as it walks; the attack winds back, punches with the leading glove and sparks | the code's ball textured with dots (read as dirt) that only bobbed | not wired (see Wiring) |
+| `game_size/Spoolstitched-Sheet.png`, `Spooldart-Sheet.png`, `Spoolseam-Sheet.png`, `Spoolmangled-Sheet.png` | 160 x 64 each, 16 px cells, same layout | the four Crafted, same shapes and colours, now lit and shaded: a real step (legs lift and swing, gloves swing against them) and an attack with a wind-up, a strike with a smear and a hit spark. The Dart raises its needle behind its head and throws it | the code's flat dolls that only bobbed | not wired (see Wiring) |
 | `preview_8x/models_Needle.png` | render only | the Dart's thrown needle (`Spool_Needle`): 0.42 long and about 0.05 thick, a white point, a dark collar, a purple thread tail | the 0.26 x 0.02 needle, too thin to see in flight | wired on PR #42 (`e0d2bf6`), the code below |
 
-## Wiring (done on PR #42; kept for reference)
+Previews: `preview_8x/<sheet>_8x.png`, and GIFs `Spoolhead_move.gif`, `Spoolhead_attack.gif`,
+`Spool_crafted_move.gif`, `Spool_crafted_attack.gif`. The vessel's own sheets (idle, walk, attack, Patch, fall, landing)
+stay as they are, drawn from Dimitri's reshade ("leave Spool as is for now").
+
+## Wiring the animation sheets (for PR #42)
+
+Give `SpoolBuilder.SaveSheet` the same file override as Yossele's (`Assets/YosseleMod/Editor/YosseleBuilder.cs`,
+`FileArt`): call `SpoolAseprite.Apply(FileArt(px, name), folder, name, cw)`, where `FileArt` loads
+`ModSource/Spool/Art/<name>.png` (final) or `Art/Temporary/game_size/<name>.png` (temporary) when it has the code
+sheet's size and logs which it used. The five sheets have the code's names, sizes and layout, so nothing else changes.
+
+## Wiring the tuft and the needle (done on PR #42; kept for reference)
 
 **Tuft.** Replace `TuftPixels` with these rows and add the three colours to `SpoolAssets.IconPalette` (or load the PNG):
 `j` `B58BC9` (lilac light), `x` `945DAD` (`SpoolClient.ThreadColor`), `X` `7A4A8F` (shade). The sprite is 12 px where the
@@ -43,4 +57,5 @@ lite renderer on the PR #42 branch, 2026-10-27):
 ## Replacing it
 
 Put the final art at `ModSource/Spool/Art/<same name>.png` (one folder up) and point the code there, then delete the
-temporary file. Generator: `concept-tools/temp_art/ui_icons.py` (the tuft rows are its `TUFT`).
+temporary file. Generators: `concept-tools/temp_art/ui_icons.py` (the tuft rows are its `TUFT`),
+`spool_threadhead.py`, `spool_units.py`.
