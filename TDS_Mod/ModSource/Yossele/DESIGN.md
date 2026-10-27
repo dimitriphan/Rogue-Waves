@@ -186,8 +186,8 @@ How the new rules work (read from the game's code, 2026-10-23; untested):
 - **Easy Target** puts Yossele's front hit hook on the foe: every hit on it is scaled by 1.15 while it is marked (the
   mark lasts 1 s past its last vine tick), with its own `Debuff_Yossele_Marked` look (red and gold sparks over the
   head; the stock `Debuff_Weakened` isn't loaded in a normal game, PC round 9).
-- **Hallucinogen** is now a plain stun (the sheet's 2026-10-20 rule; the old "attacks its friends" is gone), with the
-  stock `Debuff_Stun` look.
+- **Hallucinogen** is now a plain stun (the sheet's 2026-10-20 rule; the old "attacks its friends" is gone), with
+  Yossele's own `Debuff_Yossele_Daze` look (the stock `Debuff_Stun` isn't loaded on every map; play test 2026-10-26).
 
 ## Visual effects and sounds (temporary art, all generated)
 

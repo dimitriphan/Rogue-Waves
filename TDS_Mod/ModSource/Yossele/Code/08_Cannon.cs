@@ -253,10 +253,11 @@ public static class YosseleSpores
         }
     }
 
-    // Hallucinogen: stunned (held, no attacks) for Hallu_Stun seconds, with the stock stun look.
+    // Hallucinogen: stunned (held, no attacks) for Hallu_Stun seconds, with Yossele's own daze look (a purple swirl and
+    // stars; the stock Debuff_Stun isn't loaded on every map).
     public static void Stun(Entity_Master foe, YosseleCannonBrain cannon)
     {
-        YosseleUtil.Root(cannon.Master, foe, cannon.Param("Hallu_Stun", 2f), true, YosseleData.VfxStun);
+        YosseleUtil.Root(cannon.Master, foe, cannon.Param("Hallu_Stun", 2f), true, YosseleData.VfxDaze);
         Stuns++;
     }
 

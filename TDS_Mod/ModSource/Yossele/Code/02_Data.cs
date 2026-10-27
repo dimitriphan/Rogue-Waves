@@ -47,6 +47,9 @@ public static class YosseleData
     public const string VfxSpores = "Debuff_Yossele_Spores", VfxSporefull = "Debuff_Yossele_Sporefull";
     public const string VfxTangle = "Debuff_Yossele_Tangle", VfxBlockade = "Debuff_Yossele_Blockade";
     public const string VfxSlow = "Debuff_Slow", VfxStun = "Debuff_Stun", VfxMarked = "Debuff_Yossele_Marked", VfxDisabled = "Debuff_Disabled";
+    // Hallucinogen's stun look is Yossele's own: the stock Debuff_Stun is loaded on some maps only (play test
+    // 2026-10-26: on 3B_Woozy every stun logged "Could not retrieve Vfx/Debuff_Stun" and showed nothing).
+    public const string VfxDaze = "Debuff_Yossele_Daze";
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
 

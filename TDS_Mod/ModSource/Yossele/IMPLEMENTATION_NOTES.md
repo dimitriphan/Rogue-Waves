@@ -191,6 +191,17 @@ the 18 shutdown sound NREs round 8 had too), installed as the play build. The mo
 fire held from section 2, Yossele no longer shoots the ore node beside it (the stock ranged AI targets `Resource`, so
 in play the laser most likely mines any node in range too; worth a look on a played map).
 
+**Play test (2026-10-26, no handoff; `docs/reports/PLAYTEST_2026-10-26.md`).** A debug-only virtual player
+(`Code/98_Play.cs` with kit `ModKitPlay`, play builds only) played Purlest on its own income to Tide 8, Woozy with
+sandbox money and spawned shooters, and The Hunt, clicking the HUD for everything: 30 of the 32 upgrades bought by
+clicking their entries (Picky Placement and Fortifying Roots weren't on a route the bot finished), the Bonsai built from
+the Tree's slot, the Tree sold through SELL. One bug: Hallucinogen's stun look, the stock `Debuff_Stun`, isn't loaded on
+Woozy (10 stuns, 10 "Could not retrieve" lines, no look); it now uses the generated, unused `Debuff_Yossele_Daze`
+(`YosseleData.VfxDaze`; pitfall #114); the last Woozy run had 9 stuns and no such line. Seen in play for the first
+time: D-MDS taking down real Ballista, Onager and Excalibur shots (118 by Tide 7), Cordyfriends rising (14), fruit from a
+fully grown Sapling (3 on `Resource_Blue`), the Bonsai keeping its copy when the Tree was sold. The laser does mine: on
+Woozy the vessel dealt 802 damage by Tide 7 with no foe felled.
+
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 
 Everything the gap list named is built (`DESIGN.md` has each rule and default): the ranged mouth laser and the new

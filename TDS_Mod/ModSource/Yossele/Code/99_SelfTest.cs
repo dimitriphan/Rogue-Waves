@@ -804,7 +804,7 @@ public static class YosseleSelfTest
                     yield return Wait(0.3f);
                     // Speed bottoms out at its lower bound (0.05 in round 9); the game's own stun leaves 0.1 (the Boutman boat's).
                     Check("Hallucinogen's stun holds the foe", YosseleSpores.Stuns > stuns && SpeedOf(foe) <= 0.1f, "speed " + F(s0) + "->" + F(SpeedOf(foe)));
-                    yield return DebuffReport(foe, YosseleData.VfxStun);
+                    yield return DebuffReport(foe, YosseleData.VfxDaze);
                 }
                 Kill(foe);
                 Log("cannon: Hallucinogen stuns so far " + YosseleSpores.Stuns + " (a 20% chance every 5 s in play, not checked)");

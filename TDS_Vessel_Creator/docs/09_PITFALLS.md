@@ -357,3 +357,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      solo on 3B_Thehunt) → `Debuff_Weakened` is only named by the Fiewall's code and isn't in the Vfx group in a normal
      game, though kit `17` §10 listed it → give the look your own effect (`Debuff_Yossele_Marked`), or check a stock
      debuff name with the self-test's `DebuffReport` before relying on it.
+114. **"Could not retrieve Vfx/Debuff_Stun The GROUP exists, but item does not" on one map, though the self-test saw
+     the look attach on another** (Yossele play test, 2026-10-26) → stock effects load with groups, and which groups a
+     match loads depends on its map and vessels: `Debuff_Stun` is in the Vfx group on 3B_Thehunt (the self-test map, so
+     round 9e's `DebuffReport` passed) but not on 3B_Woozy, where each Hallucinogen stun logged the line and drew nothing
+     → a `DebuffReport` proves a stock look on its own map only (this amends #110): give the look the mod's own effect
+     (Yossele's `Debuff_Yossele_Daze`), or name only a stock look from a group the mod loads itself (its template
+     vessel's or its `ExtraGroups`). **Verified** in game (play test 2026-10-26).
