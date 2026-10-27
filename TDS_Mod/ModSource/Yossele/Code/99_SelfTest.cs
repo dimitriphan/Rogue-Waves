@@ -748,7 +748,7 @@ public static class YosseleSelfTest
 #endif
                 Kill(prey);
                 yield return Wait(0.3f);
-                Log("Cordyfriend client tint applied to " + YosseleClient.Tinted + " sprite renderers (look by eye)");
+                Log("Cordyfriend look: " + (YosseleContent.FriendOwnLook ? "its own sheet " + YosseleData.FriendSheet : "the Snoble's, tint applied to " + YosseleClient.Tinted + " sprite renderers") + " (look by eye)");
             }
             int rises = YosseleSpores.Rises;
             for (int i = 0; i < 3; i++)

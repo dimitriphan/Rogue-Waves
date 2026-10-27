@@ -239,7 +239,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
   2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
-  sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). Older entries are in "Log" below.
+  sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-27: a temporary art pass
+  (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
+  icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
+  and Vampire Dentures (files), Spool's tuft and needle (handed to PR #42). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -250,7 +253,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
-  art), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.

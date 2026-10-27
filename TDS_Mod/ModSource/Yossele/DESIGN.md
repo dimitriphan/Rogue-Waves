@@ -196,7 +196,7 @@ Attack animation where the mouth hole glows dim, then bright, and flares as the 
 no longer fights in melee); models for every new upgrade (Cordyceps5, Dmds3, Bonsai4, Rubbery4, Storm5, Easy3, Roots4,
 Obsidian4, Monument5, Forest3, Mulch3, Connected4, Fortifying5, Softening5) and the Bonsai's own
 (`Tower_Yosselebonsai`, the Tree at 60% in a bonsai dish); Growth skins 11-15 reuse stage 10's sprouts. The
-Cordyfriend borrows the Snoble's sprite, tinted. D-MDS's intercept draws a seed flying to the projectile and the
+Cordyfriend borrowed the Snoble's sprite, tinted (its own temporary sheet since 2026-10-27, `Art/Temporary/`). D-MDS's intercept draws a seed flying to the projectile and the
 seed-hit puff where it goes out. Natural Remedy and Sustaining Practices now show `World_Yossele_Mend` and play
 `Yossele_Mend` when they heal (at most every 1.5 or 2 s per building). `Yossele_Landing` and `Yossele_Footstep` are
 gone (the game's own sounds play). Renders and notes: `Previews/0.2/`.
@@ -214,7 +214,7 @@ gone (the game's own sounds play). Renders and notes: `Previews/0.2/`.
 | D-MDS: "what counts as projectiles, bosses?" (Dimitri's note) | Every foe projectile that hurts; a boss's costs 5 seeds | Default; the stock list is short (above) |
 | Cordyfriend "one for each foe that rises, no cap" (Claude's default) | Up to 30 at once per player | A safety limit on networked units in long games; the sheet's default changed to match |
 | Cordyfriend's orders and leash (blank) | Walks to the nearest foe within 4 tiles that is within 5 of where it rose, else back there | Default (`docs/12` §4 "guard a spot") |
-| Cordyfriend "resembles a Snoble" | The Snoble's own sprite, tinted fungus green | Temporary art until Dimitri's; Idle only, so it glides |
+| Cordyfriend "resembles a Snoble" | Its own temporary sheet: a pale puffball with dot eyes like a Snoble, olive spore specks and three orange cordyceps clubs; Idle, Move, Attack (`Art/Temporary/`, 2026-10-27) | Temporary art until Dimitri's; the Snoble's sprite tinted green stays the fallback |
 | Bonsai "with the same upgrades as the Tree, reduced effects" | It copies your Tree's upgrades live at 40% (penalties, distances, durations kept) and keeps the last copy if the Tree goes | Default reading of "a copy" |
 | Natural Remedy "0.5 per [Growth]" | Stage 1 before it has grown, like Sustaining Practices | Default: otherwise it does nothing until the first stage |
 | Easy Target's debuff length (unsaid) | While on the vines, and 1 s after | Default |

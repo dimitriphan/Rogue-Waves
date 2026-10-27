@@ -16,6 +16,7 @@ public static class YosseleContent
     public static int VfxRegistered;
     public static bool IconsReady, LaserReady;
     public static string GroundFrom = "", LaserFrom = "", FriendFrom = "";
+    public static bool FriendOwnLook;
 
     // Leaf green 72CC35, the accent of Yossele's sprout (docs/STYLE.md).
     public static readonly Color Accent = new Color(0x72 / 255f, 0xCC / 255f, 0x35 / 255f, 1f);
@@ -594,8 +595,9 @@ public static class YosseleContent
     // ---------------------------------------------------------------- the Cordyfriend (Cordyceps)
 
     // Mummer's Understudy recipe: the Mining Hut's miner (a walking fighter with Mob_General, Mob_Movement and the stock
-    // melee AI), standing on the Snoble's mob-blocker block so foes stop at it, with the Snoble's own look (temporary art,
-    // tinted on every client by YosseleClient). Never tagged Sno or Snoble (docs/17: the Sno Cannon eats anything Sno).
+    // melee AI), standing on the Snoble's mob-blocker block so foes stop at it. Its look is its own sheet on the miner's
+    // sprite visual (temporary art, YosseleAssets.Friend); without the sheet, the Snoble's look tinted on every client by
+    // YosseleClient, as before. Never tagged Sno or Snoble (docs/17: the Sno Cannon eats anything Sno).
     static void BuildFriend()
     {
         Beingobject tb = YosseleUtil.Load<Beingobject>("Mob", YosseleData.FriendTemplate);
@@ -628,14 +630,20 @@ public static class YosseleContent
             if (g.Name == "Distancewait") stats.Add("Distancewait=" + g.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
         ent.Defaultstat = Stats(te.Defaultstat, YosseleData.Friend + "_Statproperties", stats.ToArray());
         Register("Mob", ent.Defaultstat);
-        Entityobject look = snoble != null && snoble.Entity != null && snoble.Entity.Defaultvisual != null ? snoble.Entity : te;
-        FriendFrom = (look == te ? YosseleData.FriendTemplate : YosseleData.FriendLook) + (being.Block != null ? " (block " + being.Block.name + ")" : "");
-        // The Snoble's sheet has only Idle: its own simple animator, and no attack animation.
+        Spriteobject own = te.Defaultvisual != null ? YosseleAssets.Friend(te.Defaultvisual.Default.Spriteobject) : null;
+        FriendOwnLook = own != null;
+        Entityobject look = own == null && snoble != null && snoble.Entity != null && snoble.Entity.Defaultvisual != null ? snoble.Entity : te;
+        FriendFrom = (look == te ? YosseleData.FriendTemplate : YosseleData.FriendLook) + (own != null ? " with " + YosseleData.FriendSheet : "")
+            + (being.Block != null ? " (block " + being.Block.name + ")" : "");
+        // Its own sheet plays on the miner's animator (Idle, Move, Attack); the Snoble's sheet has only Idle, with its own
+        // simple animator and no attack animation.
         ent.Visualscripts = look == te ? Strip(te.Visualscripts) : Strip(look.Visualscripts);
         Visualproperties vp = UnityEngine.Object.Instantiate(look.Defaultvisual);
         YosseleUtil.Retag(vp, YosseleData.Friend + "_Visualproperties");
         Visualproperties.Entry e = look.Defaultvisual.Default;
         e.Rootvisualproperty = null;
+        if (own != null)
+            e.Spriteobject = own;
         e.Displayname = YosseleData.FriendDisplay;
         vp.Default = e;
         vp.Skinoverride = new List<Visualproperties.Param>();

@@ -58,9 +58,12 @@ public static class YosseleClient
         Tint(ge);
     }
 
-    // The Cordyfriend wears the Snoble's own sprite (temporary art): tinted fungus green, kept so as the sprite changes.
+    // Only when the Cordyfriend's own sheet is missing does it wear the Snoble's sprite: tinted fungus green, kept so as
+    // the sprite changes.
     static void Tint(Game_Entity ge)
     {
+        if (YosseleContent.FriendOwnLook)
+            return;
         foreach (Entity_Master master in ge.Entityclient)
         {
             if (master == null || master.Being.Value.ToString() != YosseleData.Friend)

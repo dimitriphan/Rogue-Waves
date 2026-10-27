@@ -149,6 +149,26 @@ namespace YosseleBuild
             sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
         }
 
+        // A sheet drawn as a file instead of by code: ModSource/Yossele/Art/<name>.png (final art) wins over
+        // ModSource/Yossele/Art/Temporary/game_size/<name>.png (temporary art, Art/Temporary/README.md). Neither there: skipped,
+        // and the code falls back (the Cordyfriend keeps the Snoble's tinted look).
+        static void CopySheet(string folder, string name, int cw, int ch, Vector2 pivot)
+        {
+            string final = Path.Combine(Source, "Art", name + ".png");
+            string temp = Path.Combine(Source, "Art", "Temporary", "game_size", name + ".png");
+            string from = File.Exists(final) ? final : File.Exists(temp) ? temp : null;
+            if (from == null)
+            {
+                log.AppendLine("sprites: " + name + ".png not found in Art/ or Art/Temporary/game_size/, skipped");
+                return;
+            }
+            string path = Root + "/Art/" + folder + "/" + name + ".png";
+            Directory.CreateDirectory(Path.GetDirectoryName(Abs(path)));
+            File.Copy(from, Abs(path), true);
+            sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
+            log.AppendLine("sprites: " + name + ".png from " + (from == final ? "Art/ (final)" : "Art/Temporary/ (temporary)"));
+        }
+
         static void WriteSprites()
         {
             YosseleAseprite.Begin("Yossele", Path.Combine(Source, "Aseprite"), log);
@@ -167,6 +187,7 @@ namespace YosseleBuild
             SaveSheet(YosseleCharacter.EndLose(), "UI", "Yosseleendstat2", 32, 32, c);
             SaveSheet(YosseleCharacter.ReadyUp(), "UI", "Readyup6yossele", 12, 12, c);
             SaveSheet(YosseleCharacter.TabIcon(), "UI", "Yosseletabicon", 32, 32, c);
+            CopySheet("Unit", "Yosselefriend-Sheet", 24, 24, foot);
             log.AppendLine("sprites: " + sheets.Count + " sheets");
             YosseleAseprite.WriteGenerated();
         }

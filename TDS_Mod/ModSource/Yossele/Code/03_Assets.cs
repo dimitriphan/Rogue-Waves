@@ -178,6 +178,21 @@ public static class YosseleAssets
         return so;
     }
 
+    // The Cordyfriend's own sheet (temporary art, ModSource/Yossele/Art/Temporary): 24 px cells, rows v0..v3, columns 0-5 Idle,
+    // 6-11 Move, 12-15 Attack. Null when the sheet isn't in the library, so the caller keeps the Snoble's look.
+    public static Spriteobject Friend(Spriteobject template)
+    {
+        List<Sprite> s = Frames(YosseleData.FriendSheet, 24, new Vector2(0.5f, 0f));
+        if (s.Count < 64)
+            return null;
+        Spriteobject so = NewSpriteobject(YosseleData.Friend + "_Sprite", template, 7f, "Idle");
+        Add(so, Anim("Idle", s, 16, 0, 0, 4, 6, true, false, 0, 1f, ""));
+        Add(so, Anim("Move", s, 16, 0, 6, 4, 6, true, false, 0, 1f, ""));
+        Add(so, Anim("Attack", s, 16, 0, 12, 4, 4, false, true, 1, 2f, "Idle"));
+        so.Preview = s[0];
+        return so;
+    }
+
     // The boat's character select feeds Worldsprite to a VFX graph. Match the template's layout.
     public static Texture2DArray Worldsprite(Texture2DArray template)
     {

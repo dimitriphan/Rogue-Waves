@@ -1,65 +1,71 @@
-// The weather icons for the warning popup, 12x12 in the pack's palette (docs/STYLE.md), added to the game's "Icon_Types"
+// The weather icons for the warning popup, 12x12 in the pack's palette (docs/STYLE.md); temporary art, the rows are
+// Art/Temporary/game_size/RogueWaves_*.png as concept-tools/temp_art/ui_icons.py prints them, added to the game's "Icon_Types"
 // table the way Argo adds its own (kit docs/09 #20): early, before the table is first read, since it freezes then. If
 // they didn't make it, For() falls back to a stock icon so the popup is never blank.
 public static class RWIcons
 {
     static readonly Dictionary<char, Color32> palette = new Dictionary<char, Color32>
     {
-        { 'D', new Color32(0x2E, 0x4A, 0x62, 255) },   // Deep Swell
-        { 'T', new Color32(0x3F, 0x8F, 0x96, 255) },   // Rogue Teal
-        { 'F', new Color32(0xE9, 0xF1, 0xEE, 255) },   // Foam
         { 'C', new Color32(0xE2, 0x72, 0x5B, 255) },   // Storm Coral
-        { 'c', new Color32(0xB5, 0x52, 0x40, 255) },   // Storm Coral, shade
+        { 'D', new Color32(0x2E, 0x4A, 0x62, 255) },   // Deep Swell
+        { 'F', new Color32(0xE9, 0xF1, 0xEE, 255) },   // Foam
         { 'S', new Color32(0xD8, 0xC4, 0x9A, 255) },   // Wet Sand
+        { 'T', new Color32(0x3F, 0x8F, 0x96, 255) },   // Rogue Teal
+        { 'c', new Color32(0xB5, 0x52, 0x40, 255) },   // Storm Coral, shade
+        { 'd', new Color32(0x22, 0x38, 0x4B, 255) },   // Deep Swell, dark
+        { 'f', new Color32(0xC3, 0xD8, 0xD3, 255) },   // Foam, shade
+        { 'k', new Color32(0xEE, 0x9A, 0x86, 255) },   // Storm Coral, light
+        { 'l', new Color32(0x6D, 0xB4, 0xB9, 255) },   // Rogue Teal, light
         { 's', new Color32(0xA8, 0x93, 0x6A, 255) },   // Wet Sand, shade
+        { 't', new Color32(0x32, 0x73, 0x78, 255) },   // Rogue Teal, shade
     };
 
     static readonly string[] Rising =
     {
-        "....FF......",
-        "...FFFF.....",
-        "..FFFFFF....",
-        "....FF......",
-        "....FF....F.",
-        "....FF...FTT",
-        ".FF.FF..FTTT",
-        "FTTTTTTTTTTT",
-        "TTTTTTTTTTTT",
-        "TTTDTTTTTDTT",
-        "DTTDDTTDTDDT",
-        "DDDDDDDDDDDD",
+        ".F..........",
+        "FFF...FFF...",
+        ".F...FFFfF..",
+        ".F..FlTTTfF.",
+        ".F.FlTTTTTf.",
+        "..FlTTTTTTTt",
+        "..lTTTTTTTTt",
+        "FFlTTTTTTTtt",
+        "TTTTTTTTTTTt",
+        "tTTTtTTTTtTt",
+        "DtDDDtDDDtDD",
+        "dDDdDDDdDDDd",
     };
 
     static readonly string[] Quickening =
     {
         "............",
-        "F...F...F...",
-        ".F...F...F..",
-        "..F...F...F.",
-        "...F...F...F",
-        "..F...F...F.",
-        ".F...F...F..",
-        "F...F...F...",
+        "FF..FF..FF..",
+        ".FF..FF..FF.",
+        "..Ff..Ff..Ff",
+        ".Ff..Ff..Ff.",
+        "Ff..Ff..Ff..",
         "............",
-        "TTTTTTTTTTTT",
-        "DTTDTTTDTTDT",
+        "lTTTlTTTTlTT",
+        "TTlTTTTlTTTt",
+        "TTTTTlTTTTTt",
+        "tTtTTTtTTtTt",
         "DDDDDDDDDDDD",
     };
 
     static readonly string[] Nesting =
     {
         "............",
-        ".....CC.....",
-        "....CCCC....",
-        "...CCCCcC...",
+        ".....kC.....",
+        "....kCCC....",
+        "...kCCCCc...",
+        "...CCCCCc...",
+        "...CCCCCc...",
         "...CCCCcc...",
-        "...CCCccc...",
-        ".S..CCcc..S.",
-        "SsS.SSSS.SsS",
-        "SSSSSSSSSSSS",
-        ".sSSsSSsSSs.",
-        "..SSSSSSSS..",
-        "...ssSSss...",
+        ".SsSCCcccSs.",
+        "SSSSsSSSSsSs",
+        "sSSSSSSSSSSs",
+        ".sSsSSsSSs..",
+        "..ssssssss..",
     };
 
     public static string Name(int w)
