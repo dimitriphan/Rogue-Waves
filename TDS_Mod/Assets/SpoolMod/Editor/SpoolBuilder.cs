@@ -153,8 +153,38 @@ namespace SpoolBuild
         static void SaveSheet(Px px, string folder, string name, int cw, int ch, Vector2 pivot)
         {
             string path = Root + "/Art/" + folder + "/" + name + ".png";
-            SpoolAseprite.Apply(px, folder, name, cw).Save(Abs(path));
+            SpoolAseprite.Apply(FileArt(px, name), folder, name, cw).Save(Abs(path));
             sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
+        }
+
+        // A sheet the code draws can be replaced by a file of the same name and size: ModSource/Spool/Art/<name>.png
+        // (final art) wins over ModSource/Spool/Art/Temporary/game_size/<name>.png (temporary art, docs/TEMP_ART.md),
+        // and either wins over the code. Hand-edited Aseprite frames still merge on top. A file of the wrong size is
+        // skipped and logged.
+        static Px FileArt(Px code, string name)
+        {
+            string final = Path.Combine(Source, "Art", name + ".png");
+            string temp = Path.Combine(Source, "Art", "Temporary", "game_size", name + ".png");
+            string from = File.Exists(final) ? final : File.Exists(temp) ? temp : null;
+            if (from == null)
+                return code;
+            var t = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            try
+            {
+                if (!ImageConversion.LoadImage(t, File.ReadAllBytes(from)) || t.width != code.W || t.height != code.H)
+                {
+                    log.AppendLine("sprites: " + name + ".png kept the code's art: " + from + " is " + t.width + "x" + t.height + ", not " + code.W + "x" + code.H);
+                    return code;
+                }
+                var arr = t.GetPixels32();
+                var px = new Px(code.W, code.H);
+                for (int y = 0; y < px.H; y++)
+                    for (int x = 0; x < px.W; x++)
+                        px.C[y * px.W + x] = arr[(px.H - 1 - y) * px.W + x];
+                log.AppendLine("sprites: " + name + ".png from " + (from == final ? "Art/ (final)" : "Art/Temporary/ (temporary)"));
+                return px;
+            }
+            finally { UnityEngine.Object.DestroyImmediate(t); }
         }
 
         static void WriteSprites()

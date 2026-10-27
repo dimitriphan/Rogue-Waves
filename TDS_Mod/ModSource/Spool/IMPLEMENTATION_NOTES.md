@@ -134,6 +134,10 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
   hard for a person too, the fix is a larger hit box on the Crafted or a pause while the Sell picker is open.
   Temporary art wired 2026-10-27 (compiled and rendered here, not yet seen in game): the 12 x 12 tuft and the thicker
   needle from `Art/Temporary/README.md` (PR #44), because the play test never caught either in a capture.
+  Then the Crafted's four sheets and the Thread Head's sheet: `SpoolBuilder.FileArt` (Yossele's override) loads
+  `Art/<name>.png` or else `Art/Temporary/game_size/<name>.png` in place of the code's sheet when the size matches;
+  editor-checked, not yet built in Unity. On the next build, check the build log names the five sheets
+  "from Art/Temporary/" and that the Crafted and the Head walk and strike in game.
 
 What the self-test can't show, left for Dimitri's play test (numbers from the list above): it sends the Build, Sell,
 TARGET, SPOT, RETURN, MEND and PATCH commands itself, so the clicking is unseen: the build bar's order and the Stash-only

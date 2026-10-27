@@ -29,6 +29,12 @@ been built in Unity or seen in game yet.
   hidden. `Spoolmangled-Sheet` also dresses the Overstuffed Mangled.
 - `Spoolhead-Sheet` (240x96, 24 px): the Thread Head, a big lilac ball of thread with Spool's mouth, two yellow eyes,
   white gloves, purple legs and a loose end trailing.
+  Since 2026-10-27 these five sheets come from files, not the code: `SpoolBuilder.FileArt` takes
+  `ModSource/Spool/Art/<name>.png` (final art) over `Art/Temporary/game_size/<name>.png` (temporary art, PR #44) over the
+  code's sheet, when the file has the code sheet's size, and logs which it used. The temporary ones are lit and shaded
+  with a real step (legs lift, gloves swing) and an attack with a wind-up, a smear and a hit spark; the Dart raises its
+  needle behind its head and throws it; the Thread Head is a clean ball of yarn with three wraps, Spool's zipper mouth,
+  teeth, eyes and tongue, and punches with its leading glove. The previews here show the files.
 - `Spool_Icon` (32x32): the reshade itself.
 - `Spoolsplash` (128x128): line art of the reshade at 5x in the eyes' yellow: the hood, the dark mouth with its teeth and
   eyes, the tongue, gloves, body, legs and the severed arm with its cotton.
