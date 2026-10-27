@@ -1,5 +1,5 @@
-// Yossele asset generator: every tower model (four buildings and their upgrades), the Growth props, the ground vines,
-// the aura fruit, the spore bomb and seed, and the meshes of the debuff effects. TEMPORARY ART.
+// Yossele asset generator: every tower model (four buildings, their upgrades and the Bonsai), the Growth props, the
+// ground vines, the aura fruit, the spore bomb, seed and mouth laser, and the meshes of the debuff effects. TEMPORARY ART.
 // Built sleek and low-poly like Sno Sno's and Buster's towers (smooth solids, domes, tubes), never voxels. Yossele's motif
 // runs through the kit on the top and front faces: clay with round holes (its mouth), root feet into the ground, moss and
 // leaves. Upgrades keep the base silhouette and add one clear feature.
@@ -30,11 +30,12 @@ namespace YosseleBuild
 
         public static readonly Vector3 CannonPivot = new Vector3(0f, 0.4f, 0f);
 
-        public const string Cannon = "Tower_Yosselecannon", Dandelion = "Tower_Yosseledandelion", Henge = "Tower_Yosselehenge", Pachira = "Tower_Yosselepachira";
-        public static readonly string[] CannonKeys = { "", "Sticky2", "Farout2", "Viral3", "Deathcap3", "Finish4", "Hallucinogen4" };
-        public static readonly string[] DandelionKeys = { "", "Packets2", "Demand2", "Picky3", "Weeds3", "Storm4" };
-        public static readonly string[] HengeKeys = { "", "Verdant2", "Blockade2", "Remedy3", "Carnivore3", "Spaghetti4" };
-        public static readonly string[] PachiraKeys = { "", "Focused2", "Sustaining2", "Grafted3", "Selfish3", "Connected4", "Harvest4" };
+        public const string Cannon = "Tower_Yosselecannon", Dandelion = "Tower_Yosseledandelion", Henge = "Tower_Yosselehenge", Pachira = "Tower_Yosselepachira",
+            Bonsai = "Tower_Yosselebonsai";
+        public static readonly string[] CannonKeys = { "", "Sticky2", "Farout2", "Viral3", "Deathcap3", "Finish4", "Hallucinogen4", "Cordyceps5" };
+        public static readonly string[] DandelionKeys = { "", "Packets2", "Demand2", "Picky3", "Weeds3", "Dmds3", "Bonsai4", "Rubbery4", "Storm5" };
+        public static readonly string[] HengeKeys = { "", "Verdant2", "Blockade2", "Remedy3", "Carnivore3", "Easy3", "Roots4", "Obsidian4", "Monument5" };
+        public static readonly string[] PachiraKeys = { "", "Focused2", "Sustaining2", "Grafted3", "Forest3", "Mulch3", "Connected4", "Harvest4", "Fortifying5", "Softening5" };
 
         static string Full(string b, string k) { return k == "" ? b : b + "_" + k; }
 
@@ -49,6 +50,7 @@ namespace YosseleBuild
                 l.Add(new ModelDef { Group = "Cannon", Name = Full(Cannon, key), Build = () => CannonBase(key), Part = () => CannonTurret(key), PartName = "Turret", PartPivot = CannonPivot });
             }
             foreach (var k in DandelionKeys) { string key = k; Add("Dandelion", Full(Dandelion, key), () => DandelionTree(key)); }
+            Add("Dandelion", Bonsai, BonsaiPot);
             // The Stonehenge is built with its front (where the vines creep out) on +z, all in one part, "Facing"; the game
             // turns the whole model by the placement orientation (Entity_Master_Client), so nothing turns the part.
             foreach (var k in HengeKeys)
@@ -69,6 +71,7 @@ namespace YosseleBuild
             Add("Debuff", "Yossele_Blockade", BlockadeRing);
             Add("Projectiles", "Yossele_Sporebomb", Sporebomb, true);
             Add("Projectiles", "Yossele_Seed", Seed, true);
+            Add("Projectiles", "Yossele_Laser", Laser, true);
             return l;
         }
 
@@ -277,6 +280,16 @@ namespace YosseleBuild
                     float a = (60f + i * 120f) * Mathf.Deg2Rad;
                     Toad(m, cc + V(Mathf.Cos(a) * 0.17f, cr.y * 0.85f, Mathf.Sin(a) * 0.17f), 0.75f, Pal.PurpleDark, Pal.Purple, false);
                 }
+            if (up == "Cordyceps5")
+                // orange cordyceps clubs rising from the cap: the fungus that turns foes
+                foreach (var q in new[] { new[] { 0.12f, 30f, 0.2f, 8f }, new[] { 0.16f, 150f, 0.16f, -10f }, new[] { 0.1f, 260f, 0.24f, 4f }, new[] { 0.2f, 330f, 0.13f, 14f } })
+                {
+                    float a = q[1] * Mathf.Deg2Rad;
+                    Vector3 b = cc + V(Mathf.Cos(a) * q[0], cr.y * 0.8f, Mathf.Sin(a) * q[0]);
+                    Vector3 top = b + V(Mathf.Cos(a) * 0.03f, q[2], Mathf.Sin(a) * 0.03f) + V(q[3] * 0.002f, 0, 0);
+                    m.Stem(new[] { b, Vector3.Lerp(b, top, 0.5f) + V(0.012f, 0, 0), top }, 0.026f, 0.02f, 5, Pal.Pot1);
+                    m.Ball(top + V(0, 0.045f, 0), V(0.04f, 0.075f, 0.04f), 7, 4, Pal.Pot0, Pal.PotPale, 0.5f);
+                }
             return m;
         }
 
@@ -285,6 +298,12 @@ namespace YosseleBuild
         static Lp DandelionTree(string up)
         {
             var m = new Lp();
+            DrawTree(m, up);
+            return m;
+        }
+
+        static void DrawTree(Lp m, string up)
+        {
             Roots(m, 5, 0.18f, 0.1f, 0.39f, 20f, Pal.Clay4, 0.05f);
             // squat clay trunk with the hole on the front
             m.Prism(V(0, 0, 0), 0.23f, 0.16f, 0.34f, 10, Pal.Clay, Pal.Clay2, -1, 18f);
@@ -301,7 +320,7 @@ namespace YosseleBuild
                 m.Leaf(V(Mathf.Cos(r) * 0.15f, 0.03f, Mathf.Sin(r) * 0.15f), d, 0.22f, 0.085f, Pal.Leaf, Pal.LeafDark, 0.2f, 0.1f);
             }
             // stalk, sepals and the puff ball
-            bool storm = up == "Storm4";
+            bool storm = up == "Storm5";
             float hr = storm ? 0.32f : 0.29f;
             Vector3 hc = V(0.01f, storm ? 1.02f : 0.98f, 0f);
             m.Stem(new[] { V(0, 0.42f, 0), V(0.012f, 0.56f, 0), hc - V(0, hr * 0.7f, 0) }, 0.04f, 0.032f, 6, Pal.Stalk);
@@ -360,6 +379,35 @@ namespace YosseleBuild
                     m.Flower(q + V(0, 0.13f, 0), V(0, 1f, -0.4f), 0.06f, Pal.Floret, Pal.Floret2, 8);
                 }
             }
+            if (up == "Dmds3")
+            {
+                // D-MDS: a ring round the puff's middle with seeds standing on it, pointing out to shoot things down
+                m.Tube(hc + V(0, -0.02f, 0), hc + V(0, 0.02f, 0), hr * 1.12f, hr * 1.12f, 14, Pal.Stalk2, Pal.Stalk, Pal.Stalk);
+                for (int i = 0; i < 8; i++)
+                {
+                    float a = i * 45f * Mathf.Deg2Rad;
+                    Vector3 n = V(Mathf.Cos(a), 0.35f, Mathf.Sin(a)).normalized;
+                    Vector3 p = hc + V(Mathf.Cos(a), 0, Mathf.Sin(a)) * hr * 1.12f;
+                    m.Spike(p, n, 0.022f, 0.09f, Pal.SeedBrown, 5);
+                    m.Ball(p + n * 0.1f, V(0.024f, 0.024f, 0.024f), 5, 3, Pal.White);
+                }
+            }
+            if (up == "Bonsai4")
+            {
+                // a cutting in a little pot at the tree's foot
+                Vector3 pc = V(0.27f, 0f, -0.22f);
+                m.Prism(pc, 0.07f, 0.09f, 0.1f, 10, Pal.Pot0, Pal.Soil, -1);
+                m.Stem(new[] { pc + V(0, 0.09f, 0), pc + V(0.01f, 0.17f, 0), pc + V(0, 0.24f, 0) }, 0.014f, 0.011f, 4, Pal.Stalk);
+                m.Ball(pc + V(0, 0.29f, 0), V(0.07f, 0.068f, 0.07f), 8, 5, Pal.Puff, Pal.White, 0.35f, Pal.Puff2);
+            }
+            if (up == "Rubbery4")
+                // bouncy amber rubber seeds studding the puff
+                for (int i = 0; i < 8; i++)
+                {
+                    float th = 0.5f + 0.85f * ((i * 0.618f + 0.2f) % 1f), ph = i * 2.4f + 1.1f;
+                    Vector3 n = V(Mathf.Sin(th) * Mathf.Cos(ph), Mathf.Cos(th), Mathf.Sin(th) * Mathf.Sin(ph));
+                    m.Ball(hc + n * hr * 1.02f, V(0.042f, 0.042f, 0.042f), 7, 4, Pal.Floret2, Pal.Floret, 0.4f);
+                }
             if (storm)
                 // a ring of seeds whirling round the head
                 for (int i = 0; i < 14; i++)
@@ -369,7 +417,6 @@ namespace YosseleBuild
                     m.Ball(p, V(0.026f, 0.026f, 0.026f), 5, 3, Pal.SeedBrown);
                     m.Dome(p + V(0, 0.02f, 0), V(0.035f, 0.04f, 0.035f), 6, 2, Pal.White);
                 }
-            return m;
         }
 
         // ---------------------------------------------------------------- 3. Overgrown Stonehenge
@@ -390,13 +437,19 @@ namespace YosseleBuild
             var stones = new[] { V(-0.26f, 0, 0.07f), V(0, 0, 0.15f), V(0.26f, 0, 0.07f) };
             float[] yaw = { 28f, 0f, -28f };
             float[] h = { 0.74f, 0.8f, 0.72f };
+            // Obsidian: the stones turn to black glass
+            bool obsidian = up == "Obsidian4";
+            int sSide = obsidian ? Pal.Black : Pal.Stone2, sMid = obsidian ? Pal.Hole : Pal.Stone1, sTop = obsidian ? Pal.Stone5 : Pal.Stone0;
             for (int i = 0; i < 3; i++)
             {
                 m.Push(stones[i], yaw[i]);
-                m.Block(V(0, 0, 0), V(0.22f, h[i], 0.16f), 0.04f, i == 1 ? Pal.Stone1 : Pal.Stone2, Pal.Stone0, Pal.Stone1);
+                m.Block(V(0, 0, 0), V(0.22f, h[i], 0.16f), 0.04f, i == 1 ? sMid : sSide, sTop, sMid);
                 m.Pop();
             }
             Hole(m, V(0, 0.46f, 0.15f - 0.082f), V(0, 0, -1f), 0.07f, Pal.Stone4);
+            if (up == "Monument5")
+                // the hole glows Yossele's green, and a capstone crowns the whole arc
+                m.Tube(V(0, 0.46f, 0.15f - 0.07f), V(0, 0.46f, 0.15f - 0.064f), 0.05f, 0.05f, 12, Pal.Eye, Pal.Eye, -1);
             // lintels: left-middle and middle-right
             for (int i = 0; i < 2; i++)
             {
@@ -405,12 +458,19 @@ namespace YosseleBuild
                 float y = Mathf.Max(a.y, b.y);
                 float ang = -Mathf.Atan2(b.z - a.z, b.x - a.x) * Mathf.Rad2Deg;
                 m.Push(V(c.x, y - 0.02f, c.z), ang);
-                m.Block(V(0, 0, 0), V(0.34f, 0.1f, 0.13f), 0.03f, Pal.Stone2, Pal.Stone0, Pal.Stone1);
+                m.Block(V(0, 0, 0), V(0.34f, 0.1f, 0.13f), 0.03f, sSide, sTop, sMid);
                 m.Pop();
                 Moss(m, V(c.x, y + 0.078f, c.z), 0.11f, 0.04f, ang);
             }
             Moss(m, stones[0] + V(-0.02f, h[0], 0), 0.07f, 0.035f);
             Moss(m, stones[2] + V(0.02f, h[2], 0), 0.07f, 0.035f);
+            if (up == "Monument5")
+            {
+                m.Block(V(0, 0.88f, 0.1f), V(0.66f, 0.09f, 0.17f), 0.03f, Pal.Stone1, Pal.StonePale, Pal.Stone0);
+                Moss(m, V(-0.12f, 0.97f, 0.1f), 0.12f, 0.04f);
+                foreach (var q in new[] { V(0.14f, 0.97f, 0.08f), V(0.24f, 0.97f, 0.12f), V(-0.26f, 0.97f, 0.12f) })
+                    m.Flower(q, Vector3.up, 0.05f, Pal.Floret, Pal.Floret2, 5);
+            }
             Moss(m, V(0.18f, 0.0f, 0.22f), 0.11f, 0.05f);
             Moss(m, V(-0.32f, 0.0f, -0.05f), 0.08f, 0.04f);
             // vines climb the stones' fronts and trail out of the front (-z), the way the henge faces
@@ -461,7 +521,14 @@ namespace YosseleBuild
                         m.Spike(top + d * (0.06f + i * 0.04f) + side * 0.06f, side + Vector3.up * 0.6f, 0.01f, 0.06f, Pal.Puff, 3);
                 }
             }
-            if (up == "Spaghetti4")
+            if (up == "Easy3")
+                // thorns along the front vines: whatever lingers there gets scratched
+                foreach (var q in new[] { V(-0.24f, 0.03f, -0.12f), V(-0.25f, 0.03f, -0.26f), V(0.01f, 0.03f, -0.1f), V(0.02f, 0.03f, -0.24f), V(0.25f, 0.03f, -0.14f), V(0.27f, 0.03f, -0.28f) })
+                {
+                    m.Spike(q, V(0.6f, 1f, -0.2f), 0.022f, 0.12f, Pal.Cap1, 4);
+                    m.Spike(q, V(-0.6f, 1f, -0.2f), 0.02f, 0.1f, Pal.Cap1, 4);
+                }
+            if (up == "Roots4")
                 // tangled roots looping out of the ground all over the front
                 foreach (var q in new[] { new[] { -0.26f, -0.2f, 0.11f, 30f }, new[] { -0.04f, -0.3f, 0.1f, -10f }, new[] { 0.2f, -0.2f, 0.12f, 60f }, new[] { 0.05f, -0.12f, 0.09f, 100f }, new[] { -0.2f, -0.32f, 0.07f, 80f } })
                 {
@@ -528,13 +595,21 @@ namespace YosseleBuild
             if (up == "Grafted3")
                 // the graft's binding round the trunk
                 m.Tube(V(0, 0.6f, 0), V(0, 0.66f, 0), 0.07f, 0.07f, 8, Pal.Puff2, Pal.Puff, Pal.Puff);
-            if (up == "Selfish3")
-                // a ring of thorns round the pot: keep away
-                for (int i = 0; i < 10; i++)
+            if (up == "Forest3")
+                // little saplings sprouting round the pot: a forest in the making
+                foreach (var q in new[] { V(-0.32f, 0f, -0.22f), V(0.33f, 0f, 0.2f), V(-0.3f, 0f, 0.28f) })
                 {
-                    float a = (i * 36f + 18f) * Mathf.Deg2Rad;
-                    Vector3 d = V(Mathf.Cos(a), 0.15f, Mathf.Sin(a));
-                    m.Spike(V(Mathf.Cos(a) * 0.255f, 0.16f + (i % 2) * 0.07f, Mathf.Sin(a) * 0.255f), d, 0.03f, 0.13f, Pal.Stem2, 5);
+                    m.Stem(new[] { q, q + V(0.01f, 0.1f, 0), q + V(0, 0.19f, 0) }, 0.016f, 0.012f, 4, Pal.Bark1);
+                    Palmate(m, q + V(0, 0.2f, 0), 5, 0.08f, q.x * 90f, Pal.Leaf, Pal.LeafDeep, 0.4f);
+                }
+            if (up == "Mulch3")
+                // a ring of mulch: bark chips and dark soil round the pot's foot
+                for (int i = 0; i < 12; i++)
+                {
+                    float a = (i * 30f + 7f) * Mathf.Deg2Rad, r = 0.29f + (i % 3) * 0.04f;
+                    m.Push(V(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r), i * 47f);
+                    m.Block(V(0, 0, 0), V(0.07f, 0.025f, 0.045f), 0.008f, i % 2 == 0 ? Pal.Bark2 : Pal.Bark3, i % 3 == 0 ? Pal.Soil : Pal.Bark1);
+                    m.Pop();
                 }
             if (up == "Connected4")
                 // long surface roots reaching for the tile's corners, toward the buildings around it
@@ -552,6 +627,32 @@ namespace YosseleBuild
                     Vector3 c = V(q.x, q.y, q.z);
                     m.Stem(new[] { c + V(0, 0.12f, 0), c + V(0, 0.06f, 0) }, 0.01f, 0.01f, 4, Pal.Bark2);
                     m.Ball(c, V(0.065f, 0.07f, 0.065f), 8, 5, (int)q.w);
+                }
+            if (up == "Fortifying5")
+            {
+                // stone bands bind the pot, and slabs lean on it
+                m.Tube(V(0, 0.05f, 0), V(0, 0.09f, 0), 0.225f, 0.23f, 12, Pal.Stone2, Pal.Stone0, Pal.Stone0, 15f);
+                m.Tube(V(0, 0.2f, 0), V(0, 0.24f, 0), 0.25f, 0.255f, 12, Pal.Stone2, Pal.Stone0, Pal.Stone0, 15f);
+                foreach (float a in new[] { 60f, 180f, 300f })
+                {
+                    float r = a * Mathf.Deg2Rad;
+                    m.Push(V(Mathf.Cos(r) * 0.27f, 0f, Mathf.Sin(r) * 0.27f), Quaternion.Euler(0f, -a + 90f, 0f) * Quaternion.Euler(-14f, 0f, 0f), Vector3.one);
+                    m.Block(V(0, 0, 0), V(0.12f, 0.24f, 0.05f), 0.015f, Pal.Stone1, Pal.Stone0, Pal.Stone2);
+                    m.Pop();
+                }
+            }
+            if (up == "Softening5")
+                // root tips crumbling ore nuggets apart on the ground
+                foreach (float a in new[] { 20f, 140f, 260f })
+                {
+                    float r = a * Mathf.Deg2Rad;
+                    Vector3 d = V(Mathf.Cos(r), 0, Mathf.Sin(r));
+                    m.Stem(new[] { d * 0.25f + V(0, 0.05f, 0), d * 0.33f + V(0, 0.03f, 0), d * 0.4f + V(0, 0.01f, 0) }, 0.03f, 0.016f, 5, Pal.Bark2);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Vector3 side = V(-d.z, 0, d.x) * (i - 1) * 0.045f;
+                        m.Ball(d * (0.42f + (i % 2) * 0.03f) + side + V(0, 0.015f, 0), V(0.032f, 0.026f, 0.03f), 5, 3, i == 1 ? Pal.FruitYellow : Pal.Stone2, i == 1 ? Pal.Floret : Pal.Stone0, 0.5f);
+                    }
                 }
             return m;
         }
@@ -617,9 +718,9 @@ namespace YosseleBuild
                 "...lk.......vdllk...",
                 "..llk........vd.k...",
                 "...k.mm.....kvd.....",
-                "vv....vvv..kll.vd...",
-                "ddvvvvdddvv.k..vdvvv",
-                "..dddd.lkddvvvvddddd",
+                "vv....vvv..kll.vdvvv",
+                "ddvvvvdddvv.k..vdddd",
+                "..dddd.lkddvvvvdd...",
                 "......llk..dddvd....",
                 ".......k......vdlk..",
                 "..............vdllk.",
@@ -720,6 +821,23 @@ namespace YosseleBuild
             return m;
         }
 
+        // ---------------------------------------------------------------- the Bonsai (the Tree's level 4)
+
+        // A cutting of the Primordial Dandelion Tree in a wide shallow bonsai dish: the Tree at 60%, on a terracotta tray.
+        static Lp BonsaiPot()
+        {
+            var m = new Lp();
+            m.Prism(V(0, 0, 0), 0.3f, 0.34f, 0.1f, 12, Pal.Pot1, Pal.Soil, -1, 15f);
+            m.Tube(V(0, 0.1f, 0), V(0, 0.12f, 0), 0.345f, 0.345f, 12, Pal.Pot0, Pal.Pot0, -1, 15f);
+            Hole(m, V(0, 0.055f, -0.33f), V(0, 0f, -1f), 0.03f);
+            Moss(m, V(0.18f, 0.1f, 0.12f), 0.08f, 0.03f);
+            Moss(m, V(-0.2f, 0.1f, -0.06f), 0.06f, 0.025f);
+            m.Push(V(0, 0.1f, 0), 0f, 0.6f);
+            DrawTree(m, "");
+            m.Pop();
+            return m;
+        }
+
         // ---------------------------------------------------------------- projectiles (recentred by the builder)
 
         // The cannon's lob: a round spore bomb, olive with cream spots and a few knobs.
@@ -735,6 +853,18 @@ namespace YosseleBuild
                 Vector3 n = V(Mathf.Sin(th) * Mathf.Cos(ph), Mathf.Cos(th), Mathf.Sin(th) * Mathf.Sin(ph));
                 m.Spike(c + Vector3.Scale(n, r) * 0.95f, n, 0.016f, 0.028f, Pal.Moss3, 4);
             }
+            return m;
+        }
+
+        // Yossele's mouth laser: a short lime bolt along +z (the game turns a homing shot to face its target), a pale tip
+        // in front and a darker tail.
+        static Lp Laser()
+        {
+            var m = new Lp();
+            Vector3 a = V(0, 0.5f, -0.16f), b = V(0, 0.5f, 0.16f);
+            m.Tube(a, b, 0.034f, 0.034f, 8, Pal.Eye, -1, -1);
+            m.Spike(b, Vector3.forward, 0.034f, 0.08f, Pal.LeafPale, 8);
+            m.Spike(a, Vector3.back, 0.034f, 0.06f, Pal.Leaf, 8);
             return m;
         }
 

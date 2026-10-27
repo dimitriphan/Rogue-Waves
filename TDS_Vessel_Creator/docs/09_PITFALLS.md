@@ -324,3 +324,43 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      park and restore → when a round changes `Assets/<Name>Mod/Editor`, check that `Library/ScriptAssemblies/
      Assembly-CSharp-Editor.dll` is newer than the apply (or reimport the changed scripts) before the Build Queue, and
      check a generated asset the change should alter.
+105. **A foe's shot that a building "shot down" still explodes on the host, or keeps flying on a client** (Yossele
+     D-MDS, decompile 2026-10-23) → projectiles aren't networked entities: the host keeps pooled ones per name in
+     `Game_Entity.Projectiles` and only its copy deals damage; `Kill(true)` runs the death handlers, where a bomb's
+     explosion lives (`Projectile_Ai_Explosion`) → put the host's copy out with `Kill(false)` and send a Vis so each
+     client puts out its look-only copy (`YosseleDandelionBrain.Threats`, `YosseleClient`). Read from code; compiled,
+     not run.
+106. **"When a node is mined out" never fires, and a node at 0 `Healthresource` doesn't pay yet** (Yossele's aura
+     fruit, 2026-10-23) → stock ore nodes never run out and pay only once every health stat is at 0
+     (`Helper_Damagetools.Addressdamage`): `Resource_Orange` also has `Health` 1/1, so the hit that takes
+     `Healthresource` to 0 pays nothing and the next hit, which takes `Health`, pays and refills both
+     (`Entity_Ai_Resource_Mine`; kit `16` §4) → to act on a payout your own strike caused, read the node's
+     `Healthresource` before and after the strike (a refill means it paid); to set a node up to pay on the next hit,
+     put `Healthresource` at 0, not 1. **Verified** on `Resource_Orange` (Yossele round 9e: `Health 1/1`, the third
+     strike paid); other node kinds not checked.
+111. **A foe's `Health` and its maximum both read 0 right after it spawns** (Yossele rounds 9 and 9d) → its stats fill
+     in a little later, so a loss measured from a reading taken at the spawn is wrong (round 9 got -58) → read health
+     live once its maximum is above 0, and for a foe one hit can fell, take who felled it from your despawn hook
+     (`master.Lasthit` while `killed`): its object compares equal to null afterwards. **Verified** in game.
+107. **Stripping a debuff a foe's hit puts on your building seems to need a timer after the hit** → it doesn't:
+     `Helper_Entitytools.Interacthurt` runs the attacker's `Interact` before the target's `Oninteract` chain, so the
+     debuff (the Bulwark's stun: Override modifiers and the Disabled look) is already on when a handler at the front of
+     the chain sees the hit → strip it there, and sweep ten times a second for debuffs that come without a hit
+     (Yossele's Monument, `YosseleHooks`). Read from code; compiled, not run.
+108. **Code that needs the map's Tide count finds no field for it** → the map's mode holds it:
+     `Game_Mapvars.Instance.Mode.Enemies.Totalwaves` (as `Entity_Ai_Artifact_Coin` reads it); guard each step against
+     null (`YosseleServer.TidesOnMap`). Read from code; compiled, not run.
+109. **CS7036 calling `Helper_Damagetools.Projectile` in cloud-check, though the game's code compiles without the last
+     argument** → the stubs drop default parameter values, so `Interactiontype` (default `"Hurt"`) must be passed
+     explicitly; the game's Roslyn accepts it either way.
+110. **"Could not retrieve Vfx/Debuff_Weakened The GROUP exists, but item does not"** (Yossele round 9, 2026-10-23,
+     solo on 3B_Thehunt) → `Debuff_Weakened` is only named by the Fiewall's code and isn't in the Vfx group in a normal
+     game, though kit `17` §10 listed it → give the look your own effect (`Debuff_Yossele_Marked`), or check a stock
+     debuff name with the self-test's `DebuffReport` before relying on it.
+114. **"Could not retrieve Vfx/Debuff_Stun The GROUP exists, but item does not" on one map, though the self-test saw
+     the look attach on another** (Yossele play test, 2026-10-26) → stock effects load with groups, and which groups a
+     match loads depends on its map and vessels: `Debuff_Stun` is in the Vfx group on 3B_Thehunt (the self-test map, so
+     round 9e's `DebuffReport` passed) but not on 3B_Woozy, where each Hallucinogen stun logged the line and drew nothing
+     → a `DebuffReport` proves a stock look on its own map only (this amends #110): give the look the mod's own effect
+     (Yossele's `Debuff_Yossele_Daze`), or name only a stock look from a group the mod loads itself (its template
+     vessel's or its `ExtraGroups`). **Verified** in game (play test 2026-10-26).

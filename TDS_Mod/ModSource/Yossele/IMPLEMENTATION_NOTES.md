@@ -1,61 +1,67 @@
-# Yossele implementation notes (0.1.0-dev, 2026-10-12)
+# Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
-**Built from the scope in one stretch: design (`DESIGN.md`), temporary art (`Assets/YosseleMod/Editor`,
-`Previews/0.1/ASSETS.md`), code (`Code/`), self-test (`Code/99_SelfTest.cs`).** The folder started as a copy of
-Mummer's scaffold; every Mummer mechanic, sheet, model, effect and sound is gone. New assets and every default value:
-`docs/YOSSELE_BUILD_NOTES.md`.
+**0.2.0-dev is the 2026-10-12 build (0.1.0-dev, PC rounds 1-8) brought up to Dimitri's sheet of 2026-10-20**
+(`docs/scope/07_Vessel_Yossele.txt`, with his 2026-10-21 answers): design in `DESIGN.md` (every default is under
+"Changes from the concept"), temporary art in `Assets/YosseleMod/Editor` (`Previews/0.2/ASSETS.md` lists what changed),
+code in `Code/`, self-test in `Code/99_SelfTest.cs`. The 0.1 asset list and its defaults are in
+`docs/YOSSELE_BUILD_NOTES.md` and `Previews/0.1/ASSETS.md`.
 
-**Checked here only:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release and with
-`YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud
-preview renders every sheet and model. **Built in Unity and run in game (PC round 8, 2026-10-12): 98 pass, 0 fail, 0
-setup**; Dimitri played the round 5 and round 7 builds (his notes below). Left: the look by eye of round 8's build
-(temporary art), the balance pass, online play; Viral Outbreak and Hallucinogen (chance-based) are not checked. The
-scope's 2026-10-13 edit (ranged mouth laser, slower speed, three renames) is not in this build yet (`DESIGN.md` Status).
+**State: PC round 9 passed on its fifth try (9e, 2026-10-23): self-test 160 pass, 0 fail, 0 setup; release boot
+check clean; 0.2.0-dev is Dimitri's play build** (`Mods\YosseleMod`, the only mod; 0.1.0-dev parked on the PC). Here:
+`check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with
+`YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud preview renders
+every sheet and model. Not seen yet: the look by eye, a played map, online. What is left to check, and how:
+`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
 
 ## Code map
 
 | File | What |
 |---|---|
 | `00_YosseleMod.cs` | Boot (pack registry part "Yossele", asset lookup, content, journal), per-frame calls into the kit and the server |
-| `01_Util.cs` | Helpers: stats, health (`Value` left, `Value_Calc` max), tiles, ground spawns, kept modifiers, slows and roots, hurt via `ModKitCombat.Hurt` |
+| `01_Util.cs` | Helpers: stats, health (`Value` left, `Value_Calc` max), tiles, ground spawns, kept modifiers, slows and roots, debuff looks (Argo 2.0.1's send), hurt via `ModKitCombat.Hurt` |
 | `02_Data.cs` | Every name, text and number |
 | `03_Assets.cs` | Sprite sheets to animations, pixel icons |
-| `04_Content.cs` | Clones the hero (Smacky), the four towers, vine and fruit ground beings, commands, Directions, Growth skins |
-| `05_Server.cs` | Host rules: players, fertilizer, Compost Bin, Tides (`ModKitTides`), spawn and despawn hooks, the Tree's limit |
-| `06_HeroBrain.cs` | Build options, regen, FERTILIZE |
-| `07_Building.cs` | Base for the four buildings: Growth, upgrade flow (mirrors `Entity_Ai_General_Upgrade`) |
-| `08_Cannon.cs` .. `11_Pachira.cs` | One brain per building, plus spores, vines and fruit |
-| `12_Hooks.cs` | One `Oninteract` front hook: Stonehenge armour, Blockade barrier, Connected Roots |
-| `13_Client.cs`, `14_Commands.cs` | Every look and sound (Vis RPCs), the FERTILIZE picker and COLOUR button |
+| `04_Content.cs` | Clones the hero (Smacky, made ranged like Sno Sno), the laser (Sno Sno's snowball), the four towers and the Bonsai, the Cordyfriend (the Snoble), vine and fruit ground beings, commands, Directions, Growth skins |
+| `05_Server.cs` | Host rules: players, fertilizer, Compost Bin, Tides (`ModKitTides`, the map's Tide count), spawn and despawn hooks, the Tree's and the Bonsai's limit |
+| `06_HeroBrain.cs` | Build options (the Tree's slot offers the Tree, then the Bonsai), arming the stock ranged AI with the laser, regen, FERTILIZE |
+| `07_Building.cs` | Base for the buildings: Growth, upgrade flow (mirrors `Entity_Ai_General_Upgrade`) |
+| `08_Cannon.cs` .. `11_Pachira.cs` | One brain per building (the Bonsai is a Tree brain in `09`), plus spores, vines, fruit and Softening Roots |
+| `12_Hooks.cs` | One `Oninteract` front hook: Stonehenge armour, Blockade barrier, Connected Roots, Fortifying aura, Easy Target, Monument |
+| `13_Client.cs`, `14_Commands.cs` | Every look and sound (Vis RPCs), the Cordyfriend's tint, the FERTILIZE picker and COLOUR button |
 | `15_Journal.cs` | Journal pages, diagnostics dump |
+| `16_Friend.cs` | Cordyfriends: raising, the cap, where each walks |
 | `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only |
 
-## What the first PC round must show (each is an assumption the code makes)
+## Build of 2026-10-23 (0.2.0-dev): what PC round 9 must show
 
-1. **Growth timing.** `ModKitTides.Tide` fires as a Tide begins; a building built during Tide N first grows at N+2.
-   The self-test forces Tides and checks counter and skin `Growth<n>`.
-2. **Growth skins.** Each tower gets skins `Growth1`..max, each adding prefab `Yossele_Growth<n>` to the tower's own
-   model. If a skin swaps the whole look instead of adding to it, the tower loses its upgrade model.
-3. **Vines and fruit on tiles.** They are Sno Sno's snow (`Effect_Snosnosnow`, ground-effect block, tag `Sno` and its
-   AI stripped) spawned `Forced` on a tile, building tiles included. Unknown: whether a forced spawn takes a tile a
-   building stands on, and whether the snow's model origin matches `Yossele_Vine` (ground at y 0) and the fruit
-   (tower convention, ground at y -0.5); one of them may sit half a tile off. Fallback template: Smacky's Bramble.
-4. **Stonehenge facing.** Read from `Beingserver.Orientation` through `Helper_Gridtools.Orientationdir` (logged as
-   "Stonehenge at ... faces ..."). The game turns every placed tower's `Vis` by its orientation
-   (`Entity_Master_Client`, read from the game's code 2026-10-12), so the client's own turn was dropped: it would have
-   turned the model twice. Round 6 builds the second Stonehenge turned 90 degrees and checks model and vines agree.
-5. **The hit hook.** `YosseleHooks` reads `Damage` and `Damagemulti` from each hit at the front of `Oninteract`; hits
-   without them are counted as `Skipped` (logged in the self-test's counters). Armour, barrier and Connected Roots do
-   nothing if every hit is skipped.
-6. **Ore and fruit.** The Sapling mines with the miner's `Hurt` (`Damageresource`); a node emptied within 2 s of its
-   strike drops a fruit. The pickup looks for Hero- or Mob-tagged beings within 0.75 tiles five times a second.
-7. **FERTILIZE.** The button only appears once a Compost Bin is held (the self-test grants one with
-   `ModKitDirections.Grant`). The picker is Mummer's HOOK picker on your own buildings; check it shows and that its
-   border lands on the building.
-8. **The Tree's limit** removes `Buildoption2` while one stands and re-creates it after; check the bar's order.
-9. **Debuff heights.** Overhead markers follow Mummer 1.0's verified heights; if they sit at the foe's feet, raise
-   them 0.5 (`Previews/0.1/ASSETS.md`).
-10. **Cannon turret.** `Vis/Turret` aims its mouth (local -z) at each lob's landing spot.
+Each line is an assumption the new code makes from the decompiled game, not yet seen running.
+
+1. **The laser.** The vessel runs the stock `Entity_Ai_Mob_Ranged` (Sno Sno's set-up) and its Attack command fires
+   `Hero_Yossele_Laser`, a clone of `Hero_Snosno_Snoball` with the `Yossele_Laser` model (fallback: Smacky's archer
+   arrow, logged at boot). Check it targets, fires at range 4, hurts for 5.5, mines ore as Sno Sno does, plays the
+   Attack sheet on "Shoot" and `Yossele_Zap` on every client.
+2. **Cordyfriends.** Spawned as the cannon's child on the fallen foe's tile (Mummer's Understudies), fighting with the
+   stock melee AI, moved by `YosseleFriendBrain`. Check one rises, fights, walks back home, blocks foes, stays when its
+   cannon goes, is tinted on a client, and that 30 is the cap.
+3. **D-MDS.** It reads the host's pooled projectiles (`Game_Entity.Projectiles`) and puts one out with `Kill(false)`;
+   clients put out their look-only copy from the Vis. Check a real foe's shot (an archer's, a ballista's, a bomb's) goes
+   out with no hit and no explosion, on the host and on a client.
+4. **Fruit from payouts.** Nodes refill instead of running out, so a fully grown Sapling drops a fruit on each payout
+   its strike brings about (`Healthresource` before and after the strike). Check on two or three stock node kinds.
+5. **Softening Roots.** An Add -1 modifier on a node's `Healthresource` (hits per payout); check the node pays out one
+   hit sooner and still refills, and that the modifier goes when the Sapling does.
+6. **The Bonsai.** The Tree's build slot turns into the Bonsai's once Bonsai is bought; check the button, the cost
+   (Red 50), sell value 0, its copy of the Tree's upgrades at 40%, and that it keeps them when the Tree goes.
+7. **Monument.** The attacker's `Interact` runs before the target's `Oninteract`, so a foe's debuff is already on when
+   the hook strips it. The self-test fakes the stun; a real Bulwark's stun on a Monument is the proof.
+8. **Growth on short maps.** `Totalwaves` of the map's mode gives the Tide count (as the coin artifact reads it);
+   check it is 4 or fewer on a short map and that buildings grow 5 stages a Tide there, 1 elsewhere. The host logs one
+   line a Tide with the map's Tide count, the stages given and the chance-based counters (`OnTide`).
+9. **Easy Target** shows its own `Debuff_Yossele_Marked` look on a foe that lingers 5 s on the vines (round 9: the
+   stock `Debuff_Weakened` isn't loaded).
+10. **Carried-over fixes** (`docs/reports/QUALITY_PASSES_2026-10-15.md`, B3-24 to B3-39): debuff looks sent once per
+    target and cleared at a map's end, the footstep on frames 0 and 3, the Mend look and sound, the vine texture's join,
+    Connected Roots on the owner's buildings only, the fruit's last pick cleared per map.
 
 ## PC rounds
 
@@ -131,30 +137,78 @@ The vine tile now draws at y 9.51 for a being at 10 (on the ground). The first b
 (pitfall #104) and failed that one check. The ground block's top wasn't found by the check's lookup, so it passes on
 the half-tile rule; Dimitri's eye is the real check.
 
-## Gap to the 2026-10-20 sheet (Yossele's first release)
+**Round 9 (2026-10-23, 0.2.0-dev, 3B_Thehunt): 154 pass, 6 fail, 0 setup.** Apply clean, editor assembly rebuilt after
+the apply, Build Queue ok, no Yossele warnings, the three exceptions the game's own. Proven in game: the ranged AI armed
+with the laser (77 client zaps), the stats, 5 Growth stages a Tide on a 4-Tide map, Cordyceps raising Cordyfriends (4
+raised, stats, stock melee AI, Snoble block, walking to a foe; 8 sprite renderers tinted), Viral and Explosive Finish,
+Deathcap's cap, Rubbery Shell, Dandelion Storm, Easy Target's +15%, Entangling Roots once per foe, Monument's armour and
+its strip, Obsidian, fruit from real payouts (12 dropped), Grafted, Connected and Fortifying Roots, Forest Project,
+Harvesting Season, Softening Roots (4 -> 3 hits), D-MDS shooting down a ballista bolt, every Bonsai check, Garden Weeds.
+The 0.1.0-dev play build went back into the Mods folder. The six failures, fixed for round 9b:
+- "the laser hurts a foe": the foe's health was read right after its spawn, before it was filled in (0, then 58); the
+  check now reads against its maximum, on a Dagger.
+- "Hallucinogen's stun holds the foe": speed 0.525 -> 0.05, the Speed stat's lower bound; the game's own stun leaves
+  0.1 (the Boutman boat's Override), so the check takes 0.1 or less.
+- "Growth lengthens the vines": section 4's long Tide had grown the Stonehenge already and vines never shrink (Growth
+  never falls in play); the check lays them again from Growth 0.
+- "Debuff_Weakened attached": that stock look isn't loaded (pitfall #110); Easy Target has its own
+  `Debuff_Yossele_Marked`.
+- "Debuff_Yossele_Tangle attached" (no foe) and "Spontaneous Mulch" (`foe != null` after its fall): the first foe was
+  most likely felled by Yossele's laser, which shoots anything in range while the test waits; Yossele now holds its fire
+  (a Range override) from section 2 to the journal. The Mulch check keeps whether its foe spawned before felling it.
 
-Dimitri's sheet of 2026-10-20 (`docs/scope/07_Vessel_Yossele.txt`) is the target for the release build; this build
-(0.1.0-dev, rounds 1-8) was made from the 2026-10-12 sheet. Scope only so far: nothing below is designed or built.
-`DESIGN.md` takes each line at the next build's design gate, with its change from the sheet if the engine forces one.
+**Round 9b (2026-10-23, same map): 157 pass, 2 fail, 0 setup.** The four fixed checks pass, `Debuff_Yossele_Marked`
+is generated and attached, and the "Could not retrieve Vfx/Debuff_Weakened" line is gone. Client zaps fell from 77 to
+2: in round 9 Yossele most likely spent the round shooting the ore node near it (the stock ranged AI also targets
+Resource), which holding its fire now stops. Not checked: whether that mining by laser is wanted in play. The two failures, fixed for round 9c:
+- "the laser hurts a foe: no foe": one shot felled the Dagger and its object was gone. The check keeps whether the foe
+  spawned, and a felled foe passes when the server saw Yossele's hit last (`YosseleServer.LastFelledBy`).
+- "a fully grown Sapling drops a fruit when its strike pays a node out: payouts 9 -> 9": no payout of the Sapling's in
+  6 s after the node was set one hit from paying out. Round 9d (below) showed why.
 
-- **Vessel:** ranged green mouth laser, projectile speed 15; Health 70, Speed 1.75, Damage 5.5, Range 4 tiles (build:
-  melee, 60 / 2.5 / 4.5 / 1.5).
-- **Growth:** 5 stages a Tide on a map with 4 Tides or fewer (Dimitri 2026-10-21).
-- **Level 4 capstones (tier 5), none in the build:** Cordyceps (Cannon; raises the new minion **Cordyfriend**, a
-  Snoble-like tank), Dandelion Storm (Tree; named Dandelion Season on the sheet until 2026-10-21, a Direction's name), Monument (Stonehenge,
-  "cannot receive debuffs from foes"), Fortifying Roots and Softening Roots (Sapling; a node's `Healthresource` is hits
-  per payout, kit `docs/16` §4, so lowering it is a stat change, read only).
-- **New level 2-3 upgrades:** D-MDS (Tree, seeds intercept foe projectiles; what counts as a projectile and bosses are
-  open, research before design), Bonsai (Tree copies at 40%, sells for 0%; limit 1, planted at the Tree's cost),
-  Rubbery Shell (seed bounces), Easy Target and Obsidian (Stonehenge), Spontaneous Mulch (Sapling). Three choices at
-  one tier and the `Leads to` lines change the tree shape in `02_Data.cs`.
-- **Changed rules:** Hallucinogen is now a 2 s stun (was turning on allies); Viral Outbreak's burst is 15 damage in 2
-  tiles with 1 spore stack; Deathcap keeps stacks above 8; Garden Weeds is a 3 s debuff with a 40% chance; Entangling
-  Roots once per foe; Verdant Spread 2 tiles, 3 at full Growth; Natural Remedy 0.5 per Growth; Grafted converts the
-  fruit's total at 70%; Forest Project 10% per Sapling with no cap; the fruit's value is attack speed x damage x 15;
-  fully spored foes show a fungal effect; Tree seeds start full each Tide.
-- **Changed numbers** on most lines (Cannon, Tree, Stonehenge, Sapling stats, Growth steps and costs): the sheet's
-  values without `~` are Dimitri's; diff them against `02_Data.cs` at the design gate.
-- **Names in code still from before 2026-10-13:** Grafted Colors, Selfish Sapling, Entangling Spaghetti Roots (Part C
-  "Next" of `docs/PLAN.md` lists the other carried-over fixes).
-- **Fertilize** stays Direction-only, so the first release (outside the mode) has none (Dimitri 2026-10-21).
+**Round 9c (2026-10-23): stopped at the apply check**, nothing changed: the handoff was made from round 9's commit, so
+two files the PC already had in their 9b versions read DIFFERS. Remade from 9b's commit as round 9d. A follow-up
+handoff in the same round is made `--since` the previous handoff's commit.
+
+**Round 9d (2026-10-23, same map): 157 pass, 2 fail, 0 setup**, the same two checks, now with their details:
+- "the laser hurts a foe: felled (1 fell), last hit by Hero_Yossele, zaps 0 -> 2": the laser works; the check wanted
+  a health loss read against the foe's maximum, which was still 0 right after the spawn. A felled foe now passes on
+  who felled it, and a living one is read live.
+- "drops a fruit: strikes 46 -> 47, payouts 9 -> 9, node now 0/4, refilled by another hit 0x": the Sapling's strike
+  took the node from 1 to 0 and it did NOT pay out. A node pays only when every health stat is at 0
+  (`Helper_Damagetools.Addressdamage`), so it most likely has another (a `Health` of its own) that the next hit
+  empties, and pays then; round 9 passed because Yossele's laser had taken the node to 0 first. In play the Sapling
+  counts that later payout too (the node refills, so after > before). The check now gives the Sapling up to three
+  strikes and logs the node's other health stats.
+
+**Round 9e (2026-10-23, same map): 160 pass, 0 fail, 0 setup.** The laser's first loss was 5.5 (Yossele's hit, read
+live). `Resource_Orange` logged `Health 1/1` beside its `Healthresource`: the Sapling's first strike took the node to
+0, its second paid out and refilled it (payouts 9 -> 10, fruits 4 -> 5), so a node pays on the hit after its
+`Healthresource` reaches 0 (kit `docs/09` #106, corrected). Exceptions: the game's own three. Then the release build
+(no defines), boot check ("loaded v0.2.0-dev", "ready: 8 beings, 32 upgrades, 3 Directions, 17 effects, icons ok",
+the 18 shutdown sound NREs round 8 had too), installed as the play build. The mod's `.info` still says `"_version":
+"1.0"`; the version is set once for the pack (`docs/PACK.md` §4). Client zaps in a self-test are now 1 or 2: with its
+fire held from section 2, Yossele no longer shoots the ore node beside it (the stock ranged AI targets `Resource`, so
+in play the laser most likely mines any node in range too; worth a look on a played map).
+
+**Play test (2026-10-26, no handoff; `docs/reports/PLAYTEST_2026-10-26.md`).** A debug-only virtual player
+(`Code/98_Play.cs` with kit `ModKitPlay`, play builds only) played Purlest on its own income to Tide 8, Woozy with
+sandbox money and spawned shooters, and The Hunt, clicking the HUD for everything: 30 of the 32 upgrades bought by
+clicking their entries (Picky Placement and Fortifying Roots weren't on a route the bot finished), the Bonsai built from
+the Tree's slot, the Tree sold through SELL. One bug: Hallucinogen's stun look, the stock `Debuff_Stun`, isn't loaded on
+Woozy (10 stuns, 10 "Could not retrieve" lines, no look); it now uses the generated, unused `Debuff_Yossele_Daze`
+(`YosseleData.VfxDaze`; pitfall #114); the last Woozy run had 9 stuns and no such line. Seen in play for the first
+time: D-MDS taking down real Ballista, Onager and Excalibur shots (118 by Tide 7), Cordyfriends rising (14), fruit from a
+fully grown Sapling (3 on `Resource_Blue`), the Bonsai keeping its copy when the Tree was sold. The laser does mine: on
+Woozy the vessel dealt 802 damage by Tide 7 with no foe felled.
+
+## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
+
+Everything the gap list named is built (`DESIGN.md` has each rule and default): the ranged mouth laser and the new
+stats (70 / 1.75 / 5.5 / range 4, projectile speed 15), 5 Growth stages a Tide on a map of 4 Tides or fewer, the level
+4 capstones (Cordyceps and the Cordyfriend, Dandelion Storm, Monument, Fortifying Roots, Softening Roots), D-MDS,
+Bonsai (limit 1, the Tree's cost), Rubbery Shell, Easy Target, Obsidian, Spontaneous Mulch, the changed rules and
+numbers, and the 2026-10-13 names. Fertilize stays Direction-only, so the first release has none.
+
+Still open: Dimitri's own sprite sheet (the release waits for it) and the Cordyfriend's sprite; the look by eye of the
+new models and the attack sheet; the balance pass; online play.

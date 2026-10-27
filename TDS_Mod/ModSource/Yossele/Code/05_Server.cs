@@ -16,6 +16,7 @@ public static class YosseleServer
     static Game_Entity hookedEntity;
     static bool subscribed;
     public static int Tides, Grown, FoesFelled;
+    public static string LastFelledBy = "";   // the being that dealt the last foe felled its last hit (the self-test)
 
     public static void Update()
     {
@@ -36,6 +37,9 @@ public static class YosseleServer
             YosseleVines.Reset();
             YosseleFruit.Reset();
             YosseleHooks.Reset();
+            YosseleSoftening.Reset();
+            YosseleFriends.Reset();
+            YosseleUtil.ForgetLooks(true);
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;
@@ -50,6 +54,8 @@ public static class YosseleServer
         Step("vines", () => YosseleVines.Update(Buildings));
         Step("fruit", YosseleFruit.Update);
         Step("hooks", () => YosseleHooks.Update(Buildings));
+        Step("softening", () => YosseleSoftening.Update(Buildings));
+        Step("friends", YosseleFriends.Update);
     }
 
     static readonly YosseleFaults faults = new YosseleFaults();
@@ -134,18 +140,45 @@ public static class YosseleServer
         }
     }
 
+    // The map's Tide count (its mode's Totalwaves, as Entity_Ai_Artifact_Coin reads it); 0 when unknown.
+    public static int TidesOnMap()
+    {
+        try
+        {
+            Game_Mapvars mv = Game_Mapvars.Instance;
+            return mv != null && mv.Mode != null && mv.Mode.Enemies != null ? mv.Mode.Enemies.Totalwaves : 0;
+        }
+        catch (Exception) { return 0; }
+    }
+
+    // For the self-test: a Tide count to use instead of the map's (0: the map's own).
+    public static int TidesOverride;
+
+    // Stages a Tide grants: 1, or 5 on a map of 4 Tides or fewer (the sheet's long Tides).
+    public static int GrowthPerTide()
+    {
+        int tides = TidesOverride > 0 ? TidesOverride : TidesOnMap();
+        return tides > 0 && tides <= YosseleData.LongTides ? YosseleData.GrowthPerLongTide : YosseleData.GrowthPerTide;
+    }
+
     static void OnTide(int wave)
     {
         Tides++;
+        int stages = GrowthPerTide();
         foreach (YosseleBuilding b in Buildings.ToArray())
         {
             if (b == null || !b.Started || b.Master == null || !YosseleUtil.Alive(b.Master))
                 continue;
             int before = b.Growth;
-            try { b.TideBegan(wave); }
+            try { b.TideBegan(wave, stages); }
             catch (Exception e) { YosseleLog.Warn(b.Def.Id + " tide " + wave + ": " + e.Message); }
             if (b.Growth > before) Grown++;
         }
+        // One line a Tide, so a play session's Player.log shows the short-map rule and how often the chance-based
+        // upgrades fire (docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md section 5).
+        YosseleLog.Info("Tide " + wave + ": map Tides " + TidesOnMap() + ", +" + stages + " Growth; Viral bursts " + YosseleSpores.Virals
+            + ", Cordyceps rises " + YosseleSpores.Rises + ", Hallucinogen stuns " + YosseleSpores.Stuns + ", Garden Weeds stacks " + YosseleDandelionBrain.WeedsGrown
+            + "; Cordyfriends raised " + YosseleFriends.Raised + ", fell " + YosseleFriends.Fell + ", capped " + YosseleFriends.Capped);
     }
 
     // ---------------------------------------------------------------- spawns
@@ -162,18 +195,24 @@ public static class YosseleServer
                 master.gameObject.AddComponent<YosseleHeroBrain>().Master = master;
                 return;
             }
+            if (being == YosseleData.Friend)
+            {
+                YosseleFriends.Spawned(master);
+                return;
+            }
             YosseleData.Build b = YosseleData.BuildFor(being);
             if (b == null)
                 return;
             YosseleBuilding building;
             if (b.Id == YosseleData.Cannon) building = master.gameObject.AddComponent<YosseleCannonBrain>();
             else if (b.Id == YosseleData.Dandelion) building = master.gameObject.AddComponent<YosseleDandelionBrain>();
+            else if (b.Id == YosseleData.Bonsai) building = master.gameObject.AddComponent<YosseleBonsaiBrain>();
             else if (b.Id == YosseleData.Henge) building = master.gameObject.AddComponent<YosseleHengeBrain>();
             else building = master.gameObject.AddComponent<YosselePachiraBrain>();
             building.Master = master;
             building.Def = b;
             Buildings.Add(building);
-            if (b.Id == YosseleData.Dandelion)
+            if (building is YosseleDandelionBrain)
                 Limit(YosseleUtil.Owner(master));
         }
         catch (Exception e)
@@ -206,6 +245,12 @@ public static class YosseleServer
                     YosseleUtil.Vis(master, "Yossele_Herodeath", YosseleUtil.Pos(master), 0);
                 return;
             }
+            YosseleFriendBrain friend = master.GetComponent<YosseleFriendBrain>();
+            if (friend != null)
+            {
+                YosseleFriends.Gone(friend, killed);
+                return;
+            }
             string being = YosseleUtil.BeingName(master);
             if (being == YosseleData.Vine)
             {
@@ -214,21 +259,22 @@ public static class YosseleServer
             }
             if (master.Taglistserver == null)
                 return;
-            if (master.Taglistserver.Contains("Resource"))
-            {
-                OreGone(master, killed);
-                return;
-            }
             if (master.Taglistserver.Contains("Enemy"))
             {
                 Vector3 at = YosseleUtil.Pos(master);
+                YosseleHooks.ForgetFoe(master);
                 if (killed)
                 {
                     FoesFelled++;
+                    LastFelledBy = YosseleUtil.BeingName(master.Lasthit);
                     YosseleSpores.Fell(master, at);
                     foreach (YosseleBuilding b in Buildings.ToArray())
+                    {
                         if (b is YosseleDandelionBrain)
                             ((YosseleDandelionBrain)b).FoeFell(master);
+                        else if (b is YosselePachiraBrain)
+                            ((YosselePachiraBrain)b).FoeFell(at);
+                    }
                     Compost(at);
                 }
                 else
@@ -241,34 +287,35 @@ public static class YosseleServer
         }
     }
 
-    // An ore node went: if a fully grown Pachira Sapling struck it last, and lately, it drops a fruit there.
-    static void OreGone(Entity_Master ore, bool killed)
-    {
-        YosselePachiraBrain p;
-        float when;
-        bool known = YosselePachiraBrain.LastHit.TryGetValue(ore, out p) & YosselePachiraBrain.LastHitTime.TryGetValue(ore, out when);
-        Genitem block = ore.Beingserver != null ? ore.Beingserver.Currentblock : null;
-        Vector3 at = YosseleUtil.Pos(ore);
-        YosselePachiraBrain.Forget(ore);
-        if (!known || p == null || p.Master == null || !YosseleUtil.Alive(p.Master) || Time.time - when > YosseleData.OreMemory)
-            return;
-        // A moment later: the node's tile is free again by then.
-        YosselePachiraBrain sapling = p;
-        YosseleUtil.Later(YosseleMod.Instance, 0.2f, () =>
-        {
-            if (sapling != null && sapling.Master != null)
-                sapling.NodeEmptied(at, block);
-        });
-    }
-
     // ---------------------------------------------------------------- the Dandelion Tree's limit
 
-    public static bool HasDandelion(long owner)
+    // This player's standing Tree (never the Bonsai), or null.
+    public static YosseleDandelionBrain TreeOf(long owner)
     {
         foreach (YosseleBuilding b in Buildings)
-            if (b is YosseleDandelionBrain && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Owner(b.Master) == owner)
+            if (b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Owner(b.Master) == owner)
+                return (YosseleDandelionBrain)b;
+        return null;
+    }
+
+    public static bool HasDandelion(long owner) { return TreeOf(owner) != null; }
+
+    public static bool HasBonsai(long owner)
+    {
+        foreach (YosseleBuilding b in Buildings)
+            if (b is YosseleBonsaiBrain && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Owner(b.Master) == owner)
                 return true;
         return false;
+    }
+
+    // What the Tree's build slot offers this player: the Tree while none stands, the Bonsai while the Tree has its
+    // Bonsai upgrade and no Bonsai stands, else nothing ("").
+    public static string TreeSlot(long owner)
+    {
+        YosseleDandelionBrain tree = TreeOf(owner);
+        if (tree == null)
+            return YosseleData.Dandelion;
+        return tree.Has("Bonsai") && !HasBonsai(owner) ? YosseleData.Bonsai : "";
     }
 
     public static void Limit(long owner)

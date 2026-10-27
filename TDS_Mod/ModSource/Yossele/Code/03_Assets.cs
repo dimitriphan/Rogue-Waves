@@ -165,9 +165,8 @@ public static class YosseleAssets
         List<Sprite> attack = Frames("YosseleAttack-Sheet", 32, foot);
         List<Sprite> fertilize = Frames("YosseleFertilize-Sheet", 32, foot);
         Spriteobject so = NewSpriteobject("Hero_Yossele_Sprite", template, 8f, "Falling");
-        // One footfall per walk cycle, on frame 2 (the key kept from Mummer's hop); Yossele's limbs land on frames 0
-        // and 3 (YosseleCharacter.Move).
-        Dictionary<int, string> steps = new Dictionary<int, string> { { 2, footstep } };
+        // A footfall where a pair of root legs lands: frames 0 and 3 (YosseleCharacter.Move).
+        Dictionary<int, string> steps = new Dictionary<int, string> { { 0, footstep }, { 3, footstep } };
         Add(so, Anim("Idle", main, 6, 0, 0, 4, 6, true, false, 0, 1f, ""));
         Add(so, Anim("Move", main, 6, 4, 0, 4, 6, true, false, 0, 1f, "", string.IsNullOrEmpty(footstep) ? null : steps));
         Add(so, Anim("Falling", fall, 12, 0, 0, 1, 12, true, true, 2, 1f, ""));

@@ -1,0 +1,32 @@
+# Handoff Yossele_round9: commit b3cd637 of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit d81ce9e.
+186de935bd581c1e  2da5afbc63bbca42  Assets\ModKit\Editor\ModKitPipeline.cs
+f0dfa3cfd771df6c  00e588a3871fe543  Assets\YosseleMod\Editor\YosseleAudio.cs
+0204b631f5bd2e47  ddaab51e8e2bf729  Assets\YosseleMod\Editor\YosseleBuilder.cs
+6e2ec269d8ef1e56  5554ae2c4150045d  Assets\YosseleMod\Editor\YosseleCharacter.cs
+aa696564672859ad  05e99a82704231aa  Assets\YosseleMod\Editor\YosseleLowpoly.cs
+5a66af975dd82905  cbf523710ec97198  Assets\YosseleMod\Editor\YosseleModels.cs
+87efd8d8b19108c9  5465851ecdef2896  ModSource\Shared\ModKitBoat.cs
+9d319bb559484a73  16542bc440d64606  ModSource\Shared\ModKitTides.cs
+acc5b4baad870da2  d4c8312c3de8908e  ModSource\Yossele\Code\00_YosseleMod.cs
+3363dee871df1cc1  146b78c187141621  ModSource\Yossele\Code\01_Util.cs
+707cfa0d6aed037b  60ed25c5f0d8a7d0  ModSource\Yossele\Code\02_Data.cs
+fb7f406837196862  fe25b201349b0145  ModSource\Yossele\Code\03_Assets.cs
+62203aed90051142  e011a9423145690e  ModSource\Yossele\Code\04_Content.cs
+653b59b3ed7cc6ed  5735fd3e7f74415b  ModSource\Yossele\Code\05_Server.cs
+eb692bd137b9990f  4d61131bb18e67b5  ModSource\Yossele\Code\06_HeroBrain.cs
+c308a79a5ebe2140  aa9a13c8a8def98f  ModSource\Yossele\Code\07_Building.cs
+dcb859c21cc924b3  c01042be3982393f  ModSource\Yossele\Code\08_Cannon.cs
+6d8ca73b3ee3c1da  3b3a360e6e4dcb64  ModSource\Yossele\Code\09_Dandelion.cs
+e07dfc59cb38e706  e9ac02350991076a  ModSource\Yossele\Code\10_Henge.cs
+d42d01ef8cb12eb6  df3691c3017b8a95  ModSource\Yossele\Code\11_Pachira.cs
+5c16ed09b7941487  d3692d129f18260e  ModSource\Yossele\Code\12_Hooks.cs
+782dcd9c147d8dc5  21f1ecd07d44b334  ModSource\Yossele\Code\13_Client.cs
+1592eec00a8907d6  895bc71592c1b9b1  ModSource\Yossele\Code\14_Commands.cs
+42f5cce1638791dd  faf44d3f625f6577  ModSource\Yossele\Code\15_Journal.cs
+new  508e179f502b992d  ModSource\Yossele\Code\16_Friend.cs
+6d887b371432155c  6390fd847b78aaee  ModSource\Yossele\Code\99_SelfTest.cs
+1abf9bd17282d914  b44f82abd1d51ef9  ModSource\Yossele\DESIGN.md
+d96274b8dc79495d  781adc313aa52f4a  ModSource\Yossele\IMPLEMENTATION_NOTES.md
+b1855dd09ab879a8  06295314e8bdbd58  ModSource\Yossele\README.md
+e1019fd0e144ece0  0ca4f0ee46d80778  ModSource\Yossele\Tools\Decode-Dump.ps1
