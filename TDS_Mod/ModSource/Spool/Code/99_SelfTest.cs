@@ -384,6 +384,17 @@ public static class SpoolSelfTest
             "Range " + F(SpoolUtil.Stat(hm, "Range", 0)) + ", Health " + F(SpoolUtil.Stat(hm, "Health", 0)) + ", Speed " + F(SpoolUtil.Stat(hm, "Speed", 0)) + ", Damage " + F(SpoolUtil.Stat(hm, "Damage", 0)));
         Link_Command patch;
         Check("PATCH command", hm.Commandlistserver.TryGetValue(SpoolData.PatchLink, out patch) && patch.Controllable && SpoolContent.Patch.Commandfuncts[0] is SpoolPatchSelect);
+        // Every key a Spool button names must be one of the game's input actions: selecting a thing looks each up in
+        // Bl_Inputs.Actions (Game_Selection.Addcommand) and throws on a miss, and its panel never draws (play test
+        // 2026-10-26: "Quickaction2" on RETURN; pitfall #113).
+        {
+            List<string> bad = new List<string>();
+            foreach (Commandobject c in new[] { SpoolContent.Patch, SpoolContent.Target, SpoolContent.Spot, SpoolContent.Return, SpoolContent.Mend })
+                if (c != null && c.Keybind != null)
+                    foreach (string k in c.Keybind)
+                        if (!Blockage.Bl_Inputs.Actions.ContainsKey(k)) bad.Add(c.name + " " + k);
+            Check("every Spool button's keys are the game's input actions", bad.Count == 0, bad.Count == 0 ? Blockage.Bl_Inputs.Actions.Count + " actions" : string.Join(", ", bad.ToArray()));
+        }
         Check("vessel shows Carried and Stash", hm.Statsserver.ContainsKey("Carried") && hm.Statsserver.ContainsKey("Stash"));
         Check("vessel visible to clients", hm.Client != null && hm.Client.Beingobject != null && hm.Client.Beingobject.Objectname == SpoolData.Hero);
 

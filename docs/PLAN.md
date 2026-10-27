@@ -254,7 +254,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
   sheet's open items and to the defaults in its `DESIGN.md`, then his sprites.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #113 (#92 is unused; #105-#111 are Yossele's in PR #41, #112 Spool's).
+- **Next free numbers:** kit chapter 25, pitfall #115 (#92 is unused; #105-#111 are Yossele's in PR #41, #112-#113 Spool's, #114 Yossele's per-map look).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

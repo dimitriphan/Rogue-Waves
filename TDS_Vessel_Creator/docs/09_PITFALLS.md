@@ -332,3 +332,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      tagged and has `Health` before killing or reading it (#111 for its health), and about 0.3 s more before an area
      search around it. Real Tide foes live long enough for neither to matter. **Verified** in game (the area search: missed
      at two frames, found after 0.3 s; not timed more finely).
+113. **Selecting your unit throws `KeyNotFoundException: The given key 'Quickaction2' was not present in the
+     dictionary` in `Game_Selection.Addcommand`, and its panel never draws** (Spool play test, 2026-10-26: no buttons, no
+     upgrades, the previous selection's buttons stay) → `Addcommand` looks each name in a command's `Keybind` up in
+     `Blockage.Bl_Inputs.Actions`, which holds only the game's input actions (`Quickaction` and `1` to `8`) → name only
+     those (Spool's RETURN takes `4`, MEND `3`), and have the self-test check every key against `Bl_Inputs.Actions`
+     (Spool's does). **Seen** in game; the fix is checked by Spool's play test.
