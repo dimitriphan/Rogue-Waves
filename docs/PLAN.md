@@ -254,7 +254,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #112 (#92 is unused).
+- **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
