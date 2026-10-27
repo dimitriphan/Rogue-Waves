@@ -127,7 +127,8 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
   in `Bl_Inputs.Actions` (only `Quickaction` and `1`-`8` exist), so the Head's panel never drew; RETURN's keybinds are
   now `{"4"}` and MEND's `{"3"}`, and the Head's SPOT, RETURN, MEND and upgrades were then used by hand. Balance: Purlest was
   lost at Tides 4, 1 and 2 (one Stitched from the 10 starting Thread holds the first Tide), Woozy at Tide 4 twice.
-  After it: the self-test checks every Spool button's keys against `Bl_Inputs.Actions` (pitfall #113). Still open:
+  After it: the self-test checks every Spool button's keys against `Bl_Inputs.Actions` (pitfall #113; compiled, not
+  yet run on the PC). Still open:
   selling a walking Stitched by clicking it. The stock Sell picker sells what the mouse ray hits (`Game_Client_Mouseobject`
   raycasts the hit boxes), and the virtual player's click kept missing the moving unit. Dimitri to try by hand; if it is
   hard for a person too, the fix is a larger hit box on the Crafted or a pause while the Sell picker is open.
