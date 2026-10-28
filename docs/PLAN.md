@@ -245,7 +245,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
   redrawn (wired on PR #42 at `ad85b00`). Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
+- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step, not started; one online evening). his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -433,6 +433,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   loaded (#110), none a rule of the sheet (Yossele's `IMPLEMENTATION_NOTES.md`). Release boot check clean; 0.2.0-dev is
   his play build, 0.1.0-dev parked on the PC. Pitfalls: #106 corrected (a node pays on the hit after `Healthresource`
   reaches 0: `Resource_Orange` has `Health` 1), #111 (a foe's health reads 0 right after its spawn).
+- **2026-10-28, priorities:** at Dimitri's ask ("figure out what is most needed right now") the scope was read
+  against the state; the ranked list for Release 1 and what waits after it is `docs/reports/PRIORITIES_2026-10-28.md`.
+  Nothing built.
 
 ### Decisions
 

@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `PRIORITIES_2026-10-28.md` | 2026-10-28 | What the project needs most now: the scope read against the state, ranked for Release 1 (Yossele alone), with the scope gaps and open `~defaults~` blocking each item |
 | `YOSSELE_TEST_PLAN_2026-10-23.md` | 2026-10-23 | Yossele 0.2.0-dev: every case not yet seen in game, which check covers it (PC round 9's self-test, play, by eye, online), and the cloud checks run |
 | `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | 23 passes over every file (stopped at Dimitri's word after one clean pass); what was fixed, why each pass found issues, what is left for Dimitri |
 | `QUALITY_CHECK_2026-10-15.md` | 2026-10-15 | Two quality passes over every file, the open PRs included, and the repository's reorganisation |
