@@ -5,6 +5,9 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `ENGINE_STUDY_2026-10-28.md` | 2026-10-28 | The game's code system by system (loading, data, entities, behaviour scripts, stats, upgrades, combat, players, economy and Tides, Cardinals, looks, maps), the four rungs from stock data to new code, and 13 facts new to the kit (read, not yet seen) |
+| `ENGINE_STUDY_2026-10-28_BEHAVIOURS.md` | 2026-10-28 | Its appendix: all 284 stock behaviour scripts indexed with whether a pack can reuse them, how they were checked, the most reusable per group; full entries in `engine_study_2026-10-28/` |
+| `SCOPE_FIT_PLAN_2026-10-28.md` | 2026-10-28 | Every idea of scope 00-16 matched to the stock mechanic, class and data path it rides on; none needs a new mechanic; eight probes for a test round |
 | `YOSSELE_TEST_PLAN_2026-10-23.md` | 2026-10-23 | Yossele 0.2.0-dev: every case not yet seen in game, which check covers it (PC round 9's self-test, play, by eye, online), and the cloud checks run |
 | `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | 23 passes over every file (stopped at Dimitri's word after one clean pass); what was fixed, why each pass found issues, what is left for Dimitri |
 | `QUALITY_CHECK_2026-10-15.md` | 2026-10-15 | Two quality passes over every file, the open PRs included, and the repository's reorganisation |

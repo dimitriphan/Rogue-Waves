@@ -244,7 +244,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
-  redrawn (wired on PR #42 at `ad85b00`). Older entries are in "Log" below.
+  redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: the game's code read system by system and the scope fitted to it
+  (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
+  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
+  Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -257,7 +260,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6).
+  B1-22, B1-4, C2-6). The fit plan's eight probes (`SCOPE_FIT_PLAN_2026-10-28.md` §11) ride the next RogueLab-style
+  round after Release 1; the engine study's 13 read facts (§14) go into the kit's pitfalls only once seen.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
 
@@ -433,6 +437,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   loaded (#110), none a rule of the sheet (Yossele's `IMPLEMENTATION_NOTES.md`). Release boot check clean; 0.2.0-dev is
   his play build, 0.1.0-dev parked on the PC. Pitfalls: #106 corrected (a node pays on the hit after `Healthresource`
   reaches 0: `Resource_Orange` has `Health` 1), #111 (a foe's health reads 0 right after its spawn).
+- **2026-10-28, engine study and scope fit:** at Dimitri's ask ("understand as much as you can about how it functions,
+  and plan how ideas in the scope could seamlessly fit in without needing to create new mechanics") the game was
+  decompiled again in the cloud (never committed) and read against the kit. `docs/reports/ENGINE_STUDY_2026-10-28.md`
+  walks it system by system, sorts every road into four rungs (stock data, a stock script on pack data, a stock pattern
+  in a pack brain, a new mechanic) and lists 13 facts new to the kit, all read only (the same upgrade twice does
+  nothing; nine stock Cardinal scripts need their Cardinal passed; Chrono starts at ×1.25; Teamapply reaches every
+  vessel's builds). Its appendix catalogues 284 stock behaviour scripts: 245 can be put on pack things by data.
+  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` walks 61 scope ideas: 19 on stock data or a stock script, 10 mixed, 32 on
+  a stock pattern, none on a new mechanic once Uloe's light is a stat and Photons walk like Kippy; it offers
+  stock-script options for six `! NEEDS !` lines (scope untouched) and eight PC probes. Nothing compiled or run; the PC
+  was not touched.
 
 ### Decisions
 
