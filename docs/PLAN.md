@@ -577,8 +577,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-28 (user, "Use defaults for now, then proceed", on `docs/reports/PRIORITIES_2026-10-28.md`): Yossele's laser
   keeps mining ore; `07`'s costs, healths and in-game lines stay as written (the Red/Blue balance waits for his pass);
   the D-MDS line stays his; the temporary Cordyfriend ships unless he sends his own; the dev version becomes 0.1.0-dev
-  (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked against
-  Smacky at the next PC round. Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
+  (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked by his eye
+  against Smacky's build bar (no desktop screenshots here). Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
   `TDS_Mod/ModSource/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
 
 ### Open questions
