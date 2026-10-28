@@ -244,7 +244,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
-  redrawn (wired on PR #42 at `ad85b00`). Older entries are in "Log" below.
+  redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
+  (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
+  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -254,10 +256,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
-  balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
-  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Uloe is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6).
+  B1-22, B1-4, C2-6); Spool (PR #42) was scaffolded without them and takes them at its next round.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
 

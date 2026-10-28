@@ -8,7 +8,7 @@
 		- Phase 3, Argo: done. Argo 2.0 is designed, built and passed its self-test 139 of 139 on the PC. Its work is merged. 2.0.1, a fix for its looks online, is built but not yet run. /~ PR #7, PR #10 and PR #34 \
 		- Yossele: 0.2.0-dev is built from the sheet in 07 with temporary art (the ranged laser, the new stats, {Cordyfriend}, the new and level 4 upgrades) and passed its self-test 160 of 160 on the PC; it is the play build installed for your test. /~ TDS_Mod/ModSource/Yossele/IMPLEMENTATION_NOTES.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
 		- Mode part: the sea chart, sea weather and rejoining after a drop are built and passed their PC rounds. Version 0.3.0 adds fixes for online play (a friend who restarts the game keeps their seat) that are built but not yet run. How they look is yours to check by eye; rejoining needs a friend online.
-		- Next: the first release, Yossele alone -> 01_Expansion.txt [Releases]. your play test of the installed build, your sprites and balance pass, and the pack built with Yossele only.
+		- Next: the first release, Yossele alone -> 01_Expansion.txt [Releases]: your play test of the installed build, your sprites and balance pass, and the pack built with Yossele only.
 		- After the first release: the mode's next pieces (a kit update first, then the main-menu Rogue Waves button and the vote held in the map), Spool and Uloe, each one starting with a design to approve, enemies and modifiers, the rest of the Rogue Waves mode, then content, with Argo inside the pack.
 		- Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
 		- Sonar is left out of every design for now.

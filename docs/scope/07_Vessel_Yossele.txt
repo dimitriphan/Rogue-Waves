@@ -279,7 +279,7 @@
 					- Cost: Blue 2300 + Yellow 1000
 				% 4:{Softening Roots} Reduces the health of nearby nodes by 1 point. / See if game's code can handle this? \
 					- In-game line: ~Softens the ore around it~
-					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; built, not run in game yet) \
+					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; proven in PC round 9) \
 					- Cost: ~Yellow 2300 + Red 1000~
 
 		(Minion):{Cordyfriend}
