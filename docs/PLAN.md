@@ -579,7 +579,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the D-MDS line stays his; the temporary Cordyfriend ships unless he sends his own; the dev version becomes 0.1.0-dev
   (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked against
   Smacky at the next PC round. Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
-  `TDS_Mod/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
+  `TDS_Mod/ModSource/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
 
 ### Open questions
 

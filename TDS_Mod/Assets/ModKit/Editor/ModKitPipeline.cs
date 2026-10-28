@@ -11,7 +11,7 @@
 // Then Run-SelfTests.ps1 (self-test builds) or Run-SelfTests.ps1 -BootCheck (release builds).
 //
 // Tools > ModKit > Build Pack: the release pack, one RogueWavesMod bundle with one RogueWaves_<Part>_Default prefab per
-// part (docs/PACK.md). Reads TDS_Mod/Pack/pack.txt (version, parts, description). Run Tools/pc/Build-Pack.ps1 first: it
+// part (docs/PACK.md). Reads TDS_Mod/ModSource/Pack/pack.txt (version, parts, description). Run Tools/pc/Build-Pack.ps1 first: it
 // builds each part's release code with the pack version. For each part: Build All Assets, Build Mod Prefab, then the
 // prefab is renamed RogueWaves_<Part>_Default; every Assets/*Mod folder that is not a part is parked; one export as
 // RogueWavesMod; then the names and the parked folders are put back. Status in handoff\pack_status.txt, ending in
@@ -114,7 +114,7 @@ namespace ModKitBuild
             bool parked = false;
             try
             {
-                string list = Path.GetFullPath(Path.Combine(Application.dataPath, "../Pack/pack.txt"));
+                string list = Path.GetFullPath(Path.Combine(Application.dataPath, "../ModSource/Pack/pack.txt"));
                 if (!File.Exists(list))
                     throw new Exception("no " + list);
                 foreach (string raw in File.ReadAllLines(list))

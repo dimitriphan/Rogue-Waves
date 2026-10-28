@@ -13,7 +13,7 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 | `HandoffHash.ps1` | PC | The shared hash: sha256 of text with BOM and CRs removed, first 16 hex digits |
 | `Run-SelfTests.ps1` | PC | Backs up the save, then runs each vessel's self-test in its own launch and writes a short summary; `-BootCheck` for release builds |
 | `../../Assets/ModKit/Editor/ModKitPipeline.cs` | PC (Unity) | Tools > ModKit > Build Queue: Build All Assets, Build Mod Prefab, Export and Restore for every vessel in `handoff\queue.txt`; Tools > ModKit > Build Pack: the release pack (below) |
-| `Build-Pack.ps1` | PC | The release pack's code (each part's release build with the pack version from `TDS_Mod/Pack/pack.txt`), then with `-Zip` the players' `RogueWaves-<version>.zip` in the handoff folder |
+| `Build-Pack.ps1` | PC | The release pack's code (each part's release build with the pack version from `TDS_Mod/ModSource/Pack/pack.txt`), then with `-Zip` the players' `RogueWaves-<version>.zip` in the handoff folder |
 
 ## One-time setup (Dimitri)
 

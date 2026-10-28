@@ -2,10 +2,10 @@
 #   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Build-Pack.ps1'"        # 1. release code of every part
 #   execute_menu_item("Tools/ModKit/Build Pack"), then read handoff\pack_status.txt for "PACK DONE ok"   # 2. in Unity
 #   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Build-Pack.ps1' -Zip"   # 3. the zip players get
-# Reads TDS_Mod/Pack/pack.txt (version, parts). Step 1 runs ModSource/<Part>/Build-<Part>Mod.ps1 with no -Define for each
+# Reads TDS_Mod/ModSource/Pack/pack.txt (version, parts). Step 1 runs ModSource/<Part>/Build-<Part>Mod.ps1 with no -Define for each
 # part (a release build) and sets the built code's Version constant to the pack version, so every part reports the one
 # version (docs/PACK.md section 4); the source keeps its <version>-dev. Step 3 copies TDS\Mods\RogueWavesMod (disabled,
-# as the exporter writes it) and Pack/README.txt into handoff\RogueWaves-<version>.zip.
+# as the exporter writes it) and ModSource/Pack/README.txt into handoff\RogueWaves-<version>.zip.
 # Before a boot check of the pack, move every dev build of a pack part (YosseleMod, ...) out of TDS\Mods: both would
 # register the same vessel. Then: Run-SelfTests.ps1 -Vessels Yossele -BootCheck -Pack RogueWaves
 param(
@@ -13,9 +13,11 @@ param(
     [string]$Game = "D:\Steam\steamapps\common\TDS"
 )
 $ErrorActionPreference = "Stop"
-$root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent   # TDS_Mod
+# TDS_Mod: two folders up from Tools\pc, or the PC's project when the script runs from a handoff folder.
+$root = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
+if (-not (Test-Path -LiteralPath (Join-Path $root "ModSource"))) { $root = Join-Path $env:USERPROFILE "TDS_Mod" }
 $handoff = Join-Path ([Environment]::GetFolderPath("Desktop")) "ClaudeProjects\handoff"
-$list = Join-Path $root "Pack\pack.txt"
+$list = Join-Path $root "ModSource\Pack\pack.txt"
 if (-not (Test-Path -LiteralPath $list)) { throw "no $list" }
 $version = ""; $parts = @()
 foreach ($raw in [IO.File]::ReadAllLines($list)) {
@@ -56,7 +58,7 @@ Copy-Item -LiteralPath $mod -Destination $stage -Recurse
 $staged = Join-Path $stage "RogueWavesMod\RogueWavesMod.info"
 $c = [IO.File]::ReadAllText($staged) -replace '"_isEnabled":\s*true', '"_isEnabled": false'
 [IO.File]::WriteAllText($staged, $c, (New-Object System.Text.UTF8Encoding($false)))
-$readme = [IO.File]::ReadAllText((Join-Path $root "Pack\README.txt")).Replace("{VERSION}", $version).Replace("`r`n", "`n").Replace("`n", "`r`n")
+$readme = [IO.File]::ReadAllText((Join-Path $root "ModSource\Pack\README.txt")).Replace("{VERSION}", $version).Replace("`r`n", "`n").Replace("`n", "`r`n")
 [IO.File]::WriteAllText((Join-Path $stage "README.txt"), $readme, (New-Object System.Text.UTF8Encoding($false)))
 $zipFile = Join-Path $handoff "RogueWaves-$version.zip"
 if (Test-Path -LiteralPath $zipFile) { Remove-Item -LiteralPath $zipFile -Force }

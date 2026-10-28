@@ -30,7 +30,7 @@ Why this layout:
   builds each part's release code with the pack version, Tools > ModKit > Build Pack (`ModKitPipeline.cs`) builds
   each part's prefab under its pack name, parks every non-pack `Assets/*Mod` folder and exports everything once as
   `RogueWavesMod`, and `Build-Pack.ps1 -Zip` makes the zip of §5. The version and the parts are in
-  `TDS_Mod/Pack/pack.txt`, the player README in `TDS_Mod/Pack/README.txt`.
+  `TDS_Mod/ModSource/Pack/pack.txt`, the player README in `TDS_Mod/ModSource/Pack/README.txt`.
 
 **Prefab names.** Each name contains `Default` and none of the other keywords the game matches with `IndexOf`: `Map`
 (it would join the custom-map list), `World`, `Mainmenu`, `Loading`, `Gameserver`, `Gameclient` (`docs/15` §10). No
