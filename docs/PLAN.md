@@ -447,7 +447,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` walks 61 scope ideas: 19 on stock data or a stock script, 10 mixed, 32 on
   a stock pattern, none on a new mechanic once Uloe's light is a stat and Photons walk like Kippy; it offers
   stock-script options for six `! NEEDS !` lines (scope untouched) and eight PC probes. Nothing compiled or run; the PC
-  was not touched.
+  was not touched. PR #48.
 
 ### Decisions
 
