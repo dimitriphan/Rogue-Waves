@@ -1,4 +1,5 @@
-"""Temporary animation: Spool's Thread Head, redrawn clean (2026-10-27). The code's version textured the ball with
+"""Temporary animation: Spool's Thread Head, redrawn clean (2026-10-27); its mouth is Dimitri's own, copied from his
+Spool sprite (2026-10-28, "Base Spool's art on the sprite that I created"). The code's version textured the ball with
 dots, which read as dirt (kit docs/03 section 1: "simple shapes beat texture"). This one is a lilac ball of yarn with
 three wraps, Spool's zipper mouth with its teeth, yellow eyes and tongue, white gloves on short arms, purple legs and
 a loose end trailing to the ground. Same palette and layout as the code's sheet, so it drops in.
@@ -19,6 +20,19 @@ EYE, TONGUE, TONGUE2 = H('E6D85A'), H('E58CC0'), H('C96CA6')
 GLOVE = (H('F6F3F8'), H('D8D1E2'))
 LEG = (H('9363AE'), H('784B94'))
 SPARK = (H('FFFFFF'), H('E6D85A'))
+
+# Dimitri's Spool sprite (his 2026-10-23 reshade), rows 16-23, columns 11-22: the mouth, copied as he drew it.
+MOUTH_STAMP = [
+    "_____tgtgt_.",
+    "___tgmmmmmgg",
+    "_tgmmmmmmmt.",
+    "gmmmemmmemn.",
+    "tmmmmmmmmmm.",
+    "gtgtgtgtqpt.",
+    "________qp_.",
+    "_________p..",
+]
+STAMP_PAL = {'t': TEETH, 'g': TEETH2, 'm': MOUTH, 'n': H('4A1D5A'), 'e': EYE, 'q': TONGUE, 'p': TONGUE2}
 
 
 def ring(cx, cy, rx, ry):
@@ -67,30 +81,24 @@ def frame(v, kind, i):
     shade(c, ball, BALL, centre=(cx - 0.5, cy - 0.6), radii=(rx, ry), cut=(-0.38, -0.92))
     wraps = [ring(cx + 3, cy - 7.5, 7.5, 5.0), ring(cx - 4, cy + 7.0, 7.0, 4.5)] if front else \
         [ring(cx + 3, cy - 7.5, 7.5, 5.0), ring(cx - 4, cy + 7.0, 7.0, 4.5), ring(cx - 1, cy, 9.0, 2.5)]
-    mouth_rows = set(range(int(cy) - 2, int(cy) + 2 + gape)) if front else set()
+    mouth_rows = set(range(int(cy) - 4, int(cy) + 4 + gape)) if front else set()
     for wr in wraps:
         for (x, y) in wr:
             if (x, y) in ball.px and y not in mouth_rows and ((x + 1, y) in ball.px and (x, y + 1) in ball.px):
                 c.set(x, y, WRAP if c.get(x, y) == BALL[0] else BALL[2])
 
     if front:
-        top, bot = int(cy) - 2, int(cy) + 1 + gape
-        x0, x1 = int(cx - rx) + 1, int(cx + rx) - 1
-        for y in range(top, bot + 1):
-            for x in range(x0, x1 + 1):
-                if (x, y) in ball.px:
-                    c.set(x, y, MOUTH)
-        for x in range(x0, x1 + 1):                    # the zipper's teeth, upper and lower
-            if (x, top) in ball.px:
-                c.set(x, top, TEETH if x % 2 == 0 else TEETH2)
-            if (x, bot) in ball.px:
-                c.set(x, bot, TEETH if x % 2 == 1 else TEETH2)
-        ey = top + 1 + (1 if gape >= 2 else 0)
-        for ex2 in (int(cx) - 2 + d, int(cx) + 2 + d):
-            c.set(ex2, ey, EYE)
-        tx = int(cx) + 4 * d
-        c.set(tx, bot, TONGUE)
-        c.set(tx, bot + 1, TONGUE2 if gape else TONGUE)
+        # Dimitri's own zipper mouth, pixel for pixel from his Spool sprite (rows 16-23): the upper teeth slanting down
+        # to the left, the dark opening with the eyes looking out, the straight lower teeth and the hanging tongue.
+        rows = list(MOUTH_STAMP)
+        if gape >= 2:
+            rows.insert(4, rows[4])                   # the strike: the mouth opens a row wider
+        x0, y0 = int(cx) - 6, int(cy) - 4
+        for yy, row in enumerate(rows):
+            for xx, k in enumerate(row):
+                if k in STAMP_PAL:
+                    x = x0 + xx if d > 0 else x0 + (len(row) - 1 - xx) + 1
+                    c.set(x, y0 + yy, STAMP_PAL[k])
 
     # arms and gloves: the leading glove does the attack
     for k in (-1, 1):

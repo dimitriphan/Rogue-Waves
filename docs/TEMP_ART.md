@@ -22,7 +22,7 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Yossele | a bigger aura fruit on a pale disc | `Assets/YosseleMod/Editor/YosseleModels.cs` `Fruit`; render in `Art/Temporary/preview_8x/` | compiled; next PC round |
 | Spool | the vessel's sheets, Crafted, Thread Head, towers, effects, sounds (drawn by code) | Spool's `Previews/0.1/ASSETS.md` (PR #42) | in game since Spool round 1 |
 | Spool | a 12 x 12 ground Thread tuft; a needle that reads in flight | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`e0d2bf6`), compiled; not yet seen in game |
-| Spool | the Thread Head and the four Crafted (Stitched, Dart, Seam, Mangled), redrawn and animated | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`ad85b00`, a `FileArt` like Yossele's), compiled; not yet seen in game |
+| Spool | the Thread Head and the four Crafted (Stitched, Dart, Seam, Mangled), redrawn from Dimitri's Spool sprite (2026-10-28) and animated | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`ad85b00`, a `FileArt` like Yossele's), compiled; not yet seen in game |
 | Mode UI | three weather icons, redrawn | `ModSource/RogueWavesMode/Art/Temporary/`, rows in `Code/08_Icons.cs` | wired, compiled |
 | Mode UI | the crest (12 and 32 px), Pure Aura, Depth, retry, vote icons | same folder | files only, waiting for their features |
 | Directions, Cardinals | icons for the six Directions and the one Cardinal the scope names (`docs/scope/11`, `12`) | same folder | files only |
