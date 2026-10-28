@@ -12,7 +12,8 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 | `Get-PcManifest.ps1` | PC | Writes `handoff\pc_manifest.txt`, the hash of every source file on the PC (`-Apply` runs it too) |
 | `HandoffHash.ps1` | PC | The shared hash: sha256 of text with BOM and CRs removed, first 16 hex digits |
 | `Run-SelfTests.ps1` | PC | Backs up the save, then runs each vessel's self-test in its own launch and writes a short summary; `-BootCheck` for release builds |
-| `../../Assets/ModKit/Editor/ModKitPipeline.cs` | PC (Unity) | Tools > ModKit > Build Queue: Build All Assets, Build Mod Prefab, Export and Restore for every vessel in `handoff\queue.txt` |
+| `../../Assets/ModKit/Editor/ModKitPipeline.cs` | PC (Unity) | Tools > ModKit > Build Queue: Build All Assets, Build Mod Prefab, Export and Restore for every vessel in `handoff\queue.txt`; Tools > ModKit > Build Pack: the release pack (below) |
+| `Build-Pack.ps1` | PC | The release pack's code (each part's release build with the pack version from `TDS_Mod/Pack/pack.txt`), then with `-Zip` the players' `RogueWaves-<version>.zip` in the handoff folder |
 
 ## One-time setup (Dimitri)
 
@@ -79,3 +80,16 @@ and `Run-SelfTests.ps1` in the PC folder's Claude Code permission settings.
 **Results reach the cloud thread as messages.** While a PC session runs, the thread's own folder tools are paused, and
 after it ends they can stay missing for the rest of that turn. So the PC session sends the round's lines back with
 `send_message` (each message under 50 KB, `<NAME> part i/n`), and the thread saves them from its own transcript.
+
+## The release pack
+
+Run in a PC round after the self-test passed (`docs/PACK.md`; `<h>` is `Desktop\ClaudeProjects\handoff`):
+
+1. Move every dev build of a pack part out of `TDS\Mods` (`YosseleMod`, ...): it would register the same vessel.
+2. `Build-Pack.ps1`: each part's release code, its `Version` set to the pack version.
+3. `execute_menu_item("Tools/ModKit/Build Pack")`, once; read `<h>\pack_status.txt` (or the `[ModKit]` lines of
+   Editor.log) until it ends in `PACK DONE ok` or `PACK FAILED`. The prefab names and the parked folders are put back
+   either way.
+4. `Run-SelfTests.ps1 -Vessels Yossele -BootCheck -Pack RogueWaves`: the pack enabled alone, every part's icons line
+   and its `[RogueWaves:<Part>] v<version>` line.
+5. `Build-Pack.ps1 -Zip`: `<h>\RogueWaves-<version>.zip` (the `RogueWavesMod` folder, disabled, and `README.txt`).

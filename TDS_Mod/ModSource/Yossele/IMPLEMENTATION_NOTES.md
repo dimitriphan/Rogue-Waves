@@ -6,6 +6,10 @@
 code in `Code/`, self-test in `Code/99_SelfTest.cs`. The 0.1 asset list and its defaults are in
 `docs/YOSSELE_BUILD_NOTES.md` and `Previews/0.1/ASSETS.md`.
 
+**Version string (2026-10-28):** `YosseleData.Version` and the export's `.info` now read `0.1.0-dev`, the pack
+version plus `-dev` (`docs/PACK.md` §4; Dimitri's "use defaults", PLAN Decisions 2026-10-28). "0.2.0-dev" in these
+pages names the build of 2026-10-23, the same code. The pack build sets the version to `0.1.0` (`Tools/pc/Build-Pack.ps1`).
+
 **State: PC round 9 passed on its fifth try (9e, 2026-10-23): self-test 160 pass, 0 fail, 0 setup; release boot
 check clean; 0.2.0-dev is Dimitri's play build** (`Mods\YosseleMod`, the only mod; 0.1.0-dev parked on the PC). Here:
 `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with

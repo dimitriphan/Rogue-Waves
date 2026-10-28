@@ -9,6 +9,13 @@
 // queue.txt, one vessel per line:   Argo
 //                                   Sprigg twice
 // Then Run-SelfTests.ps1 (self-test builds) or Run-SelfTests.ps1 -BootCheck (release builds).
+//
+// Tools > ModKit > Build Pack: the release pack, one RogueWavesMod bundle with one RogueWaves_<Part>_Default prefab per
+// part (docs/PACK.md). Reads TDS_Mod/Pack/pack.txt (version, parts, description). Run Tools/pc/Build-Pack.ps1 first: it
+// builds each part's release code with the pack version. For each part: Build All Assets, Build Mod Prefab, then the
+// prefab is renamed RogueWaves_<Part>_Default; every Assets/*Mod folder that is not a part is parked; one export as
+// RogueWavesMod; then the names and the parked folders are put back. Status in handoff\pack_status.txt, ending in
+// "PACK DONE ok" or "PACK FAILED". Then Build-Pack.ps1 -Zip.
 using System;
 using System.IO;
 using System.Text;
@@ -20,6 +27,8 @@ namespace ModKitBuild
     public static class ModKitPipeline
     {
         const string GameMods = @"D:\Steam\steamapps\common\TDS\Mods";
+        const string Pack = "RogueWavesMod";
+        const string Parked = "Assets/_Parked/Editor";   // where every vessel's Export Mod parks the other mods
 
         static StringBuilder log;
         static string status;
@@ -86,6 +95,139 @@ namespace ModKitBuild
                 }
             }
             Say("QUEUE DONE ok=" + ok + " failed=" + failed);
+        }
+
+        [MenuItem("Tools/ModKit/Build Pack")]
+        public static void BuildPack()
+        {
+            string handoff = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory), "ClaudeProjects", "handoff");
+            status = Path.Combine(handoff, "pack_status.txt");
+            log = new StringBuilder();
+            if (EditorApplication.isCompiling)
+            {
+                Say("Unity is still compiling: run Build Pack again once it has finished");
+                return;
+            }
+            string version = "", description = "";
+            var parts = new System.Collections.Generic.List<string>();
+            var renamed = new System.Collections.Generic.List<string>();
+            bool parked = false;
+            try
+            {
+                string list = Path.GetFullPath(Path.Combine(Application.dataPath, "../Pack/pack.txt"));
+                if (!File.Exists(list))
+                    throw new Exception("no " + list);
+                foreach (string raw in File.ReadAllLines(list))
+                {
+                    string line = raw.Trim();
+                    if (line == "" || line.StartsWith("#"))
+                        continue;
+                    int sp = line.IndexOf(' ');
+                    string key = sp < 0 ? line : line.Substring(0, sp), value = sp < 0 ? "" : line.Substring(sp + 1).Trim();
+                    if (key == "version") version = value;
+                    else if (key == "part") parts.Add(value);
+                    else if (key == "description") description = value;
+                }
+                if (version == "" || version.Contains("-") || parts.Count == 0)
+                    throw new Exception("pack.txt needs a release version (no -dev) and at least one part");
+                Say("pack " + Pack + " " + version + ": " + string.Join(", ", parts.ToArray()));
+
+                foreach (string name in parts)
+                {
+                    string source = Path.GetFullPath(Path.Combine(Application.dataPath, "../ModSource/" + name));
+                    string code = Path.Combine(source, "Build/" + name + "Mod_Code.cs");
+                    if (!File.Exists(code))
+                        throw new Exception("no " + code + ": run Build-Pack.ps1 first");
+                    string text = File.ReadAllText(code);
+                    if (text.StartsWith("#define"))
+                        throw new Exception(name + "'s code is a debug build" + Defines(code) + ": run Build-Pack.ps1");
+                    if (!text.Contains("const string Version = \"" + version + "\""))
+                        throw new Exception(name + "'s code doesn't carry version " + version + ": run Build-Pack.ps1");
+                    Say(name + ": release code " + version + ", built " + File.GetLastWriteTime(code).ToString("HH:mm:ss"));
+
+                    string prefab = "Assets/" + name + "Mod/" + name + "Mod_Default.prefab";
+                    string packed = "Assets/" + name + "Mod/RogueWaves_" + name + "_Default.prefab";
+                    if (AssetDatabase.LoadAssetAtPath<GameObject>(packed) != null)
+                        AssetDatabase.DeleteAsset(packed);   // left by a pack build that stopped half way
+                    DateTime t = DateTime.Now.AddSeconds(-2);
+                    Step(name, "Build All Assets");
+                    Expect(Path.Combine(source, "build_log.txt"), "Build All Assets", t);
+                    DateTime p = DateTime.Now.AddSeconds(-2);
+                    Step(name, "Build Mod Prefab");
+                    Expect(Path.Combine(source, "Build/prefab_log.txt"), "Build Mod Prefab", p);
+                    // A prefab asset's root takes its file's name, so the bundle's object is RogueWaves_<Part>_Default.
+                    string err = AssetDatabase.RenameAsset(prefab, "RogueWaves_" + name + "_Default");
+                    if (!string.IsNullOrEmpty(err))
+                        throw new Exception("renaming " + prefab + ": " + err);
+                    renamed.Add(name);
+                    GameObject root = AssetDatabase.LoadAssetAtPath<GameObject>(packed);
+                    if (root == null)
+                        throw new Exception(packed + " is missing after the rename");
+                    if (root.name != "RogueWaves_" + name + "_Default")
+                    {
+                        GameObject contents = PrefabUtility.LoadPrefabContents(packed);
+                        contents.name = "RogueWaves_" + name + "_Default";
+                        PrefabUtility.SaveAsPrefabAsset(contents, packed);
+                        PrefabUtility.UnloadPrefabContents(contents);
+                    }
+                    Say(name + ": " + packed + " (root " + AssetDatabase.LoadAssetAtPath<GameObject>(packed).name + ")");
+                }
+
+                parked = true;
+                if (!AssetDatabase.IsValidFolder("Assets/_Parked")) AssetDatabase.CreateFolder("Assets", "_Parked");
+                if (!AssetDatabase.IsValidFolder(Parked)) AssetDatabase.CreateFolder("Assets/_Parked", "Editor");
+                foreach (string dir in AssetDatabase.GetSubFolders("Assets"))
+                {
+                    string folder = Path.GetFileName(dir);
+                    if (!folder.EndsWith("Mod") || parts.Contains(folder.Substring(0, folder.Length - 3)))
+                        continue;
+                    string err = AssetDatabase.MoveAsset(dir, Parked + "/" + folder);
+                    if (!string.IsNullOrEmpty(err))
+                        throw new Exception("parking " + folder + ": " + err);
+                    Say("parked " + folder);
+                }
+                AssetDatabase.Refresh();
+
+                DateTime before = DateTime.Now.AddSeconds(-2);
+                ModTool.Editor.Exporting.ExportSettings.name = Pack;
+                ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
+                ModTool.Editor.Exporting.ExportSettings.description = description;
+                ModTool.Editor.Exporting.ExportSettings.version = version;
+                ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
+                AssetDatabase.SaveAssets();
+                Say("Export " + Pack);
+                ModTool.Editor.Exporting.ModExporter.ExportMod();
+                string info = Path.Combine(GameMods, Pack, Pack + ".info");
+                if (!File.Exists(info) || File.GetLastWriteTime(info) < before)
+                    throw new Exception("the export finished but " + info + " wasn't written");
+                if (!File.ReadAllText(info).Contains("\"" + version + "\""))
+                    throw new Exception(info + " doesn't carry version " + version);
+                Say("exported " + info + " (" + File.GetLastWriteTime(info).ToString("HH:mm:ss") + "; the exporter leaves it disabled)");
+                Say("PACK DONE ok");
+            }
+            catch (Exception e)
+            {
+                Say("PACK FAILED " + e.Message);
+            }
+            finally
+            {
+                foreach (string name in renamed)
+                {
+                    string err = AssetDatabase.RenameAsset("Assets/" + name + "Mod/RogueWaves_" + name + "_Default.prefab", name + "Mod_Default");
+                    Say(name + ": prefab name restored" + (string.IsNullOrEmpty(err) ? "" : " FAILED: " + err));
+                }
+                if (parked && AssetDatabase.IsValidFolder(Parked))
+                {
+                    foreach (string dir in AssetDatabase.GetSubFolders(Parked))
+                    {
+                        string err = AssetDatabase.MoveAsset(dir, "Assets/" + Path.GetFileName(dir));
+                        Say("restored " + Path.GetFileName(dir) + (string.IsNullOrEmpty(err) ? "" : " FAILED: " + err));
+                    }
+                    if (AssetDatabase.GetSubFolders(Parked).Length == 0)
+                        AssetDatabase.DeleteAsset("Assets/_Parked");
+                    AssetDatabase.Refresh();
+                }
+            }
         }
 
         static void Step(string name, string item)

@@ -13,9 +13,12 @@
 # the release build replaces it afterwards.
 # -BootCheck: the release builds of -Vessels are enabled, TDS is launched, the script waits until each logs
 # "[<Name>] icons:" and reports every vessel mod's ready/icons lines and the exception count.
+# -BootCheck -Pack RogueWaves: the same for a pack build (Build-Pack.ps1): RogueWavesMod is enabled instead of the
+# vessels' own mods, and -Vessels names the parts whose icons lines it waits for.
 param(
     [Parameter(Mandatory = $true)][string[]]$Vessels,
     [switch]$BootCheck,
+    [string]$Pack = "",
     [int]$TimeoutMinutes = 12,
     [string]$Game = "D:\Steam\steamapps\common\TDS"
 )
@@ -86,15 +89,15 @@ if (Test-Path -LiteralPath $data) {
 }
 
 if ($BootCheck) {
-    foreach ($v in $Vessels) { SetEnabled $v $true }
+    if ($Pack) { SetEnabled $Pack $true } else { foreach ($v in $Vessels) { SetEnabled $v $true } }
     $ok = Launch { param($s) $all = $true; foreach ($v in $Vessels) { if ($s -notmatch [regex]::Escape("[$v] icons:")) { $all = $false } }; $all } "icons line from every vessel"
     if (-not $script:LogFresh) { "BOOT CHECK $($stamp): the game never started; nothing summarized"; exit 1 }
     $copy = Join-Path $out "boot_$stamp.log"
     Copy-Item -LiteralPath $log -Destination $copy -Force
     $lines = Get-Content -LiteralPath $copy | Where-Object { $_ -notmatch 'Dump\] ' }
     $sum = New-Object System.Collections.Generic.List[string]
-    $sum.Add("BOOT CHECK $stamp of " + ($Vessels -join ", ") + ": " + $(if ($ok) { "every vessel logged its icons" } else { "timed out" }))
-    foreach ($l in $lines) { if ($l -match '^\[\w+\] (loaded|ready|icons:)') { $sum.Add($l) } }
+    $sum.Add("BOOT CHECK $stamp of " + $(if ($Pack) { "$($Pack)Mod (" + ($Vessels -join ", ") + ")" } else { $Vessels -join ", " }) + ": " + $(if ($ok) { "every vessel logged its icons" } else { "timed out" }))
+    foreach ($l in $lines) { if ($l -match '^\[\w+\] (loaded|ready|icons:)' -or $l -match '^\[RogueWaves:') { $sum.Add($l) } }
     $ex = @($lines | Where-Object { $_ -match 'Exception' })
     $sum.Add("exception lines: " + $ex.Count)
     $ex | Select-Object -First 8 | ForEach-Object { $sum.Add("  " + $_) }

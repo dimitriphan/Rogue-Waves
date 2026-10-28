@@ -26,8 +26,11 @@ Why this layout:
 - One bundle beats several mod folders for players. There is one thing to install and enable, and an online lobby
   can't end up with mismatched part versions (every player needs the whole pack, a Phase 1 decision).
 - Development doesn't change. Each part is built, exported and self-tested as its own dev mod with the kit pipeline.
-  Only a release assembles the pack: the Build Queue gets a `Pack` step that parks every non-pack `Assets/*Mod` folder,
-  builds each part's prefab and exports everything once as `RogueWavesMod`.
+  Only a release assembles the pack, in three steps (built 2026-10-28, not yet run): `TDS_Mod/Tools/pc/Build-Pack.ps1`
+  builds each part's release code with the pack version, Tools > ModKit > Build Pack (`ModKitPipeline.cs`) builds
+  each part's prefab under its pack name, parks every non-pack `Assets/*Mod` folder and exports everything once as
+  `RogueWavesMod`, and `Build-Pack.ps1 -Zip` makes the zip of §5. The version and the parts are in
+  `TDS_Mod/Pack/pack.txt`, the player README in `TDS_Mod/Pack/README.txt`.
 
 **Prefab names.** Each name contains `Default` and none of the other keywords the game matches with `IndexOf`: `Map`
 (it would join the custom-map list), `World`, `Mainmenu`, `Loading`, `Gameserver`, `Gameclient` (`docs/15` §10). No
@@ -82,6 +85,6 @@ mode starts (the host presses the Rogue Waves button on the main menu, `docs/mod
 (everyone needs the same version). There is no Workshop (`docs/14` §4).
 
 **Release order (user, 2026-10-20).** The first release is this same bundle holding **only Yossele's part**
-(`RogueWaves_Yossele_Default`), version 0.1.0, built with the `Pack` step above. Each later release adds parts to the
+(`RogueWaves_Yossele_Default`), version 0.1.0, built with the pack steps above. Each later release adds parts to the
 same bundle (the mode, Argo, Spool, Uloe, the foes) and bumps the one version, so a player only ever updates one mod and
 no standalone vessel mod has to be swapped out; the full pack is 1.0.0. The plan is `docs/PLAN.md` Part B "Release 1".
