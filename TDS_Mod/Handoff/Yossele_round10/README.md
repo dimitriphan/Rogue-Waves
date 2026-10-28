@@ -45,3 +45,18 @@ On the PC only (left alone): `ModSource\Yossele\build_log.txt`
 3. `Apply-Handoff.ps1 -Apply`, once Dimitri has OK'd it in the thread in his own words. It backs up what it replaces
    and writes a fresh `handoff\pc_manifest.txt`.
 4. Build, test and release as the thread's brief says (`TDS_Mod/Tools/pc/README.md`).
+
+## Result (2026-10-28, Dimitri's OK 20:07Z)
+
+All eight steps passed. Apply: 29 files, every hash matched. Self-test of 0.1.0-dev on 3B_Thehunt: **160 pass, 0 fail,
+0 setup**; the build log took `Yossele-Sheet`, `YosseleAttack-Sheet` and `Yosselefriend-Sheet` from `Art/Temporary/`;
+12 exception lines, all the game's own (one UniTask cancel at boot, eleven at shutdown). Release boot check clean
+(`[Yossele] loaded v0.1.0-dev`, Cordyfriend "with Yosselefriend-Sheet"). Pack: `PACK DONE ok` (prefab
+`RogueWaves_Yossele_Default`, four mods parked and restored, names put back), pack boot check clean at `v0.1.0`, zip
+`handoff\RogueWaves-0.1.0.zip` (3,148,026 bytes, 8 entries). PC left with `Mods\YosseleMod` 0.1.0-dev enabled (Dimitri's
+play build), the pack folder in `handoff\release_pack_0.1.0`, the 0.2.0-dev play build in
+`handoff\parked\YosseleMod_0.2.0-dev_round9e_playbuild`.
+
+Two things fixed after the round (not yet run on the PC): an MCP replay of Build Queue or Build Pack overwrote the status
+file with "still compiling" (now logged to Editor.log only), and `Compress-Archive` wrote backslashed entry names (now
+written with forward slashes). The 0.1.0 zip of this round works on Windows; the next pack build uses the fix.

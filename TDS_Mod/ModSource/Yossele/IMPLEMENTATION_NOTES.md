@@ -10,6 +10,10 @@ code in `Code/`, self-test in `Code/99_SelfTest.cs`. The 0.1 asset list and its 
 version plus `-dev` (`docs/PACK.md` §4; Dimitri's "use defaults", PLAN Decisions 2026-10-28). "0.2.0-dev" in these
 pages names the build of 2026-10-23, the same code. The pack build sets the version to `0.1.0` (`Tools/pc/Build-Pack.ps1`).
 
+**Round 10 (2026-10-28):** 0.1.0-dev (this code with the Daze fix and the temporary art) passed its self-test 160/0,
+took all three temporary sheets, booted clean and is Dimitri's play build; inside the first `RogueWavesMod` 0.1.0 pack it
+booted clean too (`TDS_Mod/Handoff/Yossele_round10/README.md`). Still to see by eye: the art itself.
+
 **State: PC round 9 passed on its fifth try (9e, 2026-10-23): self-test 160 pass, 0 fail, 0 setup; release boot
 check clean; 0.2.0-dev is Dimitri's play build** (`Mods\YosseleMod`, the only mod; 0.1.0-dev parked on the PC). Here:
 `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with

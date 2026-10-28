@@ -179,7 +179,7 @@ Steps, in order:
    them (`docs/03`, `docs/18`). PC round: self-test 0 failures, then his play test and his balance pass. Coded
    2026-10-23 as 0.2.0-dev with the carried-over fixes; PC round 9 passed the self-test (160/0) and made it his play
    build the same day. His play test next, with what it must show in `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
-4. The pack build with one part: Tools > ModKit > Build Pack with `Tools/pc/Build-Pack.ps1` (`docs/PACK.md` §1; built 2026-10-28, compiled only), the one pack version
+4. The pack build with one part: Tools > ModKit > Build Pack with `Tools/pc/Build-Pack.ps1` (`docs/PACK.md` §1; built 2026-10-28, first run in round 10: the 0.1.0 zip exists), the one pack version
    in every place `docs/PACK.md` §4 names, the README of §5, the Mods-folder install checked on the PC with no dev mods
    in it.
 5. `docs/10` hand-off; `RogueWaves-0.1.0.zip` to Dimitri. Gate: Dimitri says ship.
@@ -258,6 +258,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6).
+- **Release 1 state (2026-10-28):** the pack builds and boots (round 10); what's left is his play test of the new play
+  build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
 
@@ -436,6 +438,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-10-28, priorities:** at Dimitri's ask ("figure out what is most needed right now") the scope was read
   against the state; the ranked list for Release 1 and what waits after it is `docs/reports/PRIORITIES_2026-10-28.md`.
   Nothing built.
+- **2026-10-28, defaults and the pack (Dimitri: "Use defaults for now, then proceed"; round OK 20:07Z):** defaults
+  logged (Decisions), scope `07` asks for his sprite sheet, the pack step built. PC round Yossele_round10: self-test of
+  0.1.0-dev **160/0**, the three temporary sheets used, release boot check clean; the first pack build `PACK DONE ok`,
+  its boot check clean at v0.1.0; `handoff\RogueWaves-0.1.0.zip` (3.1 MB) made and held for his sprites. His play build
+  is now 0.1.0-dev with the Daze fix and the temporary art (`TDS_Mod/Handoff/Yossele_round10/README.md`).
 
 ### Decisions
 

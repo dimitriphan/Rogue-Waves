@@ -62,6 +62,20 @@ $readme = [IO.File]::ReadAllText((Join-Path $root "ModSource\Pack\README.txt")).
 [IO.File]::WriteAllText((Join-Path $stage "README.txt"), $readme, (New-Object System.Text.UTF8Encoding($false)))
 $zipFile = Join-Path $handoff "RogueWaves-$version.zip"
 if (Test-Path -LiteralPath $zipFile) { Remove-Item -LiteralPath $zipFile -Force }
-Compress-Archive -Path (Join-Path $stage "*") -DestinationPath $zipFile
+# Entries are written with forward slashes: PowerShell 5.1's Compress-Archive writes backslashes, which some Mac and Linux
+# unzippers turn into flat files named "RogueWavesMod\Windows\...".
+Add-Type -AssemblyName System.IO.Compression, System.IO.Compression.FileSystem
+$zip = [IO.Compression.ZipFile]::Open($zipFile, [IO.Compression.ZipArchiveMode]::Create)
+try {
+    $base = (Resolve-Path -LiteralPath $stage).Path.TrimEnd('\') + '\'
+    foreach ($item in Get-ChildItem -LiteralPath $stage -Recurse -Force) {
+        $rel = $item.FullName.Substring($base.Length).Replace('\', '/')
+        if ($item.PSIsContainer) {
+            if (@(Get-ChildItem -LiteralPath $item.FullName -Force).Count -eq 0) { [void]$zip.CreateEntry($rel + '/') }
+        } else {
+            [void][IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $item.FullName, $rel)
+        }
+    }
+} finally { $zip.Dispose() }
 Remove-Item -LiteralPath $stage -Recurse -Force
 "zip: $zipFile ($((Get-Item -LiteralPath $zipFile).Length) bytes)"

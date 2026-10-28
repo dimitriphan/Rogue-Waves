@@ -26,7 +26,7 @@ Why this layout:
 - One bundle beats several mod folders for players. There is one thing to install and enable, and an online lobby
   can't end up with mismatched part versions (every player needs the whole pack, a Phase 1 decision).
 - Development doesn't change. Each part is built, exported and self-tested as its own dev mod with the kit pipeline.
-  Only a release assembles the pack, in three steps (built 2026-10-28, not yet run): `TDS_Mod/Tools/pc/Build-Pack.ps1`
+  Only a release assembles the pack, in three steps (built 2026-10-28; first run in PC round Yossele_round10, PACK DONE ok): `TDS_Mod/Tools/pc/Build-Pack.ps1`
   builds each part's release code with the pack version, Tools > ModKit > Build Pack (`ModKitPipeline.cs`) builds
   each part's prefab under its pack name, parks every non-pack `Assets/*Mod` folder and exports everything once as
   `RogueWavesMod`, and `Build-Pack.ps1 -Zip` makes the zip of §5. The version and the parts are in

@@ -47,7 +47,8 @@ namespace ModKitBuild
             }
             if (EditorApplication.isCompiling)
             {
-                Say("Unity is still compiling: run the queue again once it has finished");
+                // Logged only: a replayed MCP call lands here and must not overwrite the real run's status file (docs/09 #76).
+                Debug.Log("[ModKit] Unity is still compiling: run the queue again once it has finished");
                 return;
             }
             int ok = 0, failed = 0;
@@ -105,7 +106,8 @@ namespace ModKitBuild
             log = new StringBuilder();
             if (EditorApplication.isCompiling)
             {
-                Say("Unity is still compiling: run Build Pack again once it has finished");
+                // Logged only: a replayed MCP call lands here and must not overwrite the real run's status file (docs/09 #76).
+                Debug.Log("[ModKit] Unity is still compiling: run Build Pack again once it has finished");
                 return;
             }
             string version = "", description = "";
