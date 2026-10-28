@@ -28,6 +28,30 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Directions, Cardinals | icons for the six Directions and the one Cardinal the scope names (`docs/scope/11`, `12`) | same folder | files only |
 | Argo | built art (Argo 2.0) | `ModSource/Argo/DESIGN.md` | not temporary: shipped look |
 
+## Versions to pick from (2026-10-28)
+
+Dimitri, 2026-10-28: "For all temporary assets, create alternative versions for me to choose for each asset. There should
+be different versions for every single animation included for Yossele and Spool. Create 3 versions of each asset for
+now." Every asset above has three new versions in `ModSource/<Part>/Art/Temporary/variants/v1|v2|v3/` (`game_size/`,
+`aseprite/`, `preview_8x/`, and `models/` for the two 3D models), each with the same name, size and frame layout as the
+file in `game_size/`, which stays the one in game until he picks. "Current" is always a fourth choice. The folder
+READMEs name each version.
+
+- **Picking.** One pick per animation (35 in all), so a sheet can take its walk from one version and its attack from
+  another: page https://claude.ai/artifact/HsfbYEykGD92BAFWhJPnZs (private to Dimitri; picks are saved on the page,
+  collection `picks`, one document per item, `{choice: "cur" | "v1" | "v2" | "v3"}`; a Claude thread reads them with
+  the ArtifactData tool, or he pastes the text the page gives).
+- **Applying.** `python3 concept-tools/temp_art/apply_picks.py picks.json` copies the picked frames over
+  `game_size/` (the wired files), copies picked icons whole and prints which snippet to paste for a model pick. The three
+  weather icons are also rows in `RogueWavesMode/Code/08_Icons.cs`: `variants_icons.py` prints each version's rows. Then
+  re-export the `.aseprite` copies (`tart.write_sheet`) and delete the versions not picked. Spool's sheets are wired on
+  PR #42's branch, which has its own copy of `Spool/Art/Temporary/game_size/`: copy the applied files there too.
+- **Rules kept.** Yossele's body in every version is the code's frame drawn from his reshade, cut into parts that move;
+  the Thread Head wears his zipper mouth pixel for pixel; the Crafted keep their bodies from his sprite (only how they
+  move changes); no soft rim; opaque, lit from the upper left. None of it has been seen in game.
+- **Generators.** `concept-tools/temp_art/variants_yossele.py`, `variants_spool.py`, `variants_icons.py`,
+  `variants_models.py` (renders the C# snippets in `model_variants/` with the cloud preview), `variants_page.py` (the page).
+
 ## Previews and generators
 
 A page of every asset, animated: https://claude.ai/artifact/S1ropAhQwBHhpLDDxWi7Xo (private to Dimitri; rebuild from

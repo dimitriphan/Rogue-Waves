@@ -244,8 +244,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
-  redrawn (wired on PR #42 at `ad85b00`). Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
+  redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: three versions of every temporary asset and every animation to pick
+  from (`Art/Temporary/variants/v1-v3/`, nothing wired changes; Log). Older entries are in "Log" below.
+- **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
+  "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -433,6 +435,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   loaded (#110), none a rule of the sheet (Yossele's `IMPLEMENTATION_NOTES.md`). Release boot check clean; 0.2.0-dev is
   his play build, 0.1.0-dev parked on the PC. Pitfalls: #106 corrected (a node pays on the hit after `Healthresource`
   reaches 0: `Resource_Orange` has `Health` 1), #111 (a foe's health reads 0 right after its spawn).
+
+- **2026-10-28, temporary art versions (Dimitri: "For all temporary assets, create alternative versions for me to choose
+  for each asset. There should be different versions for every single animation included for Yossele and Spool. Create
+  3 versions of each asset for now."):** three new versions of each of the 2026-10-27 assets, in
+  `ModSource/<Part>/Art/Temporary/variants/v1|v2|v3/` (same names, sizes and layouts, so a pick drops in): Yossele's
+  idle, walk and attack (moved from the code's frame of his reshade), the Cordyfriend (three builds), the fruit model;
+  the Thread Head (his zipper mouth in all three), the four Crafted (their bodies kept, new walks and attacks), the
+  tuft, the needle model; the fifteen 12 x 12 icons and the 32 px crest. 35 picks, one per animation, so versions
+  can mix. Generators `concept-tools/temp_art/variants_*.py`, `apply_picks.py`; page `variants_page.py`. Nothing
+  wired changed and nothing was seen in game.
 
 ### Decisions
 

@@ -1,0 +1,18 @@
+        // Temporary art, version 3 "Seed pod" (2026-10-28): an upright teardrop pod banded in its colours, standing in a
+        // ring of pale petals with a curled sprout on its tip, so it reads as something grown, not dropped.
+        static Lp Fruit(int[] cols)
+        {
+            var m = new Lp();
+            m.Disc(V(0, 0.005f, 0), 0.26f, 10, Pal.Puff2, 0.01f);
+            for (int i = 0; i < 6; i++)
+            {
+                float a = i * 60f * Mathf.Deg2Rad;
+                m.Ball(V(Mathf.Cos(a) * 0.17f, 0.04f, Mathf.Sin(a) * 0.17f), V(0.06f, 0.04f, 0.06f), 6, 3, Pal.White);
+            }
+            Vector3 c = V(0, 0.2f, 0);
+            BandBall(m, c, V(0.16f, 0.2f, 0.16f), 12, 7, cols);
+            m.Spike(c + V(0, 0.17f, 0), V(0, 1, 0), 0.07f, 0.1f, cols[0], 6);
+            m.Stem(new[] { c + V(0, 0.26f, 0), c + V(0.02f, 0.32f, 0), c + V(0.07f, 0.34f, 0), c + V(0.09f, 0.3f, 0) }, 0.016f, 0.01f, 5, Pal.Sprout);
+            m.Leaf(c + V(0.02f, 0.31f, 0), V(-0.7f, 0.5f, 0.2f), 0.11f, 0.06f, Pal.Leaf, Pal.LeafDark);
+            return m;
+        }
