@@ -17,6 +17,7 @@ public static class YosseleData
     public const string GroundTemplate = "Effect_Snosnosnow", GroundFallback = "Effect_Smackywall_Bramble";
     public const string LaserTemplate = "Hero_Snosno_Snoball", LaserFallback = "Tower_Smackyarcher_Arrow";
     public const string FriendTemplate = "Mob_Smackyminer", FriendLook = "Mob_Snoble";
+    public const string FriendSheet = "Yosselefriend-Sheet";              // temporary art, ModSource/Yossele/Art/Temporary
 
     public const string Hero = "Hero_Yossele";
     public const string HeroEntity = "Hero_Yossele_Entity";
@@ -130,7 +131,7 @@ public static class YosseleData
     public const int FriendCap = 30;            // Cordyfriends standing at once per player
     public const float FriendEngage = 4f;       // it walks to foes this close
     public const float FriendLeash = 5f;        // ...that are this close to where it rose
-    public static readonly Color FriendTint = new Color(0.72f, 0.95f, 0.62f, 1f);   // fungus green over the Snoble's sprite
+    public static readonly Color FriendTint = new Color(0.72f, 0.95f, 0.62f, 1f);   // fungus green over the Snoble's sprite, only if its own sheet is missing
 
     // ---------------------------------------------------------------- Primordial Dandelion Tree and its Bonsai
 

@@ -145,8 +145,58 @@ namespace YosseleBuild
         static void SaveSheet(Px px, string folder, string name, int cw, int ch, Vector2 pivot)
         {
             string path = Root + "/Art/" + folder + "/" + name + ".png";
-            YosseleAseprite.Apply(px, folder, name, cw).Save(Abs(path));
+            YosseleAseprite.Apply(FileArt(px, name), folder, name, cw).Save(Abs(path));
             sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
+        }
+
+        // A sheet the code draws can be replaced by a file of the same name and size: ModSource/Yossele/Art/<name>.png
+        // (final art) wins over ModSource/Yossele/Art/Temporary/game_size/<name>.png (temporary art, docs/TEMP_ART.md),
+        // and either wins over the code. Hand-edited Aseprite frames still merge on top. A file of the wrong size is
+        // skipped and logged.
+        static Px FileArt(Px code, string name)
+        {
+            string final = Path.Combine(Source, "Art", name + ".png");
+            string temp = Path.Combine(Source, "Art", "Temporary", "game_size", name + ".png");
+            string from = File.Exists(final) ? final : File.Exists(temp) ? temp : null;
+            if (from == null)
+                return code;
+            var t = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            try
+            {
+                if (!ImageConversion.LoadImage(t, File.ReadAllBytes(from)) || t.width != code.W || t.height != code.H)
+                {
+                    log.AppendLine("sprites: " + name + ".png kept the code's art: " + from + " is " + t.width + "x" + t.height + ", not " + code.W + "x" + code.H);
+                    return code;
+                }
+                var arr = t.GetPixels32();
+                var px = new Px(code.W, code.H);
+                for (int y = 0; y < px.H; y++)
+                    for (int x = 0; x < px.W; x++)
+                        px.C[y * px.W + x] = arr[(px.H - 1 - y) * px.W + x];
+                log.AppendLine("sprites: " + name + ".png from " + (from == final ? "Art/ (final)" : "Art/Temporary/ (temporary)"));
+                return px;
+            }
+            finally { UnityEngine.Object.DestroyImmediate(t); }
+        }
+
+        // A sheet drawn as a file instead of by code: ModSource/Yossele/Art/<name>.png (final art) wins over
+        // ModSource/Yossele/Art/Temporary/game_size/<name>.png (temporary art, Art/Temporary/README.md). Neither there: skipped,
+        // and the code falls back (the Cordyfriend keeps the Snoble's tinted look).
+        static void CopySheet(string folder, string name, int cw, int ch, Vector2 pivot)
+        {
+            string final = Path.Combine(Source, "Art", name + ".png");
+            string temp = Path.Combine(Source, "Art", "Temporary", "game_size", name + ".png");
+            string from = File.Exists(final) ? final : File.Exists(temp) ? temp : null;
+            if (from == null)
+            {
+                log.AppendLine("sprites: " + name + ".png not found in Art/ or Art/Temporary/game_size/, skipped");
+                return;
+            }
+            string path = Root + "/Art/" + folder + "/" + name + ".png";
+            Directory.CreateDirectory(Path.GetDirectoryName(Abs(path)));
+            File.Copy(from, Abs(path), true);
+            sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
+            log.AppendLine("sprites: " + name + ".png from " + (from == final ? "Art/ (final)" : "Art/Temporary/ (temporary)"));
         }
 
         static void WriteSprites()
@@ -167,6 +217,7 @@ namespace YosseleBuild
             SaveSheet(YosseleCharacter.EndLose(), "UI", "Yosseleendstat2", 32, 32, c);
             SaveSheet(YosseleCharacter.ReadyUp(), "UI", "Readyup6yossele", 12, 12, c);
             SaveSheet(YosseleCharacter.TabIcon(), "UI", "Yosseletabicon", 32, 32, c);
+            CopySheet("Unit", "Yosselefriend-Sheet", 24, 24, foot);
             log.AppendLine("sprites: " + sheets.Count + " sheets");
             YosseleAseprite.WriteGenerated();
         }

@@ -202,6 +202,24 @@ time: D-MDS taking down real Ballista, Onager and Excalibur shots (118 by Tide 7
 fully grown Sapling (3 on `Resource_Blue`), the Bonsai keeping its copy when the Tree was sold. The laser does mine: on
 Woozy the vessel dealt 802 damage by Tide 7 with no foe felled.
 
+**2026-10-27, temporary art pass** (Dimitri: "Create temporary assets ... categorize them as temporary"; `docs/TEMP_ART.md`):
+the Cordyfriend has its own sheet (`Art/Temporary/game_size/Yosselefriend-Sheet.png`, 24 px cells, Idle 6, Move 6, Attack 4
+in four facings), copied in by `YosseleBuilder.CopySheet` (a same-named PNG in `Art/` wins), cut by
+`YosseleAssets.Friend` and played on the miner's sprite visual, so it walks and swings instead of gliding; without the
+sheet it falls back to the tinted Snoble (`YosseleContent.FriendOwnLook`, logged by the self-test). The aura fruit is
+0.42 wide on a pale disc. Compiled (release and SELFTEST,SHOTS: 0 errors; `check_editor.sh` clean); to verify at the
+next PC round: the build log names `Yosselefriend-Sheet.png from Art/Temporary/`, the self-test's "Cordyfriend look: its own
+sheet" line, and by eye that it faces and animates right (the miner's animator plays Idle, Move and Attack).
+
+**2026-10-27, temporary animations** (Dimitri: "Create the temporary animations for Yossele and Spool as well"):
+`YosseleBuilder.FileArt` lets a PNG of the same name and size replace any sheet the code draws (`Art/<name>.png` final
+wins over `Art/Temporary/game_size/<name>.png`, either over the code; Aseprite frames still merge on top).
+`Yossele-Sheet.png` keeps the code's idle and takes the knuckle walk (`concepts/walk_2026-10-12`) as Move;
+`YosseleAttack-Sheet.png` redraws the laser as squat, charge, fire with a flash, recover with smoke. Compiled
+(`check_editor.sh` clean); to verify at the next PC round: the build log lines `Yossele-Sheet.png from Art/Temporary/`
+and `YosseleAttack-Sheet.png from Art/Temporary/`, footsteps on Move frames 0 and 3 still landing on the plants, and by
+eye the walk and the shot in all four facings.
+
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 
 Everything the gap list named is built (`DESIGN.md` has each rule and default): the ranged mouth laser and the new
@@ -210,5 +228,5 @@ stats (70 / 1.75 / 5.5 / range 4, projectile speed 15), 5 Growth stages a Tide o
 Bonsai (limit 1, the Tree's cost), Rubbery Shell, Easy Target, Obsidian, Spontaneous Mulch, the changed rules and
 numbers, and the 2026-10-13 names. Fertilize stays Direction-only, so the first release has none.
 
-Still open: Dimitri's own sprite sheet (the release waits for it) and the Cordyfriend's sprite; the look by eye of the
+Still open: Dimitri's own sprite sheet (the release waits for it) and his Cordyfriend (a temporary one is in, 2026-10-27); the look by eye of the
 new models and the attack sheet; the balance pass; online play.

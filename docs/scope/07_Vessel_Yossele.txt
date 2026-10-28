@@ -296,7 +296,7 @@
 			- Orders: ~walks to the nearest foe within 4 tiles, else back to where it rose~
 			- Leash: ~5 tiles from where it rose~
 			- Cost: ~free~
-			- Look: resembles a {Snoble} /~ Until its own sprite: the Snoble's, tinted fungus green \
+			- Look: resembles a {Snoble} /~ Until your sprite: a temporary one, a pale puffball with dot eyes like a Snoble and orange cordyceps clubs (docs/TEMP_ART.md) \
 
 		[Directions] / Written in 11_Directions.txt under Yossele \
 			- {Compost Bin}, {Dandelion Season}, {Mother of Mushrooms}

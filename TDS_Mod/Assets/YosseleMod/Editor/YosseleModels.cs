@@ -742,13 +742,18 @@ namespace YosseleBuild
         }
 
         // An aura fruit lying on the ground: a round pod banded in its colours, a stub of stem and a leaf.
+        // Temporary art, enlarged 2026-10-27 (the play test could not pick the 0.3 pod out at play zoom): a 0.42 pod on a
+        // pale disc of fallen petals, so it reads as something to pick up, with two leaves on its stem.
         static Lp Fruit(int[] cols)
         {
             var m = new Lp();
-            Vector3 c = V(0, 0.12f, 0);
-            BandBall(m, c, V(0.15f, 0.125f, 0.15f), 12, 7, cols);
-            m.Stem(new[] { c + V(0, 0.11f, 0), c + V(0.01f, 0.17f, 0.01f) }, 0.015f, 0.012f, 5, Pal.Bark2);
-            m.Leaf(c + V(0.01f, 0.15f, 0), V(0.7f, 0.5f, -0.4f), 0.1f, 0.05f, Pal.Leaf, Pal.LeafDark);
+            m.Disc(V(0, 0.005f, 0), 0.3f, 12, Pal.Puff2, 0.01f);
+            m.Disc(V(0, 0.012f, 0), 0.24f, 12, Pal.White, 0.01f, 15f);
+            Vector3 c = V(0, 0.17f, 0);
+            BandBall(m, c, V(0.21f, 0.175f, 0.21f), 12, 7, cols);
+            m.Stem(new[] { c + V(0, 0.15f, 0), c + V(0.015f, 0.235f, 0.015f) }, 0.022f, 0.016f, 5, Pal.Bark2);
+            m.Leaf(c + V(0.015f, 0.21f, 0), V(0.7f, 0.5f, -0.4f), 0.15f, 0.075f, Pal.Leaf, Pal.LeafDark);
+            m.Leaf(c + V(0.01f, 0.2f, 0), V(-0.6f, 0.45f, -0.3f), 0.11f, 0.055f, Pal.Leaf, Pal.LeafDark);
             return m;
         }
 
