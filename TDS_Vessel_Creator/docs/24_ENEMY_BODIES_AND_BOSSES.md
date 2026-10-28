@@ -66,8 +66,7 @@ for death; six skin entries that may reuse the sprites.
 roof it walks; under open sky it rises to the target's height + 2, **teleports its grid tile** to the standable tile
 nearest the target within 5 (a `Forced` move, no step check), then glides its body there and lands. It ignores paths
 and walls only while its tile has open sky. It is not a Basin attacker: it guards ore, dives on gatherers and vessels,
-retreats to and heals at its `Parent`, the **Halberdnest tower** that spawned it (correcting `13` §1's "its enemy
-core"), and at full health heads for the nearest resource.
+retreats to and heals at its `Parent`, the **Halberdnest tower** that spawned it (`13` §1 agrees), and at full health heads for the nearest resource.
 
 **What "flying" means to the rest of the engine:**
 
@@ -77,7 +76,7 @@ core"), and at full health heads for the nearest resource.
 - **Melee range is 3D** (`Entityposition` distance vs `Range + 0.1`, Entity_Ai_Mob_Melee.cs:92, 143): a body held 2
   units up is out of reach of a melee unit under it.
 - `Getpathlinear` is used only by `Entity_Ai_Mob_Movementlinear` (a client-driven straight mover); no flyer uses it
-  (correcting `16` §2's "flying uses the same graph in a straight line").
+  (`16` §2 agrees: there is no air pathing).
 
 | Pack flyer route | Code | Gives | Limits |
 | --- | --- | --- | --- |
@@ -128,7 +127,7 @@ walker's projectile name, a hover, a new attack shape, phases.
   no code and `Displayedwave` is editor-only (Mode_Normal.cs:36-186; Wavesobject.cs:9-72).
 - **`Time_Wave` counts down only after every content has finished spawning** (Mode_Normal.cs:384-403; verified by hand):
   a Tide lasts all its spawning plus up to `Wavetime`, and `Tide_Completetime` plays when the whole entry took longer
-  than `Wavetime` (corrects `13` §3 step 4).
+  than `Wavetime` (the detail behind `13` §3 step 4).
 - Each Tide lowers every enemy core's `Healthresource` by 1.
 
 ## 5. Hooks a mode can use on the enemy side

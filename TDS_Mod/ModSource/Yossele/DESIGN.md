@@ -3,8 +3,9 @@
 Rogue Waves' Yossele is **designed from the scope text** (`docs/scope/07_Vessel_Yossele.txt`, Dimitri's 2026-10-20
 sheet with his 2026-10-21 answers), checked against `TDS_Vessel_Creator/docs/02`. Where the sheet gives a number it is
 used as written; a value written `~like this~` on the sheet is a default Claude picked, and every default this page adds
-is listed under "Changes from the concept". Status: **the 2026-10-12 build (PC round 8, 98/0) brought up to this sheet,
-compiled only** (`IMPLEMENTATION_NOTES.md`, "Build of 2026-10-23"); nothing below that is new has run in game yet.
+is listed under "Changes from the concept". Status: **built to this sheet and passed PC round 9 (9e, 160/0, 2026-10-23); Dimitri's play
+build** (`IMPLEMENTATION_NOTES.md`); what the self-test cannot see is still to check by play and by eye
+(`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`).
 Yossele is Release 1, alone (`docs/PLAN.md` Part B): it works in a normal game, without the mode.
 
 ## Identity
@@ -156,7 +157,7 @@ How the new rules work (read from the game's code, 2026-10-23; untested):
   (Projectile_Ai_Explosion.cs: `Despawn`). A Vis tells every client to put out its own copy (the nearest active one of
   the same shooter) and draws the seed. **What counts:** every stock foe shot: the Ballista's and the Excalibur's
   bolts, the Onager's lobs, the Bulwark's bomb rain and the Claymore launching itself. **Bosses** (a shooter of base
-  health 600 or more, the kit's rule; the stock Bulwark has 30000) cost 5 seeds a projectile (Dimitri's open question
+  health 600 or more, kit `docs/05` §16; the stock Bulwark has 30000) cost 5 seeds a projectile (Dimitri's open question
   on the sheet, answered with a default).
 - **Cordyfriend.** When a spored foe falls (the host's despawn hook) and its last cannon has Cordyceps, a roll of 20%
   + 5% a stack raises a Cordyfriend on the foe's tile, a networked unit owned by the cannon's player (spawned as the

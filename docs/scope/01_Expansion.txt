@@ -25,4 +25,4 @@
 		- Where: a zip you share yourself /~ The game has no Steam Workshop. Kit docs/14 section 4 \
 		- Yossele outside the mode: Yossele plays in a normal game. No {Fertilize} in the first release, since it is unlocked only by a [Direction] and [Directions] exist only in the mode -> 07_Vessel_Yossele.txt [Ability]
 		- Ready when: Yossele matches 07_Vessel_Yossele.txt, carries your own sprites, passes its PC self-test and your play test, and you say ship
-		- Status: Yossele's next build from the newest 07 comes next. /~ docs/PLAN.md Part B "Release 1" \
+		- Status: Yossele 0.2.0-dev is built from 07 and installed for your play test; your sprites, your balance pass and the one-part pack come next. /~ docs/PLAN.md Part B "Release 1" \

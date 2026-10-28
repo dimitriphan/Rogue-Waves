@@ -14,7 +14,7 @@ public static class ModKitPlay
     public static string Hero = "";                  // the vessel to pick on the boat
     public static string[] Plans = new string[0];    // the maps to play, in order (a Gameplan's Objectname)
     public static int PlanIndex;
-    public static Func<IEnumerator> Scenario;        // runs once a match is on; ModKitPlay.Next() moves to the next map
+    public static Func<IEnumerator> Scenario;        // runs once a match is on; when it returns, RunScenario moves to the next map
     public static bool Done;
 
     static int phase;                                 // 0 main menu, 1 world map, 2 match starting, 3 scenario running

@@ -228,9 +228,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
-  rounds passed; full re-test 2026-10-11, 208/0). Yossele 0.1.0-dev is built (PC round 8, 98/0, Dimitri's play notes
-  folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels; RogueLab
+- **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` (0.2.1: sea chart, sea weather, rejoin; solo PC
+  rounds passed; full re-test 2026-10-11, 208/0; 0.3.0 below). Yossele 0.2.0-dev is built and is Dimitri's play build
+  (2026-10-23 below; 0.1.0-dev, PC round 8, 98/0, is parked). Kit chapters 17 (base vessels; RogueLab
   round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
   Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
