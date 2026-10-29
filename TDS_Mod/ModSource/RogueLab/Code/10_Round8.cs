@@ -12,6 +12,7 @@ public static class RogueLabRound8
 {
     const string Archer = "Tower_Smackyarcher", Wall = "Tower_Smackywall";
     const long Stranger = -1;                         // "no player", as map objects are owned: stands in for a teammate
+    const float CoinRed = 100f;                       // N4: Red_Add, large next to Tide 1's own aura
     static readonly string[] Colours = { "Redaura", "Blueaura", "Yellowaura" };
     static readonly List<Vector3> used = new List<Vector3>();
     static readonly List<string> errors = new List<string>();
@@ -313,7 +314,8 @@ public static class RogueLabRound8
     }
 
     // ---- R6: a held aura loop (Cursed's shape): towers within 3 of a source get a held Damage Multi -0.3, removed
-    // when they are out of range or the source is gone. The source here is a wall that is then removed.
+    // when they are out of range or the source is gone. The source here is a wall that is then removed. The loop skips
+    // the source and forgets towers that died (round 8 ran without both and counted the dead source as still held).
     static IEnumerator Aura()
     {
         Entity_Master src = Place(Wall, hero, hero.Entityposition.Value, 6f);
@@ -333,13 +335,15 @@ public static class RogueLabRound8
             if (Game_Entity.Instance.Entitiesserver.TryGetValue("Tower", out towers))
                 foreach (Entity_Master t in new List<Entity_Master>(towers))
                 {
-                    if (!RogueLabUtil.Alive(t) || RogueLabUtil.Owner(t) != RogueLabUtil.LocalId) continue;
+                    if (t == src || !RogueLabUtil.Alive(t) || RogueLabUtil.Owner(t) != RogueLabUtil.LocalId) continue;
                     bool inRange = alive && ModKitTest.Flat(t.Entityposition.Value, src.Entityposition.Value) <= 3f;
                     Link_Modifier m;
                     bool has = held.TryGetValue(t, out m);
                     if (inRange && !has) held[t] = Helper_Entitytools.Addmod(t, "Damage", -0.3f, Helper_Entitytools.Modtypes.Multi, 0f);
                     if (!inRange && has) { m.Remove(); held.Remove(t); }
                 }
+            foreach (Entity_Master t in new List<Entity_Master>(held.Keys))
+                if (!RogueLabUtil.Alive(t)) held.Remove(t);
             yield return new WaitForSeconds(0.5f);
             if (k == 3) { n1 = Stat(near, "Damage"); f1 = Stat(far, "Damage"); Helper_Entitytools.Despawn(src.Beingserver, false, "RogueLab"); }
         }
@@ -382,7 +386,7 @@ public static class RogueLabRound8
         Upgradeproperties coinNull = Up("Coinnull", "Entity_Ai_Artifact_Coin", zero);
         string bare = Try(() => Helper_Entitytools.Upgrade(core, coinNull, Helper_Entitytools.Upgradecheck.Forced, null));
         Helper_Entitytools.Removeupgrade(core, coinNull);
-        coin = Up("Coin", "Entity_Ai_Artifact_Coin", P("Red_Base", 0f, "Blue_Base", 0f, "Yellow_Base", 0f, "Red_Add", 7f, "Blue_Add", 0f, "Yellow_Add", 0f));
+        coin = Up("Coin", "Entity_Ai_Artifact_Coin", P("Red_Base", 0f, "Blue_Base", 0f, "Yellow_Base", 0f, "Red_Add", CoinRed, "Blue_Add", 0f, "Yellow_Add", 0f));
         card.Coreupgrades.Add(coin);
         string carried = Try(() => Helper_Entitytools.Upgrade(core, coin, Helper_Entitytools.Upgradecheck.Forced, card));
         yield return new WaitForSeconds(0.5f);
@@ -462,8 +466,10 @@ public static class RogueLabRound8
 
         int total = vars.Mode != null ? vars.Mode.Enemies.Totalwaves : 0;
         int factor = total > 0 ? 30 / total : 0;
-        float expect = 7f * vars.Wave.Value * factor * vars.Resourcegainmultiplier;
-        RogueLabProbe.Check("N4 Coin pays Red_Add x Tide x (30 / Totalwaves) in whole numbers", total > 0 && Near(w1[0] - w0[0], expect, 0.6f),
+        // Tide 1 pays its own aura too (round 7 and 8: about R+20 B+70 Y+70 here), so Red_Add is large and the
+        // tolerance absolute; round 8 ran with Red_Add 7 and a relative 0.6, which let R+90 for +70 pass.
+        float expect = CoinRed * vars.Wave.Value * factor * vars.Resourcegainmultiplier;
+        RogueLabProbe.Check("N4 Coin pays Red_Add x Tide x (30 / Totalwaves) in whole numbers", total > 0 && Mathf.Abs(w1[0] - w0[0] - expect) <= 40f,
             "Totalwaves " + total + ", 30 / it = " + factor + ", Tide " + vars.Wave.Value + ", gain " + RogueLabUtil.F(vars.Resourcegainmultiplier) + ": expected Red +" + RogueLabUtil.F(expect)
             + ", wallet R+" + RogueLabUtil.F(w1[0] - w0[0]) + " B+" + RogueLabUtil.F(w1[1] - w0[1]) + " Y+" + RogueLabUtil.F(w1[2] - w0[2]) + " (other income shows in B and Y)");
 
