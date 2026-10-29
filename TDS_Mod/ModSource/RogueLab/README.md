@@ -16,6 +16,7 @@ chapter's "untested" lines by doing each thing once on a solo host and logging o
 | Round 5 (0.4.1) | round 4 again with its probe bugs fixed | `docs/reports/MECHANICS_CHECK.md` §3 |
 | Round 6 (0.4.2) | round 5 again with the menu probes fixed, plus M4b | `docs/mode/MAIN_MENU_START.md` §5 |
 | Round 7 (0.5.x, `09_Round7.cs`) | the stock Cardinals' core upgrades at boot; in map 1 price scales, summed percentages, a −3 upgrade on three buildings, the Bout Way's prices, a re-routed path, unit counts on the Hut, Keep and Garage, a den and an ore node spawned mid-match, the `Sno` tag grab, and four timed respawns | kit `docs/17` §12, `docs/16` §9 |
+| Round 8 (0.6.0, `10_Round8.cs`) | Play with no Cardinal, Boutman, as round 7; in map 1's break the engine study's probes on pack upgrades made at run time: a stock timed buff on pack numbers (R1), the same upgrade twice and a second asset (R2, N1), two upgrades sharing a script (N2), an owner-filtered spawn hook (R8), Teamapply and owners (N13), a Light stat fed by timed mods (R3), a death node with Initstats (R4), a held aura loop (R6), a pack Cardinal on Vintage (R5), Coin with and without its Cardinal (N3), Melting's drained stats (N5); at Tide 1 the stock regen pulse (R7), Coin's `30 / Totalwaves` (N4) and Chrono's starting speed (N7); leaves as a win and stops | `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` §11, `docs/reports/ENGINE_STUDY_2026-10-28.md` §14 |
 
 Compiled here (`check_mod.py RogueLab/Code Shared RogueLab "ROGUELAB_SELFTEST"`, 0 errors). Round 1 ran on the PC on
 2026-10-08: 13 pass, 0 fail; results in `docs/15` §11, every line in `TDS_Vessel_Creator/reference/roguelab_round1.txt`.
@@ -24,7 +25,17 @@ Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a ha
 0 fail**, the eight-card dialog worked with its menu up, all 15 tour maps loaded; lines in `roguelab_round3.txt`.
 Rounds 4-6 (2026-10-09) checked the scope's new mechanics and the main-menu button: 11 pass, 5 fail, 1 setup; then
 20 pass, 2 fail; then **22 pass, 0 fail** (the failures were probe bugs; `docs/reports/MECHANICS_CHECK.md` §3).
-RogueLab's research is done; it stays in the repository as the record and is never released.
+RogueLab stays in the repository as the record and is never released; round 8 (2026-10-29) reopened it for the engine study.
+
+## Round 8 (2026-10-29)
+
+RogueLab 0.6.0 (`10_Round8.cs`, `RogueLabData.Round = 8`) checks the engine study of 2026-10-28: the eight probes of
+`docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` §11 and the facts of `docs/reports/ENGINE_STUDY_2026-10-28.md` §14 that a
+solo host can see (N1-N5, N7, N13; not N6, N8-N12, and never N12, which would write a stock unlock into the save). It
+starts like round 7 (Play, no Cardinal, Boutman), loads Smacky's group for the archers and walls the probes stand on,
+and makes every probe upgrade at run time from a template, listing stock scripts by name as pack data would. Handoff
+`RogueLab_round8`; `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes 15`; the round takes about 3 minutes and
+needs no click. **Afterwards remove `RogueLabMod` from the game's Mods folder and put Dimitri's play build back.**
 
 ## Round 7 (2026-10-12)
 
