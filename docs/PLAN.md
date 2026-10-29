@@ -247,7 +247,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: the game's code read system by system and the scope fitted to it
   (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
   `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
-  Older entries are in "Log" below.
+  2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
+  the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -260,10 +261,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6). The fit plan's eight probes (`SCOPE_FIT_PLAN_2026-10-28.md` §11) ride the next RogueLab-style
-  round after Release 1; the engine study's 13 read facts (§14) go into the kit's pitfalls only once seen.
+  B1-22, B1-4, C2-6). The fit plan's eight probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11);
+  of the engine study's 13 facts (§14), N6 and N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
+- **Next free numbers:** kit chapter 25, pitfall #121 (#113 is the Spool thread's, #114 the play test's Hallucinogen look, #115-#120 the engine study's round 8; #92 is unused).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -448,6 +449,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a stock pattern, none on a new mechanic once Uloe's light is a stat and Photons walk like Kippy; it offers
   stock-script options for six `! NEEDS !` lines (scope untouched) and eight PC probes. Nothing compiled or run; the PC
   was not touched. PR #48.
+- **2026-10-29, RogueLab round 8:** at Dimitri's ask ("Do a PC round to check") RogueLab 0.6.0 (`10_Round8.cs`) ran the
+  fit plan's probes R1-R8 and the engine study's N1-N5, N7 and N13 on a solo host: 20 pass, 1 fail (R6's own
+  bookkeeping), then **21 pass, 0 fail** after a one-file fix (handoff `RogueLab_round8b`). Seen in game: a stock script
+  runs on pack data once it has every param key it reads; the same upgrade twice does nothing and differently named
+  copies stack; removing one of two upgrades that share a script keeps both running; Teamapply reaches every player's
+  buildings and keeps reaching new ones after removal, while an owner-filtered spawn hook reaches only that player's;
+  a light stat sums sources that each replace their own 1.5 s mod; a death node pays once; Vintage and Coin work as pack
+  Cardinals with their `Artifactobject`; Melting's drain stays; Smackywall's regen heals at the Tide change; Chrono
+  starts at ×1.25. New kit pitfalls #115-#120, kit `16` §3 (Chrono), `17` §9 (Teamapply), `13` §3 (`30 / Totalwaves`),
+  `08` §6 (shutdown noise); every line in `TDS_Vessel_Creator/reference/roguelab_round8.txt`. Dimitri's Yossele
+  0.1.0-dev play build was parked for each launch and put back. PR #48.
 
 ### Decisions
 

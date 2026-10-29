@@ -418,7 +418,7 @@ one exception. Each row says what a **pack vessel** needs for the Cardinal to wo
 | Bottom Rock | disables `Buildoption1..4` past its limit; the count is **team-wide** (Artifact_Bottomrock_Effect.cs:32, 56-64) | the same command names (any other `Build*` command escapes the limit) |
 | Voice in a Bottle | `Entity_Ai_General_Upgrade` on buildings whose parent is tagged `Hero` | nothing possible: it removes itself from kit buildings (§2.7) |
 | Diorama, Blurry Photo | set `Skin` = the being's name (`<name>2` for the clone) | a `Skinoverride` of that name for the look; never drive the vessel's own stages by `Skin`; the clone (tags `Clone`, `Prespawn`, parent a `Hero`) also fires the pack's `Onspawn` |
-| Pig Named Bank, Voiceapply, Teamapply | the thing's **parent tagged `Hero`** | build through `Hero_Buildsell`; a building's units (parent = building) are left out, as for the base vessels |
+| Pig Named Bank, Voiceapply, Teamapply | the thing's **parent tagged `Hero`**, whoever owns it: Teamapply reached another player's building and kept reaching new ones after its upgrade was removed (verified, RogueLab round 8; pitfall #118) | build through `Hero_Buildsell`; a building's units (parent = building) are left out, as for the base vessels |
 | Heroapply family (Sport Water, Fluffy Slippers, Diorama, Money Bag...) | data tag `Hero` and the core's `Child` | tag `Hero`; a minion that builds and calls the core's `Child` (Boutbro) gets them too |
 | Towerapply (Rusty Pipe, Frail Titan) | data tag `Tower` | `Tower` on every building (traps and the Bouthouse are skipped) |
 | Mobapply, Aura Gavel, Kippy, Checklist | data tag `Mob` | `Mob` on the vessel and every unit (Boutdad has none, so it is skipped) |

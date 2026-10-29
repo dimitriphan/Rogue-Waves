@@ -25,7 +25,8 @@ Round 2 ran on 2026-10-09: 15 pass, 1 fail (the dialog), 28 tour maps, then a ha
 0 fail**, the eight-card dialog worked with its menu up, all 15 tour maps loaded; lines in `roguelab_round3.txt`.
 Rounds 4-6 (2026-10-09) checked the scope's new mechanics and the main-menu button: 11 pass, 5 fail, 1 setup; then
 20 pass, 2 fail; then **22 pass, 0 fail** (the failures were probe bugs; `docs/reports/MECHANICS_CHECK.md` §3).
-RogueLab stays in the repository as the record and is never released; round 8 (2026-10-29) reopened it for the engine study.
+RogueLab stays in the repository as the record and is never released; round 8 (2026-10-29) reopened it for the engine
+study: 21 pass, 0 fail on its second launch.
 
 ## Round 8 (2026-10-29)
 
@@ -36,6 +37,13 @@ starts like round 7 (Play, no Cardinal, Boutman), loads Smacky's group for the a
 and makes every probe upgrade at run time from a template, listing stock scripts by name as pack data would. Handoff
 `RogueLab_round8`; `Run-SelfTests.ps1 -Vessels RogueLab -TimeoutMinutes 15`; the round takes about 3 minutes and
 needs no click. **Afterwards remove `RogueLabMod` from the game's Mods folder and put Dimitri's play build back.**
+
+It ran on the PC on 2026-10-29 in two launches: **20 pass, 1 fail**, then (handoff `RogueLab_round8b`, one file)
+**21 pass, 0 fail**. The failure was the probe's own: R6's held list counted its source wall, which stood within 3 of
+itself and was then removed; the rerun skips the source and forgets dead towers. The rerun also checks N4 on a large
+`Red_Add` with an absolute margin, since Tide 1 pays its own aura here (about R+20 B+70 Y+70; the first launch's
+relative margin let R+90 pass for +70, which was in fact right: 20 + 70). Results in the fit plan's §11 and the engine
+study's §14; every line in `TDS_Vessel_Creator/reference/roguelab_round8.txt`; new kit pitfalls #115-#120.
 
 ## Round 7 (2026-10-12)
 

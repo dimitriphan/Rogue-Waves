@@ -1,0 +1,45 @@
+RogueLab round 8 (2026-10-29), the engine study's probes (docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §11, R1-R8;
+ENGINE_STUDY_2026-10-28.md §14, N1-N5, N7, N13), every round-8 line of two launches on Dimitri's PC. Solo host,
+Boutman, on 3B_Thehunt; the "[RogueLab] TEST " prefix is cut.
+
+== Launch 1 (0.6.0 at fb61f29, local 00:24): 20 pass, 1 fail
+map 1: RogueLab_3B_Thehunt on Map_Thehunt
+PASS map 1 plays the mod mode: mode Mode_RogueLab, entry Mode_RogueLab, Gameplan RogueLab_3B_Thehunt, Mode_Normal script True, table 6
+INFO round 8 setup: group Hero_Smacky True 0.118 s, template Hero_Boutman_Tooltip_Upgradeproperties, archer True, wall True, vessel Hero_Boutman, Totalwaves 3, gain 1, wallet R1056 B1081 Y1081
+INFO R1 Barrel_Boost with only Damage_Multi and Duration_Base: KeyNotFoundException: The given key 'Health_Pmulti' was not present in the diction
+PASS R1 a stock timed buff runs on pack numbers: x0.7 for 5 s, then back and gone: archer Damage 4 -> 2.8 -> after 6.5 s 4, upgrades gone True
+PASS R2 N1 the same upgrade applied twice changes nothing: Damage 2.8 -> 2.8, Entity_Ai_Effect_Barrel_Boost instances 1 -> 1
+PASS R2 a second asset with another name stacks: Damage 1.6 (x0.4), instances 2
+INFO N2 the pricked wall: Health 50/50
+PASS N2 removing one of two upgrades that share a script keeps both instances running: wall lost 0 with no thorns, 1 with A (1), 3 with A and B (1+2), 3 after A was removed, 0 after B; instances 2 -> 2 -> 0
+PASS R8 an owner-filtered spawn hook reaches only that player's towers: mine (owner 1) has it True, wall lost 2; the stranger's (owner -1, parent Hero_Boutman) has it False, wall lost 0
+PASS R8 a tower built again gets it again: rebuilt True
+PASS N13 Teamapply reaches a building whose owner is another player: the local player's archer has it True, the stranger's (owner -1, parent the vessel) has it True
+INFO N13 after Teamapply's upgrade is removed: a new archer still gets the gift: True (its spawn handler is never removed)
+PASS R3 a Light stat sums its sources and fades when they stop: two sources 2, one 1, 1.5 s after the last 0; each second [2 2 2 2 1 1 1 1]
+INFO R3 one source adding a 1.5 s mod every second without replacing it: right after each add and 0.6 s later [1 1 2 1 2 1 2 1], then 0
+PASS R4 a death node with Initstats Healthresource 12 dies after about 12 hits and pays once: a copy of Resource_Red [Entity_Ai_Resource_Mine->Entity_Ai_Resource_Death, Entity_Ai_General_Adjacentblocker]: Health 1/1, Healthresource 12/12, Redauramine 5; died True after 13 hits, paid 1 times, wallet R5 B0 Y0
+FAIL R6 a held aura loop marks towers in range and lets them go when the source leaves: near archer 2 away: 4 -> 2.8 -> source gone 4; far archer 4.243 away: 4 -> 4; still held 1
+PASS R5 a pack Cardinal on the stock Vintage script, granted mid-map with its Artifactobject, lengthens the break: break state 'Between', Time_Wave jumped +40 (Timeinit_Base 40), errors none
+PASS N3 the stock Coin script throws without its Cardinal and runs with it: no Cardinal: NullReferenceException: Object reference not set to an instance of an object; with the Artifactobject: no exception
+PASS N5 Melting's drained stats stay after it ends: archer Damage 4 -> 3.184 while on (True) -> 3.184 after it ended (gone True)
+INFO R7 set-up: neighbour 1.414 from the healer, hurt to Health 15/25, healer Level 1
+PASS R7 a pack building on the stock Smackywall_Regen heals a hurt neighbour at the Tide change: neighbour's health layers 15 -> 20 (Health 20/25)
+PASS N4 Coin pays Red_Add x Tide x (30 / Totalwaves) in whole numbers: Totalwaves 3, 30 / it = 10, Tide 1, gain 1: expected Red +70, wallet R+90 B+70 Y+70 (other income shows in B and Y)
+PASS N7 the Chrono brain runs the map at x1.25 before its first step: Time_Scale 1 in the break, 1 0.5 s into Tide 1, 1.25 3 s in (Lingertime 1, Quickspeed 99)
+DONE pass 20, fail 1, setup 0
+(Exceptions after "map 1": the two the probes caught above, and the game's own NullReferenceException at Game_Init.OnDestroy
+on shutdown, as in earlier rounds.)
+
+The FAIL is the probe's bookkeeping: the source wall stood within 3 of itself, was marked, then despawned, and the loop
+skipped dead towers, so its entry stayed. Both archers read right. N4's check was too loose (a relative 0.6): Tide 1
+pays its own aura here (round 7: about R+20 B+70 Y+70), so R+90 = 20 + Coin's 70. Both checks were fixed (5edafee)
+and launch 2 reran the round.
+
+== Launch 2 (0.6.0 at 5edafee, handoff RogueLab_round8b, local 00:33): 21 pass, 0 fail
+Every line as launch 1 (the same readings to the digit) except these two:
+PASS R6 a held aura loop marks towers in range and lets them go when the source leaves: near archer 2 away: 4 -> 2.8 -> source gone 4; far archer 4.243 away: 4 -> 4; still held 0
+PASS N4 Coin pays Red_Add x Tide x (30 / Totalwaves) in whole numbers: Totalwaves 3, 30 / it = 10, Tide 1, gain 1: expected Red +1000, wallet R+1020 B+70 Y+70 (other income shows in B and Y)
+DONE pass 21, fail 0, setup 0
+(Exceptions after "map 1": the two the probes caught, then ten NullReferenceExceptions after DONE at
+Bl_Sound.Stopgroup as the game shut down.)

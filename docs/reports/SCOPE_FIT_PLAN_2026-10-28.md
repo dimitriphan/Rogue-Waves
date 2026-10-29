@@ -1,5 +1,13 @@
 # The scope on the game's own mechanics: a fit plan (2026-10-28)
 
+> **Since (2026-10-29):** the eight probes of §11 ran on Dimitri's PC in RogueLab round 8 and all passed (21/0 on the
+> rerun; `TDS_Vessel_Creator/reference/roguelab_round8.txt`). Every route they settle is now **proven**: rung B as a
+> whole (a stock script on pack data, with every param key it reads), numbered ranks, Uloe's light stat, a death node
+> with its own hit count, a pack Cardinal on a stock script, the held aura loop, the regen building and the
+> owner-filtered spawn hook. Two details changed, both in §11: a stock script needs **all** its param keys (Blind on
+> Barrel_Boost lists five, the unused at 0), and each light source must **replace** its own timed mod, not add
+> another. The tables below still say **read** where they were written; §11 says which rows that now means proven.
+
 Dimitri asked (2026-10-28): plan how the ideas in the scope could fit in seamlessly without creating new mechanics.
 This page walks `docs/scope/` (00-16, as on 2026-10-28) idea by idea and names, for each, the stock mechanic, class or
 data path it rides on. The engine tour behind it is `ENGINE_STUDY_2026-10-28.md`; the stock scripts it names are
@@ -38,7 +46,8 @@ What this reading changes in the plan:
    objectives (it writes Buster's unlock keys), the Opal Core for thorns (it announces "BASIN GROWS STRONGER"), and
    the vessel's own visual script on VENDCINT (a player arrow and "VESSEL DROWNED") (§3, §5, §6, §4.1).
 
-Eight probes (§11) would prove the read routes in one RogueLab-style round after Release 1.
+Eight probes (§11) would prove the read routes in one RogueLab-style round after Release 1. (They ran on 2026-10-29,
+ahead of Release 1, and all passed: §11.)
 
 ## 2. The mode (`04`, `05`)
 
@@ -264,16 +273,22 @@ is those two in order. For a smaller safety net inside a map, the stock Loop Car
 
 ## 11. What to prove on the PC
 
-Every **read** route above can ride the next RogueLab-style round (after Release 1, Part C of `docs/PLAN.md`); none
-needs a round of its own. The probes that settle the most rows at once:
+Every **read** route above could ride one RogueLab-style round; none needed a round of its own. They ran as RogueLab
+round 8 on 2026-10-29 (Dimitri's "Do a PC round to check"): the first launch passed 20 and failed one on the probe's
+own bookkeeping, the rerun passed all 21. Results are from the rerun; every line is in
+`TDS_Vessel_Creator/reference/roguelab_round8.txt`.
 
-| # | Probe | Pass when | Settles |
-| --- | --- | --- | --- |
-| R1 | A pack upgrade listing `Entity_Ai_Effect_Barrel_Boost` with only `Damage_Multi` −0.3 and `Duration_Base` 5, put on a foe | its Damage is ×0.7 for 5 s, then back, and the upgrade is gone | rung B as a whole: a stock script runs on pack data (Blind, §7.1, §8) |
-| R2 | The same upgrade applied twice; then a second asset with another name | the second apply changes nothing; the second asset stacks | Direction ranks, Cardinal stacking (§4, §7) |
-| R3 | A `Light` stat on a pack tower, two sources each re-adding a 1.5 s `Add 1` every second | `Light` reads 2 with both in range, 1 with one, 0 about 1.5 s after both leave | Uloe's light (§10) |
-| R4 | A `Resource_Death` node spawned with `Initstats` `Healthresource` 12 | it dies and pays once after 12 hits | Mind the Meteor (§6) |
-| R5 | A pack Team Cardinal whose core upgrade lists `Entity_Ai_Artifact_Vintage`, granted mid-map with its `Artifactobject` | breaks lengthen by its param; no exception | Cardinals as data (§4.1) |
-| R6 | Cursed's loop on a foe: player towers within 3 get a held `Damage` Multi −0.3, removed when it leaves | a nearby tower's Damage drops and comes back | Cursed, Dazzling (§5) |
-| R7 | A pack building listing `Entity_Ai_Effect_Smackywall_Regen` | hurt neighbours heal at the next Tide | Sewing Machine, Yarn Stash option (§7, §8) |
-| R8 | The pack's spawn hook adds a −3 upgrade listing `Entity_Ai_Effect_Smackywall_Bramble` to one player's new towers | that player's towers prick attackers, a teammate's don't; a sold and rebuilt tower gets it again | any-vessel Directions (§7.1) |
+| # | Probe | Pass when | Settles | Result (round 8) |
+| --- | --- | --- | --- | --- |
+| R1 | A pack upgrade listing `Entity_Ai_Effect_Barrel_Boost` with only `Damage_Multi` −0.3 and `Duration_Base` 5, put on a foe | its Damage is ×0.7 for 5 s, then back, and the upgrade is gone | rung B as a whole: a stock script runs on pack data (Blind, §7.1, §8) | **pass** on a tower (a player's, so the probe could build it), with all five keys the script reads (the other three at 0): 4 → 2.8 → 4 after 6.5 s, upgrade gone. With only the two keys it throws `KeyNotFoundException: 'Health_Pmulti'`: pack data copies a stock upgrade's keys whole (pitfall #117) |
+| R2 | The same upgrade applied twice; then a second asset with another name | the second apply changes nothing; the second asset stacks | Direction ranks, Cardinal stacking (§4, §7) | **pass**: 2.8 stayed 2.8 with one instance; the second asset made 1.6 (×0.4, the `Multi` bucket sums) (pitfall #115) |
+| R3 | A `Light` stat on a pack tower, two sources each re-adding a 1.5 s `Add 1` every second | `Light` reads 2 with both in range, 1 with one, 0 about 1.5 s after both leave | Uloe's light (§10) | **pass** when each source **removes its own last mod before adding the next**: each second `[2 2 2 2 1 1 1 1]`, then 0. Adding without removing reads double half the time (`[1 1 2 1 2 1 2 1]`; pitfall #119) |
+| R4 | A `Resource_Death` node spawned with `Initstats` `Healthresource` 12 | it dies and pays once after 12 hits | Mind the Meteor (§6) | **pass**: a node with `Entity_Ai_Resource_Death` (a copy of `Resource_Red`, its mine script swapped) died on hit 13 and paid once; as kit pitfall #106 says, the hit that takes it from 0 is the one that pays, so N hits need `Healthresource` N − 1 |
+| R5 | A pack Team Cardinal whose core upgrade lists `Entity_Ai_Artifact_Vintage`, granted mid-map with its `Artifactobject` | breaks lengthen by its param; no exception | Cardinals as data (§4.1) | **pass**: the break's timer jumped +40 (`Timeinit_Base` 40), no error |
+| R6 | Cursed's loop on a foe: player towers within 3 get a held `Damage` Multi −0.3, removed when it leaves | a nearby tower's Damage drops and comes back | Cursed, Dazzling (§5) | **pass** with a wall as the source: 2 away 4 → 2.8 → 4 once the source was gone; 4.2 away untouched. The loop must skip its own source and forget towers that die (the first launch's one failure) |
+| R7 | A pack building listing `Entity_Ai_Effect_Smackywall_Regen` | hurt neighbours heal at the next Tide | Sewing Machine, Yarn Stash option (§7, §8) | **pass**: a neighbour 1.4 away healed 15 → 20 at Tide 1 (`Effect_Add` 5) |
+| R8 | The pack's spawn hook adds a −3 upgrade listing `Entity_Ai_Effect_Smackywall_Bramble` to one player's new towers | that player's towers prick attackers, a teammate's don't; a sold and rebuilt tower gets it again | any-vessel Directions (§7.1) | **pass**: the player's tower had it and pricked; another owner's (−1, standing in for a teammate) had not; a rebuilt one had it again |
+
+Also seen in the same round: N1-N5, N7 and N13 of the engine study (its §14). Teamapply reaching every player's
+buildings, and new ones even after its upgrade is removed, is now verified, so per-player Directions keep the pack's
+owner-filtered hook (R8). Online behaviour (a real teammate, a client) is still read only.

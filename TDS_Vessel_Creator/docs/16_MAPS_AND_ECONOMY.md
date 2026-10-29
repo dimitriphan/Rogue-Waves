@@ -79,7 +79,7 @@ Each is a being placed by a map; its team and skin come from data (`Modeobject.S
 | AI | What it does (read) | Trigger |
 | --- | --- | --- |
 | `Main_Flood` | rises a step per Tide toward `Maxheight` (`Heightspeed`, slower past `Halfheight`, `Quarterheight`), spawns `Block_Flood_Deter` on every surface tile it covers, multiplies the velocity of projectiles inside it by `Projslow` (Entity_Ai_Main_Flood.cs:15-80) | Wave |
-| `Main_Chrono` | from Tide `Quickspeed` / `Doublespeed` / `Superspeed` sets the networked game speed `Game_Mapvars.Time_Scale` to 1.5 / 2 / 2.25, back to 1 for `Lingertime` s after each Tide change, with a warning popup ("THE CLOCK QUICKENS") (Entity_Ai_Main_Chrono.cs:14-53) | Wave |
+| `Main_Chrono` | from Tide `Quickspeed` / `Doublespeed` / `Superspeed` sets the networked game speed `Game_Mapvars.Time_Scale` to 1.5 / 2 / 2.25, and to **1.25 before `Quickspeed`** (verified, RogueLab round 8, 2026-10-29: 1.25 three seconds into Tide 1), back to 1 for `Lingertime` s after each Tide change, with a warning popup ("THE CLOCK QUICKENS") (Entity_Ai_Main_Chrono.cs:14-53) | Wave |
 | `Main_Tpgate` | at `Starting` links its node to every other `Tp`-tagged entity sharing an upgrade key, then teleports any being arriving from more than 2 units away (Entity_Ai_Main_Tpgate.cs:11-81) | node |
 | `Main_Subcore` | survives the first lethal hit at 1 HP; on death, after 4 s, kills every non-team mob and tower within 10, then the rest (Entity_Ai_Main_Subcore.cs:11-108) | death |
 | `Main_Enemycoresplit` (+ `_Effect`) | at Tide 1 upgrades every enemy core so its spawns fan out to the other enemy cores ("Spawnsplit") (Entity_Ai_Main_Enemycoresplit.cs:11-29; `_Effect`.cs:61-123) | Wave = 1 |

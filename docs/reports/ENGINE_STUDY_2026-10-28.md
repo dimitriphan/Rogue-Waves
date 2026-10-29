@@ -1,5 +1,11 @@
 # How TDS works: an engine study (2026-10-28)
 
+> **Since (2026-10-29):** RogueLab round 8 ran the facts a solo host can see on Dimitri's PC and passed 21/0
+> (`TDS_Vessel_Creator/reference/roguelab_round8.txt`, `TDS_Mod/ModSource/RogueLab/README.md`). N1-N5, N7 and N13 are
+> now **verified** and in the kit (pitfalls #115-#118 and #120, kit `16` §3 for N7, `17` §9 for N13); §14 marks each.
+> N6 and N8-N12 stay read only (N12 is never to be tried: it would write a stock unlock into the save). The rest of the
+> page is as written on 2026-10-28.
+
 Dimitri asked (2026-10-28): go through the game's code, understand as much as possible of how it works, and plan how
 the scope's ideas can fit in without new mechanics. This page is the first half: one tour of the game, system by
 system, with the classes and methods that run each part and what a mod can reach. The second half, the scope idea by
@@ -241,23 +247,24 @@ rallies, Fie's shop and wall buffs), need code to arm them (`Entity_Ai_Mob_Range
 
 ## 14. Facts new to the kit from this reading
 
-All **read**, none run in game. They go to the kit's pitfalls only once seen (PLAN Part A; next free pitfall #115).
+Written as **read**. RogueLab round 8 (2026-10-29) saw the ones marked **verified** below; they are in the kit now.
+The rest go to the kit's pitfalls only once seen (PLAN Part A).
 
 | # | Fact | Where (read) | Matters for |
 | --- | --- | --- | --- |
-| N1 | **The same upgrade applied twice does nothing**: `Upgrade` returns when the name is already on the entity | Helper_Entitytools.cs:470-473 | Direction ranks and stacked Cardinals need upgrades of their own (fit plan §4, §7) |
-| N2 | **Removing an upgrade keeps a script that another applied upgrade, or the entity, still names**; only its `Downgrade` runs | Helper_Entitytools.cs:565-590 | two pack upgrades sharing one stock script can't be removed one at a time (an invulnerability would stay) |
-| N3 | **Nine stock Cardinal scripts read `Artifactobj`** (Checklist, Coin, Computer, Greatspear, Moneybag, Moneybagold, Mooncore, Onetimebuild, Samedayshipping) and throw when listed on a plain upgrade; `Upgrade`'s fourth argument passes the Cardinal | Helper_Entitytools.cs:464, 494; Entity_Ai_Artifact_Coin.cs:35 | pack Cardinals built on those scripts (fit plan §4) |
-| N4 | **Several Cardinals scale by `30 / Totalwaves` in whole-number maths**, so any map reaches the same end value by its last Tide: exact on the campaign's 15 Tides (×2 per Tide), short on 16-29 Tides (×1), nothing past 30 (Rusty Pipe then divides by 0) | Entity_Ai_Artifact_Coin.cs:51-59; Caffeine, Moneybag, Opalcore, Rustypipe, Voice the same | stock and pack Cardinals on these scripts work as designed on 15-Tide maps; a map of another length should divide 30 |
-| N5 | **Melting never takes its drained stats back** when it ends, and hard-codes its look `Debuff_Melting` and its `Enemyweaken` counter | Entity_Ai_Effect_Enemy_Weaken.cs:35-59, 61-79 (no `Downgrade`) | Aging can't borrow it (fit plan §5) |
+| N1 | **The same upgrade applied twice does nothing**: `Upgrade` returns when the name is already on the entity. **Verified** (round 8: ×0.7 stayed ×0.7, one instance; a second asset with another name stacked to ×0.4); pitfall #115 | Helper_Entitytools.cs:470-473 | Direction ranks and stacked Cardinals need upgrades of their own (fit plan §4, §7) |
+| N2 | **Removing an upgrade keeps a script that another applied upgrade, or the entity, still names**; only its `Downgrade` runs. **Verified** (round 8: both thorn instances kept pricking 1 + 2 after one upgrade was removed); pitfall #116 | Helper_Entitytools.cs:565-590 | two pack upgrades sharing one stock script can't be removed one at a time (an invulnerability would stay) |
+| N3 | **Nine stock Cardinal scripts read `Artifactobj`** (Checklist, Coin, Computer, Greatspear, Moneybag, Moneybagold, Mooncore, Onetimebuild, Samedayshipping) and throw when listed on a plain upgrade; `Upgrade`'s fourth argument passes the Cardinal. **Verified** for Coin (round 8: NullReferenceException without it, clean with it); pitfall #117 | Helper_Entitytools.cs:464, 494; Entity_Ai_Artifact_Coin.cs:35 | pack Cardinals built on those scripts (fit plan §4) |
+| N4 | **Several Cardinals scale by `30 / Totalwaves` in whole-number maths**, so any map reaches the same end value by its last Tide: exact on the campaign's 15 Tides (×2 per Tide), short on 16-29 Tides (×1), nothing past 30 (Rusty Pipe then divides by 0). **Verified** for Coin on a 3-Tide map (round 8: Red_Add 100 paid +1000 at Tide 1); the rounding down itself is read only | Entity_Ai_Artifact_Coin.cs:51-59; Caffeine, Moneybag, Opalcore, Rustypipe, Voice the same | stock and pack Cardinals on these scripts work as designed on 15-Tide maps; a map of another length should divide 30 |
+| N5 | **Melting never takes its drained stats back** when it ends, and hard-codes its look `Debuff_Melting` and its `Enemyweaken` counter. **Verified** (round 8: Damage 4 → 3.18 and still 3.18 after it ended); pitfall #120 | Entity_Ai_Effect_Enemy_Weaken.cs:35-59, 61-79 (no `Downgrade`) | Aging can't borrow it (fit plan §5) |
 | N6 | **A shooter's despawn kills its live shots without their death effects** (no burst, no split) | Projectile_Ai_Base.cs:74-77, 97-101 | a unit or tower that dies with lobs in the air |
-| N7 | **The Chrono map runs ×1.25 before its first step**: the speed starts at 1.25 and is applied on every Tide change; kit `docs/16` §3 lists only 1.5/2/2.25. The pack's Quickening writes the speed itself, so it is not affected | Entity_Ai_Main_Chrono.cs:10-25, 27-54 | correcting `docs/16` §3 once seen |
+| N7 | **The Chrono map runs ×1.25 before its first step**: the speed starts at 1.25 and is applied on every Tide change; kit `docs/16` §3 lists only 1.5/2/2.25. The pack's Quickening writes the speed itself, so it is not affected. **Verified** (round 8: 1.25 three seconds into Tide 1); kit `16` §3 corrected | Entity_Ai_Main_Chrono.cs:10-25, 27-54 | correcting `docs/16` §3 once seen |
 | N8 | **No game AI uses randomness**: no `Entity_Ai_*` calls `Random`; every unit walks to a chosen goal | the whole decompile | Photons' wandering (fit plan §10) |
 | N9 | **The easier setting runs once per map** (a static guard), and its `Mode_Treated` flag is read only by the end screen's record check | Entity_Ai_Main_Core_Treated.cs:127-132; Game_Endscreen.cs:56 | Depth from it (fit plan §2.1) |
 | N10 | **A colour a player doesn't hold yet is paid at the unscaled amount**; only an existing entry gets the gain multiplier | Helper_Resources.cs:20-30 | none in play (the start aura gives every colour) |
 | N11 | **Vis "Fall" has no sender**: `Entity_Vis_Hero` plays `Falling` on it, but the only stock fall cue, `Effect_Chute`'s, is "Herofall", which no visual script handles | Entity_Vis_Hero.cs:185-194; Entity_Ai_Effect_Chute.cs:7-22 | a pack drop-in look sends its own cue |
 | N12 | **Boutman's foe look writes an unlock on every client that sees its KO** (`Enemy_Boutman_Defeat`) | Entity_Vis_Enemy_Boutman.cs:63-71 | never reuse that visual on a pack foe |
-| N13 | **The stock "everything a vessel builds" Cardinal script reaches every vessel's buildings**: it checks only that the parent is tagged `Hero`, and its team check compares a team with itself | Entity_Ai_Artifact_Teamapply.cs:10-16 | per-player Directions use the pack's own owner-filtered hook (fit plan §3) |
+| N13 | **The stock "everything a vessel builds" Cardinal script reaches every vessel's buildings**: it checks only that the parent is tagged `Hero`, and its team check compares a team with itself. **Verified** (round 8: another player's building got the gift, and new ones still did after the upgrade was removed); pitfall #118 | Entity_Ai_Artifact_Teamapply.cs:10-16 | per-player Directions use the pack's own owner-filtered hook (fit plan §3) |
 
 The kit already had the rest of what this reading touched (the Healthover overflow, the elites' removal bug, runtime
 tags missing from queries #84, the bounty's missing kill check, the Treated numbers).
