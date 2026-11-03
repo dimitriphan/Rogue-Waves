@@ -7,8 +7,8 @@
 // Keep to C# 9 (the game ships Roslyn 3.8) and stay out of System.IO / System.Reflection (blocked).
 //
 // How the pieces fit:
-//   YosseleContent   builds Yossele's game data (hero entry, beings, upgrades, commands, vines, fruit, the Compost Bin
-//                    Directions) by cloning the shipped vessels' objects and swapping in the asset pack.
+//   YosseleContent   builds Yossele's game data (hero entry, beings, upgrades, commands, vines, fruit, the Directions)
+//                    by cloning the shipped vessels' objects and swapping in the asset pack.
 //   YosseleServer    runs on the host: brains, Growth on each Tide, fertilizer and Compost Bin, fruit pick-ups.
 //   *Brain           per-entity server logic (vessel, Mushroom Cannon, Dandelion Tree, Stonehenge, Pachira Sapling).
 //   YosseleSpores    the cannon's spore stacks on foes (DOT, Sticky, Explosive Finish, Hallucinogen, Viral Outbreak).
@@ -18,7 +18,8 @@
 //                    Stonehenge's model by its placement orientation; YosseleContent.ShowFacing adds its arrows).
 //   YosseleJournal   the journal pages through the shared ModKitVesselJournal.
 //   Kit 1.6          ModKitPack, ModKitTides (Growth on each Tide), ModKitCounter (Growth, Seeds, fertilizer),
-//                    ModKitDirections (Compost Bin), ModKitFocus, ModKitTowers, ModKitBoat. The build renames ModKit.
+//                    ModKitDirections (Compost Bin, Dandelion Season, Mother of Mushrooms), ModKitFocus, ModKitTowers,
+//                    ModKitBoat. The build renames ModKit.
 using System;
 using System.Collections;
 using System.Collections.Generic;

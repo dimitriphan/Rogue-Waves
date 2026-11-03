@@ -118,6 +118,17 @@ public static class SpoolUtil
         return query;
     }
 
+    // Same-team units and buildings (the tags match on any of them, as Argo's Enemies query does).
+    public static Link_Entityquery Friends(Entity_Master master)
+    {
+        Link_Entityquery query = new Link_Entityquery();
+        query.Being = master.Beingserver;
+        query.Teamfor = true;
+        query.Tags = new List<string> { "Mob", "Tower" };
+        query.Style = Link_Entityquery.Styles.Both;
+        return query;
+    }
+
     public static Link_Entityquery Tagged(string tag)
     {
         Link_Entityquery query = new Link_Entityquery();

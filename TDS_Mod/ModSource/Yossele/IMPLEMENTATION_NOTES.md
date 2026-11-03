@@ -228,6 +228,23 @@ wins over `Art/Temporary/game_size/<name>.png`, either over the code; Aseprite f
 and `YosseleAttack-Sheet.png from Art/Temporary/`, footsteps on Move frames 0 and 3 still landing on the plants, and by
 eye the walk and the shot in all four facings.
 
+## Directions (kit 1.7)
+
+`YosseleContent.BuildDirections` registers Dandelion Season and Mother of Mushrooms beside Compost Bin, one upgrade per
+rank, each with `Clash` 1. The vessel's brain copies the ranks held to `YosselePlayer` twice a second; a Tree reads them
+and keeps held modifiers, and with none held it makes none. Defaults are in `02_Data.cs` ("default, docs/scope/11").
+
+- **Dandelion Season** (`Dandelionseason`): `TreeSlot` keeps offering the Tree (the Bonsai first while one is open, still
+  limit 1). A Tree has a -30% Multi on Damage and Range; its stages do 70% of a Tree's seeds and range, so its range stays
+  70% of a Tree's at any Growth. Rank II: stages do 25% more than that (87.5% of a Tree's). Rank III: +5% Damage and Range
+  per other Tree of the player's at max Growth, at most +50%.
+- **Mother of Mushrooms** (`Mushrooms`): no seeds (`Seeds` shows 0). Every 8 s every foe within Range carrying spores takes
+  2 per stack and loses them (rank III loses half, rounded up, for the full damage). A stage adds 0.5 tiles in place of 20%;
+  rank II +25% Range. The Tree's seed upgrades do nothing while it is a Mushboom; its Range upgrades still add.
+
+Same model and panel name for both, and the Bonsai stays a seed-firing Bonsai. It compiled, with and without
+`YOSSELE_SELFTEST`, but hasn't run in game.
+
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 
 Everything the gap list named is built (`DESIGN.md` has each rule and default): the ranged mouth laser and the new

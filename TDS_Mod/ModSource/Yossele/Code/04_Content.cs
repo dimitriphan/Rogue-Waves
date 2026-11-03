@@ -13,6 +13,7 @@ public static class YosseleContent
     public static readonly Dictionary<string, YosseleData.Upg> UpgradeDefs = new Dictionary<string, YosseleData.Upg>();
     public static Commandobject Fertilize, Colour;
     public static readonly List<Upgradeproperties> Compostbins = new List<Upgradeproperties>();
+    public static readonly List<Upgradeproperties> Treeshifts = new List<Upgradeproperties>();
     public static int VfxRegistered;
     public static bool IconsReady, LaserReady;
     public static string GroundFrom = "", LaserFrom = "", FriendFrom = "";
@@ -70,7 +71,7 @@ public static class YosseleContent
 
     public static string Summary()
     {
-        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + Compostbins.Count + " Directions, " + VfxRegistered + " effects, icons "
+        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + (Compostbins.Count + Treeshifts.Count) + " Directions, " + VfxRegistered + " effects, icons "
             + (IconsReady ? "ok" : "stock") + ", ground from " + GroundFrom + ", laser from " + LaserFrom + ", Cordyfriend from " + FriendFrom
             + ", towers fitted " + ModKitTowers.Fitted;
     }
@@ -656,17 +657,17 @@ public static class YosseleContent
         Register("Mob", ent);
     }
 
-    // ---------------------------------------------------------------- Compost Bin (Directions, docs/scope/11)
+    // ---------------------------------------------------------------- Directions (docs/scope/11)
 
     // One Direction per rank (kit 1.6 has no ranks): the mode lists them by their "Direction_" names and grants the pick;
-    // the vessel reads the highest rank held (YosseleServer.CompostRank). Each carries its numbers as params.
+    // the vessel reads the highest rank held (YosseleServer.CompostRank, DirectionRank). Each carries its numbers as params.
     static void BuildDirections()
     {
         Upgradeproperties template = null;
         foreach (Upgradeproperties u in Upgrades.Values) { template = u; break; }
         if (template == null)
         {
-            YosseleLog.Warn("no upgrade to make the Compost Bin Directions from");
+            YosseleLog.Warn("no upgrade to make the Directions from");
             return;
         }
         foreach (YosseleData.Compost c in YosseleData.Compostbins)
@@ -674,16 +675,37 @@ public static class YosseleContent
             Upgradeproperties d = ModKitDirections.Make(template, "Yossele", c.Name, c.Display, c.Desc);
             d.Defaultparams["Compost_Kills"] = c.Kills;
             d.Defaultparams["Compost_Radius"] = c.Radius;
-            foreach (KeyValuePair<string, float> kv in d.Defaultparams)
-            {
-                Upgradeproperties.Param p = new Upgradeproperties.Param();
-                p.Name = kv.Key;
-                p.Value = kv.Value;
-                d.Defaultparam.Add(p);
-            }
-            Register("Upgrade", d);
-            Compostbins.Add(d);
+            Compostbins.Add(RegisterDirection(d));
         }
+        // The Tree's two clash: Clash 1 lets the mode offer a player only one of them.
+        foreach (YosseleData.Shift s in YosseleData.Seasons)
+        {
+            Upgradeproperties d = ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc);
+            d.Defaultparams["Clash"] = 1f;
+            d.Defaultparams["Season_Share"] = YosseleData.SaplingShare;
+            Treeshifts.Add(RegisterDirection(d));
+        }
+        foreach (YosseleData.Shift s in YosseleData.Mushboomkits)
+        {
+            Upgradeproperties d = ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc);
+            d.Defaultparams["Clash"] = 1f;
+            d.Defaultparams["Mushboom_Every"] = YosseleData.MushboomEvery;
+            d.Defaultparams["Mushboom_Per"] = YosseleData.MushboomPerStack;
+            Treeshifts.Add(RegisterDirection(d));
+        }
+    }
+
+    static Upgradeproperties RegisterDirection(Upgradeproperties d)
+    {
+        foreach (KeyValuePair<string, float> kv in d.Defaultparams)
+        {
+            Upgradeproperties.Param p = new Upgradeproperties.Param();
+            p.Name = kv.Key;
+            p.Value = kv.Value;
+            d.Defaultparam.Add(p);
+        }
+        Register("Upgrade", d);
+        return d;
     }
 
     // ---------------------------------------------------------------- the vessel

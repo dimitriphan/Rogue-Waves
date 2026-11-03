@@ -11,6 +11,7 @@ public static class SpoolContent
     public static readonly Dictionary<string, Beingobject> Beings = new Dictionary<string, Beingobject>();
     public static readonly Dictionary<string, Upgradeproperties> Upgrades = new Dictionary<string, Upgradeproperties>();
     public static readonly Dictionary<string, SpoolData.Upg> UpgradeDefs = new Dictionary<string, SpoolData.Upg>();
+    public static readonly List<Upgradeproperties> Directions = new List<Upgradeproperties>();
     public static Commandobject Patch, Target, Spot, Return, Mend;
     public static int VfxRegistered;
     public static bool IconsReady;
@@ -61,6 +62,7 @@ public static class SpoolContent
         BuildPin();
         BuildHero(SpoolUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
+        BuildDirections();
         try { SpoolJournal.Build(template); }
         catch (Exception e) { SpoolLog.Warn("journal: " + e); }
         Bl_Address.Loadedfolders[SpoolData.Hero] = group;
@@ -68,7 +70,7 @@ public static class SpoolContent
 
     public static string Summary()
     {
-        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + VfxRegistered + " effects, icons " + (IconsReady ? "ok" : "stock")
+        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + Directions.Count + " Directions, " + VfxRegistered + " effects, icons " + (IconsReady ? "ok" : "stock")
             + ", blocks: token '" + TokenBlock + "', pin '" + PinBlock + "', Overstuffed '" + StuffedBlock + "', towers fitted " + ModKitTowers.Fitted;
     }
 
@@ -642,6 +644,54 @@ public static class SpoolContent
         Beings[SpoolData.Pin] = being;
         Register("Mob", being);
         Register("Mob", ent);
+    }
+
+    // ---------------------------------------------------------------- Directions (kit 1.7, docs/scope/11)
+
+    // One Direction per rank: the mode lists them by their "Direction_" names and grants the pick; the vessel's brain reads
+    // the highest rank held (SpoolHeroBrain.CheckDirections). Each carries its numbers as params; Clash 1 is one per group.
+    static void BuildDirections()
+    {
+        Upgradeproperties template = null;
+        foreach (Upgradeproperties u in Upgrades.Values) { template = u; break; }
+        if (template == null)
+        {
+            SpoolLog.Warn("no upgrade to make the Directions from");
+            return;
+        }
+        foreach (SpoolData.Recycler r in SpoolData.Recyclers)
+        {
+            Upgradeproperties d = ModKitDirections.Make(template, "Spool", r.Name, r.Display, r.Desc);
+            d.Defaultparams["Recycler_Percent"] = r.Percent;
+            if (r.Heal > 0f)
+            {
+                d.Defaultparams["Recycler_Heal"] = r.Heal;
+                d.Defaultparams["Recycler_Radius"] = r.Radius;
+            }
+            AddDirection(d);
+        }
+        foreach (SpoolData.Sewing s in SpoolData.Sewingmachines)
+        {
+            Upgradeproperties d = ModKitDirections.Make(template, "Spool", s.Name, s.Display, s.Desc);
+            d.Defaultparams["Clash"] = 1f;
+            d.Defaultparams["Sewing_Mine"] = SpoolData.SewingMine;
+            d.Defaultparams["Sewing_Radius"] = s.Radius;
+            d.Defaultparams["Sewing_Heal"] = s.Heal;
+            AddDirection(d);
+        }
+    }
+
+    static void AddDirection(Upgradeproperties d)
+    {
+        foreach (KeyValuePair<string, float> kv in d.Defaultparams)
+        {
+            Upgradeproperties.Param p = new Upgradeproperties.Param();
+            p.Name = kv.Key;
+            p.Value = kv.Value;
+            d.Defaultparam.Add(p);
+        }
+        Register("Upgrade", d);
+        Directions.Add(d);
     }
 
     // ---------------------------------------------------------------- the vessel

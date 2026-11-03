@@ -10,6 +10,7 @@ public static class ArgoContent
     public static readonly Dictionary<string, ArgoData.Upg> UpgradeDefs = new Dictionary<string, ArgoData.Upg>();
     public static readonly Dictionary<string, Projectileobject> Projectiles = new Dictionary<string, Projectileobject>();
     public static readonly Dictionary<string, Commandobject> Commands = new Dictionary<string, Commandobject>();
+    public static readonly List<Upgradeproperties> Directions = new List<Upgradeproperties>();
     public static bool IconsReady;
 
     static Bl_Address.Loadgroup group;
@@ -49,6 +50,7 @@ public static class ArgoContent
             BuildNaut(c);
         BuildHero(ArgoUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
+        BuildDirections();
         try { ArgoJournal.Build(template); }
         catch (Exception e) { ArgoLog.Warn("journal: " + e); }
         Bl_Address.Loadedfolders[ArgoData.Hero] = group;
@@ -56,7 +58,7 @@ public static class ArgoContent
 
     public static string Summary()
     {
-        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + Projectiles.Count + " projectiles, " + Commands.Count + " commands, icons " + (IconsReady ? "ok" : "stock");
+        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + Directions.Count + " Directions, " + Projectiles.Count + " projectiles, " + Commands.Count + " commands, icons " + (IconsReady ? "ok" : "stock");
     }
 
     // ---------------------------------------------------------------- registration
@@ -606,6 +608,36 @@ public static class ArgoContent
         Beings[crew.Being] = being;
         Register("Mob", being);
         Register("Mob", ent);
+    }
+
+    // ---------------------------------------------------------------- Directions (kit 1.7)
+
+    // One Direction per rank: the mode lists them by their "Direction_" names and grants the pick; the vessel's brain reads
+    // the highest rank held (ArgoServer.DirectionRank). Each carries its number as a param.
+    static void BuildDirections()
+    {
+        Upgradeproperties template = null;
+        foreach (Upgradeproperties u in Upgrades.Values) { template = u; break; }
+        if (template == null)
+        {
+            ArgoLog.Warn("no upgrade to make the Directions from");
+            return;
+        }
+        foreach (ArgoData.Direction[] ranks in new[] { ArgoData.Deepcurrents, ArgoData.Heavysalvos })
+            foreach (ArgoData.Direction r in ranks)
+            {
+                Upgradeproperties d = ModKitDirections.Make(template, "Argo", r.Name, r.Display, r.Desc);
+                d.Defaultparams["Bonus"] = r.Bonus;
+                foreach (KeyValuePair<string, float> kv in d.Defaultparams)
+                {
+                    Upgradeproperties.Param p = new Upgradeproperties.Param();
+                    p.Name = kv.Key;
+                    p.Value = kv.Value;
+                    d.Defaultparam.Add(p);
+                }
+                Register("Upgrade", d);
+                Directions.Add(d);
+            }
     }
 
     // ---------------------------------------------------------------- the vessel

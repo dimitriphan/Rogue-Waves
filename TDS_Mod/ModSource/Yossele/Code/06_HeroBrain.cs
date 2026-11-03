@@ -40,6 +40,7 @@ public class YosseleHeroBrain : MonoBehaviour
             if (Time.time >= nextCheck)
             {
                 nextCheck = Time.time + 0.5f;
+                CheckDirections();
                 CheckDandelion();
                 CheckFertilize();
             }
@@ -59,6 +60,7 @@ public class YosseleHeroBrain : MonoBehaviour
             BuildOption(i);
         Player = YosseleServer.Player(YosseleUtil.Owner(Master));
         Player.Hero = this;
+        CheckDirections();
         CheckDandelion();
         CheckFertilize();
         // Subscribed after the Updatecommand calls above, which run each command once.
@@ -111,6 +113,13 @@ public class YosseleHeroBrain : MonoBehaviour
     // server checks build commands against the vessel's own build options, so a removed button can't be built from
     // either. A button that must change is removed first and made again on the next check, half a second later.
     public string Slot = "";
+
+    // The Tree's Directions this vessel holds, for what its player's Trees do and the slot's limit (kit 1.7).
+    void CheckDirections()
+    {
+        Player.Season = YosseleServer.DirectionRank(Master, YosseleData.Seasons[0].Name);
+        Player.Mushrooms = YosseleServer.DirectionRank(Master, YosseleData.Mushboomkits[0].Name);
+    }
 
     public void CheckDandelion()
     {
