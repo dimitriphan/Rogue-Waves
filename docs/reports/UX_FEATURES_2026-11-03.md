@@ -1,5 +1,8 @@
 # UX features that fit the game: a feasibility study (2026-11-03)
 
+> **Since (2026-11-03 06:21Z):** Dimitri picked option 1 of §8, the five recommended features. They are on the
+> Phase 5 list in `docs/PLAN.md` Part C; the other rows stay as reference.
+
 Dimitri asked (2026-11-03): "Look into additional features that would fit into the game while enhancing user
 experience, such as buttons, transition screens or multi-player lobbies. These are just examples, but see if these
 options are feasible as well." This page answers with the standard of `SCOPE_FIT_PLAN_2026-10-28.md`: every feature

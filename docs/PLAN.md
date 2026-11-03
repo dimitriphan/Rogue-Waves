@@ -260,8 +260,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
   nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
   60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art
-  (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a UX features study, nothing
-  built (`docs/reports/UX_FEATURES_2026-11-03.md`; Open question 3; Log). Older entries are in "Log" below.
+  (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a UX features study; Dimitri
+  picked its five recommended features for Phase 5 (`docs/reports/UX_FEATURES_2026-11-03.md`; Decisions; Log). Older entries are in "Log" below.
 - **Next:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
@@ -550,8 +550,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   screens (one "campaign card": map, stretch, weather, retries), and the boat stays the lobby. 33 features feasible,
   5 not possible (own menus, lobby browser, more than 4 players, host migration, Discord presence). Recommended first:
   the campaign card, retry warnings, a "friend has no mods" warning with rejoin instructions, weather icons on the
-  chart, the pack's tips. Ten facts new to the kit (X1-X10, read) and ten solo probes (U1-U10) wait for a round. Nothing
-  is in the scope or the Phase 5 list until Dimitri picks (report §8).
+  chart, the pack's tips. Ten facts new to the kit (X1-X10, read) and ten solo probes (U1-U10) wait for a round.
+  Dimitri picked the five recommended (decision card, 06:21Z); they are on the Phase 5 list.
 
 ### Decisions
 
@@ -696,6 +696,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked by his eye
   against Smacky's build bar (no desktop screenshots here). Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
   `TDS_Mod/ModSource/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
+- 2026-11-03 (user, decision card on `docs/reports/UX_FEATURES_2026-11-03.md`): **the five recommended UX features join
+  the Phase 5 list**, each built beside the piece it touches: the campaign card (T1-T4), the retry warnings (B4, T4),
+  the no-mods warning with the rejoin line (L1, L5), weather icons on the chart (O1) and the pack's tips (T6). The
+  other feasible rows stay in the report as reference.
 
 ### Open questions
 
@@ -705,7 +709,6 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
 | 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
-| 3 | UX features (`docs/reports/UX_FEATURES_2026-11-03.md` §8): add the five recommended ones to the Phase 5 list, every feasible one as a polish pass, or keep the report as reference | kept as reference; nothing added until Dimitri picks |
 
 ### Phase 5 pieces
 
@@ -718,6 +721,12 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 - [ ] leave-or-stay and bonus tides (a map is won at Tide 15 and 60 s breaks are built, 0.1.0-dev, compiled)
 - [ ] 10-map campaign loop (retries, replay, host quit, completion: built in 0.1.0-dev, compiled, not run)
 - [ ] ascension (Depth, on hold)
+- [ ] UX (Decisions 2026-11-03; `docs/reports/UX_FEATURES_2026-11-03.md`, probes U1-U9 in its §7):
+  - [ ] campaign card on the loading screen, the map intro card, the chart's world card and the end screen title
+  - [ ] retry warnings: the host's exit dialog names the cost; the end screen says how many retries are left
+  - [ ] "<name> has no mods on" warning on the boat; the rejoin line in the dropped player's main-menu error box
+  - [ ] weather icons above chart nodes on hover
+  - [ ] the pack's tips in the game's tip lists (end screen, pause menu, Close Game)
 
 ---
 
