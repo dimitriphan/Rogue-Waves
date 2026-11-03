@@ -1,5 +1,6 @@
 // The weather icons for the warning popup, 12x12 in the pack's palette (docs/STYLE.md); temporary art, the rows are
-// Art/Temporary/game_size/RogueWaves_*.png as concept-tools/temp_art/ui_icons.py prints them, added to the game's "Icon_Types"
+// Art/Temporary/game_size/RogueWaves_*.png as concept-tools/temp_art/ui_icons.py prints them (Rising Water: Dimitri's pick
+// of 2026-11-03, version 2 as variants_icons.py prints it), added to the game's "Icon_Types"
 // table the way Argo adds its own (kit docs/09 #20): early, before the table is first read, since it freezes then. If
 // they didn't make it, For() falls back to a stock icon so the popup is never blank.
 public static class RWIcons
@@ -22,18 +23,18 @@ public static class RWIcons
 
     static readonly string[] Rising =
     {
-        ".F..........",
-        "FFF...FFF...",
-        ".F...FFFfF..",
-        ".F..FlTTTfF.",
-        ".F.FlTTTTTf.",
-        "..FlTTTTTTTt",
-        "..lTTTTTTTTt",
-        "FFlTTTTTTTtt",
-        "TTTTTTTTTTTt",
-        "tTTTtTTTTtTt",
-        "DtDDDtDDDtDD",
-        "dDDdDDDdDDDd",
+        "..F.........",
+        ".FFF........",
+        "FFFFF.......",
+        "..F.....SSSs",
+        "..F.....Ssss",
+        "......SSSsss",
+        "......Ssssss",
+        "....SSSsssss",
+        "FfFlTTTTTTTt",
+        "lTTTTTTTTTTt",
+        "TTTTtTTTTtTt",
+        "DDDDDDDDDDDD",
     };
 
     static readonly string[] Quickening =

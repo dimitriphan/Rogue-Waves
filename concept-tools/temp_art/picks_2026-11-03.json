@@ -1,0 +1,12 @@
+{"yossele-idle":"cur","yossele-walk":"cur","yossele-attack":"v2",
+ "cordyfriend-idle":"v1","cordyfriend-walk":"v1","cordyfriend-attack":"v1","fruit":"v2",
+ "threadhead-walk":"v1","threadhead-attack":"v1",
+ "stitched-walk":"v3","stitched-attack":"cur","dart-walk":"v2","dart-attack":"cur",
+ "seam-walk":"v2","seam-attack":"v2","mangled-walk":"v2","mangled-attack":"v2",
+ "tuft":"v1","needle":"v1",
+ "icon-RogueWaves_RisingWater":"v2","icon-RogueWaves_Quickening":"cur","icon-RogueWaves_Nesting":"cur",
+ "icon-RogueWaves_Crest":"v1","icon-RogueWaves_Crest32":"v1","icon-RogueWaves_PureAura":"v3","icon-RogueWaves_Depth":"v1",
+ "icon-RogueWaves_Retry":"cur","icon-RogueWaves_Vote":"cur",
+ "icon-Direction_Tougher":"v1","icon-Direction_CompostBin":"cur","icon-Direction_DandelionSeason":"v2",
+ "icon-Direction_MotherOfMushrooms":"v3","icon-Direction_EfficientRecycler":"v2","icon-Direction_SewingMachine":"cur",
+ "icon-Cardinal_VampireDentures":"v1"}

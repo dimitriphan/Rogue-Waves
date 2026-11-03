@@ -741,19 +741,22 @@ namespace YosseleBuild
             return Px.FromRows(rows, pal);
         }
 
-        // An aura fruit lying on the ground: a round pod banded in its colours, a stub of stem and a leaf.
-        // Temporary art, enlarged 2026-10-27 (the play test could not pick the 0.3 pod out at play zoom): a 0.42 pod on a
-        // pale disc of fallen petals, so it reads as something to pick up, with two leaves on its stem.
+        // An aura fruit lying on the ground. Temporary art (ModSource/Yossele/Art/Temporary/README.md), Dimitri's pick of
+        // 2026-11-03, "Berry bunch": three round berries in a bunch on a pale disc, one per colour (or all one colour),
+        // with a stalk and a broad leaf over them.
         static Lp Fruit(int[] cols)
         {
             var m = new Lp();
             m.Disc(V(0, 0.005f, 0), 0.3f, 12, Pal.Puff2, 0.01f);
             m.Disc(V(0, 0.012f, 0), 0.24f, 12, Pal.White, 0.01f, 15f);
-            Vector3 c = V(0, 0.17f, 0);
-            BandBall(m, c, V(0.21f, 0.175f, 0.21f), 12, 7, cols);
-            m.Stem(new[] { c + V(0, 0.15f, 0), c + V(0.015f, 0.235f, 0.015f) }, 0.022f, 0.016f, 5, Pal.Bark2);
-            m.Leaf(c + V(0.015f, 0.21f, 0), V(0.7f, 0.5f, -0.4f), 0.15f, 0.075f, Pal.Leaf, Pal.LeafDark);
-            m.Leaf(c + V(0.01f, 0.2f, 0), V(-0.6f, 0.45f, -0.3f), 0.11f, 0.055f, Pal.Leaf, Pal.LeafDark);
+            var at = new[] { V(-0.1f, 0.12f, 0.05f), V(0.1f, 0.12f, 0.06f), V(0f, 0.13f, -0.1f) };
+            for (int i = 0; i < 3; i++)
+            {
+                int col = cols[i % cols.Length];
+                m.Ball(at[i], Vector3.one * 0.12f, 9, 6, col);
+            }
+            m.Stem(new[] { V(0, 0.22f, 0), V(0.01f, 0.3f, 0), V(0.03f, 0.36f, 0.01f) }, 0.018f, 0.012f, 5, Pal.Bark2);
+            m.Leaf(V(0.02f, 0.33f, 0), V(0.8f, 0.3f, -0.3f), 0.2f, 0.1f, Pal.Leaf, Pal.LeafDark);
             return m;
         }
 

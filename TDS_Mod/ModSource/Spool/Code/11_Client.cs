@@ -22,12 +22,13 @@ public static class SpoolClient
         public float Until, Seed;
     }
 
-    // Temporary art (ModSource/Spool/Art/Temporary/README.md): a fluffed tuft of lilac thread with a loose end, lit
-    // from the upper left (12x12, drawn here so ground Thread needs nothing from the asset pack).
+    // Temporary art (ModSource/Spool/Art/Temporary/README.md): a coiled loop of lilac thread with its end trailing off
+    // (Dimitri's pick of 2026-11-03), lit from the upper left (12x12, drawn here so ground Thread needs nothing from the
+    // asset pack).
     static readonly string[] TuftPixels =
     {
-        "............", "....jjx.....", "..jjjxjxj...", ".jxjjxxjxx..", ".jjxjxjxxX..", "jxjjxxjxXX..",
-        ".jxjxxxXxX..", ".xjxxXxXXX..", "..XxXXXXX...", "...XXXX..X..", ".........X..", "..........X.",
+        "............", "....jjjx....", "...jx...xx..", "..jx.jjx.xX.", "..j.jx..x.X.", "..j.x.jx.xX.",
+        "..x.xX..XX..", "..xX.xXXX.X.", "...xX....X..", "....XXXXX...", "..........X.", "...........X",
     };
 
     public static void Update()

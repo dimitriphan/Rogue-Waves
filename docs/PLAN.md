@@ -259,11 +259,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
   2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
   nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
-  60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
+  60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art
+  (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
   calibrated on the 2026-10-26 play test (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's
   proposals P1-P4 wait for his pick (Open questions 3; Log). Older entries are in "Log" below.
-- **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
-  "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+- **Next:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
+  tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15; the campaign itself no longer needs kit 1.7's "Leave" fix,
@@ -538,6 +539,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   weather lines, rejoin B4-12/B4-14, the dev description (B4-13), and B2-1 on the mode's side. Compiled 0 errors in all
   three builds; chart parity on 2,001 seeds. New self-test checks K0, CH, K1, P1, T0-T6, H1; not run.
   `docs/reports/MODE_POLISH_2026-11-03.md` (§2 readings and §3 judgment calls for Dimitri).
+- **2026-11-03, temporary art picks applied (Dimitri's list, one pick per animation):** 25 of the 35 changed (the
+  rest kept current): Yossele's attack v2, the Cordyfriend v1, the fruit v2; Thread Head v1, Stitched walk v3, Dart
+  walk v2, Seam and Mangled v2, tuft v1, needle v1; Rising Water v2, crest v1 (both sizes), Pure Aura v3, Depth v1,
+  four Direction icons and Vampire Dentures. `apply_picks.py` pasted them into `game_size/` and rebuilt the
+  `.aseprite` copies, previews and GIFs; Rising Water's rows in `08_Icons.cs`, the tuft rows in `11_Client.cs`,
+  `YosseleModels.Fruit` and `SpoolModels.Needle` changed by hand. All compiled in the cloud check; none seen in game.
+  The `variants/` folders stay until he has seen the picks in game. The list: `docs/TEMP_ART.md`.
 - **2026-11-03, balance study (cloud only):** at Dimitri's ask (a long virtual play test of Yossele and Spool), a
   simulator of a map Tide by Tide (`docs/reports/balance_2026-11-03/`, Python, no game code) was calibrated on the
   2026-10-26 play test and run about 13,000 times on Purlest, Woozy and The Hunt, Smacky as the yardstick. Found: the

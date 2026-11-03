@@ -40,3 +40,5 @@ no asset builder: its icons are string rows in code. For the three weather icons
 ask a Claude thread to turn your PNG into rows. Delete the temporary file once yours is in.
 
 **Versions to pick from (2026-10-28):** three new versions of every file above are in `variants/v1|v2|v3/` (its README names them); nothing there is wired until Dimitri picks (`docs/TEMP_ART.md`).
+
+**Picks applied (2026-11-03):** the files in `game_size/` now carry Dimitri's picks among the versions (the list is in `docs/TEMP_ART.md`, "Dimitri's picks"), so where a row above describes art he replaced, the picked version's line in `variants/README.md` describes it now. Compiled, not yet seen in game.
