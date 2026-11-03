@@ -13,10 +13,37 @@ public static class SpoolPlay
     class Plan { public string Name; public bool Money; public int Tides; public float Minutes; }
     static readonly Plan[] Plans =
     {
+#if SPOOL_SMART
+        // The balance round's Step 2 (docs/reports/BALANCE_2026-11-03.md section 9): full maps on their own income, the wall first.
+        new Plan { Name = "3_Opal", Money = false, Tides = 16, Minutes = 50f },
+        new Plan { Name = "3_Opal", Money = false, Tides = 16, Minutes = 50f },
+        new Plan { Name = "3B_Woozy", Money = false, Tides = 16, Minutes = 50f },
+#else
         // Rounds P7-P9 played 3_Opal on its own income (lost at Tides 4, 1 and 2) and 3B_Woozy with money (lost at Tide 4
         // twice); this run checks the fixed Thread Head panel, MEND and selling by hand.
         new Plan { Name = "3B_Woozy", Money = true, Tides = 4, Minutes = 12f },
+#endif
     };
+
+#if SPOOL_TUNE
+    // The balance study's P1-P3, in this play build only (docs/reports/BALANCE_2026-11-03.md section 8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and
+    // Dart 3.5 Damage. Called before the content is built.
+    public static void Tune()
+    {
+        foreach (SpoolData.Unit u in SpoolData.Units)
+            for (int i = 0; i < u.Stats.Length; i++)
+            {
+                if (u.Id == SpoolData.Stitched && u.Stats[i] == "Damage=2") u.Stats[i] = "Damage=3";
+                if (u.Id == SpoolData.Dart && u.Stats[i] == "Damage=2.5") u.Stats[i] = "Damage=3.5";
+                if (u.Id == SpoolData.Dart && u.Stats[i] == "Range=3.5") u.Stats[i] = "Range=4.5";
+            }
+        foreach (SpoolData.Build b in SpoolData.Builds)
+            if (b.Id == SpoolData.Tin)
+                for (int i = 0; i < b.Stats.Length; i++)
+                    if (b.Stats[i] == "Units=4") b.Stats[i] = "Units=6";
+        SpoolLog.Info("PLAY TUNE on: Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage");
+    }
+#endif
     const float MoneyPerTide = 1500f;
 
     // On a money map, the Sandbox Cardinal's other button: foes of a kind spawned at the spawner at a Tide's start, so
@@ -48,7 +75,11 @@ public static class SpoolPlay
     // Upgrade routes: the n-th building of a kind takes route n (mod the count).
     static readonly Dictionary<string, string[][]> Routes = new Dictionary<string, string[][]>
     {
+#if SPOOL_SMART
+        { SpoolData.Tin, new[] { new[] { "Woolen", "Design", "Surprise" } } },
+#else
         { SpoolData.Tin, new[] { new[] { "Recycle", "Discounted", "Surprise" }, new[] { "Woolen", "Design", "Surprise" } } },
+#endif
         { SpoolData.Head, new[] { new[] { "Delivery" }, new[] { "Patchwork" } } },
         { SpoolData.Cushion, new[] { new[] { "Sharper", "Barrage" }, new[] { "Unravel", "Stuffing", "Overstuffed" }, new[] { "Sharper", "Stuffing", "Burst" } } },
         { SpoolData.Loom, new[] { new[] { "Direct" }, new[] { "Seam" } } },
@@ -72,6 +103,15 @@ public static class SpoolPlay
             foreach (Plan p in Plans) names.Add(p.Name);
             ModKitPlay.Plans = names.ToArray();
             ModKitPlay.Scenario = Scenario;
+#if SPOOL_MEASURE
+            SpoolMeasure.Setup();
+#endif
+#if SPOOL_SMART
+            ModKitPlay.ReturnAtEnd = true;
+            ModKitMeasure.Log = Log;
+            ModKitPlay.AtBoat = ModKitMeasure.EmptyLoadout;
+            ModKitPlay.AtEnd = ModKitMeasure.RestoreLoadout;
+#endif
             Log("play build: maps " + string.Join(", ", ModKitPlay.Plans));
         }
         ModKitPlay.Update();
@@ -267,6 +307,11 @@ public static class SpoolPlay
     static Vector3 CushionSpot(int n)
     {
         Beingobject cushion = Being(SpoolData.Cushion);
+#if SPOOL_SMART
+        // The smart player's wall: a line across the last stretch of the lane (BALANCE section 5).
+        List<Vector3> line = ModKitMeasure.LineAcross(cushion, ModKitPlay.Team, 5, 1, used);
+        if (line.Count > 0) return line[0];
+#endif
         for (int back = 3 + n; back < 14; back++)
         {
             Vector3 t = ModKitPlay.LaneTile(n, back);
@@ -303,9 +348,13 @@ public static class SpoolPlay
                         Spawn(foes);
                 }
                 Log("STATUS " + Status());
+#if SPOOL_SMART
+                Log("TIDE " + tide + " wallet " + ModKitPlay.Wallet() + " Thread dropped " + SpoolServer.Dropped + " picked " + SpoolServer.Picked + " delivered " + SpoolServer.Delivered + " stash " + Me.Stash + " foes seen" + ModKitPlay.FoesSeen());
+#else
                 yield return ModKitPlay.Capture("tide" + tide);
                 if (tide >= 1)
                     yield return CloseUps("tide" + tide);
+#endif
             }
             if (now >= nextWatch)
             {
@@ -324,6 +373,9 @@ public static class SpoolPlay
                 }
             }
             // Selling by hand before the heavy Tides can end the map (rounds P7-P9 never got to the end-of-map sells).
+#if SPOOL_SMART
+            soldEarly = true;
+#endif
             if (!soldEarly && tide >= 2 && Units(SpoolData.Stitched).Count + Units(SpoolData.Dart).Count > 0 && Count(SpoolData.Head) > 0)
             {
                 soldEarly = true;
@@ -453,6 +505,10 @@ public static class SpoolPlay
                 yield return ModKitPlay.WalkTo(door, "to hold the core's doorstep");
             yield break;
         }
+#if SPOOL_SMART
+        // Thread Heads fetch the Thread on these runs: a walk through the virtual hand stalls a long run (seen on the PC).
+        yield break;
+#endif
         // Thread lying about within 7 tiles and room to carry: walk Spool to the biggest tuft; full, walk it home.
         if (Me.Carried >= 12 || (Me.Carried > 0 && SpoolServer.Drops.Count == 0))
         {
@@ -497,7 +553,11 @@ public static class SpoolPlay
                 float d = SpoolUtil.Flat(lane[i], t.Pos);
                 if (d > t.Reach - 1f || d < 2f) continue;
                 int back = lane.Count - 1 - i;
+#if SPOOL_SMART
+                c.Add(new KeyValuePair<float, Vector3>(Mathf.Abs(back - 3) + d * 0.2f, lane[i]));   // two tiles behind the wall, on the core's side
+#else
                 c.Add(new KeyValuePair<float, Vector3>(Mathf.Abs(back - 6) + d * 0.2f, lane[i]));
+#endif
             }
         c.Sort((a, b) => a.Key.CompareTo(b.Key));
         // A try that missed (the aim can land on a neighbour, round P8) moves on to the next candidate.
@@ -527,6 +587,21 @@ public static class SpoolPlay
         int tins = Count(SpoolData.Tin), cushions = Count(SpoolData.Cushion), looms = Count(SpoolData.Loom), heads = Count(SpoolData.Head);
         int wantTins = plan.Money ? 2 : (tide >= 3 ? 2 : 1);
         int wantCushions = plan.Money ? 3 : Mathf.Min(1 + tide / 2, 3);
+#if SPOOL_SMART
+        wantCushions = 3;
+        wantTins = tide >= 5 ? 3 : tide >= 2 ? 2 : 1;
+#if SPOOL_TINFIRST
+        // A Tin before the wall: a wall first loses Tide 1 (seen on the PC).
+        if (tins < 1) { if (ModKitPlay.Afford(Def(SpoolData.Tin).Costs, 0f)) { Vector3 first = ModKitPlay.LaneSpot(Being(SpoolData.Tin), 0, used, 2f); if (!float.IsNaN(first.x)) yield return Build(SpoolData.Tin, first, "the first Tin"); } yield break; }
+#endif
+        if (cushions < wantCushions && ModKitPlay.Afford(Def(SpoolData.Cushion).Costs, 0f))
+        {
+            Vector3 wall = CushionSpot(cushions);
+            if (!float.IsNaN(wall.x))
+                yield return Build(SpoolData.Cushion, wall, "the wall, tide " + tide);
+            yield break;
+        }
+#endif
         // Round P7: a Loom at Tide 0 walked Spool 10 tiles off the core while the first Daggers came; a Loom waits a Tide.
         int wantLooms = plan.Money ? 2 : (tide >= 3 ? 2 : tide >= 1 ? 1 : 0);
         int wantHeads = plan.Money ? 2 : (tide >= 2 ? 2 : 1);

@@ -294,7 +294,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #135 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#134 the build round of 2026-11-03).
+- **Next free numbers:** kit chapter 25, pitfall #137 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -591,7 +591,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   mode's main-menu button, staging map, Pure Aura, VENDCINT, Directions, Cardinals, objectives, Fund Transfer, votes, bonus Tides, difficulty,
   card and warnings; the foes part; vessel Directions for Yossele, Spool, Argo; Uloe from `docs/scope/10`. Self-tests in game: mode 139/0 (and with
   every part on), foes 12/0, Yossele 160/0, Spool 121/0, Argo 136/0, Uloe 147/0/3. Playing it caught what compiling never would: the chart's
-  camera looked at the sky, the Tide table was read one row off, a dead nest stopped the Tides for good (pitfalls #121-#134). `docs/reports/BUILD_2026-11-03.md`.
+  camera looked at the sky, the Tide table was read one row off, a dead nest stopped the Tides for good (pitfalls #121-#136). `docs/reports/BUILD_2026-11-03.md`.
+- **2026-11-03: the balance round** (`BALANCE_2026-11-03.md` §9, `AURA_BASELINE_2026-11-03.md` M8-M11), no shipped number changed; `docs/reports/BALANCE_ROUND_2026-11-03.md`. The model's nodes, gatherers and Crafted hold; its wall doesn't: foes walk round a three-tile line, and walling first lost Tide 1-2, not Tide 11. Tin first, by a bot: Spool as written Purlest Tide 4, Woozy Tide 2; with P1-P3 Purlest Tide 5, Woozy Tide 2. Yossele on Woozy, Tide 14. Harness: `Code/97_Measure.cs`, `ModKitMeasure`. The simulator's re-run with these numbers is left for a cloud thread.
 
 ### Decisions
 
@@ -754,6 +755,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
+| 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`): the study's wall doesn't hold; re-run the simulator before picking | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 
 ### Phase 5 pieces
