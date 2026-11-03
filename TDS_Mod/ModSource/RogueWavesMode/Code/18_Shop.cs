@@ -169,10 +169,10 @@ public static class RWShop
             a.Animplay(anim, Game_Sprite.Animationtype.Force);
     }
 
-    // A landing thud: the game's own heavy impact.
+    // A landing mark: the ring the game draws where a building is placed (its heavier impacts aren't loaded on every map, seen on the PC).
     static void Shake(Vector3 at)
     {
-        try { Helper_Vfxtools.Oneshot("Impact_Large", at, Vector3.up); }
+        try { Helper_Vfxtools.Oneshot("Placementborder", at, Vector3.forward); }
         catch (Exception e) { RWLog.Once("landing", "VENDCINT's landing effect: " + e.Message); }
     }
 

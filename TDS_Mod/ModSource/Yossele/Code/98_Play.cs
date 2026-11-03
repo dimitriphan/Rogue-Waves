@@ -14,8 +14,13 @@ public static class YosselePlay
     // Round P3 played 3_Opal on its own income to Tide 8 (the balance read); these two follow it.
     static readonly Plan[] Plans =
     {
+#if YOSSELE_FULLRUN
+        // The balance round's Step 2 check of the model on a poor map: on its own income, to the end (BALANCE section 9).
+        new Plan { Name = "3B_Woozy", Money = false, Tides = 16, Minutes = 50f },
+#else
         new Plan { Name = "3B_Thehunt", Money = false, Tides = 7, Minutes = 15f },
         new Plan { Name = "3B_Woozy", Money = true, Tides = 7, Minutes = 16f },
+#endif
     };
     const float MoneyPerTide = 2500f;
 
@@ -58,6 +63,15 @@ public static class YosselePlay
             foreach (Plan p in Plans) names.Add(p.Name);
             ModKitPlay.Plans = names.ToArray();
             ModKitPlay.Scenario = Scenario;
+#if YOSSELE_MEASURE
+            YosseleMeasure.Setup();
+#endif
+#if YOSSELE_FULLRUN
+            ModKitPlay.ReturnAtEnd = true;
+            ModKitMeasure.Log = Log;
+            ModKitPlay.AtBoat = ModKitMeasure.EmptyLoadout;
+            ModKitPlay.AtEnd = ModKitMeasure.RestoreLoadout;
+#endif
             Log("play build: maps " + string.Join(", ", ModKitPlay.Plans));
         }
         ModKitPlay.Update();

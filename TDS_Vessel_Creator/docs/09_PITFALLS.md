@@ -465,3 +465,5 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 134. **The queue can stall on a Unity modal** (2026-11-03) → "Moving file failed" during an export waits for a click with no
      log line, and the queue's next launch tests the old export: run a watcher during exports that presses Try Again
      (`EnumWindows`, `BM_CLICK`), and read the export's time from `queue_status.txt` before launching.
+135. **`Macro_Main.Playgame` with nothing selected crashes the game** (2026-11-03) → a native crash in `Boatlaunch`, from a play harness whose map wasn't on the world map → check the node first. **Verified** in game.
+136. **Three walls across a lane don't stop foes** (2026-11-03) → three Pin Cushions on the lane's own tile and either side of it, on Purlest and on Woozy, or three Stonehenges on Purlest: the foes planned round them and the walls took no hits, while a smart player's model assumed they'd stand at the line (the repository's `docs/reports/BALANCE_ROUND_2026-11-03.md` M5). A build sent in the moment after Spool's Stash stands is refused too: wait for `Home`. **Verified** in game.

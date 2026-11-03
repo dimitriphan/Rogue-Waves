@@ -16,6 +16,9 @@ public static class ModKitPlay
     public static int PlanIndex;
     public static Func<IEnumerator> Scenario;        // runs once a match is on; when it returns, RunScenario moves to the next map
     public static bool Done;
+    public static Action AtBoat, AtEnd;              // on the boat before the first map, and back on it after the last (with ReturnAtEnd)
+    public static bool ReturnAtEnd;
+    static bool boated;
 
     static int phase;                                 // 0 main menu, 1 world map, 2 match starting, 3 scenario running
     static float seen = -1f, step = -1f;
@@ -74,16 +77,27 @@ public static class ModKitPlay
             {
                 if (CurrentPlan == "")
                 {
+                    if (AtEnd != null) AtEnd();
                     Log("DONE: every map played");
                     Done = true;
                     return;
+                }
+                if (!boated)
+                {
+                    boated = true;
+                    if (AtBoat != null) AtBoat();
                 }
                 macro.Selectcharacter(Hero);
                 string why;
                 node = PickNode(CurrentPlan, out why);
                 Log("map " + (PlanIndex + 1) + "/" + Plans.Length + ": " + why + ", node '" + node + "'");
-                if (node != "")
-                    Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(node, false, default(Unity.Netcode.ServerRpcParams));
+                if (node == "")
+                {
+                    // Starting with nothing selected crashes the game (seen on the PC, 2026-11-03): this map is skipped.
+                    PlanIndex++;
+                    return;
+                }
+                Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(node, false, default(Unity.Netcode.ServerRpcParams));
                 step = now;
                 return;
             }
@@ -122,6 +136,9 @@ public static class ModKitPlay
 
     static void Watch()
     {
+        // A stray Esc opens the pause menu, and scaled waits then never end: the hand takes it back off.
+        if (phase == 3 && !Done && Time.timeScale == 0f && Tds_Pausemenu.Instance != null && Game_Mapvars.Instance != null && Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Running")
+            Tds_Pausemenu.Instance.SendMessage("Pauseclose", SendMessageOptions.DontRequireReceiver);
         if (phase == 3 && !Done && Time.realtimeSinceStartup - LastBeat > 180f)
         {
             Log("DONE: the scenario stalled (no progress for 180 s)");
@@ -135,7 +152,7 @@ public static class ModKitPlay
         yield return Scenario();
         Log("map " + (PlanIndex + 1) + " scenario ended");
         PlanIndex++;
-        if (CurrentPlan == "")
+        if (CurrentPlan == "" && !ReturnAtEnd)
         {
             Log("DONE: every map played");
             Done = true;
@@ -776,6 +793,7 @@ public static class ModKitPlay
 
     public static bool Alive(Entity_Master m) { return m != null && m.Beingserver != null && !m.Beingserver.Dead; }
     public static Vector3 Pos(Entity_Master m) { return m.Entityposition.Value; }
+    public static float Flat(Vector3 a, Vector3 b) { return ModKitTest.Flat(a, b); }
     public static string Name(Entity_Master m) { return m != null && m.Beingserver != null && m.Beingserver.Being != null ? m.Beingserver.Being.Objectname : "?"; }
     public static string T(Vector3 v) { return Mathf.RoundToInt(v.x) + "," + Mathf.RoundToInt(v.y) + "," + Mathf.RoundToInt(v.z); }
     static string F1(float v) { return v.ToString("0.#", System.Globalization.CultureInfo.InvariantCulture); }
@@ -1373,6 +1391,201 @@ public static class ModKitPlay
     {
         state = Game_Mapvars.Instance.Gamecomplete.Value.ToString();
         return state != "" && state != "Running";
+    }
+}
+
+// The balance round's measuring (the repository's docs/reports/BALANCE_2026-11-03.md section 9 and AURA_BASELINE_2026-11-03.md
+// section 7): what a vessel's measuring scenario shares. Play builds only; no number in a shipped build changes.
+public static class ModKitMeasure
+{
+    public static Action<string> Log = delegate { };
+    public static float Speed = 4f;      // the game's own Time_Scale, while a window holds the clock
+    static readonly List<string> loadout = new List<string>();
+    static string mixedCard = "";
+    // What the PC's save held before this round first emptied it (a stalled run never puts it back, and the next run reads it empty).
+    public static readonly string[] Original = { "Artifact_Voice", "Artifact_Greencoin", "Artifact_Bluecoin" };
+    public const string OriginalMixed = "Artifact_Yellowcoin";
+
+    public static string F(float v) { return v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture); }
+
+    // M1. The lobby's list writes itself to the save as it changes, so what is emptied here is put back (ReturnAtEnd).
+    public static void EmptyLoadout()
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info == null) return;
+        loadout.Clear();
+        foreach (Unity.Collections.FixedString64Bytes a in info.Artifacts) loadout.Add(a.ToString());
+        mixedCard = info.Mixedart.Value.ToString();
+        Log("M1 the lobby's Cardinals: [" + string.Join(", ", loadout.ToArray()) + "], mixed '" + mixedCard + "'");
+        while (info.Artifacts.Count > 0) info.Artifacts.RemoveAt(info.Artifacts.Count - 1);
+        info.Mixedart.Value = new Unity.Collections.FixedString64Bytes("");
+        Log("M1 emptied: " + info.Artifacts.Count + " left, mixed '" + info.Mixedart.Value + "'");
+    }
+
+    public static void RestoreLoadout()
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info == null) return;
+        foreach (string a in Original) info.Artifacts.Add(new Unity.Collections.FixedString64Bytes(a));
+        info.Mixedart.Value = new Unity.Collections.FixedString64Bytes(OriginalMixed);
+        Log("the lobby's Cardinals put back: " + info.Artifacts.Count + ", mixed '" + info.Mixedart.Value + "'");
+    }
+
+    public static float[] Purse()
+    {
+        return new[] { ModKitPlay.Aura("Redaura"), ModKitPlay.Aura("Blueaura"), ModKitPlay.Aura("Yellowaura") };
+    }
+
+    public static string Gained(float[] before)
+    {
+        float[] now = Purse();
+        return "R " + F(now[0] - before[0]) + " B " + F(now[1] - before[1]) + " Y " + F(now[2] - before[2]);
+    }
+
+    public static List<Entity_Master> Nodes()
+    {
+        List<Entity_Master> l = new List<Entity_Master>();
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Taglistserver != null && e.Taglistserver.Contains("Resource"))
+                l.Add(e);
+        return l;
+    }
+
+    // M8: every node on this map, with what it pays.
+    public static void Census(string plan)
+    {
+        List<Entity_Master> nodes = Nodes();
+        Log("M8 census of " + plan + ": " + nodes.Count + " nodes");
+        foreach (Entity_Master e in nodes)
+        {
+            List<string> stats = new List<string>();
+            foreach (KeyValuePair<string, Link_Stats> s in e.Statsserver)
+                if (s.Key == "Health" || s.Key == "Healthresource" || s.Key.EndsWith("mine") || s.Key == "Regular" || s.Key == "All")
+                    stats.Add(s.Key + " " + F(s.Value.Value) + "/" + F(s.Value.Value_Calc));
+            Log("M8 " + plan + " " + ModKitPlay.Name(e) + " at " + ModKitPlay.T(ModKitPlay.Pos(e)) + ": " + string.Join(", ", stats.ToArray()));
+        }
+    }
+
+    public static void ClearFoes(int team)
+    {
+        List<Entity_Master> foes = new List<Entity_Master>();
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Entitydata.Value.Team != team && e.Taglistserver != null && e.Taglistserver.Contains("Enemy") && !e.Taglistserver.Contains("Enemycore") && !e.Taglistserver.Contains("Resource"))
+                foes.Add(e);
+        foreach (Entity_Master e in foes)
+            Game_Entity.Instance.Despawn(e.Beingserver, false, "Measure");
+    }
+
+    // Game seconds with the clock held and the foes gone, at the game's own speed-up; each runs once a frame.
+    public static IEnumerator Window(float seconds, int team, Action each)
+    {
+        Game_Mapvars v = Game_Mapvars.Instance;
+        float t = 0f;
+        v.Time_Scale.Value = Speed;
+        while (t < seconds && v != null)
+        {
+            if (v.Time_Wave.Value < 120f) v.Time_Wave.Value = 120f;
+            ClearFoes(team);
+            if (each != null) each();
+            t += Time.deltaTime;
+            ModKitPlay.Beat();
+            yield return null;
+        }
+        if (v != null) v.Time_Scale.Value = 1f;
+    }
+
+    // Runs the clock out until the next Tide has begun.
+    public static IEnumerator NextTide(int team)
+    {
+        Game_Mapvars v = Game_Mapvars.Instance;
+        int was = v.Wave.Value;
+        float t = 0f;
+        while (v != null && v.Wave.Value == was && t < 90f)
+        {
+            v.Time_Wave.Value = -1f;
+            ClearFoes(team);
+            t += Time.unscaledDeltaTime;
+            ModKitPlay.Beat();
+            yield return null;
+        }
+    }
+
+    public static void Give(float each, long owner)
+    {
+        List<Link_Resourceset> pay = new List<Link_Resourceset>();
+        foreach (string colour in new[] { "Redaura", "Blueaura", "Yellowaura" })
+            pay.Add(new Link_Resourceset { Name = colour, Amount = each });
+        Helper_Resources.Giveresources(pay, owner, Helper_Resources.Styles.Default);
+    }
+
+    public static Entity_Master SpawnFor(Entity_Master hero, Beingobject being, Vector3 at)
+    {
+        Genitem tile = ModKitTest.Surface(at);
+        if (being == null || tile == null || hero == null) return null;
+        Link_Spawn s = Helper_Entitytools.Createlinkspawnparent(hero.Beingserver);
+        s.Being = being;
+        s.Genadd = tile;
+        s.Skin = "";
+        s.Spawnstyle = Link_Spawn.Spawnstyles.Forced;
+        Link_Being made = Helper_Entitytools.Spawn(s, tile.Position, hero.Beingserver, true, null);
+        return made != null ? made.Worldobject : null;
+    }
+
+    // The tiles of a line across lane 0, 'back' tiles from the core: the middle one on the lane, the others to either side.
+    public static List<Vector3> LineAcross(Beingobject being, int team, int back, int count, List<Vector3> used)
+    {
+        List<Vector3> line = new List<Vector3>();
+        Vector3 mid = ModKitPlay.LaneTile(0, back), ahead = ModKitPlay.LaneTile(0, back + 1);
+        if (float.IsNaN(mid.x) || float.IsNaN(ahead.x)) return line;
+        Vector3 along = ahead - mid;
+        along.y = 0f;
+        Vector3 side = Vector3.Cross(Vector3.up, along).normalized;
+        float[] offsets = { 0f, 1f, -1f, 2f, -2f, 3f, -3f };
+        foreach (float o in offsets)
+        {
+            if (line.Count >= count) break;
+            Vector3 at = ModKitTest.Spot(mid + side * o, being, team, 0f, 0.8f, used, "line");
+            if (!float.IsNaN(at.x)) { line.Add(at); used.Add(at); }
+        }
+        return line;
+    }
+
+    // M5: does a wall line hold? While its walls stand, how many foes are near it and standing, and how many got past it.
+    public static IEnumerator WatchLine(string what, List<Entity_Master> walls, Vector3 core, int team, int tides)
+    {
+        Game_Mapvars v = Game_Mapvars.Instance;
+        int startTide = v.Wave.Value, past = 0, seen = 0;
+        float next = 0f, t = 0f, lineDist = 0f;
+        foreach (Entity_Master w in walls) lineDist = Mathf.Max(lineDist, ModKitPlay.Flat(ModKitPlay.Pos(w), core));
+        Dictionary<Entity_Master, Vector3> last = new Dictionary<Entity_Master, Vector3>();
+        List<Entity_Master> passed = new List<Entity_Master>();
+        while (v != null && v.Wave.Value < startTide + tides && v.Gamecomplete.Value.ToString() == "Running" && t < 600f)
+        {
+            t += Time.deltaTime;
+            ModKitPlay.Beat();
+            if (t >= next)
+            {
+                next = t + 4f;
+                int alive = 0, near = 0, standing = 0, foes = 0;
+                foreach (Entity_Master w in walls) if (ModKitPlay.Alive(w)) alive++;
+                foreach (Entity_Master e in ModKitPlay.Foes())
+                {
+                    foes++;
+                    Vector3 at = ModKitPlay.Pos(e);
+                    Vector3 was;
+                    bool still = last.TryGetValue(e, out was) && ModKitPlay.Flat(was, at) < 0.2f;
+                    last[e] = at;
+                    float toWall = float.MaxValue;
+                    foreach (Entity_Master w in walls) if (ModKitPlay.Alive(w)) toWall = Mathf.Min(toWall, ModKitPlay.Flat(ModKitPlay.Pos(w), at));
+                    if (toWall < 2f) { near++; if (still) standing++; }
+                    if (ModKitPlay.Flat(at, core) < lineDist - 1f && !passed.Contains(e)) { passed.Add(e); past++; }
+                }
+                seen = Mathf.Max(seen, foes);
+                Log("M5 " + what + " t " + F(t) + ": tide " + v.Wave.Value + ", walls alive " + alive + "/" + walls.Count + ", foes " + foes + ", near the line " + near + " (standing " + standing + "), got past so far " + past);
+            }
+            yield return null;
+        }
+        Log("M5 " + what + " result: " + past + " foes got past the line, most foes at once " + seen + ", state " + (v != null ? v.Gamecomplete.Value.ToString() : "-"));
     }
 }
 #endif
