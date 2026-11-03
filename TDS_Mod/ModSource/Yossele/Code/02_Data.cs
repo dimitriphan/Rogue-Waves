@@ -141,7 +141,7 @@ public static class YosseleData
     public const int SeedsDrawn = 24;           // the most ready seeds a client draws round the crown
     public const float PacketsWindow = 0.6f;    // a foe that falls this soon after a seed hit was felled by it
     public const float InterceptEvery = 0.1f;   // D-MDS looks for foes' projectiles this often
-    public const float BossHealth = 600f;       // a shooter of this base health or more is a boss (kit docs/13)
+    public const float BossHealth = 600f;       // a shooter of this base health or more is a boss (kit docs/05 §16)
     public const float BonsaiShare = 0.4f;      // the Bonsai: 40% of the Tree (the sheet)
     // Tree upgrade params the Bonsai copies unchanged: chances, thresholds, distances, durations, costs and every
     // penalty (a negative number). The rest are effects, copied at 40%; Counts are rounded, never under 1.

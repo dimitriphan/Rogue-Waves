@@ -2,8 +2,8 @@
 
 A vessel for the Rogue Waves pack (*TDS - Tower Defense Strategy*): a round clay golem on root limbs whose buildings
 grow stronger for every Tide they survive. Release 1 of the pack holds Yossele alone (`docs/PACK.md`). **0.2.0-dev is
-built from Dimitri's 2026-10-20 sheet with temporary art and compiles; it has not run in game yet.** The build before
-it (0.1.0-dev, melee) passed its in-game self-test (PC round 8, 98/0) and is the one installed for play testing
+built from Dimitri's 2026-10-20 sheet with temporary art, passed its in-game self-test (PC round 9e, 160/0) and is the
+build installed for his play test.** The build before it (0.1.0-dev, melee; PC round 8, 98/0) is parked on the PC
 (`IMPLEMENTATION_NOTES.md`).
 
 ## The vessel

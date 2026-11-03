@@ -5,7 +5,7 @@
 > is Plug In's (`10`), and each vessel's attack, ability, difficulty and upgrade ideas are in its scope file. Where
 > this page and `docs/scope/` differ, the scope wins. **2026-10-13:** Yossele's and Spool's sheets in `docs/scope/07`
 > and `08` (vessel template, a value in every slot) replace §1-2's tables: Yossele is ranged (a mouth laser; the
-> 0.1.0-dev build, merged in PR #30 on 2026-10-15, is still melee); Spool's ability is Patch and a Yarn Stash holds
+> 0.1.0-dev build, merged in PR #30 on 2026-10-15, was melee; 0.2.0-dev of 2026-10-23 is ranged); Spool's ability is Patch and a Yarn Stash holds
 > the Thread (Thread Heads come from it by default).
 
 A first concept for three of the scope's four vessels, built from two sources and nothing else: the user's sprite
