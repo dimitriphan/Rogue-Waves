@@ -31,3 +31,5 @@ of each sheet ("sprites: Yossele-Sheet.png from Art/Temporary/ (temporary)").
 Generators: `concept-tools/temp_art/cordyfriend.py` and `yossele_anims.py` (re-run to redraw; they overwrite this
 folder only; `yossele_anims.py` takes the code's sheets from the lite renderer and the walk concept, see its docstring).
 To go back to the code's idle, walk or attack, delete the matching file in `game_size/`.
+
+**Versions to pick from (2026-10-28):** three new versions of every file above are in `variants/v1|v2|v3/` (its README names them); nothing there is wired until Dimitri picks (`docs/TEMP_ART.md`).

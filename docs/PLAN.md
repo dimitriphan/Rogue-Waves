@@ -251,10 +251,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
   redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
   (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
-  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-11-03: the
-  mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins, 60 s breaks, `RW_` keys; compiled, not run; Log).
-  Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-10-28: three
+  versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`, nothing wired
+  changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins, 60 s breaks,
+  `RW_` keys; compiled, not run; Log). Older entries are in "Log" below.
+- **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
+  "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15; the campaign itself no longer needs kit 1.7's "Leave" fix,
@@ -484,6 +486,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   0.1.0-dev **160/0**, the three temporary sheets used, release boot check clean; the first pack build `PACK DONE ok`,
   its boot check clean at v0.1.0; `handoff\RogueWaves-0.1.0.zip` (3.1 MB) made and held for his sprites. His play build
   is now 0.1.0-dev with the Daze fix and the temporary art (`TDS_Mod/Handoff/Yossele_round10/README.md`).
+- **2026-10-28, temporary art versions (Dimitri: "For all temporary assets, create alternative versions for me to choose
+  for each asset. There should be different versions for every single animation included for Yossele and Spool. Create
+  3 versions of each asset for now."):** three new versions of each of the 2026-10-27 assets, in
+  `ModSource/<Part>/Art/Temporary/variants/v1|v2|v3/` (same names, sizes and layouts, so a pick drops in): Yossele's
+  idle, walk and attack (moved from the code's frame of his reshade), the Cordyfriend (three builds), the fruit model;
+  the Thread Head (his zipper mouth in all three), the four Crafted (their bodies kept, new walks and attacks), the
+  tuft, the needle model; the fifteen 12 x 12 icons and the 32 px crest. 35 picks, one per animation, so versions
+  can mix. Generators `concept-tools/temp_art/variants_*.py`, `apply_picks.py`; page `variants_page.py`. Nothing
+  wired changed and nothing was seen in game.
 - **2026-11-03, mode polish (Dimitri's "Run 3, 4, and 5", item 4):** RogueWavesMode checked line by line against scope
   `04` and `docs/mode/`, two passes: 15 issues fixed as **0.1.0-dev** (the pack version plus `-dev`): 3 retries (only
   the lost map can be picked until won), the host leaving a running map loses it (saved while it runs, counted on the
