@@ -244,14 +244,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
-  redrawn (wired on PR #42 at `ad85b00`). Older entries are in "Log" below.
+  redrawn (wired on PR #42 at `ad85b00`). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15
+  wins, 60 s breaks, `RW_` keys; compiled, not run; Log). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
-  and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
-  turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
-  A3-9, B4-11, B4-12, B4-14, C2), and
-  its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
+  and the in-map vote (kit 1.7 first, Decisions 2026-10-15; the campaign itself no longer needs kit 1.7's "Leave" fix,
+  `docs/reports/MODE_POLISH_2026-11-03.md` F13); the mode's next PC round runs its new checks (K0, CH, K1, P1, T0-T6,
+  H1) and Dimitri confirms the polish's readings (that report §2). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
@@ -433,6 +433,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   loaded (#110), none a rule of the sheet (Yossele's `IMPLEMENTATION_NOTES.md`). Release boot check clean; 0.2.0-dev is
   his play build, 0.1.0-dev parked on the PC. Pitfalls: #106 corrected (a node pays on the hit after `Healthresource`
   reaches 0: `Resource_Orange` has `Health` 1), #111 (a foe's health reads 0 right after its spawn).
+- **2026-11-03, mode polish (Dimitri's "Run 3, 4, and 5", item 4):** RogueWavesMode checked line by line against scope
+  `04` and `docs/mode/`, two passes: 15 issues fixed as **0.1.0-dev** (the pack version plus `-dev`): 3 retries (only
+  the lost map can be picked until won), the host leaving a running map loses it (saved while it runs, counted on the
+  boat or by Continue), won once Tide 15 is cleared, ten maps complete the campaign and the party goes home, 60 s
+  breaks, `RW_` save keys with a one-time rename, at most 3 links per chart map (`sea_chart.py` too), scope `04`'s
+  weather lines, rejoin B4-12/B4-14, the dev description (B4-13), and B2-1 on the mode's side. Compiled 0 errors in all
+  three builds; chart parity on 2,001 seeds. New self-test checks K0, CH, K1, P1, T0-T6, H1; not run.
+  `docs/reports/MODE_POLISH_2026-11-03.md` (§2 readings and §3 judgment calls for Dimitri).
 
 ### Decisions
 
@@ -588,7 +596,9 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
   (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)
 - [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;
   online O1-O8 left)
-- [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth, on hold)
+- [ ] leave-or-stay and bonus tides (a map is won at Tide 15 and 60 s breaks are built, 0.1.0-dev, compiled)
+- [ ] 10-map campaign loop (retries, replay, host quit, completion: built in 0.1.0-dev, compiled, not run)
+- [ ] ascension (Depth, on hold)
 
 ---
 

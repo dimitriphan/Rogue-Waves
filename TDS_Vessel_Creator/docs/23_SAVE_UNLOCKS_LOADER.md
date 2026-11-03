@@ -252,7 +252,7 @@ network variable's `OnValueChanged`.
    pack, launch, Play: the boat loads, a stock vessel can be picked, no exception. Re-enable: Continue finds the
    campaign.
 3. **Slots:** with a campaign active, switch slot on the main menu and embark: the log says "campaign left behind",
-   the boat shows the stock world, and the new slot's save has no `RogueWaves/Campaign_Seed` (§6.2; the self-test's
+   the boat shows the stock world, and the new slot's save has no `RogueWaves/RW_Campaign_Seed` (§6.2; the self-test's
    S2 pretends the switch).
 4. **First main menu:** a dev `Mainmenu` prefab that logs on `Awake`: does it log at the first main menu?
 5. **Compile failure:** a dev bundle with two `Default` prefabs, the first with a compile error: does the second start?

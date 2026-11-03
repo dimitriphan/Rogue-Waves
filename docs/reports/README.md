@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `MODE_POLISH_2026-11-03.md` | 2026-11-03 | The mode part checked line by line against the scope: 15 issues fixed as 0.1.0-dev (retries, Tide 15 wins, 60 s breaks, `RW_` keys), the readings and judgment calls for Dimitri, what is not built yet |
 | `YOSSELE_TEST_PLAN_2026-10-23.md` | 2026-10-23 | Yossele 0.2.0-dev: every case not yet seen in game, which check covers it (PC round 9's self-test, play, by eye, online), and the cloud checks run |
 | `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | 23 passes over every file (stopped at Dimitri's word after one clean pass); what was fixed, why each pass found issues, what is left for Dimitri |
 | `QUALITY_CHECK_2026-10-15.md` | 2026-10-15 | Two quality passes over every file, the open PRs included, and the repository's reorganisation |

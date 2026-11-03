@@ -9,7 +9,9 @@ back on return; the one hard block is that it shuts the lobby for the whole map.
 **State:** 0.2.1 passed the solo PC round 6, 47 of 47 (2026-10-11; round 5's one failure is in §6). The drop and
 rejoin themselves need a friend online (§6, O1-O8). 0.3.0 (2026-10-15, compiled, not run) adds what the decompile
 showed was missing: a friend who restarts the game keeps their `Sessionid` (`RWIdentity`, O3b), and one player who
-can't load a map no longer sends everyone to the main menu (`RWLoad`, O3c); both in `Code/10_Online.cs`.
+can't load a map no longer sends everyone to the main menu (`RWLoad`, O3c); both in `Code/10_Online.cs`. 0.1.0-dev
+(2026-11-03, compiled, not run; the part now carries the pack version): a turned-away player stays turned away on a
+second try (O5), and the "Lost the map" line names the host of the map just lost, not the first host of the launch.
 
 ## 1. What the game does today
 
@@ -120,7 +122,7 @@ Round 6 (0.2.1, 2026-10-11): 47 pass, 0 fail.
 | O3b | Repeat O1-O3, but the friend ends the game in Task Manager and starts it again (same save slot) | As O3. Since 0.3.0 the friend's pack puts the id from their last launch back (kit `docs/19` §5, `RWIdentity`), so the host gives them the same `Sessionid`; their log says "identity: this player's id from the last launch is back". With 0.2.1 they were turned away like a stranger (O5) |
 | O3c | A friend with the pack turned off joins on the boat, and the host starts a chart map (the friend can't load it) | Since 0.3.0: 75 s into the loading screen the host sends that friend back with a chat line and the others start the map (`RWLoad`); before, everyone went to the main menu at 120 s |
 | O4 | Play a Tide | Tide pay and kill drops reach them again |
-| O5 | A third friend not in the map tries Join Game | Turned away with a chat line; back on their main menu |
+| O5 | A third friend not in the map tries Join Game, then **tries again** | Turned away with a chat line both times; back on their main menu. Before 0.1.0-dev (2026-11-03) the second try got in, seatless, while a seat was empty (`QUALITY_PASSES_2026-10-15.md` B4-14) |
 | O6 | Watch the others' screens while the friend joins | No stutter worth noting (note any, and the host's log time of the join) |
 | O7 | Repeat O1-O3 on a Rising Water and a Nesting Ground map | Flood, flooded tiles and nest look right on the rejoiner's screen |
 | O8 | Finish the map | The end screen lists the rejoiner with their stats; the party sails on together; the lobby is open on the boat |
