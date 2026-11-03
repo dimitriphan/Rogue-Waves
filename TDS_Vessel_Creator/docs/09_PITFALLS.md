@@ -357,6 +357,20 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      solo on 3B_Thehunt) → `Debuff_Weakened` is only named by the Fiewall's code and isn't in the Vfx group in a normal
      game, though kit `17` §10 listed it → give the look your own effect (`Debuff_Yossele_Marked`), or check a stock
      debuff name with the self-test's `DebuffReport` before relying on it.
+112. **A foe killed in the frame it spawned leaves nothing your despawn hook keys on, and an area search two frames
+     later misses it** (Spool round 1, 2026-10-26; #105-#111 are Yossele's, PR #41) → `Entity_Master.Start` adds a
+     being's tags (`Taglistserver`) and stats a frame after `Game_Entity` spawns it, so a hook that checks the "Enemy"
+     tag skips a foe despawned in its spawn frame (no Thread dropped), and `Helper_Entityquerytools.Entityarea` (a
+     `Physics.OverlapSphere`) didn't find a foe that had just got its tags → in a self-test, wait until a spawned foe is
+     tagged and has `Health` before killing or reading it (#111 for its health), and about 0.3 s more before an area
+     search around it. Real Tide foes live long enough for neither to matter. **Verified** in game (the area search: missed
+     at two frames, found after 0.3 s; not timed more finely).
+113. **Selecting your unit throws `KeyNotFoundException: The given key 'Quickaction2' was not present in the
+     dictionary` in `Game_Selection.Addcommand`, and its panel never draws** (Spool play test, 2026-10-26: no buttons, no
+     upgrades, the previous selection's buttons stay) → `Addcommand` looks each name in a command's `Keybind` up in
+     `Blockage.Bl_Inputs.Actions`, which holds only the game's input actions (`Quickaction` and `1` to `8`) → name only
+     those (Spool's RETURN takes `4`, MEND `3`), and have the self-test check every key against `Bl_Inputs.Actions`
+     (Spool's does). **Seen** in game; the fix is checked by Spool's play test.
 114. **"Could not retrieve Vfx/Debuff_Stun The GROUP exists, but item does not" on one map, though the self-test saw
      the look attach on another** (Yossele play test, 2026-10-26) → stock effects load with groups, and which groups a
      match loads depends on its map and vessels: `Debuff_Stun` is in the Vfx group on 3B_Thehunt (the self-test map, so

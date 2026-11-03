@@ -43,6 +43,7 @@ public static class MummerServer
             Puppets.Clear();
             players.Clear();
             marks.Clear();
+            MummerUtil.ForgetLooks(true);
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;

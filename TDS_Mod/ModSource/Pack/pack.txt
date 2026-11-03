@@ -1,0 +1,7 @@
+# The RogueWavesMod pack (docs/PACK.md): what Tools/pc/Build-Pack.ps1 and Tools > ModKit > Build Pack build.
+# version: the one pack version (docs/PACK.md section 4); every part's <Part>Data.Version is set to it in the pack build.
+# part: one line per part, as its ModSource folder is named; each becomes RogueWaves_<Part>_Default in the bundle.
+# description: the Mods menu's text for the pack.
+version 0.1.0
+part Yossele
+description Rogue Waves, an expansion for TDS. This release adds Yossele, The Patient Golem: a clay golem whose buildings grow stronger every Tide they survive. Every player in a lobby needs the same version of this pack.

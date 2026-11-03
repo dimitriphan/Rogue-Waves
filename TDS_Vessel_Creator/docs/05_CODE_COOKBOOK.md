@@ -40,11 +40,13 @@ IEnumerator Boot()
     // 6. 8 s later, after every mod had its turn: fall back to stock icons if ours missed the table
     yield return new WaitForSecondsRealtime(8f); MummerContent.CheckIcons();
 }
-void Update()     { MummerServer.Update(); MummerClient.Update(); MummerJournal.Tick(); }
+void Update()     { ModKitFocus.Update(); ModKitTides.Update(); MummerServer.Update(); MummerClient.Update(); MummerJournal.Tick(); }
 void LateUpdate() { ModKitBoat.LateUpdate(MummerData.Hero); }
 ```
 
-`Start()` detaches the mod object (`SetParent(null)`, `DontDestroyOnLoad`): it lives for the whole session.
+`Start()` detaches the mod object (`SetParent(null)`, `DontDestroyOnLoad`): it lives for the whole session, and joins the
+pack registry (`ModKitPack.Join(Data.Part, Data.Version)`); `Boot()` stands down with `ModKitPack.Notice` when
+`ModKitPack.Taken(Data.Hero)` says another copy of the vessel registered first (the repository's `docs/PACK.md` §2).
 
 ## 2. Registering data (04)
 
