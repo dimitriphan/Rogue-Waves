@@ -216,6 +216,18 @@ crew of Nauts, a scatter cannon, a harpoon tower and a drill that sinks deeper e
 `Concept/` (the user's "Argo Vessel Concept.zip") on Sprigg's proven scaffolding. Read
 `TDS_Vessel_Creator/reference/VESSEL_SURVEY.md` for how the shipped vessels are built.
 
+## Directions (kit 1.7)
+
+The scope has no Argo Directions yet, so `ArgoContent.BuildDirections` registers two defaults, one upgrade per rank, no
+`Clash`. The vessel's brain copies the ranks held to `ArgoServer.RanksOf(owner)` twice a second; they stay while it is down.
+
+- **Deep Current** (`Deepcurrent`): `ArgoData.PoolReach` +15 / 30 / 50% for a network led by that player's pump (0.55 to
+  0.825 tiles). The pool's look doesn't change.
+- **Heavy Salvo** (`Heavysalvo`): a held Multi of +10 / 20 / 35% on each Harpoon Gun's Damage, made at its first check after
+  it spawns and remade if the rank rises.
+
+With none held the numbers and behaviour are today's. It compiled, with and without `ARGO_SELFTEST`, but hasn't run in game.
+
 ## Layout
 
 2.0 (current): the table below is 1.4.0's. 2.0 builds against kit 1.6, adds `11_Water` (Deep Water) and

@@ -97,6 +97,7 @@ public static class YosseleDiagnostics
         YosseleLog.Info("Hero_Yossele: ais " + YosseleUtil.Join(heroAis) + "; vis " + YosseleUtil.Join(heroVis) + "; anims " + YosseleUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
         List<string> dirs = new List<string>();
         foreach (Upgradeproperties d in YosseleContent.Compostbins) dirs.Add(d.Objectname);
+        foreach (Upgradeproperties d in YosseleContent.Treeshifts) dirs.Add(d.Objectname);
         YosseleLog.Info("Directions: " + YosseleUtil.Join(dirs));
     }
 }

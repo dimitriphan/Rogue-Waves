@@ -95,6 +95,34 @@ public static class SpoolData
     public const int PatchCost = 20;
     public const float PatchHeal = 0.2f, PatchMax = 500f, PatchRange = 4f, PatchCooldown = 5f;
 
+    // ---------------------------------------------------------------- Directions (docs/scope/11), one per rank
+
+    // Efficient Recycler: selling a Crafted refunds Percent of its cost (half without it); rank III also mends around it.
+    public class Recycler { public string Name, Display, Desc; public int Percent; public float Heal, Radius; }
+    public static readonly Recycler[] Recyclers =
+    {
+        new Recycler { Name = "Recycler", Display = "Efficient Recycler", Percent = 65,
+            Desc = "Selling a Crafted gives back more of its Thread" },
+        new Recycler { Name = "Recycler2", Display = "Efficient Recycler II", Percent = 80,
+            Desc = "Selling a Crafted gives back even more of its Thread" },
+        new Recycler { Name = "Recycler3", Display = "Efficient Recycler III", Percent = 100, Radius = 2.5f,
+            Heal = 10f,   // default, docs/scope/11
+            Desc = "Selling a Crafted gives back all its Thread and mends units and buildings around it" },
+    };
+
+    // Sewing Machine: every Loom of this player mines faster, spins no Thread and mends around itself each Tide.
+    public const float SewingMine = 0.5f;   // +50% mining, as a Multi on the Loom's Attackspeed; default, docs/scope/11
+    public class Sewing { public string Name, Display, Desc; public float Radius, Heal; }
+    public static readonly Sewing[] Sewingmachines =
+    {
+        new Sewing { Name = "Sewingmachine", Display = "Sewing Machine", Radius = 3f, Heal = 10f,
+            Desc = "Looms become Sewing Machines: they mine aura quicker and heal nearby buildings and units each Tide, but make no Thread" },
+        new Sewing { Name = "Sewingmachine2", Display = "Sewing Machine II", Radius = 3f, Heal = 20f,
+            Desc = "Sewing Machines heal more" },
+        new Sewing { Name = "Sewingmachine3", Display = "Sewing Machine III", Radius = 5f, Heal = 20f,
+            Desc = "Sewing Machines heal in a much larger radius" },
+    };
+
     // ---------------------------------------------------------------- Crafted and other units
 
     public const string Stitched = "Mob_Spoolstitched", Dart = "Mob_Spooldart", Seam = "Mob_Spoolseam";

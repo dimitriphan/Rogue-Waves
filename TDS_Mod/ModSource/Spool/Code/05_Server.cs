@@ -9,6 +9,7 @@ public class SpoolPlayer
     public long Owner;
     public int Stash, Carried;
     public bool Placed;          // the map's first Stash got its starting Thread
+    public int Recycler, Sewing; // Direction ranks the vessel holds: its brain refreshes them, they stay while it is down
     public SpoolHeroBrain Hero;
     public SpoolStashBrain Home;
 
@@ -34,6 +35,7 @@ public static class SpoolServer
     static readonly List<Entity_Master> tokens = new List<Entity_Master>();
     static readonly List<Comeback> comebacks = new List<Comeback>();
     static Game_Entity hookedEntity;
+    static bool subscribed;
     static int nextDrop = 1;
     static float nextSweep;
     public static int Dropped, Picked, Delivered, Spilled, Refunded, Swapped, Returned;
@@ -54,6 +56,11 @@ public static class SpoolServer
 
     public static void Update()
     {
+        if (!subscribed)
+        {
+            subscribed = true;
+            ModKitTides.Tide += OnTide;
+        }
         Game_Entity ge = Game_Entity.Instance;
         if (ge != hookedEntity)
         {
@@ -276,6 +283,49 @@ public static class SpoolServer
         if (SpoolUtil.Elite(foe))
             n += SpoolData.DropElite;
         Drop(SpoolUtil.Pos(foe), Mathf.Min(n, SpoolData.DropMax));
+    }
+
+    // ---------------------------------------------------------------- Directions (kit 1.7, docs/scope/11)
+
+    // The highest rank of a Direction this vessel carries (0: none): the mode grants them on the vessel.
+    public static int DirectionRank(Entity_Master hero, string name)
+    {
+        if (hero == null || hero.Upgradelistserver == null)
+            return 0;
+        for (int r = 3; r >= 2; r--)
+            if (hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Spool", name + r)))
+                return r;
+        return hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Spool", name)) ? 1 : 0;
+    }
+
+    // Heals every hurt same-team unit and building within a radius once; 'except' (a minion being sold) and Cores are left out.
+    public static void MendAround(Entity_Master from, Vector3 at, float radius, float heal, Entity_Master except)
+    {
+        if (from == null || from.Beingserver == null || heal <= 0f)
+            return;
+        int team = SpoolUtil.Team(from);
+        foreach (Entity_Master e in SpoolUtil.Area(at, radius, SpoolUtil.Friends(from)))
+        {
+            if (e == except || !SpoolUtil.Alive(e) || SpoolUtil.Team(e) != team || e.Taglistserver == null || e.Taglistserver.Contains("Core"))
+                continue;
+            if (SpoolUtil.Health(e) >= SpoolUtil.MaxHealth(e) - 0.01f)
+                continue;
+            Helper_Entitytools.Interactheal(from, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
+            SpoolUtil.Vis(from, "Spool_Mend", SpoolUtil.Pos(e), 0f);
+        }
+    }
+
+    // Sewing Machine: each Tide every Loom of a player holding it mends around itself.
+    static void OnTide(int wave)
+    {
+        foreach (SpoolBuilding b in Buildings.ToArray())
+        {
+            SpoolLoomBrain loom = b as SpoolLoomBrain;
+            if (loom == null || !loom.Started || loom.Master == null || !SpoolUtil.Alive(loom.Master) || !loom.Sewing)
+                continue;
+            SpoolData.Sewing s = SpoolData.Sewingmachines[loom.Player.Sewing - 1];
+            MendAround(loom.Master, loom.Pos, s.Radius, s.Heal, null);
+        }
     }
 
     // ---------------------------------------------------------------- spawns

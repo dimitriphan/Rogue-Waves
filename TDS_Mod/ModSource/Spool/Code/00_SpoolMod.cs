@@ -16,7 +16,8 @@
 //   SpoolJournal   the journal pages (through the shared ModKitJournal), ModKitBoat the boat spot and unlock.
 //   Kit 1.6         ModKitPack (the Rogue Waves registry: Join, Taken, Notice), ModKitFocus (the F-key fix),
 //                   ModKitTides (Tide events), ModKitTowers (range anchors), ModKitCombat (kill credit), ModKitCounter
-//                   (Thread counters). The build renames ModKit to SpoolKit, so every mod has its own copy.
+//                   (Thread counters), ModKitDirections (Efficient Recycler, Sewing Machine). The build renames ModKit to
+//                   SpoolKit, so every mod has its own copy.
 using System;
 using System.Collections;
 using System.Collections.Generic;

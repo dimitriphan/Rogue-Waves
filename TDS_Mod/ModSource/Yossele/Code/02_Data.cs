@@ -110,6 +110,41 @@ public static class YosseleData
             Desc = "Unlocks FERTILIZE for Yossele, foes felled anywhere around Yossele make fertilizer faster" },
     };
 
+    // The Tree's Directions (docs/scope/11), one per rank, Clash 1: a player holds one of the two.
+    public class Shift { public string Name, Display, Desc; }
+    public const float ShiftCheck = 0.5f;           // how often a Tree looks at them
+
+    // Dandelion Season: no limit on Trees, each acts as a Dandelion Sapling. Its stages do less than a Tree's so its range
+    // stays at 70% of a Tree's at any Growth; rank II's stages do 25% more than that.
+    public static readonly Shift[] Seasons =
+    {
+        new Shift { Name = "Dandelionseason", Display = "Dandelion Season",
+            Desc = "Your Primordial Dandelion Tree becomes a Dandelion Sapling, slightly weaker and slower to grow. Dandelion Saplings have no limit" },
+        new Shift { Name = "Dandelionseason2", Display = "Dandelion Season II",
+            Desc = "Dandelion Sapling's Growth scaling increases" },
+        new Shift { Name = "Dandelionseason3", Display = "Dandelion Season III",
+            Desc = "Dandelion Sapling's damage and range increase based on the number of Dandelion Saplings at max Growth" },
+    };
+    public const float SaplingShare = 0.7f;         // of the Tree's damage, range and stages; default, docs/scope/11
+    public const float SaplingStage = 0.25f;        // rank II: each stage does this much more; default, docs/scope/11
+    public const float SaplingPack = 0.05f;         // rank III: damage and range per other Tree at max Growth; default, docs/scope/11
+    public const float SaplingPackMax = 0.5f;       // default, docs/scope/11
+
+    // Mother of Mushrooms: each Tree acts as a Primordial Mushboom, bursting on spored foes instead of shooting.
+    public static readonly Shift[] Mushboomkits =
+    {
+        new Shift { Name = "Mushrooms", Display = "Mother of Mushrooms",
+            Desc = "Your Primordial Dandelion Tree is replaced by a Primordial Mushboom: it explodes in a large radius, dealing damage based on spore stacks on foes and consuming them. Growth increases its range" },
+        new Shift { Name = "Mushrooms2", Display = "Mother of Mushrooms II",
+            Desc = "Primordial Mushboom's range is increased" },
+        new Shift { Name = "Mushrooms3", Display = "Mother of Mushrooms III",
+            Desc = "Primordial Mushboom's explosion only consumes half of the spore stacks on a foe, while dealing the full damage" },
+    };
+    public const float MushboomEvery = 8f;          // seconds between bursts; default, docs/scope/11
+    public const float MushboomPerStack = 2f;       // damage per spore stack; default, docs/scope/11
+    public const float MushboomPerStage = 0.5f;     // tiles of range per Growth stage, in place of the Tree's 20%
+    public const float MushboomRange = 0.25f;       // rank II
+
     // ---------------------------------------------------------------- Mushroom Cannon, its spores, the Cordyfriend
 
     public const float SporeDps = 0.3f;         // damage a second per stack

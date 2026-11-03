@@ -33,6 +33,8 @@ public class ArgoTowerBrain : MonoBehaviour
     // Each reel shot's nearest foe hit in the step it first hits, and how far it stood from the tower.
     readonly Dictionary<float, KeyValuePair<Entity_Master, float>> reelFirst = new Dictionary<float, KeyValuePair<Entity_Master, float>>();
     Link_Command upgradeCommand, aimCommand;
+    Link_Modifier salvoMod;
+    int salvoRank;
     Entity_Master.Interacts hitHandler;
     readonly ArgoFaults faults = new ArgoFaults();
 
@@ -86,6 +88,8 @@ public class ArgoTowerBrain : MonoBehaviour
                 nextHookCheck = Time.time + 0.25f;
                 if (Master.Interact == null || Array.IndexOf(Master.Interact.GetInvocationList(), hitHandler) < 0)
                     Master.Interact += hitHandler;
+                if (IsHarpoon)
+                    CheckSalvo();
             }
             if ((IsWater || IsPool) && !Master.Commandlistserver.ContainsKey(ArgoData.FloodLink) && ArgoContent.Commands.ContainsKey(ArgoData.FloodKey))
                 AddFlood();
@@ -272,6 +276,18 @@ public class ArgoTowerBrain : MonoBehaviour
     }
 
     // ---------------------------------------------------------------- Harpoon Tower
+
+    // Heavy Salvo (a Direction on its owner's vessel): a held Multi on this gun's Damage, made from its first check after
+    // it spawns and remade when the rank rises. None with none held.
+    void CheckSalvo()
+    {
+        int rank = ArgoServer.RanksOf(ArgoUtil.Owner(Master)).Heavysalvo;
+        if (rank == salvoRank)
+            return;
+        salvoRank = rank;
+        ArgoUtil.Unmod(salvoMod);
+        salvoMod = rank > 0 ? Helper_Entitytools.Addmod(Master, "Damage", ArgoData.Heavysalvos[rank - 1].Bonus, Helper_Entitytools.Modtypes.Multi, 0f) : null;
+    }
 
     void Harpoon()
     {

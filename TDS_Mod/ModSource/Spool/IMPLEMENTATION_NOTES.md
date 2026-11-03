@@ -146,6 +146,20 @@ Thread Head (3), selling by clicking (4); also the tufts' look in URP (5), the C
 (6), the needle's flight (7), foes stopping at an Overstuffed Mangled (9), the Loom striking ore (12; no ore stood in
 its reach on 3B_Thehunt) and the whole look (13).
 
+## Directions (kit 1.7)
+
+`SpoolContent.BuildDirections` registers two Directions, one upgrade per rank (`Direction_Spool_<Name><rank>_Upgradeobject`);
+the vessel's brain copies the ranks held to `SpoolPlayer` twice a second, and they stay there while the vessel is down.
+
+- **Efficient Recycler** (`Recycler`): selling a Crafted refunds 65 / 80 / 100% of its cost, rounded down (`08_Tin.cs`);
+  rank III also heals hurt same-team Mob and Tower things within 2.5 tiles once, by 10 (default, docs/scope/11).
+- **Sewing Machine** (`Sewingmachine`, Clash 1): every Loom of that player keeps its model, gets a held +50% Attackspeed
+  (default, docs/scope/11), spins no Thread (Thread it already holds can still be collected, and Direct Line does nothing),
+  and each Tide heals its team's Mob and Tower around itself, Cores left out: radius 3 heal 10, radius 3 heal 20, radius 5 heal 20.
+  The Loom's panel still says Loom: a new name there needs a skin entry with its own `Displayname`, more than the one line allowed.
+
+With none held the numbers and behaviour are today's. It compiled, with and without `SPOOL_SELFTEST`, but hasn't run in game.
+
 ## Open in the sheet (Dimitri's)
 
 `! NEEDS YARN STASH UPGRADES !`, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones; every default in

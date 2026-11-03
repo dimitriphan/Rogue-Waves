@@ -8,6 +8,10 @@ public static class ArgoServer
     public static readonly List<ArgoNautBrain> Nauts = new List<ArgoNautBrain>();
     static Game_Entity hookedEntity;
     static bool tidesHooked;
+    static readonly Dictionary<long, Ranks> ranks = new Dictionary<long, Ranks>();
+
+    // The Direction ranks a player's vessel holds: its brain refreshes them, they stay while it is down.
+    public class Ranks { public int Deepcurrent, Heavysalvo; }
 
     // Set by a Miner's Base just before it spawns a Naut (Onspawn fires synchronously inside the spawn call).
     public static ArgoTowerBrain PendingBell;
@@ -22,6 +26,7 @@ public static class ArgoServer
             Heroes.Clear();
             Towers.Clear();
             Nauts.Clear();
+            ranks.Clear();
             ArgoHooks.Reset();
             ArgoStatus.Reset();
             ArgoUtil.ForgetLooks(true);
@@ -185,6 +190,27 @@ public static class ArgoServer
                 try { t.Reeled(foe, from, to); }
                 catch (Exception e) { ArgoLog.Warn("fault line: " + e.Message); }
             }
+    }
+
+    // ---------------------------------------------------------------- Directions (kit 1.7)
+
+    public static Ranks RanksOf(long owner)
+    {
+        Ranks r;
+        if (!ranks.TryGetValue(owner, out r))
+            ranks[owner] = r = new Ranks();
+        return r;
+    }
+
+    // The highest rank of a Direction this vessel carries (0: none), by the name of its rank I.
+    public static int DirectionRank(Entity_Master hero, string name)
+    {
+        if (hero == null || hero.Upgradelistserver == null)
+            return 0;
+        for (int r = 3; r >= 2; r--)
+            if (hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Argo", name + r)))
+                return r;
+        return hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Argo", name)) ? 1 : 0;
     }
 
     // ---------------------------------------------------------------- lookups

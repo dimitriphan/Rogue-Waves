@@ -171,6 +171,22 @@ public static class YosseleSpores
         }
     }
 
+    // Takes stacks off a foe without bursting it (Mother of Mushrooms); the next tick clears a foe left with none.
+    public static void Take(Entity_Master foe, int stacks)
+    {
+        State s;
+        if (foe == null || stacks <= 0 || !spored.TryGetValue(foe, out s))
+            return;
+        s.Stacks = Mathf.Max(0, s.Stacks - stacks);
+        if (!s.Full)
+            return;
+        s.Full = false;
+        YosseleUtil.Unmod(s.Sticky);
+        s.Sticky = null;
+        if (s.Cannon != null && s.Cannon.Master != null)
+            YosseleUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSporefull);
+    }
+
     public static void Update()
     {
         // Explosive Finish bursts are queued, not recursive: a burst that fills its neighbours queues theirs.

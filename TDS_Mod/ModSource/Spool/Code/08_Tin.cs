@@ -399,20 +399,25 @@ public class SpoolUnitBrain : MonoBehaviour
         return hero != null && hero.Master != null ? hero.Master : Master;
     }
 
-    // Sold: half its Thread back, rounded down (what doesn't fit drops beside it). Killed: Reuse Reduce Recycle drops
-    // part of its cost, One Last Surprise bursts on the foes in its reach.
+    // Sold: half its Thread back, rounded down (what doesn't fit drops beside it), or Efficient Recycler's share, whose
+    // rank III also mends around it. Killed: Reuse Reduce Recycle drops part of its cost, One Last Surprise bursts on the
+    // foes in its reach.
     public void Gone(bool killed, string reason)
     {
         Vector3 pos = SpoolUtil.Pos(Master);
         Entity_Master radio = Radio();
         if (reason == "Sell" && Crafted)
         {
-            int back = Cost / 2;
+            int rank = SpoolServer.Player(Owner).Recycler;
+            SpoolData.Recycler recycler = rank > 0 ? SpoolData.Recyclers[rank - 1] : null;
+            int back = recycler != null ? Cost * recycler.Percent / 100 : Cost / 2;
             int over = SpoolServer.AddStash(Owner, back);
             if (over > 0)
                 SpoolServer.Drop(pos, over);
             SpoolServer.Refunded += back;
             SpoolUtil.Vis(radio, "Spool_Unstitch", pos, back);
+            if (recycler != null)
+                SpoolServer.MendAround(radio, pos, recycler.Radius, recycler.Heal, Master);
             return;
         }
         if (!killed)

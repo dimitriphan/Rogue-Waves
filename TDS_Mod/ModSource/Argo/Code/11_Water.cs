@@ -5,12 +5,14 @@
 //   slow (Slow stat, Undercurrent), Brine's damage over time (Salt Sting: more on pinned foes), Kelp Bed's catch on
 //   entering, Crushing Depth's extra damage taken (ArgoHooks.Soak), Trench's drag-under and its free pool each Tide.
 // A pin on a foe in the water lasts twice as long (ArgoUtil.Pin reads ArgoStatus.IsWet), and a Drill Rig's Tremor that
-// touches any tile of a network shakes all of it (ArgoTowerBrain.TremorFoes reads Shaken).
+// touches any tile of a network shakes all of it (ArgoTowerBrain.TremorFoes reads Shaken). Deep Current (a Direction on
+// the lead pump's owner's vessel) stretches how far each pool of the network reaches.
 public static class ArgoWater
 {
     public class Net
     {
         public int Team;
+        public float Reach = ArgoData.PoolReach;
         public ArgoTowerBrain Lead;
         public readonly List<ArgoTowerBrain> Parts = new List<ArgoTowerBrain>();
         public readonly List<Vector3> Tiles = new List<Vector3>();
@@ -29,7 +31,7 @@ public static class ArgoWater
         public bool Holds(Vector3 at)
         {
             foreach (ArgoTowerBrain p in Parts)
-                if (p != null && p.Master != null && InPool(ArgoUtil.Pos(p.Master), at))
+                if (p != null && p.Master != null && InPool(ArgoUtil.Pos(p.Master), at, Reach))
                     return true;
             return false;
         }
@@ -48,9 +50,9 @@ public static class ArgoWater
         wetVfx.Clear();
     }
 
-    static bool InPool(Vector3 pool, Vector3 at)
+    static bool InPool(Vector3 pool, Vector3 at, float reach)
     {
-        return ArgoUtil.Flat(pool, at) <= ArgoData.PoolReach && Mathf.Abs(pool.y - at.y) < 1.2f;
+        return ArgoUtil.Flat(pool, at) <= reach && Mathf.Abs(pool.y - at.y) < 1.2f;
     }
 
     // The grid tile a water entity stands on (FLOOD compares tiles in the same frame as the surface the player picks).
@@ -121,6 +123,9 @@ public static class ArgoWater
             foreach (ArgoTowerBrain p in net.Parts)
                 if (p.IsWater && (net.Lead == null || p.UpgradeCount > net.Lead.UpgradeCount))
                     net.Lead = p;
+            int current = ArgoServer.RanksOf(ArgoUtil.Owner((net.Lead ?? net.Parts[0]).Master)).Deepcurrent;
+            if (current > 0)
+                net.Reach = ArgoData.PoolReach * (1f + ArgoData.Deepcurrents[current - 1].Bonus);
             Nets.Add(net);
         }
     }
@@ -157,8 +162,8 @@ public static class ArgoWater
         foreach (ArgoTowerBrain p in net.Parts)
         {
             Vector3 at = ArgoUtil.Pos(p.Master);
-            foreach (Entity_Master e in ArgoUtil.Area(at, ArgoData.PoolReach + 0.5f, enemies))
-                if (e != null && ArgoUtil.Alive(e) && ArgoUtil.HasTag(e, "Mob") && !net.Foes.Contains(e) && InPool(at, ArgoUtil.Pos(e)))
+            foreach (Entity_Master e in ArgoUtil.Area(at, net.Reach + 0.5f, enemies))
+                if (e != null && ArgoUtil.Alive(e) && ArgoUtil.HasTag(e, "Mob") && !net.Foes.Contains(e) && InPool(at, ArgoUtil.Pos(e), net.Reach))
                     net.Foes.Add(e);
         }
         ArgoTowerBrain lead = net.Lead;
