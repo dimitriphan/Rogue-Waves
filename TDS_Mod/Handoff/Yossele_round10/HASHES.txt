@@ -1,0 +1,31 @@
+# Handoff Yossele_round10: commit 42c765c of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from the PC manifest (PC manifest of C:\Users\Dimitri\TDS_Mod, 2026-10-28 14:41, 173 files).
+2da5afbc63bbca42  eb430dde81c0b9e9  Assets\ModKit\Editor\ModKitPipeline.cs
+ad03ad73d2556001  d450ee59eea868a4  Assets\YosseleMod\Editor\YosseleBuilder.cs
+15f8248b0ddcaafc  a647e2bed968247f  Assets\YosseleMod\Editor\YosseleModPrefab.cs
+cbf523710ec97198  5860ad9b838dd54a  Assets\YosseleMod\Editor\YosseleModels.cs
+new  96eecd4c1703c08f  ModSource\Pack\README.txt
+new  ddf732603503cc01  ModSource\Pack\pack.txt
+8e3d3164a5eebc0a  81c152f028aaa48c  ModSource\Shared\ModKitDirections.cs
+new  fe07c024cd732350  ModSource\Yossele\Art\Temporary\README.md
+new  4f2bc0363271bd74  ModSource\Yossele\Art\Temporary\aseprite\Yossele-Sheet.aseprite
+new  717e5e24ecd0a0a9  ModSource\Yossele\Art\Temporary\aseprite\YosseleAttack-Sheet.aseprite
+new  65c04a54182b970e  ModSource\Yossele\Art\Temporary\aseprite\Yosselefriend-Sheet.aseprite
+new  3e6ece5a5ac0d8f9  ModSource\Yossele\Art\Temporary\game_size\Yossele-Sheet.png
+new  c491b52db2421cb5  ModSource\Yossele\Art\Temporary\game_size\YosseleAttack-Sheet.png
+new  0dfa5e4584c113cf  ModSource\Yossele\Art\Temporary\game_size\Yosselefriend-Sheet.png
+new  ae264c4b60ef6ffe  ModSource\Yossele\Art\Temporary\preview_8x\Yossele-Sheet_8x.png
+new  593fb2f6bc663462  ModSource\Yossele\Art\Temporary\preview_8x\YosseleAttack-Sheet_8x.png
+new  10f004e894cb3bfe  ModSource\Yossele\Art\Temporary\preview_8x\Yossele_attack.gif
+new  b89a78bddf176c5b  ModSource\Yossele\Art\Temporary\preview_8x\Yossele_idle.gif
+new  904933b13f71e236  ModSource\Yossele\Art\Temporary\preview_8x\Yossele_move.gif
+new  ac9d25eb20a85db2  ModSource\Yossele\Art\Temporary\preview_8x\Yosselefriend-Sheet_8x.png
+new  f8f7af3bbd99493f  ModSource\Yossele\Art\Temporary\preview_8x\models_Fruit.png
+c80939dec08b018e  f11e572a9ee7ea2a  ModSource\Yossele\Code\02_Data.cs
+fe25b201349b0145  0976b0bcb45a6626  ModSource\Yossele\Code\03_Assets.cs
+e011a9423145690e  0458edc4923c2d83  ModSource\Yossele\Code\04_Content.cs
+df3691c3017b8a95  56193462f0cb02a1  ModSource\Yossele\Code\11_Pachira.cs
+21f1ecd07d44b334  ffa8242a3310a321  ModSource\Yossele\Code\13_Client.cs
+43cbdea171593a00  d32d27fe355e04c6  ModSource\Yossele\Code\99_SelfTest.cs
+4eb7628f8fdd0c3d  3d7d67b4c8c57cd7  ModSource\Yossele\DESIGN.md
+7472142bc732ddcb  6ae243954a97f9df  ModSource\Yossele\IMPLEMENTATION_NOTES.md
