@@ -260,7 +260,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
   nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
   60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art
-  (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
+  (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a UX features study; Dimitri
+  picked its five recommended features for Phase 5 (`docs/reports/UX_FEATURES_2026-11-03.md`; Decisions; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
   calibrated on the 2026-10-26 play test (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's
   proposals P1-P4 wait for his pick (Open questions 3; Log). Older entries are in "Log" below.
 - **Next:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
@@ -546,6 +547,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `.aseprite` copies, previews and GIFs; Rising Water's rows in `08_Icons.cs`, the tuft rows in `11_Client.cs`,
   `YosseleModels.Fruit` and `SpoolModels.Needle` changed by hand. All compiled in the cloud check; none seen in game.
   The `variants/` folders stay until he has seen the picks in game. The list: `docs/TEMP_ART.md`.
+- **2026-11-03, UX features (Dimitri: "additional features that would fit into the game while enhancing user
+  experience, such as buttons, transition screens or multi-player lobbies"):** a feasibility study, cloud only, no code
+  (`docs/reports/UX_FEATURES_2026-11-03.md`). The game's screens were decompiled again and read (loading screen, map
+  intro card, end screen, pause menu, boat world card, main menu, Mods menu, chat, kick). All three examples fit on
+  stock UI: buttons as clones that open the choice dialog (no new menus), transitions as text on the game's own five
+  screens (one "campaign card": map, stretch, weather, retries), and the boat stays the lobby. 33 features feasible,
+  5 not possible (own menus, lobby browser, more than 4 players, host migration, Discord presence). Recommended first:
+  the campaign card, retry warnings, a "friend has no mods" warning with rejoin instructions, weather icons on the
+  chart, the pack's tips. Ten facts new to the kit (X1-X10, read) and ten solo probes (U1-U10) wait for a round.
+  Dimitri picked the five recommended (decision card, 06:21Z); they are on the Phase 5 list.
 - **2026-11-03, balance study (cloud only):** at Dimitri's ask (a long virtual play test of Yossele and Spool), a
   simulator of a map Tide by Tide (`docs/reports/balance_2026-11-03/`, Python, no game code) was calibrated on the
   2026-10-26 play test and run about 13,000 times on Purlest, Woozy and The Hunt, Smacky as the yardstick. Found: the
@@ -698,6 +709,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked by his eye
   against Smacky's build bar (no desktop screenshots here). Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
   `TDS_Mod/ModSource/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
+- 2026-11-03 (user, decision card on `docs/reports/UX_FEATURES_2026-11-03.md`): **the five recommended UX features join
+  the Phase 5 list**, each built beside the piece it touches: the campaign card (T1-T4), the retry warnings (B4, T4),
+  the no-mods warning with the rejoin line (L1, L5), weather icons on the chart (O1) and the pack's tips (T6). The
+  other feasible rows stay in the report as reference.
 
 ### Open questions
 
@@ -720,6 +735,12 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 - [ ] leave-or-stay and bonus tides (a map is won at Tide 15 and 60 s breaks are built, 0.1.0-dev, compiled)
 - [ ] 10-map campaign loop (retries, replay, host quit, completion: built in 0.1.0-dev, compiled, not run)
 - [ ] ascension (Depth, on hold)
+- [ ] UX (Decisions 2026-11-03; `docs/reports/UX_FEATURES_2026-11-03.md`, probes U1-U9 in its §7):
+  - [ ] campaign card on the loading screen, the map intro card, the chart's world card and the end screen title
+  - [ ] retry warnings: the host's exit dialog names the cost; the end screen says how many retries are left
+  - [ ] "<name> has no mods on" warning on the boat; the rejoin line in the dropped player's main-menu error box
+  - [ ] weather icons above chart nodes on hover
+  - [ ] the pack's tips in the game's tip lists (end screen, pause menu, Close Game)
 
 ---
 
