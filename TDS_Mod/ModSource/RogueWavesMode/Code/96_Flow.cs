@@ -79,11 +79,12 @@ public static partial class RWTest
     static IEnumerator ToBreakAfter(int wave)
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
+        int breaks = RWVote.Breaks;
         freeze = false;
         forcing = true;
         yield return Until(() => vars.Wave.Value >= wave, 120f);
         float t = 0f;
-        while (!ModKitTides.InBreak && t < 90f)
+        while (RWVote.Breaks == breaks && t < 90f)
         {
             ClearFoes();
             t += Time.unscaledDeltaTime;
@@ -228,6 +229,7 @@ public static partial class RWTest
         boat = Macro_Main.Instance;
         Check("staging: the party is back on the boat, no retry spent", boat != null && RWCampaign.Retries == 3 && !RWCampaign.Staging && RWCampaign.Route.Count == 0, "retries " + RWCampaign.Retries + ", route " + Digits(RWCampaign.Route));
         yield return Until(() => Here(), 30f);
+        yield return new WaitForSecondsRealtime(5f);
         yield return Snap("boat_after_staging");
 
         // Sails to the winner, picks it: map 1.
@@ -246,7 +248,15 @@ public static partial class RWTest
         yield return Snap("loading_map1");
         int cards = RWCard.CardWrites;
         yield return Until(() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game" && RWCard.CardWrites > cards, 90f);
-        Check("T2 the map intro card shows the card", RWCard.CardWrites > cards, "'" + RWCard.LastLine + "'");
+        Check("U2 T2 the map intro card shows the card", RWCard.CardWrites > cards, "'" + RWCard.LastLine + "', writes " + RWCard.CardWrites);
+        try
+        {
+            GameObject alt = Blockage.Menu.Bl_Menus.Menus["Cine"].Items["Maptitlealt"];
+            List<string> texts = new List<string>();
+            foreach (TMPro.TMP_Text x in alt.GetComponentsInChildren<TMPro.TMP_Text>(true)) texts.Add(x.name + "='" + x.text + "'");
+            Info("the intro card's texts", "Cine active " + Blockage.Menu.Bl_Menus.Menus["Cine"].Active + ": " + string.Join(", ", texts.ToArray()));
+        }
+        catch (Exception e) { Info("the intro card's texts", e.Message); }
         yield return new WaitForSecondsRealtime(1f);
         yield return Snap("intro_card");
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap, 120f);
@@ -263,7 +273,13 @@ public static partial class RWTest
         Check("VENDCINT: nobody's, every player a subowner, not a target", stand.Entitydata.Value.Owner == -1 && subs != null && Array.IndexOf(subs, me) >= 0 && stand.Beingserver.Entity.Targetable == false, "subowners " + (subs != null ? subs.Length : 0));
 
         // The Exit Map warning (B4).
-        Tds_Pausemenu.Instance.SendMessage("Exitgamehost", SendMessageOptions.DontRequireReceiver);
+        Tds_Pausemenu.Openpausemenu();
+        yield return new WaitForSecondsRealtime(1.2f);
+        yield return Snap("pause_menu");
+        Blu3_Button exitButton = null;
+        GameObject exitItem;
+        if (Blockage.Menu.Bl_Menus.Menus["Pause"].Items.TryGetValue("Exit", out exitItem) && exitItem != null) exitButton = exitItem.GetComponent<Blu3_Button>();
+        if (exitButton != null && exitButton.Buttonclick != null) exitButton.Buttonclick();
         yield return WaitDialog(5f);
         yield return new WaitForSecondsRealtime(0.5f);
         string exitSub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
@@ -272,6 +288,8 @@ public static partial class RWTest
         ClickCard("Back");
         yield return Until(() => !RWDialog.Up(), 5f);
         yield return new WaitForSecondsRealtime(0.5f);
+        Tds_Pausemenu.Instance.SendMessage("Pauseclose", SendMessageOptions.DontRequireReceiver);
+        yield return new WaitForSecondsRealtime(1f);
 
         // T6.
         Check("T6 the pack's tips are in the game's lists, gated on a campaign", RWTips.Added >= RWTips.Lines.Length && RWUtil.Has(RWData.SaveFolder, RWTips.SeenKey), "added " + RWTips.Added);
@@ -321,6 +339,7 @@ public static partial class RWTest
         if (Mathf.Abs(player.Pure) >= 0) player.Pure = 60;
 
         // A Direction's reach: each pack Direction granted at rank III; a tower built now carries the effects.
+        vessel = RWRun.Vessel(me);
         RWDirections.Refresh();
         foreach (RWDirectionDef d in RWDirections.Mine)
             if (d.Vessel == "Any")
@@ -470,6 +489,7 @@ public static partial class RWTest
         RWPlayer again = RWRun.For(me);
         Check("Continue: Pure Aura, Directions and Cardinals come back from the save", again.Pure == beforePure && again.Directions.Count == beforeDirs.Count && again.Cardinals.Count > 0 && again.Hero != "", "pure " + again.Pure + ", directions " + again.Directions.Count + ", cardinals " + again.Cardinals.Count + ", hero " + again.Hero);
         Check("Continue's card names where the campaign stands", line.StartsWith("Map 2 of 10") && line.Contains("3 retries left") && line.Contains("Crew: "), line);
+        boat.Deselectcurrentmap();
         boat.Selected.Value = new FixedString64Bytes("");
         RWCampaign.Stop();
         RWRun.Clear();

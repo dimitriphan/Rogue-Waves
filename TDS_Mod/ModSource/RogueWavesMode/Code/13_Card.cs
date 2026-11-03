@@ -63,7 +63,7 @@ public static class RWCard
         }
         // The bar shows over the map's own scene for a while too: looked for only in the first moments of a scene.
         if (scene != "Setup" && !RWMenu.OnMainMenu && Time.unscaledTime - sceneAt < 120f) Loading();
-        if (scene == "Game") { Intro(); ExitWarning(); HideScore(); }
+        if (scene == "Game") { Intro(); ExitWarning(); HideScore(); HoldEnd(); }
     }
 
     static string seenScene = "";
@@ -106,8 +106,9 @@ public static class RWCard
         if (Time.unscaledTime - sceneAt > 60f || Blockage.Menu.Bl_Menus.Menus == null || !Blockage.Menu.Bl_Menus.Menus.TryGetValue("Cine", out cine) || cine == null
             || !cine.Items.TryGetValue("Maptitlealt", out alt) || alt == null)
             return;
-        Transform desc = alt.transform.Find("Desc");
-        TMPro.TMP_Text t = desc != null ? desc.GetComponent<TMPro.TMP_Text>() : null;
+        TMPro.TMP_Text t = null;
+        foreach (TMPro.TMP_Text x in alt.GetComponentsInChildren<TMPro.TMP_Text>(true))
+            if (x.name == "Desc") t = x;
         if (t == null || string.IsNullOrEmpty(t.text))
             return;
         string line = Line();
@@ -154,10 +155,25 @@ public static class RWCard
         Game_Mapvars vars = Game_Mapvars.Instance;
         if (vars == null || !RWUtil.IsServer || title == "")
             return;
-        Game_Mapvars.Link_Displaydataref d = vars.Display.Value;
-        d.Display_Endgame = new FixedString64Bytes(title);
-        vars.Display.Value = d;
+        endMap = vars;
         LastEnd = title;
+        HoldEnd();
+    }
+
+    static Game_Mapvars endMap;
+
+    // Mode_Normal writes the whole display from its own copy at its own moments (kit docs/20 §2), so the title is held
+    // until the map goes.
+    static void HoldEnd()
+    {
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        if (ReferenceEquals(endMap, null) || endMap == null || !ReferenceEquals(vars, endMap) || !RWUtil.IsServer)
+            return;
+        Game_Mapvars.Link_Displaydataref d = vars.Display.Value;
+        if (d.Display_Endgame.ToString() == LastEnd)
+            return;
+        d.Display_Endgame = new FixedString64Bytes(LastEnd);
+        vars.Display.Value = d;
     }
 }
 

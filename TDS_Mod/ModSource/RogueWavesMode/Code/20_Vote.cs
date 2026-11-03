@@ -49,10 +49,14 @@ public static class RWVote
             if (staging) RWRun.For(s).Owed = true;
         RWCardinals.GrantAllTeam();
         startPickAt = Time.time + 3f;   // the vessels are carrying their commands by then (RWRun.Tick)
+        openingShop = false;
     }
+
+    public static int Breaks;    // self-test
 
     public static void Break(int wave)
     {
+        Breaks++;
         if (!RWRun.InCampaignMap)
             return;
         RWObjectives.Resolve();
@@ -63,12 +67,11 @@ public static class RWVote
         }
         foreach (long s in RWRun.Sessions())
             RWRun.For(s).Sent = 0f;
-        if (!staging)
-        {
-            RWShop.Land();
-            RWObjectives.Post(wave);
-            PostBoard();
-        }
+        // The opening break's table entry is up as the map loads, before the Basin and the vessels exist (seen on the PC).
+        if (wave == 0)
+            openingShop = true;
+        else if (!staging)
+            OpenShop(wave);
         if (wave >= RWCampaign.WinTide)
         {
             RWDifficulty.Bonus(wave);
@@ -102,11 +105,14 @@ public static class RWVote
         if (!RWRun.InCampaignMap || !RWUtil.IsServer || Game_Mapvars.Instance == null)
             return;
         Game_Mapvars vars = Game_Mapvars.Instance;
-        // Once every vessel stands and carries its commands: the vessels' start runs on the Tide clock, so nothing holds it
-        // before that (seen on the PC).
-        if (startPickAt > 0f && Time.time >= startPickAt && (AllStanding() || Time.time >= startPickAt + 90f))
+        // Once every vessel stands and carries its commands, and the map's fly-in (10 s, the HUD hidden) is over: the vessels'
+        // start runs on the Tide clock, so nothing holds it before that (seen on the PC).
+        if (startPickAt > 0f && Time.time >= startPickAt && ((AllStanding() && IntroOver(vars)) || Time.time >= startPickAt + 90f))
         {
             startPickAt = -1f;
+            if (openingShop && !staging)
+                OpenShop(0);
+            openingShop = false;
             OpeningPicks();
         }
         if (clearingWatch && ModKitTides.InBreak && Foes() == 0)
@@ -140,6 +146,24 @@ public static class RWVote
                 n++;
         return n;
     }
+
+    static bool openingShop;
+
+    static void OpenShop(int wave)
+    {
+        RWShop.Land();
+        RWObjectives.Post(wave);
+        PostBoard();
+    }
+
+    // The opening break's timer starts as the map loads.
+    static bool IntroOver(Game_Mapvars vars)
+    {
+        List<Wavesobject.Waves> table = vars.Mode != null && vars.Mode.Enemies != null ? vars.Mode.Enemies.Wave : null;
+        return table == null || table.Count == 0 || vars.Time_Wave.Value <= table[0].Wavetime - IntroSeconds;
+    }
+
+    public const float IntroSeconds = 14f;
 
     static bool AllStanding()
     {

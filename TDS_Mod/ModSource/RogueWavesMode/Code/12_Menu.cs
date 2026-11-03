@@ -86,13 +86,23 @@ public static class RWMenu
         RWLog.Info("main menu: the Rogue Waves button stands under Play");
     }
 
-    // A stock button's own icon, if it has one, becomes the crest.
+    // Play's tile with its ship and arrows: the clone's picture is the pack's crest, on Rogue Teal (docs/STYLE.md).
     static void Image(GameObject copy)
     {
-        Transform icon = copy.transform.Find("Icon");
-        UnityEngine.UI.Image i = icon != null ? icon.GetComponent<UnityEngine.UI.Image>() : null;
         Sprite crest = RWAssets.Sprite("RogueWaves_Crest32");
-        if (i != null && crest != null) i.sprite = crest;
+        List<string> seen = new List<string>();
+        foreach (UnityEngine.UI.Image i in copy.GetComponentsInChildren<UnityEngine.UI.Image>(true))
+        {
+            seen.Add(i.name + ":" + (i.sprite != null ? i.sprite.name : "-"));
+            if (i.gameObject == copy)
+                i.color = RWDialog.Teal;
+            else if (crest != null && i.sprite != null && i.sprite.name.IndexOf("corner", StringComparison.OrdinalIgnoreCase) < 0)
+            {
+                i.sprite = crest;
+                i.preserveAspect = true;
+            }
+        }
+        RWLog.Info("main menu button images: " + string.Join(", ", seen.ToArray()));
     }
 
     // Each stock button rewrites the tip under the menu on hover (Mainmenu_Main.Playhover).

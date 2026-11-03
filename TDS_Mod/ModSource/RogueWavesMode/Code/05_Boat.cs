@@ -150,7 +150,7 @@ public static class RWBoat
             RWCardinals.RestoreLobby();
         }
         // A new campaign's first stop opens by itself: the leader's boat is already there.
-        if (RWCampaign.Staging && main.Selected.Value.ToString() == "" && !vis.Inworldtransition && !vis.Insetup && Time.realtimeSinceStartup - upAt > 4f && RWUtil.IsLeader && Picked == "")
+        if (RWCampaign.Staging && main.Selected.Value.ToString() == "" && !vis.Inworldtransition && !vis.Insetup && Time.realtimeSinceStartup - upAt > 12f && RWUtil.IsLeader && Picked == "")
         {
             RWChart.Node home = RWCampaign.Chart.At(0, 0);
             Picked = home.Name;
