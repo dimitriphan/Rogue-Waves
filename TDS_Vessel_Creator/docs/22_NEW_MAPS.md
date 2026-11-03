@@ -62,8 +62,8 @@ own transform is ignored and **child positions are world positions**. It runs on
   merge.
 - **Then `Despawnanonblock` removes every being that has no node** (Game_Grid.cs:655; Game_Entity.cs:435-446).
   `Entities` children never get a node from their spawn, so **an `Entities` child survives only if its own funct adds
-  a node** (Ground, Add…). Cores and buildings go in `Object`. (Corrects `15` §14.4, which put map buildings in
-  `Entities`; a stock-map dump confirms where Blockage puts them.)
+  a node** (Ground, Add…). Cores and buildings go in `Object`. (`15` §14.4 says the same since the decompile; a stock-map dump confirms where Blockage puts
+  them.)
 - Stock blocks: `Block_Ground`, `Block_Surface`, `Block_Stair`, `Block_Oneway`, `Block_Twoway`, `Block_Connector`,
   `Block_None`, `Block_Occupied`, `Block_Surface_Attractor`, `Block_Surface_Deter`, `Block_Noplacement`, plus
   map-specific ones (`Block_Chute`, `Block_Waterfall`, `Block_Flood_Deter`…) (`reference/addressables_default_group.txt`
