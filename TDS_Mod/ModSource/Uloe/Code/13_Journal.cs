@@ -1,0 +1,96 @@
+// Uloe's journal pages, described for the shared ModKitVesselJournal (ModSource/Shared/ModKitJournal.cs): a vessel
+// page with the rule banner, a page per buildable with its upgrade tree, and the Photon's page as a RELATED ITEM on the
+// Power Bank's. ModKitVesselTabs keeps every vessel page's tab row complete.
+public static class UloeJournal
+{
+    static readonly Color Purple = UloeContent.Accent;
+
+    public static Logobject Page;
+    public static int Pages;
+
+    public static void Build(Heroentryobject template)
+    {
+        Entityobject hero = UloeContent.HeroBeing.Entity;
+        ModKitJournalSpec spec = new ModKitJournalSpec
+        {
+            HeroId = UloeData.Hero, Template = template, Hero = hero,
+            Rule = hero.Upgradesinit.Count > 0 ? hero.Upgradesinit[0] : null,
+            Title = UloeData.Displayname, Lore = UloeData.Lore, Origin = "Rogue Waves",
+            Portrait = Portrait(), Tab = UloeAssets.Single("Uloetabicon", 32), Accent = Purple,
+        };
+        foreach (UloeData.Build b in UloeData.Builds)
+        {
+            Beingobject being;
+            if (!UloeContent.Beings.TryGetValue(b.Id, out being))
+                continue;
+            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = UloeAssets.Quiet(b.Id) };
+            Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
+            foreach (UloeData.Upg u in b.Upgrades)
+            {
+                Upgradeproperties prop;
+                UloeContent.Upgrades.TryGetValue(u.Id, out prop);
+                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = UloeAssets.Quiet(u.Model) ?? jb.Model };
+            }
+            foreach (UloeData.Upg u in b.Upgrades)
+            {
+                ModKitJournalUpgrade ju = byKey[u.Key + u.Tier], next;
+                foreach (string n in u.Next)
+                    if (byKey.TryGetValue(n.Trim(), out next))
+                        ju.Next.Add(next);
+                if (u.Tier == 2)
+                    jb.Roots.Add(ju);
+            }
+            Beingobject photon;
+            if (b.Id == UloeData.Bank && UloeContent.Beings.TryGetValue(UloeData.Photon, out photon))
+            {
+                List<Sprite> f = UloeAssets.Frames(UloeData.PhotonSheet, UloeData.PhotonCell, new Vector2(0.5f, 0.5f));
+                jb.Units.Add(new ModKitJournalUnit { Id = UloeData.Photon, Title = UloeData.PhotonDisplay, Desc = UloeData.PhotonLore, Entity = photon.Entity, Look = f.Count > 0 ? f[0] : null });
+            }
+            spec.Buildings.Add(jb);
+        }
+        ModKitVesselJournal journal = new ModKitVesselJournal(spec);
+        Page = journal.Build();
+        Pages = journal.Pages;
+        UloeContent.Entry.Log = Page;
+        ModKitVesselTabs.Sync();
+        UloeLog.Info("journal: " + Pages + " pages, tabs added " + ModKitVesselTabs.Added + ", duplicates removed " + ModKitVesselTabs.Removed);
+    }
+
+    public static void Tick() { ModKitVesselTabs.Tick(); }
+
+    // An idle frame, front facing right, like the shipped vessel pages (Smacky4-Sheet_0, Snosnoidle-Sheet_3).
+    static Sprite Portrait()
+    {
+        List<Sprite> f = UloeAssets.Frames("Uloe-Sheet", 32, new Vector2(0.5f, 0.5f));
+        return f.Count > 0 ? f[0] : null;
+    }
+}
+// One-time log of the values Uloe copied or guessed, so a Player.log is enough to check a build.
+public static class UloeDiagnostics
+{
+    public static void Dump(Heroentryobject template)
+    {
+        Heroentryobject e = UloeContent.Entry;
+        UloeLog.Info("Uloe entry: towers " + UloeUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
+            + ", journal " + (e.Log != null ? e.Log.name : "none"));
+        foreach (KeyValuePair<string, Beingobject> kv in UloeContent.Beings)
+        {
+            Entityobject ent = kv.Value.Entity;
+            List<string> ais = new List<string>();
+            foreach (UnityEngine.Object o in ent.Aiscripts) ais.Add(o.name);
+            List<string> stats = new List<string>();
+            if (ent.Defaultstat != null)
+                foreach (Statproperties.Defaultstatgroup g in ent.Defaultstat.Stats) stats.Add(g.Name + "=" + g.Value + (g.Leveladd != 0 ? "+" + g.Leveladd : ""));
+            List<string> costs = new List<string>();
+            foreach (Link_Resourceset c in ent.Costs) costs.Add(c.Name + " " + c.Amount);
+            UloeLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + UloeUtil.Join(ais) + "; stats " + UloeUtil.Join(stats)
+                + "; cost " + UloeUtil.Join(costs) + "; tags " + UloeUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count);
+        }
+        Entityobject hero = UloeContent.HeroBeing.Entity;
+        List<string> heroAis = new List<string>();
+        foreach (UnityEngine.Object o in hero.Aiscripts) heroAis.Add(o.name);
+        List<string> heroVis = new List<string>();
+        foreach (UnityEngine.Object o in hero.Visualscripts) heroVis.Add(o.name);
+        UloeLog.Info("Hero_Uloe: ais " + UloeUtil.Join(heroAis) + "; vis " + UloeUtil.Join(heroVis) + "; anims " + UloeUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
+    }
+}

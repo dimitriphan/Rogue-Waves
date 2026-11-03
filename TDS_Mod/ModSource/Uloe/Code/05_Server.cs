@@ -1,0 +1,435 @@
+// Host-only rules. Everything that changes the game state happens here or in the brains, and reaches other players
+// through the engine's own networking (spawns, stats, upgrades, commands, Vis RPCs).
+//
+// Light is a stat: each of Uloe's buildings has a Light stat, and each source re-adds its own short timed Add every second,
+// removing its last first (UloeLight, pitfall #119; RogueLab R3 proved two sources sum and it fades 1.5 s after the last).
+// Blind and Illuminate are per foe on the host (UloeMarks).
+public class UloePlayer
+{
+    public long Owner;
+    public int Extension, Bright, Batteries, Flash;   // Direction ranks the vessel holds: its brain refreshes them
+    public UloeHeroBrain Hero;
+}
+
+// One source's share of Light: what it holds on each tower it lights.
+public class UloeLight
+{
+    readonly Dictionary<Entity_Master, Link_Modifier> held = new Dictionary<Entity_Master, Link_Modifier>();
+    static readonly List<Entity_Master> gone = new List<Entity_Master>();
+
+    public void Feed(Entity_Master tower, float amount)
+    {
+        Link_Modifier m;
+        if (held.TryGetValue(tower, out m) && m != null && !m.Dead)
+            m.Remove();
+        if (amount > 0f)
+            held[tower] = Helper_Entitytools.Addmod(tower, UloeData.LightStat, amount, Helper_Entitytools.Modtypes.Add, UloeData.LightHold);
+        else
+            held.Remove(tower);
+    }
+
+    // Forgets what has run out and what is gone; a source calls it once per tick.
+    public void Sweep()
+    {
+        gone.Clear();
+        foreach (KeyValuePair<Entity_Master, Link_Modifier> kv in held)
+            if (kv.Key == null || kv.Value == null || kv.Value.Dead)
+                gone.Add(kv.Key);
+        foreach (Entity_Master e in gone)
+            held.Remove(e);
+    }
+
+    public int Holding { get { return held.Count; } }
+}
+
+public static class UloeServer
+{
+    public static readonly List<UloeHeroBrain> Heroes = new List<UloeHeroBrain>();
+    public static readonly List<UloeBuilding> Buildings = new List<UloeBuilding>();
+    public static readonly List<UloePhotonBrain> Photons = new List<UloePhotonBrain>();
+    static readonly Dictionary<long, UloePlayer> players = new Dictionary<long, UloePlayer>();
+    static Game_Entity hookedEntity;
+    static float nextMarks;
+    public static int Bursts, Shines;
+
+    // Set just before a Power Bank spawns a Photon; read by OnSpawn (Onspawn fires synchronously inside Spawn).
+    public static UloeBankBrain PendingHome;
+
+    public static void Update()
+    {
+        Game_Entity ge = Game_Entity.Instance;
+        if (ge != hookedEntity)
+        {
+            hookedEntity = ge;
+            Heroes.Clear();
+            Buildings.Clear();
+            Photons.Clear();
+            players.Clear();
+            UloeMarks.Clear();
+            UloeUtil.ForgetLooks(true);
+            if (ge != null)
+            {
+                ge.Onspawn += OnSpawn;
+                ge.Ondespawn += OnDespawn;
+            }
+        }
+        if (ge == null || !ge.IsServer)
+            return;
+        Heroes.RemoveAll(h => h == null);
+        Buildings.RemoveAll(b => b == null);
+        Photons.RemoveAll(p => p == null);
+        try
+        {
+            if (Time.time >= nextMarks)
+            {
+                nextMarks = Time.time + 0.1f;
+                UloeMarks.Tick();
+            }
+        }
+        catch (Exception e)
+        {
+            UloeLog.Warn("server: " + e.Message);
+        }
+    }
+
+    // ---------------------------------------------------------------- players
+
+    public static UloePlayer Player(long owner)
+    {
+        UloePlayer p;
+        if (!players.TryGetValue(owner, out p))
+        {
+            p = new UloePlayer { Owner = owner };
+            players[owner] = p;
+        }
+        return p;
+    }
+
+    public static UloeHeroBrain HeroOf(long owner)
+    {
+        foreach (UloeHeroBrain h in Heroes)
+            if (h != null && h.Master != null && UloeUtil.Owner(h.Master) == owner)
+                return h;
+        return null;
+    }
+
+    public static List<T> Owned<T>(long owner) where T : UloeBuilding
+    {
+        List<T> list = new List<T>();
+        foreach (UloeBuilding b in Buildings)
+            if (b is T && b.Started && b.Master != null && b.Owner == owner)
+                list.Add((T)b);
+        return list;
+    }
+
+    public static int PhotonsOf(UloeBankBrain home)
+    {
+        int n = 0;
+        foreach (UloePhotonBrain p in Photons)
+            if (p != null && p.Master != null && p.Home == home)
+                n++;
+        return n;
+    }
+
+    // ---------------------------------------------------------------- Light
+
+    // One source's tick in a radius: every lightable building of its team there gets 'amount' from it. Uloe's light reaches
+    // any Uloe's buildings on the team. 'except' never does; relays skip a Mirror that relays too (two would feed each other).
+    public static void Shine(UloeLight light, Entity_Master from, Vector3 at, float radius, float amount, Entity_Master except, bool skipRelays = false)
+    {
+        if (from == null || amount <= 0f)
+            return;
+        int team = UloeUtil.Team(from);
+        foreach (UloeBuilding b in Buildings)
+        {
+            if (b == null || !b.Started || b.Master == null || b.Master == except || UloeUtil.Team(b.Master) != team || !UloeUtil.Alive(b.Master))
+                continue;
+            if (UloeUtil.Flat(b.Pos, at) > radius)
+                continue;
+            UloeMirrorBrain mirror = b as UloeMirrorBrain;
+            if (skipRelays && mirror != null && mirror.Has("Bounce"))
+                continue;
+            light.Feed(b.Master, amount);
+            Shines++;
+        }
+        light.Sweep();
+    }
+
+    // The nearest of a team's buildings to a point, within a reach; 'except' left out. For a Flood Light with nothing picked.
+    public static UloeBuilding NearestBuilding(int team, Vector3 at, float reach, Entity_Master except)
+    {
+        UloeBuilding best = null;
+        float bestD = reach;
+        foreach (UloeBuilding b in Buildings)
+        {
+            if (b == null || !b.Started || b.Master == null || b.Master == except || UloeUtil.Team(b.Master) != team || !UloeUtil.Alive(b.Master))
+                continue;
+            float d = UloeUtil.Flat(b.Pos, at);
+            if (d <= bestD)
+            {
+                best = b;
+                bestD = d;
+            }
+        }
+        return best;
+    }
+
+    // A Flood Light of this owner whose line of light passes within PathGrab of a point, for a Photon to follow; null if none.
+    public static UloeFloodBrain PathNear(long owner, Vector3 at)
+    {
+        foreach (UloeFloodBrain f in Owned<UloeFloodBrain>(owner))
+            if (f.Directed && UloeUtil.SegmentDistance(at, f.Pos, f.LineEnd) <= UloeData.PathGrab)
+                return f;
+        return null;
+    }
+
+    // ---------------------------------------------------------------- spawns
+
+    static void OnSpawn(Entity_Master master)
+    {
+        try
+        {
+            if (!UloeUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
+                return;
+            string being = master.Beingserver.Being.Objectname;
+            if (being == UloeData.Hero)
+            {
+                master.gameObject.AddComponent<UloeHeroBrain>().Master = master;
+                return;
+            }
+            if (being == UloeData.Photon)
+            {
+                UloePhotonBrain brain = master.gameObject.AddComponent<UloePhotonBrain>();
+                brain.Master = master;
+                brain.Home = PendingHome;
+                PendingHome = null;
+                Photons.Add(brain);
+                return;
+            }
+            UloeData.Build b = UloeData.BuildFor(being);
+            if (b == null)
+                return;
+            UloeBuilding building;
+            if (b.Id == UloeData.Glass) building = master.gameObject.AddComponent<UloeGlassBrain>();
+            else if (b.Id == UloeData.Bank) building = master.gameObject.AddComponent<UloeBankBrain>();
+            else if (b.Id == UloeData.Mirror) building = master.gameObject.AddComponent<UloeMirrorBrain>();
+            else building = master.gameObject.AddComponent<UloeFloodBrain>();
+            building.Master = master;
+            building.Def = b;
+            Buildings.Add(building);
+        }
+        catch (Exception e)
+        {
+            UloeLog.Warn("spawn hook: " + e.Message);
+        }
+    }
+
+    static void OnDespawn(Entity_Master master, bool killed, string reason)
+    {
+        try
+        {
+            if (!UloeUtil.IsServer || master == null)
+                return;
+            UloeBuilding building = master.GetComponent<UloeBuilding>();
+            if (building != null)
+            {
+                Buildings.Remove(building);
+                building.Gone(killed, reason);
+                return;
+            }
+            UloePhotonBrain photon = master.GetComponent<UloePhotonBrain>();
+            if (photon != null)
+            {
+                Photons.Remove(photon);
+                photon.Gone(killed, reason);
+                return;
+            }
+            UloeHeroBrain hero = master.GetComponent<UloeHeroBrain>();
+            if (hero != null)
+            {
+                Heroes.Remove(hero);
+                if (killed)
+                    UloeUtil.Vis(master, "Uloe_Herodeath", UloeUtil.Pos(master), 0);
+                return;
+            }
+            UloeMarks.Forget(master);
+        }
+        catch (Exception e)
+        {
+            UloeLog.Warn("despawn hook: " + e.Message);
+        }
+    }
+}
+
+// Blind and Illuminate on the host: one level of each per foe at a time. A stronger one replaces a weaker, a weaker does
+// nothing while a stronger is on, the same level refreshes in its last second. Each level is its own upgrade (a stock script
+// on pack data, fit plan 8.3); Stock false takes the same numbers through Addmod and a hit hook (IMPLEMENTATION_NOTES.md).
+public class UloeMark
+{
+    public Entity_Master Foe;
+    public int Blind, Lit;
+    public float BlindUntil, LitUntil;
+    public Link_Modifier BlindMod;
+    public Entity_Master.Oninteracts Hook;
+    public float HookMulti;
+    public bool HookOn;
+
+    // On its own copy: a caller may hand the same Data to every foe it hits, and the share must not pile up.
+    public void OnHit(Link_Interact hit)
+    {
+        float m;
+        if (hit == null || hit.Type != "Hurt" || hit.Data == null || !hit.Data.ContainsKey("Damage"))
+            return;
+        if (!hit.Data.TryGetValue("Damagemulti", out m))
+            m = 1f;
+        hit.Data = new Dictionary<string, float>(hit.Data);
+        hit.Data["Damagemulti"] = m + HookMulti;
+    }
+}
+
+public static class UloeMarks
+{
+    public static bool Stock = UloeData.StockMarks;
+    public static int Blinds, Illuminations;
+    static readonly Dictionary<Entity_Master, UloeMark> marks = new Dictionary<Entity_Master, UloeMark>();
+    static readonly List<Entity_Master> done = new List<Entity_Master>();
+
+    public static void Clear() { marks.Clear(); }
+
+    static UloeMark Get(Entity_Master foe)
+    {
+        UloeMark m;
+        if (!marks.TryGetValue(foe, out m))
+            marks[foe] = m = new UloeMark { Foe = foe };
+        return m;
+    }
+
+    public static int BlindLevel(Entity_Master foe)
+    {
+        UloeMark m;
+        return foe != null && marks.TryGetValue(foe, out m) && m.BlindUntil > Time.time ? m.Blind : 0;
+    }
+
+    public static int LitLevel(Entity_Master foe)
+    {
+        UloeMark m;
+        return foe != null && marks.TryGetValue(foe, out m) && m.LitUntil > Time.time ? m.Lit : 0;
+    }
+
+    static bool Takes(int have, float until, int level)
+    {
+        float now = Time.time;
+        if (have <= 0 || until <= now)
+            return true;
+        if (have > level)
+            return false;
+        return have < level || until - now <= UloeData.MarkRefresh;
+    }
+
+    // Blinds a foe at a level (1-3). 'radio' is whoever carries the look to every player.
+    public static void Blind(Entity_Master radio, Entity_Master foe, int level)
+    {
+        if (!UloeUtil.Alive(foe) || foe.Statsserver == null || !foe.Statsserver.ContainsKey("Damage"))
+            return;
+        level = Mathf.Clamp(level, 1, UloeData.BlindMulti.Length);
+        UloeMark m = Get(foe);
+        if (!Takes(m.Blind, m.BlindUntil, level))
+            return;
+        float secs = UloeData.MarkSeconds[level - 1];
+        TakeOffBlind(m);
+        if (Stock)
+            Helper_Entitytools.Upgrade(foe, UloeContent.Blinds[level - 1], Helper_Entitytools.Upgradecheck.Forced, null);
+        else
+            m.BlindMod = Helper_Entitytools.Addmod(foe, "Damage", -UloeData.BlindMulti[level - 1], Helper_Entitytools.Modtypes.Multi, secs);
+        m.Blind = level;
+        m.BlindUntil = Time.time + secs;
+        Blinds++;
+        UloeUtil.Debuff(radio, foe, "Debuff_Uloe_Blind", secs);
+    }
+
+    // Illuminates a foe at a level (1-3).
+    public static void Illuminate(Entity_Master radio, Entity_Master foe, int level)
+    {
+        if (!UloeUtil.Alive(foe))
+            return;
+        level = Mathf.Clamp(level, 1, UloeData.LitMulti.Length);
+        UloeMark m = Get(foe);
+        if (!Takes(m.Lit, m.LitUntil, level))
+            return;
+        float secs = UloeData.MarkSeconds[level - 1];
+        TakeOffLit(m, radio);
+        if (Stock)
+            Helper_Entitytools.Upgrade(foe, UloeContent.Lits[level - 1], Helper_Entitytools.Upgradecheck.Forced, null);
+        else
+        {
+            if (m.Hook == null) m.Hook = m.OnHit;
+            m.HookMulti = UloeData.LitMulti[level - 1];
+            m.HookOn = true;
+            UloeUtil.Front(foe, m.Hook);
+        }
+        m.Lit = level;
+        m.LitUntil = Time.time + secs;
+        Illuminations++;
+        UloeUtil.Debuff(radio, foe, "Debuff_Uloe_Lit", secs);
+    }
+
+    static void TakeOffBlind(UloeMark m)
+    {
+        if (m.BlindMod != null && !m.BlindMod.Dead)
+            m.BlindMod.Remove();
+        m.BlindMod = null;
+        if (m.Blind > 0 && m.Foe != null && m.Foe.Upgradelistserver != null && m.Foe.Upgradelistserver.ContainsKey(UloeContent.Blinds[m.Blind - 1].Objectname))
+            Helper_Entitytools.Removeupgrade(m.Foe, UloeContent.Blinds[m.Blind - 1]);
+    }
+
+    static void TakeOffLit(UloeMark m, Entity_Master radio)
+    {
+        if (m.HookOn)
+        {
+            UloeUtil.Unfront(m.Foe, m.Hook);
+            m.HookOn = false;
+        }
+        if (m.Lit > 0 && m.Foe != null && m.Foe.Upgradelistserver != null && m.Foe.Upgradelistserver.ContainsKey(UloeContent.Lits[m.Lit - 1].Objectname))
+        {
+            Helper_Entitytools.Removeupgrade(m.Foe, UloeContent.Lits[m.Lit - 1]);
+            // The stock Merchut look is set for 9999 s and no Downgrade takes it off.
+            UloeUtil.RemoveDebuff(radio != null ? radio : m.Foe, m.Foe, "Debuff_Targeted");
+        }
+    }
+
+    // Ten times a second: Illuminate is taken off when its time is up (the stock Merchut lasts until removed), a hook stays
+    // at the front of its chain, and Blind's level is forgotten when it wore off (Barrel_Boost removes itself).
+    public static void Tick()
+    {
+        float now = Time.time;
+        done.Clear();
+        foreach (KeyValuePair<Entity_Master, UloeMark> kv in marks)
+        {
+            UloeMark m = kv.Value;
+            if (kv.Key == null || !UloeUtil.Alive(kv.Key))
+            {
+                done.Add(kv.Key);
+                continue;
+            }
+            if (m.Lit > 0 && m.LitUntil <= now)
+            {
+                TakeOffLit(m, null);
+                m.Lit = 0;
+            }
+            else if (m.HookOn)
+                UloeUtil.Front(kv.Key, m.Hook);
+            if (m.Blind > 0 && m.BlindUntil <= now)
+                m.Blind = 0;
+            if (m.Lit == 0 && m.Blind == 0)
+                done.Add(kv.Key);
+        }
+        foreach (Entity_Master e in done)
+            marks.Remove(e);
+    }
+
+    public static void Forget(Entity_Master foe)
+    {
+        if (foe != null)
+            marks.Remove(foe);
+    }
+}
