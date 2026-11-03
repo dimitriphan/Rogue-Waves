@@ -533,7 +533,7 @@ def make(kind, cl, run, **kw):
         b = Bld(kind, cl, 80, dict(slow=0.15, vines=1.0, spot=kw.get('spot', run.m['merge'][cl] + (0.0 if sealing else 1.0))))
         b.spot = b.p['spot']; b.seal = sealing
     elif kind == 'sapling':
-        b = Bld(kind, cl, 30, dict(aspd=0.25, aspd_mult=1.0, noshoot=run.m['ore']['dist'] > 9))
+        b = Bld(kind, cl, 30, dict(aspd=T.get('sapling_aspd', 0.25), aspd_mult=1.0, noshoot=run.m['ore']['dist'] > 9))
     elif kind == 'vessel_y':
         b = Bld('vessel', cl, 70, dict(dmg=5.5, aspd=0.5, rng=4.0, respawn=10.0, spot=run.m['merge'][cl]), unit=True)
         b.reach = 0.0
@@ -547,7 +547,7 @@ def make(kind, cl, run, **kw):
         b = Bld(kind, cl, T.get('cushion_hp', 100), dict(spot=kw.get('spot', run.m['merge'][cl])))
         b.spot = b.p['spot']; b.seal = kw.get('seal', True)
     elif kind == 'loom':
-        b = Bld(kind, cl, 40, dict(aspd=0.4, spin=6.0, noshoot=run.m['ore']['dist'] > 9))
+        b = Bld(kind, cl, 40, dict(aspd=T.get('loom_aspd', 0.4), spin=6.0, noshoot=run.m['ore']['dist'] > 9))
         b.p['spin_next'] = 6.0
     elif kind == 'head':
         b = Bld(kind, cl, 60, dict(dmg=2.0, aspd=0.6, rng=1.5, respawn=15.0, spot=kw.get('spot', run.m['merge'][cl])), unit=True)
@@ -836,7 +836,7 @@ def act_loom(run, b, dt):
         # the Seam mines beside its Loom (melee strikes on the ore, Damage 1 at 0.8 a second)
         b.p['seam_cd'] = b.p.get('seam_cd', 0) - dt
         if b.p['seam_cd'] <= 0 and run.m['ore']['sapling']:
-            b.p['seam_cd'] = 1 / 0.8; mine(run, b, 1)
+            b.p['seam_cd'] = 1 / run.tune.get('seam_aspd', 0.8); mine(run, b, run.tune.get('seam_hit', 1.0))
 
 def act_archer(run, b, dt):
     b.cd -= dt
@@ -859,7 +859,8 @@ def act_bomber(run, b, dt):
 def act_hut(run, b, dt):
     b.cd -= dt
     if b.cd <= 0 and run.m['ore'].get('hut', True):
-        b.cd = 1.0 / b.p['aspd'] + 2.0  # the miner walks between strikes now and then
+        # the miner walks between strikes; hut_code: the miner's whole round trip as the game codes it (aura.py), 6.8 s
+        b.cd = 6.8 if run.tune.get('hut_code') else 1.0 / b.p['aspd'] + 2.0
         mine(run, b, b.p['hit'])
 
 QUIET_SKIP = {'cannon', 'archer', 'bomber', 'stitched', 'dart', 'mangled', 'henge'}

@@ -1,0 +1,537 @@
+{
+ "A": {
+  "Smacky|Mining Hut": {
+   "red": 17.647058823529413,
+   "orange": 28.235294117647058,
+   "opal": 167.64705882352945,
+   "cost": [
+    0,
+    0,
+    35
+   ],
+   "kind": ""
+  },
+  "Smacky|Hut: Mining Operation, Ore Scraps": {
+   "red": 105.88235294117648,
+   "orange": 197.64705882352945,
+   "opal": 547.0588235294118,
+   "cost": [
+    75,
+    0,
+    190
+   ],
+   "kind": ""
+  },
+  "Smacky|Hut: Mining Operation, Mining Union": {
+   "red": 52.94117647058823,
+   "orange": 84.70588235294117,
+   "opal": 502.9411764705883,
+   "cost": [
+    0,
+    0,
+    165
+   ],
+   "kind": ""
+  },
+  "Sno Sno|Sno Box": {
+   "red": 18.461538461538463,
+   "orange": 29.53846153846154,
+   "opal": 175.38461538461542,
+   "cost": [
+    0,
+    10,
+    25
+   ],
+   "kind": ""
+  },
+  "Sno Sno|Sno Box: Slush": {
+   "red": 48.0,
+   "orange": 76.8,
+   "opal": 456.0,
+   "cost": [
+    0,
+    10,
+    60
+   ],
+   "kind": ""
+  },
+  "Sno Sno|Sno Box: Slush, Soft Sno (snow piled up)": {
+   "red": 72.00000000000001,
+   "orange": 115.20000000000002,
+   "opal": 684.0000000000002,
+   "cost": [
+    0,
+    35,
+    310
+   ],
+   "kind": ""
+  },
+  "Sno Sno|Sno Box: Slush, Soft Sno (snow kept off)": {
+   "red": 198.00000000000006,
+   "orange": 316.80000000000007,
+   "opal": 1881.0000000000007,
+   "cost": [
+    0,
+    35,
+    310
+   ],
+   "kind": ""
+  },
+  "Fie|Silo Pipes": {
+   "red": 16.666666666666668,
+   "orange": 26.666666666666668,
+   "opal": 158.33333333333334,
+   "cost": [
+    0,
+    0,
+    35
+   ],
+   "kind": ""
+  },
+  "Fie|Silo: High Flow": {
+   "red": 30.0,
+   "orange": 48.0,
+   "opal": 285.00000000000006,
+   "cost": [
+    0,
+    0,
+    65
+   ],
+   "kind": ""
+  },
+  "Fie|Silo: High Flow, Reroute, Quick Construct": {
+   "red": 45.0,
+   "orange": 72.0,
+   "opal": 427.5,
+   "cost": [
+    0,
+    0,
+    190
+   ],
+   "kind": ""
+  },
+  "Buster|Checkpoint (a dog lap every 10 s)": {
+   "red": 36.0,
+   "orange": 57.599999999999994,
+   "opal": 342.00000000000006,
+   "cost": [
+    0,
+    0,
+    50
+   ],
+   "kind": ""
+  },
+  "Buster|Checkpoint: Lap 1, Lap 2": {
+   "red": 81.0,
+   "orange": 129.6,
+   "opal": 769.5,
+   "cost": [
+    0,
+    0,
+    205
+   ],
+   "kind": ""
+  },
+  "Buster|Checkpoint: Quick Pass, Lap 2": {
+   "red": 60.0,
+   "orange": 96.0,
+   "opal": 570.0000000000001,
+   "cost": [
+    0,
+    0,
+    200
+   ],
+   "kind": ""
+  },
+  "Boutman|no gatherer before Fishbender (Yellow 1750)": {
+   "red": 0.0,
+   "orange": 0.0,
+   "opal": 0.0,
+   "cost": [
+    0,
+    0,
+    0
+   ],
+   "kind": ""
+  },
+  "Yossele|Pachira Sapling": {
+   "red": 90.0,
+   "orange": 144.0,
+   "opal": 855.0,
+   "cost": [
+    0,
+    0,
+    35
+   ],
+   "kind": ""
+  },
+  "Yossele|Sapling: Focused Roots": {
+   "red": 138.0,
+   "orange": 220.8,
+   "opal": 1311.0000000000002,
+   "cost": [
+    0,
+    0,
+    65
+   ],
+   "kind": ""
+  },
+  "Yossele|Sapling: Focused Roots, every fruit picked up": {
+   "red": 883.2,
+   "orange": 966.0,
+   "opal": 2056.2000000000003,
+   "cost": [
+    0,
+    0,
+    65
+   ],
+   "kind": "extra"
+  },
+  "Yossele|Sapling at Attackspeed 0.15": {
+   "red": 53.99999999999999,
+   "orange": 86.39999999999998,
+   "opal": 513.0,
+   "cost": [
+    0,
+    0,
+    35
+   ],
+   "kind": "proposal"
+  },
+  "Yossele|Sapling at 0.15: Focused Roots": {
+   "red": 82.8,
+   "orange": 132.48,
+   "opal": 786.5999999999999,
+   "cost": [
+    0,
+    0,
+    65
+   ],
+   "kind": "proposal"
+  },
+  "Yossele|Sapling at 0.15: Focused Roots, fruit x5, every fruit picked up": {
+   "red": 182.15999999999997,
+   "orange": 231.83999999999997,
+   "opal": 885.96,
+   "cost": [
+    0,
+    0,
+    65
+   ],
+   "kind": "proposal upside"
+  },
+  "Spool|Loom": {
+   "red": 96.0,
+   "orange": 153.6,
+   "opal": 912.0,
+   "cost": [
+    0,
+    0,
+    40
+   ],
+   "kind": ""
+  },
+  "Spool|Loom: Seam Allowance": {
+   "red": 288.0,
+   "orange": 460.79999999999995,
+   "opal": 2736.0,
+   "cost": [
+    0,
+    0,
+    70
+   ],
+   "kind": ""
+  },
+  "Spool|Loom at Attackspeed 0.15": {
+   "red": 36.0,
+   "orange": 57.599999999999994,
+   "opal": 342.00000000000006,
+   "cost": [
+    0,
+    0,
+    40
+   ],
+   "kind": "proposal"
+  },
+  "Spool|Loom at 0.15: Seam at Damage 0.5, Attackspeed 0.4": {
+   "red": 84.0,
+   "orange": 134.39999999999998,
+   "opal": 798.0,
+   "cost": [
+    0,
+    0,
+    70
+   ],
+   "kind": "proposal"
+  }
+ },
+ "B": {
+  "Smacky||Purlest": {
+   "gatherers": [
+    2478.860294117648,
+    2478.860294117648,
+    2478.860294117648
+   ],
+   "setup": "Hut: Mining Operation, Ore Scraps"
+  },
+  "Smacky||Woozy": {
+   "gatherers": [
+    1410.6617647058827,
+    1410.6617647058827,
+    1410.6617647058827
+   ],
+   "setup": "Hut: Mining Operation, Ore Scraps"
+  },
+  "Smacky||The Hunt": {
+   "gatherers": [
+    1213.4558823529412,
+    0.0,
+    1410.6617647058827
+   ],
+   "setup": "Hut: Mining Operation, Ore Scraps"
+  },
+  "Sno Sno||Purlest": {
+   "gatherers": [
+    2089.2692307692305,
+    2089.2692307692305,
+    2089.2692307692305
+   ],
+   "setup": "Sno Box: Slush"
+  },
+  "Sno Sno||Woozy": {
+   "gatherers": [
+    659.7692307692307,
+    659.7692307692307,
+    659.7692307692307
+   ],
+   "setup": "Sno Box: Slush"
+  },
+  "Sno Sno||The Hunt": {
+   "gatherers": [
+    395.86153846153854,
+    0.0,
+    659.7692307692307
+   ],
+   "setup": "Sno Box: Slush"
+  },
+  "Fie||Purlest": {
+   "gatherers": [
+    1337.2569444444446,
+    1337.2569444444446,
+    1337.2569444444446
+   ],
+   "setup": "Silo: High Flow"
+  },
+  "Fie||Woozy": {
+   "gatherers": [
+    422.2916666666667,
+    422.2916666666667,
+    422.2916666666667
+   ],
+   "setup": "Silo: High Flow"
+  },
+  "Fie||The Hunt": {
+   "gatherers": [
+    253.375,
+    0.0,
+    422.2916666666667
+   ],
+   "setup": "Silo: High Flow"
+  },
+  "Buster||Purlest": {
+   "gatherers": [
+    3555.375,
+    3555.375,
+    3555.375
+   ],
+   "setup": "Checkpoint: Lap 1, Lap 2"
+  },
+  "Buster||Woozy": {
+   "gatherers": [
+    1122.75,
+    1122.75,
+    1122.75
+   ],
+   "setup": "Checkpoint: Lap 1, Lap 2"
+  },
+  "Buster||The Hunt": {
+   "gatherers": [
+    673.6500000000001,
+    0.0,
+    1122.75
+   ],
+   "setup": "Checkpoint: Lap 1, Lap 2"
+  },
+  "Boutman||Purlest": {
+   "gatherers": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "setup": "no gatherer before Fishbender (Yellow 1750)"
+  },
+  "Boutman||Woozy": {
+   "gatherers": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "setup": "no gatherer before Fishbender (Yellow 1750)"
+  },
+  "Boutman||The Hunt": {
+   "gatherers": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "setup": "no gatherer before Fishbender (Yellow 1750)"
+  },
+  "Yossele||Purlest": {
+   "gatherers": [
+    5954.125000000001,
+    5954.125000000001,
+    5954.125000000001
+   ],
+   "setup": "Sapling: Focused Roots"
+  },
+  "Yossele||Woozy": {
+   "gatherers": [
+    1880.25,
+    1880.25,
+    1880.25
+   ],
+   "setup": "Sapling: Focused Roots"
+  },
+  "Yossele||The Hunt": {
+   "gatherers": [
+    1128.1499999999996,
+    0.0,
+    1880.25
+   ],
+   "setup": "Sapling: Focused Roots"
+  },
+  "Spool||Purlest": {
+   "gatherers": [
+    12445.0,
+    12445.0,
+    12445.0
+   ],
+   "setup": "Loom: Seam Allowance"
+  },
+  "Spool||Woozy": {
+   "gatherers": [
+    3930.0,
+    3930.0,
+    3930.0
+   ],
+   "setup": "Loom: Seam Allowance"
+  },
+  "Spool||The Hunt": {
+   "gatherers": [
+    2358.0,
+    0.0,
+    3930.0
+   ],
+   "setup": "Loom: Seam Allowance"
+  },
+  "Yossele|proposal|Purlest": {
+   "gatherers": [
+    3572.4749999999995,
+    3572.4749999999995,
+    3572.4749999999995
+   ],
+   "setup": "Sapling at 0.15: Focused Roots"
+  },
+  "Yossele|proposal|Woozy": {
+   "gatherers": [
+    1128.1499999999996,
+    1128.1499999999996,
+    1128.1499999999996
+   ],
+   "setup": "Sapling at 0.15: Focused Roots"
+  },
+  "Yossele|proposal|The Hunt": {
+   "gatherers": [
+    676.8899999999999,
+    0.0,
+    1128.1499999999996
+   ],
+   "setup": "Sapling at 0.15: Focused Roots"
+  },
+  "Spool|proposal|Purlest": {
+   "gatherers": [
+    3678.875,
+    3678.875,
+    3678.875
+   ],
+   "setup": "Loom at 0.15: Seam at Damage 0.5, Attackspeed 0.4"
+  },
+  "Spool|proposal|Woozy": {
+   "gatherers": [
+    1161.75,
+    1161.75,
+    1161.75
+   ],
+   "setup": "Loom at 0.15: Seam at Damage 0.5, Attackspeed 0.4"
+  },
+  "Spool|proposal|The Hunt": {
+   "gatherers": [
+    697.0499999999997,
+    0.0,
+    1161.75
+   ],
+   "setup": "Loom at 0.15: Seam at Damage 0.5, Attackspeed 0.4"
+  }
+ },
+ "C": {
+  "Purlest": {
+   "lo": 4011.770833333334,
+   "avg": 7095.571101998492,
+   "hi": 10666.125,
+   "yossele": 17862.375000000004,
+   "yossele_prop": 10717.425,
+   "spool": 37335.0,
+   "spool_prop": 11036.625
+  },
+  "Woozy": {
+   "lo": 1266.875,
+   "avg": 2711.604496606335,
+   "hi": 4231.985294117648,
+   "yossele": 5640.75,
+   "yossele_prop": 3384.449999999999,
+   "spool": 11790.0,
+   "spool_prop": 3485.25
+  },
+  "The Hunt": {
+   "lo": 675.6666666666667,
+   "avg": 1537.953770739065,
+   "hi": 2624.117647058824,
+   "yossele": 3008.3999999999996,
+   "yossele_prop": 1805.0399999999995,
+   "spool": 6288.0,
+   "spool_prop": 1858.7999999999997
+  }
+ },
+ "kills": 885,
+ "avg_gatherers": {
+  "Purlest": 7095.571101998492,
+  "Woozy": 2711.604496606335,
+  "The Hunt": 1537.953770739065
+ },
+ "avg_red": {
+  "Purlest": 2365.1903673328306,
+  "Woozy": 903.868165535445,
+  "The Hunt": 634.0856052036199
+ },
+ "hand": {
+  "Purlest": 4203.750000000001,
+  "Woozy": 442.5,
+  "The Hunt": 708.0
+ },
+ "avg_aura_map": {
+  "Purlest": 8130.571101998492,
+  "Woozy": 3746.604496606335,
+  "The Hunt": 2572.953770739065
+ },
+ "avg_all": 4816.709789781297
+}
