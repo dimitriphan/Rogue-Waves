@@ -256,8 +256,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
   `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
   2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
-  the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log). Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+  the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
+  2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
+  nothing wired changes; Log). Older entries are in "Log" below.
+- **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
+  "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -512,6 +515,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   starts at ×1.25. New kit pitfalls #115-#120, kit `16` §3 (Chrono), `17` §9 (Teamapply), `13` §3 (`30 / Totalwaves`),
   `08` §6 (shutdown noise); every line in `TDS_Vessel_Creator/reference/roguelab_round8.txt`. Dimitri's Yossele
   0.1.0-dev play build was parked for each launch and put back. PR #48.
+
+- **2026-10-28, temporary art versions (Dimitri: "For all temporary assets, create alternative versions for me to choose
+  for each asset. There should be different versions for every single animation included for Yossele and Spool. Create
+  3 versions of each asset for now."):** three new versions of each of the 2026-10-27 assets, in
+  `ModSource/<Part>/Art/Temporary/variants/v1|v2|v3/` (same names, sizes and layouts, so a pick drops in): Yossele's
+  idle, walk and attack (moved from the code's frame of his reshade), the Cordyfriend (three builds), the fruit model;
+  the Thread Head (his zipper mouth in all three), the four Crafted (their bodies kept, new walks and attacks), the
+  tuft, the needle model; the fifteen 12 x 12 icons and the 32 px crest. 35 picks, one per animation, so versions
+  can mix. Generators `concept-tools/temp_art/variants_*.py`, `apply_picks.py`; page `variants_page.py`. Nothing
+  wired changed and nothing was seen in game.
 
 ### Decisions
 

@@ -1,0 +1,10 @@
+        // Temporary art, version 1 "Pearl-headed pin" (2026-10-28): a dressmaker's pin, a steel shaft 0.4 long with a white
+        // point and a big lilac pearl head that catches the eye in flight; no thread.
+        static Lp Needle()
+        {
+            var m = new Lp();
+            m.Tube(V(0, 0.5f, -0.16f), V(0, 0.5f, 0.16f), 0.018f, 0.016f, 6, Pal.Steel);
+            m.Tube(V(0, 0.5f, 0.16f), V(0, 0.5f, 0.24f), 0.016f, 0f, 6, Pal.White);
+            m.Ball(V(0, 0.5f, -0.19f), Vector3.one * 0.06f, 8, 5, Pal.Lilac1, Pal.Lilac0, 0.4f);
+            return m;
+        }

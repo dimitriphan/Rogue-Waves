@@ -1,0 +1,17 @@
+        // Temporary art, version 2 "Berry bunch" (2026-10-28): three round berries in a bunch on a pale disc, one per colour
+        // (or all one colour), with a stalk and a broad leaf over them.
+        static Lp Fruit(int[] cols)
+        {
+            var m = new Lp();
+            m.Disc(V(0, 0.005f, 0), 0.3f, 12, Pal.Puff2, 0.01f);
+            m.Disc(V(0, 0.012f, 0), 0.24f, 12, Pal.White, 0.01f, 15f);
+            var at = new[] { V(-0.1f, 0.12f, 0.05f), V(0.1f, 0.12f, 0.06f), V(0f, 0.13f, -0.1f) };
+            for (int i = 0; i < 3; i++)
+            {
+                int col = cols[i % cols.Length];
+                m.Ball(at[i], Vector3.one * 0.12f, 9, 6, col);
+            }
+            m.Stem(new[] { V(0, 0.22f, 0), V(0.01f, 0.3f, 0), V(0.03f, 0.36f, 0.01f) }, 0.018f, 0.012f, 5, Pal.Bark2);
+            m.Leaf(V(0.02f, 0.33f, 0), V(0.8f, 0.3f, -0.3f), 0.2f, 0.1f, Pal.Leaf, Pal.LeafDark);
+            return m;
+        }

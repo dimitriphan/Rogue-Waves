@@ -1,0 +1,280 @@
+<title>Temp Art Picks</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a sticky tide bar (views, progress, copy), then one band per part; each item is a row of four tiles on game grass: current, v1, v2, v3. */
+:root {
+  --bg: #eef1ee; --panel: #ffffff; --ink: #1d2f3d; --muted: #586b74; --line: #d3dcd8;
+  --teal: #3f8f96; --coral: #c9573f; --coral-soft: #fbe3dc; --grass: #8c9b8c; --grass2: #808f80;
+  --chip: #e2ebe8;
+  --display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15222d; --panel: #1d2e3b; --ink: #e9f1ee; --muted: #9fb3b8; --line: #2f4452;
+  --teal: #6db4b9; --coral: #ee9a86; --coral-soft: #4a2c27; --grass: #788778; --grass2: #6e7d6e; --chip: #263b49; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #15222d; --panel: #1d2e3b; --ink: #e9f1ee; --muted: #9fb3b8; --line: #2f4452;
+  --teal: #6db4b9; --coral: #ee9a86; --coral-soft: #4a2c27; --grass: #788778; --grass2: #6e7d6e; --chip: #263b49; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--panel); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { padding-block: 28px 8px; }
+h1 { font: 800 clamp(28px, 4vw, 40px)/1.1 var(--display); margin: 0 0 8px; text-wrap: balance; }
+.lede { max-width: 68ch; color: var(--muted); margin: 0; }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--panel); border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; padding-block: 10px; }
+.seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.seg button, .btn { font: 600 13px var(--body); border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--teal); border-color: var(--teal); color: var(--panel); }
+.btn:focus-visible, .seg button:focus-visible, .pick:focus-visible { outline: 3px solid var(--coral); outline-offset: 2px; }
+.progress { font: 500 13px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.progress b { color: var(--ink); }
+.spacer { flex: 1 1 auto; }
+.store { font-size: 12px; color: var(--muted); }
+nav.parts { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 14px 0; }
+nav.parts a { font: 600 13px var(--body); color: var(--teal); text-decoration: none; border-bottom: 2px solid transparent; }
+nav.parts a:hover { border-color: var(--teal); }
+section.part { padding-block: 26px 8px; }
+section.part > h2 { font: 800 26px/1.15 var(--display); margin: 0 0 4px; }
+section.part > p { margin: 0 0 14px; color: var(--muted); max-width: 70ch; }
+h3.group { font: 700 13px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin: 22px 0 8px; }
+.item { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 12px; display: grid; gap: 10px; }
+.item.done { border-color: var(--teal); }
+.ihead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.ihead h4 { font: 700 17px var(--display); margin: 0; }
+.ihead .file { font: 500 12px var(--mono); color: var(--muted); }
+.ihead .state { margin-left: auto; font: 600 12px var(--body); color: var(--muted); }
+.item.done .ihead .state { color: var(--teal); }
+.fills { margin: 0; color: var(--muted); font-size: 14px; max-width: 80ch; }
+.tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+@media (max-width: 720px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tile { display: grid; gap: 6px; min-width: 0; }
+.stage { background: repeating-conic-gradient(var(--grass) 0 25%, var(--grass2) 0 50%) 0 0 / 16px 16px; border-radius: 6px; display: grid; place-items: center; min-height: 120px; overflow: hidden; border: 2px solid transparent; }
+.stage.model { background: #dcd8cd; }
+.stage canvas { image-rendering: pixelated; max-width: 100%; height: auto; }
+.tile.picked .stage { border-color: var(--coral); }
+.tlabel { font-size: 13px; line-height: 1.3; min-height: 2.6em; }
+.tlabel b { font-family: var(--mono); font-weight: 500; font-size: 12px; color: var(--muted); margin-right: 4px; }
+.pick { font: 700 13px var(--body); border-radius: 6px; padding: 7px 8px; cursor: pointer; border: 1px solid var(--line); background: var(--chip); color: var(--ink); }
+.tile.picked .pick { background: var(--coral); border-color: var(--coral); color: var(--panel); }
+.copybox { display: grid; gap: 8px; padding-block: 18px 40px; }
+.copybox textarea { width: 100%; box-sizing: border-box; min-height: 140px; font: 500 12px/1.5 var(--mono); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 10px; }
+.copybox h2 { font: 800 22px var(--display); margin: 0; }
+.toast { min-height: 1.4em; font-size: 13px; color: var(--teal); }
+@media (prefers-reduced-motion: reduce) { .stage canvas { animation: none; } }
+</style>
+
+<header class="top wrap">
+  <h1>Pick your temporary art</h1>
+  <p class="lede">Every temporary asset for Yossele, Spool and the Rogue Waves UI, with three new versions beside the current art. Each animation is picked on its own, so you can mix a walk from one version with an attack from another. Nothing changes in game until you pick; "Current" keeps what is there now.</p>
+  <nav class="parts" id="partnav"></nav>
+</header>
+<div class="bar">
+  <div class="wrap">
+    <div class="seg" id="views" role="group" aria-label="View"></div>
+    <div class="seg" id="speed" role="group" aria-label="Speed"></div>
+    <span class="spacer"></span>
+    <span class="progress" id="progress"></span>
+    <button class="btn" id="copy" type="button">Copy my picks</button>
+  </div>
+</div>
+<main class="wrap" id="main"></main>
+<div class="wrap copybox">
+  <h2>Your picks as text</h2>
+  <p class="store" id="storeinfo">Picks are saved on this page as you click.</p>
+  <textarea id="picktext" readonly aria-label="Your picks as text"></textarea>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+const ITEMS = /*ITEMS*/[];
+const IMG = /*IMG*/{};
+const VIEWS = ['Front, heading right', 'Front, heading left', 'Back, heading right', 'Back, heading left'];
+const KEYS = ['cur', 'v1', 'v2', 'v3'];
+const PARTS = { Yossele: 'The fungus vessel. Its body is always the code\'s frame drawn from your reshade; the versions move it differently.',
+  Spool: 'The plush vessel\'s army and pickups. The Thread Head always wears your zipper mouth; the Crafted keep the bodies drawn from your sprite.',
+  UI: 'The mode\'s 12 x 12 icons and the 32 px crest. Each version is a different idea for the same thing, in the pack palette.' };
+const PARTNAME = { Yossele: 'Yossele', Spool: 'Spool', UI: 'Rogue Waves UI' };
+let view = 0, speed = 1, picks = {}, db = null;
+const images = {};
+for (const k in IMG) { const im = new Image(); im.src = IMG[k]; images[k] = im; }
+
+try { const s = JSON.parse(localStorage.getItem('picks') || '{}'); if (s && typeof s === 'object') picks = s; } catch (e) {}
+
+function el(tag, attrs, ...kids) {
+  const e = document.createElement(tag);
+  for (const k in attrs || {}) { if (k === 'class') e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  for (const c of kids) e.append(c);
+  return e;
+}
+
+const canvases = [];
+function build() {
+  const main = document.getElementById('main'), nav = document.getElementById('partnav');
+  let part = null, group = null, sec = null;
+  for (const it of ITEMS) {
+    if (it.part !== part) {
+      part = it.part; group = null;
+      sec = el('section', { class: 'part', id: 'part-' + part.toLowerCase() }, el('h2', {}, PARTNAME[part]), el('p', {}, PARTS[part]));
+      main.append(sec);
+      nav.append(el('a', { href: '#part-' + part.toLowerCase() }, PARTNAME[part]));
+    }
+    if (it.group !== group) { group = it.group; sec.append(el('h3', { class: 'group' }, group)); }
+    const state = el('span', { class: 'state' });
+    const box = el('article', { class: 'item', id: 'item-' + it.id },
+      el('div', { class: 'ihead' }, el('h4', {}, (it.group !== it.title && !it.title.startsWith(it.group) ? it.group + ': ' : '') + it.title), el('span', { class: 'file' }, it.file), state),
+      el('p', { class: 'fills' }, it.fills));
+    const tiles = el('div', { class: 'tiles' });
+    KEYS.forEach((k, i) => {
+      const c = document.createElement('canvas');
+      const stage = el('div', { class: 'stage' + (it.kind === 'model' ? ' model' : '') }, c);
+      const label = el('div', { class: 'tlabel' });
+      if (i === 0) label.append(el('b', {}, 'now'), 'Current art');
+      else label.append(el('b', {}, 'v' + i), it.names[i - 1]);
+      const btn = el('button', { class: 'pick', type: 'button', id: 'pick-' + it.id + '-' + k }, i === 0 ? 'Keep current' : 'Pick v' + i);
+      btn.addEventListener('click', () => choose(it.id, k));
+      const tile = el('div', { class: 'tile' }, stage, label, btn);
+      tile.dataset.key = k;
+      tiles.append(tile);
+      setup(c, it, k);
+    });
+    box.append(tiles);
+    box._state = state;
+    sec.append(box);
+  }
+}
+
+function setup(c, it, k) {
+  const ctx = c.getContext('2d');
+  if (it.kind === 'anim') {
+    c.width = it.cell * it.scale; c.height = it.cell * it.scale;
+    c.style.width = c.width + 'px';
+  } else if (it.kind === 'model') {
+    c.width = it.w * it.scale; c.height = it.h * it.scale;
+  } else {
+    c.width = it.w * it.scale; c.height = it.h * it.scale;
+  }
+  canvases.push({ c, ctx, it, k });
+}
+
+// Frames are cut 1:1 into their own small canvases first, so scaling never samples the neighbouring cell.
+const cells = {};
+function cellOf(key, im, col, row, n) {
+  const id = key + ':' + col + ':' + row;
+  if (!cells[id]) {
+    const cv = document.createElement('canvas'); cv.width = n; cv.height = n;
+    cv.getContext('2d').drawImage(im, col * n, row * n, n, n, 0, 0, n, n);
+    cells[id] = cv;
+  }
+  return cells[id];
+}
+
+function draw(t) {
+  for (const d of canvases) {
+    const { c, ctx, it, k } = d;
+    const im = images[it.sheets[k]];
+    if (!im || !im.complete) continue;
+    ctx.imageSmoothingEnabled = it.kind === 'model';
+    ctx.clearRect(0, 0, c.width, c.height);
+    if (it.kind === 'anim') {
+      const total = it.n + (it.hold || 0);
+      let f = Math.floor(t * speed / it.ms) % total;
+      if (f >= it.n) f = 0;
+      const col = it.start + f, row = it.rows[view];
+      ctx.drawImage(cellOf(it.sheets[k], im, col, row, it.cell), 0, 0, c.width, c.height);
+    } else {
+      ctx.drawImage(im, 0, 0, it.w, it.h, 0, 0, c.width, c.height);
+    }
+  }
+}
+let last = -1;
+function loop(t) {
+  const step = Math.floor(t / 40);
+  if (step !== last) { last = step; draw(t); }
+  requestAnimationFrame(loop);
+}
+
+function render() {
+  let done = 0;
+  for (const it of ITEMS) {
+    const box = document.getElementById('item-' + it.id);
+    const p = picks[it.id];
+    if (p) done++;
+    box.classList.toggle('done', !!p);
+    box._state.textContent = p ? (p === 'cur' ? 'Keeping current' : 'Picked ' + p) : 'Not picked yet';
+    for (const tile of box.querySelectorAll('.tile')) {
+      const on = tile.dataset.key === p;
+      tile.classList.toggle('picked', on);
+      tile.querySelector('.pick').setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+  document.getElementById('progress').innerHTML = '<b>' + done + '</b> of ' + ITEMS.length + ' picked';
+  document.getElementById('picktext').value = text();
+}
+
+function text() {
+  const lines = ['Temporary art picks (current = keep, v1/v2/v3 = version):'];
+  for (const it of ITEMS) {
+    const p = picks[it.id];
+    const name = p && p !== 'cur' ? ' (' + it.names[+p[1] - 1] + ')' : '';
+    lines.push('- ' + PARTNAME[it.part] + ' / ' + (it.group === it.title ? it.title : it.group + ' ' + it.title.toLowerCase()) + ': ' + (p ? (p === 'cur' ? 'current' : p) + name : 'not picked'));
+  }
+  return lines.join('\n');
+}
+
+async function choose(id, k) {
+  picks[id] = k;
+  try { localStorage.setItem('picks', JSON.stringify(picks)); } catch (e) {}
+  render();
+  if (db) {
+    try { await db.doc('picks/' + id).set({ choice: k, at: Date.now() }); }
+    catch (e) { toast('This pick is kept in your browser only: the page could not save it (' + (e && e.code || 'error') + ').'); }
+  }
+}
+
+function toast(s) { const t = document.getElementById('toast'); t.textContent = s; clearTimeout(toast._t); toast._t = setTimeout(() => t.textContent = '', 5000); }
+
+function controls() {
+  const vs = document.getElementById('views');
+  VIEWS.forEach((v, i) => {
+    const b = el('button', { type: 'button', 'aria-pressed': i === 0 ? 'true' : 'false', id: 'view-' + i }, v);
+    b.addEventListener('click', () => { view = i; vs.querySelectorAll('button').forEach((x, j) => x.setAttribute('aria-pressed', j === i ? 'true' : 'false')); });
+    vs.append(b);
+  });
+  const sp = document.getElementById('speed');
+  [['Game speed', 1], ['Slow', 0.4]].forEach(([n, s], i) => {
+    const b = el('button', { type: 'button', 'aria-pressed': i === 0 ? 'true' : 'false', id: 'speed-' + i }, n);
+    b.addEventListener('click', () => { speed = s; sp.querySelectorAll('button').forEach((x, j) => x.setAttribute('aria-pressed', j === i ? 'true' : 'false')); });
+    sp.append(b);
+  });
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) { speed = 0.4; sp.children[1].click(); }
+  document.getElementById('copy').addEventListener('click', () => {
+    const ta = document.getElementById('picktext');
+    const done = () => toast('Copied. Paste it in the thread, or just say you are done: Claude can read the picks from this page.');
+    try { navigator.clipboard.writeText(ta.value).then(done, () => { ta.select(); toast('Select-all is on the text below; copy it with your keyboard.'); }); }
+    catch (e) { ta.select(); toast('Select-all is on the text below; copy it with your keyboard.'); }
+  });
+}
+
+async function connect() {
+  if (!window.claude || !window.claude.use) return;
+  try { db = await window.claude.use('db'); } catch (e) { db = null; }
+  const info = document.getElementById('storeinfo');
+  if (!db) { info.textContent = 'Picks are kept in this browser. Copy them into the thread when you are done.'; return; }
+  info.textContent = 'Picks are saved to this page as you click, so Claude can read them. You can also copy them below.';
+  db.collection('picks').onSnapshot(snap => {
+    for (const d of snap.docs) { const v = d.data(); if (v && KEYS.includes(v.choice)) picks[d.id] = v.choice; }
+    try { localStorage.setItem('picks', JSON.stringify(picks)); } catch (e) {}
+    render();
+  }, () => { info.textContent = 'Picks are kept in this browser for now; the page could not reach its store.'; });
+}
+
+build();
+controls();
+render();
+requestAnimationFrame(loop);
+connect();
+</script>
