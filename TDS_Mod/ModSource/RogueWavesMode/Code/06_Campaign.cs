@@ -29,11 +29,14 @@ public static class RWCampaign
     public static int HighestTide;             // the highest Tide started in this map (host)
     public static int Choice = -1;             // a column of the next row the boat sails to by itself (the vote's winner)
     public static RWChart.Node Next;           // the node picked on the boat, whose map is loading or being played
+    public static bool Staging;                // a new campaign's first vote is still to come (docs/scope/04 [Sea Chart]: the staging map)
     public static string Ended = "";           // how the last campaign ended in this launch: "won" or "lost" (self-test, log)
+    public static bool WonThisMap;             // the map in hand was won (its bonus Tides, if any, are running or it just ended)
+    public static int LastMap;                 // the number of the map last in play (the end screen's title)
     static object save;                        // the Bla_Data.Playerdata the campaign lives in
 
     public static RWChart.Chart Chart { get { return RWWorld.Chart(Seed); } }
-    public static string WorldName() { return RWWorld.Name(Seed, Route); }
+    public static string WorldName() { return RWWorld.Name(Seed, Route, Retries); }
     public static RWChart.Node Here { get { return RWWorld.Here(Chart, Route); } }
 
     // The maps the boat may go to next: the next row's links of where it stands, or only the map to replay.
@@ -59,8 +62,13 @@ public static class RWCampaign
         Next = null;
         Ended = "";
         Active = true;
+        WonThisMap = false;
+        Staging = true;
         save = Blockage.Tags.Bla_Data.Playerdata;
+        RWRun.Clear();
         Save();
+        RWRun.Save();
+        RWTips.MarkSailed();
         RWLog.Info("new campaign, seed " + Seed + ", " + Retries + " retries");
     }
 
@@ -79,11 +87,15 @@ public static class RWCampaign
         Retries = retries;
         Replay = replay;
         Playing = playing;
-        Choice = -1;
+        Choice = RWUtil.ReadInt(RWData.SaveFolder, RWKeys.Choice, -1);
         Next = null;
         Ended = "";
         Active = true;
+        WonThisMap = false;
+        Staging = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Staged) == "1";
         save = Blockage.Tags.Bla_Data.Playerdata;
+        RWRun.Load();
+        RWTips.MarkSailed();
         RWLog.Info("continued campaign, seed " + Seed + ", " + Route.Count + " maps sailed, " + Retries + " retries left" + (Replay >= 0 ? ", replaying column " + Replay : ""));
         if (Playing >= 0)
             Lost("the host left map " + (Route.Count + 1) + " while it ran, in an earlier launch");
@@ -125,8 +137,9 @@ public static class RWCampaign
         Choice = Replay = Playing = -1;
         Next = null;
         save = null;
-        foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing })
+        foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing, RWKeys.Choice, RWKeys.Staged })
             if (RWUtil.Has(RWData.SaveFolder, key)) RWUtil.Remove(RWData.SaveFolder, key);
+        RWRun.Forget();
         RWUtil.Flush();
         RWLog.Info("campaign stopped");
     }
@@ -142,7 +155,15 @@ public static class RWCampaign
         RWUtil.WriteString(RWData.SaveFolder, RWKeys.Retries, Retries.ToString());
         RWUtil.WriteString(RWData.SaveFolder, RWKeys.Replay, Replay >= 0 ? Replay.ToString() : "");
         RWUtil.WriteString(RWData.SaveFolder, RWKeys.Playing, Playing >= 0 ? Playing.ToString() : "");
+        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Choice, Choice >= 0 ? Choice.ToString() : "");
+        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Staged, Staging ? "1" : "");
         RWUtil.Flush();
+    }
+
+    // The vote's winner, kept so a party that stops on the boat sails to it after Continue.
+    public static void SaveChoice()
+    {
+        Save();
     }
 
     // ---------------------------------------------------------------- the map (host, ModKitTides)
@@ -151,6 +172,7 @@ public static class RWCampaign
     public static void MapStart()
     {
         HighestTide = 0;
+        WonThisMap = false;
         if (!Live || Next == null)
             return;
         string plan = Tds_Multiplayerinfo.Instance != null ? Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString() : "";
@@ -162,6 +184,7 @@ public static class RWCampaign
         if (Replay >= 0 && Next.Col != Replay)
             RWLog.Warn(Next.Name + " started, but the boat was to replay column " + Replay);
         Playing = Next.Col;
+        LastMap = Route.Count + 1;
         Save();
         RWLog.Info("playing " + Next.Name + " (" + Next.Plan + "), map " + (Route.Count + 1) + " of " + RWChart.Rows + (Replay >= 0 ? ", a replay" : "") + ", " + Retries + " retries left");
     }
@@ -173,6 +196,14 @@ public static class RWCampaign
             HighestTide = wave;
         if (!Live || Playing < 0 || wave <= WinTide)
             return;
+        Cleared();
+    }
+
+    // Tide 15 is cleared: from its break, once no foe is left, or when Tide 16 starts. The map is won now.
+    public static void Cleared()
+    {
+        if (!Live || Playing < 0)
+            return;
         Won("Tide " + WinTide + " cleared");
         RWRejoin.Say("Tide " + WinTide + " cleared: this map is won. The Tides from here are bonus Tides.");
     }
@@ -182,14 +213,32 @@ public static class RWCampaign
     // which Tide() already counted.
     public static void MapEnd(string result)
     {
-        if (!Live || Playing < 0)
+        if (!Live)
             return;
-        if (result == "Win")
-            Won("the map ended " + result);
+        if (Playing >= 0)
+        {
+            if (result == "Win")
+                Won("the map ended " + result);
+            else
+                Lost("the map ended " + result + " in Tide " + HighestTide);
+        }
+        else if (!WonThisMap)
+            return;
         else
-            Lost("the map ended " + result + " in Tide " + HighestTide);
+            RWRun.Save();    // what the bonus Tides earned stays
+        // The end screen's title (T4); a host leaving by the menu has no end screen to read it.
+        RWCard.EndTitle(!Active ? (Ended == "won" ? "CAMPAIGN WON" : "CAMPAIGN LOST") : WonThisMap && Route.Count >= RWChart.Rows ? "CAMPAIGN WON"
+            : WonThisMap ? "MAP " + LastMap + " OF " + RWChart.Rows + " WON" : "MAP LOST" + RWCard.Separator + RWCard.Retries(Retries).ToUpperInvariant());
         if (Live && Route.Count >= RWChart.Rows)
             Complete();
+    }
+
+    // The main menu appeared: the campaign in memory goes, its save stays for Continue. A map still in play there counts
+    // as lost when Continue reads it.
+    public static void AtMainMenu()
+    {
+        if (Active)
+            LeaveBehind("the party went back to the main menu");
     }
 
     // Host, on the boat, every frame: a map still in play was left while it ran (the host quit to the main menu), and a
@@ -210,20 +259,28 @@ public static class RWCampaign
         Route.Add(Playing);
         Playing = Replay = -1;
         Next = null;
+        WonThisMap = true;
+        foreach (long s in RWRun.Sessions())
+            RWRun.For(s).Owed = true;
         Save();
+        RWRun.Save();
         RWLog.Info("map " + Route.Count + " won (" + why + "): sailed " + (node != null ? node.Name : "?") + ", route " + WorldName() + (Route.Count >= RWChart.Rows ? ", the chart is done" : ""));
     }
 
     // The team replays the map (Next stays on it, so a restarted map still counts), or, with no retry left, the
     // campaign ends.
+    public static bool AutoReplay = true;    // off only in the self-test's pretend losses
+
     public static void Lost(string why)
     {
         int col = Playing;
         Playing = -1;
+        RWRun.Load();        // what the lost map earned goes: it replays from the last save (docs/scope/04 [Retries])
         if (Retries > 0)
         {
             Retries--;
             Replay = col;
+            if (AutoReplay) Choice = col;   // the boat sails back to it by itself, as to a vote's winner
             Save();
             RWLog.Info("map " + (Route.Count + 1) + " lost (" + why + "): " + Retries + " retries left, the boat replays column " + col);
             RWRejoin.Say("Map lost. The team replays it from the boat: " + Retries + (Retries == 1 ? " retry" : " retries") + " left.");

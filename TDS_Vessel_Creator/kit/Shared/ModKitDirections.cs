@@ -1,11 +1,11 @@
-// Kit 1.6 (2026-10-08). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.7 (2026-11-03). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: Directions as data (docs/PACK.md section 3). A Direction is an Upgradeproperties named
-// "Direction_<Vessel>_<Name>_Upgradeobject" (or "Direction_Any_<Name>_Upgradeobject"). The part that owns the mechanic
-// registers it with its own load group, so it exists on every machine with the pack; the mode lists them all by the
-// "Direction_" prefix, offers them, and grants the pick on the core (Helper_Entitytools.Upgrade, Forced). A respawn
-// keeps a vessel's upgrades too (docs/15 section 14.1). The upgrade is game state, synced to every client by the engine.
-// A vessel asks Has(vessel, name) and reacts. Open (mode phase): the game's "Core" is the team's, so a Direction granted
-// there is team-wide; per-player Directions go on the vessel instead (kit 1.7, docs/15 section 14.1).
+// "Direction_<Vessel>_<Name><rank>_Upgradeobject" (or "Direction_Any_<Name><rank>_Upgradeobject"; rank 1, 2 or 3 is
+// the name's last digit, none means rank 1). The part that owns the mechanic registers it with its own load group, so it
+// exists on every machine with the pack; the mode lists them all by the "Direction_" prefix, offers them, and grants a
+// player's pick on that player's vessel (Grant): a respawn copies the dead vessel's upgrades, and the mode grants again
+// when each map starts (docs/15 section 14.1). The upgrade is game state, synced to every client by the engine.
+// A vessel part asks Rank(vessel, name) or Has(vessel, name) and reacts; kit 1.7 made these per vessel, not per team.
 public static class ModKitDirections
 {
     public const string Prefix = "Direction_";
@@ -13,6 +13,28 @@ public static class ModKitDirections
     public static string Id(string vessel, string name)
     {
         return Prefix + (string.IsNullOrEmpty(vessel) ? "Any" : vessel) + "_" + name + "_Upgradeobject";
+    }
+
+    // The parts of a Direction's name: false for an upgrade that isn't one.
+    public static bool Parse(string id, out string vessel, out string name, out int rank)
+    {
+        vessel = name = "";
+        rank = 1;
+        if (id == null || !id.StartsWith(Prefix) || !id.EndsWith("_Upgradeobject"))
+            return false;
+        string rest = id.Substring(Prefix.Length, id.Length - Prefix.Length - "_Upgradeobject".Length);
+        int cut = rest.IndexOf('_');
+        if (cut <= 0 || cut >= rest.Length - 1)
+            return false;
+        vessel = rest.Substring(0, cut);
+        name = rest.Substring(cut + 1);
+        char last = name[name.Length - 1];
+        if (last >= '1' && last <= '3')
+        {
+            rank = last - '0';
+            name = name.Substring(0, name.Length - 1);
+        }
+        return true;
     }
 
     // Every Direction any part registered (the mode's offer list).
@@ -54,46 +76,36 @@ public static class ModKitDirections
         return d;
     }
 
-    // Any client or the host: a "Core" entity carries the Direction (the synced Upgradelist).
-    public static bool Has(string vessel, string name)
+    // Any client or the host: this vessel carries the Direction (the synced Upgradelist; each rank is its own id).
+    public static bool Has(Entity_Master vessel, string owner, string name)
     {
-        string id = Id(vessel, name);
-        foreach (Entity_Master core in Cores())
-            if (core.Upgradelist != null)
-                foreach (FixedString64Bytes u in core.Upgradelist)
-                    if (u.ToString() == id)
-                        return true;
+        if (vessel == null || vessel.Upgradelist == null)
+            return false;
+        string id = Id(owner, name);
+        foreach (FixedString64Bytes u in vessel.Upgradelist)
+            if (u.ToString() == id)
+                return true;
         return false;
     }
 
-    // Host only: grants a Direction on every core (the mode re-grants each held one when a map starts).
-    public static bool Grant(Upgradeproperties direction)
+    // The highest rank of a Direction this vessel carries (0: none). Rank 1 may be named with or without its digit.
+    public static int Rank(Entity_Master vessel, string owner, string name)
     {
-        if (direction == null || Game_Entity.Instance == null || !Game_Entity.Instance.IsServer)
-            return false;
-        bool any = false;
-        foreach (Entity_Master core in Cores())
-            if (core.Upgradelistserver != null && !core.Upgradelistserver.ContainsKey(direction.Objectname))
-            {
-                Helper_Entitytools.Upgrade(core, direction, Helper_Entitytools.Upgradecheck.Forced, null);
-                any = true;
-            }
-        return any;
+        for (int r = 3; r >= 1; r--)
+            if (Has(vessel, owner, name + r))
+                return r;
+        return Has(vessel, owner, name) ? 1 : 0;
     }
 
-    static List<Entity_Master> Cores()
+    // Host only: grants a Direction on one vessel. False when it already holds it (the same upgrade twice does nothing,
+    // Helper_Entitytools.cs:470-473, so a rank is its own upgrade beside the ones before it).
+    public static bool Grant(Entity_Master vessel, Upgradeproperties direction)
     {
-        List<Entity_Master> cores = new List<Entity_Master>();
-        if (Game_Entity.Instance == null || Game_Entity.Instance.Entityclient == null)
-            return cores;
-        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-        {
-            if (e == null || e.Client == null || e.Client.Beingobject == null || e.Client.Beingobject.Entity == null)
-                continue;
-            List<string> tags = e.Client.Beingobject.Entity.Tags;
-            if (tags != null && tags.Contains("Core"))
-                cores.Add(e);
-        }
-        return cores;
+        if (vessel == null || direction == null || Game_Entity.Instance == null || !Game_Entity.Instance.IsServer)
+            return false;
+        if (vessel.Upgradelistserver == null || vessel.Upgradelistserver.ContainsKey(direction.Objectname))
+            return false;
+        Helper_Entitytools.Upgrade(vessel, direction, Helper_Entitytools.Upgradecheck.Forced, null);
+        return true;
     }
 }

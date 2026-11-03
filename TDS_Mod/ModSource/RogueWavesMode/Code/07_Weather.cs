@@ -297,6 +297,31 @@ public static class RWWeather
         return flood;
     }
 
+    // The stock nest hooks the Tide counter and never lets go. With the nest dead its next growth throws inside the counter's
+    // write, which ends Mode_Normal.Run: the Tides stop for good (seen on the PC). A stock map's nest too, once it can be
+    // razed: the hook goes with the nest.
+    public static int HooksDropped;
+
+    public static void DropDeadNests()
+    {
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        if (vars == null || vars.Wave.OnValueChanged == null)
+            return;
+        foreach (Delegate d in vars.Wave.OnValueChanged.GetInvocationList())
+        {
+            Entity_Ai_Tower_Halberdnest nest = d.Target as Entity_Ai_Tower_Halberdnest;
+            if (ReferenceEquals(nest, null))
+                continue;
+            if (nest != null && nest.Master != null && nest.Master.Beingserver != null && !nest.Master.Beingserver.Dead)
+                continue;
+            vars.Wave.OnValueChanged = (Unity.Netcode.NetworkVariable<int>.OnValueChangedDelegate)Delegate.Remove(vars.Wave.OnValueChanged, d);
+            HooksDropped++;
+        }
+    }
+
+    // Raze the Nest's target (19_Objectives.cs): the same nest, on order.
+    public static Entity_Master SpawnNestFor() { return SpawnNest(); }
+
     // A nest on a free tile 3 to 7 tiles from an enemy core, on the core's team, as a child of the core like Tide foes.
     static Entity_Master SpawnNest()
     {
