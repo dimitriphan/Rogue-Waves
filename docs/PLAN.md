@@ -179,7 +179,7 @@ Steps, in order:
    them (`docs/03`, `docs/18`). PC round: self-test 0 failures, then his play test and his balance pass. Coded
    2026-10-23 as 0.2.0-dev with the carried-over fixes; PC round 9 passed the self-test (160/0) and made it his play
    build the same day. His play test next, with what it must show in `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
-4. The pack build with one part: the Build Queue's `Pack` step (`docs/PACK.md` §1, not built yet), the one pack version
+4. The pack build with one part: Tools > ModKit > Build Pack with `Tools/pc/Build-Pack.ps1` (`docs/PACK.md` §1; built 2026-10-28, first run in round 10: the 0.1.0 zip exists), the one pack version
    in every place `docs/PACK.md` §4 names, the README of §5, the Mods-folder install checked on the PC with no dev mods
    in it.
 5. `docs/10` hand-off; `RogueWaves-0.1.0.zip` to Dimitri. Gate: Dimitri says ship.
@@ -252,7 +252,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
   (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
   Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
+- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -265,6 +265,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
   `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
   sheet's open items and to the defaults in its `DESIGN.md`, then his sprites.
+- **Release 1 state (2026-10-28):** the pack builds and boots (round 10); what's left is his play test of the new play
+  build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
   (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE.
@@ -473,6 +475,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Found and fixed: the Thread Head's panel never drew (RETURN's and MEND's keybinds named input actions the game doesn't
   have; PR #42, pitfall #113) and Hallucinogen's stun look is a stock effect Woozy doesn't load (PR #41, pitfall #114).
   Balance, what was clicked and what needs Dimitri: `docs/reports/PLAYTEST_2026-10-26.md`.
+- **2026-10-28, priorities:** at Dimitri's ask ("figure out what is most needed right now") the scope was read
+  against the state; the ranked list for Release 1 and what waits after it is `docs/reports/PRIORITIES_2026-10-28.md`.
+  Nothing built.
+- **2026-10-28, defaults and the pack (Dimitri: "Use defaults for now, then proceed"; round OK 20:07Z):** defaults
+  logged (Decisions), scope `07` asks for his sprite sheet, the pack step built. PC round Yossele_round10: self-test of
+  0.1.0-dev **160/0**, the three temporary sheets used, release boot check clean; the first pack build `PACK DONE ok`,
+  its boot check clean at v0.1.0; `handoff\RogueWaves-0.1.0.zip` (3.1 MB) made and held for his sprites. His play build
+  is now 0.1.0-dev with the Daze fix and the temporary art (`TDS_Mod/Handoff/Yossele_round10/README.md`).
 
 ### Decisions
 
@@ -611,6 +621,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-21 (user): Release 1's four defaults confirmed; Yossele's sheet answers: fertilizer resets each map,
   Cordyfriend's range 1.5 tiles, the Tree's capstone is Dandelion Storm, "long tide" maps have 4 Tides or fewer, one
   Bonsai per player.
+- 2026-10-28 (user, "Use defaults for now, then proceed", on `docs/reports/PRIORITIES_2026-10-28.md`): Yossele's laser
+  keeps mining ore; `07`'s costs, healths and in-game lines stay as written (the Red/Blue balance waits for his pass);
+  the D-MDS line stays his; the temporary Cordyfriend ships unless he sends his own; the dev version becomes 0.1.0-dev
+  (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked by his eye
+  against Smacky's build bar (no desktop screenshots here). Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
+  `TDS_Mod/ModSource/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
 
 ### Open questions
 

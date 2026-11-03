@@ -107,7 +107,7 @@ namespace YosseleBuild
             ModTool.Editor.Exporting.ExportSettings.name = "YosseleMod";
             ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
             ModTool.Editor.Exporting.ExportSettings.description = "Adds Yossele, The Patient Golem: a clay golem whose buildings grow stronger every Tide they survive. Every player in a lobby needs this mod.";
-            ModTool.Editor.Exporting.ExportSettings.version = "1.0";
+            ModTool.Editor.Exporting.ExportSettings.version = "0.1.0-dev";   // the pack version plus -dev (docs/PACK.md section 4)
             ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
             AssetDatabase.SaveAssets();
             ModTool.Editor.Exporting.ModExporter.ExportMod();
