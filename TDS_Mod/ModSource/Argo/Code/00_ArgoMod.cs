@@ -18,7 +18,7 @@
 //                 ModKitVesselTabs (one tab per vessel on every vessel page), ModKitBoat (a boat spot, the button
 //                 unlocked) and ModKitTowers (each tower's range centred on it). The build renames ModKit to ArgoKit.
 //   Kit 1.6       ModKitPack (the pack registry, the stand-down), ModKitTides (Tides), ModKitCounter (Fathom),
-//                 ModKitFocus (the F-key fix), ModKitDirections (unused by Argo yet).
+//                 ModKitFocus (the F-key fix), ModKitDirections (Deep Current, Heavy Salvo).
 using System;
 using System.Collections;
 using System.Collections.Generic;

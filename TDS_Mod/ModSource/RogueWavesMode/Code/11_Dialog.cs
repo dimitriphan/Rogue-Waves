@@ -21,12 +21,14 @@ public static class RWDialog
         return dialog != null && Blockage.Menu.Bl_Menus.Menus != null && Blockage.Menu.Bl_Menus.Menus.TryGetValue(dialog.gameObject.name, out menu) && menu != null && menu.Active;
     }
 
+    // The game's cards show only an icon on a coloured tile: hovering one puts its Display_Desc in the dialog's line, so
+    // that line names it, the way the stock unlock popup does ("AURA GAVEL ▪ RED"; seen on the PC, Riptide 2026-10-05).
     public static Bla_Ui_Confirmation.Entry Card(string name, string title, string desc, Sprite image, Color color)
     {
         Bla_Ui_Confirmation.Entry card = new Bla_Ui_Confirmation.Entry();
         card.Name = name;
         card.Display_Name = title;
-        card.Display_Desc = desc;
+        card.Display_Desc = title == "" ? desc : desc == "" ? title.ToUpperInvariant() : title.ToUpperInvariant() + RWCard.Separator + desc;
         card.Display_Image = image;
         card.Display_Color = color;
         card.Display_Imagecolor = Color.white;

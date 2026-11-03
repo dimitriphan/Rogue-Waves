@@ -446,7 +446,7 @@ public static class RWRunLabel
             r.anchorMax = w.anchorMax;
             r.pivot = w.pivot;
             r.sizeDelta = w.sizeDelta;
-            r.anchoredPosition = w.anchoredPosition + new Vector2(0f, -w.rect.height * 0.9f);
+            r.anchoredPosition = w.anchoredPosition + new Vector2(0f, -w.rect.height * 1.9f);
         }
         label = t;
         return true;

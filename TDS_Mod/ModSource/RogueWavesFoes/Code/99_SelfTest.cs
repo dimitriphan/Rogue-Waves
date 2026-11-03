@@ -99,16 +99,18 @@ public static class RWFTest
         Macro_Main.Instance.Playgame(true);
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && Game_Rounds.Instance != null, 200f);
         if (Game_Mapvars.Instance == null) { Setup("map", "no map"); yield break; }
+        // The vessels' start runs on the Tide clock: nothing holds it until one stands.
+        Entity_Master hero = null;
+        List<Entity_Master> heroes = null;
+        yield return Until(() => Game_Entity.Instance.Entityclienttags.TryGetValue("Hero", out heroes) && heroes.Count > 0, 90f);
+        if (heroes != null && heroes.Count > 0) hero = heroes[0];
         freeze = true;
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(4f);
         Entity_Master core = ModKitTest.Core();
         if (core == null) { Setup("map", "no core"); yield break; }
         Vector3 c = core.Entityposition.Value;
 
         // A tower of the player's, to feel the auras.
-        Entity_Master hero = null;
-        List<Entity_Master> heroes;
-        if (Game_Entity.Instance.Entityclienttags.TryGetValue("Hero", out heroes) && heroes.Count > 0) hero = heroes[0];
         Beingobject archer = Bl_Address.Getload("Mob", "Tower_Smackyarcher") as Beingobject;
         Entity_Master tower = null;
         if (hero != null && archer != null)

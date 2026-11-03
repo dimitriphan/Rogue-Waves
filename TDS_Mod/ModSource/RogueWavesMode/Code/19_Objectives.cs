@@ -190,15 +190,7 @@ public static class RWObjectives
             failed = true;
     }
 
-    static Entity_Master Core()
-    {
-        List<Entity_Master> cores;
-        if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Core", out cores))
-            return null;
-        foreach (Entity_Master c in cores)
-            if (c != null && c.Beingserver != null && !c.Beingserver.Dead) return c;
-        return null;
-    }
+    static Entity_Master Core() { return RWUtil.PlayerCore(); }
 
     // Farther and tougher on later maps (docs/scope/14 Mind the Meteor's "Later maps").
     static void SpawnMeteor()

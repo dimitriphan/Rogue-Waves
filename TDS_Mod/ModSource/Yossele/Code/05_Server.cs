@@ -4,6 +4,7 @@ public class YosselePlayer
 {
     public long Owner;
     public int Fertilizer, Compost, Made, Spent;
+    public int Season, Mushrooms;   // Tree Direction ranks the vessel holds: its brain refreshes them, they stay while it is down
     public bool Unlocked;
     public YosseleHeroBrain Hero;
 }
@@ -97,6 +98,17 @@ public static class YosseleServer
             if (hero != null && hero.Upgradelistserver != null && hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Yossele", YosseleData.Compostbins[r - 1].Name)))
                 return r;
         return 0;
+    }
+
+    // The same for any of the vessel's other Directions, by the name of its rank I.
+    public static int DirectionRank(Entity_Master hero, string name)
+    {
+        if (hero == null || hero.Upgradelistserver == null)
+            return 0;
+        for (int r = 3; r >= 2; r--)
+            if (hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Yossele", name + r)))
+                return r;
+        return hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Yossele", name)) ? 1 : 0;
     }
 
     // A foe fell: every Yossele with a Compost Bin and the foe within its radius counts it (felled by anyone).
@@ -283,13 +295,20 @@ public static class YosseleServer
 
     // ---------------------------------------------------------------- the Dandelion Tree's limit
 
-    // This player's standing Tree (never the Bonsai), or null.
+    // This player's standing Tree (never the Bonsai), or null. Dandelion Season can stand several: the one with the Bonsai
+    // upgrade comes first, as it opens the Bonsai's button and is the one the Bonsai copies.
     public static YosseleDandelionBrain TreeOf(long owner)
     {
+        YosseleDandelionBrain first = null;
         foreach (YosseleBuilding b in Buildings)
             if (b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Owner(b.Master) == owner)
-                return (YosseleDandelionBrain)b;
-        return null;
+            {
+                if (b.Has("Bonsai"))
+                    return (YosseleDandelionBrain)b;
+                if (first == null)
+                    first = (YosseleDandelionBrain)b;
+            }
+        return first;
     }
 
     public static bool HasDandelion(long owner) { return TreeOf(owner) != null; }
@@ -303,13 +322,15 @@ public static class YosseleServer
     }
 
     // What the Tree's build slot offers this player: the Tree while none stands, the Bonsai while the Tree has its
-    // Bonsai upgrade and no Bonsai stands, else nothing ("").
+    // Bonsai upgrade and no Bonsai stands, else nothing (""), or the Tree again under Dandelion Season, which has no limit.
     public static string TreeSlot(long owner)
     {
         YosseleDandelionBrain tree = TreeOf(owner);
         if (tree == null)
             return YosseleData.Dandelion;
-        return tree.Has("Bonsai") && !HasBonsai(owner) ? YosseleData.Bonsai : "";
+        if (tree.Has("Bonsai") && !HasBonsai(owner))
+            return YosseleData.Bonsai;
+        return Player(owner).Season > 0 ? YosseleData.Dandelion : "";
     }
 
     public static void Limit(long owner)

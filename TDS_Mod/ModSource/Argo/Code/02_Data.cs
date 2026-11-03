@@ -172,6 +172,31 @@ public static class ArgoData
     public const float SaltBrine = 0.5f;        // Salt Sting's brine on pinned foes when Brine wasn't taken (doubled)
     public const float AimSlack = 0.5f;         // AIM accepts a tile this far past the Range (tile centres)
 
+    // ---------------------------------------------------------------- Directions (kit 1.7)
+
+    // docs/scope/11 has none for Argo yet (its NEEDS line): defaults, one per rank, built on what Argo already has.
+    public class Direction { public string Name, Display, Desc; public float Bonus; }
+    // Deep Current: Deep Water reaches this much farther (PoolReach). Default, docs/scope/11.
+    public static readonly Direction[] Deepcurrents =
+    {
+        new Direction { Name = "Deepcurrent", Display = "Deep Current", Bonus = 0.15f,
+            Desc = "Deep Water reaches farther around each pool" },
+        new Direction { Name = "Deepcurrent2", Display = "Deep Current II", Bonus = 0.3f,
+            Desc = "Deep Water reaches further still around each pool" },
+        new Direction { Name = "Deepcurrent3", Display = "Deep Current III", Bonus = 0.5f,
+            Desc = "Deep Water reaches much farther around each pool" },
+    };
+    // Heavy Salvo: a held Multi on the Harpoon Gun's Damage. Default, docs/scope/11.
+    public static readonly Direction[] Heavysalvos =
+    {
+        new Direction { Name = "Heavysalvo", Display = "Heavy Salvo", Bonus = 0.1f,
+            Desc = "Harpoon Guns deal more damage" },
+        new Direction { Name = "Heavysalvo2", Display = "Heavy Salvo II", Bonus = 0.2f,
+            Desc = "Harpoon Guns deal even more damage" },
+        new Direction { Name = "Heavysalvo3", Display = "Heavy Salvo III", Bonus = 0.35f,
+            Desc = "Harpoon Guns deal much more damage" },
+    };
+
     // ---------------------------------------------------------------- the harpoon's reel (1.4)
 
     // 2.0: only the reel path reels (Reel, Twin Line, Undertow). The first foe each harpoon hits walks itself Reel_Tiles

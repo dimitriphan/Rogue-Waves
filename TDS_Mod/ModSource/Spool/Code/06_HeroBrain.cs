@@ -37,6 +37,7 @@ public class SpoolHeroBrain : MonoBehaviour
             {
                 nextMenu = Time.time + 0.5f;
                 CheckMenu();
+                CheckDirections();
             }
             if (Time.time >= nextCollect)
             {
@@ -58,6 +59,7 @@ public class SpoolHeroBrain : MonoBehaviour
         Player = SpoolServer.Player(Owner);
         Player.Hero = this;
         CheckMenu();
+        CheckDirections();
         if (SpoolContent.Patch != null)
         {
             patchCommand = Helper_Entitytools.Createcommand(Master, SpoolData.PatchCommand, SpoolData.PatchLink, false, true);
@@ -97,6 +99,13 @@ public class SpoolHeroBrain : MonoBehaviour
             c.Goalvalue = 1f;
             Helper_Entitytools.Updatecommand(Master, link, "", true, true);
         }
+    }
+
+    // The Directions this vessel holds, for what its player's minions and Looms do (kit 1.7).
+    void CheckDirections()
+    {
+        Player.Recycler = SpoolServer.DirectionRank(Master, SpoolData.Recyclers[0].Name);
+        Player.Sewing = SpoolServer.DirectionRank(Master, SpoolData.Sewingmachines[0].Name);
     }
 
     public string Menu()

@@ -187,7 +187,7 @@ public static class RWWorld
         Dictionary<RWChart.Node, Macro_Link_Add_Base> made = new Dictionary<RWChart.Node, Macro_Link_Add_Base>();
         foreach (List<RWChart.Node> row in chart.Rows)
             foreach (RWChart.Node n in row)
-                made[n] = Island(root.transform, n, sailed.Contains(n));
+                made[n] = Island(root.transform, n, sailed.Contains(n), chart);
         foreach (List<RWChart.Node> row in chart.Rows)
             foreach (RWChart.Node n in row)
                 foreach (int k in n.Links)
@@ -208,7 +208,7 @@ public static class RWWorld
 
     public static Vector3 At(RWChart.Node n) { return new Vector3(n.X * Scale, 0f, n.Z * Scale); }
 
-    static Macro_Link_Add_Base Island(Transform root, RWChart.Node n, bool sailed)
+    static Macro_Link_Add_Base Island(Transform root, RWChart.Node n, bool sailed, RWChart.Chart chart)
     {
         GameObject go = new GameObject(n.Name);
         go.transform.SetParent(root, false);
@@ -218,7 +218,7 @@ public static class RWWorld
         {
             // A new campaign's first stop: the harbour plays the staging map (docs/scope/04 [Sea Chart]).
             Macro_Maplink_Add harbour = go.AddComponent<Macro_Maplink_Add>();
-            harbour.Gameplan = RWMode.TwinPlan(StagingPlan());
+            harbour.Gameplan = RWMode.TwinPlan(StagingPlan(chart));
             link = harbour;
         }
         else
@@ -235,7 +235,10 @@ public static class RWWorld
         // The leader's boat code reads Cameraposition with no null check (Macro_Worldvisual.cs:1694): every node has one.
         GameObject cam = new GameObject("Cameraposition");
         cam.transform.SetParent(go.transform, false);
-        cam.transform.localPosition = new Vector3(0f, 0f, 5f);
+        // The camera stands high and south of the node, looking on over the next rows: the game's camera looks along this
+        // transform's -forward (Macro_Worldvisual.cs:1694).
+        cam.transform.localPosition = new Vector3(0f, 22f, -16f);
+        cam.transform.localRotation = Quaternion.LookRotation(cam.transform.localPosition - new Vector3(0f, 0f, 7f));
         link.Cameraposition = cam;
         GameObject dock = new GameObject("Dock");
         dock.transform.SetParent(go.transform, false);
@@ -244,10 +247,10 @@ public static class RWWorld
         GameObject vis = new GameObject("Vis");
         vis.transform.SetParent(go.transform, false);
         Color32 land = n.Row == 0 ? RogueTeal : sailed ? Sailed : n.Breaker ? StormCoral : WetSand;
-        Shape(vis.transform, PrimitiveType.Cylinder, "Island", new Vector3(0f, 0f, 0f), new Vector3(3.2f, 0.35f, 3.2f), land);
-        Shape(vis.transform, PrimitiveType.Cylinder, "Shoal", new Vector3(0f, -0.2f, 0f), new Vector3(3.9f, 0.2f, 3.9f), DeepSwellDark);
-        if (n.Breaker)
-            Shape(vis.transform, PrimitiveType.Cube, "Breaker", new Vector3(0f, 0.6f, 0f), new Vector3(0.9f, 0.9f, 0.9f), Foam);
+        // Each map's own island from the base game's world map, when one of its worlds holds it; a plain disc otherwise.
+        if (!StockIsland(vis.transform, n.Row == 0 ? StagingPlan(chart) : n.Plan))
+            Shape(vis.transform, PrimitiveType.Cylinder, "Island", new Vector3(0f, 0f, 0f), new Vector3(3.2f, 0.35f, 3.2f), land);
+        Shape(vis.transform, PrimitiveType.Cylinder, "Shoal", new Vector3(0f, -0.25f, 0f), new Vector3(4.6f, 0.15f, 4.6f), n.Row == 0 ? RogueTeal : n.Breaker ? StormCoral : DeepSwellDark);
         if (sailed && n.Row > 0)
             Flag(vis.transform, RogueTeal);
         if (n.Weather != RWChart.Calm)
@@ -273,13 +276,76 @@ public static class RWWorld
         addon.Offset = new Vector3(0f, 3.2f, 0f);
     }
 
-    // The staging map: the pool's first of its lowest danger, the same on every machine. It is only played for its break.
-    public static string StagingPlan()
+    static Dictionary<string, GameObject> stockIslands;
+    public static int IslandsCopied;
+
+    // The base game's worlds hold a node per map, drawn by hand. The chart shows that node's own art at a chart's size: a copy
+    // with everything but its look stripped, so it plays no part in the boat's logic. Every machine builds the same.
+    static bool StockIsland(Transform parent, string plan)
     {
+        if (stockIslands == null)
+        {
+            stockIslands = new Dictionary<string, GameObject>();
+            Dictionary<string, UnityEngine.Object> worlds = RWUtil.Folder("World");
+            if (worlds != null)
+                foreach (UnityEngine.Object o in worlds.Values)
+                {
+                    Mapworlddatabaseobject w = o as Mapworlddatabaseobject;
+                    if (w == null || w.Worldobj == null || w.Objectname.StartsWith(RWData.WorldPrefix))
+                        continue;
+                    foreach (Macro_Maplink_Add m in w.Worldobj.GetComponentsInChildren<Macro_Maplink_Add>(true))
+                        if (m.Gameplan != null && !stockIslands.ContainsKey(m.Gameplan.Objectname))
+                            stockIslands[m.Gameplan.Objectname] = m.gameObject;
+                }
+            RWLog.Info("chart: " + stockIslands.Count + " stock islands to copy");
+        }
+        GameObject stock;
+        if (!stockIslands.TryGetValue(plan, out stock) || stock == null)
+            return false;
+        GameObject copy = UnityEngine.Object.Instantiate(stock, parent, false);
+        copy.name = "Isle";
+        List<GameObject> dropped = new List<GameObject>();
+        foreach (Macro_Addon_Base a in copy.GetComponentsInChildren<Macro_Addon_Base>(true)) dropped.Add(a.gameObject);
+        foreach (Transform t in copy.GetComponentsInChildren<Transform>(true))
+            if (t != copy.transform && (t.name == "Dock" || t.name == "Cameraposition" || t.name.StartsWith("Arrow"))) dropped.Add(t.gameObject);
+        foreach (GameObject d in dropped) if (d != null && d != copy) UnityEngine.Object.DestroyImmediate(d);
+        foreach (Component c in copy.GetComponentsInChildren<Component>(true))
+        {
+            if (c == null || c is Transform || c is MeshFilter || c is MeshRenderer || c is SpriteRenderer)
+                continue;
+            UnityEngine.Object.DestroyImmediate(c);
+        }
+        Renderer[] rs = copy.GetComponentsInChildren<Renderer>(true);
+        if (rs.Length == 0)
+        {
+            UnityEngine.Object.DestroyImmediate(copy);
+            return false;
+        }
+        // Fitted to the chart's spacing, centred on the node, resting on the water.
+        copy.transform.localPosition = Vector3.zero;
+        copy.transform.localRotation = stock.transform.localRotation;
+        Bounds b = rs[0].bounds;
+        foreach (Renderer r in rs) b.Encapsulate(r.bounds);
+        float size = Mathf.Max(b.size.x, b.size.z);
+        float scale = size > 0.01f ? 8f / size : 1f;
+        Vector3 offset = copy.transform.position - new Vector3(b.center.x, b.min.y, b.center.z);
+        copy.transform.localScale = copy.transform.localScale * scale;
+        copy.transform.localPosition = offset * scale;
+        IslandsCopied++;
+        return true;
+    }
+
+    // The staging map: the pool's first of its lowest danger that this chart doesn't play, the same on every machine. It
+    // is only played for its break, and the card must be able to tell it from map 1.
+    public static string StagingPlan(RWChart.Chart chart)
+    {
+        List<string> onChart = new List<string>();
+        foreach (List<RWChart.Node> row in chart.Rows)
+            foreach (RWChart.Node n in row) onChart.Add(n.Plan);
         RWChart.Plan best = null;
         foreach (RWChart.Plan p in RWMode.Pool)
-            if (best == null || p.Label < best.Label) best = p;
-        return best != null ? best.Name : "";
+            if (!onChart.Contains(p.Name) && (best == null || p.Label < best.Label)) best = p;
+        return best != null ? best.Name : RWMode.Pool[0].Name;
     }
 
     static void Flag(Transform parent, Color32 c)

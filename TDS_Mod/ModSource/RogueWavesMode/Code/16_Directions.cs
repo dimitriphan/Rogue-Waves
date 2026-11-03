@@ -11,6 +11,9 @@ public class RWDirectionDef
     public string[] Keys = new string[0];       // the stock script's keys (pitfall #117)
     public float[][] Numbers = null;            // per rank, one per key
     public string Reach = "";                   // "Tower" every building, "Mob" every unit; "" only the vessel
+    public string Stat = "";                    // a stat on the vessel itself, held while the Direction is
+    public bool Plain;                          // an Add to it, not a Multi
+    public float[] Amounts = null;              // per rank
 }
 
 public static class RWDirections
@@ -41,16 +44,18 @@ public static class RWDirections
             Desc = new[] { "Your upgrades cost less", "Your upgrades cost less still", "Your upgrades cost much less" } },
         new RWDirectionDef { Name = "Interest", Display = "Compound Interest",
             Desc = new[] { "Each Tide, a little of your unspent base aura is paid on top", "A bigger share of your unspent base aura is paid each Tide", "A bigger share still of your unspent base aura is paid each Tide" } },
-        new RWDirectionDef { Vessel = "Buster", Name = "Gallop", Display = "Full Gallop",
+        // Each base vessel's is one held number the vessel's own code reads live (kit docs/17 §8; their stock upgrades are
+        // read by name, so a pack upgrade can't reach their builds' numbers).
+        new RWDirectionDef { Vessel = "Buster", Name = "Gallop", Display = "Full Gallop", Stat = "Speed", Amounts = new[] { 0.1f, 0.2f, 0.3f },
             Desc = new[] { "Buster runs faster", "Buster runs faster still", "Buster runs much faster" } },
-        new RWDirectionDef { Vessel = "Fie", Name = "Regulars", Display = "House Regulars", Reach = "Tower",
-            Desc = new[] { "Rest Stops keep one more regular", "Rest Stops keep two more regulars", "Rest Stops keep four more regulars" } },
-        new RWDirectionDef { Vessel = "Boutman", Name = "Longline", Display = "Long Line",
-            Desc = new[] { "Boutman's rally reaches farther", "Boutman's rally reaches farther still", "Boutman's rally reaches much farther" } },
-        new RWDirectionDef { Vessel = "Snosno", Name = "Packedsnow", Display = "Packed Snow",
-            Desc = new[] { "Sno Sno's trail starts deeper", "Sno Sno's trail starts deeper still", "Sno Sno's trail starts much deeper" } },
-        new RWDirectionDef { Vessel = "Smacky", Name = "Skipping", Display = "Skipping Stones", Reach = "Tower",
-            Desc = new[] { "Bomb Tower shells bounce once more", "Bomb Tower shells bounce twice more", "Bomb Tower shells bounce three times more" } },
+        new RWDirectionDef { Vessel = "Fie", Name = "Regulars", Display = "House Regulars", Stat = "Attackspeed", Amounts = new[] { 0.1f, 0.2f, 0.3f },
+            Desc = new[] { "Fie works faster", "Fie works faster still", "Fie works much faster" } },
+        new RWDirectionDef { Vessel = "Boutman", Name = "Longline", Display = "Long Line", Stat = "Fishingrange", Plain = true, Amounts = new[] { 1f, 2f, 3f },
+            Desc = new[] { "Boutman reaches farther with his rod", "Boutman reaches farther still", "Boutman reaches much farther" } },
+        new RWDirectionDef { Vessel = "Snosno", Name = "Packedsnow", Display = "Packed Snow", Stat = "Speed", Amounts = new[] { 0.08f, 0.16f, 0.25f },
+            Desc = new[] { "Sno Sno slides faster", "Sno Sno slides faster still", "Sno Sno slides much faster" } },
+        new RWDirectionDef { Vessel = "Smacky", Name = "Skipping", Display = "Skipping Stones", Stat = "Damage", Amounts = new[] { 0.15f, 0.3f, 0.5f },
+            Desc = new[] { "Smacky hits harder", "Smacky hits harder still", "Smacky hits much harder" } },
     };
 
     public static readonly float[] CostScale = { 1f, 0.9f, 0.8f, 0.7f };
@@ -220,7 +225,22 @@ public static class RWDirections
         foreach (Link_Command c in new List<Link_Command>(vessel.Commandlistserver.Values))
             if (c != null && c.Name != null && c.Name.StartsWith("Buildoption"))
                 Scale(vessel, c);
+        foreach (RWDirectionDef d in Mine)
+        {
+            if (d.Stat == "") continue;
+            int rank = Top(p, d.Vessel, d.Name);
+            if (rank <= 0 || !vessel.Statsserver.ContainsKey(d.Stat)) continue;
+            string key = vessel.GetInstanceID() + d.Name;
+            Link_Modifier held;
+            float want = d.Amounts[rank - 1];
+            if (!statMods.TryGetValue(key, out held) || held == null || held.Dead)
+                statMods[key] = Helper_Entitytools.Addmod(vessel, d.Stat, want, d.Plain ? Helper_Entitytools.Modtypes.Add : Helper_Entitytools.Modtypes.Multi, 0f);
+            else if (d.Plain) held.Value_Add = want;
+            else held.Value_Multi = want;
+        }
     }
+
+    static readonly Dictionary<string, Link_Modifier> statMods = new Dictionary<string, Link_Modifier>();
 
     public static void Take(RWPlayer p, Upgradeproperties u)
     {

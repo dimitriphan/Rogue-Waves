@@ -102,7 +102,9 @@ public static class RWVote
         if (!RWRun.InCampaignMap || !RWUtil.IsServer || Game_Mapvars.Instance == null)
             return;
         Game_Mapvars vars = Game_Mapvars.Instance;
-        if (startPickAt > 0f && Time.time >= startPickAt)
+        // Once every vessel stands and carries its commands: the vessels' start runs on the Tide clock, so nothing holds it
+        // before that (seen on the PC).
+        if (startPickAt > 0f && Time.time >= startPickAt && (AllStanding() || Time.time >= startPickAt + 90f))
         {
             startPickAt = -1f;
             OpeningPicks();
@@ -137,6 +139,17 @@ public static class RWVote
             if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Entitydata.Value.Team == 0 && !e.Taglistserver.Contains("Enemycore") && !e.Taglistserver.Contains("Tower") && e != RWWeather.Flood)
                 n++;
         return n;
+    }
+
+    static bool AllStanding()
+    {
+        foreach (long s in RWRun.Sessions())
+        {
+            Entity_Master v = RWRun.Vessel(s);
+            if (v == null || v.Commandlistserver == null || !v.Commandlistserver.ContainsKey(RWRun.AskLink))
+                return false;
+        }
+        return true;
     }
 
     static bool Everyone()
@@ -413,12 +426,21 @@ public static class RWAsk
             round = -1f;
             return;
         }
-        if (ask.Goalvalue == round)
+        // Not during the map's fly-in: the stock HUD's own menu change would close the dialog, and nothing can be clicked.
+        Blockage.Menu.Blu2_Menu_Handler hud;
+        if (Blockage.Menu.Bl_Menus.Menus == null || !Blockage.Menu.Bl_Menus.Menus.TryGetValue("Main", out hud) || hud == null || !(hud.Active || RWDialog.Up()))
+            return;
+        // A new question, or one another menu closed before it was answered.
+        if (ask.Goalvalue == round && (running || answered))
             return;
         round = ask.Goalvalue;
         Open = what;
+        running = true;
+        answered = false;
         RogueWavesModeMod.Instance.StartCoroutine(Run(what));
     }
+
+    static bool running, answered;
 
     static IEnumerator Run(string what)
     {
@@ -471,11 +493,17 @@ public static class RWAsk
             seconds = RWVote.LeaveSeconds;
         }
         if (cards.Count == 0)
+        {
+            running = false;
+            answered = true;
             yield break;
+        }
         string pick = null;
         yield return RWDialog.Ask(cards, title, sub, seconds, true, n => pick = n);
+        running = false;
         if (pick == null)
             yield break;
+        answered = true;
         if (kind == RWVote.LeaveKind) RWMine.Send(kind, 0, pick);
         else
         {

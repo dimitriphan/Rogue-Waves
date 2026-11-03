@@ -13,25 +13,32 @@
 //   Rubbery Shell      a strike bounces on twice, each time to the nearest foe within 2 tiles it hasn't hit; with D-MDS
 //                      a seed goes on to 2 more projectiles within 2 tiles.
 //   Dandelion Storm    +100% range, +20 seeds, +100% seed growth (modifiers on its stats).
+// The vessel's Directions (docs/scope/11; same model, the Bonsai stays itself):
+//   Dandelion Season     no limit (YosseleServer.TreeSlot); 70% damage and range, stages at 70%, rank II at 25% more, rank
+//                        III +5% damage and range per other Tree at max Growth, at most +50%.
+//   Mother of Mushrooms  a Primordial Mushboom: no seeds; every 8 s every foe in Range that carries spores takes 2 per stack
+//                        and loses them (half at rank III). A stage adds 0.5 tiles instead of 20%; rank II +25% range.
 public class YosseleDandelionBrain : YosseleBuilding
 {
     public float Ready;          // seeds ready (fractional while one grows)
-    public int Strikes, SeedsFlown, Refunded, Intercepted, Bounced, InterceptSeeds, Refills;
+    public int Strikes, SeedsFlown, Refunded, Intercepted, Bounced, InterceptSeeds, Refills, Bursts, BurstHits;
     public static int WeedsGrown;   // Garden Weeds stacks grown, every Tree (the host's Tide log line)
     readonly List<float> weeds = new List<float>();   // Garden Weeds stacks, by expiry time
     public readonly Dictionary<Entity_Master, float> LastSeed = new Dictionary<Entity_Master, float>();   // each foe's last seed hit
     readonly Dictionary<Entity_Master, float> incoming = new Dictionary<Entity_Master, float>();   // seeds in flight
-    Link_Modifier growLimit, growRange;
-    int shown = -1;
-    float lastTick, nextIntercept;
+    Link_Modifier growLimit, growRange, shiftDamage, shiftRange, mushRange;
+    int shown = -1, season, mushrooms;   // season, mushrooms: the Direction ranks this Tree last read
+    float lastTick, nextIntercept, nextShift, nextBurst, shiftedDamage, shiftedRange;
 
     public int Limit { get { return Mathf.Max(0, Mathf.RoundToInt(Stat("Seedlimit", 10f))); } }
     public int Weeds { get { weeds.RemoveAll(t => t <= Time.time); return weeds.Count; } }
     protected virtual float StageSeeds { get { return YosseleData.SeedsPerStage; } }
+    protected virtual bool Shifts { get { return true; } }
 
     protected override void Started2()
     {
         lastTick = Time.time;
+        Shift();
         Show();
     }
 
@@ -53,6 +60,16 @@ public class YosseleDandelionBrain : YosseleBuilding
     {
         float dt = Time.time - lastTick;
         lastTick = Time.time;
+        if (Time.time >= nextShift)
+        {
+            nextShift = Time.time + YosseleData.ShiftCheck;
+            Shift();
+        }
+        if (mushrooms > 0)
+        {
+            Mushboom();
+            return;
+        }
         int limit = Limit;
         if (Ready < limit)
             Ready = Mathf.Min(limit, Ready + Rate * dt);
@@ -85,6 +102,8 @@ public class YosseleDandelionBrain : YosseleBuilding
     // Seeds start at the maximum when each Tide begins (the sheet).
     protected override void OnTide(int wave)
     {
+        if (mushrooms > 0)
+            return;
         Ready = Limit;
         Refills++;
         Show();
@@ -323,11 +342,84 @@ public class YosseleDandelionBrain : YosseleBuilding
         }
     }
 
-    // Seed limit and range grow with each stage (the range as a percentage of its base, so it adds like any other).
+    // Seed limit and range grow with each stage (the range as a percentage of its base, so it adds like any other). A
+    // Sapling's stages do less, a Mushboom's only reach further.
     protected override void OnGrowth()
     {
-        growLimit = YosseleUtil.Keep(Master, growLimit, "Seedlimit", Helper_Entitytools.Modtypes.Add, StageSeeds * Growth);
-        growRange = YosseleUtil.Keep(Master, growRange, "Range", Helper_Entitytools.Modtypes.Multi, YosseleData.RangePerStage * Growth);
+        float share = mushrooms > 0 ? 0f : season >= 2 ? YosseleData.SaplingShare * (1f + YosseleData.SaplingStage) : season == 1 ? YosseleData.SaplingShare : 1f;
+        growLimit = YosseleUtil.Keep(Master, growLimit, "Seedlimit", Helper_Entitytools.Modtypes.Add, StageSeeds * Growth * share);
+        growRange = YosseleUtil.Keep(Master, growRange, "Range", Helper_Entitytools.Modtypes.Multi, YosseleData.RangePerStage * Growth * share);
+        if (mushrooms > 0)
+            mushRange = YosseleUtil.Keep(Master, mushRange, "Range", Helper_Entitytools.Modtypes.Add, YosseleData.MushboomPerStage * Growth);
+    }
+
+    // ---------------------------------------------------------------- the vessel's Directions
+
+    // Reads the ranks the vessel holds and re-sets the held modifiers. With none held it makes no modifier at all.
+    void Shift()
+    {
+        YosselePlayer player = YosseleServer.Player(Owner);
+        int nowSeason = Shifts ? player.Season : 0, nowMushrooms = Shifts ? player.Mushrooms : 0;
+        if (nowSeason != season || nowMushrooms != mushrooms)
+        {
+            season = nowSeason;
+            mushrooms = nowMushrooms;
+            OnGrowth();
+        }
+        float damage = 0f, range = 0f;
+        if (season > 0)
+        {
+            float pack = season >= 3 ? Mathf.Min(YosseleData.SaplingPackMax, YosseleData.SaplingPack * OthersFullGrown()) : 0f;
+            damage = YosseleData.SaplingShare - 1f + pack;
+            range = damage;
+        }
+        if (mushrooms >= 2)
+            range += YosseleData.MushboomRange;
+        if (damage != shiftedDamage)
+        {
+            shiftedDamage = damage;
+            shiftDamage = YosseleUtil.Keep(Master, shiftDamage, "Damage", Helper_Entitytools.Modtypes.Multi, damage);
+        }
+        if (range != shiftedRange)
+        {
+            shiftedRange = range;
+            shiftRange = YosseleUtil.Keep(Master, shiftRange, "Range", Helper_Entitytools.Modtypes.Multi, range);
+        }
+    }
+
+    int OthersFullGrown()
+    {
+        int n = 0;
+        foreach (YosseleBuilding b in YosseleServer.Buildings)
+            if (b != this && b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Started && b.FullGrown && b.Master != null && YosseleUtil.Alive(b.Master) && b.Owner == Owner)
+                n++;
+        return n;
+    }
+
+    // Mother of Mushrooms: instead of the seeds. Consumed first, so a foe the burst fells doesn't count its stacks twice.
+    void Mushboom()
+    {
+        Ready = 0f;
+        Show();
+        if (Time.time < nextBurst)
+            return;
+        nextBurst = Time.time + YosseleData.MushboomEvery;
+        float range = Stat("Range", 7f);
+        int hits = 0;
+        foreach (Entity_Master foe in Foes(range))
+        {
+            int stacks = YosseleSpores.StacksOf(foe);
+            if (stacks <= 0)
+                continue;
+            YosseleSpores.Take(foe, mushrooms >= 3 ? Mathf.CeilToInt(stacks * 0.5f) : stacks);
+            YosseleUtil.Hurt(Master, foe, YosseleData.MushboomPerStack * stacks);
+            hits++;
+        }
+        if (hits == 0)
+            return;
+        Bursts++;
+        BurstHits += hits;
+        YosseleUtil.Vis(Master, "Yossele_Finish", Pos, range);
     }
 }
 
@@ -342,6 +434,7 @@ public class YosseleBonsaiBrain : YosseleDandelionBrain
     float nextCopy;
 
     protected override float StageSeeds { get { return YosseleData.SeedsPerStage * YosseleData.BonsaiShare; } }
+    protected override bool Shifts { get { return false; } }
 
     protected override void Started2()
     {

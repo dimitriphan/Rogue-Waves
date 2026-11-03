@@ -91,6 +91,28 @@ public static class RWUtil
         return cores;
     }
 
+    // The player team's first living Basin (the host's lists; the client tag lists don't hold it).
+    public static Entity_Master PlayerCore()
+    {
+        if (Game_Entity.Instance == null)
+            return null;
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Core") && !e.Taglistserver.Contains("Enemycore") && e.Beingserver != null && !e.Beingserver.Dead)
+                return e;
+        return null;
+    }
+
+    public static List<Entity_Master> PlayerCores()
+    {
+        List<Entity_Master> cores = new List<Entity_Master>();
+        if (Game_Entity.Instance == null)
+            return cores;
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Core") && !e.Taglistserver.Contains("Enemycore") && e.Beingserver != null && !e.Beingserver.Dead)
+                cores.Add(e);
+        return cores;
+    }
+
     // Every ground tile of the map, one per position.
     public static List<Genitem> Ground()
     {

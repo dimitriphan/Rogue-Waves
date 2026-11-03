@@ -100,9 +100,12 @@ public static partial class RWTest
         Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
         if (menu == null) { Setup("flow", "never reached the main menu"); yield break; }
         yield return new WaitForSecondsRealtime(8f);
+        menu.Idlethreshold = 100000f;   // an unattended main menu goes to its idle view, which hides the buttons
         menu.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
         yield return Until(() => RWMenu.Button != null, 25f);
         yield return new WaitForSecondsRealtime(7f);
+        Blockage.Menu.Bl_Menus.Changemenu("Main", true);   // the automated run never leaves the title by itself (RogueLab M4b)
+        yield return new WaitForSecondsRealtime(10f);
         if (RWMenu.Button == null) { Setup("B1 the button", "no button: Tutorial_New_Game " + RWUtil.Has("Tutorial", "Tutorial_New_Game")); yield break; }
         Blockage.Menu.Blu2_Menu_Handler main = Blockage.Menu.Bl_Menus.Menus["Main"];
         GameObject play = main.Items["Play"];
@@ -122,8 +125,18 @@ public static partial class RWTest
         Info("B1 the dialog", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
         yield return Snap("mainmenu_dialog");
         List<string> first = CardNames();
-        Check("B1 New / Back on the main menu, no Continue without a saved campaign", first.Contains("New") && first.Contains("Back") && !first.Contains("Continue"), string.Join(",", first.ToArray()));
+        // A run stopped half way can leave a campaign in the save: New over it asks first, which is checked too.
+        bool hadSaved = first.Contains("Continue");
+        Check("B1 New / Back on the main menu" + (hadSaved ? ", and Continue with the saved campaign" : ""), first.Contains("New") && first.Contains("Back"), string.Join(",", first.ToArray()));
         if (!ClickCard("New")) { Check("B1 New clicked", false, "no card"); yield break; }
+        if (hadSaved)
+        {
+            yield return new WaitForSecondsRealtime(1f);
+            yield return WaitDialog(8f);
+            Check("B1c New over a saved campaign asks first", CardNamed("Sure") != null, CardTexts());
+            yield return Snap("mainmenu_startover");
+            ClickCard("Sure");
+        }
 
         // The boat, the chart, the harbour's Setup panel.
         yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance.Ready, 120f);
@@ -158,7 +171,16 @@ public static partial class RWTest
             Check("U9 the weather's billboard shows over a chart node", GameObject.Find("Billboardnode(Clone)") != null || FindBillboard(), hoverNode.Name);
         }
         else Setup("U9 the weather's billboard", "no weather on this chart's nodes");
+        yield return new WaitForSecondsRealtime(4f);
         yield return Snap("chart");
+        Info("chart islands", RWWorld.IslandsCopied + " copied from the stock worlds");
+        Mapworlddatabaseobject stockWorld = RWWorld.StockWorld();
+        if (stockWorld != null && stockWorld.Worldobj != null)
+        {
+            List<string> kids = new List<string>();
+            foreach (Transform c in stockWorld.Worldobj.transform) if (c.GetComponent<Macro_Link_Add_Base>() == null && kids.Count < 40) kids.Add(c.name);
+            Info("stock world's other children", stockWorld.Objectname + ": " + string.Join(",", kids.ToArray()));
+        }
 
         RWChart.Node harbour = RWCampaign.Chart.At(0, 0);
         yield return Until(() => boat.Selected.Value.ToString() == harbour.Name && Macro_Worldvisual.Instance.Insetup, 25f);
@@ -169,16 +191,14 @@ public static partial class RWTest
 
         // The staging map: T1 on its loading screen; Direction pick; the vote.
         boat.Playgame(true);
-        yield return Until(() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Gameloading", 40f);
-        yield return Until(() => RWCard.LoadingWrites > 0, 30f);
+        yield return Until(() => RWCard.LoadingWrites > 0, 70f);
         Check("T1 the loading screen says where the campaign stands", RWCard.LoadingWrites > 0, "'" + RWCard.LastLine + "'");
         yield return new WaitForSecondsRealtime(0.5f);
         yield return Snap("loading_staging");
         Game_Mapvars before = null;
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game", 200f);
         if (Game_Mapvars.Instance == null) { Setup("flow staging", "no map"); yield break; }
-        freeze = true;
-        yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 60f);
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 90f);
         yield return WaitDialog(10f);
         List<string> offered = CardNames();
         Check("Direction: " + RWDirections.Offers + " are offered before map 1", offered.Count == RWDirections.Offers && RWVote.State == "Picks", "open '" + RWAsk.Open + "', cards " + CardTexts() + ", " + RWDirections.List.Count + " upgrades");
@@ -199,6 +219,7 @@ public static partial class RWTest
         yield return Snap("map_vote");
         List<string> mapCards = CardNames();
         Check("Vote: every map of the first row is offered", mapCards.Count == RWCampaign.Open().Count && RWVote.State == "Map", "cards " + string.Join(",", mapCards.ToArray()) + ", open " + Names(RWCampaign.Open()));
+        if (mapCards.Count == 0) yield break;
         ClickCard(mapCards[0]);
         Macro_Main oldBoat = boat;
         yield return Until(() => RWCampaign.Choice >= 0, 10f);
@@ -217,10 +238,9 @@ public static partial class RWTest
         Check("the boat sailed by itself to the vote's winner, and its Setup panel opened", to != null && boat.Selected.Value.ToString() == to.Name, "selected '" + boat.Selected.Value + "', wanted " + (to != null ? to.Name : "-") + ", arrived " + RWUtil.F(RWBoat.ArrivedAt - RWBoat.SailedAt) + " s");
         yield return new WaitForSecondsRealtime(1.5f);
         yield return Snap("map1_setup");
-        boat.Playgame(true);
         int loads = RWCard.LoadingWrites;
-        yield return Until(() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Gameloading", 40f);
-        yield return Until(() => RWCard.LoadingWrites > loads, 30f);
+        boat.Playgame(true);
+        yield return Until(() => RWCard.LoadingWrites > loads, 70f);
         yield return new WaitForSecondsRealtime(0.5f);
         Check("T1 map 1's loading screen shows the card", RWCard.LastLine.StartsWith("Map 1 of 10") && RWCard.LastLine.Contains("3 retries left"), "'" + RWCard.LastLine + "'");
         yield return Snap("loading_map1");
@@ -230,8 +250,8 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(1f);
         yield return Snap("intro_card");
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap, 120f);
-        freeze = true;
-        yield return Until(() => RWShop.Stand != null, 60f);
+        yield return Until(() => RWShop.Stand != null, 90f);
+        freeze = true;   // only now: the vessels' own start runs on the Tide clock
         Check("VENDCINT lands in the opening break", RWShop.Stand != null, RWShop.Stand != null ? "at " + RWUtil.V(RWShop.Stand.Entityposition.Value) + ", owner " + RWShop.Stand.Entitydata.Value.Owner : "none");
         if (RWShop.Stand == null) yield break;
         yield return new WaitForSeconds(0.8f);

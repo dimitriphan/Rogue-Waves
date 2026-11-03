@@ -225,23 +225,15 @@ public static class RWCardinals
             core.Radio.Uiwarning_ClientRpc(text, icon, 3f);
     }
 
-    static Entity_Master Core()
-    {
-        List<Entity_Master> cores;
-        if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Core", out cores))
-            return null;
-        foreach (Entity_Master c in cores)
-            if (c != null && c.Beingserver != null && !c.Beingserver.Dead) return c;
-        return null;
-    }
+    static Entity_Master Core() { return RWUtil.PlayerCore(); }
 
     // ---------------------------------------------------------------- on the core (host)
 
     // A Team Cardinal goes on every core, with its Cardinal passed, and in the lobby list for the HUD row while it has room.
     static void GrantTeam(string id, int stack)
     {
-        List<Entity_Master> cores;
-        if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Core", out cores))
+        List<Entity_Master> cores = RWUtil.PlayerCores();
+        if (cores.Count == 0)
             return;
         Artifactobject art = Object(id);
         if (art == null)

@@ -52,7 +52,10 @@ public class ArgoHeroBrain : MonoBehaviour
             if (sonarOff && Time.time >= SonarReadyAt)
                 SetSonarButton(false);
             if (Time.time >= nextBase)
+            {
                 CheckBase();
+                CheckDirections();
+            }
             // Helper_Entitytools.Updateinteract rebuilds Interact whenever an upgrade or effect lands on the vessel.
             if (Time.time >= nextHookCheck)
             {
@@ -75,6 +78,7 @@ public class ArgoHeroBrain : MonoBehaviour
         for (int i = 0; i < ArgoData.Towers.Length; i++)
             BuildOption(i);
         CheckBase();
+        CheckDirections();
         if (ArgoData.SonarEnabled && ArgoContent.Commands.ContainsKey(ArgoData.SonarLink))
         {
             sonarCommand = Helper_Entitytools.Createcommand(Master, ArgoData.SonarCommand, ArgoData.SonarLink, false, true);
@@ -129,6 +133,14 @@ public class ArgoHeroBrain : MonoBehaviour
             if (Master.Commandlistserver.ContainsKey(ArgoData.BaseOption))
                 BaseShown++;
         }
+    }
+
+    // The Directions this vessel holds, for what its player's Deep Water and Harpoon Guns do (kit 1.7).
+    void CheckDirections()
+    {
+        ArgoServer.Ranks r = ArgoServer.RanksOf(ArgoUtil.Owner(Master));
+        r.Deepcurrent = ArgoServer.DirectionRank(Master, ArgoData.Deepcurrents[0].Name);
+        r.Heavysalvo = ArgoServer.DirectionRank(Master, ArgoData.Heavysalvos[0].Name);
     }
 
     // The button's look follows the command's Goalstring ("Off" while SONAR recharges), synced through Commandlist.

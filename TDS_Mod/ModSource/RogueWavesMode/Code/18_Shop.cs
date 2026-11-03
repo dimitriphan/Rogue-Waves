@@ -66,15 +66,7 @@ public static class RWShop
         Stand = null;
     }
 
-    static Entity_Master PlayerCore()
-    {
-        List<Entity_Master> cores;
-        if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Core", out cores))
-            return null;
-        foreach (Entity_Master c in cores)
-            if (c != null && c.Beingserver != null && !c.Beingserver.Dead) return c;
-        return null;
-    }
+    static Entity_Master PlayerCore() { return RWUtil.PlayerCore(); }
 
     // Beside the Basin, not on the first tiles a vessel lands on, free and standable.
     static Genitem Tile(Entity_Master core)
@@ -226,7 +218,7 @@ public static class RWShop
         foreach (string id in RWCardinals.Shelf(seed, map, wave))
         {
             int cost = RWCardinals.Cost(id);
-            cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id) + "\n" + cost, (RWCardinals.IsVessel(id) ? "Vessel Cardinal" : "Team Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), cost <= pure ? RWDialog.Teal : RWDialog.Swell));
+            cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id), "Pure Aura " + cost + RWCard.Separator + (RWCardinals.IsVessel(id) ? "Vessel Cardinal" : "Team Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), cost <= pure ? RWDialog.Teal : RWDialog.Swell));
         }
         Entity_Master v = RWMine.Vessel();
         List<string> held = new List<string>();
@@ -239,7 +231,7 @@ public static class RWShop
             int r;
             ModKitDirections.Parse(u.Objectname, out vs, out n, out r);
             int cost = RWDirections.RankCost(r);
-            cards.Add(RWDialog.Card("D:" + u.Objectname, u.Display_Name + "\n" + cost, u.Display_Desc, RWDirections.Picture(u.Objectname), cost <= pure ? RWDialog.Coral : RWDialog.Swell));
+            cards.Add(RWDialog.Card("D:" + u.Objectname, u.Display_Name, "Pure Aura " + cost + RWCard.Separator + u.Display_Desc, RWDirections.Picture(u.Objectname), cost <= pure ? RWDialog.Coral : RWDialog.Swell));
         }
         cards.Add(Back());
         string pick = null;
@@ -252,7 +244,7 @@ public static class RWShop
 
     static Bla_Ui_Confirmation.Entry Colour(string res, string display, float have, Color tint)
     {
-        return RWDialog.Card(res, display + "\n" + Mathf.FloorToInt(have), "Send " + display + " aura", null, tint);
+        return RWDialog.Card(res, display, "You hold " + Mathf.FloorToInt(have), null, tint);
     }
 
     static float Have(string res)

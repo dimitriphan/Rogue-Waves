@@ -148,8 +148,11 @@ namespace ModKitBuild
                     Say(name + ": release code " + version + ", built " + File.GetLastWriteTime(code).ToString("HH:mm:ss"));
 
                     string prefab = "Assets/" + name + "Mod/" + name + "Mod_Default.prefab";
-                    string packed = "Assets/" + name + "Mod/RogueWaves_" + name + "_Default.prefab";
-                    if (AssetDatabase.LoadAssetAtPath<GameObject>(packed) != null)
+                    // The mode and foes parts are named RogueWaves<Part>, and their dev prefab already has its pack name.
+                    bool named = name.StartsWith("RogueWaves");
+                    string part = named ? name.Substring("RogueWaves".Length) : name;
+                    string packed = "Assets/" + name + "Mod/RogueWaves_" + part + "_Default.prefab";
+                    if (!named && AssetDatabase.LoadAssetAtPath<GameObject>(packed) != null)
                         AssetDatabase.DeleteAsset(packed);   // left by a pack build that stopped half way
                     DateTime t = DateTime.Now.AddSeconds(-2);
                     Step(name, "Build All Assets");
@@ -158,17 +161,20 @@ namespace ModKitBuild
                     Step(name, "Build Mod Prefab");
                     Expect(Path.Combine(source, "Build/prefab_log.txt"), "Build Mod Prefab", p);
                     // A prefab asset's root takes its file's name, so the bundle's object is RogueWaves_<Part>_Default.
-                    string err = AssetDatabase.RenameAsset(prefab, "RogueWaves_" + name + "_Default");
-                    if (!string.IsNullOrEmpty(err))
-                        throw new Exception("renaming " + prefab + ": " + err);
-                    renamed.Add(name);
+                    if (!named)
+                    {
+                        string err = AssetDatabase.RenameAsset(prefab, "RogueWaves_" + name + "_Default");
+                        if (!string.IsNullOrEmpty(err))
+                            throw new Exception("renaming " + prefab + ": " + err);
+                        renamed.Add(name);
+                    }
                     GameObject root = AssetDatabase.LoadAssetAtPath<GameObject>(packed);
                     if (root == null)
                         throw new Exception(packed + " is missing after the rename");
-                    if (root.name != "RogueWaves_" + name + "_Default")
+                    if (root.name != "RogueWaves_" + part + "_Default")
                     {
                         GameObject contents = PrefabUtility.LoadPrefabContents(packed);
-                        contents.name = "RogueWaves_" + name + "_Default";
+                        contents.name = "RogueWaves_" + part + "_Default";
                         PrefabUtility.SaveAsPrefabAsset(contents, packed);
                         PrefabUtility.UnloadPrefabContents(contents);
                     }

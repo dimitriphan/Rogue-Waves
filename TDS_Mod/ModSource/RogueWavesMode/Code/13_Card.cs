@@ -33,11 +33,12 @@ public static class RWCard
         if (!RWWorld.Parse(world, out seed, out route, out retries))
             return "";
         RWChart.Chart chart = RWWorld.Chart(seed);
+        if (route.Count == 0 && plan == RWMode.Twin(RWWorld.StagingPlan(chart)))
+            return "Setting out" + Separator + "Choose your Directions, then vote";
         RWChart.Node node = null;
         foreach (RWChart.Node n in RWWorld.Choices(chart, route))
             if (RWMode.Twin(n.Plan) == plan) node = n;
-        // Off the next row: the staging map, the only other map a chart plays.
-        return node != null ? Line(node.Row, node.Weather, retries) : "Setting out" + Separator + "Choose your Directions, then vote";
+        return node != null ? Line(node.Row, node.Weather, retries) : "";
     }
 
     public static string Line(int row, int weather, int retries)
@@ -55,9 +56,18 @@ public static class RWCard
             return;
         nextLook = Time.unscaledTime + 0.1f;
         string scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-        if (scene == "Gameloading") Loading();
-        else if (scene == "Game") { Intro(); ExitWarning(); HideScore(); }
+        if (scene != seenScene)
+        {
+            seenScene = scene;
+            sceneAt = Time.unscaledTime;
+        }
+        // The bar shows over the map's own scene for a while too: looked for only in the first moments of a scene.
+        if (scene != "Setup" && !RWMenu.OnMainMenu && Time.unscaledTime - sceneAt < 120f) Loading();
+        if (scene == "Game") { Intro(); ExitWarning(); HideScore(); }
     }
+
+    static string seenScene = "";
+    static float sceneAt;
 
     // Score doesn't count in this mode (docs/scope/04 [Campaign]; UX report B9): the end screens' score line goes.
     static void HideScore()
@@ -93,7 +103,7 @@ public static class RWCard
     {
         Blockage.Menu.Blu2_Menu_Handler cine;
         GameObject alt;
-        if (Blockage.Menu.Bl_Menus.Menus == null || !Blockage.Menu.Bl_Menus.Menus.TryGetValue("Cine", out cine) || cine == null || !cine.Active
+        if (Time.unscaledTime - sceneAt > 60f || Blockage.Menu.Bl_Menus.Menus == null || !Blockage.Menu.Bl_Menus.Menus.TryGetValue("Cine", out cine) || cine == null
             || !cine.Items.TryGetValue("Maptitlealt", out alt) || alt == null)
             return;
         Transform desc = alt.transform.Find("Desc");
@@ -172,9 +182,18 @@ public static class RWLobby
         Unity.Netcode.NetworkManager net = Unity.Netcode.NetworkManager.Singleton;
         if (net != null && net.IsClient && !net.IsHost && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game")
             InMapAsClient = true;
+        // The game writes the flag only at a scene change after the player object spawned, so a pack machine that has just
+        // joined the boat still reads false (seen on the PC): every machine with the pack says so itself, at once.
+        Blm_Server server = Blm_Server.Instance;
+        Tds_Clientinfo mine = server != null && server.Localplayer != null ? server.Localplayer.GetComponent<Tds_Clientinfo>() : null;
+        if (mine != null && mine.IsOwner && !mine.Mods.Value)
+            mine.Mods.Value = true;
         if (Macro_Main.Instance != null && Macro_Main.Instance.Ready && RWUtil.IsHost)
             Check();
     }
+
+    public const float GraceSeconds = 8f;       // how long a friend who has just joined has to say so
+    static readonly Dictionary<string, float> firstSeen = new Dictionary<string, float>();
 
     // Host on the boat.
     public static void Check()
@@ -186,10 +205,12 @@ public static class RWLobby
         {
             Blm_Player p = o != null ? o.GetComponent<Blm_Player>() : null;
             Tds_Clientinfo info = o != null ? o.GetComponent<Tds_Clientinfo>() : null;
-            if (p == null || info == null || info.Mods.Value)
+            if (p == null || info == null || info.Mods.Value || p.IsOwner)
                 continue;
             string name = p.Displayname.Value.ToString();
-            if (Warned.Contains(name))
+            float since;
+            if (!firstSeen.TryGetValue(name, out since)) { firstSeen[name] = Time.unscaledTime; continue; }
+            if (Time.unscaledTime - since < GraceSeconds || Warned.Contains(name))
                 continue;
             Warned.Add(name);
             RWRejoin.Say(name + " has no mods on: they can't load a Rogue Waves map. Everyone needs the same pack.");
@@ -202,6 +223,7 @@ public static class RWLobby
     public static void AtMainMenu()
     {
         Warned.Clear();
+        firstSeen.Clear();
         if (!InMapAsClient)
             return;
         InMapAsClient = false;

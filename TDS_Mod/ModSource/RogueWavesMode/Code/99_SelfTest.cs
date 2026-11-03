@@ -124,6 +124,26 @@ public static partial class RWTest
         while (!ok() && t < timeout) { t += Time.unscaledDeltaTime; yield return null; }
     }
 
+    // Unity runs a yielded coroutine by itself, so an exception in one never reaches the caller: this steps it here.
+    static IEnumerator Stepped(IEnumerator inner)
+    {
+        while (true)
+        {
+            object step;
+            try
+            {
+                if (!inner.MoveNext()) yield break;
+                step = inner.Current;
+            }
+            catch (Exception e)
+            {
+                Check("the campaign flow ran to its end", false, e.ToString());
+                yield break;
+            }
+            yield return step;
+        }
+    }
+
     static IEnumerator Guarded()
     {
         IEnumerator run = Run();
@@ -158,7 +178,7 @@ public static partial class RWTest
 
     static IEnumerator Run()
     {
-        yield return Flow();     // the whole campaign as a player meets it; it ends back on the boat
+        yield return Stepped(Flow());     // the whole campaign as a player meets it; it ends back on the boat
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) yield return Embark();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("boat", "never reached the boat"); yield break; }
         yield return new WaitForSecondsRealtime(4f);
