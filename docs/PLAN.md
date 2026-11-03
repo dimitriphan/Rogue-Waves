@@ -251,9 +251,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
   redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
   (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
-  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-10-28: three
-  versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`, nothing wired
-  changes; Log). Older entries are in "Log" below.
+  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-10-28: the
+  game's code read system by system and the scope fitted to it
+  (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
+  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
+  2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
+  the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
+  2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
+  nothing wired changes; Log). Older entries are in "Log" below.
 - **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
   "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
@@ -267,13 +272,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
   `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
-  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites.
+  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
+  probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
+  N8-N11 stay read only until a round needs them (never N12).
 - **Release 1 state (2026-10-28):** the pack builds and boots (round 10); what's left is his play test of the new play
   build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
   (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE.
-- **Next free numbers:** kit chapter 25, pitfall #115 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look).
+- **Next free numbers:** kit chapter 25, pitfall #121 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -486,6 +493,28 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   0.1.0-dev **160/0**, the three temporary sheets used, release boot check clean; the first pack build `PACK DONE ok`,
   its boot check clean at v0.1.0; `handoff\RogueWaves-0.1.0.zip` (3.1 MB) made and held for his sprites. His play build
   is now 0.1.0-dev with the Daze fix and the temporary art (`TDS_Mod/Handoff/Yossele_round10/README.md`).
+- **2026-10-28, engine study and scope fit:** at Dimitri's ask ("understand as much as you can about how it functions,
+  and plan how ideas in the scope could seamlessly fit in without needing to create new mechanics") the game was
+  decompiled again in the cloud (never committed) and read against the kit. `docs/reports/ENGINE_STUDY_2026-10-28.md`
+  walks it system by system, sorts every road into four rungs (stock data, a stock script on pack data, a stock pattern
+  in a pack brain, a new mechanic) and lists 13 facts new to the kit, all read only (the same upgrade twice does
+  nothing; nine stock Cardinal scripts need their Cardinal passed; Chrono starts at ×1.25; Teamapply reaches every
+  vessel's builds). Its appendix catalogues 284 stock behaviour scripts: 245 can be put on pack things by data.
+  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` walks 61 scope ideas: 19 on stock data or a stock script, 10 mixed, 32 on
+  a stock pattern, none on a new mechanic once Uloe's light is a stat and Photons walk like Kippy; it offers
+  stock-script options for six `! NEEDS !` lines (scope untouched) and eight PC probes. Nothing compiled or run; the PC
+  was not touched. PR #48.
+- **2026-10-29, RogueLab round 8:** at Dimitri's ask ("Do a PC round to check") RogueLab 0.6.0 (`10_Round8.cs`) ran the
+  fit plan's probes R1-R8 and the engine study's N1-N5, N7 and N13 on a solo host: 20 pass, 1 fail (R6's own
+  bookkeeping), then **21 pass, 0 fail** after a one-file fix (handoff `RogueLab_round8b`). Seen in game: a stock script
+  runs on pack data once it has every param key it reads; the same upgrade twice does nothing and differently named
+  copies stack; removing one of two upgrades that share a script keeps both running; Teamapply reaches every player's
+  buildings and keeps reaching new ones after removal, while an owner-filtered spawn hook reaches only that player's;
+  a light stat sums sources that each replace their own 1.5 s mod; a death node pays once; Vintage and Coin work as pack
+  Cardinals with their `Artifactobject`; Melting's drain stays; Smackywall's regen heals at the Tide change; Chrono
+  starts at ×1.25. New kit pitfalls #115-#120, kit `16` §3 (Chrono), `17` §9 (Teamapply), `13` §3 (`30 / Totalwaves`),
+  `08` §6 (shutdown noise); every line in `TDS_Vessel_Creator/reference/roguelab_round8.txt`. Dimitri's Yossele
+  0.1.0-dev play build was parked for each launch and put back. PR #48.
 
 - **2026-10-28, temporary art versions (Dimitri: "For all temporary assets, create alternative versions for me to choose
   for each asset. There should be different versions for every single animation included for Yossele and Spool. Create

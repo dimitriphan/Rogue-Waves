@@ -78,7 +78,8 @@ Modeobject                     (label Mode)
 Wavesobject
   .Resourcesinit  List<Link_Resourceset>   starting aura
   .Wave           List<Waves>              one entry per Tide or break, played in order
-  .Totalwaves     number of entries with Wave = true (artifacts scale on it: 30 / Totalwaves)
+  .Totalwaves     number of entries with Wave = true (artifacts scale on it: 30 / Totalwaves, whole numbers;
+                  verified for Coin, RogueLab round 8: Red_Add x Tide x 10 on a 3-Tide map)
 Waves     {Displayedwave, Note (shown under the Tide banner), Wavetime (s), Wave (true = a Tide, false = a break), Content}
 Wavecontent {Style, Interval, Count, Team, Enemy (Beingobject), Gate, Upgrades (List<Upgradeproperties>), Resources}
 ```
