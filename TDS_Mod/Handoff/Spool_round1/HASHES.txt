@@ -1,0 +1,31 @@
+# Handoff Spool_round1: commit 9141555 of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit b9876ac.
+new  11b93c3d6e11fc93  Assets\SpoolMod\Editor\SpoolAseprite.cs
+new  e37a0b4a1866ea14  Assets\SpoolMod\Editor\SpoolAudio.cs
+new  4a622a378f3bd2a2  Assets\SpoolMod\Editor\SpoolBuilder.cs
+new  1d1268db1c7942a8  Assets\SpoolMod\Editor\SpoolCharacter.cs
+new  362f6650f74088e3  Assets\SpoolMod\Editor\SpoolLowpoly.cs
+new  25b4781eda39f5dd  Assets\SpoolMod\Editor\SpoolModPrefab.cs
+new  c6b42873e6fd27f3  Assets\SpoolMod\Editor\SpoolModels.cs
+new  7279f489a54c4bfc  Assets\SpoolMod\Editor\SpoolPx.cs
+new  c0928294aa55e095  ModSource\Spool\Build-SpoolMod.ps1
+new  53ebc1d9e06d4b40  ModSource\Spool\Code\00_SpoolMod.cs
+new  ebafd225d073737a  ModSource\Spool\Code\01_Util.cs
+new  27de2703e6fbef3c  ModSource\Spool\Code\02_Data.cs
+new  95ed0a71d9fcf3a9  ModSource\Spool\Code\03_Assets.cs
+new  d14699829c8bffa0  ModSource\Spool\Code\04_Content.cs
+new  3a95a6d9c522bae6  ModSource\Spool\Code\05_Server.cs
+new  3f2a248c3d4dfd0f  ModSource\Spool\Code\06_HeroBrain.cs
+new  0f2caae7c9cd41e8  ModSource\Spool\Code\07_Building.cs
+new  6d2ba98bd4c1059e  ModSource\Spool\Code\08_Tin.cs
+new  9479870cb30db422  ModSource\Spool\Code\09_Head.cs
+new  ed7316e2e2ebef81  ModSource\Spool\Code\10_Cushion.cs
+new  d92e2f7934261e8a  ModSource\Spool\Code\11_Client.cs
+new  c31c7a1047b7a538  ModSource\Spool\Code\12_Commands.cs
+new  cfc892ab6bd375a5  ModSource\Spool\Code\13_Journal.cs
+new  dfa5ac28eebebff6  ModSource\Spool\Code\97_Shots.cs
+new  68ac67cb2aaec0a6  ModSource\Spool\Code\99_SelfTest.cs
+new  242bb55d5aa92e81  ModSource\Spool\DESIGN.md
+new  281d3a5b40491c91  ModSource\Spool\Deploy-Wait.ps1
+new  cb0237fd17be6cf1  ModSource\Spool\IMPLEMENTATION_NOTES.md
+new  3d7cba9bbfaa227f  ModSource\Spool\Tools\Decode-Dump.ps1

@@ -4,7 +4,10 @@
 // and the special rule shown as a tooltip upgrade.
 public static class MummerData
 {
-    public const string Version = "1.0.0";
+    // A Rogue Waves part carries the pack version, "-dev" for the dev mod (docs/PACK.md section 4); Part names it in the
+    // pack registry (ModKitPack.Join).
+    public const string Version = "0.1.0-dev";
+    public const string Part = "Mummer";
     public const bool Diagnostics = true;
 
     public const string TemplateHero = "Hero_Smacky";
