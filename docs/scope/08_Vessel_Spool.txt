@@ -18,9 +18,9 @@
 
 		[Vessel Stats]
 			- Attack: melee.
-			- Health: ~45~ /~ Mummer, its prototype, had 45 \
+			- Health: ~45~
 			- Health regen: ~0~ per second
-			- Speed: ~2.75~ /~ Mummer's \
+			- Speed: ~2.75~
 			- Damage: ~2.5~ /~ Low: the {Crafted} do the damage \
 			- Range: ~1.5~ tiles
 			- Attack speed: ~0.6~
@@ -30,7 +30,7 @@
 
 		[Ability] {Patch}
 			- Does: uses 20 {Thread} to heal a unit or building by 20% of its maximum health. / Unthread is just the sell mechanic now. \
-			- Numbers: 20% of maximum health
+			- Numbers: 20% of maximum health, up to 500
 			- Target: ~one of your units or buildings~
 			- Range: ~4~ tiles
 			- Cooldown: ~5~ seconds
@@ -118,6 +118,7 @@
 
 		(Minion Summoner):{Repurposed Cookie Tin} / Cookie Tin with sewing supplies inside \
 			# Main source of damage, versatile in that you can create a disposable army or a stronger but smaller strike team
+			- Doesn't collect {Thread}: it uses the {Thread} collected in the {Yarn Stash}, the main supply base.
 			- Sends multiple {Stitched} to run down a path until they land at targeted location, where they then idle until seeing an enemy.
 			- Different upgrade paths stem from one building, potentially turning {Stitched} into {Dart}s / Similar to Boutman's fish \
 			- Buildings and upgrades cost aura, but minions cost {Thread}.
@@ -158,9 +159,9 @@
 			# Controller minion, can manage {Thread} throughout towers or can use {Thread} for support.
 			- Single larger minion, more controllable / Can choose its main position, similar to Boutman's Fish's reposition ability \
 			- Collects {Thread} from slain enemies nearby, with the potential to buff nearby units based on upgrade path.
-			- Once it's at max thread capacity, can return to {Repurposed Cookie Tin} to resupply thread. / Has a toggle to automatically drop off {Thread}. \
+			- Once it's at max thread capacity, can return to {Yarn Stash} to resupply thread. / Without {Threaded Delivery} you send it back yourself \
 			- Can be specialized as either a buffer or a thread porter.
-			- Made by: ~{Yarn Stash}~
+			- Made by: bought from the build menu, like Boutman's units
 			- Attack: ~melee~
 			- Health: ~60~
 			- Damage: ~2~
@@ -169,7 +170,7 @@
 			- Speed: ~2.25~
 			- Carries: Has a maximum of 20 {Thread} by default.
 			- Collects from: ~3~ tiles around it
-			- How many: ~1~ per player
+			- How many: no limit
 			- Respawn: ~15~ seconds, at the {Yarn Stash}
 			- Orders: guards the spot you choose
 			- Leash: ~3~ tiles
@@ -227,7 +228,7 @@
 
 		(Economy):{Loom}
 			- Connects to nodes to mine aura
-			- Spins thread for {Thread Head} to port to {Repurposed Cookie Tin}, or for support uses.
+			- Spins thread for {Thread Head} to port to {Yarn Stash}, or for support uses.
 			[Stats]
 				- In-game line: ~Mines aura, spins Thread~
 				- Health: ~40~, +~20~ per level
@@ -237,7 +238,7 @@
 				- Limit: ~none~
 				- Cost: ~Yellow 40~ /~ Mummer's Loom \
 			[Upgrades]
-				% 1:{~Direct Line~} Can directly connect to {Repurposed Cookie Tin}.
+				% 1:{~Direct Line~} Can directly connect to {Yarn Stash}.
 					- In-game line: ~Thread goes straight home~
 					- Numbers: ~its {Thread} goes straight to the {Yarn Stash}, no carrying needed~
 					- Cost: ~Yellow 30~
@@ -252,7 +253,4 @@
 			- {Efficient Recycler}, {Sewing Machine} / And {Made of Tougher Stuff}, for any vessel with minions \
 
 		[Questions]
-			- 1. The {Thread Head} and the {Loom} send {Thread} to the {Repurposed Cookie Tin}, but {Thread} and {Threaded Delivery} send it to the {Yarn Stash}. Which one? ~The {Yarn Stash} everywhere~
-			- 2. The {Thread Head} has a toggle to drop off {Thread} automatically, and {Threaded Delivery} grants the same thing. Which one? ~Without the upgrade you send it back yourself~
-			- 3. Where does the {Thread Head} come from, and how many? ~One per player, bought from the {Yarn Stash}~
-			- 4. {Efficient Recycler} in 11_Directions.txt is built on {Unthread}, which is now just selling. ~It raises the {Thread} refunded when you sell a {Crafted}~
+			- 1. {Efficient Recycler} in 11_Directions.txt is built on {Unthread}, which is now just selling. ~It raises the {Thread} refunded when you sell a {Crafted}~
