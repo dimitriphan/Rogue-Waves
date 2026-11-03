@@ -452,7 +452,7 @@ Load the owning vessel's group first (`09` #15). By need:
 | Ally buff projectile | `Tower_Fieshop_Buff`…`Buff5_Buffet` |
 | Rings, beams, lobs | `Tower_Snosnoheater_Pulse`/`_Healpulse`, `Tower_Boutmanbarrel_Pulse`, `Tower_Fiewall_Shot`, `Tower_Bustertotem_Beam`, `Tower_Snosnobox_Snolaunch`, `Mob_Boutmandadbait` |
 | A miner unit | `Entity_Ai_Mob_Smackyminer` (no Smacky names inside) |
-| Debuff looks for `Vfxdebuffcheck` | `Debuff_Buffed`, `Debuff_Stun`, `Debuff_Slow`, `Debuff_Slowcold`, `Debuff_Fire`, `Debuff_Poison`, `Debuff_Weakened`, `Debuff_Recruit`, `Debuff_Dogfast1/2` |
+| Debuff looks for `Vfxdebuffcheck` | `Debuff_Buffed`, `Debuff_Stun`, `Debuff_Slow`, `Debuff_Slowcold`, `Debuff_Fire`, `Debuff_Poison`, `Debuff_Recruit`, `Debuff_Dogfast1/2` (not `Debuff_Weakened`: `09` #110) |
 
 A stock effect AI reads only its own upgrade's `Defaultparams`, so a clone of the upgrade with new params and a new
 name works (as Boutmom reuses `Entity_Ai_Enemy_Red_Upgrade`). AIs named after a vessel's buildings (`Entity_Ai_Tower_*`,

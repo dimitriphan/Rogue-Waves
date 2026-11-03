@@ -54,5 +54,8 @@ cd ../Assets/ArgoMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . 
 - `stubs/ThirdParty.cs` (Netcode, TMP, UniTask stand-ins) is hand-written: add a member when real code needs it
   (`ClientRpcParams.Send.TargetClientIds` and `NetworkManager.ServerClientId`, 2026-10-14), then rerun
   `build_stubs.sh <TDS_Vessel_Creator>`.
+- Play builds (`MODKIT_PLAY`, kit `ModKitPlay.cs` and a vessel's `98_Play.cs`) use `UnityEngine.InputSystem`, which
+  the stubs don't carry: they report CS0234 here (7 errors for Yossele, 2026-10-27) and compile only on the PC. Release
+  and self-test builds don't include that code.
 - Validated against the unmodified Mummer template: 0 errors in release and with every debug define, and a seeded
   `HashSet` (missing `System.Core`) is reported as CS1069, as the game would.

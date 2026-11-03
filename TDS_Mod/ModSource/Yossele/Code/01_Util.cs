@@ -304,16 +304,61 @@ public static class YosseleUtil
     // A debuff effect the game itself attaches to the target on every player (looked up by name under "Vfx"). The
     // target goes by its synced Beingref, as the game's own debuffs do: Link_Being.Beingrefparallel is copied before
     // the spawn fills in its Worldobject, so clients can't resolve it and the effect never appears.
+    // Sent with the ClientRpc itself (Argo 2.0.1's way): the game's Vfxdebuffcheck drops a look while 50 effects wait to
+    // be sent, which happens in busy online fights (kit docs/19 §4, pitfall #95). The send still counts in the game's
+    // queue, and a look already showing until this one's end is not sent again (the vines renew theirs every tick).
+    static readonly Dictionary<Entity_Master, Dictionary<string, float>> shown = new Dictionary<Entity_Master, Dictionary<string, float>>();
+
     public static void Debuff(Entity_Master radioOf, Entity_Master target, string vfx, float duration)
     {
-        if (radioOf != null && radioOf.Radio != null && target != null && target.Beingref != null)
-            radioOf.Radio.Vfxdebuffcheck(vfx, target.Beingref.Value, duration);
+        if (radioOf == null || radioOf.Radio == null || target == null || target.Beingref == null)
+            return;
+        float end = Time.fixedTime + duration, until;
+        Dictionary<string, float> looks;
+        if (!shown.TryGetValue(target, out looks))
+        {
+            if (shown.Count >= 256)
+                ForgetLooks(false);
+            shown[target] = looks = new Dictionary<string, float>();
+        }
+        if (looks.TryGetValue(vfx, out until) && until >= end - 0.1f)
+            return;
+        looks[vfx] = end;
+        if (Game_Mapvars.Instance != null)
+            Game_Mapvars.Instance.Clientsendstack++;
+        radioOf.Radio.Vfxdebuff_ClientRpc(vfx, target.Beingref.Value, duration);
     }
 
     public static void RemoveDebuff(Entity_Master radioOf, Entity_Master target, string vfx)
     {
-        if (radioOf != null && radioOf.Radio != null && target != null && target.Beingref != null)
-            radioOf.Radio.Vfxremovedebuff_ClientRpc(vfx, target.Beingref.Value);
+        if (radioOf == null || radioOf.Radio == null || target == null || target.Beingref == null)
+            return;
+        Dictionary<string, float> looks;
+        if (shown.TryGetValue(target, out looks))
+            looks.Remove(vfx);
+        radioOf.Radio.Vfxremovedebuff_ClientRpc(vfx, target.Beingref.Value);
+    }
+
+    // All (a new map) or only the gone and the finished.
+    public static void ForgetLooks(bool all)
+    {
+        if (all)
+        {
+            shown.Clear();
+            return;
+        }
+        float now = Time.fixedTime;
+        List<Entity_Master> gone = new List<Entity_Master>();
+        foreach (KeyValuePair<Entity_Master, Dictionary<string, float>> kv in shown)
+        {
+            bool showing = false;
+            foreach (float until in kv.Value.Values)
+                if (until > now) showing = true;
+            if (kv.Key == null || !showing)
+                gone.Add(kv.Key);
+        }
+        foreach (Entity_Master e in gone)
+            shown.Remove(e);
     }
 
     // Owner-only message, shown by YosseleClient on the owner's screen.

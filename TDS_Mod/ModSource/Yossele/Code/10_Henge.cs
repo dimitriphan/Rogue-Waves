@@ -1,24 +1,39 @@
 // Overgrown Stonehenge: a sturdy block of stones that faces the way the player turned it while placing it. Its vines
 // creep forward from it over the ground (building tiles too), 1 tile at first and +1 every 2 Growth stages (5 at stage
 // 8); "forwards if possible": the line stops at a cliff or a gap, one level up or down is fine. Foes on its vines are
-// slowed by Slow (25%). Each stage it takes 10% less damage (YosseleHooks).
-//   Verdant Spread      vines spread all around (every tile within the vine length, walking the ground).
+// slowed by Slow (15%). Each stage it takes 10% less damage (YosseleHooks).
+//   Verdant Spread      vines spread all around: every ground tile within 2 steps, 3 at full Growth.
 //   Vine Blockade       +50% max health, and a barrier of 30% of it each Tide (absorbs, never heals past that).
-//   Natural Remedy      buildings on its vines mend 10 health a second (the stones included).
-//   Opportunistic Carnivore  drains 10 a second from up to 5 foes on its vines, mending the stones as much.
-//   Entangling Spaghetti Roots  a foe 7 s on its vines is stunned 1.5 s and loses 10% of its max health, which mends
-//                       the stones.
+//   Natural Remedy      buildings on its vines mend 0.5 health a second per Growth stage (the stones included).
+//   Opportunistic Carnivore  drains 5 a second from up to 5 foes on its vines, mending the stones as much.
+//   Easy Target         a foe 5 s on its vines takes 15% more damage from everything while on them, and 1 s after.
+//   Entangling Roots    a foe 7 s on its vines is stunned 1.5 s and loses 5% of its max health, which mends the
+//                       stones; once per foe.
+//   Obsidian            +200% max health.
+//   Monument            20% less damage taken, and foes' debuffs on it are stripped at once (YosseleHooks).
 public class YosseleHengeBrain : YosseleBuilding
 {
     public Vector3 Facing = Vector3.forward;
     public int Orientation;
     public readonly List<Genitem> Tiles = new List<Genitem>();
     public readonly Dictionary<Entity_Master, float> OnSince = new Dictionary<Entity_Master, float>();
-    public int Snares, Drained, Mended;
+    public int Snares, Drained, Mended, Marked;
     public float Barrier;
+    float nextMendLook;   // the Mend look shows at most every 1.5 seconds per Stonehenge
+    readonly List<Entity_Master> snared = new List<Entity_Master>();   // Entangling Roots takes each foe once
     bool faced;   // Begin sets Growth 0 before Started2 has read the facing
 
     public int Length { get { return 1 + Growth / 2; } }
+    // How far its vines reach: the forward line, or Verdant Spread's radius (2 steps, 3 at full Growth).
+    public int Reach
+    {
+        get
+        {
+            if (!Has("Verdant"))
+                return Length;
+            return Mathf.RoundToInt(FullGrown ? Param("Verdant_Full", 3f) : Param("Verdant_Reach", 2f));
+        }
+    }
 
     protected override void Started2()
     {
@@ -49,6 +64,11 @@ public class YosseleHengeBrain : YosseleBuilding
     {
         if (def.Key == "Verdant" && faced)
             Spread();
+        if (def.Key == "Monument")
+        {
+            Armor();
+            YosseleHooks.Cleanse(Master);
+        }
     }
 
     // Vine Blockade's barrier, renewed each Tide (a fresh one replaces what is left of the last).
@@ -61,7 +81,12 @@ public class YosseleHengeBrain : YosseleBuilding
         YosseleUtil.Debuff(Master, Master, YosseleData.VfxBlockade, 600f);
     }
 
-    void Armor() { YosseleHooks.Armor(Master, YosseleData.HengeArmorPerStage * Growth); }
+    void Armor()
+    {
+        float monument = Has("Monument") ? Param("Monument_Armor", 0.2f) : 0f;
+        YosseleHooks.Armor(Master, YosseleData.HengeArmorPerStage * Growth + monument);
+        YosseleHooks.Monument(Master, Has("Monument"));
+    }
 
     public override void Gone(bool killed)
     {
@@ -76,7 +101,7 @@ public class YosseleHengeBrain : YosseleBuilding
         Genitem home = Master.Beingserver != null ? Master.Beingserver.Currentblock : null;
         if (home == null)
             return;
-        List<Genitem> want = Has("Verdant") ? Around(home, Length) : Line(home, Facing, Length);
+        List<Genitem> want = Has("Verdant") ? Around(home, Reach) : Line(home, Facing, Length);
         int added = 0;
         foreach (Genitem g in want)
             if (!Tiles.Contains(g) && YosseleVines.Claim(this, g))
@@ -167,19 +192,25 @@ public class YosseleHengeBrain : YosseleBuilding
             float since;
             if (!OnSince.TryGetValue(foe, out since))
                 OnSince[foe] = since = Time.time;
+            float on = Time.time - since;
             if (Has("Carnivore") && drained < drainMax)
             {
-                float amount = Param("Carnivore_Drain", 10f) * dt;
+                float amount = Param("Carnivore_Drain", 5f) * dt;
                 YosseleUtil.Hurt(Master, foe, amount);
                 YosseleUtil.Heal(Master, Master, amount);
                 drained++;
                 Drained++;
             }
-            if (Has("Spaghetti") && Time.time - since >= Param("Spaghetti_After", 7f))
+            if (Has("Easy") && on >= Param("Easy_After", 5f))
             {
-                OnSince[foe] = Time.time;
-                float stun = Param("Spaghetti_Stun", 1.5f);
-                float sap = Param("Spaghetti_Percent", 0.1f) * YosseleUtil.MaxHealth(foe);
+                YosseleHooks.Mark(Master, foe, Param("Easy_Bonus", 0.15f), dt + YosseleData.EasyLinger);
+                Marked++;
+            }
+            if (Has("Roots") && on >= Param("Roots_After", 7f) && !snared.Contains(foe))
+            {
+                snared.Add(foe);
+                float stun = Param("Roots_Stun", 1.5f);
+                float sap = Param("Roots_Percent", 0.05f) * YosseleUtil.MaxHealth(foe);
                 YosseleUtil.Root(Master, foe, stun, true, YosseleData.VfxTangle);
                 YosseleUtil.Hurt(Master, foe, sap);
                 YosseleUtil.Heal(Master, Master, sap);
@@ -198,16 +229,19 @@ public class YosseleHengeBrain : YosseleBuilding
         if (off != null)
             foreach (Entity_Master e in off)
                 OnSince.Remove(e);
+        if (snared.Count > 64)
+            snared.RemoveAll(e => e == null || !YosseleUtil.Alive(e));
         if (drained > 0)
             YosseleUtil.Vis(Master, "Yossele_Drain", Pos, drained);
         if (Has("Remedy"))
             Remedy(dt);
     }
 
+    // 0.5 a second per Growth stage, counting stage 1 before it has grown (as Sustaining Practices does).
     void Remedy(float dt)
     {
-        float amount = Param("Remedy_Heal", 10f) * dt;
-        float reach = Length + 1.5f;
+        float amount = Param("Remedy_Heal", 0.5f) * Mathf.Max(1, Growth) * dt;
+        float reach = Mathf.Max(Length, Reach) + 1.5f;
         foreach (Entity_Master b in YosseleUtil.Area(Pos, reach, YosseleUtil.Tagged("Tower")))
         {
             if (b == null || !YosseleUtil.Alive(b) || YosseleUtil.Team(b) != Team || !Covers(YosseleUtil.Pos(b)))
@@ -216,6 +250,11 @@ public class YosseleHengeBrain : YosseleBuilding
                 continue;
             YosseleUtil.Heal(Master, b, amount);
             Mended++;
+            if (Time.time >= nextMendLook)
+            {
+                nextMendLook = Time.time + 1.5f;
+                YosseleUtil.Vis(Master, "Yossele_Mend", YosseleUtil.Pos(b), 0f);
+            }
         }
     }
 }
@@ -308,10 +347,10 @@ public static class YosseleVines
             if (henge == null || !henge.Started || henge.Master == null || !YosseleUtil.Alive(henge.Master))
                 continue;
             List<Entity_Master> on = new List<Entity_Master>();
-            foreach (Entity_Master foe in YosseleUtil.FoesNear(henge.Master, henge.Pos, henge.Length + 1.5f))
+            foreach (Entity_Master foe in YosseleUtil.FoesNear(henge.Master, henge.Pos, Mathf.Max(henge.Length, henge.Reach) + 1.5f))
                 if (henge.Covers(YosseleUtil.Pos(foe)))
                     on.Add(foe);
-            float slow = henge.Stat("Slow", 0.25f);
+            float slow = henge.Stat("Slow", 0.15f);
             foreach (Entity_Master foe in on)
             {
                 float had;

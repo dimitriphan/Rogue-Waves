@@ -134,6 +134,9 @@ public class YosseleMod : MonoBehaviour
 #if YOSSELE_SELFTEST
         YosseleSelfTest.Update();
 #endif
+#if YOSSELE_PLAY
+        YosselePlay.Update();
+#endif
     }
 
     void LateUpdate()

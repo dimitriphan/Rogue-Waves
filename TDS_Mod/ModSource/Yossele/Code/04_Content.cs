@@ -1,8 +1,9 @@
 // Builds Yossele's game data the way Blockage's own data is laid out (hero entry -> being -> entity -> visuals,
 // upgrades, commands), cloning the shipped vessels' objects for everything the engine expects and swapping in Yossele's
 // art, names and rules. Every player runs this identically, so online clients resolve the same names. Templates:
-// Smacky (vessel, Bomb Tower -> Mushroom Cannon, Archer Tower -> Dandelion Tree, Mining Hut -> Stonehenge and Pachira
-// Sapling), Sno Sno's snow (the ground layer of vines and fruit; Smacky's Bramble without it).
+// Smacky (vessel, Bomb Tower -> Mushroom Cannon, Archer Tower -> Dandelion Tree and Bonsai, Mining Hut -> Stonehenge
+// and Pachira Sapling, Mining Hut's miner -> Cordyfriend), Sno Sno (its snow is the ground layer of vines and fruit,
+// Smacky's Bramble without it; its snowball is the laser; its Snoble lends the Cordyfriend its look and block).
 public static class YosseleContent
 {
     public static Heroentryobject Entry;
@@ -13,8 +14,9 @@ public static class YosseleContent
     public static Commandobject Fertilize, Colour;
     public static readonly List<Upgradeproperties> Compostbins = new List<Upgradeproperties>();
     public static int VfxRegistered;
-    public static bool IconsReady;
-    public static string GroundFrom = "";
+    public static bool IconsReady, LaserReady;
+    public static string GroundFrom = "", LaserFrom = "", FriendFrom = "";
+    public static bool FriendOwnLook;
 
     // Leaf green 72CC35, the accent of Yossele's sprout (docs/STYLE.md).
     public static readonly Color Accent = new Color(0x72 / 255f, 0xCC / 255f, 0x35 / 255f, 1f);
@@ -32,7 +34,7 @@ public static class YosseleContent
         group.Items = new List<Bl_Address.Loadlist>();
         group.Loaded = true;
         group.Percent = 100;
-        foreach (string label in new[] { "Hero", "Mob", "Upgrade", "Command", "Vfx" })
+        foreach (string label in new[] { "Hero", "Mob", "Upgrade", "Command", "Vfx", "Projectile" })
         {
             Bl_Address.Loadlist list = new Bl_Address.Loadlist();
             list.Loaded = true;
@@ -51,11 +53,13 @@ public static class YosseleContent
 
         YosseleAssets.ApplyTowerMaterial(TemplateTowerMaterial());
         RegisterVfx();
+        BuildLaser();
         BuildCommands();
         foreach (YosseleData.Build b in YosseleData.Builds)
             BuildTower(b);
         BuildGround(YosseleData.Vine, "Yosselevine", "Vines", "Yossele_Vine", null);
         BuildGround(YosseleData.Fruit, "Yosselefruit", "Aura Fruit", "Yossele_Fruit", new[] { "Redaura", "Blueaura", "Yellowaura" });
+        BuildFriend();
         BuildDirections();
         BuildHero(YosseleUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
@@ -67,7 +71,8 @@ public static class YosseleContent
     public static string Summary()
     {
         return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + Compostbins.Count + " Directions, " + VfxRegistered + " effects, icons "
-            + (IconsReady ? "ok" : "stock") + ", ground from " + GroundFrom + ", towers fitted " + ModKitTowers.Fitted;
+            + (IconsReady ? "ok" : "stock") + ", ground from " + GroundFrom + ", laser from " + LaserFrom + ", Cordyfriend from " + FriendFrom
+            + ", towers fitted " + ModKitTowers.Fitted;
     }
 
     // ---------------------------------------------------------------- registration
@@ -168,12 +173,14 @@ public static class YosseleContent
         return l;
     }
 
-    static Visualproperties.Entry ModelEntry(Visualproperties.Entry from, string model, string display, string extra)
+    static Visualproperties.Entry ModelEntry(Visualproperties.Entry from, string model, string display, string extra, string fallback = null)
     {
         Visualproperties.Entry e = from;
         e.Rootvisualproperty = null;
         e.Style = Visualproperties.Styles.Model;
         e.Visprefab = YosseleAssets.Model(model);
+        if (e.Visprefab == null && !string.IsNullOrEmpty(fallback))
+            e.Visprefab = YosseleAssets.Model(fallback);
         e.Spriteobject = null;
         e.Displayname = display;
         e.Additionalmaterials = new List<Material>();
@@ -188,17 +195,18 @@ public static class YosseleContent
     }
 
     // A building's look: its model, plus one skin per Growth stage ("Growth1".."Growth<max>") that adds the sprouts and
-    // leaves round its foot (Yossele_Growth<n>), on the base model and every upgrade's. The skin is synced state, so
-    // every player sees the stage.
-    static Visualproperties TowerVisual(Visualproperties template, string name, string model, string display, int stages)
+    // leaves round its foot (Yossele_Growth<n>; stages past the last drawn one reuse it), on the base model and every
+    // upgrade's. The skin is synced state, so every player sees the stage. An upgrade without a model of its own shows
+    // the building's.
+    static Visualproperties TowerVisual(Visualproperties template, string name, string model, string display, int stages, string fallback)
     {
         Visualproperties vp = UnityEngine.Object.Instantiate(template);
         YosseleUtil.Retag(vp, name);
-        vp.Default = ModelEntry(template.Default, model, display, null);
+        vp.Default = ModelEntry(template.Default, model, display, null, fallback);
         vp.Skinoverride = new List<Visualproperties.Param>();
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         for (int g = 1; g <= stages; g++)
-            AddSkin(vp, YosseleData.GrowthStat + g, ModelEntry(template.Default, model, display, "Yossele_Growth" + g));
+            AddSkin(vp, YosseleData.GrowthStat + g, ModelEntry(template.Default, model, display, "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
         return vp;
     }
 
@@ -331,6 +339,40 @@ public static class YosseleContent
         return fallbacks.Length > 0 ? fallbacks[0] : mine;
     }
 
+    // ---------------------------------------------------------------- the laser
+
+    // Yossele's green mouth laser: Sno Sno's homing snowball (the kit's shot for any ranged hero) with a green bolt for
+    // its look and the Archer arrow's end look and sound. The Archer's arrow is the template without Sno Sno's group.
+    static void BuildLaser()
+    {
+        Projectileobject template = YosseleUtil.Load<Projectileobject>("Projectile", YosseleData.LaserTemplate);
+        LaserFrom = YosseleData.LaserTemplate;
+        if (template == null)
+        {
+            template = YosseleUtil.Load<Projectileobject>("Projectile", YosseleData.LaserFallback);
+            LaserFrom = YosseleData.LaserFallback;
+        }
+        if (template == null)
+        {
+            LaserFrom = "none";
+            YosseleLog.Warn("no projectile template (" + YosseleData.LaserTemplate + ", " + YosseleData.LaserFallback + "); Yossele shoots the Archer's arrow");
+            return;
+        }
+        Projectileobject laser = YosseleUtil.Clone(template, YosseleData.Laser);
+        GameObject model = YosseleAssets.Model("Yossele_Laser");
+        if (model != null)
+            laser.Vis = model;
+        laser.Sfxstart = "";
+        Projectileobject arrow = YosseleUtil.Load<Projectileobject>("Projectile", YosseleData.LaserFallback);
+        if (arrow != null && template != arrow)
+        {
+            laser.Vfxend = arrow.Vfxend;
+            laser.Sfxend = arrow.Sfxend;
+        }
+        Register("Projectile", laser);
+        LaserReady = true;
+    }
+
     // ---------------------------------------------------------------- commands
 
     static Commandobject CommandTemplate()
@@ -366,7 +408,7 @@ public static class YosseleContent
         Fertilize.Icon = "Yossele_Fertilize";
         Register("Command", Fertilize);
 
-        // COLOUR on a Pachira Sapling with Grafted Colors: a one-click button like the Mining Hut's Convert that cycles
+        // COLOUR on a Pachira Sapling with Grafted: a one-click button like the Mining Hut's Convert that cycles
         // the aura its fruit pays (All, Red, Blue, Yellow), kept in the command's Goalstring for every player.
         Colour = YosseleUtil.Clone(template, YosseleData.ColourCommand);
         Colour.Style = Commandobject.Styles.Button;
@@ -409,7 +451,9 @@ public static class YosseleContent
         // Its own hit prefab: the range the game draws centred on the tower's tile, where its brain measures from, and
         // a collider the size of its model (the templates' sat 2 tiles under the Bomb Tower, Argo 1.0).
         bool ranged = Array.Exists(b.Stats, x => x.StartsWith("Range="));
-        ModKitTowers.Fit(ent, b.Id, YosseleAssets.Model(b.Id), 0f, b.Muzzle, ranged);
+        // The Bonsai shows the Tree's model if its own is missing.
+        string fallback = b.Id == YosseleData.Bonsai ? YosseleData.Dandelion : null;
+        ModKitTowers.Fit(ent, b.Id, YosseleAssets.Model(b.Id) ?? (fallback != null ? YosseleAssets.Model(fallback) : null), 0f, b.Muzzle, ranged);
         ent.Costs = YosseleUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Sellable = true;
@@ -425,7 +469,7 @@ public static class YosseleContent
         ent.Tags.Add(b.Tag);
         ent.Defaultstat = Stats(te.Defaultstat, b.Id + "_Statproperties", b.Stats);
         Register("Mob", ent.Defaultstat);
-        ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display, b.Max);
+        ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display, b.Max, fallback);
         Register("Mob", ent.Defaultvisual);
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from YosseleData.
@@ -453,7 +497,7 @@ public static class YosseleContent
             up.Priority = u.Tier;
             up.Aiscripts = new List<UnityEngine.Object>();
             up.Costs = YosseleUtil.Costs(u.Costs);
-            up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), u.Model, u.Display, b.Max);
+            up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), u.Model, u.Display, b.Max, b.Id);
             Register("Upgrade", up.Ent_Visual);
             up.Defaultparam = new List<Upgradeproperties.Param>();
             up.Defaultparams = new Dictionary<string, float>();
@@ -548,6 +592,70 @@ public static class YosseleContent
         Register("Mob", ent);
     }
 
+    // ---------------------------------------------------------------- the Cordyfriend (Cordyceps)
+
+    // Mummer's Understudy recipe: the Mining Hut's miner (a walking fighter with Mob_General, Mob_Movement and the stock
+    // melee AI), standing on the Snoble's mob-blocker block so foes stop at it. Its look is its own sheet on the miner's
+    // sprite visual (temporary art, YosseleAssets.Friend); without the sheet, the Snoble's look tinted on every client by
+    // YosseleClient, as before. Never tagged Sno or Snoble (docs/17: the Sno Cannon eats anything Sno).
+    static void BuildFriend()
+    {
+        Beingobject tb = YosseleUtil.Load<Beingobject>("Mob", YosseleData.FriendTemplate);
+        if (tb == null || tb.Entity == null)
+        {
+            FriendFrom = "none";
+            YosseleLog.Error(YosseleData.FriendTemplate + " not found; Cordyceps raises nothing");
+            return;
+        }
+        Beingobject snoble = YosseleUtil.Load<Beingobject>("Mob", YosseleData.FriendLook);
+        Entityobject te = tb.Entity;
+        Beingobject being = YosseleUtil.Clone(tb, YosseleData.Friend);
+        if (snoble != null && snoble.Block != null)
+            being.Block = snoble.Block;
+        Entityobject ent = YosseleUtil.Clone(te, YosseleData.Friend + "_Entity");
+        ent.Name = YosseleData.Friend;
+        ent.Display_Name = YosseleData.FriendDisplay;
+        ent.Display_Desc = YosseleData.FriendDesc;
+        ent.Aiscripts = Scripts("Entity_Ai_Mob_General", "Entity_Ai_Mob_Movement", "Entity_Ai_Mob_Combat");
+        ent.Upgrades = new List<Upgradeproperties>();
+        ent.Upgradesinit = new List<Upgradeproperties>();
+        ent.Drops = new List<Link_Resourceset>();
+        ent.Costs = new List<Link_Resourceset>();
+        ent.Sellable = false;
+        ent.Controllable = false;
+        ent.Destroyonparent = false;
+        ent.Tags = new List<string> { "Mob", "Mobfighter", "Yosselefriend" };
+        List<string> stats = new List<string>(YosseleData.FriendStats);
+        foreach (Statproperties.Defaultstatgroup g in te.Defaultstat.Stats)
+            if (g.Name == "Distancewait") stats.Add("Distancewait=" + g.Value.ToString(System.Globalization.CultureInfo.InvariantCulture));
+        ent.Defaultstat = Stats(te.Defaultstat, YosseleData.Friend + "_Statproperties", stats.ToArray());
+        Register("Mob", ent.Defaultstat);
+        Spriteobject own = te.Defaultvisual != null ? YosseleAssets.Friend(te.Defaultvisual.Default.Spriteobject) : null;
+        FriendOwnLook = own != null;
+        Entityobject look = own == null && snoble != null && snoble.Entity != null && snoble.Entity.Defaultvisual != null ? snoble.Entity : te;
+        FriendFrom = (look == te ? YosseleData.FriendTemplate : YosseleData.FriendLook) + (own != null ? " with " + YosseleData.FriendSheet : "")
+            + (being.Block != null ? " (block " + being.Block.name + ")" : "");
+        // Its own sheet plays on the miner's animator (Idle, Move, Attack); the Snoble's sheet has only Idle, with its own
+        // simple animator and no attack animation.
+        ent.Visualscripts = look == te ? Strip(te.Visualscripts) : Strip(look.Visualscripts);
+        Visualproperties vp = UnityEngine.Object.Instantiate(look.Defaultvisual);
+        YosseleUtil.Retag(vp, YosseleData.Friend + "_Visualproperties");
+        Visualproperties.Entry e = look.Defaultvisual.Default;
+        e.Rootvisualproperty = null;
+        if (own != null)
+            e.Spriteobject = own;
+        e.Displayname = YosseleData.FriendDisplay;
+        vp.Default = e;
+        vp.Skinoverride = new List<Visualproperties.Param>();
+        vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
+        ent.Defaultvisual = vp;
+        Register("Mob", vp);
+        being.Entity = ent;
+        Beings[YosseleData.Friend] = being;
+        Register("Mob", being);
+        Register("Mob", ent);
+    }
+
     // ---------------------------------------------------------------- Compost Bin (Directions, docs/scope/11)
 
     // One Direction per rank (kit 1.6 has no ranks): the mode lists them by their "Direction_" names and grants the pick;
@@ -615,11 +723,15 @@ public static class YosseleContent
         ent.Name = YosseleData.Hero;
         ent.Display_Name = YosseleData.Displayname;
         ent.Display_Desc = YosseleData.HeroDesc;
-        // A melee vessel is built like Smacky: Mob_General, Mob_Movement, the stock Mob_Combat (targets, mines ore and
-        // sends "Attack", which Entity_Vis_Mob_Attack turns into the Attack animation) and Hero_Buildsell.
+        // A ranged vessel is built like Sno Sno: Mob_General, Mob_Movement, the stock Mob_Ranged in place of Smacky's
+        // Mob_Combat (targets, mines ore, fires the Attack command's projectile and sends "Shoot", which
+        // Entity_Vis_Mob_Attack turns into the Attack animation) and Hero_Buildsell. The hero brain names the laser.
         ent.Aiscripts = Strip(te.Aiscripts);
-        if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Combat"))
-            ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), YosseleUtil.Script("Entity_Ai_Mob_Combat"));
+        int melee = ent.Aiscripts.FindIndex(s => s.name == "Entity_Ai_Mob_Combat");
+        if (melee >= 0)
+            ent.Aiscripts.RemoveAt(melee);
+        if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Ranged"))
+            ent.Aiscripts.Insert(melee >= 0 ? melee : Mathf.Min(2, ent.Aiscripts.Count), YosseleUtil.Script("Entity_Ai_Mob_Ranged"));
         ent.Visualscripts = Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
             ent.Visualscripts.Add(YosseleUtil.Script("Entity_Vis_Mob_Attack"));
