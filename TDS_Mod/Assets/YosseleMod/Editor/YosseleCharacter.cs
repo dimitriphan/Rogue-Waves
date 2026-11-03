@@ -6,7 +6,8 @@
 // line drawing of the splash's shapes). Finish (round 3 "flat"): fully opaque, one shade band down the right edge, no
 // half-alpha rim, no ground patch, no highlights.
 // Yossele: a round clay head with a see-through hole for a mouth, a two-leaf sprout on a stalk, glowing green eyes, a dark
-// collar, and four long root-like limbs. The outer two limbs double as arms (the slam, the compost).
+// collar, and four long root-like limbs. The outer two limbs double as arms (the compost). It shoots a green laser from
+// the hole: the attack frames light the hole up.
 // 32x32 frames, PPU 20, bottom-centre pivot. Variants: v0 front, v1 front mirrored, v2 back, v3 back mirrored.
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace YosseleBuild
         public int armL, armR;                        // outer limbs as arms: 0 = a leg, else YosseleCharacter.Arm*
         public int[] pathR;                           // explicit right-arm path (x,y pairs), overrides armR
         public int compost;                           // 0 none, 1 clump in the right hand, 2 clump pressed on the ground
+        public int mouth;                             // the hole's glow: 0 none, 1 dim, 2 glowing, 3 firing
         public bool air;                              // airborne: the legs move with the body instead of stretching
         public readonly List<Vector3Int> fx = new List<Vector3Int>();
     }
@@ -180,6 +182,7 @@ namespace YosseleBuild
             for (int k = 1; k <= -p.headDy; k++)
                 for (int x = 0; x < 32; x++)
                     if (head.Opaque(x, HeadBottom)) c.Set(x, HeadBottom + hy + k, head.Get(x, HeadBottom));
+            if (p.mouth > 0) Mouth(c, p.mouth, hy);
             c.Draw(body, 0, p.dy);
             c.Draw(leaf, 0, p.dy + p.leafDy);
             c.Draw(sprout, p.sproutDx, hy + p.sproutDy);
@@ -253,6 +256,21 @@ namespace YosseleBuild
             }
         }
 
+        // The see-through hole (the same pixels front and back) filled with the laser's light: the middle two pixels at
+        // 'dim', the whole hole at 'glowing' with a bright middle, bright with a white middle when firing.
+        static readonly int[] HolePx = { 15, 18, 16, 18, 14, 19, 15, 19, 16, 19, 17, 19, 15, 20, 16, 20 };
+
+        static void Mouth(Px c, int level, int hy)
+        {
+            for (int i = 0; i < HolePx.Length; i += 2)
+            {
+                int x = HolePx[i], y = HolePx[i + 1];
+                bool middle = y == 19 && (x == 15 || x == 16);
+                char k = level == 1 ? (middle ? 'L' : '.') : level == 2 ? (middle ? 'f' : 'l') : (middle ? 'w' : 'f');
+                if (k != '.') c.Set(x, y + hy, C(k));
+            }
+        }
+
         // A handful of compost: dark soil with a green speck; 'pressed' lies flat on the ground.
         static void Compost(Px c, int x, int y, bool pressed)
         {
@@ -317,19 +335,18 @@ namespace YosseleBuild
             };
         }
 
-        // The slam: the outer root limbs swing up, high over the head, and come down hard on both sides.
+        // The mouth laser. The shot leaves as the animation starts ("Shoot" starts it), so the first frame fires: the hole
+        // flares white-green with a ring of sparks and the head bobs up with the recoil; then the glow fades out of the
+        // hole and the sprout settles.
         public static List<Pose> Attack()
         {
-            var up = new Pose { dy = -1, armL = ArmUp, armR = ArmUp, sproutDx = -1 };
-            var high = new Pose { dy = -2, armL = ArmHigh, armR = ArmHigh, leafDy = -1 };
-            var slam = new Pose { dy = 2, armL = ArmSlam, armR = ArmSlam, sproutDy = 1, eyes = "on" };
-            foreach (var q in new[] { L(3, 30, FxImpact), L(4, 29, FxDust), L(2, 31, FxDust), L(7, 31, FxCrack), L(3, 28, FxDust),
-                                      L(28, 30, FxImpact), L(27, 29, FxDust), L(29, 31, FxDust), L(24, 31, FxCrack), L(28, 28, FxDust) })
-                slam.fx.Add(new Vector3Int(q[0], q[1], q[2]));
-            var after = new Pose { dy = 1, sproutDx = -1 };
-            foreach (var q in new[] { L(2, 27, FxDust), L(5, 29, FxDust), L(29, 27, FxDust), L(26, 29, FxDust), L(7, 31, FxCrack), L(24, 31, FxCrack) })
-                after.fx.Add(new Vector3Int(q[0], q[1], q[2]));
-            return new List<Pose> { up, high, slam, after };
+            var fire = new Pose { dy = -1, mouth = 3, sproutDy = -1, leafDy = -1 };
+            foreach (var q in new[] { L(12, 19, FxSpark), L(19, 19, FxSpark), L(13, 17, FxSpark), L(18, 17, FxSpark), L(13, 21, FxSpark), L(18, 21, FxSpark) })
+                fire.fx.Add(new Vector3Int(q[0], q[1] - 1, q[2]));
+            var glow = new Pose { mouth = 2, sproutDx = -1 };
+            var dim = new Pose { dy = 1, mouth = 1, sproutDx = -1, leafDy = 1 };
+            var rest = new Pose();
+            return new List<Pose> { fire, glow, dim, rest };
         }
 
         // FERTILIZE: Yossele bends, presses a handful of compost into the ground with its right root arm, and a little

@@ -165,9 +165,8 @@ public static class YosseleAssets
         List<Sprite> attack = Frames("YosseleAttack-Sheet", 32, foot);
         List<Sprite> fertilize = Frames("YosseleFertilize-Sheet", 32, foot);
         Spriteobject so = NewSpriteobject("Hero_Yossele_Sprite", template, 8f, "Falling");
-        // One footfall per walk cycle, on frame 2 (the key kept from Mummer's hop); Yossele's limbs land on frames 0
-        // and 3 (YosseleCharacter.Move).
-        Dictionary<int, string> steps = new Dictionary<int, string> { { 2, footstep } };
+        // A footfall where a pair of root legs lands: frames 0 and 3 (YosseleCharacter.Move).
+        Dictionary<int, string> steps = new Dictionary<int, string> { { 0, footstep }, { 3, footstep } };
         Add(so, Anim("Idle", main, 6, 0, 0, 4, 6, true, false, 0, 1f, ""));
         Add(so, Anim("Move", main, 6, 4, 0, 4, 6, true, false, 0, 1f, "", string.IsNullOrEmpty(footstep) ? null : steps));
         Add(so, Anim("Falling", fall, 12, 0, 0, 1, 12, true, true, 2, 1f, ""));
@@ -176,6 +175,21 @@ public static class YosseleAssets
         Add(so, Anim("Attack", attack, 4, 0, 0, 4, 4, false, true, 1, 3f, "Idle"));
         Add(so, Anim("Fertilize", fertilize, 6, 0, 0, 4, 6, false, true, 1, 1.6f, "Idle"));
         so.Preview = main.Count > 0 ? main[0] : null;
+        return so;
+    }
+
+    // The Cordyfriend's own sheet (temporary art, ModSource/Yossele/Art/Temporary): 24 px cells, rows v0..v3, columns 0-5 Idle,
+    // 6-11 Move, 12-15 Attack. Null when the sheet isn't in the library, so the caller keeps the Snoble's look.
+    public static Spriteobject Friend(Spriteobject template)
+    {
+        List<Sprite> s = Frames(YosseleData.FriendSheet, 24, new Vector2(0.5f, 0f));
+        if (s.Count < 64)
+            return null;
+        Spriteobject so = NewSpriteobject(YosseleData.Friend + "_Sprite", template, 7f, "Idle");
+        Add(so, Anim("Idle", s, 16, 0, 0, 4, 6, true, false, 0, 1f, ""));
+        Add(so, Anim("Move", s, 16, 0, 6, 4, 6, true, false, 0, 1f, ""));
+        Add(so, Anim("Attack", s, 16, 0, 12, 4, 4, false, true, 1, 2f, "Idle"));
+        so.Preview = s[0];
         return so;
     }
 

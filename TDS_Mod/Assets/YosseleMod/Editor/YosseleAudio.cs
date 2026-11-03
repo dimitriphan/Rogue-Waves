@@ -1,10 +1,10 @@
 // Yossele asset generator: procedurally synthesised sound effects (44.1 kHz, 16-bit, mono like the game's clips).
 // TEMPORARY SOUNDS. Clay thuds, earth and leaves (filtered noise), a mortar's hollow pomf, soft wooden creaks, small
-// chimes for growth and healing. Every clip is normalised; loudness is set at run time by YosseleData.SoundVolume.
+// chimes for growth and healing, a soft green zap for the mouth laser. Every clip is normalised; loudness is set at run time by YosseleData.SoundVolume.
 // Suggested volumes (clip rms x volume near the game's own levels, docs/03 6; keep them accents):
-//   Yossele_Thud 0.04, Yossele_Lob 0.03, Yossele_Pop 0.025, Yossele_Seeds 0.02, Yossele_Creak 0.03,
+//   Yossele_Zap 0.03, Yossele_Thud 0.04, Yossele_Lob 0.03, Yossele_Pop 0.025, Yossele_Seeds 0.02, Yossele_Creak 0.03,
 //   Yossele_Rustle 0.03, Yossele_Fertilize 0.035, Yossele_Pick 0.03, Yossele_Dig 0.012, Yossele_Mend 0.025,
-//   Yossele_Landing 0.08, Yossele_Death 0.06, Yossele_Footstep 0.008.
+//   Yossele_Death 0.06. (The walk keeps the template's footstep: an animation frame's sound is a game sound name.)
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,7 +26,8 @@ namespace YosseleBuild
         {
             return new List<Sfx>
             {
-                new Sfx { Name = "Yossele_Thud", Use = "Melee slam of the root arms", Make = Thud },
+                new Sfx { Name = "Yossele_Zap", Use = "Yossele's mouth laser fires", Make = Zap },
+                new Sfx { Name = "Yossele_Thud", Use = "A Cordyfriend's swing lands", Make = Thud },
                 new Sfx { Name = "Yossele_Lob", Use = "The Mushroom Cannon lobs a spore bomb", Make = Lob },
                 new Sfx { Name = "Yossele_Pop", Use = "A spore bomb bursts", Make = Pop },
                 new Sfx { Name = "Yossele_Seeds", Use = "The Dandelion Tree's seeds fly out", Make = Seeds },
@@ -36,9 +37,7 @@ namespace YosseleBuild
                 new Sfx { Name = "Yossele_Pick", Use = "An aura fruit is picked up", Make = Pick },
                 new Sfx { Name = "Yossele_Dig", Use = "The Pachira's roots dig at ore (mining)", Make = Dig },
                 new Sfx { Name = "Yossele_Mend", Use = "Healing: Natural Remedy, Sustaining Practices", Make = Mend },
-                new Sfx { Name = "Yossele_Landing", Use = "Vessel lands (heavy clay thud)", Make = Landing },
                 new Sfx { Name = "Yossele_Death", Use = "Vessel death (clay crumbles)", Make = Death },
-                new Sfx { Name = "Yossele_Footstep", Use = "A root foot touches down", Make = Footstep },
             };
         }
 
@@ -132,6 +131,16 @@ namespace YosseleBuild
             return Normalize(b, 0.7f);
         }
 
+        // A soft laser: a falling sine sweep with a buzzy third harmonic and a breath of high noise, short and round.
+        static float[] Zap()
+        {
+            var b = Buf(0.3f);
+            Tone(b, 0, 0.22f, 1500, 420, 0.7f, 0.004f, 0.07f, 0f, 0.25f);
+            Tone(b, 0.005f, 0.16f, 760, 300, 0.35f, 0.003f, 0.05f);
+            Hiss(b, 0, 0.12f, 0.15f, 0.002f, 0.03f, 6000, 3000, 1500);
+            return Normalize(b, 0.55f);
+        }
+
         static float[] Pop()
         {
             var b = Buf(0.55f);
@@ -213,16 +222,6 @@ namespace YosseleBuild
             return Normalize(b, 0.55f);
         }
 
-        static float[] Landing()
-        {
-            var b = Buf(0.9f);
-            Tone(b, 0, 0.4f, 90, 40, 1f, 0.002f, 0.12f, 0.4f);
-            Hiss(b, 0, 0.4f, 0.8f, 0.003f, 0.1f, 1600, 250);
-            Crackle(b, 0.02f, 0.2f, 8, 0.5f, 13);
-            Tone(b, 0.35f, 0.4f, 880, 880, 0.12f, 0.02f, 0.15f);            // the eyes light
-            return Normalize(b, 0.8f);
-        }
-
         static float[] Death()
         {
             var b = Buf(1.3f);
@@ -232,14 +231,6 @@ namespace YosseleBuild
             float[] notes = { 523f, 466f, 392f };
             for (int i = 0; i < notes.Length; i++) Tone(b, 0.4f + i * 0.18f, 0.5f, notes[i], notes[i] * 0.98f, 0.25f, 0.01f, 0.2f, 0.15f);
             return Normalize(b, 0.75f);
-        }
-
-        static float[] Footstep()
-        {
-            var b = Buf(0.1f);
-            Hiss(b, 0, 0.1f, 1f, 0.002f, 0.02f, 900, 300);
-            Tone(b, 0, 0.06f, 120, 80, 0.4f, 0.001f, 0.015f);
-            return Normalize(b, 0.5f);
         }
 
         // ---------------------------------------------------------------- WAV writer
