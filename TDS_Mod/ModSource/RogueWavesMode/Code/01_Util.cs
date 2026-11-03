@@ -65,6 +65,14 @@ public static class RWUtil
 
     public static void WriteString(string folder, string key, string value) { Blockage.Tags.Bla_Data.Playerdata.Adddata(folder, key, value); }
 
+    public static bool Has(string folder, string key) { return Blockage.Tags.Bla_Data.Playerdata.Readdata(folder, key).Loaded; }
+
+    public static int ReadInt(string folder, string key, int missing)
+    {
+        int v;
+        return int.TryParse(ReadString(folder, key), out v) ? v : missing;
+    }
+
     public static void Remove(string folder, string key) { Blockage.Tags.Bla_Data.Playerdata.Removedata(folder, key); }
 
     public static void Flush() { Blockage.Tags.Bla_Data.Instance.Savedata(false, ""); }
@@ -118,5 +126,43 @@ public static class RWUtil
             if (e != null && e.Beingserver != null && e.Beingserver.Being != null && e.Beingserver.Being.Objectname == being && !e.Beingserver.Dead)
                 n++;
         return n;
+    }
+}
+
+// The pack's keys in its own save folder, RWData.SaveFolder (kit docs/23 §2). Each carries "RW_" (rule 3), so a stock
+// tracker that searches every folder never reads one as its own (Player_Guid is also a stock key's name). Until
+// 0.1.0-dev they had no prefix: Migrate renames any old key it finds, once per save object, before anything reads them.
+public static class RWKeys
+{
+    public const string Seed = "RW_Campaign_Seed", Route = "RW_Campaign_Route", Retries = "RW_Campaign_Retries",
+        Replay = "RW_Campaign_Replay", Playing = "RW_Campaign_Playing",
+        StockWorld = "RW_Stock_World", StockGameplan = "RW_Stock_Gameplan",
+        Guid = "RW_Player_Guid", Device = "RW_Player_Device";
+    public static readonly string[] Old = { "Campaign_Seed", "Campaign_Route", "Stock_World", "Stock_Gameplan", "Player_Guid", "Player_Device" };
+    public static int Moved;                     // old keys renamed since launch (self-test, log)
+    static object migrated;
+
+    // Every machine, every frame from launch (00_RogueWavesModeMod.Update, before RWIdentity); cheap once done.
+    public static void Migrate()
+    {
+        object data = Blockage.Tags.Bla_Data.Playerdata;
+        if (Blockage.Tags.Bla_Data.Instance == null || data == null || ReferenceEquals(data, migrated) || !Blockage.Tags.Bla_Data.Playerdata.Loaded)
+            return;
+        migrated = data;
+        int moved = 0;
+        foreach (string old in Old)
+        {
+            if (!RWUtil.Has(RWData.SaveFolder, old))
+                continue;
+            if (!RWUtil.Has(RWData.SaveFolder, RWData.KeyPrefix + old))
+                RWUtil.WriteString(RWData.SaveFolder, RWData.KeyPrefix + old, RWUtil.ReadString(RWData.SaveFolder, old));
+            RWUtil.Remove(RWData.SaveFolder, old);
+            moved++;
+        }
+        if (moved == 0)
+            return;
+        Moved += moved;
+        RWUtil.Flush();
+        RWLog.Info("save: " + moved + " keys of " + RWData.SaveFolder + " renamed to " + RWData.KeyPrefix + "... (kit docs/23 §2 rule 3)");
     }
 }
