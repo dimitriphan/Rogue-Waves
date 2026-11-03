@@ -14,7 +14,7 @@
 	Fie      Intermediate    melee    50      3       3       2       0.5        3          0.6
 	Buster   Advanced        melee    50      3.5     1.5     1.5     0.5        2.5        0.75
 	Argo     ~Intermediate~  ~melee~  ~65~    ~2.25~  ~4~     ~1.75~  ~0.4~      ~2~        ~0.5~
-	Yossele  Intermediate    ranged   ~60~    ~2.25~  ~4.5~   ~3~     ~0.5~      ~2.5~      ~0.5~
+	Yossele  Intermediate    ranged   70      1.75    5.5     4       0.5        2.5        0.5
 	Spool    Advanced        melee    ~45~    ~2.75~  ~2.5~   ~1.5~   ~0.6~      ~2.5~      ~0.5~
 
 | Base Vessel: Smacky |
@@ -579,7 +579,7 @@
 			- Archetype: Builds only his Bouthouse; his brother Boutbro builds fish, barrels and boats, at a price that rises with each one
 			- In-game line: Fast, strong, single-target melee
 			- Look: Cat in overalls
-			- Accent colour: #BEA167
+			- Accent colour: #FFC34C /~ The game's Displaycolor, kit reference/art_survey_2026-10-15.txt \
 			- Lore: Boutman plays a martial-arts expert determined to help capture the fish dealer whose gang was responsible for the death of his fish. Bout enters a kung fu competition in an attempt to fight his way to the dealer's headquarters with the help of some friends.
 
 		[Vessel Stats]
@@ -893,7 +893,7 @@
 			- Archetype: Grows one connected wall and arms her knights with guns her pipes make from ore
 			- In-game line: Fast, single-target melee
 			- Look: Knight
-			- Accent colour: #CD465F
+			- Accent colour: #FFA76D /~ The game's Displaycolor, kit reference/art_survey_2026-10-15.txt \
 			- Lore: A humble ramen shop owner. Much taller than the others in the group, outside of Bout. She feels. Connected deeply with the old structures above, we are forever grateful she wants to help!
 
 		[Vessel Stats]

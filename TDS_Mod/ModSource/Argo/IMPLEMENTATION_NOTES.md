@@ -252,7 +252,7 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
 ## How Argo is built
 
 - **Vessel.** Smacky's AIs (Mob_General, Mob_Movement, Mob_Combat, Hero_Buildsell) + visscript Entity_Vis_Mob_Attack
-  (turns each swing's "Attack" into the wrench animation). Stats: 65 HP, speed 2.25, damage 5, range 1.75, attack
+  (turns each swing's "Attack" into the wrench animation). Stats: 65 HP, speed 2.25, damage 4 (5 before 1.3.0), range 1.75, attack
   speed 0.4. **Second hit:** `Helper_Entitytools.Interacthurt` fires the attacker's `Entity_Master.Interact` before the
   target takes the hit, so the brain carries 60% of each swing to the nearest other enemy (flagged `Argocleave`).
 - **SONAR** (keys 6/7 like Buster's Dash): ping radius 6, Pinged 5 s, 15 s cooldown. The button's Goalstring is "Off"
@@ -353,7 +353,7 @@ Always rebuild without defines before shipping. **Sprigg's own Export Mod does n
 - **Deep Drill**: a brass crack runs from the drill to the ore it bites (`Argo_Mine`); texts say "ore up to 2 tiles
   away" and "Tremors slow foes in range" (the shown range).
 - **Kit**: journal (`ModKitVesselJournal`, `ModKitVesselTabs`) and boat (`ModKitBoat`) from the shared kit; Argo's own
-  copies are retired (`../Archive/Argo_1.0/11_World.cs`).
+  copies are retired (archived in `ModProjects`, not in this repository).
 - Self-test run 1 of 1.1: 72/73 (the miss was the harness failing to place a foe right after a Tide; it now retries).
 
 ## Changes in 1.2 (second playtest, 2026-10-03)

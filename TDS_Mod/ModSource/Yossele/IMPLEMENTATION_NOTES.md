@@ -10,7 +10,7 @@ code in `Code/`, self-test in `Code/99_SelfTest.cs`. The 0.1 asset list and its 
 check clean; 0.2.0-dev is Dimitri's play build** (`Mods\YosseleMod`, the only mod; 0.1.0-dev parked on the PC). Here:
 `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with
 `YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud preview renders
-every sheet and model. Not seen yet: the look by eye, a played map, online. What is left to check, and how:
+every sheet and model. Not seen yet: the look by eye, a map played by Dimitri, online. What is left to check, and how:
 `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
 
 ## Code map
