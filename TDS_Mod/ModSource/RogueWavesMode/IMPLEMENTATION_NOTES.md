@@ -14,7 +14,7 @@ clean). **Not run in game, not tried online.**
 - **One failed load** (`RWLoad`, host, once a second while a `Game_Load` exists): 75 s into the loading screen, once
   the host has loaded, every player whose `Loaded` is still false is kicked with a chat line. Online check: O3c.
 - **Hidden effects:** the mode sends none; Argo's slow look and refused-flood mark go past the throttle (Argo 2.0.1,
-  its notes). Yossele 0.1.0-dev still sends its looks through `Vfxdebuffcheck` (`Yossele/Code/01_Util.cs`; its next build).
+  its notes). Yossele 0.2.0-dev sends its looks with the ClientRpc the same way (`Yossele/Code/01_Util.cs`).
 - **Slot switch** (`06_Campaign.cs`): the campaign remembers the `Bla_Data.Playerdata` object it was started or
   continued in; `RWCampaign.Live` (boat, weather, map end, every save) and the `Onslotchanged` / `Onslotremoved`
   hooks forget it from memory when that object changed. After a switch its own slot keeps it for Continue; clearing

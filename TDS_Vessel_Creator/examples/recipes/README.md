@@ -1,6 +1,6 @@
 # Recipes: compiled sketches for the non-vessel parts of a pack
 
-Small static classes that turn chapters `19`-`23` into code a mode, a map or the pack's UI can copy. Each was written
+Small static classes that turn chapters `19`-`21` and `23` into code a mode, a map or the pack's UI can copy. Each was written
 from the decompiled game (2026-10-14, `docs/13` §11) and **compiled with cloud-check; none has run in game**. Copy what
 you need into a part's `Code/` folder, rename the class to the part's prefix, and give it a self-test check before
 trusting it.
