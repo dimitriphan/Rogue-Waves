@@ -1,0 +1,207 @@
+[
+{
+"name": "O-shut-smacky-purlest-opalcolour",
+"v": "smacky",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"opal": "colour",
+"break": 60
+}
+},
+{
+"name": "O-shut-yossele-purlest-opalcolour",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"opal": "colour",
+"break": 60
+}
+},
+{
+"name": "O-shut-spool-purlest-opalcolour",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"opal": "colour",
+"break": 60
+}
+},
+{
+"name": "O-shut-spool-purlest-opalcolour-P13",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"opal": "colour",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "O-shut-spool-purlest-opalcolour-P13back",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"opal": "colour",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "O-shut-yossele-purlest-opalcolour-P5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"opal": "colour",
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "O-open-smacky-purlest-opalcolour",
+"v": "smacky",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"opal": "colour",
+"break": 60
+}
+},
+{
+"name": "O-open-yossele-purlest-opalcolour",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"opal": "colour",
+"break": 60
+}
+},
+{
+"name": "O-open-spool-purlest-opalcolour",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"opal": "colour",
+"break": 60
+}
+},
+{
+"name": "O-open-spool-purlest-opalcolour-P13",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"opal": "colour",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "O-open-spool-purlest-opalcolour-P13back",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"opal": "colour",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "O-open-yossele-purlest-opalcolour-P5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"opal": "colour",
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "O-round-spool-purlest-opalcolour",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"opal": "colour",
+"tin_first": true,
+"break": 60
+}
+},
+{
+"name": "O-round-spool-purlest-opalcolour-P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"opal": "colour",
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+}
+]

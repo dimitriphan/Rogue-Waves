@@ -1,0 +1,979 @@
+[
+{
+"name": "M-shut-spool-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-purlest-P13back",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-P13back",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-P13back",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-purlest-P13back",
+"v": "spool",
+"m": "purlest",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-purlest-P23",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-P23",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-P23",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-purlest-P23",
+"v": "spool",
+"m": "purlest",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-block",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"stitched_block": true,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-block",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"stitched_block": true,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-chase04",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"chase_miss": 0.6,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-chase04",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"chase_miss": 0.6,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-block+P13",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"stitched_block": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-block+P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"stitched_block": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-purlest-chase04+P13",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"chase_miss": 0.6,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-purlest-chase04+P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"chase_miss": 0.6,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-woozy-P13back",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-P13back",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-P13back",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-woozy-P13back",
+"v": "spool",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-woozy-P23",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-P23",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-P23",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-woozy-P23",
+"v": "spool",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-block",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"stitched_block": true,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-block",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"stitched_block": true,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-chase04",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"chase_miss": 0.6,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-chase04",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"chase_miss": 0.6,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-block+P13",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"stitched_block": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-block+P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"stitched_block": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-woozy-chase04+P13",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"chase_miss": 0.6,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "M-round-spool-woozy-chase04+P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"chase_miss": 0.6,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-thehunt-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-thehunt-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-thehunt-P13back",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-P13back",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-P13back",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-thehunt-P13back",
+"v": "spool",
+"m": "thehunt",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_safe": true,
+"dart_all": true,
+"dart_n": 4,
+"break": 60
+}
+},
+{
+"name": "M-shut-spool-thehunt-P23",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-P23",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-P23",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-bot-spool-thehunt-P23",
+"v": "spool",
+"m": "thehunt",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"dart_n": 0,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-block",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"stitched_block": true,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-block",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"stitched_block": true,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-chase04",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"chase_miss": 0.6,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-chase04",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"chase_miss": 0.6,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-block+P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"stitched_block": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-block+P13",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"stitched_block": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-open-spool-thehunt-chase04+P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"chase_miss": 0.6,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "M-round-spool-thehunt-chase04+P13",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"chase_miss": 0.6,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+}
+]

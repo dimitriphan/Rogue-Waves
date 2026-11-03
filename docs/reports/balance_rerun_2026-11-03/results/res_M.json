@@ -1,0 +1,6508 @@
+[
+ {
+  "name": "M-shut-spool-purlest-P13",
+  "n": 60,
+  "win": 0.633,
+  "med_lost": 14.0,
+  "mean_t": 15.27,
+  "cfg": {
+   "name": "M-shut-spool-purlest-P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 0.633,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 561,
+  "income_mine": [
+   13495,
+   13489,
+   13503
+  ],
+  "income_kills": 743,
+  "spent": [
+   9314,
+   7667,
+   140
+  ],
+  "wallet_end": [
+   4975,
+   5872,
+   13413
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    59,
+    159
+   ],
+   "2": [
+    370,
+    365,
+    1376
+   ],
+   "3": [
+    342,
+    97,
+    1908
+   ],
+   "4": [
+    295,
+    991,
+    2425
+   ],
+   "5": [
+    754,
+    1997,
+    3431
+   ],
+   "6": [
+    715,
+    2493,
+    4673
+   ],
+   "7": [
+    1461,
+    3011,
+    5190
+   ],
+   "8": [
+    1515,
+    4506,
+    5788
+   ],
+   "9": [
+    2212,
+    5688,
+    6971
+   ],
+   "10": [
+    2329,
+    6317,
+    8543
+   ],
+   "11": [
+    3941,
+    5762,
+    9391
+   ],
+   "12": [
+    4063,
+    5072,
+    10025
+   ],
+   "13": [
+    4208,
+    5601,
+    10680
+   ],
+   "14": [
+    4497,
+    5855,
+    12440
+   ],
+   "15": [
+    5488,
+    6165,
+    12973
+   ]
+  },
+  "lost_hist": {
+   "14": 22
+  },
+  "thread": {
+   "dropped": 1737,
+   "picked": 1472,
+   "delivered": 1979,
+   "spun": 965,
+   "spent": 1868,
+   "lost": 460,
+   "stash_lost": 22
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 5.45,
+  "cfg": {
+   "name": "M-open-spool-purlest-P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 72.6,
+  "core_dmg_1_4": [
+   4.0,
+   6.4,
+   7.3,
+   9.7
+  ],
+  "kills": 92,
+  "income_mine": [
+   4132,
+   3995,
+   4458
+  ],
+  "income_kills": 92,
+  "spent": [
+   3776,
+   0,
+   140
+  ],
+  "wallet_end": [
+   498,
+   4045,
+   4368
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    299,
+    159
+   ],
+   "2": [
+    371,
+    792,
+    1393
+   ],
+   "3": [
+    350,
+    1325,
+    1925
+   ],
+   "4": [
+    305,
+    2623,
+    2445
+   ],
+   "5": [
+    768,
+    3633,
+    3455
+   ],
+   "6": [
+    741,
+    4147,
+    4715
+   ]
+  },
+  "lost_hist": {
+   "5": 33,
+   "6": 27
+  },
+  "thread": {
+   "dropped": 96,
+   "picked": 54,
+   "delivered": 281,
+   "spun": 235,
+   "spent": 286,
+   "lost": 28
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.63,
+  "cfg": {
+   "name": "M-round-spool-purlest-P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.633,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 8.3,
+  "core_dmg_1_4": [
+   11.2,
+   18.4,
+   23.6,
+   38.9
+  ],
+  "kills": 55,
+  "income_mine": [
+   3659,
+   4736,
+   3873
+  ],
+  "income_kills": 55,
+  "spent": [
+   1667,
+   1230,
+   140
+  ],
+  "wallet_end": [
+   2097,
+   3556,
+   3783
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    49,
+    44,
+    590
+   ],
+   "3": [
+    89,
+    135,
+    861
+   ],
+   "4": [
+    694,
+    1808,
+    1780
+   ],
+   "5": [
+    2676,
+    3772,
+    3740
+   ]
+  },
+  "lost_hist": {
+   "4": 22,
+   "5": 38
+  },
+  "thread": {
+   "dropped": 55,
+   "picked": 54,
+   "delivered": 134,
+   "spun": 103,
+   "spent": 136,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-purlest-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 4.0,
+  "mean_t": 4.03,
+  "cfg": {
+   "name": "M-bot-spool-purlest-P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.033,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0.1,
+  "core_dmg_1_4": [
+   14.1,
+   25.1,
+   29.3,
+   32.5
+  ],
+  "kills": 44,
+  "income_mine": [
+   4604,
+   4652,
+   3502
+  ],
+  "income_kills": 44,
+  "spent": [
+   1759,
+   1938,
+   140
+  ],
+  "wallet_end": [
+   2939,
+   2764,
+   3412
+  ],
+  "tide_wallet": {
+   "1": [
+    26,
+    26,
+    6
+   ],
+   "2": [
+    91,
+    36,
+    631
+   ],
+   "3": [
+    1606,
+    89,
+    1555
+   ],
+   "4": [
+    2648,
+    2502,
+    2580
+   ]
+  },
+  "lost_hist": {
+   "4": 58,
+   "5": 2
+  },
+  "thread": {
+   "dropped": 44,
+   "picked": 20,
+   "delivered": 82,
+   "spun": 93,
+   "spent": 89,
+   "lost": 21
+  }
+ },
+ {
+  "name": "M-shut-spool-purlest-P13back",
+  "n": 60,
+  "win": 1.0,
+  "med_lost": null,
+  "mean_t": 16,
+  "cfg": {
+   "name": "M-shut-spool-purlest-P13back",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 1.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 576,
+  "income_mine": [
+   13991,
+   14264,
+   13721
+  ],
+  "income_kills": 765,
+  "spent": [
+   9689,
+   4563,
+   140
+  ],
+  "wallet_end": [
+   5117,
+   9751,
+   13631
+  ],
+  "tide_wallet": {
+   "1": [
+    119,
+    59,
+    159
+   ],
+   "2": [
+    362,
+    367,
+    1380
+   ],
+   "3": [
+    331,
+    102,
+    1915
+   ],
+   "4": [
+    290,
+    1008,
+    2437
+   ],
+   "5": [
+    743,
+    2019,
+    3448
+   ],
+   "6": [
+    707,
+    2519,
+    4698
+   ],
+   "7": [
+    1450,
+    3039,
+    5219
+   ],
+   "8": [
+    1509,
+    4547,
+    5822
+   ],
+   "9": [
+    2196,
+    5728,
+    7003
+   ],
+   "10": [
+    2314,
+    6359,
+    8580
+   ],
+   "11": [
+    3765,
+    7147,
+    9368
+   ],
+   "12": [
+    3851,
+    8035,
+    9964
+   ],
+   "13": [
+    3980,
+    8630,
+    10613
+   ],
+   "14": [
+    4188,
+    9199,
+    12171
+   ],
+   "15": [
+    5154,
+    9742,
+    12749
+   ]
+  },
+  "lost_hist": {},
+  "thread": {
+   "dropped": 1825,
+   "picked": 1783,
+   "delivered": 2420,
+   "spun": 1124,
+   "spent": 2245,
+   "lost": 308,
+   "stash_lost": 33
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.98,
+  "cfg": {
+   "name": "M-open-spool-purlest-P13back",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.983,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 40.2,
+  "core_dmg_1_4": [
+   5.2,
+   13.1,
+   15.6,
+   26.0
+  ],
+  "kills": 68,
+  "income_mine": [
+   3790,
+   3776,
+   3964
+  ],
+  "income_kills": 68,
+  "spent": [
+   3540,
+   0,
+   140
+  ],
+  "wallet_end": [
+   368,
+   3826,
+   3874
+  ],
+  "tide_wallet": {
+   "1": [
+    119,
+    299,
+    159
+   ],
+   "2": [
+    371,
+    796,
+    1402
+   ],
+   "3": [
+    348,
+    1334,
+    1940
+   ],
+   "4": [
+    313,
+    2656,
+    2469
+   ],
+   "5": [
+    779,
+    3679,
+    3492
+   ]
+  },
+  "lost_hist": {
+   "4": 1,
+   "5": 59
+  },
+  "thread": {
+   "dropped": 68,
+   "picked": 32,
+   "delivered": 234,
+   "spun": 214,
+   "spent": 239,
+   "lost": 26
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.55,
+  "cfg": {
+   "name": "M-round-spool-purlest-P13back",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.55,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 6.2,
+  "core_dmg_1_4": [
+   11.2,
+   18.4,
+   23.8,
+   40.9
+  ],
+  "kills": 54,
+  "income_mine": [
+   3565,
+   4646,
+   3743
+  ],
+  "income_kills": 54,
+  "spent": [
+   1619,
+   1230,
+   140
+  ],
+  "wallet_end": [
+   2050,
+   3466,
+   3653
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    49,
+    44,
+    590
+   ],
+   "3": [
+    89,
+    135,
+    861
+   ],
+   "4": [
+    697,
+    1815,
+    1783
+   ],
+   "5": [
+    2702,
+    3802,
+    3768
+   ]
+  },
+  "lost_hist": {
+   "4": 27,
+   "5": 33
+  },
+  "thread": {
+   "dropped": 54,
+   "picked": 53,
+   "delivered": 133,
+   "spun": 102,
+   "spent": 136,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-purlest-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 4.0,
+  "mean_t": 4.03,
+  "cfg": {
+   "name": "M-bot-spool-purlest-P13back",
+   "v": "spool",
+   "m": "purlest",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.033,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0.1,
+  "core_dmg_1_4": [
+   14.1,
+   25.1,
+   29.3,
+   32.5
+  ],
+  "kills": 44,
+  "income_mine": [
+   4604,
+   4652,
+   3502
+  ],
+  "income_kills": 44,
+  "spent": [
+   1759,
+   1938,
+   140
+  ],
+  "wallet_end": [
+   2939,
+   2764,
+   3412
+  ],
+  "tide_wallet": {
+   "1": [
+    26,
+    26,
+    6
+   ],
+   "2": [
+    91,
+    36,
+    631
+   ],
+   "3": [
+    1606,
+    89,
+    1555
+   ],
+   "4": [
+    2648,
+    2502,
+    2580
+   ]
+  },
+  "lost_hist": {
+   "4": 58,
+   "5": 2
+  },
+  "thread": {
+   "dropped": 44,
+   "picked": 20,
+   "delivered": 82,
+   "spun": 93,
+   "spent": 89,
+   "lost": 21
+  }
+ },
+ {
+  "name": "M-shut-spool-purlest-P23",
+  "n": 60,
+  "win": 0.717,
+  "med_lost": 14,
+  "mean_t": 15.43,
+  "cfg": {
+   "name": "M-shut-spool-purlest-P23",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 0.717,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 565,
+  "income_mine": [
+   13646,
+   13703,
+   13614
+  ],
+  "income_kills": 749,
+  "spent": [
+   9370,
+   7619,
+   140
+  ],
+  "wallet_end": [
+   5075,
+   6134,
+   13524
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    59,
+    159
+   ],
+   "2": [
+    370,
+    365,
+    1376
+   ],
+   "3": [
+    341,
+    97,
+    1907
+   ],
+   "4": [
+    294,
+    991,
+    2425
+   ],
+   "5": [
+    749,
+    1992,
+    3426
+   ],
+   "6": [
+    709,
+    2488,
+    4665
+   ],
+   "7": [
+    1448,
+    3003,
+    5180
+   ],
+   "8": [
+    1506,
+    4507,
+    5782
+   ],
+   "9": [
+    2203,
+    5689,
+    6964
+   ],
+   "10": [
+    2321,
+    6319,
+    8539
+   ],
+   "11": [
+    3904,
+    6040,
+    9376
+   ],
+   "12": [
+    4022,
+    5071,
+    10005
+   ],
+   "13": [
+    4168,
+    5646,
+    10661
+   ],
+   "14": [
+    4462,
+    5932,
+    12433
+   ],
+   "15": [
+    5446,
+    6422,
+    12943
+   ]
+  },
+  "lost_hist": {
+   "14": 17
+  },
+  "thread": {
+   "dropped": 1773,
+   "picked": 1480,
+   "delivered": 1961,
+   "spun": 964,
+   "spent": 1831,
+   "lost": 514
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 6.0,
+  "mean_t": 5.52,
+  "cfg": {
+   "name": "M-open-spool-purlest-P23",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 75.8,
+  "core_dmg_1_4": [
+   4.0,
+   5.9,
+   5.5,
+   8.8
+  ],
+  "kills": 96,
+  "income_mine": [
+   4214,
+   4037,
+   4529
+  ],
+  "income_kills": 96,
+  "spent": [
+   3814,
+   0,
+   140
+  ],
+  "wallet_end": [
+   546,
+   4087,
+   4439
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    299,
+    159
+   ],
+   "2": [
+    371,
+    792,
+    1393
+   ],
+   "3": [
+    350,
+    1325,
+    1925
+   ],
+   "4": [
+    306,
+    2625,
+    2445
+   ],
+   "5": [
+    761,
+    3626,
+    3447
+   ],
+   "6": [
+    723,
+    4122,
+    4696
+   ]
+  },
+  "lost_hist": {
+   "5": 29,
+   "6": 31
+  },
+  "thread": {
+   "dropped": 104,
+   "picked": 58,
+   "delivered": 289,
+   "spun": 239,
+   "spent": 295,
+   "lost": 33
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.85,
+  "cfg": {
+   "name": "M-round-spool-purlest-P23",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.85,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 17.2,
+  "core_dmg_1_4": [
+   11.2,
+   17.9,
+   20.5,
+   33.4
+  ],
+  "kills": 59,
+  "income_mine": [
+   3954,
+   5026,
+   4265
+  ],
+  "income_kills": 59,
+  "spent": [
+   1793,
+   1230,
+   140
+  ],
+  "wallet_end": [
+   2270,
+   3846,
+   4175
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    49,
+    44,
+    590
+   ],
+   "3": [
+    89,
+    135,
+    861
+   ],
+   "4": [
+    690,
+    1799,
+    1776
+   ],
+   "5": [
+    2676,
+    3762,
+    3738
+   ]
+  },
+  "lost_hist": {
+   "4": 9,
+   "5": 51
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 58,
+   "delivered": 140,
+   "spun": 107,
+   "spent": 145,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-purlest-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 4.0,
+  "mean_t": 4.03,
+  "cfg": {
+   "name": "M-bot-spool-purlest-P23",
+   "v": "spool",
+   "m": "purlest",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.033,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0.1,
+  "core_dmg_1_4": [
+   14.1,
+   25.1,
+   29.3,
+   32.5
+  ],
+  "kills": 44,
+  "income_mine": [
+   4604,
+   4652,
+   3502
+  ],
+  "income_kills": 44,
+  "spent": [
+   1759,
+   1938,
+   140
+  ],
+  "wallet_end": [
+   2939,
+   2764,
+   3412
+  ],
+  "tide_wallet": {
+   "1": [
+    26,
+    26,
+    6
+   ],
+   "2": [
+    91,
+    36,
+    631
+   ],
+   "3": [
+    1606,
+    89,
+    1555
+   ],
+   "4": [
+    2648,
+    2502,
+    2580
+   ]
+  },
+  "lost_hist": {
+   "4": 58,
+   "5": 2
+  },
+  "thread": {
+   "dropped": 44,
+   "picked": 20,
+   "delivered": 82,
+   "spun": 93,
+   "spent": 89,
+   "lost": 21
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-block",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 10.27,
+  "cfg": {
+   "name": "M-open-spool-purlest-block",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "stitched_block": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.267,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 327,
+  "income_mine": [
+   9806,
+   8793,
+   9490
+  ],
+  "income_kills": 361,
+  "spent": [
+   6528,
+   0,
+   140
+  ],
+  "wallet_end": [
+   3689,
+   8843,
+   9400
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    299,
+    159
+   ],
+   "2": [
+    373,
+    788,
+    1381
+   ],
+   "3": [
+    343,
+    1319,
+    1913
+   ],
+   "4": [
+    300,
+    2621,
+    2433
+   ],
+   "5": [
+    764,
+    3632,
+    3445
+   ],
+   "6": [
+    730,
+    4134,
+    4699
+   ],
+   "7": [
+    1479,
+    4653,
+    5218
+   ],
+   "8": [
+    1541,
+    6168,
+    5824
+   ],
+   "9": [
+    2238,
+    7350,
+    7006
+   ],
+   "10": [
+    2359,
+    7982,
+    8586
+   ],
+   "11": [
+    4037,
+    8860,
+    9460
+   ]
+  },
+  "lost_hist": {
+   "10": 44,
+   "11": 16
+  },
+  "thread": {
+   "dropped": 641,
+   "picked": 641,
+   "delivered": 1162,
+   "spun": 530,
+   "spent": 1168,
+   "lost": 8
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-block",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 9.0,
+  "mean_t": 8.55,
+  "cfg": {
+   "name": "M-round-spool-purlest-block",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "stitched_block": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.767,
+  "s10": 0.117,
+  "s15": 0.0,
+  "core_after4": 85.1,
+  "core_dmg_1_4": [
+   14.1,
+   0.0,
+   0.0,
+   0.8
+  ],
+  "kills": 224,
+  "income_mine": [
+   10699,
+   11631,
+   11213
+  ],
+  "income_kills": 250,
+  "spent": [
+   2116,
+   1250,
+   140
+  ],
+  "wallet_end": [
+   8883,
+   10432,
+   11123
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    50,
+    45,
+    591
+   ],
+   "3": [
+    83,
+    133,
+    860
+   ],
+   "4": [
+    676,
+    1775,
+    1767
+   ],
+   "5": [
+    2651,
+    3727,
+    3719
+   ],
+   "6": [
+    3063,
+    4703,
+    6148
+   ],
+   "7": [
+    5555,
+    5715,
+    7155
+   ],
+   "8": [
+    6767,
+    8670,
+    8337
+   ],
+   "9": [
+    9150,
+    10992,
+    10659
+   ],
+   "10": [
+    10278,
+    12190,
+    13719
+   ]
+  },
+  "lost_hist": {
+   "5": 8,
+   "6": 6,
+   "9": 30,
+   "10": 9,
+   "11": 7
+  },
+  "thread": {
+   "dropped": 382,
+   "picked": 556,
+   "delivered": 458,
+   "spun": 203,
+   "spent": 458,
+   "lost": 9
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-chase04",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 9.0,
+  "mean_t": 9.37,
+  "cfg": {
+   "name": "M-open-spool-purlest-chase04",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "chase_miss": 0.6,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.983,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.1,
+   0.0,
+   0.0
+  ],
+  "kills": 260,
+  "income_mine": [
+   7557,
+   7617,
+   7994
+  ],
+  "income_kills": 294,
+  "spent": [
+   6029,
+   0,
+   140
+  ],
+  "wallet_end": [
+   1872,
+   7667,
+   7904
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    299,
+    159
+   ],
+   "2": [
+    368,
+    783,
+    1370
+   ],
+   "3": [
+    321,
+    1308,
+    1895
+   ],
+   "4": [
+    269,
+    2586,
+    2406
+   ],
+   "5": [
+    713,
+    3577,
+    3397
+   ],
+   "6": [
+    667,
+    4067,
+    4621
+   ],
+   "7": [
+    1414,
+    4585,
+    5139
+   ],
+   "8": [
+    1469,
+    6083,
+    5738
+   ],
+   "9": [
+    2159,
+    7257,
+    6913
+   ],
+   "10": [
+    2276,
+    7879,
+    8476
+   ]
+  },
+  "lost_hist": {
+   "8": 1,
+   "9": 36,
+   "10": 23
+  },
+  "thread": {
+   "dropped": 441,
+   "picked": 183,
+   "delivered": 466,
+   "spun": 319,
+   "spent": 433,
+   "lost": 236
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-chase04",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 5.45,
+  "cfg": {
+   "name": "M-round-spool-purlest-chase04",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "chase_miss": 0.6,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 85.4,
+  "core_dmg_1_4": [
+   5.6,
+   2.1,
+   3.4,
+   3.6
+  ],
+  "kills": 90,
+  "income_mine": [
+   4825,
+   5646,
+   5500
+  ],
+  "income_kills": 90,
+  "spent": [
+   1880,
+   1230,
+   140
+  ],
+  "wallet_end": [
+   3086,
+   4466,
+   5410
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    45,
+    40,
+    579
+   ],
+   "3": [
+    77,
+    127,
+    847
+   ],
+   "4": [
+    662,
+    1751,
+    1746
+   ],
+   "5": [
+    2612,
+    3678,
+    3674
+   ],
+   "6": [
+    3030,
+    4627,
+    6056
+   ]
+  },
+  "lost_hist": {
+   "5": 33,
+   "6": 27
+  },
+  "thread": {
+   "dropped": 93,
+   "picked": 89,
+   "delivered": 164,
+   "spun": 119,
+   "spent": 142,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-block+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 10.38,
+  "cfg": {
+   "name": "M-open-spool-purlest-block+P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "stitched_block": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.383,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 327,
+  "income_mine": [
+   9846,
+   8813,
+   9488
+  ],
+  "income_kills": 361,
+  "spent": [
+   6599,
+   0,
+   140
+  ],
+  "wallet_end": [
+   3658,
+   8863,
+   9398
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    299,
+    159
+   ],
+   "2": [
+    371,
+    786,
+    1377
+   ],
+   "3": [
+    342,
+    1317,
+    1908
+   ],
+   "4": [
+    296,
+    2613,
+    2427
+   ],
+   "5": [
+    754,
+    3619,
+    3432
+   ],
+   "6": [
+    716,
+    4117,
+    4676
+   ],
+   "7": [
+    1461,
+    4634,
+    5194
+   ],
+   "8": [
+    1518,
+    6136,
+    5795
+   ],
+   "9": [
+    2215,
+    7318,
+    6976
+   ],
+   "10": [
+    2332,
+    7947,
+    8549
+   ],
+   "11": [
+    4020,
+    8832,
+    9428
+   ]
+  },
+  "lost_hist": {
+   "10": 37,
+   "11": 23
+  },
+  "thread": {
+   "dropped": 641,
+   "picked": 622,
+   "delivered": 1149,
+   "spun": 532,
+   "spent": 1155,
+   "lost": 23
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-block+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 11,
+  "cfg": {
+   "name": "M-round-spool-purlest-block+P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "stitched_block": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 0.0,
+  "core_after4": 88.8,
+  "core_dmg_1_4": [
+   11.2,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 328,
+  "income_mine": [
+   16995,
+   16797,
+   16138
+  ],
+  "income_kills": 364,
+  "spent": [
+   2462,
+   1382,
+   140
+  ],
+  "wallet_end": [
+   14947,
+   15465,
+   16048
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    49,
+    44,
+    590
+   ],
+   "3": [
+    80,
+    131,
+    857
+   ],
+   "4": [
+    667,
+    1759,
+    1758
+   ],
+   "5": [
+    2637,
+    3706,
+    3706
+   ],
+   "6": [
+    3058,
+    4670,
+    6115
+   ],
+   "7": [
+    5549,
+    5664,
+    7109
+   ],
+   "8": [
+    6726,
+    8563,
+    8269
+   ],
+   "9": [
+    9062,
+    10846,
+    10551
+   ],
+   "10": [
+    10167,
+    12060,
+    13587
+   ],
+   "11": [
+    14295,
+    13791,
+    15318
+   ]
+  },
+  "lost_hist": {
+   "11": 60
+  },
+  "thread": {
+   "dropped": 710,
+   "picked": 1177,
+   "delivered": 733,
+   "spun": 303,
+   "spent": 737,
+   "lost": 136
+  }
+ },
+ {
+  "name": "M-open-spool-purlest-chase04+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 10.75,
+  "cfg": {
+   "name": "M-open-spool-purlest-chase04+P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "chase_miss": 0.6,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.75,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 327,
+  "income_mine": [
+   9830,
+   8782,
+   9404
+  ],
+  "income_kills": 361,
+  "spent": [
+   6784,
+   0,
+   140
+  ],
+  "wallet_end": [
+   3457,
+   8832,
+   9314
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    299,
+    159
+   ],
+   "2": [
+    363,
+    778,
+    1358
+   ],
+   "3": [
+    313,
+    1301,
+    1881
+   ],
+   "4": [
+    258,
+    2575,
+    2391
+   ],
+   "5": [
+    700,
+    3564,
+    3380
+   ],
+   "6": [
+    653,
+    4053,
+    4602
+   ],
+   "7": [
+    1374,
+    4561,
+    5110
+   ],
+   "8": [
+    1421,
+    6038,
+    5701
+   ],
+   "9": [
+    2089,
+    7190,
+    6853
+   ],
+   "10": [
+    2195,
+    7809,
+    8400
+   ],
+   "11": [
+    3882,
+    8689,
+    9283
+   ]
+  },
+  "lost_hist": {
+   "10": 15,
+   "11": 45
+  },
+  "thread": {
+   "dropped": 641,
+   "picked": 288,
+   "delivered": 740,
+   "spun": 472,
+   "spent": 747,
+   "lost": 353
+  }
+ },
+ {
+  "name": "M-round-spool-purlest-chase04+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 8.0,
+  "mean_t": 7.6,
+  "cfg": {
+   "name": "M-round-spool-purlest-chase04+P13",
+   "v": "spool",
+   "m": "purlest",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "chase_miss": 0.6,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 94.3,
+  "core_dmg_1_4": [
+   3.4,
+   1.6,
+   0.6,
+   0.2
+  ],
+  "kills": 154,
+  "income_mine": [
+   8402,
+   9479,
+   8384
+  ],
+  "income_kills": 166,
+  "spent": [
+   1880,
+   1230,
+   140
+  ],
+  "wallet_end": [
+   6737,
+   8299,
+   8294
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    43,
+    38,
+    574
+   ],
+   "3": [
+    68,
+    123,
+    840
+   ],
+   "4": [
+    640,
+    1714,
+    1726
+   ],
+   "5": [
+    2572,
+    3622,
+    3634
+   ],
+   "6": [
+    2978,
+    4564,
+    5989
+   ],
+   "7": [
+    5492,
+    5563,
+    6988
+   ],
+   "8": [
+    6696,
+    8482,
+    8155
+   ]
+  },
+  "lost_hist": {
+   "5": 1,
+   "6": 7,
+   "7": 7,
+   "8": 45
+  },
+  "thread": {
+   "dropped": 207,
+   "picked": 159,
+   "delivered": 246,
+   "spun": 145,
+   "spent": 209,
+   "lost": 33
+  }
+ },
+ {
+  "name": "M-shut-spool-woozy-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 10.95,
+  "cfg": {
+   "name": "M-shut-spool-woozy-P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "smart_nodes": [
+     "Yellow",
+     "Blue",
+     "Red"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.95,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 329,
+  "income_mine": [
+   0,
+   4044,
+   4094
+  ],
+  "income_kills": 374,
+  "spent": [
+   400,
+   4072,
+   304
+  ],
+  "wallet_end": [
+   25,
+   22,
+   3840
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    25,
+    0
+   ],
+   "2": [
+    5,
+    74,
+    320
+   ],
+   "3": [
+    17,
+    330,
+    666
+   ],
+   "4": [
+    3,
+    268,
+    1004
+   ],
+   "5": [
+    26,
+    217,
+    1353
+   ],
+   "6": [
+    0,
+    148,
+    1684
+   ],
+   "7": [
+    22,
+    537,
+    2073
+   ],
+   "8": [
+    8,
+    956,
+    2492
+   ],
+   "9": [
+    13,
+    1317,
+    2925
+   ],
+   "10": [
+    1,
+    1588,
+    3325
+   ],
+   "11": [
+    21,
+    227,
+    3801
+   ]
+  },
+  "lost_hist": {
+   "10": 3,
+   "11": 57
+  },
+  "thread": {
+   "dropped": 758,
+   "picked": 773,
+   "delivered": 1126,
+   "spun": 582,
+   "spent": 1130,
+   "lost": 75,
+   "stash_lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.92,
+  "cfg": {
+   "name": "M-open-spool-woozy-P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.917,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 18.2,
+  "core_dmg_1_4": [
+   7.4,
+   19.4,
+   24.1,
+   30.9
+  ],
+  "kills": 61,
+  "income_mine": [
+   299,
+   0,
+   1551
+  ],
+  "income_kills": 61,
+  "spent": [
+   385,
+   0,
+   140
+  ],
+  "wallet_end": [
+   25,
+   50,
+   1461
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    7,
+    50,
+    325
+   ],
+   "3": [
+    9,
+    50,
+    676
+   ],
+   "4": [
+    13,
+    50,
+    1016
+   ],
+   "5": [
+    25,
+    50,
+    1367
+   ]
+  },
+  "lost_hist": {
+   "4": 5,
+   "5": 55
+  },
+  "thread": {
+   "dropped": 61,
+   "picked": 55,
+   "delivered": 259,
+   "spun": 241,
+   "spent": 235,
+   "lost": 4
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 3.02,
+  "cfg": {
+   "name": "M-round-spool-woozy-P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   18.9,
+   51.7,
+   29.9,
+   1.7
+  ],
+  "kills": 24,
+  "income_mine": [
+   175,
+   0,
+   0
+  ],
+  "income_kills": 24,
+  "spent": [
+   222,
+   40,
+   40
+  ],
+  "wallet_end": [
+   27,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    12,
+    10,
+    10
+   ],
+   "3": [
+    13,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 7,
+   "3": 45,
+   "4": 8
+  },
+  "thread": {
+   "dropped": 24,
+   "picked": 23,
+   "delivered": 23,
+   "spun": 10,
+   "spent": 29,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-woozy-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 2.0,
+  "mean_t": 2.35,
+  "cfg": {
+   "name": "M-bot-spool-woozy-P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   34.4,
+   62.3,
+   5.3,
+   0.0
+  ],
+  "kills": 14,
+  "income_mine": [
+   140,
+   0,
+   0
+  ],
+  "income_kills": 14,
+  "spent": [
+   178,
+   50,
+   40
+  ],
+  "wallet_end": [
+   26,
+   0,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    3,
+    0,
+    10
+   ],
+   "2": [
+    7,
+    0,
+    10
+   ],
+   "3": [
+    13,
+    0,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 39,
+   "3": 21
+  },
+  "thread": {
+   "dropped": 14,
+   "picked": 9,
+   "delivered": 0,
+   "spun": 10,
+   "spent": 10,
+   "lost": 5
+  }
+ },
+ {
+  "name": "M-shut-spool-woozy-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 10.95,
+  "cfg": {
+   "name": "M-shut-spool-woozy-P13back",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "smart_nodes": [
+     "Yellow",
+     "Blue",
+     "Red"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.95,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 329,
+  "income_mine": [
+   0,
+   4044,
+   4094
+  ],
+  "income_kills": 374,
+  "spent": [
+   400,
+   4072,
+   304
+  ],
+  "wallet_end": [
+   25,
+   22,
+   3840
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    25,
+    0
+   ],
+   "2": [
+    5,
+    74,
+    320
+   ],
+   "3": [
+    17,
+    330,
+    666
+   ],
+   "4": [
+    3,
+    268,
+    1004
+   ],
+   "5": [
+    26,
+    217,
+    1353
+   ],
+   "6": [
+    0,
+    148,
+    1684
+   ],
+   "7": [
+    22,
+    537,
+    2073
+   ],
+   "8": [
+    8,
+    956,
+    2492
+   ],
+   "9": [
+    13,
+    1317,
+    2925
+   ],
+   "10": [
+    1,
+    1588,
+    3325
+   ],
+   "11": [
+    21,
+    227,
+    3801
+   ]
+  },
+  "lost_hist": {
+   "10": 3,
+   "11": 57
+  },
+  "thread": {
+   "dropped": 758,
+   "picked": 773,
+   "delivered": 1126,
+   "spun": 582,
+   "spent": 1130,
+   "lost": 75,
+   "stash_lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.92,
+  "cfg": {
+   "name": "M-open-spool-woozy-P13back",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.917,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 18.2,
+  "core_dmg_1_4": [
+   7.4,
+   19.4,
+   24.1,
+   30.9
+  ],
+  "kills": 61,
+  "income_mine": [
+   299,
+   0,
+   1551
+  ],
+  "income_kills": 61,
+  "spent": [
+   385,
+   0,
+   140
+  ],
+  "wallet_end": [
+   25,
+   50,
+   1461
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    7,
+    50,
+    325
+   ],
+   "3": [
+    9,
+    50,
+    676
+   ],
+   "4": [
+    13,
+    50,
+    1016
+   ],
+   "5": [
+    25,
+    50,
+    1367
+   ]
+  },
+  "lost_hist": {
+   "4": 5,
+   "5": 55
+  },
+  "thread": {
+   "dropped": 61,
+   "picked": 55,
+   "delivered": 259,
+   "spun": 241,
+   "spent": 235,
+   "lost": 4
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 3.02,
+  "cfg": {
+   "name": "M-round-spool-woozy-P13back",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   18.9,
+   51.7,
+   29.9,
+   1.7
+  ],
+  "kills": 24,
+  "income_mine": [
+   175,
+   0,
+   0
+  ],
+  "income_kills": 24,
+  "spent": [
+   222,
+   40,
+   40
+  ],
+  "wallet_end": [
+   27,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    12,
+    10,
+    10
+   ],
+   "3": [
+    13,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 7,
+   "3": 45,
+   "4": 8
+  },
+  "thread": {
+   "dropped": 24,
+   "picked": 23,
+   "delivered": 23,
+   "spun": 10,
+   "spent": 29,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-woozy-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 2.0,
+  "mean_t": 2.35,
+  "cfg": {
+   "name": "M-bot-spool-woozy-P13back",
+   "v": "spool",
+   "m": "woozy",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   34.4,
+   62.3,
+   5.3,
+   0.0
+  ],
+  "kills": 14,
+  "income_mine": [
+   140,
+   0,
+   0
+  ],
+  "income_kills": 14,
+  "spent": [
+   178,
+   50,
+   40
+  ],
+  "wallet_end": [
+   26,
+   0,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    3,
+    0,
+    10
+   ],
+   "2": [
+    7,
+    0,
+    10
+   ],
+   "3": [
+    13,
+    0,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 39,
+   "3": 21
+  },
+  "thread": {
+   "dropped": 14,
+   "picked": 9,
+   "delivered": 0,
+   "spun": 10,
+   "spent": 10,
+   "lost": 5
+  }
+ },
+ {
+  "name": "M-shut-spool-woozy-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 10.95,
+  "cfg": {
+   "name": "M-shut-spool-woozy-P23",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "smart_nodes": [
+     "Yellow",
+     "Blue",
+     "Red"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.95,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 329,
+  "income_mine": [
+   0,
+   4044,
+   4094
+  ],
+  "income_kills": 374,
+  "spent": [
+   400,
+   4072,
+   304
+  ],
+  "wallet_end": [
+   25,
+   22,
+   3840
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    25,
+    0
+   ],
+   "2": [
+    5,
+    74,
+    320
+   ],
+   "3": [
+    17,
+    330,
+    666
+   ],
+   "4": [
+    3,
+    268,
+    1004
+   ],
+   "5": [
+    26,
+    217,
+    1353
+   ],
+   "6": [
+    0,
+    148,
+    1684
+   ],
+   "7": [
+    22,
+    537,
+    2073
+   ],
+   "8": [
+    8,
+    956,
+    2492
+   ],
+   "9": [
+    13,
+    1317,
+    2925
+   ],
+   "10": [
+    1,
+    1588,
+    3325
+   ],
+   "11": [
+    21,
+    227,
+    3801
+   ]
+  },
+  "lost_hist": {
+   "10": 3,
+   "11": 57
+  },
+  "thread": {
+   "dropped": 758,
+   "picked": 773,
+   "delivered": 1126,
+   "spun": 582,
+   "spent": 1130,
+   "lost": 75,
+   "stash_lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.92,
+  "cfg": {
+   "name": "M-open-spool-woozy-P23",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.917,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 18.2,
+  "core_dmg_1_4": [
+   7.4,
+   19.4,
+   24.1,
+   30.9
+  ],
+  "kills": 61,
+  "income_mine": [
+   299,
+   0,
+   1551
+  ],
+  "income_kills": 61,
+  "spent": [
+   385,
+   0,
+   140
+  ],
+  "wallet_end": [
+   25,
+   50,
+   1461
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    7,
+    50,
+    325
+   ],
+   "3": [
+    9,
+    50,
+    676
+   ],
+   "4": [
+    13,
+    50,
+    1016
+   ],
+   "5": [
+    25,
+    50,
+    1367
+   ]
+  },
+  "lost_hist": {
+   "4": 5,
+   "5": 55
+  },
+  "thread": {
+   "dropped": 61,
+   "picked": 55,
+   "delivered": 259,
+   "spun": 241,
+   "spent": 235,
+   "lost": 4
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 3.02,
+  "cfg": {
+   "name": "M-round-spool-woozy-P23",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   18.9,
+   51.7,
+   29.9,
+   1.7
+  ],
+  "kills": 24,
+  "income_mine": [
+   175,
+   0,
+   0
+  ],
+  "income_kills": 24,
+  "spent": [
+   222,
+   40,
+   40
+  ],
+  "wallet_end": [
+   27,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    12,
+    10,
+    10
+   ],
+   "3": [
+    13,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 7,
+   "3": 45,
+   "4": 8
+  },
+  "thread": {
+   "dropped": 24,
+   "picked": 23,
+   "delivered": 23,
+   "spun": 10,
+   "spent": 29,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-woozy-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 2.0,
+  "mean_t": 2.35,
+  "cfg": {
+   "name": "M-bot-spool-woozy-P23",
+   "v": "spool",
+   "m": "woozy",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   34.4,
+   62.3,
+   5.3,
+   0.0
+  ],
+  "kills": 14,
+  "income_mine": [
+   140,
+   0,
+   0
+  ],
+  "income_kills": 14,
+  "spent": [
+   178,
+   50,
+   40
+  ],
+  "wallet_end": [
+   26,
+   0,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    3,
+    0,
+    10
+   ],
+   "2": [
+    7,
+    0,
+    10
+   ],
+   "3": [
+    13,
+    0,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 39,
+   "3": 21
+  },
+  "thread": {
+   "dropped": 14,
+   "picked": 9,
+   "delivered": 0,
+   "spun": 10,
+   "spent": 10,
+   "lost": 5
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-block",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 10.13,
+  "cfg": {
+   "name": "M-open-spool-woozy-block",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "stitched_block": true,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.167,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 303,
+  "income_mine": [
+   702,
+   0,
+   3566
+  ],
+  "income_kills": 337,
+  "spent": [
+   1056,
+   0,
+   141
+  ],
+  "wallet_end": [
+   33,
+   50,
+   3475
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    6,
+    50,
+    321
+   ],
+   "3": [
+    7,
+    50,
+    668
+   ],
+   "4": [
+    11,
+    50,
+    1005
+   ],
+   "5": [
+    24,
+    50,
+    1354
+   ],
+   "6": [
+    23,
+    50,
+    1681
+   ],
+   "7": [
+    34,
+    50,
+    2026
+   ],
+   "8": [
+    21,
+    50,
+    2433
+   ],
+   "9": [
+    81,
+    50,
+    2856
+   ],
+   "10": [
+    58,
+    50,
+    3252
+   ]
+  },
+  "lost_hist": {
+   "9": 2,
+   "10": 48,
+   "11": 10
+  },
+  "thread": {
+   "dropped": 570,
+   "picked": 560,
+   "delivered": 1093,
+   "spun": 579,
+   "spent": 1100,
+   "lost": 31
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-block",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 2.63,
+  "cfg": {
+   "name": "M-round-spool-woozy-block",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "stitched_block": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   24.5,
+   67.2,
+   9.6,
+   0.8
+  ],
+  "kills": 18,
+  "income_mine": [
+   151,
+   0,
+   0
+  ],
+  "income_kills": 18,
+  "spent": [
+   195,
+   40,
+   40
+  ],
+  "wallet_end": [
+   24,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    8,
+    10,
+    10
+   ],
+   "3": [
+    15,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 26,
+   "3": 30,
+   "4": 4
+  },
+  "thread": {
+   "dropped": 18,
+   "picked": 18,
+   "delivered": 16,
+   "spun": 10,
+   "spent": 22,
+   "lost": 0,
+   "stash_lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-chase04",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 6.0,
+  "mean_t": 6.05,
+  "cfg": {
+   "name": "M-open-spool-woozy-chase04",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "chase_miss": 0.6,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 74.8,
+  "core_dmg_1_4": [
+   2.5,
+   10.4,
+   9.6,
+   2.7
+  ],
+  "kills": 112,
+  "income_mine": [
+   386,
+   0,
+   1983
+  ],
+  "income_kills": 113,
+  "spent": [
+   530,
+   0,
+   140
+  ],
+  "wallet_end": [
+   19,
+   50,
+   1893
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    6,
+    50,
+    321
+   ],
+   "3": [
+    8,
+    50,
+    669
+   ],
+   "4": [
+    11,
+    50,
+    1005
+   ],
+   "5": [
+    23,
+    50,
+    1350
+   ],
+   "6": [
+    22,
+    50,
+    1675
+   ]
+  },
+  "lost_hist": {
+   "5": 4,
+   "6": 49,
+   "7": 7
+  },
+  "thread": {
+   "dropped": 136,
+   "picked": 100,
+   "delivered": 269,
+   "spun": 207,
+   "spent": 240,
+   "lost": 28
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-chase04",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 2.82,
+  "cfg": {
+   "name": "M-round-spool-woozy-chase04",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "chase_miss": 0.6,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   21.9,
+   56.9,
+   22.8,
+   0.4
+  ],
+  "kills": 21,
+  "income_mine": [
+   165,
+   0,
+   0
+  ],
+  "income_kills": 21,
+  "spent": [
+   208,
+   40,
+   40
+  ],
+  "wallet_end": [
+   28,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    11,
+    10,
+    10
+   ],
+   "3": [
+    14,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 13,
+   "3": 45,
+   "4": 2
+  },
+  "thread": {
+   "dropped": 21,
+   "picked": 21,
+   "delivered": 19,
+   "spun": 10,
+   "spent": 23,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-block+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 10.92,
+  "cfg": {
+   "name": "M-open-spool-woozy-block+P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "stitched_block": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.917,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 327,
+  "income_mine": [
+   765,
+   0,
+   3881
+  ],
+  "income_kills": 361,
+  "spent": [
+   1149,
+   0,
+   140
+  ],
+  "wallet_end": [
+   27,
+   50,
+   3791
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    6,
+    50,
+    320
+   ],
+   "3": [
+    7,
+    50,
+    665
+   ],
+   "4": [
+    10,
+    50,
+    1002
+   ],
+   "5": [
+    22,
+    50,
+    1348
+   ],
+   "6": [
+    21,
+    50,
+    1673
+   ],
+   "7": [
+    30,
+    50,
+    2007
+   ],
+   "8": [
+    16,
+    50,
+    2408
+   ],
+   "9": [
+    75,
+    50,
+    2827
+   ],
+   "10": [
+    52,
+    50,
+    3223
+   ],
+   "11": [
+    28,
+    50,
+    3702
+   ]
+  },
+  "lost_hist": {
+   "10": 5,
+   "11": 55
+  },
+  "thread": {
+   "dropped": 641,
+   "picked": 588,
+   "delivered": 1199,
+   "spun": 630,
+   "spent": 1205,
+   "lost": 59
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-block+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 3.37,
+  "cfg": {
+   "name": "M-round-spool-woozy-block+P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "stitched_block": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.033,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0.2,
+  "core_dmg_1_4": [
+   18.9,
+   51.7,
+   21.1,
+   10.0
+  ],
+  "kills": 30,
+  "income_mine": [
+   196,
+   0,
+   0
+  ],
+  "income_kills": 30,
+  "spent": [
+   250,
+   40,
+   40
+  ],
+  "wallet_end": [
+   26,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    12,
+    10,
+    10
+   ],
+   "3": [
+    13,
+    10,
+    10
+   ],
+   "4": [
+    18,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "2": 7,
+   "3": 26,
+   "4": 25,
+   "5": 2
+  },
+  "thread": {
+   "dropped": 30,
+   "picked": 30,
+   "delivered": 22,
+   "spun": 10,
+   "spent": 28,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-woozy-chase04+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 10.08,
+  "cfg": {
+   "name": "M-open-spool-woozy-chase04+P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "chase_miss": 0.6,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "smart_nodes": [
+     "Yellow",
+     "Red",
+     "Blue"
+    ],
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.083,
+  "s15": 0.0,
+  "core_after4": 98.2,
+  "core_dmg_1_4": [
+   0.8,
+   0.8,
+   0.1,
+   0.0
+  ],
+  "kills": 310,
+  "income_mine": [
+   695,
+   0,
+   3533
+  ],
+  "income_kills": 344,
+  "spent": [
+   1068,
+   0,
+   140
+  ],
+  "wallet_end": [
+   21,
+   50,
+   3443
+  ],
+  "tide_wallet": {
+   "1": [
+    7,
+    50,
+    0
+   ],
+   "2": [
+    5,
+    50,
+    318
+   ],
+   "3": [
+    6,
+    50,
+    660
+   ],
+   "4": [
+    8,
+    50,
+    991
+   ],
+   "5": [
+    19,
+    50,
+    1332
+   ],
+   "6": [
+    17,
+    50,
+    1652
+   ],
+   "7": [
+    26,
+    50,
+    1984
+   ],
+   "8": [
+    10,
+    50,
+    2378
+   ],
+   "9": [
+    68,
+    50,
+    2789
+   ],
+   "10": [
+    43,
+    50,
+    3178
+   ]
+  },
+  "lost_hist": {
+   "10": 55,
+   "11": 5
+  },
+  "thread": {
+   "dropped": 590,
+   "picked": 258,
+   "delivered": 697,
+   "spun": 469,
+   "spent": 694,
+   "lost": 313
+  }
+ },
+ {
+  "name": "M-round-spool-woozy-chase04+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 4.0,
+  "mean_t": 3.58,
+  "cfg": {
+   "name": "M-round-spool-woozy-chase04+P13",
+   "v": "spool",
+   "m": "woozy",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "chase_miss": 0.6,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Red"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.033,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0.2,
+  "core_dmg_1_4": [
+   15.2,
+   38.6,
+   38.6,
+   9.4
+  ],
+  "kills": 34,
+  "income_mine": [
+   207,
+   0,
+   0
+  ],
+  "income_kills": 34,
+  "spent": [
+   265,
+   40,
+   40
+  ],
+  "wallet_end": [
+   26,
+   10,
+   10
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ],
+   "2": [
+    19,
+    10,
+    10
+   ],
+   "3": [
+    12,
+    10,
+    10
+   ],
+   "4": [
+    17,
+    10,
+    10
+   ]
+  },
+  "lost_hist": {
+   "3": 27,
+   "4": 31,
+   "5": 2
+  },
+  "thread": {
+   "dropped": 34,
+   "picked": 33,
+   "delivered": 26,
+   "spun": 10,
+   "spent": 31,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-shut-spool-thehunt-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.87,
+  "cfg": {
+   "name": "M-shut-spool-thehunt-P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.867,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   23.1,
+   27.3,
+   34.5,
+   58.9
+  ],
+  "kills": 59,
+  "income_mine": [
+   841,
+   0,
+   1401
+  ],
+  "income_kills": 59,
+  "spent": [
+   921,
+   40,
+   140
+  ],
+  "wallet_end": [
+   28,
+   10,
+   1311
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    10,
+    34
+   ],
+   "2": [
+    39,
+    10,
+    260
+   ],
+   "3": [
+    18,
+    10,
+    595
+   ],
+   "4": [
+    17,
+    10,
+    917
+   ],
+   "5": [
+    25,
+    10,
+    1256
+   ]
+  },
+  "lost_hist": {
+   "4": 8,
+   "5": 52
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 57,
+   "delivered": 227,
+   "spun": 192,
+   "spent": 232,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.87,
+  "cfg": {
+   "name": "M-open-spool-thehunt-P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.867,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   23.1,
+   27.3,
+   34.5,
+   58.9
+  ],
+  "kills": 59,
+  "income_mine": [
+   841,
+   0,
+   1401
+  ],
+  "income_kills": 59,
+  "spent": [
+   921,
+   0,
+   140
+  ],
+  "wallet_end": [
+   28,
+   50,
+   1311
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    39,
+    50,
+    260
+   ],
+   "3": [
+    18,
+    50,
+    595
+   ],
+   "4": [
+    17,
+    50,
+    917
+   ],
+   "5": [
+    25,
+    50,
+    1256
+   ]
+  },
+  "lost_hist": {
+   "4": 8,
+   "5": 52
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 57,
+   "delivered": 227,
+   "spun": 192,
+   "spent": 232,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   110.7,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-thehunt-P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-bot-spool-thehunt-P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   118.5,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   63,
+   0,
+   105
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   50,
+   70
+  ],
+  "wallet_end": [
+   36,
+   0,
+   85
+  ],
+  "tide_wallet": {
+   "1": [
+    5,
+    0,
+    19
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 0,
+   "delivered": 12,
+   "spun": 15,
+   "spent": 20,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-shut-spool-thehunt-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.87,
+  "cfg": {
+   "name": "M-shut-spool-thehunt-P13back",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.867,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   23.1,
+   27.3,
+   34.5,
+   58.9
+  ],
+  "kills": 59,
+  "income_mine": [
+   841,
+   0,
+   1401
+  ],
+  "income_kills": 59,
+  "spent": [
+   921,
+   40,
+   140
+  ],
+  "wallet_end": [
+   28,
+   10,
+   1311
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    10,
+    34
+   ],
+   "2": [
+    39,
+    10,
+    260
+   ],
+   "3": [
+    18,
+    10,
+    595
+   ],
+   "4": [
+    17,
+    10,
+    917
+   ],
+   "5": [
+    25,
+    10,
+    1256
+   ]
+  },
+  "lost_hist": {
+   "4": 8,
+   "5": 52
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 57,
+   "delivered": 227,
+   "spun": 192,
+   "spent": 232,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.87,
+  "cfg": {
+   "name": "M-open-spool-thehunt-P13back",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.867,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   23.1,
+   27.3,
+   34.5,
+   58.9
+  ],
+  "kills": 59,
+  "income_mine": [
+   841,
+   0,
+   1401
+  ],
+  "income_kills": 59,
+  "spent": [
+   921,
+   0,
+   140
+  ],
+  "wallet_end": [
+   28,
+   50,
+   1311
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    39,
+    50,
+    260
+   ],
+   "3": [
+    18,
+    50,
+    595
+   ],
+   "4": [
+    17,
+    50,
+    917
+   ],
+   "5": [
+    25,
+    50,
+    1256
+   ]
+  },
+  "lost_hist": {
+   "4": 8,
+   "5": 52
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 57,
+   "delivered": 227,
+   "spun": 192,
+   "spent": 232,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-P13back",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   110.7,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-thehunt-P13back",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-bot-spool-thehunt-P13back",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_safe": true,
+    "dart_all": true,
+    "dart_n": 4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   118.5,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   63,
+   0,
+   105
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   50,
+   70
+  ],
+  "wallet_end": [
+   36,
+   0,
+   85
+  ],
+  "tide_wallet": {
+   "1": [
+    5,
+    0,
+    19
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 0,
+   "delivered": 12,
+   "spun": 15,
+   "spent": 20,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-shut-spool-thehunt-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.87,
+  "cfg": {
+   "name": "M-shut-spool-thehunt-P23",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.867,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   23.1,
+   27.3,
+   34.5,
+   58.9
+  ],
+  "kills": 59,
+  "income_mine": [
+   841,
+   0,
+   1401
+  ],
+  "income_kills": 59,
+  "spent": [
+   921,
+   40,
+   140
+  ],
+  "wallet_end": [
+   28,
+   10,
+   1311
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    10,
+    34
+   ],
+   "2": [
+    39,
+    10,
+    260
+   ],
+   "3": [
+    18,
+    10,
+    595
+   ],
+   "4": [
+    17,
+    10,
+    917
+   ],
+   "5": [
+    25,
+    10,
+    1256
+   ]
+  },
+  "lost_hist": {
+   "4": 8,
+   "5": 52
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 57,
+   "delivered": 227,
+   "spun": 192,
+   "spent": 232,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.87,
+  "cfg": {
+   "name": "M-open-spool-thehunt-P23",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.867,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   23.1,
+   27.3,
+   34.5,
+   58.9
+  ],
+  "kills": 59,
+  "income_mine": [
+   841,
+   0,
+   1401
+  ],
+  "income_kills": 59,
+  "spent": [
+   921,
+   0,
+   140
+  ],
+  "wallet_end": [
+   28,
+   50,
+   1311
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    39,
+    50,
+    260
+   ],
+   "3": [
+    18,
+    50,
+    595
+   ],
+   "4": [
+    17,
+    50,
+    917
+   ],
+   "5": [
+    25,
+    50,
+    1256
+   ]
+  },
+  "lost_hist": {
+   "4": 8,
+   "5": 52
+  },
+  "thread": {
+   "dropped": 59,
+   "picked": 57,
+   "delivered": 227,
+   "spun": 192,
+   "spent": 232,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-P23",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   110.7,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-bot-spool-thehunt-P23",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-bot-spool-thehunt-P23",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "bot",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "dart_n": 0,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   118.5,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   63,
+   0,
+   105
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   50,
+   70
+  ],
+  "wallet_end": [
+   36,
+   0,
+   85
+  ],
+  "tide_wallet": {
+   "1": [
+    5,
+    0,
+    19
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 0,
+   "delivered": 12,
+   "spun": 15,
+   "spent": 20,
+   "lost": 2
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-block",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 9.52,
+  "cfg": {
+   "name": "M-open-spool-thehunt-block",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "stitched_block": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.833,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 77.0,
+  "core_dmg_1_4": [
+   17.4,
+   5.6,
+   0.0,
+   0.0
+  ],
+  "kills": 288,
+  "income_mine": [
+   1912,
+   0,
+   3187
+  ],
+  "income_kills": 319,
+  "spent": [
+   2242,
+   0,
+   140
+  ],
+  "wallet_end": [
+   39,
+   50,
+   3097
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    42,
+    50,
+    256
+   ],
+   "3": [
+    13,
+    50,
+    584
+   ],
+   "4": [
+    19,
+    50,
+    905
+   ],
+   "5": [
+    36,
+    50,
+    1239
+   ],
+   "6": [
+    32,
+    50,
+    1546
+   ],
+   "7": [
+    67,
+    50,
+    1865
+   ],
+   "8": [
+    47,
+    50,
+    2227
+   ],
+   "9": [
+    63,
+    50,
+    2614
+   ],
+   "10": [
+    28,
+    50,
+    3006
+   ]
+  },
+  "lost_hist": {
+   "8": 10,
+   "9": 9,
+   "10": 41
+  },
+  "thread": {
+   "dropped": 528,
+   "picked": 513,
+   "delivered": 912,
+   "spun": 437,
+   "spent": 919,
+   "lost": 32
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-block",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-block",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "stitched_block": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   113.2,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-chase04",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 6.0,
+  "mean_t": 5.92,
+  "cfg": {
+   "name": "M-open-spool-thehunt-chase04",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "chase_miss": 0.6,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 51.2,
+  "core_dmg_1_4": [
+   19.3,
+   8.7,
+   10.1,
+   10.8
+  ],
+  "kills": 104,
+  "income_mine": [
+   1031,
+   0,
+   1719
+  ],
+  "income_kills": 104,
+  "spent": [
+   1162,
+   0,
+   140
+  ],
+  "wallet_end": [
+   24,
+   50,
+   1629
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    42,
+    50,
+    256
+   ],
+   "3": [
+    12,
+    50,
+    582
+   ],
+   "4": [
+    22,
+    50,
+    897
+   ],
+   "5": [
+    33,
+    50,
+    1224
+   ],
+   "6": [
+    20,
+    50,
+    1527
+   ]
+  },
+  "lost_hist": {
+   "5": 6,
+   "6": 53,
+   "7": 1
+  },
+  "thread": {
+   "dropped": 116,
+   "picked": 106,
+   "delivered": 314,
+   "spun": 235,
+   "spent": 319,
+   "lost": 9
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-chase04",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-chase04",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "chase_miss": 0.6,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   111.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-block+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 10,
+  "cfg": {
+   "name": "M-open-spool-thehunt-block+P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "stitched_block": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 65.2,
+  "core_dmg_1_4": [
+   17.3,
+   17.4,
+   0.0,
+   0.0
+  ],
+  "kills": 327,
+  "income_mine": [
+   2070,
+   0,
+   3450
+  ],
+  "income_kills": 361,
+  "spent": [
+   2440,
+   0,
+   140
+  ],
+  "wallet_end": [
+   41,
+   50,
+   3360
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    42,
+    50,
+    254
+   ],
+   "3": [
+    16,
+    50,
+    582
+   ],
+   "4": [
+    25,
+    50,
+    900
+   ],
+   "5": [
+    32,
+    50,
+    1233
+   ],
+   "6": [
+    28,
+    50,
+    1541
+   ],
+   "7": [
+    67,
+    50,
+    1855
+   ],
+   "8": [
+    62,
+    50,
+    2217
+   ],
+   "9": [
+    56,
+    50,
+    2598
+   ],
+   "10": [
+    27,
+    50,
+    2989
+   ]
+  },
+  "lost_hist": {
+   "10": 60
+  },
+  "thread": {
+   "dropped": 641,
+   "picked": 594,
+   "delivered": 1045,
+   "spun": 473,
+   "spent": 1051,
+   "lost": 61
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-block+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-block+P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "stitched_block": true,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   110.7,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ },
+ {
+  "name": "M-open-spool-thehunt-chase04+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 8.0,
+  "mean_t": 7.52,
+  "cfg": {
+   "name": "M-open-spool-thehunt-chase04+P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "chase_miss": 0.6,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.05,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 67.8,
+  "core_dmg_1_4": [
+   18.2,
+   7.2,
+   3.0,
+   3.8
+  ],
+  "kills": 153,
+  "income_mine": [
+   1341,
+   0,
+   2236
+  ],
+  "income_kills": 163,
+  "spent": [
+   1530,
+   0,
+   140
+  ],
+  "wallet_end": [
+   25,
+   50,
+   2146
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    50,
+    34
+   ],
+   "2": [
+    41,
+    50,
+    253
+   ],
+   "3": [
+    13,
+    50,
+    576
+   ],
+   "4": [
+    29,
+    50,
+    890
+   ],
+   "5": [
+    29,
+    50,
+    1216
+   ],
+   "6": [
+    15,
+    50,
+    1515
+   ],
+   "7": [
+    64,
+    50,
+    1830
+   ],
+   "8": [
+    63,
+    50,
+    2184
+   ]
+  },
+  "lost_hist": {
+   "6": 12,
+   "7": 8,
+   "8": 37,
+   "9": 3
+  },
+  "thread": {
+   "dropped": 206,
+   "picked": 173,
+   "delivered": 450,
+   "spun": 306,
+   "spent": 456,
+   "lost": 25
+  }
+ },
+ {
+  "name": "M-round-spool-thehunt-chase04+P13",
+  "n": 60,
+  "win": 0.0,
+  "med_lost": 1.0,
+  "mean_t": 1,
+  "cfg": {
+   "name": "M-round-spool-thehunt-chase04+P13",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "round",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "tin_first": true,
+    "chase_miss": 0.6,
+    "tin_units": 6,
+    "stitched_dmg": 1,
+    "dart_dmg": 1,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   107.8,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 3,
+  "income_mine": [
+   56,
+   0,
+   93
+  ],
+  "income_kills": 3,
+  "spent": [
+   80,
+   40,
+   70
+  ],
+  "wallet_end": [
+   29,
+   10,
+   73
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    50
+   ]
+  },
+  "lost_hist": {
+   "1": 60
+  },
+  "thread": {
+   "dropped": 3,
+   "picked": 3,
+   "delivered": 13,
+   "spun": 12,
+   "spent": 20,
+   "lost": 0
+  }
+ }
+]

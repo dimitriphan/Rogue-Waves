@@ -1,0 +1,33 @@
+{"name": "N-shut-yossele-purlest-P5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-purlest-sap025-fruit15", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-purlest-sap025-fruit5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-purlest-sap015-fruit15", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-purlest-sap015-fruit5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-open-yossele-purlest-P5", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "N-open-yossele-purlest-sap025-fruit15", "win": 0.017, "mean_t": 14.03, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 59}}
+{"name": "N-open-yossele-purlest-sap025-fruit5", "win": 0.017, "mean_t": 14.03, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 59}}
+{"name": "N-open-yossele-purlest-sap015-fruit15", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "N-open-yossele-purlest-sap015-fruit5", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "N-bot-yossele-purlest-P5", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "N-shut-yossele-woozy-P5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-woozy-sap025-fruit15", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-woozy-sap025-fruit5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-woozy-sap015-fruit15", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-woozy-sap015-fruit5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-open-yossele-woozy-P5", "win": 0.0, "mean_t": 11.67, "s4": 1.0, "s8": 1.0, "s10": 0.833, "med_lost": 12.0, "lost_hist": {"10": 10, "12": 50}}
+{"name": "N-open-yossele-woozy-sap025-fruit15", "win": 0.0, "mean_t": 13, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"13": 60}}
+{"name": "N-open-yossele-woozy-sap025-fruit5", "win": 0.0, "mean_t": 12.98, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 1, "13": 59}}
+{"name": "N-open-yossele-woozy-sap015-fruit15", "win": 0.0, "mean_t": 12.75, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 15, "13": 45}}
+{"name": "N-open-yossele-woozy-sap015-fruit5", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "N-bot-yossele-woozy-P5", "win": 0.0, "mean_t": 10.3, "s4": 1.0, "s8": 1.0, "s10": 0.167, "med_lost": 10.0, "lost_hist": {"10": 50, "11": 2, "12": 8}}
+{"name": "N-shut-yossele-thehunt-P5", "win": 0.0, "mean_t": 11.5, "s4": 1.0, "s8": 1.0, "s10": 0.75, "med_lost": 12.0, "lost_hist": {"10": 15, "12": 45}}
+{"name": "N-shut-yossele-thehunt-sap025-fruit15", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-thehunt-sap025-fruit5", "win": 0.983, "mean_t": 15.97, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 1}}
+{"name": "N-shut-yossele-thehunt-sap015-fruit15", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "N-shut-yossele-thehunt-sap015-fruit5", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 58, "13": 2}}
+{"name": "N-open-yossele-thehunt-P5", "win": 0.0, "mean_t": 11.97, "s4": 1.0, "s8": 1.0, "s10": 0.983, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 59}}
+{"name": "N-open-yossele-thehunt-sap025-fruit15", "win": 0.5, "mean_t": 15, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 30}}
+{"name": "N-open-yossele-thehunt-sap025-fruit5", "win": 0.0, "mean_t": 12.9, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 7, "13": 52, "14": 1}}
+{"name": "N-open-yossele-thehunt-sap015-fruit15", "win": 0.0, "mean_t": 12.82, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 15, "13": 41, "14": 4}}
+{"name": "N-open-yossele-thehunt-sap015-fruit5", "win": 0.0, "mean_t": 12.4, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 36, "13": 24}}
+{"name": "N-bot-yossele-thehunt-P5", "win": 0.0, "mean_t": 6.05, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"6": 57, "7": 3}}

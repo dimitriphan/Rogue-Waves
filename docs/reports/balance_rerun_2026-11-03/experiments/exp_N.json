@@ -1,0 +1,526 @@
+[
+{
+"name": "N-shut-yossele-purlest-P5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-purlest-sap025-fruit15",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-purlest-sap025-fruit5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-purlest-sap015-fruit15",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-purlest-sap015-fruit5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-purlest-P5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-purlest-sap025-fruit15",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-purlest-sap025-fruit5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-purlest-sap015-fruit15",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-purlest-sap015-fruit5",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-bot-yossele-purlest-P5",
+"v": "yossele",
+"m": "purlest",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-woozy-P5",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-woozy-sap025-fruit15",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-woozy-sap025-fruit5",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-woozy-sap015-fruit15",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-woozy-sap015-fruit5",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-woozy-P5",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-woozy-sap025-fruit15",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-woozy-sap025-fruit5",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-woozy-sap015-fruit15",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-woozy-sap015-fruit5",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "N-bot-yossele-woozy-P5",
+"v": "yossele",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-thehunt-P5",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-thehunt-sap025-fruit15",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-thehunt-sap025-fruit5",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-thehunt-sap015-fruit15",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-shut-yossele-thehunt-sap015-fruit5",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-thehunt-P5",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-thehunt-sap025-fruit15",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-thehunt-sap025-fruit5",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.25,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-thehunt-sap015-fruit15",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 15,
+"break": 60
+}
+},
+{
+"name": "N-open-yossele-thehunt-sap015-fruit5",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"sapling_aspd": 0.15,
+"fruit_pickup": 0.5,
+"fruit_k": 5,
+"break": 60
+}
+},
+{
+"name": "N-bot-yossele-thehunt-P5",
+"v": "yossele",
+"m": "thehunt",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"sapling_aspd": 0.15,
+"break": 60
+}
+}
+]

@@ -268,9 +268,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Sapling mines 2-2.5× and Spool's Loom 4-5× the base average; P1-P4 stand; options P5-P7 (Open questions 3-4; Log).
   2026-11-03: **every planned feature built and tested in game** (`docs/reports/BUILD_2026-11-03.md`): the whole campaign, from the main-menu
   button to the end screen, self-test 139/0 in game, with every part of the pack on at once as well; the foes part; Uloe; kit 1.7; the sea
-  chart rebuilt on the base game's own art. Older entries are in "Log" below.
+  chart rebuilt on the base game's own art. 2026-11-03: the balance simulator re-run on the round's numbers
+  (`docs/reports/BALANCE_RERUN_2026-11-03.md`, cloud only, no number changed): his own wall decides Spool's picks (Log).
+  Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
-  in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4). Release 1 below is unchanged.
+  in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
@@ -593,6 +595,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   every part on), foes 12/0, Yossele 160/0, Spool 121/0, Argo 136/0, Uloe 147/0/3. Playing it caught what compiling never would: the chart's
   camera looked at the sky, the Tide table was read one row off, a dead nest stopped the Tides for good (pitfalls #121-#136). `docs/reports/BUILD_2026-11-03.md`.
 - **2026-11-03: the balance round** (`BALANCE_2026-11-03.md` §9, `AURA_BASELINE_2026-11-03.md` M8-M11), no shipped number changed; `docs/reports/BALANCE_ROUND_2026-11-03.md`. The model's nodes, gatherers and Crafted hold; its wall doesn't: foes walk round a three-tile line, and walling first lost Tide 1-2, not Tide 11. Tin first, by a bot: Spool as written Purlest Tide 4, Woozy Tide 2; with P1-P3 Purlest Tide 5, Woozy Tide 2. Yossele on Woozy, Tide 14. Harness: `Code/97_Measure.cs`, `ModKitMeasure`. The simulator's re-run with these numbers is left for a cloud thread.
+- **2026-11-03: the simulator re-run on the round's numbers** (cloud only, analysis only: no mod or scope number changed; `docs/reports/BALANCE_RERUN_2026-11-03.md`, simulator in `docs/reports/balance_rerun_2026-11-03/`, 11,880 runs). The Opal pays every colour on every payout (about 21 aura a strike, not 9.5); Woozy's first node matters more than any number. Calibrated within a Tide on Spool Tin first; four Tides harsh on Yossele's bot on Woozy. Spool: with a wall that holds, P2 and P3 alone win Purlest in 72% of runs and give Woozy two Tides, P1 helps only if Darts stand back; on a line foes walk round, no number buys more than a Tide, and Stitched that block foes would (Tide 10-11 everywhere, a design question). Yossele: P5 changes no map's result (some Woozy and Hunt runs end two Tides sooner); fruit is The Hunt's only Blue and decides it, P6 keeps most of it. The Hunt has no Blue node: Spool loses there at Tide 5 whatever its numbers, Tide 10 if it hunts two small aura beasts a Tide (whether a vessel can kill them is the next measure).
 
 ### Decisions
 
@@ -755,7 +758,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
-| 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`): the study's wall doesn't hold; re-run the simulator before picking | nothing changes |
+| 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 
 ### Phase 5 pieces

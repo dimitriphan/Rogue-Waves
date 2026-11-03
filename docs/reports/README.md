@@ -5,6 +5,8 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `BALANCE_RERUN_2026-11-03.md` | 2026-11-03 | The balance simulator re-run on the PC round's measures (`balance_rerun_2026-11-03/`, 11,880 runs, analysis only): the Opal pays every colour, Woozy's first node matters most; with a wall that holds P2 and P3 carry Spool, on a line foes walk round no number helps; P5 barely matters; The Hunt is decided by Blue (fruit, aura beasts) |
+| `BALANCE_ROUND_2026-11-03.md` | 2026-11-03 | The PC round behind the balance study: nodes, gatherers and Crafted measured in game (M1-M11); foes walk round a line of walls, so P1-P4 wait for a person's wall |
 | `AURA_BASELINE_2026-11-03.md` | 2026-11-03 | What a map pays and what each vessel mines, read from the game's code: one stock gatherer earns 17-36 aura a Tide by a Red node, a base vessel about 4,800 a map; Yossele's Sapling mines 2-2.5× and Spool's Loom 4-5× the base average. Proposals P5-P7 (a slower Sapling, cheaper fruit, Spool's Loom line); P1-P4 stand; PC checks M8-M11 |
 | `UX_FEATURES_2026-11-03.md` | 2026-11-03 | Buttons, transition screens, the lobby and other UX ideas checked against the game's own screens (decompiled and read): 33 feasible on stock UI, 5 not possible, five recommended first; ten facts new to the kit and ten solo probes |
 | `BALANCE_2026-11-03.md` | 2026-11-03 | Yossele and Spool studied in a simulator calibrated on the 2026-10-26 play test (`balance_2026-11-03/`, about 13,000 runs): Yossele unchanged; Spool's early game is the Pin Cushion wall, its late game needs three numbers (proposals P1-P4); PC test plan |
