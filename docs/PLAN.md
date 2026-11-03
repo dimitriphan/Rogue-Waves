@@ -258,15 +258,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
   the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
   2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
-  nothing wired changes; Log). Older entries are in "Log" below.
+  nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
+  60 s breaks, `RW_` keys; compiled, not run; Log). Older entries are in "Log" below.
 - **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
   "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
-  and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
-  turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
-  A3-9, B4-11, B4-12, B4-14, C2), and
-  its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
+  and the in-map vote (kit 1.7 first, Decisions 2026-10-15; the campaign itself no longer needs kit 1.7's "Leave" fix,
+  `docs/reports/MODE_POLISH_2026-11-03.md` F13); the mode's next PC round runs its new checks (K0, CH, K1, P1, T0-T6,
+  H1) and Dimitri confirms the polish's readings (that report §2). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
@@ -525,6 +525,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   tuft, the needle model; the fifteen 12 x 12 icons and the 32 px crest. 35 picks, one per animation, so versions
   can mix. Generators `concept-tools/temp_art/variants_*.py`, `apply_picks.py`; page `variants_page.py`. Nothing
   wired changed and nothing was seen in game.
+- **2026-11-03, mode polish (Dimitri's "Run 3, 4, and 5", item 4):** RogueWavesMode checked line by line against scope
+  `04` and `docs/mode/`, two passes: 15 issues fixed as **0.1.0-dev** (the pack version plus `-dev`): 3 retries (only
+  the lost map can be picked until won), the host leaving a running map loses it (saved while it runs, counted on the
+  boat or by Continue), won once Tide 15 is cleared, ten maps complete the campaign and the party goes home, 60 s
+  breaks, `RW_` save keys with a one-time rename, at most 3 links per chart map (`sea_chart.py` too), scope `04`'s
+  weather lines, rejoin B4-12/B4-14, the dev description (B4-13), and B2-1 on the mode's side. Compiled 0 errors in all
+  three builds; chart parity on 2,001 seeds. New self-test checks K0, CH, K1, P1, T0-T6, H1; not run.
+  `docs/reports/MODE_POLISH_2026-11-03.md` (§2 readings and §3 judgment calls for Dimitri).
 
 ### Decisions
 
@@ -687,7 +695,9 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
   (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)
 - [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;
   online O1-O8 left)
-- [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth, on hold)
+- [ ] leave-or-stay and bonus tides (a map is won at Tide 15 and 60 s breaks are built, 0.1.0-dev, compiled)
+- [ ] 10-map campaign loop (retries, replay, host quit, completion: built in 0.1.0-dev, compiled, not run)
+- [ ] ascension (Depth, on hold)
 
 ---
 

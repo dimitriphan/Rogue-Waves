@@ -4,16 +4,21 @@
 //                  node but the next choices, hides the Warp button, writes the picked node's weather into the Setup
 //                  panel and preloads that weather's objects
 //   host           once the boat is up and a campaign is on, warps the party onto the chart the way Selectworld_ServerRpc
-//                  does; notes the node picked (Selected) for the map about to load; keeps chart names out of the save
+//                  does; notes the node picked (Selected) for the map about to load; keeps chart names out of the save.
+//                  A map left while it ran counts as lost here (RWCampaign.OnBoat); after a lost map only that map can be
+//                  picked (RWCampaign.Open: the retry replays it). With no campaign on, a party still on a chart is taken
+//                  back to the stock world it sailed from
 //   leader (host)  when RWCampaign.Choice names a column (the vote's winner, or a self-test), hovers that node so the
 //                  stock boat sails there, and picks it on arrival (Selectmap_ServerRpc), which opens the Setup panel
 // Until the vote piece exists (docs/mode/SEA_CHART.md §4, route V1: the in-map vote), the leader may also steer with the stock
-// arrows: they only offer the next row's linked maps, and only those can be picked.
+// arrows: they only offer the next row's linked maps, and only those can be picked (on the host, only the map to replay
+// after a loss; only the leader steers, so the host's blacklist is the one that counts).
 public static class RWBoat
 {
     static Macro_Main seenMain;
     static float upAt = -1f, slowAt, arriveSince = -1f;
     static GameObject keptWorld;
+    static int keptReplay = -1;
     public static string Warped = "";        // the chart the host warped to in this boat scene
     public static string Sailing = "";       // the node the leader's boat is sailing to by itself
     public static float SailedAt = -1f;      // realtime the sail started, and when it arrived (self-test reads them)
@@ -70,15 +75,23 @@ public static class RWBoat
         if (!RWWorld.Parse(vis.World.name, out seed, out route))
             return;
         RWChart.Chart chart = RWWorld.Chart(seed);
-        if (keptWorld != vis.World)
+        bool campaign = RWUtil.IsHost && RWCampaign.Live && vis.World.name == RWCampaign.WorldName();
+        int replay = campaign ? RWCampaign.Replay : -1;
+        if (keptWorld != vis.World || keptReplay != replay)
         {
             keptWorld = vis.World;
+            keptReplay = replay;
             List<string> open = new List<string>();
-            foreach (RWChart.Node n in RWWorld.Choices(chart, route)) open.Add(n.Name);
+            foreach (RWChart.Node n in campaign ? RWCampaign.Open() : RWWorld.Choices(chart, route)) open.Add(n.Name);
             int shut = 0;
             foreach (Macro_Link_Add_Base node in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
-                if (!open.Contains(node.name) && !main.Blacklist.Contains(node)) { main.Blacklist.Add(node); shut++; }
-            RWLog.Info("on " + vis.World.name + ": choices " + string.Join(", ", open.ToArray()) + "; " + shut + " nodes blacklisted");
+            {
+                bool closed = !open.Contains(node.name), listed = main.Blacklist.Contains(node);
+                if (closed && !listed) main.Blacklist.Add(node);
+                else if (!closed && listed) main.Blacklist.Remove(node);   // open again (a replay was won or dropped)
+                if (closed) shut++;
+            }
+            RWLog.Info("on " + vis.World.name + ": choices " + string.Join(", ", open.ToArray()) + (replay >= 0 ? " (the lost map, replayed)" : "") + "; " + shut + " nodes blacklisted");
         }
         if (!slow)
             return;
@@ -115,15 +128,19 @@ public static class RWBoat
     {
         if (slow)
             Guard();
+        RWCampaign.OnBoat();
         if (!RWCampaign.Live)
+        {
+            Home(main, vis);
             return;
+        }
         string target = RWCampaign.WorldName();
         if (main.Worlded.Value.ToString() != target && Warped != target && !vis.Inworldtransition && Time.realtimeSinceStartup - upAt > 1.5f)
             Warp(main, vis, target);
         if (!OnChart || vis.World.name != target)
             return;
         RWChart.Node picked = RWCampaign.Chart.Find(main.Selected.Value.ToString());
-        if (picked != null && RWWorld.Choices(RWCampaign.Chart, RWCampaign.Route).Contains(picked) && RWCampaign.Next != picked)
+        if (picked != null && RWCampaign.Open().Contains(picked) && RWCampaign.Next != picked)
         {
             RWCampaign.Next = picked;
             RWCampaign.Choice = -1;
@@ -156,13 +173,36 @@ public static class RWBoat
         RWLog.Info("warped the party onto " + target);
     }
 
+    // No campaign on (it ended, or was left behind) but the party is on a chart: back to the stock world the boat sailed
+    // from, the same way the warp onto the chart went, so no chart map is played outside a campaign.
+    static void Home(Macro_Main main, Macro_Worldvisual vis)
+    {
+        if (!OnChart || vis.Inworldtransition || Time.realtimeSinceStartup - upAt < 1.5f)
+            return;
+        string world, plan;
+        RWCampaign.Stock(out world, out plan);
+        if (world == "" || world.StartsWith(RWData.WorldPrefix) || Warped == world || main.Worlded.Value.ToString() == world)
+            return;
+        if (RWUtil.Item<Mapworlddatabaseobject>("World", world) == null)
+        {
+            RWLog.Once("home " + world, "no campaign, but the stock world " + world + " isn't in the database: the party stays on the chart");
+            return;
+        }
+        Tds_Multiplayerinfo.Instance.World.Value = new FixedString64Bytes(world);
+        if (main.Selected.Value.ToString() != "")
+            main.Selected.Value = new FixedString64Bytes("");
+        main.Worlded.Value = new FixedString64Bytes("");
+        main.Worlded.Value = new FixedString64Bytes(world);
+        Warped = world;
+        RWLog.Info("no campaign on: took the party back to " + world);
+    }
+
     // Hovers the chosen node as the leader's click would, so the stock boat sails there; picks it on arrival.
     static void Sail(Macro_Main main, Macro_Worldvisual vis)
     {
-        List<RWChart.Node> choices = RWWorld.Choices(RWCampaign.Chart, RWCampaign.Route);
         RWChart.Node to = null;
-        foreach (RWChart.Node n in choices) if (n.Col == RWCampaign.Choice) to = n;
-        if (to == null) { RWLog.Warn("choice " + RWCampaign.Choice + " is not a link of where the boat stands"); RWCampaign.Choice = -1; return; }
+        foreach (RWChart.Node n in RWCampaign.Open()) if (n.Col == RWCampaign.Choice) to = n;
+        if (to == null) { RWLog.Warn("choice " + RWCampaign.Choice + " is not open from where the boat stands" + (RWCampaign.Replay >= 0 ? " (the lost map, column " + RWCampaign.Replay + ", is replayed)" : "")); RWCampaign.Choice = -1; return; }
         Macro_Link_Add_Base node = null;
         foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             if (l.name == to.Name) node = l;

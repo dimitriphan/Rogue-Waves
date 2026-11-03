@@ -1,5 +1,45 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev (2026-11-03): the mode polish
+
+The coordinator's mode-polish pass (Dimitri's "Run 3, 4, and 5", 2026-11-03): the part checked line by line against
+`docs/scope/04` and `docs/mode/`; the findings, the judgment calls kept for Dimitri and what is not built are in
+`docs/reports/MODE_POLISH_2026-11-03.md`. **State:** compiled here (release and `ROGUEWAVESMODE_SELFTEST`: 0 errors;
+editor builder clean); chart parity with `sea_chart.py` on seeds 1-2000 and 20261009. **Not run in game.**
+
+- **Version** `0.1.0-dev`: the pack version plus `-dev` (`docs/PACK.md` §4), in `RWData.Version` and the prefab
+  builder; the part counted its own versions before (0.1-0.3.0).
+- **Save keys** (`01_Util.cs`, `RWKeys`): every key in `RogueWaves` carries `RW_` (kit `docs/23` §2 rule 3).
+  `RWKeys.Migrate`, every machine from launch, renames the six old keys once per save object (the value is kept
+  unless the new key already exists) and logs "save: N keys of RogueWaves renamed".
+- **Retries** (`06_Campaign.cs`): 3 per campaign. A lost map spends one; the boat then offers only that map
+  (`RWCampaign.Open`, the host's blacklist) until it is won. With none left the campaign ends and leaves the save.
+- **The map in play** is in the save while it runs (`RW_Campaign_Playing`, set at `ModKitTides.MapStart` when the
+  map is the chart's). If the host leaves it, it counts as lost: on the boat in the same launch (`RWCampaign.OnBoat`)
+  or by `Continue` in a later one. So a late "Leave" (kit bug B1) changes nothing: the map was already counted and
+  `MapEnd` ignores a map no longer in play. That also ends B2-1 (the next map losing its weather and route).
+- **Won at Tide 15** (`RWCampaign.Tide`): when Tide 16 starts the map is won and every later Tide is a bonus Tide, so
+  dying in one loses nothing; a "Win" end before it also wins. Ten maps won complete the campaign (it leaves the save;
+  Depth, its reward, is on hold).
+- **Breaks** (`02_Mode.cs`): every break between Tides of `Mode_RogueWave` is 60 s (Mode_Normal's 30 s, and its one
+  10 s break before Tide 19); the opening break keeps Mode_Normal's 45 s. The `Waves` entries are structs, so
+  Mode_Normal's table is untouched (K0 checks it).
+- **Home** (`05_Boat.cs`): with no campaign on (ended, or left behind by a slot switch) a party still on a chart is
+  warped back to the stock world it sailed from (`RW_Stock_World`), so no chart map is played outside a campaign.
+- **Chart links** (`03_Chart.cs`, `concept-tools/sea_chart.py`): a row's last map takes at most 3 links (scope `04`
+  [Sea Chart]); before, 1,399 of 20,000 charts had a map with 4. Seed 20261009 is unchanged.
+- **Weather lines** (`07_Weather.cs`): Quickening's and Nesting's in-game lines are scope `04`'s.
+- **Rejoin** (`09_Rejoin.cs`): a turned-away player is forgotten once they leave, so a second Join Game turns them
+  away again (B4-14, `docs/mode/REJOIN.md` O5); the "Lost the map" line names this map's host (B4-12).
+- **Prefab description** names the retries and the rejoin (B4-13).
+
+New self-test checks for the next PC round: **K0** and **CH** at boot (breaks; 500 charts with 1-3 links), **K1** (no
+unprefixed key), **P1** per map (the map in play is saved), **C5** (a won map is no longer in play), **T0-T6** on the
+boat after S2 with pretend map ends (retries, replay-only blacklist, host quit on the boat and by Continue, Tide 16
+wins and a later loss costs nothing, no retry left ends it, the tenth map completes it), **H1** (taken home after
+`Stop`). What only the game can tell: whether the blacklist alone keeps the other choices from being picked during a
+replay (the arrows still point at them, as for every closed node), and the chat lines on the boat.
+
 ## 0.3.0 (2026-10-15): fixes from the decompile
 
 Dimitri asked to fix the four problems the decompile found in the pack (kit `docs/19` §3-5, `23` §6; pitfalls

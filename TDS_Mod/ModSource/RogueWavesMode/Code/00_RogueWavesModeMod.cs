@@ -61,7 +61,9 @@ public class RogueWavesModeMod : MonoBehaviour
         catch (Exception e) { RWLog.Warn("mode not registered: " + e); }
         try { RWLog.Info("chart pool: " + RWMode.Pool.Count + " base maps"); }
         catch (Exception e) { RWLog.Warn("chart pool: " + e.Message); }
+        ModKitTides.MapStart += RWCampaign.MapStart;
         ModKitTides.MapStart += RWWeather.MapStart;
+        ModKitTides.Tide += RWCampaign.Tide;
         ModKitTides.Tide += RWWeather.Tide;
         ModKitTides.MapEnd += RWCampaign.MapEnd;
         ModKitTides.MapEnd += RWWeather.MapEnd;
@@ -74,7 +76,8 @@ public class RogueWavesModeMod : MonoBehaviour
 
     void Update()
     {
-        // Before Ready: the id must be back in the save before the player can join anyone.
+        // Before Ready: the id must be back in the save before the player can join anyone, under its RW_ key.
+        try { RWKeys.Migrate(); } catch (Exception e) { RWLog.Once("keys", "save keys: " + e); }
         try { RWIdentity.Update(); } catch (Exception e) { RWLog.Once("identity", "identity: " + e); }
         if (!Ready)
             return;
@@ -92,12 +95,14 @@ public class RogueWavesModeMod : MonoBehaviour
 public static class RWData
 {
     public const string Part = "Mode";
-    public const string Version = "0.3.0";               // pack version (docs/PACK.md §4); 0.1: sea chart and sea weather; 0.2: rejoin; 0.3: restart rejoin, load watch, slot guard
+    public const string Version = "0.1.0-dev";           // the pack version plus -dev (docs/PACK.md §4), since 2026-11-03; before it the part counted
+                                                         // its own: 0.1 sea chart and sea weather, 0.2 rejoin, 0.3.0 restart rejoin, load watch, slot guard
     public const string Mode = "Mode_RogueWave";         // the mode's entry, group and Modeobject name
     public const string ModeDisplay = "Rogue Waves";
     public const string StockMode = "Mode_Normal";
     public const string PlanPrefix = "RW_";              // + the base Gameplan's name: its twin in Mode_RogueWave
     public const string SaveFolder = "RogueWaves";
+    public const string KeyPrefix = "RW_";               // every key in SaveFolder (kit docs/23 §2 rule 3): RWKeys
     public const string WorldPrefix = "RW_Chart_";       // + seed + "_" + one column digit per row sailed
 }
 

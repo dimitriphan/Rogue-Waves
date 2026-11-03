@@ -21,6 +21,7 @@ import os, sys
 ROWS = 10
 STRETCH = 5
 NEAREST = 5                                       # a node draws among this many maps nearest its row's aim
+MAX_LINKS = 3                                     # a map links to 1 to 3 maps in the next row (scope 04 [Sea Chart])
 
 CALM, RISING_WATER, QUICKENING_CURRENT, NESTING_GROUND = 0, 1, 2, 3
 WEATHERS = ["Calm", "Rising Water", "Quickening Current", "Nesting Ground"]
@@ -73,9 +74,10 @@ def links_between(rng, w, nw):
     on (i+1, k+1); every cell it visits is a link. So links never cross and every node in both rows is linked. A node
     with one child so far takes a second five times in six; one with two shares its last child with the next node, or,
     when the next row has spare nodes to reach, moves on to a new child half the time, takes a third a quarter of the
-    time and shares a quarter of the time. The row's last node takes every child left. Without crossings, a node can't
-    always have two children (rows of equal width need some single links), so a vote after a map offers 1-3 maps (map
-    1's vote offers the whole first row, 3 or 4)."""
+    time and shares a quarter of the time. The row's last node takes every child left, but never more than MAX_LINKS
+    (scope 04: a map links to 1 to 3): when moving on would leave it 4, the node before it takes another child instead.
+    Without crossings, a node can't always have two children (rows of equal width need some single links), so a vote
+    after a map offers 1-3 maps (map 1's vote offers the whole first row, 3 or 4)."""
     i = k = 0
     kids = [[0]] + [[] for _ in range(w - 1)]
     while (i, k) != (w - 1, nw - 1):
@@ -91,6 +93,8 @@ def links_between(rng, w, nw):
             move = ("ik", "ik", "k", "i")[rng.below(4)]
         else:
             move = "ik" if spare > 0 else "i"
+        if "i" in move and i + 1 == w - 1 and nw - (k + ("k" in move)) > MAX_LINKS:
+            move = "k"                            # the last node would take more than MAX_LINKS children
         if "i" in move: i += 1
         if "k" in move: k += 1
         kids[i].append(k)
