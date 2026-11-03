@@ -239,7 +239,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
   clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
   2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
-  sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-27: a temporary art pass
+  sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-23: Spool's answers folded
+  into scope `08`; the Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports
+  the sheet (Log). 2026-10-27: a temporary art pass
   (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
@@ -433,6 +435,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   loaded (#110), none a rule of the sheet (Yossele's `IMPLEMENTATION_NOTES.md`). Release boot check clean; 0.2.0-dev is
   his play build, 0.1.0-dev parked on the PC. Pitfalls: #106 corrected (a node pays on the hit after `Healthresource`
   reaches 0: `Resource_Orange` has `Health` 1), #111 (a foe's health reads 0 right after its spawn).
+- **2026-10-23, Spool answers and the Vessel Editor:** Dimitri's `08_Vessel_Spool1.txt` folded into scope `08` (the
+  Yarn Stash is the one supply base, the Cookie Tin uses its Thread, the Thread Head returns there and is bought from
+  the build menu with no limit, Patch heals up to 500; Questions 1-3 gone). His `07_Vessel_Yossele2.txt` equals scope
+  `07` already. The Vessel Spotlight (version 3, same link) shows his reshade frames and reads the sheets with a new
+  JS parser; the new **Vessel Editor** (https://claude.ai/artifact/JiVvnHii85Fg9c1DBMC6wj) edits Spool and Yossele or
+  a new vessel from the template, saves in the page, and exports the `.txt` byte for byte with `~defaults~` (tested:
+  07, 08, 09, 10, 16 and both uploads round-trip unchanged). Its source and README are in project files
+  `concepts/vessel_spotlight_2026-10-15/`.
 
 ### Decisions
 
