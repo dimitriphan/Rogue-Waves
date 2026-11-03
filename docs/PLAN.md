@@ -242,7 +242,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-23: Spool's answers folded
   into scope `08`; the Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports
   the sheet (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from scope `08` with temporary art; its first
-  PC round passed its self-test 120/0 on round 1c (Log). 2026-10-27: a temporary art pass
+  PC round passed its self-test 120/0 on round 1c (Log). 2026-10-26: Yossele 0.2.0-dev and Spool 0.1.0-dev played
+  through the HUD by a virtual player on three maps; two bugs fixed on PRs #41 and #42 and seen fixed in game; Spool's
+  first Tide is too thin (`docs/reports/PLAYTEST_2026-10-26.md`). 2026-10-27: a temporary art pass
   (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
@@ -270,7 +272,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
   probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
   N8-N11 stay read only until a round needs them (never N12).
-- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
+- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
+  (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
+  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE.
 - **Next free numbers:** kit chapter 25, pitfall #121 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8).
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -470,6 +474,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pitfall #112; Spool's own army felling the test's foes; Tins and Thread Heads moving Thread mid-check); the one real
   slip, Slow Unravel's delayed half starting a frame early, is fixed. No exception from Spool. The self-test sends the
   build, sell, TARGET and SPOT commands itself, so the clicking (pickers, build menu) waits for Dimitri's play test.
+- **2026-10-26, play test:** at Dimitri's "Do a test run of Yossele and Spool as if you were a player testing these
+  characters", a debug-only virtual player (kit `ModKitPlay`, play builds only; Input System events on the game's own
+  mouse and keyboard, so the HUD, the map and the keys get a hand's input) played 12 runs on Purlest, Woozy and The Hunt.
+  Found and fixed: the Thread Head's panel never drew (RETURN's and MEND's keybinds named input actions the game doesn't
+  have; PR #42, pitfall #113) and Hallucinogen's stun look is a stock effect Woozy doesn't load (PR #41, pitfall #114).
+  Balance, what was clicked and what needs Dimitri: `docs/reports/PLAYTEST_2026-10-26.md`.
 - **2026-10-28, engine study and scope fit:** at Dimitri's ask ("understand as much as you can about how it functions,
   and plan how ideas in the scope could seamlessly fit in without needing to create new mechanics") the game was
   decompiled again in the cloud (never committed) and read against the kit. `docs/reports/ENGINE_STUDY_2026-10-28.md`

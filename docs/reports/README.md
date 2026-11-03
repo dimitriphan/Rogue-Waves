@@ -10,6 +10,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 | `ENGINE_STUDY_2026-10-28_BEHAVIOURS.md` | 2026-10-28 | Its appendix: all 284 stock behaviour scripts indexed with whether a pack can reuse them, how they were checked, the most reusable per group; full entries in `engine_study_2026-10-28/` |
 | `SCOPE_FIT_PLAN_2026-10-28.md` | 2026-10-28 | Every idea of scope 00-16 matched to the stock mechanic, class and data path it rides on; none needs a new mechanic; eight probes, all passed in RogueLab round 8 (2026-10-29, §11) |
 | `YOSSELE_TEST_PLAN_2026-10-23.md` | 2026-10-23 | Yossele 0.2.0-dev: every case not yet seen in game, which check covers it (PC round 9's self-test, play, by eye, online), and the cloud checks run |
+| `PLAYTEST_2026-10-26.md` | 2026-10-26 | Yossele 0.2.0-dev and Spool 0.1.0-dev played through the HUD by a virtual player on Purlest, Woozy and The Hunt: two bugs fixed (the Thread Head's panel, Hallucinogen's look), every upgrade clicked, the balance read, what needs Dimitri's eye |
 | `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | 23 passes over every file (stopped at Dimitri's word after one clean pass); what was fixed, why each pass found issues, what is left for Dimitri |
 | `QUALITY_CHECK_2026-10-15.md` | 2026-10-15 | Two quality passes over every file, the open PRs included, and the repository's reorganisation |
 | `BASE_VESSEL_CHECKS_2026-10-12.md` | 2026-10-12 | Kit `17` §12 and `16` §9 checked in game by RogueLab round 7 |
