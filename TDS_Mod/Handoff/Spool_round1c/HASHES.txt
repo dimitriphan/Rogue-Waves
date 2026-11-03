@@ -1,0 +1,4 @@
+# Handoff Spool_round1c: commit e61e31d of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit 8c1ca93.
+7cfecf4b68de9bc2  5c0a950ae23094e9  ModSource\Spool\Code\99_SelfTest.cs
+8bed706095fbe259  26e6bf11078a83e1  ModSource\Spool\IMPLEMENTATION_NOTES.md

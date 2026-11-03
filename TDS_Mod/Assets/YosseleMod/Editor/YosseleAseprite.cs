@@ -219,7 +219,9 @@ namespace YosseleBuild
             if (name == V + "Idlejustidle-Sheet" && h == 32) return Row(Lay(32, 80, "0"), "menu_idle", w / 32, "idle");
             if (!name.EndsWith("-Sheet")) return null;
             string rem = name.Substring(0, name.Length - 6);
-            if (!rem.StartsWith(V) && h == 64 && w % 16 == 0)
+            // A unit sheet is the only one 64 high: its name may start with the vessel's (the scaffold names the template's unit
+            // <Name>unit), so the name is not checked.
+            if (h == 64 && w % 16 == 0)
             {
                 string u = Snake(rem);
                 var l = Lay(16, 10, rem);
