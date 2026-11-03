@@ -6,6 +6,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 | Report | Date | What |
 | --- | --- | --- |
 | `UX_FEATURES_2026-11-03.md` | 2026-11-03 | Buttons, transition screens, the lobby and other UX ideas checked against the game's own screens (decompiled and read): 33 feasible on stock UI, 5 not possible, five recommended first; ten facts new to the kit and ten solo probes |
+| `BALANCE_2026-11-03.md` | 2026-11-03 | Yossele and Spool studied in a simulator calibrated on the 2026-10-26 play test (`balance_2026-11-03/`, about 13,000 runs): Yossele unchanged; Spool's early game is the Pin Cushion wall, its late game needs three numbers (proposals P1-P4); PC test plan |
 | `MODE_POLISH_2026-11-03.md` | 2026-11-03 | The mode part checked line by line against the scope: 15 issues fixed as 0.1.0-dev (retries, Tide 15 wins, 60 s breaks, `RW_` keys), the readings and judgment calls for Dimitri, what is not built yet |
 | `MISTAKE_CHECK_2026-10-28.md` | 2026-10-28 | Two passes over every file for mistakes (wrong facts, bugs, broken pointers): 31 found, 28 fixed, 3 listed; every mod compiles clean |
 | `PRIORITIES_2026-10-28.md` | 2026-10-28 | What the project needs most now: the scope read against the state, ranked for Release 1 (Yossele alone), with the scope gaps and open `~defaults~` blocking each item |

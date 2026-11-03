@@ -261,7 +261,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
   60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art
   (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a UX features study; Dimitri
-  picked its five recommended features for Phase 5 (`docs/reports/UX_FEATURES_2026-11-03.md`; Decisions; Log). Older entries are in "Log" below.
+  picked its five recommended features for Phase 5 (`docs/reports/UX_FEATURES_2026-11-03.md`; Decisions; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
+  calibrated on the 2026-10-26 play test (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's
+  proposals P1-P4 wait for his pick (Open questions 3; Log). Older entries are in "Log" below.
 - **Next:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
@@ -272,7 +274,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
-  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass
+  (the 2026-11-03 balance study proposes no change), the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
   `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
   sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
   probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
@@ -281,7 +284,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
   (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
-  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE.
+  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
+  balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
+  squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
 - **Next free numbers:** kit chapter 25, pitfall #121 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8).
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -552,6 +557,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the campaign card, retry warnings, a "friend has no mods" warning with rejoin instructions, weather icons on the
   chart, the pack's tips. Ten facts new to the kit (X1-X10, read) and ten solo probes (U1-U10) wait for a round.
   Dimitri picked the five recommended (decision card, 06:21Z); they are on the Phase 5 list.
+- **2026-11-03, balance study (cloud only):** at Dimitri's ask (a long virtual play test of Yossele and Spool), a
+  simulator of a map Tide by Tide (`docs/reports/balance_2026-11-03/`, Python, no game code) was calibrated on the
+  2026-10-26 play test and run about 13,000 times on Purlest, Woozy and The Hunt, Smacky as the yardstick. Found: the
+  2026-10-26 play test had three Coin Cardinals equipped; Red is every vessel's scarce colour and Purlest's Opal is
+  what piles up Blue; Yossele is at or above Smacky everywhere (no change; moving its costs to Blue loses Woozy);
+  Spool's thin first Tide is the missing Pin Cushion wall, and it loses Purlest at Tide 11 to the Maul and Tempered
+  Aegis. Proposed (his pick, Open questions 3): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 / Dart 3.5 Damage (all
+  Claude `~defaults~` in scope `08`), a "wall first" line; a PC round to confirm (report §9).
 
 ### Decisions
 
@@ -709,6 +722,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
 | 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
+| 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round | numbers as written in scope `08`; nothing changes until he picks |
 
 ### Phase 5 pieces
 
