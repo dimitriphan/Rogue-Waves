@@ -61,7 +61,8 @@ public static class MummerContent
 
     public static string Summary()
     {
-        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + VfxRegistered + " effects, icons " + (IconsReady ? "ok" : "stock") + ", Aegis block '" + AegisBlock + "'";
+        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + VfxRegistered + " effects, icons " + (IconsReady ? "ok" : "stock") + ", Aegis block '" + AegisBlock + "'"
+            + ", towers fitted " + ModKitTowers.Fitted;
     }
 
     // ---------------------------------------------------------------- registration
@@ -396,6 +397,11 @@ public static class MummerContent
         bool stage = b.Id == MummerData.Stage;
         ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display, stage);
         Register("Mob", ent.Defaultvisual);
+        // Kit 1.2: the range sphere the game draws (and the stock AIs measure from) sits on this tower, at the height its
+        // brain measures from (its Entityposition), not where the template's hit prefab put it (the archer's 0.75 up).
+        // Traps keep the template's walk-through hit prefab.
+        if (!ent.Tags.Contains("Trap"))
+            ModKitTowers.Fit(ent, b.Id, MummerAssets.Model(b.Id), 0f, 0.05f, Array.Exists(b.Stats, s => s.StartsWith("Range=")));
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from MummerData.
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
