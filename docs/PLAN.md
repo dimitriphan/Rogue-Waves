@@ -241,7 +241,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
   sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-23: Spool's answers folded
   into scope `08`; the Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports
-  the sheet (Log). 2026-10-27: a temporary art pass
+  the sheet (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from scope `08` with temporary art; its first
+  PC round passed its self-test 120/0 on round 1c (Log). 2026-10-27: a temporary art pass
   (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
@@ -259,11 +260,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
-  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Uloe is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
-  Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6); Spool (PR #42) was scaffolded without them and takes them at its next round.
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
+  `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
+  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
+- **Next free numbers:** kit chapter 25, pitfall #115 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -445,6 +446,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a new vessel from the template, saves in the page, and exports the `.txt` byte for byte with `~defaults~` (tested:
   07, 08, 09, 10, 16 and both uploads round-trip unchanged). Its source and README are in project files
   `concepts/vessel_spotlight_2026-10-15/`.
+- **2026-10-26, template before Spool:** the kit template (Mummer's scaffold) took the 1.6 pack calls, `ModKitCombat`
+  kill credit, `ModKitTowers.Fit` tower ranges and unthrottled debuff looks; the Aseprite writers keep unit sheets named
+  after the vessel (B10, B1-3, B1-22, B1-4, C2-6). Compiled, not run.
+- **2026-10-26, Spool 0.1.0-dev:** Dimitri: "Begin implementing Spools mechanics." Built from scope `08` as PR #40 leaves
+  it: the Yarn Stash first (the menu holds only it until it stands), Thread dropped by foes and carried home by Spool
+  and Thread Heads (ground Thread is a host list drawn by each client, not network entities), the Cookie Tin and its
+  Crafted (TARGET with the fish's picker), the Thread Head (placed through a walk-through token; SPOT, RETURN, Threaded
+  Delivery, MEND, comeback with its upgrades), the Pin Cushion's hit hook (reflect, spin, Slow Unravel, Mangled), the
+  Loom (spins Thread, Direct Line, Seams), PATCH; every upgrade the sheet names. Temporary art from Dimitri's reshade
+  (the walk is the 2026-10-12 concept, pixel for pixel), 19 models, 6 effects, 14 sounds. `check_mod.py` 0 errors in
+  release and both test builds, `check_editor.sh` clean. Defaults: `TDS_Mod/ModSource/Spool/DESIGN.md` "Defaults
+  picked here".
+- **2026-10-26, Spool PC round 1** (Dimitri: "Go ahead"; Yossele parked and put back each time): 1 = 95/22, 1b =
+  117/3, 1c = **120/0**. All but one fail were the self-test tripping over itself (foes killed in their spawn frame,
+  pitfall #112; Spool's own army felling the test's foes; Tins and Thread Heads moving Thread mid-check); the one real
+  slip, Slow Unravel's delayed half starting a frame early, is fixed. No exception from Spool. The self-test sends the
+  build, sell, TARGET and SPOT commands itself, so the clicking (pickers, build menu) waits for Dimitri's play test.
 
 ### Decisions
 
@@ -591,6 +609,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
+| 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
 
 ### Phase 5 pieces
 
