@@ -1,5 +1,9 @@
 # Yossele build notes (0.1.0-dev, 2026-10-12)
 
+> **Frozen at 0.1.0-dev.** Since 2026-10-23 the build is 0.2.0-dev, made from the 2026-10-20 sheet: its defaults are
+> in `TDS_Mod/ModSource/Yossele/DESIGN.md` ("Changes from the concept"), its new art in
+> `TDS_Mod/ModSource/Yossele/Previews/0.2/ASSETS.md`. The lists below describe the 0.1 build.
+
 Dimitri asked (2026-10-12): build Yossele from the updated `docs/scope/07_Vessel_Yossele.txt`, generate temporary art
 where none exists from the reshade, give every missing balance value a default, and **list every generated asset that
 did not exist before and every value the document left open**. This file is those two lists, plus what the scope files

@@ -145,8 +145,58 @@ namespace YosseleBuild
         static void SaveSheet(Px px, string folder, string name, int cw, int ch, Vector2 pivot)
         {
             string path = Root + "/Art/" + folder + "/" + name + ".png";
-            YosseleAseprite.Apply(px, folder, name, cw).Save(Abs(path));
+            YosseleAseprite.Apply(FileArt(px, name), folder, name, cw).Save(Abs(path));
             sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
+        }
+
+        // A sheet the code draws can be replaced by a file of the same name and size: ModSource/Yossele/Art/<name>.png
+        // (final art) wins over ModSource/Yossele/Art/Temporary/game_size/<name>.png (temporary art, docs/TEMP_ART.md),
+        // and either wins over the code. Hand-edited Aseprite frames still merge on top. A file of the wrong size is
+        // skipped and logged.
+        static Px FileArt(Px code, string name)
+        {
+            string final = Path.Combine(Source, "Art", name + ".png");
+            string temp = Path.Combine(Source, "Art", "Temporary", "game_size", name + ".png");
+            string from = File.Exists(final) ? final : File.Exists(temp) ? temp : null;
+            if (from == null)
+                return code;
+            var t = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            try
+            {
+                if (!ImageConversion.LoadImage(t, File.ReadAllBytes(from)) || t.width != code.W || t.height != code.H)
+                {
+                    log.AppendLine("sprites: " + name + ".png kept the code's art: " + from + " is " + t.width + "x" + t.height + ", not " + code.W + "x" + code.H);
+                    return code;
+                }
+                var arr = t.GetPixels32();
+                var px = new Px(code.W, code.H);
+                for (int y = 0; y < px.H; y++)
+                    for (int x = 0; x < px.W; x++)
+                        px.C[y * px.W + x] = arr[(px.H - 1 - y) * px.W + x];
+                log.AppendLine("sprites: " + name + ".png from " + (from == final ? "Art/ (final)" : "Art/Temporary/ (temporary)"));
+                return px;
+            }
+            finally { UnityEngine.Object.DestroyImmediate(t); }
+        }
+
+        // A sheet drawn as a file instead of by code: ModSource/Yossele/Art/<name>.png (final art) wins over
+        // ModSource/Yossele/Art/Temporary/game_size/<name>.png (temporary art, Art/Temporary/README.md). Neither there: skipped,
+        // and the code falls back (the Cordyfriend keeps the Snoble's tinted look).
+        static void CopySheet(string folder, string name, int cw, int ch, Vector2 pivot)
+        {
+            string final = Path.Combine(Source, "Art", name + ".png");
+            string temp = Path.Combine(Source, "Art", "Temporary", "game_size", name + ".png");
+            string from = File.Exists(final) ? final : File.Exists(temp) ? temp : null;
+            if (from == null)
+            {
+                log.AppendLine("sprites: " + name + ".png not found in Art/ or Art/Temporary/game_size/, skipped");
+                return;
+            }
+            string path = Root + "/Art/" + folder + "/" + name + ".png";
+            Directory.CreateDirectory(Path.GetDirectoryName(Abs(path)));
+            File.Copy(from, Abs(path), true);
+            sheets.Add(new SheetInfo { Path = path, Name = name, CellW = cw, CellH = ch, Pivot = pivot });
+            log.AppendLine("sprites: " + name + ".png from " + (from == final ? "Art/ (final)" : "Art/Temporary/ (temporary)"));
         }
 
         static void WriteSprites()
@@ -167,6 +217,7 @@ namespace YosseleBuild
             SaveSheet(YosseleCharacter.EndLose(), "UI", "Yosseleendstat2", 32, 32, c);
             SaveSheet(YosseleCharacter.ReadyUp(), "UI", "Readyup6yossele", 12, 12, c);
             SaveSheet(YosseleCharacter.TabIcon(), "UI", "Yosseletabicon", 32, 32, c);
+            CopySheet("Unit", "Yosselefriend-Sheet", 24, 24, foot);
             log.AppendLine("sprites: " + sheets.Count + " sheets");
             YosseleAseprite.WriteGenerated();
         }
@@ -554,6 +605,7 @@ namespace YosseleBuild
                 new VfxSpec { Name = "Debuff_Yossele_Spores", Use = "Spore stacks: green-brown puffs drifting round the foe", Tex = "Px_Fluff", A = H("8FA64E"), B = H("7A6440"), Burst = 0, Rate = 7f, Loop = true, Speed0 = 0.05f, Speed1 = 0.18f, Gravity = -0.04f, Life0 = 0.6f, Life1 = 1.0f, Size0 = 0.06f, Size1 = 0.1f, Radius = 0.25f, Height = -0.2f, Grow = true },
                 new VfxSpec { Name = "Debuff_Yossele_Sporefull", Use = "Full spores: a little toadstool cap over the foe's head", Mesh = "Yossele_Toadstool", Tex = "Px_Fluff", A = H("C5443F"), B = H("F7F0E1"), Burst = 0, Rate = 2.5f, Loop = true, Speed0 = 0.05f, Speed1 = 0.12f, Gravity = 0.1f, Life0 = 0.5f, Life1 = 0.8f, Size0 = 0.035f, Size1 = 0.055f, Radius = 0.14f, Height = 0.95f },
                 new VfxSpec { Name = "Debuff_Yossele_Daze", Use = "Hallucinogen: a purple swirl and stars over the foe's head", Mesh = "Yossele_Swirl", Tex = "Px_Star", A = H("9C61C4"), B = H("F6D84A"), Burst = 0, Rate = 4f, Loop = true, Speed0 = 0.1f, Speed1 = 0.25f, Life0 = 0.4f, Life1 = 0.7f, Size0 = 0.04f, Size1 = 0.07f, Radius = 0.2f, Height = 1.05f, Spin = true },
+                new VfxSpec { Name = "Debuff_Yossele_Marked", Use = "Easy Target's mark: red and gold sparks circling over the foe's head", Tex = "Px_Star", A = H("C5443F"), B = H("F6D84A"), Burst = 0, Rate = 5f, Loop = true, Speed0 = 0.05f, Speed1 = 0.15f, Gravity = 0.1f, Life0 = 0.4f, Life1 = 0.7f, Size0 = 0.04f, Size1 = 0.07f, Radius = 0.18f, Height = 0.95f, Spin = true },
                 new VfxSpec { Name = "Debuff_Yossele_Tangle", Use = "Spaghetti Roots' snare: vines round the foe's feet", Mesh = "Yossele_Tangle", Tex = "Px_Leaf", A = H("72CC35"), B = H("4E8F2A"), Burst = 0, Rate = 3f, Loop = true, Speed0 = 0.05f, Speed1 = 0.15f, Gravity = 0.2f, Life0 = 0.4f, Life1 = 0.7f, Size0 = 0.04f, Size1 = 0.06f, Radius = 0.22f, Height = -0.35f, Spin = true },
                 new VfxSpec { Name = "Debuff_Yossele_Blockade", Use = "Vine Blockade: a woven ring of vines round the Stonehenge", Mesh = "Yossele_Blockade", Tex = "Px_Leaf", A = H("72CC35"), B = H("6ABE30"), Burst = 0, Rate = 3f, Loop = true, Speed0 = 0.05f, Speed1 = 0.12f, Gravity = 0.15f, Life0 = 0.6f, Life1 = 1.0f, Size0 = 0.04f, Size1 = 0.07f, Radius = 0.42f, Edge = true, Height = -0.3f, Spin = true },
                 // One-shots played by YosseleClient (area effects at radius 1, scaled to the real radius).

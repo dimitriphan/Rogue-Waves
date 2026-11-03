@@ -1,33 +1,43 @@
-// Every name, text and tuning number for Yossele in one place (ModSource/Yossele/DESIGN.md, docs/scope/07). Numbers the
-// scope gives are used as written; the rest are defaults, each listed in docs/YOSSELE_BUILD_NOTES.md. A melee vessel
-// that mends itself, four buildables that grow a stage for every Tide they survive, and FERTILIZE once a Direction
-// (Compost Bin) is held.
+// Every name, text and tuning number for Yossele in one place (ModSource/Yossele/DESIGN.md, docs/scope/07, the
+// 2026-10-20 sheet). Numbers the sheet gives are used as written; the rest are defaults, each listed in DESIGN.md
+// "Changes from the concept". A ranged vessel with a green mouth laser that mends itself, four buildables (and the
+// Tree's Bonsai) that grow a stage for every Tide they survive, and FERTILIZE once a Direction (Compost Bin) is held.
 public static class YosseleData
 {
     // The Rogue Waves pack version, "-dev" for the dev mod (docs/PACK.md section 4).
-    public const string Version = "0.1.0-dev";
+    public const string Version = "0.2.0-dev";
     public const string Part = "Yossele";
     public const bool Diagnostics = true;
 
     public const string TemplateHero = "Hero_Smacky";
     // Other vessels' groups Yossele clones from: Sno Sno's snow is the ground layer the vines and fruit are made of
-    // (without it they fall back to Smacky's Bramble).
+    // (without it they fall back to Smacky's Bramble), its snowball is the laser's template, and its Snoble lends the
+    // Cordyfriend its look and its mob-blocker block.
     public static readonly string[] ExtraGroups = { "Hero_Snosno" };
     public const string GroundTemplate = "Effect_Snosnosnow", GroundFallback = "Effect_Smackywall_Bramble";
+    public const string LaserTemplate = "Hero_Snosno_Snoball", LaserFallback = "Tower_Smackyarcher_Arrow";
+    public const string FriendTemplate = "Mob_Smackyminer", FriendLook = "Mob_Snoble";
+    public const string FriendSheet = "Yosselefriend-Sheet";              // temporary art, ModSource/Yossele/Art/Temporary
 
     public const string Hero = "Hero_Yossele";
     public const string HeroEntity = "Hero_Yossele_Entity";
     public const string HeroTooltip = "Hero_Yossele_Tooltip_Upgradeproperties";
+    public const string Laser = "Hero_Yossele_Laser";
+    public const string LaserTag = "Yosselelaser";   // the laser's hits carry it (the ranged AI's Hurtdict)
 
     public const string Cannon = "Tower_Yosselecannon";
     public const string Dandelion = "Tower_Yosseledandelion";
     public const string Henge = "Tower_Yosselehenge";
     public const string Pachira = "Tower_Yosselepachira";
+    public const string Bonsai = "Tower_Yosselebonsai";
     public static readonly string[] Towers = { Cannon, Dandelion, Henge, Pachira };
-    public const string DandelionOption = "Buildoption2";   // its button goes while this player's tree stands (limit 1)
+    // The Tree's build slot: the Tree while this player has none, the Bonsai while the Tree has its Bonsai upgrade and
+    // no Bonsai stands, else no button (both have a limit of 1).
+    public const string DandelionOption = "Buildoption2";
 
     public const string Vine = "Effect_Yosselevine";
     public const string Fruit = "Effect_Yosselefruit";
+    public const string Friend = "Mob_Yosselefriend";
 
     public const string FertilizeCommand = "Command_Hero_Yossele_Fertilize";
     public const string FertilizeLink = "Fertilize";
@@ -35,9 +45,12 @@ public static class YosseleData
     public const string ColourLink = "Colour";
 
     // Debuff looks the game attaches itself (Vfxdebuffcheck by name, registered under "Vfx").
-    public const string VfxSpores = "Debuff_Yossele_Spores", VfxSporefull = "Debuff_Yossele_Sporefull", VfxDaze = "Debuff_Yossele_Daze";
+    public const string VfxSpores = "Debuff_Yossele_Spores", VfxSporefull = "Debuff_Yossele_Sporefull";
     public const string VfxTangle = "Debuff_Yossele_Tangle", VfxBlockade = "Debuff_Yossele_Blockade";
-    public const string VfxSlow = "Debuff_Slow", VfxStun = "Debuff_Stun";
+    public const string VfxSlow = "Debuff_Slow", VfxStun = "Debuff_Stun", VfxMarked = "Debuff_Yossele_Marked", VfxDisabled = "Debuff_Disabled";
+    // Hallucinogen's stun look is Yossele's own: the stock Debuff_Stun is loaded on some maps only (play test
+    // 2026-10-26: on 3B_Woozy every stun logged "Could not retrieve Vfx/Debuff_Stun" and showed nothing).
+    public const string VfxDaze = "Debuff_Yossele_Daze";
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
 
@@ -46,8 +59,8 @@ public static class YosseleData
     {
         { "Yossele_Thud", 0.04f }, { "Yossele_Lob", 0.03f }, { "Yossele_Pop", 0.025f }, { "Yossele_Seeds", 0.02f },
         { "Yossele_Creak", 0.03f }, { "Yossele_Rustle", 0.03f }, { "Yossele_Fertilize", 0.035f }, { "Yossele_Pick", 0.03f },
-        { "Yossele_Dig", 0.012f }, { "Yossele_Mend", 0.025f }, { "Yossele_Landing", 0.08f }, { "Yossele_Death", 0.06f },
-        { "Yossele_Footstep", 0.008f },
+        { "Yossele_Dig", 0.012f }, { "Yossele_Mend", 0.025f }, { "Yossele_Death", 0.06f },
+        { "Yossele_Zap", 0.03f },
     };
 
     // ---------------------------------------------------------------- vessel texts (the game uses English text as the key)
@@ -55,10 +68,10 @@ public static class YosseleData
     public const string Displayname = "Yossele";
     public const string Displaysub = "The Patient Golem";
     public const string Displayskill = "Intermediate";
-    public const string HeroDesc = "Sturdy, single-target melee that mends itself";
+    public const string HeroDesc = "Sturdy, single-target ranged that mends itself";
     public const string TooltipName = "Patient Growth";
-    public const string TooltipDesc = "Sturdy melee that mends itself, buildings grow a stage for every Tide they survive and lose it all when destroyed, a Direction can unlock FERTILIZE";
-    // The scope: "Lore comes once every character is fully realized". A placeholder until then (build notes).
+    public const string TooltipDesc = "Sturdy fighter that mends itself, buildings grow a stage for every Tide they survive and lose it all when destroyed, a Direction can unlock FERTILIZE";
+    // The scope: "Lore comes once every character is fully realized". A placeholder until then (DESIGN.md).
     public const string Lore = "Yossele's story comes later. For now it waits, and its garden grows.";
     public const string FertilizeName = "FERTILIZE";
     public const string FertilizeDesc = "Spend a fertilizer on one of your buildings: it grows a stage at once";
@@ -66,11 +79,11 @@ public static class YosseleData
     public const string ColourName = "COLOUR";
     public const string ColourDesc = "Pick the aura this Sapling's fruit pays";
 
-    // ---------------------------------------------------------------- vessel stats (melee band; Smacky is 50/3/4/1.5/0.5)
+    // ---------------------------------------------------------------- vessel stats (the sheet; Smacky is 50/3/4/1.5/0.5)
 
     public static readonly string[] HeroStats =
     {
-        "Health=60", "Speed=2.5", "Damage=4.5", "Range=1.5", "Attackspeed=0.5", "Buildrange=2.5", "Sellrate=0.5",
+        "Health=70", "Speed=1.75", "Damage=5.5", "Range=4", "Projspeed=15", "Attackspeed=0.5", "Buildrange=2.5", "Sellrate=0.5",
     };
     public const float Regen = 1f;              // health a second, healed by the brain (no base vessel regenerates)
 
@@ -78,6 +91,9 @@ public static class YosseleData
 
     public const string GrowthStat = "Growth";
     public const string FertilizerStat = "Fertilizer";
+    public const int GrowthPerTide = 1, GrowthPerLongTide = 5;
+    public const int LongTides = 4;             // a map of this many Tides or fewer has long Tides (the sheet)
+    public const int GrowthSkins = 10;          // sprout skins drawn; stages past it reuse the last
     public const int FertilizerMax = 10;
     public const float FertilizeReach = 6f;     // the hotkey's fallback: nearest growable building of yours this close
     public const float FertilizeGuard = 0.5f;
@@ -94,41 +110,58 @@ public static class YosseleData
             Desc = "Unlocks FERTILIZE for Yossele, foes felled anywhere around Yossele make fertilizer faster" },
     };
 
-    // ---------------------------------------------------------------- Mushroom Cannon and its spores
+    // ---------------------------------------------------------------- Mushroom Cannon, its spores, the Cordyfriend
 
     public const float SporeDps = 0.3f;         // damage a second per stack
-    public const float SporeFade = 4f;          // all stacks fall off this long after the last new one
+    public const float SporeFade = 6f;          // every stack falls off this long after the last new one
     public const int SporeMax = 10;
     public const float SporeTick = 0.5f;
     public const float LobBase = 0.6f, LobPerTile = 0.08f;   // flight time: Bomb Tower's lobs take about a second
-    public const float CannonGrowSpeed = 0.08f;              // attack speed per stage (adds, like every percentage)
+    public const float CannonGrowSpeed = 0.1f;               // attack speed per stage (adds, like every percentage)
     public const float CannonGrowRadius = 0.1f;
     public const float BounceDelay = 1f, BounceShare = 0.5f;
     public const int BounceSpores = 1;
     public const float FaroutMax = 0.75f;
-    public const float HalluReach = 1.7f;
     public const float BurstGuard = 1f;
 
-    // ---------------------------------------------------------------- Primordial Dandelion Tree
+    public const string FriendDisplay = "Cordyfriend";
+    public const string FriendDesc = "Tanky melee minion that rises from fallen foes";
+    public const string FriendLore = "It was a foe until the spores got in. Now it holds the line beside the ones it came to topple.";
+    public static readonly string[] FriendStats = { "Health=75", "Damage=2", "Range=1.5", "Attackspeed=0.5", "Speed=2.25" };
+    public const int FriendCap = 30;            // Cordyfriends standing at once per player
+    public const float FriendEngage = 4f;       // it walks to foes this close
+    public const float FriendLeash = 5f;        // ...that are this close to where it rose
+    public static readonly Color FriendTint = new Color(0.72f, 0.95f, 0.62f, 1f);   // fungus green over the Snoble's sprite, only if its own sheet is missing
+
+    // ---------------------------------------------------------------- Primordial Dandelion Tree and its Bonsai
 
     public const int SeedsPerStage = 3;
-    public const float RangePerStage = 0.4f;    // of its base range, added each stage
+    public const float RangePerStage = 0.2f;    // of its base range, added each stage
     public const float SeedFlight = 0.3f;
     public const int SeedsDrawn = 24;           // the most ready seeds a client draws round the crown
     public const float PacketsWindow = 0.6f;    // a foe that falls this soon after a seed hit was felled by it
+    public const float InterceptEvery = 0.1f;   // D-MDS looks for foes' projectiles this often
+    public const float BossHealth = 600f;       // a shooter of this base health or more is a boss (kit docs/13)
+    public const float BonsaiShare = 0.4f;      // the Bonsai: 40% of the Tree (the sheet)
+    // Tree upgrade params the Bonsai copies unchanged: chances, thresholds, distances, durations, costs and every
+    // penalty (a negative number). The rest are effects, copied at 40%; Counts are rounded, never under 1.
+    public static readonly string[] BonsaiKept = { "Demand_Below", "Weeds_Window", "Weeds_Chance", "Weeds_Last", "Dmds_Boss", "Rubbery_Range" };
+    public static readonly string[] BonsaiCounts = { "Packets_Refund", "Rubbery_Bounces" };
 
     // ---------------------------------------------------------------- Overgrown Stonehenge and its vines
 
     public const float HengeArmorPerStage = 0.1f;
+    public const float ArmorCap = 0.9f;
     public const float VineTick = 0.5f;
     public const float VineReach = 0.55f;       // a foe this close (flat) to a vine tile's centre stands on it
+    public const float EasyLinger = 1f;         // Easy Target's mark lasts this long after a foe steps off
+    public const float CleanseEvery = 0.1f;     // Monument sweeps its debuffs this often
 
     // ---------------------------------------------------------------- Pachira Sapling and aura fruit
 
-    public const float PachiraGrowSpeed = 0.1f, PachiraGrowRange = 0.3f;
-    public const float FruitEach = 30f;         // of every aura colour (the scope's Grafted Colors example)
+    public const float PachiraGrowSpeed = 0.1f, PachiraGrowRange = 0.4f;
+    public const float FruitScale = 15f;        // a fruit pays Attackspeed x Damage x 15 of every aura colour (the sheet)
     public const float FruitReach = 0.75f;
-    public const float OreMemory = 2f;          // a node emptied this soon after the Sapling's strike counts as its own
     public static readonly string[] Colours = { "All", "Redaura", "Blueaura", "Yellowaura" };
     public static readonly string[] ColourNames = { "ALL", "RED", "BLUE", "YELLOW" };
 
@@ -161,54 +194,61 @@ public static class YosseleData
         };
     }
 
-    // The scope's three levels per building are the game's tiers 2-4; every choice of a level leads to every choice of
-    // the next. No tier 5 (the scope has none).
+    // The sheet's four levels per building are the game's tiers 2-5; every choice of a level leads to every choice of
+    // the next, except where the sheet says "Leads to" (the Tree's level 1).
     public static readonly Build[] Builds =
     {
         new Build
         {
             Id = Cannon, Template = "Tower_Smackybomber", Display = "Mushroom Cannon", Tag = "Yosselecannon", Tags = new[] { "Tower", "Towerfighter" },
-            Desc = "Long-range lobs that stack spores, spores rot foes over time", Costs = "Redaura=35", Max = 5, Muzzle = 0.6f,
+            Desc = "Lobs spore bombs that stack spores, damaging foes over time", Costs = "Redaura=15", Max = 5, Muzzle = 0.6f,
             Lore = "It coughs up spore bombs in long, lazy arcs. Whatever they land on starts to rot, a little more with every hit.",
-            Stats = new[] { "Health=35+25", "Damage=1.5+0.5", "Attackspeed=0.3", "Range=6", "Radius=1", "Spores=2" },
+            Stats = new[] { "Health=20+25", "Damage=1+0.25", "Attackspeed=0.4", "Range=9", "Radius=1", "Spores=2" },
             Upgrades = new[]
             {
-                U(Cannon, "Sticky", 2, "Sticky Spores", "Fully spored foes are slowed", "Sticky_Slow=0.25", "Redaura=30", "Viral3,Deathcap3"),
-                U(Cannon, "Farout", 2, "Farout Fungus", "Longer range, bigger blasts from longer flights", "Range_Add=2;Farout_Per=0.5", "Redaura=25;Blueaura=10", "Viral3,Deathcap3"),
-                U(Cannon, "Viral", 3, "Viral Outbreak", "Fully spored foes may burst when felled", "Viral_Chance=0.3", "Redaura=90", "Finish4,Hallucinogen4"),
+                U(Cannon, "Sticky", 2, "Sticky Spores", "Fully spored foes are slowed", "Sticky_Slow=0.25", "Redaura=50", "Viral3,Deathcap3"),
+                U(Cannon, "Farout", 2, "Farout Fungus", "Spore bombs increase in potency while in the air", "Range_Add=2;Farout_Per=0.5", "Redaura=45;Blueaura=10", "Viral3,Deathcap3"),
+                U(Cannon, "Viral", 3, "Viral Outbreak", "Fully spored foes may burst when felled", "Viral_Chance=0.3;Viral_Damage=15;Viral_Radius=2;Viral_Spores=1", "Redaura=90", "Finish4,Hallucinogen4"),
                 U(Cannon, "Deathcap", 3, "Deathcap Training", "Deadlier spores, fewer of them", "Deathcap_Multi=0.25;Sporemax_Base=8", "Redaura=100", "Finish4,Hallucinogen4"),
-                U(Cannon, "Finish", 4, "Explosive Finish", "Full spores burst, spreading the rot", "Finish_Per=1;Finish_Radius=1.25;Finish_Spores=2", "Redaura=420", ""),
-                U(Cannon, "Hallucinogen", 4, "Hallucinogen", "Fully spored foes may turn on their friends", "Hallu_Every=5;Hallu_Chance=0.2;Hallu_Duration=2", "Redaura=360;Blueaura=60", ""),
+                U(Cannon, "Finish", 4, "Explosive Finish", "Full spores burst, spreading the rot", "Finish_Per=1;Finish_Radius=1.25;Finish_Spores=2", "Redaura=420", "Cordyceps5"),
+                U(Cannon, "Hallucinogen", 4, "Hallucinogen", "Fully spored foes are stunned momentarily", "Hallu_Every=5;Hallu_Chance=0.2;Hallu_Stun=2", "Redaura=360;Blueaura=280", "Cordyceps5"),
+                U(Cannon, "Cordyceps", 5, "Cordyceps", "Once a foe, now a friend!", "Cordy_Chance=0.2;Cordy_Per=0.05", "Redaura=900;Blueaura=1250", ""),
             }
         },
         new Build
         {
             Id = Dandelion, Template = "Tower_Smackyarcher", Display = "Primordial Dandelion Tree", Tag = "Yosseledandelion", Tags = new[] { "Tower", "Towerfighter" },
-            Desc = "Grows seeds that all strike at once, one per player", Costs = "Redaura=50", Max = 10, Muzzle = 1.1f,
+            Desc = "Releases seeds that strike targets who wander too close", Costs = "Redaura=50", Max = 15, Muzzle = 1.1f,
             Lore = "The oldest dandelion there is. It keeps its seeds close until something walks too near, then lets them all go.",
-            Stats = new[] { "Health=50+25", "Damage=2+0.5", "Range=6", "Seedlimit=6", "Seedrate=0.5" },
+            Stats = new[] { "Health=50+25", "Damage=2+0.25", "Range=7", "Seedlimit=10", "Seedrate=0.5" },
             Upgrades = new[]
             {
-                U(Dandelion, "Packets", 2, "Seed Packets", "Seeds that fell a foe come back", "Packets_Refund=2", "Redaura=30", "Picky3,Weeds3"),
-                U(Dandelion, "Demand", 2, "Demand and Supply", "Grows seeds faster when few are ready", "Demand_Max=1", "Redaura=30", "Picky3,Weeds3"),
-                U(Dandelion, "Picky", 3, "Picky Placement", "Seeds go for the toughest foes and bite deeper", "Picky_Percent=0.01", "Redaura=100", "Storm4"),
-                U(Dandelion, "Weeds", 3, "Garden Weeds", "Foes felled after a seed hit speed up the seeds", "Weeds_Per=0.1;Weeds_Window=3;Weeds_Last=15", "Redaura=90;Yellowaura=30", "Storm4"),
-                U(Dandelion, "Storm", 4, "Dandelion Storm", "Huge range, many more seeds, grown faster", "Range_Multi=0.5;Seedlimit_Add=10;Seedrate_Multi=0.5", "Redaura=450", ""),
+                U(Dandelion, "Packets", 2, "Seed Packets", "Hardened seeds that come back after felling a foe.", "Packets_Refund=2;Damage_Add=3", "Redaura=40", "Picky3,Weeds3"),
+                U(Dandelion, "Demand", 2, "Demand and Supply", "Grows seeds faster when few are ready", "Demand_Max=1;Demand_Below=0.25", "Redaura=20;Yellowaura=40", "Dmds3,Picky3,Weeds3"),
+                U(Dandelion, "Picky", 3, "Picky Placement", "Seeds go for the toughest foes and bite deeper", "Picky_Percent=0.0025", "Redaura=100", "Bonsai4,Rubbery4"),
+                U(Dandelion, "Weeds", 3, "Garden Weeds", "Chance to recharge seeds quicker when enemies recently damaged die.", "Weeds_Per=0.1;Weeds_Window=3;Weeds_Chance=0.4;Weeds_Last=15", "Redaura=90;Yellowaura=30", "Bonsai4,Rubbery4"),
+                U(Dandelion, "Dmds", 3, "D-MDS", "Can no longer damage foes, but now intercepts enemy projectiles.", "Seedrate_Multi=-0.5;Dmds_Boss=5", "Blueaura=150;Yellowaura=40", "Bonsai4,Rubbery4"),
+                U(Dandelion, "Bonsai", 4, "Bonsai", "Plant a copy of the Primordial Dandelion Tree with reduced effects.", "Bonsai_Share=0.4", "Redaura=300;Blueaura=300;Yellowaura=300", "Storm5"),
+                U(Dandelion, "Rubbery", 4, "Rubbery Shell", "Seeds bounce between targets.", "Rubbery_Bounces=2;Rubbery_Range=2", "Redaura=450;Blueaura=600", "Storm5"),
+                U(Dandelion, "Storm", 5, "Dandelion Storm", "Huge range, many more seeds, grown faster", "Range_Multi=1;Seedlimit_Add=20;Seedrate_Multi=1", "Redaura=1050;Blueaura=800;Yellowaura=2400", ""),
             }
         },
         new Build
         {
             Id = Henge, Template = "Tower_Smackyhut", Display = "Overgrown Stonehenge", Tag = "Yosselehenge", Tags = new[] { "Tower" },
-            Desc = "Sturdy stones, vines creep the way it faces and slow foes", Costs = "Blueaura=25", Max = 8, Muzzle = 0.5f,
-            Lore = "Old stones the moss took back. Each Tide its vines creep a little further, and foes wade through them slowly.",
-            Stats = new[] { "Health=80+40", "Slow=0.25" },
+            Desc = "Sturdy stones, vines creep forward and slow foes", Costs = "Blueaura=25", Max = 8, Muzzle = 0.5f,
+            Lore = "Old stones the moss took back. As they grow, their vines creep further out, and foes wade through them slowly.",
+            Stats = new[] { "Health=80+40", "Slow=0.15" },
             Upgrades = new[]
             {
-                U(Henge, "Verdant", 2, "Verdant Spread", "Vines spread all around", "Verdant_Base=1", "Blueaura=30", "Remedy3,Carnivore3"),
-                U(Henge, "Blockade", 2, "Vine Blockade", "A vine barrier each Tide, sturdier stones", "Health_Multi=0.5;Blockade_Share=0.3", "Blueaura=35", "Remedy3,Carnivore3"),
-                U(Henge, "Remedy", 3, "Natural Remedy", "Vines mend buildings", "Remedy_Heal=10", "Blueaura=90", "Spaghetti4"),
-                U(Henge, "Carnivore", 3, "Opportunistic Carnivore", "Vines drain foes to mend the stones", "Carnivore_Drain=10;Carnivore_Max=5", "Blueaura=80;Redaura=30", "Spaghetti4"),
-                U(Henge, "Spaghetti", 4, "Entangling Spaghetti Roots", "Lingering foes are snared and sapped", "Spaghetti_After=7;Spaghetti_Stun=1.5;Spaghetti_Percent=0.1", "Blueaura=420", ""),
+                U(Henge, "Verdant", 2, "Verdant Spread", "Vines spread all around", "Verdant_Reach=2;Verdant_Full=3", "Blueaura=30", "Remedy3,Carnivore3,Easy3"),
+                U(Henge, "Blockade", 2, "Vine Blockade", "A vine barrier each Tide, sturdier stones", "Health_Multi=0.5;Blockade_Share=0.3", "Blueaura=35", "Remedy3,Carnivore3,Easy3"),
+                U(Henge, "Remedy", 3, "Natural Remedy", "Vines mend buildings", "Remedy_Heal=0.5", "Blueaura=90", "Roots4,Obsidian4"),
+                U(Henge, "Carnivore", 3, "Opportunistic Carnivore", "Vines drain foes to mend the stones", "Carnivore_Drain=5;Carnivore_Max=5", "Blueaura=80;Redaura=30", "Roots4,Obsidian4"),
+                U(Henge, "Easy", 3, "Easy Target", "Vines eventually cause foes to take more damage", "Easy_After=5;Easy_Bonus=0.15", "Blueaura=40;Redaura=75", "Roots4,Obsidian4"),
+                U(Henge, "Roots", 4, "Entangling Roots", "Lingering foes are snared and sapped", "Roots_After=7;Roots_Stun=1.5;Roots_Percent=0.05", "Blueaura=420;Redaura=300", "Monument5"),
+                U(Henge, "Obsidian", 4, "Obsidian", "Massively increases health", "Health_Multi=2", "Blueaura=600", "Monument5"),
+                U(Henge, "Monument", 5, "Monument", "Withstand the test of time", "Monument_Armor=0.2", "Blueaura=2000;Yellowaura=1500", ""),
             }
         },
         new Build
@@ -216,16 +256,29 @@ public static class YosseleData
             Id = Pachira, Template = "Tower_Smackyhut", Display = "Pachira Sapling", Tag = "Yosselepachira", Tags = new[] { "Tower", "Gatherer" },
             Desc = "Its roots mine every ore node in reach, fully grown it drops aura fruit", Costs = "Yellowaura=35", Max = 5, Muzzle = 0.5f,
             Lore = "A money tree, still small. Its roots find every ore node nearby and drink from all of them at once.",
-            Stats = new[] { "Health=30+20", "Damage=1", "Attackspeed=0.25", "Range=2" },
+            Stats = new[] { "Health=30+20", "Damage=1", "Attackspeed=0.25", "Range=2.5" },
             Upgrades = new[]
             {
-                U(Pachira, "Focused", 2, "Focused Roots", "Mines one node much faster", "Focused_Multi=1.5", "Yellowaura=30", "Grafted3,Selfish3"),
-                U(Pachira, "Sustaining", 2, "Sustaining Practices", "Mends itself from the ore around it", "Sustain_Heal=0.25", "Yellowaura=25;Blueaura=10", "Grafted3,Selfish3"),
-                U(Pachira, "Grafted", 3, "Grafted Colors", "Pick the colour of its fruit", "Grafted_Efficiency=0.7", "Yellowaura=100", "Connected4,Harvest4"),
-                U(Pachira, "Selfish", 3, "Selfish Sapling", "Mines 20% faster for each other Sapling nearby, up to double", "Selfish_Per=0.2;Selfish_Max=1;Selfish_Range=4", "Yellowaura=90", "Connected4,Harvest4"),
-                U(Pachira, "Connected", 4, "Connected Roots", "Takes hits for buildings nearby while healthy", "Connected_Share=0.65;Connected_Above=0.5", "Yellowaura=350;Blueaura=80", ""),
-                U(Pachira, "Harvest", 4, "Harvesting Season", "Fruit is worth double", "Harvest_Multi=1", "Yellowaura=400", ""),
+                U(Pachira, "Focused", 2, "Focused Roots", "Mines one node much faster", "Focused_Multi=0.8", "Yellowaura=30", "Grafted3,Forest3,Mulch3"),
+                U(Pachira, "Sustaining", 2, "Sustaining Practices", "Mends itself from the ore around it", "Sustain_Heal=0.5", "Yellowaura=25;Blueaura=10", "Grafted3,Forest3,Mulch3"),
+                U(Pachira, "Grafted", 3, "Grafted", "Pick the colour of its fruit", "Grafted_Efficiency=0.7", "Redaura=60;Blueaura=60;Yellowaura=60", "Connected4,Harvest4"),
+                U(Pachira, "Forest", 3, "Forest Project", "Mines faster for each other Sapling nearby", "Forest_Per=0.1;Forest_Range=4", "Yellowaura=140", "Connected4,Harvest4"),
+                U(Pachira, "Mulch", 3, "Spontaneous Mulch", "Foes dying within range increase mining speed", "Mulch_Bonus=0.2;Mulch_Last=5", "Redaura=40;Yellowaura=30", "Connected4,Harvest4"),
+                U(Pachira, "Connected", 4, "Connected Roots", "Takes hits for buildings nearby while healthy", "Connected_Share=0.65;Connected_Above=0.5", "Yellowaura=120;Blueaura=300", "Fortifying5,Softening5"),
+                U(Pachira, "Harvest", 4, "Harvesting Season", "Fruit is worth double", "Harvest_Multi=1", "Yellowaura=400", "Fortifying5,Softening5"),
+                U(Pachira, "Fortifying", 5, "Fortifying Roots", "Increases health and grants a damage reduction aura to nearby buildings.", "Health_Multi=1;Fortify_Armor=0.3", "Blueaura=2300;Yellowaura=1000", ""),
+                U(Pachira, "Softening", 5, "Softening Roots", "Softens the ore around it", "Soften_Points=1", "Yellowaura=2300;Redaura=1000", ""),
             }
+        },
+        // Only with the Tree's Bonsai upgrade (the Tree's build slot), the Tree's cost, 40% of its stats, no upgrades of
+        // its own: it copies the owner's Tree's (YosseleBonsaiBrain). Sells for 0.
+        new Build
+        {
+            Id = Bonsai, Template = "Tower_Smackyarcher", Display = "Bonsai", Tag = "Yosselebonsai", Tags = new[] { "Tower", "Towerfighter" },
+            Desc = "A copy of your Primordial Dandelion Tree at 40%", Costs = "Redaura=50", Max = 15, Muzzle = 0.7f,
+            Lore = "A cutting of the oldest dandelion, grown in a pot. It learns whatever the great Tree learns, a little less well.",
+            Stats = new[] { "Health=20+10", "Damage=0.8+0.1", "Range=2.8", "Seedlimit=4", "Seedrate=0.2" },
+            Upgrades = new Upg[0],
         },
     };
 
@@ -258,13 +311,14 @@ public static class YosseleData
     // EFFECTS lines in the journal: one label per parameter, "" hides it.
     public static readonly string[][] ParamLabels =
     {
-        new[] { "Sticky", "Slow at full spores" }, new[] { "Farout", "Blast per second of flight" }, new[] { "Viral", "Burst chance" },
+        new[] { "Sticky", "Slow at full spores" }, new[] { "Farout", "Blast per second of flight" }, new[] { "Viral", "" },
         new[] { "Deathcap", "Spore damage" }, new[] { "Sporemax", "Most spores" }, new[] { "Finish", "" }, new[] { "Hallu", "" },
-        new[] { "Packets", "Seeds back" }, new[] { "Demand", "Faster when low" }, new[] { "Picky", "Of max health" },
-        new[] { "Weeds", "" }, new[] { "Seedlimit", "Seeds" }, new[] { "Seedrate", "Seed growth" }, new[] { "Verdant", "" },
-        new[] { "Blockade", "Barrier" }, new[] { "Remedy", "Healing" }, new[] { "Carnivore", "" }, new[] { "Spaghetti", "" },
-        new[] { "Focused", "Mining speed" }, new[] { "Sustain", "Healing" }, new[] { "Grafted", "Fruit value" },
-        new[] { "Selfish", "" }, new[] { "Connected", "" }, new[] { "Harvest", "Fruit value" }, new[] { "Radius", "Radius" },
-        new[] { "Spores", "Spores" },
+        new[] { "Cordy", "" }, new[] { "Packets", "Seeds back" }, new[] { "Demand", "" }, new[] { "Picky", "Of max health" },
+        new[] { "Weeds", "" }, new[] { "Dmds", "" }, new[] { "Bonsai", "" }, new[] { "Rubbery", "" }, new[] { "Seedlimit", "Seeds" },
+        new[] { "Seedrate", "Seed growth" }, new[] { "Verdant", "" }, new[] { "Blockade", "Barrier" }, new[] { "Remedy", "Healing per stage" },
+        new[] { "Carnivore", "" }, new[] { "Easy", "" }, new[] { "Roots", "" }, new[] { "Monument", "Damage taken" },
+        new[] { "Focused", "Mining speed" }, new[] { "Sustain", "Healing" }, new[] { "Grafted", "Fruit value" }, new[] { "Forest", "" },
+        new[] { "Mulch", "" }, new[] { "Connected", "" }, new[] { "Harvest", "Fruit value" }, new[] { "Fortify", "Aura" },
+        new[] { "Soften", "" }, new[] { "Radius", "Radius" }, new[] { "Spores", "Spores" },
     };
 }

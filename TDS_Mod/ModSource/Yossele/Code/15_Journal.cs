@@ -21,9 +21,16 @@ public static class YosseleJournal
         foreach (YosseleData.Build b in YosseleData.Builds)
         {
             Beingobject being;
-            if (!YosseleContent.Beings.TryGetValue(b.Id, out being))
+            // The Bonsai has no page of its own: the Tree's Bonsai upgrade page tells it.
+            if (b.Id == YosseleData.Bonsai || !YosseleContent.Beings.TryGetValue(b.Id, out being))
                 continue;
             ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore + " Grows up to " + b.Max + " stages.", Entity = being.Entity, Model = YosseleAssets.Model(b.Id) };
+            Beingobject friend;
+            if (b.Id == YosseleData.Cannon && YosseleContent.Beings.TryGetValue(YosseleData.Friend, out friend))
+            {
+                Spriteobject look = friend.Entity.Defaultvisual != null ? friend.Entity.Defaultvisual.Default.Spriteobject : null;
+                jb.Units.Add(new ModKitJournalUnit { Id = YosseleData.Friend, Title = YosseleData.FriendDisplay, Desc = YosseleData.FriendLore, Entity = friend.Entity, Look = look != null ? look.Preview : null });
+            }
             Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
             foreach (YosseleData.Upg u in b.Upgrades)
             {

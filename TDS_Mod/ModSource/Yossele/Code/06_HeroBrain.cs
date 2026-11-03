@@ -1,13 +1,14 @@
-// Server-side brain for the vessel: build options (the Dandelion Tree's button goes while one stands), regeneration,
-// the fertilizer counter and FERTILIZE. It plays the part of a vessel's own AI (Entity_Ai_Hero_<Name>). Attacking is
-// left to the stock Entity_Ai_Mob_Combat, exactly like Smacky; movement, building and selling are the engine's generic
-// hero AIs.
+// Server-side brain for the vessel: build options (the Tree's slot offers the Tree, then the Bonsai, then nothing),
+// regeneration, the fertilizer counter and FERTILIZE. It plays the part of a vessel's own AI (Entity_Ai_Hero_<Name>).
+// Attacking is left to the stock Entity_Ai_Mob_Ranged, exactly like Sno Sno: the brain only names its shot (the green
+// laser); movement, building and selling are the engine's generic hero AIs.
 public class YosseleHeroBrain : MonoBehaviour
 {
     public Entity_Master Master;
     public YosselePlayer Player;
-    public int Rank, Fertilizes, Healed, DandelionHidden, DandelionShown;
+    public int Rank, Fertilizes, Healed, DandelionHidden, DandelionShown, BonsaiShown;
     public float Regenerated;
+    public bool Armed;
     bool started;
     float nextCheck, nextRegen, guardUntil;
     readonly YosseleFaults faults = new YosseleFaults();
@@ -29,6 +30,8 @@ public class YosseleHeroBrain : MonoBehaviour
                     return;
                 Begin();
             }
+            if (!Armed)
+                Arm();
             if (Time.time >= nextRegen)
             {
                 nextRegen = Time.time + 1f;
@@ -63,13 +66,28 @@ public class YosseleHeroBrain : MonoBehaviour
         YosseleLog.Info("Yossele landed for player " + YosseleUtil.Owner(Master));
     }
 
-    void BuildOption(int i)
+    void BuildOption(int i) { BuildOption("Buildoption" + (i + 1), YosseleData.Towers[i]); }
+
+    void BuildOption(string link, string tower)
     {
-        string link = "Buildoption" + (i + 1);
         Link_Command c = Helper_Entitytools.Createcommand(Master, "Command_" + link, link, false, true);
-        c.Goalstring = YosseleData.Towers[i];
+        c.Goalstring = tower;
         c.Goalvalue = 1f;
         Helper_Entitytools.Updatecommand(Master, link, "", true, true);
+    }
+
+    // Entity_Ai_Mob_Ranged creates the Attack command when it spawns; give it Yossele's laser (Hero_Snosno.Starting
+    // does the same with its snowball). The laser's hits carry no Damage, so the game fills in Yossele's own.
+    void Arm()
+    {
+        Link_Command attack;
+        if (Master.Commandlistserver == null || !Master.Commandlistserver.TryGetValue("Attack", out attack) || attack == null)
+            return;
+        attack.Goalstring = YosseleContent.LaserReady ? YosseleData.Laser : YosseleData.LaserFallback;
+        Entity_Ai_Mob_Ranged ranged = Master.GetComponent<Entity_Ai_Mob_Ranged>();
+        if (ranged != null && ranged.Hurtdict != null)
+            ranged.Hurtdict[YosseleData.LaserTag] = 1f;
+        Armed = true;
     }
 
     // "More health regen" (scope): no base vessel regenerates, so the brain mends Yossele once a second while hurt.
@@ -86,26 +104,33 @@ public class YosseleHeroBrain : MonoBehaviour
         Regenerated += amount;
     }
 
-    // ---------------------------------------------------------------- the Dandelion Tree's limit
+    // ---------------------------------------------------------------- the Tree's build slot (both limit 1)
 
-    // Its button goes while this player's tree stands and comes back when it is gone (Argo's Miner's Base, after
-    // Entity_Ai_Hero_Boutman.Checkbouthouses). The server checks build commands against the vessel's own build options,
-    // so a removed button can't be built from either.
+    // The slot offers the Tree while this player has none, the Bonsai while the Tree has its Bonsai upgrade and no
+    // Bonsai stands, and nothing otherwise (Argo's Miner's Base, after Entity_Ai_Hero_Boutman.Checkbouthouses). The
+    // server checks build commands against the vessel's own build options, so a removed button can't be built from
+    // either. A button that must change is removed first and made again on the next check, half a second later.
+    public string Slot = "";
+
     public void CheckDandelion()
     {
         if (!started || Master == null || Master.Commandlistserver == null)
             return;
-        bool has = YosseleServer.HasDandelion(YosseleUtil.Owner(Master));
-        bool shown = Master.Commandlistserver.ContainsKey(YosseleData.DandelionOption);
-        if (has && shown)
+        string want = YosseleServer.TreeSlot(YosseleUtil.Owner(Master));
+        Link_Command shown;
+        Master.Commandlistserver.TryGetValue(YosseleData.DandelionOption, out shown);
+        if (shown != null && shown.Goalstring != want)
         {
             Helper_Entitytools.Removecommand(Master, YosseleData.DandelionOption);
             DandelionHidden++;
+            Slot = "";
         }
-        else if (!has && !shown)
+        else if (shown == null && want != "")
         {
-            BuildOption(Array.IndexOf(YosseleData.Towers, YosseleData.Dandelion));
-            DandelionShown++;
+            BuildOption(YosseleData.DandelionOption, want);
+            if (want == YosseleData.Bonsai) BonsaiShown++;
+            else DandelionShown++;
+            Slot = want;
         }
     }
 
