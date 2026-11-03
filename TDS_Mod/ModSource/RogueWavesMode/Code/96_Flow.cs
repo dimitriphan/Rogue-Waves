@@ -76,14 +76,23 @@ public static partial class RWTest
     }
 
     // Runs the current Tide table entries out until Tide 'wave' has started, then its foes are cleared and its break is up.
-    static IEnumerator ToBreakAfter(int wave)
+    static IEnumerator ToBreakAfter(int wave) { return ToBreakAfter(wave, false); }
+
+    // With 'target', the objective's target falls as soon as it stands.
+    static IEnumerator ToBreakAfter(int wave, bool target)
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
         int breaks = RWVote.Breaks;
         freeze = false;
-        forcing = true;
+        forcing = !target;
+        if (target) vars.Time_Wave.Value = 0.1f;
         yield return Until(() => vars.Wave.Value >= wave, 120f);
         float t = 0f;
+        while (target && RWObjectives.Target == null && t < 10f) { t += Time.unscaledDeltaTime; yield return null; }
+        if (target && RWObjectives.Target != null && RWObjectives.Target.Beingserver != null)
+            Helper_Entitytools.Despawn(RWObjectives.Target.Beingserver, true, "RogueWaves");
+        forcing = true;
+        t = 0f;
         while (RWVote.Breaks == breaks && t < 90f)
         {
             ClearFoes();
@@ -93,6 +102,51 @@ public static partial class RWTest
         forcing = false;
         ClearFoes();
         freeze = true;
+    }
+
+    // A Tide whose foes all fall at once, its clock left to run: Beat the Clock's way.
+    static IEnumerator ClearedEarly(int wave)
+    {
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        int breaks = RWVote.Breaks;
+        freeze = false;
+        forcing = false;
+        vars.Time_Wave.Value = 0.1f;
+        yield return Until(() => vars.Wave.Value >= wave, 30f);
+        float t = 0f, length = vars.Time_Wave.Value;
+        while (t < 45f && (vars.Time_Wave.Value >= length - 0.5f || t < 3f))
+        {
+            ClearFoes();
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        Info("Beat the Clock", "the Tide's clock began at " + RWUtil.F(length) + " s; " + RWUtil.F(t) + " s on it reads " + RWUtil.F(vars.Time_Wave.Value) + " s, foes " + RWVote.Foes());
+        yield return new WaitForSeconds(0.5f);
+        forcing = true;
+        t = 0f;
+        while (RWVote.Breaks == breaks && t < 60f)
+        {
+            ClearFoes();
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        forcing = false;
+        ClearFoes();
+        freeze = true;
+    }
+
+    // Home to the main menu through the pause menu's Leave, as a player on the boat goes.
+    static IEnumerator ToMainMenu()
+    {
+        Tds_Pausemenu.Openpausemenu();
+        yield return new WaitForSecondsRealtime(1.2f);
+        GameObject leave;
+        if (Blockage.Menu.Bl_Menus.Menus["Pause"].Items.TryGetValue("Leavegame", out leave) && leave != null && leave.GetComponent<Blu3_Button>() != null && leave.GetComponent<Blu3_Button>().Buttonclick != null)
+            leave.GetComponent<Blu3_Button>().Buttonclick();
+        yield return WaitDialog(5f);
+        Info("the boat's exit dialog", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + string.Join(",", CardNames().ToArray()));
+        ClickCard("Exit");
+        yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 90f);
     }
 
     public static IEnumerator Flow()
@@ -246,9 +300,9 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(0.5f);
         Check("T1 map 1's loading screen shows the card", RWCard.LastLine.StartsWith("Map 1 of 10") && RWCard.LastLine.Contains("3 retries left"), "'" + RWCard.LastLine + "'");
         yield return Snap("loading_map1");
-        int cards = RWCard.CardWrites;
-        yield return Until(() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game" && RWCard.CardWrites > cards, 90f);
-        Check("U2 T2 the map intro card shows the card", RWCard.CardWrites > cards, "'" + RWCard.LastLine + "', writes " + RWCard.CardWrites);
+        yield return Until(() => UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game", 90f);
+        yield return new WaitForSecondsRealtime(4f);
+        Check("U2 T2 the map intro card shows the card", RWCard.CardWrites > 0 && RWCard.LastLine.StartsWith("Map 1 of 10"), "'" + RWCard.LastLine + "', writes " + RWCard.CardWrites);
         try
         {
             GameObject alt = Blockage.Menu.Bl_Menus.Menus["Cine"].Items["Maptitlealt"];
@@ -293,6 +347,18 @@ public static partial class RWTest
 
         // T6.
         Check("T6 the pack's tips are in the game's lists, gated on a campaign", RWTips.Added >= RWTips.Lines.Length && RWUtil.Has(RWData.SaveFolder, RWTips.SeenKey), "added " + RWTips.Added);
+        Factobject.Entry packTip = null;
+        if (Tds_Pausemenu.Instance != null && Tds_Pausemenu.Instance.Funfacts != null && Tds_Pausemenu.Instance.Funfacts.Data != null) Tds_Pausemenu.Instance.Funfacts.Data.TryGetValue("RW_Tip_0", out packTip);
+        if (packTip == null) Check("U4 a pack tip is in the pause menu's list", false, "none");
+        else
+        {
+            bool withKey = Blockage.Tags.Bla_Data.Playerdata.Comparedata(packTip.Unlockconditions);
+            RWUtil.Remove(RWData.SaveFolder, RWTips.SeenKey);
+            bool withoutKey = Blockage.Tags.Bla_Data.Playerdata.Comparedata(packTip.Unlockconditions);
+            RWTips.MarkSailed();
+            Check("U4 a pack tip can show with the campaign key, never without it", withKey && !withoutKey, "with " + withKey + ", without " + withoutKey);
+        }
+        Info("U4 the pause menu's blurb", "'" + TextOf(Blockage.Menu.Bl_Menus.Menus["Pause"].Items["Blurb"]) + "'");
 
         // The panel and the shop.
         Game_Selection.Instance.Selected = stand;
@@ -328,10 +394,12 @@ public static partial class RWTest
         foreach (string id in new List<string>(RWCardinals.Sold))
         {
             string why = "";
+            float gainBefore = Game_Mapvars.Instance.Resourcegainmultiplier;
             try { why = RWCardinals.Buy(player, id); }
             catch (Exception e) { why = e.GetType().Name + ": " + e.Message; Check("Cardinal " + id + " grants without an exception", false, why); }
             if (why != "") Info("Cardinal " + id, why);
             yield return null;
+            if (!Mathf.Approximately(gainBefore, Game_Mapvars.Instance.Resourcegainmultiplier)) Info("Cardinal " + id, "changes all aura pay: " + gainBefore + " -> " + Game_Mapvars.Instance.Resourcegainmultiplier);
         }
         yield return new WaitForSeconds(2f);
         Check("Cardinals: every one on sale goes on with no error", errors == bad, (errors - bad) + " errors; team " + RWRun.Team.Count + ", vessel " + player.Cardinals.Count + ", " + RWCardinals.Sold.Count + " on sale");
@@ -384,6 +452,66 @@ public static partial class RWTest
             Check("no error from the effects on a new tower", errors == bad, (errors - bad) + " errors");
         }
         Check("Cut Costs: the vessel's build scale follows the rank", BuildScale(vessel) <= RWDirections.CostScale[3] + 0.001f, "scale " + RWUtil.F(BuildScale(vessel)));
+        yield return new WaitForSeconds(1f);
+        Link_Command refit;
+        if (built == null || !built.Commandlistserver.TryGetValue("Upgrade", out refit) || refit == null) Setup("Cheap Refits", "the tower has no Upgrade command");
+        else Check("Cheap Refits: the tower's upgrade price follows the rank", Mathf.Approximately(refit.Goalvalue, RWDirections.RefitScale[3]), "scale " + RWUtil.F(refit.Goalvalue));
+        Tds_Clientinfo purse = Game_Players.Instance.Prevsessionlist[me];
+        float due = 0f, had = 0f;
+        foreach (Link_Resource r in purse.Resources) { had += r.Amount; due += Mathf.Min(RWDirections.InterestCap, Mathf.Floor(r.Amount * RWDirections.InterestShare[3])); }
+        due *= Game_Mapvars.Instance.Resourcegainmultiplier;    // what the Cardinals bought above make of all aura pay
+        RWDirections.Interest(1);
+        float has = 0f;
+        foreach (Link_Resource r in purse.Resources) has += r.Amount;
+        Check("Compound Interest pays its share of the unspent aura", Mathf.Abs(has - had - due) < 0.01f, had + " -> " + has + ", due " + due + ", gain multiplier " + Game_Mapvars.Instance.Resourcegainmultiplier);
+        float hit0 = vessel != null && vessel.Statsserver.ContainsKey("Damage") ? vessel.Statsserver["Damage"].Value_Calc : 0f;
+        Upgradeproperties skipping = Bl_Address.Getload("Upgrade", ModKitDirections.Id("Smacky", "Skipping3")) as Upgradeproperties;
+        if (skipping != null) RWDirections.Take(player, skipping);
+        yield return new WaitForSeconds(1.5f);
+        float hit1 = vessel != null && vessel.Statsserver.ContainsKey("Damage") ? vessel.Statsserver["Damage"].Value_Calc : 0f;
+        Check("A base vessel's Direction holds its stat: Skipping Stones on Smacky", skipping != null && hit0 > 0f && hit1 >= hit0 * 1.25f, hit0 + " -> " + hit1 + " (rank I may already be held: its first pick)");
+        // Made of Tougher Stuff: a minion of this player, hit once.
+        Entity_Master minion = null;
+        Beingobject miner = RWUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        if (miner != null && vessel != null)
+            foreach (Genitem g in RWUtil.Ground())
+            {
+                float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
+                if (d < 2f || d > 8f) continue;
+                Link_Being mb = new Link_Being { Being = miner, Entity = miner.Entity, Block = miner.Block, Team = vessel.Entitydata.Value.Team };
+                Genitem spot = null;
+                try { spot = Helper_Gridtools.Checkifstandable(g, mb); } catch (Exception) { }
+                if (spot == null) continue;
+                try
+                {
+                    Link_Spawn ms = Helper_Entitytools.Createlinkspawnparent(vessel.Beingserver);
+                    ms.Being = miner;
+                    ms.Genadd = spot;
+                    ms.Skin = "";
+                    ms.Spawnstyle = Link_Spawn.Spawnstyles.Forced;
+                    Link_Being got = Helper_Entitytools.Spawn(ms, spot.Position, vessel.Beingserver, true, null);
+                    minion = got != null ? got.Worldobject : null;
+                }
+                catch (Exception e) { Info("the minion", e.Message); }
+                break;
+            }
+        yield return new WaitForSeconds(0.6f);
+        if (minion == null) Setup("Made of Tougher Stuff", "no minion could be spawned");
+        else
+        {
+            int soft0 = RWHits.Softened;
+            Link_Interact blow = new Link_Interact();
+            blow.Type = "Hurt";
+            blow.To = minion;
+            blow.Data = new Dictionary<string, float> { { "Damagemulti", 1f }, { "Damage", 1f } };
+            // The hook is first in the chain; the stock's own handlers after it want a whole hit, which this isn't.
+            try { minion.Oninteract(blow); } catch (Exception) { }
+            float multi;
+            bool saw = blow.Data.TryGetValue("Damagemulti", out multi);
+            Check("Made of Tougher Stuff softens a hit on a player's minion", RWHits.Softened == soft0 + 1 && saw && multi <= 1f - RWDirections.TougherResist[3] + 0.001f, "softened " + (RWHits.Softened - soft0) + ", multi " + multi);
+            Helper_Entitytools.Despawn(minion.Beingserver, false, "RogueWaves");
+        }
+        float tower0 = built != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
         player.Directions.RemoveAll(id => id.StartsWith("Direction_Any_Tougher") == false && id.StartsWith("Direction_Any") && !id.EndsWith("_Upgradeobject"));
 
         // The board: this break's objective.
@@ -412,6 +540,8 @@ public static partial class RWTest
         Check("Pure Aura: Tide 1 pays 3", player.Pure == paid0 + RWRun.PerTide + (RWWeather.Current != RWChart.Calm ? RWWeather.PureAuraPerTide : 0) + (RWObjectives.Outcome.EndsWith("done") ? taken.Pays : 0), paid0 + " -> " + player.Pure + ", weather " + RWWeather.Current + ", objective " + RWObjectives.Outcome);
         Check("VENDCINT lands again in the break", RWShop.Stand != null && RWShop.Landed >= 2, "landed " + RWShop.Landed);
         Check("a new objective is posted", RWObjectives.Posted != null, RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-");
+        float tower1 = built != null && built.Beingserver != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
+        Check("Spring Tide: the tower gained health in the Tide", tower0 > 0f && tower1 > tower0, tower0 + " -> " + tower1);
         Info("objective", taken.Display + ": " + RWObjectives.Outcome);
         yield return Snap("break_after_tide1");
 
@@ -419,8 +549,26 @@ public static partial class RWTest
         float clock = Time.realtimeSinceStartup;
         for (int w = 2; w <= RWCampaign.WinTide; w++)
         {
-            yield return ToBreakAfter(w);
+            // Each objective once, on Tides 2 to 6, the way a player meets it.
+            RWObjectiveDef goal = w - 2 < RWObjectives.All.Length ? RWObjectives.All[w - 2] : null;
+            int pureGoal = player.Pure;
+            if (goal != null)
+            {
+                RWObjectives.Posted = goal;
+                RWObjectives.Active = null;
+                string took = RWObjectives.Take(player);
+                if (took != "") Info("objective " + goal.Display, took);
+            }
+            if (goal != null && goal.Name == "Clock") yield return ClearedEarly(w);
+            else if (goal != null && (goal.Name == "Meteor" || goal.Name == "Nest")) yield return ToBreakAfter(w, true);
+            else yield return ToBreakAfter(w);
             if (Game_Mapvars.Instance == null || Game_Mapvars.Instance.Gamecomplete.Value.ToString() != "Running") { Check("Tides run to " + RWCampaign.WinTide, false, "map ended at " + w); yield break; }
+            if (goal != null)
+            {
+                yield return new WaitForSeconds(0.5f);
+                Check("Objective " + goal.Display + " done pays everyone in full", RWObjectives.Outcome == goal.Name + " done" && player.Pure >= pureGoal + goal.Pays, "outcome '" + RWObjectives.Outcome + "', Pure " + pureGoal + " -> " + player.Pure);
+                if (goal.Name == "Nest") Check("A razed nest's Tide hook goes with it, so the Tides run on", RWWeather.HooksDropped > 0, RWWeather.HooksDropped + " dropped");
+            }
         }
         Info("Tides 2-15", RWUtil.F(Time.realtimeSinceStartup - clock) + " s");
         yield return Until(() => RWCampaign.WonThisMap, 10f);
@@ -437,6 +585,31 @@ public static partial class RWTest
         yield return ToBreakAfter(RWCampaign.WinTide + 1);
         yield return new WaitForSeconds(1f);
         Check("Pure Aura: a bonus Tide pays 2", player.Pure - pure16 >= RWRun.PerBonusTide && player.Pure - pure16 <= RWRun.PerBonusTide + 6, pure16 + " -> " + player.Pure + ", objective " + RWObjectives.Outcome);
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 15f);
+        yield return WaitDialog(8f);
+        // Past the table's end: on to Tide 28's break, then Tides 29 and 30 and the row they replay.
+        ClickCard("Stay");
+        yield return Until(() => RWVote.State == "", 8f);
+        Game_Mapvars tideVars = Game_Mapvars.Instance;
+        List<Wavesobject.Waves> tideTable = tideVars.Mode.Enemies.Wave;
+        int lastTide = tideTable.Count - 3;     // Tide N is row 2N - 1: Tide 29's; the row after it is the table's last break
+        Func<int> rowSize = () => { int n = 0; foreach (Wavesobject.Wavecontent c in tideTable[lastTide].Content) n += c.Count; return n; };
+        tideVars.Entry.Value = lastTide;        // Tide 28's break, as if the party had got here
+        tideVars.Wave.Value = 28;
+        Info("the table's end", "row " + lastTide + " is a Tide " + tideTable[lastTide].Wave + ", the last row is a Tide " + tideTable[tideTable.Count - 1].Wave + ", " + tideTable.Count + " rows");
+        int size29 = rowSize();
+        yield return new WaitForSeconds(0.5f);   // the jump itself reads as a break
+        yield return ToBreakAfter(29);
+        yield return new WaitForSeconds(0.5f);
+        Check("Bonus Tides: past Tide 29 the last break rewinds onto its row, one step harder", tideVars.Entry.Value == lastTide && rowSize() > size29 && tideVars.Gamecomplete.Value.ToString() == "Running", "Entry " + tideVars.Entry.Value + ", Wave " + tideVars.Wave.Value + ", foes in the row " + size29 + " -> " + rowSize());
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 15f);
+        yield return WaitDialog(8f);
+        ClickCard("Stay");
+        yield return Until(() => RWVote.State == "", 8f);
+        int size30 = rowSize();
+        yield return ToBreakAfter(30);
+        yield return new WaitForSeconds(0.5f);
+        Check("Bonus Tides: Tide 30 plays the row again, harder still, and the map runs on", tideVars.Wave.Value == 30 && tideVars.Entry.Value == lastTide && rowSize() > size30 && tideVars.Gamecomplete.Value.ToString() == "Running", "Entry " + tideVars.Entry.Value + ", Wave " + tideVars.Wave.Value + ", foes in the row " + size30 + " -> " + rowSize());
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 15f);
         yield return WaitDialog(8f);
         ClickCard("Leave");
@@ -489,6 +662,79 @@ public static partial class RWTest
         RWPlayer again = RWRun.For(me);
         Check("Continue: Pure Aura, Directions and Cardinals come back from the save", again.Pure == beforePure && again.Directions.Count == beforeDirs.Count && again.Cardinals.Count > 0 && again.Hero != "", "pure " + again.Pure + ", directions " + again.Directions.Count + ", cardinals " + again.Cardinals.Count + ", hero " + again.Hero);
         Check("Continue's card names where the campaign stands", line.StartsWith("Map 2 of 10") && line.Contains("3 retries left") && line.Contains("Crew: "), line);
+
+        // Map 2 lost: the title, a retry spent, what it earned gone, the boat sails back to it by itself.
+        int lostCol = RWCampaign.Next != null ? RWCampaign.Next.Col : -1;
+        int pureSaved = RWRun.For(me).Pure;
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 200f);
+        yield return Until(() => RWShop.Stand != null, 90f);
+        freeze = true;
+        RWRun.For(me).Pure += 9;
+        ClearFoes();
+        Mode_Normal lostMode = Game_Rounds.Instance.GetComponent<Mode_Normal>();
+        if (lostMode != null) lostMode.Finished = true;
+        Tds_Multiplayerinfo.Instance.Gamestate.Value = new FixedString64Bytes("Lose");
+        Game_Mapvars.Instance.Gamecomplete.Value = new FixedString64Bytes("Lose");
+        Game_Rounds.Instance.Gamecompleted();
+        freeze = false;
+        yield return new WaitForSeconds(0.8f);
+        Check("T4 a lost map's end screen title names the retries", Game_Mapvars.Instance.Display.Value.Display_Endgame.ToString() == "MAP LOST" + RWCard.Separator + "2 RETRIES LEFT", "'" + Game_Mapvars.Instance.Display.Value.Display_Endgame + "'");
+        Check("Retries: a lost map spends one and offers only itself", RWCampaign.Retries == 2 && RWCampaign.Replay == lostCol && RWCampaign.Open().Count == 1 && RWCampaign.Open()[0].Col == lostCol, "retries " + RWCampaign.Retries + ", replay " + RWCampaign.Replay + ", open " + Names(RWCampaign.Open()));
+        Check("Retries: what the lost map earned goes", RWRun.For(me).Pure == pureSaved, pureSaved + " saved, " + RWRun.For(me).Pure + " now");
+        yield return new WaitForSeconds(7f);
+        yield return Snap("lose_screen");
+        old = Macro_Main.Instance;
+        Tds_Multiplayer_Remote.Instance.Returnmap_ServerRpc(true, default(Unity.Netcode.ServerRpcParams));
+        yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 150f);
+        boat = Macro_Main.Instance;
+        yield return Until(() => Here(), 30f);
+        Check("Retries: the chart's card says so", Macro_Worldvisual.Instance.World != null && Macro_Worldvisual.Instance.World.name.EndsWith("r2") && RWUtil.Item<Mapworlddatabaseobject>("World", RWCampaign.WorldName()).Display_Desc.Contains("2 retries left"), Macro_Worldvisual.Instance.World != null ? Macro_Worldvisual.Instance.World.name : "-");
+        yield return new WaitForSecondsRealtime(3f);
+        yield return Snap("boat_after_loss");
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 60f);
+        yield return new WaitForSecondsRealtime(1f);
+        Check("Retries: the boat sails back to the lost map by itself", boat.Selected.Value.ToString() != "" && RWCampaign.Next != null && RWCampaign.Next.Col == lostCol, "selected '" + boat.Selected.Value + "', next " + (RWCampaign.Next != null ? RWCampaign.Next.Name : "-"));
+
+        // Home to the main menu through the pause menu's Exit, and back by the Rogue Waves button's Continue.
+        yield return ToMainMenu();
+        Mainmenu_Main menu2 = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
+        if (menu2 == null) { Setup("Continue from the main menu", "the boat's Exit never reached it"); }
+        else
+        {
+            yield return new WaitForSecondsRealtime(8f);
+            menu2.Idlethreshold = 100000f;
+            menu2.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
+            yield return Until(() => RWMenu.Button != null, 25f);
+            yield return new WaitForSecondsRealtime(7f);
+            Blockage.Menu.Bl_Menus.Changemenu("Main", true);
+            yield return new WaitForSecondsRealtime(8f);
+            RWMenu.Clicked();
+            yield return WaitDialog(10f);
+            List<string> again2 = CardNames();
+            Check("Continue is on the button's dialog, with a saved campaign", again2.Contains("Continue") && again2.Contains("New"), string.Join(",", again2.ToArray()) + "; " + RWMenu.SavedLine());
+            Check("Continue's card counts the retry", RWMenu.SavedLine().Contains("2 retries left"), RWMenu.SavedLine());
+            yield return Snap("mainmenu_continue");
+            // U10, B1c: New over a saved campaign asks first; the second dialog opens only after the first has closed.
+            ClickCard("New");
+            yield return new WaitForSecondsRealtime(1f);
+            yield return WaitDialog(8f);
+            Check("B1c U10 New over a saved campaign asks first, the second dialog after the first", CardNamed("Sure") != null && CardNamed("Keep") != null, CardTexts());
+            yield return Snap("mainmenu_startover");
+            ClickCard("Keep");
+            yield return new WaitForSecondsRealtime(1.5f);
+            RWMenu.Clicked();
+            yield return WaitDialog(10f);
+            ClickCard("Continue");
+            yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance.Ready, 120f);
+            boat = Macro_Main.Instance;
+            yield return Until(() => RWCampaign.Live && Here(), 40f);
+            Check("Continue: the campaign is back on its chart, the retry still spent", RWCampaign.Live && Here() && RWCampaign.Retries == 2 && RWCampaign.Route.Count == 1, "retries " + RWCampaign.Retries + ", route " + Digits(RWCampaign.Route) + ", replay " + RWCampaign.Replay);
+            yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 60f);
+            yield return new WaitForSecondsRealtime(1f);
+            Check("Continue: the boat sails to the lost map by itself", RWCampaign.Next != null && RWCampaign.Next.Col == lostCol, "selected '" + boat.Selected.Value + "'");
+            yield return Snap("continue_setup");
+        }
         boat.Deselectcurrentmap();
         boat.Selected.Value = new FixedString64Bytes("");
         RWCampaign.Stop();
@@ -501,6 +747,14 @@ public static partial class RWTest
         RWLobby.AtMainMenu();
         Check("U8 a friend dropped from a map gets the way back in as the error box's last line", mp.Multiplayererror[mp.Multiplayererror.Count - 1] == RWLobby.RejoinLine, mp.Multiplayererror[mp.Multiplayererror.Count - 1]);
         mp.Multiplayererror.RemoveAll(s => s == "test drop" || s == RWLobby.RejoinLine);
+        try
+        {
+            Blm_Multiplayer.Instance.Kickclient(987654321UL);
+            Check("U10 Kickclient with a fake id throws nothing", true, "");
+        }
+        catch (Exception e) { Check("U10 Kickclient with a fake id throws nothing", false, e.Message); }
+        // The older probes start from a boat of their own.
+        yield return ToMainMenu();
         Info("difficulty", "map 5 for 2 players: foes x" + RWUtil.F((1f + RWDifficulty.CountPerMap * 4f) * (1f + RWDifficulty.CountPerPlayer)) + ", pool " + string.Join(", ", RWDifficulty.CampaignPool(Seed).ToArray()));
     }
 

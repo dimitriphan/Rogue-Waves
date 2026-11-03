@@ -41,8 +41,11 @@ public static class RWCardinals
     public static readonly string[] NotSold =
     {
         "Artifact_Moon", "Artifact_Mooncore", "Artifact_Loop", "Artifact_Loopedmirror", "Artifact_Vintage", "Artifact_Samedayshipping", "Artifact_Pig", "Artifact_Moneybag",
-        "Artifact_Sandbox", "Artifact_Sand", "Artifact_Blurryphoto", "Artifact_Checklist", "Artifact_Computer", "Artifact_Bottomrock",
+        "Artifact_Sandbox", "Artifact_Sand", "Artifact_Blurryphoto", "Artifact_Checklist", "Artifact_Computer", "Artifact_Bottomrock", "Artifact_Rock",
     };
+
+    // Not on the shelf, but the pack's Tide Clock and Second Wind run their scripts, which load their effects from these groups.
+    static readonly string[] Borrowed = { "Artifact_Vintage", "Artifact_Loop" };
 
     public static readonly List<string> Sold = new List<string>();      // ids on the shelf's list, sorted, the same on every machine
     static readonly Dictionary<string, RWCardinalDef> defs = new Dictionary<string, RWCardinalDef>();
@@ -63,7 +66,8 @@ public static class RWCardinals
         foreach (string id in ids)
         {
             Artifactentryobject entry = entries[id] as Artifactentryobject;
-            if (entry == null || entry.Artifactloads == null || Array.IndexOf(NotSold, id) >= 0)
+            bool sold = Array.IndexOf(NotSold, id) < 0;
+            if (entry == null || entry.Artifactloads == null || (!sold && Array.IndexOf(Borrowed, id) < 0))
                 continue;
             Bl_Address.Loadgroup g = null;
             try { g = Bl_Address.Load(entry.Artifactloads.Objectname); }
@@ -74,7 +78,7 @@ public static class RWCardinals
                 waited += Time.unscaledDeltaTime;
                 yield return null;
             }
-            if (g != null && g.Loaded && RWUtil.Load<Artifactobject>("Artifact", entry.Artifactloads.Objectname) != null)
+            if (sold && g != null && g.Loaded && RWUtil.Load<Artifactobject>("Artifact", entry.Artifactloads.Objectname) != null)
                 stock.Add(id);
         }
     }

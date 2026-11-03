@@ -2,6 +2,7 @@
 	# The rules for new Cardinals, and the Cardinal List: each Cardinal in the Cardinal template from 15_Templates.txt, under its kind.
 	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
+	- Shop's base game Cardinals, until then: ~all but Moon, Moon Core, Loop, Looped Mirror, Vintage, Same Day Shipping, Pig, Money Bag, Sandbox, Sand, Blurry Photo, Checklist, Computer and Bottom Rock~ /~ What they leave out fights the run's own rules, docs/reports/SCOPE_VS_LOOP.md #7; Bottom Rock also cuts all aura pay to 1% (seen on the PC) \
 
 	[Rules]
 		- What: a new Cardinal is a new run modifier, the same kind of effect as the base game's Cardinals
@@ -21,7 +22,7 @@
 			{Vampire Dentures}
 				- Kind: Vessel
 				- In-game line: Your vessel attacks heal themselves for a portion of damage dealt.
-				- Numbers:
+				- Numbers: ~heals 20% of the damage dealt, per stack~
 				- Lasts: The rest of the campaign
 				- Stacks: Yes
 				- Where from: Shop
@@ -29,5 +30,82 @@
 				- Cost: Pure Aura 15
 				- Look: Fake vampire dentures that could be found at a halloween dollar store.
 				- Clashes: None
+			{~Spiny Hull~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your vessel pricks what hits it~
+				- Numbers: ~prick 4, per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 12~
+				- Look: ~A rusty hull plate bristling with nails~
+				- Clashes: ~None~
+			{~Sea Legs~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your vessel speeds up while it keeps moving~
+				- Numbers: ~speed +20%~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 10~
+				- Look: ~A pair of worn deck shoes~
+				- Clashes: ~None~
+			{~Rising Tide~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your vessel grows stronger every Tide~
+				- Numbers: ~each tide: speed +1%, damage +3%, attack speed +2%~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 20~
+				- Look: ~A marked tide stick~
+				- Clashes: ~None~
+			{~Puffer Float~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your units burst when they fall~
+				- Numbers: ~burst of 4 to 12 damage within 1.5 tiles~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 15~
+				- Look: ~A dried pufferfish on a string~
+				- Clashes: ~None~
 		(Team Cardinals)
 			! NEEDS TEAM CARDINALS !
+			{~Tide Clock~}
+				- Kind: ~Team~
+				- In-game line: ~Every break lasts longer~
+				- Numbers: ~+15 seconds a break~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 15~
+				- Look: ~A brass clock full of sand~
+				- Clashes: ~None~
+			{~Rusted Bell~}
+				- Kind: ~Team~
+				- In-game line: ~Foes near the Basin lose health while they stay~
+				- Numbers: ~within 6 tiles, -15%~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 20~
+				- Look: ~A ship's bell gone green~
+				- Clashes: ~None~
+			{~Second Wind~}
+				- Kind: ~Team~
+				- In-game line: ~Once a map, the first hit on the Basin clears the field and replays the Tide~
+				- Numbers: ~once a map~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 25~
+				- Look: ~A cracked bellows~
+				- Clashes: ~None~

@@ -170,10 +170,21 @@ public static class RWCard
         if (ReferenceEquals(endMap, null) || endMap == null || !ReferenceEquals(vars, endMap) || !RWUtil.IsServer)
             return;
         Game_Mapvars.Link_Displaydataref d = vars.Display.Value;
-        if (d.Display_Endgame.ToString() == LastEnd)
-            return;
-        d.Display_Endgame = new FixedString64Bytes(LastEnd);
-        vars.Display.Value = d;
+        if (d.Display_Endgame.ToString() != LastEnd)
+        {
+            d.Display_Endgame = new FixedString64Bytes(LastEnd);
+            vars.Display.Value = d;
+        }
+        // The screen reads the display once: Mode_Normal's own write may be what it read (seen on the PC).
+        foreach (string name in new[] { "Win", "Lose" })
+        {
+            Blockage.Menu.Blu2_Menu_Handler menu;
+            GameObject shown;
+            if (Blockage.Menu.Bl_Menus.Menus == null || !Blockage.Menu.Bl_Menus.Menus.TryGetValue(name, out menu) || menu == null || !menu.Items.TryGetValue("Title", out shown) || shown == null || !shown.activeInHierarchy)
+                continue;
+            TMPro.TMP_Text text = shown.GetComponentInChildren<TMPro.TMP_Text>();
+            if (text != null && text.text != LastEnd) text.text = LastEnd;
+        }
     }
 }
 

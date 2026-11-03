@@ -57,17 +57,29 @@ public static class RWMenu
         copy.name = ItemName;
         copy.transform.SetSiblingIndex(play.transform.GetSiblingIndex() + 1);
         RectTransform from = play.transform as RectTransform, to = copy.transform as RectTransform;
-        float step = from != null ? from.rect.height + 4f : 0f;
-        // The buttons under Play move down one step, so the column keeps its spacing; the parent has no layout group.
+        // It stands one step right of Play, and what stood beside Play (Hero) moves one step on: the column under Play keeps its
+        // places, which reach the screen's foot already. The parent has no layout group.
         if (from != null && to != null)
         {
+            float step = 0f;
             foreach (Transform t in play.transform.parent)
             {
                 RectTransform other = t as RectTransform;
-                if (other != null && other != from && other != to && other.anchoredPosition.y < from.anchoredPosition.y - 0.5f && Mathf.Abs(other.anchoredPosition.x - from.anchoredPosition.x) < from.rect.width)
-                    other.anchoredPosition += new Vector2(0f, -step);
+                if (other != null && other != from && other != to && Mathf.Abs(other.anchoredPosition.y - from.anchoredPosition.y) < 0.5f && other.anchoredPosition.x > from.anchoredPosition.x)
+                    step = step == 0f ? other.anchoredPosition.x - from.anchoredPosition.x : Mathf.Min(step, other.anchoredPosition.x - from.anchoredPosition.x);
             }
-            to.anchoredPosition = from.anchoredPosition + new Vector2(0f, -step);
+            if (step == 0f) step = from.rect.width + 4f;
+            foreach (Transform t in play.transform.parent)
+            {
+                RectTransform other = t as RectTransform;
+                if (other != null && other != from && other != to && Mathf.Abs(other.anchoredPosition.y - from.anchoredPosition.y) < 0.5f && other.anchoredPosition.x > from.anchoredPosition.x)
+                    other.anchoredPosition += new Vector2(step, 0f);
+            }
+            to.anchoredPosition = from.anchoredPosition + new Vector2(step, 0f);
+            // The hover tip stood clear of Play, under Hero: it stays clear of this tile too.
+            GameObject tip;
+            RectTransform tipAt = main.Items.TryGetValue("Buttontip", out tip) && tip != null ? tip.transform as RectTransform : null;
+            if (tipAt != null) tipAt.anchoredPosition += new Vector2(step, 0f);
         }
         foreach (TMPro.TMP_Text label in copy.GetComponentsInChildren<TMPro.TMP_Text>(true))
             label.text = RWData.ModeDisplay.ToUpperInvariant();
@@ -83,26 +95,24 @@ public static class RWMenu
             Button.Addmenu();
         }
         copy.SetActive(true);
-        RWLog.Info("main menu: the Rogue Waves button stands under Play");
+        RWLog.Info("main menu: the Rogue Waves button stands beside Play");
     }
 
-    // Play's tile with its ship and arrows: the clone's picture is the pack's crest, on Rogue Teal (docs/STYLE.md).
+    // Play's tile: its picture (child "Image", the ship and arrows) becomes the pack's crest, on Rogue Teal (docs/STYLE.md). Its
+    // border stays, and the line down to the column stays Play's alone.
     static void Image(GameObject copy)
     {
         Sprite crest = RWAssets.Sprite("RogueWaves_Crest32");
-        List<string> seen = new List<string>();
-        foreach (UnityEngine.UI.Image i in copy.GetComponentsInChildren<UnityEngine.UI.Image>(true))
+        UnityEngine.UI.Image box = copy.GetComponent<UnityEngine.UI.Image>();
+        if (box != null) box.color = RWDialog.Teal;
+        Transform picture = copy.transform.Find("Image"), down = copy.transform.Find("Linev");
+        UnityEngine.UI.Image i = picture != null ? picture.GetComponent<UnityEngine.UI.Image>() : null;
+        if (i != null && crest != null)
         {
-            seen.Add(i.name + ":" + (i.sprite != null ? i.sprite.name : "-"));
-            if (i.gameObject == copy)
-                i.color = RWDialog.Teal;
-            else if (crest != null && i.sprite != null && i.sprite.name.IndexOf("corner", StringComparison.OrdinalIgnoreCase) < 0)
-            {
-                i.sprite = crest;
-                i.preserveAspect = true;
-            }
+            i.sprite = crest;
+            i.preserveAspect = true;
         }
-        RWLog.Info("main menu button images: " + string.Join(", ", seen.ToArray()));
+        if (down != null) down.gameObject.SetActive(false);
     }
 
     // Each stock button rewrites the tip under the menu on hover (Mainmenu_Main.Playhover).
@@ -113,7 +123,7 @@ public static class RWMenu
             Blockage.Menu.Blu2_Menu_Handler main = Blockage.Menu.Bl_Menus.Menus["Main"];
             GameObject tip;
             if (main.Items.TryGetValue("Buttontip", out tip) && tip != null)
-                Bla_Localization.SetText(tip, "Set sail on a campaign");
+                Bla_Localization.SetText(tip, RWData.ModeDisplay);
         }
         catch (Exception e) { RWLog.Once("menu tip", "main menu tip: " + e.Message); }
     }

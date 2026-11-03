@@ -17,10 +17,11 @@
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
 		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
+		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), and one more joins as the maps go on~
 
 	[Difficulty]
 		- Each map: harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health
-		- Numbers: / Blank: the design gate proposes them \
+		- Numbers: ~foes +6% a map, +35% per player past the first; spawn intervals -3% a map; foe health +8% a map; each bonus tide +10% foes on the last~
 
 	[Retries]
 		- Per campaign: 3
@@ -28,7 +29,8 @@
 		- The host quitting: the host quitting during a map counts as losing it. Only the host quitting during a map spends a retry
 		- A friend quitting: a friend who drops or quits doesn't spend one: they can rejoin the running map (-> 03_Bug_Fix.txt), and a friend who drops while the map loads comes back on the boat
 		- Dying in a bonus tide: doesn't lose the map: a map counts as won once Tide 15 is cleared, no retry is spent, and only the tide in progress pays nothing
-		- Status: built, not yet run on the PC. Only the lost map can be picked on the boat until it is won /~ docs/reports/MODE_POLISH_2026-11-03.md \
+		- After a loss: ~the boat sails back to the lost map by itself~, and only that map can be picked until it is won
+		- Status: built, and a lost map, its retry and Continue passed on the PC /~ docs/reports/BUILD_2026-11-03.md \
 
 	[Depth] / Ascension levels \
 		- Levels: 5
@@ -45,7 +47,7 @@
 		- Leaving: after clearing Tide 15, the players vote between tides on leaving, and the map is left when a majority votes to
 		- Only between tides: the players are only able to leave between tides, so they are not able to exit right before their demise
 		- Bonus tides: no limit. They go on, each one harder, until a majority votes to leave. Staying bonus tides allows the player to accumulate more [Pure Aura] -> 06_New_Mechanics.txt [Pure Aura]
-		- Status: 60 second breaks and a map won once Tide 15 is cleared are built, not yet run on the PC. Until the vote to leave is built, the host leaves through the game's own menu, and the bonus tides are the game's Tides 16 to 30, the last of which runs until the map ends /~ docs/reports/MODE_POLISH_2026-11-03.md \
+		- Status: built, and passed on the PC: 60 second breaks, a map won once Tide 15 is cleared, the vote to leave, and bonus tides past Tide 29 /~ docs/reports/BUILD_2026-11-03.md \
 
 	[Sea Chart] / Slay the Spire's map \
 		- Chart: a campaign's maps sit on a sea chart generated when the campaign starts, like Slay the Spire's map: a harbour, then 10 rows of 3 or 4 base game maps
@@ -57,7 +59,8 @@
 		- Vote: the vote offers the maps linked to the one just played (the first row for map 1). It is held in the map, after the vote to leave; map 1's vote is held in the opening break of a staging map
 		- Sailing: the party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps
 		- On the boat: between maps, players can't swap their Cardinals
-		- Status: built, and passed its PC round. Until the in-map vote is built, the leader steers to one of the linked maps with the boat's own arrows. How the chart looks is yours to check by eye /~ docs/mode/SEA_CHART.md sections 7-9 \
+		- Islands: ~each map shows its own island from the base game's world maps, at the base game's size, in the home world's water~; a map with no island of its own borrows one
+		- Status: built, and passed on the PC, the in-map vote and the boat's trip included. How the chart looks is yours to check by eye /~ docs/mode/SEA_CHART.md sections 7-9; docs/reports/BUILD_2026-11-03.md \
 
 	[Sea Weather]
 		- Which maps: some maps on the chart carry a weather, rolled with the chart

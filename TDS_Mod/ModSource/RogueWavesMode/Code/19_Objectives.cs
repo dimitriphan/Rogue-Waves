@@ -20,15 +20,16 @@ public static class RWObjectives
         new RWObjectiveDef { Name = "Nest", Display = "Raze the Nest", Pays = 4, Line = "A halberd nest lands near the foes: destroy it before the Tide ends" },
     };
 
+    public static Entity_Master Target { get { return target; } }
     public static RWObjectiveDef Posted;     // this break's, on the host
     public static RWObjectiveDef Active;     // taken, running in the next Tide
     public static string Outcome = "";       // self-test
     public static int Paid;                  // self-test
     public static Beingobject MeteorBeing;
     static Entity_Master target;
-    static bool failed, targetFell;
-    static float coreHurt, startedTimer, tideLength;
-    static float lastTimer;
+    static bool failed, targetFell, clockBeaten;
+    static float coreHurt, tideLength;
+    public const float ClockShare = 0.25f;   // of the Tide's clock left when its last foe falls
 
     public static void Build() { }
 
@@ -119,15 +120,14 @@ public static class RWObjectives
     {
         failed = false;
         targetFell = false;
+        clockBeaten = false;
         target = null;
-        lastTimer = 0f;
         if (Active == null)
             return;
         Entity_Master core = Core();
         coreHurt = core != null ? core.Damagetaken : 0f;
         Game_Mapvars vars = Game_Mapvars.Instance;
         tideLength = vars != null ? vars.Time_Wave.Value : 0f;
-        startedTimer = tideLength;
         try
         {
             if (Active.Name == "Meteor") SpawnMeteor();
@@ -144,8 +144,15 @@ public static class RWObjectives
     public static void Update()
     {
         EnsureMeteor();
-        if (Active != null && Game_Mapvars.Instance != null && !ModKitTides.InBreak)
-            lastTimer = Game_Mapvars.Instance.Time_Wave.Value;
+        // A Tide's clock runs out whatever happens (Mode_Normal.Run), and starts only once its foes have all been sent: the
+        // field is clear with a clock that has started and a good part of it left.
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        if (Active != null && Active.Name == "Clock" && !clockBeaten && vars != null && !ModKitTides.InBreak && tideLength > 0f)
+        {
+            float left = vars.Time_Wave.Value;
+            if (left < tideLength - 0.2f && left > tideLength * ClockShare && RWVote.Foes() == 0)
+                clockBeaten = true;
+        }
     }
 
     // The Tide's break began: did it hold?
@@ -161,7 +168,7 @@ public static class RWObjectives
         {
             case "Meteor": case "Nest": ok = targetFell; break;
             case "Hull": ok = core != null && core.Damagetaken <= coreHurt + 0.01f; break;
-            case "Clock": ok = lastTimer > tideLength * 0.25f; break;
+            case "Clock": ok = clockBeaten; break;
             case "Hands": ok = !failed; break;
         }
         if (target != null && target.Beingserver != null && !target.Beingserver.Dead)

@@ -165,7 +165,7 @@ public static class RWDifficulty
             if (core.Statsserver.TryGetValue("Healthresource", out s))
                 s.Value += 1f;
         }
-        int row = vars.Entry.Value;
+        int row = vars.Entry.Value;         // when this break's clock runs out Entry rises by one, and the row is Entry - 1
         if (row >= 0 && row < table.Count && table[row].Wave && table[row].Content != null)
         {
             Wavesobject.Waves w = table[row];

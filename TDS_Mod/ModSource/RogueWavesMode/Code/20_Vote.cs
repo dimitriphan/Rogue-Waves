@@ -105,6 +105,7 @@ public static class RWVote
         if (!RWRun.InCampaignMap || !RWUtil.IsServer || Game_Mapvars.Instance == null)
             return;
         Game_Mapvars vars = Game_Mapvars.Instance;
+        RWWeather.DropDeadNests();
         // Once every vessel stands and carries its commands, and the map's fly-in (10 s, the HUD hidden) is over: the vessels'
         // start runs on the Tide clock, so nothing holds it before that (seen on the PC).
         if (startPickAt > 0f && Time.time >= startPickAt && ((AllStanding() && IntroOver(vars)) || Time.time >= startPickAt + 90f))
@@ -135,7 +136,7 @@ public static class RWVote
         }
     }
 
-    static int Foes()
+    public static int Foes()
     {
         int n = 0;
         List<Entity_Master> foes;
@@ -310,6 +311,24 @@ public static class RWVote
         RWRejoin.Say("The party sails to " + MapName(best) + (best.Weather != RWChart.Calm ? ", " + RWWeather.Display(best.Weather) : "") + ".");
         CloseQuestion();
         Leave();
+    }
+
+    // A calm map's card shows the map's own glyph, the one on its Setup panel, at the cards' 20 pixels a unit (its own sprite
+    // is drawn for a larger panel, and comes out a speck on a card, seen on the PC).
+    static readonly Dictionary<string, Sprite> glyphs = new Dictionary<string, Sprite>();
+
+    public static Sprite MapPicture(RWChart.Node n)
+    {
+        Sprite made;
+        if (glyphs.TryGetValue(n.Map, out made) && made != null)
+            return made;
+        Mapentryobject m = RWUtil.Item<Mapentryobject>("Map", n.Map);
+        if (m == null || m.Display_Image == null || m.Display_Image.texture == null)
+            return RWAssets.Sprite("RogueWaves_Vote");
+        made = Sprite.Create(m.Display_Image.texture, m.Display_Image.rect, new Vector2(0.5f, 0.5f), 20f, 0, SpriteMeshType.FullRect);
+        made.name = n.Map + "_Card";
+        glyphs[n.Map] = made;
+        return made;
     }
 
     public static string MapName(RWChart.Node n)
@@ -502,7 +521,7 @@ public static class RWAsk
                 RWChart.Node n = chart.At(row, c);
                 if (n == null) continue;
                 string weather = n.Weather != RWChart.Calm ? RWWeather.Display(n.Weather) : "Calm waters";
-                cards.Add(RWDialog.Card(c.ToString(), RWVote.MapName(n), weather + RWCard.Separator + "Danger " + n.Label, n.Weather != RWChart.Calm ? RWIcons.SpriteFor(n.Weather) : RWAssets.Sprite("RogueWaves_Vote"), n.Breaker ? RWDialog.Coral : RWDialog.Teal));
+                cards.Add(RWDialog.Card(c.ToString(), RWVote.MapName(n), weather + RWCard.Separator + "Danger " + n.Label, n.Weather != RWChart.Calm ? RWIcons.SpriteFor(n.Weather) : RWVote.MapPicture(n), n.Breaker ? RWDialog.Coral : RWDialog.Teal));
             }
             title = "WHERE NEXT?";
             sub = "The party sails to the map most of you pick";

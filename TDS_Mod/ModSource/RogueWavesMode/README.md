@@ -31,7 +31,27 @@ it); a map is won once Tide 15 is cleared and ten won maps complete the campaign
 | `Build-RogueWavesModeMod.ps1` | joins the code with the kit (`RogueWavesModeKit`), compile-checks it on the PC |
 | `../../Assets/RogueWavesModeMod/Editor/RogueWavesModeModPrefab.cs` | Tools > RogueWavesMode: Build Mod Prefab, Export Mod |
 
-Nothing starts a campaign on its own yet: the main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) will call
+**2026-11-03, the whole campaign** (`docs/reports/BUILD_2026-11-03.md`): the main menu's button, the staging map's picks and vote,
+the campaign card, Pure Aura, VENDCINT, Directions, Cardinals, objectives, Fund Transfer, the votes, bonus Tides, end titles and
+the difficulty. **Self-test in game: 140 pass, 0 fail**, a whole campaign flow clicked through the game's own dialogs, then the older
+chart, weather, rejoin and retry probes. `96_Flow.cs` is the flow, `97_Shots.cs` the captures, `95_Look.cs` a quick round for the
+chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMODE_CHARTLOOK`).
+
+| File | What |
+| --- | --- |
+| `Code/11_Dialog.cs` | `RWDialog`: the game's choice dialog for every choice, its cards laid in one centred row |
+| `Code/12_Menu.cs` | `RWMenu`: the main menu's button; `RWAssets`: the sprite library |
+| `Code/13_Card.cs` | `RWCard`: the campaign card on four screens, the exit warning, the end titles; `RWLobby`: no-mods warning, rejoin line; `RWTips` |
+| `Code/14_Run.cs` | `RWPlayer`, `RWRun`: each player's Pure Aura, Directions, Cardinals, saved with the campaign; `RWMine`: the same seen from a client |
+| `Code/15_Content.cs` | `RWContent`: VENDCINT, the buttons and upgrades the part builds at boot |
+| `Code/16_Directions.cs` | `RWDirections`: offers, ranks, reach through an owner hook; `RWHits`: Made of Tougher Stuff's hit hook |
+| `Code/17_Cardinals.cs` | `RWCardinals`: the pack's Cardinals and the stock ones on sale, stacks as numbered copies |
+| `Code/18_Shop.cs` | `RWShop`: VENDCINT's landing, shelf, board; `RWFund`: Fund Transfer |
+| `Code/19_Objectives.cs` | `RWObjectives`: the five optional objectives |
+| `Code/20_Vote.cs` | `RWVote`: the flow between Tides, Direction picks, the map vote, the vote to leave; `RWAsk`: every machine's own question |
+| `Code/21_Difficulty.cs` | `RWDifficulty`: each map's Tide table, modifiers, bonus Tides |
+
+The main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) calls
 `RWCampaign.New(0)` or `RWCampaign.Continue()`. Until then a release build only registers the mode and its twins.
 
 Check here (`TDS_Mod/Tools/cloud-check/README.md`):

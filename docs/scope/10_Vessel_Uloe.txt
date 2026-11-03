@@ -14,7 +14,7 @@
 			- Accent colour: ~~
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites \
 			- Lore: / Lore comes once the character is finalized \
-			- Status: concept page done. Comes last.
+			- Status: built with temporary art from the sheet and its design gate's defaults; its self-test passes on the PC. His play test and look by eye are left /~ TDS_Mod/ModSource/Uloe/DESIGN.md holds every default, slot by slot \
 
 		[Vessel Stats]
 			- Attack: ranged.

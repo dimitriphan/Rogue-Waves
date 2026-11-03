@@ -69,7 +69,7 @@ public static class ModKitTides
         }
     }
 
-    // The entry the table is playing is Entry - 1 (Mode_Normal counts it up as it starts one).
+    // The row the table is playing is Entry - 1: Mode_Normal.Run starts Entry at 1 and reads Wave[Entry - 1] (kit docs/15 section 4).
     public static bool EntryIsBreak(Game_Mapvars mv, int e)
     {
         List<Wavesobject.Waves> table = mv != null && mv.Mode != null && mv.Mode.Enemies != null ? mv.Mode.Enemies.Wave : null;

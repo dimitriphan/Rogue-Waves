@@ -269,6 +269,8 @@ public static class RWCampaign
 
     // The team replays the map (Next stays on it, so a restarted map still counts), or, with no retry left, the
     // campaign ends.
+    public static bool AutoReplay = true;    // off only in the self-test's pretend losses
+
     public static void Lost(string why)
     {
         int col = Playing;
@@ -278,6 +280,7 @@ public static class RWCampaign
         {
             Retries--;
             Replay = col;
+            if (AutoReplay) Choice = col;   // the boat sails back to it by itself, as to a vote's winner
             Save();
             RWLog.Info("map " + (Route.Count + 1) + " lost (" + why + "): " + Retries + " retries left, the boat replays column " + col);
             RWRejoin.Say("Map lost. The team replays it from the boat: " + Retries + (Retries == 1 ? " retry" : " retries") + " left.");

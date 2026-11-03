@@ -225,6 +225,11 @@ public static class RWDirections
         foreach (Link_Command c in new List<Link_Command>(vessel.Commandlistserver.Values))
             if (c != null && c.Name != null && c.Name.StartsWith("Buildoption"))
                 Scale(vessel, c);
+        // A tower has no Upgrade command yet as it spawns, and each upgrade writes a new one (seen on the PC): kept up here.
+        if (Top(p, "Any", "Refit") > 0 && Game_Entity.Instance != null)
+            foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
+                if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Beingserver.Entity != null && e.Entitydata.Value.Owner == p.Session && e.Beingserver.Entity.Tags.Contains("Tower"))
+                    Refit(e, p);
         foreach (RWDirectionDef d in Mine)
         {
             if (d.Stat == "") continue;
