@@ -259,7 +259,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
   2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
   nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
-  60 s breaks, `RW_` keys; compiled, not run; Log). Older entries are in "Log" below.
+  60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: a UX features study, nothing built
+  (`docs/reports/UX_FEATURES_2026-11-03.md`; Open question 3; Log). Older entries are in "Log" below.
 - **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
   "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
@@ -533,6 +534,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   weather lines, rejoin B4-12/B4-14, the dev description (B4-13), and B2-1 on the mode's side. Compiled 0 errors in all
   three builds; chart parity on 2,001 seeds. New self-test checks K0, CH, K1, P1, T0-T6, H1; not run.
   `docs/reports/MODE_POLISH_2026-11-03.md` (§2 readings and §3 judgment calls for Dimitri).
+- **2026-11-03, UX features (Dimitri: "additional features that would fit into the game while enhancing user
+  experience, such as buttons, transition screens or multi-player lobbies"):** a feasibility study, cloud only, no code
+  (`docs/reports/UX_FEATURES_2026-11-03.md`). The game's screens were decompiled again and read (loading screen, map
+  intro card, end screen, pause menu, boat world card, main menu, Mods menu, chat, kick). All three examples fit on
+  stock UI: buttons as clones that open the choice dialog (no new menus), transitions as text on the game's own five
+  screens (one "campaign card": map, stretch, weather, retries), and the boat stays the lobby. 33 features feasible,
+  5 not possible (own menus, lobby browser, more than 4 players, host migration, Discord presence). Recommended first:
+  the campaign card, retry warnings, a "friend has no mods" warning with rejoin instructions, weather icons on the
+  chart, the pack's tips. Ten facts new to the kit (X1-X10, read) and ten solo probes (U1-U10) wait for a round. Nothing
+  is in the scope or the Phase 5 list until Dimitri picks (report §8).
 
 ### Decisions
 
@@ -686,6 +697,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
 | 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
+| 3 | UX features (`docs/reports/UX_FEATURES_2026-11-03.md` §8): add the five recommended ones to the Phase 5 list, every feasible one as a polish pass, or keep the report as reference | kept as reference; nothing added until Dimitri picks |
 
 ### Phase 5 pieces
 
