@@ -61,3 +61,5 @@ lite renderer on the PR #42 branch, 2026-10-27):
 Put the final art at `ModSource/Spool/Art/<same name>.png` (one folder up) and point the code there, then delete the
 temporary file. Generators: `concept-tools/temp_art/ui_icons.py` (the tuft rows are its `TUFT`),
 `spool_threadhead.py`, `spool_units.py`.
+
+**Versions to pick from (2026-10-28):** three new versions of every file above are in `variants/v1|v2|v3/` (its README names them); nothing there is wired until Dimitri picks (`docs/TEMP_ART.md`).

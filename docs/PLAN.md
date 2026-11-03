@@ -179,7 +179,7 @@ Steps, in order:
    them (`docs/03`, `docs/18`). PC round: self-test 0 failures, then his play test and his balance pass. Coded
    2026-10-23 as 0.2.0-dev with the carried-over fixes; PC round 9 passed the self-test (160/0) and made it his play
    build the same day. His play test next, with what it must show in `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
-4. The pack build with one part: the Build Queue's `Pack` step (`docs/PACK.md` §1, not built yet), the one pack version
+4. The pack build with one part: Tools > ModKit > Build Pack with `Tools/pc/Build-Pack.ps1` (`docs/PACK.md` §1; built 2026-10-28, first run in round 10: the 0.1.0 zip exists), the one pack version
    in every place `docs/PACK.md` §4 names, the README of §5, the Mods-folder install checked on the PC with no dev mods
    in it.
 5. `docs/10` hand-off; `RogueWaves-0.1.0.zip` to Dimitri. Gate: Dimitri says ship.
@@ -241,33 +241,51 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
   sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-23: Spool's answers folded
   into scope `08`; the Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports
-  the sheet (Log). 2026-10-27: a temporary art pass
+  the sheet (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from scope `08` with temporary art; its first
+  PC round passed its self-test 120/0 on round 1c (Log). 2026-10-26: Yossele 0.2.0-dev and Spool 0.1.0-dev played
+  through the HUD by a virtual player on three maps; two bugs fixed on PRs #41 and #42 and seen fixed in game; Spool's
+  first Tide is too thin (`docs/reports/PLAYTEST_2026-10-26.md`). 2026-10-27: a temporary art pass
   (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
   redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
   (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
-  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-11-03: a
-  balance study of Yossele and Spool in a simulator calibrated on the 2026-10-26 play test
-  (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's proposals P1-P4 wait for his pick
-  (Open questions 2). Older entries are in "Log" below.
-- **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
+  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-10-28: the
+  game's code read system by system and the scope fitted to it
+  (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
+  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
+  2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
+  the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
+  2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
+  nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
+  60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
+  calibrated on the 2026-10-26 play test (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's
+  proposals P1-P4 wait for his pick (Open questions 3; Log). Older entries are in "Log" below.
+- **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
+  "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
-  and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
-  turned-away player who gets in on a second try, and a chart whose maps link to at most 3 (`QUALITY_PASSES_2026-10-15.md`
-  A3-9, B4-11, B4-12, B4-14, C2), and
-  its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
+  and the in-map vote (kit 1.7 first, Decisions 2026-10-15; the campaign itself no longer needs kit 1.7's "Leave" fix,
+  `docs/reports/MODE_POLISH_2026-11-03.md` F13); the mode's next PC round runs its new checks (K0, CH, K1, P1, T0-T6,
+  H1) and Dimitri confirms the polish's readings (that report §2). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass
-  (the 2026-11-03 study proposes no change), the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Uloe is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
-  Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6); Spool (PR #42) was scaffolded without them and takes them at its next round.
-- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, pitfall #115 (#113 is the Spool thread's, #114 the play test's Hallucinogen look; #92 is unused).
+  (the 2026-11-03 balance study proposes no change), the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
+  `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
+  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
+  probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
+  N8-N11 stay read only until a round needs them (never N12).
+- **Release 1 state (2026-10-28):** the pack builds and boots (round 10); what's left is his play test of the new play
+  build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
+- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
+  (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
+  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
+  balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
+  squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
+- **Next free numbers:** kit chapter 25, pitfall #121 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -449,13 +467,84 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a new vessel from the template, saves in the page, and exports the `.txt` byte for byte with `~defaults~` (tested:
   07, 08, 09, 10, 16 and both uploads round-trip unchanged). Its source and README are in project files
   `concepts/vessel_spotlight_2026-10-15/`.
+- **2026-10-26, template before Spool:** the kit template (Mummer's scaffold) took the 1.6 pack calls, `ModKitCombat`
+  kill credit, `ModKitTowers.Fit` tower ranges and unthrottled debuff looks; the Aseprite writers keep unit sheets named
+  after the vessel (B10, B1-3, B1-22, B1-4, C2-6). Compiled, not run.
+- **2026-10-26, Spool 0.1.0-dev:** Dimitri: "Begin implementing Spools mechanics." Built from scope `08` as PR #40 leaves
+  it: the Yarn Stash first (the menu holds only it until it stands), Thread dropped by foes and carried home by Spool
+  and Thread Heads (ground Thread is a host list drawn by each client, not network entities), the Cookie Tin and its
+  Crafted (TARGET with the fish's picker), the Thread Head (placed through a walk-through token; SPOT, RETURN, Threaded
+  Delivery, MEND, comeback with its upgrades), the Pin Cushion's hit hook (reflect, spin, Slow Unravel, Mangled), the
+  Loom (spins Thread, Direct Line, Seams), PATCH; every upgrade the sheet names. Temporary art from Dimitri's reshade
+  (the walk is the 2026-10-12 concept, pixel for pixel), 19 models, 6 effects, 14 sounds. `check_mod.py` 0 errors in
+  release and both test builds, `check_editor.sh` clean. Defaults: `TDS_Mod/ModSource/Spool/DESIGN.md` "Defaults
+  picked here".
+- **2026-10-26, Spool PC round 1** (Dimitri: "Go ahead"; Yossele parked and put back each time): 1 = 95/22, 1b =
+  117/3, 1c = **120/0**. All but one fail were the self-test tripping over itself (foes killed in their spawn frame,
+  pitfall #112; Spool's own army felling the test's foes; Tins and Thread Heads moving Thread mid-check); the one real
+  slip, Slow Unravel's delayed half starting a frame early, is fixed. No exception from Spool. The self-test sends the
+  build, sell, TARGET and SPOT commands itself, so the clicking (pickers, build menu) waits for Dimitri's play test.
+- **2026-10-26, play test:** at Dimitri's "Do a test run of Yossele and Spool as if you were a player testing these
+  characters", a debug-only virtual player (kit `ModKitPlay`, play builds only; Input System events on the game's own
+  mouse and keyboard, so the HUD, the map and the keys get a hand's input) played 12 runs on Purlest, Woozy and The Hunt.
+  Found and fixed: the Thread Head's panel never drew (RETURN's and MEND's keybinds named input actions the game doesn't
+  have; PR #42, pitfall #113) and Hallucinogen's stun look is a stock effect Woozy doesn't load (PR #41, pitfall #114).
+  Balance, what was clicked and what needs Dimitri: `docs/reports/PLAYTEST_2026-10-26.md`.
+- **2026-10-28, priorities:** at Dimitri's ask ("figure out what is most needed right now") the scope was read
+  against the state; the ranked list for Release 1 and what waits after it is `docs/reports/PRIORITIES_2026-10-28.md`.
+  Nothing built.
+- **2026-10-28, defaults and the pack (Dimitri: "Use defaults for now, then proceed"; round OK 20:07Z):** defaults
+  logged (Decisions), scope `07` asks for his sprite sheet, the pack step built. PC round Yossele_round10: self-test of
+  0.1.0-dev **160/0**, the three temporary sheets used, release boot check clean; the first pack build `PACK DONE ok`,
+  its boot check clean at v0.1.0; `handoff\RogueWaves-0.1.0.zip` (3.1 MB) made and held for his sprites. His play build
+  is now 0.1.0-dev with the Daze fix and the temporary art (`TDS_Mod/Handoff/Yossele_round10/README.md`).
+- **2026-10-28, engine study and scope fit:** at Dimitri's ask ("understand as much as you can about how it functions,
+  and plan how ideas in the scope could seamlessly fit in without needing to create new mechanics") the game was
+  decompiled again in the cloud (never committed) and read against the kit. `docs/reports/ENGINE_STUDY_2026-10-28.md`
+  walks it system by system, sorts every road into four rungs (stock data, a stock script on pack data, a stock pattern
+  in a pack brain, a new mechanic) and lists 13 facts new to the kit, all read only (the same upgrade twice does
+  nothing; nine stock Cardinal scripts need their Cardinal passed; Chrono starts at ×1.25; Teamapply reaches every
+  vessel's builds). Its appendix catalogues 284 stock behaviour scripts: 245 can be put on pack things by data.
+  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` walks 61 scope ideas: 19 on stock data or a stock script, 10 mixed, 32 on
+  a stock pattern, none on a new mechanic once Uloe's light is a stat and Photons walk like Kippy; it offers
+  stock-script options for six `! NEEDS !` lines (scope untouched) and eight PC probes. Nothing compiled or run; the PC
+  was not touched. PR #48.
+- **2026-10-29, RogueLab round 8:** at Dimitri's ask ("Do a PC round to check") RogueLab 0.6.0 (`10_Round8.cs`) ran the
+  fit plan's probes R1-R8 and the engine study's N1-N5, N7 and N13 on a solo host: 20 pass, 1 fail (R6's own
+  bookkeeping), then **21 pass, 0 fail** after a one-file fix (handoff `RogueLab_round8b`). Seen in game: a stock script
+  runs on pack data once it has every param key it reads; the same upgrade twice does nothing and differently named
+  copies stack; removing one of two upgrades that share a script keeps both running; Teamapply reaches every player's
+  buildings and keeps reaching new ones after removal, while an owner-filtered spawn hook reaches only that player's;
+  a light stat sums sources that each replace their own 1.5 s mod; a death node pays once; Vintage and Coin work as pack
+  Cardinals with their `Artifactobject`; Melting's drain stays; Smackywall's regen heals at the Tide change; Chrono
+  starts at ×1.25. New kit pitfalls #115-#120, kit `16` §3 (Chrono), `17` §9 (Teamapply), `13` §3 (`30 / Totalwaves`),
+  `08` §6 (shutdown noise); every line in `TDS_Vessel_Creator/reference/roguelab_round8.txt`. Dimitri's Yossele
+  0.1.0-dev play build was parked for each launch and put back. PR #48.
+
+- **2026-10-28, temporary art versions (Dimitri: "For all temporary assets, create alternative versions for me to choose
+  for each asset. There should be different versions for every single animation included for Yossele and Spool. Create
+  3 versions of each asset for now."):** three new versions of each of the 2026-10-27 assets, in
+  `ModSource/<Part>/Art/Temporary/variants/v1|v2|v3/` (same names, sizes and layouts, so a pick drops in): Yossele's
+  idle, walk and attack (moved from the code's frame of his reshade), the Cordyfriend (three builds), the fruit model;
+  the Thread Head (his zipper mouth in all three), the four Crafted (their bodies kept, new walks and attacks), the
+  tuft, the needle model; the fifteen 12 x 12 icons and the 32 px crest. 35 picks, one per animation, so versions
+  can mix. Generators `concept-tools/temp_art/variants_*.py`, `apply_picks.py`; page `variants_page.py`. Nothing
+  wired changed and nothing was seen in game.
+- **2026-11-03, mode polish (Dimitri's "Run 3, 4, and 5", item 4):** RogueWavesMode checked line by line against scope
+  `04` and `docs/mode/`, two passes: 15 issues fixed as **0.1.0-dev** (the pack version plus `-dev`): 3 retries (only
+  the lost map can be picked until won), the host leaving a running map loses it (saved while it runs, counted on the
+  boat or by Continue), won once Tide 15 is cleared, ten maps complete the campaign and the party goes home, 60 s
+  breaks, `RW_` save keys with a one-time rename, at most 3 links per chart map (`sea_chart.py` too), scope `04`'s
+  weather lines, rejoin B4-12/B4-14, the dev description (B4-13), and B2-1 on the mode's side. Compiled 0 errors in all
+  three builds; chart parity on 2,001 seeds. New self-test checks K0, CH, K1, P1, T0-T6, H1; not run.
+  `docs/reports/MODE_POLISH_2026-11-03.md` (§2 readings and §3 judgment calls for Dimitri).
 - **2026-11-03, balance study (cloud only):** at Dimitri's ask (a long virtual play test of Yossele and Spool), a
   simulator of a map Tide by Tide (`docs/reports/balance_2026-11-03/`, Python, no game code) was calibrated on the
   2026-10-26 play test and run about 13,000 times on Purlest, Woozy and The Hunt, Smacky as the yardstick. Found: the
   2026-10-26 play test had three Coin Cardinals equipped; Red is every vessel's scarce colour and Purlest's Opal is
   what piles up Blue; Yossele is at or above Smacky everywhere (no change; moving its costs to Blue loses Woozy);
   Spool's thin first Tide is the missing Pin Cushion wall, and it loses Purlest at Tide 11 to the Maul and Tempered
-  Aegis. Proposed (his pick, Open questions 2): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 / Dart 3.5 Damage (all
+  Aegis. Proposed (his pick, Open questions 3): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 / Dart 3.5 Damage (all
   Claude `~defaults~` in scope `08`), a "wall first" line; a PC round to confirm (report §9).
 
 ### Decisions
@@ -595,6 +684,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-10-21 (user): Release 1's four defaults confirmed; Yossele's sheet answers: fertilizer resets each map,
   Cordyfriend's range 1.5 tiles, the Tree's capstone is Dandelion Storm, "long tide" maps have 4 Tides or fewer, one
   Bonsai per player.
+- 2026-10-28 (user, "Use defaults for now, then proceed", on `docs/reports/PRIORITIES_2026-10-28.md`): Yossele's laser
+  keeps mining ore; `07`'s costs, healths and in-game lines stay as written (the Red/Blue balance waits for his pass);
+  the D-MDS line stays his; the temporary Cordyfriend ships unless he sends his own; the dev version becomes 0.1.0-dev
+  (pack version plus -dev, `docs/PACK.md` §4) and the mod's `.info` carries it; the HUD cut-off is checked by his eye
+  against Smacky's build bar (no desktop screenshots here). Scope `07`'s Sprites slot now asks for his sheet. The pack step is built:
+  `TDS_Mod/ModSource/Pack/pack.txt`, `Tools/pc/Build-Pack.ps1`, Tools > ModKit > Build Pack, `Run-SelfTests.ps1 -Pack`.
 
 ### Open questions
 
@@ -603,7 +698,8 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
-| 2 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round | numbers as written in scope `08`; nothing changes until he picks |
+| 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
+| 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round | numbers as written in scope `08`; nothing changes until he picks |
 
 ### Phase 5 pieces
 
@@ -613,7 +709,9 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
   (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)
 - [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;
   online O1-O8 left)
-- [ ] leave-or-stay and bonus tides  - [ ] 10-map campaign loop  - [ ] ascension (Depth, on hold)
+- [ ] leave-or-stay and bonus tides (a map is won at Tide 15 and 60 s breaks are built, 0.1.0-dev, compiled)
+- [ ] 10-map campaign loop (retries, replay, host quit, completion: built in 0.1.0-dev, compiled, not run)
+- [ ] ascension (Depth, on hold)
 
 ---
 

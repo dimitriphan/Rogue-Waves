@@ -357,6 +357,20 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      solo on 3B_Thehunt) → `Debuff_Weakened` is only named by the Fiewall's code and isn't in the Vfx group in a normal
      game, though kit `17` §10 listed it → give the look your own effect (`Debuff_Yossele_Marked`), or check a stock
      debuff name with the self-test's `DebuffReport` before relying on it.
+112. **A foe killed in the frame it spawned leaves nothing your despawn hook keys on, and an area search two frames
+     later misses it** (Spool round 1, 2026-10-26; #105-#111 are Yossele's, PR #41) → `Entity_Master.Start` adds a
+     being's tags (`Taglistserver`) and stats a frame after `Game_Entity` spawns it, so a hook that checks the "Enemy"
+     tag skips a foe despawned in its spawn frame (no Thread dropped), and `Helper_Entityquerytools.Entityarea` (a
+     `Physics.OverlapSphere`) didn't find a foe that had just got its tags → in a self-test, wait until a spawned foe is
+     tagged and has `Health` before killing or reading it (#111 for its health), and about 0.3 s more before an area
+     search around it. Real Tide foes live long enough for neither to matter. **Verified** in game (the area search: missed
+     at two frames, found after 0.3 s; not timed more finely).
+113. **Selecting your unit throws `KeyNotFoundException: The given key 'Quickaction2' was not present in the
+     dictionary` in `Game_Selection.Addcommand`, and its panel never draws** (Spool play test, 2026-10-26: no buttons, no
+     upgrades, the previous selection's buttons stay) → `Addcommand` looks each name in a command's `Keybind` up in
+     `Blockage.Bl_Inputs.Actions`, which holds only the game's input actions (`Quickaction` and `1` to `8`) → name only
+     those (Spool's RETURN takes `4`, MEND `3`), and have the self-test check every key against `Bl_Inputs.Actions`
+     (Spool's does). **Seen** in game; the fix is checked by Spool's play test.
 114. **"Could not retrieve Vfx/Debuff_Stun The GROUP exists, but item does not" on one map, though the self-test saw
      the look attach on another** (Yossele play test, 2026-10-26) → stock effects load with groups, and which groups a
      match loads depends on its map and vessels: `Debuff_Stun` is in the Vfx group on 3B_Thehunt (the self-test map, so
@@ -364,3 +378,33 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      → a `DebuffReport` proves a stock look on its own map only (this amends #110): give the look the mod's own effect
      (Yossele's `Debuff_Yossele_Daze`), or name only a stock look from a group the mod loads itself (its template
      vessel's or its `ExtraGroups`). **Verified** in game (play test 2026-10-26).
+115. **A second rank or stack of a Direction or Cardinal does nothing** (RogueLab round 8, 2026-10-29) →
+     `Helper_Entitytools.Upgrade` returns at once when an upgrade of that name is already on the entity: the same asset
+     applied twice left an archer at ×0.7 with one script instance → give each rank or stack its own upgrade asset with
+     its own name; two assets with different names on one stock script stack (two Barrel_Boost −0.3 read ×0.4: the
+     `Multi` bucket sums, kit `17` §2.1). **Verified** in game.
+116. **Removing one of two upgrades that list the same stock script leaves its effect running** (round 8) →
+     `Removeupgrade` runs the script's `Downgrade`, then destroys only the AIs whose type no upgrade left on the entity
+     names, so both instances live on: a wall still lost 1 + 2 a prick after thorn upgrade A was removed, and 0 only
+     once B went too → remove upgrades that share a stock script together, or give the one that must come off alone a
+     script nothing else on the entity names. **Verified** in game.
+117. **`KeyNotFoundException: The given key 'Health_Pmulti' was not present`, or a `NullReferenceException`, when a pack
+     upgrade lists a stock script** (round 8) → a stock script reads every param it knows by key, not just the ones the
+     pack sets (Barrel_Boost reads five), and nine Cardinal scripts (Checklist, Coin, Computer, Greatspear, Moneybag,
+     Moneybagold, Mooncore, Onetimebuild, Samedayshipping) read `Artifactobj`, which stays null unless `Upgrade`'s fourth
+     argument passes the Cardinal → copy the stock upgrade's `Defaultparams` keys whole (0 for the unused ones), and pass
+     the `Artifactobject` (a mid-map grant on Vintage then ran clean and lengthened the break by its 40 s). **Verified**
+     in game for Barrel_Boost, Coin and Vintage.
+118. **The stock "everything a vessel builds" Cardinal reaches every player's buildings, and keeps reaching new ones
+     after it is removed** (round 8) → `Entity_Ai_Artifact_Teamapply` checks only that a new thing's parent is tagged
+     `Hero`: a building owned by another player got its gift, and after the upgrade was removed a new archer still got
+     it (its spawn handler is never taken off) → for one player's things use an owner-filtered `Onspawn` hook that adds
+     the upgrade to `Initupgradelistserver` (round 8: only that player's towers got it, a rebuilt one again); keep
+     Teamapply for Team Cardinals that last the whole map. **Verified** in game (owner −1 stood in for a teammate).
+119. **A timed mod re-added every second reads double half the time** (round 8) → `Addmod(..., Duration)` takes each
+     mod off after its own timer, so a 1.5 s `Add 1` added every second read `[1 1 2 1 2 1 2 1]` → keep each source's
+     `Link_Modifier` and remove it before adding the next: two sources then read 2, one 1, and 0 about 1.5 s after the
+     last (Uloe's light, fit plan §10). **Verified** in game.
+120. **Melting's drained stats never come back** (round 8) → `Entity_Ai_Effect_Enemy_Weaken` has no `Downgrade`: a 3 s
+     −0.1 Damage drain left an archer at 3.18 of 4 after the effect was gone → never borrow it for a debuff that must
+     wear off (Aging); write that on `Addmod` with a `Duration`. **Verified** in game.

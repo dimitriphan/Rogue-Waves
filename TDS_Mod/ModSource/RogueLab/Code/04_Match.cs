@@ -59,6 +59,14 @@ public static class RogueLabMatch
             RogueLabRun.Done();
             yield break;
         }
+        if (RogueLabData.Round == 8)
+        {
+            // Round 8: the engine study's probes (10_Round8.cs), then leave as a win and stop.
+            yield return RogueLabRound8.Map1();
+            yield return Win();
+            RogueLabRun.Done();
+            yield break;
+        }
         if (RogueLabData.Round == 7)
         {
             // Round 7: the base-vessel and map checks (09_Round7.cs), then leave as a win and stop.

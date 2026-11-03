@@ -1,0 +1,17 @@
+        // Temporary art, version 1 "Pear on leaves" (2026-10-28): a pear-shaped pod banded in its colours, lying on a
+        // ring of five leaves instead of the petal disc, a curled stem on top.
+        static Lp Fruit(int[] cols)
+        {
+            var m = new Lp();
+            for (int i = 0; i < 5; i++)
+            {
+                float a = (i * 72f + 18f) * Mathf.Deg2Rad;
+                m.Leaf(V(0, 0.02f, 0), V(Mathf.Cos(a), 0.05f, Mathf.Sin(a)), 0.36f, 0.14f, i % 2 == 0 ? Pal.Leaf : Pal.Leaf2, Pal.LeafDark, 0.2f, 0.05f);
+            }
+            Vector3 c = V(0, 0.15f, 0);
+            BandBall(m, c, V(0.2f, 0.15f, 0.2f), 12, 7, cols);
+            BandBall(m, c + V(0, 0.15f, 0), V(0.12f, 0.12f, 0.12f), 12, 6, cols);
+            m.Stem(new[] { c + V(0, 0.25f, 0), c + V(0.01f, 0.31f, 0), c + V(0.05f, 0.34f, 0) }, 0.02f, 0.012f, 5, Pal.Bark2);
+            m.Leaf(c + V(0.01f, 0.29f, 0), V(-0.6f, 0.5f, -0.3f), 0.12f, 0.06f, Pal.Leaf, Pal.LeafDark);
+            return m;
+        }

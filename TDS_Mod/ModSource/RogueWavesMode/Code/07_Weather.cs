@@ -25,13 +25,14 @@ public static class RWWeather
 
     public static string Display(int w) { return w >= 0 && w < RWChart.WeatherNames.Length ? RWChart.WeatherNames[w] : "?"; }
 
+    // Display(w) + ": " + Short(w) is the weather's in-game line in docs/scope/04 [Sea Weather].
     public static string Short(int w)
     {
         switch (w)
         {
             case RWChart.RisingWater: return "the water climbs each tide. More Pure Aura";
-            case RWChart.QuickeningCurrent: return "the tides run faster later on. More Pure Aura";
-            case RWChart.NestingGround: return "a halberd nest grows by the enemy. More Pure Aura";
+            case RWChart.QuickeningCurrent: return "the game runs faster from Tide " + QuickTide + ". More Pure Aura";
+            case RWChart.NestingGround: return "a halberd nest grows near the foes. More Pure Aura";
         }
         return "";
     }

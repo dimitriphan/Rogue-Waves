@@ -134,13 +134,13 @@ The part's `README.md` maps its files; `IMPLEMENTATION_NOTES.md` lists what to c
 | Step (§3) | How it is built |
 | --- | --- |
 | 1. Generate | `03_Chart.cs`, an exact port of `concept-tools/sea_chart.py` (same xorshift32 draws in the same order; 400 seeds give identical charts, checked here with mono). The generator now also gives each node its base map and its weather (§8). **Maps:** row r aims at label 2 + (r-1)/2 (labels are the maps' `Difficulty`, the final map's 0 counted as 10), a Breaker row two higher; a node draws one of the five unused maps nearest its row's aim, so no map is on a chart twice. Over 2,000 charts row 1 averages label 3.2, row 5 6, row 10 7.7 (seed 20261009: 2.7, 6, 7.3) |
-| 2. Save | `06_Campaign.cs`: host save folder `RogueWaves`, keys `Campaign_Seed` and `Campaign_Route` (one column digit per map won); `New(seed)`, `Continue()`, `Stop()`. A lost or left map leaves the route as it was |
+| 2. Save | `06_Campaign.cs`: host save folder `RogueWaves`, keys `RW_Campaign_Seed` and `RW_Campaign_Route` (one column digit per map won), and since 0.1.0-dev (2026-11-03) `RW_Campaign_Retries`, `RW_Campaign_Replay` (the lost map to replay) and `RW_Campaign_Playing` (the map in play); `New(seed)`, `Continue()`, `Stop()`. Until 0.1.0-dev the keys had no `RW_`; the part renames old ones once (`RWKeys`, kit `docs/23` §2 rule 3). A lost map spends one of 3 retries and is replayed (only it can be picked); with none left, or after ten maps won, the campaign ends and leaves the save |
 | 3. Build the world | `04_World.cs`: a `Mapworlddatabaseobject` named `RW_Chart_<seed>_<route>` per route, built on every machine from its name; islands of primitives in the `docs/STYLE.md` palette, a `Macro_Maplink_Add` per map node playing its `RW_` twin Gameplan in `Mode_RogueWave` (`02_Mode.cs`), each with a `Cameraposition` and a `Dock`; route lines; a flag on sailed islands; a weather marker. Only the node the party stands on has `Links` (to its choices), so the stock arrows offer exactly the choices |
 | 4. Sail in | `05_Boat.cs`, host: once the boat is up and a campaign is on, sets `Tds_Multiplayerinfo.World`, clears `Selected`, and sets `Worlded` ("" then the name) as `Selectworld_ServerRpc` does. The landing node is the world's `Defaultnode`, not `Selected`, so no client opens a Setup panel on landing |
 | 5. Clients | every machine registers the chart named by `World` or `Worlded` without waiting for `Macro_Main.Ready` (the client's `Startup` waits for the item first) |
 | 6. Choose | until the in-map vote exists, the leader steers with the stock arrows: every node but the choices is in `Macro_Main.Blacklist`, so only a choice can be picked. `RWCampaign.Choice` (the vote's winner later, the self-test now) makes the host's boat sail by itself |
 | 7. Sail and load | the host hovers the chosen node; on arrival (boat within 1.5 of the dock and still for 0.8 s) it calls `Selectmap_ServerRpc`, which opens the Setup panel on everyone's screen; ready-up loads the map in `Mode_RogueWave` |
-| 8. Come back | a won map adds its column to the route (`ModKitTides.MapEnd` "Win"); back on the boat the host warps onto the next chart name |
+| 8. Come back | a won map adds its column to the route: once Tide 15 is cleared (`ModKitTides.Tide` 16), or a "Win" end before it; back on the boat the host warps onto the next chart name. A map that ends otherwise, or that the host leaves while it runs (seen on the boat or by `Continue`), is lost (since 0.1.0-dev, `docs/reports/MODE_POLISH_2026-11-03.md`). With no campaign on, a party still on a chart is taken back to the stock world |
 
 Found while building, from the code (filed in kit `docs/15` §17): `Changeworld` names the world's copy after
 `Worldobj` and `Macro_Worldvisual.Update` re-swaps any machine whose world's GameObject name differs from `Worlded`, so
@@ -148,7 +148,7 @@ the prefab's name must equal the database name; `Selectworld` writes the landing
 client opens the Setup panel when the landing node is a map node; `Showhover` walks the node's `Links` without a null
 check; a map the player hasn't played shows "UNCLASSIFIED" in the Setup panel unless its Gameplan has `Prediscover`
 (the twins set it). The save guard puts the last stock `Player_Worldselect` and `Player_Gameplanselect` back (kept in
-`RogueWaves/Stock_World`, `Stock_Gameplan`) whenever either holds a chart name.
+`RogueWaves/RW_Stock_World`, `RW_Stock_Gameplan`) whenever either holds a chart name.
 
 ## 8. Sea weather (2026-10-10)
 
@@ -191,9 +191,14 @@ lowers Quickening to Tides 1 and 2. Every boat probe of §5 but C7 (online) and 
 | W2 | Quickening Current sets the game speed to 1.25, then 1.5 |
 | W3 | Nesting Ground spawns and sends a Halberd at the next Tide |
 | W | no error is logged while each weather runs |
-| C5 | a won map is sailed; back on the boat the party is on the next chart, the boat at the node just won |
+| C5 | a won map is sailed and no longer in play; back on the boat the party is on the next chart, the boat at the node just won |
 | C6 | after a map click's save write, the save holds no chart name |
-| save | the campaign's seed and route are in the save, `Continue` reads them back, `Stop` removes them |
+| save | the campaign's seed and route are in the save, `Continue` reads them back, `Stop` removes them (all five keys) |
+| K0 | (boot) every break between Tides in `Mode_RogueWave` is 60 s, the opening break is Mode_Normal's, and Mode_Normal's own table is untouched |
+| CH | (boot) 500 charts: every map links to 1 to 3 maps of the next row |
+| K1, P1 | no key of `RogueWaves` lacks `RW_`; each map is in the save (`RW_Campaign_Playing`) while it runs |
+| T0-T6 | (on the boat, pretend map ends) `Continue` gives 3 retries; a lost map spends one and only it can be picked; a map left while it ran is lost, seen on the boat (T2) or by `Continue` (T3); Tide 16 wins the map and a later loss costs nothing (T4); no retry left ends the campaign (T5); the tenth map won completes it (T6) |
+| H1 | with no campaign on, the party is taken back to the stock world |
 
 The boot log also prints every chart line (`CHART ...`) and the map pool (`POOL ...`): `python3
 concept-tools/sea_chart.py --check 20261009` must print the same chart lines.

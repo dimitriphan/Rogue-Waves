@@ -7,6 +7,7 @@ public static class RWChart
     public const int Rows = 10;
     public const int Stretch = 5;            // rows 5 and 10 close a stretch: Breaker maps
     public const int Nearest = 5;            // a node draws among this many maps nearest its row's aim
+    public const int MaxLinks = 3;           // a map links to 1 to 3 maps in the next row (docs/scope/04 [Sea Chart])
 
     public const int Calm = 0, RisingWater = 1, QuickeningCurrent = 2, NestingGround = 3;
     public static readonly string[] WeatherNames = { "Calm", "Rising Water", "Quickening Current", "Nesting Ground" };
@@ -88,6 +89,8 @@ public static class RWChart
             }
             else if (spare > 0) { di = true; dk = true; }
             else { di = true; dk = false; }
+            // The last node takes every child left, never more than MaxLinks (docs/scope/04: a map links to 1 to 3).
+            if (di && i + 1 == w - 1 && nw - (k + (dk ? 1 : 0)) > MaxLinks) { di = false; dk = true; }
             if (di) i++;
             if (dk) k++;
             kids[i].Add(k);

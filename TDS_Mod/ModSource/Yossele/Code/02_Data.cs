@@ -5,7 +5,7 @@
 public static class YosseleData
 {
     // The Rogue Waves pack version, "-dev" for the dev mod (docs/PACK.md section 4).
-    public const string Version = "0.2.0-dev";
+    public const string Version = "0.1.0-dev";
     public const string Part = "Yossele";
     public const bool Diagnostics = true;
 

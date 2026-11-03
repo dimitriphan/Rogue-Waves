@@ -2,10 +2,15 @@
 // Modeobject (so its scripts are the stock ones, found by name) with its whole Tide table, registered under one name as
 // entry, group and Modeobject. Every base Gameplan gets a twin "RW_<plan>" in this mode: the chart's map nodes play the
 // twins, so picking a node on the boat loads its map in Mode_RogueWave. Runs on every machine at boot.
-// The Tide table, leaving after Tide 15 and bonus Tides are later pieces (docs/scope/04); today it plays Mode_Normal's.
+// The Tide table is Mode_Normal's 30 Tides with every break between Tides 60 s long (docs/scope/04 [Tides and Leaving];
+// Mode_Normal's are 30 s); the opening break keeps its 45 s. A map counts as won once Tide 15 is cleared (RWCampaign),
+// so Tides 16-30 play as bonus Tides; the vote to leave and bonus Tides past 30 are a later piece.
 public static class RWMode
 {
+    public const float BreakSeconds = 60f;       // docs/scope/04 [Tides and Leaving] Breaks
+    public static int BreaksSet;                 // breaks given BreakSeconds at Register (self-test, log)
     public static Modeobject ModeObject;
+    public static Modeobject Stock;              // Mode_Normal's, whose table the mode copies (the self-test checks it is untouched)
     public static Modeentryobject Entry;
     static readonly List<RWChart.Plan> pool = new List<RWChart.Plan>();
 
@@ -16,9 +21,21 @@ public static class RWMode
     {
         Modeobject stock = normal != null && normal.Modeloads != null ? Bl_Address.Getload("Mode", normal.Modeloads.Objectname) as Modeobject : null;
         if (stock == null) { RWLog.Warn("Mode_Normal's Modeobject is not loaded: no Rogue Waves mode"); return; }
+        Stock = stock;
 
         Wavesobject waves = RWUtil.Clone(stock.Enemies, RWData.Mode + "_Waves");
-        waves.Wave = new List<Wavesobject.Waves>(stock.Enemies.Wave);
+        waves.Wave = new List<Wavesobject.Waves>(stock.Enemies.Wave);   // Waves is a struct: these are copies
+        BreaksSet = 0;
+        bool afterTide = false;
+        for (int i = 0; i < waves.Wave.Count; i++)
+        {
+            Wavesobject.Waves entry = waves.Wave[i];
+            if (entry.Wave) { afterTide = true; continue; }
+            if (!afterTide) continue;                // the opening break, before Tide 1
+            entry.Wavetime = BreakSeconds;
+            waves.Wave[i] = entry;
+            BreaksSet++;
+        }
         ModeObject = RWUtil.Clone(stock, RWData.Mode);
         ModeObject.Enemies = waves;
 
@@ -70,7 +87,7 @@ public static class RWMode
         pool.Sort((a, b) => string.CompareOrdinal(a.Name, b.Name));
 
         bool found = Tds_Masterdatabase.Instance.Getitem("Mode", RWData.Mode) == Entry && Bl_Address.Getload("Mode", RWData.Mode) == ModeObject;
-        RWLog.Info("mode " + RWData.Mode + " registered " + found + ": " + waves.Wave.Count + " table entries, twins of " + pool.Count + " Gameplans");
+        RWLog.Info("mode " + RWData.Mode + " registered " + found + ": " + waves.Wave.Count + " table entries (" + BreaksSet + " breaks of " + RWUtil.F(BreakSeconds) + " s), twins of " + pool.Count + " Gameplans");
         List<string> names = new List<string>();
         foreach (RWChart.Plan p in pool) names.Add(p.Name + ":" + p.Map + ":" + p.Label);
         RWLog.Info("POOL " + string.Join(" ", names.ToArray()));

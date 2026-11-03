@@ -14,6 +14,8 @@
 //                mechanic probes for the 2026-10-09 scope, and stops (RogueLabData.Round)
 //   round 7      (09_Round7.cs) the stock Cardinals' core upgrades at boot, then map 1's base-vessel and map checks
 //                of kit docs/17 §12 and docs/16 §9, and stops
+//   round 8      (10_Round8.cs) map 1's probes of the engine study (docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §11,
+//                docs/reports/ENGINE_STUDY_2026-10-28.md §14), and stops
 // Build: Build-RogueLabMod.ps1 -Define ROGUELAB_SELFTEST (the define also switches on the kit's ModKitTest).
 #if !ROGUELAB_SELFTEST
 #error RogueLab is a research build: build it with -Define ROGUELAB_SELFTEST

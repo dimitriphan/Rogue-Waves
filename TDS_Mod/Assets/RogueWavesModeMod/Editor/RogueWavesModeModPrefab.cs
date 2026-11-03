@@ -16,7 +16,7 @@ namespace RogueWavesModeBuild
         const string PrefabPath = "Assets/RogueWavesModeMod/RogueWaves_Mode_Default.prefab";
         const string Parked = "Assets/_Parked/Editor";
         const string Own = "RogueWavesModeMod";
-        const string Version = "0.3.0";      // = RWData.Version (docs/PACK.md §4); the one pack version replaces it at the first pack build
+        const string Version = "0.1.0-dev";  // = RWData.Version (docs/PACK.md §4): the pack version plus -dev
 
         static string Source { get { return Path.GetFullPath(Path.Combine(Application.dataPath, "../ModSource/RogueWavesMode")); } }
 
@@ -108,7 +108,7 @@ namespace RogueWavesModeBuild
             }
             ModTool.Editor.Exporting.ExportSettings.name = Own;
             ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
-            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves, the mode part (dev build): the campaign's sea chart and sea weather.";
+            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves, the mode part (dev build): the campaign's sea chart, sea weather and retries, and rejoining a running map.";
             ModTool.Editor.Exporting.ExportSettings.version = Version;
             ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
             AssetDatabase.SaveAssets();

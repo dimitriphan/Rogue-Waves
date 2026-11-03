@@ -12,6 +12,9 @@
 //   *Brain          per-entity server logic (vessel, Loom, Stage, Cross, Curtain, Understudies).
 //   MummerClient    runs on every player: sounds, thread lines, flying Scraps, owner-only messages.
 //   MummerJournal   the journal pages (through the shared ModKitJournal), ModKitBoat the boat spot and unlock.
+//   Kit 1.6         ModKitPack (the Rogue Waves registry: Join, Taken, Notice), ModKitFocus (the F-key fix),
+//                   ModKitTides (Tide events), ModKitTowers (range anchors), ModKitCombat (kill credit). The build
+//                   renames ModKit to MummerKit, so every mod has its own copy.
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,6 +33,7 @@ public class MummerMod : MonoBehaviour
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         MummerLog.Info("loaded v" + MummerData.Version);
+        ModKitPack.Join(MummerData.Part, MummerData.Version);
         StartCoroutine(Boot());
     }
 
@@ -41,6 +45,13 @@ public class MummerMod : MonoBehaviour
             template = MummerUtil.Heroentry(MummerData.TemplateHero);
             if (template == null)
                 yield return new WaitForSecondsRealtime(0.5f);
+        }
+
+        // docs/PACK.md 2.3: whoever registers Hero_Mummer first keeps it; a second copy stands down and says so.
+        if (ModKitPack.Taken(MummerData.Hero))
+        {
+            ModKitPack.Notice(this, MummerData.Part, "Another Mummer mod is loaded: disable it while Rogue Waves is on");
+            yield break;
         }
 
         if (!MummerAssets.Find())
@@ -110,6 +121,8 @@ public class MummerMod : MonoBehaviour
     {
         if (!Ready)
             return;
+        ModKitFocus.Update();
+        ModKitTides.Update();
         MummerServer.Update();
         MummerClient.Update();
         MummerJournal.Tick();

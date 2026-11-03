@@ -1,0 +1,18 @@
+        // Temporary art, version 3 "Curved needle" (2026-10-28): an upholstery needle bent in a half moon, a white point,
+        // a gold eye and a short purple thread tail; the curve gives it a shape that reads at any angle.
+        static Lp Needle()
+        {
+            var m = new Lp();
+            var pts = new List<Vector3>();
+            for (int i = 0; i <= 8; i++)
+            {
+                float a = (-70f + i * 140f / 8f) * Mathf.Deg2Rad;
+                pts.Add(V(Mathf.Cos(a) * 0.08f - 0.06f, 0.5f, Mathf.Sin(a) * 0.22f));
+            }
+            m.Stem(pts, 0.024f, 0.018f, 6, Pal.Steel);
+            m.Tube(pts[pts.Count - 1], pts[pts.Count - 1] + V(-0.03f, 0, 0.07f), 0.018f, 0f, 6, Pal.White);
+            m.Ball(pts[0], Vector3.one * 0.03f, 6, 4, Pal.Gold1);
+            Thread(m, pts[0], pts[0] + V(-0.05f, 0.02f, -0.1f), Pal.Felt2, 0.013f);
+            Thread(m, pts[0] + V(-0.05f, 0.02f, -0.1f), pts[0] + V(0.01f, 0f, -0.18f), Pal.Felt2, 0.013f);
+            return m;
+        }
