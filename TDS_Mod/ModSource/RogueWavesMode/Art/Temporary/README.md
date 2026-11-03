@@ -38,3 +38,5 @@ Draw the icon at the same size and save it as `ModSource/RogueWavesMode/Art/<sam
 no asset builder: its icons are string rows in code. For the three weather icons, run
 `python3 concept-tools/temp_art/ui_icons.py` after changing its rows (it prints them in the form `08_Icons.cs` uses), or
 ask a Claude thread to turn your PNG into rows. Delete the temporary file once yours is in.
+
+**Versions to pick from (2026-10-28):** three new versions of every file above are in `variants/v1|v2|v3/` (its README names them); nothing there is wired until Dimitri picks (`docs/TEMP_ART.md`).
