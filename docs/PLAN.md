@@ -266,8 +266,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   proposals P1-P4 wait for his pick (Open questions 3; Log). 2026-11-03: an aura baseline read from the game's code
   (`docs/reports/AURA_BASELINE_2026-11-03.md`, cloud only): a base vessel earns about 4,800 aura a map; Yossele's
   Sapling mines 2-2.5× and Spool's Loom 4-5× the base average; P1-P4 stand; options P5-P7 (Open questions 3-4; Log).
-  Older entries are in "Log" below.
-- **Next:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
+  2026-11-03: **every planned feature built and tested in game** (`docs/reports/BUILD_2026-11-03.md`): the whole campaign, from the main-menu
+  button to the end screen, self-test 139/0 in game, with every part of the pack on at once as well; the foes part; Uloe; kit 1.7; the sea
+  chart rebuilt on the base game's own art. Older entries are in "Log" below.
+- **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
+  in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4). Release 1 below is unchanged.
+- **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -290,7 +294,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #121 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8).
+- **Next free numbers:** kit chapter 25, pitfall #135 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#134 the build round of 2026-11-03).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -582,6 +586,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   his pick (Open questions 4): P5 Sapling Attackspeed 0.15, P6 fruit × 5, P7 scope `08`'s Loom line to what is built;
   PC checks M8-M11 (node census, gatherers timed, the Seam, The Hunt's beasts). `aura.py` and experiment J in
   `docs/reports/balance_2026-11-03/`.
+- **2026-11-03: every planned feature, built and tested in game** (Dimitri: "Create all planned features and assets, then test them in game
+  to make sure they function and fit seamlessly into the game. Any feature added should be to the quality of the base game."). Kit 1.7; the
+  mode's main-menu button, staging map, Pure Aura, VENDCINT, Directions, Cardinals, objectives, Fund Transfer, votes, bonus Tides, difficulty,
+  card and warnings; the foes part; vessel Directions for Yossele, Spool, Argo; Uloe from `docs/scope/10`. Self-tests in game: mode 139/0 (and with
+  every part on), foes 12/0, Yossele 160/0, Spool 121/0, Argo 136/0, Uloe 147/0/3. Playing it caught what compiling never would: the chart's
+  camera looked at the sky, the Tide table was read one row off, a dead nest stopped the Tides for good (pitfalls #121-#134). `docs/reports/BUILD_2026-11-03.md`.
 
 ### Decisions
 
@@ -730,6 +740,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the Phase 5 list**, each built beside the piece it touches: the campaign card (T1-T4), the retry warnings (B4, T4),
   the no-mods warning with the rejoin line (L1, L5), weather icons on the chart (O1) and the pack's tips (T6). The
   other feasible rows stay in the report as reference.
+- 2026-11-03 (Claude, defaults while building; each stands until Dimitri says otherwise): the sea chart shows the base game's own islands, the home
+  world's water and rocks at runtime, no new art; the main-menu button is a tile beside Play, so the stock column keeps its places; after a loss the boat
+  sails back by itself; Bottom Rock (`Artifact_Rock`) stays off the shelf. The lists in scope `04`, `10`-`14` are `~defaults~` beside their `! NEEDS !` lines.
 
 ### Open questions
 
@@ -740,25 +753,28 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
 | 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
+| 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 
 ### Phase 5 pieces
 
-- [ ] kit 1.7 (Decisions 2026-10-15), before the button
-- [ ] main-menu Rogue Waves button (calls `RWCampaign.New`/`Continue`; nothing starts a campaign until it exists)
-- [ ] Pure Aura  - [ ] objectives/bounties  - [ ] shopkeeper  - [ ] Directions  - [ ] Fund Transfer  - [ ] map vote
-  (sea chart and boat trip built and passed PC rounds 1-4, 2026-10-11; the in-map vote still to build)
+All of these passed in game on 2026-11-03 (`docs/reports/BUILD_2026-11-03.md`); left on them: Dimitri's eye, online.
+
+- [x] kit 1.7 (Decisions 2026-10-15), before the button
+- [x] main-menu Rogue Waves button
+- [x] Pure Aura  - [x] objectives/bounties  - [x] shopkeeper  - [x] Directions  - [x] Fund Transfer  - [x] map vote
+  (sea chart and boat trip passed PC rounds 1-4, 2026-10-11)
 - [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;
   online O1-O8 left)
-- [ ] leave-or-stay and bonus tides (a map is won at Tide 15 and 60 s breaks are built, 0.1.0-dev, compiled)
-- [ ] 10-map campaign loop (retries, replay, host quit, completion: built in 0.1.0-dev, compiled, not run)
+- [x] leave-or-stay and bonus tides
+- [x] 10-map campaign loop (two maps played for real, a loss, a retry, Continue; ten won on pretend results; Phase 5's gate, a full campaign by hand and online, is left)
 - [ ] ascension (Depth, on hold)
-- [ ] UX (Decisions 2026-11-03; `docs/reports/UX_FEATURES_2026-11-03.md`, probes U1-U9 in its §7):
-  - [ ] campaign card on the loading screen, the map intro card, the chart's world card and the end screen title
-  - [ ] retry warnings: the host's exit dialog names the cost; the end screen says how many retries are left
-  - [ ] "<name> has no mods on" warning on the boat; the rejoin line in the dropped player's main-menu error box
-  - [ ] weather icons above chart nodes on hover
-  - [ ] the pack's tips in the game's tip lists (end screen, pause menu, Close Game)
+- [x] UX (Decisions 2026-11-03; `docs/reports/UX_FEATURES_2026-11-03.md`, probes U1-U10 in its §7; results in `docs/reports/BUILD_2026-11-03.md` §3):
+  - [x] campaign card on the loading screen, the map intro card, the chart's world card and the end screen title
+  - [x] retry warnings: the host's exit dialog names the cost; the end screen says how many retries are left
+  - [x] "<name> has no mods on" warning on the boat; the rejoin line in the dropped player's main-menu error box
+  - [x] weather icons above chart nodes on hover, and always over a weathered map
+  - [x] the pack's tips in the game's tip lists (end screen, pause menu, Close Game)
 
 ---
 

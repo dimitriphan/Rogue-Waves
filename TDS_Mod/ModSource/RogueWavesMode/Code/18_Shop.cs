@@ -169,15 +169,11 @@ public static class RWShop
             a.Animplay(anim, Game_Sprite.Animationtype.Force);
     }
 
-    // A landing thud: the game's own, if this map has it loaded.
+    // A landing thud: the game's own heavy impact.
     static void Shake(Vector3 at)
     {
-        try
-        {
-            GameObject fx = Bl_Address.Getload("Vfx", "World_Land") as GameObject;
-            if (fx != null) UnityEngine.Object.Instantiate(fx, at, Quaternion.identity);
-        }
-        catch (Exception) { }
+        try { Helper_Vfxtools.Oneshot("Impact_Large", at, Vector3.up); }
+        catch (Exception e) { RWLog.Once("landing", "VENDCINT's landing effect: " + e.Message); }
     }
 
     // ---------------------------------------------------------------- the buttons (the machine that pressed them)
