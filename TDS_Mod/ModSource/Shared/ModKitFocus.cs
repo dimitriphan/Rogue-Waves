@@ -1,4 +1,4 @@
-// Kit 1.6 (2026-10-08). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.7 (2026-11-03). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: the scope's F-key fix (docs/15 section 9, RogueLab's RogueLabFocusFix). After a respawn the game's
 // Focus (F) can select a minion tagged "Hero" (a Boutbro) instead of the vessel: the new vessel entity is appended to
 // Entityclienttags["Hero"] behind it. On the first F after the local vessel respawned, a handler added after the
@@ -20,7 +20,8 @@ public static class ModKitFocus
             installed = true;
             try
             {
-                if (!ModKitPack.Mark("ModKitFocus"))
+                // The build scripts rename the kit's prefix inside strings too: this mark's name must not hold it (kit 1.7).
+                if (!ModKitPack.Mark("Focusfix"))
                     return;
                 Blockage.Input focus = Blockage.Bl_Inputs.Actions["Focus"];
                 focus.Function = (Blockage.Input.Pressfunct)Delegate.Combine(focus.Function, new Blockage.Input.Pressfunct(After));

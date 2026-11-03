@@ -15,8 +15,10 @@
 # "[<Name>] icons:" and reports every vessel mod's ready/icons lines and the exception count.
 # -BootCheck -Pack RogueWaves: the same for a pack build (Build-Pack.ps1): RogueWavesMod is enabled instead of the
 # vessels' own mods, and -Vessels names the parts whose icons lines it waits for.
+# -Also Yossele,Spool: these parts' builds stay enabled beside each vessel under test (the whole pack in one launch).
 param(
     [Parameter(Mandatory = $true)][string[]]$Vessels,
+    [string[]]$Also = @(),
     [switch]$BootCheck,
     [string]$Pack = "",
     [int]$TimeoutMinutes = 12,
@@ -109,7 +111,9 @@ if ($BootCheck) {
 
 foreach ($v in $Vessels) {
     foreach ($w in $Vessels) { SetEnabled $w ($w -eq $v) }
+    foreach ($a in $Also) { if ($a -ne $v) { SetEnabled $a $true } }
     $ok = Launch { param($s) $s -match [regex]::Escape("[$v] TEST DONE") } "TEST DONE"
+    foreach ($a in $Also) { if ($a -ne $v) { SetEnabled $a $false } }
     $t = Get-Date -Format "yyyyMMdd_HHmmss"
     if (-not $script:LogFresh) {
         SetEnabled $v $false

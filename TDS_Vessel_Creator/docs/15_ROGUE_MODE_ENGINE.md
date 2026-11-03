@@ -101,6 +101,8 @@ RPCs.
 
 ## 4. Tides: bonus Tides and leaving
 
+- **The row playing is `Entry - 1`** (pitfall #121; the opening break is row 0, Tide N row 2N - 1, the break after it row 2N;
+  **proven** 2026-11-03). A Tide's clock runs out whatever happens (pitfall #122).
 - `Mode_Normal.Run` counts the table's entries once (Mode_Normal.cs:315) but reads the networked `Entry` on every pass
   (:363,366). A mod's mode simply has a longer `Wavesobject` (Tides 16+ as the bonus Tides); or the host rewinds
   `Entry` to replay entries while `Wave` keeps rising (**proven**, §11).

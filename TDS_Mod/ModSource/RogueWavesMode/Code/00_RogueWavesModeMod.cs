@@ -40,6 +40,7 @@ public class RogueWavesModeMod : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.5f);
         while (Bla_Addressables.Instance == null)
             yield return new WaitForSecondsRealtime(0.5f);
+        RWAssets.Find();
         RWIcons.Add();
         RWCampaign.Install();
 
@@ -61,12 +62,21 @@ public class RogueWavesModeMod : MonoBehaviour
         catch (Exception e) { RWLog.Warn("mode not registered: " + e); }
         try { RWLog.Info("chart pool: " + RWMode.Pool.Count + " base maps"); }
         catch (Exception e) { RWLog.Warn("chart pool: " + e.Message); }
+        try { RWTips.Boot(); } catch (Exception e) { RWLog.Warn("tips: " + e.Message); }
+        yield return RWContent.Boot();
         ModKitTides.MapStart += RWCampaign.MapStart;
+        ModKitTides.MapStart += RWRun.MapStart;
+        ModKitTides.MapStart += RWDifficulty.MapStart;
         ModKitTides.MapStart += RWWeather.MapStart;
+        ModKitTides.MapStart += RWVote.MapStart;
+        ModKitTides.Break += RWVote.Break;
         ModKitTides.Tide += RWCampaign.Tide;
         ModKitTides.Tide += RWWeather.Tide;
+        ModKitTides.Tide += RWVote.Tide;
         ModKitTides.MapEnd += RWCampaign.MapEnd;
         ModKitTides.MapEnd += RWWeather.MapEnd;
+        ModKitTides.MapEnd += RWRun.MapEnd;
+        ModKitTides.MapEnd += RWVote.MapEnd;
 #if ROGUEWAVESMODE_SELFTEST
         RWTest.Boot();
 #endif
@@ -81,7 +91,19 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWIdentity.Update(); } catch (Exception e) { RWLog.Once("identity", "identity: " + e); }
         if (!Ready)
             return;
+        try { RWMenu.Update(); } catch (Exception e) { RWLog.Once("menu", "main menu: " + e); }
+        try { RWCard.Update(); } catch (Exception e) { RWLog.Once("card", "campaign card: " + e); }
+        try { RWLobby.Update(); } catch (Exception e) { RWLog.Once("lobby", "lobby: " + e); }
+        try { RWTips.Update(); } catch (Exception e) { RWLog.Once("tips", "tips: " + e); }
         try { RWLoad.Update(); } catch (Exception e) { RWLog.Once("load", "load watch: " + e); }
+        try { RWRun.Tick(); } catch (Exception e) { RWLog.Once("run", "run: " + e); }
+        try { RWRunLabel.Update(); } catch (Exception e) { RWLog.Once("run line", "run line: " + e); }
+        try { RWHits.Update(); } catch (Exception e) { RWLog.Once("hits", "hits: " + e); }
+        try { RWVote.Update(); } catch (Exception e) { RWLog.Once("vote", "vote: " + e); }
+        try { RWAsk.Update(); } catch (Exception e) { RWLog.Once("ask", "questions: " + e); }
+        try { RWShop.Update(); } catch (Exception e) { RWLog.Once("shop", "shop: " + e); }
+        try { RWObjectives.Update(); } catch (Exception e) { RWLog.Once("objectives", "objectives: " + e); }
+        try { RWCardinals.Update(); } catch (Exception e) { RWLog.Once("cardinals", "cardinals: " + e); }
         try { ModKitTides.Update(); } catch (Exception e) { RWLog.Once("tides", "tides: " + e); }
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
         try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }

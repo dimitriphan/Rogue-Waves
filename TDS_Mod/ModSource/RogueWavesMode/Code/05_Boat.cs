@@ -83,6 +83,7 @@ public static class RWBoat
             keptReplay = replay;
             List<string> open = new List<string>();
             foreach (RWChart.Node n in campaign ? RWCampaign.Open() : RWWorld.Choices(chart, route)) open.Add(n.Name);
+            if (campaign && RWCampaign.Staging) open.Add(chart.At(0, 0).Name);
             int shut = 0;
             foreach (Macro_Link_Add_Base node in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             {
@@ -102,7 +103,10 @@ public static class RWBoat
         }
         catch (Exception) { }
         RWChart.Node picked = chart.Find(main.Selected.Value.ToString());
-        if (picked != null && picked.Weather != RWChart.Calm)
+        RWWeather.Preload(RWChart.NestingGround);   // Raze the Nest, on any map
+        if (picked != null && picked.Row == 0 && vis.Insetup)
+            SetupNote("Setting out: choose your Directions, then vote on the first map");
+        else if (picked != null && picked.Weather != RWChart.Calm)
         {
             RWWeather.Preload(picked.Weather);
             if (vis.Insetup)
@@ -128,6 +132,7 @@ public static class RWBoat
     {
         if (slow)
             Guard();
+        RWMenu.Boat();
         RWCampaign.OnBoat();
         if (!RWCampaign.Live)
         {
@@ -139,6 +144,19 @@ public static class RWBoat
             Warp(main, vis, target);
         if (!OnChart || vis.World.name != target)
             return;
+        if (slow)
+        {
+            Lock();
+            RWCardinals.RestoreLobby();
+        }
+        // A new campaign's first stop opens by itself: the leader's boat is already there.
+        if (RWCampaign.Staging && main.Selected.Value.ToString() == "" && !vis.Inworldtransition && !vis.Insetup && Time.realtimeSinceStartup - upAt > 12f && RWUtil.IsLeader && Picked == "")
+        {
+            RWChart.Node home = RWCampaign.Chart.At(0, 0);
+            Picked = home.Name;
+            RWLog.Info("staging: the harbour opens");
+            Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(home.Name, false, default(Unity.Netcode.ServerRpcParams));
+        }
         RWChart.Node picked = RWCampaign.Chart.Find(main.Selected.Value.ToString());
         if (picked != null && RWCampaign.Open().Contains(picked) && RWCampaign.Next != picked)
         {
@@ -148,6 +166,30 @@ public static class RWBoat
         }
         if (RWCampaign.Choice >= 0 && RWUtil.IsLeader)
             Sail(main, vis);
+    }
+
+    // Vessels are locked in once the campaign has seen them (docs/scope/04 [Campaign]): a player's vessel goes back to theirs,
+    // said once. A friend new to the campaign picks freely.
+    static readonly List<string> lockSaid = new List<string>();
+
+    static void Lock()
+    {
+        foreach (long s in RWRun.Sessions())
+        {
+            Blm_Player bp;
+            if (!Blm_Server.Instance.Sessionidsplayer.TryGetValue(s, out bp) || bp == null)
+                continue;
+            Tds_Clientinfo info = bp.GetComponent<Tds_Clientinfo>();
+            RWPlayer p = RWRun.For(s);
+            if (info == null || p.Hero == "" || info.Hero.Value.ToString() == p.Hero)
+                continue;
+            info.Hero.Value = new FixedString64Bytes(p.Hero);
+            if (!lockSaid.Contains(p.Key))
+            {
+                lockSaid.Add(p.Key);
+                RWRejoin.Say(p.Name + "'s vessel is locked in for this campaign: " + RWRun.HeroName(p.Hero) + ".");
+            }
+        }
     }
 
     static void Warp(Macro_Main main, Macro_Worldvisual vis, string target)

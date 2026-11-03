@@ -408,3 +408,60 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 120. **Melting's drained stats never come back** (round 8) → `Entity_Ai_Effect_Enemy_Weaken` has no `Downgrade`: a 3 s
      −0.1 Damage drain left an archer at 3.18 of 4 after the effect was gone → never borrow it for a debuff that must
      wear off (Aging); write that on `Addmod` with a `Duration`. **Verified** in game.
+
+121. **The Tide table's row is `Entry - 1`** (Rogue Waves mode, 2026-11-03) → `Mode_Normal.Run` starts `Entry` at 1, reads
+     `Wave[Entry - 1]` on every pass and adds 1 when a row's clock runs out: the opening break is row 0, Tide N is row
+     2N - 1, the break after it row 2N. Reading `table[Entry]` looks right in a self-test, because every event moves by one
+     row together: the shop then opens as a Tide starts (a run of 54 passes had it so, until Beat the Clock couldn't be
+     won) → `ModKitTides.EntryIsBreak`. To replay a row from inside the break before it, set `Entry` to that row's index:
+     the clock's end adds the 1. Writing `Entry` mid-Tide ends the row's spawning. **Verified** in game.
+122. **A Tide's clock starts when its foes have all been sent, and runs out whatever happens** (2026-11-03) → `Time_Wave` is
+     written at the row's start, not counted during the spawning, and after the field is clear a second loop counts the
+     rest: a break comes at the clock's end, not at the last kill, so "the clock left at the break" is always about 0 →
+     to read "cleared early", watch for no foes with a clock that has started (`Time_Wave` below the row's `Wavetime`).
+     **Verified** in game (Beat the Clock).
+123. **A dead `Tower_Halberdnest` stops the Tides for good** (2026-11-03) → `Entity_Ai_Tower_Halberdnest.Spawn` hooks
+     `Game_Mapvars.Wave.OnValueChanged` and never unhooks; with the nest despawned, its next growth throws in
+     `Vfxoneshot_ClientRpc` inside the counter's write, inside `Mode_Normal.Run`, an `async void` nothing restarts: no more
+     Tides, no error on screen → take the delegate off the list once the nest is dead: walk `GetInvocationList()`, test
+     `d.Target as Entity_Ai_Tower_Halberdnest`, `Delegate.Remove` (`RWWeather.DropDeadNests`). It needs no reflection, which
+     the game blocks. Any handler that throws in `Wave`'s write does the same. **Verified** in game.
+124. **A world's camera looks along its node's `Cameraposition` forward** (2026-11-03) → `Macro_Main.Camdir` holds `-forward`,
+     which is the offset from the target, not the view: a transform turned to look back at the node shows the sky, and every
+     probe still passes. The stock pose is about 20 units from the boat, 28-40 degrees down. The boat floats on its world's
+     water top (the home world's water top is y -0.98 in its own coordinates). A stock node's own art is at the node's local
+     origin, but about a fifth of stock nodes are only a marker post (1.3 wide), their map drawn into the world's landscape,
+     and `Altgameplan` nodes often hold the real island. `Homevolume` is a depth of field for the menu's view, not a grade:
+     it blurs a chart. **Verified** in game.
+125. **Choice dialog cards draw `Display_Image` at its own pixels-per-unit** (2026-11-03) → the pack's icons at 20 come out the
+     right size; a map's `Mapentryobject.Display_Image` comes out a speck: make a `Sprite.Create` of the same texture and rect
+     at 20. **Verified** in game.
+126. **The main menu's column already reaches the screen's foot** (2026-11-03) → a Play-sized clone under Play pushes More and
+     Exit off the screen at 720p: stand it one step right of Play, move what stood beside Play (`Hero`) and `Buttontip` one
+     step on, and hide the clone's `Linev`. In the clone only the child `Image` is the picture; `Border`, `Lineh`, `Linev` and the
+     root's `Wave Box` are the tile. An unattended menu goes idle and hides its buttons (`Mainmenu_Main.Idlethreshold`).
+     **Verified** in game.
+127. **The map's fly-in hides the HUD for about 10 s, and the opening break's row is up as the map loads** (2026-11-03) → the
+     opening break fires before the Basin and vessels exist; the vessels' own start runs on the Tide clock, so holding
+     `Time_Wave` before they stand stops them spawning; a dialog opened in the fly-in is invisible → wait for vessels and for
+     `Time_Wave <= table[0].Wavetime - 14`. **Verified** in game.
+128. **`Tds_Clientinfo.Mods` is only written at a scene change after the player object spawned** (2026-11-03) → it reads false on
+     a player's first boat, so warning about it warns about the host himself → every machine with the pack writes its own
+     (owner-writable), and the host waits 8 s before warning about a friend. **Verified** in game.
+129. **`Mode_Normal` rewrites `Display` from its own copy, and the end screen reads the title once** (2026-11-03) → hold
+     `Display_Endgame` every tick, and write the shown `Win`/`Lose` `Title` text too: one run in two showed the forced win's
+     "BASIN BREACHED" otherwise. **Verified** in game.
+130. **A tower has no `Upgrade` command as it spawns** (2026-11-03) → an owner-hook on `Onspawn` that scales the command's
+     `Goalvalue` finds nothing; keep it up on a slow tick. **Verified** in game (Cheap Refits).
+131. **The pause menu's `Exit` is the map's, `Leavegame` the boat's** (2026-11-03) → the menu shows them by scene: on the boat
+     the host's way home is `Leavegame` ("RETURN HOME", card `Exit`, `Leaveserver`, main menu). `Exit` there opens "EXIT MAP"
+     and quits nothing. **Verified** in game.
+132. **`Artifact_Rock` is Bottom Rock: all aura pay drops to 1%** (2026-11-03) → `Resourcegainmultiplier` 1 to 0.01 on buying
+     it; any `Give` is scaled by it. A shop's list of stock Cardinals has to leave it out by that id. **Verified** in game.
+133. **A self-test step that does what a player can't leaves a state a player never meets** (2026-11-03) → unrelated probes
+     after a whole campaign in one boat scene failed (a warp home and a warp out in one scene left the boat standing, its
+     `Loaded` state unknown) and passed from a fresh boat: go back to the main menu between test blocks. Unity also runs a
+     yielded coroutine by itself, so an exception in one never reaches its caller's `try`: step inner coroutines by hand.
+134. **The queue can stall on a Unity modal** (2026-11-03) → "Moving file failed" during an export waits for a click with no
+     log line, and the queue's next launch tests the old export: run a watcher during exports that presses Try Again
+     (`EnumWindows`, `BM_CLICK`), and read the export's time from `queue_status.txt` before launching.
