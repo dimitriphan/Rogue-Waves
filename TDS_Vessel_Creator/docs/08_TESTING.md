@@ -121,7 +121,7 @@ one section per mechanic, each check a single measurable fact with the measured 
   leaves map select early) or `Mode_Normal.Run`, NRE in `Blu2_Menu_Handler.Animin` on the way back to the boat
   after a won map (RogueWavesMode round 1), `OperationCanceledException` in `Projectile_Master.Kill` when a map ends
   with shots in the air, NRE in `Tds_Clientinfo.Newscene` on disconnect, `Bla_Ambient` NREs at
-  quit, "Empty Load List!!", a missing Music System script, DOTween safe mode, `Bla_Ui_Mods.Populate` cancel when the
+  quit, NREs in `Game_Init.OnDestroy` and `Bl_Sound.Stopgroup` after `TEST DONE` as the game shuts down (RogueLab round 8), "Empty Load List!!", a missing Music System script, DOTween safe mode, `Bla_Ui_Mods.Populate` cancel when the
   Mods menu opens.
 
 ## 7. Release boot check
