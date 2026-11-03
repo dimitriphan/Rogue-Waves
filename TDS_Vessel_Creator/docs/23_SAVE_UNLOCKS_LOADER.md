@@ -131,7 +131,7 @@ synced Steam name (`RW_P_<Displayname>_…`, `RecipeSave.PlayerKey`): the Steam 
 `Macro_Unlock.Unlockseq` (once per boat visit): `Checkunlocks`; then each new `Unlock_Notif` key either flies to a world
 `Macro_Unlocklink_Add` with that key, or opens the **Cardinal panel** (key contains `Unlock_Artifact`) or the **vessel
 panel** (key contains `Unlock_Hero`); **any other key is marked seen with no announcement** (Macro_Unlock.cs:303-994).
-So a Depth unlock through the stock system is silent (corrects `15` §18.4): use a Milestone or the pack's own message.
+So a Depth unlock through the stock system is silent (`15` §18.4 says the same): use a Milestone or the pack's own message.
 
 ### 3.3 Vessel locks are cosmetic
 

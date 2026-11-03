@@ -5,8 +5,13 @@
 (`MummerAseprite.cs`, `TDS_Mod/Tools/aseprite/README.md`), the self-test checks kit 1.4's boat layout
 (`ModKitBoat.ClickReport`) and uses kit 1.5's `ModKitTest` for the map, placement, foe spawning and the SETUP outcome
 (`docs/08`), and since 2026-10-15 the builder slices each sheet by the PNG's own size (`PngSize`, `docs/09` #102) and
-Export Mod parks the other mods itself (#103), as Yossele's do. They compile here; the template with them has not been
-played on the PC yet.
+Export Mod parks the other mods itself (#103), as Yossele's do. Since 2026-10-26, before Spool was scaffolded from it, it is
+also a Rogue Waves pack part (`docs/reports/QUALITY_PASSES_2026-10-15.md` B10, B1-3, B1-22, B1-4): it joins the pack
+registry and stands down when its vessel is already loaded (`ModKitPack`), runs the F-key fix and the Tide events
+(`ModKitFocus`, `ModKitTides`), credits its own hits with kills (`ModKitCombat`), fits each tower's range
+(`ModKitTowers.Fit`), sends debuff looks past the game's effect throttle (Argo 2.0.1's `Debuff`, pitfall #95), and its
+Aseprite writer keeps unit sheets whose name starts with the vessel's (the scaffold names the unit `<Name>unit`). They
+compile here; the template with them has not been played on the PC yet.
 `tools/New-Vessel.ps1` copies it into the mod project under a new name. Don't edit it here to build a vessel; scaffold,
 then edit the copy.
 
