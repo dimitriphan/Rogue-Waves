@@ -3,8 +3,9 @@
 Rogue Waves' Yossele is **designed from the scope text** (`docs/scope/07_Vessel_Yossele.txt`, Dimitri's 2026-10-20
 sheet with his 2026-10-21 answers), checked against `TDS_Vessel_Creator/docs/02`. Where the sheet gives a number it is
 used as written; a value written `~like this~` on the sheet is a default Claude picked, and every default this page adds
-is listed under "Changes from the concept". Status: **the 2026-10-12 build (PC round 8, 98/0) brought up to this sheet,
-compiled only** (`IMPLEMENTATION_NOTES.md`, "Build of 2026-10-23"); nothing below that is new has run in game yet.
+is listed under "Changes from the concept". Status: **built to this sheet and passed PC round 9 (9e, 160/0, 2026-10-23); Dimitri's play
+build** (`IMPLEMENTATION_NOTES.md`); what the self-test cannot see is still to check by play and by eye
+(`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`).
 Yossele is Release 1, alone (`docs/PLAN.md` Part B): it works in a normal game, without the mode.
 
 ## Identity
@@ -145,7 +146,7 @@ Pachira Sapling:  Focused Roots2 / Sustaining Practices2 -> Grafted3 / Forest Pr
 | Sapling | Fortifying Roots (Fortifying5) | Increases health and grants a damage reduction aura to nearby buildings. | max health +100%; its team's buildings in its Range and itself take 30% less damage | Blue 2300, Yellow 1000 |
 | Sapling | Softening Roots (Softening5) | Softens the ore around it | every node in its Range takes one hit fewer to pay out, never fewer than 1 | Yellow 2300, Red 1000 |
 
-How the new rules work (read from the game's code, 2026-10-23; untested):
+How the new rules work (read from the game's code, 2026-10-23; proven in PC round 9 and the 2026-10-26 play test, `IMPLEMENTATION_NOTES.md`):
 
 - **D-MDS.** Projectiles are not networked entities: they are pooled GameObjects in `Game_Entity.Instance.Projectiles`
   (one list per projectile name), each a `Projectile_Master` with its shooter in `Master`; only the host's copy deals
@@ -156,15 +157,15 @@ How the new rules work (read from the game's code, 2026-10-23; untested):
   (Projectile_Ai_Explosion.cs: `Despawn`). A Vis tells every client to put out its own copy (the nearest active one of
   the same shooter) and draws the seed. **What counts:** every stock foe shot: the Ballista's and the Excalibur's
   bolts, the Onager's lobs, the Bulwark's bomb rain and the Claymore launching itself. **Bosses** (a shooter of base
-  health 600 or more, the kit's rule; the stock Bulwark has 30000) cost 5 seeds a projectile (Dimitri's open question
+  health 600 or more, kit `docs/05` §16; the stock Bulwark has 30000) cost 5 seeds a projectile (Dimitri's open question
   on the sheet, answered with a default).
 - **Cordyfriend.** When a spored foe falls (the host's despawn hook) and its last cannon has Cordyceps, a roll of 20%
   + 5% a stack raises a Cordyfriend on the foe's tile, a networked unit owned by the cannon's player (spawned as the
   cannon's child, `docs/05` §10). Stats from the sheet: Health 75, Damage 2, Range 1.5, Attackspeed 0.5, Speed 2.25,
   melee (the stock `Entity_Ai_Mob_Combat`). It stands on Sno Sno's mob-blocker block (the Snoble's, as Mummer's Aegis
-  Understudy does) so foes stop at it ("stalling foes"), and looks like a Snoble: it borrows the Snoble's own sprite,
-  tinted fungus green on every client (temporary art; the Snoble's sheet has only an Idle animation, so it glides when
-  it walks). Never tagged `Snoble` or `Sno` (`docs/17`). Its brain walks it to the nearest foe within 4 tiles that is
+  Understudy does) so foes stop at it ("stalling foes"), and wears its own temporary sheet (Idle, Move, Attack;
+  `Art/Temporary/`, 2026-10-27); when that sheet is missing it borrows the Snoble's own sprite, tinted fungus green on
+  every client. Never tagged `Snoble` or `Sno` (`docs/17`). Its brain walks it to the nearest foe within 4 tiles that is
   within 5 tiles of where it rose, else back there.
 - **Monument's "no debuffs from foes".** The only stock foe debuff on a building is the Bulwark's stun: on each of its
   hits it adds `Override` modifiers to the target's `Damage`, `Speed` and `Attackspeed` and the `Debuff_Disabled` look

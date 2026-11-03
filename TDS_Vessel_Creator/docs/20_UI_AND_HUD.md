@@ -87,7 +87,7 @@ Read `01` §8, §11, `05` §7-8 and `15` §6, §14.6, §18.2 first.
   overwritten, and an older note can replay. `Display_State` and `Display_Wave` are game logic (Cardinals, Merchut,
   Treated cores and the music read them), so only `Display_Note` is free text, and only between the mode's writes.
 - **Tutorial prompts exist in every match** (the build tool's rotate hint and the Cardinal hint use them,
-  Tds_Tutorialprompts.cs:1072-1110), correcting `15` §18.2's "only where the tutorial menu does". Still untested from a
+  Tds_Tutorialprompts.cs:1072-1110), as `15` §18.2 says. Still untested from a
   mod.
 
 ## 3. The HUD (`Game_Ui`, menu `Main` of the map scene)

@@ -16,7 +16,7 @@ namespace RogueWavesModeBuild
         const string PrefabPath = "Assets/RogueWavesModeMod/RogueWaves_Mode_Default.prefab";
         const string Parked = "Assets/_Parked/Editor";
         const string Own = "RogueWavesModeMod";
-        const string Version = "0.1.3";
+        const string Version = "0.3.0";      // = RWData.Version (docs/PACK.md §4); the one pack version replaces it at the first pack build
 
         static string Source { get { return Path.GetFullPath(Path.Combine(Application.dataPath, "../ModSource/RogueWavesMode")); } }
 

@@ -228,9 +228,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` 0.2.1 (sea chart, sea weather, rejoin; solo PC
-  rounds passed; full re-test 2026-10-11, 208/0). Yossele 0.1.0-dev is built (PC round 8, 98/0, Dimitri's play notes
-  folded in); its sheet now asks for a ranged laser and a slower speed. Kit chapters 17 (base vessels; RogueLab
+- **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` (0.2.1: sea chart, sea weather, rejoin; solo PC
+  rounds passed; full re-test 2026-10-11, 208/0; 0.3.0 below). Yossele 0.2.0-dev is built and is Dimitri's play build
+  (2026-10-23 below; 0.1.0-dev, PC round 8, 98/0, is parked). Kit chapters 17 (base vessels; RogueLab
   round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
   Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
   template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
@@ -248,7 +248,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
   and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
-  redrawn (wired on PR #42 at `ad85b00`). Older entries are in "Log" below.
+  redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
+  (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
+  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -258,10 +260,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   its dev-export description names the rejoin when the one pack version is set (B4-13). By hand:
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
-  balance pass (with FLOOD's key and `GiveUpAfter`, B2-X1/X6). Also left on Yossele: his look by eye (temporary
-  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Spool is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Uloe is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
-  B1-22, B1-4, C2-6).
+  B1-22, B1-4, C2-6); Spool (PR #42) was scaffolded without them and takes them at its next round.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
   (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE.
