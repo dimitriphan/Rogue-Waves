@@ -1,13 +1,13 @@
 """Three alternative versions of the two temporary 3D models (2026-10-28): Yossele's aura fruit (YosseleModels.Fruit) and
-the Dart's thrown needle (SpoolModels.Needle, on PR #42's branch). Each version is a whole C# method in
-model_variants/<Method>_v<n>.cs.txt; picking one means pasting it over the method of the same name. Nothing in the
-build changes until then.
+the Dart's thrown needle (SpoolModels.Needle). Each version is a whole C# method in
+model_variants/<Method>_v<n>.cs.txt; picking one means pasting it over the method of the same name (Dimitri's picks
+of 2026-11-03 are pasted: Fruit v2, Needle v1).
 
 For each version this copies the vessel's Editor folder to a scratch folder, swaps the method in, renders the model
 with the cloud preview (TDS_Mod/Tools/cloud-check/lite/run_preview.sh, flag m; run setup.sh once first) and writes
 <Part>/Art/Temporary/variants/v<n>/preview_8x/models_<Method>.png plus the snippet under variants/v<n>/models/.
 
-    python3 concept-tools/temp_art/variants_models.py --spool <a checkout of TDS_Mod/Assets/SpoolMod/Editor from PR #42>
+    python3 concept-tools/temp_art/variants_models.py --spool TDS_Mod/Assets/SpoolMod/Editor
 """
 import argparse
 import os
@@ -73,7 +73,7 @@ def render(editor, prefix, file, signature, method, names, part, crop=None):
 
 if __name__ == '__main__':
     a = argparse.ArgumentParser()
-    a.add_argument('--spool', required=True, help='SpoolMod/Editor from PR #42')
+    a.add_argument('--spool', required=True, help='TDS_Mod/Assets/SpoolMod/Editor')
     o = a.parse_args()
     yed = os.path.join(REPO, 'TDS_Mod', 'Assets', 'YosseleMod', 'Editor')
     render(yed, 'Yossele', 'YosseleModels.cs', 'static Lp Fruit(int[] cols)', 'Fruit',

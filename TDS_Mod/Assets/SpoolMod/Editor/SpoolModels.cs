@@ -406,17 +406,15 @@ namespace SpoolBuild
             return m;
         }
 
-        // The Dart's thrown needle (along z, point forward). Temporary art (ModSource/Spool/Art/Temporary/README.md): a
-        // needle that reads in flight, 0.42 long and about 0.05 thick, a white point, a dark collar at the eye and a
-        // purple thread tail.
+        // The Dart's thrown needle (along z, point forward). Temporary art (ModSource/Spool/Art/Temporary/README.md),
+        // Dimitri's pick of 2026-11-03, "Pearl-headed pin": a dressmaker's pin, a steel shaft 0.4 long with a white
+        // point and a big lilac pearl head that catches the eye in flight; no thread.
         static Lp Needle()
         {
             var m = new Lp();
-            m.Tube(V(0, 0.5f, -0.2f), V(0, 0.5f, 0.14f), 0.026f, 0.022f, 6, Pal.Steel);
-            m.Tube(V(0, 0.5f, 0.14f), V(0, 0.5f, 0.22f), 0.022f, 0f, 6, Pal.White);
-            m.Tube(V(0, 0.5f, -0.21f), V(0, 0.5f, -0.17f), 0.031f, 0.031f, 6, Pal.SteelDark);
-            Thread(m, V(0, 0.5f, -0.2f), V(0.035f, 0.53f, -0.3f), Pal.Felt2, 0.013f);
-            Thread(m, V(0.035f, 0.53f, -0.3f), V(-0.02f, 0.5f, -0.41f), Pal.Felt2, 0.013f);
+            m.Tube(V(0, 0.5f, -0.16f), V(0, 0.5f, 0.16f), 0.018f, 0.016f, 6, Pal.Steel);
+            m.Tube(V(0, 0.5f, 0.16f), V(0, 0.5f, 0.24f), 0.016f, 0f, 6, Pal.White);
+            m.Ball(V(0, 0.5f, -0.19f), Vector3.one * 0.06f, 8, 5, Pal.Lilac1, Pal.Lilac0, 0.4f);
             return m;
         }
     }

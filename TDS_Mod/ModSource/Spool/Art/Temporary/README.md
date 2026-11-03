@@ -63,3 +63,5 @@ temporary file. Generators: `concept-tools/temp_art/ui_icons.py` (the tuft rows 
 `spool_threadhead.py`, `spool_units.py`.
 
 **Versions to pick from (2026-10-28):** three new versions of every file above are in `variants/v1|v2|v3/` (its README names them); nothing there is wired until Dimitri picks (`docs/TEMP_ART.md`).
+
+**Picks applied (2026-11-03):** the files in `game_size/` now carry Dimitri's picks among the versions (the list is in `docs/TEMP_ART.md`, "Dimitri's picks"), so where a row above describes art he replaced, the picked version's line in `variants/README.md` describes it now. Compiled, not yet seen in game.

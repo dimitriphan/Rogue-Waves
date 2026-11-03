@@ -52,6 +52,43 @@ READMEs name each version.
 - **Generators.** `concept-tools/temp_art/variants_yossele.py`, `variants_spool.py`, `variants_icons.py`,
   `variants_models.py` (renders the C# snippets in `model_variants/` with the cloud preview), `variants_page.py` (the page).
 
+## Dimitri's picks (2026-11-03), applied
+
+Applied with `apply_picks.py` over `game_size/` (and the `.aseprite` copies and previews rebuilt from the result); the
+Rising Water rows in `RogueWavesMode/Code/08_Icons.cs`, the tuft rows in `Spool/Code/11_Client.cs`, `YosseleModels.Fruit`
+and `SpoolModels.Needle` changed to match. All of it compiled (cloud check); none of it seen in game. The `variants/`
+folders stay until he has seen the picks in game, in case he wants to swap one. **Re-running the 2026-10-27 generators
+(`cordyfriend.py`, `yossele_anims.py`, `spool_threadhead.py`, `spool_units.py`, `ui_icons.py`) would undo these picks;**
+re-run `apply_picks.py` with the list below after any of them.
+
+| Part | Item | Pick |
+| --- | --- | --- |
+| Yossele | idle, walk | current |
+| Yossele | mouth laser attack | v2 Recoil blast |
+| Yossele | Cordyfriend idle, walk, attack | v1 Tall clubs, hop (all three) |
+| Yossele | aura fruit model | v2 Berry bunch |
+| Spool | Thread Head walk, attack | v1 Criss-cross, hop; Jab-jab |
+| Spool | Stitched walk / attack | v3 Scamper / current |
+| Spool | Dart walk / attack | v2 Waddle / current |
+| Spool | Seam walk, attack | v2 Waddle, Slam |
+| Spool | Mangled walk, attack | v2 Waddle, Slam |
+| Spool | ground Thread tuft | v1 Coiled loop |
+| Spool | Dart needle model | v1 Pearl-headed pin |
+| UI | Rising Water | v2 Water up the steps |
+| UI | Quickening Current, Nesting Ground | current |
+| UI | crest (12 px and 32 px) | v1 Curl in a badge (both) |
+| UI | Pure Aura | v3 Glowing orb |
+| UI | Depth | v1 Anchor |
+| UI | Retry, Vote | current |
+| UI | Made of Tougher Stuff | v1 Cross-stitched patch |
+| UI | Compost Bin, Sewing Machine | current |
+| UI | Dandelion Season | v2 Seeds on the wind |
+| UI | Mother of Mushrooms | v3 Spore shower |
+| UI | Efficient Recycler | v2 Spool and arrow |
+| UI | Vampire Dentures | v1 Wide open |
+
+As `apply_picks.py` input: `concept-tools/temp_art/picks_2026-11-03.json`.
+
 ## Previews and generators
 
 A page of every asset, animated: https://claude.ai/artifact/S1ropAhQwBHhpLDDxWi7Xo (private to Dimitri; rebuild from

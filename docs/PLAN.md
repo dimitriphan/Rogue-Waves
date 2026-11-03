@@ -258,9 +258,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
   the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
   2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
-  nothing wired changes; Log). Older entries are in "Log" below.
-- **Next:** Dimitri's picks among the temporary art versions (the Temp Art Picks page saves them; `docs/TEMP_ART.md`
-  "Versions to pick from" says how a thread applies them). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+  nothing wired changes; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art (`docs/TEMP_ART.md`
+  "Dimitri's picks"; compiled, not seen in game; Log). Older entries are in "Log" below.
+- **Next:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
+  tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
   and the in-map vote (kit 1.7 first, Decisions 2026-10-15); the mode's next change also takes `RW_` save keys, scope `04`'s weather lines, the rejoin's host name and a
@@ -525,6 +526,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   tuft, the needle model; the fifteen 12 x 12 icons and the 32 px crest. 35 picks, one per animation, so versions
   can mix. Generators `concept-tools/temp_art/variants_*.py`, `apply_picks.py`; page `variants_page.py`. Nothing
   wired changed and nothing was seen in game.
+- **2026-11-03, temporary art picks applied (Dimitri's list, one pick per animation):** 20 of the 35 changed (the
+  rest kept current): Yossele's attack v2, the Cordyfriend v1, the fruit v2; Thread Head v1, Stitched walk v3, Dart
+  walk v2, Seam and Mangled v2, tuft v1, needle v1; Rising Water v2, crest v1 (both sizes), Pure Aura v3, Depth v1,
+  four Direction icons and Vampire Dentures. `apply_picks.py` pasted them into `game_size/` and rebuilt the
+  `.aseprite` copies, previews and GIFs; Rising Water's rows in `08_Icons.cs`, the tuft rows in `11_Client.cs`,
+  `YosseleModels.Fruit` and `SpoolModels.Needle` changed by hand. All compiled in the cloud check; none seen in game.
+  The `variants/` folders stay until he has seen the picks in game. The list: `docs/TEMP_ART.md`.
 
 ### Decisions
 
