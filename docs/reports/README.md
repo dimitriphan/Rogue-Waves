@@ -7,6 +7,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 | --- | --- | --- |
 | `MODE_POLISH_2026-11-03.md` | 2026-11-03 | The mode part checked line by line against the scope: 15 issues fixed as 0.1.0-dev (retries, Tide 15 wins, 60 s breaks, `RW_` keys), the readings and judgment calls for Dimitri, what is not built yet |
 | `MISTAKE_CHECK_2026-10-28.md` | 2026-10-28 | Two passes over every file for mistakes (wrong facts, bugs, broken pointers): 31 found, 28 fixed, 3 listed; every mod compiles clean |
+| `PRIORITIES_2026-10-28.md` | 2026-10-28 | What the project needs most now: the scope read against the state, ranked for Release 1 (Yossele alone), with the scope gaps and open `~defaults~` blocking each item |
 | `YOSSELE_TEST_PLAN_2026-10-23.md` | 2026-10-23 | Yossele 0.2.0-dev: every case not yet seen in game, which check covers it (PC round 9's self-test, play, by eye, online), and the cloud checks run |
 | `PLAYTEST_2026-10-26.md` | 2026-10-26 | Yossele 0.2.0-dev and Spool 0.1.0-dev played through the HUD by a virtual player on Purlest, Woozy and The Hunt: two bugs fixed (the Thread Head's panel, Hallucinogen's look), every upgrade clicked, the balance read, what needs Dimitri's eye |
 | `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | 23 passes over every file (stopped at Dimitri's word after one clean pass); what was fixed, why each pass found issues, what is left for Dimitri |
