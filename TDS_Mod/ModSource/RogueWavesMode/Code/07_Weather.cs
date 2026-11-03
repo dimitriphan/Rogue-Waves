@@ -297,6 +297,9 @@ public static class RWWeather
         return flood;
     }
 
+    // Raze the Nest's target (19_Objectives.cs): the same nest, on order.
+    public static Entity_Master SpawnNestFor() { return SpawnNest(); }
+
     // A nest on a free tile 3 to 7 tiles from an enemy core, on the core's team, as a child of the core like Tide foes.
     static Entity_Master SpawnNest()
     {

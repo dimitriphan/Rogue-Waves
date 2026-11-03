@@ -1,8 +1,10 @@
 // The chart as a world of the game's own (docs/mode/SEA_CHART.md §3 steps 3 and 5; kit docs/15 §17): a
 // Mapworlddatabaseobject in Items["World"] whose Worldobj is built here from the seed, so the stock boat, camera, arrows,
 // Setup panel and map loading work on it unchanged. The world's name carries everything a client needs:
-// "RW_Chart_<seed>_<one column digit per row sailed>". Each machine builds the same world from the name when it first
-// sees it (the boat's Tds_Multiplayerinfo.World or Macro_Main.Worlded), so nothing else crosses the network.
+// "RW_Chart_<seed>_<one column digit per row sailed>r<retries left>". Each machine builds the same world from the name
+// when it first sees it (the boat's Tds_Multiplayerinfo.World or Macro_Main.Worlded), so nothing else crosses the
+// network. The retries ride on the name for the campaign card (13_Card.cs): a lost map warps the party onto the new name,
+// and the world card is the right moment to say so.
 // One world per route: the party stands on the last node sailed (its Defaultnode), and only that node has links, to its
 // choices in the next row, so the stock arrows offer exactly the vote's choices. The template is built once per name
 // under an inactive DontDestroyOnLoad holder; Macro_Worldvisual.Changeworld instantiates it and names the copy after it,
@@ -22,24 +24,39 @@ public static class RWWorld
 
     // ---------------------------------------------------------------- names
 
-    public static string Name(uint seed, List<int> route)
+    public static string Name(uint seed, List<int> route, int retries)
     {
         string digits = "";
         foreach (int c in route) digits += c.ToString();
-        return RWData.WorldPrefix + seed + "_" + digits;
+        return RWData.WorldPrefix + seed + "_" + digits + (retries >= 0 ? "r" + retries : "");
     }
 
     public static bool Parse(string name, out uint seed, out List<int> route)
     {
+        int retries;
+        return Parse(name, out seed, out route, out retries);
+    }
+
+    // retries is -1 for a name that doesn't carry them (the save's seed and route, RWCampaign.Saved).
+    public static bool Parse(string name, out uint seed, out List<int> route, out int retries)
+    {
         seed = 0;
         route = new List<int>();
+        retries = -1;
         if (string.IsNullOrEmpty(name) || !name.StartsWith(RWData.WorldPrefix))
             return false;
         string rest = name.Substring(RWData.WorldPrefix.Length);
         int cut = rest.IndexOf('_');
         if (cut <= 0 || !uint.TryParse(rest.Substring(0, cut), out seed))
             return false;
-        foreach (char ch in rest.Substring(cut + 1))
+        string tail = rest.Substring(cut + 1);
+        int mark = tail.IndexOf('r');
+        if (mark >= 0)
+        {
+            if (!int.TryParse(tail.Substring(mark + 1), out retries)) return false;
+            tail = tail.Substring(0, mark);
+        }
+        foreach (char ch in tail)
         {
             if (ch < '0' || ch > '9') return false;
             route.Add(ch - '0');
@@ -94,7 +111,8 @@ public static class RWWorld
             return have;
         uint seed;
         List<int> route;
-        if (!Parse(name, out seed, out route) || RWMode.Pool.Count == 0 || Source() == null)
+        int retries;
+        if (!Parse(name, out seed, out route, out retries) || RWMode.Pool.Count == 0 || Source() == null)
             return null;
         RWChart.Chart chart = Chart(seed);
         RWChart.Node here = Here(chart, route);
@@ -109,7 +127,7 @@ public static class RWWorld
         world.Defaultnode = here.Name;
         world.Defaultlighting = stock != null ? stock.Defaultlighting : null;
         world.Display_Name = "Sea Chart";
-        world.Display_Desc = route.Count < RWChart.Rows ? "Map " + (route.Count + 1) + " of " + RWChart.Rows : "Charted";
+        world.Display_Desc = route.Count < RWChart.Rows ? "Map " + (route.Count + 1) + " of " + RWChart.Rows + (retries >= 0 ? RWCard.Separator + RWCard.Retries(retries) : "") : "Charted";
         world.Display_Sound = stock != null ? stock.Display_Sound : "";
         world.Display_Soundtrack = stock != null ? stock.Display_Soundtrack : "";
 
@@ -197,7 +215,12 @@ public static class RWWorld
         go.transform.localPosition = At(n);
         Macro_Link_Add_Base link;
         if (n.Row == 0)
-            link = go.AddComponent<Macro_Nodelink_Add>();
+        {
+            // A new campaign's first stop: the harbour plays the staging map (docs/scope/04 [Sea Chart]).
+            Macro_Maplink_Add harbour = go.AddComponent<Macro_Maplink_Add>();
+            harbour.Gameplan = RWMode.TwinPlan(StagingPlan());
+            link = harbour;
+        }
         else
         {
             Macro_Maplink_Add map = go.AddComponent<Macro_Maplink_Add>();
@@ -228,8 +251,35 @@ public static class RWWorld
         if (sailed && n.Row > 0)
             Flag(vis.transform, RogueTeal);
         if (n.Weather != RWChart.Calm)
+        {
             Weather(vis.transform, n.Weather);
+            Billboard(go.transform, n);
+        }
         return link;
+    }
+
+    // The weather's icon over the node while the leader hovers it (docs/reports/UX_FEATURES_2026-11-03.md O1): the game's own
+    // billboard addon, found by its object's name, which must be the node's (Macro_Main.cs:609-616, kit docs/15 §18.4).
+    static void Billboard(Transform node, RWChart.Node n)
+    {
+        Sprite icon = RWIcons.SpriteFor(n.Weather);
+        if (icon == null)
+            return;
+        GameObject g = new GameObject(n.Name);
+        g.transform.SetParent(node, false);
+        Macro_Addon_Nodeshowbillboardlink addon = g.AddComponent<Macro_Addon_Nodeshowbillboardlink>();
+        addon.Imagetouse = icon;
+        addon.Expiry = 4f;
+        addon.Offset = new Vector3(0f, 3.2f, 0f);
+    }
+
+    // The staging map: the pool's first of its lowest danger, the same on every machine. It is only played for its break.
+    public static string StagingPlan()
+    {
+        RWChart.Plan best = null;
+        foreach (RWChart.Plan p in RWMode.Pool)
+            if (best == null || p.Label < best.Label) best = p;
+        return best != null ? best.Name : "";
     }
 
     static void Flag(Transform parent, Color32 c)

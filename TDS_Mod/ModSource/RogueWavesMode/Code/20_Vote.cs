@@ -1,0 +1,486 @@
+// The run between the Tides, on the host (docs/scope/04 [Tides and Leaving], [Sea Chart], 05; docs/mode/SEA_CHART.md §4, route V1):
+//   opening   a staging map holds its opening break for the Direction picks and the map 1 vote, then returns to the boat;
+//             a map with picks still owed (a death in a bonus Tide, a late friend) holds them first
+//   a break   pays the Tide, VENDCINT lands, an objective is posted; from Tide 15 on, once the field is clear, the map is
+//             won and the players vote to leave: a majority leaves, nobody answering stays
+//   leaving   Direction picks, then the vote on the next map among the chart's links, then the stock win path; on the boat
+//             the host's boat sails to the winner by itself. Map 10 has no next map: leaving it wins the campaign
+//   bonus     the Tide table's Tide 29 is replayed for as long as they stay, each one harder (RWDifficulty)
+// Each player's question is on their own vessel (RW_Ask: Goalstring what, Goalvalue the round), and every machine opens the
+// choice dialog for its own; a pick comes back as an order. A timed question closes itself and takes "no answer".
+public static class RWVote
+{
+    public const string LeaveKind = "L", DirectionKind = "D", MapKind = "M";
+    public const float PickSeconds = 30f, MapSeconds = 25f, LeaveSeconds = 20f;
+    public static string State = "";     // "", "Picks", "Map", "Leave" (self-test reads it)
+    public static bool HoldBreak;        // the Tide clock is held while the party answers
+    public static bool Departing;        // the party voted to leave
+    public static int Round;             // a question's number, never repeated in a launch
+    public static string LastVote = "";  // self-test
+    public static readonly Dictionary<long, string> Votes = new Dictionary<long, string>();
+    static readonly Dictionary<long, List<int>> offers = new Dictionary<long, List<int>>();
+    static List<RWChart.Node> choices = new List<RWChart.Node>();
+    static float until, holdAt;
+    static int leaveWave = -1;
+    static bool clearingWatch;
+    static bool staging;
+    static float startPickAt = -1f;
+
+    // ---------------------------------------------------------------- ModKitTides (host)
+
+    public static void MapStart()
+    {
+        State = "";
+        HoldBreak = Departing = false;
+        Votes.Clear();
+        leaveWave = -1;
+        clearingWatch = false;
+        startPickAt = -1f;
+        RWHits.Reset();
+        if (!RWRun.InCampaignMap)
+            return;
+        RWDirections.Hook();
+        RWRun.Order -= OnOrder;
+        RWRun.Order += OnOrder;
+        RWRun.Order -= RWShop.OnOrder;
+        RWRun.Order += RWShop.OnOrder;
+        staging = RWCampaign.Staging && RWCampaign.Next == null;
+        foreach (long s in RWRun.Sessions())
+            if (staging) RWRun.For(s).Owed = true;
+        RWCardinals.GrantAllTeam();
+        startPickAt = Time.time + 3f;   // the vessels are carrying their commands by then (RWRun.Tick)
+    }
+
+    public static void Break(int wave)
+    {
+        if (!RWRun.InCampaignMap)
+            return;
+        RWObjectives.Resolve();
+        if (wave > 0)
+        {
+            RWRun.PayTide(wave);
+            RWDirections.Interest(wave);
+        }
+        foreach (long s in RWRun.Sessions())
+            RWRun.For(s).Sent = 0f;
+        if (!staging)
+        {
+            RWShop.Land();
+            RWObjectives.Post(wave);
+            PostBoard();
+        }
+        if (wave >= RWCampaign.WinTide)
+        {
+            RWDifficulty.Bonus(wave);
+            clearingWatch = true;
+        }
+    }
+
+    public static void Tide(int wave)
+    {
+        if (!RWRun.InCampaignMap)
+            return;
+        RWShop.Leave();
+        CloseQuestion();
+        ClearBoard();
+        RWObjectives.Begin(wave);
+        Line();
+    }
+
+    public static void MapEnd(string result)
+    {
+        RWShop.Leave();
+        RWHits.Reset();
+        State = "";
+        HoldBreak = false;
+    }
+
+    // ---------------------------------------------------------------- every frame (host)
+
+    public static void Update()
+    {
+        if (!RWRun.InCampaignMap || !RWUtil.IsServer || Game_Mapvars.Instance == null)
+            return;
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        if (startPickAt > 0f && Time.time >= startPickAt)
+        {
+            startPickAt = -1f;
+            OpeningPicks();
+        }
+        if (clearingWatch && ModKitTides.InBreak && Foes() == 0)
+        {
+            clearingWatch = false;
+            if (!RWCampaign.WonThisMap)
+                RWCampaign.Cleared();
+            if (RWCampaign.WonThisMap && State == "" && !Departing)
+                AskLeave(vars.Wave.Value);
+        }
+        if (HoldBreak && vars.Time_Wave.Value < holdAt)
+            vars.Time_Wave.Value = holdAt;
+        if (State == "")
+            return;
+        if (Everyone() || Time.time >= until)
+        {
+            if (State == "Picks") ClosePicks();
+            else if (State == "Map") CloseMap();
+            else if (State == "Leave") CloseLeave();
+        }
+    }
+
+    static int Foes()
+    {
+        int n = 0;
+        List<Entity_Master> foes;
+        if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Enemy", out foes))
+            return 0;
+        foreach (Entity_Master e in foes)
+            if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Entitydata.Value.Team == 0 && !e.Taglistserver.Contains("Enemycore") && !e.Taglistserver.Contains("Tower") && e != RWWeather.Flood)
+                n++;
+        return n;
+    }
+
+    static bool Everyone()
+    {
+        foreach (long s in RWRun.Sessions())
+            if (!Votes.ContainsKey(s)) return false;
+        return true;
+    }
+
+    static void Hold(float seconds)
+    {
+        HoldBreak = true;
+        holdAt = Mathf.Max(Game_Mapvars.Instance.Time_Wave.Value, seconds + 5f);
+    }
+
+    // ---------------------------------------------------------------- the picks
+
+    // A map's opening break: a staging map and any pick still owed.
+    static void OpeningPicks()
+    {
+        bool owed = false;
+        foreach (long s in RWRun.Sessions())
+            if (RWRun.For(s).Owed) owed = true;
+        if (owed || staging)
+            AskPicks();
+        else
+            Line();
+    }
+
+    static void AskPicks()
+    {
+        offers.Clear();
+        Votes.Clear();
+        State = "Picks";
+        Round++;
+        until = Time.time + PickSeconds;
+        Hold(PickSeconds);
+        foreach (long s in RWRun.Sessions())
+        {
+            RWPlayer p = RWRun.For(s);
+            if (!p.Owed) { Votes[s] = ""; continue; }
+            Blm_Player bp;
+            Tds_Clientinfo info = Blm_Server.Instance.Sessionidsplayer.TryGetValue(s, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
+            List<int> o = RWDirections.Roll(p, info != null ? info.Hero.Value.ToString() : "", unchecked((int)RWCampaign.Seed) ^ (RWCampaign.Route.Count * 613) ^ p.Key.GetHashCode());
+            if (o.Count == 0) { p.Owed = false; Votes[s] = ""; continue; }
+            offers[s] = o;
+            List<string> idx = new List<string>();
+            foreach (int i in o) idx.Add(i.ToString());
+            RWRun.Ask(s, DirectionKind + ":" + string.Join(".", idx.ToArray()), Round);
+        }
+        RWLog.Info("Direction picks open, round " + Round);
+    }
+
+    static void ClosePicks()
+    {
+        foreach (KeyValuePair<long, List<int>> kv in offers)
+        {
+            RWPlayer p = RWRun.For(kv.Key);
+            string pick;
+            int k = -1;
+            if (Votes.TryGetValue(kv.Key, out pick)) int.TryParse(pick, out k);
+            if (k < 0 || k >= kv.Value.Count) k = 0;   // time ran out: the first card
+            Upgradeproperties u = RWDirections.List[kv.Value[k]];
+            RWDirections.Take(p, u);
+            p.Owed = false;
+            RWDirections.Sweep(p);
+            RWRun.Ask(kv.Key, "", 0f);
+        }
+        State = "";
+        Votes.Clear();
+        if (staging || Departing)
+            AskMap();
+        else
+        {
+            HoldBreak = false;
+            Line();
+        }
+    }
+
+    // ---------------------------------------------------------------- the vote on the next map
+
+    static void AskMap()
+    {
+        choices = RWCampaign.Open();
+        if (choices.Count == 0)
+        {
+            Leave();
+            return;
+        }
+        if (choices.Count == 1)
+        {
+            RWCampaign.Choice = choices[0].Col;
+            RWCampaign.SaveChoice();
+            LastVote = "only " + choices[0].Name;
+            Leave();
+            return;
+        }
+        Votes.Clear();
+        State = "Map";
+        Round++;
+        until = Time.time + MapSeconds;
+        Hold(MapSeconds);
+        List<string> cols = new List<string>();
+        foreach (RWChart.Node n in choices) cols.Add(n.Col.ToString());
+        foreach (long s in RWRun.Sessions())
+            RWRun.Ask(s, MapKind + ":" + string.Join(".", cols.ToArray()), Round);
+        RWLog.Info("map vote open: " + string.Join(",", cols.ToArray()));
+    }
+
+    static void CloseMap()
+    {
+        Dictionary<int, int> count = new Dictionary<int, int>();
+        foreach (string v in Votes.Values)
+        {
+            int c;
+            if (int.TryParse(v, out c))
+            {
+                int have;
+                count.TryGetValue(c, out have);
+                count[c] = have + 1;
+            }
+        }
+        RWChart.Node best = choices[0];
+        int top = 0;
+        foreach (RWChart.Node n in choices)
+        {
+            int have;
+            count.TryGetValue(n.Col, out have);
+            if (have > top) { top = have; best = n; }
+        }
+        RWCampaign.Choice = best.Col;
+        RWCampaign.SaveChoice();
+        LastVote = best.Name + " with " + top;
+        RWRejoin.Say("The party sails to " + MapName(best) + (best.Weather != RWChart.Calm ? ", " + RWWeather.Display(best.Weather) : "") + ".");
+        CloseQuestion();
+        Leave();
+    }
+
+    public static string MapName(RWChart.Node n)
+    {
+        Mapentryobject m = RWUtil.Item<Mapentryobject>("Map", n.Map);
+        return m != null && !string.IsNullOrEmpty(m.Display_Name) ? Bla_Localization.GetText(m.Display_Name) : n.Map.Replace("Map_", "");
+    }
+
+    // ---------------------------------------------------------------- the vote to leave
+
+    static void AskLeave(int wave)
+    {
+        if (leaveWave == wave)
+            return;
+        leaveWave = wave;
+        Votes.Clear();
+        State = "Leave";
+        Round++;
+        until = Time.time + LeaveSeconds;
+        foreach (long s in RWRun.Sessions())
+            RWRun.Ask(s, LeaveKind, Round);
+        RWLog.Info("the vote to leave opens after Tide " + wave);
+    }
+
+    static void CloseLeave()
+    {
+        int yes = 0, all = 0;
+        foreach (long s in RWRun.Sessions())
+        {
+            all++;
+            string v;
+            if (Votes.TryGetValue(s, out v) && v == "Leave") yes++;
+        }
+        LastVote = yes + " of " + all + " to leave";
+        CloseQuestion();
+        State = "";
+        Votes.Clear();
+        RWLog.Info("the vote to leave: " + LastVote);
+        if (yes * 2 <= all)
+            return;
+        Departing = true;
+        if (RWCampaign.Route.Count >= RWChart.Rows)
+        {
+            Leave();
+            return;
+        }
+        foreach (long s in RWRun.Sessions())
+            RWRun.For(s).Owed = true;
+        AskPicks();
+    }
+
+    // The party leaves: the stock win path on a real map, the stock exit from a staging map.
+    public static void Leave()
+    {
+        State = "";
+        HoldBreak = false;
+        RWRun.Save();
+        if (staging)
+        {
+            staging = false;
+            RWCampaign.Staging = false;
+            RWCampaign.Next = null;
+            RWLog.Info("staging over: back to the boat, sailing to column " + RWCampaign.Choice);
+            Tds_Multiplayer_Remote.Instance.Quitmap_ServerRpc(default(Unity.Netcode.ServerRpcParams));
+            return;
+        }
+        Mode_Normal mode = Game_Rounds.Instance != null ? Game_Rounds.Instance.GetComponent<Mode_Normal>() : null;
+        if (mode != null) mode.Finished = true;
+        Tds_Multiplayerinfo.Instance.Gamestate.Value = new FixedString64Bytes("Win");
+        Game_Mapvars.Instance.Gamecomplete.Value = new FixedString64Bytes("Win");
+        Game_Rounds.Instance.Gamecompleted();
+    }
+
+    static void CloseQuestion()
+    {
+        if (State == "Leave" || State == "Map")
+            foreach (long s in RWRun.Sessions())
+                RWRun.Ask(s, "", 0f);
+        if (State != "Picks")
+            State = "";
+    }
+
+    // ---------------------------------------------------------------- orders (host)
+
+    static void OnOrder(Entity_Master vessel, RWPlayer p, string json)
+    {
+        string kind = RWRun.JsonText(json, "Kind");
+        long s = vessel.Entitydata.Value.Owner;
+        if (kind == DirectionKind && State == "Picks") Votes[s] = RWRun.JsonInt(json, "Pick").ToString();
+        else if (kind == MapKind && State == "Map") Votes[s] = RWRun.JsonInt(json, "Pick").ToString();
+        else if (kind == LeaveKind && State == "Leave") Votes[s] = RWRun.JsonText(json, "Text");
+    }
+
+    // ---------------------------------------------------------------- the board and the run line
+
+    static void PostBoard() { Line(); }
+
+    static void ClearBoard() { RWObjectives.Posted = null; }
+
+    static void Line()
+    {
+        string line = RWObjectives.Active != null ? "Objective: " + RWObjectives.Active.Display : RWObjectives.Posted != null && ModKitTides.InBreak ? "Posted: " + RWObjectives.Posted.Display : "";
+        foreach (long s in RWRun.Sessions())
+            RWRun.RunLine(s, line);
+    }
+}
+
+// This machine's side of the questions: a new round on its own vessel's RW_Ask opens the dialog; the pick is an order.
+public static class RWAsk
+{
+    static float round = -1f;
+    static float nextLook;
+    public static string Open = "";     // what's being asked here (self-test)
+
+    public static void Update()
+    {
+        if (Time.unscaledTime < nextLook)
+            return;
+        nextLook = Time.unscaledTime + 0.2f;
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Game")
+        {
+            round = -1f;
+            Open = "";
+            return;
+        }
+        Entity_Master v = RWMine.Vessel();
+        Link_Commandref ask;
+        if (v == null || !RWMine.Command(v, RWRun.AskLink, out ask))
+            return;
+        string what = ask.Goalstring.ToString();
+        if (what == "")
+        {
+            if (Open != "")
+            {
+                Open = "";
+                RWDialog.Cancel();
+            }
+            round = -1f;
+            return;
+        }
+        if (ask.Goalvalue == round)
+            return;
+        round = ask.Goalvalue;
+        Open = what;
+        RogueWavesModeMod.Instance.StartCoroutine(Run(what));
+    }
+
+    static IEnumerator Run(string what)
+    {
+        string kind = what.Substring(0, 1);
+        string[] parts = what.Length > 2 ? what.Substring(2).Split('.') : new string[0];
+        List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
+        string title, sub;
+        float seconds;
+        if (kind == RWVote.DirectionKind)
+        {
+            RWDirections.Refresh();
+            foreach (string p in parts)
+            {
+                int i;
+                if (!int.TryParse(p, out i) || i < 0 || i >= RWDirections.List.Count) continue;
+                Upgradeproperties u = RWDirections.List[i];
+                cards.Add(RWDialog.Card(cards.Count.ToString(), u.Display_Name, u.Display_Desc, RWDirections.Picture(u.Objectname), RWDialog.Teal));
+            }
+            title = "CHOOSE A DIRECTION";
+            sub = "It stays with your vessel for the whole campaign";
+            seconds = RWVote.PickSeconds;
+        }
+        else if (kind == RWVote.MapKind)
+        {
+            uint seed;
+            List<int> route;
+            RWWorld.Parse(Tds_Multiplayerinfo.Instance.World.Value.ToString(), out seed, out route);
+            // After a won map the host's route is one longer than the world this map was warped from.
+            RWChart.Chart chart = RWWorld.Chart(seed);
+            int row = RWCampaign.Live ? RWCampaign.Route.Count + 1 : route.Count + 2;
+            foreach (string p in parts)
+            {
+                int c;
+                if (!int.TryParse(p, out c)) continue;
+                RWChart.Node n = chart.At(row, c);
+                if (n == null) continue;
+                string weather = n.Weather != RWChart.Calm ? RWWeather.Display(n.Weather) : "Calm waters";
+                cards.Add(RWDialog.Card(c.ToString(), RWVote.MapName(n), weather + RWCard.Separator + "Danger " + n.Label, n.Weather != RWChart.Calm ? RWIcons.SpriteFor(n.Weather) : RWAssets.Sprite("RogueWaves_Vote"), n.Breaker ? RWDialog.Coral : RWDialog.Teal));
+            }
+            title = "WHERE NEXT?";
+            sub = "The party sails to the map most of you pick";
+            seconds = RWVote.MapSeconds;
+        }
+        else
+        {
+            cards.Add(RWDialog.Card("Stay", "Stay", "Another bonus Tide: more Pure Aura, and harder", RWAssets.Sprite("RogueWaves_Stay"), RWDialog.Teal));
+            cards.Add(RWDialog.Card("Leave", "Leave", "Leave this map", RWAssets.Sprite("RogueWaves_Leave"), RWDialog.Coral));
+            title = "TIDE CLEARED";
+            sub = "A majority leaves. Nobody leaves right before their demise";
+            seconds = RWVote.LeaveSeconds;
+        }
+        if (cards.Count == 0)
+            yield break;
+        string pick = null;
+        yield return RWDialog.Ask(cards, title, sub, seconds, true, n => pick = n);
+        if (pick == null)
+            yield break;
+        if (kind == RWVote.LeaveKind) RWMine.Send(kind, 0, pick);
+        else
+        {
+            int k;
+            if (int.TryParse(pick, out k)) RWMine.Send(kind, k, "");
+        }
+    }
+}

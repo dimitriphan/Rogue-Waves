@@ -1,4 +1,4 @@
-// Kit 1.6 (2026-10-08). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.7 (2026-11-03). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: a number shown on an entity on every client (docs/01 section 6), the game's own counter route: a stat
 // with Style = Counter (like the Archer Tower's kills) added by Helper_Entitytools.Addstat and driven by one Base
 // modifier. Set it on the host; the engine syncs the stat. Argo's Fathom, Pure Aura, Thread, a Growth stage.

@@ -98,20 +98,63 @@ public static class RWIcons
         return s != null ? Name(w) : Fallback(w);
     }
 
+    public static Sprite SpriteFor(int w)
+    {
+        try { return Helper_Uitools.Geticon(For(w)); }
+        catch (Exception) { return null; }
+    }
+
+    // The library's icons the HUD and the shop name, by the name the Icon_Types or Icon_Stats table lists them under
+    // (a counter's icon is in Icon_Stats under the stat's name, kit docs/05 §9).
+    public static readonly string[,] Library =
+    {
+        { "RogueWaves_Retry", "RogueWaves_Retry", "Retries" }, { "RogueWaves_Vote", "RogueWaves_Vote", "Vote" }, { "RogueWaves_Crest", "RogueWaves_Crest", "Rogue Waves" },
+        { "RogueWaves_Depth", "RogueWaves_Depth", "Depth" }, { "Pure_Aura", "RogueWaves_PureAura", "Pure Aura" },
+    };
+
     public static void Add()
     {
         try
         {
             Iconobject types = Tds_Masterdatabase.Instance != null ? Tds_Masterdatabase.Instance.Getitem("Icons", "Icon_Types") as Iconobject : null;
+            Iconobject stats = Tds_Masterdatabase.Instance != null ? Tds_Masterdatabase.Instance.Getitem("Icons", "Icon_Stats") as Iconobject : null;
             if (types == null || types.Icons == null) { RWLog.Warn("icons: no Icon_Types table"); return; }
             Iconobject.Icon like = null;
             foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
             Add(types, RWChart.RisingWater, Rising, like);
             Add(types, RWChart.QuickeningCurrent, Quickening, like);
             Add(types, RWChart.NestingGround, Nesting, like);
-            RWLog.Info("icons: three weathers");   // Run-SelfTests.ps1 -BootCheck waits for this line
+            int added = 0;
+            for (int i = 0; i < Library.GetLength(0); i++)
+            {
+                Sprite s = RWAssets.Sprite(Library[i, 1]);
+                if (s == null) continue;
+                added++;
+                AddSprite(Library[i, 0] == "Pure_Aura" && stats != null ? stats : types, Library[i, 0], s, Library[i, 2], like);
+            }
+            foreach (string name in RWContent.IconNames)
+            {
+                Sprite s = RWAssets.Sprite(name);
+                if (s != null) { AddSprite(types, name, s, name, like); added++; }
+            }
+            RWLog.Info("icons: three weathers, " + added + " from the library");   // Run-SelfTests.ps1 -BootCheck waits for this line
         }
         catch (Exception e) { RWLog.Warn("icons: " + e.Message); }
+    }
+
+    static void AddSprite(Iconobject into, string name, Sprite sprite, string display, Iconobject.Icon like)
+    {
+        if (into == null || into.Icons == null || into.Icons.ContainsKey(name))
+            return;
+        Iconobject.Icon icon = new Iconobject.Icon();
+        icon.Name = name;
+        icon.Image = sprite;
+        icon.Color = Color.white;
+        icon.Material = like != null ? like.Material : null;
+        icon.Displayname = display;
+        into.Icons[name] = icon;
+        if (into.Iconslist != null)
+            into.Iconslist.Add(icon);
     }
 
     static void Add(Iconobject into, int w, string[] rows, Iconobject.Icon like)

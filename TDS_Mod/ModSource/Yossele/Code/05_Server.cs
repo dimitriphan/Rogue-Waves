@@ -90,18 +90,12 @@ public static class YosseleServer
             p.Hero.ShowFertilizer();
     }
 
-    // The highest Compost Bin rank this vessel's player holds (0: none): on the team's core (kit 1.6, the mode grants
-    // Directions there) or on the vessel itself (kit 1.7's per-player Directions).
+    // The highest Compost Bin rank this vessel carries (0: none): the mode grants Directions on the vessel (kit 1.7).
     public static int CompostRank(Entity_Master hero)
     {
         for (int r = YosseleData.Compostbins.Length; r >= 1; r--)
-        {
-            string name = YosseleData.Compostbins[r - 1].Name;
-            if (ModKitDirections.Has("Yossele", name))
+            if (hero != null && hero.Upgradelistserver != null && hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Yossele", YosseleData.Compostbins[r - 1].Name)))
                 return r;
-            if (hero != null && hero.Upgradelistserver != null && hero.Upgradelistserver.ContainsKey(ModKitDirections.Id("Yossele", name)))
-                return r;
-        }
         return 0;
     }
 

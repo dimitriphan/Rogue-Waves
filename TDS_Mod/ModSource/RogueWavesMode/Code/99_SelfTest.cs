@@ -19,7 +19,7 @@
 //          key in the save folder lacks RW_
 //   boot   K0 the mode's breaks between Tides are 60 s and Mode_Normal's own table is untouched; CH every chart map of
 //          500 seeds links to 1 to 3 maps
-public static class RWTest
+public static partial class RWTest
 {
     public const uint Seed = 20261009;
     const int Maps = 3;
@@ -158,7 +158,8 @@ public static class RWTest
 
     static IEnumerator Run()
     {
-        yield return Embark();
+        yield return Flow();     // the whole campaign as a player meets it; it ends back on the boat
+        if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) yield return Embark();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("boat", "never reached the boat"); yield break; }
         yield return new WaitForSecondsRealtime(4f);
         if (!RWUtil.IsHost || !RWUtil.IsLeader) { Setup("boat", "not the host and leader"); yield break; }
@@ -174,6 +175,7 @@ public static class RWTest
 
         int before = errors;
         RWCampaign.New(Seed);
+        RWCampaign.Staging = false;     // these probes pick their own maps
         yield return Until(() => Here(), 40f);
         Macro_Worldvisual vis = Macro_Worldvisual.Instance;
         Mapworlddatabaseobject item = RWUtil.Item<Mapworlddatabaseobject>("World", RWCampaign.WorldName());
@@ -291,6 +293,7 @@ public static class RWTest
             "active " + RWCampaign.Active + ", ended '" + RWCampaign.Ended + "'");
 
         RWCampaign.New(Seed);
+        RWCampaign.Staging = false;
         RWChart.Node at = RWCampaign.Here;
         while (RWCampaign.Route.Count < RWChart.Rows - 1 && at != null && at.Links.Count > 0)
         {

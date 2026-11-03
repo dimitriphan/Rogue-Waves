@@ -603,7 +603,7 @@ public static class YosseleSelfTest
 
         // 5. FERTILIZE: granted by the Compost Bin Direction, fed by foes felled near Yossele, grows a building a stage.
         {
-            bool granted = ModKitDirections.Grant(YosseleContent.Compostbins[0]);
+            bool granted = ModKitDirections.Grant(hm, YosseleContent.Compostbins[0]);
             yield return Until(() => hm.Commandlistserver.ContainsKey(YosseleData.FertilizeLink), 3f);
             Check("a Compost Bin unlocks FERTILIZE", granted && hero.Rank == 1 && hm.Commandlistserver.ContainsKey(YosseleData.FertilizeLink), "granted " + granted + ", rank " + hero.Rank);
             Link_Command fert;
