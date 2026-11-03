@@ -1,5 +1,8 @@
 # Mistake check (2026-10-28)
 
+> **Note (added 2026-11-03):** the mode's save keys now carry `RW_`, with a one-time rename of the old names, and the
+> mode's version is `0.1.0-dev` (`MODE_POLISH_2026-11-03.md` F6, F7).
+
 Dimitri asked (2026-10-28 04:01Z): "go through the repository and check for mistakes." Base: `claude/phase-1-6lfnar`
 at 500381f (PRs #2-#39, #41, #44 merged; #40, #42 and #43 open and not in the tree). Two passes, as set up front;
 everything here was read, compiled or run as a script in the cloud, nothing in game.

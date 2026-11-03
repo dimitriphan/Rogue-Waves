@@ -1,5 +1,8 @@
 # Quality passes (2026-10-15)
 
+> **Note (added 2026-11-03):** the mode rows A3-9, B4-11, B4-12, B4-13, B4-14 and C2 are fixed in RogueWavesMode
+> 0.1.0-dev (`MODE_POLISH_2026-11-03.md` §1).
+
 Dimitri asked (2026-10-15 05:18Z): "Do another check on every asset in the repository now. Continue until there are no
 noticeable issues 3 times in a row." At 13:23Z he cut it to two clean passes in a row, and on 2026-10-16 at 00:17Z
 he asked to stop after pass 12 and say why every pass finds issues ("Why every pass found issues" below). At 00:31Z

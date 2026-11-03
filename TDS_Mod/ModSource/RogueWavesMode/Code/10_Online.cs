@@ -8,9 +8,10 @@ public static class RWIdentity
     // that folder on every launch (Bla_Data.Temporaryfields), so a restarted friend joins as a new player and the
     // rejoin turns them away. The host gives a GUID it has seen the same Sessionid for as long as it hosts
     // (Blm_Multiplayer.Getsessionid), and the game's own reconnect then hands the vessel and towers back
-    // (Game_Players.Playerconnected). So every machine keeps its GUID in the pack's save folder and puts it back into
-    // Metadata before the game reads it. The kept GUID is tied to this computer: a save copied to a friend's PC must
-    // not give two players one GUID (the host would add the same Sessionid twice, Blm_Player.Populatesessionid).
+    // (Game_Players.Playerconnected). So every machine keeps its GUID in the pack's save folder (RWKeys.Guid, with
+    // RWKeys.Device) and puts it back into Metadata before the game reads it. The kept GUID is tied to this computer: a
+    // save copied to a friend's PC must not give two players one GUID (the host would add the same Sessionid twice,
+    // Blm_Player.Populatesessionid).
     public static string Guid = "";       // the GUID this machine joins with
     public static bool Restored;          // this launch put a kept GUID back
     static float nextLook;
@@ -24,8 +25,8 @@ public static class RWIdentity
         if (Blockage.Tags.Bla_Data.Instance == null || Blockage.Tags.Bla_Data.Playerdata == null || !Blockage.Tags.Bla_Data.Playerdata.Loaded)
             return;
         string live = RWUtil.ReadString("Metadata", "Player_Guid");
-        string kept = RWUtil.ReadString(RWData.SaveFolder, "Player_Guid");
-        bool here = RWUtil.ReadString(RWData.SaveFolder, "Player_Device") == Device();
+        string kept = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Guid);
+        bool here = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Device) == Device();
         if (!here)
             kept = "";
         Unity.Netcode.NetworkManager net = Unity.Netcode.NetworkManager.Singleton;
@@ -48,8 +49,8 @@ public static class RWIdentity
         }
         if (kept != want || !here)
         {
-            RWUtil.WriteString(RWData.SaveFolder, "Player_Guid", want);
-            RWUtil.WriteString(RWData.SaveFolder, "Player_Device", Device());
+            RWUtil.WriteString(RWData.SaveFolder, RWKeys.Guid, want);
+            RWUtil.WriteString(RWData.SaveFolder, RWKeys.Device, Device());
             RWUtil.Flush();
             RWLog.Info("identity: this player's id is kept for a restart");
         }

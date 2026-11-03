@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `MODE_POLISH_2026-11-03.md` | 2026-11-03 | The mode part checked line by line against the scope: 15 issues fixed as 0.1.0-dev (retries, Tide 15 wins, 60 s breaks, `RW_` keys), the readings and judgment calls for Dimitri, what is not built yet |
 | `MISTAKE_CHECK_2026-10-28.md` | 2026-10-28 | Two passes over every file for mistakes (wrong facts, bugs, broken pointers): 31 found, 28 fixed, 3 listed; every mod compiles clean |
 | `PRIORITIES_2026-10-28.md` | 2026-10-28 | What the project needs most now: the scope read against the state, ranked for Release 1 (Yossele alone), with the scope gaps and open `~defaults~` blocking each item |
 | `ENGINE_STUDY_2026-10-28.md` | 2026-10-28 | The game's code system by system (loading, data, entities, behaviour scripts, stats, upgrades, combat, players, economy and Tides, Cardinals, looks, maps), the four rungs from stock data to new code, and 13 facts new to the kit (seven seen in RogueLab round 8, 2026-10-29; the note on top) |

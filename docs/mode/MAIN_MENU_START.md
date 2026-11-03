@@ -42,7 +42,9 @@ Two details that shape the build:
 **Continue campaign** fits here naturally: the campaign lives in the host's save (core loop decision 1, 2026-10-09),
 the host chooses it before anyone joins, and the host's mod restores each player's things when the first map loads,
 by the Steam name or the GUID the pack keeps (the Steam id is out of a mod's reach: kit `docs/19` §5, `docs/23`
-§2.3). The button is also where a campaign that has ended (no retries left) says so.
+§2.3). The button is also where a campaign that has ended (no retries left) says so: an ended campaign leaves the
+save, and when Continue itself ends it (the host left the last retry's map while it ran) `RWCampaign.Continue` returns
+false with `RWCampaign.Ended` set to "lost" (or "won"), since RogueWavesMode 0.1.0-dev.
 
 ## 3. Friends who join
 

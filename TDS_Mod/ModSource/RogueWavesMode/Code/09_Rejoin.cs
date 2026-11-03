@@ -124,6 +124,9 @@ public static class RWRejoin
             else if (copy)
                 Copy(seat, info, Player(kv.Key));
         }
+        // Someone turned away is forgotten once they are gone, so a second Join Game turns them away again (the game
+        // gives them the same Sessionid, and a remembered one was let in, seatless).
+        turnedAway.RemoveAll(s => !Blm_Server.Instance.Sessionids.ContainsKey(s));
         foreach (Seat seat in Seats.Values)
         {
             if (seat.Away || Blm_Server.Instance.Sessionids.ContainsKey(seat.Session))
@@ -367,9 +370,10 @@ public static class RWRejoin
 
     // ---------------------------------------------------------------- the dropped player
 
-    // While in a running map, remembers the host's name; if the connection ends before the map does, leaves a line
-    // for the main menu's error box, which shows the last one (Bla_Ui_Multiplayererrornotif). The game adds its own
-    // "Disconnected" when the client stops, after the Serverclosed callback, so the line is added a frame later.
+    // While in a running map, remembers its host's name (forgotten when the map ends or is left, so a later map's host is
+    // named right); if the connection ends before the map does, leaves a line for the main menu's error box, which shows
+    // the last one (Bla_Ui_Multiplayererrornotif). The game adds its own "Disconnected" when the client stops, after the
+    // Serverclosed callback, so the line is added a frame later.
     static void Watch(Game_Mapvars mv)
     {
         bool connected = Unity.Netcode.NetworkManager.Singleton != null && Unity.Netcode.NetworkManager.Singleton.IsClient && Blm_Server.Instance != null;
@@ -377,6 +381,7 @@ public static class RWRejoin
         {
             inMap = dropped = false;
             string host = hostName != "" ? hostName : "the host";
+            hostName = "";
             if (Blm_Multiplayer.Instance != null && Blm_Multiplayer.Instance.Multiplayererror != null)
                 Blm_Multiplayer.Instance.Multiplayererror.Add("Lost the map. If " + host + " is still playing: Steam friends, right-click " + host + ", Join Game.");
             RWLog.Info("rejoin: left a running map (host " + host + ")");
@@ -385,10 +390,13 @@ public static class RWRejoin
         if (mv == null || !connected)
         {
             if (Macro_Main.Instance != null) inMap = false;
+            if (!inMap) hostName = "";
             return;
         }
         string state = mv.Gamecomplete.Value.ToString();
         inMap = state == "Running" || state == "";
+        // The host of this map only: a later map may be someone else's.
+        if (!inMap) hostName = "";
         if (inMap && hostName == "" && Blm_Server.Instance != null)
             foreach (GameObject p in Blm_Server.Instance.Players)
             {

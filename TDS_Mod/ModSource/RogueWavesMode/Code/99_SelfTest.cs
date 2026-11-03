@@ -11,8 +11,14 @@
 //          also R1-R5 and R2b the rejoin's host side with a pretend missing friend, R6 the lobby shut once the map ends,
 //          and L1 the load watch saw the loading screen and sent nobody back
 //   end    the campaign save round-trips through Continue; S1/S2 a slot switch leaves the campaign behind (pretended),
-//          the same save keeps it; then the campaign is stopped and its keys removed. I1 (on the boat) the player's id
-//          is kept for a restart, and says whether this launch put one back
+//          the same save keeps it; T0-T6 the retries and the campaign's end, on the boat with pretend results (a lost
+//          map spends a retry and is the only map the boat offers, a map left while it ran counts as lost on the boat
+//          and at Continue, Tide 15 cleared wins the map, no retries left ends the campaign, ten maps won complete it);
+//          then the campaign is stopped and its keys removed, and H1 the party is taken back to the stock world.
+//          I1 (on the boat) the player's id is kept for a restart, and says whether this launch put one back; K1 no
+//          key in the save folder lacks RW_
+//   boot   K0 the mode's breaks between Tides are 60 s and Mode_Normal's own table is untouched; CH every chart map of
+//          500 seeds links to 1 to 3 maps
 public static class RWTest
 {
     public const uint Seed = 20261009;
@@ -30,7 +36,46 @@ public static class RWTest
         RWWeather.QuickTide = 1;
         RWWeather.QuickerTide = 2;
         Info("self-test", "v" + RWData.Version + ", seed " + Seed + ", " + Maps + " maps, Quickening Current from Tide 1 and 2");
+        try { BootChecks(); } catch (Exception e) { Check("boot checks ran", false, e.ToString()); }
         RogueWavesModeMod.Instance.StartCoroutine(Guarded());
+    }
+
+    // K0 and CH: data the mode builds at boot.
+    static void BootChecks()
+    {
+        List<Wavesobject.Waves> mine = RWMode.ModeObject != null ? RWMode.ModeObject.Enemies.Wave : null;
+        List<Wavesobject.Waves> stock = RWMode.Stock != null ? RWMode.Stock.Enemies.Wave : null;
+        if (mine == null || stock == null) { Check("K0 the mode's Tide table", false, "no table: mode " + (mine != null) + ", Mode_Normal " + (stock != null)); return; }
+        // Mode_Normal's breaks are 30 s, one 10 s (before Tide 19), the opening one 45 s (RogueLab round 1); none is 60 s.
+        int breaks = 0, wrong = 0, stockBreaks = 0, stockAt60 = 0;
+        float opening = -1f, stockOpening = -1f;
+        string stockTimes = "";
+        bool afterTide = false;
+        for (int i = 0; i < mine.Count && i < stock.Count; i++)
+        {
+            if (mine[i].Wave) { afterTide = true; continue; }
+            if (!afterTide) { opening = mine[i].Wavetime; stockOpening = stock[i].Wavetime; continue; }
+            breaks++;
+            if (!Mathf.Approximately(mine[i].Wavetime, RWMode.BreakSeconds)) wrong++;
+            stockBreaks++;
+            if (Mathf.Approximately(stock[i].Wavetime, RWMode.BreakSeconds)) stockAt60++;
+            string t = RWUtil.F(stock[i].Wavetime);
+            if (("," + stockTimes + ",").IndexOf("," + t + ",") < 0) stockTimes += (stockTimes == "" ? "" : ",") + t;
+        }
+        Check("K0 every break between Tides is " + RWUtil.F(RWMode.BreakSeconds) + " s, the opening break as Mode_Normal's", breaks > 0 && wrong == 0 && Mathf.Approximately(opening, stockOpening),
+            breaks + " breaks, " + wrong + " not " + RWUtil.F(RWMode.BreakSeconds) + " s; opening " + RWUtil.F(opening) + " s (Mode_Normal " + RWUtil.F(stockOpening) + " s); " + mine.Count + " entries");
+        Check("K0 Mode_Normal's own table is untouched", stockBreaks == breaks && stockAt60 == 0 && mine.Count == stock.Count,
+            "Mode_Normal's breaks: " + stockBreaks + ", lengths " + stockTimes + " s, " + stockAt60 + " at " + RWUtil.F(RWMode.BreakSeconds) + " s");
+
+        int worst = 0, fewest = 99, charts = 0;
+        for (uint seed = 1; seed <= 500; seed++)
+        {
+            RWChart.Chart c = RWChart.Generate(seed, RWMode.Pool);
+            charts++;
+            for (int r = 1; r < RWChart.Rows; r++)
+                foreach (RWChart.Node n in c.Rows[r]) { worst = Math.Max(worst, n.Links.Count); fewest = Math.Min(fewest, n.Links.Count); }
+        }
+        Check("CH every chart map links to 1 to " + RWChart.MaxLinks + " maps (" + charts + " seeds)", charts == 500 && fewest >= 1 && worst <= RWChart.MaxLinks, "fewest " + fewest + ", most " + worst);
     }
 
     static void Line(string message) { RWLog.Info("TEST " + message); }
@@ -117,9 +162,12 @@ public static class RWTest
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("boat", "never reached the boat"); yield break; }
         yield return new WaitForSecondsRealtime(4f);
         if (!RWUtil.IsHost || !RWUtil.IsLeader) { Setup("boat", "not the host and leader"); yield break; }
-        string kept = RWUtil.ReadString(RWData.SaveFolder, "Player_Guid");
+        string kept = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Guid);
+        string unprefixed = "";
+        foreach (string old in RWKeys.Old) if (RWUtil.Has(RWData.SaveFolder, old)) unprefixed += (unprefixed == "" ? "" : ", ") + old;
+        Check("K1 no key in " + RWData.SaveFolder + " lacks " + RWData.KeyPrefix, unprefixed == "", (unprefixed == "" ? "none" : "still there: " + unprefixed) + "; " + RWKeys.Moved + " old keys renamed this launch");
         Check("I1 this player's id is kept for a restart", kept != "" && RWUtil.ReadString("Metadata", "Player_Guid") == kept
-            && RWUtil.ReadString(RWData.SaveFolder, "Player_Device") == RWIdentity.Device(),
+            && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Device) == RWIdentity.Device(),
             (RWIdentity.Restored ? "put back from the last launch" : "first kept this launch") + ", session " + (Blm_Server.Instance.Localplayer != null ? Blm_Server.Instance.Localplayer.Sessionid.Value.ToString() : "-"));
         if (RWMode.Pool.Count == 0) { Check("C0 chart pool", false, "no base maps found"); yield break; }
         if (!Plan()) yield break;
@@ -142,6 +190,9 @@ public static class RWTest
             if (RWBoat.ArrivedAt < 0f) yield break;
             yield return Pick(m);
             if (Game_Mapvars.Instance == null || !Game_Mapvars.Instance.Maploaded.Value) yield break;
+            yield return Until(() => RWCampaign.Playing >= 0, 5f);
+            Check("P1 map " + (m + 1) + ": the map in play is in the save while it runs", RWCampaign.Playing == route[m] && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Playing) == route[m].ToString(),
+                "Playing " + RWCampaign.Playing + ", saved '" + RWUtil.ReadString(RWData.SaveFolder, RWKeys.Playing) + "', route column " + route[m]);
             yield return Weather(m);
             if (m == 0) yield return Rejoin(m);
             if (m == 0) Check("L1 the load watch saw the loading screen and sent nobody back", RWLoad.Loads >= 1 && RWLoad.Kicked == 0, "loading screens " + RWLoad.Loads + ", sent back " + RWLoad.Kicked);
@@ -164,8 +215,109 @@ public static class RWTest
         RWCampaign.SlotChanged();
         Check("S2 another save leaves the campaign behind, in its own slot", !RWCampaign.Active && RWCampaign.Route.Count == 0
             && RWCampaign.Saved(out seed, out saved) && seed == Seed, "saved " + seed + " " + Digits(saved));
+        // In the same frame (so the boat never sees it off): back in its own save for the retries.
+        bool again = RWCampaign.Continue();
+        Check("T0 Continue: " + RWCampaign.RetriesPerCampaign + " retries, no map to replay or in play", again && RWCampaign.Live && RWCampaign.Retries == RWCampaign.RetriesPerCampaign && RWCampaign.Replay < 0 && RWCampaign.Playing < 0,
+            "retries " + RWCampaign.Retries + ", replay " + RWCampaign.Replay + ", playing " + RWCampaign.Playing);
+        yield return Retries();
         RWCampaign.Stop();
-        Check("Stop removes the campaign from the save", !RWCampaign.Saved(out seed, out saved), "");
+        string left = "";
+        foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing }) if (RWUtil.Has(RWData.SaveFolder, key)) left += key + " ";
+        Check("Stop removes the campaign from the save", !RWCampaign.Saved(out seed, out saved) && left == "", left == "" ? "" : "left: " + left);
+        string stockWorld, stockPlan;
+        RWCampaign.Stock(out stockWorld, out stockPlan);
+        yield return Until(() => !RWBoat.OnChart && Macro_Worldvisual.Instance.World != null && Macro_Worldvisual.Instance.World.name == stockWorld, 40f);
+        Macro_Worldvisual home = Macro_Worldvisual.Instance;
+        Check("H1 with no campaign on, the party is taken back to the stock world", !RWBoat.OnChart && home.World != null && home.World.name == stockWorld,
+            "world " + (home.World != null ? home.World.name : "-") + ", stock " + stockWorld);
+    }
+
+    // T1-T6: the retries and the campaign's end, played on the boat with pretend map results (docs/scope/04 [Retries],
+    // [Campaign]); the maps themselves are C4-C5's. Each step is what RWCampaign does at a map's end or on the boat.
+    static IEnumerator Retries()
+    {
+        List<RWChart.Node> open = RWCampaign.Open();
+        if (open.Count == 0) { Setup("T1-T6", "no choices from " + RWCampaign.Here.Name); yield break; }
+        RWChart.Node lost = open[open.Count - 1];
+        int c = lost.Col, sailed = RWCampaign.Route.Count;
+
+        RWCampaign.Playing = c;
+        RWCampaign.MapEnd("Lose");
+        List<RWChart.Node> now = RWCampaign.Open();
+        Check("T1 a lost map spends a retry, and the boat offers only that map", RWCampaign.Retries == 2 && RWCampaign.Replay == c && now.Count == 1 && now[0] == lost
+            && RWCampaign.Route.Count == sailed && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Retries) == "2" && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Replay) == c.ToString(),
+            "retries " + RWCampaign.Retries + ", replay " + RWCampaign.Replay + ", open " + Names(now) + ", saved '" + RWUtil.ReadString(RWData.SaveFolder, RWKeys.Retries) + "'/'" + RWUtil.ReadString(RWData.SaveFolder, RWKeys.Replay) + "'");
+        yield return null;
+        yield return null;
+        if (open.Count < 2) Setup("T1 the boat lets only the lost map be picked", "one choice from " + RWCampaign.Here.Name);
+        else
+        {
+            string wrong = "";
+            foreach (RWChart.Node n in open) if (Listed(n.Name) != (n != lost)) wrong += n.Name + (n == lost ? " shut " : " open ");
+            Check("T1 the boat lets only the lost map be picked", wrong == "", wrong == "" ? lost.Name + " open, " + (open.Count - 1) + " other choices blacklisted" : wrong);
+        }
+
+        RWCampaign.Playing = c;
+        yield return null;
+        yield return null;
+        yield return null;
+        Check("T2 a map left while it ran counts as lost, seen on the boat", RWCampaign.Retries == 1 && RWCampaign.Playing < 0 && RWCampaign.Replay == c,
+            "retries " + RWCampaign.Retries + ", playing " + RWCampaign.Playing + ", replay " + RWCampaign.Replay);
+
+        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Playing, c.ToString());
+        RWUtil.Flush();
+        RWCampaign.Active = false;
+        bool back = RWCampaign.Continue();
+        Check("T3 Continue counts a map left while it ran as lost", back && RWCampaign.Retries == 0 && RWCampaign.Replay == c && RWCampaign.Playing < 0 && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Playing) == "",
+            "retries " + RWCampaign.Retries + ", replay " + RWCampaign.Replay + ", saved playing '" + RWUtil.ReadString(RWData.SaveFolder, RWKeys.Playing) + "'");
+
+        RWCampaign.Playing = c;
+        RWCampaign.Tide(RWCampaign.WinTide);
+        bool notYet = RWCampaign.Route.Count == sailed;
+        RWCampaign.Tide(RWCampaign.WinTide + 1);
+        Check("T4 a map counts as won once Tide " + RWCampaign.WinTide + " is cleared, and the replay is over", notYet && RWCampaign.Route.Count == sailed + 1 && RWCampaign.Route[sailed] == c
+            && RWCampaign.Replay < 0 && RWCampaign.Playing < 0 && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Route).Length == sailed + 1,
+            "route " + Digits(RWCampaign.Route) + " (was " + sailed + " long), replay " + RWCampaign.Replay);
+        RWCampaign.MapEnd("Lose");
+        Check("T4 dying in a bonus Tide loses nothing", RWCampaign.Live && RWCampaign.Retries == 0 && RWCampaign.Route.Count == sailed + 1, "retries " + RWCampaign.Retries + ", live " + RWCampaign.Live);
+
+        List<RWChart.Node> next = RWCampaign.Open();
+        if (next.Count == 0) { Setup("T5", "no choices after the route grew"); yield break; }
+        RWCampaign.Playing = next[0].Col;
+        RWCampaign.MapEnd("Lose");
+        uint seed;
+        List<int> saved;
+        Check("T5 with no retries left, a lost map ends the campaign and keeps nothing", !RWCampaign.Active && RWCampaign.Ended == "lost" && !RWCampaign.Saved(out seed, out saved),
+            "active " + RWCampaign.Active + ", ended '" + RWCampaign.Ended + "'");
+
+        RWCampaign.New(Seed);
+        RWChart.Node at = RWCampaign.Here;
+        while (RWCampaign.Route.Count < RWChart.Rows - 1 && at != null && at.Links.Count > 0)
+        {
+            RWCampaign.Route.Add(at.Links[0]);
+            at = RWCampaign.Here;
+        }
+        RWCampaign.Playing = RWCampaign.Open()[0].Col;
+        RWCampaign.MapEnd("Win");
+        Check("T6 the tenth map won completes the campaign, which leaves the save", !RWCampaign.Active && RWCampaign.Ended == "won" && !RWCampaign.Saved(out seed, out saved) && !RWCampaign.Continue(),
+            "route " + Digits(RWCampaign.Route) + ", ended '" + RWCampaign.Ended + "'");
+    }
+
+    // The host's boat blacklist holds the node of this name in the world shown.
+    static bool Listed(string node)
+    {
+        Macro_Worldvisual vis = Macro_Worldvisual.Instance;
+        if (vis == null || vis.World == null || Macro_Main.Instance == null) return false;
+        foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
+            if (l.name == node) return Macro_Main.Instance.Blacklist.Contains(l);
+        return false;
+    }
+
+    static string Names(List<RWChart.Node> nodes)
+    {
+        List<string> n = new List<string>();
+        foreach (RWChart.Node x in nodes) n.Add(x.Name);
+        return n.Count == 0 ? "(none)" : string.Join(", ", n.ToArray());
     }
 
     static bool Here() { return RWBoat.OnChart && Macro_Worldvisual.Instance.World.name == RWCampaign.WorldName(); }
@@ -395,7 +547,8 @@ public static class RWTest
         Game_Rounds.Instance.Gamecompleted();
         freeze = false;
         yield return new WaitForSeconds(3f);
-        Check("C5 a won map is sailed", RWCampaign.Route.Count == before + 1, "route " + Digits(RWCampaign.Route) + ", Time_Scale " + RWUtil.F(Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Time_Scale.Value : -1f));
+        Check("C5 a won map is sailed, and is no longer in play", RWCampaign.Route.Count == before + 1 && RWCampaign.Playing < 0 && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Playing) == "",
+            "route " + Digits(RWCampaign.Route) + ", playing " + RWCampaign.Playing + ", Time_Scale " + RWUtil.F(Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Time_Scale.Value : -1f));
     }
 
     static void ClearFoes()
