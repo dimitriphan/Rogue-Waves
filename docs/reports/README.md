@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `BALANCE_2026-11-03.md` | 2026-11-03 | Yossele and Spool studied in a simulator calibrated on the 2026-10-26 play test (`balance_2026-11-03/`, about 13,000 runs): Yossele unchanged; Spool's early game is the Pin Cushion wall, its late game needs three numbers (proposals P1-P4); PC test plan |
 | `MISTAKE_CHECK_2026-10-28.md` | 2026-10-28 | Two passes over every file for mistakes (wrong facts, bugs, broken pointers): 31 found, 28 fixed, 3 listed; every mod compiles clean |
 | `YOSSELE_TEST_PLAN_2026-10-23.md` | 2026-10-23 | Yossele 0.2.0-dev: every case not yet seen in game, which check covers it (PC round 9's self-test, play, by eye, online), and the cloud checks run |
 | `QUALITY_PASSES_2026-10-15.md` | 2026-10-15 | 23 passes over every file (stopped at Dimitri's word after one clean pass); what was fixed, why each pass found issues, what is left for Dimitri |

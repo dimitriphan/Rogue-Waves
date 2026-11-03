@@ -248,7 +248,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
   redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
   (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
-  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. Older entries are in "Log" below.
+  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-11-03: a
+  balance study of Yossele and Spool in a simulator calibrated on the 2026-10-26 play test
+  (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's proposals P1-P4 wait for his pick
+  (Open questions 2). Older entries are in "Log" below.
 - **Next:** **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
@@ -259,7 +262,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
-  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass, the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Uloe is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass
+  (the 2026-11-03 study proposes no change), the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Before Uloe is scaffolded the template gets the 1.6 pack calls, `ModKitCombat` and `ModKitTowers.Fit`,
   Argo's unthrottled debuff looks, and the unit-sheet Aseprite fix in the builders and `ase_sheets.py` (B10, B1-3,
   B1-22, B1-4, C2-6); Spool (PR #42) was scaffolded without them and takes them at its next round.
 - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online.
@@ -445,6 +449,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   a new vessel from the template, saves in the page, and exports the `.txt` byte for byte with `~defaults~` (tested:
   07, 08, 09, 10, 16 and both uploads round-trip unchanged). Its source and README are in project files
   `concepts/vessel_spotlight_2026-10-15/`.
+- **2026-11-03, balance study (cloud only):** at Dimitri's ask (a long virtual play test of Yossele and Spool), a
+  simulator of a map Tide by Tide (`docs/reports/balance_2026-11-03/`, Python, no game code) was calibrated on the
+  2026-10-26 play test and run about 13,000 times on Purlest, Woozy and The Hunt, Smacky as the yardstick. Found: the
+  2026-10-26 play test had three Coin Cardinals equipped; Red is every vessel's scarce colour and Purlest's Opal is
+  what piles up Blue; Yossele is at or above Smacky everywhere (no change; moving its costs to Blue loses Woozy);
+  Spool's thin first Tide is the missing Pin Cushion wall, and it loses Purlest at Tide 11 to the Maul and Tempered
+  Aegis. Proposed (his pick, Open questions 2): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 / Dart 3.5 Damage (all
+  Claude `~defaults~` in scope `08`), a "wall first" line; a PC round to confirm (report §9).
 
 ### Decisions
 
@@ -591,6 +603,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
+| 2 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round | numbers as written in scope `08`; nothing changes until he picks |
 
 ### Phase 5 pieces
 
