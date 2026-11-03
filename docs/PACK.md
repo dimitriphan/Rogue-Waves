@@ -49,7 +49,7 @@ Mods load in an undefined order, and so do prefabs (`docs/15` §10). Rules:
    the part stands down and shows one main-menu warning: "disable ArgoMod while Rogue Waves is on". The pack README
    says the same. ArgoMod 1.4.0 has no such check, so the README is the real guard.
 
-## 3. Kit 1.6: what the parts share
+## 3. Kit 1.6 and 1.7: what the parts share
 
 The kit stays per-mod source, renamed `<Part>Kit` per part (`kit/README.md`). Growth (Yossele), Thread (Spool) and
 Light (Uloe) are each **one vessel's mechanic and live in that vessel's part**. The kit adds only what several parts

@@ -24,7 +24,13 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Spool | a 12 x 12 ground Thread tuft; a needle that reads in flight | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`e0d2bf6`), compiled; not yet seen in game |
 | Spool | the Thread Head and the four Crafted (Stitched, Dart, Seam, Mangled), redrawn from Dimitri's Spool sprite (2026-10-28) and animated | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`ad85b00`, a `FileArt` like Yossele's), compiled; not yet seen in game |
 | Mode UI | three weather icons, redrawn | `ModSource/RogueWavesMode/Art/Temporary/`, rows in `Code/08_Icons.cs` | wired, compiled |
-| Mode UI | the crest (12 and 32 px), Pure Aura, Depth, retry, vote icons | same folder | files only, waiting for their features |
+| Mode UI | the crest (12 and 32 px), Pure Aura, Depth, retry, vote icons | same folder | wired (2026-11-03), seen in game on the menu button and the dialogs; Depth waits for its feature |
+| Mode UI | icons of the Stay, Leave, Shop, Fund and Board buttons | same folder | wired, seen in game |
+| Mode | VENDCINT's sheet (a vending machine, `Vendcint-Sheet`) | drawn by `Assets/RogueWavesModeMod/Editor/RogueWavesModeArt.cs` into `Art/Temporary/game_size/` if missing | seen in game (landing, panel, its jump away) |
+| Mode | Direction and Cardinal icons (`Direction_*`, `Cardinal_*`) | same folder; Uloe's four added there too | wired, seen in game |
+| Mode | the sea chart | no art of its own: the base game's own islands, water, rocks and buoys, copied in code at runtime (`Code/04_World.cs`); a flag and dashed lanes in the pack's colours are the only new shapes | seen in game |
+| Foes | the four modifiers' pixel rings | built in code (`RogueWavesFoes/Code/00_RogueWavesFoesMod.cs` `RWFLooks`), colours from `docs/STYLE.md` | seen in game by self-test, not by eye |
+| Uloe | every sheet, model, effect and sound, drawn by code from the concept page | `Assets/UloeMod/Editor`, `ModSource/Uloe/Previews/` | seen in game |
 | Directions, Cardinals | icons for the six Directions and the one Cardinal the scope names (`docs/scope/11`, `12`) | same folder | files only |
 | Argo | built art (Argo 2.0) | `ModSource/Argo/DESIGN.md` | not temporary: shipped look |
 

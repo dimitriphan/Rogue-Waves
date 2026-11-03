@@ -12,11 +12,91 @@
 				- Rank I: Your (Minions) take reduced damage from attacks.
 				- Rank II: Your (Minions) take further reduced damage from attacks.
 				- Rank III: Your (Minions) take further reduced damage, and can only take a max amount of damage per each hit.
-				- Numbers:
+				- Numbers: ~15% / 25% / 35% less damage; rank III: one hit takes at most 25% of max health~
 				- Look: A {Stitched} with a bandaid on its face, holding back tears.
 				- Clashes: Any Vessel without (Minion)
+			{~Barnacle Coat~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your towers~
+				- Rank I: ~Your towers prick what hits them~
+				- Rank II: ~Your towers prick harder~
+				- Rank III: ~Your towers prick much harder~
+				- Numbers: ~prick 2 / 4 / 7~
+				- Look: ~A crust of barnacles~
+				- Clashes: ~None~
+			{~Tidal Mend~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your towers~
+				- Rank I: ~Your towers mend what stands around them each tide~
+				- Rank II: ~Your towers mend more, a little farther~
+				- Rank III: ~Your towers mend much more, farther still~
+				- Numbers: ~mends 5 / 8 / 12 within 2 / 2.5 / 3 tiles~
+				- Look: ~A tide pool with a green glow~
+				- Clashes: ~None~
+			{~Spring Tide~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your towers~
+				- Rank I: ~Your towers gain health every tide~
+				- Rank II: ~Your towers gain more health every tide~
+				- Rank III: ~Your towers gain more health every tide and shrug off a little damage~
+				- Numbers: ~+4 / +7 / +10 health a tide; rank III: 10% less damage~
+				- Look: ~A wave rising over a sea wall~
+				- Clashes: ~None~
+			{~Cut Costs~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your buildings~
+				- Rank I: ~Your buildings cost less~
+				- Rank II: ~Your buildings cost less still~
+				- Rank III: ~Your buildings cost much less~
+				- Numbers: ~-10% / -20% / -30%~
+				- Look: ~A pair of rusty shears~
+				- Clashes: ~None~
+			{~Cheap Refits~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your buildings' upgrades~
+				- Rank I: ~Your upgrades cost less~
+				- Rank II: ~Your upgrades cost less still~
+				- Rank III: ~Your upgrades cost much less~
+				- Numbers: ~-10% / -20% / -30%~
+				- Look: ~A bent spanner~
+				- Clashes: ~None~
+			{~Compound Interest~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your aura~
+				- Rank I: ~Each tide, a little of your unspent base aura is paid on top~
+				- Rank II: ~A bigger share of your unspent base aura is paid each tide~
+				- Rank III: ~A bigger share still of your unspent base aura is paid each tide~
+				- Numbers: ~3% / 5% / 8% of each colour, at most 40 of each~
+				- Look: ~A jar of coins with a sprout in it~
+				- Clashes: ~None~
 		(Argo)
 			! NEEDS ARGO'S DIRECTIONS !
+			{~Deep Current~}
+				- Kind: ~Boost~
+				- Vessel: ~Argo~
+				- Touches: ~Deep Water~
+				- Rank I: ~Deep Water reaches farther around each pool~
+				- Rank II: ~Deep Water reaches further still around each pool~
+				- Rank III: ~Deep Water reaches much farther around each pool~
+				- Numbers: ~reach +15% / +30% / +50%~
+				- Look: ~A bottle with a dark current curling inside~
+				- Clashes: ~None~
+			{~Heavy Salvo~}
+				- Kind: ~Boost~
+				- Vessel: ~Argo~
+				- Touches: ~Harpoon Gun~
+				- Rank I: ~Harpoon Guns deal more damage~
+				- Rank II: ~Harpoon Guns deal even more damage~
+				- Rank III: ~Harpoon Guns deal much more damage~
+				- Numbers: ~damage +10% / +20% / +35%~
+				- Look: ~A heavy iron harpoon head~
+				- Clashes: ~None~
 		(Yossele)
 			! NEEDS YOSSELE'S DIRECTIONS !
 			{Compost Bin}
@@ -36,7 +116,7 @@
 				- Rank I: Your {Primordial Dandelion Tree} becomes {Dandelion Sapling}. {Dandelion Sapling} have no limit. / {Dandelion Sapling}s are slightly weaker statwise and don't scale as well as {Primordial Dandelion Tree} \
 				- Rank II: {Dandelion Sapling}'s [Growth] scaling increases.
 				- Rank III: {Dandelion Sapling}'s damage and range increase based on number of {Dandelion Sapling}s at max [Growth] level.
-				- Numbers:
+				- Numbers: ~a Sapling has 70% of the Tree's damage, range and stages; rank II: each stage does 25% more; rank III: +5% damage and range per other Sapling at max Growth, at most +50%~ /~ What the Yossele build uses \
 				- Look: A dandelion
 				- Clashes: Other {Primordial Dandelion Tree} [Directions]
 			{Mother of Mushrooms}
@@ -46,7 +126,7 @@
 				- Rank I: {Primordial Dandelion Tree} is replaced by {Primordial Mushboom}. The {Primordial Mushboom} is a large mushroom tower that explodes in a large radius around it, dealing damage based on spore stacks on enemies, consuming the spore stacks. / [Growth] increases the {Primordial Mushboom}'s range \
 				- Rank II: {Primordial Mushboom}'s range is increased.
 				- Rank III: {Primordial Mushboom}'s explosion only consumes half of the spore stacks on an enemy, while dealing the full damage.
-				- Numbers:
+				- Numbers: ~in TDS_Mod/ModSource/Yossele/Code/02_Data.cs Mushboomkits~ /~ What the Yossele build uses; each number there is marked as a default \
 				- Look: A mushroom growth starter kit
 				- Clashes: Other {Primordial Dandelion Tree} [Directions]
 		(Spool)
@@ -58,7 +138,7 @@
 				- Rank I: {Unthread} increases amount of {Thread} gained from minions
 				- Rank II: {Unthread} further increases amount of {Thread} gained from minions
 				- Rank III: {Unthread} increases the amount of {Thread} gained from minions greatly, and heals units and towers in an area around the minion that had been {Unthreaded}
-				- Numbers:
+				- Numbers: ~Thread back 65% / 80% / 100%; rank III: heals 10 within 2.5 tiles~ /~ What the Spool build uses \
 				- Look: A recycling icon made of a string of yarn
 				- Clashes: None
 			{Sewing Machine}
@@ -68,10 +148,100 @@
 				- Rank I: {Loom} is replaced by {Sewing Machine}, generating aura quicker and healing nearby buildings and units, but cannot generate {Thread}.
 				- Rank II: {Sewing Machine}'s healing is increased.
 				- Rank III: {Sewing Machine}'s healing radius is greatly increased.
-				- Numbers:
+				- Numbers: ~mines +50%; heals 10 / 20 / 20 each tide within 3 / 3 / 5 tiles~ /~ What the Spool build uses \
 				- Look: A classic light blue sewing machine
 				- Clashes: Other {Loom} [Directions]
 		(Uloe)
 			! NEEDS ULOE'S DIRECTIONS !
+			{~Extension Cord~}
+				- Kind: ~Boost~
+				- Vessel: ~Uloe~
+				- Touches: ~The vessel itself~
+				- Rank I: ~{Plug In} reaches farther~
+				- Rank II: ~{Plug In} reaches farther still~
+				- Rank III: ~{Plug In} reaches much farther~
+				- Numbers: ~reach +2 / +4 / +6 tiles~
+				- Look: ~An orange extension cord on a reel~
+				- Clashes: ~None~
+			{~Brighter Bulb~}
+				- Kind: ~Boost~
+				- Vessel: ~Uloe~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Uloe gives off more {Light}~
+				- Rank II: ~Uloe gives off more {Light} still~
+				- Rank III: ~Uloe gives off much more {Light}~
+				- Numbers: ~Light +1 / +2 / +3, plugged in or not~
+				- Look: ~A frosted light bulb stamped 100~
+				- Clashes: ~None~
+			{~Spare Batteries~}
+				- Kind: ~Boost~
+				- Vessel: ~Uloe~
+				- Touches: ~{Power Bank}~
+				- Rank I: ~Each {Power Bank} keeps another {Photon}~
+				- Rank II: ~{Photon}s come back quicker~
+				- Rank III: ~Each {Power Bank} keeps yet another {Photon}~
+				- Numbers: ~+1 Photon; +1 Photon, respawn -25%; +2 Photons, respawn -25%~
+				- Look: ~Two batteries taped together~
+				- Clashes: ~None~
+			{~Flash Bulb~}
+				- Kind: ~Shift~
+				- Vessel: ~Uloe~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Uloe's sparks {Illuminate} foes~
+				- Rank II: ~Uloe's sparks also {Blind} foes~
+				- Rank III: ~Uloe's sparks {Illuminate} and {Blind} harder~
+				- Numbers: ~rank I: Illuminate 1; rank II: Illuminate 1, Blind 1; rank III: Illuminate 2, Blind 2~
+				- Look: ~An old camera's flash cube~
+				- Clashes: ~None~
 		(Base Game Vessels)
 			/ Base game vessels get their own Directions as well as the Any ones. Put the vessel's name in Vessel \
+			{~Full Gallop~}
+				- Kind: ~Boost~
+				- Vessel: ~Buster~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Buster runs faster~
+				- Rank II: ~Buster runs faster still~
+				- Rank III: ~Buster runs much faster~
+				- Numbers: ~speed +10% / +20% / +30%~
+				- Look: ~A horseshoe with a wing on it~
+				- Clashes: ~None~
+			{~House Regulars~}
+				- Kind: ~Boost~
+				- Vessel: ~Fie~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Fie works faster~
+				- Rank II: ~Fie works faster still~
+				- Rank III: ~Fie works much faster~
+				- Numbers: ~attack speed +10% / +20% / +30%~
+				- Look: ~A tally of a regular's tab~
+				- Clashes: ~None~
+			{~Long Line~}
+				- Kind: ~Boost~
+				- Vessel: ~Boutman~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Boutman reaches farther with his rod~
+				- Rank II: ~Boutman reaches farther still~
+				- Rank III: ~Boutman reaches much farther~
+				- Numbers: ~fishing range +1 / +2 / +3~
+				- Look: ~A long spool of fishing line~
+				- Clashes: ~None~
+			{~Packed Snow~}
+				- Kind: ~Boost~
+				- Vessel: ~Sno Sno~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Sno Sno slides faster~
+				- Rank II: ~Sno Sno slides faster still~
+				- Rank III: ~Sno Sno slides much faster~
+				- Numbers: ~speed +8% / +16% / +25%~
+				- Look: ~A hard packed snowball~
+				- Clashes: ~None~
+			{~Skipping Stones~}
+				- Kind: ~Boost~
+				- Vessel: ~Smacky~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Smacky hits harder~
+				- Rank II: ~Smacky hits harder still~
+				- Rank III: ~Smacky hits much harder~
+				- Numbers: ~damage +15% / +30% / +50%~
+				- Look: ~A flat stone with a skip trail~
+				- Clashes: ~None~
