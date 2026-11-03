@@ -14,7 +14,7 @@
 			- Accent colour: ~leaf green~
 			- Sprites: ! NEEDS YOUR FULL SPRITE SHEET: idle, move, back view, fall, land, attack. The first release waits for it ! /~ What the build takes: idle and move in one sheet of 32 px cells (rows idle front right, front left, back right, back left, then move the same, 6 frames each), attack 32 px cells (4 frames, the same four rows); fall and land are 32 px too. A file of the same name and size in TDS_Mod/ModSource/Yossele/Art/ replaces the temporary one with no code change. The temporary sheets: docs/TEMP_ART.md \
 			- Lore: / Lore comes once every character is fully realized \
-			- Status: Built as 0.2.0-dev from this sheet with temporary art, compiled but not yet run in game. The build installed for your play test is still the older 0.1.0-dev (melee, no {Cordyfriend}). /~ What was built and what each default is: TDS_Mod/ModSource/Yossele/DESIGN.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
+			- Status: Built as 0.2.0-dev from this sheet with temporary art; passed its PC self-test 160 of 160 and is the build installed for your play test. /~ What was built and what each default is: TDS_Mod/ModSource/Yossele/DESIGN.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
 
 		[Vessel Stats]
 			- Attack: ranged, shoots a green laser from their mouth.
@@ -279,7 +279,7 @@
 					- Cost: Blue 2300 + Yellow 1000
 				% 4:{Softening Roots} Reduces the health of nearby nodes by 1 point. / See if game's code can handle this? \
 					- In-game line: ~Softens the ore around it~
-					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; built, not run in game yet) \
+					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; proven in PC round 9) \
 					- Cost: ~Yellow 2300 + Red 1000~
 
 		(Minion):{Cordyfriend}
