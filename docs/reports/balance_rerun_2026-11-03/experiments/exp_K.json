@@ -1,0 +1,300 @@
+[
+{
+"name": "K-round-spool-round-tinfirst-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round",
+"tin_first": true
+}
+},
+{
+"name": "K-round-spool-round-tinfirst-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round",
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-round-spool-round-wallfirst-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round"
+}
+},
+{
+"name": "K-round-spool-round-wallfirst-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-round-spool-round-tinfirst-woozy",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round",
+"tin_first": true
+}
+},
+{
+"name": "K-round-spool-round-tinfirst-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round",
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-round-spool-round-wallfirst-woozy",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round"
+}
+},
+{
+"name": "K-round-spool-round-wallfirst-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-round-yossele-bot-woozy",
+"v": "yossele",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "round"
+}
+},
+{
+"name": "K-round-yossele-bot-purlest-coins-T8",
+"v": "yossele",
+"m": "purlest",
+"p": "bot",
+"coins": true,
+"n": 8,
+"tune": {
+"model": "round"
+}
+},
+{
+"name": "K-round-yossele-bot-thehunt-coins-noore-T10",
+"v": "yossele",
+"m": "thehunt",
+"p": "bot",
+"coins": true,
+"n": 10,
+"tune": {
+"model": "round",
+"ore_scale": 0
+}
+},
+{
+"name": "K-round-spool-bot-purlest-coins-T6",
+"v": "spool",
+"m": "purlest",
+"p": "bot",
+"coins": true,
+"n": 6,
+"tune": {
+"model": "round"
+}
+},
+{
+"name": "K-study-spool-round-tinfirst-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study",
+"tin_first": true
+}
+},
+{
+"name": "K-study-spool-round-tinfirst-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study",
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-study-spool-round-wallfirst-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study"
+}
+},
+{
+"name": "K-study-spool-round-wallfirst-purlest-P13",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-study-spool-round-tinfirst-woozy",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study",
+"tin_first": true
+}
+},
+{
+"name": "K-study-spool-round-tinfirst-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study",
+"tin_first": true,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-study-spool-round-wallfirst-woozy",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study"
+}
+},
+{
+"name": "K-study-spool-round-wallfirst-woozy-P13",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study",
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1
+}
+},
+{
+"name": "K-study-yossele-bot-woozy",
+"v": "yossele",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"model": "study"
+}
+},
+{
+"name": "K-study-yossele-bot-purlest-coins-T8",
+"v": "yossele",
+"m": "purlest",
+"p": "bot",
+"coins": true,
+"n": 8,
+"tune": {
+"model": "study"
+}
+},
+{
+"name": "K-study-yossele-bot-thehunt-coins-noore-T10",
+"v": "yossele",
+"m": "thehunt",
+"p": "bot",
+"coins": true,
+"n": 10,
+"tune": {
+"model": "study",
+"ore_scale": 0
+}
+},
+{
+"name": "K-study-spool-bot-purlest-coins-T6",
+"v": "spool",
+"m": "purlest",
+"p": "bot",
+"coins": true,
+"n": 6,
+"tune": {
+"model": "study"
+}
+}
+]

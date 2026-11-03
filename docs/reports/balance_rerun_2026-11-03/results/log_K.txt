@@ -1,0 +1,24 @@
+{"name": "K-round-spool-round-tinfirst-purlest", "win": 0.0, "mean_t": 4.02, "s4": 0.017, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 59, "5": 1}}
+{"name": "K-round-spool-round-tinfirst-purlest-P13", "win": 0.0, "mean_t": 4.52, "s4": 0.517, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 29, "5": 31}}
+{"name": "K-round-spool-round-wallfirst-purlest", "win": 0.0, "mean_t": 4.02, "s4": 0.017, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 59, "5": 1}}
+{"name": "K-round-spool-round-wallfirst-purlest-P13", "win": 0.0, "mean_t": 4.52, "s4": 0.517, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 29, "5": 31}}
+{"name": "K-round-spool-round-tinfirst-woozy", "win": 0.0, "mean_t": 2.57, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 26, "3": 34}}
+{"name": "K-round-spool-round-tinfirst-woozy-P13", "win": 0.0, "mean_t": 3.02, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 7, "3": 45, "4": 8}}
+{"name": "K-round-spool-round-wallfirst-woozy", "win": 0.0, "mean_t": 2.57, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 26, "3": 34}}
+{"name": "K-round-spool-round-wallfirst-woozy-P13", "win": 0.0, "mean_t": 3.02, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 7, "3": 45, "4": 8}}
+{"name": "K-round-yossele-bot-woozy", "win": 0.0, "mean_t": 10.17, "s4": 1.0, "s8": 1.0, "s10": 0.083, "med_lost": 10.0, "lost_hist": {"10": 55, "12": 5}}
+{"name": "K-round-yossele-bot-purlest-coins-T8", "win": 1.0, "mean_t": 9, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "K-round-yossele-bot-thehunt-coins-noore-T10", "win": 0.0, "mean_t": 5.98, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 3, "6": 55, "7": 2}}
+{"name": "K-round-spool-bot-purlest-coins-T6", "win": 0.0, "mean_t": 3.98, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 1, "4": 59}}
+{"name": "K-study-spool-round-tinfirst-purlest", "win": 0.0, "mean_t": 4.02, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 1, "4": 57, "5": 2}}
+{"name": "K-study-spool-round-tinfirst-purlest-P13", "win": 0.0, "mean_t": 4.33, "s4": 0.333, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 40, "5": 20}}
+{"name": "K-study-spool-round-wallfirst-purlest", "win": 0.0, "mean_t": 4.02, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 1, "4": 57, "5": 2}}
+{"name": "K-study-spool-round-wallfirst-purlest-P13", "win": 0.0, "mean_t": 4.33, "s4": 0.333, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 40, "5": 20}}
+{"name": "K-study-spool-round-tinfirst-woozy", "win": 0.0, "mean_t": 3.13, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 1, "3": 50, "4": 9}}
+{"name": "K-study-spool-round-tinfirst-woozy-P13", "win": 0.0, "mean_t": 3.88, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 7, "4": 53}}
+{"name": "K-study-spool-round-wallfirst-woozy", "win": 0.0, "mean_t": 3.13, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 1, "3": 50, "4": 9}}
+{"name": "K-study-spool-round-wallfirst-woozy-P13", "win": 0.0, "mean_t": 3.88, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 7, "4": 53}}
+{"name": "K-study-yossele-bot-woozy", "win": 0.0, "mean_t": 11.47, "s4": 1.0, "s8": 1.0, "s10": 0.733, "med_lost": 12.0, "lost_hist": {"10": 16, "12": 44}}
+{"name": "K-study-yossele-bot-purlest-coins-T8", "win": 1.0, "mean_t": 9, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "K-study-yossele-bot-thehunt-coins-noore-T10", "win": 0.0, "mean_t": 5.98, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 3, "6": 55, "7": 2}}
+{"name": "K-study-spool-bot-purlest-coins-T6", "win": 0.0, "mean_t": 3.98, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 1, "4": 59}}

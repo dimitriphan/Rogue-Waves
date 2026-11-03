@@ -1,0 +1,51 @@
+{"name": "L-shut-smacky-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "L-shut-smacky-woozy-RBY", "win": 0.0, "mean_t": 8.12, "s4": 1.0, "s8": 0.55, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"6": 27, "9": 5, "10": 28}}
+{"name": "L-shut-smacky-woozy-BRY", "win": 0.0, "mean_t": 12.05, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 57, "13": 3}}
+{"name": "L-shut-smacky-woozy-YBR", "win": 0.0, "mean_t": 5.88, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 7, "6": 53}}
+{"name": "L-shut-smacky-thehunt", "win": 0.0, "mean_t": 10.8, "s4": 1.0, "s8": 1.0, "s10": 0.4, "med_lost": 10.0, "lost_hist": {"10": 36, "12": 24}}
+{"name": "L-shut-yossele-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "L-shut-yossele-woozy-RBY", "win": 0.0, "mean_t": 11.83, "s4": 1.0, "s8": 1.0, "s10": 0.917, "med_lost": 12.0, "lost_hist": {"10": 5, "12": 55}}
+{"name": "L-shut-yossele-woozy-RYB", "win": 0.0, "mean_t": 11.83, "s4": 1.0, "s8": 1.0, "s10": 0.917, "med_lost": 12.0, "lost_hist": {"10": 5, "12": 55}}
+{"name": "L-shut-yossele-woozy-BRY", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "L-shut-yossele-woozy-BYR", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "L-shut-yossele-woozy-YRB", "win": 0.0, "mean_t": 6.22, "s4": 1.0, "s8": 0.033, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"6": 52, "7": 5, "8": 1, "9": 2}}
+{"name": "L-shut-yossele-woozy-YBR", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "L-shut-yossele-thehunt", "win": 0.0, "mean_t": 11.87, "s4": 1.0, "s8": 1.0, "s10": 0.933, "med_lost": 12.0, "lost_hist": {"10": 4, "12": 56}}
+{"name": "L-shut-spool-purlest", "win": 0.0, "mean_t": 13.93, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"12": 1, "13": 2, "14": 57}}
+{"name": "L-shut-spool-woozy-RBY", "win": 0.0, "mean_t": 2.43, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 34, "3": 26}}
+{"name": "L-shut-spool-woozy-RYB", "win": 0.0, "mean_t": 2.43, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 34, "3": 26}}
+{"name": "L-shut-spool-woozy-BRY", "win": 0.0, "mean_t": 7.32, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 8.0, "lost_hist": {"5": 3, "6": 14, "7": 4, "8": 39}}
+{"name": "L-shut-spool-woozy-BYR", "win": 0.0, "mean_t": 7.32, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 8.0, "lost_hist": {"5": 3, "6": 14, "7": 4, "8": 39}}
+{"name": "L-shut-spool-woozy-YRB", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "L-shut-spool-woozy-YBR", "win": 0.0, "mean_t": 9.07, "s4": 1.0, "s8": 0.8, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"8": 12, "9": 32, "10": 16}}
+{"name": "L-shut-spool-thehunt", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "L-open-smacky-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "L-open-smacky-woozy-RBY", "win": 0.0, "mean_t": 6.27, "s4": 1.0, "s8": 0.067, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"6": 56, "10": 4}}
+{"name": "L-open-smacky-woozy-BRY", "win": 0.0, "mean_t": 5.8, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 12, "6": 48}}
+{"name": "L-open-smacky-woozy-YBR", "win": 0.0, "mean_t": 5.8, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 12, "6": 48}}
+{"name": "L-open-smacky-thehunt", "win": 0.0, "mean_t": 10.07, "s4": 1.0, "s8": 1.0, "s10": 0.05, "med_lost": 10.0, "lost_hist": {"9": 2, "10": 55, "12": 3}}
+{"name": "L-open-yossele-purlest", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "L-open-yossele-woozy-RBY", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "L-open-yossele-woozy-RYB", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "L-open-yossele-woozy-BRY", "win": 0.0, "mean_t": 6.23, "s4": 1.0, "s8": 0.05, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"6": 55, "7": 2, "10": 3}}
+{"name": "L-open-yossele-woozy-BYR", "win": 0.0, "mean_t": 6.23, "s4": 1.0, "s8": 0.05, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"6": 55, "7": 2, "10": 3}}
+{"name": "L-open-yossele-woozy-YRB", "win": 0.0, "mean_t": 6.2, "s4": 1.0, "s8": 0.05, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"6": 55, "7": 2, "9": 2, "10": 1}}
+{"name": "L-open-yossele-woozy-YBR", "win": 0.0, "mean_t": 6.27, "s4": 1.0, "s8": 0.05, "s10": 0.017, "med_lost": 6.0, "lost_hist": {"6": 55, "7": 2, "10": 2, "12": 1}}
+{"name": "L-open-yossele-thehunt", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "L-open-spool-purlest", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "L-open-spool-woozy-RBY", "win": 0.0, "mean_t": 2.43, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 34, "3": 26}}
+{"name": "L-open-spool-woozy-RYB", "win": 0.0, "mean_t": 2.43, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 34, "3": 26}}
+{"name": "L-open-spool-woozy-BRY", "win": 0.0, "mean_t": 2, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 60}}
+{"name": "L-open-spool-woozy-BYR", "win": 0.0, "mean_t": 2, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 60}}
+{"name": "L-open-spool-woozy-YRB", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "L-open-spool-woozy-YBR", "win": 0.0, "mean_t": 3.37, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"3": 38, "4": 22}}
+{"name": "L-open-spool-thehunt", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "L-bot-yossele-purlest", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "L-bot-yossele-woozy", "win": 0.0, "mean_t": 10.47, "s4": 1.0, "s8": 1.0, "s10": 0.25, "med_lost": 10.0, "lost_hist": {"10": 45, "11": 2, "12": 13}}
+{"name": "L-bot-yossele-thehunt", "win": 0.0, "mean_t": 6.7, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 7.0, "lost_hist": {"6": 28, "7": 22, "8": 10}}
+{"name": "L-bot-spool-purlest", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "L-bot-spool-woozy", "win": 0.0, "mean_t": 2.13, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 52, "3": 8}}
+{"name": "L-bot-spool-thehunt", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "L-round-spool-purlest", "win": 0.0, "mean_t": 4.05, "s4": 0.05, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 57, "5": 3}}
+{"name": "L-round-spool-woozy", "win": 0.0, "mean_t": 2.57, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 26, "3": 34}}
+{"name": "L-round-spool-thehunt", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}

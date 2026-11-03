@@ -1,0 +1,14 @@
+{"name": "O-shut-smacky-purlest-opalcolour", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "O-shut-yossele-purlest-opalcolour", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "O-shut-spool-purlest-opalcolour", "win": 0.0, "mean_t": 11.07, "s4": 1.0, "s8": 1.0, "s10": 0.9, "med_lost": 11.0, "lost_hist": {"10": 6, "11": 44, "12": 10}}
+{"name": "O-shut-spool-purlest-opalcolour-P13", "win": 0.0, "mean_t": 12.82, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"11": 1, "12": 10, "13": 48, "14": 1}}
+{"name": "O-shut-spool-purlest-opalcolour-P13back", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "O-shut-yossele-purlest-opalcolour-P5", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "O-open-smacky-purlest-opalcolour", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "O-open-yossele-purlest-opalcolour", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "O-open-spool-purlest-opalcolour", "win": 0.0, "mean_t": 4.97, "s4": 0.967, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 2, "5": 58}}
+{"name": "O-open-spool-purlest-opalcolour-P13", "win": 0.0, "mean_t": 5.22, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 47, "6": 13}}
+{"name": "O-open-spool-purlest-opalcolour-P13back", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "O-open-yossele-purlest-opalcolour-P5", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "O-round-spool-purlest-opalcolour", "win": 0.0, "mean_t": 4.03, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 58, "5": 2}}
+{"name": "O-round-spool-purlest-opalcolour-P13", "win": 0.0, "mean_t": 4.68, "s4": 0.683, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 19, "5": 41}}

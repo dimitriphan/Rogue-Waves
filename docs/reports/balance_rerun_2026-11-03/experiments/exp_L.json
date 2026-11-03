@@ -1,0 +1,758 @@
+[
+{
+"name": "L-shut-smacky-purlest",
+"v": "smacky",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "L-shut-smacky-woozy-RBY",
+"v": "smacky",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-smacky-woozy-BRY",
+"v": "smacky",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Blue",
+"Red",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-smacky-woozy-YBR",
+"v": "smacky",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-smacky-thehunt",
+"v": "smacky",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-purlest",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-woozy-RBY",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-woozy-RYB",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Red",
+"Yellow",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-woozy-BRY",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Blue",
+"Red",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-woozy-BYR",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Blue",
+"Yellow",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-woozy-YRB",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-woozy-YBR",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-yossele-thehunt",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-woozy-RBY",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-woozy-RYB",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Red",
+"Yellow",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-woozy-BRY",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Blue",
+"Red",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-woozy-BYR",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Blue",
+"Yellow",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-woozy-YRB",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-woozy-YBR",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-shut-spool-thehunt",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "L-open-smacky-purlest",
+"v": "smacky",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "L-open-smacky-woozy-RBY",
+"v": "smacky",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-smacky-woozy-BRY",
+"v": "smacky",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Blue",
+"Red",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-smacky-woozy-YBR",
+"v": "smacky",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-smacky-thehunt",
+"v": "smacky",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-purlest",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-woozy-RBY",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-woozy-RYB",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Red",
+"Yellow",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-woozy-BRY",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Blue",
+"Red",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-woozy-BYR",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Blue",
+"Yellow",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-woozy-YRB",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-woozy-YBR",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-yossele-thehunt",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "L-open-spool-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "L-open-spool-woozy-RBY",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-spool-woozy-RYB",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Red",
+"Yellow",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-spool-woozy-BRY",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Blue",
+"Red",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-spool-woozy-BYR",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Blue",
+"Yellow",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-spool-woozy-YRB",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-spool-woozy-YBR",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "L-open-spool-thehunt",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "L-bot-yossele-purlest",
+"v": "yossele",
+"m": "purlest",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"break": 60
+}
+},
+{
+"name": "L-bot-yossele-woozy",
+"v": "yossele",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"break": 60
+}
+},
+{
+"name": "L-bot-yossele-thehunt",
+"v": "yossele",
+"m": "thehunt",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"break": 60
+}
+},
+{
+"name": "L-bot-spool-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"break": 60
+}
+},
+{
+"name": "L-bot-spool-woozy",
+"v": "spool",
+"m": "woozy",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"break": 60
+}
+},
+{
+"name": "L-bot-spool-thehunt",
+"v": "spool",
+"m": "thehunt",
+"p": "bot",
+"coins": false,
+"n": 15,
+"tune": {
+"break": 60
+}
+},
+{
+"name": "L-round-spool-purlest",
+"v": "spool",
+"m": "purlest",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"break": 60
+}
+},
+{
+"name": "L-round-spool-woozy",
+"v": "spool",
+"m": "woozy",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"break": 60
+}
+},
+{
+"name": "L-round-spool-thehunt",
+"v": "spool",
+"m": "thehunt",
+"p": "round",
+"coins": false,
+"n": 15,
+"tune": {
+"tin_first": true,
+"break": 60
+}
+}
+]

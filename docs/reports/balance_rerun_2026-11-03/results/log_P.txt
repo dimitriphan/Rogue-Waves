@@ -1,0 +1,16 @@
+{"name": "P-shut-smacky-thehunt-beasts30", "win": 0.833, "mean_t": 15.47, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 2, "13": 8}}
+{"name": "P-shut-yossele-thehunt-beasts30", "win": 0.033, "mean_t": 14.07, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 58}}
+{"name": "P-shut-spool-thehunt-beasts30", "win": 0.0, "mean_t": 10, "s4": 1.0, "s8": 1.0, "s10": 0.0, "med_lost": 10.0, "lost_hist": {"10": 60}}
+{"name": "P-shut-spool-thehunt-beasts30-P13", "win": 0.0, "mean_t": 10, "s4": 1.0, "s8": 1.0, "s10": 0.0, "med_lost": 10.0, "lost_hist": {"10": 60}}
+{"name": "P-open-smacky-thehunt-beasts30", "win": 0.0, "mean_t": 11.93, "s4": 1.0, "s8": 1.0, "s10": 0.967, "med_lost": 12.0, "lost_hist": {"10": 2, "12": 58}}
+{"name": "P-open-yossele-thehunt-beasts30", "win": 0.0, "mean_t": 12.87, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 8, "13": 52}}
+{"name": "P-open-spool-thehunt-beasts30", "win": 0.0, "mean_t": 4.7, "s4": 0.7, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 18, "5": 42}}
+{"name": "P-open-spool-thehunt-beasts30-P13", "win": 0.0, "mean_t": 4.97, "s4": 0.967, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 2, "5": 58}}
+{"name": "P-shut-smacky-thehunt-beasts105", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "P-shut-yossele-thehunt-beasts105", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "P-shut-spool-thehunt-beasts105", "win": 0.0, "mean_t": 10.02, "s4": 1.0, "s8": 1.0, "s10": 0.017, "med_lost": 10.0, "lost_hist": {"10": 59, "11": 1}}
+{"name": "P-shut-spool-thehunt-beasts105-P13", "win": 0.0, "mean_t": 10.05, "s4": 1.0, "s8": 1.0, "s10": 0.067, "med_lost": 10.0, "lost_hist": {"9": 1, "10": 55, "11": 4}}
+{"name": "P-open-smacky-thehunt-beasts105", "win": 0.017, "mean_t": 13, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13, "lost_hist": {"12": 3, "13": 56}}
+{"name": "P-open-yossele-thehunt-beasts105", "win": 0.367, "mean_t": 14.72, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"13": 1, "14": 37}}
+{"name": "P-open-spool-thehunt-beasts105", "win": 0.0, "mean_t": 4.77, "s4": 0.767, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 14, "5": 46}}
+{"name": "P-open-spool-thehunt-beasts105-P13", "win": 0.0, "mean_t": 4.93, "s4": 0.933, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 4, "5": 56}}

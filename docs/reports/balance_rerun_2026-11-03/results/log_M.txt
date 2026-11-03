@@ -1,0 +1,60 @@
+{"name": "M-shut-spool-purlest-P13", "win": 0.633, "mean_t": 15.27, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 22}}
+{"name": "M-open-spool-purlest-P13", "win": 0.0, "mean_t": 5.45, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 33, "6": 27}}
+{"name": "M-round-spool-purlest-P13", "win": 0.0, "mean_t": 4.63, "s4": 0.633, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 22, "5": 38}}
+{"name": "M-bot-spool-purlest-P13", "win": 0.0, "mean_t": 4.03, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 58, "5": 2}}
+{"name": "M-shut-spool-purlest-P13back", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "M-open-spool-purlest-P13back", "win": 0.0, "mean_t": 4.98, "s4": 0.983, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 1, "5": 59}}
+{"name": "M-round-spool-purlest-P13back", "win": 0.0, "mean_t": 4.55, "s4": 0.55, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 27, "5": 33}}
+{"name": "M-bot-spool-purlest-P13back", "win": 0.0, "mean_t": 4.03, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 58, "5": 2}}
+{"name": "M-shut-spool-purlest-P23", "win": 0.717, "mean_t": 15.43, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 17}}
+{"name": "M-open-spool-purlest-P23", "win": 0.0, "mean_t": 5.52, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 29, "6": 31}}
+{"name": "M-round-spool-purlest-P23", "win": 0.0, "mean_t": 4.85, "s4": 0.85, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 9, "5": 51}}
+{"name": "M-bot-spool-purlest-P23", "win": 0.0, "mean_t": 4.03, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 58, "5": 2}}
+{"name": "M-open-spool-purlest-block", "win": 0.0, "mean_t": 10.27, "s4": 1.0, "s8": 1.0, "s10": 0.267, "med_lost": 10.0, "lost_hist": {"10": 44, "11": 16}}
+{"name": "M-round-spool-purlest-block", "win": 0.0, "mean_t": 8.55, "s4": 1.0, "s8": 0.767, "s10": 0.117, "med_lost": 9.0, "lost_hist": {"5": 8, "6": 6, "9": 30, "10": 9, "11": 7}}
+{"name": "M-open-spool-purlest-chase04", "win": 0.0, "mean_t": 9.37, "s4": 1.0, "s8": 0.983, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"8": 1, "9": 36, "10": 23}}
+{"name": "M-round-spool-purlest-chase04", "win": 0.0, "mean_t": 5.45, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 33, "6": 27}}
+{"name": "M-open-spool-purlest-block+P13", "win": 0.0, "mean_t": 10.38, "s4": 1.0, "s8": 1.0, "s10": 0.383, "med_lost": 10.0, "lost_hist": {"10": 37, "11": 23}}
+{"name": "M-round-spool-purlest-block+P13", "win": 0.0, "mean_t": 11, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 11.0, "lost_hist": {"11": 60}}
+{"name": "M-open-spool-purlest-chase04+P13", "win": 0.0, "mean_t": 10.75, "s4": 1.0, "s8": 1.0, "s10": 0.75, "med_lost": 11.0, "lost_hist": {"10": 15, "11": 45}}
+{"name": "M-round-spool-purlest-chase04+P13", "win": 0.0, "mean_t": 7.6, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 8.0, "lost_hist": {"5": 1, "6": 7, "7": 7, "8": 45}}
+{"name": "M-shut-spool-woozy-P13", "win": 0.0, "mean_t": 10.95, "s4": 1.0, "s8": 1.0, "s10": 0.95, "med_lost": 11.0, "lost_hist": {"10": 3, "11": 57}}
+{"name": "M-open-spool-woozy-P13", "win": 0.0, "mean_t": 4.92, "s4": 0.917, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 5, "5": 55}}
+{"name": "M-round-spool-woozy-P13", "win": 0.0, "mean_t": 3.02, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 7, "3": 45, "4": 8}}
+{"name": "M-bot-spool-woozy-P13", "win": 0.0, "mean_t": 2.35, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 39, "3": 21}}
+{"name": "M-shut-spool-woozy-P13back", "win": 0.0, "mean_t": 10.95, "s4": 1.0, "s8": 1.0, "s10": 0.95, "med_lost": 11.0, "lost_hist": {"10": 3, "11": 57}}
+{"name": "M-open-spool-woozy-P13back", "win": 0.0, "mean_t": 4.92, "s4": 0.917, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 5, "5": 55}}
+{"name": "M-round-spool-woozy-P13back", "win": 0.0, "mean_t": 3.02, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 7, "3": 45, "4": 8}}
+{"name": "M-bot-spool-woozy-P13back", "win": 0.0, "mean_t": 2.35, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 39, "3": 21}}
+{"name": "M-shut-spool-woozy-P23", "win": 0.0, "mean_t": 10.95, "s4": 1.0, "s8": 1.0, "s10": 0.95, "med_lost": 11.0, "lost_hist": {"10": 3, "11": 57}}
+{"name": "M-open-spool-woozy-P23", "win": 0.0, "mean_t": 4.92, "s4": 0.917, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 5, "5": 55}}
+{"name": "M-round-spool-woozy-P23", "win": 0.0, "mean_t": 3.02, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 7, "3": 45, "4": 8}}
+{"name": "M-bot-spool-woozy-P23", "win": 0.0, "mean_t": 2.35, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 2.0, "lost_hist": {"2": 39, "3": 21}}
+{"name": "M-open-spool-woozy-block", "win": 0.0, "mean_t": 10.13, "s4": 1.0, "s8": 1.0, "s10": 0.167, "med_lost": 10.0, "lost_hist": {"9": 2, "10": 48, "11": 10}}
+{"name": "M-round-spool-woozy-block", "win": 0.0, "mean_t": 2.63, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 26, "3": 30, "4": 4}}
+{"name": "M-open-spool-woozy-chase04", "win": 0.0, "mean_t": 6.05, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 4, "6": 49, "7": 7}}
+{"name": "M-round-spool-woozy-chase04", "win": 0.0, "mean_t": 2.82, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 13, "3": 45, "4": 2}}
+{"name": "M-open-spool-woozy-block+P13", "win": 0.0, "mean_t": 10.92, "s4": 1.0, "s8": 1.0, "s10": 0.917, "med_lost": 11.0, "lost_hist": {"10": 5, "11": 55}}
+{"name": "M-round-spool-woozy-block+P13", "win": 0.0, "mean_t": 3.37, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 3.0, "lost_hist": {"2": 7, "3": 26, "4": 25, "5": 2}}
+{"name": "M-open-spool-woozy-chase04+P13", "win": 0.0, "mean_t": 10.08, "s4": 1.0, "s8": 1.0, "s10": 0.083, "med_lost": 10.0, "lost_hist": {"10": 55, "11": 5}}
+{"name": "M-round-spool-woozy-chase04+P13", "win": 0.0, "mean_t": 3.58, "s4": 0.033, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"3": 27, "4": 31, "5": 2}}
+{"name": "M-shut-spool-thehunt-P13", "win": 0.0, "mean_t": 4.87, "s4": 0.867, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 8, "5": 52}}
+{"name": "M-open-spool-thehunt-P13", "win": 0.0, "mean_t": 4.87, "s4": 0.867, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 8, "5": 52}}
+{"name": "M-round-spool-thehunt-P13", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-bot-spool-thehunt-P13", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-shut-spool-thehunt-P13back", "win": 0.0, "mean_t": 4.87, "s4": 0.867, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 8, "5": 52}}
+{"name": "M-open-spool-thehunt-P13back", "win": 0.0, "mean_t": 4.87, "s4": 0.867, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 8, "5": 52}}
+{"name": "M-round-spool-thehunt-P13back", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-bot-spool-thehunt-P13back", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-shut-spool-thehunt-P23", "win": 0.0, "mean_t": 4.87, "s4": 0.867, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 8, "5": 52}}
+{"name": "M-open-spool-thehunt-P23", "win": 0.0, "mean_t": 4.87, "s4": 0.867, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 8, "5": 52}}
+{"name": "M-round-spool-thehunt-P23", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-bot-spool-thehunt-P23", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-open-spool-thehunt-block", "win": 0.0, "mean_t": 9.52, "s4": 1.0, "s8": 0.833, "s10": 0.0, "med_lost": 10.0, "lost_hist": {"8": 10, "9": 9, "10": 41}}
+{"name": "M-round-spool-thehunt-block", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-open-spool-thehunt-chase04", "win": 0.0, "mean_t": 5.92, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 6.0, "lost_hist": {"5": 6, "6": 53, "7": 1}}
+{"name": "M-round-spool-thehunt-chase04", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-open-spool-thehunt-block+P13", "win": 0.0, "mean_t": 10, "s4": 1.0, "s8": 1.0, "s10": 0.0, "med_lost": 10.0, "lost_hist": {"10": 60}}
+{"name": "M-round-spool-thehunt-block+P13", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}
+{"name": "M-open-spool-thehunt-chase04+P13", "win": 0.0, "mean_t": 7.52, "s4": 1.0, "s8": 0.05, "s10": 0.0, "med_lost": 8.0, "lost_hist": {"6": 12, "7": 8, "8": 37, "9": 3}}
+{"name": "M-round-spool-thehunt-chase04+P13", "win": 0.0, "mean_t": 1, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 60}}

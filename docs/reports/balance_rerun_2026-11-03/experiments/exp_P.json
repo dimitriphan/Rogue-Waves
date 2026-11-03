@@ -1,0 +1,222 @@
+[
+{
+"name": "P-shut-smacky-thehunt-beasts30",
+"v": "smacky",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 30,
+"break": 60
+}
+},
+{
+"name": "P-shut-yossele-thehunt-beasts30",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 30,
+"break": 60
+}
+},
+{
+"name": "P-shut-spool-thehunt-beasts30",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 30,
+"break": 60
+}
+},
+{
+"name": "P-shut-spool-thehunt-beasts30-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 30,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "P-open-smacky-thehunt-beasts30",
+"v": "smacky",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 30,
+"break": 60
+}
+},
+{
+"name": "P-open-yossele-thehunt-beasts30",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 30,
+"break": 60
+}
+},
+{
+"name": "P-open-spool-thehunt-beasts30",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 30,
+"break": 60
+}
+},
+{
+"name": "P-open-spool-thehunt-beasts30-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 30,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "P-shut-smacky-thehunt-beasts105",
+"v": "smacky",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 105,
+"break": 60
+}
+},
+{
+"name": "P-shut-yossele-thehunt-beasts105",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 105,
+"break": 60
+}
+},
+{
+"name": "P-shut-spool-thehunt-beasts105",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 105,
+"break": 60
+}
+},
+{
+"name": "P-shut-spool-thehunt-beasts105-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"beasts": 105,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+},
+{
+"name": "P-open-smacky-thehunt-beasts105",
+"v": "smacky",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 105,
+"break": 60
+}
+},
+{
+"name": "P-open-yossele-thehunt-beasts105",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 105,
+"break": 60
+}
+},
+{
+"name": "P-open-spool-thehunt-beasts105",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 105,
+"break": 60
+}
+},
+{
+"name": "P-open-spool-thehunt-beasts105-P13",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"beasts": 105,
+"tin_units": 6,
+"stitched_dmg": 1,
+"dart_dmg": 1,
+"break": 60
+}
+}
+]
