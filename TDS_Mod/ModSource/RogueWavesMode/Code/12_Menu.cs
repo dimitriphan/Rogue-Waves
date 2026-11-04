@@ -161,7 +161,7 @@ public static class RWMenu
         back.Tomenu = "Main";
         cards.Add(back);
         string pick = null;
-        yield return RWDialog.Ask(cards, "ROGUE WAVES", saved != "" ? "A campaign is waiting" : "Set sail?", 0f, cards.Count > 2, n => pick = n);
+        yield return RWDialog.Ask(cards, "ROGUE WAVES", saved != "" ? "A campaign is waiting" : "Set sail?", 0f, n => pick = n);
         asking = false;
         Status = "picked " + (pick ?? "nothing");
         if (pick == "New" && saved != "")
@@ -175,7 +175,7 @@ public static class RWMenu
             // One dialog at a time: the second opens only after the first has closed (kit docs/20 §2).
             yield return new WaitForSecondsRealtime(0.3f);
             pick = null;
-            yield return RWDialog.Ask(sure, "NEW CAMPAIGN", "The saved campaign is lost", 0f, false, n => pick = n);
+            yield return RWDialog.Ask(sure, "NEW CAMPAIGN", "The saved campaign is lost", 0f, n => pick = n);
             asking = false;
             Status = "start over: " + (pick ?? "nothing");
             if (pick != "Sure") { ToMain(); yield break; }

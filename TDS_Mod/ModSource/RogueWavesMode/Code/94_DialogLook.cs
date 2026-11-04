@@ -1,0 +1,153 @@
+#if ROGUEWAVESMODE_DIALOGLOOK
+// Debug build only (-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMODE_DIALOGLOOK): the quick round for the game's
+// choice dialog, on the main menu. First how smoothly it opens, the mode's way against the stock way; then every card count a
+// shop can reach and more, at four screen sizes, with a hover line longer than the mode writes. The screen size is put back.
+public static partial class RWTest
+{
+    // Every frame's time while a thing happens; a list of the slow ones, which is what a player sees as a hitch.
+    static IEnumerator Frames(string what, float seconds, Action<float> worst)
+    {
+        List<string> slow = new List<string>();
+        float begin = Time.unscaledTime, end = begin + seconds, most = 0f;
+        int frames = 0, cleanups = GC.CollectionCount(0);
+        while (Time.unscaledTime < end)
+        {
+            yield return null;
+            float dt = Time.unscaledDeltaTime;
+            frames++;
+            most = Mathf.Max(most, dt);
+            int now = GC.CollectionCount(0);
+            if (dt > 0.010f) slow.Add("+" + RWUtil.F(Time.unscaledTime - begin) + "s " + RWUtil.F(dt * 1000f) + "ms" + (now != cleanups ? " with a memory cleanup" : ""));
+            cleanups = now;
+        }
+        Info("frames", what + ": " + frames + " frames, worst " + RWUtil.F(most * 1000f) + " ms" + (slow.Count > 0 ? "; slow: " + string.Join(", ", slow.ToArray()) : ""));
+        worst(most);
+    }
+
+    static List<Bla_Ui_Confirmation.Entry> Probes(int cards, string line)
+    {
+        List<Bla_Ui_Confirmation.Entry> list = new List<Bla_Ui_Confirmation.Entry>();
+        for (int i = 0; i < cards; i++)
+            list.Add(RWDialog.Card("c" + i, "Card " + i, line, RWAssets.Sprite("RogueWaves_Crest32"), RWDialog.Teal));
+        return list;
+    }
+
+    const string LongLine = "A long hover line, about as long as the longest Cardinal the shop sells, with its price and its kind in front of it, to see that it wraps and every word of it stays on the screen";
+
+    static IEnumerator Opening(string name, bool mine, Action<float> worst)
+    {
+        Coroutine timed = RogueWavesModeMod.Instance.StartCoroutine(Frames(name, 1.8f, worst));
+        List<Bla_Ui_Confirmation.Entry> cards = Probes(5, LongLine);
+        if (mine)
+        {
+            string pick = "-";
+            RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(cards, "VENDCINT", "Pure Aura: 60", 0f, n => pick = n));
+        }
+        else
+        {
+            Blockage.Menu.Bl_Menus.Changemenu(Bla_Ui_Confirmation.Instance.gameObject.name, true);
+            yield return Until(() => RWDialog.Up() && Bla_Ui_Confirmation.Instance.GetComponentInParent<Blockage.Menu.Blu2_Menu_Handler>() != null, 5f);
+            Bla_Ui_Confirmation.Instance.Runprompt(cards, "VENDCINT", "Pure Aura: 60", false);
+        }
+        yield return timed;
+        if (mine) RWDialog.Cancel();
+        else Blockage.Menu.Bl_Menus.Closemenu(Bla_Ui_Confirmation.Instance.gameObject, true);
+        yield return new WaitForSecondsRealtime(3f);
+    }
+
+    // The mode's dialog must open as the stock one does, with no frame long enough to see (Dimitri 2026-11-04). A dialog's first
+    // opening in a launch pays for its fonts once, stock or not, so it isn't the one compared.
+    static IEnumerator Smooth()
+    {
+        float first = 0f, mine = 0f, stock = 0f;
+        int mineLong = 0, stockLong = 0;
+        const int Rounds = 10;
+        yield return Opening("first opening", true, w => first = w);
+        for (int round = 1; round <= Rounds; round++)
+        {
+            yield return Opening("the mode's, round " + round, true, w => { mine = Mathf.Max(mine, w); if (w * 1000f > 25f) mineLong++; });
+            yield return Opening("stock, round " + round, false, w => { stock = Mathf.Max(stock, w); if (w * 1000f > 25f) stockLong++; });
+        }
+        Check("The mode's dialog opens with no frame long enough to see, as the stock one does", mineLong <= stockLong + 1,
+            mineLong + " of " + Rounds + " openings with a frame over 25 ms, worst " + RWUtil.F(mine * 1000f) + " ms; stock " + stockLong + ", worst " + RWUtil.F(stock * 1000f) + " ms; a launch's first opening " + RWUtil.F(first * 1000f) + " ms");
+
+        // A card's hover, by the pointer's own calls.
+        string pick = "-";
+        RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(Probes(5, LongLine), "VENDCINT", "Pure Aura: 60", 0f, n => pick = n));
+        yield return new WaitForSecondsRealtime(2.5f);
+        UnityEngine.EventSystems.PointerEventData data = new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current);
+        float hover = 0f;
+        int hoverLong = 0;
+        foreach (RectTransform c in RWDialog.Cards(Bla_Ui_Confirmation.Instance))
+        {
+            Blu3_Button b = c.GetComponent<Blu3_Button>();
+            b.OnPointerEnter(data);
+            yield return Frames("hovering " + c.name, 0.4f, w => { hover = Mathf.Max(hover, w); if (w * 1000f > 25f) hoverLong++; });
+            b.OnPointerExit(data);
+        }
+        Check("Hovering the mode's cards shows no long frame, at most one stray", hoverLong <= 1, hoverLong + " of 5 hovers with a frame over 25 ms, worst " + RWUtil.F(hover * 1000f) + " ms");
+        RWDialog.Cancel();
+        yield return new WaitForSecondsRealtime(3f);
+    }
+
+    static IEnumerator Try(string name, int cards, bool shot)
+    {
+        string pick = "-";
+        RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(Probes(cards, LongLine), cards == 2 ? "MIND THE METEOR" : "VENDCINT", "Pure Aura: 60", 0f, n => pick = n));
+        Bla_Ui_Confirmation d = Bla_Ui_Confirmation.Instance;
+        yield return Until(() => RWDialog.Up() && RWDialog.LastCards == cards && CardNames().Count == cards, 5f);
+        yield return DialogFits(name);
+        string shotName = "dlook_" + name.Replace(" ", "_");
+        if (shot) yield return Snap(shotName);
+        Blu3_Button first = d.List.GetComponentInChildren<Blu3_Button>();
+        if (shot && first != null && first.Buttonenter != null)
+        {
+            first.Buttonenter();
+            yield return new WaitForSecondsRealtime(0.2f);
+            yield return Snap(shotName + "_hover");
+        }
+        if (first != null && first.Buttonclick != null) first.Buttonclick();
+        yield return Until(() => pick != "-", 5f);
+        Check(name + ": the card still answers", pick != null && pick.StartsWith("c"), "picked " + pick);
+        yield return new WaitForSecondsRealtime(1f);
+    }
+
+    public static IEnumerator DialogLook()
+    {
+        yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
+        Mainmenu_Main title = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
+        if (title == null) { Setup("dialog look", "no main menu"); yield break; }
+        yield return new WaitForSecondsRealtime(8f);
+        title.Idlethreshold = 100000f;
+        title.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
+        yield return Until(() => RWMenu.Button != null, 25f);
+        yield return new WaitForSecondsRealtime(7f);
+        Blockage.Menu.Bl_Menus.Changemenu("Main", true);
+        yield return new WaitForSecondsRealtime(10f);
+        yield return Smooth();
+
+        Bla_Ui_Confirmation d = Bla_Ui_Confirmation.Instance;
+        int w0 = Screen.width, h0 = Screen.height;
+        FullScreenMode mode0 = Screen.fullScreenMode;
+        int[,] sizes = { { w0, h0 }, { 1920, 1080 }, { 1280, 720 }, { 1024, 768 } };
+        for (int s = 0; s < sizes.GetLength(0); s++)
+        {
+            int w = sizes[s, 0], h = sizes[s, 1];
+            if (s > 0)
+            {
+                Screen.SetResolution(w, h, mode0);
+                yield return Until(() => Screen.width == w && Screen.height == h, 6f);
+                yield return new WaitForSecondsRealtime(1.5f);
+            }
+            Canvas root = d.GetComponentInParent<Canvas>().rootCanvas;
+            Info("screen", Screen.width + "x" + Screen.height + " " + mode0 + ": canvas " + RWUtil.V(((RectTransform)root.transform).rect.size));
+            foreach (int n in new[] { 2, 3, 4, 5, 8, 12, 16, 30 })
+                yield return Try(w + "x" + h + " " + n + " cards", n, n == 2 || n == 3 || n == 5 || n == 16 || (s > 0 && n == 8));
+        }
+        Screen.SetResolution(w0, h0, mode0);
+        yield return Until(() => Screen.width == w0 && Screen.height == h0, 6f);
+        Check("the screen size is back", Screen.width == w0 && Screen.height == h0 && Screen.fullScreenMode == mode0, Screen.width + "x" + Screen.height + " " + Screen.fullScreenMode);
+        Blockage.Menu.Bl_Menus.Changemenu("Main", true);
+    }
+}
+#endif

@@ -182,6 +182,10 @@ public static partial class RWTest
         yield return Stepped(Look());
         yield break;
 #endif
+#if ROGUEWAVESMODE_DIALOGLOOK
+        yield return Stepped(DialogLook());
+        yield break;
+#endif
         yield return Stepped(Flow());     // the whole campaign as a player meets it; it ends back on the boat
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) yield return Embark();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("boat", "never reached the boat"); yield break; }
