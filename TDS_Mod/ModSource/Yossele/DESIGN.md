@@ -99,6 +99,9 @@ seeds float round the crown; the Stonehenge faces its placement direction; the S
 
 ## Upgrade trees
 
+Added to the sheet, not built yet (Dimitri accepted it 2026-11-04, `docs/reports/UPGRADE_GAPS_2026-11-04.md` Y1): the
+Sapling's third level-3 upgrade, **Wood Wide Web** (Yellow 250; scope `07` holds its numbers).
+
 The sheet gives four levels (`1:` to `4:`). They map to the game's tiers 2 to 5; level 4 is the tier-5 capstone. Every
 choice of a level leads to every choice of the next, except where the sheet writes **Leads to** (the Tree's level 1).
 

@@ -14,7 +14,7 @@
 			- Accent colour: ~plush purple~
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \
 			- Lore: / Lore comes once the vessel is finalized \
-			- Status: concept page done. Comes after Yossele.
+			- Status: Built as 0.1.0-dev from this sheet with temporary art; passed its PC self-test 120 of 120. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are not built yet. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md \
 
 		[Vessel Stats]
 			- Attack: melee.
@@ -63,8 +63,38 @@
 				- Thread cap: Holds a limit of 50 {Thread} by default, but number increases as {Yarn Stash} is upgraded; ~+25~ per upgrade
 				- Limit: ~1~
 				- Cost: ~free, placed at the start of the map~
-			[Upgrades]
-				! NEEDS YARN STASH UPGRADES !
+			[Upgrades] / Like Boutman's Bouthouse, several land on Spool itself. Every upgrade also raises the Thread cap by 25 \
+				% 1:{Roomy Pockets} Spool carries more {Thread} and picks it up from farther away.
+					- In-game line: Spool carries more
+					- Numbers: Spool carries 40 {Thread}, picks it up within 2 tiles
+					- Cost: Yellow 30
+				% 1:{Quick Patch} {Patch} costs less {Thread} and is ready sooner.
+					- In-game line: Faster, cheaper PATCH
+					- Numbers: Thread 15 a {Patch}; cooldown 2.5 seconds
+					- Cost: Yellow 25 + Blue 10
+
+				% 2:{Darning} {Patch} also mends everything of yours around its target.
+					- In-game line: PATCH mends a whole patch
+					- Numbers: every unit and building of yours within 1.5 tiles of the target is healed the same
+					- Cost: Yellow 100
+				% 2:{Elbow Patches} Spool fights better at the line.
+					- In-game line: Spool gets stuck in
+					- Numbers: Spool's health +60%, damage +100%
+					- Cost: Red 60 + Yellow 60
+
+				% 3:{Remnant Bin} {Thread} lasts longer on the ground, and what still goes to waste comes home at half.
+					- In-game line: Nothing goes to waste
+					- Numbers: {Thread} lasts 30 seconds on the ground; {Thread} that despawns goes to the {Yarn Stash} at 50%, rounded down
+					- Cost: Yellow 300
+				% 3:{Mending Circle} Every building mends between tides.
+					- In-game line: Everything mends between Tides
+					- Numbers: at the start of each tide, every building of yours heals 25% of its maximum health
+					- Cost: Blue 150 + Yellow 200
+
+				% 4:{Quilting Bee} Once a tide, every {Repurposed Cookie Tin} stitches its whole count at once for free, and the {Crafted} hit harder for a while.
+					- In-game line: Everyone sews at once
+					- Numbers: a BEE button, once per tide: every {Repurposed Cookie Tin} stitches up to its limit at once, costing no {Thread}; {Crafted} deal +50% damage for 15 seconds
+					- Cost: Yellow 2500 + Red 1000
 
 		(Minion):{Crafted}
 			# Refers to units spawned by {Repurposed Cookie Tin}, {Loom}, and {Pin Cushion}
@@ -123,6 +153,7 @@
 			- Different upgrade paths stem from one building, potentially turning {Stitched} into {Dart}s / Similar to Boutman's fish \
 			- Buildings and upgrades cost aura, but minions cost {Thread}.
 			- Not very smart, once they're set to a location they stay there until death. Can manually be sold by Spool.
+			- An UNTHREAD button sells every {Crafted} the {Repurposed Cookie Tin} has out, refunding half their {Thread} as selling one does. / A walking {Stitched} is hard to click \
 			[Stats]
 				- In-game line: ~Stitches Crafted from Thread, sends them where you point~
 				- Health: ~60~, +~25~ per level
@@ -149,11 +180,24 @@
 					- In-game line: ~Stitches Darts that throw needles~
 					- Numbers: -> {Crafted} {Dart}
 					- Cost: ~Red 100~
+				% 2:{Tacking Stitch} {Stitched} hold the line, blocking enemies like a {Snoble}.
+					- In-game line: Stitched hold the line
+					- Numbers: {Stitched} block enemies like a {Snoble} and have +100% health; this {Repurposed Cookie Tin} makes no {Dart}s / Holds foes that walk round a {Pin Cushion} wall \
+					- Cost: Red 110
 
 				% 3:{One Last Surprise} Can detonate themselves on death, creating an AOE explosion. Explosion radius is determined by attack range. / Allows for {Dart}s to deal high damage as well. \
 					- In-game line: ~Crafted burst when they fall~
 					- Numbers: radius = the {Crafted}'s attack range; ~damage 3 times the {Crafted}'s damage~
 					- Cost: ~Red 400~
+				% 3:{Cross Stitch} {Crafted} deal more damage.
+					- In-game line: Crafted hit harder
+					- Numbers: +100% damage for this {Repurposed Cookie Tin}'s {Crafted}
+					- Cost: Red 350
+
+				% 4:{Patchwork Army} More {Crafted} at once, stitched faster.
+					- In-game line: A bigger, faster sewing circle
+					- Numbers: Crafted alive at once +3; crafting rate 1 every 2 seconds
+					- Cost: Red 2500 + Yellow 1000
 
 		(Minion):{Thread Head} / Works like Boutman's fish \
 			# Controller minion, can manage {Thread} throughout towers or can use {Thread} for support.
@@ -185,7 +229,28 @@
 					- Numbers: ~2 health per second to each unit within 2 tiles~; ~1 {Thread} for every 5 health healed~
 					- Cost: ~Red 30~
 
-				! NEEDS THREAD HEAD LEVEL 2 AND 3 UPGRADES !
+				% 2:{Big Bobbin} Carries more {Thread} and collects it from farther away. / Porter \
+					- In-game line: Carries more, reaches farther
+					- Numbers: carries 40 {Thread}; collects from 5 tiles around it
+					- Cost: Yellow 60
+				% 2:{Needle Point} Nearby {Crafted} deal more damage. / Buffer \
+					- In-game line: Points the Crafted at the weak spot
+					- Numbers: +25% damage for your {Crafted} within 3 tiles
+					- Cost: Red 80
+
+				% 3:{High Thread Count} Enemies felled near it drop more {Thread}. / Porter \
+					- In-game line: Foes near it drop more Thread
+					- Numbers: +1 {Thread} from each enemy felled within 3 tiles
+					- Cost: Yellow 250
+				% 3:{Stitch in Time} Nearby {Crafted} take less damage. / Buffer \
+					- In-game line: Nearby Crafted shrug off hits
+					- Numbers: 30% damage reduction for your {Crafted} within 3 tiles
+					- Cost: Red 300 + Yellow 100
+
+				% 4:{Head of the Class} Stronger buffs over a wider area, and {Thread} it collects goes straight home.
+					- In-game line: The best stitch in the house
+					- Numbers: its buffs reach 4 tiles: +50% damage and 45% damage reduction for your {Crafted}; {Thread} it picks up goes straight to the {Yarn Stash}
+					- Cost: Red 2000 + Yellow 1500
 
 		(Defense):{Pin Cushion}
 			# A wall that reflects damage done by melee units. This is Spool's main line of defense
@@ -211,6 +276,7 @@
 				% 2:{~Pin Barrage~} Eventually reflects ranged damage
 					- In-game line: ~Pricks ranged attackers too~
 					- Numbers: ~20%~ of ranged damage reflected too
+					- Leads to: {Iron Thimble}
 					- Cost: ~Blue 100~
 				% 2:{~Loose Stuffing~} When damaged, spins {Mangled}.
 					- In-game line: ~Spills Mangled when hit~
@@ -225,6 +291,15 @@
 					- In-game line: ~Mangled burst on foes~
 					- Numbers: ~5 damage to every enemy within 1.25 tiles when it reaches one~
 					- Cost: ~Blue 400~
+				% 3:{Iron Thimble} Much sturdier, and takes less damage.
+					- In-game line: Sturdier pins, harder to break
+					- Numbers: +200% health of base; 25% damage reduction
+					- Cost: Blue 300 + Yellow 300
+
+				% 4:{Voodoo Doll} Once a tide, when badly hurt, pins every enemy around it and mends itself.
+					- In-game line: Prick it and everyone feels it
+					- Numbers: once per tide, the first time it falls below 50% health: every enemy within 3 tiles is stunned for 3 seconds and it heals 50% of its maximum health
+					- Cost: Blue 2000 + Yellow 1500
 
 		(Economy):{Loom}
 			- Connects to nodes to mine aura
@@ -247,7 +322,28 @@
 					- Numbers: -> {Crafted} {Seam}
 					- Cost: ~Yellow 30~
 
-				! NEEDS LOOM LEVEL 2 AND 3 UPGRADES !
+				% 2:{Dyed in the Wool} The aura it mines comes in the colour you pick.
+					- In-game line: Pick the colour of its aura
+					- Numbers: a COLOUR button; every payout from the {Loom}'s strikes and its {Seam}'s comes in the picked colour at 70% of the node's total / Like Yossele's {Grafted}, for ore \
+					- Cost: Yellow 150
+				% 2:{Bobbin Winder} Spins {Thread} faster and holds more.
+					- In-game line: Spins Thread twice as fast
+					- Numbers: 1 {Thread} every 3 seconds; holds up to 20
+					- Cost: Yellow 100
+
+				% 3:{Seam Squad} More {Seam}s to mine and guard.
+					- In-game line: More Seams to mine and guard
+					- Numbers: 3 {Seam}s per {Loom}
+					- Cost: Yellow 350
+				% 3:{Snare Line} Its {Seam}s hunt aura beasts.
+					- In-game line: Seams hunt the wild aura
+					- Numbers: its {Seam}s chase aura beasts within 6 tiles of the {Loom} /~ Whether a beast pays its killer is not seen on the PC yet \
+					- Cost: Yellow 300
+
+				% 4:{Golden Thread} Becomes a drop-off point, and spins faster.
+					- In-game line: Thread spun from gold
+					- Numbers: Spool and {Thread Head}s can drop off {Thread} at it, which goes straight to the {Yarn Stash}; spins {Thread} twice as fast / The name is the Mummer prototype's \
+					- Cost: Yellow 3000
 
 		[Directions] / Written in 11_Directions.txt under Spool \
 			- {Efficient Recycler}, {Sewing Machine} / And {Made of Tougher Stuff}, for any vessel with minions \

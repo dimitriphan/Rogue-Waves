@@ -147,7 +147,10 @@ defaults.
 | Loom | 2 | Direct Line | Thread goes straight home | spun Thread goes straight into the Stash while it has room | Yellow 30 | |
 | | 2 | Seam Allowance | Makes Seams that mine and guard | one Seam per Loom | Yellow 30 | |
 
-Still open in the sheet (Dimitri's to supply): Yarn Stash upgrades, Thread Head levels 2 and 3, Loom levels 2 and 3.
+Added to the sheet, not built yet (Dimitri accepted them 2026-11-04, `docs/reports/UPGRADE_GAPS_2026-11-04.md`): seven
+Yarn Stash upgrades, the Thread Head's levels 2-4, the Loom's levels 2-4, the Cookie Tin's Tacking Stitch, Cross Stitch
+and Patchwork Army, the Pin Cushion's Iron Thimble and Voodoo Doll (Pin Barrage then leads to Iron Thimble), and the
+Tin's UNTHREAD button. Scope `08` holds their numbers.
 
 ## Directions
 

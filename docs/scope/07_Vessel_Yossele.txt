@@ -272,6 +272,10 @@
 					- In-game line: ~Fruit is worth double~
 					- Numbers: 100%
 					- Cost: ~Yellow 400~
+				% 3:{Wood Wide Web} Trades the aura colour you hold most of for the one you hold least of.
+					- In-game line: Trades spare aura for what you lack
+					- Numbers: every 1 second, while you hold at least 100 more of your most-held colour than of your least-held, 2 of the most-held become 1 of the least-held. Once a second per player, however many {Pachira Sapling}s have it / Like Smacky's Processing Plant, without picking the colour \
+					- Cost: Yellow 250
 
 				% 4:{Fortifying Roots} Increases health by 100%. Reduces damage of nearby buildings by 30%, including itself.
 					- In-game line: Increases health and grants a damage reduction aura to nearby buildings.
