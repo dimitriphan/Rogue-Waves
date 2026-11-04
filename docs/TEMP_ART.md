@@ -34,6 +34,7 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Foes | the four modifiers' pixel rings | built in code (`RogueWavesFoes/Code/00_RogueWavesFoesMod.cs` `RWFLooks`), colours from `docs/STYLE.md` | seen in game by self-test, not by eye |
 | Uloe | every sheet, model, effect and sound, drawn by code from the concept page | `Assets/UloeMod/Editor`, `ModSource/Uloe/Previews/` | seen in game |
 | Directions, Cardinals | icons for the six Directions and the one Cardinal the scope names (`docs/scope/11`, `12`) | same folder | files only |
+| Every vessel's minions | ten Snoble-sized versions each of the Cordyfriend, the Thread Head, the four Crafted, the Photon and the Nauts (2026-11-04, below) | `ModSource/<Part>/Art/Temporary/minions_2026-11-04/` | files only, until he picks |
 | Argo | built art (Argo 2.0) | `ModSource/Argo/DESIGN.md` | not temporary: shipped look |
 
 ## Versions to pick from (2026-10-28)
@@ -96,6 +97,25 @@ re-run `apply_picks.py` with the list below after any of them.
 | UI | Vampire Dentures | v1 Wide open |
 
 As `apply_picks.py` input: `concept-tools/temp_art/picks_2026-11-03.json`.
+
+## Minion versions (2026-11-04)
+
+Dimitri, 2026-11-04: "Create new sprites for all modded minions. They should be closer in size to snobles. Create at
+least 10 versions of each." Eight minions, ten versions each: Yossele's Cordyfriend, Spool's Thread Head, Stitched,
+Dart, Seam and Mangled, Uloe's Photon, Argo's Nauts (every Naut version in Port, Starboard and Bosun colours, walk and
+tune). The RogueWavesFoes part adds no bodies (rings on stock foes), so it has none. The Snoble measures 6-8 x 5-8 px
+(12 px cells); most new bodies are 6-12 px across and 8-12 tall at rest (all 5-16), against 9-15 x 10-21 today, and the
+Thread Head stays the biggest (scope 08: "works like Boutman's fish").
+
+- **Where.** `ModSource/<Part>/Art/Temporary/minions_2026-11-04/<minion>/v01..v10/` (`game_size/`, `aseprite/`,
+  `preview_8x/`), a README per part naming every version; GIFs, line-ups and the picks page source in
+  `/mnt/project-files/concepts/minions_2026-11-04/`.
+- **Picking.** Page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (private to Dimitri; picks saved in its collection `picks`, one
+  document per minion key, `{choice: "cur" | "v01".."v10", note}`). "Current" is an eleventh choice.
+- **Applying.** Every version keeps the wired sheet's name, size and layout. Cordyfriend and Spool's five: copy the picked
+  `game_size/` and `aseprite/` files over `Art/Temporary/`. Photon and Nauts are drawn by code: their builders first need
+  Yossele's `FileArt` (the part READMEs say where), then the same copy. Nothing is seen in game yet.
+- **Generator.** `concept-tools/minions/` (`build.py`, then `page.py`; `readmes.py` writes the READMEs).
 
 ## Previews and generators
 
