@@ -186,8 +186,11 @@ defaults (the sheet leaves `{}` for Dimitri), levels as placed by the sheet.
 | Flood Light | 2 | Wide Flood | "Grants light in a radius around itself. Can no longer be directed." | Lights all around it, can't be aimed | 60% Light, radius 3.5; AIM goes away | Yellow 30 |
 | | 2 | Long Throw | "Allows to redirect its light in a straight line towards towers." | Throws a line of Light at a tower | AIM's line lights every building on it, 80% Light, 8 tiles | Yellow 30 |
 
-Still open in the sheet (Dimitri's to supply): more levels for each building, level-4 capstones (`docs/02` asks for 7-11
-upgrades per building; the sheet has 8 for the vessel).
+Still open in the sheet when built (Dimitri's to supply): more levels for each building, level-4 capstones (`docs/02` asks
+for 7-11 upgrades per building; the sheet had 8 for the vessel). **2026-11-04 (proposed, not built):** scope `10` now has
+8 upgrades a building, 32 in all, each with a capstone; the 24 new ones are Claude `~defaults~`, listed with
+their routes, in `docs/reports/ULOE_UPGRADES_2026-11-04.md` §3 and §6. This
+table stays as built until Dimitri takes them and the next Uloe build lands.
 
 ## Directions
 
