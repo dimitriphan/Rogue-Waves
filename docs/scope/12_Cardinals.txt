@@ -10,7 +10,7 @@
 		- What: a new Cardinal or Trinket is a new run modifier, the same kind of effect as the base game's Cardinals
 		- Names: found objects the wave washed up, two plain words each
 		- Bought: from the shopkeeper with [Pure Aura] -> 06_New_Mechanics.txt [Shopkeeper]
-		- Two kinds, Cardinals and Trinkets: kept apart in the shop and in the list /~ Named on 2026-11-04 at your word: a Trinket was a Vessel Cardinal and a Cardinal a Team Cardinal \
+		- Two kinds: Cardinals and Trinkets, kept apart in the shop and in the list /~ Named on 2026-11-04 at your word: a Trinket was a Vessel Cardinal and a Cardinal a Team Cardinal \
 		- Trinket: belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel /~ A Trinket wherever the game allows it. About 24 of the 40 stock Cardinals could be made Trinkets; see docs/reports/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
 		- Cardinal: acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen. A Cardinal is bought by one player and works for everyone /~ Every base game Cardinal the shop sells is one: it goes on the core \
 		- No limit: Cardinals and Trinkets scale forever: there is no limit on how many Cardinals or Trinkets a campaign holds /~ The game's Cardinal row keeps a counter for only 8, lobby picks included. Past 8, Cardinals still work, and the mode shows them another way; that is settled when the shop is built \
