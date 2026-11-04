@@ -542,7 +542,7 @@ public static class RWAsk
             yield break;
         }
         string pick = null;
-        yield return RWDialog.Ask(cards, title, sub, seconds, true, n => pick = n);
+        yield return RWDialog.Ask(cards, title, sub, seconds, n => pick = n);
         running = false;
         if (pick == null)
             yield break;

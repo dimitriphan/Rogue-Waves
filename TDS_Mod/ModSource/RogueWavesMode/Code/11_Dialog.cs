@@ -2,23 +2,29 @@
 // menu's New / Continue, the Direction pick, the votes, VENDCINT. Its menu is opened with Force and awaited first
 // (Runprompt's own Changemenu isn't forced, and it throws while its parent menu is inactive, kit docs/15 §14.6; RogueLab
 // round 3). It has no timeout and no cancel, so a timed ask closes the menu itself and treats the pending task as no
-// answer. The stock dialog sits in a corner with two cards a row, made for the pause menu's Exit / Back: a choice of three
-// or more is laid out in one centred row, and put back when it closes (Riptide's Salvage, Dimitri 2026-10-05).
+// answer. The stock dialog is a corner of the screen, made for the pause menu's Exit / Back: the mode's choices stand in the
+// middle of it instead, however many cards they have, and it is put back when they close (Dimitri 2026-11-03).
 public static class RWDialog
 {
     public const int MaxRow = 4;
     public static readonly Color Teal = new Color(0.247f, 0.561f, 0.588f, 1f), Swell = new Color(0.18f, 0.29f, 0.384f, 1f),
         Coral = new Color(0.886f, 0.447f, 0.357f, 1f), Pearl = new Color(0.957f, 0.933f, 0.973f, 1f), Sand = new Color(0.847f, 0.769f, 0.604f, 1f);
-    static int asks;
+    static int asks, owner;
     public static bool Asking;
     public static string LastTitle = "";     // the self-test reads what was asked
     public static int LastCards;
 
-    public static bool Up()
+    static Blockage.Menu.Blu2_Menu_Handler Menu()
     {
         Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
         Blockage.Menu.Blu2_Menu_Handler menu;
-        return dialog != null && Blockage.Menu.Bl_Menus.Menus != null && Blockage.Menu.Bl_Menus.Menus.TryGetValue(dialog.gameObject.name, out menu) && menu != null && menu.Active;
+        return dialog != null && Blockage.Menu.Bl_Menus.Menus != null && Blockage.Menu.Bl_Menus.Menus.TryGetValue(dialog.gameObject.name, out menu) ? menu : null;
+    }
+
+    public static bool Up()
+    {
+        Blockage.Menu.Blu2_Menu_Handler menu = Menu();
+        return menu != null && menu.Active;
     }
 
     // The game's cards show only an icon on a coloured tile: hovering one puts its Display_Desc in the dialog's line, so
@@ -37,7 +43,7 @@ public static class RWDialog
 
     // Asks on this machine. done(name) gets the picked card's Name, or null when the time ran out, the menu closed, or a
     // newer Ask took over. seconds <= 0 waits for as long as the dialog stays up. Run as a coroutine on the mod's object.
-    public static IEnumerator Ask(List<Bla_Ui_Confirmation.Entry> cards, string title, string sub, float seconds, bool centre, Action<string> done)
+    public static IEnumerator Ask(List<Bla_Ui_Confirmation.Entry> cards, string title, string sub, float seconds, Action<string> done)
     {
         Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
         int ask = ++asks;
@@ -69,24 +75,19 @@ public static class RWDialog
             done(null);
             yield break;
         }
-        if (centre) Place(dialog, cards.Count);
+        owner = ask;
+        Place(dialog, cards, sub);
         yield return null;
         yield return null;
-        if (centre) Place(dialog, cards.Count);
-        float settle = Time.unscaledTime + 0.5f, end = seconds > 0f ? Time.unscaledTime + seconds : float.MaxValue;
+        Place(dialog, cards, sub);   // the last prompt's cards are gone by now
+        float end = seconds > 0f ? Time.unscaledTime + seconds : float.MaxValue;
         // A UniTask's Status can't be read after GetResult (RogueLab round 5): read it once a step, the result once.
         Cysharp.Threading.Tasks.UniTaskStatus status = task.Status;
         while (status == Cysharp.Threading.Tasks.UniTaskStatus.Pending && ask == asks && Up() && Time.unscaledTime < end)
         {
-            if (centre && settle > 0f && Time.unscaledTime >= settle)
-            {
-                settle = 0f;
-                Place(dialog, cards.Count);
-            }
             yield return null;
             status = task.Status;
         }
-        if (centre) Unfit(dialog);
         string picked = null;
         if (status == Cysharp.Threading.Tasks.UniTaskStatus.Succeeded)
         {
@@ -95,6 +96,7 @@ public static class RWDialog
         }
         else if (ask == asks && Up())
             Blockage.Menu.Bl_Menus.Closemenu(dialog.gameObject, true);
+        RogueWavesModeMod.Instance.StartCoroutine(UnplaceLater(ask));
         if (ask == asks) Asking = false;
         done(picked);
     }
@@ -117,22 +119,58 @@ public static class RWDialog
             t.text = text;
     }
 
-    // ---------------------------------------------------------------- placing it (RiptideSalvage.Centre, proven)
+    // ---------------------------------------------------------------- placing it
+    //
+    // The prefab, read on the PC (kit docs/20 §2): Confirmation > Main > { Fade (the dim), Back (the dark edge), List (the
+    // grid, with the line Sub inside it), Title (with Line, the corner's rule) }. Main slides in by its anchors for about
+    // a second, well after Intransition has gone false, and Fade and Back must stay where it takes them. So Main is never
+    // moved or measured: List and Title are anchored to its middle, and come to rest there with it. Sub runs a single line
+    // to the left of the cards in the stock place, off the screen for a long hover line: here it wraps, under the cards.
+    // A block too big for the screen (the UI scale is the player's, whatever the resolution) is scaled to fit.
 
-    static readonly List<RectTransform> movedParts = new List<RectTransform>();
-    static readonly List<Vector2> movedFrom = new List<Vector2>();
+    const float Margin = 24f;       // canvas units kept clear at the screen's edges
+    const float SubWidth = 440f;    // where the hover line wraps
+    const float SubGap = 6f;
+    const float SubSize = 10.35f;   // what the stock line's autosize comes to, in its 15 units of height
+    // Sizes are worked out from letter counts: 14 units a title's letter at its stock size (13.8 at the widest of the mode's
+    // titles) and 4.7 a hover line's, read on the PC. Asking the dialog's own text (GetPreferredValues) froze the game for a
+    // frame of about 100 ms each time a dialog opened, which the stock dialog never does (Dimitri 2026-11-04). The title keeps
+    // its stock autosize, which comes to its stock size in its 30 units of height, and shrinks a title too long for the box.
+    const float HeadLetter = 14f, SubLetter = 4.7f, SubLine = 15f, HeadMargin = 28f;
+
+    sealed class Spot
+    {
+        public RectTransform Rect;
+        public Vector2 Min, Max, Pivot, Pos, Size;              // the stock values
+        public Vector3 Scale;
+        public Vector2 WantMin, WantMax, WantPivot, WantPos, WantSize;
+        public Vector3 WantScale = Vector3.one;
+        public bool Sized;
+    }
+
+    sealed class Words_
+    {
+        public TMPro.TMP_Text Text;
+        public TMPro.TextAlignmentOptions Align;
+        public bool Wrap, Auto;
+        public float Size;
+    }
+
+    static readonly List<Spot> spots = new List<Spot>();
+    static readonly List<Words_> texts = new List<Words_>();
     static UnityEngine.UI.GridLayoutGroup grid;
     static UnityEngine.UI.GridLayoutGroup.Constraint gridConstraint;
+    static UnityEngine.UI.GridLayoutGroup.Axis gridAxis;
     static int gridCount;
-    static Vector2 listSize;
+    static bool holding;
 
-    static void Place(Bla_Ui_Confirmation dialog, int cards)
+    static void Place(Bla_Ui_Confirmation dialog, List<Bla_Ui_Confirmation.Entry> cards, string sub)
     {
-        try { Centre(dialog, cards); }
+        try { Fit(dialog, cards, sub); }
         catch (Exception e) { RWLog.Warn("dialog layout: " + e.Message); }
     }
 
-    static List<RectTransform> Cards(Bla_Ui_Confirmation dialog)
+    public static List<RectTransform> Cards(Bla_Ui_Confirmation dialog)
     {
         List<RectTransform> cards = new List<RectTransform>();
         if (dialog != null && dialog.List != null)
@@ -142,31 +180,13 @@ public static class RWDialog
         return cards;
     }
 
-    static List<RectTransform> Parts(Bla_Ui_Confirmation dialog)
-    {
-        List<RectTransform> parts = new List<RectTransform>();
-        foreach (GameObject piece in new GameObject[] { dialog.List, dialog.Titlebox, dialog.Subbox, dialog.Descbox })
-        {
-            if (piece == null || piece == dialog.gameObject)
-                continue;
-            Transform p = piece.transform;
-            while (p.parent != null && p.parent != dialog.transform)
-                p = p.parent;
-            RectTransform part = (p.parent == dialog.transform ? p : piece.transform) as RectTransform;
-            if (part != null && !parts.Contains(part))
-                parts.Add(part);
-        }
-        return parts;
-    }
-
     static Camera Cam(Canvas canvas) { return canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay ? canvas.worldCamera : null; }
 
-    static Rect OnScreen(RectTransform rt, out Canvas canvas)
+    public static Rect OnScreen(RectTransform rt)
     {
-        canvas = rt.GetComponentInParent<Canvas>();
         Vector3[] corners = new Vector3[4];
         rt.GetWorldCorners(corners);
-        return OnScreen(corners, canvas);
+        return OnScreen(corners, rt.GetComponentInParent<Canvas>());
     }
 
     static Rect OnScreen(Vector3[] corners, Canvas canvas)
@@ -182,12 +202,14 @@ public static class RWDialog
         return Rect.MinMaxRect(min.x, min.y, max.x, max.y);
     }
 
-    static bool Words(GameObject box, out Rect r)
+    // Where a box's words stand on the screen, not its rectangle: the stock boxes are far wider than their text.
+    public static bool Words(GameObject box, out Rect r)
     {
         r = new Rect();
         TMPro.TMP_Text text = box != null && box.activeInHierarchy ? box.GetComponentInChildren<TMPro.TMP_Text>() : null;
         if (text == null || string.IsNullOrEmpty(text.text) || text.text.Trim() == "")
             return false;
+        text.ForceMeshUpdate();
         Bounds b = text.textBounds;
         if (b.size.x <= 0f || b.size.y <= 0f)
             return false;
@@ -198,113 +220,228 @@ public static class RWDialog
         return true;
     }
 
-    static Rect Union(Rect a, Rect b) { return Rect.MinMaxRect(Mathf.Min(a.xMin, b.xMin), Mathf.Min(a.yMin, b.yMin), Mathf.Max(a.xMax, b.xMax), Mathf.Max(a.yMax, b.yMax)); }
-
-    static Rect Block(Bla_Ui_Confirmation dialog, List<RectTransform> cards, out Canvas canvas)
+    // What the block must be scaled by to fit the screen with this many columns; 1 when it fits as it is.
+    static float ScaleFor(int cards, int columns, UnityEngine.UI.GridLayoutGroup g, Vector2 room, float above, float below)
     {
-        canvas = null;
-        bool any = false;
-        Rect block = new Rect();
-        foreach (RectTransform card in cards)
+        int rows = (cards + columns - 1) / columns;
+        float wide = g.padding.left + g.padding.right + columns * g.cellSize.x + (columns - 1) * g.spacing.x;
+        float tall = g.padding.top + g.padding.bottom + rows * g.cellSize.y + (rows - 1) * g.spacing.y;
+        return Mathf.Min(1f, room.x / wide, room.y / (above + tall + below));
+    }
+
+    // Four cards or fewer stand in one row, more in two even rows; if that won't fit, whichever shape stays the largest.
+    public static int Columns(int cards, UnityEngine.UI.GridLayoutGroup g, Vector2 room, float above, float below, out float scale)
+    {
+        int best = cards <= MaxRow ? cards : (cards + 1) / 2;
+        scale = ScaleFor(cards, best, g, room, above, below);
+        for (int c = 1; scale < 1f && c <= cards; c++)
         {
-            Rect r = OnScreen(card, out canvas);
-            block = any ? Union(block, r) : r;
-            any = true;
-        }
-        foreach (GameObject box in new GameObject[] { dialog.Titlebox, dialog.Subbox })
-        {
-            Rect r;
-            if (Words(box, out r))
+            float k = ScaleFor(cards, c, g, room, above, below);
+            if (k > scale)
             {
-                block = any ? Union(block, r) : r;
-                any = true;
+                scale = k;
+                best = c;
             }
         }
-        return block;
+        return best;
     }
 
-    static void Row(Bla_Ui_Confirmation dialog, int n)
+    static Spot SpotFor(RectTransform rt)
     {
+        foreach (Spot s in spots)
+            if (s.Rect == rt) return s;
+        Spot spot = new Spot { Rect = rt, Min = rt.anchorMin, Max = rt.anchorMax, Pivot = rt.pivot, Pos = rt.anchoredPosition, Size = rt.sizeDelta, Scale = rt.localScale };
+        spots.Add(spot);
+        return spot;
+    }
+
+    static void Want(RectTransform rt, Vector2 anchor, Vector2 pivot, Vector2 pos)
+    {
+        Spot s = SpotFor(rt);
+        s.WantMin = s.WantMax = anchor;
+        s.WantPivot = pivot;
+        s.WantPos = pos;
+    }
+
+    static void Want(RectTransform rt, Vector2 anchor, Vector2 pivot, Vector2 pos, Vector2 size)
+    {
+        Want(rt, anchor, pivot, pos);
+        Spot s = SpotFor(rt);
+        s.WantSize = size;
+        s.Sized = true;
+    }
+
+    static void KeepWords(TMPro.TMP_Text text)
+    {
+        foreach (Words_ w in texts)
+            if (w.Text == text) return;
+        texts.Add(new Words_ { Text = text, Align = text.alignment, Wrap = text.enableWordWrapping, Auto = text.enableAutoSizing, Size = text.fontSize });
+    }
+
+    static float LinesTall(string words, float wide)
+    {
+        return SubLine * Mathf.Max(1, Mathf.CeilToInt((words != null ? words.Length : 0) * SubLetter / wide));
+    }
+
+    // The nearest offset from the screen's middle, in canvas units, that lands on a whole screen pixel.
+    static float OnPixel(float middle, float pixels, float offset)
+    {
+        float at = middle + pixels * offset;
+        return offset + (Mathf.Round(at) - at) / pixels;
+    }
+
+    // Only the list's last cards are this prompt's: the ones before them are the last prompt's, which the game destroys at
+    // the end of the frame, so they are hidden now rather than taking cells.
+    static void Fit(Bla_Ui_Confirmation dialog, List<Bla_Ui_Confirmation.Entry> entries, string words)
+    {
+        List<RectTransform> all = Cards(dialog);
+        for (int i = 0; i < all.Count - entries.Count; i++)
+            all[i].gameObject.SetActive(false);
+        int count = Cards(dialog).Count;
         UnityEngine.UI.GridLayoutGroup g = dialog.List.GetComponent<UnityEngine.UI.GridLayoutGroup>();
-        RectTransform list = dialog.List.transform as RectTransform;
-        if (g == null || list == null)
+        RectTransform list = dialog.List.transform as RectTransform, title = dialog.Titlebox.transform as RectTransform, sub = dialog.Subbox.transform as RectTransform;
+        TMPro.TMP_Text head = dialog.Titlebox.GetComponent<TMPro.TMP_Text>(), line = dialog.Subbox.GetComponent<TMPro.TMP_Text>();
+        Canvas canvas = dialog.GetComponentInParent<Canvas>();
+        if (count == 0 || g == null || list == null || title == null || sub == null || head == null || line == null || canvas == null)
             return;
+        RectTransform rootRect = (RectTransform)canvas.rootCanvas.transform;
+        Vector2 room = rootRect.rect.size - new Vector2(Margin * 2f, Margin * 2f);
+
+        KeepWords(head);
+        head.alignment = TMPro.TextAlignmentOptions.Bottom;
+        head.enableWordWrapping = false;
+        KeepWords(line);
+        line.alignment = TMPro.TextAlignmentOptions.Top;
+        line.enableWordWrapping = true;
+        line.enableAutoSizing = false;
+        line.fontSize = SubSize;
+
+        // The hover line's room is its longest line's, so that no card's words run past the block.
+        float subWide = Mathf.Min(room.x, SubWidth), lines = LinesTall(words, subWide);
+        foreach (Bla_Ui_Confirmation.Entry e in entries)
+            lines = Mathf.Max(lines, LinesTall(e.Display_Desc, subWide));
+        float headTall = SpotFor(title).Size.y;
+
         if (grid != g)
         {
-            Unrow();
             grid = g;
             gridConstraint = g.constraint;
+            gridAxis = g.startAxis;
             gridCount = g.constraintCount;
-            listSize = list.sizeDelta;
         }
-        int columns = Mathf.Clamp(n, 1, MaxRow);
+        float scale;
+        int columns = Columns(count, g, room, headTall, SubGap + lines, out scale), rows = (count + columns - 1) / columns;
         g.constraint = UnityEngine.UI.GridLayoutGroup.Constraint.FixedColumnCount;
+        g.startAxis = UnityEngine.UI.GridLayoutGroup.Axis.Horizontal;
         g.constraintCount = columns;
-        float width = g.padding.left + g.padding.right + columns * g.cellSize.x + (columns - 1) * g.spacing.x;
-        if (list.rect.width < width - 0.5f)
-            list.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
+        float wide = g.padding.left + g.padding.right + columns * g.cellSize.x + (columns - 1) * g.spacing.x;
+        float tall = g.padding.top + g.padding.bottom + rows * g.cellSize.y + (rows - 1) * g.spacing.y;
+
+        // The margin keeps the rule's end mark, at the box's left edge, clear of a long title.
+        float headWide = Mathf.Max(wide, head.text.Length * HeadLetter + HeadMargin);
+        scale = Mathf.Min(scale, room.x / headWide);
+
+        // The art is pixels drawn three screen pixels to one at a UI scale of 3, sampled without smoothing. On a half pixel
+        // a texture's edges fall exactly between two screen pixels, and rounding picks a side unevenly along them: fine
+        // notches in every line (Dimitri 2026-11-04). The stock corner is on whole pixels, so the block is put on them too,
+        // and a block that must shrink shrinks to a whole number of screen pixels to one.
+        float pixels = Screen.height / rootRect.rect.height;
+        if (scale < 1f && pixels * scale >= 1f)
+            scale = Mathf.Floor(pixels * scale) / pixels;
+        headWide = Mathf.Ceil(headWide * pixels) / pixels;
+
+        // The block is the title, the cards and the words under them; its middle stands in the middle of Main.
+        float top = OnPixel(Screen.height * 0.5f, pixels, scale * ((headTall + tall + SubGap + lines) * 0.5f - headTall));
+        float listX = OnPixel(Screen.width * 0.5f, pixels, wide * scale * 0.5f) - wide * scale * 0.5f;
+        float headX = OnPixel(Screen.width * 0.5f, pixels, headWide * scale * 0.5f) - headWide * scale * 0.5f;
+        Vector2 middle = new Vector2(0.5f, 0.5f);
+        Vector3 scaled = new Vector3(scale, scale, 1f);
+        Want(list, middle, new Vector2(0.5f, 1f), new Vector2(listX, top));
+        SpotFor(list).WantScale = scaled;
+        Want(title, middle, new Vector2(0.5f, 0f), new Vector2(headX, top), new Vector2(headWide, headTall));
+        SpotFor(title).WantScale = scaled;
+        Want(sub, new Vector2(0.5f, 0f), new Vector2(0.5f, 1f), new Vector2(0f, -SubGap), new Vector2(subWide, lines));
+        // The corner's rule: in the stock place it runs on to the screen's bottom; here it closes round the cards.
+        RectTransform rule = title.Find("Line") as RectTransform;
+        if (rule != null)
+        {
+            Spot s = SpotFor(rule);
+            Want(rule, s.Min, s.Pivot, s.Pos, new Vector2(headWide, tall));
+        }
+        if (!holding)
+        {
+            Canvas.willRenderCanvases += Hold;
+            holding = true;
+        }
+        Hold();
+        UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(list);
     }
 
-    static void Unrow()
+    // Last word before the frame is drawn, for as long as the dialog is the mode's: the game's own transition tweens may
+    // write to these rectangles too.
+    static void Hold()
     {
+        foreach (Spot s in spots)
+        {
+            RectTransform r = s.Rect;
+            if (r == null) continue;
+            if (r.anchorMin != s.WantMin) r.anchorMin = s.WantMin;
+            if (r.anchorMax != s.WantMax) r.anchorMax = s.WantMax;
+            if (r.pivot != s.WantPivot) r.pivot = s.WantPivot;
+            if (r.anchoredPosition != s.WantPos) r.anchoredPosition = s.WantPos;
+            if (s.Sized && r.sizeDelta != s.WantSize) r.sizeDelta = s.WantSize;
+            if (r.localScale != s.WantScale) r.localScale = s.WantScale;
+        }
+    }
+
+    // Once the dialog has gone, not as it goes: its way out is a slide too, and the cards shouldn't jump to the corner in it.
+    static IEnumerator UnplaceLater(int ask)
+    {
+        float cap = Time.unscaledTime + 3f;
+        Blockage.Menu.Blu2_Menu_Handler menu = Menu();
+        while (owner == ask && menu != null && (menu.Active || menu.Intransition) && Time.unscaledTime < cap)
+            yield return null;
+        float gone = Time.unscaledTime + 0.6f;
+        while (owner == ask && menu != null && !menu.Active && Time.unscaledTime < gone)
+            yield return null;
+        if (owner == ask)
+            Unplace();
+    }
+
+    static void Unplace()
+    {
+        if (holding)
+        {
+            Canvas.willRenderCanvases -= Hold;
+            holding = false;
+        }
+        foreach (Spot s in spots)
+        {
+            RectTransform r = s.Rect;
+            if (r == null) continue;
+            r.anchorMin = s.Min;
+            r.anchorMax = s.Max;
+            r.pivot = s.Pivot;
+            r.anchoredPosition = s.Pos;
+            r.sizeDelta = s.Size;
+            r.localScale = s.Scale;
+        }
+        spots.Clear();
+        foreach (Words_ w in texts)
+        {
+            if (w.Text == null) continue;
+            w.Text.alignment = w.Align;
+            w.Text.enableWordWrapping = w.Wrap;
+            w.Text.enableAutoSizing = w.Auto;
+            if (!w.Auto) w.Text.fontSize = w.Size;
+        }
+        texts.Clear();
         if (grid != null)
         {
             grid.constraint = gridConstraint;
+            grid.startAxis = gridAxis;
             grid.constraintCount = gridCount;
-            RectTransform list = grid.transform as RectTransform;
-            if (list != null)
-                list.sizeDelta = listSize;
         }
         grid = null;
-    }
-
-    // With fresh > 0, only the list's last fresh buttons are this prompt's cards: the ones before them are the last
-    // prompt's, which the game destroys at the end of the frame, so they are hidden now rather than taking cells.
-    static void Centre(Bla_Ui_Confirmation dialog, int fresh)
-    {
-        if (fresh > 0)
-        {
-            List<RectTransform> all = Cards(dialog);
-            for (int i = 0; i < all.Count - fresh; i++)
-                all[i].gameObject.SetActive(false);
-        }
-        List<RectTransform> cards = Cards(dialog);
-        if (cards.Count == 0)
-            return;
-        Row(dialog, cards.Count);
-        Canvas.ForceUpdateCanvases();
-        RectTransform root = dialog.transform as RectTransform;
-        if (root != null)
-            UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(root);
-        Canvas canvas;
-        Rect r = Block(dialog, cards, out canvas);
-        Vector2 middle = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-        if ((middle - r.center).magnitude <= 2f)
-            return;
-        Camera cam = Cam(canvas);
-        foreach (RectTransform part in Parts(dialog))
-        {
-            RectTransform parent = part.parent as RectTransform;
-            Vector3 from, to;
-            if (parent == null || !RectTransformUtility.ScreenPointToWorldPointInRectangle(parent, r.center, cam, out from)
-                || !RectTransformUtility.ScreenPointToWorldPointInRectangle(parent, middle, cam, out to))
-                continue;
-            if (!movedParts.Contains(part))
-            {
-                movedParts.Add(part);
-                movedFrom.Add(part.anchoredPosition);
-            }
-            part.position += to - from;
-        }
-    }
-
-    static void Unfit(Bla_Ui_Confirmation dialog)
-    {
-        for (int i = 0; i < movedParts.Count; i++)
-            if (movedParts[i] != null)
-                movedParts[i].anchoredPosition = movedFrom[i];
-        movedParts.Clear();
-        movedFrom.Clear();
-        Unrow();
     }
 }
