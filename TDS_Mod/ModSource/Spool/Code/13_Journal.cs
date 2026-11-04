@@ -25,20 +25,20 @@ public static class SpoolJournal
             HeroId = SpoolData.Hero, Template = template, Hero = hero,
             Rule = hero.Upgradesinit.Count > 0 ? hero.Upgradesinit[0] : null,
             Title = SpoolData.Displayname, Lore = SpoolData.Lore, Origin = "Rogue Waves",
-            Portrait = Portrait(), Tab = SpoolAssets.Single("Spooltabicon", 32), Accent = Purple,
+            Portrait = Portrait(), Tab = ModKitAssets.Single("Spooltabicon", 32), Accent = Purple,
         };
         foreach (SpoolData.Build b in SpoolData.Builds)
         {
             Beingobject being;
             if (!SpoolContent.Beings.TryGetValue(b.Id, out being))
                 continue;
-            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = SpoolAssets.Quiet(b.Id) };
+            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = ModKitAssets.Quiet(b.Id) };
             Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
             foreach (SpoolData.Upg u in b.Upgrades)
             {
                 Upgradeproperties prop;
                 SpoolContent.Upgrades.TryGetValue(u.Id, out prop);
-                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = SpoolAssets.Quiet(u.Model) ?? jb.Model };
+                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = ModKitAssets.Quiet(u.Model) ?? jb.Model };
             }
             foreach (SpoolData.Upg u in b.Upgrades)
             {
@@ -57,7 +57,7 @@ public static class SpoolJournal
                     Beingobject ub;
                     if (u == null || !SpoolContent.Beings.TryGetValue(id, out ub))
                         continue;
-                    List<Sprite> f = SpoolAssets.Frames(u.Sheet, u.Cell, new Vector2(0.5f, 0.5f));
+                    List<Sprite> f = ModKitAssets.Frames(u.Sheet, u.Cell, new Vector2(0.5f, 0.5f));
                     string cost = u.Thread > 0 ? " Costs " + u.Thread + " Thread." : "";
                     jb.Units.Add(new ModKitJournalUnit { Id = id, Title = u.Display, Desc = u.Lore + cost, Entity = ub.Entity, Look = f.Count > 0 ? f[0] : null });
                 }
@@ -76,7 +76,7 @@ public static class SpoolJournal
     // An idle frame, front facing right, like the shipped vessel pages (Smacky4-Sheet_0, Snosnoidle-Sheet_3).
     static Sprite Portrait()
     {
-        List<Sprite> f = SpoolAssets.Frames("Spool-Sheet", 32, new Vector2(0.5f, 0.5f));
+        List<Sprite> f = ModKitAssets.Frames("Spool-Sheet", 32, new Vector2(0.5f, 0.5f));
         return f.Count > 0 ? f[0] : null;
     }
 }

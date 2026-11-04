@@ -967,7 +967,7 @@ public static class YosseleSelfTest
             Check("Growth hardens the stones", Mathf.Abs(YosseleHooks.ArmorOf(henge.Master) - 4 * YosseleData.HengeArmorPerStage) < 0.01f, "armor " + F(YosseleHooks.ArmorOf(henge.Master)));
             Check("vine tiles are networked beings", YosseleVines.Count >= henge.Tiles.Count, YosseleVines.Count + " vines");
             {
-                GameObject vm = YosseleAssets.Model("Yossele_Vine");
+                GameObject vm = ModKitAssets.Model("Yossele_Vine");
                 MeshFilter mf = vm != null ? vm.GetComponentInChildren<MeshFilter>(true) : null;
                 MeshRenderer mr = mf != null ? mf.GetComponent<MeshRenderer>() : null;
                 Texture tex = mr != null && mr.sharedMaterial != null && mr.sharedMaterial.HasProperty("_BaseMap") ? mr.sharedMaterial.GetTexture("_BaseMap") : null;

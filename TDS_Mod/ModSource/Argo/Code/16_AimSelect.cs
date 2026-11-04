@@ -18,7 +18,7 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
         Close();
         try
         {
-            ring = ArgoAssets.Effect("World_Argo_Tremor", Vector3.one * 10000f, 0f);
+            ring = ModKitAssets.Effect("World_Argo_Tremor", Vector3.one * 10000f, 0f);
             ringRadius = -1f;
             Transform holder = Bl_Menus.Menus["Main"].Items["Command"].transform;
             Bl_Obj.Destroychildren(holder);

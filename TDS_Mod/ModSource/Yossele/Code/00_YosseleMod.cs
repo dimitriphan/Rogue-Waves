@@ -59,7 +59,7 @@ public class YosseleMod : MonoBehaviour
             yield break;
         }
 
-        if (!YosseleAssets.Find())
+        if (!ModKitAssets.Find(YosseleMod.Instance, "Yossele"))
         {
             YosseleLog.Error("YosseleAssets_Library is missing from the mod; Yossele is disabled");
             yield break;

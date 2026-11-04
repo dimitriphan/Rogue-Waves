@@ -20,9 +20,6 @@ public static class UloeContent
     static Bl_Address.Loadgroup group;
     static readonly Dictionary<string, Bl_Address.Loadlist> lists = new Dictionary<string, Bl_Address.Loadlist>();
 
-    // Script names written for one shipped vessel (they hard-code its objects); everything else is generic.
-    static readonly string[] VesselNames = { "Smacky", "Snosno", "Boutman", "Fie", "Buster" };
-
     public static void Build(Heroentryobject template)
     {
         string folder = template.Heroloads.Objectname;
@@ -88,7 +85,7 @@ public static class UloeContent
     static void RegisterVfx()
     {
         Bl_Address.Loadlist list = lists["Vfx"];
-        foreach (GameObject go in UloeAssets.AllVfx())
+        foreach (GameObject go in ModKitAssets.AllVfx())
         {
             list.Items[go.name] = go;
             list.Index.Add(go);
@@ -110,27 +107,6 @@ public static class UloeContent
         return r != null ? r.sharedMaterial : null;
     }
 
-    static bool VesselSpecific(string name)
-    {
-        if (name == "Entity_Ai_General_Upgrade")
-            return true;
-        foreach (string v in VesselNames)
-            if (name.Contains(v))
-                return true;
-        return false;
-    }
-
-    static List<UnityEngine.Object> Strip(List<UnityEngine.Object> scripts)
-    {
-        List<UnityEngine.Object> kept = new List<UnityEngine.Object>();
-        if (scripts == null)
-            return kept;
-        foreach (UnityEngine.Object s in scripts)
-            if (s != null && !VesselSpecific(s.name))
-                kept.Add(s);
-        return kept;
-    }
-
     static List<UnityEngine.Object> Scripts(params string[] names)
     {
         List<UnityEngine.Object> l = new List<UnityEngine.Object>();
@@ -143,15 +119,15 @@ public static class UloeContent
         Visualproperties.Entry e = from;
         e.Rootvisualproperty = null;
         e.Style = Visualproperties.Styles.Model;
-        e.Visprefab = UloeAssets.Model(model);
+        e.Visprefab = ModKitAssets.Model(model);
         e.Spriteobject = null;
         e.Displayname = display;
         e.Additionalmaterials = new List<Material>();
-        e.Additionalvisualscripts = Strip(from.Additionalvisualscripts);
+        e.Additionalvisualscripts = ModKitUtil.Strip(from.Additionalvisualscripts);
         e.Additionalprefabs = new List<GameObject>();
         if (!string.IsNullOrEmpty(extra))
         {
-            GameObject x = UloeAssets.Model(extra);
+            GameObject x = ModKitAssets.Model(extra);
             if (x != null) e.Additionalprefabs.Add(x);
         }
         return e;
@@ -167,31 +143,8 @@ public static class UloeContent
         vp.Skinoverride = new List<Visualproperties.Param>();
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         for (int band = 1; band <= UloeData.LookBands.Length; band++)
-            AddSkin(vp, "Lit" + band, ModelEntry(template.Default, model, display, "Uloe_Lit" + band));
+            ModKitUtil.AddSkin(vp, "Lit" + band, ModelEntry(template.Default, model, display, "Uloe_Lit" + band));
         return vp;
-    }
-
-    static void AddSkin(Visualproperties vp, string skin, Visualproperties.Entry entry)
-    {
-        Visualproperties.Param p = new Visualproperties.Param();
-        p.Name = skin;
-        p.Value = entry;
-        vp.Skinoverride.Add(p);
-        vp.Skinoverrides[skin] = entry;
-    }
-
-    static void CollectUpgrades(List<Upgradeproperties> from, Dictionary<int, Upgradeproperties> byTier)
-    {
-        if (from == null)
-            return;
-        foreach (Upgradeproperties u in from)
-        {
-            if (u == null)
-                continue;
-            if (!byTier.ContainsKey(u.Priority))
-                byTier[u.Priority] = u;
-            CollectUpgrades(u.Upgrades, byTier);
-        }
     }
 
     // "Health=25+25" -> value 25, +25 per level. Builds a stat block holding exactly these stats, each styled like the
@@ -230,9 +183,9 @@ public static class UloeContent
     static List<Upgradeproperties> Tree(UloeData.Build b, Entityobject te)
     {
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
-        CollectUpgrades(te.Upgrades, templateTiers);
+        ModKitUtil.CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0)
-            CollectUpgrades(ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut").Entity.Upgrades, templateTiers);
+            ModKitUtil.CollectUpgrades(ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut").Entity.Upgrades, templateTiers);
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
         foreach (UloeData.Upg u in b.Upgrades)
@@ -249,7 +202,7 @@ public static class UloeContent
             up.Priority = u.Tier;
             up.Aiscripts = new List<UnityEngine.Object>();
             up.Costs = ModKitUtil.Costs(u.Costs);
-            up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), UloeAssets.Quiet(u.Model) != null ? u.Model : b.Id, u.Display);
+            up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), ModKitAssets.Quiet(u.Model) != null ? u.Model : b.Id, u.Display);
             Register("Upgrade", up.Ent_Visual);
             up.Defaultparam = new List<Upgradeproperties.Param>();
             up.Defaultparams = new Dictionary<string, float>();
@@ -376,7 +329,7 @@ public static class UloeContent
             return;
         }
         Projectileobject spark = UloeUtil.Clone(template, UloeData.Spark);
-        GameObject model = UloeAssets.Model("Uloe_Spark");
+        GameObject model = ModKitAssets.Model("Uloe_Spark");
         if (model != null)
             spark.Vis = model;
         spark.Sfxstart = "";
@@ -403,7 +356,7 @@ public static class UloeContent
         }
         BeamFrom = UloeData.BeamTemplate;
         Projectileobject beam = UloeUtil.Clone(template, UloeData.Beam);
-        GameObject model = UloeAssets.Model("Uloe_Beamtip");
+        GameObject model = ModKitAssets.Model("Uloe_Beamtip");
         if (model != null)
             beam.Vis = model;
         beam.Sfxstart = "";
@@ -473,10 +426,10 @@ public static class UloeContent
         ent.Name = b.Id;
         ent.Display_Name = b.Display;
         ent.Display_Desc = b.Desc;
-        ent.Aiscripts = Strip(te.Aiscripts);
+        ent.Aiscripts = ModKitUtil.Strip(te.Aiscripts);
         // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
         ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"));
-        ent.Visualscripts = Strip(te.Visualscripts);
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         ent.Costs = ModKitUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Sellable = true;
@@ -490,7 +443,7 @@ public static class UloeContent
         // Kit 1.2: the range sphere the game draws (and the stock AIs measure from) sits on this tower, at the height its
         // brain measures from (its Entityposition); the Glass's lens is its muzzle.
         bool glass = b.Id == UloeData.Glass;
-        ModKitTowers.Fit(ent, b.Id, UloeAssets.Model(b.Id), glass ? UloeData.BeamEye : 0f, glass ? UloeData.BeamEye : 0.05f, Array.Exists(b.Stats, s => s.StartsWith("Range=")));
+        ModKitTowers.Fit(ent, b.Id, ModKitAssets.Model(b.Id), glass ? UloeData.BeamEye : 0f, glass ? UloeData.BeamEye : 0.05f, Array.Exists(b.Stats, s => s.StartsWith("Range=")));
         ent.Upgrades = Tree(b, te);
         being.Entity = ent;
         Beings[b.Id] = being;
@@ -538,10 +491,10 @@ public static class UloeContent
         UloeUtil.Retag(vp, id + "_Visualproperties");
         Visualproperties.Entry e = te.Defaultvisual.Default;
         e.Rootvisualproperty = null;
-        e.Spriteobject = UloeAssets.Unit(UloeData.PhotonSheet, UloeData.PhotonCell, id + "_Sprite", te.Defaultvisual.Default.Spriteobject);
+        e.Spriteobject = ModKitAssets.Unit(UloeData.PhotonSheet, UloeData.PhotonCell, id + "_Sprite", te.Defaultvisual.Default.Spriteobject);
         e.Displayname = UloeData.PhotonDisplay;
         e.Displaycolor = Tint;
-        GameObject poof = UloeAssets.Vfx("World_Uloe_Motes");
+        GameObject poof = ModKitAssets.Vfx("World_Uloe_Motes");
         if (poof != null) e.Vfxend = poof;
         vp.Default = e;
         vp.Skinoverride = new List<Visualproperties.Param>();
@@ -625,13 +578,13 @@ public static class UloeContent
         // A ranged vessel is built like Sno Sno: Mob_General, Mob_Movement, the stock Mob_Ranged in place of Smacky's
         // Mob_Combat (targets, mines ore, fires the Attack command's projectile and sends "Shoot", which
         // Entity_Vis_Mob_Attack turns into the Attack animation) and Hero_Buildsell. The hero brain names the spark.
-        ent.Aiscripts = Strip(te.Aiscripts);
+        ent.Aiscripts = ModKitUtil.Strip(te.Aiscripts);
         int melee = ent.Aiscripts.FindIndex(s => s.name == "Entity_Ai_Mob_Combat");
         if (melee >= 0)
             ent.Aiscripts.RemoveAt(melee);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Ranged"))
             ent.Aiscripts.Insert(melee >= 0 ? melee : Mathf.Min(2, ent.Aiscripts.Count), ModKitUtil.Script("Entity_Ai_Mob_Ranged"));
-        ent.Visualscripts = Strip(te.Visualscripts);
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
             ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Mob_Attack"));
         ent.Upgrades = new List<Upgradeproperties>();
@@ -661,7 +614,7 @@ public static class UloeContent
         // The bulb burning while plugged in: a skin, so every player sees it.
         Visualproperties.Entry lit = e;
         lit.Spriteobject = UloeAssets.Hero(templateSprite, footstep, true);
-        AddSkin(vp, UloeData.Plugged, lit);
+        ModKitUtil.AddSkin(vp, UloeData.Plugged, lit);
         ent.Defaultvisual = vp;
         Register("Hero", vp);
 
@@ -686,14 +639,14 @@ public static class UloeContent
         Entry.Displayskill = UloeData.Displayskill;
         Entry.Color = Accent;
         // The 12x12 sprite in player lists, the setup bar and leaderboards: the ready-up portrait in its brackets.
-        Entry.Icon = UloeAssets.Single("Readyup6uloe", 12) ?? template.Icon;
-        Entry.Worldsplash = UloeAssets.Single("Uloesplash", 128) ?? template.Worldsplash;
-        Entry.Endscreenwinicon = UloeAssets.Single("Uloeendstat1", 32) ?? template.Endscreenwinicon;
-        Entry.Endscreenloseicon = UloeAssets.Single("Uloeendstat2", 32) ?? template.Endscreenloseicon;
-        Entry.Worldsprite = UloeAssets.Worldsprite(template.Worldsprite);
-        Texture fall = UloeAssets.Sheet("UloeFall-Sheet");
-        Texture land = UloeAssets.Sheet("UloeIntroR-Sheet");
-        Texture idle = UloeAssets.Sheet("UloeIdlejustidle-Sheet");
+        Entry.Icon = ModKitAssets.Single("Readyup6uloe", 12) ?? template.Icon;
+        Entry.Worldsplash = ModKitAssets.Single("Uloesplash", 128) ?? template.Worldsplash;
+        Entry.Endscreenwinicon = ModKitAssets.Single("Uloeendstat1", 32) ?? template.Endscreenwinicon;
+        Entry.Endscreenloseicon = ModKitAssets.Single("Uloeendstat2", 32) ?? template.Endscreenloseicon;
+        Entry.Worldsprite = ModKitAssets.Worldsprite(template.Worldsprite);
+        Texture fall = ModKitAssets.Sheet("UloeFall-Sheet");
+        Texture land = ModKitAssets.Sheet("UloeIntroR-Sheet");
+        Texture idle = ModKitAssets.Sheet("UloeIdlejustidle-Sheet");
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;

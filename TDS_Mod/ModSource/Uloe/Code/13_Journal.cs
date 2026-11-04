@@ -16,20 +16,20 @@ public static class UloeJournal
             HeroId = UloeData.Hero, Template = template, Hero = hero,
             Rule = hero.Upgradesinit.Count > 0 ? hero.Upgradesinit[0] : null,
             Title = UloeData.Displayname, Lore = UloeData.Lore, Origin = "Rogue Waves",
-            Portrait = Portrait(), Tab = UloeAssets.Single("Uloetabicon", 32), Accent = Purple,
+            Portrait = Portrait(), Tab = ModKitAssets.Single("Uloetabicon", 32), Accent = Purple,
         };
         foreach (UloeData.Build b in UloeData.Builds)
         {
             Beingobject being;
             if (!UloeContent.Beings.TryGetValue(b.Id, out being))
                 continue;
-            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = UloeAssets.Quiet(b.Id) };
+            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = ModKitAssets.Quiet(b.Id) };
             Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
             foreach (UloeData.Upg u in b.Upgrades)
             {
                 Upgradeproperties prop;
                 UloeContent.Upgrades.TryGetValue(u.Id, out prop);
-                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = UloeAssets.Quiet(u.Model) ?? jb.Model };
+                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = ModKitAssets.Quiet(u.Model) ?? jb.Model };
             }
             foreach (UloeData.Upg u in b.Upgrades)
             {
@@ -43,7 +43,7 @@ public static class UloeJournal
             Beingobject photon;
             if (b.Id == UloeData.Bank && UloeContent.Beings.TryGetValue(UloeData.Photon, out photon))
             {
-                List<Sprite> f = UloeAssets.Frames(UloeData.PhotonSheet, UloeData.PhotonCell, new Vector2(0.5f, 0.5f));
+                List<Sprite> f = ModKitAssets.Frames(UloeData.PhotonSheet, UloeData.PhotonCell, new Vector2(0.5f, 0.5f));
                 jb.Units.Add(new ModKitJournalUnit { Id = UloeData.Photon, Title = UloeData.PhotonDisplay, Desc = UloeData.PhotonLore, Entity = photon.Entity, Look = f.Count > 0 ? f[0] : null });
             }
             spec.Buildings.Add(jb);
@@ -61,7 +61,7 @@ public static class UloeJournal
     // An idle frame, front facing right, like the shipped vessel pages (Smacky4-Sheet_0, Snosnoidle-Sheet_3).
     static Sprite Portrait()
     {
-        List<Sprite> f = UloeAssets.Frames("Uloe-Sheet", 32, new Vector2(0.5f, 0.5f));
+        List<Sprite> f = ModKitAssets.Frames("Uloe-Sheet", 32, new Vector2(0.5f, 0.5f));
         return f.Count > 0 ? f[0] : null;
     }
 }

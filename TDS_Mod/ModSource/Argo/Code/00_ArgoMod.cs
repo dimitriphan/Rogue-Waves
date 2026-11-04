@@ -59,7 +59,7 @@ public class ArgoMod : MonoBehaviour
             yield break;
         }
 
-        if (!ArgoAssets.Find())
+        if (!ModKitAssets.Find(ArgoMod.Instance, "Argo"))
         {
             ArgoLog.Error("ArgoAssets_Library is missing from the mod; Argo is disabled");
             yield break;

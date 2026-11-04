@@ -56,7 +56,7 @@ public class UloeMod : MonoBehaviour
             yield break;
         }
 
-        if (!UloeAssets.Find())
+        if (!ModKitAssets.Find(UloeMod.Instance, "Uloe"))
         {
             UloeLog.Error("UloeAssets_Library is missing from the mod; Uloe is disabled");
             yield break;

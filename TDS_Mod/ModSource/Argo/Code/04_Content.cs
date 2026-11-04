@@ -108,7 +108,7 @@ public static class ArgoContent
         Visualproperties.Entry e = from;
         e.Rootvisualproperty = null;
         e.Style = Visualproperties.Styles.Model;
-        GameObject m = ArgoAssets.Model(model);
+        GameObject m = ModKitAssets.Quiet(model);
         if (m == null)
             ArgoLog.Warn("missing model " + model);
         e.Visprefab = m;
@@ -117,7 +117,7 @@ public static class ArgoContent
         e.Additionalmaterials = new List<Material>();
         e.Additionalvisualscripts = Strip(from.Additionalvisualscripts);
         e.Additionalprefabs = new List<GameObject>();
-        GameObject extra = string.IsNullOrEmpty(overlay) ? null : ArgoAssets.Model(overlay);
+        GameObject extra = string.IsNullOrEmpty(overlay) ? null : ModKitAssets.Quiet(overlay);
         if (extra != null)
             e.Additionalprefabs.Add(extra);
         return e;
@@ -135,31 +135,8 @@ public static class ArgoContent
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         if (fathoms)
             for (int f = 2; f <= ArgoData.FathomDeepest; f++)
-                AddSkin(vp, "Fathom" + f, ModelEntry(template.Default, model, display, "Argo_Fathom" + Mathf.Min(f, 5)));
+                ModKitUtil.AddSkin(vp, "Fathom" + f, ModelEntry(template.Default, model, display, "Argo_Fathom" + Mathf.Min(f, 5)));
         return vp;
-    }
-
-    static void AddSkin(Visualproperties vp, string skin, Visualproperties.Entry entry)
-    {
-        Visualproperties.Param p = new Visualproperties.Param();
-        p.Name = skin;
-        p.Value = entry;
-        vp.Skinoverride.Add(p);
-        vp.Skinoverrides[skin] = entry;
-    }
-
-    static void CollectUpgrades(List<Upgradeproperties> from, Dictionary<int, Upgradeproperties> byTier)
-    {
-        if (from == null)
-            return;
-        foreach (Upgradeproperties u in from)
-        {
-            if (u == null)
-                continue;
-            if (!byTier.ContainsKey(u.Priority))
-                byTier[u.Priority] = u;
-            CollectUpgrades(u.Upgrades, byTier);
-        }
     }
 
     // Stats like the shipped data: "Health=40+25" is Health 40, +25 per level (Leveladd). Unknown stats are added with the
@@ -289,7 +266,7 @@ public static class ArgoContent
                 continue;
             }
             Projectileobject proj = ArgoUtil.Clone(template, p[0]);
-            GameObject model = ArgoAssets.Model(p[2]);
+            GameObject model = ModKitAssets.Quiet(p[2]);
             if (model != null)
                 proj.Vis = model;
             // Volleys are announced once by the tower (ArgoClient plays the boom); each pellet only lands.
@@ -486,7 +463,7 @@ public static class ArgoContent
         // Traps keep the template's walk-through hit prefab (the kit template's Curtain).
         bool ranged = Array.Exists(b.Stats, s => s.StartsWith("Range="));
         if (!b.Trap)
-            ModKitTowers.Fit(ent, b.Id, ArgoAssets.Model(b.ModelName), b.Eye, b.Eye + 0.05f, ranged);
+            ModKitTowers.Fit(ent, b.Id, ModKitAssets.Quiet(b.ModelName), b.Eye, b.Eye + 0.05f, ranged);
         ent.Costs = ArgoUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         // 2.0: traps carry no "Tower" tag (Nauts tune towers, never traps; foes don't target them).
@@ -506,12 +483,12 @@ public static class ArgoContent
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from ArgoData.
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
-        CollectUpgrades(te.Upgrades, templateTiers);
+        ModKitUtil.CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0 && b.Upgrades.Length > 0)
         {
             Beingobject hut = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
             if (hut != null && hut.Entity != null)
-                CollectUpgrades(hut.Entity.Upgrades, templateTiers);
+                ModKitUtil.CollectUpgrades(hut.Entity.Upgrades, templateTiers);
         }
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
@@ -605,7 +582,7 @@ public static class ArgoContent
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         Visualproperties.Entry tune = e;
         tune.Spriteobject = ArgoAssets.Naut(crew.Name, templateSprite, true);
-        AddSkin(vp, "Tune", tune);
+        ModKitUtil.AddSkin(vp, "Tune", tune);
         ent.Defaultvisual = vp;
         Register("Mob", vp);
         being.Entity = ent;
@@ -748,14 +725,14 @@ public static class ArgoContent
         Entry.Displayskill = ArgoData.Displayskill;
         Entry.Color = ArgoData.Color;
         // Smacky's Icon is a 12x12 sprite (player lists, setup bar, leaderboards): use the matching ready-up sprite.
-        Entry.Icon = ArgoAssets.Single("Readyup6argo", 12) ?? template.Icon;
-        Entry.Worldsplash = ArgoAssets.Single("Argosplash", 128) ?? template.Worldsplash;
-        Entry.Endscreenwinicon = ArgoAssets.Single("Argoendstat1", 32) ?? template.Endscreenwinicon;
-        Entry.Endscreenloseicon = ArgoAssets.Single("Argoendstat2", 32) ?? template.Endscreenloseicon;
-        Entry.Worldsprite = ArgoAssets.Worldsprite(template.Worldsprite);
-        Texture fall = ArgoAssets.Sheet("ArgoFall-Sheet");
-        Texture land = ArgoAssets.Sheet("ArgoIntroR-Sheet");
-        Texture idle = ArgoAssets.Sheet("ArgoIdlejustidle-Sheet");
+        Entry.Icon = ModKitAssets.Single("Readyup6argo", 12) ?? template.Icon;
+        Entry.Worldsplash = ModKitAssets.Single("Argosplash", 128) ?? template.Worldsplash;
+        Entry.Endscreenwinicon = ModKitAssets.Single("Argoendstat1", 32) ?? template.Endscreenwinicon;
+        Entry.Endscreenloseicon = ModKitAssets.Single("Argoendstat2", 32) ?? template.Endscreenloseicon;
+        Entry.Worldsprite = ModKitAssets.Worldsprite(template.Worldsprite);
+        Texture fall = ModKitAssets.Sheet("ArgoFall-Sheet");
+        Texture land = ModKitAssets.Sheet("ArgoIntroR-Sheet");
+        Texture idle = ModKitAssets.Sheet("ArgoIdlejustidle-Sheet");
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;

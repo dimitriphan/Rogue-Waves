@@ -104,7 +104,7 @@ public static class ArgoClient
             switch (type)
             {
                 case "Argo_Clang":
-                    ArgoAssets.Effect("World_Argo_Clang", position + Vector3.up * 0.2f, 1f);
+                    ModKitAssets.Effect("World_Argo_Clang", position + Vector3.up * 0.2f, 1f);
                     ArgoAssets.Play("Argo_Clang", position);
                     break;
                 case "Argo_Sonar":
@@ -126,7 +126,7 @@ public static class ArgoClient
                 case "Argo_Lance":
                     Aim(master, position, 0.12f);
                     ArgoAssets.Play("Argo_Lance", at);
-                    ArgoAssets.Effect("World_Argo_Lanceflash", Muzzlepoint(master, position), 1.2f);
+                    ModKitAssets.Effect("World_Argo_Lanceflash", Muzzlepoint(master, position), 1.2f);
                     break;
                 case "Argo_Reel":
                     // the harpoon's line, from the muzzle to the foe it reels in, while the winch clicks
@@ -138,12 +138,12 @@ public static class ArgoClient
                     break;
                 case "Argo_Paydirt":
                     // a felled foe is dug up: dust where it fell, a crack from it to the drill
-                    ArgoAssets.Effect("World_Argo_Drilldust", Ground(position) + Vector3.up * 0.1f, 1.2f);
+                    ModKitAssets.Effect("World_Argo_Drilldust", Ground(position) + Vector3.up * 0.1f, 1.2f);
                     if (master != null)
                         Run(Tether(Ground(position), Ground(at), 0.9f));
                     break;
                 case "Argo_Mine":
-                    ArgoAssets.Effect("World_Argo_Drilldust", Ground(position) + Vector3.up * 0.1f, 1.2f);
+                    ModKitAssets.Effect("World_Argo_Drilldust", Ground(position) + Vector3.up * 0.1f, 1.2f);
                     ArgoAssets.Play("Argo_Drill", at);
                     SpinFor(master, 1.6f);
                     // Which ore the drill bites: a crack runs along the ground from the drill to it.
@@ -151,11 +151,11 @@ public static class ArgoClient
                         Run(Tether(Ground(at), Ground(position), 0.9f));
                     break;
                 case "Argo_Gusher":
-                    ArgoAssets.Effect("World_Argo_Gusher", Ground(position), 2.5f);
+                    ModKitAssets.Effect("World_Argo_Gusher", Ground(position), 2.5f);
                     ArgoAssets.Play("Argo_Fathom", position, 0.8f);
                     break;
                 case "Argo_Fathom":
-                    ArgoAssets.Effect("World_Argo_Fathom", Ground(at), 2.5f);
+                    ModKitAssets.Effect("World_Argo_Fathom", Ground(at), 2.5f);
                     ArgoAssets.Play("Argo_Fathom", at);
                     FathomNote(master, Mathf.RoundToInt(number));
                     break;
@@ -175,17 +175,17 @@ public static class ArgoClient
                     OnFoe("World_Argo_Dragunder", position, 0.05f);
                     ArgoAssets.Play("Argo_Gurgle", FoePos(position, at));
                     break;
-                case "Argo_Brine": ArgoAssets.Effect("World_Argo_Brine", position + Vector3.up * 0.2f, 1.2f); break;
+                case "Argo_Brine": ModKitAssets.Effect("World_Argo_Brine", position + Vector3.up * 0.2f, 1.2f); break;
                 case "Argo_Whirl":
                     Ring("World_Argo_Whirl", position, number, 1f);
                     break;
-                case "Argo_Bedrock": ArgoAssets.Effect("World_Argo_Bedrock", Ground(position) + Vector3.up * 0.05f, 1f); break;
+                case "Argo_Bedrock": ModKitAssets.Effect("World_Argo_Bedrock", Ground(position) + Vector3.up * 0.05f, 1f); break;
                 case "Argo_Faultburst":
-                    ArgoAssets.Effect("World_Argo_Faultburst", Ground(position) + Vector3.up * 0.05f, 1.2f);
+                    ModKitAssets.Effect("World_Argo_Faultburst", Ground(position) + Vector3.up * 0.05f, 1.2f);
                     ArgoAssets.Play("Argo_Quake", position, 0.4f);
                     break;
                 case "Argo_Flood":
-                    ArgoAssets.Effect("World_Argo_Flood", Ground(position) + Vector3.up * 0.1f, 1.5f);
+                    ModKitAssets.Effect("World_Argo_Flood", Ground(position) + Vector3.up * 0.1f, 1.5f);
                     ArgoAssets.Play("Argo_Splash", position);
                     break;
                 case "Argo_Aim":
@@ -194,29 +194,29 @@ public static class ArgoClient
                     if (master != null) Tremor(master);
                     break;
                 case "Argo_Build":
-                    ArgoAssets.Effect("World_Argo_Bubbles", Ground(at), 2f);
+                    ModKitAssets.Effect("World_Argo_Bubbles", Ground(at), 2f);
                     bool water = master != null && ArgoData.BuildFor(master.Being.Value.ToString()) != null && ArgoData.BuildFor(master.Being.Value.ToString()).Trap;
                     ArgoAssets.Play(water ? "Argo_Splash" : "Argo_Build", at);
                     break;
                 case "Argo_Upgrade": ArgoAssets.Play("Argo_Upgrade", at); break;
                 case "Argo_Towerdown":
-                    ArgoAssets.Effect("World_Argo_Wreck", Ground(at), 2.5f);
+                    ModKitAssets.Effect("World_Argo_Wreck", Ground(at), 2.5f);
                     ArgoAssets.Play("Argo_Death", at, 0.6f);
                     break;
                 case "Argo_Herodeath":
-                    ArgoAssets.Effect("World_Hero_Argo_Death", at, 3f);
+                    ModKitAssets.Effect("World_Hero_Argo_Death", at, 3f);
                     ArgoAssets.Play("Argo_Death", at);
                     break;
                 case "Argo_Naut": ArgoAssets.Play("Argo_Naut", position); break;
                 case "Argo_Dive":
-                    ArgoAssets.Effect("World_Argo_Bubbles", Ground(position), 2f);
+                    ModKitAssets.Effect("World_Argo_Bubbles", Ground(position), 2f);
                     ArgoAssets.Play("Argo_Dive", position);
                     break;
                 case "Argo_Tune":
-                    ArgoAssets.Effect("World_Argo_Tunespark", position + Vector3.up * 0.4f, 1.2f);
+                    ModKitAssets.Effect("World_Argo_Tunespark", position + Vector3.up * 0.4f, 1.2f);
                     ArgoAssets.Play("Argo_Tune", position);
                     break;
-                case "Argo_Repair": ArgoAssets.Effect("World_Argo_Tunespark", position + Vector3.up * 0.5f, 1f); break;
+                case "Argo_Repair": ModKitAssets.Effect("World_Argo_Tunespark", position + Vector3.up * 0.5f, 1f); break;
                 case "Argo_Dry":
                     if (ModKitUtil.OwnedLocally(master))
                         Helper_Uitools.Warning("This Drill Rig has no ore within 2 tiles to mine", "", 3f);
@@ -238,7 +238,7 @@ public static class ArgoClient
         Entity_Master foe = ArgoUtil.ById((ulong)Mathf.RoundToInt(code.x));
         if (foe == null)
             return;
-        GameObject fx = ArgoAssets.Effect(vfx, ModKitUtil.Pos(foe) + Vector3.up * height, Mathf.Max(0.3f, code.y));
+        GameObject fx = ModKitAssets.Effect(vfx, ModKitUtil.Pos(foe) + Vector3.up * height, Mathf.Max(0.3f, code.y));
         if (fx != null)
             fx.transform.SetParent(foe.transform, true);
     }
@@ -281,7 +281,7 @@ public static class ArgoClient
     // Rings are drawn at radius 1 and scaled to the server's radius (they simulate in local space, Hierarchy scaling).
     static void Ring(string vfx, Vector3 at, float radius, float life)
     {
-        GameObject ring = ArgoAssets.Effect(vfx, Ground(at) + Vector3.up * 0.05f, life);
+        GameObject ring = ModKitAssets.Effect(vfx, Ground(at) + Vector3.up * 0.05f, life);
         if (ring == null)
             return;
         radius = Mathf.Max(0.3f, radius);
@@ -294,7 +294,7 @@ public static class ArgoClient
     static void Unscale(GameObject fx, string vfx, float scale)
     {
         ParticleSystem ps = fx.GetComponent<ParticleSystem>();
-        GameObject template = ArgoAssets.Vfx(vfx);
+        GameObject template = ModKitAssets.Vfx(vfx);
         ParticleSystem tps = template != null ? template.GetComponent<ParticleSystem>() : null;
         if (ps == null || tps == null || scale <= 0.01f)
             return;
@@ -315,7 +315,7 @@ public static class ArgoClient
             List<string> tags = e.Client.Beingobject.Entity.Tags;
             if (ModKitUtil.Team(e) == team || tags == null || !tags.Contains("Mob") || ModKitUtil.Flat(ModKitUtil.Pos(e), at) > radius)
                 continue;
-            GameObject mark = ArgoAssets.Effect("World_Argo_Ping", ModKitUtil.Pos(e) + Vector3.up * 0.55f, ArgoData.PingDuration);
+            GameObject mark = ModKitAssets.Effect("World_Argo_Ping", ModKitUtil.Pos(e) + Vector3.up * 0.55f, ArgoData.PingDuration);
             if (mark != null)
                 mark.transform.SetParent(e.transform, true);
         }
@@ -385,10 +385,10 @@ public static class ArgoClient
             return;
         if (ring)
         {
-            ArgoAssets.Effect("World_Argo_Smokering", ModKitUtil.Pos(master), 1.5f);
+            ModKitAssets.Effect("World_Argo_Smokering", ModKitUtil.Pos(master), 1.5f);
             return;
         }
-        GameObject smoke = ArgoAssets.Effect("World_Argo_Muzzle", Muzzlepoint(master, target), 1.2f);
+        GameObject smoke = ModKitAssets.Effect("World_Argo_Muzzle", Muzzlepoint(master, target), 1.2f);
         if (smoke != null)
         {
             Vector3 d = target - ModKitUtil.Pos(master);
@@ -404,7 +404,7 @@ public static class ArgoClient
     {
         if (tetherMat != null)
             return tetherMat;
-        GameObject fx = ArgoAssets.Vfx("World_Argo_Drilldust");
+        GameObject fx = ModKitAssets.Vfx("World_Argo_Drilldust");
         ParticleSystemRenderer r = fx != null ? fx.GetComponent<ParticleSystemRenderer>() : null;
         tetherMat = r != null && r.sharedMaterial != null ? new Material(r.sharedMaterial) : new Material(Shader.Find("Sprites/Default"));
         tetherMat.name = "Argo_Tether";
@@ -609,7 +609,7 @@ public static class ArgoClient
             rings[drill] = v = new Drillvis { Master = drill };
         if (v.Ring == null)
         {
-            v.Ring = ArgoAssets.Effect("World_Argo_Tremor", Ground(ModKitUtil.Pos(drill)) + Vector3.up * 0.04f, 0f);
+            v.Ring = ModKitAssets.Effect("World_Argo_Tremor", Ground(ModKitUtil.Pos(drill)) + Vector3.up * 0.04f, 0f);
             if (v.Ring == null)
                 return;
             v.Radius = -1f;
@@ -686,7 +686,7 @@ public static class ArgoClient
         }
         if (tower == null)
             return;
-        mark = ArgoAssets.Effect("World_Argo_Tuned", ModKitUtil.Pos(tower) + Vector3.up * 0.3f, 0f);
+        mark = ModKitAssets.Effect("World_Argo_Tuned", ModKitUtil.Pos(tower) + Vector3.up * 0.3f, 0f);
         if (mark != null)
         {
             mark.transform.SetParent(tower.transform, true);
@@ -700,7 +700,7 @@ public static class ArgoClient
     {
         Ring("World_Argo_Sonarring", hero, 3f, 1.5f);
         Ring("World_Argo_Quake", hero + Vector3.right * 2f, 1.5f, 1.4f);
-        ArgoAssets.Effect("World_Argo_Tunespark", hero + Vector3.left * 1.2f + Vector3.up * 0.4f, 1.2f);
+        ModKitAssets.Effect("World_Argo_Tunespark", hero + Vector3.left * 1.2f + Vector3.up * 0.4f, 1.2f);
     }
 #endif
 }

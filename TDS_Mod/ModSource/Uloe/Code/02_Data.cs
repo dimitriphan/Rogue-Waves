@@ -33,7 +33,6 @@ public static class UloeData
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
 
-    public const string ReferenceSound = "Upgrade";
     public static readonly Dictionary<string, float> SoundVolume = new Dictionary<string, float>
     {
         { "Uloe_Zap", 0.02f }, { "Uloe_Beam", 0.018f }, { "Uloe_Plugin", 0.035f }, { "Uloe_Unplug", 0.025f },

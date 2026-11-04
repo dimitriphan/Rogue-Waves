@@ -60,7 +60,7 @@ public class SpoolMod : MonoBehaviour
             yield break;
         }
 
-        if (!SpoolAssets.Find())
+        if (!ModKitAssets.Find(SpoolMod.Instance, "Spool"))
         {
             SpoolLog.Error("SpoolAssets_Library is missing from the mod; Spool is disabled");
             yield break;

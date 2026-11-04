@@ -14,7 +14,7 @@ public static class YosseleJournal
             HeroId = YosseleData.Hero, Template = template, Hero = hero,
             Rule = hero.Upgradesinit.Count > 0 ? hero.Upgradesinit[0] : null,
             Title = YosseleData.Displayname, Lore = YosseleData.Lore, Origin = "Rogue Waves",
-            Portrait = Portrait(), Tab = YosseleAssets.Single("Yosseletabicon", 32), Accent = YosseleContent.Accent,
+            Portrait = Portrait(), Tab = ModKitAssets.Single("Yosseletabicon", 32), Accent = YosseleContent.Accent,
         };
         foreach (string[] kv in YosseleData.ParamLabels)
             spec.Labels[kv[0]] = kv[1];
@@ -24,7 +24,7 @@ public static class YosseleJournal
             // The Bonsai has no page of its own: the Tree's Bonsai upgrade page tells it.
             if (b.Id == YosseleData.Bonsai || !YosseleContent.Beings.TryGetValue(b.Id, out being))
                 continue;
-            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore + " Grows up to " + b.Max + " stages.", Entity = being.Entity, Model = YosseleAssets.Model(b.Id) };
+            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore + " Grows up to " + b.Max + " stages.", Entity = being.Entity, Model = ModKitAssets.Model(b.Id) };
             Beingobject friend;
             if (b.Id == YosseleData.Cannon && YosseleContent.Beings.TryGetValue(YosseleData.Friend, out friend))
             {
@@ -36,7 +36,7 @@ public static class YosseleJournal
             {
                 Upgradeproperties prop;
                 YosseleContent.Upgrades.TryGetValue(u.Id, out prop);
-                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Upgrade = prop, Model = YosseleAssets.Model(u.Model) ?? jb.Model };
+                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Upgrade = prop, Model = ModKitAssets.Model(u.Model) ?? jb.Model };
             }
             foreach (YosseleData.Upg u in b.Upgrades)
             {
@@ -60,7 +60,7 @@ public static class YosseleJournal
     // An idle frame, front facing right, like the shipped vessel pages (Smacky4-Sheet_0, Snosnoidle-Sheet_3).
     static Sprite Portrait()
     {
-        List<Sprite> f = YosseleAssets.Frames("Yossele-Sheet", 32, new Vector2(0.5f, 0.5f));
+        List<Sprite> f = ModKitAssets.Frames("Yossele-Sheet", 32, new Vector2(0.5f, 0.5f));
         return f.Count > 0 ? f[0] : null;
     }
 }

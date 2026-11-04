@@ -20,9 +20,6 @@ public static class SpoolContent
     static Bl_Address.Loadgroup group;
     static readonly Dictionary<string, Bl_Address.Loadlist> lists = new Dictionary<string, Bl_Address.Loadlist>();
 
-    // Script names written for one shipped vessel (they hard-code its objects); everything else is generic.
-    static readonly string[] VesselNames = { "Smacky", "Snosno", "Boutman", "Fie", "Buster" };
-
     public static void Build(Heroentryobject template)
     {
         string folder = template.Heroloads.Objectname;
@@ -93,7 +90,7 @@ public static class SpoolContent
     static void RegisterVfx()
     {
         Bl_Address.Loadlist list = lists["Vfx"];
-        foreach (GameObject go in SpoolAssets.AllVfx())
+        foreach (GameObject go in ModKitAssets.AllVfx())
         {
             list.Items[go.name] = go;
             list.Index.Add(go);
@@ -115,27 +112,6 @@ public static class SpoolContent
         return r != null ? r.sharedMaterial : null;
     }
 
-    static bool VesselSpecific(string name)
-    {
-        if (name == "Entity_Ai_General_Upgrade")
-            return true;
-        foreach (string v in VesselNames)
-            if (name.Contains(v))
-                return true;
-        return false;
-    }
-
-    static List<UnityEngine.Object> Strip(List<UnityEngine.Object> scripts)
-    {
-        List<UnityEngine.Object> kept = new List<UnityEngine.Object>();
-        if (scripts == null)
-            return kept;
-        foreach (UnityEngine.Object s in scripts)
-            if (s != null && !VesselSpecific(s.name))
-                kept.Add(s);
-        return kept;
-    }
-
     static List<UnityEngine.Object> Scripts(params string[] names)
     {
         List<UnityEngine.Object> l = new List<UnityEngine.Object>();
@@ -148,11 +124,11 @@ public static class SpoolContent
         Visualproperties.Entry e = from;
         e.Rootvisualproperty = null;
         e.Style = Visualproperties.Styles.Model;
-        e.Visprefab = SpoolAssets.Model(model);
+        e.Visprefab = ModKitAssets.Model(model);
         e.Spriteobject = null;
         e.Displayname = display;
         e.Additionalmaterials = new List<Material>();
-        e.Additionalvisualscripts = Strip(from.Additionalvisualscripts);
+        e.Additionalvisualscripts = ModKitUtil.Strip(from.Additionalvisualscripts);
         e.Additionalprefabs = new List<GameObject>();
         return e;
     }
@@ -167,36 +143,22 @@ public static class SpoolContent
         return vp;
     }
 
-    // A unit's look: its sheet cut into Idle, Move and Attack (SpoolAssets.Unit), on the template's sprite visual.
+    // A unit's look: its sheet cut into Idle, Move and Attack (ModKitAssets.Unit), on the template's sprite visual.
     static Visualproperties UnitVisual(Visualproperties template, string name, string sheet, int cell, string display, Color tint)
     {
         Visualproperties vp = UnityEngine.Object.Instantiate(template);
         SpoolUtil.Retag(vp, name + "_Visualproperties");
         Visualproperties.Entry e = template.Default;
         e.Rootvisualproperty = null;
-        e.Spriteobject = SpoolAssets.Unit(sheet, cell, name + "_Sprite", template.Default.Spriteobject);
+        e.Spriteobject = ModKitAssets.Unit(sheet, cell, name + "_Sprite", template.Default.Spriteobject);
         e.Displayname = display;
         e.Displaycolor = tint;
-        GameObject poof = SpoolAssets.Vfx("World_Spool_Stuffing");
+        GameObject poof = ModKitAssets.Vfx("World_Spool_Stuffing");
         if (poof != null) e.Vfxend = poof;
         vp.Default = e;
         vp.Skinoverride = new List<Visualproperties.Param>();
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         return vp;
-    }
-
-    static void CollectUpgrades(List<Upgradeproperties> from, Dictionary<int, Upgradeproperties> byTier)
-    {
-        if (from == null)
-            return;
-        foreach (Upgradeproperties u in from)
-        {
-            if (u == null)
-                continue;
-            if (!byTier.ContainsKey(u.Priority))
-                byTier[u.Priority] = u;
-            CollectUpgrades(u.Upgrades, byTier);
-        }
     }
 
     // "Health=25+25" -> value 25, +25 per level. Builds a stat block holding exactly these stats, each styled like the
@@ -236,9 +198,9 @@ public static class SpoolContent
     static List<Upgradeproperties> Tree(SpoolData.Build b, Entityobject te)
     {
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
-        CollectUpgrades(te.Upgrades, templateTiers);
+        ModKitUtil.CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0)
-            CollectUpgrades(ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut").Entity.Upgrades, templateTiers);
+            ModKitUtil.CollectUpgrades(ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut").Entity.Upgrades, templateTiers);
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
         foreach (SpoolData.Upg u in b.Upgrades)
@@ -259,7 +221,7 @@ public static class SpoolContent
                 up.Ent_Visual = null;
             else
             {
-                up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), SpoolAssets.Quiet(u.Model) != null ? u.Model : b.Id, u.Display);
+                up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), ModKitAssets.Quiet(u.Model) != null ? u.Model : b.Id, u.Display);
                 Register("Upgrade", up.Ent_Visual);
             }
             up.Defaultparam = new List<Upgradeproperties.Param>();
@@ -386,7 +348,7 @@ public static class SpoolContent
             return;
         }
         Projectileobject proj = SpoolUtil.Clone(template, SpoolData.Needle);
-        GameObject model = SpoolAssets.Model("Spool_Needle");
+        GameObject model = ModKitAssets.Model("Spool_Needle");
         if (model != null)
             proj.Vis = model;
         proj.Sfxstart = "";
@@ -463,10 +425,10 @@ public static class SpoolContent
         ent.Name = b.Id;
         ent.Display_Name = b.Display;
         ent.Display_Desc = b.Desc;
-        ent.Aiscripts = Strip(te.Aiscripts);
+        ent.Aiscripts = ModKitUtil.Strip(te.Aiscripts);
         // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
         ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"));
-        ent.Visualscripts = Strip(te.Visualscripts);
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         ent.Costs = ModKitUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Sellable = true;
@@ -479,7 +441,7 @@ public static class SpoolContent
         Register("Mob", ent.Defaultvisual);
         // Kit 1.2: the range sphere the game draws (and the stock AIs measure from) sits on this tower, at the height its
         // brain measures from (its Entityposition).
-        ModKitTowers.Fit(ent, b.Id, SpoolAssets.Model(b.Id), 0f, 0.05f, Array.Exists(b.Stats, s => s.StartsWith("Range=")));
+        ModKitTowers.Fit(ent, b.Id, ModKitAssets.Model(b.Id), 0f, 0.05f, Array.Exists(b.Stats, s => s.StartsWith("Range=")));
         ent.Upgrades = Tree(b, te);
         being.Entity = ent;
         Beings[b.Id] = being;
@@ -629,7 +591,7 @@ public static class SpoolContent
         ent.Display_Name = "Cookie Tin Spot";
         ent.Display_Desc = "Crafted from this Tin run here";
         ent.Aiscripts = new List<UnityEngine.Object>();
-        ent.Visualscripts = Strip(te.Visualscripts);
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         ent.Upgrades = new List<Upgradeproperties>();
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Costs = new List<Link_Resourceset>();
@@ -736,10 +698,10 @@ public static class SpoolContent
         ent.Display_Desc = SpoolData.HeroDesc;
         // A melee vessel is built like Smacky: Mob_General, Mob_Movement, the stock Mob_Combat (targets, mines ore and
         // sends "Attack", which Entity_Vis_Mob_Attack turns into the attack animation) and Hero_Buildsell.
-        ent.Aiscripts = Strip(te.Aiscripts);
+        ent.Aiscripts = ModKitUtil.Strip(te.Aiscripts);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Combat"))
             ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), ModKitUtil.Script("Entity_Ai_Mob_Combat"));
-        ent.Visualscripts = Strip(te.Visualscripts);
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
             ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Mob_Attack"));
         ent.Upgrades = new List<Upgradeproperties>();
@@ -790,14 +752,14 @@ public static class SpoolContent
         Entry.Displayskill = SpoolData.Displayskill;
         Entry.Color = Purple;
         // The 12x12 sprite in player lists, the setup bar and leaderboards: the ready-up portrait in its brackets.
-        Entry.Icon = SpoolAssets.Single("Readyup6spool", 12) ?? template.Icon;
-        Entry.Worldsplash = SpoolAssets.Single("Spoolsplash", 128) ?? template.Worldsplash;
-        Entry.Endscreenwinicon = SpoolAssets.Single("Spoolendstat1", 32) ?? template.Endscreenwinicon;
-        Entry.Endscreenloseicon = SpoolAssets.Single("Spoolendstat2", 32) ?? template.Endscreenloseicon;
-        Entry.Worldsprite = SpoolAssets.Worldsprite(template.Worldsprite);
-        Texture fall = SpoolAssets.Sheet("SpoolFall-Sheet");
-        Texture land = SpoolAssets.Sheet("SpoolIntroR-Sheet");
-        Texture idle = SpoolAssets.Sheet("SpoolIdlejustidle-Sheet");
+        Entry.Icon = ModKitAssets.Single("Readyup6spool", 12) ?? template.Icon;
+        Entry.Worldsplash = ModKitAssets.Single("Spoolsplash", 128) ?? template.Worldsplash;
+        Entry.Endscreenwinicon = ModKitAssets.Single("Spoolendstat1", 32) ?? template.Endscreenwinicon;
+        Entry.Endscreenloseicon = ModKitAssets.Single("Spoolendstat2", 32) ?? template.Endscreenloseicon;
+        Entry.Worldsprite = ModKitAssets.Worldsprite(template.Worldsprite);
+        Texture fall = ModKitAssets.Sheet("SpoolFall-Sheet");
+        Texture land = ModKitAssets.Sheet("SpoolIntroR-Sheet");
+        Texture idle = ModKitAssets.Sheet("SpoolIdlejustidle-Sheet");
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;

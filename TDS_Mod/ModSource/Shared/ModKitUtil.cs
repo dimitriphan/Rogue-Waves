@@ -285,6 +285,57 @@ public static class ModKitUtil
             shown.Remove(e);
     }
 
+    // ---------------------------------------------------------------- content (beings and upgrades built at boot)
+
+    // Script names written for one shipped vessel (they hard-code its objects); everything else is generic.
+    public static readonly string[] VesselNames = { "Smacky", "Snosno", "Boutman", "Fie", "Buster" };
+
+    public static bool VesselSpecific(string name)
+    {
+        if (name == "Entity_Ai_General_Upgrade")
+            return true;
+        foreach (string v in VesselNames)
+            if (name.Contains(v))
+                return true;
+        return false;
+    }
+
+    // A stock being's scripts without the vessel-specific ones and without the stock upgrade AI (a part adds that back
+    // where its buildings upgrade).
+    public static List<UnityEngine.Object> Strip(List<UnityEngine.Object> scripts)
+    {
+        List<UnityEngine.Object> kept = new List<UnityEngine.Object>();
+        if (scripts == null)
+            return kept;
+        foreach (UnityEngine.Object s in scripts)
+            if (s != null && !VesselSpecific(s.name))
+                kept.Add(s);
+        return kept;
+    }
+
+    public static void AddSkin(Visualproperties vp, string skin, Visualproperties.Entry entry)
+    {
+        Visualproperties.Param p = new Visualproperties.Param();
+        p.Name = skin;
+        p.Value = entry;
+        vp.Skinoverride.Add(p);
+        vp.Skinoverrides[skin] = entry;
+    }
+
+    public static void CollectUpgrades(List<Upgradeproperties> from, Dictionary<int, Upgradeproperties> byTier)
+    {
+        if (from == null)
+            return;
+        foreach (Upgradeproperties u in from)
+        {
+            if (u == null)
+                continue;
+            if (!byTier.ContainsKey(u.Priority))
+                byTier[u.Priority] = u;
+            CollectUpgrades(u.Upgrades, byTier);
+        }
+    }
+
     // ---------------------------------------------------------------- hit chains
 
     // Keeps a handler at the front of a thing's hit chain: Helper_Entitytools.Updateinteract rebuilds the chain from the
