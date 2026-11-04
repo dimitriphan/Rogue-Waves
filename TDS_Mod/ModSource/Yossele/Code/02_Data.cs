@@ -54,7 +54,6 @@ public static class YosseleData
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
 
-    public const string ReferenceSound = "Upgrade";
     public static readonly Dictionary<string, float> SoundVolume = new Dictionary<string, float>
     {
         { "Yossele_Thud", 0.04f }, { "Yossele_Lob", 0.03f }, { "Yossele_Pop", 0.025f }, { "Yossele_Seeds", 0.02f },

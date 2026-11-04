@@ -21,7 +21,7 @@ public static class YosseleFriends
     {
         int n = 0;
         foreach (YosseleFriendBrain f in all)
-            if (f != null && f.Master != null && YosseleUtil.Alive(f.Master) && YosseleUtil.Owner(f.Master) == owner)
+            if (f != null && f.Master != null && ModKitUtil.Alive(f.Master) && ModKitUtil.Owner(f.Master) == owner)
                 n++;
         return n;
     }
@@ -29,7 +29,7 @@ public static class YosseleFriends
     // A spored foe fell where 'at' is: raise a Cordyfriend there a moment later (the foe's despawn is still running).
     public static bool Raise(YosseleCannonBrain cannon, Vector3 at)
     {
-        if (cannon == null || cannon.Master == null || !YosseleUtil.Alive(cannon.Master))
+        if (cannon == null || cannon.Master == null || !ModKitUtil.Alive(cannon.Master))
             return false;
         if (CountOf(cannon.Owner) >= YosseleData.FriendCap)
         {
@@ -37,7 +37,7 @@ public static class YosseleFriends
             return false;
         }
         Beingobject being;
-        Genitem tile = YosseleUtil.Tile(at);
+        Genitem tile = ModKitUtil.Tile(at);
         if (!YosseleContent.Beings.TryGetValue(YosseleData.Friend, out being) || tile == null)
         {
             Failed++;
@@ -49,7 +49,7 @@ public static class YosseleFriends
 
     static void Spawn(YosseleCannonBrain cannon, Beingobject being, Genitem tile, Vector3 at)
     {
-        if (cannon == null || cannon.Master == null || cannon.Master.Beingserver == null || !YosseleUtil.Alive(cannon.Master))
+        if (cannon == null || cannon.Master == null || cannon.Master.Beingserver == null || !ModKitUtil.Alive(cannon.Master))
             return;
         Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(cannon.Master.Beingserver);
         spawn.Genadd = tile;
@@ -67,7 +67,7 @@ public static class YosseleFriends
             return;
         }
         Raised++;
-        YosseleUtil.Vis(cannon.Master, "Yossele_Rise", at, 0f);
+        ModKitUtil.Vis(cannon.Master, "Yossele_Rise", at, 0f);
     }
 
     // The spawn hook (YosseleServer.OnSpawn): its brain, and where it rose.
@@ -90,7 +90,7 @@ public static class YosseleFriends
         if (killed)
         {
             Fell++;
-            YosseleUtil.Vis(friend.Master, "Yossele_Friendfell", YosseleUtil.Pos(friend.Master), 0f);
+            ModKitUtil.Vis(friend.Master, "Yossele_Friendfell", ModKitUtil.Pos(friend.Master), 0f);
         }
     }
 }
@@ -113,7 +113,7 @@ public class YosseleFriendBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!YosseleUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -124,7 +124,7 @@ public class YosseleFriendBrain : MonoBehaviour
                 Started = true;
                 if (!HasHome)
                 {
-                    Home = YosseleUtil.Pos(Master);
+                    Home = ModKitUtil.Pos(Master);
                     HasHome = true;
                 }
             }
@@ -144,20 +144,20 @@ public class YosseleFriendBrain : MonoBehaviour
     // The template's PuppetBrain melee walk: the nearest foe within reach that is within the leash of home, else home.
     void Think()
     {
-        if (!YosseleUtil.Alive(Master))
+        if (!ModKitUtil.Alive(Master))
             return;
-        Vector3 pos = YosseleUtil.Pos(Master);
-        float range = YosseleUtil.Stat(Master, "Range", 1.5f);
-        List<Entity_Master> foes = YosseleUtil.FoesNear(Master, pos, Mathf.Max(YosseleData.FriendEngage, range + 0.5f));
-        foes.RemoveAll(f => YosseleUtil.Flat(YosseleUtil.Pos(f), Home) > YosseleData.FriendLeash + 0.5f);
+        Vector3 pos = ModKitUtil.Pos(Master);
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f);
+        List<Entity_Master> foes = ModKitUtil.FoesNear(Master, pos, Mathf.Max(YosseleData.FriendEngage, range + 0.5f));
+        foes.RemoveAll(f => ModKitUtil.Flat(ModKitUtil.Pos(f), Home) > YosseleData.FriendLeash + 0.5f);
         Entity_Master target = foes.Count > 0 ? foes[0] : null;
         string state = Master.State.Value.ToString();
-        float fromHome = YosseleUtil.Flat(pos, Home);
+        float fromHome = ModKitUtil.Flat(pos, Home);
         if (fromHome > YosseleData.FriendLeash + 1f)
             target = null;   // strayed too far: home first
         if (target != null)
         {
-            float d = Vector3.Distance(YosseleUtil.Pos(target), pos);
+            float d = Vector3.Distance(ModKitUtil.Pos(target), pos);
             if (d > range - 0.1f && (Target != target || state != "Move"))
                 MoveTo(target, Vector3.zero);
             Target = target;

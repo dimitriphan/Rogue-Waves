@@ -1,5 +1,7 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-04, code simplification (compiled, not yet run in game):** besides the stock route below, the game's own `Entity_Ai_General_Upgrade` runs the buildings' upgrade panels again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged. The self-test now has 145 checks (148 less the deleted route's three). The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (T1, G1, G3, U1, L1).
+
 **Built from the scope in one stretch: design (`DESIGN.md`), code (`Code/`), self-test (`Code/99_SelfTest.cs`), temporary art
 (`Assets/UloeMod/Editor`, `Previews/0.1/ASSETS.md`).** The scaffold is Spool with Uloe's content; every Spool mechanic, sheet,
 model, effect and sound is gone. The sheet is `docs/scope/10_Vessel_Uloe.txt`; the routes are `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`
@@ -36,13 +38,13 @@ default now and a caller may hand one `Data` to several foes.
 | File | What |
 |---|---|
 | `00_UloeMod.cs` | Boot (pack registry part "Uloe", asset lookup, content, journal), per-frame calls into the kit and the server |
-| `01_Util.cs` | Helpers: Spool's (stats, tiles, walking, JSON, Vis, debuff looks) plus `Keep`, `Picked`, `IsNode`, `NearestNode`, `NodeAura`, `SegmentDistance`, `Front`, `Listen` |
+| `01_Util.cs` | Uloe's own helpers: `Picked`, `IsNode`, `NearestNode`, `NodeAura`, `SegmentDistance`; stats, tiles, walking, JSON, Vis, debuff looks, `Keep`, `Front` and `Listen` are the kit's `ModKitUtil` since kit 1.8 |
 | `02_Data.cs` | Every name, text and number |
-| `03_Assets.cs` | Sprite sheets to animations (the vessel twice, plain and lit; the Photon), boat sprite, 12 px icons, sounds and effects |
-| `04_Content.cs` | Clones the hero (Smacky), the Glass (Archer), Bank and Flood Light (Mining Hut), Mirror (Wall), Photon (miner), the spark (Sno Sno's snowball), the beam (Buster's Totem beam), Blind and Illuminate (stock scripts on pack data), the commands, the four Directions, the journal |
+| `03_Assets.cs` | The vessel's animations (twice, plain and lit), 12 px icons, tower material, sound levels; slicing, the Photon's unit sheet, the boat sprite, sounds and effects are the kit's `ModKitAssets` since kit 1.8 |
+| `04_Content.cs` | Clones the hero (Smacky), the Glass (Archer), Bank and Flood Light (Mining Hut), Mirror (Wall), Photon (miner), the spark (Sno Sno's snowball), the beam (Buster's Totem beam), the commands, the four Directions, the journal |
 | `05_Server.cs` | Host rules: `UloeLight` (one source's share of Light), `UloeServer` (spawn and despawn hooks, `Shine`, Flood Light paths), `UloeMarks` (Blind and Illuminate) |
 | `06_HeroBrain.cs` | The vessel: arms the spark, its own Light, PLUG IN, the Directions |
-| `07_Building.cs` | Base for the buildings (upgrade flow mirroring `Entity_Ai_General_Upgrade`, the Light stat, Light's skin), the Flood Light |
+| `07_Building.cs` | Base for the buildings (the game's own `Entity_Ai_General_Upgrade` runs the upgrade panel since 2026-11-04, the brain hears `Master.Upgrade`; the Light stat, Light's skin), the Flood Light |
 | `08_Bank.cs` | The Power Bank and the Photon's brain (wander, visit, follow a line, fight, burst) |
 | `09_Glass.cs` | The Magnifying Glass: target, beam, Light and Burning Point on Damage |
 | `10_Mirror.cs` | The Mirror's front-of-chain hit hook: Blind or Illuminate the attacker, Glare; Bounce Card |
@@ -56,8 +58,8 @@ default now and a caller may hand one `Data` to several foes.
 - `Helper_Entitytools.Interacthurt` calls `From.Interact`, then `To.Oninteract` (so a Photon's hit hook is `Master.Interact`, as
   `Entity_Ai_Mob_Merchant.Interact` does it; `Entity_Ai_Mob_Melee` hits through `Interacthurt`).
 - `Helper_Entitytools.Updateinteract` **nulls `Interact` and `Oninteract`** and rebuilds both from the entity's AIs, on every
-  `Upgrade` and `Removeupgrade`. So every handler of Uloe's is said again a few times a second: `UloeUtil.Listen` (the attacker's
-  side), `UloeUtil.Front` (the Mirror's, as Spool's Cushion).
+  `Upgrade` and `Removeupgrade`. So every handler of Uloe's is said again a few times a second: `ModKitUtil.Listen` (the attacker's
+  side), `ModKitUtil.Front` (the Mirror's, as Spool's Cushion; both in the kit since 1.8).
 - `Entity_Ai_Effect_Barrel_Boost.Downgrade` only acts on its own `Upgradeobj`, so one instance per level would clean up after
   itself; Uloe still keeps one level on a foe at a time.
 - `Entity_Ai_Effect_Tower_Merchut` adds `Effect_Multi` to `Damagemulti`, has no `Downgrade`, and puts `Debuff_Targeted` on for 9999 s
@@ -69,7 +71,12 @@ default now and a caller may hand one `Data` to several foes.
 - `Bl_Address.Getload` on a missing item only logs a warning (pitfall #114's line), so a map without `Debuff_Woozy` or `Debuff_Targeted`
   loses the stock look and keeps Uloe's own.
 
-## Decided after round 1: Blind and Illuminate take the own route (`UloeData.StockMarks = false`)
+## Decided after round 1: Blind and Illuminate take the own route (the stock route deleted 2026-11-04)
+
+**2026-11-04:** the stock route below (`UloeData.StockMarks`, `UloeMarks.Stock`, the six `Uloe_Blind<n>`/`Uloe_Lit<n>` upgrades and
+the self-test's route loop) was deleted, as `docs/reports/CODE_SIMPLIFICATION_2026-11-04.md` finding 7 proposed: it never ran in a
+release build. The self-test lost three checks that read those upgrades (two content checks and "no Blind upgrade is left on the
+foe"), and its Blind and Illuminate checks dropped the "own: " prefix. Git keeps the stock route if it is ever wanted again.
 
 Round 1 logged `stock: a marked foe falling logged 2 OperationCanceledException`, `own: ... 0`, and every Blind and Illuminate check passed on both
 routes. The self-test now runs only the route in use. The reasoning, from before the run:

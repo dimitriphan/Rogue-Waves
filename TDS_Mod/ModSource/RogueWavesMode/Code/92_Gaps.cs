@@ -19,6 +19,14 @@ public static partial class RWTest
         return i < 0 || i + 1 >= all.Length || Array.IndexOf(all[i + 1].Split(','), name) >= 0;
     }
 
+    // Only when named: it needs a save made for it.
+    static bool Asked(string name)
+    {
+        string[] all = Environment.GetCommandLineArgs();
+        int i = Array.IndexOf(all, "-rwonly");
+        return i >= 0 && i + 1 < all.Length && Array.IndexOf(all[i + 1].Split(','), name) >= 0;
+    }
+
     static IEnumerator Gaps()
     {
         if (Part("rules"))
@@ -26,6 +34,7 @@ public static partial class RWTest
             try { RollChecks(); } catch (Exception e) { Check("the Direction rules ran", false, e.ToString()); }
             try { CatalogChecks(); } catch (Exception e) { Check("the catalogue checks ran", false, e.ToString()); }
         }
+        if (Asked("oldsave")) { yield return Stepped(GapsOldSave()); yield break; }
         yield return GapsMenu();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("gaps", "never reached the boat"); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
@@ -40,6 +49,95 @@ public static partial class RWTest
             yield return Stepped(GapsHud("Hero_Argo"));
         }
 #endif
+    }
+
+    // A campaign saved before Team Cardinals became Cardinals and Vessel Cardinals Trinkets (2026-11-04), with one Vessel Cardinal,
+    // two Team Cardinals and a Direction: needs that save on disk (handoff\parked\oldsave_20261104, made on the old code). Also the
+    // renamed words a player reads.
+    static IEnumerator GapsOldSave()
+    {
+        yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
+        Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
+        if (menu == null) { Setup("oldsave", "no main menu"); yield break; }
+        yield return new WaitForSecondsRealtime(8f);
+        menu.Idlethreshold = 100000f;
+        menu.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
+        yield return Until(() => RWMenu.Button != null, 25f);
+        yield return new WaitForSecondsRealtime(7f);
+        Blockage.Menu.Bl_Menus.Changemenu("Main", true);
+        yield return new WaitForSecondsRealtime(6f);
+        RWMenu.Clicked();
+        yield return WaitDialog(10f);
+        Check("Old save: the Rogue Waves button offers Continue", CardNames().Contains("Continue"), CardTexts() + "; saved line '" + RWMenu.SavedLine() + "'");
+        ClickCard("Continue");
+        yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance.Ready, 120f);
+        Macro_Main boat = Macro_Main.Instance;
+        yield return Until(() => RWCampaign.Live && Here(), 40f);
+        long me = RWMine.Session;
+        RWPlayer player = RWRun.For(me);
+        Check("Old save: its Vessel Cardinal comes back as a Trinket", player.Trinkets.Contains("Cardinal_Dentures1") && RWCardinals.IsTrinket("Cardinal_Dentures"), string.Join(",", player.Trinkets.ToArray()));
+        Check("Old save: its Team Cardinals come back as Cardinals", RWRun.Cardinals.Contains("Artifact_Badge#1") && RWRun.Cardinals.Contains("Artifact_Beastpelt#1"), string.Join(",", RWRun.Cardinals.ToArray()));
+        Check("Old save: its Direction and Pure Aura come back", player.Directions.Contains("Direction_Any_Cost_Upgradeobject") && player.Pure == 455, string.Join(",", player.Directions.ToArray()) + ", Pure " + player.Pure);
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 60f);
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
+        yield return Until(() => RWShop.Stand != null, 120f);
+        freeze = true;
+        yield return new WaitForSeconds(4f);
+        Entity_Master vessel = RWRun.Vessel(me);
+        bool direction = false;
+        if (vessel != null)
+            foreach (string u in vessel.Upgradelistserver.Keys)
+                if (u == "Direction_Any_Cost_Upgradeobject") direction = true;
+        Check("Old save: in the map the Direction is on the vessel", direction, vessel != null ? string.Join(",", new List<string>(vessel.Upgradelistserver.Keys).ToArray()) : "no vessel");
+        // The Trinket has no upgrade of its own to look for: its heal, on a real hit.
+        yield return NewFoe();
+        if (lastFoe != null && vessel != null)
+        {
+            Hurt(lastFoe, vessel, 3f);
+            yield return new WaitForSeconds(0.6f);
+            ClearFoes();
+            yield return NewFoe();
+            float healed0 = RWCardinals.Healed;
+            if (lastFoe != null) Hurt(vessel, lastFoe, 5f);
+            yield return new WaitForSeconds(0.8f);
+            Check("Old save: in the map the Trinket heals the vessel as it hits", RWCardinals.Healed > healed0, "healed " + (RWCardinals.Healed - healed0));
+            ClearFoes();
+        }
+        else Setup("Old save's Trinket", "no foe");
+        int listed = 0;
+        foreach (FixedString64Bytes a in Tds_Multiplayerinfo.Instance.Artifacts) if (a.ToString() == "Artifact_Badge" || a.ToString() == "Artifact_Beastpelt") listed++;
+        Check("Old save: in the map the Cardinals are on the core and in the HUD's row", listed == 2 && RWCardinals.MissingOnCore() == 0, listed + " of 2 in the row, " + RWCardinals.MissingOnCore() + " upgrades missing on the core");
+
+        // The words, on a shelf holding a Trinket and two Cardinals.
+        List<string> sold = new List<string>(RWCardinals.Sold);
+        RWCardinals.Sold.Clear();
+        RWCardinals.Sold.Add("Cardinal_Dentures");
+        foreach (string id in sold) if (!RWCardinals.IsTrinket(id) && RWCardinals.Sold.Count < 3) RWCardinals.Sold.Add(id);
+        player.Pure = Mathf.Max(player.Pure, 200);
+        yield return new WaitForSeconds(0.6f);
+        RWShop.Open("Shop");
+        yield return WaitDialog(6f);
+        yield return new WaitForSecondsRealtime(2f);
+        // A card shows only its picture: its words are in the dialog's line while it is hovered.
+        string cards = "";
+        foreach (string card in CardNames())
+        {
+            Blu3_Button b = CardNamed(card) != null ? CardNamed(card).GetComponent<Blu3_Button>() : null;
+            if (b == null || b.Buttonenter == null) continue;
+            b.Buttonenter();
+            yield return null;
+            cards += card + ": " + TextOf(Bla_Ui_Confirmation.Instance.Descbox).Replace("\n", " / ") + " | ";
+        }
+        Check("The shop calls them Trinket and Cardinal, and nothing the old names", cards.Contains("Trinket") && cards.Contains("Cardinal") && !cards.Contains("Vessel Cardinal") && !cards.Contains("Team Cardinal"), cards);
+        yield return DialogFits("The shop with a Trinket and two Cardinals");
+        yield return Snap("rename_shop");
+        ClickCard("Back");
+        yield return Until(() => !RWDialog.Up(), 5f);
+        RWCardinals.Sold.Clear();
+        RWCardinals.Sold.AddRange(sold);
+        string shopDesc = RWContent.ShopCommand != null ? RWContent.ShopCommand.Display_Desc : "";
+        Check("The SHOP button says Cardinals, Trinkets", shopDesc.Contains("Cardinals, Trinkets"), shopDesc);
     }
 
     static IEnumerator GapsMenu()

@@ -16,7 +16,7 @@ public class UloeHeroBrain : MonoBehaviour
     float nextFeed, nextCheck, nextMenu, nextLink;
     Entity_Master.Interacts dealt;
 
-    public long Owner { get { return UloeUtil.Owner(Master); } }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
     public float Reach { get { return UloeData.PlugRange + UloeData.ExtensionReach[Player != null ? Player.Extension : 0]; } }
 
     void Update()
@@ -26,7 +26,7 @@ public class UloeHeroBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!UloeUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -49,7 +49,7 @@ public class UloeHeroBrain : MonoBehaviour
             {
                 nextMenu = Time.time + 0.5f;
                 CheckDirections();
-                UloeUtil.Listen(Master, dealt);
+                ModKitUtil.Listen(Master, dealt);
             }
             if (Time.time >= nextFeed)
             {
@@ -117,7 +117,7 @@ public class UloeHeroBrain : MonoBehaviour
     {
         try
         {
-            if (Player == null || Player.Flash <= 0 || hit == null || hit.Type != "Hurt" || !UloeUtil.IsFoe(hit.To, UloeUtil.Team(Master)))
+            if (Player == null || Player.Flash <= 0 || hit == null || hit.Type != "Hurt" || !ModKitUtil.IsFoe(hit.To, ModKitUtil.Team(Master)))
                 return;
             int lit = UloeData.FlashLit[Player.Flash], blind = UloeData.FlashBlind[Player.Flash];
             if (lit > 0) UloeMarks.Illuminate(Master, hit.To, lit);
@@ -138,7 +138,7 @@ public class UloeHeroBrain : MonoBehaviour
             if (Master.Commandlistserver.TryGetValue("Buildoption" + i, out c) && c != null)
                 l.Add(c.Goalstring);
         }
-        return UloeUtil.Join(l);
+        return ModKitUtil.Join(l);
     }
 
     // ---------------------------------------------------------------- Light
@@ -154,11 +154,11 @@ public class UloeHeroBrain : MonoBehaviour
 
     void Feed()
     {
-        if (!UloeUtil.Alive(Master))
+        if (!ModKitUtil.Alive(Master))
             return;
         LightNow = (Plug != null ? PlugLight(Plug) : UloeData.HeroLight) + UloeData.BrightLight[Player.Bright];
         RadiusNow = Plug != null ? UloeData.PlugRadius : UloeData.HeroRadius;
-        UloeServer.Shine(light, Master, UloeUtil.Pos(Master), RadiusNow, LightNow, null);
+        UloeServer.Shine(light, Master, ModKitUtil.Pos(Master), RadiusNow, LightNow, null);
     }
 
     // ---------------------------------------------------------------- commands
@@ -183,7 +183,7 @@ public class UloeHeroBrain : MonoBehaviour
     // One of this player's Power Banks, or a node.
     public bool Pluggable(Entity_Master m)
     {
-        if (!UloeUtil.Alive(m))
+        if (!ModKitUtil.Alive(m))
             return false;
         UloeBankBrain bank = m.GetComponent<UloeBankBrain>();
         if (bank != null)
@@ -195,10 +195,10 @@ public class UloeHeroBrain : MonoBehaviour
     Entity_Master Nearest(Vector3 pos)
     {
         Entity_Master best = UloeUtil.NearestNode(pos, Reach);
-        float bestD = best != null ? UloeUtil.Flat(UloeUtil.Pos(best), pos) : Reach;
+        float bestD = best != null ? ModKitUtil.Flat(ModKitUtil.Pos(best), pos) : Reach;
         foreach (UloeBankBrain b in UloeServer.Owned<UloeBankBrain>(Owner))
         {
-            float d = UloeUtil.Flat(b.Pos, pos);
+            float d = ModKitUtil.Flat(b.Pos, pos);
             if (d <= bestD)
             {
                 best = b.Master;
@@ -219,7 +219,7 @@ public class UloeHeroBrain : MonoBehaviour
             UloeUtil.Warn(Master, UloeData.WarnCooldown);
             return;
         }
-        Vector3 pos = UloeUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         if (target != null && !Pluggable(target))
             target = null;
         if (target == null)
@@ -231,7 +231,7 @@ public class UloeHeroBrain : MonoBehaviour
             UloeUtil.Warn(Master, UloeData.WarnNoPlug);
             return;
         }
-        if (UloeUtil.Flat(UloeUtil.Pos(target), pos) > Reach + UloeData.PlugSlack)
+        if (ModKitUtil.Flat(ModKitUtil.Pos(target), pos) > Reach + UloeData.PlugSlack)
         {
             Refused++;
             LastPlug = "too far";
@@ -240,14 +240,14 @@ public class UloeHeroBrain : MonoBehaviour
         }
         Plug = target;
         Plugs++;
-        LastPlug = UloeUtil.BeingName(target) + " Light " + PlugLight(target).ToString("0.##");
-        UloeUtil.Skin(Master, UloeData.Plugged);
+        LastPlug = ModKitUtil.BeingName(target) + " Light " + PlugLight(target).ToString("0.##");
+        ModKitUtil.Skin(Master, UloeData.Plugged);
         SetButton();
-        Vector3 dir = UloeUtil.Pos(target) - pos;
+        Vector3 dir = ModKitUtil.Pos(target) - pos;
         dir.y = 0f;
         if (dir.sqrMagnitude > 0.0001f)
             Master.Entitydirection.Value = dir.normalized;
-        UloeUtil.Vis(Master, "Uloe_Plugin", UloeUtil.Pos(target), 0f);
+        ModKitUtil.Vis(Master, "Uloe_Plugin", ModKitUtil.Pos(target), 0f);
         ShowCord();
         nextFeed = 0f;
     }
@@ -256,7 +256,7 @@ public class UloeHeroBrain : MonoBehaviour
     {
         if (Plug == null)
             return;
-        Vector3 at = UloeUtil.Pos(Plug);
+        Vector3 at = ModKitUtil.Pos(Plug);
         Plug = null;
         Unplugs++;
         PlugReady = Time.time + UloeData.PlugCooldown;
@@ -265,11 +265,11 @@ public class UloeHeroBrain : MonoBehaviour
             Snaps++;
             UloeUtil.Warn(Master, UloeData.WarnSnapped);
         }
-        UloeUtil.Skin(Master, "");
+        ModKitUtil.Skin(Master, "");
         SetButton();
-        UloeUtil.Vis(Master, "Uloe_Plugcord", at, -1f);
-        UloeUtil.Vis(Master, "Uloe_Ring", at, -1f);
-        UloeUtil.Vis(Master, "Uloe_Unplug", at, snapped ? 1f : 0f);
+        ModKitUtil.Vis(Master, "Uloe_Plugcord", at, -1f);
+        ModKitUtil.Vis(Master, "Uloe_Ring", at, -1f);
+        ModKitUtil.Vis(Master, "Uloe_Unplug", at, snapped ? 1f : 0f);
         nextFeed = 0f;
     }
 
@@ -278,7 +278,7 @@ public class UloeHeroBrain : MonoBehaviour
     {
         if (Plug == null)
             return;
-        if (!UloeUtil.Alive(Master) || !UloeUtil.Alive(Plug) || UloeUtil.Flat(UloeUtil.Pos(Plug), UloeUtil.Pos(Master)) > Reach + UloeData.PlugSlack)
+        if (!ModKitUtil.Alive(Master) || !ModKitUtil.Alive(Plug) || ModKitUtil.Flat(ModKitUtil.Pos(Plug), ModKitUtil.Pos(Master)) > Reach + UloeData.PlugSlack)
             Unplug(true);
     }
 
@@ -288,8 +288,8 @@ public class UloeHeroBrain : MonoBehaviour
         nextLink = Time.time + UloeData.LinkResend;
         if (Plug == null)
             return;
-        UloeUtil.Vis(Master, "Uloe_Plugcord", UloeUtil.Pos(Plug), 1f);
-        UloeUtil.Vis(Master, "Uloe_Ring", UloeUtil.Pos(Master), UloeData.PlugRadius);
+        ModKitUtil.Vis(Master, "Uloe_Plugcord", ModKitUtil.Pos(Plug), 1f);
+        ModKitUtil.Vis(Master, "Uloe_Ring", ModKitUtil.Pos(Master), UloeData.PlugRadius);
     }
 
     // The button: "On" while plugged (it reads UNPLUG), "Off" while cooling (grey), both synced through Commandlist with

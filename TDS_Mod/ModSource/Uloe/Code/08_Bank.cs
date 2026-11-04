@@ -82,8 +82,8 @@ public class UloePhotonBrain : MonoBehaviour
     float nextThink, nextFeed, nextWander;
     Vector3 lastPos, spawnPos;
 
-    public long Owner { get { return UloeUtil.Owner(Master); } }
-    public Vector3 Pos { get { return UloeUtil.Pos(Master); } }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
+    public Vector3 Pos { get { return ModKitUtil.Pos(Master); } }
 
     // Where its leash is measured from: the building at the end of the line it follows, else its Power Bank.
     public Vector3 Anchor
@@ -91,7 +91,7 @@ public class UloePhotonBrain : MonoBehaviour
         get
         {
             if (Following != null && Following.Directed)
-                return UloeUtil.Pos(Following.Aimed);
+                return ModKitUtil.Pos(Following.Aimed);
             return Home != null && Home.Master != null ? Home.Pos : spawnPos;
         }
     }
@@ -103,7 +103,7 @@ public class UloePhotonBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!UloeUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -121,7 +121,7 @@ public class UloePhotonBrain : MonoBehaviour
             if (Time.time >= nextThink)
             {
                 nextThink = Time.time + 0.4f;
-                UloeUtil.Listen(Master, dealt);
+                ModKitUtil.Listen(Master, dealt);
                 Think();
             }
         }
@@ -137,8 +137,8 @@ public class UloePhotonBrain : MonoBehaviour
         Started = true;
         spawnPos = lastPos = Pos;
         dealt = OnDealt;
-        UloeUtil.Listen(Master, dealt);
-        UloeUtil.Vis(Master, "Uloe_Pop", Pos, 0f);
+        ModKitUtil.Listen(Master, dealt);
+        ModKitUtil.Vis(Master, "Uloe_Pop", Pos, 0f);
         nextWander = Time.time + 0.3f;
     }
 
@@ -147,7 +147,7 @@ public class UloePhotonBrain : MonoBehaviour
     {
         try
         {
-            if (hit == null || hit.Type != "Hurt" || !UloeUtil.IsFoe(hit.To, UloeUtil.Team(Master)))
+            if (hit == null || hit.Type != "Hurt" || !ModKitUtil.IsFoe(hit.To, ModKitUtil.Team(Master)))
                 return;
             Entity_Master radio = Radio();
             UloeMarks.Blind(radio, hit.To, UloeData.PhotonBlind);
@@ -171,12 +171,12 @@ public class UloePhotonBrain : MonoBehaviour
     void Think()
     {
         Vector3 pos = Pos;
-        Travelled += UloeUtil.Flat(pos, lastPos);
+        Travelled += ModKitUtil.Flat(pos, lastPos);
         lastPos = pos;
         CheckPath(pos);
         if (Fight(pos))
             return;
-        string state = UloeUtil.State(Master);
+        string state = ModKitUtil.State(Master);
         if (state == "Move" || state == "Attack" || Time.time < nextWander)
             return;
         nextWander = Time.time + UnityEngine.Random.Range(UloeData.WanderMin, UloeData.WanderMax);
@@ -203,24 +203,24 @@ public class UloePhotonBrain : MonoBehaviour
     bool Fight(Vector3 pos)
     {
         Vector3 anchor = Anchor;
-        float range = UloeUtil.Stat(Master, "Range", 1.5f), leash = UloeData.PhotonLeash;
-        if (UloeUtil.Flat(pos, anchor) > leash + 1f)
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f), leash = UloeData.PhotonLeash;
+        if (ModKitUtil.Flat(pos, anchor) > leash + 1f)
         {
             Target = null;
-            if (UloeUtil.State(Master) != "Move")
+            if (ModKitUtil.State(Master) != "Move")
                 Walk(null, anchor, 0.5f);
             return true;
         }
-        List<Entity_Master> foes = UloeUtil.FoesNear(Master, pos, UloeData.PhotonEngage);
-        foes.RemoveAll(f => UloeUtil.Flat(UloeUtil.Pos(f), anchor) > leash + range);
+        List<Entity_Master> foes = ModKitUtil.FoesNear(Master, pos, UloeData.PhotonEngage);
+        foes.RemoveAll(f => ModKitUtil.Flat(ModKitUtil.Pos(f), anchor) > leash + range);
         Entity_Master target = foes.Count > 0 ? foes[0] : null;
         if (target == null)
         {
             Target = null;
             return false;
         }
-        string state = UloeUtil.State(Master);
-        if (UloeUtil.Flat(UloeUtil.Pos(target), pos) > range - 0.1f && (Target != target || state != "Move"))
+        string state = ModKitUtil.State(Master);
+        if (ModKitUtil.Flat(ModKitUtil.Pos(target), pos) > range - 0.1f && (Target != target || state != "Move"))
         {
             Walk(target, Vector3.zero, 0f);
             Fights++;
@@ -236,7 +236,7 @@ public class UloePhotonBrain : MonoBehaviour
         {
             List<UloeBuilding> near = new List<UloeBuilding>();
             foreach (UloeBuilding b in UloeServer.Buildings)
-                if (b != null && b.Started && b.Master != null && UloeUtil.Team(b.Master) == UloeUtil.Team(Master) && UloeUtil.Flat(b.Pos, anchor) <= UloeData.PhotonLeash && UloeUtil.Flat(b.Pos, pos) > 1.2f)
+                if (b != null && b.Started && b.Master != null && ModKitUtil.Team(b.Master) == ModKitUtil.Team(Master) && ModKitUtil.Flat(b.Pos, anchor) <= UloeData.PhotonLeash && ModKitUtil.Flat(b.Pos, pos) > 1.2f)
                     near.Add(b);
             if (near.Count > 0)
             {
@@ -248,7 +248,7 @@ public class UloePhotonBrain : MonoBehaviour
         for (int tries = 0; tries < 4; tries++)
         {
             float a = UnityEngine.Random.Range(0f, Mathf.PI * 2f), d = UnityEngine.Random.Range(1f, UloeData.PhotonLeash);
-            Genitem tile = UloeUtil.Tile(anchor + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * d);
+            Genitem tile = ModKitUtil.Tile(anchor + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * d);
             Link_Being being = Master.Beingserver;
             if (tile == null || being == null || being.Currentblock == null)
                 continue;
@@ -263,7 +263,7 @@ public class UloePhotonBrain : MonoBehaviour
 
     void Walk(Entity_Master target, Vector3 position, float stop)
     {
-        UloeUtil.MoveTo(Master, target, position, stop);
+        ModKitUtil.MoveTo(Master, target, position, stop);
         Walks++;
     }
 
@@ -275,19 +275,19 @@ public class UloePhotonBrain : MonoBehaviour
         if (killed && Home != null && Home.Master != null && Home.Has("Short"))
         {
             float damage = Home.Param("Burstdamage_Base", 3f), radius = Home.Param("Burstradius_Base", 1.5f);
-            foreach (Entity_Master foe in UloeUtil.FoesNear(radio, pos, radius))
+            foreach (Entity_Master foe in ModKitUtil.FoesNear(radio, pos, radius))
             {
-                UloeUtil.Hurt(radio, foe, damage);
-                if (UloeUtil.Alive(foe))
+                ModKitUtil.Hurt(radio, foe, damage);
+                if (ModKitUtil.Alive(foe))
                 {
                     UloeMarks.Blind(radio, foe, UloeData.BurstBlind);
                     UloeMarks.Illuminate(radio, foe, UloeData.BurstLit);
                 }
             }
             UloeServer.Bursts++;
-            UloeUtil.Vis(radio, "Uloe_Burst", pos, radius);
+            ModKitUtil.Vis(radio, "Uloe_Burst", pos, radius);
         }
         else if (killed)
-            UloeUtil.Vis(radio, "Uloe_Down", pos, 0f);
+            ModKitUtil.Vis(radio, "Uloe_Down", pos, 0f);
     }
 }

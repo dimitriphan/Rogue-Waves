@@ -29,7 +29,7 @@ public static class ArgoServer
             ranks.Clear();
             ArgoHooks.Reset();
             ArgoStatus.Reset();
-            ArgoUtil.ForgetLooks(true);
+            ModKitUtil.ForgetLooks(true);
             ArgoWater.Reset();
             if (ge != null)
             {
@@ -60,7 +60,7 @@ public static class ArgoServer
     {
         try
         {
-            if (!ArgoUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
+            if (!ModKitUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
                 return;
             string being = master.Beingserver.Being.Objectname;
             if (being == ArgoData.Hero)
@@ -76,7 +76,7 @@ public static class ArgoServer
                 brain.Def = build;
                 Towers.Add(brain);
                 if (build.Id == ArgoData.Bell)
-                    BaseLimit(ArgoUtil.Owner(master));
+                    BaseLimit(ModKitUtil.Owner(master));
                 return;
             }
             ArgoData.Crew crew = ArgoData.CrewFor(being);
@@ -102,7 +102,7 @@ public static class ArgoServer
     {
         try
         {
-            if (!ArgoUtil.IsServer || master == null)
+            if (!ModKitUtil.IsServer || master == null)
                 return;
             ArgoNautBrain naut = master.GetComponent<ArgoNautBrain>();
             if (naut != null)
@@ -116,17 +116,17 @@ public static class ArgoServer
             {
                 Towers.Remove(tower);
                 if (killed)
-                    ArgoUtil.Vis(master, "Argo_Towerdown", ArgoUtil.Pos(master), 0);
+                    ModKitUtil.Vis(master, "Argo_Towerdown", ModKitUtil.Pos(master), 0);
                 // The Miner's Base button comes back once its owner's Base is gone (sold or destroyed).
                 if (tower.IsBell)
-                    BaseLimit(ArgoUtil.Owner(master));
+                    BaseLimit(ModKitUtil.Owner(master));
             }
             if (killed && master.GetComponent<ArgoHeroBrain>() != null)
-                ArgoUtil.Vis(master, "Argo_Herodeath", ArgoUtil.Pos(master), 0);
+                ModKitUtil.Vis(master, "Argo_Herodeath", ModKitUtil.Pos(master), 0);
             // Pay Dirt: every Drill Rig whose Tremor holds a felled foe digs it up for ore.
             if (killed && tower == null && master.Taglistserver != null && master.Taglistserver.Contains("Enemy"))
             {
-                Vector3 at = ArgoUtil.Pos(master);
+                Vector3 at = ModKitUtil.Pos(master);
                 foreach (ArgoTowerBrain t in Towers.ToArray())
                     if (t != null && t.IsDrill && t.Has("Paydirt"))
                         t.PayDirt(master, at);
@@ -147,7 +147,7 @@ public static class ArgoServer
     static void OnTide(int current)
     {
         Tide = current;
-        if (!ArgoUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -169,14 +169,14 @@ public static class ArgoServer
     public static void BaseLimit(long owner)
     {
         foreach (ArgoHeroBrain h in Heroes)
-            if (h != null && h.Master != null && ArgoUtil.Owner(h.Master) == owner)
+            if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 h.CheckBase();
     }
 
     public static bool HasBase(long owner)
     {
         foreach (ArgoTowerBrain t in Towers)
-            if (t != null && t.IsBell && t.Master != null && ArgoUtil.Alive(t.Master) && ArgoUtil.Owner(t.Master) == owner)
+            if (t != null && t.IsBell && t.Master != null && ModKitUtil.Alive(t.Master) && ModKitUtil.Owner(t.Master) == owner)
                 return true;
         return false;
     }

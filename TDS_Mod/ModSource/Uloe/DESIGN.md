@@ -115,8 +115,8 @@ stronger is on, the same level refreshes in its last second.
 **Routes (changed from fit plan §8.3 after the first in-game run).** Blind is `Addmod(foe, "Damage", -x, Multi, seconds)` and
 Illuminate a front-of-chain hit hook, the same numbers with no stock scripts, each showing Uloe's own look (`Debuff_Uloe_Blind`,
 `Debuff_Uloe_Lit`). The plan's route, the stock `Entity_Ai_Effect_Barrel_Boost` and `Entity_Ai_Effect_Tower_Merchut` on pack
-upgrades, worked but logged 2 `OperationCanceledException` for every marked foe that fell; it stays behind
-`UloeData.StockMarks = true`, and the self-test follows the switch. The cost: a marked foe no longer lists "Blinded" or
+upgrades, worked but logged 2 `OperationCanceledException` for every marked foe that fell; it was deleted on 2026-11-04 (git keeps
+it). The cost: a marked foe no longer lists "Blinded" or
 "Illuminated" among its upgrades when selected; the looks are what show it.
 
 ## Buildables

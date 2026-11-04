@@ -57,7 +57,7 @@ public static class RWWeather
     static string Missing(int w)
     {
         string m = "";
-        foreach (string b in Needs(w)) if (RWUtil.Load<Beingobject>("Mob", b) == null) m += (m == "" ? "" : ", ") + b;
+        foreach (string b in Needs(w)) if (ModKitUtil.Load<Beingobject>("Mob", b) == null) m += (m == "" ? "" : ", ") + b;
         return m;
     }
 
@@ -144,7 +144,7 @@ public static class RWWeather
     static float deterSince, deterNext;
     static bool deterDone;
 
-    public static bool HasDeter { get { return RWUtil.Load<Beingobject>("Mob", Deter) != null; } }
+    public static bool HasDeter { get { return ModKitUtil.Load<Beingobject>("Mob", Deter) != null; } }
 
     // Every machine, every frame: in each map, once a second for its first 30 s (its groups are still loading), until
     // the stand-in exists; logs once.
@@ -177,7 +177,7 @@ public static class RWWeather
         Beingobject like = null;
         string seen = "";
         foreach (string n in DeterLike)
-            if (like == null) like = RWUtil.Load<Beingobject>("Mob", n);
+            if (like == null) like = ModKitUtil.Load<Beingobject>("Mob", n);
         foreach (Bl_Address.Loadlist l in mob)
             foreach (KeyValuePair<string, UnityEngine.Object> kv in l.Items)
             {
@@ -186,7 +186,7 @@ public static class RWWeather
                 if (like == null && kv.Key.StartsWith("Block_No") && kv.Value is Beingobject) like = (Beingobject)kv.Value;
             }
         if (like == null)
-            return "no stand-in for " + Deter + " (loaded Block_ beings: " + (seen == "" ? "none" : RWUtil.Clip(seen.Trim())) + ")";
+            return "no stand-in for " + Deter + " (loaded Block_ beings: " + (seen == "" ? "none" : ModKitUtil.Clip(seen.Trim())) + ")";
         Beingobject copy = RWUtil.Clone(like, Deter);
         Bl_Address.Loadlist list = new Bl_Address.Loadlist();
         list.Loaded = true;
@@ -277,7 +277,7 @@ public static class RWWeather
     // The water starts just under the map's lowest ground, in the middle of the map, and climbs from there.
     static Entity_Master SpawnFlood()
     {
-        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Main_Flood");
+        Beingobject being = ModKitUtil.Load<Beingobject>("Mob", "Main_Flood");
         List<Genitem> ground = RWUtil.Ground();
         if (being == null || ground.Count == 0) { RWLog.Warn("Rising Water: being " + (being != null) + ", " + ground.Count + " ground tiles"); return null; }
         float minY = float.MaxValue;
@@ -332,10 +332,10 @@ public static class RWWeather
         Vector3 c = core.Entityposition.Value;
         int team = core.Entitydata.Value.Team;
         List<Genitem> ground = RWUtil.Ground();
-        ground.Sort((a, b) => Mathf.Abs(RWUtil.Flat(a.Position, c) - 5f).CompareTo(Mathf.Abs(RWUtil.Flat(b.Position, c) - 5f)));
+        ground.Sort((a, b) => Mathf.Abs(ModKitUtil.Flat(a.Position, c) - 5f).CompareTo(Mathf.Abs(ModKitUtil.Flat(b.Position, c) - 5f)));
         foreach (Genitem g in ground)
         {
-            float d = RWUtil.Flat(g.Position, c);
+            float d = ModKitUtil.Flat(g.Position, c);
             if (d < 3f || d > 7f || Mathf.Abs(g.Position.y - c.y) > 2.5f)
                 continue;
             bool ok = false;
@@ -349,7 +349,7 @@ public static class RWWeather
     // Raze the Nest is only posted where its nest can land (RWObjectives.Post).
     public static bool CanNest()
     {
-        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
+        Beingobject being = ModKitUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
         List<Entity_Master> cores = RWUtil.EnemyCores();
         return being != null && cores.Count > 0 && NestTile(being, cores[0]) != null;
     }
@@ -357,7 +357,7 @@ public static class RWWeather
     // A nest on a free tile 3 to 7 tiles from an enemy core, on the core's team, as a child of the core like Tide foes.
     static Entity_Master SpawnNest()
     {
-        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
+        Beingobject being = ModKitUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
         List<Entity_Master> cores = RWUtil.EnemyCores();
         if (being == null || cores.Count == 0) { RWLog.Warn("Nesting Ground: being " + (being != null) + ", " + cores.Count + " enemy cores"); return null; }
         Entity_Master core = cores[0];
@@ -366,7 +366,7 @@ public static class RWWeather
         Genitem g = NestTile(being, core);
         if (g != null)
         {
-            float d = RWUtil.Flat(g.Position, c);
+            float d = ModKitUtil.Flat(g.Position, c);
             Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(core.Beingserver);
             spawn.Being = being;
             spawn.Genadd = g;

@@ -1,5 +1,7 @@
 # Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2026-11-04, code simplification (compiled, not yet run in game; `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md`):** the 2026-10-12 review's leftovers are gone (`Stagger_Base`, `LastGusher`, `Argo_Bleed`, `AftershockEvery` and their journal labels and effect specs, counters nothing read), and Bulkhead keeps one tuner per tower instead of an unread list of Nauts; SONAR stays until Dimitri decides. The game's own `Entity_Ai_General_Upgrade` runs the towers' upgrade panel again (the mirror in `07_TowerBrain` is gone; the brain hears `Master.Upgrade` and plays `Argo_Upgrade` from it), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets`; Argo keeps its own `ById`, `Costs`, `Params` and sound levels. The PC checks: that report's §4 (self-test 142/0, G1, G3, G4, A1, H1, L1).
+
 **Review 2026-11-04 (design only, nothing built): what the next build changes.** `docs/reports/ARGO_REVIEW_2026-11-04.md`
 §5 and scope `09` (each changed line carries a "Review 2026-11-04" note). Two are code fixes the sheet already
 asked for: **one slow per source** (`ArgoUtil.Slow` adds a new Speed Multi mod every tick, Deep Water every 0.25 s for
@@ -253,13 +255,13 @@ point.
 | File | Role |
 |---|---|
 | 00_ArgoMod | Boot: add icons early, wait for the template hero, load Smacky's asset group, build content, diagnostics; ticks the kit's vessel-tab sync and boat |
-| 01_Util | Helpers: stats and counters, skins, queries, JSON parsing, `Root`/`Slow`, `Hit()` damage dictionaries |
+| 01_Util | Argo's own helpers: `Enemies`/`Allies` queries, `Hit()` damage dictionaries, `Root`/`Pin`/`Slow`, reeling, `MustSee`, and its own `ById`/`Costs`/`Params`; the rest (stats, skins, queries, JSON) is the kit's `ModKitUtil` since kit 1.8 |
 | 02_Data | Every name, text, stat, upgrade tree (explicit `next` lists and costs), tuning number and sound target |
-| 03_Assets | Asset-pack access: sprite slicing, Spriteobjects (vessel, Nauts and their Tune skin), tower material, icons, auto-levelled sounds, particles |
+| 03_Assets | Spriteobjects (vessel, Nauts and their Tune skin), the journal's pool coin, tower material, icons, auto-levelled sound volumes; library access, slicing, playback and particles are the kit's `ModKitAssets` since kit 1.8 |
 | 04_Content | Builds and registers the vessel, buildables (stats from data), Nauts, projectiles, SONAR and crew commands, the tooltip upgrade |
 | 05_Server | Host rules: brain attachment, Tides, the Naut roster ("one Naut per tower") |
 | 06_HeroBrain | Vessel: build options, SONAR (cooldown shown on the button), the second hit of each swing |
-| 07_TowerBrain | Scatter volleys, harpoon lines, the Diving Bell's crew, the Deep Drill (mining, Fathoms, Tremors, quakes), upgrades (mirrors General_Upgrade) |
+| 07_TowerBrain | Scatter volleys, harpoon lines, the Diving Bell's crew, the Deep Drill (mining, Fathoms, Tremors, quakes), upgrades (the game's own `Entity_Ai_General_Upgrade` runs the panel since 2026-11-04; the brain hears `Master.Upgrade`) |
 | 08_NautBrain | A Naut walks to its tower with the stock movement AI, tunes it, repairs it, comes home |
 | 09_Hooks | Pinged (+20% damage taken) and Bulkhead (-25%) via the target's hit event |
 | 10_Client | All players: turret aiming and recoil, drill spin, Tremor rings, tuning marks, SONAR ping marks, effects, sounds, owner warnings |

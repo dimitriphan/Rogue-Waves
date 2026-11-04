@@ -30,7 +30,7 @@ public class SpoolHeadBrain : SpoolBuilding
         if (Has("Patchwork"))
             ShowMend();
         Show();
-        if (SpoolUtil.Flat(Pos, Spot) > 0.9f)
+        if (ModKitUtil.Flat(Pos, Spot) > 0.9f)
             Walk(null, Spot, 0f);
     }
 
@@ -72,7 +72,7 @@ public class SpoolHeadBrain : SpoolBuilding
         if (command == SpoolData.SpotLink)
         {
             Vector3 at;
-            if (!SpoolUtil.JsonPosition(json, out at))
+            if (!ModKitUtil.JsonPosition(json, out at))
                 return;
             Spots++;
             Genitem stand = Standable(at);
@@ -85,7 +85,7 @@ public class SpoolHeadBrain : SpoolBuilding
             Returning = false;
             Walk(null, Spot, 0f);
             SpoolUtil.Warn(Master, SpoolData.WarnSpot);
-            SpoolUtil.Vis(Master, "Spool_Target", Spot, 1f);
+            ModKitUtil.Vis(Master, "Spool_Target", Spot, 1f);
         }
         else if (command == SpoolData.ReturnLink)
         {
@@ -106,7 +106,7 @@ public class SpoolHeadBrain : SpoolBuilding
 
     Genitem Standable(Vector3 at)
     {
-        Genitem tile = SpoolUtil.Tile(at);
+        Genitem tile = ModKitUtil.Tile(at);
         Link_Being being = Master.Beingserver;
         if (tile == null || being == null || being.Currentblock == null)
             return null;
@@ -125,7 +125,7 @@ public class SpoolHeadBrain : SpoolBuilding
             Walk(home.Master, Vector3.zero, 1f);
     }
 
-    void Walk(Entity_Master target, Vector3 position, float stop) { SpoolUtil.MoveTo(Master, target, position, stop); }
+    void Walk(Entity_Master target, Vector3 position, float stop) { ModKitUtil.MoveTo(Master, target, position, stop); }
 
     protected override void Tick()
     {
@@ -176,7 +176,7 @@ public class SpoolHeadBrain : SpoolBuilding
                 Returning = false;
                 Walk(null, Spot, 0f);
             }
-            else if (SpoolUtil.State(Master) != "Move")
+            else if (ModKitUtil.State(Master) != "Move")
                 Walk(home.Master, Vector3.zero, 1f);
             return;
         }
@@ -187,19 +187,19 @@ public class SpoolHeadBrain : SpoolBuilding
     void Guard(Vector3 pos)
     {
         float range = Stat("Range", 1.5f);
-        List<Entity_Master> foes = SpoolUtil.FoesNear(Master, pos, Mathf.Max(SpoolData.CraftedEngage, range + 0.5f));
-        foes.RemoveAll(f => SpoolUtil.Flat(SpoolUtil.Pos(f), Spot) > Leash + range);
-        Entity_Master target = foes.Count > 0 && SpoolUtil.Flat(pos, Spot) <= Leash + 1f ? foes[0] : null;
-        string state = SpoolUtil.State(Master);
+        List<Entity_Master> foes = ModKitUtil.FoesNear(Master, pos, Mathf.Max(SpoolData.CraftedEngage, range + 0.5f));
+        foes.RemoveAll(f => ModKitUtil.Flat(ModKitUtil.Pos(f), Spot) > Leash + range);
+        Entity_Master target = foes.Count > 0 && ModKitUtil.Flat(pos, Spot) <= Leash + 1f ? foes[0] : null;
+        string state = ModKitUtil.State(Master);
         if (target != null)
         {
-            if (SpoolUtil.Flat(SpoolUtil.Pos(target), pos) > range - 0.1f && (Target != target || state != "Move"))
+            if (ModKitUtil.Flat(ModKitUtil.Pos(target), pos) > range - 0.1f && (Target != target || state != "Move"))
                 Walk(target, Vector3.zero, 0f);
             Target = target;
             return;
         }
         Target = null;
-        if (SpoolUtil.Flat(pos, Spot) > 0.9f && state != "Move" && state != "Attack")
+        if (ModKitUtil.Flat(pos, Spot) > 0.9f && state != "Move" && state != "Attack")
             Walk(null, Spot, 0f);
     }
 
@@ -210,10 +210,10 @@ public class SpoolHeadBrain : SpoolBuilding
         float rate = Param("Mend_Base", 2f), reach = Param("Mendrange_Base", 2f), per = Mathf.Max(1f, Param("Mendper_Base", 5f));
         List<Entity_Master> hurt = new List<Entity_Master>();
         foreach (SpoolUnitBrain u in SpoolServer.Units)
-            if (u != null && u.Master != null && u.Owner == Owner && Hurt(u.Master) && SpoolUtil.Flat(SpoolUtil.Pos(u.Master), Pos) <= reach)
+            if (u != null && u.Master != null && u.Owner == Owner && Hurt(u.Master) && ModKitUtil.Flat(ModKitUtil.Pos(u.Master), Pos) <= reach)
                 hurt.Add(u.Master);
         foreach (SpoolHeadBrain h in SpoolServer.Owned<SpoolHeadBrain>(Owner))
-            if (Hurt(h.Master) && SpoolUtil.Flat(h.Pos, Pos) <= reach)
+            if (Hurt(h.Master) && ModKitUtil.Flat(h.Pos, Pos) <= reach)
                 hurt.Add(h.Master);
         if (hurt.Count == 0)
             return;
@@ -227,7 +227,7 @@ public class SpoolHeadBrain : SpoolBuilding
         emptyWarned = false;
         foreach (Entity_Master m in hurt)
         {
-            float heal = Mathf.Min(rate, SpoolUtil.MaxHealth(m) - SpoolUtil.Health(m));
+            float heal = Mathf.Min(rate, ModKitUtil.MaxHealth(m) - ModKitUtil.Health(m));
             if (heal <= 0f)
                 continue;
             // Thread is paid ahead: one carried Thread buys 'per' health.
@@ -240,14 +240,14 @@ public class SpoolHeadBrain : SpoolBuilding
                 Show();
             }
             mendDebt -= heal / per;
-            SpoolUtil.Heal(Master, m, heal);
+            ModKitUtil.Heal(Master, m, heal);
             Mended += heal;
             Mends++;
-            SpoolUtil.Vis(Master, "Spool_Mend", SpoolUtil.Pos(m), 0f);
+            ModKitUtil.Vis(Master, "Spool_Mend", ModKitUtil.Pos(m), 0f);
         }
     }
 
-    static bool Hurt(Entity_Master m) { return SpoolUtil.Alive(m) && SpoolUtil.Health(m) < SpoolUtil.MaxHealth(m) - 0.01f; }
+    static bool Hurt(Entity_Master m) { return ModKitUtil.Alive(m) && ModKitUtil.Health(m) < ModKitUtil.MaxHealth(m) - 0.01f; }
 
     // Killed: what it carried falls, and it comes back at the Stash after Respawn seconds with the upgrades it had.
     // Sold: what it carried falls (the stock Sell refunds its cost).
@@ -270,6 +270,6 @@ public class SpoolHeadBrain : SpoolBuilding
                 c.Upgrades.Add(u);
         SpoolServer.HeadFell(c);
         SpoolHeroBrain hero = SpoolServer.HeroOf(Owner);
-        SpoolUtil.Vis(hero != null && hero.Master != null ? hero.Master : Master, "Spool_Down", Pos, 1f);
+        ModKitUtil.Vis(hero != null && hero.Master != null ? hero.Master : Master, "Spool_Down", Pos, 1f);
     }
 }

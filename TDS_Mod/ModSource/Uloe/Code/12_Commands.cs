@@ -19,7 +19,7 @@ public abstract class UloePicker : Entity_Command_Itemselect_Base
         try
         {
             if (Master != null)
-                reach = ModKitTowers.RangePreview(UloeUtil.Pos(Master), ReachNow());
+                reach = ModKitTowers.RangePreview(ModKitUtil.Pos(Master), ReachNow());
             Transform holder = Bl_Menus.Menus["Main"].Items["Command"].transform;
             Bl_Obj.Destroychildren(holder);
             GameObject prefab = Load("Ui", "Ui_Command_Sell", "Ui_Command_Tower_Fiesilo_Reroute");
@@ -68,7 +68,7 @@ public abstract class UloePicker : Entity_Command_Itemselect_Base
             Label("Desc", Hint());
             return;
         }
-        Label("Desc", UloeUtil.Flat(UloeUtil.Pos(m), UloeUtil.Pos(Master)) > ReachNow() + 0.5f ? "Too far away" : Pointing(m));
+        Label("Desc", ModKitUtil.Flat(ModKitUtil.Pos(m), ModKitUtil.Pos(Master)) > ReachNow() + 0.5f ? "Too far away" : Pointing(m));
     }
 
     public override void Send()

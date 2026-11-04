@@ -266,7 +266,7 @@ public static class RWBoat
         }
         Transform dock = node.transform.Find("Dock");
         Vector3 at = dock != null ? dock.position : node.transform.position;
-        bool there = RWUtil.Flat(vis.Boat.transform.position, at) < 1.5f && vis.Boatspeed < 1f;
+        bool there = ModKitUtil.Flat(vis.Boat.transform.position, at) < 1.5f && vis.Boatspeed < 1f;
         if (!there) { arriveSince = -1f; return; }
         if (arriveSince < 0f) { arriveSince = Time.realtimeSinceStartup; return; }
         if (Time.realtimeSinceStartup - arriveSince < 0.8f)

@@ -25,20 +25,20 @@ public static class SpoolJournal
             HeroId = SpoolData.Hero, Template = template, Hero = hero,
             Rule = hero.Upgradesinit.Count > 0 ? hero.Upgradesinit[0] : null,
             Title = SpoolData.Displayname, Lore = SpoolData.Lore, Origin = "Rogue Waves",
-            Portrait = Portrait(), Tab = SpoolAssets.Single("Spooltabicon", 32), Accent = Purple,
+            Portrait = Portrait(), Tab = ModKitAssets.Single("Spooltabicon", 32), Accent = Purple,
         };
         foreach (SpoolData.Build b in SpoolData.Builds)
         {
             Beingobject being;
             if (!SpoolContent.Beings.TryGetValue(b.Id, out being))
                 continue;
-            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = SpoolAssets.Quiet(b.Id) };
+            ModKitJournalBuilding jb = new ModKitJournalBuilding { Id = b.Id, Title = b.Display, Desc = b.Lore, Entity = being.Entity, Model = ModKitAssets.Quiet(b.Id) };
             Dictionary<string, ModKitJournalUpgrade> byKey = new Dictionary<string, ModKitJournalUpgrade>();
             foreach (SpoolData.Upg u in b.Upgrades)
             {
                 Upgradeproperties prop;
                 SpoolContent.Upgrades.TryGetValue(u.Id, out prop);
-                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = SpoolAssets.Quiet(u.Model) ?? jb.Model };
+                byKey[u.Key + u.Tier] = new ModKitJournalUpgrade { Id = u.Id, Title = u.Display, Desc = u.Desc, Effects = u.Effects, Upgrade = prop, Model = ModKitAssets.Quiet(u.Model) ?? jb.Model };
             }
             foreach (SpoolData.Upg u in b.Upgrades)
             {
@@ -57,7 +57,7 @@ public static class SpoolJournal
                     Beingobject ub;
                     if (u == null || !SpoolContent.Beings.TryGetValue(id, out ub))
                         continue;
-                    List<Sprite> f = SpoolAssets.Frames(u.Sheet, u.Cell, new Vector2(0.5f, 0.5f));
+                    List<Sprite> f = ModKitAssets.Frames(u.Sheet, u.Cell, new Vector2(0.5f, 0.5f));
                     string cost = u.Thread > 0 ? " Costs " + u.Thread + " Thread." : "";
                     jb.Units.Add(new ModKitJournalUnit { Id = id, Title = u.Display, Desc = u.Lore + cost, Entity = ub.Entity, Look = f.Count > 0 ? f[0] : null });
                 }
@@ -76,7 +76,7 @@ public static class SpoolJournal
     // An idle frame, front facing right, like the shipped vessel pages (Smacky4-Sheet_0, Snosnoidle-Sheet_3).
     static Sprite Portrait()
     {
-        List<Sprite> f = SpoolAssets.Frames("Spool-Sheet", 32, new Vector2(0.5f, 0.5f));
+        List<Sprite> f = ModKitAssets.Frames("Spool-Sheet", 32, new Vector2(0.5f, 0.5f));
         return f.Count > 0 ? f[0] : null;
     }
 }
@@ -86,7 +86,7 @@ public static class SpoolDiagnostics
     public static void Dump(Heroentryobject template)
     {
         Heroentryobject e = SpoolContent.Entry;
-        SpoolLog.Info("Spool entry: towers " + SpoolUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
+        SpoolLog.Info("Spool entry: towers " + ModKitUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
             + ", journal " + (e.Log != null ? e.Log.name : "none"));
         foreach (KeyValuePair<string, Beingobject> kv in SpoolContent.Beings)
         {
@@ -98,14 +98,14 @@ public static class SpoolDiagnostics
                 foreach (Statproperties.Defaultstatgroup g in ent.Defaultstat.Stats) stats.Add(g.Name + "=" + g.Value + (g.Leveladd != 0 ? "+" + g.Leveladd : ""));
             List<string> costs = new List<string>();
             foreach (Link_Resourceset c in ent.Costs) costs.Add(c.Name + " " + c.Amount);
-            SpoolLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + SpoolUtil.Join(ais) + "; stats " + SpoolUtil.Join(stats)
-                + "; cost " + SpoolUtil.Join(costs) + "; tags " + SpoolUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count);
+            SpoolLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + ModKitUtil.Join(ais) + "; stats " + ModKitUtil.Join(stats)
+                + "; cost " + ModKitUtil.Join(costs) + "; tags " + ModKitUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count);
         }
         Entityobject hero = SpoolContent.HeroBeing.Entity;
         List<string> heroAis = new List<string>();
         foreach (UnityEngine.Object o in hero.Aiscripts) heroAis.Add(o.name);
         List<string> heroVis = new List<string>();
         foreach (UnityEngine.Object o in hero.Visualscripts) heroVis.Add(o.name);
-        SpoolLog.Info("Hero_Spool: ais " + SpoolUtil.Join(heroAis) + "; vis " + SpoolUtil.Join(heroVis) + "; anims " + SpoolUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
+        SpoolLog.Info("Hero_Spool: ais " + ModKitUtil.Join(heroAis) + "; vis " + ModKitUtil.Join(heroVis) + "; anims " + ModKitUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
     }
 }

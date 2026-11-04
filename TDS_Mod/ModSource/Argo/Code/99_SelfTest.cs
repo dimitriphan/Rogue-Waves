@@ -340,7 +340,7 @@ public static class ArgoSelfTest
 
     // A Dagger (else the Tide's own enemy type) about 'dist' tiles from 'near' (then 2 closer, 2 farther, 3), spawned as
     // a child of the enemy core like Tide enemies, on the first standable tile of the ring. Not an Aegis: a held Aegis
-    // reads 0.05 (the kit template's Cross check; see SpeedInfo).
+    // reads 0.05 (Mummer's Cross check; see SpeedInfo).
     static Entity_Master SpeedFoe(Vector3 near, float dist)
     {
         Beingobject being = ArgoUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType;
@@ -1886,6 +1886,15 @@ public static class ArgoSelfTest
             else
             {
                 float reach0 = net.Reach;
+                // A point between the plain reach and rank III's, the way the water asks of a foe. Tiles are a whole tile apart, so no
+                // foe stands there by itself, and one can't be held there: its own movement keeps writing its position.
+                Vector3 wet = ArgoUtil.Pos(pool.Master), hold = wet;
+                foreach (Vector3 dir in new[] { new Vector3(1f, 0f, 1f).normalized, new Vector3(1f, 0f, -1f).normalized, new Vector3(-1f, 0f, 1f).normalized, new Vector3(-1f, 0f, -1f).normalized })   // diagonals: FLOOD's pools can stand on every side
+                {
+                    Vector3 p = wet + dir * (ArgoData.PoolReach * 1.25f);
+                    if (hold == wet && !net.Holds(p)) hold = p;
+                }
+                bool dryAtFirst = hold != wet && !net.Holds(hold);
                 for (int r = 1; r <= 3; r++)
                 {
                     ModKitDirections.Grant(hm, direction(ArgoData.Deepcurrents[r - 1].Name));
@@ -1893,18 +1902,7 @@ public static class ArgoSelfTest
                     net = ArgoWater.NetOf(pool);
                     Check("Deep Current rank " + r + ": Deep Water reaches +" + F(ArgoData.Deepcurrents[r - 1].Bonus * 100f) + "%", net != null && Mathf.Abs(net.Reach - ArgoData.PoolReach * (1f + ArgoData.Deepcurrents[r - 1].Bonus)) < 0.01f, F(reach0) + " -> " + (net != null ? F(net.Reach) : "no net"));
                 }
-                // Felt, not only read: a foe a little past the plain reach is slowed now.
-                Vector3 wet = ArgoUtil.Pos(pool.Master);
-                Entity_Master past = ModKitTest.SpawnFoe("Enemy_Dagger", wet, ArgoData.PoolReach * 1.1f, ArgoData.PoolReach * 1.45f, null);
-                if (past == null) ModKitTest.Setup("Deep Current's reach", "no foe past the plain reach");
-                else
-                {
-                    yield return Wait(1f);
-                    float apart = ArgoUtil.Flat(ArgoUtil.Pos(past), wet);
-                    bool inPool = net != null && net.Foes.Contains(past);
-                    Check("Deep Current rank 3: a foe past the plain reach is in the water", inPool || apart > net.Reach, F(apart) + " from the pool, plain reach " + F(ArgoData.PoolReach) + ", reach " + F(net.Reach) + ", in the water " + inPool);
-                    Game_Entity.Instance.Despawn(past.Beingserver, false, "Selftest");
-                }
+                Check("Deep Current rank 3: a point past the plain reach is in the water, and wasn't before", dryAtFirst && net.Holds(hold), F(ArgoUtil.Flat(hold, wet)) + " from the pool, plain reach " + F(ArgoData.PoolReach) + ", now " + F(net.Reach));
             }
         }
         // 9. The journal: Argo's own pages, linked from every vessel's tabs, in one order, no duplicates.

@@ -25,9 +25,6 @@ public static class YosseleContent
     static Bl_Address.Loadgroup group;
     static readonly Dictionary<string, Bl_Address.Loadlist> lists = new Dictionary<string, Bl_Address.Loadlist>();
 
-    // Script names written for one shipped vessel (they hard-code its objects); everything else is generic.
-    static readonly string[] VesselNames = { "Smacky", "Snosno", "Boutman", "Fie", "Buster" };
-
     public static void Build(Heroentryobject template)
     {
         string folder = template.Heroloads.Objectname;
@@ -62,7 +59,7 @@ public static class YosseleContent
         BuildGround(YosseleData.Fruit, "Yosselefruit", "Aura Fruit", "Yossele_Fruit", new[] { "Redaura", "Blueaura", "Yellowaura" });
         BuildFriend();
         BuildDirections();
-        BuildHero(YosseleUtil.Load<Beingobject>("Hero", folder));
+        BuildHero(ModKitUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
         try { YosseleJournal.Build(template); }
         catch (Exception e) { YosseleLog.Warn("journal: " + e); }
@@ -96,7 +93,7 @@ public static class YosseleContent
     static void RegisterVfx()
     {
         Bl_Address.Loadlist list = lists["Vfx"];
-        foreach (GameObject go in YosseleAssets.AllVfx())
+        foreach (GameObject go in ModKitAssets.AllVfx())
         {
             list.Items[go.name] = go;
             list.Index.Add(go);
@@ -108,7 +105,7 @@ public static class YosseleContent
 
     static Material TemplateTowerMaterial()
     {
-        Beingobject archer = YosseleUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
         if (archer == null || archer.Entity == null || archer.Entity.Defaultvisual == null)
             return null;
         GameObject prefab = archer.Entity.Defaultvisual.Default.Visprefab;
@@ -116,16 +113,6 @@ public static class YosseleContent
             return null;
         MeshRenderer r = prefab.GetComponentInChildren<MeshRenderer>(true);
         return r != null ? r.sharedMaterial : null;
-    }
-
-    static bool VesselSpecific(string name)
-    {
-        if (name == "Entity_Ai_General_Upgrade")
-            return true;
-        foreach (string v in VesselNames)
-            if (name.Contains(v))
-                return true;
-        return false;
     }
 
     // The game's two facing arrows, as Sno Sno's Ice Wall (Tower_Snosnowall) has them: the build command draws an arrow
@@ -141,7 +128,7 @@ public static class YosseleContent
         {
             Transform mark = new GameObject("Forward").transform;
             mark.SetParent(hit.transform, false);
-            Beingobject wall = YosseleUtil.Load<Beingobject>("Mob", "Tower_Snosnowall");
+            Beingobject wall = ModKitUtil.Load<Beingobject>("Mob", "Tower_Snosnowall");
             GameObject wallHit = wall != null && wall.Entity != null && wall.Entity.Defaulthit != null ? wall.Entity.Defaulthit.Default.Entityprefab : null;
             Transform theirs = wallHit != null ? Extramethods.FindDeepChild(wallHit.transform, "Forward") : null;
             if (theirs != null)
@@ -152,25 +139,14 @@ public static class YosseleContent
             ForwardFrom = theirs != null ? "the Ice Wall's at " + theirs.localPosition.ToString("F2") : "the tile centre (the Ice Wall has none)";
         }
         if (!ent.Visualscripts.Exists(s => s != null && s.name == "Entity_Vis_Tower_Orientation"))
-            ent.Visualscripts.Add(YosseleUtil.Script("Entity_Vis_Tower_Orientation"));
+            ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Tower_Orientation"));
         YosseleLog.Info("Stonehenge facing arrows: Forward from " + ForwardFrom);
-    }
-
-    static List<UnityEngine.Object> Strip(List<UnityEngine.Object> scripts)
-    {
-        List<UnityEngine.Object> kept = new List<UnityEngine.Object>();
-        if (scripts == null)
-            return kept;
-        foreach (UnityEngine.Object s in scripts)
-            if (s != null && !VesselSpecific(s.name))
-                kept.Add(s);
-        return kept;
     }
 
     static List<UnityEngine.Object> Scripts(params string[] names)
     {
         List<UnityEngine.Object> l = new List<UnityEngine.Object>();
-        foreach (string n in names) l.Add(YosseleUtil.Script(n));
+        foreach (string n in names) l.Add(ModKitUtil.Script(n));
         return l;
     }
 
@@ -179,17 +155,17 @@ public static class YosseleContent
         Visualproperties.Entry e = from;
         e.Rootvisualproperty = null;
         e.Style = Visualproperties.Styles.Model;
-        e.Visprefab = YosseleAssets.Model(model);
+        e.Visprefab = ModKitAssets.Model(model);
         if (e.Visprefab == null && !string.IsNullOrEmpty(fallback))
-            e.Visprefab = YosseleAssets.Model(fallback);
+            e.Visprefab = ModKitAssets.Model(fallback);
         e.Spriteobject = null;
         e.Displayname = display;
         e.Additionalmaterials = new List<Material>();
-        e.Additionalvisualscripts = Strip(from.Additionalvisualscripts);
+        e.Additionalvisualscripts = ModKitUtil.Strip(from.Additionalvisualscripts);
         e.Additionalprefabs = new List<GameObject>();
         if (!string.IsNullOrEmpty(extra))
         {
-            GameObject x = YosseleAssets.Model(extra);
+            GameObject x = ModKitAssets.Model(extra);
             if (x != null) e.Additionalprefabs.Add(x);
         }
         return e;
@@ -207,31 +183,8 @@ public static class YosseleContent
         vp.Skinoverride = new List<Visualproperties.Param>();
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         for (int g = 1; g <= stages; g++)
-            AddSkin(vp, YosseleData.GrowthStat + g, ModelEntry(template.Default, model, display, "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
+            ModKitUtil.AddSkin(vp, YosseleData.GrowthStat + g, ModelEntry(template.Default, model, display, "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
         return vp;
-    }
-
-    static void AddSkin(Visualproperties vp, string skin, Visualproperties.Entry entry)
-    {
-        Visualproperties.Param p = new Visualproperties.Param();
-        p.Name = skin;
-        p.Value = entry;
-        vp.Skinoverride.Add(p);
-        vp.Skinoverrides[skin] = entry;
-    }
-
-    static void CollectUpgrades(List<Upgradeproperties> from, Dictionary<int, Upgradeproperties> byTier)
-    {
-        if (from == null)
-            return;
-        foreach (Upgradeproperties u in from)
-        {
-            if (u == null)
-                continue;
-            if (!byTier.ContainsKey(u.Priority))
-                byTier[u.Priority] = u;
-            CollectUpgrades(u.Upgrades, byTier);
-        }
     }
 
     // "Health=25+25" -> value 25, +25 per level. Builds a stat block holding exactly these stats, each styled like the
@@ -258,8 +211,8 @@ public static class YosseleContent
                 n.Display_Type = src.Display_Type;
                 n.Display_Exposed = src.Display_Exposed;
             }
-            n.Value = YosseleUtil.F(vl[0]);
-            n.Leveladd = vl.Length > 1 ? YosseleUtil.F(vl[1]) : 0f;
+            n.Value = ModKitUtil.F(vl[0]);
+            n.Leveladd = vl.Length > 1 ? ModKitUtil.F(vl[1]) : 0f;
             list.Add(n);
         }
         stats.Stats = list;
@@ -346,11 +299,11 @@ public static class YosseleContent
     // its look and the Archer arrow's end look and sound. The Archer's arrow is the template without Sno Sno's group.
     static void BuildLaser()
     {
-        Projectileobject template = YosseleUtil.Load<Projectileobject>("Projectile", YosseleData.LaserTemplate);
+        Projectileobject template = ModKitUtil.Load<Projectileobject>("Projectile", YosseleData.LaserTemplate);
         LaserFrom = YosseleData.LaserTemplate;
         if (template == null)
         {
-            template = YosseleUtil.Load<Projectileobject>("Projectile", YosseleData.LaserFallback);
+            template = ModKitUtil.Load<Projectileobject>("Projectile", YosseleData.LaserFallback);
             LaserFrom = YosseleData.LaserFallback;
         }
         if (template == null)
@@ -360,11 +313,11 @@ public static class YosseleContent
             return;
         }
         Projectileobject laser = YosseleUtil.Clone(template, YosseleData.Laser);
-        GameObject model = YosseleAssets.Model("Yossele_Laser");
+        GameObject model = ModKitAssets.Model("Yossele_Laser");
         if (model != null)
             laser.Vis = model;
         laser.Sfxstart = "";
-        Projectileobject arrow = YosseleUtil.Load<Projectileobject>("Projectile", YosseleData.LaserFallback);
+        Projectileobject arrow = ModKitUtil.Load<Projectileobject>("Projectile", YosseleData.LaserFallback);
         if (arrow != null && template != arrow)
         {
             laser.Vfxend = arrow.Vfxend;
@@ -378,7 +331,7 @@ public static class YosseleContent
 
     static Commandobject CommandTemplate()
     {
-        Commandobject template = YosseleUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
+        Commandobject template = ModKitUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
         if (template == null)
             foreach (Bl_Address.Loadlist l in Bl_Address.Groups["Command"])
                 foreach (UnityEngine.Object o in l.Items.Values)
@@ -428,11 +381,11 @@ public static class YosseleContent
 
     static void BuildTower(YosseleData.Build b)
     {
-        Beingobject tb = YosseleUtil.Load<Beingobject>("Mob", b.Template);
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", b.Template);
         if (tb == null || tb.Entity == null)
         {
             YosseleLog.Warn("tower template " + b.Template + " not found; " + b.Id + " uses the Mining Hut");
-            tb = YosseleUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
+            tb = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
         }
         if (tb == null || tb.Entity == null)
         {
@@ -445,17 +398,19 @@ public static class YosseleContent
         ent.Name = b.Id;
         ent.Display_Name = b.Display;
         ent.Display_Desc = b.Desc;
-        ent.Aiscripts = Strip(te.Aiscripts);
+        ent.Aiscripts = ModKitUtil.Strip(te.Aiscripts);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
-            ent.Aiscripts.Insert(0, YosseleUtil.Script("Entity_Ai_Tower_General"));
-        ent.Visualscripts = Strip(te.Visualscripts);
+            ent.Aiscripts.Insert(0, ModKitUtil.Script("Entity_Ai_Tower_General"));
+        // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
+        ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"));
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         // Its own hit prefab: the range the game draws centred on the tower's tile, where its brain measures from, and
         // a collider the size of its model (the templates' sat 2 tiles under the Bomb Tower, Argo 1.0).
         bool ranged = Array.Exists(b.Stats, x => x.StartsWith("Range="));
         // The Bonsai shows the Tree's model if its own is missing.
         string fallback = b.Id == YosseleData.Bonsai ? YosseleData.Dandelion : null;
-        ModKitTowers.Fit(ent, b.Id, YosseleAssets.Model(b.Id) ?? (fallback != null ? YosseleAssets.Model(fallback) : null), 0f, b.Muzzle, ranged);
-        ent.Costs = YosseleUtil.Costs(b.Costs);
+        ModKitTowers.Fit(ent, b.Id, ModKitAssets.Model(b.Id) ?? (fallback != null ? ModKitAssets.Model(fallback) : null), 0f, b.Muzzle, ranged);
+        ent.Costs = ModKitUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Sellable = true;
         ent.Controllable = true;
@@ -475,12 +430,12 @@ public static class YosseleContent
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from YosseleData.
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
-        CollectUpgrades(te.Upgrades, templateTiers);
+        ModKitUtil.CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0)
         {
-            Beingobject hut = YosseleUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
+            Beingobject hut = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
             if (hut != null && hut.Entity != null)
-                CollectUpgrades(hut.Entity.Upgrades, templateTiers);
+                ModKitUtil.CollectUpgrades(hut.Entity.Upgrades, templateTiers);
         }
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
@@ -497,12 +452,12 @@ public static class YosseleContent
             up.Display_Desc = u.Desc;
             up.Priority = u.Tier;
             up.Aiscripts = new List<UnityEngine.Object>();
-            up.Costs = YosseleUtil.Costs(u.Costs);
+            up.Costs = ModKitUtil.Costs(u.Costs);
             up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), u.Model, u.Display, b.Max, b.Id);
             Register("Upgrade", up.Ent_Visual);
             up.Defaultparam = new List<Upgradeproperties.Param>();
             up.Defaultparams = new Dictionary<string, float>();
-            foreach (KeyValuePair<string, float> kv in YosseleUtil.Params(u.Params))
+            foreach (KeyValuePair<string, float> kv in ModKitUtil.Params(u.Params))
             {
                 Upgradeproperties.Param p = new Upgradeproperties.Param();
                 p.Name = kv.Key;
@@ -544,11 +499,11 @@ public static class YosseleContent
     // server's vine and fruit code reads where they stand. Fruit has one skin per single colour it can pay.
     static void BuildGround(string id, string tag, string display, string model, string[] colourSkins)
     {
-        Beingobject tb = YosseleUtil.Load<Beingobject>("Mob", YosseleData.GroundTemplate);
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", YosseleData.GroundTemplate);
         string from = YosseleData.GroundTemplate;
         if (tb == null || tb.Entity == null)
         {
-            tb = YosseleUtil.Load<Beingobject>("Mob", YosseleData.GroundFallback);
+            tb = ModKitUtil.Load<Beingobject>("Mob", YosseleData.GroundFallback);
             from = YosseleData.GroundFallback;
         }
         if (tb == null || tb.Entity == null)
@@ -564,7 +519,7 @@ public static class YosseleContent
         ent.Display_Name = display;
         ent.Display_Desc = "";
         ent.Aiscripts = new List<UnityEngine.Object>();
-        ent.Visualscripts = Strip(te.Visualscripts);
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         ent.Upgrades = new List<Upgradeproperties>();
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Costs = new List<Link_Resourceset>();
@@ -584,7 +539,7 @@ public static class YosseleContent
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         if (colourSkins != null)
             foreach (string c in colourSkins)
-                AddSkin(vp, c, ModelEntry(te.Defaultvisual.Default, model + "_" + c.Replace("aura", ""), display, null));
+                ModKitUtil.AddSkin(vp, c, ModelEntry(te.Defaultvisual.Default, model + "_" + c.Replace("aura", ""), display, null));
         ent.Defaultvisual = vp;
         Register("Mob", vp);
         being.Entity = ent;
@@ -601,14 +556,14 @@ public static class YosseleContent
     // YosseleClient, as before. Never tagged Sno or Snoble (docs/17: the Sno Cannon eats anything Sno).
     static void BuildFriend()
     {
-        Beingobject tb = YosseleUtil.Load<Beingobject>("Mob", YosseleData.FriendTemplate);
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", YosseleData.FriendTemplate);
         if (tb == null || tb.Entity == null)
         {
             FriendFrom = "none";
             YosseleLog.Error(YosseleData.FriendTemplate + " not found; Cordyceps raises nothing");
             return;
         }
-        Beingobject snoble = YosseleUtil.Load<Beingobject>("Mob", YosseleData.FriendLook);
+        Beingobject snoble = ModKitUtil.Load<Beingobject>("Mob", YosseleData.FriendLook);
         Entityobject te = tb.Entity;
         Beingobject being = YosseleUtil.Clone(tb, YosseleData.Friend);
         if (snoble != null && snoble.Block != null)
@@ -638,7 +593,7 @@ public static class YosseleContent
             + (being.Block != null ? " (block " + being.Block.name + ")" : "");
         // Its own sheet plays on the miner's animator (Idle, Move, Attack); the Snoble's sheet has only Idle, with its own
         // simple animator and no attack animation.
-        ent.Visualscripts = look == te ? Strip(te.Visualscripts) : Strip(look.Visualscripts);
+        ent.Visualscripts = look == te ? ModKitUtil.Strip(te.Visualscripts) : ModKitUtil.Strip(look.Visualscripts);
         Visualproperties vp = UnityEngine.Object.Instantiate(look.Defaultvisual);
         YosseleUtil.Retag(vp, YosseleData.Friend + "_Visualproperties");
         Visualproperties.Entry e = look.Defaultvisual.Default;
@@ -748,15 +703,15 @@ public static class YosseleContent
         // A ranged vessel is built like Sno Sno: Mob_General, Mob_Movement, the stock Mob_Ranged in place of Smacky's
         // Mob_Combat (targets, mines ore, fires the Attack command's projectile and sends "Shoot", which
         // Entity_Vis_Mob_Attack turns into the Attack animation) and Hero_Buildsell. The hero brain names the laser.
-        ent.Aiscripts = Strip(te.Aiscripts);
+        ent.Aiscripts = ModKitUtil.Strip(te.Aiscripts);
         int melee = ent.Aiscripts.FindIndex(s => s.name == "Entity_Ai_Mob_Combat");
         if (melee >= 0)
             ent.Aiscripts.RemoveAt(melee);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Ranged"))
-            ent.Aiscripts.Insert(melee >= 0 ? melee : Mathf.Min(2, ent.Aiscripts.Count), YosseleUtil.Script("Entity_Ai_Mob_Ranged"));
-        ent.Visualscripts = Strip(te.Visualscripts);
+            ent.Aiscripts.Insert(melee >= 0 ? melee : Mathf.Min(2, ent.Aiscripts.Count), ModKitUtil.Script("Entity_Ai_Mob_Ranged"));
+        ent.Visualscripts = ModKitUtil.Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
-            ent.Visualscripts.Add(YosseleUtil.Script("Entity_Vis_Mob_Attack"));
+            ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Mob_Attack"));
         ent.Upgrades = new List<Upgradeproperties>();
         ent.Upgradesinit = new List<Upgradeproperties>();
         Upgradeproperties tooltip = Tooltip();
@@ -805,18 +760,18 @@ public static class YosseleContent
         Entry.Displayskill = YosseleData.Displayskill;
         Entry.Color = Accent;
         // The 12x12 sprite in player lists, the setup bar and leaderboards: the ready-up portrait in its brackets.
-        Entry.Icon = YosseleAssets.Single("Readyup6yossele", 12) ?? template.Icon;
-        Entry.Worldsplash = YosseleAssets.Single("Yosselesplash", 128) ?? template.Worldsplash;
-        Entry.Endscreenwinicon = YosseleAssets.Single("Yosseleendstat1", 32) ?? template.Endscreenwinicon;
-        Entry.Endscreenloseicon = YosseleAssets.Single("Yosseleendstat2", 32) ?? template.Endscreenloseicon;
-        Entry.Worldsprite = YosseleAssets.Worldsprite(template.Worldsprite);
-        Texture fall = YosseleAssets.Sheet("YosseleFall-Sheet");
-        Texture land = YosseleAssets.Sheet("YosseleIntroR-Sheet");
-        Texture idle = YosseleAssets.Sheet("YosseleIdlejustidle-Sheet");
+        Entry.Icon = ModKitAssets.Single("Readyup6yossele", 12) ?? template.Icon;
+        Entry.Worldsplash = ModKitAssets.Single("Yosselesplash", 128) ?? template.Worldsplash;
+        Entry.Endscreenwinicon = ModKitAssets.Single("Yosseleendstat1", 32) ?? template.Endscreenwinicon;
+        Entry.Endscreenloseicon = ModKitAssets.Single("Yosseleendstat2", 32) ?? template.Endscreenloseicon;
+        Entry.Worldsprite = ModKitAssets.Worldsprite(template.Worldsprite);
+        Texture fall = ModKitAssets.Sheet("YosseleFall-Sheet");
+        Texture land = ModKitAssets.Sheet("YosseleIntroR-Sheet");
+        Texture idle = ModKitAssets.Sheet("YosseleIdlejustidle-Sheet");
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;
-        Dictionary<string, UnityEngine.Object> heroes = YosseleUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         heroes[YosseleData.Hero] = Entry;
     }
 }

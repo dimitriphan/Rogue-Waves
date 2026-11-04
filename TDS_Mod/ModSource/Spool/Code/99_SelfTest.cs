@@ -526,6 +526,9 @@ public static class SpoolSelfTest
                     Check("a Stitched is visible to clients", cast[0] != null && cast[0].Master.Client != null && cast[0].Master.Client.Beingobject != null);
                     Check("Stitched stats", cast[0] != null && Mathf.Approximately(SpoolUtil.MaxHealth(cast[0].Master), 20f) && Mathf.Approximately(SpoolUtil.Stat(cast[0].Master, "Speed", 0), 1.8f),
                         cast[0] != null ? "health " + F(SpoolUtil.MaxHealth(cast[0].Master)) + ", speed " + F(SpoolUtil.Stat(cast[0].Master, "Speed", 0)) : "");
+#if SPOOL_SHOTS
+                    if (cast[0] != null) yield return SpoolShots.Close("stitched", SpoolUtil.Pos(cast[0].Master), 3f);
+#endif
                 }
                 player.Stash = 50;
                 SpoolServer.Show(player);
@@ -608,6 +611,15 @@ public static class SpoolSelfTest
             yield return Wait(0.3f);
             Check("a Dart throws needles (stock ranged AI)", dart != null && dart.Master.GetComponent<Entity_Ai_Mob_Ranged>() != null && dart.Master.Commandlistserver.TryGetValue("Attack", out attack) && attack.Goalstring == SpoolData.Needle,
                 attack != null ? attack.Goalstring : "no Attack command");
+#if SPOOL_SHOTS
+            if (dart != null)
+            {
+                Entity_Master aimAt = ModKitTest.SpawnFoe("Enemy_Dagger", SpoolUtil.Pos(dart.Master), 1.5f, 3f, null);
+                yield return Wait(1.6f);
+                yield return SpoolShots.Close("dart_needle", SpoolUtil.Pos(dart.Master), 4f);
+                if (aimAt != null && SpoolUtil.Alive(aimAt)) Game_Entity.Instance.Despawn(aimAt.Beingserver, false, "Selftest");
+            }
+#endif
             yield return Upgrade(tinA, "Surprise4", owner);
             Check("One Last Surprise", Has(tinA, "Surprise4"));
             foreach (SpoolUnitBrain u in UnitsOf(tinA)) Kill(u.Master);
@@ -807,8 +819,11 @@ public static class SpoolSelfTest
                 Hit(dagger, c.Master, 10f);
                 Hit(dagger, c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("every 25 damage spins a Thread beside it", c.Spun == spun + 1 && SpoolServer.DropsNear(cp, 1.2f) == near + 1,
+                Check("every 25 damage spins a Thread beside it", c.Spun == spun + 1 && SpoolServer.Dropped == dropped + 1 && SpoolServer.DropsNear(cp, 1.2f) >= Mathf.Max(1, near),   // it can join a tuft already there
                     "spun " + (c.Spun - spun) + " after " + F(c.Taken) + ", beside it " + (SpoolServer.DropsNear(cp, 1.2f) - near) + ", dropped anywhere " + (SpoolServer.Dropped - dropped));
+#if SPOOL_SHOTS
+                yield return SpoolShots.Close("tuft", cp, 3f);
+#endif
                 yield return Upgrade(c, "Sharper2", owner);
                 yield return FarFoe("Enemy_Dagger", far);
                 back = c.Reflected;
@@ -875,6 +890,9 @@ public static class SpoolSelfTest
             }
             SpoolUtil.Heal(hm, c.Master, 500f);
             Check("at most 3 Mangled alive", UnitsOf(c).Count == 3, UnitsOf(c).Count + " alive, made " + (c.Mangled - mangled));
+#if SPOOL_SHOTS
+            yield return SpoolShots.Close("mangled", c.Pos, 3.5f);
+#endif
             yield return Upgrade(c, "Overstuffed4", owner);
             foreach (SpoolUnitBrain u in UnitsOf(c)) Kill(u.Master);
             yield return Wait(0.3f);

@@ -40,7 +40,7 @@ public class RogueWavesModeMod : MonoBehaviour
 #if ROGUEWAVESMODE_TWOPC
         if (RWTwo.NoPack) { yield return RWTwo.NoPackRun(); yield break; }
 #endif
-        while (Tds_Masterdatabase.Instance == null || RWUtil.Folder("Mode") == null || RWUtil.Folder("Gameplan") == null || RWUtil.Folder("World") == null)
+        while (Tds_Masterdatabase.Instance == null || ModKitUtil.Folder("Mode") == null || ModKitUtil.Folder("Gameplan") == null || ModKitUtil.Folder("World") == null)
             yield return new WaitForSecondsRealtime(0.5f);
         while (Bla_Addressables.Instance == null)
             yield return new WaitForSecondsRealtime(0.5f);
@@ -49,7 +49,7 @@ public class RogueWavesModeMod : MonoBehaviour
         RWCampaign.Install();
 
         // Mode_Normal's group holds the Modeobject and Tide table the mode copies.
-        Modeentryobject normal = RWUtil.Folder("Mode").ContainsKey(RWData.StockMode) ? RWUtil.Folder("Mode")[RWData.StockMode] as Modeentryobject : null;
+        Modeentryobject normal = ModKitUtil.Folder("Mode").ContainsKey(RWData.StockMode) ? ModKitUtil.Folder("Mode")[RWData.StockMode] as Modeentryobject : null;
         if (normal != null && normal.Modeloads != null)
         {
             Bl_Address.Loadgroup group = null;

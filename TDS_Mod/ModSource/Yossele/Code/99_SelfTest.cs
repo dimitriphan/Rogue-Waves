@@ -35,9 +35,9 @@ public static class YosseleSelfTest
 
     static void Drive()
     {
-        if (freeze && !forcing && Game_Mapvars.Instance != null && YosseleUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
+        if (freeze && !forcing && Game_Mapvars.Instance != null && ModKitUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
             Game_Mapvars.Instance.Time_Wave.Value = 900f;
-        if (forcing && Game_Mapvars.Instance != null && YosseleUtil.IsServer)
+        if (forcing && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
             Game_Mapvars.Instance.Time_Wave.Value = -1f;
         if (phase >= 3)
             return;
@@ -107,7 +107,7 @@ public static class YosseleSelfTest
             return;
         }
 
-        if (phase <= 2 && YosseleServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && YosseleUtil.IsServer)
+        if (phase <= 2 && YosseleServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
             YosseleMod.Instance.StartCoroutine(Scenario());
@@ -129,7 +129,7 @@ public static class YosseleSelfTest
             buttons++;
             if (b.Character == YosseleData.Hero) mine = b;
         }
-        Dictionary<string, UnityEngine.Object> heroes = YosseleUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         Check("Yossele unlocked on the boat's vessel select", mine != null && !mine.Locked, mine == null ? "no button" : "locked " + mine.Locked);
         Check("every vessel has a boat spot", buttons == heroes.Count, buttons + " buttons, " + heroes.Count + " vessels");
         Transform spots = Macro_Worldvisual.Instance.Boat.transform.Find("Charselect/Spots");
@@ -210,7 +210,7 @@ public static class YosseleSelfTest
     // each column out to 8 tiles; when there is none it logs why and a picture of the ground).
     static Vector3 Spot(Entity_Master hero, Beingobject being, float ring)
     {
-        return ModKitTest.Spot(YosseleUtil.Pos(hero), being, YosseleUtil.Team(hero), ring, 8f, used, being.Objectname);
+        return ModKitTest.Spot(ModKitUtil.Pos(hero), being, ModKitUtil.Team(hero), ring, 8f, used, being.Objectname);
     }
 
     static T Newest<T>(string being, List<YosseleBuilding> known) where T : YosseleBuilding
@@ -224,7 +224,7 @@ public static class YosseleSelfTest
     static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<YosseleBuilding> known, YosseleBuilding[] result, int orientation = 0)
     {
         result[0] = null;
-        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":" + orientation + ",\"Owner\":" + YosseleUtil.Owner(hero) + "}";
+        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":" + orientation + ",\"Owner\":" + ModKitUtil.Owner(hero) + "}";
         Send(hero, "Build", json);
         float t = 0f;
         while (t < 20f && result[0] == null)
@@ -250,14 +250,14 @@ public static class YosseleSelfTest
         ClearFoes();
     }
 
-    static int Team() { return YosseleServer.Heroes.Count > 0 ? YosseleUtil.Team(YosseleServer.Heroes[0].Master) : 1; }
+    static int Team() { return YosseleServer.Heroes.Count > 0 ? ModKitUtil.Team(YosseleServer.Heroes[0].Master) : 1; }
 
     // Removes Tide foes so they don't pile up (not a kill: no Scraps).
     static void ClearFoes()
     {
         int team = Team();
         foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
-            if (YosseleUtil.IsFoe(e, team))
+            if (ModKitUtil.IsFoe(e, team))
                 Game_Entity.Instance.Despawn(e.Beingserver, false, "Selftest");
     }
 
@@ -289,7 +289,7 @@ public static class YosseleSelfTest
             foreach (Renderer r in t.GetComponentsInChildren<Renderer>(true))
                 rs.Add(r.GetType().Name + (r.enabled ? "" : "(off)") + " y" + r.bounds.min.y.ToString("F2") + ".." + r.bounds.max.y.ToString("F2") + " mat " + (r.sharedMaterial != null ? r.sharedMaterial.name : "-"));
             Log("debuff " + vfx + " at " + path + " active " + t.gameObject.activeInHierarchy + " local " + t.localPosition.ToString("F2") + " scale " + t.lossyScale.ToString("F2")
-                + " foe pos " + YosseleUtil.Pos(foe).ToString("F2") + " renderers: " + string.Join("; ", rs.ToArray()));
+                + " foe pos " + ModKitUtil.Pos(foe).ToString("F2") + " renderers: " + string.Join("; ", rs.ToArray()));
         }
         Check("the game attaches " + vfx + " to the foe", found);
     }
@@ -339,7 +339,7 @@ public static class YosseleSelfTest
         if (b != null)
             foreach (YosseleData.Upg u in b.Upgrades)
                 if (u.Key + u.Tier == key)
-                    foreach (Link_Resourceset r in YosseleUtil.Costs(u.Costs))
+                    foreach (Link_Resourceset r in ModKitUtil.Costs(u.Costs))
                         if (r.Name == colour) return r.Amount;
         return 0f;
     }
@@ -364,7 +364,7 @@ public static class YosseleSelfTest
         YosseleSpores.Add(foe, 2, sporer);
         int bursts = boom.Bursts;
         float until = Time.time + YosseleData.MushboomEvery + 3f, nextTop = Time.time + 2f;
-        while (boom.Bursts == bursts && Time.time < until && YosseleUtil.Alive(foe))
+        while (boom.Bursts == bursts && Time.time < until && ModKitUtil.Alive(foe))
         {
             if (Time.time >= nextTop) { YosseleSpores.Add(foe, 1, sporer); nextTop = Time.time + 2f; }
             int over = YosseleSpores.StacksOf(foe) - 2;
@@ -373,8 +373,8 @@ public static class YosseleSelfTest
             s.Value = full;
             yield return null;
         }
-        drop[0] = full - (YosseleUtil.Alive(foe) ? YosseleUtil.Health(foe) : 0f);
-        Log("WaitBurst: " + foe.Being.Value + ", full " + F(full) + ", alive " + YosseleUtil.Alive(foe) + ", bursts " + bursts + " -> " + boom.Bursts);
+        drop[0] = full - (ModKitUtil.Alive(foe) ? ModKitUtil.Health(foe) : 0f);
+        Log("WaitBurst: " + foe.Being.Value + ", full " + F(full) + ", alive " + ModKitUtil.Alive(foe) + ", bursts " + bursts + " -> " + boom.Bursts);
     }
 
     static void SetHealth(Entity_Master e, float value)
@@ -386,7 +386,7 @@ public static class YosseleSelfTest
 
     static string Skin(Entity_Master e) { return e != null ? e.Skin.Value.ToString() : "-"; }
 
-    static float SpeedOf(Entity_Master e) { return YosseleUtil.Stat(e, "Speed", 1f); }
+    static float SpeedOf(Entity_Master e) { return ModKitUtil.Stat(e, "Speed", 1f); }
 
     static IEnumerator Fell(string being, Vector3 near, float maxDist, float minDist, int count, int[] felled)
     {
@@ -406,7 +406,7 @@ public static class YosseleSelfTest
     static float NearestVine(YosseleHengeBrain henge, Vector3 at)
     {
         float best = 99f;
-        foreach (Genitem g in henge.Tiles) best = Mathf.Min(best, YosseleUtil.Flat(g.Position, at));
+        foreach (Genitem g in henge.Tiles) best = Mathf.Min(best, ModKitUtil.Flat(g.Position, at));
         return best;
     }
 
@@ -415,19 +415,19 @@ public static class YosseleSelfTest
     {
         List<string> gone = new List<string>();
         foreach (KeyValuePair<string, YosseleBuilding> kv in built)
-            if (kv.Value == null || !YosseleUtil.Alive(kv.Value.Master)) gone.Add(kv.Key);
-        if (gone.Count > 0) Log("buildings gone before this step: " + YosseleUtil.Join(gone));
+            if (kv.Value == null || !ModKitUtil.Alive(kv.Value.Master)) gone.Add(kv.Key);
+        if (gone.Count > 0) Log("buildings gone before this step: " + ModKitUtil.Join(gone));
     }
 
     static Entity_Master NearestOre(Vector3 at, float reach)
     {
         Entity_Master best = null;
         float bestD = reach;
-        foreach (Entity_Master e in YosseleUtil.Area(at, reach, YosseleUtil.Tagged("Resource")))
+        foreach (Entity_Master e in ModKitUtil.Area(at, reach, ModKitUtil.Tagged("Resource")))
         {
-            if (e == null || !YosseleUtil.Alive(e) || e.Statsserver == null || !e.Statsserver.ContainsKey("Healthresource"))
+            if (e == null || !ModKitUtil.Alive(e) || e.Statsserver == null || !e.Statsserver.ContainsKey("Healthresource"))
                 continue;
-            float d = YosseleUtil.Flat(YosseleUtil.Pos(e), at);
+            float d = ModKitUtil.Flat(ModKitUtil.Pos(e), at);
             if (d < bestD) { bestD = d; best = e; }
         }
         return best;
@@ -444,10 +444,10 @@ public static class YosseleSelfTest
         yield return Wait(2f);
         ClearFoes();
         Entity_Master hm = hero.Master;
-        long owner = YosseleUtil.Owner(hm);
-        int team = YosseleUtil.Team(hm);
+        long owner = ModKitUtil.Owner(hm);
+        int team = ModKitUtil.Team(hm);
         YosselePlayer player = YosseleServer.Player(owner);
-        Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + YosseleUtil.Pos(hm) + ", owner " + owner + ", team " + team);
+        Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + ModKitUtil.Pos(hm) + ", owner " + owner + ", team " + team);
         ModKitTest.Log = Log;
         ModKitTest.MapDump(team, hm);
 
@@ -464,10 +464,10 @@ public static class YosseleSelfTest
                 "laser from " + YosseleContent.LaserFrom + ", Attack shoots '" + (attack != null ? attack.Goalstring : "-") + "'");
         }
         Check("vessel has the Patient Growth tooltip", hm.Upgradelistserver.ContainsKey(YosseleData.HeroTooltip));
-        Check("vessel stats 70 / 1.75 / 5.5 / range 4 / projectile 15", Mathf.Approximately(YosseleUtil.MaxHealth(hm), 70f) && Mathf.Approximately(YosseleUtil.Stat(hm, "Speed", 0), 1.75f)
-            && Mathf.Approximately(YosseleUtil.Stat(hm, "Damage", 0), 5.5f) && Mathf.Approximately(YosseleUtil.Stat(hm, "Range", 0), 4f) && Mathf.Approximately(YosseleUtil.Stat(hm, "Projspeed", 0), 15f),
-            "max health " + YosseleUtil.MaxHealth(hm) + ", Speed " + YosseleUtil.Stat(hm, "Speed", 0) + ", Damage " + YosseleUtil.Stat(hm, "Damage", 0) + ", Range " + YosseleUtil.Stat(hm, "Range", 0)
-            + ", Projspeed " + YosseleUtil.Stat(hm, "Projspeed", 0));
+        Check("vessel stats 70 / 1.75 / 5.5 / range 4 / projectile 15", Mathf.Approximately(ModKitUtil.MaxHealth(hm), 70f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Speed", 0), 1.75f)
+            && Mathf.Approximately(ModKitUtil.Stat(hm, "Damage", 0), 5.5f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Range", 0), 4f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Projspeed", 0), 15f),
+            "max health " + ModKitUtil.MaxHealth(hm) + ", Speed " + ModKitUtil.Stat(hm, "Speed", 0) + ", Damage " + ModKitUtil.Stat(hm, "Damage", 0) + ", Range " + ModKitUtil.Stat(hm, "Range", 0)
+            + ", Projspeed " + ModKitUtil.Stat(hm, "Projspeed", 0));
         int options = 0;
         for (int i = 0; i < 4; i++)
         {
@@ -478,11 +478,11 @@ public static class YosseleSelfTest
         Check("no FERTILIZE button without a Compost Bin", !hm.Commandlistserver.ContainsKey(YosseleData.FertilizeLink) && hero.Rank == 0);
         Check("vessel visible to clients", hm.Client != null && hm.Client.Beingobject != null && hm.Client.Beingobject.Objectname == YosseleData.Hero);
         {
-            float max = YosseleUtil.MaxHealth(hm);
+            float max = ModKitUtil.MaxHealth(hm);
             SetHealth(hm, max - 20f);
-            float h0 = YosseleUtil.Health(hm);
+            float h0 = ModKitUtil.Health(hm);
             yield return Wait(3.2f);
-            float h1 = YosseleUtil.Health(hm);
+            float h1 = ModKitUtil.Health(hm);
             Check("Yossele mends about " + YosseleData.Regen + " health a second", h1 >= h0 + 2f * YosseleData.Regen && h1 <= h0 + 4.5f * YosseleData.Regen, F(h0) + "->" + F(h1));
             SetHealth(hm, max);
         }
@@ -490,18 +490,18 @@ public static class YosseleSelfTest
             // A foe 2.5-3.5 tiles off: Yossele, standing idle, shoots it (the stock AI's own targeting). Right after the
             // spawn its health and maximum aren't filled in yet (both read 0 in rounds 9 and 9d), so they are read live.
             // One shot can fell it (round 9b), and a felled foe's object is gone, so who felled it comes from the server.
-            Entity_Master foe = SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(hm), 3.5f, 2.5f);
+            Entity_Master foe = SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(hm), 3.5f, 2.5f);
             bool spawned = foe != null;
             int zaps = YosseleClient.Zaps, felled = YosseleServer.FoesFelled;
-            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || (YosseleUtil.MaxHealth(foe) > 0f && YosseleUtil.Health(foe) < YosseleUtil.MaxHealth(foe) - 0.01f), 8f);
-            bool gone = foe == null || !YosseleUtil.Alive(foe);
-            float lost = gone ? 0f : YosseleUtil.MaxHealth(foe) - YosseleUtil.Health(foe);
-            string by = gone ? YosseleServer.LastFelledBy : YosseleUtil.BeingName(foe.Lasthit);
+            yield return Until(() => foe == null || !ModKitUtil.Alive(foe) || (ModKitUtil.MaxHealth(foe) > 0f && ModKitUtil.Health(foe) < ModKitUtil.MaxHealth(foe) - 0.01f), 8f);
+            bool gone = foe == null || !ModKitUtil.Alive(foe);
+            float lost = gone ? 0f : ModKitUtil.MaxHealth(foe) - ModKitUtil.Health(foe);
+            string by = gone ? YosseleServer.LastFelledBy : ModKitUtil.BeingName(foe.Lasthit);
             Check("Yossele's laser hurts a foe in range", spawned && (gone || lost > 0.01f) && by == YosseleData.Hero && YosseleClient.Zaps > zaps,
                 !spawned ? "no foe spawned" : (gone ? "felled (" + (YosseleServer.FoesFelled - felled) + " fell)" : "first loss " + F(lost) + " (Damage 5.5 before the foe's own armour)")
                 + ", zaps " + zaps + "->" + YosseleClient.Zaps + ", last hit by " + by);
 #if YOSSELE_SHOTS
-            yield return YosseleShots.Close("laser", YosseleUtil.Pos(hm), 4f);
+            yield return YosseleShots.Close("laser", ModKitUtil.Pos(hm), 4f);
 #endif
             Kill(foe);
             yield return Wait(0.4f);
@@ -511,7 +511,7 @@ public static class YosseleSelfTest
         Link_Modifier holdFire = Helper_Entitytools.Addmod(hm, "Range", 0.01f, Helper_Entitytools.Modtypes.Override, 0f);
 
         // 2. Building all four through the vessel's real Build command; they start at Growth 0.
-        Helper_Resources.Giveresources(YosseleUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
+        Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
         yield return Wait(0.5f);
         List<YosseleBuilding> known = new List<YosseleBuilding>(YosseleServer.Buildings);
         Dictionary<string, YosseleBuilding> built = new Dictionary<string, YosseleBuilding>();
@@ -523,9 +523,9 @@ public static class YosseleSelfTest
             Beingobject being = YosseleContent.Beings[tower];
             Vector3 at;
             // The Sapling goes beside an ore node when there is one nearby, so it has something to mine.
-            Entity_Master ore = tower == YosseleData.Pachira ? NearestOre(YosseleUtil.Pos(hm), 14f) : null;
+            Entity_Master ore = tower == YosseleData.Pachira ? NearestOre(ModKitUtil.Pos(hm), 14f) : null;
             if (ore != null)
-                at = ModKitTest.Spot(YosseleUtil.Pos(ore), being, team, 1.2f, 2.5f, used, being.Objectname);
+                at = ModKitTest.Spot(ModKitUtil.Pos(ore), being, team, 1.2f, 2.5f, used, being.Objectname);
             else
                 at = Spot(hm, being, rings[i]);
             if (float.IsNaN(at.x)) { ModKitTest.Setup("build " + tower, "no free tile"); continue; }
@@ -539,7 +539,7 @@ public static class YosseleSelfTest
             float spent = before - Res(owner, cost.Name);
             Check(tower + " costs " + cost.Amount + " " + cost.Name, Mathf.Abs(spent - cost.Amount) < 0.01f, "spent " + spent);
             Check(tower + " visible to clients", got[0].Master.Client != null && got[0].Master.Client.Beingobject != null && got[0].Master.Client.Beingobject.Objectname == tower);
-            Check(tower + " starts at Growth 0", got[0].Growth == 0 && Mathf.Approximately(YosseleUtil.Stat(got[0].Master, YosseleData.GrowthStat, -1f), 0f), "Growth " + got[0].Growth);
+            Check(tower + " starts at Growth 0", got[0].Growth == 0 && Mathf.Approximately(ModKitUtil.Stat(got[0].Master, YosseleData.GrowthStat, -1f), 0f), "Growth " + got[0].Growth);
         }
         YosseleCannonBrain cannon = built.ContainsKey(YosseleData.Cannon) ? (YosseleCannonBrain)built[YosseleData.Cannon] : null;
         YosseleDandelionBrain tree = built.ContainsKey(YosseleData.Dandelion) ? (YosseleDandelionBrain)built[YosseleData.Dandelion] : null;
@@ -596,8 +596,8 @@ public static class YosseleSelfTest
             {
                 if (b == null) continue;
                 total++;
-                if (b.Growth == 1 && Skin(b.Master) == YosseleData.GrowthStat + "1" && Mathf.Approximately(YosseleUtil.Stat(b.Master, YosseleData.GrowthStat, -1f), 1f)) grown++;
-                else Log(b.Def.Id + ": Growth " + b.Growth + ", skin '" + Skin(b.Master) + "', counter " + YosseleUtil.Stat(b.Master, YosseleData.GrowthStat, -1f));
+                if (b.Growth == 1 && Skin(b.Master) == YosseleData.GrowthStat + "1" && Mathf.Approximately(ModKitUtil.Stat(b.Master, YosseleData.GrowthStat, -1f), 1f)) grown++;
+                else Log(b.Def.Id + ": Growth " + b.Growth + ", skin '" + Skin(b.Master) + "', counter " + ModKitUtil.Stat(b.Master, YosseleData.GrowthStat, -1f));
             }
             Check("every building grew one stage after a whole Tide (counter and skin)", total > 0 && grown == total, grown + "/" + total + ", Tide " + reached[0]);
             if (tree != null)
@@ -622,7 +622,7 @@ public static class YosseleSelfTest
                 if (kv.Key.Growth == want) five++;
                 got5.Add(kv.Key.Def.Id.Replace("Tower_Yossele", "") + " " + kv.Value + "->" + kv.Key.Growth);
             }
-            Check("a map of 4 Tides or fewer grows 5 stages a Tide", before.Count > 0 && five == before.Count, YosseleUtil.Join(got5));
+            Check("a map of 4 Tides or fewer grows 5 stages a Tide", before.Count > 0 && five == before.Count, ModKitUtil.Join(got5));
         }
 
         // 5. FERTILIZE: granted by the Compost Bin Direction, fed by foes felled near Yossele, grows a building a stage.
@@ -644,11 +644,11 @@ public static class YosseleSelfTest
             }
             int need = YosseleData.Compostbins[0].Kills;
             int[] felled = new int[1];
-            yield return Fell("Enemy_Dagger", YosseleUtil.Pos(hm), 2.5f, 0f, need, felled);
-            Check(need + " foes felled near Yossele make a fertilizer", felled[0] == need && player.Fertilizer == 1 && Mathf.Approximately(YosseleUtil.Stat(hm, YosseleData.FertilizerStat, -1f), 1f),
-                felled[0] + " felled, fertilizer " + player.Fertilizer + ", counter " + YosseleUtil.Stat(hm, YosseleData.FertilizerStat, -1f));
+            yield return Fell("Enemy_Dagger", ModKitUtil.Pos(hm), 2.5f, 0f, need, felled);
+            Check(need + " foes felled near Yossele make a fertilizer", felled[0] == need && player.Fertilizer == 1 && Mathf.Approximately(ModKitUtil.Stat(hm, YosseleData.FertilizerStat, -1f), 1f),
+                felled[0] + " felled, fertilizer " + player.Fertilizer + ", counter " + ModKitUtil.Stat(hm, YosseleData.FertilizerStat, -1f));
             float radius = YosseleData.Compostbins[0].Radius;
-            yield return Fell("Enemy_Dagger", YosseleUtil.Pos(hm), radius + 8f, radius + 1.5f, 3, felled);
+            yield return Fell("Enemy_Dagger", ModKitUtil.Pos(hm), radius + 8f, radius + 1.5f, 3, felled);
             if (felled[0] > 0) Check("foes felled far from Yossele make none", player.Compost == 0, "compost " + player.Compost + " after " + felled[0]);
             else ModKitTest.Setup("far foes", "no ground for a foe " + F(radius + 1.5f) + "-" + F(radius + 8f) + " tiles from Yossele");
             if (target != null && player.Fertilizer > 0)
@@ -679,19 +679,19 @@ public static class YosseleSelfTest
         // 6. Mushroom Cannon: lobs land, spore stacks build to their cap and rot foes; fully grown, the lobs bounce.
         if (cannon != null)
         {
-            Vector3 cp = YosseleUtil.Pos(cannon.Master);
+            Vector3 cp = ModKitUtil.Pos(cannon.Master);
             Entity_Master foe = SpawnFoe("Enemy_Aegis", cp, 5f, 3f);
             int blasts = cannon.Blasts, bounces = cannon.Bounces;
-            yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || YosseleSpores.StacksOf(foe) > 0, 8f);
+            yield return Until(() => foe == null || !ModKitUtil.Alive(foe) || YosseleSpores.StacksOf(foe) > 0, 8f);
             Check("the Cannon lobs a spore bomb that lands", foe != null && cannon.Lobs > 0 && cannon.Blasts > blasts, "lobs " + cannon.Lobs + ", blasts " + blasts + "->" + cannon.Blasts);
             Check("a blast spores the foe", foe != null && YosseleSpores.StacksOf(foe) > 0, "stacks " + YosseleSpores.StacksOf(foe));
             yield return DebuffReport(foe, YosseleData.VfxSpores);
-            if (foe != null && YosseleUtil.Alive(foe))
+            if (foe != null && ModKitUtil.Alive(foe))
             {
-                float h0 = YosseleUtil.Health(foe);
+                float h0 = ModKitUtil.Health(foe);
                 int ticks = YosseleSpores.Ticks;
                 yield return Wait(1.2f);
-                Check("spores rot the foe over time", YosseleSpores.Ticks > ticks && (!YosseleUtil.Alive(foe) || YosseleUtil.Health(foe) < h0), F(h0) + "->" + F(YosseleUtil.Health(foe)));
+                Check("spores rot the foe over time", YosseleSpores.Ticks > ticks && (!ModKitUtil.Alive(foe) || ModKitUtil.Health(foe) < h0), F(h0) + "->" + F(ModKitUtil.Health(foe)));
                 YosseleSpores.Add(foe, 50, cannon);
                 Check("spores stop at " + YosseleData.SporeMax + " stacks", YosseleSpores.StacksOf(foe) == YosseleData.SporeMax && YosseleSpores.IsFull(foe), "" + YosseleSpores.StacksOf(foe));
                 yield return DebuffReport(foe, YosseleData.VfxSporefull);
@@ -699,7 +699,7 @@ public static class YosseleSelfTest
             yield return Until(() => cannon.Bounces > bounces, 6f);
             Check("a fully grown Cannon's lobs bounce", cannon.FullGrown && cannon.Bounces > bounces, "bounces " + bounces + "->" + cannon.Bounces);
 #if YOSSELE_SHOTS
-            yield return YosseleShots.Close("cannon", (cp + (foe != null ? YosseleUtil.Pos(foe) : cp)) * 0.5f, 6f);
+            yield return YosseleShots.Close("cannon", (cp + (foe != null ? ModKitUtil.Pos(foe) : cp)) * 0.5f, 6f);
 #endif
             Kill(foe);
             yield return Wait(0.4f);
@@ -726,7 +726,7 @@ public static class YosseleSelfTest
                 && Mathf.Approximately(cannon.Param("Viral_Damage", 0f), 15f) && Mathf.Approximately(cannon.Param("Viral_Radius", 0f), 2f) && Mathf.Approximately(cannon.Param("Viral_Spores", 0f), 1f));
             yield return Upgrade(cannon, "Finish4", owner);
             Check("Sticky -> Viral -> Explosive Finish", Has(cannon, "Viral3") && Has(cannon, "Finish4"));
-            Entity_Master a = SpawnFoe("Enemy_Aegis", cp, 6f, 4f), b = a != null ? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(a), 1f) : null;
+            Entity_Master a = SpawnFoe("Enemy_Aegis", cp, 6f, 4f), b = a != null ? SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(a), 1f) : null;
             yield return Wait(0.5f);
             if (a != null)
             {
@@ -751,24 +751,24 @@ public static class YosseleSelfTest
             yield return Wait(0.5f);
             List<YosseleFriendBrain> friends = YosseleFriends.All;
             YosseleFriendBrain friend = friends.Count > 0 ? friends[friends.Count - 1] : null;
-            if (Check("the Cordyfriend stands, owned by the cannon's player", friend != null && friend.Started && YosseleUtil.Owner(friend.Master) == owner && YosseleUtil.Team(friend.Master) == team,
+            if (Check("the Cordyfriend stands, owned by the cannon's player", friend != null && friend.Started && ModKitUtil.Owner(friend.Master) == owner && ModKitUtil.Team(friend.Master) == team,
                 "raised " + raised + "->" + YosseleFriends.Raised + ", from " + YosseleContent.FriendFrom))
             {
                 Entity_Master fm = friend.Master;
-                Check("Cordyfriend stats 75 / 2 / range 1.5 / 0.5 / speed 2.25", Mathf.Approximately(YosseleUtil.MaxHealth(fm), 75f) && Mathf.Approximately(YosseleUtil.Stat(fm, "Damage", 0f), 2f)
-                    && Mathf.Approximately(YosseleUtil.Stat(fm, "Range", 0f), 1.5f) && Mathf.Approximately(YosseleUtil.Stat(fm, "Attackspeed", 0f), 0.5f) && Mathf.Approximately(YosseleUtil.Stat(fm, "Speed", 0f), 2.25f),
-                    "health " + YosseleUtil.MaxHealth(fm) + ", damage " + YosseleUtil.Stat(fm, "Damage", 0f) + ", speed " + YosseleUtil.Stat(fm, "Speed", 0f));
-                Beingobject snoble = YosseleUtil.Load<Beingobject>("Mob", YosseleData.FriendLook);
+                Check("Cordyfriend stats 75 / 2 / range 1.5 / 0.5 / speed 2.25", Mathf.Approximately(ModKitUtil.MaxHealth(fm), 75f) && Mathf.Approximately(ModKitUtil.Stat(fm, "Damage", 0f), 2f)
+                    && Mathf.Approximately(ModKitUtil.Stat(fm, "Range", 0f), 1.5f) && Mathf.Approximately(ModKitUtil.Stat(fm, "Attackspeed", 0f), 0.5f) && Mathf.Approximately(ModKitUtil.Stat(fm, "Speed", 0f), 2.25f),
+                    "health " + ModKitUtil.MaxHealth(fm) + ", damage " + ModKitUtil.Stat(fm, "Damage", 0f) + ", speed " + ModKitUtil.Stat(fm, "Speed", 0f));
+                Beingobject snoble = ModKitUtil.Load<Beingobject>("Mob", YosseleData.FriendLook);
                 Check("the Cordyfriend fights with the stock melee AI, on the Snoble's block, never tagged Sno",
-                    fm.GetComponent<Entity_Ai_Mob_Combat>() != null && !YosseleUtil.HasTag(fm, "Sno") && !YosseleUtil.HasTag(fm, "Snoble")
+                    fm.GetComponent<Entity_Ai_Mob_Combat>() != null && !ModKitUtil.HasTag(fm, "Sno") && !ModKitUtil.HasTag(fm, "Snoble")
                     && (snoble == null || snoble.Block == null || fm.Beingserver.Being.Block == snoble.Block),
-                    "block " + (fm.Beingserver.Being.Block != null ? fm.Beingserver.Being.Block.name : "-") + ", tags " + YosseleUtil.Join(fm.Taglistserver));
+                    "block " + (fm.Beingserver.Being.Block != null ? fm.Beingserver.Being.Block.name : "-") + ", tags " + ModKitUtil.Join(fm.Taglistserver));
                 Entity_Master prey = SpawnFoe("Enemy_Dagger", friend.Home, 3f, 1.5f);
                 int orders = friend.Orders;
                 yield return Until(() => prey == null || friend == null || friend.Target == prey || friend.Orders > orders, 3f);
                 Check("the Cordyfriend walks to a foe near where it rose", prey != null && friend != null && (friend.Target == prey || friend.Orders > orders), "orders " + orders + "->" + (friend != null ? friend.Orders : -1));
 #if YOSSELE_SHOTS
-                yield return YosseleShots.Close("cordyfriend", YosseleUtil.Pos(fm), 3f);
+                yield return YosseleShots.Close("cordyfriend", ModKitUtil.Pos(fm), 3f);
 #endif
                 Kill(prey);
                 yield return Wait(0.3f);
@@ -821,7 +821,7 @@ public static class YosseleSelfTest
                 Check("Farout Fungus adds range", Has(second, "Farout2") && second.Stat("Range", 0f) >= range + 1.9f, F(range) + "->" + F(second.Stat("Range", 0f)));
                 Check("Deathcap Training: spores cap at 8 and hurt more", Has(second, "Deathcap3") && second.SporeMax == 8 && second.SporeDps > YosseleData.SporeDps, "max " + second.SporeMax + ", dps " + F(second.SporeDps));
                 Check("Hallucinogen bought", Has(second, "Hallucinogen4"));
-                Entity_Master foe = SpawnFoe("Enemy_Aegis", YosseleUtil.Pos(second.Master), 5f, 3f);
+                Entity_Master foe = SpawnFoe("Enemy_Aegis", ModKitUtil.Pos(second.Master), 5f, 3f);
                 yield return Wait(0.4f);
                 if (foe != null)
                 {
@@ -852,12 +852,12 @@ public static class YosseleSelfTest
                         List<Entity_Master> tough = new List<Entity_Master>();
                         for (int i = 0; i < 6; i++)
                         {
-                            Entity_Master f = SpawnFoe("Enemy_Maul", YosseleUtil.Pos(second.Master), 6f, 3f) ?? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(second.Master), 6f, 3f);
+                            Entity_Master f = SpawnFoe("Enemy_Maul", ModKitUtil.Pos(second.Master), 6f, 3f) ?? SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(second.Master), 6f, 3f);
                             if (f != null) { tough.Add(f); YosseleSpores.Add(f, YosseleData.SporeMax, second); }
                         }
                         rolled += tough.Count;
                         yield return Wait(5.6f);
-                        foreach (Entity_Master f in tough) if (YosseleUtil.Alive(f)) Kill(f);
+                        foreach (Entity_Master f in tough) if (ModKitUtil.Alive(f)) Kill(f);
                         yield return Wait(0.2f);
                     }
                     Check("Hallucinogen stuns by its rate, in play", YosseleSpores.Stuns - stuns0 >= 1 && YosseleSpores.Stuns - stuns0 <= rolled * 0.5f, (YosseleSpores.Stuns - stuns0) + " stuns from " + rolled + " foes, each rolled once, 5 s after it filled");
@@ -871,7 +871,7 @@ public static class YosseleSelfTest
         Standing(built);
         // 8. Primordial Dandelion Tree: seeds grow, all strike when a foe comes near; Growth adds 3 seeds and 20% range a
         // stage. Seed Packets -> Picky Placement -> Rubbery Shell (bounces) -> Dandelion Storm.
-        if (tree != null && YosseleUtil.Alive(tree.Master))
+        if (tree != null && ModKitUtil.Alive(tree.Master))
         {
             tree.SetGrowth(0);
             yield return Wait(0.3f);
@@ -881,17 +881,17 @@ public static class YosseleSelfTest
             yield return Wait(0.3f);
             Check("each stage adds " + YosseleData.SeedsPerStage + " seeds and 20% range", tree.Limit == 10 + 2 * YosseleData.SeedsPerStage && Mathf.Abs(tree.Stat("Range", 0f) - 7f * 1.4f) < 0.05f,
                 "limit " + tree.Limit + ", range " + F(tree.Stat("Range", 0f)));
-            Check("the seed counter shows on the Tree", YosseleUtil.Stat(tree.Master, "Seeds", -1f) >= 0f, "Seeds " + YosseleUtil.Stat(tree.Master, "Seeds", -1f));
+            Check("the seed counter shows on the Tree", ModKitUtil.Stat(tree.Master, "Seeds", -1f) >= 0f, "Seeds " + ModKitUtil.Stat(tree.Master, "Seeds", -1f));
             float d0 = tree.Stat("Damage", 0f);
             yield return Upgrade(tree, "Packets2", owner);
             Check("Seed Packets: seeds deal +3", Has(tree, "Packets2") && tree.Stat("Damage", 0f) >= d0 + 2.99f, F(d0) + "->" + F(tree.Stat("Damage", 0f)));
             tree.Ready = tree.Limit;
-            Entity_Master foe = SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(tree.Master), tree.Stat("Range", 3f) - 0.5f, 1f);
+            Entity_Master foe = SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(tree.Master), tree.Stat("Range", 3f) - 0.5f, 1f);
             int strikes = tree.Strikes;
             yield return Until(() => tree.Strikes > strikes, 5f);
             Check("the Tree lets its seeds go at a foe in range", foe != null && tree.Strikes > strikes && tree.SeedsFlown >= 1, "strikes " + strikes + "->" + tree.Strikes + ", seeds flown " + tree.SeedsFlown + ", ready " + F(tree.Ready));
 #if YOSSELE_SHOTS
-            yield return YosseleShots.Close("dandelion", YosseleUtil.Pos(tree.Master), 5f);
+            yield return YosseleShots.Close("dandelion", ModKitUtil.Pos(tree.Master), 5f);
 #endif
             yield return Wait(1f);
             if (tree.Refunded > 0) Check("Seed Packets: seeds that fell a foe come back", true, "refunded " + tree.Refunded);
@@ -903,22 +903,22 @@ public static class YosseleSelfTest
             if (tree == null) ModKitTest.Setup("seed regrow", "the Tree was felled during the check");
             else Check("seeds grow back over time", tree.Ready >= 0.5f || tree.Strikes > strikes1, "ready " + F(tree.Ready) + ", rate " + F(tree.Rate) + ", limit " + tree.Limit);
         }
-        if (tree != null && YosseleUtil.Alive(tree.Master))
+        if (tree != null && ModKitUtil.Alive(tree.Master))
         {
             yield return Upgrade(tree, "Picky3", owner);
             Check("Picky Placement: 0.25% of the foe's max health a seed", Has(tree, "Picky3") && Mathf.Approximately(tree.Param("Picky_Percent", 0f), 0.0025f));
             yield return Upgrade(tree, "Rubbery4", owner);
             Check("Seed Packets -> Picky Placement -> Rubbery Shell", Has(tree, "Rubbery4"));
-            Vector3 tp = YosseleUtil.Pos(tree.Master);
+            Vector3 tp = ModKitUtil.Pos(tree.Master);
             Entity_Master a = SpawnFoe("Enemy_Aegis", tp, tree.Stat("Range", 7f) - 1f, 2f);
-            Entity_Master b = a != null ? SpawnFoe("Enemy_Aegis", YosseleUtil.Pos(a), 1.5f, 0.5f) : null;
+            Entity_Master b = a != null ? SpawnFoe("Enemy_Aegis", ModKitUtil.Pos(a), 1.5f, 0.5f) : null;
             yield return Wait(0.3f);
             int bounced = tree.Bounced;
             tree.Ready = tree.Limit;
             yield return Until(() => tree == null || tree.Bounced > bounced, 4f);
             if (a != null && b != null)
                 Check("Rubbery Shell: a strike bounces on to a foe within 2 tiles", tree != null && tree.Bounced > bounced,
-                    "bounced " + bounced + "->" + (tree != null ? tree.Bounced : -1) + ", foes " + F(YosseleUtil.Flat(YosseleUtil.Pos(a), YosseleUtil.Pos(b))) + " apart");
+                    "bounced " + bounced + "->" + (tree != null ? tree.Bounced : -1) + ", foes " + F(ModKitUtil.Flat(ModKitUtil.Pos(a), ModKitUtil.Pos(b))) + " apart");
             else
                 ModKitTest.Setup("Rubbery Shell", "no ground for two foes side by side");
             Kill(a); Kill(b);
@@ -944,11 +944,11 @@ public static class YosseleSelfTest
             GameObject hit = he.Defaulthit != null ? he.Defaulthit.Default.Entityprefab : null;
             bool marker = hit != null && Extramethods.FindDeepChild(hit.transform, "Forward") != null;
             bool arrow = he.Visualscripts.Exists(x => x != null && x.name == "Entity_Vis_Tower_Orientation");
-            Beingobject wall = YosseleUtil.Load<Beingobject>("Mob", "Tower_Snosnowall");
-            string theirs = wall == null || wall.Entity == null ? "Ice Wall not found" : "Ice Wall scripts: " + YosseleUtil.Join(wall.Entity.Visualscripts.FindAll(x => x != null).ConvertAll(x => x.name));
+            Beingobject wall = ModKitUtil.Load<Beingobject>("Mob", "Tower_Snosnowall");
+            string theirs = wall == null || wall.Entity == null ? "Ice Wall not found" : "Ice Wall scripts: " + ModKitUtil.Join(wall.Entity.Visualscripts.FindAll(x => x != null).ConvertAll(x => x.name));
             Check("the Stonehenge shows its facing like the Ice Wall (placing arrow, selected arrow)", he.Orientable && marker && arrow, "Forward from " + YosseleContent.ForwardFrom + "; " + theirs);
         }
-        if (henge != null && YosseleUtil.Alive(henge.Master))
+        if (henge != null && ModKitUtil.Alive(henge.Master))
         {
             Vector3 hp = henge.Master.Beingserver.Currentblock != null ? henge.Master.Beingserver.Currentblock.Position : henge.Pos;
             // Section 4's Tides grew it already, and in play Growth never falls, so its vines are laid again from Growth 0.
@@ -967,7 +967,7 @@ public static class YosseleSelfTest
             Check("Growth hardens the stones", Mathf.Abs(YosseleHooks.ArmorOf(henge.Master) - 4 * YosseleData.HengeArmorPerStage) < 0.01f, "armor " + F(YosseleHooks.ArmorOf(henge.Master)));
             Check("vine tiles are networked beings", YosseleVines.Count >= henge.Tiles.Count, YosseleVines.Count + " vines");
             {
-                GameObject vm = YosseleAssets.Model("Yossele_Vine");
+                GameObject vm = ModKitAssets.Model("Yossele_Vine");
                 MeshFilter mf = vm != null ? vm.GetComponentInChildren<MeshFilter>(true) : null;
                 MeshRenderer mr = mf != null ? mf.GetComponent<MeshRenderer>() : null;
                 Texture tex = mr != null && mr.sharedMaterial != null && mr.sharedMaterial.HasProperty("_BaseMap") ? mr.sharedMaterial.GetTexture("_BaseMap") : null;
@@ -978,7 +978,7 @@ public static class YosseleSelfTest
                 foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
                     if (e != null && e.Being.Value.ToString() == YosseleData.Vine)
                     {
-                        float vy = YosseleUtil.Pos(e).y, low = float.NaN;
+                        float vy = ModKitUtil.Pos(e).y, low = float.NaN;
                         foreach (Renderer r in e.GetComponentsInChildren<Renderer>(true))
                             if (r.enabled) low = r.bounds.min.y;
                         Check("vine tiles lie on the ground (half a tile under the being, like a tower's foot)", !float.IsNaN(low) && Mathf.Abs(low - (vy - 0.5f)) < 0.05f,
@@ -997,13 +997,13 @@ public static class YosseleSelfTest
             yield return YosseleShots.Close("henge", hp + henge.Facing * 1.5f, 5f);
 #endif
             // A real hit through the hit hook: 40% armour at Growth 4.
-            Entity_Master hitter = foe != null && YosseleUtil.Alive(foe) ? foe : hm;
-            SetHealth(henge.Master, YosseleUtil.MaxHealth(henge.Master));
-            float hh0 = YosseleUtil.Health(henge.Master);
+            Entity_Master hitter = foe != null && ModKitUtil.Alive(foe) ? foe : hm;
+            SetHealth(henge.Master, ModKitUtil.MaxHealth(henge.Master));
+            float hh0 = ModKitUtil.Health(henge.Master);
             int softened = YosseleHooks.Softened;
-            YosseleUtil.Hurt(hitter, henge.Master, 10f);
+            ModKitUtil.Hurt(hitter, henge.Master, 10f);
             yield return Wait(0.3f);
-            float lost = hh0 - YosseleUtil.Health(henge.Master);
+            float lost = hh0 - ModKitUtil.Health(henge.Master);
             Check("Growth's armour softens a real hit (10 -> 6)", YosseleHooks.Softened > softened && lost > 5.5f && lost < 6.5f, "lost " + F(lost) + ", softened " + softened + "->" + YosseleHooks.Softened + ", skipped " + YosseleHooks.Skipped);
             Kill(foe);
             yield return Wait(0.6f);
@@ -1022,17 +1022,17 @@ public static class YosseleSelfTest
             if (foe != null && henge.OnSince.ContainsKey(foe))
             {
                 // Same frame before and after, so no other hit lands in between.
-                float a0 = YosseleUtil.Health(foe);
-                YosseleUtil.Hurt(hm, foe, 4f);
-                float plain = a0 - YosseleUtil.Health(foe);
+                float a0 = ModKitUtil.Health(foe);
+                ModKitUtil.Hurt(hm, foe, 4f);
+                float plain = a0 - ModKitUtil.Health(foe);
                 henge.OnSince[foe] = Time.time - (henge.Param("Easy_After", 5f) - 0.3f);
                 yield return Until(() => foe == null || YosseleHooks.MarkOf(foe) > 0f, 2f);
                 Check("Easy Target marks a foe 5 s on the vines (+15% damage taken)", foe != null && Mathf.Approximately(YosseleHooks.MarkOf(foe), 0.15f), "mark " + F(YosseleHooks.MarkOf(foe)) + ", marked " + henge.Marked);
-                if (foe != null && YosseleUtil.Alive(foe))
+                if (foe != null && ModKitUtil.Alive(foe))
                 {
-                    float a1 = YosseleUtil.Health(foe);
-                    YosseleUtil.Hurt(hm, foe, 4f);
-                    float marked = a1 - YosseleUtil.Health(foe);
+                    float a1 = ModKitUtil.Health(foe);
+                    ModKitUtil.Hurt(hm, foe, 4f);
+                    float marked = a1 - ModKitUtil.Health(foe);
                     if (plain > 0.01f)
                         Check("a marked foe takes 15% more from a real hit", Mathf.Abs(marked - plain * 1.15f) < 0.02f + 0.02f * plain, "plain " + F(plain) + ", marked " + F(marked));
                     else
@@ -1044,7 +1044,7 @@ public static class YosseleSelfTest
                 int snares = henge.Snares;
                 if (foe != null && henge.OnSince.ContainsKey(foe))
                     henge.OnSince[foe] = Time.time - (henge.Param("Roots_After", 7f) - 0.3f);
-                yield return Until(() => foe == null || !YosseleUtil.Alive(foe) || henge.Snares > snares, 3f);
+                yield return Until(() => foe == null || !ModKitUtil.Alive(foe) || henge.Snares > snares, 3f);
                 if (henge.Snares > snares)
                 {
                     Check("Entangling Roots snare a foe 7 s on the vines", true, "snares " + henge.Snares);
@@ -1104,28 +1104,28 @@ public static class YosseleSelfTest
                 Check("the turned model's front points along its vines (turned once, not twice)", front != null && Vector3.Dot(look, second.Facing) > 0.9f,
                     front == null ? "no Facing part" : "model front " + look.ToString("F2") + ", vines " + second.Facing);
 
-                float max0 = YosseleUtil.MaxHealth(second.Master);
+                float max0 = ModKitUtil.MaxHealth(second.Master);
                 yield return Upgrade(second, "Blockade2", owner);
                 yield return Upgrade(second, "Remedy3", owner);
-                Check("Vine Blockade: sturdier stones", Has(second, "Blockade2") && YosseleUtil.MaxHealth(second.Master) > max0 * 1.45f, F(max0) + "->" + F(YosseleUtil.MaxHealth(second.Master)));
+                Check("Vine Blockade: sturdier stones", Has(second, "Blockade2") && ModKitUtil.MaxHealth(second.Master) > max0 * 1.45f, F(max0) + "->" + F(ModKitUtil.MaxHealth(second.Master)));
                 int[] reached = new int[1];
                 yield return ForceTide(reached);
-                Check("Vine Blockade raises a barrier of 30% of max health each Tide", Mathf.Abs(second.Barrier - 0.3f * YosseleUtil.MaxHealth(second.Master)) < 0.5f && YosseleHooks.ShieldOf(second.Master) > 0f,
-                    "barrier " + F(second.Barrier) + " of " + F(YosseleUtil.MaxHealth(second.Master)));
+                Check("Vine Blockade raises a barrier of 30% of max health each Tide", Mathf.Abs(second.Barrier - 0.3f * ModKitUtil.MaxHealth(second.Master)) < 0.5f && YosseleHooks.ShieldOf(second.Master) > 0f,
+                    "barrier " + F(second.Barrier) + " of " + F(ModKitUtil.MaxHealth(second.Master)));
                 yield return DebuffReport(second.Master, YosseleData.VfxBlockade);
-                float shield0 = YosseleHooks.ShieldOf(second.Master), sh0 = YosseleUtil.Health(second.Master);
+                float shield0 = YosseleHooks.ShieldOf(second.Master), sh0 = ModKitUtil.Health(second.Master);
                 int soaked = YosseleHooks.Soaked;
-                YosseleUtil.Hurt(hm, second.Master, 10f);
+                ModKitUtil.Hurt(hm, second.Master, 10f);
                 yield return Wait(0.3f);
-                Check("the barrier soaks a real hit before the stones", YosseleHooks.Soaked > soaked && YosseleHooks.ShieldOf(second.Master) < shield0 - 1f && YosseleUtil.Health(second.Master) >= sh0 - 0.01f,
-                    "barrier " + F(shield0) + "->" + F(YosseleHooks.ShieldOf(second.Master)) + ", health " + F(sh0) + "->" + F(YosseleUtil.Health(second.Master)));
-                SetHealth(second.Master, YosseleUtil.MaxHealth(second.Master) * 0.5f);
-                float h0 = YosseleUtil.Health(second.Master);
+                Check("the barrier soaks a real hit before the stones", YosseleHooks.Soaked > soaked && YosseleHooks.ShieldOf(second.Master) < shield0 - 1f && ModKitUtil.Health(second.Master) >= sh0 - 0.01f,
+                    "barrier " + F(shield0) + "->" + F(YosseleHooks.ShieldOf(second.Master)) + ", health " + F(sh0) + "->" + F(ModKitUtil.Health(second.Master)));
+                SetHealth(second.Master, ModKitUtil.MaxHealth(second.Master) * 0.5f);
+                float h0 = ModKitUtil.Health(second.Master);
                 yield return Wait(1.6f);
-                Check("Natural Remedy: vines mend the stones", second.Mended > 0 && YosseleUtil.Health(second.Master) > h0, F(h0) + "->" + F(YosseleUtil.Health(second.Master)) + ", mends " + second.Mended);
-                float max1 = YosseleUtil.MaxHealth(second.Master);
+                Check("Natural Remedy: vines mend the stones", second.Mended > 0 && ModKitUtil.Health(second.Master) > h0, F(h0) + "->" + F(ModKitUtil.Health(second.Master)) + ", mends " + second.Mended);
+                float max1 = ModKitUtil.MaxHealth(second.Master);
                 yield return Upgrade(second, "Obsidian4", owner);
-                Check("Obsidian: +200% max health", Has(second, "Obsidian4") && YosseleUtil.MaxHealth(second.Master) >= max1 * 2.3f, F(max1) + "->" + F(YosseleUtil.MaxHealth(second.Master)));
+                Check("Obsidian: +200% max health", Has(second, "Obsidian4") && ModKitUtil.MaxHealth(second.Master) >= max1 * 2.3f, F(max1) + "->" + F(ModKitUtil.MaxHealth(second.Master)));
             }
             else
                 ModKitTest.Setup("second Stonehenge", "could not build one");
@@ -1161,7 +1161,7 @@ public static class YosseleSelfTest
         // fruit beside the node, worth Attackspeed x Damage x 15 of each aura, and walking over it pays.
         // Focused Roots -> Grafted -> Connected Roots -> Fortifying Roots; a second Sapling: Sustaining Practices -> Forest
         // Project -> Harvesting Season -> Softening Roots; a third: Spontaneous Mulch.
-        if (sapling != null && YosseleUtil.Alive(sapling.Master))
+        if (sapling != null && ModKitUtil.Alive(sapling.Master))
         {
             List<Entity_Master> ores = sapling.Ores();
             Entity_Master ore = ores.Count > 0 ? ores[0] : null;
@@ -1180,21 +1180,21 @@ public static class YosseleSelfTest
             Check("a fruit is worth Attackspeed x Damage x 15 of each aura", Mathf.Abs(each - want) < 0.01f && pay.Count == 3 && Mathf.Approximately(total, 3f * Mathf.Max(1f, Mathf.Round(each))),
                 "each " + F(each) + " (Attackspeed " + F(sapling.Stat("Attackspeed", 0f)) + ", Damage " + F(sapling.Stat("Damage", 0f)) + "), " + pay.Count + " colours, " + F(total));
             int dropped = YosseleFruit.Dropped;
-            sapling.NodeEmptied(ore, YosseleUtil.Pos(sapling.Master));
+            sapling.NodeEmptied(ore, ModKitUtil.Pos(sapling.Master));
             Check("a Sapling not fully grown drops no fruit", YosseleFruit.Dropped == dropped);
             sapling.SetGrowth(sapling.Max);
             yield return Wait(0.3f);
-            if (ore != null && YosseleUtil.Alive(ore))
+            if (ore != null && ModKitUtil.Alive(ore))
             {
                 // A node one hit from paying out: the Sapling's next strike pays it out for real.
                 Link_Stats hr;
                 ore.Statsserver.TryGetValue("Healthresource", out hr);
-                Log("ore node " + YosseleUtil.BeingName(ore) + ": Healthresource " + F(hr.Value) + "/" + F(hr.Value_Calc));
+                Log("ore node " + ModKitUtil.BeingName(ore) + ": Healthresource " + F(hr.Value) + "/" + F(hr.Value_Calc));
                 // The node is held at most one hit from empty, and the Sapling gets up to three strikes to pay it out:
                 // round 9d's strike took it 1 -> 0 and it didn't pay until a later hit (its other health stats are logged
                 // to see why). Another hit that pays it out and refills it first is counted, and the node held again.
                 int payouts = sapling.Payouts, fruits = sapling.Fruits, strikes0 = sapling.Strikes, others = 0;
-                Vector3 op = YosseleUtil.Pos(ore);
+                Vector3 op = ModKitUtil.Pos(ore);
                 Log("ore node's other health: " + Pools(ore));
                 hr.Value = 1f;
                 List<Entity_Master> lying = YosseleFruit.All();
@@ -1211,7 +1211,7 @@ public static class YosseleSelfTest
                     "strikes " + strikes0 + "->" + sapling.Strikes + ", payouts " + payouts + "->" + sapling.Payouts + ", fruits " + fruits + "->" + sapling.Fruits + ", failed " + YosseleFruit.Failed
                     + ", node now " + F(hr.Value) + "/" + F(hr.Value_Calc) + " (" + Pools(ore) + "), refilled by another hit " + others + "x, Attackspeed " + F(sapling.Stat("Attackspeed", 0f)));
                 if (fruit != null)
-                    Check("the fruit lies beside the node, off its tile", YosseleUtil.Flat(YosseleUtil.Pos(fruit), op) >= 0.9f, F(YosseleUtil.Flat(YosseleUtil.Pos(fruit), op)) + " tiles from the node");
+                    Check("the fruit lies beside the node, off its tile", ModKitUtil.Flat(ModKitUtil.Pos(fruit), op) >= 0.9f, F(ModKitUtil.Flat(ModKitUtil.Pos(fruit), op)) + " tiles from the node");
                 else if (sapling.Fruits > fruits)
                     Log("fruit: picked up before it could be measured");
 #if YOSSELE_SHOTS
@@ -1254,7 +1254,7 @@ public static class YosseleSelfTest
             yield return Wait(0.4f);
             Check("Grafted -> Connected Roots", Has(sapling, "Connected4"));
             Beingobject guardBeing = YosseleContent.Beings[YosseleData.Cannon];
-            Vector3 gat = ModKitTest.Spot(YosseleUtil.Pos(sapling.Master), guardBeing, team, 1.2f, sapling.Stat("Range", 2f), used, "guarded cannon");
+            Vector3 gat = ModKitTest.Spot(ModKitUtil.Pos(sapling.Master), guardBeing, team, 1.2f, sapling.Stat("Range", 2f), used, "guarded cannon");
             YosseleCannonBrain guarded = null;
             if (!float.IsNaN(gat.x))
             {
@@ -1264,32 +1264,32 @@ public static class YosseleSelfTest
             if (guarded != null)
             {
                 yield return Wait(0.4f);
-                SetHealth(sapling.Master, YosseleUtil.MaxHealth(sapling.Master));
-                float g0 = YosseleUtil.Health(guarded.Master), s0 = YosseleUtil.Health(sapling.Master);
+                SetHealth(sapling.Master, ModKitUtil.MaxHealth(sapling.Master));
+                float g0 = ModKitUtil.Health(guarded.Master), s0 = ModKitUtil.Health(sapling.Master);
                 int shared = YosseleHooks.Shared;
-                YosseleUtil.Hurt(hm, guarded.Master, 10f);
+                ModKitUtil.Hurt(hm, guarded.Master, 10f);
                 yield return Wait(0.3f);
-                float gl = g0 - YosseleUtil.Health(guarded.Master), sl = s0 - YosseleUtil.Health(sapling.Master);
+                float gl = g0 - ModKitUtil.Health(guarded.Master), sl = s0 - ModKitUtil.Health(sapling.Master);
                 Check("Connected Roots: the Sapling takes 65% of a nearby building's hit", YosseleHooks.GuardOf(guarded.Master) == sapling && YosseleHooks.Shared > shared && gl > 3f && gl < 4f && sl > 6f && sl < 7f,
                     "cannon lost " + F(gl) + ", Sapling lost " + F(sl) + ", shared " + shared + "->" + YosseleHooks.Shared);
             }
             else
                 ModKitTest.Setup("Connected Roots", "no tile for a building in the Sapling's range");
-            float smax = YosseleUtil.MaxHealth(sapling.Master);
+            float smax = ModKitUtil.MaxHealth(sapling.Master);
             yield return Upgrade(sapling, "Fortifying5", owner);
             yield return Wait(0.4f);
-            Check("Fortifying Roots: +100% max health", Has(sapling, "Fortifying5") && YosseleUtil.MaxHealth(sapling.Master) >= smax * 1.9f, F(smax) + "->" + F(YosseleUtil.MaxHealth(sapling.Master)));
+            Check("Fortifying Roots: +100% max health", Has(sapling, "Fortifying5") && ModKitUtil.MaxHealth(sapling.Master) >= smax * 1.9f, F(smax) + "->" + F(ModKitUtil.MaxHealth(sapling.Master)));
             Check("Fortifying Roots: 30% less damage for itself and its team's buildings in range", Mathf.Approximately(YosseleHooks.AuraOf(sapling.Master), 0.3f)
                 && (guarded == null || Mathf.Approximately(YosseleHooks.AuraOf(guarded.Master), 0.3f)),
                 "Sapling " + F(YosseleHooks.AuraOf(sapling.Master)) + ", cannon " + (guarded != null ? F(YosseleHooks.AuraOf(guarded.Master)) : "-"));
-            if (guarded != null && YosseleUtil.Alive(guarded.Master))
+            if (guarded != null && ModKitUtil.Alive(guarded.Master))
             {
-                SetHealth(sapling.Master, YosseleUtil.MaxHealth(sapling.Master));
-                SetHealth(guarded.Master, YosseleUtil.MaxHealth(guarded.Master));
-                float g0 = YosseleUtil.Health(guarded.Master), s0 = YosseleUtil.Health(sapling.Master);
-                YosseleUtil.Hurt(hm, guarded.Master, 10f);
+                SetHealth(sapling.Master, ModKitUtil.MaxHealth(sapling.Master));
+                SetHealth(guarded.Master, ModKitUtil.MaxHealth(guarded.Master));
+                float g0 = ModKitUtil.Health(guarded.Master), s0 = ModKitUtil.Health(sapling.Master);
+                ModKitUtil.Hurt(hm, guarded.Master, 10f);
                 yield return Wait(0.3f);
-                float gl = g0 - YosseleUtil.Health(guarded.Master), sl = s0 - YosseleUtil.Health(sapling.Master);
+                float gl = g0 - ModKitUtil.Health(guarded.Master), sl = s0 - ModKitUtil.Health(sapling.Master);
                 Check("with Connected Roots too: the cannon loses 10 x 35% x 70%, the Sapling 6.5 x 70%", Mathf.Abs(gl - 2.45f) < 0.2f && Mathf.Abs(sl - 4.55f) < 0.2f,
                     "cannon lost " + F(gl) + ", Sapling lost " + F(sl));
             }
@@ -1297,7 +1297,7 @@ public static class YosseleSelfTest
 
             // A second Sapling beside it, down the other branch.
             Beingobject pb = YosseleContent.Beings[YosseleData.Pachira];
-            Vector3 pat = ModKitTest.Spot(YosseleUtil.Pos(sapling.Master), pb, team, 1.2f, 3.5f, used, "second Sapling");
+            Vector3 pat = ModKitTest.Spot(ModKitUtil.Pos(sapling.Master), pb, team, 1.2f, 3.5f, used, "second Sapling");
             YosselePachiraBrain second = null;
             if (!float.IsNaN(pat.x))
             {
@@ -1310,10 +1310,10 @@ public static class YosseleSelfTest
                 yield return Upgrade(second, "Sustaining2", owner);
                 if (second.Nodes > 0)
                 {
-                    SetHealth(second.Master, YosseleUtil.MaxHealth(second.Master) * 0.5f);
-                    float h0 = YosseleUtil.Health(second.Master);
+                    SetHealth(second.Master, ModKitUtil.MaxHealth(second.Master) * 0.5f);
+                    float h0 = ModKitUtil.Health(second.Master);
                     yield return Wait(1.2f);
-                    Check("Sustaining Practices: it mends from the ore in range", YosseleUtil.Health(second.Master) > h0 + 0.2f, F(h0) + "->" + F(YosseleUtil.Health(second.Master)) + ", nodes " + second.Nodes);
+                    Check("Sustaining Practices: it mends from the ore in range", ModKitUtil.Health(second.Master) > h0 + 0.2f, F(h0) + "->" + F(ModKitUtil.Health(second.Master)) + ", nodes " + second.Nodes);
                 }
                 else
                     ModKitTest.Setup("Sustaining Practices", "no ore node within the second Sapling's range");
@@ -1343,7 +1343,7 @@ public static class YosseleSelfTest
                 ModKitTest.Setup("second Sapling", "could not build one");
 
             // A third: Focused Roots -> Spontaneous Mulch.
-            pat = ModKitTest.Spot(YosseleUtil.Pos(sapling.Master), pb, team, 1.2f, 5f, used, "third Sapling");
+            pat = ModKitTest.Spot(ModKitUtil.Pos(sapling.Master), pb, team, 1.2f, 5f, used, "third Sapling");
             YosselePachiraBrain third = null;
             if (!float.IsNaN(pat.x))
             {
@@ -1373,7 +1373,7 @@ public static class YosseleSelfTest
         Standing(built);
         // 12. Gone is gone: a destroyed building's replacement starts at Growth 0, and the Tree's button comes back. The new
         // Tree goes Demand and Supply -> D-MDS (shoots down a foe's projectile) -> Bonsai (plants one copy at 40%).
-        if (tree != null && YosseleUtil.Alive(tree.Master))
+        if (tree != null && ModKitUtil.Alive(tree.Master))
         {
             Kill(tree.Master);
             yield return Until(() => hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption), 3f);
@@ -1403,22 +1403,22 @@ public static class YosseleSelfTest
             yield return Upgrade(tree2, "Dmds3", owner);
             Check("Demand and Supply -> D-MDS: seed growth -50%", Has(tree2, "Dmds3") && Mathf.Abs(tree2.Stat("Seedrate", 0f) - 0.25f) < 0.01f, "seed growth " + F(tree2.Stat("Seedrate", 0f)));
             Check("D-MDS: a boss's projectile takes 5 seeds, others 1", tree2.CostFor(30000f) == 5 && tree2.CostFor(40f) == 1, "boss " + tree2.CostFor(30000f) + ", other " + tree2.CostFor(40f));
-            Projectileobject bolt = YosseleUtil.Load<Projectileobject>("Projectile", "Enemy_Ballista_Bolt");
+            Projectileobject bolt = ModKitUtil.Load<Projectileobject>("Projectile", "Enemy_Ballista_Bolt");
             Entity_Master shooter = SpawnFoe("Enemy_Aegis", tree2.Pos, 5f, 3f);
             yield return Wait(0.3f);
-            if (shooter != null && bolt != null && YosseleUtil.Alive(shooter))
+            if (shooter != null && bolt != null && ModKitUtil.Alive(shooter))
             {
                 tree2.Ready = tree2.Limit;
                 int intercepted = tree2.Intercepted, spent = tree2.InterceptSeeds, strikes = tree2.Strikes;
                 Projdata data = default(Projdata);
                 data.Params = new Dictionary<string, float> { { "Speed", 2f }, { "Accel", 0.5f }, { "Zvelocity", 1f } };
                 data.Paramsobject = new Dictionary<string, Entity_Master> { { "Goal", tree2.Master } };
-                Projectile_Master p = Helper_Damagetools.Projectile(shooter, "Enemy_Ballista_Bolt", YosseleUtil.Pos(shooter) + Vector3.up * 0.5f, data, "Hurt");
+                Projectile_Master p = Helper_Damagetools.Projectile(shooter, "Enemy_Ballista_Bolt", ModKitUtil.Pos(shooter) + Vector3.up * 0.5f, data, "Hurt");
                 bool threat = YosseleDandelionBrain.Threat(p, team);
                 yield return Until(() => tree2 == null || tree2.Intercepted > intercepted, 2f);
                 Check("D-MDS shoots down a foe's projectile in range", tree2 != null && tree2.Intercepted > intercepted && tree2.InterceptSeeds > spent && p != null && !p.gameObject.activeInHierarchy,
                     "a threat " + threat + ", intercepted " + intercepted + "->" + (tree2 != null ? tree2.Intercepted : -1) + ", seeds " + spent + "->" + (tree2 != null ? tree2.InterceptSeeds : -1)
-                    + ", bolt active " + (p != null && p.gameObject.activeInHierarchy) + ", shooter base health " + F(YosseleUtil.BaseHealth(shooter)));
+                    + ", bolt active " + (p != null && p.gameObject.activeInHierarchy) + ", shooter base health " + F(ModKitUtil.BaseHealth(shooter)));
                 Check("D-MDS seeds don't strike foes", tree2 != null && tree2.Strikes == strikes, "strikes " + strikes + "->" + (tree2 != null ? tree2.Strikes : -1));
                 Log("D-MDS: client copies put out " + YosseleClient.Intercepts + " (a client's own count; the host skips its own)");
             }
@@ -1452,7 +1452,7 @@ public static class YosseleSelfTest
                 Check("the Bonsai has 40% of the Tree's stats", Mathf.Abs(bonsai.Stat("Range", 0f) - 2.8f) < 0.01f && bonsai.Limit == 4, "range " + F(bonsai.Stat("Range", 0f)) + ", seeds " + bonsai.Limit);
                 Check("the Bonsai copies the Tree's upgrades, their effects at 40%", bonsai.Has("Demand") && bonsai.Has("Dmds") && Mathf.Abs(bonsai.Param("Demand_Max", 0f) - 0.4f) < 0.001f
                     && Mathf.Abs(bonsai.Param("Demand_Below", 0f) - 0.25f) < 0.001f && Mathf.Abs(bonsai.Stat("Seedrate", 0f) - 0.1f) < 0.005f && Mathf.Abs(bonsai.Param("Dmds_Boss", 0f) - 5f) < 0.001f,
-                    "copied " + YosseleUtil.Join(bonsai.Keys) + " (" + bonsai.Copies + "), Demand " + F(bonsai.Param("Demand_Max", 0f)) + " below " + F(bonsai.Param("Demand_Below", 0f))
+                    "copied " + ModKitUtil.Join(bonsai.Keys) + " (" + bonsai.Copies + "), Demand " + F(bonsai.Param("Demand_Max", 0f)) + " below " + F(bonsai.Param("Demand_Below", 0f))
                     + ", seed growth " + F(bonsai.Stat("Seedrate", 0f)) + ", boss seeds " + F(bonsai.Param("Dmds_Boss", 0f)));
                 Check("the Tree's slot is empty while the Bonsai stands", hero.Slot == "" && !hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption), "slot '" + hero.Slot + "'");
                 Vector3 bat2 = Spot(hm, bb, 3.6f);
@@ -1478,7 +1478,7 @@ public static class YosseleSelfTest
 
         // A third Tree: Demand and Supply -> Garden Weeds (a foe that falls within 3 s of a seed hit: 40% for a stack of
         // +10% seed growth, at most one a Growth stage). The falls are handed to the brain the way YosseleServer does.
-        if (tree2 != null && YosseleUtil.Alive(tree2.Master))
+        if (tree2 != null && ModKitUtil.Alive(tree2.Master))
         {
             Kill(tree2.Master);
             yield return Until(() => hero.Slot == YosseleData.Dandelion, 3f);
@@ -1532,12 +1532,12 @@ public static class YosseleSelfTest
             + "; fruit dropped " + YosseleFruit.Dropped + ", picked " + YosseleFruit.Picked + "; softened nodes " + YosseleSoftening.Made + "; client zaps " + YosseleClient.Zaps
             + ", intercepts " + YosseleClient.Intercepts + ", tinted " + YosseleClient.Tinted + "; hero regen " + F(hero.Regenerated));
 #if YOSSELE_SHOTS
-        yield return YosseleShots.Close("yossele", YosseleUtil.Pos(hm), 3.2f);
+        yield return YosseleShots.Close("yossele", ModKitUtil.Pos(hm), 3.2f);
         yield return Wait(1f);
         yield return YosseleShots.Shot("upgraded");
 #endif
 
-        YosseleUtil.Unmod(holdFire);
+        ModKitUtil.Unmod(holdFire);
 
 // 12b. The Tree's two Directions (kit 1.7). They clash, so a player holds one: Mother of Mushrooms here on this vessel,
         // then, with its ranks taken off, Dandelion Season. (Untested until 2026-11-04.)
@@ -1557,15 +1557,15 @@ public static class YosseleSelfTest
             if (boom == null) ModKitTest.Setup("the Tree's Directions", "no Tree standing, none could be built");
             else
             {
-                float range0 = YosseleUtil.Stat(boom.Master, "Range", 0f);
+                float range0 = ModKitUtil.Stat(boom.Master, "Range", 0f);
                 ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[0].Name));
                 yield return Wait(1.2f);
                 Check("Mother of Mushrooms reads back", player.Mushrooms == 1, "rank " + player.Mushrooms);
                 YosseleCannonBrain sporer = null;
-                foreach (YosseleBuilding b in YosseleServer.Buildings) if (b is YosseleCannonBrain && b.Started && YosseleUtil.Alive(b.Master)) sporer = (YosseleCannonBrain)b;
+                foreach (YosseleBuilding b in YosseleServer.Buildings) if (b is YosseleCannonBrain && b.Started && ModKitUtil.Alive(b.Master)) sporer = (YosseleCannonBrain)b;
                 int[] burstStacks = new int[1];
                 float[] burstDrop = new float[1];
-                Entity_Master spored = SpawnFoe("Enemy_Maul", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f) ?? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f);
+                Entity_Master spored = SpawnFoe("Enemy_Maul", ModKitUtil.Pos(boom.Master), 3.5f, 1.5f) ?? SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(boom.Master), 3.5f, 1.5f);
                 yield return Wait(0.3f);
                 if (spored == null || sporer == null) ModKitTest.Setup("Mother of Mushrooms' burst", spored == null ? "no foe in reach" : "no Cannon to spore it");
                 else
@@ -1573,16 +1573,16 @@ public static class YosseleSelfTest
                     int strikes0 = boom.Strikes, bursts0 = boom.Bursts;
                     yield return WaitBurst(boom, spored, sporer, burstStacks, burstDrop);
                     Check("Mother of Mushrooms: every 8 s a burst on spored foes, 2 a stack, and the stacks go", boom.Bursts > bursts0 && Mathf.Abs(burstDrop[0] - YosseleData.MushboomPerStack * burstStacks[0]) <= 1f && YosseleSpores.StacksOf(spored) == 0 && boom.Strikes == strikes0, "bursts +" + (boom.Bursts - bursts0) + ", " + burstStacks[0] + " stacks took " + F(burstDrop[0]) + ", stacks left " + YosseleSpores.StacksOf(spored) + ", seed strikes +" + (boom.Strikes - strikes0));
-                    if (YosseleUtil.Alive(spored)) Kill(spored);
+                    if (ModKitUtil.Alive(spored)) Kill(spored);
                 }
-                float r1 = YosseleUtil.Stat(boom.Master, "Range", 0f);
+                float r1 = ModKitUtil.Stat(boom.Master, "Range", 0f);
                 ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[1].Name));
                 yield return Wait(1.2f);
-                float r2 = YosseleUtil.Stat(boom.Master, "Range", 0f);
+                float r2 = ModKitUtil.Stat(boom.Master, "Range", 0f);
                 Check("Mother of Mushrooms rank II: a wider burst", player.Mushrooms == 2 && r2 > r1, F(r1) + " -> " + F(r2));
                 ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[2].Name));
                 yield return Wait(1.2f);
-                spored = SpawnFoe("Enemy_Maul", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f) ?? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f);
+                spored = SpawnFoe("Enemy_Maul", ModKitUtil.Pos(boom.Master), 3.5f, 1.5f) ?? SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(boom.Master), 3.5f, 1.5f);
                 yield return Wait(0.3f);
                 if (spored != null && sporer != null)
                 {
@@ -1590,17 +1590,17 @@ public static class YosseleSelfTest
                     yield return WaitBurst(boom, spored, sporer, burstStacks, burstDrop);
                     int left = YosseleSpores.StacksOf(spored);
                     Check("Mother of Mushrooms rank III: half the stacks stay, the damage is full", boom.Bursts > bursts1 && left > 0 && left < burstStacks[0] && Mathf.Abs(burstDrop[0] - YosseleData.MushboomPerStack * burstStacks[0]) <= 1f, "stacks " + burstStacks[0] + " -> " + left + ", took " + F(burstDrop[0]));
-                    if (YosseleUtil.Alive(spored)) Kill(spored);
+                    if (ModKitUtil.Alive(spored)) Kill(spored);
                 }
                 // Off with Mushrooms; on with Dandelion Season.
                 foreach (YosseleData.Shift s in YosseleData.Mushboomkits) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
                 yield return Wait(1.2f);
                 Check("with its ranks gone, the Tree shoots seeds again", player.Mushrooms == 0, "rank " + player.Mushrooms);
-                float limit0 = YosseleUtil.Stat(boom.Master, "Range", 0f), dmg0 = YosseleUtil.Stat(boom.Master, "Damage", 0f);
+                float limit0 = ModKitUtil.Stat(boom.Master, "Range", 0f), dmg0 = ModKitUtil.Stat(boom.Master, "Damage", 0f);
                 string slotBefore = hero.Slot;
                 ModKitDirections.Grant(hm, direction(YosseleData.Seasons[0].Name));
                 yield return Wait(1.5f);
-                Check("Dandelion Season: 70% damage and range", player.Season == 1 && Mathf.Abs(YosseleUtil.Stat(boom.Master, "Damage", 0f) - dmg0 * YosseleData.SaplingShare) < 0.05f * Mathf.Max(1f, dmg0) && YosseleUtil.Stat(boom.Master, "Range", 0f) < limit0, "damage " + F(dmg0) + " -> " + F(YosseleUtil.Stat(boom.Master, "Damage", 0f)) + ", range " + F(limit0) + " -> " + F(YosseleUtil.Stat(boom.Master, "Range", 0f)));
+                Check("Dandelion Season: 70% damage and range", player.Season == 1 && Mathf.Abs(ModKitUtil.Stat(boom.Master, "Damage", 0f) - dmg0 * YosseleData.SaplingShare) < 0.05f * Mathf.Max(1f, dmg0) && ModKitUtil.Stat(boom.Master, "Range", 0f) < limit0, "damage " + F(dmg0) + " -> " + F(ModKitUtil.Stat(boom.Master, "Damage", 0f)) + ", range " + F(limit0) + " -> " + F(ModKitUtil.Stat(boom.Master, "Range", 0f)));
                 Check("Dandelion Season: the Tree's button stays while one stands", hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption) && hero.Slot == YosseleData.Dandelion, "slot before " + slotBefore + ", now " + hero.Slot);
                 Vector3 secondAt = Spot(hm, YosseleContent.Beings[YosseleData.Dandelion], 4f);
                 YosseleDandelionBrain sapling2 = null;
@@ -1614,7 +1614,7 @@ public static class YosseleSelfTest
                 ModKitDirections.Grant(hm, direction(YosseleData.Seasons[1].Name));
                 yield return Wait(1.2f);
                 Check("Dandelion Season rank II reads back", player.Season == 2, "rank " + player.Season);
-                float r3 = YosseleUtil.Stat(boom.Master, "Range", 0f), d3 = YosseleUtil.Stat(boom.Master, "Damage", 0f);
+                float r3 = ModKitUtil.Stat(boom.Master, "Range", 0f), d3 = ModKitUtil.Stat(boom.Master, "Damage", 0f);
                 ModKitDirections.Grant(hm, direction(YosseleData.Seasons[2].Name));
                 yield return Wait(1.2f);
                 Log("Dandelion Season rank III: range " + F(r3) + ", damage " + F(d3) + "; other full-grown Saplings give +5% each");
@@ -1642,7 +1642,7 @@ public static class YosseleSelfTest
                     if (b is Logitems.LinkUpgrade && ((Logitems.LinkUpgrade)b).Target != null && upgradePage == null) upgradePage = ((Logitems.LinkUpgrade)b).Target;
             Check("journal: the Cannon page links its upgrades", upgradePage != null && upgradePage.name.Contains("Yosselecannon"), upgradePage != null ? upgradePage.name : "none");
             List<Logobject> vesselPages = new List<Logobject>();
-            foreach (UnityEngine.Object o in YosseleUtil.Folder("Hero").Values)
+            foreach (UnityEngine.Object o in ModKitUtil.Folder("Hero").Values)
                 if (o is Heroentryobject && ((Heroentryobject)o).Log != null) vesselPages.Add(((Heroentryobject)o).Log);
             int complete = 0;
             List<string> broken = new List<string>();
@@ -1664,7 +1664,7 @@ public static class YosseleSelfTest
             List<Logobject> show = new List<Logobject> { page, cannonPage, upgradePage };
             foreach (string other in new[] { "Hero_Smacky", "Hero_Spool" })
             {
-                Heroentryobject h = YosseleUtil.Heroentry(other);
+                Heroentryobject h = ModKitUtil.Heroentry(other);
                 if (h != null && h.Log != null) show.Add(h.Log);
             }
             foreach (Logobject shown in show)

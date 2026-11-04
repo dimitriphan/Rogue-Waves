@@ -95,7 +95,7 @@ public static class RWContent
     {
         obj.name = name;
         obj.Objectname = name;
-        obj.Id = RWUtil.Clip(name.ToLowerInvariant() + "-roguewaves");
+        obj.Id = ModKitUtil.Clip(name.ToLowerInvariant() + "-roguewaves");
     }
 
     static readonly Dictionary<string, UnityEngine.Object> carriers = new Dictionary<string, UnityEngine.Object>();
@@ -152,7 +152,7 @@ public static class RWContent
             return template;
         foreach (string n in new[] { "Tower_Smackyarcher_Range2_Upgradeobject", "Hero_Boutman_Tooltip_Upgradeproperties" })
         {
-            template = RWUtil.Load<Upgradeproperties>("Upgrade", n);
+            template = ModKitUtil.Load<Upgradeproperties>("Upgrade", n);
             if (template != null) return template;
         }
         foreach (Bl_Address.Loadlist l in Bl_Address.Groups["Upgrade"])
@@ -166,7 +166,7 @@ public static class RWContent
 
     static Commandobject TemplateCommand()
     {
-        Commandobject t = RWUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
+        Commandobject t = ModKitUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
         if (t == null)
             foreach (Bl_Address.Loadlist l in Bl_Address.Groups["Command"])
                 foreach (UnityEngine.Object o in l.Items.Values)
@@ -216,7 +216,7 @@ public static class RWContent
 
     static void BuildVendcint()
     {
-        Beingobject miner = RWUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        Beingobject miner = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
         Texture2D sheet = RWAssets.Texture(VendorSheet);
         if (miner == null || miner.Entity == null || sheet == null)
         {

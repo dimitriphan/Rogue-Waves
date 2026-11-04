@@ -23,7 +23,7 @@ public class UloeGlassBrain : UloeBuilding
         if (aspd <= 0f || Time.time < nextShot)
             return;
         float range = Stat("Range", 4.5f);
-        Entity_Master foe = Target != null && UloeUtil.IsFoe(Target, Team) && UloeUtil.Flat(UloeUtil.Pos(Target), Pos) <= range ? Target : null;
+        Entity_Master foe = Target != null && ModKitUtil.IsFoe(Target, Team) && ModKitUtil.Flat(ModKitUtil.Pos(Target), Pos) <= range ? Target : null;
         if (foe == null)
         {
             List<Entity_Master> foes = Foes(range);
@@ -46,7 +46,7 @@ public class UloeGlassBrain : UloeBuilding
     }
 
     // Light and Burning Point on the Damage stat: one modifier, changed in place, so the panel shows the Damage it deals.
-    void Refresh() { damageMod = UloeUtil.Keep(Master, damageMod, "Damage", Helper_Entitytools.Modtypes.Multi, Multi); }
+    void Refresh() { damageMod = ModKitUtil.Keep(Master, damageMod, "Damage", Helper_Entitytools.Modtypes.Multi, Multi); }
 
     void Fire(Entity_Master foe)
     {
@@ -75,6 +75,6 @@ public class UloeGlassBrain : UloeBuilding
         else
             ModKitCombat.HurtWithStat(Master, foe, 1f);
         Beams++;
-        Master.Radio.Vis_ClientRpc("Uloe_Beam", UloeUtil.Pos(foe), Multi);
+        Master.Radio.Vis_ClientRpc("Uloe_Beam", ModKitUtil.Pos(foe), Multi);
     }
 }

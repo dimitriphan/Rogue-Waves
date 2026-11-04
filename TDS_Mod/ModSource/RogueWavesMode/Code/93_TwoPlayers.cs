@@ -536,7 +536,19 @@ public static partial class RWTest
         forcing = false;
         Game_Mapvars.Instance.Time_Wave.Value = 0.1f;
         yield return Sync("fight");
-        yield return new WaitForSeconds(45f);
+        yield return new WaitForSeconds(8f);
+        // A big fight: the game drops a look when 50 effects wait, and the vessels' own looks must still reach a friend (kit docs/19 section 4).
+        {
+            Entity_Master bigAt = RWRun.Vessel(friend);
+            int spawned = 0;
+            for (int i = 0; i < 60 && bigAt != null; i++)
+            {
+                if (RogueWavesModeKitTest.SpawnFoe("Enemy_Dagger", bigAt.Entityposition.Value, 1f, 7f, null) != null) spawned++;
+                if (i % 6 == 0) yield return null;
+            }
+            Info("the big fight", spawned + " more foes by the second player's vessel, " + RWVote.Foes() + " up");
+        }
+        yield return new WaitForSeconds(37f);
         Check("N4 a real Tide with both players' things: no error on the host", errors == errs, (errors - errs) + " errors");
         ClearFoes();
         forcing = true;
@@ -690,6 +702,16 @@ public static partial class RWTest
         yield return new WaitForSeconds(1f);
         yield return Sync("nest");
         yield return Until(() => RWTwo.OtherSaid("nestdone"), 40f);
+
+        // O7 on a Nesting Ground map: the friend drops and comes back.
+        int nestRestored = RWRejoin.Restored;
+        yield return Sync("dropnest");
+        yield return new WaitForSecondsRealtime(3f);
+        Unity.Netcode.NetworkManager.Singleton.DisconnectClient(Blm_Server.Instance.Sessionidsplayer[friend].OwnerClientId);
+        yield return Until(() => !Blm_Server.Instance.Sessionids.ContainsKey(friend), 40f);
+        yield return Until(() => RWRejoin.Restored > nestRestored, 200f);
+        Check("O7 a friend dropped on a Nesting Ground map gets the seat back", RWRejoin.Restored > nestRestored && RWWeather.Current == RWChart.NestingGround && RWWeather.Nest != null, "restored " + RWRejoin.Restored);
+        yield return Sync("nestback", 300f);
 
         // The host leaves the running map by the pause menu's Exit: a retry goes, both sail back.
         int retries = RWCampaign.Retries;
@@ -1045,10 +1067,37 @@ public static partial class RWTest
         yield return Say("built");
         yield return Sync("fight");
         int errs = errors;
-        yield return new WaitForSeconds(20f);
-        yield return Snap("second_fight1");
-        yield return new WaitForSeconds(22f);
+        // How many foes wear a debuff look on this machine, sampled through the fight.
+        int mostLooks = 0, foesSeen = 0;
+        List<string> lookNames = new List<string>();
+        float fightEnds = Time.realtimeSinceStartup + 42f;
+        bool shot1 = false;
+        while (Time.realtimeSinceStartup < fightEnds)
+        {
+            int looks = 0, foes = 0;
+            foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
+            {
+                if (e == null || e.Taglistserver == null && e.Being.Value.ToString().IndexOf("Enemy_") != 0) continue;
+                if (e.Being.Value.ToString().IndexOf("Enemy_") != 0) continue;
+                foes++;
+                bool wears = false;
+                foreach (Transform t in e.GetComponentsInChildren<Transform>(true))
+                    if (t.name.StartsWith("Debuff_"))
+                    {
+                        wears = true;
+                        string look = t.name.Replace("(Clone)", "");
+                        if (!lookNames.Contains(look)) lookNames.Add(look);
+                    }
+                if (wears) looks++;
+            }
+            if (looks > mostLooks) mostLooks = looks;
+            if (foes > foesSeen) foesSeen = foes;
+            if (!shot1 && looks > 0 && foes > 20) { shot1 = true; yield return Snap("second_fight1"); }
+            yield return new WaitForSecondsRealtime(1f);
+        }
         yield return Snap("second_fight2");
+        Info("the big fight here", "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
+        Check("N4 in a big fight, foes wear their debuff looks on the second player's machine", foesSeen < 20 || RWTwo.SecondHero != "Hero_Argo" || mostLooks > 0, "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
         Check("N4 a real Tide with both players' things: no error on the second player's machine", errors == errs, (errors - errs) + " errors");
         yield return Sync("fought");
 
@@ -1152,6 +1201,11 @@ public static partial class RWTest
         Blockage.Menu.Blu2_Menu_Handler win;
         if (Blockage.Menu.Bl_Menus.Menus.TryGetValue("Win", out win) && win != null) win.Items.TryGetValue("Title", out title);
         Check("U3 the second player's end screen reads the campaign's title", title != null && TextOf(title).ToUpperInvariant().Contains("MAP 1 OF 10 WON"), "'" + TextOf(title) + "'");
+        // O8: the rejoined player is on the end screen's list, with stats.
+        Blockage.Menu.Blu2_Menu_Handler endstats;
+        Func<int> statRows = () => Blockage.Menu.Bl_Menus.Menus.TryGetValue("Endstats", out endstats) && endstats != null && endstats.Items.ContainsKey("List") ? endstats.Items["List"].transform.childCount : -1;
+        yield return Until(() => statRows() >= 2, 12f);
+        Check("O8 the end screen lists both players on the rejoined machine", statRows() >= 2, statRows() + " rows, this player Activeplayer " + (Blm_Server.Instance.Localplayer != null ? Blm_Server.Instance.Localplayer.GetComponent<Tds_Clientinfo>().Activeplayer.Value.ToString() : "-"));
         yield return Snap("second_endscreen");
         Macro_Main old = Macro_Main.Instance;
         yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 200f);
@@ -1186,6 +1240,19 @@ public static partial class RWTest
         Check("W3 the nest stands on the second player's machine", nest != null, nest != null ? "at " + RWUtil.V(nest.Entityposition.Value) : "none");
         yield return Snap("second_nest");
         yield return Say("nestdone");
+
+        // O7 on a Nesting Ground map: dropped, and back.
+        yield return Sync("dropnest");
+        yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 60f);
+        yield return new WaitForSecondsRealtime(6f);
+        yield return RWTwo.Join();
+        yield return Until(() => LoadedHere(), 200f);
+        yield return Until(() => Game_Client_Init.Instance != null && Game_Client_Init.Instance.Gametimescale, 40f);
+        yield return Until(() => Lookless() == "", 30f);
+        Entity_Master nestBack = Thing("Tower_Halberdnest");
+        Check("O7 the nest stands for the rejoiner on a Nesting Ground map, and everything has its look", nestBack != null && RWRejoin.Late && RWWeather.Loaded(RWChart.NestingGround) && Lookless() == "", "nest " + (nestBack != null) + ", weather " + RWWeather.Display(RWRejoin.MapWeather()) + ", without: " + Lookless());
+        yield return Snap("second_nest_rejoined");
+        yield return Sync("nestback", 300f);
         old = Macro_Main.Instance;
         yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 240f);
         Check("The host's Exit takes the second player back to the boat too", Macro_Main.Instance != null && Unity.Netcode.NetworkManager.Singleton.IsConnectedClient, "");

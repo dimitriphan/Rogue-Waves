@@ -1,5 +1,9 @@
 # The mod's code against the base game's: what could be simpler (2026-11-04)
 
+> **Since written (2026-11-04, later the same day):** Dimitri said go. Findings 7, 8 (without SONAR), 2 and 3 are built
+> and compiled, not yet run in game; finding 1 is not built, because it would change numbers in four places. What was
+> built, what was not and the PC list: `SIMPLIFICATION_BUILD_2026-11-04.md`.
+
 Dimitri asked (2026-11-04 17:04Z): look through the code of the modded variables, compare it to the base game's code,
 find ways to simplify mechanics or bring them closer to the base game, and where something is overcomplicated, find
 the method that removes it. **No change was made**: this page is findings and proposed methods only.

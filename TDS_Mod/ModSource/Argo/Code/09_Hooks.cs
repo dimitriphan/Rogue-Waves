@@ -9,7 +9,8 @@
 public static class ArgoHooks
 {
     static readonly Dictionary<Entity_Master, float> pinged = new Dictionary<Entity_Master, float>();
-    static readonly Dictionary<Entity_Master, List<ArgoNautBrain>> armored = new Dictionary<Entity_Master, List<ArgoNautBrain>>();
+    // Bulkhead: the tower's cut and the Naut tuning it (one Naut per tower, ArgoTowerBrain.CrewOrder).
+    static readonly Dictionary<Entity_Master, ArgoNautBrain> armored = new Dictionary<Entity_Master, ArgoNautBrain>();
     static readonly Dictionary<Entity_Master, float> armorAmount = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, Vector2> soaked = new Dictionary<Entity_Master, Vector2>();   // (amount, until)
     static readonly Entity_Master.Oninteracts handler = OnHurt;
@@ -61,27 +62,19 @@ public static class ArgoHooks
 
     public static void Armor(Entity_Master tower, ArgoNautBrain by, float amount)
     {
-        List<ArgoNautBrain> list;
-        if (!armored.TryGetValue(tower, out list))
-            armored[tower] = list = new List<ArgoNautBrain>();
-        if (!list.Contains(by))
-            list.Add(by);
-        float old;
-        armorAmount[tower] = Mathf.Max(armorAmount.TryGetValue(tower, out old) ? old : 0f, Mathf.Clamp(amount, 0f, 0.9f));
+        armored[tower] = by;
+        armorAmount[tower] = Mathf.Clamp(amount, 0f, 0.9f);
         First(tower);
     }
 
+    // Only the Naut that tunes the tower takes its cut off.
     public static void Unarmor(Entity_Master tower, ArgoNautBrain by)
     {
-        List<ArgoNautBrain> list;
-        if (tower == null || !armored.TryGetValue(tower, out list))
+        ArgoNautBrain tuner;
+        if (tower == null || !armored.TryGetValue(tower, out tuner) || tuner != by)
             return;
-        list.Remove(by);
-        if (list.Count == 0)
-        {
-            armored.Remove(tower);
-            armorAmount.Remove(tower);
-        }
+        armored.Remove(tower);
+        armorAmount.Remove(tower);
     }
 
     public static void Update()
@@ -92,7 +85,7 @@ public static class ArgoHooks
         List<Entity_Master> drop = null;
         foreach (KeyValuePair<Entity_Master, float> kv in pinged)
         {
-            if (kv.Key == null || Time.time >= kv.Value || !ArgoUtil.Alive(kv.Key))
+            if (kv.Key == null || Time.time >= kv.Value || !ModKitUtil.Alive(kv.Key))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(kv.Key);
@@ -106,7 +99,7 @@ public static class ArgoHooks
         drop = null;
         foreach (KeyValuePair<Entity_Master, Vector2> kv in soaked)
         {
-            if (kv.Key == null || Time.time >= kv.Value.y || !ArgoUtil.Alive(kv.Key))
+            if (kv.Key == null || Time.time >= kv.Value.y || !ModKitUtil.Alive(kv.Key))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(kv.Key);
@@ -120,7 +113,7 @@ public static class ArgoHooks
         drop = null;
         foreach (Entity_Master t in armored.Keys)
         {
-            if (t == null || !ArgoUtil.Alive(t))
+            if (t == null || !ModKitUtil.Alive(t))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(t);
@@ -137,18 +130,7 @@ public static class ArgoHooks
     }
 
     // Moves Argo's handler to the front of the entity's Oninteract chain (adding it if Updateinteract dropped it).
-    static void First(Entity_Master e)
-    {
-        Entity_Master.Oninteracts chain = e.Oninteract;
-        if (chain != null)
-        {
-            Delegate[] list = chain.GetInvocationList();
-            if (list.Length > 0 && list[0].Equals(handler))
-                return;
-        }
-        Delegate rest = Delegate.Remove(chain, handler);
-        e.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(handler, rest);
-    }
+    static void First(Entity_Master e) { ModKitUtil.Front(e, handler); }
 
     static void OnHurt(Link_Interact hit)
     {

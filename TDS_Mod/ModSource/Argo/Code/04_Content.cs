@@ -48,7 +48,7 @@ public static class ArgoContent
             BuildTower(b);
         foreach (ArgoData.Crew c in ArgoData.Nauts)
             BuildNaut(c);
-        BuildHero(ArgoUtil.Load<Beingobject>("Hero", folder));
+        BuildHero(ModKitUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
         BuildDirections();
         try { ArgoJournal.Build(template); }
@@ -80,7 +80,7 @@ public static class ArgoContent
 
     static Material TemplateTowerMaterial()
     {
-        Beingobject archer = ArgoUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
         if (archer == null || archer.Entity == null || archer.Entity.Defaultvisual == null)
             return null;
         GameObject prefab = archer.Entity.Defaultvisual.Default.Visprefab;
@@ -108,7 +108,7 @@ public static class ArgoContent
         Visualproperties.Entry e = from;
         e.Rootvisualproperty = null;
         e.Style = Visualproperties.Styles.Model;
-        GameObject m = ArgoAssets.Model(model);
+        GameObject m = ModKitAssets.Quiet(model);
         if (m == null)
             ArgoLog.Warn("missing model " + model);
         e.Visprefab = m;
@@ -117,7 +117,7 @@ public static class ArgoContent
         e.Additionalmaterials = new List<Material>();
         e.Additionalvisualscripts = Strip(from.Additionalvisualscripts);
         e.Additionalprefabs = new List<GameObject>();
-        GameObject extra = string.IsNullOrEmpty(overlay) ? null : ArgoAssets.Model(overlay);
+        GameObject extra = string.IsNullOrEmpty(overlay) ? null : ModKitAssets.Quiet(overlay);
         if (extra != null)
             e.Additionalprefabs.Add(extra);
         return e;
@@ -135,31 +135,8 @@ public static class ArgoContent
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         if (fathoms)
             for (int f = 2; f <= ArgoData.FathomDeepest; f++)
-                AddSkin(vp, "Fathom" + f, ModelEntry(template.Default, model, display, "Argo_Fathom" + Mathf.Min(f, 5)));
+                ModKitUtil.AddSkin(vp, "Fathom" + f, ModelEntry(template.Default, model, display, "Argo_Fathom" + Mathf.Min(f, 5)));
         return vp;
-    }
-
-    static void AddSkin(Visualproperties vp, string skin, Visualproperties.Entry entry)
-    {
-        Visualproperties.Param p = new Visualproperties.Param();
-        p.Name = skin;
-        p.Value = entry;
-        vp.Skinoverride.Add(p);
-        vp.Skinoverrides[skin] = entry;
-    }
-
-    static void CollectUpgrades(List<Upgradeproperties> from, Dictionary<int, Upgradeproperties> byTier)
-    {
-        if (from == null)
-            return;
-        foreach (Upgradeproperties u in from)
-        {
-            if (u == null)
-                continue;
-            if (!byTier.ContainsKey(u.Priority))
-                byTier[u.Priority] = u;
-            CollectUpgrades(u.Upgrades, byTier);
-        }
     }
 
     // Stats like the shipped data: "Health=40+25" is Health 40, +25 per level (Leveladd). Unknown stats are added with the
@@ -188,8 +165,8 @@ public static class ArgoContent
                     g.Display_Exposed = like.Display_Exposed;
                 }
             }
-            g.Value = ArgoUtil.F(parts[0]);
-            g.Leveladd = parts.Length > 1 ? ArgoUtil.F(parts[1]) : 0f;
+            g.Value = ModKitUtil.F(parts[0]);
+            g.Leveladd = parts.Length > 1 ? ModKitUtil.F(parts[1]) : 0f;
             kept.Add(g);
         }
         // Only the listed stats: a template's leftovers (Projduration, Projcount...) would mean nothing on Argo's towers.
@@ -282,14 +259,14 @@ public static class ArgoContent
     {
         foreach (string[] p in ArgoData.Projectiles)
         {
-            Projectileobject template = ArgoUtil.Load<Projectileobject>("Projectile", p[1]);
+            Projectileobject template = ModKitUtil.Load<Projectileobject>("Projectile", p[1]);
             if (template == null)
             {
                 ArgoLog.Warn("projectile template " + p[1] + " not found");
                 continue;
             }
             Projectileobject proj = ArgoUtil.Clone(template, p[0]);
-            GameObject model = ArgoAssets.Model(p[2]);
+            GameObject model = ModKitAssets.Quiet(p[2]);
             if (model != null)
                 proj.Vis = model;
             // Volleys are announced once by the tower (ArgoClient plays the boom); each pellet only lands.
@@ -309,7 +286,7 @@ public static class ArgoContent
 
     static Commandobject CommandTemplate()
     {
-        Commandobject template = ArgoUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
+        Commandobject template = ModKitUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
         if (template == null)
             foreach (Bl_Address.Loadlist l in Bl_Address.Groups["Command"])
                 foreach (UnityEngine.Object o in l.Items.Values)
@@ -400,7 +377,7 @@ public static class ArgoContent
     // the water instead of the vessel (Fie's Grow Wall pattern, 2.0).
     static void FloodCommand()
     {
-        Commandobject build1 = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption1");
+        Commandobject build1 = ModKitUtil.Load<Commandobject>("Command", "Command_Buildoption1");
         if (build1 == null)
         {
             if (!clonesLogged)
@@ -416,7 +393,7 @@ public static class ArgoContent
         flood.Icon = IconOr("Argo_Flood", build1.Icon);
         Commands[ArgoData.FloodKey] = flood;
         Register("Command", flood);
-        ArgoLog.Info("FLOOD: keys " + ArgoUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
+        ArgoLog.Info("FLOOD: keys " + ModKitUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
     }
 
     // The game's vessels have Buildoption1-4. Argo's fifth is Command_Buildoption4 cloned under the next name and key
@@ -426,13 +403,13 @@ public static class ArgoContent
 
     static void BuildOption5()
     {
-        if (ArgoUtil.Load<Commandobject>("Command", ArgoData.BuildOption5) != null)
+        if (ModKitUtil.Load<Commandobject>("Command", ArgoData.BuildOption5) != null)
         {
             option5Done = true;
             Option5Note = "found";
             return;
         }
-        Commandobject four = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption4");
+        Commandobject four = ModKitUtil.Load<Commandobject>("Command", "Command_Buildoption4");
         if (four == null)
         {
             Option5Note = "Command_Buildoption4 not loaded yet (cloned when the match loads it)";
@@ -447,7 +424,7 @@ public static class ArgoContent
         five.Keybind = keys;
         five.Priority = four.Priority + 1;
         Register("Command", five);
-        Option5Note = "cloned from Command_Buildoption4 (keys " + ArgoUtil.Join(four.Keybind ?? new List<string>()) + " -> " + ArgoUtil.Join(keys) + ", priority " + five.Priority + ")";
+        Option5Note = "cloned from Command_Buildoption4 (keys " + ModKitUtil.Join(four.Keybind ?? new List<string>()) + " -> " + ModKitUtil.Join(keys) + ", priority " + five.Priority + ")";
         ArgoLog.Info("Command_Buildoption5 " + Option5Note);
     }
 
@@ -455,11 +432,11 @@ public static class ArgoContent
 
     static void BuildTower(ArgoData.Build b)
     {
-        Beingobject tb = ArgoUtil.Load<Beingobject>("Mob", b.Template);
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", b.Template);
         if ((tb == null || tb.Entity == null) && b.Trap)
         {
             ArgoLog.Warn(b.Template + " not loaded; " + b.Id + " uses " + ArgoData.TrapFallback + "'s walk-through block");
-            tb = ArgoUtil.Load<Beingobject>("Mob", ArgoData.TrapFallback);
+            tb = ModKitUtil.Load<Beingobject>("Mob", ArgoData.TrapFallback);
         }
         if (tb == null || tb.Entity == null)
         {
@@ -474,7 +451,11 @@ public static class ArgoContent
         ent.Display_Desc = b.Desc;
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!b.Trap && !ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
-            ent.Aiscripts.Insert(0, ArgoUtil.Script("Entity_Ai_Tower_General"));
+            ent.Aiscripts.Insert(0, ModKitUtil.Script("Entity_Ai_Tower_General"));
+        // The game's own upgrade panel AI on every buildable with a tree (FLOOD's pools have none). Strip drops the
+        // template's copy so no other entity gets one by accident.
+        if (b.Upgrades.Length > 0)
+            ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
         // Its own hit prefab: the range the game draws (while placing, when selected) centred on the tower at the point
         // its brain measures from (Def.Eye), and a collider the size of the model. Argo 1.0 kept the templates': the
@@ -482,7 +463,7 @@ public static class ArgoContent
         // Traps keep the template's walk-through hit prefab (the kit template's Curtain).
         bool ranged = Array.Exists(b.Stats, s => s.StartsWith("Range="));
         if (!b.Trap)
-            ModKitTowers.Fit(ent, b.Id, ArgoAssets.Model(b.ModelName), b.Eye, b.Eye + 0.05f, ranged);
+            ModKitTowers.Fit(ent, b.Id, ModKitAssets.Quiet(b.ModelName), b.Eye, b.Eye + 0.05f, ranged);
         ent.Costs = ArgoUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         // 2.0: traps carry no "Tower" tag (Nauts tune towers, never traps; foes don't target them).
@@ -502,12 +483,12 @@ public static class ArgoContent
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from ArgoData.
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
-        CollectUpgrades(te.Upgrades, templateTiers);
+        ModKitUtil.CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0 && b.Upgrades.Length > 0)
         {
-            Beingobject hut = ArgoUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
+            Beingobject hut = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
             if (hut != null && hut.Entity != null)
-                CollectUpgrades(hut.Entity.Upgrades, templateTiers);
+                ModKitUtil.CollectUpgrades(hut.Entity.Upgrades, templateTiers);
         }
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
@@ -568,7 +549,7 @@ public static class ArgoContent
 
     static void BuildNaut(ArgoData.Crew crew)
     {
-        Beingobject tb = ArgoUtil.Load<Beingobject>("Mob", "Mob_Smackyengineer") ?? ArgoUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyengineer") ?? ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
         if (tb == null || tb.Entity == null)
         {
             ArgoLog.Error("no unit template; " + crew.Name + " disabled");
@@ -601,7 +582,7 @@ public static class ArgoContent
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         Visualproperties.Entry tune = e;
         tune.Spriteobject = ArgoAssets.Naut(crew.Name, templateSprite, true);
-        AddSkin(vp, "Tune", tune);
+        ModKitUtil.AddSkin(vp, "Tune", tune);
         ent.Defaultvisual = vp;
         Register("Mob", vp);
         being.Entity = ent;
@@ -681,10 +662,10 @@ public static class ArgoContent
         // (and SONAR when it is switched on). Entity_Vis_Mob_Attack turns each swing's "Attack" into the wrench animation.
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Combat" || s.name == "Entity_Ai_Mob_Melee"))
-            ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), ArgoUtil.Script("Entity_Ai_Mob_Combat"));
+            ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), ModKitUtil.Script("Entity_Ai_Mob_Combat"));
         ent.Visualscripts = Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
-            ent.Visualscripts.Add(ArgoUtil.Script("Entity_Vis_Mob_Attack"));
+            ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Mob_Attack"));
         ent.Upgrades = new List<Upgradeproperties>();
         ent.Upgradesinit = new List<Upgradeproperties>();
         Upgradeproperties tooltip = Tooltip();
@@ -744,18 +725,18 @@ public static class ArgoContent
         Entry.Displayskill = ArgoData.Displayskill;
         Entry.Color = ArgoData.Color;
         // Smacky's Icon is a 12x12 sprite (player lists, setup bar, leaderboards): use the matching ready-up sprite.
-        Entry.Icon = ArgoAssets.Single("Readyup6argo", 12) ?? template.Icon;
-        Entry.Worldsplash = ArgoAssets.Single("Argosplash", 128) ?? template.Worldsplash;
-        Entry.Endscreenwinicon = ArgoAssets.Single("Argoendstat1", 32) ?? template.Endscreenwinicon;
-        Entry.Endscreenloseicon = ArgoAssets.Single("Argoendstat2", 32) ?? template.Endscreenloseicon;
-        Entry.Worldsprite = ArgoAssets.Worldsprite(template.Worldsprite);
-        Texture fall = ArgoAssets.Sheet("ArgoFall-Sheet");
-        Texture land = ArgoAssets.Sheet("ArgoIntroR-Sheet");
-        Texture idle = ArgoAssets.Sheet("ArgoIdlejustidle-Sheet");
+        Entry.Icon = ModKitAssets.Single("Readyup6argo", 12) ?? template.Icon;
+        Entry.Worldsplash = ModKitAssets.Single("Argosplash", 128) ?? template.Worldsplash;
+        Entry.Endscreenwinicon = ModKitAssets.Single("Argoendstat1", 32) ?? template.Endscreenwinicon;
+        Entry.Endscreenloseicon = ModKitAssets.Single("Argoendstat2", 32) ?? template.Endscreenloseicon;
+        Entry.Worldsprite = ModKitAssets.Worldsprite(template.Worldsprite);
+        Texture fall = ModKitAssets.Sheet("ArgoFall-Sheet");
+        Texture land = ModKitAssets.Sheet("ArgoIntroR-Sheet");
+        Texture idle = ModKitAssets.Sheet("ArgoIdlejustidle-Sheet");
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;
-        Dictionary<string, UnityEngine.Object> heroes = ArgoUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         heroes[ArgoData.Hero] = Entry;
     }
 }

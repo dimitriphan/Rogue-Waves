@@ -67,9 +67,9 @@ public static class RWMode
         Entry = RWUtil.Clone(normal, RWData.Mode);
         Entry.Modeloads = RWUtil.Clone(normal.Modeloads, RWData.Mode);
         Entry.Display_Name = RWData.ModeDisplay;
-        RWUtil.Folder("Mode")[RWData.Mode] = Entry;
+        ModKitUtil.Folder("Mode")[RWData.Mode] = Entry;
 
-        Dictionary<string, UnityEngine.Object> plans = RWUtil.Folder("Gameplan");
+        Dictionary<string, UnityEngine.Object> plans = ModKitUtil.Folder("Gameplan");
         List<UnityEngine.Object> stockPlans = new List<UnityEngine.Object>(plans.Values);
         pool.Clear();
         foreach (UnityEngine.Object o in stockPlans)
@@ -98,7 +98,7 @@ public static class RWMode
 
     static bool IsStockMode(string mode) { return Array.IndexOf(StockModes, mode) >= 0; }
 
-    public static string Twin(string stockPlan) { return RWUtil.Clip(RWData.PlanPrefix + stockPlan); }
+    public static string Twin(string stockPlan) { return ModKitUtil.Clip(RWData.PlanPrefix + stockPlan); }
 
     public static Gameplandatabaseobject TwinPlan(string stockPlan) { return RWUtil.Item<Gameplandatabaseobject>("Gameplan", Twin(stockPlan)); }
 }

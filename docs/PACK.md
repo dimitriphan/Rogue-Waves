@@ -49,7 +49,7 @@ Mods load in an undefined order, and so do prefabs (`docs/15` §10). Rules:
    the part stands down and shows one main-menu warning: "disable ArgoMod while Rogue Waves is on". The pack README
    says the same. ArgoMod 1.4.0 has no such check, so the README is the real guard.
 
-## 3. Kit 1.6 and 1.7: what the parts share
+## 3. Kit 1.6 to 1.8: what the parts share
 
 The kit stays per-mod source, renamed `<Part>Kit` per part (`kit/README.md`). Growth (Yossele), Thread (Spool) and
 Light (Uloe) are each **one vessel's mechanic and live in that vessel's part**. The kit adds only what several parts
@@ -61,6 +61,7 @@ must agree on. That is the 1.6 scope, built when Phase 3 starts with Argo:
 | `ModKitTides.cs` | Host-side events from `Game_Mapvars`: the map starts, a Tide starts, the map ends (win, lose, leave), a break starts (`Break`, `InBreak`, kit 1.7). One poll, many listeners | Growth, Pure Aura per Tide, Argo's tremors per Tide, vines per Tide, objectives |
 | `ModKitCounter.cs` | A number drawn over an entity on every client, using the game's counter route (`docs/01` §6): set on the host, synced by the engine | Pure Aura on each vessel, Thread, Growth stage, seed count |
 | `ModKitDirections.cs` | **Directions as data.** Each Direction is an `Upgradeproperties` named `Direction_<Vessel>_<Name>_Upgradeobject` (or `Direction_Any_<Name>_Upgradeobject`). The part that owns the mechanic registers it, and the mode lists every registered Direction by prefix, offers them and grants the pick with `Helper_Entitytools.Upgrade` on the **player's vessel** (the core is the team's, so a Direction there would be team-wide, `docs/15` §14.1). A respawn copies the dead vessel's upgrades into the new one (`docs/15` §14.1), and each map has new vessels, so the mode re-grants every held Direction from its host state at each map's first spawn (a repeat grant is ignored); tower Directions go through the part's own spawn hook, filtered by owner. A vessel asks `Has(vessel, owner, name)` and reacts. Kit 1.6 granted on the core; kit 1.7 made this change (`docs/RESEARCH_GAPS.md` A1). The upgrade is game state, so it syncs to every client and needs no shared types | the mode offers and grants; every vessel registers and reacts |
+| `ModKitUtil.cs`, `ModKitAssets.cs` | Kit 1.8: the helpers and the asset reader every vessel used to copy (database, beings, stats, foes near a point, hits, debuff looks, the hit chain; the part's library, sheets, sounds, effects). Each part's build has its own renamed copy, so `ModKitAssets.Library` is that part's | every vessel part (`ModKitUtil` also the mode) |
 | `ModKitFocus.cs` | The scope's F-key fix (`docs/15` §9): idempotent, every vessel part runs it, so it covers Boutman and every pack vessel | every vessel part |
 
 Rules kept from 1.5: tab order, boat layout, icons at boot. A part's Directions and its Cardinals' and Trinkets' upgrades load with
@@ -71,7 +72,7 @@ its own group, so they exist on every machine that has the pack.
 - **One pack version**, `MAJOR.MINOR.PATCH`, in `RogueWavesMod.info`, in every part's `<Part>Data.Version` and in the
   pack README. It stays 0.x until Phase 7's release, which is 1.0.0. Every pack build bumps the version of every part,
   even the unchanged ones.
-- The kit keeps its own version (1.6, 1.7, ...) in `kit/README.md`. Every part of one pack build carries the same kit.
+- The kit keeps its own version (1.6, 1.7, 1.8, ...) in `kit/README.md`. Every part of one pack build carries the same kit.
 - Each part logs `[RogueWaves:<Part>] v<pack> kit <kit>` at boot. The mode logs a warning, and shows one on the main
   menu, when the registry holds two different pack or kit versions.
 - Dev mods use the pack version plus `-dev` and are never shipped.

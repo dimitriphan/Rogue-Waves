@@ -85,7 +85,6 @@ public static class ArgoData
     // ---------------------------------------------------------------- sound levels
 
     // Argo's sounds play through the same mixer group as this game sound (General_Main).
-    public const string ReferenceSound = "Upgrade";
 
     // Target loudness (clip rms x playback volume) per clip, matched to the game's own sounds for the same job
     // (measured in game: tower shots ~0.004, hits ~0.0015, Upgrade ~0.013, vessel landings ~0.015).
@@ -154,7 +153,6 @@ public static class ArgoData
     public const float FathomSlow = 0.04f;      // +4% Tremor slow
     public const float SlowCap = 0.6f;          // Tremors never slow more than this
     public const float TremorTick = 0.5f;
-    public const float AftershockEvery = 2f;
     public const float OreReach = 2.1f;         // ore within this flat distance can be drilled (2 tiles straight out, 1 diagonally)
     public const float BedrockEvery = 1f;       // 2.0 Bedrock: a tick of damage on each pinned foe in the Tremor
 

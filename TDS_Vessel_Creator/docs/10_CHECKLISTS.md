@@ -40,7 +40,8 @@ Copy the relevant list into your notes and tick it honestly.
 - [ ] Every id/tag/icon/effect/sound/class carries the vessel name; ids ≤ 60 chars.
 - [ ] No System.IO/Reflection/Core/JsonUtility; build script passes.
 - [ ] Brains only on the server; try/catch per brain tick; logs once per kind.
-- [ ] Upgrades go through the mirrored flow (costs, throttle, Forced/Normal, Upgradeborder, Upgraded stat).
+- [ ] Upgrades go through the game's own `Entity_Ai_General_Upgrade` on every building that upgrades (costs, throttle,
+  Forced/Normal, Upgradeborder, Upgraded stat, Voice in a Bottle; `05` §14), or through the template's mirror of it.
 - [ ] Button state via `Updatecommand(..., false, false)`; commands validated on the host.
 - [ ] Debuffs with `Beingref.Value`; projectiles get every param; hit data copied before edits.
 - [ ] Icons added at boot, checked 8 s later with stock fallbacks.

@@ -63,13 +63,13 @@ public static class UloeClient
             return;
         try
         {
-            Vector3 at = master != null ? UloeUtil.Pos(master) : position;
+            Vector3 at = master != null ? ModKitUtil.Pos(master) : position;
             string being = master != null ? master.Being.Value.ToString() : "";
             // The stock attack AIs announce each swing with "Attack" and each shot with "Shoot".
             if (type == "Attack")
             {
                 UloeAssets.Play("Uloe_Zap", at, 0.4f);
-                UloeAssets.Effect("World_Uloe_Spark", at + Vector3.up * 0.3f, 0.8f);
+                ModKitAssets.Effect("World_Uloe_Spark", at + Vector3.up * 0.3f, 0.8f);
                 return;
             }
             if (type == "Shoot")
@@ -90,12 +90,12 @@ public static class UloeClient
                 case "Uloe_Plugin":
                     UloeAssets.Play("Uloe_Plugin", at);
                     Animate(master, "Plug");
-                    UloeAssets.Effect("World_Uloe_Spark", position + Vector3.up * 0.2f, 1f);
+                    ModKitAssets.Effect("World_Uloe_Spark", position + Vector3.up * 0.2f, 1f);
                     break;
                 case "Uloe_Unplug":
                     UloeAssets.Play("Uloe_Unplug", at, n == 1 ? 1.2f : 0.8f);
                     if (n == 1)
-                        UloeAssets.Effect("World_Uloe_Snap", at, 1.2f);
+                        ModKitAssets.Effect("World_Uloe_Snap", at, 1.2f);
                     break;
                 case "Uloe_Plugcord":
                     SetLink(master, Kind.Plugcord, position, number);
@@ -113,43 +113,43 @@ public static class UloeClient
                     break;
                 case "Uloe_Pop":
                     UloeAssets.Play("Uloe_Pop", at);
-                    UloeAssets.Effect("World_Uloe_Motes", at + Vector3.up * 0.2f, 1.2f);
+                    ModKitAssets.Effect("World_Uloe_Motes", at + Vector3.up * 0.2f, 1.2f);
                     break;
                 case "Uloe_Down":
                     UloeAssets.Play("Uloe_Pop", position, 0.7f);
-                    UloeAssets.Effect("World_Uloe_Motes", position + Vector3.up * 0.2f, 1.2f);
+                    ModKitAssets.Effect("World_Uloe_Motes", position + Vector3.up * 0.2f, 1.2f);
                     break;
                 case "Uloe_Burst":
                     UloeAssets.Play("Uloe_Burst", position);
-                    GameObject ring = UloeAssets.Effect("World_Uloe_Burst", Ground(position), 2f);
+                    GameObject ring = ModKitAssets.Effect("World_Uloe_Burst", Ground(position), 2f);
                     if (ring != null) ring.transform.localScale = Vector3.one * Mathf.Max(0.8f, number);
                     break;
                 case "Uloe_Flash":
                     UloeAssets.Play("Uloe_Flash", at);
-                    UloeAssets.Effect("World_Uloe_Flash", position + Vector3.up * 0.5f, 1f);
+                    ModKitAssets.Effect("World_Uloe_Flash", position + Vector3.up * 0.5f, 1f);
                     Run(LineRun(at + Vector3.up * 0.4f, position + Vector3.up * 0.4f, 0.14f, 0.05f + 0.02f * n, Bright));
                     break;
                 case "Uloe_Nullify":
                     UloeAssets.Play("Uloe_Nullify", at);
-                    UloeAssets.Effect("World_Uloe_Flash", at + Vector3.up * 0.6f, 1f);
+                    ModKitAssets.Effect("World_Uloe_Flash", at + Vector3.up * 0.6f, 1f);
                     break;
                 case "Uloe_Strike":
                     UloeAssets.Play("Uloe_Strike", position, 0.6f);
                     break;
                 case "Uloe_Built":
-                    UloeAssets.Effect("World_Uloe_Motes", at + Vector3.up * 0.2f, 1.2f);
+                    ModKitAssets.Effect("World_Uloe_Motes", at + Vector3.up * 0.2f, 1.2f);
                     UloeAssets.Play("Uloe_Build", at, 0.6f);
                     break;
                 case "Uloe_Upgrade":
                     UloeAssets.Play("Uloe_Build", at, 0.8f);
                     break;
                 case "Uloe_Herodeath":
-                    UloeAssets.Effect("World_Hero_Uloe_Death", at, 2.5f);
+                    ModKitAssets.Effect("World_Hero_Uloe_Death", at, 2.5f);
                     UloeAssets.Play("Uloe_Death", at);
                     break;
                 case "Uloe_Warn":
                     int code = n % 100, value = n / 100;
-                    if (UloeUtil.OwnedLocally(master) && code > 0 && code < UloeData.WarnText.Length)
+                    if (ModKitUtil.OwnedLocally(master) && code > 0 && code < UloeData.WarnText.Length)
                         Helper_Uitools.Warning(UloeData.WarnText[code] + (value > 0 ? " (" + value + ")" : ""), "", 2f);
                     break;
             }
@@ -183,7 +183,7 @@ public static class UloeClient
     {
         if (lineMat != null)
             return lineMat;
-        GameObject fx = UloeAssets.Vfx("World_Uloe_Spark");
+        GameObject fx = ModKitAssets.Vfx("World_Uloe_Spark");
         ParticleSystemRenderer r = fx != null ? fx.GetComponent<ParticleSystemRenderer>() : null;
         lineMat = r != null && r.sharedMaterial != null ? new Material(r.sharedMaterial) : new Material(Shader.Find("Sprites/Default"));
         lineMat.name = "Uloe_Line";
@@ -248,7 +248,7 @@ public static class UloeClient
                 case Kind.Plugcord:
                 case Kind.Nodecord:
                     link.Line = Line("Uloe_Cord", 10, Cord, 0.03f);
-                    GameObject plug = UloeAssets.Model("Uloe_Plug");
+                    GameObject plug = ModKitAssets.Model("Uloe_Plug");
                     if (plug != null) link.Plug = UnityEngine.Object.Instantiate(plug);
                     break;
                 case Kind.Ring:
@@ -266,7 +266,7 @@ public static class UloeClient
         link.To = to;
         link.Radius = number;
         link.Until = Time.time + UloeData.LinkLife;
-        if (kind == Kind.Plugcord && UloeUtil.OwnedLocally(master))
+        if (kind == Kind.Plugcord && ModKitUtil.OwnedLocally(master))
             link.Line.startWidth = link.Line.endWidth = 0.035f;
     }
 
@@ -309,14 +309,14 @@ public static class UloeClient
                 gone.Add(kv.Key);
                 continue;
             }
-            Vector3 at = UloeUtil.Pos(l.From);
+            Vector3 at = ModKitUtil.Pos(l.From);
             switch (l.Kind)
             {
                 case Kind.Plugcord:
                 case Kind.Nodecord:
                     Vector3 a = at + Vector3.down * (l.Kind == Kind.Plugcord ? 0.42f : 0.35f);
                     Vector3 b = Ground(l.To) + Vector3.up * 0.12f;
-                    Draw(l.Line, a, b, Mathf.Min(0.1f, 0.03f * UloeUtil.Flat(a, b)));
+                    Draw(l.Line, a, b, Mathf.Min(0.1f, 0.03f * ModKitUtil.Flat(a, b)));
                     if (l.Plug != null)
                     {
                         l.Plug.transform.position = b + Vector3.up * 0.06f;
@@ -374,7 +374,7 @@ public static class UloeClient
         if (glass == null)
             yield break;
         Transform lens = Part(glass, "Lens");
-        Vector3 start = UloeUtil.Pos(glass) + Vector3.up * UloeData.BeamEye;
+        Vector3 start = ModKitUtil.Pos(glass) + Vector3.up * UloeData.BeamEye;
         if (lens != null)
         {
             Vector3 d = foe - lens.position;
@@ -384,7 +384,7 @@ public static class UloeClient
         }
         float width = 0.03f + 0.02f * Mathf.Clamp(multi, 0f, 3f);
         Run(LineRun(start, foe + Vector3.up * 0.25f, 0.18f, width, Bright));
-        UloeAssets.Effect("World_Uloe_Spark", foe + Vector3.up * 0.3f, 0.8f);
+        ModKitAssets.Effect("World_Uloe_Spark", foe + Vector3.up * 0.3f, 0.8f);
     }
 
     static Transform Part(Entity_Master master, string name)

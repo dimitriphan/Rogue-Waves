@@ -125,8 +125,8 @@ public static class YosseleMeasure
     {
         string plan = ModKitPlay.CurrentPlan;
         hm = ModKitPlay.LocalHero();
-        owner = YosseleUtil.Owner(hm);
-        team = YosseleUtil.Team(hm);
+        owner = ModKitUtil.Owner(hm);
+        team = ModKitUtil.Team(hm);
         used.Clear();
         known.Clear();
         ModKitPlay.Reset(hm);
@@ -204,11 +204,11 @@ public static class YosseleMeasure
                 {
                     float[] before = ModKitMeasure.Purse();
                     Entity_Master b = null;
-                    try { b = ModKitTest.SpawnFoe(beast, YosseleUtil.Pos(hm), 2f, 8f, null); }
+                    try { b = ModKitTest.SpawnFoe(beast, ModKitUtil.Pos(hm), 2f, 8f, null); }
                     catch (Exception e) { Log("M11 " + beast + ": " + e.Message); }
                     if (b == null) { Log("M11 " + beast + ": could not spawn it"); continue; }
                     yield return new WaitForSeconds(1f);
-                    float hp = YosseleUtil.MaxHealth(b);
+                    float hp = ModKitUtil.MaxHealth(b);
                     if (b.Beingserver != null && !b.Beingserver.Dead) Game_Entity.Instance.Despawn(b.Beingserver, true, "Measure");
                     yield return new WaitForSeconds(5f);
                     Log("M11 " + beast + " (health " + F(hp) + ") killed: purse " + ModKitMeasure.Gained(before));

@@ -72,7 +72,7 @@ public static class SpoolServer
             players.Clear();
             tokens.Clear();
             comebacks.Clear();
-            SpoolUtil.ForgetLooks(true);
+            ModKitUtil.ForgetLooks(true);
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;
@@ -162,14 +162,14 @@ public static class SpoolServer
         p.Stash += put;
         Delivered += put;
         Show(p);
-        SpoolUtil.Vis(carrier, "Spool_Deliver", SpoolUtil.Pos(p.Home.Master), put);
+        ModKitUtil.Vis(carrier, "Spool_Deliver", ModKitUtil.Pos(p.Home.Master), put);
         return put;
     }
 
     public static bool AtStash(long owner, Vector3 at, float reach)
     {
         SpoolPlayer p = Player(owner);
-        return p.Home != null && p.Home.Master != null && SpoolUtil.Flat(SpoolUtil.Pos(p.Home.Master), at) <= reach;
+        return p.Home != null && p.Home.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(p.Home.Master), at) <= reach;
     }
 
     // ---------------------------------------------------------------- ground Thread
@@ -198,7 +198,7 @@ public static class SpoolServer
             Vector3 p = n == 0 ? at : at + new Vector3(Mathf.Cos(n * 2.1f), 0f, Mathf.Sin(n * 2.1f)) * 0.35f;
             SpoolDrop d = null;
             foreach (SpoolDrop o in Drops)
-                if (o.Amount > 0 && o.Amount < SpoolData.TuftMax && o.Until > Time.time && SpoolUtil.Flat(o.Pos, p) <= SpoolData.Merge)
+                if (o.Amount > 0 && o.Amount < SpoolData.TuftMax && o.Until > Time.time && ModKitUtil.Flat(o.Pos, p) <= SpoolData.Merge)
                 {
                     d = o;
                     break;
@@ -215,7 +215,7 @@ public static class SpoolServer
             left -= put;
             n++;
             Dropped += put;
-            SpoolUtil.Vis(radio, "Spool_Tuft", d.Pos, d.Id * 16 + d.Amount);
+            ModKitUtil.Vis(radio, "Spool_Tuft", d.Pos, d.Id * 16 + d.Amount);
         }
     }
 
@@ -224,18 +224,18 @@ public static class SpoolServer
     {
         if (room <= 0 || Drops.Count == 0)
             return 0;
-        Vector3 at = SpoolUtil.Pos(carrier);
+        Vector3 at = ModKitUtil.Pos(carrier);
         int took = 0;
         foreach (SpoolDrop d in Drops)
         {
             if (took >= room)
                 break;
-            if (d.Amount <= 0 || d.Until <= Time.time || SpoolUtil.Flat(d.Pos, at) > reach)
+            if (d.Amount <= 0 || d.Until <= Time.time || ModKitUtil.Flat(d.Pos, at) > reach)
                 continue;
             int n = Mathf.Min(d.Amount, room - took);
             d.Amount -= n;
             took += n;
-            SpoolUtil.Vis(carrier, "Spool_Take", d.Pos, d.Id * 16 + d.Amount);
+            ModKitUtil.Vis(carrier, "Spool_Take", d.Pos, d.Id * 16 + d.Amount);
         }
         if (took > 0)
         {
@@ -249,17 +249,17 @@ public static class SpoolServer
     public static int CollectLooms(long owner, Entity_Master carrier, float reach, int room)
     {
         int took = 0;
-        Vector3 at = SpoolUtil.Pos(carrier);
+        Vector3 at = ModKitUtil.Pos(carrier);
         foreach (SpoolBuilding b in Buildings)
         {
             SpoolLoomBrain loom = b as SpoolLoomBrain;
-            if (took >= room || loom == null || !loom.Started || loom.Owner != owner || loom.Held <= 0 || SpoolUtil.Flat(loom.Pos, at) > reach)
+            if (took >= room || loom == null || !loom.Started || loom.Owner != owner || loom.Held <= 0 || ModKitUtil.Flat(loom.Pos, at) > reach)
                 continue;
             int n = loom.TakeHeld(room - took);
             if (n > 0)
             {
                 took += n;
-                SpoolUtil.Vis(carrier, "Spool_Take", loom.Pos, 0);
+                ModKitUtil.Vis(carrier, "Spool_Take", loom.Pos, 0);
             }
         }
         return took;
@@ -269,7 +269,7 @@ public static class SpoolServer
     {
         int n = 0;
         foreach (SpoolDrop d in Drops)
-            if (d.Amount > 0 && d.Until > Time.time && SpoolUtil.Flat(d.Pos, at) <= reach)
+            if (d.Amount > 0 && d.Until > Time.time && ModKitUtil.Flat(d.Pos, at) <= reach)
                 n += d.Amount;
         return n;
     }
@@ -279,10 +279,10 @@ public static class SpoolServer
     {
         if (players.Count == 0)
             return;
-        int n = SpoolUtil.BaseHealth(foe) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall;
-        if (SpoolUtil.Elite(foe))
+        int n = ModKitUtil.BaseHealth(foe) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall;
+        if (ModKitUtil.Elite(foe))
             n += SpoolData.DropElite;
-        Drop(SpoolUtil.Pos(foe), Mathf.Min(n, SpoolData.DropMax));
+        Drop(ModKitUtil.Pos(foe), Mathf.Min(n, SpoolData.DropMax));
     }
 
     // ---------------------------------------------------------------- Directions (kit 1.7, docs/scope/11)
@@ -303,15 +303,15 @@ public static class SpoolServer
     {
         if (from == null || from.Beingserver == null || heal <= 0f)
             return;
-        int team = SpoolUtil.Team(from);
-        foreach (Entity_Master e in SpoolUtil.Area(at, radius, SpoolUtil.Friends(from)))
+        int team = ModKitUtil.Team(from);
+        foreach (Entity_Master e in ModKitUtil.Area(at, radius, ModKitUtil.Friends(from)))
         {
-            if (e == except || !SpoolUtil.Alive(e) || SpoolUtil.Team(e) != team || e.Taglistserver == null || e.Taglistserver.Contains("Core"))
+            if (e == except || !ModKitUtil.Alive(e) || ModKitUtil.Team(e) != team || e.Taglistserver == null || e.Taglistserver.Contains("Core"))
                 continue;
-            if (SpoolUtil.Health(e) >= SpoolUtil.MaxHealth(e) - 0.01f)
+            if (ModKitUtil.Health(e) >= ModKitUtil.MaxHealth(e) - 0.01f)
                 continue;
             Helper_Entitytools.Interactheal(from, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
-            SpoolUtil.Vis(from, "Spool_Mend", SpoolUtil.Pos(e), 0f);
+            ModKitUtil.Vis(from, "Spool_Mend", ModKitUtil.Pos(e), 0f);
         }
     }
 
@@ -321,7 +321,7 @@ public static class SpoolServer
         foreach (SpoolBuilding b in Buildings.ToArray())
         {
             SpoolLoomBrain loom = b as SpoolLoomBrain;
-            if (loom == null || !loom.Started || loom.Master == null || !SpoolUtil.Alive(loom.Master) || !loom.Sewing)
+            if (loom == null || !loom.Started || loom.Master == null || !ModKitUtil.Alive(loom.Master) || !loom.Sewing)
                 continue;
             SpoolData.Sewing s = SpoolData.Sewingmachines[loom.Player.Sewing - 1];
             MendAround(loom.Master, loom.Pos, s.Radius, s.Heal, null);
@@ -334,7 +334,7 @@ public static class SpoolServer
     {
         try
         {
-            if (!SpoolUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
+            if (!ModKitUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
                 return;
             string being = master.Beingserver.Being.Objectname;
             if (being == SpoolData.Hero)
@@ -387,7 +387,7 @@ public static class SpoolServer
     {
         try
         {
-            if (!SpoolUtil.IsServer || master == null)
+            if (!ModKitUtil.IsServer || master == null)
                 return;
             SpoolBuilding building = master.GetComponent<SpoolBuilding>();
             if (building != null)
@@ -408,7 +408,7 @@ public static class SpoolServer
             {
                 Heroes.Remove(hero);
                 if (killed)
-                    SpoolUtil.Vis(master, "Spool_Herodeath", SpoolUtil.Pos(master), 0);
+                    ModKitUtil.Vis(master, "Spool_Herodeath", ModKitUtil.Pos(master), 0);
                 return;
             }
             if (killed && master.Taglistserver != null && master.Taglistserver.Contains("Enemy"))
@@ -432,10 +432,10 @@ public static class SpoolServer
             if (token.Beingserver.Currentblock == null || token.Statsserver == null)
                 return;   // not settled yet: next frame
             Genitem block = token.Beingserver.Currentblock;
-            long owner = SpoolUtil.Owner(token);
+            long owner = ModKitUtil.Owner(token);
             Comeback c = new Comeback { Owner = owner, Spot = block.Position, Sellvalue = token.Entitydata.Value.Sellvalue };
             SpoolHeroBrain hero = HeroOf(owner);
-            Link_Being parent = hero != null && hero.Master != null && SpoolUtil.Alive(hero.Master) ? hero.Master.Beingserver : token.Beingserver;
+            Link_Being parent = hero != null && hero.Master != null && ModKitUtil.Alive(hero.Master) ? hero.Master.Beingserver : token.Beingserver;
             bool ok = SpawnHead(c, block, parent);
             Helper_Entitytools.Despawn(token.Beingserver, false, "Place");
             if (ok) Swapped++;
@@ -497,7 +497,7 @@ public static class SpoolServer
     public static SpoolHeroBrain HeroOf(long owner)
     {
         foreach (SpoolHeroBrain h in Heroes)
-            if (h != null && h.Master != null && SpoolUtil.Owner(h.Master) == owner)
+            if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 return h;
         return null;
     }

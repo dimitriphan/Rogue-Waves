@@ -1,5 +1,7 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+**2026-11-04, code simplification (compiled, not yet run in game):** the game's own `Entity_Ai_General_Upgrade` runs every building's upgrade panel again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged. The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (self-test 173/0, G1, G3, H1, L1).
+
 **0.2.0-dev is the 2026-10-12 build (0.1.0-dev, PC rounds 1-8) brought up to Dimitri's sheet of 2026-10-20**
 (`docs/scope/07_Vessel_Yossele.txt`, with his 2026-10-21 answers): design in `DESIGN.md` (every default is under
 "Changes from the concept"), temporary art in `Assets/YosseleMod/Editor` (`Previews/0.2/ASSETS.md` lists what changed),
@@ -27,13 +29,13 @@ every sheet and model. Not seen yet: the look by eye, a map played by Dimitri, o
 | File | What |
 |---|---|
 | `00_YosseleMod.cs` | Boot (pack registry part "Yossele", asset lookup, content, journal), per-frame calls into the kit and the server |
-| `01_Util.cs` | Helpers: stats, health (`Value` left, `Value_Calc` max), tiles, ground spawns, kept modifiers, slows and roots, debuff looks (Argo 2.0.1's send), hurt via `ModKitCombat.Hurt` |
+| `01_Util.cs` | Yossele's own helpers: ground spawns, roots and slows, owner-only warnings; stats, health, tiles, kept modifiers, debuff looks (Argo 2.0.1's send) and hurt are the kit's `ModKitUtil` since kit 1.8 |
 | `02_Data.cs` | Every name, text and number |
-| `03_Assets.cs` | Sprite sheets to animations, pixel icons |
+| `03_Assets.cs` | The hero's and the Cordyfriend's animations, pixel icons, tower material, sound levels; slicing and playback are the kit's `ModKitAssets` since kit 1.8 |
 | `04_Content.cs` | Clones the hero (Smacky, made ranged like Sno Sno), the laser (Sno Sno's snowball), the four towers and the Bonsai, the Cordyfriend (the Snoble), vine and fruit ground beings, commands, Directions, Growth skins |
 | `05_Server.cs` | Host rules: players, fertilizer, Compost Bin, Tides (`ModKitTides`, the map's Tide count), spawn and despawn hooks, the Tree's and the Bonsai's limit |
 | `06_HeroBrain.cs` | Build options (the Tree's slot offers the Tree, then the Bonsai), arming the stock ranged AI with the laser, regen, FERTILIZE |
-| `07_Building.cs` | Base for the buildings: Growth, upgrade flow (mirrors `Entity_Ai_General_Upgrade`) |
+| `07_Building.cs` | Base for the buildings: Growth, upgrades (the game's own `Entity_Ai_General_Upgrade` runs the panel since 2026-11-04; the brain hears `Master.Upgrade`) |
 | `08_Cannon.cs` .. `11_Pachira.cs` | One brain per building (the Bonsai is a Tree brain in `09`), plus spores, vines, fruit and Softening Roots |
 | `12_Hooks.cs` | One `Oninteract` front hook: Stonehenge armour, Blockade barrier, Connected Roots, Fortifying aura, Easy Target, Monument |
 | `13_Client.cs`, `14_Commands.cs` | Every look and sound (Vis RPCs), the Cordyfriend's tint, the FERTILIZE picker and COLOUR button |

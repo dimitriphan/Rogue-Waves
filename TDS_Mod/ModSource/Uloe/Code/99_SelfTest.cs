@@ -1086,10 +1086,20 @@ public static class UloeSelfTest
 #endif
                 // Long Throw on a second one, Wide Flood on the first.
                 Vector3 fat2 = ReachSpot(hm, UloeUtil.Pos(node), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
+                // That node's ring can be full on this map: any other node will do, with a building near it to aim at.
+                if (float.IsNaN(fat2.x))
+                    foreach (Entity_Master otherNode in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
+                        if (otherNode != node && float.IsNaN(fat2.x) && UloeUtil.IsNode(otherNode))
+                            fat2 = ReachSpot(hm, UloeUtil.Pos(otherNode), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
                 if (!float.IsNaN(fat2.x))
                 {
                     yield return Build(hm, UloeData.Flood, fat2, known, got);
                     flood2 = got[0] as UloeFloodBrain;
+                    if (flood2 != null && UloeServer.NearestBuilding(flood2.Team, flood2.Pos, 6f, flood2.Master) == null)
+                    {
+                        Vector3 near2 = ReachSpot(hm, flood2.Pos, UloeContent.Beings[UloeData.Glass], team, 1.5f, 3.5f);
+                        if (!float.IsNaN(near2.x)) yield return Build(hm, UloeData.Glass, near2, known, got);
+                    }
                 }
                 yield return Upgrade(flood, "Wide2", owner);
                 Check("Wide Flood", Has(flood, "Wide2") && flood.Wide);

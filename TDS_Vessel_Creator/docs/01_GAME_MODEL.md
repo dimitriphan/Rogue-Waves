@@ -112,8 +112,9 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
   named in `Commandlistserver["Attack"].Goalstring`, sends "Shoot"), `Entity_Ai_Tower_General`. Visual scripts:
   `Entity_Vis_Animator_Mob`, `Entity_Vis_Hero`, `Entity_Vis_Mob_Attack` (plays the Attack animation on "Attack"/"Shoot").
 - Scripts named after a shipped vessel (`*_Smacky*`, `*_Snosno*`, `*_Fie*`, `*_Buster*`, `*_Boutman*`) hard-code that
-  vessel's objects: strip them from cloned data. Strip `Entity_Ai_General_Upgrade` too: it is generic, but the brain
-  replaces its upgrade flow (`docs/05`).
+  vessel's objects: strip them from cloned data. Strip the copied `Entity_Ai_General_Upgrade` too, and add one fresh
+  carrier of it to each building that upgrades: it runs the whole upgrade panel, and the brain hears each upgrade
+  through `Master.Upgrade` (`docs/05` §14).
 - Enemies: `Entity_Ai_Enemy_Basic` walks to its parent core's Goal whenever it is Idle (`Approachgoal`), and
   `Helper_Entityai.Checkenemymelee` re-targets "Attack" every slow tick when something is in range. An enemy spawned
   without a parent throws a NullReferenceException every tick.

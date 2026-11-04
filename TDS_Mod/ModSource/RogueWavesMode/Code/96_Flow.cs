@@ -744,6 +744,9 @@ public static partial class RWTest
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 200f);
         yield return Until(() => RWShop.Stand != null, 90f);
         freeze = true;
+        // What was bought on map 1 goes back on this map's new core, and in the HUD's row (missing until 2026-11-04).
+        yield return new WaitForSeconds(1f);
+        Check("A later map: the Cardinals held go back on its new core, and in the HUD's row", RWRun.Cardinals.Count > 0 && RWCardinals.MissingOnCore() == 0 && Tds_Multiplayerinfo.Instance.Artifacts.Count > 0, RWRun.Cardinals.Count + " held, " + RWCardinals.MissingOnCore() + " missing on the core, " + Tds_Multiplayerinfo.Instance.Artifacts.Count + " in the row");
         RWRun.For(me).Pure += 9;
         ClearFoes();
         Mode_Normal lostMode = Game_Rounds.Instance.GetComponent<Mode_Normal>();

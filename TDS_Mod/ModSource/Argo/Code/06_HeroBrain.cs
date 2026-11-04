@@ -39,7 +39,7 @@ public class ArgoHeroBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!ArgoUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -88,7 +88,7 @@ public class ArgoHeroBrain : MonoBehaviour
         Master.Command += OnCommand;
         hitHandler = OnHit;
         Master.Interact += hitHandler;
-        ArgoLog.Info("Argo landed for player " + ArgoUtil.Owner(Master));
+        ArgoLog.Info("Argo landed for player " + ModKitUtil.Owner(Master));
     }
 
     // Build option i+1 builds Towers[i]. The fifth needs Command_Buildoption5 (ArgoContent registers it when the game
@@ -97,7 +97,7 @@ public class ArgoHeroBrain : MonoBehaviour
     {
         string link = "Buildoption" + (i + 1);
         // Quiet lookup: CheckBase asks every half second, and Getload logs each miss.
-        if (ArgoUtil.Load<Commandobject>("Command", "Command_" + link) == null)
+        if (ModKitUtil.Load<Commandobject>("Command", "Command_" + link) == null)
         {
             if (!missingOptions.Contains(link))
             {
@@ -120,7 +120,7 @@ public class ArgoHeroBrain : MonoBehaviour
         nextBase = Time.time + 0.5f;
         if (!started || Master == null || Master.Commandlistserver == null)
             return;
-        bool has = ArgoServer.HasBase(ArgoUtil.Owner(Master));
+        bool has = ArgoServer.HasBase(ModKitUtil.Owner(Master));
         bool shown = Master.Commandlistserver.ContainsKey(ArgoData.BaseOption);
         if (has && shown)
         {
@@ -138,7 +138,7 @@ public class ArgoHeroBrain : MonoBehaviour
     // The Directions this vessel holds, for what its player's Deep Water and Harpoon Guns do (kit 1.7).
     void CheckDirections()
     {
-        ArgoServer.Ranks r = ArgoServer.RanksOf(ArgoUtil.Owner(Master));
+        ArgoServer.Ranks r = ArgoServer.RanksOf(ModKitUtil.Owner(Master));
         r.Deepcurrent = ArgoServer.DirectionRank(Master, ArgoData.Deepcurrents[0].Name);
         r.Heavysalvo = ArgoServer.DirectionRank(Master, ArgoData.Heavysalvos[0].Name);
     }
@@ -175,16 +175,16 @@ public class ArgoHeroBrain : MonoBehaviour
         SonarReadyAt = Time.time + ArgoData.SonarCooldown;
         SetSonarButton(true);
         Sonars++;
-        Vector3 pos = ArgoUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         // Clients play the animation and the ring, and mark every enemy inside the same radius.
-        ArgoUtil.Vis(Master, "Argo_Sonar", pos, ArgoData.SonarRadius);
-        foreach (Entity_Master e in ArgoUtil.Area(pos, ArgoData.SonarRadius, ArgoUtil.Enemies(Master)))
-            if (e != null && ArgoUtil.Alive(e) && !ArgoUtil.HasTag(e, "Core") && !ArgoUtil.HasTag(e, "Enemycore"))
+        ModKitUtil.Vis(Master, "Argo_Sonar", pos, ArgoData.SonarRadius);
+        foreach (Entity_Master e in ModKitUtil.Area(pos, ArgoData.SonarRadius, ArgoUtil.Enemies(Master)))
+            if (e != null && ModKitUtil.Alive(e) && !ModKitUtil.HasTag(e, "Core") && !ModKitUtil.HasTag(e, "Enemycore"))
                 ArgoHooks.Ping(e, ArgoData.PingDuration);
         // Every Drill Rig on Argo's team inside the ping quakes.
         foreach (ArgoTowerBrain t in ArgoServer.Towers)
-            if (t != null && t.IsDrill && t.Started && ArgoUtil.Team(t.Master) == ArgoUtil.Team(Master)
-                && ArgoUtil.Flat(ArgoUtil.Pos(t.Master), pos) <= ArgoData.SonarRadius)
+            if (t != null && t.IsDrill && t.Started && ModKitUtil.Team(t.Master) == ModKitUtil.Team(Master)
+                && ModKitUtil.Flat(ModKitUtil.Pos(t.Master), pos) <= ArgoData.SonarRadius)
                 t.Quake(ArgoData.QuakeRoot);
         return true;
     }
@@ -198,20 +198,20 @@ public class ArgoHeroBrain : MonoBehaviour
             if (hit == null || hit.Type != "Hurt" || hit.To == null || hit.To == Master || hit.Data == null || hit.Data.ContainsKey("Argocleave"))
                 return;
             Entity_Master first = hit.To;
-            if (ArgoUtil.Team(first) == ArgoUtil.Team(Master) || !(ArgoUtil.HasTag(first, "Mob") || ArgoUtil.HasTag(first, "Tower")))
+            if (ModKitUtil.Team(first) == ModKitUtil.Team(Master) || !(ModKitUtil.HasTag(first, "Mob") || ModKitUtil.HasTag(first, "Tower")))
                 return;
             float damage, multi;
             if (!hit.Data.TryGetValue("Damage", out damage) || !hit.Data.TryGetValue("Damagemulti", out multi))
                 return;
             Entity_Master second = null;
             float best = float.MaxValue;
-            Vector3 at = ArgoUtil.Pos(first);
-            foreach (Entity_Master e in ArgoUtil.Area(at, ArgoData.CleaveReach, ArgoUtil.Enemies(Master)))
+            Vector3 at = ModKitUtil.Pos(first);
+            foreach (Entity_Master e in ModKitUtil.Area(at, ArgoData.CleaveReach, ArgoUtil.Enemies(Master)))
             {
-                if (e == null || e == first || !ArgoUtil.Alive(e))
+                if (e == null || e == first || !ModKitUtil.Alive(e))
                     continue;
-                float d = ArgoUtil.Flat(ArgoUtil.Pos(e), at);
-                if (d < best && ArgoUtil.Flat(ArgoUtil.Pos(e), ArgoUtil.Pos(Master)) <= ArgoUtil.Stat(Master, "Range", 1.75f) + 1f)
+                float d = ModKitUtil.Flat(ModKitUtil.Pos(e), at);
+                if (d < best && ModKitUtil.Flat(ModKitUtil.Pos(e), ModKitUtil.Pos(Master)) <= ModKitUtil.Stat(Master, "Range", 1.75f) + 1f)
                 {
                     best = d;
                     second = e;
@@ -220,9 +220,9 @@ public class ArgoHeroBrain : MonoBehaviour
             if (second == null)
                 return;
             // Recorded on the second foe like the swing itself (ModKitCombat): kill credit, and no Aegis regeneration.
-            ModKitCombat.Hurt(Master, second, damage * multi * ArgoData.CleaveMulti, 1f, null, ArgoUtil.Data("Argocleave", 1f));
+            ModKitCombat.Hurt(Master, second, damage * multi * ArgoData.CleaveMulti, 1f, null, ModKitUtil.Data("Argocleave", 1f));
             Cleaves++;
-            ArgoUtil.Vis(Master, "Argo_Clang", ArgoUtil.Pos(second), 0);
+            ModKitUtil.Vis(Master, "Argo_Clang", ModKitUtil.Pos(second), 0);
         }
         catch (Exception e)
         {
