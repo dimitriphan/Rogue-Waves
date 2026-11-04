@@ -12,7 +12,7 @@ public class SpoolHeroBrain : MonoBehaviour
     Link_Command patchCommand;
     float nextCollect, nextMenu;
 
-    public long Owner { get { return SpoolUtil.Owner(Master); } }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
 
     void Update()
     {
@@ -21,7 +21,7 @@ public class SpoolHeroBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!SpoolUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -92,7 +92,7 @@ public class SpoolHeroBrain : MonoBehaviour
                 MenuChanges++;
             }
             // Quiet lookup: asked every half second, and Getload logs each miss (pitfall #71).
-            if (shown || want == null || SpoolUtil.Load<Commandobject>("Command", "Command_" + link) == null)
+            if (shown || want == null || ModKitUtil.Load<Commandobject>("Command", "Command_" + link) == null)
                 continue;
             Link_Command c = Helper_Entitytools.Createcommand(Master, "Command_" + link, link, false, true);
             c.Goalstring = want;
@@ -117,7 +117,7 @@ public class SpoolHeroBrain : MonoBehaviour
             if (Master.Commandlistserver.TryGetValue("Buildoption" + i, out c) && c != null)
                 l.Add(c.Goalstring);
         }
-        return SpoolUtil.Join(l);
+        return ModKitUtil.Join(l);
     }
 
     // ---------------------------------------------------------------- carrying
@@ -125,9 +125,9 @@ public class SpoolHeroBrain : MonoBehaviour
     // Spool picks up ground Thread within a tile and a Loom's within 1.5, and hands it over at its Yarn Stash.
     void Collect()
     {
-        if (!SpoolUtil.Alive(Master))
+        if (!ModKitUtil.Alive(Master))
             return;
-        Vector3 pos = SpoolUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         bool changed = false;
         int room = Player.CarryCap - Player.Carried;
         int took = SpoolServer.Collect(Master, SpoolData.PickHero, room);
@@ -185,9 +185,9 @@ public class SpoolHeroBrain : MonoBehaviour
     {
         Link_Command sell;
         Vector3 at;
-        if (string.IsNullOrEmpty(json) || !Master.Commandlistserver.TryGetValue("Sell", out sell) || sell.Goalobject != null || !SpoolUtil.JsonPosition(json, out at))
+        if (string.IsNullOrEmpty(json) || !Master.Commandlistserver.TryGetValue("Sell", out sell) || sell.Goalobject != null || !ModKitUtil.JsonPosition(json, out at))
             return;
-        string name = SpoolUtil.JsonString(json, "Tower");
+        string name = ModKitUtil.JsonString(json, "Tower");
         Entity_Master best = null;
         float bestD = 1.5f;
         foreach (SpoolUnitBrain u in SpoolServer.Units)
@@ -205,7 +205,7 @@ public class SpoolHeroBrain : MonoBehaviour
 
     static void Closer(Entity_Master m, Vector3 at, ref Entity_Master best, ref float bestD)
     {
-        float d = SpoolUtil.Flat(SpoolUtil.Pos(m), at);
+        float d = ModKitUtil.Flat(ModKitUtil.Pos(m), at);
         if (d <= bestD)
         {
             best = m;
@@ -237,16 +237,16 @@ public class SpoolHeroBrain : MonoBehaviour
         ulong id;
         if (j == i || !ulong.TryParse(json.Substring(i, j - i), out id))
             return null;
-        return SpoolUtil.ById(id);
+        return ModKitUtil.ById(id);
     }
 
     // One of this player's units or buildings (not Spool itself, the Tin's pin or a placement token).
     public bool Patchable(Entity_Master m)
     {
-        if (m == null || m == Master || !SpoolUtil.Alive(m) || SpoolUtil.Owner(m) != Owner || SpoolUtil.Team(m) != SpoolUtil.Team(Master))
+        if (m == null || m == Master || !ModKitUtil.Alive(m) || ModKitUtil.Owner(m) != Owner || ModKitUtil.Team(m) != ModKitUtil.Team(Master))
             return false;
-        string being = SpoolUtil.BeingName(m);
-        return being != SpoolData.Pin && being != SpoolData.HeadToken && being != SpoolData.Hero && SpoolUtil.MaxHealth(m) > 0f;
+        string being = ModKitUtil.BeingName(m);
+        return being != SpoolData.Pin && being != SpoolData.HeadToken && being != SpoolData.Hero && ModKitUtil.MaxHealth(m) > 0f;
     }
 
     // The most hurt of this player's Spool units and buildings within reach.
@@ -261,9 +261,9 @@ public class SpoolHeroBrain : MonoBehaviour
         float worst = 0.999f;
         foreach (Entity_Master m in mine)
         {
-            if (!Patchable(m) || SpoolUtil.Flat(SpoolUtil.Pos(m), pos) > SpoolData.PatchRange + 0.6f)
+            if (!Patchable(m) || ModKitUtil.Flat(ModKitUtil.Pos(m), pos) > SpoolData.PatchRange + 0.6f)
                 continue;
-            float frac = SpoolUtil.Health(m) / Mathf.Max(0.01f, SpoolUtil.MaxHealth(m));
+            float frac = ModKitUtil.Health(m) / Mathf.Max(0.01f, ModKitUtil.MaxHealth(m));
             if (frac < worst)
             {
                 worst = frac;
@@ -281,7 +281,7 @@ public class SpoolHeroBrain : MonoBehaviour
             SpoolUtil.Warn(Master, SpoolData.WarnCooldown);
             return;
         }
-        Vector3 pos = SpoolUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         if (target != null && !Patchable(target))
             target = null;
         if (target == null)
@@ -292,13 +292,13 @@ public class SpoolHeroBrain : MonoBehaviour
             SpoolUtil.Warn(Master, SpoolData.WarnNoTarget);
             return;
         }
-        if (SpoolUtil.Flat(SpoolUtil.Pos(target), pos) > SpoolData.PatchRange + 0.6f)
+        if (ModKitUtil.Flat(ModKitUtil.Pos(target), pos) > SpoolData.PatchRange + 0.6f)
         {
             LastPatch = "too far";
             SpoolUtil.Warn(Master, SpoolData.WarnFar);
             return;
         }
-        float max = SpoolUtil.MaxHealth(target), hp = SpoolUtil.Health(target);
+        float max = ModKitUtil.MaxHealth(target), hp = ModKitUtil.Health(target);
         if (hp >= max - 0.01f)
         {
             LastPatch = "full";
@@ -318,16 +318,16 @@ public class SpoolHeroBrain : MonoBehaviour
             return;
         }
         float heal = Mathf.Min(max * SpoolData.PatchHeal, SpoolData.PatchMax);
-        SpoolUtil.Heal(Master, target, heal);
+        ModKitUtil.Heal(Master, target, heal);
         PatchReady = Time.time + SpoolData.PatchCooldown;
         Patches++;
-        LastPatch = SpoolUtil.BeingName(target) + " +" + heal.ToString("F1");
+        LastPatch = ModKitUtil.BeingName(target) + " +" + heal.ToString("F1");
         SetPatchButton(true);
-        Vector3 dir = SpoolUtil.Pos(target) - pos;
+        Vector3 dir = ModKitUtil.Pos(target) - pos;
         dir.y = 0f;
         if (dir.sqrMagnitude > 0.0001f)
             Master.Entitydirection.Value = dir.normalized;
         // Clients: Spool plays its Patch animation and a thread runs from Spool to what it mends.
-        Master.Radio.Vis_ClientRpc("Spool_Patch", SpoolUtil.Pos(target), (float)target.NetworkObjectId);
+        Master.Radio.Vis_ClientRpc("Spool_Patch", ModKitUtil.Pos(target), (float)target.NetworkObjectId);
     }
 }

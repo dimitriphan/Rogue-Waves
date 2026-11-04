@@ -32,7 +32,7 @@ public class UloeMirrorBrain : UloeBuilding
     protected override void Started2()
     {
         handler = OnHit;
-        UloeUtil.Front(Master, handler);
+        ModKitUtil.Front(Master, handler);
     }
 
     protected override void Tick()
@@ -40,7 +40,7 @@ public class UloeMirrorBrain : UloeBuilding
         if (Time.time >= nextFront)
         {
             nextFront = Time.time + 0.1f;
-            UloeUtil.Front(Master, handler);
+            ModKitUtil.Front(Master, handler);
         }
         if (Time.time >= nextFeed && Has("Bounce"))
         {
@@ -62,7 +62,7 @@ public class UloeMirrorBrain : UloeBuilding
             Taken += total;
             Hits++;
             Entity_Master from = hit.From;
-            if (from == null || from == Master || !UloeUtil.IsFoe(from, Team))
+            if (from == null || from == Master || !ModKitUtil.IsFoe(from, Team))
                 return;
             LastAttacker = from;
             // Glare reads the Blind already on the foe, so the hit that first blinds it still lands.
@@ -77,7 +77,7 @@ public class UloeMirrorBrain : UloeBuilding
                     hit.Data["Damage"] = 0f;
                     hit.Data["Damagemulti"] = 0f;
                     Nullified++;
-                    UloeUtil.Vis(Master, "Uloe_Nullify", Pos, 0f);
+                    ModKitUtil.Vis(Master, "Uloe_Nullify", Pos, 0f);
                 }
             }
             int level = Level;
@@ -91,7 +91,7 @@ public class UloeMirrorBrain : UloeBuilding
             if (Time.time - lastFlashVis > 0.3f)
             {
                 lastFlashVis = Time.time;
-                UloeUtil.Vis(Master, "Uloe_Flash", UloeUtil.Pos(from), level);
+                ModKitUtil.Vis(Master, "Uloe_Flash", ModKitUtil.Pos(from), level);
             }
         }
         catch (Exception e)

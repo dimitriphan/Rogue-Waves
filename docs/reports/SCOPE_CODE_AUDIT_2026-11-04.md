@@ -22,10 +22,14 @@ right and the line should be rewritten. *Dimitri*: a real choice either way; my 
 the code, not run: only rows that say "measured" were seen in game, on an earlier PC round. Nothing ran on the PC for
 this report.
 
-**Running alongside.** The code simplification build (PR from the thread "Build the code simplification items") is moving
-the pack's hit handlers onto the stock `Resistadd` stat and its copied upgrade scripts back to the stock one, numbers
-unchanged. Rows 07-3 and 11-4 below read today's hit handlers. Once Voice in a Bottle works on pack buildings (its item
-2), row 11-3 reaches those buildings too.
+**Since the audit (PRs #80 and #82, merged the same evening).** Line numbers below point at `5d9b09e` (read them with
+`git show 5d9b09e:<path>`); the code simplification (#80) moved each vessel's helpers into `Shared/ModKitUtil.cs` and
+`Shared/ModKitAssets.cs`, so many vessel line numbers have moved since. Every issue row was re-read on the merged code
+and still holds. What changed around them: Spool's elite check is now the shared `ModKitUtil.Elite`, still `Enemy_` only
+(08 row 1); Voice in a Bottle now works on pack buildings, so Cheap Refits undoes it there too (11 row 3); Uloe's unused
+stock Blind and Illuminate route is gone, which leaves the foes part as the only user of the stock Merchut mark (13
+notes); held Cardinals now go back on at every map (#82), which changes no row. The hit handlers stay as they were (#80
+did not build its finding 1), so 07 row 3 and 11 row 4 read the current code.
 
 ## 1. Summary
 
@@ -416,9 +420,10 @@ Checked 22 lines; 4 issues (3 on `~defaults~`).
   lost; Aging -30% speed, health and damage rising to +100% over 50 s; the rings in indigo, hot pink, barnacle blue and
   bright yellow (`00_RogueWavesFoesMod.cs:81-84`, `:283-296`, `:373-381`).
 - Not seen in game: Dazzling's Illuminate is the stock Merchut mark, which also puts a "Targeted" look on its target.
-  Uloe takes that look off by hand (`Uloe/Code/05_Server.cs:395-396`); the foes part doesn't, so a tower may keep it after
-  leaving the aura. Uloe dropped this stock route after its first PC run because a marked target that dies logs two
-  errors (`Uloe/Code/02_Data.cs:101`).
+  Uloe took that look off by hand while it carried this route (`Uloe/Code/05_Server.cs:395-396` at `5d9b09e`; the route
+  was removed as unused in #80); the foes part doesn't, so a tower may keep it after leaving the aura. Uloe dropped this
+  stock route after its first PC run because a marked target that dies logs two errors (`Uloe/Code/02_Data.cs:101` at
+  `5d9b09e`).
 
 ### 14_Optional_Objectives.txt
 

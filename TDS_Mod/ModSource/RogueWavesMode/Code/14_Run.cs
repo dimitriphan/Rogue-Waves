@@ -229,7 +229,7 @@ public static class RWRun
     // Host, every frame of a campaign map: every vessel carries the three commands and the counter.
     public static void Tick()
     {
-        if (!InCampaignMap || !RWUtil.IsServer || Time.time < nextTick)
+        if (!InCampaignMap || !ModKitUtil.IsServer || Time.time < nextTick)
             return;
         nextTick = Time.time + 0.5f;
         foreach (long s in Sessions())

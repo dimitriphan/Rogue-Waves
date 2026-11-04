@@ -84,8 +84,8 @@ public static class SpoolMeasure
     {
         string plan = ModKitPlay.CurrentPlan;
         hm = ModKitPlay.LocalHero();
-        owner = SpoolUtil.Owner(hm);
-        team = SpoolUtil.Team(hm);
+        owner = ModKitUtil.Owner(hm);
+        team = ModKitUtil.Team(hm);
         known.Clear();
         used.Clear();
         ModKitPlay.Reset(hm);
@@ -96,7 +96,7 @@ public static class SpoolMeasure
         ModKitMeasure.Give(5000f, owner);
         ModKitPlay.Beat();
         List<Entity_Master> cores = ModKitPlay.Cores("Core", true);
-        Vector3 core = cores.Count > 0 ? ModKitPlay.Pos(cores[0]) : SpoolUtil.Pos(hm);
+        Vector3 core = cores.Count > 0 ? ModKitPlay.Pos(cores[0]) : ModKitUtil.Pos(hm);
         // The Stash first: the Crafted draw from it.
         Vector3 stash = ModKitTest.Spot(core, Being(SpoolData.Stash), team, 2f, 6f, used, "Stash");
         SpoolBuilding[] got = new SpoolBuilding[1];
@@ -228,15 +228,15 @@ public static class SpoolMeasure
             {
                 next = t + 3f;
                 int walls = 0; string hp = "";
-                foreach (Entity_Master w in line2) if (ModKitPlay.Alive(w)) { walls++; hp += " " + F(SpoolUtil.Health(w)); }
+                foreach (Entity_Master w in line2) if (ModKitPlay.Alive(w)) { walls++; hp += " " + F(ModKitUtil.Health(w)); }
                 int stitched = 0, darts = 0;
                 foreach (SpoolUnitBrain u in SpoolServer.Units)
-                    if (u != null && u.Master != null && SpoolUtil.Alive(u.Master) && u.Owner == owner) { if (u.Def.Id == SpoolData.Dart) darts++; else stitched++; }
-                Log("M7 t " + F(t) + ": Maul " + F(SpoolUtil.Health(maul)) + "/" + F(SpoolUtil.MaxHealth(maul)) + " at " + F(ModKitPlay.Flat(ModKitPlay.Pos(maul), behind)) + " from the Crafted's spot; Cushions " + walls + hp + "; Stitched " + stitched + ", Darts " + darts);
+                    if (u != null && u.Master != null && ModKitUtil.Alive(u.Master) && u.Owner == owner) { if (u.Def.Id == SpoolData.Dart) darts++; else stitched++; }
+                Log("M7 t " + F(t) + ": Maul " + F(ModKitUtil.Health(maul)) + "/" + F(ModKitUtil.MaxHealth(maul)) + " at " + F(ModKitPlay.Flat(ModKitPlay.Pos(maul), behind)) + " from the Crafted's spot; Cushions " + walls + hp + "; Stitched " + stitched + ", Darts " + darts);
             }
             yield return null;
         }
-        Log("M7 result: Maul " + (ModKitPlay.Alive(maul) ? "alive " + F(SpoolUtil.Health(maul)) : "dead"));
+        Log("M7 result: Maul " + (ModKitPlay.Alive(maul) ? "alive " + F(ModKitUtil.Health(maul)) : "dead"));
     }
 }
 #endif

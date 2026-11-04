@@ -68,7 +68,7 @@ public class SpoolPatchSelect : Entity_Command_Itemselect_Base
             Label("Desc", "Point at one of your units or buildings");
             return;
         }
-        float distance = SpoolUtil.Flat(SpoolUtil.Pos(m), SpoolUtil.Pos(Master));
+        float distance = ModKitUtil.Flat(ModKitUtil.Pos(m), ModKitUtil.Pos(Master));
         Label("Desc", distance > SpoolData.PatchRange + 0.6f ? "Too far away" : "20 Thread: mend 20%");
     }
 

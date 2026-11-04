@@ -66,7 +66,7 @@ public static class UloeServer
             Photons.Clear();
             players.Clear();
             UloeMarks.Clear();
-            UloeUtil.ForgetLooks(true);
+            ModKitUtil.ForgetLooks(true);
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;
@@ -108,7 +108,7 @@ public static class UloeServer
     public static UloeHeroBrain HeroOf(long owner)
     {
         foreach (UloeHeroBrain h in Heroes)
-            if (h != null && h.Master != null && UloeUtil.Owner(h.Master) == owner)
+            if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 return h;
         return null;
     }
@@ -139,12 +139,12 @@ public static class UloeServer
     {
         if (from == null || amount <= 0f)
             return;
-        int team = UloeUtil.Team(from);
+        int team = ModKitUtil.Team(from);
         foreach (UloeBuilding b in Buildings)
         {
-            if (b == null || !b.Started || b.Master == null || b.Master == except || UloeUtil.Team(b.Master) != team || !UloeUtil.Alive(b.Master))
+            if (b == null || !b.Started || b.Master == null || b.Master == except || ModKitUtil.Team(b.Master) != team || !ModKitUtil.Alive(b.Master))
                 continue;
-            if (UloeUtil.Flat(b.Pos, at) > radius)
+            if (ModKitUtil.Flat(b.Pos, at) > radius)
                 continue;
             UloeMirrorBrain mirror = b as UloeMirrorBrain;
             if (skipRelays && mirror != null && mirror.Has("Bounce"))
@@ -162,9 +162,9 @@ public static class UloeServer
         float bestD = reach;
         foreach (UloeBuilding b in Buildings)
         {
-            if (b == null || !b.Started || b.Master == null || b.Master == except || UloeUtil.Team(b.Master) != team || !UloeUtil.Alive(b.Master))
+            if (b == null || !b.Started || b.Master == null || b.Master == except || ModKitUtil.Team(b.Master) != team || !ModKitUtil.Alive(b.Master))
                 continue;
-            float d = UloeUtil.Flat(b.Pos, at);
+            float d = ModKitUtil.Flat(b.Pos, at);
             if (d <= bestD)
             {
                 best = b;
@@ -189,7 +189,7 @@ public static class UloeServer
     {
         try
         {
-            if (!UloeUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
+            if (!ModKitUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
                 return;
             string being = master.Beingserver.Being.Objectname;
             if (being == UloeData.Hero)
@@ -228,7 +228,7 @@ public static class UloeServer
     {
         try
         {
-            if (!UloeUtil.IsServer || master == null)
+            if (!ModKitUtil.IsServer || master == null)
                 return;
             UloeBuilding building = master.GetComponent<UloeBuilding>();
             if (building != null)
@@ -249,7 +249,7 @@ public static class UloeServer
             {
                 Heroes.Remove(hero);
                 if (killed)
-                    UloeUtil.Vis(master, "Uloe_Herodeath", UloeUtil.Pos(master), 0);
+                    ModKitUtil.Vis(master, "Uloe_Herodeath", ModKitUtil.Pos(master), 0);
                 return;
             }
             UloeMarks.Forget(master);
@@ -262,8 +262,9 @@ public static class UloeServer
 }
 
 // Blind and Illuminate on the host: one level of each per foe at a time. A stronger one replaces a weaker, a weaker does
-// nothing while a stronger is on, the same level refreshes in its last second. Each level is its own upgrade (a stock script
-// on pack data, fit plan 8.3); Stock false takes the same numbers through Addmod and a hit hook (IMPLEMENTATION_NOTES.md).
+// nothing while a stronger is on, the same level refreshes in its last second. Blind is a timed Addmod on the foe's Damage,
+// Illuminate a hit hook; the stock scripts (Barrel_Boost, Merchut) logged an exception per marked foe that fell
+// (IMPLEMENTATION_NOTES.md, "Decided after round 1").
 public class UloeMark
 {
     public Entity_Master Foe;
@@ -289,7 +290,6 @@ public class UloeMark
 
 public static class UloeMarks
 {
-    public static bool Stock = UloeData.StockMarks;
     public static int Blinds, Illuminations;
     static readonly Dictionary<Entity_Master, UloeMark> marks = new Dictionary<Entity_Master, UloeMark>();
     static readonly List<Entity_Master> done = new List<Entity_Master>();
@@ -329,7 +329,7 @@ public static class UloeMarks
     // Blinds a foe at a level (1-3). 'radio' is whoever carries the look to every player.
     public static void Blind(Entity_Master radio, Entity_Master foe, int level)
     {
-        if (!UloeUtil.Alive(foe) || foe.Statsserver == null || !foe.Statsserver.ContainsKey("Damage"))
+        if (!ModKitUtil.Alive(foe) || foe.Statsserver == null || !foe.Statsserver.ContainsKey("Damage"))
             return;
         level = Mathf.Clamp(level, 1, UloeData.BlindMulti.Length);
         UloeMark m = Get(foe);
@@ -337,40 +337,32 @@ public static class UloeMarks
             return;
         float secs = UloeData.MarkSeconds[level - 1];
         TakeOffBlind(m);
-        if (Stock)
-            Helper_Entitytools.Upgrade(foe, UloeContent.Blinds[level - 1], Helper_Entitytools.Upgradecheck.Forced, null);
-        else
-            m.BlindMod = Helper_Entitytools.Addmod(foe, "Damage", -UloeData.BlindMulti[level - 1], Helper_Entitytools.Modtypes.Multi, secs);
+        m.BlindMod = Helper_Entitytools.Addmod(foe, "Damage", -UloeData.BlindMulti[level - 1], Helper_Entitytools.Modtypes.Multi, secs);
         m.Blind = level;
         m.BlindUntil = Time.time + secs;
         Blinds++;
-        UloeUtil.Debuff(radio, foe, "Debuff_Uloe_Blind", secs);
+        ModKitUtil.Debuff(radio, foe, "Debuff_Uloe_Blind", secs);
     }
 
     // Illuminates a foe at a level (1-3).
     public static void Illuminate(Entity_Master radio, Entity_Master foe, int level)
     {
-        if (!UloeUtil.Alive(foe))
+        if (!ModKitUtil.Alive(foe))
             return;
         level = Mathf.Clamp(level, 1, UloeData.LitMulti.Length);
         UloeMark m = Get(foe);
         if (!Takes(m.Lit, m.LitUntil, level))
             return;
         float secs = UloeData.MarkSeconds[level - 1];
-        TakeOffLit(m, radio);
-        if (Stock)
-            Helper_Entitytools.Upgrade(foe, UloeContent.Lits[level - 1], Helper_Entitytools.Upgradecheck.Forced, null);
-        else
-        {
-            if (m.Hook == null) m.Hook = m.OnHit;
-            m.HookMulti = UloeData.LitMulti[level - 1];
-            m.HookOn = true;
-            UloeUtil.Front(foe, m.Hook);
-        }
+        TakeOffLit(m);
+        if (m.Hook == null) m.Hook = m.OnHit;
+        m.HookMulti = UloeData.LitMulti[level - 1];
+        m.HookOn = true;
+        ModKitUtil.Front(foe, m.Hook);
         m.Lit = level;
         m.LitUntil = Time.time + secs;
         Illuminations++;
-        UloeUtil.Debuff(radio, foe, "Debuff_Uloe_Lit", secs);
+        ModKitUtil.Debuff(radio, foe, "Debuff_Uloe_Lit", secs);
     }
 
     static void TakeOffBlind(UloeMark m)
@@ -378,27 +370,19 @@ public static class UloeMarks
         if (m.BlindMod != null && !m.BlindMod.Dead)
             m.BlindMod.Remove();
         m.BlindMod = null;
-        if (m.Blind > 0 && m.Foe != null && m.Foe.Upgradelistserver != null && m.Foe.Upgradelistserver.ContainsKey(UloeContent.Blinds[m.Blind - 1].Objectname))
-            Helper_Entitytools.Removeupgrade(m.Foe, UloeContent.Blinds[m.Blind - 1]);
     }
 
-    static void TakeOffLit(UloeMark m, Entity_Master radio)
+    static void TakeOffLit(UloeMark m)
     {
         if (m.HookOn)
         {
-            UloeUtil.Unfront(m.Foe, m.Hook);
+            ModKitUtil.Unfront(m.Foe, m.Hook);
             m.HookOn = false;
-        }
-        if (m.Lit > 0 && m.Foe != null && m.Foe.Upgradelistserver != null && m.Foe.Upgradelistserver.ContainsKey(UloeContent.Lits[m.Lit - 1].Objectname))
-        {
-            Helper_Entitytools.Removeupgrade(m.Foe, UloeContent.Lits[m.Lit - 1]);
-            // The stock Merchut look is set for 9999 s and no Downgrade takes it off.
-            UloeUtil.RemoveDebuff(radio != null ? radio : m.Foe, m.Foe, "Debuff_Targeted");
         }
     }
 
-    // Ten times a second: Illuminate is taken off when its time is up (the stock Merchut lasts until removed), a hook stays
-    // at the front of its chain, and Blind's level is forgotten when it wore off (Barrel_Boost removes itself).
+    // Ten times a second: Illuminate is taken off when its time is up, its hook stays at the front of its chain, and Blind's
+    // level is forgotten when it wore off (its Addmod removes itself).
     public static void Tick()
     {
         float now = Time.time;
@@ -406,18 +390,18 @@ public static class UloeMarks
         foreach (KeyValuePair<Entity_Master, UloeMark> kv in marks)
         {
             UloeMark m = kv.Value;
-            if (kv.Key == null || !UloeUtil.Alive(kv.Key))
+            if (kv.Key == null || !ModKitUtil.Alive(kv.Key))
             {
                 done.Add(kv.Key);
                 continue;
             }
             if (m.Lit > 0 && m.LitUntil <= now)
             {
-                TakeOffLit(m, null);
+                TakeOffLit(m);
                 m.Lit = 0;
             }
             else if (m.HookOn)
-                UloeUtil.Front(kv.Key, m.Hook);
+                ModKitUtil.Front(kv.Key, m.Hook);
             if (m.Blind > 0 && m.BlindUntil <= now)
                 m.Blind = 0;
             if (m.Lit == 0 && m.Blind == 0)

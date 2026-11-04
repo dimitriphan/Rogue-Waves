@@ -18,7 +18,7 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
         Close();
         try
         {
-            ring = ArgoAssets.Effect("World_Argo_Tremor", Vector3.one * 10000f, 0f);
+            ring = ModKitAssets.Effect("World_Argo_Tremor", Vector3.one * 10000f, 0f);
             ringRadius = -1f;
             Transform holder = Bl_Menus.Menus["Main"].Items["Command"].transform;
             Bl_Obj.Destroychildren(holder);
@@ -51,7 +51,7 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
     {
         get
         {
-            float r = ArgoUtil.F(Link.Goalstring.ToString());
+            float r = ModKitUtil.F(Link.Goalstring.ToString());
             return r > 0f ? r : 5.5f;
         }
     }
@@ -61,7 +61,7 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
         Entity_Master s = Game_Client_Mouseobject.Surfacemaster;
         bool on = s != null && Game_Client_Mouseobject.Surfacehit && Master != null;
         Vector3 at = on ? s.Position.Value + Vector3.up : Vector3.zero;
-        bool ok = on && ArgoUtil.Flat(at, ArgoUtil.Pos(Master)) <= Reach;
+        bool ok = on && ModKitUtil.Flat(at, ModKitUtil.Pos(Master)) <= Reach;
         if (Clone1 != null)
         {
             Clone1.SetActive(ok);

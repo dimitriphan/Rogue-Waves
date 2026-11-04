@@ -83,7 +83,7 @@ public static class YosseleClient
             return;
         try
         {
-            Vector3 at = master != null ? YosseleUtil.Pos(master) : position;
+            Vector3 at = master != null ? ModKitUtil.Pos(master) : position;
             // The stock ranged AI announces each laser with "Shoot"; the Cordyfriend's melee AI each swing with "Attack".
             if (type == "Shoot")
             {
@@ -116,27 +116,27 @@ public static class YosseleClient
                     Scaled("World_Yossele_Sporeblast", Ground(position), number, 1.5f);
                     break;
                 case "Yossele_Seedbounce":
-                    Entity_Master next = YosseleUtil.ById((ulong)Mathf.Max(0f, number));
+                    Entity_Master next = ModKitUtil.ById((ulong)Mathf.Max(0f, number));
                     if (next != null)
-                        Run(SeedHop(position, YosseleUtil.Pos(next)));
+                        Run(SeedHop(position, ModKitUtil.Pos(next)));
                     break;
                 case "Yossele_Intercept":
                     Intercepts++;
-                    if (!YosseleUtil.IsServer)
+                    if (!ModKitUtil.IsServer)
                         PutOut(position, number);
                     YosseleAssets.Play("Yossele_Seeds", at, 1.2f);
                     Run(SeedHop(Crown(master), position));
                     break;
                 case "Yossele_Rise":
                     YosseleAssets.Play("Yossele_Rustle", position, 0.8f);
-                    YosseleAssets.Effect("World_Yossele_Sporeblast", Ground(position), 1.5f);
+                    ModKitAssets.Effect("World_Yossele_Sporeblast", Ground(position), 1.5f);
                     break;
                 case "Yossele_Friendfell":
                     YosseleAssets.Play("Yossele_Pop", position, 0.8f);
-                    YosseleAssets.Effect("World_Yossele_Sporeblast", Ground(position), 1.2f);
+                    ModKitAssets.Effect("World_Yossele_Sporeblast", Ground(position), 1.2f);
                     break;
                 case "Yossele_Cleanse":
-                    YosseleAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 1.5f);
+                    ModKitAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 1.5f);
                     break;
                 case "Yossele_Seeds":
                     Seedruns++;
@@ -144,76 +144,76 @@ public static class YosseleClient
                     Run(SeedRun(master, position, n));
                     break;
                 case "Yossele_Seedhit":
-                    YosseleAssets.Effect("World_Yossele_Seedhit", position + Vector3.up * 0.2f, 1.2f);
+                    ModKitAssets.Effect("World_Yossele_Seedhit", position + Vector3.up * 0.2f, 1.2f);
                     break;
                 case "Yossele_Vines":
                     YosseleAssets.Play("Yossele_Creak", at);
                     break;
                 case "Yossele_Grow":
                     YosseleAssets.Play("Yossele_Rustle", at);
-                    YosseleAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 2f);
+                    ModKitAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 2f);
                     if (n >= 100)
-                        YosseleAssets.Effect("World_Yossele_Fertilize", Ground(at) + Vector3.up * 0.1f, 2f);
+                        ModKitAssets.Effect("World_Yossele_Fertilize", Ground(at) + Vector3.up * 0.1f, 2f);
                     break;
                 case "Yossele_Fertilize":
                     Animate(master, "Fertilize");
                     YosseleAssets.Play("Yossele_Fertilize", position);
                     break;
                 case "Yossele_Compost":
-                    YosseleAssets.Effect("World_Yossele_Compost", at + Vector3.up * 0.3f, 2f);
+                    ModKitAssets.Effect("World_Yossele_Compost", at + Vector3.up * 0.3f, 2f);
                     YosseleAssets.Play("Yossele_Pick", at, 0.6f);
-                    if (YosseleUtil.OwnedLocally(master))
+                    if (ModKitUtil.OwnedLocally(master))
                         Helper_Uitools.Warning(YosseleData.WarnText[YosseleData.WarnFertilizer] + " (" + n + ")", "", 2f);
                     break;
                 case "Yossele_Dig":
                     YosseleAssets.Play("Yossele_Dig", position, 0.7f);
-                    YosseleAssets.Effect("World_Yossele_Dig", Ground(position) + Vector3.up * 0.1f, 1.2f);
+                    ModKitAssets.Effect("World_Yossele_Dig", Ground(position) + Vector3.up * 0.1f, 1.2f);
                     break;
                 case "Yossele_Fruitdrop":
                     YosseleAssets.Play("Yossele_Pick", position, 0.6f);
-                    YosseleAssets.Effect("World_Yossele_Grow", Ground(position) + Vector3.up * 0.1f, 2f);
+                    ModKitAssets.Effect("World_Yossele_Grow", Ground(position) + Vector3.up * 0.1f, 2f);
                     break;
                 case "Yossele_Fruitpick":
                     YosseleAssets.Play("Yossele_Pick", position);
-                    YosseleAssets.Effect("World_Yossele_Fruitpick", position + Vector3.up * 0.2f, 2f);
+                    ModKitAssets.Effect("World_Yossele_Fruitpick", position + Vector3.up * 0.2f, 2f);
                     break;
                 case "Yossele_Mend":
-                    YosseleAssets.Effect("World_Yossele_Mend", position + Vector3.up * 0.3f, 1.5f);
+                    ModKitAssets.Effect("World_Yossele_Mend", position + Vector3.up * 0.3f, 1.5f);
                     YosseleAssets.Play("Yossele_Mend", position, 0.6f);
                     break;
                 case "Yossele_Drain":
-                    YosseleAssets.Effect("World_Yossele_Drain", at + Vector3.up * 0.3f, 1.5f);
+                    ModKitAssets.Effect("World_Yossele_Drain", at + Vector3.up * 0.3f, 1.5f);
                     break;
                 case "Yossele_Snare":
                     YosseleAssets.Play("Yossele_Creak", position, 0.8f);
-                    YosseleAssets.Effect("World_Yossele_Drain", position + Vector3.up * 0.3f, 1.5f);
+                    ModKitAssets.Effect("World_Yossele_Drain", position + Vector3.up * 0.3f, 1.5f);
                     break;
                 case "Yossele_Blockadebreak":
                     YosseleAssets.Play("Yossele_Creak", at, 1.2f);
                     break;
                 case "Yossele_Colour":
                     YosseleAssets.Play("Yossele_Rustle", at, 0.7f);
-                    if (YosseleUtil.OwnedLocally(master) && n >= 0 && n < YosseleData.Colours.Length)
+                    if (ModKitUtil.OwnedLocally(master) && n >= 0 && n < YosseleData.Colours.Length)
                         Helper_Uitools.Warning(YosseleData.WarnText[YosseleData.WarnColour + n], "", 2f);
                     break;
                 case "Yossele_Built":
-                    YosseleAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 2f);
+                    ModKitAssets.Effect("World_Yossele_Grow", Ground(at) + Vector3.up * 0.1f, 2f);
                     YosseleAssets.Play("Yossele_Rustle", at, 0.6f);
                     break;
                 case "Yossele_Upgrade":
                     YosseleAssets.Play("Yossele_Rustle", at, 0.8f);
                     break;
                 case "Yossele_Towerdown":
-                    YosseleAssets.Effect("World_Yossele_Towerdown", at, 2f);
+                    ModKitAssets.Effect("World_Yossele_Towerdown", at, 2f);
                     YosseleAssets.Play("Yossele_Creak", at, 1.3f);
                     break;
                 case "Yossele_Herodeath":
-                    YosseleAssets.Effect("World_Hero_Yossele_Death", at, 2.5f);
+                    ModKitAssets.Effect("World_Hero_Yossele_Death", at, 2.5f);
                     YosseleAssets.Play("Yossele_Death", at);
                     break;
                 case "Yossele_Warn":
                     int code = n % 100, value = n / 100;
-                    if (YosseleUtil.OwnedLocally(master) && code > 0 && code < YosseleData.WarnText.Length)
+                    if (ModKitUtil.OwnedLocally(master) && code > 0 && code < YosseleData.WarnText.Length)
                         Helper_Uitools.Warning(YosseleData.WarnText[code] + (value > 0 ? " (" + value + ")" : ""), "", 2f);
                     break;
             }
@@ -243,7 +243,7 @@ public static class YosseleClient
 
     static void Scaled(string vfx, Vector3 at, float radius, float life)
     {
-        GameObject go = YosseleAssets.Effect(vfx, at, life);
+        GameObject go = ModKitAssets.Effect(vfx, at, life);
         if (go != null)
             go.transform.localScale = Vector3.one * Mathf.Max(0.3f, radius);
     }
@@ -286,7 +286,7 @@ public static class YosseleClient
 
     static Vector3 Muzzle(Entity_Master master, Vector3 target)
     {
-        Vector3 pos = master != null ? YosseleUtil.Pos(master) : target;
+        Vector3 pos = master != null ? ModKitUtil.Pos(master) : target;
         YosseleData.Build b = master != null ? YosseleData.BuildFor(master.Being.Value.ToString()) : null;
         Vector3 d = target - pos;
         d.y = 0f;
@@ -296,12 +296,12 @@ public static class YosseleClient
     // The spore bomb's arc: a parabola peaking a little higher the farther it flies.
     static IEnumerator LobRun(Vector3 from, Vector3 to, float flight)
     {
-        GameObject model = YosseleAssets.Model("Yossele_Sporebomb");
+        GameObject model = ModKitAssets.Model("Yossele_Sporebomb");
         GameObject bomb = model != null ? UnityEngine.Object.Instantiate(model, from, Quaternion.identity) : null;
         if (bomb == null)
             yield break;
         bomb.SetActive(true);
-        float peak = 1f + 0.25f * YosseleUtil.Flat(from, to);
+        float peak = 1f + 0.25f * ModKitUtil.Flat(from, to);
         for (float e = 0f; e < flight && bomb != null; e += Time.deltaTime)
         {
             float k = e / flight;
@@ -320,7 +320,7 @@ public static class YosseleClient
         if (tree == null)
             return Vector3.zero;
         YosseleData.Build b = YosseleData.BuildFor(tree.Being.Value.ToString()) ?? YosseleData.BuildFor(YosseleData.Dandelion);
-        return YosseleUtil.Pos(tree) + Vector3.up * (b != null ? b.Muzzle : 1.1f);
+        return ModKitUtil.Pos(tree) + Vector3.up * (b != null ? b.Muzzle : 1.1f);
     }
 
     // D-MDS shot a foe's projectile down on the host: put out this client's look-only copy of it, the nearest active
@@ -359,7 +359,7 @@ public static class YosseleClient
     // One seed flying from one spot to another (a bounce, an intercept), then the seed-hit puff.
     static IEnumerator SeedHop(Vector3 from, Vector3 to)
     {
-        GameObject model = YosseleAssets.Model("Yossele_Seed");
+        GameObject model = ModKitAssets.Model("Yossele_Seed");
         GameObject g = model != null ? UnityEngine.Object.Instantiate(model, from, Quaternion.identity) : null;
         if (g != null)
             g.SetActive(true);
@@ -372,7 +372,7 @@ public static class YosseleClient
         }
         if (g != null)
             UnityEngine.Object.Destroy(g);
-        YosseleAssets.Effect("World_Yossele_Seedhit", to + Vector3.up * 0.1f, 1.2f);
+        ModKitAssets.Effect("World_Yossele_Seedhit", to + Vector3.up * 0.1f, 1.2f);
     }
 
     // The ready seeds float round the crown: as many as its synced "Seeds" counter (up to SeedsDrawn).
@@ -385,7 +385,7 @@ public static class YosseleClient
             int want = Mathf.Clamp(Mathf.FloorToInt(ClientStat(t.Master, "Seeds")), 0, YosseleData.SeedsDrawn);
             while (t.Seeds.Count < want)
             {
-                GameObject model = YosseleAssets.Model("Yossele_Seed");
+                GameObject model = ModKitAssets.Model("Yossele_Seed");
                 if (model == null)
                     return;
                 GameObject seed = UnityEngine.Object.Instantiate(model);
@@ -421,7 +421,7 @@ public static class YosseleClient
     // A strike: up to 8 seeds drawn flying from the crown to where the foe stood.
     static IEnumerator SeedRun(Entity_Master tree, Vector3 to, int count)
     {
-        GameObject model = YosseleAssets.Model("Yossele_Seed");
+        GameObject model = ModKitAssets.Model("Yossele_Seed");
         if (model == null || tree == null)
             yield break;
         Vector3 c = Crown(tree);

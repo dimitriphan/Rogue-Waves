@@ -1,5 +1,7 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+**2026-11-04, code simplification (compiled, not yet run in game):** the game's own `Entity_Ai_General_Upgrade` runs the buildings' and the Thread Head's upgrade panels again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged; the Pin Cushion keeps its handler first through `ModKitUtil.Front`. The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (self-test 133/0, G1, G3, H1, L1).
+
 **Built from the scope in one stretch: design (`DESIGN.md`), temporary art (`Assets/SpoolMod/Editor`,
 `Previews/0.1/ASSETS.md`), code (`Code/`), self-test (`Code/99_SelfTest.cs`).** Started at Dimitri's "Begin
 implementing Spools mechanics" (2026-10-26) from the kit's template (with the 1.6 pack calls,
@@ -19,13 +21,13 @@ says about the game is read from its code, not seen.
 | File | What |
 |---|---|
 | `00_SpoolMod.cs` | Boot (pack registry part "Spool", asset lookup, content, journal), per-frame calls into the kit and the server |
-| `01_Util.cs` | Helpers: stats, health (`Value` left, `Value_Calc` max), elites, tiles, walking (`MoveTo`), JSON, hurt and heal, Vis, owner-only warnings |
+| `01_Util.cs` | Spool's own helpers (`Retag`, owner-only `Warn`, `Later`); stats, health, elites, tiles, walking, JSON, hurt and heal and Vis are the kit's `ModKitUtil` since kit 1.8 |
 | `02_Data.cs` | Every name, text and number: the hero, Thread, the five buildables and their upgrade trees, the Crafted, warnings, sound levels |
-| `03_Assets.cs` | Sprite sheets to animations (hero, Crafted, Thread Head), the boat sprite, 12 px icons, sounds and effects |
+| `03_Assets.cs` | The hero's animations, 12 px icons, tower material, sound levels; slicing, units, the boat sprite, sounds and effects are the kit's `ModKitAssets` since kit 1.8 |
 | `04_Content.cs` | Clones the hero (Smacky), the Stash, Tin, Cushion and Loom (Smacky's hut and wall), the Thread Head and the Crafted (Smacky's miner), the Head's placement token and the Tin's pin (Buster's pad), the needle (the archer's arrow), five commands, the journal |
 | `05_Server.cs` | Host rules: Thread per player (Stash and carried), ground drops (a list, no network entities), pickup, drop-off, the token swap, the Thread Head's comeback, spawn and despawn hooks |
 | `06_HeroBrain.cs` | Spool: the Stash-first build menu, pickup and drop-off, PATCH, the fallback that lets the Sell picker find walking units |
-| `07_Building.cs` | Base for the buildings (upgrade flow mirroring `Entity_Ai_General_Upgrade`, unit spawns), the Yarn Stash, the Loom |
+| `07_Building.cs` | Base for the buildings (the game's own `Entity_Ai_General_Upgrade` runs the upgrade panel since 2026-11-04, the brain hears `Master.Upgrade`; unit spawns), the Yarn Stash, the Loom |
 | `08_Tin.cs` | The Cookie Tin (stitching, TARGET, the pin) and every Crafted's brain (run to the spot, guard, leap, burst, mine) |
 | `09_Head.cs` | The Thread Head: guard, collect, SPOT, RETURN, Threaded Delivery, MEND, death and comeback |
 | `10_Cushion.cs` | The Pin Cushion's front-of-chain hit hook: reflect, spin, Slow Unravel, Loose Stuffing |

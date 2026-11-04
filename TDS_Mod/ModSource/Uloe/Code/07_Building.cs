@@ -1,7 +1,8 @@
-// Server-side base for every Uloe buildable. Replaces the template's own AIs (which hard-code Smacky's objects) and
-// Entity_Ai_General_Upgrade, whose upgrade flow it mirrors exactly: the same Upgrade/Upgradeoption commands, throttle,
-// costs, Forced/Normal checks, Upgradeborder effect and the owner's Upgraded end-screen stat. An upgrade parameter on a stat
-// the entity has becomes a modifier; the rest are read by the subclass through Param(). Every building has a Light stat
+// Server-side base for every Uloe buildable. Replaces the template's own AIs (which hard-code Smacky's objects). The
+// game's own Entity_Ai_General_Upgrade sits on each of them (UloeContent.BuildTower) and runs the upgrade panel: the
+// Upgrade/Upgradeoption commands, throttle, costs, Upgradeborder effect, the owner's Upgraded end-screen stat and Voice in
+// a Bottle's price cut. This brain hears each upgrade through Master.Upgrade: a parameter on a stat the entity has becomes
+// a modifier; the rest are read by the subclass through Param(). Every building has a Light stat
 // (UloeLight feeds it) and shows its band as a skin.
 public abstract class UloeBuilding : MonoBehaviour
 {
@@ -12,8 +13,7 @@ public abstract class UloeBuilding : MonoBehaviour
 
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
-    Link_Command upgradeCommand;
-    float upgradeThrottle, nextLook, lookFrom;
+    float nextLook, lookFrom;
 
     public bool Has(string key) { return keys.Contains(key); }
     public int UpgradeCount { get { return keys.Count; } }
@@ -24,10 +24,10 @@ public abstract class UloeBuilding : MonoBehaviour
         return param.TryGetValue(name, out v) ? v : fallback;
     }
 
-    public float Stat(string name, float fallback) { return UloeUtil.Stat(Master, name, fallback); }
-    public long Owner { get { return UloeUtil.Owner(Master); } }
-    public int Team { get { return UloeUtil.Team(Master); } }
-    public Vector3 Pos { get { return UloeUtil.Pos(Master); } }
+    public float Stat(string name, float fallback) { return ModKitUtil.Stat(Master, name, fallback); }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
+    public int Team { get { return ModKitUtil.Team(Master); } }
+    public Vector3 Pos { get { return ModKitUtil.Pos(Master); } }
 
     // The Light this building counts: what it receives, up to the cap.
     public float Light { get { return Mathf.Min(Stat(UloeData.LightStat, 0f), UloeData.LightCap); } }
@@ -39,7 +39,7 @@ public abstract class UloeBuilding : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!UloeUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -74,21 +74,12 @@ public abstract class UloeBuilding : MonoBehaviour
         light.Display_Type = Statproperties.Displaytypes.Float;
         light.Display_Exposed = true;
         Helper_Entitytools.Addstat(Master, light, 0f);
-        upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
-        for (int i = 1; i <= 4; i++)
-        {
-            Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
-            option.Goalvalue = i - 1;
-            Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
-        }
-        upgradeCommand.Goalvalue = 1f;
-        Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         Started2();
-        UloeUtil.Vis(Master, "Uloe_Built", Pos, 0);
+        ModKitUtil.Vis(Master, "Uloe_Built", Pos, 0);
     }
 
     protected virtual void Started2() { }
@@ -98,51 +89,13 @@ public abstract class UloeBuilding : MonoBehaviour
     protected virtual void Command(string command, string json, bool server) { }
     protected virtual void Upgraded(UloeData.Upg def) { }
 
+    // "Upgrade" belongs to the stock Entity_Ai_General_Upgrade; every other command goes to the subclass.
     void OnCommand(string command, string json, bool server)
     {
-        if (command != "Upgrade")
-        {
-            try { Command(command, json, server); }
-            catch (Exception e) { UloeLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
+        if (command == "Upgrade")
             return;
-        }
-        if (string.IsNullOrEmpty(json))
-            return;
-        try
-        {
-            // {"Upgrade":"<name>","Upgrader":<session>} (Entity_Ai_General_Upgrade.Upgradedata), read by hand because
-            // JsonUtility isn't available to mod code.
-            string upgradeName = UloeUtil.JsonString(json, "Upgrade");
-            long upgrader = (long)UloeUtil.JsonNumber(json, "Upgrader");
-            Upgradeproperties up = Bl_Address.Getload("Upgrade", upgradeName) as Upgradeproperties;
-            if (up == null)
-                return;
-            if (!server)
-            {
-                List<Upgradeproperties> available = new List<Upgradeproperties>(Master.Beingserver.Entity.Upgrades);
-                foreach (Upgradeproperties applied in Master.Upgradelistserver.Values)
-                    if (applied.Priority == Master.Entitydata.Value.Level)
-                        available.AddRange(applied.Upgrades);
-                if (!available.Contains(up) || Time.time - upgradeThrottle <= 0.05f)
-                    return;
-                upgradeThrottle = Time.time;
-            }
-            float scale = upgradeCommand != null ? upgradeCommand.Goalvalue : 1f;
-            if (!Helper_Resources.Checkresources(up.Costs, upgrader, scale))
-                return;
-            Helper_Resources.Useresources(up.Costs, upgrader, scale);
-            Helper_Entitytools.Upgrade(Master, up, server ? Helper_Entitytools.Upgradecheck.Forced : Helper_Entitytools.Upgradecheck.Normal, null);
-            Master.Radio.Vfxoneshotcheck("Upgradeborder", Pos, Vector3.forward);
-            GameObject player;
-            Tds_Clientinfo info;
-            if (Blm_Server.Instance != null && Blm_Server.Instance.Sessionids.TryGetValue(Owner, out player)
-                && player != null && player.TryGetComponent(out info) && info.Activeplayerdata != null)
-                info.Activeplayerdata.Upgraded++;
-        }
-        catch (Exception e)
-        {
-            UloeLog.Warn("upgrade command: " + e.Message);
-        }
+        try { Command(command, json, server); }
+        catch (Exception e) { UloeLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
     }
 
     void OnUpgrade(Upgradeproperties up)
@@ -171,7 +124,7 @@ public abstract class UloeBuilding : MonoBehaviour
             }
         if (Started)
         {
-            UloeUtil.Vis(Master, "Uloe_Upgrade", Pos, def.Tier);
+            ModKitUtil.Vis(Master, "Uloe_Upgrade", Pos, def.Tier);
             Upgraded(def);
         }
     }
@@ -188,11 +141,11 @@ public abstract class UloeBuilding : MonoBehaviour
             return;
         LookBand = band;
         lookFrom = Time.time + UloeData.LookHold;
-        UloeUtil.Skin(Master, band > 0 ? "Lit" + band : "");
+        ModKitUtil.Skin(Master, band > 0 ? "Lit" + band : "");
     }
 
     // Foes near this building, nearest first.
-    protected List<Entity_Master> Foes(float range) { return UloeUtil.FoesNear(Master, Pos, range); }
+    protected List<Entity_Master> Foes(float range) { return ModKitUtil.FoesNear(Master, Pos, range); }
 
     public UloePlayer Player { get { return UloeServer.Player(Owner); } }
 
@@ -240,7 +193,7 @@ public class UloeFloodBrain : UloeBuilding
         {
             if (Aimed == null)
                 return Pos;
-            Vector3 to = UloeUtil.Pos(Aimed);
+            Vector3 to = ModKitUtil.Pos(Aimed);
             if (!Long)
                 return to;
             Vector3 d = to - Pos;
@@ -291,7 +244,7 @@ public class UloeFloodBrain : UloeBuilding
 
     void FindNode()
     {
-        if (UloeUtil.IsNode(Node) && UloeUtil.Flat(UloeUtil.Pos(Node), Pos) <= Stat("Range", 2.5f) + 0.1f)
+        if (UloeUtil.IsNode(Node) && ModKitUtil.Flat(ModKitUtil.Pos(Node), Pos) <= Stat("Range", 2.5f) + 0.1f)
             return;
         Node = UloeUtil.NearestNode(Pos, Stat("Range", 2.5f));
         if (Node != null)
@@ -311,19 +264,19 @@ public class UloeFloodBrain : UloeBuilding
     void Strike()
     {
         float aspd = Stat("Attackspeed", 0.4f) * (1f + UloeData.FloodPerLight * Light);
-        if (aspd <= 0f || Node == null || !UloeUtil.Alive(Node) || Time.time - lastStrike < 1f / aspd)
+        if (aspd <= 0f || Node == null || !ModKitUtil.Alive(Node) || Time.time - lastStrike < 1f / aspd)
             return;
         lastStrike = Time.time;
         Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", 1f }, { "Damagemulti", 1f }, { "Damageresource", Mathf.Max(0f, Stat("Damage", 1f) - 1f) } };
         Helper_Entitytools.Interact(Master, Node, "Hurt", d);
         Strikes++;
-        Master.Radio.Vis_ClientRpc("Uloe_Strike", UloeUtil.Pos(Node), 0f);
+        Master.Radio.Vis_ClientRpc("Uloe_Strike", ModKitUtil.Pos(Node), 0f);
     }
 
     // The aim: what the player picked while it stands in reach, else the nearest building in reach.
     Entity_Master CurrentAim()
     {
-        if (UloeUtil.Alive(Picked) && UloeUtil.Flat(UloeUtil.Pos(Picked), Pos) <= AimReach + 0.5f)
+        if (ModKitUtil.Alive(Picked) && ModKitUtil.Flat(ModKitUtil.Pos(Picked), Pos) <= AimReach + 0.5f)
             return Picked;
         Picked = null;
         UloeBuilding near = UloeServer.NearestBuilding(Team, Pos, AimReach, Master);
@@ -362,7 +315,7 @@ public class UloeFloodBrain : UloeBuilding
         Vector3 end = LineEnd;
         float width = Param("Linewidth_Base", 0.6f), amount = Output * Param("Line_Base", 0.8f);
         foreach (UloeBuilding b in UloeServer.Buildings)
-            if (b != null && b.Started && b != this && b.Master != null && b.Team == Team && UloeUtil.Alive(b.Master) && UloeUtil.SegmentDistance(b.Pos, Pos, end) <= width)
+            if (b != null && b.Started && b != this && b.Master != null && b.Team == Team && ModKitUtil.Alive(b.Master) && UloeUtil.SegmentDistance(b.Pos, Pos, end) <= width)
                 light.Feed(b.Master, amount);
         light.Sweep();
     }
@@ -374,14 +327,14 @@ public class UloeFloodBrain : UloeBuilding
         Aims++;
         Entity_Master m = UloeUtil.Picked(json);
         UloeBuilding b = m != null ? m.GetComponent<UloeBuilding>() : null;
-        if (b == null || b == this || !b.Started || b.Team != Team || !UloeUtil.Alive(m))
+        if (b == null || b == this || !b.Started || b.Team != Team || !ModKitUtil.Alive(m))
         {
             Refused++;
             LastAim = "not a building of yours";
             Tell(UloeData.WarnBadAim);
             return;
         }
-        if (UloeUtil.Flat(b.Pos, Pos) > AimReach + 0.5f)
+        if (ModKitUtil.Flat(b.Pos, Pos) > AimReach + 0.5f)
         {
             Refused++;
             LastAim = "too far";
@@ -389,7 +342,7 @@ public class UloeFloodBrain : UloeBuilding
             return;
         }
         Picked = m;
-        LastAim = UloeUtil.BeingName(m);
+        LastAim = ModKitUtil.BeingName(m);
         nextFeed = 0f;
         Tell(UloeData.WarnAimed);
     }
@@ -399,24 +352,24 @@ public class UloeFloodBrain : UloeBuilding
     {
         nextLink = Time.time + UloeData.LinkResend;
         if (Node != null)
-            UloeUtil.Vis(Master, "Uloe_Nodecord", UloeUtil.Pos(Node), 1f);
+            ModKitUtil.Vis(Master, "Uloe_Nodecord", ModKitUtil.Pos(Node), 1f);
         if (Wide && Node != null)
-            UloeUtil.Vis(Master, "Uloe_Ring", Pos, Param("Wideradius_Base", 3.5f));
+            ModKitUtil.Vis(Master, "Uloe_Ring", Pos, Param("Wideradius_Base", 3.5f));
         if (Directed)
         {
             rayShown = true;
-            UloeUtil.Vis(Master, "Uloe_Ray", LineEnd, Long ? 2f : 1f);
+            ModKitUtil.Vis(Master, "Uloe_Ray", LineEnd, Long ? 2f : 1f);
         }
         else if (rayShown)
         {
             rayShown = false;
-            UloeUtil.Vis(Master, "Uloe_Ray", Pos, -1f);
+            ModKitUtil.Vis(Master, "Uloe_Ray", Pos, -1f);
         }
     }
 
     public override void Gone(bool killed, string reason)
     {
         if (Master != null && Master.Radio != null)
-            UloeUtil.Vis(Master, "Uloe_Ray", Pos, -1f);
+            ModKitUtil.Vis(Master, "Uloe_Ray", Pos, -1f);
     }
 }

@@ -7,6 +7,10 @@ scaffolding they carry your vessel's name. Constraints: no `System.IO`, `System.
 
 ## 0. Modules: what to keep, what to replace
 
+Since kit 1.8 the generic helpers (`01_Util.cs`) and the asset reader (`03_Assets.cs`) also live once in the kit as
+`ModKitUtil` and `ModKitAssets` (`kit/README.md`); the pack's vessels call those and keep only what names them. The
+template still carries its own copies: a new vessel can keep them or switch its calls to the kit's.
+
 | File | Generic (keep, rename) | Vessel-specific (replace) |
 |---|---|---|
 | `00_<Name>Mod.cs` | boot order, Update/LateUpdate wiring | `ExtraGroups` you borrow from |
@@ -281,11 +285,16 @@ dictionary, which is kept by reference (`examples/code/Argo_07_TowerBrain.cs`, `
 
 ## 14. Building brains and upgrades (07)
 
-`MummerBuilding` mirrors `Entity_Ai_General_Upgrade` so the game's upgrade panel works unchanged: it creates the
-`Upgrade` and `Upgradeoption1..4` commands, handles "Upgrade" JSON (`{"Upgrade":name,"Upgrader":session}`, parsed by
-hand), checks availability (roots + next of upgrades at the current Level), throttles, checks and spends resources,
-applies with `Helper_Entitytools.Upgrade(..., Forced if server-issued else Normal)`, plays `Upgradeborder` and counts
-the owner's `Upgraded` stat.
+The game's own `Entity_Ai_General_Upgrade` runs the upgrade panel: it creates the `Upgrade` and `Upgradeoption1..4`
+commands, handles the "Upgrade" JSON (`{"Upgrade":name,"Upgrader":session}`), checks availability (roots + next of
+upgrades at the current Level), throttles, checks and spends resources × the `Upgrade` command's `Goalvalue`, applies
+with `Helper_Entitytools.Upgrade(..., Forced if server-issued else Normal)`, plays `Upgradeborder` and counts the
+owner's `Upgraded` stat. Voice in a Bottle needs it on the building (`17` §2.7). So the content code strips the copied
+one with the vessel-specific scripts and adds a fresh carrier to every building that upgrades
+(`ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"))`); a pack upgrade has no `Aiscripts` of its own,
+so upgrade pruning keeps it. The brain ignores the "Upgrade" command (the stock AI answers it) and hears each upgrade
+through `Master.Upgrade` (the pack's vessels since 2026-11-04). `MummerBuilding` still mirrors the whole flow in its
+own code: that works too, but Voice in a Bottle removes itself from such buildings.
 
 `OnUpgrade`: params on stats the building **has** (`Range_Add`, `Attackspeed_Multi`, `Health_Pmulti`...) become
 modifiers; everything else is stored and read by the subclass with `Param("Key_Base", fallback)` / `Has("Key")`.

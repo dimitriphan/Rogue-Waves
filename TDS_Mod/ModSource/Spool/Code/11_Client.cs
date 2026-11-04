@@ -65,7 +65,7 @@ public static class SpoolClient
             return;
         try
         {
-            Vector3 at = master != null ? SpoolUtil.Pos(master) : position;
+            Vector3 at = master != null ? ModKitUtil.Pos(master) : position;
             string being = master != null ? master.Being.Value.ToString() : "";
             // The stock attack AIs announce each swing with "Attack" and each shot with "Shoot".
             if (type == "Attack")
@@ -97,7 +97,7 @@ public static class SpoolClient
                     break;
                 case "Spool_Spin":
                     SpoolAssets.Play("Spool_Spin", at);
-                    SpoolAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.6f, 1.2f);
+                    ModKitAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.6f, 1.2f);
                     if (n == 1 && master != null)
                         Run(LineRun(at + Vector3.up * 0.5f, at + Vector3.up * 1.4f, 0.35f, 0.025f));
                     break;
@@ -106,23 +106,23 @@ public static class SpoolClient
                     break;
                 case "Spool_Stitch":
                     SpoolAssets.Play("Spool_Stitch", at);
-                    SpoolAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.4f, 1.5f);
+                    ModKitAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.4f, 1.5f);
                     break;
                 case "Spool_Pop":
                     SpoolAssets.Play("Spool_Pop", at);
-                    SpoolAssets.Effect("World_Spool_Stuffing", at, 1.2f);
+                    ModKitAssets.Effect("World_Spool_Stuffing", at, 1.2f);
                     break;
                 case "Spool_Down":
                     SpoolAssets.Play("Spool_Down", position, n == 1 ? 1.3f : 1f);
-                    SpoolAssets.Effect("World_Spool_Stuffing", position, 1.5f);
+                    ModKitAssets.Effect("World_Spool_Stuffing", position, 1.5f);
                     break;
                 case "Spool_Unstitch":
                     SpoolAssets.Play("Spool_Stitch", position, 0.6f);
-                    SpoolAssets.Effect("World_Spool_Stuffing", position, 1.2f);
+                    ModKitAssets.Effect("World_Spool_Stuffing", position, 1.2f);
                     break;
                 case "Spool_Burst":
                     SpoolAssets.Play("Spool_Burst", position);
-                    GameObject ring = SpoolAssets.Effect("World_Spool_Burst", Ground(position), 2f);
+                    GameObject ring = ModKitAssets.Effect("World_Spool_Burst", Ground(position), 2f);
                     if (ring != null) ring.transform.localScale = Vector3.one * Mathf.Max(0.8f, number);
                     break;
                 case "Spool_Leap":
@@ -130,10 +130,10 @@ public static class SpoolClient
                     break;
                 case "Spool_Prick":
                     SpoolAssets.Play("Spool_Prick", position);
-                    SpoolAssets.Effect("World_Spool_Prick", position + Vector3.up * 0.3f, 1f);
+                    ModKitAssets.Effect("World_Spool_Prick", position + Vector3.up * 0.3f, 1f);
                     break;
                 case "Spool_Target":
-                    if (SpoolUtil.OwnedLocally(master))
+                    if (ModKitUtil.OwnedLocally(master))
                     {
                         SpoolAssets.Play("Spool_Prick", position, 0.7f);
                         Run(LineRun(at + Vector3.up * 0.4f, position + Vector3.up * 0.1f, 0.6f, 0.02f));
@@ -145,22 +145,22 @@ public static class SpoolClient
                     Run(ThreadRun(master, (ulong)number, position, 0.1f, 0.6f));
                     break;
                 case "Spool_Mend":
-                    SpoolAssets.Effect("World_Spool_Mend", position + Vector3.up * 0.4f, 1f);
+                    ModKitAssets.Effect("World_Spool_Mend", position + Vector3.up * 0.4f, 1f);
                     break;
                 case "Spool_Built":
-                    SpoolAssets.Effect("World_Spool_Stuffing", at, 1.2f);
+                    ModKitAssets.Effect("World_Spool_Stuffing", at, 1.2f);
                     SpoolAssets.Play("Spool_Stitch", at, 0.6f);
                     break;
                 case "Spool_Upgrade":
                     SpoolAssets.Play("Spool_Stitch", at, 0.8f);
                     break;
                 case "Spool_Herodeath":
-                    SpoolAssets.Effect("World_Hero_Spool_Death", at, 2.5f);
+                    ModKitAssets.Effect("World_Hero_Spool_Death", at, 2.5f);
                     SpoolAssets.Play("Spool_Death", at);
                     break;
                 case "Spool_Warn":
                     int code = n % 100, value = n / 100;
-                    if (SpoolUtil.OwnedLocally(master) && code > 0 && code < SpoolData.WarnText.Length)
+                    if (ModKitUtil.OwnedLocally(master) && code > 0 && code < SpoolData.WarnText.Length)
                         Helper_Uitools.Warning(SpoolData.WarnText[code] + (value > 0 ? " (" + value + ")" : ""), "", 2f);
                     break;
             }
@@ -301,7 +301,7 @@ public static class SpoolClient
         for (float e = 0f; e < time && go != null; e += Time.deltaTime)
         {
             float k = e / time;
-            Vector3 dest = deliver ? stash + Vector3.up * 0.3f : to != null ? SpoolUtil.Pos(to) + Vector3.up * 0.2f : a;
+            Vector3 dest = deliver ? stash + Vector3.up * 0.3f : to != null ? ModKitUtil.Pos(to) + Vector3.up * 0.2f : a;
             go.transform.position = Vector3.Lerp(a, dest, k) + Vector3.up * Mathf.Sin(k * Mathf.PI) * 0.7f;
             if (cam != null) go.transform.rotation = cam.transform.rotation;
             yield return null;
@@ -309,7 +309,7 @@ public static class SpoolClient
         if (deliver)
         {
             SpoolAssets.Play("Spool_Deliver", stash);
-            SpoolAssets.Effect("World_Spool_Stitch", stash + Vector3.up * 0.4f, 1.2f);
+            ModKitAssets.Effect("World_Spool_Stitch", stash + Vector3.up * 0.4f, 1.2f);
         }
         if (go != null) UnityEngine.Object.Destroy(go);
     }
@@ -320,7 +320,7 @@ public static class SpoolClient
     {
         if (threadMat != null)
             return threadMat;
-        GameObject fx = SpoolAssets.Vfx("World_Spool_Stitch");
+        GameObject fx = ModKitAssets.Vfx("World_Spool_Stitch");
         ParticleSystemRenderer r = fx != null ? fx.GetComponent<ParticleSystemRenderer>() : null;
         threadMat = r != null && r.sharedMaterial != null ? new Material(r.sharedMaterial) : new Material(Shader.Find("Sprites/Default"));
         threadMat.name = "Spool_Thread";
@@ -369,20 +369,20 @@ public static class SpoolClient
     {
         if (delay > 0f)
             yield return new WaitForSeconds(delay);
-        Entity_Master target = SpoolUtil.ById(targetId);
+        Entity_Master target = ModKitUtil.ById(targetId);
         LineRenderer l = Line("Spool_Patchthread", 0.035f);
         const float fly = 0.16f;
         float total = fly + hold;
         for (float e = 0f; e < total && l != null; e += Time.deltaTime)
         {
-            Vector3 a = (from != null ? SpoolUtil.Pos(from) : fallback) + Vector3.up * 0.45f;
-            Vector3 b = (target != null && SpoolUtil.Pos(target) != Vector3.zero ? SpoolUtil.Pos(target) : fallback) + Vector3.up * 0.3f;
+            Vector3 a = (from != null ? ModKitUtil.Pos(from) : fallback) + Vector3.up * 0.45f;
+            Vector3 b = (target != null && ModKitUtil.Pos(target) != Vector3.zero ? ModKitUtil.Pos(target) : fallback) + Vector3.up * 0.3f;
             Vector3 end = e < fly ? Vector3.Lerp(a, b, e / fly) : b;
             Draw(l, a, end, e < fly ? 0.05f : 0.02f);
             yield return null;
         }
-        Vector3 at = target != null ? SpoolUtil.Pos(target) : fallback;
-        SpoolAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.4f, 1.5f);
+        Vector3 at = target != null ? ModKitUtil.Pos(target) : fallback;
+        ModKitAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.4f, 1.5f);
         SpoolAssets.Play("Spool_Stitch", at, 0.8f);
         if (l != null) UnityEngine.Object.Destroy(l.gameObject);
     }

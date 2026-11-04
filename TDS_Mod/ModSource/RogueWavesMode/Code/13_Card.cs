@@ -123,7 +123,7 @@ public static class RWCard
     // title tells it apart. A friend's own leaving costs nothing, and their prompt has another title.
     static void ExitWarning()
     {
-        if (!RWDialog.Up() || !RWUtil.IsServer || !RWCampaign.Live || RWDialog.Asking)
+        if (!RWDialog.Up() || !ModKitUtil.IsServer || !RWCampaign.Live || RWDialog.Asking)
             return;
         Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
         TMPro.TMP_Text title = dialog.Titlebox != null ? dialog.Titlebox.GetComponentInChildren<TMPro.TMP_Text>() : null;
@@ -153,7 +153,7 @@ public static class RWCard
     public static void EndTitle(string title)
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
-        if (vars == null || !RWUtil.IsServer || title == "")
+        if (vars == null || !ModKitUtil.IsServer || title == "")
             return;
         endMap = vars;
         LastEnd = title;
@@ -167,7 +167,7 @@ public static class RWCard
     static void HoldEnd()
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
-        if (ReferenceEquals(endMap, null) || endMap == null || !ReferenceEquals(vars, endMap) || !RWUtil.IsServer)
+        if (ReferenceEquals(endMap, null) || endMap == null || !ReferenceEquals(vars, endMap) || !ModKitUtil.IsServer)
             return;
         Game_Mapvars.Link_Displaydataref d = vars.Display.Value;
         if (d.Display_Endgame.ToString() != LastEnd)
@@ -335,7 +335,7 @@ public static class RWTips
         if (Tds_Pausemenu.Instance != null) Add(Tds_Pausemenu.Instance.Funfacts);
         Mainmenu_Main menu = RWMenu.OnMainMenu ? UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() : null;
         if (menu != null) Add(menu.Funfacts);
-        Factobject stock = RWUtil.Load<Factobject>("Other", "Earlygame_Funfacts");
+        Factobject stock = ModKitUtil.Load<Factobject>("Other", "Earlygame_Funfacts");
         if (stock != null) Add(stock);
     }
 
