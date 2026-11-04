@@ -82,6 +82,9 @@ Read `01` §8, §11, `05` §7-8 and `15` §6, §14.6, §18.2 first.
   moved, since the dim and the dark edge go with it. To place the cards somewhere else, anchor `List` and `Title` inside `Main` and
   write them again in `Canvas.willRenderCanvases`, because `List`'s own `Move` writes its anchors back. `RWDialog.Fit` in
   `ModSource/RogueWavesMode/Code/11_Dialog.cs` does it, and puts everything back once the dialog has gone.
+- **Placed elsewhere, keep it smooth and on whole pixels** (pitfall #138): don't ask this dialog's own text for its size, and leave the
+  title's autosize on. The stock corner stands on whole screen pixels, and the art is drawn without smoothing, so put `List` and
+  `Title` on whole pixels too.
 - **The UI scale is the player's:** `Blu1_Ui_Handler.Updatescale` sets the `CanvasScaler`'s `scaleFactor`, and a resolution change
   doesn't touch it. On Dimitri's PC it is 3, so the canvas is 853 by 480 at 2560x1440 and 426 by 240 at 1280x720. Fit to the root
   canvas's rectangle, not to a resolution.

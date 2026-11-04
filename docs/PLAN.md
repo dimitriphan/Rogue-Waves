@@ -313,7 +313,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #138 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137 the dialog's placement).
+- **Next free numbers:** kit chapter 25, pitfall #139 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -636,7 +636,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (`06`, `15`) and a No copies line (`12`). Then, at his word (04:49Z), Claude's seven earlier Cardinals that copied stock ones are removed
   from scope `12` and from `RWCardinals.Mine` and their icons (RogueWavesMode `IMPLEMENTATION_NOTES.md`; compiled here, not run on the PC).
   `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md`.
-- **2026-11-03: the choice dialogs' placement.** Dimitri: "The UI for VENDCINT and selecting the Rogue Waves button is too far to the side, cutting off many options." Every dialog the mode asks now stands in the middle of the screen with every card and word on it, at any size and card count; the stock dialog slides in late, so the old centring measured it mid-slide (pitfall #137). In game: 150 pass in the whole campaign with every part on, 68 at four screen sizes. `docs/reports/DIALOG_PLACEMENT_2026-11-03.md`.
+- **2026-11-03: the choice dialogs' placement.** Dimitri: "The UI for VENDCINT and selecting the Rogue Waves button is too far to the side, cutting off many options." Every dialog the mode asks now stands in the middle of the screen with every card and word on it, at any size and card count; the stock dialog slides in late, so the old centring measured it mid-slide (pitfall #137). 2026-11-04, Dimitri: "All of the buttons have very tiny stutters": my placement froze one frame of 83 to 146 ms each time a dialog opened (pitfall #138); now no opening of 10 has a frame over 25 ms, as stock. In game on that code: 70 pass, at four screen sizes. The whole campaign, 150 pass with every part on, ran before the stutter fix. `docs/reports/DIALOG_PLACEMENT_2026-11-03.md`.
 
 ### Decisions
 

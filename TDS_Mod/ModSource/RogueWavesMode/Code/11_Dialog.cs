@@ -132,7 +132,11 @@ public static class RWDialog
     const float SubWidth = 440f;    // where the hover line wraps
     const float SubGap = 6f;
     const float SubSize = 10.35f;   // what the stock line's autosize comes to, in its 15 units of height
-    const float HeadSize = 23.6f;   // what the stock title's autosize comes to, in its 30 units of height
+    // Sizes are worked out from letter counts: 14 units a title's letter at its stock size (13.8 at the widest of the mode's
+    // titles) and 4.7 a hover line's, read on the PC. Asking the dialog's own text (GetPreferredValues) froze the game for a
+    // frame of about 100 ms each time a dialog opened, which the stock dialog never does (Dimitri 2026-11-04). The title keeps
+    // its stock autosize, which comes to its stock size in its 30 units of height, and shrinks a title too long for the box.
+    const float HeadLetter = 14f, SubLetter = 4.7f, SubLine = 15f, HeadMargin = 28f;
 
     sealed class Spot
     {
@@ -274,6 +278,18 @@ public static class RWDialog
         texts.Add(new Words_ { Text = text, Align = text.alignment, Wrap = text.enableWordWrapping, Auto = text.enableAutoSizing, Size = text.fontSize });
     }
 
+    static float LinesTall(string words, float wide)
+    {
+        return SubLine * Mathf.Max(1, Mathf.CeilToInt((words != null ? words.Length : 0) * SubLetter / wide));
+    }
+
+    // The nearest offset from the screen's middle, in canvas units, that lands on a whole screen pixel.
+    static float OnPixel(float middle, float pixels, float offset)
+    {
+        float at = middle + pixels * offset;
+        return offset + (Mathf.Round(at) - at) / pixels;
+    }
+
     // Only the list's last cards are this prompt's: the ones before them are the last prompt's, which the game destroys at
     // the end of the frame, so they are hidden now rather than taking cells.
     static void Fit(Bla_Ui_Confirmation dialog, List<Bla_Ui_Confirmation.Entry> entries, string words)
@@ -288,13 +304,12 @@ public static class RWDialog
         Canvas canvas = dialog.GetComponentInParent<Canvas>();
         if (count == 0 || g == null || list == null || title == null || sub == null || head == null || line == null || canvas == null)
             return;
-        Vector2 room = ((RectTransform)canvas.rootCanvas.transform).rect.size - new Vector2(Margin * 2f, Margin * 2f);
+        RectTransform rootRect = (RectTransform)canvas.rootCanvas.transform;
+        Vector2 room = rootRect.rect.size - new Vector2(Margin * 2f, Margin * 2f);
 
         KeepWords(head);
         head.alignment = TMPro.TextAlignmentOptions.Bottom;
         head.enableWordWrapping = false;
-        head.enableAutoSizing = false;
-        head.fontSize = HeadSize;
         KeepWords(line);
         line.alignment = TMPro.TextAlignmentOptions.Top;
         line.enableWordWrapping = true;
@@ -302,10 +317,9 @@ public static class RWDialog
         line.fontSize = SubSize;
 
         // The hover line's room is its longest line's, so that no card's words run past the block.
-        float subWide = Mathf.Min(room.x, SubWidth), lines = line.GetPreferredValues(words ?? "", subWide, 0f).y;
+        float subWide = Mathf.Min(room.x, SubWidth), lines = LinesTall(words, subWide);
         foreach (Bla_Ui_Confirmation.Entry e in entries)
-            if (!string.IsNullOrEmpty(e.Display_Desc))
-                lines = Mathf.Max(lines, line.GetPreferredValues(e.Display_Desc, subWide, 0f).y);
+            lines = Mathf.Max(lines, LinesTall(e.Display_Desc, subWide));
         float headTall = SpotFor(title).Size.y;
 
         if (grid != g)
@@ -323,21 +337,28 @@ public static class RWDialog
         float wide = g.padding.left + g.padding.right + columns * g.cellSize.x + (columns - 1) * g.spacing.x;
         float tall = g.padding.top + g.padding.bottom + rows * g.cellSize.y + (rows - 1) * g.spacing.y;
 
-        // The game's own transition plays with the title's letter spacing, so its width is read without any. The margin
-        // keeps the rule's end mark, at the box's left edge, clear of a long title.
-        float spacing = head.characterSpacing;
-        head.characterSpacing = 0f;
-        float headWide = Mathf.Max(wide, head.GetPreferredValues(head.text, 100000f, headTall).x + 28f);
-        head.characterSpacing = spacing;
+        // The margin keeps the rule's end mark, at the box's left edge, clear of a long title.
+        float headWide = Mathf.Max(wide, head.text.Length * HeadLetter + HeadMargin);
         scale = Mathf.Min(scale, room.x / headWide);
 
+        // The art is pixels drawn three screen pixels to one at a UI scale of 3, sampled without smoothing. On a half pixel
+        // a texture's edges fall exactly between two screen pixels, and rounding picks a side unevenly along them: fine
+        // notches in every line (Dimitri 2026-11-04). The stock corner is on whole pixels, so the block is put on them too,
+        // and a block that must shrink shrinks to a whole number of screen pixels to one.
+        float pixels = Screen.height / rootRect.rect.height;
+        if (scale < 1f && pixels * scale >= 1f)
+            scale = Mathf.Floor(pixels * scale) / pixels;
+        headWide = Mathf.Ceil(headWide * pixels) / pixels;
+
         // The block is the title, the cards and the words under them; its middle stands in the middle of Main.
-        float top = scale * ((headTall + tall + SubGap + lines) * 0.5f - headTall);
+        float top = OnPixel(Screen.height * 0.5f, pixels, scale * ((headTall + tall + SubGap + lines) * 0.5f - headTall));
+        float listX = OnPixel(Screen.width * 0.5f, pixels, wide * scale * 0.5f) - wide * scale * 0.5f;
+        float headX = OnPixel(Screen.width * 0.5f, pixels, headWide * scale * 0.5f) - headWide * scale * 0.5f;
         Vector2 middle = new Vector2(0.5f, 0.5f);
         Vector3 scaled = new Vector3(scale, scale, 1f);
-        Want(list, middle, new Vector2(0.5f, 1f), new Vector2(0f, top));
+        Want(list, middle, new Vector2(0.5f, 1f), new Vector2(listX, top));
         SpotFor(list).WantScale = scaled;
-        Want(title, middle, new Vector2(0.5f, 0f), new Vector2(0f, top), new Vector2(headWide, headTall));
+        Want(title, middle, new Vector2(0.5f, 0f), new Vector2(headX, top), new Vector2(headWide, headTall));
         SpotFor(title).WantScale = scaled;
         Want(sub, new Vector2(0.5f, 0f), new Vector2(0.5f, 1f), new Vector2(0f, -SubGap), new Vector2(subWide, lines));
         // The corner's rule: in the stock place it runs on to the screen's bottom; here it closes round the cards.

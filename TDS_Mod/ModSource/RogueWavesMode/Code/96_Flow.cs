@@ -81,6 +81,10 @@ public static partial class RWTest
         {
             Rect r = RWDialog.OnScreen(cards[i]);
             if (!OnTheScreen(r)) off.Add(cards[i].name + " " + Rc(r));
+            Vector3[] corner = new Vector3[4];
+            cards[i].GetWorldCorners(corner);
+            Vector2 at = RectTransformUtility.WorldToScreenPoint(d.GetComponentInParent<Canvas>().worldCamera, corner[2]);
+            if (Mathf.Abs(at.x - Mathf.Round(at.x)) > 0.05f || Mathf.Abs(at.y - Mathf.Round(at.y)) > 0.05f) off.Add(cards[i].name + " between pixels at " + RWUtil.F(at.x) + "," + RWUtil.F(at.y));
             all = i == 0 ? r : Rect.MinMaxRect(Mathf.Min(all.xMin, r.xMin), Mathf.Min(all.yMin, r.yMin), Mathf.Max(all.xMax, r.xMax), Mathf.Max(all.yMax, r.yMax));
         }
         string title = "-", line = "-";
@@ -111,7 +115,7 @@ public static partial class RWTest
         Rect stage = main != null ? RWDialog.OnScreen(main) : new Rect();
         bool centred = Mathf.Abs(all.center.x - Screen.width * 0.5f) <= 2f;
         bool stock = main != null && Mathf.Abs(stage.xMin) <= 2f && Mathf.Abs(stage.xMax - Screen.width) <= 2f;
-        Check(what + ": every card and word on the screen, the cards in its middle", cards.Count > 0 && off.Count == 0 && centred && stock,
+        Check(what + ": every card and word on the screen on whole pixels, the cards in its middle", cards.Count > 0 && off.Count == 0 && centred && stock,
             Screen.width + "x" + Screen.height + ", " + cards.Count + " cards at " + Rc(all) + ", title " + title + ", last line " + line + ", Main " + Rc(stage) + (off.Count > 0 ? "; off: " + string.Join("; ", off.ToArray()) : ""));
     }
 
