@@ -167,3 +167,11 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
    hurts a pinned foe in it; Fault Line bursts a foe reeled through it.
 6. Miner's Base: a Naut picked onto Deep Water is refused (towers only); tuning as in 1.4.0.
 7. The F-key fix (`docs/15` §9): F selects Argo after a respawn with the crew out.
+
+## Review 2026-11-04 (proposed, not built)
+
+A balance and skill review (`docs/reports/ARGO_REVIEW_2026-11-04.md`) made fourteen changes and two notes in scope `09`, each
+line marked with a "Review 2026-11-04" note: slows one per source and Kelp Bed and Trench as pins (both code fixes),
+the Scatter's pin bonus, Wide Bore, Double Barrel, Abyss, Trench, Gusher, Mantle Tap, and Yellow prices for the Drill's
+control path and the Miner's Base. The tables above stay as built until Dimitri takes them and the next Argo build
+lands; `IMPLEMENTATION_NOTES.md` lists the code each one touches.

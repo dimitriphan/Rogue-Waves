@@ -7,6 +7,7 @@
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. /~ No sonar \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
 		/~ Laid out in the Vessel template, 15_Templates.txt. Every ~ value is what the built Argo 2.0 uses, so all of them wait on your balance pass \
+		/~ Reviewed 2026-11-04 (docs/reports/ARGO_REVIEW_2026-11-04.md): every line the review changed ends with a "Review 2026-11-04: was ..." note, and is not built yet \
 
 		[Identity]
 			- Title: Deep Sea Diver
@@ -32,29 +33,31 @@
 			- Sell rate: ~50%~
 			- Second hit: ~every swing also hits a second foe within 1.25 tiles of the first, for 60% damage~
 			- Special rule: {~Fathoms~} ~Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never traps~
+			- Slows: ~one slow per source on a foe, renewed while it lasts, never stacked with itself; slows from different sources add up, down to 10% of a foe's speed~ /~ Review 2026-11-04: the code stacks Deep Water's and the Tremor's own re-ticks, so a 30% pool slows 60%. This line asks the next build to fix it \
+			- Pins: ~Anchor Line, Kelp Bed, Trench and Mantle Tap pin; a pinned foe is held in place, twice as long in Deep Water~ /~ Review 2026-11-04: Kelp Bed and Trench held foes without pinning them, so Salt Sting, Bedrock and the Scatter Cannon's pin bonus had almost nothing to read \
 
 		(Offense 1):{Scatter Cannon}
 			- Shoots close range blasts that are effective against hordes /~ A cone of 6 pellets \
-			- Deals bonus damage to enemies affected by debuffs /~ +50% to slowed or pinned enemies \
+			- Deals bonus damage to enemies affected by debuffs /~ +50% to slowed enemies, +100% to pinned ones \
 			[Stats]
-				- In-game line: ~Short range, sprays a cone of pellets, hits slowed and pinned foes harder~
+				- In-game line: ~Short range, sprays a cone of pellets, hits slowed foes harder and pinned foes much harder~
 				- Health: ~40~, +~25~ per level
 				- Damage: ~1.25~ per pellet, +~0.25~ per level
 				- Attack speed: ~0.6~
 				- Range: ~4.5~ tiles
 				- Projectile speed: ~16~
 				- Pellets: ~6~, in a ~50~ degree cone, each piercing ~1~ foe
-				- Debuff bonus: ~+50%~ damage to a slowed or pinned foe
+				- Debuff bonus: ~+50%~ damage to a slowed foe, ~+100%~ to a pinned foe /~ Review 2026-11-04: was +50% to either. Slows are on almost every foe in Argo's water and Tremor, so the bonus was always on; pins now pay for the play that makes them \
 				- Limit: ~none~
 				- Cost: ~Red 30~
 			[Upgrades]
 				% 1:{Wide Bore} A wider cone with two more pellets
 					- In-game line: ~A wider cone with two more pellets~
-					- Numbers: ~+2~ pellets; ~cone +25 degrees~
+					- Numbers: ~+2~ pellets; ~cone +10 degrees~ /~ Review 2026-11-04: was cone +25. A 75 degree cone sends more pellets off a lane than the two new ones add, so Wide Bore cost a Scatter 20% of its hits on a single lane \
 					- Cost: ~Red 30~
-				% 1:{Double Barrel} Loads a second volley while idle, and fires both at once
-					- In-game line: ~Loads a second volley while idle, and fires both at once~
-					- Numbers: ~stores 1 volley while no foe is in range~
+				% 1:{Double Barrel} Loads extra volleys while idle, and fires them all at once
+					- In-game line: ~Loads extra volleys while idle, and fires them all at once~
+					- Numbers: ~stores a volley every 2 seconds while no foe is in range, up to 3~ /~ Review 2026-11-04: was 1 volley, about one extra volley a Tide. Three make it the opener for a Scatter placed behind the water \
 					- Cost: ~Red 30~
 
 				% 2:{Grapeshot} Three more pellets in every volley
@@ -121,7 +124,7 @@
 					- Leads to: nothing, the branch ends here
 					- Cost: ~Red 60 + Blue 50~
 				% 2:{Reel} Reels the first foe hit toward the gun
-					- In-game line: ~Reels the first foe hit toward the gun~
+					- In-game line: ~Reels the first foe hit toward the gun~ /~ Review 2026-11-04: the journal page adds "Place it beside or up the lane: a gun by your core pulls foes toward the core" \
 					- Numbers: ~reels the first foe hit 1.5 tiles closer~
 					- Leads to: {Twin Line}
 					- Cost: ~Red 60 + Blue 50~
@@ -170,8 +173,8 @@
 					- Cost: ~Blue 25~
 
 				% 2:{Kelp Bed} Catch enemies on entering
-					- In-game line: ~Foes are caught for a moment on entering~
-					- Numbers: ~holds a foe 0.75 seconds as it wades in~
+					- In-game line: ~Foes are pinned for a moment on entering~
+					- Numbers: ~pins a foe 0.5 seconds as it wades in, so 1 second in the water~ /~ Review 2026-11-04: was a 0.75 second hold that did not count as a pin \
 					- Cost: ~Blue 80~
 				% 2:{Salt Sting} Brine stings pinned foes harder
 					- In-game line: ~Brine stings pinned foes harder~
@@ -180,8 +183,8 @@
 					- Cost: ~Blue 70 + Red 30~
 
 				% 3:{Abyss} FLOOD fills two tiles at once
-					- In-game line: ~FLOOD fills two tiles at once~
-					- Numbers: ~FLOOD adds a second pool for free~
+					- In-game line: ~FLOOD fills two tiles at once, and the water runs deeper~
+					- Numbers: ~FLOOD adds a second pool for free~; ~slow +10%~ /~ Review 2026-11-04: the slow is new. A free pool saves Blue 15, so Abyss alone paid back after 17 FLOODs \
 					- Leads to: nothing, the branch ends here
 					- Cost: ~Blue 260~
 				% 3:{Crushing Depth} More damage taken
@@ -190,8 +193,8 @@
 					- Cost: ~Blue 300~
 
 				% 4:{Trench} Final upgrade that spreads the water each tide and drags enemies under
-					- In-game line: ~Spreads by itself each Tide, and drags foes under now and then~
-					- Numbers: ~a free pool each Tide~; ~every 6 seconds a foe inside is held 1 second~
+					- In-game line: ~Spreads by itself each Tide, and drags foes under again and again~
+					- Numbers: ~two free pools each Tide~; ~every 3 seconds a foe inside is pinned 1 second, so 2 seconds in the water~ /~ Review 2026-11-04: was one pool and a 1 second hold every 6 seconds, for Blue 3000 \
 					- Cost: ~Blue 3000~
 
 		(Economy/Defense):{Drill Rig}
@@ -206,7 +209,7 @@
 				- Range: ~5~ tiles / How far AIM can place the Tremor \
 				- Ore reach: ~2~ tiles
 				- Tremor: ~2~ tiles radius, slows ~20%~
-				- Each Fathom: ~+75%~ ore per strike, ~+10%~ strikes per second, ~+0.4~ tiles Tremor, ~+4%~ Tremor slow
+				- Each Fathom: ~+75%~ ore per strike, ~+10%~ strikes per second, ~+0.4~ tiles Tremor, ~+4%~ Tremor slow /~ Review 2026-11-04: a strike breaks at most one share of ore, which it reaches at Fathom 3; below that only the speed adds. On a Red node: 30 aura a Tide at Fathom 1, 72 at 3, 84 at 5 (a Mining Hut 18) \
 				- Deepest Fathom: ~5~
 				- Limit: ~none~
 				- Cost: ~Yellow 35~
@@ -219,7 +222,7 @@
 					- In-game line: ~The Tremor slows harder and reaches farther~
 					- Numbers: ~Tremor slow +10%~; ~Tremor +0.5 tiles~
 					- Leads to: {Bedrock}
-					- Cost: ~Blue 25 + Yellow 10~
+					- Cost: ~Yellow 35~ /~ Review 2026-11-04: was Blue 25 + Yellow 10. Argo's Yellow piles up and its Blue runs out on maps without a Blue node, so the Drill's control path is priced in Yellow \
 
 				% 2:{Deep Core} Keeps sinking two Fathoms past the usual bottom
 					- In-game line: ~Keeps sinking two Fathoms past the usual bottom~
@@ -229,21 +232,21 @@
 					- In-game line: ~Pinned foes in its Tremor take damage over time~
 					- Numbers: ~1.5~ damage a second to each pinned foe
 					- Leads to: {Fault Line}
-					- Cost: ~Blue 80 + Red 30~
+					- Cost: ~Yellow 80 + Red 30~ /~ Review 2026-11-04: was Blue 80 + Red 30 \
 
 				% 3:{Gusher} Once it is deep enough, a gush of ore bursts up at each Tide
-					- In-game line: ~Once it is deep enough, a gush of ore bursts up at each Tide~
-					- Numbers: ~12~ mining strikes at once, each Tide; ~from Fathom 3 down~
+					- In-game line: ~Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is~
+					- Numbers: ~4~ mining strikes per Fathom at once, each Tide; ~from Fathom 3 down~ /~ Review 2026-11-04: was 12 strikes, 12 aura a Tide on a Red node, 23 Tides to pay back Yellow 275. Now 20 at Fathom 5, 28 at Fathom 7 \
 					- Cost: ~Yellow 275~
 				% 3:{Fault Line} Pulling enemies through tremors cause them to take large burst damage
 					- In-game line: ~Foes reeled through its Tremor take a burst of damage~
 					- Numbers: ~12~ damage to a foe reeled into or across the Tremor
 					- Leads to: nothing, the branch ends here
-					- Cost: ~Blue 300~
+					- Cost: ~Yellow 300~ /~ Review 2026-11-04: was Blue 300 \
 
-				% 4:{Mantle Tap} Mines twice as hard, and once a Tide a quake pins every foe in its Tremor
-					- In-game line: ~Mines twice as hard, and once a Tide a quake pins every foe in its Tremor~
-					- Numbers: ~ore per strike x2~; ~quake pins foes for 2 seconds, once a Tide~
+				% 4:{Mantle Tap} Mines much faster, and its quakes pin every foe in its Tremor
+					- In-game line: ~Mines much faster, and every few seconds a quake pins every foe in its Tremor~
+					- Numbers: ~strikes per second x1.5~; ~every 20 seconds a quake pins foes for 2 seconds~ /~ Review 2026-11-04: was ore per strike x2, which mines nothing more (a strike is already a full share from Fathom 3), and one quake a Tide \
 					- Cost: ~Yellow 3000~
 
 		(Support):{Miner's Base} / Works similar to Boutman's bouthouse with a limit of 1 \
@@ -255,7 +258,7 @@
 				- Health: ~50~, +~25~ per level
 				- Units: ~2~ Nauts
 				- Limit: 1
-				- Cost: ~Blue 35~
+				- Cost: ~Blue 20 + Yellow 15~ /~ Review 2026-11-04: was Blue 35. With Deep Water's Blue 20 it ate the start's 50 Blue, so on Woozy and The Hunt the crew never came in the simulator \
 			[Upgrades]
 				% 1:{Flippers} Nauts get to their towers much faster
 					- In-game line: ~Nauts get to their towers much faster~
@@ -310,3 +313,5 @@
 
 		[Questions]
 			- 1. Every number here is the built Argo 2.0's, which nobody has balanced yet. ~Keep them until your balance pass~
+			- 2. The 2026-11-04 review's changes (docs/reports/ARGO_REVIEW_2026-11-04.md): take, change or drop each. ~Each stands until you say; the next Argo build picks them up~
+			- 3. The Drill Rig mines about what Yossele's Sapling does, 4 times a Mining Hut. If you take Yossele's P5 (Sapling Attackspeed 0.15), take the Drill's Attackspeed 0.25 down to 0.2 with it? ~No change unless you take P5~
