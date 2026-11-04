@@ -44,6 +44,18 @@ p { margin: 0; max-width: 65ch; }
 .eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--brass); }
 .intro { display: grid; gap: 12px; }
 .group { display: grid; gap: 28px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.take.mini { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 16px; }
+.take.mini .art { grid-template-columns: auto auto; justify-content: start; align-items: end; }
+.take.mini .front { width: 160px; height: 160px; }
+.take.mini .back { width: 96px; height: 96px; }
+.take.mini .notes { gap: 8px; }
+.take.mini h2 { font-size: 1.6rem; }
+.earlier { border-top: 2px solid var(--line); padding-top: 20px; }
+.earlier summary { cursor: pointer; font: 600 1.3rem var(--display); color: var(--deep); }
+.earlier-body { display: grid; gap: 28px; margin-top: 20px; }
+@media (max-width: 720px) { .take.mini .front { width: 160px; height: 160px; } }
+
 .group + .group { border-top: 2px solid var(--line); padding-top: 28px; }
 h2.round { font-size: 2.2rem; color: var(--deep); }
 .lineup { background: #8c8a86; border-radius: 4px; overflow-x: auto; width: fit-content; max-width: 100%; }
@@ -91,6 +103,152 @@ textarea { width: 100%; box-sizing: border-box; min-height: 96px; font: inherit;
 </style>
 
 <div class="wrap">
+  <div class="group" data-doc="hollow3">
+  <header class="intro">
+    <span class="eyebrow">Round 3 · Hollow, ten bodies · 2026-11-04</span>
+    <h1>Hollow, ten new bodies</h1>
+    <p>These go back to the Hollow you picked in round 1, keeping Argo's riveted brass dome with the sea in its porthole
+    and his faded suit and empty gloves. Each of the ten changes how big the helmet is and how the body is shaped, sized
+    and weighted. Round 1's Hollow is first in the line-up.</p>
+    <div class="lineup" aria-label="Hollow and the ten new bodies at game size">
+      <img src="{{LINEUP3_1X}}" alt="Hollow and the ten round 3 designs side by side at game size, shown three times larger" width="1188" height="132">
+    </div>
+    <div class="legend"><span>Game size, shown 3×:</span><span>Hollow</span><span>Big Head</span><span>Long Legs</span><span>Lead Boots</span><span>Waterlogged</span><span>Broad</span><span>Air Tank</span><span>Stout</span><span>Lopsided</span><span>Bell Skirt</span><span>Long Arms</span></div>
+  </header>
+  <div class="grid3">
+    <section class="take mini" data-take="BigHead">
+      <div class="art">
+        <figure><img class="front" src="{{BigHead_IDLE}}" alt="Big Head, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{BigHead_BACK}}" alt="Big Head from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Big Head</h2>
+        <p>A huge helmet on a tiny empty suit, so the sea inside is the biggest thing on him.</p>
+        <span class="stats">23 × 27 px</span>
+        <button class="pick" type="button" id="pick-BigHead">Pick Big Head</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="LongLegs">
+      <div class="art">
+        <figure><img class="front" src="{{LongLegs_IDLE}}" alt="Long Legs, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{LongLegs_BACK}}" alt="Long Legs from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Long Legs</h2>
+        <p>A small helmet on a short body, standing up on long thin legs.</p>
+        <span class="stats">18 × 26 px</span>
+        <button class="pick" type="button" id="pick-LongLegs">Pick Long Legs</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="LeadBoots">
+      <div class="art">
+        <figure><img class="front" src="{{LeadBoots_IDLE}}" alt="Lead Boots, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{LeadBoots_BACK}}" alt="Lead Boots from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Lead Boots</h2>
+        <p>All the weight sinks to the bottom: huge lead boots with brass straps, the suit tapering down to them.</p>
+        <span class="stats">19 × 26 px</span>
+        <button class="pick" type="button" id="pick-LeadBoots">Pick Lead Boots</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Waterlogged">
+      <div class="art">
+        <figure><img class="front" src="{{Waterlogged_IDLE}}" alt="Waterlogged, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Waterlogged_BACK}}" alt="Waterlogged from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Waterlogged</h2>
+        <p>The suit has swollen round with seawater and leaks from the cuffs. The seams stretch across it.</p>
+        <span class="stats">22 × 27 px</span>
+        <button class="pick" type="button" id="pick-Waterlogged">Pick Waterlogged</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Broad">
+      <div class="art">
+        <figure><img class="front" src="{{Broad_IDLE}}" alt="Broad, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Broad_BACK}}" alt="Broad from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Broad</h2>
+        <p>Wide shoulders under strapped-on lead weights, narrowing to a thin waist.</p>
+        <span class="stats">25 × 26 px</span>
+        <button class="pick" type="button" id="pick-Broad">Pick Broad</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="AirTank">
+      <div class="art">
+        <figure><img class="front" src="{{AirTank_IDLE}}" alt="Air Tank, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{AirTank_BACK}}" alt="Air Tank from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Air Tank</h2>
+        <p>A big brass air tank on his back shows past the shoulder, with a hose looping to the helmet. The bubbles come from the tank.</p>
+        <span class="stats">21 × 27 px</span>
+        <button class="pick" type="button" id="pick-AirTank">Pick Air Tank</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Stout">
+      <div class="art">
+        <figure><img class="front" src="{{Stout_IDLE}}" alt="Stout, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Stout_BACK}}" alt="Stout from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Stout</h2>
+        <p>Short and wide: a broad helmet sits low on a squat body over stubby boots.</p>
+        <span class="stats">26 × 23 px</span>
+        <button class="pick" type="button" id="pick-Stout">Pick Stout</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Lopsided">
+      <div class="art">
+        <figure><img class="front" src="{{Lopsided_IDLE}}" alt="Lopsided, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Lopsided_BACK}}" alt="Lopsided from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Lopsided</h2>
+        <p>The helmet has sagged to one side and its valve is bent over. One sleeve hangs long and the other cuff is empty, pouring sea onto the floor.</p>
+        <span class="stats">23 × 26 px</span>
+        <button class="pick" type="button" id="pick-Lopsided">Pick Lopsided</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="BellSkirt">
+      <div class="art">
+        <figure><img class="front" src="{{BellSkirt_IDLE}}" alt="Bell Skirt, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{BellSkirt_BACK}}" alt="Bell Skirt from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Bell Skirt</h2>
+        <p>The suit flares out like a diving bell, with a riveted brass hem and only the boot toes showing beneath.</p>
+        <span class="stats">24 × 27 px</span>
+        <button class="pick" type="button" id="pick-BellSkirt">Pick Bell Skirt</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="LongArms">
+      <div class="art">
+        <figure><img class="front" src="{{LongArms_IDLE}}" alt="Long Arms, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{LongArms_BACK}}" alt="Long Arms from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Long Arms</h2>
+        <p>Long empty sleeves reach to the floor and the gloves drag.</p>
+        <span class="stats">23 × 26 px</span>
+        <button class="pick" type="button" id="pick-LongArms">Pick Long Arms</button>
+      </div>
+    </section>
+  </div>
+  <section class="foot" aria-label="Your round 3 pick">
+    <h2>Your round 3 pick</h2>
+    <p class="pick-line">No pick yet.</p>
+    <label for="note-hollow3">Anything to mix or change, for example "Lead Boots with the Air Tank"</label>
+    <textarea id="note-hollow3" class="note" placeholder="Optional"></textarea>
+    <div class="row"><button class="primary save" type="button" id="save-hollow3">Save note</button><span class="status">Loading saved pick…</span></div>
+  </section>
+  </div>
+
+  <details class="earlier">
+    <summary>Earlier rounds: round 2 (Hollow reshaped) and round 1 (five takes)</summary>
+    <div class="earlier-body">
   <div class="group" data-doc="hollow">
   <header class="intro">
     <span class="eyebrow">Round 2 · Hollow, new shapes · 2026-11-04</span>
@@ -360,12 +518,14 @@ textarea { width: 100%; box-sizing: border-box; min-height: 96px; font: inherit;
     <div class="row"><button class="primary save" type="button" id="save">Save note</button><span class="status">Loading saved pick…</span></div>
   </section>
   </div>
+    </div>
+  </details>
 </div>
 
 <script>
 (function () {
   var names = { Barnacled: 'Barnacled', Angler: 'Angler', Hollow: 'Hollow', Passenger: 'Passenger', Hull: 'Pressure Hull',
-    Shipped: 'the shipped look', BellJar: 'Bell Jar', FishTank: 'Fish Tank', Slump: 'Slump', Fishbowl: 'Fishbowl', Hunch: 'Hunch' };
+    Shipped: 'the shipped look', BigHead: 'Big Head', LongLegs: 'Long Legs', LeadBoots: 'Lead Boots', Waterlogged: 'Waterlogged', Broad: 'Broad', AirTank: 'Air Tank', Stout: 'Stout', Lopsided: 'Lopsided', BellSkirt: 'Bell Skirt', LongArms: 'Long Arms', BellJar: 'Bell Jar', FishTank: 'Fish Tank', Slump: 'Slump', Fishbowl: 'Fishbowl', Hunch: 'Hunch' };
   var groups = [];
   document.querySelectorAll('.group').forEach(function (g) {
     var G = { el: g, doc: g.getAttribute('data-doc'), state: { choice: null, note: '' }, ref: null, dirty: false,

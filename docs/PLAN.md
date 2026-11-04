@@ -289,6 +289,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and from RogueWavesMode's code (compiled here, not run on the PC).
   2026-11-04: he picked Hollow; round 2 draws it in five head and body shapes (Bell Jar, Fish Tank, Slump, Fishbowl,
   Hunch) on the same page (`docs/concepts/argo_hollow_2026-11-04/`; not wired; Log).
+  2026-11-04: round 2 did not appeal; round 3 draws ten new Hollow bodies on round 1's helmet (Big Head, Long Legs, Lead
+  Boots, Waterlogged, Broad, Air Tank, Stout, Lopsided, Bell Skirt, Long Arms), top of the same page
+  (`docs/concepts/argo_hollow_ten_2026-11-04/`; not wired; Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -644,6 +647,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Fishbowl (a glass globe head, a coat on a hanger), Hunch (helmet slid forward, cut air hose). Same checks and outputs;
   `docs/concepts/argo_hollow_2026-11-04/README.md`; round 2 sits on top of the same picks page (doc `hollow`); generator
   `concept-tools/argo_divers/hollow_shapes.py`. Still concepts only.
+- **2026-11-04: Argo Hollow, round 3** (Dimitri: "None of the round 2 versions appeal to me. Try 10 new designs"). Back to round 1's
+  Hollow helmet (riveted brass dome, valve, sea in the porthole) with ten bodies varying helmet size and body shape, size and weight:
+  Big Head, Long Legs, Lead Boots, Waterlogged, Broad, Air Tank, Stout, Lopsided, Bell Skirt, Long Arms. Same checks and outputs;
+  `docs/concepts/argo_hollow_ten_2026-11-04/README.md`; round 3 on top of the same picks page (doc `hollow3`), rounds 1-2 folded
+  below; generator `concept-tools/argo_divers/hollow_ten.py`. Still concepts only.
 
 ### Decisions
 

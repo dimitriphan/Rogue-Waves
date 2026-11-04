@@ -1,10 +1,10 @@
-"""Builds the Argo diver picks page (round 1 and round 2, the Hollow shapes): template.html with every image inlined as a data URI.
+"""Builds the Argo diver picks page (round 1, round 2 the Hollow shapes, round 3 ten Hollow bodies): template.html with every image inlined as a data URI.
 
     python3 concept-tools/argo_divers/argo_divers.py            # the art first
     python3 concept-tools/argo_divers/build_page.py [out.html]
 
 Default out: /mnt/project-files/concepts/argo_divers_2026-11-04/argo_divers_picks.html (the page is published as an
-Artifact from there; it stores Dimitri's pick in its db collection `picks`, doc `argo` for round 1, doc `hollow` for round 2).
+Artifact from there; it stores Dimitri's pick in its db collection `picks`, doc `argo` for round 1, doc `hollow` for round 2, doc `hollow3` for round 3).
 """
 import base64
 import io
@@ -17,6 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import argo_divers as A  # noqa: E402
 import hollow_shapes as HS  # noqa: E402
+import hollow_ten as HT  # noqa: E402
 
 ART = os.path.join(A.REPO, 'docs', 'concepts', 'argo_divers_2026-11-04', 'art')
 BG = (140, 155, 140)
@@ -46,7 +47,7 @@ def idle_gif(frames, k=K):
 def main():
     out = sys.argv[1] if len(sys.argv) > 1 else '/mnt/project-files/concepts/argo_divers_2026-11-04/argo_divers_picks.html'
     html = open(os.path.join(HERE, 'template.html')).read()
-    takes = [('Shipped', A.shipped)] + A.TAKES + HS.TAKES
+    takes = [('Shipped', A.shipped)] + A.TAKES + HS.TAKES + HT.TAKES
     for name, fn in takes:
         idle = [fn(i) for i in range(6)]
         html = html.replace('{{%s_IDLE}}' % name, idle_gif(idle))
@@ -56,6 +57,8 @@ def main():
     html = html.replace('{{LINEUP_1X}}', uri(one))
     two = Image.open(os.path.join(A.REPO, 'docs', 'concepts', 'argo_hollow_2026-11-04', 'art', 'argo_hollow_lineup_1x_x3.png'))
     html = html.replace('{{LINEUP2_1X}}', uri(two))
+    three = Image.open(os.path.join(A.REPO, 'docs', 'concepts', 'argo_hollow_ten_2026-11-04', 'art', 'argo_hollow_ten_lineup_1x_x3.png'))
+    html = html.replace('{{LINEUP3_1X}}', uri(three))
     os.makedirs(os.path.dirname(out), exist_ok=True)
     open(out, 'w').write(html)
     print(out, len(html) // 1024, 'KB')
