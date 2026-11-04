@@ -12,6 +12,7 @@ standard library.
 | `pngout.py` | Writes RGBA PNGs without Pillow |
 | `sea_chart.py` | Seeded Slay the Spire style sea chart for the campaign (`docs/mode/SEA_CHART.md`): the reference the mod's C# port (`TDS_Mod/ModSource/RogueWavesMode/Code/03_Chart.cs`) matches line for line (`--check`), and a PNG preview |
 | `temp_art/` | The pack's temporary art drawn as files (`docs/TEMP_ART.md`): `tart.py` (canvas, upper-left shading, PNG + `.aseprite` + 8x preview), `cordyfriend.py` (Yossele's Cordyfriend sheet), `ui_icons.py` (the mode's 12 x 12 icons, the 32 px crest, Spool's tuft), `yossele_anims.py` (Yossele's idle, walk and laser sheets), `spool_threadhead.py` and `spool_units.py` (the Thread Head and the four Crafted) |
+| `argo_divers/` | Five concept takes on Argo as a diver who might not be human (`argo_divers.py`: art over the shipped frame plus the kit `docs/18` §4.2 check; `build_page.py` + `template.html`: the picks page); `docs/concepts/argo_divers_2026-11-04/` |
 | `build_mod_pages.py` | Builds an illustrated sheet for a vessel from the mod itself (`02_Data.cs` + `run_preview.sh` output), so the page can't drift from the code. Pages go to `docs/concepts/<slug>/`; add a row to its `VESSELS` table per vessel |
 
 A new concept page follows the Broodie pattern described in `.claude/rules/concepts.md`: an art script, a models script

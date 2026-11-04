@@ -278,6 +278,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   every Direction and Cardinal now carries `By: Dimitri` or `By: Claude` (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`,
   not built); the Scope Editor artifact (https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo) shows and edits every scope file, makers
   tagged, and exports the `.txt` (source in project files `concepts/scope_editor_2026-11-04/`; Log).
+  2026-11-04: five concept sprites of Argo as a diver who might not be entirely human (Barnacled, Angler, Hollow,
+  Passenger, Pressure Hull), drawn over his shipped frame, idle and back each; Dimitri picks on
+  https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (`docs/concepts/argo_divers_2026-11-04/`; not wired; Log).
   2026-11-04: the overlap check Dimitri asked for: 5 of those 13 Cardinals copied a stock one and are removed (Iron Rivets, Siren
   Conch, Kelp Net, Lucky Geode, Storm Lantern); then 11 more Directions (Any, 2 Duos, Yossele, Spool) and 7 Cardinals after Risk of
   Rain 2, Hades and other roguelikes, all Claude `~defaults~`, not built; the Scope Editor rebuilt on the same link
@@ -617,6 +620,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Direction and Cardinal ends with `By: Dimitri` or `By: Claude`; `06` and `12` gain Power and Pairs lines. `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`.
   Scope Editor artifact https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo (every file 00-16, line edit, filters by maker, Export .txt; edits in its
   db collection `scopes`, doc `f<NN>` per edited file; rebuild from project files `concepts/scope_editor_2026-11-04/`).
+- **2026-11-04: Argo diver concept sprites** (Dimitri: "Create 5 new sprite arts of Argo based on his idea of being a deep sea diver
+  that might not entirely be human"; the Yossele-and-Spool limit lifted for this ask). Five takes over Argo's shipped standing
+  frame, each a 6-frame idle and a back view at 32 px with an `.aseprite` and 8x previews, checked against kit `docs/18` §4.2:
+  Barnacled (the sea grew on him), Angler (a lure and fins), Hollow (an empty suit full of sea), Passenger (an octopus
+  drives it), Pressure Hull (a later hard suit with a light for a face). `docs/concepts/argo_divers_2026-11-04/README.md`;
+  picks page https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (db collection `picks`, doc `argo`); generator
+  `concept-tools/argo_divers/`. Concepts only: Argo's mod and `docs/STYLE.md` are unchanged until he picks.
 - **2026-11-04: Cardinal overlap check and roguelike Directions and Cardinals** (Dimitri: "Check to make sure that the new cardinals you
   created do not overlap with already existing cardinals... develop some more directions and cardinals using other roguelikes as inspiration").
   Checked against the 40 stock Cardinals' in-game lines (kit `reference/roguelab_round1.txt`): Iron Rivets (Rusty Pipe), Siren Conch (Blue
