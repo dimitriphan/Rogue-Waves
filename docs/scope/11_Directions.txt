@@ -2,7 +2,7 @@
 	# Every vessel's Directions, each in the Direction template from 15_Templates.txt, under its vessel.
 	# How Directions are offered, ranked and bought: -> 06_New_Mechanics.txt [Directions]
 	# Each sheet ends with By: who made it, Dimitri or Claude. A Claude-made sheet is all ~defaults~ until you take it.
-	/~ What each of Claude's rides on in the game's code, and the StarCraft II campaign upgrade behind it: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md \
+	/~ What each of Claude's rides on in the game's code, and the StarCraft II campaign upgrade behind it: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md. The ones after Risk of Rain 2, Hades and other roguelikes: docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md \
 
 	[Directions by Vessel]
 		(Any)
@@ -172,6 +172,83 @@
 				- Look: ~A closed clam shell~
 				- Clashes: ~None~
 				- By: Claude /~ After the Spear of Adun's Guardian Shell: the Basin's own last stand, put on the vessel \
+			{~Notched Oar~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Every 10th hit of your vessel deals double damage~
+				- Rank II: ~Every 7th hit~
+				- Rank III: ~Every 5th hit~
+				- Numbers: ~every 10th / 7th / 5th hit deals double damage, about +10% / +14% / +20% over time~
+				- Look: ~An oar with a notch cut for every stroke~
+				- Clashes: ~None~
+				- By: Claude /~ After Slay the Spire's Pen Nib \
+			{~Lamp Oil~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Foes your vessel drowns burst into flame, hurting foes around them~
+				- Rank II: ~The bursts are bigger~
+				- Rank III: ~The bursts are much bigger and reach farther~
+				- Numbers: ~a burst of 15% / 25% / 35% of the drowned foe's max health, within 1 / 1.25 / 1.5 tiles~
+				- Look: ~A tin of lamp oil with a rag in the spout~
+				- Clashes: ~None~
+				- By: Claude /~ After Risk of Rain 2's Gasoline and Will-o'-the-wisp \
+			{~Fish Hook~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Some of your vessel's hits snag, and the foe bleeds~
+				- Rank II: ~More hits snag~
+				- Rank III: ~Most hits snag, and the bleeding stacks higher~
+				- Numbers: ~15% / 25% / 35% of hits snag: the foe bleeds half the hit's damage over 3 seconds; up to 3 / 3 / 5 bleeds at once~
+				- Look: ~A barbed fish hook on a short line~
+				- Clashes: ~None~
+				- By: Claude /~ After Risk of Rain 2's Tri-Tip Dagger and Hades' Hangover (Dionysus) \
+			{~Spare Compass~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your Direction offers~
+				- Rank I: ~One more Direction is offered to you before each map~
+				- Rank II: ~Once a map, you can throw back the offer and draw new ones~
+				- Rank III: ~Two more Directions are offered~
+				- Numbers: ~4 offered at rank I; rank II: one redraw a map; 5 offered at rank III~
+				- Look: ~A compass with two needles~
+				- Clashes: ~None~
+				- By: Claude /~ After Hades' Fated Persuasion and Fated Authority (the Mirror of Night) \
+			{~Magpie Nest~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your vessel and towers~
+				- Rank I: ~Your vessel and towers hit harder for every Cardinal you hold~
+				- Rank II: ~Harder still for each~
+				- Rank III: ~Much harder for each~
+				- Numbers: ~damage +1% / +1.5% / +2% for each Cardinal: every stack of your Vessel Cardinals and every Team Cardinal counts~
+				- Look: ~A magpie's nest full of buttons, keys and bottle caps~
+				- Clashes: ~None~
+				- By: Claude /~ After Balatro's Abstract Joker, which grows with every Joker held \
+			{~Fire Ship~}
+				- Kind: ~Duo~
+				- Vessel: ~Any vessel holding {Lamp Oil} and {Chain Shot}~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Every Chain Shot jump bursts where it lands, as Lamp Oil does~
+				- Rank II: ~None: a Duo has one rank~
+				- Rank III: ~None: a Duo has one rank~
+				- Numbers: ~each jump bursts for 10% of the struck foe's max health within 0.75 tiles~
+				- Look: ~A burning rowboat with a chain trailing behind~
+				- Clashes: ~None~
+				- By: Claude /~ After Hades' Duo boons, which only come to a player holding a boon from each of two gods \
+			{~Tide Pool~}
+				- Kind: ~Duo~
+				- Vessel: ~Any vessel holding {Tidal Mend} and {Spring Tide}~
+				- Touches: ~Your towers~
+				- Rank I: ~Mending past full health stays on as extra health until the Tide ends~
+				- Rank II: ~None: a Duo has one rank~
+				- Rank III: ~None: a Duo has one rank~
+				- Numbers: ~what Tidal Mend mends past full is kept as extra max health, at most +20%, until the Tide ends~
+				- Look: ~A rock pool brimming over~
+				- Clashes: ~None~
+				- By: Claude /~ After Hades' Duo boons \
 		(Argo)
 			! NEEDS ARGO'S DIRECTIONS !
 			{~Deep Current~}
@@ -286,6 +363,28 @@
 				- Look: ~A sprig of ivy curling round a stone~
 				- Clashes: ~None~
 				- By: Claude /~ After Malignant Creep and the Creeper Strain \
+			{~Deep Breath~}
+				- Kind: ~Boost~
+				- Vessel: ~Yossele~
+				- Touches: ~The vessel itself~
+				- Rank I: ~When Yossele has not fired for a moment, its next beam hits harder~
+				- Rank II: ~It hits harder still~
+				- Rank III: ~It hits much harder, and reaches farther~
+				- Numbers: ~after 2 seconds without firing, the next beam deals +40% / +70% / +100%; rank III: +1 tile range for that beam~
+				- Look: ~Yossele puffing out its cheeks~
+				- Clashes: ~None~
+				- By: Claude /~ After The Binding of Isaac's Brimstone and Risk of Rain 2's charged shots \
+			{~Fairy Ring~}
+				- Kind: ~Boost~
+				- Vessel: ~Yossele~
+				- Touches: ~The vessel itself and your buildings near it~
+				- Rank I: ~When Yossele stands still, mushrooms ring it and mend what is near~
+				- Rank II: ~The ring mends more~
+				- Rank III: ~The ring mends much more, farther out~
+				- Numbers: ~after 1.5 seconds standing still: Yossele and your buildings within 1.5 / 2 / 2.5 tiles mend 1% / 1.5% / 2% of their max health a second~
+				- Look: ~A ring of small white mushrooms in the grass~
+				- Clashes: ~None~
+				- By: Claude /~ After Risk of Rain 2's Bustling Fungus \
 		(Spool)
 			! NEEDS SPOOL'S DIRECTIONS !
 			{Efficient Recycler}
@@ -343,6 +442,28 @@
 				- Look: ~A dog-eared sewing pattern book~
 				- Clashes: ~None~
 				- By: Claude /~ After the Sentinel's return from death and Zergling Reconstitution. Sits beside your Efficient Recycler \
+			{~Merit Badge~}
+				- Kind: ~Boost~
+				- Vessel: ~Spool~
+				- Touches: ~{Crafted}~
+				- Rank I: ~Your {Crafted} grow stronger with every foe they drown~
+				- Rank II: ~They grow further~
+				- Rank III: ~They grow much further~
+				- Numbers: ~+3% damage and health for each foe a {Crafted} drowns, up to +15% / +30% / +45%; lost when it falls~
+				- Look: ~A felt merit badge sewn on crooked~
+				- Clashes: ~None~
+				- By: Claude /~ After Monster Train's Slay triggers, units that grow with each kill \
+			{~Odd Socks~}
+				- Kind: ~Boost~
+				- Vessel: ~Spool~
+				- Touches: ~{Crafted}~
+				- Rank I: ~Your {Crafted} fight better beside a different kind of {Crafted}~
+				- Rank II: ~Better still~
+				- Rank III: ~Much better, and they take less damage~
+				- Numbers: ~+8% / +15% / +25% damage while another kind of {Crafted} is within 2 tiles; rank III: also 10% less damage taken~
+				- Look: ~A pair of socks that do not match~
+				- Clashes: ~None~
+				- By: Claude /~ After The Binding of Isaac's transformations and Monster Train's clan pairs: mixing kinds pays \
 		(Uloe)
 			! NEEDS ULOE'S DIRECTIONS !
 			{~Extension Cord~}

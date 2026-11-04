@@ -304,4 +304,4 @@
 
 		[Directions] / Written in 11_Directions.txt under Yossele \
 			- {Compost Bin}, {Dandelion Season}, {Mother of Mushrooms}
-			- {~Cutting Jar~}, {~Sap Bucket~}, {~Creeping Ivy~} /~ Made by Claude \
+			- {~Cutting Jar~}, {~Sap Bucket~}, {~Creeping Ivy~}, {~Deep Breath~}, {~Fairy Ring~} /~ Made by Claude \
