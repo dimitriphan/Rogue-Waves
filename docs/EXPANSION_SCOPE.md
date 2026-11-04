@@ -36,7 +36,7 @@ The game's code can be read in this container without the PC: `TDS_Vessel_Creato
 is the API dump, `tools/cecil/` reads IL, callers and string literals on the PC, and `docs/13` §11 describes the cloud
 decompiler setup (ICSharpCode.Decompiler from NuGet) that produced chapter 13. Facts that only a running game can give
 (asset contents, data values, Addressables groups) go on a PC research list like `docs/13` §10 and come back through
-Sprigg-style research builds (`examples/code/Sprigg_95_Research.cs`).
+research builds (the kit's example: `examples/code/Sprigg_95_Research.cs`).
 
 ## Suggested order, if everything is approved
 

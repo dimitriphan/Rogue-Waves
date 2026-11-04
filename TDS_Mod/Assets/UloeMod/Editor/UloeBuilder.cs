@@ -488,7 +488,7 @@ namespace UloeBuild
         }
 
         // Which way Unity's Hemisphere shape faces: emit a few particles and see where they go, then return the shape
-        // rotation that turns the dome upward (so ground bursts never sink into the floor). Sprigg learned this the hard way.
+        // rotation that turns the dome upward (so ground bursts never sink into the floor).
         static Vector3 HemisphereUp()
         {
             var go = new GameObject("hemisphere probe");
@@ -641,7 +641,7 @@ namespace UloeBuild
                 src.playOnAwake = false;
             }
             // The game instantiates the mod prefab (and this library with it) at startup, so every holder stays inactive
-            // (Sprigg 1.2.1: active SpriteRenderers drew the sheets on the startup screen). Find/GetComponent still work.
+            // (an active SpriteRenderer draws its sheet on the startup screen). Find/GetComponent still work.
             spr.SetActive(false);
             models.SetActive(false);
             vfx.SetActive(false);

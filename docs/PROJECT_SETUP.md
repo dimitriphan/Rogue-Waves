@@ -8,8 +8,8 @@ chores.
 
 Connect `dimitriphan/Rogue-Waves`. Its default branch is **`claude/phase-1-6lfnar`** (switched from the old
 `claude/rogue-waves-mod-setup-ngfuv3`, which stopped at PR #3, per Decisions 2026-10-15; no `main` exists): all work
-lands there, and every thread branches from and opens its PR against it. Do not connect `ModProjects`: the coordinator
-needs it only once, when Argo's phase copies the shipped Argo in, and the plan says so at that step.
+lands there, and every thread branches from and opens its PR against it. It is
+the only repository the project needs.
 
 ## 2. Project instructions (paste as the project's instructions)
 

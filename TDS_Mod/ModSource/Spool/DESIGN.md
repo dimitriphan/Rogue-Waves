@@ -13,8 +13,8 @@ Status: **compiled in the cloud, never run in game**; temporary art (`IMPLEMENTA
 - **One-line fantasy:** a disposable stitched army. Foes drop Thread, Spool and its Thread Heads haul it home, and the
   Cookie Tins turn it into Crafted that run where you point.
 - **Silhouette:** a hooded purple plush whose face is a stitched opening, yellow eyes looking out, a pink tongue,
-  white gloves, and a severed arm on the floor with cotton stuffing coming out of the wound (not a tail). Distinct from
-  Mummer's triangle costume (`docs/STYLE.md`).
+  white gloves, and a severed arm on the floor with cotton stuffing coming out of the wound (not a tail)
+  (`docs/STYLE.md`).
 - **Sprite baseline:** Dimitri's reshade (`concepts/vessels_2026-10-09/v3_flat/game_size/spool_reshade.png`, equal to
   the `spool_reshade.aseprite` he uploaded) and the back view in `concepts/vessels_2026-10-09/back/`. Every 32 px frame is
   his pixels moved or added to, never redrawn or recoloured; the walk is the hinged-hood cycle he asked for

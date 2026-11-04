@@ -1,7 +1,7 @@
 # Runs vessel self-tests on the PC, one vessel per game launch, and writes a short summary of each run, so a Remote
 # Control session relays a few lines instead of reading a 40 MB Player.log.
-#   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Run-SelfTests.ps1' -Vessels Argo,Crackpot"
-#   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Run-SelfTests.ps1' -Vessels Argo,Crackpot -BootCheck"
+#   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Run-SelfTests.ps1' -Vessels Argo,Yossele"
+#   powershell -ExecutionPolicy Bypass -Command "& '<this folder>\Run-SelfTests.ps1' -Vessels Argo,Yossele -BootCheck"
 # Launching TDS needs Dimitri's yes in the thread. Before the first launch the script backs up his save folder
 # (%USERPROFILE%\AppData\LocalLow\Blockage\TDS, logs left out) into the handoff folder.
 #

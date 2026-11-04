@@ -139,7 +139,7 @@ Gate: packaging and style approved; kit 1.6 scope listed.
 Order and reason: **Argo** first (designed from the scope, with shipped code and tests to reuse, so it is the cheapest
 way to shake out kit 1.6), then **Yossele** (Growth is a new generic mechanic other pieces may reuse; finished to
 Dimitri's 2026-10-20 sheet and released alone, Release 1 below), then **Spool** (minion-heavy:
-`docs/12`, and Mummer's Thread code is the nearest prior art), then **Uloe** (light levels are new engine territory:
+`docs/12`, and the template's Thread code is the nearest prior art), then **Uloe** (light levels are new engine territory:
 "light received" is feasible: the mod sums light sources itself, `docs/RESEARCH_GAPS.md` B1).
 
 Each vessel runs the kit's loop; the reading list is `CLAUDE.md`'s reading-order table, not more:
@@ -155,8 +155,6 @@ Each vessel runs the kit's loop; the reading list is `CLAUDE.md`'s reading-order
 Opening prompt (per vessel):
 > Build `<Vessel>` from its file in `docs/scope/` (its Directions are in `11_Directions.txt`) through the five steps
 > in `docs/PLAN.md` Phase 3, one step per session unless a step is small. Start with step 1 and stop at the design gate.
-> For Argo: design from the scope text. Then copy `ModProjects/TDS_Mod/ModSource/Argo` and `Assets/ArgoMod` in,
-> read only its `IMPLEMENTATION_NOTES.md` and `02_Data.cs`, keep what matches the design and list the rest as changes.
 
 Gate per vessel: the kit's definition of done (`TDS_Vessel_Creator/README.md`).
 
@@ -242,7 +240,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
   code read against the base game's for what could be simpler: ten findings, nothing changed, each waits for his word
   (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`). 2026-11-04: Vessel Cardinals are now **Trinkets** and Team Cardinals
-  just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC).
+  just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC). 2026-11-04: the
+  repository no longer presents the mods from before the scope: the README now summarises Rogue Waves, and the maps, rules,
+  tool notes and the pack parts' comments drop `ModProjects` and the earlier vessels; the kit, dated reports, this Log, the
+  scope and every path a script uses keep them (PR body lists what stayed and why).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

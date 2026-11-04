@@ -10,7 +10,7 @@ The release is **one mod folder, `RogueWavesMod`**: one zip, one toggle in the M
 
 | Part | Prefab | Dev mod (own build, own self-test) |
 | --- | --- | --- |
-| The mode (Rogue Waves run, Pure Aura, shop, objectives, Directions catalogue, Cardinals and Trinkets, map vote, ascension) | `RogueWaves_Mode_Default` | `RogueWavesModeMod` (grows out of RogueLab and Riptide) |
+| The mode (Rogue Waves run, Pure Aura, shop, objectives, Directions catalogue, Cardinals and Trinkets, map vote, ascension) | `RogueWaves_Mode_Default` | `RogueWavesModeMod` (its engine work proven first in RogueLab) |
 | Enemies and modifiers (Cursed, Berserk, Aging, Dazzling, new foes) | `RogueWaves_Foes_Default` | `RogueWavesFoesMod` |
 | Argo, Yossele, Spool, Uloe (one part each) | `RogueWaves_<Vessel>_Default` | `<Vessel>Mod`, as in the kit today |
 

@@ -479,7 +479,7 @@ public static class ArgoContent
         // Its own hit prefab: the range the game draws (while placing, when selected) centred on the tower at the point
         // its brain measures from (Def.Eye), and a collider the size of the model. Argo 1.0 kept the templates': the
         // Scatter Cannon's range sat 2 tiles underground (Smacky's Bomb Tower lobs), the others 0.75 above the tower.
-        // Traps keep the template's walk-through hit prefab (Mummer's Curtain).
+        // Traps keep the template's walk-through hit prefab (the kit template's Curtain).
         bool ranged = Array.Exists(b.Stats, s => s.StartsWith("Range="));
         if (!b.Trap)
             ModKitTowers.Fit(ent, b.Id, ArgoAssets.Model(b.ModelName), b.Eye, b.Eye + 0.05f, ranged);

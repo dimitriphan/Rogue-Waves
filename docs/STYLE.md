@@ -66,12 +66,11 @@ pack and doesn't redraw them. Each vessel owns its silhouette and carries it int
 | **Uloe** | a glass light-bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms of electricity at the sides, a cord to a plug | Sno Sno (an object come alive; legless, it hops) | glass `DAE6FC` / `CBDBFC`, glints `F1EF72`, steel `9BADB7` to `595652`, arms `FBF236`, eyes `3F3F74` | glass, screw rings and cords: the Flood Light's lamp, the Magnifying Glass's lens, the Mirror's panes |
 
 Each must read at 1× zoom against the boat and the darkest map. The concept page (§4) checks them against the taken
-shapes. Uloe is the only tall, thin, legless outline on the boat. Its bulb is glass on a post, not Sprigg's plant bulb.
+shapes. Uloe is the only tall, thin, legless outline on the boat. Its bulb is glass on a post, not a plant bulb.
 
 **Where the art departs from the house style**, kept as drawn until Dimitri says otherwise (each is decided at that
 vessel's design gate): Yossele's and Spool's eyes glow instead of being dark dots; Yossele's limbs are long (the style
-wants 2 px or none); Uloe's head is under half its height. Spool keeps Loom and Thread although Mummer used them: Mummer was
-Spool's prototype (`docs/scope/08`). The names stay the user's.
+wants 2 px or none); Uloe's head is under half its height. The names stay the user's.
 
 ## Towers
 

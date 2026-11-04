@@ -1,8 +1,9 @@
 # Rogue Waves
 
-An expansion-sized fan mod for *TDS - Tower Defense Strategy* (Blockage): new **vessels** (playable characters) and, once
-researched, the other pieces an expansion has (`docs/EXPANSION_SCOPE.md`). This repository carries the kit and every
-lesson learned building six vessel mods in `ModProjects`; the vessels themselves arrive after their overhaul.
+An expansion-sized fan mod for *TDS - Tower Defense Strategy* (Blockage): a roguelike campaign mode, four new
+**vessels** (playable characters: Yossele, Spool, Argo, Uloe) and the other pieces an expansion has
+(`docs/EXPANSION_SCOPE.md`), shipped as one pack (`docs/PACK.md`). This repository carries the pack's parts and the kit
+that holds every lesson learned making them.
 
 **Where the truth lives, in order:** the user's newest words > `TDS_Vessel_Creator/` (the kit) > this file. This file
 is only a map and a reading order. Rules live in the kit; don't copy them here or into `.claude/rules/`, link them.
@@ -11,8 +12,8 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 
 | Path | What | Read first |
 | --- | --- | --- |
-| `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule, distilled from shipping Sprigg, Argo, Mummer and building Crackpot, Rustle, Broodie | `README.md`, then the doc the task needs (below) |
-| `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.7), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames. `ModSource/Riptide`: a tested roguelike-mode prototype, prior art for the mode | `TDS_Mod/README.md` |
+| `TDS_Vessel_Creator/` | The vessel-making kit: every TDS rule learned so far | `README.md`, then the doc the task needs (below) |
+| `TDS_Mod/` | The vessel-free part of the Unity mod project. `ModSource/Shared` is the **live** shared kit (1.7), copied to `TDS_Vessel_Creator/kit/Shared`. `Assets/ModKit/Editor`: Unity build queue. `Tools/cloud-check`: compile and preview here. `Tools/pc`: PC rounds. `Tools/aseprite`: hand-edited frames | `TDS_Mod/README.md` |
 | `TDS_Mod/ModSource/Argo` + `Assets/ArgoMod` | Argo 2.0.1, designed from the scope and built; self-test 142/0 and played by a second machine on the PC (2026-11-04); ships only inside the pack; the 2026-11-04 review's scope changes are not built | its `DESIGN.md` |
 | `TDS_Mod/ModSource/RogueWavesMode` | The pack's mode part (0.1.0-dev, the pack version: the whole campaign from the main-menu button to the end screen, sea chart, weather, Pure Aura, VENDCINT, Directions, Cardinals and Trinkets, objectives, votes, retries, rejoin; its self-test passes in game, `docs/reports/BUILD_2026-11-03.md`), dev mod `RogueWavesModeMod` | its `README.md`, then `docs/mode/SEA_CHART.md` §7-9 or `docs/mode/REJOIN.md` |
 | `TDS_Mod/ModSource/Yossele` | Yossele 0.2.0-dev, built from the 2026-10-20 sheet (`docs/scope/07`) with temporary art; PC round 9 passed 160/0, Dimitri's play build | `DESIGN.md`, `IMPLEMENTATION_NOTES.md`, `docs/YOSSELE_BUILD_NOTES.md` |

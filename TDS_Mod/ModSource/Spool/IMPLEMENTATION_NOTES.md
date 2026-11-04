@@ -2,8 +2,8 @@
 
 **Built from the scope in one stretch: design (`DESIGN.md`), temporary art (`Assets/SpoolMod/Editor`,
 `Previews/0.1/ASSETS.md`), code (`Code/`), self-test (`Code/99_SelfTest.cs`).** Started at Dimitri's "Begin
-implementing Spools mechanics" (2026-10-26) from the kit's template (Mummer's scaffold, with the 1.6 pack calls,
-`ModKitCombat` kill credit, `ModKitTowers.Fit` and unthrottled looks added to the template first). Every Mummer
+implementing Spools mechanics" (2026-10-26) from the kit's template (with the 1.6 pack calls,
+`ModKitCombat` kill credit, `ModKitTowers.Fit` and unthrottled looks added to the template first). Every template
 mechanic, sheet, model, effect and sound is gone. The sheet is `docs/scope/08_Vessel_Spool.txt` as PR #40 leaves it.
 
 **Checked here first:** `check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with
@@ -30,7 +30,7 @@ says about the game is read from its code, not seen.
 | `09_Head.cs` | The Thread Head: guard, collect, SPOT, RETURN, Threaded Delivery, MEND, death and comeback |
 | `10_Cushion.cs` | The Pin Cushion's front-of-chain hit hook: reflect, spin, Slow Unravel, Loose Stuffing |
 | `11_Client.cs` | Every look and sound (Vis RPCs): ground tufts, flights to the carrier and the Stash, pops, pricks, patch, warnings |
-| `12_Commands.cs` | The PATCH picker (Mummer's HOOK picker on your own units and buildings), the RETURN and MEND buttons |
+| `12_Commands.cs` | The PATCH picker (the template's HOOK picker on your own units and buildings), the RETURN and MEND buttons |
 | `13_Journal.cs` | Journal pages, diagnostics dump |
 | `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only; the self-test makes about 120 checks in the sections of `DESIGN.md`'s test plan |
 

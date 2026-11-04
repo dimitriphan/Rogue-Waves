@@ -761,7 +761,7 @@ namespace YosseleBuild
         }
 
         // ---------------------------------------------------------------- debuff meshes (attached by the game)
-        // Heights follow the template's verified numbers (Mummer 1.0: overhead marker at 1.6 in these coordinates).
+        // Heights follow the template's verified numbers (overhead marker at 1.6 in these coordinates).
 
         // Full spores: a little toadstool cap over the foe's head.
         static Lp Toadstool()

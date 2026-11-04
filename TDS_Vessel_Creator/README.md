@@ -2,7 +2,8 @@
 
 Everything needed to add new **vessels** (playable characters) to *TDS - Tower Defense Strategy* as mods that look,
 play and read like the five vessels Blockage shipped, show up in the journal, and work online. It is distilled from
-building three vessels end to end (Sprigg, Argo, Mummer; 2026-10-01/02), including every mistake made on the way.
+every vessel built so far, including every mistake made on the way; the template and `examples/` keep the code of the
+first ones, because the chapters cite it.
 
 Written for an AI agent (Claude or another) working on the user's Windows PC with the TDS mod project, but a human can
 follow it too. **Read this file fully, then the docs in order.** Don't skip `docs/09_PITFALLS.md`.

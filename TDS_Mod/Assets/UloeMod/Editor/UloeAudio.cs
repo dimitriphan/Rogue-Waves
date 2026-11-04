@@ -39,7 +39,7 @@ namespace UloeBuild
             };
         }
 
-        // ---------------------------------------------------------------- building blocks (as Sprigg's)
+        // ---------------------------------------------------------------- building blocks
 
         static float[] Buf(float seconds) { return new float[Mathf.CeilToInt(seconds * Rate)]; }
         static System.Random rng = new System.Random(17);

@@ -364,7 +364,7 @@ def sheets_from_ase(ase):
 def pack(vessel, outdir, pngs, version=''):
     named = {os.path.splitext(os.path.basename(p))[0]: p for p in pngs}
     sizes = {n: png_read(p) for n, p in named.items()}
-    # Growth stages (Sprigg): main sheets named <Vessel><Stage>-Sheet
+    # Growth stages: main sheets named <Vessel><Stage>-Sheet
     stages = sorted({n[len(vessel):-len('-Sheet')] for n, (w, h, _) in sizes.items()
                      if n.startswith(vessel) and n.endswith('-Sheet') and (w, h) == (192, 256)} - {''},
                     key=lambda s: ['Sprout', 'Bud', 'Leafy', 'Bloom'].index(s) if s in

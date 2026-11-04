@@ -2,7 +2,7 @@
 // (never voxel): a few clean solids per model - bevelled blocks, tubes, frusta, low-poly spheres, folded leaves -
 // coloured from one 8x8 point-filtered palette texture (like the game's Tower_*_Color textures). Origin at the tile
 // centre, ground at y = -0.5; primitive coordinates are given with y measured up from the ground. Front faces -z.
-// The Lp builder is the same as Sprigg's (each mod's editor code stands alone); the palette is Yossele's: clay, leaf,
+// The Lp builder is the kit template's (each mod's editor code stands alone); the palette is Yossele's: clay, leaf,
 // moss, stone, mushroom, dandelion, pachira, aura fruit.
 using System;
 using System.Collections.Generic;

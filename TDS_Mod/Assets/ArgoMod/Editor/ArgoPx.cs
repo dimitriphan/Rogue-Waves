@@ -1,4 +1,4 @@
-// Argo asset generator: pixel-art canvas helpers (same as Sprigg's).
+// Argo asset generator: pixel-art canvas helpers (the kit template's).
 // Authoring coordinates are x right, y DOWN (row 0 = top), like the sheets you see in an image editor.
 using System.Collections.Generic;
 using System.IO;

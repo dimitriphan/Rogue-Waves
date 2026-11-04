@@ -70,7 +70,7 @@ public class ArgoMod : MonoBehaviour
         while (Bla_Addressables.Instance == null)
             yield return new WaitForSecondsRealtime(0.5f);
 
-        // Smacky's group (the template), then the other vessels' groups Argo clones from (Mummer's pattern).
+        // Smacky's group (the template), then the other vessels' groups Argo clones from (the kit template's pattern).
         List<string> folders = new List<string> { template.Heroloads.Objectname };
         foreach (string hero in ArgoData.ExtraGroups)
         {

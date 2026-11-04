@@ -416,7 +416,7 @@ namespace ArgoBuild
         }
 
         // Which way Unity's Hemisphere shape faces: emit a few particles and see where they go, then return the shape
-        // rotation that turns the dome upward (Unity's Hemisphere faces +Z; see Sprigg v1.3).
+        // rotation that turns the dome upward (Unity's Hemisphere faces +Z).
         static Vector3 HemisphereUp()
         {
             var go = new GameObject("hemisphere probe");
@@ -588,7 +588,7 @@ namespace ArgoBuild
                 src.playOnAwake = false;
             }
             // The game instantiates the mod prefab (and this library with it) at startup, so every holder stays inactive
-            // (Sprigg v1.2.1: active SpriteRenderers drew the sheets at the world origin on the startup screen).
+            // (an active SpriteRenderer draws its sheet at the world origin on the startup screen).
             spr.SetActive(false);
             models.SetActive(false);
             vfx.SetActive(false);

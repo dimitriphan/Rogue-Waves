@@ -19,7 +19,7 @@ public static class ArgoData
     public const bool Diagnostics = true;
 
     public const string TemplateHero = "Hero_Smacky";
-    // Other vessels' groups Argo's data clones from: Buster's Speed Pad is Deep Water's walk-through template (Mummer's
+    // Other vessels' groups Argo's data clones from: Buster's Speed Pad is Deep Water's walk-through template (the kit template's
     // Curtain pattern; without it the traps fall back to Smacky's Perma-Wall block).
     public static readonly string[] ExtraGroups = { "Hero_Buster" };
     public const string TrapFallback = "Trap_Smackywall_Perma";
@@ -88,7 +88,7 @@ public static class ArgoData
     public const string ReferenceSound = "Upgrade";
 
     // Target loudness (clip rms x playback volume) per clip, matched to the game's own sounds for the same job
-    // (measured in game for Sprigg: tower shots ~0.004, hits ~0.0015, Upgrade ~0.013, vessel landings ~0.015).
+    // (measured in game: tower shots ~0.004, hits ~0.0015, Upgrade ~0.013, vessel landings ~0.015).
     // ArgoAssets.Play measures each clip once and sets the volume to hit its target.
     public static readonly Dictionary<string, float> SoundTarget = new Dictionary<string, float>
     {
@@ -200,7 +200,7 @@ public static class ArgoData
     // ---------------------------------------------------------------- the harpoon's reel (1.4)
 
     // 2.0: only the reel path reels (Reel, Twin Line, Undertow). The first foe each harpoon hits walks itself Reel_Tiles
-    // toward the gun on its own Move command (Mummer's HOOK reel), never closer than ReelMinDist. Foes this tough (max
+    // toward the gun on its own Move command (the kit template's HOOK reel), never closer than ReelMinDist. Foes this tough (max
     // health) are hit but not moved.
     public const float ReelTiles = 1.5f, ReelTime = 0.4f, ReelMinDist = 1.2f, BossHealth = 600f;
     public const float DoubleDelay = 0.15f;     // Double Barrel: the stored volley follows this long after the first
@@ -308,7 +308,7 @@ public static class ArgoData
         },
         new Build
         {
-            // Buster's Speed Pad is the template: a walk-through block (Mummer's Curtain proved it, falling back to
+            // Buster's Speed Pad is the template: a walk-through block (the kit template's Curtain proved it, falling back to
             // Perma-Wall's when Buster's group isn't loaded).
             Id = Water, Template = "Trap_Busterpad", Display = "Deep Water", Desc = "Walk-through pool that slows foes inside. FLOOD adds a pool next to it", Family = "Argowater",
             Tags = new[] { "Trap" }, Costs = "Blueaura=20", Trap = true,

@@ -22,7 +22,7 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 None if the PC's GitHub CLI is signed in (`gh auth status`): `Get-Handoff.ps1` uses it. Otherwise:
 
 1. On github.com: Settings > Developer settings > Personal access tokens > Fine-grained tokens > Generate new token.
-   Repository access: only `dimitriphan/Rogue-Waves` (a token made for ModProjects does not reach this repository). Permissions: Contents, Read-only. Expiry: 90 days.
+   Repository access: only `dimitriphan/Rogue-Waves`. Permissions: Contents, Read-only. Expiry: 90 days.
 2. Save the token as the only line of `C:\Users\Dimitri\.modprojects_token`.
 3. The scripts reach the PC once in a handoff zip; after that every handoff carries the current copies.
 
@@ -53,7 +53,7 @@ PC session (`<h>` is `Desktop\ClaudeProjects\handoff`):
 3. Apply it: `Apply-Handoff.ps1 -Apply`. This backs up what it replaces and writes a fresh `pc_manifest.txt`.
 4. Let Unity compile: `execute_menu_item("Assets/Refresh")`, then wait until it has finished.
 5. Build the code: `Build-<Name>Mod.ps1 -Define <NAME>_SELFTEST` for each vessel. Then write `<h>\queue.txt`, one
-   vessel per line, adding ` twice` for Sprigg. If Dimitri keeps a play build in the game's Mods folder (kit
+   vessel per line, adding ` twice` for a vessel whose assets need two passes. If Dimitri keeps a play build in the game's Mods folder (kit
    `TDS_Vessel_Creator/README.md`, "Facts about this PC": Yossele's since 2026-10-12), move it out of `TDS\Mods` now
    and put it back when the round is done (no script does either).
 6. Build and export: `execute_menu_item("Tools/ModKit/Build Queue")`, once. Then read the `[ModKit]` lines in
