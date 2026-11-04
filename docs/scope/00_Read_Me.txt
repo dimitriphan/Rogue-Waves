@@ -43,6 +43,7 @@
 		- Money: the colour or currency, then the amount / Red 30, Blue 20 + Yellow 10, Pure Aura 20 \
 		- A blank slot means not decided yet, and the design gate proposes a ~value~. ! NEEDS ! means Claude can't pick it for you
 		- A value Claude read from the game (the base vessels) carries no ~: it is the game's, not a default
+		- By: on a Direction or a Cardinal, who made it: Dimitri or Claude. It is a fact Claude keeps, never a default, so it is never marked as one. A Claude-made sheet keeps every value a ~default~ until you take it. Taking it does not change By
 
 	[Names]
 		- Title Case inside { } and [ ]. Base game names are spelled as the game spells them / Sno Sno, Boutman, Bouthouse \
@@ -55,7 +56,7 @@
 		- One fact per line. A paragraph of prose is allowed only as a file's opening [Summary], and every rule in it is also a slot below
 		- Every file follows the same order: | Title |, # lines saying what the file holds, its rules, then its list of sheets, then [Questions]
 		- Every sheet in a list follows its template from 15_Templates.txt, in the template's slot order
-		- Slots every template shares sit in the same places: Kind first, Cost or Pays just before Look, Look and Clashes last, Status at the very end
+		- Slots every template shares sit in the same places: Kind first, Cost or Pays just before Look, Look, Clashes and By last, Status at the very end
 
 	[One Place for Each Fact]
 		- A rule lives in one file. Any other file points to it with -> instead of repeating it

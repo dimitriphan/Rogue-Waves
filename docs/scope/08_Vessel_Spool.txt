@@ -347,6 +347,7 @@
 
 		[Directions] / Written in 11_Directions.txt under Spool \
 			- {Efficient Recycler}, {Sewing Machine} / And {Made of Tougher Stuff}, for any vessel with minions \
+			- {~Double Needle~}, {~Button Jar~}, {~Pattern Book~} /~ Made by Claude \
 
 		[Questions]
 			- 1. {Efficient Recycler} in 11_Directions.txt is built on {Unthread}, which is now just selling. ~It raises the {Thread} refunded when you sell a {Crafted}~

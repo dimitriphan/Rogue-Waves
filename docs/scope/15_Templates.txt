@@ -150,6 +150,7 @@
 		- Numbers: / Exact values for each rank. Leave blank and the design gate proposes them \
 		- Look: / One found object for its icon, readable at 12x12. It shows on the card in the pick dialog \
 		- Clashes: / Any Direction or Cardinal it should not be held with, or none \
+		- By: / Dimitri or Claude: who made it. Claude keeps it -> 00_Read_Me.txt [Values] \
 
 	{Deep Roots} / Example only, not a decision \
 		- Kind: Boost
@@ -161,6 +162,7 @@
 		- Numbers: / Blank: the design gate proposes them \
 		- Look: A seed with a root curling out of it
 		- Clashes: None
+		- By: Claude
 
 | Template: Cardinal |
 	- Goes in: 12_Cardinals.txt, under its kind
@@ -177,6 +179,7 @@
 		- Cost: / In Pure Aura \
 		- Look: / The object for its icon, readable at 12x12, in the pack's palette \
 		- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \
+		- By: / Dimitri or Claude: who made it. Claude keeps it -> 00_Read_Me.txt [Values] \
 
 	{Cracked Buoy} / Example only, not a decision \
 		- Kind: Vessel
@@ -189,6 +192,7 @@
 		- Cost: ! NEEDS !
 		- Look: A red and white buoy with a crack down one side
 		- Clashes: None
+		- By: Claude
 
 | Template: Optional Objective |
 	- Goes in: 14_Optional_Objectives.txt
