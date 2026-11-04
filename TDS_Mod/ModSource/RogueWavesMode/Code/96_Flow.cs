@@ -490,7 +490,7 @@ public static partial class RWTest
                 }
         yield return new WaitForSeconds(1f);
         bad = errors;
-        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        Beingobject archer = RWUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
         Entity_Master built = null;
         if (archer != null && vessel != null)
         {
@@ -498,7 +498,7 @@ public static partial class RWTest
             Genitem tile = null;
             foreach (Genitem g in RWUtil.Ground())
             {
-                float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
+                float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
                 if (d < 2f || d > 7f) continue;
                 bool ok = false;
                 try { ok = Helper_Gridtools.Checkifplaceable(g, archer, 0, vessel.Entitydata.Value.Team); } catch (Exception) { }
@@ -544,11 +544,11 @@ public static partial class RWTest
         Check("A base vessel's Direction holds its stat: Skipping Stones on Smacky", skipping != null && hit0 > 0f && hit1 >= hit0 * 1.25f, hit0 + " -> " + hit1 + " (rank I may already be held: its first pick)");
         // Made of Tougher Stuff: a minion of this player, hit once.
         Entity_Master minion = null;
-        Beingobject miner = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        Beingobject miner = RWUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
         if (miner != null && vessel != null)
             foreach (Genitem g in RWUtil.Ground())
             {
-                float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
+                float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
                 if (d < 2f || d > 8f) continue;
                 Link_Being mb = new Link_Being { Being = miner, Entity = miner.Entity, Block = miner.Block, Team = vessel.Entitydata.Value.Team };
                 Genitem spot = null;
@@ -744,6 +744,9 @@ public static partial class RWTest
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 200f);
         yield return Until(() => RWShop.Stand != null, 90f);
         freeze = true;
+        // What was bought on map 1 goes back on this map's new core, and in the HUD's row (missing until 2026-11-04).
+        yield return new WaitForSeconds(1f);
+        Check("A later map: the Cardinals held go back on its new core, and in the HUD's row", RWRun.Cardinals.Count > 0 && RWCardinals.MissingOnCore() == 0 && Tds_Multiplayerinfo.Instance.Artifacts.Count > 0, RWRun.Cardinals.Count + " held, " + RWCardinals.MissingOnCore() + " missing on the core, " + Tds_Multiplayerinfo.Instance.Artifacts.Count + " in the row");
         RWRun.For(me).Pure += 9;
         ClearFoes();
         Mode_Normal lostMode = Game_Rounds.Instance.GetComponent<Mode_Normal>();
