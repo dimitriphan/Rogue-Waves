@@ -1,7 +1,8 @@
-// Server-side base for every Yossele buildable. Replaces the template's own AIs (which hard-code Smacky's objects) and
-// Entity_Ai_General_Upgrade, whose upgrade flow it mirrors exactly: the same Upgrade/Upgradeoption commands, throttle,
-// costs, Forced/Normal checks, Upgradeborder effect and the owner's Upgraded end-screen stat. Upgrade parameters on the
-// building's own stats become modifiers; the rest are read by the subclass through Param() and Has().
+// Server-side base for every Yossele buildable. Replaces the template's own AIs (which hard-code Smacky's objects). The
+// game's own Entity_Ai_General_Upgrade sits on every buildable (YosseleContent.BuildTower) and runs the upgrade panel:
+// the Upgrade/Upgradeoption commands, throttle, costs, Upgradeborder effect, the owner's Upgraded end-screen stat, and
+// Voice in a Bottle's price cut. This brain hears each upgrade through Master.Upgrade: parameters on the building's own
+// stats become modifiers; the rest are read by the subclass through Param() and Has().
 //
 // Growth (the scope's rule): a building gains a stage when a Tide begins if it stood through the whole Tide before it
 // (5 stages on a map of 4 Tides or fewer), up to its maximum; FERTILIZE adds one at once. The stage is shown as the "Growth" counter (ModKitCounter) and the
@@ -18,8 +19,6 @@ public abstract class YosseleBuilding : MonoBehaviour
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
     readonly List<Link_Modifier> upgradeMods = new List<Link_Modifier>();
     readonly YosseleFaults faults = new YosseleFaults();
-    Link_Command upgradeCommand;
-    float upgradeThrottle;
 
     // Stats the buildings own: an upgrade param named after one of these (Range_Add, Seedlimit_Add...) is a modifier.
     static readonly string[] StatNames = { "Damage", "Attackspeed", "Range", "Health", "Radius", "Spores", "Seedlimit", "Seedrate", "Slow" };
@@ -70,15 +69,6 @@ public abstract class YosseleBuilding : MonoBehaviour
     void Begin()
     {
         Started = true;
-        upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
-        for (int i = 1; i <= 4; i++)
-        {
-            Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
-            option.Goalvalue = i - 1;
-            Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
-        }
-        upgradeCommand.Goalvalue = 1f;
-        Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         BuiltWave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
@@ -132,53 +122,15 @@ public abstract class YosseleBuilding : MonoBehaviour
         OnGrowth();
     }
 
-    // ---------------------------------------------------------------- upgrades (Entity_Ai_General_Upgrade's flow)
+    // ---------------------------------------------------------------- commands and upgrades
 
+    // "Upgrade" belongs to the stock Entity_Ai_General_Upgrade; every other command goes to the subclass.
     void OnCommand(string command, string json, bool server)
     {
-        if (command != "Upgrade")
-        {
-            try { Command(command, json, server); }
-            catch (Exception e) { YosseleLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
+        if (command == "Upgrade")
             return;
-        }
-        if (string.IsNullOrEmpty(json))
-            return;
-        try
-        {
-            // {"Upgrade":"<name>","Upgrader":<session>} (Entity_Ai_General_Upgrade.Upgradedata), read by hand because
-            // JsonUtility isn't available to mod code.
-            string upgradeName = YosseleUtil.JsonString(json, "Upgrade");
-            long upgrader = (long)YosseleUtil.JsonNumber(json, "Upgrader");
-            Upgradeproperties up = Bl_Address.Getload("Upgrade", upgradeName) as Upgradeproperties;
-            if (up == null)
-                return;
-            if (!server)
-            {
-                List<Upgradeproperties> available = new List<Upgradeproperties>(Master.Beingserver.Entity.Upgrades);
-                foreach (Upgradeproperties applied in Master.Upgradelistserver.Values)
-                    if (applied.Priority == Master.Entitydata.Value.Level)
-                        available.AddRange(applied.Upgrades);
-                if (!available.Contains(up) || Time.time - upgradeThrottle <= 0.05f)
-                    return;
-                upgradeThrottle = Time.time;
-            }
-            float scale = upgradeCommand != null ? upgradeCommand.Goalvalue : 1f;
-            if (!Helper_Resources.Checkresources(up.Costs, upgrader, scale))
-                return;
-            Helper_Resources.Useresources(up.Costs, upgrader, scale);
-            Helper_Entitytools.Upgrade(Master, up, server ? Helper_Entitytools.Upgradecheck.Forced : Helper_Entitytools.Upgradecheck.Normal, null);
-            Master.Radio.Vfxoneshotcheck("Upgradeborder", Pos, Vector3.forward);
-            GameObject player;
-            Tds_Clientinfo info;
-            if (Blm_Server.Instance != null && Blm_Server.Instance.Sessionids.TryGetValue(Owner, out player)
-                && player != null && player.TryGetComponent(out info) && info.Activeplayerdata != null)
-                info.Activeplayerdata.Upgraded++;
-        }
-        catch (Exception e)
-        {
-            YosseleLog.Warn("upgrade command: " + e.Message);
-        }
+        try { Command(command, json, server); }
+        catch (Exception e) { YosseleLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
     }
 
     void OnUpgrade(Upgradeproperties up)

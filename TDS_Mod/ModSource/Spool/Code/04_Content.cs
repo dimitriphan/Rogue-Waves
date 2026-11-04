@@ -464,6 +464,8 @@ public static class SpoolContent
         ent.Display_Name = b.Display;
         ent.Display_Desc = b.Desc;
         ent.Aiscripts = Strip(te.Aiscripts);
+        // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
+        ent.Aiscripts.Add(SpoolUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
         ent.Costs = SpoolUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
@@ -561,6 +563,7 @@ public static class SpoolContent
         Entityobject te = tb.Entity;
         Beingobject being = SpoolUtil.Clone(tb, b.Id);
         Entityobject ent = UnitEntity(te, b.Id, b.Display, b.Desc, b.Stats, false);
+        ent.Aiscripts.Add(SpoolUtil.Script("Entity_Ai_General_Upgrade"));   // its upgrade tree, as on a building
         ent.Costs = SpoolUtil.Costs(b.Costs);
         ent.Sellable = true;
         ent.Controllable = true;

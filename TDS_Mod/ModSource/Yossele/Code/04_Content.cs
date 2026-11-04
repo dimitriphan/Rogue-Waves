@@ -448,6 +448,8 @@ public static class YosseleContent
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
             ent.Aiscripts.Insert(0, YosseleUtil.Script("Entity_Ai_Tower_General"));
+        // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
+        ent.Aiscripts.Add(YosseleUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
         // Its own hit prefab: the range the game draws centred on the tower's tile, where its brain measures from, and
         // a collider the size of its model (the templates' sat 2 tiles under the Bomb Tower, Argo 1.0).

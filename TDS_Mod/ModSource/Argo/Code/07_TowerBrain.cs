@@ -1,5 +1,6 @@
 // Server-side brain for every Argo buildable. Replaces the template tower AIs (which hard-code Smacky's projectiles and
-// upgrades) and Entity_Ai_General_Upgrade (mirrored exactly, so the game's upgrade panel works unchanged).
+// upgrades). The game's own Entity_Ai_General_Upgrade runs the upgrade panel on every buildable with a tree
+// (ArgoContent.BuildTower); this brain hears each upgrade through Master.Upgrade.
 //   Scatter Cannon  volleys of real pellets (Projectile_Ai_Simple) fanned across a cone; each pellet hits what it meets,
 //                   50% harder on a Slowed or Pinned foe (2.0).
 //   Harpoon Gun     one piercing harpoon down the line that holds the most enemies (the Heavy Bow's native Pierce).
@@ -22,7 +23,7 @@ public class ArgoTowerBrain : MonoBehaviour
     public float TunedReel, LastReelDone, NextDrag;
     public Vector3 AimCenter;
 
-    float lastAttack, nextScan, upgradeThrottle, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f;
+    float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f;
     int shotSerial, mantleTide = -1;
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
@@ -31,7 +32,7 @@ public class ArgoTowerBrain : MonoBehaviour
     readonly List<float> reelShots = new List<float>();   // shots whose first hit is still to come
     // Each reel shot's nearest foe hit in the step it first hits, and how far it stood from the tower.
     readonly Dictionary<float, KeyValuePair<Entity_Master, float>> reelFirst = new Dictionary<float, KeyValuePair<Entity_Master, float>>();
-    Link_Command upgradeCommand, aimCommand;
+    Link_Command aimCommand;
     Link_Modifier salvoMod;
     int salvoRank;
     Entity_Master.Interacts hitHandler;
@@ -108,20 +109,6 @@ public class ArgoTowerBrain : MonoBehaviour
     {
         Started = true;
         hitHandler = OnHit;
-        // Same upgrade commands Entity_Ai_General_Upgrade creates, so the game's upgrade panel works unchanged.
-        // FLOOD's pools have no tree of their own.
-        if (Def.Upgrades.Length > 0)
-        {
-            upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
-            for (int i = 1; i <= 4; i++)
-            {
-                Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
-                option.Goalvalue = i - 1;
-                Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
-            }
-            upgradeCommand.Goalvalue = 1f;
-            Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
-        }
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         if (IsBell)
@@ -140,7 +127,7 @@ public class ArgoTowerBrain : MonoBehaviour
             AddFlood();
         // Subscribed last: the Updatecommand calls above run each command once.
         Master.Command += OnCommand;
-        Master.Upgrade += OnUpgrade;
+        Master.Upgrade += Upgraded;
         lastAttack = Time.fixedTime - 0.5f;
         ArgoUtil.Vis(Master, "Argo_Build", ArgoUtil.Pos(Master), 0);
     }
@@ -913,7 +900,7 @@ public class ArgoTowerBrain : MonoBehaviour
             SinkTo(Fathom + 1);
     }
 
-    // ---------------------------------------------------------------- upgrades (mirrors Entity_Ai_General_Upgrade)
+    // ---------------------------------------------------------------- commands and upgrades
 
     void OnCommand(string command, string json, bool server)
     {
@@ -939,55 +926,26 @@ public class ArgoTowerBrain : MonoBehaviour
             catch (Exception e) { ArgoLog.Warn("flood: " + e.Message); }
             return;
         }
-        if (command != "Upgrade" || string.IsNullOrEmpty(json))
-            return;
-        try
-        {
-            // {"Upgrade":"<name>","Upgrader":<session>} (Entity_Ai_General_Upgrade.Upgradedata). JsonUtility isn't
-            // available to mod code, so read the two fields directly.
-            string upgradeName = ArgoUtil.JsonString(json, "Upgrade");
-            long upgrader = (long)ArgoUtil.JsonNumber(json, "Upgrader");
-            Upgradeproperties up = Bl_Address.Getload("Upgrade", upgradeName) as Upgradeproperties;
-            if (up == null)
-                return;
-            if (!server)
-            {
-                List<Upgradeproperties> available = new List<Upgradeproperties>(Master.Beingserver.Entity.Upgrades);
-                foreach (Upgradeproperties applied in Master.Upgradelistserver.Values)
-                    if (applied.Priority == Master.Entitydata.Value.Level)
-                        available.AddRange(applied.Upgrades);
-                if (!available.Contains(up) || Time.time - upgradeThrottle <= 0.05f)
-                    return;
-                upgradeThrottle = Time.time;
-            }
-            float scale = upgradeCommand != null ? upgradeCommand.Goalvalue : 1f;
-            if (!Helper_Resources.Checkresources(up.Costs, upgrader, scale))
-                return;
-            Helper_Resources.Useresources(up.Costs, upgrader, scale);
-            Helper_Entitytools.Upgrade(Master, up, server ? Helper_Entitytools.Upgradecheck.Forced : Helper_Entitytools.Upgradecheck.Normal, null);
-            Master.Radio.Vfxoneshotcheck("Upgradeborder", ArgoUtil.Pos(Master), Vector3.forward);
-            ArgoUtil.Vis(Master, "Argo_Upgrade", ArgoUtil.Pos(Master), up.Priority);
-            // End-of-match stats, as Entity_Ai_General_Upgrade records them.
-            GameObject player;
-            Tds_Clientinfo info;
-            if (Blm_Server.Instance != null && Blm_Server.Instance.Sessionids.TryGetValue(ArgoUtil.Owner(Master), out player)
-                && player != null && player.TryGetComponent(out info) && info.Activeplayerdata != null)
-                info.Activeplayerdata.Upgraded++;
-        }
-        catch (Exception e)
-        {
-            ArgoLog.Warn("upgrade command: " + e.Message);
-        }
+        // "Upgrade" belongs to the stock Entity_Ai_General_Upgrade.
     }
 
-    void OnUpgrade(Upgradeproperties up)
+    // An upgrade landing after Begin (the stock upgrade AI's purchase, or a host's Forced one): applied, and a tree
+    // upgrade plays its sound.
+    void Upgraded(Upgradeproperties up)
+    {
+        if (OnUpgrade(up))
+            ArgoUtil.Vis(Master, "Argo_Upgrade", ArgoUtil.Pos(Master), up.Priority);
+    }
+
+    // Returns true when 'up' is one of Argo's tree upgrades, applied now.
+    bool OnUpgrade(Upgradeproperties up)
     {
         ArgoData.Upg def;
         if (up == null || !ArgoContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
-            return;
+            return false;
         keys.Add(def.Key);
         if (up.Defaultparams == null)
-            return;
+            return true;
         foreach (KeyValuePair<string, float> kv in up.Defaultparams)
         {
             int cut = kv.Key.LastIndexOf('_');
@@ -1026,5 +984,6 @@ public class ArgoTowerBrain : MonoBehaviour
         }
         if (Started && IsDrill && Fathom > FathomMax)
             SinkTo(FathomMax);
+        return true;
     }
 }

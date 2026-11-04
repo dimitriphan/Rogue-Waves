@@ -474,6 +474,8 @@ public static class UloeContent
         ent.Display_Name = b.Display;
         ent.Display_Desc = b.Desc;
         ent.Aiscripts = Strip(te.Aiscripts);
+        // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
+        ent.Aiscripts.Add(UloeUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
         ent.Costs = UloeUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();

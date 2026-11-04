@@ -1,7 +1,8 @@
-// Server-side base for every Uloe buildable. Replaces the template's own AIs (which hard-code Smacky's objects) and
-// Entity_Ai_General_Upgrade, whose upgrade flow it mirrors exactly: the same Upgrade/Upgradeoption commands, throttle,
-// costs, Forced/Normal checks, Upgradeborder effect and the owner's Upgraded end-screen stat. An upgrade parameter on a stat
-// the entity has becomes a modifier; the rest are read by the subclass through Param(). Every building has a Light stat
+// Server-side base for every Uloe buildable. Replaces the template's own AIs (which hard-code Smacky's objects). The
+// game's own Entity_Ai_General_Upgrade sits on each of them (UloeContent.BuildTower) and runs the upgrade panel: the
+// Upgrade/Upgradeoption commands, throttle, costs, Upgradeborder effect, the owner's Upgraded end-screen stat and Voice in
+// a Bottle's price cut. This brain hears each upgrade through Master.Upgrade: a parameter on a stat the entity has becomes
+// a modifier; the rest are read by the subclass through Param(). Every building has a Light stat
 // (UloeLight feeds it) and shows its band as a skin.
 public abstract class UloeBuilding : MonoBehaviour
 {
@@ -12,8 +13,7 @@ public abstract class UloeBuilding : MonoBehaviour
 
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
-    Link_Command upgradeCommand;
-    float upgradeThrottle, nextLook, lookFrom;
+    float nextLook, lookFrom;
 
     public bool Has(string key) { return keys.Contains(key); }
     public int UpgradeCount { get { return keys.Count; } }
@@ -74,15 +74,6 @@ public abstract class UloeBuilding : MonoBehaviour
         light.Display_Type = Statproperties.Displaytypes.Float;
         light.Display_Exposed = true;
         Helper_Entitytools.Addstat(Master, light, 0f);
-        upgradeCommand = Helper_Entitytools.Createcommand(Master, "Command_Upgrade", "Upgrade", false, true);
-        for (int i = 1; i <= 4; i++)
-        {
-            Link_Command option = Helper_Entitytools.Createcommand(Master, "Command_Upgradeoption" + i, "Upgradeoption" + i, false, true);
-            option.Goalvalue = i - 1;
-            Helper_Entitytools.Updatecommand(Master, "Upgradeoption" + i, "", true, true);
-        }
-        upgradeCommand.Goalvalue = 1f;
-        Helper_Entitytools.Updatecommand(Master, "Upgrade", "", true, true);
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
@@ -98,51 +89,13 @@ public abstract class UloeBuilding : MonoBehaviour
     protected virtual void Command(string command, string json, bool server) { }
     protected virtual void Upgraded(UloeData.Upg def) { }
 
+    // "Upgrade" belongs to the stock Entity_Ai_General_Upgrade; every other command goes to the subclass.
     void OnCommand(string command, string json, bool server)
     {
-        if (command != "Upgrade")
-        {
-            try { Command(command, json, server); }
-            catch (Exception e) { UloeLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
+        if (command == "Upgrade")
             return;
-        }
-        if (string.IsNullOrEmpty(json))
-            return;
-        try
-        {
-            // {"Upgrade":"<name>","Upgrader":<session>} (Entity_Ai_General_Upgrade.Upgradedata), read by hand because
-            // JsonUtility isn't available to mod code.
-            string upgradeName = UloeUtil.JsonString(json, "Upgrade");
-            long upgrader = (long)UloeUtil.JsonNumber(json, "Upgrader");
-            Upgradeproperties up = Bl_Address.Getload("Upgrade", upgradeName) as Upgradeproperties;
-            if (up == null)
-                return;
-            if (!server)
-            {
-                List<Upgradeproperties> available = new List<Upgradeproperties>(Master.Beingserver.Entity.Upgrades);
-                foreach (Upgradeproperties applied in Master.Upgradelistserver.Values)
-                    if (applied.Priority == Master.Entitydata.Value.Level)
-                        available.AddRange(applied.Upgrades);
-                if (!available.Contains(up) || Time.time - upgradeThrottle <= 0.05f)
-                    return;
-                upgradeThrottle = Time.time;
-            }
-            float scale = upgradeCommand != null ? upgradeCommand.Goalvalue : 1f;
-            if (!Helper_Resources.Checkresources(up.Costs, upgrader, scale))
-                return;
-            Helper_Resources.Useresources(up.Costs, upgrader, scale);
-            Helper_Entitytools.Upgrade(Master, up, server ? Helper_Entitytools.Upgradecheck.Forced : Helper_Entitytools.Upgradecheck.Normal, null);
-            Master.Radio.Vfxoneshotcheck("Upgradeborder", Pos, Vector3.forward);
-            GameObject player;
-            Tds_Clientinfo info;
-            if (Blm_Server.Instance != null && Blm_Server.Instance.Sessionids.TryGetValue(Owner, out player)
-                && player != null && player.TryGetComponent(out info) && info.Activeplayerdata != null)
-                info.Activeplayerdata.Upgraded++;
-        }
-        catch (Exception e)
-        {
-            UloeLog.Warn("upgrade command: " + e.Message);
-        }
+        try { Command(command, json, server); }
+        catch (Exception e) { UloeLog.Warn(Def.Id + " command " + command + ": " + e.Message); }
     }
 
     void OnUpgrade(Upgradeproperties up)

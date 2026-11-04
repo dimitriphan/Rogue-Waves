@@ -475,6 +475,10 @@ public static class ArgoContent
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!b.Trap && !ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
             ent.Aiscripts.Insert(0, ArgoUtil.Script("Entity_Ai_Tower_General"));
+        // The game's own upgrade panel AI on every buildable with a tree (FLOOD's pools have none). Strip drops the
+        // template's copy so no other entity gets one by accident.
+        if (b.Upgrades.Length > 0)
+            ent.Aiscripts.Add(ArgoUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
         // Its own hit prefab: the range the game draws (while placing, when selected) centred on the tower at the point
         // its brain measures from (Def.Eye), and a collider the size of the model. Argo 1.0 kept the templates': the
