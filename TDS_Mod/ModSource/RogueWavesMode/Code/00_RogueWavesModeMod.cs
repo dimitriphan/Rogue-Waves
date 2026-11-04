@@ -90,6 +90,9 @@ public class RogueWavesModeMod : MonoBehaviour
 
     void Update()
     {
+#if ROGUEWAVESMODE_FEEL
+        RWFeel.Frame();
+#endif
 #if ROGUEWAVESMODE_TWOPC
         try { RWTwo.Update(); } catch (Exception e) { RWLog.Once("two", "two players: " + e); }
 #endif

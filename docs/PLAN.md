@@ -691,6 +691,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   size and layout (`ModSource/<Part>/Art/Temporary/minions_2026-11-04/`); Cordyfriend and Spool picks are a file copy,
   Photon and Naut picks first need a `FileArt` hook in their builders. Picks page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (collection `picks`, one doc per
   minion); generator `concept-tools/minions/`; GIFs in `/mnt/project-files/concepts/minions_2026-11-04/`. Nothing seen in game.
+- **2026-11-04: smoothness in real play** (Dimitri: "I am unable to test that at the moment, continue with other test features for now."). The one gap the test round left: no frame had been timed in real play. Nothing here is the mod's to fix. Two campaigns with every part on, 148 pass each, hold 144 Hz nearly all the time. In a map, a dialog's opening and a real card's hover cost the same in the mode's layout as in the game's own, and VENDCINT's landing is clean. A changed line of text costs one or two dropped frames in a map, in the game's own layout too, which may be the stutter he saw; that stays his to say. Test-only timer behind `ROGUEWAVESMODE_FEEL`. `docs/reports/SMOOTHNESS_2026-11-04.md`.
 
 ### Decisions
 

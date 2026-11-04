@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `SMOOTHNESS_2026-11-04.md` | 2026-11-04 | Every frame timed through a whole campaign, and the dialogs against the game's own in a map: nothing of the mod's to fix |
 | `TEST_ROUND_2026-11-04.md` | 2026-11-04 | Every feature that had not been tested, run on the PC: the online half with a real second player on the loopback address, the solo gaps, the vessels' new checks, the whole pack. Ten bugs fixed; what is left needs Steam, a real network or a person |
 | `ULOE_UPGRADES_2026-11-04.md` | 2026-11-04 | Uloe's upgrade trees fleshed out from 8 to 32 (8 a building, a capstone each), the five holes they fill (crowds, colour trade, a parked frail vessel, no slow, no capstones), hand numbers against Smacky's towers by Light (`uloe_upgrades_2026-11-04/`), the route each takes in the next build |
 | `ARGO_REVIEW_2026-11-04.md` | 2026-11-04 | Argo's kit reviewed for balance and skill: its slows stack with their own re-ticks; with that fixed it sits between Smacky and Yossele; fourteen changes in scope `09`; simulator with Argo (`balance_argo_2026-11-04/`) |
