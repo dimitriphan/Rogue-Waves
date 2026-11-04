@@ -281,6 +281,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: five concept sprites of Argo as a diver who might not be entirely human (Barnacled, Angler, Hollow,
   Passenger, Pressure Hull), drawn over his shipped frame, idle and back each; Dimitri picks on
   https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (`docs/concepts/argo_divers_2026-11-04/`; not wired; Log).
+  2026-11-04: he picked Hollow; round 2 draws it in five head and body shapes (Bell Jar, Fish Tank, Slump, Fishbowl,
+  Hunch) on the same page (`docs/concepts/argo_hollow_2026-11-04/`; not wired; Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -621,6 +623,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   drives it), Pressure Hull (a later hard suit with a light for a face). `docs/concepts/argo_divers_2026-11-04/README.md`;
   picks page https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (db collection `picks`, doc `argo`); generator
   `concept-tools/argo_divers/`. Concepts only: Argo's mod and `docs/STYLE.md` are unchanged until he picks.
+- **2026-11-04: Argo Hollow, round 2** (Dimitri picked Hollow on the page, "play around with the body shape and size more", and in the
+  thread: "Create more concepts based on the hollow choice, but play around more with the body and head's shapes"). Five shapes keeping
+  the empty, sea-filled suit: Bell Jar (tall, thin), Fish Tank (wide tank head, stubby body), Slump (sunk into a pear on the floor),
+  Fishbowl (a glass globe head, a coat on a hanger), Hunch (helmet slid forward, cut air hose). Same checks and outputs;
+  `docs/concepts/argo_hollow_2026-11-04/README.md`; round 2 sits on top of the same picks page (doc `hollow`); generator
+  `concept-tools/argo_divers/hollow_shapes.py`. Still concepts only.
 
 ### Decisions
 
