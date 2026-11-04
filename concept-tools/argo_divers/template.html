@@ -43,6 +43,21 @@ h2 { font-size: 1.9rem; }
 p { margin: 0; max-width: 65ch; }
 .eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--brass); }
 .intro { display: grid; gap: 12px; }
+.group { display: grid; gap: 28px; }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.take.mini { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 16px; }
+.take.mini .art { grid-template-columns: auto auto; justify-content: start; align-items: end; }
+.take.mini .front { width: 160px; height: 160px; }
+.take.mini .back { width: 96px; height: 96px; }
+.take.mini .notes { gap: 8px; }
+.take.mini h2 { font-size: 1.6rem; }
+.earlier { border-top: 2px solid var(--line); padding-top: 20px; }
+.earlier summary { cursor: pointer; font: 600 1.3rem var(--display); color: var(--deep); }
+.earlier-body { display: grid; gap: 28px; margin-top: 20px; }
+@media (max-width: 720px) { .take.mini .front { width: 160px; height: 160px; } }
+
+.group + .group { border-top: 2px solid var(--line); padding-top: 28px; }
+h2.round { font-size: 2.2rem; color: var(--deep); }
 .lineup { background: #8c8a86; border-radius: 4px; overflow-x: auto; width: fit-content; max-width: 100%; }
 .lineup img { display: block; image-rendering: pixelated; max-width: none; height: auto; }
 .legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
@@ -88,9 +103,277 @@ textarea { width: 100%; box-sizing: border-box; min-height: 96px; font: inherit;
 </style>
 
 <div class="wrap">
+  <div class="group" data-doc="hollow3">
   <header class="intro">
-    <span class="eyebrow">Rogue Waves · Argo concept sprites · 2026-11-04</span>
-    <h1>Argo, a diver who might not be human</h1>
+    <span class="eyebrow">Round 3 · Hollow, ten bodies · 2026-11-04</span>
+    <h1>Hollow, ten new bodies</h1>
+    <p>These go back to the Hollow you picked in round 1, keeping Argo's riveted brass dome with the sea in its porthole
+    and his faded suit and empty gloves. Each of the ten changes how big the helmet is and how the body is shaped, sized
+    and weighted. Round 1's Hollow is first in the line-up.</p>
+    <div class="lineup" aria-label="Hollow and the ten new bodies at game size">
+      <img src="{{LINEUP3_1X}}" alt="Hollow and the ten round 3 designs side by side at game size, shown three times larger" width="1188" height="132">
+    </div>
+    <div class="legend"><span>Game size, shown 3×:</span><span>Hollow</span><span>Big Head</span><span>Long Legs</span><span>Lead Boots</span><span>Waterlogged</span><span>Broad</span><span>Air Tank</span><span>Stout</span><span>Lopsided</span><span>Bell Skirt</span><span>Long Arms</span></div>
+  </header>
+  <div class="grid3">
+    <section class="take mini" data-take="BigHead">
+      <div class="art">
+        <figure><img class="front" src="{{BigHead_IDLE}}" alt="Big Head, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{BigHead_BACK}}" alt="Big Head from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Big Head</h2>
+        <p>A huge helmet on a tiny empty suit, so the sea inside is the biggest thing on him.</p>
+        <span class="stats">23 × 27 px</span>
+        <button class="pick" type="button" id="pick-BigHead">Pick Big Head</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="LongLegs">
+      <div class="art">
+        <figure><img class="front" src="{{LongLegs_IDLE}}" alt="Long Legs, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{LongLegs_BACK}}" alt="Long Legs from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Long Legs</h2>
+        <p>A small helmet on a short body, standing up on long thin legs.</p>
+        <span class="stats">18 × 26 px</span>
+        <button class="pick" type="button" id="pick-LongLegs">Pick Long Legs</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="LeadBoots">
+      <div class="art">
+        <figure><img class="front" src="{{LeadBoots_IDLE}}" alt="Lead Boots, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{LeadBoots_BACK}}" alt="Lead Boots from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Lead Boots</h2>
+        <p>All the weight sinks to the bottom: huge lead boots with brass straps, the suit tapering down to them.</p>
+        <span class="stats">19 × 26 px</span>
+        <button class="pick" type="button" id="pick-LeadBoots">Pick Lead Boots</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Waterlogged">
+      <div class="art">
+        <figure><img class="front" src="{{Waterlogged_IDLE}}" alt="Waterlogged, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Waterlogged_BACK}}" alt="Waterlogged from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Waterlogged</h2>
+        <p>The suit has swollen round with seawater and leaks from the cuffs. The seams stretch across it.</p>
+        <span class="stats">22 × 27 px</span>
+        <button class="pick" type="button" id="pick-Waterlogged">Pick Waterlogged</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Broad">
+      <div class="art">
+        <figure><img class="front" src="{{Broad_IDLE}}" alt="Broad, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Broad_BACK}}" alt="Broad from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Broad</h2>
+        <p>Wide shoulders under strapped-on lead weights, narrowing to a thin waist.</p>
+        <span class="stats">25 × 26 px</span>
+        <button class="pick" type="button" id="pick-Broad">Pick Broad</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="AirTank">
+      <div class="art">
+        <figure><img class="front" src="{{AirTank_IDLE}}" alt="Air Tank, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{AirTank_BACK}}" alt="Air Tank from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Air Tank</h2>
+        <p>A big brass air tank on his back shows past the shoulder, with a hose looping to the helmet. The bubbles come from the tank.</p>
+        <span class="stats">21 × 27 px</span>
+        <button class="pick" type="button" id="pick-AirTank">Pick Air Tank</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Stout">
+      <div class="art">
+        <figure><img class="front" src="{{Stout_IDLE}}" alt="Stout, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Stout_BACK}}" alt="Stout from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Stout</h2>
+        <p>Short and wide: a broad helmet sits low on a squat body over stubby boots.</p>
+        <span class="stats">26 × 23 px</span>
+        <button class="pick" type="button" id="pick-Stout">Pick Stout</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="Lopsided">
+      <div class="art">
+        <figure><img class="front" src="{{Lopsided_IDLE}}" alt="Lopsided, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{Lopsided_BACK}}" alt="Lopsided from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Lopsided</h2>
+        <p>The helmet has sagged to one side and its valve is bent over. One sleeve hangs long and the other cuff is empty, pouring sea onto the floor.</p>
+        <span class="stats">23 × 26 px</span>
+        <button class="pick" type="button" id="pick-Lopsided">Pick Lopsided</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="BellSkirt">
+      <div class="art">
+        <figure><img class="front" src="{{BellSkirt_IDLE}}" alt="Bell Skirt, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{BellSkirt_BACK}}" alt="Bell Skirt from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Bell Skirt</h2>
+        <p>The suit flares out like a diving bell, with a riveted brass hem and only the boot toes showing beneath.</p>
+        <span class="stats">24 × 27 px</span>
+        <button class="pick" type="button" id="pick-BellSkirt">Pick Bell Skirt</button>
+      </div>
+    </section>
+    <section class="take mini" data-take="LongArms">
+      <div class="art">
+        <figure><img class="front" src="{{LongArms_IDLE}}" alt="Long Arms, idle animation"><figcaption>idle</figcaption></figure>
+        <figure><img class="back" src="{{LongArms_BACK}}" alt="Long Arms from behind"><figcaption>back</figcaption></figure>
+      </div>
+      <div class="notes">
+        <h2>Long Arms</h2>
+        <p>Long empty sleeves reach to the floor and the gloves drag.</p>
+        <span class="stats">23 × 26 px</span>
+        <button class="pick" type="button" id="pick-LongArms">Pick Long Arms</button>
+      </div>
+    </section>
+  </div>
+  <section class="foot" aria-label="Your round 3 pick">
+    <h2>Your round 3 pick</h2>
+    <p class="pick-line">No pick yet.</p>
+    <label for="note-hollow3">Anything to mix or change, for example "Lead Boots with the Air Tank"</label>
+    <textarea id="note-hollow3" class="note" placeholder="Optional"></textarea>
+    <div class="row"><button class="primary save" type="button" id="save-hollow3">Save note</button><span class="status">Loading saved pick…</span></div>
+  </section>
+  </div>
+
+  <details class="earlier">
+    <summary>Earlier rounds: round 2 (Hollow reshaped) and round 1 (five takes)</summary>
+    <div class="earlier-body">
+  <div class="group" data-doc="hollow">
+  <header class="intro">
+    <span class="eyebrow">Round 2 · Hollow, new shapes · 2026-11-04</span>
+    <h1>Hollow, reshaped</h1>
+    <p>You picked Hollow’s idea: nobody in the suit and the helmet full of sea. These five keep that and change the
+    head and body shapes. Hollow from round 1 is first in the line-up for comparison.</p>
+    <div class="lineup" aria-label="Hollow and the five new shapes at game size: Hollow, Bell Jar, Fish Tank, Slump, Fishbowl, Hunch">
+      <img src="{{LINEUP2_1X}}" alt="Hollow and the five new shapes side by side at game size, shown three times larger" width="720" height="132">
+    </div>
+    <div class="legend"><span>Game size, shown 3×:</span><span>Hollow</span><span>Bell Jar</span><span>Fish Tank</span><span>Slump</span><span>Fishbowl</span><span>Hunch</span></div>
+  </header>
+
+  <section class="take" data-take="BellJar">
+    <div class="art">
+      <figure><img class="front" src="{{BellJar_IDLE}}" alt="Bell Jar Hollow, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{BellJar_BACK}}" alt="Bell Jar Hollow from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{BellJar_1X}}" alt="Bell Jar Hollow at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Bell Jar</h2><span class="eyebrow">tall and thin</span></div>
+      <p class="pitch">A tall bell jar of a helmet with a tall oval port, the sea standing high inside it. The suit below is a thin sack that slumps wider at the hem. Long empty sleeves hang to the ground with the gloves dragging.</p>
+      <dl>
+        <dt>Idle</dt><dd>The fish crosses the tall port, the lights drift and the last air bubbles out of the valve.</dd>
+        <dt>Watch</dt><dd>At 15 px it is the narrowest outline on the boat, close to Uloe’s tall lamp post. The brass jar has to say Argo.</dd>
+      </dl>
+      <span class="stats">15 × 27 px · 14 colours</span>
+      <button class="pick" type="button" id="pick-BellJar">Pick Bell Jar</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="FishTank">
+    <div class="art">
+      <figure><img class="front" src="{{FishTank_IDLE}}" alt="Fish Tank Hollow, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{FishTank_BACK}}" alt="Fish Tank Hollow from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{FishTank_1X}}" alt="Fish Tank Hollow at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Fish Tank</h2><span class="eyebrow">wide and flat</span></div>
+      <p class="pitch">The head is a wide, flat-topped brass tank with a big square window, two bolts on the lid and kelp growing inside. Underneath is a stubby little body, so he is mostly head.</p>
+      <dl>
+        <dt>Idle</dt><dd>The fish swims the length of the window, the kelp sways and the lights drift.</dd>
+        <dt>Watch</dt><dd>The water reads best of all at game size. The dome becomes a box, so the brass and rivets carry Argo. The lid bolts read a little like ears.</dd>
+      </dl>
+      <span class="stats">21 × 26 px · 18 colours</span>
+      <button class="pick" type="button" id="pick-FishTank">Pick Fish Tank</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Slump">
+    <div class="art">
+      <figure><img class="front" src="{{Slump_IDLE}}" alt="Slump Hollow, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Slump_BACK}}" alt="Slump Hollow from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Slump_1X}}" alt="Slump Hollow at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Slump</h2><span class="eyebrow">sunk into the suit</span></div>
+      <p class="pitch">The helmet has sunk into a suit that settled on the floor like a deflated pear. No legs show, only the toes of the boots under the hem. The sleeves spill out to the sides with the gloves lying open, and the helmet tips back so its port looks down.</p>
+      <dl>
+        <dt>Idle</dt><dd>The helmet sinks a pixel further, then settles, and bubbles leave the tipped valve.</dd>
+        <dt>Watch</dt><dd>The lowest and widest outline (25 px tall, 24 wide). His walk would be a shuffle or a slide, so Move needs its own idea.</dd>
+      </dl>
+      <span class="stats">24 × 25 px · 13 colours</span>
+      <button class="pick" type="button" id="pick-Slump">Pick Slump</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Fishbowl">
+    <div class="art">
+      <figure><img class="front" src="{{Fishbowl_IDLE}}" alt="Fishbowl Hollow, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Fishbowl_BACK}}" alt="Fishbowl Hollow from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Fishbowl_1X}}" alt="Fishbowl Hollow at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Fishbowl</h2><span class="eyebrow">a head of glass</span></div>
+      <p class="pitch">The whole head is a glass globe of seawater sitting in Argo’s brass collar, with a brass cap on top. You see clear glass above the waterline, glints on the glass, and the lights and the fish from any side. The suit hangs like a coat on a hanger, with square shoulders and the cloth falling narrow.</p>
+      <dl>
+        <dt>Idle</dt><dd>The surface wobbles, the fish swims through, the lights drift and a bubble rises from the cap.</dd>
+        <dt>Watch</dt><dd>It drops the brass dome, which is Argo’s mark in the style sheet, so the collar and cap carry it. From behind the lights only glow.</dd>
+      </dl>
+      <span class="stats">16 × 27 px · 15 colours</span>
+      <button class="pick" type="button" id="pick-Fishbowl">Pick Fishbowl</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Hunch">
+    <div class="art">
+      <figure><img class="front" src="{{Hunch_IDLE}}" alt="Hunch Hollow, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Hunch_BACK}}" alt="Hunch Hollow from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Hunch_1X}}" alt="Hunch Hollow at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Hunch</h2><span class="eyebrow">the helmet slid forward</span></div>
+      <p class="pitch">The helmet has slid forward off its collar and nods down, and the body bends under its weight with the back rounding up. One arm hangs long with its glove on the floor and the other is tucked under the helmet. A cut air hose runs from the back of the helmet down to the floor, dripping.</p>
+      <dl>
+        <dt>Idle</dt><dd>The hose drips and bubbles rise from the valve.</dd>
+        <dt>Watch</dt><dd>Lopsided on purpose, so the left-heading frames must be drawn, not mirrored, to keep the hose on his back.</dd>
+      </dl>
+      <span class="stats">22 × 26 px · 14 colours</span>
+      <button class="pick" type="button" id="pick-Hunch">Pick Hunch</button>
+    </div>
+  </section>
+
+  <section class="foot" aria-label="Your round 2 pick">
+    <h2>Your round 2 pick</h2>
+    <p class="pick-line">No pick yet.</p>
+    <label for="note-hollow">Anything to mix or change, for example "Fishbowl head on the Slump body"</label>
+    <textarea id="note-hollow" class="note" placeholder="Optional"></textarea>
+    <div class="row"><button class="primary save" type="button" id="save-hollow">Save note</button><span class="status">Loading saved pick…</span></div>
+  </section>
+  </div>
+
+  <div class="group" data-doc="argo">
+  <header class="intro">
+    <span class="eyebrow">Round 1 · five takes · 2026-11-04</span>
+    <h2 class="round">Round 1: a diver who might not be human</h2>
     <p>Five takes on Argo built on your idea, each drawn over his shipped sprite so the brass dome stays his. Each one
     changes what is inside the suit, or what the sea has done to it. They are 32 px game-size sprites with a six-frame
     idle and a back view. Pick one, or write what to mix, and the page keeps your pick for the next build.</p>
@@ -227,69 +510,71 @@ textarea { width: 100%; box-sizing: border-box; min-height: 96px; font: inherit;
     </div>
   </section>
 
-  <section class="foot" aria-labelledby="note-h">
-    <h2 id="note-h">Your pick</h2>
-    <p id="pick-line">No pick yet.</p>
+  <section class="foot" aria-label="Your round 1 pick">
+    <h2>Your round 1 pick</h2>
+    <p class="pick-line">No pick yet.</p>
     <label for="note">Anything to mix or change, for example "Angler's lure on Hollow" or "less kelp"</label>
-    <textarea id="note" placeholder="Optional"></textarea>
-    <div class="row"><button class="primary" type="button" id="save">Save note</button><span class="status" id="status">Loading saved pick…</span></div>
+    <textarea id="note" class="note" placeholder="Optional"></textarea>
+    <div class="row"><button class="primary save" type="button" id="save">Save note</button><span class="status">Loading saved pick…</span></div>
   </section>
+  </div>
+    </div>
+  </details>
 </div>
 
 <script>
 (function () {
-  var names = { Barnacled: 'Barnacled', Angler: 'Angler', Hollow: 'Hollow', Passenger: 'Passenger', Hull: 'Pressure Hull', Shipped: 'the shipped look' };
-  var state = { choice: null, note: '' };
-  var ref = null;
-  var statusEl = document.getElementById('status');
-  var noteEl = document.getElementById('note');
-  var noteDirty = false;
-
-  function render() {
-    document.querySelectorAll('.take').forEach(function (s) {
-      var on = s.getAttribute('data-take') === state.choice;
-      s.classList.toggle('is-picked', on);
-      var b = s.querySelector('button.pick');
-      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+  var names = { Barnacled: 'Barnacled', Angler: 'Angler', Hollow: 'Hollow', Passenger: 'Passenger', Hull: 'Pressure Hull',
+    Shipped: 'the shipped look', BigHead: 'Big Head', LongLegs: 'Long Legs', LeadBoots: 'Lead Boots', Waterlogged: 'Waterlogged', Broad: 'Broad', AirTank: 'Air Tank', Stout: 'Stout', Lopsided: 'Lopsided', BellSkirt: 'Bell Skirt', LongArms: 'Long Arms', BellJar: 'Bell Jar', FishTank: 'Fish Tank', Slump: 'Slump', Fishbowl: 'Fishbowl', Hunch: 'Hunch' };
+  var groups = [];
+  document.querySelectorAll('.group').forEach(function (g) {
+    var G = { el: g, doc: g.getAttribute('data-doc'), state: { choice: null, note: '' }, ref: null, dirty: false,
+      statusEl: g.querySelector('.status'), noteEl: g.querySelector('.note'), lineEl: g.querySelector('.pick-line') };
+    G.render = function () {
+      g.querySelectorAll('.take').forEach(function (s) {
+        var on = s.getAttribute('data-take') === G.state.choice;
+        s.classList.toggle('is-picked', on);
+        s.querySelector('button.pick').setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      G.lineEl.textContent = G.state.choice ? 'Picked: ' + names[G.state.choice] + '.' : 'No pick yet.';
+      if (!G.dirty) G.noteEl.value = G.state.note || '';
+    };
+    G.save = function (patch) {
+      var next = { choice: G.state.choice, note: G.state.note };
+      for (var k in patch) next[k] = patch[k];
+      if (!G.ref) { G.statusEl.textContent = 'Saving is not available here, so this pick stays on this screen only.'; G.state = next; G.render(); return; }
+      G.statusEl.textContent = 'Saving…';
+      G.ref.set({ choice: next.choice || '', note: next.note || '', saved: new Date().toISOString() })
+        .then(function () { G.state = next; G.dirty = false; G.statusEl.textContent = 'Saved.'; G.render(); })
+        .catch(function (e) { G.statusEl.textContent = 'Not saved: ' + ((e && e.message) || 'the store refused the write') + '.'; });
+    };
+    g.querySelectorAll('button.pick').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.closest('.take').getAttribute('data-take');
+        G.state.choice = t; G.render();
+        G.save({ choice: t, note: G.dirty ? G.noteEl.value : G.state.note });
+      });
     });
-    document.getElementById('pick-line').textContent = state.choice ? 'Picked: ' + names[state.choice] + '.' : 'No pick yet.';
-    if (!noteDirty) noteEl.value = state.note || '';
-  }
-
-  function save(patch) {
-    var next = { choice: state.choice, note: state.note };
-    for (var k in patch) next[k] = patch[k];
-    if (!ref) { statusEl.textContent = 'Saving is not available here, so this pick stays on this screen only.'; state = next; render(); return; }
-    statusEl.textContent = 'Saving…';
-    ref.set({ choice: next.choice || '', note: next.note || '', saved: new Date().toISOString() })
-      .then(function () { state = next; noteDirty = false; statusEl.textContent = 'Saved.'; render(); })
-      .catch(function (e) { statusEl.textContent = 'Not saved: ' + ((e && e.message) || 'the store refused the write') + '.'; });
-  }
-
-  document.querySelectorAll('button.pick').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var t = b.closest('.take').getAttribute('data-take');
-      state.choice = t; render();
-      save({ choice: t, note: noteDirty ? noteEl.value : state.note });
-    });
+    G.noteEl.addEventListener('input', function () { G.dirty = true; });
+    g.querySelector('button.save').addEventListener('click', function () { G.save({ note: G.noteEl.value }); });
+    G.render();
+    groups.push(G);
   });
-  noteEl.addEventListener('input', function () { noteDirty = true; });
-  document.getElementById('save').addEventListener('click', function () { save({ note: noteEl.value }); });
-
-  render();
-  var timer = setTimeout(function () { statusEl.textContent = 'Can’t reach the saved pick yet.'; }, 10000);
+  var timer = setTimeout(function () { groups.forEach(function (G) { G.statusEl.textContent = 'Can\u2019t reach the saved pick yet.'; }); }, 10000);
   var use = window.claude && window.claude.use ? window.claude.use('db') : Promise.resolve(null);
   Promise.resolve(use).then(function (db) {
-    if (!db) { clearTimeout(timer); statusEl.textContent = 'Saving is not available in this view.'; return; }
-    ref = db.doc('picks/argo');
-    ref.onSnapshot(function (snap) {
-      if (!(snap.metadata && snap.metadata.fromCache)) clearTimeout(timer);
-      var d = snap.exists ? snap.data() : null;
-      state.choice = d && d.choice ? d.choice : null;
-      state.note = d && d.note ? d.note : '';
-      statusEl.textContent = d ? 'Saved pick loaded.' : 'Nothing saved yet.';
-      render();
-    }, function () { clearTimeout(timer); statusEl.textContent = 'The saved pick can’t be read right now.'; });
-  }).catch(function () { clearTimeout(timer); statusEl.textContent = 'Saving is not available in this view.'; });
+    if (!db) { clearTimeout(timer); groups.forEach(function (G) { G.statusEl.textContent = 'Saving is not available in this view.'; }); return; }
+    groups.forEach(function (G) {
+      G.ref = db.doc('picks/' + G.doc);
+      G.ref.onSnapshot(function (snap) {
+        if (!(snap.metadata && snap.metadata.fromCache)) clearTimeout(timer);
+        var d = snap.exists ? snap.data() : null;
+        G.state.choice = d && d.choice ? d.choice : null;
+        G.state.note = d && d.note ? d.note : '';
+        G.statusEl.textContent = d ? 'Saved pick loaded.' : 'Nothing saved yet.';
+        G.render();
+      }, function () { clearTimeout(timer); G.statusEl.textContent = 'The saved pick can\u2019t be read right now.'; });
+    });
+  }).catch(function () { clearTimeout(timer); groups.forEach(function (G) { G.statusEl.textContent = 'Saving is not available in this view.'; }); });
 })();
 </script>
