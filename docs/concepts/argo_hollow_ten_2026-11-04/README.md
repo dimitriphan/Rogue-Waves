@@ -1,5 +1,7 @@
 # Argo Hollow, round 3: ten new bodies (concept sprites, 2026-11-04)
 
+**Outcome (05:31Z):** Dimitri: "Keep the original for now." Argo keeps his shipped look; these rounds stay on file.
+
 Round 2 (`docs/concepts/argo_hollow_2026-11-04/`) did not land. Dimitri, 05:21Z: "None of the round 2 versions appeal
 to me. Try 10 new designs." His round 1 note still stands: "Hollow, but play around with the body shape and size more
 with more concepts".
