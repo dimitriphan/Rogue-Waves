@@ -4,6 +4,9 @@
 > upgrades are missing from each character that needs to be added?" Cloud only: no PC, no Remote Control. **Nothing in a
 > mod or a scope file changed.** Every name, cost and number below is a **proposal** until Dimitri picks it; a picked one
 > goes into scope `07` or `08` in his format, then into the vessel's `DESIGN.md` and code.
+>
+> **Since (2026-11-04):** Dimitri accepted every proposal ("Accept all changes"); all are in scopes `07` and `08` as
+> written here, none is built yet.
 
 **In short.**
 
