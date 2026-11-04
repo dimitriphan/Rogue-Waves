@@ -252,7 +252,7 @@ without a stock bespoke AI reads as a plain melee foe to them.
    skin would hide a stock elite's look; the stock skins are overlay materials, not redrawn sprites, `18` §5.5), so
    show it with an effect parented to the enemy and refreshed (`Radio.Vfxdebuffcheck(name, master.Beingref.Value,
    seconds)` every couple of seconds, as Tempered does). That call is dropped while 50 sends are in flight, which a busy
-   online fight reaches: a look every player must see goes out the way Argo 2.0.1's `ArgoUtil.Debuff` sends it (`19`
+   online fight reaches: a look every player must see goes out the way Argo 2.0.1's `ArgoUtil.Debuff` sent it (`ModKitUtil.Debuff` since kit 1.8, `19`
    §4, `09` #95). Leave the skin to the stock elites. Give it a colour no elite
    uses (taken: green, white, red, near-black, bronze, orange; `18` §5.5, §7).
 5. **Who gets it**: list it in a `Wavecontent.Upgrades` (Tide table route above), in the `Upgrades` array of a

@@ -243,7 +243,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC). 2026-11-04: the
   repository no longer presents the mods from before the scope: the README now summarises Rogue Waves, and the maps, rules,
   tool notes and the pack parts' comments drop `ModProjects` and the earlier vessels; the kit, dated reports, this Log, the
-  scope and every path a script uses keep them (PR body lists what stayed and why).
+  scope and every path a script uses keep them (PR body lists what stayed and why). 2026-11-04: the code simplification
+  built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
+  gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
+  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -724,6 +727,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   style sheet, `TEMP_ART.md`, `PACK.md`, `EXPANSION_SCOPE.md`, `docs/mode/`, the mode's README and notes; the nine
   reports that used the old names carry a note on top. Compiled here, not run on the PC. The same PR folds in #74 and
   #75, which both conflicted with the base once #76 merged.
+- **2026-11-04: code simplification built** (Dimitri: "Begin development of Code Simplification, then add the tests to
+  the testing thread."; cloud, compiled, not run on the PC; `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md`). Uloe's
+  dead stock-mark route and Argo's 1.4 leftovers deleted (SONAR kept); pack buildings carry the game's own
+  `Entity_Ai_General_Upgrade` again instead of four mirrors, so Voice in a Bottle should now work on them; kit 1.8 puts
+  the helpers and the asset reader every vessel copied into `Shared/ModKitUtil.cs` and `Shared/ModKitAssets.cs`, and the
+  five hit-chain copies into `ModKitUtil.Front`. Every part compiles at 0 errors. Not built: finding 1 (four places where
+  it changes numbers, report §2), the per-vessel content builders (they need a shared data type), findings 4-6, 9, 10.
+  Kit docs `01`, `05`, `09` #9 and `17` §2.7 describe the stock upgrade AI. The PC list (T0-L1, with R3 on today's
+  build) went to the testing thread.
 
 ### Decisions
 
@@ -885,6 +897,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   **Cardinal**. Renamed in the scope, the living docs and the mode's code and shop text; dated entries and reports keep
   the old names (a note on each report). A saved campaign keeps loading: the save key `RW_Run_Team` and the held ids
   `Cardinal_<Name><n>` stay (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`).
+- 2026-11-04 (Claude, building the code simplification at Dimitri's word): armour and "takes more" stay in the pack's
+  own hit hooks; the stock `Resistadd` route (finding 1) waits until its four number changes are dealt with
+  (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §2). Pack buildings use the game's own upgrade AI.
 
 ### Open questions
 

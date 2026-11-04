@@ -159,8 +159,10 @@ dying meanwhile (**guess**: a handler subscribed in the vessel's `Onspawn`, befo
   is also the building's `Sellvalue`, so a discount also cuts its refund. **Verified**: a `Buildoption` at 0.8 built a
   Red 25 archer for 20 with `Sellvalue` 0.8.
 - Upgrade price scale = the building's own `Upgrade` command `Goalvalue` (Entity_Ai_General_Upgrade.cs:31, 73-75);
-  Voice in a Bottle lowers it. **Verified**: at 0.8 Long Bow (Blue 25) cost 20. The kit's buildings have no `Entity_Ai_General_Upgrade` (`05` §14), so Voice removes
-  itself from them (Entity_Ai_Effect_Artifact_Voice.cs:49, 68).
+  Voice in a Bottle lowers it. **Verified**: at 0.8 Long Bow (Blue 25) cost 20. Voice removes itself from a building
+  without `Entity_Ai_General_Upgrade` (Entity_Ai_Effect_Artifact_Voice.cs:49, 68): the Mummer template's buildings
+  (which mirror the flow) lack it; the pack's buildings carry it since 2026-11-04 (`05` §14), so Voice works on them
+  (not yet seen in game).
 - Boutbro rewrites his own `Goalvalue`s on every spawn, child and despawn (§5.1): write his cost stats instead.
 
 ## 3. Smacky (Good Ol' Fella, Basic)
@@ -416,7 +418,7 @@ one exception. Each row says what a **pack vessel** needs for the Cardinal to wo
 | Torrid Badge | tag **`Buster`** (Merchant.cs:41) | never the tag `Buster`; the generic part works anyway |
 | Paper Tower | `Buildoption1..4` whose being is `Towerfighter`, read at the effect's `Starting` (Effect_Artifact_Paper.cs:15-63) | build commands named `Buildoption1..4`, made before then; attack buildings tagged `Towerfighter`; built through `Hero_Buildsell` |
 | Bottom Rock | disables `Buildoption1..4` past its limit; the count is **team-wide** (Artifact_Bottomrock_Effect.cs:32, 56-64) | the same command names (any other `Build*` command escapes the limit) |
-| Voice in a Bottle | `Entity_Ai_General_Upgrade` on buildings whose parent is tagged `Hero` | nothing possible: it removes itself from kit buildings (§2.7) |
+| Voice in a Bottle | `Entity_Ai_General_Upgrade` on buildings whose parent is tagged `Hero` | carry the stock upgrade AI (`05` §14; the pack's buildings since 2026-11-04); a building that mirrors the flow loses it (§2.7) |
 | Diorama, Blurry Photo | set `Skin` = the being's name (`<name>2` for the clone) | a `Skinoverride` of that name for the look; never drive the vessel's own stages by `Skin`; the clone (tags `Clone`, `Prespawn`, parent a `Hero`) also fires the pack's `Onspawn` |
 | Pig Named Bank, Voiceapply, Teamapply | the thing's **parent tagged `Hero`**, whoever owns it: Teamapply reached another player's building and kept reaching new ones after its upgrade was removed (verified, RogueLab round 8; pitfall #118) | build through `Hero_Buildsell`; a building's units (parent = building) are left out, as for the base vessels |
 | Heroapply family (Sport Water, Fluffy Slippers, Diorama, Money Bag...) | data tag `Hero` and the core's `Child` | tag `Hero`; a minion that builds and calls the core's `Child` (Boutbro) gets them too |
