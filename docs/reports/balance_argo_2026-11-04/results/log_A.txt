@@ -1,0 +1,44 @@
+{"name": "A-built-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-built-woozy-YRB", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-built-woozy-RBY", "win": 0.275, "mean_t": 13.62, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12, "lost_hist": {"12": 18, "13": 6, "15": 5}}
+{"name": "A-built-thehunt", "win": 0.0, "mean_t": 12.35, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 23, "13": 16}}
+{"name": "A-text-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-woozy-YRB", "win": 0.05, "mean_t": 12.28, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 35, "13": 3}}
+{"name": "A-text-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-text-thehunt", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 0.975, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"5": 1, "10": 1, "12": 28, "13": 10}}
+{"name": "A-text-noaim-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-noaim-woozy-YRB", "win": 0.0, "mean_t": 5.03, "s4": 0.85, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"3": 6, "5": 21, "6": 13}}
+{"name": "A-text-noaim-woozy-RBY", "win": 0.0, "mean_t": 9.25, "s4": 1.0, "s8": 0.8, "s10": 0.025, "med_lost": 10.0, "lost_hist": {"6": 8, "10": 31, "12": 1}}
+{"name": "A-text-noaim-thehunt", "win": 0.0, "mean_t": 1.75, "s4": 0.15, "s8": 0.0, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 34, "6": 6}}
+{"name": "A-text-reelfwd-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-reelfwd-woozy-YRB", "win": 0.05, "mean_t": 12.28, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 35, "13": 3}}
+{"name": "A-text-reelfwd-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-text-reelfwd-thehunt", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 0.975, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"5": 1, "10": 1, "12": 28, "13": 10}}
+{"name": "A-text-nonauts-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-nonauts-woozy-YRB", "win": 0.05, "mean_t": 12.28, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 35, "13": 3}}
+{"name": "A-text-nonauts-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-text-nonauts-thehunt", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 0.975, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"5": 1, "10": 1, "12": 28, "13": 10}}
+{"name": "A-text-2pools-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-2pools-woozy-YRB", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 39, "13": 1}}
+{"name": "A-text-2pools-woozy-RBY", "win": 0.0, "mean_t": 11.9, "s4": 1.0, "s8": 1.0, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"10": 2, "12": 38}}
+{"name": "A-text-2pools-thehunt", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 0.975, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"5": 1, "10": 1, "12": 28, "13": 10}}
+{"name": "A-text-dmgharpoon-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-dmgharpoon-woozy-YRB", "win": 0.3, "mean_t": 13.2, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 28}}
+{"name": "A-text-dmgharpoon-woozy-RBY", "win": 0.0, "mean_t": 11.9, "s4": 1.0, "s8": 1.0, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"10": 2, "12": 38}}
+{"name": "A-text-dmgharpoon-thehunt", "win": 0.0, "mean_t": 12.1, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 36, "13": 4}}
+{"name": "A-text-faultline-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-faultline-woozy-YRB", "win": 0.0, "mean_t": 8.68, "s4": 0.975, "s8": 0.675, "s10": 0.025, "med_lost": 10.0, "lost_hist": {"3": 1, "6": 12, "10": 26, "12": 1}}
+{"name": "A-text-faultline-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-text-faultline-thehunt", "win": 0.0, "mean_t": 1.85, "s4": 0.15, "s8": 0.025, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 34, "6": 5, "10": 1}}
+{"name": "A-text-anchor-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-text-anchor-woozy-YRB", "win": 0.05, "mean_t": 12.28, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 35, "13": 3}}
+{"name": "A-text-anchor-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-text-anchor-thehunt", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 0.975, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"5": 1, "10": 1, "12": 28, "13": 10}}
+{"name": "A-prop-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-prop-woozy-YRB", "win": 0.05, "mean_t": 12.28, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 35, "13": 3}}
+{"name": "A-prop-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-prop-thehunt", "win": 0.0, "mean_t": 12.03, "s4": 1.0, "s8": 0.975, "s10": 0.95, "med_lost": 12.0, "lost_hist": {"5": 1, "10": 1, "12": 28, "13": 10}}
+{"name": "A-prop-anchor-purlest", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "A-prop-anchor-woozy-YRB", "win": 0.0, "mean_t": 8.68, "s4": 0.975, "s8": 0.675, "s10": 0.025, "med_lost": 10.0, "lost_hist": {"3": 1, "6": 12, "10": 26, "12": 1}}
+{"name": "A-prop-anchor-woozy-RBY", "win": 0.0, "mean_t": 11.95, "s4": 1.0, "s8": 1.0, "s10": 0.975, "med_lost": 12.0, "lost_hist": {"10": 1, "12": 39}}
+{"name": "A-prop-anchor-thehunt", "win": 0.0, "mean_t": 1.85, "s4": 0.15, "s8": 0.025, "s10": 0.0, "med_lost": 1.0, "lost_hist": {"1": 34, "6": 5, "10": 1}}

@@ -1,0 +1,40 @@
+{"name": "B-built-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-built-woozy-YRB", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.7, "leaks_total": 0.1, "med_lost": null, "lost_hist": {}}
+{"name": "B-built-woozy-RBY", "win": 0.267, "mean_t": 13.63, "core_dmg_total": 86.0, "leaks_total": 7.6, "med_lost": 12.0, "lost_hist": {"12": 13, "13": 5, "15": 4}}
+{"name": "B-built-thehunt", "win": 0.133, "mean_t": 13.17, "core_dmg_total": 100.0, "leaks_total": 7.2, "med_lost": 13.0, "lost_hist": {"12": 7, "13": 19}}
+{"name": "B-text-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-woozy-YRB", "win": 0.033, "mean_t": 12.23, "core_dmg_total": 99.6, "leaks_total": 10.5, "med_lost": 12, "lost_hist": {"12": 26, "13": 3}}
+{"name": "B-text-woozy-RBY", "win": 0.0, "mean_t": 12, "core_dmg_total": 100.0, "leaks_total": 13.1, "med_lost": 12.0, "lost_hist": {"12": 30}}
+{"name": "B-text-thehunt", "win": 0.0, "mean_t": 12.3, "core_dmg_total": 103.6, "leaks_total": 7.7, "med_lost": 13.0, "lost_hist": {"5": 1, "12": 13, "13": 16}}
+{"name": "B-text-noaim-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-noaim-woozy-YRB", "win": 0.0, "mean_t": 4.93, "core_dmg_total": 101.8, "leaks_total": 8.5, "med_lost": 5.0, "lost_hist": {"3": 6, "5": 14, "6": 10}}
+{"name": "B-text-noaim-woozy-RBY", "win": 0.0, "mean_t": 9.13, "core_dmg_total": 101.8, "leaks_total": 9.0, "med_lost": 10.0, "lost_hist": {"6": 7, "10": 22, "12": 1}}
+{"name": "B-text-noaim-thehunt", "win": 0.0, "mean_t": 11.87, "core_dmg_total": 105.1, "leaks_total": 9.8, "med_lost": 12.0, "lost_hist": {"10": 2, "12": 28}}
+{"name": "B-text-3drills-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-3drills-woozy-YRB", "win": 1.0, "mean_t": 16, "core_dmg_total": 6.5, "leaks_total": 0.5, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-3drills-woozy-RBY", "win": 0.0, "mean_t": 12, "core_dmg_total": 100.0, "leaks_total": 13.1, "med_lost": 12.0, "lost_hist": {"12": 30}}
+{"name": "B-text-3drills-thehunt", "win": 0.933, "mean_t": 15.8, "core_dmg_total": 17.3, "leaks_total": 1.4, "med_lost": 13.0, "lost_hist": {"13": 2}}
+{"name": "B-text-dmgharpoon-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-dmgharpoon-woozy-YRB", "win": 0.3, "mean_t": 13.2, "core_dmg_total": 86.8, "leaks_total": 10.0, "med_lost": 12, "lost_hist": {"12": 21}}
+{"name": "B-text-dmgharpoon-woozy-RBY", "win": 0.0, "mean_t": 12, "core_dmg_total": 100.0, "leaks_total": 12.8, "med_lost": 12.0, "lost_hist": {"12": 30}}
+{"name": "B-text-dmgharpoon-thehunt", "win": 0.0, "mean_t": 12.33, "core_dmg_total": 103.0, "leaks_total": 7.5, "med_lost": 12.0, "lost_hist": {"12": 20, "13": 10}}
+{"name": "B-text-anchor-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-anchor-woozy-YRB", "win": 0.033, "mean_t": 12.23, "core_dmg_total": 99.6, "leaks_total": 10.5, "med_lost": 12, "lost_hist": {"12": 26, "13": 3}}
+{"name": "B-text-anchor-woozy-RBY", "win": 0.0, "mean_t": 12, "core_dmg_total": 100.0, "leaks_total": 13.1, "med_lost": 12.0, "lost_hist": {"12": 30}}
+{"name": "B-text-anchor-thehunt", "win": 0.0, "mean_t": 12.3, "core_dmg_total": 103.6, "leaks_total": 7.7, "med_lost": 13.0, "lost_hist": {"5": 1, "12": 13, "13": 16}}
+{"name": "B-text-fault-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-text-fault-woozy-YRB", "win": 0.0, "mean_t": 8.73, "core_dmg_total": 101.7, "leaks_total": 9.8, "med_lost": 10.0, "lost_hist": {"6": 10, "10": 19, "12": 1}}
+{"name": "B-text-fault-woozy-RBY", "win": 0.0, "mean_t": 12, "core_dmg_total": 100.0, "leaks_total": 13.1, "med_lost": 12.0, "lost_hist": {"12": 30}}
+{"name": "B-text-fault-thehunt", "win": 0.0, "mean_t": 10.37, "core_dmg_total": 102.0, "leaks_total": 9.9, "med_lost": 10.0, "lost_hist": {"9": 3, "10": 20, "12": 7}}
+{"name": "B-prop-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-prop-woozy-YRB", "win": 0.033, "mean_t": 12.13, "core_dmg_total": 100.1, "leaks_total": 10.8, "med_lost": 12, "lost_hist": {"12": 29}}
+{"name": "B-prop-woozy-RBY", "win": 0.0, "mean_t": 11.67, "core_dmg_total": 100.0, "leaks_total": 11.3, "med_lost": 12.0, "lost_hist": {"10": 5, "12": 25}}
+{"name": "B-prop-thehunt", "win": 0.433, "mean_t": 13.93, "core_dmg_total": 82.6, "leaks_total": 6, "med_lost": 13, "lost_hist": {"5": 1, "12": 3, "13": 13}}
+{"name": "B-prop-anchor-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-prop-anchor-woozy-YRB", "win": 0.033, "mean_t": 12.13, "core_dmg_total": 100.1, "leaks_total": 10.8, "med_lost": 12, "lost_hist": {"12": 29}}
+{"name": "B-prop-anchor-woozy-RBY", "win": 0.0, "mean_t": 11.67, "core_dmg_total": 100.0, "leaks_total": 11.3, "med_lost": 12.0, "lost_hist": {"10": 5, "12": 25}}
+{"name": "B-prop-anchor-thehunt", "win": 0.433, "mean_t": 13.93, "core_dmg_total": 82.6, "leaks_total": 6, "med_lost": 13, "lost_hist": {"5": 1, "12": 3, "13": 13}}
+{"name": "B-prop-fault-purlest", "win": 1.0, "mean_t": 16, "core_dmg_total": 0.0, "leaks_total": 0, "med_lost": null, "lost_hist": {}}
+{"name": "B-prop-fault-woozy-YRB", "win": 0.0, "mean_t": 7.23, "core_dmg_total": 101.5, "leaks_total": 9.0, "med_lost": 6.0, "lost_hist": {"3": 1, "5": 2, "6": 17, "10": 9, "12": 1}}
+{"name": "B-prop-fault-woozy-RBY", "win": 0.0, "mean_t": 11.67, "core_dmg_total": 100.0, "leaks_total": 11.3, "med_lost": 12.0, "lost_hist": {"10": 5, "12": 25}}
+{"name": "B-prop-fault-thehunt", "win": 0.0, "mean_t": 9.17, "core_dmg_total": 101.5, "leaks_total": 10, "med_lost": 10.0, "lost_hist": {"5": 1, "6": 4, "8": 2, "9": 6, "10": 14, "12": 3}}

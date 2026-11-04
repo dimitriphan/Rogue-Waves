@@ -293,6 +293,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Boots, Waterlogged, Broad, Air Tank, Stout, Lopsided, Bell Skirt, Long Arms), top of the same page
   (`docs/concepts/argo_hollow_ten_2026-11-04/`; not wired; Log).
   2026-11-04 05:31Z, Dimitri: "Keep the original for now." Argo keeps his shipped look; the three concept rounds stay on file.
+  2026-11-04: a balance and skill review of Argo (his Yossele-and-Spool limit lifted for it; cloud only, nothing built):
+  close to balanced once its slows match its sheet; fourteen changes in scope `09`, each marked with what it was, and two
+  code fixes for the next Argo build (`docs/reports/ARGO_REVIEW_2026-11-04.md`; Open questions 8; Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -655,6 +658,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/concepts/argo_hollow_ten_2026-11-04/README.md`; round 3 on top of the same picks page (doc `hollow3`), rounds 1-2 folded
   below; generator `concept-tools/argo_divers/hollow_ten.py`. Still concepts only.
   Then Dimitri, 05:31Z: "Keep the original for now." Argo keeps the shipped look; no diver art is drawn into the mod.
+- **2026-11-04: Argo's kit reviewed** (Dimitri: "Do a review on Argo's current kit. Is it mathematically balanced? Do the
+  mechanics work well together in a way that has skill expression? Make any changes deemed necessary, then update the scope editor
+  artifact."). Read from the built code, hand numbers, and the balance simulator with Argo added (84 setups, 2,940 runs). Found: a slow
+  stacks with its own re-ticks (a 30% pool slows 60%), worth one to four Tides; with that fixed Argo sits between Smacky and Yossele.
+  The Drill mines like a Sapling, and Fathom ore past Fathom 3 and Mantle Tap's ×2 mine nothing. Pins are read four times and made
+  almost nowhere. Blue starves the crew and the water on Woozy and The Hunt. AIM is worth seven Tides on Woozy. Fourteen changes in scope
+  `09` (Claude `~defaults~`, each with a "Review 2026-11-04: was ..." note), the code list in Argo's `IMPLEMENTATION_NOTES.md`; Scope Editor
+  republished on the same link. `docs/reports/ARGO_REVIEW_2026-11-04.md`, simulator in `docs/reports/balance_argo_2026-11-04/`.
 
 ### Decisions
 
@@ -825,6 +836,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 | 7 | New Directions and Cardinals (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
+| 8 | Argo's review (`docs/reports/ARGO_REVIEW_2026-11-04.md` §5): take, change or drop each of the fourteen changes in scope `09`; and if he takes P5 (question 4), the Drill Rig's Attackspeed 0.25 → 0.2 with it | each `~value~` stands; the next Argo build picks them up; the Drill stays at 0.25 unless P5 is taken |
 
 ### Phase 5 pieces
 

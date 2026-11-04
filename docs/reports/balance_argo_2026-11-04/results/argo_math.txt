@@ -1,0 +1,63 @@
+## Drill Rig on a Red node, aura a Tide
+| Fathom | Damage (ore a bite) | bites/s | bites a payout | as coded | if the excess counted |
+| 1 | 0.500 | 0.250 | 10 | 30 | 30 (10) |
+| 2 | 0.875 | 0.275 | 7 | 47 | 47 (7) |
+| 3 | 1.250 | 0.300 | 5 | 72 | 72 (5) |
+| 4 | 1.625 | 0.325 | 5 | 78 | 98 (4) |
+| 5 | 2.000 | 0.350 | 5 | 84 | 140 (3) |
+| 6 | 2.375 | 0.375 | 5 | 90 | 150 (3) |
+| 7 | 2.750 | 0.400 | 5 | 96 | 160 (3) |
+| Mantle Tap, F5 | | | | 84 | 210 |
+| Mantle Tap as "strikes twice as fast", F5 | | | | 168 | |
+| Mantle Tap as the review has it, strikes x1.5, F5 | | | | 126 | |
+| Mantle Tap, F7 | | | | 96 | 240 |
+| Mantle Tap as "strikes twice as fast", F7 | | | | 192 | |
+| Mantle Tap as the review has it, strikes x1.5, F7 | | | | 144 | |
+Stock, same node (AURA_BASELINE §3): Hut 18, Sno Box 18, Silo 17, Checkpoint 36; Sapling 60/90, Loom 96.
+A Drill built in the opening break, Tides 0-15: 1235 aura on a Red node (Hut: 288)
+Gusher 12 bites a Tide at Fathom 5+ (1 Damage-1 strike each): 12 aura on a Red node, payback 22.9 Tides of Yellow 275
+Gusher 20 bites a Tide at Fathom 5+ (1 Damage-1 strike each): 20 aura on a Red node, payback 13.8 Tides of Yellow 275
+Gusher 28 bites a Tide at Fathom 5+ (1 Damage-1 strike each): 28 aura on a Red node, payback 9.8 Tides of Yellow 275
+
+## Damage a second, per Red spent (one target / a packed crowd)
+| Building | cost | one target | crowd | crowd per 10 aura |
+| Archer Tower (R25) | 25 | 2.80 | 2.80 | 1.12 |
+| Bomb Tower (R25 B25), radius 1.5 | 50 | 1.05 | 4.20 | 0.84 |
+| Scatter Cannon (R30), 6 pellets | 30 | 0.98 | 4.50 | 1.50 |
+| Scatter on slowed foes (+50%) | 30 | 1.46 | 6.75 | 2.25 |
+| Harpoon Gun (R35), pierce 3 | 35 | 1.75 | 5.25 | 1.50 |
+| Argo (vessel), cleave 60% | 0 | 1.60 | 2.56 | - |
+| Smacky (vessel) | 0 | 2.00 | 2.00 | - |
+(One target for the Scatter: about 1.3 of 6 pellets reach a lone foe 3 tiles out in a 50 degree cone.)
+
+## Pellets that stay in a lane 1.5 tiles wide
+| distance | 50 deg, 6 pellets | 75 deg (Wide Bore), 8 pellets | Wide Bore as reviewed, 60 deg, 8 pellets |
+| 1.5 | 6.0 | 5.2 | 6.9 |
+| 2.0 | 4.8 | 3.9 | 5.2 |
+| 3.0 | 3.2 | 2.6 | 3.5 |
+| 4.0 | 2.4 | 2.0 | 2.6 |
+| 4.5 | 2.1 | 1.7 | 2.3 |
+
+## What a slow really is: a re-tick that outlives its tick stacks (Speed Multi mods sum, floor 10%)
+| Source | written | tick / lasts | slows on a foe at once | real slow |
+| Deep Water | 30% | 0.25 / 0.50 s | 2-2 | 60-60% |
+| Deep Water, Undercurrent and 2 levels | 45% | 0.25 / 0.50 s | 2-2 | 90-90% |
+| Tremor, Fathom 1 | 20% | 0.50 / 0.75 s | 1-2 | 20-40% |
+| Tremor, Fathom 5 | 36% | 0.50 / 0.75 s | 1-2 | 36-72% |
+| Tremor, Fathom 5, Seismic, Old Salts | 56% | 0.50 / 0.75 s | 1-2 | 56-90% |
+Time a Dagger (speed 1) spends crossing 6 pools: written 30%: 8.6 s; as coded 60%: 15.0 s; 90%: 60.0 s
+
+## Pins: who makes them and how often (the Scatter, Salt Sting, Bedrock and "held twice as long" read them)
+Anchor Line: the first foe a harpoon hits, every 2.86 s (Attackspeed 0.35): 1 s, 2 s in water -> 35%-70% of one foe's time
+Mantle Tap quake: once a Tide, 2 s on what stands in the Tremor -> under 1% of a 240 s Tide
+Kelp Bed catch and Trench drag hold foes but are not pins in the code (ArgoUtil.Root, not ArgoStatus.Pinned)
+Bedrock on Anchor Line's pins: 1.5 x 0.35-0.7 = 0.52-1.05 damage a second for Blue 80 + Red 30
+Salt Sting: +0.5 a second on a pinned foe in water: 0.35 a second for Blue 70 + Red 30
+
+## Upgrades that do less than their price says
+Abyss (B260): a free pool a FLOOD, worth B15 -> pays back after 17 FLOODs
+Gusher (Y275): 12 bites a Tide = 2.4 payouts = 12 aura on a Red node -> 23 Tides to pay back (a map is 15)
+Mantle Tap (Y3000): "x2 ore" -> +0 aura (ore a bite is capped at 1, Damage is already 1.25 at Fathom 3)
+Deep Core (Y120): Fathom 7 bites 14% faster than 5 -> +12 aura a Tide on a Red node, plus 0.8 tiles and 8% Tremor
+Double Barrel (R30): one stored volley after a quiet spell, about 1 extra volley a Tide
+

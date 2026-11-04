@@ -1,0 +1,1106 @@
+[
+ {
+  "name": "B-built-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60
+  }
+ },
+ {
+  "name": "B-built-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ]
+  }
+ },
+ {
+  "name": "B-built-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ]
+  }
+ },
+ {
+  "name": "B-built-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60
+  }
+ },
+ {
+  "name": "B-text-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false
+  }
+ },
+ {
+  "name": "B-text-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false
+  }
+ },
+ {
+  "name": "B-text-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false
+  }
+ },
+ {
+  "name": "B-text-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false
+  }
+ },
+ {
+  "name": "B-text-noaim-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "tremor_reach": 0
+  }
+ },
+ {
+  "name": "B-text-noaim-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "tremor_reach": 0
+  }
+ },
+ {
+  "name": "B-text-noaim-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "tremor_reach": 0
+  }
+ },
+ {
+  "name": "B-text-noaim-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "tremor_reach": 0
+  }
+ },
+ {
+  "name": "B-text-3drills-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "drills": 3
+  }
+ },
+ {
+  "name": "B-text-3drills-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "drills": 3
+  }
+ },
+ {
+  "name": "B-text-3drills-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "drills": 3
+  }
+ },
+ {
+  "name": "B-text-3drills-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "drills": 3
+  }
+ },
+ {
+  "name": "B-text-dmgharpoon-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Longline",
+     "Skewer",
+     "Whaler",
+     "Leviathan"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-dmgharpoon-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Longline",
+     "Skewer",
+     "Whaler",
+     "Leviathan"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-dmgharpoon-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Longline",
+     "Skewer",
+     "Whaler",
+     "Leviathan"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-dmgharpoon-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Longline",
+     "Skewer",
+     "Whaler",
+     "Leviathan"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-anchor-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-anchor-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-anchor-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-anchor-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-fault-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-fault-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-fault-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-text-fault-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ]
+  }
+ },
+ {
+  "name": "B-prop-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ]
+  }
+ },
+ {
+  "name": "B-prop-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ]
+  }
+ },
+ {
+  "name": "B-prop-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ]
+  }
+ },
+ {
+  "name": "B-prop-anchor-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-anchor-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-anchor-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-anchor-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "harpoon": [
+     "Tether",
+     "Anchor"
+    ],
+    "water": [
+     "Brine",
+     "Salt",
+     "Crushing",
+     "Trench"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-fault-purlest",
+  "v": "argo",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-fault-woozy-YRB",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Yellow",
+    "Red",
+    "Blue"
+   ],
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-fault-woozy-RBY",
+  "v": "argo",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "smart_nodes": [
+    "Red",
+    "Blue",
+    "Yellow"
+   ],
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ },
+ {
+  "name": "B-prop-fault-thehunt",
+  "v": "argo",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "break": 60,
+   "slow_stack": false,
+   "prop": [
+    "kelp_pins",
+    "mantle_speed",
+    "mantle_every",
+    "trench_more"
+   ],
+   "scatter_pinbonus": 1.0,
+   "gusher_per_fathom": 4,
+   "cost_base": [
+    0,
+    20,
+    15
+   ],
+   "up_Seismic": [
+    0,
+    0,
+    35
+   ],
+   "up_Bedrock": [
+    30,
+    0,
+    80
+   ],
+   "up_Faultline": [
+    0,
+    0,
+    300
+   ],
+   "argo_paths": {
+    "drill": [
+     "Seismic",
+     "Bedrock",
+     "Faultline"
+    ]
+   }
+  }
+ }
+]
