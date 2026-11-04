@@ -176,6 +176,9 @@ public static partial class RWTest
         done = true;
         freeze = forcing = false;
         try { if (RWCampaign.Active || RWCampaign.Seed == Seed) RWCampaign.Stop(); } catch (Exception e) { Info("cleanup", e.Message); }
+#if ROGUEWAVESMODE_FEEL
+        try { RWFeel.Report(); } catch (Exception e) { Info("feel", e.Message); }
+#endif
         Line("DONE pass " + Pass + ", fail " + Fail + ", setup " + Setups + ", errors logged " + errors);
     }
 
@@ -195,11 +198,14 @@ public static partial class RWTest
         yield return Stepped(Look());
         yield break;
 #endif
-#if ROGUEWAVESMODE_DIALOGLOOK
+#if ROGUEWAVESMODE_DIALOGLOOK && !ROGUEWAVESMODE_FEELMAP
         yield return Stepped(DialogLook());
         yield break;
 #endif
         yield return Stepped(Flow());     // the whole campaign as a player meets it; it ends back on the boat
+#if ROGUEWAVESMODE_FEELMAP
+        yield break;
+#endif
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) yield return Embark();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("boat", "never reached the boat"); yield break; }
         yield return new WaitForSecondsRealtime(4f);

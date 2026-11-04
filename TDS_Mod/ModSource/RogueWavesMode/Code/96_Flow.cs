@@ -441,6 +441,10 @@ public static partial class RWTest
         player.Pure = 60;
         yield return new WaitForSeconds(1.2f);
         Check("Pure Aura: the vessel's counter and the run line follow the host", Mathf.RoundToInt(RWMine.Pure()) == 60 && RWRunLabel.Shown.Contains("Pure Aura 60"), "counter " + RWMine.Pure() + ", line '" + RWRunLabel.Shown + "'");
+#if ROGUEWAVESMODE_FEELMAP
+        yield return SmoothInMap();
+        yield break;
+#endif
         RWShop.Open("Shop");
         yield return WaitDialog(5f);
         List<string> shelf = CardNames();

@@ -90,6 +90,102 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(3f);
     }
 
+#if ROGUEWAVESMODE_FEELMAP
+    // The same comparison in a running map with the clock held, opened from the live HUD as the mode's dialogs are, and then the
+    // real VENDCINT as its button opens it.
+    static IEnumerator HoverOne(string what, RectTransform c, List<string> texts)
+    {
+        UnityEngine.EventSystems.PointerEventData data = new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current);
+        Blu3_Button b = c.GetComponent<Blu3_Button>();
+        double before = Time.realtimeSinceStartupAsDouble;
+        b.OnPointerEnter(data);
+        float call = (float)((Time.realtimeSinceStartupAsDouble - before) * 1000.0);
+        float worst = 0f;
+        yield return Frames(what + " " + c.name, 0.4f, w => worst = w);
+        string line = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
+        Info("hover", what + " " + c.name + ": call " + RWUtil.F(call) + " ms, worst frame " + RWUtil.F(worst * 1000f) + " ms, " + line.Length + " letters: " + line);
+        if (texts != null) texts.Add(line);
+        b.OnPointerExit(data);
+        yield return new WaitForSecondsRealtime(0.3f);
+    }
+
+    static IEnumerator HoverProbe()
+    {
+        RWShop.Open("Shop");
+        yield return new WaitForSecondsRealtime(2.5f);
+        Bla_Ui_Confirmation d = Bla_Ui_Confirmation.Instance;
+        List<RectTransform> cards = RWDialog.Cards(d);
+        List<string> texts = new List<string>();
+        foreach (RectTransform c in cards) yield return HoverOne("mine, in order", c, texts);
+        for (int i = cards.Count - 1; i >= 0; i--) yield return HoverOne("mine, backwards", cards[i], null);
+        for (int i = 0; i < 4; i++) yield return HoverOne("mine, the first card again", cards[0], null);
+
+        // The words alone, with no button and no sound.
+        TMPro.TMP_Text line = d.Subbox.GetComponent<TMPro.TMP_Text>();
+        foreach (string text in texts)
+        {
+            yield return new WaitForSecondsRealtime(0.3f);
+            double before = Time.realtimeSinceStartupAsDouble;
+            line.text = text;
+            float set = (float)((Time.realtimeSinceStartupAsDouble - before) * 1000.0);
+            float worst = 0f;
+            yield return Frames("words alone", 0.3f, w => worst = w);
+            Info("hover", "words alone, " + text.Length + " letters: set " + RWUtil.F(set) + " ms, worst frame " + RWUtil.F(worst * 1000f) + " ms");
+            line.text = "Pure Aura: 60";
+        }
+        RWDialog.Cancel();
+        yield return new WaitForSecondsRealtime(3f);
+
+        // The same words on the same cards in the game's own layout, with nothing of the mode's placing.
+        List<Bla_Ui_Confirmation.Entry> same = new List<Bla_Ui_Confirmation.Entry>();
+        for (int i = 0; i < texts.Count; i++)
+            same.Add(RWDialog.Card("c" + i, "", texts[i], RWAssets.Sprite("RogueWaves_Crest32"), RWDialog.Teal));
+        Blockage.Menu.Bl_Menus.Changemenu(d.gameObject.name, true);
+        yield return Until(() => RWDialog.Up() && d.GetComponentInParent<Blockage.Menu.Blu2_Menu_Handler>() != null, 5f);
+        d.Runprompt(same, "VENDCINT", "Pure Aura: 60", false);
+        yield return new WaitForSecondsRealtime(2.5f);
+        cards = RWDialog.Cards(d);
+        foreach (RectTransform c in cards) yield return HoverOne("stock, in order", c, null);
+        for (int i = cards.Count - 1; i >= 0; i--) yield return HoverOne("stock, backwards", cards[i], null);
+        for (int i = 0; i < 4; i++) yield return HoverOne("stock, the first card again", cards[0], null);
+        Blockage.Menu.Bl_Menus.Closemenu(d.gameObject, true);
+        yield return new WaitForSecondsRealtime(3f);
+    }
+
+    static IEnumerator SmoothInMap()
+    {
+        const int Rounds = 10;
+        float mine = 0f, stock = 0f, shop = 0f;
+        int mineLong = 0, stockLong = 0, shopLong = 0;
+        for (int round = 1; round <= Rounds; round++)
+        {
+            yield return Opening("in a map, the mode's, round " + round, true, w => { mine = Mathf.Max(mine, w); if (w * 1000f > 25f) mineLong++; });
+            yield return Opening("in a map, stock, round " + round, false, w => { stock = Mathf.Max(stock, w); if (w * 1000f > 25f) stockLong++; });
+        }
+        for (int round = 1; round <= Rounds; round++)
+        {
+            Coroutine timed = RogueWavesModeMod.Instance.StartCoroutine(Frames("in a map, VENDCINT's own shop, round " + round, 1.8f, w => { shop = Mathf.Max(shop, w); if (w * 1000f > 25f) shopLong++; }));
+            RWShop.Open("Shop");
+            yield return timed;
+            RWDialog.Cancel();
+            yield return new WaitForSecondsRealtime(3f);
+        }
+        Info("feel map", "with pretend cards " + mineLong + " of " + Rounds + " openings over 25 ms, worst " + RWUtil.F(mine * 1000f) + " ms; stock " + stockLong + ", worst " + RWUtil.F(stock * 1000f) + " ms; VENDCINT's own shop " + shopLong + ", worst " + RWUtil.F(shop * 1000f) + " ms");
+
+        // VENDCINT's landing, the host's whole call.
+        float land = 0f;
+        for (int round = 1; round <= 6; round++)
+        {
+            Coroutine timedLand = RogueWavesModeMod.Instance.StartCoroutine(Frames("VENDCINT's landing, round " + round, 0.6f, w => land = Mathf.Max(land, w)));
+            RWShop.Land();
+            yield return timedLand;
+            yield return new WaitForSecondsRealtime(2f);
+        }
+        Info("feel map", "VENDCINT's landing: worst frame " + RWUtil.F(land * 1000f) + " ms");
+        yield return HoverProbe();
+    }
+#endif
+
     static IEnumerator Try(string name, int cards, bool shot)
     {
         string pick = "-";
