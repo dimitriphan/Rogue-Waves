@@ -112,7 +112,7 @@
 			- Cost:
 
 		[Directions] / Written in 11_Directions.txt under Uloe \
-			- none yet
+			- {~Extension Cord~}, {~Brighter Bulb~}, {~Spare Batteries~}, {~Flash Bulb~} /~ Made by Claude \
 
 		[Questions]
 			- 1. Your upgrade ideas have no names or levels yet, so each sits at a level Claude guessed, with an empty name {} for you to fill. ~Levels as placed~

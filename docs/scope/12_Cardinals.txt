@@ -1,5 +1,7 @@
 | New Cardinals |
 	# The rules for new Cardinals, and the Cardinal List: each Cardinal in the Cardinal template from 15_Templates.txt, under its kind.
+	# Each sheet ends with By: who made it, Dimitri or Claude. A Claude-made sheet is all ~defaults~ until you take it.
+	/~ What each of Claude's rides on in the game's code, and the StarCraft II campaign upgrade behind it: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md \
 	! NEEDS LIST OF NEW CARDINALS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
 	- Shop's base game Cardinals, until then: ~all but Moon, Moon Core, Loop, Looped Mirror, Vintage, Same Day Shipping, Pig, Money Bag, Sandbox, Sand, Blurry Photo, Checklist, Computer and Bottom Rock~ /~ What they leave out fights the run's own rules, docs/reports/SCOPE_VS_LOOP.md #7; Bottom Rock also cuts all aura pay to 1% (seen on the PC) \
@@ -15,6 +17,9 @@
 		- Stacking: Cardinals stack with no limit: a Cardinal that stacks can be bought again as many times as a player can pay for it
 		- Saved: Vessel Cardinals and Directions are saved with the campaign for each player and come back when it continues
 		- On the boat: no Cardinal swaps between maps -> 04_Rogue_Waves_Mode.txt [Sea Chart]
+		- Power: ~a Vessel Cardinal is worth about one level 1 or 2 building upgrade, spread over one player's things; a Team Cardinal about one base game Cardinal such as Vintage Watch, Wave Breaker or Aura Gavel, or less~ /~ docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md section 2 \
+		- Pairs: ~two Cardinals that clash are a pair, like a research choice: a player who holds one is never offered the other~
+		- By: each Cardinal says who made it, Dimitri or Claude -> 00_Read_Me.txt [Values]
 		- Kept names: Model Lighthouse, your name for the old start Cardinal, is kept for a later Cardinal or item
 
 	[Cardinal List]
@@ -30,6 +35,7 @@
 				- Cost: Pure Aura 15
 				- Look: Fake vampire dentures that could be found at a halloween dollar store.
 				- Clashes: None
+				- By: Dimitri
 			{~Spiny Hull~}
 				- Kind: ~Vessel~
 				- In-game line: ~Your vessel pricks what hits it~
@@ -41,6 +47,7 @@
 				- Cost: ~Pure Aura 12~
 				- Look: ~A rusty hull plate bristling with nails~
 				- Clashes: ~None~
+				- By: Claude
 			{~Sea Legs~}
 				- Kind: ~Vessel~
 				- In-game line: ~Your vessel speeds up while it keeps moving~
@@ -52,6 +59,7 @@
 				- Cost: ~Pure Aura 10~
 				- Look: ~A pair of worn deck shoes~
 				- Clashes: ~None~
+				- By: Claude
 			{~Rising Tide~}
 				- Kind: ~Vessel~
 				- In-game line: ~Your vessel grows stronger every Tide~
@@ -63,6 +71,7 @@
 				- Cost: ~Pure Aura 20~
 				- Look: ~A marked tide stick~
 				- Clashes: ~None~
+				- By: Claude
 			{~Puffer Float~}
 				- Kind: ~Vessel~
 				- In-game line: ~Your units burst when they fall~
@@ -74,6 +83,103 @@
 				- Cost: ~Pure Aura 15~
 				- Look: ~A dried pufferfish on a string~
 				- Clashes: ~None~
+				- By: Claude
+			{~Brass Spyglass~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your vessel reaches farther~
+				- Numbers: ~range +0.5 tile for a ranged vessel, +0.25 for a melee one~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 12~
+				- Look: ~A dented brass spyglass~
+				- Clashes: ~None~
+				- By: Claude /~ After the Ghost's Ocular Implants and the Hydralisk's Grooved Spines \
+			{~Gutting Knife~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your vessel hits healthy foes harder~
+				- Numbers: ~damage +20% against foes above half health, per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 12~
+				- Look: ~A fish gutting knife~
+				- Clashes: ~None~
+				- By: Claude /~ After the Mutalisk's Sundering Glaive and the Roach's Hydriodic Bile \
+			{~Oil Can~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your towers attack faster~
+				- Numbers: ~attack speed +5%, per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 12~
+				- Look: ~A long-spouted oil can~
+				- Clashes: ~{Iron Rivets}: a player holds one or the other~
+				- By: Claude /~ After Ultra-Capacitors, the research opposite Vanadium Plating \
+			{~Iron Rivets~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your towers have more health~
+				- Numbers: ~health +8%, per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Blue~
+				- Cost: ~Pure Aura 10~
+				- Look: ~A handful of iron rivets~
+				- Clashes: ~{Oil Can}: a player holds one or the other~
+				- By: Claude /~ After Vanadium Plating \
+			{~Tar Bucket~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your towers mend when left alone~
+				- Numbers: ~1% of their health a second after 4 seconds without a hit, +1% per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Blue~
+				- Cost: ~Pure Aura 15~
+				- Look: ~A bucket of pitch with a brush in it~
+				- Clashes: ~None~
+				- By: Claude /~ After Regenerative Bio-Steel and the Spear of Adun's Reconstruction Beam \
+			{~Rubber Duck~}
+				- Kind: ~Vessel~
+				- In-game line: ~Your vessel comes back sooner after it drowns~
+				- Numbers: ~respawn -20% per stack, at most -60%~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Green~
+				- Cost: ~Pure Aura 10~
+				- Look: ~A faded yellow rubber duck~
+				- Clashes: ~None~
+				- By: Claude /~ After Zergling Reconstitution and the Avenger, which come back quickly \
+			{~Siren Conch~}
+				- Kind: ~Vessel~
+				- In-game line: ~Once a Tide, a foe your vessel brings low turns and fights for you~
+				- Numbers: ~the first foe each Tide that your vessel brings below 25% health joins you until it falls; never a foe of 200 health or more~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Green~
+				- Cost: ~Pure Aura 25~
+				- Look: ~A pink conch shell~
+				- Clashes: ~None~
+				- By: Claude /~ After the Hive Mind Emulator and the Dark Archon. Rides on the Blue Paint Cardinal's charm \
+			{~Spare Plank~}
+				- Kind: ~Vessel~
+				- In-game line: ~One of your walls is free each map, and comes back when it falls~
+				- Numbers: ~one free (Defense) building at a time, at its first level~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Yellow~
+				- Cost: ~Pure Aura 15~
+				- Look: ~A spare plank with two nails in it~
+				- Clashes: ~Any vessel without a (Defense) building~
+				- By: Claude /~ After Orbital Depots: free building. Rides on the Processor Jr Cardinal's free build button \
 		(Team Cardinals)
 			! NEEDS TEAM CARDINALS !
 			{~Tide Clock~}
@@ -87,6 +193,7 @@
 				- Cost: ~Pure Aura 15~
 				- Look: ~A brass clock full of sand~
 				- Clashes: ~None~
+				- By: Claude
 			{~Rusted Bell~}
 				- Kind: ~Team~
 				- In-game line: ~Foes near the Basin lose health while they stay~
@@ -98,6 +205,7 @@
 				- Cost: ~Pure Aura 20~
 				- Look: ~A ship's bell gone green~
 				- Clashes: ~None~
+				- By: Claude
 			{~Second Wind~}
 				- Kind: ~Team~
 				- In-game line: ~Once a map, the first hit on the Basin clears the field and replays the Tide~
@@ -109,3 +217,64 @@
 				- Cost: ~Pure Aura 25~
 				- Look: ~A cracked bellows~
 				- Clashes: ~None~
+				- By: Claude
+			{~Kelp Net~}
+				- Kind: ~Team~
+				- In-game line: ~Foes near the Basin move slower~
+				- Numbers: ~speed -20% within 6 tiles of the Basin~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Blue~
+				- Cost: ~Pure Aura 20~
+				- Look: ~A tangle of kelp in a torn net~
+				- Clashes: ~None~
+				- By: Claude /~ After the Psi Disrupter. The Wave Breaker Cardinal's pattern, with speed in place of health \
+			{~Lucky Geode~}
+				- Kind: ~Team~
+				- In-game line: ~Ore mines faster for everyone~
+				- Numbers: ~every ore node on the map mines +10% faster, per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Yellow~
+				- Cost: ~Pure Aura 20~
+				- Look: ~A cracked geode full of crystals~
+				- Clashes: ~None~
+				- By: Claude /~ After Micro-Filtering. The Starter Seeds Cardinal's pattern: every ore node gets an upgrade \
+			{~Cork Lifebuoy~}
+				- Kind: ~Team~
+				- In-game line: ~The Basin lives through one more killing blow each map~
+				- Numbers: ~one more last stand at 1 health each map, after the game's own~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Green~
+				- Cost: ~Pure Aura 25~
+				- Look: ~A cork lifebuoy on a frayed rope~
+				- Clashes: ~None~
+				- By: Claude /~ After the Spear of Adun's Guardian Shell \
+			{~Signal Flare~}
+				- Kind: ~Team~
+				- In-game line: ~Now and then, a flare strikes the toughest foe near the Basin~
+				- Numbers: ~every 20 seconds, 15 damage to the foe with the most health within 8 tiles of the Basin; +15 damage per stack~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~Yes~
+				- Where from: ~Shop~
+				- Colour: ~Red~
+				- Cost: ~Pure Aura 15~
+				- Look: ~A spent flare gun~
+				- Clashes: ~None~
+				- By: Claude /~ After the Spear of Adun's Solar Lance. Fires the Aura Gavel Cardinal's bolt \
+			{~Storm Lantern~}
+				- Kind: ~Team~
+				- In-game line: ~Every Tide opens with a rush for every tower~
+				- Numbers: ~every player's towers attack 25% faster for the first 10 seconds of each Tide~
+				- Lasts: ~The rest of the campaign~
+				- Stacks: ~No~
+				- Where from: ~Shop~
+				- Colour: ~Yellow~
+				- Cost: ~Pure Aura 15~
+				- Look: ~A storm lantern with a cracked pane~
+				- Clashes: ~None~
+				- By: Claude /~ After Kerrigan's Wild Mutation and the Energizer. The Sport Water Cardinal's Tide burst, on towers \

@@ -273,6 +273,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: the missing upgrades of Yossele and Spool, against the base vessels' trees (`docs/reports/UPGRADE_GAPS_2026-11-04.md`,
   cloud only, no mod or scope changed): Yossele needs one (Wood Wide Web, a trade); Spool needs 22, five of them fill the
   studies' holes; Dimitri accepted them all and they are in scopes `07` and `08`, not built (Decisions).
+  2026-11-04: at Dimitri's ask (his Yossele-and-Spool limit lifted for it), 21 new Directions and 13 new Cardinals drawn
+  from StarCraft II's campaign upgrades at the stock Cardinals' power, all Claude `~defaults~` in scopes `11` and `12`;
+  every Direction and Cardinal now carries `By: Dimitri` or `By: Claude` (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`,
+  not built); a Scope Editor artifact covers every scope file (Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -599,6 +603,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   camera looked at the sky, the Tide table was read one row off, a dead nest stopped the Tides for good (pitfalls #121-#136). `docs/reports/BUILD_2026-11-03.md`.
 - **2026-11-03: the balance round** (`BALANCE_2026-11-03.md` §9, `AURA_BASELINE_2026-11-03.md` M8-M11), no shipped number changed; `docs/reports/BALANCE_ROUND_2026-11-03.md`. The model's nodes, gatherers and Crafted hold; its wall doesn't: foes walk round a three-tile line, and walling first lost Tide 1-2, not Tide 11. Tin first, by a bot: Spool as written Purlest Tide 4, Woozy Tide 2; with P1-P3 Purlest Tide 5, Woozy Tide 2. Yossele on Woozy, Tide 14. Harness: `Code/97_Measure.cs`, `ModKitMeasure`. The simulator's re-run with these numbers is left for a cloud thread.
 - **2026-11-03: the simulator re-run on the round's numbers** (cloud only, analysis only: no mod or scope number changed; `docs/reports/BALANCE_RERUN_2026-11-03.md`, simulator in `docs/reports/balance_rerun_2026-11-03/`, 11,880 runs). The Opal pays every colour on every payout (about 21 aura a strike, not 9.5); Woozy's first node matters more than any number. Calibrated within a Tide on Spool Tin first; four Tides harsh on Yossele's bot on Woozy. Spool: with a wall that holds, P2 and P3 alone win Purlest in 72% of runs and give Woozy two Tides, P1 helps only if Darts stand back; on a line foes walk round, no number buys more than a Tide, and Stitched that block foes would (Tide 10-11 everywhere, a design question). Yossele: P5 changes no map's result (some Woozy and Hunt runs end two Tides sooner); fruit is The Hunt's only Blue and decides it, P6 keeps most of it. The Hunt has no Blue node: Spool loses there at Tide 5 whatever its numbers, Tide 10 if it hunts two small aura beasts a Tide (whether a vessel can kill them is the next measure).
+- **2026-11-04: new Directions and Cardinals** (Dimitri: "Create new directions and cardinals based on the ones I had already
+  conceptualized. Look into Starcraft 2's campaign's upgrade paths..."; his Yossele-and-Spool limit lifted for this ask). 21 Directions
+  (8 Any, 3 Yossele, 3 Spool, 2 Argo, 1 more per base vessel) and 13 Cardinals (8 Vessel, 5 Team), Claude `~defaults~` at the stock
+  Cardinals' scale, each with the StarCraft II upgrade behind it and the game piece it rides on (read, not built). New scope rule: every
+  Direction and Cardinal ends with `By: Dimitri` or `By: Claude`; `06` and `12` gain Power and Pairs lines. `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`.
 
 ### Decisions
 
@@ -753,6 +762,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-11-04 (Dimitri, "Accept all changes, then update the scopes in the documents"): every upgrade of
   `docs/reports/UPGRADE_GAPS_2026-11-04.md` is in: Yossele's Wood Wide Web (scope `07`), Spool's 22 and the Cookie Tin's
   UNTHREAD button (scope `08`, which no longer has a `! NEEDS !` line). Open question 7 is closed. Not built yet.
+- 2026-11-04 (Dimitri, new Directions and Cardinals): every Direction and Cardinal in the scope names its maker in a `By:` slot
+  (rule in scope `00`). Two that clash form a research-choice pair (`~default~`, Open question 7).
 
 ### Open questions
 
@@ -766,6 +777,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
+| 7 | New Directions and Cardinals (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6): take, change or drop each; keep the research-choice pairs or not | each `~value~` stands; nothing is built until he picks |
 
 ### Phase 5 pieces
 

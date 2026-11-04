@@ -306,7 +306,7 @@
 			- Cost: ~free~
 
 		[Directions] / Written in 11_Directions.txt under Argo \
-			- none yet
+			- {~Deep Current~}, {~Heavy Salvo~}, {~Chum Bucket~}, {~Pressure Gauge~} /~ Made by Claude \
 
 		[Questions]
 			- 1. Every number here is the built Argo 2.0's, which nobody has balanced yet. ~Keep them until your balance pass~

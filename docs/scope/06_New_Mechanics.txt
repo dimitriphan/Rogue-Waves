@@ -11,6 +11,9 @@
 		- Kept: each player's Directions sit on their own vessel and come back at the start of every map. They are saved with the campaign
 		- Base game vessels: get their own Directions too, besides the Any ones
 		- Names: a plain name that matches its Look line; a heading or a course is optional
+		- Power: ~rank I is about +6% to +15% on one broad stat, or one small rule; rank III about +20% to +50%; a Shift changes one building or rule and gives something up for it~ /~ The scale of the base game's Cardinals and level 1 upgrades: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md section 2 \
+		- Pairs: ~two Directions that clash are a pair, like a research choice: a player who holds one is never offered the other~
+		- By: each Direction says who made it, Dimitri or Claude -> 00_Read_Me.txt [Values]
 		- List: -> 11_Directions.txt, one Direction template per Direction, under its vessel
 		- Status: built, and passed on the PC /~ docs/reports/BUILD_2026-11-03.md \
 

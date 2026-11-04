@@ -1,6 +1,8 @@
 | Directions |
 	# Every vessel's Directions, each in the Direction template from 15_Templates.txt, under its vessel.
 	# How Directions are offered, ranked and bought: -> 06_New_Mechanics.txt [Directions]
+	# Each sheet ends with By: who made it, Dimitri or Claude. A Claude-made sheet is all ~defaults~ until you take it.
+	/~ What each of Claude's rides on in the game's code, and the StarCraft II campaign upgrade behind it: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md \
 
 	[Directions by Vessel]
 		(Any)
@@ -15,6 +17,7 @@
 				- Numbers: ~15% / 25% / 35% less damage; rank III: one hit takes at most 25% of max health~
 				- Look: A {Stitched} with a bandaid on its face, holding back tears.
 				- Clashes: Any Vessel without (Minion)
+				- By: Dimitri
 			{~Barnacle Coat~}
 				- Kind: ~Boost~
 				- Vessel: ~Any~
@@ -25,6 +28,7 @@
 				- Numbers: ~prick 2 / 4 / 7~
 				- Look: ~A crust of barnacles~
 				- Clashes: ~None~
+				- By: Claude
 			{~Tidal Mend~}
 				- Kind: ~Boost~
 				- Vessel: ~Any~
@@ -35,6 +39,7 @@
 				- Numbers: ~mends 5 / 8 / 12 within 2 / 2.5 / 3 tiles~
 				- Look: ~A tide pool with a green glow~
 				- Clashes: ~None~
+				- By: Claude
 			{~Spring Tide~}
 				- Kind: ~Boost~
 				- Vessel: ~Any~
@@ -44,7 +49,8 @@
 				- Rank III: ~Your towers gain more health every tide and shrug off a little damage~
 				- Numbers: ~+4 / +7 / +10 health a tide; rank III: 10% less damage~
 				- Look: ~A wave rising over a sea wall~
-				- Clashes: ~None~
+				- Clashes: ~{Wound Spring}: a player holds one or the other~
+				- By: Claude
 			{~Cut Costs~}
 				- Kind: ~Boost~
 				- Vessel: ~Any~
@@ -55,6 +61,7 @@
 				- Numbers: ~-10% / -20% / -30%~
 				- Look: ~A pair of rusty shears~
 				- Clashes: ~None~
+				- By: Claude
 			{~Cheap Refits~}
 				- Kind: ~Boost~
 				- Vessel: ~Any~
@@ -65,6 +72,7 @@
 				- Numbers: ~-10% / -20% / -30%~
 				- Look: ~A bent spanner~
 				- Clashes: ~None~
+				- By: Claude
 			{~Compound Interest~}
 				- Kind: ~Boost~
 				- Vessel: ~Any~
@@ -75,6 +83,95 @@
 				- Numbers: ~3% / 5% / 8% of each colour, at most 40 of each~
 				- Look: ~A jar of coins with a sprout in it~
 				- Clashes: ~None~
+				- By: Claude
+			{~Wound Spring~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~All its buildings~
+				- Rank I: ~Your towers attack faster~
+				- Rank II: ~Your towers attack faster still~
+				- Rank III: ~Your towers attack much faster~
+				- Numbers: ~attack speed +6% / +12% / +20%~
+				- Look: ~A wound clock spring~
+				- Clashes: ~{Spring Tide}: a player holds one or the other~
+				- By: Claude /~ After StarCraft II's Ultra-Capacitors, the research that sits opposite Vanadium Plating. Spring Tide is the Vanadium Plating side \
+			{~Fine Sieve~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~Your aura~
+				- Rank I: ~Each Tide pays you a little of the colour you hold least~
+				- Rank II: ~Each Tide pays you more of it~
+				- Rank III: ~Each Tide pays you much more of it~
+				- Numbers: ~3 / 5 / 8 times the Tide's number, in the colour you hold least~ /~ At Tide 15: 45 / 75 / 120. A whole map: about 360 / 600 / 960, to you alone. A base vessel earns about 4,800 a map; the stock Red Coin pays 25, then 5 or more times each Tide's number, shared by the team \
+				- Look: ~A fine mesh sieve full of sand~
+				- Clashes: ~None~
+				- By: Claude /~ After Micro-Filtering and Vespene Efficiency. Paid to you directly, since mining pays the team \
+			{~Spare Hands~}
+				- Kind: ~Boost~
+				- Vessel: ~Any vessel with a building that makes units~
+				- Touches: ~Your units~
+				- Rank I: ~Each of your unit buildings keeps one more unit~
+				- Rank II: ~Your units come back sooner~
+				- Rank III: ~Each of your unit buildings keeps two more units, and they come back sooner still~
+				- Numbers: ~rank I: +1 unit; rank II: +1 unit, respawn -25%; rank III: +2 units, respawn -40%~
+				- Look: ~A pair of work gloves~
+				- Clashes: ~Any vessel without a building that makes units: Sno Sno~
+				- By: Claude /~ After the Command Center Reactor, Twin Drones and Zergling Reconstitution \
+			{~Galley Kettle~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Your vessel attacks faster the longer it keeps hitting~
+				- Rank II: ~It builds up to a faster pace~
+				- Rank III: ~It builds up to a much faster pace, and hits harder at full steam~
+				- Numbers: ~+4% attack speed a hit, up to +20% / +35% / +50%, lost after 3 seconds without a hit; rank III: damage +10% at the top~
+				- Look: ~A dented galley kettle letting off steam~
+				- Clashes: ~None~
+				- By: Claude /~ After Kerrigan's Fury and the Zergling's Adrenal Overload \
+			{~Chain Shot~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Every few hits, your vessel's attack jumps to another foe~
+				- Rank II: ~It jumps to two more foes~
+				- Rank III: ~It jumps to three more foes, more often~
+				- Numbers: ~every 4th hit jumps 1 / 2 / 3 times within 2 tiles for 50% damage; rank III: every 3rd hit~
+				- Look: ~Two cannonballs joined by a chain~
+				- Clashes: ~None~
+				- By: Claude /~ After Kerrigan's Chain Reaction and the Mutalisk's Vicious Glaive \
+			{~Salt Barrel~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Your vessel has more health~
+				- Rank II: ~It has more health, and mends while hurt~
+				- Rank III: ~It has much more health, and mends faster~
+				- Numbers: ~health +15% / +30% / +45%; mends 0 / 0.5 / 1 a second while hurt~
+				- Look: ~A small barrel of salt pork~
+				- Clashes: ~None~
+				- By: Claude /~ After Kerrigan's Heroic Fortitude and the Zergling's Hardened Carapace \
+			{~Fog Horn~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Foes near your vessel move slower~
+				- Rank II: ~Foes near it move slower still~
+				- Rank III: ~Foes near it move much slower, over a wider area~
+				- Numbers: ~speed -10% / -15% / -25% within 2 / 2 / 3 tiles~
+				- Look: ~A brass fog horn~
+				- Clashes: ~None~
+				- By: Claude /~ After the Psi Disrupter and the Spear of Adun's Temporal Field \
+			{~Clam Shell~}
+				- Kind: ~Boost~
+				- Vessel: ~Any~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Once a map, your vessel lives through a killing blow at 1 health~
+				- Rank II: ~After it saves you, nothing can hurt your vessel for a moment~
+				- Rank III: ~Twice a map~
+				- Numbers: ~rank II and III: untouchable for 3 seconds after~
+				- Look: ~A closed clam shell~
+				- Clashes: ~None~
+				- By: Claude /~ After the Spear of Adun's Guardian Shell: the Basin's own last stand, put on the vessel \
 		(Argo)
 			! NEEDS ARGO'S DIRECTIONS !
 			{~Deep Current~}
@@ -87,6 +184,7 @@
 				- Numbers: ~reach +15% / +30% / +50%~
 				- Look: ~A bottle with a dark current curling inside~
 				- Clashes: ~None~
+				- By: Claude
 			{~Heavy Salvo~}
 				- Kind: ~Boost~
 				- Vessel: ~Argo~
@@ -97,6 +195,29 @@
 				- Numbers: ~damage +10% / +20% / +35%~
 				- Look: ~A heavy iron harpoon head~
 				- Clashes: ~None~
+				- By: Claude
+			{~Chum Bucket~}
+				- Kind: ~Boost~
+				- Vessel: ~Argo~
+				- Touches: ~All its buildings~
+				- Rank I: ~Slowed and pinned foes take more damage from your towers~
+				- Rank II: ~They take more still~
+				- Rank III: ~They take much more~
+				- Numbers: ~damage taken +8% / +15% / +25%, on top of the Scatter Cannon's own bonus~
+				- Look: ~A bucket of chum~
+				- Clashes: ~None~
+				- By: Claude /~ After the Havoc, which makes foes take more damage \
+			{~Pressure Gauge~}
+				- Kind: ~Boost~
+				- Vessel: ~Argo~
+				- Touches: ~{Drill Rig}~
+				- Rank I: ~Your {Drill Rig}s start a Fathom deep~
+				- Rank II: ~They start two Fathoms deep~
+				- Rank III: ~They start three Fathoms deep~
+				- Numbers: ~starts 1 / 2 / 3 Fathoms down when built~
+				- Look: ~A brass pressure gauge with its needle in the red~
+				- Clashes: ~None~
+				- By: Claude /~ After the Automated Refinery and Orbital Assimilators: an economy that starts ahead \
 		(Yossele)
 			! NEEDS YOSSELE'S DIRECTIONS !
 			{Compost Bin}
@@ -109,6 +230,7 @@
 				- Numbers: ~rank I: 1 fertilizer per 10 enemies killed within 4 tiles of Yossele~; ~rank II: per 6 within 4 tiles~; ~rank III: per 6 within 7 tiles~ /~ What the Yossele build uses \
 				- Look: A small gray bin with dirt inside and stink lines emanating from the top.
 				- Clashes: None
+				- By: Dimitri
 			{Dandelion Season}
 				- Kind: Shift
 				- Vessel: Yossele
@@ -119,6 +241,7 @@
 				- Numbers: ~a Sapling has 70% of the Tree's damage, range and stages; rank II: each stage does 25% more; rank III: +5% damage and range per other Sapling at max Growth, at most +50%~ /~ What the Yossele build uses \
 				- Look: A dandelion
 				- Clashes: Other {Primordial Dandelion Tree} [Directions]
+				- By: Dimitri
 			{Mother of Mushrooms}
 				- Kind: Shift
 				- Vessel: Yossele
@@ -129,6 +252,40 @@
 				- Numbers: ~in TDS_Mod/ModSource/Yossele/Code/02_Data.cs Mushboomkits~ /~ What the Yossele build uses; each number there is marked as a default \
 				- Look: A mushroom growth starter kit
 				- Clashes: Other {Primordial Dandelion Tree} [Directions]
+				- By: Dimitri
+			{~Cutting Jar~}
+				- Kind: ~Shift~
+				- Vessel: ~Yossele~
+				- Touches: ~All its buildings~
+				- Rank I: ~A building that falls leaves a cutting: rebuild it on the same tile soon and it keeps some of its [Growth]~
+				- Rank II: ~The cutting keeps more of its [Growth]~
+				- Rank III: ~The cutting keeps most of its [Growth], and waits longer~
+				- Numbers: ~keeps 25% / 50% / 75% of its Growth stages, rounded down, if the same building is rebuilt there within 20 / 20 / 40 seconds~
+				- Look: ~A jar of water with a plant cutting rooting in it~
+				- Clashes: ~None~
+				- By: Claude /~ After the Torrasque Strain and the Sentinel, which come back from death. Softens your [Growth] rule, which resets when a building falls \
+			{~Sap Bucket~}
+				- Kind: ~Boost~
+				- Vessel: ~Yossele~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Yossele's laser leaves sticky sap that slows foes~
+				- Rank II: ~The sap slows more~
+				- Rank III: ~The sap slows much more, and foes stuck in it take more damage from your towers~
+				- Numbers: ~speed -15% / -25% / -35% for 2 seconds; rank III: damage taken from your buildings +10%~
+				- Look: ~A tin bucket under a tapped tree, sap dripping in~
+				- Clashes: ~None~
+				- By: Claude /~ After the Roach's Vile Strain \
+			{~Creeping Ivy~}
+				- Kind: ~Boost~
+				- Vessel: ~Yossele~
+				- Touches: ~{Overgrown Stonehenge}~
+				- Rank I: ~Your vines reach farther~
+				- Rank II: ~Foes on your vines slow down~
+				- Rank III: ~Your vines grow farther every Tide~
+				- Numbers: ~vine reach +1 tile; rank II: foes on vines -15% speed; rank III: +0.5 tile a Tide, at most +3~
+				- Look: ~A sprig of ivy curling round a stone~
+				- Clashes: ~None~
+				- By: Claude /~ After Malignant Creep and the Creeper Strain \
 		(Spool)
 			! NEEDS SPOOL'S DIRECTIONS !
 			{Efficient Recycler}
@@ -141,6 +298,7 @@
 				- Numbers: ~Thread back 65% / 80% / 100%; rank III: heals 10 within 2.5 tiles~ /~ What the Spool build uses \
 				- Look: A recycling icon made of a string of yarn
 				- Clashes: None
+				- By: Dimitri
 			{Sewing Machine}
 				- Kind: Shift
 				- Vessel: Spool
@@ -151,6 +309,40 @@
 				- Numbers: ~mines +50%; heals 10 / 20 / 20 each tide within 3 / 3 / 5 tiles~ /~ What the Spool build uses \
 				- Look: A classic light blue sewing machine
 				- Clashes: Other {Loom} [Directions]
+				- By: Dimitri
+			{~Double Needle~}
+				- Kind: ~Boost~
+				- Vessel: ~Spool~
+				- Touches: ~{Repurposed Cookie Tin}~
+				- Rank I: ~Your {Repurposed Cookie Tin}s stitch faster~
+				- Rank II: ~They stitch faster still~
+				- Rank III: ~Every third {Crafted} they stitch comes out as two~
+				- Numbers: ~stitch time -15% / -30% / -30%; rank III: every 3rd stitch makes a second {Crafted} for no {Thread}~
+				- Look: ~A sewing machine needle with two points~
+				- Clashes: ~None~
+				- By: Claude /~ After the Tech Reactor and Twin Drones \
+			{~Button Jar~}
+				- Kind: ~Shift~
+				- Vessel: ~Spool~
+				- Touches: ~{Repurposed Cookie Tin}~
+				- Rank I: ~Your {Repurposed Cookie Tin}s stitch {Crafted} two at a time, smaller and weaker, for the {Thread} of one~
+				- Rank II: ~The small {Crafted} are sturdier~
+				- Rank III: ~The small {Crafted} are sturdier still and hit harder~
+				- Numbers: ~two Crafted for one's Thread, each with 55% / 65% / 75% of the health and damage; each Tin holds twice as many~
+				- Look: ~A glass jar of mismatched buttons~
+				- Clashes: ~None~
+				- By: Claude /~ After the Zergling's Swarm Strain. A Shift on one building, the way your Sewing Machine changes the Loom \
+			{~Pattern Book~}
+				- Kind: ~Boost~
+				- Vessel: ~Spool~
+				- Touches: ~{Crafted}~
+				- Rank I: ~Once a Tide, the first {Crafted} of each {Repurposed Cookie Tin} to fall is stitched again for free~
+				- Rank II: ~The first two are~
+				- Rank III: ~The first three are, at once~
+				- Numbers: ~1 / 2 / 3 a Tide for each Tin; ranks I and II wait the usual stitch time, rank III is instant~
+				- Look: ~A dog-eared sewing pattern book~
+				- Clashes: ~None~
+				- By: Claude /~ After the Sentinel's return from death and Zergling Reconstitution. Sits beside your Efficient Recycler \
 		(Uloe)
 			! NEEDS ULOE'S DIRECTIONS !
 			{~Extension Cord~}
@@ -163,6 +355,7 @@
 				- Numbers: ~reach +2 / +4 / +6 tiles~
 				- Look: ~An orange extension cord on a reel~
 				- Clashes: ~None~
+				- By: Claude
 			{~Brighter Bulb~}
 				- Kind: ~Boost~
 				- Vessel: ~Uloe~
@@ -173,6 +366,7 @@
 				- Numbers: ~Light +1 / +2 / +3, plugged in or not~
 				- Look: ~A frosted light bulb stamped 100~
 				- Clashes: ~None~
+				- By: Claude
 			{~Spare Batteries~}
 				- Kind: ~Boost~
 				- Vessel: ~Uloe~
@@ -183,6 +377,7 @@
 				- Numbers: ~+1 Photon; +1 Photon, respawn -25%; +2 Photons, respawn -25%~
 				- Look: ~Two batteries taped together~
 				- Clashes: ~None~
+				- By: Claude
 			{~Flash Bulb~}
 				- Kind: ~Shift~
 				- Vessel: ~Uloe~
@@ -193,6 +388,7 @@
 				- Numbers: ~rank I: Illuminate 1; rank II: Illuminate 1, Blind 1; rank III: Illuminate 2, Blind 2~
 				- Look: ~An old camera's flash cube~
 				- Clashes: ~None~
+				- By: Claude
 		(Base Game Vessels)
 			/ Base game vessels get their own Directions as well as the Any ones. Put the vessel's name in Vessel \
 			{~Full Gallop~}
@@ -205,6 +401,7 @@
 				- Numbers: ~speed +10% / +20% / +30%~
 				- Look: ~A horseshoe with a wing on it~
 				- Clashes: ~None~
+				- By: Claude
 			{~House Regulars~}
 				- Kind: ~Boost~
 				- Vessel: ~Fie~
@@ -215,6 +412,7 @@
 				- Numbers: ~attack speed +10% / +20% / +30%~
 				- Look: ~A tally of a regular's tab~
 				- Clashes: ~None~
+				- By: Claude
 			{~Long Line~}
 				- Kind: ~Boost~
 				- Vessel: ~Boutman~
@@ -225,6 +423,7 @@
 				- Numbers: ~fishing range +1 / +2 / +3~
 				- Look: ~A long spool of fishing line~
 				- Clashes: ~None~
+				- By: Claude
 			{~Packed Snow~}
 				- Kind: ~Boost~
 				- Vessel: ~Sno Sno~
@@ -235,6 +434,7 @@
 				- Numbers: ~speed +8% / +16% / +25%~
 				- Look: ~A hard packed snowball~
 				- Clashes: ~None~
+				- By: Claude
 			{~Skipping Stones~}
 				- Kind: ~Boost~
 				- Vessel: ~Smacky~
@@ -245,3 +445,59 @@
 				- Numbers: ~damage +15% / +30% / +50%~
 				- Look: ~A flat stone with a skip trail~
 				- Clashes: ~None~
+				- By: Claude
+			{~Mason's Trowel~}
+				- Kind: ~Boost~
+				- Vessel: ~Smacky~
+				- Touches: ~{Wall}~
+				- Rank I: ~Your {Wall}s are sturdier~
+				- Rank II: ~Your {Wall}s are sturdier still~
+				- Rank III: ~Your {Wall}s are much sturdier, and mend when left alone~
+				- Numbers: ~health +20% / +40% / +60%; rank III: mends 1 a second after 3 seconds without a hit~
+				- Look: ~A mason's trowel with mortar on it~
+				- Clashes: ~None~
+				- By: Claude /~ After the Fortified Bunker and Neosteel Frame \
+			{~Snow Shovel~}
+				- Kind: ~Boost~
+				- Vessel: ~Sno Sno~
+				- Touches: ~The vessel itself~
+				- Rank I: ~The snow Sno Sno leaves is deeper~
+				- Rank II: ~The snow he leaves is deeper still~
+				- Rank III: ~The snow he leaves is much deeper~
+				- Numbers: ~his snow starts at level 30 / 40 / 55, where the game's is 20~
+				- Look: ~A snow shovel with a bent blade~
+				- Clashes: ~None~
+				- By: Claude /~ After Malignant Creep: he runs 75% faster on snow above level 20, and deeper snow lasts longer \
+			{~Worm Tin~}
+				- Kind: ~Boost~
+				- Vessel: ~Boutman~
+				- Touches: ~{Gubby}s, {Fish Barrel}s and the {Boutboat}~
+				- Rank I: ~Boutbro builds for less~
+				- Rank II: ~Boutbro builds for less still~
+				- Rank III: ~Boutbro builds for much less~
+				- Numbers: ~cost -10% / -20% / -30%~
+				- Look: ~A rusty tin of bait worms~
+				- Clashes: ~None~
+				- By: Claude /~ After Orbital Depots, which made building quick and cheap \
+			{~Open Sign~}
+				- Kind: ~Boost~
+				- Vessel: ~Fie~
+				- Touches: ~{Rest Stop}~
+				- Rank I: ~Your {Rest Stop} keeps one more regular~
+				- Rank II: ~It keeps two more~
+				- Rank III: ~It keeps three more~
+				- Numbers: ~regulars 5 / 6 / 7, where the game's is 4~
+				- Look: ~A hand-painted OPEN LATE sign~
+				- Clashes: ~None~
+				- By: Claude /~ After the Command Center Reactor: more hands from the same building \
+			{~Long Leash~}
+				- Kind: ~Boost~
+				- Vessel: ~Buster~
+				- Touches: ~The vessel itself~
+				- Rank I: ~Buster keeps his full reach while dashing~
+				- Rank II: ~His dash hits land harder~
+				- Rank III: ~His dash hits land much harder~
+				- Numbers: ~rank I: no -1 range while dashing; rank II: dash hits +15%; rank III: +30%~
+				- Look: ~A long red dog leash~
+				- Clashes: ~None~
+				- By: Claude /~ After the Raptor Strain's leap and the Centurion's charge \
