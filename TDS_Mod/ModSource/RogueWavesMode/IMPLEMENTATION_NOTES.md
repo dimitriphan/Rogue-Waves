@@ -1,5 +1,17 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-04): the test round's fixes
+
+`docs/reports/TEST_ROUND_2026-11-04.md` has the round; `docs/mode/REJOIN.md` §6 has the rejoin's table. What changed in the mode:
+
+- **Rejoin** (`09_Rejoin.cs`): `OnLog`, `Repair` and `Looks` run again what a late player object or a late load group stopped (pitfalls #139, #141).
+- **Spring Tide** (`16_Directions.cs`): numbers `{1,4},{1,7},{1,10}`, and rank III's shrug is `SpringShrug` in the part's hit hook (pitfall #140). `HasMinions` adds Fie and Buster. `Picture` aliases Recycler and Mushrooms.
+- **Fund Transfer** (`18_Shop.cs`, `11_Dialog.cs`): every card has a picture; `RWDialog.Number` draws the amounts.
+- **Objectives** (`19_Objectives.cs`, `07_Weather.cs`): Beat the Clock judges the clock's last reading in the Tide's own row (`clockLeft`, pitfall #142); Raze the Nest isn't offered where no nest fits (`CanNest`), and says so if one finds no room.
+- **`RWRun.Vessel`** (`14_Run.cs`): Boutbro isn't the vessel. **`RWDifficulty.Pool`** (`21_Difficulty.cs`): a reserve list for an elite the map hasn't loaded.
+
+Test code: `92_Gaps.cs` (`ROGUEWAVESMODE_GAPS`) and `93_TwoPlayers.cs` (`ROGUEWAVESMODE_TWOPC`), both out of a release build, and `Tools/pc/Run-TwoPlayers.ps1`.
+
 ## 0.1.0-dev, later (2026-11-04): seven Cardinals removed
 
 At Dimitri's word, Claude's seven starter Cardinals are gone from `RWCardinals.Mine` and their icons from

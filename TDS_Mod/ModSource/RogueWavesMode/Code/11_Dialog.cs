@@ -41,6 +41,43 @@ public static class RWDialog
         return card;
     }
 
+    // A number as a card's picture, in pixels the size of the library's icons (the cards show no text of their own).
+    static readonly string[] Digits = { "111101101101111", "010110010010111", "111001111100111", "111001111001111", "101101111001001", "111100111001111", "111100111101111", "111001010010010", "111101111101111", "111101111001111" };
+    static readonly Dictionary<int, Sprite> numbers = new Dictionary<int, Sprite>();
+
+    public static Sprite Number(int n)
+    {
+        Sprite made;
+        if (numbers.TryGetValue(n, out made) && made != null)
+            return made;
+        const int Size = 32;
+        string text = n.ToString();
+        int scale = text.Length <= 3 ? 3 : 2, wide = text.Length * 3 * scale + (text.Length - 1) * scale;
+        Texture2D tex = new Texture2D(Size, Size, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        Color32[] all = new Color32[Size * Size];
+        int x0 = Mathf.Max(0, (Size - wide) / 2), y0 = (Size - 5 * scale) / 2;
+        for (int d = 0; d < text.Length; d++)
+        {
+            string glyph = Digits[text[d] - (char)48];
+            for (int row = 0; row < 5; row++)
+                for (int col = 0; col < 3; col++)
+                    if (glyph[row * 3 + col] == (char)49)
+                        for (int sy = 0; sy < scale; sy++)
+                            for (int sx = 0; sx < scale; sx++)
+                            {
+                                int x = x0 + d * 4 * scale + col * scale + sx, y = y0 + (4 - row) * scale + sy;
+                                if (x >= 0 && x < Size && y >= 0 && y < Size) all[y * Size + x] = new Color32(255, 255, 255, 255);
+                            }
+        }
+        tex.SetPixels32(all);
+        tex.Apply();
+        made = UnityEngine.Sprite.Create(tex, new Rect(0, 0, Size, Size), new Vector2(0.5f, 0.5f), 20f, 0, SpriteMeshType.FullRect);
+        made.name = "RW_Number_" + n;
+        numbers[n] = made;
+        return made;
+    }
+
     // Asks on this machine. done(name) gets the picked card's Name, or null when the time ran out, the menu closed, or a
     // newer Ask took over. seconds <= 0 waits for as long as the dialog stays up. Run as a coroutine on the mod's object.
     public static IEnumerator Ask(List<Bla_Ui_Confirmation.Entry> cards, string title, string sub, float seconds, Action<string> done)

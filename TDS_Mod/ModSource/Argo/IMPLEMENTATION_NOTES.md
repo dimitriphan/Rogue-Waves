@@ -237,7 +237,7 @@ The scope has no Argo Directions yet, so `ArgoContent.BuildDirections` registers
 - **Heavy Salvo** (`Heavysalvo`): a held Multi of +10 / 20 / 35% on each Harpoon Gun's Damage, made at its first check after
   it spawns and remade if the rank rises.
 
-With none held the numbers and behaviour are today's. It compiled, with and without `ARGO_SELFTEST`, but hasn't run in game.
+With none held the numbers and behaviour are today's. Measured in game on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`): Heavy Salvo's +10, +20, +35% on the Harpoon Gun's Damage, and Deep Current's reach numbers. A foe past the plain reach couldn't be set up, so the longer reach's effect on a foe isn't seen.
 
 ## Layout
 

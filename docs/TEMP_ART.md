@@ -28,6 +28,8 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Mode UI | icons of the Stay, Leave, Shop, Fund and Board buttons | same folder | wired, seen in game |
 | Mode | VENDCINT's sheet (a vending machine, `Vendcint-Sheet`) | drawn by `Assets/RogueWavesModeMod/Editor/RogueWavesModeArt.cs` into `Art/Temporary/game_size/` if missing | seen in game (landing, panel, its jump away) |
 | Mode | Direction and Cardinal icons (`Direction_*`, `Cardinal_*`) | same folder; Uloe's four added there too | wired, seen in game |
+| Mode | Deep Current and Heavy Salvo, Argo's two Direction icons (`Direction_Deepcurrent`, `Direction_Heavysalvo`; both showed the crest), drawn 2026-11-04 by `ModSource/Argo/Tools/Make-DirectionIcons.ps1` | same folder | wired, compiled; the mode's Direction cards read them |
+| Mode UI | Fund Transfer's cards: the friend's vessel, the aura colours, and numbers drawn in pixel digits by `RWDialog.Number` (they were blank white squares) | in code | wired, seen by the self-test, for his eye |
 | Mode | the sea chart | no art of its own: the base game's own islands, water, rocks and buoys, copied in code at runtime (`Code/04_World.cs`); a flag and dashed lanes in the pack's colours are the only new shapes | seen in game |
 | Foes | the four modifiers' pixel rings | built in code (`RogueWavesFoes/Code/00_RogueWavesFoesMod.cs` `RWFLooks`), colours from `docs/STYLE.md` | seen in game by self-test, not by eye |
 | Uloe | every sheet, model, effect and sound, drawn by code from the concept page | `Assets/UloeMod/Editor`, `ModSource/Uloe/Previews/` | seen in game |

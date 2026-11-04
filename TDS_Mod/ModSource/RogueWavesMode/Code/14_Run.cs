@@ -91,7 +91,9 @@ public static class RWRun
                 return e;
             if (any == null) any = e;
         }
-        return any;
+        // While Boutman is down his Boutbro is the only thing of his tagged Hero: it is not his vessel, and must not take his Directions
+        // and the run's commands (seen on the PC, 2026-11-04). "any" is only for a vessel this machine can't name.
+        return being != null ? null : any;
     }
 
     // ---------------------------------------------------------------- the save

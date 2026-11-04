@@ -238,9 +238,20 @@ public static class RWShop
         RWMine.Send("Buy", 0, pick);
     }
 
+    // A card with no picture shows a blank white square (seen on a real second player's screen, 2026-11-04): each of Fund
+    // Transfer's cards carries one. The colour on its tile says which aura; a friend's card shows their vessel; an amount, its number.
     static Bla_Ui_Confirmation.Entry Colour(string res, string display, float have, Color tint)
     {
-        return RWDialog.Card(res, display, "You hold " + Mathf.FloorToInt(have), null, tint);
+        Sprite icon = null;
+        try { icon = Helper_Uitools.Geticon(res); } catch (Exception) { }
+        return RWDialog.Card(res, display, "You hold " + Mathf.FloorToInt(have), icon ?? RWAssets.Sprite("RogueWaves_Fund"), tint);
+    }
+
+    static Sprite FriendPicture(Blm_Player p)
+    {
+        Tds_Clientinfo info = p != null ? p.GetComponent<Tds_Clientinfo>() : null;
+        Heroentryobject hero = info != null ? RWUtil.Item<Heroentryobject>("Hero", info.Hero.Value.ToString()) : null;
+        return hero != null && hero.Icon != null ? hero.Icon : RWAssets.Sprite("RogueWaves_Fund");
     }
 
     static float Have(string res)
@@ -258,7 +269,7 @@ public static class RWShop
         List<Bla_Ui_Confirmation.Entry> friends = new List<Bla_Ui_Confirmation.Entry>();
         foreach (long s in Blm_Server.Instance.Sessionidsplayer.Keys)
             if (s != me)
-                friends.Add(RWDialog.Card(s.ToString(), Blm_Server.Instance.Sessionidsplayer[s].Displayname.Value.ToString(), "Send base aura to this friend", null, RWDialog.Teal));
+                friends.Add(RWDialog.Card(s.ToString(), Blm_Server.Instance.Sessionidsplayer[s].Displayname.Value.ToString(), "Send base aura to this friend", FriendPicture(Blm_Server.Instance.Sessionidsplayer[s]), RWDialog.Teal));
         if (friends.Count == 0)
         {
             asking = "";
@@ -284,7 +295,7 @@ public static class RWShop
         List<Bla_Ui_Confirmation.Entry> amounts = new List<Bla_Ui_Confirmation.Entry>();
         foreach (int a in new[] { 10, 25, limit / 2, limit })
             if (a > 0 && !amounts.Exists(x => x.Name == a.ToString()))
-                amounts.Add(RWDialog.Card(a.ToString(), a.ToString(), "Send " + a, null, RWDialog.Teal));
+                amounts.Add(RWDialog.Card(a.ToString(), a.ToString(), "Send " + a, RWDialog.Number(a), RWDialog.Teal));
         amounts.Add(Back());
         string amount = null;
         yield return RWDialog.Ask(amounts, "FUND TRANSFER", "This break's limit: " + limit, 0f, n => amount = n);

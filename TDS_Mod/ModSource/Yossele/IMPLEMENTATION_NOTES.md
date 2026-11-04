@@ -243,7 +243,7 @@ and keeps held modifiers, and with none held it makes none. Defaults are in `02_
   rank II +25% Range. The Tree's seed upgrades do nothing while it is a Mushboom; its Range upgrades still add.
 
 Same model and panel name for both, and the Bonsai stays a seed-firing Bonsai. It compiled, with and without
-`YOSSELE_SELFTEST`, but hasn't run in game.
+`YOSSELE_SELFTEST`. Measured in game on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`): the burst takes 2 a stack and the stacks go, rank III leaves half, Dandelion Season does 70% damage and range and allows a second Tree. Viral Outbreak, Cordyceps and Hallucinogen fired by their rates in the same run.
 
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
 

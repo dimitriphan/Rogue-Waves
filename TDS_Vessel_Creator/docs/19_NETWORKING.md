@@ -221,6 +221,8 @@ Before starting, compare the `Loaded Mod: <name>` lines (Bla_Mods.cs:111) in bot
 
 Copy any `[Netcode]` warning into `09_PITFALLS.md` with what was being done at that moment.
 
+**Run with a real second player, 2026-11-04** (`TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`, pitfall #144; two copies of the game on one PC, UnityTransport on the loopback address): N1-N5, N7, N12, N13 and N14 pass, as do N8 and N9 as `docs/mode/REJOIN.md` O1-O3b, and N11 as O5 (`docs/reports/TEST_ROUND_2026-11-04.md`). N4 is by errors only: none on either machine, its looks unread. N6 and N10 were not run. All that is left of the evening is what loopback can't be: Steam's friends list and lobby, a real network's delay and drop, and a person's eye.
+
 ## 9. Sources
 
 The decompiled `Assembly-CSharp.dll` (703 types), read on 2026-10-14 by a parallel reader and spot-checked by hand

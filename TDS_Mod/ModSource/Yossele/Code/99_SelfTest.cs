@@ -240,9 +240,11 @@ public static class YosseleSelfTest
     static IEnumerator ForceTide(int[] reached)
     {
         int before = Game_Mapvars.Instance.Wave.Value;
+        float forcedAt = Time.realtimeSinceStartup;
         forcing = true;
         yield return Until(() => Game_Mapvars.Instance == null || Game_Mapvars.Instance.Wave.Value > before, 120f);
         forcing = false;
+        Log("ForceTide: Wave " + before + " -> " + (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : -1) + " after " + F(Time.realtimeSinceStartup - forcedAt) + " s, Entry " + (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Entry.Value : -1) + (Game_Mapvars.Instance != null ? ", state '" + Game_Mapvars.Instance.Display.Value.Display_State + "', end '" + Game_Mapvars.Instance.Display.Value.Display_Endgame + "'" : ""));
         reached[0] = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : before;
         yield return Wait(1.5f);
         ClearFoes();
@@ -352,6 +354,28 @@ public static class YosseleSelfTest
     static List<Logitems.Base> AllItems(List<Logitems.Base> items) { return ModKitVesselJournal.Flat(items); }
 
     // ---------------------------------------------------------------- small scenario helpers
+
+    // A foe under spores until the Tree's next burst. Spores hurt and fade and the base's towers shoot: a Maul is kept full each
+    // frame and held at 2 stacks, whose burst of 4 it survives, so what it then loses is the burst's alone. Logged, with its health.
+    static IEnumerator WaitBurst(YosseleDandelionBrain boom, Entity_Master foe, YosseleCannonBrain sporer, int[] stacks, float[] drop)
+    {
+        Link_Stats s = foe.Statsserver["Health"];
+        float full = s.Value;
+        YosseleSpores.Add(foe, 2, sporer);
+        int bursts = boom.Bursts;
+        float until = Time.time + YosseleData.MushboomEvery + 3f, nextTop = Time.time + 2f;
+        while (boom.Bursts == bursts && Time.time < until && YosseleUtil.Alive(foe))
+        {
+            if (Time.time >= nextTop) { YosseleSpores.Add(foe, 1, sporer); nextTop = Time.time + 2f; }
+            int over = YosseleSpores.StacksOf(foe) - 2;
+            if (over > 0) YosseleSpores.Take(foe, over);
+            stacks[0] = YosseleSpores.StacksOf(foe);
+            s.Value = full;
+            yield return null;
+        }
+        drop[0] = full - (YosseleUtil.Alive(foe) ? YosseleUtil.Health(foe) : 0f);
+        Log("WaitBurst: " + foe.Being.Value + ", full " + F(full) + ", alive " + YosseleUtil.Alive(foe) + ", bursts " + bursts + " -> " + boom.Bursts);
+    }
 
     static void SetHealth(Entity_Master e, float value)
     {
@@ -750,17 +774,29 @@ public static class YosseleSelfTest
                 yield return Wait(0.3f);
                 Log("Cordyfriend look: " + (YosseleContent.FriendOwnLook ? "its own sheet " + YosseleData.FriendSheet : "the Snoble's, tint applied to " + YosseleClient.Tinted + " sprite renderers") + " (look by eye)");
             }
-            int rises = YosseleSpores.Rises;
-            for (int i = 0; i < 3; i++)
+            // The two chances, by their rates (test plan 5; never seen firing in a self-test until 2026-11-04): 30 fully spored foes fall.
+            int rises = YosseleSpores.Rises, virals = YosseleSpores.Virals, fell = 0;
+            for (int i = 0; i < 30; i++)
             {
                 Entity_Master f = SpawnFoe("Enemy_Dagger", cp, 6f, 3f);
                 yield return Wait(0.3f);
                 if (f == null) continue;
                 YosseleSpores.Add(f, YosseleData.SporeMax, cannon);
                 Kill(f);
+                fell++;
                 yield return Wait(0.3f);
             }
-            Log("cannon: Cordyceps rises from 3 fully spored foes " + (YosseleSpores.Rises - rises) + " (a 70% chance each, not checked)");
+            int risen = YosseleSpores.Rises - rises, burst = YosseleSpores.Virals - virals;
+            if (fell < 20) ModKitTest.Setup("Viral Outbreak and Cordyceps by their rates", fell + " foes could spawn");
+            else
+            {
+                Check("Viral Outbreak fires at about 30%", burst >= fell * 0.1f && burst <= fell * 0.55f, burst + " of " + fell);
+                Check("Cordyceps raises at about 70% from full stacks", risen >= fell * 0.4f && risen <= fell * 0.95f, risen + " of " + fell);
+            }
+            // The twenty Cordyfriends those raised would fight every foe the checks below set up.
+            foreach (YosseleFriendBrain raisedByRate in YosseleFriends.All)
+                if (raisedByRate.Master != null && raisedByRate.Master.Beingserver != null) Game_Entity.Instance.Despawn(raisedByRate.Master.Beingserver, false, "Selftest");
+            yield return Wait(0.5f);
         }
 
         ClearFoes();
@@ -807,7 +843,25 @@ public static class YosseleSelfTest
                     yield return DebuffReport(foe, YosseleData.VfxDaze);
                 }
                 Kill(foe);
-                Log("cannon: Hallucinogen stuns so far " + YosseleSpores.Stuns + " (a 20% chance every 5 s in play, not checked)");
+                // Its 20% every 5 s at full spores, by its rate: six rounds of six foes under a full cloud, about 7 stuns. A round is
+                // short because foes walk: six left for 30 s reached the Basin and ended the map (seen on the PC, 2026-11-04).
+                {
+                    int stuns0 = YosseleSpores.Stuns, rolled = 0;
+                    for (int round = 0; round < 6; round++)
+                    {
+                        List<Entity_Master> tough = new List<Entity_Master>();
+                        for (int i = 0; i < 6; i++)
+                        {
+                            Entity_Master f = SpawnFoe("Enemy_Maul", YosseleUtil.Pos(second.Master), 6f, 3f) ?? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(second.Master), 6f, 3f);
+                            if (f != null) { tough.Add(f); YosseleSpores.Add(f, YosseleData.SporeMax, second); }
+                        }
+                        rolled += tough.Count;
+                        yield return Wait(5.6f);
+                        foreach (Entity_Master f in tough) if (YosseleUtil.Alive(f)) Kill(f);
+                        yield return Wait(0.2f);
+                    }
+                    Check("Hallucinogen stuns by its rate, in play", YosseleSpores.Stuns - stuns0 >= 1 && YosseleSpores.Stuns - stuns0 <= rolled * 0.5f, (YosseleSpores.Stuns - stuns0) + " stuns from " + rolled + " foes, each rolled once, 5 s after it filled");
+                }
             }
             else
                 ModKitTest.Setup("second Cannon", "could not build one");
@@ -1485,6 +1539,90 @@ public static class YosseleSelfTest
 
         YosseleUtil.Unmod(holdFire);
 
+// 12b. The Tree's two Directions (kit 1.7). They clash, so a player holds one: Mother of Mushrooms here on this vessel,
+        // then, with its ranks taken off, Dandelion Season. (Untested until 2026-11-04.)
+        {
+            Func<string, Upgradeproperties> direction = n => Bl_Address.Getload("Upgrade", ModKitDirections.Id("Yossele", n)) as Upgradeproperties;
+            YosseleDandelionBrain boom = YosseleServer.TreeOf(owner);
+            if (boom == null)
+            {
+                Beingobject treeBeing = YosseleContent.Beings[YosseleData.Dandelion];
+                Vector3 boomAt = hero.Slot == YosseleData.Dandelion ? Spot(hm, treeBeing, 3.2f) : new Vector3(float.NaN, 0f, 0f);
+                if (!float.IsNaN(boomAt.x))
+                {
+                    yield return Build(hm, YosseleData.Dandelion, boomAt, known, got);
+                    boom = got[0] as YosseleDandelionBrain;
+                }
+            }
+            if (boom == null) ModKitTest.Setup("the Tree's Directions", "no Tree standing, none could be built");
+            else
+            {
+                float range0 = YosseleUtil.Stat(boom.Master, "Range", 0f);
+                ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[0].Name));
+                yield return Wait(1.2f);
+                Check("Mother of Mushrooms reads back", player.Mushrooms == 1, "rank " + player.Mushrooms);
+                YosseleCannonBrain sporer = null;
+                foreach (YosseleBuilding b in YosseleServer.Buildings) if (b is YosseleCannonBrain && b.Started && YosseleUtil.Alive(b.Master)) sporer = (YosseleCannonBrain)b;
+                int[] burstStacks = new int[1];
+                float[] burstDrop = new float[1];
+                Entity_Master spored = SpawnFoe("Enemy_Maul", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f) ?? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f);
+                yield return Wait(0.3f);
+                if (spored == null || sporer == null) ModKitTest.Setup("Mother of Mushrooms' burst", spored == null ? "no foe in reach" : "no Cannon to spore it");
+                else
+                {
+                    int strikes0 = boom.Strikes, bursts0 = boom.Bursts;
+                    yield return WaitBurst(boom, spored, sporer, burstStacks, burstDrop);
+                    Check("Mother of Mushrooms: every 8 s a burst on spored foes, 2 a stack, and the stacks go", boom.Bursts > bursts0 && Mathf.Abs(burstDrop[0] - YosseleData.MushboomPerStack * burstStacks[0]) <= 1f && YosseleSpores.StacksOf(spored) == 0 && boom.Strikes == strikes0, "bursts +" + (boom.Bursts - bursts0) + ", " + burstStacks[0] + " stacks took " + F(burstDrop[0]) + ", stacks left " + YosseleSpores.StacksOf(spored) + ", seed strikes +" + (boom.Strikes - strikes0));
+                    if (YosseleUtil.Alive(spored)) Kill(spored);
+                }
+                float r1 = YosseleUtil.Stat(boom.Master, "Range", 0f);
+                ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[1].Name));
+                yield return Wait(1.2f);
+                float r2 = YosseleUtil.Stat(boom.Master, "Range", 0f);
+                Check("Mother of Mushrooms rank II: a wider burst", player.Mushrooms == 2 && r2 > r1, F(r1) + " -> " + F(r2));
+                ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[2].Name));
+                yield return Wait(1.2f);
+                spored = SpawnFoe("Enemy_Maul", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f) ?? SpawnFoe("Enemy_Dagger", YosseleUtil.Pos(boom.Master), 3.5f, 1.5f);
+                yield return Wait(0.3f);
+                if (spored != null && sporer != null)
+                {
+                    int bursts1 = boom.Bursts;
+                    yield return WaitBurst(boom, spored, sporer, burstStacks, burstDrop);
+                    int left = YosseleSpores.StacksOf(spored);
+                    Check("Mother of Mushrooms rank III: half the stacks stay, the damage is full", boom.Bursts > bursts1 && left > 0 && left < burstStacks[0] && Mathf.Abs(burstDrop[0] - YosseleData.MushboomPerStack * burstStacks[0]) <= 1f, "stacks " + burstStacks[0] + " -> " + left + ", took " + F(burstDrop[0]));
+                    if (YosseleUtil.Alive(spored)) Kill(spored);
+                }
+                // Off with Mushrooms; on with Dandelion Season.
+                foreach (YosseleData.Shift s in YosseleData.Mushboomkits) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
+                yield return Wait(1.2f);
+                Check("with its ranks gone, the Tree shoots seeds again", player.Mushrooms == 0, "rank " + player.Mushrooms);
+                float limit0 = YosseleUtil.Stat(boom.Master, "Range", 0f), dmg0 = YosseleUtil.Stat(boom.Master, "Damage", 0f);
+                string slotBefore = hero.Slot;
+                ModKitDirections.Grant(hm, direction(YosseleData.Seasons[0].Name));
+                yield return Wait(1.5f);
+                Check("Dandelion Season: 70% damage and range", player.Season == 1 && Mathf.Abs(YosseleUtil.Stat(boom.Master, "Damage", 0f) - dmg0 * YosseleData.SaplingShare) < 0.05f * Mathf.Max(1f, dmg0) && YosseleUtil.Stat(boom.Master, "Range", 0f) < limit0, "damage " + F(dmg0) + " -> " + F(YosseleUtil.Stat(boom.Master, "Damage", 0f)) + ", range " + F(limit0) + " -> " + F(YosseleUtil.Stat(boom.Master, "Range", 0f)));
+                Check("Dandelion Season: the Tree's button stays while one stands", hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption) && hero.Slot == YosseleData.Dandelion, "slot before " + slotBefore + ", now " + hero.Slot);
+                Vector3 secondAt = Spot(hm, YosseleContent.Beings[YosseleData.Dandelion], 4f);
+                YosseleDandelionBrain sapling2 = null;
+                if (!float.IsNaN(secondAt.x))
+                {
+                    yield return Build(hm, YosseleData.Dandelion, secondAt, known, got);
+                    sapling2 = got[0] as YosseleDandelionBrain;
+                }
+                Check("Dandelion Season: a second Sapling can be built", sapling2 != null, "at " + secondAt);
+                float seedRate = boom.Rate;
+                ModKitDirections.Grant(hm, direction(YosseleData.Seasons[1].Name));
+                yield return Wait(1.2f);
+                Check("Dandelion Season rank II reads back", player.Season == 2, "rank " + player.Season);
+                float r3 = YosseleUtil.Stat(boom.Master, "Range", 0f), d3 = YosseleUtil.Stat(boom.Master, "Damage", 0f);
+                ModKitDirections.Grant(hm, direction(YosseleData.Seasons[2].Name));
+                yield return Wait(1.2f);
+                Log("Dandelion Season rank III: range " + F(r3) + ", damage " + F(d3) + "; other full-grown Saplings give +5% each");
+                Check("Dandelion Season rank III reads back", player.Season == 3, "rank " + player.Season);
+                foreach (YosseleData.Shift s in YosseleData.Seasons) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
+                yield return Wait(1f);
+            }
+        }
         // 13. The journal: Yossele's pages, and every vessel page with exactly one tab per vessel (Smacky included).
         {
             Logobject page = YosseleContent.Entry.Log;
