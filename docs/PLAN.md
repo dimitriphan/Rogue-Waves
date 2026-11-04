@@ -237,7 +237,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
   review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 15 Cardinals (`11`, `12`).
   Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
-  `docs/reports/README.md`. 2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`).
+  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion, files only until he picks (`docs/TEMP_ART.md` "Minion
+  versions"). 2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -616,6 +617,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   hold the built numbers. `docs/reports/ULOE_UPGRADES_2026-11-04.md`, numbers in `docs/reports/uloe_upgrades_2026-11-04/`; Scope
   Editor republished on the same link.
 - **2026-11-04: every untested feature tested** (Dimitri: "Develop upgrades for Uloe until they're fully fleshed out. Afterwards, make sure to test all untested features of the mod."; Uloe's upgrades are their own thread). On the PC: a real second player through a second copy of the game on the loopback address (`TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`, `RogueWavesMode/Code/93_TwoPlayers.cs`), the solo gaps (`92_Gaps.cs`), new Direction and rate checks in the vessels' self-tests. Ten bugs fixed; pitfalls #139-#149; `docs/mode/REJOIN.md` §6, kit `docs/19` §8 and `docs/RESEARCH_GAPS.md` §E say what is left. Report: `docs/reports/TEST_ROUND_2026-11-04.md`.
+- **2026-11-04: minion versions** (Dimitri: "Create new sprites for all modded minions. They should be closer in size to
+  snobles. Create at least 10 versions of each."). Eight minions counted from the scope and the builders: Cordyfriend
+  (Yossele), Thread Head and the Crafted Stitched, Dart, Seam, Mangled (Spool), Photon (Uloe), Naut (Argo; Port,
+  Starboard, Bosun). The Snoble measures 6-8 x 5-8 px in 12 px cells; today's minions are 9-15 x 10-21, the 80 new
+  versions mostly 6-12 across and 8-12 tall, the Thread Head the biggest. Every version keeps its wired sheet's name,
+  size and layout (`ModSource/<Part>/Art/Temporary/minions_2026-11-04/`); Cordyfriend and Spool picks are a file copy,
+  Photon and Naut picks first need a `FileArt` hook in their builders. Picks page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (collection `picks`, one doc per
+  minion); generator `concept-tools/minions/`; GIFs in `/mnt/project-files/concepts/minions_2026-11-04/`. Nothing seen in game.
 - **2026-11-04: "Now"'s Done list, moved here word for word** by the repository tidy
   (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md` S12), so "Now" stays the short state Part A asks for. It read:
   > Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` (0.2.1: sea chart, sea weather, rejoin; solo PC
@@ -690,6 +699,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   > every building 8 with a capstone, all Claude `~defaults~` in scope `10` beside his eight lines; hand numbers put a lit
   > Uloe level with Smacky (`docs/reports/ULOE_UPGRADES_2026-11-04.md`; Open questions 9; Log).
   > 2026-11-04: **every feature that had not been tested was run, the mod's online half with a real second player** (two copies of the game on the PC over the loopback address; `docs/reports/TEST_ROUND_2026-11-04.md`): votes, shop, Fund Transfer, weather, the drop and rejoin, Continue with a friend, a friend without the pack, four vessel pairs on a client, the F key on a real death, Direction effects on real hits, UI scales, the 45 maps, ten maps to the win. Ten bugs fixed, among them a rejoin that left a friend on a map with no looks for good and a Spring Tide that made hits on a tower infinite. Vessel self-tests: Spool 133, Argo 142, Yossele 173, Uloe 148, no failures. The whole mod boots as one pack (`pack.txt` itself stays Yossele alone). Compiled and run on the PC.
+  > 2026-11-04: **new sprites for every modded minion**, ten Snoble-sized versions each (Dimitri: "Create new sprites for all
+  > modded minions. They should be closer in size to snobles. Create at least 10 versions of each."): Cordyfriend, Thread Head,
+  > Stitched, Dart, Seam, Mangled, Photon, Naut (in all three crew colours); the foes part adds no bodies. Files only, nothing
+  > wired until he picks on the Minion Picks page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (`docs/TEMP_ART.md` "Minion versions"; Log).
 
 ### Decisions
 
