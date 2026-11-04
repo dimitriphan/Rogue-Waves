@@ -1,5 +1,8 @@
 # Test round, 2026-11-04: every feature that had not been tested
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 Dimitri, in the project: "Develop upgrades for Uloe until they're fully fleshed out. Afterwards, make sure to test all untested
 features of the mod." Uloe's upgrades are a design thread of their own. This report is the second half.
 

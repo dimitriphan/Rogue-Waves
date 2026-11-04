@@ -1,5 +1,5 @@
 // A campaign's per-player things (docs/scope/06, 12; kit docs/15 §3, §14.1), on the host's mod object: Pure Aura, the
-// Directions and Vessel Cardinals each player holds, their vessel, and the team's Cardinals. In a map they show through
+// Directions and Trinkets each player holds, their vessel, and the team's Cardinals. In a map they show through
 // what already syncs: a Pure Aura counter on each vessel (ModKitCounter), the upgrades on it, and three None-style commands
 // on each vessel (kit docs/20 §3.1), which draw nothing:
 //   RW_Ask    host to its owner: the question open for that player (Goalstring what, Goalvalue the round)
@@ -12,7 +12,7 @@ public class RWPlayer
     public string Key = "", Name = "", Hero = "";
     public int Pure;
     public readonly List<string> Directions = new List<string>();   // every Direction upgrade held, each rank its own id
-    public readonly List<string> Cardinals = new List<string>();    // Vessel Cardinals, each stack its own numbered id
+    public readonly List<string> Trinkets = new List<string>();     // Trinkets (Vessel Cardinals until 2026-11-04), each stack its own numbered id
     public bool Owed;                                               // a Direction pick waits for this player
     public float Sent;                                              // base aura sent in this break (Fund Transfer)
     public long Session = -1;                                       // in this host session
@@ -22,10 +22,11 @@ public static class RWRun
 {
     public const string PureStat = "Pure_Aura";
     public const string OrderLink = "RW_Order", AskLink = "RW_Ask", RunLink = "RW_Run";
-    public const string CountKey = "RW_Run_Count", PlayerKey = "RW_Run_Player_", TeamKey = "RW_Run_Team";
+    // CardinalsKey keeps its old text: a campaign saved before Team Cardinals became Cardinals (2026-11-04) still loads.
+    public const string CountKey = "RW_Run_Count", PlayerKey = "RW_Run_Player_", CardinalsKey = "RW_Run_Team";
     public const int PerTide = 3, PerBonusTide = 2;   // docs/scope/06 [Pure Aura]
     public static readonly Dictionary<string, RWPlayer> Players = new Dictionary<string, RWPlayer>();
-    public static readonly List<string> Team = new List<string>();        // Team Cardinals held, each stack its own id
+    public static readonly List<string> Cardinals = new List<string>();   // Cardinals held (Team Cardinals until 2026-11-04), each stack its own id
     public static bool InCampaignMap;                                     // host: this map belongs to the campaign, a staging map too
     static readonly List<Entity_Master> listening = new List<Entity_Master>();
     static float nextTick;
@@ -101,7 +102,7 @@ public static class RWRun
     public static void Clear()
     {
         Players.Clear();
-        Team.Clear();
+        Cardinals.Clear();
     }
 
     public static void Save()
@@ -113,7 +114,7 @@ public static class RWRun
             n++;
         }
         RWUtil.WriteString(RWData.SaveFolder, CountKey, n.ToString());
-        RWUtil.WriteString(RWData.SaveFolder, TeamKey, string.Join(",", Team.ToArray()));
+        RWUtil.WriteString(RWData.SaveFolder, CardinalsKey, string.Join(",", Cardinals.ToArray()));
         RWUtil.Flush();
     }
 
@@ -126,8 +127,8 @@ public static class RWRun
             RWPlayer p = Decode(RWUtil.ReadString(RWData.SaveFolder, PlayerKey + i));
             if (p != null && p.Key != "") Players[p.Key] = p;
         }
-        string team = RWUtil.ReadString(RWData.SaveFolder, TeamKey);
-        if (team != "") Team.AddRange(team.Split(','));
+        string held = RWUtil.ReadString(RWData.SaveFolder, CardinalsKey);
+        if (held != "") Cardinals.AddRange(held.Split(','));
     }
 
     public static void Forget()
@@ -135,7 +136,7 @@ public static class RWRun
         int n = RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0);
         for (int i = 0; i < n; i++)
             if (RWUtil.Has(RWData.SaveFolder, PlayerKey + i)) RWUtil.Remove(RWData.SaveFolder, PlayerKey + i);
-        foreach (string key in new[] { CountKey, TeamKey })
+        foreach (string key in new[] { CountKey, CardinalsKey })
             if (RWUtil.Has(RWData.SaveFolder, key)) RWUtil.Remove(RWData.SaveFolder, key);
         Clear();
     }
@@ -143,7 +144,7 @@ public static class RWRun
     // Tabs split the fields: a Steam name may hold anything but a tab, and a tab can't be typed into one.
     public static string Encode(RWPlayer p)
     {
-        return string.Join("\t", new[] { p.Key, p.Name.Replace("\t", " "), p.Hero, p.Pure.ToString(), string.Join(",", p.Directions.ToArray()), string.Join(",", p.Cardinals.ToArray()), p.Owed ? "1" : "0" });
+        return string.Join("\t", new[] { p.Key, p.Name.Replace("\t", " "), p.Hero, p.Pure.ToString(), string.Join(",", p.Directions.ToArray()), string.Join(",", p.Trinkets.ToArray()), p.Owed ? "1" : "0" });
     }
 
     public static RWPlayer Decode(string line)
@@ -157,7 +158,7 @@ public static class RWRun
         p.Hero = f[2];
         int.TryParse(f[3], out p.Pure);
         if (f[4] != "") p.Directions.AddRange(f[4].Split(','));
-        if (f[5] != "") p.Cardinals.AddRange(f[5].Split(','));
+        if (f[5] != "") p.Trinkets.AddRange(f[5].Split(','));
         p.Owed = f[6] == "1";
         return p;
     }

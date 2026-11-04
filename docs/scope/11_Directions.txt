@@ -220,10 +220,10 @@
 				- Kind: ~Boost~
 				- Vessel: ~Any~
 				- Touches: ~Your vessel and towers~
-				- Rank I: ~Your vessel and towers hit harder for every Cardinal you hold~
+				- Rank I: ~Your vessel and towers hit harder for every Cardinal and Trinket you hold~
 				- Rank II: ~Harder still for each~
 				- Rank III: ~Much harder for each~
-				- Numbers: ~damage +1% / +1.5% / +2% for each Cardinal: every stack of your Vessel Cardinals and every Team Cardinal counts~
+				- Numbers: ~damage +1% / +1.5% / +2% for each Cardinal and Trinket: every stack of your Trinkets and every Cardinal counts~
 				- Look: ~A magpie's nest full of buttons, keys and bottle caps~
 				- Clashes: ~None~
 				- By: Claude /~ After Balatro's Abstract Joker, which grows with every Joker held \

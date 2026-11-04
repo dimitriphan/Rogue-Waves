@@ -1,5 +1,5 @@
 | Templates |
-	# Every repeatable thing in the scope has its template here: a vessel, a Direction, a Cardinal, an optional objective, an enemy modifier, a sea weather and a bug.
+	# Every repeatable thing in the scope has its template here: a vessel, a Direction, a Cardinal or Trinket, an optional objective, an enemy modifier, a sea weather and a bug.
 	# To add one: copy its template into the file its - Goes in: line names, replace every line, and delete the / \ notes that only explain the template.
 	# Leave a slot blank when you don't know it yet: the design gate proposes a ~value~ and says which. Write ! NEEDS ! in a slot only you can fill.
 	# Units: distance in tiles, time in seconds, rates per second, a change in % and a multiplier with x. Money is the colour, then the amount: Red 30, Pure Aura 20.
@@ -149,7 +149,7 @@
 		- Rank III: / The last rank \
 		- Numbers: / Exact values for each rank. Leave blank and the design gate proposes them \
 		- Look: / One found object for its icon, readable at 12x12. It shows on the card in the pick dialog \
-		- Clashes: / Any Direction or Cardinal it should not be held with, or none \
+		- Clashes: / Any Direction, Cardinal or Trinket it should not be held with, or none \
 		- By: / Dimitri or Claude: who made it. Claude keeps it -> 00_Read_Me.txt [Values] \
 
 	{Deep Roots} / Example only, not a decision \
@@ -164,12 +164,12 @@
 		- Clashes: None
 		- By: Claude
 
-| Template: Cardinal |
+| Template: Cardinal or Trinket |
 	- Goes in: 12_Cardinals.txt, under its kind
-	# Names follow the pack's style sheet: a Cardinal is two plain words for a found object. /~ docs/STYLE.md \
+	# Names follow the pack's style sheet: a Cardinal or a Trinket is two plain words for a found object. /~ docs/STYLE.md \
 
-	{Name of Cardinal} / Two plain words, a found object the wave washed up \
-		- Kind: / Vessel or Team. Vessel acts only on the buyer's vessel, towers, units or aura. Team acts on the core, the enemies or the Tide clock, for every player \
+	{Name of Cardinal or Trinket} / Two plain words, a found object the wave washed up \
+		- Kind: / Trinket or Cardinal. A Trinket acts only on the buyer's vessel, towers, units or aura. A Cardinal acts on the core, the enemies or the Tide clock, for every player \
 		- In-game line: / One line as the game shows it, no numbers, like the base game's Cardinals \
 		- Numbers: / Exact values. Leave blank and the design gate proposes them \
 		- Lasts: / The rest of the campaign, this map only, or a number of Tides \
@@ -182,7 +182,7 @@
 		- By: / Dimitri or Claude: who made it. Claude keeps it -> 00_Read_Me.txt [Values] \
 
 	{Cracked Buoy} / Example only, not a decision \
-		- Kind: Vessel
+		- Kind: Trinket
 		- In-game line: Your towers start every map with more health.
 		- Numbers: / Blank: the design gate proposes them \
 		- Lasts: The rest of the campaign
@@ -209,7 +209,7 @@
 		- Later maps: / How it gets harder on later maps: bigger counts, a modifier on the targets, a shorter time \
 		- Pays: / In Pure Aura, and any base aura on top \
 		- Look: / One found object for its icon, readable at 12x12 \
-		- Clashes: / Any Cardinal, Direction or modifier it should not be offered with, or none \
+		- Clashes: / Any Cardinal, Trinket, Direction or modifier it should not be offered with, or none \
 
 	{Net the Shoal} / Example only, not a decision \
 		- Kind: Hunt

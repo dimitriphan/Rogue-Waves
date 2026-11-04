@@ -10,7 +10,7 @@ The release is **one mod folder, `RogueWavesMod`**: one zip, one toggle in the M
 
 | Part | Prefab | Dev mod (own build, own self-test) |
 | --- | --- | --- |
-| The mode (Rogue Waves run, Pure Aura, shop, objectives, Directions catalogue, Cardinals, map vote, ascension) | `RogueWaves_Mode_Default` | `RogueWavesModeMod` (grows out of RogueLab and Riptide) |
+| The mode (Rogue Waves run, Pure Aura, shop, objectives, Directions catalogue, Cardinals and Trinkets, map vote, ascension) | `RogueWaves_Mode_Default` | `RogueWavesModeMod` (grows out of RogueLab and Riptide) |
 | Enemies and modifiers (Cursed, Berserk, Aging, Dazzling, new foes) | `RogueWaves_Foes_Default` | `RogueWavesFoesMod` |
 | Argo, Yossele, Spool, Uloe (one part each) | `RogueWaves_<Vessel>_Default` | `<Vessel>Mod`, as in the kit today |
 
@@ -63,7 +63,7 @@ must agree on. That is the 1.6 scope, built when Phase 3 starts with Argo:
 | `ModKitDirections.cs` | **Directions as data.** Each Direction is an `Upgradeproperties` named `Direction_<Vessel>_<Name>_Upgradeobject` (or `Direction_Any_<Name>_Upgradeobject`). The part that owns the mechanic registers it, and the mode lists every registered Direction by prefix, offers them and grants the pick with `Helper_Entitytools.Upgrade` on the **player's vessel** (the core is the team's, so a Direction there would be team-wide, `docs/15` §14.1). A respawn copies the dead vessel's upgrades into the new one (`docs/15` §14.1), and each map has new vessels, so the mode re-grants every held Direction from its host state at each map's first spawn (a repeat grant is ignored); tower Directions go through the part's own spawn hook, filtered by owner. A vessel asks `Has(vessel, name)` and reacts. Kit 1.6 still grants on the core; kit 1.7 makes this change at Phase 5 (`docs/RESEARCH_GAPS.md` A1). The upgrade is game state, so it syncs to every client and needs no shared types | the mode offers and grants; every vessel registers and reacts |
 | `ModKitFocus.cs` | The scope's F-key fix (`docs/15` §9): idempotent, every vessel part runs it, so it covers Boutman and every pack vessel | every vessel part |
 
-Rules kept from 1.5: tab order, boat layout, icons at boot. A part's Directions and its Cardinals' upgrades load with
+Rules kept from 1.5: tab order, boat layout, icons at boot. A part's Directions and its Cardinals' and Trinkets' upgrades load with
 its own group, so they exist on every machine that has the pack.
 
 ## 4. Versions

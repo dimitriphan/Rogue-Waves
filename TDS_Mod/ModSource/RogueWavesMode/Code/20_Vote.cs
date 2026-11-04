@@ -47,7 +47,7 @@ public static class RWVote
         staging = RWCampaign.Staging && RWCampaign.Next == null;
         foreach (long s in RWRun.Sessions())
             if (staging) RWRun.For(s).Owed = true;
-        RWCardinals.GrantAllTeam();
+        RWCardinals.GrantAllCardinals();
         startPickAt = Time.time + 3f;   // the vessels are carrying their commands by then (RWRun.Tick)
         openingShop = false;
     }

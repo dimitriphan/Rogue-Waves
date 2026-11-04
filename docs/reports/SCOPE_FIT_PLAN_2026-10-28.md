@@ -1,5 +1,8 @@
 # The scope on the game's own mechanics: a fit plan (2026-10-28)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 > **Since (2026-10-29):** the eight probes of §11 ran on Dimitri's PC in RogueLab round 8 and all passed (21/0 on the
 > rerun; `TDS_Vessel_Creator/reference/roguelab_round8.txt`). Every route they settle is now **proven**: rung B as a
 > whole (a stock script on pack data, with every param key it reads), numbered ranks, Uloe's light stat, a death node

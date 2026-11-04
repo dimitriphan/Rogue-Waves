@@ -1,5 +1,8 @@
 # New Directions and Cardinals, from StarCraft II's campaign upgrades (2026-11-04)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 **Changed since (2026-11-04, later):** Iron Rivets, Siren Conch, Kelp Net, Lucky Geode and Storm Lantern are removed from
 scope `12`: each copies a stock Cardinal. Oil Can has no pair now. Claude's seven earlier Cardinals (§1's "Claude's, earlier") are
 removed too, from the scope and the mode's code. See `ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §1.

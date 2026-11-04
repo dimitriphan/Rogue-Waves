@@ -358,7 +358,7 @@ public static class RWDirections
         Helper_Entitytools.Updatecommand(m, "Upgrade", "", false, false);
     }
 
-    // What a player already built when they took a Direction or a Cardinal.
+    // What a player already built when they took a Direction or a Trinket.
     public static void Sweep(RWPlayer p)
     {
         if (Game_Entity.Instance == null || p.Session < 0)

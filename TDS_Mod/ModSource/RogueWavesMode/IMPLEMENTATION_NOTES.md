@@ -1,5 +1,18 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-04): Trinkets and Cardinals
+
+Dimitri: "Rename Vessel Cardinals as Trinkets and Team Cardinals as just Cardinals." The shop card's kind line reads
+**Trinket** or **Cardinal** (`18_Shop.cs`), the SHOP button and VENDCINT's line say "Cardinals, Trinkets" (`15_Content.cs`).
+In the code: `RWCardinalDef.Trinket` (was `Vessel`), `RWCardinals.IsTrinket`, `GrantCardinal`, `GrantAllCardinals`,
+`RWPlayer.Trinkets` (was `Cardinals`), `RWRun.Cardinals` (was `Team`), `RWRun.CardinalsKey`; the self-tests' check
+lines name the new kinds (same checks, same count). **Kept on purpose, so a saved campaign still loads:** the save key
+`RW_Run_Team`, the player line's field order, and the held ids `Cardinal_<Name><n>` (Vampire Dentures is
+`Cardinal_Dentures`); also the icon's asset name `Cardinal_VampireDentures`, which a rename would make a PC build
+change. The class stays `RWCardinals`: it sells both kinds and the stock Cardinals. **State:** compiled here (release,
+`ROGUEWAVESMODE_SELFTEST`, `_GAPS`, `_FEEL` at 0 errors as before; `_TWOPC`'s Netcode-only errors the same before and
+after, checked with a transport stub); not run on the PC.
+
 ## 0.1.0-dev, later (2026-11-04): the test round's fixes
 
 `docs/reports/TEST_ROUND_2026-11-04.md` has the round; `docs/mode/REJOIN.md` §6 has the rejoin's table. What changed in the mode:

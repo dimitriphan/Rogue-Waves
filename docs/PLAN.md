@@ -214,7 +214,7 @@ Gate: a full 10-map campaign completed on the PC (saved and continued at least o
 
 ### Phase 6. Content passes (2-3 sessions)
 
-New Cardinals (run modifiers, built like the base game's), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), and the
+New Cardinals and Trinkets (run modifiers, built like the base game's Cardinals), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), and the
 Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6). Each is data plus small code on finished systems.
 
 ### Phase 7. Hardening and release (2 sessions plus PC rounds; Release 1 runs its pack steps for Yossele alone)
@@ -235,13 +235,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04 test round ran the online half with a real second player, ten maps to the win and every vessel's self-test
   with no failure, and the six parts boot as one pack (`docs/reports/TEST_ROUND_2026-11-04.md`). **Designed, not built**
   (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
-  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 15 Cardinals (`11`, `12`).
+  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`).
   Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
   `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion, files only until he picks (`docs/TEMP_ART.md` "Minion
   versions"). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
   2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
   code read against the base game's for what could be simpler: ten findings, nothing changed, each waits for his word
-  (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`).
+  (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`). 2026-11-04: Vessel Cardinals are now **Trinkets** and Team Cardinals
+  just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -707,7 +708,6 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   > modded minions. They should be closer in size to snobles. Create at least 10 versions of each."): Cordyfriend, Thread Head,
   > Stitched, Dart, Seam, Mangled, Photon, Naut (in all three crew colours); the foes part adds no bodies. Files only, nothing
   > wired until he picks on the Minion Picks page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (`docs/TEMP_ART.md` "Minion versions"; Log).
-
 - **2026-11-04: code simplification report** (Dimitri: "Don't make any changes"; cloud only, nothing changed;
   `docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`): the mod's code read against the base game's for what could be simpler,
   ten findings ranked. The three big ones: armour and "takes more" as the game's own `Resistadd` stat with the stock
@@ -715,6 +715,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   of it, which also makes Voice in a Bottle work on pack buildings; and the four vessels' shared scaffold (about 2,500 lines)
   moved into `Shared`. Read only, so it needs a PC check: a tower holding Spring Tide next to a Fie wall that spreads its
   resistance may take half damage today (R3). Each step waits for his word; the suggested order is the report's last section.
+- **2026-11-04: Trinkets and Cardinals** (Dimitri: "Rename Vessel Cardinals as Trinkets and Team Cardinals as just
+  Cardinals, then fix merge conflicts."). Scope `00`, `01`, `04`-`06`, `11`, `12` (now "New Cardinals and Trinkets",
+  its list split into (Trinkets) and (Cardinals)) and `15` (the template is "Cardinal or Trinket"); `02` logs it. The
+  shop card's kind line reads Trinket or Cardinal, the SHOP button and VENDCINT's line name both; the code's names follow
+  (`RWPlayer.Trinkets`, `RWRun.Cardinals`, `IsTrinket`) with the save key and ids kept. Kit `17` and pitfall #118, the
+  style sheet, `TEMP_ART.md`, `PACK.md`, `EXPANSION_SCOPE.md`, `docs/mode/`, the mode's README and notes; the nine
+  reports that used the old names carry a note on top. Compiled here, not run on the PC. The same PR folds in #74 and
+  #75, which both conflicted with the base once #76 merged.
+
 ### Decisions
 
 - 2026-10-08: vessels arrive one at a time through the kit loop; Argo first. Mode feasibility (Phase 1) closes before
@@ -870,6 +879,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   UNTHREAD button (scope `08`, which no longer has a `! NEEDS !` line). Open question 7 is closed. Not built yet.
 - 2026-11-04 (Dimitri, new Directions and Cardinals): every Direction and Cardinal in the scope names its maker in a `By:` slot
   (rule in scope `00`). Two that clash form a research-choice pair (`~default~`, Open question 7).
+- 2026-11-04 (Dimitri, "Rename Vessel Cardinals as Trinkets and Team Cardinals as just Cardinals"): a run modifier
+  that reaches one player's things is a **Trinket**; one that reaches everyone, and every stock Cardinal on sale, is a
+  **Cardinal**. Renamed in the scope, the living docs and the mode's code and shop text; dated entries and reports keep
+  the old names (a note on each report). A saved campaign keeps loading: the save key `RW_Run_Team` and the held ids
+  `Cardinal_<Name><n>` stay (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`).
 
 ### Open questions
 
@@ -883,7 +897,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
-| 7 | New Directions and Cardinals (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
+| 7 | New Directions, Cardinals and Trinkets (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
 | 8 | Argo's review (`docs/reports/ARGO_REVIEW_2026-11-04.md` §5): take, change or drop each of the fourteen changes in scope `09`; and if he takes P5 (question 4), the Drill Rig's Attackspeed 0.25 → 0.2 with it | each `~value~` stands; the next Argo build picks them up; the Drill stays at 0.25 unless P5 is taken |
 | 9 | Uloe's 24 new upgrades (`docs/reports/ULOE_UPGRADES_2026-11-04.md` §3, scope `10` [Questions] 2-3): take, rename, change or drop each; Supernova a button or automatic; and if he takes P5 (question 4), the Flood Light's strike rate drops with the Sapling's | each `~value~` stands; nothing is built until he picks; the next Uloe build is an xhigh PC round |
 

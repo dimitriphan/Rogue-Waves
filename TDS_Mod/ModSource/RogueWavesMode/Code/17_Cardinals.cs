@@ -1,19 +1,23 @@
-// Cardinals at VENDCINT (docs/scope/12; kit docs/15 §7, §13; docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §4): bought with Pure
-// Aura, each of two kinds, and each stacking with no limit where its sheet says so.
-//   Team    acts on the core, the foes or the clock: the upgrade goes on the core with its Artifactobject passed (nine stock
-//           scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby list while
-//           the row has room (8 counters, lobby picks included), and in the run line's count past that
-//   Vessel  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook
+// Cardinals and Trinkets at VENDCINT (docs/scope/12; kit docs/15 §7, §13; docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §4): bought
+// with Pure Aura, and each stacking with no limit where its sheet says so. The two kinds (Team and Vessel Cardinals until
+// Dimitri renamed them on 2026-11-04):
+//   Cardinal acts on the core, the foes or the clock, for everyone: the upgrade goes on the core with its Artifactobject passed
+//            (nine stock scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby
+//            list while the row has room (8 counters, lobby picks included), and in the run line's count past that. Every
+//            stock Cardinal on sale is one
+//   Trinket  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook.
+//            It is built as a Cardinal is (an Artifactobject and its entry) and keeps its "Cardinal_" id, so a saved
+//            campaign still finds it
 // "The same upgrade twice does nothing" (RogueLab R2), so a stack is a numbered copy of its upgrades, made at boot.
 // The stock Cardinals the shop sells are granted as Riptide granted them (proven); the left-out ones fight the run's own
 // rules (docs/reports/SCOPE_VS_LOOP.md #7). The list is a default for docs/scope/12's NEEDS lines.
 public class RWCardinalDef
 {
     public string Name = "", Display = "", Desc = "", Script = null, Look = "", Team = "Red";
-    public bool Vessel, Stacks = true;
+    public bool Trinket, Stacks = true;    // Trinket: one player's (a Vessel Cardinal until 2026-11-04); else a Cardinal, everyone's
     public int Cost = 15;
     public object[] Numbers = new object[0];
-    public string Reach = "";       // Vessel only: "Hero" (default) the vessel, "Mob" every unit they own
+    public string Reach = "";       // Trinket only: "Hero" (default) the vessel, "Mob" every unit they own
 }
 
 public static class RWCardinals
@@ -21,14 +25,14 @@ public static class RWCardinals
     public const int Stacks = 6;     // numbered copies made at boot; buying past them still takes Pure Aura for no more effect
     public const float DenturesHeal = 0.2f;   // of the damage the vessel dealt, per stack
     public const int StockCost = 15;
-    public const int OnShelf = 3;    // Cardinals on the shelf in a break, rolled per map and Tide, the same on every machine
+    public const int OnShelf = 3;    // Cardinals and Trinkets on the shelf in a break, rolled per map and Tide, the same on every machine
 
     // 2026-11-04: Claude's seven starter Cardinals (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell,
     // Second Wind) are gone at Dimitri's word: each copied a stock Cardinal (docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md).
     // A save that still holds one keeps the id; Def() finds no sheet for it, so it does nothing.
     public static readonly RWCardinalDef[] Mine =
     {
-        new RWCardinalDef { Name = "Dentures", Display = "Vampire Dentures", Vessel = true, Cost = 15, Look = "Cardinal_VampireDentures", Desc = "Your vessel attacks heal themselves for a portion of damage dealt" },
+        new RWCardinalDef { Name = "Dentures", Display = "Vampire Dentures", Trinket = true, Cost = 15, Look = "Cardinal_VampireDentures", Desc = "Your vessel attacks heal themselves for a portion of damage dealt" },
     };
 
     // Stock Cardinals on sale: Riptide's whitelist of the 40, less docs/reports/SCOPE_VS_LOOP.md #7's and MECHANIC_IDEAS §7's.
@@ -141,10 +145,10 @@ public static class RWCardinals
         return defs.TryGetValue(id, out d) ? d.Cost : StockCost;
     }
 
-    public static bool IsVessel(string id)
+    public static bool IsTrinket(string id)
     {
         RWCardinalDef d;
-        return defs.TryGetValue(id, out d) && d.Vessel;
+        return defs.TryGetValue(id, out d) && d.Trinket;
     }
 
     public static Sprite Picture(string id)
@@ -184,18 +188,18 @@ public static class RWCardinals
             return "Not enough Pure Aura";
         RWCardinalDef d;
         bool mine = defs.TryGetValue(id, out d);
-        if (mine && d.Vessel)
+        if (mine && d.Trinket)
         {
-            int held = Count(p.Cardinals, id);
+            int held = Count(p.Trinkets, id);
             if (!d.Stacks && held > 0) return "Already held";
-            p.Cardinals.Add(id + (held + 1));
+            p.Trinkets.Add(id + (held + 1));
         }
         else
         {
-            int held = Count(RWRun.Team, id);
+            int held = Count(RWRun.Cardinals, id);
             if ((!mine || !d.Stacks) && held > 0) return "Already held";
-            RWRun.Team.Add(id + "#" + (held + 1));
-            if (Game_Entity.Instance != null) GrantTeam(id, held + 1);
+            RWRun.Cardinals.Add(id + "#" + (held + 1));
+            if (Game_Entity.Instance != null) GrantCardinal(id, held + 1);
         }
         p.Pure -= cost;
         RWLog.Info(p.Name + " bought " + id + " for " + cost + " Pure Aura, " + p.Pure + " left");
@@ -222,10 +226,10 @@ public static class RWCardinals
 
     static Entity_Master Core() { return RWUtil.PlayerCore(); }
 
-    // ---------------------------------------------------------------- on the core (host)
+    // ---------------------------------------------------------------- Cardinals: on the core (host)
 
-    // A Team Cardinal goes on every core, with its Cardinal passed, and in the lobby list for the HUD row while it has room.
-    static void GrantTeam(string id, int stack)
+    // A Cardinal goes on every core, with its Artifactobject passed, and in the lobby list for the HUD row while it has room.
+    static void GrantCardinal(string id, int stack)
     {
         List<Entity_Master> cores = RWUtil.PlayerCores();
         if (cores.Count == 0)
@@ -269,15 +273,15 @@ public static class RWCardinals
     static readonly List<string> shown = new List<string>();
 
     // A map's first moments: the team's Cardinals go back on (a new core each map).
-    public static void GrantAllTeam()
+    public static void GrantAllCardinals()
     {
-        foreach (string held in RWRun.Team)
+        foreach (string held in RWRun.Cardinals)
         {
             int cut = held.IndexOf('#');
             int stack = 1;
             string id = cut > 0 ? held.Substring(0, cut) : held;
             if (cut > 0) int.TryParse(held.Substring(cut + 1), out stack);
-            GrantTeam(id, stack);
+            GrantCardinal(id, stack);
         }
     }
 
@@ -291,12 +295,12 @@ public static class RWCardinals
         shown.Clear();
     }
 
-    // ---------------------------------------------------------------- on one player's things (host)
+    // ---------------------------------------------------------------- Trinkets: on one player's things (host)
 
-    // RWRun.Carry, twice a second.
+    // RWRun.Carry, twice a second: the Trinkets that go on the vessel itself.
     public static void Grant(Entity_Master vessel, RWPlayer p)
     {
-        foreach (string held in p.Cardinals)
+        foreach (string held in p.Trinkets)
         {
             Upgradeproperties u;
             RWCardinalDef d = Def(held);
@@ -321,11 +325,11 @@ public static class RWCardinals
         return int.TryParse(held.Substring(Id(d).Length), out n) ? n : 1;
     }
 
-    // A new thing of this player's (the owner hook), or a sweep: unit-reaching Cardinals.
+    // A new thing of this player's (the owner hook), or a sweep: unit-reaching Trinkets.
     public static void Reach(Entity_Master m, RWPlayer p)
     {
         List<string> tags = m.Beingserver.Entity.Tags;
-        foreach (string held in p.Cardinals)
+        foreach (string held in p.Trinkets)
         {
             RWCardinalDef d = Def(held);
             Upgradeproperties u;
@@ -355,7 +359,7 @@ public static class RWCardinals
         foreach (long s in RWRun.Sessions())
         {
             RWPlayer p = RWRun.For(s);
-            int stacks = Count(p.Cardinals, "Cardinal_Dentures");
+            int stacks = Count(p.Trinkets, "Cardinal_Dentures");
             Entity_Master v = RWRun.Vessel(s);
             if (stacks <= 0 || v == null || v.Beingserver == null || v.Beingserver.Dead)
                 continue;

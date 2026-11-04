@@ -452,29 +452,29 @@ public static partial class RWTest
         yield return DialogFits("VENDCINT");
         yield return Snap("shop");
         string buy = shelf.Find(n => n.StartsWith("C:"));
-        Check("Shop: Cardinals on the shelf, and a Back card", buy != null && shelf.Contains("Back"), string.Join(",", shelf.ToArray()));
-        int pure0 = player.Pure, team0 = RWRun.Team.Count, vessel0 = player.Cardinals.Count;
+        Check("Shop: Cardinals or Trinkets on the shelf, and a Back card", buy != null && shelf.Contains("Back"), string.Join(",", shelf.ToArray()));
+        int pure0 = player.Pure, cardinals0 = RWRun.Cardinals.Count, trinkets0 = player.Trinkets.Count;
         if (buy != null)
         {
             ClickCard(buy);
             yield return Until(() => player.Pure != pure0, 8f);
-            Check("Shop: a Cardinal costs Pure Aura, and is held", player.Pure == pure0 - RWCardinals.Cost(buy.Substring(2)) && (RWRun.Team.Count > team0 || player.Cardinals.Count > vessel0), buy + " " + pure0 + " -> " + player.Pure + ", team " + string.Join(",", RWRun.Team.ToArray()) + ", vessel " + string.Join(",", player.Cardinals.ToArray()));
+            Check("Shop: a Cardinal or Trinket costs Pure Aura, and is held", player.Pure == pure0 - RWCardinals.Cost(buy.Substring(2)) && (RWRun.Cardinals.Count > cardinals0 || player.Trinkets.Count > trinkets0), buy + " " + pure0 + " -> " + player.Pure + ", cardinals " + string.Join(",", RWRun.Cardinals.ToArray()) + ", trinkets " + string.Join(",", player.Trinkets.ToArray()));
         }
-        // Each pack Cardinal and stock one bought straight, so every script is met once in game.
+        // Each pack Trinket and stock Cardinal bought straight, so every script is met once in game.
         player.Pure = 500;
         int bad = errors;
         foreach (string id in new List<string>(RWCardinals.Sold))
         {
-            string why = "";
+            string why = "", what = (RWCardinals.IsTrinket(id) ? "Trinket " : "Cardinal ") + id;
             float gainBefore = Game_Mapvars.Instance.Resourcegainmultiplier;
             try { why = RWCardinals.Buy(player, id); }
-            catch (Exception e) { why = e.GetType().Name + ": " + e.Message; Check("Cardinal " + id + " grants without an exception", false, why); }
-            if (why != "") Info("Cardinal " + id, why);
+            catch (Exception e) { why = e.GetType().Name + ": " + e.Message; Check(what + " grants without an exception", false, why); }
+            if (why != "") Info(what, why);
             yield return null;
-            if (!Mathf.Approximately(gainBefore, Game_Mapvars.Instance.Resourcegainmultiplier)) Info("Cardinal " + id, "changes all aura pay: " + gainBefore + " -> " + Game_Mapvars.Instance.Resourcegainmultiplier);
+            if (!Mathf.Approximately(gainBefore, Game_Mapvars.Instance.Resourcegainmultiplier)) Info(what, "changes all aura pay: " + gainBefore + " -> " + Game_Mapvars.Instance.Resourcegainmultiplier);
         }
         yield return new WaitForSeconds(2f);
-        Check("Cardinals: every one on sale goes on with no error", errors == bad, (errors - bad) + " errors; team " + RWRun.Team.Count + ", vessel " + player.Cardinals.Count + ", " + RWCardinals.Sold.Count + " on sale");
+        Check("Cardinals and Trinkets: every one on sale goes on with no error", errors == bad, (errors - bad) + " errors; cardinals " + RWRun.Cardinals.Count + ", trinkets " + player.Trinkets.Count + ", " + RWCardinals.Sold.Count + " on sale");
         yield return Snap("cardinal_row");
         if (Mathf.Abs(player.Pure) >= 0) player.Pure = 60;
 
@@ -734,7 +734,7 @@ public static partial class RWTest
         List<string> beforeDirs = new List<string>(player.Directions);
         RWRun.Load();
         RWPlayer again = RWRun.For(me);
-        Check("Continue: Pure Aura, Directions and Cardinals come back from the save", again.Pure == beforePure && again.Directions.Count == beforeDirs.Count && again.Cardinals.Count > 0 && again.Hero != "", "pure " + again.Pure + ", directions " + again.Directions.Count + ", cardinals " + again.Cardinals.Count + ", hero " + again.Hero);
+        Check("Continue: Pure Aura, Directions and Trinkets come back from the save", again.Pure == beforePure && again.Directions.Count == beforeDirs.Count && again.Trinkets.Count > 0 && again.Hero != "", "pure " + again.Pure + ", directions " + again.Directions.Count + ", trinkets " + again.Trinkets.Count + ", hero " + again.Hero);
         Check("Continue's card names where the campaign stands", line.StartsWith("Map 2 of 10") && line.Contains("3 retries left") && line.Contains("Crew: "), line);
 
         // Map 2 lost: the title, a retry spent, what it earned gone, the boat sails back to it by itself.

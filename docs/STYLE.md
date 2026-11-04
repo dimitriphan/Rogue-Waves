@@ -1,6 +1,6 @@
 # Rogue Waves style sheet
 
-One page every vessel, enemy, Cardinal, UI piece and text of the pack follows. The game's own rules come first:
+One page every vessel, enemy, Cardinal, Trinket, UI piece and text of the pack follows. The game's own rules come first:
 sprites `TDS_Vessel_Creator/docs/03` §1 (house style), towers §4 (low-poly sleek, never voxel). This page only adds
 what makes the pack read as one. Phase 2 draft, 2026-10-08, approved by the user.
 
@@ -9,7 +9,7 @@ what makes the pack read as one. Phase 2 draft, 2026-10-08, approved by the user
 The base game is a world going under water. Its modes are named by water level: Still Waters, Downpour, High Tide,
 Flood, Tsunami. **A rogue wave is the one that comes out of nowhere.** The pack is about the unexpected: each run is
 different, things wash ashore, and the sea takes back what you don't defend. Vessels keep their own colours and
-fantasy. The pack's look lives in what belongs to the run: Pure Aura, Cardinals, Directions, the shop, the vote, the
+fantasy. The pack's look lives in what belongs to the run: Pure Aura, Cardinals, Trinkets, Directions, the shop, the vote, the
 modifiers and the mode's UI.
 
 ## Palette (pack pieces only)
@@ -30,9 +30,9 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 
 - **The crest**: one breaking curl with a Foam rim. It is the pack's mark: the mode icon, the corner of pack UI
   frames, the main menu's Rogue Waves button. Draw it as one clean shape, not a pattern.
-- **Washed ashore**: Cardinals and Directions are found objects, as in the base game (Red Coin, Rusty Pipe, Fish Bait).
-  Pack Cardinals are flotsam, things the wave brought. The first is named in `docs/scope/12_Cardinals.txt` (Vampire
-  Dentures); Cracked Buoy and Ship's Bell are examples only (`15_Templates.txt` uses Cracked Buoy). One object per
+- **Washed ashore**: Cardinals, Trinkets and Directions are found objects, as in the base game (Red Coin, Rusty Pipe, Fish
+  Bait). The pack's Cardinals and Trinkets are flotsam, things the wave brought. The first is named in
+  `docs/scope/12_Cardinals.txt` (Vampire Dentures, a Trinket); Cracked Buoy and Ship's Bell are examples only (`15_Templates.txt` uses Cracked Buoy). One object per
   icon, readable at 12×12.
 - **Pearl drops** for Pure Aura: a small teardrop, Pearl with its sheen, used in the counter, the shop and rewards.
 - No skulls, gore or horror for the harder modifiers. Danger reads through the shape (and Storm Coral on danger marks; a modifier takes its own colour, see Enemies).
@@ -43,7 +43,7 @@ anything. Pure Aura is always Pearl, so it never looks like a base aura.
 | --- | --- | --- |
 | Vessel | one soft name + an epithet, as the scope writes them | Yossele, The Patient Golem; Spool, Crafty Crafted Crafter |
 | Buildings, units | the everyday object named plainly, with a twist; the scope's names stay | Repurposed Cookie Tin, Pin Cushion, Flood Light |
-| Cardinals | two plain words, a found object; one-line effect, no numbers (base style) | Vampire Dentures, Cracked Buoy, Ship's Bell (base: Red Coin, Rusty Pipe) |
+| Cardinals, Trinkets | two plain words, a found object; one-line effect, no numbers (base style) | Vampire Dentures, Cracked Buoy, Ship's Bell (base: Red Coin, Rusty Pipe) |
 | Directions | a plain name that matches its Look line; a heading or a course, short and active, is optional (`docs/PLAN.md` Decisions 2026-10-15) | Compost Bin, Sewing Machine; Deep Roots, Loose Threads, Hard to Port |
 | Optional objectives | a short order, like a bounty on a notice board (`docs/scope/14_Optional_Objectives.txt`) | Mind the Meteor |
 | Mode, ascension, events | sea weather | Rogue Waves; ascension levels "Depth 1, 2, ..." (renamed from Swell by the user, 2026-10-09); banners "A rogue wave rises" |

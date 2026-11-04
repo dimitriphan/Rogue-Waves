@@ -1,6 +1,6 @@
 // The mode's game data, built the same on every machine at boot so online clients resolve the same names (kit docs/05,
 // docs/15 §3): the three None commands of RWRun, VENDCINT and its buttons, the Directions any vessel can take and the
-// Cardinals, the way Blockage's data is laid out, cloned from Smacky's objects (his group is loaded at boot for that).
+// Cardinals and Trinkets, the way Blockage's data is laid out, cloned from Smacky's objects (his group is loaded at boot for that).
 public static class RWContent
 {
     public const string OrderName = "Command_RW_Order", AskName = "Command_RW_Ask", RunName = "Command_RW_Run";
@@ -29,7 +29,7 @@ public static class RWContent
         Heroentryobject smacky = RWUtil.Item<Heroentryobject>("Hero", "Hero_Smacky");
         if (smacky == null || smacky.Heroloads == null)
         {
-            RWLog.Warn("no Hero_Smacky entry: no shop, Directions or Cardinals");
+            RWLog.Warn("no Hero_Smacky entry: no shop, Directions, Cardinals or Trinkets");
             yield break;
         }
         Bl_Address.Loadgroup g = null;
@@ -75,7 +75,7 @@ public static class RWContent
         RWCardinals.Build();
         RWObjectives.Build();
         Built = true;
-        RWLog.Info("content: VENDCINT " + (Vendcint != null) + ", " + RWDirections.List.Count + " Direction upgrades, " + RWCardinals.Sold.Count + " Cardinals on sale, " + RWObjectives.All.Length + " objectives");
+        RWLog.Info("content: VENDCINT " + (Vendcint != null) + ", " + RWDirections.List.Count + " Direction upgrades, " + RWCardinals.Sold.Count + " Cardinals and Trinkets on sale, " + RWObjectives.All.Length + " objectives");
     }
 
     public static void Register(string label, Bl_ScriptableObject obj)
@@ -200,7 +200,7 @@ public static class RWContent
         OrderCommand = Command(t, OrderName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         AskCommand = Command(t, AskName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         RunCommand = Command(t, RunName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
-        ShopCommand = Command(t, ShopName, Commandobject.Styles.Button, "SHOP", "Spend Pure Aura on Cardinals and the next rank of your Directions", Icon("RogueWaves_Shop"), new RWShopButton(), "3");
+        ShopCommand = Command(t, ShopName, Commandobject.Styles.Button, "SHOP", "Spend Pure Aura on Cardinals, Trinkets and the next rank of your Directions", Icon("RogueWaves_Shop"), new RWShopButton(), "3");
         FundCommand = Command(t, FundName, Commandobject.Styles.Button, "FUND TRANSFER", "Send base aura to a friend", Icon("RogueWaves_Fund"), new RWFundButton(), "4");
         BoardCommand = Command(t, BoardName, Commandobject.Styles.Button, "OBJECTIVE", "An optional objective for the next Tide, for bonus Pure Aura", Icon("RogueWaves_Board"), new RWBoardButton(), "5");
     }
@@ -230,7 +230,7 @@ public static class RWContent
         Retag(ent, Vendor + "_Entity");
         ent.Name = Vendor;
         ent.Display_Name = "VENDCINT";
-        ent.Display_Desc = "A sentient vending machine. It sells Cardinals and Direction ranks for Pure Aura, moves aura between friends, and posts an objective every break";
+        ent.Display_Desc = "A sentient vending machine. It sells Cardinals, Trinkets and Direction ranks for Pure Aura, moves aura between friends, and posts an objective every break";
         ent.Aiscripts = new List<UnityEngine.Object> { Script("Entity_Ai_Mob_General") };
         ent.Visualscripts = new List<UnityEngine.Object> { Script("Entity_Vis_Animator_Mob") };
         ent.Upgrades = new List<Upgradeproperties>();

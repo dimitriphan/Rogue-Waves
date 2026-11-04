@@ -3,6 +3,9 @@
 Dated reports and reviews. Each is frozen as written; where something changed since, a note at its top says so. Living
 pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
+Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trinkets** and its Team Cardinals just
+**Cardinals**. Reports written before keep the old names; each that uses them says so at its top.
+
 | Report | Date | What |
 | --- | --- | --- |
 | `CODE_SIMPLIFICATION_2026-11-04.md` | 2026-11-04 | The mod's code read against the base game's (decompiled again): ten ways to simplify, ranked by what they remove and their risk to the proven rounds. Armour as the stock `Resistadd` stat, the stock upgrade AI back on pack buildings, one shared scaffold; what looks reimplemented but must stay; PC checks R1-R5, G1-G3. Nothing changed |

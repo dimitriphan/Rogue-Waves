@@ -91,7 +91,7 @@ cosmetic change the base game already makes on any drop: player colours follow j
   10 s after the map loads to find its group (`Bl_Address.Waitforload`). Likely enough; checked online (O3).
 - Sea weather objects on the rejoiner: same 10 s window (O7).
 - Netcode sends the whole running map to the rejoiner in one go from the host; whether the others notice a hitch is O6.
-- Pieces built later that keep per-player state (Pure Aura, Directions, Cardinals, votes) must add it to the seat
+- Pieces built later that keep per-player state (Pure Aura, Directions, Trinkets, votes) must add it to the seat
   (`RWRejoin.Seat`, `Copy`, `Restore`) and count a vote's voters from the seats present.
 
 ## 5. Where the code is

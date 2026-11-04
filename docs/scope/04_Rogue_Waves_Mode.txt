@@ -12,7 +12,7 @@
 		- Vessels: players must select their vessel first before the Rogue Waves begins, as they are locked into their choice
 		- Start: the host starts a campaign from the Rogue Waves button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there
 		- Saving: progress is saved between maps, so a campaign can be played over several sessions
-		- Continue: when the host picks the campaign up again with Continue on the main menu's Rogue Waves button, each player gets back their vessel, [Pure Aura], [Directions] and [Cardinals]
+		- Continue: when the host picks the campaign up again with Continue on the main menu's Rogue Waves button, each player gets back their vessel, [Pure Aura], [Directions] and [Trinkets], and the team its [Cardinals]
 		- Won: if the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked / Map 10 ends like every map, so the campaign is won by leaving map 10 after Tide 15 or later \
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
@@ -58,7 +58,7 @@
 		- Every map is voted on, the first map included
 		- Vote: the vote offers the maps linked to the one just played (the first row for map 1). It is held in the map, after the vote to leave; map 1's vote is held in the opening break of a staging map
 		- Sailing: the party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps
-		- On the boat: between maps, players can't swap their Cardinals
+		- On the boat: between maps, players can't swap their Cardinals or Trinkets
 		- Islands: ~each map shows its own island from the base game's world maps, at the base game's size, in the home world's water~; a map with no island of its own borrows one
 		- Status: built, and passed on the PC, the in-map vote and the boat's trip included. How the chart looks is yours to check by eye /~ docs/mode/SEA_CHART.md sections 7-9; docs/reports/BUILD_2026-11-03.md \
 

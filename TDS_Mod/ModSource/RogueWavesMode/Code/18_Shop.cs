@@ -2,7 +2,7 @@
 // vessels' spawn at the start of every break and jumps away at its end. Every player can select it (owner -1, every
 // Sessionid a subowner); its three buttons open the choice dialog on the machine that pressed them, and a pick goes
 // to the host through that player's own vessel (RW_Order), which is how the host knows who ordered:
-//   SHOP    three Cardinals rolled for this break, and the next rank of each Direction held, for Pure Aura
+//   SHOP    three Cardinals and Trinkets rolled for this break, and the next rank of each Direction held, for Pure Aura
 //   FUND    base aura to a friend, up to 50 x the coming Tide per break, in any mix of colours (docs/scope/06 [Fund Transfer])
 //   BOARD   the break's objective (RWObjectives)
 // The fall and the jump are client code on the sprite shader's _Offset, as the vessels' landing is (Entity_Vis_Hero, kit
@@ -214,7 +214,7 @@ public static class RWShop
         foreach (string id in RWCardinals.Shelf(seed, map, wave))
         {
             int cost = RWCardinals.Cost(id);
-            cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id), "Pure Aura " + cost + RWCard.Separator + (RWCardinals.IsVessel(id) ? "Vessel Cardinal" : "Team Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), cost <= pure ? RWDialog.Teal : RWDialog.Swell));
+            cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id), "Pure Aura " + cost + RWCard.Separator + (RWCardinals.IsTrinket(id) ? "Trinket" : "Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), cost <= pure ? RWDialog.Teal : RWDialog.Swell));
         }
         Entity_Master v = RWMine.Vessel();
         List<string> held = new List<string>();
