@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` | 2026-11-04 | The overlap check of those 13 Cardinals against the 40 stock ones (5 removed), then 11 Directions (2 of a new Duo kind) and 7 Cardinals after Risk of Rain 2, Hades, Slay the Spire, Balatro, Isaac and Monster Train |
 | `DIRECTIONS_CARDINALS_2026-11-04.md` | 2026-11-04 | 21 new Directions and 13 new Cardinals from StarCraft II's campaign upgrades, at the stock Cardinals' power scale; who made every Direction and Cardinal (Dimitri 6 + 1, Claude 38 + 20); what each rides on in the game's code |
 | `UPGRADE_GAPS_2026-11-04.md` | 2026-11-04 | Yossele's and Spool's upgrade trees against the base vessels': Yossele complete but for one trade upgrade (Wood Wide Web); Spool has 15 of a base vessel's ~40, no capstones; 22 proposed upgrades, the hole each fills, priced and checked in a copy of the simulator (`balance_upgrades_2026-11-04/`, 5,040 runs) |
 | `BALANCE_RERUN_2026-11-03.md` | 2026-11-03 | The balance simulator re-run on the PC round's measures (`balance_rerun_2026-11-03/`, 11,880 runs, analysis only): the Opal pays every colour, Woozy's first node matters most; with a wall that holds P2 and P3 carry Spool, on a line foes walk round no number helps; P5 barely matters; The Hunt is decided by Blue (fruit, aura beasts) |
