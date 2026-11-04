@@ -31,7 +31,7 @@ is only a map and a reading order. Rules live in the kit; don't copy them here o
 | `docs/reports/` | Dated reports, frozen (a note on top says what changed since): quality checks, the full PC re-test, scope reviews, `SCOPE_GAPS.md` (every asset the scope names), `MECHANICS_CHECK.md` (the 2026-10-09 scope's mechanics: all go, the eight that needed the game proven) | its `README.md`; `SCOPE_GAPS.md` for what the first scope named (check `docs/scope/` first) |
 | `docs/TEMP_ART.md` | Every temporary (placeholder) asset of the pack, where it lives (`ModSource/<Part>/Art/Temporary/`) and how final art replaces it | before drawing or replacing art |
 | `docs/RESEARCH_GAPS.md` | Engine facts the scope needed researched: 17 of 18 answered (2026-10-09, C3 2026-10-15), what is left and the order to answer it | before Phase 5 or a vessel design gate |
-| `docs/concepts/` | Vessel concept pages drafted from the user's sprite art and the scope (Yossele, Spool, Uloe), with the art in `art/` | before designing one of those vessels |
+| `docs/concepts/` | Vessel concept pages drafted from the user's sprite art and the scope (Yossele, Spool, Uloe), with the art in `art/`; five Argo diver takes to pick from (`argo_divers_2026-11-04/`) | before designing or redrawing one of those vessels |
 
 When a vessel starts: `TDS_Mod/ModSource/<Name>` + `Assets/<Name>Mod` (scaffold with
 `TDS_Vessel_Creator/tools/New-Vessel.ps1` or `TDS_Mod/Tools/cloud-check/new_vessel.py`), add a row here and in
