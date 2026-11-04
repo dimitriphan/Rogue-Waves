@@ -281,7 +281,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: the overlap check Dimitri asked for: 5 of those 13 Cardinals copied a stock one and are removed (Iron Rivets, Siren
   Conch, Kelp Net, Lucky Geode, Storm Lantern); then 11 more Directions (Any, 2 Duos, Yossele, Spool) and 7 Cardinals after Risk of
   Rain 2, Hades and other roguelikes, all Claude `~defaults~`, not built; the Scope Editor rebuilt on the same link
-  (`docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md`; Log).
+  (`docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md`; Log). At his next word Claude's seven older Cardinals that copied
+  stock ones (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell, Second Wind) are removed from scope `12`
+  and from RogueWavesMode's code (compiled here, not run on the PC).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -621,7 +623,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Paint), Kelp Net (Frozen Computer), Lucky Geode (Starter Seeds) and Storm Lantern (Sport Water) removed. Added 11 Directions (Notched Oar,
   Lamp Oil, Fish Hook, Spare Compass, Magpie Nest; Duos Fire Ship and Tide Pool; Yossele Deep Breath, Fairy Ring; Spool Merit Badge, Odd Socks)
   and 7 Cardinals (Punch Card, Pearl Oyster, Bottled Storm, Oilskin Coat, Gull Feather; Team Cargo Crate, Tin Whistle). New: the Duo kind
-  (`06`, `15`) and a No copies line (`12`). Claude's seven earlier Cardinals that copy stock ones are kept and flagged (report §5).
+  (`06`, `15`) and a No copies line (`12`). Then, at his word (04:49Z), Claude's seven earlier Cardinals that copied stock ones are removed
+  from scope `12` and from `RWCardinals.Mine` and their icons (RogueWavesMode `IMPLEMENTATION_NOTES.md`; compiled here, not run on the PC).
   `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md`.
 
 ### Decisions
@@ -792,7 +795,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
-| 7 | New Directions and Cardinals (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not; drop Claude's earlier Cardinals that copy stock ones or not | each `~value~` stands; nothing is built until he picks |
+| 7 | New Directions and Cardinals (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
 
 ### Phase 5 pieces
 

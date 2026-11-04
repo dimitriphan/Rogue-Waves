@@ -1,7 +1,8 @@
 # New Directions and Cardinals, from StarCraft II's campaign upgrades (2026-11-04)
 
 **Changed since (2026-11-04, later):** Iron Rivets, Siren Conch, Kelp Net, Lucky Geode and Storm Lantern are removed from
-scope `12`: each copies a stock Cardinal. Oil Can has no pair now. See `ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §1.
+scope `12`: each copies a stock Cardinal. Oil Can has no pair now. Claude's seven earlier Cardinals (§1's "Claude's, earlier") are
+removed too, from the scope and the mode's code. See `ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §1.
 
 Frozen report. Dimitri asked (2026-11-04 03:35Z): "Create new directions and cardinals based on the ones I had already
 conceptualized. Look into Starcraft 2's campaign's upgrade paths for ideas that would fit into the power scale of the

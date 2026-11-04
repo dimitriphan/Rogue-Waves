@@ -23,18 +23,12 @@ public static class RWCardinals
     public const int StockCost = 15;
     public const int OnShelf = 3;    // Cardinals on the shelf in a break, rolled per map and Tide, the same on every machine
 
+    // 2026-11-04: Claude's seven starter Cardinals (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell,
+    // Second Wind) are gone at Dimitri's word: each copied a stock Cardinal (docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md).
+    // A save that still holds one keeps the id; Def() finds no sheet for it, so it does nothing.
     public static readonly RWCardinalDef[] Mine =
     {
         new RWCardinalDef { Name = "Dentures", Display = "Vampire Dentures", Vessel = true, Cost = 15, Look = "Cardinal_VampireDentures", Desc = "Your vessel attacks heal themselves for a portion of damage dealt" },
-        new RWCardinalDef { Name = "Hull", Display = "Spiny Hull", Vessel = true, Cost = 12, Script = "Entity_Ai_Effect_Smackywall_Bramble", Numbers = new object[] { "Effect_Add", 4f }, Desc = "Your vessel pricks what hits it" },
-        new RWCardinalDef { Name = "Legs", Display = "Sea Legs", Vessel = true, Stacks = false, Cost = 10, Script = "Entity_Ai_Effect_Artifact_Slippers", Numbers = new object[] { "Speed_Base", 0.2f }, Desc = "Your vessel speeds up while it keeps moving" },
-        new RWCardinalDef { Name = "Rising", Display = "Rising Tide", Vessel = true, Stacks = false, Cost = 20, Script = "Entity_Ai_Effect_Artifact_Caffeine",
-            Numbers = new object[] { "Speed_Base", 0.01f, "Damage_Base", 0.03f, "Attackspeed_Base", 0.02f, "Sellrate_Base", 0f, "Boost_Duration", 3f, "Damage_Pmulti", 0f, "Attackspeed_Pmulti", 0f, "Speed_Pmulti", 0f }, Desc = "Your vessel grows stronger every Tide" },
-        new RWCardinalDef { Name = "Puffer", Display = "Puffer Float", Vessel = true, Stacks = false, Cost = 15, Reach = "Mob", Script = "Entity_Ai_Effect_Artifact_Titan",
-            Numbers = new object[] { "Health_Pmulti", 0f, "Range_Base", 1.5f, "Damage_Base", 4f, "Damage2_Base", 6f, "Damage3_Base", 8f, "Damage4_Base", 10f, "Damage5_Base", 12f }, Desc = "Your units burst when they fall" },
-        new RWCardinalDef { Name = "Clock", Display = "Tide Clock", Stacks = false, Cost = 15, Script = "Entity_Ai_Artifact_Vintage", Numbers = new object[] { "Timeinit_Base", 15f, "Time_Base", 15f }, Desc = "Every break lasts longer" },
-        new RWCardinalDef { Name = "Bell", Display = "Rusted Bell", Stacks = false, Cost = 20, Script = "Entity_Ai_Artifact_Wavebreaker", Numbers = new object[] { "Range_Base", 6f, "Debuff_Base", -0.15f }, Desc = "Foes near the Basin lose health while they stay" },
-        new RWCardinalDef { Name = "Wind", Display = "Second Wind", Stacks = false, Cost = 25, Script = "Entity_Ai_Effect_Artifact_Loop", Desc = "Once a map, the first hit on the Basin clears the field and replays the Tide" },
     };
 
     // Stock Cardinals on sale: Riptide's whitelist of the 40, less docs/reports/SCOPE_VS_LOOP.md #7's and MECHANIC_IDEAS §7's.
@@ -43,9 +37,6 @@ public static class RWCardinals
         "Artifact_Moon", "Artifact_Mooncore", "Artifact_Loop", "Artifact_Loopedmirror", "Artifact_Vintage", "Artifact_Samedayshipping", "Artifact_Pig", "Artifact_Moneybag",
         "Artifact_Sandbox", "Artifact_Sand", "Artifact_Blurryphoto", "Artifact_Checklist", "Artifact_Computer", "Artifact_Bottomrock", "Artifact_Rock",
     };
-
-    // Not on the shelf, but the pack's Tide Clock and Second Wind run their scripts, which load their effects from these groups.
-    static readonly string[] Borrowed = { "Artifact_Vintage", "Artifact_Loop" };
 
     public static readonly List<string> Sold = new List<string>();      // ids on the shelf's list, sorted, the same on every machine
     static readonly Dictionary<string, RWCardinalDef> defs = new Dictionary<string, RWCardinalDef>();
@@ -67,7 +58,7 @@ public static class RWCardinals
         {
             Artifactentryobject entry = entries[id] as Artifactentryobject;
             bool sold = Array.IndexOf(NotSold, id) < 0;
-            if (entry == null || entry.Artifactloads == null || (!sold && Array.IndexOf(Borrowed, id) < 0))
+            if (entry == null || entry.Artifactloads == null || !sold)
                 continue;
             Bl_Address.Loadgroup g = null;
             try { g = Bl_Address.Load(entry.Artifactloads.Objectname); }

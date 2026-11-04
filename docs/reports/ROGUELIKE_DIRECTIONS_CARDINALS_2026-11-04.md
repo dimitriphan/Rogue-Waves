@@ -8,7 +8,8 @@ artifact."
 **Result:**
 
 - 5 of the 13 Cardinals from `DIRECTIONS_CARDINALS_2026-11-04.md` did what a base game Cardinal already does. They are
-  removed from scope `12`.
+  removed from scope `12`. At Dimitri's next word, Claude's 7 older Cardinals that copied stock ones went too, from the scope and
+  from the mode's code.
 - 11 more Directions and 7 more Cardinals were added, all Claude's `~defaults~` with `By: Claude`.
 - Every one of them was checked against the 40 base game Cardinals and every pack Direction and Cardinal before it went in.
 - Nothing is built, and nothing here has run in game.
@@ -47,15 +48,27 @@ The removals are done in scope `12`. Two more changes came with them:
 - Oil Can's Clashes line is now `~None~`. Its note says why its pair is gone.
 - A new `~No copies~` line in `12` [Rules] says a new Cardinal never does what a base game Cardinal does.
 
-**Not removed, flagged for Dimitri:**
+**Claude's older Cardinals, removed too (Dimitri, 04:49Z: "Remove the older cardinals that are also still copies"):**
 
-- Claude's seven *earlier* Cardinals (2026-10-09, built 2026-11-03) were made on purpose as the shop's own version of
-  base game Cardinals.
-- Sea Legs is Fluffy Slippers, Rising Tide is close to Sport Water, Tide Clock is Vintage Watch, Rusted Bell is Wave
-  Breaker, and Second Wind is Looped Mirror.
-- Three of them (Tide Clock, Rusted Bell, Second Wind) stand in for stock Cardinals that the shop leaves out or that act
-  map-wide. Puffer Float is close to Aura Gavel and Frail Titan. Spiny Hull is Opal Core's thorns put on the vessel.
-- The ask named only the new ones, so these stay. Under the new No copies line they would go too: §5 question 1.
+Claude's seven *earlier* Cardinals (2026-10-09, built 2026-11-03) had been made on purpose as the shop's own versions
+of stock Cardinals. Under the same test, every one was a copy:
+
+| Older Cardinal | Copied | How |
+| --- | --- | --- |
+| Spiny Hull | Opal Core | its "deals damage when touched", put on the vessel |
+| Sea Legs | Fluffy Slippers | the same script, `Entity_Ai_Effect_Artifact_Slippers` |
+| Rising Tide | Sport Water | the same script, `Entity_Ai_Effect_Artifact_Caffeine` |
+| Puffer Float | Frail Titan, Aura Gavel | Frail Titan's death blast, on your units |
+| Tide Clock | Vintage Watch | the same script, `Entity_Ai_Artifact_Vintage` |
+| Rusted Bell | Wave Breaker | the same script, `Entity_Ai_Artifact_Wavebreaker` |
+| Second Wind | Looped Mirror | the same script, `Entity_Ai_Effect_Artifact_Loop` |
+
+All seven are removed from scope `12`, and from the mode's code (`RWCardinals.Mine`, their icons in
+`RogueWavesModeArt.cs`, and the load of the two stock groups only Tide Clock and Second Wind used; mode
+`IMPLEMENTATION_NOTES.md`). The code compiles here and has not been run on the PC.
+
+After this, the pack's own Cardinals are Vampire Dentures (built) and Claude's 15 not yet built. Scope `12`'s Team
+Cardinals are now only Claude's four new ones. The No copies line is now Dimitri's rule, written without `~`.
 
 **Directions were checked too:**
 
@@ -142,14 +155,11 @@ Pairs:
 | | Dimitri's | Claude's, earlier | Claude's, StarCraft II | Claude's, roguelikes | Total |
 | --- | --- | --- | --- | --- | --- |
 | Directions | 6 | 17 | 21 | 11 | 55 |
-| Cardinals | 1 | 7 | 8 (13, less 5 removed) | 7 | 23 |
+| Cardinals | 1 | 0 (7, all removed) | 8 (13, less 5 removed) | 7 | 16 |
 
 ## 5. Questions for Dimitri
 
-1. Should Claude's seven earlier Cardinals that copy stock ones also go, under the No copies line? They are Sea Legs,
-   Rising Tide, Tide Clock, Rusted Bell, Second Wind, Puffer Float and Spiny Hull. Tide Clock, Rusted Bell and Second
-   Wind are built and stand in for stock Cardinals the shop leaves out. My recommendation: keep those three, and drop
-   Sea Legs, Rising Tide and Puffer Float.
+1. ~~Should Claude's seven earlier Cardinals that copy stock ones also go?~~ Answered: yes, all seven are removed (§1).
 2. Should a Cardinal that matches a Direction be allowed? The only one now is Oil Can (towers attack faster), which
    matches Wound Spring.
 3. Should Duos exist? Each needs two other Directions first, so a Duo is rare in a 10-map campaign.
