@@ -2,8 +2,9 @@
 
 What the mod container itself allows: content types, scenes, mod folders, load order, the code sandbox, and how a pack
 of several parts should be packaged. Written 2026-10-08 from a sourced research round (upstream ModTool code,
-RoslynCSharp's shipped settings, Blockage's Patch 0.4 note) plus the game's API dump; nothing here was tried in the game
-yet except the load order (§6) and Q4 (several `Default` prefabs in one bundle all activate: RogueLab round 2, `15` §15). Tags: **verified** = seen in a shipping mod, **read** = read from code, **untested** =
+RoslynCSharp's shipped settings, Blockage's Patch 0.4 note) plus the game's API dump; what has been tried in the game since
+is the load order (§6), Q4 (several `Default` prefabs in one bundle all activate: RogueLab round 2, `15` §15) and the
+pack's own one-bundle layout (§5, booted with all six parts on 2026-11-04). Tags: **verified** = seen in a shipping mod, **read** = read from code, **untested** =
 inferred or from a secondary source. The rest of the pipeline (export, park, deploy, release) is `docs/04`; the mod
 prefab and the compiler's reference list, `docs/01` §1.
 
@@ -99,7 +100,9 @@ Rules that hold either way:
 
 Rogue Waves' choice (2026-10-08, the repository's `docs/PACK.md`): one bundle with one `Default` prefab per part,
 since each prefab is its own assembly anyway (`15` §10). Parts find each other through the game's own objects (the pack
-registry, `kit/README.md`).
+registry, `kit/README.md`). **Verified** 2026-11-04: the whole pack, all six parts in one bundle and enabled alone,
+boots with one `[RogueWaves:<Part>] v0.1.0 kit 1.7` line per part and no error of its own
+(`docs/reports/TEST_ROUND_2026-11-04.md`, in the repository's root).
 
 ## 6. Open questions for a PC session
 

@@ -19,19 +19,19 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | State across the campaign's maps (Pure Aura, Directions, Depth) | **go, proven** on the host | the mod's `DontDestroyOnLoad` object, keyed by player; it survived the chain (§3, §11) |
 | Showing that state on every client | **fallback** | no new `NetworkVariable`s: counters on each vessel (`01` §6), Vis RPCs, upgrades (§3) |
 | Direction pick (one of three per player) | **go, proven** | a command on the player's own vessel opening a `Runprompt` dialog, the pick sent with `Command_ServerRpc`: Riptide's Salvage (§6, §13). Bring its menu up first (`Bl_Menus.Changemenu`), then it takes eight cards and returns the pick (§15) |
-| Map vote (one of the 1-3 chart nodes linked to the last map) | **go** (route V1) | no boat-side vote exists: vote in game before leaving the map, with the same commands, then the boat sails to the winner (§6, §17); the in-map vote is not built yet |
+| Map vote (one of the 1-3 chart nodes linked to the last map) | **go** (route V1) | no boat-side vote exists: vote in game before leaving the map, with the same commands, then the boat sails to the winner (§6, §17); built in `RogueWavesMode` and passed with a second player on 2026-11-04 (`19` §8) |
 | Leave or stay between Tides from Tide 15 | **go, proven** | the same vote; "leave" = the stock win path through public members, proven between Tides (§4, §11) |
 | Bonus Tides | **go, proven** | a longer Tide table in the mod's mode (live writes proven by Riptide, §13), or rewind `Game_Mapvars.Entry`, which also spends a core Tide (§4, §11) |
 | Pure Aura earned per Tide | **go** | host counter per player, paid on `Wave` (§3) |
 | Objectives like bounties | **fallback** | Merchut's contracts are hardcoded; copy its pattern in a mod brain (§5) |
-| Shopkeeper between Tides | **go, proven solo** | the game has no shop; VENDCINT is a neutral unit with buttons on Merchut's command-button pattern (§5; RogueLab rounds 4-5, §16); another player's click needs the online evening |
+| Shopkeeper between Tides | **go, proven solo** | the game has no shop; VENDCINT is a neutral unit with buttons on Merchut's command-button pattern (§5; RogueLab rounds 4-5, §16); a second player's shop passed on 2026-11-04 (`19` §8) |
 | Fund Transfer (aura between players) | **go** | a shop command; the host takes with `Useresources` and gives with `Giveresources(list, owner)`, both per player (§5, §14.2) |
 | Directions held per player | **fallback** | the core is the team's: grant on the player's vessel and re-grant when each map starts (§14.1) |
 | New Cardinals | **go, proven** | data: entry + `Artifactobject` + upgrades, registered in `Tds_Masterdatabase`; equipped from the lobby and carried to map 2 (§7, §11) |
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Depth (ascension, on hold), the campaign and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk, Aging, Dazzling | **go** | `13` §6 (the recipe); Aging and Dazzling checked in §16 |
-| The F-key respawn bug | **go, not reproduced** | client-side: put the main vessel first in the `Hero` tag list; a by-hand repro with a real Boutbro is still needed (§9, §11) |
+| The F-key respawn bug | **go, passes** | client-side: put the main vessel first in the `Hero` tag list; not reproduced with a mod-spawned Boutbro (§9, §11), and on a real Boutman death (2026-11-04) F selects `Hero_Boutman`; a person's own press is left |
 | Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10; untested, and they load through the custom-map slot whose stock map hung, §15) |
 
 ## 2. Modes and how a mod adds one
@@ -102,7 +102,7 @@ RPCs.
 ## 4. Tides: bonus Tides and leaving
 
 - **The row playing is `Entry - 1`** (pitfall #121; the opening break is row 0, Tide N row 2N - 1, the break after it row 2N;
-  **proven** 2026-11-03). A Tide's clock runs out whatever happens (pitfall #122).
+  **proven** 2026-11-03). A Tide row ends the moment its last foe falls, and the break's 60 s start at once (pitfall #142, which amends #122).
 - `Mode_Normal.Run` counts the table's entries once (Mode_Normal.cs:315) but reads the networked `Entry` on every pass
   (:363,366). A mod's mode simply has a longer `Wavesobject` (Tides 16+ as the bonus Tides); or the host rewinds
   `Entry` to replay entries while `Wave` keeps rising (**proven**, §11).
@@ -132,7 +132,7 @@ break; **it never checks that the foes died** (Entity_Ai_Tower_Merchut.cs:216-24
 player can press. A mod brain runs its own objectives (with a kill check) and its own shop (commands on a shop
 building or on each vessel, priced in Pure Aura). Fund Transfer is a shop command that moves resources from one
 player to another on the host (proven solo: each colour moved by exactly 40, RogueLab round 5 probe F1; between two
-players it waits for the online evening).
+players on 2026-11-04, `19` §8).
 
 ## 6. Choices on every client
 
@@ -151,7 +151,7 @@ host can write a line for everyone (`Chat.Add`) and read every player's lines (`
 | Choice | Route | Verdict |
 |---|---|---|
 | Direction (each player, one of three) | three commands on the player's own vessel; the host applies the pick. Nicer: a client `Bla_Ui_Confirmation.Instance.Runprompt(entries, title, sub)` dialog (Bla_Ui_Confirmation.cs:342, used in game by the pause menu) opened by a host Vis RPC, answered through the vessel command (proven by Riptide from a vessel command, §13, and by RogueLab with eight cards once its menu is up, §15) | go |
-| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands over the 1-3 chart nodes linked to this map, then the party returns to the boat and it sails to the winner (route V1, §17). Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads and the opening break is held while players pick Directions and vote | go (in-map vote not built yet) |
+| Map vote | no boat-side vote (only the leader picks, `Changehero` takes only hero names); vote in game with the same commands over the 1-3 chart nodes linked to this map, then the party returns to the boat and it sails to the winner (route V1, §17). Every map is voted (user, 2026-10-08), so map 1 needs a staging step: the leader's pick loads and the opening break is held while players pick Directions and vote | go (built; passed with a second player, `19` §8) |
 | Leave or stay | the same vote with a host timer and count; the built-in `Returnmap` vote only exists after a map ends | go |
 | Vessel lock | ready-up: the select screen opens only while not ready (Macro_Worldvisual.cs:617); `Startgame_ServerRpc` waits for all (Tds_Multiplayer_Remote.cs:542-569). `Changehero_ServerRpc` itself checks nothing | go |
 
@@ -328,7 +328,8 @@ settles here:
   lobby list with `SendMessage("Updateartifactlist")`, acts like a lobby pick and shows on the HUD (probe 3).
 - `Runprompt` works from mod code; a per-vessel `Commandobject` button reopens it; the pick reaches the host through
   `Command_ServerRpc`; holding `Time_Wave` keeps a break open (probe 4, round 2). The dialog needs re-centring for
-  three or more cards (`RiptideSalvage.Centre`).
+  three or more cards; `RiptideSalvage.Centre` does it by moving `Main`, which is wrong (pitfall #137: anchor `List`
+  and `Title` instead).
 - `PlayerPrefs`, named messages and `OnClientConnectedCallback` pass the game's code security (probe 5).
 - A Setup-screen switch (a copy of the alternate-map toggle) is a working start route, a fallback if the main-menu
   button (§14.8, `docs/mode/MAIN_MENU_START.md` in the project) ever fails.
@@ -352,7 +353,7 @@ questions. All **read**; RogueLab round 2's results are §15.
 - So a per-player Direction can't sit on the core. Put it on the player's vessel (owner = `Sessionid`), re-grant it from
   host state at each map's first spawn (a respawn copies the dead vessel's upgrades, Entity_Ai_Main_Core.cs:137-144; a
   repeat grant is ignored), and give tower Directions through the mod's own `Onspawn` hook filtered by owner.
-  `ModKitDirections` (kit 1.6) grants on the core and needs this change before the mode uses it.
+  `ModKitDirections` made this change in kit 1.7 (grants and reads per vessel).
 
 ### 14.2 Resources and moving aura
 
@@ -410,7 +411,8 @@ questions. All **read**; RogueLab round 2's results are §15.
 - A match closes the lobby (`Lobbystate` "Closed", which the chain also sends), and a closed Steam lobby refuses joins
   (Blm_Multiplayer.cs:67-77, Blm_Multiplayer_Remote.cs:278-297): a dropped friend can't rejoin a running map.
 - **A mod can reopen it** (read, 2026-10-11; built in `RogueWavesMode` 0.2.0-0.2.1, `docs/mode/REJOIN.md` in the project;
-  0.2.1 passed solo PC round 6, 47/0, and the real drop and rejoin waits for the online evening, `docs/mode/REJOIN.md` §6):
+  0.2.1 passed solo PC round 6, 47/0; a real drop and rejoin by a second player passed on 2026-11-04, `19` §8, and only
+  Steam's own Join Game is left, `docs/mode/REJOIN.md` §6):
   `Blm_Multiplayer_Remote.Instance.Changelobbystatus_ServerOnly("Open")` is public and takes a string, so it needs no
   Steamworks type (mods can't reference Steamworks); `Blm_Multiplayer.Instance.Server_Serveropen` is the public flag the
   connection check reads. `Game_Load` shuts the lobby again when its loading screen ends (Game_Load.cs:261, "Loading

@@ -161,7 +161,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 58. **PowerShell array garbles a scripted edit** → in `@('a', 'b' + $x)` the comma binds before `+` → parenthesise, or
     write new text to a file and splice it. `Set-Content` defaults to ANSI: pass `-Encoding utf8`; reading a UTF-8 file
     without BOM via `Get-Content -Raw` can mangle `▪`.
-59. **No decompiler** → read IL with the Cecil scripts (`tools/cecil`).
+59. **No decompiler on the PC** → read IL with the Cecil scripts (`tools/cecil`); a cloud thread decompiles the whole
+    game to C# in about a minute (`13` §11).
 59a. **A scripted rename changed nothing** → a PowerShell hashtable (`[ordered]@{}` too) treats `Mummer`, `MUMMER`
     and `mummer` as one key, so only the last mapping survived → a list of pairs (`New-Vessel.ps1`).
 59b. **A new folder never imports** → UnityMCP `refresh_unity` didn't pick up a folder created outside Unity →
@@ -225,7 +226,11 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     game), so two full Tremor ticks or a slow on a rooted foe left it crawling, never stopped → make a root -1 (Speed at
     its floor), cut slows so slows alone stop at 10% of a foe's speed and skip them on a held foe, and raise a
     `Speed.Value_Bounds.x` under 0 to 0 (`ArgoUtil.Speed`, `TDS_Mod/ModSource/Argo`). Seen in game in Argo 1.x; the fix
-    is in Argo 2.0.
+    is in Argo 2.0. **Not the whole fix** (read in Argo 2.0's code, 2026-11-04): a slow that re-ticks before its last
+    mod ends stacks with itself, since each tick adds a new `Multi` mod. Deep Water slows every 0.25 s for 0.5 s, so a
+    foe always carries two and a written 30% is a real 60% → renew one held mod per source instead of adding one per
+    tick (#119 is the same trap for any timed mod). Not built yet; the repository's
+    `docs/reports/ARGO_REVIEW_2026-11-04.md` has the numbers.
 80. **One exception silences a tower or a unit for the whole match** (Argo 1.3.0, carried from ModProjects' 40k) → the
     brain's catch logged and set `enabled = false` on its first exception → skip the failing tick and stop the brain
     only after it throws on every frame for 600 frames (~10 s) (`ArgoFaults`, `TDS_Mod/ModSource/Argo`). Seen in game in
@@ -271,21 +276,22 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     the map (pack missing, a `Subloads` group name `Waitload` never finds) never sets `Loaded`; the host waits for it
     with no timeout, and each machine's `Game_Load` kicks itself out at 120 s → every player runs the same pack; the
     host sends back a client still not loaded 75 s into the loading screen, once the host itself has loaded
-    (RogueWavesMode 0.3.0 `RWLoad`; `RecipeNet.LoadWatchdog` is the bare recipe). Read from code; compiled, not run.
-    (92 is not used.)
+    (RogueWavesMode 0.3.0 `RWLoad`; `RecipeNet.LoadWatchdog` is the bare recipe). **Verified** with a real second player
+    (2026-11-04, `19` §8 N14: a friend without the pack was sent back and the host played on). (92 is not used.)
 94. **A friend who restarted the game is turned away on rejoin** (decompile, `19` §5) → the client's GUID lives in the
     save's `Metadata`, which every launch wipes, so a restart brings a new `Sessionid` and RogueWavesMode's seat check
     misses → keep the GUID in the pack's own save folder and put it back into `Metadata` before the game reads it on
     joining; the host maps a GUID it has seen to the same `Sessionid` (`Blm_Multiplayer.Getsessionid`) and the stock
     reconnect does the rest (RogueWavesMode 0.3.0 `RWIdentity`, tied to the computer so a copied save can't give two
-    players one id). Test a pulled cable and a restart apart (`docs/mode/REJOIN.md` O1-O3b). Read from code; compiled, not
-    run.
+    players one id). Test a pulled cable and a restart apart (`docs/mode/REJOIN.md` O1-O3b). **Verified** with a real
+    second player (2026-11-04, `19` §8 N9: the same session number and the seat back after a restart).
 95. **Effects show solo but not in a busy online fight** (decompile, `19` §4) → `Projectilecheck`, `Vfxoneshotcheck`,
     `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
     solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
     calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
     look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`).
-    Read from code; compiled, not run.
+    Read from code; the fix runs in game without error (Argo 2.0.1's self-test and a second player's machine,
+    2026-11-04), but no fight there was big enough to fill the queue (`19` §8 N4), so the drop itself is still unseen.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
     table is built once, before mods load, and never takes a new key; an unknown, empty or null key throws wherever the
     game plays it; `Random.Range(0, Count - 1)` never picks the last variant → check every key the pack writes at boot
@@ -302,7 +308,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Bla_Data.Playerdata`, which a switch or a clear of the current slot replaces (nothing else does after launch) →
     remember the `Playerdata` object the state came from, check it before every write, and drop the state on
     `Onslotchanged` and `Onslotremoved`, in a handler that never throws (RogueWavesMode 0.3.0 `RWCampaign.Live`;
-    `RecipeSave.Install`). Read from code; compiled, not run.
+    `RecipeSave.Install`). Read from code; the mode's self-test checks S1/S2 pass in game with a pretended switch
+    (2026-11-04), a real switch by hand is not done.
 100. **One part's compile error silently drops the parts after it** (decompile, `23` §4.3) → the loader activates a
      bundle's `Default` prefabs in one loop, and a compile failure leaves the loop → compile each part alone with
      cloud-check before a build, and ship `Default` prefabs only (a broken keyword prefab stops a game scene for every
@@ -328,8 +335,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      D-MDS, decompile 2026-10-23) → projectiles aren't networked entities: the host keeps pooled ones per name in
      `Game_Entity.Projectiles` and only its copy deals damage; `Kill(true)` runs the death handlers, where a bomb's
      explosion lives (`Projectile_Ai_Explosion`) → put the host's copy out with `Kill(false)` and send a Vis so each
-     client puts out its look-only copy (`YosseleDandelionBrain.Threats`, `YosseleClient`). Read from code; compiled,
-     not run.
+     client puts out its look-only copy (`YosseleDandelionBrain.Threats`, `YosseleClient`). **Seen** on the host (Yossele
+     round 9: D-MDS shot down a ballista bolt); a client's copy not checked.
 106. **"When a node is mined out" never fires, and a node at 0 `Healthresource` doesn't pay yet** (Yossele's aura
      fruit, 2026-10-23) → stock ore nodes never run out and pay only once every health stat is at 0
      (`Helper_Damagetools.Addressdamage`): `Resource_Orange` also has `Health` 1/1, so the hit that takes
@@ -346,10 +353,11 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      `Helper_Entitytools.Interacthurt` runs the attacker's `Interact` before the target's `Oninteract` chain, so the
      debuff (the Bulwark's stun: Override modifiers and the Disabled look) is already on when a handler at the front of
      the chain sees the hit → strip it there, and sweep ten times a second for debuffs that come without a hit
-     (Yossele's Monument, `YosseleHooks`). Read from code; compiled, not run.
+     (Yossele's Monument, `YosseleHooks`). **Seen** in game with a stun the self-test puts on (round 9: Monument's strip);
+     a real Bulwark's stun not yet.
 108. **Code that needs the map's Tide count finds no field for it** → the map's mode holds it:
      `Game_Mapvars.Instance.Mode.Enemies.Totalwaves` (as `Entity_Ai_Artifact_Coin` reads it); guard each step against
-     null (`YosseleServer.TidesOnMap`). Read from code; compiled, not run.
+     null (`YosseleServer.TidesOnMap`). **Verified** in game (Yossele round 9: 5 Growth stages a Tide on a 4-Tide map).
 109. **CS7036 calling `Helper_Damagetools.Projectile` in cloud-check, though the game's code compiles without the last
      argument** → the stubs drop default parameter values, so `Interactiontype` (default `"Hurt"`) must be passed
      explicitly; the game's Roslyn accepts it either way.
@@ -419,7 +427,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      written at the row's start, not counted during the spawning, and after the field is clear a second loop counts the
      rest: a break comes at the clock's end, not at the last kill, so "the clock left at the break" is always about 0 →
      to read "cleared early", watch for no foes with a clock that has started (`Time_Wave` below the row's `Wavetime`).
-     **Verified** in game (Beat the Clock).
+     **Verified** in game (Beat the Clock). **Amended by #142** (2026-11-04): a Tide row ends the moment its last foe
+     falls and the break's clock starts at once; the clock runs out only over a field that still has foes.
 123. **A dead `Tower_Halberdnest` stops the Tides for good** (2026-11-03) → `Entity_Ai_Tower_Halberdnest.Spawn` hooks
      `Game_Mapvars.Wave.OnValueChanged` and never unhooks; with the nest despawned, its next growth throws in
      `Vfxoneshot_ClientRpc` inside the counter's write, inside `Mode_Normal.Run`, an `async void` nothing restarts: no more
@@ -470,7 +479,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 137. **The choice dialog slides in late, by its anchors, with its dim and its edge** (2026-11-03) → centring it by moving `Main` at open, and again 0.5 s later, left VENDCINT and the Rogue Waves dialog about 500 pixels left of centre at 2560x1440, with a dark band across the middle of the screen, and a long hover line off the left edge. The map vote's capture still came out centred, which hid it; my reading, not proven, is that its menu was already up, so it had no slide. Riptide's Salvage centre has the same flaw. Leave `Main` alone, anchor `List` and `Title` inside it, and check at rest, after 1.6 s (`20` §2). **Verified** in game.
 138. **Measuring the choice dialog's own text freezes a frame as it opens** (2026-11-04) → `GetPreferredValues` on `Title` and `Sub` took 0.45 ms itself, but every opening then had one frame of 83 to 146 ms, where the stock dialog stayed at 7 ms a frame; Dimitri saw it as a tiny stutter on every button that opens a dialog. Without it, turning the title's autosize off still gave a 62 to 70 ms frame on 2 of 10 openings. With both gone, 0 of 10. The mechanism wasn't traced: this is measured by taking steps out one at a time. Letter counts give sizes close enough (`20` §2). A memory cleanup isn't the cause: `GC.CollectionCount` didn't move on those frames. In the same round, the cards were found half a pixel off the screen's grid, which is why they now stand on whole pixels. A timing test also needs care: a big `Debug.Log` shows up as a false hitch on the next frames. **Verified** in game.
 139. **A rejoiner's own player object arrives after the rest of the map** (2026-11-04) → a rejoin gets the running map in one go, and `Blm_Server.Localplayer` is set a frame or more later (`Blm_Player.OnNetworkSpawn`). Everything the scene starts on that client reads it at once and dies on the null: every `Entity_Master_Client.Start` (506 things with no look or state, for good), `Game_Client_Init.Initalize` just before it would say the player has loaded, `Game_Artifacts.Init`, `Game_Endscreen.Initalize`. A normal map load never meets it: the player object has been there since the boat. Watch `Application.logMessageReceived` for those stacks, wait for `Localplayer`, then run again what died (`StartCoroutine("Start")`, `SendMessage("Init")`; `RWRejoin.Repair`). **Verified** with a real second player.
-140. **`Entity_Ai_Effect_Smackywall_Beacon` divides every hit by `Effect_Multi`** (2026-11-04) → `Oninteract` does `Damagemulti /= Effect_Multi`, so the 0 and 0.1 a Direction gave it as "reduce damage" made hits on the tower infinite and ten times worse: a self-test that only read "applied without error" passed it. And `Alreadyactive` makes a tower that has held one Beacon ignore the next one's number, so a later rank changes nothing. Leave it at 1 and take damage off in your own hit hook; measure a real hit, never the param. **Verified** in game (10 lost at rank I, 9 at rank III).
+140. **`Entity_Ai_Effect_Smackywall_Beacon` divides every hit by `Effect_Multi`** (2026-11-04) → `Oninteract` does `Damagemulti /= Effect_Multi`, so the 0 and 0.1 a Direction gave it as "reduce damage" made hits on the tower infinite and ten times worse: a self-test that only read "applied without error" passed it. And `Alreadyactive` makes a tower that has held one Beacon ignore the next one's number, so a later rank changes nothing. Leave it at 1 and take damage off in your own hit hook, or with the stock `Resistadd` stat and `Fiewall_Regen` script (`05` §9, read only); measure a real hit, never the param. **Verified** in game (10 lost at rank I, 9 at rank III).
 141. **A rejoin can outrun the load groups too** (2026-11-04) → `Bl_Address.Getload(Being)` is null until the being's group has loaded, and `Entity_Master_Client.Start` then dies on `Beingobject.Entity` with its `Master` already set: no look, no state, for good, and no sign in the game's own flags (116 things on a rejoin after a game restart, where #139's order happened not to bite). Look twice a second apart for a client half with `Master`, `Clientready` and `Being` set and no `Beingobject`; once its group holds it, take it out of `Game_Entity.Entityclient` and run `Start` again (`RWRejoin.Looks`).
 142. **A Tide ends the moment its last foe falls: no clock ever runs on over a clear field** (2026-11-04) → `Mode_Normal.Run` leaves a Tide row as soon as no foe is left, and the break's 60 s go into `Time_Wave` at once, a frame before `ModKitTides.InBreak` says break. So "clear with time left" read in that frame is true of every cleared Tide, however late; and asking only in a Tide's own row is never true at all (my first fix, caught by the flow test). Keep the clock's last reading in the Tide's own row (`table[Entry - 1].Wave`, #121) and judge it at the break. **Verified** in game (Beat the Clock).
 143. **A choice card with no picture is a blank white square** (2026-11-04) → the choice dialog's card keeps its default white image when its sprite is null, with no error. Every card needs a sprite, also a number or a colour (`RWDialog.Number`, `Helper_Uitools.Geticon(res)`), and a Direction's look name must match a file (`Recycler` and `Mushrooms` looked for names no icon has; Deep Current and Heavy Salvo had no icon, so they showed the crest). **Verified** in game (Fund Transfer, Deep Current, Heavy Salvo).

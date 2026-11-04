@@ -2,7 +2,8 @@
 
 ## 1. Reading the game's code without a decompiler
 
-The game ships `Trivial.Mono.Cecil.dll`; Windows PowerShell can load it and walk the IL of `Assembly-CSharp.dll`.
+On the PC there is no decompiler; a cloud thread can turn the whole game into C# in about a minute instead (`13` §11),
+which is how most of chapters 13-24 were read. On the PC, the game ships `Trivial.Mono.Cecil.dll`; Windows PowerShell can load it and walk the IL of `Assembly-CSharp.dll`.
 Setup (once): copy both DLLs next to the scripts in `tools/cecil/`:
 
 ```powershell

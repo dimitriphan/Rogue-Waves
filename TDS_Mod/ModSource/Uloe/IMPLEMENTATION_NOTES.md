@@ -13,12 +13,12 @@ model, effect and sound is gone. The sheet is `docs/scope/10_Vessel_Uloe.txt`; t
 | `-Define ULOE_SELFTEST,ULOE_SHOTS` | compiled |
 | `Assets/UloeMod/Editor` | built and exported by Unity (round 1) |
 | The generators' output | run outside Unity on the kit's `Tools/cloud-check/lite/UnityLite.cs` (renders in `Previews/0.1/`): every sheet, model and sound was looked at or measured. The rest frame equals Dimitri's concept frame pixel for pixel |
-| **Self-test in game** | round 1 ran (below). The fixes after it are compiled, not yet run. Nothing has been played by hand |
+| **Self-test in game** | round 1 ran (below); after its fixes, 148 pass, 0 fail, 1 setup on 2026-11-04 (the setup: Long Throw found no free tile on that map; it passed in `Uloe_20261103_045153`). Its buttons pressed through the game's own UI on 2026-11-04 (builds, upgrades, sell, PLUG IN, UNPLUG, Flood Light's AIM), and as a client's vessel with a second player (`docs/reports/TEST_ROUND_2026-11-04.md`) |
 
 ## Round 1 (2026-11-03, first in-game self-test): 138 pass, 8 fail, 1 setup
 
 All eight fails and the setup were the test's. No mechanic was at fault, though the Flood Light's section never got past its first line, so **its
-mechanics have still never run**.
+mechanics did not run in round 1** (they did in the later rounds above).
 
 | What the log said | Cause | Fix |
 |---|---|---|

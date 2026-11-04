@@ -12,7 +12,10 @@ going to the main menu at 120 s, and a save-slot switch leaves the campaign in i
 (2026-11-03, compiled, not run): the mode polish** (`docs/reports/MODE_POLISH_2026-11-03.md`): the part now carries the
 pack version plus `-dev` (`docs/PACK.md` §4); 3 retries (a lost map is replayed, the host leaving a running map loses
 it); a map is won once Tide 15 is cleared and ten won maps complete the campaign; 60 s breaks; the save keys carry `RW_`
-(old keys are renamed once); a chart map links to at most 3.
+(old keys are renamed once); a chart map links to at most 3. **Since then, all of it has run on the PC:** the
+self-test passed 148/0 on the merged base (2026-11-04), and with a second game copy as a real second player the
+drop and rejoin, the restart rejoin and the load watchdog passed (`docs/reports/TEST_ROUND_2026-11-04.md`); only
+Steam's own Join Game is left.
 
 | File | What |
 | --- | --- |

@@ -14,7 +14,11 @@ powershell -ExecutionPolicy Bypass -File ...\ModSource\<Name>\Deploy-Wait.ps1 -L
 ```
 
 Several vessels in one round: `TDS_Mod/Tools/pc/README.md` (Tools > ModKit > Build Queue exports them in one call;
-`Run-SelfTests.ps1 -Vessels A,B` backs up the save, runs each self-test in its own launch and writes a short summary).
+`Run-SelfTests.ps1 -Vessels A,B` backs up the save, runs each self-test in its own launch and writes a short summary;
+it switches only the parts it is given, pitfall #147). Two more kinds of run live there: a **play build**
+(`ModKitPlay`, `-Define <NAME>_PLAY,<NAME>_SHOTS,MODKIT_PLAY,MODKIT_TEST`, run by `Run-Play.ps1`), a virtual player that
+clicks the HUD and the map as a hand does, and the mode's **two-player round** (`Run-TwoPlayers.ps1`), a real second
+client from a copy of the game on the same PC (`07` §4, pitfall #144).
 
 Watch for the result (the log is ~40 MB with captures, so filter out dump lines):
 
@@ -122,7 +126,8 @@ one section per mechanic, each check a single measurable fact with the measured 
   after a won map (RogueWavesMode round 1), `OperationCanceledException` in `Projectile_Master.Kill` when a map ends
   with shots in the air, NRE in `Tds_Clientinfo.Newscene` on disconnect, `Bla_Ambient` NREs at
   quit, NREs in `Game_Init.OnDestroy` and `Bl_Sound.Stopgroup` after `TEST DONE` as the game shuts down (RogueLab round 8), "Empty Load List!!", a missing Music System script, DOTween safe mode, `Bla_Ui_Mods.Populate` cancel when the
-  Mods menu opens.
+  Mods menu opens, and on `Map_Monogrove` an `InvalidKeyException` and a null in `Bl_Address.Load` for two assets its
+  load list names and the game doesn't ship (seen with no pack part on too; the map still loads and plays, 2026-11-04).
 
 ## 7. Release boot check
 

@@ -222,7 +222,7 @@ network variable's `OnValueChanged`.
 ## 6. Findings for the pack's existing code
 
 1. **Rejoin after a restart** gets a new `Sessionid` and RogueWavesMode turns it away (`19` §5); `docs/mode/REJOIN.md`
-   O1-O3 should test the two cases apart. **Fixed in RogueWavesMode 0.3.0** (2026-10-15, compiled, not run): the pack
+   O1-O3 should test the two cases apart. **Fixed in RogueWavesMode 0.3.0** (2026-10-15; passed a real restart and rejoin on 2026-11-04, `19` §8 N9): the pack
    keeps the GUID in its `RogueWaves` folder and puts it back into `Metadata` (`RWIdentity`, `19` §5).
 2. **Campaign statics survive a slot switch:** after a switch the next `Save()` would write slot A's campaign into
    slot B. **Fixed in 0.3.0:** `Bla_Data.Playerdata` is replaced only at launch, on `Switchslot` and on `Cleardata`
