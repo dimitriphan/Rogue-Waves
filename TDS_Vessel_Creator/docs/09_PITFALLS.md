@@ -30,7 +30,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
    via name carriers (`Util.Script`).
 9. **A cloned tower behaves like Smacky's or throws** → copied vessel-specific scripts (`Entity_Ai_Tower_Smackyarcher`
    hard-codes Smacky's objects; the generic `Entity_Ai_General_Upgrade` runs the stock upgrade flow) → `Strip()` removes
-   any script named after a shipped vessel, and the building brain mirrors the upgrade AI.
+   any script named after a shipped vessel and the copied upgrade AI; then add one fresh `Entity_Ai_General_Upgrade`
+   carrier to every building that upgrades and let the brain listen to `Master.Upgrade` (the pack's vessels since
+   2026-11-04, `05` §14). A brain that mirrors the flow instead (the Mummer template) works, but Voice in a Bottle
+   then removes itself from its buildings.
 10. **Edits to `Visualproperties.Default` have no effect** → `Entry` is a struct → copy, change, assign back.
 11. **NRE in `Bl_Address_Group.OnEnable`** → `ScriptableObject.CreateInstance` leaves its item list null → `Instantiate`
     an existing group (`template.Heroloads`) and retag it.
@@ -225,7 +228,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     carried from ModProjects' 40j) → raw `Speed` Multi mods stack, and enemy `Speed` has Limits 0.05..99999 (read in
     game), so two full Tremor ticks or a slow on a rooted foe left it crawling, never stopped → make a root -1 (Speed at
     its floor), cut slows so slows alone stop at 10% of a foe's speed and skip them on a held foe, and raise a
-    `Speed.Value_Bounds.x` under 0 to 0 (`ArgoUtil.Speed`, `TDS_Mod/ModSource/Argo`). Seen in game in Argo 1.x; the fix
+    `Speed.Value_Bounds.x` under 0 to 0 (`ArgoUtil.Speed`, `TDS_Mod/ModSource/Argo`; `ModKitUtil.Speed` since kit 1.8). Seen in game in Argo 1.x; the fix
     is in Argo 2.0. **Not the whole fix** (read in Argo 2.0's code, 2026-11-04): a slow that re-ticks before its last
     mod ends stacks with itself, since each tick adds a new `Multi` mod. Deep Water slows every 0.25 s for 0.5 s, so a
     foe always carries two and a written 30% is a real 60% → renew one held mod per source instead of adding one per
@@ -289,7 +292,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     `Vfxdebuffcheck` and `Vfxemittercheck` drop the send while 50 are in flight; the queue drains 10 per physics step
     solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
     calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
-    look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`).
+    look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`; every part's `ModKitUtil.Debuff` since kit 1.8).
     Read from code; the fix runs in game without error (Argo 2.0.1's self-test and a second player's machine,
     2026-11-04), but no fight there was big enough to fill the queue (`19` §8 N4), so the drop itself is still unseen.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the

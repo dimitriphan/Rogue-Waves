@@ -107,7 +107,7 @@ public static partial class RWTest
     public static void Update()
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
-        if (vars == null || !RWUtil.IsServer || done)
+        if (vars == null || !ModKitUtil.IsServer || done)
             return;
         if (forcing)
             vars.Time_Wave.Value = -1f;
@@ -439,7 +439,7 @@ public static partial class RWTest
         yield return Until(() => RWBoat.ArrivedAt > 0f, 60f);
         Macro_Worldvisual vis = Macro_Worldvisual.Instance;
         Check("C3 map " + (m + 1) + ": the boat sails to " + to.Name + " by itself", RWBoat.ArrivedAt > 0f,
-            RWBoat.ArrivedAt > 0f ? RWUtil.F(RWBoat.ArrivedAt - RWBoat.SailedAt) + " s, " + RWUtil.F(RWUtil.Flat(vis.Boat.transform.position, RWWorld.At(to))) + " from the island" : "not there after 60 s, boat at " + RWUtil.V(vis.Boat.transform.position) + ", hovering " + (Macro_Main.Instance.Hovering != null ? Macro_Main.Instance.Hovering.name : "-") + ", prev " + (Macro_Main.Instance.Prevhovering != null ? Macro_Main.Instance.Prevhovering.name : "-") + ", preview " + (Macro_Main.Instance.Preview != null ? Macro_Main.Instance.Preview.name : "-") + ", goto " + (Macro_Main.Instance.Goto != null ? Macro_Main.Instance.Goto.name : "-") + ", speed " + RWUtil.F(vis.Boatspeed) + ", setup " + vis.Insetup + ", transition " + vis.Inworldtransition + ", selected '" + Macro_Main.Instance.Selected.Value + "'");
+            RWBoat.ArrivedAt > 0f ? RWUtil.F(RWBoat.ArrivedAt - RWBoat.SailedAt) + " s, " + RWUtil.F(ModKitUtil.Flat(vis.Boat.transform.position, RWWorld.At(to))) + " from the island" : "not there after 60 s, boat at " + RWUtil.V(vis.Boat.transform.position) + ", hovering " + (Macro_Main.Instance.Hovering != null ? Macro_Main.Instance.Hovering.name : "-") + ", prev " + (Macro_Main.Instance.Prevhovering != null ? Macro_Main.Instance.Prevhovering.name : "-") + ", preview " + (Macro_Main.Instance.Preview != null ? Macro_Main.Instance.Preview.name : "-") + ", goto " + (Macro_Main.Instance.Goto != null ? Macro_Main.Instance.Goto.name : "-") + ", speed " + RWUtil.F(vis.Boatspeed) + ", setup " + vis.Insetup + ", transition " + vis.Inworldtransition + ", selected '" + Macro_Main.Instance.Selected.Value + "'");
     }
 
     // C4: picking the node opens its Setup panel in the mode, and its map loads in Mode_RogueWave.
@@ -626,7 +626,7 @@ public static partial class RWTest
         Transform dock = null;
         if (vis.World != null && here != null)
             foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true)) if (l.name == here.Name) dock = l.transform.Find("Dock");
-        float off = dock != null ? RWUtil.Flat(vis.Boat.transform.position, dock.position) : -1f;
+        float off = dock != null ? ModKitUtil.Flat(vis.Boat.transform.position, dock.position) : -1f;
         Check("C5 map " + (m + 1) + ": back on the chart one row on, the boat at " + (here != null ? here.Name : "-"), Here() && RWCampaign.Route.Count == m + 1 && dock != null && off < 3f,
             "world " + (vis.World != null ? vis.World.name : "-") + ", boat " + RWUtil.F(off) + " from the dock");
         string w = RWUtil.ReadString("Player", "Player_Worldselect"), g = RWUtil.ReadString("Player", "Player_Gameplanselect");

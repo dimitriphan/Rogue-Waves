@@ -121,7 +121,7 @@ public static class RWWorld
         Mapworlddatabaseobject world = ScriptableObject.CreateInstance<Mapworlddatabaseobject>();
         world.name = name;
         world.Objectname = name;
-        world.Id = RWUtil.Clip(name.ToLowerInvariant());
+        world.Id = ModKitUtil.Clip(name.ToLowerInvariant());
         world.Worldobj = Build(name, chart, route, here);
         world.Defaultnode = here.Name;
         world.Defaultlighting = stock != null ? stock.Defaultlighting : null;
@@ -131,7 +131,7 @@ public static class RWWorld
         world.Display_Soundtrack = stock != null ? stock.Display_Soundtrack : "";
 
         // Older charts go, except a name the boat still uses (a client can see the new World before the new Worlded).
-        Dictionary<string, UnityEngine.Object> worlds = RWUtil.Folder("World");
+        Dictionary<string, UnityEngine.Object> worlds = ModKitUtil.Folder("World");
         string inUse = Tds_Multiplayerinfo.Instance != null ? Tds_Multiplayerinfo.Instance.World.Value.ToString() : "";
         string shown = Macro_Main.Instance != null ? Macro_Main.Instance.Worlded.Value.ToString() : "";
         foreach (string old in new List<string>(worlds.Keys))
@@ -151,7 +151,7 @@ public static class RWWorld
     {
         if (Macro_Main.Instance != null && Macro_Main.Instance.Defaultworld != null)
             return Macro_Main.Instance.Defaultworld;
-        Dictionary<string, UnityEngine.Object> worlds = RWUtil.Folder("World");
+        Dictionary<string, UnityEngine.Object> worlds = ModKitUtil.Folder("World");
         if (worlds != null)
             foreach (UnityEngine.Object o in worlds.Values)
             {
@@ -312,7 +312,7 @@ public static class RWWorld
         stockIslands = new Dictionary<string, GameObject>();
         islandPool = new List<GameObject>();
         Dictionary<string, float> widest = new Dictionary<string, float>();
-        Dictionary<string, UnityEngine.Object> worlds = RWUtil.Folder("World");
+        Dictionary<string, UnityEngine.Object> worlds = ModKitUtil.Folder("World");
         if (worlds == null)
             return;
         foreach (UnityEngine.Object o in worlds.Values)
@@ -532,7 +532,7 @@ public static class RWWorld
             bool clear = true;
             foreach (List<RWChart.Node> row in chart.Rows)
                 foreach (RWChart.Node n in row)
-                    if (RWUtil.Flat(At(n), at) < RockClear) clear = false;
+                    if (ModKitUtil.Flat(At(n), at) < RockClear) clear = false;
             if (!clear)
                 continue;
             MeshFilter f = from.GetComponent<MeshFilter>();

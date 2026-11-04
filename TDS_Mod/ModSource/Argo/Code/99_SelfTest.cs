@@ -37,10 +37,10 @@ public static class ArgoSelfTest
 
     static void Drive()
     {
-        if (freeze && !forcing && Game_Mapvars.Instance != null && ArgoUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
+        if (freeze && !forcing && Game_Mapvars.Instance != null && ModKitUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
             Game_Mapvars.Instance.Time_Wave.Value = 900f;
         // Mode_Normal leaves a Tide entry once Time_Wave <= 0 (or when no enemy is left).
-        if (forcing && Game_Mapvars.Instance != null && ArgoUtil.IsServer)
+        if (forcing && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
             Game_Mapvars.Instance.Time_Wave.Value = -1f;
         if (phase >= 3)
             return;
@@ -110,7 +110,7 @@ public static class ArgoSelfTest
             return;
         }
 
-        if (phase <= 2 && ArgoServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ArgoUtil.IsServer)
+        if (phase <= 2 && ArgoServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
             ArgoMod.Instance.StartCoroutine(Scenario());
@@ -187,7 +187,7 @@ public static class ArgoSelfTest
 
     static float Life(Entity_Master e)
     {
-        return ArgoUtil.Stat(e, "Health", 0f) + ArgoUtil.Stat(e, "Healtharmor", 0f) + ArgoUtil.Stat(e, "Healthover", 0f);
+        return ModKitUtil.Stat(e, "Health", 0f) + ModKitUtil.Stat(e, "Healtharmor", 0f) + ModKitUtil.Stat(e, "Healthover", 0f);
     }
 
     static ArgoTowerBrain Newest(string being, List<ArgoTowerBrain> known)
@@ -210,15 +210,15 @@ public static class ArgoSelfTest
         for (int dx = -r; dx <= r; dx++)
             for (int dz = -r; dz <= r; dz++)
                 options.Add(new Vector3(c.x + dx, c.y, c.z + dz));
-        options.Sort((a, b) => Mathf.Abs(ArgoUtil.Flat(a, c) - ring).CompareTo(Mathf.Abs(ArgoUtil.Flat(b, c) - ring)));
+        options.Sort((a, b) => Mathf.Abs(ModKitUtil.Flat(a, c) - ring).CompareTo(Mathf.Abs(ModKitUtil.Flat(b, c) - ring)));
         foreach (Vector3 p in options)
         {
-            if (ArgoUtil.Flat(p, c) > maxDist)
+            if (ModKitUtil.Flat(p, c) > maxDist)
                 continue;
-            Genitem block = ArgoUtil.Surface(p) ?? ArgoUtil.Surface(p + Vector3.up) ?? ArgoUtil.Surface(p + Vector3.down);
+            Genitem block = ModKitUtil.Surface(p) ?? ModKitUtil.Surface(p + Vector3.up) ?? ModKitUtil.Surface(p + Vector3.down);
             // anyLevel: the terraces up to 4 levels below too (the hill around the core is small and full by then).
             for (int dy = 2; block == null && anyLevel && dy <= 4; dy++)
-                block = ArgoUtil.Surface(p + Vector3.down * dy);
+                block = ModKitUtil.Surface(p + Vector3.down * dy);
             if (block == null || used.Contains(block.Position) || reserved.Contains(block.Position))
                 continue;
             if (Helper_Gridtools.Checkifplaceable(block, being, 0, team))
@@ -247,7 +247,7 @@ public static class ArgoSelfTest
                 bool any = false;
                 for (int dy = 2; dy >= -6; dy--)
                 {
-                    Genitem b = ArgoUtil.Surface(c0 + new Vector3(dx, dy, dz));
+                    Genitem b = ModKitUtil.Surface(c0 + new Vector3(dx, dy, dz));
                     if (b == null || tiles.Contains(b))
                         continue;
                     any = true;
@@ -255,7 +255,7 @@ public static class ArgoSelfTest
                 }
                 if (!any) bare++;
             }
-        tiles.Sort((a, b) => ArgoUtil.Flat(a.Position, c).CompareTo(ArgoUtil.Flat(b.Position, c)));
+        tiles.Sort((a, b) => ModKitUtil.Flat(a.Position, c).CompareTo(ModKitUtil.Flat(b.Position, c)));
         foreach (Genitem b in tiles)
         {
             if (used.Contains(b.Position) || reserved.Contains(b.Position))
@@ -281,7 +281,7 @@ public static class ArgoSelfTest
     static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<ArgoTowerBrain> known, ArgoTowerBrain[] result)
     {
         result[0] = null;
-        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + ArgoUtil.Owner(hero) + "}";
+        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + ModKitUtil.Owner(hero) + "}";
         Send(hero, "Build", json);
         float t = 0f;
         while (t < 30f && result[0] == null)
@@ -308,12 +308,12 @@ public static class ArgoSelfTest
     // Tide enemies carry the "Enemy" tag (Mode_Normal counts them with that query); cores are left alone.
     static bool IsEnemyMob(Entity_Master e, int team)
     {
-        if (e == null || !ArgoUtil.Alive(e) || ArgoUtil.Team(e) == team || e.Taglistserver == null)
+        if (e == null || !ModKitUtil.Alive(e) || ModKitUtil.Team(e) == team || e.Taglistserver == null)
             return false;
         return e.Taglistserver.Contains("Enemy") && !e.Taglistserver.Contains("Enemycore") && !e.Taglistserver.Contains("Core");
     }
 
-    static int Team() { return ArgoServer.Heroes.Count > 0 ? ArgoUtil.Team(ArgoServer.Heroes[0].Master) : 1; }
+    static int Team() { return ArgoServer.Heroes.Count > 0 ? ModKitUtil.Team(ArgoServer.Heroes[0].Master) : 1; }
 
     // Removes forced-Tide enemies so they don't pile up (not a kill: no drops or stats).
     static void ClearEnemies()
@@ -343,19 +343,19 @@ public static class ArgoSelfTest
     // reads 0.05 (the kit template's Cross check; see SpeedInfo).
     static Entity_Master SpeedFoe(Vector3 near, float dist)
     {
-        Beingobject being = ArgoUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType;
+        Beingobject being = ModKitUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType;
         Entity_Master core = null;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ArgoUtil.Alive(e)) { core = e; break; }
+            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ModKitUtil.Alive(e)) { core = e; break; }
         if (being == null || core == null)
             return null;
-        Link_Being probe = new Link_Being { Being = being, Entity = being.Entity, Block = being.Block, Team = ArgoUtil.Team(core) };
+        Link_Being probe = new Link_Being { Being = being, Entity = being.Entity, Block = being.Block, Team = ModKitUtil.Team(core) };
         foreach (float d in new[] { dist, dist - 2f, dist + 2f, 3f })
         for (int a = 0; a < 16; a++)
             foreach (float dy in new[] { 0f, -1f, 1f })
             {
                 Vector3 p = near + new Vector3(Mathf.Round(Mathf.Cos(a * Mathf.PI / 8f) * d), dy, Mathf.Round(Mathf.Sin(a * Mathf.PI / 8f) * d));
-                Genitem block = ArgoUtil.Surface(p);
+                Genitem block = ModKitUtil.Surface(p);
                 Genitem stand = null;
                 try { stand = block != null ? Helper_Gridtools.Checkifstandable(block, probe) : null; } catch (Exception) { }
                 if (stand == null)
@@ -377,7 +377,7 @@ public static class ArgoSelfTest
             return null;
         Entity_Master core = null;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ArgoUtil.Alive(e)) { core = e; break; }
+            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ModKitUtil.Alive(e)) { core = e; break; }
         if (core == null)
             return null;
         // The nearest tile around 'near' an enemy can stand on.
@@ -387,7 +387,7 @@ public static class ArgoSelfTest
                 {
                     if (Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dz)) != ring) continue;
                     Vector3 p = near + new Vector3(dx, 0f, dz);
-                    Genitem block = ArgoUtil.Surface(p) ?? ArgoUtil.Surface(p + Vector3.up) ?? ArgoUtil.Surface(p + Vector3.down);
+                    Genitem block = ModKitUtil.Surface(p) ?? ModKitUtil.Surface(p + Vector3.up) ?? ModKitUtil.Surface(p + Vector3.down);
                     if (block == null)
                         continue;
                     Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(core.Beingserver);
@@ -402,7 +402,7 @@ public static class ArgoSelfTest
     // Size of a buildable's model as the game draws it (instantiated far below the map, renderer bounds).
     static void Measure(string being)
     {
-        Beingobject b = ArgoUtil.Load<Beingobject>("Mob", being);
+        Beingobject b = ModKitUtil.Load<Beingobject>("Mob", being);
         GameObject prefab = b != null && b.Entity != null && b.Entity.Defaultvisual != null ? b.Entity.Defaultvisual.Default.Visprefab : null;
         if (prefab == null) { Log("SIZE " + being + ": not loaded"); return; }
         GameObject g = UnityEngine.Object.Instantiate(prefab, new Vector3(0f, -500f, 0f), Quaternion.identity);
@@ -420,7 +420,7 @@ public static class ArgoSelfTest
     // A visual-only copy of a tower model (no entity) on a tile, for side-by-side screenshots.
     static GameObject Showpiece(string being, Vector3 tile)
     {
-        Beingobject b = ArgoUtil.Load<Beingobject>("Mob", being);
+        Beingobject b = ModKitUtil.Load<Beingobject>("Mob", being);
         GameObject prefab = b != null && b.Entity != null && b.Entity.Defaultvisual != null ? b.Entity.Defaultvisual.Default.Visprefab : null;
         if (prefab == null) return null;
         GameObject g = UnityEngine.Object.Instantiate(prefab, tile, Quaternion.identity);
@@ -430,7 +430,7 @@ public static class ArgoSelfTest
 
     static IEnumerator LoadGroup(string hero)
     {
-        Heroentryobject h = ArgoUtil.Heroentry(hero);
+        Heroentryobject h = ModKitUtil.Heroentry(hero);
         if (h == null || h.Heroloads == null) yield break;
         Bl_Address.Loadgroup g = null;
         try { g = Bl_Address.Load(h.Heroloads.Objectname); } catch (Exception e) { Log("load " + hero + ": " + e.Message); }
@@ -477,12 +477,12 @@ public static class ArgoSelfTest
             yield break;
         rv.Selected();
         yield return Wait(1.3f);
-        float r = ArgoUtil.Stat(m, "Range", 0f);
+        float r = ModKitUtil.Stat(m, "Range", 0f);
         bool ok = rv.Rangeclone != null && Vector3.Distance(rv.Rangeclone.transform.position, t.Eye) < 0.05f && Mathf.Abs(rv.Rangeclone.transform.lossyScale.x - 2f * r) < 0.1f;
         Check(t.Def.Display + " range is centred on it and as big as its Range", ok, "circle at " + (rv.Rangeclone != null ? rv.Rangeclone.transform.position.ToString("F2") + " size " + F(rv.Rangeclone.transform.lossyScale.x) : "-")
-            + ", tower " + ArgoUtil.Pos(m).ToString("F2") + " eye " + t.Eye.ToString("F2") + ", Range " + F(r));
+            + ", tower " + ModKitUtil.Pos(m).ToString("F2") + " eye " + t.Eye.ToString("F2") + ", Range " + F(r));
 #if ARGO_SHOTS
-        yield return ArgoShot.Close("range_" + t.Def.Family, ArgoUtil.Pos(m), Mathf.Max(6f, r * 2.4f));
+        yield return ArgoShot.Close("range_" + t.Def.Family, ModKitUtil.Pos(m), Mathf.Max(6f, r * 2.4f));
 #endif
         rv.Deselected();
     }
@@ -497,15 +497,15 @@ public static class ArgoSelfTest
             for (int dz = -r; dz <= r; dz++)
             {
                 Vector3 p = new Vector3(Mathf.Round(tower.x) + dx, tower.y, Mathf.Round(tower.z) + dz);
-                float d = ArgoUtil.Flat(p, tower);
+                float d = ModKitUtil.Flat(p, tower);
                 if (d < minD || d > maxD) continue;
                 for (int k = 1; k <= 3; k++)
                 {
-                    Genitem b = ArgoUtil.Surface(p + Vector3.down * k);
+                    Genitem b = ModKitUtil.Surface(p + Vector3.down * k);
                     if (b == null || b.Position.y > tower.y - 0.5f || used.Contains(b.Position)) continue;
                     float drop = tower.y - b.Position.y;
                     if (Mathf.Sqrt(d * d + drop * drop) > reach) break;
-                    if (drop > bestDrop && (ArgoUtil.Surface(p + Vector3.down * (k - 1)) == null)) { best = b; bestDrop = drop; }
+                    if (drop > bestDrop && (ModKitUtil.Surface(p + Vector3.down * (k - 1)) == null)) { best = b; bestDrop = drop; }
                     break;
                 }
             }
@@ -516,7 +516,7 @@ public static class ArgoSelfTest
     {
         Entity_Master core = null;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ArgoUtil.Alive(e)) { core = e; break; }
+            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ModKitUtil.Alive(e)) { core = e; break; }
         if (core == null || enemyType == null || block == null)
             return null;
         Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(core.Beingserver);
@@ -528,7 +528,7 @@ public static class ArgoSelfTest
     static Entity_Master Core()
     {
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ArgoUtil.Alive(e)) return e;
+            if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Enemycore") && ModKitUtil.Alive(e)) return e;
         return null;
     }
 
@@ -575,7 +575,7 @@ public static class ArgoSelfTest
         return got;
     }
 
-    static Beingobject LaneBeing() { return ArgoUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType; }
+    static Beingobject LaneBeing() { return ModKitUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType; }
 
     // The tiles of a lane about 'dist' tiles out (see Lane), or null; inner: the tile in front of the first, if any.
     static List<Genitem> LaneTiles(Vector3 from, float dist, float reach, int count, bool reel, out Genitem inner)
@@ -585,7 +585,7 @@ public static class ArgoSelfTest
         Entity_Master core = Core();
         if (being == null || core == null)
             return null;
-        Link_Being probe = new Link_Being { Being = being, Entity = being.Entity, Block = being.Block, Team = ArgoUtil.Team(core) };
+        Link_Being probe = new Link_Being { Being = being, Entity = being.Entity, Block = being.Block, Team = ModKitUtil.Team(core) };
         Vector3 start = new Vector3(Mathf.Round(from.x), from.y, Mathf.Round(from.z));
         foreach (Vector3 step in new[] { new Vector3(1, 0, 0), new Vector3(-1, 0, 0), new Vector3(0, 0, 1), new Vector3(0, 0, -1),
                                          new Vector3(1, 0, 1), new Vector3(1, 0, -1), new Vector3(-1, 0, 1), new Vector3(-1, 0, -1) })
@@ -597,7 +597,7 @@ public static class ArgoSelfTest
             for (int i = 0; i < count; i++)
             {
                 // At the tower's level only: the fourth PC run's lane, stepped a level down, was never harpooned.
-                Genitem block = ArgoUtil.Surface(start + step * (k + i));
+                Genitem block = ModKitUtil.Surface(start + step * (k + i));
                 Genitem stand = null;
                 try { stand = block != null ? Helper_Gridtools.Checkifstandable(block, probe) : null; } catch (Exception) { }
                 if (stand == null || used.Contains(block.Position))
@@ -609,7 +609,7 @@ public static class ArgoSelfTest
             // A walking foe stands, for the game, on the tile it is stepping onto (Entity_Ai_Mob_Movement claims it as the
             // step starts, even at the 0.05 Speed floor), and the reel is measured from there: the fifth PC run's foe,
             // placed 3 tiles out, was on the tile 2 out when the harpoon hit, too close to be reeled.
-            Genitem front = ArgoUtil.Surface(start + step * (k - 1));
+            Genitem front = ModKitUtil.Surface(start + step * (k - 1));
             if (reel && (!ReelRoom(tiles[0], from, probe) || (front != null && !ReelRoom(front, from, probe))))
             {
                 noReelRoom++;
@@ -654,14 +654,14 @@ public static class ArgoSelfTest
                 for (int dz = -r; dz <= r; dz++)
                 {
                     Vector3 p = new Vector3(home.x + dx, home.y, home.z + dz);
-                    float f = ArgoUtil.Flat(p, home);
+                    float f = ModKitUtil.Flat(p, home);
                     if (f > tried && f <= maxDist)
                         options.Add(p);
                 }
-            options.Sort((a, b) => Mathf.Abs(ArgoUtil.Flat(a, home) - 2.5f).CompareTo(Mathf.Abs(ArgoUtil.Flat(b, home) - 2.5f)));
+            options.Sort((a, b) => Mathf.Abs(ModKitUtil.Flat(a, home) - 2.5f).CompareTo(Mathf.Abs(ModKitUtil.Flat(b, home) - 2.5f)));
             foreach (Vector3 p in options)
             {
-                Genitem block = ArgoUtil.Surface(p) ?? ArgoUtil.Surface(p + Vector3.up) ?? ArgoUtil.Surface(p + Vector3.down);
+                Genitem block = ModKitUtil.Surface(p) ?? ModKitUtil.Surface(p + Vector3.up) ?? ModKitUtil.Surface(p + Vector3.down);
                 if (block == null || used.Contains(block.Position) || reserved.Contains(block.Position)
                     || !Helper_Gridtools.Checkifplaceable(block, being, 0, team))
                     continue;
@@ -695,8 +695,8 @@ public static class ArgoSelfTest
             Vector3 p = from.Position + dir * k;
             Genitem block = null;
             foreach (float dy in new[] { 0f, -1f, 1f })
-                if (block == null) block = ArgoUtil.Surface(new Vector3(Mathf.Round(p.x), Mathf.Round(p.y) + dy, Mathf.Round(p.z)));
-            if (block == null || block == from || ArgoUtil.Flat(block.Position, toward) < ArgoData.ReelMinDist)
+                if (block == null) block = ModKitUtil.Surface(new Vector3(Mathf.Round(p.x), Mathf.Round(p.y) + dy, Mathf.Round(p.z)));
+            if (block == null || block == from || ModKitUtil.Flat(block.Position, toward) < ArgoData.ReelMinDist)
                 continue;
             Genitem stand = null;
             try { stand = Helper_Gridtools.Checkifstandable(block, probe); } catch (Exception) { }
@@ -725,14 +725,14 @@ public static class ArgoSelfTest
             for (int dz = -r; dz <= r; dz++)
                 foreach (float dy in new[] { 0f, -1f, 1f })
                 {
-                    Genitem b = ArgoUtil.Surface(new Vector3(Mathf.Round(c.x) + dx, c.y + dy, Mathf.Round(c.z) + dz));
+                    Genitem b = ModKitUtil.Surface(new Vector3(Mathf.Round(c.x) + dx, c.y + dy, Mathf.Round(c.z) + dz));
                     if (b == null || tiles.Contains(b) || used.Contains(b.Position))
                         continue;
-                    float f = ArgoUtil.Flat(b.Position, c);
+                    float f = ModKitUtil.Flat(b.Position, c);
                     if (f >= min && f <= max)
                         tiles.Add(b);
                 }
-        tiles.Sort((a, b) => Mathf.Abs(ArgoUtil.Flat(a.Position, c) - mid).CompareTo(Mathf.Abs(ArgoUtil.Flat(b.Position, c) - mid)));
+        tiles.Sort((a, b) => Mathf.Abs(ModKitUtil.Flat(a.Position, c) - mid).CompareTo(Mathf.Abs(ModKitUtil.Flat(b.Position, c) - mid)));
         foreach (Genitem b in tiles)
         {
             Entity_Master e = EnemyOn(b);
@@ -754,16 +754,16 @@ public static class ArgoSelfTest
         foreach (Entity_Master f in foes)
         {
             Link_Stats hp;
-            if (f == null || !ArgoUtil.Alive(f) || f.Statsserver == null || !f.Statsserver.TryGetValue("Health", out hp))
+            if (f == null || !ModKitUtil.Alive(f) || f.Statsserver == null || !f.Statsserver.TryGetValue("Health", out hp))
             {
                 holds.Add(null);
                 continue;
             }
             Helper_Entitytools.Addmod(f, "Health", health, Helper_Entitytools.Modtypes.Add, 0f);
             hp.Value = hp.Value_Calc;
-            holds.Add(ArgoUtil.Speed(f) != null ? Helper_Entitytools.Addmod(f, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, 0f) : null);
+            holds.Add(ModKitUtil.Speed(f) != null ? Helper_Entitytools.Addmod(f, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, 0f) : null);
         }
-        ArgoUtil.Unmod(jam);
+        ModKitUtil.Unmod(jam);
     }
 
     static void Force(ArgoTowerBrain t, string key)
@@ -778,7 +778,7 @@ public static class ArgoSelfTest
         return bell.Crew[i] != null && bell.Crew[i].Tuning && t != null && bell.Crew[i].Post == t.Master;
     }
 
-    static bool Gone(Entity_Master m) { return m == null || !ArgoUtil.Alive(m) || !ArgoServer.Towers.Exists(t => t != null && t.Master == m); }
+    static bool Gone(Entity_Master m) { return m == null || !ModKitUtil.Alive(m) || !ArgoServer.Towers.Exists(t => t != null && t.Master == m); }
 
     // A real "Sell" command, as the sell button sends it (Entity_Ai_Hero_Buildsell.Selldata: the building's Position, its
     // object's name, the owner). Falls back to removing the building if the vessel's sell doesn't happen.
@@ -789,7 +789,7 @@ public static class ArgoSelfTest
         yield return Until(() => Gone(m), 20f);
         if (!Gone(m))
         {
-            Log("the vessel's Sell did not sell " + ArgoUtil.BeingName(m) + "; removing it instead");
+            Log("the vessel's Sell did not sell " + ModKitUtil.BeingName(m) + "; removing it instead");
             Game_Entity.Instance.Despawn(m.Beingserver, false, "Selftest");
             yield return Until(() => Gone(m), 2f);
         }
@@ -798,23 +798,23 @@ public static class ArgoSelfTest
     // A foe below the tower: the tower must fire at it and its shots must land (Argo 1.0's flew over foes below).
     static IEnumerator Steep(ArgoTowerBrain t, float minD)
     {
-        float range = ArgoUtil.Stat(t.Master, "Range", 4f);
-        Genitem low = LowTile(ArgoUtil.Pos(t.Master), minD, Mathf.Min(range - 0.5f, 4f), range - 0.4f);
+        float range = ModKitUtil.Stat(t.Master, "Range", 4f);
+        Genitem low = LowTile(ModKitUtil.Pos(t.Master), minD, Mathf.Min(range - 0.5f, 4f), range - 0.4f);
         if (low == null) { Log("steep shot " + t.Def.Display + ": no lower ground within reach here (skipped)"); yield break; }
         ClearEnemies();
         Entity_Master foe = EnemyOn(low);
         yield return Wait(0.4f);
         if (foe == null) { Log("steep shot " + t.Def.Display + ": could not spawn below (skipped)"); yield break; }
-        float l0 = Life(foe), drop = ArgoUtil.Pos(t.Master).y - ArgoUtil.Pos(foe).y;
+        float l0 = Life(foe), drop = ModKitUtil.Pos(t.Master).y - ModKitUtil.Pos(foe).y;
         int v0 = t.Volleys;
-        yield return Until(() => foe == null || !ArgoUtil.Alive(foe) || t.Volleys >= v0 + 2, 8f);
+        yield return Until(() => foe == null || !ModKitUtil.Alive(foe) || t.Volleys >= v0 + 2, 8f);
         yield return Wait(0.8f);
-        bool fired = t.Volleys > v0, hit = foe == null || !ArgoUtil.Alive(foe) || Life(foe) < l0 - 0.01f;
+        bool fired = t.Volleys > v0, hit = foe == null || !ModKitUtil.Alive(foe) || Life(foe) < l0 - 0.01f;
         if (!fired) { Log("steep shot " + t.Def.Display + ": foe " + F(drop) + " below was not targeted (out of sight?) (skipped)"); ClearEnemies(); yield break; }
         Check(t.Def.Display + " hits a foe " + F(drop) + " tiles below", hit, "volleys " + (t.Volleys - v0) + ", health " + F(l0) + "->" + (foe != null ? F(Life(foe)) : "dead")
-            + ", flat " + F(ArgoUtil.Flat(ArgoUtil.Pos(foe), ArgoUtil.Pos(t.Master))));
+            + ", flat " + F(ModKitUtil.Flat(ModKitUtil.Pos(foe), ModKitUtil.Pos(t.Master))));
 #if ARGO_SHOTS
-        yield return ArgoShot.Close("steep_" + t.Def.Family, (ArgoUtil.Pos(t.Master) + low.Position) * 0.5f, 4.5f);
+        yield return ArgoShot.Close("steep_" + t.Def.Family, (ModKitUtil.Pos(t.Master) + low.Position) * 0.5f, 4.5f);
 #endif
         ClearEnemies();
     }
@@ -837,7 +837,7 @@ public static class ArgoSelfTest
                     continue;
                 for (int dy = 2; dy >= -6; dy--)
                 {
-                    Genitem block = ArgoUtil.Surface(c0 + new Vector3(dx, dy, dz));
+                    Genitem block = ModKitUtil.Surface(c0 + new Vector3(dx, dy, dz));
                     if (block == null || Mathf.Abs(block.Position.y - (c0.y + dy)) > 0.5f || used.Contains(block.Position) || reserved.Contains(block.Position))
                         continue;
                     bool ok = false;
@@ -866,11 +866,11 @@ public static class ArgoSelfTest
         for (int k = 0; k < seen.Count && seen.Count < cap; k++)
             foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
             {
-                Genitem b = ArgoUtil.Surface(seen[k] + d);
+                Genitem b = ModKitUtil.Surface(seen[k] + d);
                 if (b == null || Mathf.Abs(b.Position.y - at.y) > 0.5f || used.Contains(b.Position) || reserved.Contains(b.Position))
                     continue;
                 bool dup = false;
-                foreach (Vector3 o in seen) if (ArgoUtil.Flat(o, b.Position) < 0.3f) dup = true;
+                foreach (Vector3 o in seen) if (ModKitUtil.Flat(o, b.Position) < 0.3f) dup = true;
                 if (dup)
                     continue;
                 bool ok = false;
@@ -887,7 +887,7 @@ public static class ArgoSelfTest
         int free = 0;
         foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
         {
-            Genitem b = ArgoUtil.Surface(at + d);
+            Genitem b = ModKitUtil.Surface(at + d);
             string no = null;
             if (b == null) no = "no ground";
             else if (Mathf.Abs(b.Position.y - at.y) > 0.5f) no = "another level";
@@ -942,7 +942,7 @@ public static class ArgoSelfTest
     {
         int n = 0;
         foreach (ArgoTowerBrain t in ArgoServer.Towers)
-            if (t != null && t.IsPool && t.Master != null && ArgoUtil.Alive(t.Master)) n++;
+            if (t != null && t.IsPool && t.Master != null && ModKitUtil.Alive(t.Master)) n++;
         return n;
     }
 
@@ -957,11 +957,11 @@ public static class ArgoSelfTest
         foreach (Vector3 t in net.Tiles)
             foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
             {
-                Genitem b = ArgoUtil.Surface(t + d);
+                Genitem b = ModKitUtil.Surface(t + d);
                 if (b == null || used.Contains(b.Position) || reserved.Contains(b.Position))
                     continue;
                 bool taken = false;
-                foreach (Vector3 o in net.Tiles) if (ArgoUtil.Flat(o, b.Position) < 0.3f) taken = true;
+                foreach (Vector3 o in net.Tiles) if (ModKitUtil.Flat(o, b.Position) < 0.3f) taken = true;
                 bool ok = false;
                 try { ok = !taken && Helper_Gridtools.Checkifplaceable(b, pool, 0, team); } catch (Exception) { }
                 if (ok)
@@ -992,7 +992,7 @@ public static class ArgoSelfTest
     {
         Entity_Master e = EnemyOn(block);
         // Round 3: no foe would spawn on the pool tile; any tile of the same water will do.
-        ArgoWater.Net net = e == null && block != null ? ArgoWater.Nets.Find(n => n.Tiles.Exists(t => ArgoUtil.Flat(t, block.Position) < 0.3f)) : null;
+        ArgoWater.Net net = e == null && block != null ? ArgoWater.Nets.Find(n => n.Tiles.Exists(t => ModKitUtil.Flat(t, block.Position) < 0.3f)) : null;
         if (net != null)
             foreach (ArgoTowerBrain part in net.Parts)
                 if (e == null && part != null && part.Master != null && part.Master.Beingserver != null)
@@ -1033,18 +1033,18 @@ public static class ArgoSelfTest
         yield return Wait(2f);
         ClearEnemies();
         Entity_Master hm = hero.Master;
-        long owner = ArgoUtil.Owner(hm);
-        int team = ArgoUtil.Team(hm);
-        Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + ArgoUtil.Pos(hm) + ", owner " + owner + ", team " + team + ", enemy type " + (enemyType != null ? enemyType.Objectname : "none yet"));
+        long owner = ModKitUtil.Owner(hm);
+        int team = ModKitUtil.Team(hm);
+        Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + ModKitUtil.Pos(hm) + ", owner " + owner + ", team " + team + ", enemy type " + (enemyType != null ? enemyType.Objectname : "none yet"));
         ModKitTest.Log = Log;
         ModKitTest.MapDump(team, hm);
 
         // 1. Vessel: native melee setup, tooltip, five build options, no SONAR, stats; the pack registry.
         Check("vessel uses the stock melee AI", hm.GetComponent<Entity_Ai_Mob_Combat>() != null && hm.GetComponent<Entity_Ai_Mob_Ranged>() == null && hm.GetComponent<Entity_Ai_Hero_Buildsell>() != null);
         Check("vessel has the Fathoms tooltip", hm.Upgradelistserver.ContainsKey(ArgoData.HeroTooltip));
-        Check("vessel stats (Damage 4, Smacky's)", Mathf.Approximately(ArgoUtil.Stat(hm, "Health", 0), 65f) && Mathf.Approximately(ArgoUtil.Stat(hm, "Speed", 0), 2.25f) && Mathf.Approximately(ArgoUtil.Stat(hm, "Range", 0), 1.75f)
-            && Mathf.Approximately(ArgoUtil.Stat(hm, "Damage", 0), 4f),
-            "Health " + ArgoUtil.Stat(hm, "Health", 0) + ", Speed " + ArgoUtil.Stat(hm, "Speed", 0) + ", Range " + ArgoUtil.Stat(hm, "Range", 0) + ", Damage " + ArgoUtil.Stat(hm, "Damage", 0));
+        Check("vessel stats (Damage 4, Smacky's)", Mathf.Approximately(ModKitUtil.Stat(hm, "Health", 0), 65f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Speed", 0), 2.25f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Range", 0), 1.75f)
+            && Mathf.Approximately(ModKitUtil.Stat(hm, "Damage", 0), 4f),
+            "Health " + ModKitUtil.Stat(hm, "Health", 0) + ", Speed " + ModKitUtil.Stat(hm, "Speed", 0) + ", Range " + ModKitUtil.Stat(hm, "Range", 0) + ", Damage " + ModKitUtil.Stat(hm, "Damage", 0));
         int options = 0;
         List<string> optionInfo = new List<string>();
         for (int i = 0; i < ArgoData.Towers.Length; i++)
@@ -1052,7 +1052,7 @@ public static class ArgoSelfTest
             Link_Command c;
             bool ok = hm.Commandlistserver.TryGetValue("Buildoption" + (i + 1), out c) && c.Goalstring == ArgoData.Towers[i];
             if (ok) options++;
-            optionInfo.Add("Buildoption" + (i + 1) + (ok ? " " + c.Goalstring + (c.Ref != null ? " (" + c.Ref.Objectname + ", keys " + ArgoUtil.Join(c.Ref.Keybind ?? new List<string>()) + ")" : " (no command object)") : " missing"));
+            optionInfo.Add("Buildoption" + (i + 1) + (ok ? " " + c.Goalstring + (c.Ref != null ? " (" + c.Ref.Objectname + ", keys " + ModKitUtil.Join(c.Ref.Keybind ?? new List<string>()) + ")" : " (no command object)") : " missing"));
         }
         Check("five build options (the fifth is the Miner's Base)", options == 5, string.Join("; ", optionInfo.ToArray()) + "; Command_Buildoption5 " + ArgoContent.Option5Note);
         Check("no SONAR in 2.0", !hm.Commandlistserver.ContainsKey(ArgoData.SonarLink) && !ArgoData.SonarEnabled);
@@ -1075,27 +1075,27 @@ public static class ArgoSelfTest
         // 1b. Speed floor (1.3.0): stacked slows never take a foe under a tenth of its speed, a hold stops it at its floor
         // whatever slows it carries, and the foe gets its full speed back when they expire. Before anything is built.
         {
-            Entity_Master foe = SpeedFoe(ArgoUtil.Pos(hm), 6f);
-            yield return Until(() => foe == null || ArgoUtil.Stat(foe, "Speed", 0f) > 0f, 1.5f);
+            Entity_Master foe = SpeedFoe(ModKitUtil.Pos(hm), 6f);
+            yield return Until(() => foe == null || ModKitUtil.Stat(foe, "Speed", 0f) > 0f, 1.5f);
             yield return Wait(0.3f);
-            if (Check("a foe for the speed checks", foe != null && ArgoUtil.Alive(foe), foe != null ? ArgoUtil.BeingName(foe) + " " + F(Vector3.Distance(ArgoUtil.Pos(foe), ArgoUtil.Pos(hm))) + " tiles away, " + SpeedInfo(foe) : "none"))
+            if (Check("a foe for the speed checks", foe != null && ModKitUtil.Alive(foe), foe != null ? ModKitUtil.BeingName(foe) + " " + F(Vector3.Distance(ModKitUtil.Pos(foe), ModKitUtil.Pos(hm))) + " tiles away, " + SpeedInfo(foe) : "none"))
             {
-                float speed0 = ArgoUtil.Stat(foe, "Speed", 0f);
+                float speed0 = ModKitUtil.Stat(foe, "Speed", 0f);
                 ArgoUtil.Slow(hm, foe, ArgoData.SlowCap, 1.5f, true);
                 ArgoUtil.Slow(hm, foe, ArgoData.SlowCap, 1.5f, false);
                 yield return Wait(0.2f);
-                float slowed = ArgoUtil.Stat(foe, "Speed", -1f);
+                float slowed = ModKitUtil.Stat(foe, "Speed", -1f);
                 Check("two full-strength Tremor slows leave a foe 10% of its speed", slowed >= speed0 * 0.1f - 0.001f && slowed <= speed0 * 0.1f + 0.01f, F(speed0) + "->" + F(slowed));
                 Check("a slowed foe reads as Slowed (the Scatter Cannon's bonus)", ArgoStatus.IsSlowed(foe) && !ArgoStatus.IsPinned(foe));
                 ArgoUtil.Root(hm, foe, 1f);
                 ArgoUtil.Slow(hm, foe, ArgoData.SlowCap, 1f, false);
                 yield return Wait(0.2f);
-                float held = ArgoUtil.Stat(foe, "Speed", -1f);
+                float held = ModKitUtil.Stat(foe, "Speed", -1f);
                 Link_Stats sp = foe != null && foe.Statsserver != null && foe.Statsserver.ContainsKey("Speed") ? foe.Statsserver["Speed"] : null;
                 float floor = sp != null ? Mathf.Max(0f, sp.Value_Bounds.x) : 0f;
                 Check("a hold on a slowed foe stops it at its Speed floor, never below", sp != null && sp.Value_Bounds.x >= 0f && Mathf.Abs(held - floor) < 0.0001f, "speed " + F(held) + ", floor " + F(floor) + ", " + SpeedInfo(foe));
                 yield return Wait(1.6f);
-                float after = foe != null ? ArgoUtil.Stat(foe, "Speed", -1f) : -1f;
+                float after = foe != null ? ModKitUtil.Stat(foe, "Speed", -1f) : -1f;
                 Check("when the hold and slows expire the foe has its speed back", Mathf.Abs(after - speed0) < 0.01f && !ArgoStatus.Debuffed(foe), F(speed0) + "->" + F(after));
             }
             if (foe != null && foe.Beingserver != null)
@@ -1109,18 +1109,18 @@ public static class ArgoSelfTest
         List<ArgoTowerBrain> known = new List<ArgoTowerBrain>(ArgoServer.Towers);
         Dictionary<string, ArgoTowerBrain> towers = new Dictionary<string, ArgoTowerBrain>();
         ArgoTowerBrain[] got = new ArgoTowerBrain[1];
-        Vector3 home = ArgoUtil.Pos(hm);
+        Vector3 home = ModKitUtil.Pos(hm);
         Entity_Master ore = null;
         Vector3 drillAt = new Vector3(float.NaN, 0f, 0f);
-        List<Entity_Master> ores = new List<Entity_Master>(ArgoUtil.Area(home, 45f, ArgoUtil.Tagged("Resource")));
-        ores.Sort((a, b) => ArgoUtil.Flat(ArgoUtil.Pos(a), home).CompareTo(ArgoUtil.Flat(ArgoUtil.Pos(b), home)));
+        List<Entity_Master> ores = new List<Entity_Master>(ModKitUtil.Area(home, 45f, ModKitUtil.Tagged("Resource")));
+        ores.Sort((a, b) => ModKitUtil.Flat(ModKitUtil.Pos(a), home).CompareTo(ModKitUtil.Flat(ModKitUtil.Pos(b), home)));
         foreach (Entity_Master o in ores)
         {
-            if (o == null || !ArgoUtil.Alive(o)) continue;
-            drillAt = Spot(ArgoUtil.Pos(o), ArgoContent.Beings[ArgoData.Drill], team, 1f, ArgoData.OreReach - 0.05f);
+            if (o == null || !ModKitUtil.Alive(o)) continue;
+            drillAt = Spot(ModKitUtil.Pos(o), ArgoContent.Beings[ArgoData.Drill], team, 1f, ArgoData.OreReach - 0.05f);
             if (!float.IsNaN(drillAt.x)) { ore = o; break; }
         }
-        Log(ores.Count + " ores; drilling " + (ore != null ? ArgoUtil.BeingName(ore) + " at " + ArgoUtil.Pos(ore) + ", " + F(ArgoUtil.Flat(ArgoUtil.Pos(ore), home)) + " from the vessel" : "none"));
+        Log(ores.Count + " ores; drilling " + (ore != null ? ModKitUtil.BeingName(ore) + " at " + ModKitUtil.Pos(ore) + ", " + F(ModKitUtil.Flat(ModKitUtil.Pos(ore), home)) + " from the vessel" : "none"));
         // Deep Water goes last, after the second Harpoon Gun ("hook"): round 3's water took the ridge the second gun's
         // lanes needed.
         ArgoTowerBrain hook = null;
@@ -1161,24 +1161,24 @@ public static class ArgoSelfTest
         towers.TryGetValue(ArgoData.Bell, out bell);
         towers.TryGetValue(ArgoData.Drill, out drill);
         if (scatter != null)
-            Check("Scatter Cannon stats (+50% vs Slowed or Pinned)", Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Projcount", 0), 6f) && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Range", 0), 4.5f)
-                && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Debuffbonus", 0), 0.5f),
-                "pellets " + ArgoUtil.Stat(scatter.Master, "Projcount", 0) + ", range " + ArgoUtil.Stat(scatter.Master, "Range", 0) + ", bonus " + ArgoUtil.Stat(scatter.Master, "Debuffbonus", 0));
+            Check("Scatter Cannon stats (+50% vs Slowed or Pinned)", Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 6f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Range", 0), 4.5f)
+                && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Debuffbonus", 0), 0.5f),
+                "pellets " + ModKitUtil.Stat(scatter.Master, "Projcount", 0) + ", range " + ModKitUtil.Stat(scatter.Master, "Range", 0) + ", bonus " + ModKitUtil.Stat(scatter.Master, "Debuffbonus", 0));
         if (harpoon != null)
-            Check("Harpoon Gun stats (Damage 5, Range 6.5: the top of the shipped bands)", Mathf.Approximately(ArgoUtil.Stat(harpoon.Master, "Damage", 0), 5f) && Mathf.Approximately(ArgoUtil.Stat(harpoon.Master, "Range", 0), 6.5f)
-                && Mathf.Approximately(ArgoUtil.Stat(harpoon.Master, "Pierce", 0), 3f) && Mathf.Approximately(ArgoUtil.Stat(harpoon.Master, "Attackspeed", 0), 0.35f),
-                "damage " + ArgoUtil.Stat(harpoon.Master, "Damage", 0) + ", range " + ArgoUtil.Stat(harpoon.Master, "Range", 0) + ", pierce " + ArgoUtil.Stat(harpoon.Master, "Pierce", 0) + ", attack speed " + ArgoUtil.Stat(harpoon.Master, "Attackspeed", 0));
+            Check("Harpoon Gun stats (Damage 5, Range 6.5: the top of the shipped bands)", Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Damage", 0), 5f) && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Range", 0), 6.5f)
+                && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Pierce", 0), 3f) && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Attackspeed", 0), 0.35f),
+                "damage " + ModKitUtil.Stat(harpoon.Master, "Damage", 0) + ", range " + ModKitUtil.Stat(harpoon.Master, "Range", 0) + ", pierce " + ModKitUtil.Stat(harpoon.Master, "Pierce", 0) + ", attack speed " + ModKitUtil.Stat(harpoon.Master, "Attackspeed", 0));
         if (drill != null)
-            Check("Drill Rig stats (AIM reach 5, Tremor 2)", Mathf.Approximately(ArgoUtil.Stat(drill.Master, "Range", 0), 5f) && Mathf.Approximately(drill.TremorRadius, 2f),
-                "range " + ArgoUtil.Stat(drill.Master, "Range", 0) + ", tremor " + F(drill.TremorRadius));
+            Check("Drill Rig stats (AIM reach 5, Tremor 2)", Mathf.Approximately(ModKitUtil.Stat(drill.Master, "Range", 0), 5f) && Mathf.Approximately(drill.TremorRadius, 2f),
+                "range " + ModKitUtil.Stat(drill.Master, "Range", 0) + ", tremor " + F(drill.TremorRadius));
         if (water != null)
         {
             Link_Command flood;
-            Check("Deep Water is a trap: tagged Trap, not Tower", ArgoUtil.HasTag(water.Master, "Trap") && !ArgoUtil.HasTag(water.Master, "Tower"), ArgoUtil.Join(water.Master.Taglistserver));
+            Check("Deep Water is a trap: tagged Trap, not Tower", ModKitUtil.HasTag(water.Master, "Trap") && !ModKitUtil.HasTag(water.Master, "Tower"), ModKitUtil.Join(water.Master.Taglistserver));
             Check("Deep Water has FLOOD (its build option for a pool) and takes Build",
                 water.Master.Commandlistserver.TryGetValue(ArgoData.FloodLink, out flood) && flood.Goalstring == ArgoData.Pool && flood.Ref != null && water.Master.Commandlistserver.ContainsKey("Build"),
                 flood != null ? "goal " + flood.Goalstring + ", command " + (flood.Ref != null ? flood.Ref.Objectname : "none") : "no FLOOD");
-            Check("Deep Water's being is Buster's Speed Pad (else the Perma-Wall fallback)", true, "ais " + ArgoUtil.Join(new List<string>(ArgoContent.Beings[ArgoData.Water].Entity.Aiscripts.ConvertAll(s => s.name))));
+            Check("Deep Water's being is Buster's Speed Pad (else the Perma-Wall fallback)", true, "ais " + ModKitUtil.Join(new List<string>(ArgoContent.Beings[ArgoData.Water].Entity.Aiscripts.ConvertAll(s => s.name))));
             // Its water bobs: over half a swell the part rises or falls by at least one amplitude, never by more than two.
             Transform swell = Extramethods.FindDeepChild(water.Master.transform, "Swell");
             float low = float.MaxValue, high = float.MinValue;
@@ -1213,12 +1213,12 @@ public static class ArgoSelfTest
         foreach (string n in new[] { "Tower_Smackyarcher", "Tower_Smackybomber", "Tower_Smackyhut", "Trap_Busterpad", ArgoData.Scatter, ArgoData.Harpoon, ArgoData.Water, ArgoData.Pool, ArgoData.Bell, ArgoData.Drill })
             Measure(n);
         {
-            Vector3 focus = ArgoUtil.Pos(hm);
+            Vector3 focus = ModKitUtil.Pos(hm);
             int n0 = 1;
-            foreach (ArgoTowerBrain t in towers.Values) { focus += ArgoUtil.Pos(t.Master); n0++; }
+            foreach (ArgoTowerBrain t in towers.Values) { focus += ModKitUtil.Pos(t.Master); n0++; }
             focus /= n0;
             yield return ArgoShot.Close("towers", focus, 6f);
-            yield return ArgoShot.Close("argo", ArgoUtil.Pos(hm) + Vector3.up * 0.5f, 2.2f);
+            yield return ArgoShot.Close("argo", ModKitUtil.Pos(hm) + Vector3.up * 0.5f, 2.2f);
             yield return ArgoShot.Shot("built");
         }
 #endif
@@ -1239,29 +1239,29 @@ public static class ArgoSelfTest
             }
             if (scatter != null && bell.Crew[0] != null)
             {
-                float aspd = ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f);
+                float aspd = ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f);
                 Send(bell.Master, "Crew_Port", Ref(scatter.Master));
                 yield return Until(() => bell.Crew[0] != null && bell.Crew[0].Tuning, 25f);
                 ArgoNautBrain port = bell.Crew[0];
                 Check("PORT walks to the Scatter Cannon and tunes it", port != null && port.Tuning && port.Post == scatter.Master,
-                    port != null ? "post " + ArgoUtil.BeingName(port.Post) + ", tuning " + port.Tuning + ", " + F(ArgoUtil.Flat(ArgoUtil.Pos(port.Master), ArgoUtil.Pos(scatter.Master))) + " away" : "no Port");
-                Check("tuning: +20% attack speed", Mathf.Abs(ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f) - aspd * (1f + ArgoData.TuneAttackspeed)) < 0.02f,
-                    F(aspd) + "->" + F(ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f)));
+                    port != null ? "post " + ModKitUtil.BeingName(port.Post) + ", tuning " + port.Tuning + ", " + F(ModKitUtil.Flat(ModKitUtil.Pos(port.Master), ModKitUtil.Pos(scatter.Master))) + " away" : "no Port");
+                Check("tuning: +20% attack speed", Mathf.Abs(ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f) - aspd * (1f + ArgoData.TuneAttackspeed)) < 0.02f,
+                    F(aspd) + "->" + F(ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f)));
                 Check("tuning skin on the Naut", port != null && port.Master.Skin.Value.ToString() == "Tune");
 #if ARGO_SHOTS
                 yield return Wait(0.5f);
-                yield return ArgoShot.Close("tuning", ArgoUtil.Pos(scatter.Master), 2.6f);
+                yield return ArgoShot.Close("tuning", ModKitUtil.Pos(scatter.Master), 2.6f);
 #endif
                 Send(bell.Master, "Crew_Starboard", Ref(scatter.Master));
                 yield return Wait(0.5f);
-                Check("one Naut per tower", bell.Crew[0] == null || bell.Crew[0].Post == null, bell.Crew[0] != null ? "Port's post " + ArgoUtil.BeingName(bell.Crew[0].Post) : "");
+                Check("one Naut per tower", bell.Crew[0] == null || bell.Crew[0].Post == null, bell.Crew[0] != null ? "Port's post " + ModKitUtil.BeingName(bell.Crew[0].Post) : "");
                 yield return Until(() => bell.Crew[1] != null && bell.Crew[1].Tuning, 25f);
                 Check("Starboard took over", bell.Crew[1] != null && bell.Crew[1].Tuning && bell.Crew[1].Post == scatter.Master);
-                Check("only one tune on the tower", Mathf.Abs(ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f) - aspd * (1f + ArgoData.TuneAttackspeed)) < 0.02f, F(ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f)));
+                Check("only one tune on the tower", Mathf.Abs(ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f) - aspd * (1f + ArgoData.TuneAttackspeed)) < 0.02f, F(ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f)));
                 Send(bell.Master, "Crew_Starboard", Ref(bell.Master));
                 yield return Wait(0.5f);
-                Check("picking the base recalls the Naut", bell.Crew[1] != null && bell.Crew[1].Post == null && !bell.Crew[1].Tuning && Mathf.Abs(ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f) - aspd) < 0.02f,
-                    "attack speed " + F(ArgoUtil.Stat(scatter.Master, "Attackspeed", 0f)));
+                Check("picking the base recalls the Naut", bell.Crew[1] != null && bell.Crew[1].Post == null && !bell.Crew[1].Tuning && Mathf.Abs(ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f) - aspd) < 0.02f,
+                    "attack speed " + F(ModKitUtil.Stat(scatter.Master, "Attackspeed", 0f)));
             }
         }
 
@@ -1278,13 +1278,13 @@ public static class ArgoSelfTest
             if (scatter != null)
                 for (int i = 0; i < 3; i++)
                 {
-                    Entity_Master e = Enemy(ArgoUtil.Pos(scatter.Master) + new Vector3(2f, 0f, i - 1f));
+                    Entity_Master e = Enemy(ModKitUtil.Pos(scatter.Master) + new Vector3(2f, 0f, i - 1f));
                     if (e != null) targets.Add(e);
                 }
             if (harpoon != null)
                 for (int i = 0; i < 3; i++)
                 {
-                    Entity_Master e = Enemy(ArgoUtil.Pos(harpoon.Master) + new Vector3(-3f - i, 0f, 0f));
+                    Entity_Master e = Enemy(ModKitUtil.Pos(harpoon.Master) + new Vector3(-3f - i, 0f, 0f));
                     if (e != null) targets.Add(e);
                 }
             yield return Wait(0.4f);
@@ -1298,10 +1298,10 @@ public static class ArgoSelfTest
                 Check("Harpoon Gun fires harpoons", harpoon.Shots > harpoonShots, (harpoon.Shots - harpoonShots) + " harpoons");
             int hurt = 0;
             foreach (KeyValuePair<Entity_Master, float> kv in life)
-                if (kv.Key == null || !ArgoUtil.Alive(kv.Key) || Life(kv.Key) < kv.Value - 0.01f) hurt++;
+                if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || Life(kv.Key) < kv.Value - 0.01f) hurt++;
             Check("projectiles hurt the enemies they hit", hurt >= Mathf.Min(2, life.Count), hurt + "/" + life.Count);
             Check("pellets and harpoons are the game's own projectiles", Game_Entity.Instance.Projectiles != null && Game_Entity.Instance.Projectiles.ContainsKey(ArgoData.Pellet) && Game_Entity.Instance.Projectiles.ContainsKey(ArgoData.HarpoonShot),
-                Game_Entity.Instance.Projectiles != null ? ArgoUtil.Join(Game_Entity.Instance.Projectiles.Keys) : "none");
+                Game_Entity.Instance.Projectiles != null ? ModKitUtil.Join(Game_Entity.Instance.Projectiles.Keys) : "none");
             ClearEnemies();
             if (scatter != null) yield return Steep(scatter, 1f);
             if (harpoon != null) yield return Steep(harpoon, 1.5f);
@@ -1311,26 +1311,26 @@ public static class ArgoSelfTest
         if (harpoon != null && enemyType != null)
         {
             ClearEnemies();
-            Vector3 hp = ArgoUtil.Pos(harpoon.Master);
-            float reach = ArgoUtil.Stat(harpoon.Master, "Range", 6.5f) - 0.4f;
+            Vector3 hp = ModKitUtil.Pos(harpoon.Master);
+            float reach = ModKitUtil.Stat(harpoon.Master, "Range", 6.5f) - 0.4f;
             List<Entity_Master> lane = Lane(hp, 5f, reach, 2);
             List<Link_Modifier> holds = new List<Link_Modifier>();
             if (lane.Count == 2) yield return Ready(harpoon, lane, 50f, holds);
-            if (Check("two foes in a lane from the Harpoon Gun", lane.Count == 2 && lane.TrueForAll(f => ArgoUtil.Alive(f)),
-                lane.Count == 2 ? F(ArgoUtil.Flat(ArgoUtil.Pos(lane[0]), hp)) + " and " + F(ArgoUtil.Flat(ArgoUtil.Pos(lane[1]), hp)) + " tiles out" : "none spawned"))
+            if (Check("two foes in a lane from the Harpoon Gun", lane.Count == 2 && lane.TrueForAll(f => ModKitUtil.Alive(f)),
+                lane.Count == 2 ? F(ModKitUtil.Flat(ModKitUtil.Pos(lane[0]), hp)) + " and " + F(ModKitUtil.Flat(ModKitUtil.Pos(lane[1]), hp)) + " tiles out" : "none spawned"))
             {
                 Entity_Master a = lane[0], b = lane[1];
                 float lifeA = Life(a), lifeB = Life(b);
-                Vector3 a0 = ArgoUtil.Pos(a), b0 = ArgoUtil.Pos(b);
+                Vector3 a0 = ModKitUtil.Pos(a), b0 = ModKitUtil.Pos(b);
                 int reels = harpoon.Reels, shots = harpoon.Shots;
                 List<Link_Modifier> others = JamGuns(harpoon);
                 yield return Until(() => harpoon.Shots > shots, 8f);
                 yield return Wait(1f);
-                foreach (Link_Modifier j in others) ArgoUtil.Unmod(j);
+                foreach (Link_Modifier j in others) ModKitUtil.Unmod(j);
                 Check("the base gun pierces both and moves neither", a != null && b != null && Life(a) < lifeA - 0.01f && Life(b) < lifeB - 0.01f && harpoon.Reels == reels
-                    && ArgoUtil.Flat(ArgoUtil.Pos(a), a0) < 0.3f && ArgoUtil.Flat(ArgoUtil.Pos(b), b0) < 0.3f,
+                    && ModKitUtil.Flat(ModKitUtil.Pos(a), a0) < 0.3f && ModKitUtil.Flat(ModKitUtil.Pos(b), b0) < 0.3f,
                     "health " + F(lifeA) + "->" + (a != null ? F(Life(a)) : "felled") + " / " + F(lifeB) + "->" + (b != null ? F(Life(b)) : "felled") + ", reels " + (harpoon.Reels - reels) + ", harpoons " + (harpoon.Shots - shots)
-                    + ", moved " + (a != null ? F(ArgoUtil.Flat(ArgoUtil.Pos(a), a0)) : "-") + " / " + (b != null ? F(ArgoUtil.Flat(ArgoUtil.Pos(b), b0)) : "-"));
+                    + ", moved " + (a != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(a), a0)) : "-") + " / " + (b != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(b), b0)) : "-"));
             }
             ClearEnemies();
         }
@@ -1339,7 +1339,7 @@ public static class ArgoSelfTest
         if (scatter != null && enemyType != null)
         {
             ClearEnemies();
-            Entity_Master dummy = Enemy(ArgoUtil.Pos(hm) + new Vector3(0f, 0f, 3f));
+            Entity_Master dummy = Enemy(ModKitUtil.Pos(hm) + new Vector3(0f, 0f, 3f));
             yield return Wait(0.3f);
             if (Check("enemy for the Scatter bonus", dummy != null))
             {
@@ -1365,12 +1365,12 @@ public static class ArgoSelfTest
 
             // 6. The second hit: two enemies side by side in front of Argo.
             int cleaves = hero.Cleaves;
-            Vector3 p = ArgoUtil.Pos(hm);
+            Vector3 p = ModKitUtil.Pos(hm);
             Entity_Master a = Enemy(p + new Vector3(1f, 0f, 0f)), b = Enemy(p + new Vector3(1f, 0f, 1f));
             yield return Until(() => hero.Cleaves > cleaves, 12f);
             Check("each swing hits a second enemy", hero.Cleaves > cleaves, "cleaves " + cleaves + "->" + hero.Cleaves + (a == null || b == null ? " (spawn failed)" : ""));
             Check("the second hit counts as Argo's", hero.Cleaves > cleaves && (a == null || a.Lasthit == hm) && (b == null || b.Lasthit == hm),
-                "last hit by " + (a != null && a.Lasthit != null ? ArgoUtil.BeingName(a.Lasthit) : "-") + " / " + (b != null && b.Lasthit != null ? ArgoUtil.BeingName(b.Lasthit) : "-"));
+                "last hit by " + (a != null && a.Lasthit != null ? ModKitUtil.BeingName(a.Lasthit) : "-") + " / " + (b != null && b.Lasthit != null ? ModKitUtil.BeingName(b.Lasthit) : "-"));
             ClearEnemies();
         }
 
@@ -1394,7 +1394,7 @@ public static class ArgoSelfTest
             Check("FLOOD adds a pool next to Deep Water for Blue 15, joined to it", pool1 != null && Mathf.Abs(paid - 15f) < 0.01f && net != null && net.Parts.Contains(pool1) && PoolCount() == pools0 + 1,
                 next == null ? "no free tile next to the water" : "pool " + (pool1 != null) + ", Blue spent " + F(paid) + ", network " + (net != null ? net.Parts.Count + " parts" : "none"));
             // A tile three away touches nothing.
-            Vector3 far = Spot(ArgoUtil.Pos(water.Master), ArgoContent.Beings[ArgoData.Pool], team, 3f, 4f);
+            Vector3 far = Spot(ModKitUtil.Pos(water.Master), ArgoContent.Beings[ArgoData.Pool], team, 3f, 4f);
             if (!float.IsNaN(far.x))
             {
                 int refused = ArgoWater.Refused, n0 = PoolCount();
@@ -1404,28 +1404,28 @@ public static class ArgoSelfTest
             }
             if (pool1 != null)
             {
-                Check("a FLOOD pool is a trap with no upgrades of its own", ArgoUtil.HasTag(pool1.Master, "Trap") && !ArgoUtil.HasTag(pool1.Master, "Tower") && !pool1.Master.Commandlistserver.ContainsKey("Upgrade"));
+                Check("a FLOOD pool is a trap with no upgrades of its own", ModKitUtil.HasTag(pool1.Master, "Trap") && !ModKitUtil.HasTag(pool1.Master, "Tower") && !pool1.Master.Commandlistserver.ContainsKey("Upgrade"));
                 List<Entity_Master> wet = new List<Entity_Master>();
                 yield return FoeOn(pool1.Master.Beingserver.Currentblock, wet, water);
                 Entity_Master e = wet.Count > 0 ? wet[0] : null;
                 yield return Wait(0.8f);
-                if (Check("a foe wading in the pool", e != null && ArgoUtil.Alive(e), e != null ? F(ArgoUtil.Flat(ArgoUtil.Pos(e), ArgoUtil.Pos(pool1.Master))) + " from the pool" : "none"))
+                if (Check("a foe wading in the pool", e != null && ModKitUtil.Alive(e), e != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(e), ModKitUtil.Pos(pool1.Master))) + " from the pool" : "none"))
                 {
                     Check("Deep Water slows foes in any of its pools", ArgoStatus.IsWet(e) && ArgoStatus.IsSlowed(e), "wet " + ArgoStatus.IsWet(e) + ", slowed " + ArgoStatus.IsSlowed(e) + ", " + SpeedInfo(e));
                     float held = ArgoUtil.Pin(water.Master, e, 1f, false);
                     Check("a pinned foe in Deep Water is held twice as long", Mathf.Abs(held - ArgoData.WaterPinMulti) < 0.01f && ArgoStatus.IsPinned(e), "pinned for " + F(held) + "s");
                 }
 #if ARGO_SHOTS
-                yield return ArgoShot.Close("water", ArgoUtil.Pos(water.Master), 3f);
+                yield return ArgoShot.Close("water", ModKitUtil.Pos(water.Master), 3f);
 #endif
                 ClearEnemies();
             }
             // Its upgrades: Undercurrent (paid), then the rest forced, each checked on a foe in the pool.
-            float slow0 = ArgoUtil.Stat(water.Master, "Slow", 0f);
+            float slow0 = ModKitUtil.Stat(water.Master, "Slow", 0f);
             float[] cost = new float[2];
             yield return UpgradePaid(water, "Undercurrent2", owner, "Blueaura", cost);
-            Check("Undercurrent: a stronger slow, Blue 20", Has(water, "Undercurrent2") && ArgoUtil.Stat(water.Master, "Slow", 0f) >= slow0 + 0.099f && Mathf.Abs(cost[0] - 20f) < 0.01f,
-                "slow " + F(slow0) + "->" + F(ArgoUtil.Stat(water.Master, "Slow", 0f)) + ", Blue " + F(cost[0]));
+            Check("Undercurrent: a stronger slow, Blue 20", Has(water, "Undercurrent2") && ModKitUtil.Stat(water.Master, "Slow", 0f) >= slow0 + 0.099f && Mathf.Abs(cost[0] - 20f) < 0.01f,
+                "slow " + F(slow0) + "->" + F(ModKitUtil.Stat(water.Master, "Slow", 0f)) + ", Blue " + F(cost[0]));
             if (pool1 != null)
             {
                 Genitem tile = pool1.Master.Beingserver.Currentblock;
@@ -1441,7 +1441,7 @@ public static class ArgoSelfTest
                 Force(water, "Crushing4");
                 List<Link_Modifier> quiet = JamGuns();
                 yield return Wait(0.5f);
-                if (e != null && ArgoUtil.Alive(e))
+                if (e != null && ModKitUtil.Alive(e))
                 {
                     float l0 = Life(e);
                     yield return Wait(1f);
@@ -1456,7 +1456,7 @@ public static class ArgoSelfTest
                     float dealt = Hit(water.Master, e, 2f);
                     Check("Crushing Depth: foes in the water take 15% more", Mathf.Abs(dealt - 2.3f) < 0.05f && ArgoHooks.Crushed > 0, "2 -> " + F(dealt));
                 }
-                foreach (Link_Modifier j in quiet) ArgoUtil.Unmod(j);
+                foreach (Link_Modifier j in quiet) ModKitUtil.Unmod(j);
                 ClearEnemies();
                 // Abyss: FLOOD fills two tiles at once.
                 Force(water, "Abyss4");
@@ -1474,8 +1474,8 @@ public static class ArgoSelfTest
         // AIM moves it, it spreads through Deep Water it touches; Bedrock and Fault Line.
         if (drill != null)
         {
-            Entity_Master drilled = drill.Ore(ArgoUtil.Pos(drill.Master));
-            Check("Drill Rig has ore in reach", drilled != null, ore != null ? F(ArgoUtil.Flat(ArgoUtil.Pos(drill.Master), ArgoUtil.Pos(ore))) + " from the ore" : "no ore on the map");
+            Entity_Master drilled = drill.Ore(ModKitUtil.Pos(drill.Master));
+            Check("Drill Rig has ore in reach", drilled != null, ore != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(drill.Master), ModKitUtil.Pos(ore))) + " from the ore" : "no ore on the map");
             yield return Until(() => drill.Bites > 0, 6f);
             Check("Drill Rig mines ore (the game's own ore damage)", drill.Bites > 0, drill.Bites + " bites");
             float range0 = drill.TremorRadius;
@@ -1488,34 +1488,34 @@ public static class ArgoSelfTest
             if (water != null && Has(water, "Trench5"))
                 Check("Trench: Deep Water spreads a pool by itself at the Tide", ArgoWater.Freepools > free0, "free pools " + free0 + "->" + ArgoWater.Freepools
                     + (ArgoWater.Freepools > free0 ? "" : ", no tile " + ArgoWater.NoTile + "x: " + WhyNoFlood(water, team)));
-            float dmg2 = ArgoUtil.Stat(drill.Master, "Damage", 0f), aspd2 = ArgoUtil.Stat(drill.Master, "Attackspeed", 0f), slow2 = ArgoUtil.Stat(drill.Master, "Slow", 0f);
+            float dmg2 = ModKitUtil.Stat(drill.Master, "Damage", 0f), aspd2 = ModKitUtil.Stat(drill.Master, "Attackspeed", 0f), slow2 = ModKitUtil.Stat(drill.Master, "Slow", 0f);
             Check("Fathom 2 mines harder and faster and slows more", Mathf.Abs(dmg2 - 0.5f * (1f + ArgoData.FathomYield)) < 0.01f && Mathf.Abs(aspd2 - 0.25f * (1f + ArgoData.FathomSpeed)) < 0.01f
                 && Mathf.Abs(slow2 - 0.2f - ArgoData.FathomSlow) < 0.01f, "ore per strike " + F(dmg2) + ", strikes/s " + F(aspd2) + ", slow " + F(slow2));
             yield return Wait(0.6f);
             Vector3 cc;
             float cr;
             bool synced = ArgoClient.Aimed(drill.Master, out cc, out cr);
-            Check("clients get the Tremor's centre and radius (the AIM command's link)", synced && Mathf.Abs(cr - drill.TremorRadius) < 0.01f && ArgoUtil.Flat(cc, drill.AimCenter) < 0.01f,
+            Check("clients get the Tremor's centre and radius (the AIM command's link)", synced && Mathf.Abs(cr - drill.TremorRadius) < 0.01f && ModKitUtil.Flat(cc, drill.AimCenter) < 0.01f,
                 "synced " + synced + ", radius " + F(cr) + " vs " + F(drill.TremorRadius) + ", centre " + cc.ToString("F2") + " vs " + drill.AimCenter.ToString("F2"));
             Check("client Tremor slow matches the server's", Mathf.Abs(ArgoClient.TremorSlow(drill.Master) - slow2) < 0.01f, F(ArgoClient.TremorSlow(drill.Master)) + " vs " + F(slow2));
             // AIM: a tile within reach moves the Tremor, one past it is refused.
             Genitem aimTile = null, farTile = null;
-            Vector3 dp = ArgoUtil.Pos(drill.Master);
-            float reach = ArgoUtil.Stat(drill.Master, "Range", 5f);
+            Vector3 dp = ModKitUtil.Pos(drill.Master);
+            float reach = ModKitUtil.Stat(drill.Master, "Range", 5f);
             for (int r = 3; r <= 4 && aimTile == null; r++)
                 foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
                     foreach (float dy in new[] { -1f, 0f, -2f, 1f })
-                        if (aimTile == null) aimTile = ArgoUtil.Surface(dp + d * r + Vector3.up * dy);
+                        if (aimTile == null) aimTile = ModKitUtil.Surface(dp + d * r + Vector3.up * dy);
             foreach (Vector3 d in new[] { Vector3.forward, Vector3.back, Vector3.left, Vector3.right })
                 foreach (float dy in new[] { -1f, 0f, -2f, 1f })
-                    if (farTile == null) farTile = ArgoUtil.Surface(dp + d * (reach + 3f) + Vector3.up * dy);
+                    if (farTile == null) farTile = ModKitUtil.Surface(dp + d * (reach + 3f) + Vector3.up * dy);
             if (aimTile != null)
             {
                 int aims = drill.Aims;
                 Send(drill.Master, ArgoData.AimLink, Aimjson(aimTile.Position));
                 yield return Wait(0.6f);
-                Check("AIM moves the Tremor to the picked tile", drill.Aims == aims + 1 && ArgoUtil.Flat(drill.AimCenter, aimTile.Position) < 0.3f && ArgoClient.Aimed(drill.Master, out cc, out cr) && ArgoUtil.Flat(cc, aimTile.Position) < 0.3f,
-                    "aims " + (drill.Aims - aims) + ", centre " + drill.AimCenter.ToString("F2") + " (y " + F(drill.AimCenter.y - aimTile.Position.y) + " over the tile), client " + cc.ToString("F2") + ", " + F(ArgoUtil.Flat(aimTile.Position, dp)) + " from the drill");
+                Check("AIM moves the Tremor to the picked tile", drill.Aims == aims + 1 && ModKitUtil.Flat(drill.AimCenter, aimTile.Position) < 0.3f && ArgoClient.Aimed(drill.Master, out cc, out cr) && ModKitUtil.Flat(cc, aimTile.Position) < 0.3f,
+                    "aims " + (drill.Aims - aims) + ", centre " + drill.AimCenter.ToString("F2") + " (y " + F(drill.AimCenter.y - aimTile.Position.y) + " over the tile), client " + cc.ToString("F2") + ", " + F(ModKitUtil.Flat(aimTile.Position, dp)) + " from the drill");
             }
             else Log("AIM: no ground 3-4 tiles from the drill (skipped)");
             if (farTile != null)
@@ -1523,7 +1523,7 @@ public static class ArgoSelfTest
                 Vector3 c0 = drill.AimCenter;
                 Send(drill.Master, ArgoData.AimLink, Aimjson(farTile.Position));
                 yield return Wait(0.5f);
-                Check("AIM refuses a tile out of the drill's reach", ArgoUtil.Flat(drill.AimCenter, c0) < 0.01f, F(ArgoUtil.Flat(farTile.Position, dp)) + " tiles out");
+                Check("AIM refuses a tile out of the drill's reach", ModKitUtil.Flat(drill.AimCenter, c0) < 0.01f, F(ModKitUtil.Flat(farTile.Position, dp)) + " tiles out");
             }
 #if ARGO_SHOTS
             yield return ArgoShot.Close("aim", (dp + drill.AimCenter) * 0.5f, 5f);
@@ -1543,7 +1543,7 @@ public static class ArgoSelfTest
                     if (g != null) speed0 = g.Value;
                 }
                 yield return Wait(1.2f);
-                Check("the Tremor slows enemies where it was aimed", e != null && ArgoUtil.Stat(e, "Speed", 0f) < speed0 - 0.01f, e != null ? F(speed0) + "->" + F(ArgoUtil.Stat(e, "Speed", 0f)) : "no enemy");
+                Check("the Tremor slows enemies where it was aimed", e != null && ModKitUtil.Stat(e, "Speed", 0f) < speed0 - 0.01f, e != null ? F(speed0) + "->" + F(ModKitUtil.Stat(e, "Speed", 0f)) : "no enemy");
                 // Mantle Tap's quake pins every foe in the Tremor (it is the tier-5 rule, called here directly).
                 int q = drill.Quakes, pins = ArgoStatus.Pins;
                 drill.Quake(1f);
@@ -1555,7 +1555,7 @@ public static class ArgoSelfTest
                 yield return Upgrade(drill, "Deepcore3", owner);
                 // Bedrock: pinned foes in the Tremor take damage over time.
                 Force(drill, "Bedrock3");
-                if (e != null && ArgoUtil.Alive(e))
+                if (e != null && ModKitUtil.Alive(e))
                 {
                     ArgoUtil.Pin(drill.Master, e, 2.5f, false);
                     float l0 = Life(e);
@@ -1566,19 +1566,19 @@ public static class ArgoSelfTest
                 // Fault Line: a foe reeled across the Tremor bursts (the reel's own call, ArgoServer.Reeled).
                 Force(drill, "Faultline4");
                 // Round 4: Bedrock felled the foe, and Fault Line's checks skipped without a word. A fresh, sturdy foe.
-                if (e == null || !ArgoUtil.Alive(e))
+                if (e == null || !ModKitUtil.Alive(e))
                 {
                     e = FoeBetween(drill.AimCenter, 0f, 1f);
                     if (e != null)
                         yield return Ready(drill, new List<Entity_Master> { e }, 50f, new List<Link_Modifier>());
                 }
-                if (Check("a foe for Fault Line", e != null && ArgoUtil.Alive(e)))
+                if (Check("a foe for Fault Line", e != null && ModKitUtil.Alive(e)))
                 {
                     float r = drill.TremorRadius;
                     float l0 = Life(e);
                     int f0 = drill.Faults;
                     ArgoServer.Reeled(e, drill.AimCenter + Vector3.right * (r + 1f), drill.AimCenter + Vector3.left * (r + 1f));
-                    float burst = l0 - (e != null && ArgoUtil.Alive(e) ? Life(e) : 0f);
+                    float burst = l0 - (e != null && ModKitUtil.Alive(e) ? Life(e) : 0f);
                     Check("Fault Line: a foe reeled across the Tremor takes a burst", drill.Faults == f0 + 1 && burst >= Mathf.Min(11.9f, l0 - 0.01f), "bursts " + (drill.Faults - f0) + ", health " + F(l0) + "->" + F(Life(e)));
                     f0 = drill.Faults;
                     ArgoServer.Reeled(e, drill.AimCenter + Vector3.right * (r + 3f), drill.AimCenter + Vector3.right * (r + 1.5f));
@@ -1590,20 +1590,20 @@ public static class ArgoSelfTest
                 if (water != null && pool1 != null && pool1.Master != null)
                 {
                     Vector3 keep = drill.AimCenter;
-                    drill.AimCenter = ArgoUtil.Pos(water.Master);
+                    drill.AimCenter = ModKitUtil.Pos(water.Master);
                     Link_Modifier shrink = Helper_Entitytools.Addmod(drill.Master, "Tremor", 0.6f - drill.TremorRadius, Helper_Entitytools.Modtypes.Add, 0f);
                     List<Entity_Master> wet = new List<Entity_Master>();
                     yield return FoeOn(pool1.Master.Beingserver.Currentblock, wet, drill);
                     yield return Wait(0.6f);
                     Entity_Master w = wet.Count > 0 ? wet[0] : null;
-                    bool outside = w != null && ArgoUtil.Flat(ArgoUtil.Pos(w), drill.AimCenter) > drill.TremorRadius;
+                    bool outside = w != null && ModKitUtil.Flat(ModKitUtil.Pos(w), drill.AimCenter) > drill.TremorRadius;
                     Check("a Tremor touching Deep Water shakes every pool connected to it", w != null && outside && drill.TremorFoes().Contains(w),
-                        w == null ? "no foe in the pool" : "radius " + F(drill.TremorRadius) + ", foe " + F(ArgoUtil.Flat(ArgoUtil.Pos(w), drill.AimCenter)) + " from the centre, in the Tremor " + drill.TremorFoes().Contains(w));
-                    ArgoUtil.Unmod(shrink);
+                        w == null ? "no foe in the pool" : "radius " + F(drill.TremorRadius) + ", foe " + F(ModKitUtil.Flat(ModKitUtil.Pos(w), drill.AimCenter)) + " from the centre, in the Tremor " + drill.TremorFoes().Contains(w));
+                    ModKitUtil.Unmod(shrink);
                     drill.AimCenter = keep;
                     ClearEnemies();
                 }
-                foreach (Link_Modifier j in jams) ArgoUtil.Unmod(j);
+                foreach (Link_Modifier j in jams) ModKitUtil.Unmod(j);
             }
         }
 
@@ -1613,8 +1613,8 @@ public static class ArgoSelfTest
             ClearEnemies();
             float[] paid = new float[2];
             yield return UpgradePaid(scatter, "Widebore2", owner, "Redaura", paid);
-            Check("Wide Bore: more pellets, wider cone", Has(scatter, "Widebore2") && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Projcount", 0), 8f) && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Spread", 0), 75f),
-                "pellets " + ArgoUtil.Stat(scatter.Master, "Projcount", 0) + ", cone " + ArgoUtil.Stat(scatter.Master, "Spread", 0));
+            Check("Wide Bore: more pellets, wider cone", Has(scatter, "Widebore2") && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 8f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Spread", 0), 75f),
+                "pellets " + ModKitUtil.Stat(scatter.Master, "Projcount", 0) + ", cone " + ModKitUtil.Stat(scatter.Master, "Spread", 0));
             Check("Wide Bore paid", Mathf.Abs(paid[0] - 30f) < 0.01f, "Red spent " + F(paid[0]) + (paid[1] > 0f ? ", " + F(paid[1]) + " came in meanwhile" : ""));
             yield return Upgrade(scatter, "Pressure4", owner);
             Check("tier-4 upgrade not offered from tier 2", !Has(scatter, "Pressure4"));
@@ -1624,12 +1624,12 @@ public static class ArgoSelfTest
                 ClearEnemies();
                 yield return Until(() => scatter.Stored > 0, 5f);
                 Check("Double Barrel loads a volley while nothing is in range", Has(scatter, "Double2") && scatter.Stored == 1, "stored " + scatter.Stored);
-                List<Entity_Master> foe = new List<Entity_Master> { Enemy(ArgoUtil.Pos(scatter.Master) + new Vector3(2f, 0f, 0f)) };
+                List<Entity_Master> foe = new List<Entity_Master> { Enemy(ModKitUtil.Pos(scatter.Master) + new Vector3(2f, 0f, 0f)) };
                 yield return Ready(scatter, foe, 50f, new List<Link_Modifier>());
                 int shots0 = scatter.Shots, volleys0 = scatter.Volleys;
                 yield return Until(() => scatter.Volleys > volleys0, 4f);
                 float first = Time.time;
-                int pellets = Mathf.RoundToInt(ArgoUtil.Stat(scatter.Master, "Projcount", 6f));
+                int pellets = Mathf.RoundToInt(ModKitUtil.Stat(scatter.Master, "Projcount", 6f));
                 yield return Until(() => scatter.Volleys > volleys0 + 1, 1f);
                 float gap = Time.time - first;
                 Check("Double Barrel: the next volley fires twice the pellets", scatter.Volleys == volleys0 + 2 && scatter.Shots - shots0 == 2 * pellets && gap <= ArgoData.DoubleDelay + 0.2f && scatter.Stored == 0,
@@ -1640,23 +1640,23 @@ public static class ArgoSelfTest
             Force(scatter, "Ironclad4");
             yield return Wait(0.3f);
             Link_Stats hpStat = scatter.Master.Statsserver.ContainsKey("Health") ? scatter.Master.Statsserver["Health"] : null;
-            Check("Ironclad: health x2.5 and 2 armour", hpStat != null && Mathf.Abs(hpStat.Value_Multi - 2.5f) < 0.01f && Mathf.Approximately(ArgoUtil.Stat(scatter.Master, "Healtharmor", 0f), 2f),
-                "health multi " + (hpStat != null ? F(hpStat.Value_Multi) : "-") + ", armour " + F(ArgoUtil.Stat(scatter.Master, "Healtharmor", 0f)));
+            Check("Ironclad: health x2.5 and 2 armour", hpStat != null && Mathf.Abs(hpStat.Value_Multi - 2.5f) < 0.01f && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Healtharmor", 0f), 2f),
+                "health multi " + (hpStat != null ? F(hpStat.Value_Multi) : "-") + ", armour " + F(ModKitUtil.Stat(scatter.Master, "Healtharmor", 0f)));
         }
         if (harpoon != null)
         {
             yield return Upgrade(harpoon, "Longline2", owner);
             yield return Upgrade(harpoon, "Skewer3", owner);
-            Check("Long Line -> Skewer: range and pierce", Has(harpoon, "Skewer3") && Mathf.Approximately(ArgoUtil.Stat(harpoon.Master, "Pierce", 0), 6f) && Mathf.Approximately(ArgoUtil.Stat(harpoon.Master, "Range", 0), 8.5f),
-                "pierce " + ArgoUtil.Stat(harpoon.Master, "Pierce", 0) + ", range " + ArgoUtil.Stat(harpoon.Master, "Range", 0));
+            Check("Long Line -> Skewer: range and pierce", Has(harpoon, "Skewer3") && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Pierce", 0), 6f) && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Range", 0), 8.5f),
+                "pierce " + ModKitUtil.Stat(harpoon.Master, "Pierce", 0) + ", range " + ModKitUtil.Stat(harpoon.Master, "Range", 0));
             yield return Upgrade(harpoon, "Anchor3", owner);
             Check("the damage path can't take Anchor Line after Skewer", !Has(harpoon, "Anchor3"));
         }
         // The crowd-control path on the second gun: Tether, Anchor Line, then Reel, Twin Line and Undertow.
         if (hook != null && enemyType != null)
         {
-            Vector3 hp = ArgoUtil.Pos(hook.Master);
-            float reach = ArgoUtil.Stat(hook.Master, "Range", 6.5f) - 0.4f;
+            Vector3 hp = ModKitUtil.Pos(hook.Master);
+            float reach = ModKitUtil.Stat(hook.Master, "Range", 6.5f) - 0.4f;
             float[] paid = new float[2];
             yield return UpgradePaid(hook, "Tether2", owner, "Redaura", paid);
             ClearEnemies();
@@ -1675,16 +1675,16 @@ public static class ArgoSelfTest
             lane = Lane(hp, 5f, reach, 1);
             holds.Clear();
             if (lane.Count == 1) yield return Ready(hook, lane, 50f, holds);
-            if (Check("a foe for Anchor Line", Has(hook, "Anchor3") && lane.Count == 1 && ArgoUtil.Alive(lane[0]), "anchor " + Has(hook, "Anchor3") + ", foes " + lane.Count))
+            if (Check("a foe for Anchor Line", Has(hook, "Anchor3") && lane.Count == 1 && ModKitUtil.Alive(lane[0]), "anchor " + Has(hook, "Anchor3") + ", foes " + lane.Count))
             {
                 Entity_Master a = lane[0];
-                ArgoUtil.Unmod(holds[0]);
+                ModKitUtil.Unmod(holds[0]);
                 int anchors = hook.Anchors;
                 yield return Until(() => hook.Anchors > anchors, 8f);
                 yield return Wait(0.2f);
                 bool held = Held(a), pinned = ArgoStatus.IsPinned(a);
                 yield return Wait(1.3f);
-                bool free = a == null || !ArgoUtil.Alive(a) || !Held(a);
+                bool free = a == null || !ModKitUtil.Alive(a) || !Held(a);
                 Check("Anchor Line pins the first foe hit, then lets go after about a second", hook.Anchors > anchors && held && pinned && free && hook.Reels == 0,
                     "anchors " + (hook.Anchors - anchors) + ", held " + held + ", pinned " + pinned + ", free after " + free + ", " + SpeedInfo(a));
             }
@@ -1695,10 +1695,10 @@ public static class ArgoSelfTest
             if (beside != null)
             {
                 int stuns = ArgoStatus.Stuns;
-                float aspd = ArgoUtil.Stat(beside, "Attackspeed", -1f);
+                float aspd = ModKitUtil.Stat(beside, "Attackspeed", -1f);
                 ArgoUtil.Pin(hook.Master, beside, 1f, true);
-                Check("Anchor Line's pin beside a building stuns (no attacks while held)", ArgoStatus.Stuns == stuns + 1 && (aspd < 0f || ArgoUtil.Stat(beside, "Attackspeed", 0f) < aspd * 0.1f),
-                    "stuns " + (ArgoStatus.Stuns - stuns) + ", attack speed " + F(aspd) + "->" + F(ArgoUtil.Stat(beside, "Attackspeed", 0f)));
+                Check("Anchor Line's pin beside a building stuns (no attacks while held)", ArgoStatus.Stuns == stuns + 1 && (aspd < 0f || ModKitUtil.Stat(beside, "Attackspeed", 0f) < aspd * 0.1f),
+                    "stuns " + (ArgoStatus.Stuns - stuns) + ", attack speed " + F(aspd) + "->" + F(ModKitUtil.Stat(beside, "Attackspeed", 0f)));
             }
             ClearEnemies();
             // Reel (forced: the other tier 3 of Tether): the first foe hit walks toward the gun, the one behind it stays.
@@ -1708,22 +1708,22 @@ public static class ArgoSelfTest
             if (!two) { ClearEnemies(); lane = Lane(hp, 5f, reach, 1, true); }
             holds.Clear();
             if (lane.Count > 0) yield return Ready(hook, lane, 50f, holds);
-            if (Check("foes in a lane from the Reel gun", lane.Count > 0 && lane.TrueForAll(f => ArgoUtil.Alive(f)), lane.Count + " foes"))
+            if (Check("foes in a lane from the Reel gun", lane.Count > 0 && lane.TrueForAll(f => ModKitUtil.Alive(f)), lane.Count + " foes"))
             {
                 Entity_Master a = lane[0], b = two ? lane[1] : null;
                 float lifeB = b != null ? Life(b) : 0f;
-                Vector3 b0 = b != null ? ArgoUtil.Pos(b) : Vector3.zero;
+                Vector3 b0 = b != null ? ModKitUtil.Pos(b) : Vector3.zero;
                 int reels = hook.Reels, shots0 = hook.Shots;
                 yield return Until(() => hook.Reels > reels, 8f);
-                float hitAt = Time.time, dHit = a != null ? ArgoUtil.Flat(ArgoUtil.Pos(a), hp) : -1f;
-                if (b != null) b0 = ArgoUtil.Pos(b);
+                float hitAt = Time.time, dHit = a != null ? ModKitUtil.Flat(ModKitUtil.Pos(a), hp) : -1f;
+                if (b != null) b0 = ModKitUtil.Pos(b);
                 yield return Until(() => hook.LastReelDone >= hitAt, 1.5f);
-                float took = Time.time - hitAt, dEnd = a != null ? ArgoUtil.Flat(ArgoUtil.Pos(a), hp) : -1f;
+                float took = Time.time - hitAt, dEnd = a != null ? ModKitUtil.Flat(ModKitUtil.Pos(a), hp) : -1f;
                 Check("Reel: the first foe hit walks toward the gun (a tile or more), within 1s", hook.Reels == reels + 1 && a != null && dHit - dEnd >= 0.7f && took <= 1f,
                     "reels " + (hook.Reels - reels) + " of " + (hook.Shots - shots0) + " harpoons, " + F(dHit) + "->" + F(dEnd) + " tiles in " + F(took) + "s");
                 if (two)
-                    Check("Reel: the foe behind it is pierced but not reeled", b == null || (Life(b) < lifeB - 0.01f && ArgoUtil.Flat(ArgoUtil.Pos(b), b0) < 0.3f),
-                        b != null ? "health " + F(lifeB) + "->" + F(Life(b)) + ", moved " + F(ArgoUtil.Flat(ArgoUtil.Pos(b), b0)) : "felled");
+                    Check("Reel: the foe behind it is pierced but not reeled", b == null || (Life(b) < lifeB - 0.01f && ModKitUtil.Flat(ModKitUtil.Pos(b), b0) < 0.3f),
+                        b != null ? "health " + F(lifeB) + "->" + F(Life(b)) + ", moved " + F(ModKitUtil.Flat(ModKitUtil.Pos(b), b0)) : "felled");
 #if ARGO_SHOTS
                 yield return ArgoShot.Close("reel", hp, 4.5f);
 #endif
@@ -1732,16 +1732,16 @@ public static class ArgoSelfTest
             lane = Lane(hp, 4f, reach, 1);
             holds.Clear();
             if (lane.Count == 1) yield return Ready(hook, lane, 700f, holds);
-            if (Check("a Boss-weight foe in front of the Reel gun", lane.Count == 1 && ArgoUtil.MaxHealth(lane[0]) >= ArgoData.BossHealth, lane.Count == 1 ? "max health " + F(ArgoUtil.MaxHealth(lane[0])) : "none"))
+            if (Check("a Boss-weight foe in front of the Reel gun", lane.Count == 1 && ModKitUtil.MaxHealth(lane[0]) >= ArgoData.BossHealth, lane.Count == 1 ? "max health " + F(ModKitUtil.MaxHealth(lane[0])) : "none"))
             {
                 Entity_Master boss = lane[0];
-                Vector3 p0 = ArgoUtil.Pos(boss);
+                Vector3 p0 = ModKitUtil.Pos(boss);
                 float life0 = Life(boss);
                 int bossHits = hook.BossHits, reels = hook.Reels;
                 yield return Until(() => hook.BossHits > bossHits, 8f);
                 yield return Wait(0.6f);
-                Check("a Boss-weight foe is harpooned but never moved", hook.BossHits > bossHits && hook.Reels == reels && Life(boss) < life0 && ArgoUtil.Flat(ArgoUtil.Pos(boss), p0) < 0.3f,
-                    "boss hits " + (hook.BossHits - bossHits) + ", reels " + (hook.Reels - reels) + ", moved " + F(ArgoUtil.Flat(ArgoUtil.Pos(boss), p0)));
+                Check("a Boss-weight foe is harpooned but never moved", hook.BossHits > bossHits && hook.Reels == reels && Life(boss) < life0 && ModKitUtil.Flat(ModKitUtil.Pos(boss), p0) < 0.3f,
+                    "boss hits " + (hook.BossHits - bossHits) + ", reels " + (hook.Reels - reels) + ", moved " + F(ModKitUtil.Flat(ModKitUtil.Pos(boss), p0)));
             }
             ClearEnemies();
             // Undertow: the foes around the reeled one are reeled too.
@@ -1756,7 +1756,7 @@ public static class ArgoSelfTest
                 lane = Lane(hp, 5f, reach, 1, true);
                 if (lane.Count == 1)
                 {
-                    Vector3 f0 = ArgoUtil.Pos(lane[0]), along = f0 - hp;
+                    Vector3 f0 = ModKitUtil.Pos(lane[0]), along = f0 - hp;
                     along.y = 0f;
                     Vector3 side = Vector3.Cross(along.normalized, Vector3.up);
                     side = Mathf.Abs(side.x) > Mathf.Abs(side.z) ? new Vector3(Mathf.Sign(side.x), 0f, 0f) : new Vector3(0f, 0f, Mathf.Sign(side.z));
@@ -1764,7 +1764,7 @@ public static class ArgoSelfTest
                         if (lane.Count == 1)
                             foreach (float dy in new[] { 0f, -1f, 1f })
                             {
-                                Genitem g = lane.Count == 1 ? ArgoUtil.Surface(f0 + sd + Vector3.up * (dy - 1f)) : null;
+                                Genitem g = lane.Count == 1 ? ModKitUtil.Surface(f0 + sd + Vector3.up * (dy - 1f)) : null;
                                 Entity_Master n = g != null ? EnemyOn(g) : null;
                                 if (n != null) lane.Add(n);
                             }
@@ -1783,7 +1783,7 @@ public static class ArgoSelfTest
         if (drill != null)
         {
             Check("Pay Dirt -> Deep Core: sinks to 7", Has(drill, "Paydirt2") && Has(drill, "Deepcore3") && drill.FathomMax == ArgoData.FathomDeepest, "max Fathom " + drill.FathomMax);
-            if (enemyType != null && drill.Ore(ArgoUtil.Pos(drill.Master)) != null)
+            if (enemyType != null && drill.Ore(ModKitUtil.Pos(drill.Master)) != null)
             {
                 ClearEnemies();
                 Vector3 c = drill.AimCenter;
@@ -1794,15 +1794,15 @@ public static class ArgoSelfTest
                 int dug = drill.PaydirtBites, bites = drill.Bites;
                 if (inside != null) Helper_Entitytools.Interacthurt(hm, inside, ArgoUtil.Hit(9999f, 1f));
                 yield return Wait(0.3f);
-                Check("Pay Dirt: a foe felled in the Tremor is dug up for two strikes of ore", placedIn && !ArgoUtil.Alive(inside) && drill.PaydirtBites == dug + 2 && drill.Bites >= bites + 2,
+                Check("Pay Dirt: a foe felled in the Tremor is dug up for two strikes of ore", placedIn && !ModKitUtil.Alive(inside) && drill.PaydirtBites == dug + 2 && drill.Bites >= bites + 2,
                     !placedIn ? "no foe placed inside " + F(radius) : "strikes " + (drill.PaydirtBites - dug) + ", bites " + (drill.Bites - bites));
                 Entity_Master outside = FoeBetween(c, radius + 1f, radius + 3f);
-                bool placedOut = outside != null && !drill.InTremor(ArgoUtil.Pos(outside));
+                bool placedOut = outside != null && !drill.InTremor(ModKitUtil.Pos(outside));
                 yield return Wait(0.4f);
                 dug = drill.PaydirtBites;
                 if (outside != null) Helper_Entitytools.Interacthurt(hm, outside, ArgoUtil.Hit(9999f, 1f));
                 yield return Wait(0.3f);
-                Check("Pay Dirt: a foe felled outside the Tremor gives nothing", placedOut && !ArgoUtil.Alive(outside) && drill.PaydirtBites == dug,
+                Check("Pay Dirt: a foe felled outside the Tremor gives nothing", placedOut && !ModKitUtil.Alive(outside) && drill.PaydirtBites == dug,
                     !placedOut ? "no foe placed outside " + F(radius) : "strikes " + (drill.PaydirtBites - dug));
                 ClearEnemies();
             }
@@ -1823,59 +1823,59 @@ public static class ArgoSelfTest
             yield return Upgrade(bell, "Thirdmate4", owner);
             yield return Until(() => bell.Crew[2] != null, 6f);
             Check("Third Mate hires Bosun", Has(bell, "Thirdmate4") && bell.Crew[2] != null && bell.Master.Commandlistserver.ContainsKey("Crew_Bosun"),
-                "units " + ArgoUtil.Stat(bell.Master, "Units", 0) + ", Bosun " + (bell.Crew[2] != null));
+                "units " + ModKitUtil.Stat(bell.Master, "Units", 0) + ", Bosun " + (bell.Crew[2] != null));
             yield return Upgrade(bell, "Fullcrew5", owner);
             if (scatter != null && harpoon != null && bell.Crew[0] != null)
             {
-                float pellets = ArgoUtil.Stat(scatter.Master, "Projcount", 0f), pierce = ArgoUtil.Stat(harpoon.Master, "Pierce", 0f);
-                float slow = drill != null ? ArgoUtil.Stat(drill.Master, "Slow", 0f) : 0f;
+                float pellets = ModKitUtil.Stat(scatter.Master, "Projcount", 0f), pierce = ModKitUtil.Stat(harpoon.Master, "Pierce", 0f);
+                float slow = drill != null ? ModKitUtil.Stat(drill.Master, "Slow", 0f) : 0f;
                 Send(bell.Master, "Crew_Port", Ref(scatter.Master));
                 yield return Until(() => Tuned(bell, 0, scatter), 10f);
-                Check("Old Salts: a tuned Scatter Cannon fires 2 more pellets", Tuned(bell, 0, scatter) && Mathf.Abs(ArgoUtil.Stat(scatter.Master, "Projcount", 0f) - pellets - ArgoData.SaltsPellets) < 0.01f,
-                    "tuned " + Tuned(bell, 0, scatter) + ", pellets " + F(pellets) + "->" + F(ArgoUtil.Stat(scatter.Master, "Projcount", 0f)));
+                Check("Old Salts: a tuned Scatter Cannon fires 2 more pellets", Tuned(bell, 0, scatter) && Mathf.Abs(ModKitUtil.Stat(scatter.Master, "Projcount", 0f) - pellets - ArgoData.SaltsPellets) < 0.01f,
+                    "tuned " + Tuned(bell, 0, scatter) + ", pellets " + F(pellets) + "->" + F(ModKitUtil.Stat(scatter.Master, "Projcount", 0f)));
                 Send(bell.Master, "Crew_Port", Ref(harpoon.Master));
                 yield return Until(() => Tuned(bell, 0, harpoon), 10f);
                 Check("Full Crew: Port dives to the Harpoon Gun and tunes it", Tuned(bell, 0, harpoon),
-                    bell.Crew[0] != null ? "tuning " + bell.Crew[0].Tuning + ", attack speed " + F(ArgoUtil.Stat(harpoon.Master, "Attackspeed", 0f)) : "no Port");
+                    bell.Crew[0] != null ? "tuning " + bell.Crew[0].Tuning + ", attack speed " + F(ModKitUtil.Stat(harpoon.Master, "Attackspeed", 0f)) : "no Port");
                 Check("Old Salts: a tuned Harpoon Gun pierces 2 more; the Scatter Cannon has its pellets back",
-                    Mathf.Abs(ArgoUtil.Stat(harpoon.Master, "Pierce", 0f) - pierce - ArgoData.SaltsPierce) < 0.01f && Mathf.Abs(ArgoUtil.Stat(scatter.Master, "Projcount", 0f) - pellets) < 0.01f,
-                    "pierce " + F(pierce) + "->" + F(ArgoUtil.Stat(harpoon.Master, "Pierce", 0f)) + ", pellets " + F(ArgoUtil.Stat(scatter.Master, "Projcount", 0f)));
+                    Mathf.Abs(ModKitUtil.Stat(harpoon.Master, "Pierce", 0f) - pierce - ArgoData.SaltsPierce) < 0.01f && Mathf.Abs(ModKitUtil.Stat(scatter.Master, "Projcount", 0f) - pellets) < 0.01f,
+                    "pierce " + F(pierce) + "->" + F(ModKitUtil.Stat(harpoon.Master, "Pierce", 0f)) + ", pellets " + F(ModKitUtil.Stat(scatter.Master, "Projcount", 0f)));
                 ArgoTowerBrain last = harpoon;
                 if (drill != null)
                 {
                     Send(bell.Master, "Crew_Port", Ref(drill.Master));
                     yield return Until(() => Tuned(bell, 0, drill), 12f);
                     Check("Old Salts: a tuned Drill Rig's Tremor slows 10% more; the Harpoon Gun is back to normal",
-                        Tuned(bell, 0, drill) && Mathf.Abs(ArgoUtil.Stat(drill.Master, "Slow", 0f) - slow - ArgoData.SaltsSlow) < 0.01f && Mathf.Abs(ArgoUtil.Stat(harpoon.Master, "Pierce", 0f) - pierce) < 0.01f,
-                        "tuned " + Tuned(bell, 0, drill) + ", slow " + F(slow) + "->" + F(ArgoUtil.Stat(drill.Master, "Slow", 0f)) + ", pierce " + F(ArgoUtil.Stat(harpoon.Master, "Pierce", 0f)));
+                        Tuned(bell, 0, drill) && Mathf.Abs(ModKitUtil.Stat(drill.Master, "Slow", 0f) - slow - ArgoData.SaltsSlow) < 0.01f && Mathf.Abs(ModKitUtil.Stat(harpoon.Master, "Pierce", 0f) - pierce) < 0.01f,
+                        "tuned " + Tuned(bell, 0, drill) + ", slow " + F(slow) + "->" + F(ModKitUtil.Stat(drill.Master, "Slow", 0f)) + ", pierce " + F(ModKitUtil.Stat(harpoon.Master, "Pierce", 0f)));
                     last = drill;
                 }
                 Send(bell.Master, "Crew_Port", Ref(bell.Master));
                 yield return Wait(0.5f);
-                Check("Old Salts: it all goes when the Naut leaves", !Tuned(bell, 0, last) && Mathf.Abs(ArgoUtil.Stat(scatter.Master, "Projcount", 0f) - pellets) < 0.01f
-                    && Mathf.Abs(ArgoUtil.Stat(harpoon.Master, "Pierce", 0f) - pierce) < 0.01f && (drill == null || Mathf.Abs(ArgoUtil.Stat(drill.Master, "Slow", 0f) - slow) < 0.01f),
-                    "pellets " + F(ArgoUtil.Stat(scatter.Master, "Projcount", 0f)) + ", pierce " + F(ArgoUtil.Stat(harpoon.Master, "Pierce", 0f)) + (drill != null ? ", slow " + F(ArgoUtil.Stat(drill.Master, "Slow", 0f)) : ""));
+                Check("Old Salts: it all goes when the Naut leaves", !Tuned(bell, 0, last) && Mathf.Abs(ModKitUtil.Stat(scatter.Master, "Projcount", 0f) - pellets) < 0.01f
+                    && Mathf.Abs(ModKitUtil.Stat(harpoon.Master, "Pierce", 0f) - pierce) < 0.01f && (drill == null || Mathf.Abs(ModKitUtil.Stat(drill.Master, "Slow", 0f) - slow) < 0.01f),
+                    "pellets " + F(ModKitUtil.Stat(scatter.Master, "Projcount", 0f)) + ", pierce " + F(ModKitUtil.Stat(harpoon.Master, "Pierce", 0f)) + (drill != null ? ", slow " + F(ModKitUtil.Stat(drill.Master, "Slow", 0f)) : ""));
             }
             Force(bell, "Flippers2");
             yield return Wait(0.3f);
-            Check("Flippers: faster Nauts", Has(bell, "Flippers2") && bell.Crew[0] != null && ArgoUtil.Stat(bell.Crew[0].Master, "Speed", 0f) > 1.6f * 1.4f, bell.Crew[0] != null ? F(ArgoUtil.Stat(bell.Crew[0].Master, "Speed", 0f)) : "no Port");
+            Check("Flippers: faster Nauts", Has(bell, "Flippers2") && bell.Crew[0] != null && ModKitUtil.Stat(bell.Crew[0].Master, "Speed", 0f) > 1.6f * 1.4f, bell.Crew[0] != null ? F(ModKitUtil.Stat(bell.Crew[0].Master, "Speed", 0f)) : "no Port");
         }
 
 // 8b. The Directions (kit 1.7): each rank's effect. (Untested until 2026-11-04.)
         {
             Func<string, Upgradeproperties> direction = n => Bl_Address.Getload("Upgrade", ModKitDirections.Id("Argo", n)) as Upgradeproperties;
             ArgoTowerBrain salvoGun = towers.ContainsKey(ArgoData.Harpoon) ? towers[ArgoData.Harpoon] : null;
-            if (salvoGun == null || !ArgoUtil.Alive(salvoGun.Master)) ModKitTest.Setup("Heavy Salvo", "no Harpoon Gun");
+            if (salvoGun == null || !ModKitUtil.Alive(salvoGun.Master)) ModKitTest.Setup("Heavy Salvo", "no Harpoon Gun");
             else
             {
-                float base0 = ArgoUtil.Stat(salvoGun.Master, "Damage", 0f);
+                float base0 = ModKitUtil.Stat(salvoGun.Master, "Damage", 0f);
                 float last = 0f;
                 for (int r = 1; r <= 3; r++)
                 {
                     ModKitDirections.Grant(hm, direction(ArgoData.Heavysalvos[r - 1].Name));
                     yield return Wait(1.2f);
                     float bonus = ArgoData.Heavysalvos[r - 1].Bonus;
-                    float now = ArgoUtil.Stat(salvoGun.Master, "Damage", 0f);
+                    float now = ModKitUtil.Stat(salvoGun.Master, "Damage", 0f);
                     Check("Heavy Salvo rank " + r + ": the Harpoon Gun deals +" + F(bonus * 100f) + "%", now > last && Mathf.Abs(now - base0 * (1f + bonus)) < 0.02f, F(base0) + " -> " + F(now));
                     last = now;
                 }
@@ -1894,13 +1894,13 @@ public static class ArgoSelfTest
                     Check("Deep Current rank " + r + ": Deep Water reaches +" + F(ArgoData.Deepcurrents[r - 1].Bonus * 100f) + "%", net != null && Mathf.Abs(net.Reach - ArgoData.PoolReach * (1f + ArgoData.Deepcurrents[r - 1].Bonus)) < 0.01f, F(reach0) + " -> " + (net != null ? F(net.Reach) : "no net"));
                 }
                 // Felt, not only read: a foe a little past the plain reach is slowed now.
-                Vector3 wet = ArgoUtil.Pos(pool.Master);
+                Vector3 wet = ModKitUtil.Pos(pool.Master);
                 Entity_Master past = ModKitTest.SpawnFoe("Enemy_Dagger", wet, ArgoData.PoolReach * 1.1f, ArgoData.PoolReach * 1.45f, null);
                 if (past == null) ModKitTest.Setup("Deep Current's reach", "no foe past the plain reach");
                 else
                 {
                     yield return Wait(1f);
-                    float apart = ArgoUtil.Flat(ArgoUtil.Pos(past), wet);
+                    float apart = ModKitUtil.Flat(ModKitUtil.Pos(past), wet);
                     bool inPool = net != null && net.Foes.Contains(past);
                     Check("Deep Current rank 3: a foe past the plain reach is in the water", inPool || apart > net.Reach, F(apart) + " from the pool, plain reach " + F(ArgoData.PoolReach) + ", reach " + F(net.Reach) + ", in the water " + inPool);
                     Game_Entity.Instance.Despawn(past.Beingserver, false, "Selftest");
@@ -1938,7 +1938,7 @@ public static class ArgoSelfTest
         List<string> order = null;
         bool same = true, noDupes = true;
         int pagesWithTabs = 0;
-        Dictionary<string, UnityEngine.Object> heroes = ArgoUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         foreach (UnityEngine.Object o in heroes.Values)
         {
             Heroentryobject h = o as Heroentryobject;
@@ -1965,7 +1965,7 @@ public static class ArgoSelfTest
             int fixes = ModKitFocus.Fixes;
             try { Blockage.Bl_Inputs.Actions["Focus"].Function("Onpressed"); } catch (Exception e) { Log("Focus press: " + e.Message); }
             Check("F after a respawn selects Argo, with the crew out", Game_Selection.Instance.Selected == hm,
-                "selected " + (Game_Selection.Instance.Selected != null ? ArgoUtil.BeingName(Game_Selection.Instance.Selected) : "nothing") + ", fixes " + (ModKitFocus.Fixes - fixes) + (ModKitFocus.MainHero() == hm ? "" : ", main hero not found"));
+                "selected " + (Game_Selection.Instance.Selected != null ? ModKitUtil.BeingName(Game_Selection.Instance.Selected) : "nothing") + ", fixes " + (ModKitFocus.Fixes - fixes) + (ModKitFocus.MainHero() == hm ? "" : ", main hero not found"));
         }
         else
             Log("F-key fix installed by another part (or no selection): skipped here");
@@ -1980,7 +1980,7 @@ public static class ArgoSelfTest
                 "gone " + Gone(bm) + ", shown again " + hero.BaseShown);
         }
 #if ARGO_SHOTS
-        ArgoClient.Demo(ArgoUtil.Pos(hm));
+        ArgoClient.Demo(ModKitUtil.Pos(hm));
         yield return Wait(0.2f);
         yield return ArgoShot.Shot("fx");
         Bl_Menus.Changemenu("Journal");

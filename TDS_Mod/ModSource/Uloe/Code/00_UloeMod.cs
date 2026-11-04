@@ -44,7 +44,7 @@ public class UloeMod : MonoBehaviour
         Heroentryobject template = null;
         while (template == null)
         {
-            template = UloeUtil.Heroentry(UloeData.TemplateHero);
+            template = ModKitUtil.Heroentry(UloeData.TemplateHero);
             if (template == null)
                 yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -56,7 +56,7 @@ public class UloeMod : MonoBehaviour
             yield break;
         }
 
-        if (!UloeAssets.Find())
+        if (!ModKitAssets.Find(UloeMod.Instance, "Uloe"))
         {
             UloeLog.Error("UloeAssets_Library is missing from the mod; Uloe is disabled");
             yield break;
@@ -71,7 +71,7 @@ public class UloeMod : MonoBehaviour
         List<string> folders = new List<string> { template.Heroloads.Objectname };
         foreach (string hero in UloeData.ExtraGroups)
         {
-            Heroentryobject h = UloeUtil.Heroentry(hero);
+            Heroentryobject h = ModKitUtil.Heroentry(hero);
             if (h != null && h.Heroloads != null) folders.Add(h.Heroloads.Objectname);
             else UloeLog.Warn("no entry for " + hero + "; its pieces fall back to Smacky's");
         }

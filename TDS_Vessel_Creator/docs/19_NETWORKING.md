@@ -96,7 +96,7 @@ they send only while it is under 50 and **drop** the send otherwise. It drains b
   look calls `Vfxdebuff_ClientRpc(item, beingref, seconds)` or `Vfxoneshot_ClientRpc(item, position, direction)`
   itself and adds one to `Clientsendstack`, so stock effects make room. Send a debuff look again only when the new
   one would end later than the one showing (`Helper_Vfxtools.Debuff` resets `Duration` on a look already attached).
-  Argo 2.0.1 does this for its slow look and its refused-flood mark (`ArgoUtil.Debuff`, `MustSee`). It runs
+  Argo 2.0.1 does this for its slow look and its refused-flood mark (`ArgoUtil.Debuff`, now `ModKitUtil.Debuff` for every part, and `MustSee`). It runs
   without error in game and on a second player's machine (2026-11-04); no fight there filled the queue (pitfall #95).
 
 ## 5. Late join, drops and identity

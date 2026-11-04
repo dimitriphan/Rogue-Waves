@@ -102,7 +102,7 @@ public static class RWVote
 
     public static void Update()
     {
-        if (!RWRun.InCampaignMap || !RWUtil.IsServer || Game_Mapvars.Instance == null)
+        if (!RWRun.InCampaignMap || !ModKitUtil.IsServer || Game_Mapvars.Instance == null)
             return;
         Game_Mapvars vars = Game_Mapvars.Instance;
         RWWeather.DropDeadNests();

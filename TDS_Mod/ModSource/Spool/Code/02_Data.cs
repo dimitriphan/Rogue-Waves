@@ -40,7 +40,6 @@ public static class SpoolData
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
 
-    public const string ReferenceSound = "Upgrade";
     public static readonly Dictionary<string, float> SoundVolume = new Dictionary<string, float>
     {
         { "Spool_Swat", 0.03f }, { "Spool_Stitch", 0.03f }, { "Spool_Pop", 0.02f }, { "Spool_Down", 0.025f },

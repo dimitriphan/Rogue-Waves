@@ -409,11 +409,7 @@ public static class RWHits
         First(e);
     }
 
-    static void First(Entity_Master e)
-    {
-        e.Oninteract = (Entity_Master.Oninteracts)Delegate.Remove(e.Oninteract, handler);
-        e.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(handler, e.Oninteract);
-    }
+    static void First(Entity_Master e) { ModKitUtil.Front(e, handler); }
 
     public static void Update()
     {

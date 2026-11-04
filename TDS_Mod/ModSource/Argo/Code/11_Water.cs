@@ -22,7 +22,7 @@ public static class ArgoWater
         public bool Touches(Vector3 center, float radius)
         {
             foreach (ArgoTowerBrain p in Parts)
-                if (p != null && p.Master != null && ArgoUtil.Flat(ArgoUtil.Pos(p.Master), center) <= radius + 0.5f)
+                if (p != null && p.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(p.Master), center) <= radius + 0.5f)
                     return true;
             return false;
         }
@@ -31,7 +31,7 @@ public static class ArgoWater
         public bool Holds(Vector3 at)
         {
             foreach (ArgoTowerBrain p in Parts)
-                if (p != null && p.Master != null && InPool(ArgoUtil.Pos(p.Master), at, Reach))
+                if (p != null && p.Master != null && InPool(ModKitUtil.Pos(p.Master), at, Reach))
                     return true;
             return false;
         }
@@ -41,7 +41,7 @@ public static class ArgoWater
     static readonly Dictionary<Entity_Master, float> lastWet = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> wetVfx = new Dictionary<Entity_Master, float>();
     static float nextTick;
-    public static int Ticks, Catches, Drags, Brined, Soaked, Floods, Freepools, Refused;
+    public static int Ticks, Catches, Drags, Floods, Freepools, Refused;
 
     public static void Reset()
     {
@@ -52,19 +52,19 @@ public static class ArgoWater
 
     static bool InPool(Vector3 pool, Vector3 at, float reach)
     {
-        return ArgoUtil.Flat(pool, at) <= reach && Mathf.Abs(pool.y - at.y) < 1.2f;
+        return ModKitUtil.Flat(pool, at) <= reach && Mathf.Abs(pool.y - at.y) < 1.2f;
     }
 
     // The grid tile a water entity stands on (FLOOD compares tiles in the same frame as the surface the player picks).
     public static Vector3 Tile(ArgoTowerBrain part)
     {
         Link_Being b = part.Master.Beingserver;
-        return b != null && b.Currentblock != null ? b.Currentblock.Position : ArgoUtil.Pos(part.Master);
+        return b != null && b.Currentblock != null ? b.Currentblock.Position : ModKitUtil.Pos(part.Master);
     }
 
     static bool Touching(Vector3 a, Vector3 b)
     {
-        float d = ArgoUtil.Flat(a, b);
+        float d = ModKitUtil.Flat(a, b);
         return d > 0.3f && d <= ArgoData.FloodLinkReach && Mathf.Abs(a.y - b.y) < 0.6f;
     }
 
@@ -96,14 +96,14 @@ public static class ArgoWater
         Nets.Clear();
         List<ArgoTowerBrain> water = new List<ArgoTowerBrain>();
         foreach (ArgoTowerBrain t in ArgoServer.Towers)
-            if (t != null && (t.IsWater || t.IsPool) && t.Started && t.Master != null && ArgoUtil.Alive(t.Master))
+            if (t != null && (t.IsWater || t.IsPool) && t.Started && t.Master != null && ModKitUtil.Alive(t.Master))
                 water.Add(t);
         List<ArgoTowerBrain> seen = new List<ArgoTowerBrain>();
         foreach (ArgoTowerBrain start in water)
         {
             if (seen.Contains(start))
                 continue;
-            Net net = new Net { Team = ArgoUtil.Team(start.Master) };
+            Net net = new Net { Team = ModKitUtil.Team(start.Master) };
             List<ArgoTowerBrain> open = new List<ArgoTowerBrain> { start };
             seen.Add(start);
             while (open.Count > 0)
@@ -114,7 +114,7 @@ public static class ArgoWater
                 Vector3 tile = Tile(p);
                 net.Tiles.Add(tile);
                 foreach (ArgoTowerBrain q in water)
-                    if (!seen.Contains(q) && ArgoUtil.Team(q.Master) == net.Team && Touching(tile, Tile(q)))
+                    if (!seen.Contains(q) && ModKitUtil.Team(q.Master) == net.Team && Touching(tile, Tile(q)))
                     {
                         seen.Add(q);
                         open.Add(q);
@@ -123,7 +123,7 @@ public static class ArgoWater
             foreach (ArgoTowerBrain p in net.Parts)
                 if (p.IsWater && (net.Lead == null || p.UpgradeCount > net.Lead.UpgradeCount))
                     net.Lead = p;
-            int current = ArgoServer.RanksOf(ArgoUtil.Owner((net.Lead ?? net.Parts[0]).Master)).Deepcurrent;
+            int current = ArgoServer.RanksOf(ModKitUtil.Owner((net.Lead ?? net.Parts[0]).Master)).Deepcurrent;
             if (current > 0)
                 net.Reach = ArgoData.PoolReach * (1f + ArgoData.Deepcurrents[current - 1].Bonus);
             Nets.Add(net);
@@ -144,7 +144,7 @@ public static class ArgoWater
         List<Net> found = new List<Net>();
         if (drill == null || drill.Master == null)
             return found;
-        int team = ArgoUtil.Team(drill.Master);
+        int team = ModKitUtil.Team(drill.Master);
         float radius = drill.TremorRadius;
         foreach (Net n in Nets)
             if (n.Team == team && n.Touches(drill.AimCenter, radius))
@@ -161,13 +161,13 @@ public static class ArgoWater
         Link_Entityquery enemies = ArgoUtil.Enemies(by);
         foreach (ArgoTowerBrain p in net.Parts)
         {
-            Vector3 at = ArgoUtil.Pos(p.Master);
-            foreach (Entity_Master e in ArgoUtil.Area(at, net.Reach + 0.5f, enemies))
-                if (e != null && ArgoUtil.Alive(e) && ArgoUtil.HasTag(e, "Mob") && !net.Foes.Contains(e) && InPool(at, ArgoUtil.Pos(e), net.Reach))
+            Vector3 at = ModKitUtil.Pos(p.Master);
+            foreach (Entity_Master e in ModKitUtil.Area(at, net.Reach + 0.5f, enemies))
+                if (e != null && ModKitUtil.Alive(e) && ModKitUtil.HasTag(e, "Mob") && !net.Foes.Contains(e) && InPool(at, ModKitUtil.Pos(e), net.Reach))
                     net.Foes.Add(e);
         }
         ArgoTowerBrain lead = net.Lead;
-        float slow = lead != null ? Mathf.Min(ArgoData.SlowCap, ArgoUtil.Stat(lead.Master, "Slow", ArgoData.WaterSlow)) : ArgoData.WaterSlow;
+        float slow = lead != null ? Mathf.Min(ArgoData.SlowCap, ModKitUtil.Stat(lead.Master, "Slow", ArgoData.WaterSlow)) : ArgoData.WaterSlow;
         float brine = lead != null ? lead.Param("Brine_Damage", 0f) : 0f;
         float salt = lead != null && lead.Has("Salt") ? lead.Param("Brinepinned_Multi", 1f) : 0f;
         float catchFor = lead != null ? lead.Param("Catch_Duration", 0f) : 0f;
@@ -179,7 +179,7 @@ public static class ArgoWater
             if (vfx)
             {
                 wetVfx[e] = Time.time;
-                ArgoUtil.Vis(by, "Argo_Wet", new Vector3((float)e.NetworkObjectId, 1.6f, 0f), 1.6f);
+                ModKitUtil.Vis(by, "Argo_Wet", new Vector3((float)e.NetworkObjectId, 1.6f, 0f), 1.6f);
             }
             ArgoUtil.Slow(by, e, slow, ArgoData.WaterTick + 0.25f, vfx);
             ArgoStatus.Wet(e, ArgoData.WaterTick + 0.3f);
@@ -188,7 +188,7 @@ public static class ArgoWater
             {
                 ArgoUtil.Root(by, e, catchFor);
                 Catches++;
-                ArgoUtil.Vis(by, "Argo_Kelp", new Vector3((float)e.NetworkObjectId, catchFor, 0f), catchFor);
+                ModKitUtil.Vis(by, "Argo_Kelp", new Vector3((float)e.NetworkObjectId, catchFor, 0f), catchFor);
             }
             lastWet[e] = Time.time;
             // Brine; Salt Sting doubles it on a pinned foe (and stings with SaltBrine when Brine wasn't taken).
@@ -197,15 +197,13 @@ public static class ArgoWater
                 b = (b > 0f ? b : ArgoData.SaltBrine) * (1f + salt);
             if (b > 0f)
             {
-                ModKitCombat.Hurt(by, e, b * ArgoData.WaterTick, 1f, null, ArgoUtil.Data("Argodot", 1f));
-                Brined++;
+                ModKitCombat.Hurt(by, e, b * ArgoData.WaterTick, 1f, null, ModKitUtil.Data("Argodot", 1f));
                 if (vfx)
-                    ArgoUtil.Vis(by, "Argo_Brine", ArgoUtil.Pos(e), 0);
+                    ModKitUtil.Vis(by, "Argo_Brine", ModKitUtil.Pos(e), 0);
             }
             if (crush > 0f)
             {
                 ArgoHooks.Soak(e, crush, ArgoData.WaterTick + 0.3f);
-                Soaked++;
             }
         }
         // Trench: every few seconds one foe in the water is dragged under, held for a moment.
@@ -217,7 +215,7 @@ public static class ArgoWater
             float hold = lead.Param("Dragunder_Duration", 1f);
             ArgoUtil.Root(by, f, hold);
             Drags++;
-            ArgoUtil.Vis(by, "Argo_Dragunder", new Vector3((float)f.NetworkObjectId, hold, 0f), hold);
+            ModKitUtil.Vis(by, "Argo_Dragunder", new Vector3((float)f.NetworkObjectId, hold, 0f), hold);
         }
     }
 
@@ -240,13 +238,13 @@ public static class ArgoWater
     // must touch this network and take a pool; the pool costs Blue 15 (the owner pays), Abyss adds Flood_Add free ones.
     public static void Flood(ArgoTowerBrain from, string json)
     {
-        if (from == null || from.Master == null || ArgoUtil.JsonString(json, "Tower") != ArgoData.Pool)
+        if (from == null || from.Master == null || ModKitUtil.JsonString(json, "Tower") != ArgoData.Pool)
             return;
         Beingobject pool;
         if (!ArgoContent.Beings.TryGetValue(ArgoData.Pool, out pool))
             return;
-        Vector3 p = new Vector3((float)ArgoUtil.JsonNumber(json, "x"), (float)ArgoUtil.JsonNumber(json, "y"), (float)ArgoUtil.JsonNumber(json, "z"));
-        Entity_Master surface = Helper_Entityquerytools.Entitynearest(p, 0.25f, ArgoUtil.Tagged("Surface"));
+        Vector3 p = new Vector3((float)ModKitUtil.JsonNumber(json, "x"), (float)ModKitUtil.JsonNumber(json, "y"), (float)ModKitUtil.JsonNumber(json, "z"));
+        Entity_Master surface = Helper_Entityquerytools.Entitynearest(p, 0.25f, ModKitUtil.Tagged("Surface"));
         Rebuild();
         Net net = NetOf(from);
         if (surface == null || surface.Beingserver == null || surface.Beingserver.Currentblock == null || net == null)
@@ -255,7 +253,7 @@ public static class ArgoWater
         bool next = false;
         foreach (Vector3 t in net.Tiles)
             if (Touching(t, block.Position)) next = true;
-        if (!next || !Helper_Gridtools.Checkifplaceable(block, pool, 0, ArgoUtil.Team(from.Master)))
+        if (!next || !Helper_Gridtools.Checkifplaceable(block, pool, 0, ModKitUtil.Team(from.Master)))
         {
             Refused++;
             ArgoUtil.MustSee(from.Master, "Cannotbuild", block.Position, block.Direction);
@@ -263,7 +261,7 @@ public static class ArgoWater
                 ArgoUtil.Warn(from.Master, 11);
             return;
         }
-        long owner = ArgoUtil.Owner(from.Master);
+        long owner = ModKitUtil.Owner(from.Master);
         Link_Command cmd;
         float scale = from.Master.Commandlistserver.TryGetValue(ArgoData.FloodLink, out cmd) && cmd != null ? cmd.Goalvalue : 1f;
         if (!Helper_Resources.Checkresources(pool.Entity.Costs, owner, scale))
@@ -273,7 +271,7 @@ public static class ArgoWater
         Helper_Resources.Useresources(pool.Entity.Costs, owner, scale);
         from.Master.Radio.Vfxoneshotcheck("Placementborder", block.Position, Vector3.forward);
         Floods++;
-        ArgoUtil.Vis(from.Master, "Argo_Flood", block.Position + Vector3.up, 1f);
+        ModKitUtil.Vis(from.Master, "Argo_Flood", block.Position + Vector3.up, 1f);
         Rebuild();
         net = NetOf(from);
         int extra = net != null && net.Lead != null ? Mathf.RoundToInt(net.Lead.Param("Flood_Add", 0f)) : 0;
@@ -299,12 +297,12 @@ public static class ArgoWater
             foreach (Vector3 d in dirs)
                 foreach (float dy in new[] { 0f, -1f, 1f })
                 {
-                    Genitem block = ArgoUtil.Surface(t + d + Vector3.up * dy);
+                    Genitem block = ModKitUtil.Surface(t + d + Vector3.up * dy);
                     if (block == null || free.Contains(block) || !Touching(t, block.Position))
                         continue;
                     bool taken = false;
                     foreach (Vector3 o in net.Tiles)
-                        if (ArgoUtil.Flat(o, block.Position) < 0.3f) taken = true;
+                        if (ModKitUtil.Flat(o, block.Position) < 0.3f) taken = true;
                     if (taken)
                         continue;
                     bool ok = false;
@@ -322,7 +320,7 @@ public static class ArgoWater
         if (!Spawn(from, at, pool, 0f))
             return false;
         Freepools++;
-        ArgoUtil.Vis(from.Master, "Argo_Flood", at.Position + Vector3.up, 1f);
+        ModKitUtil.Vis(from.Master, "Argo_Flood", at.Position + Vector3.up, 1f);
         return true;
     }
 

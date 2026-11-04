@@ -20,7 +20,7 @@ public class YosseleHeroBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!YosseleUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -58,14 +58,14 @@ public class YosseleHeroBrain : MonoBehaviour
         YosseleServer.Heroes.Add(this);
         for (int i = 0; i < YosseleData.Towers.Length; i++)
             BuildOption(i);
-        Player = YosseleServer.Player(YosseleUtil.Owner(Master));
+        Player = YosseleServer.Player(ModKitUtil.Owner(Master));
         Player.Hero = this;
         CheckDirections();
         CheckDandelion();
         CheckFertilize();
         // Subscribed after the Updatecommand calls above, which run each command once.
         Master.Command += OnCommand;
-        YosseleLog.Info("Yossele landed for player " + YosseleUtil.Owner(Master));
+        YosseleLog.Info("Yossele landed for player " + ModKitUtil.Owner(Master));
     }
 
     void BuildOption(int i) { BuildOption("Buildoption" + (i + 1), YosseleData.Towers[i]); }
@@ -95,13 +95,13 @@ public class YosseleHeroBrain : MonoBehaviour
     // "More health regen" (scope): no base vessel regenerates, so the brain mends Yossele once a second while hurt.
     void Regen()
     {
-        if (!YosseleUtil.Alive(Master))
+        if (!ModKitUtil.Alive(Master))
             return;
-        float missing = YosseleUtil.MaxHealth(Master) - YosseleUtil.Health(Master);
+        float missing = ModKitUtil.MaxHealth(Master) - ModKitUtil.Health(Master);
         if (missing <= 0.01f)
             return;
         float amount = Mathf.Min(missing, YosseleData.Regen);
-        YosseleUtil.Heal(Master, Master, amount);
+        ModKitUtil.Heal(Master, Master, amount);
         Healed++;
         Regenerated += amount;
     }
@@ -125,7 +125,7 @@ public class YosseleHeroBrain : MonoBehaviour
     {
         if (!started || Master == null || Master.Commandlistserver == null)
             return;
-        string want = YosseleServer.TreeSlot(YosseleUtil.Owner(Master));
+        string want = YosseleServer.TreeSlot(ModKitUtil.Owner(Master));
         Link_Command shown;
         Master.Commandlistserver.TryGetValue(YosseleData.DandelionOption, out shown);
         if (shown != null && shown.Goalstring != want)
@@ -190,7 +190,7 @@ public class YosseleHeroBrain : MonoBehaviour
         ulong id;
         if (j == i || !ulong.TryParse(json.Substring(i, j - i), out id))
             return null;
-        return YosseleUtil.ById(id);
+        return ModKitUtil.ById(id);
     }
 
     // Spends 1 fertilizer for +1 Growth on one of this player's Yossele buildings. From the hotkey with nothing picked:
@@ -199,7 +199,7 @@ public class YosseleHeroBrain : MonoBehaviour
     {
         if (Rank <= 0 || Time.time < guardUntil)
             return false;
-        long owner = YosseleUtil.Owner(Master);
+        long owner = ModKitUtil.Owner(Master);
         YosseleBuilding target = picked != null ? picked.GetComponent<YosseleBuilding>() : null;
         if (picked != null && (target == null || target.Owner != owner))
         {
@@ -211,9 +211,9 @@ public class YosseleHeroBrain : MonoBehaviour
             float best = YosseleData.FertilizeReach;
             foreach (YosseleBuilding b in YosseleServer.Buildings)
             {
-                if (b == null || !b.Started || b.Owner != owner || b.FullGrown || !YosseleUtil.Alive(b.Master))
+                if (b == null || !b.Started || b.Owner != owner || b.FullGrown || !ModKitUtil.Alive(b.Master))
                     continue;
-                float d = YosseleUtil.Flat(b.Pos, YosseleUtil.Pos(Master));
+                float d = ModKitUtil.Flat(b.Pos, ModKitUtil.Pos(Master));
                 if (d <= best)
                 {
                     best = d;
@@ -241,7 +241,7 @@ public class YosseleHeroBrain : MonoBehaviour
         Player.Spent++;
         target.Grow(1, true);
         Fertilizes++;
-        Vector3 dir = target.Pos - YosseleUtil.Pos(Master);
+        Vector3 dir = target.Pos - ModKitUtil.Pos(Master);
         dir.y = 0f;
         if (dir.sqrMagnitude > 0.0001f)
             Master.Entitydirection.Value = dir.normalized;

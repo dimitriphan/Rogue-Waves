@@ -35,7 +35,7 @@ public static class UloeSelfTest
 
     static void Drive()
     {
-        if (freeze && Game_Mapvars.Instance != null && UloeUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
+        if (freeze && Game_Mapvars.Instance != null && ModKitUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
             Game_Mapvars.Instance.Time_Wave.Value = 900f;
         if (phase >= 3)
             return;
@@ -105,7 +105,7 @@ public static class UloeSelfTest
             return;
         }
 
-        if (phase <= 2 && UloeServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && UloeUtil.IsServer)
+        if (phase <= 2 && UloeServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
             UloeMod.Instance.StartCoroutine(Scenario());
@@ -127,7 +127,7 @@ public static class UloeSelfTest
             buttons++;
             if (b.Character == UloeData.Hero) mine = b;
         }
-        Dictionary<string, UnityEngine.Object> heroes = UloeUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         Check("Uloe unlocked on the boat's vessel select", mine != null && !mine.Locked, mine == null ? "no button" : "locked " + mine.Locked);
         Check("every vessel has a boat spot", buttons == heroes.Count, buttons + " buttons, " + heroes.Count + " vessels");
         Transform spots = Macro_Worldvisual.Instance.Boat.transform.Find("Charselect/Spots");
@@ -208,7 +208,7 @@ public static class UloeSelfTest
     // each column out to 8 tiles; when there is none it logs why and a picture of the ground).
     static Vector3 Spot(Entity_Master hero, Beingobject being, float ring)
     {
-        return ModKitTest.Spot(UloeUtil.Pos(hero), being, UloeUtil.Team(hero), ring, 8f, used, being.Objectname);
+        return ModKitTest.Spot(ModKitUtil.Pos(hero), being, ModKitUtil.Team(hero), ring, 8f, used, being.Objectname);
     }
 
     static T Newest<T>(string being, List<UloeBuilding> known) where T : UloeBuilding
@@ -222,7 +222,7 @@ public static class UloeSelfTest
     static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<UloeBuilding> known, UloeBuilding[] result)
     {
         result[0] = null;
-        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + UloeUtil.Owner(hero) + "}";
+        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + ModKitUtil.Owner(hero) + "}";
         Send(hero, "Build", json);
         float t = 0f;
         while (t < 20f && result[0] == null)
@@ -235,14 +235,14 @@ public static class UloeSelfTest
             known.Add(result[0]);
     }
 
-    static int Team() { return UloeServer.Heroes.Count > 0 ? UloeUtil.Team(UloeServer.Heroes[0].Master) : 1; }
+    static int Team() { return UloeServer.Heroes.Count > 0 ? ModKitUtil.Team(UloeServer.Heroes[0].Master) : 1; }
 
     // Removes Tide foes so they don't pile up.
     static void ClearFoes()
     {
         int team = Team();
         foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
-            if (UloeUtil.IsFoe(e, team))
+            if (ModKitUtil.IsFoe(e, team))
                 Game_Entity.Instance.Despawn(e.Beingserver, false, "Selftest");
     }
 
@@ -265,7 +265,7 @@ public static class UloeSelfTest
 
     // A foe's tags and stats arrive a frame after its spawn (Entity_Master.Start): killed or read in its spawn frame it is
     // not yet "Enemy" and has no Health (round 1). The checks wait for both.
-    static bool Loaded(Entity_Master e) { return UloeUtil.Alive(e) && e.Taglistserver != null && e.Taglistserver.Contains("Enemy") && e.Statsserver != null && e.Statsserver.ContainsKey("Health"); }
+    static bool Loaded(Entity_Master e) { return ModKitUtil.Alive(e) && e.Taglistserver != null && e.Taglistserver.Contains("Enemy") && e.Statsserver != null && e.Statsserver.ContainsKey("Health"); }
 
     // A loaded foe between minDist and maxDist from 'near': slot[0], or null when none could spawn or it fell while loading.
     static IEnumerator Foe(string being, Vector3 near, float maxDist, float minDist, Entity_Master[] slot)
@@ -274,7 +274,7 @@ public static class UloeSelfTest
         Entity_Master e = SpawnFoe(being, near, maxDist, minDist);
         if (e == null)
             yield break;
-        yield return Until(() => !UloeUtil.Alive(e) || Loaded(e), 2f);
+        yield return Until(() => !ModKitUtil.Alive(e) || Loaded(e), 2f);
         if (Loaded(e))
             slot[0] = e;
     }
@@ -283,12 +283,12 @@ public static class UloeSelfTest
     // from afar (Spool round 1: units felled the Daggers beside the buildings, and a hit from a fallen foe lands nowhere).
     static IEnumerator FarFoe(string being, Entity_Master[] slot)
     {
-        if (slot[0] != null && Loaded(slot[0]) && UloeUtil.BeingName(slot[0]) == being)
+        if (slot[0] != null && Loaded(slot[0]) && ModKitUtil.BeingName(slot[0]) == being)
             yield break;
         slot[0] = null;
         Entity_Master core = ModKitTest.Core();
         if (core != null)
-            yield return Foe(being, UloeUtil.Pos(core), 6f, 1f, slot);
+            yield return Foe(being, ModKitUtil.Pos(core), 6f, 1f, slot);
     }
 
     static IEnumerator Upgrade(UloeBuilding b, string key, long owner)
@@ -306,15 +306,15 @@ public static class UloeSelfTest
 
     static IEnumerator Walk(Entity_Master m, Vector3 to, float near, float timeout)
     {
-        UloeUtil.MoveTo(m, null, to, 0f);
-        yield return Until(() => m == null || UloeUtil.Flat(UloeUtil.Pos(m), to) <= near, timeout);
+        ModKitUtil.MoveTo(m, null, to, 0f);
+        yield return Until(() => m == null || ModKitUtil.Flat(ModKitUtil.Pos(m), to) <= near, timeout);
     }
 
     // Up to a building or node, as the vessel walks to what it builds next to (the thing's own tile isn't walkable).
     static IEnumerator Near(Entity_Master m, Entity_Master to, float within)
     {
-        UloeUtil.MoveTo(m, to, Vector3.zero, Mathf.Max(0f, within - 1f));
-        yield return Until(() => m == null || to == null || UloeUtil.Flat(UloeUtil.Pos(m), UloeUtil.Pos(to)) <= within, 15f);
+        ModKitUtil.MoveTo(m, to, Vector3.zero, Mathf.Max(0f, within - 1f));
+        yield return Until(() => m == null || to == null || ModKitUtil.Flat(ModKitUtil.Pos(m), ModKitUtil.Pos(to)) <= within, 15f);
     }
 
     static void Hit(Entity_Master from, Entity_Master to, float amount) { ModKitCombat.Hurt(from, to, amount, 1f, null, null); }
@@ -323,13 +323,13 @@ public static class UloeSelfTest
     {
         int n = 0;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && UloeUtil.BeingName(e) == being) n++;
+            if (e != null && ModKitUtil.BeingName(e) == being) n++;
         return n;
     }
 
     static string Sell(Entity_Master hero, Entity_Master what)
     {
-        return "{\"Tower\":\"" + what.name + "\",\"Position\":" + Vec(UloeUtil.Pos(what)) + ",\"Owner\":" + UloeUtil.Owner(hero) + "}";
+        return "{\"Tower\":\"" + what.name + "\",\"Position\":" + Vec(ModKitUtil.Pos(what)) + ",\"Owner\":" + ModKitUtil.Owner(hero) + "}";
     }
 
     static string Ref(Entity_Master m) { return "{\"Ref\":" + m.NetworkObjectId + "}"; }
@@ -349,7 +349,7 @@ public static class UloeSelfTest
     {
         Beingobject node = null;
         foreach (string n in new[] { "Resource_Red", "Resource_Blue", "Resource_Yellow" })
-            if (node == null) node = UloeUtil.Load<Beingobject>("Mob", n);
+            if (node == null) node = ModKitUtil.Load<Beingobject>("Mob", n);
         if (node == null)
         {
             Log("no ore node being is loaded on this map");
@@ -383,11 +383,11 @@ public static class UloeSelfTest
             Genitem g = s != null && s.Beingserver != null ? s.Beingserver.Currentblock : null;
             if (g == null || tiles.Contains(g) || used.Contains(g.Position))
                 continue;
-            float d = UloeUtil.Flat(g.Position, c);
+            float d = ModKitUtil.Flat(g.Position, c);
             if (d >= min && d <= max)
                 tiles.Add(g);
         }
-        tiles.Sort((a, b) => UloeUtil.Flat(a.Position, c).CompareTo(UloeUtil.Flat(b.Position, c)));
+        tiles.Sort((a, b) => ModKitUtil.Flat(a.Position, c).CompareTo(ModKitUtil.Flat(b.Position, c)));
         return tiles;
     }
 
@@ -432,14 +432,6 @@ public static class UloeSelfTest
         return new Vector3(float.NaN, 0f, 0f);
     }
 
-    // Exceptions the game logs while a check runs (a stock script's UniTask cancelled when its foe falls: the route question).
-    static int cancelled;
-    static void OnLog(string message, string stack, LogType type)
-    {
-        if (type == LogType.Exception && message.Contains("OperationCanceledException") && (stack.Contains("Barrel_Boost") || stack.Contains("Tower_Merchut")))
-            cancelled++;
-    }
-
     // ---------------------------------------------------------------- the scenario
 
     static IEnumerator Scenario()
@@ -451,15 +443,14 @@ public static class UloeSelfTest
         yield return Wait(2f);
         ClearFoes();
         Entity_Master hm = hero.Master;
-        long owner = UloeUtil.Owner(hm);
-        int team = UloeUtil.Team(hm);
+        long owner = ModKitUtil.Owner(hm);
+        int team = ModKitUtil.Team(hm);
         UloePlayer player = UloeServer.Player(owner);
-        Vector3 home = UloeUtil.Pos(hm);
+        Vector3 home = ModKitUtil.Pos(hm);
         Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + home + ", owner " + owner + ", team " + team);
         ModKitTest.Log = Log;
         ModKitTest.MapDump(team, hm);
-        Application.logMessageReceived += OnLog;
-        Helper_Resources.Giveresources(UloeUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
+        Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
         yield return Wait(0.5f);
         List<UloeBuilding> known = new List<UloeBuilding>();
         UloeBuilding[] got = new UloeBuilding[1];
@@ -471,8 +462,8 @@ public static class UloeSelfTest
         // 1. The vessel.
         Check("vessel uses the stock ranged AI", hm.GetComponent<Entity_Ai_Mob_Ranged>() != null && hm.GetComponent<Entity_Ai_Mob_Combat>() == null && hm.GetComponent<Entity_Ai_Hero_Buildsell>() != null);
         Check("vessel has the Bright Idea tooltip", hm.Upgradelistserver.ContainsKey(UloeData.HeroTooltip));
-        Check("vessel stats", Near(UloeUtil.Stat(hm, "Range", 0), 3f) && Near(UloeUtil.Stat(hm, "Health", 0), 30f) && Near(UloeUtil.Stat(hm, "Speed", 0), 2.25f) && Near(UloeUtil.Stat(hm, "Damage", 0), 2f),
-            "Range " + F(UloeUtil.Stat(hm, "Range", 0)) + ", Health " + F(UloeUtil.Stat(hm, "Health", 0)) + ", Speed " + F(UloeUtil.Stat(hm, "Speed", 0)) + ", Damage " + F(UloeUtil.Stat(hm, "Damage", 0)));
+        Check("vessel stats", Near(ModKitUtil.Stat(hm, "Range", 0), 3f) && Near(ModKitUtil.Stat(hm, "Health", 0), 30f) && Near(ModKitUtil.Stat(hm, "Speed", 0), 2.25f) && Near(ModKitUtil.Stat(hm, "Damage", 0), 2f),
+            "Range " + F(ModKitUtil.Stat(hm, "Range", 0)) + ", Health " + F(ModKitUtil.Stat(hm, "Health", 0)) + ", Speed " + F(ModKitUtil.Stat(hm, "Speed", 0)) + ", Damage " + F(ModKitUtil.Stat(hm, "Damage", 0)));
         {
             Link_Command attack = null;
             hm.Commandlistserver.TryGetValue("Attack", out attack);
@@ -488,11 +479,9 @@ public static class UloeSelfTest
                         if (!Blockage.Bl_Inputs.Actions.ContainsKey(k)) bad.Add(c.name + " " + k);
             Check("every Uloe button's keys are the game's input actions", bad.Count == 0, bad.Count == 0 ? Blockage.Bl_Inputs.Actions.Count + " actions" : string.Join(", ", bad.ToArray()));
         }
-        Check("the build menu holds the four", hero.Menu() == UloeUtil.Join(UloeData.Towers), hero.Menu());
+        Check("the build menu holds the four", hero.Menu() == ModKitUtil.Join(UloeData.Towers), hero.Menu());
         Check("vessel visible to clients", hm.Client != null && hm.Client.Beingobject != null && hm.Client.Beingobject.Objectname == UloeData.Hero);
         Check("the beam is the stock Projectile_Ai_Beam", UloeContent.BeamReady, UloeContent.BeamFrom);
-        Check("Blind and Illuminate have three levels each", UloeContent.Blinds[2] != null && UloeContent.Lits[2] != null);
-        Check("Blind lists every key Barrel_Boost reads (pitfall #117)", UloeContent.Blinds[0] != null && UloeContent.Blinds[0].Defaultparams.ContainsKey("Health_Pmulti") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Speed_Multi") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Attackspeed_Multi") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Damage_Multi") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Duration_Base"));
 
         // 2. Light: a Glass by the vessel, then a walk away.
         at = Spot(hm, UloeContent.Beings[UloeData.Glass], 2f);
@@ -510,22 +499,22 @@ public static class UloeSelfTest
         Check("a Glass is visible to clients", glass.Master.Client != null && glass.Master.Client.Beingobject != null);
         yield return Walk(hm, glass.Pos + (home - glass.Pos).normalized * 1.5f, 1.6f, 8f);
         yield return Wait(1.6f);
-        Check("Uloe lights what stands within 3 tiles: Light " + F(UloeData.HeroLight), Near(UloeUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight), "Light " + F(UloeUtil.Stat(glass.Master, "Light", -1f)) + ", " + F(UloeUtil.Flat(glass.Pos, UloeUtil.Pos(hm))) + " tiles away");
+        Check("Uloe lights what stands within 3 tiles: Light " + F(UloeData.HeroLight), Near(ModKitUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight), "Light " + F(ModKitUtil.Stat(glass.Master, "Light", -1f)) + ", " + F(ModKitUtil.Flat(glass.Pos, ModKitUtil.Pos(hm))) + " tiles away");
         test.Feed(glass.Master, 2f);
         yield return Wait(0.4f);
-        Check("two sources sum", Near(UloeUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight + 2f), "Light " + F(UloeUtil.Stat(glass.Master, "Light", -1f)));
+        Check("two sources sum", Near(ModKitUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight + 2f), "Light " + F(ModKitUtil.Stat(glass.Master, "Light", -1f)));
         test.Feed(glass.Master, 3f);
         yield return Wait(0.4f);
-        Check("a source replaces its own last share (pitfall #119)", Near(UloeUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight + 3f), "Light " + F(UloeUtil.Stat(glass.Master, "Light", -1f)));
+        Check("a source replaces its own last share (pitfall #119)", Near(ModKitUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight + 3f), "Light " + F(ModKitUtil.Stat(glass.Master, "Light", -1f)));
         yield return Wait(1.5f);
-        Check("a source that stops fades by itself", Near(UloeUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight), "Light " + F(UloeUtil.Stat(glass.Master, "Light", -1f)));
+        Check("a source that stops fades by itself", Near(ModKitUtil.Stat(glass.Master, "Light", -1f), UloeData.HeroLight), "Light " + F(ModKitUtil.Stat(glass.Master, "Light", -1f)));
         Genitem awayTile = WalkTile(hm, glass.Pos, UloeData.HeroRadius + 2f, UloeData.HeroRadius + 6f);
         if (awayTile != null)
             yield return Walk(hm, awayTile.Position, 0.8f, 15f);
         else
             Log("no tile the vessel can walk to beyond its light");
         yield return Wait(2f);
-        Check("Light is gone about 1.5 s after Uloe leaves", Near(UloeUtil.Stat(glass.Master, "Light", -1f), 0f), "Light " + F(UloeUtil.Stat(glass.Master, "Light", -1f)) + ", " + F(UloeUtil.Flat(glass.Pos, UloeUtil.Pos(hm))) + " tiles away");
+        Check("Light is gone about 1.5 s after Uloe leaves", Near(ModKitUtil.Stat(glass.Master, "Light", -1f), 0f), "Light " + F(ModKitUtil.Stat(glass.Master, "Light", -1f)) + ", " + F(ModKitUtil.Flat(glass.Pos, ModKitUtil.Pos(hm))) + " tiles away");
         yield return Wait(1.5f);
         Check("Light's look: no skin at no Light", glass.Master.Skin.Value.ToString() == "", glass.Master.Skin.Value.ToString());
         test.Feed(glass.Master, 5f);
@@ -550,15 +539,15 @@ public static class UloeSelfTest
         else
         {
             float aura = UloeUtil.NodeAura(node);
-            Log("node " + UloeUtil.BeingName(node) + " " + F(UloeUtil.Flat(UloeUtil.Pos(node), glass.Pos)) + " from the Glass, total aura " + F(aura));
+            Log("node " + ModKitUtil.BeingName(node) + " " + F(ModKitUtil.Flat(ModKitUtil.Pos(node), glass.Pos)) + " from the Glass, total aura " + F(aura));
             float want = UloeHeroBrain.PlugLight(node);
             Check("a node's Light comes from its total aura", Near(want, Mathf.Min(UloeData.NodeMax, UloeData.NodeBase + UloeData.NodePerAura * aura)), "aura " + F(aura) + " -> Light " + F(want));
             Send(hm, UloeData.PlugLink, Ref(node));
             yield return Wait(0.4f);
-            Check("PLUG IN refuses what the cord won't reach", hero.Plug == null && hero.LastPlug == "too far" || UloeUtil.Flat(UloeUtil.Pos(node), UloeUtil.Pos(hm)) <= hero.Reach + UloeData.PlugSlack, hero.LastPlug + ", " + F(UloeUtil.Flat(UloeUtil.Pos(node), UloeUtil.Pos(hm))) + " tiles");
+            Check("PLUG IN refuses what the cord won't reach", hero.Plug == null && hero.LastPlug == "too far" || ModKitUtil.Flat(ModKitUtil.Pos(node), ModKitUtil.Pos(hm)) <= hero.Reach + UloeData.PlugSlack, hero.LastPlug + ", " + F(ModKitUtil.Flat(ModKitUtil.Pos(node), ModKitUtil.Pos(hm))) + " tiles");
             if (hero.Plug != null) { Send(hm, UloeData.PlugLink, "{\"Unplug\":1}"); yield return Wait(0.8f); }
             // Between the node and the Glass, in reach of both.
-            Genitem midTile = ModKitTest.FoeTile(UloeContent.Beings[UloeData.Photon], Vector3.Lerp(UloeUtil.Pos(node), glass.Pos, 0.5f), 0f, 3f, used);
+            Genitem midTile = ModKitTest.FoeTile(UloeContent.Beings[UloeData.Photon], Vector3.Lerp(ModKitUtil.Pos(node), glass.Pos, 0.5f), 0f, 3f, used);
             if (midTile != null)
                 yield return Walk(hm, midTile.Position, 1f, 12f);
             else
@@ -572,12 +561,12 @@ public static class UloeSelfTest
             Check("the button says it is plugged", hm.Commandlistserver.TryGetValue(UloeData.PlugLink, out pc) && pc.Goalstring == "On", pc != null ? pc.Goalstring : "");
             yield return Wait(1.2f);
             Check("plugged in, Uloe gives the node's Light", Near(hero.LightNow, want) && Near(hero.RadiusNow, UloeData.PlugRadius), "Light " + F(hero.LightNow) + ", radius " + F(hero.RadiusNow));
-            if (UloeUtil.Flat(glass.Pos, UloeUtil.Pos(hm)) <= UloeData.PlugRadius)
-                Check("... and the Glass receives it", Near(UloeUtil.Stat(glass.Master, "Light", -1f), want), "Light " + F(UloeUtil.Stat(glass.Master, "Light", -1f)));
-            else ModKitTest.Setup("Plug In's Light on the Glass", F(UloeUtil.Flat(glass.Pos, UloeUtil.Pos(hm))) + " tiles away");
+            if (ModKitUtil.Flat(glass.Pos, ModKitUtil.Pos(hm)) <= UloeData.PlugRadius)
+                Check("... and the Glass receives it", Near(ModKitUtil.Stat(glass.Master, "Light", -1f), want), "Light " + F(ModKitUtil.Stat(glass.Master, "Light", -1f)));
+            else ModKitTest.Setup("Plug In's Light on the Glass", F(ModKitUtil.Flat(glass.Pos, ModKitUtil.Pos(hm))) + " tiles away");
 #if ULOE_SHOTS
             yield return UloeShots.Shot("plugged");
-            yield return UloeShots.Close("plugged", UloeUtil.Pos(hm), 5f);
+            yield return UloeShots.Close("plugged", ModKitUtil.Pos(hm), 5f);
 #endif
             Send(hm, UloeData.PlugLink, "{\"Unplug\":1}");
             yield return Wait(0.1f);
@@ -591,117 +580,103 @@ public static class UloeSelfTest
             yield return Wait(0.4f);
             Check("the hotkey takes the nearest in reach", hero.Plug != null, hero.LastPlug);
             int snaps = hero.Snaps;
-            Genitem farTile = WalkTile(hm, UloeUtil.Pos(node), hero.Reach + 2f, hero.Reach + 7f);
+            Genitem farTile = WalkTile(hm, ModKitUtil.Pos(node), hero.Reach + 2f, hero.Reach + 7f);
             if (hero.Plug != null && farTile != null)
             {
                 yield return Walk(hm, farTile.Position, 0.8f, 20f);
                 yield return Until(() => hero.Snaps > snaps, 8f);
-                Check("walking past the cord's length snaps it", hero.Snaps == snaps + 1 && hero.Plug == null, F(UloeUtil.Flat(UloeUtil.Pos(node), UloeUtil.Pos(hm))) + " tiles from the node, snaps " + hero.Snaps);
+                Check("walking past the cord's length snaps it", hero.Snaps == snaps + 1 && hero.Plug == null, F(ModKitUtil.Flat(ModKitUtil.Pos(node), ModKitUtil.Pos(hm))) + " tiles from the node, snaps " + hero.Snaps);
             }
             else ModKitTest.Setup("the cord snapping", "no tile beyond its length");
             if (hero.Plug != null) { Send(hm, UloeData.PlugLink, "{\"Unplug\":1}"); yield return Wait(0.8f); }
             yield return Near(hm, glass.Master, 3f);
         }
 
-        // 4. Blind and Illuminate, on the route in use, with a foe far from everything. Round 1 ran both: the stock route logged 2
-        // OperationCanceledException per marked foe that fell, the own route none (IMPLEMENTATION_NOTES.md).
+        // 4. Blind and Illuminate (a timed Addmod and a hit hook), with a foe far from everything.
         ClearFoes();
-        foreach (bool stock in new[] { UloeData.StockMarks })
+        yield return FarFoe("Enemy_Dagger", slot);
+        far = slot[0];
+        if (far == null)
+            ModKitTest.Setup("Blind and Illuminate", "no foe could stand by the enemy core");
+        else
         {
-            UloeMarks.Stock = stock;
-            string route = stock ? "stock: " : "own: ";
-            yield return FarFoe("Enemy_Dagger", slot);
-            far = slot[0];
-            if (far == null)
-            {
-                ModKitTest.Setup(route + "Blind and Illuminate", "no foe could stand by the enemy core");
-                continue;
-            }
-            float d0 = UloeUtil.Stat(far, "Damage", 0f);
+            float d0 = ModKitUtil.Stat(far, "Damage", 0f);
             UloeMarks.Blind(hm, far, 1);
             yield return Wait(0.2f);
-            Check(route + "Blind 1 takes 15% of a foe's Damage", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.85f), F(d0) + " -> " + F(UloeUtil.Stat(far, "Damage", 0f)));
+            Check("Blind 1 takes 15% of a foe's Damage", Near(ModKitUtil.Stat(far, "Damage", 0f), d0 * 0.85f), F(d0) + " -> " + F(ModKitUtil.Stat(far, "Damage", 0f)));
             UloeMarks.Blind(hm, far, 2);
             yield return Wait(0.2f);
-            Check(route + "Blind 2 replaces it: 30%", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
+            Check("Blind 2 replaces it: 30%", Near(ModKitUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(ModKitUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
             UloeMarks.Blind(hm, far, 1);
             yield return Wait(0.2f);
-            Check(route + "a weaker Blind does nothing", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
+            Check("a weaker Blind does nothing", Near(ModKitUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(ModKitUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
             UloeMarks.Blind(hm, far, 3);
             yield return Wait(0.2f);
-            Check(route + "Blind 3: 45%", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.55f) && UloeMarks.BlindLevel(far) == 3, F(UloeUtil.Stat(far, "Damage", 0f)));
+            Check("Blind 3: 45%", Near(ModKitUtil.Stat(far, "Damage", 0f), d0 * 0.55f) && UloeMarks.BlindLevel(far) == 3, F(ModKitUtil.Stat(far, "Damage", 0f)));
             yield return Wait(UloeData.MarkSeconds[2] + 0.5f);
-            Check(route + "Blind wears off", Near(UloeUtil.Stat(far, "Damage", 0f), d0) && UloeMarks.BlindLevel(far) == 0, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
-            bool listed = false;
-            foreach (Upgradeproperties up in UloeContent.Blinds) if (far.Upgradelistserver.ContainsKey(up.Objectname)) listed = true;
-            Check(route + "no Blind upgrade is left on the foe", !listed);
-            float h0 = UloeUtil.Health(far);
+            Check("Blind wears off", Near(ModKitUtil.Stat(far, "Damage", 0f), d0) && UloeMarks.BlindLevel(far) == 0, F(ModKitUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
+            float h0 = ModKitUtil.Health(far);
             Hit(hm, far, 1f);
-            float plain = h0 - UloeUtil.Health(far);
+            float plain = h0 - ModKitUtil.Health(far);
             UloeMarks.Illuminate(hm, far, 2);
             yield return Wait(0.2f);
-            h0 = UloeUtil.Health(far);
+            h0 = ModKitUtil.Health(far);
             Hit(hm, far, 1f);
-            float lit2 = h0 - UloeUtil.Health(far);
-            Check(route + "Illuminate 2: 30% more damage taken", Near(plain, 1f) && Near(lit2, 1.3f), "1 damage takes " + F(plain) + ", lit " + F(lit2));
+            float lit2 = h0 - ModKitUtil.Health(far);
+            Check("Illuminate 2: 30% more damage taken", Near(plain, 1f) && Near(lit2, 1.3f), "1 damage takes " + F(plain) + ", lit " + F(lit2));
             // A spark's or a beam's hit starts with empty Data, as Projectile_Master.Interact delivers it.
-            h0 = UloeUtil.Health(far);
+            h0 = ModKitUtil.Health(far);
             Helper_Entitytools.Interacthurt(hm, far, new Dictionary<string, float>());
-            Check(route + "a spark on an Illuminated foe takes the share too", Near(h0 - UloeUtil.Health(far), UloeUtil.Stat(hm, "Damage", 0f) * 1.3f), F(h0 - UloeUtil.Health(far)) + " from Damage " + F(UloeUtil.Stat(hm, "Damage", 0f)));
+            Check("a spark on an Illuminated foe takes the share too", Near(h0 - ModKitUtil.Health(far), ModKitUtil.Stat(hm, "Damage", 0f) * 1.3f), F(h0 - ModKitUtil.Health(far)) + " from Damage " + F(ModKitUtil.Stat(hm, "Damage", 0f)));
             UloeMarks.Illuminate(hm, far, 1);
             yield return Wait(0.1f);
-            Check(route + "a weaker Illuminate does nothing", UloeMarks.LitLevel(far) == 2, "level " + UloeMarks.LitLevel(far));
+            Check("a weaker Illuminate does nothing", UloeMarks.LitLevel(far) == 2, "level " + UloeMarks.LitLevel(far));
             UloeMarks.Illuminate(hm, far, 3);
             yield return Wait(0.2f);
-            h0 = UloeUtil.Health(far);
+            h0 = ModKitUtil.Health(far);
             Hit(hm, far, 1f);
-            Check(route + "Illuminate 3 replaces it: 45%", Near(h0 - UloeUtil.Health(far), 1.45f) && UloeMarks.LitLevel(far) == 3, F(h0 - UloeUtil.Health(far)));
+            Check("Illuminate 3 replaces it: 45%", Near(h0 - ModKitUtil.Health(far), 1.45f) && UloeMarks.LitLevel(far) == 3, F(h0 - ModKitUtil.Health(far)));
             yield return Wait(UloeData.MarkSeconds[2] + 0.5f);
-            h0 = UloeUtil.Health(far);
-            if (UloeUtil.Alive(far))
+            h0 = ModKitUtil.Health(far);
+            if (ModKitUtil.Alive(far))
             {
                 Hit(hm, far, 1f);
-                Check(route + "Illuminate wears off", Near(h0 - UloeUtil.Health(far), 1f) && UloeMarks.LitLevel(far) == 0, F(h0 - UloeUtil.Health(far)));
+                Check("Illuminate wears off", Near(h0 - ModKitUtil.Health(far), 1f) && UloeMarks.LitLevel(far) == 0, F(h0 - ModKitUtil.Health(far)));
             }
-            // The route question: does a stock script's UniTask, cancelled when its foe falls, log an exception?
             yield return FarFoe("Enemy_Dagger", slot);
             far = slot[0];
             if (far != null)
             {
-                cancelled = 0;
                 UloeMarks.Blind(hm, far, 1);
                 UloeMarks.Illuminate(hm, far, 1);
                 yield return Wait(0.2f);
                 Kill(far);
                 yield return Wait(1f);
-                Log("INFO " + route + "a marked foe falling logged " + cancelled + " OperationCanceledException (a stock script's cancelled delay)");
-                Check(route + "a marked foe falling leaves no mark behind", UloeMarks.BlindLevel(far) == 0);
+                Check("a marked foe falling leaves no mark behind", UloeMarks.BlindLevel(far) == 0);
             }
         }
-        UloeMarks.Stock = UloeData.StockMarks;
-        Log("route in use: " + (UloeMarks.Stock ? "stock scripts" : "own"));
         ClearFoes();
 
         // 5. The Magnifying Glass.
         {
             yield return Wait(2f);
-            float d0 = UloeUtil.Stat(glass.Master, "Damage", 0f) / (1f + glass.Multi);
+            float d0 = ModKitUtil.Stat(glass.Master, "Damage", 0f) / (1f + glass.Multi);
             Check("the Glass's base Damage is at least 2", d0 > 1.9f, "Damage " + F(d0) + ", Light's share " + F(glass.Multi));
             test.Feed(glass.Master, 5f);
             yield return Wait(0.6f);
             float light = glass.Light;
-            Check("Light raises its Damage: +20% a Light", Near(UloeUtil.Stat(glass.Master, "Damage", 0f), d0 * (1f + UloeData.GlassPerLight * light), 0.02f), "Light " + F(light) + ", Damage " + F(UloeUtil.Stat(glass.Master, "Damage", 0f)));
+            Check("Light raises its Damage: +20% a Light", Near(ModKitUtil.Stat(glass.Master, "Damage", 0f), d0 * (1f + UloeData.GlassPerLight * light), 0.02f), "Light " + F(light) + ", Damage " + F(ModKitUtil.Stat(glass.Master, "Damage", 0f)));
             int beamsBefore = glass.Beams;     // before the foe: the Glass can fire as it lands
             yield return Foe("Enemy_Dagger", glass.Pos, 3.5f, 1.5f, slot);
             Entity_Master foe = slot[0];
             if (foe != null)
             {
-                float h0 = UloeUtil.Health(foe);
-                yield return Until(() => glass.Beams > beamsBefore + 1 || !UloeUtil.Alive(foe), 6f);
+                float h0 = ModKitUtil.Health(foe);
+                yield return Until(() => glass.Beams > beamsBefore + 1 || !ModKitUtil.Alive(foe), 6f);
                 yield return Wait(0.3f);
                 Check("the Glass beams the foe in Range", glass.Beams > beamsBefore, glass.Beams + " beams");
-                Check("a beam hurts it", !UloeUtil.Alive(foe) || UloeUtil.Health(foe) < h0, F(h0) + " -> " + F(UloeUtil.Alive(foe) ? UloeUtil.Health(foe) : 0f));
-                Check("the Glass's target is the nearest foe", glass.Target == foe || !UloeUtil.Alive(foe));
+                Check("a beam hurts it", !ModKitUtil.Alive(foe) || ModKitUtil.Health(foe) < h0, F(h0) + " -> " + F(ModKitUtil.Alive(foe) ? ModKitUtil.Health(foe) : 0f));
+                Check("the Glass's target is the nearest foe", glass.Target == foe || !ModKitUtil.Alive(foe));
 #if ULOE_SHOTS
                 yield return UloeShots.Close("glass_beam", glass.Pos, 5f);
 #endif
@@ -716,18 +691,18 @@ public static class UloeSelfTest
             if (foe != null)
             {
                 int beams = glass.Beams;
-                yield return Until(() => glass.Beams >= beams + 4 || !UloeUtil.Alive(foe), 10f);
-                if (UloeUtil.Alive(foe))
+                yield return Until(() => glass.Beams >= beams + 4 || !ModKitUtil.Alive(foe), 10f);
+                if (ModKitUtil.Alive(foe))
                 {
                     float want = (glass.Beams - beams - 1) * glass.Param("Ramp_Base", 0.12f);
                     Check("Burning Point: +12% a beam on the same target", Near(glass.Ramp, want, 0.13f) && glass.Ramp > 0f, "ramp " + F(glass.Ramp) + " after " + (glass.Beams - beams) + " beams");
-                    Check("... on the Damage stat", UloeUtil.Stat(glass.Master, "Damage", 0f) > d0 * (1f + glass.Ramp * 0.9f), "Damage " + F(UloeUtil.Stat(glass.Master, "Damage", 0f)));
+                    Check("... on the Damage stat", ModKitUtil.Stat(glass.Master, "Damage", 0f) > d0 * (1f + glass.Ramp * 0.9f), "Damage " + F(ModKitUtil.Stat(glass.Master, "Damage", 0f)));
                     int resets = glass.Resets;
                     Kill(foe);
                     yield return Foe("Enemy_Dagger", glass.Pos, 3.5f, 1.5f, slot);
                     Entity_Master next = slot[0];
                     int b2 = glass.Beams;
-                    yield return Until(() => glass.Beams > b2 || next == null || !UloeUtil.Alive(next), 4f);
+                    yield return Until(() => glass.Beams > b2 || next == null || !ModKitUtil.Alive(next), 4f);
                     Check("a new target starts over", glass.Resets == resets + 1 && glass.Ramp <= glass.Param("Ramp_Base", 0.12f) + 0.001f, "resets " + glass.Resets + ", ramp " + F(glass.Ramp));
                 }
                 else ModKitTest.Setup("Burning Point's ramp", "the Aegis fell first");
@@ -760,15 +735,15 @@ public static class UloeSelfTest
             {
                 Check("a Photon fights with the game's melee AI", ph.Master.GetComponent<Entity_Ai_Mob_Combat>() != null);
                 Check("a Photon is visible to clients", ph.Master.Client != null && ph.Master.Client.Beingobject != null);
-                Check("Photon stats", Near(UloeUtil.MaxHealth(ph.Master), 8f) && Near(UloeUtil.Stat(ph.Master, "Speed", 0), 1.75f) && Near(UloeUtil.Stat(ph.Master, "Damage", 0), 0.5f),
-                    "health " + F(UloeUtil.MaxHealth(ph.Master)) + ", speed " + F(UloeUtil.Stat(ph.Master, "Speed", 0)) + ", damage " + F(UloeUtil.Stat(ph.Master, "Damage", 0)));
+                Check("Photon stats", Near(ModKitUtil.MaxHealth(ph.Master), 8f) && Near(ModKitUtil.Stat(ph.Master, "Speed", 0), 1.75f) && Near(ModKitUtil.Stat(ph.Master, "Damage", 0), 0.5f),
+                    "health " + F(ModKitUtil.MaxHealth(ph.Master)) + ", speed " + F(ModKitUtil.Stat(ph.Master, "Speed", 0)) + ", damage " + F(ModKitUtil.Stat(ph.Master, "Damage", 0)));
                 float maxLight = 0f, maxOff = 0f;
                 float until = Time.time + 16f;
                 while (Time.time < until)
                 {
                     maxLight = Mathf.Max(maxLight, bank.Light);
                     foreach (UloePhotonBrain p in PhotonsOf(bank))
-                        maxOff = Mathf.Max(maxOff, UloeUtil.Flat(p.Pos, bank.Pos));
+                        maxOff = Mathf.Max(maxOff, ModKitUtil.Flat(p.Pos, bank.Pos));
                     yield return Wait(0.4f);
                 }
                 Check("a Photon wanders", ph.Walks > 0 && ph.Travelled > 0.5f, ph.Walks + " walks, " + ph.Visits + " visits, " + F(ph.Travelled) + " tiles");
@@ -808,11 +783,11 @@ public static class UloeSelfTest
                             marked += p.Marked;
                             if (p.Target == foe) drawn = true;
                         }
-                        return (marked > 0 && drawn) || !UloeUtil.Alive(foe);
+                        return (marked > 0 && drawn) || !ModKitUtil.Alive(foe);
                     }, 15f);
-                    if (marked > 0 && UloeUtil.Alive(foe))
+                    if (marked > 0 && ModKitUtil.Alive(foe))
                         Check("a Photon's hit Blinds and Illuminates, level 1", UloeMarks.BlindLevel(foe) >= 1 && UloeMarks.LitLevel(foe) >= 1, "Blind " + UloeMarks.BlindLevel(foe) + ", Illuminate " + UloeMarks.LitLevel(foe));
-                    else ModKitTest.Setup("a Photon's hit", "no hit in 15 s (fell " + !UloeUtil.Alive(foe) + ")");
+                    else ModKitTest.Setup("a Photon's hit", "no hit in 15 s (fell " + !ModKitUtil.Alive(foe) + ")");
                     int walks = 0;
                     foreach (UloePhotonBrain p in PhotonsOf(bank)) walks += p.Fights;
                     Check("a Photon was drawn to the foe", drawn, walks + " walks toward a foe");
@@ -831,21 +806,21 @@ public static class UloeSelfTest
                     foe = slot[0];
                     if (foe != null)
                         yield return Wait(0.3f);   // its hit box reaches the physics scene that Entityarea searches (Spool round 1b; round 1 here)
-                    if (foe != null && ph != null && ph.Master != null && UloeUtil.Alive(ph.Master))
+                    if (foe != null && ph != null && ph.Master != null && ModKitUtil.Alive(ph.Master))
                     {
-                        float h0 = UloeUtil.Health(foe);
+                        float h0 = ModKitUtil.Health(foe);
                         int bursts = UloeServer.Bursts;
-                        float apart = UloeUtil.Flat(UloeUtil.Pos(foe), ph.Pos);
-                        bool inReach = UloeUtil.FoesNear(bank.Master, ph.Pos, bank.Param("Burstradius_Base", 1.5f)).Contains(foe);
+                        float apart = ModKitUtil.Flat(ModKitUtil.Pos(foe), ph.Pos);
+                        bool inReach = ModKitUtil.FoesNear(bank.Master, ph.Pos, bank.Param("Burstradius_Base", 1.5f)).Contains(foe);
                         Kill(ph.Master);
                         yield return Wait(0.3f);
                         Check("a falling Photon bursts", UloeServer.Bursts == bursts + 1);
-                        if (inReach && UloeUtil.Alive(foe))
+                        if (inReach && ModKitUtil.Alive(foe))
                         {
-                            Check("... hurting foes around it", h0 - UloeUtil.Health(foe) >= 3f - 0.01f, F(h0) + " -> " + F(UloeUtil.Health(foe)) + ", " + F(apart) + " apart");
+                            Check("... hurting foes around it", h0 - ModKitUtil.Health(foe) >= 3f - 0.01f, F(h0) + " -> " + F(ModKitUtil.Health(foe)) + ", " + F(apart) + " apart");
                             Check("... with Blind 2 and Illuminate 2", UloeMarks.BlindLevel(foe) == 2 && UloeMarks.LitLevel(foe) == 2, "Blind " + UloeMarks.BlindLevel(foe) + ", Illuminate " + UloeMarks.LitLevel(foe));
                         }
-                        else ModKitTest.Setup("the burst's numbers", "the foe stood " + F(apart) + " from it, in its reach " + inReach + ", fell " + !UloeUtil.Alive(foe));
+                        else ModKitTest.Setup("the burst's numbers", "the foe stood " + F(apart) + " from it, in its reach " + inReach + ", fell " + !ModKitUtil.Alive(foe));
                     }
                     else ModKitTest.Setup("Short Circuit", "no Dagger could spawn by the Photon");
                 }
@@ -891,7 +866,7 @@ public static class UloeSelfTest
                     yield return Wait(0.1f);
                     Check("an unlit Mirror does nothing to what hits it", UloeMarks.BlindLevel(far) == 0 && mirror.Flashes == 0, "Blind " + UloeMarks.BlindLevel(far) + ", flashes " + mirror.Flashes);
                 }
-                float h0 = UloeUtil.Health(mirror.Master);
+                float h0 = ModKitUtil.Health(mirror.Master);
                 float[] lights = { 1f, 3f, 6f };
                 int[] levels = { 1, 2, 3 };
                 for (int i = 0; i < 3; i++)
@@ -899,14 +874,14 @@ public static class UloeSelfTest
                     lightA.Feed(mirror.Master, lights[i]);
                     yield return Wait(0.15f);
                     Check("a Mirror at Light " + F(mirror.Light) + " has level " + levels[i], mirror.Level >= levels[i], "level " + mirror.Level);
-                    if (UloeUtil.Alive(far))
+                    if (ModKitUtil.Alive(far))
                     {
                         Hit(far, mirror.Master, 2f);
                         yield return Wait(0.1f);
                         Check("... and Blinds what hits it at that level", UloeMarks.BlindLevel(far) >= levels[i], "Blind " + UloeMarks.BlindLevel(far));
                     }
                 }
-                Check("a Mirror takes its hits", UloeUtil.Health(mirror.Master) < h0, F(h0) + " -> " + F(UloeUtil.Health(mirror.Master)));
+                Check("a Mirror takes its hits", ModKitUtil.Health(mirror.Master) < h0, F(h0) + " -> " + F(ModKitUtil.Health(mirror.Master)));
                 Kill(far);
                 yield return Wait(0.3f);
             }
@@ -952,24 +927,24 @@ public static class UloeSelfTest
                 yield return Wait(0.2f);
                 float chance = UloeMarks.BlindLevel(far) * 0.2f;
                 UloeMirrorBrain.ForceRoll = chance - 0.01f;
-                float h1 = UloeUtil.Health(mirror.Master);
+                float h1 = ModKitUtil.Health(mirror.Master);
                 int nulled = mirror.Nullified;
                 Hit(far, mirror.Master, 2f);
                 yield return Wait(0.1f);
-                Check("Glare: within N x 20% the hit does nothing", mirror.Nullified == nulled + 1 && Near(UloeUtil.Health(mirror.Master), h1), "chance " + F(chance) + ", " + F(h1) + " -> " + F(UloeUtil.Health(mirror.Master)));
+                Check("Glare: within N x 20% the hit does nothing", mirror.Nullified == nulled + 1 && Near(ModKitUtil.Health(mirror.Master), h1), "chance " + F(chance) + ", " + F(h1) + " -> " + F(ModKitUtil.Health(mirror.Master)));
                 UloeMirrorBrain.ForceRoll = chance + 0.01f;
-                h1 = UloeUtil.Health(mirror.Master);
+                h1 = ModKitUtil.Health(mirror.Master);
                 nulled = mirror.Nullified;
                 Hit(far, mirror.Master, 2f);
                 yield return Wait(0.1f);
-                Check("Glare: beyond it the hit lands", mirror.Nullified == nulled && UloeUtil.Health(mirror.Master) < h1, F(h1) + " -> " + F(UloeUtil.Health(mirror.Master)));
+                Check("Glare: beyond it the hit lands", mirror.Nullified == nulled && ModKitUtil.Health(mirror.Master) < h1, F(h1) + " -> " + F(ModKitUtil.Health(mirror.Master)));
                 UloeMirrorBrain.ForceRoll = -1f;
             }
             else ModKitTest.Setup("Glare", "no foe could stand by the enemy core");
             // Bounce Card: B relays; A (no Bounce Card) receives.
             yield return Upgrade(mirrorB, "Bounce3", owner);
             Check("Bounce Card", Has(mirrorB, "Bounce3"));
-            if (UloeUtil.Flat(mirror.Pos, mirrorB.Pos) <= 3f)
+            if (ModKitUtil.Flat(mirror.Pos, mirrorB.Pos) <= 3f)
             {
                 yield return Wait(UloeData.LightHold + 0.3f);
                 float before = mirror.Light;
@@ -995,7 +970,7 @@ public static class UloeSelfTest
                 }
                 else ModKitTest.Setup("two Bounce Cards", "no third Mirror");
             }
-            else ModKitTest.Setup("Bounce Card", "the Mirrors stand " + F(UloeUtil.Flat(mirror.Pos, mirrorB.Pos)) + " apart");
+            else ModKitTest.Setup("Bounce Card", "the Mirrors stand " + F(ModKitUtil.Flat(mirror.Pos, mirrorB.Pos)) + " apart");
 #if ULOE_SHOTS
             yield return UloeShots.Close("mirrors", mirror.Pos, 5f);
 #endif
@@ -1007,8 +982,8 @@ public static class UloeSelfTest
         if (node != null)
         {
             yield return Near(hm, node, 3f);
-            Log("the node: Health " + F(UloeUtil.Health(node)) + ", Healthresource " + F(UloeUtil.Stat(node, "Healthresource", 0f)));
-            Vector3 fat = ReachSpot(hm, UloeUtil.Pos(node), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
+            Log("the node: Health " + F(ModKitUtil.Health(node)) + ", Healthresource " + F(ModKitUtil.Stat(node, "Healthresource", 0f)));
+            Vector3 fat = ReachSpot(hm, ModKitUtil.Pos(node), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
             yellow = Res(owner, "Yellowaura");
             if (float.IsNaN(fat.x))
                 ModKitTest.Setup("the Flood Light", "no tile the vessel can get to beside the node");
@@ -1024,26 +999,26 @@ public static class UloeSelfTest
                 float spentYellow = yellow - Res(owner, "Yellowaura");
                 Check("a Flood Light costs Yellow 40", spentYellow > 25f && spentYellow <= 40.01f, "spent " + F(spentYellow));
                 yield return Wait(UloeData.LightTick + 0.5f);
-                Check("it plugs into the node", flood.Node == node || UloeUtil.IsNode(flood.Node), flood.Node != null ? UloeUtil.BeingName(flood.Node) : "none");
+                Check("it plugs into the node", flood.Node == node || UloeUtil.IsNode(flood.Node), flood.Node != null ? ModKitUtil.BeingName(flood.Node) : "none");
                 Check("its Light comes from Light out and the node's aura", flood.Node != null && Near(flood.Output, 2f + Mathf.Min(UloeData.FloodNodeMax, UloeData.FloodNodePerAura * UloeUtil.NodeAura(flood.Node))), "Output " + F(flood.Output));
                 int strikes = flood.Strikes;
                 yield return Wait(3.2f);
                 Check("it mines the node", flood.Strikes > strikes, (flood.Strikes - strikes) + " strikes in 3.2 s");
                 yield return Until(() => flood.Aimed != null, 2f);
-                Check("with nothing picked it aims at the nearest building", flood.Aimed != null, flood.Aimed != null ? UloeUtil.BeingName(flood.Aimed) + " " + F(UloeUtil.Flat(UloeUtil.Pos(flood.Aimed), flood.Pos)) + " away" : "none in reach");
+                Check("with nothing picked it aims at the nearest building", flood.Aimed != null, flood.Aimed != null ? ModKitUtil.BeingName(flood.Aimed) + " " + F(ModKitUtil.Flat(ModKitUtil.Pos(flood.Aimed), flood.Pos)) + " away" : "none in reach");
                 if (flood.Aimed != null)
                 {
                     yield return Wait(UloeData.LightTick + 0.1f);
-                    float aimedLight = UloeUtil.Stat(flood.Aimed, "Light", 0f);
+                    float aimedLight = ModKitUtil.Stat(flood.Aimed, "Light", 0f);
                     Check("... and lights it", aimedLight >= flood.Output - 0.01f, "Light " + F(aimedLight) + ", Output " + F(flood.Output));
                 }
                 // AIM: a pick, and two refusals.
                 UloeBuilding other = null;
                 foreach (UloeBuilding b in UloeServer.Buildings)
-                    if (b != flood && b.Started && b.Master != flood.Aimed && UloeUtil.Flat(b.Pos, flood.Pos) <= flood.AimReach) other = b;
+                    if (b != flood && b.Started && b.Master != flood.Aimed && ModKitUtil.Flat(b.Pos, flood.Pos) <= flood.AimReach) other = b;
                 UloeBuilding tooFar = null;
                 foreach (UloeBuilding b in UloeServer.Buildings)
-                    if (b != flood && b.Started && UloeUtil.Flat(b.Pos, flood.Pos) > flood.AimReach + 0.6f) tooFar = b;
+                    if (b != flood && b.Started && ModKitUtil.Flat(b.Pos, flood.Pos) > flood.AimReach + 0.6f) tooFar = b;
                 if (other != null)
                 {
                     Send(flood.Master, UloeData.AimLink, Ref(other.Master));
@@ -1073,7 +1048,7 @@ public static class UloeSelfTest
                 }
                 else ModKitTest.Setup("AIM's reach", "no building beyond it");
                 // A Photon near the line follows it.
-                if (bank != null && PhotonsOf(bank).Count > 0 && UloeUtil.Flat(bank.Pos, flood.Pos) <= flood.AimReach)
+                if (bank != null && PhotonsOf(bank).Count > 0 && ModKitUtil.Flat(bank.Pos, flood.Pos) <= flood.AimReach)
                 {
                     Send(flood.Master, UloeData.AimLink, Ref(bank.Master));
                     yield return Wait(0.3f);
@@ -1085,7 +1060,7 @@ public static class UloeSelfTest
                 yield return UloeShots.Close("flood", flood.Pos, 5f);
 #endif
                 // Long Throw on a second one, Wide Flood on the first.
-                Vector3 fat2 = ReachSpot(hm, UloeUtil.Pos(node), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
+                Vector3 fat2 = ReachSpot(hm, ModKitUtil.Pos(node), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
                 if (!float.IsNaN(fat2.x))
                 {
                     yield return Build(hm, UloeData.Flood, fat2, known, got);
@@ -1099,8 +1074,8 @@ public static class UloeSelfTest
                 float wide = flood.Output * flood.Param("Wide_Base", 0.6f), radius = flood.Param("Wideradius_Base", 3.5f);
                 List<string> dim = new List<string>();
                 foreach (UloeBuilding b in UloeServer.Buildings)
-                    if (b != flood && b.Started && UloeUtil.Flat(b.Pos, flood.Pos) <= radius && UloeUtil.Stat(b.Master, "Light", 0f) < wide - 0.01f)
-                        dim.Add(b.Def.Id + " " + F(UloeUtil.Stat(b.Master, "Light", 0f)));
+                    if (b != flood && b.Started && ModKitUtil.Flat(b.Pos, flood.Pos) <= radius && ModKitUtil.Stat(b.Master, "Light", 0f) < wide - 0.01f)
+                        dim.Add(b.Def.Id + " " + F(ModKitUtil.Stat(b.Master, "Light", 0f)));
                 Check("Wide Flood lights all around it", dim.Count == 0, "share " + F(wide) + " within " + F(radius) + (dim.Count > 0 ? ", dim: " + string.Join(", ", dim.ToArray()) : ""));
                 if (flood2 != null)
                 {
@@ -1116,10 +1091,10 @@ public static class UloeSelfTest
                             if (b != flood2 && b.Started && UloeUtil.SegmentDistance(b.Pos, flood2.Pos, flood2.LineEnd) <= flood2.Param("Linewidth_Base", 0.6f))
                             {
                                 onLine++;
-                                if (UloeUtil.Stat(b.Master, "Light", 0f) < line - 0.01f) off.Add(b.Def.Id);
+                                if (ModKitUtil.Stat(b.Master, "Light", 0f) < line - 0.01f) off.Add(b.Def.Id);
                             }
                         Check("Long Throw lights every building on its line", onLine > 0 && off.Count == 0, onLine + " on the line, share " + F(line) + (off.Count > 0 ? ", dim: " + string.Join(", ", off.ToArray()) : ""));
-                        Check("Long Throw's line runs 8 tiles", Near(UloeUtil.Flat(flood2.LineEnd, flood2.Pos), flood2.Param("Linereach_Base", 8f), 0.1f), F(UloeUtil.Flat(flood2.LineEnd, flood2.Pos)));
+                        Check("Long Throw's line runs 8 tiles", Near(ModKitUtil.Flat(flood2.LineEnd, flood2.Pos), flood2.Param("Linereach_Base", 8f), 0.1f), F(ModKitUtil.Flat(flood2.LineEnd, flood2.Pos)));
                     }
                     else ModKitTest.Setup("Long Throw", "nothing in its reach, node " + UloeUtil.IsNode(flood2.Node));
                 }
@@ -1167,7 +1142,7 @@ public static class UloeSelfTest
                     // A spark landing, as Projectile_Master.Interact delivers it.
                     Helper_Entitytools.Interacthurt(hm, far, new Dictionary<string, float>());
                     yield return Wait(0.2f);
-                    if (UloeUtil.Alive(far))
+                    if (ModKitUtil.Alive(far))
                         Check("Flash Bulb rank " + r, UloeMarks.LitLevel(far) >= UloeData.FlashLit[r] && UloeMarks.BlindLevel(far) >= UloeData.FlashBlind[r], "Illuminate " + UloeMarks.LitLevel(far) + ", Blind " + UloeMarks.BlindLevel(far));
                     Kill(far);
                     yield return Wait(0.2f);
@@ -1212,7 +1187,7 @@ public static class UloeSelfTest
             Check("journal: the Bank page links its upgrade", upgradePage != null && upgradePage.name.Contains("Uloebank"), upgradePage != null ? upgradePage.name : "none");
             Check("journal: the Bank page links the Photon", unitPage != null && unitPage.name.StartsWith("Log_Mob_Uloe"), unitPage != null ? unitPage.name : "none");
             List<Logobject> vesselPages = new List<Logobject>();
-            foreach (UnityEngine.Object o in UloeUtil.Folder("Hero").Values)
+            foreach (UnityEngine.Object o in ModKitUtil.Folder("Hero").Values)
                 if (o is Heroentryobject && ((Heroentryobject)o).Log != null) vesselPages.Add(((Heroentryobject)o).Log);
             int complete = 0;
             List<string> broken = new List<string>();
@@ -1244,7 +1219,6 @@ public static class UloeSelfTest
 #endif
         }
 
-        Application.logMessageReceived -= OnLog;
         Log("counts: beams seen " + UloeClient.Beams + ", links drawn " + UloeClient.Linksdrawn + ", blinds " + UloeMarks.Blinds + ", illuminations " + UloeMarks.Illuminations + ", shines " + UloeServer.Shines + ", bursts " + UloeServer.Bursts);
         freeze = false;
         Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups);

@@ -14,12 +14,12 @@ public static class ArgoJournal
             HeroId = ArgoData.Hero, Template = template, Hero = ArgoContent.HeroBeing.Entity,
             Rule = ArgoContent.HeroBeing.Entity.Upgradesinit.Count > 0 ? ArgoContent.HeroBeing.Entity.Upgradesinit[0] : null,
             Title = ArgoData.LogTitle, Lore = ArgoData.LogDesc, Origin = "Argo mod",
-            Portrait = Portrait(), Tab = ArgoAssets.Single("Argotabicon", 32), Accent = ArgoData.Color,
+            Portrait = Portrait(), Tab = ModKitAssets.Single("Argotabicon", 32), Accent = ArgoData.Color,
         };
         foreach (KeyValuePair<string, string> kv in new Dictionary<string, string>
         {
-            { "Projcount", "Pellets" }, { "Spread", "Cone" }, { "Pierce", "Pierce" }, { "Stagger", "Stagger" }, { "Broadside", "Broadside Every" },
-            { "Bleedticks", "Bleed Ticks" }, { "Bleed", "Bleed Damage" }, { "Root", "Hold" }, { "Whaler", "Full Bonus At Health" }, { "Twin", "Second Harpoon After" },
+            { "Projcount", "Pellets" }, { "Spread", "Cone" }, { "Pierce", "Pierce" }, { "Broadside", "Broadside Every" },
+            { "Root", "Hold" }, { "Whaler", "Full Bonus At Health" }, { "Twin", "Second Harpoon After" },
             { "Lance", "Lance Every" }, { "Nautspeed", "Naut Speed" }, { "Repair", "Repair" }, { "Tunerange", "Tuned Range" },
             { "Bulkhead", "Damage Taken Cut" }, { "Divebell", "Dive" }, { "Tuneboost", "Tuning Boost" }, { "Fathommax", "Deepest Fathom" }, { "Tremor", "Tremor Radius" },
             { "Gusher", "Gusher Strikes" }, { "Mantle", "Quake Pin" }, { "Debuffbonus", "Bonus vs Slowed or Pinned" },
@@ -64,7 +64,7 @@ public static class ArgoJournal
                     if (!ArgoContent.Beings.TryGetValue(c.Being, out nb)) continue;
                     jb.Units.Add(new ModKitJournalUnit
                     {
-                        Id = c.Being, Title = c.Name, Entity = nb.Entity, Look = ArgoAssets.Single("Naut_" + c.Name + "-Sheet", 16),
+                        Id = c.Being, Title = c.Name, Entity = nb.Entity, Look = ModKitAssets.Single("Naut_" + c.Name + "-Sheet", 16),
                         Desc = c.Name + " wears the " + c.Light + ". " + ArgoData.NautJournal,
                     });
                 }
@@ -82,7 +82,7 @@ public static class ArgoJournal
     // An idle frame, front facing right, like the shipped vessel pages (Smacky4-Sheet_0, Snosnoidle-Sheet_3).
     static Sprite Portrait()
     {
-        List<Sprite> f = ArgoAssets.Frames("Argo-Sheet", 32, new Vector2(0.5f, 0.5f));
+        List<Sprite> f = ModKitAssets.Frames("Argo-Sheet", 32, new Vector2(0.5f, 0.5f));
         return f.Count > 0 ? f[0] : null;
     }
 }

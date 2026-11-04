@@ -33,13 +33,13 @@ public class YosselePachiraBrain : YosseleBuilding
         {
             nextMend = Time.time + 0.5f;
             float heal = Param("Sustain_Heal", 0.5f) * ores.Count * Mathf.Max(1, Growth) * 0.5f;
-            if (heal > 0f && YosseleUtil.Health(Master) < YosseleUtil.MaxHealth(Master) - 0.01f)
+            if (heal > 0f && ModKitUtil.Health(Master) < ModKitUtil.MaxHealth(Master) - 0.01f)
             {
-                YosseleUtil.Heal(Master, Master, heal);
+                ModKitUtil.Heal(Master, Master, heal);
                 if (Time.time >= nextMendLook)
                 {
                     nextMendLook = Time.time + 2f;
-                    YosseleUtil.Vis(Master, "Yossele_Mend", Pos, 0f);
+                    ModKitUtil.Vis(Master, "Yossele_Mend", Pos, 0f);
                 }
             }
         }
@@ -67,7 +67,7 @@ public class YosselePachiraBrain : YosseleBuilding
         if (Mathf.Approximately(bonus, lastBonus) && speedMod != null && !speedMod.Dead)
             return;
         lastBonus = bonus;
-        speedMod = YosseleUtil.Keep(Master, speedMod, "Attackspeed", Helper_Entitytools.Modtypes.Multi, bonus);
+        speedMod = ModKitUtil.Keep(Master, speedMod, "Attackspeed", Helper_Entitytools.Modtypes.Multi, bonus);
     }
 
     // Other Pachira Saplings within Forest_Range, anyone's.
@@ -76,7 +76,7 @@ public class YosselePachiraBrain : YosseleBuilding
         float reach = Param("Forest_Range", 4f);
         int n = 0;
         foreach (YosseleBuilding b in YosseleServer.Buildings)
-            if (b != this && b is YosselePachiraBrain && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Flat(b.Pos, Pos) <= reach)
+            if (b != this && b is YosselePachiraBrain && b.Master != null && ModKitUtil.Alive(b.Master) && ModKitUtil.Flat(b.Pos, Pos) <= reach)
                 n++;
         return n;
     }
@@ -84,7 +84,7 @@ public class YosselePachiraBrain : YosseleBuilding
     // A foe fell (YosseleServer): Spontaneous Mulch, if it fell within Range.
     public void FoeFell(Vector3 at)
     {
-        if (!Has("Mulch") || YosseleUtil.Flat(at, Pos) > Stat("Range", 2.5f) + 0.3f)
+        if (!Has("Mulch") || ModKitUtil.Flat(at, Pos) > Stat("Range", 2.5f) + 0.3f)
             return;
         mulchUntil = Time.time + Param("Mulch_Last", 5f);
         Mulched++;
@@ -95,10 +95,10 @@ public class YosselePachiraBrain : YosseleBuilding
     {
         List<Entity_Master> list = new List<Entity_Master>();
         float range = Stat("Range", 2.5f);
-        foreach (Entity_Master e in YosseleUtil.Area(Pos, range + 0.3f, YosseleUtil.Tagged("Resource")))
-            if (e != null && YosseleUtil.Alive(e) && e.Statsserver != null && e.Statsserver.ContainsKey("Healthresource") && YosseleUtil.Flat(YosseleUtil.Pos(e), Pos) <= range + 0.3f)
+        foreach (Entity_Master e in ModKitUtil.Area(Pos, range + 0.3f, ModKitUtil.Tagged("Resource")))
+            if (e != null && ModKitUtil.Alive(e) && e.Statsserver != null && e.Statsserver.ContainsKey("Healthresource") && ModKitUtil.Flat(ModKitUtil.Pos(e), Pos) <= range + 0.3f)
                 list.Add(e);
-        list.Sort((a, b) => YosseleUtil.Flat(YosseleUtil.Pos(a), Pos).CompareTo(YosseleUtil.Flat(YosseleUtil.Pos(b), Pos)));
+        list.Sort((a, b) => ModKitUtil.Flat(ModKitUtil.Pos(a), Pos).CompareTo(ModKitUtil.Flat(ModKitUtil.Pos(b), Pos)));
         return list;
     }
 
@@ -107,13 +107,13 @@ public class YosselePachiraBrain : YosseleBuilding
         // Ore takes min(Damage, 1) + Damageresource per strike and pays every player when it reaches 0, then refills.
         float hit = 1f + Mathf.Max(0f, Stat("Damage", 1f) - 1f);
         Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", 1f }, { "Damagemulti", 1f }, { "Damageresource", hit - 1f } };
-        float before = YosseleUtil.Stat(ore, "Healthresource", -1f);
-        Vector3 at = YosseleUtil.Pos(ore);
+        float before = ModKitUtil.Stat(ore, "Healthresource", -1f);
+        Vector3 at = ModKitUtil.Pos(ore);
         Helper_Entitytools.Interact(Master, ore, "Hurt", d);
         Strikes++;
         Master.Radio.Vis_ClientRpc("Yossele_Dig", at, 0f);
-        float after = YosseleUtil.Stat(ore, "Healthresource", -1f);
-        if (Paid(before, after, hit, YosseleUtil.Alive(ore)))
+        float after = ModKitUtil.Stat(ore, "Healthresource", -1f);
+        if (Paid(before, after, hit, ModKitUtil.Alive(ore)))
         {
             Payouts++;
             NodeEmptied(ore, at);
@@ -135,7 +135,7 @@ public class YosselePachiraBrain : YosseleBuilding
 
     protected override void OnGrowth()
     {
-        growRange = YosseleUtil.Keep(Master, growRange, "Range", Helper_Entitytools.Modtypes.Add, YosseleData.PachiraGrowRange * Growth);
+        growRange = ModKitUtil.Keep(Master, growRange, "Range", Helper_Entitytools.Modtypes.Add, YosseleData.PachiraGrowRange * Growth);
         lastBonus = -1f;
     }
 
@@ -155,7 +155,7 @@ public class YosselePachiraBrain : YosseleBuilding
         int i = Array.IndexOf(YosseleData.Colours, Colour);
         Colour = YosseleData.Colours[(i + 1) % YosseleData.Colours.Length];
         SyncColour();
-        YosseleUtil.Vis(Master, "Yossele_Colour", Pos, Array.IndexOf(YosseleData.Colours, Colour));
+        ModKitUtil.Vis(Master, "Yossele_Colour", Pos, Array.IndexOf(YosseleData.Colours, Colour));
     }
 
     // The button draws the colour from the command's Goalstring (synced); run: false, so it isn't pressed again.
@@ -180,7 +180,7 @@ public class YosselePachiraBrain : YosseleBuilding
             spec = "Redaura=" + Num(each) + ";Blueaura=" + Num(each) + ";Yellowaura=" + Num(each);
         else
             spec = Colour + "=" + Num(3f * each * Param("Grafted_Efficiency", 0.7f));
-        return YosseleUtil.Costs(spec);
+        return ModKitUtil.Costs(spec);
     }
 
     static string Num(float v) { return Mathf.Max(1f, Mathf.Round(v)).ToString(System.Globalization.CultureInfo.InvariantCulture); }
@@ -208,17 +208,17 @@ public class YosselePachiraBrain : YosseleBuilding
                 {
                     if (Mathf.Max(Mathf.Abs(dx), Mathf.Abs(dz)) != r)
                         continue;
-                    Genitem g = YosseleUtil.Tile(node + new Vector3(dx, 0f, dz));
+                    Genitem g = ModKitUtil.Tile(node + new Vector3(dx, 0f, dz));
                     if (g == null || Occupied(g))
                         continue;
-                    float dist = YosseleUtil.Flat(g.Position, Pos) + 0.01f * (Mathf.Abs(dx) + Mathf.Abs(dz));
+                    float dist = ModKitUtil.Flat(g.Position, Pos) + 0.01f * (Mathf.Abs(dx) + Mathf.Abs(dz));
                     if (dist < bestD)
                     {
                         bestD = dist;
                         best = g;
                     }
                 }
-        return best ?? YosseleUtil.Tile(node);
+        return best ?? ModKitUtil.Tile(node);
     }
 
     // A node or a building stands on it.
@@ -226,8 +226,8 @@ public class YosselePachiraBrain : YosseleBuilding
     {
         Vector3 c = g.Position + Vector3.up * 0.5f;
         foreach (string tag in new[] { "Resource", "Tower" })
-            foreach (Entity_Master e in YosseleUtil.Area(c, 0.8f, YosseleUtil.Tagged(tag)))
-                if (e != null && YosseleUtil.Alive(e) && YosseleUtil.Flat(YosseleUtil.Pos(e), g.Position) < 0.45f)
+            foreach (Entity_Master e in ModKitUtil.Area(c, 0.8f, ModKitUtil.Tagged(tag)))
+                if (e != null && ModKitUtil.Alive(e) && ModKitUtil.Flat(ModKitUtil.Pos(e), g.Position) < 0.45f)
                     return true;
         return false;
     }
@@ -262,7 +262,7 @@ public static class YosseleSoftening
         foreach (YosseleBuilding b in buildings)
         {
             YosselePachiraBrain p = b as YosselePachiraBrain;
-            if (p == null || !p.Started || p.Master == null || !YosseleUtil.Alive(p.Master) || !p.Has("Softening"))
+            if (p == null || !p.Started || p.Master == null || !ModKitUtil.Alive(p.Master) || !p.Has("Softening"))
                 continue;
             points = p.Param("Soften_Points", 1f);
             foreach (Entity_Master ore in p.Ores())
@@ -287,7 +287,7 @@ public static class YosseleSoftening
         foreach (Entity_Master ore in off)
         {
             if (ore != null)
-                YosseleUtil.Unmod(softened[ore]);
+                ModKitUtil.Unmod(softened[ore]);
             softened.Remove(ore);
         }
     }
@@ -330,7 +330,7 @@ public static class YosseleFruit
         }
         fruits.Add(new Fruit { Master = fruit, Pay = pay });
         Dropped++;
-        YosseleUtil.Vis(from.Master, "Yossele_Fruitdrop", at, 0f);
+        ModKitUtil.Vis(from.Master, "Yossele_Fruitdrop", at, 0f);
         return true;
     }
 
@@ -342,12 +342,12 @@ public static class YosseleFruit
         for (int i = fruits.Count - 1; i >= 0; i--)
         {
             Fruit f = fruits[i];
-            if (f.Master == null || !YosseleUtil.Alive(f.Master))
+            if (f.Master == null || !ModKitUtil.Alive(f.Master))
             {
                 fruits.RemoveAt(i);
                 continue;
             }
-            Entity_Master picker = Picker(YosseleUtil.Pos(f.Master));
+            Entity_Master picker = Picker(ModKitUtil.Pos(f.Master));
             if (picker == null)
                 continue;
             fruits.RemoveAt(i);
@@ -359,28 +359,28 @@ public static class YosseleFruit
     static Entity_Master Picker(Vector3 at)
     {
         foreach (string tag in new[] { "Hero", "Mob" })
-            foreach (Entity_Master e in YosseleUtil.Area(at, YosseleData.FruitReach + 0.3f, YosseleUtil.Tagged(tag)))
-                if (e != null && YosseleUtil.Alive(e) && !YosseleUtil.HasTag(e, "Enemy") && YosseleUtil.Flat(YosseleUtil.Pos(e), at) <= YosseleData.FruitReach
-                    && Mathf.Abs(YosseleUtil.Pos(e).y - at.y) < 1.2f)
+            foreach (Entity_Master e in ModKitUtil.Area(at, YosseleData.FruitReach + 0.3f, ModKitUtil.Tagged(tag)))
+                if (e != null && ModKitUtil.Alive(e) && !ModKitUtil.HasTag(e, "Enemy") && ModKitUtil.Flat(ModKitUtil.Pos(e), at) <= YosseleData.FruitReach
+                    && Mathf.Abs(ModKitUtil.Pos(e).y - at.y) < 1.2f)
                     return e;
         return null;
     }
 
     static void Pay(Fruit f, Entity_Master picker)
     {
-        long owner = YosseleUtil.Owner(picker);
+        long owner = ModKitUtil.Owner(picker);
         Helper_Resources.Giveresources(f.Pay, owner, Helper_Resources.Styles.Default);
         Picked++;
         List<string> parts = new List<string>();
         foreach (Link_Resourceset r in f.Pay) parts.Add(r.Name + " " + r.Amount);
-        LastPick = YosseleUtil.BeingName(picker) + " of player " + owner + ": " + YosseleUtil.Join(parts);
-        Vector3 at = YosseleUtil.Pos(f.Master);
-        YosseleUtil.Vis(f.Master, "Yossele_Fruitpick", at, 0f);
+        LastPick = ModKitUtil.BeingName(picker) + " of player " + owner + ": " + ModKitUtil.Join(parts);
+        Vector3 at = ModKitUtil.Pos(f.Master);
+        ModKitUtil.Vis(f.Master, "Yossele_Fruitpick", at, 0f);
         // A moment later, so the pick-up's look reaches every player before the fruit goes.
         Entity_Master fruit = f.Master;
         YosseleUtil.Later(YosseleMod.Instance, 0.15f, () =>
         {
-            if (fruit != null && fruit.Beingserver != null && YosseleUtil.Alive(fruit))
+            if (fruit != null && fruit.Beingserver != null && ModKitUtil.Alive(fruit))
                 Helper_Entitytools.Despawn(fruit.Beingserver, false, "Yossele fruit picked");
         });
     }

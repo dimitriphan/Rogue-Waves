@@ -151,7 +151,7 @@ public static class RWDifficulty
         {
             if (on.Count >= count)
                 break;
-            Upgradeproperties u = RWUtil.Load<Upgradeproperties>("Upgrade", name);
+            Upgradeproperties u = ModKitUtil.Load<Upgradeproperties>("Upgrade", name);
             if (u != null) on.Add(u);
             else RWLog.Once("no modifier " + name, "modifier " + name + " isn't loaded on this map: the next one stands in");
         }
