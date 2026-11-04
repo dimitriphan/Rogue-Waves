@@ -270,6 +270,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   button to the end screen, self-test 139/0 in game, with every part of the pack on at once as well; the foes part; Uloe; kit 1.7; the sea
   chart rebuilt on the base game's own art. 2026-11-03: the balance simulator re-run on the round's numbers
   (`docs/reports/BALANCE_RERUN_2026-11-03.md`, cloud only, no number changed): his own wall decides Spool's picks (Log).
+  2026-11-04: the missing upgrades of Yossele and Spool, against the base vessels' trees (`docs/reports/UPGRADE_GAPS_2026-11-04.md`,
+  cloud only, no mod or scope changed): Yossele needs one (Wood Wide Web, a trade); Spool needs 22, five of them fill the
+  studies' holes (Open questions 7).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -760,6 +763,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
+| 7 | The missing upgrades (`docs/reports/UPGRADE_GAPS_2026-11-04.md` §6): Spool's S2 Dyed in the Wool, S3/S4 damage, S1 Tacking Stitch, S5/S6 the wall, the §4 fill for scope `08`'s `! NEEDS !` lines; Yossele's Y1 Wood Wide Web; the Tin's UNTHREAD button | nothing is added until he picks; picked lines go into scopes `07`/`08` in his format |
 
 ### Phase 5 pieces
 
