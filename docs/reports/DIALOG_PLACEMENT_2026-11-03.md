@@ -42,15 +42,16 @@ Every line reads the rectangles at rest, once the slide has ended, and hovers ea
 | Round | Result | Log |
 | --- | --- | --- |
 | The quick round on the main menu: ten openings against stock, each card hovered, then 2, 3, 4, 5, 8, 12, 16 and 30 cards at 2560x1440, 1920x1080, 1280x720 and 1024x768, with a hover line longer than any the shop writes, each card answering a click | **70 pass, 0 fail** on the final code. An early try failed 5, at the small sizes: the fit-to-screen scale came from that | `RogueWavesMode_20261104_001449` |
-| The whole campaign with every part enabled: the Rogue Waves button with and without a saved campaign, New Campaign over a saved one, the Direction pick, the map vote, VENDCINT's shop, the Board, the vote to leave, and the stock Exit prompt back in its corner | **150 pass, 0 fail**. This ran before the stutter fix; the quick round ran after it | `RogueWavesMode_20261103_230023` |
-| Every part's release build, booted together | no exception, all enabled | the `-BootCheck` run at 23:05 |
+| The whole campaign with every part enabled: the Rogue Waves button with and without a saved campaign, New Campaign over a saved one, the Direction pick, the map vote, VENDCINT's shop, the Board, the vote to leave, and the stock Exit prompt back in its corner | **148 pass, 0 fail** on the merged code, with #66's Cardinal removals: 30 on sale, all go on with no error. The count moves by two with whether a run starts with a saved campaign: 150 before the stutter fix had one | `RogueWavesMode_20261104_003346` (before the fix, `RogueWavesMode_20261103_230023`) |
+| Every part's release build, booted together, on the merged code | no exception, all enabled | the `-BootCheck` run at 00:35 on 2026-11-04 |
 
 Exceptions in the campaign round are the stock ones of section 7 of the build report, in the same counts as that round (265 cancelled delays in Great Spear's effect, 13 `Newscene` writes, the menu's 3 cancels on a scene change); none is from the dialog. The game's screen size came back to 2560x1440 after the quick round changed it, in the running game and in its saved settings.
 
-Logs are in `handoff\selftest_logs`, captures in `shots_20261103\DialogLook3` and `shots_20261103\Mode11`; nothing from there is committed, because they hold base-game art. The quick round is `Code/94_DialogLook.cs`, under `ROGUEWAVESMODE_DIALOGLOOK`.
+Logs are in `handoff\selftest_logs`, captures in `shots_20261103\DialogLook5` and `shots_20261103\Mode12`; nothing from there is committed, because they hold base-game art. The quick round is `Code/94_DialogLook.cs`, under `ROGUEWAVESMODE_DIALOGLOOK`.
 
 ## Limits
 
+- His eye: the measurements fit "tiny stutters", but his message doesn't say which kind he saw, so whether this is what he meant waits for his word.
 - Sizes from letter counts are estimates, so a frame can stand a little wider than its title. A very long title shrinks to fit its box.
 - A UI scale other than 3 wasn't set by hand. The screen sizes covered smaller canvases than any scale at 2560x1440 gives; a larger canvas only has more room.
 - A real shelf reached only the cards the test held. More cards were tried with pretend cards on the main menu.
