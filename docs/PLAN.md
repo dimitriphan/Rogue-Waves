@@ -278,6 +278,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   every Direction and Cardinal now carries `By: Dimitri` or `By: Claude` (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`,
   not built); the Scope Editor artifact (https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo) shows and edits every scope file, makers
   tagged, and exports the `.txt` (source in project files `concepts/scope_editor_2026-11-04/`; Log).
+  2026-11-04: five concept sprites of Argo as a diver who might not be entirely human (Barnacled, Angler, Hollow,
+  Passenger, Pressure Hull), drawn over his shipped frame, idle and back each; Dimitri picks on
+  https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (`docs/concepts/argo_divers_2026-11-04/`; not wired; Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -611,6 +614,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Direction and Cardinal ends with `By: Dimitri` or `By: Claude`; `06` and `12` gain Power and Pairs lines. `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`.
   Scope Editor artifact https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo (every file 00-16, line edit, filters by maker, Export .txt; edits in its
   db collection `scopes`, doc `f<NN>` per edited file; rebuild from project files `concepts/scope_editor_2026-11-04/`).
+- **2026-11-04: Argo diver concept sprites** (Dimitri: "Create 5 new sprite arts of Argo based on his idea of being a deep sea diver
+  that might not entirely be human"; the Yossele-and-Spool limit lifted for this ask). Five takes over Argo's shipped standing
+  frame, each a 6-frame idle and a back view at 32 px with an `.aseprite` and 8x previews, checked against kit `docs/18` §4.2:
+  Barnacled (the sea grew on him), Angler (a lure and fins), Hollow (an empty suit full of sea), Passenger (an octopus
+  drives it), Pressure Hull (a later hard suit with a light for a face). `docs/concepts/argo_divers_2026-11-04/README.md`;
+  picks page https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (db collection `picks`, doc `argo`); generator
+  `concept-tools/argo_divers/`. Concepts only: Argo's mod and `docs/STYLE.md` are unchanged until he picks.
 
 ### Decisions
 

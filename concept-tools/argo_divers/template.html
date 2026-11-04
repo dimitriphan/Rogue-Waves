@@ -1,0 +1,295 @@
+<title>Argo Diver Takes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a diver's log. One intro band with the 1x line-up, then one plate per take (art left, notes right),
+   a brass pick button on each, and the pick and a note saved at the foot. */
+:root {
+  --bg: #eef1ee;          /* sea-foam paper */
+  --panel: #ffffff;
+  --ink: #1f2b33;
+  --muted: #56656e;
+  --line: #cfd8d6;
+  --brass: #b9832f;       /* Argo's brass, darkened for text on paper */
+  --brass-fill: #d9a048;
+  --brass-ink: #2a1d08;
+  --deep: #26405a;        /* the porthole glass */
+  --chosen: #e7f3ee;
+  --stage: #8c9b8c;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111b22; --panel: #182630; --ink: #e5edf0; --muted: #9aaab3; --line: #2b3d49;
+    --brass: #e5b768; --brass-fill: #d9a048; --brass-ink: #2a1d08; --deep: #9cc3e0; --chosen: #1d3530;
+    --stage: #8c9b8c; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111b22; --panel: #182630; --ink: #e5edf0; --muted: #9aaab3; --line: #2b3d49;
+  --brass: #e5b768; --brass-fill: #d9a048; --brass-ink: #2a1d08; --deep: #9cc3e0; --chosen: #1d3530;
+  --stage: #8c9b8c; color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 32px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 28px; }
+h1, h2 { font-family: var(--display); font-weight: 700; letter-spacing: .01em; line-height: 1.05; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2.2rem, 6vw, 3.4rem); color: var(--deep); }
+h2 { font-size: 1.9rem; }
+p { margin: 0; max-width: 65ch; }
+.eyebrow { font-family: var(--mono); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--brass); }
+.intro { display: grid; gap: 12px; }
+.lineup { background: #8c8a86; border-radius: 4px; overflow-x: auto; width: fit-content; max-width: 100%; }
+.lineup img { display: block; image-rendering: pixelated; max-width: none; height: auto; }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 18px; font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+.take { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 20px;
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; }
+.take.is-picked { background: var(--chosen); border-color: var(--brass); box-shadow: inset 4px 0 0 var(--brass-fill); }
+.art { display: grid; grid-template-columns: auto auto; gap: 8px; align-content: start; }
+.art figure { margin: 0; display: grid; gap: 4px; }
+.art img { image-rendering: pixelated; display: block; border-radius: 3px; background: var(--stage); }
+.art .front { width: 256px; height: 256px; }
+.art .back { width: 128px; height: 128px; }
+.art .one { width: 64px; height: 64px; }
+.art figcaption { font-family: var(--mono); font-size: .72rem; color: var(--muted); }
+.side { display: grid; gap: 8px; align-content: start; }
+.notes { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.pitch { font-size: 1.05rem; }
+.gauge { display: grid; gap: 4px; }
+.gauge .bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; max-width: 260px; }
+.gauge .bar span { height: 8px; border-radius: 2px; background: var(--line); }
+.gauge .bar span.on { background: var(--deep); }
+.gauge small { font-family: var(--mono); font-size: .75rem; color: var(--muted); }
+dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 14px; margin: 0; }
+dt { font-family: var(--mono); font-size: .76rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding-top: 3px; }
+dd { margin: 0; }
+.stats { font-family: var(--mono); font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+button { font: 600 1rem var(--display); letter-spacing: .04em; text-transform: uppercase; cursor: pointer;
+  border-radius: 4px; padding: 8px 16px; border: 1px solid var(--brass); background: transparent; color: var(--brass); justify-self: start; }
+button.primary, .is-picked button.pick { background: var(--brass-fill); color: var(--brass-ink); border-color: var(--brass-fill); }
+button:focus-visible, textarea:focus-visible { outline: 3px solid var(--deep); outline-offset: 2px; }
+button:disabled { opacity: .5; cursor: default; }
+.foot { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 20px; display: grid; gap: 12px; }
+textarea { width: 100%; box-sizing: border-box; min-height: 96px; font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 4px; padding: 10px; }
+.status { font-family: var(--mono); font-size: .82rem; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+@media (max-width: 720px) {
+  .take { grid-template-columns: minmax(0, 1fr); }
+  .art .front { width: 192px; height: 192px; }
+  .art .back { width: 96px; height: 96px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="intro">
+    <span class="eyebrow">Rogue Waves · Argo concept sprites · 2026-11-04</span>
+    <h1>Argo, a diver who might not be human</h1>
+    <p>Five takes on Argo built on your idea, each drawn over his shipped sprite so the brass dome stays his. Each one
+    changes what is inside the suit, or what the sea has done to it. They are 32 px game-size sprites with a six-frame
+    idle and a back view. Pick one, or write what to mix, and the page keeps your pick for the next build.</p>
+    <div class="lineup" aria-label="All six at game size on the boat's grey: shipped, Barnacled, Angler, Hollow, Passenger, Pressure Hull">
+      <img src="{{LINEUP_1X}}" alt="The shipped Argo and the five takes, side by side at game size, shown three times larger" width="720" height="132">
+    </div>
+    <div class="legend"><span>Game size, shown 3×:</span><span>shipped</span><span>Barnacled</span><span>Angler</span><span>Hollow</span><span>Passenger</span><span>Pressure Hull</span></div>
+  </header>
+
+  <!--TAKES-->
+  <section class="take" data-take="Barnacled">
+    <div class="art">
+      <figure><img class="front" src="{{Barnacled_IDLE}}" alt="Barnacled Argo, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Barnacled_BACK}}" alt="Barnacled Argo from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Barnacled_1X}}" alt="Barnacled Argo at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Barnacled</h2><span class="eyebrow">the sea grew on him</span></div>
+      <p class="pitch">The same diver, down so long the sea has started keeping him. Verdigris creeps over the brass, barnacles crust the dome's edge and his shoulder, kelp is snagged on the valve and a starfish holds onto his chest.</p>
+      <div class="gauge"><div class="bar"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div><small>Still human: mostly</small></div>
+      <dl>
+        <dt>Idle</dt><dd>The kelp sways and a bubble slips out by his cheek.</dd>
+        <dt>Towers</dt><dd>Barnacles and green patches on the brass domes.</dd>
+        <dt>Watch</dt><dd>The closest to the shipped look, so every 1.4.0 animation can take the same overlay. At 1× the barnacles read as speckle; the kelp and starfish carry it.</dd>
+      </dl>
+      <span class="stats">21 × 27 px · 21 colours</span>
+      <button class="pick" type="button" id="pick-Barnacled">Pick Barnacled</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Angler">
+    <div class="art">
+      <figure><img class="front" src="{{Angler_IDLE}}" alt="Angler Argo, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Angler_BACK}}" alt="Angler Argo from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Angler_1X}}" alt="Angler Argo at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Angler</h2><span class="eyebrow">the deep gave him a lure</span></div>
+      <p class="pitch">Part fish. The valve has grown into an anglerfish lure that arches over the porthole. Behind the glass are wide-set fish eyes and a long mouth with two small teeth. A spiny fin runs down the back of the dome, and webbed fins hang where his mitts were.</p>
+      <div class="gauge"><div class="bar"><span class="on"></span><span class="on"></span><span></span><span></span><span></span></div><small>Still human: half</small></div>
+      <dl>
+        <dt>Idle</dt><dd>The lure glows and dips, and the near fin flicks.</dd>
+        <dt>Kit fit</dt><dd>A lure suits the Harpoon's reel and pull. Reel and Undertow could flash it.</dd>
+        <dt>Watch</dt><dd>The lure takes him to 28 px, the tallest a vessel can be. The wrench swing needs a fin that grips.</dd>
+      </dl>
+      <span class="stats">23 × 28 px · 16 colours</span>
+      <button class="pick" type="button" id="pick-Angler">Pick Angler</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Hollow">
+    <div class="art">
+      <figure><img class="front" src="{{Hollow_IDLE}}" alt="Hollow Argo, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Hollow_BACK}}" alt="Hollow Argo from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Hollow_1X}}" alt="Hollow Argo at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Hollow</h2><span class="eyebrow">nobody in the suit, only sea</span></div>
+      <p class="pitch">The suit came back up, but nobody is inside. The helmet is full of seawater, with a pocket of air at the top, a bright surface line, two pale lights drifting at different heights and a small fish swimming through. The faded suit has lost its square shoulders and the empty gloves hang limp at its sides.</p>
+      <div class="gauge"><div class="bar"><span></span><span></span><span></span><span></span><span></span></div><small>Still human: none</small></div>
+      <dl>
+        <dt>Idle</dt><dd>The fish crosses the glass, the lights drift, the last air bubbles out of the valve and a glove drips.</dd>
+        <dt>Lore</dt><dd>Fits his line as written: he "never quite came back up".</dd>
+        <dt>Watch</dt><dd>The quietest take. From a distance it can pass for the shipped Argo, and the water in the porthole has to carry it.</dd>
+      </dl>
+      <span class="stats">19 × 27 px · 14 colours</span>
+      <button class="pick" type="button" id="pick-Hollow">Pick Hollow</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Passenger">
+    <div class="art">
+      <figure><img class="front" src="{{Passenger_IDLE}}" alt="Passenger Argo, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Passenger_BACK}}" alt="Passenger Argo from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Passenger_1X}}" alt="Passenger Argo at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Passenger</h2><span class="eyebrow">something else wears the suit</span></div>
+      <p class="pitch">Something else is driving. One big gold eye with an octopus's slit pupil fills the porthole. Coral tentacles come out of the cuffs and curl back to the hips, where his mitts used to rest, and a third one feels about from under the collar.</p>
+      <div class="gauge"><div class="bar"><span></span><span></span><span></span><span></span><span></span></div><small>Still human: none, but someone is home</small></div>
+      <dl>
+        <dt>Idle</dt><dd>The tentacle tips curl, the pupil slides toward you and the eye blinks.</dd>
+        <dt>Kit fit</dt><dd>Grabbing arms suit pins, slows and pulls.</dd>
+        <dt>Watch</dt><dd>The coral sits near Storm Coral, the pack's danger mark. On a vessel it reads as a creature, but the hue can move toward peach if it competes. The tentacles widen him to 24 px.</dd>
+      </dl>
+      <span class="stats">24 × 27 px · 16 colours</span>
+      <button class="pick" type="button" id="pick-Passenger">Pick Passenger</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Hull">
+    <div class="art">
+      <figure><img class="front" src="{{Hull_IDLE}}" alt="Pressure Hull Argo, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Hull_BACK}}" alt="Pressure Hull Argo from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Hull_1X}}" alt="Pressure Hull Argo at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Pressure Hull</h2><span class="eyebrow">a later suit, and what glows in it</span></div>
+      <p class="pitch">A different era of suit: a rounder hard suit made for crushing depths, with a steel barrel body, ball joints and pincer hands resting on the hips. On top is a smaller brass dome with one big port and a little side port. There is no face, only a light that pulses where one should be, and the seam down the chest breathes with it.</p>
+      <div class="gauge"><div class="bar"><span class="on"></span><span></span><span></span><span></span><span></span></div><small>Still human: hard to say</small></div>
+      <dl>
+        <dt>Idle</dt><dd>The light swells to white and fades, and the chest seam glows in time with it.</dd>
+        <dt>Towers</dt><dd>Steel, rivets and the same cyan glow in the portholes.</dd>
+        <dt>Watch</dt><dd>The biggest change from 1.4.0, because the blue suit and the mitts go. The white steel sits near Sno Sno's white, so the dome has to carry who he is. The cyan is Buster's collar teal from the shared palette.</dd>
+      </dl>
+      <span class="stats">20 × 27 px · 11 colours</span>
+      <button class="pick" type="button" id="pick-Hull">Pick Pressure Hull</button>
+    </div>
+  </section>
+
+  <section class="take" data-take="Shipped">
+    <div class="art">
+      <figure><img class="front" src="{{Shipped_IDLE}}" alt="The shipped Argo, idle animation"><figcaption>idle, front</figcaption></figure>
+      <div class="side">
+        <figure><img class="back" src="{{Shipped_BACK}}" alt="The shipped Argo from behind"><figcaption>back</figcaption></figure>
+        <figure><img class="one" src="{{Shipped_1X}}" alt="The shipped Argo at twice game size"><figcaption>2×</figcaption></figure>
+      </div>
+    </div>
+    <div class="notes">
+      <div class="head"><h2>Keep the shipped look</h2><span class="eyebrow">Argo 1.4.0 to 2.0</span></div>
+      <p class="pitch">The diver as he ships today, redrawn here without the soft rim and ground patch so it compares fairly with the five takes.</p>
+      <span class="stats">21 × 27 px · 10 colours</span>
+      <button class="pick" type="button" id="pick-Shipped">Keep the shipped look</button>
+    </div>
+  </section>
+
+  <section class="foot" aria-labelledby="note-h">
+    <h2 id="note-h">Your pick</h2>
+    <p id="pick-line">No pick yet.</p>
+    <label for="note">Anything to mix or change, for example "Angler's lure on Hollow" or "less kelp"</label>
+    <textarea id="note" placeholder="Optional"></textarea>
+    <div class="row"><button class="primary" type="button" id="save">Save note</button><span class="status" id="status">Loading saved pick…</span></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var names = { Barnacled: 'Barnacled', Angler: 'Angler', Hollow: 'Hollow', Passenger: 'Passenger', Hull: 'Pressure Hull', Shipped: 'the shipped look' };
+  var state = { choice: null, note: '' };
+  var ref = null;
+  var statusEl = document.getElementById('status');
+  var noteEl = document.getElementById('note');
+  var noteDirty = false;
+
+  function render() {
+    document.querySelectorAll('.take').forEach(function (s) {
+      var on = s.getAttribute('data-take') === state.choice;
+      s.classList.toggle('is-picked', on);
+      var b = s.querySelector('button.pick');
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    document.getElementById('pick-line').textContent = state.choice ? 'Picked: ' + names[state.choice] + '.' : 'No pick yet.';
+    if (!noteDirty) noteEl.value = state.note || '';
+  }
+
+  function save(patch) {
+    var next = { choice: state.choice, note: state.note };
+    for (var k in patch) next[k] = patch[k];
+    if (!ref) { statusEl.textContent = 'Saving is not available here, so this pick stays on this screen only.'; state = next; render(); return; }
+    statusEl.textContent = 'Saving…';
+    ref.set({ choice: next.choice || '', note: next.note || '', saved: new Date().toISOString() })
+      .then(function () { state = next; noteDirty = false; statusEl.textContent = 'Saved.'; render(); })
+      .catch(function (e) { statusEl.textContent = 'Not saved: ' + ((e && e.message) || 'the store refused the write') + '.'; });
+  }
+
+  document.querySelectorAll('button.pick').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.closest('.take').getAttribute('data-take');
+      state.choice = t; render();
+      save({ choice: t, note: noteDirty ? noteEl.value : state.note });
+    });
+  });
+  noteEl.addEventListener('input', function () { noteDirty = true; });
+  document.getElementById('save').addEventListener('click', function () { save({ note: noteEl.value }); });
+
+  render();
+  var timer = setTimeout(function () { statusEl.textContent = 'Can’t reach the saved pick yet.'; }, 10000);
+  var use = window.claude && window.claude.use ? window.claude.use('db') : Promise.resolve(null);
+  Promise.resolve(use).then(function (db) {
+    if (!db) { clearTimeout(timer); statusEl.textContent = 'Saving is not available in this view.'; return; }
+    ref = db.doc('picks/argo');
+    ref.onSnapshot(function (snap) {
+      if (!(snap.metadata && snap.metadata.fromCache)) clearTimeout(timer);
+      var d = snap.exists ? snap.data() : null;
+      state.choice = d && d.choice ? d.choice : null;
+      state.note = d && d.note ? d.note : '';
+      statusEl.textContent = d ? 'Saved pick loaded.' : 'Nothing saved yet.';
+      render();
+    }, function () { clearTimeout(timer); statusEl.textContent = 'The saved pick can’t be read right now.'; });
+  }).catch(function () { clearTimeout(timer); statusEl.textContent = 'Saving is not available in this view.'; });
+})();
+</script>
