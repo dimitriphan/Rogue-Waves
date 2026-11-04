@@ -1,18 +1,13 @@
-"""Builds crackpot/index.html, rustle/index.html and broodie/mod/index.html: sheets for the vessels implemented in
-TDS_Mod, drawn from the mod itself so they never drift from it. Names, stats, costs and upgrade trees are read from each vessel's
+"""Builds docs/concepts/<slug>/index.html for each vessel in the VESSELS table: a sheet for a vessel implemented in
+TDS_Mod, drawn from the mod itself so it never drifts from it. Names, stats, costs and upgrade trees are read from each vessel's
 ModSource/<Name>/Code/02_Data.cs; the sprites and model renders are the ones its editor generators write, rendered by
 TDS_Mod/Tools/cloud-check/lite/run_preview.sh.
 
-    cd TDS_Mod/Assets/CrackpotMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . Crackpot /tmp/vessels/crackpot sm
-    cd TDS_Mod/Assets/RustleMod/Editor   && ../../../Tools/cloud-check/lite/run_preview.sh . Rustle   /tmp/vessels/rustle sm
-    cd TDS_Mod/Assets/BroodieMod/Editor  && ../../../Tools/cloud-check/lite/run_preview.sh . Broodie  /tmp/vessels/broodie sm
+    cd TDS_Mod/Assets/<Name>Mod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . <Name> /tmp/vessels/<slug> sm
     python3 concept-tools/build_mod_pages.py /tmp/vessels [slug ...]
 
-Rogue Waves: the VESSELS table below still lists the ModProjects vessels it was written for; replace its rows with
-the vessels of this repository as they are implemented.
-
-A vessel that already has a concept page of its own (Broodie) gets its mod page in a subfolder ('out'), so the concept
-page stays as it was drawn.
+The VESSELS table starts empty: add a row for a vessel when its page is wanted. A vessel that already has a concept page
+of its own gets its mod page in a subfolder ('out'), so the concept page stays as it was drawn.
 """
 import html, os, re, shutil, sys
 
@@ -26,79 +21,15 @@ STAT_LABEL = {'Health': 'Health', 'Speed': 'Speed', 'Damage': 'Damage', 'Range':
               'Buildrange': 'Build range', 'Sellrate': 'Sell rate', 'Projspeed': 'Shot speed', 'Units': 'Units',
               'Respawn': 'Respawn (s)', 'Duration': 'Duration (s)', 'Rearm': 'Re-arm (s)', 'Slow': 'Slow', 'Charge': 'Static'}
 
+# One dict per vessel of this repository, added as its page is wanted. Keys:
+#   slug, name                      folder name under docs/concepts/ and ModSource/<name>
+#   accent, accent_dark, accent_soft, accent_line   the page's colours (hex)
+#   ability = (NameKey, DescKey)    the 02_Data.cs strings of the vessel ability
+#   ability_anim = (sheet, label)   the ability's sheet in the preview output and its caption
+#   pitch, loop_title, loop = [(heading, html), ...]   the page's opening and how the vessel plays
+#   optional: out (subfolder when the vessel already has a hand-drawn concept page), pick, from,
+#             reference_alt, units = [(sheet, name, caption), ...], others_cap
 VESSELS = [
-    {
-        'slug': 'crackpot', 'name': 'Crackpot', 'accent': '#b8940f', 'accent_dark': '#8a6d06', 'accent_soft': '#f7f0cf', 'accent_line': '#e3d38b',
-        'ability': ('ZapName', 'ZapDesc'), 'ability_anim': ('CrackpotZap-Sheet.png', 'ZAP'),
-        'pitch': 'A small wizard whose head is a dark orb cracked open by a seam of golden light. Everything it touches is '
-                 'charged with Static until it goes off.',
-        'loop_title': 'Charge it, then let it go off',
-        'loop': [
-            ('Static', 'Every hit from Crackpot or one of its buildings charges a foe with Static, up to <b>5</b>. It fades '
-                       '6 s after the last charge. Every player sees it: sparks at 1-2, a gold ring overhead at 3-4.'),
-            ('Overload', 'At 5 Static the foe <b>Overloads</b>: 6 damage plus 8% of its full health (up to +16), a 1 s '
-                         'stun (not for bosses), and a jolt that gives the nearest other foe +2 Static. Crowds '
-                         'chain-react, capped at 8 Overloads a moment.'),
-            ('ZAP', 'The vessel ability (keys 6/7): pick a foe within 5 tiles and lightning from the staff strikes it, '
-                    'then hops to 3 more foes nearby, charging each one. 8 s recharge, or at once from a full Think Tank.'),
-            ('Payoff', 'The Spark Coil and the Rune Circle build Static; the Thunderhead cashes it in, spending a crowd\'s '
-                       'Static for extra damage. Overloads pay the Think Tank and fill it (five fill it, and a full tank '
-                       'recharges ZAP), and Overloads beside a Rune Circle charge it for the next foe across.'),
-        ],
-    },
-    {
-        'slug': 'rustle', 'name': 'Rustle', 'accent': '#4f9a24', 'accent_dark': '#3a7419', 'accent_soft': '#e5f3d9', 'accent_line': '#b9dc9c',
-        'ability': ('StepName', 'StepDesc'), 'ability_anim': ('RustleStep-Sheet.png', 'SHADOWSTEP'),
-        'units': [('Cutpurse-Sheet.png', 'Cutpurse', '16×16 unit: walk columns 1-6, stab 7-10, four facings.')],
-        'pitch': 'A woodland spirit with a carved wooden mask for a head, two curling horns and leaves fanning out '
-                 'behind the mask. The red cross on the mask is his one eye. You never see him coming.',
-        'loop_title': 'Get behind them',
-        'loop': [
-            ('Backstab', 'A hit from behind a foe (within a 110° cone opposite the way it faces), or on a helpless one '
-                         '(Snared, Dazed or asleep), lands a second hit of the same damage, with a slash every player '
-                         'sees. Rustle and its Cutpurses both backstab.'),
-            ('SHADOWSTEP', 'The vessel ability (keys 6/7): pick a foe within 5 tiles and Rustle dashes to the tile behind '
-                           'it, then strikes for triple damage and dazes it for 1 s. 10 s recharge.'),
-            ('Set it up', 'The Mask Totem\'s darts poison a foe and leave it <b>Distracted</b>, staring at the Totem with '
-                          'its back open on the far side (a "?" over it). The Snare holds the first foe to step on it, '
-                          'helpless. The Hideout\'s Cutpurses GUARD its range or wait in AMBUSH, where their first hit '
-                          'on each foe is a backstab. Master Trapper leaves snared foes Exposed: every hit on them, from '
-                          'anyone, deals double.'),
-            ('Pick pockets', 'Every backstab near a Stash picks the foe\'s pocket for 1 Yellow aura, a few times per foe '
-                             '(more for big foes), double with Ransom Note on a helpless foe, and to every player with '
-                             'Robin Hood (double, when playing alone).'),
-        ],
-    },
-    {
-        'slug': 'broodie', 'name': 'Broodie', 'out': os.path.join('broodie', 'mod'),
-        'accent': '#c98208', 'accent_dark': '#94600a', 'accent_soft': '#fbf0d9', 'accent_line': '#f0cf8f',
-        'ability': ('FlingName', 'FlingDesc'), 'ability_anim': ('BroodieFling-Sheet.png', 'FLING'),
-        'pick': 'Keys 6 / 7 · picks a ground tile like Sell picks a tower',
-        'from': 'The concept page (<a href="../index.html">broodie/index.html</a>, left: its first frame) is the design. '
-                'The mod\'s generators redraw every one of its sheets pixel for pixel, with the same shading, eyes and '
-                'walk, attack and %s cycles in four facings.',
-        'reference_alt': 'Frame one of the concept page\'s sheet',
-        'units': [('Nipper-Sheet.png', 'Nipper', '16×16 unit from the Clutch: idle and walk columns 1-6, bite 7-10, four facings.'),
-                  ('Grub-Sheet.png', 'Grub', '16×16 unit from the Grub Pit: wriggle columns 1-6, nibble 7-10, four facings.')],
-        'others_cap': 'Dozing models are each building\'s "Dozing" skin, shown off Loam; Burst is the Grub Pit after it pops. '
-                      'The Loam tiles, Clods, horns and little pits are networked beings; the debuff meshes ride inside the '
-                      'effect prefabs the game attaches to foes.',
-        'pitch': 'A broody little rhinoceros beetle in a bone mask and a glossy slate shell, with one forked crescent horn. '
-                 'It tills the Loam and raises a brood that buries the Tide in tiny bites.',
-        'loop_title': 'Till the Loam, raise the brood',
-        'loop': [
-            ('Loam', 'Mounds and Clods spread <b>Loam</b>, soft tilled earth, one ring of tiles a second; it recedes '
-                     'when they go. The Horn Burrow, Clutch and Grub Pit doze off it and wake the moment it reaches them. '
-                     'Broodie and its Nippers are faster on it.'),
-            ('FLING', 'The vessel ability (keys 6/7): pick a ground tile within 6 and Broodie flings a Clod of Loam onto '
-                      'it, spreading Loam around it. Up to 3 Clods; a fourth crumbles the oldest. 20 s recharge.'),
-            ('Swarmed', 'A foe bitten by two or more of the brood (Broodie, Nippers, Grubs) within 2 s is <b>Swarmed</b>: '
-                        'it takes 8% more damage for each different biter, up to +40%. Amber bite marks circle over it.'),
-            ('The brood', 'The Clutch hatches Nippers that guard its range, and SWARM sends them all at one foe. The Grub '
-                          'Pit sticks foes in the muck and lets Grubs out to nibble; the Horn Burrow bursts up under '
-                          'whoever is furthest along, harder on Loam.'),
-        ],
-    },
 ]
 
 
@@ -351,7 +282,7 @@ def page(v, data_src, assets_rel):
     out.append('<title>%s Vessel Concept</title>' % p)
     out.append('<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>')
     out.append('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Nunito:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">')
-    out.append('<style>\n/* Generated by concept-tools/build_mod_pages.py from TDS_Mod (do not edit by hand). The same card family as the\n   Mummer page: vessel card, kit, upgrade trees, how it plays, asset pack. Light-only, like its siblings. */' + CSS + '</style>\n</head>')
+    out.append('<style>\n/* Generated by concept-tools/build_mod_pages.py from TDS_Mod (do not edit by hand). Cards: vessel card,\n   kit, upgrade trees, how it plays, asset pack. Light-only. */' + CSS + '</style>\n</head>')
     out.append('<body style="%s">\n<main class="page">' % accent_vars)
 
     # 1. vessel card

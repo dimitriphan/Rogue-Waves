@@ -165,7 +165,7 @@ How the new rules work (read from the game's code, 2026-10-23; proven in PC roun
 - **Cordyfriend.** When a spored foe falls (the host's despawn hook) and its last cannon has Cordyceps, a roll of 20%
   + 5% a stack raises a Cordyfriend on the foe's tile, a networked unit owned by the cannon's player (spawned as the
   cannon's child, `docs/05` §10). Stats from the sheet: Health 75, Damage 2, Range 1.5, Attackspeed 0.5, Speed 2.25,
-  melee (the stock `Entity_Ai_Mob_Combat`). It stands on Sno Sno's mob-blocker block (the Snoble's, as Mummer's Aegis
+  melee (the stock `Entity_Ai_Mob_Combat`). It stands on Sno Sno's mob-blocker block (the Snoble's, as the template's Aegis
   Understudy does) so foes stop at it ("stalling foes"), and wears its own temporary sheet (Idle, Move, Attack;
   `Art/Temporary/`, 2026-10-27); when that sheet is missing it borrows the Snoble's own sprite, tinted fungus green on
   every client. Never tagged `Snoble` or `Sno` (`docs/17`). Its brain walks it to the nearest foe within 4 tiles that is

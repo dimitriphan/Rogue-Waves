@@ -1662,7 +1662,7 @@ public static class YosseleSelfTest
 #if YOSSELE_SHOTS
             Bl_Menus.Changemenu("Journal");
             List<Logobject> show = new List<Logobject> { page, cannonPage, upgradePage };
-            foreach (string other in new[] { "Hero_Smacky", "Hero_Sprigg" })
+            foreach (string other in new[] { "Hero_Smacky", "Hero_Spool" })
             {
                 Heroentryobject h = YosseleUtil.Heroentry(other);
                 if (h != null && h.Log != null) show.Add(h.Log);

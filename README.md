@@ -1,39 +1,59 @@
 # Rogue Waves
 
-An expansion-sized fan mod for *TDS - Tower Defense Strategy* (Blockage). This repository is the home of the Claude
-Project for Rogue Waves and holds only what that work needs: the vessel-making kit, the mod code, the tools, the
-user's scope, and every lesson learned building six vessel mods in `ModProjects` (2026-10-01 to 2026-10-05). Its vessels
-are Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev and Uloe 0.1.0-dev (`TDS_Mod/ModSource/<Name>`), beside the pack's mode and
-foes parts; the other vessels made in `ModProjects` (Sprigg, Mummer, Crackpot, Rustle, Broodie) are due for an overhaul and stay there until
-it happens.
+**Rogue Waves** is an expansion-sized fan mod for *TDS - Tower Defense Strategy* (Blockage), built around roguelike
+play. It adds a new campaign mode, four new vessels, new enemy modifiers, new run modifiers and a few new economy
+mechanics, and plays online with 2 to 4 players. It ships as one mod pack, `RogueWavesMod`, with every part inside it
+and no load order; each release adds parts to the same pack, so players update one mod.
 
-Start with `CLAUDE.md` (the map and reading order), then `TDS_Vessel_Creator/README.md`. Work lands on the branch
-`claude/phase-1-6lfnar` (`docs/PROJECT_SETUP.md` §1).
+The design is Dimitri's scope in `docs/scope/` (one file per category, `00_Read_Me.txt` lists them).
 
-## What is here
+## The mode
+
+Players pick a vessel, are locked into it, and sail a **campaign of 10 maps** in a row, each harder than the last. Between
+maps they vote on the next one on a **sea chart** (a node map of linked maps, with sea weather), and the run is saved
+between maps, so a campaign can be played over several sessions; a player who drops out can rejoin a running map.
+
+- **Pure Aura**, a new currency earned each tide and from optional objectives, buys the run's upgrades.
+- **Directions** are upgrade paths picked before each map; their ranks are bought at **VENDCINT**, the shop, which
+  also sells **Trinkets** (run modifiers for one player's things) and **Cardinals** (run modifiers for the whole team).
+- **Fund Transfer** lets players share aura between tides.
+- **Optional objectives**, **enemy modifiers** (Cursed, Berserk, Aging, Dazzling) and the sea weather change each
+  campaign. A campaign has 3 retries; finishing one unlocks a harder difficulty for the next.
+
+The whole run is in `docs/scope/04_Rogue_Waves_Mode.txt` and step by step in `05_Gameplay_Rundown.txt`.
+
+## The vessels
+
+| Vessel | Title | How it plays | Scope |
+| --- | --- | --- | --- |
+| **Yossele** | The Patient Golem | Sturdy ranged clay golem with a green mouth laser; towers it keeps alive grow stronger | `07` |
+| **Spool** | Crafty Crafted Crafter | Melee plush who commands a disposable army of stitched minions | `08` |
+| **Argo** | Deep Sea Diver | Slow melee diver with no walls: slows, pins and reels foes in | `09` |
+| **Uloe** | Light Personified | Frail ranged light bulb who powers clusters of towers with Light and wandering Photons | `10` |
+
+## Where it stands
+
+Every part is built with temporary art and passes its self-test in the game: the mode (the whole campaign, from the
+**Rogue Waves** button on the main menu to the end screen), the foes, Yossele, Spool, Argo and Uloe. A full ten-map
+campaign has been won, two players have played it together, and the parts boot as one pack. The first release is
+**Yossele alone**, waiting on Dimitri's own sprites and play test; the mode and the other vessels follow. Live state:
+`docs/PLAN.md` Part C "Now".
+
+## What is in this repository
 
 | Path | What |
 | --- | --- |
-| `TDS_Vessel_Creator/` | The kit: 24 chapters in `docs/` (game model, design rules, art, pipeline, code cookbook, journal, online, testing, pitfalls, checklists, tooling, minion vessels, enemies and modifiers, ModTool and packaging, the Rogue mode engine, maps and economy, the base vessels, character art, networking, UI and HUD, music, sound and text, new maps, the save, unlocks and loader, enemy bodies and bosses), the shared kit 1.6 (`kit/`), the Mummer template, the scaffold script, the Cecil scripts, `reference/` (API dump, network surface, base-vessel and art surveys, round logs) and `examples/` (notes, frozen code the chapters cite, and the compiled recipes of chapters 19-21 and 23 in `examples/recipes/`) |
-| `TDS_Mod/` | The Unity mod project's repository copy: `ModSource/Shared` (kit 1.7, live copy), Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev, the mode part `RogueWavesMode`, the foes part `RogueWavesFoes`, the pack list `ModSource/Pack`, the research mod `RogueLab`, the prototype `Riptide`, the editor code in `Assets/`, the tools (`Tools/cloud-check`, `Tools/pc`, `Tools/aseprite`) and one `Handoff/` folder per PC round (`TDS_Mod/README.md`) |
-| `concept-tools/` | Generic Python for concept pages: pixel rasteriser, low-poly builder and renderer, PNG writer, mod-page builder, the sea chart generator |
-| `docs/` | The living project pages (`PLAN.md`, `PACK.md`, `STYLE.md`, `EXPANSION_SCOPE.md`, `RESEARCH_GAPS.md`, `PROJECT_SETUP.md`), Yossele's build notes (`YOSSELE_BUILD_NOTES.md`), the user's scope (`scope/`), the mode's design pages (`mode/`), dated reports (`reports/`) and vessel concept pages (`concepts/`); `CLAUDE.md` maps each |
-| `.claude/` | Path-scoped rule notes that load when the matching files are touched, and the session permissions |
+| `docs/scope/` | The scope: the highest truth after Dimitri's newest words |
+| `docs/` | The living project pages: the plan and its state (`PLAN.md`), how the pack ships (`PACK.md`), the style sheet (`STYLE.md`), the expansion's reach (`EXPANSION_SCOPE.md`), the mode's design pages (`mode/`), vessel concept pages (`concepts/`) and dated reports (`reports/`) |
+| `TDS_Mod/` | The Unity mod project: each part's code and design in `ModSource/<Part>`, its Unity editor code in `Assets/<Part>Mod`, the shared kit, the pack list, and the tools that compile and preview here and run rounds on the PC (`TDS_Mod/README.md`) |
+| `TDS_Vessel_Creator/` | The kit: every rule learned about how TDS works and how a vessel is made, built, tested and shipped (`README.md`, then `docs/`) |
+| `concept-tools/` | Python for concept pages and art previews, and the sea chart generator |
+| `.claude/` | Path-scoped rule notes and the session permissions |
 
-## What stayed in `ModProjects`, and why
+## Working on it
 
-- `TDS_Mod/ModSource/<Vessel>`, `TDS_Mod/Assets/<Vessel>Mod` and their handoffs: the six vessels, overhauled before
-  they join Rogue Waves.
-- `tds-vessel-concepts/` (their concept pages and per-vessel sprite scripts) and `aseprite/roguewaves/` (the hand-drawn
-  Sprigg and its idle loop; copy `sprigg_idle.py` over when the first hand-drawn Rogue Waves sprite needs an idle).
-- The kit's `template/Mummer/` and `examples/` **are** kept: the template is the scaffold every vessel starts from
-  (`tools/New-Vessel.ps1`), and the examples are the lessons, not the characters.
-
-## Loose ends
-
-- `TDS_Mod/Tools/pc/Get-Handoff.ps1` fetches with the PC's signed-in `gh`; its fallback, a read-only token
-  (`C:\Users\Dimitri\.modprojects_token`), doesn't exist on the PC. Pack handoffs against the PC's files with
-  `make_handoff.py --manifest` (`TDS_Mod/Tools/pc/README.md`).
-- The game's `Assembly-CSharp.dll` and the PC lock `pc/QUEUE.md` live in the Claude Project's files, never in git.
-- `TDS_Mod/Tools/cloud-check` needs its one-time `setup.sh` in each new container (its `README.md`).
-- `TDS_Vessel_Creator/README.md` "Facts about this PC" says what is installed in the game's Mods folder; keep it current.
+Start with `CLAUDE.md` (the map and reading order). Work lands on the branch `claude/phase-1-6lfnar`
+(`docs/PROJECT_SETUP.md` §1). The game, Unity and the mod tools run only on Dimitri's Windows PC; a cloud session
+designs, writes code and checks it with `TDS_Mod/Tools/cloud-check` (one-time `setup.sh` per container), and a PC round
+builds and tests it in the game (`TDS_Mod/Tools/pc/README.md`). The game's `Assembly-CSharp.dll` and the PC lock
+`pc/QUEUE.md` live in the Claude Project's files, never in git.

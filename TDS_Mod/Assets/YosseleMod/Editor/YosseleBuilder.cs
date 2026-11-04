@@ -565,7 +565,7 @@ namespace YosseleBuild
         }
 
         // Which way Unity's Hemisphere shape faces: emit a few particles and see where they go, then return the shape
-        // rotation that turns the dome upward (so ground bursts never sink into the floor). Sprigg learned this the hard way.
+        // rotation that turns the dome upward (so ground bursts never sink into the floor).
         static Vector3 HemisphereUp()
         {
             var go = new GameObject("hemisphere probe");
@@ -597,7 +597,7 @@ namespace YosseleBuild
         {
             var hemisphereUp = HemisphereUp();
             Color H(string hex) { Color c; ColorUtility.TryParseHtmlString("#" + hex, out c); return c; }
-            // Heights follow the template's verified convention (Mummer 1.0): debuffs hang under the target's Vis; ground
+            // Heights follow the template's verified convention: debuffs hang under the target's Vis; ground
             // level is about -0.4, an overhead marker about 1.0-1.1 (its mesh is drawn at 1.5-1.6 in model coordinates).
             var specs = new List<VfxSpec>
             {
@@ -729,7 +729,7 @@ namespace YosseleBuild
                 src.playOnAwake = false;
             }
             // The game instantiates the mod prefab (and this library with it) at startup, so every holder stays inactive
-            // (Sprigg 1.2.1: active SpriteRenderers drew the sheets on the startup screen). Find/GetComponent still work.
+            // (an active SpriteRenderer draws its sheet on the startup screen). Find/GetComponent still work.
             spr.SetActive(false);
             models.SetActive(false);
             vfx.SetActive(false);

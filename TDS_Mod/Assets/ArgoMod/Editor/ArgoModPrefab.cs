@@ -3,7 +3,7 @@
 // "Default" in the name makes the game load it as soon as the mod is enabled.
 //
 // Tools > Argo > Export Mod: ModTool exports every prefab and ScriptableObject in the project except paths containing
-// "/Editor/" or "/ModTool/". Other vessel mods kept in this project (Assets/SpriggMod...) would ride along in Argo's
+// "/Editor/" or "/ModTool/". Other mods kept in this project (Assets/<Name>Mod...) would ride along in Argo's
 // bundle, so the export first parks them under Assets/_Parked/Editor/ (AssetDatabase.MoveAsset keeps their GUIDs).
 // Run Tools > Argo > Restore Parked Mods once the export has finished.
 using System;

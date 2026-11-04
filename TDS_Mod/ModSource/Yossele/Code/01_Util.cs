@@ -152,7 +152,7 @@ public static class YosseleUtil
     }
 
     // A networked ground being (a vine, a fruit) on a tile, a child of 'parent' (its owner and team), Forced so it goes
-    // in beside whatever stands there (Sprigg's SpawnOnTile, Sno Sno's snow under towers).
+    // in beside whatever stands there (kit docs/05's SpawnOnTile, Sno Sno's snow under towers).
     public static Entity_Master SpawnOnTile(Beingobject being, Genitem block, Entity_Master parent, string skin)
     {
         if (being == null || block == null || parent == null || parent.Beingserver == null)

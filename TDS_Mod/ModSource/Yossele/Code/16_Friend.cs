@@ -1,5 +1,5 @@
 // Cordyfriends (Cordyceps, the Mushroom Cannon's tier 5, host only): a foe that falls with spores may rise as one, a
-// networked melee unit owned by the cannon's player, spawned as the cannon's child on the felled foe's tile (Mummer's
+// networked melee unit owned by the cannon's player, spawned as the cannon's child on the felled foe's tile (the template's
 // Understudies, docs/05 section 10). Fighting is the stock Entity_Ai_Mob_Combat; YosseleFriendBrain only decides where
 // it walks: to the nearest foe within 4 tiles that is within 5 of where it rose, else back there. It stands on the
 // Snoble's mob-blocker block, so foes stop at it ("stalling foes"). It stays when its cannon goes. At most 30 stand at
@@ -141,7 +141,7 @@ public class YosseleFriendBrain : MonoBehaviour
         }
     }
 
-    // MummerPuppetBrain's melee walk: the nearest foe within reach that is within the leash of home, else home.
+    // The template's PuppetBrain melee walk: the nearest foe within reach that is within the leash of home, else home.
     void Think()
     {
         if (!YosseleUtil.Alive(Master))

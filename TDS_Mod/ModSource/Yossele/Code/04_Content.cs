@@ -595,7 +595,7 @@ public static class YosseleContent
 
     // ---------------------------------------------------------------- the Cordyfriend (Cordyceps)
 
-    // Mummer's Understudy recipe: the Mining Hut's miner (a walking fighter with Mob_General, Mob_Movement and the stock
+    // The template's Understudy recipe: the Mining Hut's miner (a walking fighter with Mob_General, Mob_Movement and the stock
     // melee AI), standing on the Snoble's mob-blocker block so foes stop at it. Its look is its own sheet on the miner's
     // sprite visual (temporary art, YosseleAssets.Friend); without the sheet, the Snoble's look tinted on every client by
     // YosseleClient, as before. Never tagged Sno or Snoble (docs/17: the Sno Cannon eats anything Sno).

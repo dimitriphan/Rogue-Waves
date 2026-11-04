@@ -48,7 +48,7 @@ Each line is an assumption the new code makes from the decompiled game, not yet 
    `Hero_Yossele_Laser`, a clone of `Hero_Snosno_Snoball` with the `Yossele_Laser` model (fallback: Smacky's archer
    arrow, logged at boot). Check it targets, fires at range 4, hurts for 5.5, mines ore as Sno Sno does, plays the
    Attack sheet on "Shoot" and `Yossele_Zap` on every client.
-2. **Cordyfriends.** Spawned as the cannon's child on the fallen foe's tile (Mummer's Understudies), fighting with the
+2. **Cordyfriends.** Spawned as the cannon's child on the fallen foe's tile (the template's Understudies), fighting with the
    stock melee AI, moved by `YosseleFriendBrain`. Check one rises, fights, walks back home, blocks foes, stays when its
    cannon goes, is tinted on a client, and that 30 is the cap.
 3. **D-MDS.** It reads the host's pooled projectiles (`Game_Entity.Projectiles`) and puts one out with `Kill(false)`;

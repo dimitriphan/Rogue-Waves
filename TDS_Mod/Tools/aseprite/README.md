@@ -15,7 +15,7 @@ any frame in Aseprite without losing the edit on the next build.
    | `<Name>_splash.aseprite` | 128×128 | `splash` |
    | `<Name>_readyup.aseprite` | 12×12 | `readyup` |
 
-   v0 faces the camera, v1 is v0 mirrored, v2 is the back, v3 is v2 mirrored. Sprigg's tags start with the growth stage.
+   v0 faces the camera, v1 is v0 mirrored, v2 is the back, v3 is v2 mirrored. A vessel with growth-stage sheets starts its tags with the stage.
    The palette holds every colour the vessel uses, translucent tones (a Smacky-style rim, a ground patch) last, if it has any.
 2. Copy the file you want to change up one folder, into `ModSource/<Name>/Aseprite/`, and edit it. Keep the colour mode
    RGB, the canvas size and each tag's frame count. Extra layers are fine; hidden layers are ignored.
@@ -26,7 +26,7 @@ How the merge works (`<Name>Aseprite.cs`): each tag's user data records where it
 CRC-32 of each frame as it was written:
 
 ```
-sheet=Vessel/Crackpot-Sheet.png;row=0;col=0;cols=6;rows=8;gen=1a2b3c4d,...;mirror=idle_v0
+sheet=Vessel/Yossele-Sheet.png;row=0;col=0;cols=6;rows=8;gen=1a2b3c4d,...;mirror=idle_v0
 ```
 
 A frame whose pixels no longer match its CRC is yours and replaces the code's frame. A frame you left alone keeps
@@ -40,7 +40,7 @@ to go back to the code's art.
 sheets:
 
 ```
-python3 ase_sheets.py pack Crackpot out --version 1.0.0 path/to/sheets/*.png
+python3 ase_sheets.py pack Yossele out --version 1.0.0 path/to/sheets/*.png
 python3 ase_sheets.py unpack sheets out/*.aseprite
 ```
 
@@ -48,6 +48,6 @@ python3 ase_sheets.py unpack sheets out/*.aseprite
 `sheets/Unit` next to the open file. Both rebuild whole sheets; only the builder merges frame by frame.
 
 Checked in the cloud: the builder's C# writer and `ase_sheets.py` produce the same tags, CRCs, frames and palette for
-Crackpot, Rustle and Broodie; files re-read by `ase_sheets.py` and the npm `ase-parser` match the sheets pixel for
+the first three vessels it was built with; files re-read by `ase_sheets.py` and the npm `ase-parser` match the sheets pixel for
 pixel; edited frames, mirrors, extra layers, raw cels and hidden layers merge as described. In Unity it runs inside Argo's Build All
 Assets (Argo's PC rounds, 2026-10-08); the written files have not been opened in Aseprite yet.

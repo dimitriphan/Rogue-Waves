@@ -1,7 +1,7 @@
 # cloud-check: compile and preview vessel mods without Unity or the game
 
-Crackpot and Rustle (in ModProjects) were written on a Linux machine with no Windows, Unity or copy of TDS; Argo 2.0,
-RogueLab and RogueWavesMode were checked the same way here. These scripts are how such code is checked and its art
+Every part of the pack (Argo 2.0, Yossele, Spool, Uloe, RogueWavesMode, RogueWavesFoes) and RogueLab is written and
+checked here, on a Linux machine with no Windows, Unity or copy of TDS. These scripts are how such code is checked and its art
 reviewed. They don't replace a build in Unity and a test in the game: they catch
 compile errors early and let you look at the generated sprites, models and sounds.
 
@@ -61,5 +61,5 @@ cd ../Assets/ArgoMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . 
   chat box, which the stubs don't carry: it reports errors here and compiles only on the PC. The mode's
   release, `ROGUEWAVESMODE_SELFTEST` and `ROGUEWAVESMODE_GAPS` builds compile at 0 errors (the TMPro and layout
   members they use were added to `stubs/ThirdParty.cs` on 2026-11-04).
-- Validated against the unmodified Mummer template: 0 errors in release and with every debug define, and a seeded
+- Validated against the unmodified template (`TDS_Vessel_Creator/template/Mummer`): 0 errors in release and with every debug define, and a seeded
   `HashSet` (missing `System.Core`) is reported as CS1069, as the game would.

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 // FERTILIZE picks one of your buildings the way the game's own Sell picks a tower: press it, point at one of your
 // Yossele buildings (it gets the selection border), click to spend a fertilizer on it. The hotkey fertilizes the
 // building under the cursor straight away, or (nothing under it) the nearest of yours that can still grow. The server
-// checks every pick (owner, fertilizer, Growth). Mummer's HOOK picker, pointed at your own buildings.
+// checks every pick (owner, fertilizer, Growth). The template's HOOK picker, pointed at your own buildings.
 public class YosseleFertilizeSelect : Entity_Command_Itemselect_Base
 {
     GameObject ui;

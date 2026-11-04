@@ -21,7 +21,7 @@ if (-not $token) {
     if (-not (Test-Path -LiteralPath $TokenFile)) { throw "No signed-in gh and no token at $TokenFile. See TDS_Mod\Tools\pc\README.md." }
     $token = ([IO.File]::ReadAllText($TokenFile)).Trim()
 }
-$headers = @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json"; "User-Agent" = "ModProjects-Get-Handoff"; "X-GitHub-Api-Version" = "2022-11-28" }
+$headers = @{ Authorization = "Bearer $token"; Accept = "application/vnd.github+json"; "User-Agent" = "RogueWaves-Get-Handoff"; "X-GitHub-Api-Version" = "2022-11-28" }
 $sha = (Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/commits/$Ref" -Headers $headers).sha
 $short = $sha.Substring(0, 7)
 $zip = Join-Path $env:TEMP "modprojects_$short.zip"

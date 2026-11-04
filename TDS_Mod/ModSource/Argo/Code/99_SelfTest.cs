@@ -340,7 +340,7 @@ public static class ArgoSelfTest
 
     // A Dagger (else the Tide's own enemy type) about 'dist' tiles from 'near' (then 2 closer, 2 farther, 3), spawned as
     // a child of the enemy core like Tide enemies, on the first standable tile of the ring. Not an Aegis: a held Aegis
-    // reads 0.05 (Mummer's Cross check; see SpeedInfo).
+    // reads 0.05 (the kit template's Cross check; see SpeedInfo).
     static Entity_Master SpeedFoe(Vector3 near, float dist)
     {
         Beingobject being = ArgoUtil.Load<Beingobject>("Mob", "Enemy_Dagger") ?? enemyType;

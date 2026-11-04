@@ -29,7 +29,7 @@ the cloud renders of the first build. The art has since been built in Unity and 
 - `Readyup6yossele` (12x12): the face (hole, eyes, sprout, collar) in white brackets.
 - `Yosseletabicon` (32x32): a white 1 px outline of the splash shapes, with the hole and two eye dots.
 
-Removed from the template: the unit and doll sheets, the hangers, and every Mummer model, effect and sound.
+Removed from the template: the unit and doll sheets, the hangers, and every template model, effect and sound.
 
 ## Models (low-poly, palette `Yossele_Palette` 8x8; front -z unless noted)
 
@@ -97,7 +97,7 @@ Removed from the template: the unit and doll sheets, the hangers, and every Mumm
 5. **Vine:** `Yossele_Vine` is a flat quad at y -0.49, 0.01 above the ground in the tower convention.
 6. **Sheets:** layouts as listed above. `World_Yossele_Dig` is in the effect list.
 
-## Effects (`VfxSpec` in YosseleBuilder; heights follow Mummer 1.0's verified convention)
+## Effects (`VfxSpec` in YosseleBuilder; heights follow the template's verified convention)
 
 - `Debuff_Yossele_Spores`: green-brown puffs drifting round the foe.
 - `Debuff_Yossele_Sporefull`: the toadstool mesh over the head, with a few spore motes.
@@ -137,7 +137,7 @@ The new particle textures are `Px_Plus` and `Px_Leaf`.
 ## Not made, or made differently
 
 - **Debuff heights:** the contract asks for overhead markers 1.4-1.7 up. I followed the template's convention
-  instead. The overhead meshes sit at 1.5-1.6 in model coordinates, as Mummer 1.0's verified marker does at 1.6, which
+  instead. The overhead meshes sit at 1.5-1.6 in model coordinates, as the template's verified marker does at 1.6, which
   puts them about 1.0-1.1 above the effect origin. If the game puts the debuff origin at the feet, raise them 0.5.
 - **Spores stack count:** `Debuff_Yossele_Spores` doesn't show the count, as DESIGN.md says.
 - **Stonehenge front on +z:** this follows the coordinator's runtime contract and overrides the brief's "front faces

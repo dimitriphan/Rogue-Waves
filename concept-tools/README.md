@@ -1,7 +1,7 @@
 # Concept tools
 
-The generic Python behind the concept pages in `ModProjects/tds-vessel-concepts`, without the per-vessel scripts. Each
-script's docstring says how to run it; `lowpoly.py` and `pngout.py` are libraries the scripts import. Only
+Generic Python for the pack's concept pages, art previews and sea chart. Each script's docstring says how to run it;
+`lowpoly.py` and `pngout.py` are libraries the scripts import. Only
 `sea_chart.py`'s PNG needs Pillow (`pip install pillow`, may be missing in a fresh container); the rest use the
 standard library.
 
@@ -14,7 +14,7 @@ standard library.
 | `temp_art/` | The pack's temporary art drawn as files (`docs/TEMP_ART.md`): `tart.py` (canvas, upper-left shading, PNG + `.aseprite` + 8x preview), `cordyfriend.py` (Yossele's Cordyfriend sheet), `ui_icons.py` (the mode's 12 x 12 icons, the 32 px crest, Spool's tuft), `yossele_anims.py` (Yossele's idle, walk and laser sheets), `spool_threadhead.py` and `spool_units.py` (the Thread Head and the four Crafted) |
 | `argo_divers/` | Five concept takes on Argo as a diver who might not be human (`argo_divers.py`: art over the shipped frame plus the kit `docs/18` §4.2 check; `hollow_shapes.py`: round 2, Hollow in five head and body shapes; `hollow_ten.py`: round 3, ten Hollow bodies on round 1's helmet; `build_page.py` + `template.html`: the picks page); `docs/concepts/argo_divers_2026-11-04/`, `argo_hollow_2026-11-04/`, `argo_hollow_ten_2026-11-04/` |
 | `minions/` | Ten Snoble-sized versions of every modded minion (2026-11-04, `docs/TEMP_ART.md` "Minion versions"): `mlib.py` (poses, gaits, small parts, sheet writer on `temp_art/tart.py`), one file per vessel with the ten designs (`yossele.py`, `spool.py`, `uloe.py`, `argo.py`), `build.py` (sheets into each part's `Art/Temporary/minions_2026-11-04/`, GIFs and line-ups into the project files), `page.py` + `page_template.html` (the picks page), `readmes.py`, `lineup.py` (a check sheet while drawing) |
-| `build_mod_pages.py` | Builds an illustrated sheet for a vessel from the mod itself (`02_Data.cs` + `run_preview.sh` output), so the page can't drift from the code. Pages go to `docs/concepts/<slug>/`; add a row to its `VESSELS` table per vessel |
+| `build_mod_pages.py` | Builds an illustrated sheet for a vessel from the mod itself (`02_Data.cs` + `run_preview.sh` output), so the page can't drift from the code. Pages go to `docs/concepts/<slug>/`; its `VESSELS` table starts empty, add a row per vessel |
 
-A new concept page follows the Broodie pattern described in `.claude/rules/concepts.md`: an art script, a models script
+A new concept page follows the pattern in `.claude/rules/concepts.md`: an art script, a models script
 on `lowpoly.py`, and a design script that checks the design against `docs/02` and writes `DESIGN.md`.

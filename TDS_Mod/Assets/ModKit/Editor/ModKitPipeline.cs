@@ -1,13 +1,13 @@
 // Tools > ModKit > Build Queue: one call (one UnityMCP execute_menu_item) builds and exports every vessel listed in
-// Desktop\ClaudeProjects\handoff\queue.txt, in order: Build All Assets (twice on a line ending in " twice", as Sprigg
-// needs), Build Mod Prefab, Export Mod (which parks the other vessels) and Restore Parked Mods. Build each vessel's code
-// first (Build-<Name>Mod.ps1, with or without -Define), and let Unity finish compiling after a handoff is applied.
+// Desktop\ClaudeProjects\handoff\queue.txt, in order: Build All Assets (twice on a line ending in " twice", for a vessel
+// whose assets need two passes), Build Mod Prefab, Export Mod (which parks the other vessels) and Restore Parked Mods.
+// Build each vessel's code first (Build-<Name>Mod.ps1, with or without -Define), and let Unity finish compiling after a handoff is applied.
 // Every step is written to handoff\queue_status.txt as it happens, ending in "QUEUE DONE ok=N failed=M", and logged as a
 // "[ModKit]" line in Editor.log. Read the Editor.log lines (and the .info file's time) rather than waiting on the MCP
 // call, which can time out on a long export (and must not be run a second time): MCP replays a timed-out call, and a
 // replay can overwrite queue_status.txt after a good run (kit docs/09 #76).
 // queue.txt, one vessel per line:   Argo
-//                                   Sprigg twice
+//                                   <Name> twice   (a vessel whose assets need two passes)
 // Then Run-SelfTests.ps1 (self-test builds) or Run-SelfTests.ps1 -BootCheck (release builds).
 //
 // Tools > ModKit > Build Pack: the release pack, one RogueWavesMod bundle with one RogueWaves_<Part>_Default prefab per

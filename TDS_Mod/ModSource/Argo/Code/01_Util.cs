@@ -432,7 +432,7 @@ public static class ArgoUtil
         return foe != null && reeling.TryGetValue(foe, out until) && until > Time.time;
     }
 
-    // Reels a foe up to 'tiles' toward a point over 'seconds', stopping 'minDist' short of it. Mummer's HOOK reel: the
+    // Reels a foe up to 'tiles' toward a point over 'seconds', stopping 'minDist' short of it. The kit template's HOOK reel: the
     // foe walks itself to a tile on the way, on its own Move command sped up for the moment, never physics, so the pull
     // looks the same on every screen and the foe's AI takes its path up again from where it lands. Boss-weight foes,
     // foes already close and foes with no free tile toward the point aren't moved. onDone runs when the foe arrives (or
