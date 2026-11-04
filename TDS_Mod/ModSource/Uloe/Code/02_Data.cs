@@ -96,9 +96,6 @@ public static class UloeData
     public static readonly float[] LitMulti = { 0.15f, 0.3f, 0.45f };
     public static readonly float[] MarkSeconds = { 3f, 4f, 5f };
     public const float MarkRefresh = 1f;                   // the same level refreshes in its last second
-    // true: the stock scripts (Barrel_Boost, Merchut; fit plan 8.3); false: Addmod with a duration and a hit hook, the same
-    // numbers (IMPLEMENTATION_NOTES.md says why there are two).
-    public const bool StockMarks = false;   // first in-game run (2026-11-03): the stock route logged 2 OperationCanceledException per marked foe that fell
 
     // ---------------------------------------------------------------- Directions (docs/scope/11), one upgrade per rank; index = rank
 

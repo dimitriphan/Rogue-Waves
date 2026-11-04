@@ -432,14 +432,6 @@ public static class UloeSelfTest
         return new Vector3(float.NaN, 0f, 0f);
     }
 
-    // Exceptions the game logs while a check runs (a stock script's UniTask cancelled when its foe falls: the route question).
-    static int cancelled;
-    static void OnLog(string message, string stack, LogType type)
-    {
-        if (type == LogType.Exception && message.Contains("OperationCanceledException") && (stack.Contains("Barrel_Boost") || stack.Contains("Tower_Merchut")))
-            cancelled++;
-    }
-
     // ---------------------------------------------------------------- the scenario
 
     static IEnumerator Scenario()
@@ -458,7 +450,6 @@ public static class UloeSelfTest
         Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + home + ", owner " + owner + ", team " + team);
         ModKitTest.Log = Log;
         ModKitTest.MapDump(team, hm);
-        Application.logMessageReceived += OnLog;
         Helper_Resources.Giveresources(UloeUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
         yield return Wait(0.5f);
         List<UloeBuilding> known = new List<UloeBuilding>();
@@ -491,8 +482,6 @@ public static class UloeSelfTest
         Check("the build menu holds the four", hero.Menu() == UloeUtil.Join(UloeData.Towers), hero.Menu());
         Check("vessel visible to clients", hm.Client != null && hm.Client.Beingobject != null && hm.Client.Beingobject.Objectname == UloeData.Hero);
         Check("the beam is the stock Projectile_Ai_Beam", UloeContent.BeamReady, UloeContent.BeamFrom);
-        Check("Blind and Illuminate have three levels each", UloeContent.Blinds[2] != null && UloeContent.Lits[2] != null);
-        Check("Blind lists every key Barrel_Boost reads (pitfall #117)", UloeContent.Blinds[0] != null && UloeContent.Blinds[0].Defaultparams.ContainsKey("Health_Pmulti") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Speed_Multi") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Attackspeed_Multi") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Damage_Multi") && UloeContent.Blinds[0].Defaultparams.ContainsKey("Duration_Base"));
 
         // 2. Light: a Glass by the vessel, then a walk away.
         at = Spot(hm, UloeContent.Beings[UloeData.Glass], 2f);
@@ -603,38 +592,29 @@ public static class UloeSelfTest
             yield return Near(hm, glass.Master, 3f);
         }
 
-        // 4. Blind and Illuminate, on the route in use, with a foe far from everything. Round 1 ran both: the stock route logged 2
-        // OperationCanceledException per marked foe that fell, the own route none (IMPLEMENTATION_NOTES.md).
+        // 4. Blind and Illuminate (a timed Addmod and a hit hook), with a foe far from everything.
         ClearFoes();
-        foreach (bool stock in new[] { UloeData.StockMarks })
+        yield return FarFoe("Enemy_Dagger", slot);
+        far = slot[0];
+        if (far == null)
+            ModKitTest.Setup("Blind and Illuminate", "no foe could stand by the enemy core");
+        else
         {
-            UloeMarks.Stock = stock;
-            string route = stock ? "stock: " : "own: ";
-            yield return FarFoe("Enemy_Dagger", slot);
-            far = slot[0];
-            if (far == null)
-            {
-                ModKitTest.Setup(route + "Blind and Illuminate", "no foe could stand by the enemy core");
-                continue;
-            }
             float d0 = UloeUtil.Stat(far, "Damage", 0f);
             UloeMarks.Blind(hm, far, 1);
             yield return Wait(0.2f);
-            Check(route + "Blind 1 takes 15% of a foe's Damage", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.85f), F(d0) + " -> " + F(UloeUtil.Stat(far, "Damage", 0f)));
+            Check("Blind 1 takes 15% of a foe's Damage", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.85f), F(d0) + " -> " + F(UloeUtil.Stat(far, "Damage", 0f)));
             UloeMarks.Blind(hm, far, 2);
             yield return Wait(0.2f);
-            Check(route + "Blind 2 replaces it: 30%", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
+            Check("Blind 2 replaces it: 30%", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
             UloeMarks.Blind(hm, far, 1);
             yield return Wait(0.2f);
-            Check(route + "a weaker Blind does nothing", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
+            Check("a weaker Blind does nothing", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.7f) && UloeMarks.BlindLevel(far) == 2, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
             UloeMarks.Blind(hm, far, 3);
             yield return Wait(0.2f);
-            Check(route + "Blind 3: 45%", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.55f) && UloeMarks.BlindLevel(far) == 3, F(UloeUtil.Stat(far, "Damage", 0f)));
+            Check("Blind 3: 45%", Near(UloeUtil.Stat(far, "Damage", 0f), d0 * 0.55f) && UloeMarks.BlindLevel(far) == 3, F(UloeUtil.Stat(far, "Damage", 0f)));
             yield return Wait(UloeData.MarkSeconds[2] + 0.5f);
-            Check(route + "Blind wears off", Near(UloeUtil.Stat(far, "Damage", 0f), d0) && UloeMarks.BlindLevel(far) == 0, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
-            bool listed = false;
-            foreach (Upgradeproperties up in UloeContent.Blinds) if (far.Upgradelistserver.ContainsKey(up.Objectname)) listed = true;
-            Check(route + "no Blind upgrade is left on the foe", !listed);
+            Check("Blind wears off", Near(UloeUtil.Stat(far, "Damage", 0f), d0) && UloeMarks.BlindLevel(far) == 0, F(UloeUtil.Stat(far, "Damage", 0f)) + ", level " + UloeMarks.BlindLevel(far));
             float h0 = UloeUtil.Health(far);
             Hit(hm, far, 1f);
             float plain = h0 - UloeUtil.Health(far);
@@ -643,43 +623,38 @@ public static class UloeSelfTest
             h0 = UloeUtil.Health(far);
             Hit(hm, far, 1f);
             float lit2 = h0 - UloeUtil.Health(far);
-            Check(route + "Illuminate 2: 30% more damage taken", Near(plain, 1f) && Near(lit2, 1.3f), "1 damage takes " + F(plain) + ", lit " + F(lit2));
+            Check("Illuminate 2: 30% more damage taken", Near(plain, 1f) && Near(lit2, 1.3f), "1 damage takes " + F(plain) + ", lit " + F(lit2));
             // A spark's or a beam's hit starts with empty Data, as Projectile_Master.Interact delivers it.
             h0 = UloeUtil.Health(far);
             Helper_Entitytools.Interacthurt(hm, far, new Dictionary<string, float>());
-            Check(route + "a spark on an Illuminated foe takes the share too", Near(h0 - UloeUtil.Health(far), UloeUtil.Stat(hm, "Damage", 0f) * 1.3f), F(h0 - UloeUtil.Health(far)) + " from Damage " + F(UloeUtil.Stat(hm, "Damage", 0f)));
+            Check("a spark on an Illuminated foe takes the share too", Near(h0 - UloeUtil.Health(far), UloeUtil.Stat(hm, "Damage", 0f) * 1.3f), F(h0 - UloeUtil.Health(far)) + " from Damage " + F(UloeUtil.Stat(hm, "Damage", 0f)));
             UloeMarks.Illuminate(hm, far, 1);
             yield return Wait(0.1f);
-            Check(route + "a weaker Illuminate does nothing", UloeMarks.LitLevel(far) == 2, "level " + UloeMarks.LitLevel(far));
+            Check("a weaker Illuminate does nothing", UloeMarks.LitLevel(far) == 2, "level " + UloeMarks.LitLevel(far));
             UloeMarks.Illuminate(hm, far, 3);
             yield return Wait(0.2f);
             h0 = UloeUtil.Health(far);
             Hit(hm, far, 1f);
-            Check(route + "Illuminate 3 replaces it: 45%", Near(h0 - UloeUtil.Health(far), 1.45f) && UloeMarks.LitLevel(far) == 3, F(h0 - UloeUtil.Health(far)));
+            Check("Illuminate 3 replaces it: 45%", Near(h0 - UloeUtil.Health(far), 1.45f) && UloeMarks.LitLevel(far) == 3, F(h0 - UloeUtil.Health(far)));
             yield return Wait(UloeData.MarkSeconds[2] + 0.5f);
             h0 = UloeUtil.Health(far);
             if (UloeUtil.Alive(far))
             {
                 Hit(hm, far, 1f);
-                Check(route + "Illuminate wears off", Near(h0 - UloeUtil.Health(far), 1f) && UloeMarks.LitLevel(far) == 0, F(h0 - UloeUtil.Health(far)));
+                Check("Illuminate wears off", Near(h0 - UloeUtil.Health(far), 1f) && UloeMarks.LitLevel(far) == 0, F(h0 - UloeUtil.Health(far)));
             }
-            // The route question: does a stock script's UniTask, cancelled when its foe falls, log an exception?
             yield return FarFoe("Enemy_Dagger", slot);
             far = slot[0];
             if (far != null)
             {
-                cancelled = 0;
                 UloeMarks.Blind(hm, far, 1);
                 UloeMarks.Illuminate(hm, far, 1);
                 yield return Wait(0.2f);
                 Kill(far);
                 yield return Wait(1f);
-                Log("INFO " + route + "a marked foe falling logged " + cancelled + " OperationCanceledException (a stock script's cancelled delay)");
-                Check(route + "a marked foe falling leaves no mark behind", UloeMarks.BlindLevel(far) == 0);
+                Check("a marked foe falling leaves no mark behind", UloeMarks.BlindLevel(far) == 0);
             }
         }
-        UloeMarks.Stock = UloeData.StockMarks;
-        Log("route in use: " + (UloeMarks.Stock ? "stock scripts" : "own"));
         ClearFoes();
 
         // 5. The Magnifying Glass.
@@ -1244,7 +1219,6 @@ public static class UloeSelfTest
 #endif
         }
 
-        Application.logMessageReceived -= OnLog;
         Log("counts: beams seen " + UloeClient.Beams + ", links drawn " + UloeClient.Linksdrawn + ", blinds " + UloeMarks.Blinds + ", illuminations " + UloeMarks.Illuminations + ", shines " + UloeServer.Shines + ", bursts " + UloeServer.Bursts);
         freeze = false;
         Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups);

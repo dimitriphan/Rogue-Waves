@@ -39,7 +39,7 @@ default now and a caller may hand one `Data` to several foes.
 | `01_Util.cs` | Helpers: Spool's (stats, tiles, walking, JSON, Vis, debuff looks) plus `Keep`, `Picked`, `IsNode`, `NearestNode`, `NodeAura`, `SegmentDistance`, `Front`, `Listen` |
 | `02_Data.cs` | Every name, text and number |
 | `03_Assets.cs` | Sprite sheets to animations (the vessel twice, plain and lit; the Photon), boat sprite, 12 px icons, sounds and effects |
-| `04_Content.cs` | Clones the hero (Smacky), the Glass (Archer), Bank and Flood Light (Mining Hut), Mirror (Wall), Photon (miner), the spark (Sno Sno's snowball), the beam (Buster's Totem beam), Blind and Illuminate (stock scripts on pack data), the commands, the four Directions, the journal |
+| `04_Content.cs` | Clones the hero (Smacky), the Glass (Archer), Bank and Flood Light (Mining Hut), Mirror (Wall), Photon (miner), the spark (Sno Sno's snowball), the beam (Buster's Totem beam), the commands, the four Directions, the journal |
 | `05_Server.cs` | Host rules: `UloeLight` (one source's share of Light), `UloeServer` (spawn and despawn hooks, `Shine`, Flood Light paths), `UloeMarks` (Blind and Illuminate) |
 | `06_HeroBrain.cs` | The vessel: arms the spark, its own Light, PLUG IN, the Directions |
 | `07_Building.cs` | Base for the buildings (upgrade flow mirroring `Entity_Ai_General_Upgrade`, the Light stat, Light's skin), the Flood Light |
@@ -69,7 +69,12 @@ default now and a caller may hand one `Data` to several foes.
 - `Bl_Address.Getload` on a missing item only logs a warning (pitfall #114's line), so a map without `Debuff_Woozy` or `Debuff_Targeted`
   loses the stock look and keeps Uloe's own.
 
-## Decided after round 1: Blind and Illuminate take the own route (`UloeData.StockMarks = false`)
+## Decided after round 1: Blind and Illuminate take the own route (the stock route deleted 2026-11-04)
+
+**2026-11-04:** the stock route below (`UloeData.StockMarks`, `UloeMarks.Stock`, the six `Uloe_Blind<n>`/`Uloe_Lit<n>` upgrades and
+the self-test's route loop) was deleted, as `docs/reports/CODE_SIMPLIFICATION_2026-11-04.md` finding 7 proposed: it never ran in a
+release build. The self-test lost three checks that read those upgrades (two content checks and "no Blind upgrade is left on the
+foe"), and its Blind and Illuminate checks dropped the "own: " prefix. Git keeps the stock route if it is ever wanted again.
 
 Round 1 logged `stock: a marked foe falling logged 2 OperationCanceledException`, `own: ... 0`, and every Blind and Illuminate check passed on both
 routes. The self-test now runs only the route in use. The reasoning, from before the run:

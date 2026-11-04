@@ -262,8 +262,9 @@ public static class UloeServer
 }
 
 // Blind and Illuminate on the host: one level of each per foe at a time. A stronger one replaces a weaker, a weaker does
-// nothing while a stronger is on, the same level refreshes in its last second. Each level is its own upgrade (a stock script
-// on pack data, fit plan 8.3); Stock false takes the same numbers through Addmod and a hit hook (IMPLEMENTATION_NOTES.md).
+// nothing while a stronger is on, the same level refreshes in its last second. Blind is a timed Addmod on the foe's Damage,
+// Illuminate a hit hook; the stock scripts (Barrel_Boost, Merchut) logged an exception per marked foe that fell
+// (IMPLEMENTATION_NOTES.md, "Decided after round 1").
 public class UloeMark
 {
     public Entity_Master Foe;
@@ -289,7 +290,6 @@ public class UloeMark
 
 public static class UloeMarks
 {
-    public static bool Stock = UloeData.StockMarks;
     public static int Blinds, Illuminations;
     static readonly Dictionary<Entity_Master, UloeMark> marks = new Dictionary<Entity_Master, UloeMark>();
     static readonly List<Entity_Master> done = new List<Entity_Master>();
@@ -337,10 +337,7 @@ public static class UloeMarks
             return;
         float secs = UloeData.MarkSeconds[level - 1];
         TakeOffBlind(m);
-        if (Stock)
-            Helper_Entitytools.Upgrade(foe, UloeContent.Blinds[level - 1], Helper_Entitytools.Upgradecheck.Forced, null);
-        else
-            m.BlindMod = Helper_Entitytools.Addmod(foe, "Damage", -UloeData.BlindMulti[level - 1], Helper_Entitytools.Modtypes.Multi, secs);
+        m.BlindMod = Helper_Entitytools.Addmod(foe, "Damage", -UloeData.BlindMulti[level - 1], Helper_Entitytools.Modtypes.Multi, secs);
         m.Blind = level;
         m.BlindUntil = Time.time + secs;
         Blinds++;
@@ -357,16 +354,11 @@ public static class UloeMarks
         if (!Takes(m.Lit, m.LitUntil, level))
             return;
         float secs = UloeData.MarkSeconds[level - 1];
-        TakeOffLit(m, radio);
-        if (Stock)
-            Helper_Entitytools.Upgrade(foe, UloeContent.Lits[level - 1], Helper_Entitytools.Upgradecheck.Forced, null);
-        else
-        {
-            if (m.Hook == null) m.Hook = m.OnHit;
-            m.HookMulti = UloeData.LitMulti[level - 1];
-            m.HookOn = true;
-            UloeUtil.Front(foe, m.Hook);
-        }
+        TakeOffLit(m);
+        if (m.Hook == null) m.Hook = m.OnHit;
+        m.HookMulti = UloeData.LitMulti[level - 1];
+        m.HookOn = true;
+        UloeUtil.Front(foe, m.Hook);
         m.Lit = level;
         m.LitUntil = Time.time + secs;
         Illuminations++;
@@ -378,27 +370,19 @@ public static class UloeMarks
         if (m.BlindMod != null && !m.BlindMod.Dead)
             m.BlindMod.Remove();
         m.BlindMod = null;
-        if (m.Blind > 0 && m.Foe != null && m.Foe.Upgradelistserver != null && m.Foe.Upgradelistserver.ContainsKey(UloeContent.Blinds[m.Blind - 1].Objectname))
-            Helper_Entitytools.Removeupgrade(m.Foe, UloeContent.Blinds[m.Blind - 1]);
     }
 
-    static void TakeOffLit(UloeMark m, Entity_Master radio)
+    static void TakeOffLit(UloeMark m)
     {
         if (m.HookOn)
         {
             UloeUtil.Unfront(m.Foe, m.Hook);
             m.HookOn = false;
         }
-        if (m.Lit > 0 && m.Foe != null && m.Foe.Upgradelistserver != null && m.Foe.Upgradelistserver.ContainsKey(UloeContent.Lits[m.Lit - 1].Objectname))
-        {
-            Helper_Entitytools.Removeupgrade(m.Foe, UloeContent.Lits[m.Lit - 1]);
-            // The stock Merchut look is set for 9999 s and no Downgrade takes it off.
-            UloeUtil.RemoveDebuff(radio != null ? radio : m.Foe, m.Foe, "Debuff_Targeted");
-        }
     }
 
-    // Ten times a second: Illuminate is taken off when its time is up (the stock Merchut lasts until removed), a hook stays
-    // at the front of its chain, and Blind's level is forgotten when it wore off (Barrel_Boost removes itself).
+    // Ten times a second: Illuminate is taken off when its time is up, its hook stays at the front of its chain, and Blind's
+    // level is forgotten when it wore off (its Addmod removes itself).
     public static void Tick()
     {
         float now = Time.time;
@@ -413,7 +397,7 @@ public static class UloeMarks
             }
             if (m.Lit > 0 && m.LitUntil <= now)
             {
-                TakeOffLit(m, null);
+                TakeOffLit(m);
                 m.Lit = 0;
             }
             else if (m.HookOn)

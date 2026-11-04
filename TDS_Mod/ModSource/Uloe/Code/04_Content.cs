@@ -11,7 +11,6 @@ public static class UloeContent
     public static readonly Dictionary<string, Upgradeproperties> Upgrades = new Dictionary<string, Upgradeproperties>();
     public static readonly Dictionary<string, UloeData.Upg> UpgradeDefs = new Dictionary<string, UloeData.Upg>();
     public static readonly List<Upgradeproperties> Directions = new List<Upgradeproperties>();
-    public static readonly Upgradeproperties[] Blinds = new Upgradeproperties[3], Lits = new Upgradeproperties[3];
     public static Commandobject Plug, Aim;
     public static int VfxRegistered;
     public static bool IconsReady, SparkReady, BeamReady;
@@ -56,7 +55,6 @@ public static class UloeContent
         foreach (UloeData.Build b in UloeData.Builds)
             BuildTower(b);
         BuildPhoton();
-        BuildMarks();
         BuildHero(UloeUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
         BuildDirections();
@@ -564,53 +562,6 @@ public static class UloeContent
                 if (o is Upgradeproperties && !Upgrades.ContainsKey(o.name))
                     return (Upgradeproperties)o;
         return null;
-    }
-
-    static Upgradeproperties Effect(Upgradeproperties template, string id, string display, string desc, string script, Dictionary<string, float> pars)
-    {
-        Upgradeproperties up = UloeUtil.Clone(template, id);
-        up.Notes = "";
-        up.Display_Name = display;
-        up.Display_Desc = desc;
-        up.Priority = -3;
-        up.Costs = new List<Link_Resourceset>();
-        up.Aiscripts = Scripts(script);
-        up.Ent_Visual = null;
-        up.Upgrades = new List<Upgradeproperties>();
-        up.Defaultparam = new List<Upgradeproperties.Param>();
-        up.Defaultparams = pars;
-        foreach (KeyValuePair<string, float> kv in pars)
-        {
-            Upgradeproperties.Param p = new Upgradeproperties.Param();
-            p.Name = kv.Key;
-            p.Value = kv.Value;
-            up.Defaultparam.Add(p);
-        }
-        Register("Upgrade", up);
-        return up;
-    }
-
-    // Each level is its own upgrade, since the same upgrade applied twice does nothing (pitfall #115). Barrel_Boost reads all
-    // five keys whether set or not (pitfall #117); Merchut reads Effect_Multi and lasts until removed (UloeMarks takes it off).
-    static void BuildMarks()
-    {
-        Upgradeproperties template = AnyUpgrade();
-        if (template == null)
-        {
-            UloeLog.Error("no upgrade to make Blind and Illuminate from");
-            return;
-        }
-        for (int i = 0; i < 3; i++)
-        {
-            Blinds[i] = Effect(template, "Uloe_Blind" + (i + 1) + "_Upgradeobject", "Blinded", "Deals less damage", "Entity_Ai_Effect_Barrel_Boost", new Dictionary<string, float>
-            {
-                { "Health_Pmulti", 0f }, { "Speed_Multi", 0f }, { "Attackspeed_Multi", 0f }, { "Damage_Multi", -UloeData.BlindMulti[i] }, { "Duration_Base", UloeData.MarkSeconds[i] },
-            });
-            Lits[i] = Effect(template, "Uloe_Lit" + (i + 1) + "_Upgradeobject", "Illuminated", "Takes more damage", "Entity_Ai_Effect_Tower_Merchut", new Dictionary<string, float>
-            {
-                { "Effect_Multi", UloeData.LitMulti[i] },
-            });
-        }
     }
 
     // ---------------------------------------------------------------- Directions (kit 1.7, docs/scope/11)
