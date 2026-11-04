@@ -1,5 +1,16 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-04): seven Cardinals removed
+
+At Dimitri's word, Claude's seven starter Cardinals are gone from `RWCardinals.Mine` and their icons from
+`RogueWavesModeArt.cs`: Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell and Second Wind. Each one
+copied a stock Cardinal (`docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §1). With them goes the `Borrowed` load of
+`Artifact_Vintage` and `Artifact_Loop`, which only Tide Clock and Second Wind needed. The pack now sells only
+Vampire Dentures of its own, beside the stock Cardinals on sale. Claude's newer Cardinals in scope `12` are not built yet.
+A saved campaign that still holds one of the seven keeps its id, but `Def()` finds no sheet for it, so nothing is
+granted. **State:** compiled here: release and `ROGUEWAVESMODE_SELFTEST` give the same 9 errors as the base, all TMPro members the cloud stubs lack (`14_Run.cs`), none from this change; editor builder clean. Not run on the PC. The next PC round's shop check (`Cardinals: every one on
+sale goes on with no error`) covers it.
+
 ## 0.1.0-dev (2026-11-03): the mode polish
 
 The coordinator's mode-polish pass (Dimitri's "Run 3, 4, and 5", 2026-11-03): the part checked line by line against

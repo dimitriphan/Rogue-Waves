@@ -141,7 +141,7 @@
 	# Names follow the pack's style sheet: a Direction's name matches its Look line; a heading or a course is optional. /~ docs/STYLE.md \
 
 	{Name of Direction} / Short, and matches its Look line \
-		- Kind: / Boost (a stat bonus) or Shift (changes how the vessel plays) \
+		- Kind: / Boost (a stat bonus), Shift (changes how the vessel plays) or Duo (comes only to a player who holds the two Directions its Vessel line names; one rank) \
 		- Vessel: / Argo, Yossele, Spool, Uloe, a base game vessel, or Any. Any works on every vessel, base game vessels included \
 		- Touches: / The vessel itself, one building (name it), all its buildings, its units or minions, or its aura income \
 		- Rank I: / One line the player reads on the pick card \
