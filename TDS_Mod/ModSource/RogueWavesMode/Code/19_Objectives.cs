@@ -41,7 +41,7 @@ public static class RWObjectives
         Game_Mapvars map = Game_Mapvars.Instance;
         if (map == null || ReferenceEquals(map, meteorMap) || !RWContent.Built)
             return;
-        Beingobject ore = RWUtil.Load<Beingobject>("Mob", "Resource_Red") ?? RWUtil.Load<Beingobject>("Mob", "Resource_Blue") ?? RWUtil.Load<Beingobject>("Mob", "Resource_Yellow");
+        Beingobject ore = ModKitUtil.Load<Beingobject>("Mob", "Resource_Red") ?? ModKitUtil.Load<Beingobject>("Mob", "Resource_Blue") ?? ModKitUtil.Load<Beingobject>("Mob", "Resource_Yellow");
         if (ore == null || ore.Entity == null)
             return;
         meteorMap = map;
@@ -227,7 +227,7 @@ public static class RWObjectives
             try { stand = Helper_Gridtools.Checkifstandable(g, probe); } catch (Exception) { }
             if (stand == null)
                 continue;
-            float score = Mathf.Abs(RWUtil.Flat(stand.Position, from) - want);
+            float score = Mathf.Abs(ModKitUtil.Flat(stand.Position, from) - want);
             if (score < bestScore) { bestScore = score; best = stand; }
         }
         if (best == null)
@@ -243,7 +243,7 @@ public static class RWObjectives
         Dictionary<string, float> init = new Dictionary<string, float> { { "Healthresource", 12 + map * 3 } };
         Link_Being made = Helper_Entitytools.Spawn(spawn, best.Position, null, false, init);
         target = made != null ? made.Worldobject : null;
-        RWLog.Info("meteor at " + RWUtil.V(best.Position) + ", " + RWUtil.F(RWUtil.Flat(best.Position, from)) + " from the Basin, " + (12 + map * 3) + " hits");
+        RWLog.Info("meteor at " + RWUtil.V(best.Position) + ", " + RWUtil.F(ModKitUtil.Flat(best.Position, from)) + " from the Basin, " + (12 + map * 3) + " hits");
     }
 
     static void SpawnNest()

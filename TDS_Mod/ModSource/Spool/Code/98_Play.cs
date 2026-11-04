@@ -61,15 +61,15 @@ public static class SpoolPlay
     {
         Entity_Master sp = null;
         foreach (Entity_Master e in ModKitPlay.Cores("Enemycore", false))
-            if (sp == null || !SpoolUtil.BeingName(e).Contains("Sub")) sp = e;
+            if (sp == null || !ModKitUtil.BeingName(e).Contains("Sub")) sp = e;
         if (sp == null) { Log("sandbox: no spawner"); return; }
         string got = "";
         foreach (string f in foes)
         {
-            Entity_Master e = ModKitTest.SpawnFoe(f, SpoolUtil.Pos(sp), 1f, 4f, null);
+            Entity_Master e = ModKitTest.SpawnFoe(f, ModKitUtil.Pos(sp), 1f, 4f, null);
             got += " " + f.Replace("Enemy_", "") + (e != null ? "" : "(failed)");
         }
-        Log("sandbox: spawned at " + SpoolUtil.BeingName(sp) + got);
+        Log("sandbox: spawned at " + ModKitUtil.BeingName(sp) + got);
     }
 
     // Upgrade routes: the n-th building of a kind takes route n (mod the count).
@@ -141,7 +141,7 @@ public static class SpoolPlay
     {
         List<SpoolBuilding> l = new List<SpoolBuilding>();
         foreach (SpoolBuilding b in SpoolServer.Buildings)
-            if (b != null && b.Started && b.Master != null && SpoolUtil.Alive(b.Master) && b.Owner == owner)
+            if (b != null && b.Started && b.Master != null && ModKitUtil.Alive(b.Master) && b.Owner == owner)
                 l.Add(b);
         return l;
     }
@@ -158,7 +158,7 @@ public static class SpoolPlay
     {
         List<SpoolUnitBrain> l = new List<SpoolUnitBrain>();
         foreach (SpoolUnitBrain u in SpoolServer.Units)
-            if (u != null && u.Master != null && SpoolUtil.Alive(u.Master) && u.Owner == owner && (id == null || u.Def.Id == id))
+            if (u != null && u.Master != null && ModKitUtil.Alive(u.Master) && u.Owner == owner && (id == null || u.Def.Id == id))
                 l.Add(u);
         return l;
     }
@@ -185,13 +185,13 @@ public static class SpoolPlay
             else if (b is SpoolCushionBrain) { SpoolCushionBrain c = (SpoolCushionBrain)b; extra = " taken " + F(c.Taken) + " reflected " + F(c.Reflected) + " pricks " + c.Pricks + " spun " + c.Spun + " mangled " + c.Mangled; }
             else if (b is SpoolLoomBrain) { SpoolLoomBrain l = (SpoolLoomBrain)b; extra = " held " + l.Held + " spun " + l.Spun + " sent " + l.Sent + " strikes " + l.Strikes + " seams " + l.Seams; }
             string k = Keys(b);
-            bs += " " + Short(b.Def.Id) + "(" + (k != "" ? k + " " : "") + "hp " + F(SpoolUtil.Health(b.Master)) + "/" + F(SpoolUtil.MaxHealth(b.Master)) + " dmg " + F(b.Master.Damagedone) + " kills " + b.Master.Killed + extra + ")";
+            bs += " " + Short(b.Def.Id) + "(" + (k != "" ? k + " " : "") + "hp " + F(ModKitUtil.Health(b.Master)) + "/" + F(ModKitUtil.MaxHealth(b.Master)) + " dmg " + F(b.Master.Damagedone) + " kills " + b.Master.Killed + extra + ")";
         }
         int crafted = 0; float cdmg = 0f; int ckills = 0;
         foreach (SpoolUnitBrain u in Units(null)) { crafted++; cdmg += u.Master.Damagedone; ckills += u.Master.Killed; }
         return ModKitPlay.Tide() + " | " + ModKitPlay.Wallet() + " | Thread stash " + Me.Stash + "/" + Me.Cap + " carried " + Me.Carried
             + " (dropped " + SpoolServer.Dropped + ", picked " + SpoolServer.Picked + ", delivered " + SpoolServer.Delivered + ", ground " + SpoolServer.Drops.Count + ")"
-            + " | vessel " + (SpoolUtil.Alive(hm) ? F(SpoolUtil.Health(hm)) + "/" + F(SpoolUtil.MaxHealth(hm)) + " dmg " + F(hm.Damagedone) + " kills " + hm.Killed : "down")
+            + " | vessel " + (ModKitUtil.Alive(hm) ? F(ModKitUtil.Health(hm)) + "/" + F(ModKitUtil.MaxHealth(hm)) + " dmg " + F(hm.Damagedone) + " kills " + hm.Killed : "down")
             + " | cores" + ModKitPlay.Cores() + " | foes now " + ModKitPlay.Foes().Count + ", seen" + ModKitPlay.FoesSeen()
             + " | crafted alive " + crafted + " (live dmg " + F(cdmg) + ", kills " + ckills + ") | buildings" + (bs == "" ? " none" : bs);
     }
@@ -203,7 +203,7 @@ public static class SpoolPlay
         plan = Plans[ModKitPlay.PlanIndex];
         matchStart = Time.realtimeSinceStartup;
         hm = ModKitPlay.LocalHero();
-        owner = SpoolUtil.Owner(hm);
+        owner = ModKitUtil.Owner(hm);
         ModKitPlay.Reset(hm);
         ModKitPlay.ResetMap();
         used.Clear(); route.Clear(); built.Clear();
@@ -216,7 +216,7 @@ public static class SpoolPlay
         Log("match on " + plan.Name + (plan.Money ? " (money: +" + MoneyPerTide + " of each aura a Tide)" : " (own income)") + ": " + ModKitPlay.Tide() + ", wallet " + ModKitPlay.Wallet());
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
             if (e != null && e.Taglistserver != null && (e.Taglistserver.Contains("Core") || e.Taglistserver.Contains("Enemycore")))
-                Log("core: " + SpoolUtil.BeingName(e) + " team " + SpoolUtil.Team(e) + " at " + T(SpoolUtil.Pos(e)) + " tags " + string.Join(",", e.Taglistserver.ToArray()));
+                Log("core: " + ModKitUtil.BeingName(e) + " team " + ModKitUtil.Team(e) + " at " + T(ModKitUtil.Pos(e)) + " tags " + string.Join(",", e.Taglistserver.ToArray()));
         ModKitTest.Log = m => Log(m);
         if (!probed) ModKitTest.MapDump(ModKitPlay.Team, hm);
         ModKitPlay.PlanLanes();
@@ -281,7 +281,7 @@ public static class SpoolPlay
     static Vector3 StashSpot()
     {
         List<Entity_Master> cores = ModKitPlay.Cores("Core", true);
-        Vector3 c = cores.Count > 0 ? ModKitPlay.Pos(cores[0]) : SpoolUtil.Pos(hm);
+        Vector3 c = cores.Count > 0 ? ModKitPlay.Pos(cores[0]) : ModKitUtil.Pos(hm);
         // Between the core and the lanes, a few tiles out: Spool walks Thread home here.
         Vector3 toward = ModKitPlay.Lanes.Count > 0 ? ModKitPlay.LaneTile(0, 6) : c;
         Vector3 mid = float.IsNaN(toward.x) ? c : Vector3.Lerp(c, toward, 0.4f);
@@ -341,7 +341,7 @@ public static class SpoolPlay
                 tideSeen = now;
                 if (plan.Money && tide >= 1)
                 {
-                    Helper_Resources.Giveresources(SpoolUtil.Costs("Redaura=" + MoneyPerTide + ";Blueaura=" + MoneyPerTide + ";Yellowaura=" + MoneyPerTide), owner, Helper_Resources.Styles.Default);
+                    Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=" + MoneyPerTide + ";Blueaura=" + MoneyPerTide + ";Yellowaura=" + MoneyPerTide), owner, Helper_Resources.Styles.Default);
                     Log("money: +" + MoneyPerTide + " of each aura (sandbox)");
                     string[] foes;
                     if (SandboxFoes.TryGetValue(tide, out foes))
@@ -361,13 +361,13 @@ public static class SpoolPlay
                 nextWatch = now + 0.5f;
                 ModKitPlay.WatchFoes();
             }
-            if (!SpoolUtil.Alive(hm))
+            if (!ModKitUtil.Alive(hm))
             {
                 // Felled, the vessel comes back as a new being: play on with that one.
                 Entity_Master back = ModKitPlay.LocalHero();
                 if (back != null && back != hm)
                 {
-                    Log("the vessel was felled and is back at " + T(SpoolUtil.Pos(back)));
+                    Log("the vessel was felled and is back at " + T(ModKitUtil.Pos(back)));
                     hm = back;
                     ModKitPlay.Me = back;
                 }
@@ -386,12 +386,12 @@ public static class SpoolPlay
                 ffDone = true;
                 yield return ModKitPlay.FastForward();
             }
-            if (SpoolUtil.Alive(hm) && now >= nextThink)
+            if (ModKitUtil.Alive(hm) && now >= nextThink)
             {
                 nextThink = now + (plan.Money ? 1.5f : 2.5f);
                 yield return Think(tide);
             }
-            if (SpoolUtil.Alive(hm) && now >= nextChores && Me.Home != null)
+            if (ModKitUtil.Alive(hm) && now >= nextChores && Me.Home != null)
             {
                 nextChores = now + 4f;
                 yield return Chores(tide);
@@ -444,20 +444,20 @@ public static class SpoolPlay
             float worst = 0.7f;
             foreach (SpoolBuilding b in Mine())
             {
-                float frac = SpoolUtil.Health(b.Master) / Mathf.Max(0.01f, SpoolUtil.MaxHealth(b.Master));
+                float frac = ModKitUtil.Health(b.Master) / Mathf.Max(0.01f, ModKitUtil.MaxHealth(b.Master));
                 if (frac < worst) { worst = frac; hurt = b.Master; }
             }
             if (hurt != null)
             {
-                if (SpoolUtil.Flat(SpoolUtil.Pos(hurt), SpoolUtil.Pos(hm)) > SpoolData.PatchRange)
+                if (ModKitUtil.Flat(ModKitUtil.Pos(hurt), ModKitUtil.Pos(hm)) > SpoolData.PatchRange)
                 {
-                    yield return ModKitPlay.WalkTo(SpoolUtil.Pos(hurt), "to PATCH the " + Short(SpoolUtil.BeingName(hurt)));
+                    yield return ModKitPlay.WalkTo(ModKitUtil.Pos(hurt), "to PATCH the " + Short(ModKitUtil.BeingName(hurt)));
                     yield return Wait(2f);
                 }
                 int before = Me.Hero.Patches;
-                float hp = SpoolUtil.Health(hurt);
+                float hp = ModKitUtil.Health(hurt);
                 yield return ModKitPlay.Command(hm, "vessel", SpoolData.PatchName, true, Vector3.zero, hurt, () => Me.Hero.Patches > before);
-                Log("PATCH on " + Short(SpoolUtil.BeingName(hurt)) + ": " + (ModKitPlay.LastOk ? "hp " + F(hp) + " -> " + F(SpoolUtil.Health(hurt)) : "not done, last '" + Me.Hero.LastPatch + "'") + "; Stash " + Me.Stash);
+                Log("PATCH on " + Short(ModKitUtil.BeingName(hurt)) + ": " + (ModKitPlay.LastOk ? "hp " + F(hp) + " -> " + F(ModKitUtil.Health(hurt)) : "not done, last '" + Me.Hero.LastPatch + "'") + "; Stash " + Me.Stash);
                 if (ModKitPlay.LastOk) patches++;
                 yield break;
             }
@@ -492,7 +492,7 @@ public static class SpoolPlay
                 Vector3 old = h.Spot;
                 Vector3 to = ModKitTest.Spot(h.Spot, Being(SpoolData.HeadToken), ModKitPlay.Team, 2f, 3.5f, new List<Vector3>(used), "spot");
                 if (float.IsNaN(to.x)) to = h.Spot + Vector3.right * 2f;
-                yield return ModKitPlay.Command(h.Master, "Thread Head", SpoolData.SpotName, true, to, null, () => SpoolUtil.Flat(h.Spot, old) > 0.5f);
+                yield return ModKitPlay.Command(h.Master, "Thread Head", SpoolData.SpotName, true, to, null, () => ModKitUtil.Flat(h.Spot, old) > 0.5f);
                 if (ModKitPlay.LastOk) spots++;
                 yield break;
             }
@@ -501,7 +501,7 @@ public static class SpoolPlay
         if (tide <= 1)
         {
             Vector3 door = ModKitPlay.LaneTile(0, 2);
-            if (!float.IsNaN(door.x) && SpoolUtil.Flat(SpoolUtil.Pos(hm), door) > 2.5f)
+            if (!float.IsNaN(door.x) && ModKitUtil.Flat(ModKitUtil.Pos(hm), door) > 2.5f)
                 yield return ModKitPlay.WalkTo(door, "to hold the core's doorstep");
             yield break;
         }
@@ -512,7 +512,7 @@ public static class SpoolPlay
         // Thread lying about within 7 tiles and room to carry: walk Spool to the biggest tuft; full, walk it home.
         if (Me.Carried >= 12 || (Me.Carried > 0 && SpoolServer.Drops.Count == 0))
         {
-            if (Me.Home != null && SpoolUtil.Flat(SpoolUtil.Pos(hm), Me.Home.Pos) > SpoolData.DropOff)
+            if (Me.Home != null && ModKitUtil.Flat(ModKitUtil.Pos(hm), Me.Home.Pos) > SpoolData.DropOff)
             {
                 int before = SpoolServer.Delivered;
                 yield return ModKitPlay.WalkTo(Me.Home.Pos, "to hand in " + Me.Carried + " Thread");
@@ -527,7 +527,7 @@ public static class SpoolPlay
         float bestD = 7f;
         foreach (SpoolDrop d in SpoolServer.Drops)
         {
-            float dist = SpoolUtil.Flat(d.Pos, SpoolUtil.Pos(hm));
+            float dist = ModKitUtil.Flat(d.Pos, ModKitUtil.Pos(hm));
             if (dist < bestD && ModKitPlay.Foes().Count < 8) { bestD = dist; best = d; }
         }
         if (best != null && Me.Carried < Me.CarryCap)
@@ -550,7 +550,7 @@ public static class SpoolPlay
         foreach (List<Vector3> lane in ModKitPlay.Lanes)
             for (int i = 0; i < lane.Count; i++)
             {
-                float d = SpoolUtil.Flat(lane[i], t.Pos);
+                float d = ModKitUtil.Flat(lane[i], t.Pos);
                 if (d > t.Reach - 1f || d < 2f) continue;
                 int back = lane.Count - 1 - i;
 #if SPOOL_SMART
@@ -695,9 +695,9 @@ public static class SpoolPlay
         }
         List<SpoolUnitBrain> crafted = Units(null);
         if (crafted.Count > 0)
-            yield return SpoolShots.Close("play_" + name + "_crafted", SpoolUtil.Pos(crafted[0].Master), 3.5f);
-        if (SpoolUtil.Alive(hm))
-            yield return SpoolShots.Close("play_" + name + "_vessel", SpoolUtil.Pos(hm), 4f);
+            yield return SpoolShots.Close("play_" + name + "_crafted", ModKitUtil.Pos(crafted[0].Master), 3.5f);
+        if (ModKitUtil.Alive(hm))
+            yield return SpoolShots.Close("play_" + name + "_vessel", ModKitUtil.Pos(hm), 4f);
 #else
         yield break;
 #endif

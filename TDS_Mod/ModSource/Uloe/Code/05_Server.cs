@@ -66,7 +66,7 @@ public static class UloeServer
             Photons.Clear();
             players.Clear();
             UloeMarks.Clear();
-            UloeUtil.ForgetLooks(true);
+            ModKitUtil.ForgetLooks(true);
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;
@@ -108,7 +108,7 @@ public static class UloeServer
     public static UloeHeroBrain HeroOf(long owner)
     {
         foreach (UloeHeroBrain h in Heroes)
-            if (h != null && h.Master != null && UloeUtil.Owner(h.Master) == owner)
+            if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 return h;
         return null;
     }
@@ -139,12 +139,12 @@ public static class UloeServer
     {
         if (from == null || amount <= 0f)
             return;
-        int team = UloeUtil.Team(from);
+        int team = ModKitUtil.Team(from);
         foreach (UloeBuilding b in Buildings)
         {
-            if (b == null || !b.Started || b.Master == null || b.Master == except || UloeUtil.Team(b.Master) != team || !UloeUtil.Alive(b.Master))
+            if (b == null || !b.Started || b.Master == null || b.Master == except || ModKitUtil.Team(b.Master) != team || !ModKitUtil.Alive(b.Master))
                 continue;
-            if (UloeUtil.Flat(b.Pos, at) > radius)
+            if (ModKitUtil.Flat(b.Pos, at) > radius)
                 continue;
             UloeMirrorBrain mirror = b as UloeMirrorBrain;
             if (skipRelays && mirror != null && mirror.Has("Bounce"))
@@ -162,9 +162,9 @@ public static class UloeServer
         float bestD = reach;
         foreach (UloeBuilding b in Buildings)
         {
-            if (b == null || !b.Started || b.Master == null || b.Master == except || UloeUtil.Team(b.Master) != team || !UloeUtil.Alive(b.Master))
+            if (b == null || !b.Started || b.Master == null || b.Master == except || ModKitUtil.Team(b.Master) != team || !ModKitUtil.Alive(b.Master))
                 continue;
-            float d = UloeUtil.Flat(b.Pos, at);
+            float d = ModKitUtil.Flat(b.Pos, at);
             if (d <= bestD)
             {
                 best = b;
@@ -189,7 +189,7 @@ public static class UloeServer
     {
         try
         {
-            if (!UloeUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
+            if (!ModKitUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
                 return;
             string being = master.Beingserver.Being.Objectname;
             if (being == UloeData.Hero)
@@ -228,7 +228,7 @@ public static class UloeServer
     {
         try
         {
-            if (!UloeUtil.IsServer || master == null)
+            if (!ModKitUtil.IsServer || master == null)
                 return;
             UloeBuilding building = master.GetComponent<UloeBuilding>();
             if (building != null)
@@ -249,7 +249,7 @@ public static class UloeServer
             {
                 Heroes.Remove(hero);
                 if (killed)
-                    UloeUtil.Vis(master, "Uloe_Herodeath", UloeUtil.Pos(master), 0);
+                    ModKitUtil.Vis(master, "Uloe_Herodeath", ModKitUtil.Pos(master), 0);
                 return;
             }
             UloeMarks.Forget(master);
@@ -329,7 +329,7 @@ public static class UloeMarks
     // Blinds a foe at a level (1-3). 'radio' is whoever carries the look to every player.
     public static void Blind(Entity_Master radio, Entity_Master foe, int level)
     {
-        if (!UloeUtil.Alive(foe) || foe.Statsserver == null || !foe.Statsserver.ContainsKey("Damage"))
+        if (!ModKitUtil.Alive(foe) || foe.Statsserver == null || !foe.Statsserver.ContainsKey("Damage"))
             return;
         level = Mathf.Clamp(level, 1, UloeData.BlindMulti.Length);
         UloeMark m = Get(foe);
@@ -341,13 +341,13 @@ public static class UloeMarks
         m.Blind = level;
         m.BlindUntil = Time.time + secs;
         Blinds++;
-        UloeUtil.Debuff(radio, foe, "Debuff_Uloe_Blind", secs);
+        ModKitUtil.Debuff(radio, foe, "Debuff_Uloe_Blind", secs);
     }
 
     // Illuminates a foe at a level (1-3).
     public static void Illuminate(Entity_Master radio, Entity_Master foe, int level)
     {
-        if (!UloeUtil.Alive(foe))
+        if (!ModKitUtil.Alive(foe))
             return;
         level = Mathf.Clamp(level, 1, UloeData.LitMulti.Length);
         UloeMark m = Get(foe);
@@ -362,7 +362,7 @@ public static class UloeMarks
         m.Lit = level;
         m.LitUntil = Time.time + secs;
         Illuminations++;
-        UloeUtil.Debuff(radio, foe, "Debuff_Uloe_Lit", secs);
+        ModKitUtil.Debuff(radio, foe, "Debuff_Uloe_Lit", secs);
     }
 
     static void TakeOffBlind(UloeMark m)
@@ -390,7 +390,7 @@ public static class UloeMarks
         foreach (KeyValuePair<Entity_Master, UloeMark> kv in marks)
         {
             UloeMark m = kv.Value;
-            if (kv.Key == null || !UloeUtil.Alive(kv.Key))
+            if (kv.Key == null || !ModKitUtil.Alive(kv.Key))
             {
                 done.Add(kv.Key);
                 continue;

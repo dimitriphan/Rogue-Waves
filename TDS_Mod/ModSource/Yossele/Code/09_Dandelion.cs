@@ -122,7 +122,7 @@ public class YosseleDandelionBrain : YosseleBuilding
     {
         float d = Stat("Damage", 2f);
         if (Has("Picky"))
-            d += Param("Picky_Percent", 0.0025f) * YosseleUtil.MaxHealth(foe);
+            d += Param("Picky_Percent", 0.0025f) * ModKitUtil.MaxHealth(foe);
         return Mathf.Max(0.01f, d);
     }
 
@@ -132,11 +132,11 @@ public class YosseleDandelionBrain : YosseleBuilding
         if (incoming.Count > 32)
         {
             List<Entity_Master> gone = new List<Entity_Master>();
-            foreach (Entity_Master e in incoming.Keys) if (e == null || !YosseleUtil.Alive(e)) gone.Add(e);
+            foreach (Entity_Master e in incoming.Keys) if (e == null || !ModKitUtil.Alive(e)) gone.Add(e);
             foreach (Entity_Master e in gone) incoming.Remove(e);
         }
         if (Has("Picky"))
-            foes.Sort((a, b) => YosseleUtil.MaxHealth(b).CompareTo(YosseleUtil.MaxHealth(a)));
+            foes.Sort((a, b) => ModKitUtil.MaxHealth(b).CompareTo(ModKitUtil.MaxHealth(a)));
         int seeds = Mathf.FloorToInt(Ready);
         int used = 0;
         foreach (Entity_Master foe in foes)
@@ -145,7 +145,7 @@ public class YosseleDandelionBrain : YosseleBuilding
                 break;
             float per = PerSeed(foe), flying;
             incoming.TryGetValue(foe, out flying);
-            float left = YosseleUtil.Health(foe) - flying;
+            float left = ModKitUtil.Health(foe) - flying;
             if (left <= 0f)
                 continue;
             int need = Mathf.Max(1, Mathf.CeilToInt(left / per));
@@ -164,7 +164,7 @@ public class YosseleDandelionBrain : YosseleBuilding
     // The seeds fly (every client draws them from one Vis) and hit when they arrive.
     void Send(Entity_Master foe, int seeds, float per)
     {
-        Vector3 at = YosseleUtil.Pos(foe);
+        Vector3 at = ModKitUtil.Pos(foe);
         Master.Radio.Vis_ClientRpc("Yossele_Seeds", at, seeds);
         Entity_Master target = foe;
         float damage = per * seeds, before;
@@ -178,7 +178,7 @@ public class YosseleDandelionBrain : YosseleBuilding
                 if (now - damage <= 0.01f) incoming.Remove(target);
                 else incoming[target] = now - damage;
             }
-            if (target == null || !YosseleUtil.Alive(target) || Master == null)
+            if (target == null || !ModKitUtil.Alive(target) || Master == null)
                 return;
             Hit(target, seeds, damage);
             if (Has("Rubbery"))
@@ -189,8 +189,8 @@ public class YosseleDandelionBrain : YosseleBuilding
     void Hit(Entity_Master target, int seeds, float damage)
     {
         LastSeed[target] = Time.time;
-        YosseleUtil.Vis(Master, "Yossele_Seedhit", YosseleUtil.Pos(target), seeds);
-        YosseleUtil.Hurt(Master, target, damage);
+        ModKitUtil.Vis(Master, "Yossele_Seedhit", ModKitUtil.Pos(target), seeds);
+        ModKitUtil.Hurt(Master, target, damage);
     }
 
     // Rubbery Shell: the seeds go on to the nearest foe within Rubbery_Range they haven't hit, as many times as it says.
@@ -198,9 +198,9 @@ public class YosseleDandelionBrain : YosseleBuilding
     {
         if (left <= 0 || from == null || Master == null)
             return;
-        Vector3 at = YosseleUtil.Pos(from);
+        Vector3 at = ModKitUtil.Pos(from);
         Entity_Master next = null;
-        foreach (Entity_Master foe in YosseleUtil.FoesNear(Master, at, Param("Rubbery_Range", 2f)))
+        foreach (Entity_Master foe in ModKitUtil.FoesNear(Master, at, Param("Rubbery_Range", 2f)))
             if (!hit.Contains(foe))
             {
                 next = foe;
@@ -214,7 +214,7 @@ public class YosseleDandelionBrain : YosseleBuilding
         Entity_Master target = next;
         YosseleUtil.Later(this, YosseleData.SeedFlight * 0.6f, () =>
         {
-            if (target == null || !YosseleUtil.Alive(target) || Master == null)
+            if (target == null || !ModKitUtil.Alive(target) || Master == null)
                 return;
             Hit(target, seeds, PerSeed(target) * seeds);
             Bounce(target, seeds, hit, left - 1);
@@ -230,7 +230,7 @@ public class YosseleDandelionBrain : YosseleBuilding
     public static bool Threat(Projectile_Master p, int team)
     {
         return p != null && p.gameObject.activeInHierarchy && p.Ais != null && p.Ais.Count > 0 && p.Interactiontype == "Hurt"
-            && p.Master != null && YosseleUtil.IsFoe(p.Master, team);
+            && p.Master != null && ModKitUtil.IsFoe(p.Master, team);
     }
 
     public static List<Projectile_Master> Threats(Vector3 at, float range, int team)
@@ -245,19 +245,19 @@ public class YosseleDandelionBrain : YosseleBuilding
                 continue;
             foreach (GameObject go in kv.Value)
             {
-                if (go == null || !go.activeInHierarchy || YosseleUtil.Flat(go.transform.position, at) > range)
+                if (go == null || !go.activeInHierarchy || ModKitUtil.Flat(go.transform.position, at) > range)
                     continue;
                 Projectile_Master p = go.GetComponent<Projectile_Master>();
                 if (Threat(p, team))
                     list.Add(p);
             }
         }
-        list.Sort((a, b) => YosseleUtil.Flat(a.transform.position, at).CompareTo(YosseleUtil.Flat(b.transform.position, at)));
+        list.Sort((a, b) => ModKitUtil.Flat(a.transform.position, at).CompareTo(ModKitUtil.Flat(b.transform.position, at)));
         return list;
     }
 
     // A boss's projectile (its shooter has a base health of 600 or more) takes Dmds_Boss seeds.
-    public int Cost(Projectile_Master p) { return CostFor(p.Master != null ? YosseleUtil.BaseHealth(p.Master) : 0f); }
+    public int Cost(Projectile_Master p) { return CostFor(p.Master != null ? ModKitUtil.BaseHealth(p.Master) : 0f); }
 
     public int CostFor(float shooterHealth)
     {
@@ -288,7 +288,7 @@ public class YosseleDandelionBrain : YosseleBuilding
             {
                 if (left <= 0)
                     break;
-                if (q == p || !Threat(q, Team) || YosseleUtil.Flat(q.transform.position, at) > reach)
+                if (q == p || !Threat(q, Team) || ModKitUtil.Flat(q.transform.position, at) > reach)
                     continue;
                 at = q.transform.position;
                 Shoot(q);
@@ -347,10 +347,10 @@ public class YosseleDandelionBrain : YosseleBuilding
     protected override void OnGrowth()
     {
         float share = mushrooms > 0 ? 0f : season >= 2 ? YosseleData.SaplingShare * (1f + YosseleData.SaplingStage) : season == 1 ? YosseleData.SaplingShare : 1f;
-        growLimit = YosseleUtil.Keep(Master, growLimit, "Seedlimit", Helper_Entitytools.Modtypes.Add, StageSeeds * Growth * share);
-        growRange = YosseleUtil.Keep(Master, growRange, "Range", Helper_Entitytools.Modtypes.Multi, YosseleData.RangePerStage * Growth * share);
+        growLimit = ModKitUtil.Keep(Master, growLimit, "Seedlimit", Helper_Entitytools.Modtypes.Add, StageSeeds * Growth * share);
+        growRange = ModKitUtil.Keep(Master, growRange, "Range", Helper_Entitytools.Modtypes.Multi, YosseleData.RangePerStage * Growth * share);
         if (mushrooms > 0)
-            mushRange = YosseleUtil.Keep(Master, mushRange, "Range", Helper_Entitytools.Modtypes.Add, YosseleData.MushboomPerStage * Growth);
+            mushRange = ModKitUtil.Keep(Master, mushRange, "Range", Helper_Entitytools.Modtypes.Add, YosseleData.MushboomPerStage * Growth);
     }
 
     // ---------------------------------------------------------------- the vessel's Directions
@@ -378,12 +378,12 @@ public class YosseleDandelionBrain : YosseleBuilding
         if (damage != shiftedDamage)
         {
             shiftedDamage = damage;
-            shiftDamage = YosseleUtil.Keep(Master, shiftDamage, "Damage", Helper_Entitytools.Modtypes.Multi, damage);
+            shiftDamage = ModKitUtil.Keep(Master, shiftDamage, "Damage", Helper_Entitytools.Modtypes.Multi, damage);
         }
         if (range != shiftedRange)
         {
             shiftedRange = range;
-            shiftRange = YosseleUtil.Keep(Master, shiftRange, "Range", Helper_Entitytools.Modtypes.Multi, range);
+            shiftRange = ModKitUtil.Keep(Master, shiftRange, "Range", Helper_Entitytools.Modtypes.Multi, range);
         }
     }
 
@@ -391,7 +391,7 @@ public class YosseleDandelionBrain : YosseleBuilding
     {
         int n = 0;
         foreach (YosseleBuilding b in YosseleServer.Buildings)
-            if (b != this && b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Started && b.FullGrown && b.Master != null && YosseleUtil.Alive(b.Master) && b.Owner == Owner)
+            if (b != this && b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Started && b.FullGrown && b.Master != null && ModKitUtil.Alive(b.Master) && b.Owner == Owner)
                 n++;
         return n;
     }
@@ -412,14 +412,14 @@ public class YosseleDandelionBrain : YosseleBuilding
             if (stacks <= 0)
                 continue;
             YosseleSpores.Take(foe, mushrooms >= 3 ? Mathf.CeilToInt(stacks * 0.5f) : stacks);
-            YosseleUtil.Hurt(Master, foe, YosseleData.MushboomPerStack * stacks);
+            ModKitUtil.Hurt(Master, foe, YosseleData.MushboomPerStack * stacks);
             hits++;
         }
         if (hits == 0)
             return;
         Bursts++;
         BurstHits += hits;
-        YosseleUtil.Vis(Master, "Yossele_Finish", Pos, range);
+        ModKitUtil.Vis(Master, "Yossele_Finish", Pos, range);
     }
 }
 

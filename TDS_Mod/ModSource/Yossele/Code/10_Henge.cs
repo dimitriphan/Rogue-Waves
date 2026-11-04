@@ -76,9 +76,9 @@ public class YosseleHengeBrain : YosseleBuilding
     {
         if (!Has("Blockade"))
             return;
-        Barrier = Param("Blockade_Share", 0.3f) * YosseleUtil.MaxHealth(Master);
+        Barrier = Param("Blockade_Share", 0.3f) * ModKitUtil.MaxHealth(Master);
         YosseleHooks.Shield(Master, Barrier);
-        YosseleUtil.Debuff(Master, Master, YosseleData.VfxBlockade, 600f);
+        ModKitUtil.Debuff(Master, Master, YosseleData.VfxBlockade, 600f);
     }
 
     void Armor()
@@ -110,7 +110,7 @@ public class YosseleHengeBrain : YosseleBuilding
                 added++;
             }
         if (added > 0)
-            YosseleUtil.Vis(Master, "Yossele_Vines", Pos, added);
+            ModKitUtil.Vis(Master, "Yossele_Vines", Pos, added);
     }
 
     // The next ground tile one step along 'dir' from 'from': level, else one down, else one up.
@@ -119,8 +119,8 @@ public class YosseleHengeBrain : YosseleBuilding
         Vector3 p = from.Position + dir;
         foreach (float dy in new[] { 0f, -1f, 1f })
         {
-            Genitem g = YosseleUtil.Surface(p + Vector3.up * dy);
-            if (g != null && g != from && YosseleUtil.Flat(g.Position, p) < 0.3f && Mathf.Abs(g.Position.y - (p.y + dy)) < 0.3f)
+            Genitem g = ModKitUtil.Surface(p + Vector3.up * dy);
+            if (g != null && g != from && ModKitUtil.Flat(g.Position, p) < 0.3f && Mathf.Abs(g.Position.y - (p.y + dy)) < 0.3f)
                 return g;
         }
         return null;
@@ -168,12 +168,12 @@ public class YosseleHengeBrain : YosseleBuilding
     public bool Covers(Vector3 at)
     {
         foreach (Genitem g in Tiles)
-            if (g != null && YosseleUtil.Flat(g.Position, at) <= YosseleData.VineReach && Mathf.Abs(g.Position.y - at.y) < 1.1f)
+            if (g != null && ModKitUtil.Flat(g.Position, at) <= YosseleData.VineReach && Mathf.Abs(g.Position.y - at.y) < 1.1f)
                 return true;
         if (Master.Beingserver != null && Master.Beingserver.Currentblock != null)
         {
             Vector3 home = Master.Beingserver.Currentblock.Position;
-            if (YosseleUtil.Flat(home, at) <= YosseleData.VineReach && Mathf.Abs(home.y - at.y) < 1.1f)
+            if (ModKitUtil.Flat(home, at) <= YosseleData.VineReach && Mathf.Abs(home.y - at.y) < 1.1f)
                 return true;
         }
         return false;
@@ -187,7 +187,7 @@ public class YosseleHengeBrain : YosseleBuilding
         float drainMax = Param("Carnivore_Max", 5f);
         foreach (Entity_Master foe in onVines)
         {
-            if (!YosseleUtil.Alive(foe))
+            if (!ModKitUtil.Alive(foe))
                 continue;
             float since;
             if (!OnSince.TryGetValue(foe, out since))
@@ -196,8 +196,8 @@ public class YosseleHengeBrain : YosseleBuilding
             if (Has("Carnivore") && drained < drainMax)
             {
                 float amount = Param("Carnivore_Drain", 5f) * dt;
-                YosseleUtil.Hurt(Master, foe, amount);
-                YosseleUtil.Heal(Master, Master, amount);
+                ModKitUtil.Hurt(Master, foe, amount);
+                ModKitUtil.Heal(Master, Master, amount);
                 drained++;
                 Drained++;
             }
@@ -210,12 +210,12 @@ public class YosseleHengeBrain : YosseleBuilding
             {
                 snared.Add(foe);
                 float stun = Param("Roots_Stun", 1.5f);
-                float sap = Param("Roots_Percent", 0.05f) * YosseleUtil.MaxHealth(foe);
+                float sap = Param("Roots_Percent", 0.05f) * ModKitUtil.MaxHealth(foe);
                 YosseleUtil.Root(Master, foe, stun, true, YosseleData.VfxTangle);
-                YosseleUtil.Hurt(Master, foe, sap);
-                YosseleUtil.Heal(Master, Master, sap);
+                ModKitUtil.Hurt(Master, foe, sap);
+                ModKitUtil.Heal(Master, Master, sap);
                 Snares++;
-                YosseleUtil.Vis(Master, "Yossele_Snare", YosseleUtil.Pos(foe), sap);
+                ModKitUtil.Vis(Master, "Yossele_Snare", ModKitUtil.Pos(foe), sap);
             }
         }
         // Foes that stepped off start their count again.
@@ -230,9 +230,9 @@ public class YosseleHengeBrain : YosseleBuilding
             foreach (Entity_Master e in off)
                 OnSince.Remove(e);
         if (snared.Count > 64)
-            snared.RemoveAll(e => e == null || !YosseleUtil.Alive(e));
+            snared.RemoveAll(e => e == null || !ModKitUtil.Alive(e));
         if (drained > 0)
-            YosseleUtil.Vis(Master, "Yossele_Drain", Pos, drained);
+            ModKitUtil.Vis(Master, "Yossele_Drain", Pos, drained);
         if (Has("Remedy"))
             Remedy(dt);
     }
@@ -242,18 +242,18 @@ public class YosseleHengeBrain : YosseleBuilding
     {
         float amount = Param("Remedy_Heal", 0.5f) * Mathf.Max(1, Growth) * dt;
         float reach = Mathf.Max(Length, Reach) + 1.5f;
-        foreach (Entity_Master b in YosseleUtil.Area(Pos, reach, YosseleUtil.Tagged("Tower")))
+        foreach (Entity_Master b in ModKitUtil.Area(Pos, reach, ModKitUtil.Tagged("Tower")))
         {
-            if (b == null || !YosseleUtil.Alive(b) || YosseleUtil.Team(b) != Team || !Covers(YosseleUtil.Pos(b)))
+            if (b == null || !ModKitUtil.Alive(b) || ModKitUtil.Team(b) != Team || !Covers(ModKitUtil.Pos(b)))
                 continue;
-            if (YosseleUtil.Health(b) >= YosseleUtil.MaxHealth(b) - 0.01f)
+            if (ModKitUtil.Health(b) >= ModKitUtil.MaxHealth(b) - 0.01f)
                 continue;
-            YosseleUtil.Heal(Master, b, amount);
+            ModKitUtil.Heal(Master, b, amount);
             Mended++;
             if (Time.time >= nextMendLook)
             {
                 nextMendLook = Time.time + 1.5f;
-                YosseleUtil.Vis(Master, "Yossele_Mend", YosseleUtil.Pos(b), 0f);
+                ModKitUtil.Vis(Master, "Yossele_Mend", ModKitUtil.Pos(b), 0f);
             }
         }
     }
@@ -318,7 +318,7 @@ public static class YosseleVines
             if (t.Owners.Count > 0)
                 continue;
             tiles.RemoveAt(i);
-            if (t.Vine != null && t.Vine.Beingserver != null && YosseleUtil.Alive(t.Vine))
+            if (t.Vine != null && t.Vine.Beingserver != null && ModKitUtil.Alive(t.Vine))
             {
                 try { Helper_Entitytools.Despawn(t.Vine.Beingserver, false, "Yossele vines"); }
                 catch (Exception e) { YosseleLog.Warn("vine despawn: " + e.Message); }
@@ -344,11 +344,11 @@ public static class YosseleVines
         foreach (YosseleBuilding b in buildings.ToArray())
         {
             YosseleHengeBrain henge = b as YosseleHengeBrain;
-            if (henge == null || !henge.Started || henge.Master == null || !YosseleUtil.Alive(henge.Master))
+            if (henge == null || !henge.Started || henge.Master == null || !ModKitUtil.Alive(henge.Master))
                 continue;
             List<Entity_Master> on = new List<Entity_Master>();
-            foreach (Entity_Master foe in YosseleUtil.FoesNear(henge.Master, henge.Pos, Mathf.Max(henge.Length, henge.Reach) + 1.5f))
-                if (henge.Covers(YosseleUtil.Pos(foe)))
+            foreach (Entity_Master foe in ModKitUtil.FoesNear(henge.Master, henge.Pos, Mathf.Max(henge.Length, henge.Reach) + 1.5f))
+                if (henge.Covers(ModKitUtil.Pos(foe)))
                     on.Add(foe);
             float slow = henge.Stat("Slow", 0.15f);
             foreach (Entity_Master foe in on)
@@ -364,13 +364,13 @@ public static class YosseleVines
         foreach (KeyValuePair<Entity_Master, float> kv in want)
         {
             // A modifier draws nothing: the stock slow look, renewed every tick while the foe stays on the vines.
-            YosseleUtil.Debuff(by[kv.Key], kv.Key, YosseleData.VfxSlow, YosseleData.VineTick + 0.3f);
+            ModKitUtil.Debuff(by[kv.Key], kv.Key, YosseleData.VfxSlow, YosseleData.VineTick + 0.3f);
             float had;
             Link_Modifier mod;
             if (slowAmount.TryGetValue(kv.Key, out had) && Mathf.Approximately(had, kv.Value) && slowed.TryGetValue(kv.Key, out mod) && mod != null && !mod.Dead)
                 continue;
             if (slowed.TryGetValue(kv.Key, out mod))
-                YosseleUtil.Unmod(mod);
+                ModKitUtil.Unmod(mod);
             slowed[kv.Key] = YosseleUtil.SlowOn(kv.Key, kv.Value);
             slowAmount[kv.Key] = kv.Value;
             Slowed++;
@@ -382,7 +382,7 @@ public static class YosseleVines
         foreach (Entity_Master e in off)
         {
             if (e != null)
-                YosseleUtil.Unmod(slowed[e]);
+                ModKitUtil.Unmod(slowed[e]);
             slowed.Remove(e);
             slowAmount.Remove(e);
         }

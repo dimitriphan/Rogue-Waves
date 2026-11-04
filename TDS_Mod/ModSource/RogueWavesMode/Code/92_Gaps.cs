@@ -280,7 +280,7 @@ public static partial class RWTest
     static IEnumerator BuildOne(Entity_Master vessel, string tower, List<Vector3> used, List<Entity_Master> known, Action<Entity_Master, float> done)
     {
         long me = vessel.Entitydata.Value.Owner;
-        Beingobject being = RWUtil.Load<Beingobject>("Mob", tower);
+        Beingobject being = ModKitUtil.Load<Beingobject>("Mob", tower);
         Vector3 at = being != null ? RogueWavesModeKitTest.Spot(vessel.Entityposition.Value, being, vessel.Entitydata.Value.Team, 3f, 8f, used, tower) : new Vector3(float.NaN, 0f, 0f);
         if (float.IsNaN(at.x)) { done(null, 0f); yield break; }
         float before = Total(me);
@@ -503,7 +503,7 @@ public static partial class RWTest
         int slot = 0, built = 0;
         foreach (string tower in new List<string>(entry.Towerdisplay))
         {
-            Beingobject being = RWUtil.Load<Beingobject>("Mob", tower);
+            Beingobject being = ModKitUtil.Load<Beingobject>("Mob", tower);
             if (being == null) { Info("hud " + hero, tower + " isn't loaded"); slot++; continue; }
             Vector3 at = RogueWavesModeKitTest.Spot(vessel.Entityposition.Value, being, vessel.Entitydata.Value.Team, 3f, 8f, used, tower);
             if (float.IsNaN(at.x)) { Setup("HUD " + hero + " " + tower, "no tile"); slot++; continue; }
@@ -582,7 +582,7 @@ public static partial class RWTest
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
             if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Resource") && e.Beingserver != null && !e.Beingserver.Dead)
             {
-                float d = RWUtil.Flat(e.Entityposition.Value, at);
+                float d = ModKitUtil.Flat(e.Entityposition.Value, at);
                 if (d < bestD) { bestD = d; best = e; }
             }
         return best;
@@ -600,7 +600,7 @@ public static partial class RWTest
             Func<string> state = () => vessel.Commandlistserver.TryGetValue("Plug", out plug) && plug != null ? plug.Goalstring ?? "" : "-";
             string s0 = state();
             Entity_Master node = NodeNear(vessel.Entityposition.Value, 60f);
-            Info("hud PLUG IN", "state '" + s0 + "', bank " + (bank != null) + ", nearest node " + (node != null ? node.Being.Value.ToString() + " " + RWUtil.F(RWUtil.Flat(node.Entityposition.Value, vessel.Entityposition.Value)) + " tiles" : "none"));
+            Info("hud PLUG IN", "state '" + s0 + "', bank " + (bank != null) + ", nearest node " + (node != null ? node.Being.Value.ToString() + " " + RWUtil.F(ModKitUtil.Flat(node.Entityposition.Value, vessel.Entityposition.Value)) + " tiles" : "none"));
             if (bank != null)
             {
                 yield return RogueWavesModeKitPlay.Command(vessel, "vessel", "PLUG IN", true, Vector3.zero, bank, () => state() == "On");
@@ -631,7 +631,7 @@ public static partial class RWTest
                 string a0 = aimed();
                 Vector3 spot = drill.Entityposition.Value + new Vector3(2f, 0f, 2f);
                 foreach (Genitem g in RWUtil.Ground())
-                    if (RWUtil.Flat(g.Position, drill.Entityposition.Value) > 1.5f && RWUtil.Flat(g.Position, drill.Entityposition.Value) < 3.5f && Mathf.Abs(g.Position.y - drill.Entityposition.Value.y) < 1.1f) { spot = g.Position; break; }
+                    if (ModKitUtil.Flat(g.Position, drill.Entityposition.Value) > 1.5f && ModKitUtil.Flat(g.Position, drill.Entityposition.Value) < 3.5f && Mathf.Abs(g.Position.y - drill.Entityposition.Value.y) < 1.1f) { spot = g.Position; break; }
                 yield return RogueWavesModeKitPlay.Command(drill, "Drill Rig", "AIM", true, spot, null, () => aimed() != a0);
                 Check("HUD Argo: the Drill Rig's AIM arms a picker, and a click on the ground moves its Tremor", RogueWavesModeKitPlay.LastOk, "'" + a0 + "' -> '" + aimed() + "'");
                 yield return RogueWavesModeKitPlay.Capture("argo_aim");
@@ -791,18 +791,18 @@ public static partial class RWTest
                 float m0 = Hp(wounded), mMax = HpMax(wounded);
                 yield return ToBreakAfter(1);
                 yield return new WaitForSeconds(0.6f);
-                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", " + RWUtil.F(RWUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
+                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
             }
 
             // Made of Tougher Stuff at rank III: a big hit takes at most a quarter of a minion's health.
             foreach (string n in new[] { "Tougher", "Tougher2", "Tougher3" }) RWDirections.Take(player, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id("Any", n)) as Upgradeproperties);
             yield return new WaitForSeconds(1f);
-            Beingobject miner = RWUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+            Beingobject miner = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
             Entity_Master minion = null;
             if (miner != null)
                 foreach (Genitem g in RWUtil.Ground())
                 {
-                    float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
+                    float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
                     if (d < 2f || d > 8f) continue;
                     Genitem spot = null;
                     try { spot = Helper_Gridtools.Checkifstandable(g, new Link_Being { Being = miner, Entity = miner.Entity, Block = miner.Block, Team = vessel.Entitydata.Value.Team }); } catch (Exception) { }
@@ -1358,8 +1358,8 @@ public static partial class RWTest
             string loadNote = RWUtil.F(Time.realtimeSinceStartup - clock) + " s";
             yield return new WaitForSeconds(1f);
             Entity_Master core = RWUtil.PlayerCore();
-            Check(name + ": the vessel stands, VENDCINT lands near the Basin, an objective is posted", vessel != null && vessel.Being.Value.ToString() == hero && stand != null && core != null && RWUtil.Flat(stand.Entityposition.Value, core.Entityposition.Value) <= 8f && RWObjectives.Posted != null,
-                "vessel " + (vessel != null ? vessel.Being.Value.ToString() : "-") + ", VENDCINT " + (stand != null ? RWUtil.F(RWUtil.Flat(stand.Entityposition.Value, core != null ? core.Entityposition.Value : Vector3.zero)) + " from the Basin" : "none") + ", posted " + (RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-") + ", " + loadNote);
+            Check(name + ": the vessel stands, VENDCINT lands near the Basin, an objective is posted", vessel != null && vessel.Being.Value.ToString() == hero && stand != null && core != null && ModKitUtil.Flat(stand.Entityposition.Value, core.Entityposition.Value) <= 8f && RWObjectives.Posted != null,
+                "vessel " + (vessel != null ? vessel.Being.Value.ToString() : "-") + ", VENDCINT " + (stand != null ? RWUtil.F(ModKitUtil.Flat(stand.Entityposition.Value, core != null ? core.Entityposition.Value : Vector3.zero)) + " from the Basin" : "none") + ", posted " + (RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-") + ", " + loadNote);
 
             // Both weather objects find a tile on this map.
             Entity_Master flood = RWWeather.TestFlood();

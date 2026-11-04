@@ -48,7 +48,7 @@ public static class ArgoContent
             BuildTower(b);
         foreach (ArgoData.Crew c in ArgoData.Nauts)
             BuildNaut(c);
-        BuildHero(ArgoUtil.Load<Beingobject>("Hero", folder));
+        BuildHero(ModKitUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
         BuildDirections();
         try { ArgoJournal.Build(template); }
@@ -80,7 +80,7 @@ public static class ArgoContent
 
     static Material TemplateTowerMaterial()
     {
-        Beingobject archer = ArgoUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
         if (archer == null || archer.Entity == null || archer.Entity.Defaultvisual == null)
             return null;
         GameObject prefab = archer.Entity.Defaultvisual.Default.Visprefab;
@@ -188,8 +188,8 @@ public static class ArgoContent
                     g.Display_Exposed = like.Display_Exposed;
                 }
             }
-            g.Value = ArgoUtil.F(parts[0]);
-            g.Leveladd = parts.Length > 1 ? ArgoUtil.F(parts[1]) : 0f;
+            g.Value = ModKitUtil.F(parts[0]);
+            g.Leveladd = parts.Length > 1 ? ModKitUtil.F(parts[1]) : 0f;
             kept.Add(g);
         }
         // Only the listed stats: a template's leftovers (Projduration, Projcount...) would mean nothing on Argo's towers.
@@ -282,7 +282,7 @@ public static class ArgoContent
     {
         foreach (string[] p in ArgoData.Projectiles)
         {
-            Projectileobject template = ArgoUtil.Load<Projectileobject>("Projectile", p[1]);
+            Projectileobject template = ModKitUtil.Load<Projectileobject>("Projectile", p[1]);
             if (template == null)
             {
                 ArgoLog.Warn("projectile template " + p[1] + " not found");
@@ -309,7 +309,7 @@ public static class ArgoContent
 
     static Commandobject CommandTemplate()
     {
-        Commandobject template = ArgoUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
+        Commandobject template = ModKitUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
         if (template == null)
             foreach (Bl_Address.Loadlist l in Bl_Address.Groups["Command"])
                 foreach (UnityEngine.Object o in l.Items.Values)
@@ -400,7 +400,7 @@ public static class ArgoContent
     // the water instead of the vessel (Fie's Grow Wall pattern, 2.0).
     static void FloodCommand()
     {
-        Commandobject build1 = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption1");
+        Commandobject build1 = ModKitUtil.Load<Commandobject>("Command", "Command_Buildoption1");
         if (build1 == null)
         {
             if (!clonesLogged)
@@ -416,7 +416,7 @@ public static class ArgoContent
         flood.Icon = IconOr("Argo_Flood", build1.Icon);
         Commands[ArgoData.FloodKey] = flood;
         Register("Command", flood);
-        ArgoLog.Info("FLOOD: keys " + ArgoUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
+        ArgoLog.Info("FLOOD: keys " + ModKitUtil.Join(flood.Keybind ?? new List<string>()) + ", " + (flood.Commandfuncts != null ? flood.Commandfuncts.Count : 0) + " command functions");
     }
 
     // The game's vessels have Buildoption1-4. Argo's fifth is Command_Buildoption4 cloned under the next name and key
@@ -426,13 +426,13 @@ public static class ArgoContent
 
     static void BuildOption5()
     {
-        if (ArgoUtil.Load<Commandobject>("Command", ArgoData.BuildOption5) != null)
+        if (ModKitUtil.Load<Commandobject>("Command", ArgoData.BuildOption5) != null)
         {
             option5Done = true;
             Option5Note = "found";
             return;
         }
-        Commandobject four = ArgoUtil.Load<Commandobject>("Command", "Command_Buildoption4");
+        Commandobject four = ModKitUtil.Load<Commandobject>("Command", "Command_Buildoption4");
         if (four == null)
         {
             Option5Note = "Command_Buildoption4 not loaded yet (cloned when the match loads it)";
@@ -447,7 +447,7 @@ public static class ArgoContent
         five.Keybind = keys;
         five.Priority = four.Priority + 1;
         Register("Command", five);
-        Option5Note = "cloned from Command_Buildoption4 (keys " + ArgoUtil.Join(four.Keybind ?? new List<string>()) + " -> " + ArgoUtil.Join(keys) + ", priority " + five.Priority + ")";
+        Option5Note = "cloned from Command_Buildoption4 (keys " + ModKitUtil.Join(four.Keybind ?? new List<string>()) + " -> " + ModKitUtil.Join(keys) + ", priority " + five.Priority + ")";
         ArgoLog.Info("Command_Buildoption5 " + Option5Note);
     }
 
@@ -455,11 +455,11 @@ public static class ArgoContent
 
     static void BuildTower(ArgoData.Build b)
     {
-        Beingobject tb = ArgoUtil.Load<Beingobject>("Mob", b.Template);
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", b.Template);
         if ((tb == null || tb.Entity == null) && b.Trap)
         {
             ArgoLog.Warn(b.Template + " not loaded; " + b.Id + " uses " + ArgoData.TrapFallback + "'s walk-through block");
-            tb = ArgoUtil.Load<Beingobject>("Mob", ArgoData.TrapFallback);
+            tb = ModKitUtil.Load<Beingobject>("Mob", ArgoData.TrapFallback);
         }
         if (tb == null || tb.Entity == null)
         {
@@ -474,11 +474,11 @@ public static class ArgoContent
         ent.Display_Desc = b.Desc;
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!b.Trap && !ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Tower_General"))
-            ent.Aiscripts.Insert(0, ArgoUtil.Script("Entity_Ai_Tower_General"));
+            ent.Aiscripts.Insert(0, ModKitUtil.Script("Entity_Ai_Tower_General"));
         // The game's own upgrade panel AI on every buildable with a tree (FLOOD's pools have none). Strip drops the
         // template's copy so no other entity gets one by accident.
         if (b.Upgrades.Length > 0)
-            ent.Aiscripts.Add(ArgoUtil.Script("Entity_Ai_General_Upgrade"));
+            ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
         // Its own hit prefab: the range the game draws (while placing, when selected) centred on the tower at the point
         // its brain measures from (Def.Eye), and a collider the size of the model. Argo 1.0 kept the templates': the
@@ -509,7 +509,7 @@ public static class ArgoContent
         CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0 && b.Upgrades.Length > 0)
         {
-            Beingobject hut = ArgoUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
+            Beingobject hut = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut");
             if (hut != null && hut.Entity != null)
                 CollectUpgrades(hut.Entity.Upgrades, templateTiers);
         }
@@ -572,7 +572,7 @@ public static class ArgoContent
 
     static void BuildNaut(ArgoData.Crew crew)
     {
-        Beingobject tb = ArgoUtil.Load<Beingobject>("Mob", "Mob_Smackyengineer") ?? ArgoUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyengineer") ?? ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
         if (tb == null || tb.Entity == null)
         {
             ArgoLog.Error("no unit template; " + crew.Name + " disabled");
@@ -685,10 +685,10 @@ public static class ArgoContent
         // (and SONAR when it is switched on). Entity_Vis_Mob_Attack turns each swing's "Attack" into the wrench animation.
         ent.Aiscripts = Strip(te.Aiscripts);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Combat" || s.name == "Entity_Ai_Mob_Melee"))
-            ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), ArgoUtil.Script("Entity_Ai_Mob_Combat"));
+            ent.Aiscripts.Insert(Mathf.Min(2, ent.Aiscripts.Count), ModKitUtil.Script("Entity_Ai_Mob_Combat"));
         ent.Visualscripts = Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
-            ent.Visualscripts.Add(ArgoUtil.Script("Entity_Vis_Mob_Attack"));
+            ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Mob_Attack"));
         ent.Upgrades = new List<Upgradeproperties>();
         ent.Upgradesinit = new List<Upgradeproperties>();
         Upgradeproperties tooltip = Tooltip();
@@ -759,7 +759,7 @@ public static class ArgoContent
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;
-        Dictionary<string, UnityEngine.Object> heroes = ArgoUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         heroes[ArgoData.Hero] = Entry;
     }
 }

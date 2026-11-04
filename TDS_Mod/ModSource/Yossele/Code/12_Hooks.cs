@@ -83,7 +83,7 @@ public static class YosseleHooks
     // Easy Target: the foe takes 'bonus' more from every hit for 'seconds' (renewed while it stays on the vines).
     public static void Mark(Entity_Master by, Entity_Master foe, float bonus, float seconds)
     {
-        if (foe == null || !YosseleUtil.Alive(foe) || bonus <= 0f)
+        if (foe == null || !ModKitUtil.Alive(foe) || bonus <= 0f)
             return;
         float had;
         bool fresh = !markUntil.TryGetValue(foe, out had) || had < Time.time;
@@ -93,10 +93,10 @@ public static class YosseleHooks
         if (fresh)
         {
             Marked++;
-            YosseleUtil.Debuff(by, foe, YosseleData.VfxMarked, seconds);
+            ModKitUtil.Debuff(by, foe, YosseleData.VfxMarked, seconds);
         }
         else
-            YosseleUtil.Debuff(by, foe, YosseleData.VfxMarked, markUntil[foe] - Time.time);
+            ModKitUtil.Debuff(by, foe, YosseleData.VfxMarked, markUntil[foe] - Time.time);
     }
 
     public static float MarkOf(Entity_Master foe)
@@ -131,15 +131,15 @@ public static class YosseleHooks
             foreach (Link_Modifier m in new List<Link_Modifier>(kv.Value))
                 if (m != null && !m.Dead && (m.Value_Override_On > 0 || m.Value_Override != 0f || m.Value_Multi < 0f || m.Value_Pmulti < 0f))
                 {
-                    YosseleUtil.Unmod(m);
+                    ModKitUtil.Unmod(m);
                     n++;
                 }
         }
         if (n > 0)
         {
             Cleansed += n;
-            YosseleUtil.RemoveDebuff(e, e, YosseleData.VfxDisabled);
-            YosseleUtil.Vis(e, "Yossele_Cleanse", YosseleUtil.Pos(e), n);
+            ModKitUtil.RemoveDebuff(e, e, YosseleData.VfxDisabled);
+            ModKitUtil.Vis(e, "Yossele_Cleanse", ModKitUtil.Pos(e), n);
         }
         return n;
     }
@@ -176,12 +176,12 @@ public static class YosseleHooks
         foreach (YosseleBuilding b in buildings)
         {
             YosselePachiraBrain p = b as YosselePachiraBrain;
-            if (p == null || !p.Started || p.Master == null || !YosseleUtil.Alive(p.Master) || !p.Has("Connected"))
+            if (p == null || !p.Started || p.Master == null || !ModKitUtil.Alive(p.Master) || !p.Has("Connected"))
                 continue;
             float range = p.Stat("Range", 2f);
-            foreach (Entity_Master t in YosseleUtil.Area(p.Pos, range + 0.3f, YosseleUtil.Tagged("Tower")))
-                if (t != null && t != p.Master && YosseleUtil.Alive(t) && YosseleUtil.Owner(t) == p.Owner && t.GetComponent<YosselePachiraBrain>() == null
-                    && YosseleUtil.Flat(YosseleUtil.Pos(t), p.Pos) <= range + 0.3f && !guarded.ContainsKey(t))
+            foreach (Entity_Master t in ModKitUtil.Area(p.Pos, range + 0.3f, ModKitUtil.Tagged("Tower")))
+                if (t != null && t != p.Master && ModKitUtil.Alive(t) && ModKitUtil.Owner(t) == p.Owner && t.GetComponent<YosselePachiraBrain>() == null
+                    && ModKitUtil.Flat(ModKitUtil.Pos(t), p.Pos) <= range + 0.3f && !guarded.ContainsKey(t))
                     guarded[t] = p;
         }
         // Fortifying Roots: the strongest aura on each building of the Sapling's team within its Range, itself included.
@@ -189,11 +189,11 @@ public static class YosseleHooks
         foreach (YosseleBuilding b in buildings)
         {
             YosselePachiraBrain p = b as YosselePachiraBrain;
-            if (p == null || !p.Started || p.Master == null || !YosseleUtil.Alive(p.Master) || !p.Has("Fortifying"))
+            if (p == null || !p.Started || p.Master == null || !ModKitUtil.Alive(p.Master) || !p.Has("Fortifying"))
                 continue;
             float range = p.Stat("Range", 2.5f), value = p.Param("Fortify_Armor", 0.3f), had;
-            foreach (Entity_Master t in YosseleUtil.Area(p.Pos, range + 0.3f, YosseleUtil.Tagged("Tower")))
-                if (t != null && YosseleUtil.Alive(t) && YosseleUtil.Team(t) == p.Team && YosseleUtil.Flat(YosseleUtil.Pos(t), p.Pos) <= range + 0.3f)
+            foreach (Entity_Master t in ModKitUtil.Area(p.Pos, range + 0.3f, ModKitUtil.Tagged("Tower")))
+                if (t != null && ModKitUtil.Alive(t) && ModKitUtil.Team(t) == p.Team && ModKitUtil.Flat(ModKitUtil.Pos(t), p.Pos) <= range + 0.3f)
                     aura[t] = aura.TryGetValue(t, out had) ? Mathf.Max(had, value) : value;
         }
         Keep(armor);
@@ -202,7 +202,7 @@ public static class YosseleHooks
             First(t);
         foreach (Entity_Master t in aura.Keys)
             First(t);
-        monuments.RemoveAll(m => m == null || !YosseleUtil.Alive(m));
+        monuments.RemoveAll(m => m == null || !ModKitUtil.Alive(m));
         foreach (Entity_Master m in monuments)
         {
             First(m);
@@ -210,7 +210,7 @@ public static class YosseleHooks
         }
         List<Entity_Master> gone = null;
         foreach (KeyValuePair<Entity_Master, float> kv in markUntil)
-            if (kv.Key == null || !YosseleUtil.Alive(kv.Key) || kv.Value < Time.time - 5f)
+            if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || kv.Value < Time.time - 5f)
             {
                 if (gone == null) gone = new List<Entity_Master>();
                 gone.Add(kv.Key);
@@ -227,7 +227,7 @@ public static class YosseleHooks
         List<Entity_Master> drop = null;
         foreach (Entity_Master e in table.Keys)
         {
-            if (e == null || !YosseleUtil.Alive(e))
+            if (e == null || !ModKitUtil.Alive(e))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(e);
@@ -260,7 +260,7 @@ public static class YosseleHooks
         {
             if (hit == null || hit.Type != "Hurt" || hit.To == null || hit.Data == null)
                 return;
-            if (hit.From != null && monuments.Contains(hit.To) && YosseleUtil.IsFoe(hit.From, YosseleUtil.Team(hit.To)))
+            if (hit.From != null && monuments.Contains(hit.To) && ModKitUtil.IsFoe(hit.From, ModKitUtil.Team(hit.To)))
                 Cleanse(hit.To);
             float multi, damage;
             if (!hit.Data.TryGetValue("Damagemulti", out multi) || !hit.Data.TryGetValue("Damage", out damage))
@@ -273,8 +273,8 @@ public static class YosseleHooks
                 return;
             float scale = 1f;
             YosselePachiraBrain guard;
-            if (guarded.TryGetValue(hit.To, out guard) && guard != null && guard.Master != null && YosseleUtil.Alive(guard.Master)
-                && YosseleUtil.Health(guard.Master) > guard.Param("Connected_Above", 0.5f) * YosseleUtil.MaxHealth(guard.Master))
+            if (guarded.TryGetValue(hit.To, out guard) && guard != null && guard.Master != null && ModKitUtil.Alive(guard.Master)
+                && ModKitUtil.Health(guard.Master) > guard.Param("Connected_Above", 0.5f) * ModKitUtil.MaxHealth(guard.Master))
             {
                 float share = Mathf.Clamp01(guard.Param("Connected_Share", 0.65f));
                 scale *= 1f - share;
@@ -303,8 +303,8 @@ public static class YosseleHooks
                 if (s <= 0.01f)
                 {
                     shield.Remove(hit.To);
-                    YosseleUtil.RemoveDebuff(hit.To, hit.To, YosseleData.VfxBlockade);
-                    YosseleUtil.Vis(hit.To, "Yossele_Blockadebreak", YosseleUtil.Pos(hit.To), 0f);
+                    ModKitUtil.RemoveDebuff(hit.To, hit.To, YosseleData.VfxBlockade);
+                    ModKitUtil.Vis(hit.To, "Yossele_Blockadebreak", ModKitUtil.Pos(hit.To), 0f);
                 }
                 else
                     shield[hit.To] = s;

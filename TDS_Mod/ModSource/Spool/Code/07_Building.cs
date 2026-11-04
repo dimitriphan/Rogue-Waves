@@ -21,9 +21,9 @@ public abstract class SpoolBuilding : MonoBehaviour
         return param.TryGetValue(name, out v) ? v : fallback;
     }
 
-    public float Stat(string name, float fallback) { return SpoolUtil.Stat(Master, name, fallback); }
-    public long Owner { get { return SpoolUtil.Owner(Master); } }
-    public Vector3 Pos { get { return SpoolUtil.Pos(Master); } }
+    public float Stat(string name, float fallback) { return ModKitUtil.Stat(Master, name, fallback); }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
+    public Vector3 Pos { get { return ModKitUtil.Pos(Master); } }
 
     void Update()
     {
@@ -32,7 +32,7 @@ public abstract class SpoolBuilding : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!SpoolUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -59,7 +59,7 @@ public abstract class SpoolBuilding : MonoBehaviour
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         Started2();
-        SpoolUtil.Vis(Master, "Spool_Built", Pos, 0);
+        ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
     }
 
     protected virtual void Started2() { }
@@ -105,13 +105,13 @@ public abstract class SpoolBuilding : MonoBehaviour
             }
         if (Started)
         {
-            SpoolUtil.Vis(Master, "Spool_Upgrade", Pos, def.Tier);
+            ModKitUtil.Vis(Master, "Spool_Upgrade", Pos, def.Tier);
             Upgraded(def);
         }
     }
 
     // Foes near this building, nearest first.
-    protected List<Entity_Master> Foes(float range) { return SpoolUtil.FoesNear(Master, Pos, range); }
+    protected List<Entity_Master> Foes(float range) { return ModKitUtil.FoesNear(Master, Pos, range); }
 
     public SpoolPlayer Player { get { return SpoolServer.Player(Owner); } }
 
@@ -236,14 +236,14 @@ public class SpoolLoomBrain : SpoolBuilding
         if (aspd <= 0f || Time.time - lastStrike < 1f / aspd)
             return;
         lastStrike = Time.time;
-        Entity_Master ore = Helper_Entityquerytools.Entitynearest(Pos, Stat("Range", 2.5f), SpoolUtil.Tagged("Resource"));
+        Entity_Master ore = Helper_Entityquerytools.Entitynearest(Pos, Stat("Range", 2.5f), ModKitUtil.Tagged("Resource"));
         if (ore == null || ore.Statsserver == null || !ore.Statsserver.ContainsKey("Healthresource"))
             return;
         // Ore takes min(Damage, 1) + Damageresource per strike (Helper_Damagetools.Dodamage) and pays out when emptied.
         Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", 1f }, { "Damagemulti", 1f }, { "Damageresource", Mathf.Max(0f, Stat("Damage", 1f) - 1f) } };
         Helper_Entitytools.Interact(Master, ore, "Hurt", d);
         Strikes++;
-        Master.Radio.Vis_ClientRpc("Spool_Strike", SpoolUtil.Pos(ore), 0f);
+        Master.Radio.Vis_ClientRpc("Spool_Strike", ModKitUtil.Pos(ore), 0f);
     }
 
     void Spin()
@@ -252,7 +252,7 @@ public class SpoolLoomBrain : SpoolBuilding
         {
             Spun++;
             Sent++;
-            SpoolUtil.Vis(Master, "Spool_Spin", Pos, 1f);
+            ModKitUtil.Vis(Master, "Spool_Spin", Pos, 1f);
             return;
         }
         if (Held >= Hold)
@@ -260,7 +260,7 @@ public class SpoolLoomBrain : SpoolBuilding
         Held++;
         Spun++;
         ShowHeld();
-        SpoolUtil.Vis(Master, "Spool_Spin", Pos, 0f);
+        ModKitUtil.Vis(Master, "Spool_Spin", Pos, 0f);
     }
 
     public int TakeHeld(int max)

@@ -48,7 +48,7 @@ public class SpoolMod : MonoBehaviour
         Heroentryobject template = null;
         while (template == null)
         {
-            template = SpoolUtil.Heroentry(SpoolData.TemplateHero);
+            template = ModKitUtil.Heroentry(SpoolData.TemplateHero);
             if (template == null)
                 yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -75,7 +75,7 @@ public class SpoolMod : MonoBehaviour
         List<string> folders = new List<string> { template.Heroloads.Objectname };
         foreach (string hero in SpoolData.ExtraGroups)
         {
-            Heroentryobject h = SpoolUtil.Heroentry(hero);
+            Heroentryobject h = ModKitUtil.Heroentry(hero);
             if (h != null && h.Heroloads != null) folders.Add(h.Heroloads.Objectname);
             else SpoolLog.Warn("no entry for " + hero + "; its pieces fall back to Smacky's");
         }

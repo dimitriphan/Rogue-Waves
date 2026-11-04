@@ -71,7 +71,7 @@ public static class UloeDiagnostics
     public static void Dump(Heroentryobject template)
     {
         Heroentryobject e = UloeContent.Entry;
-        UloeLog.Info("Uloe entry: towers " + UloeUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
+        UloeLog.Info("Uloe entry: towers " + ModKitUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
             + ", journal " + (e.Log != null ? e.Log.name : "none"));
         foreach (KeyValuePair<string, Beingobject> kv in UloeContent.Beings)
         {
@@ -83,14 +83,14 @@ public static class UloeDiagnostics
                 foreach (Statproperties.Defaultstatgroup g in ent.Defaultstat.Stats) stats.Add(g.Name + "=" + g.Value + (g.Leveladd != 0 ? "+" + g.Leveladd : ""));
             List<string> costs = new List<string>();
             foreach (Link_Resourceset c in ent.Costs) costs.Add(c.Name + " " + c.Amount);
-            UloeLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + UloeUtil.Join(ais) + "; stats " + UloeUtil.Join(stats)
-                + "; cost " + UloeUtil.Join(costs) + "; tags " + UloeUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count);
+            UloeLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + ModKitUtil.Join(ais) + "; stats " + ModKitUtil.Join(stats)
+                + "; cost " + ModKitUtil.Join(costs) + "; tags " + ModKitUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count);
         }
         Entityobject hero = UloeContent.HeroBeing.Entity;
         List<string> heroAis = new List<string>();
         foreach (UnityEngine.Object o in hero.Aiscripts) heroAis.Add(o.name);
         List<string> heroVis = new List<string>();
         foreach (UnityEngine.Object o in hero.Visualscripts) heroVis.Add(o.name);
-        UloeLog.Info("Hero_Uloe: ais " + UloeUtil.Join(heroAis) + "; vis " + UloeUtil.Join(heroVis) + "; anims " + UloeUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
+        UloeLog.Info("Hero_Uloe: ais " + ModKitUtil.Join(heroAis) + "; vis " + ModKitUtil.Join(heroVis) + "; anims " + ModKitUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
     }
 }

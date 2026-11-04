@@ -55,7 +55,7 @@ public static class UloeContent
         foreach (UloeData.Build b in UloeData.Builds)
             BuildTower(b);
         BuildPhoton();
-        BuildHero(UloeUtil.Load<Beingobject>("Hero", folder));
+        BuildHero(ModKitUtil.Load<Beingobject>("Hero", folder));
         BuildEntry(template);
         BuildDirections();
         try { UloeJournal.Build(template); }
@@ -100,7 +100,7 @@ public static class UloeContent
 
     static Material TemplateTowerMaterial()
     {
-        Beingobject archer = UloeUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
         if (archer == null || archer.Entity == null || archer.Entity.Defaultvisual == null)
             return null;
         GameObject prefab = archer.Entity.Defaultvisual.Default.Visprefab;
@@ -134,7 +134,7 @@ public static class UloeContent
     static List<UnityEngine.Object> Scripts(params string[] names)
     {
         List<UnityEngine.Object> l = new List<UnityEngine.Object>();
-        foreach (string n in names) l.Add(UloeUtil.Script(n));
+        foreach (string n in names) l.Add(ModKitUtil.Script(n));
         return l;
     }
 
@@ -218,8 +218,8 @@ public static class UloeContent
                 n.Display_Type = src.Display_Type;
                 n.Display_Exposed = src.Display_Exposed;
             }
-            n.Value = UloeUtil.F(vl[0]);
-            n.Leveladd = vl.Length > 1 ? UloeUtil.F(vl[1]) : 0f;
+            n.Value = ModKitUtil.F(vl[0]);
+            n.Leveladd = vl.Length > 1 ? ModKitUtil.F(vl[1]) : 0f;
             list.Add(n);
         }
         stats.Stats = list;
@@ -232,7 +232,7 @@ public static class UloeContent
         Dictionary<int, Upgradeproperties> templateTiers = new Dictionary<int, Upgradeproperties>();
         CollectUpgrades(te.Upgrades, templateTiers);
         if (templateTiers.Count == 0)
-            CollectUpgrades(UloeUtil.Load<Beingobject>("Mob", "Tower_Smackyhut").Entity.Upgrades, templateTiers);
+            CollectUpgrades(ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyhut").Entity.Upgrades, templateTiers);
         Dictionary<string, Upgradeproperties> byKey = new Dictionary<string, Upgradeproperties>();
         List<Upgradeproperties> roots = new List<Upgradeproperties>();
         foreach (UloeData.Upg u in b.Upgrades)
@@ -248,12 +248,12 @@ public static class UloeContent
             up.Display_Desc = u.Desc;
             up.Priority = u.Tier;
             up.Aiscripts = new List<UnityEngine.Object>();
-            up.Costs = UloeUtil.Costs(u.Costs);
+            up.Costs = ModKitUtil.Costs(u.Costs);
             up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), UloeAssets.Quiet(u.Model) != null ? u.Model : b.Id, u.Display);
             Register("Upgrade", up.Ent_Visual);
             up.Defaultparam = new List<Upgradeproperties.Param>();
             up.Defaultparams = new Dictionary<string, float>();
-            foreach (KeyValuePair<string, float> kv in UloeUtil.Params(u.Params))
+            foreach (KeyValuePair<string, float> kv in ModKitUtil.Params(u.Params))
             {
                 Upgradeproperties.Param p = new Upgradeproperties.Param();
                 p.Name = kv.Key;
@@ -362,11 +362,11 @@ public static class UloeContent
     // arrow's end look and sound. The Archer's arrow is the template without Sno Sno's group.
     static void BuildSpark()
     {
-        Projectileobject template = UloeUtil.Load<Projectileobject>("Projectile", UloeData.SparkTemplate);
+        Projectileobject template = ModKitUtil.Load<Projectileobject>("Projectile", UloeData.SparkTemplate);
         SparkFrom = UloeData.SparkTemplate;
         if (template == null)
         {
-            template = UloeUtil.Load<Projectileobject>("Projectile", UloeData.SparkFallback);
+            template = ModKitUtil.Load<Projectileobject>("Projectile", UloeData.SparkFallback);
             SparkFrom = UloeData.SparkFallback;
         }
         if (template == null)
@@ -380,7 +380,7 @@ public static class UloeContent
         if (model != null)
             spark.Vis = model;
         spark.Sfxstart = "";
-        Projectileobject arrow = UloeUtil.Load<Projectileobject>("Projectile", UloeData.SparkFallback);
+        Projectileobject arrow = ModKitUtil.Load<Projectileobject>("Projectile", UloeData.SparkFallback);
         if (arrow != null && template != arrow)
         {
             spark.Vfxend = arrow.Vfxend;
@@ -394,7 +394,7 @@ public static class UloeContent
     // line is drawn by every client (UloeClient.BeamRun). Without Buster's group the Glass hits directly.
     static void BuildBeam()
     {
-        Projectileobject template = UloeUtil.Load<Projectileobject>("Projectile", UloeData.BeamTemplate);
+        Projectileobject template = ModKitUtil.Load<Projectileobject>("Projectile", UloeData.BeamTemplate);
         if (template == null)
         {
             BeamFrom = "none, direct hits";
@@ -416,7 +416,7 @@ public static class UloeContent
 
     static Commandobject CommandTemplate()
     {
-        Commandobject template = UloeUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
+        Commandobject template = ModKitUtil.Load<Commandobject>("Command", "Command_Tower_Smackyhut_Convert");
         if (template == null)
             foreach (Bl_Address.Loadlist l in Bl_Address.Groups["Command"])
                 foreach (UnityEngine.Object o in l.Items.Values)
@@ -461,7 +461,7 @@ public static class UloeContent
 
     static void BuildTower(UloeData.Build b)
     {
-        Beingobject tb = UloeUtil.Load<Beingobject>("Mob", b.Template);
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", b.Template);
         if (tb == null || tb.Entity == null)
         {
             UloeLog.Error("tower template " + b.Template + " not found; " + b.Id + " skipped");
@@ -475,9 +475,9 @@ public static class UloeContent
         ent.Display_Desc = b.Desc;
         ent.Aiscripts = Strip(te.Aiscripts);
         // The game's own upgrade panel AI (Strip drops the template's copy so no other entity gets one by accident).
-        ent.Aiscripts.Add(UloeUtil.Script("Entity_Ai_General_Upgrade"));
+        ent.Aiscripts.Add(ModKitUtil.Script("Entity_Ai_General_Upgrade"));
         ent.Visualscripts = Strip(te.Visualscripts);
-        ent.Costs = UloeUtil.Costs(b.Costs);
+        ent.Costs = ModKitUtil.Costs(b.Costs);
         ent.Upgradesinit = new List<Upgradeproperties>();
         ent.Sellable = true;
         ent.Controllable = true;
@@ -504,7 +504,7 @@ public static class UloeContent
 
     static void BuildPhoton()
     {
-        Beingobject tb = UloeUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        Beingobject tb = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
         if (tb == null || tb.Entity == null)
         {
             UloeLog.Error("Mob_Smackyminer not found; Uloe's Photons are disabled");
@@ -630,10 +630,10 @@ public static class UloeContent
         if (melee >= 0)
             ent.Aiscripts.RemoveAt(melee);
         if (!ent.Aiscripts.Exists(s => s.name == "Entity_Ai_Mob_Ranged"))
-            ent.Aiscripts.Insert(melee >= 0 ? melee : Mathf.Min(2, ent.Aiscripts.Count), UloeUtil.Script("Entity_Ai_Mob_Ranged"));
+            ent.Aiscripts.Insert(melee >= 0 ? melee : Mathf.Min(2, ent.Aiscripts.Count), ModKitUtil.Script("Entity_Ai_Mob_Ranged"));
         ent.Visualscripts = Strip(te.Visualscripts);
         if (!ent.Visualscripts.Exists(s => s.name == "Entity_Vis_Mob_Attack"))
-            ent.Visualscripts.Add(UloeUtil.Script("Entity_Vis_Mob_Attack"));
+            ent.Visualscripts.Add(ModKitUtil.Script("Entity_Vis_Mob_Attack"));
         ent.Upgrades = new List<Upgradeproperties>();
         ent.Upgradesinit = new List<Upgradeproperties>();
         Upgradeproperties tooltip = Tooltip();
@@ -697,7 +697,7 @@ public static class UloeContent
         if (fall != null) Entry.Loadingsprite = fall;
         if (land != null) Entry.Landingsprite = land;
         if (idle != null) Entry.Idlesprite = idle;
-        Dictionary<string, UnityEngine.Object> heroes = UloeUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
         heroes[UloeData.Hero] = Entry;
     }
 }

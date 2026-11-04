@@ -34,12 +34,12 @@ public class YosseleCannonBrain : YosseleBuilding
 
     void Fire(Entity_Master foe)
     {
-        Vector3 at = YosseleUtil.Pos(foe);
-        float flight = YosseleData.LobBase + YosseleData.LobPerTile * YosseleUtil.Flat(Pos, at);
+        Vector3 at = ModKitUtil.Pos(foe);
+        float flight = YosseleData.LobBase + YosseleData.LobPerTile * ModKitUtil.Flat(Pos, at);
         // Lead the foe along its walk, as far as it gets in the flight (a held foe stays put).
         Vector3 dir = foe.Entitydirection.Value;
         dir.y = 0f;
-        float speed = Mathf.Max(0f, YosseleUtil.Stat(foe, "Speed", 0f));
+        float speed = Mathf.Max(0f, ModKitUtil.Stat(foe, "Speed", 0f));
         if (dir.sqrMagnitude > 0.01f)
             at += dir.normalized * Mathf.Min(speed * flight, 2f);
         float radius = Stat("Radius", 1f);
@@ -67,22 +67,22 @@ public class YosseleCannonBrain : YosseleBuilding
     public void Blast(Vector3 at, float radius, float damage, int spores)
     {
         Blasts++;
-        YosseleUtil.Vis(Master, "Yossele_Blast", at, radius);
-        foreach (Entity_Master foe in YosseleUtil.FoesNear(Master, at, radius + 0.3f))
+        ModKitUtil.Vis(Master, "Yossele_Blast", at, radius);
+        foreach (Entity_Master foe in ModKitUtil.FoesNear(Master, at, radius + 0.3f))
         {
-            if (YosseleUtil.Flat(YosseleUtil.Pos(foe), at) > radius + 0.3f)
+            if (ModKitUtil.Flat(ModKitUtil.Pos(foe), at) > radius + 0.3f)
                 continue;
-            YosseleUtil.Hurt(Master, foe, damage);
+            ModKitUtil.Hurt(Master, foe, damage);
             Hits++;
-            if (YosseleUtil.Alive(foe))
+            if (ModKitUtil.Alive(foe))
                 YosseleSpores.Add(foe, spores, this);
         }
     }
 
     protected override void OnGrowth()
     {
-        growSpeed = YosseleUtil.Keep(Master, growSpeed, "Attackspeed", Helper_Entitytools.Modtypes.Multi, YosseleData.CannonGrowSpeed * Growth);
-        growRadius = YosseleUtil.Keep(Master, growRadius, "Radius", Helper_Entitytools.Modtypes.Add, YosseleData.CannonGrowRadius * Growth);
+        growSpeed = ModKitUtil.Keep(Master, growSpeed, "Attackspeed", Helper_Entitytools.Modtypes.Multi, YosseleData.CannonGrowSpeed * Growth);
+        growRadius = ModKitUtil.Keep(Master, growRadius, "Radius", Helper_Entitytools.Modtypes.Add, YosseleData.CannonGrowRadius * Growth);
     }
 
     // The upgrades' spore rules, read by YosseleSpores from the cannon whose bomb landed last on a foe.
@@ -140,7 +140,7 @@ public static class YosseleSpores
 
     public static void Add(Entity_Master foe, int stacks, YosseleCannonBrain cannon)
     {
-        if (foe == null || cannon == null || stacks <= 0 || !YosseleUtil.Alive(foe))
+        if (foe == null || cannon == null || stacks <= 0 || !ModKitUtil.Alive(foe))
             return;
         State s;
         if (!spored.TryGetValue(foe, out s))
@@ -151,7 +151,7 @@ public static class YosseleSpores
         // Deathcap's lower cap never takes stacks away: a foe above it keeps its stacks (the sheet).
         if (s.Stacks < max)
             s.Stacks = Mathf.Min(max, s.Stacks + stacks);
-        YosseleUtil.Debuff(cannon.Master, foe, YosseleData.VfxSpores, YosseleData.SporeFade);
+        ModKitUtil.Debuff(cannon.Master, foe, YosseleData.VfxSpores, YosseleData.SporeFade);
         if (s.Stacks >= max)
         {
             if (!s.Full)
@@ -160,7 +160,7 @@ public static class YosseleSpores
                 Fulls++;
                 s.NextHallu = Time.time + cannon.Param("Hallu_Every", 5f);
             }
-            YosseleUtil.Debuff(cannon.Master, foe, YosseleData.VfxSporefull, YosseleData.SporeFade);
+            ModKitUtil.Debuff(cannon.Master, foe, YosseleData.VfxSporefull, YosseleData.SporeFade);
             if (cannon.Has("Sticky") && (s.Sticky == null || s.Sticky.Dead))
             {
                 s.Sticky = YosseleUtil.SlowOn(foe, cannon.Param("Sticky_Slow", 0.25f));
@@ -181,10 +181,10 @@ public static class YosseleSpores
         if (!s.Full)
             return;
         s.Full = false;
-        YosseleUtil.Unmod(s.Sticky);
+        ModKitUtil.Unmod(s.Sticky);
         s.Sticky = null;
         if (s.Cannon != null && s.Cannon.Master != null)
-            YosseleUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSporefull);
+            ModKitUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSporefull);
     }
 
     public static void Update()
@@ -207,14 +207,14 @@ public static class YosseleSpores
         {
             Entity_Master foe = kv.Key;
             State s = kv.Value;
-            if (foe == null || !YosseleUtil.Alive(foe) || s.Cannon == null || s.Cannon.Master == null || s.Stacks <= 0
+            if (foe == null || !ModKitUtil.Alive(foe) || s.Cannon == null || s.Cannon.Master == null || s.Stacks <= 0
                 || Time.time - s.Last > YosseleData.SporeFade)
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(foe);
                 continue;
             }
-            YosseleUtil.Hurt(s.Cannon.Master, foe, s.Stacks * s.Cannon.SporeDps * YosseleData.SporeTick);
+            ModKitUtil.Hurt(s.Cannon.Master, foe, s.Stacks * s.Cannon.SporeDps * YosseleData.SporeTick);
             if (s.Full && s.Cannon.Has("Hallucinogen") && Time.time >= s.NextHallu)
             {
                 s.NextHallu = Time.time + s.Cannon.Param("Hallu_Every", 5f);
@@ -233,11 +233,11 @@ public static class YosseleSpores
         if (!spored.TryGetValue(foe, out s))
             return;
         spored.Remove(foe);
-        YosseleUtil.Unmod(s.Sticky);
-        if (foe != null && s.Cannon != null && s.Cannon.Master != null && YosseleUtil.Alive(foe))
+        ModKitUtil.Unmod(s.Sticky);
+        if (foe != null && s.Cannon != null && s.Cannon.Master != null && ModKitUtil.Alive(foe))
         {
-            YosseleUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSpores);
-            YosseleUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSporefull);
+            ModKitUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSpores);
+            ModKitUtil.RemoveDebuff(s.Cannon.Master, foe, YosseleData.VfxSporefull);
         }
     }
 
@@ -246,25 +246,25 @@ public static class YosseleSpores
     static void Burst(Entity_Master foe)
     {
         State s;
-        if (foe == null || !spored.TryGetValue(foe, out s) || s.Cannon == null || s.Cannon.Master == null || !YosseleUtil.Alive(foe))
+        if (foe == null || !spored.TryGetValue(foe, out s) || s.Cannon == null || s.Cannon.Master == null || !ModKitUtil.Alive(foe))
             return;
         YosseleCannonBrain cannon = s.Cannon;
         int consumed = s.Stacks;
         s.Stacks = 0;
         s.Full = false;
         s.Guard = Time.time + YosseleData.BurstGuard;
-        YosseleUtil.Unmod(s.Sticky);
+        ModKitUtil.Unmod(s.Sticky);
         s.Sticky = null;
-        YosseleUtil.RemoveDebuff(cannon.Master, foe, YosseleData.VfxSporefull);
+        ModKitUtil.RemoveDebuff(cannon.Master, foe, YosseleData.VfxSporefull);
         Finishes++;
-        Vector3 at = YosseleUtil.Pos(foe);
+        Vector3 at = ModKitUtil.Pos(foe);
         float radius = cannon.Param("Finish_Radius", 1.25f);
         float damage = cannon.Param("Finish_Per", 1f) * consumed;
-        YosseleUtil.Vis(cannon.Master, "Yossele_Finish", at, radius);
-        foreach (Entity_Master other in YosseleUtil.FoesNear(cannon.Master, at, radius))
+        ModKitUtil.Vis(cannon.Master, "Yossele_Finish", at, radius);
+        foreach (Entity_Master other in ModKitUtil.FoesNear(cannon.Master, at, radius))
         {
-            YosseleUtil.Hurt(cannon.Master, other, damage);
-            if (other != foe && YosseleUtil.Alive(other))
+            ModKitUtil.Hurt(cannon.Master, other, damage);
+            if (other != foe && ModKitUtil.Alive(other))
                 Add(other, Mathf.RoundToInt(cannon.Param("Finish_Spores", 2f)), cannon);
         }
     }

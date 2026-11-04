@@ -47,7 +47,7 @@ public class YosseleMod : MonoBehaviour
         Heroentryobject template = null;
         while (template == null)
         {
-            template = YosseleUtil.Heroentry(YosseleData.TemplateHero);
+            template = ModKitUtil.Heroentry(YosseleData.TemplateHero);
             if (template == null)
                 yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -74,7 +74,7 @@ public class YosseleMod : MonoBehaviour
         List<string> folders = new List<string> { template.Heroloads.Objectname };
         foreach (string hero in YosseleData.ExtraGroups)
         {
-            Heroentryobject h = YosseleUtil.Heroentry(hero);
+            Heroentryobject h = ModKitUtil.Heroentry(hero);
             if (h != null && h.Heroloads != null) folders.Add(h.Heroloads.Objectname);
             else YosseleLog.Warn("no entry for " + hero + "; its pieces fall back to Smacky's");
         }

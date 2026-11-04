@@ -490,7 +490,7 @@ public static partial class RWTest
                 }
         yield return new WaitForSeconds(1f);
         bad = errors;
-        Beingobject archer = RWUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
         Entity_Master built = null;
         if (archer != null && vessel != null)
         {
@@ -498,7 +498,7 @@ public static partial class RWTest
             Genitem tile = null;
             foreach (Genitem g in RWUtil.Ground())
             {
-                float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
+                float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
                 if (d < 2f || d > 7f) continue;
                 bool ok = false;
                 try { ok = Helper_Gridtools.Checkifplaceable(g, archer, 0, vessel.Entitydata.Value.Team); } catch (Exception) { }
@@ -544,11 +544,11 @@ public static partial class RWTest
         Check("A base vessel's Direction holds its stat: Skipping Stones on Smacky", skipping != null && hit0 > 0f && hit1 >= hit0 * 1.25f, hit0 + " -> " + hit1 + " (rank I may already be held: its first pick)");
         // Made of Tougher Stuff: a minion of this player, hit once.
         Entity_Master minion = null;
-        Beingobject miner = RWUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+        Beingobject miner = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
         if (miner != null && vessel != null)
             foreach (Genitem g in RWUtil.Ground())
             {
-                float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
+                float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
                 if (d < 2f || d > 8f) continue;
                 Link_Being mb = new Link_Being { Being = miner, Entity = miner.Entity, Block = miner.Block, Team = vessel.Entitydata.Value.Team };
                 Genitem spot = null;

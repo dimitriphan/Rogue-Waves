@@ -40,7 +40,7 @@ public static class YosseleServer
             YosseleHooks.Reset();
             YosseleSoftening.Reset();
             YosseleFriends.Reset();
-            YosseleUtil.ForgetLooks(true);
+            ModKitUtil.ForgetLooks(true);
             if (ge != null)
             {
                 ge.Onspawn += OnSpawn;
@@ -116,10 +116,10 @@ public static class YosseleServer
     {
         foreach (YosseleHeroBrain h in Heroes)
         {
-            if (h == null || h.Master == null || !YosseleUtil.Alive(h.Master) || h.Rank <= 0)
+            if (h == null || h.Master == null || !ModKitUtil.Alive(h.Master) || h.Rank <= 0)
                 continue;
             YosseleData.Compost c = YosseleData.Compostbins[h.Rank - 1];
-            if (YosseleUtil.Flat(YosseleUtil.Pos(h.Master), at) > c.Radius)
+            if (ModKitUtil.Flat(ModKitUtil.Pos(h.Master), at) > c.Radius)
                 continue;
             YosselePlayer p = h.Player;
             p.Compost++;
@@ -129,7 +129,7 @@ public static class YosseleServer
             if (p.Fertilizer >= YosseleData.FertilizerMax)
                 continue;
             AddFertilizer(p.Owner, 1);
-            YosseleUtil.Vis(h.Master, "Yossele_Compost", YosseleUtil.Pos(h.Master), p.Fertilizer);
+            ModKitUtil.Vis(h.Master, "Yossele_Compost", ModKitUtil.Pos(h.Master), p.Fertilizer);
         }
     }
 
@@ -173,7 +173,7 @@ public static class YosseleServer
         int stages = GrowthPerTide();
         foreach (YosseleBuilding b in Buildings.ToArray())
         {
-            if (b == null || !b.Started || b.Master == null || !YosseleUtil.Alive(b.Master))
+            if (b == null || !b.Started || b.Master == null || !ModKitUtil.Alive(b.Master))
                 continue;
             int before = b.Growth;
             try { b.TideBegan(wave, stages); }
@@ -193,7 +193,7 @@ public static class YosseleServer
     {
         try
         {
-            if (!YosseleUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
+            if (!ModKitUtil.IsServer || master == null || master.Beingserver == null || master.Beingserver.Being == null)
                 return;
             string being = master.Beingserver.Being.Objectname;
             if (being == YosseleData.Hero)
@@ -219,7 +219,7 @@ public static class YosseleServer
             building.Def = b;
             Buildings.Add(building);
             if (building is YosseleDandelionBrain)
-                Limit(YosseleUtil.Owner(master));
+                Limit(ModKitUtil.Owner(master));
         }
         catch (Exception e)
         {
@@ -231,7 +231,7 @@ public static class YosseleServer
     {
         try
         {
-            if (!YosseleUtil.IsServer || master == null)
+            if (!ModKitUtil.IsServer || master == null)
                 return;
             YosseleBuilding building = master.GetComponent<YosseleBuilding>();
             if (building != null)
@@ -240,15 +240,15 @@ public static class YosseleServer
                 YosseleLog.Info(building.Def.Id + " at " + building.Pos.ToString("F0") + " gone: " + (killed ? "destroyed" : "removed") + " (" + reason + "), Growth " + building.Growth);
                 building.Gone(killed);
                 if (killed)
-                    YosseleUtil.Vis(master, "Yossele_Towerdown", YosseleUtil.Pos(master), 0);
+                    ModKitUtil.Vis(master, "Yossele_Towerdown", ModKitUtil.Pos(master), 0);
                 if (building is YosseleDandelionBrain)
-                    Limit(YosseleUtil.Owner(master));
+                    Limit(ModKitUtil.Owner(master));
                 return;
             }
             if (master.GetComponent<YosseleHeroBrain>() != null)
             {
                 if (killed)
-                    YosseleUtil.Vis(master, "Yossele_Herodeath", YosseleUtil.Pos(master), 0);
+                    ModKitUtil.Vis(master, "Yossele_Herodeath", ModKitUtil.Pos(master), 0);
                 return;
             }
             YosseleFriendBrain friend = master.GetComponent<YosseleFriendBrain>();
@@ -257,7 +257,7 @@ public static class YosseleServer
                 YosseleFriends.Gone(friend, killed);
                 return;
             }
-            string being = YosseleUtil.BeingName(master);
+            string being = ModKitUtil.BeingName(master);
             if (being == YosseleData.Vine)
             {
                 YosseleVines.VineGone(master);
@@ -267,12 +267,12 @@ public static class YosseleServer
                 return;
             if (master.Taglistserver.Contains("Enemy"))
             {
-                Vector3 at = YosseleUtil.Pos(master);
+                Vector3 at = ModKitUtil.Pos(master);
                 YosseleHooks.ForgetFoe(master);
                 if (killed)
                 {
                     FoesFelled++;
-                    LastFelledBy = YosseleUtil.BeingName(master.Lasthit);
+                    LastFelledBy = ModKitUtil.BeingName(master.Lasthit);
                     YosseleSpores.Fell(master, at);
                     foreach (YosseleBuilding b in Buildings.ToArray())
                     {
@@ -301,7 +301,7 @@ public static class YosseleServer
     {
         YosseleDandelionBrain first = null;
         foreach (YosseleBuilding b in Buildings)
-            if (b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Owner(b.Master) == owner)
+            if (b is YosseleDandelionBrain && !(b is YosseleBonsaiBrain) && b.Master != null && ModKitUtil.Alive(b.Master) && ModKitUtil.Owner(b.Master) == owner)
             {
                 if (b.Has("Bonsai"))
                     return (YosseleDandelionBrain)b;
@@ -316,7 +316,7 @@ public static class YosseleServer
     public static bool HasBonsai(long owner)
     {
         foreach (YosseleBuilding b in Buildings)
-            if (b is YosseleBonsaiBrain && b.Master != null && YosseleUtil.Alive(b.Master) && YosseleUtil.Owner(b.Master) == owner)
+            if (b is YosseleBonsaiBrain && b.Master != null && ModKitUtil.Alive(b.Master) && ModKitUtil.Owner(b.Master) == owner)
                 return true;
         return false;
     }
@@ -336,14 +336,14 @@ public static class YosseleServer
     public static void Limit(long owner)
     {
         foreach (YosseleHeroBrain h in Heroes)
-            if (h != null && h.Master != null && YosseleUtil.Owner(h.Master) == owner)
+            if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 h.CheckDandelion();
     }
 
     public static YosseleHeroBrain HeroOf(long owner)
     {
         foreach (YosseleHeroBrain h in Heroes)
-            if (h != null && h.Master != null && YosseleUtil.Owner(h.Master) == owner)
+            if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 return h;
         return null;
     }

@@ -46,7 +46,7 @@ public class ArgoMod : MonoBehaviour
         Heroentryobject template = null;
         while (template == null)
         {
-            template = ArgoUtil.Heroentry(ArgoData.TemplateHero);
+            template = ModKitUtil.Heroentry(ArgoData.TemplateHero);
             if (template == null)
                 yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -74,7 +74,7 @@ public class ArgoMod : MonoBehaviour
         List<string> folders = new List<string> { template.Heroloads.Objectname };
         foreach (string hero in ArgoData.ExtraGroups)
         {
-            Heroentryobject h = ArgoUtil.Heroentry(hero);
+            Heroentryobject h = ModKitUtil.Heroentry(hero);
             if (h != null && h.Heroloads != null) folders.Add(h.Heroloads.Objectname);
             else ArgoLog.Warn("no entry for " + hero + "; its pieces fall back to Smacky's");
         }

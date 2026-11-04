@@ -71,7 +71,7 @@ public static class YosseleDiagnostics
     public static void Dump(Heroentryobject template)
     {
         Heroentryobject e = YosseleContent.Entry;
-        YosseleLog.Info("Yossele entry: towers " + YosseleUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
+        YosseleLog.Info("Yossele entry: towers " + ModKitUtil.Join(e.Towerdisplay) + ", worldsprite " + e.Worldsprite.width + "x" + e.Worldsprite.height + "x" + e.Worldsprite.depth
             + ", journal " + (e.Log != null ? e.Log.name : "none"));
         foreach (KeyValuePair<string, Beingobject> kv in YosseleContent.Beings)
         {
@@ -85,8 +85,8 @@ public static class YosseleDiagnostics
                 foreach (Statproperties.Defaultstatgroup g in ent.Defaultstat.Stats) stats.Add(g.Name + "=" + g.Value + (g.Leveladd != 0 ? "+" + g.Leveladd : ""));
             List<string> costs = new List<string>();
             foreach (Link_Resourceset c in ent.Costs) costs.Add(c.Name + " " + c.Amount);
-            YosseleLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + YosseleUtil.Join(ais) + "; vis " + YosseleUtil.Join(vis)
-                + "; stats " + YosseleUtil.Join(stats) + "; cost " + YosseleUtil.Join(costs) + "; tags " + YosseleUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count
+            YosseleLog.Info(kv.Key + ": block " + (kv.Value.Block != null ? kv.Value.Block.name : "-") + "; ais " + ModKitUtil.Join(ais) + "; vis " + ModKitUtil.Join(vis)
+                + "; stats " + ModKitUtil.Join(stats) + "; cost " + ModKitUtil.Join(costs) + "; tags " + ModKitUtil.Join(ent.Tags) + "; upgrades " + ent.Upgrades.Count
                 + "; skins " + (ent.Defaultvisual != null ? ent.Defaultvisual.Skinoverrides.Count : 0) + "; orientable " + ent.Orientable);
         }
         Entityobject hero = YosseleContent.HeroBeing.Entity;
@@ -94,10 +94,10 @@ public static class YosseleDiagnostics
         foreach (UnityEngine.Object o in hero.Aiscripts) heroAis.Add(o.name);
         List<string> heroVis = new List<string>();
         foreach (UnityEngine.Object o in hero.Visualscripts) heroVis.Add(o.name);
-        YosseleLog.Info("Hero_Yossele: ais " + YosseleUtil.Join(heroAis) + "; vis " + YosseleUtil.Join(heroVis) + "; anims " + YosseleUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
+        YosseleLog.Info("Hero_Yossele: ais " + ModKitUtil.Join(heroAis) + "; vis " + ModKitUtil.Join(heroVis) + "; anims " + ModKitUtil.Join(hero.Defaultvisual.Default.Spriteobject.Items.Keys));
         List<string> dirs = new List<string>();
         foreach (Upgradeproperties d in YosseleContent.Compostbins) dirs.Add(d.Objectname);
         foreach (Upgradeproperties d in YosseleContent.Treeshifts) dirs.Add(d.Objectname);
-        YosseleLog.Info("Directions: " + YosseleUtil.Join(dirs));
+        YosseleLog.Info("Directions: " + ModKitUtil.Join(dirs));
     }
 }

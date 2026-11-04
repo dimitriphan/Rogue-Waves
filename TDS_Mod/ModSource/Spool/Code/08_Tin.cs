@@ -64,7 +64,7 @@ public class SpoolTinBrain : SpoolBuilding
         u.HealthMulti = Param("Craftedhealth_Multi", 0f);
         u.SpeedMulti = kind == SpoolData.Stitched && Has("Discounted") ? Param("Stitchedspeed_Multi", SpoolData.StitchedSpeedUp) : 0f;
         Stitched++;
-        SpoolUtil.Vis(Master, "Spool_Stitch", Pos, 0f);
+        ModKitUtil.Vis(Master, "Spool_Stitch", Pos, 0f);
         nextStitch = Time.time + Mathf.Max(1f, Stat("Respawn", 4f));
     }
 
@@ -73,7 +73,7 @@ public class SpoolTinBrain : SpoolBuilding
     protected override void Command(string command, string json, bool server)
     {
         Vector3 at;
-        if (command != SpoolData.TargetLink || !SpoolUtil.JsonPosition(json, out at))
+        if (command != SpoolData.TargetLink || !ModKitUtil.JsonPosition(json, out at))
             return;
         Targets++;
         string why;
@@ -88,17 +88,17 @@ public class SpoolTinBrain : SpoolBuilding
         Spot = spot.Position;
         MovePin(spot);
         SpoolUtil.Warn(Master, SpoolData.WarnSpot);
-        SpoolUtil.Vis(Master, "Spool_Target", Spot, 0f);
+        ModKitUtil.Vis(Master, "Spool_Target", Spot, 0f);
     }
 
     public Genitem Reachable(Vector3 at, out string why)
     {
-        if (SpoolUtil.Flat(at, Pos) > Reach + 0.5f)
+        if (ModKitUtil.Flat(at, Pos) > Reach + 0.5f)
         {
             why = "far";
             return null;
         }
-        Genitem tile = SpoolUtil.Tile(at);
+        Genitem tile = ModKitUtil.Tile(at);
         if (tile == null)
         {
             why = "no tile";
@@ -172,7 +172,7 @@ public class SpoolUnitBrain : MonoBehaviour
     float nextThink;
     bool armed;
 
-    public long Owner { get { return SpoolUtil.Owner(Master); } }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
     bool Crafted { get { return Def.Sellable; } }
 
     void Update()
@@ -182,7 +182,7 @@ public class SpoolUnitBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!SpoolUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -211,7 +211,7 @@ public class SpoolUnitBrain : MonoBehaviour
     {
         Started = true;
         if (Spot == Vector3.zero)
-            Spot = Home != null && Home.Master != null ? Home.Pos : SpoolUtil.Pos(Master);
+            Spot = Home != null && Home.Master != null ? Home.Pos : ModKitUtil.Pos(Master);
         if (HealthMulti != 0f)
         {
             Helper_Entitytools.Addmod(Master, "Health", HealthMulti, Helper_Entitytools.Modtypes.Multi, 0f);
@@ -219,7 +219,7 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         if (SpeedMulti != 0f)
             Helper_Entitytools.Addmod(Master, "Speed", SpeedMulti, Helper_Entitytools.Modtypes.Multi, 0f);
-        SpoolUtil.Vis(Master, "Spool_Pop", SpoolUtil.Pos(Master), 0f);
+        ModKitUtil.Vis(Master, "Spool_Pop", ModKitUtil.Pos(Master), 0f);
         if (Crafted)
             Walk(null, Spot, 0f);
         else if (Leap > 0f)
@@ -257,21 +257,21 @@ public class SpoolUnitBrain : MonoBehaviour
 
     void Think()
     {
-        Vector3 pos = SpoolUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         if (Crafted && !Arrived)
         {
-            if (SpoolUtil.Flat(pos, Spot) <= 0.9f)
+            if (ModKitUtil.Flat(pos, Spot) <= 0.9f)
                 Arrived = true;
             else
             {
-                if (SpoolUtil.State(Master) != "Move")
+                if (ModKitUtil.State(Master) != "Move")
                     Walk(null, Spot, 0f);
                 return;
             }
         }
         if (Leap > 0f && !Holding)
         {
-            if (SpoolUtil.Flat(pos, Spot) <= 0.6f || SpoolUtil.State(Master) != "Move")
+            if (ModKitUtil.Flat(pos, Spot) <= 0.6f || ModKitUtil.State(Master) != "Move")
             {
                 Holding = true;
                 Spot = pos;
@@ -280,7 +280,7 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         Entity_Master target = Guard();
         SpoolCushionBrain cushion = Home as SpoolCushionBrain;
-        if (target != null && cushion != null && cushion.Has("Burst") && SpoolUtil.Flat(SpoolUtil.Pos(target), pos) <= SpoolUtil.Stat(Master, "Range", 1.5f) + 0.2f)
+        if (target != null && cushion != null && cushion.Has("Burst") && ModKitUtil.Flat(ModKitUtil.Pos(target), pos) <= ModKitUtil.Stat(Master, "Range", 1.5f) + 0.2f)
             BurstOn(cushion);
         else if (target == null && Def.Id == SpoolData.Seam)
             Mine(pos);
@@ -289,19 +289,19 @@ public class SpoolUnitBrain : MonoBehaviour
     // Fights what comes within its leash of its anchor (spot, Loom or Cushion), else goes back to it.
     Entity_Master Guard()
     {
-        Vector3 pos = SpoolUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         Vector3 anchor = Anchor;
         float leash = Def.Leash;
-        float range = SpoolUtil.Stat(Master, "Range", 1.5f);
-        List<Entity_Master> foes = SpoolUtil.FoesNear(Master, pos, Mathf.Max(SpoolData.CraftedEngage, range + 0.5f));
-        foes.RemoveAll(f => SpoolUtil.Flat(SpoolUtil.Pos(f), anchor) > leash + range);
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f);
+        List<Entity_Master> foes = ModKitUtil.FoesNear(Master, pos, Mathf.Max(SpoolData.CraftedEngage, range + 0.5f));
+        foes.RemoveAll(f => ModKitUtil.Flat(ModKitUtil.Pos(f), anchor) > leash + range);
         Entity_Master target = foes.Count > 0 ? foes[0] : null;
-        string state = SpoolUtil.State(Master);
-        if (SpoolUtil.Flat(pos, anchor) > leash + 1f)
+        string state = ModKitUtil.State(Master);
+        if (ModKitUtil.Flat(pos, anchor) > leash + 1f)
             target = null;   // strayed past its leash: back first
         if (target != null)
         {
-            float d = SpoolUtil.Flat(SpoolUtil.Pos(target), pos);
+            float d = ModKitUtil.Flat(ModKitUtil.Pos(target), pos);
             if (Holding)
             {
                 // Holds its tile: the stock AI swings at what is in reach.
@@ -309,9 +309,9 @@ public class SpoolUnitBrain : MonoBehaviour
             else if (Def.Ranged)
             {
                 if (d > range - 0.3f)
-                    Walk(null, SpoolUtil.Pos(target) + (pos - SpoolUtil.Pos(target)).normalized * Mathf.Max(1f, range - 1f), 0f);
+                    Walk(null, ModKitUtil.Pos(target) + (pos - ModKitUtil.Pos(target)).normalized * Mathf.Max(1f, range - 1f), 0f);
                 else if (state == "Move")
-                    SpoolUtil.Stop(Master);
+                    ModKitUtil.Stop(Master);
             }
             else if (d > range - 0.1f && (Target != target || state != "Move"))
                 Walk(target, Vector3.zero, 0f);
@@ -319,7 +319,7 @@ public class SpoolUnitBrain : MonoBehaviour
             return target;
         }
         Target = null;
-        if (!Holding && SpoolUtil.Flat(pos, anchor) > (Crafted ? 0.9f : leash) && state != "Move" && state != "Attack" && Def.Id != SpoolData.Seam)
+        if (!Holding && ModKitUtil.Flat(pos, anchor) > (Crafted ? 0.9f : leash) && state != "Move" && state != "Attack" && Def.Id != SpoolData.Seam)
             Walk(null, anchor + Offset(), 0f);
         return null;
     }
@@ -337,32 +337,32 @@ public class SpoolUnitBrain : MonoBehaviour
     // strikes it (Smacky's miners mine the same way), and the ore pays the Seam's owner.
     void Mine(Vector3 pos)
     {
-        string state = SpoolUtil.State(Master);
+        string state = ModKitUtil.State(Master);
         if (state == "Move" || state == "Attack")
             return;
         Vector3 loom = Anchor;
-        Entity_Master ore = Helper_Entityquerytools.Entitynearest(loom, Def.Leash + 1f, SpoolUtil.Tagged("Resource"));
+        Entity_Master ore = Helper_Entityquerytools.Entitynearest(loom, Def.Leash + 1f, ModKitUtil.Tagged("Resource"));
         if (ore == null)
         {
-            if (SpoolUtil.Flat(pos, loom) > Def.Leash)
+            if (ModKitUtil.Flat(pos, loom) > Def.Leash)
                 Walk(null, loom + Offset(), 0f);
             return;
         }
-        if (SpoolUtil.Flat(SpoolUtil.Pos(ore), pos) > SpoolUtil.Stat(Master, "Range", 1.5f))
+        if (ModKitUtil.Flat(ModKitUtil.Pos(ore), pos) > ModKitUtil.Stat(Master, "Range", 1.5f))
             Walk(ore, Vector3.zero, 1f);
     }
 
     void Walk(Entity_Master target, Vector3 position, float stop)
     {
-        SpoolUtil.MoveTo(Master, target, position, stop);
+        ModKitUtil.MoveTo(Master, target, position, stop);
         Orders++;
     }
 
     // Overstuffed: the Mangled leaps up to its Leap toward the foe that hit its Cushion, and holds that tile.
     void LeapIn()
     {
-        Vector3 from = SpoolUtil.Pos(Master);
-        Vector3 to = LeapAt != null && SpoolUtil.Alive(LeapAt) ? SpoolUtil.Pos(LeapAt) : from;
+        Vector3 from = ModKitUtil.Pos(Master);
+        Vector3 to = LeapAt != null && ModKitUtil.Alive(LeapAt) ? ModKitUtil.Pos(LeapAt) : from;
         Vector3 dir = to - from;
         dir.y = 0f;
         float far = Mathf.Min(Leap, dir.magnitude - 0.8f);
@@ -372,22 +372,22 @@ public class SpoolUnitBrain : MonoBehaviour
             Spot = from;
             return;
         }
-        Genitem tile = SpoolUtil.Tile(from + dir.normalized * far);
+        Genitem tile = ModKitUtil.Tile(from + dir.normalized * far);
         Spot = tile != null ? tile.Position : from + dir.normalized * far;
         Helper_Entitytools.Addmod(Master, "Speed", 2f, Helper_Entitytools.Modtypes.Multi, 1.2f);
         Walk(null, Spot, 0f);
-        SpoolUtil.Vis(Master, "Spool_Leap", Spot, 0f);
+        ModKitUtil.Vis(Master, "Spool_Leap", Spot, 0f);
     }
 
     // Burst Seams: a Mangled that reaches a foe bursts on every foe within the radius.
     void BurstOn(SpoolCushionBrain cushion)
     {
-        Vector3 pos = SpoolUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         float damage = cushion.Param("Seams_Damage", 5f), radius = cushion.Param("Seams_Radius", 1.25f);
-        foreach (Entity_Master foe in SpoolUtil.FoesNear(Master, pos, radius))
-            SpoolUtil.Hurt(cushion.Master, foe, damage);
+        foreach (Entity_Master foe in ModKitUtil.FoesNear(Master, pos, radius))
+            ModKitUtil.Hurt(cushion.Master, foe, damage);
         cushion.Bursts++;
-        SpoolUtil.Vis(cushion.Master, "Spool_Burst", pos, radius);
+        ModKitUtil.Vis(cushion.Master, "Spool_Burst", pos, radius);
         Helper_Entitytools.Despawn(Master.Beingserver, true, "Burst");
     }
 
@@ -404,7 +404,7 @@ public class SpoolUnitBrain : MonoBehaviour
     // foes in its reach.
     public void Gone(bool killed, string reason)
     {
-        Vector3 pos = SpoolUtil.Pos(Master);
+        Vector3 pos = ModKitUtil.Pos(Master);
         Entity_Master radio = Radio();
         if (reason == "Sell" && Crafted)
         {
@@ -415,7 +415,7 @@ public class SpoolUnitBrain : MonoBehaviour
             if (over > 0)
                 SpoolServer.Drop(pos, over);
             SpoolServer.Refunded += back;
-            SpoolUtil.Vis(radio, "Spool_Unstitch", pos, back);
+            ModKitUtil.Vis(radio, "Spool_Unstitch", pos, back);
             if (recycler != null)
                 SpoolServer.MendAround(radio, pos, recycler.Radius, recycler.Heal, Master);
             return;
@@ -426,11 +426,11 @@ public class SpoolUnitBrain : MonoBehaviour
             SpoolServer.Drop(pos, Mathf.CeilToInt(Cost * Recycle));
         if (Burst > 0f && radio != Master)
         {
-            float damage = SpoolUtil.Stat(Master, "Damage", 2f) * Burst, reach = SpoolUtil.Stat(Master, "Range", 1.5f);
-            foreach (Entity_Master foe in SpoolUtil.FoesNear(radio, pos, reach))
-                SpoolUtil.Hurt(radio, foe, damage);
-            SpoolUtil.Vis(radio, "Spool_Burst", pos, reach);
+            float damage = ModKitUtil.Stat(Master, "Damage", 2f) * Burst, reach = ModKitUtil.Stat(Master, "Range", 1.5f);
+            foreach (Entity_Master foe in ModKitUtil.FoesNear(radio, pos, reach))
+                ModKitUtil.Hurt(radio, foe, damage);
+            ModKitUtil.Vis(radio, "Spool_Burst", pos, reach);
         }
-        SpoolUtil.Vis(radio, "Spool_Down", pos, 0f);
+        ModKitUtil.Vis(radio, "Spool_Down", pos, 0f);
     }
 }

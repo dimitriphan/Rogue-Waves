@@ -85,7 +85,7 @@ public static class ArgoHooks
         List<Entity_Master> drop = null;
         foreach (KeyValuePair<Entity_Master, float> kv in pinged)
         {
-            if (kv.Key == null || Time.time >= kv.Value || !ArgoUtil.Alive(kv.Key))
+            if (kv.Key == null || Time.time >= kv.Value || !ModKitUtil.Alive(kv.Key))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(kv.Key);
@@ -99,7 +99,7 @@ public static class ArgoHooks
         drop = null;
         foreach (KeyValuePair<Entity_Master, Vector2> kv in soaked)
         {
-            if (kv.Key == null || Time.time >= kv.Value.y || !ArgoUtil.Alive(kv.Key))
+            if (kv.Key == null || Time.time >= kv.Value.y || !ModKitUtil.Alive(kv.Key))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(kv.Key);
@@ -113,7 +113,7 @@ public static class ArgoHooks
         drop = null;
         foreach (Entity_Master t in armored.Keys)
         {
-            if (t == null || !ArgoUtil.Alive(t))
+            if (t == null || !ModKitUtil.Alive(t))
             {
                 if (drop == null) drop = new List<Entity_Master>();
                 drop.Add(t);

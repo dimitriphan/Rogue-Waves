@@ -23,7 +23,7 @@ public class ArgoNautBrain : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!ArgoUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -37,7 +37,7 @@ public class ArgoNautBrain : MonoBehaviour
                 Refit();
                 Moved();
             }
-            if (Bell == null || Bell.Master == null || !ArgoUtil.Alive(Bell.Master))
+            if (Bell == null || Bell.Master == null || !ModKitUtil.Alive(Bell.Master))
             {
                 StopTune();
                 if (Master.Beingserver != null && !Master.Beingserver.Dead)
@@ -45,12 +45,12 @@ public class ArgoNautBrain : MonoBehaviour
                 Master = null;
                 return;
             }
-            if (Post != null && !ArgoUtil.Alive(Post))
+            if (Post != null && !ModKitUtil.Alive(Post))
                 PostLost();
-            Vector3 pos = ArgoUtil.Pos(Master);
+            Vector3 pos = ModKitUtil.Pos(Master);
             if (Post != null)
             {
-                float d = ArgoUtil.Flat(pos, ArgoUtil.Pos(Post));
+                float d = ModKitUtil.Flat(pos, ModKitUtil.Pos(Post));
                 if (d <= ArgoData.TuneReach)
                 {
                     if (!Tuning) StartTune();
@@ -70,7 +70,7 @@ public class ArgoNautBrain : MonoBehaviour
             else
             {
                 StopTune();
-                float d = ArgoUtil.Flat(pos, ArgoUtil.Pos(Bell.Master));
+                float d = ModKitUtil.Flat(pos, ModKitUtil.Pos(Bell.Master));
                 if (d > 1.6f)
                     Travel(Bell.Master, d);
             }
@@ -92,7 +92,7 @@ public class ArgoNautBrain : MonoBehaviour
         Post = tower;
         Moved();
         if (Master != null)
-            ArgoUtil.Vis(Master, "Argo_Naut", ArgoUtil.Pos(Master), Index);
+            ModKitUtil.Vis(Master, "Argo_Naut", ModKitUtil.Pos(Master), Index);
     }
 
     public void PostLost()
@@ -166,7 +166,7 @@ public class ArgoNautBrain : MonoBehaviour
         // Old Salts: each kind of Argo tower is tuned its own way (other towers get the attack speed only).
         if (Bell.Has("Salts"))
         {
-            string being = ArgoUtil.BeingName(Post);
+            string being = ModKitUtil.BeingName(Post);
             if (being == ArgoData.Scatter && Post.Statsserver.ContainsKey("Projcount"))
                 saltMod = Helper_Entitytools.Addmod(Post, "Projcount", ArgoData.SaltsPellets, Helper_Entitytools.Modtypes.Add, 0f);
             else if (being == ArgoData.Harpoon && Post.Statsserver.ContainsKey("Pierce"))
@@ -178,8 +178,8 @@ public class ArgoNautBrain : MonoBehaviour
             else if (being == ArgoData.Drill && Post.Statsserver.ContainsKey("Slow"))
                 saltMod = Helper_Entitytools.Addmod(Post, "Slow", ArgoData.SaltsSlow, Helper_Entitytools.Modtypes.Add, 0f);
         }
-        ArgoUtil.Skin(Master, "Tune");
-        ArgoUtil.Vis(Master, "Argo_Tune", ArgoUtil.Pos(Post), Index);
+        ModKitUtil.Skin(Master, "Tune");
+        ModKitUtil.Vis(Master, "Argo_Tune", ModKitUtil.Pos(Post), Index);
         nextHeal = Time.time + 1f;
     }
 
@@ -188,9 +188,9 @@ public class ArgoNautBrain : MonoBehaviour
         if (!Tuning)
             return;
         Tuning = false;
-        ArgoUtil.Unmod(speedMod);
-        ArgoUtil.Unmod(rangeMod);
-        ArgoUtil.Unmod(saltMod);
+        ModKitUtil.Unmod(speedMod);
+        ModKitUtil.Unmod(rangeMod);
+        ModKitUtil.Unmod(saltMod);
         speedMod = rangeMod = saltMod = null;
         if (tunedTower != null)
         {
@@ -200,12 +200,12 @@ public class ArgoNautBrain : MonoBehaviour
         }
         tunedTower = null;
         if (Master != null)
-            ArgoUtil.Skin(Master, "");
+            ModKitUtil.Skin(Master, "");
     }
 
     void Work(Vector3 pos)
     {
-        Vector3 face = ArgoUtil.Pos(Post) - pos;
+        Vector3 face = ModKitUtil.Pos(Post) - pos;
         face.y = 0f;
         if (face.sqrMagnitude > 0.01f)
             Master.Entitydirection.Value = face.normalized;
@@ -217,7 +217,7 @@ public class ArgoNautBrain : MonoBehaviour
         if (heal > 0f && Post.Statsserver.TryGetValue("Health", out hp) && hp.Value < hp.Value_Calc - 0.01f)
         {
             Helper_Entitytools.Interact(Master, Post, "Heal", ArgoUtil.Hit(heal, 1f));
-            ArgoUtil.Vis(Master, "Argo_Repair", ArgoUtil.Pos(Post), Index);
+            ModKitUtil.Vis(Master, "Argo_Repair", ModKitUtil.Pos(Post), Index);
         }
     }
 
@@ -226,7 +226,7 @@ public class ArgoNautBrain : MonoBehaviour
     {
         if (Master == null || Bell == null || !started)
             return;
-        ArgoUtil.Unmod(nautSpeedMod);
+        ModKitUtil.Unmod(nautSpeedMod);
         nautSpeedMod = null;
         float speed = Bell.Param("Nautspeed_Multi", 0f);
         if (speed > 0f && Master.Statsserver.ContainsKey("Speed"))

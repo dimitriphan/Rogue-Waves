@@ -77,7 +77,7 @@ public static class RWShop
         float bestDistance = float.MaxValue;
         foreach (Genitem g in RWUtil.Ground())
         {
-            float d = RWUtil.Flat(g.Position, at);
+            float d = ModKitUtil.Flat(g.Position, at);
             if (d < 2f || d > 7f || d >= bestDistance)
                 continue;
             Genitem stand = null;
@@ -94,7 +94,7 @@ public static class RWShop
 
     public static void Update()
     {
-        if (RWRun.InCampaignMap && RWUtil.IsServer && Stand != null && !jumped && Game_Mapvars.Instance != null && Game_Mapvars.Instance.Time_Wave.Value <= JumpBefore && ModKitTides.InBreak)
+        if (RWRun.InCampaignMap && ModKitUtil.IsServer && Stand != null && !jumped && Game_Mapvars.Instance != null && Game_Mapvars.Instance.Time_Wave.Value <= JumpBefore && ModKitTides.InBreak)
         {
             jumped = true;
             if (Stand.Radio != null)

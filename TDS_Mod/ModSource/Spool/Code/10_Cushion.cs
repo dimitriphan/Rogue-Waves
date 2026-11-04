@@ -79,10 +79,10 @@ public class SpoolCushionBrain : SpoolBuilding
                 return;
             Taken += total;
             Entity_Master from = hit.From;
-            if (from != null && from != Master && SpoolUtil.IsFoe(from, SpoolUtil.Team(Master)))
+            if (from != null && from != Master && ModKitUtil.IsFoe(from, ModKitUtil.Team(Master)))
             {
                 LastAttacker = from;
-                bool melee = SpoolUtil.Stat(from, "Range", 1.5f) <= MeleeRange;
+                bool melee = ModKitUtil.Stat(from, "Range", 1.5f) <= MeleeRange;
                 float rate = melee ? Stat("Reflect", 0.2f) : Has("Barrage") ? Param("Rangedreflect_Base", 0.2f) : 0f;
                 if (rate > 0f)
                     Prick(from, total * rate);
@@ -111,14 +111,14 @@ public class SpoolCushionBrain : SpoolBuilding
     void Prick(Entity_Master foe, float amount)
     {
         own = true;
-        try { SpoolUtil.Hurt(Master, foe, amount); }
+        try { ModKitUtil.Hurt(Master, foe, amount); }
         finally { own = false; }
         Pricks++;
         Reflected += amount;
         if (Time.time - lastPrickVis > 0.3f)
         {
             lastPrickVis = Time.time;
-            SpoolUtil.Vis(Master, "Spool_Prick", SpoolUtil.Pos(foe), 0f);
+            ModKitUtil.Vis(Master, "Spool_Prick", ModKitUtil.Pos(foe), 0f);
         }
     }
 
@@ -172,7 +172,7 @@ public class SpoolCushionBrain : SpoolBuilding
         if (damage <= 0f)
             return;
         own = true;
-        try { ModKitCombat.Hurt(Master, Master, damage, 1f, LastAttacker != null && SpoolUtil.Alive(LastAttacker) ? LastAttacker : Master, null); }
+        try { ModKitCombat.Hurt(Master, Master, damage, 1f, LastAttacker != null && ModKitUtil.Alive(LastAttacker) ? LastAttacker : Master, null); }
         finally { own = false; }
     }
 

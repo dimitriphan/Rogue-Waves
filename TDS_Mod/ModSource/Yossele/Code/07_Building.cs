@@ -32,10 +32,10 @@ public abstract class YosseleBuilding : MonoBehaviour
         return param.TryGetValue(name, out v) ? v : fallback;
     }
 
-    public float Stat(string name, float fallback) { return YosseleUtil.Stat(Master, name, fallback); }
-    public long Owner { get { return YosseleUtil.Owner(Master); } }
-    public int Team { get { return YosseleUtil.Team(Master); } }
-    public Vector3 Pos { get { return YosseleUtil.Pos(Master); } }
+    public float Stat(string name, float fallback) { return ModKitUtil.Stat(Master, name, fallback); }
+    public long Owner { get { return ModKitUtil.Owner(Master); } }
+    public int Team { get { return ModKitUtil.Team(Master); } }
+    public Vector3 Pos { get { return ModKitUtil.Pos(Master); } }
     public int Max { get { return Def != null ? Def.Max : 0; } }
     public bool FullGrown { get { return Growth >= Max; } }
 
@@ -46,7 +46,7 @@ public abstract class YosseleBuilding : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!YosseleUtil.IsServer)
+        if (!ModKitUtil.IsServer)
             return;
         try
         {
@@ -56,7 +56,7 @@ public abstract class YosseleBuilding : MonoBehaviour
                     return;
                 Begin();
             }
-            if (YosseleUtil.Alive(Master))
+            if (ModKitUtil.Alive(Master))
                 Tick();
         }
         catch (Exception e)
@@ -76,7 +76,7 @@ public abstract class YosseleBuilding : MonoBehaviour
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         Started2();
-        YosseleUtil.Vis(Master, "Yossele_Built", Pos, 0);
+        ModKitUtil.Vis(Master, "Yossele_Built", Pos, 0);
     }
 
     protected virtual void Started2() { }
@@ -110,7 +110,7 @@ public abstract class YosseleBuilding : MonoBehaviour
         SetGrowth(Mathf.Min(Max, Growth + stages));
         if (fertilizer)
             Fertilized++;
-        YosseleUtil.Vis(Master, "Yossele_Grow", Pos, Growth + (fertilizer ? 100 : 0));
+        ModKitUtil.Vis(Master, "Yossele_Grow", Pos, Growth + (fertilizer ? 100 : 0));
         return true;
     }
 
@@ -118,7 +118,7 @@ public abstract class YosseleBuilding : MonoBehaviour
     {
         Growth = Mathf.Clamp(stages, 0, Max);
         ModKitCounter.Set(Master, YosseleData.GrowthStat, Growth);
-        YosseleUtil.Skin(Master, Growth > 0 ? YosseleData.GrowthStat + Growth : "");
+        ModKitUtil.Skin(Master, Growth > 0 ? YosseleData.GrowthStat + Growth : "");
         OnGrowth();
     }
 
@@ -138,7 +138,7 @@ public abstract class YosseleBuilding : MonoBehaviour
         YosseleData.Upg def = Apply(up, 1f);
         if (def != null && Started)
         {
-            YosseleUtil.Vis(Master, "Yossele_Upgrade", Pos, def.Tier);
+            ModKitUtil.Vis(Master, "Yossele_Upgrade", Pos, def.Tier);
             Upgraded(def);
         }
     }
@@ -180,12 +180,12 @@ public abstract class YosseleBuilding : MonoBehaviour
     protected void ClearUpgrades()
     {
         foreach (Link_Modifier m in upgradeMods)
-            YosseleUtil.Unmod(m);
+            ModKitUtil.Unmod(m);
         upgradeMods.Clear();
         keys.Clear();
         param.Clear();
     }
 
     // Foes near this building, nearest first.
-    protected List<Entity_Master> Foes(float range) { return YosseleUtil.FoesNear(Master, Pos, range); }
+    protected List<Entity_Master> Foes(float range) { return ModKitUtil.FoesNear(Master, Pos, range); }
 }

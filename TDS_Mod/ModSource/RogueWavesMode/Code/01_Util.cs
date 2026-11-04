@@ -1,34 +1,10 @@
 public static class RWUtil
 {
-    public static Dictionary<string, UnityEngine.Object> Folder(string name)
-    {
-        Tds_Masterdatabase db = Tds_Masterdatabase.Instance;
-        Dictionary<string, UnityEngine.Object> folder;
-        if (db == null || db.Items == null || !db.Items.TryGetValue(name, out folder))
-            return null;
-        return folder;
-    }
-
     public static T Item<T>(string folder, string name) where T : UnityEngine.Object
     {
-        Dictionary<string, UnityEngine.Object> f = Folder(folder);
+        Dictionary<string, UnityEngine.Object> f = ModKitUtil.Folder(folder);
         UnityEngine.Object found;
         return f != null && name != null && f.TryGetValue(name, out found) ? found as T : null;
-    }
-
-    // A being, item or object from the loaded groups under a label ("Mob", "Mode"...), or null if its group isn't loaded.
-    public static T Load<T>(string label, string name) where T : UnityEngine.Object
-    {
-        List<Bl_Address.Loadlist> lists;
-        if (string.IsNullOrEmpty(name) || !Bl_Address.Groups.TryGetValue(label, out lists))
-            return null;
-        foreach (Bl_Address.Loadlist list in lists)
-        {
-            UnityEngine.Object item;
-            if (list.Items.TryGetValue(name, out item) && item is T)
-                return (T)item;
-        }
-        return null;
     }
 
     public static T Clone<T>(T source, string name) where T : Bl_ScriptableObject
@@ -36,13 +12,9 @@ public static class RWUtil
         T copy = UnityEngine.Object.Instantiate(source);
         copy.name = name;
         copy.Objectname = name;
-        copy.Id = Clip(name.ToLowerInvariant() + "-roguewaves");
+        copy.Id = ModKitUtil.Clip(name.ToLowerInvariant() + "-roguewaves");
         return copy;
     }
-
-    public static string Clip(string value) { return value.Length > 60 ? value.Substring(0, 60) : value; }
-
-    public static bool IsServer { get { return Game_Entity.Instance != null && Game_Entity.Instance.IsServer; } }
 
     // The host on the boat (no Game_Entity there): the network host.
     public static bool IsHost { get { return Unity.Netcode.NetworkManager.Singleton != null && Unity.Netcode.NetworkManager.Singleton.IsHost; } }
@@ -52,8 +24,6 @@ public static class RWUtil
     public static string F(float v) { return v.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture); }
 
     public static string V(Vector3 v) { return F(v.x) + "," + F(v.y) + "," + F(v.z); }
-
-    public static float Flat(Vector3 a, Vector3 b) { return new Vector2(a.x - b.x, a.z - b.z).magnitude; }
 
     // ---------------------------------------------------------------- the save
 

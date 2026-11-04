@@ -83,7 +83,7 @@ public static class YosseleClient
             return;
         try
         {
-            Vector3 at = master != null ? YosseleUtil.Pos(master) : position;
+            Vector3 at = master != null ? ModKitUtil.Pos(master) : position;
             // The stock ranged AI announces each laser with "Shoot"; the Cordyfriend's melee AI each swing with "Attack".
             if (type == "Shoot")
             {
@@ -116,13 +116,13 @@ public static class YosseleClient
                     Scaled("World_Yossele_Sporeblast", Ground(position), number, 1.5f);
                     break;
                 case "Yossele_Seedbounce":
-                    Entity_Master next = YosseleUtil.ById((ulong)Mathf.Max(0f, number));
+                    Entity_Master next = ModKitUtil.ById((ulong)Mathf.Max(0f, number));
                     if (next != null)
-                        Run(SeedHop(position, YosseleUtil.Pos(next)));
+                        Run(SeedHop(position, ModKitUtil.Pos(next)));
                     break;
                 case "Yossele_Intercept":
                     Intercepts++;
-                    if (!YosseleUtil.IsServer)
+                    if (!ModKitUtil.IsServer)
                         PutOut(position, number);
                     YosseleAssets.Play("Yossele_Seeds", at, 1.2f);
                     Run(SeedHop(Crown(master), position));
@@ -162,7 +162,7 @@ public static class YosseleClient
                 case "Yossele_Compost":
                     YosseleAssets.Effect("World_Yossele_Compost", at + Vector3.up * 0.3f, 2f);
                     YosseleAssets.Play("Yossele_Pick", at, 0.6f);
-                    if (YosseleUtil.OwnedLocally(master))
+                    if (ModKitUtil.OwnedLocally(master))
                         Helper_Uitools.Warning(YosseleData.WarnText[YosseleData.WarnFertilizer] + " (" + n + ")", "", 2f);
                     break;
                 case "Yossele_Dig":
@@ -193,7 +193,7 @@ public static class YosseleClient
                     break;
                 case "Yossele_Colour":
                     YosseleAssets.Play("Yossele_Rustle", at, 0.7f);
-                    if (YosseleUtil.OwnedLocally(master) && n >= 0 && n < YosseleData.Colours.Length)
+                    if (ModKitUtil.OwnedLocally(master) && n >= 0 && n < YosseleData.Colours.Length)
                         Helper_Uitools.Warning(YosseleData.WarnText[YosseleData.WarnColour + n], "", 2f);
                     break;
                 case "Yossele_Built":
@@ -213,7 +213,7 @@ public static class YosseleClient
                     break;
                 case "Yossele_Warn":
                     int code = n % 100, value = n / 100;
-                    if (YosseleUtil.OwnedLocally(master) && code > 0 && code < YosseleData.WarnText.Length)
+                    if (ModKitUtil.OwnedLocally(master) && code > 0 && code < YosseleData.WarnText.Length)
                         Helper_Uitools.Warning(YosseleData.WarnText[code] + (value > 0 ? " (" + value + ")" : ""), "", 2f);
                     break;
             }
@@ -286,7 +286,7 @@ public static class YosseleClient
 
     static Vector3 Muzzle(Entity_Master master, Vector3 target)
     {
-        Vector3 pos = master != null ? YosseleUtil.Pos(master) : target;
+        Vector3 pos = master != null ? ModKitUtil.Pos(master) : target;
         YosseleData.Build b = master != null ? YosseleData.BuildFor(master.Being.Value.ToString()) : null;
         Vector3 d = target - pos;
         d.y = 0f;
@@ -301,7 +301,7 @@ public static class YosseleClient
         if (bomb == null)
             yield break;
         bomb.SetActive(true);
-        float peak = 1f + 0.25f * YosseleUtil.Flat(from, to);
+        float peak = 1f + 0.25f * ModKitUtil.Flat(from, to);
         for (float e = 0f; e < flight && bomb != null; e += Time.deltaTime)
         {
             float k = e / flight;
@@ -320,7 +320,7 @@ public static class YosseleClient
         if (tree == null)
             return Vector3.zero;
         YosseleData.Build b = YosseleData.BuildFor(tree.Being.Value.ToString()) ?? YosseleData.BuildFor(YosseleData.Dandelion);
-        return YosseleUtil.Pos(tree) + Vector3.up * (b != null ? b.Muzzle : 1.1f);
+        return ModKitUtil.Pos(tree) + Vector3.up * (b != null ? b.Muzzle : 1.1f);
     }
 
     // D-MDS shot a foe's projectile down on the host: put out this client's look-only copy of it, the nearest active

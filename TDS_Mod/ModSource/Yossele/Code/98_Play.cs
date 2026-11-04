@@ -113,7 +113,7 @@ public static class YosselePlay
     {
         List<YosseleBuilding> l = new List<YosseleBuilding>();
         foreach (YosseleBuilding b in YosseleServer.Buildings)
-            if (b != null && b.Started && b.Master != null && YosseleUtil.Alive(b.Master) && b.Owner == owner)
+            if (b != null && b.Started && b.Master != null && ModKitUtil.Alive(b.Master) && b.Owner == owner)
                 l.Add(b);
         return l;
     }
@@ -130,7 +130,7 @@ public static class YosselePlay
     {
         List<Entity_Master> l = new List<Entity_Master>();
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (YosseleUtil.IsFoe(e, team) && YosseleUtil.HasTag(e, "Enemy"))
+            if (ModKitUtil.IsFoe(e, team) && ModKitUtil.HasTag(e, "Enemy"))
                 l.Add(e);
         return l;
     }
@@ -139,7 +139,7 @@ public static class YosselePlay
     {
         List<Entity_Master> l = new List<Entity_Master>();
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && YosseleUtil.HasTag(e, tag) && e.Beingserver != null && !e.Beingserver.Dead && (YosseleUtil.Team(e) == team) == ownTeam)
+            if (e != null && ModKitUtil.HasTag(e, tag) && e.Beingserver != null && !e.Beingserver.Dead && (ModKitUtil.Team(e) == team) == ownTeam)
                 l.Add(e);
         return l;
     }
@@ -151,14 +151,14 @@ public static class YosselePlay
         string bs = "";
         foreach (YosseleBuilding b in Mine())
             bs += " " + Short(b.Def.Id) + "(G" + b.Growth + (b.Keys.Count > 0 ? " " + string.Join("+", b.Keys.ToArray()) : "")
-                + " hp " + F(YosseleUtil.Health(b.Master)) + "/" + F(YosseleUtil.MaxHealth(b.Master)) + " dmg " + F(b.Master.Damagedone) + " kills " + b.Master.Killed + ")";
+                + " hp " + F(ModKitUtil.Health(b.Master)) + "/" + F(ModKitUtil.MaxHealth(b.Master)) + " dmg " + F(b.Master.Damagedone) + " kills " + b.Master.Killed + ")";
         string cores = "";
         foreach (Entity_Master c in Cores("Core", true))
-            cores += " " + YosseleUtil.BeingName(c).Replace("Main_", "") + " " + F(YosseleUtil.Health(c)) + "/" + F(YosseleUtil.MaxHealth(c));
+            cores += " " + ModKitUtil.BeingName(c).Replace("Main_", "") + " " + F(ModKitUtil.Health(c)) + "/" + F(ModKitUtil.MaxHealth(c));
         string kinds = "";
         foreach (KeyValuePair<string, int> kv in foeKinds) kinds += " " + kv.Key.Replace("Enemy_", "") + "x" + kv.Value;
         return "tide " + Game_Mapvars.Instance.Wave.Value + " timer " + F(Game_Mapvars.Instance.Time_Wave.Value) + " speed " + F(Game_Mapvars.Instance.Time_Scale.Value) + (Game_Mapvars.Instance.Time_Speedup.Value ? "ff" : "")
-            + " | " + ModKitPlay.Wallet() + " | vessel " + (YosseleUtil.Alive(hm) ? F(YosseleUtil.Health(hm)) + "/" + F(YosseleUtil.MaxHealth(hm)) + " dmg " + F(hm.Damagedone) + " kills " + hm.Killed : "down")
+            + " | " + ModKitPlay.Wallet() + " | vessel " + (ModKitUtil.Alive(hm) ? F(ModKitUtil.Health(hm)) + "/" + F(ModKitUtil.MaxHealth(hm)) + " dmg " + F(hm.Damagedone) + " kills " + hm.Killed : "down")
             + " | cores" + cores + " | foes now " + Foes().Count + ", felled " + YosseleServer.FoesFelled + ", seen" + kinds
             + " | friends " + YosseleFriends.Raised + "/" + YosseleFriends.Fell + " | buildings" + (bs == "" ? " none" : bs);
     }
@@ -170,8 +170,8 @@ public static class YosselePlay
         plan = Plans[ModKitPlay.PlanIndex];
         matchStart = Time.realtimeSinceStartup;
         hm = ModKitPlay.LocalHero();
-        owner = YosseleUtil.Owner(hm);
-        team = YosseleUtil.Team(hm);
+        owner = ModKitUtil.Owner(hm);
+        team = ModKitUtil.Team(hm);
         used.Clear(); trail.Clear(); route.Clear(); built.Clear(); foeKinds.Clear(); foesSeen.Clear(); lanes.Clear();
         fallbacks = uiBuilds = uiUpgrades = uiSells = uiSelects = keySelects = felled = 0;
         ModKitPlay.Init();
@@ -181,7 +181,7 @@ public static class YosselePlay
             + ", tide " + Game_Mapvars.Instance.Wave.Value + ", timer " + F(Game_Mapvars.Instance.Time_Wave.Value) + ", wallet " + ModKitPlay.Wallet());
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
             if (e != null && e.Taglistserver != null && (e.Taglistserver.Contains("Core") || e.Taglistserver.Contains("Enemycore")))
-                Log("core: " + YosseleUtil.BeingName(e) + " team " + YosseleUtil.Team(e) + " at " + T(YosseleUtil.Pos(e)) + " tags " + string.Join(",", e.Taglistserver.ToArray()));
+                Log("core: " + ModKitUtil.BeingName(e) + " team " + ModKitUtil.Team(e) + " at " + T(ModKitUtil.Pos(e)) + " tags " + string.Join(",", e.Taglistserver.ToArray()));
         ModKitTest.Log = m => Log(m);
         ModKitTest.MapDump(team, hm);
         Lanes();
@@ -228,24 +228,24 @@ public static class YosselePlay
             {
                 try
                 {
-                    Link_Being probe = new Link_Being { Being = dagger, Entity = dagger.Entity, Block = dagger.Block, Team = YosseleUtil.Team(spawner) };
-                    Genitem start = ModKitTest.FoeTile(dagger, YosseleUtil.Pos(spawner), 0f, 3f, null);
-                    Genitem end = ModKitTest.FoeTile(dagger, YosseleUtil.Pos(core), 1f, 3f, null);
-                    if (start == null || end == null) { Log("lane " + YosseleUtil.BeingName(spawner) + " -> " + YosseleUtil.BeingName(core) + ": no tile (start " + (start != null) + ", end " + (end != null) + ")"); continue; }
+                    Link_Being probe = new Link_Being { Being = dagger, Entity = dagger.Entity, Block = dagger.Block, Team = ModKitUtil.Team(spawner) };
+                    Genitem start = ModKitTest.FoeTile(dagger, ModKitUtil.Pos(spawner), 0f, 3f, null);
+                    Genitem end = ModKitTest.FoeTile(dagger, ModKitUtil.Pos(core), 1f, 3f, null);
+                    if (start == null || end == null) { Log("lane " + ModKitUtil.BeingName(spawner) + " -> " + ModKitUtil.BeingName(core) + ": no tile (start " + (start != null) + ", end " + (end != null) + ")"); continue; }
                     // Round P3: to the core's own position no path came back; to a standable tile beside it, forced.
                     Link_Path p = Helper_Navtools.Getpath(start, end, probe, true);
                     if (!p.Valid || p.Path == null || p.Path.Count == 0)
-                        p = Helper_Navtools.Getpath(start, YosseleUtil.Pos(core), probe, true);
-                    if (!p.Valid || p.Path == null || p.Path.Count == 0) { Log("lane " + YosseleUtil.BeingName(spawner) + " " + T(start.Position) + " -> " + YosseleUtil.BeingName(core) + " " + T(end.Position) + ": no path (valid " + p.Valid + ", length " + p.Length + ")"); continue; }
+                        p = Helper_Navtools.Getpath(start, ModKitUtil.Pos(core), probe, true);
+                    if (!p.Valid || p.Path == null || p.Path.Count == 0) { Log("lane " + ModKitUtil.BeingName(spawner) + " " + T(start.Position) + " -> " + ModKitUtil.BeingName(core) + " " + T(end.Position) + ": no path (valid " + p.Valid + ", length " + p.Length + ")"); continue; }
                     List<Vector3> l = new List<Vector3>();
                     foreach (Genitem g in p.Path) l.Add(g.Position);
                     // The path comes back goal first (round P4 built at the spawners): spawner first, core last.
-                    if (YosseleUtil.Flat(l[0], YosseleUtil.Pos(core)) < YosseleUtil.Flat(l[l.Count - 1], YosseleUtil.Pos(core)))
+                    if (ModKitUtil.Flat(l[0], ModKitUtil.Pos(core)) < ModKitUtil.Flat(l[l.Count - 1], ModKitUtil.Pos(core)))
                         l.Reverse();
                     lanes.Add(l);
                     string s = "";
                     for (int i = 0; i < l.Count; i += Mathf.Max(1, l.Count / 8)) s += " " + T(l[i]);
-                    Log("lane " + YosseleUtil.BeingName(spawner) + " " + T(YosseleUtil.Pos(spawner)) + " -> " + YosseleUtil.BeingName(core) + " " + T(YosseleUtil.Pos(core)) + ": " + l.Count + " tiles:" + s + " ... " + T(l[l.Count - 1]));
+                    Log("lane " + ModKitUtil.BeingName(spawner) + " " + T(ModKitUtil.Pos(spawner)) + " -> " + ModKitUtil.BeingName(core) + " " + T(ModKitUtil.Pos(core)) + ": " + l.Count + " tiles:" + s + " ... " + T(l[l.Count - 1]));
                 }
                 catch (Exception e) { Log("lane error: " + e.Message); }
             }
@@ -330,7 +330,7 @@ public static class YosselePlay
     static IEnumerator BuildUi(string tower, Vector3 at, int turns, string why)
     {
         int before = Count(tower);
-        Vector3 heroBefore = YosseleUtil.Pos(hm);
+        Vector3 heroBefore = ModKitUtil.Pos(hm);
         yield return SelectVessel();
         int slot = Slot(tower);
         Transform entry = BuildEntry(slot);
@@ -372,15 +372,15 @@ public static class YosselePlay
         if (Count(tower) > before)
         {
             uiBuilds++;
-            Log("BUILT by hand (" + how + "): " + Short(tower) + " at " + T(at) + " (" + why + "); vessel walked " + F(YosseleUtil.Flat(heroBefore, YosseleUtil.Pos(hm))) + " tiles; wallet " + ModKitPlay.Wallet());
+            Log("BUILT by hand (" + how + "): " + Short(tower) + " at " + T(at) + " (" + why + "); vessel walked " + F(ModKitUtil.Flat(heroBefore, ModKitUtil.Pos(hm))) + " tiles; wallet " + ModKitPlay.Wallet());
             yield break;
         }
-        if (!YosseleUtil.Alive(hm)) { Log("build of " + Short(tower) + " dropped: the vessel is down"); yield break; }
+        if (!ModKitUtil.Alive(hm)) { Log("build of " + Short(tower) + " dropped: the vessel is down"); yield break; }
         fallbacks++;
         string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":" + (turns % 4) + ",\"Owner\":" + owner + "}";
         hm.GetComponent<Entity_Master_Remote>().Command_ServerRpc("Build", json, default(Unity.Netcode.ServerRpcParams));
         yield return Until(() => Count(tower) > before, 6f);
-        Log("FALLBACK build " + Short(tower) + " at " + T(at) + ": " + (Count(tower) > before ? "built" : "refused (vessel " + F(YosseleUtil.Flat(YosseleUtil.Pos(hm), at)) + " tiles away)") + "; wallet " + ModKitPlay.Wallet());
+        Log("FALLBACK build " + Short(tower) + " at " + T(at) + ": " + (Count(tower) > before ? "built" : "refused (vessel " + F(ModKitUtil.Flat(ModKitUtil.Pos(hm), at)) + " tiles away)") + "; wallet " + ModKitPlay.Wallet());
     }
 
     static IEnumerator SelectBuilding(YosseleBuilding b)
@@ -415,7 +415,7 @@ public static class YosselePlay
                 yield return ModKitPlay.Capture("upgraded_" + u.Key);
             yield break;
         }
-        if (!YosseleUtil.Alive(b.Master)) yield break;
+        if (!ModKitUtil.Alive(b.Master)) yield break;
         fallbacks++;
         b.Master.GetComponent<Entity_Master_Remote>().Command_ServerRpc("Upgrade", "{\"Upgrade\":\"" + u.Id + "\",\"Upgrader\":" + owner + "}", default(Unity.Netcode.ServerRpcParams));
         yield return Until(() => b.Has(u.Key), 2f);
@@ -445,11 +445,11 @@ public static class YosselePlay
             yield return Wait(0.3f);
             Log("after SELL: " + ModKitPlay.Selected());
             yield return ModKitPlay.ClickThing(m, "the " + what + " to sell");
-            yield return Until(() => !YosseleUtil.Alive(m), 3f);
+            yield return Until(() => !ModKitUtil.Alive(m), 3f);
         }
         else
             Log("no SELL entry on the vessel's HUD (" + ModKitPlay.Selected() + ")");
-        if (!YosseleUtil.Alive(m))
+        if (!ModKitUtil.Alive(m))
         {
             uiSells++;
             Log("SOLD by hand: " + what + " (Growth " + b.Growth + ", " + b.Keys.Count + " upgrades); wallet " + walletBefore + " -> " + ModKitPlay.Wallet());
@@ -490,7 +490,7 @@ public static class YosselePlay
                 tideSeen = now;
                 if (plan.Money && tide >= 1)
                 {
-                    Helper_Resources.Giveresources(YosseleUtil.Costs("Redaura=" + MoneyPerTide + ";Blueaura=" + MoneyPerTide + ";Yellowaura=" + MoneyPerTide), owner, Helper_Resources.Styles.Default);
+                    Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=" + MoneyPerTide + ";Blueaura=" + MoneyPerTide + ";Yellowaura=" + MoneyPerTide), owner, Helper_Resources.Styles.Default);
                     Log("money: +" + MoneyPerTide + " of each aura (sandbox)");
                     string[] foes;
                     if (SandboxFoes.TryGetValue(tide, out foes))
@@ -507,14 +507,14 @@ public static class YosselePlay
                 nextTrail = now + 0.5f;
                 foreach (Entity_Master f in Foes())
                 {
-                    string k = T(YosseleUtil.Pos(f));
+                    string k = T(ModKitUtil.Pos(f));
                     int n;
                     trail.TryGetValue(k, out n);
                     trail[k] = n + 1;
                     if (!foesSeen.Contains(f))
                     {
                         foesSeen.Add(f);
-                        string kind = YosseleUtil.BeingName(f);
+                        string kind = ModKitUtil.BeingName(f);
                         foeKinds.TryGetValue(kind, out n);
                         foeKinds[kind] = n + 1;
                     }
@@ -526,7 +526,7 @@ public static class YosselePlay
                 ffDone = true;
                 yield return FastForward();
             }
-            if (YosseleUtil.Alive(hm) && now >= nextThink)
+            if (ModKitUtil.Alive(hm) && now >= nextThink)
             {
                 nextThink = now + (plan.Money ? 1.5f : 2.5f);
                 yield return Think(tide);
@@ -542,13 +542,13 @@ public static class YosselePlay
                 yield return Wait(2f);
                 Log("after the Tree went: Bonsai " + BonsaiState());
             }
-            if (!YosseleUtil.Alive(hm))
+            if (!ModKitUtil.Alive(hm))
             {
                 // Felled, the vessel comes back as a new being (rounds P5 and P6 lost it): play on with that one.
                 Entity_Master back = ModKitPlay.LocalHero();
                 if (back != null && back != hm)
                 {
-                    Log("the vessel was felled and is back at " + T(YosseleUtil.Pos(back)) + " (felled " + (++felled) + " times)");
+                    Log("the vessel was felled and is back at " + T(ModKitUtil.Pos(back)) + " (felled " + (++felled) + " times)");
                     hm = back;
                     ModKitPlay.Me = back;
                 }
@@ -586,7 +586,7 @@ public static class YosselePlay
         Entity_Master any = null;
         foreach (Entity_Master e in Cores("Enemycore", false))
         {
-            if (!YosseleUtil.BeingName(e).Contains("Sub")) return e;
+            if (!ModKitUtil.BeingName(e).Contains("Sub")) return e;
             if (any == null) any = e;
         }
         return any;
@@ -599,7 +599,7 @@ public static class YosselePlay
         string got = "";
         foreach (string f in foes)
         {
-            Entity_Master e = ModKitTest.SpawnFoe(f, YosseleUtil.Pos(sp), 1f, 4f, null);
+            Entity_Master e = ModKitTest.SpawnFoe(f, ModKitUtil.Pos(sp), 1f, 4f, null);
             got += " " + f.Replace("Enemy_", "") + (e != null ? "" : "(failed)");
         }
         Log("sandbox: spawned at the spawner" + got);
@@ -632,9 +632,9 @@ public static class YosselePlay
     // minute and a quarter: does the Monument shrug its stun off, what do D-MDS's seeds cost against its bombs.
     static IEnumerator BulwarkTest()
     {
-        Vector3 at = lanes.Count > 0 ? lanes[0][Mathf.Max(0, lanes[0].Count - 11)] : YosseleUtil.Pos(Spawner());
+        Vector3 at = lanes.Count > 0 ? lanes[0][Mathf.Max(0, lanes[0].Count - 11)] : ModKitUtil.Pos(Spawner());
         Entity_Master b = ModKitTest.SpawnFoe("Enemy_Bulwark", at, 0f, 3f, used);
-        Log("sandbox: Bulwark " + (b != null ? "spawned at " + T(YosseleUtil.Pos(b)) : "failed") + "; hooks cleansed " + YosseleHooks.Cleansed);
+        Log("sandbox: Bulwark " + (b != null ? "spawned at " + T(ModKitUtil.Pos(b)) : "failed") + "; hooks cleansed " + YosseleHooks.Cleansed);
         if (b == null) yield break;
         float t0 = Time.realtimeSinceStartup;
         int shots = 0;
@@ -645,15 +645,15 @@ public static class YosselePlay
             string hs = "";
             foreach (YosseleBuilding x in Mine())
                 if (x is YosseleHengeBrain && x.Has("Monument"))
-                    hs += " Monument hp " + F(YosseleUtil.Health(x.Master)) + "/" + F(YosseleUtil.MaxHealth(x.Master)) + " dmg-taken-mult " + F(1f - YosseleHooks.Reduction(x.Master));
-            Log("Bulwark " + (YosseleUtil.Alive(b) ? "hp " + F(YosseleUtil.Health(b)) + " at " + T(YosseleUtil.Pos(b)) : "down") + " | cleansed " + YosseleHooks.Cleansed + hs + " | " + Counters());
-            if (YosseleUtil.Alive(b) && shots < 2 && Time.realtimeSinceStartup - t0 > 15f + shots * 25f)
+                    hs += " Monument hp " + F(ModKitUtil.Health(x.Master)) + "/" + F(ModKitUtil.MaxHealth(x.Master)) + " dmg-taken-mult " + F(1f - YosseleHooks.Reduction(x.Master));
+            Log("Bulwark " + (ModKitUtil.Alive(b) ? "hp " + F(ModKitUtil.Health(b)) + " at " + T(ModKitUtil.Pos(b)) : "down") + " | cleansed " + YosseleHooks.Cleansed + hs + " | " + Counters());
+            if (ModKitUtil.Alive(b) && shots < 2 && Time.realtimeSinceStartup - t0 > 15f + shots * 25f)
             {
                 shots++;
-                yield return ModKitPlay.Look(YosseleUtil.Pos(b));
+                yield return ModKitPlay.Look(ModKitUtil.Pos(b));
                 yield return ModKitPlay.Capture("bulwark" + shots);
             }
-            if (!YosseleUtil.Alive(b) || Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Lose") break;
+            if (!ModKitUtil.Alive(b) || Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Lose") break;
         }
     }
 
@@ -698,13 +698,13 @@ public static class YosselePlay
             string[] p = kv.Key.Split(',');
             Vector3 t = new Vector3(int.Parse(p[0]), int.Parse(p[1]), int.Parse(p[2]));
             bool near = false;
-            foreach (Entity_Master c in cores) if (YosseleUtil.Flat(t, YosseleUtil.Pos(c)) <= 10f) near = true;
+            foreach (Entity_Master c in cores) if (ModKitUtil.Flat(t, ModKitUtil.Pos(c)) <= 10f) near = true;
             if (!near) continue;
             Vector3 at = Tile(tower, t, 1.5f, 3f);
             if (!float.IsNaN(at.x)) return at;
         }
         Entity_Master core = cores.Count > 0 ? cores[n % cores.Count] : hm;
-        return Tile(tower, YosseleUtil.Pos(core), 3f, 7f);
+        return Tile(tower, ModKitUtil.Pos(core), 3f, 7f);
     }
 
     // The way a Stonehenge should face: its vines run "forward" (orientation 0 faces +z, round P2); turn toward the
@@ -716,7 +716,7 @@ public static class YosselePlay
         foreach (List<Vector3> lane in lanes)
             foreach (Vector3 t in lane)
             {
-                float d = YosseleUtil.Flat(t, at);
+                float d = ModKitUtil.Flat(t, at);
                 if (d > 0.5f && d < bd) { bd = d; best = t; }
             }
         Vector3 dir = best - at;
@@ -738,7 +738,7 @@ public static class YosselePlay
             string[] kv = part.Split('=');
             if (kv.Length != 2) continue;
             float keep = kv[0] == "Redaura" ? reserveRed : 0f;
-            if (ModKitPlay.Aura(kv[0]) < YosseleUtil.F(kv[1]) + keep)
+            if (ModKitPlay.Aura(kv[0]) < ModKitUtil.F(kv[1]) + keep)
                 return false;
         }
         return true;
@@ -813,18 +813,18 @@ public static class YosselePlay
     {
         List<Entity_Master> ore = new List<Entity_Master>();
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && YosseleUtil.HasTag(e, "Resource") && e.Statsserver != null && e.Statsserver.ContainsKey("Healthresource"))
+            if (e != null && ModKitUtil.HasTag(e, "Resource") && e.Statsserver != null && e.Statsserver.ContainsKey("Healthresource"))
                 ore.Add(e);
         if (ore.Count == 0) { Log("no ore node on the map"); return new Vector3(float.NaN, 0f, 0f); }
-        Vector3 home = Cores("Core", true).Count > 0 ? YosseleUtil.Pos(Cores("Core", true)[0]) : YosseleUtil.Pos(hm);
-        ore.Sort((a, b) => YosseleUtil.Flat(YosseleUtil.Pos(a), home).CompareTo(YosseleUtil.Flat(YosseleUtil.Pos(b), home)));
+        Vector3 home = Cores("Core", true).Count > 0 ? ModKitUtil.Pos(Cores("Core", true)[0]) : ModKitUtil.Pos(hm);
+        ore.Sort((a, b) => ModKitUtil.Flat(ModKitUtil.Pos(a), home).CompareTo(ModKitUtil.Flat(ModKitUtil.Pos(b), home)));
         for (int i = 0; i < ore.Count; i++)
         {
             Entity_Master node = ore[(n + i) % ore.Count];
-            Vector3 at = Tile(YosseleData.Pachira, YosseleUtil.Pos(node), 1.5f, 2.2f);
+            Vector3 at = Tile(YosseleData.Pachira, ModKitUtil.Pos(node), 1.5f, 2.2f);
             if (!float.IsNaN(at.x))
             {
-                Log("Sapling spot " + T(at) + " beside " + YosseleUtil.BeingName(node) + " at " + T(YosseleUtil.Pos(node)));
+                Log("Sapling spot " + T(at) + " beside " + ModKitUtil.BeingName(node) + " at " + T(ModKitUtil.Pos(node)));
                 return at;
             }
         }
@@ -844,8 +844,8 @@ public static class YosselePlay
             shown++;
             yield return YosseleShots.Close("play_" + name + "_" + Short(b.Def.Id), b.Pos, 5f);
         }
-        if (YosseleUtil.Alive(hm))
-            yield return YosseleShots.Close("play_" + name + "_vessel", YosseleUtil.Pos(hm), 4f);
+        if (ModKitUtil.Alive(hm))
+            yield return YosseleShots.Close("play_" + name + "_vessel", ModKitUtil.Pos(hm), 4f);
 #else
         yield break;
 #endif
