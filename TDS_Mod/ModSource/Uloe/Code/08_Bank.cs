@@ -121,7 +121,7 @@ public class UloePhotonBrain : MonoBehaviour
             if (Time.time >= nextThink)
             {
                 nextThink = Time.time + 0.4f;
-                UloeUtil.Listen(Master, dealt);
+                ModKitUtil.Listen(Master, dealt);
                 Think();
             }
         }
@@ -137,7 +137,7 @@ public class UloePhotonBrain : MonoBehaviour
         Started = true;
         spawnPos = lastPos = Pos;
         dealt = OnDealt;
-        UloeUtil.Listen(Master, dealt);
+        ModKitUtil.Listen(Master, dealt);
         ModKitUtil.Vis(Master, "Uloe_Pop", Pos, 0f);
         nextWander = Time.time + 0.3f;
     }

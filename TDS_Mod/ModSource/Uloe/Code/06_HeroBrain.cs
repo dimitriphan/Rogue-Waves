@@ -49,7 +49,7 @@ public class UloeHeroBrain : MonoBehaviour
             {
                 nextMenu = Time.time + 0.5f;
                 CheckDirections();
-                UloeUtil.Listen(Master, dealt);
+                ModKitUtil.Listen(Master, dealt);
             }
             if (Time.time >= nextFeed)
             {

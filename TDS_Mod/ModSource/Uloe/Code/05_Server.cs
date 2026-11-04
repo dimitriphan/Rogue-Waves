@@ -358,7 +358,7 @@ public static class UloeMarks
         if (m.Hook == null) m.Hook = m.OnHit;
         m.HookMulti = UloeData.LitMulti[level - 1];
         m.HookOn = true;
-        UloeUtil.Front(foe, m.Hook);
+        ModKitUtil.Front(foe, m.Hook);
         m.Lit = level;
         m.LitUntil = Time.time + secs;
         Illuminations++;
@@ -376,7 +376,7 @@ public static class UloeMarks
     {
         if (m.HookOn)
         {
-            UloeUtil.Unfront(m.Foe, m.Hook);
+            ModKitUtil.Unfront(m.Foe, m.Hook);
             m.HookOn = false;
         }
     }
@@ -401,7 +401,7 @@ public static class UloeMarks
                 m.Lit = 0;
             }
             else if (m.HookOn)
-                UloeUtil.Front(kv.Key, m.Hook);
+                ModKitUtil.Front(kv.Key, m.Hook);
             if (m.Blind > 0 && m.BlindUntil <= now)
                 m.Blind = 0;
             if (m.Lit == 0 && m.Blind == 0)

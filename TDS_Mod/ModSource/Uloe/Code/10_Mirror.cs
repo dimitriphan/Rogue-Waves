@@ -32,7 +32,7 @@ public class UloeMirrorBrain : UloeBuilding
     protected override void Started2()
     {
         handler = OnHit;
-        UloeUtil.Front(Master, handler);
+        ModKitUtil.Front(Master, handler);
     }
 
     protected override void Tick()
@@ -40,7 +40,7 @@ public class UloeMirrorBrain : UloeBuilding
         if (Time.time >= nextFront)
         {
             nextFront = Time.time + 0.1f;
-            UloeUtil.Front(Master, handler);
+            ModKitUtil.Front(Master, handler);
         }
         if (Time.time >= nextFeed && Has("Bounce"))
         {

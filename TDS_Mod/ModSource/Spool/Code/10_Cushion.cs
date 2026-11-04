@@ -47,18 +47,8 @@ public class SpoolCushionBrain : SpoolBuilding
         }
     }
 
-    void First()
-    {
-        Entity_Master.Oninteracts chain = Master.Oninteract;
-        if (chain != null)
-        {
-            Delegate[] list = chain.GetInvocationList();
-            if (list.Length > 0 && list[0].Equals(handler))
-                return;
-        }
-        Delegate rest = Delegate.Remove(chain, handler);
-        Master.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(handler, rest);
-    }
+    // Keeps the cushion's handler first in the wall's hit chain (Updateinteract rebuilds it when an upgrade lands).
+    void First() { ModKitUtil.Front(Master, handler); }
 
     void OnHit(Link_Interact hit)
     {

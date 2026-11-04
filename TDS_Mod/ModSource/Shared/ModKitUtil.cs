@@ -285,6 +285,37 @@ public static class ModKitUtil
             shown.Remove(e);
     }
 
+    // ---------------------------------------------------------------- hit chains
+
+    // Keeps a handler at the front of a thing's hit chain: Helper_Entitytools.Updateinteract rebuilds the chain from the
+    // thing's AIs whenever an upgrade lands or leaves, so every part's hit hooks call this again a few times a second.
+    public static void Front(Entity_Master m, Entity_Master.Oninteracts handler)
+    {
+        Entity_Master.Oninteracts chain = m.Oninteract;
+        if (chain != null)
+        {
+            Delegate[] list = chain.GetInvocationList();
+            if (list.Length > 0 && list[0].Equals(handler))
+                return;
+        }
+        Delegate rest = Delegate.Remove(chain, handler);
+        m.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(handler, rest);
+    }
+
+    public static void Unfront(Entity_Master m, Entity_Master.Oninteracts handler)
+    {
+        if (m != null && m.Oninteract != null)
+            m.Oninteract = (Entity_Master.Oninteracts)Delegate.Remove(m.Oninteract, handler);
+    }
+
+    // The attacker's side of a hit (Interacthurt calls From.Interact before To.Oninteract). Updateinteract clears it too,
+    // so a brain says this again a few times a second; taking the handler off first keeps it from piling up.
+    public static void Listen(Entity_Master m, Entity_Master.Interacts handler)
+    {
+        m.Interact = (Entity_Master.Interacts)Delegate.Remove(m.Interact, handler);
+        m.Interact = (Entity_Master.Interacts)Delegate.Combine(m.Interact, handler);
+    }
+
     // Network ids fit a float exactly below 2^24, which covers every entity of a match.
     public static Entity_Master ById(ulong id)
     {

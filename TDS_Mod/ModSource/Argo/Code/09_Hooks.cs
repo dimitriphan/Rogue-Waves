@@ -130,18 +130,7 @@ public static class ArgoHooks
     }
 
     // Moves Argo's handler to the front of the entity's Oninteract chain (adding it if Updateinteract dropped it).
-    static void First(Entity_Master e)
-    {
-        Entity_Master.Oninteracts chain = e.Oninteract;
-        if (chain != null)
-        {
-            Delegate[] list = chain.GetInvocationList();
-            if (list.Length > 0 && list[0].Equals(handler))
-                return;
-        }
-        Delegate rest = Delegate.Remove(chain, handler);
-        e.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(handler, rest);
-    }
+    static void First(Entity_Master e) { ModKitUtil.Front(e, handler); }
 
     static void OnHurt(Link_Interact hit)
     {
