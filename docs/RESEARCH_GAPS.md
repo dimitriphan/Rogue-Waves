@@ -64,12 +64,14 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
 
 1. **By hand:** the F-key bug with Boutman (`docs/15` §11 step 8; the mod could not reproduce it in three rounds,
    because the mod-spawned Boutbro is not the player's): let Boutbro spawn, die, press F after respawning.
+   **2026-11-04:** the real death was run through the game's own respawn: F selects `Hero_Boutman`, no fault found (`docs/reports/TEST_ROUND_2026-11-04.md`). A person pressing it stays open only as an eye check.
 2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, the client
    checks `docs/reports/MECHANICS_CHECK.md` §3 lists (a Fund Transfer between two players among them; its moves are proven
    solo), the real drop and rejoin (`docs/mode/REJOIN.md` §6, O1-O8), the sea chart on a client (`docs/mode/SEA_CHART.md` C7),
    a friend joining the host's boat after the main-menu button, and Quickening's `Time_Scale` and Rising Water's
    flood on a client (kit `docs/16` §9 item 4). Kit `docs/19` §8 (N1-N14) is the evening's full list and extends
    this one.
+   **2026-11-04:** all of this that isn't Steam or a real network ran with a real second player on the PC, and passed after one rejoin fix (kit `docs/19` §8, `docs/reports/TEST_ROUND_2026-11-04.md`). What is left of the evening: Steam's Join Game and lobby (A5, A8), a real network's delay and drop, a person's eye.
 3. **Kit 1.7** at Phase 5's start: `ModKitDirections` grants per player on the vessel (A1). A respawn keeping a
    granted −3 upgrade was seen in RogueLab round 7 (2026-10-12, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).
 4. **C3** when the scope decides on new enemy types (modifiers show as an effect, not a skin: `docs/scope/13`).

@@ -691,15 +691,15 @@ public static class UloeSelfTest
             yield return Wait(0.6f);
             float light = glass.Light;
             Check("Light raises its Damage: +20% a Light", Near(UloeUtil.Stat(glass.Master, "Damage", 0f), d0 * (1f + UloeData.GlassPerLight * light), 0.02f), "Light " + F(light) + ", Damage " + F(UloeUtil.Stat(glass.Master, "Damage", 0f)));
+            int beamsBefore = glass.Beams;     // before the foe: the Glass can fire as it lands
             yield return Foe("Enemy_Dagger", glass.Pos, 3.5f, 1.5f, slot);
             Entity_Master foe = slot[0];
             if (foe != null)
             {
                 float h0 = UloeUtil.Health(foe);
-                int beams = glass.Beams;
-                yield return Until(() => glass.Beams > beams + 1 || !UloeUtil.Alive(foe), 6f);
+                yield return Until(() => glass.Beams > beamsBefore + 1 || !UloeUtil.Alive(foe), 6f);
                 yield return Wait(0.3f);
-                Check("the Glass beams the foe in Range", glass.Beams > beams, glass.Beams + " beams");
+                Check("the Glass beams the foe in Range", glass.Beams > beamsBefore, glass.Beams + " beams");
                 Check("a beam hurts it", !UloeUtil.Alive(foe) || UloeUtil.Health(foe) < h0, F(h0) + " -> " + F(UloeUtil.Alive(foe) ? UloeUtil.Health(foe) : 0f));
                 Check("the Glass's target is the nearest foe", glass.Target == foe || !UloeUtil.Alive(foe));
 #if ULOE_SHOTS

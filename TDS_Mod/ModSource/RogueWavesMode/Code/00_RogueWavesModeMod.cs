@@ -30,12 +30,16 @@ public class RogueWavesModeMod : MonoBehaviour
         transform.SetParent(null);
         DontDestroyOnLoad(gameObject);
         ModKitPack.Join(RWData.Part, RWData.Version);
+        Application.logMessageReceived += RWRejoin.OnLog;
         RWLog.Info("loaded v" + RWData.Version);
         StartCoroutine(Boot());
     }
 
     IEnumerator Boot()
     {
+#if ROGUEWAVESMODE_TWOPC
+        if (RWTwo.NoPack) { yield return RWTwo.NoPackRun(); yield break; }
+#endif
         while (Tds_Masterdatabase.Instance == null || RWUtil.Folder("Mode") == null || RWUtil.Folder("Gameplan") == null || RWUtil.Folder("World") == null)
             yield return new WaitForSecondsRealtime(0.5f);
         while (Bla_Addressables.Instance == null)
@@ -86,6 +90,9 @@ public class RogueWavesModeMod : MonoBehaviour
 
     void Update()
     {
+#if ROGUEWAVESMODE_TWOPC
+        try { RWTwo.Update(); } catch (Exception e) { RWLog.Once("two", "two players: " + e); }
+#endif
         // Before Ready: the id must be back in the save before the player can join anyone, under its RW_ key.
         try { RWKeys.Migrate(); } catch (Exception e) { RWLog.Once("keys", "save keys: " + e); }
         try { RWIdentity.Update(); } catch (Exception e) { RWLog.Once("identity", "identity: " + e); }

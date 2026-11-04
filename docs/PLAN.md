@@ -299,9 +299,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: Uloe's upgrades fleshed out (his Yossele-and-Spool limit lifted for it; cloud only, nothing built): 8 to 32,
   every building 8 with a capstone, all Claude `~defaults~` in scope `10` beside his eight lines; hand numbers put a lit
   Uloe level with Smacky (`docs/reports/ULOE_UPGRADES_2026-11-04.md`; Open questions 9; Log).
+  2026-11-04: **every feature that had not been tested was run, the mod's online half with a real second player** (two copies of the game on the PC over the loopback address; `docs/reports/TEST_ROUND_2026-11-04.md`): votes, shop, Fund Transfer, weather, the drop and rejoin, Continue with a friend, a friend without the pack, four vessel pairs on a client, the F key on a real death, Direction effects on real hits, UI scales, the 45 maps, ten maps to the win. Ten bugs fixed, among them a rejoin that left a friend on a map with no looks for good and a Spring Tide that made hits on a tower infinite. Vessel self-tests: Spool 133, Argo 142, Yossele 173, Uloe 148, no failures. The whole mod boots as one pack (`pack.txt` itself stays Yossele alone). Compiled and run on the PC.
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
+- **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
 - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
@@ -325,7 +327,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #139 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement).
+- **Next free numbers:** kit chapter 25, pitfall #150 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -676,6 +678,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   unlit about half of Smacky's towers, at Light 8 level with them, at Light 12 a quarter or more above. Blank stat slots in scope `10` now
   hold the built numbers. `docs/reports/ULOE_UPGRADES_2026-11-04.md`, numbers in `docs/reports/uloe_upgrades_2026-11-04/`; Scope
   Editor republished on the same link.
+- **2026-11-04: every untested feature tested** (Dimitri: "Develop upgrades for Uloe until they're fully fleshed out. Afterwards, make sure to test all untested features of the mod."; Uloe's upgrades are their own thread). On the PC: a real second player through a second copy of the game on the loopback address (`TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`, `RogueWavesMode/Code/93_TwoPlayers.cs`), the solo gaps (`92_Gaps.cs`), new Direction and rate checks in the vessels' self-tests. Ten bugs fixed; pitfalls #139-#149; `docs/mode/REJOIN.md` §6, kit `docs/19` §8 and `docs/RESEARCH_GAPS.md` §E say what is left. Report: `docs/reports/TEST_ROUND_2026-11-04.md`.
 
 ### Decisions
 

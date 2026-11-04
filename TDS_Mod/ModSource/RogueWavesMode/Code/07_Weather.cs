@@ -319,16 +319,16 @@ public static class RWWeather
         }
     }
 
+#if ROGUEWAVESMODE_GAPS
+    public static Entity_Master TestFlood() { return HasDeter ? SpawnFlood() : null; }
+#endif
+
     // Raze the Nest's target (19_Objectives.cs): the same nest, on order.
     public static Entity_Master SpawnNestFor() { return SpawnNest(); }
 
-    // A nest on a free tile 3 to 7 tiles from an enemy core, on the core's team, as a child of the core like Tide foes.
-    static Entity_Master SpawnNest()
+    // A free tile 3 to 7 tiles from an enemy core; null on the maps with none (a tight spawn, or a nest there already).
+    static Genitem NestTile(Beingobject being, Entity_Master core)
     {
-        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
-        List<Entity_Master> cores = RWUtil.EnemyCores();
-        if (being == null || cores.Count == 0) { RWLog.Warn("Nesting Ground: being " + (being != null) + ", " + cores.Count + " enemy cores"); return null; }
-        Entity_Master core = cores[0];
         Vector3 c = core.Entityposition.Value;
         int team = core.Entitydata.Value.Team;
         List<Genitem> ground = RWUtil.Ground();
@@ -340,8 +340,33 @@ public static class RWWeather
                 continue;
             bool ok = false;
             try { ok = Helper_Gridtools.Checkifplaceable(g, being, 0, team); } catch (Exception) { }
-            if (!ok)
-                continue;
+            if (ok)
+                return g;
+        }
+        return null;
+    }
+
+    // Raze the Nest is only posted where its nest can land (RWObjectives.Post).
+    public static bool CanNest()
+    {
+        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
+        List<Entity_Master> cores = RWUtil.EnemyCores();
+        return being != null && cores.Count > 0 && NestTile(being, cores[0]) != null;
+    }
+
+    // A nest on a free tile 3 to 7 tiles from an enemy core, on the core's team, as a child of the core like Tide foes.
+    static Entity_Master SpawnNest()
+    {
+        Beingobject being = RWUtil.Load<Beingobject>("Mob", "Tower_Halberdnest");
+        List<Entity_Master> cores = RWUtil.EnemyCores();
+        if (being == null || cores.Count == 0) { RWLog.Warn("Nesting Ground: being " + (being != null) + ", " + cores.Count + " enemy cores"); return null; }
+        Entity_Master core = cores[0];
+        Vector3 c = core.Entityposition.Value;
+        int team = core.Entitydata.Value.Team;
+        Genitem g = NestTile(being, core);
+        if (g != null)
+        {
+            float d = RWUtil.Flat(g.Position, c);
             Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(core.Beingserver);
             spawn.Being = being;
             spawn.Genadd = g;

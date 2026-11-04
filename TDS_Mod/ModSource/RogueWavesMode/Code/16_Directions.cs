@@ -35,8 +35,12 @@ public static class RWDirections
         new RWDirectionDef { Name = "Mend", Display = "Tidal Mend", Reach = "Tower", Script = "Entity_Ai_Effect_Smackywall_Regen", Keys = new[] { "Range_Base", "Effect_Add" },
             Numbers = new[] { new[] { 2f, 5f }, new[] { 2.5f, 8f }, new[] { 3f, 12f } },
             Desc = new[] { "Your towers mend what stands around them each Tide", "Your towers mend more, a little farther", "Your towers mend much more, farther still" } },
+        // The stock script DIVIDES every hit's Damagemulti by Effect_Multi (Entity_Ai_Effect_Smackywall_Beacon.Oninteract): 0 made every
+        // hit on the tower infinite and 0.1 made it ten times worse, until a real hit was measured on 2026-11-04 (pitfall #140). It stays
+        // at 1, a no-op: a tower that has held a Beacon ignores the next one's number (Alreadyactive, so a rank bought later would do
+        // nothing). Rank III's shrug is this part's own hit hook, SpringShrug.
         new RWDirectionDef { Name = "Spring", Display = "Spring Tide", Reach = "Tower", Script = "Entity_Ai_Effect_Smackywall_Beacon", Keys = new[] { "Effect_Multi", "Effect_Add" },
-            Numbers = new[] { new[] { 0f, 4f }, new[] { 0f, 7f }, new[] { 0.1f, 10f } },
+            Numbers = new[] { new[] { 1f, 4f }, new[] { 1f, 7f }, new[] { 1f, 10f } },
             Desc = new[] { "Your towers gain health every Tide", "Your towers gain more health every Tide", "Your towers gain more health every Tide and shrug off a little damage" } },
         new RWDirectionDef { Name = "Cost", Display = "Cut Costs",
             Desc = new[] { "Your buildings cost less", "Your buildings cost less still", "Your buildings cost much less" } },
@@ -64,6 +68,7 @@ public static class RWDirections
     public const float InterestCap = 40f;
     public static readonly float[] TougherResist = { 0f, 0.15f, 0.25f, 0.35f };
     public const float TougherMaxShare = 0.25f;     // rank III: one hit takes at most this share of the unit's max health
+    public const float SpringShrug = 0.1f;          // Spring Tide rank III: a tenth off every hit on a tower
 
     public static void Build()
     {
@@ -98,8 +103,9 @@ public static class RWDirections
 
     static bool HasMinions(string hero)
     {
-        // The stock vessels and the pack's that send minions (docs/scope/11 "Any Vessel with (Minions)").
-        return hero == "Hero_Boutman" || hero == "Hero_Snosno" || hero == "Hero_Spool" || hero == "Hero_Yossele" || hero == "Hero_Argo" || hero == "Hero_Uloe" || hero == "Hero_Smacky";
+        // The vessels that send minions (docs/scope/11 "Any Vessel with (Minions)"): all of them. Fie's Knight's Keep sends
+        // knights and Buster's Garage dogs, both tagged Mob (kit docs/17 §10); both were left out until 2026-11-04.
+        return hero == "Hero_Boutman" || hero == "Hero_Snosno" || hero == "Hero_Spool" || hero == "Hero_Yossele" || hero == "Hero_Argo" || hero == "Hero_Uloe" || hero == "Hero_Smacky" || hero == "Hero_Fie" || hero == "Hero_Buster";
     }
 
     // The offers for one player: next ranks of what they hold, and new ones for their vessel, seeded so a retry of the
@@ -202,7 +208,12 @@ public static class RWDirections
         Sprite s = null;
         RWDirectionDef d;
         if (defs.TryGetValue(id, out d) && d.Look != "") s = RWAssets.Sprite(d.Look);
-        if (s == null && ModKitDirections.Parse(id, out v, out n, out r)) s = RWAssets.Like("Direction_" + n);
+        if (s == null && ModKitDirections.Parse(id, out v, out n, out r))
+        {
+            // Two art files carry the scope's whole name, where their Directions go by a shorter one.
+            string file = n == "Recycler" ? "EfficientRecycler" : n == "Mushrooms" ? "MotherOfMushrooms" : n;
+            s = RWAssets.Like("Direction_" + file);
+        }
         return s ?? RWAssets.Sprite("RogueWaves_Crest32");
     }
 
@@ -326,6 +337,8 @@ public static class RWDirections
                 }
                 if (m.Upgradelistserver != null && !m.Upgradelistserver.ContainsKey(u.Objectname))
                     Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, null);
+                if (d.Name == "Spring" && rank >= 3)
+                    RWHits.Resist(m, SpringShrug, 0f);
             }
             else if (d.Name == "Tougher")
                 RWHits.Resist(m, TougherResist[rank], rank >= 3 ? TougherMaxShare : 0f);

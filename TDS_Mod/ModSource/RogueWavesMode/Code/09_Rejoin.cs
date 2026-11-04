@@ -307,9 +307,101 @@ public static class RWRejoin
         }
     }
 
+    // A rejoin's whole map arrives in one go, and this player's own object sets Blm_Server.Localplayer a frame or more after
+    // the rest (Blm_Player.OnNetworkSpawn). Everything the map's scene starts on a client reads that field at once and dies on
+    // its null: each entity's client half (no look, no state, ever), Game_Client_Init.Initalize just as it would say this
+    // player has loaded, Game_Artifacts.Init and Game_Endscreen.Initalize (seen on the PC with a real second player, 2026-11-04;
+    // pitfall #139). A normal map load never meets this: the player object has been there since the boat.
+    static bool initDied, artifactsDied, endDied;
+    public static int ClientsRestarted;      // self-test
+
+    public static void OnLog(string condition, string stack, LogType type)
+    {
+        if (type != LogType.Exception || string.IsNullOrEmpty(stack) || RWUtil.IsHost)
+            return;
+        if (stack.Contains("Game_Client_Init.Initalize")) initDied = true;
+        else if (stack.Contains("Game_Artifacts.Init")) artifactsDied = true;
+        else if (stack.Contains("Game_Endscreen.Initalize")) endDied = true;
+    }
+
+    // What died gets its turn again, now that the player object is here. A client half left alone has no Master yet.
+    static void Repair()
+    {
+        Tds_Clientinfo me = Local();
+        int clients = 0;
+        if (initDied && me != null && !me.Loaded.Value)
+        {
+            me.Loaded.Value = true;
+            try { Game_Rounds.Instance.Startgameclient(Game_Mapvars.Instance.Mode); }
+            catch (Exception e) { RWLog.Warn("rejoin: Startgameclient: " + e.Message); }
+        }
+        if (artifactsDied)
+        {
+            Game_Artifacts row = UnityEngine.Object.FindObjectOfType<Game_Artifacts>();
+            if (row != null) row.SendMessage("Init", SendMessageOptions.DontRequireReceiver);
+        }
+        if (endDied)
+        {
+            Game_Endscreen end = UnityEngine.Object.FindObjectOfType<Game_Endscreen>();
+            if (end != null) end.SendMessage("Initalize", SendMessageOptions.DontRequireReceiver);
+        }
+        foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
+            if (c.Master == null)
+            {
+                c.StartCoroutine("Start");
+                clients++;
+            }
+        ClientsRestarted += clients;
+        RWLog.Info("rejoin: started again what the late player object stopped: " + clients + " entities" + (initDied ? ", the map's load" : "") + (artifactsDied ? ", the Cardinal row" : "") + (endDied ? ", the end screen" : ""));
+        initDied = artifactsDied = endDied = false;
+    }
+
+    // The same arrival can outrun the load groups: a client half that asks for its being before its group is in gets null and
+    // dies on it a few lines on, with its Master set and no look or state for good (116 things on a rejoin after a restart,
+    // 2026-11-04; pitfall #141). One still without its being on two looks a second apart, once the group holds it, runs again.
+    // A live one waits on the game's flags for a frame or two, which the two looks leave alone.
+    static IEnumerator Looks()
+    {
+        List<Entity_Master_Client> seen = new List<Entity_Master_Client>();
+        List<string> beings = new List<string>();
+        int started = 0;
+        for (int i = 0; i < 90 && Game_Mapvars.Instance != null; i++)
+        {
+            yield return new WaitForSecondsRealtime(1f);
+            List<Entity_Master_Client> now = new List<Entity_Master_Client>();
+            foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
+            {
+                if (c.Master == null || c.Beingobject != null || !c.Master.Clientready.Value || c.Master.Being.Value.ToString() == "")
+                    continue;
+                if (!seen.Contains(c) || Blockage.Address.Bl_Address.Getload(c.Master.Being.Value) == null)
+                {
+                    now.Add(c);
+                    continue;
+                }
+                // Its first run got as far as this list.
+                if (Game_Entity.Instance != null)
+                    Game_Entity.Instance.Entityclient.Remove(c.Master);
+                string being = c.Master.Being.Value.ToString();
+                if (!beings.Contains(being))
+                    beings.Add(being);
+                c.StartCoroutine("Start");
+                started++;
+            }
+            seen = now;
+        }
+        ClientsRestarted += started;
+        if (started > 0)
+            RWLog.Info("rejoin: gave " + started + " things their look once their groups had loaded: " + string.Join(", ", beings.ToArray()));
+    }
+
     static IEnumerator CatchUp()
     {
         float t = 0f;
+        while (t < 90f && (Blm_Server.Instance == null || Blm_Server.Instance.Localplayer == null)) { t += Time.unscaledDeltaTime; yield return null; }
+        yield return new WaitForSecondsRealtime(1f);
+        Repair();
+        RogueWavesModeMod.Instance.StartCoroutine(Looks());
+        t = 0f;
         while (t < 180f && !LocalLoaded()) { t += Time.unscaledDeltaTime; yield return null; }
         Game_Client_Init ci = Game_Client_Init.Instance;
         if (!LocalLoaded() || ci == null) { RWLog.Warn("rejoin: the map didn't finish loading here after " + RWUtil.F(t) + " s"); yield break; }

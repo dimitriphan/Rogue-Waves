@@ -1861,6 +1861,52 @@ public static class ArgoSelfTest
             Check("Flippers: faster Nauts", Has(bell, "Flippers2") && bell.Crew[0] != null && ArgoUtil.Stat(bell.Crew[0].Master, "Speed", 0f) > 1.6f * 1.4f, bell.Crew[0] != null ? F(ArgoUtil.Stat(bell.Crew[0].Master, "Speed", 0f)) : "no Port");
         }
 
+// 8b. The Directions (kit 1.7): each rank's effect. (Untested until 2026-11-04.)
+        {
+            Func<string, Upgradeproperties> direction = n => Bl_Address.Getload("Upgrade", ModKitDirections.Id("Argo", n)) as Upgradeproperties;
+            ArgoTowerBrain salvoGun = towers.ContainsKey(ArgoData.Harpoon) ? towers[ArgoData.Harpoon] : null;
+            if (salvoGun == null || !ArgoUtil.Alive(salvoGun.Master)) ModKitTest.Setup("Heavy Salvo", "no Harpoon Gun");
+            else
+            {
+                float base0 = ArgoUtil.Stat(salvoGun.Master, "Damage", 0f);
+                float last = 0f;
+                for (int r = 1; r <= 3; r++)
+                {
+                    ModKitDirections.Grant(hm, direction(ArgoData.Heavysalvos[r - 1].Name));
+                    yield return Wait(1.2f);
+                    float bonus = ArgoData.Heavysalvos[r - 1].Bonus;
+                    float now = ArgoUtil.Stat(salvoGun.Master, "Damage", 0f);
+                    Check("Heavy Salvo rank " + r + ": the Harpoon Gun deals +" + F(bonus * 100f) + "%", now > last && Mathf.Abs(now - base0 * (1f + bonus)) < 0.02f, F(base0) + " -> " + F(now));
+                    last = now;
+                }
+            }
+            ArgoTowerBrain pool = towers.ContainsKey(ArgoData.Water) ? towers[ArgoData.Water] : null;
+            ArgoWater.Net net = pool != null ? ArgoWater.NetOf(pool) : null;
+            if (net == null) ModKitTest.Setup("Deep Current", "no Deep Water");
+            else
+            {
+                float reach0 = net.Reach;
+                for (int r = 1; r <= 3; r++)
+                {
+                    ModKitDirections.Grant(hm, direction(ArgoData.Deepcurrents[r - 1].Name));
+                    yield return Wait(1.5f);
+                    net = ArgoWater.NetOf(pool);
+                    Check("Deep Current rank " + r + ": Deep Water reaches +" + F(ArgoData.Deepcurrents[r - 1].Bonus * 100f) + "%", net != null && Mathf.Abs(net.Reach - ArgoData.PoolReach * (1f + ArgoData.Deepcurrents[r - 1].Bonus)) < 0.01f, F(reach0) + " -> " + (net != null ? F(net.Reach) : "no net"));
+                }
+                // Felt, not only read: a foe a little past the plain reach is slowed now.
+                Vector3 wet = ArgoUtil.Pos(pool.Master);
+                Entity_Master past = ModKitTest.SpawnFoe("Enemy_Dagger", wet, ArgoData.PoolReach * 1.1f, ArgoData.PoolReach * 1.45f, null);
+                if (past == null) ModKitTest.Setup("Deep Current's reach", "no foe past the plain reach");
+                else
+                {
+                    yield return Wait(1f);
+                    float apart = ArgoUtil.Flat(ArgoUtil.Pos(past), wet);
+                    bool inPool = net != null && net.Foes.Contains(past);
+                    Check("Deep Current rank 3: a foe past the plain reach is in the water", inPool || apart > net.Reach, F(apart) + " from the pool, plain reach " + F(ArgoData.PoolReach) + ", reach " + F(net.Reach) + ", in the water " + inPool);
+                    Game_Entity.Instance.Despawn(past.Beingserver, false, "Selftest");
+                }
+            }
+        }
         // 9. The journal: Argo's own pages, linked from every vessel's tabs, in one order, no duplicates.
         Logobject page = ArgoContent.Entry.Log;
         bool own = page != null && page.name == "Log_" + ArgoData.Hero, shown = false, rule = false;

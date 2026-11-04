@@ -18,6 +18,9 @@ public static class RWIdentity
 
     public static void Update()
     {
+#if ROGUEWAVESMODE_TWOPC
+        if (RWTwo.Identity()) return;
+#endif
         float now = Time.realtimeSinceStartup;
         if (now < nextLook)
             return;

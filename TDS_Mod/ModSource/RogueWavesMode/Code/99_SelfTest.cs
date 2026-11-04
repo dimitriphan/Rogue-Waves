@@ -25,7 +25,7 @@ public static partial class RWTest
     const int Maps = 3;
     static readonly int[] Forced = { RWChart.RisingWater, RWChart.QuickeningCurrent, RWChart.NestingGround };
     public static int Pass, Fail, Setups;
-    static int errors;
+    static int errors, hardErrors;    // hardErrors: the stock cancels of a scene change left out
     static bool freeze, forcing, done;
     static readonly List<int> route = new List<int>();
 
@@ -94,6 +94,11 @@ public static partial class RWTest
         if (type != LogType.Exception && type != LogType.Error)
             return;
         errors++;
+        // The stock cancels of a scene change, and Map_Monogrove's own load list, which names two assets the game doesn't ship (seen
+        // with no pack part on, RogueLab_20261009_002213).
+        bool stock = condition != null && (condition.StartsWith("OperationCanceledException") || condition.Contains("InvalidKeyException")
+            || (stack != null && stack.Contains("Bl_Address") && stack.Contains("Checkprogress")));
+        if (!stock) hardErrors++;
         if (errors <= 20)
             Info("error seen", (condition ?? "").Split('\n')[0]);
     }
@@ -178,6 +183,14 @@ public static partial class RWTest
 
     static IEnumerator Run()
     {
+#if ROGUEWAVESMODE_GAPS
+        yield return Stepped(Gaps());
+        yield break;
+#endif
+#if ROGUEWAVESMODE_TWOPC
+        yield return TwoRun();
+        yield break;
+#endif
 #if ROGUEWAVESMODE_CHARTLOOK
         yield return Stepped(Look());
         yield break;
