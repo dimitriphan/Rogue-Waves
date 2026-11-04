@@ -2,43 +2,43 @@
 	Uloe, Light Personified
 		# Uses {Light} as a mechanic
 		# Uses wandering minions named {Photon}s, similar to Sno Sno, that interact with towers.
-		/~ Laid out in the Vessel template, 15_Templates.txt. Uloe hasn't reached its design gate, so most slots are blank: the design gate proposes ~ values for them \
+		/~ Laid out in the Vessel template, 15_Templates.txt. A value written ~like this~ is a default Claude picked. The stats are what the current build uses; every upgrade past your eight lines is new and not built \
 
 		[Identity]
 			- Title: Light Personified
 			- Difficulty: ~Advanced~
-			- Archetype:
-			- In-game line: ~~
+			- Archetype: ~Brings Light to a cluster of towers: plugs in beside them, keeps Photons drifting among them, aims Flood Lights at what matters~
+			- In-game line: ~Frail, single-target ranged~
 			- Look: glass light bulb head with a face for a filament, a ribbed screw base on a tall lamp post, yellow floating arms made of electricity at the sides, a cord to a plug. / The yellow strokes are floating arms made of electricity. \
 			- Towers look: Towers carry glass, screw rings and cords.
-			- Accent colour: ~~
+			- Accent colour: ~glint yellow~
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites \
 			- Lore: / Lore comes once the character is finalized \
-			- Status: built with temporary art from the sheet and its design gate's defaults; its self-test passes on the PC. His play test and look by eye are left /~ TDS_Mod/ModSource/Uloe/DESIGN.md holds every default, slot by slot \
+			- Status: Built with temporary art from the sheet and its design gate's defaults; its self-test passes on the PC. His play test and look by eye are left. The 24 upgrades after your eight lines are not built yet /~ TDS_Mod/ModSource/Uloe/DESIGN.md holds every built default; why each new upgrade: docs/reports/ULOE_UPGRADES_2026-11-04.md \
 
 		[Vessel Stats]
-			- Attack: ranged.
-			- Health:
-			- Health regen:
-			- Speed:
-			- Damage:
-			- Range:
-			- Projectile speed:
-			- Attack speed:
-			- Build range:
-			- Sell rate:
-			- Special rule:
+			- Attack: ranged, a spark.
+			- Health: ~30~
+			- Health regen: ~0~ per second
+			- Speed: ~2.25~
+			- Damage: ~2~ /~ Low: towers and Photons do the damage \
+			- Range: ~3~ tiles
+			- Projectile speed: ~15~
+			- Attack speed: ~0.5~
+			- Build range: ~2.5~ tiles
+			- Sell rate: ~50%~
+			- Special rule: {~Bright Idea~} ~Ranged, towers grow stronger with the Light they receive, Uloe and Photons give Light, PLUG IN to a node or Power Bank for far more, Photons Illuminate and Blind foes~
 
 		[Ability] {Plug In}
 			- Does: Uloe plugs into a node or a {Power Bank} and gives off high levels of {Light} in a radius around them, as long as they stay in range of what they plugged into. / The level of {Light} depends on the node's total aura or the {Power Bank}'s upgrades \
 			- The plug and cord are the {Plug In} ability's: they move with Uloe, like a cord in real life.
-			- Numbers:
+			- Numbers: ~a node gives Light 2 + 0.4 per point of its total aura, at most 10; a {Power Bank} gives Light 4 + 2 per upgrade it has, so 12 with all four; within 4 tiles of Uloe~
 			- Target: a node or a {Power Bank}
-			- Range:
-			- Cooldown:
+			- Range: ~5~ tiles /~ The cord's length: walking past it unplugs \
+			- Cooldown: ~0.5~ seconds
 			- Keys: ~6 / 7~
 			- Unlocked: ~from the start~
-			- Cost:
+			- Cost: ~none~
 
 		[Vessel Mechanic] [Light]
 			- Rule: Towers have increased effects based on how much light they're receiving. {Photon}s and Uloe provide light around them.
@@ -46,73 +46,237 @@
 			- {Blind}: Can also {Blind} enemies, reducing their damage.
 			- Strength: {Illuminate} and {Blind} have different levels of strength depending on its source.
 			- Details: /~ The game has no light for gameplay, so the mod adds up the light from sources in range (docs/RESEARCH_GAPS.md B1) \
+			- Sources: ~Uloe Light 1 within 3 tiles; a {Photon} Light 1 within 2 tiles; {Plug In} and the {Flood Light} as written on them~
+			- Cap: ~12~ Light counted per building
+			- Effects: ~{Magnifying Glass} +20% damage per Light; {Power Bank}'s {Photon}s come back 10% faster per Light; {Mirror} at level 1 from Light 1, level 2 from Light 3, level 3 from Light 6; {Flood Light} mines 10% faster per Light~
+			- Levels: ~{Blind} -15% / -30% / -45% damage dealt, {Illuminate} +15% / +30% / +45% damage taken, lasting 3 / 4 / 5 seconds; a foe holds one level of each, and a stronger one replaces a weaker~
 
 		(Offense):{Magnifying Glass}
+			# The beam is Uloe's damage, and Light is what makes it big: unlit it is weaker than an Archer Tower, at Light 4 it matches one.
+			# Two roads: one big beam that keeps its heat ({Burning Point}, {Polished Lens}, {Sunspot}, {Death Ray}), or a beam that splits and pierces for crowds ({Wide Lens}, {Prism}, {Focal Point}).
 			- Focuses beams of light to deal damage to enemies.
 			- Damage dependent on how much {Light} it is receiving
 			[Stats]
-				- In-game line:
-				- Health:
-				- Damage:
-				- Attack speed:
-				- Range:
-				- Limit:
-				- Cost:
+				- In-game line: ~Focused, single-target beam, burns brighter in Light~
+				- Health: ~30~, +~20~ per level
+				- Damage: ~2~, +~0.5~ per level
+				- Attack speed: ~0.75~
+				- Range: ~4.5~ tiles
+				- Limit: ~none~
+				- Cost: ~Red 30~
 			[Upgrades]
-				% ~1~:{} Damage increases as it attacks the same target
+				% ~1~:{~Burning Point~} Damage increases as it attacks the same target
+					- In-game line: ~Burns hotter on the same target~
+					- Numbers: ~+12% damage per beam on one target, at most +120%; a new target starts over~
+					- Leads to: ~{Polished Lens}, {Quick Focus}~
+					- Cost: ~Red 35~
+				% 1:{~Wide Lens~} Reaches farther.
+					- In-game line: ~Longer reach~
+					- Numbers: ~range +1.5 tiles~
+					- Leads to: ~{Quick Focus}, {Prism}~
+					- Cost: ~Red 30~
+
+				% 2:{~Polished Lens~} Every point of {Light} does more for it.
+					- In-game line: ~Makes more of every Light~
+					- Numbers: ~+40% damage per Light instead of +20%~
+					- Leads to: ~{Sunspot}~
+					- Cost: ~Red 90~
+				% 2:{~Quick Focus~} Beams faster.
+					- In-game line: ~Beams faster~
+					- Numbers: ~attack speed +50%~
+					- Leads to: ~{Sunspot}, {Focal Point}~
+					- Cost: ~Red 80~
+				% 2:{~Prism~} The beam splits onto the foes beside its target.
+					- In-game line: ~Splits the beam onto nearby foes~
+					- Numbers: ~2 more beams, at foes within 1.5 tiles of the target, for 50% damage each~
+					- Leads to: ~{Focal Point}~
+					- Cost: ~Red 100~
+
+				% 3:{~Sunspot~} Its target is {Illuminate}d, harder the more {Light} the lens receives.
+					- In-game line: ~Shows its target up for everyone~
+					- Numbers: ~the beamed foe is Illuminated at level 1 from Light 4, level 2 from Light 8, level 3 at Light 12~
+					- Leads to: ~{Death Ray}~
+					- Cost: ~Red 300 + Blue 50~
+				% 3:{~Focal Point~} The beam burns through every foe in a line.
+					- In-game line: ~Burns through a whole line~
+					- Numbers: ~full damage to every foe on the line from the lens out to its range; with {Prism}, the side beams pierce too~
+					- Leads to: ~nothing, the branch ends here~
+					- Cost: ~Red 350~
+
+				% 4:{~Death Ray~} The beam never cools: it keeps its heat from target to target.
+					- In-game line: ~Never cools down~
+					- Numbers: ~+12% damage per beam, at most +250%, kept when it changes target and lost only after 3 seconds with nothing to beam; at full heat its target is Illuminated at level 3; replaces {Burning Point}'s ramp~
+					- Cost: ~Red 3000~
 
 		(Support):{Power Bank}
+			# Its upgrades are also Uloe's: {Plug In} from a {Power Bank} gives Light 4 + 2 per upgrade, so every upgrade bought here brightens what Uloe lights.
+			# Three roads: {Photon}s that mark foes harder ({Static Charge}, {Chain Lightning}), more and brighter {Photon}s ({Extra Cell}, {Bright Spark}, {Photon Swarm}), or a safe socket for a frail Uloe ({Surge Protector}).
 			- Spawns {Photon}s which are light minions that provide benefits to towers.
 			[Stats]
-				- In-game line:
-				- Health:
-				- Units:
-				- Limit:
-				- Cost:
+				- In-game line: ~Makes Photons that wander and give Light~
+				- Health: ~60~, +~25~ per level
+				- Units: ~2~ {Photon}s
+				- Respawn: ~8~ seconds
+				- Limit: ~none~
+				- Cost: ~Red 40 + Yellow 20~
 			[Upgrades]
-				% ~1~:{} Photons explode on death, dealing damage and applying blind + illumination
+				% ~1~:{~Short Circuit~} Photons explode on death, dealing damage and applying blind + illumination
+					- In-game line: ~Photons burst when they fall~
+					- Numbers: ~3 damage to every foe within 1.5 tiles; Blind and Illuminate at level 2~
+					- Leads to: ~{Static Charge}, {Surge Protector}~
+					- Cost: ~Red 40~
+				% 1:{~Extra Cell~} One more {Photon}.
+					- In-game line: ~Holds another Photon~
+					- Numbers: ~units +1~
+					- Cost: ~Yellow 35~
+
+				% 2:{~Static Charge~} {Photon}s hit harder and mark foes harder.
+					- In-game line: ~Photons zap harder~
+					- Numbers: ~Photon damage +100%; their hits Blind and Illuminate at level 2~
+					- Cost: ~Red 90~
+				% 2:{~Bright Spark~} {Photon}s shine brighter and farther.
+					- In-game line: ~Brighter Photons~
+					- Numbers: ~a Photon gives Light 2, within 2.5 tiles~
+					- Cost: ~Yellow 90~
+				% 2:{~Surge Protector~} Uloe is safer while plugged into it.
+					- In-game line: ~Shields Uloe while plugged in~
+					- Numbers: ~while Uloe is plugged into this Power Bank, Uloe takes 40% less damage and heals 2 health per second~
+					- Leads to: ~nothing, the branch ends here~ /~ So a safe socket gives Plug In at most Light 8, not 12 \
+					- Cost: ~Yellow 60 + Blue 40~
+
+				% 3:{~Chain Lightning~} A {Photon}'s hit jumps on to more foes.
+					- In-game line: ~Zaps jump between foes~
+					- Numbers: ~each Photon hit jumps to 2 more foes within 2 tiles, with the same damage, Blind and Illuminate~
+					- Cost: ~Red 350~
+				% 3:{~Photon Swarm~} Many more {Photon}s, roaming farther.
+					- In-game line: ~A swarm of Photons~
+					- Numbers: ~units +2; leash 5 tiles~
+					- Cost: ~Red 150 + Yellow 200~
+
+				% 4:{~Supernova~} Once a tide, every {Photon} bursts at once and comes straight back, brighter.
+					- In-game line: ~Every Photon goes off at once~
+					- Numbers: ~a SURGE button, once per tide: every Photon of this Power Bank bursts for 20 damage to every foe within 2 tiles, with Blind and Illuminate at level 3, and they all come back at once; for 15 seconds after, its Photons give Light 3~
+					- Cost: ~Red 2000 + Yellow 1000~
 
 		(Defense):{Mirror}
+			# Light decides how strong it is: unlit it is a thin wall, lit it Blinds whatever hits it.
+			# Two roads: a wall that shrugs hits off ({Silver Backing}, {Glare}, {Tempered Glass}, {Reflection}), or a wall that spreads Light and marks ({Vanity Lights}, {Bounce Card}, {Hall of Mirrors}, {Heliostat}).
 			- Wall that can be empowered by {Light} to blind enemies, reducing their damage.
 			[Stats]
-				- In-game line:
-				- Health:
-				- Limit:
-				- Cost:
+				- In-game line: ~Sturdy, Blinds what hits it when lit~
+				- Health: ~100~, +~40~ per level
+				- Blind: ~a foe whose hit lands on it is Blinded at the level its Light gives, melee or ranged; unlit it does nothing~
+				- Limit: ~none~
+				- Cost: ~Blue 20~
 			[Upgrades]
-				% ~1~:{} {Blind} or {Illuminate} enemies based on upgrade path.
-				% ~2~:{} Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
-				% ~2~:{} A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
+				% ~1~:{~Silver Backing~} Blind or Illuminate enemies based on upgrade path. /~ Your line is two upgrades, one a path, as built. This one is the Blind path \
+					- In-game line: ~Blinds harder~
+					- Numbers: ~Blind one level stronger, at most level 3~
+					- Cost: ~Blue 30~
+				% ~1~:{~Vanity Lights~} The Illuminate path: what hits it is {Illuminate}d instead of {Blind}ed.
+					- In-game line: ~Shows foes up instead~
+					- Numbers: ~Illuminate at the level its Light gives, in place of Blind~
+					- Cost: ~Blue 30~
+
+				% ~2~:{~Glare~} Gain a chance to completely nullify damage based on levels of {Blind} on opponent.
+					- In-game line: ~Can shrug off a Blinded foe's hit~
+					- Numbers: ~a hit from a foe Blinded at level N has an N x 20% chance to do nothing~
+					- Cost: ~Blue 100~
+				% ~2~:{~Bounce Card~} A portion of {Light} directed to {Mirror} is added to nearby towers that can be empowered by {Light}
+					- In-game line: ~Passes its Light on to nearby towers~
+					- Numbers: ~50% of the Light it receives, to your buildings within 3 tiles; never to another Bounce Card~
+					- Cost: ~Blue 100~
+				% 2:{~Tempered Glass~} Much sturdier.
+					- In-game line: ~Toughened panes~
+					- Numbers: ~health +200% of base; takes 20% less damage~
+					- Cost: ~Blue 90~
+
+				% 3:{~Hall of Mirrors~} Its {Blind} or {Illuminate} spreads to the foes around whoever hit it.
+					- In-game line: ~Its flash spreads through the crowd~
+					- Numbers: ~every foe within 2 tiles of the attacker gets the same mark at the same level~
+					- Leads to: ~{Heliostat}~
+					- Cost: ~Blue 350~
+				% 3:{~Reflection~} Throws part of each hit back at the attacker.
+					- In-game line: ~Hits come back as light~
+					- Numbers: ~30% of each hit's damage back at the attacker, 60% from Light 6~
+					- Leads to: ~nothing, the branch ends here~
+					- Cost: ~Blue 300 + Red 100~
+
+				% 4:{~Heliostat~} The {Mirror} turns its {Light} on foes: it beams the nearest one and marks it.
+					- In-game line: ~Aims its Light at foes~
+					- Numbers: ~beams the nearest foe within 4 tiles once a second for 1.5 damage per Light it receives, and gives it its Blind, or Illuminate after {Vanity Lights}, at its level; still a wall~
+					- Cost: ~Blue 2500 + Red 1000~
 
 		(Economy):{Flood Light}
+			# Mines its node as often as Spool's {Loom}, and turns what the node burns into Light for the towers.
+			# Two roads: the economy, which ends in a colour trade ({High Voltage}, {Colour Filter}), or Light as a weapon ({Halogen Bulb}, {Searchlight}), which leads to both capstones: {Stadium Lights} also mines, {Lighthouse} marks foes.
 			- Plugs into nodes and provides light. Can be directed towards towers to focus their light benefits.
 			[Stats]
-				- In-game line:
-				- Health:
-				- Range:
-				- Limit:
-				- Cost:
+				- In-game line: ~Mines a node, aims its Light at a tower~
+				- Health: ~40~, +~20~ per level
+				- Mining: ~strikes a node within 2.5 tiles for 1, 0.4 times a second, as the Mining Hut's pick does; no node in reach, no Light~
+				- Light out: ~2, plus 0.2 per point of the node's total aura up to 3 more, to the one building it aims at~
+				- Aim reach: ~6~ tiles /~ An AIM button picks the building; with no pick it lights the nearest \
+				- Limit: ~none~
+				- Cost: ~Yellow 40~
 			[Upgrades]
-				% ~1~:{} Grants light in a radius around itself. Can no longer be directed.
-				% ~1~:{} Allows to redirect its light in a straight line towards towers.
+				% ~1~:{~Wide Flood~} Grants light in a radius around itself. Can no longer be directed.
+					- In-game line: ~Lights all around it, can't be aimed~
+					- Numbers: ~60% of its Light, to your buildings within 3.5 tiles~
+					- Cost: ~Yellow 30~
+				% ~1~:{~Long Throw~} Allows to redirect its light in a straight line towards towers.
+					- In-game line: ~Throws a line of Light at a tower~
+					- Numbers: ~80% of its Light to every building on a line 8 tiles long toward its aim~
+					- Cost: ~Yellow 30~
+
+				% 2:{~Halogen Bulb~} Burns brighter.
+					- In-game line: ~A brighter lamp~
+					- Numbers: ~Light out +2~
+					- Cost: ~Yellow 90~
+				% 2:{~High Voltage~} Mines faster.
+					- In-game line: ~Strikes its node faster~
+					- Numbers: ~strikes +60% faster~
+					- Cost: ~Yellow 100~
+
+				% 3:{~Colour Filter~} The aura it mines comes in the colour you pick.
+					- In-game line: ~Pick the colour of its aura~
+					- Numbers: ~a COLOUR button; every payout from its strikes comes in the picked colour at 70% of the node's total~
+					- Leads to: ~nothing, the branch ends here~
+					- Cost: ~Yellow 250~
+				% 3:{~Searchlight~} Foes caught in its {Light} are shown up and slowed.
+					- In-game line: ~Foes in its light are caught out~
+					- Numbers: ~foes in its Light (its radius, its line, or within 1.5 tiles of what it aims at) are Illuminated at level 1, level 2 once its Light out is 5 or more, and slowed 20%; one slow a Flood Light~
+					- Cost: ~Yellow 250 + Red 100~
+
+				% 4:{~Stadium Lights~} Lights everything around it at full strength, and mines two nodes twice as fast.
+					- In-game line: ~Lights up the whole ground~
+					- Numbers: ~100% of its Light to your buildings within 5 tiles; AIM comes back if {Wide Flood} took it, and what it aims at takes its Light twice; strikes twice as fast, and a second node in reach as well~
+					- Cost: ~Yellow 3000~
+				% 4:{~Lighthouse~} Its beam sweeps round and round, lighting towers and marking foes all about.
+					- In-game line: ~Sweeps the sea with light~
+					- Numbers: ~the beam turns a full circle every 6 seconds, 9 tiles long; each of your buildings it crosses keeps 60% of its Light for 6 seconds; each foe it crosses is Blinded and Illuminated at level 2; AIM goes away~
+					- Cost: ~Yellow 2500 + Red 500~
 
 		(Minion):{Photon}
 			# Refers to minion units
 			- Made by: {Power Bank}
 			- Attack: Can attack enemies for very little damage, but apply illumination and blinding.
-			- Health:
-			- Damage:
-			- Range:
-			- Attack speed:
-			- Speed:
-			- How many:
-			- Respawn:
+			- Health: ~8~
+			- Damage: ~0.5~
+			- Range: ~1.5~ tiles
+			- Attack speed: ~0.6~
+			- Speed: ~1.75~
+			- How many: ~2~ per {Power Bank}
+			- Respawn: ~8~ seconds
 			- Orders: {Photon}s wander around aimlessly where they spawn, but will follow light paths from {Flood Light}s if they're being directed.
-			- Leash:
-			- Cost:
+			- Marks: ~a hit Blinds and Illuminates at level 1~
+			- Leash: ~3.5~ tiles from its {Power Bank}
+			- Cost: ~free~
 
 		[Directions] / Written in 11_Directions.txt under Uloe \
 			- {~Extension Cord~}, {~Brighter Bulb~}, {~Spare Batteries~}, {~Flash Bulb~} /~ Made by Claude \
 
 		[Questions]
-			- 1. Your upgrade ideas have no names or levels yet, so each sits at a level Claude guessed, with an empty name {} for you to fill. ~Levels as placed~
+			- 1. Your upgrade ideas had no names, so each carries the name it was built with, at the level Claude placed it. ~Names and levels as written~
+			- 2. Every building now has 8 upgrades, two roots, branches that cross and one that ends early, and a level 4 capstone, like the base vessels' trees. The 24 Claude added are all ~defaults~: take, rename, change or drop each. ~As written~ /~ docs/reports/ULOE_UPGRADES_2026-11-04.md \
+			- 3. {Supernova} is the only upgrade with a button of its own (SURGE). ~A button once per tide~, or it could go off by itself the first time the {Power Bank} is hit each tide.

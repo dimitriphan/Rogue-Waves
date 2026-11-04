@@ -5,6 +5,8 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `ULOE_UPGRADES_2026-11-04.md` | 2026-11-04 | Uloe's upgrade trees fleshed out from 8 to 32 (8 a building, a capstone each), the five holes they fill (crowds, colour trade, a parked frail vessel, no slow, no capstones), hand numbers against Smacky's towers by Light (`uloe_upgrades_2026-11-04/`), the route each takes in the next build |
+| `ARGO_REVIEW_2026-11-04.md` | 2026-11-04 | Argo's kit reviewed for balance and skill: its slows stack with their own re-ticks; with that fixed it sits between Smacky and Yossele; fourteen changes in scope `09`; simulator with Argo (`balance_argo_2026-11-04/`) |
 | `ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` | 2026-11-04 | The overlap check of those 13 Cardinals against the 40 stock ones (5 removed), then 11 Directions (2 of a new Duo kind) and 7 Cardinals after Risk of Rain 2, Hades, Slay the Spire, Balatro, Isaac and Monster Train |
 | `DIRECTIONS_CARDINALS_2026-11-04.md` | 2026-11-04 | 21 new Directions and 13 new Cardinals from StarCraft II's campaign upgrades, at the stock Cardinals' power scale; who made every Direction and Cardinal (Dimitri 6 + 1, Claude 38 + 20); what each rides on in the game's code |
 | `UPGRADE_GAPS_2026-11-04.md` | 2026-11-04 | Yossele's and Spool's upgrade trees against the base vessels': Yossele complete but for one trade upgrade (Wood Wide Web); Spool has 15 of a base vessel's ~40, no capstones; 22 proposed upgrades, the hole each fills, priced and checked in a copy of the simulator (`balance_upgrades_2026-11-04/`, 5,040 runs) |

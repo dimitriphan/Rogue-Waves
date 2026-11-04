@@ -1,0 +1,94 @@
+== 1. Tree shape and prices (scope 15 band, kit docs/02 shipped range) ==
+Magnifying Glass: 8 upgrades, by level 2/3/2/1
+   L1 Burning Point    R35            =    35  in band
+   L1 Wide Lens        R30            =    30  in band
+   L2 Polished Lens    R90            =    90  in band
+   L2 Quick Focus      R80            =    80  in band
+   L2 Prism            R100           =   100  in band
+   L3 Sunspot          R300+B50       =   350  in band
+   L3 Focal Point      R350           =   350  in band
+   L4 Death Ray        R3000          =  3000  in band
+Power Bank: 8 upgrades, by level 2/3/2/1
+   L1 Short Circuit    R40            =    40  in band
+   L1 Extra Cell       Y35            =    35  in band
+   L2 Static Charge    R90            =    90  in band
+   L2 Bright Spark     Y90            =    90  in band
+   L2 Surge Protector  Y60+B40        =   100  in band
+   L3 Chain Lightning  R350           =   350  in band
+   L3 Photon Swarm     R150+Y200      =   350  in band
+   L4 Supernova        R2000+Y1000    =  3000  in band
+Mirror: 8 upgrades, by level 2/3/2/1
+   L1 Silver Backing   B30            =    30  in band
+   L1 Vanity Lights    B30            =    30  in band
+   L2 Glare            B100           =   100  in band
+   L2 Bounce Card      B100           =   100  in band
+   L2 Tempered Glass   B90            =    90  in band
+   L3 Hall of Mirrors  B350           =   350  in band
+   L3 Reflection       B300+R100      =   400  in band
+   L4 Heliostat        B2500+R1000    =  3500  in band
+Flood Light: 8 upgrades, by level 2/2/2/2
+   L1 Wide Flood       Y30            =    30  in band
+   L1 Long Throw       Y30            =    30  in band
+   L2 Halogen Bulb     Y90            =    90  in band
+   L2 High Voltage     Y100           =   100  in band
+   L3 Colour Filter    Y250           =   250  in kit range
+   L3 Searchlight      Y250+R100      =   350  in band
+   L4 Stadium Lights   Y3000          =  3000  in band
+   L4 Lighthouse       Y2500+R500     =  3000  in band
+
+== 2. Light a building can see ==
+Plug In, node: 2 + 0.4 x total aura, at most 10: [(5, 4.0), (10, 6.0), (15, 8.0), (20, 10)]
+Plug In, Power Bank: 4 + 2 per upgrade: [(0, 4), (1, 6), (2, 8), (3, 10), (4, 12)] (Surge Protector ends at 2 upgrades: 8)
+Flood Light aimed: 2 + min(3, 0.2 x aura); +2 with Halogen: [(5, 3.0, 5.0), (10, 4.0, 6.0), (15, 5, 7)]
+Clusters: early (Uloe 1 + a Photon 1) = 2; mid (plugged into a 10-aura node 6 + aimed Flood 4) = 10;
+          late (plugged into a 4-upgrade Bank 12) = 12, the cap; a Bounce Card passes half on.
+
+== 3. Single-target damage a second: Magnifying Glass (by Light) against Archer Tower ==
+                                                     L0     L4     L8    L12   aura
+Glass, no upgrade (L1)                              1.5    2.7    3.9    5.1   30
+Glass L3 Burning Point (full) + Polished            5.0   12.9   20.8   28.7   155
+Glass L3 Burning Point (full) + Quick Focus         7.4   13.4   19.3   25.2   145
+Glass L5 BP, Polished, Sunspot, Death Ray          10.5   27.3   44.1   60.9   3505
+Glass L5 BP, Quick Focus, Sunspot, Death Ray       15.8   28.3   40.9   53.6   3495
+Archer, no upgrade (L1)                           2.8   25
+Archer L3 Rapid Fire, Auto Bow                    10.8   105
+Archer L4 Rapid Fire, Auto Bow, Bow Squad         33.0   655
+Archer L5 Rapid, Eagle, Assassin, Death Mark vs a 1,000-health foe  43.2   5,235
+Sunspot / Death Ray also Illuminate the target: +15/30/45% from every source, Uloe's Photons and teammates too.
+
+Crowds: Wide Lens, Prism, Focal Point (L4, the branch ends): damage a second to EACH foe on the line
+   Light  0:   2.6 each, side beams  1.3
+   Light  4:   4.7 each, side beams  2.4
+   Light  8:   6.8 each, side beams  3.4
+   Light 12:   8.9 each, side beams  4.5
+Bomb Tower L4 Dynamite, Splitting Bombs: (3+6+2.5) x 0.35 = 4.0 to each of up to 15 foes
+
+== 4. Effective health at level 5 (damage it takes before it falls) ==
+Smacky's Wall L5, Reinforced, Stone Wall, Steel Wall: health 950
+   Mirror L5 Silver, Glare, Reflection (no Tempered)    Light 0: Blind 0 ->    260
+   Mirror L5 Silver, Glare, Reflection (no Tempered)    Light 1: Blind 2 ->    619
+   Mirror L5 Silver, Glare, Reflection (no Tempered)    Light 3: Blind 3 ->   1182
+   Mirror L5 Silver, Glare, Reflection (no Tempered)    Light 6: Blind 3 ->   1182
+   Mirror L5 Silver, Tempered Glass, Reflection         Light 0: Blind 0 ->    575
+   Mirror L5 Silver, Tempered Glass, Reflection         Light 1: Blind 2 ->    821
+   Mirror L5 Silver, Tempered Glass, Reflection         Light 3: Blind 3 ->   1045
+   Mirror L5 Silver, Tempered Glass, Reflection         Light 6: Blind 3 ->   1045
+Reflection hands back 30% (60% from Light 6) of what it takes: a lit Mirror that takes 1,000 returns 600.
+
+== 5. Mining, aura a Tide on a Red node (the Loom's strike rate: 96; a Mining Hut 18, AURA_BASELINE) ==
+   Flood Light, unlit                             96
+   Flood Light, Light 4                          134
+   High Voltage, Light 4                         192
+   High Voltage, Light 8                         230
+   Stadium Lights (x2, two nodes), Light 8       691
+Colour Filter pays 70% in the picked colour: on a Red node 96 x 1.4 x 0.7 = 94 Blue or Yellow a Tide
+
+== 6. Power Bank ==
+Photon damage a second: 0.5 x 0.6 = 0.3; Static Charge 0.6; Chain Lightning 3 foes = 1.8 a Photon
+   base                         Photons 2, Light to a tower they visit 1 each (2 with Bright Spark)
+   Extra Cell                   Photons 3, Light to a tower they visit 1 each (2 with Bright Spark)
+   Extra Cell, Photon Swarm     Photons 5, Light to a tower they visit 1 each (2 with Bright Spark)
+Illuminate is the Bank's real damage: level 2 on a crowd = +30% from every tower, Uloe's and teammates'.
+Supernova: 20 damage, Blind 3 + Illuminate 3 (+45%, -45%) on every foe within 2 tiles of every Photon, once a Tide.
+Plug In from the Bank: 4 / 6 / 8 / 10 / 12 by upgrades, so the Bank's tree is also Uloe's Light tree.
+
