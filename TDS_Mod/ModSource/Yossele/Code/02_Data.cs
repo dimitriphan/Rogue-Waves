@@ -98,7 +98,7 @@ public static class YosseleData
     public const float FertilizeReach = 6f;     // the hotkey's fallback: nearest growable building of yours this close
     public const float FertilizeGuard = 0.5f;
 
-    // Compost Bin, one Direction per rank (kit 1.6 has no ranks): foes felled within Radius of Yossele for 1 fertilizer.
+    // Compost Bin, one Direction per rank (written for kit 1.6, which had no ranks; kit 1.7's Rank is not used yet): foes felled within Radius of Yossele for 1 fertilizer.
     public class Compost { public string Name, Display, Desc; public int Kills; public float Radius; }
     public static readonly Compost[] Compostbins =
     {

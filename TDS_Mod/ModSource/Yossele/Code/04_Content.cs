@@ -659,7 +659,7 @@ public static class YosseleContent
 
     // ---------------------------------------------------------------- Directions (docs/scope/11)
 
-    // One Direction per rank (kit 1.6 has no ranks): the mode lists them by their "Direction_" names and grants the pick;
+    // One Direction per rank (written for kit 1.6, which had no ranks; kit 1.7's Rank is not used yet): the mode lists them by their "Direction_" names and grants the pick;
     // the vessel reads the highest rank held (YosseleServer.CompostRank, DirectionRank). Each carries its numbers as params.
     static void BuildDirections()
     {
