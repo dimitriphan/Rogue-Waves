@@ -5,7 +5,8 @@ PR #40 left it (Yarn Stash the one supply base, Thread Head bought from the buil
 Every number the sheet gives is used as written. A number written `~like this~` in the sheet is a default Claude picked
 there and is used too; anything the sheet leaves open is a **default picked here**, marked *(default)* below and
 listed in "Defaults picked here" at the end. Checked against `TDS_Vessel_Creator/docs/02` and `docs/12` (minion vessels).
-Status: **compiled in the cloud, never run in game**; temporary art (`IMPLEMENTATION_NOTES.md`, `Previews/0.1/ASSETS.md`).
+Status: **self-test passes in game** (PC round 1c 120/0, 2026-10-26; 133/0 on 2026-11-04); balance P1-P7 wait on a
+hand try of a Pin Cushion wall; temporary art (`IMPLEMENTATION_NOTES.md`, `Previews/0.1/ASSETS.md`).
 
 ## Identity
 

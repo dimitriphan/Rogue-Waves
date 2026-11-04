@@ -3,8 +3,8 @@
 `07` gives the rules a vessel follows online; this chapter is the engine underneath, for the parts of an expansion
 that are not a vessel: the mode's host brain, the in-map vote, the shop, the HUD, maps, rejoin. Everything here was
 **read from the game's code** (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11) on 2026-10-14 unless it
-says otherwise; `File.cs:line` points into that decompiled folder (never committed). **Nothing here was tried
-online**: §8 is the list for the first online evening. Every RPC and every synced field, with its checks, is in
+says otherwise; `File.cs:line` points into that decompiled folder (never committed). **Tried with a real second player
+since 2026-11-04** (two copies of the game on one PC): §8 is the list and its result; real Steam online is still untried. Every RPC and every synced field, with its checks, is in
 `reference/network_surface.md`.
 
 Read `07`, `01` §3-4 and `15` §6, §14.5 first.
@@ -96,8 +96,8 @@ they send only while it is under 50 and **drop** the send otherwise. It drains b
   look calls `Vfxdebuff_ClientRpc(item, beingref, seconds)` or `Vfxoneshot_ClientRpc(item, position, direction)`
   itself and adds one to `Clientsendstack`, so stock effects make room. Send a debuff look again only when the new
   one would end later than the one showing (`Helper_Vfxtools.Debuff` resets `Duration` on a look already attached).
-  Argo 2.0.1 does this for its slow look and its refused-flood mark (`ArgoUtil.Debuff`, `MustSee`). Compiled, not
-  run.
+  Argo 2.0.1 does this for its slow look and its refused-flood mark (`ArgoUtil.Debuff`, `MustSee`). It runs
+  without error in game and on a second player's machine (2026-11-04); no fight there filled the queue (pitfall #95).
 
 ## 5. Late join, drops and identity
 
@@ -142,8 +142,8 @@ RogueWavesMode 0.3.0 (`RWIdentity`, `Code/10_Online.cs`) does this every half se
   way; a restart takes longer than Steam's disconnect, so this is not expected (`docs/mode/REJOIN.md` §4, O3b).
 
 The host can also read a player's kept GUID back from `Blm_Multiplayer.Instance.Sessionids` (GUID → `Sessionid`): a
-key that survives sessions and Steam renames, but not a new PC or another save slot. Read from code; compiled, not
-run.
+key that survives sessions and Steam renames, but not a new PC or another save slot. Read from code; RogueWavesMode's
+kept GUID passed a real restart and rejoin on 2026-11-04 (§8 N9, `docs/mode/REJOIN.md` O3b).
 
 ## 6. Rules for mode code (what `07` doesn't cover)
 

@@ -11,7 +11,8 @@ registry and stands down when its vessel is already loaded (`ModKitPack`), runs 
 (`ModKitFocus`, `ModKitTides`), credits its own hits with kills (`ModKitCombat`), fits each tower's range
 (`ModKitTowers.Fit`), sends debuff looks past the game's effect throttle (Argo 2.0.1's `Debuff`, pitfall #95), and its
 Aseprite writer keeps unit sheets whose name starts with the vessel's (the scaffold names the unit `<Name>unit`). They
-compile here; the template with them has not been played on the PC yet.
+compile here, and Spool, scaffolded from this template on 2026-10-26, runs them in game (round 1c 120/0, 133/0 on
+2026-11-04); the bare template itself has not been played.
 `tools/New-Vessel.ps1` copies it into the mod project under a new name. Don't edit it here to build a vessel; scaffold,
 then edit the copy.
 

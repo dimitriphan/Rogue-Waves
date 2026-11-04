@@ -112,7 +112,8 @@ A Rogue Waves part ships inside the pack instead: one version and one `RogueWave
 
 Three places, kept equal: `<Name>Data.Version` ("1.0.0"; logged as `[<Name>] loaded v...`), `ExportSettings.version`
 in `<Name>ModPrefab.cs` ("1.0"; shown in the Mods menu), and the zip/README name. Every player in a lobby needs the
-same version. Bump the patch for fixes, the minor for new content.
+same version. Bump the patch for fixes, the minor for new content. A Rogue Waves part carries the one pack version in
+both places instead, with `-dev` on a dev mod (`0.1.0-dev` in every part today; the repository's `docs/PACK.md` §4).
 
 ## 7. Many vessels in one project
 

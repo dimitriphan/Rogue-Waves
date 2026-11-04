@@ -214,5 +214,8 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 | Buster | A Very Fast Dog ▪ Advanced | Checkpoint (trap), Pedestal, Speed Pad (trap), Garage | melee + Dash | Good Dog |
 
 Full conventions: `reference/VESSEL_SURVEY.md`; raw data (stats, trees, costs, params of every shipped buildable):
-`reference/vessel_data_survey.txt`. Mod vessels so far: Sprigg (plant, ranged, Intermediate), Argo (diver, melee,
-Intermediate), Mummer (costume, melee with reach, Advanced): see `examples/`.
+`reference/vessel_data_survey.txt`. Mod vessels so far: the Rogue Waves pack's Argo 2.0 (diver, melee), Yossele (a
+clay head with a sprout, ranged mouth laser), Spool (plush, melee, Crafted units) and Uloe (a light bulb on a lamp post,
+ranged, Photons), each with a `DESIGN.md` under `TDS_Mod/ModSource/<Name>/`; and the three built first, Sprigg (plant,
+ranged, Intermediate), Argo 1.x (diver, melee, Intermediate) and Mummer (costume, melee with reach, Advanced): see
+`examples/`.

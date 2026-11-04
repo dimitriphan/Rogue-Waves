@@ -1,4 +1,4 @@
-# Rogue Waves mode: temporary UI art (2026-10-27)
+# Rogue Waves mode: temporary UI art (2026-10-27, table brought up to date 2026-11-04)
 
 **Everything in this folder is temporary.** It gives the mode's UI a look in the pack's palette and motifs
 (`docs/STYLE.md`) until Dimitri's own art replaces it; the pack's whole list is `docs/TEMP_ART.md`. Icons are 12 x 12
@@ -10,19 +10,24 @@ opaque, no outline, lit from the upper left, one object each.
 | `RogueWaves_RisingWater.png` | a teal swell with a foam crest, an arrow rising beside it | weather Rising Water (scope 04) | **wired**: `Code/08_Icons.cs` rows; compiled, not yet seen |
 | `RogueWaves_Quickening.png` | three foam chevrons over running water | weather Quickening Current | **wired** (same) |
 | `RogueWaves_Nesting.png` | a coral egg in a sand nest | weather Nesting Ground | **wired** (same) |
-| `RogueWaves_Crest.png` | the crest: one breaking curl with a Foam rim | the mode's icon (`STYLE.md` "The crest") | not wired: no slot yet |
-| `RogueWaves_Crest32.png` | the crest at 32 x 32, drawn, not scaled | the main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) | not wired: the button is built after Release 1 |
-| `RogueWaves_PureAura.png` | a Pearl drop with its blue and pink sheen | the Pure Aura counter and rewards | not wired: Pure Aura is Phase 5 |
-| `RogueWaves_Depth.png` | a coral sounding lead on its line | Depth (ascension) marks | not wired |
-| `RogueWaves_Retry.png` | a coral and foam life ring | the campaign's retries | not wired |
-| `RogueWaves_Vote.png` | a teal pennant on a pole | the chart vote | not wired |
-| `Direction_Tougher.png` | a Stitched with a bandaid on its head, holding back tears | Made of Tougher Stuff (scope 11) | not wired |
-| `Direction_CompostBin.png` | a small grey bin of dirt with green stink lines | Compost Bin | not wired (Yossele's Compost Bin Directions have no icon yet) |
-| `Direction_DandelionSeason.png` | a yellow dandelion with a jagged leaf | Dandelion Season | not wired |
-| `Direction_MotherOfMushrooms.png` | a red cap over a growing-kit box | Mother of Mushrooms | not wired |
-| `Direction_EfficientRecycler.png` | the recycling loop drawn in yarn | Efficient Recycler | not wired |
-| `Direction_SewingMachine.png` | the classic light blue sewing machine | Sewing Machine | not wired |
-| `Cardinal_VampireDentures.png` | cheap plastic fangs on red gums | Vampire Dentures (scope 12) | not wired |
+| `RogueWaves_Crest.png` | the crest: one breaking curl with a Foam rim | the mode's icon (`STYLE.md` "The crest") | **wired** (2026-11-03): `Code/08_Icons.cs` |
+| `RogueWaves_Crest32.png` | the crest at 32 x 32, drawn, not scaled | the main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) and the New campaign card | **seen in game** (`Code/12_Menu.cs`) |
+| `RogueWaves_PureAura.png` | a Pearl drop with its blue and pink sheen | the Pure Aura counter and rewards | **seen in game** (2026-11-03) |
+| `RogueWaves_Depth.png` | a coral sounding lead on its line | Depth (ascension) marks | wired; waits for Depth, which is on hold |
+| `RogueWaves_Retry.png` | a coral and foam life ring | the campaign's retries, the Continue card | **seen in game** (2026-11-03) |
+| `RogueWaves_Vote.png` | a teal pennant on a pole | the chart vote | **seen in game** (2026-11-03) |
+| `RogueWaves_Stay.png`, `_Leave`, `_Shop`, `_Fund`, `_Board` | the buttons of the leave vote, VENDCINT, Fund Transfer and the Board | those buttons | **seen in game**; drawn by `Assets/RogueWavesModeMod/Editor/RogueWavesModeArt.cs` when missing |
+| `Vendcint-Sheet.png` | VENDCINT, a vending machine | the shopkeeper | **seen in game** (landing, panel, its jump away); drawn by the same editor file when missing |
+| `Direction_Tougher.png` | a Stitched with a bandaid on its head, holding back tears | Made of Tougher Stuff (scope 11) | **seen in game** on the Direction cards (`Code/16_Directions.cs` reads `Direction_<Look>`) |
+| `Direction_CompostBin.png` | a small grey bin of dirt with green stink lines | Compost Bin | **seen in game** (same) |
+| `Direction_DandelionSeason.png` | a yellow dandelion with a jagged leaf | Dandelion Season | **seen in game** (same) |
+| `Direction_MotherOfMushrooms.png` | a red cap over a growing-kit box | Mother of Mushrooms | **seen in game** (same) |
+| `Direction_EfficientRecycler.png` | the recycling loop drawn in yarn | Efficient Recycler | **seen in game** (same) |
+| `Direction_SewingMachine.png` | the classic light blue sewing machine | Sewing Machine | **seen in game** (same) |
+| `Direction_Barnacle`, `_Mend`, `_Spring`, `_Cost`, `_Refit`, `_Interest`, `_Gallop`, `_Regulars`, `_Longline`, `_Packedsnow`, `_Skipping` (`.png`) | the mode's own Directions: Barnacle Coat, Tidal Mend, Spring Tide, Cut Costs, Cheap Refits, Compound Interest, and the base vessels' Full Gallop, House Regulars, Long Line, Packed Snow, Skipping Stones | the Direction cards | **seen in game**; drawn by `RogueWavesModeArt.cs` when missing |
+| `Direction_Extension`, `_Brightbulb`, `_Batteries`, `_Flashbulb` (`.png`) | Uloe's Extension Cord, Brighter Bulb, Spare Batteries, Flash Bulb | the Direction cards | **seen in game**; drawn by `ModSource/Uloe/Tools/Make-DirectionIcons.ps1` |
+| `Direction_Deepcurrent`, `_Heavysalvo` (`.png`) | Argo's Deep Current and Heavy Salvo (both showed the crest before) | the Direction cards | wired, compiled (2026-11-04); drawn by `ModSource/Argo/Tools/Make-DirectionIcons.ps1` |
+| `Cardinal_VampireDentures.png` | cheap plastic fangs on red gums | Vampire Dentures, a Trinket since 2026-11-04 (scope 12; the file keeps its name) | **seen in game** |
 
 `aseprite/RogueWaves_Icons.aseprite` holds every 12 x 12 icon, one frame and one tag each; `RogueWaves_Crest32.aseprite`
 the big crest. Their layer is named "TEMP art". `preview_8x/` holds enlarged copies for review.

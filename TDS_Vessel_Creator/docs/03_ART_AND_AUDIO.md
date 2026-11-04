@@ -16,6 +16,12 @@ the content.
 | `<Name>ModPrefab.cs` | Build Mod Prefab, Park Other Mods, Export Mod, Restore Parked Mods |
 | `<Name>Aseprite.cs` | hand-editable Aseprite copies of the sheets, written each build; frames edited in a copy replace the code's (`TDS_Mod/Tools/aseprite/README.md`) |
 
+Art can also come from files. A Rogue Waves part keeps placeholder art in `ModSource/<Part>/Art/Temporary/game_size/`
+(the folder's README lists each file) and final art in `ModSource/<Part>/Art/<same name>.png`, which wins. The builder
+loads a file of the same name and size in place of the sheet it would draw, and logs when a size doesn't match
+(`FileArt` in Yossele's, Spool's and Uloe's builders; Yossele's `CopySheet` for a sheet the code doesn't draw). The
+pack's whole list of placeholders and how each is replaced: the repository's `docs/TEMP_ART.md`.
+
 ## 1. The vessel sprite
 
 **Formats** (read from the game's own sheets):

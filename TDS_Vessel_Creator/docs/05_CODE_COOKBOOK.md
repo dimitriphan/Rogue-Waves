@@ -208,6 +208,14 @@ To scale damage an entity takes from every source (Argo's Pinged/Bulkhead), put 
 `Oninteract` chain and re-check it often (`Updateinteract` rebuilds the chain on every upgrade/effect); copy
 `hit.Data` before changing `Damagemulti` (`examples/code/Argo_09_Hooks.cs`).
 
+The base game's own way needs no re-check (read from code, not yet tried by a mod): Fie's walls and Smacky's Beacon give
+the building a `Resistadd` stat (`Addstat`, Display_Type Percent) and the effect upgrade
+`Effect_Fiewall_Regen_Upgradeobject`, whose stock AI `Entity_Ai_Effect_Fiewall_Regen` sits in the chain at priority 9
+and divides every hit's `Damagemulti` by `1 + Resistadd`. Being a real AI, it survives `Updateinteract`; each source is
+then an ordinary `Addmod` on `Resistadd` (a cut of *r* is *r* / (1 - *r*), *v* more taken is -*v* / (1 + *v*)), and a
+timed one comes off by itself. Never give an entity two copies of the script, or every hit is divided twice. Method,
+risks and the PC checks: the repository's `docs/reports/CODE_SIMPLIFICATION_2026-11-04.md` finding 1.
+
 ## 10. Units (08, 09)
 
 The full guide to unit-based vessels (how the game's own unit buildings work, orders, rally points, design rules,

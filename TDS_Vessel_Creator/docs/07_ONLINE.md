@@ -58,12 +58,17 @@ played online by the user and a friend and worked; Argo and Mummer use the same 
 - [ ] The self-test passes (it runs as host, which also runs the client code). It can't catch a client reading
       host-only data (host lists, `Onspawn`) or the online throttle, which drains 2.5 times slower with two players
       (`19` §2, §4).
-- [ ] If the vessel adds a new kind of sync (a new channel or a client-driven picker), ask the user to try a match with
-      a friend and send both Player.log files.
+- [ ] If the vessel adds a new kind of sync (a new channel or a client-driven picker), run it on a real client: the
+      two-player round on one PC (§4), then, for what loopback can't show, a match with a friend and both Player.log
+      files.
 
 ## 4. Testing online
 
 The automated self-test runs solo as host: it proves the host logic and the host's client code. It can't prove a
-remote client sees the same; the rules above are what make that true. For a real check, the user hosts, a friend
-joins, both pick (ideally both the new vessel), play a few Tides, and send both `Player.log` files. Look for the
-vessel's `[<Name>]` lines on the client, `Could not retrieve` warnings (a name the client doesn't have) and exceptions.
+remote client sees the same; the rules above are what make that true. **A real client on one PC** (since 2026-11-04):
+a second copy of the game joins the host over the game's own `UnityTransport` on the loopback address, a real Netcode
+client with its own process and scene (pitfall #144, `TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`, `19` §8). It ran the
+pack's vessels in four host and client pairs, the client's build, upgrade and sell orders included. What it can't show is Steam's Join
+Game and lobby, a real network's delay and a person's eye: for those the user hosts, a friend joins, both pick
+(ideally both the new vessel), play a few Tides, and send both `Player.log` files. Look for the vessel's `[<Name>]`
+lines on the client, `Could not retrieve` warnings (a name the client doesn't have) and exceptions.
