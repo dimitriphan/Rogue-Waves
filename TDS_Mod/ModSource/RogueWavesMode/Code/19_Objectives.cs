@@ -24,11 +24,11 @@ public static class RWObjectives
     public static RWObjectiveDef Posted;     // this break's, on the host
     public static RWObjectiveDef Active;     // taken, running in the next Tide
     public static string Outcome = "";       // self-test
-    public static int Paid;                  // self-test
+    public static int Paid, NoRoom;          // self-test
     public static Beingobject MeteorBeing;
     static Entity_Master target;
-    static bool failed, targetFell, clockBeaten;
-    static float coreHurt, tideLength;
+    static bool failed, targetFell;
+    static float coreHurt, tideLength, clockLeft;
     public const float ClockShare = 0.25f;   // of the Tide's clock left when its last foe falls
 
     public static void Build() { }
@@ -85,7 +85,7 @@ public static class RWObjectives
             return;
         System.Random rng = new System.Random(unchecked((int)RWCampaign.Seed) ^ (RWCampaign.Route.Count * 31) ^ (wave * 977));
         List<RWObjectiveDef> pool = new List<RWObjectiveDef>(All);
-        if (RWWeather.Current == RWChart.NestingGround) pool.RemoveAll(o => o.Name == "Nest");
+        if (RWWeather.Current == RWChart.NestingGround || !RWWeather.CanNest()) pool.RemoveAll(o => o.Name == "Nest");
         if (MeteorBeing == null) pool.RemoveAll(o => o.Name == "Meteor");
         Posted = pool[rng.Next(pool.Count)];
         RWLog.Info("posted: " + Posted.Display + " for Tide " + (wave + 1));
@@ -120,7 +120,7 @@ public static class RWObjectives
     {
         failed = false;
         targetFell = false;
-        clockBeaten = false;
+        clockLeft = 0f;
         target = null;
         if (Active == null)
             return;
@@ -136,7 +136,10 @@ public static class RWObjectives
         catch (Exception e) { RWLog.Warn("objective " + Active.Display + ": " + e.Message); }
         if ((Active.Name == "Meteor" || Active.Name == "Nest") && target == null)
         {
+            // A Tide's first foes can stand on the last free tile by the enemy core: the team is told (RWWeather.CanNest looked in the break).
             RWLog.Info(Active.Display + " could not place its target: it pays nothing and costs nothing");
+            RWRejoin.Say(Active.Display + " found no room for its target this Tide. Nothing is lost.");
+            NoRoom++;
             Active = null;
         }
     }
@@ -144,15 +147,19 @@ public static class RWObjectives
     public static void Update()
     {
         EnsureMeteor();
-        // A Tide's clock runs out whatever happens (Mode_Normal.Run), and starts only once its foes have all been sent: the
-        // field is clear with a clock that has started and a good part of it left.
+        // A Tide's row ends the moment its last foe falls (Mode_Normal.Run), and the break's 60 s are in Time_Wave at once, a frame
+        // before ModKitTides.InBreak says so: a field clear with its clock still running never happens. So what counts is the clock's
+        // last reading in the Tide's own row, read at the break (pitfall #142).
         Game_Mapvars vars = Game_Mapvars.Instance;
-        if (Active != null && Active.Name == "Clock" && !clockBeaten && vars != null && !ModKitTides.InBreak && tideLength > 0f)
-        {
-            float left = vars.Time_Wave.Value;
-            if (left < tideLength - 0.2f && left > tideLength * ClockShare && RWVote.Foes() == 0)
-                clockBeaten = true;
-        }
+        if (Active != null && Active.Name == "Clock" && vars != null && TideRow(vars))
+            clockLeft = vars.Time_Wave.Value;
+    }
+
+    static bool TideRow(Game_Mapvars vars)
+    {
+        List<Wavesobject.Waves> table = vars.Mode != null && vars.Mode.Enemies != null ? vars.Mode.Enemies.Wave : null;
+        int row = vars.Entry.Value - 1;     // the row is Entry - 1 (pitfall #121)
+        return table != null && row >= 0 && row < table.Count && table[row].Wave;
     }
 
     // The Tide's break began: did it hold?
@@ -168,7 +175,7 @@ public static class RWObjectives
         {
             case "Meteor": case "Nest": ok = targetFell; break;
             case "Hull": ok = core != null && core.Damagetaken <= coreHurt + 0.01f; break;
-            case "Clock": ok = clockBeaten; break;
+            case "Clock": ok = tideLength > 0f && clockLeft > tideLength * ClockShare; break;
             case "Hands": ok = !failed; break;
         }
         if (target != null && target.Beingserver != null && !target.Beingserver.Dead)

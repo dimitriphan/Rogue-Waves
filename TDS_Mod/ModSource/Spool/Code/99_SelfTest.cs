@@ -360,6 +360,23 @@ public static class SpoolSelfTest
 
     // ---------------------------------------------------------------- the scenario
 
+    // One Tide on: the frozen clock let go until the Wave rises, its foes cleared, frozen again.
+    static IEnumerator NextTide()
+    {
+        int wave = Game_Mapvars.Instance.Wave.Value;
+        freeze = false;
+        float t = 0f;
+        while (Game_Mapvars.Instance.Wave.Value == wave && t < 60f)
+        {
+            Game_Mapvars.Instance.Time_Wave.Value = -1f;
+            ClearFoes();
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        freeze = true;
+        yield return Wait(0.6f);
+        ClearFoes();
+    }
     static IEnumerator Scenario()
     {
         Log("match started: scenario begins");
@@ -1039,6 +1056,103 @@ public static class SpoolSelfTest
             }
         }
 
+// 10b. The Directions (kit 1.7): each rank's effect, as a player meets it. (Untested until 2026-11-04.)
+        {
+            Func<string, Upgradeproperties> direction = n => Bl_Address.Getload("Upgrade", ModKitDirections.Id("Spool", n)) as Upgradeproperties;
+            SpoolTinBrain sellTin = tinB ?? tinA;
+            for (int r = 1; r <= 3 && sellTin != null; r++)
+            {
+                SpoolData.Recycler rec = SpoolData.Recyclers[r - 1];
+                ModKitDirections.Grant(hm, direction(rec.Name));
+                yield return Wait(0.8f);
+                Check("Efficient Recycler rank " + r + " reads back on the vessel", player.Recycler == r, "rank " + player.Recycler);
+                player.Stash = 40;
+                SpoolServer.Show(player);
+                SpoolUnitBrain unit = null;
+                yield return Until(() => (unit = UnitsOf(sellTin).Find(u => u.Started)) != null, 12f);
+                if (unit == null) { ModKitTest.Setup("Efficient Recycler rank " + r, "no Crafted to sell"); continue; }
+                // Rank III mends what stands within 2.5 of the sold one: a building hurt beside it.
+                SpoolBuilding beside = null;
+                float toBeside = rec.Radius;
+                foreach (SpoolBuilding b in SpoolServer.Buildings)
+                    if (b != null && b.Started && b.Master != null && SpoolUtil.Alive(b.Master) && SpoolUtil.Flat(b.Pos, SpoolUtil.Pos(unit.Master)) < toBeside) { beside = b; toBeside = SpoolUtil.Flat(b.Pos, SpoolUtil.Pos(unit.Master)); }
+                float hurt0 = 0f;
+                if (beside != null)
+                {
+                    Hit(hm, beside.Master, 15f);
+                    yield return Wait(0.2f);
+                    hurt0 = SpoolUtil.Health(beside.Master);
+                }
+                int refunded = SpoolServer.Refunded, stash0 = player.Stash, cost = unit.Cost;
+                SpoolUnitBrain sold = unit;
+                Send(hm, "Sell", Sell(hm, sold.Master));
+                yield return Until(() => sold == null || sold.Master == null, 12f);
+                int want = cost * rec.Percent / 100;
+                Check("Efficient Recycler rank " + r + ": selling a Crafted refunds " + rec.Percent + "%", SpoolServer.Refunded == refunded + want, "cost " + cost + ", refunded " + (SpoolServer.Refunded - refunded) + ", wanted " + want);
+                if (rec.Heal > 0f)
+                {
+                    yield return Wait(0.3f);
+                    if (beside == null) ModKitTest.Setup("Efficient Recycler rank III's mend", "nothing stood within " + F(rec.Radius) + " of the sold Crafted");
+                    else Check("Efficient Recycler rank III mends what stands around the sold one", SpoolUtil.Health(beside.Master) > hurt0, F(hurt0) + " -> " + F(SpoolUtil.Health(beside.Master)) + ", " + F(toBeside) + " away");
+                }
+            }
+
+            SpoolLoomBrain sewer = loomB ?? loomA;
+            if (sewer == null) ModKitTest.Setup("Sewing Machine", "no Loom");
+            else
+            {
+                float aspd0 = SpoolUtil.Stat(sewer.Master, "Attackspeed", 0f);
+                int held0 = sewer.Held, sent0 = sewer.Sent;
+                sewer.Held = 0;
+                ModKitDirections.Grant(hm, direction(SpoolData.Sewingmachines[0].Name));
+                yield return Wait(1.2f);
+                Check("Sewing Machine: the Looms mine half as fast again", player.Sewing == 1 && sewer.Sewing && Mathf.Abs(SpoolUtil.Stat(sewer.Master, "Attackspeed", 0f) - aspd0 * (1f + SpoolData.SewingMine)) < 0.01f, F(aspd0) + " -> " + F(SpoolUtil.Stat(sewer.Master, "Attackspeed", 0f)));
+                sewer.Held = 0;
+                sent0 = sewer.Sent;
+                yield return Wait(7f);
+                Check("Sewing Machine: the Looms spin no Thread", sewer.Held == 0 && sewer.Sent == sent0, "held " + sewer.Held + ", sent " + (sewer.Sent - sent0));
+                int looms = 0;
+                foreach (SpoolBuilding b in SpoolServer.Buildings) if (b is SpoolLoomBrain && b.Started && SpoolUtil.Alive(b.Master) && SpoolUtil.Flat(b.Pos, sewer.Pos) <= SpoolData.Sewingmachines[0].Radius) looms++;
+                for (int r = 1; r <= 2; r++)
+                {
+                    if (r > 1)
+                    {
+                        ModKitDirections.Grant(hm, direction(SpoolData.Sewingmachines[r - 1].Name));
+                        yield return Wait(1.2f);
+                    }
+                    SpoolData.Sewing s = SpoolData.Sewingmachines[r - 1];
+                    Hit(hm, sewer.Master, s.Heal * looms + 5f);
+                    yield return Wait(0.2f);
+                    float h0 = SpoolUtil.Health(sewer.Master);
+                    yield return NextTide();
+                    float gain = SpoolUtil.Health(sewer.Master) - h0;
+                    Check("Sewing Machine rank " + r + ": each Tide it mends " + F(s.Heal) + " around itself", player.Sewing == r && Mathf.Abs(gain - s.Heal * looms) < 0.6f, "rank " + player.Sewing + ", health +" + F(gain) + " from " + looms + " Looms");
+                }
+                // Rank III reaches 5: a building between 3 and 5 from every Loom heals only at rank III.
+                SpoolBuilding farOne = null;
+                foreach (SpoolBuilding b in SpoolServer.Buildings)
+                {
+                    if (b == null || !b.Started || b is SpoolLoomBrain || !SpoolUtil.Alive(b.Master)) continue;
+                    float nearest = float.MaxValue;
+                    foreach (SpoolBuilding l in SpoolServer.Buildings) if (l is SpoolLoomBrain && l.Started) nearest = Mathf.Min(nearest, SpoolUtil.Flat(b.Pos, l.Pos));
+                    if (nearest > SpoolData.Sewingmachines[1].Radius + 0.1f && nearest < SpoolData.Sewingmachines[2].Radius - 0.1f) { farOne = b; break; }
+                }
+                if (farOne == null) ModKitTest.Setup("Sewing Machine rank III's reach", "nothing stands 3 to 5 from the Looms");
+                else
+                {
+                    Hit(hm, farOne.Master, 25f);
+                    yield return Wait(0.2f);
+                    float h1 = SpoolUtil.Health(farOne.Master);
+                    yield return NextTide();
+                    float h2 = SpoolUtil.Health(farOne.Master);
+                    ModKitDirections.Grant(hm, direction(SpoolData.Sewingmachines[2].Name));
+                    yield return Wait(1.2f);
+                    yield return NextTide();
+                    float h3 = SpoolUtil.Health(farOne.Master);
+                    Check("Sewing Machine rank III: its reach grows to 5", Mathf.Abs(h2 - h1) < 0.01f && h3 > h2 && player.Sewing == 3, F(h1) + " at rank II -> " + F(h2) + ", at rank III -> " + F(h3));
+                }
+            }
+        }
         // 11. The journal: Spool's pages, and every vessel page with exactly one tab per vessel (Smacky included).
         {
             Logobject page = SpoolContent.Entry.Log;

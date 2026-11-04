@@ -34,7 +34,7 @@
 		- What can be sent: only base aura, never [Pure Aura]
 		- Limit: each player can send up to 50 times the coming tide's number per break, in any mix of colours / 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue) \
 		- Where: at {VENDCINT}
-		- Status: built; its limit passed on the PC. A transfer between two players waits for the online evening
+		- Status: built, and passed on the PC with a real second player, through its dialogs /~ docs/reports/TEST_ROUND_2026-11-04.md \
 
 	[Shopkeeper]
 		{VENDCINT} / A sentient vending machine \

@@ -142,11 +142,18 @@ public static class RWDifficulty
         List<Upgradeproperties> on = new List<Upgradeproperties>();
         List<string> pool = CampaignPool(RWCampaign.Seed);
         int count = map < 3 ? 0 : Mathf.Min(pool.Count, 1 + (map - 3) / 2);
-        for (int i = 0; i < count; i++)
+        // A stock elite's upgrade is only there on maps whose groups load it (Molten wasn't on Alt_3B_Woozy, seen on the PC 2026-11-04):
+        // the next one of the campaign's, then of the rest, takes its place, so a map never goes easier than its number.
+        List<string> reserve = new List<string>(pool);
+        foreach (string s in StockElites) if (!reserve.Contains(s)) reserve.Add(s);
+        foreach (string s in PackModifiers) if (!reserve.Contains(s)) reserve.Add(s);
+        foreach (string name in reserve)
         {
-            Upgradeproperties u = RWUtil.Load<Upgradeproperties>("Upgrade", pool[i]);
+            if (on.Count >= count)
+                break;
+            Upgradeproperties u = RWUtil.Load<Upgradeproperties>("Upgrade", name);
             if (u != null) on.Add(u);
-            else RWLog.Once("no modifier " + pool[i], "modifier " + pool[i] + " isn't loaded: this map goes without it");
+            else RWLog.Once("no modifier " + name, "modifier " + name + " isn't loaded on this map: the next one stands in");
         }
         return on;
     }

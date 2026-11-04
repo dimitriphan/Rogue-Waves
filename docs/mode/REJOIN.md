@@ -12,6 +12,7 @@ showed was missing: a friend who restarts the game keeps their `Sessionid` (`RWI
 can't load a map no longer sends everyone to the main menu (`RWLoad`, O3c); both in `Code/10_Online.cs`. 0.1.0-dev
 (2026-11-03, compiled, not run; the part now carries the pack version): a turned-away player stays turned away on a
 second try (O5), and the "Lost the map" line names the host of the map just lost, not the first host of the launch.
+**2026-11-04: run with a real second player** (two copies of the game over the loopback address, `TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`; §6 below, `docs/reports/TEST_ROUND_2026-11-04.md`). It found the rejoin broken and it is fixed: see "What a real rejoin needed" in §6.
 
 ## 1. What the game does today
 
@@ -126,3 +127,25 @@ Round 6 (0.2.1, 2026-10-11): 47 pass, 0 fail.
 | O6 | Watch the others' screens while the friend joins | No stutter worth noting (note any, and the host's log time of the join) |
 | O7 | Repeat O1-O3 on a Rising Water and a Nesting Ground map | Flood, flooded tiles and nest look right on the rejoiner's screen |
 | O8 | Finish the map | The end screen lists the rejoiner with their stats; the party sails on together; the lobby is open on the boat |
+
+**With a real second player, 2026-11-04** (`TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`, kit `09_PITFALLS.md` #144; a real client with its own game and machine state, but on the loopback address and without Steam):
+
+| # | Result |
+| --- | --- |
+| O1 | Pass: chat line, the Tide clock runs on, the lobby opens, the vessel waits |
+| O2 | Pass with a real disconnect: the box reads "Lost the map. If *Host* is still playing: Steam friends, right-click *Host*, Join Game." The drop was first faked by calling the game's disconnect callback, which left the box hidden: an artefact of that call, not a bug |
+| O3 | Pass after the fixes below: same session, vessel, HUD, camera, towers, aura, Pure Aura, Directions, a look on everything |
+| O3b | Pass: killed like Task Manager, restarted, the same session and seat, with the flood on the map |
+| O3c | Pass: sent back at the 75 s limit (read as about 90 s from the host's own start of the load), and the host starts alone |
+| O4 | Pass: Tide pay reaches the rejoined player |
+| O5 | Pass: turned away twice with a chat line, the seat stays open |
+| O6 | Not measured: on one PC the two copies share a CPU, so a stutter here says nothing about a friend's machine |
+| O7 | Pass on Rising Water (flood) and on Nesting Ground without a drop (the nest on a client); a drop on a Nesting Ground map was not run |
+| O8 | Pass in parts: the end screen's title on the rejoined client (U3), both back on the boat one row on (N12), the lobby open. The stats line on the end screen wasn't read |
+
+Still for the online evening: Steam's Join Game itself and a real network's drop (a cable pulled, a timeout).
+
+**What a real rejoin needed**, neither visible solo:
+
+1. A rejoiner's own player object arrives after the rest of the map (kit `09_PITFALLS.md` #139): 506 things' client halves, the map's load, the Cardinal row and the end screen died on the null `Localplayer`, and the rejoiner would have stood on a map with no looks and no HUD for good. `RWRejoin.OnLog` notes what died, `Repair` runs it again once the object is there.
+2. The arrival can outrun the load groups (#141): on a restart, 116 of the flood's deter blocks died on a being their group hadn't loaded yet. `RWRejoin.Looks` runs those again once the group holds them. It adds the check that everything has its look, O3 and O3b.
