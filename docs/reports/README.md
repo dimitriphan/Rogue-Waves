@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `CODE_SIMPLIFICATION_2026-11-04.md` | 2026-11-04 | The mod's code read against the base game's (decompiled again): ten ways to simplify, ranked by what they remove and their risk to the proven rounds. Armour as the stock `Resistadd` stat, the stock upgrade AI back on pack buildings, one shared scaffold; what looks reimplemented but must stay; PC checks R1-R5, G1-G3. Nothing changed |
 | `SMOOTHNESS_2026-11-04.md` | 2026-11-04 | Every frame timed through a whole campaign, and the dialogs against the game's own in a map: nothing of the mod's to fix |
 | `REPO_QUALITY_CHECK_2026-11-04.md` | 2026-11-04 | The repository checked for stale lines, broken paths, unused files and scope/code mismatches: 21 issues, none breaking a build; fixed in the same PR (§8) |
 | `TEST_ROUND_2026-11-04.md` | 2026-11-04 | Every feature that had not been tested, run on the PC: the online half with a real second player on the loopback address, the solo gaps, the vessels' new checks, the whole pack. Ten bugs fixed; what is left needs Steam, a real network or a person |
