@@ -5,6 +5,7 @@ pages are one folder up (`docs/`); the mode's design pages are in `docs/mode/`.
 
 | Report | Date | What |
 | --- | --- | --- |
+| `CODE_SIMPLIFICATION_2026-11-04.md` | 2026-11-04 | The mod's code read against the base game's (decompiled again): ten ways to simplify, ranked by what they remove and their risk to the proven rounds. Armour as the stock `Resistadd` stat, the stock upgrade AI back on pack buildings, one shared scaffold; what looks reimplemented but must stay; PC checks R1-R5, G1-G3. Nothing changed |
 | `TEST_ROUND_2026-11-04.md` | 2026-11-04 | Every feature that had not been tested, run on the PC: the online half with a real second player on the loopback address, the solo gaps, the vessels' new checks, the whole pack. Ten bugs fixed; what is left needs Steam, a real network or a person |
 | `ULOE_UPGRADES_2026-11-04.md` | 2026-11-04 | Uloe's upgrade trees fleshed out from 8 to 32 (8 a building, a capstone each), the five holes they fill (crowds, colour trade, a parked frail vessel, no slow, no capstones), hand numbers against Smacky's towers by Light (`uloe_upgrades_2026-11-04/`), the route each takes in the next build |
 | `ARGO_REVIEW_2026-11-04.md` | 2026-11-04 | Argo's kit reviewed for balance and skill: its slows stack with their own re-ticks; with that fixed it sits between Smacky and Yossele; fourteen changes in scope `09`; simulator with Argo (`balance_argo_2026-11-04/`) |

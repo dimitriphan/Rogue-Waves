@@ -304,6 +304,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   modded minions. They should be closer in size to snobles. Create at least 10 versions of each."): Cordyfriend, Thread Head,
   Stitched, Dart, Seam, Mangled, Photon, Naut (in all three crew colours); the foes part adds no bodies. Files only, nothing
   wired until he picks on the Minion Picks page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (`docs/TEMP_ART.md` "Minion versions"; Log).
+  2026-11-04: the mod's code read against the base game's for what could be simpler (Dimitri: "Don't make any changes";
+  cloud only, nothing changed; `docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`): ten findings ranked. The three big ones:
+  armour and "takes more" as the game's own `Resistadd` stat with the stock `Fiewall_Regen` script, instead of five hand-kept
+  hit hooks; the stock `Entity_Ai_General_Upgrade` instead of four mirrors of it, which also makes Voice in a Bottle work on
+  pack buildings; and the four vessels' shared scaffold (about 2,500 lines) moved into `Shared`. Read only, so it needs a PC
+  check: a tower holding Spring Tide next to a Fie wall that spreads its resistance may take half damage today (R3). Each
+  step waits for his word; the suggested order is the report's last section.
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
