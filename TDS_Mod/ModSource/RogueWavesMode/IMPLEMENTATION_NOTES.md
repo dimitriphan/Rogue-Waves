@@ -12,6 +12,13 @@
 
 Test code: `92_Gaps.cs` (`ROGUEWAVESMODE_GAPS`) and `93_TwoPlayers.cs` (`ROGUEWAVESMODE_TWOPC`), both out of a release build, and `Tools/pc/Run-TwoPlayers.ps1`.
 
+## For the next mode build (2026-11-04, repository check)
+
+`RWCardinals.NotSold` (`17_Cardinals.cs`) names four ids that are not among the game's 40 Cardinals (`reference/roguelab_round1.txt`):
+`Artifact_Moon`, `Artifact_Loopedmirror`, `Artifact_Sand` and `Artifact_Bottomrock` (Bottom Rock is `Artifact_Rock`, also listed).
+Harmless, since the shelf only ever sees the folder's 40; drop them or confirm what they meant at the next build
+(`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md` O3). The seven removed Cardinals' icons are gone from `Art/Temporary/game_size/`.
+
 ## 0.1.0-dev, later (2026-11-04): seven Cardinals removed
 
 At Dimitri's word, Claude's seven starter Cardinals are gone from `RWCardinals.Mine` and their icons from
@@ -20,7 +27,7 @@ copied a stock Cardinal (`docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04
 `Artifact_Vintage` and `Artifact_Loop`, which only Tide Clock and Second Wind needed. The pack now sells only
 Vampire Dentures of its own, beside the stock Cardinals on sale. Claude's newer Cardinals in scope `12` are not built yet.
 A saved campaign that still holds one of the seven keeps its id, but `Def()` finds no sheet for it, so nothing is
-granted. **State:** compiled here: release and `ROGUEWAVESMODE_SELFTEST` give the same 9 errors as the base, all TMPro members the cloud stubs lack (`14_Run.cs`), none from this change; editor builder clean. Not run on the PC. The next PC round's shop check (`Cardinals: every one on
+granted. **State:** compiled here: release and `ROGUEWAVESMODE_SELFTEST` gave the same 9 errors as the base, all TMPro members the cloud stubs lacked (`14_Run.cs`; added to the stubs 2026-11-04, so both now compile at 0), none from this change; editor builder clean. Not run on the PC. The next PC round's shop check (`Cardinals: every one on
 sale goes on with no error`) covers it.
 
 ## 0.1.0-dev (2026-11-03): the mode polish

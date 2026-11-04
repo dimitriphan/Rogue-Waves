@@ -164,6 +164,8 @@ namespace UnityEngine.UI
     public class GridLayoutGroup : LayoutGroup
     {
         public enum Constraint { Flexible, FixedColumnCount, FixedRowCount }
+        public enum Axis { Horizontal, Vertical }   // added 2026-11-04 for RogueWavesMode's dialog placement (11_Dialog.cs)
+        public Axis startAxis { get { throw null; } set { } }
         public Constraint constraint { get { throw null; } set { } }
         public int constraintCount { get { throw null; } set { } }
         public UnityEngine.Vector2 cellSize { get { throw null; } set { } }
@@ -182,13 +184,28 @@ namespace UnityEngine.UI
     public class Shadow : UnityEngine.EventSystems.UIBehaviour { }
     public class Dropdown : Selectable { }
     public class InputField : Selectable { }
-    public class CanvasScaler : UnityEngine.EventSystems.UIBehaviour { }
+    public class CanvasScaler : UnityEngine.EventSystems.UIBehaviour { public float scaleFactor { get { throw null; } set { } } }   // scaleFactor: 2026-11-04, the mode's 92_Gaps.cs
     public class GraphicRaycaster : UnityEngine.MonoBehaviour { }
 }
 
 namespace TMPro
 {
-    public abstract class TMP_Text : UnityEngine.UI.MaskableGraphic { public string text { get { throw null; } set { } } public float fontSize { get { throw null; } set { } } public UnityEngine.Bounds textBounds { get { throw null; } } }
+    public abstract class TMP_Text : UnityEngine.UI.MaskableGraphic
+    {
+        public string text { get { throw null; } set { } }
+        public float fontSize { get { throw null; } set { } }
+        public UnityEngine.Bounds textBounds { get { throw null; } }
+        // Added 2026-11-04 for RogueWavesMode's dialog placement (11_Dialog.cs, 05_Boat.cs).
+        public TextAlignmentOptions alignment { get { throw null; } set { } }
+        public bool enableWordWrapping { get { throw null; } set { } }
+        public bool enableAutoSizing { get { throw null; } set { } }
+        public TextOverflowModes overflowMode { get { throw null; } set { } }
+        public TMP_FontAsset font { get { throw null; } set { } }
+        public UnityEngine.Material fontSharedMaterial { get { throw null; } set { } }
+        public void ForceMeshUpdate(bool ignoreActiveState = false, bool forceTextReparsing = false) { }
+    }
+    public enum TextAlignmentOptions { TopLeft = 257, Top = 258, TopRight = 260, Left = 513, Center = 514, Right = 516, BottomLeft = 1025, Bottom = 1026, BottomRight = 1028 }
+    public enum TextOverflowModes { Overflow, Ellipsis, Masking, Truncate, ScrollRect, Page, Linked }
     public class TextMeshProUGUI : TMP_Text { }
     public class TextMeshPro : TMP_Text { }
     public class TMP_InputField : UnityEngine.UI.Selectable { }

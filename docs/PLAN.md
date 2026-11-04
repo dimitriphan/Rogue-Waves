@@ -228,79 +228,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done:** Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` (0.2.1: sea chart, sea weather, rejoin; solo PC
-  rounds passed; full re-test 2026-10-11, 208/0; 0.3.0 below). Yossele 0.2.0-dev is built and is Dimitri's play build
-  (2026-10-23 below; 0.1.0-dev, PC round 8, 98/0, is parked). Kit chapters 17 (base vessels; RogueLab
-  round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
-  Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
-  template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
-  RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
-  a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
-  file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
-  clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
-  2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
-  sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-23: Spool's answers folded
-  into scope `08`; the Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports
-  the sheet (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from scope `08` with temporary art; its first
-  PC round passed its self-test 120/0 on round 1c (Log). 2026-10-26: Yossele 0.2.0-dev and Spool 0.1.0-dev played
-  through the HUD by a virtual player on three maps; two bugs fixed on PRs #41 and #42 and seen fixed in game; Spool's
-  first Tide is too thin (`docs/reports/PLAYTEST_2026-10-26.md`). 2026-10-27: a temporary art pass
-  (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
-  icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
-  and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
-  knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
-  redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
-  (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
-  Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-10-28: the
-  game's code read system by system and the scope fitted to it
-  (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
-  `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
-  2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
-  the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
-  2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
-  nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
-  60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art
-  (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a UX features study; Dimitri
-  picked its five recommended features for Phase 5 (`docs/reports/UX_FEATURES_2026-11-03.md`; Decisions; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
-  calibrated on the 2026-10-26 play test (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's
-  proposals P1-P4 wait for his pick (Open questions 3; Log). 2026-11-03: an aura baseline read from the game's code
-  (`docs/reports/AURA_BASELINE_2026-11-03.md`, cloud only): a base vessel earns about 4,800 aura a map; Yossele's
-  Sapling mines 2-2.5× and Spool's Loom 4-5× the base average; P1-P4 stand; options P5-P7 (Open questions 3-4; Log).
-  2026-11-03: **every planned feature built and tested in game** (`docs/reports/BUILD_2026-11-03.md`): the whole campaign, from the main-menu
-  button to the end screen, self-test 139/0 in game, with every part of the pack on at once as well; the foes part; Uloe; kit 1.7; the sea
-  chart rebuilt on the base game's own art. 2026-11-03: the balance simulator re-run on the round's numbers
-  (`docs/reports/BALANCE_RERUN_2026-11-03.md`, cloud only, no number changed): his own wall decides Spool's picks (Log).
-  2026-11-04: the missing upgrades of Yossele and Spool, against the base vessels' trees (`docs/reports/UPGRADE_GAPS_2026-11-04.md`,
-  cloud only, no mod or scope changed): Yossele needs one (Wood Wide Web, a trade); Spool needs 22, five of them fill the
-  studies' holes; Dimitri accepted them all and they are in scopes `07` and `08`, not built (Decisions).
-  2026-11-04: at Dimitri's ask (his Yossele-and-Spool limit lifted for it), 21 new Directions and 13 new Cardinals drawn
-  from StarCraft II's campaign upgrades at the stock Cardinals' power, all Claude `~defaults~` in scopes `11` and `12`;
-  every Direction and Cardinal now carries `By: Dimitri` or `By: Claude` (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`,
-  not built); the Scope Editor artifact (https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo) shows and edits every scope file, makers
-  tagged, and exports the `.txt` (source in project files `concepts/scope_editor_2026-11-04/`; Log).
-  2026-11-04: five concept sprites of Argo as a diver who might not be entirely human (Barnacled, Angler, Hollow,
-  Passenger, Pressure Hull), drawn over his shipped frame, idle and back each; Dimitri picks on
-  https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (`docs/concepts/argo_divers_2026-11-04/`; not wired; Log).
-  2026-11-04: the overlap check Dimitri asked for: 5 of those 13 Cardinals copied a stock one and are removed (Iron Rivets, Siren
-  Conch, Kelp Net, Lucky Geode, Storm Lantern); then 11 more Directions (Any, 2 Duos, Yossele, Spool) and 7 Cardinals after Risk of
-  Rain 2, Hades and other roguelikes, all Claude `~defaults~`, not built; the Scope Editor rebuilt on the same link
-  (`docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md`; Log). At his next word Claude's seven older Cardinals that copied
-  stock ones (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell, Second Wind) are removed from scope `12`
-  and from RogueWavesMode's code (compiled here, not run on the PC).
-  2026-11-04: he picked Hollow; round 2 draws it in five head and body shapes (Bell Jar, Fish Tank, Slump, Fishbowl,
-  Hunch) on the same page (`docs/concepts/argo_hollow_2026-11-04/`; not wired; Log).
-  2026-11-04: round 2 did not appeal; round 3 draws ten new Hollow bodies on round 1's helmet (Big Head, Long Legs, Lead
-  Boots, Waterlogged, Broad, Air Tank, Stout, Lopsided, Bell Skirt, Long Arms), top of the same page
-  (`docs/concepts/argo_hollow_ten_2026-11-04/`; not wired; Log).
-  2026-11-04 05:31Z, Dimitri: "Keep the original for now." Argo keeps his shipped look; the three concept rounds stay on file.
-  2026-11-04: a balance and skill review of Argo (his Yossele-and-Spool limit lifted for it; cloud only, nothing built):
-  close to balanced once its slows match its sheet; fourteen changes in scope `09`, each marked with what it was, and two
-  code fixes for the next Argo build (`docs/reports/ARGO_REVIEW_2026-11-04.md`; Open questions 8; Log).
-  2026-11-04: Uloe's upgrades fleshed out (his Yossele-and-Spool limit lifted for it; cloud only, nothing built): 8 to 32,
-  every building 8 with a capstone, all Claude `~defaults~` in scope `10` beside his eight lines; hand numbers put a lit
-  Uloe level with Smacky (`docs/reports/ULOE_UPGRADES_2026-11-04.md`; Open questions 9; Log).
-  2026-11-04: **every feature that had not been tested was run, the mod's online half with a real second player** (two copies of the game on the PC over the loopback address; `docs/reports/TEST_ROUND_2026-11-04.md`): votes, shop, Fund Transfer, weather, the drop and rejoin, Continue with a friend, a friend without the pack, four vessel pairs on a client, the F key on a real death, Direction effects on real hits, UI scales, the 45 maps, ten maps to the win. Ten bugs fixed, among them a rejoin that left a friend on a map with no looks for good and a Spring Tide that made hits on a tower infinite. Vessel self-tests: Spool 133, Argo 142, Yossele 173, Uloe 148, no failures. The whole mod boots as one pack (`pack.txt` itself stays Yossele alone). Compiled and run on the PC.
-  Older entries are in "Log" below.
+- **Done (state on 2026-11-04):** Phases 1-2 and Phase 3 Argo. **Built and run on the PC:** Argo 2.0.1, Yossele 0.2.0-dev
+  (Dimitri's play build), Spool 0.1.0-dev and Uloe 0.1.0-dev, all with temporary art (`docs/TEMP_ART.md`, his 35 picks);
+  the mode `RogueWavesMode` 0.1.0-dev (the whole campaign, from the main-menu button to the end screen); the foes part;
+  kit 1.7. The 2026-11-03 build round passed 139/0 with every part on (`docs/reports/BUILD_2026-11-03.md`); the
+  2026-11-04 test round ran the online half with a real second player, ten maps to the win and every vessel's self-test
+  with no failure, and the six parts boot as one pack (`docs/reports/TEST_ROUND_2026-11-04.md`). **Designed, not built**
+  (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
+  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 15 Cardinals (`11`, `12`).
+  Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
+  `docs/reports/README.md`. 2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -679,6 +616,80 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   hold the built numbers. `docs/reports/ULOE_UPGRADES_2026-11-04.md`, numbers in `docs/reports/uloe_upgrades_2026-11-04/`; Scope
   Editor republished on the same link.
 - **2026-11-04: every untested feature tested** (Dimitri: "Develop upgrades for Uloe until they're fully fleshed out. Afterwards, make sure to test all untested features of the mod."; Uloe's upgrades are their own thread). On the PC: a real second player through a second copy of the game on the loopback address (`TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`, `RogueWavesMode/Code/93_TwoPlayers.cs`), the solo gaps (`92_Gaps.cs`), new Direction and rate checks in the vessels' self-tests. Ten bugs fixed; pitfalls #139-#149; `docs/mode/REJOIN.md` §6, kit `docs/19` §8 and `docs/RESEARCH_GAPS.md` §E say what is left. Report: `docs/reports/TEST_ROUND_2026-11-04.md`.
+- **2026-11-04: "Now"'s Done list, moved here word for word** by the repository tidy
+  (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md` S12), so "Now" stays the short state Part A asks for. It read:
+  > Phases 1-2, Phase 3 Argo, and the mode part `RogueWavesMode` (0.2.1: sea chart, sea weather, rejoin; solo PC
+  > rounds passed; full re-test 2026-10-11, 208/0; 0.3.0 below). Yossele 0.2.0-dev is built and is Dimitri's play build
+  > (2026-10-23 below; 0.1.0-dev, PC round 8, 98/0, is parked). Kit chapters 17 (base vessels; RogueLab
+  > round 7 checked it in game, `docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`) and 18 (character art); the Vessel
+  > Spotlight pages (Log). 2026-10-14: every scope file follows one rule set (`docs/scope/00_Read_Me.txt`), with every
+  > template in `15_Templates.txt`; a full decompile gave kit chapters 19-24 and pitfalls #93-101. 2026-10-15:
+  > RogueWavesMode 0.3.0 and Argo 2.0.1 fix the four problems it found (compiled, not run; Log); two quality passes and
+  > a reorganisation (`docs/reports/`, `docs/mode/`; `docs/reports/QUALITY_CHECK_2026-10-15.md`); then passes over every
+  > file: twelve passes, then eleven more counting only wrong facts, stopped at Dimitri's word once pass 23 was in (one
+  > clean pass, pass 20, never two in a row); what was found and why is in `docs/reports/QUALITY_PASSES_2026-10-15.md`.
+  > 2026-10-16: scope defaults are written `~value~` (Log). 2026-10-23: Yossele 0.2.0-dev, built from the 2026-10-20
+  > sheet; PC round 9 passed its self-test 160/0 and it is Dimitri's play build (Log). 2026-10-23: Spool's answers folded
+  > into scope `08`; the Spotlight rebuilt on his newest sheets and reshade sprites, plus a Vessel Editor page that exports
+  > the sheet (Log). 2026-10-26: at Dimitri's ask, Spool 0.1.0-dev is built from scope `08` with temporary art; its first
+  > PC round passed its self-test 120/0 on round 1c (Log). 2026-10-26: Yossele 0.2.0-dev and Spool 0.1.0-dev played
+  > through the HUD by a virtual player on three maps; two bugs fixed on PRs #41 and #42 and seen fixed in game; Spool's
+  > first Tide is too thin (`docs/reports/PLAYTEST_2026-10-26.md`). 2026-10-27: a temporary art pass
+  > (`docs/TEMP_ART.md`): the Cordyfriend's own sheet and a bigger fruit (Yossele, wired, compiled), the mode's weather
+  > icons redrawn (wired) and twelve more icons for the crest, Pure Aura, Depth, retries, the vote, the scope's Directions
+  > and Vampire Dentures (files), Spool's tuft and needle (wired on PR #42); then temporary animations: Yossele's
+  > knuckle walk and laser attack (files over the code's sheets, wired, compiled) and Spool's Thread Head and four Crafted
+  > redrawn (wired on PR #42 at `ad85b00`). 2026-10-28: a mistake check over every file, two passes
+  > (`docs/reports/MISTAKE_CHECK_2026-10-28.md`): 31 found, 28 fixed (stale Yossele state in eleven places, scope `16`'s
+  > Yossele row and two accent colours, three dev-export versions, pointers), every mod compiles clean. 2026-10-28: the
+  > game's code read system by system and the scope fitted to it
+  > (`docs/reports/ENGINE_STUDY_2026-10-28.md`, its catalogue of 284 stock behaviour scripts, and
+  > `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`): every scope idea rides on a stock mechanic, none needs a new one (Log).
+  > 2026-10-29: RogueLab round 8 checked it on the PC, **21 pass, 0 fail** on the rerun: all eight probes and seven of
+  > the 13 facts are now seen in game, in the kit as pitfalls #115-#120 (Log).
+  > 2026-10-28: three versions of every temporary asset and every animation to pick from (`Art/Temporary/variants/v1-v3/`,
+  > nothing wired changes; Log). 2026-11-03: the mode polish, RogueWavesMode 0.1.0-dev (retries, Tide 15 wins,
+  > 60 s breaks, `RW_` keys; compiled, not run; Log). 2026-11-03: Dimitri's 35 picks applied to the wired temporary art
+  > (`docs/TEMP_ART.md` "Dimitri's picks"; compiled, not seen in game; Log). 2026-11-03: a UX features study; Dimitri
+  > picked its five recommended features for Phase 5 (`docs/reports/UX_FEATURES_2026-11-03.md`; Decisions; Log). 2026-11-03: a balance study of Yossele and Spool in a simulator
+  > calibrated on the 2026-10-26 play test (`docs/reports/BALANCE_2026-11-03.md`, cloud only): Yossele unchanged; Spool's
+  > proposals P1-P4 wait for his pick (Open questions 3; Log). 2026-11-03: an aura baseline read from the game's code
+  > (`docs/reports/AURA_BASELINE_2026-11-03.md`, cloud only): a base vessel earns about 4,800 aura a map; Yossele's
+  > Sapling mines 2-2.5× and Spool's Loom 4-5× the base average; P1-P4 stand; options P5-P7 (Open questions 3-4; Log).
+  > 2026-11-03: **every planned feature built and tested in game** (`docs/reports/BUILD_2026-11-03.md`): the whole campaign, from the main-menu
+  > button to the end screen, self-test 139/0 in game, with every part of the pack on at once as well; the foes part; Uloe; kit 1.7; the sea
+  > chart rebuilt on the base game's own art. 2026-11-03: the balance simulator re-run on the round's numbers
+  > (`docs/reports/BALANCE_RERUN_2026-11-03.md`, cloud only, no number changed): his own wall decides Spool's picks (Log).
+  > 2026-11-04: the missing upgrades of Yossele and Spool, against the base vessels' trees (`docs/reports/UPGRADE_GAPS_2026-11-04.md`,
+  > cloud only, no mod or scope changed): Yossele needs one (Wood Wide Web, a trade); Spool needs 22, five of them fill the
+  > studies' holes; Dimitri accepted them all and they are in scopes `07` and `08`, not built (Decisions).
+  > 2026-11-04: at Dimitri's ask (his Yossele-and-Spool limit lifted for it), 21 new Directions and 13 new Cardinals drawn
+  > from StarCraft II's campaign upgrades at the stock Cardinals' power, all Claude `~defaults~` in scopes `11` and `12`;
+  > every Direction and Cardinal now carries `By: Dimitri` or `By: Claude` (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`,
+  > not built); the Scope Editor artifact (https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo) shows and edits every scope file, makers
+  > tagged, and exports the `.txt` (source in project files `concepts/scope_editor_2026-11-04/`; Log).
+  > 2026-11-04: five concept sprites of Argo as a diver who might not be entirely human (Barnacled, Angler, Hollow,
+  > Passenger, Pressure Hull), drawn over his shipped frame, idle and back each; Dimitri picks on
+  > https://claude.ai/artifact/FnchhGQBHvi9JyhC47TCe2 (`docs/concepts/argo_divers_2026-11-04/`; not wired; Log).
+  > 2026-11-04: the overlap check Dimitri asked for: 5 of those 13 Cardinals copied a stock one and are removed (Iron Rivets, Siren
+  > Conch, Kelp Net, Lucky Geode, Storm Lantern); then 11 more Directions (Any, 2 Duos, Yossele, Spool) and 7 Cardinals after Risk of
+  > Rain 2, Hades and other roguelikes, all Claude `~defaults~`, not built; the Scope Editor rebuilt on the same link
+  > (`docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md`; Log). At his next word Claude's seven older Cardinals that copied
+  > stock ones (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell, Second Wind) are removed from scope `12`
+  > and from RogueWavesMode's code (compiled here, not run on the PC).
+  > 2026-11-04: he picked Hollow; round 2 draws it in five head and body shapes (Bell Jar, Fish Tank, Slump, Fishbowl,
+  > Hunch) on the same page (`docs/concepts/argo_hollow_2026-11-04/`; not wired; Log).
+  > 2026-11-04: round 2 did not appeal; round 3 draws ten new Hollow bodies on round 1's helmet (Big Head, Long Legs, Lead
+  > Boots, Waterlogged, Broad, Air Tank, Stout, Lopsided, Bell Skirt, Long Arms), top of the same page
+  > (`docs/concepts/argo_hollow_ten_2026-11-04/`; not wired; Log).
+  > 2026-11-04 05:31Z, Dimitri: "Keep the original for now." Argo keeps his shipped look; the three concept rounds stay on file.
+  > 2026-11-04: a balance and skill review of Argo (his Yossele-and-Spool limit lifted for it; cloud only, nothing built):
+  > close to balanced once its slows match its sheet; fourteen changes in scope `09`, each marked with what it was, and two
+  > code fixes for the next Argo build (`docs/reports/ARGO_REVIEW_2026-11-04.md`; Open questions 8; Log).
+  > 2026-11-04: Uloe's upgrades fleshed out (his Yossele-and-Spool limit lifted for it; cloud only, nothing built): 8 to 32,
+  > every building 8 with a capstone, all Claude `~defaults~` in scope `10` beside his eight lines; hand numbers put a lit
+  > Uloe level with Smacky (`docs/reports/ULOE_UPGRADES_2026-11-04.md`; Open questions 9; Log).
+  > 2026-11-04: **every feature that had not been tested was run, the mod's online half with a real second player** (two copies of the game on the PC over the loopback address; `docs/reports/TEST_ROUND_2026-11-04.md`): votes, shop, Fund Transfer, weather, the drop and rejoin, Continue with a friend, a friend without the pack, four vessel pairs on a client, the F key on a real death, Direction effects on real hits, UI scales, the 45 maps, ten maps to the win. Ten bugs fixed, among them a rejoin that left a friend on a map with no looks for good and a Spring Tide that made hits on a tower infinite. Vessel self-tests: Spool 133, Argo 142, Yossele 173, Uloe 148, no failures. The whole mod boots as one pack (`pack.txt` itself stays Yossele alone). Compiled and run on the PC.
 
 ### Decisions
 

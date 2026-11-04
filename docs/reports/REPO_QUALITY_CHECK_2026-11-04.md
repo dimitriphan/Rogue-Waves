@@ -1,5 +1,13 @@
 # Repository quality check, 2026-11-04
 
+> **Stage 2 done, 2026-11-04 17:30Z, on the base with PRs #71 and #72 merged:** fixed in place S1-S12, S14, O1, M1, Q1
+> and Q2 (Argo's lines now also cite the test round's 142/0). S13 was already fixed by PR #71. Q1 went further than listed:
+> the stubs gained every TMPro member the mode uses, so its release, `ROGUEWAVESMODE_SELFTEST` and `_GAPS` builds
+> compile at 0 errors; `_TWOPC` (Netcode's transport, the chat box) still compiles only on the PC, now said in the
+> cloud-check README. O3 is a note in the mode's `IMPLEMENTATION_NOTES.md`; M2 still waits for Dimitri's word. S12
+> moved Part C "Now"'s Done list word for word into "Log" and left a ten-line state in its place. Below is the report as
+> written in stage 1.
+
 Dimitri, 2026-11-04 05:41Z: "If all threads are idle, begin tidying up the repository while doing a quality check of
 the resources in the repository." Two threads were still running (Uloe's upgrades, the untested-features PC round), so
 this runs in two stages: **stage 1** (this report) reads only; **stage 2** does the moves, deletions and rewrites once

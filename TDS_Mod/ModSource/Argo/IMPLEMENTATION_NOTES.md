@@ -11,7 +11,7 @@ Barrel, Abyss, Trench, Gusher (4 strikes a Fathom), Mantle Tap (Attackspeed x1.5
 `Damage_Pmulti`, which mines nothing past Fathom 3), the Drill's control path and the Miner's Base priced in Yellow.
 The self-test checks that read the old numbers move with them (Kelp, Trench, Mantle, Gusher, the Base's cost).
 
-**2.0.1 (2026-10-15, compiled, not run): looks that must show online.** The decompile showed the game drops
+**2.0.1 (2026-10-15; run in game since: self-test 142/0 and a second player's machine, `docs/reports/TEST_ROUND_2026-11-04.md`): looks that must show online.** The decompile showed the game drops
 `Vfxdebuffcheck` and `Vfxoneshotcheck` sends while 50 effects wait (kit `docs/19` §4, pitfall #95), which happens in
 busy online fights. `ArgoUtil.Debuff` (the slow look on every slow, root and pin) now calls `Vfxdebuff_ClientRpc`
 itself, counts it in `Clientsendstack`, and skips a look already showing until the new one's end (cleared per map,

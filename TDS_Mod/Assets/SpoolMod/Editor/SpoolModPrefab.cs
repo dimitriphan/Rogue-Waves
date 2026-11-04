@@ -107,7 +107,7 @@ namespace SpoolBuild
             ModTool.Editor.Exporting.ExportSettings.name = "SpoolMod";
             ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
             ModTool.Editor.Exporting.ExportSettings.description = "Adds Spool, Crafty Crafted Crafter: a plush vessel that carries Thread home and stitches it into a disposable army. Every player in a lobby needs this mod.";
-            ModTool.Editor.Exporting.ExportSettings.version = "1.0";
+            ModTool.Editor.Exporting.ExportSettings.version = "0.1.0-dev";   // the pack version plus -dev (docs/PACK.md section 4)
             ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
             AssetDatabase.SaveAssets();
             ModTool.Editor.Exporting.ModExporter.ExportMod();
