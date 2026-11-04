@@ -296,6 +296,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: a balance and skill review of Argo (his Yossele-and-Spool limit lifted for it; cloud only, nothing built):
   close to balanced once its slows match its sheet; fourteen changes in scope `09`, each marked with what it was, and two
   code fixes for the next Argo build (`docs/reports/ARGO_REVIEW_2026-11-04.md`; Open questions 8; Log).
+  2026-11-04: Uloe's upgrades fleshed out (his Yossele-and-Spool limit lifted for it; cloud only, nothing built): 8 to 32,
+  every building 8 with a capstone, all Claude `~defaults~` in scope `10` beside his eight lines; hand numbers put a lit
+  Uloe level with Smacky (`docs/reports/ULOE_UPGRADES_2026-11-04.md`; Open questions 9; Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -666,6 +669,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   almost nowhere. Blue starves the crew and the water on Woozy and The Hunt. AIM is worth seven Tides on Woozy. Fourteen changes in scope
   `09` (Claude `~defaults~`, each with a "Review 2026-11-04: was ..." note), the code list in Argo's `IMPLEMENTATION_NOTES.md`; Scope Editor
   republished on the same link. `docs/reports/ARGO_REVIEW_2026-11-04.md`, simulator in `docs/reports/balance_argo_2026-11-04/`.
+- **2026-11-04: Uloe's upgrades fleshed out** (Dimitri: "Develop upgrades for Uloe until they're fully fleshed out."). Uloe had 8
+  upgrades (Glass 1, Bank 1, Mirror 4, Flood Light 2), no capstones. Now 32: each building 8, two roots, crossing branches, one early end,
+  a capstone (Death Ray, Supernova, Heliostat, Stadium Lights or Lighthouse). They fill five holes: crowds (Prism, Focal Point, Chain
+  Lightning), a colour trade (Colour Filter), a parked frail vessel (Surge Protector), no slow (Searchlight), no capstones. Hand numbers:
+  unlit about half of Smacky's towers, at Light 8 level with them, at Light 12 a quarter or more above. Blank stat slots in scope `10` now
+  hold the built numbers. `docs/reports/ULOE_UPGRADES_2026-11-04.md`, numbers in `docs/reports/uloe_upgrades_2026-11-04/`; Scope
+  Editor republished on the same link.
 
 ### Decisions
 
@@ -837,6 +847,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 | 7 | New Directions and Cardinals (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
 | 8 | Argo's review (`docs/reports/ARGO_REVIEW_2026-11-04.md` §5): take, change or drop each of the fourteen changes in scope `09`; and if he takes P5 (question 4), the Drill Rig's Attackspeed 0.25 → 0.2 with it | each `~value~` stands; the next Argo build picks them up; the Drill stays at 0.25 unless P5 is taken |
+| 9 | Uloe's 24 new upgrades (`docs/reports/ULOE_UPGRADES_2026-11-04.md` §3, scope `10` [Questions] 2-3): take, rename, change or drop each; Supernova a button or automatic; and if he takes P5 (question 4), the Flood Light's strike rate drops with the Sapling's | each `~value~` stands; nothing is built until he picks; the next Uloe build is an xhigh PC round |
 
 ### Phase 5 pieces
 
