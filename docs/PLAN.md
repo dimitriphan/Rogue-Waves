@@ -303,7 +303,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #137 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03).
+- **Next free numbers:** kit chapter 25, pitfall #138 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137 the dialog's placement).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -608,6 +608,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (8 Any, 3 Yossele, 3 Spool, 2 Argo, 1 more per base vessel) and 13 Cardinals (8 Vessel, 5 Team), Claude `~defaults~` at the stock
   Cardinals' scale, each with the StarCraft II upgrade behind it and the game piece it rides on (read, not built). New scope rule: every
   Direction and Cardinal ends with `By: Dimitri` or `By: Claude`; `06` and `12` gain Power and Pairs lines. `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`.
+- **2026-11-03: the choice dialogs' placement.** Dimitri: "The UI for VENDCINT and selecting the Rogue Waves button is too far to the side, cutting off many options." Every dialog the mode asks now stands in the middle of the screen with every card and word on it, at any size and card count; the stock dialog slides in late, so the old centring measured it mid-slide (pitfall #137). In game: 150 pass in the whole campaign with every part on, 68 at four screen sizes. `docs/reports/DIALOG_PLACEMENT_2026-11-03.md`.
 
 ### Decisions
 

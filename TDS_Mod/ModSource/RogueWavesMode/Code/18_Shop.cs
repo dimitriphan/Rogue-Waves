@@ -231,7 +231,7 @@ public static class RWShop
         }
         cards.Add(Back());
         string pick = null;
-        yield return RWDialog.Ask(cards, "VENDCINT", "Pure Aura: " + pure, 0f, true, n => pick = n);
+        yield return RWDialog.Ask(cards, "VENDCINT", "Pure Aura: " + pure, 0f, n => pick = n);
         asking = "";
         if (pick == null || pick == "Back")
             yield break;
@@ -267,7 +267,7 @@ public static class RWShop
         }
         friends.Add(Back());
         string to = null;
-        yield return RWDialog.Ask(friends, "FUND TRANSFER", "Send to whom?", 0f, true, n => to = n);
+        yield return RWDialog.Ask(friends, "FUND TRANSFER", "Send to whom?", 0f, n => to = n);
         if (to == null || to == "Back") { asking = ""; yield break; }
         yield return new WaitForSecondsRealtime(0.3f);
         List<Bla_Ui_Confirmation.Entry> colours = new List<Bla_Ui_Confirmation.Entry>();
@@ -276,7 +276,7 @@ public static class RWShop
         colours.Add(Colour("Yellowaura", "Yellow", Have("Yellowaura"), new Color(0.86f, 0.72f, 0.25f, 1f)));
         colours.Add(Back());
         string res = null;
-        yield return RWDialog.Ask(colours, "FUND TRANSFER", "Send which aura?", 0f, true, n => res = n);
+        yield return RWDialog.Ask(colours, "FUND TRANSFER", "Send which aura?", 0f, n => res = n);
         if (res == null || res == "Back") { asking = ""; yield break; }
         yield return new WaitForSecondsRealtime(0.3f);
         int wave = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0;
@@ -287,7 +287,7 @@ public static class RWShop
                 amounts.Add(RWDialog.Card(a.ToString(), a.ToString(), "Send " + a, null, RWDialog.Teal));
         amounts.Add(Back());
         string amount = null;
-        yield return RWDialog.Ask(amounts, "FUND TRANSFER", "This break's limit: " + limit, 0f, true, n => amount = n);
+        yield return RWDialog.Ask(amounts, "FUND TRANSFER", "This break's limit: " + limit, 0f, n => amount = n);
         asking = "";
         if (amount == null || amount == "Back")
             yield break;
@@ -309,7 +309,7 @@ public static class RWShop
         cards.Add(RWDialog.Card("Take", "Take it", p[1], RWAssets.Sprite("RogueWaves_Board"), RWDialog.Teal));
         cards.Add(Back());
         string pick = null;
-        yield return RWDialog.Ask(cards, p[0], p[1], 0f, false, n => pick = n);
+        yield return RWDialog.Ask(cards, p[0], p[1], 0f, n => pick = n);
         asking = "";
         if (pick == "Take")
             RWMine.Send("Board", 0, "");

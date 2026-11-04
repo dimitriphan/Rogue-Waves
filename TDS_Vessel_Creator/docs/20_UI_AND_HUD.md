@@ -71,6 +71,20 @@ Read `01` §8, §11, `05` §7-8 and `15` §6, §14.6, §18.2 first.
 - **No timeout and no cancel:** closing the menu another way leaves the task pending. A timed vote closes the dialog
   itself (`Bl_Menus.Closemenu(dialog.gameObject, true)`) and treats the pending task as "no vote".
 - `List`'s `GridLayoutGroup` is a mod-adjustable default (Riptide and RogueLab use up to 4 per row).
+- **What it is made of** (read in game, 2026-11-03): `Confirmation` (its own Canvas) > `Main` > `Fade` (the dim), `Back` (the dark
+  edge at the screen's right), `List` (a grid with a `ContentSizeFitter`, cell 60, gap -5, anchored at (1, 0.2) with its pivot top
+  right, cards filling from the right) and `Title` (with `Line`, the corner's rule, 300 by 1000, and a small `Image`). `Subbox` and
+  `Descbox` are the same object, `Sub`, a child of `List` that ignores the layout: one line 1000 wide, right-aligned, autosized
+  to 10.35, running left from the cards. A long hover line runs off the screen's left edge wherever the cards are.
+- **It slides in by anchors, and late** (pitfall #137): `Main` and `List` each carry a `Move` on their `Blu4_Transition_Animator`.
+  `Main`'s anchors go from x 0.3 to 0 for about a second after `Intransition` has gone false, some 0.55 s after `Changemenu`, and
+  before that every rectangle under it reads nonsense. Nothing measured before about 1.6 s is true, and `Main` must never be
+  moved, since the dim and the dark edge go with it. To place the cards somewhere else, anchor `List` and `Title` inside `Main` and
+  write them again in `Canvas.willRenderCanvases`, because `List`'s own `Move` writes its anchors back. `RWDialog.Fit` in
+  `ModSource/RogueWavesMode/Code/11_Dialog.cs` does it, and puts everything back once the dialog has gone.
+- **The UI scale is the player's:** `Blu1_Ui_Handler.Updatescale` sets the `CanvasScaler`'s `scaleFactor`, and a resolution change
+  doesn't touch it. On Dimitri's PC it is 3, so the canvas is 853 by 480 at 2560x1440 and 426 by 240 at 1280x720. Fit to the root
+  canvas's rectangle, not to a resolution.
 - **Client-local:** a pick reaches the host only through a command (`19` §6 rule 6).
 
 | Other prompt | Call | Reach | Where |

@@ -63,6 +63,58 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(0.6f);
     }
 
+    static string Rc(Rect r) { return "x " + Mathf.RoundToInt(r.xMin) + ".." + Mathf.RoundToInt(r.xMax) + " y " + Mathf.RoundToInt(r.yMin) + ".." + Mathf.RoundToInt(r.yMax); }
+
+    static bool OnTheScreen(Rect r) { return r.xMin >= -1f && r.yMin >= -1f && r.xMax <= Screen.width + 1f && r.yMax <= Screen.height + 1f; }
+
+    // The dialog as a player sees it once the game's slide-in has ended: every card, the title and every card's hover line
+    // wholly on the screen, the cards in its middle, and Main (the dim and the dark edge) where the game puts it.
+    static IEnumerator DialogFits(string what)
+    {
+        yield return new WaitForSecondsRealtime(1.6f);
+        Bla_Ui_Confirmation d = Bla_Ui_Confirmation.Instance;
+        if (d == null || !RWDialog.Up()) { Setup(what + ": on the screen", "no dialog up"); yield break; }
+        List<string> off = new List<string>();
+        List<RectTransform> cards = RWDialog.Cards(d);
+        Rect all = new Rect(), words;
+        for (int i = 0; i < cards.Count; i++)
+        {
+            Rect r = RWDialog.OnScreen(cards[i]);
+            if (!OnTheScreen(r)) off.Add(cards[i].name + " " + Rc(r));
+            all = i == 0 ? r : Rect.MinMaxRect(Mathf.Min(all.xMin, r.xMin), Mathf.Min(all.yMin, r.yMin), Mathf.Max(all.xMax, r.xMax), Mathf.Max(all.yMax, r.yMax));
+        }
+        string title = "-", line = "-";
+        if (RWDialog.Words(d.Titlebox, out words))
+        {
+            title = Rc(words);
+            if (!OnTheScreen(words)) off.Add("title " + title);
+        }
+        if (RWDialog.Words(d.Subbox, out words))
+        {
+            line = Rc(words);
+            if (!OnTheScreen(words)) off.Add("sub " + line);
+        }
+        foreach (RectTransform c in cards)
+        {
+            Blu3_Button b = c.GetComponent<Blu3_Button>();
+            if (b == null || b.Buttonenter == null) continue;
+            b.Buttonenter();
+            yield return null;
+            if (RWDialog.Words(d.Subbox, out words))
+            {
+                line = Rc(words);
+                if (!OnTheScreen(words)) off.Add("hover " + c.name + " " + line);
+            }
+            if (b.Buttonleave != null) b.Buttonleave();
+        }
+        RectTransform main = d.List.transform.parent as RectTransform;
+        Rect stage = main != null ? RWDialog.OnScreen(main) : new Rect();
+        bool centred = Mathf.Abs(all.center.x - Screen.width * 0.5f) <= 2f;
+        bool stock = main != null && Mathf.Abs(stage.xMin) <= 2f && Mathf.Abs(stage.xMax - Screen.width) <= 2f;
+        Check(what + ": every card and word on the screen, the cards in its middle", cards.Count > 0 && off.Count == 0 && centred && stock,
+            Screen.width + "x" + Screen.height + ", " + cards.Count + " cards at " + Rc(all) + ", title " + title + ", last line " + line + ", Main " + Rc(stage) + (off.Count > 0 ? "; off: " + string.Join("; ", off.ToArray()) : ""));
+    }
+
     static string TextOf(GameObject box)
     {
         TMPro.TMP_Text t = box != null ? box.GetComponentInChildren<TMPro.TMP_Text>() : null;
@@ -178,6 +230,7 @@ public static partial class RWTest
         RWMenu.Clicked();
         yield return WaitDialog(10f);
         Info("B1 the dialog", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
+        yield return DialogFits("The Rogue Waves button");
         yield return Snap("mainmenu_dialog");
         List<string> first = CardNames();
         // A run stopped half way can leave a campaign in the save: New over it asks first, which is checked too.
@@ -189,7 +242,8 @@ public static partial class RWTest
             yield return new WaitForSecondsRealtime(1f);
             yield return WaitDialog(8f);
             Check("B1c New over a saved campaign asks first", CardNamed("Sure") != null, CardTexts());
-            yield return Snap("mainmenu_startover");
+            yield return DialogFits("New campaign, over a saved one");
+        yield return Snap("mainmenu_startover");
             ClickCard("Sure");
         }
 
@@ -258,6 +312,7 @@ public static partial class RWTest
         List<string> offered = CardNames();
         Check("Direction: " + RWDirections.Offers + " are offered before map 1", offered.Count == RWDirections.Offers && RWVote.State == "Picks", "open '" + RWAsk.Open + "', cards " + CardTexts() + ", " + RWDirections.List.Count + " upgrades");
         Info("the Direction dialog", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "'");
+        yield return DialogFits("The Direction pick");
         yield return Snap("direction_pick");
         long me = RWMine.Session;
         RWPlayer player = RWRun.For(me);
@@ -271,6 +326,7 @@ public static partial class RWTest
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 15f);
         yield return WaitDialog(10f);
         Info("the map vote", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', cards " + CardTexts());
+        yield return DialogFits("The map vote");
         yield return Snap("map_vote");
         List<string> mapCards = CardNames();
         Check("Vote: every map of the first row is offered", mapCards.Count == RWCampaign.Open().Count && RWVote.State == "Map", "cards " + string.Join(",", mapCards.ToArray()) + ", open " + Names(RWCampaign.Open()));
@@ -339,6 +395,13 @@ public static partial class RWTest
         string exitSub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
         Check("B4 the host's exit dialog names the cost", RWCard.ExitWrites > 0 && exitSub.Contains("loses this map") && exitSub.Contains("2 retries left"), "'" + exitSub + "'");
         yield return Snap("exit_warning");
+        {
+            Bla_Ui_Confirmation stock = Bla_Ui_Confirmation.Instance;
+            RectTransform stockList = stock.List.transform as RectTransform;
+            TMPro.TMP_Text stockSub = stock.Subbox.GetComponent<TMPro.TMP_Text>();
+            Check("The stock Exit prompt keeps its own corner after the mode's dialogs", Mathf.Approximately(stockList.anchorMin.x, 1f) && Mathf.Approximately(stockList.anchorMin.y, 0.2f) && Mathf.Approximately(stockList.pivot.x, 1f) && stockSub.alignment == TMPro.TextAlignmentOptions.TopRight && stockSub.enableAutoSizing,
+                "list anchors " + RWUtil.V(stockList.anchorMin) + ", pivot " + RWUtil.V(stockList.pivot) + ", sub " + stockSub.alignment + ", autosize " + stockSub.enableAutoSizing);
+        }
         ClickCard("Back");
         yield return Until(() => !RWDialog.Up(), 5f);
         yield return new WaitForSecondsRealtime(0.5f);
@@ -378,6 +441,7 @@ public static partial class RWTest
         yield return WaitDialog(5f);
         List<string> shelf = CardNames();
         Info("the shop", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
+        yield return DialogFits("VENDCINT");
         yield return Snap("shop");
         string buy = shelf.Find(n => n.StartsWith("C:"));
         Check("Shop: Cardinals on the shelf, and a Back card", buy != null && shelf.Contains("Back"), string.Join(",", shelf.ToArray()));
@@ -521,6 +585,7 @@ public static partial class RWTest
         RWShop.Open("Board");
         yield return WaitDialog(5f);
         Info("the board", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
+        yield return DialogFits("The Board");
         yield return Snap("board");
         ClickCard("Take");
         yield return Until(() => RWObjectives.Active != null, 8f);
@@ -577,6 +642,7 @@ public static partial class RWTest
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 15f);
         yield return WaitDialog(8f);
         Info("the vote to leave", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
+        yield return DialogFits("The vote to leave");
         yield return Snap("leave_vote");
         ClickCard("Stay");
         yield return Until(() => RWVote.State == "", 8f);
@@ -714,13 +780,15 @@ public static partial class RWTest
             List<string> again2 = CardNames();
             Check("Continue is on the button's dialog, with a saved campaign", again2.Contains("Continue") && again2.Contains("New"), string.Join(",", again2.ToArray()) + "; " + RWMenu.SavedLine());
             Check("Continue's card counts the retry", RWMenu.SavedLine().Contains("2 retries left"), RWMenu.SavedLine());
-            yield return Snap("mainmenu_continue");
+            yield return DialogFits("The Rogue Waves button, with a saved campaign");
+        yield return Snap("mainmenu_continue");
             // U10, B1c: New over a saved campaign asks first; the second dialog opens only after the first has closed.
             ClickCard("New");
             yield return new WaitForSecondsRealtime(1f);
             yield return WaitDialog(8f);
             Check("B1c U10 New over a saved campaign asks first, the second dialog after the first", CardNamed("Sure") != null && CardNamed("Keep") != null, CardTexts());
-            yield return Snap("mainmenu_startover");
+            yield return DialogFits("New campaign, over a saved one");
+        yield return Snap("mainmenu_startover");
             ClickCard("Keep");
             yield return new WaitForSecondsRealtime(1.5f);
             RWMenu.Clicked();
