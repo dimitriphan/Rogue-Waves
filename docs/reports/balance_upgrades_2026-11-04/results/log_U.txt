@@ -1,0 +1,84 @@
+{"name": "U-shut-spool-purlest-base", "win": 0.0, "mean_t": 13.93, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"12": 1, "13": 2, "14": 57}}
+{"name": "U-shut-spool-purlest-tack", "win": 0.0, "mean_t": 13.85, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"12": 1, "13": 7, "14": 52}}
+{"name": "U-shut-spool-purlest-dmg", "win": 0.967, "mean_t": 15.87, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 2}}
+{"name": "U-shut-spool-purlest-wall", "win": 0.0, "mean_t": 13.95, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"13": 3, "14": 57}}
+{"name": "U-shut-spool-purlest-blue", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "U-shut-spool-purlest-blue50", "win": 0.0, "mean_t": 13.5, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"12": 3, "13": 24, "14": 33}}
+{"name": "U-shut-spool-purlest-thread", "win": 0.833, "mean_t": 15.67, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 10}}
+{"name": "U-shut-spool-purlest-army", "win": 0.0, "mean_t": 13.75, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"12": 2, "13": 11, "14": 47}}
+{"name": "U-shut-spool-purlest-all", "win": 0.917, "mean_t": 15.8, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"12": 1, "14": 4}}
+{"name": "U-shut-spool-purlest-all50", "win": 0.95, "mean_t": 15.9, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 3}}
+{"name": "U-shut-spool-purlest-allnotack", "win": 0.833, "mean_t": 15.6, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"12": 1, "13": 2, "14": 7}}
+{"name": "U-shut-yossele-purlest-base", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-yossele-purlest-web", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-yossele-purlest-web2", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-spool-woozy-base", "win": 0.0, "mean_t": 9.07, "s4": 1.0, "s8": 0.8, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"8": 12, "9": 32, "10": 16}}
+{"name": "U-shut-spool-woozy-tack", "win": 0.0, "mean_t": 9.07, "s4": 1.0, "s8": 0.8, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"8": 12, "9": 32, "10": 16}}
+{"name": "U-shut-spool-woozy-dmg", "win": 0.0, "mean_t": 9.07, "s4": 1.0, "s8": 0.8, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"8": 12, "9": 32, "10": 16}}
+{"name": "U-shut-spool-woozy-wall", "win": 0.0, "mean_t": 9.83, "s4": 1.0, "s8": 1.0, "s10": 0.0, "med_lost": 10.0, "lost_hist": {"9": 10, "10": 50}}
+{"name": "U-shut-spool-woozy-blue", "win": 0.0, "mean_t": 11, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 11.0, "lost_hist": {"11": 60}}
+{"name": "U-shut-spool-woozy-blue50", "win": 0.0, "mean_t": 11, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 11.0, "lost_hist": {"11": 60}}
+{"name": "U-shut-spool-woozy-thread", "win": 0.0, "mean_t": 10.08, "s4": 1.0, "s8": 1.0, "s10": 0.083, "med_lost": 10.0, "lost_hist": {"10": 55, "11": 5}}
+{"name": "U-shut-spool-woozy-army", "win": 0.0, "mean_t": 9.07, "s4": 1.0, "s8": 0.8, "s10": 0.0, "med_lost": 9.0, "lost_hist": {"8": 12, "9": 32, "10": 16}}
+{"name": "U-shut-spool-woozy-all", "win": 0.0, "mean_t": 11, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 11.0, "lost_hist": {"11": 60}}
+{"name": "U-shut-spool-woozy-all50", "win": 0.0, "mean_t": 11, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 11.0, "lost_hist": {"11": 60}}
+{"name": "U-shut-spool-woozy-allnotack", "win": 0.0, "mean_t": 11, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 11.0, "lost_hist": {"11": 60}}
+{"name": "U-shut-yossele-woozy-base", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-yossele-woozy-web", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-yossele-woozy-web2", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-spool-thehunt-base", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-shut-spool-thehunt-tack", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-shut-spool-thehunt-dmg", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-shut-spool-thehunt-wall", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-shut-spool-thehunt-blue", "win": 0.0, "mean_t": 10.85, "s4": 1.0, "s8": 1.0, "s10": 0.85, "med_lost": 11.0, "lost_hist": {"10": 9, "11": 51}}
+{"name": "U-shut-spool-thehunt-blue50", "win": 0.0, "mean_t": 10.33, "s4": 1.0, "s8": 1.0, "s10": 0.333, "med_lost": 10.0, "lost_hist": {"10": 40, "11": 20}}
+{"name": "U-shut-spool-thehunt-thread", "win": 0.0, "mean_t": 4.92, "s4": 0.917, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 5, "5": 55}}
+{"name": "U-shut-spool-thehunt-army", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-shut-spool-thehunt-all", "win": 0.0, "mean_t": 10.97, "s4": 1.0, "s8": 1.0, "s10": 0.967, "med_lost": 11.0, "lost_hist": {"10": 2, "11": 58}}
+{"name": "U-shut-spool-thehunt-all50", "win": 0.0, "mean_t": 10.48, "s4": 1.0, "s8": 1.0, "s10": 0.483, "med_lost": 10.0, "lost_hist": {"10": 31, "11": 29}}
+{"name": "U-shut-spool-thehunt-allnotack", "win": 0.0, "mean_t": 10.97, "s4": 1.0, "s8": 1.0, "s10": 0.967, "med_lost": 11.0, "lost_hist": {"10": 2, "11": 58}}
+{"name": "U-shut-yossele-thehunt-base", "win": 0.0, "mean_t": 11.87, "s4": 1.0, "s8": 1.0, "s10": 0.933, "med_lost": 12.0, "lost_hist": {"10": 4, "12": 56}}
+{"name": "U-shut-yossele-thehunt-web", "win": 1.0, "mean_t": 16, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": null, "lost_hist": {}}
+{"name": "U-shut-yossele-thehunt-web2", "win": 0.0, "mean_t": 13.27, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 1, "13": 42, "14": 17}}
+{"name": "U-open-spool-purlest-base", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "U-open-spool-purlest-tack", "win": 0.0, "mean_t": 10.33, "s4": 1.0, "s8": 1.0, "s10": 0.333, "med_lost": 10.0, "lost_hist": {"10": 40, "11": 20}}
+{"name": "U-open-spool-purlest-dmg", "win": 0.0, "mean_t": 6.75, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 7.0, "lost_hist": {"5": 2, "6": 22, "7": 25, "8": 11}}
+{"name": "U-open-spool-purlest-wall", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "U-open-spool-purlest-blue", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "U-open-spool-purlest-blue50", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "U-open-spool-purlest-thread", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "U-open-spool-purlest-army", "win": 0.0, "mean_t": 5, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"5": 60}}
+{"name": "U-open-spool-purlest-all", "win": 0.0, "mean_t": 10.6, "s4": 1.0, "s8": 1.0, "s10": 0.6, "med_lost": 11.0, "lost_hist": {"10": 24, "11": 36}}
+{"name": "U-open-spool-purlest-all50", "win": 0.0, "mean_t": 10.37, "s4": 1.0, "s8": 1.0, "s10": 0.367, "med_lost": 10.0, "lost_hist": {"10": 38, "11": 22}}
+{"name": "U-open-spool-purlest-allnotack", "win": 0.0, "mean_t": 7.43, "s4": 1.0, "s8": 0.0, "s10": 0.0, "med_lost": 8.0, "lost_hist": {"6": 6, "7": 22, "8": 32}}
+{"name": "U-open-yossele-purlest-base", "win": 0.0, "mean_t": 14, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14.0, "lost_hist": {"14": 60}}
+{"name": "U-open-yossele-purlest-web", "win": 0.017, "mean_t": 14.03, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 59}}
+{"name": "U-open-yossele-purlest-web2", "win": 0.017, "mean_t": 14.03, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 14, "lost_hist": {"14": 59}}
+{"name": "U-open-spool-woozy-base", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "U-open-spool-woozy-tack", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "U-open-spool-woozy-dmg", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "U-open-spool-woozy-wall", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "U-open-spool-woozy-blue", "win": 0.0, "mean_t": 4.73, "s4": 0.733, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 16, "5": 44}}
+{"name": "U-open-spool-woozy-blue50", "win": 0.0, "mean_t": 4.7, "s4": 0.7, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 18, "5": 42}}
+{"name": "U-open-spool-woozy-thread", "win": 0.0, "mean_t": 4.02, "s4": 0.017, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 59, "5": 1}}
+{"name": "U-open-spool-woozy-army", "win": 0.0, "mean_t": 4, "s4": 0.0, "s8": 0.0, "s10": 0.0, "med_lost": 4.0, "lost_hist": {"4": 60}}
+{"name": "U-open-spool-woozy-all", "win": 0.0, "mean_t": 4.88, "s4": 0.883, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 7, "5": 53}}
+{"name": "U-open-spool-woozy-all50", "win": 0.0, "mean_t": 4.95, "s4": 0.95, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 3, "5": 57}}
+{"name": "U-open-spool-woozy-allnotack", "win": 0.0, "mean_t": 4.88, "s4": 0.883, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 7, "5": 53}}
+{"name": "U-open-yossele-woozy-base", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "U-open-yossele-woozy-web", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "U-open-yossele-woozy-web2", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "U-open-spool-thehunt-base", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-open-spool-thehunt-tack", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-open-spool-thehunt-dmg", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-open-spool-thehunt-wall", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-open-spool-thehunt-blue", "win": 0.0, "mean_t": 4.5, "s4": 0.5, "s8": 0.0, "s10": 0.0, "med_lost": 4.5, "lost_hist": {"4": 30, "5": 30}}
+{"name": "U-open-spool-thehunt-blue50", "win": 0.0, "mean_t": 4.5, "s4": 0.5, "s8": 0.0, "s10": 0.0, "med_lost": 4.5, "lost_hist": {"4": 30, "5": 30}}
+{"name": "U-open-spool-thehunt-thread", "win": 0.0, "mean_t": 4.92, "s4": 0.917, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 5, "5": 55}}
+{"name": "U-open-spool-thehunt-army", "win": 0.0, "mean_t": 4.67, "s4": 0.667, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 20, "5": 40}}
+{"name": "U-open-spool-thehunt-all", "win": 0.0, "mean_t": 4.82, "s4": 0.817, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 11, "5": 49}}
+{"name": "U-open-spool-thehunt-all50", "win": 0.0, "mean_t": 4.82, "s4": 0.817, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 11, "5": 49}}
+{"name": "U-open-spool-thehunt-allnotack", "win": 0.0, "mean_t": 4.82, "s4": 0.817, "s8": 0.0, "s10": 0.0, "med_lost": 5.0, "lost_hist": {"4": 11, "5": 49}}
+{"name": "U-open-yossele-thehunt-base", "win": 0.0, "mean_t": 12, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 60}}
+{"name": "U-open-yossele-thehunt-web", "win": 0.0, "mean_t": 12.62, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 13.0, "lost_hist": {"12": 23, "13": 37}}
+{"name": "U-open-yossele-thehunt-web2", "win": 0.0, "mean_t": 12.45, "s4": 1.0, "s8": 1.0, "s10": 1.0, "med_lost": 12.0, "lost_hist": {"12": 33, "13": 27}}

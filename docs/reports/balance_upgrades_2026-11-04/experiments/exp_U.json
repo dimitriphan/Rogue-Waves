@@ -1,0 +1,1582 @@
+[
+{
+"name": "U-shut-spool-purlest-base",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-tack",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Tacking"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-dmg",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Cross",
+"Needle",
+"Stitchtime",
+"Class"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-wall",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Thimble",
+"Voodoo"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-blue",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-blue50",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"dye_eff": 0.5,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-thread",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Winder",
+"Bobbin",
+"Count"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-army",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Army"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-all",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-all50",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"dye_eff": 0.5,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-purlest-allnotack",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-purlest-base",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-purlest-web",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"web": true,
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-purlest-web2",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"web": true,
+"web_every": 2.0,
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-base",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-tack",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Tacking"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-dmg",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Cross",
+"Needle",
+"Stitchtime",
+"Class"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-wall",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Thimble",
+"Voodoo"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-blue",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-blue50",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"dye_eff": 0.5,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-thread",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Winder",
+"Bobbin",
+"Count"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-army",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Army"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-all",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-all50",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"dye_eff": 0.5,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-woozy-allnotack",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-woozy-base",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-woozy-web",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"web": true,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-woozy-web2",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"web": true,
+"web_every": 2.0,
+"smart_nodes": [
+"Yellow",
+"Blue",
+"Red"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-base",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-tack",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Tacking"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-dmg",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Cross",
+"Needle",
+"Stitchtime",
+"Class"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-wall",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Thimble",
+"Voodoo"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-blue",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-blue50",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"dye_eff": 0.5,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-thread",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Winder",
+"Bobbin",
+"Count"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-army",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Army"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-all",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-all50",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"dye_eff": 0.5,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-spool-thehunt-allnotack",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"pkg": [
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-thehunt-base",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-thehunt-web",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"web": true,
+"break": 60
+}
+},
+{
+"name": "U-shut-yossele-thehunt-web2",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": true,
+"web": true,
+"web_every": 2.0,
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-base",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-tack",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Tacking"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-dmg",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Cross",
+"Needle",
+"Stitchtime",
+"Class"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-wall",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Thimble",
+"Voodoo"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-blue",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-blue50",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"dye_eff": 0.5,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-thread",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Winder",
+"Bobbin",
+"Count"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-army",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Army"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-all",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-all50",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"dye_eff": 0.5,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-purlest-allnotack",
+"v": "spool",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-purlest-base",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-purlest-web",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"web": true,
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-purlest-web2",
+"v": "yossele",
+"m": "purlest",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"web": true,
+"web_every": 2.0,
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-base",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-tack",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Tacking"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-dmg",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Cross",
+"Needle",
+"Stitchtime",
+"Class"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-wall",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Thimble",
+"Voodoo"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-blue",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-blue50",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"dye_eff": 0.5,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-thread",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Winder",
+"Bobbin",
+"Count"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-army",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Army"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-all",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-all50",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"dye_eff": 0.5,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-woozy-allnotack",
+"v": "spool",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"smart_nodes": [
+"Yellow",
+"Red",
+"Blue"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-woozy-base",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-woozy-web",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"web": true,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-woozy-web2",
+"v": "yossele",
+"m": "woozy",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"web": true,
+"web_every": 2.0,
+"smart_nodes": [
+"Red",
+"Blue",
+"Yellow"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-base",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-tack",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Tacking"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-dmg",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Cross",
+"Needle",
+"Stitchtime",
+"Class"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-wall",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Thimble",
+"Voodoo"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-blue",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-blue50",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"dye_eff": 0.5,
+"pkg": [
+"Dyed",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-thread",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Winder",
+"Bobbin",
+"Count"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-army",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Army"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-all",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-all50",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"dye_eff": 0.5,
+"pkg": [
+"Tacking",
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-spool-thehunt-allnotack",
+"v": "spool",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"pkg": [
+"Cross",
+"Army",
+"Needle",
+"Stitchtime",
+"Class",
+"Thimble",
+"Voodoo",
+"Dyed",
+"Winder",
+"QuickPatch"
+],
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-thehunt-base",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-thehunt-web",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"web": true,
+"break": 60
+}
+},
+{
+"name": "U-open-yossele-thehunt-web2",
+"v": "yossele",
+"m": "thehunt",
+"p": "smart",
+"coins": false,
+"n": 15,
+"tune": {
+"seal": false,
+"web": true,
+"web_every": 2.0,
+"break": 60
+}
+}
+]
