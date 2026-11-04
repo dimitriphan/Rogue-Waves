@@ -1,7 +1,8 @@
 # 12 · Minion vessels (units, like Boutman and Fie)
 
 A minion vessel plays through units it makes, keeps and orders: Fie's knights, Boutman's fish, Buster's dog,
-Smacky's miners, and in mods Mummer's Understudies, Argo's Nauts and Sprigg's Sproutlings. This chapter is what the
+Smacky's miners, and in mods Mummer's Understudies, Argo's Nauts, Sprigg's Sproutlings and, in the Rogue Waves pack,
+Spool's Crafted and Thread Heads, Yossele's Cordyfriends and Uloe's Photons. This chapter is what the
 game's own unit code does (read from its IL, 2026-10-02) and how a mod builds the same thing. Each recipe says whether
 it was **verified in a mod** or is **read from the game's code** (then test it first).
 
@@ -16,6 +17,9 @@ it was **verified in a mod** or is **read from the game's code** (then test it f
 | Mummer (mod) | Puppet Stage (Red 50), paid in Thread | Understudy 24/16/70 HP by costume | 2 (+1/+2), 6 s | leashed to the stage, step out to meet foes (Marked first); COSTUME picks the next one | stage params applied by the stage brain (Puppethealth_Multi...) |
 | Argo (mod) | Miner's Base, 1.4.0's Diving Bell (Blue 35; limit 1 in 2.0) | Nauts (Port, Starboard, Bosun) | 2, 8 s | **PORT/STARBOARD**: pick a tower, the Naut walks there and tunes it | bell upgrades read by the Naut brain |
 | Sprigg (mod) | Root (Yellow 21) | Sproutling: a miner clone using the game's own miner AI | 1, 10 s | none | — |
+| Spool (pack) | Repurposed Cookie Tin (Red 50), paid in Thread from the Yarn Stash; the Thread Head is bought from the build menu itself | Crafted (Stitched, Dart, Seam, Mangled) on the stock fighter AIs; Thread Heads haul Thread home | 4 a Tin, one every 4 s; Heads with no limit | **TARGET**: pick a tile the Tin's Crafted run to (the fish Relocate picker); SPOT for a Head | the Tin's and the Head's own upgrades (`TDS_Mod/ModSource/Spool/DESIGN.md`) |
+| Yossele (pack) | Cannon with Cordyceps: a spored foe that falls may rise as a friend | Cordyfriend: the stock melee AI, Sno Sno's Snoble block | up to 30 a player | none | the cannon's upgrade |
+| Uloe (pack) | Power Bank (Red 40 + Yellow 20) | Photon: weak hits that Illuminate and Blind, carries Light to towers | 2, 8 s | none: they wander, half their walks visits to your buildings | bank upgrades (Short Circuit: they burst when they fall) |
 
 Boutman lists only three buildables (Fish Barrel, Boutboat, Bouthouse): his fish take the place of a fourth. A minion
 vessel can trade a building slot for its units that way. His vessel upgrades come from the Bouthouse
@@ -131,8 +135,12 @@ rally point while selected (the Keep draws one "Knightconnection" line in `Rende
 
 The unit itself is placed and paid for like a building (a `Buildoption` whose Goalstring is the unit id, the unit
 entity has `Costs`), guards the tile it was placed on, has its own upgrade tree and can be sold. Boutman's fish add a
-knocked-out state (health 0 → "Dead" with `Deadarmor`, revived in a barrel) instead of despawning. No mod
-vessels has done this yet: build it on the unit-building recipe, give the unit brain the building's upgrade flow
+knocked-out state (health 0 → "Dead" with `Deadarmor`, revived in a barrel) instead of despawning. Spool's Thread Head
+is the first mod unit bought from the build menu (Spool round 1, 2026-10-26): the menu places a token on Buster's
+walk-through pad block (`Trap_Busterpad`'s, Perma-Wall's as a fallback), and the host swaps it at once for the unit
+(a `Forced` spawn on the token's block, then the token despawned with reason "Place"); the stock Sell picker finds the
+walking unit (Spool's brain falls back to the nearest of yours of that name within 1.5 tiles). Nothing else of the
+fish's has been done by a mod: build it on the unit-building recipe, give the unit brain the building's upgrade flow
 (`MummerBuilding` works on any entity it creates the Upgrade commands on), and test selection, the upgrade panel,
 selling and the journal page in game before relying on it.
 

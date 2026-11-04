@@ -1,7 +1,7 @@
 # The game's network surface: every RPC and every synced field
 
 Reference for `docs/19_NETWORKING.md`. Read from the decompiled `Assembly-CSharp.dll` (2026-10-14, `docs/13` §11);
-`File.cs:line` points into that folder (never committed). Nothing here was tried online. All 47 RPCs are reliable and
+`File.cs:line` points into that folder (never committed). Tried only with a second game copy on one PC (`docs/19` §8, 2026-11-04), never on real Steam online. All 47 RPCs are reliable and
 every ServerRpc has `RequireOwnership = false`, so **any client can call any ServerRpc**; "Checks" is what the host
 verifies before acting. "Leader" means the host in practice (`19` §1).
 

@@ -233,6 +233,12 @@ without a stock bespoke AI reads as a plain melee foe to them.
 
 ## 6. Making a new enemy modifier in a mod
 
+**Verified in a mod** (2026-11-04): the pack's enemies part, `TDS_Mod/ModSource/RogueWavesFoes`, builds four
+modifiers this way (Cursed, Berserk, Aging, Dazzling) as `RW_Modifier_<Name>_Upgradeobject` copies of a stock
+modifier upgrade with their own brains, a pixel ring for their look and the mode's difficulty picking who gets them;
+its self-test passes in game, 12 pass, 0 fail. Its `README.md` has the numbers. No mod has made a new enemy *type*
+(§5) yet.
+
 1. **An upgrade** `Enemy_<Mod><Name>_Upgradeobject` (`ScriptableObject.CreateInstance<Upgradeproperties>()`; fill
    both `Defaultparam` and `Defaultparams`), `Priority` -1, a one-word metalworking `Display_Name`, a short comma-phrase
    `Display_Desc` with no numbers, its numbers in params with the game's names (`Health_Multi`, `Radius_Base`,

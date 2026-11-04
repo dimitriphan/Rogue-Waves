@@ -243,7 +243,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC). 2026-11-04: the
   repository no longer presents the mods from before the scope: the README now summarises Rogue Waves, and the maps, rules,
   tool notes and the pack parts' comments drop `ModProjects` and the earlier vessels; the kit, dated reports, this Log, the
-  scope and every path a script uses keep them (PR body lists what stayed and why). 2026-11-04: the code simplification
+  scope and every path a script uses keep them (PR body lists what stayed and why). 2026-11-04: the kit and the
+  resources read against the repository: 35 stale lines fixed, no code changed (`docs/reports/KIT_CHECK_2026-11-04.md`). 2026-11-04: the code simplification
   built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
   gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
   testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4.
@@ -727,6 +728,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   style sheet, `TEMP_ART.md`, `PACK.md`, `EXPANSION_SCOPE.md`, `docs/mode/`, the mode's README and notes; the nine
   reports that used the old names carry a note on top. Compiled here, not run on the PC. The same PR folds in #74 and
   #75, which both conflicted with the base once #76 merged.
+- **2026-11-04: kit and resources check** (Dimitri: "Read through TDS_Vessel_Creator to make sure everything is updated,
+  then review the resources to make sure everything checks out."; cloud only, `docs/reports/KIT_CHECK_2026-11-04.md`).
+  Two passes over every kit page and the parts' pages: 29 stale lines in the kit (the pack's vessels, minions and foes
+  part now cited; the two-player round, the stock `Resistadd` route, re-ticked slows in #79, the 2026-11-04 results in
+  pitfalls #93-#108 and chapters 15, 16, 19, 23; #122 amended by #142) and 6 in the resources (Spool's and Uloe's
+  status, the mode's README and temporary-art table, a stale `TEMP_ART.md` row, scope `02` [Now]). Pre-scope mentions
+  kept by the #78 rule. The project-files copy of scope `02` and the Scope Editor wait for his word to sync. Every part
+  compiles clean; nothing run on the PC.
 - **2026-11-04: code simplification built** (Dimitri: "Begin development of Code Simplification, then add the tests to
   the testing thread."; cloud, compiled, not run on the PC; `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md`). Uloe's
   dead stock-mark route and Argo's 1.4 leftovers deleted (SONAR kept); pack buildings carry the game's own

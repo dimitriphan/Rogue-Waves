@@ -479,7 +479,8 @@ the engineer, the Boutman family boosts, `Hero_Boutman_Shoot`) are name-locked: 
 7. **Re-apply on every spawn** of units and rebuilt towers (dogs every lap, Snobles all match, knights and miners on
    respawn, Gutter fish, Detonate's bomber).
 8. **Per-hit effects** live in a stock-AI upgrade's `Interact` or a handler the brain re-inserts after each upgrade
-   (§2.3); **per-kill** effects use `Ondespawn` + `Lasthit.Entitydata.Value.Owner` and accept §8's gaps.
+   (§2.3), or, for damage taken scaled by a share, the stock `Resistadd` stat and `Fiewall_Regen` script (`05` §9,
+   read only); **per-kill** effects use `Ondespawn` + `Lasthit.Entitydata.Value.Owner` and accept §8's gaps.
 9. **Income pays the player directly** with `Giveresources(list, owner)`; never `−1`.
 10. **Unit counts need the building's own count check**, never `Units` alone: after the mod, `SendMessage` the Hut's
     `Addressminercount`, the Keep's `Addressmobcount` or the Garage's `Addressdogcount` (verified); Boutman's barrels

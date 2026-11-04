@@ -212,8 +212,8 @@ flooded at the first Tide, no error.
 2. Done: a wall on a path tile re-routes foes once `Savedpaths` is cleared (§2).
 3. Done: 0.8 on a `Buildoption` and on an `Upgrade` command cut the paid price to 0.8 (`17` §2.7). The shown price
    was not read.
-4. Write `Time_Scale` = 1.25 on the host; log the client's Tide timer (online evening; the host half is verified,
-   RogueWavesMode W2: 1, 1.25, 1.5).
+4. Done: `Time_Scale` = 1.25 written on the host reaches the client and goes back (2026-11-04, a second player, `19`
+   §8); the host half was RogueWavesMode W2: 1, 1.25, 1.5.
 5. Call `Uiwarning_ClientRpc` (`15` §18.2) with a mod icon; check it on a client.
 
 ## 10. Sources
