@@ -224,7 +224,7 @@ ICONS = {
         ".UUUUUUUUUUU",
         "..hh....hh..",
     ],
-    # ---- Cardinals (docs/scope/12)
+    # ---- Trinkets (docs/scope/12; the file names keep Cardinal_)
     'Cardinal_VampireDentures': [  # Vampire Dentures: cheap plastic fangs on pink gums
         "............",
         "..rrrrrrrr..",

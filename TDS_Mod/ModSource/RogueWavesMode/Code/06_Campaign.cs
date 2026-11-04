@@ -10,7 +10,7 @@
 //                spends nothing (they rejoin, RWRejoin)
 //   ended        ten maps won complete the campaign (Depth, its reward, is on hold); won or lost, it leaves the save, and
 //                the party is taken back to the stock world on the boat (RWBoat)
-// Players' Pure Aura, Directions and Cardinals, and the votes (to leave, and on the next map), are later pieces
+// Players' Pure Aura, Directions, Cardinals and Trinkets, and the votes (to leave, and on the next map), are later pieces
 // (docs/scope/04, 06, 11, 12).
 // The campaign belongs to the save it was started or continued in: switching or clearing the save slot on the main
 // menu gives the game a new Bla_Data.Playerdata (nothing else replaces it after launch), and the campaign in memory is

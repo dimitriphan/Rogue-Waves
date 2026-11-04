@@ -42,10 +42,10 @@ chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMO
 | `Code/11_Dialog.cs` | `RWDialog`: the game's choice dialog for every choice, its cards laid in one centred row |
 | `Code/12_Menu.cs` | `RWMenu`: the main menu's button; `RWAssets`: the sprite library |
 | `Code/13_Card.cs` | `RWCard`: the campaign card on four screens, the exit warning, the end titles; `RWLobby`: no-mods warning, rejoin line; `RWTips` |
-| `Code/14_Run.cs` | `RWPlayer`, `RWRun`: each player's Pure Aura, Directions, Cardinals, saved with the campaign; `RWMine`: the same seen from a client |
+| `Code/14_Run.cs` | `RWPlayer`, `RWRun`: each player's Pure Aura, Directions and Trinkets, and the team's Cardinals, saved with the campaign; `RWMine`: the same seen from a client |
 | `Code/15_Content.cs` | `RWContent`: VENDCINT, the buttons and upgrades the part builds at boot |
 | `Code/16_Directions.cs` | `RWDirections`: offers, ranks, reach through an owner hook; `RWHits`: Made of Tougher Stuff's hit hook |
-| `Code/17_Cardinals.cs` | `RWCardinals`: the pack's Cardinals and the stock ones on sale, stacks as numbered copies |
+| `Code/17_Cardinals.cs` | `RWCardinals`: the pack's Cardinals and Trinkets and the stock Cardinals on sale, stacks as numbered copies |
 | `Code/18_Shop.cs` | `RWShop`: VENDCINT's landing, shelf, board; `RWFund`: Fund Transfer |
 | `Code/19_Objectives.cs` | `RWObjectives`: the five optional objectives |
 | `Code/20_Vote.cs` | `RWVote`: the flow between Tides, Direction picks, the map vote, the vote to leave; `RWAsk`: every machine's own question |

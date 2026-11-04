@@ -1,5 +1,8 @@
 # Cardinal overlap check, and Directions and Cardinals from other roguelikes (2026-11-04)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 Frozen report. Dimitri asked (2026-11-04 04:33Z): "Check to make sure that the new cardinals you created do not overlap
 with already existing cardinals. If there is an overlap, remove your own cardinal. Afterwards, develop some more
 directions and cardinals using other roguelikes as inspiration, such as Risk of Rain or Hades and then update the

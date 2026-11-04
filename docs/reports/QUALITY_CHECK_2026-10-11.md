@@ -1,5 +1,8 @@
 # Quality check of the lessons and resources (2026-10-11)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 > **Note (added 2026-10-15):** the kit has 24 chapters now, and the scope was re-laid on 2026-10-14
 > (`docs/scope/00_Read_Me.txt`), so §3's scope line numbers no longer match. The next check is
 > `QUALITY_CHECK_2026-10-15.md`. §4's default-branch row is done: GitHub's default branch is `claude/phase-1-6lfnar`.

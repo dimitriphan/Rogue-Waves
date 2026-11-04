@@ -10,7 +10,7 @@
 		- Online Compatibility -> [Online]
 		- Upgrade System [Direction] -> 06_New_Mechanics.txt, 11_Directions.txt
 		- Streamlined Economy Changes: aura sharing between players between tides, which is [Fund Transfer] -> 06_New_Mechanics.txt
-		- New Cardinals: a new Cardinal is a new run modifier -> 12_Cardinals.txt
+		- New Cardinals and Trinkets: a new Cardinal or Trinket is a new run modifier -> 12_Cardinals.txt
 		- Bug fixes -> 03_Bug_Fix.txt
 
 	[Online]
@@ -20,7 +20,7 @@
 
 	[Releases]
 		- First release: {Yossele} alone
-		- After it: everything else: the Rogue Waves mode with its sea chart and sea weather, {Argo}, {Spool}, {Uloe}, the new enemies and modifiers, [Directions], [Cardinals] and the rest of the parts above
+		- After it: everything else: the Rogue Waves mode with its sea chart and sea weather, {Argo}, {Spool}, {Uloe}, the new enemies and modifiers, [Directions], [Cardinals], [Trinkets] and the rest of the parts above
 		- Download: the RogueWavesMod pack holding only Yossele, version 0.1.0 /~ Each later release adds parts to the same pack, so players update one mod. docs/PACK.md \
 		- Where: a zip you share yourself /~ The game has no Steam Workshop. Kit docs/14 section 4 \
 		- Yossele outside the mode: Yossele plays in a normal game. No {Fertilize} in the first release, since it is unlocked only by a [Direction] and [Directions] exist only in the mode -> 07_Vessel_Yossele.txt [Ability]

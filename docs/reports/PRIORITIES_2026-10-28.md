@@ -1,5 +1,8 @@
 # What the project needs most now (2026-10-28)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 Dimitri asked (2026-10-28): "Go through the scope and figure out what is most needed right now for the project."
 Read: `docs/scope/` 00-16 (the default branch, plus `07`, `01` and `02` as PR #45 corrects them), `CLAUDE.md`,
 `docs/PLAN.md` Parts A, B "Release 1" and C, `docs/PACK.md`, `docs/reports/PLAYTEST_2026-10-26.md` (PR #43),

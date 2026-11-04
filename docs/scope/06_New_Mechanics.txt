@@ -1,6 +1,6 @@
 | New Mechanics |
 	# The systems the expansion adds to every map of the Rogue Waves mode: [Directions], [Pure Aura], [Fund Transfer] and the [Shopkeeper].
-	# Cardinal rules live in 12_Cardinals.txt, and the mode's own rules in 04_Rogue_Waves_Mode.txt.
+	# Cardinal and Trinket rules live in 12_Cardinals.txt, and the mode's own rules in 04_Rogue_Waves_Mode.txt.
 
 	[Directions]
 		# A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
@@ -19,13 +19,13 @@
 		- Status: built, and passed on the PC /~ docs/reports/BUILD_2026-11-03.md \
 
 	[Pure Aura]
-		# A new currency earned in game to purchase [Directions] and [Cardinals]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
+		# A new currency earned in game to purchase [Directions], [Cardinals] and [Trinkets]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
 		- Per tide: 3
 		- Per bonus tide: 2
 		- Weather map: pays extra each tide -> 04_Rogue_Waves_Mode.txt [Sea Weather]
 		- Objectives: each pays its own amount -> 14_Optional_Objectives.txt
 		- Shown as: a pearl white counter on each player's vessel, a colour none of the base auras use
-		- Spent on: [Cardinals] and ranks of [Directions], at {VENDCINT}
+		- Spent on: [Cardinals], [Trinkets] and ranks of [Directions], at {VENDCINT}
 		- Status: built, and passed on the PC
 
 	[Fund Transfer]
@@ -40,7 +40,7 @@
 		{VENDCINT} / A sentient vending machine \
 			- Arrives: a unit that falls from the sky near the vessels' spawn point at the start of every break, the opening one before Tide 1 included, the way the vessels land
 			- Leaves: at the end of the break it jumps into the sky and disappears / A break lasts 60 seconds -> 04_Rogue_Waves_Mode.txt [Tides and Leaving] \
-			- Sells: [Cardinals], and the next rank of [Directions] the vessel already holds, for [Pure Aura] / A Cardinal's cost is on its own sheet in 12_Cardinals.txt \
+			- Sells: [Cardinals], [Trinkets], and the next rank of [Directions] the vessel already holds, for [Pure Aura] / A Cardinal's or Trinket's cost is on its own sheet in 12_Cardinals.txt \
 			- Also: [Fund Transfer] is done at it too
 			- Objectives: a new optional objective is offered at it in every break -> 14_Optional_Objectives.txt
 			- Status: built with temporary art, and passed on the PC

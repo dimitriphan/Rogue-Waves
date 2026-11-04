@@ -93,7 +93,7 @@ Stock values that point at pack content:
 | --- | --- | --- |
 | `Player/Player_Worldselect` = a pack world (the chart) | **the boat never loads** (waits for the world with no timeout, Macro_Main.cs:356-417) | RogueWavesMode's guard (`05_Boat.cs`) |
 | `Player/Player_Heroselect` = a pack vessel | the host ignores the unknown hero; no vessel selected | the player picks by hand (`09` #22); a pack guard could keep a stock vessel saved |
-| a pack Cardinal in `Player_Artifactselect` | a ghost entry, skipped everywhere | never leave pack Cardinals equipped on the boat |
+| a pack Cardinal or Trinket in `Player_Artifactselect` | a ghost entry, skipped everywhere | never leave pack Cardinals or Trinkets equipped on the boat |
 | `Unlock/Unlock_Hero_<pack>`, `Map/*_<pack plan>` | inert | none |
 | `Unlock_Notif/<pack key>` still 0 | one blank unlock panel to click away | none |
 

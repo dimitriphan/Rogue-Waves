@@ -27,13 +27,13 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Mode UI | the crest (12 and 32 px), Pure Aura, Depth, retry, vote icons | same folder | wired (2026-11-03), seen in game on the menu button and the dialogs; Depth waits for its feature |
 | Mode UI | icons of the Stay, Leave, Shop, Fund and Board buttons | same folder | wired, seen in game |
 | Mode | VENDCINT's sheet (a vending machine, `Vendcint-Sheet`) | drawn by `Assets/RogueWavesModeMod/Editor/RogueWavesModeArt.cs` into `Art/Temporary/game_size/` if missing | seen in game (landing, panel, its jump away) |
-| Mode | Direction and Cardinal icons (`Direction_*`, `Cardinal_*`) | same folder; Uloe's four added there too | wired, seen in game |
+| Mode | Direction and Trinket icons (`Direction_*`, `Cardinal_*`: Vampire Dentures, a Trinket, keeps its file name) | same folder; Uloe's four added there too | wired, seen in game |
 | Mode | Deep Current and Heavy Salvo, Argo's two Direction icons (`Direction_Deepcurrent`, `Direction_Heavysalvo`; both showed the crest), drawn 2026-11-04 by `ModSource/Argo/Tools/Make-DirectionIcons.ps1` | same folder | wired, compiled; the mode's Direction cards read them |
 | Mode UI | Fund Transfer's cards: the friend's vessel, the aura colours, and numbers drawn in pixel digits by `RWDialog.Number` (they were blank white squares) | in code | wired, seen by the self-test, for his eye |
 | Mode | the sea chart | no art of its own: the base game's own islands, water, rocks and buoys, copied in code at runtime (`Code/04_World.cs`); a flag and dashed lanes in the pack's colours are the only new shapes | seen in game |
 | Foes | the four modifiers' pixel rings | built in code (`RogueWavesFoes/Code/00_RogueWavesFoesMod.cs` `RWFLooks`), colours from `docs/STYLE.md` | seen in game by self-test, not by eye |
-| Uloe | every sheet, model, effect and sound, drawn by code from the concept page | `Assets/UloeMod/Editor`, `ModSource/Uloe/Previews/` | seen in game |
-| Directions, Cardinals | icons for the six Directions and the one Cardinal the scope names (`docs/scope/11`, `12`) | same folder | files only |
+| Uloe | every sheet, model, effect and sound, drawn by code from the concept page | `Assets/UloeMod/Editor` (nothing wired from files; minion versions below) | seen in game |
+| Directions, Trinkets | icons for the six Directions and the one Trinket the scope names (`docs/scope/11`, `12`) | same folder | files only |
 | Every vessel's minions | ten Snoble-sized versions each of the Cordyfriend, the Thread Head, the four Crafted, the Photon and the Nauts (2026-11-04, below) | `ModSource/<Part>/Art/Temporary/minions_2026-11-04/` | files only, until he picks |
 | Argo | built art (Argo 2.0) | `ModSource/Argo/DESIGN.md` | not temporary: shipped look |
 

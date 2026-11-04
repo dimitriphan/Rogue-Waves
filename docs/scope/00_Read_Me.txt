@@ -14,18 +14,18 @@
 		- 06_New_Mechanics.txt: [Directions], [Pure Aura], [Fund Transfer], [Shopkeeper]
 		- 07_Vessel_Yossele.txt, 08_Vessel_Spool.txt, 09_Vessel_Argo.txt, 10_Vessel_Uloe.txt: one vessel each, in the Vessel template
 		- 11_Directions.txt: every vessel's Directions
-		- 12_Cardinals.txt: the Cardinal rules and the Cardinal List
+		- 12_Cardinals.txt: the rules for Cardinals and Trinkets, and their list
 		- 13_Enemy_Modifiers.txt: Cursed, Berserk, Aging, Dazzling
 		- 14_Optional_Objectives.txt: the objective rules and the Optional Objective List
-		- 15_Templates.txt: every template: Vessel, Direction, Cardinal, Optional Objective, Enemy Modifier, Sea Weather, Bug
+		- 15_Templates.txt: every template: Vessel, Direction, Cardinal or Trinket, Optional Objective, Enemy Modifier, Sea Weather, Bug
 		- 16_Base_Vessels.txt: Smacky, Sno Sno, Boutman, Fie and Buster in the Vessel template with the game's own numbers, and every vessel's stats side by side
 
 | Rules |
 	[Symbols] / One meaning each, and no symbol is used for anything else \
 		- | Title |: the top of a file, or the top of one sheet in a file of sheets / | Vessel: Yossele |, | Base Vessel: Smacky |, | Directions | \
 		- [Name]: a game system or a sheet's section / [Pure Aura], [Growth], [Stats], [Upgrades] \
-		- {Name}: one named thing: a vessel, building, unit, ability, resource, Direction, Cardinal, objective, modifier, weather / {Loom}, {VENDCINT}, {Thread} \
-		- (Kind): a category or a slot that a thing fills / (Offense 1), (Minion), (Any), (Team Cardinals) \
+		- {Name}: one named thing: a vessel, building, unit, ability, resource, Direction, Cardinal, Trinket, objective, modifier, weather / {Loom}, {VENDCINT}, {Thread} \
+		- (Kind): a category or a slot that a thing fills / (Offense 1), (Minion), (Any), (Trinkets) \
 		- % Level:{Name}: an upgrade, its level first / % 2:{Natural Remedy} \
 		- : connector: joins a slot to its value, or a kind to its name / - Cost: Red 30, (Offense 1):{Scatter Cannon} \
 		- # line: a design note, the why or the feel. It never holds a value Claude builds from \
@@ -43,13 +43,13 @@
 		- Money: the colour or currency, then the amount / Red 30, Blue 20 + Yellow 10, Pure Aura 20 \
 		- A blank slot means not decided yet, and the design gate proposes a ~value~. ! NEEDS ! means Claude can't pick it for you
 		- A value Claude read from the game (the base vessels) carries no ~: it is the game's, not a default
-		- By: on a Direction or a Cardinal, who made it: Dimitri or Claude. It is a fact Claude keeps, never a default, so it is never marked as one. A Claude-made sheet keeps every value a ~default~ until you take it. Taking it does not change By
+		- By: on a Direction, a Cardinal or a Trinket, who made it: Dimitri or Claude. It is a fact Claude keeps, never a default, so it is never marked as one. A Claude-made sheet keeps every value a ~default~ until you take it. Taking it does not change By
 
 	[Names]
 		- Title Case inside { } and [ ]. Base game names are spelled as the game spells them / Sno Sno, Boutman, Bouthouse \
 		- A name is singular inside the braces. Plurals and possessives go outside / {Photon}s, {Loom}'s range \
 		- A thing has one name everywhere. A renamed thing is renamed in every file at once
-		- Name styles stay as the pack's style sheet sets them: a Direction a plain name that matches its Look line (a heading or a course is optional), a Cardinal two plain words for a found object, an objective a short order /~ docs/STYLE.md \
+		- Name styles stay as the pack's style sheet sets them: a Direction a plain name that matches its Look line (a heading or a course is optional), a Cardinal or a Trinket two plain words for a found object, an objective a short order /~ docs/STYLE.md \
 
 	[Layout]
 		- Tabs indent, one tab per level: | Title | at 0, sections and sheets at 1, slots at 2, details of a slot at 3

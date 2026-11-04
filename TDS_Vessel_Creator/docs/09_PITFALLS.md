@@ -400,7 +400,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      `Hero`: a building owned by another player got its gift, and after the upgrade was removed a new archer still got
      it (its spawn handler is never taken off) → for one player's things use an owner-filtered `Onspawn` hook that adds
      the upgrade to `Initupgradelistserver` (round 8: only that player's towers got it, a rebuilt one again); keep
-     Teamapply for Team Cardinals that last the whole map. **Verified** in game (owner −1 stood in for a teammate).
+     Teamapply for the pack's Cardinals (everyone's; Team Cardinals until 2026-11-04) that last the whole map. **Verified** in game (owner −1 stood in for a teammate).
 119. **A timed mod re-added every second reads double half the time** (round 8) → `Addmod(..., Duration)` takes each
      mod off after its own timer, so a 1.5 s `Add 1` added every second read `[1 1 2 1 2 1 2 1]` → keep each source's
      `Link_Modifier` and remove it before adding the next: two sources then read 2, one 1, and 0 about 1.5 s after the

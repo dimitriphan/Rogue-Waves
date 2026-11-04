@@ -1,5 +1,8 @@
 # Scope review (2026-10-10)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 > **Note (added 2026-10-15):** the answered rows say so. The scope was re-laid on 2026-10-14
 > (`docs/scope/00_Read_Me.txt`): `04_Rogue_Wave_Mode.txt` is now `04_Rogue_Waves_Mode.txt`, the sea chart and sea
 > weather moved from `05` to `04`, every template is in `15_Templates.txt`, and the line numbers below no longer

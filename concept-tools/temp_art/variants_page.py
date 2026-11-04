@@ -124,9 +124,9 @@ def items():
               'Direction_MotherOfMushrooms': ('Mother of Mushrooms', 'Direction (scope 11).'),
               'Direction_EfficientRecycler': ('Efficient Recycler', 'Direction (scope 11).'),
               'Direction_SewingMachine': ('Sewing Machine', 'Direction (scope 11).'),
-              'Cardinal_VampireDentures': ('Vampire Dentures', 'Cardinal (scope 12).')}
+              'Cardinal_VampireDentures': ('Vampire Dentures', 'Trinket (scope 12).')}
     for n, opts in VI.V.items():
-        g = groups.get(n, 'Directions and Cardinals' if n.startswith(('Direction', 'Cardinal')) else 'Mode icons')
+        g = groups.get(n, 'Directions and Trinkets' if n.startswith(('Direction', 'Cardinal')) else 'Mode icons')
         t, f = labels[n]
         out.append(still('icon-' + n, 'UI', g, t, n + '.png, 12 x 12', f, versions('UI', '{v}/game_size/%s.png' % n), 12, 12,
                          [o[0] for o in opts], 7))

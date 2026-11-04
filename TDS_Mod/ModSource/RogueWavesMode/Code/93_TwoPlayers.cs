@@ -441,7 +441,7 @@ public static partial class RWTest
 
         // The second player's shop.
         yield return Until(() => RWTwo.OtherSaid("bought"), 90f);
-        Check("N5 the second player's Cardinal is paid for on the host, from their Pure Aura only", his.Pure < 60 && mine.Pure == 60, "his " + his.Pure + ", mine " + mine.Pure + ", last order " + RWShop.LastOrder + ", team " + string.Join(",", RWRun.Team.ToArray()) + ", his Cardinals " + string.Join(",", his.Cardinals.ToArray()));
+        Check("N5 the second player's Cardinal or Trinket is paid for on the host, from their Pure Aura only", his.Pure < 60 && mine.Pure == 60, "his " + his.Pure + ", mine " + mine.Pure + ", last order " + RWShop.LastOrder + ", cardinals " + string.Join(",", RWRun.Cardinals.ToArray()) + ", his Trinkets " + string.Join(",", his.Trinkets.ToArray()));
         yield return Sync("rank");
         yield return Until(() => RWTwo.OtherSaid("rankdone"), 60f);
         int dirs = his.Directions.Count;
@@ -932,7 +932,7 @@ public static partial class RWTest
         else RWShop.Open("Shop");
         yield return WaitDialog(6f);
         List<string> shelf = CardNames();
-        Check("The HUD's SHOP button opens the shop on the second player's machine, Cardinals and the Direction's next rank on it", shelf.Exists(n => n.StartsWith("C:")) && shelf.Exists(n => n.StartsWith("D:")) && shelf.Contains("Back"), string.Join(",", shelf.ToArray()));
+        Check("The HUD's SHOP button opens the shop on the second player's machine, Cardinals or Trinkets and the Direction's next rank on it", shelf.Exists(n => n.StartsWith("C:")) && shelf.Exists(n => n.StartsWith("D:")) && shelf.Contains("Back"), string.Join(",", shelf.ToArray()));
         yield return DialogFits("The second player's shop");
         yield return Snap("second_shop");
         string buy = shelf.Find(n => n.StartsWith("C:"));
@@ -942,13 +942,13 @@ public static partial class RWTest
         if (buy != null) ClickCard(buy);
         yield return Until(() => RWMine.Pure() != pure0, 10f);
         yield return new WaitForSeconds(0.5f);
-        Check("Shop: the second player's counter drops by the Cardinal's price", Mathf.RoundToInt(pure0 - RWMine.Pure()) == RWCardinals.Cost(id), id + " " + pure0 + " -> " + RWMine.Pure());
-        if (!RWCardinals.IsVessel(id))
+        Check("Shop: the second player's counter drops by the price", Mathf.RoundToInt(pure0 - RWMine.Pure()) == RWCardinals.Cost(id), id + " " + pure0 + " -> " + RWMine.Pure());
+        if (!RWCardinals.IsTrinket(id))
         {
             yield return new WaitForSeconds(3f);
             bool listed = false;
             foreach (FixedString64Bytes a in Tds_Multiplayerinfo.Instance.Artifacts) if (a.ToString() == id) listed = true;
-            Check("A Team Cardinal joins the HUD's row on the second player's machine", listed && Game_Mapvars.Instance.Artifactobjects != null && Game_Mapvars.Instance.Artifactobjects.Exists(x => x != null && x.Objectname != null), id + ", listed " + listed + ", row " + (Game_Mapvars.Instance.Artifactobjects != null ? Game_Mapvars.Instance.Artifactobjects.Count : -1));
+            Check("A Cardinal joins the HUD's row on the second player's machine", listed && Game_Mapvars.Instance.Artifactobjects != null && Game_Mapvars.Instance.Artifactobjects.Exists(x => x != null && x.Objectname != null), id + ", listed " + listed + ", row " + (Game_Mapvars.Instance.Artifactobjects != null ? Game_Mapvars.Instance.Artifactobjects.Count : -1));
         }
         yield return Say("bought");
         yield return Sync("rank");

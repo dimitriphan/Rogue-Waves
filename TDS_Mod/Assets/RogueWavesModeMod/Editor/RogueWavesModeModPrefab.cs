@@ -172,7 +172,7 @@ namespace RogueWavesModeBuild
             }
             ModTool.Editor.Exporting.ExportSettings.name = Own;
             ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
-            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves, the mode part (dev build): the campaign's sea chart and sea weather, retries, Pure Aura, VENDCINT, Directions, Cardinals, objectives and votes, and rejoining a running map.";
+            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves, the mode part (dev build): the campaign's sea chart and sea weather, retries, Pure Aura, VENDCINT, Directions, Cardinals, Trinkets, objectives and votes, and rejoining a running map.";
             ModTool.Editor.Exporting.ExportSettings.version = Version;
             ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
             AssetDatabase.SaveAssets();

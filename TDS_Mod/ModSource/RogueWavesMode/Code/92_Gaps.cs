@@ -1,7 +1,7 @@
 #if ROGUEWAVESMODE_GAPS
 // Debug build only (-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_GAPS, with ROGUEWAVESMODE_SHOTS for captures): the features the
 // campaign flow (96_Flow.cs) reaches but never measures (docs/reports/UNTESTED_FEATURES_2026-11-04.md), one launch, on a solo host:
-//   rules    what a Direction roll may offer for each of the nine vessels; every Direction's and Cardinal's text and picture
+//   rules    what a Direction roll may offer for each of the nine vessels; every Direction's, Cardinal's and Trinket's text and picture
 //   effects  on a real map: what each Direction and Vampire Dentures do to the wallet and to health; each objective's failure
 //   scales   every dialog of the mode at each UI scale and three screen sizes
 //   ten      a whole campaign on ten real maps, each voted, left and won, to the CAMPAIGN WON screen, with the difficulty measured
@@ -206,7 +206,7 @@ public static partial class RWTest
             if (RWCardinals.Picture(id) == null) wrong.Add(id + " has no picture");
             if (RWCardinals.Cost(id) <= 0) wrong.Add(id + " is free");
         }
-        Check("Cardinals: every one on sale has a name, a line, a picture and a price", wrong.Count == 0 && RWCardinals.Sold.Count > 0, RWCardinals.Sold.Count + " on sale; " + string.Join("; ", wrong.ToArray()));
+        Check("Cardinals and Trinkets: every one on sale has a name, a line, a picture and a price", wrong.Count == 0 && RWCardinals.Sold.Count > 0, RWCardinals.Sold.Count + " on sale; " + string.Join("; ", wrong.ToArray()));
         int shelves = 0, shelfBad = 0;
         List<string> sawOnShelf = new List<string>();
         for (uint seed = 1; seed <= 30; seed++)
@@ -219,7 +219,7 @@ public static partial class RWTest
                     List<string> once = new List<string>();
                     foreach (string id in s1) { if (once.Contains(id)) shelfBad++; once.Add(id); if (!sawOnShelf.Contains(id)) sawOnShelf.Add(id); }
                 }
-        Check("The shelf: 3 different Cardinals, the same on every machine, each on sale coming up in time", shelfBad == 0 && sawOnShelf.Count == RWCardinals.Sold.Count, shelves + " shelves, " + shelfBad + " bad, " + sawOnShelf.Count + " of " + RWCardinals.Sold.Count + " seen");
+        Check("The shelf: 3 different Cardinals or Trinkets, the same on every machine, each on sale coming up in time", shelfBad == 0 && sawOnShelf.Count == RWCardinals.Sold.Count, shelves + " shelves, " + shelfBad + " bad, " + sawOnShelf.Count + " of " + RWCardinals.Sold.Count + " seen");
         foreach (string w in new[] { RWChart.WeatherNames[RWChart.RisingWater], RWChart.WeatherNames[RWChart.QuickeningCurrent], RWChart.WeatherNames[RWChart.NestingGround] })
             Info("weather name", w);
     }
@@ -846,7 +846,7 @@ public static partial class RWTest
             float i1 = Purse2(me, "Redaura");
             Check("Compound Interest: never more than 40 of a colour a Tide, however rich", Mathf.Abs(i1 - i0 - RWDirections.InterestCap * gain) < 0.01f, i0 + " -> " + i1 + " at gain " + gain);
 
-            // Vampire Dentures, real damage, then two stacks. Only the Cardinal's own part of the hit counts.
+            // Vampire Dentures, real damage, then two stacks. Only the Trinket's own part of the hit counts.
             player.Pure = 200;
             string why = RWCardinals.Buy(player, "Cardinal_Dentures");
             yield return new WaitForSeconds(1f);
@@ -877,24 +877,24 @@ public static partial class RWTest
                 dealt0 = vessel.Damagedone;
                 if (bite != null) Hurt(vessel, bite, 2f);
                 yield return new WaitForSeconds(0.8f);
-                Check("Vampire Dentures stack: two heal twice as much", why2 == "" && player.Cardinals.Count == 2 && Mathf.Abs(RWCardinals.Healed - healed0 - (vessel.Damagedone - dealt0) * RWCardinals.DenturesHeal * 2f) < 0.3f, "healed " + (RWCardinals.Healed - healed0) + " for a 2 damage hit; held " + string.Join(",", player.Cardinals.ToArray()));
+                Check("Vampire Dentures stack: two heal twice as much", why2 == "" && player.Trinkets.Count == 2 && Mathf.Abs(RWCardinals.Healed - healed0 - (vessel.Damagedone - dealt0) * RWCardinals.DenturesHeal * 2f) < 0.3f, "healed " + (RWCardinals.Healed - healed0) + " for a 2 damage hit; held " + string.Join(",", player.Trinkets.ToArray()));
                 ClearFoes();
             }
 
             // The shop's refusals, on the host's own order path.
             player.Pure = 0;
-            Check("Cardinals: refused with too little Pure Aura", RWCardinals.Buy(player, "Cardinal_Dentures") == "Not enough Pure Aura", "");
+            Check("Trinkets: refused with too little Pure Aura", RWCardinals.Buy(player, "Cardinal_Dentures") == "Not enough Pure Aura", "");
             player.Pure = 200;
             string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - RWCardinals.Cost(stockCard), stockCard + ": '" + first + "', '" + second + "', Pure " + player.Pure);
-            Check("The HUD's Cardinal row keeps to 8, the rest in the run's count", Tds_Multiplayerinfo.Instance.Artifacts.Count <= 8, "row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + ", team " + RWRun.Team.Count);
+            Check("The HUD's Cardinal row keeps to 8, the rest in the run's count", Tds_Multiplayerinfo.Instance.Artifacts.Count <= 8, "row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + ", cardinals " + RWRun.Cardinals.Count);
 
             // Each objective failing pays nothing, and the map goes on.
             yield return ObjectiveFails(player, vessel, me);
 
             // A felled vessel comes back carrying everything.
-            int cards0 = player.Cardinals.Count;
+            int trinkets0 = player.Trinkets.Count;
             vessel = RWRun.Vessel(me);
             float dmg0 = vessel.Statsserver.ContainsKey("Damage") ? vessel.Statsserver["Damage"].Value_Calc : -1f;
             RWDirections.Take(player, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id("Smacky", "Skipping")) as Upgradeproperties);
@@ -1329,8 +1329,8 @@ public static partial class RWTest
             RWPlayer player = RWRun.For(me);
             player.Hero = "";
             player.Directions.Clear();
-            player.Cardinals.Clear();
-            RWRun.Team.Clear();
+            player.Trinkets.Clear();
+            RWRun.Cardinals.Clear();
             boat = Macro_Main.Instance;
             boat.Selectcharacter(hero);
             yield return new WaitForSecondsRealtime(0.8f);

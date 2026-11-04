@@ -1,5 +1,8 @@
 # Scope vs the proven loop: where the run outgrows `SCOPE_v0.txt` (2026-10-09)
 
+> **Renamed since (2026-11-04, at Dimitri's word):** a Vessel Cardinal is now a **Trinket** and a Team Cardinal just a
+> **Cardinal** (`docs/scope/12_Cardinals.txt`). The text below keeps the names it was written with.
+
 > **Superseded in part (note added 2026-10-11).** Since this page: 10 maps (not 15) and Depth (not Swell); bonus tides
 > have no limit; Fund Transfer moves base aura only; Cardinals stack with no limit; breaks are 60 s; the start is a
 > main-menu button, not a start Cardinal; a dropped player can rejoin the running map (`docs/mode/REJOIN.md`); only the

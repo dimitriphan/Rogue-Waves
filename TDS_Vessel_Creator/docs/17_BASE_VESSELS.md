@@ -1,7 +1,7 @@
 # 17 · The five base vessels inside, and how run upgrades reach every vessel
 
 What each of the game's five vessels (Smacky, Sno Sno, Boutman, Fie, Buster) really does in code, and what that means
-for the Rogue Waves pack: a **Direction** or a **Vessel Cardinal** must work on all of them and on the pack's own
+for the Rogue Waves pack: a **Direction** or a **Trinket** (one player's Cardinal; a Vessel Cardinal until 2026-11-04) must work on all of them and on the pack's own
 vessels, and a new vessel may borrow their assets. Read on 2026-10-12 (Dimitri: "get a clear understanding of each
 character's mechanics so modded assets and characters integrate smoothly"). Everything is **read from the game's code**
 (`Assembly-CSharp.dll` of 2026-10-08, decompiled as in `13` §11; `File.cs:line` points into that folder, never
@@ -383,7 +383,7 @@ ignores server-issued commands.
 
 ## 8. What each common run upgrade needs, vessel by vessel
 
-The matrix the pack's Directions and Vessel Cardinals are designed against. "Re-apply" = at every `Onspawn` of that
+The matrix the pack's Directions and Trinkets are designed against. "Re-apply" = at every `Onspawn` of that
 kind of entity with the player's owner, after its stats exist (§2.3).
 
 | Effect | Smacky | Sno Sno | Boutman | Fie | Buster |
@@ -460,7 +460,7 @@ the engineer, the Boutman family boosts, `Hero_Boutman_Shoot`) are name-locked: 
 
 ## 11. Integration rules
 
-### 11.1 Writing a Direction or Vessel Cardinal that works on every vessel
+### 11.1 Writing a Direction or Trinket that works on every vessel
 
 1. **Carry it as an upgrade** on the entity: Priority −3, empty `Costs`, no `Ent_Visual` (`ModKitDirections.Make`). On
    the vessel it survives death; a Perma-Wall or Thin Ice rebuild drops it.
