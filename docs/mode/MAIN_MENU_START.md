@@ -61,7 +61,8 @@ false with `RWCampaign.Ended` set to "lost" (or "won"), since RogueWavesMode 0.1
   (`docs/15` §14.5) in the base game; the pack reopens it only for a player who dropped (`docs/mode/REJOIN.md`). Between campaign sessions, the host presses the button again (Continue), friends join on the boat,
   and new friends can join then too.
 - The host can't yet tell whether a friend has the pack: no networked value a mod can add says so. A handshake is a
-  Phase 7 polish item, not needed for this.
+  Phase 7 polish item, not needed for this. Since 2026-11-03 the boat warns when a friend has no mods on at all (the
+  game's `Tds_Clientinfo.Mods`, `RWLobby` in `13_Card.cs`).
 
 ## 4. What changes, what is rejected
 

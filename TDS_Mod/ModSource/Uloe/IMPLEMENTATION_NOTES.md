@@ -51,7 +51,7 @@ default now and a caller may hand one `Data` to several foes.
 | `13_Journal.cs` | Journal pages, diagnostics dump |
 | `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only |
 
-## Read from the game's IL for this build (none of it seen in game yet)
+## Read from the game's IL for this build (before round 1; the self-test has since passed in game)
 
 - `Helper_Entitytools.Interacthurt` calls `From.Interact`, then `To.Oninteract` (so a Photon's hit hook is `Master.Interact`, as
   `Entity_Ai_Mob_Merchant.Interact` does it; `Entity_Ai_Mob_Melee` hits through `Interacthurt`).
@@ -116,8 +116,8 @@ is too weak on the first Tides, whether Uloe tied to a node is a real cost.
 `UloeContent.BuildDirections` registers four Directions, one upgrade per rank (`Direction_Uloe_<Name><rank>_Upgradeobject`, `Extension`,
 `Brightbulb`, `Batteries`, `Flashbulb`, ranks 1-3); the vessel's brain reads the ranks with `ModKitDirections.Rank` twice a second, and the numbers are arrays in
 `UloeData` indexed by rank. With none held the numbers are the plain ones. The mode finds them by name, and its cards find their pictures by name too
-(`RWAssets.Like("Direction_" + name)`): `Tools/Make-DirectionIcons.ps1` drew the four into `ModSource/RogueWavesMode/Art/Temporary/game_size`, so **the mode part has
-to be rebuilt to show them**; until then the cards show the crest.
+(`RWAssets.Like("Direction_" + name)`): `Tools/Make-DirectionIcons.ps1` drew the four into `ModSource/RogueWavesMode/Art/Temporary/game_size`, and the mode's cards
+show them (seen in game, `docs/TEMP_ART.md`).
 
 ## Open in the sheet (Dimitri's)
 

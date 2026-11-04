@@ -182,7 +182,7 @@ Steps, in order:
    in it.
 5. `docs/10` hand-off; `RogueWaves-0.1.0.zip` to Dimitri. Gate: Dimitri says ship.
 
-### Phase 4. Enemies and modifiers (1-2 sessions plus one PC round)
+### Phase 4. Enemies and modifiers (1-2 sessions plus one PC round; built 2026-11-03, the foes part)
 
 Reads: `docs/13`, `docs/15` §1, `docs/18` (foe art). The modifiers are the scope's four (`docs/scope/13`): Cursed (an
 aura that lowers nearby towers' and units' attack), Berserk (damage and speed up as health drops), Aging and Dazzling;
@@ -195,7 +195,7 @@ Opening prompt:
 
 Gate: the four modifiers seen in a self-test, 0 exceptions with the whole pack loaded.
 
-### Phase 5. The Rogue Waves Mode (4-8 sessions, several PC rounds)
+### Phase 5. The Rogue Waves Mode (4-8 sessions, several PC rounds; built and run in game 2026-11-03, "Phase 5 pieces" in Part C)
 
 Build in the order a run plays, each piece testable alone: the main-menu button → Pure Aura (per-player counter, earned
 per tide) → objectives/bounties (Merchut's pattern in a mod brain; its contracts are hardcoded, `docs/15` §5) → VENDCINT
@@ -213,7 +213,7 @@ Gate: a full 10-map campaign completed on the PC (saved and continued at least o
 ### Phase 6. Content passes (2-3 sessions)
 
 New Cardinals and Trinkets (run modifiers, built like the base game's Cardinals), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), and the
-Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6). Each is data plus small code on finished systems.
+Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6; a real Boutman death passed on 2026-11-04, a person's own press is left). Each is data plus small code on finished systems.
 
 ### Phase 7. Hardening and release (2 sessions plus PC rounds; Release 1 runs its pack steps for Yossele alone)
 
@@ -251,15 +251,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
-  (its one version also replaces the mod's `.info` "1.0"). After Release 1: Phase 5's next pieces, the main-menu button
-  and the in-map vote (kit 1.7 first, Decisions 2026-10-15; the campaign itself no longer needs kit 1.7's "Leave" fix,
-  `docs/reports/MODE_POLISH_2026-11-03.md` F13); the mode's next PC round runs its new checks (K0, CH, K1, P1, T0-T6,
-  H1) and Dimitri confirms the polish's readings (that report §2). By hand:
-  the F-key check, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
+  (its one version, `0.1.0`, replaces the dev builds' `0.1.0-dev`). Phase 5's pieces are built and passed in game
+  ahead of Release 1 (kit 1.7, the main-menu button, the in-map vote and the mode's checks K0, CH, K1, P1, T0-T6, H1:
+  `docs/reports/BUILD_2026-11-03.md`, "Phase 5 pieces" below); Dimitri confirms the polish's readings
+  (`docs/reports/MODE_POLISH_2026-11-03.md` §2). By hand:
+  a person's own F-key press (the real Boutman death passed, `docs/reports/TEST_ROUND_2026-11-04.md`), the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass
-  (the 2026-11-03 balance study proposes no change), the Compost Bin numbers in scope `11`, and the chance-based upgrades (test plan §5). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
+  (the 2026-11-03 balance study proposes no change), and the Compost Bin numbers in scope `11` (the chance-based upgrades passed by their rates, `docs/reports/TEST_ROUND_2026-11-04.md`). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
   `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
   sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
   probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
@@ -886,7 +886,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   sails back by itself; Bottom Rock (`Artifact_Rock`) stays off the shelf. The lists in scope `04`, `10`-`14` are `~defaults~` beside their `! NEEDS !` lines.
 - 2026-11-04 (Dimitri, "Accept all changes, then update the scopes in the documents"): every upgrade of
   `docs/reports/UPGRADE_GAPS_2026-11-04.md` is in: Yossele's Wood Wide Web (scope `07`), Spool's 22 and the Cookie Tin's
-  UNTHREAD button (scope `08`, which no longer has a `! NEEDS !` line). Open question 7 is closed. Not built yet.
+  UNTHREAD button (scope `08`, which no longer has a `! NEEDS !` line). Open question 7 (then the upgrade gaps; the number now holds the new Directions) is closed. Not built yet.
 - 2026-11-04 (Dimitri, new Directions and Cardinals): every Direction and Cardinal in the scope names its maker in a `By:` slot
   (rule in scope `00`). Two that clash form a research-choice pair (`~default~`, Open question 7).
 - 2026-11-04 (Dimitri, "Rename Vessel Cardinals as Trinkets and Team Cardinals as just Cardinals"): a run modifier
@@ -902,7 +902,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
-| 2 | Spool: the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones (scope `08`'s `! NEEDS ... !`), and the defaults in its `DESIGN.md` | built without them; every default stands |
+| 2 | Spool: the defaults in its `DESIGN.md` (the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are in scope `08` since 2026-11-04: designed, not built) | built without the new upgrades; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
@@ -913,16 +913,16 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 
 ### Phase 5 pieces
 
-All of these passed in game on 2026-11-03 (`docs/reports/BUILD_2026-11-03.md`); left on them: Dimitri's eye, online.
+All of these passed in game on 2026-11-03 (`docs/reports/BUILD_2026-11-03.md`) and with a real second player on one PC on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`); left on them: Dimitri's eye, Steam online.
 
 - [x] kit 1.7 (Decisions 2026-10-15), before the button
 - [x] main-menu Rogue Waves button
 - [x] Pure Aura  - [x] objectives/bounties  - [x] shopkeeper  - [x] Directions  - [x] Fund Transfer  - [x] map vote
   (sea chart and boat trip passed PC rounds 1-4, 2026-10-11)
-- [x] sea weather (PC round 4, 38/0; the look by eye and online left)  - [x] rejoin after a drop (PC round 6, 47/0;
-  online O1-O8 left)
+- [x] sea weather (PC round 4, 38/0; on a client 2026-11-04; the look by eye left)  - [x] rejoin after a drop (PC round 6, 47/0;
+  O1-O8 with a second player 2026-11-04, `docs/mode/REJOIN.md` §6; Steam's Join Game left)
 - [x] leave-or-stay and bonus tides
-- [x] 10-map campaign loop (two maps played for real, a loss, a retry, Continue; ten won on pretend results; Phase 5's gate, a full campaign by hand and online, is left)
+- [x] 10-map campaign loop (two maps played for real, a loss, a retry, Continue; ten real maps won on 2026-11-04, 44/0; Phase 5's gate, a full campaign by hand and on Steam, is left)
 - [ ] ascension (Depth, on hold)
 - [x] UX (Decisions 2026-11-03; `docs/reports/UX_FEATURES_2026-11-03.md`, probes U1-U10 in its §7; results in `docs/reports/BUILD_2026-11-03.md` §3):
   - [x] campaign card on the loading screen, the map intro card, the chart's world card and the end screen title

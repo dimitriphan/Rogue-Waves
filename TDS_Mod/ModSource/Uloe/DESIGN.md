@@ -4,7 +4,7 @@ Rogue Waves' Uloe is **built from the scope text**: `docs/scope/10_Vessel_Uloe.t
 sheet gives is kept as written; every blank slot is a **default picked here**, marked *(default)* and listed in
 "Defaults picked here" at the end. Numbers are held to `TDS_Vessel_Creator/docs/02` and `docs/12` and to the five base
 vessels (`docs/scope/16_Base_Vessels.txt`). Routes follow `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md` §8.3, §10 and §11.
-Status: **self-tested once in game, never played by hand**; temporary art drawn by code (`IMPLEMENTATION_NOTES.md`).
+Status: **its self-test passes in game (148/0, 2026-11-04), never played by hand**; temporary art drawn by code (`IMPLEMENTATION_NOTES.md`).
 
 ## Identity
 
@@ -48,7 +48,7 @@ in range of what they plugged into. The level of Light depends on the node's tot
 "The plug and cord are the ability's: they move with Uloe, like a cord in real life."
 
 - **Keys:** 6 / 7, Onpressed, priority 6 (Buster's Dash setup). **Unlocked:** from the start. **Cost:** none *(default)*.
-- **Target:** a node (any entity tagged `Resource`) or one of the player's own Power Banks: a picker, like Sell.
+- **Target:** a node (an entity tagged `Resource` with `Healthresource`; dens are tagged `Resource` too and are not nodes) or one of the player's own Power Banks: a picker, like Sell.
   The hotkey takes what is under the cursor, else the nearest valid one in reach *(default)*. The server checks every pick.
 - **Range:** 5 tiles *(default)*, the cord's length. Walking past it snaps the cord: Uloe unplugs, with a spark and an
   owner-only line.
@@ -73,7 +73,7 @@ RogueLab R3): the stat system does the summing, and Light fades by itself about 
 | Photon | 1 *(default)* | radius 2 *(default)* | sheet |
 | Flood Light, aimed | `2 + 0.2 x node's total aura`, bonus at most 3 *(default)*: 3 on a 5 aura node | the one tower it is aimed at, within 6 tiles | sheet |
 | Flood Light with Wide Flood | 60% of that *(default)* | radius 3.5 *(default)* | sheet |
-| Flood Light with Long Throw | 80% of that *(default)* | every building on a line 8 tiles long, half a tile each side *(default)* | sheet |
+| Flood Light with Long Throw | 80% of that *(default)* | every building on a line 8 tiles long, 0.6 tile each side *(default)* | sheet |
 | Mirror with Bounce Card | 50% of the Light it receives *(default)* | radius 3 *(default)*; never to another Bounce Card (a loop) | sheet |
 
 What Light does ("Towers have increased effects based on how much light they're receiving"), each counted up to Light 12
@@ -262,7 +262,7 @@ defaults for `docs/scope/11`'s "! NEEDS ULOE'S DIRECTIONS !".
 1. The vessel: stock ranged AI, armed; tooltip, stats, PLUG IN, keys, the four on the build menu.
 2. Light: Uloe lights a Glass; two sources sum; Light fades about 1.5 s after Uloe leaves.
 3. Plug In: refusals, a node's Light from its aura, a Power Bank's from its upgrades, the skin, unplug, the snap.
-4. Blind and Illuminate, on both routes: each level's numbers, a stronger replacing a weaker, a weaker refused, wearing off.
+4. Blind and Illuminate, on the route in use (the own route since round 1): each level's numbers, a stronger replacing a weaker, a weaker refused, wearing off.
 5. Magnifying Glass: damage by Light, beams, Burning Point's ramp and its reset.
 6. Power Bank and Photons: count, respawn, faster with Light, wandering, Light from a Photon, a hit marking a foe, Short Circuit.
 7. Mirror: unlit does nothing; level by Light; Silver Backing; Vanity Lights; Glare's chance; Bounce Card.

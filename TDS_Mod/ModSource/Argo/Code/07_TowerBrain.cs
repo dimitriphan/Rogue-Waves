@@ -275,7 +275,7 @@ public class ArgoTowerBrain : MonoBehaviour
         ArgoUtil.Vis(Master, broadside ? "Argo_Broadside" : "Argo_Scatter", aim, spread);
     }
 
-    // ---------------------------------------------------------------- Harpoon Tower
+    // ---------------------------------------------------------------- Harpoon Gun
 
     // Heavy Salvo (a Direction on its owner's vessel): a held Multi on this gun's Damage, made from its first check after
     // it spawns and remade when the rank rises. None with none held.

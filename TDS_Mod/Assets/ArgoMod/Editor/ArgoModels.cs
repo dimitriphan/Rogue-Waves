@@ -1,7 +1,7 @@
 // Argo asset generator: every tower model (buildables, upgrades, Fathom overlays, projectiles), built low-poly and sleek
 // like Sno Sno's and Buster's towers: a handful of clean solids per model, flat palette colours, readable silhouettes,
 // no voxels. Every Argo building stands on the same riveted stone-and-brass dock. Upgrades keep the silhouette and add
-// one clear feature. The Scatter Cannon and the Harpoon Tower keep their gun on a separate "Turret" part (the clients
+// one clear feature. The Scatter Cannon and the Harpoon Gun keep their gun on a separate "Turret" part (the clients
 // swing it toward each shot); the Drill Rig's chuck is a "Spinner" part that turns while it bites. Deep Water (2.0) is
 // a walk-through pool in a stone frame with a small brass pump dome in its back corner, its water a "Swell" part the
 // clients bob; FLOOD pools are the frame and water alone (Argo_Pool).
@@ -220,7 +220,7 @@ namespace ArgoBuild
             return m;
         }
 
-        // ---------------------------------------------------------------- Harpoon Tower
+        // ---------------------------------------------------------------- Harpoon Gun
 
         static Lp HarpoonBase(int v)
         {

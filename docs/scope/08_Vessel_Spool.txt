@@ -2,7 +2,7 @@
 	Spool, Crafty Crafted Crafter
 		# Fulfills a similar niche to Fie, but with more automation and more disposable troops. Is a mix between Buster sending dogs towards enemies and Fie's minions.
 		# Keeps the names {Loom} and {Thread}: Mummer was a prototype version of Spool.
-		/~ Laid out in the Vessel template, 15_Templates.txt. A value written ~like this~ is a default Claude picked; nothing of Spool is built yet, so every ~ is open \
+		/~ Laid out in the Vessel template, 15_Templates.txt. A value written ~like this~ is a default Claude picked; Spool is built with these defaults, and every ~ stays open until you take it \
 
 		[Identity]
 			- Title: Crafty Crafted Crafter
@@ -14,7 +14,7 @@
 			- Accent colour: ~plush purple~
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \
 			- Lore: / Lore comes once the vessel is finalized \
-			- Status: Built as 0.1.0-dev from this sheet with temporary art; passed its PC self-test 120 of 120. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are not built yet. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md \
+			- Status: Built as 0.1.0-dev from this sheet with temporary art; passes its PC self-test, 133 of 133 in the latest round. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are not built yet. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md \
 
 		[Vessel Stats]
 			- Attack: melee.

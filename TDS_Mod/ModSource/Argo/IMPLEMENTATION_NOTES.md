@@ -1,4 +1,4 @@
-# Argo implementation notes (2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
+# Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
 **Review 2026-11-04 (design only, nothing built): what the next build changes.** `docs/reports/ARGO_REVIEW_2026-11-04.md`
 §5 and scope `09` (each changed line carries a "Review 2026-11-04" note). Two are code fixes the sheet already
@@ -229,7 +229,7 @@ crew of Nauts, a scatter cannon, a harpoon tower and a drill that sinks deeper e
 
 ## Directions (kit 1.7)
 
-The scope has no Argo Directions yet, so `ArgoContent.BuildDirections` registers two defaults, one upgrade per rank, no
+Scope `11` has none of Dimitri's for Argo yet (its NEEDS line), only Claude's four defaults; `ArgoContent.BuildDirections` registers two of them (Deep Current, Heavy Salvo), one upgrade per rank, no
 `Clash`. The vessel's brain copies the ranks held to `ArgoServer.RanksOf(owner)` twice a second; they stay while it is down.
 
 - **Deep Current** (`Deepcurrent`): `ArgoData.PoolReach` +15 / 30 / 50% for a network led by that player's pump (0.55 to
@@ -241,8 +241,10 @@ With none held the numbers and behaviour are today's. Measured in game on 2026-1
 
 ## Layout
 
-2.0 (current): the table below is 1.4.0's. 2.0 builds against kit 1.6, adds `11_Water` (Deep Water) and
-`16_AimSelect` (AIM: the Drill Rig's aimed Tremor), keeps SONAR's files switched off, and `99_SelfTest` has 139 checks (PC round 6).
+2.0 (current): the table below is 1.4.0's, with 1.4.0's names (Diving Bell is now the Miner's Base, Deep Drill the Drill
+Rig). 2.0.1 builds against kit 1.7, adds `11_Water` (Deep Water) and `16_AimSelect` (AIM: the Drill Rig's aimed Tremor),
+keeps SONAR's files switched off, and `99_SelfTest` passes 142 checks (2026-11-04; 139 in PC round 6). The editor side also
+has `ArgoAseprite` and `ArgoPx` (Aseprite copies of the sheets to hand-edit, the pixel canvas).
 
 All code lives in `Code/*.cs` plus the shared kit in `../Shared` (kit 1.3 at 1.4.0). `Build-ArgoMod.ps1` joins the files in name
 order, then the kit with its `ModKit` prefix renamed to `ArgoKit`, into one Roslyn string; the first type is the entry

@@ -174,7 +174,7 @@ public static class ArgoData
 
     // ---------------------------------------------------------------- Directions (kit 1.7)
 
-    // docs/scope/11 has none for Argo yet (its NEEDS line): defaults, one per rank, built on what Argo already has.
+    // docs/scope/11 has none of Dimitri's for Argo yet (its NEEDS line): two of its four defaults, one per rank, built on what Argo already has.
     public class Direction { public string Name, Display, Desc; public float Bonus; }
     // Deep Current: Deep Water reaches this much farther (PoolReach). Default, docs/scope/11.
     public static readonly Direction[] Deepcurrents =

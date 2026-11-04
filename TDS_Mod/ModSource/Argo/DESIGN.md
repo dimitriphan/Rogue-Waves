@@ -3,7 +3,7 @@
 Rogue Waves' Argo is **designed from the scope text** (`docs/scope/09_Vessel_Argo.txt`, "Argo, Deep Sea Diver"), which the user calls
 the planned version of every vessel (`docs/PLAN.md` Part C). The earlier standalone ArgoMod 1.4.0 is reused only
 where it matches. "Changes from the concept, and from 1.4.0" lists every difference; 1.4.0's own design is `DESIGN_1.4.0.md`. Checked against `TDS_Vessel_Creator/docs/02`.
-Status: **approved 2026-10-08; built and self-tested on the PC (round 6: 139 pass, 0 fail, `IMPLEMENTATION_NOTES.md`)**. Unmarked numbers are 1.4.0's, verified in its
+Status: **approved 2026-10-08; built and self-tested on the PC (round 6: 139 pass, 0 fail; 2.0.1: 142 pass, 0 fail and a second player's machine on 2026-11-04, `IMPLEMENTATION_NOTES.md`)**. Unmarked numbers are 1.4.0's, verified in its
 ninth PC self-test (103/103).
 
 ## Identity

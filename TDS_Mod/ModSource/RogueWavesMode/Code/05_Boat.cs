@@ -10,7 +10,7 @@
 //                  back to the stock world it sailed from
 //   leader (host)  when RWCampaign.Choice names a column (the vote's winner, or a self-test), hovers that node so the
 //                  stock boat sails there, and picks it on arrival (Selectmap_ServerRpc), which opens the Setup panel
-// Until the vote piece exists (docs/mode/SEA_CHART.md §4, route V1: the in-map vote), the leader may also steer with the stock
+// Beside the in-map vote (20_Vote.cs; docs/mode/SEA_CHART.md §4, route V1), the leader may also steer with the stock
 // arrows: they only offer the next row's linked maps, and only those can be picked (on the host, only the map to replay
 // after a loss; only the leader steers, so the host's blacklist is the one that counts).
 public static class RWBoat

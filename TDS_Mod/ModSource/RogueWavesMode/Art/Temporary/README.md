@@ -29,18 +29,19 @@ opaque, no outline, lit from the upper left, one object each.
 | `Direction_Deepcurrent`, `_Heavysalvo` (`.png`) | Argo's Deep Current and Heavy Salvo (both showed the crest before) | the Direction cards | wired, compiled (2026-11-04); drawn by `ModSource/Argo/Tools/Make-DirectionIcons.ps1` |
 | `Cardinal_VampireDentures.png` | cheap plastic fangs on red gums | Vampire Dentures, a Trinket since 2026-11-04 (scope 12; the file keeps its name) | **seen in game** |
 
-`aseprite/RogueWaves_Icons.aseprite` holds every 12 x 12 icon, one frame and one tag each; `RogueWaves_Crest32.aseprite`
+`aseprite/RogueWaves_Icons.aseprite` holds 15 of the 12 x 12 icons (the three weathers, the crest, Depth, Pure Aura,
+Retry, Vote, six Directions and Vampire Dentures), one frame and one tag each; `RogueWaves_Crest32.aseprite`
 the big crest. Their layer is named "TEMP art". `preview_8x/` holds enlarged copies for review.
 
 Not drawn yet, and why: the vote, shop, Direction-card and leave-prompt frames (the game's own choice dialog and panels
-are reused, kit `docs/15` §15, so there is no frame slot to fill), the sea chart's islands (built from shapes at run time in
-`Code/04_World.cs`; a better look is model work for the chart's next change), and Cardinal or Direction art bigger than
+are reused, kit `docs/15` §15, so there is no frame slot to fill), the sea chart's islands (each map's own island
+from the base game's world map, copied at run time in `Code/04_World.cs`; a shape only when none is found), and Cardinal or Direction art bigger than
 12 x 12 (the size those slots show at hasn't been seen in game).
 
 ## Replacing it
 
-Draw the icon at the same size and save it as `ModSource/RogueWavesMode/Art/<same name>.png`, one folder up. The mode has
-no asset builder: its icons are string rows in code. For the three weather icons, run
+Draw the icon at the same size and save it as `ModSource/RogueWavesMode/Art/<same name>.png`, one folder up. Tools > RogueWavesMode >
+Build All Assets packs the PNGs into the sprite library; only the three weather icons are string rows in code. For them, run
 `python3 concept-tools/temp_art/ui_icons.py` after changing its rows (it prints them in the form `08_Icons.cs` uses), or
 ask a Claude thread to turn your PNG into rows. Delete the temporary file once yours is in.
 

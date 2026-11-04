@@ -4,7 +4,7 @@
 // twins, so picking a node on the boat loads its map in Mode_RogueWave. Runs on every machine at boot.
 // The Tide table is Mode_Normal's 30 Tides with every break between Tides 60 s long (docs/scope/04 [Tides and Leaving];
 // Mode_Normal's are 30 s); the opening break keeps its 45 s. A map counts as won once Tide 15 is cleared (RWCampaign),
-// so Tides 16-30 play as bonus Tides; the vote to leave and bonus Tides past 30 are a later piece.
+// so the Tides after it are bonus Tides, with no limit past 30 (RWDifficulty.Bonus), until the vote to leave (20_Vote.cs).
 public static class RWMode
 {
     public const float BreakSeconds = 60f;       // docs/scope/04 [Tides and Leaving] Breaks

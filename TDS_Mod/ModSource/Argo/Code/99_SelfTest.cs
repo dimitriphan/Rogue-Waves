@@ -233,7 +233,7 @@ public static class ArgoSelfTest
 
     // A free tile for this being as near the centre as there is one, on any level from 2 above it to 6 below, every level
     // of each column tried, out to 'maxDist'; logs why when there's none. Spot's first ground in a column, at the centre's
-    // own height or 1-4 below, found nothing for the second Deep Drill in three of seven PC runs.
+    // own height or 1-4 below, found nothing for the second Drill Rig in three of seven PC runs.
     static Vector3 AnySpot(Vector3 c, Beingobject being, int team, float maxDist, string what)
     {
         int r = Mathf.CeilToInt(maxDist), cy = Mathf.RoundToInt(c.y), bare = 0, taken = 0, unplaceable = 0;
@@ -638,7 +638,7 @@ public static class ArgoSelfTest
         return null;
     }
 
-    // The Harpoon Tower's tile: one with room for its reel and pierce checks (4b, Anchor Line), a lane of one foe with a
+    // The Harpoon Gun's tile: one with room for its reel and pierce checks (4b, Anchor Line), a lane of one foe with a
     // tile to be reeled to and a lane of two (see Lane), nearest 2.5 tiles from the vessel, else the plain Spot. The
     // sixth PC run's tower, on the top of Thehunt's small hill, had neither lane. Those lanes are kept free of the other
     // buildings ('reserved').

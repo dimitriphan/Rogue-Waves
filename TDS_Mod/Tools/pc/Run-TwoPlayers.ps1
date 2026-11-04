@@ -5,7 +5,7 @@
 # settings; both copies run windowed at 1280x720, so the settings go back at the end. The second copy never writes the save.
 # Commands the host's log can give this script, by a line "TEST DRIVER <word>":
 #   KILL      ends the second copy as Task Manager would (a friend's crash)
-#   START     starts the second copy again
+#   START <phase>  starts the second copy (again), its log named after the phase
 param(
     [int]$TimeoutMinutes = 25,
     [string]$Game = "D:\Steam\steamapps\common\TDS\TDS\TDSgame.exe",

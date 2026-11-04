@@ -4,7 +4,7 @@
 light bulb on a lamp post whose towers grow stronger with the Light they receive. Uloe and its Photons give Light, PLUG IN
 gives far more, and Photons mark foes with Illuminate and Blind.
 
-Status: **0.1.0-dev, self-tested once in game (round 1: 138 pass, 8 fail, 1 setup; notes in `IMPLEMENTATION_NOTES.md`), never played by hand.** The art is temporary and drawn by code.
+Status: **0.1.0-dev, its self-test passes in game (148 pass, 0 fail on 2026-11-04, also as a client's vessel with a second player; notes in `IMPLEMENTATION_NOTES.md`), never played by hand.** The art is temporary and drawn by code.
 
 | File | What |
 |---|---|

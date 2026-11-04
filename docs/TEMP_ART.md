@@ -17,12 +17,12 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Part | Temporary art | Where | State |
 | --- | --- | --- | --- |
 | Yossele | the vessel's sheets, menu art, towers, upgrades, effects, sounds (drawn by code from his reshade) | `ModSource/Yossele/Previews/0.1/ASSETS.md`, `0.2/ASSETS.md` | in game since PC round 9 |
-| Yossele | the Cordyfriend's own sheet (was the Snoble's sprite tinted green) | `ModSource/Yossele/Art/Temporary/` | wired, compiled; next PC round |
-| Yossele | the vessel's idle and walk (the knuckle walk) and its mouth-laser attack, as files over the code's sheets | `ModSource/Yossele/Art/Temporary/` (`Yossele-Sheet`, `YosseleAttack-Sheet`) | wired (`YosseleBuilder.FileArt`), compiled; next PC round |
-| Yossele | a bigger aura fruit on a pale disc | `Assets/YosseleMod/Editor/YosseleModels.cs` `Fruit`; render in `Art/Temporary/preview_8x/` | compiled; next PC round |
-| Spool | the vessel's sheets, Crafted, Thread Head, towers, effects, sounds (drawn by code) | Spool's `Previews/0.1/ASSETS.md` (PR #42) | in game since Spool round 1 |
-| Spool | a 12 x 12 ground Thread tuft; a needle that reads in flight | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`e0d2bf6`), compiled; not yet seen in game |
-| Spool | the Thread Head and the four Crafted (Stitched, Dart, Seam, Mangled), redrawn from Dimitri's Spool sprite (2026-10-28) and animated | `ModSource/Spool/Art/Temporary/` | wired on PR #42 (`ad85b00`, a `FileArt` like Yossele's), compiled; not yet seen in game |
+| Yossele | the Cordyfriend's own sheet (was the Snoble's sprite tinted green) | `ModSource/Yossele/Art/Temporary/` | wired; in every build since PC round 10 (2026-10-28, its build log names the sheet); not yet looked at by eye |
+| Yossele | the vessel's idle and walk (the knuckle walk) and its mouth-laser attack, as files over the code's sheets | `ModSource/Yossele/Art/Temporary/` (`Yossele-Sheet`, `YosseleAttack-Sheet`) | wired (`YosseleBuilder.FileArt`); in every build since PC round 10 (its build log); not yet looked at by eye |
+| Yossele | a bigger aura fruit on a pale disc | `Assets/YosseleMod/Editor/YosseleModels.cs` `Fruit`; render in `Art/Temporary/preview_8x/` | in every build since PC round 10; not yet looked at by eye |
+| Spool | the vessel's sheets, Crafted, Thread Head, towers, effects, sounds (drawn by code) | Spool's `Previews/0.1/ASSETS.md` | in game since Spool round 1 |
+| Spool | a 12 x 12 ground Thread tuft; a needle that reads in flight | `ModSource/Spool/Art/Temporary/` | wired (PR #42, merged); in the builds of 2026-11-03 and 2026-11-04 (121/0, 133/0); not yet looked at by eye |
+| Spool | the Thread Head and the four Crafted (Stitched, Dart, Seam, Mangled), redrawn from Dimitri's Spool sprite (2026-10-28) and animated | `ModSource/Spool/Art/Temporary/` | wired (PR #42, merged; a `FileArt` like Yossele's); in the builds of 2026-11-03 and 2026-11-04; not yet looked at by eye |
 | Mode UI | three weather icons, redrawn | `ModSource/RogueWavesMode/Art/Temporary/`, rows in `Code/08_Icons.cs` | wired, compiled |
 | Mode UI | the crest (12 and 32 px), Pure Aura, Depth, retry, vote icons | same folder | wired (2026-11-03), seen in game on the menu button and the dialogs; Depth waits for its feature |
 | Mode UI | icons of the Stay, Leave, Shop, Fund and Board buttons | same folder | wired, seen in game |
@@ -52,8 +52,8 @@ READMEs name each version.
 - **Applying.** `python3 concept-tools/temp_art/apply_picks.py picks.json` copies the picked frames over
   `game_size/` (the wired files), copies picked icons whole and prints which snippet to paste for a model pick. The three
   weather icons are also rows in `RogueWavesMode/Code/08_Icons.cs`: `variants_icons.py` prints each version's rows. Then
-  re-export the `.aseprite` copies (`tart.write_sheet`) and delete the versions not picked. Spool's sheets are wired on
-  PR #42's branch, which has its own copy of `Spool/Art/Temporary/game_size/`: copy the applied files there too.
+  re-export the `.aseprite` copies (`tart.write_sheet`) and delete the versions not picked. Spool's sheets are wired the
+  same way (PR #42, merged), so the applied files are the wired ones.
 - **Rules kept.** Yossele's body in every version is the code's frame drawn from his reshade, cut into parts that move;
   the Thread Head wears his zipper mouth pixel for pixel; the Crafted keep their bodies from his sprite (only how they
   move changes); no soft rim; opaque, lit from the upper left. None of it has been seen in game.
@@ -112,8 +112,9 @@ Thread Head stays the biggest (scope 08: "works like Boutman's fish").
 - **Picking.** Page https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX (private to Dimitri; picks saved in its collection `picks`, one
   document per minion key, `{choice: "cur" | "v01".."v10", note}`). "Current" is an eleventh choice.
 - **Applying.** Every version keeps the wired sheet's name, size and layout. Cordyfriend and Spool's five: copy the picked
-  `game_size/` and `aseprite/` files over `Art/Temporary/`. Photon and Nauts are drawn by code: their builders first need
-  Yossele's `FileArt` (the part READMEs say where), then the same copy. Nothing is seen in game yet.
+  `game_size/` and `aseprite/` files over `Art/Temporary/`. The Photon is drawn by code, but `UloeBuilder` already takes a file
+  over it (`FileArt`), so the same copy. The Nauts are drawn by code: `ArgoBuilder` first needs Yossele's `FileArt` (Argo's README
+  in that folder says where), then the same copy. Nothing is seen in game yet.
 - **Generator.** `concept-tools/minions/` (`build.py`, then `page.py`; `readmes.py` writes the READMEs).
 
 ## Previews and generators
