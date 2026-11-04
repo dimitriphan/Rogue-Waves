@@ -35,7 +35,7 @@ public static class SpoolSelfTest
 
     static void Drive()
     {
-        if (freeze && Game_Mapvars.Instance != null && ModKitUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
+        if (freeze && Game_Mapvars.Instance != null && SpoolUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
             Game_Mapvars.Instance.Time_Wave.Value = 900f;
         if (phase >= 3)
             return;
@@ -105,7 +105,7 @@ public static class SpoolSelfTest
             return;
         }
 
-        if (phase <= 2 && SpoolServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
+        if (phase <= 2 && SpoolServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && SpoolUtil.IsServer)
         {
             phase = 3;
             SpoolMod.Instance.StartCoroutine(Scenario());
@@ -127,7 +127,7 @@ public static class SpoolSelfTest
             buttons++;
             if (b.Character == SpoolData.Hero) mine = b;
         }
-        Dictionary<string, UnityEngine.Object> heroes = ModKitUtil.Folder("Hero");
+        Dictionary<string, UnityEngine.Object> heroes = SpoolUtil.Folder("Hero");
         Check("Spool unlocked on the boat's vessel select", mine != null && !mine.Locked, mine == null ? "no button" : "locked " + mine.Locked);
         Check("every vessel has a boat spot", buttons == heroes.Count, buttons + " buttons, " + heroes.Count + " vessels");
         Transform spots = Macro_Worldvisual.Instance.Boat.transform.Find("Charselect/Spots");
@@ -208,7 +208,7 @@ public static class SpoolSelfTest
     // each column out to 8 tiles; when there is none it logs why and a picture of the ground).
     static Vector3 Spot(Entity_Master hero, Beingobject being, float ring)
     {
-        return ModKitTest.Spot(ModKitUtil.Pos(hero), being, ModKitUtil.Team(hero), ring, 8f, used, being.Objectname);
+        return ModKitTest.Spot(SpoolUtil.Pos(hero), being, SpoolUtil.Team(hero), ring, 8f, used, being.Objectname);
     }
 
     static T Newest<T>(string being, List<SpoolBuilding> known) where T : SpoolBuilding
@@ -222,7 +222,7 @@ public static class SpoolSelfTest
     static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<SpoolBuilding> known, SpoolBuilding[] result)
     {
         result[0] = null;
-        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + ModKitUtil.Owner(hero) + "}";
+        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + SpoolUtil.Owner(hero) + "}";
         Send(hero, "Build", json);
         float t = 0f;
         while (t < 20f && result[0] == null)
@@ -235,14 +235,14 @@ public static class SpoolSelfTest
             known.Add(result[0]);
     }
 
-    static int Team() { return SpoolServer.Heroes.Count > 0 ? ModKitUtil.Team(SpoolServer.Heroes[0].Master) : 1; }
+    static int Team() { return SpoolServer.Heroes.Count > 0 ? SpoolUtil.Team(SpoolServer.Heroes[0].Master) : 1; }
 
     // Removes Tide foes so they don't pile up (not a kill: no Thread).
     static void ClearFoes()
     {
         int team = Team();
         foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
-            if (ModKitUtil.IsFoe(e, team))
+            if (SpoolUtil.IsFoe(e, team))
                 Game_Entity.Instance.Despawn(e.Beingserver, false, "Selftest");
     }
 
@@ -265,7 +265,7 @@ public static class SpoolSelfTest
 
     // A foe's tags and stats arrive a frame after its spawn (Entity_Master.Start): killed or read in its spawn frame it is
     // not yet "Enemy" and has no Health (round 1). The checks wait for both.
-    static bool Loaded(Entity_Master e) { return ModKitUtil.Alive(e) && e.Taglistserver != null && e.Taglistserver.Contains("Enemy") && e.Statsserver != null && e.Statsserver.ContainsKey("Health"); }
+    static bool Loaded(Entity_Master e) { return SpoolUtil.Alive(e) && e.Taglistserver != null && e.Taglistserver.Contains("Enemy") && e.Statsserver != null && e.Statsserver.ContainsKey("Health"); }
 
     // A loaded foe between minDist and maxDist from 'near': slot[0], or null when none could spawn or it fell while loading.
     static IEnumerator Foe(string being, Vector3 near, float maxDist, float minDist, Entity_Master[] slot)
@@ -274,7 +274,7 @@ public static class SpoolSelfTest
         Entity_Master e = SpawnFoe(being, near, maxDist, minDist);
         if (e == null)
             yield break;
-        yield return Until(() => !ModKitUtil.Alive(e) || Loaded(e), 2f);
+        yield return Until(() => !SpoolUtil.Alive(e) || Loaded(e), 2f);
         if (Loaded(e))
             slot[0] = e;
     }
@@ -284,12 +284,12 @@ public static class SpoolSelfTest
     // nowhere).
     static IEnumerator FarFoe(string being, Entity_Master[] slot)
     {
-        if (slot[0] != null && Loaded(slot[0]) && ModKitUtil.BeingName(slot[0]) == being)
+        if (slot[0] != null && Loaded(slot[0]) && SpoolUtil.BeingName(slot[0]) == being)
             yield break;
         slot[0] = null;
         Entity_Master core = ModKitTest.Core();
         if (core != null)
-            yield return Foe(being, ModKitUtil.Pos(core), 6f, 1f, slot);
+            yield return Foe(being, SpoolUtil.Pos(core), 6f, 1f, slot);
     }
 
     // Thread still lying about from earlier checks would join what a check counts.
@@ -322,8 +322,8 @@ public static class SpoolSelfTest
 
     static IEnumerator Walk(Entity_Master m, Vector3 to, float near, float timeout)
     {
-        ModKitUtil.MoveTo(m, null, to, 0f);
-        yield return Until(() => m == null || ModKitUtil.Flat(ModKitUtil.Pos(m), to) <= near, timeout);
+        SpoolUtil.MoveTo(m, null, to, 0f);
+        yield return Until(() => m == null || SpoolUtil.Flat(SpoolUtil.Pos(m), to) <= near, timeout);
     }
 
     static void Hit(Entity_Master from, Entity_Master to, float amount) { ModKitCombat.Hurt(from, to, amount, 1f, null, null); }
@@ -347,13 +347,13 @@ public static class SpoolSelfTest
     {
         int n = 0;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && ModKitUtil.BeingName(e) == being) n++;
+            if (e != null && SpoolUtil.BeingName(e) == being) n++;
         return n;
     }
 
     static string Sell(Entity_Master hero, Entity_Master what)
     {
-        return "{\"Tower\":\"" + what.name + "\",\"Position\":" + Vec(ModKitUtil.Pos(what)) + ",\"Owner\":" + ModKitUtil.Owner(hero) + "}";
+        return "{\"Tower\":\"" + what.name + "\",\"Position\":" + Vec(SpoolUtil.Pos(what)) + ",\"Owner\":" + SpoolUtil.Owner(hero) + "}";
     }
 
     static string At(Vector3 p) { return "{\"Position\":" + Vec(p) + "}"; }
@@ -386,10 +386,10 @@ public static class SpoolSelfTest
         yield return Wait(2f);
         ClearFoes();
         Entity_Master hm = hero.Master;
-        long owner = ModKitUtil.Owner(hm);
-        int team = ModKitUtil.Team(hm);
+        long owner = SpoolUtil.Owner(hm);
+        int team = SpoolUtil.Team(hm);
         SpoolPlayer player = SpoolServer.Player(owner);
-        Vector3 home = ModKitUtil.Pos(hm);
+        Vector3 home = SpoolUtil.Pos(hm);
         Log("tide " + Game_Mapvars.Instance.Wave.Value + ", vessel at " + home + ", owner " + owner + ", team " + team);
         ModKitTest.Log = Log;
         ModKitTest.MapDump(team, hm);
@@ -397,8 +397,8 @@ public static class SpoolSelfTest
         // 1. The vessel.
         Check("vessel uses the stock melee AI", hm.GetComponent<Entity_Ai_Mob_Combat>() != null && hm.GetComponent<Entity_Ai_Mob_Ranged>() == null && hm.GetComponent<Entity_Ai_Hero_Buildsell>() != null);
         Check("vessel has the Hand Stitched tooltip", hm.Upgradelistserver.ContainsKey(SpoolData.HeroTooltip));
-        Check("vessel stats", Mathf.Approximately(ModKitUtil.Stat(hm, "Range", 0), 1.5f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Health", 0), 45f) && Mathf.Approximately(ModKitUtil.Stat(hm, "Speed", 0), 2.75f),
-            "Range " + F(ModKitUtil.Stat(hm, "Range", 0)) + ", Health " + F(ModKitUtil.Stat(hm, "Health", 0)) + ", Speed " + F(ModKitUtil.Stat(hm, "Speed", 0)) + ", Damage " + F(ModKitUtil.Stat(hm, "Damage", 0)));
+        Check("vessel stats", Mathf.Approximately(SpoolUtil.Stat(hm, "Range", 0), 1.5f) && Mathf.Approximately(SpoolUtil.Stat(hm, "Health", 0), 45f) && Mathf.Approximately(SpoolUtil.Stat(hm, "Speed", 0), 2.75f),
+            "Range " + F(SpoolUtil.Stat(hm, "Range", 0)) + ", Health " + F(SpoolUtil.Stat(hm, "Health", 0)) + ", Speed " + F(SpoolUtil.Stat(hm, "Speed", 0)) + ", Damage " + F(SpoolUtil.Stat(hm, "Damage", 0)));
         Link_Command patch;
         Check("PATCH command", hm.Commandlistserver.TryGetValue(SpoolData.PatchLink, out patch) && patch.Controllable && SpoolContent.Patch.Commandfuncts[0] is SpoolPatchSelect);
         // Every key a Spool button names must be one of the game's input actions: selecting a thing looks each up in
@@ -417,7 +417,7 @@ public static class SpoolSelfTest
 
         // 2. The Yarn Stash first.
         Check("build menu holds only the Yarn Stash", hero.Menu() == SpoolData.Stash, hero.Menu());
-        Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
+        Helper_Resources.Giveresources(SpoolUtil.Costs("Redaura=20000;Blueaura=20000;Yellowaura=20000"), owner, Helper_Resources.Styles.Default);
         yield return Wait(0.5f);
         List<SpoolBuilding> known = new List<SpoolBuilding>(SpoolServer.Buildings);
         SpoolBuilding[] got = new SpoolBuilding[1];
@@ -432,10 +432,10 @@ public static class SpoolSelfTest
         }
         yield return Wait(0.8f);
         Vector3 sp = stash.Pos;
-        Check("the first Stash starts with " + SpoolData.StashStart + " Thread", player.Stash == SpoolData.StashStart && Mathf.Approximately(ModKitUtil.Stat(stash.Master, "Thread", -1f), SpoolData.StashStart),
-            "Stash " + player.Stash + ", stat " + F(ModKitUtil.Stat(stash.Master, "Thread", -1f)));
+        Check("the first Stash starts with " + SpoolData.StashStart + " Thread", player.Stash == SpoolData.StashStart && Mathf.Approximately(SpoolUtil.Stat(stash.Master, "Thread", -1f), SpoolData.StashStart),
+            "Stash " + player.Stash + ", stat " + F(SpoolUtil.Stat(stash.Master, "Thread", -1f)));
         Check("Stash cap " + SpoolData.StashCap, stash.Cap == (int)SpoolData.StashCap, "cap " + stash.Cap);
-        Check("with the Stash standing, the menu holds the four", hero.Menu() == ModKitUtil.Join(SpoolData.Buildables), hero.Menu());
+        Check("with the Stash standing, the menu holds the four", hero.Menu() == SpoolUtil.Join(SpoolData.Buildables), hero.Menu());
         Vector3 second = Spot(hm, SpoolContent.Beings[SpoolData.Stash], 4f);
         Send(hm, "Build", "{\"Tower\":\"" + SpoolData.Stash + "\",\"Position\":" + Vec(second) + ",\"Orientation\":0,\"Owner\":" + owner + "}");
         yield return Wait(2f);
@@ -448,15 +448,15 @@ public static class SpoolSelfTest
             Entity_Master small = slot[0];
             if (small != null)
             {
-                Vector3 fp = ModKitUtil.Pos(small);
-                float bh = ModKitUtil.BaseHealth(small);
-                int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (ModKitUtil.Elite(small) ? SpoolData.DropElite : 0));
+                Vector3 fp = SpoolUtil.Pos(small);
+                float bh = SpoolUtil.BaseHealth(small);
+                int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (SpoolUtil.Elite(small) ? SpoolData.DropElite : 0));
                 int before = SpoolServer.DropsNear(fp, 0.6f), dropped = SpoolServer.Dropped;
                 Kill(small);
                 yield return Wait(0.3f);
                 Check("a felled Dagger leaves " + expect + " Thread where it fell", SpoolServer.Dropped - dropped == expect && SpoolServer.DropsNear(fp, 0.6f) == before + expect,
                     (SpoolServer.Dropped - dropped) + " dropped, " + (SpoolServer.DropsNear(fp, 0.6f) - before) + " where it fell, base health " + F(bh));
-                SpoolDrop d = SpoolServer.Drops.Find(x => ModKitUtil.Flat(x.Pos, fp) <= 0.6f);
+                SpoolDrop d = SpoolServer.Drops.Find(x => SpoolUtil.Flat(x.Pos, fp) <= 0.6f);
                 Check("a drop lasts " + SpoolData.DropLife + " s", d != null && Mathf.Abs(d.Until - Time.time - SpoolData.DropLife) < 1f, d != null ? F(d.Until - Time.time) : "none");
                 int carried = player.Carried, delivered = SpoolServer.Delivered;
                 yield return Walk(hm, fp, 0.6f, 12f);
@@ -464,7 +464,7 @@ public static class SpoolSelfTest
                 // Within reach of the Stash it hands what it picked up over in the same tick (round 1b).
                 int took = player.Carried - carried + SpoolServer.Delivered - delivered;
                 Check("Spool picks Thread up within a tile", took >= expect && SpoolServer.DropsNear(fp, 0.6f) == 0, "took " + took + ", carried " + carried + "->" + player.Carried);
-                Check("Carried shows on the vessel", Mathf.Approximately(ModKitUtil.Stat(hm, "Carried", -1f), player.Carried), F(ModKitUtil.Stat(hm, "Carried", -1f)));
+                Check("Carried shows on the vessel", Mathf.Approximately(SpoolUtil.Stat(hm, "Carried", -1f), player.Carried), F(SpoolUtil.Stat(hm, "Carried", -1f)));
                 int stash0 = player.Stash;
                 int c0 = player.Carried;
                 yield return Walk(hm, sp, SpoolData.DropOff - 0.2f, 12f);
@@ -476,8 +476,8 @@ public static class SpoolSelfTest
             Entity_Master big = slot[0];
             if (big != null)
             {
-                float bh = ModKitUtil.BaseHealth(big);
-                bool elite = ModKitUtil.Elite(big);
+                float bh = SpoolUtil.BaseHealth(big);
+                bool elite = SpoolUtil.Elite(big);
                 int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (elite ? SpoolData.DropElite : 0));
                 int dropped = SpoolServer.Dropped;
                 Kill(big);
@@ -498,7 +498,7 @@ public static class SpoolSelfTest
             // Expiry (hurried: the drop's clock is set to half a second).
             Vector3 xp = home + new Vector3(6f, 0f, 0f);
             SpoolServer.Drop(xp, 2);
-            SpoolDrop x = SpoolServer.Drops.Find(o => ModKitUtil.Flat(o.Pos, xp) <= 0.1f);
+            SpoolDrop x = SpoolServer.Drops.Find(o => SpoolUtil.Flat(o.Pos, xp) <= 0.1f);
             if (x != null) x.Until = Time.time + 0.5f;
             yield return Wait(1.2f);
             Check("a drop is gone when its time runs out", SpoolServer.DropsNear(xp, 0.3f) == 0);
@@ -524,8 +524,11 @@ public static class SpoolSelfTest
                     yield return Until(() => cast[0] == null || cast[0].Started, 2f);
                     Check("a Stitched fights with the game's melee AI", cast[0] != null && cast[0].Master.GetComponent<Entity_Ai_Mob_Combat>() != null);
                     Check("a Stitched is visible to clients", cast[0] != null && cast[0].Master.Client != null && cast[0].Master.Client.Beingobject != null);
-                    Check("Stitched stats", cast[0] != null && Mathf.Approximately(ModKitUtil.MaxHealth(cast[0].Master), 20f) && Mathf.Approximately(ModKitUtil.Stat(cast[0].Master, "Speed", 0), 1.8f),
-                        cast[0] != null ? "health " + F(ModKitUtil.MaxHealth(cast[0].Master)) + ", speed " + F(ModKitUtil.Stat(cast[0].Master, "Speed", 0)) : "");
+                    Check("Stitched stats", cast[0] != null && Mathf.Approximately(SpoolUtil.MaxHealth(cast[0].Master), 20f) && Mathf.Approximately(SpoolUtil.Stat(cast[0].Master, "Speed", 0), 1.8f),
+                        cast[0] != null ? "health " + F(SpoolUtil.MaxHealth(cast[0].Master)) + ", speed " + F(SpoolUtil.Stat(cast[0].Master, "Speed", 0)) : "");
+#if SPOOL_SHOTS
+                    if (cast[0] != null) yield return SpoolShots.Close("stitched", SpoolUtil.Pos(cast[0].Master), 3f);
+#endif
                 }
                 player.Stash = 50;
                 SpoolServer.Show(player);
@@ -540,15 +543,15 @@ public static class SpoolSelfTest
                 {
                     Send(tinA.Master, SpoolData.TargetLink, At(tile.Position));
                     yield return Wait(0.6f);
-                    Check("TARGET sets the Tin's spot and plants its pin", tinA.HasSpot && ModKitUtil.Flat(tinA.Spot, tile.Position) < 0.6f && tinA.Pin != null, tinA.LastTarget + ", pin " + (tinA.Pin != null));
-                    Check("the pin is a walk-through marker", tinA.Pin != null && ModKitUtil.BeingName(tinA.Pin) == SpoolData.Pin && SpoolContent.PinBlock != "", SpoolContent.PinBlock);
+                    Check("TARGET sets the Tin's spot and plants its pin", tinA.HasSpot && SpoolUtil.Flat(tinA.Spot, tile.Position) < 0.6f && tinA.Pin != null, tinA.LastTarget + ", pin " + (tinA.Pin != null));
+                    Check("the pin is a walk-through marker", tinA.Pin != null && SpoolUtil.BeingName(tinA.Pin) == SpoolData.Pin && SpoolContent.PinBlock != "", SpoolContent.PinBlock);
                     List<SpoolUnitBrain> old = UnitsOf(tinA);
                     Kill(old[0].Master);
                     SpoolUnitBrain fresh = null;
                     yield return Until(() => (fresh = UnitsOf(tinA).Find(u => !old.Contains(u))) != null, 6f);
                     yield return Until(() => fresh == null || fresh.Arrived, 15f);
-                    Check("a new Crafted runs to the spot", fresh != null && fresh.Arrived && ModKitUtil.Flat(ModKitUtil.Pos(fresh.Master), tinA.Spot) < 1.2f, fresh != null ? "at " + F(ModKitUtil.Flat(ModKitUtil.Pos(fresh.Master), tinA.Spot)) + " from the spot" : "none stitched");
-                    Check("Crafted already out keep their spot", old.Count > 1 && old[1] != null && ModKitUtil.Flat(old[1].Spot, tinA.Pos) < 0.6f);
+                    Check("a new Crafted runs to the spot", fresh != null && fresh.Arrived && SpoolUtil.Flat(SpoolUtil.Pos(fresh.Master), tinA.Spot) < 1.2f, fresh != null ? "at " + F(SpoolUtil.Flat(SpoolUtil.Pos(fresh.Master), tinA.Spot)) + " from the spot" : "none stitched");
+                    Check("Crafted already out keep their spot", old.Count > 1 && old[1] != null && SpoolUtil.Flat(old[1].Spot, tinA.Pos) < 0.6f);
                     Vector3 spot = tinA.Spot;
                     Send(tinA.Master, SpoolData.TargetLink, At(tinA.Pos + new Vector3(20f, 0f, 0f)));
                     yield return Wait(0.4f);
@@ -588,7 +591,7 @@ public static class SpoolSelfTest
                 yield return Until(() => (next = UnitsOf(tinA).Find(u => u.Started && u.Recycle > 0f)) != null, 8f);
                 if (next != null)
                 {
-                    Vector3 np = ModKitUtil.Pos(next.Master);
+                    Vector3 np = SpoolUtil.Pos(next.Master);
                     int before = SpoolServer.DropsNear(np, 0.6f);
                     Kill(next.Master);
                     yield return Wait(0.3f);
@@ -608,6 +611,15 @@ public static class SpoolSelfTest
             yield return Wait(0.3f);
             Check("a Dart throws needles (stock ranged AI)", dart != null && dart.Master.GetComponent<Entity_Ai_Mob_Ranged>() != null && dart.Master.Commandlistserver.TryGetValue("Attack", out attack) && attack.Goalstring == SpoolData.Needle,
                 attack != null ? attack.Goalstring : "no Attack command");
+#if SPOOL_SHOTS
+            if (dart != null)
+            {
+                Entity_Master aimAt = ModKitTest.SpawnFoe("Enemy_Dagger", SpoolUtil.Pos(dart.Master), 1.5f, 3f, null);
+                yield return Wait(1.6f);
+                yield return SpoolShots.Close("dart_needle", SpoolUtil.Pos(dart.Master), 4f);
+                if (aimAt != null && SpoolUtil.Alive(aimAt)) Game_Entity.Instance.Despawn(aimAt.Beingserver, false, "Selftest");
+            }
+#endif
             yield return Upgrade(tinA, "Surprise4", owner);
             Check("One Last Surprise", Has(tinA, "Surprise4"));
             foreach (SpoolUnitBrain u in UnitsOf(tinA)) Kill(u.Master);
@@ -617,20 +629,20 @@ public static class SpoolSelfTest
             yield return Until(() => (bomb = UnitsOf(tinA).Find(u => u.Started && u.Burst > 0f)) != null, 6f);
             Entity_Master[] beside = new Entity_Master[1];
             if (bomb != null)
-                yield return Foe("Enemy_Dagger", ModKitUtil.Pos(bomb.Master), 2f, 0f, beside);
+                yield return Foe("Enemy_Dagger", SpoolUtil.Pos(bomb.Master), 2f, 0f, beside);
             Entity_Master foe = beside[0];
             if (foe != null)
                 yield return Wait(0.3f);   // its hit box reaches the physics scene that Entityarea searches (round 1b)
-            float apart = foe != null && bomb != null && bomb.Master != null && ModKitUtil.Alive(foe) ? ModKitUtil.Flat(ModKitUtil.Pos(foe), ModKitUtil.Pos(bomb.Master)) : -1f;
-            if (apart >= 0f && apart <= ModKitUtil.Stat(bomb.Master, "Range", 1.5f) - 0.2f)
+            float apart = foe != null && bomb != null && bomb.Master != null && SpoolUtil.Alive(foe) ? SpoolUtil.Flat(SpoolUtil.Pos(foe), SpoolUtil.Pos(bomb.Master)) : -1f;
+            if (apart >= 0f && apart <= SpoolUtil.Stat(bomb.Master, "Range", 1.5f) - 0.2f)
             {
-                float hp = ModKitUtil.Health(foe);
-                float expect = ModKitUtil.Stat(bomb.Master, "Damage", 2.5f) * 3f;
-                int seen = ModKitUtil.FoesNear(tinA.Master, ModKitUtil.Pos(bomb.Master), ModKitUtil.Stat(bomb.Master, "Range", 1.5f)).Count;
+                float hp = SpoolUtil.Health(foe);
+                float expect = SpoolUtil.Stat(bomb.Master, "Damage", 2.5f) * 3f;
+                int seen = SpoolUtil.FoesNear(tinA.Master, SpoolUtil.Pos(bomb.Master), SpoolUtil.Stat(bomb.Master, "Range", 1.5f)).Count;
                 Kill(bomb.Master);
                 yield return Wait(0.3f);
-                Check("a falling Crafted bursts for 3x its damage", !ModKitUtil.Alive(foe) || hp - ModKitUtil.Health(foe) >= expect - 0.05f,
-                    F(hp) + "->" + F(ModKitUtil.Alive(foe) ? ModKitUtil.Health(foe) : 0f) + ", expected -" + F(expect) + ", " + F(apart) + " apart, foes in its reach " + seen);
+                Check("a falling Crafted bursts for 3x its damage", !SpoolUtil.Alive(foe) || hp - SpoolUtil.Health(foe) >= expect - 0.05f,
+                    F(hp) + "->" + F(SpoolUtil.Alive(foe) ? SpoolUtil.Health(foe) : 0f) + ", expected -" + F(expect) + ", " + F(apart) + " apart, foes in its reach " + seen);
             }
             else ModKitTest.Setup("One Last Surprise", bomb == null ? "no Crafted stitched after the upgrade, Stash " + player.Stash : foe == null ? "no foe could stand beside it" : "the foe was " + F(apart) + " from it");
             ClearFoes();
@@ -649,8 +661,8 @@ public static class SpoolSelfTest
             yield return Until(() => (u2 = UnitsOf(tinB).Find(u => u.Started)) != null, 6f);
             yield return Wait(0.2f);
             Check("Discounted Material: a Stitched costs 8", u2 != null && u2.Cost == 8, u2 != null ? "cost " + u2.Cost + ", Stash " + s0 + "->" + player.Stash : "none");
-            Check("Woolen Lining: Crafted health +50%", u2 != null && Mathf.Abs(ModKitUtil.MaxHealth(u2.Master) - 30f) < 0.05f && Mathf.Abs(ModKitUtil.Health(u2.Master) - 30f) < 0.05f, u2 != null ? F(ModKitUtil.Health(u2.Master)) + "/" + F(ModKitUtil.MaxHealth(u2.Master)) : "");
-            Check("Discounted Material: Stitched walk 30% faster", u2 != null && Mathf.Abs(ModKitUtil.Stat(u2.Master, "Speed", 0f) - 1.8f * 1.3f) < 0.02f, u2 != null ? F(ModKitUtil.Stat(u2.Master, "Speed", 0f)) : "");
+            Check("Woolen Lining: Crafted health +50%", u2 != null && Mathf.Abs(SpoolUtil.MaxHealth(u2.Master) - 30f) < 0.05f && Mathf.Abs(SpoolUtil.Health(u2.Master) - 30f) < 0.05f, u2 != null ? F(SpoolUtil.Health(u2.Master)) + "/" + F(SpoolUtil.MaxHealth(u2.Master)) : "");
+            Check("Discounted Material: Stitched walk 30% faster", u2 != null && Mathf.Abs(SpoolUtil.Stat(u2.Master, "Speed", 0f) - 1.8f * 1.3f) < 0.02f, u2 != null ? F(SpoolUtil.Stat(u2.Master, "Speed", 0f)) : "");
         }
 #if SPOOL_SHOTS
         yield return Wait(1f);
@@ -675,17 +687,17 @@ public static class SpoolSelfTest
                 if (i == 0) headA = h; else headB = h;
                 yield return Wait(0.5f);
                 Check("Thread Head costs Red 40", Mathf.Abs(red - Res(owner, "Redaura") - 40f) < 0.01f, "spent " + F(red - Res(owner, "Redaura")));
-                Check("its token is gone, the Thread Head guards the token's tile", Beings(SpoolData.HeadToken) == 0 && ModKitUtil.Flat(h.Spot, at) < 0.6f, "tokens " + Beings(SpoolData.HeadToken) + ", spot " + F(ModKitUtil.Flat(h.Spot, at)));
+                Check("its token is gone, the Thread Head guards the token's tile", Beings(SpoolData.HeadToken) == 0 && SpoolUtil.Flat(h.Spot, at) < 0.6f, "tokens " + Beings(SpoolData.HeadToken) + ", spot " + F(SpoolUtil.Flat(h.Spot, at)));
                 Check("Thread Head has SPOT, RETURN and upgrades", h.Master.Commandlistserver.ContainsKey(SpoolData.SpotLink) && h.Master.Commandlistserver.ContainsKey(SpoolData.ReturnLink) && h.Master.Commandlistserver.ContainsKey("Upgrade"));
-                Check("Thread Head stats", Mathf.Approximately(ModKitUtil.MaxHealth(h.Master), 60f) && Mathf.Approximately(ModKitUtil.Stat(h.Master, "Speed", 0f), 2.25f) && h.Cap == 20,
-                    F(ModKitUtil.MaxHealth(h.Master)) + " health, speed " + F(ModKitUtil.Stat(h.Master, "Speed", 0f)) + ", carries " + h.Cap);
+                Check("Thread Head stats", Mathf.Approximately(SpoolUtil.MaxHealth(h.Master), 60f) && Mathf.Approximately(SpoolUtil.Stat(h.Master, "Speed", 0f), 2.25f) && h.Cap == 20,
+                    F(SpoolUtil.MaxHealth(h.Master)) + " health, speed " + F(SpoolUtil.Stat(h.Master, "Speed", 0f)) + ", carries " + h.Cap);
             }
             if (headA != null)
             {
                 // Two tiles from its spot, on the side away from the vessel (which picks Thread up within a tile).
                 ClearFoes();
                 ClearDrops();
-                Vector3 away = headA.Spot - ModKitUtil.Pos(hm);
+                Vector3 away = headA.Spot - SpoolUtil.Pos(hm);
                 away.y = 0f;
                 Vector3 dp = headA.Spot + (away.sqrMagnitude > 0.01f ? away.normalized : Vector3.right) * 2f;
                 headA.Carried = 0;   // both had filled up on earlier checks' Thread (round 1b: carried 20)
@@ -702,14 +714,14 @@ public static class SpoolSelfTest
                 yield return Until(() => headA.Deliveries > deliveries, 25f);
                 Check("RETURN: it carries its Thread home", headA.Deliveries > deliveries && headA.Carried == 0 && SpoolServer.Delivered - delivered >= carrying,
                     "delivered " + (SpoolServer.Delivered - delivered) + " of " + carrying + ", carried " + headA.Carried);
-                yield return Until(() => ModKitUtil.Flat(headA.Pos, headA.Spot) < 1f, 25f);
-                Check("then it walks back to its spot", ModKitUtil.Flat(headA.Pos, headA.Spot) < 1f, F(ModKitUtil.Flat(headA.Pos, headA.Spot)) + " from it");
+                yield return Until(() => SpoolUtil.Flat(headA.Pos, headA.Spot) < 1f, 25f);
+                Check("then it walks back to its spot", SpoolUtil.Flat(headA.Pos, headA.Spot) < 1f, F(SpoolUtil.Flat(headA.Pos, headA.Spot)) + " from it");
                 Genitem tile = ModKitTest.FoeTile(SpoolContent.Beings[SpoolData.Head], headA.Spot, 2f, 4f, used);
                 if (tile != null)
                 {
                     Send(headA.Master, SpoolData.SpotLink, At(tile.Position));
-                    yield return Until(() => ModKitUtil.Flat(headA.Pos, tile.Position) < 1f, 15f);
-                    Check("SPOT moves the tile it guards", ModKitUtil.Flat(headA.Spot, tile.Position) < 0.6f && ModKitUtil.Flat(headA.Pos, tile.Position) < 1f, F(ModKitUtil.Flat(headA.Pos, tile.Position)) + " from it");
+                    yield return Until(() => SpoolUtil.Flat(headA.Pos, tile.Position) < 1f, 15f);
+                    Check("SPOT moves the tile it guards", SpoolUtil.Flat(headA.Spot, tile.Position) < 0.6f && SpoolUtil.Flat(headA.Pos, tile.Position) < 1f, F(SpoolUtil.Flat(headA.Pos, tile.Position)) + " from it");
                 }
                 yield return Upgrade(headA, "Delivery2", owner);
                 Check("Threaded Delivery", Has(headA, "Delivery2"));
@@ -729,9 +741,9 @@ public static class SpoolSelfTest
                 Check("MEND switches on", headB.Mending && headB.Master.Commandlistserver[SpoolData.MendLink].Goalstring == "On");
                 headB.Carried = 2;
                 Hit(hm, headB.Master, 6f);
-                float hp = ModKitUtil.Health(headB.Master);
+                float hp = SpoolUtil.Health(headB.Master);
                 yield return Wait(2.6f);
-                Check("MEND heals 2 a second and spends carried Thread", ModKitUtil.Health(headB.Master) >= hp + 3.9f && headB.Carried < 2, F(hp) + "->" + F(ModKitUtil.Health(headB.Master)) + ", carried 2->" + headB.Carried);
+                Check("MEND heals 2 a second and spends carried Thread", SpoolUtil.Health(headB.Master) >= hp + 3.9f && headB.Carried < 2, F(hp) + "->" + F(SpoolUtil.Health(headB.Master)) + ", carried 2->" + headB.Carried);
             }
             if (headA != null)
             {
@@ -752,8 +764,8 @@ public static class SpoolSelfTest
                 {
                     known.Add(back);
                     headA = back;
-                    yield return Until(() => ModKitUtil.Flat(back.Pos, back.Spot) < 1f, 25f);
-                    Check("... then walks to its spot", ModKitUtil.Flat(back.Pos, back.Spot) < 1f, F(ModKitUtil.Flat(back.Pos, back.Spot)) + " from it");
+                    yield return Until(() => SpoolUtil.Flat(back.Pos, back.Spot) < 1f, 25f);
+                    Check("... then walks to its spot", SpoolUtil.Flat(back.Pos, back.Spot) < 1f, F(SpoolUtil.Flat(back.Pos, back.Spot)) + " from it");
                 }
             }
             if (headB != null)
@@ -796,19 +808,22 @@ public static class SpoolSelfTest
             {
                 Entity_Master dagger = far[0];
                 int pricks = c.Pricks;
-                float back = c.Reflected, hp = ModKitUtil.Health(dagger);
+                float back = c.Reflected, hp = SpoolUtil.Health(dagger);
                 Hit(dagger, c.Master, 10f);
                 yield return Wait(0.2f);
                 Check("Pin Cushion pricks a melee attacker for 20%", c.Pricks == pricks + 1 && Mathf.Abs(c.Reflected - back - 2f) < 0.05f,
-                    "pricks +" + (c.Pricks - pricks) + ", " + F(c.Reflected - back) + " back, foe " + F(hp) + "->" + F(ModKitUtil.Health(dagger)) + ", its range " + F(ModKitUtil.Stat(dagger, "Range", -1f)));
+                    "pricks +" + (c.Pricks - pricks) + ", " + F(c.Reflected - back) + " back, foe " + F(hp) + "->" + F(SpoolUtil.Health(dagger)) + ", its range " + F(SpoolUtil.Stat(dagger, "Range", -1f)));
                 int spun = c.Spun, dropped = SpoolServer.Dropped;
                 Vector3 cp = c.Pos;
                 int near = SpoolServer.DropsNear(cp, 1.2f);
                 Hit(dagger, c.Master, 10f);
                 Hit(dagger, c.Master, 10f);
                 yield return Wait(0.2f);
-                Check("every 25 damage spins a Thread beside it", c.Spun == spun + 1 && SpoolServer.DropsNear(cp, 1.2f) == near + 1,
+                Check("every 25 damage spins a Thread beside it", c.Spun == spun + 1 && SpoolServer.Dropped == dropped + 1 && SpoolServer.DropsNear(cp, 1.2f) >= Mathf.Max(1, near),   // it can join a tuft already there
                     "spun " + (c.Spun - spun) + " after " + F(c.Taken) + ", beside it " + (SpoolServer.DropsNear(cp, 1.2f) - near) + ", dropped anywhere " + (SpoolServer.Dropped - dropped));
+#if SPOOL_SHOTS
+                yield return SpoolShots.Close("tuft", cp, 3f);
+#endif
                 yield return Upgrade(c, "Sharper2", owner);
                 yield return FarFoe("Enemy_Dagger", far);
                 back = c.Reflected;
@@ -821,7 +836,7 @@ public static class SpoolSelfTest
             Entity_Master[] ranged = new Entity_Master[1];
             yield return FarFoe("Enemy_Ballista", ranged);
             Entity_Master archer = ranged[0];
-            float range = archer != null ? ModKitUtil.Stat(archer, "Range", 0f) : 0f;
+            float range = archer != null ? SpoolUtil.Stat(archer, "Range", 0f) : 0f;
             if (archer != null && range > SpoolCushionBrain.MeleeRange)
             {
                 int pricks = c.Pricks;
@@ -846,22 +861,22 @@ public static class SpoolSelfTest
             ClearFoes();
             SpoolCushionBrain c = cushions[1];
             yield return Upgrade(c, "Unravel2", owner);
-            float ch = ModKitUtil.Health(c.Master);
+            float ch = SpoolUtil.Health(c.Master);
             Hit(hm, c.Master, 10f);
             yield return Wait(0.2f);
-            float now = ch - ModKitUtil.Health(c.Master);
+            float now = ch - SpoolUtil.Health(c.Master);
             Check("Slow Unravel: half a hit now", Has(c, "Unravel2") && Mathf.Abs(now - 5f) < 0.05f && Mathf.Abs(c.Owing() - 5f) < 0.05f, "took " + F(now) + ", owing " + F(c.Owing()));
             yield return Wait(4.6f);
-            Check("... the other half over 4 seconds", Mathf.Abs(ch - ModKitUtil.Health(c.Master) - 10f) < 0.1f && c.Owing() < 0.01f, "took " + F(ch - ModKitUtil.Health(c.Master)));
-            Check("Slow Unravel spins twice the Thread", Mathf.Abs(ModKitUtil.Stat(c.Master, "Spin", 0f) - 12.5f) < 0.01f, "Spin " + F(ModKitUtil.Stat(c.Master, "Spin", 0f)));
+            Check("... the other half over 4 seconds", Mathf.Abs(ch - SpoolUtil.Health(c.Master) - 10f) < 0.1f && c.Owing() < 0.01f, "took " + F(ch - SpoolUtil.Health(c.Master)));
+            Check("Slow Unravel spins twice the Thread", Mathf.Abs(SpoolUtil.Stat(c.Master, "Spin", 0f) - 12.5f) < 0.01f, "Spin " + F(SpoolUtil.Stat(c.Master, "Spin", 0f)));
             float cancelled = c.Cancelled;
             Hit(hm, c.Master, 10f);
             yield return Wait(0.1f);
-            ModKitUtil.Heal(hm, c.Master, 3f);
+            SpoolUtil.Heal(hm, c.Master, 3f);
             yield return Wait(0.1f);
             Check("a heal cancels damage still owed", c.Cancelled - cancelled >= 2.9f, "cancelled " + F(c.Cancelled - cancelled) + ", owing " + F(c.Owing()));
             yield return Upgrade(c, "Stuffing3", owner);
-            ModKitUtil.Heal(hm, c.Master, 500f);
+            SpoolUtil.Heal(hm, c.Master, 500f);
             int mangled = c.Mangled;
             Hit(hm, c.Master, 40f);
             yield return Wait(0.5f);
@@ -869,27 +884,30 @@ public static class SpoolSelfTest
             // Three more 40s, each healed (a heal also cancels what Slow Unravel still owes), so the Cushion stands.
             for (int i = 0; i < 3; i++)
             {
-                ModKitUtil.Heal(hm, c.Master, 500f);
+                SpoolUtil.Heal(hm, c.Master, 500f);
                 Hit(hm, c.Master, 40f);
                 yield return Wait(0.3f);
             }
-            ModKitUtil.Heal(hm, c.Master, 500f);
+            SpoolUtil.Heal(hm, c.Master, 500f);
             Check("at most 3 Mangled alive", UnitsOf(c).Count == 3, UnitsOf(c).Count + " alive, made " + (c.Mangled - mangled));
+#if SPOOL_SHOTS
+            yield return SpoolShots.Close("mangled", c.Pos, 3.5f);
+#endif
             yield return Upgrade(c, "Overstuffed4", owner);
             foreach (SpoolUnitBrain u in UnitsOf(c)) Kill(u.Master);
             yield return Wait(0.3f);
-            ModKitUtil.Heal(hm, c.Master, 500f);
+            SpoolUtil.Heal(hm, c.Master, 500f);
             yield return FarFoe("Enemy_Dagger", far);
             Hit(far[0] != null ? far[0] : hm, c.Master, 40f);
             yield return Wait(0.4f);
-            ModKitUtil.Heal(hm, c.Master, 500f);
+            SpoolUtil.Heal(hm, c.Master, 500f);
             SpoolUnitBrain stuffed = UnitsOf(c).Find(u => u.Def.Id == SpoolData.Stuffed);
-            Check("Overstuffed: Mangled with 3x health", stuffed != null && Mathf.Abs(ModKitUtil.MaxHealth(stuffed.Master) - 45f) < 0.05f, stuffed != null ? F(ModKitUtil.MaxHealth(stuffed.Master)) : "none");
+            Check("Overstuffed: Mangled with 3x health", stuffed != null && Mathf.Abs(SpoolUtil.MaxHealth(stuffed.Master) - 45f) < 0.05f, stuffed != null ? F(SpoolUtil.MaxHealth(stuffed.Master)) : "none");
             Check("... standing on Sno Sno's blocking block", stuffed != null && stuffed.Master.Beingserver.Being.Block != null && stuffed.Master.Beingserver.Being.Block.name == SpoolContent.StuffedBlock && SpoolContent.StuffedBlock != "", SpoolContent.StuffedBlock);
             if (stuffed != null)
             {
                 yield return Until(() => stuffed == null || stuffed.Holding, 4f);
-                Check("... which leaps in and holds", stuffed != null && stuffed.Holding, stuffed != null ? "at " + F(ModKitUtil.Flat(ModKitUtil.Pos(stuffed.Master), c.Pos)) + " from the Cushion" : "");
+                Check("... which leaps in and holds", stuffed != null && stuffed.Holding, stuffed != null ? "at " + F(SpoolUtil.Flat(SpoolUtil.Pos(stuffed.Master), c.Pos)) + " from the Cushion" : "");
             }
             ClearFoes();
         }
@@ -906,14 +924,14 @@ public static class SpoolSelfTest
             float t0 = Time.time;
             while (c.Bursts == bursts && Time.time - t0 < 15f)
             {
-                if (!ModKitUtil.Alive(beside[0]))
+                if (!SpoolUtil.Alive(beside[0]))
                 {
                     yield return Foe("Enemy_Dagger", c.Pos, 2.5f, 1f, beside);
                     if (beside[0] != null) foes++;
                 }
-                if (UnitsOf(c).Count == 0 && ModKitUtil.Alive(beside[0]))
+                if (UnitsOf(c).Count == 0 && SpoolUtil.Alive(beside[0]))
                 {
-                    ModKitUtil.Heal(hm, c.Master, 500f);
+                    SpoolUtil.Heal(hm, c.Master, 500f);
                     Hit(hm, c.Master, 40f);
                 }
                 yield return Wait(0.25f);
@@ -942,10 +960,10 @@ public static class SpoolSelfTest
         if (loomA != null)
         {
             yield return Until(() => loomA.Held >= 1, 8f);
-            Check("a Loom spins a Thread every 6 s", loomA.Held == 1 && Mathf.Approximately(ModKitUtil.Stat(loomA.Master, "Thread", -1f), 1f), "held " + loomA.Held);
+            Check("a Loom spins a Thread every 6 s", loomA.Held == 1 && Mathf.Approximately(SpoolUtil.Stat(loomA.Master, "Thread", -1f), 1f), "held " + loomA.Held);
             int strikes = loomA.Strikes;
             yield return Wait(3f);
-            Entity_Master ore = Helper_Entityquerytools.Entitynearest(loomA.Pos, 2.5f, ModKitUtil.Tagged("Resource"));
+            Entity_Master ore = Helper_Entityquerytools.Entitynearest(loomA.Pos, 2.5f, SpoolUtil.Tagged("Resource"));
             Check("Loom strikes ore in reach", ore == null || loomA.Strikes > strikes, ore == null ? "no ore in reach here (skipped)" : strikes + "->" + loomA.Strikes);
             player.Carried = 0;
             int held = loomA.Held, delivered = SpoolServer.Delivered;
@@ -989,13 +1007,13 @@ public static class SpoolSelfTest
             yield return Wait(5.5f);
             player.Stash = 40;
             SpoolServer.Show(player);
-            float hp = ModKitUtil.Health(tinA.Master), max = ModKitUtil.MaxHealth(tinA.Master);
+            float hp = SpoolUtil.Health(tinA.Master), max = SpoolUtil.MaxHealth(tinA.Master);
             int patches = hero.Patches, traffic = Traffic(owner);
             Send(hm, SpoolData.PatchLink, "{\"Ref\":" + tinA.Master.NetworkObjectId + "}");
             yield return Wait(0.4f);
             int patchCost = 40 - player.Stash + (Traffic(owner) - traffic);
-            Check("PATCH mends 20% for 20 Thread", hero.Patches == patches + 1 && Mathf.Abs(ModKitUtil.Health(tinA.Master) - Mathf.Min(max, hp + max * 0.2f)) < 0.1f && patchCost == 20,
-                F(hp) + "->" + F(ModKitUtil.Health(tinA.Master)) + " of " + F(max) + ", PATCH took " + patchCost + " (other traffic " + (Traffic(owner) - traffic) + "), " + hero.LastPatch);
+            Check("PATCH mends 20% for 20 Thread", hero.Patches == patches + 1 && Mathf.Abs(SpoolUtil.Health(tinA.Master) - Mathf.Min(max, hp + max * 0.2f)) < 0.1f && patchCost == 20,
+                F(hp) + "->" + F(SpoolUtil.Health(tinA.Master)) + " of " + F(max) + ", PATCH took " + patchCost + " (other traffic " + (Traffic(owner) - traffic) + "), " + hero.LastPatch);
             Check("PATCH greys out while it threads", hm.Commandlistserver[SpoolData.PatchLink].Goalstring == "Off");
             Send(hm, SpoolData.PatchLink, "{\"Ref\":" + tinA.Master.NetworkObjectId + "}");
             yield return Wait(0.3f);
@@ -1007,12 +1025,12 @@ public static class SpoolSelfTest
             yield return Wait(0.3f);
             Check("PATCH needs 20 Thread", hero.Patches == patches + 1 && hero.LastPatch == "short", hero.LastPatch);
             player.Stash = 40;
-            ModKitUtil.Heal(hm, tinA.Master, 500f);
+            SpoolUtil.Heal(hm, tinA.Master, 500f);
             yield return Wait(0.2f);
             Send(hm, SpoolData.PatchLink, "{\"Ref\":" + tinA.Master.NetworkObjectId + "}");
             yield return Wait(0.3f);
             Check("PATCH refuses what is in one piece", hero.Patches == patches + 1 && (hero.LastPatch == "full" || hero.LastPatch == "nothing hurt in reach"), hero.LastPatch);
-            if (loomB != null && ModKitUtil.Flat(loomB.Pos, ModKitUtil.Pos(hm)) > SpoolData.PatchRange + 1f)
+            if (loomB != null && SpoolUtil.Flat(loomB.Pos, SpoolUtil.Pos(hm)) > SpoolData.PatchRange + 1f)
             {
                 Hit(hm, loomB.Master, 10f);
                 Send(hm, SpoolData.PatchLink, "{\"Ref\":" + loomB.Master.NetworkObjectId + "}");
@@ -1075,13 +1093,13 @@ public static class SpoolSelfTest
                 SpoolBuilding beside = null;
                 float toBeside = rec.Radius;
                 foreach (SpoolBuilding b in SpoolServer.Buildings)
-                    if (b != null && b.Started && b.Master != null && ModKitUtil.Alive(b.Master) && ModKitUtil.Flat(b.Pos, ModKitUtil.Pos(unit.Master)) < toBeside) { beside = b; toBeside = ModKitUtil.Flat(b.Pos, ModKitUtil.Pos(unit.Master)); }
+                    if (b != null && b.Started && b.Master != null && SpoolUtil.Alive(b.Master) && SpoolUtil.Flat(b.Pos, SpoolUtil.Pos(unit.Master)) < toBeside) { beside = b; toBeside = SpoolUtil.Flat(b.Pos, SpoolUtil.Pos(unit.Master)); }
                 float hurt0 = 0f;
                 if (beside != null)
                 {
                     Hit(hm, beside.Master, 15f);
                     yield return Wait(0.2f);
-                    hurt0 = ModKitUtil.Health(beside.Master);
+                    hurt0 = SpoolUtil.Health(beside.Master);
                 }
                 int refunded = SpoolServer.Refunded, stash0 = player.Stash, cost = unit.Cost;
                 SpoolUnitBrain sold = unit;
@@ -1093,7 +1111,7 @@ public static class SpoolSelfTest
                 {
                     yield return Wait(0.3f);
                     if (beside == null) ModKitTest.Setup("Efficient Recycler rank III's mend", "nothing stood within " + F(rec.Radius) + " of the sold Crafted");
-                    else Check("Efficient Recycler rank III mends what stands around the sold one", ModKitUtil.Health(beside.Master) > hurt0, F(hurt0) + " -> " + F(ModKitUtil.Health(beside.Master)) + ", " + F(toBeside) + " away");
+                    else Check("Efficient Recycler rank III mends what stands around the sold one", SpoolUtil.Health(beside.Master) > hurt0, F(hurt0) + " -> " + F(SpoolUtil.Health(beside.Master)) + ", " + F(toBeside) + " away");
                 }
             }
 
@@ -1101,18 +1119,18 @@ public static class SpoolSelfTest
             if (sewer == null) ModKitTest.Setup("Sewing Machine", "no Loom");
             else
             {
-                float aspd0 = ModKitUtil.Stat(sewer.Master, "Attackspeed", 0f);
+                float aspd0 = SpoolUtil.Stat(sewer.Master, "Attackspeed", 0f);
                 int held0 = sewer.Held, sent0 = sewer.Sent;
                 sewer.Held = 0;
                 ModKitDirections.Grant(hm, direction(SpoolData.Sewingmachines[0].Name));
                 yield return Wait(1.2f);
-                Check("Sewing Machine: the Looms mine half as fast again", player.Sewing == 1 && sewer.Sewing && Mathf.Abs(ModKitUtil.Stat(sewer.Master, "Attackspeed", 0f) - aspd0 * (1f + SpoolData.SewingMine)) < 0.01f, F(aspd0) + " -> " + F(ModKitUtil.Stat(sewer.Master, "Attackspeed", 0f)));
+                Check("Sewing Machine: the Looms mine half as fast again", player.Sewing == 1 && sewer.Sewing && Mathf.Abs(SpoolUtil.Stat(sewer.Master, "Attackspeed", 0f) - aspd0 * (1f + SpoolData.SewingMine)) < 0.01f, F(aspd0) + " -> " + F(SpoolUtil.Stat(sewer.Master, "Attackspeed", 0f)));
                 sewer.Held = 0;
                 sent0 = sewer.Sent;
                 yield return Wait(7f);
                 Check("Sewing Machine: the Looms spin no Thread", sewer.Held == 0 && sewer.Sent == sent0, "held " + sewer.Held + ", sent " + (sewer.Sent - sent0));
                 int looms = 0;
-                foreach (SpoolBuilding b in SpoolServer.Buildings) if (b is SpoolLoomBrain && b.Started && ModKitUtil.Alive(b.Master) && ModKitUtil.Flat(b.Pos, sewer.Pos) <= SpoolData.Sewingmachines[0].Radius) looms++;
+                foreach (SpoolBuilding b in SpoolServer.Buildings) if (b is SpoolLoomBrain && b.Started && SpoolUtil.Alive(b.Master) && SpoolUtil.Flat(b.Pos, sewer.Pos) <= SpoolData.Sewingmachines[0].Radius) looms++;
                 for (int r = 1; r <= 2; r++)
                 {
                     if (r > 1)
@@ -1123,18 +1141,18 @@ public static class SpoolSelfTest
                     SpoolData.Sewing s = SpoolData.Sewingmachines[r - 1];
                     Hit(hm, sewer.Master, s.Heal * looms + 5f);
                     yield return Wait(0.2f);
-                    float h0 = ModKitUtil.Health(sewer.Master);
+                    float h0 = SpoolUtil.Health(sewer.Master);
                     yield return NextTide();
-                    float gain = ModKitUtil.Health(sewer.Master) - h0;
+                    float gain = SpoolUtil.Health(sewer.Master) - h0;
                     Check("Sewing Machine rank " + r + ": each Tide it mends " + F(s.Heal) + " around itself", player.Sewing == r && Mathf.Abs(gain - s.Heal * looms) < 0.6f, "rank " + player.Sewing + ", health +" + F(gain) + " from " + looms + " Looms");
                 }
                 // Rank III reaches 5: a building between 3 and 5 from every Loom heals only at rank III.
                 SpoolBuilding farOne = null;
                 foreach (SpoolBuilding b in SpoolServer.Buildings)
                 {
-                    if (b == null || !b.Started || b is SpoolLoomBrain || !ModKitUtil.Alive(b.Master)) continue;
+                    if (b == null || !b.Started || b is SpoolLoomBrain || !SpoolUtil.Alive(b.Master)) continue;
                     float nearest = float.MaxValue;
-                    foreach (SpoolBuilding l in SpoolServer.Buildings) if (l is SpoolLoomBrain && l.Started) nearest = Mathf.Min(nearest, ModKitUtil.Flat(b.Pos, l.Pos));
+                    foreach (SpoolBuilding l in SpoolServer.Buildings) if (l is SpoolLoomBrain && l.Started) nearest = Mathf.Min(nearest, SpoolUtil.Flat(b.Pos, l.Pos));
                     if (nearest > SpoolData.Sewingmachines[1].Radius + 0.1f && nearest < SpoolData.Sewingmachines[2].Radius - 0.1f) { farOne = b; break; }
                 }
                 if (farOne == null) ModKitTest.Setup("Sewing Machine rank III's reach", "nothing stands 3 to 5 from the Looms");
@@ -1142,13 +1160,13 @@ public static class SpoolSelfTest
                 {
                     Hit(hm, farOne.Master, 25f);
                     yield return Wait(0.2f);
-                    float h1 = ModKitUtil.Health(farOne.Master);
+                    float h1 = SpoolUtil.Health(farOne.Master);
                     yield return NextTide();
-                    float h2 = ModKitUtil.Health(farOne.Master);
+                    float h2 = SpoolUtil.Health(farOne.Master);
                     ModKitDirections.Grant(hm, direction(SpoolData.Sewingmachines[2].Name));
                     yield return Wait(1.2f);
                     yield return NextTide();
-                    float h3 = ModKitUtil.Health(farOne.Master);
+                    float h3 = SpoolUtil.Health(farOne.Master);
                     Check("Sewing Machine rank III: its reach grows to 5", Mathf.Abs(h2 - h1) < 0.01f && h3 > h2 && player.Sewing == 3, F(h1) + " at rank II -> " + F(h2) + ", at rank III -> " + F(h3));
                 }
             }
@@ -1176,7 +1194,7 @@ public static class SpoolSelfTest
             Check("journal: the Tin page links its upgrades", upgradePage != null && upgradePage.name.Contains("Spooltin"), upgradePage != null ? upgradePage.name : "none");
             Check("journal: the Tin page links the Crafted", unitPage != null && unitPage.name.StartsWith("Log_Mob_Spool"), unitPage != null ? unitPage.name : "none");
             List<Logobject> vesselPages = new List<Logobject>();
-            foreach (UnityEngine.Object o in ModKitUtil.Folder("Hero").Values)
+            foreach (UnityEngine.Object o in SpoolUtil.Folder("Hero").Values)
                 if (o is Heroentryobject && ((Heroentryobject)o).Log != null) vesselPages.Add(((Heroentryobject)o).Log);
             int complete = 0;
             List<string> broken = new List<string>();

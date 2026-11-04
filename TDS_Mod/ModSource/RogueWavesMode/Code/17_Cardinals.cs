@@ -53,7 +53,7 @@ public static class RWCardinals
     // Every machine at boot: the stock Cardinals' groups (RiptideContent's way).
     public static IEnumerator LoadStock()
     {
-        Dictionary<string, UnityEngine.Object> entries = ModKitUtil.Folder("Artifact");
+        Dictionary<string, UnityEngine.Object> entries = RWUtil.Folder("Artifact");
         if (entries == null)
             yield break;
         List<string> ids = new List<string>(entries.Keys);
@@ -73,7 +73,7 @@ public static class RWCardinals
                 waited += Time.unscaledDeltaTime;
                 yield return null;
             }
-            if (sold && g != null && g.Loaded && ModKitUtil.Load<Artifactobject>("Artifact", entry.Artifactloads.Objectname) != null)
+            if (sold && g != null && g.Loaded && RWUtil.Load<Artifactobject>("Artifact", entry.Artifactloads.Objectname) != null)
                 stock.Add(id);
         }
     }
@@ -106,7 +106,7 @@ public static class RWCardinals
     // The entry the HUD's Cardinal row reads for its icon, a copy of any stock one.
     static void Entry(RWCardinalDef d)
     {
-        Dictionary<string, UnityEngine.Object> entries = ModKitUtil.Folder("Artifact");
+        Dictionary<string, UnityEngine.Object> entries = RWUtil.Folder("Artifact");
         Artifactentryobject like = null;
         foreach (UnityEngine.Object o in entries.Values) { like = o as Artifactentryobject; if (like != null) break; }
         if (like == null)
@@ -267,13 +267,18 @@ public static class RWCardinals
         Artifactobject art;
         if (arts.TryGetValue(id, out art)) return art;
         Artifactentryobject e = RWUtil.Item<Artifactentryobject>("Artifact", id);
-        return e != null && e.Artifactloads != null ? ModKitUtil.Load<Artifactobject>("Artifact", e.Artifactloads.Objectname) : null;
+        return e != null && e.Artifactloads != null ? RWUtil.Load<Artifactobject>("Artifact", e.Artifactloads.Objectname) : null;
     }
 
     static readonly List<string> shown = new List<string>();
 
-    // A map's first moments: the team's Cardinals go back on (a new core each map).
-    public static void GrantAllCardinals()
+    // A map's first moments: the team's Cardinals go back on (a new core each map). A map counts as loaded before its Basin stands,
+    // so they wait for it in Update: until 2026-11-04 a Cardinal did nothing after the map it was bought on (pitfall #150).
+    public static void GrantAllCardinals() { regrant = true; }
+
+    static bool regrant;
+
+    static void GrantHeld()
     {
         foreach (string held in RWRun.Cardinals)
         {
@@ -283,6 +288,34 @@ public static class RWCardinals
             if (cut > 0) int.TryParse(held.Substring(cut + 1), out stack);
             GrantCardinal(id, stack);
         }
+    }
+
+    // Self-test: the held Cardinals' upgrades not on a core.
+    public static int MissingOnCore()
+    {
+        int missing = 0;
+        foreach (string held in RWRun.Cardinals)
+        {
+            int cut = held.IndexOf('#');
+            int stack = 1;
+            string id = cut > 0 ? held.Substring(0, cut) : held;
+            if (cut > 0) int.TryParse(held.Substring(cut + 1), out stack);
+            Artifactobject art = Object(id);
+            if (art == null) { missing++; continue; }
+            List<Upgradeproperties> ups = new List<Upgradeproperties>();
+            RWCardinalDef d;
+            if (defs.TryGetValue(id, out d))
+            {
+                Upgradeproperties u;
+                if (copies.TryGetValue(d.Name + stack, out u)) ups.Add(u);
+            }
+            else
+                ups.AddRange(art.Coreupgrades);
+            foreach (Entity_Master core in RWUtil.PlayerCores())
+                foreach (Upgradeproperties u in ups)
+                    if (u != null && (core.Upgradelistserver == null || !core.Upgradelistserver.ContainsKey(u.Objectname))) missing++;
+        }
+        return missing;
     }
 
     // On the boat: the lobby list goes back to what the players picked (no Cardinal swaps there; the row is rebuilt each map).
@@ -353,7 +386,12 @@ public static class RWCardinals
     public static void Update()
     {
         Row();
-        if (!RWRun.InCampaignMap || !ModKitUtil.IsServer || Time.time < nextLook)
+        if (regrant && RWRun.InCampaignMap && RWUtil.IsServer && RWUtil.PlayerCores().Count > 0)
+        {
+            regrant = false;
+            GrantHeld();
+        }
+        if (!RWRun.InCampaignMap || !RWUtil.IsServer || Time.time < nextLook)
             return;
         nextLook = Time.time + 0.25f;
         foreach (long s in RWRun.Sessions())

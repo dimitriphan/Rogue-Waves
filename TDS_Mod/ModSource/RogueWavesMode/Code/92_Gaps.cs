@@ -19,6 +19,14 @@ public static partial class RWTest
         return i < 0 || i + 1 >= all.Length || Array.IndexOf(all[i + 1].Split(','), name) >= 0;
     }
 
+    // Only when named: it needs a save made for it.
+    static bool Asked(string name)
+    {
+        string[] all = Environment.GetCommandLineArgs();
+        int i = Array.IndexOf(all, "-rwonly");
+        return i >= 0 && i + 1 < all.Length && Array.IndexOf(all[i + 1].Split(','), name) >= 0;
+    }
+
     static IEnumerator Gaps()
     {
         if (Part("rules"))
@@ -26,6 +34,7 @@ public static partial class RWTest
             try { RollChecks(); } catch (Exception e) { Check("the Direction rules ran", false, e.ToString()); }
             try { CatalogChecks(); } catch (Exception e) { Check("the catalogue checks ran", false, e.ToString()); }
         }
+        if (Asked("oldsave")) { yield return Stepped(GapsOldSave()); yield break; }
         yield return GapsMenu();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("gaps", "never reached the boat"); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
@@ -40,6 +49,95 @@ public static partial class RWTest
             yield return Stepped(GapsHud("Hero_Argo"));
         }
 #endif
+    }
+
+    // A campaign saved before Team Cardinals became Cardinals and Vessel Cardinals Trinkets (2026-11-04), with one Vessel Cardinal,
+    // two Team Cardinals and a Direction: needs that save on disk (handoff\parked\oldsave_20261104, made on the old code). Also the
+    // renamed words a player reads.
+    static IEnumerator GapsOldSave()
+    {
+        yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
+        Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
+        if (menu == null) { Setup("oldsave", "no main menu"); yield break; }
+        yield return new WaitForSecondsRealtime(8f);
+        menu.Idlethreshold = 100000f;
+        menu.SendMessage("Transitiontomain", SendMessageOptions.DontRequireReceiver);
+        yield return Until(() => RWMenu.Button != null, 25f);
+        yield return new WaitForSecondsRealtime(7f);
+        Blockage.Menu.Bl_Menus.Changemenu("Main", true);
+        yield return new WaitForSecondsRealtime(6f);
+        RWMenu.Clicked();
+        yield return WaitDialog(10f);
+        Check("Old save: the Rogue Waves button offers Continue", CardNames().Contains("Continue"), CardTexts() + "; saved line '" + RWMenu.SavedLine() + "'");
+        ClickCard("Continue");
+        yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance.Ready, 120f);
+        Macro_Main boat = Macro_Main.Instance;
+        yield return Until(() => RWCampaign.Live && Here(), 40f);
+        long me = RWMine.Session;
+        RWPlayer player = RWRun.For(me);
+        Check("Old save: its Vessel Cardinal comes back as a Trinket", player.Trinkets.Contains("Cardinal_Dentures1") && RWCardinals.IsTrinket("Cardinal_Dentures"), string.Join(",", player.Trinkets.ToArray()));
+        Check("Old save: its Team Cardinals come back as Cardinals", RWRun.Cardinals.Contains("Artifact_Badge#1") && RWRun.Cardinals.Contains("Artifact_Beastpelt#1"), string.Join(",", RWRun.Cardinals.ToArray()));
+        Check("Old save: its Direction and Pure Aura come back", player.Directions.Contains("Direction_Any_Cost_Upgradeobject") && player.Pure == 455, string.Join(",", player.Directions.ToArray()) + ", Pure " + player.Pure);
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 60f);
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
+        yield return Until(() => RWShop.Stand != null, 120f);
+        freeze = true;
+        yield return new WaitForSeconds(4f);
+        Entity_Master vessel = RWRun.Vessel(me);
+        bool direction = false;
+        if (vessel != null)
+            foreach (string u in vessel.Upgradelistserver.Keys)
+                if (u == "Direction_Any_Cost_Upgradeobject") direction = true;
+        Check("Old save: in the map the Direction is on the vessel", direction, vessel != null ? string.Join(",", new List<string>(vessel.Upgradelistserver.Keys).ToArray()) : "no vessel");
+        // The Trinket has no upgrade of its own to look for: its heal, on a real hit.
+        yield return NewFoe();
+        if (lastFoe != null && vessel != null)
+        {
+            Hurt(lastFoe, vessel, 3f);
+            yield return new WaitForSeconds(0.6f);
+            ClearFoes();
+            yield return NewFoe();
+            float healed0 = RWCardinals.Healed;
+            if (lastFoe != null) Hurt(vessel, lastFoe, 5f);
+            yield return new WaitForSeconds(0.8f);
+            Check("Old save: in the map the Trinket heals the vessel as it hits", RWCardinals.Healed > healed0, "healed " + (RWCardinals.Healed - healed0));
+            ClearFoes();
+        }
+        else Setup("Old save's Trinket", "no foe");
+        int listed = 0;
+        foreach (FixedString64Bytes a in Tds_Multiplayerinfo.Instance.Artifacts) if (a.ToString() == "Artifact_Badge" || a.ToString() == "Artifact_Beastpelt") listed++;
+        Check("Old save: in the map the Cardinals are on the core and in the HUD's row", listed == 2 && RWCardinals.MissingOnCore() == 0, listed + " of 2 in the row, " + RWCardinals.MissingOnCore() + " upgrades missing on the core");
+
+        // The words, on a shelf holding a Trinket and two Cardinals.
+        List<string> sold = new List<string>(RWCardinals.Sold);
+        RWCardinals.Sold.Clear();
+        RWCardinals.Sold.Add("Cardinal_Dentures");
+        foreach (string id in sold) if (!RWCardinals.IsTrinket(id) && RWCardinals.Sold.Count < 3) RWCardinals.Sold.Add(id);
+        player.Pure = Mathf.Max(player.Pure, 200);
+        yield return new WaitForSeconds(0.6f);
+        RWShop.Open("Shop");
+        yield return WaitDialog(6f);
+        yield return new WaitForSecondsRealtime(2f);
+        // A card shows only its picture: its words are in the dialog's line while it is hovered.
+        string cards = "";
+        foreach (string card in CardNames())
+        {
+            Blu3_Button b = CardNamed(card) != null ? CardNamed(card).GetComponent<Blu3_Button>() : null;
+            if (b == null || b.Buttonenter == null) continue;
+            b.Buttonenter();
+            yield return null;
+            cards += card + ": " + TextOf(Bla_Ui_Confirmation.Instance.Descbox).Replace("\n", " / ") + " | ";
+        }
+        Check("The shop calls them Trinket and Cardinal, and nothing the old names", cards.Contains("Trinket") && cards.Contains("Cardinal") && !cards.Contains("Vessel Cardinal") && !cards.Contains("Team Cardinal"), cards);
+        yield return DialogFits("The shop with a Trinket and two Cardinals");
+        yield return Snap("rename_shop");
+        ClickCard("Back");
+        yield return Until(() => !RWDialog.Up(), 5f);
+        RWCardinals.Sold.Clear();
+        RWCardinals.Sold.AddRange(sold);
+        string shopDesc = RWContent.ShopCommand != null ? RWContent.ShopCommand.Display_Desc : "";
+        Check("The SHOP button says Cardinals, Trinkets", shopDesc.Contains("Cardinals, Trinkets"), shopDesc);
     }
 
     static IEnumerator GapsMenu()
@@ -280,7 +378,7 @@ public static partial class RWTest
     static IEnumerator BuildOne(Entity_Master vessel, string tower, List<Vector3> used, List<Entity_Master> known, Action<Entity_Master, float> done)
     {
         long me = vessel.Entitydata.Value.Owner;
-        Beingobject being = ModKitUtil.Load<Beingobject>("Mob", tower);
+        Beingobject being = RWUtil.Load<Beingobject>("Mob", tower);
         Vector3 at = being != null ? RogueWavesModeKitTest.Spot(vessel.Entityposition.Value, being, vessel.Entitydata.Value.Team, 3f, 8f, used, tower) : new Vector3(float.NaN, 0f, 0f);
         if (float.IsNaN(at.x)) { done(null, 0f); yield break; }
         float before = Total(me);
@@ -503,7 +601,7 @@ public static partial class RWTest
         int slot = 0, built = 0;
         foreach (string tower in new List<string>(entry.Towerdisplay))
         {
-            Beingobject being = ModKitUtil.Load<Beingobject>("Mob", tower);
+            Beingobject being = RWUtil.Load<Beingobject>("Mob", tower);
             if (being == null) { Info("hud " + hero, tower + " isn't loaded"); slot++; continue; }
             Vector3 at = RogueWavesModeKitTest.Spot(vessel.Entityposition.Value, being, vessel.Entitydata.Value.Team, 3f, 8f, used, tower);
             if (float.IsNaN(at.x)) { Setup("HUD " + hero + " " + tower, "no tile"); slot++; continue; }
@@ -582,7 +680,7 @@ public static partial class RWTest
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
             if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Resource") && e.Beingserver != null && !e.Beingserver.Dead)
             {
-                float d = ModKitUtil.Flat(e.Entityposition.Value, at);
+                float d = RWUtil.Flat(e.Entityposition.Value, at);
                 if (d < bestD) { bestD = d; best = e; }
             }
         return best;
@@ -600,7 +698,7 @@ public static partial class RWTest
             Func<string> state = () => vessel.Commandlistserver.TryGetValue("Plug", out plug) && plug != null ? plug.Goalstring ?? "" : "-";
             string s0 = state();
             Entity_Master node = NodeNear(vessel.Entityposition.Value, 60f);
-            Info("hud PLUG IN", "state '" + s0 + "', bank " + (bank != null) + ", nearest node " + (node != null ? node.Being.Value.ToString() + " " + RWUtil.F(ModKitUtil.Flat(node.Entityposition.Value, vessel.Entityposition.Value)) + " tiles" : "none"));
+            Info("hud PLUG IN", "state '" + s0 + "', bank " + (bank != null) + ", nearest node " + (node != null ? node.Being.Value.ToString() + " " + RWUtil.F(RWUtil.Flat(node.Entityposition.Value, vessel.Entityposition.Value)) + " tiles" : "none"));
             if (bank != null)
             {
                 yield return RogueWavesModeKitPlay.Command(vessel, "vessel", "PLUG IN", true, Vector3.zero, bank, () => state() == "On");
@@ -631,7 +729,7 @@ public static partial class RWTest
                 string a0 = aimed();
                 Vector3 spot = drill.Entityposition.Value + new Vector3(2f, 0f, 2f);
                 foreach (Genitem g in RWUtil.Ground())
-                    if (ModKitUtil.Flat(g.Position, drill.Entityposition.Value) > 1.5f && ModKitUtil.Flat(g.Position, drill.Entityposition.Value) < 3.5f && Mathf.Abs(g.Position.y - drill.Entityposition.Value.y) < 1.1f) { spot = g.Position; break; }
+                    if (RWUtil.Flat(g.Position, drill.Entityposition.Value) > 1.5f && RWUtil.Flat(g.Position, drill.Entityposition.Value) < 3.5f && Mathf.Abs(g.Position.y - drill.Entityposition.Value.y) < 1.1f) { spot = g.Position; break; }
                 yield return RogueWavesModeKitPlay.Command(drill, "Drill Rig", "AIM", true, spot, null, () => aimed() != a0);
                 Check("HUD Argo: the Drill Rig's AIM arms a picker, and a click on the ground moves its Tremor", RogueWavesModeKitPlay.LastOk, "'" + a0 + "' -> '" + aimed() + "'");
                 yield return RogueWavesModeKitPlay.Capture("argo_aim");
@@ -791,18 +889,18 @@ public static partial class RWTest
                 float m0 = Hp(wounded), mMax = HpMax(wounded);
                 yield return ToBreakAfter(1);
                 yield return new WaitForSeconds(0.6f);
-                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
+                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", " + RWUtil.F(RWUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
             }
 
             // Made of Tougher Stuff at rank III: a big hit takes at most a quarter of a minion's health.
             foreach (string n in new[] { "Tougher", "Tougher2", "Tougher3" }) RWDirections.Take(player, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id("Any", n)) as Upgradeproperties);
             yield return new WaitForSeconds(1f);
-            Beingobject miner = ModKitUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
+            Beingobject miner = RWUtil.Load<Beingobject>("Mob", "Mob_Smackyminer");
             Entity_Master minion = null;
             if (miner != null)
                 foreach (Genitem g in RWUtil.Ground())
                 {
-                    float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
+                    float d = RWUtil.Flat(g.Position, vessel.Entityposition.Value);
                     if (d < 2f || d > 8f) continue;
                     Genitem spot = null;
                     try { spot = Helper_Gridtools.Checkifstandable(g, new Link_Being { Being = miner, Entity = miner.Entity, Block = miner.Block, Team = vessel.Entitydata.Value.Team }); } catch (Exception) { }
@@ -1358,8 +1456,8 @@ public static partial class RWTest
             string loadNote = RWUtil.F(Time.realtimeSinceStartup - clock) + " s";
             yield return new WaitForSeconds(1f);
             Entity_Master core = RWUtil.PlayerCore();
-            Check(name + ": the vessel stands, VENDCINT lands near the Basin, an objective is posted", vessel != null && vessel.Being.Value.ToString() == hero && stand != null && core != null && ModKitUtil.Flat(stand.Entityposition.Value, core.Entityposition.Value) <= 8f && RWObjectives.Posted != null,
-                "vessel " + (vessel != null ? vessel.Being.Value.ToString() : "-") + ", VENDCINT " + (stand != null ? RWUtil.F(ModKitUtil.Flat(stand.Entityposition.Value, core != null ? core.Entityposition.Value : Vector3.zero)) + " from the Basin" : "none") + ", posted " + (RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-") + ", " + loadNote);
+            Check(name + ": the vessel stands, VENDCINT lands near the Basin, an objective is posted", vessel != null && vessel.Being.Value.ToString() == hero && stand != null && core != null && RWUtil.Flat(stand.Entityposition.Value, core.Entityposition.Value) <= 8f && RWObjectives.Posted != null,
+                "vessel " + (vessel != null ? vessel.Being.Value.ToString() : "-") + ", VENDCINT " + (stand != null ? RWUtil.F(RWUtil.Flat(stand.Entityposition.Value, core != null ? core.Entityposition.Value : Vector3.zero)) + " from the Basin" : "none") + ", posted " + (RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-") + ", " + loadNote);
 
             // Both weather objects find a tile on this map.
             Entity_Master flood = RWWeather.TestFlood();
