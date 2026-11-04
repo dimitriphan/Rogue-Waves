@@ -18,8 +18,8 @@ public static class ArgoJournal
         };
         foreach (KeyValuePair<string, string> kv in new Dictionary<string, string>
         {
-            { "Projcount", "Pellets" }, { "Spread", "Cone" }, { "Pierce", "Pierce" }, { "Stagger", "Stagger" }, { "Broadside", "Broadside Every" },
-            { "Bleedticks", "Bleed Ticks" }, { "Bleed", "Bleed Damage" }, { "Root", "Hold" }, { "Whaler", "Full Bonus At Health" }, { "Twin", "Second Harpoon After" },
+            { "Projcount", "Pellets" }, { "Spread", "Cone" }, { "Pierce", "Pierce" }, { "Broadside", "Broadside Every" },
+            { "Root", "Hold" }, { "Whaler", "Full Bonus At Health" }, { "Twin", "Second Harpoon After" },
             { "Lance", "Lance Every" }, { "Nautspeed", "Naut Speed" }, { "Repair", "Repair" }, { "Tunerange", "Tuned Range" },
             { "Bulkhead", "Damage Taken Cut" }, { "Divebell", "Dive" }, { "Tuneboost", "Tuning Boost" }, { "Fathommax", "Deepest Fathom" }, { "Tremor", "Tremor Radius" },
             { "Gusher", "Gusher Strikes" }, { "Mantle", "Quake Pin" }, { "Debuffbonus", "Bonus vs Slowed or Pinned" },

@@ -9,7 +9,8 @@
 public static class ArgoHooks
 {
     static readonly Dictionary<Entity_Master, float> pinged = new Dictionary<Entity_Master, float>();
-    static readonly Dictionary<Entity_Master, List<ArgoNautBrain>> armored = new Dictionary<Entity_Master, List<ArgoNautBrain>>();
+    // Bulkhead: the tower's cut and the Naut tuning it (one Naut per tower, ArgoTowerBrain.CrewOrder).
+    static readonly Dictionary<Entity_Master, ArgoNautBrain> armored = new Dictionary<Entity_Master, ArgoNautBrain>();
     static readonly Dictionary<Entity_Master, float> armorAmount = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, Vector2> soaked = new Dictionary<Entity_Master, Vector2>();   // (amount, until)
     static readonly Entity_Master.Oninteracts handler = OnHurt;
@@ -61,27 +62,19 @@ public static class ArgoHooks
 
     public static void Armor(Entity_Master tower, ArgoNautBrain by, float amount)
     {
-        List<ArgoNautBrain> list;
-        if (!armored.TryGetValue(tower, out list))
-            armored[tower] = list = new List<ArgoNautBrain>();
-        if (!list.Contains(by))
-            list.Add(by);
-        float old;
-        armorAmount[tower] = Mathf.Max(armorAmount.TryGetValue(tower, out old) ? old : 0f, Mathf.Clamp(amount, 0f, 0.9f));
+        armored[tower] = by;
+        armorAmount[tower] = Mathf.Clamp(amount, 0f, 0.9f);
         First(tower);
     }
 
+    // Only the Naut that tunes the tower takes its cut off.
     public static void Unarmor(Entity_Master tower, ArgoNautBrain by)
     {
-        List<ArgoNautBrain> list;
-        if (tower == null || !armored.TryGetValue(tower, out list))
+        ArgoNautBrain tuner;
+        if (tower == null || !armored.TryGetValue(tower, out tuner) || tuner != by)
             return;
-        list.Remove(by);
-        if (list.Count == 0)
-        {
-            armored.Remove(tower);
-            armorAmount.Remove(tower);
-        }
+        armored.Remove(tower);
+        armorAmount.Remove(tower);
     }
 
     public static void Update()

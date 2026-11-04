@@ -128,7 +128,6 @@ public static class ArgoClient
                     ArgoAssets.Play("Argo_Lance", at);
                     ArgoAssets.Effect("World_Argo_Lanceflash", Muzzlepoint(master, position), 1.2f);
                     break;
-                case "Argo_Bleed": ArgoAssets.Effect("World_Argo_Bleed", position, 1f); break;
                 case "Argo_Reel":
                     // the harpoon's line, from the muzzle to the foe it reels in, while the winch clicks
                     ArgoAssets.Play("Argo_Winch", at);

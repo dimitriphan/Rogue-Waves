@@ -41,7 +41,7 @@ public static class ArgoWater
     static readonly Dictionary<Entity_Master, float> lastWet = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> wetVfx = new Dictionary<Entity_Master, float>();
     static float nextTick;
-    public static int Ticks, Catches, Drags, Brined, Soaked, Floods, Freepools, Refused;
+    public static int Ticks, Catches, Drags, Floods, Freepools, Refused;
 
     public static void Reset()
     {
@@ -198,14 +198,12 @@ public static class ArgoWater
             if (b > 0f)
             {
                 ModKitCombat.Hurt(by, e, b * ArgoData.WaterTick, 1f, null, ArgoUtil.Data("Argodot", 1f));
-                Brined++;
                 if (vfx)
                     ArgoUtil.Vis(by, "Argo_Brine", ArgoUtil.Pos(e), 0);
             }
             if (crush > 0f)
             {
                 ArgoHooks.Soak(e, crush, ArgoData.WaterTick + 0.3f);
-                Soaked++;
             }
         }
         // Trench: every few seconds one foe in the water is dragged under, held for a moment.

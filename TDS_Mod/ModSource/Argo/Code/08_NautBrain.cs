@@ -9,7 +9,6 @@ public class ArgoNautBrain : MonoBehaviour
     public Entity_Master Post;
     public int Index = -1;
     public bool Tuning;
-    public float TunedFor;
 
     bool started;
     float lastOrder, closest, closestAt, nextHeal;
@@ -206,7 +205,6 @@ public class ArgoNautBrain : MonoBehaviour
 
     void Work(Vector3 pos)
     {
-        TunedFor += Time.deltaTime;
         Vector3 face = ArgoUtil.Pos(Post) - pos;
         face.y = 0f;
         if (face.sqrMagnitude > 0.01f)

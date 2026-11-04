@@ -16,7 +16,6 @@ public class ArgoTowerBrain : MonoBehaviour
     public ArgoData.Build Def;
     public bool Started;
     public int Shots, Volleys, Bites, Quakes, Fathom = 1;
-    public float LastGusher;
     // Double Barrel's stored volley; the reel; Pay Dirt. 2.0: the debuff bonus, Tether, Anchor Line, Undertow, the aim,
     // Bedrock and Fault Line.
     public int Stored, Reels, BossHits, PaydirtBites, BonusHits, Tethers, Anchors, Undertows, Aims, Bedrocks, Faults;
@@ -400,9 +399,6 @@ public class ArgoTowerBrain : MonoBehaviour
                 float slow = Param("Slow_Base", 0f);
                 if (slow > 0f)
                     ArgoUtil.Slow(Master, to, slow, Param("Duration_Base", 1.5f), true);
-                float stagger = Param("Stagger_Base", 0f);
-                if (stagger > 0f)
-                    ArgoUtil.Root(Master, to, stagger);
                 return;
             }
             // Harpoon. Tether slows every foe a harpoon hits.
@@ -910,7 +906,6 @@ public class ArgoTowerBrain : MonoBehaviour
             {
                 for (int i = 0; i < gush; i++)
                     Bite(ore, 1f);
-                LastGusher = Time.time;
                 ArgoUtil.Vis(Master, "Argo_Gusher", ArgoUtil.Pos(ore), gush);
             }
         }
