@@ -247,7 +247,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   resources read against the repository: 35 stale lines fixed, no code changed (`docs/reports/KIT_CHECK_2026-11-04.md`). 2026-11-04: the code simplification
   built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
   gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
-  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4.
+  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4. 2026-11-04: one quality pass over the whole
+  repository, paused at his word before a second: 127 issues, 120 fixed in docs and comments (mostly "not built / not
+  run / online left" lines), 7 for him (`docs/reports/QUALITY_PASSES_2026-11-04.md`); since PR #82 the base fails the
+  cloud compile (the mode 6 errors, three self-tests), a code fix for another thread.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

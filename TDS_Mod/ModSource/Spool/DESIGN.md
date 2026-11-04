@@ -86,7 +86,7 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 
 - **Yarn Stash** *(defaults)*: sellable for nothing (to move it; its Thread is kept for the next one). Destroyed, its
   Thread spills on the ground around it as drops and the build menu goes back to the Stash (rebuilt free). No upgrades
-  yet: the sheet asks Dimitri for them (`! NEEDS YARN STASH UPGRADES !`).
+  built yet: the sheet has seven since 2026-11-04 (below, not built).
 - **Cookie Tin:** "Crafted alive at once" 4 per Tin; one is stitched every 4 s while the Stash has the Thread. Its
   **TARGET** button (the fish Relocate picker, keys Quickaction / 5) picks a walkable tile within 8 tiles that a Crafted
   can reach *(the sheet: "picked like Fie's rally point, on a path within 8 tiles")*; a pin marker (a walk-through trap
@@ -127,7 +127,7 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 ## Upgrade trees
 
 The sheet's levels 1-3 are the game's tiers 2-4; a building takes one upgrade per level. Every choice of a level leads
-to every choice of the next, except where noted. No tier-5 capstones yet (the sheet has none). Costs are the sheet's
+to every choice of the next, except where noted. No tier-5 capstones built yet (the sheet has them since 2026-11-04, below). Costs are the sheet's
 defaults.
 
 | Building | Tier | Upgrade | Desc (in-game line) | What it does | Cost | Next |
@@ -156,8 +156,9 @@ Tin's UNTHREAD button. Scope `08` holds their numbers.
 ## Directions
 
 `docs/scope/11`: **Efficient Recycler** (selling a Crafted refunds more Thread, the sheet's question 1 default),
-**Sewing Machine** (replaces the Loom), **Made of Tougher Stuff** (any vessel with minions). Not built: Directions come
-with the Rogue Waves mode, after the Yossele-only first release (`docs/PLAN.md`).
+**Sewing Machine** (replaces the Loom), **Made of Tougher Stuff** (any vessel with minions). All three are built: the first
+two by Spool (`SpoolContent.BuildDirections`, `IMPLEMENTATION_NOTES.md`), the third by the mode (`RogueWavesMode/Code/16_Directions.cs`);
+measured in game on 2026-11-04.
 
 ## Visual effects and sounds
 

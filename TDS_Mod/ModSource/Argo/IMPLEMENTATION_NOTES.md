@@ -244,7 +244,7 @@ With none held the numbers and behaviour are today's. Measured in game on 2026-1
 ## Layout
 
 2.0 (current): the table below is 1.4.0's, with 1.4.0's names (Diving Bell is now the Miner's Base, Deep Drill the Drill
-Rig). 2.0.1 builds against kit 1.7, adds `11_Water` (Deep Water) and `16_AimSelect` (AIM: the Drill Rig's aimed Tremor),
+Rig). 2.0.1 builds against kit 1.8, adds `11_Water` (Deep Water) and `16_AimSelect` (AIM: the Drill Rig's aimed Tremor),
 keeps SONAR's files switched off, and `99_SelfTest` passes 142 checks (2026-11-04; 139 in PC round 6). The editor side also
 has `ArgoAseprite` and `ArgoPx` (Aseprite copies of the sheets to hand-edit, the pixel canvas).
 
