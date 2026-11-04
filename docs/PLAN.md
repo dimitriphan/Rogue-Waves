@@ -276,7 +276,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: at Dimitri's ask (his Yossele-and-Spool limit lifted for it), 21 new Directions and 13 new Cardinals drawn
   from StarCraft II's campaign upgrades at the stock Cardinals' power, all Claude `~defaults~` in scopes `11` and `12`;
   every Direction and Cardinal now carries `By: Dimitri` or `By: Claude` (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`,
-  not built); a Scope Editor artifact covers every scope file (Log).
+  not built); the Scope Editor artifact (https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo) shows and edits every scope file, makers
+  tagged, and exports the `.txt` (source in project files `concepts/scope_editor_2026-11-04/`; Log).
   Older entries are in "Log" below.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
@@ -608,6 +609,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (8 Any, 3 Yossele, 3 Spool, 2 Argo, 1 more per base vessel) and 13 Cardinals (8 Vessel, 5 Team), Claude `~defaults~` at the stock
   Cardinals' scale, each with the StarCraft II upgrade behind it and the game piece it rides on (read, not built). New scope rule: every
   Direction and Cardinal ends with `By: Dimitri` or `By: Claude`; `06` and `12` gain Power and Pairs lines. `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md`.
+  Scope Editor artifact https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo (every file 00-16, line edit, filters by maker, Export .txt; edits in its
+  db collection `scopes`, doc `f<NN>` per edited file; rebuild from project files `concepts/scope_editor_2026-11-04/`).
 
 ### Decisions
 
