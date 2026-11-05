@@ -3,8 +3,8 @@
 // (Team and Vessel Cardinals until Dimitri renamed them on 2026-11-04):
 //   Cardinal acts on the core, the foes or the clock, for everyone: the upgrade goes on the core with its Artifactobject passed
 //            (nine stock scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby
-//            list while the row has room (8 counters, lobby picks included), and in the run line's count past that. Every
-//            stock Cardinal on sale is one
+//            list while the row has room (8 counters, lobby picks included); past that it works but shows nowhere yet (the run
+//            line carries only the objective; docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md row 3). Every stock Cardinal on sale is one
 //   Trinket  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook.
 //            It is built as a Cardinal is (an Artifactobject and its entry) and keeps its "Cardinal_" id, so a saved
 //            campaign still finds it

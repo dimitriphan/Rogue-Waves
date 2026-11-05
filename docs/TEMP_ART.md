@@ -33,7 +33,7 @@ left, shade keeps the hue, no pure black, magenta only on foes.
 | Mode | the sea chart | no art of its own: the base game's own islands, water, rocks and buoys, copied in code at runtime (`Code/04_World.cs`); a flag and dashed lanes in the pack's colours are the only new shapes | seen in game |
 | Foes | the four modifiers' pixel rings | built in code (`RogueWavesFoes/Code/00_RogueWavesFoesMod.cs` `RWFLooks`), colours from `docs/STYLE.md` | seen in game by self-test, not by eye |
 | Uloe | every sheet, model, effect and sound, drawn by code from the concept page | `Assets/UloeMod/Editor` (nothing wired from files; minion versions below) | seen in game |
-| Every vessel's minions | ten Snoble-sized versions each of the Cordyfriend, the Thread Head, the four Crafted, the Photon and the Nauts (2026-11-04, below) | `ModSource/<Part>/Art/Temporary/minions_2026-11-04/` | files only, until he picks |
+| Every vessel's minions | ten Snoble-sized versions each of the Cordyfriend, the Thread Head, the four Crafted, the Photon and the Nauts (2026-11-04, below) | `ModSource/<Part>/Art/Temporary/minions_2026-11-04/`; the picks copied to each part's `Art/Temporary/game_size/` | his picks (2026-11-05) wired for the Cordyfriend, Thread Head, four Crafted and Photon; the Nauts keep the code's art. Not yet built in Unity or seen in game |
 | Argo | built art (Argo 2.0) | `ModSource/Argo/DESIGN.md` | not temporary: shipped look |
 
 ## Versions to pick from (2026-10-28)
@@ -116,6 +116,13 @@ Thread Head stays the biggest (scope 08: "works like Boutman's fish").
   over it (`FileArt`), so the same copy. The Nauts are drawn by code: `ArgoBuilder` first needs Yossele's `FileArt` (Argo's README
   in that folder says where), then the same copy. Nothing is seen in game yet.
 - **Generator.** `concept-tools/minions/` (`build.py`, then `page.py`; `readmes.py` writes the READMEs).
+- **Picked (2026-11-05).** Cordyfriend v04 Antlers, Thread Head v04 Bobbin, Stitched v06 Patchwork, Dart v01 Long Hood,
+  Seam v06 Button, Mangled v02 Burst, Photon v04 Star; Naut "Current" (the code's art stays, `ArgoBuilder` unchanged).
+  His note on the Dart, "Long hood but very slightly larger so details are more apparent": v01 redrawn at 7 x 13 (was
+  6 x 11), body 5 x 8, a 5 px zipper with the eyes a pixel apart. Each pick's `game_size/`, `aseprite/` and `preview_8x/`
+  files are copied over the part's `Art/Temporary/`; Spool's GIFs there were redrawn from them. The builders take them
+  through `FileArt` (Yossele `CopySheet`, Spool and Uloe `SaveSheet`); the cloud preview draws only the code, so the next
+  PC round checks the build log's `sprites: <sheet>.png from Art/Temporary/` lines and the look in game.
 
 ## Previews and generators
 

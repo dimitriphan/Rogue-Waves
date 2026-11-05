@@ -143,6 +143,10 @@ there for Dimitri's play: park them and put them back after, `TDS_Mod/Tools/pc/R
   `Art/<name>.png` or else `Art/Temporary/game_size/<name>.png` in place of the code's sheet when the size matches;
   editor-checked, then in every build since (2026-11-03, 2026-11-04); the build log should name the five sheets
   "from Art/Temporary/" and that the Crafted and the Head walk and strike in game.
+  2026-11-05: the five sheets replaced by Dimitri's Snoble-sized picks (Thread Head v04 Bobbin, Stitched v06 Patchwork,
+  Dart v01 Long Hood drawn a little larger, Seam v06 Button, Mangled v02 Burst; same names, sizes and layout,
+  `docs/TEMP_ART.md` "Minion versions"). Same check at the next PC round, plus whether the smaller Crafted are still
+  easy to click to sell.
 
 What the self-test can't show, left for Dimitri's play test (numbers from the list above): it sends the Build, Sell,
 TARGET, SPOT, RETURN, MEND and PATCH commands itself, so the clicking is unseen: the build bar's order and the Stash-only

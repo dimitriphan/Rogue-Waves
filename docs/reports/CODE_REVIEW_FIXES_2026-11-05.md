@@ -86,8 +86,8 @@ not run on the PC**: §5 is the test list for the next PC round.
 ## 5. PC test list
 
 **First:** bring the PC's `TDS_Mod` up to this PR (it is older than PR #80). Every part should boot with "kit 1.9" in
-its first line. Then each part's self-test as usual: the expected counts are unchanged from PR #80's list
-(`SIMPLIFICATION_BUILD_2026-11-04.md` §4), since no check was added or removed. Each row: what to do, and what to read
+its first line. Then each part's self-test as usual: this PR adds and removes no check, so the expected counts are
+PR #80's list (`SIMPLIFICATION_BUILD_2026-11-04.md` §4), except the mode's, which PR #87's save fuzz brings to 155. Each row: what to do, and what to read
 once fixed (the review's §6 has what the old build shows).
 
 **Solo, the mode:**

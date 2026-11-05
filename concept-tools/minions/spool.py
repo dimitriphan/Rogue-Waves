@@ -421,12 +421,22 @@ def dart_body(c, p, w=2, h=7, tones=LILAC, tip=3):
 
 
 def da01(c, p):
-    """Long Hood: thin and lilac, the hood drawn out into a long point, a needle in its leading glove."""
-    cx, top, bottom, m = dart_body(c, p)
-    zipmouth(c, p, cx - 2, top + 1, 4, tongue=False)
+    """Long Hood: thin and lilac, the hood drawn out into a long point, a needle in its leading glove. Picked
+    2026-11-05 and drawn a little larger (body 5 x 8 not 4 x 7, a 4 px hood, a 5 px zipper with the eyes a pixel apart)
+    so the details read."""
+    cx, bottom = p.cx + p.dx, p.g - 1 + p.dy
+    legs(c, p, (cx - 1, cx + 1), bottom + 1, PLUSH)
+    top = bottom - 7 + p.sq
+    m = Mask().rect(cx - 2, top, cx + 2, bottom)
+    m.px -= {(cx - 2, top), (cx - 2, bottom), (cx + 2, top), (cx + 2, bottom)}
+    s = p.sway if p.kind != 'move' else -p.arm
+    for k in range(4):
+        m.px.add((cx + (0 if k < 2 else 1) + (s if k == 3 else 0), top - 1 - k))
+    fill(c, m, LILAC)
+    zipmouth(c, p, cx - 2, top + 2, 5, tongue=False)
     c.set(cx - 3, top + 5 - p.arm, FELT[1])
-    needle_throw(c, p, cx + 2, top + 5)
-    c.set(cx + 2, top + 5, FELT[0])
+    needle_throw(c, p, cx + 3, top + 5)
+    c.set(cx + 3, top + 5, FELT[0])
 
 
 def da02(c, p):
