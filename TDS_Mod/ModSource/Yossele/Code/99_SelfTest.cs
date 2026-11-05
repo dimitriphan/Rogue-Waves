@@ -328,7 +328,7 @@ public static partial class YosseleSelfTest
     static void Kill(Entity_Master e) { if (e != null && e.Beingserver != null) Game_Entity.Instance.Despawn(e.Beingserver, true, "Selftest"); }
 
     // What this building's upgrades cost against their list price: his save's Voice in a Bottle lowers it on pack buildings since the
-    // stock upgrade AI (kit docs/17 Â§6), and the list price would then fail a check that is doing nothing wrong (round 3).
+    // stock upgrade AI (kit docs/17 §6), and the list price would then fail a check that is doing nothing wrong (round 3).
     static float PriceScale(Entity_Master m) { Link_Command c; return m != null && m.Commandlistserver != null && m.Commandlistserver.TryGetValue("Upgrade", out c) && c != null ? c.Goalvalue : 1f; }
 
     static IEnumerator Upgrade(YosseleBuilding b, string key, long owner)

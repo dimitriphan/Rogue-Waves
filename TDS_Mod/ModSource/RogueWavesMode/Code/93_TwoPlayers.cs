@@ -549,7 +549,7 @@ public static partial class RWTest
             }
             Info("the big fight", spawned + " more foes by the second player's vessel, " + RWVote.Foes() + " up");
         }
-        yield return BigFightHost(friend);
+        yield return Stepped(BigFightHost(friend));
         Check("N4 a real Tide with both players' things: no error on the host", hardErrors == hardBefore, (hardErrors - hardBefore) + " errors, the game's own cancels left out");
         ClearFoes();
         forcing = true;
@@ -592,7 +592,7 @@ public static partial class RWTest
         yield return new WaitForSeconds(1f);
         Check("O4 a Tide pays the rejoined player", RWRun.For(friend).Pure > pureHis, pureHis + " -> " + RWRun.For(friend).Pure);
         yield return Sync("paid");
-        if (RWTwo.Review) { yield return ReviewHost(me, friend); yield break; }
+        if (RWTwo.Review) { yield return Stepped(ReviewHost(me, friend)); yield break; }
         if (RWTwo.Short) yield break;
 
         // O3b: the second copy killed as Task Manager would, started again: its id comes back, so the same seat.
@@ -1155,13 +1155,20 @@ public static partial class RWTest
         Check("O3 Pure Aura and Directions follow", RWMine.Pure() > 0f && v != null && HeldDirections(v).Count >= 2, "Pure " + RWMine.Pure() + ", " + (v != null ? string.Join(",", HeldDirections(v).ToArray()) : "-"));
         Check("O7 the weather's objects are there for the rejoiner", RWWeather.Loaded(RWChart.RisingWater) && Thing("Main_Flood") != null && RWRejoin.MapWeather() == RWChart.RisingWater, "weather " + RWWeather.Display(RWRejoin.MapWeather()));
         yield return Snap("second_rejoined");
-        if (RWTwo.Review) Reading("MODE-B1 the rejoiner", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
+        if (RWTwo.Review)
+        {
+            Reading("MODE-B1 the rejoiner", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
+            int doubled;
+            string doubles = Doubles(out doubled);
+            Reading("MODE-B2", doubled > 0, doubles);
+            Info("MODE-C10 the rejoiner's row", CardinalRow());
+        }
         yield return Sync("back");
         float pureBack = RWMine.Pure();
         yield return Until(() => RWTwo.OtherSaid("paid"), 120f);
         yield return Say("paid");
         Check("O4 the rejoined player's counter rises with the Tide", RWMine.Pure() > pureBack, pureBack + " -> " + RWMine.Pure());
-        if (RWTwo.Review) { yield return ReviewSecond(); yield break; }
+        if (RWTwo.Review) { yield return Stepped(ReviewSecond()); yield break; }
         // The host kills this copy here (O3b); the next launch carries on from AfterRestart.
         yield return new WaitForSecondsRealtime(600f);
     }
@@ -1320,7 +1327,7 @@ public static partial class RWTest
     // O5: this copy wasn't in the map. Turned away, twice.
     static IEnumerator Stranger()
     {
-        if (RWTwo.Review) { yield return ReviewStranger(); yield break; }
+        if (RWTwo.Review) { yield return Stepped(ReviewStranger()); yield break; }
         for (int i = 1; i <= 2; i++)
         {
             yield return RWTwo.Join();

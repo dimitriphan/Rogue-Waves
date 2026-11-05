@@ -542,3 +542,14 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      0.25 s, and a brain's `Begin` runs about a frame after the spawn (#61), so Argo's and Uloe's build looks and
      Uloe's Photon pop land before anyone listens → send a first-frame look a moment later, or let the client play it
      as it first hooks the thing. Read from code (max review ARG-2, ULO-6); not yet seen in game, left for a PC look.
+159. **Spring Tide's Beacon on a building that then gets Fie's Regen halves its hits** (2026-11-05) → the Beacon gives `Resistadd` 1,
+     which does nothing alone; once a Shield wall or Shared Strength adds `Effect_Fiewall_Regen_Upgradeobject`, every hit divides by
+     1 + `Resistadd`: 4.88 of a 10 hit, against 9.52 with the wall's effect on first. Measured in game (round 3, MODE-C3); not
+     fixed, it waits for Dimitri's word.
+160. **Dimitri's save equips Voice in a Bottle, so upgrade prices fall 3% a Tide on pack buildings in every test launch** (2026-11-05)
+     → a check of a list price fails with nothing wrong (Sticky Spores 44 of 50) → read the `Upgrade` command's `Goalvalue` before
+     the buy. Seen in game (round 3).
+161. **A test that picks a map or forces one to end leaves traces** (2026-11-05) → a map selected right after `RWCampaign.New` is
+     overwritten by the boat's own pick, and the stale plan loads: wait until the boat has docked. A forced map end can leave the
+     game's Lose menu over the next map, which hid a dialog from the next check: give such a part its own launch. Seen in game
+     (round 3).

@@ -216,6 +216,9 @@ public static class RWShop
 
     static IEnumerator Shelf()
     {
+#if ROGUEWAVESMODE_GAPS
+        if (RWTest.ThrowShelf) { RWTest.ThrowShelf = false; throw new Exception("MODE-D10: a test's throw"); }
+#endif
         int map, wave;
         uint seed = Seed(out map, out wave);
         int pure = Mathf.RoundToInt(RWMine.Pure());

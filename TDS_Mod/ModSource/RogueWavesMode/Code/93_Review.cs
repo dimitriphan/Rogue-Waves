@@ -29,6 +29,9 @@ public static partial class RWTest
     {
         float t = 0f, sendAt = 20f;
         int sent = 0, mostSlowed = 0, mostStack = 0;
+        // A top-up each frame isn't enough: 60 foes spawned together can strike in one frame (round 3, an Argo host: the map lost in seconds).
+        Entity_Master held = RWUtil.PlayerCore();
+        if (held != null && held.Statsserver != null && held.Statsserver.ContainsKey("Health")) Helper_Entitytools.Addmod(held, "Health", 100000f, Helper_Entitytools.Modtypes.Add, 45f);
         while (t < 37f)
         {
             HoldBasin();
@@ -41,7 +44,7 @@ public static partial class RWTest
                     if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Statsserver != null && e.Statsserver.TryGetValue("Speed", out s) && s.Value_Multi < 0.99f) slowed++;
                     if (t >= sendAt && sent < 40 && e != null && e.Beingserver != null && !e.Beingserver.Dead && !e.Taglistserver.Contains("Enemycore") && Time.frameCount % 30 == 0)
                     {
-                        Entity_Master by = RWRun.Vessel(friend);
+                        Entity_Master by = RWRun.Vessel(friend) ?? RWRun.Vessel(RWMine.Session);
                         if (by != null) { ModKitUtil.Debuff(by, e, "Debuff_Slow", 6f); sent++; }
                     }
                 }
@@ -53,12 +56,54 @@ public static partial class RWTest
         Info("the big fight on the host", "foes slowed at once, at most " + mostSlowed + "; the game's look queue at most " + mostStack + " of 50; looks the test sent from 20 s on: " + sent + "; " + RWVote.Foes() + " foes up, the map " + Game_Mapvars.Instance.Gamecomplete.Value);
     }
 
+    // MODE-B2's reading on a machine that has just rejoined: a client half holding the same visual script twice, a being listed twice.
+    static string Doubles(out int doubled)
+    {
+        doubled = 0;
+        int halves = 0, twice = 0;
+        List<string> names = new List<string>();
+        foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
+        {
+            halves++;
+            List<string> seen = new List<string>();
+            bool hit = false;
+            foreach (MonoBehaviour b in c.GetComponentsInChildren<MonoBehaviour>(true))
+            {
+                if (b == null) continue;
+                string t = b.GetType().Name;
+                if (!t.StartsWith("Entity_Vis")) continue;
+                if (seen.Contains(t)) { hit = true; if (names.Count < 6) names.Add(c.name + ":" + t); }
+                else seen.Add(t);
+            }
+            if (hit) doubled++;
+        }
+        List<Entity_Master> listed = new List<Entity_Master>();
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+        {
+            if (listed.Contains(e)) twice++;
+            else listed.Add(e);
+        }
+        doubled += twice;
+        return halves + " client halves, " + doubled + " with a double, " + twice + " beings listed twice: " + string.Join(", ", names.ToArray());
+    }
+
+    static string CardinalRow()
+    {
+        List<string> row = new List<string>();
+        if (Tds_Multiplayerinfo.Instance != null)
+            foreach (FixedString64Bytes a in Tds_Multiplayerinfo.Instance.Artifacts) row.Add(a.ToString());
+        return row.Count + " [" + string.Join(",", row.ToArray()) + "]";
+    }
+
     // ---------------------------------------------------------------- after the first rejoin: the host
 
     static IEnumerator ReviewHost(long me, long friend)
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
         vars.Time_Scale.Value = 1f;
+        // MODE-C9 and C10: after the rejoin, one key for the friend, and the Cardinal row as the host has it.
+        Reading("MODE-C9", RWRun.For(friend).Key != RWTwo.SecondGuid, "the friend's key after the rejoin: " + RWRun.For(friend).Key + ", " + RWRun.Players.Count + " players held");
+        Info("MODE-C10 the host's row", CardinalRow());
 
         // MODE-D4: the friend's vessel goes down in the last seconds of Tide 15; the vote to leave opens while it is down.
         yield return Sync("d4");
@@ -72,21 +117,25 @@ public static partial class RWTest
         vars.Time_Wave.Value = 0.1f;
         yield return Until(() => vars.Wave.Value >= RWCampaign.WinTide, 30f);
         yield return new WaitForSeconds(1f);
-        ClearFoes();
-        Entity_Master hisVessel = RWRun.Vessel(friend);
-        if (hisVessel != null && hisVessel.Beingserver != null) Game_Entity.Instance.Despawn(hisVessel.Beingserver, true, "RogueWaves");
+        // The vote opens on an empty field: a foe stays up until the break is here and the vessel is down, so it opens as it falls.
+        List<Entity_Master> enemyCores = RWUtil.EnemyCores();
+        Entity_Master keeper = enemyCores.Count > 0 ? RogueWavesModeKitTest.SpawnFoe("Enemy_Dagger", enemyCores[0].Entityposition.Value, 2f, 10f, null) : null;
         forcing = true;
         float t = 0f;
         while (RWVote.Breaks == breaks && t < 60f)
         {
-            ClearFoes();
             t += Time.unscaledDeltaTime;
             yield return null;
         }
         forcing = false;
+        vars.Time_Wave.Value = RWMode.BreakSeconds;
+        Entity_Master hisVessel = RWRun.Vessel(friend);
+        if (hisVessel != null && hisVessel.Beingserver != null) Game_Entity.Instance.Despawn(hisVessel.Beingserver, true, "RogueWaves");
+        yield return null;
         ClearFoes();
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
         bool down = RWRun.Vessel(friend) == null;
+        if (RWAsk.Open == RWVote.LeaveKind) yield return Say("d4open");
         if (RWAsk.Open == RWVote.LeaveKind)
         {
             yield return WaitDialog(8f);
@@ -130,6 +179,7 @@ public static partial class RWTest
         yield return Until(() => RWRejoin.Turned > turned, 300f);
         float turnedAt = Time.realtimeSinceStartup;
         Info("MODE-B3", "the stranger was turned away, " + RWRejoin.Turned + " so far; the party goes home");
+        RWCampaign.Choice = RWCampaign.Open()[0].Col;     // a real leave's map vote has picked it by now
         yield return Win();
         yield return new WaitForSeconds(5f);
         Macro_Main old = Macro_Main.Instance;
@@ -171,7 +221,8 @@ public static partial class RWTest
             yield return null;
         }
         yield return new WaitForSeconds(2f);
-        Reading("MODE-D4", !opened, "the vote to leave's dialog opened on this machine: " + opened + "; the respawned vessel stood after " + RWUtil.F(backAt) + " s: " + cameBack + "; RWAsk.Open now '" + RWAsk.Open + "'");
+        if (!RWTwo.OtherSaid("d4open")) Setup("MODE-D4", "the host's vote never opened");
+        else Reading("MODE-D4", !opened, "the vote to leave's dialog opened on this machine: " + opened + "; the respawned vessel stood after " + RWUtil.F(backAt) + " s: " + cameBack + "; RWAsk.Open now '" + RWAsk.Open + "'");
         yield return Say("d4read");
         // MODE-D7: this player answers once the host's shop is up.
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 150f);
@@ -225,6 +276,7 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(2f);
         boat.Selectcharacter(RWTwo.SecondHero);
         yield return OneWay("mapb3");
+        loadAt = rejoinAt = -1;     // a turned-away join's lines don't count: only the next map's
         boat.Playgame(true);
         yield return Until(() => LoadedHere(), 240f);
         yield return new WaitForSecondsRealtime(25f);
