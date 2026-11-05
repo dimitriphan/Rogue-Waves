@@ -194,6 +194,36 @@ flooded at the first Tide, no error.
 - The 55 lighting groups and 28 atmospheres the base game ships (`reference/vessel_data_survey.txt`, `FOLDER Lighting`)
   can be loaded by name and applied to any map.
 
+### 7.1 What a mod can change, and how far (read 2026-11-05, kit 1.13 `ModKitLight`; not yet run in game)
+
+- **What `Editlighting` does, line by line** (Blockage.Lighting.Bl_Lighting.cs): linear fog only (`fogMode` 1) with the
+  group's colour, start and end; ambient as a three-colour gradient (`Topcolor`, `Midcolor`, `Bottomcolor`); the
+  reflection strength; the group's `Profile` put on every **global** URP `Volume` of the active scene; every "Sun" found
+  is destroyed and a fresh one made from `Resources.Load("Sun")` (colour, intensity, `Sunshadowintensity`, aimed along
+  `Sundirection`), likewise the "Reflectprobe". The game calls it at each map's load on each machine
+  (Game_Client_Init.cs:168, Game_Load.cs:137 and 217), the boat at each world change (Macro_Worldvisual.cs:171).
+- **The groups are always in memory**: `Tds_Masterdatabase` holds direct references in its `"Lighting"` folder, keyed by
+  asset name (`Map_Woozy`, `Macro_World`, `Other_Mainmenu`...), so any of the 55 can be applied on any map without a load.
+- **Fog, ambient and sun can be driven by mod code directly**: they are `RenderSettings` and a `Light`, all in
+  `UnityEngine.CoreModule`, which the game's compiler references. A held look must be written again after the game's own
+  call at a map's load; a fade is a per-frame lerp.
+- **Post-processing can only be borrowed whole.** The mod compiler's reference list has no
+  `Unity.RenderPipelines.Core.Runtime` or `...Universal.Runtime`, so mod code can't name `Volume`, `VolumeProfile`,
+  `Bloom`, `ColorAdjustments` or the game's own `Betterfog_Volumeoverride` (CS0012), and reflection is banned. A copy of a
+  stock group (`Object.Instantiate`) keeps its profile; write the fog, ambient and sun fields over it and pass it to
+  `Editlighting` (pitfall #167: never touch `.Profile` itself). The base game already makes a runtime global Volume of
+  its own (Tds_Photomode.cs:348-365, priority 99), so a profile built in Unity and shipped in the pack's bundle on a
+  prefab (a `Volume` component, with an Animator for its weight) is the route to a grade of our own; it needs a Unity
+  build on the PC and was not tried.
+- **The game's own fog post effect**: `Betterfog_Renderingfeature` adds a full-screen pass (material
+  `Resources/Betterfog`) when the camera has post-processing on and the volume stack's `Betterfog_Volumeoverride` has
+  `On`: a near and a far colour over `Colorbounds`, a skybox fade, distance-based or not. Only a borrowed profile can
+  switch it.
+- **Open on the PC** (`docs/reports/LIGHTING_2026-11-05.md` §4): whether the game's sprite and effect shaders take
+  Unity fog at all (a unit that ignores it stands out of the fog), whether a map's prefab carries baked lightmaps
+  (`Map_PrefabLightmapData`: the sun then darkens units but not the ground; fog and post-processing still apply), whether
+  extra point lights are drawn, and the 55 groups' own numbers (the gaps build's `-rwonly light` logs them).
+
 ## 8. Projectile behaviours a building can borrow
 
 - `Projectile_Ai_Splitbounce` (Smacky's Bomb Tower): a shot fired with the per-shot param `Splitbounce` = 1 splits into
