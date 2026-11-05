@@ -86,6 +86,8 @@ public static partial class SpoolSelfTest
             Check("... each with 55% of the health (Woolen Lining's share too) and damage", one != null && Mathf.Abs(ModKitUtil.MaxHealth(one.Master) - baseHealth * SpoolData.ButtonShare[0] * woolen) < 0.05f
                 && Mathf.Abs(ModKitUtil.Stat(one.Master, "Damage", 0f) - baseDamage * SpoolData.ButtonShare[0]) < 0.02f,
                 one == null ? "none" : "health " + F(ModKitUtil.MaxHealth(one.Master)) + " (base " + F(baseHealth) + " x" + F(woolen) + "), damage " + F(ModKitUtil.Stat(one.Master, "Damage", 0f)) + " (base " + F(baseDamage) + ")");
+            Check("... and wear the smaller look (skin '" + SpoolData.SmallSkin + "', from the library's small sheet)", one != null && SpoolContent.HasSmallLook(one.Def.Id) && one.Master.Skin.Value.ToString() == SpoolData.SmallSkin,
+                one == null ? "none" : "skin '" + one.Master.Skin.Value + "', small look built " + SpoolContent.HasSmallLook(one.Def.Id));
             ModKitDirections.Grant(hm, DirectionOf(SpoolData.Buttonjars[1].Name));
             ModKitDirections.Grant(hm, DirectionOf(SpoolData.Buttonjars[2].Name));
             yield return Wait(1.2f);

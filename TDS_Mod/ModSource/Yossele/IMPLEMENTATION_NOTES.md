@@ -1,5 +1,13 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-05: the Shift looks and Wood Wide Web's
+
+Rendered here, not yet built in Unity or seen in game: `Yossele_Dandelionsapling` (a smaller clay stump, one floret head on
+a tall stalk) and `Yossele_Mushboom` (a large red-capped mushroom on the Tree's roots, toads round its foot), the models
+`ShiftLook.Model` names, and `Tower_Yosselepachira_Web4` (pale threads round the pot joining a red, a blue and a yellow
+knot). All three are temporary art (`docs/TEMP_ART.md`); renders in `Previews/0.2/models_Dandelion.png`, `models_Pachira.png`.
+For the PC: a shifted Tree's model and Wood Wide Web's by eye, after Build All Assets.
+
 ## 2026-11-05: five new Directions
 
 Compiled, not yet run in game: Claude's five Yossele Directions from scope 11 (`17_Directions.cs`, "Directions" below):
@@ -12,8 +20,8 @@ still Yossele), both made from effects Yossele already has until the art PR.
 Compiled, not yet run in game: the Sapling's **Wood Wide Web** (`Web4`, Yellow 250, after Grafted, Forest Project or
 Spontaneous Mulch, leading to the level 4 pair): `YosseleWeb`, once a second a player however many Saplings have it, while
 the most-held colour is 100 or more above the least-held, gives the game's own `Giveresource` -2 of the most and +1 of the
-least (divided by the map's gain, which `Give` multiplies by, so the purse moves by exactly 2 and 1). Its model is the
-Sapling's until the art PR. A shifted Tree's panel says Dandelion Sapling or Primordial Mushboom (B8, "Directions" below).
+least (divided by the map's gain, which `Give` multiplies by, so the purse moves by exactly 2 and 1). Its model is its own
+since the art PR (above). A shifted Tree's panel says Dandelion Sapling or Primordial Mushboom (B8, "Directions" below).
 For the PC: the self-test's Wood Wide Web and panel-name lines; the purse after a minute with one colour far ahead.
 
 ## 2026-11-05: the decisions' build items

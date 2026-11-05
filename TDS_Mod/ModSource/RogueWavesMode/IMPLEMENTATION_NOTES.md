@@ -1,5 +1,15 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the objectives' icons
+
+Compiled, not yet run in game (A3, scope `14` Look lines). Five 12 x 12 icons, `RogueWaves_Objective_Meteor`, `_Hull`,
+`_Clock`, `_Hands` and `_Nest` (`Art/Temporary/`, `concept-tools/temp_art/objective_icons.py`), go into the icon table with the
+Board's (`RWContent.IconNames`). `RWObjectives.Icon` names the posted one's, or the Board's when the icon table lacks it; the
+Board's Take card (`RWObjectives.PostedOn`, `CardText`) and the DONE popup show it. Mind the Meteor's node itself is still a stock ore
+node's copy: a white crystal would be a model, and this part's library holds sprites only. `MakeMeteor` logs once what
+the ore's look is made of (`meteor: the ore's look is ...`), for the round that decides how to give it one.
+For the PC: the Board's card and the DONE popup for each objective; that log line.
+
 ## 0.1.0-dev, later (2026-11-05): Claude's Trinkets and Cardinals
 
 Compiled, not yet run in game (scope `12`, B11). Sheets in `17_Cardinals.cs` `Mine` (each with its scope line as the

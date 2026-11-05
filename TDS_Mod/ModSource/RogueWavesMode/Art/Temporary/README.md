@@ -31,7 +31,9 @@ opaque, no outline, lit from the upper left, one object each.
 | `Direction_Wound` to `Direction_Pool` (15), `Direction_Trowel`, `_Shovel`, `_Wormtin`, `_Opensign`, `_Leash`, `Direction_Chumbucket`, `_Pressuregauge`, `Direction_Cuttingjar`, `_Sapbucket`, `_Creepingivy`, `_Deepbreath`, `_Fairyring`, `Direction_Doubleneedle`, `_Buttonjar`, `_Patternbook`, `_Meritbadge`, `_Oddsocks` (`.png`) | each Direction's Look line in scope 11, one object each | the 32 Directions built 2026-11-05 (B11): the ones any vessel takes, the base vessels', Argo's, Yossele's and Spool's | wired by name (`RWDirections.Picture`), drawn by `concept-tools/temp_art/b11_icons.py`; not yet seen in game |
 | `Cardinal_BrassSpyglass` to `Cardinal_GullFeather` (11), `Cardinal_CorkLifebuoy`, `_SignalFlare`, `_CargoCrate`, `_TinWhistle` (`.png`) | each Look line in scope 12 | the Trinkets and Cardinals built 2026-11-05 | wired by each sheet's Look (`17_Cardinals.cs`), same script; not yet seen in game |
 
-`aseprite/RogueWaves_Icons_B11.aseprite` holds the 47 of 2026-11-05, one frame and tag each. `aseprite/RogueWaves_Icons.aseprite` holds 15 of the 12 x 12 icons (the three weathers, the crest, Depth, Pure Aura,
+| `RogueWaves_Objective_Meteor`, `_Hull`, `_Clock`, `_Hands`, `_Nest` (`.png`) | scope 14's Look lines: a white crystal node on grey rock, a mop in a coral bucket, a cracked stopwatch, a life ring afloat with its rope, a burning twig nest | the five optional objectives: the Board's card and the DONE popup | wired (`Code/19_Objectives.cs` `RWObjectives.Icon`, the Board's icon when missing), drawn by `concept-tools/temp_art/objective_icons.py`; not yet seen in game |
+
+`aseprite/RogueWaves_Icons_Objectives.aseprite` holds the five objective icons. `aseprite/RogueWaves_Icons_B11.aseprite` holds the 47 of 2026-11-05, one frame and tag each. `aseprite/RogueWaves_Icons.aseprite` holds 15 of the 12 x 12 icons (the three weathers, the crest, Depth, Pure Aura,
 Retry, Vote, six Directions and Vampire Dentures), one frame and one tag each; `RogueWaves_Crest32.aseprite`
 the big crest. Their layer is named "TEMP art". `preview_8x/` holds enlarged copies for review.
 

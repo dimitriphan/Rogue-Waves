@@ -659,6 +659,34 @@ namespace SpoolBuild
                     },
                 }
             },
+            // Button Jar's small Crafted (Code/02_Data.cs Unit.SmallSheet): the picked Patchwork Stitched and Long Hood Dart a
+            // row and a column smaller each, drawn here as there is no file for them (temporary art, docs/TEMP_ART.md).
+            {
+                "Stitchedsmall", new Doll
+                {
+                    Size = 16, Hips = 13, FaceTop = 10, FaceBottom = 12, Split = 8, Body = 'a', Face = "tgmeq",
+                    Rows = new[]
+                    {
+                        "................", "................", "................", "................", "................",
+                        "................", "................", "................", "................", "......Lab.......",
+                        ".....Latgt......", ".....bmeemb.....", ".....aagtq......", "...u.bbbbp.v....", "......b.b.......",
+                        "......b.b.......",
+                    },
+                }
+            },
+            {
+                "Dartsmall", new Doll
+                {
+                    Size = 16, Hips = 13, FaceTop = 9, FaceBottom = 11, Split = 8, Body = 'l', Face = "tgme", Thrower = true,
+                    Rows = new[]
+                    {
+                        "................", "................", "................", "................", "................",
+                        ".........L......", "........L.......", ".......llL......", "......lllLs.....", "......tgtgtS....",
+                        "......mememS....", "......gtgtgS....", ".....ulLLLav....", ".......LLa......", ".......b.b......",
+                        ".......b.b......",
+                    },
+                }
+            },
             {
                 "Seam", new Doll
                 {

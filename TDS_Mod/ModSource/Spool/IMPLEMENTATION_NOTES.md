@@ -1,5 +1,14 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-05: the Sewing Machine's model and Button Jar's small Crafted
+
+Compiled and rendered here, not yet run in game: `Spool_Sewingmachine` (the classic light blue machine on the Loom's
+plinth, a sage felt scrap under the needle), the model `SewingModel` names; Button Jar's small Stitched and Dart, code
+dolls `Stitchedsmall` and `Dartsmall` (the picked Crafted a row and a column smaller) saved as `Spoolstitchedsmall-Sheet`
+and `Spooldartsmall-Sheet`. Their visual gets a `Small` skin when the library has the sheet (`SpoolContent.SmallLooks`), and
+a Crafted with a Button Jar share puts it on in `Begin`. Self-test section 10c checks the skin. Temporary art
+(`docs/TEMP_ART.md`); renders in `Previews/0.1/`.
+
 ## 2026-11-05: the decisions' build items
 
 Compiled, not yet run in game: the pack's own foe modifiers (`RW_Modifier_`) count as elite for the Thread drop
@@ -204,7 +213,7 @@ not yet run in game (self-test section 10c, `98_Directions.cs`):
   (what selling refunds); each has a Pmulti of share - 1 on Health and Damage (0.55 / 0.65 / 0.75), so Woolen Lining's
   Multi applies to the smaller base; the Tin's Units doubles; with one slot free a stitch makes one, for half the
   Thread. Selling refunds each its own half, rounded down (a 10-Thread pair gives back 2 + 2 where a whole one gives 5).
-  Their look is a whole one's until the art PR draws a smaller one.
+  Their look is the smaller one since the art PR (above).
 - **Pattern Book** (`Patternbook`): a Tin's Crafted killed (not sold) is queued to come back (`SpoolTinBrain.Fell`, from
   the unit's `Gone`) while fewer than 1 / 2 / 3 have been queued this Tide (`ModKitTides.Wave`); it comes back of its
   own kind with Cost 0, before any paid stitch and in its place even past the Tin's Units, on the usual stitch time

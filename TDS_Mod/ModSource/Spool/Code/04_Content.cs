@@ -508,6 +508,14 @@ public static class SpoolContent
         return ent;
     }
 
+    // Button Jar's small skin is on this Crafted's visual (BuildUnit adds it when the library has the small sheet).
+    public static bool HasSmallLook(string id)
+    {
+        Beingobject b;
+        return Beings.TryGetValue(id, out b) && b != null && b.Entity != null && b.Entity.Defaultvisual != null
+            && b.Entity.Defaultvisual.Skinoverrides.ContainsKey(SpoolData.SmallSkin);
+    }
+
     static void BuildUnit(SpoolData.Unit u)
     {
         Beingobject tb = Miner();
@@ -534,6 +542,12 @@ public static class SpoolContent
         ent.Destroyonparent = !u.Sellable;
         ent.Tags = new List<string> { "Mob", "Mobfighter", "Spoolcrafted" };
         ent.Defaultvisual = UnitVisual(te.Defaultvisual, u.Id, u.Sheet, u.Cell, u.Display, Tint);
+        if (u.SmallSheet != null && ModKitAssets.Library.Find("Sprites/" + u.SmallSheet) != null)
+        {
+            Visualproperties.Entry small = ent.Defaultvisual.Default;
+            small.Spriteobject = ModKitAssets.Unit(u.SmallSheet, u.Cell, u.Id + "_Small_Sprite", te.Defaultvisual.Default.Spriteobject);
+            ModKitUtil.AddSkin(ent.Defaultvisual, SpoolData.SmallSkin, small);
+        }
         Register("Mob", ent.Defaultvisual);
         being.Entity = ent;
         Beings[u.Id] = being;
