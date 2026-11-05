@@ -413,6 +413,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   cleared; Depth's notes in 04 and 05. Handed on (the report's end): items 2, 5, 6 and 9 to a code thread, 10 and 11 to
   art, the next PC round (his OK) right after the balance sweep, then the sync and 04's NEEDS line from this thread;
   `.claude/settings.json` is his edit. Docs only, no compile.
+  2026-11-05: the weather test and a map's lighting, at his ask ("Test the weather effect. Are we able to drastically
+  alter the lighting of levels to include features like fog?"; `docs/reports/LIGHTING_2026-11-05.md`): the weather's
+  code is as it passed on the PC (156/0 on `ecd1991`), so its test is the mode's self-test again on the current base,
+  plus his eye on a flooded map. Lighting: yes; fog, the ambient colours, the sun and any of the 55 stock grades can
+  change a running map on every machine (kit 1.13 `ModKitLight`, kit `docs/16` §7.1, pitfall #167); a grade of our own
+  needs a Unity-built profile, and drifting fog banks would be new art. The gaps build's `light` part shows each look in
+  pictures. Compiled here (every part, every test switch, 0 errors), not run on the PC: §4 waits for his OK; whether a
+  look ships is §5, after the pictures.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -439,7 +447,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #167 (#162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, pitfall #168 (#167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

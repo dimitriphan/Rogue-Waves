@@ -10,6 +10,7 @@
 //   ten      a whole campaign on ten real maps, each voted, left and won, to the CAMPAIGN WON screen, with the difficulty measured
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
 //            both weather objects find a tile, a Tide runs; Boutman's real death for the F key
+//   light    only when named, its own launch: a map's lighting changed by the kit's ModKitLight, fog included (92_GapsLight.cs)
 // "-rwonly <word,word>" on the command line picks parts (Tools/pc/Run-TwoPlayers.ps1 -Extra "..."; a solo build never starts the second copy).
 public static partial class RWTest
 {
@@ -54,6 +55,7 @@ public static partial class RWTest
         if (Asked("split")) { yield return Stepped(ReviewSplithead()); yield break; }
         if (Asked("artrio")) { yield return Stepped(ReviewArtrio()); yield break; }
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
+        if (Asked("light")) { yield return Stepped(GapsLight()); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
         if (Part("any")) yield return Stepped(GapsAny());
         if (Part("base")) yield return Stepped(GapsBase());

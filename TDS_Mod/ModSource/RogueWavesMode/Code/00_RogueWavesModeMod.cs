@@ -123,6 +123,7 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
         try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }
         try { RWWeather.SpeedUpdate(); } catch (Exception e) { RWLog.Once("speed", "game speed: " + e); }
+        try { ModKitLight.Update(); } catch (Exception e) { RWLog.Once("light", "lighting: " + e); }
         try { RWRejoin.Update(); } catch (Exception e) { RWLog.Once("rejoin", "rejoin: " + e); }
 #if ROGUEWAVESMODE_SELFTEST
         try { RWTest.Update(); } catch (Exception e) { RWLog.Once("test", "self-test: " + e); }
