@@ -12,6 +12,8 @@
 //   Connected Roots      while above half health it takes 65% of each hit on its owner's Tower-tagged buildings
 //                        within its Range, other Saplings excluded (YosseleHooks).
 //   Harvesting Season    fruit is worth double.
+//   Wood Wide Web        once a second a player, however many Saplings have it: while the owner holds 100 or more of
+//                        their most-held colour than of their least-held, 2 of the most become 1 of the least (YosseleWeb).
 //   Fortifying Roots     +100% max health; its team's buildings within its Range, itself included, take 30% less
 //                        damage (YosseleHooks; the strongest aura counts, two don't stack).
 //   Softening Roots      every node in its Range takes one hit fewer to pay out, never fewer than 1 (YosseleSoftening).
@@ -290,6 +292,85 @@ public static class YosseleSoftening
                 ModKitUtil.Unmod(softened[ore]);
             softened.Remove(ore);
         }
+    }
+}
+
+// Wood Wide Web (host only): like Smacky's Processing Plant without picking the colour. Once a second, each player with a
+// standing Sapling that has it trades 2 of the colour they hold most of for 1 of the one they hold least of, while the gap
+// between the two is at least 100. Both sides go through the game's own Give, as the Processing Plant's do
+// (Entity_Ai_Tower_Converter: a negative Give for what it takes); Give multiplies by the map's gain, so the amounts are
+// divided by it first and the purse moves by exactly 2 and 1.
+public static class YosseleWeb
+{
+    static readonly string[] colours = { "Redaura", "Blueaura", "Yellowaura" };
+    static readonly List<long> seen = new List<long>();
+    static readonly Dictionary<long, float> nextLook = new Dictionary<long, float>();
+    static float next;
+    public static int Trades;
+
+    public static void Reset()
+    {
+        next = 0f;
+        nextLook.Clear();
+    }
+
+    public static void Update(List<YosseleBuilding> buildings)
+    {
+        if (Time.time < next)
+            return;
+        next = Time.time + 1f;
+        seen.Clear();
+        foreach (YosseleBuilding b in buildings)
+        {
+            YosselePachiraBrain p = b as YosselePachiraBrain;
+            if (p == null || !p.Started || p.Master == null || !ModKitUtil.Alive(p.Master) || !p.Has("Web") || seen.Contains(p.Owner))
+                continue;
+            seen.Add(p.Owner);
+            if (!Trade(p.Owner, p))
+                continue;
+            // The trade's look, a root pulse of the three colours on that Sapling, at most every 3 s a player.
+            float at;
+            if (!nextLook.TryGetValue(p.Owner, out at) || Time.time >= at)
+            {
+                nextLook[p.Owner] = Time.time + 3f;
+                ModKitUtil.Vis(p.Master, "Yossele_Web", p.Pos, 0f);
+            }
+        }
+    }
+
+    // One trade for one player now; true when it traded. Public for the self-test.
+    public static bool Trade(long owner, YosselePachiraBrain p)
+    {
+        Tds_Clientinfo info;
+        if (Game_Players.Instance == null || Game_Players.Instance.Prevsessionlist == null || !Game_Players.Instance.Prevsessionlist.TryGetValue(owner, out info) || info == null)
+            return false;
+        string most = null, least = null;
+        float hi = float.MinValue, lo = float.MaxValue;
+        foreach (string c in colours)
+        {
+            float held = 0f;
+            foreach (Link_Resource r in info.Resources)
+                if (r.Name.ToString() == c)
+                    held = r.Amount;
+            if (held > hi) { hi = held; most = c; }
+            if (held < lo) { lo = held; least = c; }
+        }
+        float take = p.Param("Web_Take", 2f), give = p.Param("Web_Give", 1f);
+        float g = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f;
+        if (most == null || least == null || most == least || hi - lo < p.Param("Web_Gap", 100f) - 0.001f || hi < take || g <= 0f)
+            return false;
+        Give(most, -take / g, owner);
+        Give(least, give / g, owner);
+        Trades++;
+        return true;
+    }
+
+    static void Give(string colour, float amount, long owner)
+    {
+        Link_Resource r = default(Link_Resource);
+        r.Name = colour;
+        r.Amount = amount;
+        Helper_Resources.Giveresource(r, owner, Helper_Resources.Styles.Default);
     }
 }
 

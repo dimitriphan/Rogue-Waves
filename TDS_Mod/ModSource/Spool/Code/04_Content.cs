@@ -144,6 +144,14 @@ public static class SpoolContent
         return vp;
     }
 
+    // A Loom under the Sewing Machine Direction: same visual, its own name in the panel (the title is the skin entry's
+    // Displayname, Game_Ui, pitfall #164), and its own model once there is one.
+    static Visualproperties SewingSkin(Visualproperties vp, Visualproperties template, string model)
+    {
+        ModKitUtil.AddSkin(vp, SpoolData.SewingSkin, ModelEntry(template.Default, ModKitAssets.Quiet(SpoolData.SewingModel) != null ? SpoolData.SewingModel : model, SpoolData.SewingDisplay));
+        return vp;
+    }
+
     // A unit's look: its sheet cut into Idle, Move and Attack (ModKitAssets.Unit), on the template's sprite visual.
     static Visualproperties UnitVisual(Visualproperties template, string name, string sheet, int cell, string display, Color tint)
     {
@@ -222,7 +230,10 @@ public static class SpoolContent
                 up.Ent_Visual = null;
             else
             {
-                up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), ModKitAssets.Quiet(u.Model) != null ? u.Model : b.Id, u.Display);
+                string model = ModKitAssets.Quiet(u.Model) != null ? u.Model : b.Id;
+                up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), model, u.Display);
+                if (b.Id == SpoolData.Loom)
+                    SewingSkin(up.Ent_Visual, te.Defaultvisual, model);
                 Register("Upgrade", up.Ent_Visual);
             }
             up.Defaultparam = new List<Upgradeproperties.Param>();
@@ -451,6 +462,8 @@ public static class SpoolContent
         ent.Defaultstat = Stats(te.Defaultstat, b.Id + "_Statproperties", b.Stats);
         Register("Mob", ent.Defaultstat);
         ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display);
+        if (b.Id == SpoolData.Loom)
+            SewingSkin(ent.Defaultvisual, te.Defaultvisual, b.Id);
         Register("Mob", ent.Defaultvisual);
         // Kit 1.2: the range sphere the game draws (and the stock AIs measure from) sits on this tower, at the height its
         // brain measures from (its Entityposition).

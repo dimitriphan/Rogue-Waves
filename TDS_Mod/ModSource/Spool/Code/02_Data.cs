@@ -112,6 +112,9 @@ public static class SpoolData
 
     // Sewing Machine: every Loom of this player mines faster, spins no Thread and mends around itself each Tide.
     public const float SewingMine = 0.5f;   // +50% mining, as a Multi on the Loom's Attackspeed; default, docs/scope/11
+    // A Loom of a player holding it shows this skin: the panel reads Sewing Machine, and the model is Spool_Sewingmachine
+    // once there is one (decision 15; until then the Loom's own model).
+    public const string SewingSkin = "Sewing", SewingDisplay = "Sewing Machine", SewingModel = "Spool_Sewingmachine";
     public class Sewing { public string Name, Display, Desc; public float Radius, Heal; }
     public static readonly Sewing[] Sewingmachines =
     {

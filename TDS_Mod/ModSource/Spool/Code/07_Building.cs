@@ -194,8 +194,8 @@ public class SpoolStashBrain : SpoolBuilding
 // Loom: strikes ore within reach like the Mining Hut's pick (stock payout to its owner) and spins a Thread every few
 // seconds while it holds fewer than its Hold, for Spool or a Thread Head to collect. Direct Line sends what it spins
 // straight to the Yarn Stash; Seam Allowance keeps one Seam mining and guarding beside it. While its player's vessel
-// holds the Sewing Machine Direction it works as one (same model): it mines faster and spins nothing, and SpoolServer
-// mends around it each Tide.
+// holds the Sewing Machine Direction it works as one: its panel reads Sewing Machine (the "Sewing" skin; the Loom's model
+// until A1's arrives), it mines faster and spins nothing, and SpoolServer mends around it each Tide.
 public class SpoolLoomBrain : SpoolBuilding
 {
     public int Held, Spun, Sent, Strikes, Seams;
@@ -221,6 +221,8 @@ public class SpoolLoomBrain : SpoolBuilding
             sewingMod = true;
             Helper_Entitytools.Addmod(Master, "Attackspeed", SpoolData.SewingMine, Helper_Entitytools.Modtypes.Multi, 0f);
         }
+        // The panel reads Sewing Machine (the skin, synced to every player); an upgrade's look keeps the skin too.
+        ModKitUtil.Skin(Master, sewing ? SpoolData.SewingSkin : "");
         Strike();
         if (Time.time >= nextSpin)
         {

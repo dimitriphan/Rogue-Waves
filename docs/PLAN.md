@@ -354,6 +354,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and Photon visits keep to the owner's buildings (ULO-3); Supernova's SURGE once a Tide and Colour Filter's COLOUR are
   one-click buttons. Self-test section 8b. Compiled here (release, self-test and review builds, 0 errors), not run on
   the PC.
+  2026-11-05, part 4: Yossele's Wood Wide Web built (scope `07`, `UPGRADE_GAPS_2026-11-04.md` Y1), and the Shift
+  Directions rename the building's panel (B8, decision 15): Dandelion Sapling, Primordial Mushboom, Sewing Machine, by a
+  skin whose entry's Displayname is the panel's title (pitfall #164); the models wait for A1. Compiled here (release, self-test and
+  review builds, 0 errors), not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -380,7 +384,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #164 (#162-#163 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, pitfall #165 (#162-#164 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

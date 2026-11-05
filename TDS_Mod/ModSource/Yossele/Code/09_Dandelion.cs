@@ -13,7 +13,8 @@
 //   Rubbery Shell      a strike bounces on twice, each time to the nearest foe within 2 tiles it hasn't hit; with D-MDS
 //                      a seed goes on to 2 more projectiles within 2 tiles.
 //   Dandelion Storm    +100% range, +20 seeds, +100% seed growth (modifiers on its stats).
-// The vessel's Directions (docs/scope/11; same model, the Bonsai stays itself):
+// The vessel's Directions (docs/scope/11; the panel reads the new name through a skin, the model is the Tree's until A1's
+// arrive, the Bonsai stays itself):
 //   Dandelion Season     no limit (YosseleServer.TreeSlot); 70% damage and range, stages at 70%, rank II at 25% more, rank
 //                        III +5% damage and range per other Tree at max Growth, at most +50%.
 //   Mother of Mushrooms  a Primordial Mushboom: no seeds; every 8 s every foe in Range that carries spores takes 2 per stack
@@ -34,6 +35,9 @@ public class YosseleDandelionBrain : YosseleBuilding
     public int Weeds { get { weeds.RemoveAll(t => t <= Time.time); return weeds.Count; } }
     protected virtual float StageSeeds { get { return YosseleData.SeedsPerStage; } }
     protected virtual bool Shifts { get { return true; } }
+    // A shifted Tree's name and look: Primordial Mushboom or Dandelion Sapling (Mushboom first, as OnGrowth reads them).
+    protected override string SkinPrefix { get { return mushrooms > 0 ? YosseleData.MushboomLook.Skin : season > 0 ? YosseleData.SaplingLook.Skin : ""; } }
+    public string Look { get { return Master != null ? Master.Skin.Value.ToString() : ""; } }
 
     protected override void Started2()
     {
@@ -365,6 +369,7 @@ public class YosseleDandelionBrain : YosseleBuilding
             season = nowSeason;
             mushrooms = nowMushrooms;
             OnGrowth();
+            ShowSkin();
         }
         float damage = 0f, range = 0f;
         if (season > 0)

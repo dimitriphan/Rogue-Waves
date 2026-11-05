@@ -177,6 +177,10 @@ public static class YosseleClient
                     YosseleAssets.Play("Yossele_Pick", position);
                     ModKitAssets.Effect("World_Yossele_Fruitpick", position + Vector3.up * 0.2f, 2f);
                     break;
+                case "Yossele_Web":
+                    ModKitAssets.Effect("World_Yossele_Fruitpick", Ground(position) + Vector3.up * 0.15f, 1.2f);
+                    YosseleAssets.Play("Yossele_Rustle", position, 0.35f);
+                    break;
                 case "Yossele_Mend":
                     ModKitAssets.Effect("World_Yossele_Mend", position + Vector3.up * 0.3f, 1.5f);
                     YosseleAssets.Play("Yossele_Mend", position, 0.6f);
