@@ -3,6 +3,7 @@
 // campaign flow (96_Flow.cs) reaches but never measures (docs/reports/TEST_ROUND_2026-11-04.md §3), one launch, on a solo host:
 //   rules    what a Direction roll may offer for each of the nine vessels; every Direction's, Cardinal's and Trinket's text and picture
 //   effects  on a real map: what each Direction and Vampire Dentures do to the wallet and to health; each objective's failure
+//   any      on a real map: each Direction any vessel can take (92_GapsAny.cs)
 //   scales   every dialog of the mode at each UI scale and three screen sizes
 //   ten      a whole campaign on ten real maps, each voted, left and won, to the CAMPAIGN WON screen, with the difficulty measured
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
@@ -33,6 +34,7 @@ public static partial class RWTest
         {
             try { RollChecks(); } catch (Exception e) { Check("the Direction rules ran", false, e.ToString()); }
             try { CatalogChecks(); } catch (Exception e) { Check("the catalogue checks ran", false, e.ToString()); }
+            try { AnyRollChecks(); } catch (Exception e) { Check("the Any Direction rules ran", false, e.ToString()); }
         }
         if (Asked("oldsave")) { yield return Stepped(GapsOldSave()); yield break; }
         yield return GapsMenu();
@@ -50,6 +52,7 @@ public static partial class RWTest
         if (Asked("artrio")) { yield return Stepped(ReviewArtrio()); yield break; }
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
+        if (Part("any")) yield return Stepped(GapsAny());
         if (Part("foes")) yield return Stepped(GapsFoes());
         if (Part("ten")) yield return Stepped(GapsTen());
         if (Part("tour")) yield return Stepped(GapsTour());
@@ -301,10 +304,11 @@ public static partial class RWTest
             if (s == null || s == fallback) { crest++; if (r == 1) crested.Add(v + "/" + n); }
             string want = n.Length > 0 ? (r == 2 ? " II" : r == 3 ? " III" : "") : "";
             if (r > 1 && !u.Display_Name.EndsWith(want)) bad.Add(u.Objectname + " reads '" + u.Display_Name + "'");
+            int has = RWDirections.Ranks(u.Objectname);
             for (int k = 2; k <= 3; k++)
-                if (r == 1 && Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id(v, n + k)) == null) bad.Add(u.Objectname + " has no rank " + k);
+                if (r == 1 && (Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id(v, n + k)) == null) != (k > has)) bad.Add(u.Objectname + (k > has ? " is a Duo with a rank " : " has no rank ") + k);
         }
-        Check("Directions: every rank has a name and a line, ranks II and III exist and say so", bad.Count == 0 && ranks >= 60, ranks + " ranks; " + string.Join("; ", bad.ToArray()));
+        Check("Directions: every rank has a name and a line, ranks II and III exist and say so (a Duo has one rank)", bad.Count == 0 && ranks >= 60, ranks + " ranks; " + string.Join("; ", bad.ToArray()));
         Check("Directions: every one has a picture of its own, not the crest", crested.Count == 0, crest + " ranks on the crest: " + string.Join(" ", crested.ToArray()));
 
         List<string> wrong = new List<string>();

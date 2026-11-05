@@ -365,6 +365,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05, part 6: Spool's new Directions built (scope `11`, B11): Double Needle, Button Jar, Pattern Book, Merit
   Badge and Odd Socks, with the sheet's numbers and self-test section 10c; Button Jar's smaller look waits for the art.
   Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
+  2026-11-05, part 7: the Directions any vessel can take built (scope `11` (Any), B11, audit N7): Wound Spring, Fine
+  Sieve, Spare Hands, Galley Kettle, Chain Shot, Salt Barrel, Fog Horn, Clam Shell, Notched Oar, Lamp Oil, Fish Hook,
+  Spare Compass (with its once-a-map redraw), Magpie Nest, and the Duos Fire Ship and Tide Pool, offered only to a player
+  holding both; Wound Spring and Spring Tide are a pair. In `RogueWavesMode/Code/22_AnyDirections.cs`, self-test part
+  "any" of the gaps build. Compiled here (release and test builds, 0 errors), not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

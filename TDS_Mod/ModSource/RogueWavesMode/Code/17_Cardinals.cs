@@ -313,6 +313,20 @@ public static class RWCardinals
         return n;
     }
 
+    // Every Cardinal the run holds: each bought stack, and the lobby's picks (Magpie Nest counts them).
+    public static int HeldCount()
+    {
+        int n = RWRun.Cardinals.Count;
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info != null)
+        {
+            foreach (FixedString64Bytes a in info.Artifacts)
+                if (!shown.Contains(a.ToString())) n++;
+            if (info.Mixedart.Value.Length > 0) n++;
+        }
+        return n;
+    }
+
     // Held Cardinals the row has no room for (its 8 counters, lobby picks included): the run line shows "+N" (B4).
     public static int Overflow()
     {
@@ -652,7 +666,13 @@ public static class RWCardinals
         }
     }
 
-    public static void OnDespawn(Entity_Master master, bool killed, string reason) { RWObjectives.OnDespawn(master, killed, reason); }
+    public static void OnDespawn(Entity_Master master, bool killed, string reason)
+    {
+        RWObjectives.OnDespawn(master, killed, reason);
+        // Inside Game_Entity.Despawn: a throw here would stop the listeners after this one (MODE-C8).
+        try { RWAny.OnDespawn(master, killed, reason); }
+        catch (Exception e) { RWLog.Once("any despawn", "Directions on a death: " + e.Message); }
+    }
 
     // ---------------------------------------------------------------- Vampire Dentures, and the row on every machine
 

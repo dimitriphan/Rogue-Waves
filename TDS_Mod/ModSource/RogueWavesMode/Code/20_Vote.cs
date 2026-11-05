@@ -45,6 +45,7 @@ public static class RWVote
         RWHits.Reset();
         RWDirections.Reset();
         RWCardinals.Reset();
+        RWAny.Reset();
         // An objective left running when the last map ended would be judged at this map's opening break (MODE-D2).
         RWObjectives.Reset();
         if (!RWRun.InCampaignMap)
@@ -80,6 +81,7 @@ public static class RWVote
         {
             RWRun.PayTide(wave);
             RWDirections.Interest(wave);
+            RWAny.Tide(wave);
             RWDirections.TideEffects(wave);
         }
         foreach (long s in RWRun.Sessions())
@@ -235,17 +237,56 @@ public static class RWVote
         {
             RWPlayer p = RWRun.For(s);
             if (!p.Owed) { Votes[s] = ""; continue; }
-            Blm_Player bp;
-            Tds_Clientinfo info = Blm_Server.Instance.Sessionidsplayer.TryGetValue(s, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
-            List<int> o = RWDirections.Roll(p, info != null ? info.Hero.Value.ToString() : "", unchecked((int)RWCampaign.Seed) ^ (RWCampaign.Route.Count * 613) ^ p.Key.GetHashCode());
+            List<int> o = RWDirections.Roll(p, HeroOf(s), PickSeed(p));
             if (o.Count == 0) { p.Owed = false; Votes[s] = ""; continue; }
             offers[s] = o;
-            List<string> idx = new List<string>();
-            foreach (int i in o) idx.Add(i.ToString());
-            RWRun.Ask(s, DirectionKind + ":" + string.Join(".", idx.ToArray()), Round);
+            AskOffers(s, p, o);
         }
         RWLog.Info("Direction picks open, round " + Round);
     }
+
+    static string HeroOf(long s)
+    {
+        Blm_Player bp;
+        Tds_Clientinfo info = Blm_Server.Instance.Sessionidsplayer.TryGetValue(s, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
+        return info != null ? info.Hero.Value.ToString() : "";
+    }
+
+    static int PickSeed(RWPlayer p) { return unchecked((int)RWCampaign.Seed) ^ (RWCampaign.Route.Count * 613) ^ p.Key.GetHashCode(); }
+
+    // The cards' indexes, and Spare Compass's redraw mark while the holder has one this map (a client before it skips the part).
+    public const string RedrawMark = "r";
+    public const int RedrawPick = -2;
+
+    static void AskOffers(long s, RWPlayer p, List<int> o)
+    {
+        List<string> idx = new List<string>();
+        foreach (int i in o) idx.Add(i.ToString());
+        if (RWAny.CanRedraw(p)) idx.Add(RedrawMark);
+        RWRun.Ask(s, DirectionKind + ":" + string.Join(".", idx.ToArray()), Round);
+    }
+
+    // Spare Compass rank II: the offer thrown back and drawn again, once a map; the clock gets a full pick's time back.
+    static void Redraw(long s)
+    {
+        List<int> had;
+        RWPlayer p = RWRun.For(s);
+        if (!offers.TryGetValue(s, out had) || Votes.ContainsKey(s) || !RWAny.CanRedraw(p))
+            return;
+        RWAny.Redrew(p);
+        List<int> o = RWDirections.Roll(p, HeroOf(s), PickSeed(p) ^ 7919, had);
+        if (o.Count == 0)
+            return;
+        offers[s] = o;
+        Round++;
+        until = Mathf.Max(until, Time.time + PickSeconds);
+        Hold(PickSeconds);
+        AskOffers(s, p, o);
+        Redraws++;
+        RWLog.Info(p.Name + " drew the Directions again");
+    }
+
+    public static int Redraws;    // self-test
 
     static void ClosePicks()
     {
@@ -481,7 +522,12 @@ public static class RWVote
     {
         string kind = RWRun.JsonText(json, "Kind");
         long s = vessel.Entitydata.Value.Owner;
-        if (kind == DirectionKind && State == "Picks") Votes[s] = RWRun.JsonInt(json, "Pick").ToString();
+        if (kind == DirectionKind && State == "Picks")
+        {
+            int pick = RWRun.JsonInt(json, "Pick");
+            if (pick == RedrawPick) Redraw(s);
+            else Votes[s] = pick.ToString();
+        }
         else if (kind == MapKind && State == "Map") Votes[s] = RWRun.JsonInt(json, "Pick").ToString();
         else if (kind == LeaveKind && State == "Leave") Votes[s] = RWRun.JsonText(json, "Text");
     }
@@ -571,13 +617,17 @@ public static class RWAsk
         if (kind == RWVote.DirectionKind)
         {
             RWDirections.Refresh();
+            bool redraw = false;
             foreach (string p in parts)
             {
                 int i;
+                if (p == RWVote.RedrawMark) { redraw = true; continue; }
                 if (!int.TryParse(p, out i) || i < 0 || i >= RWDirections.List.Count) continue;
                 Upgradeproperties u = RWDirections.List[i];
                 cards.Add(RWDialog.Card(cards.Count.ToString(), u.Display_Name, u.Display_Desc, RWDirections.Picture(u.Objectname), RWDialog.Teal));
             }
+            if (redraw && cards.Count > 0)
+                cards.Add(RWDialog.Card(RWVote.RedrawPick.ToString(), "Draw again", "Spare Compass: throw these back and draw new ones, once a map", RWDirections.Picture(ModKitDirections.Id("Any", "Compass")), RWDialog.Swell));
             title = "CHOOSE A DIRECTION";
             sub = "It stays with your vessel for the whole campaign";
             seconds = RWVote.PickSeconds;
