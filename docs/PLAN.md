@@ -47,6 +47,13 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > **Ask only at gates.** Questions for the user are collected in Part C "Open questions" and asked together when a
 > gate is reached or the work cannot continue without them. Defaults you can take yourself are taken and logged.
 >
+> **Merging (Dimitri, 2026-11-05: "Automatically merge pull requests").** Claude merges PRs into
+> `claude/phase-1-6lfnar` itself, with a merge commit, through the GitHub MCP tool `merge_pull_request` (pass
+> `expectedHeadSha`). Before merging: merge the base into the PR's branch (Part C entries base first, the PR's own
+> last), run the cloud-check of every changed part (docs-only: check the cited paths), and leave a PR whose own thread
+> is still working on it. After merging, message the threads of the PRs still open to re-merge the base. Pushing
+> straight to the base stays denied, and his OK is still needed for anything that touches his PC.
+>
 > **End of every session.** Update Part C "Now" (done / next / blocked, three lines), add decisions and open
 > questions, commit with a message under five lines, push to the working branch.
 
@@ -283,6 +290,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   UI colour, the Thread Head and Crafted sheets, the thread and the models' felt (`concept-tools/temp_art/spool_sage.py`).
   Compiled here (release and self-test 0 errors, editor clean), not run on the PC: the next Spool round looks at it
   beside a Hardened foe and on grass.
+  2026-11-05: Claude now merges PRs itself, at his word (Part A "Merging"; `CLAUDE.md` and `docs/PROJECT_SETUP.md` §2
+  follow). #91, #92 and #90 merged through the GitHub MCP `merge_pull_request` tool, each after the base was merged in
+  and its cloud-check passed. `.claude/settings.json` still lists the merge tools under "deny" (Claude may not edit
+  its own permissions; the deny did not stop the MCP tool), and his project instructions still say "only Dimitri
+  merges" until the new §2 text is pasted there.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -835,6 +847,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Decisions
 
+- 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
+  passes (Dimitri: "Automatically merge pull requests"); replaces "only Dimitri merges".
 - 2026-10-08: vessels arrive one at a time through the kit loop; Argo first. Mode feasibility (Phase 1) closes before
   any vessel code.
 - 2026-10-08: Cardinals, bounties and the shopkeeper are built on the base game's own systems where Phase 1 finds

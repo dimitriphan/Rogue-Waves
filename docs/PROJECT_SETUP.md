@@ -18,7 +18,7 @@ the only repository the project needs.
 > operating rules and read Part C "Now" for where the work stands; read nothing else until the task sends you there.
 > The scope is `docs/scope/` (`00_Read_Me.txt` first; `~value~` marks Claude's defaults); game rules live in
 > `TDS_Vessel_Creator/`. Dimitri's newest words win over both. Threads open PRs on `claude/phase-1-6lfnar`, each
-> editing Part C "Now" (the base's entries first, its own last); only Dimitri merges. Say what was compiled here
+> editing Part C "Now" (the base's entries first, its own last); Claude merges them once checked (Part A "Merging"). Say what was compiled here
 > (cloud-check) and what ran on the PC; nothing touches his PC without his OK. Save lasting facts to project memory in
 > the turn you learn them, and update Part C before a session ends.
 
