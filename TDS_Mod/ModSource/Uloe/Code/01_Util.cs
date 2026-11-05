@@ -47,13 +47,39 @@ public static class UloeUtil
         return ModKitUtil.Alive(m) && m.Taglistserver != null && m.Taglistserver.Contains("Resource") && m.Statsserver != null && m.Statsserver.ContainsKey("Healthresource");
     }
 
-    // The nearest aura node within a reach (dens are tagged Resource too, RogueLab round 7, and aren't nodes).
-    public static Entity_Master NearestNode(Vector3 at, float reach)
+    // The nearest aura node within a reach (dens are tagged Resource too, RogueLab round 7, and aren't nodes); 'except'
+    // left out (Stadium Lights' second node).
+    public static Entity_Master NearestNode(Vector3 at, float reach, Entity_Master except = null)
     {
         foreach (Entity_Master e in ModKitUtil.Area(at, reach, ModKitUtil.Tagged("Resource")))
-            if (IsNode(e))
+            if (IsNode(e) && e != except)
                 return e;
         return null;
+    }
+
+    // Whether one strike paid a node out (Yossele's Pachira reads it the same way): it refilled (after > before), or it
+    // was full, the strike was enough to empty it and it refilled to the same number, or it went (a node that pays once).
+    public static bool Paid(float before, float after, float hit, bool alive)
+    {
+        if (before < 0f)
+            return false;
+        if (!alive)
+            return true;
+        if (after > before + 0.001f)
+            return true;
+        return Mathf.Abs(after - before) <= 0.001f && before <= hit + 0.001f;
+    }
+
+    // What a player holds of one aura colour now (their Tds_Clientinfo.Resources); 0 when none, -1 when the player is unknown.
+    public static float Purse(long owner, string colour)
+    {
+        Tds_Clientinfo info;
+        if (Game_Players.Instance == null || Game_Players.Instance.Prevsessionlist == null || !Game_Players.Instance.Prevsessionlist.TryGetValue(owner, out info) || info == null)
+            return -1f;
+        foreach (Link_Resource r in info.Resources)
+            if (r.Name.ToString() == colour)
+                return r.Amount;
+        return 0f;
     }
 
     // A node on any machine, from the synced tag list (clients have no Taglistserver).

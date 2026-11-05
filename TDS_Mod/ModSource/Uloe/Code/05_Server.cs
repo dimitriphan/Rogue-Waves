@@ -11,21 +11,68 @@ public class UloePlayer
     public UloeHeroBrain Hero;
 }
 
-// One source's share of Light: what it holds on each tower it lights.
+// One source's share of Light: what it holds on each tower it lights. 'by' is the source's owner: a tower of another
+// player on the team (a teammate's Uloe) takes at most TeamLightCap from all such sources together (scope 10 "Sharing",
+// decision 18); -1 is a source of the tower's own owner.
 public class UloeLight
 {
     readonly Dictionary<Entity_Master, Link_Modifier> held = new Dictionary<Entity_Master, Link_Modifier>();
+    readonly Dictionary<Entity_Master, Share> heldShare = new Dictionary<Entity_Master, Share>();
     static readonly List<Entity_Master> gone = new List<Entity_Master>();
 
-    public void Feed(Entity_Master tower, float amount)
+    // What every teammate source holds on a tower: a live modifier and the Light it adds.
+    class Share { public Link_Modifier Mod; public float Amount; }
+    static readonly Dictionary<Entity_Master, List<Share>> shared = new Dictionary<Entity_Master, List<Share>>();
+    static readonly List<Entity_Master> sharedGone = new List<Entity_Master>();
+
+    public void Feed(Entity_Master tower, float amount) { Feed(tower, amount, -1L, UloeData.LightHold); }
+    public void Feed(Entity_Master tower, float amount, long by) { Feed(tower, amount, by, UloeData.LightHold); }
+
+    public void Feed(Entity_Master tower, float amount, long by, float hold)
     {
         Link_Modifier m;
         if (held.TryGetValue(tower, out m) && m != null && !m.Dead)
             m.Remove();
-        if (amount > 0f)
-            held[tower] = Helper_Entitytools.Addmod(tower, UloeData.LightStat, amount, Helper_Entitytools.Modtypes.Add, UloeData.LightHold);
-        else
+        // This source's own last share leaves the ledger with its modifier, so it never counts against itself.
+        Share old;
+        List<Share> list;
+        if (heldShare.TryGetValue(tower, out old))
+        {
+            if (shared.TryGetValue(tower, out list))
+                list.Remove(old);
+            heldShare.Remove(tower);
+        }
+        bool teammate = by >= 0 && by != ModKitUtil.Owner(tower);
+        if (teammate)
+            amount = Mathf.Min(amount, Mathf.Max(0f, UloeData.TeamLightCap - SharedOn(tower)));
+        if (amount <= 0.001f)
+        {
             held.Remove(tower);
+            return;
+        }
+        m = Helper_Entitytools.Addmod(tower, UloeData.LightStat, amount, Helper_Entitytools.Modtypes.Add, hold);
+        held[tower] = m;
+        if (teammate && m != null)
+        {
+            if (!shared.TryGetValue(tower, out list))
+                shared[tower] = list = new List<Share>();
+            Share share = new Share { Mod = m, Amount = amount };
+            list.Add(share);
+            heldShare[tower] = share;
+        }
+    }
+
+    // The Light teammates' sources hold on a tower now; spent shares are dropped as it counts.
+    public static float SharedOn(Entity_Master tower)
+    {
+        List<Share> list;
+        if (tower == null || !shared.TryGetValue(tower, out list))
+            return 0f;
+        list.RemoveAll(x => x.Mod == null || x.Mod.Dead);
+        float sum = 0f;
+        foreach (Share x in list)
+            sum += x.Amount;
+        return sum;
     }
 
     // Forgets what has run out and what is gone; a source calls it once per tick.
@@ -36,7 +83,26 @@ public class UloeLight
             if (kv.Key == null || kv.Value == null || kv.Value.Dead)
                 gone.Add(kv.Key);
         foreach (Entity_Master e in gone)
+        {
             held.Remove(e);
+            heldShare.Remove(e);
+        }
+    }
+
+    // The shared ledger, pruned of towers that are gone or hold nothing (UloeServer, a few times a second), or cleared.
+    public static void SweepShared(bool all)
+    {
+        if (all)
+        {
+            shared.Clear();
+            return;
+        }
+        sharedGone.Clear();
+        foreach (KeyValuePair<Entity_Master, List<Share>> kv in shared)
+            if (kv.Key == null || SharedOn(kv.Key) <= 0f)
+                sharedGone.Add(kv.Key);
+        foreach (Entity_Master e in sharedGone)
+            shared.Remove(e);
     }
 
     public int Holding { get { return held.Count; } }
@@ -49,7 +115,7 @@ public static class UloeServer
     public static readonly List<UloePhotonBrain> Photons = new List<UloePhotonBrain>();
     static readonly Dictionary<long, UloePlayer> players = new Dictionary<long, UloePlayer>();
     static Game_Entity hookedEntity;
-    static float nextMarks;
+    static float nextMarks, nextShared;
     public static int Bursts, Shines;
 
     // Set just before a Power Bank spawns a Photon; read by OnSpawn (Onspawn fires synchronously inside Spawn).
@@ -66,6 +132,7 @@ public static class UloeServer
             Photons.Clear();
             players.Clear();
             UloeMarks.Clear();
+            UloeLight.SweepShared(true);
             ModKitUtil.ForgetLooks(true);
             if (ge != null)
             {
@@ -84,6 +151,11 @@ public static class UloeServer
             {
                 nextMarks = Time.time + 0.1f;
                 UloeMarks.Tick();
+            }
+            if (Time.time >= nextShared)
+            {
+                nextShared = Time.time + 2f;
+                UloeLight.SweepShared(false);
             }
         }
         catch (Exception e)
@@ -133,13 +205,15 @@ public static class UloeServer
 
     // ---------------------------------------------------------------- Light
 
-    // One source's tick in a radius: every lightable building of its team there gets 'amount' from it. Uloe's light reaches
-    // any Uloe's buildings on the team. 'except' never does; relays skip a Mirror that relays too (two would feed each other).
-    public static void Shine(UloeLight light, Entity_Master from, Vector3 at, float radius, float amount, Entity_Master except, bool skipRelays = false)
+    // One source's tick in a radius: every lightable building of its team there gets 'amount' from it, a teammate's at most
+    // TeamLightCap from teammates all told (UloeLight). 'except' never does; relays skip a Mirror that relays too (two would
+    // feed each other).
+    public static void Shine(UloeLight light, Entity_Master from, Vector3 at, float radius, float amount, Entity_Master except, bool skipRelays = false, float hold = UloeData.LightHold)
     {
         if (from == null || amount <= 0f)
             return;
         int team = ModKitUtil.Team(from);
+        long by = ModKitUtil.Owner(from);
         foreach (UloeBuilding b in Buildings)
         {
             if (b == null || !b.Started || b.Master == null || b.Master == except || ModKitUtil.Team(b.Master) != team || !ModKitUtil.Alive(b.Master))
@@ -149,20 +223,21 @@ public static class UloeServer
             UloeMirrorBrain mirror = b as UloeMirrorBrain;
             if (skipRelays && mirror != null && mirror.Has("Bounce"))
                 continue;
-            light.Feed(b.Master, amount);
+            light.Feed(b.Master, amount, by, hold);
             Shines++;
         }
         light.Sweep();
     }
 
-    // The nearest of a team's buildings to a point, within a reach; 'except' left out. For a Flood Light with nothing picked.
-    public static UloeBuilding NearestBuilding(int team, Vector3 at, float reach, Entity_Master except)
+    // The nearest of one player's buildings to a point, within a reach; 'except' left out. For a Flood Light with nothing
+    // picked: its own player's, never a teammate's (ULO-3).
+    public static UloeBuilding NearestBuilding(long owner, Vector3 at, float reach, Entity_Master except)
     {
         UloeBuilding best = null;
         float bestD = reach;
         foreach (UloeBuilding b in Buildings)
         {
-            if (b == null || !b.Started || b.Master == null || b.Master == except || ModKitUtil.Team(b.Master) != team || !ModKitUtil.Alive(b.Master))
+            if (b == null || !b.Started || b.Master == null || b.Master == except || b.Owner != owner || !ModKitUtil.Alive(b.Master))
                 continue;
             float d = ModKitUtil.Flat(b.Pos, at);
             if (d <= bestD)

@@ -2,7 +2,7 @@
 	Uloe, Light Personified
 		# Uses {Light} as a mechanic
 		# Uses wandering minions named {Photon}s, similar to Sno Sno, that interact with towers.
-		/~ Laid out in the Vessel template, 15_Templates.txt. A value written like this is a default Claude picked. The stats are what the current build uses; every upgrade past your eight lines is new and not built \
+		/~ Laid out in the Vessel template, 15_Templates.txt. A value written like this is a default Claude picked. The stats are what the current build uses; every upgrade past your eight lines is new, built on 2026-11-05 and not yet run on the PC \
 
 		[Identity]
 			- Title: Light Personified
@@ -14,7 +14,7 @@
 			- Accent colour: glint yellow
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites \
 			- Lore: / Lore comes once the character is finalized \
-			- Status: Built with temporary art from the sheet and its design gate's defaults; its self-test passes on the PC. His play test and look by eye are left. The 24 upgrades after your eight lines are not built yet /~ TDS_Mod/ModSource/Uloe/DESIGN.md holds every built default; why each new upgrade: docs/reports/ULOE_UPGRADES_2026-11-04.md \
+			- Status: Built with temporary art from the sheet and its design gate's defaults; its self-test passes on the PC. His play test and look by eye are left. The 24 upgrades after your eight lines and the Light sharing are built (2026-11-05), compiled but not yet run on the PC /~ TDS_Mod/ModSource/Uloe/DESIGN.md holds every built default; why each new upgrade: docs/reports/ULOE_UPGRADES_2026-11-04.md \
 
 		[Vessel Stats]
 			- Attack: ranged, a spark.

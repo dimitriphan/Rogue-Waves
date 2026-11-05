@@ -1,5 +1,15 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the 24 upgrades, Light sharing and SURGE (compiled, not yet run in game):** every building now has its
+eight upgrades from scope `10` (`DESIGN.md` "Upgrade trees", with the routes); Burning Point and Short Circuit lead where
+scope `10` says (audit N10). A building takes at most 4 Light from teammates' sources all told (`UloeLight`'s shared ledger,
+decision 18); AIM, the default aim and Photon visits take only the owner's buildings (ULO-3). Supernova's SURGE and Colour
+Filter's COLOUR are one-click buttons (`UloeSurgeButton`, `UloeColourButton`) with their state in the command's `Goalstring`;
+COLOUR is on key 4 so a Long Throw keeps AIM on Quickaction / 5. Self-test section 8b (`Code/98_Upgrades.cs`) checks each.
+**For the next PC round:** section 8b's checks; Colour Filter's trade (negative `Giveresource` amounts; read the purse after a
+Red pick on a mixed node); the SURGE and COLOUR buttons greying and tinting; the Lighthouse beam turning in step on host and
+client; Prism's side lines and the Heliostat's beam looks.
+
 **2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** a building's brain stops once its entity is Dead (a Bank sold in its spawn frame made a Photon that never went, ULO-4); a lost plug no longer says "The cord snapped" (ULO-7); a Flood Light's cord goes with its node (ULO-10); the self-test asks the mark table itself and says SETUP when a test foe falls. `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
 
 **2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the PLUG IN and AIM buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.
@@ -44,20 +54,20 @@ default now and a caller may hand one `Data` to several foes.
 | File | What |
 |---|---|
 | `00_UloeMod.cs` | Boot (pack registry part "Uloe", asset lookup, content, journal), per-frame calls into the kit and the server |
-| `01_Util.cs` | Uloe's own helpers: `Picked`, `IsNode`, `NearestNode`, `NodeAura`, `SegmentDistance`; stats, tiles, walking, JSON, Vis, debuff looks, `Keep`, `Front` and `Listen` are the kit's `ModKitUtil` since kit 1.8 |
+| `01_Util.cs` | Uloe's own helpers: `Picked`, `IsNode`, `NearestNode`, `NodeAura`, `SegmentDistance`, `Paid` (a strike paid a node out, pitfall #106), `ActivePlayers`; stats, tiles, walking, JSON, Vis, debuff looks, `Keep`, `Front` and `Listen` are the kit's `ModKitUtil` since kit 1.8 |
 | `02_Data.cs` | Every name, text and number |
 | `03_Assets.cs` | The vessel's animations (twice, plain and lit), 12 px icons, tower material, sound levels; slicing, the Photon's unit sheet, the boat sprite, sounds and effects are the kit's `ModKitAssets` since kit 1.8 |
 | `04_Content.cs` | Clones the hero (Smacky), the Glass (Archer), Bank and Flood Light (Mining Hut), Mirror (Wall), Photon (miner), the spark (Sno Sno's snowball), the beam (Buster's Totem beam), the commands, the four Directions, the journal |
-| `05_Server.cs` | Host rules: `UloeLight` (one source's share of Light), `UloeServer` (spawn and despawn hooks, `Shine`, Flood Light paths), `UloeMarks` (Blind and Illuminate) |
-| `06_HeroBrain.cs` | The vessel: arms the spark, its own Light, PLUG IN, the Directions |
-| `07_Building.cs` | Base for the buildings (the game's own `Entity_Ai_General_Upgrade` runs the upgrade panel since 2026-11-04, the brain hears `Master.Upgrade`; the Light stat, Light's skin), the Flood Light |
-| `08_Bank.cs` | The Power Bank and the Photon's brain (wander, visit, follow a line, fight, burst) |
-| `09_Glass.cs` | The Magnifying Glass: target, beam, Light and Burning Point on Damage |
-| `10_Mirror.cs` | The Mirror's front-of-chain hit hook: Blind or Illuminate the attacker, Glare; Bounce Card |
-| `11_Client.cs` | Every look and sound (Vis RPCs): cords, rays, rings, the beam and the lens turning, flashes, bursts, warnings |
-| `12_Commands.cs` | The pickers: PLUG IN (a node or your Bank; UNPLUG while plugged) and AIM |
+| `05_Server.cs` | Host rules: `UloeLight` (one source's share of Light; the teammate cap), `UloeServer` (spawn and despawn hooks, `Shine`, Flood Light paths), `UloeMarks` (Blind and Illuminate) |
+| `06_HeroBrain.cs` | The vessel: arms the spark, its own Light, PLUG IN, Surge Protector's shield, the Directions |
+| `07_Building.cs` | Base for the buildings (the game's own `Entity_Ai_General_Upgrade` runs the upgrade panel since 2026-11-04, the brain hears `Master.Upgrade`; the Light stat, Light's skin), the Flood Light (Colour Filter, Searchlight, Stadium Lights, Lighthouse) |
+| `08_Bank.cs` | The Power Bank (Supernova's SURGE) and the Photon's brain (wander, visit, follow a line, fight, burst, Static Charge, Chain Lightning) |
+| `09_Glass.cs` | The Magnifying Glass: target, beam, Light and the ramps on Damage, Prism, Focal Point, Sunspot, Death Ray |
+| `10_Mirror.cs` | The Mirror's front-of-chain hit hook: Blind or Illuminate the attacker, Glare, Tempered Glass, Reflection, Hall of Mirrors; Bounce Card; Heliostat |
+| `11_Client.cs` | Every look and sound (Vis RPCs): cords, rays, rings, the Lighthouse beam, the beam and the lens turning, side beams, flashes, bursts, warnings |
+| `12_Commands.cs` | The pickers: PLUG IN (a node or your Bank; UNPLUG while plugged) and AIM; the SURGE and COLOUR buttons |
 | `13_Journal.cs` | Journal pages, diagnostics dump |
-| `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only |
+| `97_Shots.cs`, `98_Upgrades.cs`, `99_SelfTest.cs` | Debug builds only |
 
 ## Read from the game's IL for this build (before round 1; the self-test has since passed in game)
 
@@ -138,5 +148,5 @@ show them (seen in game, `docs/TEMP_ART.md`).
 
 ## Open in the sheet (Dimitri's)
 
-More upgrade levels and capstones, the lore, his own sprites, models and sounds, every default in `DESIGN.md`. The mode's
+The lore, his own sprites, models and sounds, every default in `DESIGN.md`. The mode's
 "Dazzling" modifier (fit plan §5) can now read what Blind and Illuminate are: it isn't built here.

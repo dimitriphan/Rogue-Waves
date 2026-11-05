@@ -1,10 +1,18 @@
 // Power Bank: keeps its Units of Photons, one per Respawn seconds (quicker in Light), and is one of the two things PLUG IN
-// goes into: its upgrades set the Light it gives. Short Circuit makes a falling Photon burst.
+// goes into: its upgrades set the Light it gives. Short Circuit makes a falling Photon burst. Its Photons read the rest of
+// its upgrades (UloePhotonBrain): Static Charge, Bright Spark, Chain Lightning, Photon Swarm's leash. Surge Protector is
+// the vessel's (UloeHeroBrain.CheckSurge). Supernova puts a SURGE button on it, once a Tide.
 public class UloeBankBrain : UloeBuilding
 {
-    public int Spawned;
-    float nextSpawn;
+    public int Spawned, Novas, NovaWave = -99;
+    public float NovaUntil;
+    float nextSpawn, nextSurge;
     bool waiting;
+    Link_Command surgeCommand;
+
+    public bool NovaOn { get { return Time.time < NovaUntil; } }
+    public static int Wave { get { return Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0; } }
+    public bool SurgeReady { get { return Has("Supernova") && NovaWave != Wave; } }
 
     public int Slots { get { return Mathf.Max(1, Mathf.RoundToInt(Stat("Units", 2f))) + UloeData.BatteryUnits[Player.Batteries]; } }
     public int Alive { get { return UloeServer.PhotonsOf(this); } }
@@ -24,9 +32,65 @@ public class UloeBankBrain : UloeBuilding
         waiting = true;
     }
 
+    protected override void Upgraded(UloeData.Upg def)
+    {
+        if (def.Key == "Supernova" && surgeCommand == null && UloeContent.Surge != null)
+        {
+            surgeCommand = Helper_Entitytools.Createcommand(Master, UloeData.SurgeCommand, UloeData.SurgeLink, false, true);
+            SyncSurge();
+        }
+    }
+
+    // The button reads its state from the command's Goalstring (synced): "Off" greys it until the next Tide.
+    void SyncSurge()
+    {
+        if (surgeCommand == null)
+            return;
+        string state = SurgeReady ? "" : "Off";
+        if (surgeCommand.Goalstring == state)
+            return;
+        surgeCommand.Goalstring = state;
+        Helper_Entitytools.Updatecommand(Master, UloeData.SurgeLink, "", false, false);
+    }
+
+    protected override void Command(string command, string json, bool server)
+    {
+        if (command != UloeData.SurgeLink || !Has("Supernova"))
+            return;
+        if (!SurgeReady)
+        {
+            Tell(UloeData.WarnNovaUsed);
+            return;
+        }
+        Supernova();
+    }
+
+    // Every Photon of this Bank bursts where it stands, then every empty slot fills at once, and for a while its Photons
+    // shine brighter.
+    public void Supernova()
+    {
+        NovaWave = Wave;
+        NovaUntil = Time.time + Param("Novatime_Base", 15f);
+        Novas++;
+        float damage = Param("Supernova_Base", 20f), radius = Param("Novaradius_Base", 2f);
+        foreach (UloePhotonBrain p in new List<UloePhotonBrain>(UloeServer.Photons))
+            if (p != null && p.Master != null && p.Home == this && ModKitUtil.Alive(p.Master))
+                p.Burst(damage, radius, UloeData.NovaMark);
+        for (int i = 0; i < 16 && Alive < Slots; i++)
+            Spawn();
+        waiting = false;
+        SyncSurge();
+        Tell(UloeData.WarnNova);
+    }
+
     // Like the shipped unit buildings: a Photon short, it waits the Respawn seconds, then makes one.
     protected override void Tick()
     {
+        if (surgeCommand != null && Time.time >= nextSurge)
+        {
+            nextSurge = Time.time + 0.5f;
+            SyncSurge();
+        }
         if (Alive >= Slots)
         {
             waiting = false;
@@ -75,15 +139,30 @@ public class UloePhotonBrain : MonoBehaviour
     public UloeFloodBrain Following;
     public Entity_Master Target;
     public bool Started;
-    public int Walks, Visits, Marked, Fights, Followed;
+    public int Walks, Visits, Marked, Fights, Followed, Chained;
     public float Travelled;
     readonly UloeLight light = new UloeLight();
     Entity_Master.Interacts dealt;
+    Link_Modifier staticMod;
     float nextThink, nextFeed, nextWander;
     Vector3 lastPos, spawnPos;
 
     public long Owner { get { return ModKitUtil.Owner(Master); } }
     public Vector3 Pos { get { return ModKitUtil.Pos(Master); } }
+    bool HomeHas(string key) { return Home != null && Home.Master != null && Home.Has(key); }
+
+    // What its Power Bank's upgrades make of it.
+    public float Leash { get { return HomeHas("Swarm") ? Home.Param("Leash_Base", UloeData.PhotonLeash) : UloeData.PhotonLeash; } }
+    public float LightOut
+    {
+        get
+        {
+            if (Home != null && Home.NovaOn) return Home.Param("Novalight_Base", 3f);
+            return HomeHas("Bright") ? Home.Param("Photonlight_Base", 2f) : UloeData.PhotonLight;
+        }
+    }
+    public float LightRadius { get { return HomeHas("Bright") ? Home.Param("Photonradius_Base", 2.5f) : UloeData.PhotonRadius; } }
+    public int MarkLevel { get { return HomeHas("Static") ? Mathf.RoundToInt(Home.Param("Staticmark_Base", 2f)) : UloeData.PhotonMark; } }
 
     // Where its leash is measured from: the building at the end of the line it follows, else its Power Bank.
     public Vector3 Anchor
@@ -116,12 +195,14 @@ public class UloePhotonBrain : MonoBehaviour
             if (Time.time >= nextFeed)
             {
                 nextFeed = Time.time + UloeData.LightTick;
-                UloeServer.Shine(light, Master, Pos, UloeData.PhotonRadius, UloeData.PhotonLight, null);
+                UloeServer.Shine(light, Master, Pos, LightRadius, LightOut, null);
             }
             if (Time.time >= nextThink)
             {
                 nextThink = Time.time + 0.4f;
                 ModKitUtil.Listen(Master, dealt);
+                // Static Charge: one Damage share kept on it, changed in place.
+                staticMod = ModKitUtil.Keep(Master, staticMod, "Damage", Helper_Entitytools.Modtypes.Multi, HomeHas("Static") ? Home.Param("Static_Base", 1f) : 0f);
                 Think();
             }
         }
@@ -150,13 +231,49 @@ public class UloePhotonBrain : MonoBehaviour
             if (hit == null || hit.Type != "Hurt" || !ModKitUtil.IsFoe(hit.To, ModKitUtil.Team(Master)))
                 return;
             Entity_Master radio = Radio();
-            UloeMarks.Blind(radio, hit.To, UloeData.PhotonBlind);
-            UloeMarks.Illuminate(radio, hit.To, UloeData.PhotonLit);
+            int level = MarkLevel;
+            UloeMarks.Blind(radio, hit.To, level);
+            UloeMarks.Illuminate(radio, hit.To, level);
             Marked++;
+            if (HomeHas("Chain"))
+                Chain(hit.To, level);
         }
         catch (Exception e)
         {
             UloeLog.Warn("photon hit: " + e.Message);
+        }
+    }
+
+    // Chain Lightning: the hit jumps on to the foes nearest the one it landed on, with the Photon's damage and marks. The
+    // jumps are the Bank's (the Photon's own Interact would hear them and jump again).
+    float nextZap;
+
+    void Chain(Entity_Master from, int level)
+    {
+        if (Home == null || Home.Master == null)
+            return;
+        int n = Mathf.RoundToInt(Home.Param("Chain_Base", 2f));
+        float damage = ModKitUtil.Stat(Master, "Damage", 0.5f);
+        // The spark is a look sent to every player: a Photon sends it at most every ZapLook seconds.
+        bool look = Time.time >= nextZap;
+        if (look)
+            nextZap = Time.time + UloeData.ZapLook;
+        foreach (Entity_Master f in ModKitUtil.FoesNear(Master, ModKitUtil.Pos(from), Home.Param("Chainradius_Base", 2f)))
+        {
+            if (n <= 0)
+                break;
+            if (f == from || !ModKitUtil.Alive(f))
+                continue;
+            n--;
+            Chained++;
+            ModKitCombat.Hurt(Home.Master, f, damage, 1f, Home.Master, null);
+            if (ModKitUtil.Alive(f))
+            {
+                UloeMarks.Blind(Home.Master, f, level);
+                UloeMarks.Illuminate(Home.Master, f, level);
+            }
+            if (look)
+                ModKitUtil.Vis(Home.Master, "Uloe_Zap", ModKitUtil.Pos(f), 0f);
         }
     }
 
@@ -203,7 +320,7 @@ public class UloePhotonBrain : MonoBehaviour
     bool Fight(Vector3 pos)
     {
         Vector3 anchor = Anchor;
-        float range = ModKitUtil.Stat(Master, "Range", 1.5f), leash = UloeData.PhotonLeash;
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f), leash = Leash;
         if (ModKitUtil.Flat(pos, anchor) > leash + 1f)
         {
             Target = null;
@@ -232,11 +349,14 @@ public class UloePhotonBrain : MonoBehaviour
     void Wander(Vector3 pos)
     {
         Vector3 anchor = Anchor;
+        float leash = Leash;
         if (UnityEngine.Random.value < UloeData.PhotonVisit)
         {
+            // Its own player's buildings only: a teammate's Uloe has Photons of its own (ULO-3).
             List<UloeBuilding> near = new List<UloeBuilding>();
+            long owner = Owner;
             foreach (UloeBuilding b in UloeServer.Buildings)
-                if (b != null && b.Started && b.Master != null && ModKitUtil.Team(b.Master) == ModKitUtil.Team(Master) && ModKitUtil.Flat(b.Pos, anchor) <= UloeData.PhotonLeash && ModKitUtil.Flat(b.Pos, pos) > 1.2f)
+                if (b != null && b.Started && b.Master != null && b.Owner == owner && ModKitUtil.Flat(b.Pos, anchor) <= leash && ModKitUtil.Flat(b.Pos, pos) > 1.2f)
                     near.Add(b);
             if (near.Count > 0)
             {
@@ -247,7 +367,7 @@ public class UloePhotonBrain : MonoBehaviour
         }
         for (int tries = 0; tries < 4; tries++)
         {
-            float a = UnityEngine.Random.Range(0f, Mathf.PI * 2f), d = UnityEngine.Random.Range(1f, UloeData.PhotonLeash);
+            float a = UnityEngine.Random.Range(0f, Mathf.PI * 2f), d = UnityEngine.Random.Range(1f, leash);
             Genitem tile = ModKitUtil.Tile(anchor + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * d);
             Link_Being being = Master.Beingserver;
             if (tile == null || being == null || being.Currentblock == null)
@@ -270,24 +390,28 @@ public class UloePhotonBrain : MonoBehaviour
     // Killed, with Short Circuit: it bursts on the foes around it. The Bank takes the kill credit.
     public void Gone(bool killed, string reason)
     {
+        if (killed && HomeHas("Short"))
+            Burst(Home.Param("Burstdamage_Base", 3f), Home.Param("Burstradius_Base", 1.5f), UloeData.BurstMark);
+        else if (killed)
+            ModKitUtil.Vis(Radio(), "Uloe_Down", Pos, 0f);
+    }
+
+    // A burst where it stands: damage to every foe within the radius, Blind and Illuminate at 'mark' (Short Circuit,
+    // Supernova).
+    public void Burst(float damage, float radius, int mark)
+    {
         Vector3 pos = Pos;
         Entity_Master radio = Radio();
-        if (killed && Home != null && Home.Master != null && Home.Has("Short"))
+        foreach (Entity_Master foe in ModKitUtil.FoesNear(radio, pos, radius))
         {
-            float damage = Home.Param("Burstdamage_Base", 3f), radius = Home.Param("Burstradius_Base", 1.5f);
-            foreach (Entity_Master foe in ModKitUtil.FoesNear(radio, pos, radius))
+            ModKitUtil.Hurt(radio, foe, damage);
+            if (ModKitUtil.Alive(foe))
             {
-                ModKitUtil.Hurt(radio, foe, damage);
-                if (ModKitUtil.Alive(foe))
-                {
-                    UloeMarks.Blind(radio, foe, UloeData.BurstBlind);
-                    UloeMarks.Illuminate(radio, foe, UloeData.BurstLit);
-                }
+                UloeMarks.Blind(radio, foe, mark);
+                UloeMarks.Illuminate(radio, foe, mark);
             }
-            UloeServer.Bursts++;
-            ModKitUtil.Vis(radio, "Uloe_Burst", pos, radius);
         }
-        else if (killed)
-            ModKitUtil.Vis(radio, "Uloe_Down", pos, 0f);
+        UloeServer.Bursts++;
+        ModKitUtil.Vis(radio, "Uloe_Burst", pos, radius);
     }
 }

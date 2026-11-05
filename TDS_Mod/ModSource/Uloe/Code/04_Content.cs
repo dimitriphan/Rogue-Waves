@@ -11,7 +11,7 @@ public static class UloeContent
     public static readonly Dictionary<string, Upgradeproperties> Upgrades = new Dictionary<string, Upgradeproperties>();
     public static readonly Dictionary<string, UloeData.Upg> UpgradeDefs = new Dictionary<string, UloeData.Upg>();
     public static readonly List<Upgradeproperties> Directions = new List<Upgradeproperties>();
-    public static Commandobject Plug, Aim;
+    public static Commandobject Plug, Aim, Surge, Colour;
     public static int VfxRegistered;
     public static bool IconsReady, SparkReady, BeamReady;
     public static string SparkFrom = "", BeamFrom = "";
@@ -254,6 +254,8 @@ public static class UloeContent
                 foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
             AddIcon(types, "Uloe_Plug", UloeAssets.PlugIcon, "Plug In", like, ModKitAssets.CommandIcon);
             AddIcon(types, "Uloe_Aim", UloeAssets.AimIcon, "Aim", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Uloe_Surge", UloeAssets.SurgeIcon, "Surge", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Uloe_Colour", UloeAssets.ColourIcon, "Colour", like, ModKitAssets.CommandIcon);
             AddIcon(stats, UloeData.LightStat, UloeAssets.LightIcon, UloeData.LightStat, like);
             IconsReady = true;
         }
@@ -277,6 +279,8 @@ public static class UloeContent
         }
         if (Plug != null) Plug.Icon = Icon("", "Movelinear", "Move");
         if (Aim != null) Aim.Icon = Icon("", "Move");
+        if (Surge != null) Surge.Icon = Icon("", "Convert", "Move");
+        if (Colour != null) Colour.Icon = Icon("", "Convert", "Move");
         UloeLog.Warn("icon table was built before Uloe's icons were added; Uloe's buttons use stock icons");
     }
 
@@ -408,6 +412,12 @@ public static class UloeContent
         Plug = Command(template, UloeData.PlugCommand, UloeData.PlugName, UloeData.PlugDesc, "Uloe_Plug", new UloePlugSelect(), true);
         // AIM: a building's button, the same kind of picker.
         Aim = Command(template, UloeData.AimCommand, UloeData.AimName, UloeData.AimDesc, "Uloe_Aim", new UloeAimSelect(), false);
+        // SURGE (Supernova) and COLOUR (Colour Filter): one-click buttons like the Mining Hut's Convert; the building keeps
+        // their state in the command's Goalstring for every player.
+        Surge = Command(template, UloeData.SurgeCommand, UloeData.SurgeName, UloeData.SurgeDesc, "Uloe_Surge", new UloeSurgeButton(), false);
+        Colour = Command(template, UloeData.ColourCommand, UloeData.ColourName, UloeData.ColourDesc, "Uloe_Colour", new UloeColourButton(), false);
+        // A Long Throw Flood Light keeps AIM beside COLOUR: one key each (only the game's input actions, pitfall #113).
+        Colour.Keybind = new List<string> { "4" };
     }
 
     // ---------------------------------------------------------------- buildables
