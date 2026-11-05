@@ -20,7 +20,7 @@ asset"), as several PRs, without changing a balance number. This is the thread's
 | #111 | 9 | Claude's 11 Trinkets, 4 Cardinals and the Punch Card / Pearl Oyster pair (`24_Trinkets.cs`, gaps part "trinkets"); pitfalls #165-#166 |
 | #112 | 10 | The 47 icons of parts 5-9, temporary (`concept-tools/temp_art/b11_icons.py`); the art review in `docs/STYLE.md` and `concept-tools/temp_art/art_check.py` |
 | #113 | 11 | The models and the rest of the missing art, temporary: three Shift looks, Uloe's 24 upgrade looks, Wood Wide Web, Button Jar's small Stitched and Dart (`Small` skin), the five objectives' icons on the Board card and the DONE popup |
-| this PR | 12 | `/simplify` on parts 1-11 (section 2); kit 1.12 |
+| #114 | 12 | `/simplify` on parts 1-11 (section 2); kit 1.12 |
 
 ## 2. The clean-up (part 12)
 
