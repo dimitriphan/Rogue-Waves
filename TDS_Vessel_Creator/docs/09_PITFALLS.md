@@ -588,3 +588,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      scale → a `Goalvalue` of 0 builds at no price and the tower it makes has `Sellvalue` 0, which tells it apart; write the
      price back with `Updatecommand` so every HUD shows it (`RWTrinkets` Spare Plank). The HUD shows four build slots,
      `Buildoption1`-`4`. Read from code; compiled, for the PC round.
+167. **A line that touches a URP type compiles in the cloud and fails in game** (2026-11-05) → the game's compiler
+     references no render-pipeline assembly (`Build-<Name>Mod.ps1`'s list), so `Bl_Lighting_Group.Profile`
+     (`VolumeProfile`), `Volume`, `Bloom` or the game's `Betterfog_Volumeoverride` are CS0012 in game, while the cloud
+     stubs type the unknown field as `object` and compile it → never name them: borrow a stock group's grade whole with a
+     copy of the group (`Object.Instantiate`, then `Bl_Lighting.Editlighting`), as `ModKitLight.Grade` does (kit 1.13,
+     `docs/16` §7.1). Read from code; compiled, for the PC round.
