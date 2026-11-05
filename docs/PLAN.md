@@ -240,8 +240,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
   review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`).
   Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
-  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion, files only until he picks (`docs/TEMP_ART.md` "Minion
-  versions"). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
+  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion; his picks wired 2026-11-05 (below). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
   2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
   code read against the base game's for what could be simpler: ten findings, nothing changed, each waits for his word
   (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`). 2026-11-04: Vessel Cardinals are now **Trinkets** and Team Cardinals
@@ -261,11 +260,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (`docs/reports/QUALITY_PASSES_2026-11-04.md`); the cloud compile break it found after PR #82 is repaired by PR #84.
   2026-11-04: every line of the scope read against the code: 41 mismatches, 22 of them on Claude's defaults, each with
   who should yield; nothing changed, each waits for his word (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2).
+  2026-11-05: quality checks 4-7 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md`): save and load fuzz tests, seven
+  checks as self-test code (`RogueWavesMode/Code/98_SaveFuzz.cs`, the mode's self-test should read 155) and run here on a
+  stand-in save (`Tools/cloud-check/save_fuzz.py`, 7/7); three damaged-save bugs guarded (a route off the chart stranded
+  the boat after Continue, a huge player count froze it, empty ids loaded); compiled, not run on the PC. The Scope
+  Editor holds no edits and, like his project-files copy, is behind the repository in 7 files (his word to sync); art
+  needed nothing; four merged PRs got their missing Log entries. Still open from 2026-11-04, found missing here: the
+  code review's 54 bugs are unfixed (`docs/reports/CODE_REVIEW_2026-11-04.md` §5 batches, §6 PC list); PR #82's test
+  round stopped before #80's test list (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4), and the PC's `TDS_Mod` is
+  older than PR #80, so the next PC round brings it up to the base first.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
 - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
-  tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+  tuft and needle, Rising Water, the picked minions of 2026-11-05 with Uloe's Photon). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version, `0.1.0`, replaces the dev builds' `0.1.0-dev`). Phase 5's pieces are built and passed in game
   ahead of Release 1 (kit 1.7, the main-menu button, the in-map vote and the mode's checks K0, CH, K1, P1, T0-T6, H1:
@@ -778,6 +786,38 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the lobby Cardinal picker still free between maps (04:61), Trinkets and Cardinals past the eighth shown nowhere, stock
   Cardinals bought once but still offered, the Shift Directions not renaming their building. Scope 16 matches the game's
   data; 44 of its lines need the decompiled game. No scope file or code changed; nothing run on the PC.
+- **2026-11-04: the repository presents only Rogue Waves** (PR #78; Dimitri: remove mentions of the mods before the
+  scope, and make the README summarise Rogue Waves; Log entry added 2026-11-05, it was in "Now" only). The README,
+  `CLAUDE.md`, the maps, rules, tool notes and the pack parts' comments drop `ModProjects` and the earlier vessels; the
+  kit, `Shared`, dated reports, this Log, the scope, the Riptide and RogueLab folders, the proof citations and every
+  path a script uses keep them (the PR body lists what stayed and why). Compiled here; nothing run on the PC.
+- **2026-11-04: held Cardinals on later maps** (PR #82, from the testing thread's PC round; Log entry added 2026-11-05).
+  A map counts as loaded before its Basin stands, so the team's Cardinals found no core on every map after the one they
+  were bought on and did nothing; they now wait for the core (`17_Cardinals.cs`, pitfall #150), seen working in game. The
+  same commit added an old-save check for the Trinket rename, a later-map check in the flow, a Nesting Ground drop,
+  end-screen rows, a big fight on a client, and fixes to Spool's, Argo's and Uloe's checks. The round stopped at the
+  usage limit before PR #80's test list (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4) and wrote no report. The
+  commit was made from the PC's copy, older than PR #80, and broke the cloud build until PR #84.
+- **2026-11-04: one quality pass over the whole repository** (PR #83, item 3 of "Start with 1, 2, and 3", paused at
+  his word after one pass; Log entry added 2026-11-05; `docs/reports/QUALITY_PASSES_2026-11-04.md`). 127 issues, 120
+  fixed in docs and comments, mostly "not built / not run / online left" lines; 7 left for him, the first that the
+  build caps a pack Cardinal or Trinket at 6 working copies and a stock Cardinal at 1 where scope `12` says no limit.
+- **2026-11-05: the project set up to Claude Code's best practices** (PR #85; Log entry added 2026-11-05). `CLAUDE.md`
+  rewritten as the checks to run, which skill to use when and the rules the code doesn't show, build state left to this
+  Part; `.claude/settings.json` denies merging and pushing to the base branch; effort per thread in Part A; new project
+  instructions in `docs/PROJECT_SETUP.md` §2.
+- **2026-11-05: quality checks 4-7** (Dimitri: "81 is merged, resume with new project instructions and plugins in
+  mind"; the coordinator's list's last four; cloud only, `docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md`). One pass each,
+  then a re-check of every fix. **4:** `RogueWavesMode/Code/98_SaveFuzz.cs` puts seeded random and damaged values
+  through the campaign save (F1-F7, in the mode's self-test, every key put back) and `Tools/cloud-check/save_fuzz.py`
+  runs it here on the mode's own methods and a stand-in save: on the base it failed three checks and hung on a fourth
+  case; three guards fix them (`RWCampaign.Saved` cuts a route that leaves the chart back onto it, `RWRun` reads at most
+  64 saved players and drops empty ids and negative Pure Aura), and it passes 7/7. **5:** the Scope Editor holds no
+  edits and equals his project-files copy; both are behind the repository in 7 files, Claude's lines only; one note
+  (scope `12`, `17_Cardinals.cs`) claimed a Cardinal count in the run line that the code doesn't show. **6:** every
+  sprite listed, present, the right size, and none private or from before the scope. **7:** this Log lacked #78, #82,
+  #83 and #85, and "Now" the code review's open bugs and #82's unfinished round. Compiled here (release, self-test,
+  gaps: 0 errors); nothing run on the PC.
 
 ### Decisions
 
@@ -952,13 +992,16 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
 | 2 | Spool: the defaults in its `DESIGN.md` (the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are in scope `08` since 2026-11-04: designed, not built) | built without the new upgrades; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
+| 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
 | 6 | Questions 3 and 4 in the light of the PC round (`docs/reports/BALANCE_ROUND_2026-11-03.md`) and its re-run (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9): his own wall on Purlest and Woozy decides them. If it holds, P2 and P3 carry Spool (P1 only with Darts held back); if foes walk round it, no number buys more than a Tide | nothing changes |
-| 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 | 7 | New Directions, Cardinals and Trinkets (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
 | 8 | Argo's review (`docs/reports/ARGO_REVIEW_2026-11-04.md` §5): take, change or drop each of the fourteen changes in scope `09`; and if he takes P5 (question 4), the Drill Rig's Attackspeed 0.25 → 0.2 with it | each `~value~` stands; the next Argo build picks them up; the Drill stays at 0.25 unless P5 is taken |
 | 9 | Uloe's 24 new upgrades (`docs/reports/ULOE_UPGRADES_2026-11-04.md` §3, scope `10` [Questions] 2-3): take, rename, change or drop each; Supernova a button or automatic; and if he takes P5 (question 4), the Flood Light's strike rate drops with the Sapling's | each `~value~` stands; nothing is built until he picks; the next Uloe build is an xhigh PC round |
 | 10 | The scope-against-code audit (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2-3): for each of the 41 rows, scope or code yields | nothing changes until he picks; each row names my lean |
+| 11 | The quality pass's seven (`docs/reports/QUALITY_PASSES_2026-11-04.md` "Left for Dimitri"): Cardinal stacking (6 working copies of a pack one, 1 of a stock one, against scope `12`'s no limit), scope `14`'s objective kinds, three scope wording points, Spool's Cookie Tin role, his scope copy | the build's caps stand; nothing changes until he picks |
+| 12 | The code review's calls (`docs/reports/CODE_REVIEW_2026-11-04.md`): §5 B: ULO-3 (do two Uloes share Light?), MODE-C2, C3 and C5 (Spring Tide and Tidal Mend on the mode's own mods, not stock scripts), MODE-D5 (the map's extra foe health without the elite look), YOS-2 (Monument's Cleanse and a stock artifact's trade-off), MODE-D9 (lobby Cardinals in a campaign) | the low-risk batch can be built without them; these wait |
+| 13 | Quality checks 4-7 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §5): sync his scope copy and the Scope Editor; keep the chart's maps following the base game's pool under a running campaign, or save each sailed map | no sync; the maps follow the pool |
 
 ### Phase 5 pieces
 

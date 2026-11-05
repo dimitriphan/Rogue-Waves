@@ -25,6 +25,7 @@ public static class RWRun
     // CardinalsKey keeps its old text: a campaign saved before Team Cardinals became Cardinals (2026-11-04) still loads.
     public const string CountKey = "RW_Run_Count", PlayerKey = "RW_Run_Player_", CardinalsKey = "RW_Run_Team";
     public const int PerTide = 3, PerBonusTide = 2;   // docs/scope/06 [Pure Aura]
+    public const int MaxSaved = 64;                   // players read back from a save at most: a damaged count can't hold the game in a loop
     public static readonly Dictionary<string, RWPlayer> Players = new Dictionary<string, RWPlayer>();
     public static readonly List<string> Cardinals = new List<string>();   // Cardinals held (Team Cardinals until 2026-11-04), each stack its own id
     public static bool InCampaignMap;                                     // host: this map belongs to the campaign, a staging map too
@@ -110,6 +111,7 @@ public static class RWRun
         int n = 0;
         foreach (RWPlayer p in Players.Values)
         {
+            if (n == MaxSaved) { RWLog.Once("max saved", "save: more than " + MaxSaved + " players in the run; the rest aren't saved"); break; }
             RWUtil.WriteString(RWData.SaveFolder, PlayerKey + n, Encode(p));
             n++;
         }
@@ -121,19 +123,22 @@ public static class RWRun
     public static void Load()
     {
         Clear();
-        int n = RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0);
+        int n = Math.Min(RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0), MaxSaved);
         for (int i = 0; i < n; i++)
         {
             RWPlayer p = Decode(RWUtil.ReadString(RWData.SaveFolder, PlayerKey + i));
             if (p != null && p.Key != "") Players[p.Key] = p;
         }
         string held = RWUtil.ReadString(RWData.SaveFolder, CardinalsKey);
-        if (held != "") Cardinals.AddRange(held.Split(','));
+        Cardinals.AddRange(Ids(held));
     }
+
+    // A saved list of ids; an empty one (a damaged key, ",," or a trailing comma) is dropped.
+    static string[] Ids(string list) { return (list ?? "").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries); }
 
     public static void Forget()
     {
-        int n = RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0);
+        int n = Math.Min(RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0), MaxSaved);
         for (int i = 0; i < n; i++)
             if (RWUtil.Has(RWData.SaveFolder, PlayerKey + i)) RWUtil.Remove(RWData.SaveFolder, PlayerKey + i);
         foreach (string key in new[] { CountKey, CardinalsKey })
@@ -157,8 +162,9 @@ public static class RWRun
         p.Name = f[1];
         p.Hero = f[2];
         int.TryParse(f[3], out p.Pure);
-        if (f[4] != "") p.Directions.AddRange(f[4].Split(','));
-        if (f[5] != "") p.Trinkets.AddRange(f[5].Split(','));
+        if (p.Pure < 0) p.Pure = 0;     // Pure Aura is only ever spent down to 0
+        p.Directions.AddRange(Ids(f[4]));
+        p.Trinkets.AddRange(Ids(f[5]));
         p.Owed = f[6] == "1";
         return p;
     }
@@ -167,7 +173,7 @@ public static class RWRun
     public static string SavedCrew()
     {
         List<string> crew = new List<string>();
-        int n = RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0);
+        int n = Math.Min(RWUtil.ReadInt(RWData.SaveFolder, CountKey, 0), MaxSaved);
         for (int i = 0; i < n; i++)
         {
             RWPlayer p = Decode(RWUtil.ReadString(RWData.SaveFolder, PlayerKey + i));

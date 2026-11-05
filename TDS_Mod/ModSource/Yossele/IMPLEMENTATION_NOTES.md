@@ -231,6 +231,8 @@ wins over `Art/Temporary/game_size/<name>.png`, either over the code; Aseprite f
 (`check_editor.sh` clean); to verify at the next PC round: the build log lines `Yossele-Sheet.png from Art/Temporary/`
 and `YosseleAttack-Sheet.png from Art/Temporary/`, footsteps on Move frames 0 and 3 still landing on the plants, and by
 eye the walk and the shot in all four facings.
+2026-11-05: `Yosselefriend-Sheet.png` replaced by Dimitri's Snoble-sized pick (v04 Antlers, same 384 x 96 layout,
+`docs/TEMP_ART.md` "Minion versions"); same build-log line to check, and by eye the idle, waddle and charge.
 
 ## Directions (kit 1.7)
 

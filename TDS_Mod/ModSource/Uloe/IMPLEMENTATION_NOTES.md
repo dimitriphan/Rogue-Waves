@@ -118,6 +118,10 @@ range spheres, UNPLUG on the button, the hotkey. Also the looks: the cord saggin
 in URP, the beam's line, the lit skins' size, the debuff looks' height over a foe, the whole temporary art; and the balance: whether an unlit Glass
 is too weak on the first Tides, whether Uloe tied to a node is a real cost.
 
+Temporary art, 2026-11-05: the Photon takes Dimitri's pick from the minion versions (v04 Star, `Art/Temporary/game_size/Uloephoton-Sheet.png`,
+same 160 x 64 layout) through `UloeBuilder.FileArt`, Uloe's first file there. Compiled; at the next PC round the build
+log should say `sprites: Uloephoton-Sheet.png from Art/Temporary/ (temporary)` and the Photons should drift and strike as stars.
+
 ## Directions (kit 1.7)
 
 `UloeContent.BuildDirections` registers four Directions, one upgrade per rank (`Direction_Uloe_<Name><rank>_Upgradeobject`, `Extension`,
