@@ -43,7 +43,7 @@
 			- Start: ~10~ in the {Yarn Stash} each map
 			- Cap: 50 in the {Yarn Stash}, more as it is upgraded -> {Yarn Stash}
 			- Carried: Spool ~20~, a {Thread Head} 20
-			- Earned by: Smaller enemies drop 1 {Thread}, while larger elite enemies drop up to 5 {Thread}. /~ Also mined from nodes by the {Loom}, and spun by the {Pin Cushion} when it is damaged \
+			- Earned by: Smaller enemies drop 1 {Thread}, while larger elite enemies drop up to 5 {Thread}. / The pack's own enemy modifiers count as elite \ /~ Also mined from nodes by the {Loom}, and spun by the {Pin Cushion} when it is damaged \
 			- On the ground: {Thread} lasts on the ground for 15 seconds before despawning unless collected.
 			- Pickup: ~by walking within 1 tile of it~
 			- Collected by: {Thread} must be collected by Spool or a {Thread Head}. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets. \
@@ -308,7 +308,7 @@
 				- In-game line: ~Mines aura, spins Thread~
 				- Health: ~40~, +~20~ per level
 				- Range: ~2.5~ tiles /~ The nodes it connects to \
-				- Mining: ~like Smacky's Mining Hut~
+				- Mining: ~like Smacky's Mining Hut~ /~ The build mines about 5 times a Hut; the balance sweep lowers it if it outmines the base vessels \
 				- Thread spun: ~1 {Thread} every 6 seconds~, held at the {Loom} up to ~10~ for pickup
 				- Limit: ~none~
 				- Cost: ~Yellow 40~ /~ Mummer's Loom \
@@ -348,6 +348,3 @@
 		[Directions] / Written in 11_Directions.txt under Spool \
 			- {Efficient Recycler}, {Sewing Machine} / And {Made of Tougher Stuff}, for any vessel with minions \
 			- {~Double Needle~}, {~Button Jar~}, {~Pattern Book~}, {~Merit Badge~}, {~Odd Socks~} /~ Made by Claude \
-
-		[Questions]
-			- 1. {Efficient Recycler} in 11_Directions.txt is built on {Unthread}, which is now just selling. ~It raises the {Thread} refunded when you sell a {Crafted}~

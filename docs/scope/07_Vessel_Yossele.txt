@@ -33,7 +33,7 @@
 			- Does: spends fertilizer to speed up a tower's [Growth].
 			- Numbers: ~+1 [Growth] stage for 1 fertilizer~
 			- Target: ~one of your Yossele buildings~ /~ The hotkey with nothing picked takes the nearest one that can still grow \
-			- Range: ~6~ tiles
+			- Range: ~6~ tiles /~ The hotkey's own pick; a building you click is fertilized at any distance \
 			- Cooldown: ~0.5~ seconds /~ Fertilizer is the limit \
 			- Keys: ~6 / 7~
 			- Unlocked: by a [Direction], and its button doesn't show until Yossele has it. -> 11_Directions.txt {Compost Bin}
@@ -198,7 +198,7 @@
 
 				% 2:{Natural Remedy} Vines heal buildings slowly
 					- In-game line: ~Vines mend buildings~
-					- Numbers: 0.5 health per second per [Growth].
+					- Numbers: 0.5 health per second per [Growth]. / A building that hasn't grown yet counts as stage 1 \
 					- Cost: ~Blue 90~
 				% 2:{Opportunistic Carnivore} Vines siphon health from enemies standing on them, slowly healing {Overgrown Stonehenge}.
 					- In-game line: ~Vines drain foes to mend the stones~
@@ -220,7 +220,7 @@
 
 				% 4:{Monument} Gains damage reduction and cannot receive debuffs from foes
 					- In-game line: Withstand the test of time
-					- Numbers: 20% damage reduction, cannot receive debuffs from foes.
+					- Numbers: 20% damage reduction, cannot receive debuffs from foes. / A building's own damage reduction and the strongest aura add up to at most 90% \
 					- Cost: Blue 2000 + Yellow 1500
 
 		(Economy):{Pachira Sapling} / Money Tree Sapling \
@@ -244,7 +244,7 @@
 			[Upgrades]
 				% 1:{Focused Roots} Collects aura much faster, but can only select 1 node
 					- In-game line: ~Mines one node much faster~
-					- Numbers: 1.8 times the mining speed
+					- Numbers: +80% mining speed / Adds to Growth's and the other mining bonuses, as the game adds percentages \
 					- Cost: ~Yellow 30~
 				% 1:{Sustaining Practices} Heals itself slowly based on how many mining nodes are in range, as well as [Growth] level.
 					- In-game line: ~Mends itself from the ore around it~
