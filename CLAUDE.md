@@ -49,7 +49,7 @@ round, a scope fold-in) is worth proposing as a project skill.
 | --- | --- | --- |
 | `TDS_Vessel_Creator/` | The kit: every TDS rule learned so far | `README.md`, then the chapter the task needs |
 | `TDS_Mod/ModSource/<Part>` + `Assets/<Part>Mod` | The pack's parts: `Argo`, `Yossele`, `Spool`, `Uloe`, `RogueWavesMode`, `RogueWavesFoes`; `Pack` builds them into one bundle; `Shared` is the live kit (keep equal to `TDS_Vessel_Creator/kit/Shared`) | its `README.md` or `DESIGN.md`, then `IMPLEMENTATION_NOTES.md` |
-| `TDS_Mod/Tools/` | `cloud-check` (compile, previews), `pc` (PC rounds), `aseprite` | its `README.md` |
+| `TDS_Mod/Tools/` | `cloud-check` (compile, previews), `pc` (PC rounds), `aseprite`, `batch` (text and scope checks on API credit) | its `README.md` |
 | `docs/scope/` | Dimitri's scope, one `.txt` per category; `! NEEDS ... !` marks what only he can supply, `~value~` a default Claude picked | `00_Read_Me.txt`, then the file the task touches |
 | `docs/PLAN.md` | Part A coordinator rules, B phases, C state, D prompt templates | Part C "Now" |
 | `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md` | Packaging and versions; look and naming; temporary art | before packaging; before drawing or naming |
