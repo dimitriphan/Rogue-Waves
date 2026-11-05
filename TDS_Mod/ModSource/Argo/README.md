@@ -45,7 +45,7 @@ Each building has a branching upgrade tree, tiers 2 to 5, with a tier-5 capstone
 - **Scatter:** Broadside fires a full ring of 16 pellets every 4th volley.
 - **Harpoon:** Leviathan Lance, where every 5th shot pierces everything.
 - **Diving Bell:** Full Crew doubles tuning, and Nauts dive straight to their tower.
-- **Deep Drill:** Mantle Tap mines twice as hard, and once a Tide a quake pins every enemy in its Tremors.
+- **Deep Drill:** Mantle Tap mines half again as fast, and every 20 seconds a quake pins every enemy in its Tremor.
 
 The journal has pages for Argo, every building, every upgrade and the Nauts, plus Argo's tab among the vessels.
 

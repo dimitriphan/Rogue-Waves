@@ -44,11 +44,11 @@ ninth PC self-test (103/103).
 
 | # | Name | Id | Role tag | Template | Cost | Stats (+per level) | What it does |
 |---|---|---|---|---|---|---|---|
-| 1 | Scatter Cannon | `Tower_Argoscatter` | Towerfighter | Bomb Tower | Red 30 | Health 40+25, Damage 1.25+0.25, Attackspeed 0.6, Range 4.5, Projcount 6, Spread 50, Pierce 1, **Debuffbonus 0.5** | Sprays a cone of 6 pellets, shreds a crowd up close; **+50% damage to a debuffed foe** (new) |
+| 1 | Scatter Cannon | `Tower_Argoscatter` | Towerfighter | Bomb Tower | Red 30 | Health 40+25, Damage 1.25+0.25, Attackspeed 0.6, Range 4.5, Projcount 6, Spread 50, Pierce 1, **Debuffbonus 0.5, Pinbonus 1** | Sprays a cone of 6 pellets, shreds a crowd up close; **+50% damage to a slowed foe, +100% to a pinned one** (new; split by the review of 2026-11-04) |
 | 2 | Harpoon Gun | `Tower_Argoharpoon` | Towerfighter | Archer Tower | Red 35 | Health 40+25, Damage 5+2, Attackspeed 0.35, Range 6.5, Projspeed 18, Pierce 3 | Slow, long-range harpoons that pierce a lane. **Its tree picks the job:** pure damage (Long Line, Skewer, Whaler, Leviathan Lance) or crowd control (Tether, Anchor Line's pin, Reel, Undertow). The base gun no longer reels (1.4.0 did) |
 | 3 | Deep Water | `Trap_Argowater` | Trap | Buster's Speed Pad block | Blue 20 | Health 30+15, Slow 0.3+0.05 | **New.** Walk-through pool; foes inside are Slowed. **FLOOD** (keys 1/Quickaction, like Fie's Grow Wall) adds an adjacent pool for Blue 15. Combines: a pinned foe in Deep Water is held twice as long; a Tremor touching a pool spreads through every pool connected to it |
 | 4 | Drill Rig | `Tower_Argodrill` | Gatherer | Archer Tower | Yellow 35 | Health 40+25, Damage 0.5 (mining), Attackspeed 0.25, Range 5 (aim), Tremor 2, Slow 0.2 | Mines ore up to 2 tiles away and sinks a Fathom each Tide (to 5): faster mining, a wider (+0.4 tiles) and stronger (+4%) Tremor. **AIM** (picker, within 5 tiles) **places the Tremor** where the player wants it (new; 1.4.0's ringed the drill) |
-| 5 | Miner's Base | `Tower_Argobell` (1.4.0's id, kept) | none | Mining Hut | Blue 35 | Health 50+25, Units 2, Respawn 8 | 1.4.0's Diving Bell, renamed. **Limit 1** (new: its build button goes while one stands, Boutman's Bouthouse pattern). Houses **Port** and **Starboard**: PORT or STARBOARD, then click a tower (a teammate's too) and that Naut walks over and **tunes** it, +20% attack speed and a slow repair. **Towers only, never traps** (new) |
+| 5 | Miner's Base | `Tower_Argobell` (1.4.0's id, kept) | none | Mining Hut | Blue 20 + Yellow 15 (review 2026-11-04; was Blue 35) | Health 50+25, Units 2, Respawn 8 | 1.4.0's Diving Bell, renamed. **Limit 1** (new: its build button goes while one stands, Boutman's Bouthouse pattern). Houses **Port** and **Starboard**: PORT or STARBOARD, then click a tower (a teammate's too) and that Naut walks over and **tunes** it, +20% attack speed and a slow repair. **Towers only, never traps** (new) |
 
 Units: `Mob_Argonaut_Port`, `Mob_Argonaut_Starboard` (and `Mob_Argonaut_Bosun` from Third Mate), as in 1.4.0.
 
@@ -129,7 +129,7 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 | Five buildables | All five (Deep Water is new) | Four | The concept wins; the fifth build option works in game (PC round 2) |
 | Harpoon Gun: long-range damage **or** crowd control, "pin or reel depending on upgrade path" | Base gun pierces and doesn't reel; the tree splits into damage and CC paths, two capstones | Every harpoon reeled | As written; the reel (verified in 1.4.0) moves to Reel3 |
 | "Pinning against wall stuns" | Anchor Line pins the foe hit; beside any building it is stunned instead | Pinned the reeled foe | Argo has no walls, and the game has no knockback (`docs/05` §11) to pin a foe *against* something; "beside a building" reads the same on screen |
-| Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed or Pinned foes | none | As written; every debuff source is a tower, trap or upgrade |
+| Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed foes, +100% to Pinned ones (review 2026-11-04) | none | As written; every debuff source is a tower, trap or upgrade |
 | Scatter: "% increases health greatly" | Ironclad4 (ends early) | Undertow4 | As written |
 | Deep Water: slowing trap, extends like Fie's wall, combines with Harpoon and Drill Rig | FLOOD extends it; pinned foes held twice as long; Tremors spread through pools | none | Gives "combines" two testable rules |
 | Drill Rig: "tremors in targeted location; tremor size increases per tide" | AIM picker places the Tremor; Fathoms widen it each Tide | Tremors ringed the drill | A target the player picks needs a picker (`docs/02` §2) |
@@ -168,10 +168,11 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 6. Miner's Base: a Naut picked onto Deep Water is refused (towers only); tuning as in 1.4.0.
 7. The F-key fix (`docs/15` §9): F selects Argo after a respawn with the crew out.
 
-## Review 2026-11-04 (proposed, not built)
+## Review 2026-11-04 (built 2026-11-05, compiled, not yet run in game)
 
 A balance and skill review (`docs/reports/ARGO_REVIEW_2026-11-04.md`) made fourteen changes and two notes in scope `09`, each
 line marked with a "Review 2026-11-04" note: slows one per source and Kelp Bed and Trench as pins (both code fixes),
 the Scatter's pin bonus, Wide Bore, Double Barrel, Abyss, Trench, Gusher, Mantle Tap, and Yellow prices for the Drill's
-control path and the Miner's Base. The tables above stay as built until Dimitri takes them and the next Argo build
-lands; `IMPLEMENTATION_NOTES.md` lists the code each one touches.
+control path and the Miner's Base. Dimitri's "build all" (decision 19, 2026-11-05) took them; all fourteen are built
+(the slows in the decisions' build, B13; the rest in the next). Where a table above and `02_Data.cs` differ, the data
+file and scope `09` win; `IMPLEMENTATION_NOTES.md` has the build.

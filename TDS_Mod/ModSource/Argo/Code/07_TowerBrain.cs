@@ -2,7 +2,7 @@
 // upgrades). The game's own Entity_Ai_General_Upgrade runs the upgrade panel on every buildable with a tree
 // (ArgoContent.BuildTower); this brain hears each upgrade through Master.Upgrade.
 //   Scatter Cannon  volleys of real pellets (Projectile_Ai_Simple) fanned across a cone; each pellet hits what it meets,
-//                   50% harder on a Slowed or Pinned foe (2.0).
+//                   50% harder on a Slowed foe, twice as hard on a Pinned one (2.0, scope 09's review of 2026-11-04).
 //   Harpoon Gun     one piercing harpoon down the line that holds the most enemies (the Heavy Bow's native Pierce).
 //                   2.0: the base gun moves nobody; Tether slows, Anchor Line pins the first foe hit, Reel reels it
 //                   (1.4's reel), Undertow reels the foes around it.
@@ -17,14 +17,15 @@ public class ArgoTowerBrain : MonoBehaviour
     public ArgoData.Build Def;
     public bool Started;
     public int Shots, Volleys, Bites, Quakes, Fathom = 1;
-    // Double Barrel's stored volley; the reel; Pay Dirt. 2.0: the debuff bonus, Tether, Anchor Line, Undertow, the aim,
+    // Double Barrel's stored volleys; the reel; Pay Dirt. 2.0: the debuff bonus, Tether, Anchor Line, Undertow, the aim,
     // Bedrock and Fault Line.
     public int Stored, Reels, BossHits, PaydirtBites, BonusHits, Tethers, Anchors, Undertows, Aims, Bedrocks, Faults;
     public float TunedReel, LastReelDone, NextDrag;
     public Vector3 AimCenter;
 
     float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f, syncedRange = -1f;
-    int shotSerial, mantleTide = -1;
+    float nextStore, lastQuake = -999f;
+    int shotSerial;
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
     readonly List<Link_Modifier> fathomMods = new List<Link_Modifier>();
@@ -204,31 +205,37 @@ public class ArgoTowerBrain : MonoBehaviour
         if (!Ready(out range))
             return;
         Entity_Master target = Helper_Entityquerytools.Entitynearest(Eye, range, Visible());
+        float every = Param("Double_Every", 2f);
         if (target == null)
         {
-            // Double Barrel: a full reload with nothing to shoot loads a volley for later.
+            // Double Barrel: every Double_Every seconds of a loaded gun with nothing to shoot stores a volley for later,
+            // up to Double_Base (the idle clock starts at the first empty look, and again after each volley).
             int store = Mathf.RoundToInt(Param("Double_Base", 0f));
-            if (store > Stored)
+            if (store > 0 && Stored < store && Time.time >= nextStore)
             {
-                Stored = store;
-                ModKitUtil.Vis(Master, "Argo_Loaded", ModKitUtil.Pos(Master), 0);
+                if (nextStore > 0f)
+                {
+                    Stored++;
+                    ModKitUtil.Vis(Master, "Argo_Loaded", ModKitUtil.Pos(Master), Stored);
+                }
+                nextStore = Time.time + every;
             }
             return;
         }
         lastAttack = Time.fixedTime;
+        nextStore = Time.time + every;
         Volley(target, range);
-        if (Stored > 0)
-        {
-            Stored--;
-            Entity_Master first = target;
-            ArgoUtil.Later(this, ArgoData.DoubleDelay, () =>
+        // Every stored volley follows, DoubleDelay after the one before.
+        Entity_Master first = target;
+        for (int k = 1; k <= Stored; k++)
+            ArgoUtil.Later(this, ArgoData.DoubleDelay * k, () =>
             {
                 if (Master == null) return;
                 float r = ModKitUtil.Stat(Master, "Range", range);
                 Entity_Master t = first != null && ModKitUtil.Alive(first) ? first : Helper_Entityquerytools.Entitynearest(Eye, r, Visible());
                 if (t != null) Volley(t, r);
             });
-        }
+        Stored = 0;
     }
 
     void Volley(Entity_Master target, float range)
@@ -373,10 +380,12 @@ public class ArgoTowerBrain : MonoBehaviour
             ModKitCombat.Mark(to, Master);
             if (IsScatter)
             {
-                // 2.0: the scope's "bonus damage to enemies affected by debuffs", read before the pellet's own slow.
-                float bonus = ModKitUtil.Stat(Master, "Debuffbonus", 0f);
+                // 2.0: the scope's "bonus damage to enemies affected by debuffs", read before the pellet's own slow: the
+                // pin's on a pinned foe, else the slow's (a pin slows too; the larger counts, never both).
+                float bonus = ArgoStatus.IsPinned(to) ? Mathf.Max(ModKitUtil.Stat(Master, "Pinbonus", 0f), ModKitUtil.Stat(Master, "Debuffbonus", 0f))
+                    : ArgoStatus.IsSlowed(to) ? ModKitUtil.Stat(Master, "Debuffbonus", 0f) : 0f;
                 float m;
-                if (bonus > 0f && ArgoStatus.Debuffed(to) && hit.Data.TryGetValue("Damagemulti", out m))
+                if (bonus > 0f && hit.Data.TryGetValue("Damagemulti", out m))
                 {
                     // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
                     hit.Data = new Dictionary<string, float>(hit.Data);
@@ -693,10 +702,10 @@ public class ArgoTowerBrain : MonoBehaviour
             }
             if (slowVfx.Count > 64)
                 slowVfx.Clear();
-            // Mantle Tap: the first enemy into the Tremor each Tide sets off a quake.
-            if (foes.Count > 0 && Param("Mantle_Base", 0f) > 0f && mantleTide != ArgoServer.Tide)
+            // Mantle Tap: a quake when a foe is in the Tremor, at most every Mantle_Every seconds.
+            if (foes.Count > 0 && Param("Mantle_Base", 0f) > 0f && Time.time - lastQuake >= Param("Mantle_Every", 20f))
             {
-                mantleTide = ArgoServer.Tide;
+                lastQuake = Time.time;
                 Quake(Param("Mantle_Base", 2f));
             }
         }
@@ -886,8 +895,8 @@ public class ArgoTowerBrain : MonoBehaviour
             return;
         if (!IsDrill)
             return;
-        // Gusher: a deep drill throws up a burst of ore as the Tide turns.
-        int gush = Mathf.RoundToInt(Param("Gusher_Base", 0f));
+        // Gusher: a deep drill throws up a burst of ore as the Tide turns, Gusher_Base strikes a Fathom.
+        int gush = Mathf.RoundToInt(Param("Gusher_Base", 0f)) * Fathom;
         if (gush > 0 && Fathom >= 3)
         {
             Entity_Master ore = Ore(ModKitUtil.Pos(Master));

@@ -1079,6 +1079,24 @@ public static partial class ArgoSelfTest
             }
             Check("Miner's Base upgrades are priced in Blue (tier 2 Blue only)", off.Count == 0, off.Count == 0 ? "7 upgrades" : string.Join("; ", off.ToArray()));
         }
+        {
+            // The review of 2026-11-04 (scope 09): the Drill's control path in Yellow, the Base in Blue 20 + Yellow 15.
+            Func<string, string> price = id =>
+            {
+                Upgradeproperties up = Bl_Address.Getload("Upgrade", id) as Upgradeproperties;
+                List<string> parts = new List<string>();
+                if (up != null && up.Costs != null)
+                    foreach (Link_Resourceset r in up.Costs) parts.Add(r.Name + "=" + F(r.Amount));
+                return string.Join(";", parts.ToArray());
+            };
+            string seismic = price(ArgoData.Drill + "_Seismic2_Upgradeobject"), bedrock = price(ArgoData.Drill + "_Bedrock3_Upgradeobject"), fault = price(ArgoData.Drill + "_Faultline4_Upgradeobject");
+            List<string> baseCost = new List<string>();
+            foreach (Link_Resourceset r in ArgoContent.Beings[ArgoData.Bell].Entity.Costs) baseCost.Add(r.Name + "=" + F(r.Amount));
+            string bellCost = string.Join(";", baseCost.ToArray());
+            Check("the review's prices: Seismic, Bedrock and Fault Line in Yellow, the Base Blue 20 + Yellow 15",
+                seismic == "Yellowaura=35" && !bedrock.Contains("Blue") && bedrock.Contains("Yellowaura=80") && fault == "Yellowaura=300" && bellCost.Contains("Blueaura=20") && bellCost.Contains("Yellowaura=15"),
+                "Seismic " + seismic + ", Bedrock " + bedrock + ", Fault Line " + fault + ", Base " + bellCost);
+        }
 
         // 1b. Speed floor (1.3.0): stacked slows never take a foe under a tenth of its speed, a hold stops it at its floor
         // whatever slows it carries, and the foe gets its full speed back when they expire. Before anything is built.
@@ -1169,9 +1187,9 @@ public static partial class ArgoSelfTest
         towers.TryGetValue(ArgoData.Bell, out bell);
         towers.TryGetValue(ArgoData.Drill, out drill);
         if (scatter != null)
-            Check("Scatter Cannon stats (+50% vs Slowed or Pinned)", Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 6f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Range", 0), 4.5f)
-                && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Debuffbonus", 0), 0.5f),
-                "pellets " + ModKitUtil.Stat(scatter.Master, "Projcount", 0) + ", range " + ModKitUtil.Stat(scatter.Master, "Range", 0) + ", bonus " + ModKitUtil.Stat(scatter.Master, "Debuffbonus", 0));
+            Check("Scatter Cannon stats (+50% vs Slowed, +100% vs Pinned)", Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 6f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Range", 0), 4.5f)
+                && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Debuffbonus", 0), 0.5f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Pinbonus", 0), 1f),
+                "pellets " + ModKitUtil.Stat(scatter.Master, "Projcount", 0) + ", range " + ModKitUtil.Stat(scatter.Master, "Range", 0) + ", bonus " + ModKitUtil.Stat(scatter.Master, "Debuffbonus", 0) + " / pinned " + ModKitUtil.Stat(scatter.Master, "Pinbonus", 0));
         if (harpoon != null)
             Check("Harpoon Gun stats (Damage 5, Range 6.5: the top of the shipped bands)", Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Damage", 0), 5f) && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Range", 0), 6.5f)
                 && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Pierce", 0), 3f) && Mathf.Approximately(ModKitUtil.Stat(harpoon.Master, "Attackspeed", 0), 0.35f),
@@ -1344,7 +1362,7 @@ public static partial class ArgoSelfTest
             ClearEnemies();
         }
 
-        // 5. The Scatter Cannon's bonus: +50% on a Slowed or a Pinned foe, none on a clean one.
+        // 5. The Scatter Cannon's bonus: +50% on a Slowed foe, +100% on a Pinned one, none on a clean one.
         if (scatter != null && enemyType != null)
         {
             ClearEnemies();
@@ -1366,8 +1384,8 @@ public static partial class ArgoSelfTest
                 ArgoUtil.Pin(hm, dummy, 1f, false);
                 float pinned = Hit(scatter.Master, dummy, 2f);
                 ArgoStatus.Clear(dummy);
-                Check("Scatter Cannon: +50% to a Slowed and a Pinned foe, none to a clean one",
-                    Mathf.Abs(slowed - plain * 1.5f) < 0.05f && Mathf.Abs(pinned - plain * 1.5f) < 0.05f && Mathf.Abs(clean - plain) < 0.05f && Mathf.Abs(plain - 2f) < 0.05f && scatter.BonusHits == b0 + 2,
+                Check("Scatter Cannon: +50% to a Slowed foe, +100% to a Pinned one, none to a clean one",
+                    Mathf.Abs(slowed - plain * 1.5f) < 0.05f && Mathf.Abs(pinned - plain * 2f) < 0.05f && Mathf.Abs(clean - plain) < 0.05f && Mathf.Abs(plain - 2f) < 0.05f && scatter.BonusHits == b0 + 2,
                     "clean " + F(plain) + ", slowed " + F(slowed) + ", clean again " + F(clean) + ", pinned " + F(pinned) + ", bonus hits " + (scatter.BonusHits - b0));
             }
             ClearEnemies();
@@ -1441,11 +1459,13 @@ public static partial class ArgoSelfTest
             {
                 Genitem tile = pool1.Master.Beingserver.Currentblock;
                 Force(water, "Kelp3");
-                int c0 = ArgoWater.Catches;
+                int c0 = ArgoWater.Catches, pinsKelp = ArgoStatus.Pins;
                 List<Entity_Master> wet = new List<Entity_Master>();
                 yield return FoeOn(tile, wet, water);
                 yield return Wait(0.6f);
                 Check("Kelp Bed: a foe is caught on entering the water", ArgoWater.Catches > c0, "catches " + (ArgoWater.Catches - c0));
+                // Review 2026-11-04 (scope 09): the catch is a pin, so it counts as one.
+                Check("Kelp Bed's catch is a pin", ArgoWater.Catches > c0 && ArgoStatus.Pins >= pinsKelp + (ArgoWater.Catches - c0), "pins " + (ArgoStatus.Pins - pinsKelp) + ", catches " + (ArgoWater.Catches - c0));
                 Entity_Master e = wet.Count > 0 ? wet[0] : null;
                 Force(water, "Brine2");
                 Force(water, "Salt3");
@@ -1629,7 +1649,7 @@ public static partial class ArgoSelfTest
             float[] paid = new float[2];
             float wideScale = PriceScale(scatter.Master);
             yield return UpgradePaid(scatter, "Widebore2", owner, "Redaura", paid);
-            Check("Wide Bore: more pellets, wider cone", Has(scatter, "Widebore2") && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 8f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Spread", 0), 75f),
+            Check("Wide Bore: more pellets, wider cone", Has(scatter, "Widebore2") && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 8f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Spread", 0), 60f),
                 "pellets " + ModKitUtil.Stat(scatter.Master, "Projcount", 0) + ", cone " + ModKitUtil.Stat(scatter.Master, "Spread", 0));
             Check("Wide Bore paid", Mathf.Abs(paid[0] - 30f * wideScale) < 0.01f, "Red spent " + F(paid[0]) + " at price scale " + F(wideScale) + (paid[1] > 0f ? ", " + F(paid[1]) + " came in meanwhile" : ""));
             yield return Upgrade(scatter, "Pressure4", owner);
@@ -1638,18 +1658,24 @@ public static partial class ArgoSelfTest
             {
                 Force(scatter, "Double2");
                 ClearEnemies();
-                yield return Until(() => scatter.Stored > 0, 5f);
-                Check("Double Barrel loads a volley while nothing is in range", Has(scatter, "Double2") && scatter.Stored == 1, "stored " + scatter.Stored);
+                // Review 2026-11-04 (scope 09): a volley every 2 s with nothing in range, up to 3, all fired with the next.
+                int most = Mathf.RoundToInt(scatter.Param("Double_Base", 0f));
+                float every = scatter.Param("Double_Every", 2f), idle0 = Time.time;
+                yield return Until(() => scatter.Stored >= most, every * most + 4f);
+                float took = Time.time - idle0;
+                yield return Wait(every + 0.5f);
+                Check("Double Barrel stores a volley every 2 s while nothing is in range, up to 3", Has(scatter, "Double2") && most == 3 && scatter.Stored == most && took >= every * (most - 1) - 0.5f,
+                    "stored " + scatter.Stored + " of " + most + " in " + F(took) + " s");
                 List<Entity_Master> foe = new List<Entity_Master> { Enemy(ModKitUtil.Pos(scatter.Master) + new Vector3(2f, 0f, 0f)) };
                 yield return Ready(scatter, foe, 50f, new List<Link_Modifier>());
-                int shots0 = scatter.Shots, volleys0 = scatter.Volleys;
+                int shots0 = scatter.Shots, volleys0 = scatter.Volleys, held = scatter.Stored;
                 yield return Until(() => scatter.Volleys > volleys0, 4f);
                 float first = Time.time;
                 int pellets = Mathf.RoundToInt(ModKitUtil.Stat(scatter.Master, "Projcount", 6f));
-                yield return Until(() => scatter.Volleys > volleys0 + 1, 1f);
+                yield return Until(() => scatter.Volleys > volleys0 + held, 1.5f);
                 float gap = Time.time - first;
-                Check("Double Barrel: the next volley fires twice the pellets", scatter.Volleys == volleys0 + 2 && scatter.Shots - shots0 == 2 * pellets && gap <= ArgoData.DoubleDelay + 0.2f && scatter.Stored == 0,
-                    "volleys " + (scatter.Volleys - volleys0) + ", pellets " + (scatter.Shots - shots0) + " (2 x " + pellets + "), " + F(gap) + "s apart, stored " + scatter.Stored);
+                Check("Double Barrel: the next volley fires every stored one after it", held == most && scatter.Volleys == volleys0 + 1 + held && scatter.Shots - shots0 == (1 + held) * pellets && gap <= ArgoData.DoubleDelay * held + 0.3f && scatter.Stored == 0,
+                    "volleys " + (scatter.Volleys - volleys0) + ", pellets " + (scatter.Shots - shots0) + " (" + (1 + held) + " x " + pellets + "), " + F(gap) + " s from first to last, stored " + scatter.Stored);
                 ClearEnemies();
             }
             // Ironclad: health x2.5 and the game's armour.

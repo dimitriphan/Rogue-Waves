@@ -183,12 +183,16 @@ public static class ArgoWater
             }
             ArgoUtil.Slow(by, e, slow, ArgoData.WaterTick + 0.25f, vfx, "Water");
             ArgoStatus.Wet(e, ArgoData.WaterTick + 0.3f);
-            // Kelp Bed: caught on entering (again only after it was out of the water for CatchMemory seconds).
+            // Kelp Bed: pinned on entering, twice as long since it is wet (again only after it was out of the water for
+            // CatchMemory seconds). Review 2026-11-04 (scope 09): a pin, so Salt Sting, Bedrock and the Scatter read it.
             if (catchFor > 0f && (!lastWet.TryGetValue(e, out last) || Time.time - last > ArgoData.CatchMemory))
             {
-                ArgoUtil.Root(by, e, catchFor);
-                Catches++;
-                ModKitUtil.Vis(by, "Argo_Kelp", new Vector3((float)e.NetworkObjectId, catchFor, 0f), catchFor);
+                float held = ArgoUtil.Pin(by, e, catchFor, false);
+                if (held > 0f)
+                {
+                    Catches++;
+                    ModKitUtil.Vis(by, "Argo_Kelp", new Vector3((float)e.NetworkObjectId, held, 0f), held);
+                }
             }
             lastWet[e] = Time.time;
             // Brine; Salt Sting doubles it on a pinned foe (and stings with SaltBrine when Brine wasn't taken).
@@ -206,16 +210,18 @@ public static class ArgoWater
                 ArgoHooks.Soak(e, crush, ArgoData.WaterTick + 0.3f);
             }
         }
-        // Trench: every few seconds one foe in the water is dragged under, held for a moment.
+        // Trench: every few seconds one foe in the water is dragged under, pinned for a moment (twice as long, wet).
         float every = lead != null ? lead.Param("Dragunder_Every", 0f) : 0f;
         if (every > 0f && net.Foes.Count > 0 && Time.time >= lead.NextDrag)
         {
             lead.NextDrag = Time.time + every;
             Entity_Master f = net.Foes[UnityEngine.Random.Range(0, net.Foes.Count)];
-            float hold = lead.Param("Dragunder_Duration", 1f);
-            ArgoUtil.Root(by, f, hold);
-            Drags++;
-            ModKitUtil.Vis(by, "Argo_Dragunder", new Vector3((float)f.NetworkObjectId, hold, 0f), hold);
+            float hold = ArgoUtil.Pin(by, f, lead.Param("Dragunder_Duration", 1f), false);
+            if (hold > 0f)
+            {
+                Drags++;
+                ModKitUtil.Vis(by, "Argo_Dragunder", new Vector3((float)f.NetworkObjectId, hold, 0f), hold);
+            }
         }
     }
 

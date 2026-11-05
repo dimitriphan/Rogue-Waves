@@ -1,5 +1,16 @@
 # Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2026-11-05, the review of 2026-11-04 built (compiled, not yet run in game):** the fourteen changes in scope `09`
+(`docs/reports/ARGO_REVIEW_2026-11-04.md` §5). One slow per source came with the decisions' build (B13, `ArgoUtil.Slow`
+with a kind). Now: Kelp Bed and Trench pin through `ArgoUtil.Pin` (Kelp 0.5 s, doubled in the water; Trench every 3 s
+for 1 s, doubled, and two free pools a Tide); the Scatter's bonus is `Debuffbonus` 0.5 on a slowed foe and the new
+`Pinbonus` 1 on a pinned one (the larger, never both); Wide Bore's cone +10; Double Barrel stores a volley every 2 s idle,
+up to 3, all fired after the next; Abyss adds Slow +10%; Gusher is 4 strikes a Fathom; Mantle Tap is Attackspeed x1.5
+(`Attackspeed_Pmulti`) and a quake every 20 s while a foe is in the Tremor; Seismic, Bedrock and Fault Line cost Yellow;
+the Miner's Base Blue 20 + Yellow 15; Reel's journal says where to place the gun. The self-test moves with them (the
+Scatter's +100%, Kelp's pin, Wide Bore's 60 degrees, Double Barrel's three, a check of the new prices). For the PC: a
+Kelp-pinned foe takes Salt Sting's double brine; a foe's speed in a pool is 70% of its own (a 30% slow, not 60%).
+
 **2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** `ARGO_REVIEW` alone compiles again (ARG-7); the self-test's F-key check runs when Argo's copy of the fix is the one installed (it looked for a renamed mark and always skipped), Deep Water's being is a reading, not a pass, and the stun, Brine, Salt Sting, Crushing Depth and Bedrock checks say SETUP instead of passing or dropping out (one pass fewer). Left for a PC look: Full Crew's dive loop (ARG-1), build looks sent in the first frame (ARG-2, pitfall #158). `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
 
 **2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the SONAR, FLOOD, AIM and the Nauts' buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.
@@ -8,7 +19,7 @@
 
 **2026-11-04, code simplification (compiled, not yet run in game; `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md`):** the 2026-10-12 review's leftovers are gone (`Stagger_Base`, `LastGusher`, `Argo_Bleed`, `AftershockEvery` and their journal labels and effect specs, counters nothing read), and Bulkhead keeps one tuner per tower instead of an unread list of Nauts; SONAR stays until Dimitri decides. The game's own `Entity_Ai_General_Upgrade` runs the towers' upgrade panel again (the mirror in `07_TowerBrain` is gone; the brain hears `Master.Upgrade` and plays `Argo_Upgrade` from it), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets`; Argo keeps its own `ById`, `Costs`, `Params` and sound levels. The PC checks: that report's §4 (self-test 142/0, G1, G3, G4, A1, H1, L1).
 
-**Review 2026-11-04 (design only, nothing built): what the next build changes.** `docs/reports/ARGO_REVIEW_2026-11-04.md`
+**Review 2026-11-04 (design only; built 2026-11-05, above): what the next build changes.** `docs/reports/ARGO_REVIEW_2026-11-04.md`
 §5 and scope `09` (each changed line carries a "Review 2026-11-04" note). Two are code fixes the sheet already
 asked for: **one slow per source** (`ArgoUtil.Slow` adds a new Speed Multi mod every tick, Deep Water every 0.25 s for
 0.5 s and the Tremor every 0.5 s for 0.75 s, and Multi mods sum, so a foe carries two water slows: a 30% pool slows 60%
