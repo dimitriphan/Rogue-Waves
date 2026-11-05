@@ -38,7 +38,7 @@ Every part is built with temporary art and passed its self-test in the game: the
 **Rogue Waves** button on the main menu to the end screen), the foes, Yossele, Spool, Argo and Uloe. A full ten-map
 campaign has been won, two players have played it together, and the parts boot as one pack. What was built on
 2026-11-05 (Uloe's 24 new upgrades, Argo's review, the new Directions, Trinkets and Cardinals, and the code reviews'
-fixes) is compiled but not yet run in the game; only Spool's new upgrades are still to build. The first release is
+fixes) is compiled but not yet run in the game; Spool's new upgrades and UNTHREAD wait for the balance sweep. The first release is
 **Yossele alone**, waiting on Dimitri's own sprites and play test; the mode and the other vessels follow. Live state:
 `docs/PLAN.md` Part C "Now".
 

@@ -19,7 +19,7 @@
 			- Accent colour: sea blue
 			- Sprites: as shipped in the earlier ArgoMod
 			- Lore: Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough.
-			- Status: Argo 2.0.1 designed, built, passes its PC self-test, 144 of 144 in the latest round, and played on a second player's machine. The 2026-11-04 review's changes below are not built yet. Ships only inside the Rogue Waves pack.
+			- Status: Argo 2.0.1 designed, built, passes its PC self-test, 144 of 144 in the latest round, and played on a second player's machine. The 2026-11-04 review's changes below are built, compiled but not yet run on the PC. Ships only inside the Rogue Waves pack.
 
 		[Vessel Stats]
 			- Attack: melee, with reach

@@ -34,7 +34,7 @@ Clean, nothing to change:
 
 ## 2. Fixed: what players read
 
-The in-game line and its scope line changed together, so `scope_upgrades.py` still matches them.
+P1-P5 changed the in-game line and its scope line together, so `scope_upgrades.py` still matches them; P6 and P7 have no scope line.
 
 | # | Where | Before | After |
 | --- | --- | --- | --- |
@@ -51,19 +51,19 @@ The in-game line and its scope line changed together, so `scope_upgrades.py` sti
 | # | Where | Before | After |
 | --- | --- | --- | --- |
 | S1 | scope `03:8` (F Picks a Minion) | Status: built, and passed on the PC on a real death and respawn | the pass ran with the fix not yet switched on (the max review's P1-1, pitfall #157); fixed since, compiled, checked again next round |
-| S2 | `docs/PLAN.md:228`, `:407`, `docs/RESEARCH_GAPS.md:17`, kit `docs/15:34` | the real Boutman death passed | the same, plus "with the fix unarmed; kit 1.11 arms it" |
+| S2 | `docs/PLAN.md:228`, `:416`, `docs/RESEARCH_GAPS.md:17`, `:68`, kit `docs/15:34` (its verdict "go, passes" now "go, built") and `:231` | the real Boutman death passed | the same, plus "with the fix unarmed; kit 1.11 arms it" |
 | S3 | scope `06:19` ([Directions] Status) | built, and passed on the PC | ...; the Directions added since are compiled, not yet run on the PC |
 | S4 | scope `02:13` ([Now]) | not built yet: the new upgrades in 07-10, the new Directions, Cardinals and Trinkets in 11-12 | not built yet: Spool's new upgrades and UNTHREAD; the rest is built, compiled, not yet run |
 | S5 | scope `02:16` | only the Yossele play build is in [the Mods folder] now | it held only that until 2026-11-03, and since holds every pack part's release build (as `Yossele/README.md` says) |
 | S6 | scope `00:5`, `docs/PLAN.md:41` (Part A) | Both [scope copies] are kept the same | ...; his copy is written only at his word ("sync"), as `CLAUDE.md` rules |
 | S7 | `docs/PLAN.md:248` (Part C, the 2026-11-04 state) | Designed, not built: ... Argo's review, Uloe's 8 to 32, the new Directions, Trinkets and Cardinals | adds: since 2026-11-05 he has taken the defaults and all are built but Spool's |
-| S8 | `docs/PLAN.md:398` (Part C "Next") | the `~defaults~` in scope 04, 10-14; Open questions 3-4 and 6 | the same, marked taken 2026-11-05 and now the balance sweep's |
-| S9 | `README.md:37` | Every part ... passes its self-test in the game | passed it; what was built on 2026-11-05 is compiled, not yet run in game; only Spool's new upgrades are left to build |
+| S8 | `docs/PLAN.md:407` (Part C "Next") | the `~defaults~` in scope 04, 10-14; Open questions 3-4 and 6 | the same, marked taken 2026-11-05 and now the balance sweep's |
+| S9 | `README.md:37` | Every part ... passes its self-test in the game | passed it; what was built on 2026-11-05 is compiled, not yet run in game; Spool's new upgrades and UNTHREAD wait for the balance sweep |
 | S10 | `README.md:16`, `:19` | earned each tide; between tides | each Tide; between Tides |
 | S11 | `docs/STYLE.md:34`, `:46` | examples Cracked Buoy, Ship's Bell; "The first is named in 12" | the real ones (Brass Spyglass, Cork Lifebuoy); all sixteen are named in scope `12` |
 | S12 | `docs/STYLE.md:49` | ascension levels "Depth 1, 2, ..." | ... (Depth is on hold) |
 | S13 | `Spool/Art/Temporary/README.md:10` | the tuft, Thread Head and Crafted described lilac and purple; the needle with a purple thread tail | a note: sage since 2026-11-05 (`spool_sage.py`); the needle in game is the pale sage pearl-headed pin |
-| S14 | `RogueWavesMode/README.md:18`, `Yossele/README.md:8` | the status stops at the 2026-11-04 round | adds what 2026-11-05 built, compiled, not yet run in game |
+| S14 | `RogueWavesMode/README.md:18`, `Yossele/README.md:8`, scope `07:17`, `09:22` | the status stops at the 2026-11-04 round (Argo's: "the review's changes below are not built yet") | adds what 2026-11-05 built, compiled, not yet run in game |
 | S15 | scope `04:7` | New vessels and cardinals | ... Cardinals |
 | S16 | scope `05:6`, `:9`, `:11` | gameplay alternations; traded with to the shopkeeper; choosing a direction | alterations; traded to the shopkeeper; choosing a [Direction] |
 | S17 | scope `06:6`, `:32` | gameplay altering; inbetween | gameplay-altering; in between |
