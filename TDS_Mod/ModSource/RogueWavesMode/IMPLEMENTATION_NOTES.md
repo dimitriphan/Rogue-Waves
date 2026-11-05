@@ -1,5 +1,20 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the balance sweep's numbers (compiled, not yet run in game)
+
+Set S2 of `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`, tuned by `docs/reports/BALANCE_SWEEP_2026-11-05.md`:
+
+- `RWDifficulty`: map k's Tide 15 plays the base game's row `FinishRows[k]` (15, 18, 20, 21, 21, 24 x5) and its Tides
+  1-14 the rows between (F1); a Tide entry and the break before it carry the notes of the row they play; the bonus Tides
+  go on from the row after and rewind on row 29. Foe health is one Pmulti (F2), x(2.6 + 0.08(k - 1)) (F3) x(1 + 1.5%
+  for each Cardinal stack, Trinket copy and Direction rank held as the map starts) (F5, `Hoard`). Modifiers from map 2,
+  one more every second map, each Tide taking them in turn (F4). +50% foes a player past the first (X1).
+- `RWCardinals`: every price is 3 more for each Trinket copy the buyer holds and each Cardinal the run has bought (C1,
+  `Ramp`). The host writes that ramp on each vessel as a fourth None command, `RW_Price`, which `PriceMine` reads: a
+  bought stock Cardinal and a lobby pick look the same on a client.
+- `RWObjectives`: the board opens from the break before Tide 3 (P1, `ObjectivesFrom`). Self-tests that read map 1's
+  opening board go through `RWTest.BoardFromTide1`, which sets it back however they end.
+
 ## 0.1.0-dev, later (2026-11-05): the decided fixes, kit 1.14 (compiled, not yet run in game)
 
 Dimitri's "default for all" on the second decisions page (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`):

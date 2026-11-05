@@ -438,6 +438,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (pitfall #169), the Cardinals' paired lookups read the panel's ids, Boutman's Direction is Spare Reel, the leave vote's
   new line, "towards" in Argo's Reel. `HasMinions` was right (all nine vessels have minions). Compiled here (every part,
   release and self-test, 0 errors), not run on the PC: its §4 joins the next round's list.
+  2026-11-05: the balance simulator sweep, Dimitri's queued order on his "Starting set S2, all proposals"
+  (`docs/reports/BALANCE_SWEEP_2026-11-05.md`, runs in `balance_sweep_2026-11-05/`). The mode: map k's Tide 15 plays
+  the base game's row 15, 18, 20, 21, 21, then 24 to map 10 (F1); foe health one Pmulti (F2) of x2.6 on map 1 (F3),
+  +0.08 a map, +1.5% for each Cardinal, Trinket copy and Direction rank held (F5); modifiers from map 2 (F4); +50% foes a
+  player (X1); prices +3 a held item (C1, shown right on every machine by a fourth None command, `RW_Price`); objectives
+  from the break before Tide 3 (P1). Fitted to the review's target, D 0.8 on map 1 to about 1.45 on map 10 (mid case),
+  checked with 16 seeds and on Yossele, Spool and Argo. Spool on one Pin Cushion (answers 25, 26): Stitched 5, Dart
+  5.5, 6 Crafted a Tin, Range 3.5 kept, the Loom 0.3 a second, the Cushion's "Build it first" line (P4); Uloe's Flood
+  Light 0.3 with it. Spring Tide by a Fie wall was B7's code (PR #103), and the weather's pay line is fixed. Scope `04`,
+  `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
+  but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins
+  PC round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
