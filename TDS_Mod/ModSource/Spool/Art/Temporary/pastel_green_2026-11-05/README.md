@@ -3,7 +3,8 @@
 **A proposal, not wired.** Dimitri, 2026-11-05: "Spool's current color scheme is too similar to enemy units. Swap
 Spool's color scheme to pastel yellow, but only recolor the main sprite for now so I can see an example." After seeing the yellow
 he asked, 03:00Z: "Change the color to pastel green instead." Of the first green, a bright mint (`A4EBC7`, h149),
-03:05Z: "The color is too minty and bright. Darken the green while keeping the pastel theme." This is the darker one.
+03:05Z: "The color is too minty and bright. Darken the green while keeping the pastel theme." This is the darker one, and
+his pick (03:09Z: "This version works.").
 The game still draws Spool in purple from `SpoolCharacter.P` (`Assets/SpoolMod/Editor/SpoolCharacter.cs`); nothing
 here is read by a build.
 

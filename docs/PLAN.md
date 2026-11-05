@@ -275,7 +275,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
   look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
   2026-11-05: Spool's main sprite recoloured to pastel green as an example, at his word (his purple reads too close to
-  the foes' magenta; yellow first, then green at his word): files only in `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`, not wired; the game still
+  the foes' magenta; yellow, then a mint, then the soft sage `93CCA1` he picked): files only in `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`, not wired; the game still
   draws Spool in purple. Its README lists the follow-up (the vessel's sheets through `SpoolCharacter.P`, the UI colour,
   the minions, the thread), each waiting for his yes or no.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
