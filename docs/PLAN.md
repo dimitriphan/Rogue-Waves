@@ -265,6 +265,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
   map's weather on every machine, a 4 s fade after the intro, calm maps unchanged; self-test W4. Compiled here (the mode,
   every test build), not run on the PC; its PC round is §4. No kit change; no pitfall used.
+- **2026-11-05: API credit set up** (Dimitri: "Setup both"): `docs/PROJECT_SETUP.md` "API credit" (the $100 can't
+  overflow the plan; usage credits can; key steps for Windows) and `TDS_Mod/Tools/batch/` (text and scope checks on
+  the Batches API, about $3.50 a run on Sonnet 5.5, $0.70 on Haiku 5.5). No real batch run yet: no key here.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1080,6 +1083,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   shots, chart look and feel builds 0 errors (the base's warnings), editor clean; the two-PC and dialog-look builds fail
   here as always. Not run on the PC. No kit change (kit 1.14 stays), no pitfall used: next free kit 1.15, pitfall #172
   (which PR used which pitfall numbers: the entry before this one).
+
+- 2026-11-05, API credit and batch checks (Dimitri 20:13Z "Setup both of those options", on the coordinator's 20:12Z
+  proposal). Checked against the Claude Code docs ("Authentication") and four help-centre articles: the Max plan's $100
+  monthly API credit pays only for API calls with a key from the linked Console organization (and `claude -p` or Agent
+  SDK runs with it); it can't pay for interactive Claude Code, cloud sessions or usage credits, and Claude Code has no
+  automatic overflow to a key: a set and approved `ANTHROPIC_API_KEY` replaces the plan for every terminal session,
+  while cloud sessions always keep the plan. The overflow is usage credits (`claude.ai/settings/usage`), paid
+  separately. `docs/PROJECT_SETUP.md` "API credit" has the Windows steps (key in the cloud environment, or one
+  PowerShell window, never a permanent variable) and how to confirm it. `TDS_Mod/Tools/batch/run_checks.py`: `plan`,
+  `submit`, `collect`; the text audit's strings (1,310 from the six parts' game code) and one scope-to-code request per
+  scope file (`01`, `03`-`14`, `16`), structured answers, report `docs/reports/BATCH_CHECKS_<date>.md`; cost table in
+  its README. Ran here: `plan` for both checks on both models, the report writer on made-up results, the missing-key
+  exit. Not run: a real batch (no key in the container). No mod code changed, so nothing compiled; no kit change, no
+  pitfall: next free kit 1.15, pitfall #172.
 
 ### Decisions
 
