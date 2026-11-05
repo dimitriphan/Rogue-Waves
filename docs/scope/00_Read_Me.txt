@@ -2,7 +2,7 @@
 	# The Rogue Waves scope, one file per category.
 	# Edit a file, then send back only the files you changed. Claude diffs each against its copy, keeps your wording, and updates both copies.
 	# Every file follows the rules below. A ! NEEDS ! line is waiting on you, and your < Answer > goes right under it.
-	/~ The repository copy is docs/scope/ and the project files copy is scope/. Both are kept the same \
+	/~ The repository copy is docs/scope/ and the project files copy is scope/. Both are kept the same; the project files copy is updated at your word ("sync") \
 
 	[Files]
 		- 00_Read_Me.txt: this list and the rules

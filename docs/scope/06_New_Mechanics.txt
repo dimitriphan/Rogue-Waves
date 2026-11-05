@@ -3,7 +3,7 @@
 	# Cardinal and Trinket rules live in 12_Cardinals.txt, and the mode's own rules in 04_Rogue_Waves_Mode.txt.
 
 	[Directions]
-		# A new gameplay altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
+		# A new gameplay-altering mechanic specific to each player. Directions can provide normal bonuses to characters, or create fundamental changes to how a vessel functions.
 		- Offered: 3 are offered and 1 is picked before each map
 		- Ranks: a Direction a player already holds can be offered again as its next rank (II, III) / So about 7 for any vessel and 4 per new vessel last a 10-map campaign \
 		- Rank costs: rank II costs Pure Aura 20, and its final rank, III, costs Pure Aura 30 / Bought at {VENDCINT} \
@@ -16,7 +16,7 @@
 		- Duos: ~a Duo is offered only to a player who already holds both Directions it names, and has one rank~ /~ After Hades' Duo boons \
 		- By: each Direction says who made it, Dimitri or Claude -> 00_Read_Me.txt [Values]
 		- List: -> 11_Directions.txt, one Direction template per Direction, under its vessel
-		- Status: built, and passed on the PC /~ docs/reports/BUILD_2026-11-03.md \
+		- Status: built, and passed on the PC; the Directions added to 11_Directions.txt since are compiled, not yet run on the PC /~ docs/reports/BUILD_2026-11-03.md; docs/reports/BUILD_UNBUILT_2026-11-05.md \
 
 	[Pure Aura]
 		# A new currency earned in game to purchase [Directions], [Cardinals] and [Trinkets]. Can be earned by surviving tides and by accepting and completing optional objectives. Each player has their own amount of [Pure Aura].
@@ -29,7 +29,7 @@
 		- Status: built, and passed on the PC
 
 	[Fund Transfer]
-		# Players are able to send each other a limited amount of aura inbetween waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
+		# Players are able to send each other a limited amount of aura in between waves at {VENDCINT}, allowing for more cooperative play and specialization into roles.
 		- This is the expansion's "Streamlined Economy Changes"
 		- What can be sent: only base aura, never [Pure Aura]
 		- Limit: each player can send up to 50 times the coming tide's number per break, in any mix of colours / 50 before Tide 1, and 250 in the break before Tide 5 (125 red and 125 blue, or 250 blue) \

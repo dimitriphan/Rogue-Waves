@@ -14,7 +14,7 @@ player; **by hand** = Dimitri plays it. Nothing waits on the PC any more.
 
 Of the 18 items, 17 are answered (A5 and B5 keep a half for the online evening; C3's answer waits on the scope's new
 enemy types) and 1 waits for a real online evening (A8: it ran with a second player on one PC on 2026-11-04; Steam's Join Game and
-a real network are left); the F-key check passed on a real Boutman death the same day (§E). Three
+a real network are left); the F-key check passed on a real Boutman death the same day (§E), with the fix unarmed: kit 1.11 arms it (pitfall #157), so it is checked again. Three
 answers change plans: **Directions can't be per player on the core** (A1), **nothing in the game scales foes for more
 players or harder maps** (A3), and **a friend who drops can't rejoin a running map** in the base game (A5; the pack
 now reopens it, `docs/mode/REJOIN.md`). The PC rounds added one rule, **bring the choice dialog's menu up before

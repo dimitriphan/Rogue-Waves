@@ -41,7 +41,7 @@ public static class RWCardinals
     // icon's name; until it is drawn the Rogue Waves crest stands in (Picture).
     public static readonly RWCardinalDef[] Mine =
     {
-        new RWCardinalDef { Name = "Dentures", Display = "Vampire Dentures", Trinket = true, Cost = 15, Look = "Cardinal_VampireDentures", Desc = "Your vessel attacks heal themselves for a portion of damage dealt" },
+        new RWCardinalDef { Name = "Dentures", Display = "Vampire Dentures", Trinket = true, Cost = 15, Look = "Cardinal_VampireDentures", Desc = "Your vessel's attacks heal it for a portion of the damage dealt" },
         new RWCardinalDef { Name = "Spyglass", Display = "Brass Spyglass", Trinket = true, Stacks = false, Cost = 12, Look = "Cardinal_BrassSpyglass", Desc = "Your vessel reaches farther" },
         new RWCardinalDef { Name = "Knife", Display = "Gutting Knife", Trinket = true, Cost = 12, Look = "Cardinal_GuttingKnife", Desc = "Your vessel hits healthy foes harder" },
         new RWCardinalDef { Name = "Oilcan", Display = "Oil Can", Trinket = true, Cost = 12, Look = "Cardinal_OilCan", Desc = "Your towers attack faster" },

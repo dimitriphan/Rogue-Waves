@@ -112,7 +112,7 @@
 
 		(Offense 2):{Primordial Dandelion Tree}
 			# Stacks dandelion seeds that burst down enemies that get close enough
-			# Tree resembles the Yggdrasil tree but with white leaves. Floating dandelions are pixelart sprite based and not 3d.
+			# Tree resembles the Yggdrasil tree but with white leaves. Floating dandelions are pixel art sprites, not 3D.
 			- Dandelion seeds float around tower, slowly stacking in quantity. Seeds target enemy all at once.
 			[Stats]
 				- In-game line: Releases seeds that strike targets who wander too close.

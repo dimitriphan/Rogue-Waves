@@ -5,7 +5,9 @@ grow stronger for every Tide they survive. Release 1 of the pack holds Yossele a
 built from Dimitri's 2026-10-20 sheet with temporary art, passed its in-game self-test (PC round 9e, 160/0; 173/0 on
 2026-11-04).** Since 2026-11-03 the PC's Mods folder holds the release build of every pack part for his play; the
 earlier play build is parked (`IMPLEMENTATION_NOTES.md`). The melee 0.1 build (PC round 8, 98/0) is history
-(`docs/YOSSELE_BUILD_NOTES.md`).
+(`docs/YOSSELE_BUILD_NOTES.md`). **2026-11-05, compiled, not yet run in game:** Wood Wide Web, the Shift Directions'
+new panel names, and the Directions Cutting Jar, Sap Bucket, Creeping Ivy, Deep Breath and Fairy Ring
+(`IMPLEMENTATION_NOTES.md`).
 
 ## The vessel
 

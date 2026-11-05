@@ -31,7 +31,7 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Depth (ascension, on hold), the campaign and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk, Aging, Dazzling | **go** | `13` §6 (the recipe); Aging and Dazzling checked in §16 |
-| The F-key respawn bug | **go, passes** | client-side: put the main vessel first in the `Hero` tag list; not reproduced with a mod-spawned Boutbro (§9, §11), and on a real Boutman death (2026-11-04) F selects `Hero_Boutman`; a person's own press is left |
+| The F-key respawn bug | **go, passes** | client-side: put the main vessel first in the `Hero` tag list; not reproduced with a mod-spawned Boutbro (§9, §11), and on a real Boutman death (2026-11-04) F selects `Hero_Boutman`, though with the fix unarmed (kit 1.11 arms it, `docs/09` #157); a person's own press is left |
 | Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10; untested, and they load through the custom-map slot whose stock map hung, §15) |
 
 ## 2. Modes and how a mod adds one

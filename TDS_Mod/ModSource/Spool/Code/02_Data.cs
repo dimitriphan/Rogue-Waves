@@ -299,7 +299,7 @@ public static class SpoolData
                 U(Head, "Delivery", 2, "Threaded Delivery", "Carries Thread home on its own", "Delivery_Base=1", "Redaura=30", "",
                     "Full, it carries its Thread home and comes back"),
                 U(Head, "Patchwork", 2, "Patchwork Job", "Mends nearby units with Thread", "Mend_Base=2;Mendrange_Base=2;Mendper_Base=5", "Redaura=30", "",
-                    "MEND: 2 Health a second to your units within 2 tiles", "1 Thread per 5 Health"),
+                    "MEND: 2 health a second to your units within 2 tiles", "1 Thread per 5 health"),
             }
         },
         new Build

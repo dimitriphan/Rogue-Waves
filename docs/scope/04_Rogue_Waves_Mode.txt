@@ -4,7 +4,7 @@
 	# The mode comes after the first release, which is Yossele alone -> 01_Expansion.txt [Releases]
 
 	[Summary]
-		The Rogue Waves is an expansive mod revolving around roguelike mechanics and new content. New vessels and cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 10 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency earned each tide and from optional objectives given to the player: [Directions] are picked before each map, and their ranks are bought at {VENDCINT}. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
+		The Rogue Waves is an expansive mod revolving around roguelike mechanics and new content. New vessels and Cardinals are included, along with a new roguelike mode. In this mode, players join together and play a campaign of 10 maps in a row with increasing difficulty and new modifiers / enemies that change with each campaign. Progress is saved between maps, so a campaign can be played over several sessions. Players can empower themselves using new mechanics and upgrades, purchasable with a new currency earned each tide and from optional objectives given to the player: [Directions] are picked before each map, and their ranks are bought at {VENDCINT}. Completing a campaign unlocks a harder difficulty modifier for future campaigns. Score does not count in this mode.
 
 	[Campaign]
 		- Maps: 10 in a row, with increasing difficulty
@@ -73,7 +73,7 @@
 		- Status: built, and passed its PC round. How a flooded map looks is yours to check by eye
 
 		{Rising Water}
-			- In-game line: Rising Water: the water climbs each tide. More Pure Aura
+			- In-game line: Rising Water: the water climbs each Tide. More Pure Aura
 			- Does: the water climbs each tide. Flooded tiles can't be built on, and shots through the water slow down.
 			- Numbers: the water rises each tide by its own stats, as on Manafold
 			- Never on: Manafold

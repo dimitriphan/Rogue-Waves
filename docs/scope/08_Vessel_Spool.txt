@@ -47,7 +47,7 @@
 			- On the ground: {Thread} lasts on the ground for 15 seconds before despawning unless collected.
 			- Pickup: by walking within 1 tile of it
 			- Collected by: {Thread} must be collected by Spool or a {Thread Head}. / Make sure it doesn't lag the game, make collection look similar to Boutman's fish flying to buckets. \
-			- Delivered: {Thread} must be moved to main base building in order to be used by Spool's buildings, either by Spool itself or by a {Thread Head}. / {Thread Head}'s porting ability works similar to worker units from RTS games like Starcraft. \
+			- Delivered: {Thread} must be moved to main base building in order to be used by Spool's buildings, either by Spool itself or by a {Thread Head}. / {Thread Head}'s porting ability works similar to worker units from RTS games like StarCraft. \
 			- Drop-off: Spool drops off what it carries by walking within 1.5 tiles of the {Yarn Stash}
 			- Spent on: {Crafted} and {Patch}
 			- Sold back: selling (Unthread) a {Crafted} refunds half its {Thread}, rounded down

@@ -13,9 +13,9 @@
 				- Touches: (Minions)
 				- Rank I: Your (Minions) take reduced damage from attacks.
 				- Rank II: Your (Minions) take further reduced damage from attacks.
-				- Rank III: Your (Minions) take further reduced damage, and can only take a max amount of damage per each hit.
+				- Rank III: Your (Minions) take further reduced damage, and can only take a max amount of damage per hit.
 				- Numbers: 15% / 25% / 35% less damage; rank III: one hit takes at most 25% of max health
-				- Look: A {Stitched} with a bandaid on its face, holding back tears.
+				- Look: A {Stitched} with a band-aid on its face, holding back tears.
 				- Clashes: Any Vessel without (Minion)
 				- By: Dimitri
 			{Barnacle Coat}
@@ -256,7 +256,7 @@
 				- Vessel: Argo
 				- Touches: Deep Water
 				- Rank I: Deep Water reaches farther around each pool
-				- Rank II: Deep Water reaches further still around each pool
+				- Rank II: Deep Water reaches farther still around each pool
 				- Rank III: Deep Water reaches much farther around each pool
 				- Numbers: reach +15% / +30% / +50%
 				- Look: A bottle with a dark current curling inside
@@ -301,9 +301,9 @@
 				- Kind: Shift
 				- Vessel: Yossele
 				- Touches: The vessel itself
-				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives stack of fertilizer per x enemies killed in a radius around Yossele. / x is a number \
-				- Rank II: Gives stack of fertilizer per x enemies killed in a radius around Yossele / x is a number \
-				- Rank III: Gives stack of fertilizer per x enemies killed in a much larger radius around Yossele / x is a number \
+				- Rank I: Unlocks {Fertilize} for Yossele if not already unlocked, and gives a stack of fertilizer per x enemies killed in a radius around Yossele. / x is a number \
+				- Rank II: Gives a stack of fertilizer per x enemies killed in a radius around Yossele / x is a number \
+				- Rank III: Gives a stack of fertilizer per x enemies killed in a much larger radius around Yossele / x is a number \
 				- Numbers: rank I: 1 fertilizer per 10 enemies killed within 4 tiles of Yossele; rank II: per 6 within 4 tiles; rank III: per 6 within 7 tiles /~ What the Yossele build uses \
 				- Look: A small gray bin with dirt inside and stink lines emanating from the top.
 				- Clashes: None

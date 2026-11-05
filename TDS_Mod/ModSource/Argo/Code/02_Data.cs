@@ -180,7 +180,7 @@ public static class ArgoData
         new Direction { Name = "Deepcurrent", Display = "Deep Current", Bonus = 0.15f,
             Desc = "Deep Water reaches farther around each pool" },
         new Direction { Name = "Deepcurrent2", Display = "Deep Current II", Bonus = 0.3f,
-            Desc = "Deep Water reaches further still around each pool" },
+            Desc = "Deep Water reaches farther still around each pool" },
         new Direction { Name = "Deepcurrent3", Display = "Deep Current III", Bonus = 0.5f,
             Desc = "Deep Water reaches much farther around each pool" },
     };

@@ -30,7 +30,7 @@ public static class RWWeather
     {
         switch (w)
         {
-            case RWChart.RisingWater: return "the water climbs each tide. More Pure Aura";
+            case RWChart.RisingWater: return "the water climbs each Tide. More Pure Aura";
             case RWChart.QuickeningCurrent: return "the game runs faster from Tide " + QuickTide + ". More Pure Aura";
             case RWChart.NestingGround: return "a halberd nest grows near the foes. More Pure Aura";
         }
@@ -266,7 +266,7 @@ public static class RWWeather
             else if (w == RWChart.RisingWater) Flood = SpawnFlood();
             else if (w == RWChart.NestingGround) Nest = SpawnNest();
             RWLog.Info("weather " + Display(w) + " on " + node.Name + " (" + node.Plan + "): " + (w == RWChart.RisingWater ? "flood " + (Flood != null) : w == RWChart.NestingGround ? "nest " + (Nest != null) : "game speed from Tide " + QuickTide)
-                + ", +" + PureAuraPerTide + " Pure Aura a tide");
+                + ", +" + PureAuraPerTide + " Pure Aura a Tide");
         }
         catch (Exception e) { RWLog.Warn("weather " + Display(w) + ": " + e); }
     }
