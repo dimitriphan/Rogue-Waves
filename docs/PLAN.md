@@ -403,6 +403,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   unlock, numbers in Notched Oar, British or American spelling, the weather's pay wording for the sweep). No number
   changed. Compiled here (Argo, Spool, the mode and the foes, every test switch, 0 errors; editors clean), not run on
   the PC. His project-files scope copy and the Scope Editor are behind in 00, 02-09 and 11-13 too (his word to sync).
+  2026-11-05: every call waiting on Dimitri after PR #115 on one page, at his word (`docs/reports/OPEN_DECISIONS_2026-11-05b.md`):
+  14 numbered items with Claude's recommendation and what each blocks (the build's 15 readings and 7 behaviour
+  questions, Yossele's ~90 scope `07` defaults, the last defaults and built `! NEEDS !` lines, five wording calls, the
+  meteor's crystal, Yossele's final sheet, when to run the next PC round, the sync, `.claude/settings.json`). Spring
+  Tide by a Fie wall is not a call: B7 in PR #103 rebuilt it, and the PC still has to see it. Docs only, no compile.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
