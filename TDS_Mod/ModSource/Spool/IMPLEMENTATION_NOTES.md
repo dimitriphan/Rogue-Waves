@@ -194,6 +194,28 @@ the vessel's brain copies the ranks held to `SpoolPlayer` twice a second, and th
 
 With none held the numbers and behaviour are today's. Measured in game on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`): selling a Crafted refunds 65, 80 and 100%, rank III mends around it, a Sewing Machine's Looms mine half as fast again and spin no Thread, and it mends 10 and 20 each Tide.
 
+Five more since 2026-11-05, scope 11's numbers in `02_Data.cs`, no `Clash`; compiled with and without `SPOOL_SELFTEST`,
+not yet run in game (self-test section 10c, `98_Directions.cs`):
+
+- **Double Needle** (`Doubleneedle`): a Tin's stitch time (`SpoolTinBrain.StitchTime`) is its Respawn x 0.85 / 0.7 / 0.7.
+  Rank III: every third paid stitch a Tin makes while it is held adds one more of its kind for no Thread (`Doubled`),
+  which may stand one over the Tin's Units until one falls.
+- **Button Jar** (`Buttonjar`, a Shift with no clash): a stitch makes two for one's Thread, the cost split between them
+  (what selling refunds); each has a Pmulti of share - 1 on Health and Damage (0.55 / 0.65 / 0.75), so Woolen Lining's
+  Multi applies to the smaller base; the Tin's Units doubles; with one slot free a stitch makes one, for half the
+  Thread. Selling refunds each its own half, rounded down (a 10-Thread pair gives back 2 + 2 where a whole one gives 5).
+  Their look is a whole one's until the art PR draws a smaller one.
+- **Pattern Book** (`Patternbook`): a Tin's Crafted killed (not sold) is queued to come back (`SpoolTinBrain.Fell`, from
+  the unit's `Gone`) while fewer than 1 / 2 / 3 have been queued this Tide (`ModKitTides.Wave`); it comes back of its
+  own kind with Cost 0, before any paid stitch and in its place even past the Tin's Units, on the usual stitch time
+  (rank III: at once); one that can't be made waits a second in the queue.
+- **Merit Badge** (`Meritbadge`): a foe killed whose `Lasthit` is a Crafted (`SpoolServer.OnDespawn`) counts for it while
+  its owner holds a rank: +3% Damage (a kept Multi) and Health (a Multi made anew, so its health keeps its share) each,
+  up to +15 / 30 / 45%; a `Spool_Merit` look each time.
+- **Odd Socks** (`Oddsocks`): every 0.4 s a Crafted with a Crafted of another kind and its team within 2 tiles
+  (`SpoolServer.OtherKindNear`) has a kept +8 / 15 / 25% Multi on Damage, 0 when alone; rank III also puts a handler
+  at the front of its hit chain (re-fronted every 0.1 s) that takes 10% off each hit (`SpoolUnitBrain.Socked`).
+
 ## Open in the sheet (Dimitri's)
 
 The Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are on the sheet

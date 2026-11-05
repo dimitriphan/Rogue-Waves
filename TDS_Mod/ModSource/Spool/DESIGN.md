@@ -162,6 +162,17 @@ Tin's UNTHREAD button. Scope `08` holds their numbers.
 two by Spool (`SpoolContent.BuildDirections`, `IMPLEMENTATION_NOTES.md`), the third by the mode (`RogueWavesMode/Code/16_Directions.cs`);
 measured in game on 2026-11-04.
 
+Claude's five, built 2026-11-05 with the sheet's numbers (compiled, not yet run in game; `IMPLEMENTATION_NOTES.md`
+"Directions"):
+
+| Direction | Rank I / II / III | Reading |
+|---|---|---|
+| Double Needle | Stitch time -15 / 30 / 30%; rank III every third stitch makes one more Crafted for no Thread | The extra may stand one over the Tin's Units until one falls |
+| Button Jar (Shift) | Two Crafted for one's Thread, each 55 / 65 / 75% health and damage; Units doubled | A Pmulti, so it scales Woolen Lining's health too; each costs half for selling (each refund rounded down); one slot free makes one for half; the smaller look waits for the art |
+| Pattern Book | Once a Tide, the first 1 / 2 / 3 of a Tin's Crafted to fall come back free | In the fallen one's place, even past the Tin's Units; ranks I-II on the Tin's usual stitch time, rank III at once; nothing back when sold |
+| Merit Badge | +3% Damage and Health a foe drowned, up to +15 / 30 / 45% | "Drowned" = it landed the last hit; lost when it falls |
+| Odd Socks | +8 / 15 / 25% Damage beside another kind of Crafted (2 tiles); rank III also 10% less damage taken | Another kind on the same team: a Stitched beside a Dart |
+
 ## Visual effects and sounds
 
 - Ground Thread: a small sage tuft (purple until 2026-11-05) that bobs and fades in its last 2 s; a pickup flies to the carrier in a hop; a

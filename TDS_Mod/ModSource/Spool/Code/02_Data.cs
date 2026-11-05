@@ -126,6 +126,54 @@ public static class SpoolData
             Desc = "Sewing Machines heal in a much larger radius" },
     };
 
+    // Claude's five (docs/scope/11, built 2026-11-05), one upgrade per rank, no clash; the numbers are the sheet's.
+    public class Direction { public string Name, Display, Desc; }
+    // Double Needle: a Tin's stitch time is cut; rank III: every third stitch makes one more Crafted for no Thread.
+    public static readonly Direction[] Doubleneedles =
+    {
+        new Direction { Name = "Doubleneedle", Display = "Double Needle", Desc = "Your Repurposed Cookie Tins stitch faster" },
+        new Direction { Name = "Doubleneedle2", Display = "Double Needle II", Desc = "They stitch faster still" },
+        new Direction { Name = "Doubleneedle3", Display = "Double Needle III", Desc = "Every third Crafted they stitch comes out as two" },
+    };
+    public static readonly float[] NeedleCut = { 0.15f, 0.3f, 0.3f };
+    public const int NeedleEvery = 3;
+    // Button Jar (a Shift on the Tin): each stitch makes two smaller Crafted for one's Thread, each with this share of
+    // the health and damage; a Tin holds twice as many.
+    public static readonly Direction[] Buttonjars =
+    {
+        new Direction { Name = "Buttonjar", Display = "Button Jar", Desc = "Your Repurposed Cookie Tins stitch Crafted two at a time, smaller and weaker, for the Thread of one" },
+        new Direction { Name = "Buttonjar2", Display = "Button Jar II", Desc = "The small Crafted are sturdier" },
+        new Direction { Name = "Buttonjar3", Display = "Button Jar III", Desc = "The small Crafted are sturdier still and hit harder" },
+    };
+    public static readonly float[] ButtonShare = { 0.55f, 0.65f, 0.75f };
+    public const int ButtonPair = 2;
+    // Pattern Book: once a Tide, the first Crafted of each Tin to fall are stitched again for free (rank III at once).
+    public static readonly Direction[] Patternbooks =
+    {
+        new Direction { Name = "Patternbook", Display = "Pattern Book", Desc = "Once a Tide, the first Crafted of each Repurposed Cookie Tin to fall is stitched again for free" },
+        new Direction { Name = "Patternbook2", Display = "Pattern Book II", Desc = "The first two are" },
+        new Direction { Name = "Patternbook3", Display = "Pattern Book III", Desc = "The first three are, at once" },
+    };
+    public static readonly int[] PatternFree = { 1, 2, 3 };
+    // Merit Badge: a Crafted gains damage and health for each foe it drowns (its kills), up to a cap; lost when it falls.
+    public static readonly Direction[] Meritbadges =
+    {
+        new Direction { Name = "Meritbadge", Display = "Merit Badge", Desc = "Your Crafted grow stronger with every foe they drown" },
+        new Direction { Name = "Meritbadge2", Display = "Merit Badge II", Desc = "They grow further" },
+        new Direction { Name = "Meritbadge3", Display = "Merit Badge III", Desc = "They grow much further" },
+    };
+    public const float MeritEach = 0.03f;
+    public static readonly float[] MeritCap = { 0.15f, 0.3f, 0.45f };
+    // Odd Socks: a Crafted deals more while another kind of Crafted is near; rank III: it also takes less damage.
+    public static readonly Direction[] Oddsocks =
+    {
+        new Direction { Name = "Oddsocks", Display = "Odd Socks", Desc = "Your Crafted fight better beside a different kind of Crafted" },
+        new Direction { Name = "Oddsocks2", Display = "Odd Socks II", Desc = "Better still" },
+        new Direction { Name = "Oddsocks3", Display = "Odd Socks III", Desc = "Much better, and they take less damage" },
+    };
+    public static readonly float[] SocksBonus = { 0.08f, 0.15f, 0.25f };
+    public const float SocksRange = 2f, SocksGuard = 0.1f;   // tiles; rank III: less damage taken
+
     // ---------------------------------------------------------------- Crafted and other units
 
     public const string Stitched = "Mob_Spoolstitched", Dart = "Mob_Spooldart", Seam = "Mob_Spoolseam";

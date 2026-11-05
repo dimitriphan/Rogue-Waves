@@ -362,6 +362,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Cutting Jar, Sap Bucket, Creeping Ivy, Deep Breath and Fairy Ring for Yossele, each with the sheet's numbers and its
   self-test lines (Argo after Deep Current, Yossele section 12c). Deep Breath's 2 s rest counts from the laser's reload,
   since Yossele fires every 2 s. Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
+  2026-11-05, part 6: Spool's new Directions built (scope `11`, B11): Double Needle, Button Jar, Pattern Book, Merit
+  Badge and Odd Socks, with the sheet's numbers and self-test section 10c; Button Jar's smaller look waits for the art.
+  Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

@@ -9,7 +9,8 @@ public class SpoolPlayer
     public long Owner;
     public int Stash, Carried;
     public bool Placed;          // the map's first Stash got its starting Thread
-    public int Recycler, Sewing; // Direction ranks the vessel holds: its brain refreshes them, they stay while it is down
+    // Direction ranks the vessel holds: its brain refreshes them, they stay while it is down.
+    public int Recycler, Sewing, Needle, Buttons, Pattern, Merit, Socks;
     public SpoolHeroBrain Hero;
     public SpoolStashBrain Home;
 
@@ -429,7 +430,13 @@ public static class SpoolServer
                 return;
             }
             if (killed && master.Taglistserver != null && master.Taglistserver.Contains("Enemy"))
+            {
                 FoeFell(master);
+                // Merit Badge: the Crafted that landed the last hit drowned it.
+                SpoolUnitBrain by = master.Lasthit != null ? master.Lasthit.GetComponent<SpoolUnitBrain>() : null;
+                if (by != null)
+                    by.Drowned();
+            }
         }
         catch (Exception e)
         {
@@ -526,6 +533,19 @@ public static class SpoolServer
             if (b is T && b.Started && b.Master != null && b.Owner == owner)
                 list.Add((T)b);
         return list;
+    }
+
+    // Odd Socks: a Crafted of another kind on the same team within 'reach' of this one.
+    public static bool OtherKindNear(SpoolUnitBrain u, float reach)
+    {
+        Vector3 at = ModKitUtil.Pos(u.Master);
+        int team = ModKitUtil.Team(u.Master);
+        // The cheap tests first: most units are the same kind, or not Crafted at all.
+        foreach (SpoolUnitBrain o in Units)
+            if (o != null && o.Def != null && o.Def.Sellable && o.Def.Id != u.Def.Id && o.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach
+                && ModKitUtil.Team(o.Master) == team && ModKitUtil.Alive(o.Master))
+                return true;
+        return false;
     }
 
     public static int UnitsOf(SpoolBuilding home)

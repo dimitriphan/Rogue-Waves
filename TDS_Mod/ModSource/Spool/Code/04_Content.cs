@@ -670,6 +670,10 @@ public static class SpoolContent
             d.Defaultparams["Sewing_Heal"] = s.Heal;
             AddDirection(d);
         }
+        // Claude's five (2026-11-05): their numbers are in SpoolData, read by the brains from the ranks the vessel holds.
+        foreach (SpoolData.Direction[] ranks in new[] { SpoolData.Doubleneedles, SpoolData.Buttonjars, SpoolData.Patternbooks, SpoolData.Meritbadges, SpoolData.Oddsocks })
+            foreach (SpoolData.Direction s in ranks)
+                AddDirection(ModKitDirections.Make(template, "Spool", s.Name, s.Display, s.Desc));
     }
 
     static void AddDirection(Upgradeproperties d)

@@ -106,6 +106,11 @@ public class SpoolHeroBrain : MonoBehaviour
     {
         Player.Recycler = SpoolServer.DirectionRank(Master, SpoolData.Recyclers[0].Name);
         Player.Sewing = SpoolServer.DirectionRank(Master, SpoolData.Sewingmachines[0].Name);
+        Player.Needle = SpoolServer.DirectionRank(Master, SpoolData.Doubleneedles[0].Name);
+        Player.Buttons = SpoolServer.DirectionRank(Master, SpoolData.Buttonjars[0].Name);
+        Player.Pattern = SpoolServer.DirectionRank(Master, SpoolData.Patternbooks[0].Name);
+        Player.Merit = SpoolServer.DirectionRank(Master, SpoolData.Meritbadges[0].Name);
+        Player.Socks = SpoolServer.DirectionRank(Master, SpoolData.Oddsocks[0].Name);
     }
 
     public string Menu()
