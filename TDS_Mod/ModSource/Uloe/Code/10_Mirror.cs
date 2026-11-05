@@ -116,9 +116,8 @@ public class UloeMirrorBrain : UloeBuilding
                 float roll = ForceRoll >= 0f ? ForceRoll : UnityEngine.Random.value;
                 if (blind > 0 && roll < chance)
                 {
-                    hit.Data = new Dictionary<string, float>(hit.Data);
+                    ModKitCombat.SetMulti(hit, 0f);
                     hit.Data["Damage"] = 0f;
-                    hit.Data["Damagemulti"] = 0f;
                     nullified = true;
                     Nullified++;
                     ModKitUtil.Vis(Master, "Uloe_Nullify", Pos, 0f);
@@ -129,8 +128,7 @@ public class UloeMirrorBrain : UloeBuilding
             if (!nullified && Has("Tempered"))
             {
                 float cut = Mathf.Clamp01(Param("Tempered_Base", 0.2f));
-                hit.Data = new Dictionary<string, float>(hit.Data);
-                hit.Data["Damagemulti"] = multi * (1f - cut);
+                ModKitCombat.SetMulti(hit, multi * (1f - cut));
                 Cut += total * cut;
                 dealt = total * (1f - cut);
             }

@@ -23,15 +23,15 @@ public static class RWBase
     public static readonly float[] LeashHit = { 0f, 0f, 0.15f, 0.3f };
     public const string Regulars = "Tower_Fieshop_Regular4_Upgradeobject", Buffet = "Tower_Fieshop_Buffet5_Upgradeobject";
     static readonly string[] WormStats = { "Fishcost", "Barrelcost", "Boatcost" };
+    static readonly string[] WormKeys = { "WormFishcost", "WormBarrelcost", "WormBoatcost" };   // RWHold's, one a stat
     static readonly string[] Recounts = { "Countfish", "Countbarrel", "Countboat" };
 
     sealed class Holder { public long Session; public Entity_Master Vessel; public int Trowel, Shovel, Worm, Sign, Leash; }
-    sealed class Wall { public float Health, Hurt, Next; }
     sealed class Left { public Genitem Block; public float Until, Level; }
     sealed class Sign { public int Count; public Entity_Ai_Tower_Fieshop Ai; public object Chain; }
 
     static readonly List<Holder> holders = new List<Holder>();
-    static readonly Dictionary<Entity_Master, Wall> walls = new Dictionary<Entity_Master, Wall>();
+    static readonly Dictionary<Entity_Master, RWUtil.Rest> walls = new Dictionary<Entity_Master, RWUtil.Rest>();
     static readonly Dictionary<long, Genitem> standing = new Dictionary<long, Genitem>();
     static readonly List<Left> left = new List<Left>();
     static readonly Dictionary<Entity_Master, Sign> signs = new Dictionary<Entity_Master, Sign>();
@@ -207,14 +207,14 @@ public static class RWBase
         if (rank < 3)
             return;
         if (!walls.ContainsKey(e))
-            walls[e] = new Wall { Health = ModKitUtil.Health(e), Hurt = now };
+            walls[e] = new RWUtil.Rest { Health = ModKitUtil.Health(e), Hurt = now };
         ModKitUtil.Front(e, wallHit);
     }
 
     // A hit on a mending wall: first in its chain, so a heal in the same moment can't hide it.
     static void OnWallHit(Link_Interact hit)
     {
-        Wall w;
+        RWUtil.Rest w;
         if (hit != null && hit.Type == "Hurt" && hit.To != null && walls.TryGetValue(hit.To, out w))
             w.Hurt = Time.time;
     }
@@ -227,27 +227,12 @@ public static class RWBase
             return;
         foreach (Entity_Master e in new List<Entity_Master>(walls.Keys))
         {
-            Wall w = walls[e];
             if (!ModKitUtil.Alive(e))
             {
                 walls.Remove(e);
                 continue;
             }
-            float hp = ModKitUtil.Health(e);
-            if (hp < w.Health - 0.001f)
-                w.Hurt = now;
-            else if (now - w.Hurt >= TrowelRest && now >= w.Next)
-            {
-                float missing = ModKitUtil.MaxHealth(e) - hp;
-                if (missing > 0.001f)
-                {
-                    float heal = Mathf.Min(missing, TrowelMend);
-                    ModKitUtil.Heal(e, e, heal);
-                    Mended += heal;
-                    w.Next = now + 1f;
-                }
-            }
-            w.Health = ModKitUtil.Health(e);
+            Mended += RWUtil.Mend(walls[e], e, now, TrowelRest, TrowelMend, false);
         }
     }
 
@@ -255,8 +240,8 @@ public static class RWBase
     static void Worm(Entity_Master bro, int rank)
     {
         bool changed = false;
-        foreach (string stat in WormStats)
-            changed |= RWHold.Set(bro, "Worm" + stat, stat, Helper_Entitytools.Modtypes.Multi, -WormCut[rank]);
+        for (int i = 0; i < WormStats.Length; i++)
+            changed |= RWHold.Set(bro, WormKeys[i], WormStats[i], Helper_Entitytools.Modtypes.Multi, -WormCut[rank]);
         if (!changed)
             return;
         foreach (string count in Recounts)
@@ -320,9 +305,7 @@ public static class RWBase
             float multi;
             if (rank < 2 || !hit.Data.TryGetValue("Damagemulti", out multi))
                 return;
-            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = multi * (1f + LeashHit[rank]);
+            ModKitCombat.SetMulti(hit, multi * (1f + LeashHit[rank]));
             Dashed++;
         }
         catch (Exception e) { RWLog.Once("leash", "a dash hit: " + e.Message); }

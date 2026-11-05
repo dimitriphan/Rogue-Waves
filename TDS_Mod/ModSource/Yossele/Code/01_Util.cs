@@ -78,16 +78,6 @@ public static class YosseleUtil
             ModKitUtil.Debuff(by, foe, vfx, seconds);
     }
 
-    // A slow that lasts until taken off (vines, Sticky Spores): never takes a foe under 10% of its speed.
-    public static Link_Modifier SlowOn(Entity_Master foe, float amount)
-    {
-        Link_Stats s = ModKitUtil.Speed(foe);
-        if (s == null || amount <= 0f)
-            return null;
-        float cut = Mathf.Min(Mathf.Clamp01(amount), s.Value_Multi - 0.1f);
-        return cut >= 0.01f ? Helper_Entitytools.Addmod(foe, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, 0f) : null;
-    }
-
     // Owner-only message, shown by YosseleClient on the owner's screen.
     public static void Warn(Entity_Master master, int code) { ModKitUtil.Vis(master, "Yossele_Warn", ModKitUtil.Pos(master), code); }
 

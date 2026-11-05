@@ -224,8 +224,7 @@ public class UloeHeroBrain : MonoBehaviour
                 return;
             if (!hit.Data.TryGetValue("Damagemulti", out m))
                 m = 1f;
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = m * (1f - surgeCut);
+            ModKitCombat.SetMulti(hit, m * (1f - surgeCut));
             SurgeCuts++;
         }
         catch (Exception e)

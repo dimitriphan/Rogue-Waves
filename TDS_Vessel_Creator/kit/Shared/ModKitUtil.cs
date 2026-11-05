@@ -1,9 +1,10 @@
-// Kit 1.9 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.12 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: the small helpers every vessel had its own copy of (the database, beings, stats, foes near a point, hits,
 // debuff looks, costs, json fields). Each part keeps only what names it: Retag and Clone (the "-<vessel>" id suffix),
 // Warn, Later, its own rules, and Argo's ById, Costs and Params (they read ids and numbers a little differently).
 // Before kit 1.8 each vessel carried these in <Vessel>Util; the bodies came unchanged
-// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Debuff`.
+// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Debuff`; kit 1.12 added `SlowOn`, `Purse`, `Give` and `Gain` (copies
+// the build of 2026-11-05 had made in several parts) and `Keep`'s Health rule.
 public static class ModKitUtil
 {
     public static Dictionary<string, UnityEngine.Object> Folder(string name)
@@ -123,12 +124,21 @@ public static class ModKitUtil
             mod.Remove.Invoke();
     }
 
-    // A modifier this code keeps and re-sets (a Growth bonus): made on first use, then its value changed in place.
+    // A modifier this code keeps and re-sets (a Growth bonus): made on first use, then its value changed in place, and the
+    // stat filled at once. Health is a Variable stat, which keeps its share of the maximum when the maximum moves, so its
+    // modifier is taken off and made again instead (when its value changes), and nothing fills it (kit docs/17 §2.1).
     public static Link_Modifier Keep(Entity_Master master, Link_Modifier mod, string stat, Helper_Entitytools.Modtypes type, float value)
     {
         Link_Stats s;
         if (master == null || master.Statsserver == null || !master.Statsserver.TryGetValue(stat, out s))
             return mod;
+        if (stat == "Health")
+        {
+            if (mod != null && !mod.Dead && Mathf.Approximately(ValueOf(mod, type), value))
+                return mod;
+            Unmod(mod);
+            return Helper_Entitytools.Addmod(master, stat, value, type, 0f);
+        }
         if (mod == null || mod.Dead)
             mod = Helper_Entitytools.Addmod(master, stat, value, type, 0f);
         else if (type == Helper_Entitytools.Modtypes.Add) mod.Value_Add = value;
@@ -137,6 +147,14 @@ public static class ModKitUtil
         else mod.Value_Base = value;
         s.Value = s.Value_Calc;
         return mod;
+    }
+
+    static float ValueOf(Link_Modifier mod, Helper_Entitytools.Modtypes type)
+    {
+        if (type == Helper_Entitytools.Modtypes.Add) return mod.Value_Add;
+        if (type == Helper_Entitytools.Modtypes.Multi) return mod.Value_Multi;
+        if (type == Helper_Entitytools.Modtypes.Pmulti) return mod.Value_Pmulti;
+        return mod.Value_Base;
     }
 
     // Limits of 0.05..99999 on the game's enemies; a Speed without Limits has bounds of +-infinity and would go negative
@@ -149,6 +167,17 @@ public static class ModKitUtil
         if (s.Value_Bounds.x < 0f)
             s.Value_Bounds = new Vector2(0f, s.Value_Bounds.y);
         return s;
+    }
+
+    // A slow that lasts until taken off (Yossele's vines, Fog Horn, Tin Whistle): a Speed Multi that never takes a foe under
+    // 10% of its speed (pitfall #79), or none.
+    public static Link_Modifier SlowOn(Entity_Master foe, float amount)
+    {
+        Link_Stats s = Speed(foe);
+        if (s == null || amount <= 0f)
+            return null;
+        float cut = Mathf.Min(Mathf.Clamp01(amount), s.Value_Multi - 0.1f);
+        return cut >= 0.01f ? Helper_Entitytools.Addmod(foe, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, 0f) : null;
     }
 
     public static float MaxHealth(Entity_Master m)
@@ -217,6 +246,39 @@ public static class ModKitUtil
             return;
         Dictionary<string, float> d = new Dictionary<string, float> { { "Heal", amount }, { "Damage", amount }, { "Damagemulti", 1f } };
         Helper_Entitytools.Interact(from, to, "Heal", d);
+    }
+
+    // ---------------------------------------------------------------- aura
+
+    public static readonly string[] Auras = { "Redaura", "Blueaura", "Yellowaura" };
+
+    // What a player holds of each colour now (their Tds_Clientinfo.Resources), into 'into' in Auras' order (0 for a colour
+    // they have none of); false, with 'into' untouched, when the player is unknown.
+    public static bool Purse(long owner, float[] into)
+    {
+        Tds_Clientinfo info;
+        if (Game_Players.Instance == null || Game_Players.Instance.Prevsessionlist == null || !Game_Players.Instance.Prevsessionlist.TryGetValue(owner, out info) || info == null)
+            return false;
+        for (int i = 0; i < Auras.Length; i++)
+            into[i] = 0f;
+        foreach (Link_Resource r in info.Resources)
+        {
+            int at = Array.IndexOf(Auras, r.Name.ToString());
+            if (at >= 0) into[at] = r.Amount;
+        }
+        return true;
+    }
+
+    // The map's aura gain: the game's Give multiplies by it, so an exact amount is divided by it first.
+    public static float Gain() { return Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f; }
+
+    // Gives a player aura (or takes it, with a negative amount) through the game's own Give, so its Gained stat nets out.
+    public static void Give(string colour, float amount, long owner)
+    {
+        Link_Resource r = default(Link_Resource);
+        r.Name = colour;
+        r.Amount = amount;
+        Helper_Resources.Giveresource(r, owner, Helper_Resources.Styles.Default);
     }
 
     // Plays a named effect on every player's machine (each part's client brain handles its own types).

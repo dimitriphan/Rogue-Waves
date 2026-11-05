@@ -84,11 +84,12 @@ public static class RWAny
     static readonly Dictionary<Entity_Master, float> fogWant = new Dictionary<Entity_Master, float>();
     static readonly List<string> redrawn = new List<string>();
     static readonly Dictionary<string, float> extra = new Dictionary<string, float> { { Extra, 1f } };
+    static readonly float[] purse = new float[3];   // Fine Sieve's read, in ModKitUtil.Auras' order
     static readonly Entity_Master.Interacts dealt = OnDealt;
     static readonly Entity_Master.Oninteracts hurt = OnHurt;
     static float nextRanks, nextHooks, nextSweep, nextFog, nextPrune;
     public static bool ForceSnag;       // self-test: every hit snags
-    public static int Doubled, Jumped, Burned, Snags, Saved, Swept, Sieved;
+    public static int Doubled, Jumped, Burned, Snags, Saved, Swept;
     public static float Bled;
 
     // A map starts (RWVote.MapStart): the last map's things go, and each holder's once-a-map uses come back.
@@ -222,20 +223,13 @@ public static class RWAny
         }
         if (!towers)
             return;
-        foreach (string tag in new[] { "Tower", "Bouthouse" })
-        {
-            List<Entity_Master> list;
-            if (!Game_Entity.Instance.Entityclienttags.TryGetValue(tag, out list))
-                continue;
-            foreach (Entity_Master e in new List<Entity_Master>(list))
+        foreach (string tag in SweptTags)
+            foreach (Entity_Master e in Owned(tag))
             {
                 Crew c;
-                if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Statsserver == null || !crews.TryGetValue(ModKitUtil.Owner(e), out c))
+                if (!crews.TryGetValue(ModKitUtil.Owner(e), out c))
                     continue;
-                // RWDirections.Reach's filter: no vessel and no Blurry Photo copy (Boutbro is no Tower, so not here).
                 List<string> tags = e.Beingserver.Entity.Tags;
-                if (tags.Contains("Hero") || tags.Contains("Clone") || tags.Contains("Prespawn"))
-                    continue;
                 bool house = tags.Contains("Bouthouse");
                 if (!house)
                 {
@@ -245,7 +239,40 @@ public static class RWAny
                 if (c.Hands > 0) Hands(e, c, house, tags);
                 Swept++;
             }
+    }
+
+    static readonly string[] SweptTags = { "Tower", "Bouthouse" };   // Boutbro is no Tower, so not here
+    static readonly Dictionary<string, List<Entity_Master>> owned = new Dictionary<string, List<Entity_Master>>();
+    static readonly Dictionary<string, int> ownedFrame = new Dictionary<string, int>();
+    static readonly Predicate<Entity_Master> fallen = e => !ModKitUtil.Alive(e);
+
+    // A tag's things as the sweeps read them (RWDirections.Reach's filter): standing, with stats, no vessel and no Blurry
+    // Photo copy, whoever owns them. One list a tag a frame (RWAny's and RWTrinkets' sweeps and Tar Bucket fall on the
+    // same frames), kept for reuse; a second look in the frame drops what fell since.
+    public static IReadOnlyList<Entity_Master> Owned(string tag)
+    {
+        List<Entity_Master> l, all;
+        int frame;
+        if (!owned.TryGetValue(tag, out l))
+            owned[tag] = l = new List<Entity_Master>();
+        if (ownedFrame.TryGetValue(tag, out frame) && frame == Time.frameCount)
+        {
+            l.RemoveAll(fallen);
+            return l;
         }
+        ownedFrame[tag] = Time.frameCount;
+        l.Clear();
+        if (!Game_Entity.Instance.Entityclienttags.TryGetValue(tag, out all))
+            return l;
+        foreach (Entity_Master e in all)
+        {
+            if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Statsserver == null)
+                continue;
+            List<string> tags = e.Beingserver.Entity.Tags;
+            if (!tags.Contains("Hero") && !tags.Contains("Clone") && !tags.Contains("Prespawn"))
+                l.Add(e);
+        }
+        return l;
     }
 
     // Every Trinket stack the player holds and every Cardinal the run holds, the lobby's picks too.
@@ -303,10 +330,8 @@ public static class RWAny
             }
             if (c.OarNow)
             {
-                // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
-                hit.Data = new Dictionary<string, float>(hit.Data);
                 multi *= 2f;
-                hit.Data["Damagemulti"] = multi;
+                ModKitCombat.SetMulti(hit, multi);
                 Doubled++;
             }
             float landed = damage * multi;
@@ -348,6 +373,12 @@ public static class RWAny
         }
         if (!want.Contains(handler))
             want.Add(handler);
+        SetChain(m, list, want);
+    }
+
+    // A rebuilt hit chain goes back only when it differs from the one there.
+    public static void SetChain(Entity_Master m, Delegate[] list, List<Delegate> want)
+    {
         bool same = want.Count == list.Length;
         for (int i = 0; same && i < list.Length; i++)
             same = list[i].Equals(want[i]);
@@ -400,8 +431,7 @@ public static class RWAny
             }
             if (!Mathf.Approximately(multi, was))
             {
-                hit.Data = new Dictionary<string, float>(hit.Data);
-                hit.Data["Damagemulti"] = multi;
+                ModKitCombat.SetMulti(hit, multi);
             }
         }
         catch (Exception e) { RWLog.Once("any hurt", "a hit on a vessel: " + e.Message); }
@@ -473,15 +503,22 @@ public static class RWAny
     {
         if (!killed || master == null || !RWRun.InCampaignMap || !ModKitUtil.IsServer)
             return;
-        // Lasthit set by the killing blow, not by an older hit: one carrying its own Damage (a Sno Box, a wall's blast) never
-        // moves it (kit docs/17 §2.6), and a death comes inside the blow that deals it (Helper_Damagetools.Addressdamage).
+        Crew c = DrownedBy(master);
+        if (c == null || c.Lamp <= 0)
+            return;
+        if (master.Taglistserver == null || !master.Taglistserver.Contains("Enemy") || ModKitUtil.Team(master) == ModKitUtil.Team(c.Vessel))
+            return;
+        bursts.Add(new Burst { From = c.Vessel, Skip = master, At = ModKitUtil.Pos(master), Damage = LampBurst[c.Lamp] * ModKitUtil.MaxHealth(master), Reach = LampReach[c.Lamp] });
+    }
+
+    // The player whose vessel dealt the blow that drowned this, or null. Its Lasthit, when set by the killing blow, not by an
+    // older hit: one carrying its own Damage (a Sno Box, a wall's blast) never moves it (kit docs/17 §2.6), and a death comes
+    // inside the blow that deals it (Helper_Damagetools.Addressdamage).
+    public static Crew DrownedBy(Entity_Master master)
+    {
         Entity_Master by = master.Lasthit;
         Crew c;
-        if (by == null || Time.fixedTime - master.Lasthittime > LampFresh || !crews.TryGetValue(ModKitUtil.Owner(by), out c) || c.Vessel != by || c.Lamp <= 0)
-            return;
-        if (master.Taglistserver == null || !master.Taglistserver.Contains("Enemy") || ModKitUtil.Team(master) == ModKitUtil.Team(by))
-            return;
-        bursts.Add(new Burst { From = by, Skip = master, At = ModKitUtil.Pos(master), Damage = LampBurst[c.Lamp] * ModKitUtil.MaxHealth(master), Reach = LampReach[c.Lamp] });
+        return by != null && Time.fixedTime - master.Lasthittime <= LampFresh && crews.TryGetValue(ModKitUtil.Owner(by), out c) && c.Vessel == by ? c : null;
     }
 
     static void Snag(Crew c, Entity_Master from, Entity_Master foe, float total)
@@ -547,7 +584,7 @@ public static class RWAny
                 continue;
             if (f != null)
                 ModKitUtil.Unmod(f.Mod);
-            fogged[kv.Key] = new Fogged { Mod = Slow(kv.Key, kv.Value), Amount = kv.Value };
+            fogged[kv.Key] = new Fogged { Mod = ModKitUtil.SlowOn(kv.Key, kv.Value), Amount = kv.Value };
         }
         if (fogged.Count == fogWant.Count)
             return;
@@ -557,16 +594,6 @@ public static class RWAny
                 ModKitUtil.Unmod(fogged[foe].Mod);
                 fogged.Remove(foe);
             }
-    }
-
-    // A Speed Multi down to a tenth of the foe's speed at most (Yossele's and Argo's floor), or none.
-    public static Link_Modifier Slow(Entity_Master foe, float amount)
-    {
-        Link_Stats s = ModKitUtil.Speed(foe);
-        if (s == null || amount <= 0f)
-            return null;
-        float cut = Mathf.Min(Mathf.Clamp01(amount), s.Value_Multi - 0.1f);
-        return cut >= 0.01f ? Helper_Entitytools.Addmod(foe, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, 0f) : null;
     }
 
     public static float FogOn(Entity_Master foe) { Fogged f; return foe != null && fogged.TryGetValue(foe, out f) && f.Mod != null ? f.Amount : 0f; }
@@ -580,94 +607,84 @@ public static class RWAny
         foreach (long s in RWRun.Sessions())
         {
             int rank = Top(RWRun.For(s), "Sieve");
-            Tds_Clientinfo info;
-            if (rank <= 0 || !Game_Players.Instance.Prevsessionlist.TryGetValue(s, out info) || info == null)
+            if (rank <= 0 || !ModKitUtil.Purse(s, purse))
                 continue;
             string least = "";
             float low = float.MaxValue;
-            foreach (string res in new[] { "Redaura", "Blueaura", "Yellowaura" })
-            {
-                float have = 0f;
-                foreach (Link_Resource r in info.Resources)
-                    if (r.Name.ToString() == res) have = r.Amount;
-                if (have < low) { low = have; least = res; }
-            }
+            for (int i = 0; i < purse.Length; i++)
+                if (purse[i] < low) { low = purse[i]; least = ModKitUtil.Auras[i]; }
             int amount = SieveTimes[rank] * wave;
             Helper_Resources.Giveresources(new List<Link_Resourceset> { new Link_Resourceset { Name = least, Amount = amount } }, s, Helper_Resources.Styles.Default);
-            Sieved += amount;
         }
     }
 }
 
 // One kept modifier per thing and key (kit docs/17 §11.1 rules 5-6): made when the thing has the stat, changed in place when
-// the value changes, taken off at 0. Health is Variable, so its mod is taken off and made again, and the thing keeps its
-// share of it (kit docs/17 §2.1); every other stat is filled at once (ModKitUtil.Keep). Returns true when it changed.
+// the value changes, taken off at 0, through ModKitUtil.Keep (a Health mod made again, every other stat filled at once,
+// kit docs/17 §2.1). Returns true when it changed.
 public static class RWHold
 {
-    sealed class Kept { public Entity_Master On; public Link_Modifier Mod; public float Value; }
-    static readonly Dictionary<string, Kept> kept = new Dictionary<string, Kept>();
+    sealed class Kept { public Link_Modifier Mod; public float Value; }
+    // Each thing's mods by key (a thing is a key here by reference: no string is built for a look-up).
+    static readonly Dictionary<Entity_Master, Dictionary<string, Kept>> kept = new Dictionary<Entity_Master, Dictionary<string, Kept>>();
 
     public static void Clear() { kept.Clear(); }
 
     // Takes every thing's mod under this key off.
     public static void Drop(string key)
     {
-        string end = ":" + key;
-        List<string> gone = new List<string>();
-        foreach (KeyValuePair<string, Kept> kv in kept)
-            if (kv.Key.EndsWith(end))
-            {
-                if (kv.Value.Mod != null && !kv.Value.Mod.Dead) ModKitUtil.Unmod(kv.Value.Mod);
-                gone.Add(kv.Key);
-            }
-        foreach (string k in gone) kept.Remove(k);
+        foreach (Dictionary<string, Kept> mods in kept.Values)
+        {
+            Kept h;
+            if (!mods.TryGetValue(key, out h))
+                continue;
+            if (h.Mod != null && !h.Mod.Dead) ModKitUtil.Unmod(h.Mod);
+            mods.Remove(key);
+        }
     }
 
     public static bool Set(Entity_Master e, string key, string stat, Helper_Entitytools.Modtypes type, float value)
     {
         if (e == null || e.Statsserver == null || !e.Statsserver.ContainsKey(stat))
             return false;
-        string k = e.GetInstanceID() + ":" + key;
+        Dictionary<string, Kept> mods;
+        if (!kept.TryGetValue(e, out mods))
+            kept[e] = mods = new Dictionary<string, Kept>();
         Kept h;
-        kept.TryGetValue(k, out h);
+        mods.TryGetValue(key, out h);
         bool live = h != null && h.Mod != null && !h.Mod.Dead;
         if (live && Mathf.Approximately(h.Value, value))
             return false;
         if (Mathf.Abs(value) < 0.0001f)
         {
             if (live) ModKitUtil.Unmod(h.Mod);
-            kept.Remove(k);
+            mods.Remove(key);
             return live;
         }
         if (h == null)
-            kept[k] = h = new Kept { On = e };
-        if (stat == "Health")
-        {
-            if (live) ModKitUtil.Unmod(h.Mod);
-            h.Mod = Helper_Entitytools.Addmod(e, stat, value, type, 0f);
-        }
-        else
-            h.Mod = ModKitUtil.Keep(e, live ? h.Mod : null, stat, type, value);
+            mods[key] = h = new Kept();
+        h.Mod = ModKitUtil.Keep(e, live ? h.Mod : null, stat, type, value);
         h.Value = value;
         return true;
     }
 
     public static float Get(Entity_Master e, string key)
     {
+        Dictionary<string, Kept> mods;
         Kept h;
-        return e != null && kept.TryGetValue(e.GetInstanceID() + ":" + key, out h) && h.Mod != null && !h.Mod.Dead ? h.Value : 0f;
+        return e != null && kept.TryGetValue(e, out mods) && mods.TryGetValue(key, out h) && h.Mod != null && !h.Mod.Dead ? h.Value : 0f;
     }
 
     public static void Prune()
     {
-        List<string> gone = null;
-        foreach (KeyValuePair<string, Kept> kv in kept)
-            if (kv.Value.On == null || kv.Value.On.Beingserver == null || kv.Value.On.Beingserver.Dead)
+        List<Entity_Master> gone = null;
+        foreach (Entity_Master e in kept.Keys)
+            if (e == null || e.Beingserver == null || e.Beingserver.Dead)
             {
-                if (gone == null) gone = new List<string>();
-                gone.Add(kv.Key);
+                if (gone == null) gone = new List<Entity_Master>();
+                gone.Add(e);
             }
         if (gone != null)
-            foreach (string k in gone) kept.Remove(k);
+            foreach (Entity_Master e in gone) kept.Remove(e);
     }
 }

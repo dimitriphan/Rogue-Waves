@@ -1,5 +1,7 @@
 # Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2026-11-05, the clean-up, kit 1.12 (compiled, not yet run in game):** no number or behaviour changed. Chum Bucket tests the foe's state before the attacker's component; the hooks set Damagemulti with `ModKitCombat.SetMulti`; `ArgoHooks.Chummed` (read by nothing) is gone. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.
+
 **2026-11-05, the review of 2026-11-04 built (compiled, not yet run in game):** the fourteen changes in scope `09`
 (`docs/reports/ARGO_REVIEW_2026-11-04.md` §5). One slow per source came with the decisions' build (B13, `ArgoUtil.Slow`
 with a kind). Now: Kelp Bed and Trench pin through `ArgoUtil.Pin` (Kelp 0.5 s, doubled in the water; Trench every 3 s
@@ -262,7 +264,7 @@ Scope `11` has none of Dimitri's for Argo yet (its NEEDS line), only Claude's fo
 - **Chum Bucket** (`Chumbucket`, 2026-11-05): a foe that is Slowed or Pinned (`ArgoStatus.Debuffed`) takes +8 / 15 / 25% from
   every hit by a building of the holder's (anything with an `ArgoTowerBrain`, traps included), on top of the Scatter
   Cannon's own bonus on a pinned foe; in `ArgoHooks.OnHurt`, whose handler a foe gets the moment it is slowed or pinned
-  while anyone holds a rank, and keeps while it stays so (`ArgoStatus.Debuffees`, `ArgoHooks.Chummed`). The hit that
+  while anyone holds a rank, and keeps while it stays so (`ArgoStatus.Debuffees`). The hit that
   slows or pins it doesn't count: a tower's own slow lands on the attacker's side of the hit, before the target's
   chain, so the foe must have been held since an earlier frame (`ArgoStatus.DebuffedBefore`), as the Scatter's bonus
   reads the status before its pellet's slow.

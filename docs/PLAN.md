@@ -387,6 +387,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   card and the DONE popup (`concept-tools/temp_art/objective_icons.py`). The meteor node keeps a stock ore's look: a
   white crystal needs a model the mode part doesn't carry, and its boot log now names what that look is made of.
   Compiled and rendered here, not run on the PC.
+  2026-11-05, part 12: `/simplify` on parts 1-11, no number or behaviour changed: kit 1.12 (`ModKitUtil.SlowOn`,
+  `Auras`/`Purse`/`Gain`/`Give`, `ModKitCombat.SetMulti`, `Keep` on Health), the mode's one tower list a frame, shared
+  rest-then-mend, kept Direction parses, and the vessel parts' single records. Also seven behaviour questions for the next
+  code review, the leftovers, his readings and the next PC round's list: `docs/reports/BUILD_UNBUILT_2026-11-05.md`
+  (the thread's closing report). Compiled here (every part, every test switch, 0 errors; the two-PC build fails here as
+  always), not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

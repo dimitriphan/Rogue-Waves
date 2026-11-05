@@ -410,7 +410,7 @@ public static class RWFund
     {
         string[] p = what.Split('/');
         long to;
-        if (p.Length != 2 || !long.TryParse(p[0], out to) || amount <= 0 || to == from.Session || Array.IndexOf(new[] { "Redaura", "Blueaura", "Yellowaura" }, p[1]) < 0)
+        if (p.Length != 2 || !long.TryParse(p[0], out to) || amount <= 0 || to == from.Session || Array.IndexOf(ModKitUtil.Auras, p[1]) < 0)
             return "No such transfer";
         Tds_Clientinfo info;
         if (Game_Players.Instance == null || !Game_Players.Instance.Prevsessionlist.TryGetValue(to, out info) || info == null)

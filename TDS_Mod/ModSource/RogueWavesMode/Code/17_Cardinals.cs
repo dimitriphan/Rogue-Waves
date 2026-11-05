@@ -406,7 +406,7 @@ public static class RWCardinals
     {
         int n = 0;
         foreach (string h in held)
-            if (h.StartsWith(id) && (h.Length == id.Length || char.IsDigit(h[id.Length]) || h[id.Length] == '#'))
+            if (h.StartsWith(id, StringComparison.Ordinal) && (h.Length == id.Length || char.IsDigit(h[id.Length]) || h[id.Length] == '#'))
                 n++;
         return n;
     }
@@ -647,7 +647,6 @@ public static class RWCardinals
     // On the boat, twice a second: before the first map a pick the shop doesn't sell comes off; after it the lobby goes back
     // to the campaign's picks. Each said once in chat.
     static readonly List<string> lobbySaid = new List<string>();
-    public static int LobbyFixes;     // self-test
 
     public static void LockLobby()
     {
@@ -694,7 +693,6 @@ public static class RWCardinals
         }
         if (changed == 0)
             return;
-        LobbyFixes += changed;
         if (locked) SayOnce("locked", "The lobby's Cardinals are locked for this campaign.");
         RWLog.Info("lobby Cardinals: " + changed + " put back");
     }
@@ -730,17 +728,24 @@ public static class RWCardinals
     // can't take its stacks.
     static RWCardinalDef Def(string held)
     {
+        RWCardinalDef found;
+        if (defOf.TryGetValue(held, out found))
+            return found;
         foreach (RWCardinalDef d in Mine)
         {
             string id = Id(d);
-            if (!held.StartsWith(id))
+            if (!held.StartsWith(id, StringComparison.Ordinal))
                 continue;
             bool digits = true;
             for (int i = id.Length; i < held.Length; i++) if (!char.IsDigit(held[i])) digits = false;
-            if (digits) return d;
+            if (digits) { found = d; break; }
         }
-        return null;
+        defOf[held] = found;
+        return found;
     }
+
+    // Def's answer for each held id (Mine is fixed at boot), read for every stack on each Grant and every new thing's Reach.
+    static readonly Dictionary<string, RWCardinalDef> defOf = new Dictionary<string, RWCardinalDef>();
 
     static int StackOf(string held, RWCardinalDef d)
     {

@@ -1,5 +1,17 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the clean-up, kit 1.12 (compiled, not yet run in game)
+
+No number or behaviour changed (`docs/reports/BUILD_UNBUILT_2026-11-05.md` §2):
+
+- one tower list a tag a frame for the sweeps (`RWAny.Owned`);
+- Mason's Trowel and Tar Bucket mend through `RWUtil.Mend`;
+- Lamp Oil and Gull Feather share `RWAny.DrownedBy`, Clam Shell and Cork share `RWAny.SetChain`;
+- `RWDirections.Top` keeps each id's parse, `RWHold` keys by the thing, `RWCardinals.Def` keeps its answers;
+- Fine Sieve reads the purse through `ModKitUtil.Purse`, Fog Horn and Tin Whistle slow through `ModKitUtil.SlowOn`;
+- Spare Plank skips its scan while the plank stands, and Signal Flare looks four times a second while there is no Basin;
+- `KitOf` and seven counters nothing read are gone.
+
 ## 0.1.0-dev, later (2026-11-05): the objectives' icons
 
 Compiled, not yet run in game (A3, scope `14` Look lines). Five 12 x 12 icons, `RogueWaves_Objective_Meteor`, `_Hull`,
@@ -46,7 +58,7 @@ in-game line and the look `Cardinal_<Name>`, drawn by the art PR; the crest stan
   within 8 tiles; ready and waiting when no foe is near.
 - **Cargo Crate**: one more card a stack on the shelf (at most 6); the first three are the shelf without it.
 - **Tin Whistle**: once every foe of the Tide's row has come (its contents' Counts, the row's beings only), the last 3
-  standing move 30% slower (`RWAny.Slow`) and take 25% more damage.
+  standing move 30% slower (`ModKitUtil.SlowOn`) and take 25% more damage.
 - Self-test: the gaps build's rules part checks the pair, the prices, Spare Plank's vessels, the Crate's shelf, the
   Oilskin chances and the storm's save line; the new part "trinkets" (`92_GapsTrinkets.cs`) buys each on a calm map
   with Smacky and measures it on the vessel, an archer, a wall, a foe or the Basin. The flow's buy-everything loop and

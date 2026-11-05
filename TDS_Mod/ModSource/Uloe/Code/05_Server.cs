@@ -16,12 +16,11 @@ public class UloePlayer
 // decision 18); -1 is a source of the tower's own owner.
 public class UloeLight
 {
-    readonly Dictionary<Entity_Master, Link_Modifier> held = new Dictionary<Entity_Master, Link_Modifier>();
-    readonly Dictionary<Entity_Master, Share> heldShare = new Dictionary<Entity_Master, Share>();
+    readonly Dictionary<Entity_Master, Share> held = new Dictionary<Entity_Master, Share>();
     static readonly List<Entity_Master> gone = new List<Entity_Master>();
 
-    // What every teammate source holds on a tower: a live modifier and the Light it adds.
-    class Share { public Link_Modifier Mod; public float Amount; }
+    // What a source holds on a tower: its modifier and the Light it adds; a teammate's share is also on the tower's ledger.
+    class Share { public Link_Modifier Mod; public float Amount; public bool Teammate; }
     static readonly Dictionary<Entity_Master, List<Share>> shared = new Dictionary<Entity_Master, List<Share>>();
     static readonly List<Entity_Master> sharedGone = new List<Entity_Master>();
 
@@ -30,35 +29,29 @@ public class UloeLight
 
     public void Feed(Entity_Master tower, float amount, long by, float hold)
     {
-        Link_Modifier m;
-        if (held.TryGetValue(tower, out m) && m != null && !m.Dead)
-            m.Remove();
-        // This source's own last share leaves the ledger with its modifier, so it never counts against itself.
+        // This source's own last share goes, and leaves the ledger with its modifier, so it never counts against itself.
         Share old;
         List<Share> list;
-        if (heldShare.TryGetValue(tower, out old))
+        if (held.TryGetValue(tower, out old))
         {
-            if (shared.TryGetValue(tower, out list))
+            if (old.Mod != null && !old.Mod.Dead)
+                old.Mod.Remove();
+            if (old.Teammate && shared.TryGetValue(tower, out list))
                 list.Remove(old);
-            heldShare.Remove(tower);
+            held.Remove(tower);
         }
         bool teammate = by >= 0 && by != ModKitUtil.Owner(tower);
         if (teammate)
             amount = Mathf.Min(amount, Mathf.Max(0f, UloeData.TeamLightCap - SharedOn(tower)));
         if (amount <= 0.001f)
-        {
-            held.Remove(tower);
             return;
-        }
-        m = Helper_Entitytools.Addmod(tower, UloeData.LightStat, amount, Helper_Entitytools.Modtypes.Add, hold);
-        held[tower] = m;
-        if (teammate && m != null)
+        Share share = new Share { Mod = Helper_Entitytools.Addmod(tower, UloeData.LightStat, amount, Helper_Entitytools.Modtypes.Add, hold), Amount = amount, Teammate = teammate };
+        held[tower] = share;
+        if (teammate && share.Mod != null)
         {
             if (!shared.TryGetValue(tower, out list))
                 shared[tower] = list = new List<Share>();
-            Share share = new Share { Mod = m, Amount = amount };
             list.Add(share);
-            heldShare[tower] = share;
         }
     }
 
@@ -79,14 +72,11 @@ public class UloeLight
     public void Sweep()
     {
         gone.Clear();
-        foreach (KeyValuePair<Entity_Master, Link_Modifier> kv in held)
-            if (kv.Key == null || kv.Value == null || kv.Value.Dead)
+        foreach (KeyValuePair<Entity_Master, Share> kv in held)
+            if (kv.Key == null || kv.Value.Mod == null || kv.Value.Mod.Dead)
                 gone.Add(kv.Key);
         foreach (Entity_Master e in gone)
-        {
             held.Remove(e);
-            heldShare.Remove(e);
-        }
     }
 
     // The shared ledger, pruned of towers that are gone or hold nothing (UloeServer, a few times a second), or cleared.
@@ -358,8 +348,7 @@ public class UloeMark
             return;
         if (!hit.Data.TryGetValue("Damagemulti", out m))
             m = 1f;
-        hit.Data = new Dictionary<string, float>(hit.Data);
-        hit.Data["Damagemulti"] = m + HookMulti;
+        ModKitCombat.SetMulti(hit, m + HookMulti);
     }
 }
 

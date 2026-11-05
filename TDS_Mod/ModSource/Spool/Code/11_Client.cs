@@ -63,7 +63,6 @@ public static class SpoolClient
     // A Cookie Tin's TARGET pin is a marker, never something to click: the pointer takes the nearest collider it meets, so the
     // pin under a Stitched took its clicks (round 3, 2026-11-05: 0 of 3 and 2 of 3). Its hit colliders go off on every
     // machine (the host's server-side hit object, a client's own copy); the pin has no upgrades, so they are built once.
-    public static int PinsQuieted;   // self-test
     static readonly List<Entity_Master> quiet = new List<Entity_Master>();
 
     static void QuietPins(Game_Entity ge)
@@ -85,7 +84,6 @@ public static class SpoolClient
                     foreach (Collider c in h.GetComponentsInChildren<Collider>(true))
                         c.enabled = false;
             quiet.Add(pin);
-            PinsQuieted++;
         }
     }
 

@@ -76,9 +76,7 @@ public class YosseleBoosts
                 float multi;
                 if (Mathf.Approximately(chargedAt, Time.time) && hit.Data.TryGetValue("Damagemulti", out multi))
                 {
-                    // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
-                    hit.Data = new Dictionary<string, float>(hit.Data);
-                    hit.Data["Damagemulti"] = multi * (1f + YosseleData.BreathBonus[p.Breath - 1]);
+                    ModKitCombat.SetMulti(hit, multi * (1f + YosseleData.BreathBonus[p.Breath - 1]));
                     Breaths++;
                     ModKitUtil.Vis(hero.Master, "Yossele_Breath", ModKitUtil.Pos(hit.To), p.Breath);
                 }
@@ -133,51 +131,38 @@ public class YosseleBoosts
 // after the last.
 public static class YosseleSap
 {
-    static readonly Dictionary<Entity_Master, Link_Modifier> slowed = new Dictionary<Entity_Master, Link_Modifier>();
-    static readonly Dictionary<Entity_Master, float> amount = new Dictionary<Entity_Master, float>();
-    static readonly Dictionary<Entity_Master, float> until = new Dictionary<Entity_Master, float>();
+    // A sapped foe: its slow (null while none is made) at the rank's amount, and when the sap runs out.
+    sealed class Sapped { public Link_Modifier Mod; public float Amount, Until; }
+    static readonly Dictionary<Entity_Master, Sapped> sapped = new Dictionary<Entity_Master, Sapped>();
     static readonly List<Entity_Master> gone = new List<Entity_Master>();
     static float nextCheck;
 
-    public static void Reset()
-    {
-        slowed.Clear();
-        amount.Clear();
-        until.Clear();
-    }
+    public static void Reset() { sapped.Clear(); }
 
     public static bool IsSapped(Entity_Master foe)
     {
-        float t;
-        return foe != null && until.TryGetValue(foe, out t) && t > Time.time;
+        Sapped s;
+        return foe != null && sapped.TryGetValue(foe, out s) && s.Until > Time.time;
     }
 
-    public static float SlowOf(Entity_Master foe) { float a; return IsSapped(foe) && amount.TryGetValue(foe, out a) ? a : 0f; }
+    public static float SlowOf(Entity_Master foe) { Sapped s; return IsSapped(foe) && sapped.TryGetValue(foe, out s) && s.Mod != null ? s.Amount : 0f; }
 
     public static bool Stick(Entity_Master from, Entity_Master foe, int rank)
     {
         if (foe == null || !ModKitUtil.Alive(foe) || rank <= 0)
             return false;
-        float slow = YosseleData.SapSlow[Mathf.Min(rank, YosseleData.SapSlow.Length) - 1], had;
-        until[foe] = Time.time + YosseleData.SapLasts;
-        Link_Modifier m;
-        bool keep = amount.TryGetValue(foe, out had) && had >= slow - 0.001f && slowed.TryGetValue(foe, out m) && m != null && !m.Dead;
+        float slow = YosseleData.SapSlow[Mathf.Min(rank, YosseleData.SapSlow.Length) - 1];
+        Sapped s;
+        if (!sapped.TryGetValue(foe, out s))
+            sapped[foe] = s = new Sapped();
+        s.Until = Time.time + YosseleData.SapLasts;
+        bool keep = s.Mod != null && !s.Mod.Dead && s.Amount >= slow - 0.001f;
         if (!keep)
         {
-            if (slowed.TryGetValue(foe, out m))
-                ModKitUtil.Unmod(m);
+            ModKitUtil.Unmod(s.Mod);
             // None is made for a foe already near the 10% floor: nothing is recorded, and the next hit tries again.
-            m = YosseleUtil.SlowOn(foe, slow);
-            if (m != null)
-            {
-                slowed[foe] = m;
-                amount[foe] = slow;
-            }
-            else
-            {
-                slowed.Remove(foe);
-                amount.Remove(foe);
-            }
+            s.Mod = ModKitUtil.SlowOn(foe, slow);
+            s.Amount = s.Mod != null ? slow : 0f;
         }
         ModKitUtil.Debuff(from, foe, YosseleData.VfxSlow, YosseleData.SapLasts);
         if (rank >= 3)
@@ -191,17 +176,13 @@ public static class YosseleSap
             return;
         nextCheck = Time.time + 0.1f;
         gone.Clear();
-        foreach (KeyValuePair<Entity_Master, float> kv in until)
-            if (kv.Key == null || kv.Value <= Time.time || !ModKitUtil.Alive(kv.Key))
+        foreach (KeyValuePair<Entity_Master, Sapped> kv in sapped)
+            if (kv.Key == null || kv.Value.Until <= Time.time || !ModKitUtil.Alive(kv.Key))
                 gone.Add(kv.Key);
         foreach (Entity_Master e in gone)
         {
-            Link_Modifier m;
-            if (e != null && slowed.TryGetValue(e, out m))
-                ModKitUtil.Unmod(m);
-            slowed.Remove(e);
-            amount.Remove(e);
-            until.Remove(e);
+            if (e != null) ModKitUtil.Unmod(sapped[e].Mod);
+            sapped.Remove(e);
         }
     }
 }

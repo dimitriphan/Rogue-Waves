@@ -1,5 +1,9 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-05: the clean-up, kit 1.12 (compiled, not yet run in game)
+
+No number or behaviour changed. `YosseleUtil.SlowOn` is now the kit's `ModKitUtil.SlowOn`; Wood Wide Web reads the purse and gives through `ModKitUtil.Purse`/`Give`; the Monument watch (`YosseleHooks`, four dictionaries) and Sap Bucket (`YosseleSap`, three) each keep one record a thing; the hit hooks set Damagemulti with `ModKitCombat.SetMulti`; `SapHits` (read by nothing) is gone. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.
+
 ## 2026-11-05: the Shift looks and Wood Wide Web's
 
 Rendered here, not yet built in Unity or seen in game: `Yossele_Dandelionsapling` (a smaller clay stump, one floret head on
