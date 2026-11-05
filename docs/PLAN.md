@@ -470,6 +470,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
   but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins PC
   round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
+  2026-11-05: whether a lighting look ships (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`, the lighting round's §5 call).
+  Dimitri picked **a look per weather** (17:45Z): Rising Water under light mist, Quickening Current under storm grey,
+  Nesting Ground at dusk, calm maps on their own light. Not built: a code thread of the mode builds it from the page's
+  hand-off (a table and one `ModKitLight` call from the map's weather, a self-test check), then a PC round shows it
+  with foes on screen. Fog Bank (heavy sea fog) and a mood ramp stay ideas. Docs only.
   2026-11-05: the scope sync after the sweep, his "sync" (item 13 of `docs/reports/OPEN_DECISIONS_2026-11-05b.md`)
   and item 4's default for scope `04`: the per-campaign NEEDS line is gone, and the modifier schedule that answers it
   (2 of the 4 new modifiers and 2 stock elites a campaign, from map 2, one more every second map) is his, without
