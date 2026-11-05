@@ -329,5 +329,10 @@ stats (70 / 1.75 / 5.5 / range 4, projectile speed 15), 5 Growth stages a Tide o
 Bonsai (limit 1, the Tree's cost), Rubbery Shell, Easy Target, Obsidian, Spontaneous Mulch, the changed rules and
 numbers, and the 2026-10-13 names. Fertilize stays Direction-only, so the first release has none.
 
-Still open: Dimitri's own sprite sheet (the release waits for it) and his Cordyfriend (a temporary one is in, 2026-10-27); the look by eye of the
+**2026-11-05, final sheets drawn by Claude** (decision 11-05b item 11, `Art/README.md`): idle and walk, attack,
+Fertilize, fall and landing as files in `Art/` (they win over `Art/Temporary/` and the code), with `.aseprite` copies
+for him to edit; the left-heading facings now keep the shade on the right. Checked here (`art_check.py`: 0 problems),
+not yet built in Unity or seen in game; the next PC round looks at Yossele walking left and right.
+
+Still open: Dimitri taking the final sheets (scope `07`'s NEEDS line stays until then; the release waits for it) and his Cordyfriend (a temporary one is in, 2026-10-27); the look by eye of the
 new models and the attack sheet; the balance pass; online play.
