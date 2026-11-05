@@ -250,8 +250,7 @@ public static class RWVote
 
     static string HeroOf(long s)
     {
-        Blm_Player bp;
-        Tds_Clientinfo info = Blm_Server.Instance.Sessionidsplayer.TryGetValue(s, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
+        Tds_Clientinfo info = RWRun.Info(s);
         return info != null ? info.Hero.Value.ToString() : "";
     }
 
@@ -286,11 +285,8 @@ public static class RWVote
         until = Mathf.Max(until, Time.time + PickSeconds);
         Hold(PickSeconds);
         AskOffers(s, p, o);
-        Redraws++;
         RWLog.Info(p.Name + " drew the Directions again");
     }
-
-    public static int Redraws;    // self-test
 
     static void ClosePicks()
     {

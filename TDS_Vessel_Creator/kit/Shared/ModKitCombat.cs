@@ -1,4 +1,4 @@
-// Kit 1.3 (2026-10-03). Shared vessel-mod kit: hits dealt by a mod's own code.
+// Kit 1.12 (2026-11-05). Shared vessel-mod kit: hits dealt by a mod's own code, and changes to a hit on its way (SetMulti).
 // The game's Hurt only applies Data["Damage"] x Data["Damagemulti"]; a hit without Damage deals nothing but still flashes.
 // Interacthurt fills Damage from the attacker's stat and records Lasthit/Lasthittime only when the data has no Damage, and
 // throws if Damagemulti is present. Lasthit gets the kill; Lasthittime is what an Aegis watches for regen. ModKitCombat.Hurt
@@ -34,5 +34,13 @@ public static class ModKitCombat
         if (by != null)
             to.Lasthit = by;
         to.Lasthittime = Time.fixedTime;
+    }
+
+    // Sets the Damagemulti of a hit on its way (a hit hook's change), on a copy of its data: some AIs hand one dictionary
+    // to every target they hit (pitfall #30).
+    public static void SetMulti(Link_Interact hit, float multi)
+    {
+        hit.Data = new Dictionary<string, float>(hit.Data);
+        hit.Data["Damagemulti"] = multi;
     }
 }

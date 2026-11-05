@@ -69,11 +69,10 @@ public static class RWTrinkets
     }
 
     sealed class Duck { public Entity_Master Vessel; public Entity_Master.Despawns First, Last; public Link_Modifier Mod; public float Cut; }
-    sealed class Tarred { public float Health, Hurt, Next; }
 
     static readonly Dictionary<long, Kit> kits = new Dictionary<long, Kit>();
     static readonly Dictionary<Entity_Master, Duck> ducks = new Dictionary<Entity_Master, Duck>();
-    static readonly Dictionary<Entity_Master, Tarred> tarred = new Dictionary<Entity_Master, Tarred>();
+    static readonly Dictionary<Entity_Master, RWUtil.Rest> tarred = new Dictionary<Entity_Master, RWUtil.Rest>();
     static readonly Dictionary<Entity_Master, Link_Modifier> whistled = new Dictionary<Entity_Master, Link_Modifier>();
     static readonly List<Entity_Master> corked = new List<Entity_Master>();
     static readonly Dictionary<string, float> extra = new Dictionary<string, float> { { RWAny.Extra, 1f } };
@@ -83,7 +82,7 @@ public static class RWTrinkets
     static int spawned, totalWave = -1, total;
     static readonly List<string> rowFoes = new List<string>();   // the beings the Tide's row sends
     public static bool ForceSlide, ForceLast;       // self-test: every hit slides off; a Tide's foes have all come
-    public static int Gutted, Slid, Stormed, Ducked, Planked, Oystered, Storms, Feathered, Corked, Flares, Whistled;
+    public static int Slid, Ducked, Planked, Storms, Feathered, Corked, Flares;
     public static float TarMended, Flared;
 
     // A map starts (RWVote.MapStart): the last map's things go, each map's once-a-map uses and planks come back.
@@ -99,8 +98,6 @@ public static class RWTrinkets
         rowFoes.Clear();
         flareReady = 0f;
     }
-
-    public static Kit KitOf(long session) { Kit k; return kits.TryGetValue(session, out k) ? k : null; }
 
     static void Refresh(Kit k, RWPlayer p)
     {
@@ -192,7 +189,7 @@ public static class RWTrinkets
         }
         if (!towers)
             return;
-        foreach (Entity_Master e in Towers())
+        foreach (Entity_Master e in RWAny.Owned("Tower"))
         {
             Kit k;
             if (kits.TryGetValue(ModKitUtil.Owner(e), out k) && k.Oilcan > 0)
@@ -203,23 +200,6 @@ public static class RWTrinkets
     // A vessel that shoots carries a Projspeed (Sno Sno, Yossele, Uloe); Boutman's fishing reach is his own (kit docs/17 §6).
     public static bool Ranged(Entity_Master v) { return v != null && v.Statsserver != null && v.Statsserver.ContainsKey("Projspeed"); }
 
-    // A player's towers as RWAny's sweep reads them: no vessel, no Blurry Photo copy.
-    static List<Entity_Master> Towers()
-    {
-        List<Entity_Master> list = new List<Entity_Master>(), all;
-        if (!Game_Entity.Instance.Entityclienttags.TryGetValue("Tower", out all))
-            return list;
-        foreach (Entity_Master e in all)
-        {
-            if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Statsserver == null || ModKitUtil.Owner(e) < 0)
-                continue;
-            List<string> tags = e.Beingserver.Entity.Tags;
-            if (!tags.Contains("Hero") && !tags.Contains("Clone") && !tags.Contains("Prespawn"))
-                list.Add(e);
-        }
-        return list;
-    }
-
     // ---------------------------------------------------------------- Tar Bucket
 
     // A hit is a drop in health or a newer Lasthit; once 4 s pass with neither, the tower mends each second.
@@ -229,25 +209,15 @@ public static class RWTrinkets
         foreach (Kit k in kits.Values) if (k.Tar > 0) any = true;
         if (!any)
             return;
-        foreach (Entity_Master e in Towers())
+        foreach (Entity_Master e in RWAny.Owned("Tower"))
         {
             Kit k;
             if (!kits.TryGetValue(ModKitUtil.Owner(e), out k) || k.Tar <= 0)
                 continue;
-            float hp = ModKitUtil.Health(e), max = ModKitUtil.MaxHealth(e);
-            Tarred t;
+            RWUtil.Rest t;
             if (!tarred.TryGetValue(e, out t))
-                tarred[e] = t = new Tarred { Health = hp, Hurt = now - TarAfter, Next = now };
-            if (hp < t.Health - 0.001f || Time.fixedTime - e.Lasthittime < 0.3f)
-                t.Hurt = now;
-            if (now - t.Hurt >= TarAfter && now >= t.Next && hp < max - 0.001f)
-            {
-                t.Next = now + 1f;
-                float mend = Mathf.Min(max - hp, max * TarEach * k.Tar);
-                ModKitUtil.Heal(e, e, mend);
-                TarMended += mend;
-            }
-            t.Health = ModKitUtil.Health(e);
+                tarred[e] = t = new RWUtil.Rest { Health = ModKitUtil.Health(e), Hurt = now - TarAfter, Next = now };
+            TarMended += RWUtil.Mend(t, e, now, TarAfter, ModKitUtil.MaxHealth(e) * TarEach * k.Tar, Time.fixedTime - e.Lasthittime < 0.3f);
         }
         if (tarred.Count > 256)
             foreach (Entity_Master e in new List<Entity_Master>(tarred.Keys))
@@ -268,10 +238,7 @@ public static class RWTrinkets
             float multi, max = ModKitUtil.MaxHealth(hit.To);
             if (max <= 0f || ModKitUtil.Health(hit.To) <= KnifeAbove * max || !hit.Data.TryGetValue("Damagemulti", out multi))
                 return;
-            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = multi * (1f + KnifeEach * k.Knife);
-            Gutted++;
+            ModKitCombat.SetMulti(hit, multi * (1f + KnifeEach * k.Knife));
         }
         catch (Exception e) { RWLog.Once("trinket dealt", "a vessel hit: " + e.Message); }
     }
@@ -298,14 +265,10 @@ public static class RWTrinkets
                 Slid++;
             }
             else if (k.Player.StormLeft > 0)
-            {
                 multi *= 1f + StormTaken;
-                Stormed++;
-            }
             if (!Mathf.Approximately(multi, was))
             {
-                hit.Data = new Dictionary<string, float>(hit.Data);
-                hit.Data["Damagemulti"] = multi;
+                ModKitCombat.SetMulti(hit, multi);
             }
         }
         catch (Exception e) { RWLog.Once("trinket taken", "a hit on a vessel: " + e.Message); }
@@ -385,10 +348,13 @@ public static class RWTrinkets
             k.Standing = null;
             RWLog.Info(k.Player.Name + "'s Spare Plank fell: the next wall is free again");
         }
+        // The plank stands with nothing held or waiting: nothing below would change (Holds reads the button only while held).
+        if (k.Standing != null && k.Kept <= 0f && k.Built.Count == 0)
+            return;
         string name = null;
         Link_Command button = null;
         foreach (KeyValuePair<string, Link_Command> c in v.Commandlistserver)
-            if (c.Value != null && c.Key.StartsWith("Buildoption") && c.Value.Goalstring == wall)
+            if (c.Value != null && c.Key.StartsWith("Buildoption", StringComparison.Ordinal) && c.Value.Goalstring == wall)
             {
                 name = c.Key;
                 button = c.Value;
@@ -456,15 +422,15 @@ public static class RWTrinkets
             k.Built.Add(m);
     }
 
-    // Game_Entity.Ondespawn (RWCardinals.OnDespawn): an elite the vessel drowned (its Lasthit, set by the killing blow, as Lamp Oil reads it).
+    // Game_Entity.Ondespawn (RWCardinals.OnDespawn): an elite the vessel drowned (RWAny.DrownedBy, as Lamp Oil reads it).
     public static void OnDespawn(Entity_Master master, bool killed)
     {
         whistled.Remove(master);
         if (!killed || master == null || !RWRun.InCampaignMap || !ModKitUtil.IsServer || master.Taglistserver == null || !master.Taglistserver.Contains("Enemy"))
             return;
-        Entity_Master by = master.Lasthit;
+        RWAny.Crew c = RWAny.DrownedBy(master);
         Kit k;
-        if (by == null || Time.fixedTime - master.Lasthittime > RWAny.LampFresh || !kits.TryGetValue(ModKitUtil.Owner(by), out k) || k.Vessel != by || k.Gull <= 0 || !Elite(master))
+        if (c == null || !kits.TryGetValue(ModKitUtil.Owner(c.Vessel), out k) || k.Vessel != c.Vessel || k.Gull <= 0 || !Elite(master))
             return;
         k.GullUntil = Mathf.Max(Time.time, k.GullUntil) + GullLasts;
         Feathered++;
@@ -475,7 +441,7 @@ public static class RWTrinkets
         if (foe == null || foe.Upgradelistserver == null)
             return false;
         foreach (string id in foe.Upgradelistserver.Keys)
-            if (id.StartsWith(PackModifier) || Array.IndexOf(StockElites, id) >= 0) return true;
+            if (id.StartsWith(PackModifier, StringComparison.Ordinal) || Array.IndexOf(StockElites, id) >= 0) return true;
         return false;
     }
 
@@ -499,10 +465,7 @@ public static class RWTrinkets
         {
             RWPlayer p = RWRun.For(s);
             if (RWCardinals.Held(p, "Oyster") > 0 && !p.Bought)
-            {
                 p.Pure += OysterPay;
-                Oystered += OysterPay;
-            }
             if (p.StormLeft > 0 && --p.StormLeft == 0)
             {
                 p.StormsDone++;
@@ -562,13 +525,8 @@ public static class RWTrinkets
             if (d.Target is Entity_Ai_Main_Core)
                 want.Add(basin);
         }
-        if (!want.Contains(basin))
-            return;     // no stand of the game's to come after
-        bool same = want.Count == list.Length;
-        for (int i = 0; same && i < list.Length; i++)
-            same = list[i].Equals(want[i]);
-        if (!same)
-            m.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(want.ToArray());
+        if (want.Contains(basin))     // else no stand of the game's to come after
+            RWAny.SetChain(m, list, want);
     }
 
     static void OnBasin(Link_Interact hit)
@@ -581,9 +539,8 @@ public static class RWTrinkets
             if (!hit.Data.TryGetValue("Damage", out damage) || !hit.Data.TryGetValue("Damagemulti", out multi) || damage * multi <= 0f || hit.To.Statsserver == null || !RWAny.Kills(hit.To, damage * multi))
                 return;
             // As the game's own stand does it.
-            hit.Data = new Dictionary<string, float>(hit.Data);
+            ModKitCombat.SetMulti(hit, 0f);
             hit.Data["Damage"] = 0f;
-            hit.Data["Damagemulti"] = 0f;
             hit.To.Statsserver["Health"].Value = 1f;
             corked.Add(hit.To);
             Corked++;
@@ -607,7 +564,10 @@ public static class RWTrinkets
             return;
         Entity_Master core = RWUtil.PlayerCore();
         if (!ModKitUtil.Alive(core))
+        {
+            flareReady = now + 0.25f;   // no Basin yet (or none left): looked at as often as for a foe
             return;
+        }
         Entity_Master best = null;
         float most = 0f;
         foreach (Entity_Master e in ModKitUtil.FoesNear(core, ModKitUtil.Pos(core), FlareReach))
@@ -666,9 +626,8 @@ public static class RWTrinkets
         {
             if (whistled.ContainsKey(foe))
                 continue;
-            whistled[foe] = RWAny.Slow(foe, WhistleSlow);
+            whistled[foe] = ModKitUtil.SlowOn(foe, WhistleSlow);
             ModKitUtil.Front(foe, whistle);
-            Whistled++;
         }
     }
 
@@ -701,8 +660,7 @@ public static class RWTrinkets
             float multi;
             if (hit == null || hit.Type != "Hurt" || hit.To == null || hit.Data == null || !whistled.ContainsKey(hit.To) || !hit.Data.TryGetValue("Damagemulti", out multi) || multi <= 0f)
                 return;
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = multi * (1f + WhistleTaken);
+            ModKitCombat.SetMulti(hit, multi * (1f + WhistleTaken));
         }
         catch (Exception e) { RWLog.Once("whistle", "Tin Whistle: " + e.Message); }
     }

@@ -1,5 +1,9 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-05: the clean-up, kit 1.12 (compiled, not yet run in game)
+
+No number or behaviour changed. Merit Badge's health goes through `ModKitUtil.Keep`, which now makes a Health mod again as this did by hand; Odd Socks and the Pin Cushion set Damagemulti with `ModKitCombat.SetMulti`; `SpoolClient.PinsQuieted` (read by nothing) is gone. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.
+
 ## 2026-11-05: the Sewing Machine's model and Button Jar's small Crafted
 
 Compiled and rendered here, not yet run in game: `Spool_Sewingmachine` (the classic light blue machine on the Loom's

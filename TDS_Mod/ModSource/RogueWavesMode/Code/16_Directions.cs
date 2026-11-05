@@ -378,11 +378,29 @@ public static class RWDirections
         int best = 0;
         foreach (string id in p.Directions)
         {
-            string v, n;
-            int r;
-            if (ModKitDirections.Parse(id, out v, out n, out r) && v == vessel && n == name && r > best) best = r;
+            Held h = Parsed(id);
+            if (h != null && h.Rank > best && h.Vessel == vessel && h.Name == name) best = h.Rank;
         }
         return best;
+    }
+
+    // ModKitDirections.Parse kept for each id (null: no Direction's): the ids are a fixed set, and Top runs for every rank of
+    // every player several times a second (RWAny, RWBase, Grant, Reach).
+    sealed class Held { public string Vessel, Name; public int Rank; }
+    static readonly Dictionary<string, Held> parsed = new Dictionary<string, Held>();
+
+    static Held Parsed(string id)
+    {
+        Held h;
+        if (id == null)
+            return null;
+        if (!parsed.TryGetValue(id, out h))
+        {
+            string v, n;
+            int r;
+            parsed[id] = h = ModKitDirections.Parse(id, out v, out n, out r) ? new Held { Vessel = v, Name = n, Rank = r } : null;
+        }
+        return h;
     }
 
     // Build price scale = the BuildoptionN Goalvalue of what builds (kit docs/17 §2.7). Boutbro rewrites his own on every
@@ -703,8 +721,7 @@ public static class RWHits
             Link_Stats hp;
             if (c > 0f && hit.Data.TryGetValue("Damage", out damage) && damage > 0f && m.Statsserver.TryGetValue("Health", out hp))
                 multi = Mathf.Min(multi, c * hp.Value_Calc / damage);
-            hit.Data = new Dictionary<string, float>(hit.Data);    // the same dictionary may go to the next target
-            hit.Data["Damagemulti"] = multi;
+            ModKitCombat.SetMulti(hit, multi);
             Softened++;
         }
         catch (Exception e) { RWLog.Once("hits", "hit hook: " + e.Message); }

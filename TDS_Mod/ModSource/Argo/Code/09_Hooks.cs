@@ -16,7 +16,7 @@ public static class ArgoHooks
     static readonly Dictionary<Entity_Master, Vector2> soaked = new Dictionary<Entity_Master, Vector2>();   // (amount, until)
     static readonly Entity_Master.Oninteracts handler = OnHurt;
     static float nextCheck;
-    public static int Boosted, Softened, Crushed, Chummed;
+    public static int Boosted, Softened, Crushed;
 
     public static void Reset()
     {
@@ -146,7 +146,8 @@ public static class ArgoHooks
     // What Chum Bucket adds to this hit: the holder's rank, when one of their buildings hits a Slowed or Pinned foe.
     static float ChumOf(Link_Interact hit)
     {
-        if (hit.From == null || hit.From.GetComponent<ArgoTowerBrain>() == null || !ArgoStatus.DebuffedBefore(hit.To))
+        // The foe's state first: it is a look-up, and most hits through this handler are on a foe that is neither.
+        if (hit.From == null || !ArgoStatus.DebuffedBefore(hit.To) || hit.From.GetComponent<ArgoTowerBrain>() == null)
             return 0f;
         int rank = ArgoServer.RanksOf(ModKitUtil.Owner(hit.From)).Chumbucket;
         return rank > 0 ? ArgoData.Chumbuckets[rank - 1].Bonus : 0f;
@@ -172,10 +173,7 @@ public static class ArgoHooks
             }
             float chum = ChumOf(hit);
             if (chum > 0f)
-            {
                 scale *= 1f + chum;
-                Chummed++;
-            }
             float armor = ArgoHooks.ArmorOf(hit.To);
             if (armor > 0f)
             {
@@ -185,9 +183,7 @@ public static class ArgoHooks
             float multi;
             if (Mathf.Approximately(scale, 1f) || !hit.Data.TryGetValue("Damagemulti", out multi))
                 return;
-            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = multi * scale;
+            ModKitCombat.SetMulti(hit, multi * scale);
         }
         catch (Exception e)
         {

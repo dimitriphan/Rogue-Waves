@@ -377,8 +377,7 @@ public static partial class RWTest
         float m;
         if (hit != null && hit.Type == "Hurt" && hit.Data != null && hit.Data.TryGetValue("Damagemulti", out m))
         {
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = m * 0.5f;
+            ModKitCombat.SetMulti(hit, m * 0.5f);
         }
     };
 

@@ -404,7 +404,7 @@ public static class YosseleVines
                 continue;
             if (slowed.TryGetValue(kv.Key, out mod))
                 ModKitUtil.Unmod(mod);
-            slowed[kv.Key] = YosseleUtil.SlowOn(kv.Key, kv.Value);
+            slowed[kv.Key] = ModKitUtil.SlowOn(kv.Key, kv.Value);
             slowAmount[kv.Key] = kv.Value;
             Slowed++;
         }

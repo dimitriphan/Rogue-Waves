@@ -1,5 +1,29 @@
 public static class RWUtil
 {
+    // Mason's Trowel and Tar Bucket: a thing that mends while hurt, once 'rest' seconds pass with no hit.
+    public sealed class Rest { public float Health, Hurt, Next; }
+
+    // A look at a resting thing (four times a second): a drop in health since the last look counts as a hit, as does 'hit';
+    // when due it mends up to 'most', at most once a second. Returns what it mended.
+    public static float Mend(Rest r, Entity_Master e, float now, float rest, float most, bool hit)
+    {
+        float hp = ModKitUtil.Health(e), mend = 0f;
+        if (hit || hp < r.Health - 0.001f)
+            r.Hurt = now;
+        else if (now - r.Hurt >= rest && now >= r.Next)
+        {
+            float missing = ModKitUtil.MaxHealth(e) - hp;
+            if (missing > 0.001f)
+            {
+                mend = Mathf.Min(missing, most);
+                ModKitUtil.Heal(e, e, mend);
+                r.Next = now + 1f;
+            }
+        }
+        r.Health = ModKitUtil.Health(e);
+        return mend;
+    }
+
     public static T Item<T>(string folder, string name) where T : UnityEngine.Object
     {
         Dictionary<string, UnityEngine.Object> f = ModKitUtil.Folder(folder);

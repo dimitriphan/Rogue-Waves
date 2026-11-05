@@ -510,10 +510,7 @@ public class SpoolUnitBrain : MonoBehaviour
             return;
         MeritBonus = bonus;
         meritDamage = ModKitUtil.Keep(Master, meritDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
-        // Made anew rather than kept: Keep fills the stat, and Health is a Variable stat, which keeps its share of the
-        // maximum when the maximum moves.
-        ModKitUtil.Unmod(meritHealth);
-        meritHealth = Helper_Entitytools.Addmod(Master, "Health", bonus, Helper_Entitytools.Modtypes.Multi, 0f);
+        meritHealth = ModKitUtil.Keep(Master, meritHealth, "Health", Helper_Entitytools.Modtypes.Multi, bonus);
         ModKitUtil.Vis(Radio(), "Spool_Merit", ModKitUtil.Pos(Master), Drowns);
     }
 
@@ -548,9 +545,7 @@ public class SpoolUnitBrain : MonoBehaviour
             SpoolUnitBrain u = hit.To.GetComponent<SpoolUnitBrain>();
             if (u == null || !u.Guarded)
                 return;
-            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
-            hit.Data = new Dictionary<string, float>(hit.Data);
-            hit.Data["Damagemulti"] = multi * (1f - SpoolData.SocksGuard);
+            ModKitCombat.SetMulti(hit, multi * (1f - SpoolData.SocksGuard));
             Socked++;
         }
         catch (Exception e)

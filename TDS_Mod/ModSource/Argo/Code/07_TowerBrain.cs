@@ -391,9 +391,7 @@ public class ArgoTowerBrain : MonoBehaviour
                 float m;
                 if (bonus > 0f && hit.Data.TryGetValue("Damagemulti", out m))
                 {
-                    // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
-                    hit.Data = new Dictionary<string, float>(hit.Data);
-                    hit.Data["Damagemulti"] = m * (1f + bonus);
+                    ModKitCombat.SetMulti(hit, m * (1f + bonus));
                     BonusHits++;
                 }
                 float slow = Param("Slow_Base", 0f);
@@ -412,9 +410,7 @@ public class ArgoTowerBrain : MonoBehaviour
             float multi;
             if (whale > 0f && hit.Data.TryGetValue("Damagemulti", out multi))
             {
-                // A copy before the edit (pitfall #30); each pierced foe's hit already has its own.
-                hit.Data = new Dictionary<string, float>(hit.Data);
-                hit.Data["Damagemulti"] = multi * (1f + Mathf.Clamp01(ModKitUtil.MaxHealth(to) / whale));
+                ModKitCombat.SetMulti(hit, multi * (1f + Mathf.Clamp01(ModKitUtil.MaxHealth(to) / whale)));
             }
             // The reel goes to the foe nearest the tower among the hits of the step that first hits: one projectile
             // step can hit several foes, and the game hands them over in any order (Projectile_Master sweeps with

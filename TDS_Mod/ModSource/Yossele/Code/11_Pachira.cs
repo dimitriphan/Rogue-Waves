@@ -302,7 +302,7 @@ public static class YosseleSoftening
 // divided by it first and the purse moves by exactly 2 and 1.
 public static class YosseleWeb
 {
-    static readonly string[] colours = { "Redaura", "Blueaura", "Yellowaura" };
+    static readonly float[] purse = new float[3];   // in ModKitUtil.Auras' order
     static readonly List<long> seen = new List<long>();
     static readonly Dictionary<long, float> nextLook = new Dictionary<long, float>();
     static float next;
@@ -341,36 +341,23 @@ public static class YosseleWeb
     // One trade for one player now; true when it traded. Public for the self-test.
     public static bool Trade(long owner, YosselePachiraBrain p)
     {
-        Tds_Clientinfo info;
-        if (Game_Players.Instance == null || Game_Players.Instance.Prevsessionlist == null || !Game_Players.Instance.Prevsessionlist.TryGetValue(owner, out info) || info == null)
+        if (!ModKitUtil.Purse(owner, purse))
             return false;
         string most = null, least = null;
         float hi = float.MinValue, lo = float.MaxValue;
-        foreach (string c in colours)
+        for (int i = 0; i < purse.Length; i++)
         {
-            float held = 0f;
-            foreach (Link_Resource r in info.Resources)
-                if (r.Name.ToString() == c)
-                    held = r.Amount;
-            if (held > hi) { hi = held; most = c; }
-            if (held < lo) { lo = held; least = c; }
+            if (purse[i] > hi) { hi = purse[i]; most = ModKitUtil.Auras[i]; }
+            if (purse[i] < lo) { lo = purse[i]; least = ModKitUtil.Auras[i]; }
         }
         float take = p.Param("Web_Take", 2f), give = p.Param("Web_Give", 1f);
-        float g = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f;
+        float g = ModKitUtil.Gain();
         if (most == null || least == null || most == least || hi - lo < p.Param("Web_Gap", 100f) - 0.001f || hi < take || g <= 0f)
             return false;
-        Give(most, -take / g, owner);
-        Give(least, give / g, owner);
+        ModKitUtil.Give(most, -take / g, owner);
+        ModKitUtil.Give(least, give / g, owner);
         Trades++;
         return true;
-    }
-
-    static void Give(string colour, float amount, long owner)
-    {
-        Link_Resource r = default(Link_Resource);
-        r.Name = colour;
-        r.Amount = amount;
-        Helper_Resources.Giveresource(r, owner, Helper_Resources.Styles.Default);
     }
 }
 

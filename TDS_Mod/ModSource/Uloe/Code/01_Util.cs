@@ -70,18 +70,6 @@ public static class UloeUtil
         return Mathf.Abs(after - before) <= 0.001f && before <= hit + 0.001f;
     }
 
-    // What a player holds of one aura colour now (their Tds_Clientinfo.Resources); 0 when none, -1 when the player is unknown.
-    public static float Purse(long owner, string colour)
-    {
-        Tds_Clientinfo info;
-        if (Game_Players.Instance == null || Game_Players.Instance.Prevsessionlist == null || !Game_Players.Instance.Prevsessionlist.TryGetValue(owner, out info) || info == null)
-            return -1f;
-        foreach (Link_Resource r in info.Resources)
-            if (r.Name.ToString() == colour)
-                return r.Amount;
-        return 0f;
-    }
-
     // A node on any machine, from the synced tag list (clients have no Taglistserver).
     public static bool IsNodeClient(Entity_Master m)
     {

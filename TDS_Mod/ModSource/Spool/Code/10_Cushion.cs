@@ -80,8 +80,7 @@ public class SpoolCushionBrain : SpoolBuilding
             if (Has("Unravel"))
             {
                 float secs = Mathf.Max(0.5f, Param("Unravel_Base", 4f));
-                hit.Data = new Dictionary<string, float>(hit.Data);
-                hit.Data["Damagemulti"] = multi * 0.5f;
+                ModKitCombat.SetMulti(hit, multi * 0.5f);
                 if (owed.Count == 0)
                     nextUnravel = Time.time + 0.5f;
                 owed.Add(new Owed { Rate = total * 0.5f / secs, Left = total * 0.5f });

@@ -178,6 +178,7 @@ public class UloeFloodBrain : UloeBuilding
     readonly Dictionary<Entity_Master, float> crossed = new Dictionary<Entity_Master, float>();
     readonly List<Entity_Master> lit = new List<Entity_Master>(), swept = new List<Entity_Master>();
     static readonly List<Entity_Master> drop = new List<Entity_Master>();
+    readonly float[] purseBefore = new float[3], purseAfter = new float[3];   // Colour Filter: the owner's aura around a strike
     Link_Command colourCommand;
     float lastStrike, nextFeed, nextLink, nextSweep;
     bool noNodeTold, rayShown, sweepShown;
@@ -331,23 +332,15 @@ public class UloeFloodBrain : UloeBuilding
         float before = ModKitUtil.Stat(node, "Healthresource", -1f);
         // The node pays inside the strike (Entity_Ai_Resource_Mine.Oninteract), so the owner's purse read around it is
         // exactly their share, whatever the split, the map's gain or a Direction did to it.
-        bool trade = Has("Filter") && Colour != "All";
-        long owner = Owner;
-        float r0 = -1f, b0 = 0f, y0 = 0f;
-        if (trade)
-        {
-            r0 = UloeUtil.Purse(owner, "Redaura");
-            b0 = UloeUtil.Purse(owner, "Blueaura");
-            y0 = UloeUtil.Purse(owner, "Yellowaura");
-        }
+        bool trade = Has("Filter") && Colour != "All" && ModKitUtil.Purse(Owner, purseBefore);
         Vector3 at = ModKitUtil.Pos(node);
         Helper_Entitytools.Interact(Master, node, "Hurt", d);
         Master.Radio.Vis_ClientRpc("Uloe_Strike", at, 0f);
         if (!UloeUtil.Paid(before, ModKitUtil.Stat(node, "Healthresource", -1f), hit, ModKitUtil.Alive(node)))
             return;
         Payouts++;
-        if (trade && r0 >= 0f)
-            Filter(Mathf.Max(0f, UloeUtil.Purse(owner, "Redaura") - r0), Mathf.Max(0f, UloeUtil.Purse(owner, "Blueaura") - b0), Mathf.Max(0f, UloeUtil.Purse(owner, "Yellowaura") - y0));
+        if (trade && ModKitUtil.Purse(Owner, purseAfter))
+            Filter(Mathf.Max(0f, purseAfter[0] - purseBefore[0]), Mathf.Max(0f, purseAfter[1] - purseBefore[1]), Mathf.Max(0f, purseAfter[2] - purseBefore[2]));
     }
 
     // Colour Filter: what the owner's purse just gained from a payout is taken back colour by colour (the game's own
@@ -356,23 +349,15 @@ public class UloeFloodBrain : UloeBuilding
     public void Filter(float red, float blue, float yellow)
     {
         float total = red + blue + yellow;
-        float g = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f;
+        float g = ModKitUtil.Gain();
         if (total <= 0.001f || g <= 0f)
             return;
         long owner = Owner;
-        if (red > 0f) Give("Redaura", -red / g, owner);
-        if (blue > 0f) Give("Blueaura", -blue / g, owner);
-        if (yellow > 0f) Give("Yellowaura", -yellow / g, owner);
-        Give(Colour, Param("Filter_Base", 0.7f) * total / g, owner);
+        if (red > 0f) ModKitUtil.Give("Redaura", -red / g, owner);
+        if (blue > 0f) ModKitUtil.Give("Blueaura", -blue / g, owner);
+        if (yellow > 0f) ModKitUtil.Give("Yellowaura", -yellow / g, owner);
+        ModKitUtil.Give(Colour, Param("Filter_Base", 0.7f) * total / g, owner);
         Filtered++;
-    }
-
-    static void Give(string colour, float amount, long owner)
-    {
-        Link_Resource r = default(Link_Resource);
-        r.Name = colour;
-        r.Amount = amount;
-        Helper_Resources.Giveresource(r, owner, Helper_Resources.Styles.Default);
     }
 
     // The aim: what the player picked while it stands in reach, else the nearest of the owner's buildings in reach.

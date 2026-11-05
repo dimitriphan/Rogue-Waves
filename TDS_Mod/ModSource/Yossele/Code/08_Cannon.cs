@@ -163,7 +163,7 @@ public static class YosseleSpores
             ModKitUtil.Debuff(cannon.Master, foe, YosseleData.VfxSporefull, YosseleData.SporeFade);
             if (cannon.Has("Sticky") && (s.Sticky == null || s.Sticky.Dead))
             {
-                s.Sticky = YosseleUtil.SlowOn(foe, cannon.Param("Sticky_Slow", 0.25f));
+                s.Sticky = ModKitUtil.SlowOn(foe, cannon.Param("Sticky_Slow", 0.25f));
                 Stuck++;
             }
             if (cannon.Has("Finish") && Time.time >= s.Guard && !bursts.Contains(foe))

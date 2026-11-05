@@ -105,9 +105,15 @@ public static class RWRun
     // The being a player picked, or null when this machine can't name it.
     static Beingobject HeroBeing(long session)
     {
-        Blm_Player bp;
-        Tds_Clientinfo info = Blm_Server.Instance != null && Blm_Server.Instance.Sessionidsplayer.TryGetValue(session, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
+        Tds_Clientinfo info = Info(session);
         return info != null ? Bl_Address.Getload("Hero", info.Hero.Value.ToString()) as Beingobject : null;
+    }
+
+    // A player's synced client info (their pick, their aura), or null for a session this machine doesn't know.
+    public static Tds_Clientinfo Info(long session)
+    {
+        Blm_Player bp;
+        return Blm_Server.Instance != null && Blm_Server.Instance.Sessionidsplayer.TryGetValue(session, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
     }
 
     // A player's own vessel, not a Boutbro or another helper tagged Hero (pitfall #145; MODE-D3).
