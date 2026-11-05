@@ -3,7 +3,7 @@
 		# Immobilization and Slows
 		# Has no dedicated wall for defenses, and relies on crowd control to control the battlefield
 		# Harpoon Gun is offensive mixed with crowd control / pulling in or pinning back \
-		# Drill rig is economy mixed with crowd control / Slowing designated areas \
+		# Drill Rig is economy mixed with crowd control / Slowing designated areas \
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. /~ No sonar \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
 		/~ Laid out in the Vessel template, 15_Templates.txt. Every value is what the built Argo 2.0 uses; you took them as defaults, and they still wait on your balance pass \
@@ -19,7 +19,7 @@
 			- Accent colour: sea blue
 			- Sprites: as shipped in the earlier ArgoMod
 			- Lore: Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough.
-			- Status: Argo 2.0.1 designed, built, passes its PC self-test, 144 of 144 in the latest round, and played on a second player's machine. The 2026-11-04 review's changes below are not built yet. Ships only inside the Rogue Waves pack.
+			- Status: Argo 2.0.1 designed, built, passes its PC self-test, 144 of 144 in the latest round, and played on a second player's machine. The 2026-11-04 review's changes below are built, compiled but not yet run on the PC. Ships only inside the Rogue Waves pack.
 
 		[Vessel Stats]
 			- Attack: melee, with reach

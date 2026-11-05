@@ -36,7 +36,7 @@
 
 		{Dazzling}
 			- Kind: Aura
-			- In-game line: Blinds and illuminates everything nearby
+			- In-game line: Blinds and Illuminates everything nearby
 			- Does: {Blind}s and {Illuminate}s nearby vessels, towers, and units. -> 10_Vessel_Uloe.txt [Light]
 			- Numbers: within 3 tiles: Blind and Illuminate at level 1 (-15% damage dealt, +15% damage taken), lasting 3 seconds after leaving
 			- Shows as: a bright yellow ring around the foe

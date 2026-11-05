@@ -31,7 +31,7 @@ Read `01` §1, §3, §6, §8 and §11, `07` and `13` §3 first.
 | Buying a Cardinal mid-run | **go, proven** | core upgrades applied on the host plus the synced lobby list and `SendMessage("Updateartifactlist")` for the HUD row: Riptide's Salvage grants (§7, §13) |
 | Depth (ascension, on hold), the campaign and unlocks kept in the save | **go** | `Bla_Data.Playerdata` in a folder of the mod's own; write, read back and a restart proven (§8, §11, §15) |
 | Enemy modifiers Cursed, Berserk, Aging, Dazzling | **go** | `13` §6 (the recipe); Aging and Dazzling checked in §16 |
-| The F-key respawn bug | **go, passes** | client-side: put the main vessel first in the `Hero` tag list; not reproduced with a mod-spawned Boutbro (§9, §11), and on a real Boutman death (2026-11-04) F selects `Hero_Boutman`; a person's own press is left |
+| The F-key respawn bug | **go, built** (kit 1.11; not yet seen armed in game) | client-side: put the main vessel first in the `Hero` tag list; not reproduced with a mod-spawned Boutbro (§9, §11), and on a real Boutman death (2026-11-04) F selects `Hero_Boutman`, though with the fix unarmed (kit 1.11 arms it, `docs/09` #157); a person's own press is left |
 | Maps from the base game | **go, proven** | Gameplans resolve by name (§3); all 45 base maps played clean in the mod's mode, never Special_Custom (§15); a mod can also ship maps as `Map` prefabs (§10; untested, and they load through the custom-map slot whose stock map hung, §15) |
 
 ## 2. Modes and how a mod adds one
@@ -228,7 +228,7 @@ Always pass the typed third argument (two `Adddata` overloads with optional para
   `Cycle = 0` lands on the minion; with nothing selected, the minion wins whenever it is nearer the camera than the
   fresh vessel at the Basin. Order or distance, not a stale reference (read).
 
-**Fix (compiled and run, but the bug did not reproduce, §11):** a client-side handler added to
+**Fix (compiled and run, but the bug did not reproduce, §11; until kit 1.11 it never noticed a respawn, `docs/09` #157):** a client-side handler added to
 `Bl_Inputs.Actions["Focus"].Function` after the game's own: on the first press after the local vessel respawned, it
 selects the main vessel (its `Being` equals `Getload("Hero", Tds_Clientinfo.Hero)`; `Game_Selection.Selected` and
 `Select()` are public) and moves it to index 0 of `Entityclienttags["Hero"]` so later presses cycle from it. It works

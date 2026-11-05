@@ -38,7 +38,7 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > time, and batched: several fixes per round, never one. Compile is not a test; say which it was.
 >
 > **The user's scope.** `docs/scope/` is the scope as one `.txt` per category (`00_Read_Me.txt` lists them), and
-> `/mnt/project-files/scope/` is his copy; keep the two equal. He sends back only the files he edited. An upload
+> `/mnt/project-files/scope/` is his copy; keep the two equal, writing to his copy only at his word ("sync", `CLAUDE.md`). He sends back only the files he edited. An upload
 > arrives without its name: its first line (`| Directions |`, `| New Vessel: Yossele |`) says which file it is. Fold in
 > just that file: diff it against the repo copy, keep his wording, put each `< answer >` into the line above it in his
 > format, and update both copies. Touch another scope file only where his edit contradicts it, and name that file in
@@ -225,7 +225,7 @@ Gate: a full 10-map campaign completed on the PC (saved and continued at least o
 ### Phase 6. Content passes (2-3 sessions)
 
 New Cardinals and Trinkets (run modifiers, built like the base game's Cardinals), the Direction catalogue (per vessel: stat bonuses and one "fundamental change" each), and the
-Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6; a real Boutman death passed on 2026-11-04, a person's own press is left). Each is data plus small code on finished systems.
+Boutman F-key fix's by-hand check (the fix is built: `ModKitFocus`, kit 1.6; a real Boutman death passed on 2026-11-04 with the fix unarmed, so kit 1.11's fix and a person's own press are left). Each is data plus small code on finished systems.
 
 ### Phase 7. Hardening and release (2 sessions plus PC rounds; Release 1 runs its pack steps for Yossele alone)
 
@@ -245,7 +245,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04 test round ran the online half with a real second player, ten maps to the win and every vessel's self-test
   with no failure, and the six parts boot as one pack (`docs/reports/TEST_ROUND_2026-11-04.md`). **Designed, not built**
   (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
-  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`).
+  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`);
+  since 2026-11-05 he has taken the defaults and all of these are built but Spool's (parts 1-12 below).
   Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
   `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion; his picks wired 2026-11-05 (below). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
   2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
@@ -393,8 +394,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   code review, the leftovers, his readings and the next PC round's list: `docs/reports/BUILD_UNBUILT_2026-11-05.md`
   (the thread's closing report). Compiled here (every part, every test switch, 0 errors; the two-PC build fails here as
   always), not run on the PC.
+  2026-11-05: the text audit, Dimitri's queued order (`docs/reports/TEXT_AUDIT_2026-11-05.md`): every player-facing
+  string and the living docs read for spelling, grammar, the names, stale facts and the clean rule. Seven game lines
+  fixed, five with their scope lines (Rising Water's Tide, Dazzling's Illuminates, Vampire Dentures' grammar, "per hit",
+  "farther", Spool's mend line, Argo's Mods-menu text); about 40 scope and doc lines (the F-key "pass" of 2026-11-04 ran
+  with the fix unarmed: scope `03`, here, `RESEARCH_GAPS.md`, kit `docs/15`; stale "not built" and "passes in game"
+  lines; typos). Seven calls for him in its §4 (the meteor's line, Long Line named twice, the leave vote's line, Depth's
+  unlock, numbers in Notched Oar, British or American spelling, the weather's pay wording for the sweep). No number
+  changed. Compiled here (Argo, Spool, the mode and the foes, every test switch, 0 errors; editors clean), not run on
+  the PC. His project-files scope copy and the Scope Editor are behind in 00, 02-09 and 11-13 too (his word to sync).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
-  in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
+  in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
 - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
   tuft and needle, Rising Water, the picked minions of 2026-11-05 with Uloe's Photon). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
@@ -403,7 +413,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   ahead of Release 1 (kit 1.7, the main-menu button, the in-map vote and the mode's checks K0, CH, K1, P1, T0-T6, H1:
   `docs/reports/BUILD_2026-11-03.md`, "Phase 5 pieces" below); Dimitri confirms the polish's readings
   (`docs/reports/MODE_POLISH_2026-11-03.md` §2). By hand:
-  a person's own F-key press (the real Boutman death passed, `docs/reports/TEST_ROUND_2026-11-04.md`), the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
+  the F key on a real Boutman death again (its 2026-11-04 pass ran with the fix unarmed; kit 1.11 arms it, `docs/reports/CODE_REVIEW_MAX_2026-11-05.md` P1-1) and a person's own press, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
   kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
   balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
   art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass

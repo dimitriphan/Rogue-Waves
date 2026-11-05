@@ -14,7 +14,7 @@ player; **by hand** = Dimitri plays it. Nothing waits on the PC any more.
 
 Of the 18 items, 17 are answered (A5 and B5 keep a half for the online evening; C3's answer waits on the scope's new
 enemy types) and 1 waits for a real online evening (A8: it ran with a second player on one PC on 2026-11-04; Steam's Join Game and
-a real network are left); the F-key check passed on a real Boutman death the same day (§E). Three
+a real network are left); the F-key check passed on a real Boutman death the same day (§E), with the fix unarmed: kit 1.11 arms it (pitfall #157), so it is checked again. Three
 answers change plans: **Directions can't be per player on the core** (A1), **nothing in the game scales foes for more
 players or harder maps** (A3), and **a friend who drops can't rejoin a running map** in the base game (A5; the pack
 now reopens it, `docs/mode/REJOIN.md`). The PC rounds added one rule, **bring the choice dialog's menu up before
@@ -65,7 +65,7 @@ New maps, a boss or final fight, music, localization, tutorial tips and vessel s
 
 1. **By hand:** the F-key bug with Boutman (`docs/15` §11 step 8; the mod could not reproduce it in three rounds,
    because the mod-spawned Boutbro is not the player's): let Boutbro spawn, die, press F after respawning.
-   **2026-11-04:** the real death was run through the game's own respawn: F selects `Hero_Boutman`, no fault found (`docs/reports/TEST_ROUND_2026-11-04.md`). A person pressing it stays open only as an eye check.
+   **2026-11-04:** the real death was run through the game's own respawn: F selects `Hero_Boutman`, no fault found (`docs/reports/TEST_ROUND_2026-11-04.md`), but with the fix unarmed: it never noticed a respawn until kit 1.11 (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md` P1-1, kit `docs/09` #157). The next PC round runs the death again on kit 1.11; a person pressing it stays open as an eye check.
 2. **One online evening** with a friend: A5 (reopening the lobby between maps), A8, B5's client half, the client
    checks `docs/reports/MECHANICS_CHECK.md` §3 lists (a Fund Transfer between two players among them; its moves are proven
    solo), the real drop and rejoin (`docs/mode/REJOIN.md` §6, O1-O8), the sea chart on a client (`docs/mode/SEA_CHART.md` C7),

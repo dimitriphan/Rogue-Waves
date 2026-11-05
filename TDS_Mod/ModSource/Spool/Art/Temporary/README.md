@@ -7,6 +7,11 @@ animation sheets below at `ad85b00` (a `FileArt` like Yossele's in `SpoolBuilder
 Every Spool build since takes them (self-test 121/0 on 2026-11-03, 133/0 on 2026-11-04); nobody has looked at them by
 eye yet. `aseprite/` holds the same sheets as one frame per cell, layer "TEMP art", to hand-edit.
 
+**Since 2026-11-05 Spool is sage green** (Dimitri's pick, `pastel_green_2026-11-05/`): the tuft, the Thread Head and
+the Crafted were recoloured by `concept-tools/temp_art/spool_sage.py`, so each "lilac" or "purple" below is how a piece
+was drawn, now its sage match; the needle in game is the "Pearl-headed pin" (a steel shaft, a white point, a pale sage
+pearl head, no thread, `SpoolModels.Needle`), not the purple-tailed needle the table and the wiring notes describe.
+
 | File | Size | Fills | Replaces | In game |
 | --- | --- | --- | --- | --- |
 | `game_size/Spool_Tuft.png` | 12 x 12, PPU 20, centre pivot | ground Thread: a fluffed tuft of lilac thread with a loose end, lit from the upper left | the 8 x 8 `TuftPixels` in `Code/11_Client.cs` (the play test never caught one in a capture) | wired on PR #42 (`e0d2bf6`): 0.42 to 0.78 wide on the ground |

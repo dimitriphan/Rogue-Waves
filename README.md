@@ -13,10 +13,10 @@ Players pick a vessel, are locked into it, and sail a **campaign of 10 maps** in
 maps they vote on the next one on a **sea chart** (a node map of linked maps, with sea weather), and the run is saved
 between maps, so a campaign can be played over several sessions; a player who drops out can rejoin a running map.
 
-- **Pure Aura**, a new currency earned each tide and from optional objectives, buys the run's upgrades.
+- **Pure Aura**, a new currency earned each Tide and from optional objectives, buys the run's upgrades.
 - **Directions** are upgrade paths picked before each map; their ranks are bought at **VENDCINT**, the shop, which
   also sells **Trinkets** (run modifiers for one player's things) and **Cardinals** (run modifiers for the whole team).
-- **Fund Transfer** lets players share aura between tides.
+- **Fund Transfer** lets players share aura between Tides.
 - **Optional objectives**, **enemy modifiers** (Cursed, Berserk, Aging, Dazzling) and the sea weather change each
   campaign. A campaign has 3 retries; finishing one is meant to unlock a harder
   difficulty for the next (Depth, on hold).
@@ -34,9 +34,11 @@ The whole run is in `docs/scope/04_Rogue_Waves_Mode.txt` and step by step in `05
 
 ## Where it stands
 
-Every part is built with temporary art and passes its self-test in the game: the mode (the whole campaign, from the
+Every part is built with temporary art and passed its self-test in the game: the mode (the whole campaign, from the
 **Rogue Waves** button on the main menu to the end screen), the foes, Yossele, Spool, Argo and Uloe. A full ten-map
-campaign has been won, two players have played it together, and the parts boot as one pack. The first release is
+campaign has been won, two players have played it together, and the parts boot as one pack. What was built on
+2026-11-05 (Uloe's 24 new upgrades, Argo's review, the new Directions, Trinkets and Cardinals, and the code reviews'
+fixes) is compiled but not yet run in the game; Spool's new upgrades and UNTHREAD wait for the balance sweep. The first release is
 **Yossele alone**, waiting on Dimitri's own sprites and play test; the mode and the other vessels follow. Live state:
 `docs/PLAN.md` Part C "Now".
 

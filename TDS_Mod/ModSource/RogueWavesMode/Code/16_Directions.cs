@@ -29,7 +29,7 @@ public static class RWDirections
     public static readonly RWDirectionDef[] Mine =
     {
         new RWDirectionDef { Name = "Tougher", Display = "Made of Tougher Stuff", Look = "Direction_Tougher", Reach = "Mob", Needs = "Minions",
-            Desc = new[] { "Your minions take reduced damage from attacks", "Your minions take further reduced damage from attacks", "Your minions take further reduced damage, and can only take a max amount of damage per each hit" } },
+            Desc = new[] { "Your minions take reduced damage from attacks", "Your minions take further reduced damage from attacks", "Your minions take further reduced damage, and can only take a max amount of damage per hit" } },
         new RWDirectionDef { Name = "Barnacle", Display = "Barnacle Coat", Reach = "Tower", Script = "Entity_Ai_Effect_Smackywall_Bramble", Keys = new[] { "Effect_Add" },
             Numbers = new[] { new[] { 2f }, new[] { 4f }, new[] { 7f } },
             Desc = new[] { "Your towers prick what hits them", "Your towers prick harder", "Your towers prick much harder" } },

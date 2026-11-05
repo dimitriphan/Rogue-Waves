@@ -27,14 +27,14 @@
 		(Trinkets)
 			{Vampire Dentures}
 				- Kind: Trinket
-				- In-game line: Your vessel attacks heal themselves for a portion of damage dealt.
+				- In-game line: Your vessel's attacks heal it for a portion of the damage dealt.
 				- Numbers: heals 20% of the damage dealt, per stack
 				- Lasts: The rest of the campaign
 				- Stacks: Yes
 				- Where from: Shop
 				- Colour: Red
 				- Cost: Pure Aura 15
-				- Look: Fake vampire dentures that could be found at a halloween dollar store.
+				- Look: Fake vampire dentures that could be found at a Halloween dollar store.
 				- Clashes: None
 				- By: Dimitri
 			{Brass Spyglass}

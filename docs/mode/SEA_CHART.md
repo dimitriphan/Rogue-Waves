@@ -166,7 +166,7 @@ Rules (defaults, Dimitri's to change in the scope): rows 1, 5 and 10 are calm; e
 three in the first stretch and one in two in the second (29% of all nodes over 2,000 charts, the three about equal); a
 weather a map already has rotates to the next one. **Pay:** 1 extra Pure Aura a Tide (`RWWeather.PureAuraPerTide`,
 paid by `RWRun`, `14_Run.cs`). **Shown:** the island marker; the Setup panel's empty "State" line names it
-("Rising Water: the water climbs each tide. More Pure Aura"); the warning popup at map start ("RISING WATER ROLLS
+("Rising Water: the water climbs each Tide. More Pure Aura"); the warning popup at map start ("RISING WATER ROLLS
 IN") with a 12×12 icon of the pack's; the icon over the node while the leader hovers it (`RWWorld.Billboard`, `docs/15` §18.4).
 
 A map object's being sits in its home map's groups, which only that map loads: every machine loads the group from the

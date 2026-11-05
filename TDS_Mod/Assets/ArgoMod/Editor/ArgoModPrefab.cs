@@ -62,7 +62,7 @@ namespace ArgoBuild
             Park();
             ModTool.Editor.Exporting.ExportSettings.name = "ArgoMod";
             ModTool.Editor.Exporting.ExportSettings.author = "Dimitri";
-            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves, Argo (dev build): Deep Sea Diver, a bulky diver with a crew of Nauts, a scatter cannon, a harpoon tower and a drill rig that sinks deeper every Tide. Every player in a lobby needs this mod.";
+            ModTool.Editor.Exporting.ExportSettings.description = "Rogue Waves, Argo (dev build): Deep Sea Diver, a bulky diver with a crew of Nauts, a Scatter Cannon, a Harpoon Gun and a Drill Rig that sinks deeper every Tide. Every player in a lobby needs this mod.";
             ModTool.Editor.Exporting.ExportSettings.version = "0.1.0-dev";      // ArgoData.Version (docs/PACK.md §4); the one pack version replaces it at the first pack build
             ModTool.Editor.Exporting.ExportSettings.content = ModTool.Shared.ModContent.Assets;
             AssetDatabase.SaveAssets();

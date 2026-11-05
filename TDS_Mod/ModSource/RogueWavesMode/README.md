@@ -15,7 +15,9 @@ it); a map is won once Tide 15 is cleared and ten won maps complete the campaign
 (old keys are renamed once); a chart map links to at most 3. **Since then, all of it has run on the PC:** the
 self-test passed 148/0 on the merged base (2026-11-04), and with a second game copy as a real second player the
 drop and rejoin, the restart rejoin and the load watchdog passed (`docs/reports/TEST_ROUND_2026-11-04.md`); only
-Steam's own Join Game is left.
+Steam's own Join Game is left. **2026-11-05, compiled, not yet run in game:** the code reviews' fixes, the build of the
+unbuilt candidates (the Any and base vessels' Directions, the Duos, Claude's 11 Trinkets and 4 Cardinals, the decisions'
+code items) and kit 1.12 (`docs/reports/BUILD_UNBUILT_2026-11-05.md`, whose §5 is the next PC round's list).
 
 | File | What |
 | --- | --- |

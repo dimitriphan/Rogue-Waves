@@ -138,7 +138,7 @@ public static class RWFModifiers
         Make(template, Id(Cursed), "Cursed", "A curse on this foe weakens the attack of everything nearby");
         Make(template, Id(Berserk), "Berserk", "Stronger and faster the more it is hurt");
         Make(template, Id(Aging), "Aging", "Slow, but its health and damage grow the longer it lives");
-        Make(template, Id(Dazzling), "Dazzling", "Blinds and illuminates everything nearby");
+        Make(template, Id(Dazzling), "Dazzling", "Blinds and Illuminates everything nearby");
         Built = 4;
         Blind = Make(template, "RW_Effect_Blind_Upgradeobject", "Blinded", "Deals less damage", "Entity_Ai_Effect_Barrel_Boost",
             "Health_Pmulti", 0f, "Speed_Multi", 0f, "Attackspeed_Multi", 0f, "Damage_Multi", RWFData.BlindDamage, "Duration_Base", RWFData.DazzleSeconds);
