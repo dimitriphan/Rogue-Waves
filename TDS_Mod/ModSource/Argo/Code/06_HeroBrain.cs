@@ -221,7 +221,8 @@ public class ArgoHeroBrain : MonoBehaviour
             }
             if (second == null)
                 return;
-            // Recorded on the second foe like the swing itself (ModKitCombat): kill credit, and no Aegis regeneration.
+            // Recorded on the second foe like the swing itself (ModKitCombat): kill credit, and no Aegis regeneration. The mode
+            // reads "Argocleave" (RWAny.ArgoCleave): Notched Oar, Fish Hook and Gutting Knife don't count it as Argo's own hit.
             ModKitCombat.Hurt(Master, second, damage * multi * ArgoData.CleaveMulti, 1f, null, ModKitUtil.Data("Argocleave", 1f));
             Cleaves++;
             ModKitUtil.Vis(Master, "Argo_Clang", ModKitUtil.Pos(second), 0);

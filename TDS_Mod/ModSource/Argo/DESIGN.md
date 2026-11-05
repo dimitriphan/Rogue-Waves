@@ -76,7 +76,7 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 | Scatter | Ironclad4 | **new** (scope: "increases health greatly"), replaces Undertow4 | Health greatly increased | Health_Multi 1.5 (health ×2.5), Healtharmor_Base 2 (the game's armour: each hit, whatever its damage, takes its Damagemulti, 1 by default, from it first) | Red 250, Blue 150 | (ends) |
 | Harpoon | Tether2 | **new**, replaces Barbed2 | Harpooned foes are slowed | Tetherslow_Base 0.3, Tetherslow_Duration 2 | Red 30 | Anchor Line3, Reel3 |
 | Harpoon | Anchor Line3 | **changed**: pins the foe hit, stunned instead beside a building | Pins the foe it hits, stunned against a building | Root_Base 1, Pinstun_Base 1 | Red 60, Blue 50 | (ends) |
-| Harpoon | Reel3 | **new** (1.4.0's base reel moved here) | Reels the first foe hit toward the gun | Reel_Tiles 1.5 | Red 60, Blue 50 | Twin Line4 |
+| Harpoon | Reel3 | **new** (1.4.0's base reel moved here) | Reels the first foe hit towards the gun | Reel_Tiles 1.5 | Red 60, Blue 50 | Twin Line4 |
 | Harpoon | Twin Line4 | **changed**: next is Undertow5 | A second harpoon follows, reeling its own foe | Twin_Base 0.3 | Red 350 | Undertow5 |
 | Harpoon | Undertow5 | **new** CC capstone | Every harpoon reels the foes around its target | Undertow_Radius 1.5, Undertow_Tiles 1.5 | Red 1750, Blue 1750 | |
 | Deep Water | Undercurrent2 | **new** | Stronger slow | Slow_Add 0.1 | Blue 20 | Kelp Bed3, Salt Sting3 |

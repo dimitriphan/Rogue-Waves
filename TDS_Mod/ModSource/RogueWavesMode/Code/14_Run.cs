@@ -129,6 +129,11 @@ public static class RWRun
         return being == null ? !e.Beingserver.Entity.Tags.Contains("Boutbro") : e.Being.Value.ToString() == being.Objectname;
     }
 
+    // A Blurry Photo copy, or the enemy Boutman's ally on Artrio and Manafold: the game marks them "Clone" and "Prespawn"
+    // with Helper_Entitytools.Tag after the spawn, so the thing's own tag list shows it and its being's data tags never do
+    // (pitfall #169). Every "the player's things" sweep leaves them out with this one test (BUILD_UNBUILT_2026-11-05 §2.7).
+    public static bool IsCopy(Entity_Master e) { return ModKitUtil.HasTag(e, "Clone") || ModKitUtil.HasTag(e, "Prespawn"); }
+
     // ---------------------------------------------------------------- the save
 
     public static void Clear()

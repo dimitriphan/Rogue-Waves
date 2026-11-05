@@ -1121,6 +1121,13 @@ public static partial class RWTest
             }
             if (name == "Meteor" || name == "Nest")
                 Check("Objective " + goal.Display + ": its target stands", RWObjectives.Target != null, RWObjectives.Target != null ? RWUtil.V(RWObjectives.Target.Entityposition.Value) : "none");
+            if (name == "Meteor")
+            {
+                // The white crystal from the part's model library (open decisions 11-05b item 10); look at it by eye too.
+                GameObject vis = RWObjectives.Target != null && RWObjectives.Target.Client != null ? RWObjectives.Target.Client.Currentvis : null;
+                Check("Objective " + goal.Display + ": the node wears the white crystal " + RWModels.Meteor + ", lit like a stock ore", vis != null && vis.name.StartsWith(RWModels.Meteor) && RWModels.IsLit(vis),
+                    vis != null ? vis.name + (RWModels.IsLit(vis) ? ", tower shader" : ", NOT on the tower shader (no hit flash)") : "no look");
+            }
             Entity_Master target = RWObjectives.Target;
             forcing = true;
             float t = 0f;
@@ -1221,7 +1228,7 @@ public static partial class RWTest
                     RWDialog.Card("Stay", "Stay", "Another bonus Tide: more Pure Aura, and harder", RWAssets.Sprite("RogueWaves_Stay"), RWDialog.Teal),
                     RWDialog.Card("Leave", "Leave", "Leave this map", RWAssets.Sprite("RogueWaves_Leave"), RWDialog.Coral),
                 };
-                RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(leave, "TIDE CLEARED", "A majority leaves. Nobody leaves right before their demise", 0f, x => pick = x));
+                RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(leave, "TIDE CLEARED", "Most votes win. Nobody leaves right before their demise", 0f, x => pick = x));
                 yield return WaitDialog(6f);
                 yield return DialogFits("The vote to leave, " + at);
                 RWDialog.Cancel();

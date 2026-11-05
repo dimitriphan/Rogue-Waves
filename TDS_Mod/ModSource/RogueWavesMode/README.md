@@ -55,6 +55,7 @@ chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMO
 | `Code/19_Objectives.cs` | `RWObjectives`: the five optional objectives |
 | `Code/20_Vote.cs` | `RWVote`: the flow between Tides, Direction picks, the map vote, the vote to leave; `RWAsk`: every machine's own question |
 | `Code/21_Difficulty.cs` | `RWDifficulty`: each map's Tide table, modifiers, bonus Tides |
+| `Code/25_Models.cs` | `RWModels`: the part's model library (`RWAssets_Library/Models`, built from `Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs`), lit with a copy of the game's tower material; the meteor's white crystal `RW_Meteor` (2026-11-05) |
 | `Code/98_SaveFuzz.cs` | `RWSaveFuzz` (`ROGUEWAVESMODE_SELFTEST` only): F1-F7, seeded random and damaged values through the campaign save, in the self-test and in `Tools/cloud-check/save_fuzz.py` |
 
 The main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) calls

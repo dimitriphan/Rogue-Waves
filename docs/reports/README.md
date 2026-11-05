@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `DECIDED_CODE_FIXES_2026-11-05.md` | 2026-11-05 | The code items of Dimitri's "default for all" (second decisions page): kit 1.14's steady hit-chain order, Searchlight's floor, Argo's Cleave not his own hit, Tar Bucket's hook, Blurry Photo copies and the Cardinals' panel ids, Spare Reel, the leave vote's line, one British spelling; pitfalls #168-#169; the PC list |
 | `LIGHTING_2026-11-05.md` | 2026-11-05 | The weather test and a map's lighting: the weather's code unchanged since its PC pass (the mode's self-test again on the PC); fog, ambient, sun and the 55 stock grades can change a running map (kit 1.13 `ModKitLight`, the gaps build's `light` part with pictures); compiled here, the PC round waits for his OK |
 | `OPEN_DECISIONS_2026-11-05b.md` | 2026-11-05 | Every call waiting on Dimitri after PR #115, second page: 14 numbered items (design, wording, art, the next PC round, housekeeping) each with Claude's recommendation and what it blocks; what is settled already; what waits for his eye. Answered 16:04Z ("default for all", OK for the next PC round); the hand-offs are at its end |
 | `TEXT_AUDIT_2026-11-05.md` | 2026-11-05 | Every player-facing string and the living docs read for spelling, grammar, names and stale facts: 7 game lines and about 40 scope and doc lines fixed (the F-key "pass" that ran unarmed among them), 7 calls for Dimitri (§4) |

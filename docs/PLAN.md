@@ -421,6 +421,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   needs a Unity-built profile, and drifting fog banks would be new art. The gaps build's `light` part shows each look in
   pictures. Compiled here (every part, every test switch, 0 errors), not run on the PC: §4 waits for his OK; whether a
   look ships is §5, after the pictures.
+  2026-11-05: the art of decisions 10 and 11 (`OPEN_DECISIONS_2026-11-05b.md`, his "default for all"). The mode part has
+  a model library (`Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs` into `RWAssets_Library/Models`, lit with a
+  copy of the game's "General Tower" material by `RWModels`, `Code/25_Models.cs`), and Mind the Meteor's node wears its
+  first model, a temporary white crystal on a scorched fallen stone (`RW_Meteor`; the line stays; the gaps self-test
+  checks it). Yossele's final sheets drawn by Claude from his reshade and the temporary sheets, for him to edit
+  (`ModSource/Yossele/Art/README.md`, `.aseprite` in `Art/aseprite/`): idle and walk, attack, Fertilize, fall, landing;
+  the left-heading facings were plain mirrors with the shade on the left, now on the right like his reshade. Scope
+  `07`'s sprite NEEDS line stays until he takes them. Compiled here (the mode's release, self-test and gaps builds, 0
+  errors; editors clean), `art_check.py` 0 problems, model rendered; not built in Unity, not run on the PC: the next
+  round looks at the meteor on a map (size, the hit flash, the boot line) and Yossele walking left.
+  2026-11-05: the code items of his "default for all" on the second decisions page
+  (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`): kit 1.14 (`Front` keeps two parts' hit handlers in a steady order,
+  pitfall #168), Uloe's Searchlight slow keeps the 10% floor, Argo's Cleave is no longer his own hit for Notched Oar, Fish
+  Hook and Gutting Knife, Tar Bucket uses Mason's Trowel's hook, Blurry Photo copies are found by their run-time tags
+  (pitfall #169), the Cardinals' paired lookups read the panel's ids, Boutman's Direction is Spare Reel, the leave vote's
+  new line, "towards" in Argo's Reel. `HasMinions` was right (all nine vessels have minions). Compiled here (every part,
+  release and self-test, 0 errors), not run on the PC: its §4 joins the next round's list.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -447,7 +464,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #168 (#167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #170 (#168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

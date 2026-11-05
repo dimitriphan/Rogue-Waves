@@ -3,6 +3,15 @@ public static class RWUtil
     // Mason's Trowel and Tar Bucket: a thing that mends while hurt, once 'rest' seconds pass with no hit.
     public sealed class Rest { public float Health, Hurt, Next; }
 
+    // Their hit hook, first in the thing's chain (ModKitUtil.Front), so a heal in the same moment can't hide a hit, and a hit
+    // carrying its own Damage counts though it never sets Lasthittime (kit docs/17 §2.6).
+    public static void Hit(Dictionary<Entity_Master, Rest> rests, Link_Interact hit)
+    {
+        Rest r;
+        if (hit != null && hit.Type == "Hurt" && hit.To != null && rests.TryGetValue(hit.To, out r))
+            r.Hurt = Time.time;
+    }
+
     // A look at a resting thing (four times a second): a drop in health since the last look counts as a hit, as does 'hit';
     // when due it mends up to 'most', at most once a second. Returns what it mended.
     public static float Mend(Rest r, Entity_Master e, float now, float rest, float most, bool hit)
