@@ -76,16 +76,23 @@ public static class RWObjectives
         RWContent.Retag(vp, Meteor + "_Visualproperties");
         Visualproperties.Entry e = vp.Default;
         // The white crystal from the part's model library (temporary art, RogueWavesModeModels.Meteor), lit like the ore
-        // it replaces; the ore's own look stays when the library has none. The line tells a PC round which it got.
-        string ore0 = e.Style + (e.Visprefab != null ? ", model " + e.Visprefab.name : "") + (e.Spriteobject != null ? ", sprite " + e.Spriteobject.name : "");
+        // it replaces; the ore's own look stays when the library has none or it couldn't be lit. Switched like the kit's
+        // ModelEntry: a model only, no root look, sprite or extra props and materials; the ore's visual scripts stay (the
+        // hit flash). The line tells a PC round which look it got, and the ore's skins (they keep the ore's look).
+        string ore0 = e.Style + (e.Visprefab != null ? ", model " + e.Visprefab.name : "") + (e.Spriteobject != null ? ", sprite " + e.Spriteobject.name : "")
+            + (e.Rootvisualproperty != null ? ", root look" : "") + ", " + (e.Additionalprefabs != null ? e.Additionalprefabs.Count : 0) + " extra props, "
+            + (vp.Skinoverride != null ? vp.Skinoverride.Count : 0) + " skins";
         GameObject crystal = RWModels.Get(RWModels.Meteor, RWModels.MaterialOf(e.Visprefab));
         if (crystal != null)
         {
+            e.Rootvisualproperty = null;
+            e.Style = Visualproperties.Styles.Model;
             e.Visprefab = crystal;
-            if (e.Style == Visualproperties.Styles.Sprite)
-                e.Style = Visualproperties.Styles.Model;
+            e.Spriteobject = null;
+            e.Additionalmaterials = new List<Material>();
+            e.Additionalprefabs = new List<GameObject>();
         }
-        RWLog.Once("meteorlook", "meteor: " + (crystal != null ? "the white crystal " + RWModels.Meteor + " (temporary art) over the ore's look, " : "no " + RWModels.Meteor + " in the library, so the ore's look, ") + ore0);
+        RWLog.Once("meteorlook", "meteor: " + (crystal != null ? "the white crystal " + RWModels.Meteor + " (temporary art) over the ore's look (" : "the ore's look, no lit " + RWModels.Meteor + " in the library (") + ore0 + ")");
         e.Displayname = "Meteor";
         e.Displaycolor = new Color(0.957f, 0.933f, 0.973f, 0f);
         vp.Default = e;

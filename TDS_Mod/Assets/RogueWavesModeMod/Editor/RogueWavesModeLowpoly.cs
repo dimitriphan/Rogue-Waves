@@ -2,7 +2,7 @@
 // meteor's white crystal. Meshes in the game's tower format like the vessels' (origin at the tile centre, ground at
 // y = -0.5, coordinates given with y up from the ground, front faces -z), coloured from one 8x8 point-filtered palette
 // texture. The Lp builder is the kit template's, copied unchanged from YosseleLowpoly.cs (each part's editor code stands
-// alone); the palette is the mode's: the meteor's white crystal (white shades to a pale cold blue, kit docs/18 §4) and
+// alone); the palette is the mode's: the meteor's white crystal (white shades to a pale cold blue, kit docs/18 §3 rule 3) and
 // its scorched stone, plus the pack's sand and sea from RogueWavesModeArt's icon palette.
 using System;
 using System.Collections.Generic;

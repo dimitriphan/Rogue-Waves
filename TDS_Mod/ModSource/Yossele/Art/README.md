@@ -15,14 +15,14 @@ Files here, one folder above `Temporary/`, win over the temporary files and over
 | `YosseleFall-Sheet.png` | 384 x 32, one row of 12 | falling in at a map's start, arms up, sparks round |
 | `YosseleIntroR-Sheet.png` | 384 x 32, one row of 12 | landing: the drop, the dust, the eyes lighting |
 
-Rows v0-v3 are front heading right, front heading left, back heading right, back heading left (kit `docs/18` §2).
+Rows v0-v3 are front heading right, front heading left, back heading right, back heading left (kit `docs/18` §1).
 
 **What changed from the temporary sheets.** Every frame is still his reshade's pixels moved as parts. The left-heading
 facings (v1, v3) were exact mirrors of v0 and v2, so the reshade's shade band, on the right edge of each form, landed
 on the left whenever Yossele walked left, and the light seemed to come from the right. Each mirrored run of clay and leaf
-is turned back, so the shade sits on the right in all four facings (shade on the right edge: v0 100%, the mirrored rows
-11% before and 94-100% after; kit `docs/18` §3 rules 2 and 7). Cast shadows (under the head, the collar) and every
-outline stay where they were. No colour was added: the sheets use only his reshade's colours and the laser's and soil's.
+has its edge band moved back to the right end, so the shade sits on the right in all four facings (shade on the right edge: v0 100%, the mirrored rows
+11% before and 94-100% after; kit `docs/18` §3 rules 2 and 7). Cast shadows (under the head, the collar) keep their order
+inside the run, and every outline stays where it was. No colour was added: the sheets use only his reshade's colours and the laser's and soil's.
 
 **Editing.** `aseprite/<sheet>.aseprite` holds the same frames, one per cell, a tag per row (`idle_v0` ... `move_v3`,
 `attack_v0` ..., `fertilize_v0` ..., `fall`, `land`) on a layer named "FINAL art"; each tag's user data names its place
@@ -32,3 +32,6 @@ sheets and GIFs for review; they are never built.
 
 Generator: `concept-tools/temp_art/yossele_final.py` (its docstring; it reads `Temporary/game_size/` and the code's
 sheets from the cloud preview). Re-running it overwrites this folder, so once he edits a file here, edit by hand.
+These files freeze the code's Fertilize, fall and landing as they were on 2026-11-05: a later change to
+`YosseleCharacter` reaches the game only after this folder's file is redrawn or deleted (the build log names the source).
+The same mirroring is still in `YosseleCharacter` itself, so a sheet the code draws without a file here keeps it.

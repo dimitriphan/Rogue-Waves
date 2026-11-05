@@ -82,7 +82,16 @@ namespace RogueWavesModeBuild
                 child.transform.SetParent(holder.transform, false);
                 child.AddComponent<SpriteRenderer>().sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
             }
-            models = BuildModels(root);
+            // A failed model never costs the sprites: the library is saved without it, the log says why, and the meteor
+            // keeps the ore's look (RWObjectives.MakeMeteor).
+            try { models = BuildModels(root); }
+            catch (Exception e)
+            {
+                models = 0;
+                Debug.LogError("[RogueWavesMode] models skipped: " + e);
+                Transform half = root.transform.Find("Models");
+                if (half != null) UnityEngine.Object.DestroyImmediate(half.gameObject);
+            }
             root.SetActive(false);
             PrefabUtility.SaveAsPrefabAsset(root, LibraryPath);
             UnityEngine.Object.DestroyImmediate(root);
@@ -116,6 +125,7 @@ namespace RogueWavesModeBuild
 
             string matPath = dir + "/RW_Palette.mat";
             var shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader == null) throw new Exception("shader Universal Render Pipeline/Lit not found");
             var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
             if (mat == null) { mat = new Material(shader); AssetDatabase.CreateAsset(mat, matPath); }
             mat.shader = shader;

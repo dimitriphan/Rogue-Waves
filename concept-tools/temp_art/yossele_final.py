@@ -8,8 +8,8 @@ What makes them final rather than temporary (kit docs/18 section 3, rules 2 and 
   * The light stays on the upper left in every facing. The temporary v1 and v3 rows (and the code's Fertilize v1/v3)
     are the exact mirrors of v0 and v2 (the attack's in part), so the right-edge shade band of his reshade landed on the LEFT edge whenever
     Yossele walked left. Here each mirrored frame is re-shaded: within every horizontal run of one material (the clay,
-    the sprout's leaf), the tones are put back in v0's order, so the shade band sits on the right edge again and the
-    cast shadows under the collar and the head stay where they were. Nothing else in the frame moves. The attack's v1
+    the sprout's leaf) that starts in shade and ends lit, the edge band moves back to the right end, so the shade band
+    sits on the right edge again; cast shadows inside the run keep their order. Nothing else in the frame moves. The attack's v1
     and v3 mirror only the body (its legs were drawn lit from the left already), so only runs that read mirrored change.
   * Each sheet is checked: only his reshade's colours plus the laser's and the soil's, fully opaque, feet on the
     bottom row, the shade on the right in every facing (the metric is printed).
@@ -28,7 +28,7 @@ import argparse
 import os
 import sys
 
-from tart import Canvas, H, REPO, gif, preview, save_png, sheet
+from tart import Canvas, H, REPO, gif, preview, save_ase, save_png, sheet
 import ase_sheets
 
 OUT = os.path.join(REPO, 'TDS_Mod', 'ModSource', 'Yossele', 'Art')
@@ -73,9 +73,10 @@ def ramp_of(p):
 
 
 def reshade(c):
-    """Puts a mirrored run's tones back in the unmirrored order: a run of one material that starts in its shade tone and
-    ends in its light one is read right to left. A run already lit from the left (the attack's legs, drawn unmirrored)
-    and a run in one tone (a cast shadow) stay as they are."""
+    """Moves a mirrored run's edge band back to the right: in a run of one material that starts in its shade tone and ends
+    in its light one, the leading shade pixels go to the right end and the rest shifts left, keeping its order (a cast
+    shadow inside stays a cast shadow). A run already lit from the left (the attack's legs, drawn unmirrored) and a run
+    in one tone stay as they are."""
     o = Canvas(c.w, c.h)
     o.c = list(c.c)
     for y in range(c.h):
@@ -90,7 +91,11 @@ def reshade(c):
                 end += 1
             run = [c.get(i, y) for i in range(x, end + 1)]
             if run[0] == r[1] and run[-1] == r[0]:      # shade at the left end, light at the right: mirrored
-                for i, p in enumerate(reversed(run)):
+                band = 0
+                while run[band] == r[1]:
+                    band += 1
+                # the edge band moves to the right end; whatever lies inside (a cast shadow) keeps its order
+                for i, p in enumerate(run[band:] + run[:band]):
                     o.set(x + i, y, p)
             x = end + 1
     return o
@@ -131,14 +136,7 @@ def build(name, src, cols, tags, mirrored):
         start = len(frames)
         frames += cells[row * cols:row * cols + count]
         atags.append((tag, start, len(frames) - 1, 'FINAL;sheet=Vessel/%s.png;row=%d;col=0;cols=%d;rows=%d' % (name, row, cols, rows)))
-    cols_used = set()
-    for f in frames:
-        cols_used |= set(p for p in f.c if p[3])
-    palette = [(0, 0, 0, 0)] + sorted(cols_used, key=lambda c: sum(c[:3]))
-    rgb = [(0x3F, 0x8F, 0x96), (0xE2, 0x72, 0x5B), (0xD8, 0xC4, 0x9A), (0x72, 0xCC, 0x35)]
-    t = [(n, a, b, rgb[i % len(rgb)], text) for i, (n, a, b, text) in enumerate(atags)]
-    os.makedirs(os.path.join(OUT, 'aseprite'), exist_ok=True)
-    ase_sheets.write_ase(os.path.join(OUT, 'aseprite', name + '.aseprite'), 32, 32, [f.rgba() for f in frames], t, palette, 'FINAL art')
+    save_ase(os.path.join(OUT, 'aseprite', name + '.aseprite'), 32, frames, atags, layer='FINAL art')
     try:
         by_row = [cells[r * cols:r * cols + cols] for r in range(rows)]
         if rows >= 4:
