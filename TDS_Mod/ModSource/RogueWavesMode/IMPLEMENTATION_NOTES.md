@@ -1,5 +1,26 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): a model library and the meteor's white crystal (compiled, not yet run in game)
+
+Dimitri's "default for all" on `docs/reports/OPEN_DECISIONS_2026-11-05b.md` item 10: the part gets a model library and
+a temporary white crystal for Mind the Meteor's node; the "white crystal" line stays.
+
+- **The library.** Tools > RogueWavesMode > Build All Assets now also builds each model of
+  `Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs` into `RWAssets_Library/Models/<Name>` (`<Name>/Vis/<Name>_Export`,
+  mesh and the 8x8 palette under `Assets/RogueWavesModeMod/Art/Models/`); `RogueWavesModeLowpoly.cs` is the kit's `Lp`
+  builder with the mode's palette. Its `build_log.txt` counts the models.
+- **Lit like the game's.** `RWModels.Get` (`Code/25_Models.cs`) moves the model's renderers once onto a copy of a game
+  material on the "Shader Graphs/General Tower" shader (the stock ore's own, else Smacky's archer tower's) with the
+  mode's palette as `_MainTex`, the way the vessel parts light their towers. Read from the game's code
+  (`Entity_Vis_Resource`): a resource node's look flashes `_Overlaycolor`/`_Overlayamount` on every renderer of its
+  model whose shader is that one, on "Hurt", so the crystal flashes when mined like a stock ore.
+- **The meteor.** `RWObjectives.MakeMeteor` sets the copied ore entry's `Visprefab` to `RW_Meteor` (a `Sprite` style
+  becomes `Model`; the ore's own look stays if the library has none). The boot log's `meteor:` line says which look it
+  got and what the ore's look was. The gaps self-test (`ROGUEWAVESMODE_GAPS`) checks the spawned node wears it.
+- Compiled here (release, self-test and gaps builds, 0 errors; editor clean) and rendered with the cloud preview; not
+  built in Unity, not seen in game. For the next PC round: the boot line, the node on a map (size against a stock ore,
+  white against the grass and the darkest map), the hit flash, and the gaps check.
+
 ## 0.1.0-dev, later (2026-11-05): the clean-up, kit 1.12 (compiled, not yet run in game)
 
 No number or behaviour changed (`docs/reports/BUILD_UNBUILT_2026-11-05.md` §2):

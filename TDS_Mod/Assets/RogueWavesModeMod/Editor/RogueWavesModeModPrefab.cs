@@ -1,6 +1,7 @@
 // Tools > RogueWavesMode: the mode part's build steps, named as Tools > ModKit > Build Queue expects. The chart is built in
 // code at run time; Build All Assets gathers the part's sprites (Art/Temporary/game_size, with final art of the same name
-// one folder up winning, docs/TEMP_ART.md) into a library prefab; Build Mod Prefab packs the library and the compile-checked
+// one folder up winning, docs/TEMP_ART.md) and its low-poly models (RogueWavesModeModels, since 2026-11-05) into a
+// library prefab; Build Mod Prefab packs the library and the compile-checked
 // code (ModSource/RogueWavesMode/Build/RogueWavesModeMod_Code.cs, from
 // Build-RogueWavesModeMod.ps1) into Assets/RogueWavesModeMod/RogueWaves_Mode_Default.prefab (docs/PACK.md: the name has
 // "Default", so the game loads it at startup, and none of the game's other keywords); Export Mod parks every other
@@ -8,6 +9,7 @@
 using System;
 using System.IO;
 using UnityEditor;
+using UnityEngine.Rendering;
 using UnityEngine;
 
 namespace RogueWavesModeBuild
@@ -30,8 +32,9 @@ namespace RogueWavesModeBuild
             string log = Path.Combine(Source, "build_log.txt");
             try
             {
-                int n = BuildLibrary();
-                File.WriteAllText(log, "OK " + DateTime.Now.ToString("s") + " " + n + " sprites");
+                int models;
+                int n = BuildLibrary(out models);
+                File.WriteAllText(log, "OK " + DateTime.Now.ToString("s") + " " + n + " sprites, " + models + " models");
             }
             catch (Exception e)
             {
@@ -41,7 +44,8 @@ namespace RogueWavesModeBuild
         }
 
         // Library/Sprites/<name>: a SpriteRenderer whose sprite is the whole file. The code cuts what it needs at run time.
-        static int BuildLibrary()
+        // Library/Models/<name>: each model of RogueWavesModeModels (RWModels in the code instantiates and lights it).
+        static int BuildLibrary(out int models)
         {
             string temporary = Path.Combine(Source, "Art/Temporary/game_size");
             RogueWavesModeArt.WriteMissing(temporary);
@@ -78,11 +82,72 @@ namespace RogueWavesModeBuild
                 child.transform.SetParent(holder.transform, false);
                 child.AddComponent<SpriteRenderer>().sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
             }
+            models = BuildModels(root);
             root.SetActive(false);
             PrefabUtility.SaveAsPrefabAsset(root, LibraryPath);
             UnityEngine.Object.DestroyImmediate(root);
             AssetDatabase.SaveAssets();
             return names.Count;
+        }
+
+        // Each model as <Name> / Vis / <Name>_Export, its mesh saved under Art/Models and coloured from the mode's 8x8 palette
+        // (RogueWavesModeLowpoly.Pal) on a URP Lit material. At run time RWModels puts the same palette on a copy of the
+        // game's own tower material, so the model is lit like the stock ore it replaces and flashes when hit
+        // (Entity_Vis_Resource looks for the "General Tower" shader). The holder stays inactive: the game instantiates
+        // the mod prefab at startup, and an active model would draw on the startup screen.
+        static int BuildModels(GameObject root)
+        {
+            const string dir = "Assets/RogueWavesModeMod/Art/Models";
+            if (!AssetDatabase.IsValidFolder(dir)) AssetDatabase.CreateFolder(ArtPath, "Models");
+            string palPath = dir + "/RW_Palette.png";
+            var palTex = Pal.Texture();
+            File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(Application.dataPath), palPath), palTex.EncodeToPNG());
+            UnityEngine.Object.DestroyImmediate(palTex);
+            AssetDatabase.ImportAsset(palPath, ImportAssetOptions.ForceSynchronousImport);
+            var ti = (TextureImporter)AssetImporter.GetAtPath(palPath);
+            ti.textureType = TextureImporterType.Default;
+            ti.filterMode = FilterMode.Point;
+            ti.textureCompression = TextureImporterCompression.Uncompressed;
+            ti.mipmapEnabled = false;
+            ti.wrapMode = TextureWrapMode.Clamp;
+            ti.npotScale = TextureImporterNPOTScale.None;
+            ti.SaveAndReimport();
+            var palette = AssetDatabase.LoadAssetAtPath<Texture2D>(palPath);
+
+            string matPath = dir + "/RW_Palette.mat";
+            var shader = Shader.Find("Universal Render Pipeline/Lit");
+            var mat = AssetDatabase.LoadAssetAtPath<Material>(matPath);
+            if (mat == null) { mat = new Material(shader); AssetDatabase.CreateAsset(mat, matPath); }
+            mat.shader = shader;
+            mat.SetTexture("_BaseMap", palette);
+            mat.SetTexture("_MainTex", palette);
+            mat.SetFloat("_Smoothness", 0.05f);
+            EditorUtility.SetDirty(mat);
+
+            var holder = new GameObject("Models");
+            holder.transform.SetParent(root.transform, false);
+            int n = 0;
+            foreach (ModelDef def in RogueWavesModeModels.All())
+            {
+                string meshPath = dir + "/" + def.Name + ".asset";
+                if (AssetDatabase.LoadAssetAtPath<Mesh>(meshPath) != null) AssetDatabase.DeleteAsset(meshPath);
+                Mesh mesh = def.Build().ToMesh(def.Name);
+                AssetDatabase.CreateAsset(mesh, meshPath);
+                var model = new GameObject(def.Name);
+                model.transform.SetParent(holder.transform, false);
+                var vis = new GameObject("Vis");
+                vis.transform.SetParent(model.transform, false);
+                var exp = new GameObject(def.Name + "_Export");
+                exp.transform.SetParent(vis.transform, false);
+                exp.AddComponent<MeshFilter>().sharedMesh = mesh;
+                var r = exp.AddComponent<MeshRenderer>();
+                r.sharedMaterial = mat;
+                r.shadowCastingMode = ShadowCastingMode.On;
+                n++;
+            }
+            holder.SetActive(false);
+            AssetDatabase.SaveAssets();
+            return n;
         }
 
         [MenuItem("Tools/RogueWavesMode/Build Mod Prefab")]

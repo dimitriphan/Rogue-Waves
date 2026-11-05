@@ -75,9 +75,17 @@ public static class RWObjectives
         Visualproperties vp = UnityEngine.Object.Instantiate(ore.Entity.Defaultvisual);
         RWContent.Retag(vp, Meteor + "_Visualproperties");
         Visualproperties.Entry e = vp.Default;
-        // Still the ore's own look (a white crystal would be a model, which this part doesn't carry): this line tells a PC
-        // round what that look is made of.
-        RWLog.Once("meteorlook", "meteor: the ore's look is " + e.Style + (e.Visprefab != null ? ", model " + e.Visprefab.name : "") + (e.Spriteobject != null ? ", sprite " + e.Spriteobject.name : ""));
+        // The white crystal from the part's model library (temporary art, RogueWavesModeModels.Meteor), lit like the ore
+        // it replaces; the ore's own look stays when the library has none. The line tells a PC round which it got.
+        string ore0 = e.Style + (e.Visprefab != null ? ", model " + e.Visprefab.name : "") + (e.Spriteobject != null ? ", sprite " + e.Spriteobject.name : "");
+        GameObject crystal = RWModels.Get(RWModels.Meteor, RWModels.MaterialOf(e.Visprefab));
+        if (crystal != null)
+        {
+            e.Visprefab = crystal;
+            if (e.Style == Visualproperties.Styles.Sprite)
+                e.Style = Visualproperties.Styles.Model;
+        }
+        RWLog.Once("meteorlook", "meteor: " + (crystal != null ? "the white crystal " + RWModels.Meteor + " (temporary art) over the ore's look, " : "no " + RWModels.Meteor + " in the library, so the ore's look, ") + ore0);
         e.Displayname = "Meteor";
         e.Displaycolor = new Color(0.957f, 0.933f, 0.973f, 0f);
         vp.Default = e;

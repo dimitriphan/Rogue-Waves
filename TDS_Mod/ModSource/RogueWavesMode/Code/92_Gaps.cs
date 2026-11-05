@@ -1119,6 +1119,12 @@ public static partial class RWTest
             }
             if (name == "Meteor" || name == "Nest")
                 Check("Objective " + goal.Display + ": its target stands", RWObjectives.Target != null, RWObjectives.Target != null ? RWUtil.V(RWObjectives.Target.Entityposition.Value) : "none");
+            if (name == "Meteor")
+            {
+                // The white crystal from the part's model library (open decisions 11-05b item 10); look at it by eye too.
+                GameObject vis = RWObjectives.Target != null && RWObjectives.Target.Client != null ? RWObjectives.Target.Client.Currentvis : null;
+                Check("Objective " + goal.Display + ": the node wears the white crystal " + RWModels.Meteor, vis != null && vis.name.StartsWith(RWModels.Meteor), vis != null ? vis.name : "no look");
+            }
             Entity_Master target = RWObjectives.Target;
             forcing = true;
             float t = 0f;
