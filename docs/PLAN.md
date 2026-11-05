@@ -268,6 +268,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: API credit set up** (Dimitri: "Setup both"): `docs/PROJECT_SETUP.md` "API credit" (the $100 can't
   overflow the plan; usage credits can; key steps for Windows) and `TDS_Mod/Tools/batch/` (text and scope checks on
   the Batches API, about $3.50 a run on Sonnet 5.5, $0.70 on Haiku 5.5). No real batch run yet: no key here.
+- **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
+  pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
+  Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1097,6 +1100,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   its README. Ran here: `plan` for both checks on both models, the report writer on made-up results, the missing-key
   exit. Not run: a real batch (no key in the container). No mod code changed, so nothing compiled; no kit change, no
   pitfall: next free kit 1.15, pitfall #172.
+- **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills", after the coordinator named four
+  recipes re-explained to nearly every thread). `docs/skills/ship-a-pr.md` (branch, Part C entry, cloud-check, attribution,
+  re-merge the base, second merger renumbers, merge commit via `merge_pull_request`), `pc-round.md` (his OK and the PC lock
+  first; handoff, park and back up, apply, self-test builds, `Run-SelfTests.ps1 -TimeoutMinutes 30` for the mode, gaps
+  launches, two players, scope copy, restore, dated report), `scope-audit.md` (one file a pass, the six marks of
+  `SCOPE_CODE_AUDIT_2026-11-05.md`, `scope_upgrades.py`), `scope-sync.md` (his edits first from the Scope Editor's
+  `scopes` rows and the project-files diff, keep his tildes, NEEDS lines, `build.py`, publish to the same URL), and a
+  README on installing them. Each was also posted on a save card. Steps taken from `CLAUDE.md`, Part A,
+  `TDS_Mod/Tools/pc/README.md` and the 2026-11-05 reports; project memory supplied two facts the repository doesn't hold
+  (the PC lock lives in memory; RC sessions can't reach the project files). Docs only, no compile. Next free numbers
+  unchanged: kit 1.15, pitfall #172.
 
 ### Decisions
 
