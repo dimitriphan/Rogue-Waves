@@ -523,7 +523,7 @@ public static partial class RWTest
             Entity_Master hv = RWRun.Vessel(friend);
             foreach (string tower in sheet.Towerdisplay)
             {
-                Beingobject being = RWUtil.Load<Beingobject>("Mob", tower);
+                Beingobject being = ModKitUtil.Load<Beingobject>("Mob", tower);
                 Vector3 at = being != null && hv != null ? RogueWavesModeKitTest.Spot(hv.Entityposition.Value, being, hv.Entitydata.Value.Team, 3f, 8f, tiles, tower) : new Vector3(float.NaN, 0f, 0f);
                 if (!float.IsNaN(at.x)) yield return Say("spot " + tower + " " + RWUtil.F(at.x) + " " + RWUtil.F(at.y) + " " + RWUtil.F(at.z));
                 else Info("building", "no tile for " + tower + " near the second player's vessel");
@@ -1424,7 +1424,7 @@ public static partial class RWTest
         Entity_Master lastBuilt = null;
         foreach (string tower in new List<string>(entry.Towerdisplay))
         {
-            Beingobject being = RWUtil.Load<Beingobject>("Mob", tower);
+            Beingobject being = ModKitUtil.Load<Beingobject>("Mob", tower);
             if (being == null) { Info("building", tower + " isn't loaded on this machine"); continue; }
             string spot = RWTwo.HeardStarting("TWO H spot " + tower + " ");
             if (spot == null) { Info("building", "no tile for " + tower); continue; }

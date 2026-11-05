@@ -83,6 +83,13 @@ and `Run-SelfTests.ps1` in the PC folder's Claude Code permission settings.
 after it ends they can stay missing for the rest of that turn. So the PC session sends the round's lines back with
 `send_message` (each message under 50 KB, `<NAME> part i/n`), and the thread saves them from its own transcript.
 
+## A change made on the PC
+
+A fix a PC session makes goes back to the repository as a diff of what it changed, applied to the newest base
+branch, never as whole files: the PC's `TDS_Mod` can be older than the base. PR #82 copied seven PC files over
+PR #80's and put back the helper names kit 1.8 had moved, so the mode's release build failed with 6 errors
+(`docs/reports/CODE_REVIEW_2026-11-04.md` §2). Run the cloud check on every part the diff touches before the PR.
+
 ## The release pack
 
 Run in a PC round after the self-test passed (`docs/PACK.md`; `<h>` is `Desktop\ClaudeProjects\handoff`):

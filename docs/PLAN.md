@@ -30,7 +30,8 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 >
 > **Write to files, not to chat.** Findings go to the kit chapter they belong to (new engine fact → that chapter or
 > `docs/09`; a mode or system fact → `docs/14+`), decisions go to Part C "Decisions" as one line each. Chat replies
-> stay under 150 words: what changed, what is blocked, what you need. Never paste file contents or restate a file.
+> say what changed, what is blocked, what you need (Dimitri dropped the 150-word cap, 2026-11-04). Never paste
+> file contents or restate a file.
 >
 > **One thing at a time.** One vessel, one system, one gate. Design before code (`DESIGN.md`, checked against
 > `docs/02` by its design script), `cloud-check` before any handoff, a handoff only when it is worth the user's PC
@@ -64,6 +65,10 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
 of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
 outcome and the constraints; the Part D templates stay as written for Opus threads.
+
+Effort per thread (Dimitri, 2026-11-04): `xhigh` for code builds, PC rounds, debugging and engine work; `high` for
+design, reviews and text PRs; `medium` for lookups, syncs and small fixes; `max` only at his word. A quality check
+states its pass cap and what counts as an issue in its opening prompt. Which skill to use when is in `CLAUDE.md`.
 
 ---
 
@@ -247,10 +252,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   resources read against the repository: 35 stale lines fixed, no code changed (`docs/reports/KIT_CHECK_2026-11-04.md`). 2026-11-04: the code simplification
   built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
   gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
-  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4. 2026-11-04: one quality pass over the whole
-  repository, paused at his word before a second: 127 issues, 120 fixed in docs and comments (mostly "not built / not
-  run / online left" lines), 7 for him (`docs/reports/QUALITY_PASSES_2026-11-04.md`); since PR #82 the base fails the
-  cloud compile (the mode 6 errors, three self-tests), a code fix for another thread.
+  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4. 2026-11-05: `CLAUDE.md` rewritten to the
+  Claude Code best-practices page: the checks to run, which skill to use when, the rules the code doesn't show; build
+  state left out of it, since this Part holds it. `.claude/settings.json` now denies merging and pushing to the base
+  branch; effort per thread is in Part A; new project instructions in `docs/PROJECT_SETUP.md` §2.
+  2026-11-04: one quality pass over the whole repository, paused at his word before a second: 127 issues, 120 fixed
+  in docs and comments (mostly "not built / not run / online left" lines), 7 for him
+  (`docs/reports/QUALITY_PASSES_2026-11-04.md`); the cloud compile break it found after PR #82 is repaired by PR #84.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -277,7 +285,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #150 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04).
+- **Next free numbers:** kit chapter 25, pitfall #151 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -748,6 +756,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   it changes numbers, report §2), the per-vessel content builders (they need a shared data type), findings 4-6, 9, 10.
   Kit docs `01`, `05`, `09` #9 and `17` §2.7 describe the stock upgrade AI. The PC list (T0-L1, with R3 on today's
   build) went to the testing thread.
+- **2026-11-04: code review against the engine** (Dimitri: "Start with 1, 2, and 3" on the coordinator's list of
+  quality checks; paused early at "Once every thread is at a good stopping point, pause activity"; cloud only, nothing
+  run on the PC; `docs/reports/CODE_REVIEW_2026-11-04.md`, every finding in `_FINDINGS.md`). Nine reviewers read every
+  part's shipping code against the kit's rules and the decompiled game: 55 findings, 54 bugs, 32 confirmed and 22
+  plausible, none seen in game yet. The worst: every bonus break from Tide 29 pays twice, an objective left running
+  pays at the next map's start, a question asked while a vessel is down never reaches its player, and a quit after
+  the staging map brings it back. None is fixed: the report sorts the fixes into a low-risk batch, the ones that need
+  Dimitri's word (Uloe's shared Light, Spring Tide and Tidal Mend, the map's foe health look, Monument's Cleanse, lobby
+  Cardinals) and the ones a PC fact decides. Not done: the second pass over the mode and the shared kit, and most
+  debug files. The same PR repairs the base: PR #82's commit came from the PC's copy, older than PR #80, and put back
+  old helper names, so the mode's release build failed with 6 errors and three vessels' self-tests failed too. Seven
+  files three-way merged; every part compiles at 0 errors again. A change made on the PC goes back as a diff on the
+  newest base (`TDS_Mod/Tools/pc/README.md`).
 
 ### Decisions
 
