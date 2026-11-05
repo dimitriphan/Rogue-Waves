@@ -275,6 +275,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
   look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
   2026-11-05: PC testing round 3, stopped early at the usage limit: on PR #89's base every self-test passes and the fixes read hold in game; the two-player list did not run (`docs/reports/TESTING_ROUND_3_2026-11-05.md`).
+  2026-11-05: every call waiting on Dimitri gathered on one page, 39 questions by theme, each with Claude's default
+  (`docs/reports/OPEN_DECISIONS_2026-11-05.md`); answered in its thread, small answers go straight into a PR.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -824,6 +826,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   sprite listed, present, the right size, and none private or from before the scope. **7:** this Log lacked #78, #82,
   #83 and #85, and "Now" the code review's open bugs and #82's unfinished round. Compiled here (release, self-test,
   gaps: 0 errors); nothing run on the PC.
+- **2026-11-05: Dimitri's open decisions on one page** (Dimitri: "Check the idle threads to see if there is anything
+  that can be continued or combined into a single thread instead"). Nearly every idle thread waits on his word, so
+  `docs/reports/OPEN_DECISIONS_2026-11-05.md` gathers the calls from the code review (§5 B), the scope audit, the quality
+  pass, the kit check, the mode polish, the balance reports, testing round 3 and this Part's Open questions: 39
+  questions, each with Claude's default, and an appendix of the audit's smaller rows. Docs only.
 
 ### Decisions
 
@@ -1011,6 +1018,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 10 | The scope-against-code audit (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2-3): for each of the 41 rows, scope or code yields | nothing changes until he picks; each row names my lean |
 | 11 | The quality pass's seven (`docs/reports/QUALITY_PASSES_2026-11-04.md` "Left for Dimitri"): Cardinal stacking (6 working copies of a pack one, 1 of a stock one, against scope `12`'s no limit), scope `14`'s objective kinds, three scope wording points, Spool's Cookie Tin role, his scope copy | the build's caps stand; nothing changes until he picks |
 | 12 | The code review's calls (`docs/reports/CODE_REVIEW_2026-11-04.md`): §5 B: ULO-3 (do two Uloes share Light?), MODE-C2, C3 and C5 (Spring Tide and Tidal Mend on the mode's own mods, not stock scripts), MODE-D5 (the map's extra foe health without the elite look), YOS-2 (Monument's Cleanse and a stock artifact's trade-off), MODE-D9 (lobby Cardinals in a campaign) | the low-risk batch can be built without them; these wait |
+| 13 | All of the above, and every other call waiting on him, on one page (`docs/reports/OPEN_DECISIONS_2026-11-05.md`): 39 questions by theme | each line's `~default~`; nothing changes for a question he skips |
 
 ### Phase 5 pieces
 
