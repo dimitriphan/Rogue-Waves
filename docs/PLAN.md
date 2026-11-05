@@ -282,7 +282,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #150 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04).
+- **Next free numbers:** kit chapter 25, pitfall #151 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -753,6 +753,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   it changes numbers, report §2), the per-vessel content builders (they need a shared data type), findings 4-6, 9, 10.
   Kit docs `01`, `05`, `09` #9 and `17` §2.7 describe the stock upgrade AI. The PC list (T0-L1, with R3 on today's
   build) went to the testing thread.
+- **2026-11-04: code review against the engine** (Dimitri: "Start with 1, 2, and 3" on the coordinator's list of
+  quality checks; paused early at "Once every thread is at a good stopping point, pause activity"; cloud only, nothing
+  run on the PC; `docs/reports/CODE_REVIEW_2026-11-04.md`, every finding in `_FINDINGS.md`). Nine reviewers read every
+  part's shipping code against the kit's rules and the decompiled game: 55 findings, 54 bugs, 32 confirmed and 22
+  plausible, none seen in game yet. The worst: every bonus break from Tide 29 pays twice, an objective left running
+  pays at the next map's start, a question asked while a vessel is down never reaches its player, and a quit after
+  the staging map brings it back. None is fixed: the report sorts the fixes into a low-risk batch, the ones that need
+  Dimitri's word (Uloe's shared Light, Spring Tide and Tidal Mend, the map's foe health look, Monument's Cleanse, lobby
+  Cardinals) and the ones a PC fact decides. Not done: the second pass over the mode and the shared kit, and most
+  debug files. The same PR repairs the base: PR #82's commit came from the PC's copy, older than PR #80, and put back
+  old helper names, so the mode's release build failed with 6 errors and three vessels' self-tests failed too. Seven
+  files three-way merged; every part compiles at 0 errors again. A change made on the PC goes back as a diff on the
+  newest base (`TDS_Mod/Tools/pc/README.md`).
 
 ### Decisions
 
