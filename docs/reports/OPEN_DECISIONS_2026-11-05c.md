@@ -6,7 +6,7 @@ the base `1f33941`. Nothing was changed in code to write this page, and nothing 
 built by a code thread and seen on the PC.
 
 **Answered 2026-11-05 17:45Z:** Dimitri picked **a** on the decision card. What follows from it is in "The answer" at the
-end.
+end. **Built** the same day: `WEATHER_LOOK_2026-11-05.md` (compiled; its PC round is that page's §4).
 
 **How to answer:** by letter ("1 a", "1 b"...), or "as recommended". `~a~` is the default Claude takes if you say so.
 

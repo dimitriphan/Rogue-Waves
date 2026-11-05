@@ -427,6 +427,7 @@ public static partial class RWTest
         Entity_Master stand = RWShop.Stand;
         long[] subs = stand.Entitydata.Value.Subowner;
         Check("VENDCINT: nobody's, every player a subowner, not a target", stand.Entitydata.Value.Owner == -1 && subs != null && Array.IndexOf(subs, me) >= 0 && stand.Beingserver.Entity.Targetable == false, "subowners " + (subs != null ? subs.Length : 0));
+        yield return WeatherLook(RWChart.Calm, Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString());   // the chart's row 1 is always calm
 
         // The Exit Map warning (B4).
         Tds_Pausemenu.Openpausemenu();

@@ -28,7 +28,7 @@ code items) and kit 1.12 (`docs/reports/BUILD_UNBUILT_2026-11-05.md`, whose §5 
 | `Code/04_World.cs` | the chart as a world: built on every machine from its name `RW_Chart_<seed>_<route>` |
 | `Code/05_Boat.cs` | on the boat: register, warp, blacklist (only the lost map during a replay), sail to a choice, pick it, keep the save clean, take the party home when no campaign is on |
 | `Code/06_Campaign.cs` | the host's campaign: seed, route, retries, the map to replay and the map in play in the save; `New`, `Continue`, `Stop`; a map won at Tide 15, lost at its end or when the host leaves it; `Live` leaves it behind after a slot switch |
-| `Code/07_Weather.cs` | Rising Water, Quickening Current, Nesting Ground |
+| `Code/07_Weather.cs` | Rising Water, Quickening Current, Nesting Ground; each one's look (light mist, storm grey, dusk), set by every machine (2026-11-05) |
 | `Code/08_Icons.cs` | the weather icons for the warning popup |
 | `Code/09_Rejoin.cs` | a dropped player rejoins the running map: the host keeps seats and opens the lobby while one is empty; the rejoiner starts its camera, HUD, vessel and weather |
 | `Code/10_Online.cs` | `RWIdentity`: every machine keeps its player GUID for a restart; `RWLoad`: the host sends back a player whose map never loads |

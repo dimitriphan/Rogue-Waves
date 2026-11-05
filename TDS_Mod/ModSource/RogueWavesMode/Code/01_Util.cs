@@ -181,6 +181,26 @@ public static class RWUtil
         return tiles;
     }
 
+    // The lowest ground tile, from the Surface entities every machine has; the host's grid if there are none.
+    // Entityclienttags is filled on every machine from each being's own tags as its client half starts (as Entitiesserver
+    // is on the host at its spawn, read from the game's IL), and a tile's synced Position is the tile's place (the game's
+    // own rally order sends Surfacemaster.Position). ModKitLight's relative fog measures the camera's distance to it.
+    public static float GroundLow(out int tiles)
+    {
+        float low = float.MaxValue;
+        tiles = 0;
+        List<Entity_Master> surfaces;
+        if (Game_Entity.Instance != null && Game_Entity.Instance.Entityclienttags.TryGetValue("Surface", out surfaces))
+            foreach (Entity_Master s in surfaces)
+                if (s != null) { low = Mathf.Min(low, s.Position.Value.y); tiles++; }
+        if (tiles == 0)
+            foreach (Genitem g in Ground()) { low = Mathf.Min(low, g.Position.y); tiles++; }
+        return tiles > 0 ? low : 0f;
+    }
+
+    // A colour written 0xRRGGBB.
+    public static Color32 Rgb(int rgb) { return new Color32((byte)(rgb >> 16), (byte)(rgb >> 8), (byte)rgb, 255); }
+
     public static int Count(string being)
     {
         int n = 0;

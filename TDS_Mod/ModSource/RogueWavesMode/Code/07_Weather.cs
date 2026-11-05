@@ -7,6 +7,7 @@
 //                       from Tide 10, as Main_Chrono does on Map_Chrono, with the same warning popup
 //   Nesting Ground      Tower_Halberdnest (3_Vultures'): a nest near an enemy core that grows each Tide and sends a
 //                       Halberd every few Tides
+// Each also has a look of its own (light mist, storm grey, dusk; "the look" below), set by every machine for itself.
 // A map object's being (and every being it spawns, Needs) lives in its home Gameplan's groups, which only that map
 // loads: every machine loads those groups from the boat once the weather's map is picked (RWBoat), and a map object never unsubscribes from Tides (docs/16 §3), so it
 // stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); RWRun (14_Run.cs) pays it.
@@ -411,6 +412,92 @@ public static class RWWeather
         }
         RWLog.Warn("Nesting Ground: no free tile 3-7 from the enemy core at " + RWUtil.V(c));
         return null;
+    }
+
+    // ---------------------------------------------------------------- the look (every machine)
+
+    // A look per weather, so each reads at a glance (Dimitri's pick, 2026-11-05: docs/reports/OPEN_DECISIONS_2026-11-05c.md):
+    // the light mist, storm grey and dusk the PC showed readable (docs/reports/LIGHTING_2026-11-05.md §6.3; the gaps
+    // build's L1 pictures these three). A calm map keeps its own light; no night, no borrowed grade, no heavy sea fog.
+    // Nothing syncs lighting: every machine, a rejoiner too, sets its own from the synced names (RWRejoin.MapWeather)
+    // once its intro is over, fading in over LookFade; ModKitLight holds it over the game's own lighting call and lets it
+    // go with the map.
+    public const float LookFade = 4f;
+    public static int Lit = -1;              // the weather this machine set this map's look from (Calm: none); -1 until its intro ends
+    public static float LitAt;               // when, in unscaled time (the self-test waits out the fade)
+    static Game_Mapvars litMap;
+
+    // The weather's look over this map's own lighting; null for a calm map, or a map with no lighting group to start from.
+    // The fog runs from start to end times the camera's distance to the ground (ModKitLight's Relative), so a zoom keeps
+    // the same haze on every map.
+    public static ModKitLight.Look LookFor(int w)
+    {
+        Blockage.Lighting.Bl_Lighting_Group own = ModKitLight.MapOwn();
+        if (own == null)
+            return null;
+        ModKitLight.Look l = ModKitLight.Look.Of(own);
+        switch (w)
+        {
+            case RWChart.RisingWater:           // light mist: a pale haze far off, over the map's own ambient light and sun
+                return Fog(l, 0xC9D6D8, 0.8f, 2.2f);
+            case RWChart.QuickeningCurrent:     // storm grey: flat grey light, a low sun
+                return Tint(Fog(l, 0x4A5258, 0.7f, 1.8f), 0x5A646C, 0x4B545B, 0x30363B, 0xB8C0C8, 0.45f, new Vector3(0.3f, -0.5f, 0.8f));
+            case RWChart.NestingGround:         // dusk: an orange-gold haze, a low orange sun, long shadows
+                return Tint(Fog(l, 0xE09A6B, 1f, 3f), 0x6A5A8A, 0xB07A6A, 0x4A3A4A, 0xFF9A5A, 0.9f, new Vector3(-0.8f, -0.25f, 0.3f));
+        }
+        return null;
+    }
+
+    static ModKitLight.Look Fog(ModKitLight.Look l, int rgb, float start, float end)
+    {
+        l.Fog = true;
+        l.FogColor = RWUtil.Rgb(rgb);
+        l.FogStart = start;
+        l.FogEnd = end;
+        l.Relative = true;
+        l.SunDirection = Vector3.zero;      // the sun keeps the map's heading
+        return l;
+    }
+
+    // Its own ambient sky, horizon and ground, and the sun's colour, strength and heading.
+    static ModKitLight.Look Tint(ModKitLight.Look l, int top, int mid, int bottom, int sun, float strength, Vector3 toward)
+    {
+        l.Top = RWUtil.Rgb(top); l.Mid = RWUtil.Rgb(mid); l.Bottom = RWUtil.Rgb(bottom);
+        l.Sun = RWUtil.Rgb(sun);
+        l.SunIntensity = strength;
+        l.SunDirection = toward.normalized;
+        return l;
+    }
+
+    // Every machine, every frame: once a map, when this machine's intro is over (the game's own lighting is on by then).
+    public static void LookUpdate()
+    {
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        if (ReferenceEquals(mv, litMap))
+            return;
+        Lit = -1;
+        if (mv == null) { litMap = null; return; }
+        Game_Client_Init init = Game_Client_Init.Instance;
+        if (!mv.Maploaded.Value || init == null || !init.Gametimescale)
+            return;
+        litMap = mv;       // one try a map: a throw is logged for this map, not retried every frame
+        Lit = RWRejoin.MapWeather();
+        LitAt = Time.unscaledTime;
+        if (Lit == RWChart.Calm)
+            return;
+        try
+        {
+            Blockage.Lighting.Bl_Lighting_Group own = ModKitLight.MapOwn();
+            ModKitLight.Look look = LookFor(Lit);
+            if (look == null) { RWLog.Warn("weather look: " + Display(Lit) + " on a map with no lighting group: none set"); return; }
+            int tiles;
+            ModKitLight.GroundY = RWUtil.GroundLow(out tiles);
+            ModKitLight.Measure();
+            ModKitLight.Set(look, LookFade);
+            RWLog.Info("weather look: " + Display(Lit) + " over " + RWUtil.F(LookFade) + " s on " + own.name + ", ground y " + RWUtil.F(ModKitLight.GroundY)
+                + " from " + tiles + " tiles, the camera " + RWUtil.F(ModKitLight.Reach) + " from it: " + look);
+        }
+        catch (Exception e) { RWLog.Warn("weather look: " + Display(Lit) + ": " + e); }
     }
 
     public static string Stats(Entity_Master e, params string[] names)
