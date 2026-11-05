@@ -37,15 +37,15 @@ public static partial class RWTest
         Check("Spare Plank: offered to every vessel with a wall, never Buster or Argo", walls.Trim() == "Smacky Fie Boutman Snosno Yossele Spool Uloe", walls);
 
         // The stock Cardinals split (docs/reports/STOCK_TRINKETS_2026-11-05.md): thirteen Trinkets, each held once by each buyer.
-        string kinds = "", wrong = "";
+        string wrong = "", unsold = "";
         foreach (string id in RWCardinals.Sold)
-        {
-            if (RWCardinals.IsMine(id)) continue;
-            bool listed = System.Array.IndexOf(RWCardinals.StockTrinketIds, id) >= 0;
-            if (RWCardinals.IsTrinket(id) != listed) wrong += id + " ";
-            if (listed) kinds += RWCardinals.StockKind(id).Substring(0, 1);
-        }
-        Check("Stock split: the sold stock Cardinals that act on one player's things are Trinkets, the rest Cardinals", wrong == "" && kinds.Length == RWCardinals.StockTrinketIds.Length, "'" + wrong + "', kinds " + kinds);
+            if (!RWCardinals.IsMine(id) && RWCardinals.IsTrinket(id) != (System.Array.IndexOf(RWCardinals.StockTrinketIds, id) >= 0)) wrong += id + " ";
+        foreach (string id in RWCardinals.StockTrinketIds)
+            if (!RWCardinals.Sold.Contains(id)) unsold += id + " ";
+        string kinds = RWCardinals.StockKind("Artifact_Caffeine") + RWCardinals.StockKind("Artifact_Rustypipe") + RWCardinals.StockKind("Artifact_Voice") + RWCardinals.StockKind("Artifact_Redcoin") + RWCardinals.StockKind("Artifact_Gavel");
+        Check("Stock split: the sold stock Cardinals that act on one player's things are Trinkets, the rest Cardinals, each Trinket by its kind",
+            wrong == "" && kinds == "HeroTowerBuiltCoinGavel" && RWCardinals.StockKind("Artifact_Opalcore") == "", "'" + wrong + "', kinds " + kinds);
+        if (unsold != "") Setup("Stock split", "not loaded, so not on sale: " + unsold);
         if (RWCardinals.Sold.Contains("Artifact_Caffeine"))
         {
             RWPlayer a = new RWPlayer { Key = "test", Hero = "Hero_Smacky", Pure = 200 }, b = new RWPlayer { Key = "test", Hero = "Hero_Smacky", Pure = 200 };

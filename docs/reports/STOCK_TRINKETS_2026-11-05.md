@@ -63,7 +63,9 @@ if the shop ever sold them.
   Hero-tagged unit of theirs such as Boutbro, who gets the game's own through the core's `Child`.
 - **Tower, Built** (`RWCardinals.Reach`, the owner-filtered spawn hook and the sweep after a buy): the Towerapply or
   Voiceapply effect goes on each new tower of the buyer's (Built: tower, trap or unit whose parent is a Hero) through its
-  init list, as the game's own scripts do (pitfall #118); a thing already standing gets it at once.
+  init list, as the game's own scripts do (pitfall #118); a thing already standing gets it at once. Each thing gets each
+  effect once a map, as the game's spawn hooks give it: Rusty Pipe's takes itself off when it ripens and must not start
+  again at the next sweep.
 - **Coin** (`RWTrinkets.CoinStart`, `Tide`): the start sum once a map, once the Basin stands or at once when bought mid-map;
   then each break its Tide's sum, Add x Tide x (30 / Tides, whole number) as `Entity_Ai_Artifact_Coin` counts it, all
   to the buyer through `Giveresources(list, owner)`.
@@ -99,7 +101,10 @@ four Sport Waters pays for four stacks of foe health where it used to pay for on
 Compiled here (`TDS_Mod/ModSource`, `python3 ../Tools/cloud-check/check_mod.py RogueWavesMode/Code Shared RogueWavesMode
 "<defines>"`): release, `ROGUEWAVESMODE_SELFTEST`, `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_GAPS`, and with `_SHOTS`
 added: 0 errors, the same 0-2 warnings as the base. `ROGUEWAVESMODE_TWOPC` reports the Netcode transport error the stubs
-always give (cloud-check `README.md`). Nothing ran on the PC.
+always give (cloud-check `README.md`). `/code-review high` on the diff: fixed what it confirmed (Rusty Pipe ripening again
+at a later sweep, a Coin's start sum lost while a wallet isn't there yet, the Gavel reading the level's base value, the
+kind table as one list of pairs, a shared reader of a Cardinal's named upgrades); left as it is: folding the 13 into the
+pack's own Trinket sheets (a larger change with no behaviour gained). Nothing ran on the PC.
 
 For the next PC round (the gaps build, solo then two players):
 

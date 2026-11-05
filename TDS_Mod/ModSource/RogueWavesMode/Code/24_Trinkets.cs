@@ -46,7 +46,6 @@ public static class RWTrinkets
     public const int CrateMost = 6, WhistleLast = 3;
     public const float WhistleSlow = 0.3f, WhistleTaken = 0.25f;
     public const string FlareBolt = "Artifact_Auragavel";
-    static readonly string[] coinAuras = { "Red", "Yellow", "Blue" };     // a Coin's param prefix; the aura is "<prefix>aura"
 
     // Each vessel's (Defense) building (docs/scope/07-10, 16). Buster has none; Argo's Drill Rig is Economy/Defense and his
     // own tooltip says "no walls of its own".
@@ -638,8 +637,8 @@ public static class RWTrinkets
     // A Coin's start sum, once a map for each holder, once the Basin stands (the game's Coin pays as the core starts).
     static void CoinStart(long s, Kit k)
     {
-        if (k.Coins.Count == 0 || !ModKitUtil.Alive(RWUtil.PlayerCore()))
-            return;
+        if (k.Coins.Count == 0 || !ModKitUtil.Alive(RWUtil.PlayerCore()) || Game_Players.Instance == null || !Game_Players.Instance.Prevsessionlist.ContainsKey(s))
+            return;     // looked at again next time: the player's wallet may come after the Basin
         foreach (string coin in k.Coins)
         {
             string key = s + "|" + coin;
@@ -654,10 +653,10 @@ public static class RWTrinkets
     static void Pay(long s, string coin, string suffix, float times)
     {
         List<Link_Resourceset> pay = new List<Link_Resourceset>();
-        foreach (string aura in coinAuras)
+        foreach (string aura in ModKitUtil.Auras)       // "Redaura": the Coin's numbers are "Red" + suffix
         {
-            float amount = RWCardinals.StockParam(coin, aura + suffix) * times;
-            if (amount > 0f) pay.Add(new Link_Resourceset { Name = aura + "aura", Amount = amount });
+            float amount = RWCardinals.StockParam(coin, aura.Substring(0, aura.Length - 4) + suffix) * times;
+            if (amount > 0f) pay.Add(new Link_Resourceset { Name = aura, Amount = amount });
         }
         if (pay.Count == 0 || Game_Players.Instance == null || !Game_Players.Instance.Prevsessionlist.ContainsKey(s))
             return;
@@ -672,7 +671,8 @@ public static class RWTrinkets
         if (!kits.TryGetValue(ModKitUtil.Owner(dead), out k) || !k.Gavel || !ModKitUtil.HasTag(dead, "Mob") || ModKitUtil.HasTag(dead, "Enemy") || RWRun.IsCopy(dead))
             return;
         const string id = "Artifact_Gavel";
-        int level = Mathf.Clamp(Mathf.RoundToInt(ModKitUtil.Stat(dead, "Level", 1f)), 1, 5);
+        Link_Stats lv;
+        int level = Mathf.Clamp(Mathf.RoundToInt(dead.Statsserver != null && dead.Statsserver.TryGetValue("Level", out lv) ? lv.Value_Calc : 1f), 1, 5);
         float reach = RWCardinals.StockParam(id, "Range_Base"), damage = RWCardinals.StockParam(id, level == 1 ? "Damage_Base" : "Damage" + level + "_Base");
         Entity_Master core = RWUtil.PlayerCore();
         if (reach <= 0f || damage <= 0f || !ModKitUtil.Alive(core))
