@@ -134,18 +134,23 @@ Dimitri: "1. Keep that 2. Make Trinket 3. Pay only share". So **17 Trinkets, 12 
 2. **Torrid Badge, Bendigo, Kippy, Fish Bait are Trinkets** (kind Unit). `RWCardinals.GrantStock` puts the Cardinal's
    own spawner upgrade (`Entity_Ai_General_Spawnmobs`) on the buyer's vessel, so the unit spawns beside the vessel as its
    child and is the buyer's (owner follows the parent), with their unit Directions and Trinkets. A vessel that drowns
-   and comes back starts its copied spawner again, so `RWTrinkets.Companions` (host, four times a second) keeps each
-   buyer to one of each unit. When the spawner replaces its unit (Torrid Badge's merchant, Fish Bait's Gabby: 10 s),
-   the newest stays and the older one goes, because its spawner died with the old vessel. When it doesn't (Bendigo's bird,
-   Kippy: 0), the first of the map stays and any later one goes at once, so the vessel's death never brings a new bird
-   (`CompanionsCut` counts them). They are despawned outside the spawn, never inside it.
+   and comes back starts its copied spawner again, so `RWTrinkets.Companions` (host, four times a second) takes away the
+   unit the drowned vessel made (its parent is gone) once the new vessel's own unit stands: one of each at a time. A unit
+   whose spawner lives is never taken, so a spawner that replaces its unit (Torrid Badge, Fish Bait: 10 s) can't loop.
+   Bendigo's bird and Kippy (respawn 0) come again with each new vessel if the last one is gone. Despawned outside the
+   spawn, never inside it (`CompanionsCut` counts them).
 3. **A Coin pays its buyer one share**: each sum divided by the players in the campaign, as the game's Coin splits it
-   among the active players. In one-player play that is the whole sum.
+   among the active players; the start sum waits until every player's vessel stands, so the split counts everyone. In
+   one-player play that is the whole sum.
+
+`/code-review high` on this change: fixed what it confirmed (the first rule could loop a replacing spawner or keep the
+wrong unit on a tie, so it became the parent rule above; the start share could count too few players; the unit lookup is
+cached; stale comments).
 
 Checked: compiled here (release 0/0, SELFTEST 0/1, SELFTEST+GAPS 0/2, with SHOTS 0/2, the same as the base), gaps rule
 "Stock split" now also checks Kippy is kind Unit. Not run on the PC. Add to §6's list:
 
 9. Torrid Badge on Smacky: a merchant spawns beside the vessel, owned by the buyer (its kills credited to them). Drown
-   and respawn: one merchant stands afterwards, not two. Bendigo: one bird a map, even after a respawn. Kippy: one cat;
-   note whether a cat whose vessel drowned keeps working.
+   and respawn: one merchant stands afterwards, not two. Bendigo: one bird at a time; note whether a bird taken away
+   pops (hurting every foe) as it goes. Kippy: one cat; note whether a cat keeps working while its vessel is down.
 10. Two players, Red Coin held by one: that player's Red rises by 12.5 at the start (25 split by 2), the other's not at all.

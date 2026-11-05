@@ -4,8 +4,9 @@
 
 Dimitri: "Keep that, Make Trinket, Pay only share" (`docs/reports/STOCK_TRINKETS_2026-11-05.md` §7). Kind Unit (Torrid
 Badge, Bendigo, Kippy, Fish Bait): `GrantStock` puts the stock spawner upgrade on the buyer's vessel (Artifactobject
-passed); `RWTrinkets.Companions` keeps one of each unit per buyer (spawner replaces: newest stays; respawn 0: first of
-the map stays), despawning outside the spawn. `RWTrinkets.Pay` divides a Coin's sums by `RWRun.Sessions().Count`.
+passed); `RWTrinkets.Companions` takes away a buyer's unit whose parent vessel is gone once the new vessel's
+stands (one at a time; a live spawner's unit is never taken), outside the spawn. `RWTrinkets.Pay` divides a Coin's sums
+by `RWRun.Sessions().Count`; the start sum waits for every vessel.
 
 ## 0.1.0-dev, later (2026-11-05): base game Cardinals split into Trinkets (compiled, not yet run in game)
 

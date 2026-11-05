@@ -271,7 +271,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
   pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
   Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-05: base game Cardinals split** (Dimitri: "separate them", then "Make Trinket", "Pay only share"): 17 of the
+- **2026-11-05: base game Cardinals split** (Dimitri: "separate them"): 13 of the 29 sold are Trinkets, held once per buyer
+  (`docs/reports/STOCK_TRINKETS_2026-11-05.md`; §5 three questions, §6 the PC list); scope `12` lists them as defaults.
+  Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-05: feature spotlight page** (Dimitri: "Design a spotlight of all of the new features"): `docs/spotlight/`
+  (artifact https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr), every feature chipped played, built-not-run or not built,
+  with the PR #130 Trinket split. Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-05: his answers on the split** (Dimitri: "Keep that", "Make Trinket", "Pay only share"): 17 of the
   29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
   §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
 
@@ -1124,10 +1130,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   gaps rules "Stock split" x2; a lobby pick or a pre-split save's Cardinal keeps the game's team-wide one. Scope `12`:
   the list as `~defaults~`. Compiled here (release, self-test, gaps, shots: 0 errors), not run on the PC (report §6 =
   next round's list; §5 three questions: Gavel, companions, Coin's sum). No kit change, no pitfall: kit 1.15, #172.
+- **2026-11-05: Rogue Waves Spotlight** (Dimitri: "Design a spotlight of all of the new features added in the Rogue
+  Waves mod"). A new artifact, https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr; the older Vessel Spotlight
+  (NZ3wMMaujKDSNSaYCw7NZw, the per-vessel journal with the base vessels' private sheets) is kept as it was, since this page
+  covers the whole pack instead. Source `docs/spotlight/` (`spotlight.src.html`, `build.py`, the built page). Read from
+  scope `01`, `03`-`14`, Part C and the 2026-11-05 reports, `STOCK_TRINKETS_2026-11-05.md` included (13 base Trinkets,
+  16 base Cardinals). Flagged as called a feature but not built: Depth, new enemy types, Spool's 22 upgrades and
+  UNTHREAD, Spool's and Uloe's final sprites, three vessels' lore, the modifiers' journal pages, Fog Bank and the mood
+  ramp (ideas); most of 5 November's work is marked built, not yet run, until PC round 4 reports. Docs only, no compile.
+  Next free numbers unchanged: kit 1.15, pitfall #172.
 - **2026-11-05: his answers on the split** (Dimitri 23:51Z: "1. Keep that 2. Make Trinket 3. Pay only share"). Aura
   Gavel stays a Trinket; Torrid Badge, Bendigo, Kippy and Fish Bait become Trinkets of kind Unit (their stock spawner on
-  the buyer's vessel; `RWTrinkets.Companions` keeps one of each per buyer after a respawn: newest when the spawner
-  replaces, first of the map when it doesn't); a Coin pays its buyer the sum divided by the players. 17 Trinkets, 12
+  the buyer's vessel; `RWTrinkets.Companions` removes the drowned vessel's unit once the new vessel's stands); a Coin pays its buyer the sum divided by the players. 17 Trinkets, 12
   Cardinals. Report §7, scope `12` (list still `~defaults~` but his three answers). Compiled here (0 errors), not run on the PC. No kit, no pitfall.
 
 ### Decisions
