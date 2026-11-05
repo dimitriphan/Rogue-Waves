@@ -205,9 +205,17 @@ public static partial class RWTest
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 90f);
     }
 
+    // A test that reads the board from a map's opening break (P1 posts it from Tide 3's): set back however the test ends,
+    // a Setup's early exit and a throw included, so the gaps part's P1 check sees Tide 3 again.
+    public static IEnumerator BoardFromTide1(IEnumerator inner)
+    {
+        RWObjectives.FirstTide = 1;
+        try { while (inner.MoveNext()) yield return inner.Current; }
+        finally { RWObjectives.FirstTide = RWObjectives.ObjectivesFrom; }
+    }
+
     public static IEnumerator Flow()
     {
-        RWObjectives.FirstTide = 1;     // the board is read from the opening break here; P1's Tide 3 is the gaps part's check
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
         Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
         if (menu == null) { Setup("flow", "never reached the main menu"); yield break; }
@@ -655,7 +663,6 @@ public static partial class RWTest
             }
         }
         Info("Tides 2-15", RWUtil.F(Time.realtimeSinceStartup - clock) + " s");
-        RWObjectives.FirstTide = RWObjectives.ObjectivesFrom;
         yield return Until(() => RWCampaign.WonThisMap, 10f);
         Check("Won: Tide 15 cleared wins the map, and adds it to the route", RWCampaign.WonThisMap && RWCampaign.Route.Count == 1 && RWCampaign.Playing < 0, "route " + Digits(RWCampaign.Route));
         Check("Won: a Direction pick is owed before the next map", player.Owed, "");

@@ -317,32 +317,15 @@ public static class RWCardinals
     public static int PriceMine(string id)
     {
         Entity_Master v = RWMine.Vessel();
-        return Price(Cost(id) + RampHere(v), OnPanel(v, "Cardinal_Punch"));
+        return Price(Cost(id) + RampMine(v), OnPanel(v, "Cardinal_Punch"));
     }
 
-    // The ramp as this machine sees it, from what syncs: this vessel's Trinket copies (a unit Trinket's by its panel mark),
-    // the pack's Cardinal stacks on a Basin, and each stock Cardinal on a Basin that isn't a lobby pick.
-    static int RampHere(Entity_Master v)
+    // The ramp the host wrote on this player's vessel (RW_Price, RWRun.Carry): the bought stock Cardinals can't be told from
+    // the lobby's picks on a machine (both are in the HUD row and on the cores), so every machine takes the host's count.
+    static int RampMine(Entity_Master v)
     {
-        List<Entity_Master> cores = CoresHere();
-        int n = 0;
-        foreach (string id in Sold)
-        {
-            RWCardinalDef d;
-            if (!defs.TryGetValue(id, out d))
-            {
-                Artifactobject art = InLobby(id) ? null : Object(id);
-                Upgradeproperties first = art != null && art.Coreupgrades != null && art.Coreupgrades.Count > 0 ? art.Coreupgrades[0] : null;
-                if (first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname)))) n++;
-                continue;
-            }
-            for (int i = 1; i <= Cap(id); i++)
-            {
-                FixedString64Bytes copy = new FixedString64Bytes(PanelId(d, i));
-                if (d.Trinket ? v != null && v.Upgradelist != null && v.Upgradelist.Contains(copy) : cores.Exists(c => c.Upgradelist.Contains(copy))) n++;
-            }
-        }
-        return Ramp * n;
+        Link_Commandref c;
+        return RWMine.Command(v, RWRun.PriceLink, out c) ? Mathf.RoundToInt(c.Goalvalue) : 0;
     }
 
     static int Price(int cost, bool punched) { return punched ? Mathf.FloorToInt(cost * (1f - RWTrinkets.PunchOff) + 0.0001f) : cost; }

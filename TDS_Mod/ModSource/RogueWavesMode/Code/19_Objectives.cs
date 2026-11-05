@@ -32,7 +32,7 @@ public static class RWObjectives
     static readonly Dictionary<Entity_Master, float> coreHurt = new Dictionary<Entity_Master, float>();   // each Basin's damage taken as the Tide began
     public const float ClockShare = 0.25f;   // of the Tide's clock left when its last foe falls
     public const int ObjectivesFrom = 3;     // P1: the first Tide with an objective (posted in the break before it), docs/scope/14
-    public static int FirstTide = ObjectivesFrom;   // the flow self-test lowers it to read the board from the opening break
+    public static int FirstTide = ObjectivesFrom;   // the flow and two-player self-tests lower it to read the opening board (RWTest.BoardFromTide1)
 
     public static void Build() { }
 

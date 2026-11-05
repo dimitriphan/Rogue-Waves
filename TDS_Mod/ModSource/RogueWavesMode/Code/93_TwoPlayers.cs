@@ -329,8 +329,9 @@ public static partial class RWTest
     static IEnumerator TwoRun()
     {
         RWTwo.Hook();
-        if (RWTwo.Second) yield return Stepped(TwoSecond());
-        else yield return Stepped(TwoHost());
+        // The second player takes the objective on map 1's opening board, before P1's Tide 3.
+        if (RWTwo.Second) yield return Stepped(BoardFromTide1(TwoSecond()));
+        else yield return Stepped(BoardFromTide1(TwoHost()));
     }
 
     // ---------------------------------------------------------------- the host

@@ -1020,6 +1020,11 @@ public static partial class RWTest
             int stockPrice = RWCardinals.PriceFor(player, stockCard);
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - stockPrice, stockCard + ": '" + first + "', '" + second + "', price " + stockPrice + ", Pure " + player.Pure);
+            RWRun.TickNow();
+            yield return new WaitForSeconds(0.5f);
+            // The bought stock Cardinal is in the HUD row like a lobby pick: the shelf reads the host's ramp (RW_Price), not the row.
+            Check("C1: the shelf shows what the host charges, a bought stock Cardinal counted", RWCardinals.PriceMine("Cardinal_Dentures") == RWCardinals.PriceFor(player, "Cardinal_Dentures"),
+                "shelf " + RWCardinals.PriceMine("Cardinal_Dentures") + ", charged " + RWCardinals.PriceFor(player, "Cardinal_Dentures") + ", run " + RWRun.Cardinals.Count + ", copies " + player.Trinkets.Count);
             // B3, B4: a Trinket stacks to 6 and then leaves the shelf; each stack shows on the vessel's panel; a Cardinal the
             // row has no room for is counted on the run line.
             player.Pure = 500;
@@ -1284,14 +1289,15 @@ public static partial class RWTest
             freeze = true;
             RWPlayer player = RWRun.For(me);
             yield return new WaitForSeconds(1f);
-            float wantScale = 1f + RWDifficulty.CountPerMap * (map - 1), wantHealth = RWDifficulty.HealthFor(map, RWDifficulty.LastHoard);
+            int hoard = RWDifficulty.Hoard();
+            // Scope 04's numbers written out, so a changed constant shows here: Tide 15's row, x2.6 on map 1, 0.08 more a map, 1.5% a held item.
+            float wantScale = 1f + RWDifficulty.CountPerMap * (map - 1), wantHealth = (2.6f + 0.08f * (map - 1)) * (1f + 0.015f * hoard) - 1f;
             int wantMods = RWDifficulty.ModifiersOn(map, 4);
             int mods = RWDifficulty.LastModifiers == "" ? 0 : RWDifficulty.LastModifiers.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Length;
-            Check("Map " + map + " of 10 (" + plan + ", " + RWWeather.Display(weather) + "): harder as written, every modifier loaded", Mathf.Abs(RWDifficulty.LastScale - wantScale) < 0.001f && Mathf.Abs(RWDifficulty.LastHealth - wantHealth) < 0.001f && RWDifficulty.LastFinish == RWDifficulty.Finish(map) && mods == wantMods,
-                "Tide 15 on row " + RWDifficulty.LastFinish + ", foes x" + RWUtil.F(RWDifficulty.LastScale) + ", health x" + RWUtil.F(1f + RWDifficulty.LastHealth) + " (" + RWDifficulty.LastHoard + " held), modifiers " + mods + " of " + wantMods + " [" + RWDifficulty.LastModifiers + "]; " + RWUtil.F(Time.realtimeSinceStartup - started) + " s in");
+            Check("Map " + map + " of 10 (" + plan + ", " + RWWeather.Display(weather) + "): harder as written, every modifier loaded", Mathf.Abs(RWDifficulty.LastScale - wantScale) < 0.001f && Mathf.Abs(RWDifficulty.LastHealth - wantHealth) < 0.001f && RWDifficulty.LastHoard == hoard && RWDifficulty.LastFinish == new[] { 15, 18, 20, 21, 21, 24, 24, 24, 24, 24 }[Mathf.Clamp(map, 1, 10) - 1] && mods == wantMods,
+                "Tide 15 on row " + RWDifficulty.LastFinish + ", foes x" + RWUtil.F(RWDifficulty.LastScale) + ", health x" + RWUtil.F(1f + RWDifficulty.LastHealth) + " (" + RWDifficulty.LastHoard + " held, " + hoard + " now; want x" + RWUtil.F(1f + wantHealth) + "), modifiers " + mods + " of " + wantMods + " [" + RWDifficulty.LastModifiers + "]; " + RWUtil.F(Time.realtimeSinceStartup - started) + " s in");
 
             // Each pass of a Tide: a real Tide's foes carry the map's health (every map since the balance sweep) and modifiers.
-            if (map >= 1)
             {
                 freeze = false;
                 forcing = false;

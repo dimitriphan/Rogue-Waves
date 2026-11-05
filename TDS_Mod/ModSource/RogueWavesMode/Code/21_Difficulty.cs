@@ -33,7 +33,7 @@ public static class RWDifficulty
     static List<Wavesobject.Waves> table;
     static int[] rowAt = new int[0];                 // per table entry: the base game's row a Tide entry plays (0 a break)
     static readonly Dictionary<int, Upgradeproperties> health = new Dictionary<int, Upgradeproperties>();
-    static string healthId;                         // this map's health upgrade, null on map 1 and outside the campaign
+    static string healthId;                         // this map's health upgrade (F3 lifts map 1 too), null outside the campaign
     static readonly Dictionary<Entity_Master, bool> toughened = new Dictionary<Entity_Master, bool>();
     static float nextLook;
     static int pruneAt = 256;
@@ -149,6 +149,7 @@ public static class RWDifficulty
                 table[i - 1] = b;
             }
             w.Wavetime = from.Wavetime;
+            w.Note = from.Note;      // Mode_Normal shows the entry's note under the banner (kit docs/15): the row's own, wherever it lives
             if (from.Content == null)
             {
                 w.Content = null;

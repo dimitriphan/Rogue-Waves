@@ -1,12 +1,12 @@
 // The mode's game data, built the same on every machine at boot so online clients resolve the same names (kit docs/05,
-// docs/15 §3): the three None commands of RWRun, VENDCINT and its buttons, the Directions any vessel can take and the
+// docs/15 §3): the four None commands of RWRun, VENDCINT and its buttons, the Directions any vessel can take and the
 // Cardinals and Trinkets, the way Blockage's data is laid out, cloned from Smacky's objects (his group is loaded at boot for that).
 public static class RWContent
 {
-    public const string OrderName = "Command_RW_Order", AskName = "Command_RW_Ask", RunName = "Command_RW_Run";
+    public const string OrderName = "Command_RW_Order", AskName = "Command_RW_Ask", RunName = "Command_RW_Run", PriceName = "Command_RW_Price";
     public const string ShopName = "Command_RW_Shop", FundName = "Command_RW_Fund", BoardName = "Command_RW_Board";
     public const string Vendor = "Mob_Vendcint", VendorSheet = "Vendcint-Sheet";
-    public static Commandobject OrderCommand, AskCommand, RunCommand, ShopCommand, FundCommand, BoardCommand;
+    public static Commandobject OrderCommand, AskCommand, RunCommand, PriceCommand, ShopCommand, FundCommand, BoardCommand;
     public static Beingobject Vendcint;
     public static bool Built;
 
@@ -22,7 +22,7 @@ public static class RWContent
 
     public static string CommandFor(string link)
     {
-        return link == RWRun.OrderLink ? OrderName : link == RWRun.AskLink ? AskName : RunName;
+        return link == RWRun.OrderLink ? OrderName : link == RWRun.AskLink ? AskName : link == RWRun.PriceLink ? PriceName : RunName;
     }
 
     public static IEnumerator Boot()
@@ -202,6 +202,7 @@ public static class RWContent
         OrderCommand = Command(t, OrderName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         AskCommand = Command(t, AskName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         RunCommand = Command(t, RunName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
+        PriceCommand = Command(t, PriceName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         ShopCommand = Command(t, ShopName, Commandobject.Styles.Button, "SHOP", "Spend Pure Aura on Cardinals, Trinkets and the next rank of your Directions", Icon("RogueWaves_Shop"), new RWShopButton(), "3");
         FundCommand = Command(t, FundName, Commandobject.Styles.Button, "FUND TRANSFER", "Send base aura to a friend", Icon("RogueWaves_Fund"), new RWFundButton(), "4");
         BoardCommand = Command(t, BoardName, Commandobject.Styles.Button, "OBJECTIVE", "An optional objective for the next Tide, for bonus Pure Aura", Icon("RogueWaves_Board"), new RWBoardButton(), "5");
