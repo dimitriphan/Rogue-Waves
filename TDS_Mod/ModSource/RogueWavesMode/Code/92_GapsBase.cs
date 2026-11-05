@@ -4,11 +4,7 @@
 // the boat for the next.
 public static partial class RWTest
 {
-    static void TakeBase(RWPlayer p, string vessel, string name)
-    {
-        for (int r = 1; r <= 3; r++)
-            RWDirections.Take(p, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id(vessel, name + (r > 1 ? r.ToString() : ""))) as Upgradeproperties);
-    }
+    static void TakeBase(RWPlayer p, string vessel, string name) { TakeRanks(p, vessel, name, 3); }
 
     static float Calc(Entity_Master e, string stat) { Link_Stats s; return e != null && e.Statsserver != null && e.Statsserver.TryGetValue(stat, out s) ? s.Value_Calc : -1f; }
 
@@ -193,8 +189,16 @@ public static partial class RWTest
             yield return null;
         }
         ModKitUtil.Unfront(foe, recordDash);
+        // And just after, when the game's -1 is still on until its next slow tick and he looks for a foe to bite.
+        float lowAfter = float.MaxValue, after = Time.time;
+        while (Time.time - after < 0.45f)
+        {
+            lowAfter = Mathf.Min(lowAfter, Calc(vessel, "Range"));
+            yield return null;
+        }
         float multi = dashMultis.Count > 0 ? dashMultis[0] : -1f;
-        Check("Long Leash rank I: Buster's reach stays whole while he dashes", frames > 0 && low >= range0 - 0.001f, "Range " + range0 + ", lowest while dashing " + low + " over " + frames + " frames");
+        Check("Long Leash rank I: Buster's reach stays whole while he dashes and just after", frames > 0 && low >= range0 - 0.001f && lowAfter >= range0 - 0.001f && Calc(vessel, "Range") <= range0 + 0.001f,
+            "Range " + range0 + ", lowest while dashing " + low + " over " + frames + " frames, lowest in the 0.45 s after " + lowAfter + ", now " + Calc(vessel, "Range"));
         Check("Long Leash rank III: a dash hit lands 30% harder", struck && RWBase.Dashed > dashed0 && Mathf.Abs(multi - (1f + RWBase.LeashHit[3])) < 0.001f,
             "struck " + struck + ", Damagemulti " + multi + ", leashed hits " + (RWBase.Dashed - dashed0));
     }

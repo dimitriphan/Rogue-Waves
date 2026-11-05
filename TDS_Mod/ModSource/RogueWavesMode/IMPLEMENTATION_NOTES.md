@@ -3,22 +3,27 @@
 ## 0.1.0-dev, later (2026-11-05): the base vessels' Directions no held stat carries
 
 Compiled, not yet run in game (scope `11`). Sheets in `16_Directions.cs` `Mine` (no `Stat`); what they do is
-`23_BaseDirections.cs` (`RWBase`), host only, on each holder's own things:
+`23_BaseDirections.cs` (`RWBase`), host only, on each holder's own things, the holders read from `RWAny`'s crews four
+times a second:
 - **Mason's Trowel** (Smacky): his walls' Health Pmulti +20 / 40 / 60% (`RWHold`); rank III mends 1 a second once 3 s
-  pass with no drop in health (a hit with its own Damage leaves no `Lasthittime`, so health is what is watched).
+  pass with no hit, seen by a hook first in each wall's chain (a hit with its own Damage leaves no `Lasthittime`) and by
+  a drop in health for the moments the hook is off.
 - **Snow Shovel** (Sno Sno): the snow on each tile he leaves comes up to 30 / 40 / 55, read every frame as his tile
   changes; a new snow waits until its AI lifts the Level cap to 100 (`Link_Stats.Value` clamps to `Value_Calc`). His own
   +75% on snow above 20 then works on his trail.
 - **Worm Tin** (Boutman): Boutbro's `Fishcost`, `Barrelcost`, `Boatcost` Multi -10 / 20 / 30%, then his own `Countfish`,
   `Countbarrel`, `Countboat` by `SendMessage` (private methods, one float), so the price follows at once.
 - **Open Sign** (Fie): the Rest Stop's regulars count is a private field read only when Regulars lands. With no
-  `System.Reflection` (kit `docs/01`), `RWBase.Sign` lands Regulars once more with the sheet's `Perm_Count` raised for
-  that call, puts back the `Duration` hook chain and the look it rewrites, and lands Buffet again if held (its throw
-  outranks Regulars'). The sheet is shared by every Rest Stop, so it is set back at once. Without Regulars it does nothing.
-- **Long Leash** (Buster): a Range Add +1 every frame he is in `Movelinear` (the game's -1 follows at its own tick, so a
-  tick's worth either side can differ); rank II and III multiply his dash hits' `Damagemulti` on his `Interact`.
+  `System.Reflection` (kit `docs/01`), `RWBase.Open` lands a copy of the Regulars sheet with `Perm_Count` raised (the
+  sheet every Rest Stop shares is never changed), puts back the `Duration` hook chain and the look it rewrites, and lands
+  Buffet again if held (its throw outranks Regulars'). It lands again whenever the AI or its `Duration` chain is not the
+  one it left. Without Regulars it does nothing.
+- **Long Leash** (Buster): the game's -1 (`Rangemod`, set at each slow tick while he dashes and still on at the first
+  tick after, when he looks for a foe to bite) is found among his Range modifiers the first time he dashes and met by a
+  +1 every frame; rank II and III multiply his dash hits' `Damagemulti` on his `Interact`.
 - Self-test: the gaps build's new part "base" (`92_GapsBase.cs`) takes each vessel to a calm map: a wall hit and left,
-  a walk on fresh ground, Boutbro's boat price, a Rest Stop's regulars counted through its own `Duration` hook, a dash.
+  a walk on fresh ground, Boutbro's boat price, a Rest Stop's regulars counted through its own `Duration` hook, a dash
+  and the moment after it.
 
 ## 0.1.0-dev, later (2026-11-05): the Directions any vessel can take
 
