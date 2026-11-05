@@ -242,7 +242,7 @@
 	- Goes in: 04_Rogue_Waves_Mode.txt, under [Sea Weather]
 
 	{Name of Weather}
-		- In-game line: / The line announced when the map starts \
+		- In-game line: / The line in the boat's map panel when the map is picked; the map's start announces only the weather's name \
 		- Does: / What it changes on the map, in words \
 		- Numbers: / Exact values \
 		- Never on: / Maps that already have it built in \
