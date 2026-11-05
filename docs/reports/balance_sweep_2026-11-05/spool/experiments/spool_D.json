@@ -1,0 +1,173 @@
+[
+ {
+  "name": "spool kept wall thehunt pick, Loom 0.30",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall thehunt pick, Loom 0.25",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.25,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall thehunt pick, Loom 0.20",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick, Loom 0.30",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick, Loom 0.25",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.25,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick, Loom 0.20",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick, Loom 0.30",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick, Loom 0.25",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.25,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick, Loom 0.20",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ }
+]

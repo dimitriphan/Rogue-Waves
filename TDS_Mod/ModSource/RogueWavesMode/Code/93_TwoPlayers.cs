@@ -329,8 +329,9 @@ public static partial class RWTest
     static IEnumerator TwoRun()
     {
         RWTwo.Hook();
-        if (RWTwo.Second) yield return Stepped(TwoSecond());
-        else yield return Stepped(TwoHost());
+        // The second player takes the objective on map 1's opening board, before P1's Tide 3.
+        if (RWTwo.Second) yield return Stepped(BoardFromTide1(TwoSecond()));
+        else yield return Stepped(BoardFromTide1(TwoHost()));
     }
 
     // ---------------------------------------------------------------- the host
@@ -432,8 +433,8 @@ public static partial class RWTest
         yield return Until(() => RWShop.Stand != null, 120f);
         freeze = true;
         Check("VENDCINT lands with two players: both subowners", RWShop.Stand != null && RWShop.Stand.Entitydata.Value.Subowner != null && RWShop.Stand.Entitydata.Value.Subowner.Length == 2, RWShop.Stand != null ? RWUtil.V(RWShop.Stand.Entityposition.Value) : "none");
-        Info("difficulty with two players", "foes x" + RWUtil.F(RWDifficulty.LastScale) + ", health +" + RWUtil.F(RWDifficulty.LastHealth * 100f) + "%, modifiers [" + RWDifficulty.LastModifiers + "]");
-        Check("Difficulty: a second player adds a third more foes", Mathf.Abs(RWDifficulty.LastScale - (1f + RWDifficulty.CountPerPlayer)) < 0.001f, "scale " + RWUtil.F(RWDifficulty.LastScale));
+        Info("difficulty with two players", "foes x" + RWUtil.F(RWDifficulty.LastScale) + ", health x" + RWUtil.F(1f + RWDifficulty.LastHealth) + " (" + RWDifficulty.LastHoard + " held), modifiers [" + RWDifficulty.LastModifiers + "]");
+        Check("Difficulty: a second player adds half as many foes again", Mathf.Abs(RWDifficulty.LastScale - (1f + RWDifficulty.CountPerPlayer)) < 0.001f, "scale " + RWUtil.F(RWDifficulty.LastScale));
         mine = RWRun.For(me); his = RWRun.For(friend);
         mine.Pure = his.Pure = 60;
         Give(me, 1000f); Give(friend, 1000f);

@@ -1,0 +1,446 @@
+[
+ {
+  "name": "spool kept wall purlest as built 2/2.5/4/3.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 0,
+   "dart_dmg": 0,
+   "tin_units": 4,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest P1-P3 3/3.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 4/4.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 5/5.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 6/6.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 4,
+   "dart_dmg": 4,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 6/6.5/8/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 4,
+   "dart_dmg": 4,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 4/4.5/6/4.5 loom 0.30",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 4/4.5/6/4.5 loom 0.20",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 4/4.5/6/4.5 loom 0.15",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 5/5.5/6/4.5 loom 0.30",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 5/5.5/6/4.5 loom 0.20",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest 5/5.5/6/4.5 loom 0.15",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy as built 2/2.5/4/3.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 0,
+   "dart_dmg": 0,
+   "tin_units": 4,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy P1-P3 3/3.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 4/4.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 5/5.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 6/6.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 4,
+   "dart_dmg": 4,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 6/6.5/8/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 4,
+   "dart_dmg": 4,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 4/4.5/6/4.5 loom 0.30",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 4/4.5/6/4.5 loom 0.20",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 4/4.5/6/4.5 loom 0.15",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 5/5.5/6/4.5 loom 0.30",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.3,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 5/5.5/6/4.5 loom 0.20",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.2,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy 5/5.5/6/4.5 loom 0.15",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ }
+]

@@ -1,0 +1,23 @@
+step 1
+step 2
+step 3
+step 4
+step 5
+step 6
+step 7
+step 8
+{"name": "E4 smacky purlest map2", "w50": 1.021, "win": 0.0625, "mean_t": 12.9375}
+{"name": "E4 smacky purlest map5", "w50": 2.014, "win": 0.0, "mean_t": 8.75}
+{"name": "E4 smacky purlest map8", "w50": 3.7, "win": 0.0, "mean_t": 6.0}
+{"name": "E4 smacky purlest map9", "w50": 4.064, "win": 0.0, "mean_t": 5.625}
+{"name": "E4 smacky purlest map10", "w50": 4.359, "win": 0.0, "mean_t": 4.3125}
+{"name": "E4 smacky woozy map2", "w50": 14.721, "win": 0.0, "mean_t": 2.0}
+{"name": "E4 smacky woozy map5", "w50": 17.752, "win": 0.0, "mean_t": 1.75}
+{"name": "E4 smacky woozy map8", "w50": 26.427, "win": 0.0, "mean_t": 1.0}
+{"name": "E4 smacky woozy map9", "w50": 27.053, "win": 0.0, "mean_t": 1.0}
+{"name": "E4 smacky woozy map10", "w50": 28.349, "win": 0.0, "mean_t": 1.0}
+{"name": "E4 smacky thehunt map2", "w50": 8.2, "win": 0.0, "mean_t": 3.0}
+{"name": "E4 smacky thehunt map5", "w50": 14.381, "win": 0.0, "mean_t": 2.0}
+{"name": "E4 smacky thehunt map8", "w50": 24.065, "win": 0.0, "mean_t": 1.0}
+{"name": "E4 smacky thehunt map9", "w50": 25.219, "win": 0.0, "mean_t": 1.0}
+{"name": "E4 smacky thehunt map10", "w50": 24.065, "win": 0.0, "mean_t": 1.0}

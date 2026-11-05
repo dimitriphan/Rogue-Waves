@@ -12,7 +12,7 @@
 // stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); RWRun (14_Run.cs) pays it.
 public static class RWWeather
 {
-    public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/06 [Pure Aura])
+    public const int PureAuraPerTide = 1;        // on top of what the Tide pays: 3, or 2 a bonus Tide (docs/scope/04 [Sea Weather])
     public static int QuickTide = 5, QuickerTide = 10;   // the self-test lowers them
     public const float Quick = 1.25f, Quicker = 1.5f;
 

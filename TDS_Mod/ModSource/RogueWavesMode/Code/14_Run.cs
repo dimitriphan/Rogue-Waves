@@ -1,9 +1,10 @@
 // A campaign's per-player things (docs/scope/06, 12; kit docs/15 §3, §14.1), on the host's mod object: Pure Aura, the
 // Directions and Trinkets each player holds, their vessel, and the team's Cardinals. In a map they show through
-// what already syncs: a Pure Aura counter on each vessel (ModKitCounter), the upgrades on it, and three None-style commands
+// what already syncs: a Pure Aura counter on each vessel (ModKitCounter), the upgrades on it, and four None-style commands
 // on each vessel (kit docs/20 §3.1), which draw nothing:
 //   RW_Ask    host to its owner: the question open for that player (Goalstring what, Goalvalue the round)
 //   RW_Run    host to its owner: the run line's text (Goalstring) and the held Cardinals the HUD row has no room for (Goalvalue)
+//   RW_Price  host to its owner: the Pure Aura C1's ramp adds to every Cardinal and Trinket that player buys (Goalvalue)
 //   RW_Order  owner to host: a pick, sent with Command_ServerRpc, which only the vessel's owner may send (kit docs/15 §6)
 // Saved under the host's save for Continue, keyed by the GUID the pack keeps for each player (RWIdentity, kit docs/19 §5),
 // and only at a checkpoint: a map's start and its win. A lost map replays from the last save, so what it earned goes.
@@ -27,7 +28,7 @@ public class RWPlayer
 public static class RWRun
 {
     public const string PureStat = "Pure_Aura";
-    public const string OrderLink = "RW_Order", AskLink = "RW_Ask", RunLink = "RW_Run";
+    public const string OrderLink = "RW_Order", AskLink = "RW_Ask", RunLink = "RW_Run", PriceLink = "RW_Price";
     // CardinalsKey keeps its old text: a campaign saved before Team Cardinals became Cardinals (2026-11-04) still loads.
     public const string CountKey = "RW_Run_Count", PlayerKey = "RW_Run_Player_", CardinalsKey = "RW_Run_Team";
     public const int PerTide = 3, PerBonusTide = 2;   // docs/scope/06 [Pure Aura]
@@ -310,7 +311,7 @@ public static class RWRun
     {
         if (RWContent.OrderCommand == null)
             return;
-        foreach (string link in new[] { OrderLink, AskLink, RunLink })
+        foreach (string link in new[] { OrderLink, AskLink, RunLink, PriceLink })
             if (!v.Commandlistserver.ContainsKey(link))
                 Helper_Entitytools.Createcommand(v, RWContent.CommandFor(link), link, false, link == OrderLink);
         if (!listening.Contains(v))
@@ -326,6 +327,7 @@ public static class RWRun
         // it again, or a vote asked while it was down never reaches its player (MODE-D4).
         Write(v, AskLink, p.AskWhat, p.AskRound);
         Write(v, RunLink, p.RunText, RWCardinals.Overflow());
+        Write(v, PriceLink, "", RWCardinals.RampFor(p));
         RWDirections.Grant(v, p);
         RWCardinals.Grant(v, p);
     }

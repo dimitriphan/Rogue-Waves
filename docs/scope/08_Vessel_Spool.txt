@@ -102,7 +102,7 @@
 				- Made by: {Repurposed Cookie Tin}
 				- Attack: melee
 				- Health: 20
-				- Damage: ~2~
+				- Damage: ~5~ /~ The balance sweep, for one Pin Cushion (your answer 25): with 2 Spool loses Purlest at Tide 5, with 5 at Tide 8; past 5 it buys little. docs/reports/BALANCE_SWEEP_2026-11-05.md section 3 \
 				- Range: 1.5 tiles
 				- Attack speed: 0.8
 				- Speed: 1.8
@@ -113,8 +113,8 @@
 				- Made by: {Repurposed Cookie Tin} once upgraded with {New Design}
 				- Attack: ranged, thrown needles
 				- Health: 12
-				- Damage: ~2.5~
-				- Range: ~3.5~ tiles
+				- Damage: ~5.5~ /~ The balance sweep, with the {Stitched} \
+				- Range: ~3.5~ tiles /~ The balance sweep kept it: 4.5 bought nothing on one wall \
 				- Attack speed: 0.6
 				- Speed: 1.6
 				- Orders: stays closer to its fortified point
@@ -157,7 +157,7 @@
 			[Stats]
 				- In-game line: Stitches Crafted from Thread, sends them where you point
 				- Health: 60, +25 per level
-				- Crafted alive at once: ~4~ per {Repurposed Cookie Tin}
+				- Crafted alive at once: ~6~ per {Repurposed Cookie Tin} /~ The balance sweep, with the {Stitched} \
 				- Crafting rate: 1 every 4 seconds, while the {Yarn Stash} has the {Thread}
 				- Target spot: picked like Fie's rally point, on a path within 8 tiles
 				- Limit: none
@@ -257,7 +257,7 @@
 			- When damaged, spins thread and potentially {Mangled} depending on player choices.
 			- {Mangled} can either spec into being tankier, or more aggressive suicidal bombers.
 			[Stats]
-				- In-game line: Sturdy, pricks melee attackers, spins Thread when hit
+				- In-game line: Build it first: pricks melee attackers, spins Thread when hit /~ P4, your answer 25: the journal page adds "Set one where the paths meet before anything else: the Crafted fight best beside it." \
 				- Health: 100, +40 per level
 				- Melee damage reflected: 20%
 				- Thread spun: 1 {Thread} for every 25 damage taken, dropped beside it for pickup
@@ -308,7 +308,7 @@
 				- In-game line: Mines aura, spins Thread
 				- Health: 40, +20 per level
 				- Range: 2.5 tiles /~ The nodes it connects to \
-				- Mining: ~like Smacky's Mining Hut~ /~ The build mines about 5 times a Hut; the balance sweep lowers it if it outmines the base vessels \
+				- Mining: ~strikes a node within 2.5 tiles for 1, 0.3 times a second: about 72 aura a Tide beside a Red node, 4 times a Mining Hut~ /~ The balance sweep lowered it from 0.4 (your answer 26). With one Pin Cushion its Blue goes unspent, but on The Hunt it is Spool's Red for Tins: below 0.3 Spool loses The Hunt sooner than as built. docs/reports/BALANCE_SWEEP_2026-11-05.md section 3 \
 				- Thread spun: 1 {Thread} every 6 seconds, held at the {Loom} up to 10 for pickup
 				- Limit: none
 				- Cost: Yellow 40 /~ Mummer's Loom \

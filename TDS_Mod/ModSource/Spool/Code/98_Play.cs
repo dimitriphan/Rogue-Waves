@@ -25,25 +25,6 @@ public static class SpoolPlay
 #endif
     };
 
-#if SPOOL_TUNE
-    // The balance study's P1-P3, in this play build only (docs/reports/BALANCE_2026-11-03.md section 8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and
-    // Dart 3.5 Damage. Called before the content is built.
-    public static void Tune()
-    {
-        foreach (SpoolData.Unit u in SpoolData.Units)
-            for (int i = 0; i < u.Stats.Length; i++)
-            {
-                if (u.Id == SpoolData.Stitched && u.Stats[i] == "Damage=2") u.Stats[i] = "Damage=3";
-                if (u.Id == SpoolData.Dart && u.Stats[i] == "Damage=2.5") u.Stats[i] = "Damage=3.5";
-                if (u.Id == SpoolData.Dart && u.Stats[i] == "Range=3.5") u.Stats[i] = "Range=4.5";
-            }
-        foreach (SpoolData.Build b in SpoolData.Builds)
-            if (b.Id == SpoolData.Tin)
-                for (int i = 0; i < b.Stats.Length; i++)
-                    if (b.Stats[i] == "Units=4") b.Stats[i] = "Units=6";
-        SpoolLog.Info("PLAY TUNE on: Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage");
-    }
-#endif
     const float MoneyPerTide = 1500f;
 
     // On a money map, the Sandbox Cardinal's other button: foes of a kind spawned at the spawner at a Tide's start, so

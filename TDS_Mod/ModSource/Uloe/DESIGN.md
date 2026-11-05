@@ -145,7 +145,7 @@ it). The cost: a marked foe no longer lists "Blinded" or
 | Magnifying Glass | `Tower_Uloeglass` | Offense | Tower_Smackyarcher | Red 30 | Health 30 (+20/level), Damage 2 (+0.5/level), Attack speed 0.75, Range 4.5, limit none |
 | Power Bank | `Tower_Uloebank` | Support | Tower_Smackyhut | Red 40 + Yellow 20 | Health 60 (+25/level), Units 2, Respawn 8 s, limit none |
 | Mirror | `Tower_Uloemirror` | Defense | Tower_Smackywall | Blue 20 | Health 100 (+40/level), limit none |
-| Flood Light | `Tower_Uloeflood` | Economy | Tower_Smackyhut | Yellow 40 | Health 40 (+20/level), mines Damage 1 at 0.4, node reach Range 2.5, aim reach 6, Light out 2, limit none |
+| Flood Light | `Tower_Uloeflood` | Economy | Tower_Smackyhut | Yellow 40 | Health 40 (+20/level), mines Damage 1 at 0.3 *(balance sweep 2026-11-05; was 0.4)*, node reach Range 2.5, aim reach 6, Light out 2, limit none |
 
 In-game lines *(defaults)*: Magnifying Glass "Focused, single-target beam, burns brighter in Light"; Power Bank "Makes
 Photons that wander and give Light"; Mirror "Sturdy, Blinds what hits it when lit"; Flood Light "Mines a node, aims its

@@ -1,0 +1,245 @@
+[
+ {
+  "name": "smacky one wall purlest",
+  "v": "smacky",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest as built",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick, Loom as built",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.4,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut purlest pick",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "smacky one wall woozy",
+  "v": "smacky",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy as built",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick, Loom as built",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.4,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut woozy pick",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "smacky one wall thehunt",
+  "v": "smacky",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall thehunt as built",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall thehunt pick",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool kept wall thehunt pick, Loom as built",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "keep_wall": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.4,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut thehunt pick",
+  "v": "spool",
+  "m": "thehunt",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "loom_aspd": 0.15,
+   "break": 60
+  }
+ }
+]

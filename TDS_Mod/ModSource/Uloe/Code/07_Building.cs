@@ -314,7 +314,7 @@ public class UloeFloodBrain : UloeBuilding
     // (Helper_Damagetools.Dodamage) and pays out when emptied.
     void Strike()
     {
-        float aspd = Stat("Attackspeed", 0.4f) * (1f + UloeData.FloodPerLight * Light);
+        float aspd = Stat("Attackspeed", 0.3f) * (1f + UloeData.FloodPerLight * Light);
         if (aspd <= 0f || Node == null || !ModKitUtil.Alive(Node) || Time.time - lastStrike < 1f / aspd)
             return;
         lastStrike = Time.time;

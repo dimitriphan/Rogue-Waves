@@ -350,7 +350,7 @@ public static partial class UloeSelfTest
             }
             else ModKitTest.Setup("Searchlight", foe == null ? "no Aegis could spawn in its ring" : "the Flood Light has no node");
             ClearFoes();
-            float as0 = flood.Stat("Attackspeed", 0.4f);
+            float as0 = flood.Stat("Attackspeed", 0.3f);
             yield return Upgrade(flood, "Stadium5", owner);
             yield return Wait(UloeData.LightTick + 0.3f);
             Check("Stadium Lights: a 5-tile ring, AIM back, strikes twice as fast", Has(flood, "Stadium5") && Near(flood.RingRadius, 5f) && flood.Master.Commandlistserver.ContainsKey(UloeData.AimLink) && Near(flood.Stat("Attackspeed", 0f), as0 * 2f, 0.01f),
@@ -359,7 +359,7 @@ public static partial class UloeSelfTest
         else ModKitTest.Setup("Halogen Bulb to Stadium Lights", "no Wide Flood Light");
         if (flood2 != null && flood2.Master != null)
         {
-            float as0 = flood2.Stat("Attackspeed", 0.4f);
+            float as0 = flood2.Stat("Attackspeed", 0.3f);
             yield return Upgrade(flood2, "Voltage3", owner);
             Check("High Voltage: strikes +60% faster", Has(flood2, "Voltage3") && Near(flood2.Stat("Attackspeed", 0f), as0 * 1.6f, 0.01f), F(as0) + " -> " + F(flood2.Stat("Attackspeed", 0f)));
             yield return Upgrade(flood2, "Filter4", owner);

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 352" width="760" height="352" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">Spool with one Pin Cushion: the Tide it reaches by package</title>
+<desc id="d">Mean Tide reached over 30 runs (16 means won) on Purlest and Woozy, for each package of Stitched Damage, Dart Damage, Crafted a Tin and Dart Range, with the wall kept. Dashed lines: Smacky on the same map.</desc>
+<style>svg{--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--grid:#e4e3df;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--band:#2a78d6;} @media (prefers-color-scheme: dark){svg{--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--grid:#3a3936;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--band:#3987e5;}} .t{fill:var(--text)} .t2{fill:var(--text2)} .g{stroke:var(--grid)}</style>
+<rect width="100%" height="100%" fill="var(--surface)"/>
+<text class="t" x="16" y="24" font-size="15" font-weight="600">Spool with one Pin Cushion: the Tide it reaches</text>
+<text class="t2" x="16" y="42" font-size="12">Mean over 30 runs, 60 s breaks; 16 = map won. Package: Stitched Damage / Dart Damage / Crafted a Tin / Dart Range</text>
+<text class="t" x="16" y="66" font-size="12"><tspan fill="var(--s1)">&#9679;</tspan> Purlest<tspan dx="16" fill="var(--s2)">&#9670;</tspan> Woozy<tspan dx="16">Dashed lines: Smacky on the same map</tspan></text>
+<line class="g" x1="230.0" x2="230.0" y1="84" y2="296" stroke-width="1"/>
+<text class="t2" x="230.0" y="314" font-size="11" text-anchor="middle">T1</text>
+<line class="g" x1="328.0" x2="328.0" y1="84" y2="296" stroke-width="1"/>
+<text class="t2" x="328.0" y="314" font-size="11" text-anchor="middle">T4</text>
+<line class="g" x1="426.0" x2="426.0" y1="84" y2="296" stroke-width="1"/>
+<text class="t2" x="426.0" y="314" font-size="11" text-anchor="middle">T7</text>
+<line class="g" x1="524.0" x2="524.0" y1="84" y2="296" stroke-width="1"/>
+<text class="t2" x="524.0" y="314" font-size="11" text-anchor="middle">T10</text>
+<line class="g" x1="622.0" x2="622.0" y1="84" y2="296" stroke-width="1"/>
+<text class="t2" x="622.0" y="314" font-size="11" text-anchor="middle">T13</text>
+<line class="g" x1="720.0" x2="720.0" y1="84" y2="296" stroke-width="1"/>
+<text class="t2" x="720.0" y="314" font-size="11" text-anchor="middle">won</text>
+<text class="t2" x="475.0" y="342" font-size="12" text-anchor="middle">Tide reached</text>
+<line x1="720.0" x2="720.0" y1="84" y2="296" stroke="var(--s1)" stroke-width="1.5" stroke-dasharray="5 4"><title>Smacky, Purlest: 16.0</title></line>
+<line x1="386.8" x2="386.8" y1="84" y2="296" stroke="var(--s2)" stroke-width="1.5" stroke-dasharray="5 4"><title>Smacky, Woozy: 5.8</title></line>
+<text class="t" x="218" y="113.0" font-size="12" text-anchor="end">As built 2 / 2.5 / 4 / 3.5</text>
+<circle cx="360.7" cy="109.0" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>as built 2/2.5/4/3.5, Purlest: Tide 5.0, won 0%</title></circle>
+<path d="M308.4,103.0 l6,6 l-6,6 l-6,-6 Z" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>as built 2/2.5/4/3.5, Woozy: Tide 3.4, won 0%</title></path>
+<text class="t" x="218" y="147.0" font-size="12" text-anchor="end">P1-P3 3 / 3.5 / 6 / 4.5</text>
+<circle cx="370.5" cy="143.0" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>P1-P3 3/3.5/6/4.5, Purlest: Tide 5.3, won 0%</title></circle>
+<path d="M330.3,137.0 l6,6 l-6,6 l-6,-6 Z" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>P1-P3 3/3.5/6/4.5, Woozy: Tide 4.1, won 0%</title></path>
+<text class="t" x="218" y="181.0" font-size="12" text-anchor="end">4 / 4.5 / 6 / 4.5</text>
+<circle cx="412.9" cy="177.0" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>4/4.5/6/4.5, Purlest: Tide 6.6, won 0%</title></circle>
+<path d="M336.8,171.0 l6,6 l-6,6 l-6,-6 Z" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>4/4.5/6/4.5, Woozy: Tide 4.3, won 0%</title></path>
+<text class="t" x="218" y="215.0" font-size="12" text-anchor="end">5 / 5.5 / 6 / 4.5</text>
+<circle cx="465.2" cy="211.0" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>5/5.5/6/4.5, Purlest: Tide 8.2, won 0%</title></circle>
+<path d="M353.2,205.0 l6,6 l-6,6 l-6,-6 Z" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>5/5.5/6/4.5, Woozy: Tide 4.8, won 0%</title></path>
+<text class="t" x="218" y="249.0" font-size="12" text-anchor="end">6 / 6.5 / 6 / 4.5</text>
+<circle cx="485.8" cy="245.0" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>6/6.5/6/4.5, Purlest: Tide 8.8, won 0%</title></circle>
+<path d="M353.2,239.0 l6,6 l-6,6 l-6,-6 Z" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>6/6.5/6/4.5, Woozy: Tide 4.8, won 0%</title></path>
+<text class="t" x="218" y="283.0" font-size="12" text-anchor="end">6 / 6.5 / 8 / 4.5</text>
+<circle cx="504.4" cy="279.0" r="5" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>6/6.5/8/4.5, Purlest: Tide 9.4, won 0%</title></circle>
+<path d="M360.7,273.0 l6,6 l-6,6 l-6,-6 Z" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>6/6.5/8/4.5, Woozy: Tide 5.0, won 0%</title></path>
+</svg>
