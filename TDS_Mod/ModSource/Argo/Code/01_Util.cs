@@ -175,8 +175,9 @@ public static class ArgoUtil
     // 2.0 Pinned: a hold that counts as Pinned for the Scatter Cannon, Bedrock and Salt Sting. Twice as long in Deep
     // Water; with stun (Anchor Line) a foe beside any building is also stunned, unable to attack while held (the
     // concept's "pinning against a wall stuns": Argo has no walls and the game no knockback). Clients draw the rope bits
-    // or the stars on the foe (Argo_Pin: x = the foe's id, y = seconds, z = 1 for a stun). Returns the seconds applied.
-    public static float Pin(Entity_Master by, Entity_Master target, float seconds, bool stun)
+    // or the stars on the foe (Argo_Pin: x = the foe's id, y = seconds, z = 1 for a stun) unless the caller draws its own
+    // (Kelp Bed's kelp, Trench's drag). Returns the seconds applied.
+    public static float Pin(Entity_Master by, Entity_Master target, float seconds, bool stun, bool look = true)
     {
         if (target == null || !ModKitUtil.Alive(target) || seconds <= 0f || ModKitUtil.Speed(target) == null || Boss(target))
             return 0f;
@@ -190,7 +191,8 @@ public static class ArgoUtil
         if (stun)
             ArgoStatus.Stuns++;
         ArgoStatus.Pins++;
-        ModKitUtil.Vis(by, "Argo_Pin", new Vector3((float)target.NetworkObjectId, seconds, stun ? 1f : 0f), seconds);
+        if (look)
+            ModKitUtil.Vis(by, "Argo_Pin", new Vector3((float)target.NetworkObjectId, seconds, stun ? 1f : 0f), seconds);
         return seconds;
     }
 

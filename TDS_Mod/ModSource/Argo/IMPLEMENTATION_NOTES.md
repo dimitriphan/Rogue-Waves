@@ -7,8 +7,11 @@ for 1 s, doubled, and two free pools a Tide); the Scatter's bonus is `Debuffbonu
 `Pinbonus` 1 on a pinned one (the larger, never both); Wide Bore's cone +10; Double Barrel stores a volley every 2 s idle,
 up to 3, all fired after the next; Abyss adds Slow +10%; Gusher is 4 strikes a Fathom; Mantle Tap is Attackspeed x1.5
 (`Attackspeed_Pmulti`) and a quake every 20 s while a foe is in the Tremor; Seismic, Bedrock and Fault Line cost Yellow;
-the Miner's Base Blue 20 + Yellow 15; Reel's journal says where to place the gun. The self-test moves with them (the
-Scatter's +100%, Kelp's pin, Wide Bore's 60 degrees, Double Barrel's three, a check of the new prices). For the PC: a
+the Miner's Base Blue 20 + Yellow 15; Reel's journal says where to place the gun. A pin that draws its own look (Kelp's kelp, Trench's drag) skips `Argo_Pin`'s
+(`ArgoUtil.Pin`'s `look`), and a foe Kelp's pin refused is tried again the next tick. The self-test moves with them:
+the Scatter's +100%, Kelp's and Trench's pins read on the foe, Abyss's slow, Trench's two pools a Tide, Wide Bore's 60
+degrees, Double Barrel's three, Gusher's 4 a Fathom, Mantle Tap's x1.5 and its 20 s quake, every colour of a build's
+price, and the new prices. For the PC: a
 Kelp-pinned foe takes Salt Sting's double brine; a foe's speed in a pool is 70% of its own (a 30% slow, not 60%).
 
 **2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** `ARGO_REVIEW` alone compiles again (ARG-7); the self-test's F-key check runs when Argo's copy of the fix is the one installed (it looked for a renamed mark and always skipped), Deep Water's being is a reading, not a pass, and the stun, Brine, Salt Sting, Crushing Depth and Bedrock checks say SETUP instead of passing or dropping out (one pass fewer). Left for a PC look: Full Crew's dive loop (ARG-1), build looks sent in the first frame (ARG-2, pitfall #158). `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.

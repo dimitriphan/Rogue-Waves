@@ -24,7 +24,8 @@ public class ArgoTowerBrain : MonoBehaviour
     public Vector3 AimCenter;
 
     float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f, syncedRange = -1f;
-    float nextStore, lastQuake = -999f;
+    float nextStore = -1f;   // Double Barrel's idle clock: -1 until the first empty look after a volley (or ever)
+    public float LastQuake = -999f;
     int shotSerial;
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
@@ -209,21 +210,23 @@ public class ArgoTowerBrain : MonoBehaviour
         if (target == null)
         {
             // Double Barrel: every Double_Every seconds of a loaded gun with nothing to shoot stores a volley for later,
-            // up to Double_Base (the idle clock starts at the first empty look, and again after each volley).
+            // up to Double_Base. The clock starts at the first empty look after a volley (or after the upgrade).
             int store = Mathf.RoundToInt(Param("Double_Base", 0f));
-            if (store > 0 && Stored < store && Time.time >= nextStore)
+            if (store > 0 && Stored < store)
             {
-                if (nextStore > 0f)
+                if (nextStore < 0f)
+                    nextStore = Time.time + every;
+                else if (Time.time >= nextStore)
                 {
                     Stored++;
+                    nextStore = Time.time + every;
                     ModKitUtil.Vis(Master, "Argo_Loaded", ModKitUtil.Pos(Master), Stored);
                 }
-                nextStore = Time.time + every;
             }
             return;
         }
         lastAttack = Time.fixedTime;
-        nextStore = Time.time + every;
+        nextStore = -1f;
         Volley(target, range);
         // Every stored volley follows, DoubleDelay after the one before.
         Entity_Master first = target;
@@ -703,9 +706,9 @@ public class ArgoTowerBrain : MonoBehaviour
             if (slowVfx.Count > 64)
                 slowVfx.Clear();
             // Mantle Tap: a quake when a foe is in the Tremor, at most every Mantle_Every seconds.
-            if (foes.Count > 0 && Param("Mantle_Base", 0f) > 0f && Time.time - lastQuake >= Param("Mantle_Every", 20f))
+            if (foes.Count > 0 && Param("Mantle_Base", 0f) > 0f && Time.time - LastQuake >= Param("Mantle_Every", 20f))
             {
-                lastQuake = Time.time;
+                LastQuake = Time.time;
                 Quake(Param("Mantle_Base", 2f));
             }
         }

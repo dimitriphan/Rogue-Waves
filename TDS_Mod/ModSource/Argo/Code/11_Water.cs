@@ -185,16 +185,20 @@ public static class ArgoWater
             ArgoStatus.Wet(e, ArgoData.WaterTick + 0.3f);
             // Kelp Bed: pinned on entering, twice as long since it is wet (again only after it was out of the water for
             // CatchMemory seconds). Review 2026-11-04 (scope 09): a pin, so Salt Sting, Bedrock and the Scatter read it.
+            // A foe the pin refused (its stats not up yet in its first tick, a boss) isn't marked wet, so it is tried again.
+            bool refused = false;
             if (catchFor > 0f && (!lastWet.TryGetValue(e, out last) || Time.time - last > ArgoData.CatchMemory))
             {
-                float held = ArgoUtil.Pin(by, e, catchFor, false);
-                if (held > 0f)
+                float held = ArgoUtil.Pin(by, e, catchFor, false, false);
+                refused = held <= 0f;
+                if (!refused)
                 {
                     Catches++;
                     ModKitUtil.Vis(by, "Argo_Kelp", new Vector3((float)e.NetworkObjectId, held, 0f), held);
                 }
             }
-            lastWet[e] = Time.time;
+            if (!refused)
+                lastWet[e] = Time.time;
             // Brine; Salt Sting doubles it on a pinned foe (and stings with SaltBrine when Brine wasn't taken).
             float b = brine;
             if (salt > 0f && ArgoStatus.IsPinned(e))
@@ -216,7 +220,7 @@ public static class ArgoWater
         {
             lead.NextDrag = Time.time + every;
             Entity_Master f = net.Foes[UnityEngine.Random.Range(0, net.Foes.Count)];
-            float hold = ArgoUtil.Pin(by, f, lead.Param("Dragunder_Duration", 1f), false);
+            float hold = ArgoUtil.Pin(by, f, lead.Param("Dragunder_Duration", 1f), false, false);
             if (hold > 0f)
             {
                 Drags++;

@@ -829,7 +829,7 @@ public static partial class ArgoSelfTest
 
     // ---------------------------------------------------------------- 2.0 helpers
 
-    // Deep Water where FLOOD has room: the pump plus four pools (FLOOD, Abyss's two, Trench's one) on one level. Round 3
+    // Deep Water where FLOOD has room: the pump plus five pools (FLOOD, Abyss's two, Trench's two) on one level. Round 3
     // put it on a one-tile ridge with two free tiles. Every level of each column out to 8 tiles; the most room wins.
     static Vector3 WaterSpot(Vector3 c, Beingobject being, int team)
     {
@@ -837,8 +837,8 @@ public static partial class ArgoSelfTest
         int best = -1;
         Genitem bestBlock = null;
         Vector3 c0 = new Vector3(Mathf.Round(c.x), Mathf.Round(c.y), Mathf.Round(c.z));
-        for (int dx = -8; dx <= 8 && best < 5; dx++)
-            for (int dz = -8; dz <= 8 && best < 5; dz++)
+        for (int dx = -8; dx <= 8 && best < 6; dx++)
+            for (int dz = -8; dz <= 8 && best < 6; dz++)
             {
                 float d = Mathf.Sqrt(dx * dx + dz * dz);
                 if (d < 2.5f || d > 8f)
@@ -852,7 +852,7 @@ public static partial class ArgoSelfTest
                     try { ok = Helper_Gridtools.Checkifplaceable(block, being, 0, team); } catch (Exception) { }
                     if (!ok)
                         continue;
-                    int room = Room(block.Position, pool, team, 5);
+                    int room = Room(block.Position, pool, team, 6);
                     if (room > best)
                     {
                         best = room;
@@ -1081,15 +1081,17 @@ public static partial class ArgoSelfTest
         }
         {
             // The review of 2026-11-04 (scope 09): the Drill's control path in Yellow, the Base in Blue 20 + Yellow 15.
-            Func<string, string> price = id =>
+            Func<string, string> price = key =>
             {
-                Upgradeproperties up = Bl_Address.Getload("Upgrade", id) as Upgradeproperties;
+                ArgoData.Upg u = Array.Find(ArgoData.BuildFor(ArgoData.Drill).Upgrades, x => x.Key == key);
+                Upgradeproperties up = u != null ? Bl_Address.Getload("Upgrade", u.Id) as Upgradeproperties : null;
+                if (up == null || up.Costs == null)
+                    return "missing " + key;
                 List<string> parts = new List<string>();
-                if (up != null && up.Costs != null)
-                    foreach (Link_Resourceset r in up.Costs) parts.Add(r.Name + "=" + F(r.Amount));
+                foreach (Link_Resourceset r in up.Costs) parts.Add(r.Name + "=" + F(r.Amount));
                 return string.Join(";", parts.ToArray());
             };
-            string seismic = price(ArgoData.Drill + "_Seismic2_Upgradeobject"), bedrock = price(ArgoData.Drill + "_Bedrock3_Upgradeobject"), fault = price(ArgoData.Drill + "_Faultline4_Upgradeobject");
+            string seismic = price("Seismic"), bedrock = price("Bedrock"), fault = price("Faultline");
             List<string> baseCost = new List<string>();
             foreach (Link_Resourceset r in ArgoContent.Beings[ArgoData.Bell].Entity.Costs) baseCost.Add(r.Name + "=" + F(r.Amount));
             string bellCost = string.Join(";", baseCost.ToArray());
@@ -1169,15 +1171,20 @@ public static partial class ArgoSelfTest
                 : tower == ArgoData.Water ? WaterSpot(home, being, team)
                 : Spot(home, being, team, tower == ArgoData.Bell ? 1.5f : 2.5f, 6f);
             if (float.IsNaN(at.x)) { Check("build " + tower, false, "no free tile"); continue; }
-            Link_Resourceset cost = being.Entity.Costs[0];
-            float before = Res(owner, cost.Name);
+            // Every colour of the price (the Miner's Base is Blue 20 + Yellow 15 since the review of 2026-11-04).
+            List<Link_Resourceset> costs = new List<Link_Resourceset>(being.Entity.Costs);
+            float[] before = new float[costs.Count];
+            for (int k = 0; k < costs.Count; k++) before[k] = Res(owner, costs[k].Name);
             yield return Build(hm, tower, at, known, got);
             if (!Check("build " + tower, got[0] != null, "at " + at))
                 continue;
             towers[tower] = got[0];
             yield return Wait(0.3f);
-            float spent = before - Res(owner, cost.Name);
-            Check(tower + " costs " + cost.Amount + " " + cost.Name, Mathf.Abs(spent - cost.Amount) < 0.01f, "spent " + spent);
+            for (int k = 0; k < costs.Count; k++)
+            {
+                float spent = before[k] - Res(owner, costs[k].Name);
+                Check(tower + " costs " + costs[k].Amount + " " + costs[k].Name, Mathf.Abs(spent - costs[k].Amount) < 0.01f, "spent " + spent);
+            }
             Check(tower + " visible to clients", got[0].Master.Client != null && got[0].Master.Client.Beingobject != null && got[0].Master.Client.Beingobject.Objectname == tower);
         }
         ArgoTowerBrain scatter, harpoon, water, bell, drill;
@@ -1459,14 +1466,16 @@ public static partial class ArgoSelfTest
             {
                 Genitem tile = pool1.Master.Beingserver.Currentblock;
                 Force(water, "Kelp3");
-                int c0 = ArgoWater.Catches, pinsKelp = ArgoStatus.Pins;
+                int c0 = ArgoWater.Catches;
                 List<Entity_Master> wet = new List<Entity_Master>();
                 yield return FoeOn(tile, wet, water);
+                Entity_Master e = wet.Count > 0 ? wet[0] : null;
+                yield return Until(() => ArgoWater.Catches > c0, 1f);
+                // Review 2026-11-04 (scope 09): the catch is a pin (0.5 s, doubled in the water), read on the foe itself.
+                bool kelpPinned = e != null && ArgoStatus.IsPinned(e);
                 yield return Wait(0.6f);
                 Check("Kelp Bed: a foe is caught on entering the water", ArgoWater.Catches > c0, "catches " + (ArgoWater.Catches - c0));
-                // Review 2026-11-04 (scope 09): the catch is a pin, so it counts as one.
-                Check("Kelp Bed's catch is a pin", ArgoWater.Catches > c0 && ArgoStatus.Pins >= pinsKelp + (ArgoWater.Catches - c0), "pins " + (ArgoStatus.Pins - pinsKelp) + ", catches " + (ArgoWater.Catches - c0));
-                Entity_Master e = wet.Count > 0 ? wet[0] : null;
+                Check("Kelp Bed's catch pins the foe", ArgoWater.Catches > c0 && kelpPinned, "pinned when caught " + kelpPinned);
                 Force(water, "Brine2");
                 Force(water, "Salt3");
                 Force(water, "Crushing4");
@@ -1474,6 +1483,8 @@ public static partial class ArgoSelfTest
                 yield return Wait(0.5f);
                 if (e != null && ModKitUtil.Alive(e))
                 {
+                    // Kelp's own pin must be over first, or Salt Sting doubles the "unpinned" second too.
+                    yield return Until(() => e == null || !ArgoStatus.IsPinned(e), 2f);
                     float l0 = Life(e);
                     yield return Wait(1f);
                     float plain = l0 - Life(e);
@@ -1491,15 +1502,31 @@ public static partial class ArgoSelfTest
                     ModKitTest.Setup("Brine, Salt Sting and Crushing Depth", "no foe left in the pool");   // dropped out without a word (MAX ARG-6)
                 foreach (Link_Modifier j in quiet) ModKitUtil.Unmod(j);
                 ClearEnemies();
-                // Abyss: FLOOD fills two tiles at once.
+                // Abyss: FLOOD fills two tiles at once, and the water slows 10% more (review 2026-11-04).
+                float slowWas = ModKitUtil.Stat(water.Master, "Slow", 0f);
                 Force(water, "Abyss4");
+                yield return Wait(0.2f);
+                float slowNow = ModKitUtil.Stat(water.Master, "Slow", 0f);
+                Check("Abyss: the water slows 10% more", Mathf.Abs(slowNow - slowWas - 0.1f) < 0.01f, F(slowWas) + " -> " + F(slowNow));
                 Genitem more = FloodTile(water, team);
                 int n0 = PoolCount();
                 if (more != null)
                     yield return Flood(water, more.Position, owner, known, got);
                 yield return Wait(0.5f);
                 Check("Abyss: FLOOD adds a second pool for free", more != null && PoolCount() == n0 + 2, more == null ? "no free tile beside the water: " + WhyNoFlood(water, team) : "pools " + n0 + "->" + PoolCount() + ", free " + ArgoWater.Freepools);
+                // Trench: every 3 s a foe in the water is dragged under, a pin (1 s, doubled in the water).
                 Force(water, "Trench5");
+                List<Entity_Master> under = new List<Entity_Master>();
+                yield return FoeOn(tile, under, water);
+                Entity_Master dragged = under.Count > 0 ? under[0] : null;
+                int d0 = ArgoWater.Drags;
+                yield return Until(() => ArgoWater.Drags > d0, water.Param("Dragunder_Every", 3f) + 1f);
+                bool draggedPinned = dragged != null && ArgoStatus.IsPinned(dragged);
+                if (dragged != null)
+                    Check("Trench: a foe in the water is dragged under and pinned within 3 s", ArgoWater.Drags > d0 && draggedPinned, "drags " + (ArgoWater.Drags - d0) + ", pinned " + draggedPinned);
+                else
+                    ModKitTest.Setup("Trench's drag", "no foe stood in the pool");
+                ClearEnemies();
             }
         }
 
@@ -1512,15 +1539,22 @@ public static partial class ArgoSelfTest
             yield return Until(() => drill.Bites > 0, 6f);
             Check("Drill Rig mines ore (the game's own ore damage)", drill.Bites > 0, drill.Bites + " bites");
             float range0 = drill.TremorRadius;
-            int free0 = ArgoWater.Freepools;
+            int free0 = ArgoWater.Freepools, noTile0 = ArgoWater.NoTile;
             int[] reached = new int[1];
             yield return ForceTide(reached);
             Check("Tide sinks the drill to Fathom 2 and widens its Tremor", drill.Fathom == 2 && drill.Master.Skin.Value.ToString() == "Fathom2" && Mathf.Abs(drill.TremorRadius - range0 - ArgoData.FathomTremor) < 0.01f,
                 "Fathom " + drill.Fathom + ", skin '" + drill.Master.Skin.Value + "', Tremor " + F(range0) + "->" + F(drill.TremorRadius));
             Check("Fathom stat on the drill (kit counter)", Mathf.Approximately(ModKitCounter.Get(drill.Master, "Fathom"), 2f));
             if (water != null && Has(water, "Trench5"))
-                Check("Trench: Deep Water spreads a pool by itself at the Tide", ArgoWater.Freepools > free0, "free pools " + free0 + "->" + ArgoWater.Freepools
-                    + (ArgoWater.Freepools > free0 ? "" : ", no tile " + ArgoWater.NoTile + "x: " + WhyNoFlood(water, team)));
+            {
+                // Two a Tide since the review of 2026-11-04; the second one needs a free tile beside the water.
+                int spread = Mathf.RoundToInt(water.Param("Spread_Per_Tide", 0f));
+                if (ArgoWater.Freepools == free0 + 1 && ArgoWater.NoTile > noTile0)
+                    ModKitTest.Setup("Trench's second pool a Tide", "one pool spread, then no free tile: " + WhyNoFlood(water, team));
+                else
+                    Check("Trench: Deep Water spreads two pools by itself at the Tide", spread == 2 && ArgoWater.Freepools == free0 + spread, "free pools " + free0 + "->" + ArgoWater.Freepools
+                        + ", Spread_Per_Tide " + spread + (ArgoWater.Freepools > free0 ? "" : ", no tile " + ArgoWater.NoTile + "x: " + WhyNoFlood(water, team)));
+            }
             float dmg2 = ModKitUtil.Stat(drill.Master, "Damage", 0f), aspd2 = ModKitUtil.Stat(drill.Master, "Attackspeed", 0f), slow2 = ModKitUtil.Stat(drill.Master, "Slow", 0f);
             Check("Fathom 2 mines harder and faster and slows more", Mathf.Abs(dmg2 - 0.5f * (1f + ArgoData.FathomYield)) < 0.01f && Mathf.Abs(aspd2 - 0.25f * (1f + ArgoData.FathomSpeed)) < 0.01f
                 && Mathf.Abs(slow2 - 0.2f - ArgoData.FathomSlow) < 0.01f, "ore per strike " + F(dmg2) + ", strikes/s " + F(aspd2) + ", slow " + F(slow2));
@@ -1638,6 +1672,45 @@ public static partial class ArgoSelfTest
                     drill.AimCenter = keep;
                     ClearEnemies();
                 }
+                // The review of 2026-11-04: Gusher is 4 strikes a Fathom at the Tide, from Fathom 3; Mantle Tap strikes
+                // x1.5 a second and quakes when a foe is in the Tremor, at most every 20 s.
+                if (drilled != null)
+                {
+                    Force(drill, "Gusher4");
+                    drill.SinkTo(3);
+                    yield return Wait(0.2f);
+                    int bites0 = drill.Bites, deep = drill.Fathom;
+                    drill.OnTide(ArgoServer.Tide);
+                    int gushed = drill.Bites - bites0;
+                    Check("Gusher: 4 mining strikes a Fathom at the Tide", deep == 3 && gushed >= 4 * deep && gushed <= 4 * deep + 1, "Fathom " + deep + ", strikes " + gushed);
+                }
+                else
+                    ModKitTest.Setup("Gusher", "no ore in the drill's reach");
+                float aspd0 = ModKitUtil.Stat(drill.Master, "Attackspeed", 0f);
+                Force(drill, "Mantle5");
+                yield return Wait(0.3f);
+                float aspd1 = ModKitUtil.Stat(drill.Master, "Attackspeed", 0f);
+                Check("Mantle Tap: strikes per second x1.5", Has(drill, "Mantle5") && Mathf.Abs(aspd1 - aspd0 * 1.5f) < 0.01f, F(aspd0) + " -> " + F(aspd1));
+                Entity_Master shaken = FoeBetween(drill.AimCenter, 0f, 1f);
+                if (shaken != null)
+                {
+                    List<Link_Modifier> held = new List<Link_Modifier>();
+                    yield return Ready(drill, new List<Entity_Master> { shaken }, 50f, held);
+                    drill.LastQuake = -999f;
+                    int q0 = drill.Quakes;
+                    yield return Until(() => drill.Quakes > q0, 1.5f);
+                    bool first = drill.Quakes == q0 + 1;
+                    yield return Wait(1.5f);
+                    bool quiet = drill.Quakes == q0 + 1;
+                    drill.LastQuake = Time.time - drill.Param("Mantle_Every", 20f) - 0.1f;
+                    yield return Until(() => drill.Quakes > q0 + 1, 1.5f);
+                    Check("Mantle Tap: a quake when a foe is in the Tremor, then none for 20 s", first && quiet && drill.Quakes == q0 + 2 && Mathf.Abs(drill.Param("Mantle_Every", 0f) - 20f) < 0.01f,
+                        "first " + first + ", quiet after " + quiet + ", quakes " + (drill.Quakes - q0) + ", every " + F(drill.Param("Mantle_Every", 0f)) + " s");
+                    foreach (Link_Modifier h in held) ModKitUtil.Unmod(h);
+                }
+                else
+                    ModKitTest.Setup("Mantle Tap's quake", "no foe could stand in the Tremor");
+                ClearEnemies();
                 foreach (Link_Modifier j in jams) ModKitUtil.Unmod(j);
             }
         }
