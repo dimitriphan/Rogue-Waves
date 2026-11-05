@@ -1,5 +1,27 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the decisions' build items
+
+Compiled, not yet run in game (`docs/reports/DECISIONS_APPLIED_2026-11-05.md` §3; PLAN Part C has the PC list):
+- **B1** the first "Stay" on a won map votes on the next map there and then (`20_Vote.cs` `AskMap(true)`, the cards say
+  "When the party leaves"); leaving later sails to it with no second vote. A won map left with no vote at all (the host
+  quit right after Tide 15) asks the host once on the boat (`05_Boat.cs` `AskHere`): the boat has no channel for a
+  friend's pick, so the host picks, said in chat, and the stock arrows still steer.
+- **B2** the lobby's Cardinals are the campaign's from its first map (save key `RW_Campaign_Lobby`); on the boat they are
+  put back, and before that a pick the shop doesn't sell comes off (`17_Cardinals.cs` `RecordLobby`, `LockLobby`;
+  MODE-D9 closed, MAX MODEB-4 with it: a lobby pick never reaches the shelf).
+- **B3, B4** the shelf: 2 Cardinal slots and 1 Trinket slot, from a seeded shuffle that skips what a player can't buy
+  more of (6 copies; a stock one held, lobby picks too), read from what syncs on a client (`MaxedHere`) and from the run
+  on the host (`MaxedFor`). Every held Trinket stack is on the vessel's panel ("X", "X x2"; a unit Trinket by a mark
+  with no script). Held Cardinals past the row's 8 show on the run line as "+N Cardinals" (RW_Run's Goalvalue).
+- **B7** Spring Tide and Tidal Mend run on the mode's own effects at each break (`16_Directions.cs` `TideEffects`): no
+  stock Beacon or Regen, no `Resistadd` on Fie's walls (pitfall #159), Mend's heal at the tower's level each Tide.
+- **B15, MODEB-8** Made of Tougher Stuff skips only the player's own vessel (Boutbro gets it); the meteor node takes
+  12 + 3 x map hits (`Healthresource` 11 + 3 x map).
+- **MODEA-3** in a campaign the host keeps the boat's lead (`KeepLead`, said once). **MODE-A3** the Basin is the main
+  core on a map with sub-cores (`RWUtil.PlayerCore`). **MODEB-7** VENDCINT never lands mid-Tide from the 90 s fallback.
+- Self-test: the flow, the gaps and both two-player builds follow the stay's map vote; new checks B1, B3, B4.
+
 ## 0.1.0-dev, later (2026-11-05): the code review at max
 
 Kit 1.11, compiled, not yet run in game (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): a counted chart map ends staging,

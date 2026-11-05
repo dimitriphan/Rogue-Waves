@@ -544,8 +544,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      as it first hooks the thing. Read from code (max review ARG-2, ULO-6); not yet seen in game, left for a PC look.
 159. **Spring Tide's Beacon on a building that then gets Fie's Regen halves its hits** (2026-11-05) → the Beacon gives `Resistadd` 1,
      which does nothing alone; once a Shield wall or Shared Strength adds `Effect_Fiewall_Regen_Upgradeobject`, every hit divides by
-     1 + `Resistadd`: 4.88 of a 10 hit, against 9.52 with the wall's effect on first. Measured in game (round 3, MODE-C3); not
-     fixed, it waits for Dimitri's word.
+     1 + `Resistadd`: 4.88 of a 10 hit, against 9.52 with the wall's effect on first. Measured in game (round 3, MODE-C3);
+     fixed 2026-11-05 at Dimitri's word: Spring Tide and Tidal Mend run on the mode's own effects, no stock Beacon or Regen
+     (`RogueWavesMode/Code/16_Directions.cs` `TideEffects`, B7).
 160. **Dimitri's save equips Voice in a Bottle, so upgrade prices fall 3% a Tide on pack buildings in every test launch** (2026-11-05)
      → a check of a list price fails with nothing wrong (Sticky Spores 44 of 50) → read the `Upgrade` command's `Goalvalue` before
      the buy. Seen in game (round 3).
@@ -553,3 +554,16 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      overwritten by the boat's own pick, and the stale plan loads: wait until the boat has docked. A forced map end can leave the
      game's Lose menu over the next map, which hid a dialog from the next check: give such a part its own launch. Seen in game
      (round 3).
+162. **A marker under a unit takes the unit's clicks** (2026-11-05) → the pointer is one `Physics.Raycast` on the entity
+     layer and the first collider it meets wins (`Game_Client_Mouseobject`: `Master` from the hit's
+     `Entity_Hitobject_Connect(_Client)`), so a pin or pad drawn under a walking unit was selected instead of it (Spool's
+     TARGET pin under a Stitched, round 3: 0 of 3, 2 of 3) → turn off a marker's hit colliders on every machine: the host's
+     are on `Currenthit` (the server's hit object; the host's own visual copy has them off already), a client's on
+     `Client.Currentvishit`; both are built from `Entity.Defaulthit` and again on an upgrade (`SpoolClient.QuietPins`).
+     Read from code; compiled, for the PC round.
+163. **A modifier carries neither its source nor its time** (2026-11-05) → `Helper_Entitytools.Addmod` leaves
+     `Link_Modifier.From` unset (only interacts set `From`) and ends a timed one with a coroutine of its own, so code can't
+     tell a foe's debuff from a Cardinal's trade-off by the modifier, nor make a timed one last longer → keep your own
+     references: a slow that renews is made with Duration 0 and taken off by your own clock (`ArgoUtil.Slow` with a
+     source kind, B13); what a building owns is what it carried when you started watching plus what came with its own
+     upgrades (`YosseleHooks.Adopt`, B9). Read from code.

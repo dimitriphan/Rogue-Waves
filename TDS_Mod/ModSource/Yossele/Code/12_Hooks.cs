@@ -37,6 +37,8 @@ public static class YosseleHooks
         markBonus.Clear();
         markUntil.Clear();
         monuments.Clear();
+        own.Clear();
+        ownUpgrades.Clear();
     }
 
     public static void Armor(Entity_Master e, float amount)
@@ -109,27 +111,64 @@ public static class YosseleHooks
     {
         if (e == null)
             return;
-        if (on && !monuments.Contains(e)) monuments.Add(e);
-        else if (!on) monuments.Remove(e);
+        if (on && !monuments.Contains(e)) { monuments.Add(e); Adopt(e, true); }
+        else if (!on) { monuments.Remove(e); own.Remove(e); ownUpgrades.Remove(e); }
         if (on) First(e);
+    }
+
+    // A Monument's own modifiers, never cleansed (YOS-2, Dimitri's answer 17 of 2026-11-05, B9): what it carried when it became
+    // one, and what comes within a second of an upgrade landing on it that isn't a foe's (a stock Cardinal's trade-off,
+    // Paper Tower's negative Multi). A foe's debuff (the Bulwark's stun on a hit, a cursed foe's aura, the pack's Blind)
+    // comes with no upgrade of the building's own, so it is stripped. Upgrades named Enemy_, RW_Modifier_ or RW_Effect_
+    // are foes' (kit docs/13 §4; the pack's foe part).
+    static readonly Dictionary<Entity_Master, List<Link_Modifier>> own = new Dictionary<Entity_Master, List<Link_Modifier>>();
+    static readonly Dictionary<Entity_Master, int> ownUpgrades = new Dictionary<Entity_Master, int>();
+    static readonly Dictionary<Entity_Master, float> adoptUntil = new Dictionary<Entity_Master, float>();
+    public const float AdoptSeconds = 1f;
+
+    static bool FoeUpgrade(string key) { return key.StartsWith("Enemy_") || key.StartsWith("RW_Modifier_") || key.StartsWith("RW_Effect_"); }
+
+    static void Adopt(Entity_Master e, bool all)
+    {
+        if (e == null || e.Modifiers == null)
+            return;
+        int mine = 0;
+        if (e.Upgradelistserver != null)
+            foreach (string key in e.Upgradelistserver.Keys)
+                if (!FoeUpgrade(key)) mine++;
+        int had;
+        if (!all && ownUpgrades.TryGetValue(e, out had) && had != mine)
+            adoptUntil[e] = Time.time + AdoptSeconds;
+        ownUpgrades[e] = mine;
+        float until;
+        if (!all && (!adoptUntil.TryGetValue(e, out until) || Time.time > until))
+            return;
+        List<Link_Modifier> set;
+        if (!own.TryGetValue(e, out set)) own[e] = set = new List<Link_Modifier>();
+        set.RemoveAll(m => m == null || m.Dead);
+        foreach (KeyValuePair<string, List<Link_Modifier>> kv in e.Modifiers)
+            if (kv.Value != null)
+                foreach (Link_Modifier m in kv.Value)
+                    if (m != null && !m.Dead && !set.Contains(m)) set.Add(m);
     }
 
     public static bool IsMonument(Entity_Master e) { return e != null && monuments.Contains(e); }
 
     // Strips every foe's debuff from a Monument: Override modifiers (the Bulwark's stun freezes Damage, Speed and
-    // Attackspeed with them) and any negative Multi or Pmulti, then the Disabled look. Yossele's own buildings carry no
-    // negative modifiers of their own.
+    // Attackspeed with them) and any negative Multi or Pmulti, then the Disabled look; never one of its own (Adopt).
     public static int Cleanse(Entity_Master e)
     {
         if (e == null || e.Modifiers == null)
             return 0;
+        List<Link_Modifier> mine;
+        own.TryGetValue(e, out mine);
         int n = 0;
         foreach (KeyValuePair<string, List<Link_Modifier>> kv in new List<KeyValuePair<string, List<Link_Modifier>>>(e.Modifiers))
         {
             if (kv.Value == null)
                 continue;
             foreach (Link_Modifier m in new List<Link_Modifier>(kv.Value))
-                if (m != null && !m.Dead && (m.Value_Override_On > 0 || m.Value_Override != 0f || m.Value_Multi < 0f || m.Value_Pmulti < 0f))
+                if (m != null && !m.Dead && (mine == null || !mine.Contains(m)) && (m.Value_Override_On > 0 || m.Value_Override != 0f || m.Value_Multi < 0f || m.Value_Pmulti < 0f))
                 {
                     ModKitUtil.Unmod(m);
                     n++;
@@ -206,8 +245,11 @@ public static class YosseleHooks
         foreach (Entity_Master m in monuments)
         {
             First(m);
+            Adopt(m, false);
             Cleanse(m);
         }
+        foreach (Entity_Master m in new List<Entity_Master>(own.Keys))
+            if (m == null || !monuments.Contains(m)) { own.Remove(m); ownUpgrades.Remove(m); adoptUntil.Remove(m); }
         List<Entity_Master> gone = null;
         foreach (KeyValuePair<Entity_Master, float> kv in markUntil)
             if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || kv.Value < Time.time - 5f)

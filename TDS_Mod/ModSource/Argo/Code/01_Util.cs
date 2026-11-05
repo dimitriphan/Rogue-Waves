@@ -162,9 +162,10 @@ public static class ArgoUtil
 
     // A brief hold in place: Speed at its floor (0, or the game's own 0.05 for its enemies) whatever slows it carries (up to 1.2.2 a -0.9
     // slow, which let a held foe creep at a tenth of its speed).
+    // A Boss-weight foe (600 max health or more) is never held, as it is never reeled (Dimitri's answer 29 of 2026-11-05, B13).
     public static void Root(Entity_Master by, Entity_Master target, float seconds)
     {
-        if (target == null || !ModKitUtil.Alive(target) || seconds <= 0f || ModKitUtil.Speed(target) == null)
+        if (target == null || !ModKitUtil.Alive(target) || seconds <= 0f || ModKitUtil.Speed(target) == null || Boss(target))
             return;
         Helper_Entitytools.Addmod(target, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, seconds);
         ArgoStatus.Slowed(target, seconds);
@@ -177,7 +178,7 @@ public static class ArgoUtil
     // or the stars on the foe (Argo_Pin: x = the foe's id, y = seconds, z = 1 for a stun). Returns the seconds applied.
     public static float Pin(Entity_Master by, Entity_Master target, float seconds, bool stun)
     {
-        if (target == null || !ModKitUtil.Alive(target) || seconds <= 0f || ModKitUtil.Speed(target) == null)
+        if (target == null || !ModKitUtil.Alive(target) || seconds <= 0f || ModKitUtil.Speed(target) == null || Boss(target))
             return 0f;
         if (ArgoStatus.IsWet(target))
             seconds *= ArgoData.WaterPinMulti;
@@ -192,6 +193,8 @@ public static class ArgoUtil
         ModKitUtil.Vis(by, "Argo_Pin", new Vector3((float)target.NetworkObjectId, seconds, stun ? 1f : 0f), seconds);
         return seconds;
     }
+
+    public static bool Boss(Entity_Master foe) { return ModKitUtil.MaxHealth(foe) >= ArgoData.BossHealth; }
 
     // A building (any team's tower, Argo's or not) within StunReach of the foe.
     public static bool Beside(Entity_Master foe)
@@ -312,8 +315,15 @@ public static class ArgoUtil
     }
 
     // Slows on their own never take a foe under 10% of its speed: the modifier is cut to what is left above that, and
-    // skipped on a foe already that slow or held (the slow look still plays).
-    public static void Slow(Entity_Master by, Entity_Master target, float amount, float seconds, bool vfx)
+    // skipped on a foe already that slow or held (the slow look still plays). A slow with a source kind is one modifier per
+    // source and foe, renewed by its own re-ticks and hits instead of stacking with them for the overlap (Deep Water and the
+    // Tremor re-tick 0.25 s before the last ends; Barnacle Shot and Tether on every hit: Dimitri's answer 28 of 2026-11-05,
+    // B13). Two sources still add up.
+    sealed class Held { public Link_Modifier Mod; public float Until; public Entity_Master Foe; }
+    static readonly Dictionary<string, Held> held = new Dictionary<string, Held>();
+    public static int Renewed;   // self-test
+
+    public static void Slow(Entity_Master by, Entity_Master target, float amount, float seconds, bool vfx, string kind = "")
     {
         if (target == null || !ModKitUtil.Alive(target) || amount <= 0f)
             return;
@@ -321,12 +331,50 @@ public static class ArgoUtil
         if (s == null)
             return;
         ArgoStatus.Slowed(target, seconds);
-        float cut = Mathf.Min(Mathf.Clamp01(amount), s.Value_Multi - 0.1f);
-        if (cut >= 0.01f)
-            Helper_Entitytools.Addmod(target, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, seconds);
         if (vfx)
             ModKitUtil.Debuff(by, target, "Debuff_Slow", seconds);
+        string key = kind != "" && by != null ? kind + "#" + by.NetworkObjectId + "#" + target.NetworkObjectId : "";
+        Held h;
+        if (key != "" && held.TryGetValue(key, out h) && h.Mod != null && !h.Mod.Dead && h.Foe == target)
+        {
+            float without = s.Value_Multi - h.Mod.Value_Multi;
+            float again = Mathf.Max(0f, Mathf.Min(Mathf.Clamp01(amount), without - 0.1f));
+            if (Mathf.Abs(-again - h.Mod.Value_Multi) > 0.001f) h.Mod.Value_Multi = -again;
+            h.Until = Mathf.Max(h.Until, Time.time + seconds);
+            Renewed++;
+            return;
+        }
+        float cut = Mathf.Min(Mathf.Clamp01(amount), s.Value_Multi - 0.1f);
+        if (cut < 0.01f)
+            return;
+        if (key == "")
+        {
+            Helper_Entitytools.Addmod(target, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, seconds);
+            return;
+        }
+        held[key] = new Held { Mod = Helper_Entitytools.Addmod(target, "Speed", -cut, Helper_Entitytools.Modtypes.Multi, 0f), Until = Time.time + seconds, Foe = target };
     }
+
+    // Host, every frame (ArgoServer.Update): a held slow past its time comes off; a gone foe's is forgotten.
+    public static void SweepSlows()
+    {
+        if (held.Count == 0)
+            return;
+        List<string> done = null;
+        foreach (KeyValuePair<string, Held> kv in held)
+        {
+            bool gone = kv.Value.Foe == null || !ModKitUtil.Alive(kv.Value.Foe) || kv.Value.Mod == null || kv.Value.Mod.Dead;
+            if (!gone && kv.Value.Until > Time.time)
+                continue;
+            if (!gone) ModKitUtil.Unmod(kv.Value.Mod);
+            if (done == null) done = new List<string>();
+            done.Add(kv.Key);
+        }
+        if (done != null)
+            foreach (string k in done) held.Remove(k);
+    }
+
+    public static void ForgetSlows() { held.Clear(); }
 
     // A one-off look a player must see (a refused build), past the same queue.
     public static void MustSee(Entity_Master by, string vfx, Vector3 at, Vector3 direction)

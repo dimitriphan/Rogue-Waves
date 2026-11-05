@@ -385,14 +385,14 @@ public class ArgoTowerBrain : MonoBehaviour
                 }
                 float slow = Param("Slow_Base", 0f);
                 if (slow > 0f)
-                    ArgoUtil.Slow(Master, to, slow, Param("Duration_Base", 1.5f), true);
+                    ArgoUtil.Slow(Master, to, slow, Param("Duration_Base", 1.5f), true, "Barnacle");
                 return;
             }
             // Harpoon. Tether slows every foe a harpoon hits.
             float tether = Param("Tetherslow_Base", 0f);
             if (tether > 0f)
             {
-                ArgoUtil.Slow(Master, to, tether, Param("Tetherslow_Duration", 2f), true);
+                ArgoUtil.Slow(Master, to, tether, Param("Tetherslow_Duration", 2f), true, "Tether");
                 Tethers++;
             }
             float whale = Param("Whaler_Base", 0f);
@@ -689,7 +689,7 @@ public class ArgoTowerBrain : MonoBehaviour
                 float last;
                 bool vfx = !slowVfx.TryGetValue(e, out last) || Time.time - last > 1.5f;
                 if (vfx) slowVfx[e] = Time.time;
-                ArgoUtil.Slow(Master, e, slow, ArgoData.TremorTick + 0.25f, vfx);
+                ArgoUtil.Slow(Master, e, slow, ArgoData.TremorTick + 0.25f, vfx, "Tremor");
             }
             if (slowVfx.Count > 64)
                 slowVfx.Clear();

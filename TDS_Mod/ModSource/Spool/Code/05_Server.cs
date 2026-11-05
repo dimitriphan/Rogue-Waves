@@ -281,9 +281,25 @@ public static class SpoolServer
         if (players.Count == 0)
             return;
         int n = ModKitUtil.BaseHealth(foe) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall;
-        if (ModKitUtil.Elite(foe))
+        if (Elite(foe))
             n += SpoolData.DropElite;
         Drop(ModKitUtil.Pos(foe), Mathf.Min(n, SpoolData.DropMax));
+    }
+
+    // An elite for the drop: the game's Enemy_* modifiers (the kit's reading) and the pack's own foe modifiers, which the
+    // mode writes into its Tide rows (docs/scope/08 "Earned by"; Dimitri's answer 12 of 2026-11-05, B6).
+    public const string PackModifier = "RW_Modifier_";
+
+    public static bool Elite(Entity_Master foe)
+    {
+        if (ModKitUtil.Elite(foe))
+            return true;
+        if (foe == null || foe.Upgradelistserver == null)
+            return false;
+        foreach (string key in foe.Upgradelistserver.Keys)
+            if (key.StartsWith(PackModifier))
+                return true;
+        return false;
     }
 
     // ---------------------------------------------------------------- Directions (kit 1.7, docs/scope/11)

@@ -29,6 +29,7 @@ public static class ArgoServer
             ranks.Clear();
             ArgoHooks.Reset();
             ArgoStatus.Reset();
+            ArgoUtil.ForgetSlows();
             ModKitUtil.ForgetLooks(true);
             ArgoWater.Reset();
             if (ge != null)
@@ -52,6 +53,7 @@ public static class ArgoServer
         Nauts.RemoveAll(n => n == null);
         ArgoHooks.Update();
         ArgoWater.Update();
+        ArgoUtil.SweepSlows();
     }
 
     // ---------------------------------------------------------------- spawns

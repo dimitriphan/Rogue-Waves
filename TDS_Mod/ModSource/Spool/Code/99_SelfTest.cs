@@ -454,7 +454,7 @@ public static partial class SpoolSelfTest
             {
                 Vector3 fp = ModKitUtil.Pos(small);
                 float bh = ModKitUtil.BaseHealth(small);
-                int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (ModKitUtil.Elite(small) ? SpoolData.DropElite : 0));
+                int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (SpoolServer.Elite(small) ? SpoolData.DropElite : 0));
                 int before = SpoolServer.DropsNear(fp, 0.6f), dropped = SpoolServer.Dropped;
                 Kill(small);
                 yield return Wait(0.3f);
@@ -481,7 +481,7 @@ public static partial class SpoolSelfTest
             if (big != null)
             {
                 float bh = ModKitUtil.BaseHealth(big);
-                bool elite = ModKitUtil.Elite(big);
+                bool elite = SpoolServer.Elite(big);
                 int expect = Mathf.Min(SpoolData.DropMax, (bh >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall) + (elite ? SpoolData.DropElite : 0));
                 int dropped = SpoolServer.Dropped;
                 Kill(big);

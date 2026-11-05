@@ -6,12 +6,12 @@ colour no stock elite uses (`docs/STYLE.md` "Enemies"). The mode's `RWDifficulty
 
 | Modifier | Does | Numbers (`RWFData`) |
 | --- | --- | --- |
-| Cursed | weakens the attack of everything nearby | `CursedRange` 3, `CursedDamage` -25%: defaults |
+| Cursed | weakens the attack of everything nearby, vessels too | `CursedRange` 3, `CursedDamage` -25% (his answer 10 of 2026-11-05) |
 | Berserk | stronger and faster the more it is hurt | at no health left, damage +100%, speed +50%: defaults |
 | Aging | slow, health and damage grow the longer it lives | speed -30%, up to +100%, over 50 s: the scope's |
-| Dazzling | Blinds and Illuminates everything nearby, in the stock upgrades' way, not Uloe's Light | within 3 tiles, damage -20%, taken +20%, 3 s: defaults |
+| Dazzling | Blinds and Illuminates everything nearby, in the stock upgrades' way, not Uloe's Light | within 3 tiles, damage -15%, taken +15%, both lingering 3 s after leaving (his answer 11 of 2026-11-05) |
 
-Self-test in game: 12 pass, 0 fail (`-Define ROGUEWAVESFOES_SELFTEST`). The look is by self-test only: a player's eye on the rings is left.
+Self-test in game: 12 pass, 0 fail (`-Define ROGUEWAVESFOES_SELFTEST`); 13 checks since 2026-11-05 (Illuminate's linger), compiled, not yet run. The look is by self-test only: a player's eye on the rings is left.
 Build: `Build-RogueWavesFoesMod.ps1`, then Tools > ModKit > Build Queue. The editor half is `Assets/RogueWavesFoesMod/Editor`.
 
 2026-11-05 (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`): the auras skip the Bouthouse, which hands what it holds on to

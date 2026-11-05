@@ -1417,10 +1417,12 @@ public static partial class ArgoSelfTest
                 List<Entity_Master> wet = new List<Entity_Master>();
                 yield return FoeOn(pool1.Master.Beingserver.Currentblock, wet, water);
                 Entity_Master e = wet.Count > 0 ? wet[0] : null;
+                int renewed0 = ArgoUtil.Renewed;
                 yield return Wait(0.8f);
                 if (Check("a foe wading in the pool", e != null && ModKitUtil.Alive(e), e != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(e), ModKitUtil.Pos(pool1.Master))) + " from the pool" : "none"))
                 {
                     Check("Deep Water slows foes in any of its pools", ArgoStatus.IsWet(e) && ArgoStatus.IsSlowed(e), "wet " + ArgoStatus.IsWet(e) + ", slowed " + ArgoStatus.IsSlowed(e) + ", " + SpeedInfo(e));
+                    Check("B13 Deep Water's re-ticks renew its one slow instead of stacking", ArgoUtil.Renewed > renewed0, (ArgoUtil.Renewed - renewed0) + " renewals in 0.8 s, " + SpeedInfo(e));
                     float held = ArgoUtil.Pin(water.Master, e, 1f, false);
                     Check("a pinned foe in Deep Water is held twice as long", Mathf.Abs(held - ArgoData.WaterPinMulti) < 0.01f && ArgoStatus.IsPinned(e), "pinned for " + F(held) + "s");
                 }
