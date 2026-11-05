@@ -421,6 +421,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   needs a Unity-built profile, and drifting fog banks would be new art. The gaps build's `light` part shows each look in
   pictures. Compiled here (every part, every test switch, 0 errors), not run on the PC: §4 waits for his OK; whether a
   look ships is §5, after the pictures.
+  2026-11-05: the art of decisions 10 and 11 (`OPEN_DECISIONS_2026-11-05b.md`, his "default for all"). The mode part has
+  a model library (`Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs` into `RWAssets_Library/Models`, lit with a
+  copy of the game's "General Tower" material by `RWModels`, `Code/25_Models.cs`), and Mind the Meteor's node wears its
+  first model, a temporary white crystal on a scorched fallen stone (`RW_Meteor`; the line stays; the gaps self-test
+  checks it). Yossele's final sheets drawn by Claude from his reshade and the temporary sheets, for him to edit
+  (`ModSource/Yossele/Art/README.md`, `.aseprite` in `Art/aseprite/`): idle and walk, attack, Fertilize, fall, landing;
+  the left-heading facings were plain mirrors with the shade on the left, now on the right like his reshade. Scope
+  `07`'s sprite NEEDS line stays until he takes them. Compiled here (the mode's release, self-test and gaps builds, 0
+  errors; editors clean), `art_check.py` 0 problems, model rendered; not built in Unity, not run on the PC: the next
+  round looks at the meteor on a map (size, the hit flash, the boot line) and Yossele walking left.
   2026-11-05: the code items of his "default for all" on the second decisions page
   (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`): kit 1.14 (`Front` keeps two parts' hit handlers in a steady order,
   pitfall #168), Uloe's Searchlight slow keeps the 10% floor, Argo's Cleave is no longer his own hit for Notched Oar, Fish
