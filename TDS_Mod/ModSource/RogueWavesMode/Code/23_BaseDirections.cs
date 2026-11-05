@@ -291,7 +291,7 @@ public static class RWBase
     {
         try
         {
-            if (hit == null || hit.Type != "Hurt" || hit.From == null || hit.Data == null || hit.Data.ContainsKey("Burn") || hit.Data.ContainsKey(RWAny.Extra)
+            if (hit == null || hit.Type != "Hurt" || hit.From == null || hit.Data == null || hit.Data.ContainsKey("Burn") || RWAny.ExtraHit(hit.Data)
                 || ModKitUtil.State(hit.From) != "Movelinear")
                 return;
             int rank = 0;

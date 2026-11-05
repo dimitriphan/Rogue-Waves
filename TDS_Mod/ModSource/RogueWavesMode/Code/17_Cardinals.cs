@@ -299,10 +299,12 @@ public static class RWCardinals
     }
 
     // The upgrade a held stack puts on the vessel's panel (Grant): its numbered copy, or its mark when it reaches units.
+    static bool OnPanel(RWCardinalDef d, int stack, out Upgradeproperties u) { return (d.Reach != "" ? marks : copies).TryGetValue(d.Name + stack, out u); }
+
     static string PanelId(RWCardinalDef d, int stack)
     {
         Upgradeproperties u;
-        return (d.Trinket && d.Reach != "" ? marks : copies).TryGetValue(d.Name + stack, out u) ? u.Objectname : Id(d) + stack + "_Upgradeobject";
+        return OnPanel(d, stack, out u) ? u.Objectname : Id(d) + stack + "_Upgradeobject";
     }
 
     // What a player pays: the price, or with Punch Card 20% off, rounded down (docs/scope/12).
@@ -727,7 +729,7 @@ public static class RWCardinals
         {
             Upgradeproperties u;
             RWCardinalDef d = Def(held);
-            if (d == null || !(d.Reach != "" ? marks : copies).TryGetValue(d.Name + StackOf(held, d), out u))
+            if (d == null || !OnPanel(d, StackOf(held, d), out u))
                 continue;
             if (!vessel.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(vessel, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);

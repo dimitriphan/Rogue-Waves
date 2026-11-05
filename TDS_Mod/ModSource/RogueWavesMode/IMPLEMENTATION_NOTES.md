@@ -1,5 +1,16 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the decided fixes, kit 1.14 (compiled, not yet run in game)
+
+Dimitri's "default for all" on the second decisions page (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`):
+
+- Argo's Cleave is an extra hit for Notched Oar, Fish Hook, Gutting Knife and the attack counts (`RWAny.ExtraHit`);
+- Tar Bucket marks hits with Mason's Trowel's hook (`RWUtil.Hit`);
+- one copy test, `RWRun.IsCopy`, on the run-time tags (pitfall #169); a Hero-tagged spawn is reached once it has stats;
+- `ClashHere`, `PriceMine` and `MaxedHere` read a held stack's panel id as `Grant` puts it;
+- Boutman's Direction shows as Spare Reel (id `Longline` kept); the leave vote reads "Most votes win. Nobody leaves right
+  before their demise".
+
 ## 0.1.0-dev, later (2026-11-05): a map's lighting, kit 1.13 (compiled, not yet run in game)
 
 - `Update` calls `ModKitLight.Update()` every frame on every machine: the pack's one holder of a lighting look (kit

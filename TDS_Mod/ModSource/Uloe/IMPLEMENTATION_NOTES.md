@@ -1,5 +1,9 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the decided fixes, kit 1.14 (compiled, not yet run in game):** Searchlight's slow goes through
+`ModKitUtil.SlowOn`, so a foe under Fog Horn, Tin Whistle or Sap stays at 10% of its speed or more; a slow the floor cut
+short is made again at full strength once there is room (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`).
+
 **2026-11-05, the clean-up, kit 1.12 (compiled, not yet run in game):** no number or behaviour changed. Colour Filter reads the owner's purse once before a strike and once after (`ModKitUtil.Purse`, was six `UloeUtil.Purse` reads) and gives through `ModKitUtil.Give`; `UloeLight` keeps one ledger a source (`held` and `heldShare` were two); SURGE, the Mirror and Light's hook set Damagemulti with `ModKitCombat.SetMulti`. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.
 
 **2026-11-05, the 24 upgrades' looks (rendered here, not yet built in Unity or seen in game):** every upgrade now has its

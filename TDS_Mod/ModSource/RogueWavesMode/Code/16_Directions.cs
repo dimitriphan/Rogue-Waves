@@ -492,7 +492,29 @@ public static class RWDirections
         long owner = m.Entitydata.Value.Owner;
         if (owner < 0)
             return;
+        // A Blurry Photo copy is a Hero being the game marks "Clone" only after this spawn returns (pitfall #169), so a thing
+        // tagged Hero (Boutbro, a copy) is reached once it has its stats, when a copy shows as one; the rest at once.
+        if (m.Beingserver.Entity.Tags.Contains("Hero"))
+        {
+            RogueWavesModeMod.Instance.StartCoroutine(ReachLater(m, owner));
+            return;
+        }
         // Inside Game_Entity.Spawn: a throw here would stop the spawn and every Onspawn listener after this one (MODE-C8).
+        try
+        {
+            RWPlayer p = RWRun.For(owner);
+            Reach(m, p);
+            RWCardinals.Reach(m, p);
+        }
+        catch (Exception e) { RWLog.Once("spawn reach", "Directions on a new spawn: " + e); }
+    }
+
+    static IEnumerator ReachLater(Entity_Master m, long owner)
+    {
+        for (int i = 0; i < 60 && m != null && (m.Statsserver == null || m.Statsserver.Count == 0); i++)
+            yield return null;
+        if (!RWRun.InCampaignMap || !ModKitUtil.Alive(m) || m.Statsserver == null || m.Statsserver.Count == 0 || RWRun.IsCopy(m))
+            yield break;
         try
         {
             RWPlayer p = RWRun.For(owner);

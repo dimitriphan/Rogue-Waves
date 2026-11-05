@@ -446,7 +446,13 @@ public class UloeFloodBrain : UloeBuilding
             UloeMarks.Illuminate(Master, f, level);
             Link_Modifier m;
             if (slows.TryGetValue(f, out m) && m != null && !m.Dead)
-                continue;
+            {
+                // Cut short by the floor when it came: the full slow again once the other slows leave room for more.
+                Link_Stats speed = ModKitUtil.Speed(f);
+                if (m.Value_Multi <= 0.001f - slow || speed == null || speed.Value_Multi - 0.1f < 0.01f)
+                    continue;
+                ModKitUtil.Unmod(m);
+            }
             // SlowOn keeps the foe at 10% of its speed or more, under Fog Horn, Tin Whistle or Sap too (pitfall #79); a foe
             // already at the floor gets none and is tried again next second.
             m = ModKitUtil.SlowOn(f, slow);
