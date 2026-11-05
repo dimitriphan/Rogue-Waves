@@ -175,7 +175,7 @@
 		- Lasts: / The rest of the campaign, this map only, or a number of Tides \
 		- Stacks: / Yes if a player (or the team) can own more than one, with no limit; no if it leaves the shop once owned \
 		- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
-		- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \
+		- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot. A shop card's colour says whether the buyer can pay \
 		- Cost: / In Pure Aura \
 		- Look: / The object for its icon, readable at 12x12, in the pack's palette \
 		- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \

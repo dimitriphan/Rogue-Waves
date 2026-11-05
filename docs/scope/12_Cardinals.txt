@@ -1,6 +1,6 @@
 | New Cardinals and Trinkets |
 	# The rules for new Cardinals and Trinkets, and their list: each one in the Cardinal or Trinket template from 15_Templates.txt, under its kind.
-	# Each sheet ends with By: who made it, Dimitri or Claude. A Claude-made sheet is all ~defaults~ until you take it.
+	# Each sheet ends with By: who made it, Dimitri or Claude. A Claude-made sheet is all defaults until you take it.
 	/~ What each of Claude's rides on in the game's code, and the StarCraft II campaign upgrade behind it: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md. The overlap check against the base game's Cardinals and the roguelike ones: docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md \
 	! NEEDS LIST OF NEW CARDINALS AND TRINKETS: NAME AND EFFECT FOR EACH !
 	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
@@ -11,14 +11,14 @@
 		- Names: found objects the wave washed up, two plain words each
 		- Bought: from the shopkeeper with [Pure Aura] -> 06_New_Mechanics.txt [Shopkeeper]
 		- Two kinds: Cardinals and Trinkets, kept apart in the shop and in the list /~ Named on 2026-11-04 at your word: a Trinket was a Vessel Cardinal and a Cardinal a Team Cardinal \
-		- Trinket: belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel /~ A Trinket wherever the game allows it. About 24 of the 40 stock Cardinals could be made Trinkets; see docs/reports/SCOPE_VS_LOOP.md §F (read from the game's code, not yet seen in game) \
+		- Trinket: belongs to the player who bought it, acts only on that player's vessel, towers, units or aura, and shows on their vessel's panel /~ Every base game Cardinal the shop sells stays a Cardinal; only new ones are Trinkets \
 		- Cardinal: acts on the core, the enemies or the Tide clock, so it is everyone's and shows in the Cardinal row at the top of the screen. A Cardinal is bought by one player and works for everyone /~ Every base game Cardinal the shop sells is one: it goes on the core \
-		- No limit: Cardinals and Trinkets scale forever: there is no limit on how many Cardinals or Trinkets a campaign holds /~ The game's Cardinal row keeps a counter for only 8, lobby picks included. Past 8, Cardinals still work but show nowhere yet: the run line carries only the objective. docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md row 3, waits on your word \
-		- Stacking: Cardinals and Trinkets stack with no limit: one that stacks can be bought again as many times as a player can pay for it /~ The build differs: a new one that stacks (Vampire Dentures, the one built so far) works for 6 copies, a 7th still costs Pure Aura but adds nothing, and a base game Cardinal is held only once. Waits on your word \
+		- No limit: there is no limit on how many different Cardinals or Trinkets a campaign holds. Past the Cardinal row's 8, the rest show as a +N count beside it
+		- Stacking: a new Cardinal or Trinket that stacks works for up to 6 copies and leaves the shop at 6; a base game Cardinal is bought once and then leaves the shop
 		- Saved: Trinkets and Directions are saved with the campaign for each player and come back when it continues
 		- On the boat: no Cardinal or Trinket swaps between maps -> 04_Rogue_Waves_Mode.txt [Sea Chart]
-		- Power: ~a Trinket is worth about one level 1 or 2 building upgrade, spread over one player's things; a Cardinal about one base game Cardinal such as Vintage Watch, Wave Breaker or Aura Gavel, or less~ /~ docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md section 2 \
-		- Pairs: ~two Cardinals or Trinkets that clash are a pair, like a research choice: a player who holds one is never offered the other~
+		- Power: a Trinket is worth about one level 1 or 2 building upgrade, spread over one player's things; a Cardinal about one base game Cardinal such as Vintage Watch, Wave Breaker or Aura Gavel, or less /~ docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md section 2 \
+		- Pairs: two Cardinals or Trinkets that clash are a pair, like a research choice: a player who holds one is never offered the other
 		- No copies: a new Cardinal or Trinket never does what a base game Cardinal already does, even on other things /~ Checked against the 40 base game Cardinals' own in-game lines on 2026-11-04; your word that day removed the twelve of Claude's that did \
 		- By: each Cardinal and Trinket says who made it, Dimitri or Claude -> 00_Read_Me.txt [Values]
 		- Kept names: Model Lighthouse, your name for the old start Cardinal, is kept for a later Cardinal or item
@@ -28,7 +28,7 @@
 			{Vampire Dentures}
 				- Kind: Trinket
 				- In-game line: Your vessel attacks heal themselves for a portion of damage dealt.
-				- Numbers: ~heals 20% of the damage dealt, per stack~
+				- Numbers: heals 20% of the damage dealt, per stack
 				- Lasts: The rest of the campaign
 				- Stacks: Yes
 				- Where from: Shop
@@ -37,185 +37,185 @@
 				- Look: Fake vampire dentures that could be found at a halloween dollar store.
 				- Clashes: None
 				- By: Dimitri
-			{~Brass Spyglass~}
-				- Kind: ~Trinket~
-				- In-game line: ~Your vessel reaches farther~
-				- Numbers: ~range +0.5 tile for a ranged vessel, +0.25 for a melee one~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Red~
-				- Cost: ~Pure Aura 12~
-				- Look: ~A dented brass spyglass~
-				- Clashes: ~None~
+			{Brass Spyglass}
+				- Kind: Trinket
+				- In-game line: Your vessel reaches farther
+				- Numbers: range +0.5 tile for a ranged vessel, +0.25 for a melee one
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Red
+				- Cost: Pure Aura 12
+				- Look: A dented brass spyglass
+				- Clashes: None
 				- By: Claude /~ After the Ghost's Ocular Implants and the Hydralisk's Grooved Spines \
-			{~Gutting Knife~}
-				- Kind: ~Trinket~
-				- In-game line: ~Your vessel hits healthy foes harder~
-				- Numbers: ~damage +20% against foes above half health, per stack~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Red~
-				- Cost: ~Pure Aura 12~
-				- Look: ~A fish gutting knife~
-				- Clashes: ~None~
+			{Gutting Knife}
+				- Kind: Trinket
+				- In-game line: Your vessel hits healthy foes harder
+				- Numbers: damage +20% against foes above half health, per stack
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Red
+				- Cost: Pure Aura 12
+				- Look: A fish gutting knife
+				- Clashes: None
 				- By: Claude /~ After the Mutalisk's Sundering Glaive and the Roach's Hydriodic Bile \
-			{~Oil Can~}
-				- Kind: ~Trinket~
-				- In-game line: ~Your towers attack faster~
-				- Numbers: ~attack speed +5%, per stack~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Red~
-				- Cost: ~Pure Aura 12~
-				- Look: ~A long-spouted oil can~
-				- Clashes: ~None~
+			{Oil Can}
+				- Kind: Trinket
+				- In-game line: Your towers attack faster
+				- Numbers: attack speed +5%, per stack
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Red
+				- Cost: Pure Aura 12
+				- Look: A long-spouted oil can
+				- Clashes: None
 				- By: Claude /~ After Ultra-Capacitors. Its pair, Iron Rivets, was dropped on 2026-11-04 because the Rusty Pipe Cardinal already makes towers sturdier \
-			{~Tar Bucket~}
-				- Kind: ~Trinket~
-				- In-game line: ~Your towers mend when left alone~
-				- Numbers: ~1% of their health a second after 4 seconds without a hit, +1% per stack~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Blue~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A bucket of pitch with a brush in it~
-				- Clashes: ~None~
+			{Tar Bucket}
+				- Kind: Trinket
+				- In-game line: Your towers mend when left alone
+				- Numbers: 1% of their health a second after 4 seconds without a hit, +1% per stack
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Blue
+				- Cost: Pure Aura 15
+				- Look: A bucket of pitch with a brush in it
+				- Clashes: None
 				- By: Claude /~ After Regenerative Bio-Steel and the Spear of Adun's Reconstruction Beam \
-			{~Rubber Duck~}
-				- Kind: ~Trinket~
-				- In-game line: ~Your vessel comes back sooner after it drowns~
-				- Numbers: ~respawn -20% per stack, at most -60%~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Green~
-				- Cost: ~Pure Aura 10~
-				- Look: ~A faded yellow rubber duck~
-				- Clashes: ~None~
+			{Rubber Duck}
+				- Kind: Trinket
+				- In-game line: Your vessel comes back sooner after it drowns
+				- Numbers: respawn -20% per stack, at most -60%
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Green
+				- Cost: Pure Aura 10
+				- Look: A faded yellow rubber duck
+				- Clashes: None
 				- By: Claude /~ After Zergling Reconstitution and the Avenger, which come back quickly \
-			{~Spare Plank~}
-				- Kind: ~Trinket~
-				- In-game line: ~One of your walls is free each map, and comes back when it falls~
-				- Numbers: ~one free (Defense) building at a time, at its first level~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Yellow~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A spare plank with two nails in it~
-				- Clashes: ~Any vessel without a (Defense) building~
+			{Spare Plank}
+				- Kind: Trinket
+				- In-game line: One of your walls is free each map, and comes back when it falls
+				- Numbers: one free (Defense) building at a time, at its first level
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Yellow
+				- Cost: Pure Aura 15
+				- Look: A spare plank with two nails in it
+				- Clashes: Any vessel without a (Defense) building
 				- By: Claude /~ After Orbital Depots: free building. Rides on the Processor Jr Cardinal's free build button \
-			{~Punch Card~}
-				- Kind: ~Trinket~
-				- In-game line: ~Cardinals and Trinkets cost you less~
-				- Numbers: ~Cardinals and Trinkets cost you 20% less at {VENDCINT}, rounded down~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Yellow~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A shop punch card with three holes punched~
-				- Clashes: ~{Pearl Oyster}: a player holds one or the other~
+			{Punch Card}
+				- Kind: Trinket
+				- In-game line: Cardinals and Trinkets cost you less
+				- Numbers: Cardinals and Trinkets cost you 20% less at {VENDCINT}, rounded down
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Yellow
+				- Cost: Pure Aura 15
+				- Look: A shop punch card with three holes punched
+				- Clashes: {Pearl Oyster}: a player holds one or the other
 				- By: Claude /~ After Slay the Spire's Membership Card, The Binding of Isaac's Steam Sale and Balatro's Clearance Sale \
-			{~Pearl Oyster~}
-				- Kind: ~Trinket~
-				- In-game line: ~Pure Aura grows while you save it~
-				- Numbers: ~+1 Pure Aura each Tide, until you next buy something at {VENDCINT} on that map; it starts again on the next map~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Blue~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A closed oyster with a pearl showing at the lip~
-				- Clashes: ~{Punch Card}: a player holds one or the other~
+			{Pearl Oyster}
+				- Kind: Trinket
+				- In-game line: Pure Aura grows while you save it
+				- Numbers: +1 Pure Aura each Tide, until you next buy something at {VENDCINT} on that map; it starts again on the next map
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Blue
+				- Cost: Pure Aura 15
+				- Look: A closed oyster with a pearl showing at the lip
+				- Clashes: {Punch Card}: a player holds one or the other
 				- By: Claude /~ After Slay the Spire's Maw Bank and Balatro's interest. Punch Card is the spending side of the pair \
-			{~Bottled Storm~}
-				- Kind: ~Trinket~
-				- In-game line: ~A storm now, a reward when it passes~
-				- Numbers: ~for the next 5 Tides your vessel takes 25% more damage; when they end, one of your Directions below rank III goes up a rank for free, or you get Pure Aura 20 if none can~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes, one storm at a time~
-				- Where from: ~Shop~
-				- Colour: ~Green~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A storm cloud corked in a bottle~
-				- Clashes: ~None~
+			{Bottled Storm}
+				- Kind: Trinket
+				- In-game line: A storm now, a reward when it passes
+				- Numbers: for the next 5 Tides your vessel takes 25% more damage; when they end, one of your Directions below rank III goes up a rank for free, or you get Pure Aura 20 if none can
+				- Lasts: The rest of the campaign
+				- Stacks: Yes, one storm at a time
+				- Where from: Shop
+				- Colour: Green
+				- Cost: Pure Aura 15
+				- Look: A storm cloud corked in a bottle
+				- Clashes: None
 				- By: Claude /~ After Hades' Chaos boons: a curse for a few rooms, then a blessing \
-			{~Oilskin Coat~}
-				- Kind: ~Trinket~
-				- In-game line: ~Some hits slide off your vessel~
-				- Numbers: ~10% of the hits on your vessel do nothing; each stack takes a tenth of what still lands (2 stacks 19%, 3 stacks 27%)~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Green~
-				- Cost: ~Pure Aura 12~
-				- Look: ~A yellow oilskin coat, still dripping~
-				- Clashes: ~None~
+			{Oilskin Coat}
+				- Kind: Trinket
+				- In-game line: Some hits slide off your vessel
+				- Numbers: 10% of the hits on your vessel do nothing; each stack takes a tenth of what still lands (2 stacks 19%, 3 stacks 27%)
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Green
+				- Cost: Pure Aura 12
+				- Look: A yellow oilskin coat, still dripping
+				- Clashes: None
 				- By: Claude /~ After Risk of Rain 2's Tougher Times \
-			{~Gull Feather~}
-				- Kind: ~Trinket~
-				- In-game line: ~Drowning an elite foe lends your vessel its strength~
-				- Numbers: ~each elite foe your vessel drowns gives it +20% damage and +15% speed for 8 seconds; more elites make it last longer, not grow~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Red~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A grey gull feather~
-				- Clashes: ~None~
+			{Gull Feather}
+				- Kind: Trinket
+				- In-game line: Drowning an elite foe lends your vessel its strength
+				- Numbers: each elite foe your vessel drowns gives it +20% damage and +15% speed for 8 seconds; more elites make it last longer, not grow
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Red
+				- Cost: Pure Aura 15
+				- Look: A grey gull feather
+				- Clashes: None
 				- By: Claude /~ After Risk of Rain 2's Wake of Vultures. Elite means any foe with a modifier, the base game's or the pack's (13_Enemy_Modifiers.txt) \
 		(Cardinals)
 			! NEEDS CARDINALS !
-			{~Cork Lifebuoy~}
-				- Kind: ~Cardinal~
-				- In-game line: ~The Basin lives through one more killing blow each map~
-				- Numbers: ~one more last stand at 1 health each map, after the game's own~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Green~
-				- Cost: ~Pure Aura 25~
-				- Look: ~A cork lifebuoy on a frayed rope~
-				- Clashes: ~None~
+			{Cork Lifebuoy}
+				- Kind: Cardinal
+				- In-game line: The Basin lives through one more killing blow each map
+				- Numbers: one more last stand at 1 health each map, after the game's own
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Green
+				- Cost: Pure Aura 25
+				- Look: A cork lifebuoy on a frayed rope
+				- Clashes: None
 				- By: Claude /~ After the Spear of Adun's Guardian Shell \
-			{~Signal Flare~}
-				- Kind: ~Cardinal~
-				- In-game line: ~Now and then, a flare strikes the toughest foe near the Basin~
-				- Numbers: ~every 20 seconds, 15 damage to the foe with the most health within 8 tiles of the Basin; +15 damage per stack~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Red~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A spent flare gun~
-				- Clashes: ~None~
+			{Signal Flare}
+				- Kind: Cardinal
+				- In-game line: Now and then, a flare strikes the toughest foe near the Basin
+				- Numbers: every 20 seconds, 15 damage to the foe with the most health within 8 tiles of the Basin; +15 damage per stack
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Red
+				- Cost: Pure Aura 15
+				- Look: A spent flare gun
+				- Clashes: None
 				- By: Claude /~ After the Spear of Adun's Solar Lance. Fires the Aura Gavel Cardinal's bolt \
-			{~Cargo Crate~}
-				- Kind: ~Cardinal~
-				- In-game line: ~{VENDCINT} brings more Cardinals and Trinkets~
-				- Numbers: ~{VENDCINT} offers one more Cardinal or Trinket each break, per stack, at most 6~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~Yes~
-				- Where from: ~Shop~
-				- Colour: ~Yellow~
-				- Cost: ~Pure Aura 20~
-				- Look: ~A slatted cargo crate stencilled THIS SIDE UP~
-				- Clashes: ~None~
+			{Cargo Crate}
+				- Kind: Cardinal
+				- In-game line: {VENDCINT} brings more Cardinals and Trinkets
+				- Numbers: {VENDCINT} offers one more Cardinal or Trinket each break, per stack, at most 6
+				- Lasts: The rest of the campaign
+				- Stacks: Yes
+				- Where from: Shop
+				- Colour: Yellow
+				- Cost: Pure Aura 20
+				- Look: A slatted cargo crate stencilled THIS SIDE UP
+				- Clashes: None
 				- By: Claude /~ After Balatro's Overstock voucher and Slay the Spire's Courier \
-			{~Tin Whistle~}
-				- Kind: ~Cardinal~
-				- In-game line: ~The last foes of each Tide are run down~
-				- Numbers: ~the last 3 foes of each Tide move 30% slower and take 25% more damage~
-				- Lasts: ~The rest of the campaign~
-				- Stacks: ~No~
-				- Where from: ~Shop~
-				- Colour: ~Blue~
-				- Cost: ~Pure Aura 15~
-				- Look: ~A dented tin whistle on a lanyard~
-				- Clashes: ~None~
+			{Tin Whistle}
+				- Kind: Cardinal
+				- In-game line: The last foes of each Tide are run down
+				- Numbers: the last 3 foes of each Tide move 30% slower and take 25% more damage
+				- Lasts: The rest of the campaign
+				- Stacks: No
+				- Where from: Shop
+				- Colour: Blue
+				- Cost: Pure Aura 15
+				- Look: A dented tin whistle on a lanyard
+				- Clashes: None
 				- By: Claude /~ After Hades' Killing Freeze (Demeter) and Risk of Rain 2 marking the last few foes \

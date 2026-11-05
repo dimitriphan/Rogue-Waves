@@ -81,7 +81,7 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 | Name | Id | Role | Template | Cost | Stats | What it does |
 |---|---|---|---|---|---|---|
 | Yarn Stash | `Tower_Spoolstash` | supply | Tower_Smackyhut | free, limit 1 | Health 100 (+50/level), Thread cap 50 (+25/level) | holds the Thread; drop-off point; Thread Heads respawn here |
-| Repurposed Cookie Tin | `Tower_Spooltin` | Towerfighter | Tower_Smackyhut | Red 50 | Health 60 (+25/level), Crafted 4, one every 4 s | stitches Crafted from Stash Thread and sends them to its target spot |
+| Repurposed Cookie Tin | `Tower_Spooltin` | Tower | Tower_Smackyhut | Red 50 | Health 60 (+25/level), Crafted 4, one every 4 s | stitches Crafted from Stash Thread and sends them to its target spot |
 | Thread Head | `Mob_Spoolhead` | unit | Mob_Smackyminer | Red 40, no limit | Health 60, Damage 2, Range 1.5, Attackspeed 0.6, Speed 2.25, carries 20, collects 3 tiles, leash 3, respawn 15 s | guards a spot, collects Thread, carries it home |
 | Pin Cushion | `Tower_Spoolcushion` | defence | Tower_Smackywall | Blue 20 | Health 100 (+40/level), reflect 20% melee, 1 Thread per 25 damage taken | the wall: pricks melee attackers, spins Thread when hit |
 | Loom | `Tower_Spoolloom` | Gatherer | Tower_Smackyhut | Yellow 40 | Health 40 (+20/level), Range 2.5, Damage 1, Attackspeed 0.4 | mines ore in reach, spins 1 Thread every 6 s up to 10 held for pickup |

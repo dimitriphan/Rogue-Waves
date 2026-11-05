@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `DECISIONS_APPLIED_2026-11-05.md` | 2026-11-05 | His answers to the open decisions: each one, what the scope took, and the hand-off for the build thread, art and the balance sweep |
 | `OPEN_DECISIONS_2026-11-05.md` | 2026-11-05 | Every call waiting on Dimitri on one page: 39 questions by theme with Claude's defaults, the scope audit's smaller rows in an appendix |
 | `TESTING_ROUND_3_2026-11-05.md` | 2026-11-05 | PC round, stopped early: self-tests on kit 1.9, the fixes read in game; two-player not run |
 | `CODE_REVIEW_RECHECK_2026-11-05.md` | 2026-11-05 | The 54 bugs checked again on PR #89's base with PC round 3's readings: 18 gone in game, 14 fixed but not yet seen, 20 still there, 2 not bugs; round 3's three open readings explained. Docs only |

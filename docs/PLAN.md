@@ -297,6 +297,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   merges" until the new §2 text is pasted there.
   2026-11-05: every call waiting on Dimitri gathered on one page, 39 questions by theme, each with Claude's default
   (`docs/reports/OPEN_DECISIONS_2026-11-05.md`); answered in its thread, small answers go straight into a PR.
+  2026-11-05: his answers applied (`docs/reports/DECISIONS_APPLIED_2026-11-05.md`): the scope's defaults in 04 and 09-14
+  taken (1,192 tildes removed) and the text answers written; what needs code or art is handed to the queued build
+  thread (B1-B15), art (A1-A4) and the balance sweep (S1-S2). Docs only. His project-files scope copy and the Scope
+  Editor are behind again in 12 files (his word to sync).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -851,6 +855,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/OPEN_DECISIONS_2026-11-05.md` gathers the calls from the code review (§5 B), the scope audit, the quality
   pass, the kit check, the mode polish, the balance reports, testing round 3 and this Part's Open questions: 39
   questions, each with Claude's default, and an appendix of the audit's smaller rows. Docs only.
+- **2026-11-05: his answers applied** (same thread). Scope 04 and 09-14's defaults taken, the text answers written into
+  02, 04, 06-15 and Spool's `DESIGN.md`, the answered [Questions] removed; the hand-off for the build thread, art and the
+  balance sweep in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §3. Docs only.
 
 ### Decisions
 
@@ -1021,6 +1028,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   map list at each load, so a TDS update that adds or drops a map mid-campaign redraws the islands' maps; the rows,
   links, route and retries stay (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §1.4 item 5). Same day, his "sync":
   his project-files scope copy and the Scope Editor brought up to the repository.
+- **2026-11-05: the open decisions answered** (Dimitri, 04:59Z, on `docs/reports/OPEN_DECISIONS_2026-11-05.md`: "10. Cursed
+  should also weaken vessels. 15. Create art for new looks and rename as well. 18. Uloe can share light up to a limit.
+  19. Build all for now. 25. Balance as if you only build one wall, and use recommended for rest. 26. Reduce the amount
+  mined if it is unbalanced. 34. Create art for every missing asset. Use defaults for the rest."). Every answer, and
+  what it needs, in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §1. Among them: the mode polish's nine readings
+  confirmed; MODE-D5 stays; lobby Cardinals lock once a campaign starts; caps of 6 copies and one stock Cardinal kept;
+  Spring Tide and Tidal Mend move to the mode's own effects; a teammate's Uloe Light counts up to 4 a building; Yossele's
+  P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open.
 
 ### Open questions
 
@@ -1041,6 +1056,8 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 11 | The quality pass's seven (`docs/reports/QUALITY_PASSES_2026-11-04.md` "Left for Dimitri"): Cardinal stacking (6 working copies of a pack one, 1 of a stock one, against scope `12`'s no limit), scope `14`'s objective kinds, three scope wording points, Spool's Cookie Tin role, his scope copy | the build's caps stand; nothing changes until he picks |
 | 12 | The code review's calls (`docs/reports/CODE_REVIEW_2026-11-04.md`): §5 B: ULO-3 (do two Uloes share Light?), MODE-C2, C3 and C5 (Spring Tide and Tidal Mend on the mode's own mods, not stock scripts), MODE-D5 (the map's extra foe health without the elite look), YOS-2 (Monument's Cleanse and a stock artifact's trade-off), MODE-D9 (lobby Cardinals in a campaign) | the low-risk batch can be built without them; these wait |
 | 13 | All of the above, and every other call waiting on him, on one page (`docs/reports/OPEN_DECISIONS_2026-11-05.md`): 39 questions by theme | each line's `~default~`; nothing changes for a question he skips |
+
+**2026-11-05: questions 1 and 3-13 above are answered; 2 stays open** (Decisions 2026-11-05, `docs/reports/DECISIONS_APPLIED_2026-11-05.md`); the rows stay for their history.
 
 ### Phase 5 pieces
 
