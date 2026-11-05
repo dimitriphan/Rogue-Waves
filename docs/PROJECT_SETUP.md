@@ -25,7 +25,7 @@ the only repository the project needs.
 (Proposed 2026-11-05 after the Claude Code best-practices page; the coordinator sets it. It replaces the 2026-11-04
 text, which still pointed at `docs/SCOPE_v0.txt`. On 2026-11-04 Dimitri removed "keep chat replies under 150 words".)
 
-Set the project's model to Fable 5.1; Part A's "Model per role" table says when a thread should drop to Opus 5.5.
+Set the project's model to Fable 5.1; the "Model per role" table below says when a thread should drop to Opus 5.5.
 
 ## 3. Project files (upload to the project, never commit)
 
@@ -59,3 +59,21 @@ Upload the DLL first: without it a session can only grep the API dump (`docs/13`
 
 Run `TDS_Mod/Tools/cloud-check/setup.sh` once per container when it first needs a compile check, follow Part A (one
 gate at a time, questions collected for the next gate), and keep Part C current.
+
+## Model per role
+
+(Moved from `docs/PLAN.md` Part A, 2026-11-05.)
+
+Fable 5.1 costs 2.5x Opus 5.5 per token (same 1M context); its edge is judgment on open-ended problems. The plan
+puts the judgment in the coordinator and the volume in the threads, so the models follow that split.
+
+| Role | Model | Why |
+| --- | --- | --- |
+| Coordinator at a gate (Phase 1 go/fallback, packaging, design gates, definition of done) | Fable 5.1 | Few tokens, costly if wrong |
+| Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
+| Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
+| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's 10-map campaign loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
+
+Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
+of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
+outcome and the constraints; the Part D templates stay as written for Opus threads.

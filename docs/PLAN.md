@@ -54,24 +54,13 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > is still working on it. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
 >
-> **End of every session.** Update Part C "Now" (done / next / blocked, three lines), add decisions and open
+> **End of every session.** Update Part C "Now" (done / next / blocked, three lines; fold finished items into
+> "State" and put their detail in "Log" as one dated entry, so "Now" stays under about 4 KB), add decisions and open
 > questions, commit with a message under five lines, push to the working branch.
 
 ### Model per role
 
-Fable 5.1 costs 2.5x Opus 5.5 per token (same 1M context); its edge is judgment on open-ended problems. The plan
-puts the judgment in the coordinator and the volume in the threads, so the models follow that split.
-
-| Role | Model | Why |
-| --- | --- | --- |
-| Coordinator at a gate (Phase 1 go/fallback, packaging, design gates, definition of done) | Fable 5.1 | Few tokens, costly if wrong |
-| Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
-| Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
-| Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's 10-map campaign loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
-
-Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
-of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
-outcome and the constraints; the Part D templates stay as written for Opus threads.
+Which model each role uses, and the escalation rule: `docs/PROJECT_SETUP.md` "Model per role".
 
 Effort per thread (Dimitri, 2026-11-04): `xhigh` for code builds, PC rounds, debugging and engine work; `high` for
 design, reviews and text PRs; `medium` for lookups, syncs and small fixes; `max` only at his word. A quality check
@@ -238,276 +227,42 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **Done (state on 2026-11-04):** Phases 1-2 and Phase 3 Argo. **Built and run on the PC:** Argo 2.0.1, Yossele 0.2.0-dev
-  (Dimitri's play build), Spool 0.1.0-dev and Uloe 0.1.0-dev, all with temporary art (`docs/TEMP_ART.md`, his 35 picks);
-  the mode `RogueWavesMode` 0.1.0-dev (the whole campaign, from the main-menu button to the end screen); the foes part;
-  kit 1.7. The 2026-11-03 build round passed 139/0 with every part on (`docs/reports/BUILD_2026-11-03.md`); the
-  2026-11-04 test round ran the online half with a real second player, ten maps to the win and every vessel's self-test
-  with no failure, and the six parts boot as one pack (`docs/reports/TEST_ROUND_2026-11-04.md`). **Designed, not built**
-  (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
-  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`);
-  since 2026-11-05 he has taken the defaults and all of these are built but Spool's (parts 1-12 below).
-  Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
-  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion; his picks wired 2026-11-05 (below). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
-  2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
-  code read against the base game's for what could be simpler: ten findings, nothing changed, each waits for his word
-  (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`). 2026-11-04: Vessel Cardinals are now **Trinkets** and Team Cardinals
-  just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC). 2026-11-04: the
-  repository no longer presents the mods from before the scope: the README now summarises Rogue Waves, and the maps, rules,
-  tool notes and the pack parts' comments drop `ModProjects` and the earlier vessels; the kit, dated reports, this Log, the
-  scope and every path a script uses keep them (PR body lists what stayed and why). 2026-11-04: the kit and the
-  resources read against the repository: 35 stale lines fixed, no code changed (`docs/reports/KIT_CHECK_2026-11-04.md`). 2026-11-04: the code simplification
-  built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
-  gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
-  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4. 2026-11-05: `CLAUDE.md` rewritten to the
-  Claude Code best-practices page: the checks to run, which skill to use when, the rules the code doesn't show; build
-  state left out of it, since this Part holds it. `.claude/settings.json` now denies merging and pushing to the base
-  branch; effort per thread is in Part A; new project instructions in `docs/PROJECT_SETUP.md` §2.
-  2026-11-04: one quality pass over the whole repository, paused at his word before a second: 127 issues, 120 fixed
-  in docs and comments (mostly "not built / not run / online left" lines), 7 for him
-  (`docs/reports/QUALITY_PASSES_2026-11-04.md`); the cloud compile break it found after PR #82 is repaired by PR #84.
-  2026-11-04: every line of the scope read against the code: 41 mismatches, 22 of them on Claude's defaults, each with
-  who should yield; nothing changed, each waits for his word (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2).
-  2026-11-05: quality checks 4-7 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md`): save and load fuzz tests, seven
-  checks as self-test code (`RogueWavesMode/Code/98_SaveFuzz.cs`, the mode's self-test should read 155) and run here on a
-  stand-in save (`Tools/cloud-check/save_fuzz.py`, 7/7); three damaged-save bugs guarded (a route off the chart stranded
-  the boat after Continue, a huge player count froze it, empty ids loaded); compiled, not run on the PC. The Scope
-  Editor holds no edits and, like his project-files copy, is behind the repository in 7 files (his word to sync); art
-  needed nothing; four merged PRs got their missing Log entries. Still open from 2026-11-04, found missing here: the
-  code review's 54 bugs are unfixed (`docs/reports/CODE_REVIEW_2026-11-04.md` §5 batches, §6 PC list); PR #82's test
-  round stopped before #80's test list (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4), and the PC's `TDS_Mod` is
-  older than PR #80, so the next PC round brings it up to the base first. Then, at his word: his project-files scope
-  copy (all 17 files) and the Scope Editor (version 7) synced to the repository; his PC's copy waits for a PC round. The
-  chart's maps keep following the base game's map list (Decisions 2026-11-05).
-  2026-11-05: the code review's bugs fixed, 32 of 54 (every confirmed one that needs neither his word nor a PC fact,
-  and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
-  look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
-  2026-11-05: PC testing round 3, stopped early at the usage limit: on PR #89's base every self-test passes and the fixes read hold in game; the two-player list did not run (`docs/reports/TESTING_ROUND_3_2026-11-05.md`).
-  2026-11-05: the 54 bugs checked again on that base with round 3's readings (`docs/reports/CODE_REVIEW_RECHECK_2026-11-05.md`):
-  18 fixed and gone in game, 14 fixed but not yet seen (the two-player ones, D8, A2, D10, ARG-3 and four guards), 20 still
-  there for his word, a PC fact or a sighting, MODE-C12 and ARG-1 (Dagger, Spear) not bugs; round 3's open readings explained.
-  2026-11-05: Spool is sage green, not purple, at his word (the purple read too close to the foes' magenta; a yellow
-  and a mint tried first, `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`): its frames (`SpoolCharacter.P`), the
-  UI colour, the Thread Head and Crafted sheets, the thread and the models' felt (`concept-tools/temp_art/spool_sage.py`).
-  Compiled here (release and self-test 0 errors, editor clean), not run on the PC: the next Spool round looks at it
-  beside a Hardened foe and on grass.
-  2026-11-05: Claude now merges PRs itself, at his word (Part A "Merging"; `CLAUDE.md` and `docs/PROJECT_SETUP.md` §2
-  follow). #91, #92 and #90 merged through the GitHub MCP `merge_pull_request` tool, each after the base was merged in
-  and its cloud-check passed. `.claude/settings.json` still lists the merge tools under "deny" (Claude may not edit
-  its own permissions; the deny did not stop the MCP tool), and his project instructions still say "only Dimitri
-  merges" until the new §2 text is pasted there.
-  2026-11-05: every call waiting on Dimitri gathered on one page, 39 questions by theme, each with Claude's default
-  (`docs/reports/OPEN_DECISIONS_2026-11-05.md`); answered in its thread, small answers go straight into a PR.
-  2026-11-05: his answers applied (`docs/reports/DECISIONS_APPLIED_2026-11-05.md`): the scope's defaults in 04 and 09-14
-  taken (1,192 tildes removed) and the text answers written; what needs code or art is handed to the queued build
-  thread (B1-B15), art (A1-A4) and the balance sweep (S1-S2). Docs only. His project-files scope copy and the Scope
-  Editor are behind again in 12 files (his word to sync).
-  2026-11-05: synced at his word (project-files scope copy, Scope Editor version 8); Open question 2, Spool's
-  defaults, spelled out as S1-S17 for his answer (`docs/reports/SPOOL_DEFAULTS_2026-11-05.md`).
-  2026-11-05: Spool's defaults answered ("Use all defaults"): scope 08's defaults taken except the four numbers the
-  balance sweep owns; hand-off B16-B19 in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §4.
-  2026-11-05: the scope read against the code a second time (`docs/reports/SCOPE_CODE_AUDIT_2026-11-05.md`): 369
-  checkable rows, 269 MATCH, 93 on the queued lists, 7 unbuilt by design, no new behaviour mismatch; of the first audit's
-  41 rows 18 are resolved and 23 queued. Ten new items: N1-N4 fixed in the scope text (Spool sage green, the picked
-  Cordyfriend, self-test counts, 16's tildes and 15's weather line), N5-N10 for the build and balance threads (B5
-  half built, 47 Direction/Trinket/Cardinal sheets, pairs, B12 is code, the sweep's tilde lines, Leads to). New tool
-  `TDS_Mod/Tools/cloud-check/scope_upgrades.py`. Docs only. His project-files scope copy and the Scope Editor are
-  behind in six files (02, 07, 08, 09, 15, 16; his word to sync).
-  2026-11-05: the jittering button icons fixed (pitfall #156, kit 1.10): every pack icon the game drew stretched (the
-  menu's 32 px crest in Play's 48-unit box, the 12 px command icons and card pictures in 16-unit boxes) now draws a whole
-  number of screen pixels per art pixel: command icons are 16 px boxes (all four vessels and the mode's SHOP, FUND
-  TRANSFER, OBJECTIVE, weathers), the crest is sized to 32 units, and every card's picture is crisped where the dialog is
-  placed; card art uses the 12 px crest and 24 px numbers; the
-  sea chart's weather marks keep their size. Compiled here, not yet seen in game: his eye on the menu, a
-  dialog sliding in, and the HUD's buttons.
-  2026-11-05: the code review at max, at his word (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): every part read
-  against the engine again by a first pass and seven reviewers, 58 findings none of which were known; 35 fixed (the
-  F-key fix that never armed, kit 1.11 and pitfall #157; a skipped staging map replayed forever; campaign Cardinals left
-  free in the lobby; Voice in a Bottle reaching the Bouthouse; 16 self-test checks that couldn't fail), 23 left: three
-  for his word (§5.1), the rest for a PC fact. Pitfall #158 (first-frame looks lost). Compiled here (every part, release
-  and test builds, 0 errors; editors clean), not run on the PC: the next round runs its §6.
-  2026-11-05: the mode's balance reviewed against the base game at his word ("with stacking cardinals and directions,
-  the difficulty should be higher than base game"; `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`): as built every
-  map asks less than a Downpour run and the gap widens (carried power about x3.5 by map 10, foe pressure x1.5); the
-  proposals F1-F5, X1, C1 and P1 wait for his word (scope `04` and `06` numbers are his); the balance simulator sweep
-  thread starts from set S2 with `docs/reports/mode_balance_2026-11-05/`. Simulated here, no code changed.
-  2026-11-05: PC testing round 3 finished at his "Continue": every fix read in game holds, online too (D4, D7, B1-B4, D8, A2, D10,
-  ARG-3); kit 1.9's self-tests pass. Live and unfixed: Spring Tide by a Fie wall halves hits (R3, C3), the part takes a sub-core for
-  the Basin on Artrio (A3). New: a Crafted with no TARGET stands inside its Tin (`docs/reports/TESTING_ROUND_3_2026-11-05.md` §7).
-  The PC holds this base, with release builds on.
-  2026-11-05: the build of the unbuilt candidates, part 1 (the decisions' code items, `DECISIONS_APPLIED_2026-11-05.md`
-  §3-§4, and the max review's three calls at their defaults): B1 the map vote held when the party first stays, and the
-  host's ask on the boat when none was held; B2 the lobby's Cardinals locked to the campaign's (MODE-D9, MODEB-4
-  closed); B3-B4 the shelf's caps and Trinket slot, one roll a break, Trinkets on the vessel's panel, "+N Cardinals" on the run line; B5
-  Dazzling at 15% with Illuminate's 3 s linger; B6 the pack's foe modifiers are elite for Spool's Thread; B7 Spring Tide
-  and Tidal Mend on the mode's own effects (pitfall #159's fix); B9 Monument's Cleanse leaves a building's own
-  trade-offs; B12 Salt Sting's line; B13 Argo's slows renew, bosses never held; B15 Tougher for Boutbro (MODEB-8), the
-  Compost Bin III line, the meteor's 12 + 3 x map hits; B16 no stock MOVE on the Thread Head; the Stitched's click no
-  longer goes to its TARGET pin (pitfall #162); MODEA-3 the host keeps the boat's lead; YOS-3 fruit for players only;
-  MODE-A3 the Basin is the main core on Artrio; MODEB-7 no VENDCINT mid-Tide. Pitfalls #162-#163. Compiled here (every
-  part, release and test builds, 0 errors; editors clean), not run on the PC; the PC list is in the PR.
-  2026-11-05, part 2: Argo's review of 2026-11-04 built (scope `09`, `ARGO_REVIEW_2026-11-04.md` §5, all fourteen):
-  Kelp Bed and Trench pin, the Scatter's +100% on a pinned foe, Wide Bore, Double Barrel's three, Abyss, Trench, Gusher a
-  Fathom, Mantle Tap's speed and 20 s quake, Yellow prices for the Drill's control path, the Base Blue 20 + Yellow 15.
-  Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
-  2026-11-05, part 3: Uloe's 24 upgrades built (scope `10`, `ULOE_UPGRADES_2026-11-04.md` §3 and §6), eight a building
-  with every Leads to (N10); a building takes at most 4 Light from teammates (B10, decision 18), and AIM, the default aim
-  and Photon visits keep to the owner's buildings (ULO-3); Supernova's SURGE once a Tide and Colour Filter's COLOUR are
-  one-click buttons. Self-test section 8b. Compiled here (release, self-test and review builds, 0 errors), not run on
-  the PC.
-  2026-11-05, part 4: Yossele's Wood Wide Web built (scope `07`, `UPGRADE_GAPS_2026-11-04.md` Y1), and the Shift
-  Directions rename the building's panel (B8, decision 15): Dandelion Sapling, Primordial Mushboom, Sewing Machine, by a
-  skin whose entry's Displayname is the panel's title (pitfall #164); the models wait for A1. Compiled here (release, self-test and
-  review builds, 0 errors), not run on the PC.
-  2026-11-05, part 5: Argo's and Yossele's new Directions built (scope `11`, B11): Chum Bucket and Pressure Gauge for Argo;
-  Cutting Jar, Sap Bucket, Creeping Ivy, Deep Breath and Fairy Ring for Yossele, each with the sheet's numbers and its
-  self-test lines (Argo after Deep Current, Yossele section 12c). Deep Breath's 2 s rest counts from the laser's reload,
-  since Yossele fires every 2 s. Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
-  2026-11-05, part 6: Spool's new Directions built (scope `11`, B11): Double Needle, Button Jar, Pattern Book, Merit
-  Badge and Odd Socks, with the sheet's numbers and self-test section 10c; Button Jar's smaller look waits for the art.
-  Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
-  2026-11-05, part 7: the Directions any vessel can take built (scope `11` (Any), B11, audit N7): Wound Spring, Fine
-  Sieve, Spare Hands, Galley Kettle, Chain Shot, Salt Barrel, Fog Horn, Clam Shell, Notched Oar, Lamp Oil, Fish Hook,
-  Spare Compass (with its once-a-map redraw), Magpie Nest, and the Duos Fire Ship and Tide Pool, offered only to a player
-  holding both; Wound Spring and Spring Tide are a pair. In `RogueWavesMode/Code/22_AnyDirections.cs`, self-test part
-  "any" of the gaps build. Compiled here (release and test builds, 0 errors), not run on the PC.
-  2026-11-05, part 8: the base vessels' Directions no held stat carries built (scope `11`): Mason's Trowel, Snow Shovel,
-  Worm Tin, Open Sign, Long Leash, in `RogueWavesMode/Code/23_BaseDirections.cs`, self-test part "base" of the gaps
-  build. Compiled here, not run on the PC.
-  2026-11-05, part 9: Claude's Trinkets and Cardinals built (scope `12`, B11): Brass Spyglass, Gutting Knife, Oil Can,
-  Tar Bucket, Rubber Duck, Spare Plank, Punch Card and Pearl Oyster (a pair), Bottled Storm, Oilskin Coat, Gull
-  Feather; the Cardinals Cork Lifebuoy, Signal Flare, Cargo Crate and Tin Whistle. In
-  `RogueWavesMode/Code/24_Trinkets.cs`, self-test part "trinkets" of the gaps build; their 15 icons wait for the art.
-  Compiled here, not run on the PC.
-  2026-11-05, part 10: the 47 icons of the Directions, Trinkets and Cardinals built in parts 5-9 (A2), temporary, 12 x 12
-  from their Look lines (`concept-tools/temp_art/b11_icons.py`), and the art review in `docs/STYLE.md` with its
-  check script (`concept-tools/temp_art/art_check.py`: 0 problems on all 47). Not yet seen in game.
-  2026-11-05, part 11: the models and the rest of the missing art (A1, A3, A4), temporary: the three Shift looks
-  (`Yossele_Dandelionsapling`, `Yossele_Mushboom`, `Spool_Sewingmachine`), a look for each of Uloe's 24 new upgrades,
-  Wood Wide Web's, Button Jar's small Stitched and Dart (a `Small` skin), and the five objectives' icons on the Board's
-  card and the DONE popup (`concept-tools/temp_art/objective_icons.py`). The meteor node keeps a stock ore's look: a
-  white crystal needs a model the mode part doesn't carry, and its boot log now names what that look is made of.
-  Compiled and rendered here, not run on the PC.
-  2026-11-05, part 12: `/simplify` on parts 1-11, no number or behaviour changed: kit 1.12 (`ModKitUtil.SlowOn`,
-  `Auras`/`Purse`/`Gain`/`Give`, `ModKitCombat.SetMulti`, `Keep` on Health), the mode's one tower list a frame, shared
-  rest-then-mend, kept Direction parses, and the vessel parts' single records. Also seven behaviour questions for the next
-  code review, the leftovers, his readings and the next PC round's list: `docs/reports/BUILD_UNBUILT_2026-11-05.md`
-  (the thread's closing report). Compiled here (every part, every test switch, 0 errors; the two-PC build fails here as
-  always), not run on the PC.
-  2026-11-05: the text audit, Dimitri's queued order (`docs/reports/TEXT_AUDIT_2026-11-05.md`): every player-facing
-  string and the living docs read for spelling, grammar, the names, stale facts and the clean rule. Seven game lines
-  fixed, five with their scope lines (Rising Water's Tide, Dazzling's Illuminates, Vampire Dentures' grammar, "per hit",
-  "farther", Spool's mend line, Argo's Mods-menu text); about 40 scope and doc lines (the F-key "pass" of 2026-11-04 ran
-  with the fix unarmed: scope `03`, here, `RESEARCH_GAPS.md`, kit `docs/15`; stale "not built" and "passes in game"
-  lines; typos). Seven calls for him in its §4 (the meteor's line, Long Line named twice, the leave vote's line, Depth's
-  unlock, numbers in Notched Oar, British or American spelling, the weather's pay wording for the sweep). No number
-  changed. Compiled here (Argo, Spool, the mode and the foes, every test switch, 0 errors; editors clean), not run on
-  the PC. His project-files scope copy and the Scope Editor are behind in 00, 02-09 and 11-13 too (his word to sync).
-  2026-11-05: every call waiting on Dimitri after PR #115 on one page, at his word (`docs/reports/OPEN_DECISIONS_2026-11-05b.md`):
-  14 numbered items with Claude's recommendation and what each blocks (the build's 15 readings and 7 behaviour
-  questions, Yossele's ~90 scope `07` defaults, the last defaults and built `! NEEDS !` lines, five wording calls, the
-  meteor's crystal, Yossele's final sheet, when to run the next PC round, the sync, `.claude/settings.json`). Spring
-  Tide by a Fie wall is not a call: B7 in PR #103 rebuilt it, and the PC still has to see it. Docs only, no compile.
-  2026-11-05 16:04Z, his answer: "Default for all, and I give permission for 12". Applied here: Yossele's 95 scope `07`
-  defaults, 03's names, 06's rules, 10's sharing limit and 12's shop list are his; the NEEDS lines in 11, 12 and 14
-  cleared; Depth's notes in 04 and 05. Handed on (the report's end): items 2, 5, 6 and 9 to a code thread, 10 and 11 to
-  art, the next PC round (his OK) right after the balance sweep, then the sync and 04's NEEDS line from this thread;
-  `.claude/settings.json` is his edit. Docs only, no compile.
-  2026-11-05: the weather test and a map's lighting, at his ask ("Test the weather effect. Are we able to drastically
-  alter the lighting of levels to include features like fog?"; `docs/reports/LIGHTING_2026-11-05.md`): the weather's
-  code is as it passed on the PC (156/0 on `ecd1991`), so its test is the mode's self-test again on the current base,
-  plus his eye on a flooded map. Lighting: yes; fog, the ambient colours, the sun and any of the 55 stock grades can
-  change a running map on every machine (kit 1.13 `ModKitLight`, kit `docs/16` §7.1, pitfall #167); a grade of our own
-  needs a Unity-built profile, and drifting fog banks would be new art. The gaps build's `light` part shows each look in
-  pictures. Compiled here (every part, every test switch, 0 errors); run on the PC since (the entry below); whether a
-  look ships is §5.
-  2026-11-05: the art of decisions 10 and 11 (`OPEN_DECISIONS_2026-11-05b.md`, his "default for all"). The mode part has
-  a model library (`Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs` into `RWAssets_Library/Models`, lit with a
-  copy of the game's "General Tower" material by `RWModels`, `Code/25_Models.cs`), and Mind the Meteor's node wears its
-  first model, a temporary white crystal on a scorched fallen stone (`RW_Meteor`; the line stays; the gaps self-test
-  checks it). Yossele's final sheets drawn by Claude from his reshade and the temporary sheets, for him to edit
-  (`ModSource/Yossele/Art/README.md`, `.aseprite` in `Art/aseprite/`): idle and walk, attack, Fertilize, fall, landing;
-  the left-heading facings were plain mirrors with the shade on the left, now on the right like his reshade. Scope
-  `07`'s sprite NEEDS line stays until he takes them. Compiled here (the mode's release, self-test and gaps builds, 0
-  errors; editors clean), `art_check.py` 0 problems, model rendered; not built in Unity, not run on the PC: the next
-  round looks at the meteor on a map (size, the hit flash, the boot line) and Yossele walking left.
-  2026-11-05: the code items of his "default for all" on the second decisions page
-  (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`): kit 1.14 (`Front` keeps two parts' hit handlers in a steady order,
-  pitfall #168), Uloe's Searchlight slow keeps the 10% floor, Argo's Cleave is no longer his own hit for Notched Oar, Fish
-  Hook and Gutting Knife, Tar Bucket uses Mason's Trowel's hook, Blurry Photo copies are found by their run-time tags
-  (pitfall #169), the Cardinals' paired lookups read the panel's ids, Boutman's Direction is Spare Reel, the leave vote's
-  new line, "towards" in Argo's Reel. `HasMinions` was right (all nine vessels have minions). Compiled here (every part,
-  release and self-test, 0 errors), not run on the PC: its §4 joins the next round's list.
-  2026-11-05: the weather and lighting PC round (`Light_round1`, his "Run it now", code `fb208b8`, kit 1.13;
-  `docs/reports/LIGHTING_2026-11-05.md` §6). The mode's self-test with every part on: 157 pass, 2 fail; every weather
-  check passes (W0-W3, 12 of 12); the two fails are Spring Tide's Tide gain as B7 rebuilt it, run for the first time
-  (`0 -> 0.0375` where 10 is asked), handed on for a thread of its own. The gaps build's `light` part: 23/0 and 16
-  pictures: real depth fog on units and buildings alike (the UI stays sharp over it), a look darkens the ground but not
-  the sky (night reads as dusk; only a borrowed grade changes the sky), lamps are drawn, nothing measurable per frame;
-  the 55 stock groups' numbers in `docs/reports/lighting_2026-11-05/light_groups.txt`. Pitfall #170 (the HUD hides
-  after 10 s without input). His release builds, save and settings are back as they were; Unity's project holds
-  `fb208b8`. Whether a look ships (§5) goes to the open-decisions page with the pictures.
-  2026-11-05: Spring Tide's Tide gain, the round's two fails, traced to the test's tower, not B7's effect
-  (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`, first entry; pitfall #171): the flow built its archer
-  right after buying every stock Cardinal, so it holds Frail Titan and is Paper Tower's paper tower, and both readings fit
-  a max that sums below 0 (read as 0) and a +10 Add scaled by 0.01; fitted, not yet confirmed. The flow now measures on
-  a plain archer placed before the map's first Cardinal (the max and Spring Tide's own modifier +10 at Tide 1, and again
-  at Tide 2, a new line) and logs the other archer's Health parts. No game behaviour changed. Compiled here (the mode's
-  release, self-test, with gaps and with shots: 0 errors), not run on the PC. **PC round 4:** the mode's self-test with
-  every part on shows the three `Spring Tide` lines passing, and the two `INFO Spring Tide: the archer built after the
-  Cardinals` lines list Paper Tower's and Frail Titan's effects with a Multi near 0.01 (the cause confirmed).
-  2026-11-05: the balance simulator sweep, Dimitri's queued order on his "Starting set S2, all proposals"
-  (`docs/reports/BALANCE_SWEEP_2026-11-05.md`, runs in `balance_sweep_2026-11-05/`). The mode: map k's Tide 15 plays
-  the base game's row 15, 18, 20, 21, 21, then 24 to map 10 (F1); foe health one Pmulti (F2) of x2.6 on map 1 (F3),
-  +0.08 a map, +2% for each Cardinal, Trinket copy and Direction rank held (F5); modifiers from map 2 (F4); +50% foes
-  a player (X1); prices +3 a held item (C1, shown right on every machine by a fourth None command, `RW_Price`);
-  objectives from the break before Tide 3 (P1). Measured (16 seeds): D 0.8 on map 1, 1.0 on map 3, about 1.5 on maps
-  8-10 (mid case), the review's target; Yossele follows Smacky, Spool on one Cushion can't hold the mode's maps until
-  a Stitched blocks (its 22 upgrades), and Argo looks easier than its base game (a PC check). Spool on one Pin Cushion
-  (answers 25, 26): Stitched 5, Dart 5.5, 6 Crafted a Tin, Range 3.5 kept, the Loom 0.3 a second, the Cushion's "Build
-  it first" line (P4); Uloe's Flood Light 0.3 with it. Spring Tide by a Fie wall is code, not a number: B7's rebuild,
-  whose weather-round fails were the test's tower (the entry above). The weather's pay line is fixed. Scope `04`,
-  `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
-  but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins PC
-  round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
-  2026-11-05: whether a lighting look ships (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`, the lighting round's §5 call).
-  Dimitri picked **a look per weather** (17:45Z): Rising Water under light mist, Quickening Current under storm grey,
-  Nesting Ground at dusk, calm maps on their own light. Not built: a code thread of the mode builds it from the page's
-  hand-off (a table and one `ModKitLight` call from the map's weather, a self-test check), then a PC round shows it
-  with foes on screen. Fog Bank (heavy sea fog) and a mood ramp stay ideas. Docs only.
-  2026-11-05: the scope sync after the sweep, his "sync" (item 13 of `docs/reports/OPEN_DECISIONS_2026-11-05b.md`)
-  and item 4's default for scope `04`: the per-campaign NEEDS line is gone, and the modifier schedule that answers it
-  (2 of the 4 new modifiers and 2 stock elites a campaign, from map 2, one more every second map) is his, without
-  tildes. The sweep's tuned numbers in `04`, `08`, `10` and `12` keep their tildes, as the sweep's report §7-8
-  leaves them, until he takes them (`06`'s and `14`'s lines were written as built). Scope `02` logs it. The Scope Editor and his project-files copy are refreshed
-  from this base (his word asked in the thread before the copy is overwritten). Docs only, no compile; nothing ran on the PC.
-- **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
-  in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
-- **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
-- **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
-  tuft and needle, Rising Water, the picked minions of 2026-11-05 with Uloe's Photon). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
-  0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
-  (its one version, `0.1.0`, replaces the dev builds' `0.1.0-dev`). Phase 5's pieces are built and passed in game
-  ahead of Release 1 (kit 1.7, the main-menu button, the in-map vote and the mode's checks K0, CH, K1, P1, T0-T6, H1:
-  `docs/reports/BUILD_2026-11-03.md`, "Phase 5 pieces" below); Dimitri confirms the polish's readings
-  (`docs/reports/MODE_POLISH_2026-11-03.md` §2). By hand:
-  the F key on a real Boutman death again (its 2026-11-04 pass ran with the fix unarmed; kit 1.11 arms it, `docs/reports/CODE_REVIEW_MAX_2026-11-05.md` P1-1) and a person's own press, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
-  kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
-  balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
-  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass
-  (the 2026-11-03 balance study proposes no change), and the Compost Bin numbers in scope `11` (the chance-based upgrades passed by their rates, `docs/reports/TEST_ROUND_2026-11-04.md`). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
-  `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
-  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
-  probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
-  N8-N11 stay read only until a round needs them (never N12).
-- **Release 1 state (2026-10-28):** the pack builds and boots (round 10); what's left is his play test of the new play
-  build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
-- **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
-  (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
-  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
-  balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
-  squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (#171 a tower's max Health under Frail Titan and Paper Tower, Spring Tide's test; #170 the HUD's idle hide, `LIGHTING_2026-11-05.md` §6; #168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **State (2026-11-05, base `7de9305`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
+  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps his
+  shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen), the foes part; kit 1.14. Last run on the PC:
+  testing round 3 (kit 1.9, `docs/reports/TESTING_ROUND_3_2026-11-05.md`) and `Light_round1` (`fb208b8`, kit 1.13,
+  `docs/reports/LIGHTING_2026-11-05.md` §6). Built since, compiled here, not run on the PC: the unbuilt candidates
+  (`BUILD_UNBUILT_2026-11-05.md`), the max review's fixes, the decided code fixes, the balance sweep, Spring Tide's test,
+  the meteor's crystal and Yossele's final sheets. Every scope default is his except the sweep's tuned numbers in `04`,
+  `08`, `10`, `12` (tildes until after PC round 4); his project-files scope copy and the Scope Editor equal `7de9305`.
+  Dated history: "Log" (newest last); reports: `docs/reports/README.md`.
+- **Next, in order:** PC round 4 (his OK 16:04Z; lists: `BUILD_UNBUILT_2026-11-05.md` §5, `CODE_REVIEW_MAX_2026-11-05.md`
+  §6, `BALANCE_SWEEP_2026-11-05.md` §8, `DECIDED_CODE_FIXES_2026-11-05.md` §4; Spring Tide's three lines pass and its two
+  `INFO` lines show a Multi near 0.01, `RogueWavesMode/IMPLEMENTATION_NOTES.md` first entry; the meteor on a map and
+  Yossele walking left; it also syncs the PC's scope copy), then scope `07`'s sprite NEEDS line cleared in a docs PR;
+  the per-weather lighting look (`OPEN_DECISIONS_2026-11-05c.md`: Rising Water light mist, Quickening Current storm grey,
+  Nesting Ground dusk, calm maps unchanged; Fog Bank and a mood ramp stay ideas) and its PC round with foes on screen;
+  then Spool's 22 upgrades and UNTHREAD (scope `08`, B19).
+- **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
+  (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
+  (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
+  button's and chart's look, a flooded map, the chart, VENDCINT, Uloe and the campaign (`BUILD_2026-11-03.md` §6), the
+  polish's readings (`MODE_POLISH_2026-11-03.md` §2); his `.claude/settings.json` edit (item 14,
+  `OPEN_DECISIONS_2026-11-05b.md`).
+- **Online evening:** only what loopback can't be: Steam's Join Game and lobby, a real network's delay and drop, a
+  person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5, `docs/RESEARCH_GAPS.md` §E, kit `docs/19` §8). Wherever
+  "one online evening" appears, read that.
+- **Release 1, Yossele alone** (Part B; `docs/reports/PRIORITIES_2026-10-28.md`): the pack builds and boots; left: his
+  play test of 0.2.0-dev (`YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his look by eye and sprites (final sheets drawn,
+  `ModSource/Yossele/Art/README.md`), his balance pass, the Compost Bin numbers in scope `11`, one online evening, then
+  the one-part pack build (version `0.1.0`) and his "ship". Left on Argo: his balance pass (FLOOD's key, `GiveUpAfter`,
+  Salt Sting's no-Brine number, `MISTAKE_CHECK_2026-10-28.md` B2-X1/X6) and whether it plays easier than its base
+  (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
+  his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
+- **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (which PR used which pitfall numbers: the last Log entry).
+- **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
+  entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1038,6 +793,279 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: his answers applied** (same thread). Scope 04 and 09-14's defaults taken, the text answers written into
   02, 04, 06-15 and Spool's `DESIGN.md`, the answered [Questions] removed; the hand-off for the build thread, art and the
   balance sweep in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §3. Docs only.
+
+- **2026-11-04 to 2026-11-05: the "Now" entries of those days** (moved here verbatim from "Now" on 2026-11-05 to keep
+  "Now" short; some repeat entries above). The old "Now" read:
+  - **Done (state on 2026-11-04):** Phases 1-2 and Phase 3 Argo. **Built and run on the PC:** Argo 2.0.1, Yossele 0.2.0-dev
+  (Dimitri's play build), Spool 0.1.0-dev and Uloe 0.1.0-dev, all with temporary art (`docs/TEMP_ART.md`, his 35 picks);
+  the mode `RogueWavesMode` 0.1.0-dev (the whole campaign, from the main-menu button to the end screen); the foes part;
+  kit 1.7. The 2026-11-03 build round passed 139/0 with every part on (`docs/reports/BUILD_2026-11-03.md`); the
+  2026-11-04 test round ran the online half with a real second player, ten maps to the win and every vessel's self-test
+  with no failure, and the six parts boot as one pack (`docs/reports/TEST_ROUND_2026-11-04.md`). **Designed, not built**
+  (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
+  review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`);
+  since 2026-11-05 he has taken the defaults and all of these are built but Spool's (parts 1-12 below).
+  Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
+  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion; his picks wired 2026-11-05 (below). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
+  2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
+  code read against the base game's for what could be simpler: ten findings, nothing changed, each waits for his word
+  (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`). 2026-11-04: Vessel Cardinals are now **Trinkets** and Team Cardinals
+  just **Cardinals**, in the scope, the docs and the mode's shop (Decisions; compiled, not run on the PC). 2026-11-04: the
+  repository no longer presents the mods from before the scope: the README now summarises Rogue Waves, and the maps, rules,
+  tool notes and the pack parts' comments drop `ModProjects` and the earlier vessels; the kit, dated reports, this Log, the
+  scope and every path a script uses keep them (PR body lists what stayed and why). 2026-11-04: the kit and the
+  resources read against the repository: 35 stale lines fixed, no code changed (`docs/reports/KIT_CHECK_2026-11-04.md`). 2026-11-04: the code simplification
+  built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
+  gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
+  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4. 2026-11-05: `CLAUDE.md` rewritten to the
+  Claude Code best-practices page: the checks to run, which skill to use when, the rules the code doesn't show; build
+  state left out of it, since this Part holds it. `.claude/settings.json` now denies merging and pushing to the base
+  branch; effort per thread is in Part A; new project instructions in `docs/PROJECT_SETUP.md` §2.
+  2026-11-04: one quality pass over the whole repository, paused at his word before a second: 127 issues, 120 fixed
+  in docs and comments (mostly "not built / not run / online left" lines), 7 for him
+  (`docs/reports/QUALITY_PASSES_2026-11-04.md`); the cloud compile break it found after PR #82 is repaired by PR #84.
+  2026-11-04: every line of the scope read against the code: 41 mismatches, 22 of them on Claude's defaults, each with
+  who should yield; nothing changed, each waits for his word (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2).
+  2026-11-05: quality checks 4-7 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md`): save and load fuzz tests, seven
+  checks as self-test code (`RogueWavesMode/Code/98_SaveFuzz.cs`, the mode's self-test should read 155) and run here on a
+  stand-in save (`Tools/cloud-check/save_fuzz.py`, 7/7); three damaged-save bugs guarded (a route off the chart stranded
+  the boat after Continue, a huge player count froze it, empty ids loaded); compiled, not run on the PC. The Scope
+  Editor holds no edits and, like his project-files copy, is behind the repository in 7 files (his word to sync); art
+  needed nothing; four merged PRs got their missing Log entries. Still open from 2026-11-04, found missing here: the
+  code review's 54 bugs are unfixed (`docs/reports/CODE_REVIEW_2026-11-04.md` §5 batches, §6 PC list); PR #82's test
+  round stopped before #80's test list (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4), and the PC's `TDS_Mod` is
+  older than PR #80, so the next PC round brings it up to the base first. Then, at his word: his project-files scope
+  copy (all 17 files) and the Scope Editor (version 7) synced to the repository; his PC's copy waits for a PC round. The
+  chart's maps keep following the base game's map list (Decisions 2026-11-05).
+  2026-11-05: the code review's bugs fixed, 32 of 54 (every confirmed one that needs neither his word nor a PC fact,
+  and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
+  look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
+  2026-11-05: PC testing round 3, stopped early at the usage limit: on PR #89's base every self-test passes and the fixes read hold in game; the two-player list did not run (`docs/reports/TESTING_ROUND_3_2026-11-05.md`).
+  2026-11-05: the 54 bugs checked again on that base with round 3's readings (`docs/reports/CODE_REVIEW_RECHECK_2026-11-05.md`):
+  18 fixed and gone in game, 14 fixed but not yet seen (the two-player ones, D8, A2, D10, ARG-3 and four guards), 20 still
+  there for his word, a PC fact or a sighting, MODE-C12 and ARG-1 (Dagger, Spear) not bugs; round 3's open readings explained.
+  2026-11-05: Spool is sage green, not purple, at his word (the purple read too close to the foes' magenta; a yellow
+  and a mint tried first, `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`): its frames (`SpoolCharacter.P`), the
+  UI colour, the Thread Head and Crafted sheets, the thread and the models' felt (`concept-tools/temp_art/spool_sage.py`).
+  Compiled here (release and self-test 0 errors, editor clean), not run on the PC: the next Spool round looks at it
+  beside a Hardened foe and on grass.
+  2026-11-05: Claude now merges PRs itself, at his word (Part A "Merging"; `CLAUDE.md` and `docs/PROJECT_SETUP.md` §2
+  follow). #91, #92 and #90 merged through the GitHub MCP `merge_pull_request` tool, each after the base was merged in
+  and its cloud-check passed. `.claude/settings.json` still lists the merge tools under "deny" (Claude may not edit
+  its own permissions; the deny did not stop the MCP tool), and his project instructions still say "only Dimitri
+  merges" until the new §2 text is pasted there.
+  2026-11-05: every call waiting on Dimitri gathered on one page, 39 questions by theme, each with Claude's default
+  (`docs/reports/OPEN_DECISIONS_2026-11-05.md`); answered in its thread, small answers go straight into a PR.
+  2026-11-05: his answers applied (`docs/reports/DECISIONS_APPLIED_2026-11-05.md`): the scope's defaults in 04 and 09-14
+  taken (1,192 tildes removed) and the text answers written; what needs code or art is handed to the queued build
+  thread (B1-B15), art (A1-A4) and the balance sweep (S1-S2). Docs only. His project-files scope copy and the Scope
+  Editor are behind again in 12 files (his word to sync).
+  2026-11-05: synced at his word (project-files scope copy, Scope Editor version 8); Open question 2, Spool's
+  defaults, spelled out as S1-S17 for his answer (`docs/reports/SPOOL_DEFAULTS_2026-11-05.md`).
+  2026-11-05: Spool's defaults answered ("Use all defaults"): scope 08's defaults taken except the four numbers the
+  balance sweep owns; hand-off B16-B19 in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §4.
+  2026-11-05: the scope read against the code a second time (`docs/reports/SCOPE_CODE_AUDIT_2026-11-05.md`): 369
+  checkable rows, 269 MATCH, 93 on the queued lists, 7 unbuilt by design, no new behaviour mismatch; of the first audit's
+  41 rows 18 are resolved and 23 queued. Ten new items: N1-N4 fixed in the scope text (Spool sage green, the picked
+  Cordyfriend, self-test counts, 16's tildes and 15's weather line), N5-N10 for the build and balance threads (B5
+  half built, 47 Direction/Trinket/Cardinal sheets, pairs, B12 is code, the sweep's tilde lines, Leads to). New tool
+  `TDS_Mod/Tools/cloud-check/scope_upgrades.py`. Docs only. His project-files scope copy and the Scope Editor are
+  behind in six files (02, 07, 08, 09, 15, 16; his word to sync).
+  2026-11-05: the jittering button icons fixed (pitfall #156, kit 1.10): every pack icon the game drew stretched (the
+  menu's 32 px crest in Play's 48-unit box, the 12 px command icons and card pictures in 16-unit boxes) now draws a whole
+  number of screen pixels per art pixel: command icons are 16 px boxes (all four vessels and the mode's SHOP, FUND
+  TRANSFER, OBJECTIVE, weathers), the crest is sized to 32 units, and every card's picture is crisped where the dialog is
+  placed; card art uses the 12 px crest and 24 px numbers; the
+  sea chart's weather marks keep their size. Compiled here, not yet seen in game: his eye on the menu, a
+  dialog sliding in, and the HUD's buttons.
+  2026-11-05: the code review at max, at his word (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): every part read
+  against the engine again by a first pass and seven reviewers, 58 findings none of which were known; 35 fixed (the
+  F-key fix that never armed, kit 1.11 and pitfall #157; a skipped staging map replayed forever; campaign Cardinals left
+  free in the lobby; Voice in a Bottle reaching the Bouthouse; 16 self-test checks that couldn't fail), 23 left: three
+  for his word (§5.1), the rest for a PC fact. Pitfall #158 (first-frame looks lost). Compiled here (every part, release
+  and test builds, 0 errors; editors clean), not run on the PC: the next round runs its §6.
+  2026-11-05: the mode's balance reviewed against the base game at his word ("with stacking cardinals and directions,
+  the difficulty should be higher than base game"; `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`): as built every
+  map asks less than a Downpour run and the gap widens (carried power about x3.5 by map 10, foe pressure x1.5); the
+  proposals F1-F5, X1, C1 and P1 wait for his word (scope `04` and `06` numbers are his); the balance simulator sweep
+  thread starts from set S2 with `docs/reports/mode_balance_2026-11-05/`. Simulated here, no code changed.
+  2026-11-05: PC testing round 3 finished at his "Continue": every fix read in game holds, online too (D4, D7, B1-B4, D8, A2, D10,
+  ARG-3); kit 1.9's self-tests pass. Live and unfixed: Spring Tide by a Fie wall halves hits (R3, C3), the part takes a sub-core for
+  the Basin on Artrio (A3). New: a Crafted with no TARGET stands inside its Tin (`docs/reports/TESTING_ROUND_3_2026-11-05.md` §7).
+  The PC holds this base, with release builds on.
+  2026-11-05: the build of the unbuilt candidates, part 1 (the decisions' code items, `DECISIONS_APPLIED_2026-11-05.md`
+  §3-§4, and the max review's three calls at their defaults): B1 the map vote held when the party first stays, and the
+  host's ask on the boat when none was held; B2 the lobby's Cardinals locked to the campaign's (MODE-D9, MODEB-4
+  closed); B3-B4 the shelf's caps and Trinket slot, one roll a break, Trinkets on the vessel's panel, "+N Cardinals" on the run line; B5
+  Dazzling at 15% with Illuminate's 3 s linger; B6 the pack's foe modifiers are elite for Spool's Thread; B7 Spring Tide
+  and Tidal Mend on the mode's own effects (pitfall #159's fix); B9 Monument's Cleanse leaves a building's own
+  trade-offs; B12 Salt Sting's line; B13 Argo's slows renew, bosses never held; B15 Tougher for Boutbro (MODEB-8), the
+  Compost Bin III line, the meteor's 12 + 3 x map hits; B16 no stock MOVE on the Thread Head; the Stitched's click no
+  longer goes to its TARGET pin (pitfall #162); MODEA-3 the host keeps the boat's lead; YOS-3 fruit for players only;
+  MODE-A3 the Basin is the main core on Artrio; MODEB-7 no VENDCINT mid-Tide. Pitfalls #162-#163. Compiled here (every
+  part, release and test builds, 0 errors; editors clean), not run on the PC; the PC list is in the PR.
+  2026-11-05, part 2: Argo's review of 2026-11-04 built (scope `09`, `ARGO_REVIEW_2026-11-04.md` §5, all fourteen):
+  Kelp Bed and Trench pin, the Scatter's +100% on a pinned foe, Wide Bore, Double Barrel's three, Abyss, Trench, Gusher a
+  Fathom, Mantle Tap's speed and 20 s quake, Yellow prices for the Drill's control path, the Base Blue 20 + Yellow 15.
+  Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
+  2026-11-05, part 3: Uloe's 24 upgrades built (scope `10`, `ULOE_UPGRADES_2026-11-04.md` §3 and §6), eight a building
+  with every Leads to (N10); a building takes at most 4 Light from teammates (B10, decision 18), and AIM, the default aim
+  and Photon visits keep to the owner's buildings (ULO-3); Supernova's SURGE once a Tide and Colour Filter's COLOUR are
+  one-click buttons. Self-test section 8b. Compiled here (release, self-test and review builds, 0 errors), not run on
+  the PC.
+  2026-11-05, part 4: Yossele's Wood Wide Web built (scope `07`, `UPGRADE_GAPS_2026-11-04.md` Y1), and the Shift
+  Directions rename the building's panel (B8, decision 15): Dandelion Sapling, Primordial Mushboom, Sewing Machine, by a
+  skin whose entry's Displayname is the panel's title (pitfall #164); the models wait for A1. Compiled here (release, self-test and
+  review builds, 0 errors), not run on the PC.
+  2026-11-05, part 5: Argo's and Yossele's new Directions built (scope `11`, B11): Chum Bucket and Pressure Gauge for Argo;
+  Cutting Jar, Sap Bucket, Creeping Ivy, Deep Breath and Fairy Ring for Yossele, each with the sheet's numbers and its
+  self-test lines (Argo after Deep Current, Yossele section 12c). Deep Breath's 2 s rest counts from the laser's reload,
+  since Yossele fires every 2 s. Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
+  2026-11-05, part 6: Spool's new Directions built (scope `11`, B11): Double Needle, Button Jar, Pattern Book, Merit
+  Badge and Odd Socks, with the sheet's numbers and self-test section 10c; Button Jar's smaller look waits for the art.
+  Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
+  2026-11-05, part 7: the Directions any vessel can take built (scope `11` (Any), B11, audit N7): Wound Spring, Fine
+  Sieve, Spare Hands, Galley Kettle, Chain Shot, Salt Barrel, Fog Horn, Clam Shell, Notched Oar, Lamp Oil, Fish Hook,
+  Spare Compass (with its once-a-map redraw), Magpie Nest, and the Duos Fire Ship and Tide Pool, offered only to a player
+  holding both; Wound Spring and Spring Tide are a pair. In `RogueWavesMode/Code/22_AnyDirections.cs`, self-test part
+  "any" of the gaps build. Compiled here (release and test builds, 0 errors), not run on the PC.
+  2026-11-05, part 8: the base vessels' Directions no held stat carries built (scope `11`): Mason's Trowel, Snow Shovel,
+  Worm Tin, Open Sign, Long Leash, in `RogueWavesMode/Code/23_BaseDirections.cs`, self-test part "base" of the gaps
+  build. Compiled here, not run on the PC.
+  2026-11-05, part 9: Claude's Trinkets and Cardinals built (scope `12`, B11): Brass Spyglass, Gutting Knife, Oil Can,
+  Tar Bucket, Rubber Duck, Spare Plank, Punch Card and Pearl Oyster (a pair), Bottled Storm, Oilskin Coat, Gull
+  Feather; the Cardinals Cork Lifebuoy, Signal Flare, Cargo Crate and Tin Whistle. In
+  `RogueWavesMode/Code/24_Trinkets.cs`, self-test part "trinkets" of the gaps build; their 15 icons wait for the art.
+  Compiled here, not run on the PC.
+  2026-11-05, part 10: the 47 icons of the Directions, Trinkets and Cardinals built in parts 5-9 (A2), temporary, 12 x 12
+  from their Look lines (`concept-tools/temp_art/b11_icons.py`), and the art review in `docs/STYLE.md` with its
+  check script (`concept-tools/temp_art/art_check.py`: 0 problems on all 47). Not yet seen in game.
+  2026-11-05, part 11: the models and the rest of the missing art (A1, A3, A4), temporary: the three Shift looks
+  (`Yossele_Dandelionsapling`, `Yossele_Mushboom`, `Spool_Sewingmachine`), a look for each of Uloe's 24 new upgrades,
+  Wood Wide Web's, Button Jar's small Stitched and Dart (a `Small` skin), and the five objectives' icons on the Board's
+  card and the DONE popup (`concept-tools/temp_art/objective_icons.py`). The meteor node keeps a stock ore's look: a
+  white crystal needs a model the mode part doesn't carry, and its boot log now names what that look is made of.
+  Compiled and rendered here, not run on the PC.
+  2026-11-05, part 12: `/simplify` on parts 1-11, no number or behaviour changed: kit 1.12 (`ModKitUtil.SlowOn`,
+  `Auras`/`Purse`/`Gain`/`Give`, `ModKitCombat.SetMulti`, `Keep` on Health), the mode's one tower list a frame, shared
+  rest-then-mend, kept Direction parses, and the vessel parts' single records. Also seven behaviour questions for the next
+  code review, the leftovers, his readings and the next PC round's list: `docs/reports/BUILD_UNBUILT_2026-11-05.md`
+  (the thread's closing report). Compiled here (every part, every test switch, 0 errors; the two-PC build fails here as
+  always), not run on the PC.
+  2026-11-05: the text audit, Dimitri's queued order (`docs/reports/TEXT_AUDIT_2026-11-05.md`): every player-facing
+  string and the living docs read for spelling, grammar, the names, stale facts and the clean rule. Seven game lines
+  fixed, five with their scope lines (Rising Water's Tide, Dazzling's Illuminates, Vampire Dentures' grammar, "per hit",
+  "farther", Spool's mend line, Argo's Mods-menu text); about 40 scope and doc lines (the F-key "pass" of 2026-11-04 ran
+  with the fix unarmed: scope `03`, here, `RESEARCH_GAPS.md`, kit `docs/15`; stale "not built" and "passes in game"
+  lines; typos). Seven calls for him in its §4 (the meteor's line, Long Line named twice, the leave vote's line, Depth's
+  unlock, numbers in Notched Oar, British or American spelling, the weather's pay wording for the sweep). No number
+  changed. Compiled here (Argo, Spool, the mode and the foes, every test switch, 0 errors; editors clean), not run on
+  the PC. His project-files scope copy and the Scope Editor are behind in 00, 02-09 and 11-13 too (his word to sync).
+  2026-11-05: every call waiting on Dimitri after PR #115 on one page, at his word (`docs/reports/OPEN_DECISIONS_2026-11-05b.md`):
+  14 numbered items with Claude's recommendation and what each blocks (the build's 15 readings and 7 behaviour
+  questions, Yossele's ~90 scope `07` defaults, the last defaults and built `! NEEDS !` lines, five wording calls, the
+  meteor's crystal, Yossele's final sheet, when to run the next PC round, the sync, `.claude/settings.json`). Spring
+  Tide by a Fie wall is not a call: B7 in PR #103 rebuilt it, and the PC still has to see it. Docs only, no compile.
+  2026-11-05 16:04Z, his answer: "Default for all, and I give permission for 12". Applied here: Yossele's 95 scope `07`
+  defaults, 03's names, 06's rules, 10's sharing limit and 12's shop list are his; the NEEDS lines in 11, 12 and 14
+  cleared; Depth's notes in 04 and 05. Handed on (the report's end): items 2, 5, 6 and 9 to a code thread, 10 and 11 to
+  art, the next PC round (his OK) right after the balance sweep, then the sync and 04's NEEDS line from this thread;
+  `.claude/settings.json` is his edit. Docs only, no compile.
+  2026-11-05: the weather test and a map's lighting, at his ask ("Test the weather effect. Are we able to drastically
+  alter the lighting of levels to include features like fog?"; `docs/reports/LIGHTING_2026-11-05.md`): the weather's
+  code is as it passed on the PC (156/0 on `ecd1991`), so its test is the mode's self-test again on the current base,
+  plus his eye on a flooded map. Lighting: yes; fog, the ambient colours, the sun and any of the 55 stock grades can
+  change a running map on every machine (kit 1.13 `ModKitLight`, kit `docs/16` §7.1, pitfall #167); a grade of our own
+  needs a Unity-built profile, and drifting fog banks would be new art. The gaps build's `light` part shows each look in
+  pictures. Compiled here (every part, every test switch, 0 errors); run on the PC since (the entry below); whether a
+  look ships is §5.
+  2026-11-05: the art of decisions 10 and 11 (`OPEN_DECISIONS_2026-11-05b.md`, his "default for all"). The mode part has
+  a model library (`Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs` into `RWAssets_Library/Models`, lit with a
+  copy of the game's "General Tower" material by `RWModels`, `Code/25_Models.cs`), and Mind the Meteor's node wears its
+  first model, a temporary white crystal on a scorched fallen stone (`RW_Meteor`; the line stays; the gaps self-test
+  checks it). Yossele's final sheets drawn by Claude from his reshade and the temporary sheets, for him to edit
+  (`ModSource/Yossele/Art/README.md`, `.aseprite` in `Art/aseprite/`): idle and walk, attack, Fertilize, fall, landing;
+  the left-heading facings were plain mirrors with the shade on the left, now on the right like his reshade. Scope
+  `07`'s sprite NEEDS line stays until he takes them. Compiled here (the mode's release, self-test and gaps builds, 0
+  errors; editors clean), `art_check.py` 0 problems, model rendered; not built in Unity, not run on the PC: the next
+  round looks at the meteor on a map (size, the hit flash, the boot line) and Yossele walking left.
+  2026-11-05: the code items of his "default for all" on the second decisions page
+  (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`): kit 1.14 (`Front` keeps two parts' hit handlers in a steady order,
+  pitfall #168), Uloe's Searchlight slow keeps the 10% floor, Argo's Cleave is no longer his own hit for Notched Oar, Fish
+  Hook and Gutting Knife, Tar Bucket uses Mason's Trowel's hook, Blurry Photo copies are found by their run-time tags
+  (pitfall #169), the Cardinals' paired lookups read the panel's ids, Boutman's Direction is Spare Reel, the leave vote's
+  new line, "towards" in Argo's Reel. `HasMinions` was right (all nine vessels have minions). Compiled here (every part,
+  release and self-test, 0 errors), not run on the PC: its §4 joins the next round's list.
+  2026-11-05: the weather and lighting PC round (`Light_round1`, his "Run it now", code `fb208b8`, kit 1.13;
+  `docs/reports/LIGHTING_2026-11-05.md` §6). The mode's self-test with every part on: 157 pass, 2 fail; every weather
+  check passes (W0-W3, 12 of 12); the two fails are Spring Tide's Tide gain as B7 rebuilt it, run for the first time
+  (`0 -> 0.0375` where 10 is asked), handed on for a thread of its own. The gaps build's `light` part: 23/0 and 16
+  pictures: real depth fog on units and buildings alike (the UI stays sharp over it), a look darkens the ground but not
+  the sky (night reads as dusk; only a borrowed grade changes the sky), lamps are drawn, nothing measurable per frame;
+  the 55 stock groups' numbers in `docs/reports/lighting_2026-11-05/light_groups.txt`. Pitfall #170 (the HUD hides
+  after 10 s without input). His release builds, save and settings are back as they were; Unity's project holds
+  `fb208b8`. Whether a look ships (§5) goes to the open-decisions page with the pictures.
+  2026-11-05: Spring Tide's Tide gain, the round's two fails, traced to the test's tower, not B7's effect
+  (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`, first entry; pitfall #171): the flow built its archer
+  right after buying every stock Cardinal, so it holds Frail Titan and is Paper Tower's paper tower, and both readings fit
+  a max that sums below 0 (read as 0) and a +10 Add scaled by 0.01; fitted, not yet confirmed. The flow now measures on
+  a plain archer placed before the map's first Cardinal (the max and Spring Tide's own modifier +10 at Tide 1, and again
+  at Tide 2, a new line) and logs the other archer's Health parts. No game behaviour changed. Compiled here (the mode's
+  release, self-test, with gaps and with shots: 0 errors), not run on the PC. **PC round 4:** the mode's self-test with
+  every part on shows the three `Spring Tide` lines passing, and the two `INFO Spring Tide: the archer built after the
+  Cardinals` lines list Paper Tower's and Frail Titan's effects with a Multi near 0.01 (the cause confirmed).
+  2026-11-05: the balance simulator sweep, Dimitri's queued order on his "Starting set S2, all proposals"
+  (`docs/reports/BALANCE_SWEEP_2026-11-05.md`, runs in `balance_sweep_2026-11-05/`). The mode: map k's Tide 15 plays
+  the base game's row 15, 18, 20, 21, 21, then 24 to map 10 (F1); foe health one Pmulti (F2) of x2.6 on map 1 (F3),
+  +0.08 a map, +2% for each Cardinal, Trinket copy and Direction rank held (F5); modifiers from map 2 (F4); +50% foes
+  a player (X1); prices +3 a held item (C1, shown right on every machine by a fourth None command, `RW_Price`);
+  objectives from the break before Tide 3 (P1). Measured (16 seeds): D 0.8 on map 1, 1.0 on map 3, about 1.5 on maps
+  8-10 (mid case), the review's target; Yossele follows Smacky, Spool on one Cushion can't hold the mode's maps until
+  a Stitched blocks (its 22 upgrades), and Argo looks easier than its base game (a PC check). Spool on one Pin Cushion
+  (answers 25, 26): Stitched 5, Dart 5.5, 6 Crafted a Tin, Range 3.5 kept, the Loom 0.3 a second, the Cushion's "Build
+  it first" line (P4); Uloe's Flood Light 0.3 with it. Spring Tide by a Fie wall is code, not a number: B7's rebuild,
+  whose weather-round fails were the test's tower (the entry above). The weather's pay line is fixed. Scope `04`,
+  `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
+  but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins PC
+  round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
+  2026-11-05: whether a lighting look ships (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`, the lighting round's §5 call).
+  Dimitri picked **a look per weather** (17:45Z): Rising Water under light mist, Quickening Current under storm grey,
+  Nesting Ground at dusk, calm maps on their own light. Not built: a code thread of the mode builds it from the page's
+  hand-off (a table and one `ModKitLight` call from the map's weather, a self-test check), then a PC round shows it
+  with foes on screen. Fog Bank (heavy sea fog) and a mood ramp stay ideas. Docs only.
+  2026-11-05: the scope sync after the sweep, his "sync" (item 13 of `docs/reports/OPEN_DECISIONS_2026-11-05b.md`)
+  and item 4's default for scope `04`: the per-campaign NEEDS line is gone, and the modifier schedule that answers it
+  (2 of the 4 new modifiers and 2 stock elites a campaign, from map 2, one more every second map) is his, without
+  tildes. The sweep's tuned numbers in `04`, `08`, `10` and `12` keep their tildes, as the sweep's report §7-8
+  leaves them, until he takes them (`06`'s and `14`'s lines were written as built). Scope `02` logs it. The Scope Editor and his project-files copy are refreshed
+  from this base (his word asked in the thread before the copy is overwritten). Docs only, no compile; nothing ran on the PC.
+  - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
+  in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
+  - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
+  - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
+  tuft and needle, Rising Water, the picked minions of 2026-11-05 with Uloe's Photon). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+  0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
+  (its one version, `0.1.0`, replaces the dev builds' `0.1.0-dev`). Phase 5's pieces are built and passed in game
+  ahead of Release 1 (kit 1.7, the main-menu button, the in-map vote and the mode's checks K0, CH, K1, P1, T0-T6, H1:
+  `docs/reports/BUILD_2026-11-03.md`, "Phase 5 pieces" below); Dimitri confirms the polish's readings
+  (`docs/reports/MODE_POLISH_2026-11-03.md` §2). By hand:
+  the F key on a real Boutman death again (its 2026-11-04 pass ran with the fix unarmed; kit 1.11 arms it, `docs/reports/CODE_REVIEW_MAX_2026-11-05.md` P1-1) and a person's own press, the button's and the chart's look, a flooded map; one online evening (`docs/RESEARCH_GAPS.md` §E,
+  kit `docs/19` §8); in `.claude/settings.json`, the two setup commands the docs ask for (C10). Left on Argo: his
+  balance pass (with FLOOD's key, `GiveUpAfter` and Salt Sting's no-Brine number, B2-X1/X6, `MISTAKE_CHECK_2026-10-28.md`). Also left on Yossele: his look by eye (temporary
+  art; the next PC round checks the Cordyfriend's own sheet, `IMPLEMENTATION_NOTES.md` 2026-10-27), his balance pass
+  (the 2026-11-03 balance study proposes no change), and the Compost Bin numbers in scope `11` (the chance-based upgrades passed by their rates, `docs/reports/TEST_ROUND_2026-11-04.md`). Spool (beside Release 1, at Dimitri's ask): his play test and look by eye (the pickers, the temporary art;
+  `TDS_Mod/ModSource/Spool/IMPLEMENTATION_NOTES.md` "PC rounds" lists what the self-test can't show), his answers to the
+  sheet's open items and to the defaults in its `DESIGN.md`, then his sprites. The fit plan's eight
+  probes passed in RogueLab round 8 (`SCOPE_FIT_PLAN_2026-10-28.md` §11); of the engine study's 13 facts (§14), N6 and
+  N8-N11 stay read only until a round needs them (never N12).
+  - **Release 1 state (2026-10-28):** the pack builds and boots (round 10); what's left is his play test of the new play
+  build, his sprite sheet, his balance pass and one online evening, then a rebuild of the pack and his "ship".
+  - **Blocked:** nothing; the research left needs Dimitri at the keyboard or a friend online. His calls from the play test
+  (report section 5): Spool's first Tide (more starting Thread, a free first Stitched or a cheaper first Tin), Yossele's
+  Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
+  balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
+  squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
+  - **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (#171 a tower's max Health under Frail Titan and Paper Tower, Spring Tide's test; #170 the HUD's idle hide, `LIGHTING_2026-11-05.md` §6; #168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Decisions
 
