@@ -57,13 +57,22 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(3f);
     }
 
+    static IEnumerator BackOnBoat()
+    {
+        if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) yield return Stepped(ToBoat());
+    }
+
     static IEnumerator GapsReview()
     {
         Application.logMessageReceived += ReviewLog;
         yield return Stepped(ReviewCampaign());
+        yield return BackOnBoat();
         yield return Stepped(ReviewBoutman());
+        yield return BackOnBoat();
         yield return Stepped(ReviewFie(false));
+        yield return BackOnBoat();
         yield return Stepped(ReviewFie(true));
+        yield return BackOnBoat();
         yield return Stepped(ReviewVoice());
         Application.logMessageReceived -= ReviewLog;
     }
@@ -122,6 +131,7 @@ public static partial class RWTest
         string sport = RWCardinals.Buy(player, "Artifact_Caffeine"), pipe = RWCardinals.Buy(player, "Artifact_Rustypipe");
         yield return new WaitForSeconds(1.5f);
         yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => newer = m);
+        if (older == null) { Setup("MODE-C1", "no tower built before the purchase"); yield break; }
         string onVessel = Holding(vessel, "Caffeine"), onOlder = Holding(older, "Rustypipe"), onNewer = Holding(newer, "Rustypipe");
         Finding("MODE-C1", onVessel == "" || onOlder == "", "bought '" + sport + "' and '" + pipe + "' (empty is yes); vessel's Caffeine [" + onVessel + "], speed " + speed0 + " -> " + StatOf(vessel, "Speed")
             + "; the tower from before [" + onOlder + "], a tower built after [" + onNewer + "]");
@@ -131,6 +141,7 @@ public static partial class RWTest
         Entity_Master voiced = null;
         yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => voiced = m);
         yield return new WaitForSeconds(1f);
+        if (voiced == null) { Setup("MODE-C4", "no tower built after Voice"); yield break; }
         float g0 = UpgradePrice(voiced);
         Info("MODE-C4", "bought Voice '" + voice + "'; the new tower holds [" + Holding(voiced, "Voice") + "], price scale " + g0);
         yield return ToBreakAfter(vars.Wave.Value + 1);
@@ -668,7 +679,8 @@ public static partial class RWTest
         yield return Until(() => vars.Wave.Value > wave, 40f);
         yield return new WaitForSeconds(0.5f);
         yield return NewFoe();
-        if (lastFoe != null) Hurt(lastFoe, cores[1], 1f);
+        if (lastFoe == null) { Setup("MODE-D8", "no foe to hit the second Basin"); yield return ToBoat(); yield break; }
+        Hurt(lastFoe, cores[1], 1f);
         yield return new WaitForSeconds(0.3f);
         forcing = true;
         float t = 0f;

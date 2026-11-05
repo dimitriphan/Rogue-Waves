@@ -199,7 +199,7 @@ public static class ArgoClient
                     ArgoAssets.Play(water ? "Argo_Splash" : "Argo_Build", at);
                     break;
                 case "Argo_Upgrade":
-#if ARGO_REVIEW
+#if ARGO_SELFTEST && ARGO_REVIEW
                     ArgoSelfTest.UpgradeSounds++;
 #endif
                     ArgoAssets.Play("Argo_Upgrade", at);

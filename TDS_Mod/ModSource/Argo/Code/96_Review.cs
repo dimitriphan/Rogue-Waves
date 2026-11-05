@@ -184,7 +184,6 @@ public static partial class ArgoSelfTest
         }
 
         // ARG-1: the bounds of a foe's attack speed, and two stuns on one foe.
-        if (harpoon == null) { ModKitTest.Setup("ARG-1", "no Harpoon Gun"); yield break; }
         foreach (string kind in new[] { "Enemy_Dagger", "Enemy_Spear", "Enemy_Halberd", "Enemy_Bulwark", "Enemy_Archer" })
         {
             Entity_Master e = ModKitTest.Core() != null ? ModKitTest.SpawnFoe(kind, ModKitUtil.Pos(ModKitTest.Core()), 1f, 6f, null) : null;

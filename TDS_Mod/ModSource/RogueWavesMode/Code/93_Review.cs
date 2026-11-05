@@ -44,7 +44,7 @@ public static partial class RWTest
                     if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Statsserver != null && e.Statsserver.TryGetValue("Speed", out s) && s.Value_Multi < 0.99f) slowed++;
                     if (t >= sendAt && sent < 40 && e != null && e.Beingserver != null && !e.Beingserver.Dead && !e.Taglistserver.Contains("Enemycore") && Time.frameCount % 30 == 0)
                     {
-                        Entity_Master by = RWRun.Vessel(friend);
+                        Entity_Master by = RWRun.Vessel(friend) ?? RWRun.Vessel(RWMine.Session);
                         if (by != null) { ModKitUtil.Debuff(by, e, "Debuff_Slow", 6f); sent++; }
                     }
                 }
@@ -135,6 +135,7 @@ public static partial class RWTest
         ClearFoes();
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
         bool down = RWRun.Vessel(friend) == null;
+        if (RWAsk.Open == RWVote.LeaveKind) yield return Say("d4open");
         if (RWAsk.Open == RWVote.LeaveKind)
         {
             yield return WaitDialog(8f);
@@ -220,7 +221,8 @@ public static partial class RWTest
             yield return null;
         }
         yield return new WaitForSeconds(2f);
-        Reading("MODE-D4", !opened, "the vote to leave's dialog opened on this machine: " + opened + "; the respawned vessel stood after " + RWUtil.F(backAt) + " s: " + cameBack + "; RWAsk.Open now '" + RWAsk.Open + "'");
+        if (!RWTwo.OtherSaid("d4open")) Setup("MODE-D4", "the host's vote never opened");
+        else Reading("MODE-D4", !opened, "the vote to leave's dialog opened on this machine: " + opened + "; the respawned vessel stood after " + RWUtil.F(backAt) + " s: " + cameBack + "; RWAsk.Open now '" + RWAsk.Open + "'");
         yield return Say("d4read");
         // MODE-D7: this player answers once the host's shop is up.
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 150f);
@@ -274,6 +276,7 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(2f);
         boat.Selectcharacter(RWTwo.SecondHero);
         yield return OneWay("mapb3");
+        loadAt = rejoinAt = -1;     // a turned-away join's lines don't count: only the next map's
         boat.Playgame(true);
         yield return Until(() => LoadedHere(), 240f);
         yield return new WaitForSecondsRealtime(25f);
