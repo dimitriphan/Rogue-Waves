@@ -4,11 +4,12 @@
 //   Cardinal acts on the core, the foes or the clock, for everyone: the upgrade goes on the core with its Artifactobject passed
 //            (nine stock scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby
 //            list while the row has room (8 counters, lobby picks included); past that it works and the run line counts it as
-//            "+N Cardinals" (B4, docs/scope/12 "No limit"). Every stock Cardinal on sale is one
+//            "+N Cardinals" (B4, docs/scope/12 "No limit"). Sixteen of the stock Cardinals on sale are ones
 //   Trinket  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook,
 //            and every held stack shows on the vessel's panel (one that reaches units by a mark with no script, B4). It is
 //            built as a Cardinal is (an Artifactobject and its entry) and keeps its "Cardinal_" id, so a saved campaign
-//            still finds it
+//            still finds it. Thirteen stock Cardinals are Trinkets too (StockTrinketIds, 2026-11-05): held once by each player
+//            who buys one, as "<Artifact id>1" in their list, never on the core or in the row
 // The shelf has 2 Cardinal slots and a Trinket slot; what a player can't buy more of (6 copies, a stock one once, lobby
 // picks included) leaves it (B3). The lobby's picks are locked once the campaign has played a map, and never one the shop
 // doesn't sell (B2, docs/scope/04 [Sea Chart] "Lobby Cardinals").
@@ -67,11 +68,35 @@ public static class RWCardinals
         "Artifact_Sandbox", "Artifact_Sand", "Artifact_Blurryphoto", "Artifact_Checklist", "Artifact_Computer", "Artifact_Bottomrock", "Artifact_Rock",
     };
 
+    // The stock Cardinals that act on one player's things are Trinkets (docs/reports/STOCK_TRINKETS_2026-11-05.md, Dimitri:
+    // "separate them"), by how the mode keeps each to the buyer's things (the game's own scripts reach every player's):
+    //   Hero   the Cardinal's own effect upgrades (its Heroapply list) on the buyer's vessel, and on a Hero-tagged unit of
+    //          theirs (Boutbro, whom the game's Heroapply reaches through the core's Child)
+    //   Tower  its Towerapply list on each tower the buyer owns, through the new tower's init list (pitfall #118)
+    //   Built  its Voiceapply list on what the buyer builds from a Hero (towers, traps, units), the same way
+    //   Coin   RWTrinkets pays the buyer the Coin's own numbers: the whole sum the game splits among the team
+    //   Gavel  RWTrinkets fires the Gavel's own bolt when one of the buyer's units drowns
+    // The other sixteen on sale stay Cardinals: they act on the Basin, the foes, the ore or the aura of everyone, or add a unit
+    // or a Basin build that serves the whole team. A campaign saved before 2026-11-05 that holds one of these as a Cardinal
+    // keeps it on the core (GrantHeld), and no player is offered its Trinket.
+    // Each row's place names its panel line, so add a row only at the end.
+    static readonly string[][] stockTable =
+    {
+        new[] { "Artifact_Beastpelt", "Hero" }, new[] { "Artifact_Bluecoin", "Coin" }, new[] { "Artifact_Caffeine", "Hero" }, new[] { "Artifact_Diorama", "Hero" },
+        new[] { "Artifact_Gavel", "Gavel" }, new[] { "Artifact_Greencoin", "Coin" }, new[] { "Artifact_Paper", "Hero" }, new[] { "Artifact_Redcoin", "Coin" },
+        new[] { "Artifact_Rustypipe", "Tower" }, new[] { "Artifact_Slippers", "Hero" }, new[] { "Artifact_Titan", "Tower" }, new[] { "Artifact_Voice", "Built" },
+        new[] { "Artifact_Yellowcoin", "Coin" },
+    };
+    public static readonly string[] StockTrinketIds = Array.ConvertAll(stockTable, r => r[0]);
+
     public static readonly List<string> Sold = new List<string>();      // ids on the shelf's list, sorted, the same on every machine
     static readonly Dictionary<string, RWCardinalDef> defs = new Dictionary<string, RWCardinalDef>();
     static readonly Dictionary<string, Upgradeproperties> copies = new Dictionary<string, Upgradeproperties>();    // "<Name><n>"
     static readonly Dictionary<string, Upgradeproperties> marks = new Dictionary<string, Upgradeproperties>();      // "<Name><n>": a unit Trinket's panel line
     static readonly Dictionary<string, Artifactobject> arts = new Dictionary<string, Artifactobject>();
+    static readonly Dictionary<string, Upgradeproperties> stockMarks = new Dictionary<string, Upgradeproperties>();    // a stock Trinket's panel line
+    static readonly Dictionary<string, List<Upgradeproperties>> stockEffects = new Dictionary<string, List<Upgradeproperties>>();
+    static readonly Dictionary<Entity_Master, List<string>> given = new Dictionary<Entity_Master, List<string>>();   // stock effects given on this map
     static readonly List<string> stock = new List<string>();
 
     public static string Id(RWCardinalDef d) { return "Cardinal_" + d.Name; }
@@ -130,6 +155,14 @@ public static class RWCardinals
         }
         Sold.AddRange(stock);
         Sold.Sort(string.CompareOrdinal);
+        // A held stock Trinket's line on the buyer's vessel panel (B4), scriptless, named by its place in the fixed list so every
+        // machine makes the same one; its words are the game's own entry's.
+        for (int i = 0; i < StockTrinketIds.Length; i++)
+        {
+            Artifactentryobject e = RWUtil.Item<Artifactentryobject>("Artifact", StockTrinketIds[i]);
+            if (e != null && !stockMarks.ContainsKey(StockTrinketIds[i]))
+                stockMarks[StockTrinketIds[i]] = RWContent.Upgrade("RW_StockTrinket" + i + "_Upgradeobject", e.Display_Name, e.Display_Desc, null);
+        }
     }
 
     // The entry the HUD's Cardinal row reads for its icon, a copy of any stock one.
@@ -177,8 +210,111 @@ public static class RWCardinals
     public static bool IsTrinket(string id)
     {
         RWCardinalDef d;
-        return defs.TryGetValue(id, out d) && d.Trinket;
+        return defs.TryGetValue(id, out d) ? d.Trinket : StockKind(id) != "";
     }
+
+    // How a stock Trinket reaches its buyer's things ("Hero", "Tower", "Built", "Coin", "Gavel"), or "" for any other id.
+    public static string StockKind(string id)
+    {
+        int i = id != null ? Array.IndexOf(StockTrinketIds, id) : -1;
+        return i >= 0 ? stockTable[i][1] : "";
+    }
+
+    // The stock id a held entry ("Artifact_Caffeine1") is, or "".
+    static string StockOf(string held)
+    {
+        int end = held.Length;
+        while (end > 0 && char.IsDigit(held[end - 1])) end--;
+        string id = held.Substring(0, end);
+        return StockKind(id) != "" ? id : "";
+    }
+
+    // The stock Trinkets of one kind a player holds (host).
+    public static List<string> StockHeld(RWPlayer p, string kind)
+    {
+        List<string> ids = new List<string>();
+        if (p != null)
+            foreach (string held in p.Trinkets)
+            {
+                string id = StockOf(held);
+                if (id != "" && StockKind(id) == kind && !ids.Contains(id)) ids.Add(id);
+            }
+        return ids;
+    }
+
+    // One of a stock Cardinal's own numbers (its core upgrades' params), 0 when it has none.
+    public static float StockParam(string id, string key)
+    {
+        Artifactobject art = Object(id);
+        float v;
+        if (art != null && art.Coreupgrades != null)
+            foreach (Upgradeproperties up in art.Coreupgrades)
+                if (up != null && up.Defaultparams != null && up.Defaultparams.TryGetValue(key, out v)) return v;
+        return 0f;
+    }
+
+    // The upgrades a stock Trinket's apply-script names in its params (loaded with its group at boot); kept once found.
+    static List<Upgradeproperties> StockEffects(string id)
+    {
+        List<Upgradeproperties> list;
+        if (stockEffects.TryGetValue(id, out list))
+            return list;
+        list = new List<Upgradeproperties>();
+        Artifactobject art = Object(id);
+        if (art != null && art.Coreupgrades != null)
+            foreach (Upgradeproperties up in art.Coreupgrades)
+                foreach (Upgradeproperties u in Named(up))
+                    if (!list.Contains(u)) list.Add(u);
+        if (list.Count == 0)
+            RWLog.Once("no effect " + id, "stock Trinket " + id + ": no effect upgrade of its own is loaded");
+        stockEffects[id] = list;    // the groups load at boot: a miss stays one
+        return list;
+    }
+
+    // The upgrades a stock apply-script names in its params (keys = Upgrade asset names; a key that isn't one is skipped).
+    static List<Upgradeproperties> Named(Upgradeproperties up)
+    {
+        List<Upgradeproperties> found = new List<Upgradeproperties>();
+        if (up != null && up.Defaultparams != null)
+            foreach (string key in up.Defaultparams.Keys)
+            {
+                Upgradeproperties u = ModKitUtil.Load<Upgradeproperties>("Upgrade", key);
+                if (u != null) found.Add(u);
+            }
+        return found;
+    }
+
+    // A stock effect onto one thing, once a map: through its init list while it is being made (its stats come later, kit
+    // docs/17 §11 rule 3, the stock apply-scripts' way, pitfall #118), else at once. Once only, as the game's spawn hooks give
+    // it: Rusty Pipe's effect takes itself off when it ripens, Voice's on a thing with no upgrade panel.
+    static void Give(Entity_Master m, List<Upgradeproperties> ups)
+    {
+        bool making = m.Statsserver == null || m.Statsserver.Count == 0;
+        List<string> had;
+        if (!given.TryGetValue(m, out had))
+        {
+            if (given.Count >= 512) foreach (Entity_Master gone in new List<Entity_Master>(given.Keys)) if (gone == null) given.Remove(gone);
+            given[m] = had = new List<string>();
+        }
+        foreach (Upgradeproperties u in ups)
+        {
+            if (had.Contains(u.Objectname))
+                continue;
+            had.Add(u.Objectname);
+            if (m.Upgradelistserver != null && m.Upgradelistserver.ContainsKey(u.Objectname))
+                continue;
+            if (making)
+            {
+                if (m.Initupgradelistserver != null && !m.Initupgradelistserver.ContainsKey(u.Objectname)) m.Initupgradelistserver.Add(u.Objectname, u);
+            }
+            else if (m.Upgradelistserver != null)
+                Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, null);
+        }
+    }
+
+    // A stock Trinket a player may not buy: a lobby pick (the game already gives it to everyone), or held as a Cardinal by a
+    // campaign saved before the split.
+    static bool StockTaken(string id) { return !IsMine(id) && (InLobby(id) || Count(RWRun.Cardinals, id) > 0); }
 
     public static Sprite Picture(string id)
     {
@@ -261,7 +397,7 @@ public static class RWCardinals
         if (ClashFor(p, id) != "")
             return true;
         if (IsTrinket(id))
-            return Count(p.Trinkets, id) >= Cap(id);
+            return Count(p.Trinkets, id) >= Cap(id) || StockTaken(id);
         return Count(RWRun.Cardinals, id) >= Cap(id) || (!IsMine(id) && InLobby(id));
     }
 
@@ -376,7 +512,11 @@ public static class RWCardinals
                 if (InLobby(id)) return true;
                 Artifactobject art = Object(id);
                 Upgradeproperties first = art != null && art.Coreupgrades != null && art.Coreupgrades.Count > 0 ? art.Coreupgrades[0] : null;
-                return first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname)));
+                if (first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname))))
+                    return true;
+                // A stock Trinket: its line on this machine's vessel.
+                Upgradeproperties mark;
+                return stockMarks.TryGetValue(id, out mark) && v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes(mark.Objectname));
             }
             FixedString64Bytes top = new FixedString64Bytes(PanelId(d, Cap(id)));
             if (ClashHere(id, v) != "")
@@ -405,10 +545,10 @@ public static class RWCardinals
             return "Not enough Pure Aura";
         RWCardinalDef d;
         bool mine = defs.TryGetValue(id, out d);
-        if (mine && d.Trinket)
+        if (IsTrinket(id))
         {
             int held = Count(p.Trinkets, id);
-            if (held >= Cap(id)) return held > 1 ? "Held " + held + " times" : "Already held";
+            if (held >= Cap(id) || StockTaken(id)) return held > 1 ? "Held " + held + " times" : "Already held";
             p.Trinkets.Add(id + (held + 1));
         }
         else
@@ -538,12 +678,7 @@ public static class RWCardinals
                 hero = kinds.Contains("Entity_Ai_Artifact_Heroapply");   // Heroapply_Delay too: caught up at once
             if (!tower && !mob && !teamApply && !voice && !hero)
                 continue;
-            List<Upgradeproperties> give = new List<Upgradeproperties>();
-            foreach (KeyValuePair<string, float> p in up.Defaultparams)
-            {
-                Upgradeproperties u = ModKitUtil.Load<Upgradeproperties>("Upgrade", p.Key);
-                if (u != null) give.Add(u);
-            }
+            List<Upgradeproperties> give = Named(up);
             if (give.Count == 0)
                 continue;
             foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
@@ -741,11 +876,28 @@ public static class RWCardinals
         {
             Upgradeproperties u;
             RWCardinalDef d = Def(held);
-            if (d == null || !OnPanel(d, StackOf(held, d), out u))
+            if (d == null)
+            {
+                GrantStock(vessel, StockOf(held));
+                continue;
+            }
+            if (!OnPanel(d, StackOf(held, d), out u))
                 continue;
             if (!vessel.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(vessel, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);
         }
+    }
+
+    // A held stock Trinket on the vessel: its panel line, and a "Hero" one's own effects (a respawn copies them; a repeat is skipped).
+    static void GrantStock(Entity_Master vessel, string id)
+    {
+        if (id == "")
+            return;
+        Upgradeproperties mark;
+        if (stockMarks.TryGetValue(id, out mark) && !vessel.Upgradelistserver.ContainsKey(mark.Objectname))
+            Helper_Entitytools.Upgrade(vessel, mark, Helper_Entitytools.Upgradecheck.Forced, null);
+        if (StockKind(id) == "Hero" && !RWRun.IsCopy(vessel))
+            Give(vessel, StockEffects(id));
     }
 
     // The sheet a held id ("Cardinal_<Name><n>") is a stack of: the name and then digits only, so one name that starts another
@@ -791,6 +943,17 @@ public static class RWCardinals
             if (m.Upgradelistserver != null && !m.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);
         }
+        if (RWRun.IsVessel(m) || RWRun.IsCopy(m))
+            return;
+        foreach (string held in p.Trinkets)
+        {
+            string id = StockOf(held), kind = StockKind(id);
+            bool reached = kind == "Hero" ? tags.Contains("Hero")
+                : kind == "Tower" ? tags.Contains("Tower")
+                : kind == "Built" && ModKitUtil.HasTag(m.Parent, "Hero") && (tags.Contains("Tower") || tags.Contains("Trap") || tags.Contains("Mob"));
+            if (reached)
+                Give(m, StockEffects(id));
+        }
     }
 
     public static void OnDespawn(Entity_Master master, bool killed, string reason)
@@ -812,7 +975,11 @@ public static class RWCardinals
     static float loadedAt = -1f;
 
     // A map starts (RWVote.MapStart): the last map's vessels go (MODE-C7).
-    public static void Reset() { dealt.Clear(); }
+    public static void Reset()
+    {
+        dealt.Clear();
+        given.Clear();
+    }
 
     public static void Update()
     {

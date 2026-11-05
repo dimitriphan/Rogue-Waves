@@ -1,5 +1,18 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): base game Cardinals split into Trinkets (compiled, not yet run in game)
+
+Dimitri: "separate them" (`docs/reports/STOCK_TRINKETS_2026-11-05.md`). `RWCardinals.StockTrinketIds` lists the 13 stock
+Cardinals that are Trinkets now, each with its kind: Hero (Sport Water, Fluffy Slippers, Beast Tassle, Diorama, Paper
+Tower: `GrantStock` puts the Cardinal's own Heroapply effects on the buyer's vessel, `Reach` on a Hero-tagged unit of
+theirs), Tower (Rusty Pipe, Frail Titan) and Built (Voice in a Bottle): `Reach` gives the Towerapply or Voiceapply
+effect to the buyer's new things through their init list (pitfall #118), at once to what stands; Coin (the four):
+`RWTrinkets.CoinStart` and `Tide` pay the buyer the Coin's own sums; Gavel: `RWTrinkets.Gavel` fires the Gavel's bolt
+(`Bolt`, shared with Signal Flare) when one of the buyer's units drowns. A held one is `"<Artifact id>1"` in
+`RWPlayer.Trinkets`, with a scriptless panel line `RW_StockTrinket<i>_Upgradeobject` (the game's own words); never on the
+core or the row. `StockTaken`: not sold while a lobby pick or a pre-split save's run Cardinal already gives it to
+everyone. Gaps rules "Stock split" x2. The PC list is the report's §6.
+
 ## 0.1.0-dev, later (2026-11-05): a look per weather (compiled, not yet run in game)
 
 Dimitri's pick on the third decisions page (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`): `RWWeather` ("the look",

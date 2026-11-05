@@ -271,6 +271,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
   pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
   Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-05: base game Cardinals split** (Dimitri: "separate them"): 13 of the 29 sold are Trinkets, held once per buyer
+  (`docs/reports/STOCK_TRINKETS_2026-11-05.md`; §5 three questions, §6 the PC list); scope `12` lists them as defaults.
+  Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1111,6 +1114,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `TDS_Mod/Tools/pc/README.md` and the 2026-11-05 reports; project memory supplied two facts the repository doesn't hold
   (the PC lock lives in memory; RC sessions can't reach the project files). Docs only, no compile. Next free numbers
   unchanged: kit 1.15, pitfall #172.
+- **2026-11-05: base game Cardinals split into Trinkets and Cardinals** (Dimitri: "Check which base game Cardinals can
+  be turned into trinkets and which can only be teamwide, then separate them"). `docs/reports/STOCK_TRINKETS_2026-11-05.md`:
+  of the 29 the shop sells, 13 are Trinkets (Sport Water, Fluffy Slippers, Beast Tassle, Diorama, Paper Tower: their
+  Heroapply effects on the buyer's vessel; Rusty Pipe, Frail Titan, Voice in a Bottle: their effects on the buyer's
+  towers or builds through the init list; the four Coins: the mode pays the buyer the whole sum; Aura Gavel: its bolt
+  for the buyer's own units), held once by each buyer, on their vessel panel; 16 stay Cardinals (Basin, foes, ore, Basin
+  builds, companion units). `RWCardinals.StockTrinketIds`, `GrantStock`, `Reach`, `RWTrinkets.CoinStart`/`Gavel`;
+  gaps rules "Stock split" x2; a lobby pick or a pre-split save's Cardinal keeps the game's team-wide one. Scope `12`:
+  the list as `~defaults~`. Compiled here (release, self-test, gaps, shots: 0 errors), not run on the PC (report §6 =
+  next round's list; §5 three questions: Gavel, companions, Coin's sum). No kit change, no pitfall: kit 1.15, #172.
 
 ### Decisions
 
@@ -1290,6 +1303,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spring Tide and Tidal Mend move to the mode's own effects; a teammate's Uloe Light counts up to 4 a building; Yossele's
   P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open. Same day, his "sync": the project-files scope copy and the Scope Editor (version 8) brought up to the repository; and
   question 2 spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`.
+- 2026-11-05 (Dimitri, "Check which base game Cardinals can be turned into trinkets and which can only be teamwide, then
+  separate them"): 13 stock Cardinals on sale are Trinkets, held once by each buyer (list a `~default~` in scope `12`;
+  `docs/reports/STOCK_TRINKETS_2026-11-05.md`, §5 asks about Aura Gavel, the companions and the Coin's sum).
 
 ### Open questions
 

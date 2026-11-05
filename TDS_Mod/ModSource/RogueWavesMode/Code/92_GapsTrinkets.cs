@@ -36,6 +36,26 @@ public static partial class RWTest
             if (!RWCardinals.MaxedFor(new RWPlayer { Key = "test", Hero = hero }, "Cardinal_Plank")) walls += RWDirections.VesselName(hero) + " ";
         Check("Spare Plank: offered to every vessel with a wall, never Buster or Argo", walls.Trim() == "Smacky Fie Boutman Snosno Yossele Spool Uloe", walls);
 
+        // The stock Cardinals split (docs/reports/STOCK_TRINKETS_2026-11-05.md): thirteen Trinkets, each held once by each buyer.
+        string wrong = "", unsold = "";
+        foreach (string id in RWCardinals.Sold)
+            if (!RWCardinals.IsMine(id) && RWCardinals.IsTrinket(id) != (System.Array.IndexOf(RWCardinals.StockTrinketIds, id) >= 0)) wrong += id + " ";
+        foreach (string id in RWCardinals.StockTrinketIds)
+            if (!RWCardinals.Sold.Contains(id)) unsold += id + " ";
+        string kinds = RWCardinals.StockKind("Artifact_Caffeine") + RWCardinals.StockKind("Artifact_Rustypipe") + RWCardinals.StockKind("Artifact_Voice") + RWCardinals.StockKind("Artifact_Redcoin") + RWCardinals.StockKind("Artifact_Gavel");
+        Check("Stock split: the sold stock Cardinals that act on one player's things are Trinkets, the rest Cardinals, each Trinket by its kind",
+            wrong == "" && kinds == "HeroTowerBuiltCoinGavel" && RWCardinals.StockKind("Artifact_Opalcore") == "", "'" + wrong + "', kinds " + kinds);
+        if (unsold != "") Setup("Stock split", "not loaded, so not on sale: " + unsold);
+        if (RWCardinals.Sold.Contains("Artifact_Caffeine"))
+        {
+            RWPlayer a = new RWPlayer { Key = "test", Hero = "Hero_Smacky", Pure = 200 }, b = new RWPlayer { Key = "test", Hero = "Hero_Smacky", Pure = 200 };
+            string first = RWCardinals.Buy(a, "Artifact_Caffeine"), again = RWCardinals.Buy(a, "Artifact_Caffeine"), other = RWCardinals.Buy(b, "Artifact_Caffeine");
+            Check("Stock split: Sport Water is a Trinket held once by its buyer, another player can buy their own, and it is never a Cardinal",
+                first == "" && again == "Already held" && other == "" && RWCardinals.MaxedFor(a, "Artifact_Caffeine") && a.Trinkets.Contains("Artifact_Caffeine1") && !RWRun.Cardinals.Exists(h => h.StartsWith("Artifact_Caffeine")),
+                "'" + first + "', '" + again + "', '" + other + "'");
+        }
+        else Setup("Stock split's Sport Water", "not on sale");
+
         int bad = 0;
         for (uint seed = 1; seed <= 30; seed++)
         {
