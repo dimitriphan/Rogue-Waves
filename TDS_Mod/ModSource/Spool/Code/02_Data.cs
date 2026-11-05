@@ -201,8 +201,8 @@ public static class SpoolData
 
     // The sheet's levels 1-3 are the game's tiers 2-4, one upgrade per level; every choice of a level leads to every
     // choice of the next except Pin Barrage (both level-3 Cushion upgrades shape Mangled, which only Loose Stuffing
-    // makes). The sheet has no level-4 capstones yet, and asks Dimitri for the Stash's upgrades and the Thread Head's and
-    // Loom's levels 2 and 3. The Effects lines are the journal's EFFECTS, written for the player.
+    // makes). The sheet's Stash upgrades, the Thread Head's and Loom's levels 2-4 and the level-4 capstones (scope 08 since
+    // 2026-11-04) are not built yet. The Effects lines are the journal's EFFECTS, written for the player.
     public static readonly Build[] Builds =
     {
         new Build

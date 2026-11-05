@@ -2,7 +2,8 @@
 
 > Status 2026-10-11: Dimitri picked **sea weather** (§2) on 2026-10-10. It is now in `docs/scope/04` [Sea Weather]
 > (in `05` until 2026-10-14), built in `RogueWavesMode` and passed PC round 4 (38/0, `docs/mode/SEA_CHART.md` §8-9).
-> The other ideas are still unpicked and untested; the text below is as written on 2026-10-09. "Personal" Cardinals are
+> Since 2026-11-03 some others are built as Claude's defaults and run in game: §3's objectives (`19_Objectives.cs`) and §4's
+> Directions (`16_Directions.cs`); the rest are unpicked. The text below is as written on 2026-10-09. "Personal" Cardinals are
 > now called Trinkets (Vessel Cardinals from 2026-10-11, Trinkets since 2026-11-04; Team Cardinals are just Cardinals). **2026-10-15:** the scope pointers below are as of 2026-10-09: since 2026-10-14 the sea
 > chart is in `04` and every template in `15_Templates.txt`. Kit `docs/16` §9 items 1-3 (§2's "untested", §8) ran in
 > RogueLab round 7 (`docs/reports/BASE_VESSEL_CHECKS_2026-10-12.md`).

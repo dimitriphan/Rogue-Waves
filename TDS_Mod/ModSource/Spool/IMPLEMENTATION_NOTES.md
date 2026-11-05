@@ -34,14 +34,15 @@ says about the game is read from its code, not seen.
 | `11_Client.cs` | Every look and sound (Vis RPCs): ground tufts, flights to the carrier and the Stash, pops, pricks, patch, warnings |
 | `12_Commands.cs` | The PATCH picker (the template's HOOK picker on your own units and buildings), the RETURN and MEND buttons |
 | `13_Journal.cs` | Journal pages, diagnostics dump |
-| `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only; the self-test makes about 120 checks in the sections of `DESIGN.md`'s test plan |
+| `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only; the self-test makes 133 checks (2026-11-04) in the sections of `DESIGN.md`'s test plan |
+| `97_Measure.cs`, `98_Play.cs` | Play builds only (`SPOOL_PLAY`, with kit `ModKitPlay`): the virtual player and the balance round's measures |
 
 ## What the first PC round must show (each is an assumption the code makes)
 
 1. **The Stash-first menu.** Until a Yarn Stash stands, the hero's `Buildoption1-4` are removed and only the Stash is
    offered; then the four buildables come back (checked every 0.5 s, remove and recreate, as Argo and Boutman do).
    Check the bar's order and that a destroyed Stash brings the Stash-only menu back.
-2. **The Thread Head token.** The build menu places `Mob_Spoolheadtoken` on Buster's walk-through pad block and the
+2. **The Thread Head token.** The build menu places `Mob_Spoolhead_Place` (tag `Spoolheadtoken`) on Buster's walk-through pad block and the
    host swaps it for the Thread Head at once (a `Forced` spawn on the token's block, then the token is despawned with
    reason "Place"). Check that the token can be placed on a path tile, the Head appears there, and foes walk past it.
    If `Trap_Busterpad` isn't loaded, Perma-Wall's walk-through block is used (a warning says so).
@@ -88,8 +89,8 @@ pickers send when clicked is still unseen:
 
 ## PC rounds
 
-Spool must be the only dev mod in the Mods folder for a round (Yossele 0.2.0-dev is Dimitri's play build there now:
-park it and put it back after). Build: the Build Queue (Build All Assets, Build Mod Prefab, Export); the self-test with
+Spool must be the only dev mod in the Mods folder for a round (since 2026-11-03 the release build of every pack part is
+there for Dimitri's play: park them and put them back after, `TDS_Mod/Tools/pc/README.md`). Build: the Build Queue (Build All Assets, Build Mod Prefab, Export); the self-test with
 `SPOOL_SELFTEST`; captures with `SPOOL_SHOTS` (none taken yet).
 
 - **Round 1 (2026-10-26, handoff `Spool_round1`, map 3B_Thehunt): 95 pass, 22 fail, 1 setup.** First build ever: Unity
@@ -129,8 +130,8 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
   in `Bl_Inputs.Actions` (only `Quickaction` and `1`-`8` exist), so the Head's panel never drew; RETURN's keybinds are
   now `{"4"}` and MEND's `{"3"}`, and the Head's SPOT, RETURN, MEND and upgrades were then used by hand. Balance: Purlest was
   lost at Tides 4, 1 and 2 (one Stitched from the 10 starting Thread holds the first Tide), Woozy at Tide 4 twice.
-  After it: the self-test checks every Spool button's keys against `Bl_Inputs.Actions` (pitfall #113; compiled, not
-  yet run on the PC). Still open:
+  After it: the self-test checks every Spool button's keys against `Bl_Inputs.Actions` (pitfall #113; passes in game since
+  2026-11-03). Still open:
   selling a walking Stitched by clicking it. The stock Sell picker sells what the mouse ray hits (`Game_Client_Mouseobject`
   raycasts the hit boxes), and the virtual player's click kept missing the moving unit. Dimitri to try by hand; if it is
   hard for a person too, the fix is a larger hit box on the Crafted or a pause while the Sell picker is open.
@@ -138,7 +139,7 @@ park it and put it back after). Build: the Build Queue (Build All Assets, Build 
   needle from `Art/Temporary/README.md` (PR #44), because the play test never caught either in a capture.
   Then the Crafted's four sheets and the Thread Head's sheet: `SpoolBuilder.FileArt` (Yossele's override) loads
   `Art/<name>.png` or else `Art/Temporary/game_size/<name>.png` in place of the code's sheet when the size matches;
-  editor-checked, not yet built in Unity. On the next build, check the build log names the five sheets
+  editor-checked, then in every build since (2026-11-03, 2026-11-04); the build log should name the five sheets
   "from Art/Temporary/" and that the Crafted and the Head walk and strike in game.
 
 What the self-test can't show, left for Dimitri's play test (numbers from the list above): it sends the Build, Sell,
@@ -164,5 +165,6 @@ With none held the numbers and behaviour are today's. Measured in game on 2026-1
 
 ## Open in the sheet (Dimitri's)
 
-`! NEEDS YARN STASH UPGRADES !`, the Thread Head's and the Loom's levels 2 and 3, level-4 capstones; every default in
+The Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are on the sheet
+since 2026-11-04 (designed, not built: `DESIGN.md`); every default in
 `DESIGN.md` "Defaults picked here"; his own sprites, models and sounds (all of this build's art is temporary).

@@ -1,11 +1,11 @@
 # Spool: temporary art drawn as files (2026-10-27)
 
 **Everything in this folder is temporary.** It fills a slot until Dimitri's own art replaces it. The rest of Spool's
-temporary art is drawn by code in `Assets/SpoolMod/Editor` (Spool's `Previews/0.1/ASSETS.md`, PR #42); the pack's whole
-list is `docs/TEMP_ART.md`. Spool 0.1.0-dev lives on PR #42's branch, where the Spool thread wired the tuft and the
-needle at `e0d2bf6` (2026-10-27; compiled and editor-checked, not yet seen in game). The five animation sheets below
-came after; the Spool thread wired them at `ad85b00` (a `FileArt` like Yossele's in `SpoolBuilder.SaveSheet`, the PNGs
-copied in; editor check clean, not yet built in Unity).
+temporary art is drawn by code in `Assets/SpoolMod/Editor` (Spool's `Previews/0.1/ASSETS.md`); the pack's whole
+list is `docs/TEMP_ART.md`. The Spool thread wired the tuft and the needle at `e0d2bf6` (2026-10-27) and the five
+animation sheets below at `ad85b00` (a `FileArt` like Yossele's in `SpoolBuilder.SaveSheet`), both on PR #42, merged.
+Every Spool build since takes them (self-test 121/0 on 2026-11-03, 133/0 on 2026-11-04); nobody has looked at them by
+eye yet. `aseprite/` holds the same sheets as one frame per cell, layer "TEMP art", to hand-edit.
 
 | File | Size | Fills | Replaces | In game |
 | --- | --- | --- | --- | --- |

@@ -18,7 +18,7 @@ already a Slay the Spire map; the base game's is just hand-made. A mod can build
 register them as a world of its own, and the game's own boat, camera, arrows, Setup panel and map loading work on
 them unchanged. Three things are not free: the chart needs its own sea art, the clients must build the identical
 chart (a seed carried in the world's name does it), and **only the leader can steer**, so the vote needs a route
-(§4). Built and proven solo since (RogueWavesMode PC rounds 1-4, 2026-10-11, §9); online is still to try.
+(§4). Built and proven solo since (RogueWavesMode PC rounds 1-4, 2026-10-11, §9), and with a second player on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`).
 
 A preview from the prototype generator (`concept-tools/sea_chart.py`, seed 20261009): the harbour at the bottom, ten
 rows of 3-4 maps, red rows close each stretch of five.
@@ -135,10 +135,10 @@ The part's `README.md` maps its files; `IMPLEMENTATION_NOTES.md` lists what to c
 | --- | --- |
 | 1. Generate | `03_Chart.cs`, an exact port of `concept-tools/sea_chart.py` (same xorshift32 draws in the same order; 400 seeds give identical charts, checked here with mono). The generator now also gives each node its base map and its weather (§8). **Maps:** row r aims at label 2 + (r-1)/2 (labels are the maps' `Difficulty`, the final map's 0 counted as 10), a Breaker row two higher; a node draws one of the five unused maps nearest its row's aim, so no map is on a chart twice. Over 2,000 charts row 1 averages label 3.2, row 5 6, row 10 7.7 (seed 20261009: 2.7, 6, 7.3) |
 | 2. Save | `06_Campaign.cs`: host save folder `RogueWaves`, keys `RW_Campaign_Seed` and `RW_Campaign_Route` (one column digit per map won), and since 0.1.0-dev (2026-11-03) `RW_Campaign_Retries`, `RW_Campaign_Replay` (the lost map to replay) and `RW_Campaign_Playing` (the map in play); `New(seed)`, `Continue()`, `Stop()`. Until 0.1.0-dev the keys had no `RW_`; the part renames old ones once (`RWKeys`, kit `docs/23` §2 rule 3). A lost map spends one of 3 retries and is replayed (only it can be picked); with none left, or after ten maps won, the campaign ends and leaves the save |
-| 3. Build the world | `04_World.cs`: a `Mapworlddatabaseobject` named `RW_Chart_<seed>_<route>` per route, built on every machine from its name; islands of primitives in the `docs/STYLE.md` palette, a `Macro_Maplink_Add` per map node playing its `RW_` twin Gameplan in `Mode_RogueWave` (`02_Mode.cs`), each with a `Cameraposition` and a `Dock`; route lines; a flag on sailed islands; a weather marker. Only the node the party stands on has `Links` (to its choices), so the stock arrows offer exactly the choices |
+| 3. Build the world | `04_World.cs`: a `Mapworlddatabaseobject` named `RW_Chart_<seed>_<route>` per route, built on every machine from its name; each map's own island copied from the base game's world map (a shape in the `docs/STYLE.md` palette only when none is found), a `Macro_Maplink_Add` per map node playing its `RW_` twin Gameplan in `Mode_RogueWave` (`02_Mode.cs`), each with a `Cameraposition` and a `Dock`; route lines; a flag on sailed islands; a weather marker. Only the node the party stands on has `Links` (to its choices), so the stock arrows offer exactly the choices |
 | 4. Sail in | `05_Boat.cs`, host: once the boat is up and a campaign is on, sets `Tds_Multiplayerinfo.World`, clears `Selected`, and sets `Worlded` ("" then the name) as `Selectworld_ServerRpc` does. The landing node is the world's `Defaultnode`, not `Selected`, so no client opens a Setup panel on landing |
 | 5. Clients | every machine registers the chart named by `World` or `Worlded` without waiting for `Macro_Main.Ready` (the client's `Startup` waits for the item first) |
-| 6. Choose | until the in-map vote exists, the leader steers with the stock arrows: every node but the choices is in `Macro_Main.Blacklist`, so only a choice can be picked. `RWCampaign.Choice` (the vote's winner later, the self-test now) makes the host's boat sail by itself |
+| 6. Choose | the in-map vote's winner (`20_Vote.cs`) is `RWCampaign.Choice`, which makes the host's boat sail by itself; every node but the choices is in `Macro_Main.Blacklist`, so the stock arrows can only pick a choice |
 | 7. Sail and load | the host hovers the chosen node; on arrival (boat within 1.5 of the dock and still for 0.8 s) it calls `Selectmap_ServerRpc`, which opens the Setup panel on everyone's screen; ready-up loads the map in `Mode_RogueWave` |
 | 8. Come back | a won map adds its column to the route: once Tide 15 is cleared (`ModKitTides.Tide` 16), or a "Win" end before it; back on the boat the host warps onto the next chart name. A map that ends otherwise, or that the host leaves while it runs (seen on the boat or by `Continue`), is lost (since 0.1.0-dev, `docs/reports/MODE_POLISH_2026-11-03.md`). With no campaign on, a party still on a chart is taken back to the stock world |
 
@@ -164,11 +164,10 @@ map object or effect the game puts on one map only (kit `docs/16` §3), started 
 
 Rules (defaults, Dimitri's to change in the scope): rows 1, 5 and 10 are calm; elsewhere a node has weather one time in
 three in the first stretch and one in two in the second (29% of all nodes over 2,000 charts, the three about equal); a
-weather a map already has rotates to the next one. **Pay:** 1 extra Pure Aura a Tide (`RWWeather.PureAuraPerTide`),
-paid once the Pure Aura piece exists. **Shown:** the island marker; the Setup panel's empty "State" line names it
+weather a map already has rotates to the next one. **Pay:** 1 extra Pure Aura a Tide (`RWWeather.PureAuraPerTide`,
+paid by `RWRun`, `14_Run.cs`). **Shown:** the island marker; the Setup panel's empty "State" line names it
 ("Rising Water: the water climbs each tide. More Pure Aura"); the warning popup at map start ("RISING WATER ROLLS
-IN") with a 12×12 icon of the pack's. Not built: a hover billboard (`docs/15` §18.4), which can come with the chart's
-art pass.
+IN") with a 12×12 icon of the pack's; the icon over the node while the leader hovers it (`RWWorld.Billboard`, `docs/15` §18.4).
 
 A map object's being sits in its home map's groups, which only that map loads: every machine loads the group from the
 boat once a weather map is picked (Manafold's sub-load, then Vultures' map group), and the host checks again at map

@@ -4,7 +4,7 @@
 	{~F Picks a Minion~}
 		- Problem: Vessel issue where if the main vessel dies, pressing F selects a controllable minion and not the main vessel after respawn. Mainly applies to Boutman and Boutbro, but could apply to new vessels so make sure to check.
 		- How to see it: play Boutman, let Boutbro spawn, die, then press F after respawn.
-		- Fix: built into the pack's shared code and runs with Argo and Yossele.
+		- Fix: built into the pack's shared code and runs with Argo, Yossele, Spool and Uloe.
 		- Status: built, and passed on the PC on a real death and respawn /~ docs/reports/TEST_ROUND_2026-11-04.md \
 
 	{~No Way Back In~}

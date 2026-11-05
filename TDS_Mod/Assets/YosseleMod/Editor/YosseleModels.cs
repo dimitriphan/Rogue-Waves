@@ -789,7 +789,7 @@ namespace YosseleBuild
             return m;
         }
 
-        // Spaghetti Roots' snare: loops of vine round the foe's feet.
+        // Entangling Roots' snare: loops of vine round the foe's feet.
         static Lp Tangle()
         {
             var m = new Lp();

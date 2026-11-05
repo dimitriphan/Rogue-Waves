@@ -9,7 +9,7 @@
 //                       Halberd every few Tides
 // A map object's being (and every being it spawns, Needs) lives in its home Gameplan's groups, which only that map
 // loads: every machine loads those groups from the boat once the weather's map is picked (RWBoat), and a map object never unsubscribes from Tides (docs/16 §3), so it
-// stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); the Pure Aura counter is a later piece.
+// stays for the whole map. The extra Pure Aura is data here (PureAuraPerTide); RWRun (14_Run.cs) pays it.
 public static class RWWeather
 {
     public const int PureAuraPerTide = 1;        // on top of the 3 every Tide pays (docs/scope/06 [Pure Aura])

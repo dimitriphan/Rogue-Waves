@@ -1,5 +1,5 @@
 // Temporary art of the mode part, drawn by code in the pack's palette (docs/STYLE.md, docs/TEMP_ART.md): VENDCINT's sheet and
-// the 12 x 12 icons of the shop, the votes and the starter Directions and Trinkets. Build All Assets writes each file into
+// the 12 x 12 icons of the shop, the votes and the starter Directions. Build All Assets writes each file into
 // ModSource/RogueWavesMode/Art/Temporary/game_size/ unless it is there already, so a hand-made file of the same name stays.
 // Final art goes one folder up and wins.
 using System.Collections.Generic;

@@ -2,7 +2,7 @@
 // "RogueWaves" (kit docs/15 §8, proven; the keys are RWKeys) so Continue finds it:
 //   seed, route  the chart, and one column per map won; the boat stands on the route's last node
 //   won          a map counts as won once Tide 15 is cleared (Tide 16 starts), or when it ends as a win before that, so
-//                dying in a bonus Tide loses nothing. Tides 16-30 of the mode's table are its bonus Tides for now
+//                dying in a bonus Tide loses nothing. Every Tide after 15 is a bonus Tide, with no limit (RWDifficulty.Bonus)
 //   retries      3 per campaign. A lost map spends one and the team replays it: the boat offers only that map (Replay)
 //                until it is won. With none left, a lost map ends the campaign
 //   in play      the map being played is in the save while it runs (Playing), so the host quitting during a map counts
@@ -10,8 +10,8 @@
 //                spends nothing (they rejoin, RWRejoin)
 //   ended        ten maps won complete the campaign (Depth, its reward, is on hold); won or lost, it leaves the save, and
 //                the party is taken back to the stock world on the boat (RWBoat)
-// Players' Pure Aura, Directions, Cardinals and Trinkets, and the votes (to leave, and on the next map), are later pieces
-// (docs/scope/04, 06, 11, 12).
+// Players' Pure Aura, Directions, Cardinals and Trinkets are RWRun's (14_Run.cs), the votes (to leave, and on the next map)
+// RWVote's (20_Vote.cs) (docs/scope/04, 06, 11, 12).
 // The campaign belongs to the save it was started or continued in: switching or clearing the save slot on the main
 // menu gives the game a new Bla_Data.Playerdata (nothing else replaces it after launch), and the campaign in memory is
 // then left behind (after a switch its own slot still holds it; clearing that slot erased it), so the next win never
@@ -208,8 +208,8 @@ public static class RWCampaign
         RWRejoin.Say("Tide " + WinTide + " cleared: this map is won. The Tides from here are bonus Tides.");
     }
 
-    // ModKitTides.MapEnd, host. "Win" before Tide 15 is cleared is a won map too (the self-test's, and later the vote to
-    // leave); anything else ("Lose", "Leave": the host left the running map) loses it, unless Tide 15 was cleared,
+    // ModKitTides.MapEnd, host. "Win" before Tide 15 is cleared is a won map too (the self-test's, and the vote to
+    // leave's); anything else ("Lose", "Leave": the host left the running map) loses it, unless Tide 15 was cleared,
     // which Tide() already counted.
     public static void MapEnd(string result)
     {

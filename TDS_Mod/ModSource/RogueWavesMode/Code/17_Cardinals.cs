@@ -1,6 +1,6 @@
 // Cardinals and Trinkets at VENDCINT (docs/scope/12; kit docs/15 §7, §13; docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §4): bought
-// with Pure Aura, and each stacking with no limit where its sheet says so. The two kinds (Team and Vessel Cardinals until
-// Dimitri renamed them on 2026-11-04):
+// with Pure Aura; one of the pack's that stacks works for Stacks (6) copies, a stock one is held once. The two kinds
+// (Team and Vessel Cardinals until Dimitri renamed them on 2026-11-04):
 //   Cardinal acts on the core, the foes or the clock, for everyone: the upgrade goes on the core with its Artifactobject passed
 //            (nine stock scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby
 //            list while the row has room (8 counters, lobby picks included), and in the run line's count past that. Every

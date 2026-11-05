@@ -7,10 +7,10 @@ to rejoin mid-game without interrupting the others.
 back on return; the one hard block is that it shuts the lobby for the whole map. `RogueWavesMode` 0.2.0
 (`TDS_Mod/ModSource/RogueWavesMode/Code/09_Rejoin.cs`) opens it while a seat is empty and catches the rejoiner up.
 **State:** 0.2.1 passed the solo PC round 6, 47 of 47 (2026-10-11; round 5's one failure is in §6). The drop and
-rejoin themselves need a friend online (§6, O1-O8). 0.3.0 (2026-10-15, compiled, not run) adds what the decompile
+rejoin themselves were run with a second player on 2026-11-04 (below). 0.3.0 (2026-10-15) added what the decompile
 showed was missing: a friend who restarts the game keeps their `Sessionid` (`RWIdentity`, O3b), and one player who
 can't load a map no longer sends everyone to the main menu (`RWLoad`, O3c); both in `Code/10_Online.cs`. 0.1.0-dev
-(2026-11-03, compiled, not run; the part now carries the pack version): a turned-away player stays turned away on a
+(2026-11-03; the part now carries the pack version): a turned-away player stays turned away on a
 second try (O5), and the "Lost the map" line names the host of the map just lost, not the first host of the launch.
 **2026-11-04: run with a real second player** (two copies of the game over the loopback address, `TDS_Mod/Tools/pc/Run-TwoPlayers.ps1`; §6 below, `docs/reports/TEST_ROUND_2026-11-04.md`). It found the rejoin broken and it is fixed: see "What a real rejoin needed" in §6.
 

@@ -10,7 +10,7 @@
 		- Mode part: the sea chart, sea weather and rejoining after a drop are built and passed their PC rounds. The fixes for online play and the mode checked against 04 (3 retries, a map won once Tide 15 is cleared, 60 second breaks) passed too, online with a second copy of the game on your PC. How they look is yours to check by eye; Steam's Join Game and a real network still need a friend online. /~ docs/reports/MODE_POLISH_2026-11-03.md \
 		- Next: the first release, Yossele alone -> 01_Expansion.txt [Releases]: your play test of the installed build, your sprites and balance pass, and the pack built with Yossele only.
 		- Built ahead of the first release, with temporary art, and passed on your PC: the main-menu Rogue Waves button and the vote held in the map (on kit 1.7), Spool and Uloe, the four enemy modifiers, the Directions, Cardinals and Trinkets the mode sells. /~ docs/reports/TEST_ROUND_2026-11-04.md \
-		- After the first release: what the sheets add that is not built yet (the new upgrades in 07-10, the new Directions, Cardinals and Trinkets in 11-12), the rest of the Rogue Waves mode, then content, with Argo inside the pack.
+		- After the first release: what the sheets add that is not built yet (the new upgrades in 07-10, the new Directions, Cardinals and Trinkets in 11-12), Depth (on hold), then content, with Argo inside the pack.
 		- Riptide, the earlier roguelike prototype, is kept as prior art for the mode. It does not ship in the pack.
 		- Sonar is left out of every design for now.
 		- Every older mod was taken out of the game's Mods folder, since the finished pack installs all characters and content at once; only the Yossele play build is in it now, for your test. /~ Backed up in ClaudeProjects\handoff\mods_removed_20261008 \

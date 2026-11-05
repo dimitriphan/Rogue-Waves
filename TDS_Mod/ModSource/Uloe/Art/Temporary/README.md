@@ -5,4 +5,4 @@
 
 | Folder | What | In game |
 | --- | --- | --- |
-| `minions_2026-11-04/photon/` | ten Snoble-sized versions of the Photon to pick from (2026-11-04), same name, size and layout as the code's `Uloephoton-Sheet` | not wired: a pick needs a file override in `UloeBuilder` first (that folder's README) |
+| `minions_2026-11-04/photon/` | ten Snoble-sized versions of the Photon to pick from (2026-11-04), same name, size and layout as the code's `Uloephoton-Sheet` | not wired until Dimitri picks: `UloeBuilder.FileArt` takes a picked sheet copied to `game_size/` (that folder's README) |

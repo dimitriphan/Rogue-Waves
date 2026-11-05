@@ -17,8 +17,9 @@ took all three temporary sheets, booted clean and is Dimitri's play build; insid
 booted clean too (`TDS_Mod/Handoff/Yossele_round10/README.md`). Still to see by eye: the art itself.
 
 **State: PC round 9 passed on its fifth try (9e, 2026-10-23): self-test 160 pass, 0 fail, 0 setup; release boot
-check clean; 0.2.0-dev is Dimitri's play build** (`Mods\YosseleMod`, the only mod; 0.1.0-dev parked on the PC). Here:
-`check_mod.py` compiles the mod with kit 1.6 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with
+check clean; 0.2.0-dev was Dimitri's play build** (`Mods\YosseleMod`, the only mod, until 2026-11-03; since then the
+release build of every pack part is installed and the play build is parked). 173 pass, 0 fail on 2026-11-04
+(`docs/reports/TEST_ROUND_2026-11-04.md`). Here: `check_mod.py` compiles the mod with kit 1.8 at 0 errors, 0 warnings, in release, with `YOSSELE_SELFTEST` and with
 `YOSSELE_SELFTEST,YOSSELE_SHOTS`; `check_editor.sh` passes on `Assets/YosseleMod/Editor`; the cloud preview renders
 every sheet and model. Not seen yet: the look by eye, a map played by Dimitri, online. What is left to check, and how:
 `docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`.
@@ -41,6 +42,7 @@ every sheet and model. Not seen yet: the look by eye, a map played by Dimitri, o
 | `15_Journal.cs` | Journal pages, diagnostics dump |
 | `16_Friend.cs` | Cordyfriends: raising, the cap, where each walks |
 | `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only |
+| `97_Measure.cs`, `98_Play.cs` | Play builds only (`YOSSELE_PLAY`, with kit `ModKitPlay`): the virtual player and the balance round's measures |
 
 ## Build of 2026-10-23 (0.2.0-dev): what PC round 9 must show
 

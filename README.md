@@ -18,7 +18,8 @@ between maps, so a campaign can be played over several sessions; a player who dr
   also sells **Trinkets** (run modifiers for one player's things) and **Cardinals** (run modifiers for the whole team).
 - **Fund Transfer** lets players share aura between tides.
 - **Optional objectives**, **enemy modifiers** (Cursed, Berserk, Aging, Dazzling) and the sea weather change each
-  campaign. A campaign has 3 retries; finishing one unlocks a harder difficulty for the next.
+  campaign. A campaign has 3 retries; finishing one is meant to unlock a harder
+  difficulty for the next (Depth, on hold).
 
 The whole run is in `docs/scope/04_Rogue_Waves_Mode.txt` and step by step in `05_Gameplay_Rundown.txt`.
 
