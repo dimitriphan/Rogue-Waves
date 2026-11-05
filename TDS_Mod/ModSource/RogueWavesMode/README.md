@@ -53,6 +53,7 @@ chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMO
 | `Code/19_Objectives.cs` | `RWObjectives`: the five optional objectives |
 | `Code/20_Vote.cs` | `RWVote`: the flow between Tides, Direction picks, the map vote, the vote to leave; `RWAsk`: every machine's own question |
 | `Code/21_Difficulty.cs` | `RWDifficulty`: each map's Tide table, modifiers, bonus Tides |
+| `Code/98_SaveFuzz.cs` | `RWSaveFuzz` (`ROGUEWAVESMODE_SELFTEST` only): F1-F7, seeded random and damaged values through the campaign save, in the self-test and in `Tools/cloud-check/save_fuzz.py` |
 
 The main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) calls
 `RWCampaign.New(0)` or `RWCampaign.Continue()`. Until then a release build only registers the mode and its twins.
@@ -64,6 +65,7 @@ cd TDS_Mod/ModSource
 python3 ../Tools/cloud-check/check_mod.py RogueWavesMode/Code Shared RogueWavesMode ""
 python3 ../Tools/cloud-check/check_mod.py RogueWavesMode/Code Shared RogueWavesMode "ROGUEWAVESMODE_SELFTEST"
 ../Tools/cloud-check/check_editor.sh ../Assets/RogueWavesModeMod/Editor
+python3 ../Tools/cloud-check/save_fuzz.py          # the save fuzz (98_SaveFuzz.cs), run here on a stand-in save
 ```
 
 Chart parity with the script: compile `Code/03_Chart.cs` with a small `Main` that reads the pool from

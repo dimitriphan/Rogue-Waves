@@ -16,7 +16,7 @@
 //          and at Continue, Tide 15 cleared wins the map, no retries left ends the campaign, ten maps won complete it);
 //          then the campaign is stopped and its keys removed, and H1 the party is taken back to the stock world.
 //          I1 (on the boat) the player's id is kept for a restart, and says whether this launch put one back; K1 no
-//          key in the save folder lacks RW_
+//          key in the save folder lacks RW_; F1-F7 the save fuzz (98_SaveFuzz.cs), every key it touches put back
 //   boot   K0 the mode's breaks between Tides are 60 s and Mode_Normal's own table is untouched; CH every chart map of
 //          500 seeds links to 1 to 3 maps
 public static partial class RWTest
@@ -218,6 +218,7 @@ public static partial class RWTest
             && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Device) == RWIdentity.Device(),
             (RWIdentity.Restored ? "put back from the last launch" : "first kept this launch") + ", session " + (Blm_Server.Instance.Localplayer != null ? Blm_Server.Instance.Localplayer.Sessionid.Value.ToString() : "-"));
         if (RWMode.Pool.Count == 0) { Check("C0 chart pool", false, "no base maps found"); yield break; }
+        try { RWSaveFuzz.Run(Check); } catch (Exception e) { Check("F the save fuzz ran", false, e.ToString()); }
         if (!Plan()) yield break;
 
         int before = errors;

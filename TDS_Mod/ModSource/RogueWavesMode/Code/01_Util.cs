@@ -45,7 +45,17 @@ public static class RWUtil
 
     public static void Remove(string folder, string key) { Blockage.Tags.Bla_Data.Playerdata.Removedata(folder, key); }
 
-    public static void Flush() { Blockage.Tags.Bla_Data.Instance.Savedata(false, ""); }
+    public static void Flush()
+    {
+#if ROGUEWAVESMODE_SELFTEST
+        if (HoldFlush) return;
+#endif
+        Blockage.Tags.Bla_Data.Instance.Savedata(false, "");
+    }
+
+#if ROGUEWAVESMODE_SELFTEST
+    public static bool HoldFlush;    // the save fuzz writes the save in memory only, then flushes once (98_SaveFuzz.cs)
+#endif
 
     // ---------------------------------------------------------------- the map (host)
 
