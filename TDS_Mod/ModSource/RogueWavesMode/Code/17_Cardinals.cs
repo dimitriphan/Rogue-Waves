@@ -217,7 +217,7 @@ public static class RWCardinals
         return defs.TryGetValue(id, out d) ? d.Trinket : StockKind(id) != "";
     }
 
-    // How a stock Trinket reaches its buyer's things ("Hero", "Tower", "Built", "Coin", "Gavel"), or "" for any other id.
+    // How a stock Trinket reaches its buyer's things ("Hero", "Tower", "Built", "Coin", "Gavel", "Unit"), or "" for any other id.
     public static string StockKind(string id)
     {
         int i = id != null ? Array.IndexOf(StockTrinketIds, id) : -1;
@@ -892,7 +892,8 @@ public static class RWCardinals
         }
     }
 
-    // A held stock Trinket on the vessel: its panel line, and a "Hero" one's own effects (a respawn copies them; a repeat is skipped).
+    // A held stock Trinket on the vessel: its panel line, a "Hero" one's own effects, a "Unit" one's spawner (a respawn copies
+    // them; a repeat is skipped).
     static void GrantStock(Entity_Master vessel, string id)
     {
         if (id == "")
@@ -913,21 +914,25 @@ public static class RWCardinals
         }
     }
 
-    // A companion Trinket's unit (its spawner's first param: being name -> respawn seconds, 0 for none), or "".
+    // A companion Trinket's unit (its spawner's first param: being name -> respawn seconds, 0 for none), or ""; kept once read.
     public static string CompanionOf(string id, out float respawn)
     {
-        respawn = 0f;
-        Artifactobject art = StockKind(id) == "Unit" ? Object(id) : null;
-        if (art != null && art.Coreupgrades != null)
-            foreach (Upgradeproperties up in art.Coreupgrades)
-                if (up != null && up.Defaultparams != null)
-                    foreach (KeyValuePair<string, float> p in up.Defaultparams)
-                    {
-                        respawn = p.Value;
-                        return p.Key;
-                    }
-        return "";
+        KeyValuePair<string, float> found;
+        if (!companionOf.TryGetValue(id, out found))
+        {
+            found = new KeyValuePair<string, float>("", 0f);
+            Artifactobject art = StockKind(id) == "Unit" ? Object(id) : null;
+            if (art != null && art.Coreupgrades != null)
+                foreach (Upgradeproperties up in art.Coreupgrades)
+                    if (up != null && up.Defaultparams != null && up.Defaultparams.Count > 0 && found.Key == "")
+                        foreach (KeyValuePair<string, float> p in up.Defaultparams) { found = p; break; }
+            companionOf[id] = found;
+        }
+        respawn = found.Value;
+        return found.Key;
     }
+
+    static readonly Dictionary<string, KeyValuePair<string, float>> companionOf = new Dictionary<string, KeyValuePair<string, float>>();
 
     // The sheet a held id ("Cardinal_<Name><n>") is a stack of: the name and then digits only, so one name that starts another
     // can't take its stacks.

@@ -31,13 +31,12 @@
 //                   Speed and +25% damage taken, until it drowns
 //   Stock Trinkets (RWCardinals.StockTrinketIds; the rest go on the buyer's things through RWCardinals.Grant and Reach)
 //   the four Coins  the Coin's own numbers paid to the holder alone: its start sum once a map (on the map's first look with
-//                   the Basin up, or at once when bought mid-map), then each break its Tide sum, Add x Tide x (30 / Tides),
-//                   whole-number, as Entity_Ai_Artifact_Coin, split by the players as the game splits it (Dimitri
+//                   every vessel up, or at once when bought mid-map), then each break its Tide sum, Add x Tide x (30 /
+//                   Tides, a whole-number factor) as Entity_Ai_Artifact_Coin, split by the players as the game splits it (Dimitri
 //                   2026-11-05: "Pay only share")
 //   Badge, Bendigo, Kippy, Fish Bait  the unit their spawner (on the holder's vessel, RWCardinals.GrantStock) makes is the
-//                   holder's, one at a time: a vessel that drowns and comes back starts its spawner again, so when a second
-//                   one stands the older goes if the spawner replaces its unit (Badge, Fish Bait: the new vessel's is the
-//                   live one), and the newer goes if it doesn't (Bendigo, Kippy: one a map, as the game's on the Basin)
+//                   holder's, one at a time: a vessel that drowns and comes back starts its copied spawner again, and the
+//                   unit the drowned vessel made goes once the new one stands (Companions)
 //   Aura Gavel      one of the holder's own units (a Mob, the vessel too) drowns: the Gavel's bolt flies from it at the
 //                   nearest foe within the Gavel's reach, damage by the unit's level (Damage_Base, Damage2_Base..Damage5_Base)
 // No look of their own yet, as the Directions (pitfall #114).
@@ -90,8 +89,6 @@ public static class RWTrinkets
     static readonly Dictionary<Entity_Master, Link_Modifier> whistled = new Dictionary<Entity_Master, Link_Modifier>();
     static readonly List<Entity_Master> corked = new List<Entity_Master>();
     static readonly List<string> coined = new List<string>();      // "<session>|<Coin id>": its start sum is paid on this map
-    static readonly Dictionary<Entity_Master, float> companions = new Dictionary<Entity_Master, float>();   // a holder's unit: first seen
-    static readonly List<string> companionMet = new List<string>();  // "<session>|<being>": one has stood on this map
     static readonly Dictionary<string, float> extra = new Dictionary<string, float> { { RWAny.Extra, 1f } };
     static readonly Entity_Master.Interacts dealt = OnDealt;
     static readonly Entity_Master.Oninteracts taken = OnTaken, basin = OnBasin, whistle = OnWhistled, tarHit = OnTarHit;
@@ -111,8 +108,6 @@ public static class RWTrinkets
         whistled.Clear();
         corked.Clear();
         coined.Clear();
-        companions.Clear();
-        companionMet.Clear();
         totalWave = -1;
         spawned = total = 0;
         rowFoes.Clear();
@@ -150,7 +145,7 @@ public static class RWTrinkets
                 Refresh(k, RWRun.For(s));
                 k.Vessel = RWRun.Vessel(s);
                 CoinStart(s, k);
-                Companions(s, k, now);
+                Companions(s, k);
             }
         }
         if (now >= nextHooks)
@@ -652,6 +647,9 @@ public static class RWTrinkets
     {
         if (k.Coins.Count == 0 || !ModKitUtil.Alive(RWUtil.PlayerCore()) || Game_Players.Instance == null || !Game_Players.Instance.Prevsessionlist.ContainsKey(s))
             return;     // looked at again next time: the player's wallet may come after the Basin
+        foreach (long other in RWRun.Sessions())
+            if (!ModKitUtil.Alive(RWRun.Vessel(other)))
+                return;     // every player in, so the share is split the right number of ways
         foreach (string coin in k.Coins)
         {
             string key = s + "|" + coin;
@@ -679,43 +677,29 @@ public static class RWTrinkets
         foreach (Link_Resourceset r in pay) CoinPaid += r.Amount;
     }
 
-    // A companion holder's units of each kind: one at a time (see the header). Despawned here, never inside the spawn.
-    static void Companions(long s, Kit k, float now)
+    // A companion holder's units of each kind, one at a time: a unit whose vessel (its spawner's holder, its parent) is gone
+    // goes once the new vessel's spawner has made its own. A unit whose spawner lives is never taken, so a spawner that
+    // replaces its unit (Torrid Badge, Fish Bait) never loops. Despawned here, never inside the spawn.
+    static void Companions(long s, Kit k)
     {
-        if (k.Units.Count == 0)
-            return;
         foreach (string id in k.Units)
         {
             float respawn;
             string being = RWCardinals.CompanionOf(id, out respawn);
             if (being == "")
                 continue;
-            List<Entity_Master> mine = new List<Entity_Master>();
+            List<Entity_Master> orphans = new List<Entity_Master>();
+            bool fresh = false;
             foreach (Entity_Master e in RWAny.Owned("Mob"))
-                if (ModKitUtil.Owner(e) == s && ModKitUtil.BeingName(e) == being && !RWRun.IsCopy(e)) mine.Add(e);
-            string met = s + "|" + being;
-            List<Entity_Master> cut = new List<Entity_Master>();
-            foreach (Entity_Master e in mine)
-                if (!companions.ContainsKey(e))
-                {
-                    companions[e] = now;
-                    // Respawn 0: one a map. A later one goes at once (its spawner won't replace it).
-                    if (respawn <= 0f && companionMet.Contains(met)) cut.Add(e);
-                    else if (!companionMet.Contains(met)) companionMet.Add(met);
-                }
-            foreach (Entity_Master e in cut)
-                Despawn(e);
-            mine.RemoveAll(e => cut.Contains(e) || !ModKitUtil.Alive(e));
-            if (mine.Count < 2)
-                continue;
-            // Two stand: keep the newest when the spawner replaces its unit, else the first.
-            mine.Sort((a, b) => companions[a].CompareTo(companions[b]));
-            Entity_Master keep = respawn > 0f ? mine[mine.Count - 1] : mine[0];
-            foreach (Entity_Master e in mine)
-                if (e != keep) Despawn(e);
+            {
+                if (ModKitUtil.Owner(e) != s || ModKitUtil.BeingName(e) != being || RWRun.IsCopy(e))
+                    continue;
+                if (ModKitUtil.Alive(e.Parent)) fresh = true;
+                else orphans.Add(e);
+            }
+            if (fresh)
+                foreach (Entity_Master e in orphans) Despawn(e);
         }
-        if (companions.Count >= 256)
-            foreach (Entity_Master gone in new List<Entity_Master>(companions.Keys)) if (gone == null) companions.Remove(gone);
     }
 
     static void Despawn(Entity_Master e)
