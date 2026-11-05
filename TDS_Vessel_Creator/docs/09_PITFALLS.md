@@ -576,3 +576,15 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      the new `Displayname`, and set `Master.Skin` while it applies; every player sees it, since the skin is synced
      (`SpoolData.SewingSkin`, `YosseleData.ShiftLooks`, which prefix the Growth skins). Read from code; compiled, for the
      PC round.
+165. **A Fixed stat's Value follows its Calc on every recount** (2026-11-05) → for a stat whose Value isn't spent (the
+     core's `Respawn`), the `Link_Stats.Value_Calc` setter writes Value too, so a modifier from `Helper_Entitytools.Addmod`
+     shows in Value at once and leaves it as soon as it is taken off; the Basin's respawn handler, put on the vessel's
+     `Despawn` as it spawns, reads Value before its first await → to change one respawn only, put a handler first and one
+     last on the vessel's `Despawn` that add and take off the modifier around the Basin's own (`RWTrinkets` Rubber Duck).
+     Read from code; compiled, for the PC round.
+166. **A build costs the button's Goalvalue, for the host's own clicks too** (2026-11-05) → `Hero_Buildsell` prices a
+     `Build` order by the first `Buildoption` command whose `Goalstring` is the tower (its `Goalvalue` scales the price),
+     the order reaching it as `Updatecommand(Server: false)` even on the host, and the new tower's `Sellvalue` is that
+     scale → a `Goalvalue` of 0 builds at no price and the tower it makes has `Sellvalue` 0, which tells it apart; write the
+     price back with `Updatecommand` so every HUD shows it (`RWTrinkets` Spare Plank). The HUD shows four build slots,
+     `Buildoption1`-`4`. Read from code; compiled, for the PC round.

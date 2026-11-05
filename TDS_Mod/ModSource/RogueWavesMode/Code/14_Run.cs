@@ -19,6 +19,9 @@ public class RWPlayer
     // What the host last wrote on this player's vessel (RW_Ask, RW_Run), kept so a vessel that respawns carries it again.
     public string AskWhat = "", RunText = "";
     public float AskRound;
+    // Bottled Storm (RWTrinkets): Tides left in the storm blowing now, and storms passed; saved, one storm to each stack.
+    public int StormLeft, StormsDone;
+    public bool Bought;                                             // bought at VENDCINT on this map, since Pearl Oyster (not saved)
 }
 
 public static class RWRun
@@ -168,10 +171,12 @@ public static class RWRun
         Clear();
     }
 
-    // Tabs split the fields: a Steam name may hold anything but a tab, and a tab can't be typed into one.
+    // Tabs split the fields: a Steam name may hold anything but a tab, and a tab can't be typed into one. The eighth, Bottled
+    // Storm's "<left>/<passed>", came on 2026-11-05: a line without it reads as no storm, and an older build reads the first seven.
     public static string Encode(RWPlayer p)
     {
-        return string.Join("\t", new[] { p.Key, p.Name.Replace("\t", " "), p.Hero, p.Pure.ToString(), string.Join(",", p.Directions.ToArray()), string.Join(",", p.Trinkets.ToArray()), p.Owed ? "1" : "0" });
+        return string.Join("\t", new[] { p.Key, p.Name.Replace("\t", " "), p.Hero, p.Pure.ToString(), string.Join(",", p.Directions.ToArray()), string.Join(",", p.Trinkets.ToArray()), p.Owed ? "1" : "0",
+            p.StormLeft + "/" + p.StormsDone });
     }
 
     public static RWPlayer Decode(string line)
@@ -188,6 +193,14 @@ public static class RWRun
         p.Directions.AddRange(Ids(f[4]));
         p.Trinkets.AddRange(Ids(f[5]));
         p.Owed = f[6] == "1";
+        string[] storm = f.Length > 7 ? f[7].Split('/') : new string[0];
+        if (storm.Length == 2 && int.TryParse(storm[0], out p.StormLeft) && int.TryParse(storm[1], out p.StormsDone))
+        {
+            p.StormLeft = Mathf.Clamp(p.StormLeft, 0, RWTrinkets.StormTides);
+            p.StormsDone = Mathf.Clamp(p.StormsDone, 0, RWCardinals.Stacks);
+        }
+        else
+            p.StormLeft = p.StormsDone = 0;
         return p;
     }
 
@@ -219,6 +232,7 @@ public static class RWRun
         {
             p.AskWhat = p.RunText = "";
             p.AskRound = 0f;
+            p.Bought = false;
         }
         InCampaignMap = RWCampaign.Live && Tds_Multiplayerinfo.Instance != null && Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString().StartsWith(RWData.PlanPrefix);
         if (!InCampaignMap)
@@ -381,6 +395,14 @@ public static class RWRun
 public static class RWMine
 {
     public static long Session { get { return Blm_Server.Instance != null && Blm_Server.Instance.Localplayer != null ? Blm_Server.Instance.Localplayer.Sessionid.Value : -1; } }
+
+    // The vessel this player picked (synced on their client info), "" before it is known: readable while the vessel is down.
+    public static string Hero()
+    {
+        Blm_Player bp = Blm_Server.Instance != null ? Blm_Server.Instance.Localplayer : null;
+        Tds_Clientinfo info = bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
+        return info != null ? info.Hero.Value.ToString() : "";
+    }
 
     public static Entity_Master Vessel()
     {

@@ -305,6 +305,8 @@ public static class RWSaveFuzz
         int t = rng.Next(0, 7);
         for (int k = 0; k < t; k++) p.Trinkets.Add(Id() + (k + 1));
         p.Owed = rng.Next(2) == 0;
+        p.StormLeft = rng.Next(0, RWTrinkets.StormTides + 1);
+        p.StormsDone = rng.Next(0, RWCardinals.Stacks + 1);
         return p;
     }
 
@@ -358,6 +360,7 @@ public static class RWSaveFuzz
         if (string.Join(",", q.Directions.ToArray()) != string.Join(",", p.Directions.ToArray())) return "Directions";
         if (string.Join(",", q.Trinkets.ToArray()) != string.Join(",", p.Trinkets.ToArray())) return "Trinkets";
         if (q.Owed != p.Owed) return "Owed";
+        if (q.StormLeft != p.StormLeft || q.StormsDone != p.StormsDone) return "Bottled Storm " + q.StormLeft + "/" + q.StormsDone;
         return "";
     }
 

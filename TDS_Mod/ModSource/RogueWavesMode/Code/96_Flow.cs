@@ -451,20 +451,25 @@ public static partial class RWTest
         Info("the shop", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
         yield return DialogFits("VENDCINT");
         yield return Snap("shop");
-        string buy = shelf.Find(n => n.StartsWith("C:"));
+        // A stock card or Vampire Dentures before Claude's new ones, whose effects would change the checks below (gaps part "trinkets").
+        string buy = shelf.Find(n => n.StartsWith("C:") && (!RWCardinals.IsMine(n.Substring(2)) || n == "C:Cardinal_Dentures")) ?? shelf.Find(n => n.StartsWith("C:"));
         Check("Shop: Cardinals or Trinkets on the shelf, and a Back card", buy != null && shelf.Contains("Back"), string.Join(",", shelf.ToArray()));
         int pure0 = player.Pure, cardinals0 = RWRun.Cardinals.Count, trinkets0 = player.Trinkets.Count;
         if (buy != null)
         {
+            int price = RWCardinals.PriceFor(player, buy.Substring(2));
             ClickCard(buy);
             yield return Until(() => player.Pure != pure0, 8f);
-            Check("Shop: a Cardinal or Trinket costs Pure Aura, and is held", player.Pure == pure0 - RWCardinals.Cost(buy.Substring(2)) && (RWRun.Cardinals.Count > cardinals0 || player.Trinkets.Count > trinkets0), buy + " " + pure0 + " -> " + player.Pure + ", cardinals " + string.Join(",", RWRun.Cardinals.ToArray()) + ", trinkets " + string.Join(",", player.Trinkets.ToArray()));
+            Check("Shop: a Cardinal or Trinket costs Pure Aura, and is held", player.Pure == pure0 - price && (RWRun.Cardinals.Count > cardinals0 || player.Trinkets.Count > trinkets0), buy + " " + pure0 + " -> " + player.Pure + ", cardinals " + string.Join(",", RWRun.Cardinals.ToArray()) + ", trinkets " + string.Join(",", player.Trinkets.ToArray()));
         }
         // Each pack Trinket and stock Cardinal bought straight, so every script is met once in game.
         player.Pure = 500;
         int bad = errors;
+        // Claude's Trinkets and Cardinals of 2026-11-05 have their own test (gaps part "trinkets"): held here they would change the
+        // checks below (Oil Can speeds the archer, Spare Plank frees the wall button, Bottled Storm and Oilskin Coat change hits).
         foreach (string id in new List<string>(RWCardinals.Sold))
         {
+            if (RWCardinals.IsMine(id) && id != "Cardinal_Dentures") continue;
             string why = "", what = (RWCardinals.IsTrinket(id) ? "Trinket " : "Cardinal ") + id;
             float gainBefore = Game_Mapvars.Instance.Resourcegainmultiplier;
             try { why = RWCardinals.Buy(player, id); }

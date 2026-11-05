@@ -112,6 +112,7 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWHits.Update(); } catch (Exception e) { RWLog.Once("hits", "hits: " + e); }
         try { RWAny.Update(); } catch (Exception e) { RWLog.Once("any", "Any Directions: " + e); }
         try { RWBase.Update(); } catch (Exception e) { RWLog.Once("base", "base vessels' Directions: " + e); }
+        try { RWTrinkets.Update(); } catch (Exception e) { RWLog.Once("trinkets", "Trinkets and Cardinals: " + e); }
         try { RWVote.Update(); } catch (Exception e) { RWLog.Once("vote", "vote: " + e); }
         try { RWAsk.Update(); } catch (Exception e) { RWLog.Once("ask", "questions: " + e); }
         try { RWShop.Update(); } catch (Exception e) { RWLog.Once("shop", "shop: " + e); }

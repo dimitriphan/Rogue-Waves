@@ -373,6 +373,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05, part 8: the base vessels' Directions no held stat carries built (scope `11`): Mason's Trowel, Snow Shovel,
   Worm Tin, Open Sign, Long Leash, in `RogueWavesMode/Code/23_BaseDirections.cs`, self-test part "base" of the gaps
   build. Compiled here, not run on the PC.
+  2026-11-05, part 9: Claude's Trinkets and Cardinals built (scope `12`, B11): Brass Spyglass, Gutting Knife, Oil Can,
+  Tar Bucket, Rubber Duck, Spare Plank, Punch Card and Pearl Oyster (a pair), Bottled Storm, Oilskin Coat, Gull
+  Feather; the Cardinals Cork Lifebuoy, Signal Flare, Cargo Crate and Tin Whistle. In
+  `RogueWavesMode/Code/24_Trinkets.cs`, self-test part "trinkets" of the gaps build; their 15 icons wait for the art.
+  Compiled here, not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

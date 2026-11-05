@@ -22,6 +22,8 @@ public class RWCardinalDef
     public int Cost = 15;
     public object[] Numbers = new object[0];
     public string Reach = "";       // Trinket only: "Hero" (default) the vessel, "Mob" every unit they own
+    public string Clash = "";       // the Name of its pair: a player who holds one is never offered the other (docs/scope/12 "Pairs")
+    public bool Wall;               // never offered to a vessel with no (Defense) wall (Spare Plank)
 }
 
 public static class RWCardinals
@@ -35,9 +37,26 @@ public static class RWCardinals
     // 2026-11-04: Claude's seven starter Cardinals (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell,
     // Second Wind) are gone at Dimitri's word: each copied a stock Cardinal (docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md).
     // A save that still holds one keeps the id; Def() finds no sheet for it, so it does nothing.
+    // Claude's fifteen (built 2026-11-05) are scriptless: RWTrinkets (24_Trinkets.cs) does what each says. Each Look is the
+    // icon's name; until it is drawn the Rogue Waves crest stands in (Picture).
     public static readonly RWCardinalDef[] Mine =
     {
         new RWCardinalDef { Name = "Dentures", Display = "Vampire Dentures", Trinket = true, Cost = 15, Look = "Cardinal_VampireDentures", Desc = "Your vessel attacks heal themselves for a portion of damage dealt" },
+        new RWCardinalDef { Name = "Spyglass", Display = "Brass Spyglass", Trinket = true, Stacks = false, Cost = 12, Look = "Cardinal_BrassSpyglass", Desc = "Your vessel reaches farther" },
+        new RWCardinalDef { Name = "Knife", Display = "Gutting Knife", Trinket = true, Cost = 12, Look = "Cardinal_GuttingKnife", Desc = "Your vessel hits healthy foes harder" },
+        new RWCardinalDef { Name = "Oilcan", Display = "Oil Can", Trinket = true, Cost = 12, Look = "Cardinal_OilCan", Desc = "Your towers attack faster" },
+        new RWCardinalDef { Name = "Tar", Display = "Tar Bucket", Trinket = true, Cost = 15, Team = "Blue", Look = "Cardinal_TarBucket", Desc = "Your towers mend when left alone" },
+        new RWCardinalDef { Name = "Duck", Display = "Rubber Duck", Trinket = true, Cost = 10, Team = "Green", Look = "Cardinal_RubberDuck", Desc = "Your vessel comes back sooner after it drowns" },
+        new RWCardinalDef { Name = "Plank", Display = "Spare Plank", Trinket = true, Stacks = false, Wall = true, Cost = 15, Team = "Yellow", Look = "Cardinal_SparePlank", Desc = "One of your walls is free each map, and comes back when it falls" },
+        new RWCardinalDef { Name = "Punch", Display = "Punch Card", Trinket = true, Stacks = false, Clash = "Oyster", Cost = 15, Team = "Yellow", Look = "Cardinal_PunchCard", Desc = "Cardinals and Trinkets cost you less" },
+        new RWCardinalDef { Name = "Oyster", Display = "Pearl Oyster", Trinket = true, Stacks = false, Clash = "Punch", Cost = 15, Team = "Blue", Look = "Cardinal_PearlOyster", Desc = "Pure Aura grows while you save it" },
+        new RWCardinalDef { Name = "Storm", Display = "Bottled Storm", Trinket = true, Cost = 15, Team = "Green", Look = "Cardinal_BottledStorm", Desc = "A storm now, a reward when it passes" },
+        new RWCardinalDef { Name = "Oilskin", Display = "Oilskin Coat", Trinket = true, Cost = 12, Team = "Green", Look = "Cardinal_OilskinCoat", Desc = "Some hits slide off your vessel" },
+        new RWCardinalDef { Name = "Gull", Display = "Gull Feather", Trinket = true, Stacks = false, Cost = 15, Look = "Cardinal_GullFeather", Desc = "Drowning an elite foe lends your vessel its strength" },
+        new RWCardinalDef { Name = "Cork", Display = "Cork Lifebuoy", Stacks = false, Cost = 25, Team = "Green", Look = "Cardinal_CorkLifebuoy", Desc = "The Basin lives through one more killing blow each map" },
+        new RWCardinalDef { Name = "Flare", Display = "Signal Flare", Cost = 15, Look = "Cardinal_SignalFlare", Desc = "Now and then, a flare strikes the toughest foe near the Basin" },
+        new RWCardinalDef { Name = "Crate", Display = "Cargo Crate", Cost = 20, Team = "Yellow", Look = "Cardinal_CargoCrate", Desc = "VENDCINT brings more Cardinals and Trinkets" },
+        new RWCardinalDef { Name = "Whistle", Display = "Tin Whistle", Stacks = false, Cost = 15, Team = "Blue", Look = "Cardinal_TinWhistle", Desc = "The last foes of each Tide are run down" },
     };
 
     // Stock Cardinals on sale: Riptide's whitelist of the 40, less docs/reports/SCOPE_VS_LOOP.md #7's and MECHANIC_IDEAS §7's.
@@ -180,10 +199,13 @@ public static class RWCardinals
     }
 
     // The shelf for a break: the list shuffled by the campaign and the Tide, so client and host roll the same, then the first
-    // Cardinals and the first Trinket not maxed for this player (maxed null: none is).
-    public static List<string> Shelf(uint seed, int map, int wave) { return Shelf(seed, map, wave, null); }
+    // Cardinals and the first Trinket not maxed for this player (maxed null: none is), and Cargo Crate's extra cards (extra)
+    // from what is left in the same order, of either kind.
+    public static List<string> Shelf(uint seed, int map, int wave) { return Shelf(seed, map, wave, null, 0); }
 
-    public static List<string> Shelf(uint seed, int map, int wave, Func<string, bool> maxed)
+    public static List<string> Shelf(uint seed, int map, int wave, Func<string, bool> maxed) { return Shelf(seed, map, wave, maxed, 0); }
+
+    public static List<string> Shelf(uint seed, int map, int wave, Func<string, bool> maxed, int extra)
     {
         System.Random rng = new System.Random(unchecked((int)seed) ^ (map * 7919) ^ (wave * 104729));
         List<string> order = new List<string>(Sold);
@@ -206,7 +228,7 @@ public static class RWCardinals
         }
         List<string> shelf = new List<string>(cards);
         shelf.AddRange(trinkets);
-        for (int i = 0; shelf.Count < OnShelf && i < spare.Count; i++)
+        for (int i = 0; shelf.Count < OnShelf + Mathf.Max(0, extra) && i < spare.Count; i++)
             shelf.Add(spare[i]);
         return shelf;
     }
@@ -214,7 +236,9 @@ public static class RWCardinals
     // This break's shelf for one reader (the host keys each player, a machine its own view ""): rolled once, with what was
     // maxed when it was first read, and kept to the break's end, so a buy leaves the card on it (held) and doesn't pull the
     // next one in (a buyer could otherwise empty the whole list in one break). A new map, a retry or the next break
-    // (the table's Entry) rolls a new one.
+    // (the table's Entry) rolls a new one. Cargo Crate's cards are counted at the roll too: one bought in a break adds its
+    // card from the next. A machine rolls its view before the host rolls that player's (the host's at their first buy), so
+    // a Crate bought in between leaves the host's list the longer, with the machine's as its start: no pick is refused.
     static readonly Dictionary<string, List<string>> shelves = new Dictionary<string, List<string>>();
 
     public static List<string> ShelfFor(string who, uint seed, int map, int wave, Func<string, bool> maxed)
@@ -225,28 +249,96 @@ public static class RWCardinals
         if (!shelves.TryGetValue(key, out shelf))
         {
             if (shelves.Count >= 64) shelves.Clear();
-            shelves[key] = shelf = Shelf(seed, map, wave, maxed);
+            shelves[key] = shelf = Shelf(seed, map, wave, maxed, Mathf.Min(RWTrinkets.CrateMost, CrateStacks()));
         }
         return new List<string>(shelf);
     }
 
-    // The host's reading of what a player can't buy more of.
+    // The host's reading of what a player can't buy more of, or may not hold beside what they hold (a pair, a vessel's wall).
     public static bool MaxedFor(RWPlayer p, string id)
     {
+        if (ClashFor(p, id) != "")
+            return true;
         if (IsTrinket(id))
             return Count(p.Trinkets, id) >= Cap(id);
         return Count(RWRun.Cardinals, id) >= Cap(id) || (!IsMine(id) && InLobby(id));
     }
 
-    // This machine's reading, from what syncs: a held Trinket's top copy on the vessel, a Cardinal's on a core, a stock one
-    // in the row's list (the lobby's picks are there) or its first upgrade on a core.
-    public static Func<string, bool> MaxedHere()
+    // Why a player may not take this one, as the refusal says it, or "": the pair they hold, or no wall to spare.
+    public static string ClashFor(RWPlayer p, string id)
+    {
+        RWCardinalDef d;
+        if (p == null || !defs.TryGetValue(id, out d))
+            return "";
+        if (d.Clash != "" && Count(p.Trinkets, "Cardinal_" + d.Clash) > 0)
+            return Display("Cardinal_" + d.Clash);
+        return d.Wall && RWTrinkets.WallOf(p.Hero) == "" ? "a vessel with no wall" : "";
+    }
+
+    // The same on this machine, from its own vessel: the pair's first copy on the vessel's panel, the vessel's being.
+    public static string ClashMine(string id) { return ClashHere(id, RWMine.Vessel()); }
+
+    static string ClashHere(string id, Entity_Master v)
+    {
+        RWCardinalDef d;
+        if (!defs.TryGetValue(id, out d))
+            return "";
+        if (d.Clash != "" && v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes("Cardinal_" + d.Clash + "1_Upgradeobject")))
+            return Display("Cardinal_" + d.Clash);
+        // The pick, as the host reads it (p.Hero): the vessel may be down when the shelf is rolled.
+        string hero = RWMine.Hero();
+        if (hero == "" && v != null) hero = v.Being.Value.ToString();
+        return d.Wall && hero != "" && RWTrinkets.WallOf(hero) == "" ? "a vessel with no wall" : "";
+    }
+
+    // What a player pays: the price, or with Punch Card 20% off, rounded down (docs/scope/12).
+    public static int PriceFor(RWPlayer p, string id) { return Price(Cost(id), p != null && Count(p.Trinkets, "Cardinal_Punch") > 0); }
+
+    public static int PriceMine(string id)
+    {
+        Entity_Master v = RWMine.Vessel();
+        return Price(Cost(id), v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes("Cardinal_Punch1_Upgradeobject")));
+    }
+
+    static int Price(int cost, bool punched) { return punched ? Mathf.FloorToInt(cost * (1f - RWTrinkets.PunchOff) + 0.0001f) : cost; }
+
+    // Copies a player holds of one of the pack's Trinkets, and stacks the run holds of one of its Cardinals (host).
+    public static int Held(RWPlayer p, string name) { return p != null ? Count(p.Trinkets, "Cardinal_" + name) : 0; }
+
+    public static int Stacked(string name) { return Count(RWRun.Cardinals, "Cardinal_" + name); }
+
+    // Cargo Crate's stacks: the host's list, or on a machine the copies on a Basin (each stack its own upgrade).
+    static int CrateStacks()
+    {
+        if (ModKitUtil.IsServer)
+            return Stacked("Crate");
+        int n = 0;
+        foreach (Entity_Master core in CoresHere())
+        {
+            int here = 0;
+            for (int i = 1; i <= Stacks; i++)
+                if (core.Upgradelist.Contains(new FixedString64Bytes("Cardinal_Crate" + i + "_Upgradeobject"))) here++;
+            n = Mathf.Max(n, here);
+        }
+        return n;
+    }
+
+    // The players' Basins as this machine sees them: by the synced tag list, which a machine has where the host's isn't.
+    static List<Entity_Master> CoresHere()
     {
         List<Entity_Master> cores = new List<Entity_Master>();
         if (Game_Entity.Instance != null)
             foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
                 if (e != null && e.Taglist != null && e.Upgradelist != null && e.Taglist.Contains(new FixedString64Bytes("Core")) && !e.Taglist.Contains(new FixedString64Bytes("Enemycore")))
                     cores.Add(e);
+        return cores;
+    }
+
+    // This machine's reading, from what syncs: a held Trinket's top copy on the vessel, a Cardinal's on a core, a stock one
+    // in the row's list (the lobby's picks are there) or its first upgrade on a core.
+    public static Func<string, bool> MaxedHere()
+    {
+        List<Entity_Master> cores = CoresHere();
         Entity_Master v = RWMine.Vessel();
         return id =>
         {
@@ -259,6 +351,8 @@ public static class RWCardinals
                 return first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname)));
             }
             FixedString64Bytes top = new FixedString64Bytes(Id(d) + Cap(id) + "_Upgradeobject");
+            if (ClashHere(id, v) != "")
+                return true;
             if (d.Trinket)
             {
                 Upgradeproperties mark;
@@ -279,7 +373,10 @@ public static class RWCardinals
 
     public static string Buy(RWPlayer p, string id)
     {
-        int cost = Cost(id);
+        string clash = ClashFor(p, id);
+        if (clash != "")
+            return "Clashes with " + clash;
+        int cost = PriceFor(p, id);
         if (p.Pure < cost)
             return "Not enough Pure Aura";
         RWCardinalDef d;
@@ -300,6 +397,7 @@ public static class RWCardinals
         p.Pure -= cost;
         RWLog.Info(p.Name + " bought " + id + " for " + cost + " Pure Aura, " + p.Pure + " left");
         Warn(Display(id).ToUpperInvariant(), mine ? "RogueWaves_Crest" : id);
+        RWTrinkets.OnBuy(p, id);
         RWDirections.Sweep(p);
         return "";
     }
@@ -672,6 +770,8 @@ public static class RWCardinals
         // Inside Game_Entity.Despawn: a throw here would stop the listeners after this one (MODE-C8).
         try { RWAny.OnDespawn(master, killed, reason); }
         catch (Exception e) { RWLog.Once("any despawn", "Directions on a death: " + e.Message); }
+        try { RWTrinkets.OnDespawn(master, killed); }
+        catch (Exception e) { RWLog.Once("trinket despawn", "Trinkets on a death: " + e.Message); }
     }
 
     // ---------------------------------------------------------------- Vampire Dentures, and the row on every machine

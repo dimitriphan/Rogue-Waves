@@ -47,6 +47,7 @@ public static class RWVote
         RWCardinals.Reset();
         RWAny.Reset();
         RWBase.Reset();
+        RWTrinkets.Reset();
         // An objective left running when the last map ended would be judged at this map's opening break (MODE-D2).
         RWObjectives.Reset();
         if (!RWRun.InCampaignMap)
@@ -83,6 +84,7 @@ public static class RWVote
             RWRun.PayTide(wave);
             RWDirections.Interest(wave);
             RWAny.Tide(wave);
+            RWTrinkets.Tide(wave);
             RWDirections.TideEffects(wave);
         }
         foreach (long s in RWRun.Sessions())
