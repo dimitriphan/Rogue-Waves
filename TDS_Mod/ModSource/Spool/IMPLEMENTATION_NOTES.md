@@ -1,5 +1,9 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+**2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** a Thread Head back with Patchwork Job shows MEND as it is (SPL-8: `Started` after the comeback upgrades); a last Stash, Loom or Head falling while Spool is down spills its Thread (SPL-10); "Loom strikes ore" is a SETUP with no ore in reach (one pass fewer on the test map). Correctness only; nothing about how Spool plays. `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
+
+**2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the PATCH, TARGET, SPOT, RETURN and MEND buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.
+
 **2026-11-05, the code review's fixes (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`):** two plain bugs in the Thread Head's walk, nothing about how Spool plays: with Delivery it heads home only when the Stash has room (SPL-1), and it turns round at the Stash whatever it carries (SPL-2). The PC checks: that report's §5.
 
 **2026-11-04, code simplification (compiled, not yet run in game):** the game's own `Entity_Ai_General_Upgrade` runs the buildings' and the Thread Head's upgrade panels again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged; the Pin Cushion keeps its handler first through `ModKitUtil.Front`. The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (self-test 133/0, G1, G3, H1, L1).

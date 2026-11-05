@@ -1,15 +1,20 @@
-// Kit 1.7 (2026-11-03). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.11 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: the scope's F-key fix (docs/15 section 9, RogueLab's RogueLabFocusFix). After a respawn the game's
 // Focus (F) can select a minion tagged "Hero" (a Boutbro) instead of the vessel: the new vessel entity is appended to
 // Entityclienttags["Hero"] behind it. On the first F after the local vessel respawned, a handler added after the
 // game's own selects the vessel and moves it to the front of that list, so later presses cycle from it. Client-side.
 // Every vessel part runs it; the registry (ModKitPack.Mark) lets only the first part install it, so it runs once.
+// Kit 1.11: the dead vessel is destroyed before the new one comes (it despawns, then the respawn waits), so the last
+// vessel seen is a destroyed object by then: tested as a reference, not with Unity's == (pitfall #157, max review P1-1). `Installed`
+// says whether this part's copy is the one that runs (a self-test can only check its own).
 public static class ModKitFocus
 {
     public static bool Respawned;
     public static int Fixes;
     static bool installed, mine;
+    public static bool Installed { get { return mine; } }
     static Entity_Master lastHero;
+    static Game_Mapvars lastMap;
     static float nextLook;
 
     // Call every frame (any machine).
@@ -35,8 +40,14 @@ public static class ModKitFocus
         if (!mine || Time.unscaledTime < nextLook)
             return;
         nextLook = Time.unscaledTime + 0.5f;
+        // A new map's first vessel is no respawn: the last one seen belongs to the map before.
+        if (!ReferenceEquals(Game_Mapvars.Instance, lastMap))
+        {
+            lastMap = Game_Mapvars.Instance;
+            lastHero = null;
+        }
         Entity_Master hero = MainHero();
-        if (hero != null && lastHero != null && hero != lastHero)
+        if (hero != null && !ReferenceEquals(lastHero, null) && !ReferenceEquals(hero, lastHero))
             Respawned = true;
         if (hero != null)
             lastHero = hero;

@@ -259,6 +259,13 @@ public static class RWRun
         nextTick = 0f;
     }
 
+    // Host: the counter and run line now, past Tick's half-second throttle (a purchase, MAX P1-8).
+    public static void TickNow()
+    {
+        nextTick = 0f;
+        Tick();
+    }
+
     // Host, every frame of a campaign map: every vessel carries the three commands and the counter.
     public static void Tick()
     {

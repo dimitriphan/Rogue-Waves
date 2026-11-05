@@ -157,7 +157,7 @@ public static class RWCardinals
         if (defs.TryGetValue(id, out d))
         {
             Sprite s = d.Look != "" ? RWAssets.Sprite(d.Look) : RWAssets.Like("Cardinal_" + d.Name);
-            return s ?? RWAssets.Sprite("RogueWaves_Crest32");
+            return s ?? RWAssets.Sprite("RogueWaves_Crest");
         }
         Artifactentryobject e = RWUtil.Item<Artifactentryobject>("Artifact", id);
         return e != null ? e.Display_Icon : null;
@@ -310,8 +310,8 @@ public static class RWCardinals
                     n = give.Count;   // the game's Mobapply compares its own team with itself: every Mob gets it
                 else if (teamApply && heroParent && (tags.Contains("Tower") || tags.Contains("Mob")))
                     n = 1;            // Teamapply uses its first upgrade only
-                else if (voice && heroParent)
-                    n = give.Count;
+                else if (voice && heroParent && (tags.Contains("Tower") || tags.Contains("Trap") || tags.Contains("Mob")))
+                    n = give.Count;   // the stock Voiceapply's own filter (game code): the Bouthouse, tagged neither, never gets it (MAX MODEB-5)
                 else if (hero && tags.Contains("Hero") && (ModKitUtil.HasTag(e.Parent, "Core") || tags.Contains("Boutbro")))
                     n = give.Count;   // the core's hero children, and Boutbro, who calls every core's Child (kit docs/17 §5)
                 bool got = false;
@@ -383,6 +383,9 @@ public static class RWCardinals
         }
         return missing;
     }
+
+    // The main menu: the lobby the ids were written to is gone, and a later lobby's own picks must not be taken out.
+    public static void AtMainMenu() { shown.Clear(); }
 
     // On the boat: the lobby list goes back to what the players picked (no Cardinal swaps there; the row is rebuilt each map).
     public static void RestoreLobby()

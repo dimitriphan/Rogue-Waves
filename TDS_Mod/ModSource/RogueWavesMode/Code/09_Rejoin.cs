@@ -351,11 +351,21 @@ public static class RWRejoin
     // A client half sets its Master once the local player has loaded, a frame after it looks. So two frames after that, a
     // half still without one is one the late player object stopped; a live one still waiting must not start twice (two
     // of every look and handler, MODE-B2).
-    static void RestartStopped()
+    // Only halves already without a Master when the player loaded count: one that came in the two frames since is still in
+    // its own Start, and starting it again gives it two of everything (MAX P1-3).
+    static List<Entity_Master_Client> Stopped()
+    {
+        List<Entity_Master_Client> list = new List<Entity_Master_Client>();
+        foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
+            if (c.Master == null) list.Add(c);
+        return list;
+    }
+
+    static void RestartStopped(List<Entity_Master_Client> atLoad)
     {
         int clients = 0;
-        foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
-            if (c.Master == null)
+        foreach (Entity_Master_Client c in atLoad)
+            if (c != null && c.Master == null)
             {
                 c.StartCoroutine("Start");
                 clients++;
@@ -427,9 +437,10 @@ public static class RWRejoin
         while (t < 180f && !LocalLoaded()) { t += Time.unscaledDeltaTime; yield return null; }
         Game_Client_Init ci = Game_Client_Init.Instance;
         if (!LocalLoaded() || ci == null) { RWLog.Warn("rejoin: the map didn't finish loading here after " + RWUtil.F(t) + " s"); yield break; }
+        List<Entity_Master_Client> atLoad = Stopped();
         yield return null;
         yield return null;
-        RestartStopped();
+        RestartStopped(atLoad);
         yield return new WaitForSecondsRealtime(0.5f);
         try
         {

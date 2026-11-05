@@ -17,11 +17,11 @@
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
 		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
-		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for maps 1 and 2, one comes on from map 3 and one more every second map~
+		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for maps 1 and 2, one comes on from map 3 and one more every second map, on one foe in five of each row; a stock elite a map can't load is replaced by the next one outside the four, so no map plays easier than its number~
 
 	[Difficulty]
 		- Each map: harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health
-		- Numbers: ~foes +6% a map, +35% per player past the first; spawn intervals -3% a map; foe health +8% a map; each bonus tide +10% foes on the last~
+		- Numbers: foes +6% a map, +35% per player past the first; spawn intervals -3% a map; foe health +8% a map; bonus Tides 16-29 are the game's own Tides with the map's scaling, and from Tide 30 each bonus Tide +10% foes on the last
 
 	[Retries]
 		- Per campaign: 3
@@ -29,7 +29,7 @@
 		- The host quitting: the host quitting during a map counts as losing it. Only the host quitting during a map spends a retry
 		- A friend quitting: a friend who drops or quits doesn't spend one: they can rejoin the running map (-> 03_Bug_Fix.txt), and a friend who drops while the map loads comes back on the boat
 		- Dying in a bonus tide: doesn't lose the map: a map counts as won once Tide 15 is cleared, no retry is spent, and only the tide in progress pays nothing
-		- After a loss: ~the boat sails back to the lost map by itself~, and only that map can be picked until it is won
+		- After a loss: the boat sails back to the lost map by itself, and only that map can be picked until it is won
 		- Status: built, and a lost map, its retry and Continue passed on the PC /~ docs/reports/BUILD_2026-11-03.md \
 
 	[Depth] / Ascension levels \
@@ -59,38 +59,36 @@
 		- Vote: the vote offers the maps linked to the one just played (the first row for map 1). It is held in the map, after the vote to leave; map 1's vote is held in the opening break of a staging map
 		- Sailing: the party then returns to the boat, which sails across the chart to the winning map. It loads once everyone readies up, and friends can join on the boat between maps
 		- On the boat: between maps, players can't swap their Cardinals or Trinkets
-		- Islands: ~each map shows its own island from the base game's world maps, at the base game's size, in the home world's water~; a map with no island of its own borrows one
+		- Lobby Cardinals: picked once, before the first map, then locked for the campaign; the lobby offers only what the shop may sell -> 12_Cardinals.txt
+		- Islands: each map shows its own island from the base game's world maps, at the base game's size, in the home world's water; a map with no island of its own borrows one
 		- Status: built, and passed on the PC, the in-map vote and the boat's trip included. How the chart looks is yours to check by eye /~ docs/mode/SEA_CHART.md sections 7-9; docs/reports/BUILD_2026-11-03.md \
 
 	[Sea Weather]
 		- Which maps: some maps on the chart carry a weather, rolled with the chart
 		- Calm rows: the first row and the rows closing a stretch are calm
-		- Odds: about ~1 map in 3~ has weather in the first stretch, ~1 in 2~ in the second
-		- Pays: ~1~ extra [Pure Aura] each tide, on top of the usual 3
-		- Shown: the weather shows on its island on the chart and in the boat's map panel, and is announced when the map starts
+		- Odds: about 1 map in 3 has weather in the first stretch, 1 in 2 in the second
+		- Pays: 1 extra [Pure Aura] each tide, on top of the usual 3
+		- Shown: the weather shows on its island on the chart, and its in-game line in the boat's map panel when the map is picked; the map's start announces only its name (RISING WATER ROLLS IN)
 		- Never twice: a map never gets the weather it already has: Manafold already floods, Chrono already speeds up, Vultures already has a nest
 		- Status: built, and passed its PC round. How a flooded map looks is yours to check by eye
 
 		{Rising Water}
-			- In-game line: ~Rising Water: the water climbs each tide. More Pure Aura~
+			- In-game line: Rising Water: the water climbs each tide. More Pure Aura
 			- Does: the water climbs each tide. Flooded tiles can't be built on, and shots through the water slow down.
-			- Numbers: ~the water rises each tide by its own stats, as on Manafold~
+			- Numbers: the water rises each tide by its own stats, as on Manafold
 			- Never on: Manafold
-			- Look: ~a teal swell with a foam crest~
+			- Look: a teal swell with a foam crest
 
 		{Quickening Current}
-			- In-game line: ~Quickening Current: the game runs faster from Tide 5. More Pure Aura~
+			- In-game line: Quickening Current: the game runs faster from Tide 5. More Pure Aura
 			- Does: from Tide 5 the whole game runs faster, and faster again from Tide 10.
-			- Numbers: ~x1.25 from Tide 5~, ~x1.5 from Tide 10~
+			- Numbers: x1.25 from Tide 5, x1.5 from Tide 10
 			- Never on: Chrono
-			- Look: ~three foam chevrons~
+			- Look: three foam chevrons
 
 		{Nesting Ground}
-			- In-game line: ~Nesting Ground: a halberd nest grows near the foes. More Pure Aura~
+			- In-game line: Nesting Ground: a halberd nest grows near the foes. More Pure Aura
 			- Does: a halberd nest sits near where the enemies come from. It grows each tide and sends out a halberd every few tides.
-			- Numbers: ~placed 3 to 7 tiles from an enemy core~
+			- Numbers: placed 3 to 7 tiles from an enemy core
 			- Never on: Vultures
-			- Look: ~a coral egg in a sand nest~
-
-	[Questions]
-		- 1. The weather numbers are defaults: the odds, the extra Pure Aura and Quickening's speeds. Change any of them in their slots. ~As written~
+			- Look: a coral egg in a sand nest

@@ -16,6 +16,7 @@ public static class RWShop
     static bool jumped;
     static string asking = "";
     static readonly List<Entity_Master> fallen = new List<Entity_Master>();
+    static readonly Unity.Collections.FixedString64Bytes vendorName = new Unity.Collections.FixedString64Bytes(RWContent.Vendor);
     static float nextLook;
 
     // ---------------------------------------------------------------- the host
@@ -106,7 +107,8 @@ public static class RWShop
         if (Game_Entity.Instance == null || Game_Entity.Instance.Entityclient == null)
             return;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && !fallen.Contains(e) && e.Being.Value.ToString() == RWContent.Vendor)
+            // The being compared as the synced struct: a string per entity every 0.1 s all map long only to find one stand (MAX P1-9).
+            if (e != null && e.Being.Value == vendorName && !fallen.Contains(e))
             {
                 fallen.RemoveAll(x => x == null);
                 fallen.Add(e);
@@ -350,7 +352,7 @@ public static class RWShop
         else why = RWObjectives.Take(p);
         if (why != "")
             Refuse(vessel, why.ToUpperInvariant());
-        RWRun.Tick();
+        RWRun.TickNow();
     }
 
     static string Buy(RWPlayer p, string item)

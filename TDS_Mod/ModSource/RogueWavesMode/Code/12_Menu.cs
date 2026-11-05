@@ -14,6 +14,7 @@ public static class RWMenu
     static Mainmenu_Main seen;
     static float nextLook;
     static bool asking;
+    static UnityEngine.UI.Image crest;
 
     public static bool OnMainMenu { get { return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name.StartsWith("Mainmenu"); } }
 
@@ -38,8 +39,11 @@ public static class RWMenu
             asking = false;
             Embarking = "";
             RWCampaign.AtMainMenu();
+            RWCardinals.AtMainMenu();
             RWLobby.AtMainMenu();
         }
+        if (Button != null && crest != null)
+            RWAssets.Crisp(crest, PictureBox, RWAssets.ScreenPixels(crest.GetComponentInParent<Canvas>()));   // again after a change of UI scale
         if (Button != null || !RWUtil.Has("Tutorial", "Tutorial_New_Game"))
             return;
         Blockage.Menu.Blu2_Menu_Handler main;
@@ -99,18 +103,24 @@ public static class RWMenu
     }
 
     // Play's tile: its picture (child "Image", the ship and arrows) becomes the pack's crest, on Rogue Teal (docs/STYLE.md). Its
-    // border stays, and the line down to the column stays Play's alone.
+    // border stays, and the line down to the column stays Play's alone. Play's picture is 48 px in a 48-unit box; the crest
+    // is 32 px, so it is sized to 32 units rather than stretched to fill the box (pitfall #156).
+    public const float PictureBox = 48f;
+
     static void Image(GameObject copy)
     {
-        Sprite crest = RWAssets.Sprite("RogueWaves_Crest32");
+        Sprite art = RWAssets.Sprite("RogueWaves_Crest32");
         UnityEngine.UI.Image box = copy.GetComponent<UnityEngine.UI.Image>();
         if (box != null) box.color = RWDialog.Teal;
         Transform picture = copy.transform.Find("Image"), down = copy.transform.Find("Linev");
         UnityEngine.UI.Image i = picture != null ? picture.GetComponent<UnityEngine.UI.Image>() : null;
-        if (i != null && crest != null)
+        crest = null;
+        if (i != null && art != null)
         {
-            i.sprite = crest;
+            i.sprite = art;
             i.preserveAspect = true;
+            RWAssets.Crisp(i, PictureBox, RWAssets.ScreenPixels(copy.GetComponentInParent<Canvas>()));
+            crest = i;
         }
         if (down != null) down.gameObject.SetActive(false);
     }
@@ -154,7 +164,7 @@ public static class RWMenu
     {
         string saved = SavedLine();
         List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
-        cards.Add(RWDialog.Card("New", "New campaign", "Start a new campaign: ten maps across a fresh sea chart", RWAssets.Sprite("RogueWaves_Crest32"), RWDialog.Teal));
+        cards.Add(RWDialog.Card("New", "New campaign", "Start a new campaign: ten maps across a fresh sea chart", RWAssets.Sprite("RogueWaves_Crest"), RWDialog.Teal));
         if (saved != "")
             cards.Add(RWDialog.Card("Continue", "Continue", saved, RWAssets.Sprite("RogueWaves_Retry"), RWDialog.Teal));
         Bla_Ui_Confirmation.Entry back = RWDialog.Card("Back", "Back", "", Icon("Back"), new Color(0.3568f, 0.3647059f, 0.4117647f, 1f));
@@ -274,6 +284,48 @@ public static class RWAssets
             if (string.Equals(t.name, name, StringComparison.OrdinalIgnoreCase))
                 return Sprite(t.name);
         return null;
+    }
+
+    // Screen pixels per canvas unit on this canvas at rest (the player's UI scale: 3 at 2560x1440), from the root's size.
+    public static float ScreenPixels(Canvas canvas)
+    {
+        RectTransform root = canvas != null ? canvas.rootCanvas.transform as RectTransform : null;
+        return root != null && root.rect.height > 0f ? Screen.height / root.rect.height : 0f;
+    }
+
+    // Pixel art in a UI box, crisp: every art pixel covers the same whole number of screen pixels, and the picture's corner
+    // sits a whole number of screen pixels from its parent's corner. A picture stretched to an uneven size (12 px in a
+    // 16-unit box at a UI scale of 3 is 4 screen pixels to one art pixel in some columns and 3 in others) changes which
+    // columns are wide with every sub-pixel step of a slide or tween, and reads as jitter (pitfall #156). A picture that
+    // fits the box draws one unit per art pixel, or a whole multiple of that while the multiple still fits (an 8 px icon
+    // fills a 16-unit box), as near as whole screen pixels allow at an uneven UI scale; a larger one at the most whole screen
+    // pixels per art pixel that still fit the box, and one too large for even one screen pixel each is only fitted.
+    // pixels: screen pixels per canvas unit at the picture (ScreenPixels, times any scale between). The picture keeps its
+    // middle, is pinned to its parent's corner, and may be crisped again.
+    public static void Crisp(UnityEngine.UI.Image image, float box, float pixels)
+    {
+        if (image == null || image.sprite == null || pixels <= 0f)
+            return;
+        RectTransform rt = image.transform as RectTransform, parent = rt != null ? rt.parent as RectTransform : null;
+        Rect art = image.sprite.rect;
+        float big = Mathf.Max(art.width, art.height);
+        if (parent == null || big <= 0f)
+            return;
+        int most = Mathf.FloorToInt(box * pixels / big + 0.001f);
+        if (most < 1)
+        {
+            image.preserveAspect = true;
+            return;
+        }
+        int n = big <= box ? Mathf.Min(most, Mathf.Max(1, Mathf.RoundToInt(pixels)) * Mathf.FloorToInt(box / big)) : most;
+        Vector2 size = new Vector2(art.width, art.height) * (n / pixels);
+        Vector2 middle = (Vector2)rt.localPosition + Vector2.Scale(rt.rect.size, new Vector2(0.5f, 0.5f) - rt.pivot) - parent.rect.min;
+        Vector2 corner = middle - size * 0.5f;
+        corner = new Vector2(Mathf.Round(corner.x * pixels), Mathf.Round(corner.y * pixels)) / pixels;
+        image.preserveAspect = false;
+        rt.anchorMin = rt.anchorMax = Vector2.zero;
+        rt.sizeDelta = size;
+        rt.anchoredPosition = corner + Vector2.Scale(size, rt.pivot);
     }
 
     public static Texture2D Texture(string name)

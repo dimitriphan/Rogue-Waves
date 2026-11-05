@@ -187,11 +187,12 @@ public static class SpoolServer
     }
 
     // A tuft on the ground: it joins one within half a tile while the sum fits one tuft; larger amounts become several.
-    public static void Drop(Vector3 at, int amount)
+    // 'via': a dying building's own entity, whose messages still go out (Ondespawn runs before the game despawns it). With
+    // no radio at all the Thread still lies there for a carrier, unseen, instead of vanishing (MAX SPL-10: a last Stash
+    // falling while Spool was down spilled nothing).
+    public static void Drop(Vector3 at, int amount, Entity_Master via = null)
     {
-        Entity_Master radio = Radio();
-        if (radio == null)
-            return;
+        Entity_Master radio = Radio() ?? via;
         int left = amount, n = 0;
         while (left > 0)
         {
@@ -215,7 +216,7 @@ public static class SpoolServer
             left -= put;
             n++;
             Dropped += put;
-            ModKitUtil.Vis(radio, "Spool_Tuft", d.Pos, d.Id * 16 + d.Amount);
+            ModKitUtil.Vis(radio, "Spool_Tuft", d.Pos, d.Id * 16 + d.Amount);   // nothing when there is no radio
         }
     }
 

@@ -111,6 +111,14 @@ public static class RWDifficulty
         RWLog.Info("map " + map + " for " + players + " players: foes x" + RWUtil.F(scale) + ", intervals x" + RWUtil.F(interval) + ", health +" + RWUtil.F(LastHealth * 100f) + "%, modifiers [" + LastModifiers + "]");
     }
 
+    // Every machine, with the content: a foe's synced upgrade list names the map's health upgrade, and a client that has
+    // none registered logs "Could not retrieve Upgrade/..." each time the foe is selected (kit docs/13 §7, MAX P1-7).
+    public static void BuildHealth()
+    {
+        for (int map = 2; map <= RWChart.Rows; map++)
+            Health(map);
+    }
+
     static Upgradeproperties Health(int map)
     {
         if (map <= 1)

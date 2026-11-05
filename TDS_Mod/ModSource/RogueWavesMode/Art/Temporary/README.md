@@ -10,8 +10,8 @@ opaque, no outline, lit from the upper left, one object each.
 | `RogueWaves_RisingWater.png` | a teal swell with a foam crest, an arrow rising beside it | weather Rising Water (scope 04) | **wired**: `Code/08_Icons.cs` rows; compiled, not yet seen |
 | `RogueWaves_Quickening.png` | three foam chevrons over running water | weather Quickening Current | **wired** (same) |
 | `RogueWaves_Nesting.png` | a coral egg in a sand nest | weather Nesting Ground | **wired** (same) |
-| `RogueWaves_Crest.png` | the crest: one breaking curl with a Foam rim | the mode's icon (`STYLE.md` "The crest") | **wired** (2026-11-03): `Code/08_Icons.cs` |
-| `RogueWaves_Crest32.png` | the crest at 32 x 32, drawn, not scaled | the main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`) and the New campaign card | **seen in game** (`Code/12_Menu.cs`) |
+| `RogueWaves_Crest.png` | the crest: one breaking curl with a Foam rim | the mode's icon (`STYLE.md` "The crest"); since 2026-11-05 also the New campaign card and the cards' fallback | **wired** (2026-11-03): `Code/08_Icons.cs` |
+| `RogueWaves_Crest32.png` | the crest at 32 x 32, drawn, not scaled | the main menu's Rogue Waves button (`docs/mode/MAIN_MENU_START.md`), drawn 32 units, one per pixel, in Play's 48-unit box (pitfall #156) | **seen in game** (`Code/12_Menu.cs`) |
 | `RogueWaves_PureAura.png` | a Pearl drop with its blue and pink sheen | the Pure Aura counter and rewards | **seen in game** (2026-11-03) |
 | `RogueWaves_Depth.png` | a coral sounding lead on its line | Depth (ascension) marks | wired; waits for Depth, which is on hold |
 | `RogueWaves_Retry.png` | a coral and foam life ring | the campaign's retries, the Continue card | **seen in game** (2026-11-03) |

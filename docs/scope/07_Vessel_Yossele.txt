@@ -14,7 +14,7 @@
 			- Accent colour: ~leaf green~
 			- Sprites: ! NEEDS YOUR FULL SPRITE SHEET: idle, move, back view, fall, land, attack. The first release waits for it ! /~ What the build takes: idle and move in one sheet of 32 px cells (rows idle front right, front left, back right, back left, then move the same, 6 frames each), attack 32 px cells (4 frames, the same four rows); fall and land are 32 px too. A file of the same name and size in TDS_Mod/ModSource/Yossele/Art/ replaces the temporary one with no code change. The temporary sheets: docs/TEMP_ART.md \
 			- Lore: / Lore comes once every character is fully realized \
-			- Status: Built as 0.2.0-dev from this sheet with temporary art; passes its PC self-test, 173 of 173 in the latest round, and is the build installed for your play test. /~ What was built and what each default is: TDS_Mod/ModSource/Yossele/DESIGN.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
+			- Status: Built as 0.2.0-dev from this sheet with temporary art; passes its PC self-test, 177 of 177 in the latest round, and is the build installed for your play test. /~ What was built and what each default is: TDS_Mod/ModSource/Yossele/DESIGN.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
 
 		[Vessel Stats]
 			- Attack: ranged, shoots a green laser from their mouth.
@@ -33,7 +33,7 @@
 			- Does: spends fertilizer to speed up a tower's [Growth].
 			- Numbers: ~+1 [Growth] stage for 1 fertilizer~
 			- Target: ~one of your Yossele buildings~ /~ The hotkey with nothing picked takes the nearest one that can still grow \
-			- Range: ~6~ tiles
+			- Range: ~6~ tiles /~ The hotkey's own pick; a building you click is fertilized at any distance \
 			- Cooldown: ~0.5~ seconds /~ Fertilizer is the limit \
 			- Keys: ~6 / 7~
 			- Unlocked: by a [Direction], and its button doesn't show until Yossele has it. -> 11_Directions.txt {Compost Bin}
@@ -198,7 +198,7 @@
 
 				% 2:{Natural Remedy} Vines heal buildings slowly
 					- In-game line: ~Vines mend buildings~
-					- Numbers: 0.5 health per second per [Growth].
+					- Numbers: 0.5 health per second per [Growth]. / A building that hasn't grown yet counts as stage 1 \
 					- Cost: ~Blue 90~
 				% 2:{Opportunistic Carnivore} Vines siphon health from enemies standing on them, slowly healing {Overgrown Stonehenge}.
 					- In-game line: ~Vines drain foes to mend the stones~
@@ -220,7 +220,7 @@
 
 				% 4:{Monument} Gains damage reduction and cannot receive debuffs from foes
 					- In-game line: Withstand the test of time
-					- Numbers: 20% damage reduction, cannot receive debuffs from foes.
+					- Numbers: 20% damage reduction, cannot receive debuffs from foes. / A building's own damage reduction and the strongest aura add up to at most 90% \
 					- Cost: Blue 2000 + Yellow 1500
 
 		(Economy):{Pachira Sapling} / Money Tree Sapling \
@@ -244,7 +244,7 @@
 			[Upgrades]
 				% 1:{Focused Roots} Collects aura much faster, but can only select 1 node
 					- In-game line: ~Mines one node much faster~
-					- Numbers: 1.8 times the mining speed
+					- Numbers: +80% mining speed / Adds to Growth's and the other mining bonuses, as the game adds percentages \
 					- Cost: ~Yellow 30~
 				% 1:{Sustaining Practices} Heals itself slowly based on how many mining nodes are in range, as well as [Growth] level.
 					- In-game line: ~Mends itself from the ore around it~
@@ -300,7 +300,7 @@
 			- Orders: ~walks to the nearest foe within 4 tiles, else back to where it rose~
 			- Leash: ~5 tiles from where it rose~
 			- Cost: ~free~
-			- Look: resembles a {Snoble} /~ Until your sprite: a temporary one, a pale puffball with dot eyes like a Snoble and orange cordyceps clubs (docs/TEMP_ART.md). The first release ships it unless you send your own: 24 px cells, idle 6, move 6, attack 4 frames \
+			- Look: resembles a {Snoble} /~ Until your sprite: a temporary one at Snoble size, your pick of the ten versions: a cream puff with two forked orange growths like little antlers, charging head first (docs/TEMP_ART.md). The first release ships it unless you send your own: 24 px cells, idle 6, move 6, attack 4 frames \
 
 		[Directions] / Written in 11_Directions.txt under Yossele \
 			- {Compost Bin}, {Dandelion Season}, {Mother of Mushrooms}

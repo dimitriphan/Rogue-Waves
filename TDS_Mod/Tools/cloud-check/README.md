@@ -15,6 +15,7 @@ compile errors early and let you look at the generated sprites, models and sound
 | `new_vessel.py <TDS_Vessel_Creator> <TDS_Mod> <Name>` | Port of `tools/New-Vessel.ps1`. | New-Vessel.ps1 |
 | `save_fuzz.py [RogueWavesMode/Code]` | Copies the mode's save readers and writers out of its code, puts a dictionary in place of the game's save, and runs `98_SaveFuzz.cs` (F1-F7) on them with mono; exits 1 on a failure. Run from `TDS_Mod/ModSource`. | The mode's self-test F1-F7, on the real save |
 | `map_view.py save\|near\|spots ...` | Reads the self-test's map snapshot (`TEST MAP` lines, kit 1.5): saves it with a top-down PNG, prints the ground around a tile, or lists the tiles `ModKitTest.Spot` would try. | Seeing the test map before a PC round |
+| `scope_upgrades.py <scope.txt> <02_Data.cs>` | Matches every `% N:{Name}` upgrade in a vessel's scope to the `U(...)` entry of the same name: level (scope N = tier N+1), cost, in-game line and Leads to; `V=1` adds the Numbers line and the parameters side by side. Used by `docs/reports/SCOPE_CODE_AUDIT_2026-11-05.md`. | Reading a vessel's scope against its code by hand |
 
 Debug builds: pass the defines like the PowerShell script, e.g. `"ARGO_SELFTEST,ARGO_SHOTS"`.
 

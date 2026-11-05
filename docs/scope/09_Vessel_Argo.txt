@@ -6,84 +6,84 @@
 		# Drill rig is economy mixed with crowd control / Slowing designated areas \
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. /~ No sonar \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
-		/~ Laid out in the Vessel template, 15_Templates.txt. Every ~ value is what the built Argo 2.0 uses, so all of them wait on your balance pass \
+		/~ Laid out in the Vessel template, 15_Templates.txt. Every value is what the built Argo 2.0 uses; you took them as defaults, and they still wait on your balance pass \
 		/~ Reviewed 2026-11-04 (docs/reports/ARGO_REVIEW_2026-11-04.md): every line the review changed ends with a "Review 2026-11-04: was ..." note, and is not built yet \
 
 		[Identity]
 			- Title: Deep Sea Diver
-			- Difficulty: ~Intermediate~
-			- Archetype: ~No walls; control the field instead. Slow foes, pin them, reel them in, and blast what's stuck~
-			- In-game line: ~Sturdy, slow melee, hits two at once~
-			- Look: ~bulky dome-helmeted diver with hands touching the body~
-			- Towers look: ~low-poly and sleek: brass domes, portholes and rivets on the top and front faces~
-			- Accent colour: ~sea blue~
-			- Sprites: ~as shipped in the earlier ArgoMod~
-			- Lore: ~Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough~.
-			- Status: Argo 2.0.1 designed, built, passed its PC self-test (142 pass, 0 fail) and played on a second player's machine. The 2026-11-04 review's changes below are not built yet. Ships only inside the Rogue Waves pack.
+			- Difficulty: Intermediate
+			- Archetype: No walls; control the field instead. Slow foes, pin them, reel them in, and blast what's stuck
+			- In-game line: Sturdy, slow melee, hits two at once
+			- Look: bulky dome-helmeted diver with hands touching the body
+			- Towers look: low-poly and sleek: brass domes, portholes and rivets on the top and front faces
+			- Accent colour: sea blue
+			- Sprites: as shipped in the earlier ArgoMod
+			- Lore: Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough.
+			- Status: Argo 2.0.1 designed, built, passes its PC self-test, 144 of 144 in the latest round, and played on a second player's machine. The 2026-11-04 review's changes below are not built yet. Ships only inside the Rogue Waves pack.
 
 		[Vessel Stats]
-			- Attack: ~melee, with reach~
-			- Health: ~65~ /~ The top of the 25-65 band: a bulky melee \
-			- Health regen: ~0~ per second
-			- Speed: ~2.25~
-			- Damage: ~4~
-			- Range: ~1.75~ tiles
-			- Attack speed: ~0.4~
-			- Build range: ~2~ tiles
-			- Sell rate: ~50%~
-			- Second hit: ~every swing also hits a second foe within 1.25 tiles of the first, for 60% damage~
-			- Special rule: {~Fathoms~} ~Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never traps~
-			- Slows: ~one slow per source on a foe, renewed while it lasts, never stacked with itself; slows from different sources add up, down to 10% of a foe's speed~ /~ Review 2026-11-04: the code stacks Deep Water's and the Tremor's own re-ticks, so a 30% pool slows 60%. This line asks the next build to fix it \
-			- Pins: ~Anchor Line, Kelp Bed, Trench and Mantle Tap pin; a pinned foe is held in place, twice as long in Deep Water~ /~ Review 2026-11-04: Kelp Bed and Trench held foes without pinning them, so Salt Sting, Bedrock and the Scatter Cannon's pin bonus had almost nothing to read \
+			- Attack: melee, with reach
+			- Health: 65 /~ The top of the 25-65 band: a bulky melee \
+			- Health regen: 0 per second
+			- Speed: 2.25
+			- Damage: 4
+			- Range: 1.75 tiles
+			- Attack speed: 0.4
+			- Build range: 2 tiles
+			- Sell rate: 50%
+			- Second hit: every swing also hits a second foe within 1.25 tiles of the first, for 60% damage
+			- Special rule: {Fathoms} Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never traps
+			- Slows: one slow per source on a foe, renewed while it lasts, never stacked with itself; slows from different sources add up, down to 10% of a foe's speed /~ Review 2026-11-04: the code stacks Deep Water's and the Tremor's own re-ticks, so a 30% pool slows 60%. This line asks the next build to fix it \
+			- Pins: Anchor Line, Kelp Bed, Trench and Mantle Tap pin; a pinned foe is held in place, twice as long in Deep Water /~ Review 2026-11-04: Kelp Bed and Trench held foes without pinning them, so Salt Sting, Bedrock and the Scatter Cannon's pin bonus had almost nothing to read \
 
 		(Offense 1):{Scatter Cannon}
 			- Shoots close range blasts that are effective against hordes /~ A cone of 6 pellets \
 			- Deals bonus damage to enemies affected by debuffs /~ +50% to slowed enemies, +100% to pinned ones \
 			[Stats]
-				- In-game line: ~Short range, sprays a cone of pellets, hits slowed foes harder and pinned foes much harder~
-				- Health: ~40~, +~25~ per level
-				- Damage: ~1.25~ per pellet, +~0.25~ per level
-				- Attack speed: ~0.6~
-				- Range: ~4.5~ tiles
-				- Projectile speed: ~16~
-				- Pellets: ~6~, in a ~50~ degree cone, each piercing ~1~ foe
-				- Debuff bonus: ~+50%~ damage to a slowed foe, ~+100%~ to a pinned foe /~ Review 2026-11-04: was +50% to either. Slows are on almost every foe in Argo's water and Tremor, so the bonus was always on; pins now pay for the play that makes them \
-				- Limit: ~none~
-				- Cost: ~Red 30~
+				- In-game line: Short range, sprays a cone of pellets, hits slowed foes harder and pinned foes much harder /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+				- Health: 40, +25 per level
+				- Damage: 1.25 per pellet, +0.25 per level
+				- Attack speed: 0.6
+				- Range: 4.5 tiles
+				- Projectile speed: 16
+				- Pellets: 6, in a 50 degree cone, each piercing 1 foe
+				- Debuff bonus: +50% damage to a slowed foe, +100% to a pinned foe /~ Review 2026-11-04: was +50% to either. Slows are on almost every foe in Argo's water and Tremor, so the bonus was always on; pins now pay for the play that makes them \
+				- Limit: none
+				- Cost: Red 30
 			[Upgrades]
 				% 1:{Wide Bore} A wider cone with two more pellets
-					- In-game line: ~A wider cone with two more pellets~
-					- Numbers: ~+2~ pellets; ~cone +10 degrees~ /~ Review 2026-11-04: was cone +25. A 75 degree cone sends more pellets off a lane than the two new ones add, so Wide Bore cost a Scatter 20% of its hits on a single lane \
-					- Cost: ~Red 30~
+					- In-game line: A wider cone with two more pellets
+					- Numbers: +2 pellets; cone +10 degrees /~ Review 2026-11-04: was cone +25. A 75 degree cone sends more pellets off a lane than the two new ones add, so Wide Bore cost a Scatter 20% of its hits on a single lane \
+					- Cost: Red 30
 				% 1:{Double Barrel} Loads extra volleys while idle, and fires them all at once
-					- In-game line: ~Loads extra volleys while idle, and fires them all at once~
-					- Numbers: ~stores a volley every 2 seconds while no foe is in range, up to 3~ /~ Review 2026-11-04: was 1 volley, about one extra volley a Tide. Three make it the opener for a Scatter placed behind the water \
-					- Cost: ~Red 30~
+					- In-game line: Loads extra volleys while idle, and fires them all at once /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- Numbers: stores a volley every 2 seconds while no foe is in range, up to 3 /~ Review 2026-11-04: was 1 volley, about one extra volley a Tide. Three make it the opener for a Scatter placed behind the water \
+					- Cost: Red 30
 
 				% 2:{Grapeshot} Three more pellets in every volley
-					- In-game line: ~Three more pellets in every volley~
-					- Numbers: ~+3~ pellets
-					- Cost: ~Red 90~
+					- In-game line: Three more pellets in every volley
+					- Numbers: +3 pellets
+					- Cost: Red 90
 				% 2:{Barnacle Shot} Pellets stick and slow what they hit
-					- In-game line: ~Pellets stick and slow what they hit~
-					- Numbers: ~slows by 25% for 1.5 seconds~
+					- In-game line: Pellets stick and slow what they hit
+					- Numbers: slows by 25% for 1.5 seconds
 					- Leads to: {Ironclad}
-					- Cost: ~Red 60 + Blue 40~
+					- Cost: Red 60 + Blue 40
 
 				% 3:{Pressure Rounds} Harder pellets that punch through one more enemy
-					- In-game line: ~Harder pellets that punch through one more enemy~
-					- Numbers: ~pierce +1~; ~pellet damage +0.5~
-					- Cost: ~Red 350~
+					- In-game line: Harder pellets that punch through one more enemy
+					- Numbers: pierce +1; pellet damage +0.5
+					- Cost: Red 350
 				% 3:{Ironclad} Increases health greatly
-					- In-game line: ~Health greatly increased~
-					- Numbers: ~health x2.5~; ~armour 2: while it lasts, a hit of any size takes 1 from the armour and none from health; healing refills it~
+					- In-game line: Health greatly increased
+					- Numbers: health x2.5; armour 2: while it lasts, a hit of any size takes 1 from the armour and none from health; healing refills it
 					- Leads to: nothing, the branch ends here
-					- Cost: ~Red 250 + Blue 150~
+					- Cost: Red 250 + Blue 150
 
 				% 4:{Broadside} Every few volleys, a full ring of pellets all around
-					- In-game line: ~Every few volleys, a full ring of pellets all around~
-					- Numbers: ~ring of 16 every 4th volley~; ~pellet damage +0.5~
-					- Cost: ~Red 3000~
+					- In-game line: Every few volleys, a full ring of pellets all around
+					- Numbers: ring of 16 every 4th volley; pellet damage +0.5
+					- Cost: Red 3000
 
 		(Offense 2):{Harpoon Gun}
 			- Can spec into long range pure damage, or crowd control /~ The base harpoon pierces a lane and does not pull \
@@ -91,227 +91,222 @@
 			- Damage path: {Long Line}, {Skewer}, {Whaler}, {Leviathan Lance}
 			- Crowd control path: {Tether} slows, {Anchor Line} pins and stuns beside a building, {Reel} pulls in, {Undertow} reels every enemy around the target
 			[Stats]
-				- In-game line: ~Long range, harpoons pierce a line; its upgrades pick damage or crowd control~
-				- Health: ~40~, +~25~ per level
-				- Damage: ~5~, +~2~ per level
-				- Attack speed: ~0.35~
-				- Range: ~6.5~ tiles
-				- Projectile speed: ~18~
-				- Pierce: ~3~ foes
-				- Bosses: ~never moved by a reel or pin~
-				- Limit: ~none~
-				- Cost: ~Red 35~
+				- In-game line: Long range, harpoons pierce a line; its upgrades pick damage or crowd control
+				- Health: 40, +25 per level
+				- Damage: 5, +2 per level
+				- Attack speed: 0.35
+				- Range: 6.5 tiles
+				- Projectile speed: 18
+				- Pierce: 3 foes
+				- Bosses: never moved by a reel or pin
+				- Limit: none
+				- Cost: Red 35
 			[Upgrades]
 				% 1:{Long Line} Reaches farther, and harpoons fly faster
-					- In-game line: ~Reaches farther, and harpoons fly faster~
-					- Numbers: ~range +2 tiles~; ~harpoon speed +4~
+					- In-game line: Reaches farther, and harpoons fly faster
+					- Numbers: range +2 tiles; harpoon speed +4
 					- Leads to: {Skewer}, {Anchor Line}
-					- Cost: ~Red 25~
+					- Cost: Red 25
 				% 1:{Tether} Harpooned foes are slowed
-					- In-game line: ~Harpooned foes are slowed~
-					- Numbers: ~slows every foe hit by 30% for 2 seconds~
+					- In-game line: Harpooned foes are slowed
+					- Numbers: slows every foe hit by 30% for 2 seconds
 					- Leads to: {Anchor Line}, {Reel}
-					- Cost: ~Red 30~
+					- Cost: Red 30
 
 				% 2:{Skewer} Harpoons run through three more enemies
-					- In-game line: ~Harpoons run through three more enemies~
-					- Numbers: ~pierce +3~
+					- In-game line: Harpoons run through three more enemies
+					- Numbers: pierce +3
 					- Leads to: {Whaler}
-					- Cost: ~Red 100~
+					- Cost: Red 100
 				% 2:{Anchor Line} Pins the foe it hits, stunned against a building
-					- In-game line: ~Pins the foe it hits, stunned against a building~
-					- Numbers: ~pins the first foe hit for 1 second~; ~beside a building: stunned for 1 second instead~; ~twice as long in Deep Water~
+					- In-game line: Pins the foe it hits, stunned against a building
+					- Numbers: pins the first foe hit for 1 second; beside a building: stunned for 1 second instead; twice as long in Deep Water
 					- Leads to: nothing, the branch ends here
-					- Cost: ~Red 60 + Blue 50~
+					- Cost: Red 60 + Blue 50
 				% 2:{Reel} Reels the first foe hit toward the gun
-					- In-game line: ~Reels the first foe hit toward the gun~ /~ Review 2026-11-04: the journal page adds "Place it beside or up the lane: a gun by your core pulls foes toward the core" \
-					- Numbers: ~reels the first foe hit 1.5 tiles closer~
+					- In-game line: Reels the first foe hit toward the gun /~ Review 2026-11-04: the journal page adds "Place it beside or up the lane: a gun by your core pulls foes toward the core" \
+					- Numbers: reels the first foe hit 1.5 tiles closer
 					- Leads to: {Twin Line}
-					- Cost: ~Red 60 + Blue 50~
+					- Cost: Red 60 + Blue 50
 
 				% 3:{Whaler} Hits harder, and up to twice as hard against tough enemies
-					- In-game line: ~Hits harder, and up to twice as hard against tough enemies~
-					- Numbers: ~damage +4~; ~up to x2 on big health pools~
+					- In-game line: Hits harder, and up to twice as hard against tough enemies
+					- Numbers: damage +4; up to x2 on big health pools
 					- Leads to: {Leviathan Lance}
-					- Cost: ~Red 450~
+					- Cost: Red 450
 				% 3:{Twin Line} A second harpoon follows, reeling its own foe
-					- In-game line: ~A second harpoon follows, reeling its own foe~
-					- Numbers: ~2~ harpoons per shot, each reels
+					- In-game line: A second harpoon follows, reeling its own foe
+					- Numbers: 2 harpoons per shot, each reels
 					- Leads to: {Undertow}
-					- Cost: ~Red 350~
+					- Cost: Red 350
 
 				% 4:{Leviathan Lance} Every few shots, a huge lance that runs through everything in its path
-					- In-game line: ~Every few shots, a huge lance that runs through everything in its path~
-					- Numbers: ~every 5th shot: x2.5 damage~; ~pierces all, twice the range~
-					- Cost: ~Red 3500~
+					- In-game line: Every few shots, a huge lance that runs through everything in its path
+					- Numbers: every 5th shot: x2.5 damage; pierces all, twice the range
+					- Cost: Red 3500
 				% 4:{Undertow} Every harpoon reels the foes around its target
-					- In-game line: ~Every harpoon reels the foes around its target~
-					- Numbers: ~foes within 1.5 tiles of the reeled one are reeled 1.5 tiles too~
-					- Cost: ~Red 1750 + Blue 1750~
+					- In-game line: Every harpoon reels the foes around its target
+					- Numbers: foes within 1.5 tiles of the reeled one are reeled 1.5 tiles too
+					- Cost: Red 1750 + Blue 1750
 
 		(Trap):{Deep Water}
 			- Slowing trap that can combine with harpoon gun or drill rig /~ A pinned enemy in Deep Water is held twice as long. A tremor touching a pool spreads through every connected pool \
 			- Can be extended like Fie's wall /~ FLOOD adds a pool next to it \
-			- FLOOD: ~a button on the Deep Water (keys 1 / Quickaction, like Fie's Grow Wall) that adds a pool on a tile next to it or next to one of its pools; connected pools act as one~
+			- FLOOD: a button on the Deep Water (keys 1 / Quickaction, like Fie's Grow Wall) that adds a pool on a tile next to it or next to one of its pools; connected pools act as one
 			[Stats]
-				- In-game line: ~Walk-through pool that slows foes inside. FLOOD adds a pool next to it~
-				- Health: ~30~, +~15~ per level
-				- Slow: ~30%~, +~5%~ per level
-				- Pinned foes: ~held twice as long in the water~
-				- FLOOD pool: ~Blue 15~ each
-				- Limit: ~none~
-				- Cost: ~Blue 20~
+				- In-game line: Walk-through pool that slows foes inside. FLOOD adds a pool next to it
+				- Health: 30, +15 per level
+				- Slow: 30%, +5% per level
+				- Pinned foes: held twice as long in the water
+				- FLOOD pool: Blue 15 each
+				- Limit: none
+				- Cost: Blue 20
 			[Upgrades]
 				% 1:{Undercurrent} Stronger slow
-					- In-game line: ~Stronger slow~
-					- Numbers: ~slow +10%~
-					- Cost: ~Blue 20~
+					- In-game line: Stronger slow
+					- Numbers: slow +10%
+					- Cost: Blue 20
 				% 1:{Brine} Damage over time
-					- In-game line: ~Foes inside take damage over time~
-					- Numbers: ~0.5~ damage a second
+					- In-game line: Foes inside take damage over time
+					- Numbers: 0.5 damage a second
 					- Leads to: {Salt Sting}
-					- Cost: ~Blue 25~
+					- Cost: Blue 25
 
 				% 2:{Kelp Bed} Catch enemies on entering
-					- In-game line: ~Foes are pinned for a moment on entering~
-					- Numbers: ~pins a foe 0.5 seconds as it wades in, so 1 second in the water~ /~ Review 2026-11-04: was a 0.75 second hold that did not count as a pin \
-					- Cost: ~Blue 80~
+					- In-game line: Foes are pinned for a moment on entering /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- Numbers: pins a foe 0.5 seconds as it wades in, so 1 second in the water /~ Review 2026-11-04: was a 0.75 second hold that did not count as a pin \
+					- Cost: Blue 80
 				% 2:{Salt Sting} Brine stings pinned foes harder
-					- In-game line: ~Brine stings pinned foes harder~
-					- Numbers: ~pinned foes take double brine (0.5 a second without Brine)~
+					- In-game line: Brine stings pinned foes harder
+					- Numbers: pinned foes take double brine (0.5 a second without Brine)
 					- Leads to: {Crushing Depth}
-					- Cost: ~Blue 70 + Red 30~
+					- Cost: Blue 70 + Red 30
 
 				% 3:{Abyss} FLOOD fills two tiles at once
-					- In-game line: ~FLOOD fills two tiles at once, and the water runs deeper~
-					- Numbers: ~FLOOD adds a second pool for free~; ~slow +10%~ /~ Review 2026-11-04: the slow is new. A free pool saves Blue 15, so Abyss alone paid back after 17 FLOODs \
+					- In-game line: FLOOD fills two tiles at once, and the water runs deeper /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- Numbers: FLOOD adds a second pool for free; slow +10% /~ Review 2026-11-04: the slow is new. A free pool saves Blue 15, so Abyss alone paid back after 17 FLOODs \
 					- Leads to: nothing, the branch ends here
-					- Cost: ~Blue 260~
+					- Cost: Blue 260
 				% 3:{Crushing Depth} More damage taken
-					- In-game line: ~Foes inside take more damage~
-					- Numbers: ~+15%~ damage taken from everything
-					- Cost: ~Blue 300~
+					- In-game line: Foes inside take more damage
+					- Numbers: +15% damage taken from everything
+					- Cost: Blue 300
 
 				% 4:{Trench} Final upgrade that spreads the water each tide and drags enemies under
-					- In-game line: ~Spreads by itself each Tide, and drags foes under again and again~
-					- Numbers: ~two free pools each Tide~; ~every 3 seconds a foe inside is pinned 1 second, so 2 seconds in the water~ /~ Review 2026-11-04: was one pool and a 1 second hold every 6 seconds, for Blue 3000 \
-					- Cost: ~Blue 3000~
+					- In-game line: Spreads by itself each Tide, and drags foes under again and again /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- Numbers: two free pools each Tide; every 3 seconds a foe inside is pinned 1 second, so 2 seconds in the water /~ Review 2026-11-04: was one pool and a 1 second hold every 6 seconds, for Blue 3000 \
+					- Cost: Blue 3000
 
 		(Economy/Defense):{Drill Rig}
 			- Mines ore while also creating slowing tremors in targeted location. Tremor size increases per tide. /~ AIM picks where the tremor goes. Each tide sinks a Fathom, up to 5 \
-			- AIM: ~a button that places the Drill Rig's Tremor anywhere within its range~
-			- Fathoms: ~every Tide it stands through it sinks a Fathom, down to Fathom 5: each one mines faster and harder, and widens and strengthens the Tremor~
+			- AIM: a button that places the Drill Rig's Tremor anywhere within its range
+			- Fathoms: every Tide it stands through it sinks a Fathom, down to Fathom 5: each one mines faster and harder, and widens and strengthens the Tremor
 			[Stats]
-				- In-game line: ~Mines ore nearby and sinks deeper each Tide; AIM places its Tremor, which slows foes~
-				- Health: ~40~, +~25~ per level
-				- Damage: ~0.5~ / Mining \
-				- Attack speed: ~0.25~
-				- Range: ~5~ tiles / How far AIM can place the Tremor \
-				- Ore reach: ~2~ tiles
-				- Tremor: ~2~ tiles radius, slows ~20%~
-				- Each Fathom: ~+75%~ ore per strike, ~+10%~ strikes per second, ~+0.4~ tiles Tremor, ~+4%~ Tremor slow /~ Review 2026-11-04: a strike breaks at most one share of ore, which it reaches at Fathom 3; below that only the speed adds. On a Red node: 30 aura a Tide at Fathom 1, 72 at 3, 84 at 5 (a Mining Hut 18) \
-				- Deepest Fathom: ~5~
-				- Limit: ~none~
-				- Cost: ~Yellow 35~
+				- In-game line: Mines ore nearby and sinks deeper each Tide; AIM places its Tremor, which slows foes
+				- Health: 40, +25 per level
+				- Damage: 0.5 / Mining \
+				- Attack speed: 0.25
+				- Range: 5 tiles / How far AIM can place the Tremor \
+				- Ore reach: 2 tiles
+				- Tremor: 2 tiles radius, slows 20%
+				- Each Fathom: +75% ore per strike, +10% strikes per second, +0.4 tiles Tremor, +4% Tremor slow /~ Review 2026-11-04: a strike breaks at most one share of ore, which it reaches at Fathom 3; below that only the speed adds. On a Red node: 30 aura a Tide at Fathom 1, 72 at 3, 84 at 5 (a Mining Hut 18) \
+				- Deepest Fathom: 5
+				- Limit: none
+				- Cost: Yellow 35
 			[Upgrades]
 				% 1:{Pay Dirt} Foes that fall in its Tremor are dug up for ore
-					- In-game line: ~Foes that fall in its Tremor are dug up for ore~
-					- Numbers: ~2~ mining strikes per foe felled in its Tremor
-					- Cost: ~Yellow 30~
+					- In-game line: Foes that fall in its Tremor are dug up for ore
+					- Numbers: 2 mining strikes per foe felled in its Tremor
+					- Cost: Yellow 30
 				% 1:{Seismic} The Tremor slows harder and reaches farther
-					- In-game line: ~The Tremor slows harder and reaches farther~
-					- Numbers: ~Tremor slow +10%~; ~Tremor +0.5 tiles~
+					- In-game line: The Tremor slows harder and reaches farther
+					- Numbers: Tremor slow +10%; Tremor +0.5 tiles
 					- Leads to: {Bedrock}
-					- Cost: ~Yellow 35~ /~ Review 2026-11-04: was Blue 25 + Yellow 10. Argo's Yellow piles up and its Blue runs out on maps without a Blue node, so the Drill's control path is priced in Yellow \
+					- Cost: Yellow 35 /~ Review 2026-11-04: was Blue 25 + Yellow 10. Argo's Yellow piles up and its Blue runs out on maps without a Blue node, so the Drill's control path is priced in Yellow \
 
 				% 2:{Deep Core} Keeps sinking two Fathoms past the usual bottom
-					- In-game line: ~Keeps sinking two Fathoms past the usual bottom~
-					- Numbers: ~deepest Fathom 7~
-					- Cost: ~Yellow 120~
+					- In-game line: Keeps sinking two Fathoms past the usual bottom
+					- Numbers: deepest Fathom 7
+					- Cost: Yellow 120
 				% 2:{Bedrock} Pinning enemies to tremors cause them to take damage over time
-					- In-game line: ~Pinned foes in its Tremor take damage over time~
-					- Numbers: ~1.5~ damage a second to each pinned foe
+					- In-game line: Pinned foes in its Tremor take damage over time
+					- Numbers: 1.5 damage a second to each pinned foe
 					- Leads to: {Fault Line}
-					- Cost: ~Yellow 80 + Red 30~ /~ Review 2026-11-04: was Blue 80 + Red 30 \
+					- Cost: Yellow 80 + Red 30 /~ Review 2026-11-04: was Blue 80 + Red 30 \
 
 				% 3:{Gusher} Once it is deep enough, a gush of ore bursts up at each Tide
-					- In-game line: ~Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is~
-					- Numbers: ~4~ mining strikes per Fathom at once, each Tide; ~from Fathom 3 down~ /~ Review 2026-11-04: was 12 strikes, 12 aura a Tide on a Red node, 23 Tides to pay back Yellow 275. Now 20 at Fathom 5, 28 at Fathom 7 \
-					- Cost: ~Yellow 275~
+					- In-game line: Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- Numbers: 4 mining strikes per Fathom at once, each Tide; from Fathom 3 down /~ Review 2026-11-04: was 12 strikes, 12 aura a Tide on a Red node, 23 Tides to pay back Yellow 275. Now 20 at Fathom 5, 28 at Fathom 7 \
+					- Cost: Yellow 275
 				% 3:{Fault Line} Pulling enemies through tremors cause them to take large burst damage
-					- In-game line: ~Foes reeled through its Tremor take a burst of damage~
-					- Numbers: ~12~ damage to a foe reeled into or across the Tremor
+					- In-game line: Foes reeled through its Tremor take a burst of damage
+					- Numbers: 12 damage to a foe reeled into or across the Tremor
 					- Leads to: nothing, the branch ends here
-					- Cost: ~Yellow 300~ /~ Review 2026-11-04: was Blue 300 \
+					- Cost: Yellow 300 /~ Review 2026-11-04: was Blue 300 \
 
 				% 4:{Mantle Tap} Mines much faster, and its quakes pin every foe in its Tremor
-					- In-game line: ~Mines much faster, and every few seconds a quake pins every foe in its Tremor~
-					- Numbers: ~strikes per second x1.5~; ~every 20 seconds a quake pins foes for 2 seconds~ /~ Review 2026-11-04: was ore per strike x2, which mines nothing more (a strike is already a full share from Fathom 3), and one quake a Tide \
-					- Cost: ~Yellow 3000~
+					- In-game line: Mines much faster, and every few seconds a quake pins every foe in its Tremor /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- Numbers: strikes per second x1.5; every 20 seconds a quake pins foes for 2 seconds /~ Review 2026-11-04: was ore per strike x2, which mines nothing more (a strike is already a full share from Fathom 3), and one quake a Tide \
+					- Cost: Yellow 3000
 
 		(Support):{Miner's Base} / Works similar to Boutman's bouthouse with a limit of 1 \
 			- Summons 2 units that tune towers, repairing and enhancing them. / Port & Starboard \
 			- Can only enhance towers, not traps
-			- PORT and STARBOARD: ~buttons that send that Naut to a tower you click, a teammate's too~
+			- PORT and STARBOARD: buttons that send that Naut to a tower you click, a teammate's too
 			[Stats]
-				- In-game line: ~One per player. Houses Nauts: press PORT or STARBOARD, then click a tower to tune it~
-				- Health: ~50~, +~25~ per level
-				- Units: ~2~ Nauts
+				- In-game line: One per player. Houses Nauts: press PORT or STARBOARD, then click a tower to tune it
+				- Health: 50, +25 per level
+				- Units: 2 Nauts
 				- Limit: 1
-				- Cost: ~Blue 20 + Yellow 15~ /~ Review 2026-11-04: was Blue 35. With Deep Water's Blue 20 it ate the start's 50 Blue, so on Woozy and The Hunt the crew never came in the simulator \
+				- Cost: Blue 20 + Yellow 15 /~ Review 2026-11-04: was Blue 35. With Deep Water's Blue 20 it ate the start's 50 Blue, so on Woozy and The Hunt the crew never came in the simulator \
 			[Upgrades]
 				% 1:{Flippers} Nauts get to their towers much faster
-					- In-game line: ~Nauts get to their towers much faster~
-					- Numbers: ~Naut speed +50%~
-					- Cost: ~Blue 30~
+					- In-game line: Nauts get to their towers much faster
+					- Numbers: Naut speed +50%
+					- Cost: Blue 30
 				% 1:{Old Salts} Nauts tune each kind of Argo tower its own way
-					- In-game line: ~Nauts tune each kind of Argo tower its own way~
-					- Numbers: ~Scatter Cannon: +2 pellets~; ~Harpoon Gun: +2 pierce, reels 1 tile farther~; ~Drill Rig: Tremor slow +10%~
+					- In-game line: Nauts tune each kind of Argo tower its own way
+					- Numbers: Scatter Cannon: +2 pellets; Harpoon Gun: +2 pierce, reels 1 tile farther; Drill Rig: Tremor slow +10%
 					- Leads to: {Overhaul}
-					- Cost: ~Blue 30~
+					- Cost: Blue 30
 
 				% 2:{Overhaul} Nauts patch up the towers they tune
-					- In-game line: ~Nauts patch up the towers they tune~
-					- Numbers: ~repairs 2.5 health a second~
-					- Cost: ~Blue 90 + Yellow 30~
+					- In-game line: Nauts patch up the towers they tune
+					- Numbers: repairs 2.5 health a second
+					- Cost: Blue 90 + Yellow 30
 				% 2:{Calibrate} Tuned towers reach a tile farther
-					- In-game line: ~Tuned towers reach a tile farther~
-					- Numbers: ~tuned towers: range +1 tile~
+					- In-game line: Tuned towers reach a tile farther
+					- Numbers: tuned towers: range +1 tile
 					- Leads to: {Third Mate}
-					- Cost: ~Blue 80 + Yellow 30~
+					- Cost: Blue 80 + Yellow 30
 
 				% 3:{Third Mate} Hires Bosun, a third Naut (the BOSUN button)
-					- In-game line: ~Hires Bosun, a third Naut (the BOSUN button)~
-					- Numbers: ~+1~ Naut
-					- Cost: ~Blue 200 + Yellow 100~
+					- In-game line: Hires Bosun, a third Naut (the BOSUN button)
+					- Numbers: +1 Naut
+					- Cost: Blue 200 + Yellow 100
 				% 3:{Bulkhead} Tuned towers take less damage
-					- In-game line: ~Tuned towers take less damage~
-					- Numbers: ~tuned towers: -25% damage taken~
+					- In-game line: Tuned towers take less damage
+					- Numbers: tuned towers: -25% damage taken
 					- Leads to: nothing, the branch ends here
-					- Cost: ~Blue 250 + Yellow 100~
+					- Cost: Blue 250 + Yellow 100
 
 				% 4:{Full Crew} Tuning is twice as strong, and Nauts dive straight to their tower
-					- In-game line: ~Tuning is twice as strong, and Nauts dive straight to their tower~
-					- Numbers: ~tuning: +40% attack speed~; ~Nauts dive instead of walking~
-					- Cost: ~Blue 2500 + Yellow 500~
+					- In-game line: Tuning is twice as strong, and Nauts dive straight to their tower
+					- Numbers: tuning: +40% attack speed; Nauts dive instead of walking
+					- Cost: Blue 2500 + Yellow 500
 
 		(Minion):{Naut} / Port, Starboard, and Bosun from {Third Mate} \
 			# Small divers from the Miner's Base. Sent to a tower, a Naut tunes it: faster attacks and a slow repair. Knocked out, it swims home.
 			- Made by: {Miner's Base}
-			- Attack: ~none~
-			- Health: ~20~, +~5~ per level
-			- Range: ~1.5~ tiles
-			- Speed: ~1.6~
-			- Tuning: ~+20%~ attack speed and ~0.5~ health per second on the tower, tuned from ~1.75~ tiles away
-			- How many: ~2~, ~3~ with {Third Mate}
-			- Respawn: ~8~ seconds
+			- Attack: none
+			- Health: 20, +5 per level
+			- Range: 1.5 tiles
+			- Speed: 1.6
+			- Tuning: +20% attack speed and 0.5 health per second on the tower, tuned from 1.75 tiles away
+			- How many: 2, 3 with {Third Mate}
+			- Respawn: 8 seconds
 			- Orders: goes to the tower you point at and tunes it
-			- Cost: ~free~
+			- Cost: free
 
 		[Directions] / Written in 11_Directions.txt under Argo \
-			- {~Deep Current~}, {~Heavy Salvo~}, {~Chum Bucket~}, {~Pressure Gauge~} /~ Made by Claude \
-
-		[Questions]
-			- 1. Every number here is the built Argo 2.0's, which nobody has balanced yet. ~Keep them until your balance pass~
-			- 2. The 2026-11-04 review's changes (docs/reports/ARGO_REVIEW_2026-11-04.md): take, change or drop each. ~Each stands until you say; the next Argo build picks them up~
-			- 3. The Drill Rig mines about what Yossele's Sapling does, 4 times a Mining Hut. If you take Yossele's P5 (Sapling Attackspeed 0.15), take the Drill's Attackspeed 0.25 down to 0.2 with it? ~No change unless you take P5~
+			- {Deep Current}, {Heavy Salvo}, {Chum Bucket}, {Pressure Gauge} /~ Made by Claude \

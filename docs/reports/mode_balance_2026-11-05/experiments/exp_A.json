@@ -1,0 +1,534 @@
+[
+ {
+  "name": "base smacky purlest",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "base"
+ },
+ {
+  "name": "mode smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode smacky purlest map2",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode smacky purlest map3",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode smacky purlest map5",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode smacky purlest map6",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode smacky purlest map8",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode smacky purlest map9",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10
+ },
+ {
+  "name": "base smacky woozy",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "base"
+ },
+ {
+  "name": "mode smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode smacky woozy map2",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode smacky woozy map3",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode smacky woozy map5",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode smacky woozy map6",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode smacky woozy map8",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode smacky woozy map9",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10
+ },
+ {
+  "name": "base smacky thehunt",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "base"
+ },
+ {
+  "name": "mode smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode smacky thehunt map2",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode smacky thehunt map3",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode smacky thehunt map5",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode smacky thehunt map6",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode smacky thehunt map8",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode smacky thehunt map9",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10
+ },
+ {
+  "name": "base yossele purlest",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "base"
+ },
+ {
+  "name": "mode yossele purlest map1",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode yossele purlest map2",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode yossele purlest map3",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode yossele purlest map4",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode yossele purlest map5",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode yossele purlest map6",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode yossele purlest map7",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode yossele purlest map8",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode yossele purlest map9",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode yossele purlest map10",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10
+ },
+ {
+  "name": "base yossele woozy",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "base"
+ },
+ {
+  "name": "mode yossele woozy map1",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode yossele woozy map2",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode yossele woozy map3",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode yossele woozy map4",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode yossele woozy map5",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode yossele woozy map6",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode yossele woozy map7",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode yossele woozy map8",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode yossele woozy map9",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode yossele woozy map10",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10
+ },
+ {
+  "name": "base yossele thehunt",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "base"
+ },
+ {
+  "name": "mode yossele thehunt map1",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode yossele thehunt map2",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode yossele thehunt map3",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode yossele thehunt map4",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode yossele thehunt map5",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode yossele thehunt map6",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode yossele thehunt map7",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode yossele thehunt map8",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode yossele thehunt map9",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode yossele thehunt map10",
+  "v": "yossele",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10
+ },
+ {
+  "name": "base spool purlest",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "base"
+ },
+ {
+  "name": "mode spool purlest map1",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1
+ },
+ {
+  "name": "mode spool purlest map2",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2
+ },
+ {
+  "name": "mode spool purlest map3",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3
+ },
+ {
+  "name": "mode spool purlest map4",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4
+ },
+ {
+  "name": "mode spool purlest map5",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5
+ },
+ {
+  "name": "mode spool purlest map6",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6
+ },
+ {
+  "name": "mode spool purlest map7",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7
+ },
+ {
+  "name": "mode spool purlest map8",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8
+ },
+ {
+  "name": "mode spool purlest map9",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9
+ },
+ {
+  "name": "mode spool purlest map10",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10
+ }
+]

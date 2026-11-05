@@ -520,3 +520,25 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      Power Bank made `if (Plug == null) return;` skip the very unplug that should have run, so PLUG IN stuck on UNPLUG →
      ask the reference itself (`(object)Plug == null`) where the code must still act on a thing that went (`UloeHeroBrain`);
      `ModKitUtil.Alive` already reads both. Read from code (ULO-1); pitfalls #6 and #63 are the same rule met elsewhere.
+156. **An icon not drawn at a whole number of screen pixels per art pixel jitters as its button moves** (2026-11-05) →
+     the game's UI draws pixel art one canvas unit per art pixel (the main menu's Play picture is 48 px in a 48-unit box,
+     the HUD's command icons and the choice dialog's cards 16 px in 16-unit boxes), and a canvas unit is 3 screen pixels
+     at a UI scale of 3. A 12 px icon in a 16-unit box is 4 screen pixels a pixel, drawn as columns of 4 and 3 that trade
+     places with every sub-pixel step of a slide or a hover tween; the 32 px crest stretched to Play's 48-unit box is 4.5.
+     Dimitri saw the Rogue Waves button "jittering"; pitfall #138's whole-pixel placing of the dialog didn't reach it →
+     a command icon is a 16 px texture with the drawing centred in clear pixels (`ModKitAssets.CommandIcon`, `Pixel`'s
+     box, `Boxed`; kit 1.10); a picture the part sizes itself is sized to whole screen pixels per art pixel with its corner
+     on a whole pixel (`RWAssets.Crisp`: the menu's crest, every card). Read from the game's files (`level1` Main/Play,
+     the HUD's Commandcontainer, `Confirmationbuttonbase`); compiled, not yet seen in game.
+157. **The F-key fix never armed: the vessel it last saw was already destroyed** (2026-11-05) → a dead vessel despawns
+     first and the core respawns the player only after the wait (`Entity_Ai_Main_Core` `Respawn`), so by the time the new
+     vessel shows, the old reference is a destroyed object: `lastHero != null` read false and the respawn was never
+     noticed; the same rule bites `hit.From ?? fallback` (a shooter destroyed while its shot flew stays, and the hit is
+     dropped) → compare references (`ReferenceEquals`, `(object)x`), or test with Unity's `!=` and pick the fallback
+     yourself (`ModKitFocus`, kit 1.11; `YosseleHooks`). Read from code (the 2026-11-05 max review, P1-1, P1-2); the
+     same family as #6, #63 and #155.
+158. **A look sent in a new thing's first frame is mostly lost** (2026-11-05) → `Vis_ClientRpc` raises the client half's
+     `Vis` when it arrives, and a handler added later never hears it; the vessels hook new entities in a scan every
+     0.25 s, and a brain's `Begin` runs about a frame after the spawn (#61), so Argo's and Uloe's build looks and
+     Uloe's Photon pop land before anyone listens → send a first-frame look a moment later, or let the client play it
+     as it first hooks the thing. Read from code (max review ARG-2, ULO-6); not yet seen in game, left for a PC look.

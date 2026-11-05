@@ -297,6 +297,39 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   merges" until the new §2 text is pasted there.
   2026-11-05: every call waiting on Dimitri gathered on one page, 39 questions by theme, each with Claude's default
   (`docs/reports/OPEN_DECISIONS_2026-11-05.md`); answered in its thread, small answers go straight into a PR.
+  2026-11-05: his answers applied (`docs/reports/DECISIONS_APPLIED_2026-11-05.md`): the scope's defaults in 04 and 09-14
+  taken (1,192 tildes removed) and the text answers written; what needs code or art is handed to the queued build
+  thread (B1-B15), art (A1-A4) and the balance sweep (S1-S2). Docs only. His project-files scope copy and the Scope
+  Editor are behind again in 12 files (his word to sync).
+  2026-11-05: synced at his word (project-files scope copy, Scope Editor version 8); Open question 2, Spool's
+  defaults, spelled out as S1-S17 for his answer (`docs/reports/SPOOL_DEFAULTS_2026-11-05.md`).
+  2026-11-05: Spool's defaults answered ("Use all defaults"): scope 08's defaults taken except the four numbers the
+  balance sweep owns; hand-off B16-B19 in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §4.
+  2026-11-05: the scope read against the code a second time (`docs/reports/SCOPE_CODE_AUDIT_2026-11-05.md`): 369
+  checkable rows, 269 MATCH, 93 on the queued lists, 7 unbuilt by design, no new behaviour mismatch; of the first audit's
+  41 rows 18 are resolved and 23 queued. Ten new items: N1-N4 fixed in the scope text (Spool sage green, the picked
+  Cordyfriend, self-test counts, 16's tildes and 15's weather line), N5-N10 for the build and balance threads (B5
+  half built, 47 Direction/Trinket/Cardinal sheets, pairs, B12 is code, the sweep's tilde lines, Leads to). New tool
+  `TDS_Mod/Tools/cloud-check/scope_upgrades.py`. Docs only. His project-files scope copy and the Scope Editor are
+  behind in six files (02, 07, 08, 09, 15, 16; his word to sync).
+  2026-11-05: the jittering button icons fixed (pitfall #156, kit 1.10): every pack icon the game drew stretched (the
+  menu's 32 px crest in Play's 48-unit box, the 12 px command icons and card pictures in 16-unit boxes) now draws a whole
+  number of screen pixels per art pixel: command icons are 16 px boxes (all four vessels and the mode's SHOP, FUND
+  TRANSFER, OBJECTIVE, weathers), the crest is sized to 32 units, and every card's picture is crisped where the dialog is
+  placed; card art uses the 12 px crest and 24 px numbers; the
+  sea chart's weather marks keep their size. Compiled here, not yet seen in game: his eye on the menu, a
+  dialog sliding in, and the HUD's buttons.
+  2026-11-05: the code review at max, at his word (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): every part read
+  against the engine again by a first pass and seven reviewers, 58 findings none of which were known; 35 fixed (the
+  F-key fix that never armed, kit 1.11 and pitfall #157; a skipped staging map replayed forever; campaign Cardinals left
+  free in the lobby; Voice in a Bottle reaching the Bouthouse; 16 self-test checks that couldn't fail), 23 left: three
+  for his word (§5.1), the rest for a PC fact. Pitfall #158 (first-frame looks lost). Compiled here (every part, release
+  and test builds, 0 errors; editors clean), not run on the PC: the next round runs its §6.
+  2026-11-05: the mode's balance reviewed against the base game at his word ("with stacking cardinals and directions,
+  the difficulty should be higher than base game"; `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`): as built every
+  map asks less than a Downpour run and the gap widens (carried power about x3.5 by map 10, foe pressure x1.5); the
+  proposals F1-F5, X1, C1 and P1 wait for his word (scope `04` and `06` numbers are his); the balance simulator sweep
+  thread starts from set S2 with `docs/reports/mode_balance_2026-11-05/`. Simulated here, no code changed.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -323,7 +356,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #156 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes).
+- **Next free numbers:** kit chapter 25, pitfall #159 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -851,6 +884,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/OPEN_DECISIONS_2026-11-05.md` gathers the calls from the code review (§5 B), the scope audit, the quality
   pass, the kit check, the mode polish, the balance reports, testing round 3 and this Part's Open questions: 39
   questions, each with Claude's default, and an appendix of the audit's smaller rows. Docs only.
+- **2026-11-05: his answers applied** (same thread). Scope 04 and 09-14's defaults taken, the text answers written into
+  02, 04, 06-15 and Spool's `DESIGN.md`, the answered [Questions] removed; the hand-off for the build thread, art and the
+  balance sweep in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §3. Docs only.
 
 ### Decisions
 
@@ -1021,6 +1057,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   map list at each load, so a TDS update that adds or drops a map mid-campaign redraws the islands' maps; the rows,
   links, route and retries stay (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §1.4 item 5). Same day, his "sync":
   his project-files scope copy and the Scope Editor brought up to the repository.
+- **2026-11-05: the open decisions answered** (Dimitri, 04:59Z, on `docs/reports/OPEN_DECISIONS_2026-11-05.md`: "10. Cursed
+  should also weaken vessels. 15. Create art for new looks and rename as well. 18. Uloe can share light up to a limit.
+  19. Build all for now. 25. Balance as if you only build one wall, and use recommended for rest. 26. Reduce the amount
+  mined if it is unbalanced. 34. Create art for every missing asset. Use defaults for the rest."). Every answer, and
+  what it needs, in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §1. Among them: the mode polish's nine readings
+  confirmed; MODE-D5 stays; lobby Cardinals lock once a campaign starts; caps of 6 copies and one stock Cardinal kept;
+  Spring Tide and Tidal Mend move to the mode's own effects; a teammate's Uloe Light counts up to 4 a building; Yossele's
+  P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open. Same day, his "sync": the project-files scope copy and the Scope Editor (version 8) brought up to the repository; and
+  question 2 spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`.
 
 ### Open questions
 
@@ -1029,7 +1074,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
-| 2 | Spool: the defaults in its `DESIGN.md` (the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are in scope `08` since 2026-11-04: designed, not built) | built without the new upgrades; every default stands |
+| 2 | Spool: the defaults in its `DESIGN.md`, spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`, answered 2026-11-05 ("Use all defaults"); (the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are in scope `08` since 2026-11-04: designed, not built) | built without the new upgrades; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
@@ -1041,6 +1086,8 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 11 | The quality pass's seven (`docs/reports/QUALITY_PASSES_2026-11-04.md` "Left for Dimitri"): Cardinal stacking (6 working copies of a pack one, 1 of a stock one, against scope `12`'s no limit), scope `14`'s objective kinds, three scope wording points, Spool's Cookie Tin role, his scope copy | the build's caps stand; nothing changes until he picks |
 | 12 | The code review's calls (`docs/reports/CODE_REVIEW_2026-11-04.md`): §5 B: ULO-3 (do two Uloes share Light?), MODE-C2, C3 and C5 (Spring Tide and Tidal Mend on the mode's own mods, not stock scripts), MODE-D5 (the map's extra foe health without the elite look), YOS-2 (Monument's Cleanse and a stock artifact's trade-off), MODE-D9 (lobby Cardinals in a campaign) | the low-risk batch can be built without them; these wait |
 | 13 | All of the above, and every other call waiting on him, on one page (`docs/reports/OPEN_DECISIONS_2026-11-05.md`): 39 questions by theme | each line's `~default~`; nothing changes for a question he skips |
+
+**2026-11-05: questions 1-13 above are answered** (2 at 05:10Z, `DECISIONS_APPLIED_2026-11-05.md` §4) (Decisions 2026-11-05, `docs/reports/DECISIONS_APPLIED_2026-11-05.md`); the rows stay for their history.
 
 ### Phase 5 pieces
 

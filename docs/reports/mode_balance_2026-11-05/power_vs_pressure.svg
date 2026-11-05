@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 440" width="760" height="440" font-family="system-ui, -apple-system, Segoe UI, sans-serif" role="img" aria-labelledby="t d">
+<title id="t">Power carried against power asked, maps 1 to 10</title>
+<desc id="d">Both lines are multiples of the power the base game asks for (1). Where the orange line is above a blue or green one, that map is easier than the base game.</desc>
+<style>svg{--surface:#fcfcfb;--text:#0b0b0b;--text2:#52514e;--grid:#e4e3df;--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--s4:#c98500;--band:#eb6834;} @media (prefers-color-scheme: dark){svg{--surface:#1a1a19;--text:#f0efec;--text2:#c3c2b7;--grid:#3a3936;--s1:#3987e5;--s2:#d95926;--s3:#199e70;--s4:#c98500;--band:#d95926;}} .t{fill:var(--text)} .t2{fill:var(--text2)} .g{stroke:var(--grid)}</style>
+<rect width="100%" height="100%" fill="var(--surface)"/>
+<text class="t" x="64" y="24" font-size="15" font-weight="600">Power carried against power asked, maps 1 to 10</text>
+<text class="t2" x="64" y="42" font-size="12">Multiples of what the base game asks (1 = Downpour to Tide 30), log scale. Shaded: carried, low to high case</text>
+<line class="g" x1="64" x2="610" y1="388.0" y2="388.0" stroke-width="1"/>
+<text class="t2" x="56" y="392.0" font-size="11" text-anchor="end">0.1</text>
+<line class="g" x1="64" x2="610" y1="335.5" y2="335.5" stroke-width="1"/>
+<text class="t2" x="56" y="339.5" font-size="11" text-anchor="end">0.2</text>
+<line class="g" x1="64" x2="610" y1="266.1" y2="266.1" stroke-width="1"/>
+<text class="t2" x="56" y="270.1" font-size="11" text-anchor="end">0.5</text>
+<line class="g" x1="64" x2="610" y1="213.5" y2="213.5" stroke-width="1"/>
+<text class="t2" x="56" y="217.5" font-size="11" text-anchor="end">1</text>
+<line class="g" x1="64" x2="610" y1="161.0" y2="161.0" stroke-width="1"/>
+<text class="t2" x="56" y="165.0" font-size="11" text-anchor="end">2</text>
+<line class="g" x1="64" x2="610" y1="91.6" y2="91.6" stroke-width="1"/>
+<text class="t2" x="56" y="95.6" font-size="11" text-anchor="end">5</text>
+<line x1="64" x2="610" y1="213.5" y2="213.5" stroke="var(--text2)" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text class="t2" x="618" y="217.5" font-size="11">base game</text>
+<text class="t2" x="64.0" y="406" font-size="11" text-anchor="middle">1</text>
+<text class="t2" x="124.7" y="406" font-size="11" text-anchor="middle">2</text>
+<text class="t2" x="185.3" y="406" font-size="11" text-anchor="middle">3</text>
+<text class="t2" x="246.0" y="406" font-size="11" text-anchor="middle">4</text>
+<text class="t2" x="306.7" y="406" font-size="11" text-anchor="middle">5</text>
+<text class="t2" x="367.3" y="406" font-size="11" text-anchor="middle">6</text>
+<text class="t2" x="428.0" y="406" font-size="11" text-anchor="middle">7</text>
+<text class="t2" x="488.7" y="406" font-size="11" text-anchor="middle">8</text>
+<text class="t2" x="549.3" y="406" font-size="11" text-anchor="middle">9</text>
+<text class="t2" x="610.0" y="406" font-size="11" text-anchor="middle">10</text>
+<text class="t2" x="337.0" y="430" font-size="12" text-anchor="middle">Map of the campaign</text>
+<path d="M64.0,175.8 L124.7,147.2 L185.3,129.7 L246.0,117.6 L306.7,108.0 L367.3,99.6 L428.0,95.2 L488.7,93.9 L549.3,93.9 L610.0,93.9 L610.0,153.7 L549.3,157.2 L488.7,160.4 L428.0,162.9 L367.3,167.2 L306.7,171.2 L246.0,176.4 L185.3,183.4 L124.7,191.7 L64.0,203.0Z" fill="var(--band)" fill-opacity="0.14"/>
+<path d="M64.0,192.8 L124.7,169.8 L185.3,156.5 L246.0,145.8 L306.7,139.5 L367.3,132.6 L428.0,127.7 L488.7,123.0 L549.3,119.7 L610.0,119.4" fill="none" stroke="var(--s2)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="64.0" cy="192.8" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 1, carried (mid case): x1.31 of the base game</title></circle>
+<circle cx="124.7" cy="169.8" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 2, carried (mid case): x1.78 of the base game</title></circle>
+<circle cx="185.3" cy="156.5" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 3, carried (mid case): x2.12 of the base game</title></circle>
+<circle cx="246.0" cy="145.8" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 4, carried (mid case): x2.44 of the base game</title></circle>
+<circle cx="306.7" cy="139.5" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 5, carried (mid case): x2.66 of the base game</title></circle>
+<circle cx="367.3" cy="132.6" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 6, carried (mid case): x2.91 of the base game</title></circle>
+<circle cx="428.0" cy="127.7" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 7, carried (mid case): x3.10 of the base game</title></circle>
+<circle cx="488.7" cy="123.0" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 8, carried (mid case): x3.30 of the base game</title></circle>
+<circle cx="549.3" cy="119.7" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 9, carried (mid case): x3.45 of the base game</title></circle>
+<circle cx="610.0" cy="119.4" r="4" fill="var(--s2)" stroke="var(--surface)" stroke-width="2"><title>Map 10, carried (mid case): x3.47 of the base game</title></circle>
+<path d="M64.0,192.8 L124.7,169.8 L185.3,160.9 L246.0,154.8 L306.7,148.6 L367.3,143.4 L428.0,137.8 L488.7,134.1 L549.3,131.9 L610.0,130.5" fill="none" stroke="var(--s4)" stroke-width="2" stroke-linejoin="round" stroke-dasharray="6 4"/>
+<circle cx="64.0" cy="192.8" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 1, carried, price ramp: x1.31 of the base game</title></circle>
+<circle cx="124.7" cy="169.8" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 2, carried, price ramp: x1.78 of the base game</title></circle>
+<circle cx="185.3" cy="160.9" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 3, carried, price ramp: x2.00 of the base game</title></circle>
+<circle cx="246.0" cy="154.8" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 4, carried, price ramp: x2.17 of the base game</title></circle>
+<circle cx="306.7" cy="148.6" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 5, carried, price ramp: x2.36 of the base game</title></circle>
+<circle cx="367.3" cy="143.4" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 6, carried, price ramp: x2.52 of the base game</title></circle>
+<circle cx="428.0" cy="137.8" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 7, carried, price ramp: x2.72 of the base game</title></circle>
+<circle cx="488.7" cy="134.1" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 8, carried, price ramp: x2.85 of the base game</title></circle>
+<circle cx="549.3" cy="131.9" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 9, carried, price ramp: x2.94 of the base game</title></circle>
+<circle cx="610.0" cy="130.5" r="4" fill="var(--s4)" stroke="var(--surface)" stroke-width="2"><title>Map 10, carried, price ramp: x2.99 of the base game</title></circle>
+<path d="M64.0,281.5 L124.7,277.4 L185.3,271.5 L246.0,270.7 L306.7,267.4 L367.3,260.8 L428.0,254.1 L488.7,253.3 L549.3,251.6 L610.0,248.4" fill="none" stroke="var(--s1)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="64.0" cy="281.5" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 1, asked, as built: x0.41 of the base game</title></circle>
+<circle cx="124.7" cy="277.4" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 2, asked, as built: x0.43 of the base game</title></circle>
+<circle cx="185.3" cy="271.5" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 3, asked, as built: x0.47 of the base game</title></circle>
+<circle cx="246.0" cy="270.7" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 4, asked, as built: x0.47 of the base game</title></circle>
+<circle cx="306.7" cy="267.4" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 5, asked, as built: x0.49 of the base game</title></circle>
+<circle cx="367.3" cy="260.8" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 6, asked, as built: x0.54 of the base game</title></circle>
+<circle cx="428.0" cy="254.1" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 7, asked, as built: x0.59 of the base game</title></circle>
+<circle cx="488.7" cy="253.3" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 8, asked, as built: x0.59 of the base game</title></circle>
+<circle cx="549.3" cy="251.6" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 9, asked, as built: x0.60 of the base game</title></circle>
+<circle cx="610.0" cy="248.4" r="4" fill="var(--s1)" stroke="var(--surface)" stroke-width="2"><title>Map 10, asked, as built: x0.63 of the base game</title></circle>
+<path d="M64.0,209.9 L124.7,185.6 L185.3,173.5 L246.0,170.2 L306.7,149.2 L367.3,118.9 L428.0,137.1 L488.7,117.8 L549.3,94.7 L610.0,78.7" fill="none" stroke="var(--s3)" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="64.0" cy="209.9" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 1, asked, proposed s2: x1.05 of the base game</title></circle>
+<circle cx="124.7" cy="185.6" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 2, asked, proposed s2: x1.45 of the base game</title></circle>
+<circle cx="185.3" cy="173.5" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 3, asked, proposed s2: x1.70 of the base game</title></circle>
+<circle cx="246.0" cy="170.2" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 4, asked, proposed s2: x1.77 of the base game</title></circle>
+<circle cx="306.7" cy="149.2" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 5, asked, proposed s2: x2.34 of the base game</title></circle>
+<circle cx="367.3" cy="118.9" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 6, asked, proposed s2: x3.49 of the base game</title></circle>
+<circle cx="428.0" cy="137.1" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 7, asked, proposed s2: x2.74 of the base game</title></circle>
+<circle cx="488.7" cy="117.8" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 8, asked, proposed s2: x3.54 of the base game</title></circle>
+<circle cx="549.3" cy="94.7" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 9, asked, proposed s2: x4.80 of the base game</title></circle>
+<circle cx="610.0" cy="78.7" r="4" fill="var(--s3)" stroke="var(--surface)" stroke-width="2"><title>Map 10, asked, proposed s2: x5.93 of the base game</title></circle>
+<text class="t" x="618" y="82.7" font-size="12">Asked, proposed S2</text>
+<text class="t" x="618" y="123.4" font-size="12">Carried (mid case)</text>
+<text class="t" x="618" y="137.4" font-size="12">Carried, price ramp</text>
+<text class="t" x="618" y="252.4" font-size="12">Asked, as built</text>
+</svg>

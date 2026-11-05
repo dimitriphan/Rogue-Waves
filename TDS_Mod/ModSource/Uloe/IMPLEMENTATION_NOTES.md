@@ -1,5 +1,9 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** a building's brain stops once its entity is Dead (a Bank sold in its spawn frame made a Photon that never went, ULO-4); a lost plug no longer says "The cord snapped" (ULO-7); a Flood Light's cord goes with its node (ULO-10); the self-test asks the mark table itself and says SETUP when a test foe falls. `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
+
+**2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the PLUG IN and AIM buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.
+
 **2026-11-05, the code review's fixes (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`):** the cord tests its plug's reference itself, so a sold or destroyed Power Bank unplugs Uloe and PLUG IN comes back (ULO-1, pitfall #155). The PC check: that report's §5.
 
 **2026-11-04, code simplification (compiled, not yet run in game):** besides the stock route below, the game's own `Entity_Ai_General_Upgrade` runs the buildings' upgrade panels again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged. The self-test now has 145 checks (148 less the deleted route's three). The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (T1, G1, G3, U1, L1).

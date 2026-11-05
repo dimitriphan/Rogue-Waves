@@ -137,6 +137,8 @@ public static class RWSaveFuzz
                 if (RWRun.Players.Count > RWRun.MaxSaved) why = RWRun.Players.Count + " players";
                 foreach (string h in RWRun.Cardinals) if (h == "") why = "an empty Cardinal id";
                 foreach (RWPlayer p in RWRun.Players.Values) if (why == "") why = Sane(p);
+                // Load is what keeps an empty id out (Decode alone may give one, so F2 can't ask this): MAX KIT-8.
+                foreach (KeyValuePair<string, RWPlayer> kv in RWRun.Players) if (why == "" && (kv.Key == "" || kv.Value.Key == "")) why = "an empty player id";
                 RWRun.SavedCrew();
             }
             catch (Exception e) { why = "threw " + e.GetType().Name; }

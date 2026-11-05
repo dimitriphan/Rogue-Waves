@@ -175,7 +175,7 @@
 		- Lasts: / The rest of the campaign, this map only, or a number of Tides \
 		- Stacks: / Yes if a player (or the team) can own more than one, with no limit; no if it leaves the shop once owned \
 		- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
-		- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot and the colour of its card in the shop \
+		- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot. A shop card's colour says whether the buyer can pay \
 		- Cost: / In Pure Aura \
 		- Look: / The object for its icon, readable at 12x12, in the pack's palette \
 		- Clashes: / Anything it should not touch: retries, the leave choice after Tide 15, shop breaks, [Fund Transfer], or none \
@@ -242,7 +242,7 @@
 	- Goes in: 04_Rogue_Waves_Mode.txt, under [Sea Weather]
 
 	{Name of Weather}
-		- In-game line: / The line announced when the map starts \
+		- In-game line: / The line in the boat's map panel when the map is picked; the map's start announces only the weather's name \
 		- Does: / What it changes on the map, in words \
 		- Numbers: / Exact values \
 		- Never on: / Maps that already have it built in \

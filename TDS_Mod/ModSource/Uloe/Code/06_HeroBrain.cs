@@ -284,8 +284,10 @@ public class UloeHeroBrain : MonoBehaviour
             return;
         if (ModKitUtil.Alive(Plug))
             plugAt = ModKitUtil.Pos(Plug);
-        if (!ModKitUtil.Alive(Master) || !ModKitUtil.Alive(Plug) || ModKitUtil.Flat(ModKitUtil.Pos(Plug), ModKitUtil.Pos(Master)) > Reach + UloeData.PlugSlack)
-            Unplug(true);
+        // Only a cord pulled past its length snaps; one whose Bank or Uloe went is just let go (MAX ULO-7).
+        bool both = ModKitUtil.Alive(Master) && ModKitUtil.Alive(Plug);
+        if (!both || ModKitUtil.Flat(ModKitUtil.Pos(Plug), ModKitUtil.Pos(Master)) > Reach + UloeData.PlugSlack)
+            Unplug(both);
     }
 
     // Told again every few seconds, so a player who joins late still sees the cord; a client lets it go if it stops hearing.

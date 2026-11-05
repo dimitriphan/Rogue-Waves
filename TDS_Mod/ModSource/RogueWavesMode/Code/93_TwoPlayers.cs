@@ -1110,7 +1110,11 @@ public static partial class RWTest
         yield return Snap("second_fight2");
         Info("the big fight here", "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
         Info("the big fight here, foes wearing a look each second", string.Join(",", perSecond.ToArray()));
-        Check("N4 in a big fight, a look sent by the host reaches foes on the second player's machine", foesSeen < 20 || mostLooks > 0, "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
+        // A small fight measures nothing: a Setup, not a pass (MAX KIT-7).
+        if (foesSeen < 20)
+            Setup("N4 in a big fight, a look sent by the host reaches foes on the second player's machine", "only " + foesSeen + " foes seen, 20 needed");
+        else
+            Check("N4 in a big fight, a look sent by the host reaches foes on the second player's machine", mostLooks > 0, "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
         Check("N4 a real Tide with both players' things: no error on the second player's machine", hardErrors == hardBefore, (hardErrors - hardBefore) + " errors, the game's own cancels left out");
         yield return Sync("fought");
 

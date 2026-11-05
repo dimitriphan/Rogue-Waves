@@ -288,7 +288,7 @@ public static partial class RWTest
     {
         int noName = 0, noDesc = 0, crest = 0, ranks = 0;
         List<string> crested = new List<string>(), bad = new List<string>();
-        Sprite fallback = RWAssets.Sprite("RogueWaves_Crest32");
+        Sprite fallback = RWAssets.Sprite("RogueWaves_Crest");
         foreach (Upgradeproperties u in RWDirections.List)
         {
             string v, n;
@@ -423,6 +423,30 @@ public static partial class RWTest
         RogueWavesModeKitCombat.Hurt(from, to, damage);
     }
 
+    // Used by 92_Review.cs too, with or without a play build (MAX P1-6).
+    static IEnumerator ToNextMap()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        yield return Until(() => Here(), 40f);
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 90f);
+        yield return new WaitForSecondsRealtime(1f);
+        freeze = false;
+        forcing = false;
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
+        yield return Until(() => RWShop.Stand != null, 120f);
+        freeze = true;
+        yield return new WaitForSeconds(3f);
+    }
+
+    static Entity_Master MineLast(string being, long me)
+    {
+        Entity_Master last = null;
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && e.Entitydata.Value.Owner == me && e.Being.Value.ToString() == being && e.Beingserver != null && !e.Beingserver.Dead) last = e;
+        return last;
+    }
+
 #if MODKIT_PLAY
     // ---------------------------------------------------------------- the HUD by a virtual hand, for the vessels no play build covers
 
@@ -460,20 +484,6 @@ public static partial class RWTest
         yield return RogueWavesModeKitPlay.Cancel();
     }
 
-    static IEnumerator ToNextMap()
-    {
-        Macro_Main boat = Macro_Main.Instance;
-        yield return Until(() => Here(), 40f);
-        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 90f);
-        yield return new WaitForSecondsRealtime(1f);
-        freeze = false;
-        forcing = false;
-        boat.Playgame(true);
-        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
-        yield return Until(() => RWShop.Stand != null, 120f);
-        freeze = true;
-        yield return new WaitForSeconds(3f);
-    }
 
     static IEnumerator GapsBlocked()
     {
@@ -677,13 +687,6 @@ public static partial class RWTest
         return n;
     }
 
-    static Entity_Master MineLast(string being, long me)
-    {
-        Entity_Master last = null;
-        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
-            if (e != null && e.Entitydata.Value.Owner == me && e.Being.Value.ToString() == being && e.Beingserver != null && !e.Beingserver.Dead) last = e;
-        return last;
-    }
 
     static Entity_Master NodeNear(Vector3 at, float within)
     {
@@ -767,10 +770,11 @@ public static partial class RWTest
             Transform sonar = RogueWavesModeKitPlay.CommandButton("SONAR");
             if (sonar != null)
             {
+                int sonarErrors = hardErrors;
                 yield return RogueWavesModeKitPlay.ClickUi(sonar, "SONAR");
                 yield return new WaitForSeconds(1f);
                 yield return RogueWavesModeKitPlay.Capture("argo_sonar");
-                Check("HUD Argo: SONAR presses with no error", true, RogueWavesModeKitPlay.CommandState(vessel));
+                Check("HUD Argo: SONAR presses with no error", hardErrors == sonarErrors, (hardErrors - sonarErrors) + " errors; " + RogueWavesModeKitPlay.CommandState(vessel));   // was Check(true) (MAX KIT-6)
             }
             else Info("hud Argo", "no SONAR on the vessel: " + RogueWavesModeKitPlay.CommandTitles());
         }
@@ -998,7 +1002,11 @@ public static partial class RWTest
             string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - RWCardinals.Cost(stockCard), stockCard + ": '" + first + "', '" + second + "', Pure " + player.Pure);
-            Check("The HUD's Cardinal row keeps to 8, the rest in the run's count", Tds_Multiplayerinfo.Instance.Artifacts.Count <= 8, "row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + ", cardinals " + RWRun.Cardinals.Count);
+            // Only a run holding more than 8 can show the cap (MAX KIT-3: one Cardinal held passed it every time).
+            if (RWRun.Cardinals.Count > 8)
+                Check("The HUD's Cardinal row keeps to 8, the rest in the run's count", Tds_Multiplayerinfo.Instance.Artifacts.Count <= 8, "row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + ", cardinals " + RWRun.Cardinals.Count);
+            else
+                Setup("The HUD's Cardinal row keeps to 8", "the run holds " + RWRun.Cardinals.Count + " Cardinals, 9 needed to test it");
 
             // Each objective failing pays nothing, and the map goes on.
             yield return ObjectiveFails(player, vessel, me);
@@ -1584,6 +1592,9 @@ public static partial class RWTest
         if (foe != null) Hurt(foe, vessel, 100000f);
         ClearFoes();
         freeze = false;
+        // Read once he is down: in the killing hit's own frame the vessel was still his (MAX KIT-2).
+        yield return Until(() => was == null || was.Beingserver == null || was.Beingserver.Dead, 5f);
+        yield return null;
         Check("F key: while Boutman is down, his Boutbro isn't taken for his vessel", RWRun.Vessel(me) == null || RWRun.Vessel(me) == was, RWRun.Vessel(me) != null ? RWRun.Vessel(me).Being.Value.ToString() : "none");
         yield return Until(() => { Entity_Master v = RWRun.Vessel(me); return v != null && v != was && v.Being.Value.ToString() == "Hero_Boutman" && v.Beingserver != null && !v.Beingserver.Dead; }, 180f);
         freeze = true;

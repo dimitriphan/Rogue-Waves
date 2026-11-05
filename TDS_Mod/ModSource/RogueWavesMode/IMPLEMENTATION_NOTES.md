@@ -1,5 +1,28 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the code review at max
+
+Kit 1.11, compiled, not yet run in game (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): a counted chart map ends staging,
+and picking the harbour clears the next map (MODEA-1, -2); an ended campaign's Cardinals leave the lobby list (MODEB-1);
+the staging map's vote shows row 1 on a friend's screen (MODEB-3); Voice in a Bottle's catch-up uses the stock filter
+(MODEB-5); the map's health upgrades are registered on every machine (P1-7); a rejoin restarts only halves stopped at
+the load (P1-3); a purchase shows at once (P1-8). The gaps build compiles without a play build (P1-6); its probes and
+checks for MODE-D1, the F key, the Cardinal row, SONAR, N4 and the save fuzz's F4 can now fail.
+
+## 0.1.0-dev, later (2026-11-05): crisp icons
+
+Compiled, not yet run in game. Dimitri saw the Rogue Waves button's icon, and others like it, jittering: every pack
+picture the game drew stretched to an uneven number of screen pixels per art pixel (pitfall #156). Now:
+
+- **The menu's crest** (`12_Menu.cs`, `RWMenu.Image`): `RWAssets.Crisp` sizes the 32 px crest to 32 units in Play's
+  48-unit box, its corner on a whole screen pixel, instead of stretching it to 48.
+- **Cards** (`11_Dialog.cs`, `RWDialog.Fit`): every card's `Icon` is crisped at the list's own scale once the dialog is
+  placed. Card art that stood at 32 px now uses the 12 px crest (New campaign, a Direction's or Cardinal's fallback,
+  the dialog-look test) and `RWDialog.Number` draws 16 px (wider only for five digits).
+- **Icon_Types** (`08_Icons.cs`): the weathers and the library icons go in as 16 px boxes (`ModKitAssets.Pixel`'s box,
+  `ModKitAssets.Boxed`, kit 1.10), so the HUD's SHOP, FUND TRANSFER and OBJECTIVE draw one unit per pixel; the
+  warning popup draws them three to one. Pure Aura in Icon_Stats stays 12 px. The part's own copy of `Pixel` is gone.
+
 ## 0.1.0-dev, later (2026-11-05): the code review's fixes
 
 Compiled, not yet run in game. The confirmed findings of `docs/reports/CODE_REVIEW_2026-11-04.md` that need

@@ -1,5 +1,9 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+**2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** a Pachira's share of a hit is dealt when the shooter died in flight (P1-2, pitfall #157); FERTILIZE refuses a building not begun or being felled (YOS-5); the self-test's Entangling Roots can FAIL, and "Growth stops at the maximum" counts growth steps. Left: neutral beasts and fruit (his call), fruit merging (YOS-4). `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
+
+**2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the FERTILIZE and COLOUR buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.
+
 **2026-11-05, the code review's fixes (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`):** `SpawnOnTile` writes the asked-for skin again after the spawn, which copies the parent's, so a Grafted fruit shows its colour, while the Henge's vines, asked for no skin, keep the Henge's (YOS-1, pitfall #151); the Cordyfriend cap is checked again at the spawn (YOS-3); kit 1.9 fires no Tide 0, so the log's first Tide is 1 (SHARED-2). The PC checks: that report's §5.
 
 **2026-11-04, code simplification (compiled, not yet run in game):** the game's own `Entity_Ai_General_Upgrade` runs every building's upgrade panel again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged. The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (self-test 173/0, G1, G3, H1, L1).

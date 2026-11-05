@@ -133,25 +133,28 @@ public static class RWIcons
                 Sprite s = RWAssets.Sprite(Library[i, 1]);
                 if (s == null) continue;
                 added++;
-                AddSprite(Library[i, 0] == "Pure_Aura" && stats != null ? stats : types, Library[i, 0], s, Library[i, 2], like);
+                bool stat = Library[i, 0] == "Pure_Aura" && stats != null;
+                AddSprite(stat ? stats : types, Library[i, 0], s, Library[i, 2], like, stat ? 0 : ModKitAssets.CommandIcon);
             }
             foreach (string name in RWContent.IconNames)
             {
                 Sprite s = RWAssets.Sprite(name);
-                if (s != null) { AddSprite(types, name, s, name, like); added++; }
+                if (s != null) { AddSprite(types, name, s, name, like, ModKitAssets.CommandIcon); added++; }
             }
             RWLog.Info("icons: three weathers, " + added + " from the library");   // Run-SelfTests.ps1 -BootCheck waits for this line
         }
         catch (Exception e) { RWLog.Warn("icons: " + e.Message); }
     }
 
-    static void AddSprite(Iconobject into, string name, Sprite sprite, string display, Iconobject.Icon like)
+    // Icon_Types is drawn by the command buttons and the warning popup in 16-unit boxes: a 12 px icon goes in as a clear
+    // 16 px box, so it draws one unit per pixel there (pitfall #156). Icon_Stats' counters draw 12 px as they are.
+    static void AddSprite(Iconobject into, string name, Sprite sprite, string display, Iconobject.Icon like, int box)
     {
         if (into == null || into.Icons == null || into.Icons.ContainsKey(name))
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = sprite;
+        icon.Image = ModKitAssets.Boxed(sprite, box, "Icon_" + name);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = display;
@@ -167,7 +170,7 @@ public static class RWIcons
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = Pixel(rows, "Icon_" + name);
+        icon.Image = ModKitAssets.Pixel(rows, "Icon_" + name, palette, ModKitAssets.CommandIcon);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = RWWeather.Display(w);
@@ -176,24 +179,4 @@ public static class RWIcons
             into.Iconslist.Add(icon);
     }
 
-    static Sprite Pixel(string[] rows, string name)
-    {
-        int h = rows.Length, w = rows[0].Length;
-        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        tex.wrapMode = TextureWrapMode.Clamp;
-        Color32[] px = new Color32[w * h];
-        for (int y = 0; y < h; y++)
-            for (int x = 0; x < w; x++)
-            {
-                Color32 c;
-                px[(h - 1 - y) * w + x] = x < rows[y].Length && palette.TryGetValue(rows[y][x], out c) ? c : new Color32(0, 0, 0, 0);
-            }
-        tex.SetPixels32(px);
-        tex.Apply(false);
-        tex.name = name;
-        Sprite s = Sprite.Create(tex, new Rect(0, 0, w, h), new Vector2(0.5f, 0.5f), 20f, 0, SpriteMeshType.FullRect);
-        s.name = name;
-        return s;
-    }
 }

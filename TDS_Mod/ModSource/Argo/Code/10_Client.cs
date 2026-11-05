@@ -200,7 +200,7 @@ public static class ArgoClient
                     break;
                 case "Argo_Upgrade":
 #if ARGO_SELFTEST && ARGO_REVIEW
-                    ArgoSelfTest.UpgradeSounds++;
+                    ArgoSelfTest.UpgradeSounds++;   // declared under both (96_Review.cs): ARGO_REVIEW alone didn't compile (MAX ARG-7)
 #endif
                     ArgoAssets.Play("Argo_Upgrade", at);
                     break;

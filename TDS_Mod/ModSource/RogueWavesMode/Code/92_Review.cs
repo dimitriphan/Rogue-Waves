@@ -170,7 +170,9 @@ public static partial class RWTest
         reviewLines.Clear();
         yield return ToBreakAfter(29);
         yield return new WaitForSeconds(3f);
-        Finding("MODE-D1", RWVote.Breaks - breaks0 >= 2 || SeenLines("Tide 29 paid") >= 2, "Tide 29's break: Break fired " + (RWVote.Breaks - breaks0) + " times, 'Tide 29 paid' " + SeenLines("Tide 29 paid") + " lines, 'VENDCINT landed' "
+        // The fixed build still sees Break(29) twice (the rewind's repeat is counted before its guard returns), so the reading
+        // is the payout's (MAX KIT-1).
+        Finding("MODE-D1", SeenLines("Tide 29 paid") >= 2 || SeenLines("VENDCINT landed") >= 2, "Tide 29's break: Break fired " + (RWVote.Breaks - breaks0) + " times, 'Tide 29 paid' " + SeenLines("Tide 29 paid") + " lines, 'VENDCINT landed' "
             + SeenLines("VENDCINT landed") + " lines, Pure +" + (player.Pure - pure0) + " (a Tide pays " + RWRun.PerTide + ")");
         // The vote to leave: stay.
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
