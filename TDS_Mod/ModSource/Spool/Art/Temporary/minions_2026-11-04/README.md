@@ -1,6 +1,6 @@
 # Spool: minion versions to pick from (2026-11-04)
 
-Dimitri, 2026-11-04: "Create new sprites for all modded minions. They should be closer in size to snobles. Create at least 10 versions of each." **Everything here is temporary and nothing is wired**: the art in game stays as it is until he picks (`docs/TEMP_ART.md`, "Minion versions"). Picks page: https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX.
+Dimitri, 2026-11-04: "Create new sprites for all modded minions. They should be closer in size to snobles. Create at least 10 versions of each." **Everything here is temporary.** **Picked 2026-11-05 and wired** (copied over `Art/Temporary/`): Thread Head v04 Bobbin, Stitched v06 Patchwork, Dart v01 Long Hood (redrawn a little larger at his note: "Long hood but very slightly larger so details are more apparent"), Seam v06 Button, Mangled v02 Burst. The other versions stay here for reference. Picks page: https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX.
 
 Size: the Snoble is 6-8 px wide and 5-8 px tall in a 12 px cell (measured on the game's sheet, kit `docs/18` section 2). Every version keeps the wired sheet's name, size and frame layout; only the body in each cell is smaller. Drawn by `concept-tools/minions/` (`spool.py`; `build.py` writes this folder).
 
@@ -17,7 +17,7 @@ Today: 15 x 21 px at rest. Sheets: `Spoolhead-Sheet`.
 | v01 | Yarn Ball | 13 x 11 | Today's Thread Head at Snoble size: a lilac ball with wraps, the zipper mouth, gloves, a loose end. |
 | v02 | Pom-pom | 12 x 11 | A fluffy pom-pom with a ragged edge that bounces instead of walking; gloves bob beside it. |
 | v03 | Skein | 14 x 9 | A long twisted skein of yarn lying across two legs, the mouth on its twist. |
-| v04 | Bobbin | 12 x 11 | A wooden bobbin wound thick with purple thread; the mouth opens in the thread between the flanges. |
+| v04 | Bobbin | 12 x 11 | A wooden bobbin wound thick with purple thread; the mouth opens in the thread between the flanges. **Picked.** |
 | v05 | Beanie | 12 x 14 | The ball wears a purple knitted beanie with a white pom-pom that flops as it walks. |
 | v06 | Tangle | 15 x 13 | A messy ball with loops of loose thread sticking out all over it. |
 | v07 | Candy Stripe | 12 x 11 | Wound from purple and white yarn in turns, so it reads like a sweet. |
@@ -36,7 +36,7 @@ Today: 11 x 12 px at rest. Sheets: `Spoolstitched-Sheet`.
 | v03 | Mitten | 8 x 9 | A purple mitten walking on its cuff; the thumb is its arm and swings as it goes. |
 | v04 | Sock Puppet | 10 x 9 | A striped sock standing on its heel, the mouth at the toe. |
 | v05 | Teddy Ears | 10 x 8 | A round plush with two little ears sewn on top, ears flick as it walks. |
-| v06 | Patchwork | 10 x 8 | Sewn from purple and lilac squares with the seams showing. |
+| v06 | Patchwork | 10 x 8 | Sewn from purple and lilac squares with the seams showing. **Picked.** |
 | v07 | Floppy Hood | 10 x 10 | The hood's point is long and flops over to the back; it bounces on every step. |
 | v08 | Boxer | 11 x 8 | A stubby square plush in oversized white gloves; it jabs. |
 | v09 | Tongue Out | 10 x 8 | Round and cheerful with a long tongue that wags as it walks. |
@@ -48,7 +48,7 @@ Today: 8 x 15 px at rest. Sheets: `Spooldart-Sheet`.
 
 | Version | Name | Size at rest | Look |
 | --- | --- | --- | --- |
-| v01 | Long Hood | 6 x 11 | Thin and lilac, the hood drawn out into a long point, a needle in its leading glove. |
+| v01 | Long Hood | 7 x 13 | Thin and lilac, the hood drawn out into a long point, a needle in its leading glove. Redrawn 2026-11-05 a little larger (body 5 x 8, was 4 x 7; a 5 px zipper with the eyes a pixel apart). **Picked.** |
 | v02 | Pinhead | 6 x 11 | A lilac body with a round pearl head like a sewing pin's, the eyes looking out of a slit. |
 | v03 | Quill | 6 x 12 | Thin, with a white feather plume rising from its hood that bends as it runs. |
 | v04 | Lancer | 5 x 10 | Carries a needle longer than itself upright like a lance and hurls it. |
@@ -70,7 +70,7 @@ Today: 10 x 11 px at rest. Sheets: `Spoolseam-Sheet`.
 | v03 | Baseball | 8 x 9 | Two curved purple seams with stitch ticks, like a baseball on legs. |
 | v04 | Dumpling | 8 x 9 | A felt dumpling pinched into pleats on top. |
 | v05 | Pillow | 8 x 9 | A little square felt pillow with a tuft at each corner and a purple seam round its edge. |
-| v06 | Button | 8 x 9 | A big round felt button with four holes; two are its eyes. |
+| v06 | Button | 8 x 9 | A big round felt button with four holes; two are its eyes. **Picked.** |
 | v07 | Beanbag | 8 x 9 | A slouchy pear of felt that sags and wobbles as it waddles. |
 | v08 | Eyepatch | 8 x 8 | Round felt with a purple patch stitched over one eye. |
 | v09 | Little Miner | 10 x 8 | Carries a felt pickaxe over its shoulder and swings it to dig. |
@@ -83,7 +83,7 @@ Today: 11 x 12 px at rest. Sheets: `Spoolmangled-Sheet`.
 | Version | Name | Size at rest | Look |
 | --- | --- | --- | --- |
 | v01 | Torn | 8 x 9 | Torn white cotton with a purple patch and mismatched eyes, one yellow, one a button. |
-| v02 | Burst | 10 x 9 | A spiky ball of cotton tufts standing out in every direction. |
+| v02 | Burst | 10 x 9 | A spiky ball of cotton tufts standing out in every direction. **Picked.** |
 | v03 | Half Hood | 8 x 11 | A scrap of Spool's purple hood still sits on a lump of spilled cotton; half a mouth shows. |
 | v04 | Frankenpatch | 8 x 9 | Three scraps (purple, lilac, white) stitched into one lump with the stitches showing. |
 | v05 | Ragdoll | 10 x 8 | An X stitched over one eye and one arm hanging by a thread. |

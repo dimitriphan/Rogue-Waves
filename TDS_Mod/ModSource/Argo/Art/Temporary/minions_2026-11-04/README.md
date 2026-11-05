@@ -1,6 +1,6 @@
 # Argo: minion versions to pick from (2026-11-04)
 
-Dimitri, 2026-11-04: "Create new sprites for all modded minions. They should be closer in size to snobles. Create at least 10 versions of each." **Everything here is temporary and nothing is wired**: the art in game stays as it is until he picks (`docs/TEMP_ART.md`, "Minion versions"). Picks page: https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX.
+Dimitri, 2026-11-04: "Create new sprites for all modded minions. They should be closer in size to snobles. Create at least 10 versions of each." **Everything here is temporary and nothing is wired**: Dimitri picked "Current" for the Nauts on 2026-11-05, so the code's Naut art stays (`docs/TEMP_ART.md`, "Minion versions"). The versions stay here for reference. Picks page: https://claude.ai/artifact/Rj9xQXsYUnauTGQyiFfAJX.
 
 Size: the Snoble is 6-8 px wide and 5-8 px tall in a 12 px cell (measured on the game's sheet, kit `docs/18` section 2). Every version keeps the wired sheet's name, size and frame layout; only the body in each cell is smaller. Drawn by `concept-tools/minions/` (`argo.py`; `build.py` writes this folder).
 

@@ -5,4 +5,4 @@
 
 | Folder | What | In game |
 | --- | --- | --- |
-| `minions_2026-11-04/naut/` | ten Snoble-sized versions of the Nauts to pick from (2026-11-04), each in Port, Starboard and Bosun colours, same names, sizes and layout as the code's `Naut_<Crew>-Sheet` and `NautTune_<Crew>-Sheet` | not wired: a pick needs a file override in `ArgoBuilder` first (that folder's README) |
+| `minions_2026-11-04/naut/` | ten Snoble-sized versions of the Nauts (2026-11-04), each in Port, Starboard and Bosun colours, same names, sizes and layout as the code's `Naut_<Crew>-Sheet` and `NautTune_<Crew>-Sheet` | not wired: Dimitri kept the current Naut art (2026-11-05). Using one later needs a file override in `ArgoBuilder` first (that folder's README) |
