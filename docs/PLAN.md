@@ -319,6 +319,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   placed; card art uses the 12 px crest and 24 px numbers; the
   sea chart's weather marks keep their size. Compiled here, not yet seen in game: his eye on the menu, a
   dialog sliding in, and the HUD's buttons.
+  2026-11-05: the code review at max, at his word (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): every part read
+  against the engine again by a first pass and seven reviewers, 58 findings none of which were known; 35 fixed (the
+  F-key fix that never armed, kit 1.11 and pitfall #157; a skipped staging map replayed forever; campaign Cardinals left
+  free in the lobby; Voice in a Bottle reaching the Bouthouse; 16 self-test checks that couldn't fail), 23 left: three
+  for his word (§5.1), the rest for a PC fact. Pitfall #158 (first-frame looks lost). Compiled here (every part, release
+  and test builds, 0 errors; editors clean), not run on the PC: the next round runs its §6.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -345,7 +351,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #157 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size).
+- **Next free numbers:** kit chapter 25, pitfall #159 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

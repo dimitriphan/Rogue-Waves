@@ -39,7 +39,9 @@ public abstract class UloeBuilding : MonoBehaviour
             Destroy(this);
             return;
         }
-        if (!ModKitUtil.IsServer)
+        // A despawned building lives to the end of its frame (Game_Entity.Despawn destroys it last): a Bank due a Photon
+        // then made one its Despawn no longer reached, which never went (MAX ULO-4).
+        if (!ModKitUtil.IsServer || (Master.Beingserver != null && Master.Beingserver.Dead))
             return;
         try
         {
@@ -246,6 +248,12 @@ public class UloeFloodBrain : UloeBuilding
     {
         if (UloeUtil.IsNode(Node) && ModKitUtil.Flat(ModKitUtil.Pos(Node), Pos) <= Stat("Range", 2.5f) + 0.1f)
             return;
+        // The node it held is gone: take its cord (and a Wide Flood's ring) off every screen now, not 12 s later (MAX ULO-10).
+        if (!ReferenceEquals(Node, null) && Master.Radio != null)
+        {
+            ModKitUtil.Vis(Master, "Uloe_Nodecord", Pos, -1f);
+            if (Wide) ModKitUtil.Vis(Master, "Uloe_Ring", Pos, -1f);
+        }
         Node = UloeUtil.NearestNode(Pos, Stat("Range", 2.5f));
         if (Node != null)
         {

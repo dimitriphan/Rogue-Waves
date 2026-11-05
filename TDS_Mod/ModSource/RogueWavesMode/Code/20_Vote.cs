@@ -541,7 +541,10 @@ public static class RWAsk
             RWWorld.Parse(Tds_Multiplayerinfo.Instance.World.Value.ToString(), out seed, out route);
             // After a won map the host's route is one longer than the world this map was warped from.
             RWChart.Chart chart = RWWorld.Chart(seed);
-            int row = RWCampaign.Live ? RWCampaign.Route.Count + 1 : route.Count + 2;
+            // The staging map is never won, so its vote is on row 1 on every machine (MAX MODEB-3; the test is RWCard.Line's).
+            string plan = Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString();
+            bool stagingMap = route.Count == 0 && plan == RWMode.Twin(RWWorld.StagingPlan(chart));
+            int row = RWCampaign.Live ? RWCampaign.Route.Count + 1 : route.Count + (stagingMap ? 1 : 2);
             foreach (string p in parts)
             {
                 int c;

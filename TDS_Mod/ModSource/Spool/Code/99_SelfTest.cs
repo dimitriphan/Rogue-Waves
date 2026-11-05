@@ -968,7 +968,11 @@ public static partial class SpoolSelfTest
             int strikes = loomA.Strikes;
             yield return Wait(3f);
             Entity_Master ore = Helper_Entityquerytools.Entitynearest(loomA.Pos, 2.5f, ModKitUtil.Tagged("Resource"));
-            Check("Loom strikes ore in reach", ore == null || loomA.Strikes > strikes, ore == null ? "no ore in reach here (skipped)" : strikes + "->" + loomA.Strikes);
+            // No ore in reach tests nothing: a Setup, not a pass (MAX SPL-9).
+            if (ore == null)
+                ModKitTest.Setup("Loom strikes ore in reach", "no ore in reach here");
+            else
+                Check("Loom strikes ore in reach", loomA.Strikes > strikes, strikes + "->" + loomA.Strikes);
             player.Carried = 0;
             int held = loomA.Held, delivered = SpoolServer.Delivered;
             yield return Walk(hm, loomA.Pos, SpoolData.LoomPick - 0.3f, 10f);

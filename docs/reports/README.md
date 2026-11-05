@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `CODE_REVIEW_MAX_2026-11-05.md` | 2026-11-05 | The code review at max, at Dimitri's word: every part against the engine again, 58 new findings, 35 fixed (17 shipping, 16 self-test checks that couldn't fail, 2 build guards), kit 1.11, pitfalls #157-#158; three calls for him, the rest for the PC |
 | `SPOOL_DEFAULTS_2026-11-05.md` | 2026-11-05 | Spool's open defaults (PLAN Open question 2) in plain words, S1-S17, each with Claude's pick |
 | `DECISIONS_APPLIED_2026-11-05.md` | 2026-11-05 | His answers to the open decisions: each one, what the scope took, and the hand-off for the build thread, art and the balance sweep |
 | `OPEN_DECISIONS_2026-11-05.md` | 2026-11-05 | Every call waiting on Dimitri on one page: 39 questions by theme with Claude's defaults, the scope audit's smaller rows in an appendix |

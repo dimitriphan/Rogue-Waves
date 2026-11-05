@@ -256,7 +256,7 @@ public class SpoolHeadBrain : SpoolBuilding
     public override void Gone(bool killed, string reason)
     {
         if (Carried > 0)
-            SpoolServer.Drop(Pos, Carried);
+            SpoolServer.Drop(Pos, Carried, Master);
         Carried = 0;
         if (!killed)
             return;

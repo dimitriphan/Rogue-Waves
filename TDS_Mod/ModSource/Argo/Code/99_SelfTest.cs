@@ -1186,7 +1186,8 @@ public static partial class ArgoSelfTest
             Check("Deep Water has FLOOD (its build option for a pool) and takes Build",
                 water.Master.Commandlistserver.TryGetValue(ArgoData.FloodLink, out flood) && flood.Goalstring == ArgoData.Pool && flood.Ref != null && water.Master.Commandlistserver.ContainsKey("Build"),
                 flood != null ? "goal " + flood.Goalstring + ", command " + (flood.Ref != null ? flood.Ref.Objectname : "none") : "no FLOOD");
-            Check("Deep Water's being is Buster's Speed Pad (else the Perma-Wall fallback)", true, "ais " + ModKitUtil.Join(new List<string>(ArgoContent.Beings[ArgoData.Water].Entity.Aiscripts.ConvertAll(s => s.name))));
+            // A reading, not a check: it was Check(true) (MAX ARG-4).
+            Log("INFO Deep Water's being (Buster's Speed Pad, else the Perma-Wall fallback): ais " + ModKitUtil.Join(new List<string>(ArgoContent.Beings[ArgoData.Water].Entity.Aiscripts.ConvertAll(s => s.name))));
             // Its water bobs: over half a swell the part rises or falls by at least one amplitude, never by more than two.
             Transform swell = Extramethods.FindDeepChild(water.Master.transform, "Swell");
             float low = float.MaxValue, high = float.MinValue;
@@ -1464,6 +1465,8 @@ public static partial class ArgoSelfTest
                     float dealt = Hit(water.Master, e, 2f);
                     Check("Crushing Depth: foes in the water take 15% more", Mathf.Abs(dealt - 2.3f) < 0.05f && ArgoHooks.Crushed > 0, "2 -> " + F(dealt));
                 }
+                else
+                    ModKitTest.Setup("Brine, Salt Sting and Crushing Depth", "no foe left in the pool");   // dropped out without a word (MAX ARG-6)
                 foreach (Link_Modifier j in quiet) ModKitUtil.Unmod(j);
                 ClearEnemies();
                 // Abyss: FLOOD fills two tiles at once.
@@ -1571,6 +1574,8 @@ public static partial class ArgoSelfTest
                     yield return Wait(2.1f);
                     Check("Bedrock: a pinned foe in the Tremor takes 1.5 a second", drill.Bedrocks > b0 && l0 - Life(e) >= 1.4f, "ticks " + (drill.Bedrocks - b0) + ", health " + F(l0) + "->" + F(Life(e)));
                 }
+                else
+                    ModKitTest.Setup("Bedrock", "no foe left to pin");   // MAX ARG-6
                 // Fault Line: a foe reeled across the Tremor bursts (the reel's own call, ArgoServer.Reeled).
                 Force(drill, "Faultline4");
                 // Round 4: Bedrock felled the foe, and Fault Line's checks skipped without a word. A fresh, sturdy foe.
@@ -1707,8 +1712,12 @@ public static partial class ArgoSelfTest
                 int stuns = ArgoStatus.Stuns;
                 float aspd = ModKitUtil.Stat(beside, "Attackspeed", -1f);
                 ArgoUtil.Pin(hook.Master, beside, 1f, true);
-                Check("Anchor Line's pin beside a building stuns (no attacks while held)", ArgoStatus.Stuns == stuns + 1 && (aspd < 0f || ModKitUtil.Stat(beside, "Attackspeed", 0f) < aspd * 0.1f),
-                    "stuns " + (ArgoStatus.Stuns - stuns) + ", attack speed " + F(aspd) + "->" + F(ModKitUtil.Stat(beside, "Attackspeed", 0f)));
+                // A foe without the stat gets no stun mod (01_Util.cs): nothing to read, so a Setup, not a pass (MAX ARG-5).
+                if (aspd <= 0f)
+                    ModKitTest.Setup("Anchor Line's pin beside a building stuns", "the foe beside the gun has no Attackspeed");
+                else
+                    Check("Anchor Line's pin beside a building stuns (no attacks while held)", ArgoStatus.Stuns == stuns + 1 && ModKitUtil.Stat(beside, "Attackspeed", 0f) < aspd * 0.1f,
+                        "stuns " + (ArgoStatus.Stuns - stuns) + ", attack speed " + F(aspd) + "->" + F(ModKitUtil.Stat(beside, "Attackspeed", 0f)));
                 // ARG-1 (code review): a second stun within the first. The stat's bounds decide whether its attack speed can go below 0.
                 Link_Stats stunStat;
                 if (beside.Statsserver != null && beside.Statsserver.TryGetValue("Attackspeed", out stunStat))
@@ -1973,8 +1982,10 @@ public static partial class ArgoSelfTest
         Check("journal: Argo is in the vessel tabs", order != null && order.Contains("Log_" + ArgoData.Hero));
 
         // 10. The F-key fix (kit 1.6, docs/15 section 9): the first F after a respawn selects the vessel, whatever was
-        // selected. The respawn is simulated (the fix's flag); RogueLab ran the full respawn on the PC.
-        if (ModKitPack.Registry.transform.Find("ModKitFocus") != null && Game_Selection.Instance != null)
+        // selected. The respawn is simulated (the fix's flag); RogueLab ran the full respawn on the PC. Only the part whose
+        // copy installed the fix can check it (the registry's mark is "Focusfix", which the build doesn't rename; the old
+        // test looked for "ModKitFocus", which it does, so this was always skipped: MAX P1-5).
+        if (ModKitFocus.Installed && Game_Selection.Instance != null)
         {
             Entity_Master other = bell != null && bell.Crew[0] != null ? bell.Crew[0].Master : null;
             ModKitFocus.Respawned = true;
@@ -1985,7 +1996,7 @@ public static partial class ArgoSelfTest
                 "selected " + (Game_Selection.Instance.Selected != null ? ModKitUtil.BeingName(Game_Selection.Instance.Selected) : "nothing") + ", fixes " + (ModKitFocus.Fixes - fixes) + (ModKitFocus.MainHero() == hm ? "" : ", main hero not found"));
         }
         else
-            Log("F-key fix installed by another part (or no selection): skipped here");
+            ModKitTest.Setup("F after a respawn selects Argo", "the F-key fix is another part's copy here, or nothing to select");
 
         // 11. The Miner's Base button comes back once the Base is sold.
         if (bell != null && bell.Master != null)

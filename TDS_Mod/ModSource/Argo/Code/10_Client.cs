@@ -199,8 +199,8 @@ public static class ArgoClient
                     ArgoAssets.Play(water ? "Argo_Splash" : "Argo_Build", at);
                     break;
                 case "Argo_Upgrade":
-#if ARGO_REVIEW
-                    ArgoSelfTest.UpgradeSounds++;
+#if ARGO_SELFTEST && ARGO_REVIEW
+                    ArgoSelfTest.UpgradeSounds++;   // declared under both (96_Review.cs): ARGO_REVIEW alone didn't compile (MAX ARG-7)
 #endif
                     ArgoAssets.Play("Argo_Upgrade", at);
                     break;

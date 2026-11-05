@@ -613,8 +613,10 @@ public static partial class YosseleSelfTest
             if (cannon != null)
             {
                 cannon.SetGrowth(cannon.Max);
+                int grownAtMax = cannon.Grown;
                 yield return ForceTide(reached);
-                Check("Growth stops at the building's maximum", cannon.Growth == cannon.Max, cannon.Growth + "/" + cannon.Max);
+                // SetGrowth clamps, so Growth alone can't show it: no growth step may run at the maximum (MAX YOS-6).
+                Check("Growth stops at the building's maximum", cannon.Growth == cannon.Max && cannon.Grown == grownAtMax, cannon.Growth + "/" + cannon.Max + ", growth steps " + grownAtMax + "->" + cannon.Grown);
             }
             // The test map's own count is replaced: a map of 4 Tides has long Tides.
             YosseleServer.TidesOverride = YosseleData.LongTides;
@@ -1063,6 +1065,8 @@ public static partial class YosseleSelfTest
                     yield return Wait(1.2f);
                     Check("Entangling Roots take each foe once", henge.Snares == once, "snares " + once + "->" + henge.Snares);
                 }
+                else if (foe != null && ModKitUtil.Alive(foe) && henge.OnSince.ContainsKey(foe) && Time.time - henge.OnSince[foe] >= henge.Param("Roots_After", 7f) + 0.5f)
+                    Check("Entangling Roots snare a foe 7 s on the vines", false, "the foe stayed on the vines and wasn't snared (MAX YOS-1: this read as SETUP)");
                 else
                     ModKitTest.Setup("Entangling Roots", "the foe left the vines before " + F(henge.Param("Roots_After", 7f)) + " s (on since: " + henge.OnSince.Count + ")");
             }

@@ -199,6 +199,9 @@ public static class RWCampaign
             RWLog.Warn(Next.Name + " started, but the boat was to replay column " + Replay);
         Playing = Next.Col;
         LastMap = Route.Count + 1;
+        // A counted chart map ends the staging map's turn, also when the party sailed past it: left on, every later boat
+        // opened the harbour again and replayed it with free picks (MAX MODEA-1).
+        Staging = false;
         Save();
         RWLog.Info("playing " + Next.Name + " (" + Next.Plan + "), map " + (Route.Count + 1) + " of " + RWChart.Rows + (Replay >= 0 ? ", a replay" : "") + ", " + Retries + " retries left");
     }

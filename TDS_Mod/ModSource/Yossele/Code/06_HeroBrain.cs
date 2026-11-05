@@ -221,7 +221,8 @@ public class YosseleHeroBrain : MonoBehaviour
                 }
             }
         }
-        if (target == null)
+        // A picked building not begun yet, or felled, can't grow: Grow refused and the fertilizer was spent (MAX YOS-5).
+        if (target == null || !target.Started || !ModKitUtil.Alive(target.Master))
         {
             YosseleUtil.Warn(Master, YosseleData.WarnNoTarget);
             return false;

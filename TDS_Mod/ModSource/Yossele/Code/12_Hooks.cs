@@ -269,7 +269,9 @@ public static class YosseleHooks
                 scale *= 1f - share;
                 Shared++;
                 SharedDamage += total * share;
-                ModKitCombat.Hurt(hit.From ?? guard.Master, guard.Master, total * share, 1f, hit.From, null);
+                // A shooter destroyed while its shot flew is a destroyed reference, which ?? keeps and Hurt drops (MAX P1-2).
+                Entity_Master by = hit.From != null ? hit.From : null;
+                ModKitCombat.Hurt(by ?? guard.Master, guard.Master, total * share, 1f, by, null);
             }
             float a = Reduction(hit.To);
             if (a > 0f)
