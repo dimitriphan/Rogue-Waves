@@ -1,5 +1,5 @@
 #if YOSSELE_SELFTEST
-// Debug build only: Yossele's five Directions from scope 11 (17_Directions.cs), run from section 12b of 99_SelfTest.cs on
+// Debug build only: Yossele's five Directions from scope 11 (17_Directions.cs), run from section 12c of 99_SelfTest.cs on
 // the host, each granted the way the mode grants them (ModKitDirections.Grant) and taken off after. (Written 2026-11-05,
 // not yet run on the PC.)
 public static partial class YosseleSelfTest

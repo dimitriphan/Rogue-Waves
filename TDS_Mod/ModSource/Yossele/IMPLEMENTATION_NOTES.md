@@ -291,7 +291,8 @@ Five more since 2026-11-05 (`17_Directions.cs`; the numbers are scope 11's, in `
 - **Creeping Ivy** (`Creepingivy`): the Stonehenge's vines reach 1 tile farther, the forward line and Verdant Spread's
   radius alike (`YosseleHengeBrain.IvyBonus`); rank II: foes on them slow 15% more than the stones' own Slow; rank III:
   each Tide a Stonehenge stands while its owner holds rank III counts (`IvyTides`), +1 tile every 2 of them, at most +3.
-  The vines spread again when the bonus changes; taken off, tiles already grown stay until the Stonehenge goes.
+  The vines spread again when the bonus changes; taken off, tiles already grown stay and keep working until the
+  Stonehenge goes (foes and buildings are looked for out to the farthest spread, `Span`).
 - **Deep Breath** (`Deepbreath`): on the attacker's side of the hit (`Interacthurt` calls `From.Interact` before the
   target's chain; `YosseleBoosts.OnDealt`, said again every 0.1 s), the first laser hit after a rest deals +40 / 70 /
   100% (`Damagemulti` on a copy of the hit's data; every hit of that same frame too). A rest is 2 s past the laser's own

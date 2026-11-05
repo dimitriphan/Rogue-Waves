@@ -399,6 +399,7 @@ public static class ArgoStatus
     static readonly Dictionary<Entity_Master, float> slowed = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> pinned = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> wet = new Dictionary<Entity_Master, float>();
+    static readonly Dictionary<Entity_Master, float> since = new Dictionary<Entity_Master, float>();   // Slowed or Pinned since
     public static int Pins, Stuns;
 
     public static void Reset()
@@ -406,10 +407,11 @@ public static class ArgoStatus
         slowed.Clear();
         pinned.Clear();
         wet.Clear();
+        since.Clear();
     }
 
-    public static void Slowed(Entity_Master foe, float seconds) { Mark(slowed, foe, seconds); ArgoHooks.Held(foe); }
-    public static void Pinned(Entity_Master foe, float seconds) { Mark(pinned, foe, seconds); ArgoHooks.Held(foe); }
+    public static void Slowed(Entity_Master foe, float seconds) { Since(foe); Mark(slowed, foe, seconds); ArgoHooks.WatchDebuffed(foe); }
+    public static void Pinned(Entity_Master foe, float seconds) { Since(foe); Mark(pinned, foe, seconds); ArgoHooks.WatchDebuffed(foe); }
     public static void Wet(Entity_Master foe, float seconds) { Mark(wet, foe, seconds); }
 
     public static bool IsSlowed(Entity_Master foe) { return Active(slowed, foe); }
@@ -417,16 +419,38 @@ public static class ArgoStatus
     public static bool IsWet(Entity_Master foe) { return Active(wet, foe); }
     public static bool Debuffed(Entity_Master foe) { return IsSlowed(foe) || IsPinned(foe); }
 
-    // Every foe Slowed or Pinned now (Chum Bucket's handler stays on them).
-    static readonly List<Entity_Master> held = new List<Entity_Master>();
-    public static List<Entity_Master> Held()
+    // Slowed or Pinned since an earlier frame: the hit that slows a foe (a tower's own slow lands on the attacker's side,
+    // before the target's chain) doesn't count as a hit on a slowed foe (Chum Bucket).
+    public static bool DebuffedBefore(Entity_Master foe)
     {
-        held.Clear();
+        float t;
+        return Debuffed(foe) && (!since.TryGetValue(foe, out t) || t < Time.time);
+    }
+
+    static void Since(Entity_Master foe)
+    {
+        if (foe == null || Debuffed(foe))
+            return;
+        since[foe] = Time.time;
+        if (since.Count > 128)
+        {
+            List<Entity_Master> stale = new List<Entity_Master>();
+            foreach (Entity_Master e in since.Keys)
+                if (e == null || !Debuffed(e)) stale.Add(e);
+            foreach (Entity_Master e in stale) since.Remove(e);
+        }
+    }
+
+    // Every foe Slowed or Pinned now (Chum Bucket's handler stays on them).
+    static readonly List<Entity_Master> debuffees = new List<Entity_Master>();
+    public static List<Entity_Master> Debuffees()
+    {
+        debuffees.Clear();
         foreach (KeyValuePair<Entity_Master, float> kv in slowed)
-            if (kv.Key != null && kv.Value > Time.time && ModKitUtil.Alive(kv.Key)) held.Add(kv.Key);
+            if (kv.Key != null && kv.Value > Time.time && ModKitUtil.Alive(kv.Key)) debuffees.Add(kv.Key);
         foreach (KeyValuePair<Entity_Master, float> kv in pinned)
-            if (kv.Key != null && kv.Value > Time.time && ModKitUtil.Alive(kv.Key) && !held.Contains(kv.Key)) held.Add(kv.Key);
-        return held;
+            if (kv.Key != null && kv.Value > Time.time && ModKitUtil.Alive(kv.Key) && !IsSlowed(kv.Key)) debuffees.Add(kv.Key);
+        return debuffees;
     }
 
     // Self-tests only need it: a foe read as clean whatever slowed it before (the game's own slow mods stay).
@@ -436,6 +460,7 @@ public static class ArgoStatus
         slowed.Remove(foe);
         pinned.Remove(foe);
         wet.Remove(foe);
+        since.Remove(foe);
     }
 
     static void Mark(Dictionary<Entity_Master, float> d, Entity_Master foe, float seconds)

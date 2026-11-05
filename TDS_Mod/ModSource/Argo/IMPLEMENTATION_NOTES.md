@@ -262,7 +262,10 @@ Scope `11` has none of Dimitri's for Argo yet (its NEEDS line), only Claude's fo
 - **Chum Bucket** (`Chumbucket`, 2026-11-05): a foe that is Slowed or Pinned (`ArgoStatus.Debuffed`) takes +8 / 15 / 25% from
   every hit by a building of the holder's (anything with an `ArgoTowerBrain`, traps included), on top of the Scatter
   Cannon's own bonus on a pinned foe; in `ArgoHooks.OnHurt`, whose handler a foe gets the moment it is slowed or pinned
-  while anyone holds a rank, and keeps while it stays held (`ArgoStatus.Held`, `ArgoHooks.Chummed`).
+  while anyone holds a rank, and keeps while it stays so (`ArgoStatus.Debuffees`, `ArgoHooks.Chummed`). The hit that
+  slows or pins it doesn't count: a tower's own slow lands on the attacker's side of the hit, before the target's
+  chain, so the foe must have been held since an earlier frame (`ArgoStatus.DebuffedBefore`), as the Scatter's bonus
+  reads the status before its pellet's slow.
 - **Pressure Gauge** (`Pressuregauge`, 2026-11-05): a Drill Rig the holder builds starts at Fathom 2 / 3 / 4 (the sheet's
   "1 / 2 / 3 Fathoms down", counted below the first), never past its deepest (`ArgoTowerBrain.StartFathom`); its
   Fathom's mining and damage follow as if it had been sunk there.

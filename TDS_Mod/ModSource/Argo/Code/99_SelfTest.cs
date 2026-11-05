@@ -2046,11 +2046,15 @@ public static partial class ArgoSelfTest
                 {
                     ModKitDirections.Grant(hm, direction(ArgoData.Chumbuckets[r - 1].Name));
                     yield return Wait(1.2f);
+                    // The hit in the frame the foe is slowed is the slowing hit's: no bonus (a tower's own slow lands first).
                     ArgoStatus.Slowed(chum, 3f);
+                    float fresh = Hit(chummer.Master, chum, 1f);
+                    yield return null;
                     float held = Hit(chummer.Master, chum, 1f), vessel = Hit(hm, chum, 1f);
                     float bonus = ArgoData.Chumbuckets[r - 1].Bonus;
-                    Check("Chum Bucket rank " + r + ": a Slowed foe takes +" + F(bonus * 100f) + "% from your towers, not from the vessel", plain > 0f && Mathf.Abs(held - plain * (1f + bonus)) < 0.02f && Mathf.Abs(vessel - plain) < 0.02f,
-                        "plain " + F(plain) + ", held " + F(held) + ", the vessel's " + F(vessel));
+                    Check("Chum Bucket rank " + r + ": a Slowed foe takes +" + F(bonus * 100f) + "% from your towers, not from the vessel, nor on the hit that slows it",
+                        plain > 0f && Mathf.Abs(held - plain * (1f + bonus)) < 0.02f && Mathf.Abs(vessel - plain) < 0.02f && Mathf.Abs(fresh - plain) < 0.02f,
+                        "plain " + F(plain) + ", the slowing hit " + F(fresh) + ", held " + F(held) + ", the vessel's " + F(vessel));
                     ArgoStatus.Clear(chum);
                 }
                 if (ModKitUtil.Alive(chum)) Game_Entity.Instance.Despawn(chum.Beingserver, false, "Selftest");

@@ -166,8 +166,18 @@ public static class YosseleSap
         {
             if (slowed.TryGetValue(foe, out m))
                 ModKitUtil.Unmod(m);
-            slowed[foe] = YosseleUtil.SlowOn(foe, slow);
-            amount[foe] = slow;
+            // None is made for a foe already near the 10% floor: nothing is recorded, and the next hit tries again.
+            m = YosseleUtil.SlowOn(foe, slow);
+            if (m != null)
+            {
+                slowed[foe] = m;
+                amount[foe] = slow;
+            }
+            else
+            {
+                slowed.Remove(foe);
+                amount.Remove(foe);
+            }
         }
         ModKitUtil.Debuff(from, foe, YosseleData.VfxSlow, YosseleData.SapLasts);
         if (rank >= 3)

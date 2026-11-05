@@ -14,7 +14,7 @@ public static class YosseleContent
     public static Commandobject Fertilize, Colour;
     public static readonly List<Upgradeproperties> Compostbins = new List<Upgradeproperties>();
     public static readonly List<Upgradeproperties> Treeshifts = new List<Upgradeproperties>();
-    public static readonly List<Upgradeproperties> Boosts = new List<Upgradeproperties>();
+    public static readonly List<Upgradeproperties> VesselDirections = new List<Upgradeproperties>();
     public static int VfxRegistered;
     public static bool IconsReady, LaserReady;
     public static string GroundFrom = "", LaserFrom = "", FriendFrom = "";
@@ -69,7 +69,7 @@ public static class YosseleContent
 
     public static string Summary()
     {
-        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + (Compostbins.Count + Treeshifts.Count + Boosts.Count) + " Directions, " + VfxRegistered + " effects, icons "
+        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + (Compostbins.Count + Treeshifts.Count + VesselDirections.Count) + " Directions, " + VfxRegistered + " effects, icons "
             + (IconsReady ? "ok" : "stock") + ", ground from " + GroundFrom + ", laser from " + LaserFrom + ", Cordyfriend from " + FriendFrom
             + ", towers fitted " + ModKitTowers.Fitted;
     }
@@ -660,7 +660,7 @@ public static class YosseleContent
         // Claude's five (2026-11-05): no clash; their numbers are in YosseleData, one a rank.
         foreach (YosseleData.Direction[] ranks in new[] { YosseleData.Cuttingjars, YosseleData.Sapbuckets, YosseleData.Creepingivies, YosseleData.Deepbreaths, YosseleData.Fairyrings })
             foreach (YosseleData.Direction s in ranks)
-                Boosts.Add(RegisterDirection(ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc)));
+                VesselDirections.Add(RegisterDirection(ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc)));
     }
 
     static Upgradeproperties RegisterDirection(Upgradeproperties d)

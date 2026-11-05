@@ -113,7 +113,7 @@ public static class ArgoHooks
                 soaked.Remove(e);
         drop = null;
         if (ArgoServer.AnyChum())
-            foreach (Entity_Master foe in ArgoStatus.Held())
+            foreach (Entity_Master foe in ArgoStatus.Debuffees())
                 First(foe);
         foreach (Entity_Master t in armored.Keys)
         {
@@ -134,7 +134,7 @@ public static class ArgoHooks
     }
 
     // Chum Bucket: a foe that was just Slowed or Pinned gets the handler at once, and Update keeps it there while held.
-    public static void Held(Entity_Master foe)
+    public static void WatchDebuffed(Entity_Master foe)
     {
         if (foe != null && ArgoServer.AnyChum())
             First(foe);
@@ -146,7 +146,7 @@ public static class ArgoHooks
     // What Chum Bucket adds to this hit: the holder's rank, when one of their buildings hits a Slowed or Pinned foe.
     static float ChumOf(Link_Interact hit)
     {
-        if (hit.From == null || hit.From.GetComponent<ArgoTowerBrain>() == null || !ArgoStatus.Debuffed(hit.To))
+        if (hit.From == null || hit.From.GetComponent<ArgoTowerBrain>() == null || !ArgoStatus.DebuffedBefore(hit.To))
             return 0f;
         int rank = ArgoServer.RanksOf(ModKitUtil.Owner(hit.From)).Chumbucket;
         return rank > 0 ? ArgoData.Chumbuckets[rank - 1].Bonus : 0f;

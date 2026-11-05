@@ -23,7 +23,8 @@ public static class YosseleHooks
     static readonly Dictionary<Entity_Master, float> aura = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> markBonus = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> markUntil = new Dictionary<Entity_Master, float>();
-    static readonly Dictionary<Entity_Master, Vector2> sapped = new Dictionary<Entity_Master, Vector2>();   // x: bonus, y: until
+    class SapMark { public float Bonus, Until; public long Owner; }
+    static readonly Dictionary<Entity_Master, SapMark> sapped = new Dictionary<Entity_Master, SapMark>();
     static readonly List<Entity_Master> monuments = new List<Entity_Master>();
     static readonly Entity_Master.Oninteracts handler = OnHurt;
     static float nextCheck;
@@ -39,7 +40,6 @@ public static class YosseleHooks
         markBonus.Clear();
         markUntil.Clear();
         sapped.Clear();
-        sapOwner.Clear();
         monuments.Clear();
         own.Clear();
         seen.Clear();
@@ -108,27 +108,23 @@ public static class YosseleHooks
     }
 
     // Sap Bucket III: the foe takes 'bonus' more from 'owner''s buildings for 'seconds' (renewed by each laser hit; the
-    // last sapper's). The owner, a Steam id, doesn't fit a float, so it is kept beside.
-    static readonly Dictionary<Entity_Master, long> sapOwner = new Dictionary<Entity_Master, long>();
-
+    // last sapper's).
     public static void Sap(Entity_Master foe, long owner, float bonus, float seconds)
     {
         if (foe == null || !ModKitUtil.Alive(foe) || bonus <= 0f)
             return;
-        sapped[foe] = new Vector2(bonus, Time.time + seconds);
-        sapOwner[foe] = owner;
+        sapped[foe] = new SapMark { Bonus = bonus, Until = Time.time + seconds, Owner = owner };
         First(foe);
     }
 
     // The Sap Bucket bonus a hit from 'from' gets on 'foe' (0: none).
     public static float SapOf(Entity_Master foe, Entity_Master from)
     {
-        Vector2 v;
-        long owner;
-        if (foe == null || from == null || !sapped.TryGetValue(foe, out v) || v.y <= Time.time || !sapOwner.TryGetValue(foe, out owner))
+        SapMark s;
+        if (foe == null || from == null || !sapped.TryGetValue(foe, out s) || s.Until <= Time.time)
             return 0f;
         YosseleBuilding b = from.GetComponent<YosseleBuilding>();
-        return b != null && b.Owner == owner ? v.x : 0f;
+        return b != null && b.Owner == s.Owner ? s.Bonus : 0f;
     }
 
     public static float MarkOf(Entity_Master foe)
@@ -275,7 +271,6 @@ public static class YosseleHooks
         markBonus.Remove(foe);
         markUntil.Remove(foe);
         sapped.Remove(foe);
-        sapOwner.Remove(foe);
     }
 
     public static void Update(List<YosseleBuilding> buildings)
@@ -340,8 +335,8 @@ public static class YosseleHooks
                 markUntil.Remove(e);
             }
         gone = null;
-        foreach (KeyValuePair<Entity_Master, Vector2> kv in sapped)
-            if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || kv.Value.y < Time.time)
+        foreach (KeyValuePair<Entity_Master, SapMark> kv in sapped)
+            if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || kv.Value.Until < Time.time)
             {
                 if (gone == null) gone = new List<Entity_Master>();
                 gone.Add(kv.Key);
@@ -350,10 +345,7 @@ public static class YosseleHooks
                 First(kv.Key);
         if (gone != null)
             foreach (Entity_Master e in gone)
-            {
                 sapped.Remove(e);
-                sapOwner.Remove(e);
-            }
     }
 
     static void Keep(Dictionary<Entity_Master, float> table)
