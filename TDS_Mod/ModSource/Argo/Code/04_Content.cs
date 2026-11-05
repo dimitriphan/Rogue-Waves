@@ -193,11 +193,11 @@ public static class ArgoContent
             if (types != null && types.Icons != null)
                 foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
             if (ArgoData.SonarEnabled)
-                AddIcon(types, "Argo_Sonar", ArgoAssets.SonarIcon, "Sonar", like);
-            AddIcon(types, "Argo_Flood", ArgoAssets.FloodIcon, "Flood", like);
-            AddIcon(types, "Argo_Aim", ArgoAssets.AimIcon, "Aim", like);
+                AddIcon(types, "Argo_Sonar", ArgoAssets.SonarIcon, "Sonar", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Argo_Flood", ArgoAssets.FloodIcon, "Flood", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Argo_Aim", ArgoAssets.AimIcon, "Aim", like, ModKitAssets.CommandIcon);
             foreach (ArgoData.Crew c in ArgoData.Nauts)
-                AddIcon(types, "Argo_Crew_" + c.Name, ArgoAssets.IconFor(c.Color), c.Name, like);
+                AddIcon(types, "Argo_Crew_" + c.Name, ArgoAssets.IconFor(c.Color), c.Name, like, ModKitAssets.CommandIcon);
             AddIcon(stats, "Fathom", ArgoAssets.FathomIcon, "Fathom", like);
             IconsReady = true;
         }
@@ -224,13 +224,13 @@ public static class ArgoContent
         ArgoLog.Warn("icon table was built before Argo's icons were added; Argo's buttons use stock icons");
     }
 
-    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like)
+    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like, int box = 0)
     {
         if (into == null || into.Icons == null || into.Icons.ContainsKey(name))
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = ArgoAssets.Pixel(rows, "Icon_" + name);
+        icon.Image = ArgoAssets.Pixel(rows, "Icon_" + name, box);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = display;

@@ -252,8 +252,8 @@ public static class UloeContent
             Iconobject.Icon like = null;
             if (types != null && types.Icons != null)
                 foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
-            AddIcon(types, "Uloe_Plug", UloeAssets.PlugIcon, "Plug In", like);
-            AddIcon(types, "Uloe_Aim", UloeAssets.AimIcon, "Aim", like);
+            AddIcon(types, "Uloe_Plug", UloeAssets.PlugIcon, "Plug In", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Uloe_Aim", UloeAssets.AimIcon, "Aim", like, ModKitAssets.CommandIcon);
             AddIcon(stats, UloeData.LightStat, UloeAssets.LightIcon, UloeData.LightStat, like);
             IconsReady = true;
         }
@@ -280,13 +280,13 @@ public static class UloeContent
         UloeLog.Warn("icon table was built before Uloe's icons were added; Uloe's buttons use stock icons");
     }
 
-    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like)
+    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like, int box = 0)
     {
         if (into == null || into.Icons == null || into.Icons.ContainsKey(name))
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = UloeAssets.Pixel(rows, "Icon_" + name);
+        icon.Image = UloeAssets.Pixel(rows, "Icon_" + name, box);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = display;

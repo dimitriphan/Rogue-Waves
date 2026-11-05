@@ -28,7 +28,7 @@ public static partial class RWTest
     {
         List<Bla_Ui_Confirmation.Entry> list = new List<Bla_Ui_Confirmation.Entry>();
         for (int i = 0; i < cards; i++)
-            list.Add(RWDialog.Card("c" + i, "Card " + i, line, RWAssets.Sprite("RogueWaves_Crest32"), RWDialog.Teal));
+            list.Add(RWDialog.Card("c" + i, "Card " + i, line, RWAssets.Sprite("RogueWaves_Crest"), RWDialog.Teal));
         return list;
     }
 
@@ -139,7 +139,7 @@ public static partial class RWTest
         // The same words on the same cards in the game's own layout, with nothing of the mode's placing.
         List<Bla_Ui_Confirmation.Entry> same = new List<Bla_Ui_Confirmation.Entry>();
         for (int i = 0; i < texts.Count; i++)
-            same.Add(RWDialog.Card("c" + i, "", texts[i], RWAssets.Sprite("RogueWaves_Crest32"), RWDialog.Teal));
+            same.Add(RWDialog.Card("c" + i, "", texts[i], RWAssets.Sprite("RogueWaves_Crest"), RWDialog.Teal));
         Blockage.Menu.Bl_Menus.Changemenu(d.gameObject.name, true);
         yield return Until(() => RWDialog.Up() && d.GetComponentInParent<Blockage.Menu.Blu2_Menu_Handler>() != null, 5f);
         d.Runprompt(same, "VENDCINT", "Pure Aura: 60", false);

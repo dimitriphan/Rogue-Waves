@@ -214,7 +214,7 @@ public static class RWDirections
             string file = n == "Recycler" ? "EfficientRecycler" : n == "Mushrooms" ? "MotherOfMushrooms" : n;
             s = RWAssets.Like("Direction_" + file);
         }
-        return s ?? RWAssets.Sprite("RogueWaves_Crest32");
+        return s ?? RWAssets.Sprite("RogueWaves_Crest");
     }
 
     // ---------------------------------------------------------------- on the vessel (host)

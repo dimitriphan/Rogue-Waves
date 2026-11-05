@@ -235,8 +235,8 @@ public static class YosseleContent
             Iconobject.Icon like = null;
             if (types != null && types.Icons != null)
                 foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
-            AddIcon(types, "Yossele_Fertilize", YosseleAssets.FertilizeIcon, "Fertilize", like);
-            AddIcon(types, "Yossele_Colour", YosseleAssets.ColourIcon, "Colour", like);
+            AddIcon(types, "Yossele_Fertilize", YosseleAssets.FertilizeIcon, "Fertilize", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Yossele_Colour", YosseleAssets.ColourIcon, "Colour", like, ModKitAssets.CommandIcon);
             AddIcon(stats, YosseleData.FertilizerStat, YosseleAssets.FertilizerIcon, "Fertilizer", like);
             AddIcon(stats, YosseleData.GrowthStat, YosseleAssets.GrowthIcon, "Growth", like);
             AddIcon(stats, "Seeds", YosseleAssets.SeedIcon, "Seeds", like);
@@ -264,13 +264,13 @@ public static class YosseleContent
         if (Colour != null) Colour.Icon = Icon("", "Convert", "Upgrade", "Move");
         YosseleLog.Warn("icon table was built before Yossele's icons were added; FERTILIZE and COLOUR use stock icons");
     }
-    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like)
+    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like, int box = 0)
     {
         if (into == null || into.Icons == null || into.Icons.ContainsKey(name))
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = YosseleAssets.Pixel(rows, "Icon_" + name);
+        icon.Image = YosseleAssets.Pixel(rows, "Icon_" + name, box);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = display;

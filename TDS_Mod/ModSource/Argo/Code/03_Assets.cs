@@ -152,7 +152,8 @@ public static class ArgoAssets
         return CrewIcon(crew.r > 0.8f && crew.g > 0.6f ? 'y' : crew.g > crew.r ? 's' : 'r');
     }
 
-    public static Sprite Pixel(string[] rows, string name) { return ModKitAssets.Pixel(rows, name, IconPalette); }
+    // box: ModKitAssets.CommandIcon for an icon the HUD's command buttons draw (pitfall #156).
+    public static Sprite Pixel(string[] rows, string name, int box = 0) { return ModKitAssets.Pixel(rows, name, IconPalette, box); }
 
     // ---------------------------------------------------------------- tower material
 

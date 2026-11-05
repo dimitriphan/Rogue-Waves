@@ -86,7 +86,8 @@ public static class SpoolAssets
         "..LLlLLlLL..", "...LlLlLL...", "....LLLL..l.", "...........l", "............", "............"
     };
 
-    public static Sprite Pixel(string[] rows, string name) { return ModKitAssets.Pixel(rows, name, IconPalette); }
+    // box: ModKitAssets.CommandIcon for an icon the HUD's command buttons draw (pitfall #156).
+    public static Sprite Pixel(string[] rows, string name, int box = 0) { return ModKitAssets.Pixel(rows, name, IconPalette, box); }
 
     // ---------------------------------------------------------------- tower material
 
