@@ -31,6 +31,7 @@ public static class RWCardinals
     public const int Stacks = 6;     // numbered copies made at boot; buying past them still takes Pure Aura for no more effect
     public const float DenturesHeal = 0.2f;   // of the damage the vessel dealt, per stack
     public const int StockCost = 15;
+    public const int Ramp = 3;       // C1: Pure Aura more for each Cardinal stack the run holds and each Trinket copy the buyer holds
     public const int OnShelf = 3;    // Cardinals and Trinkets on the shelf in a break, rolled per map and Tide, the same on every machine
     public const int TrinketSlots = 1;   // of OnShelf, kept for a Trinket while one can be bought (audit 12 row 1); a kind short fills from the other
 
@@ -291,13 +292,42 @@ public static class RWCardinals
         return d.Wall && hero != "" && RWTrinkets.WallOf(hero) == "" ? "a vessel with no wall" : "";
     }
 
-    // What a player pays: the price, or with Punch Card 20% off, rounded down (docs/scope/12).
-    public static int PriceFor(RWPlayer p, string id) { return Price(Cost(id), p != null && Count(p.Trinkets, "Cardinal_Punch") > 0); }
+    // What a player pays: the price, Ramp more for each Cardinal stack the run holds (the lobby's picks left out) and each
+    // Trinket copy the buyer holds (C1, docs/scope/12 [Rules] Price ramp), then with Punch Card 20% off, rounded down.
+    public static int PriceFor(RWPlayer p, string id) { return Price(Cost(id) + RampFor(p), p != null && Count(p.Trinkets, "Cardinal_Punch") > 0); }
+
+    public static int RampFor(RWPlayer p) { return Ramp * ((p != null ? p.Trinkets.Count : 0) + RWRun.Cardinals.Count); }
 
     public static int PriceMine(string id)
     {
         Entity_Master v = RWMine.Vessel();
-        return Price(Cost(id), v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes("Cardinal_Punch1_Upgradeobject")));
+        return Price(Cost(id) + RampHere(v), v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes("Cardinal_Punch1_Upgradeobject")));
+    }
+
+    // The ramp as this machine sees it, from what syncs: this vessel's Trinket copies (a unit Trinket's by its panel mark),
+    // the pack's Cardinal stacks on a Basin, and each stock Cardinal on a Basin that isn't a lobby pick.
+    static int RampHere(Entity_Master v)
+    {
+        List<Entity_Master> cores = CoresHere();
+        int n = 0;
+        foreach (string id in Sold)
+        {
+            RWCardinalDef d;
+            if (!defs.TryGetValue(id, out d))
+            {
+                Artifactobject art = InLobby(id) ? null : Object(id);
+                Upgradeproperties first = art != null && art.Coreupgrades != null && art.Coreupgrades.Count > 0 ? art.Coreupgrades[0] : null;
+                if (first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname)))) n++;
+                continue;
+            }
+            for (int i = 1; i <= Cap(id); i++)
+            {
+                Upgradeproperties mark;
+                FixedString64Bytes copy = new FixedString64Bytes(d.Trinket && d.Reach != "" && marks.TryGetValue(d.Name + i, out mark) ? mark.Objectname : Id(d) + i + "_Upgradeobject");
+                if (d.Trinket ? v != null && v.Upgradelist != null && v.Upgradelist.Contains(copy) : cores.Exists(c => c.Upgradelist.Contains(copy))) n++;
+            }
+        }
+        return Ramp * n;
     }
 
     static int Price(int cost, bool punched) { return punched ? Mathf.FloorToInt(cost * (1f - RWTrinkets.PunchOff) + 0.0001f) : cost; }

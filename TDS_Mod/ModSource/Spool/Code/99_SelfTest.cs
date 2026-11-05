@@ -545,13 +545,15 @@ public static partial class SpoolSelfTest
                     if (cast[0] != null) yield return SpoolShots.Close("stitched", ModKitUtil.Pos(cast[0].Master), 3f);
 #endif
                 }
-                player.Stash = 50;
+                const int tinCap = 6;   // docs/scope/08 Crafted alive a Tin (the balance sweep 2026-11-05)
+                player.Stash = 10 * tinCap;
                 SpoolServer.Show(player);
                 float t0 = Time.time;
-                yield return Until(() => UnitsOf(tinA).Count >= 4, 20f);
+                yield return Until(() => UnitsOf(tinA).Count >= tinCap, 4f * tinCap + 6f);
                 float took = Time.time - t0;
                 yield return Wait(5f);
-                Check("a Tin keeps at most 4 Crafted, one every 4 s", UnitsOf(tinA).Count == 4 && took > 9f, UnitsOf(tinA).Count + " alive, 3 more took " + F(took) + " s");
+                Check("a Tin keeps at most " + tinCap + " Crafted, one every 4 s", UnitsOf(tinA).Count == tinCap && took > 4f * (tinCap - 1) - 3f,
+                    UnitsOf(tinA).Count + " alive, " + (tinCap - 1) + " more took " + F(took) + " s");
                 // TARGET
                 Genitem tile = ModKitTest.FoeTile(SpoolContent.Beings[SpoolData.Stitched], tinA.Pos, 3f, 5f, used);
                 if (tile != null)

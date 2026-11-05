@@ -31,6 +31,8 @@ public static class RWObjectives
     static float tideLength, clockLeft;
     static readonly Dictionary<Entity_Master, float> coreHurt = new Dictionary<Entity_Master, float>();   // each Basin's damage taken as the Tide began
     public const float ClockShare = 0.25f;   // of the Tide's clock left when its last foe falls
+    public const int ObjectivesFrom = 3;     // P1: the first Tide with an objective (posted in the break before it), docs/scope/14
+    public static int FirstTide = ObjectivesFrom;   // the flow self-test lowers it to read the board from the opening break
 
     public static void Build() { }
 
@@ -110,7 +112,8 @@ public static class RWObjectives
     {
         Posted = null;
         Active = null;
-        if (!RWRun.InCampaignMap)
+        // P1 (the balance sweep): Tides 1 and 2, where nothing yet threatens the Basin, have none; three of the five were free there.
+        if (!RWRun.InCampaignMap || wave + 1 < FirstTide)
             return;
         System.Random rng = new System.Random(unchecked((int)RWCampaign.Seed) ^ (RWCampaign.Route.Count * 31) ^ (wave * 977));
         List<RWObjectiveDef> pool = new List<RWObjectiveDef>(All);

@@ -1,5 +1,5 @@
 #if SPOOL_PLAY && SPOOL_MEASURE
-// Debug build only (-Define SPOOL_PLAY,SPOOL_SHOTS,MODKIT_PLAY,MODKIT_TEST,SPOOL_MEASURE, with SPOOL_TUNE for the package): the balance round's measures
+// Debug build only (-Define SPOOL_PLAY,SPOOL_SHOTS,MODKIT_PLAY,MODKIT_TEST,SPOOL_MEASURE): the balance round's measures
 // that take Spool's own buildings (docs/reports/BALANCE_2026-11-03.md section 9, AURA_BASELINE_2026-11-03.md section 7): M5 a line of Pin Cushions, M6 do
 // Crafted hit walkers, M7 the Maul against the line, M10 a Loom and a Loom with its Seam.
 public static class SpoolMeasure

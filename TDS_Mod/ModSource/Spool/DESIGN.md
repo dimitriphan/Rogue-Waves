@@ -81,15 +81,15 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 | Name | Id | Role | Template | Cost | Stats | What it does |
 |---|---|---|---|---|---|---|
 | Yarn Stash | `Tower_Spoolstash` | supply | Tower_Smackyhut | free, limit 1 | Health 100 (+50/level), Thread cap 50 (+25/level) | holds the Thread; drop-off point; Thread Heads respawn here |
-| Repurposed Cookie Tin | `Tower_Spooltin` | Tower | Tower_Smackyhut | Red 50 | Health 60 (+25/level), Crafted 4, one every 4 s | stitches Crafted from Stash Thread and sends them to its target spot |
+| Repurposed Cookie Tin | `Tower_Spooltin` | Tower | Tower_Smackyhut | Red 50 | Health 60 (+25/level), Crafted 6 *(balance sweep 2026-11-05)*, one every 4 s | stitches Crafted from Stash Thread and sends them to its target spot |
 | Thread Head | `Mob_Spoolhead` | unit | Mob_Smackyminer | Red 40, no limit | Health 60, Damage 2, Range 1.5, Attackspeed 0.6, Speed 2.25, carries 20, collects 3 tiles, leash 3, respawn 15 s | guards a spot, collects Thread, carries it home |
-| Pin Cushion | `Tower_Spoolcushion` | defence | Tower_Smackywall | Blue 20 | Health 100 (+40/level), reflect 20% melee, 1 Thread per 25 damage taken | the wall: pricks melee attackers, spins Thread when hit |
-| Loom | `Tower_Spoolloom` | Gatherer | Tower_Smackyhut | Yellow 40 | Health 40 (+20/level), Range 2.5, Damage 1, Attackspeed 0.4 | mines ore in reach, spins 1 Thread every 6 s up to 10 held for pickup |
+| Pin Cushion | `Tower_Spoolcushion` | defence | Tower_Smackywall | Blue 20 | Health 100 (+40/level), reflect 20% melee, 1 Thread per 25 damage taken | the wall: pricks melee attackers, spins Thread when hit; its in-game line says to build it first (P4) |
+| Loom | `Tower_Spoolloom` | Gatherer | Tower_Smackyhut | Yellow 40 | Health 40 (+20/level), Range 2.5, Damage 1, Attackspeed 0.3 *(balance sweep 2026-11-05; was 0.4)* | mines ore in reach, spins 1 Thread every 6 s up to 10 held for pickup |
 
 - **Yarn Stash** *(defaults)*: sellable for nothing (to move it; its Thread is kept for the next one). Destroyed, its
   Thread spills on the ground around it as drops and the build menu goes back to the Stash (rebuilt free). No upgrades
   built yet: the sheet has seven since 2026-11-04 (below, not built).
-- **Cookie Tin:** "Crafted alive at once" 4 per Tin; one is stitched every 4 s while the Stash has the Thread. Its
+- **Cookie Tin:** "Crafted alive at once" 6 per Tin *(balance sweep 2026-11-05; was 4)*; one is stitched every 4 s while the Stash has the Thread. Its
   **TARGET** button (the fish Relocate picker, keys Quickaction / 5) picks a walkable tile within 8 tiles that a Crafted
   can reach *(the sheet: "picked like Fie's rally point, on a path within 8 tiles")*; a pin marker (a walk-through trap
   being every player sees) stands there. Until a spot is picked the Crafted guard the Tin itself. New Crafted run to the
@@ -105,16 +105,16 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 - **Pin Cushion:** a wall (blocks like Smacky's Wall). A hit from a melee foe (its `Range` stat 2.25 or less
   *(default test)*) pricks the attacker for 20% of the damage, with kill credit. Every 25 damage it takes spins 1
   Thread, dropped beside it for pickup.
-- **Loom:** strikes ore within 2.5 tiles like the Mining Hut's pick (stock payout to its owner), and spins 1 Thread every
-  6 s while it holds fewer than 10. Spool picks the held Thread up within 1.5 tiles *(default: the drop-off reach)*, a
-  Thread Head within its 3 tiles.
+- **Loom:** strikes ore within 2.5 tiles 0.3 times a second, like the Mining Hut's pick (stock payout to its owner), and
+  spins 1 Thread every 6 s while it holds fewer than 10. Spool picks the held Thread up within 1.5 tiles *(default: the
+  drop-off reach)*, a Thread Head within its 3 tiles.
 
 ### Crafted (units)
 
 | Crafted | Id | Made by | Attack | Health | Damage | Range | Attackspeed | Speed | Leash | Cost |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Stitched | `Mob_Spoolstitched` | Cookie Tin | melee | 20 | 2 | 1.5 | 0.8 | 1.8 | 2 from its spot | Thread 10 |
-| Dart | `Mob_Spooldart` | Cookie Tin with New Design | ranged, thrown needles | 12 | 2.5 | 3.5 | 0.6 | 1.6 | 1 from its spot | Thread 15 |
+| Stitched | `Mob_Spoolstitched` | Cookie Tin | melee | 20 | 5 *(balance sweep 2026-11-05; was 2)* | 1.5 | 0.8 | 1.8 | 2 from its spot | Thread 10 |
+| Dart | `Mob_Spooldart` | Cookie Tin with New Design | ranged, thrown needles | 12 | 5.5 *(balance sweep 2026-11-05; was 2.5)* | 3.5 | 0.6 | 1.6 | 1 from its spot | Thread 15 |
 | Seam | `Mob_Spoolseam` | Loom with Seam Allowance, 1 per Loom, respawn 10 s | melee, mines | 10 | 1 | 1.5 | 0.8 | 1.5 | 2.5 from its Loom | free |
 | Mangled | `Mob_Spoolmangled` | Pin Cushion with Loose Stuffing, 1 per 40 damage taken, at most 3 alive | melee | 15 (45 Overstuffed) | 1.5 | 1.5 | 0.8 | 2 | 2 from its Cushion | free |
 

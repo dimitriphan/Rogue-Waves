@@ -1,5 +1,7 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the balance sweep's Flood Light (compiled, not yet run in game):** it strikes its node 0.3 times a second, not 0.4, with Spool's Loom, as scope `10` ties the two (`docs/reports/BALANCE_SWEEP_2026-11-05.md` section 4; `02_Data.cs`, the fallback in `07_Building.cs` and the two upgrade checks' fallbacks in `98_Upgrades.cs`). Light still adds 10% a point; Uloe has no simulator, so its play test is the check.
+
 **2026-11-05, the clean-up, kit 1.12 (compiled, not yet run in game):** no number or behaviour changed. Colour Filter reads the owner's purse once before a strike and once after (`ModKitUtil.Purse`, was six `UloeUtil.Purse` reads) and gives through `ModKitUtil.Give`; `UloeLight` keeps one ledger a source (`held` and `heldShare` were two); SURGE, the Mirror and Light's hook set Damagemulti with `ModKitCombat.SetMulti`. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.
 
 **2026-11-05, the 24 upgrades' looks (rendered here, not yet built in Unity or seen in game):** every upgrade now has its

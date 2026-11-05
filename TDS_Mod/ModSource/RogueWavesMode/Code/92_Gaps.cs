@@ -1017,8 +1017,9 @@ public static partial class RWTest
             Check("Trinkets: refused with too little Pure Aura", RWCardinals.Buy(player, "Cardinal_Dentures") == "Not enough Pure Aura", "");
             player.Pure = 200;
             string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
+            int stockPrice = RWCardinals.PriceFor(player, stockCard);
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
-            Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - RWCardinals.Cost(stockCard), stockCard + ": '" + first + "', '" + second + "', Pure " + player.Pure);
+            Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - stockPrice, stockCard + ": '" + first + "', '" + second + "', price " + stockPrice + ", Pure " + player.Pure);
             // B3, B4: a Trinket stacks to 6 and then leaves the shelf; each stack shows on the vessel's panel; a Cardinal the
             // row has no room for is counted on the run line.
             player.Pure = 500;
@@ -1283,14 +1284,14 @@ public static partial class RWTest
             freeze = true;
             RWPlayer player = RWRun.For(me);
             yield return new WaitForSeconds(1f);
-            float wantScale = 1f + RWDifficulty.CountPerMap * (map - 1), wantHealth = RWDifficulty.HealthPerMap * (map - 1);
-            int wantMods = map < 3 ? 0 : Mathf.Min(4, 1 + (map - 3) / 2);
+            float wantScale = 1f + RWDifficulty.CountPerMap * (map - 1), wantHealth = RWDifficulty.HealthFor(map, RWDifficulty.LastHoard);
+            int wantMods = RWDifficulty.ModifiersOn(map, 4);
             int mods = RWDifficulty.LastModifiers == "" ? 0 : RWDifficulty.LastModifiers.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Length;
-            Check("Map " + map + " of 10 (" + plan + ", " + RWWeather.Display(weather) + "): harder as written, every modifier loaded", Mathf.Abs(RWDifficulty.LastScale - wantScale) < 0.001f && Mathf.Abs(RWDifficulty.LastHealth - wantHealth) < 0.001f && mods == wantMods,
-                "foes x" + RWUtil.F(RWDifficulty.LastScale) + ", health +" + RWUtil.F(RWDifficulty.LastHealth * 100f) + "%, modifiers " + mods + " of " + wantMods + " [" + RWDifficulty.LastModifiers + "]; " + RWUtil.F(Time.realtimeSinceStartup - started) + " s in");
+            Check("Map " + map + " of 10 (" + plan + ", " + RWWeather.Display(weather) + "): harder as written, every modifier loaded", Mathf.Abs(RWDifficulty.LastScale - wantScale) < 0.001f && Mathf.Abs(RWDifficulty.LastHealth - wantHealth) < 0.001f && RWDifficulty.LastFinish == RWDifficulty.Finish(map) && mods == wantMods,
+                "Tide 15 on row " + RWDifficulty.LastFinish + ", foes x" + RWUtil.F(RWDifficulty.LastScale) + ", health x" + RWUtil.F(1f + RWDifficulty.LastHealth) + " (" + RWDifficulty.LastHoard + " held), modifiers " + mods + " of " + wantMods + " [" + RWDifficulty.LastModifiers + "]; " + RWUtil.F(Time.realtimeSinceStartup - started) + " s in");
 
-            // Each pass of a Tide: a real Tide's foes carry the map's health and modifiers.
-            if (map >= 3 || map == 2)
+            // Each pass of a Tide: a real Tide's foes carry the map's health (every map since the balance sweep) and modifiers.
+            if (map >= 1)
             {
                 freeze = false;
                 forcing = false;
@@ -1523,7 +1524,7 @@ public static partial class RWTest
             string loadNote = RWUtil.F(Time.realtimeSinceStartup - clock) + " s";
             yield return new WaitForSeconds(1f);
             Entity_Master core = RWUtil.PlayerCore();
-            Check(name + ": the vessel stands, VENDCINT lands near the Basin, an objective is posted", vessel != null && vessel.Being.Value.ToString() == hero && stand != null && core != null && ModKitUtil.Flat(stand.Entityposition.Value, core.Entityposition.Value) <= 8f && RWObjectives.Posted != null,
+            Check(name + ": the vessel stands, VENDCINT lands near the Basin, no objective before Tide " + RWObjectives.ObjectivesFrom, vessel != null && vessel.Being.Value.ToString() == hero && stand != null && core != null && ModKitUtil.Flat(stand.Entityposition.Value, core.Entityposition.Value) <= 8f && (RWObjectives.Posted == null) == (RWObjectives.FirstTide > 1),
                 "vessel " + (vessel != null ? vessel.Being.Value.ToString() : "-") + ", VENDCINT " + (stand != null ? RWUtil.F(ModKitUtil.Flat(stand.Entityposition.Value, core != null ? core.Entityposition.Value : Vector3.zero)) + " from the Basin" : "none") + ", posted " + (RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-") + ", " + loadNote);
 
             // Both weather objects find a tile on this map.

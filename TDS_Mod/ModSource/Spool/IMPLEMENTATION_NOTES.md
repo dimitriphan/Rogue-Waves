@@ -1,5 +1,13 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-05: the balance sweep's numbers (compiled, not yet run in game)
+
+For one Pin Cushion (Dimitri's answer 25) and the Loom's mining (answer 26), `docs/reports/BALANCE_SWEEP_2026-11-05.md`
+section 3: Stitched Damage 2 -> 5, Dart Damage 2.5 -> 5.5, Crafted a Tin 4 -> 6, Dart Range kept at 3.5, the Loom's
+Attackspeed 0.4 -> 0.3 (`02_Data.cs`; the stat fallbacks in `07_Building.cs` and `08_Tin.cs` follow). The Pin Cushion's
+in-game line and journal text say to build it first (P4). The self-test's Tin check counts to 6 with Thread for 6. The
+play build's `SPOOL_TUNE` package (Stitched 3, Dart 3.5, Range 4.5, 6 a Tin) is gone: its numbers no longer match.
+
 ## 2026-11-05: the clean-up, kit 1.12 (compiled, not yet run in game)
 
 No number or behaviour changed. Merit Badge's health goes through `ModKitUtil.Keep`, which now makes a Health mod again as this did by hand; Odd Socks and the Pin Cushion set Damagemulti with `ModKitCombat.SetMulti`; `SpoolClient.PinsQuieted` (read by nothing) is gone. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.

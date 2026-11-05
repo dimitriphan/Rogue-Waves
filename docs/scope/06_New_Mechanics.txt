@@ -40,7 +40,7 @@
 		{VENDCINT} / A sentient vending machine \
 			- Arrives: a unit that falls from the sky near the vessels' spawn point at the start of every break, the opening one before Tide 1 included, the way the vessels land
 			- Leaves: at the end of the break it jumps into the sky and disappears / A break lasts 60 seconds -> 04_Rogue_Waves_Mode.txt [Tides and Leaving] \
-			- Sells: [Cardinals], [Trinkets], and the next rank of [Directions] the vessel already holds, for [Pure Aura] / A new Cardinal's or Trinket's cost is on its own sheet in 12_Cardinals.txt; a base game Cardinal costs Pure Aura 15 \
+			- Sells: [Cardinals], [Trinkets], and the next rank of [Directions] the vessel already holds, for [Pure Aura] / A new Cardinal's or Trinket's cost is on its own sheet in 12_Cardinals.txt; a base game Cardinal costs Pure Aura 15. Each costs ~3~ more for every Cardinal the team has bought and every Trinket copy the buyer holds -> 12_Cardinals.txt [Rules] \
 			- Also: [Fund Transfer] is done at it too
-			- Objectives: a new optional objective is offered at it in every break -> 14_Optional_Objectives.txt
+			- Objectives: a new optional objective is offered at it in every break from the one before Tide 3 -> 14_Optional_Objectives.txt
 			- Status: built with temporary art, and passed on the PC

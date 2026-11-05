@@ -67,7 +67,7 @@
 		- Which maps: some maps on the chart carry a weather, rolled with the chart
 		- Calm rows: the first row and the rows closing a stretch are calm
 		- Odds: about 1 map in 3 has weather in the first stretch, 1 in 2 in the second
-		- Pays: 1 extra [Pure Aura] each tide, on top of the usual 3
+		- Pays: 1 extra [Pure Aura] each tide, on top of what the tide pays: 3 for Tides 1-15, 2 for a bonus tide -> 06_New_Mechanics.txt [Pure Aura]
 		- Shown: the weather shows on its island on the chart, and its in-game line in the boat's map panel when the map is picked; the map's start announces only its name (RISING WATER ROLLS IN)
 		- Never twice: a map never gets the weather it already has: Manafold already floods, Chrono already speeds up, Vultures already has a nest
 		- Status: built, and passed its PC round. How a flooded map looks is yours to check by eye

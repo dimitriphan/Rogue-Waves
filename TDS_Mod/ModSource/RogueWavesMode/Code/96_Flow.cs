@@ -207,6 +207,7 @@ public static partial class RWTest
 
     public static IEnumerator Flow()
     {
+        RWObjectives.FirstTide = 1;     // the board is read from the opening break here; P1's Tide 3 is the gaps part's check
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
         Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
         if (menu == null) { Setup("flow", "never reached the main menu"); yield break; }
@@ -472,6 +473,7 @@ public static partial class RWTest
             if (RWCardinals.IsMine(id) && id != "Cardinal_Dentures") continue;
             string why = "", what = (RWCardinals.IsTrinket(id) ? "Trinket " : "Cardinal ") + id;
             float gainBefore = Game_Mapvars.Instance.Resourcegainmultiplier;
+            player.Pure = Mathf.Max(player.Pure, RWCardinals.PriceFor(player, id));     // C1's ramp outgrows any fixed budget
             try { why = RWCardinals.Buy(player, id); }
             catch (Exception e) { why = e.GetType().Name + ": " + e.Message; Check(what + " grants without an exception", false, why); }
             if (why != "") Info(what, why);
@@ -653,6 +655,7 @@ public static partial class RWTest
             }
         }
         Info("Tides 2-15", RWUtil.F(Time.realtimeSinceStartup - clock) + " s");
+        RWObjectives.FirstTide = RWObjectives.ObjectivesFrom;
         yield return Until(() => RWCampaign.WonThisMap, 10f);
         Check("Won: Tide 15 cleared wins the map, and adds it to the route", RWCampaign.WonThisMap && RWCampaign.Route.Count == 1 && RWCampaign.Playing < 0, "route " + Digits(RWCampaign.Route));
         Check("Won: a Direction pick is owed before the next map", player.Owed, "");

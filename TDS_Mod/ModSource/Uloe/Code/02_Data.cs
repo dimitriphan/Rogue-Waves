@@ -282,7 +282,7 @@ public static class UloeData
             Id = Flood, Template = "Tower_Smackyhut", Display = "Flood Light", Tag = "Uloeflood", Tags = new[] { "Tower", "Gatherer" },
             Desc = "Mines a node, aims its Light at a tower", Costs = "Yellowaura=40",
             Lore = "A stadium lamp on a tripod. Its cord goes into the nearest node; what the node pays, the owner keeps, and what it burns, the lamp throws at whatever you point it at.",
-            Stats = new[] { "Health=40+20", "Damage=1", "Attackspeed=0.4", "Range=2.5", "Aimrange=6", "Lightout=2" },
+            Stats = new[] { "Health=40+20", "Damage=1", "Attackspeed=0.3", "Range=2.5", "Aimrange=6", "Lightout=2" },     // Attackspeed: the Loom's (the balance sweep 2026-11-05)
             Upgrades = new[]
             {
                 U(Flood, "Wide", 2, "Wide Flood", "Lights all around it, can't be aimed", "Wide_Base=0.6;Wideradius_Base=3.5", "Yellowaura=30", "Halogen3,Voltage3",
