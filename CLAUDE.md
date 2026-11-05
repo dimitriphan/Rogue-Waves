@@ -54,7 +54,7 @@ round, a scope fold-in) is worth proposing as a project skill; the drafted ones 
 | `docs/PLAN.md` | Part A coordinator rules, B phases, C state, D prompt templates | Part C "Now" |
 | `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md` | Packaging and versions; look and naming; temporary art | before packaging; before drawing or naming |
 | `docs/EXPANSION_SCOPE.md`, `docs/RESEARCH_GAPS.md` | Non-vessel systems and what is known about them; engine facts left to research | before non-vessel work |
-| `docs/mode/`, `docs/concepts/`, `docs/reports/` | Mode design pages; concept pages and art; dated, frozen reports | the page the task names; reports' `README.md` |
+| `docs/mode/`, `docs/concepts/`, `docs/reports/`, `docs/spotlight/` | Mode design pages; concept pages and art; dated, frozen reports; the feature spotlight page | the page the task names; reports' `README.md` |
 | `concept-tools/` | Python for concept pages, sprites, low-poly models, the sea chart | the docstring of each file |
 
 ## Reading order by task

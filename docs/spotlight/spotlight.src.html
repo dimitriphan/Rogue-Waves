@@ -1,0 +1,849 @@
+<title>Rogue Waves Spotlight</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a sailing log. A deep-swell masthead, then the run in the order a player meets it:
+   the loop, the ten maps, the chart and its weather, the breaks, the vessels, the finds, the foes, what is left. */
+:root {
+  --bg: #EDF3F1;          /* Foam, a touch deeper */
+  --surface: #F9FBFA;
+  --ink: #1D3245;         /* Deep Swell, darkened for text */
+  --muted: #546977;
+  --line: rgba(46, 74, 98, .16);
+  --swell: #2E4A62;       /* Deep Swell */
+  --swell-ink: #E9F1EE;   /* Foam */
+  --teal: #2F7C83;        /* Rogue Teal, darkened to read on Foam */
+  --teal-soft: rgba(63, 143, 150, .14);
+  --coral: #C4553F;       /* Storm Coral, darkened for text */
+  --coral-soft: rgba(226, 114, 91, .14);
+  --sand: #8A7340;        /* Wet Sand, as ink */
+  --sand-soft: rgba(216, 196, 154, .34);
+  --pearl: #F4EEF8;
+  --plate: #E3DDD2;       /* behind tower renders */
+  --c-yossele: #4E9A22;   --c-yossele-bg: rgba(114, 204, 53, .15);
+  --c-spool: #3F8A56;     --c-spool-bg: rgba(147, 204, 161, .26);
+  --c-argo: #3B6E9C;      --c-argo-bg: rgba(79, 134, 184, .15);
+  --c-uloe: #8C7F0E;      --c-uloe-bg: rgba(241, 239, 114, .28);
+  --f-display: "Jersey 15", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --radius: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #13212E; --surface: #1A2B3B; --ink: #E4EDEA; --muted: #9DB1BC; --line: rgba(233, 241, 238, .12);
+    --swell: #0E1A25; --swell-ink: #E9F1EE; --teal: #6EC0C6; --teal-soft: rgba(63, 143, 150, .22);
+    --coral: #F0907C; --coral-soft: rgba(226, 114, 91, .18); --sand: #D8C49A; --sand-soft: rgba(216, 196, 154, .16);
+    --plate: #2A3B4B;
+    --c-yossele: #8FD95E; --c-yossele-bg: rgba(114, 204, 53, .12);
+    --c-spool: #93CCA1;   --c-spool-bg: rgba(147, 204, 161, .13);
+    --c-argo: #8DB9E2;    --c-argo-bg: rgba(79, 134, 184, .16);
+    --c-uloe: #F1EF72;    --c-uloe-bg: rgba(241, 239, 114, .10);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #13212E; --surface: #1A2B3B; --ink: #E4EDEA; --muted: #9DB1BC; --line: rgba(233, 241, 238, .12);
+  --swell: #0E1A25; --swell-ink: #E9F1EE; --teal: #6EC0C6; --teal-soft: rgba(63, 143, 150, .22);
+  --coral: #F0907C; --coral-soft: rgba(226, 114, 91, .18); --sand: #D8C49A; --sand-soft: rgba(216, 196, 154, .16);
+  --plate: #2A3B4B;
+  --c-yossele: #8FD95E; --c-yossele-bg: rgba(114, 204, 53, .12);
+  --c-spool: #93CCA1;   --c-spool-bg: rgba(147, 204, 161, .13);
+  --c-argo: #8DB9E2;    --c-argo-bg: rgba(79, 134, 184, .16);
+  --c-uloe: #F1EF72;    --c-uloe-bg: rgba(241, 239, 114, .10);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body); }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3, h4 { font-family: var(--f-display); font-weight: 400; line-height: 1.15; text-wrap: balance; margin: 0; letter-spacing: .01em; }
+h2 { font-size: clamp(2.1rem, 4.4vw, 2.9rem); }
+h3 { font-size: 1.55rem; }
+h4 { font-size: 1.25rem; }
+p { margin: 0; max-width: 68ch; }
+.px { image-rendering: pixelated; image-rendering: crisp-edges; }
+.eyebrow { font: 500 .74rem/1 var(--f-data); letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+.lede { color: var(--muted); font-size: 1.05rem; }
+.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
+a { color: var(--teal); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+/* status chips */
+.st { display: inline-flex; align-items: center; gap: .35em; font: 500 .7rem/1 var(--f-data); letter-spacing: .04em; padding: .32em .55em; border-radius: 99px; white-space: nowrap; vertical-align: middle; }
+.st::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: currentColor; }
+.st-pc { color: var(--teal); background: var(--teal-soft); }
+.st-built { color: var(--sand); background: var(--sand-soft); }
+.st-no { color: var(--coral); background: var(--coral-soft); }
+.st-no::before { background: transparent; border: 1.5px solid currentColor; }
+
+/* masthead */
+.mast { background: var(--swell); color: var(--swell-ink); padding-block: 48px 0; position: relative; overflow: hidden; }
+.mast .wrap { display: grid; gap: 22px; }
+.brand { display: flex; align-items: center; gap: 16px; }
+.brand img { width: 64px; height: 64px; }
+.mast h1 { font-size: clamp(3.4rem, 11vw, 6rem); line-height: .95; }
+.mast .tag { font-size: 1.15rem; max-width: 60ch; opacity: .92; }
+.mast .eyebrow { color: #9ED3D7; }
+.tally { display: flex; flex-wrap: wrap; gap: 8px 26px; padding-block: 6px 4px; }
+.tally div { display: grid; }
+.tally b { font: 400 2.4rem/1 var(--f-display); }
+.tally span { font-size: .8rem; opacity: .8; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: .85rem; padding-bottom: 8px; }
+.legend .st { background: rgba(233, 241, 238, .12); }
+.legend .st-pc { color: #8FD3D8; } .legend .st-built { color: #E2CF9F; } .legend .st-no { color: #F3A08F; }
+.wave { display: block; width: 100%; height: 56px; margin-top: 18px; }
+.wave path { fill: var(--bg); }
+
+section { padding-block: 56px 8px; }
+.head { display: grid; gap: 10px; margin-bottom: 26px; }
+
+/* the loop */
+.loop { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; counter-reset: step; }
+.loop li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 8px; align-content: start; counter-increment: step; min-width: 0; }
+.loop .top { display: flex; align-items: center; gap: 10px; }
+.loop .top::before { content: counter(step); font: 400 1.3rem/1 var(--f-display); color: var(--teal); width: 1.7em; height: 1.7em; display: grid; place-items: center; border: 1.5px solid var(--teal); border-radius: 50%; flex: none; }
+.loop img { width: 24px; height: 24px; margin-left: auto; }
+.loop p { font-size: .93rem; color: var(--muted); }
+
+/* ten maps */
+.route-box { overflow-x: auto; padding-bottom: 6px; }
+.route { display: grid; grid-template-columns: 120px repeat(10, minmax(64px, 1fr)); min-width: 760px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.route > div { padding: 10px 8px; border-top: 1px solid var(--line); font-size: .85rem; text-align: center; }
+.route > div:nth-child(-n+11) { border-top: 0; }
+.route .rl { text-align: left; color: var(--muted); font-size: .78rem; }
+.route .mh { font: 400 1.35rem/1 var(--f-display); }
+.route .mh small { display: block; font: 400 .68rem/1.3 var(--f-body); color: var(--muted); margin-top: 3px; }
+.route .end { background: var(--teal-soft); }
+.dots { display: inline-flex; gap: 3px; }
+.dots i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.dots i.on { border-color: var(--coral); background: var(--coral); }
+.bar { height: 6px; border-radius: 3px; background: var(--teal); margin: 4px auto 0; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 28px; margin-top: 20px; font-size: .93rem; }
+.notes p { color: var(--muted); }
+.notes b { color: var(--ink); }
+
+/* chart and weather */
+.chart { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 32px; align-items: start; }
+.chart figure { margin: 0; }
+.chart figure img { width: 100%; border-radius: var(--radius); display: block; }
+.chart figcaption { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+.facts { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.facts li { display: grid; grid-template-columns: 9.5em 1fr; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 10px; font-size: .95rem; }
+.facts li > span:first-child { color: var(--muted); font-size: .85rem; }
+.weathers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 26px; }
+.wx { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--surface); display: grid; min-width: 0; }
+.wx .sky { height: 92px; position: relative; display: flex; align-items: flex-end; padding: 10px 12px; color: #fff; }
+.wx .sky img { width: 36px; height: 36px; background: rgba(255,255,255,.85); border-radius: 6px; padding: 3px; }
+.wx .sky .look { margin-left: auto; font: 500 .72rem/1 var(--f-data); background: rgba(14, 26, 37, .55); padding: 4px 6px; border-radius: 4px; }
+.wx-rise .sky { background: linear-gradient(180deg, #C9D6D8 0%, #9FB9BD 55%, #3F8F96 100%); }
+.wx-quick .sky { background: linear-gradient(180deg, #5A646C 0%, #4B545B 50%, #30363B 100%); }
+.wx-nest .sky { background: linear-gradient(180deg, #6A5A8A 0%, #B07A6A 55%, #E09A6B 100%); }
+.wx .body { padding: 14px; display: grid; gap: 8px; }
+.wx .body p { font-size: .92rem; color: var(--muted); }
+.wx .line { font-style: italic; font-size: .88rem; color: var(--ink); }
+
+/* breaks */
+.breaks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.span-5 { grid-column: span 5; } .span-7 { grid-column: span 7; } .span-4 { grid-column: span 4; } .span-6 { grid-column: span 6; } .span-12 { grid-column: span 12; }
+.panel .title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.panel .title .st { margin-left: auto; }
+.panel p { font-size: .93rem; color: var(--muted); }
+.vend { display: flex; gap: 18px; align-items: center; }
+.sprite { flex: none; background-repeat: no-repeat; image-rendering: pixelated; }
+.vend .sprite { width: 96px; height: 96px; background-size: 576px 96px; animation: frames6 .9s steps(6) infinite; border-radius: 8px; background-color: var(--sand-soft); }
+@keyframes frames6 { to { background-position: -576px 0; } }
+.pearl { display: inline-block; width: 12px; height: 15px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 35% 30%, #fff, #F4EEF8 45%, #C9E4F2 75%, #F2D9E6); box-shadow: 0 0 0 1px rgba(46, 74, 98, .25); vertical-align: -2px; }
+.pays { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.pays div { background: var(--bg); border-radius: 8px; padding: 10px; display: grid; gap: 2px; }
+.pays b { font: 400 1.9rem/1 var(--f-display); }
+.pays span { font-size: .76rem; color: var(--muted); }
+.obj { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.obj li { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; font-size: .92rem; }
+.obj img { width: 30px; height: 30px; }
+.obj small { display: block; color: var(--muted); font-size: .8rem; }
+.obj .pay { font: 500 .8rem/1 var(--f-data); white-space: nowrap; }
+
+/* vessels */
+.vessels { display: grid; gap: 18px; }
+.vessel { border-radius: 14px; border: 1px solid var(--line); background: var(--surface); display: grid; grid-template-columns: 230px minmax(0, 1fr); overflow: hidden; }
+.vessel .portrait { background: var(--vbg); display: grid; place-items: center; padding: 22px 14px; gap: 10px; align-content: center; }
+.vessel .portrait .hero { width: 160px; height: 160px; }
+.vessel .portrait .argo-shot { width: 170px; border-radius: 8px; }
+.vessel .portrait .yos { width: 160px; height: 160px; background-size: 960px 160px; animation: frames6y .8s steps(6) infinite; }
+@keyframes frames6y { to { background-position: -960px 0; } }
+.vessel .portrait .note { font-size: .72rem; color: var(--muted); text-align: center; }
+.vessel .info { padding: 22px; display: grid; gap: 14px; min-width: 0; }
+.vessel .name { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.vessel .name h3 { font-size: 2.6rem; color: var(--vc); }
+.vessel .name em { font-style: normal; color: var(--muted); }
+.vessel .name .st { margin-left: auto; }
+.stats { display: flex; flex-wrap: wrap; gap: 6px; }
+.stats span { font: 500 .78rem/1 var(--f-data); padding: 6px 8px; border-radius: 6px; background: var(--vbg); }
+.stats span b { font-weight: 500; color: var(--vc); }
+.mech { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.mech div { border-left: 3px solid var(--vc); padding-left: 10px; font-size: .92rem; }
+.mech b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 1.25rem; }
+.mech span { color: var(--muted); }
+.kit { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 16px; align-items: start; }
+.towers { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: .9rem; }
+.towers li { display: grid; grid-template-columns: 11.5em 1fr; gap: 10px; }
+.towers li b { font-weight: 700; }
+.towers li span { color: var(--muted); }
+.towers li i { font-style: normal; font: 500 .68rem/1 var(--f-data); color: var(--vc); display: block; margin-top: 2px; letter-spacing: .04em; text-transform: uppercase; }
+.tower { background: var(--plate); border-radius: 10px; display: grid; justify-items: center; padding: 6px 6px 8px; }
+.tower img { width: 138px; height: auto; }
+.tower small { font-size: .72rem; color: var(--muted); text-align: center; }
+.left { font-size: .86rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+.v-yossele { --vc: var(--c-yossele); --vbg: var(--c-yossele-bg); }
+.v-spool { --vc: var(--c-spool); --vbg: var(--c-spool-bg); }
+.v-argo { --vc: var(--c-argo); --vbg: var(--c-argo-bg); }
+.v-uloe { --vc: var(--c-uloe); --vbg: var(--c-uloe-bg); }
+
+/* directions */
+.rules { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.rules span { font-size: .85rem; padding: 6px 10px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); }
+.dirs { columns: 3 300px; column-gap: 24px; }
+.dgroup { break-inside: avoid; margin-bottom: 22px; }
+.dgroup h4 { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); margin-bottom: 4px; }
+.count { font: 500 .75rem/1 var(--f-data); color: var(--muted); }
+.dlist { list-style: none; margin: 0; padding: 0; }
+.dlist li { display: grid; grid-template-columns: 24px 1fr; column-gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); align-items: center; }
+.dlist img { width: 24px; height: 24px; grid-row: span 2; align-self: start; margin-top: 2px; }
+.dlist .dn { font-weight: 700; font-size: .92rem; }
+.dlist .for { grid-column: 2; font: 500 .68rem/1.2 var(--f-data); color: var(--teal); text-transform: uppercase; letter-spacing: .06em; }
+.dlist .r1 { grid-column: 2; font-size: .8rem; color: var(--muted); line-height: 1.35; }
+.kind { font: 500 .62rem/1 var(--f-data); text-transform: uppercase; letter-spacing: .06em; padding: 2px 5px; border-radius: 4px; vertical-align: 2px; margin-left: 4px; }
+.kind-shift { color: var(--coral); background: var(--coral-soft); }
+.kind-duo { color: var(--teal); background: var(--teal-soft); }
+
+/* finds */
+.flux { display: flex; gap: 12px; align-items: flex-start; background: var(--sand-soft); border-radius: var(--radius); padding: 12px 14px; font-size: .9rem; margin-bottom: 22px; }
+.flux b { font-family: var(--f-display); font-weight: 400; font-size: 1.15rem; }
+.finds { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
+.finds .panel h3 { display: flex; align-items: baseline; gap: 8px; }
+.finds ul.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.items li { display: grid; grid-template-columns: 36px 1fr; gap: 10px; align-items: center; }
+.items img { width: 36px; height: 36px; background: var(--bg); border-radius: 6px; padding: 2px; }
+.items b { display: block; font-size: .92rem; }
+.items span { font-size: .82rem; color: var(--muted); }
+.stock { display: flex; flex-wrap: wrap; gap: 6px; }
+.stock span { font-size: .8rem; padding: 4px 8px; border-radius: 6px; background: var(--bg); border: 1px solid var(--line); }
+
+/* foes */
+.foes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.foe { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 8px; align-content: start; }
+.foe svg { width: 100%; height: 110px; display: block; }
+.foe .numbers { font: 500 .78rem/1.4 var(--f-data); color: var(--ink); }
+.foe p { font-size: .9rem; color: var(--muted); }
+
+/* hood */
+.hood { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.hood ul { margin: 0; padding-left: 1.1em; font-size: .92rem; color: var(--muted); display: grid; gap: 6px; }
+.hood ul b { color: var(--ink); }
+
+/* not built */
+.gaps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 0 28px; align-items: start; }
+.gaps li { align-content: start; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.gaps li .st { grid-row: span 2; align-self: start; margin-top: 2px; }
+.gaps b { font-size: .95rem; }
+.gaps span:last-child { font-size: .86rem; color: var(--muted); grid-column: 2; }
+
+.release { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+.release .panel:first-child { border-color: var(--c-yossele); }
+footer { padding-block: 48px 56px; color: var(--muted); font-size: .82rem; }
+footer .wrap { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 18px; }
+code { font-family: var(--f-data); font-size: .85em; }
+
+@media (max-width: 860px) {
+  .chart, .vessel { grid-template-columns: 1fr; }
+  .breaks > * { grid-column: span 12; }
+  .kit { grid-template-columns: 1fr; }
+  .tower { justify-self: start; }
+}
+@media (max-width: 520px) {
+  .towers li { grid-template-columns: 1fr; gap: 0; }
+  .facts li { grid-template-columns: 1fr; gap: 2px; }
+  .pays { grid-template-columns: 1fr 1fr 1fr; }
+  .vessel .name .st { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vend .sprite, .vessel .portrait .yos { animation: none; }
+}
+</style>
+
+<header class="mast">
+  <div class="wrap">
+    <div class="brand">
+      <img class="px" src="{{img:icon_RogueWaves_Crest32}}" alt="The Rogue Waves crest" width="64" height="64">
+      <span class="eyebrow">A fan expansion for TDS - Tower Defense Strategy</span>
+    </div>
+    <h1>Rogue Waves</h1>
+    <p class="tag">The wave that comes out of nowhere. A roguelike campaign of ten maps for two to four players, four new vessels, foes that change every run, and a sea of washed-up things to find, all in one mod pack.</p>
+    <div class="tally" aria-label="What the pack adds">
+      <div><b class="num">10</b><span>maps a campaign</span></div>
+      <div><b class="num">4</b><span>new vessels</span></div>
+      <div><b class="num">55</b><span>Directions</span></div>
+      <div><b class="num">25</b><span>Trinkets in the shop</span></div>
+      <div><b class="num">20</b><span>Cardinals in the shop</span></div>
+      <div><b class="num">4</b><span>foe modifiers</span></div>
+      <div><b class="num">3</b><span>sea weathers</span></div>
+      <div><b class="num">5</b><span>optional objectives</span></div>
+    </div>
+    <div class="legend">
+      <span>Each feature says where it stands:</span>
+      <span class="st st-pc">Played on the PC</span>
+      <span class="st st-built">Built, not yet run in game</span>
+      <span class="st st-no">Not built</span>
+      <span style="opacity:.75">As of 5 November 2026, base <code>3ee6305</code></span>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C 140 10, 260 10, 380 30 S 600 56, 760 26 S 1000 0, 1200 30 L 1200 56 L 0 56 Z"/></svg>
+</header>
+
+<main>
+<section id="loop">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">The Rogue Waves mode</span>
+      <h2>One campaign, start to finish</h2>
+      <p class="lede">The host starts a run from the main menu. Every map after that follows the same loop: pick a Direction, vote, sail, hold the tides, spend Pure Aura in the breaks, and leave once Tide 15 is behind you. <span class="st st-pc">Played on the PC</span></p>
+    </div>
+    <ol class="loop">
+      <li><div class="top"><h4>Board the boat</h4><img class="px" src="{{img:icon_RogueWaves_Board}}" alt="" width="24" height="24"></div><p>The Rogue Waves button on the main menu offers New or Continue and takes the host to the boat with the mode set. Friends join there. Each player picks a vessel and is locked into it for the run.</p></li>
+      <li><div class="top"><h4>Pick a Direction</h4><img class="px" src="{{img:icon_Direction_Compass}}" alt="" width="24" height="24"></div><p>Before every map each player is offered 3 Directions and keeps 1. Some raise a stat; Shifts change how a vessel plays.</p></li>
+      <li><div class="top"><h4>Vote and sail</h4><img class="px" src="{{img:icon_RogueWaves_Vote}}" alt="" width="24" height="24"></div><p>The party votes on the next island among the ones linked on the sea chart. The boat then sails there by itself.</p></li>
+      <li><div class="top"><h4>Hold the tides</h4><img class="px" src="{{img:icon_RogueWaves_PureAura}}" alt="" width="24" height="24"></div><p>The map plays like the base game, harder. Every tide pays each player Pure Aura, and optional objectives pay more.</p></li>
+      <li><div class="top"><h4>Shop in the break</h4><img class="px" src="{{img:icon_RogueWaves_Shop}}" alt="" width="24" height="24"></div><p>Breaks last 60 seconds. VENDCINT drops in to sell Cardinals, Trinkets and Direction ranks, and to carry aura between friends.</p></li>
+      <li><div class="top"><h4>Leave or stay</h4><img class="px" src="{{img:icon_RogueWaves_Stay}}" alt="" width="24" height="24"></div><p>Clearing Tide 15 wins the map. From then on the party votes between tides: leave, or stay for bonus tides that pay more and hit harder. Nobody can leave mid-tide.</p></li>
+      <li><div class="top"><h4>Save and go on</h4><img class="px" src="{{img:icon_RogueWaves_Retry}}" alt="" width="24" height="24"></div><p>The host's save keeps the run between maps. Continue brings back each vessel, Pure Aura, Directions and Trinkets, and the team's Cardinals. Three retries replay a lost map.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="maps">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Difficulty</span>
+      <h2>Ten maps, each harder than the last</h2>
+      <p class="lede">The run must end harder than the base game, even with every Cardinal and Direction the party stacks up. Each map's Tide 15 plays a later base-game tide, foe health climbs, and the seed switches on its foe modifiers one at a time. <span class="st st-built">Tuned numbers built, not yet run</span></p>
+    </div>
+    <div class="route-box">
+      <div class="route" role="table" aria-label="The ten maps of a campaign">
+        <div class="rl" role="rowheader">Map</div>
+        <div class="mh">1<small>calm</small></div><div class="mh">2</div><div class="mh">3</div><div class="mh">4</div><div class="mh">5<small>closes stretch, calm</small></div><div class="mh">6</div><div class="mh">7</div><div class="mh">8</div><div class="mh">9</div><div class="mh end">10<small>closes stretch, calm</small></div>
+        <div class="rl">Tide 15 plays like base Tide</div>
+        <div class="num">15</div><div class="num">18</div><div class="num">20</div><div class="num">21</div><div class="num">21</div><div class="num">24</div><div class="num">24</div><div class="num">24</div><div class="num">24</div><div class="num end">24</div>
+        <div class="rl">Foe health</div>
+        <div class="num">×2.60<div class="bar" style="width:78%"></div></div><div class="num">×2.68<div class="bar" style="width:81%"></div></div><div class="num">×2.76<div class="bar" style="width:83%"></div></div><div class="num">×2.84<div class="bar" style="width:86%"></div></div><div class="num">×2.92<div class="bar" style="width:88%"></div></div><div class="num">×3.00<div class="bar" style="width:90%"></div></div><div class="num">×3.08<div class="bar" style="width:93%"></div></div><div class="num">×3.16<div class="bar" style="width:95%"></div></div><div class="num">×3.24<div class="bar" style="width:98%"></div></div><div class="num end">×3.32<div class="bar" style="width:100%"></div></div>
+        <div class="rl">Foe modifiers on</div>
+        <div><span class="dots"><i></i><i></i><i></i><i></i></span></div><div><span class="dots"><i class="on"></i><i></i><i></i><i></i></span></div><div><span class="dots"><i class="on"></i><i></i><i></i><i></i></span></div><div><span class="dots"><i class="on"></i><i class="on"></i><i></i><i></i></span></div><div><span class="dots"><i class="on"></i><i class="on"></i><i></i><i></i></span></div><div><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div><div><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></div><div><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div><div><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div><div class="end"><span class="dots"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></div>
+      </div>
+    </div>
+    <div class="notes">
+      <p><b>On top of that:</b> foes +6% a map and +50% for each player past the first; spawns 3% quicker a map; health +2% for every Cardinal, Trinket copy and Direction rank the party holds when a map starts.</p>
+      <p><b>Modifiers per campaign:</b> the seed draws 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis). They ride on one foe in five, taken in turn from tide to tide.</p>
+      <p><b>Bonus tides</b> play the rows after Tide 15 with the map's scaling, and from row 29 each one adds 10% more foes. They never cost a retry: only the tide in progress pays nothing.</p>
+    </div>
+  </div>
+</section>
+
+<section id="chart">
+  <div class="wrap">
+    <div class="chart">
+      <figure>
+        <img src="{{img:chart}}" alt="A generated sea chart: a harbour at the bottom and ten rows of linked islands above it" width="340">
+        <figcaption>The sea chart prototype from <code>concept-tools/sea_chart.py</code>. In game the chart is built from the base game's own islands, water, rocks and buoys.</figcaption>
+      </figure>
+      <div class="head" style="margin:0">
+        <span class="eyebrow">Between maps</span>
+        <h2>A new sea chart every run</h2>
+        <p class="lede">Like a roguelike map screen, sailed by the game's own boat. A harbour, then 10 rows of 3 or 4 base-game maps, each linked to 1 to 3 in the next row. <span class="st st-pc">Played on the PC</span></p>
+        <ul class="facts" style="margin-top:14px">
+          <li><span>Spread</span><span>Easier maps in the first rows, harder and δ maps later, the hardest closing each stretch of five.</span></li>
+          <li><span>No repeats</span><span>No map sits on a chart twice. Every base-game map can come up; the custom slot never does.</span></li>
+          <li><span>The vote</span><span>Held in the map, after the vote to leave. Map 1's vote is held in the opening break of a staging map.</span></li>
+          <li><span>After a loss</span><span>The boat sails back by itself, and only the lost map can be picked until it is won.</span></li>
+          <li><span>On the boat</span><span>No Cardinal or Trinket swaps. Lobby Cardinals are picked once, before map 1, and stay for the run.</span></li>
+          <li><span>The chart's look</span><span>Islands at the base game's size in the home world's water, a flag and dashed lanes in the pack's colours. <span class="st st-built">Still his to check by eye</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="weathers" id="weather">
+      <article class="wx wx-rise">
+        <div class="sky"><img class="px" src="{{img:icon_RogueWaves_RisingWater}}" alt="" width="36" height="36"><span class="look">light mist</span></div>
+        <div class="body"><h3>Rising Water</h3><p class="line">"Rising Water: the water climbs each Tide. More Pure Aura"</p><p>Flooded tiles can't be built on and shots through the water slow down. Never on Manafold, which floods already.</p></div>
+      </article>
+      <article class="wx wx-quick">
+        <div class="sky"><img class="px" src="{{img:icon_RogueWaves_Quickening}}" alt="" width="36" height="36"><span class="look">storm grey</span></div>
+        <div class="body"><h3>Quickening Current</h3><p class="line">"Quickening Current: the game runs faster from Tide 5. More Pure Aura"</p><p><span class="num">×1.25</span> speed from Tide 5, <span class="num">×1.5</span> from Tide 10. Never on Chrono.</p></div>
+      </article>
+      <article class="wx wx-nest">
+        <div class="sky"><img class="px" src="{{img:icon_RogueWaves_Nesting}}" alt="" width="36" height="36"><span class="look">dusk</span></div>
+        <div class="body"><h3>Nesting Ground</h3><p class="line">"Nesting Ground: a halberd nest grows near the foes. More Pure Aura"</p><p>A nest 3 to 7 tiles from an enemy core grows each tide and sends out a halberd every few tides. Never on Vultures.</p></div>
+      </article>
+    </div>
+    <div class="notes">
+      <p><b>Sea weather</b> is rolled with the chart: about 1 map in 3 in the first stretch, 1 in 2 in the second, never on the first row or a row that closes a stretch. A weather map pays 1 extra Pure Aura each tide. <span class="st st-pc">Played on the PC</span></p>
+      <p><b>A look per weather:</b> each weather now brings its own light and fog, fading in over 4 seconds after the map's intro, on every player's screen. Calm maps keep their own light. <span class="st st-built">Built, being checked in the PC round now</span></p>
+    </div>
+  </div>
+</section>
+
+<section id="breaks">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Between tides</span>
+      <h2>Breaks, the shop and Pure Aura</h2>
+    </div>
+    <div class="breaks">
+      <div class="panel span-7">
+        <div class="title"><h3>VENDCINT</h3><span class="st st-pc">Played on the PC</span></div>
+        <div class="vend">
+          <div class="sprite" style="background-image:url({{img:vendcint}})" role="img" aria-label="VENDCINT, a vending machine, idle"></div>
+          <p>A sentient vending machine that falls from the sky by the vessels' landing spot at the start of every break and jumps back out when it ends. It sells Cardinals, Trinkets and the next rank of a Direction you hold, hands out the optional objective, and runs Fund Transfer. Each buy costs 3 Pure Aura more for every Cardinal the team holds and every Trinket copy the buyer holds. Its look is temporary art.</p>
+        </div>
+      </div>
+      <div class="panel span-5">
+        <div class="title"><h3><span class="pearl" aria-hidden="true"></span> Pure Aura</h3><span class="st st-pc">Played on the PC</span></div>
+        <p>A new currency for the run, one counter per player in a pearl white none of the base auras use.</p>
+        <div class="pays">
+          <div><b class="num">3</b><span>each tide, 1 to 15</span></div>
+          <div><b class="num">2</b><span>each bonus tide</span></div>
+          <div><b class="num">+1</b><span>a tide on a weather map</span></div>
+        </div>
+        <p>Direction rank II costs <span class="num">20</span>, rank III <span class="num">30</span>; a base-game Cardinal <span class="num">15</span>.</p>
+      </div>
+      <div class="panel span-6">
+        <div class="title"><h3>Optional objectives</h3><span class="st st-pc">Played on the PC</span></div>
+        <p>A new bounty is offered at VENDCINT in every break from the one before Tide 3. It lasts the next tide, pays every player in full, and failing it costs nothing.</p>
+        <ul class="obj">
+          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Meteor}}" alt="" width="30" height="30"><div>Mind the Meteor<small>Fully mine a node that lands somewhere on the map. Its white crystal is built, not yet seen.</small></div><span class="pay"><span class="pearl"></span> 3</span></li>
+          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Hull}}" alt="" width="30" height="30"><div>Keep the Basin Clean<small>No foe hurts the Basin this tide</small></div><span class="pay"><span class="pearl"></span> 2</span></li>
+          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Clock}}" alt="" width="30" height="30"><div>Beat the Clock<small>The last foe falls with 25% of the tide's clock left</small></div><span class="pay"><span class="pearl"></span> 3</span></li>
+          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Hands}}" alt="" width="30" height="30"><div>Mind the Vessels<small>No vessel drowns this tide</small></div><span class="pay"><span class="pearl"></span> 2</span></li>
+          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Nest}}" alt="" width="30" height="30"><div>Raze the Nest<small>A halberd nest lands near the foes: destroy it</small></div><span class="pay"><span class="pearl"></span> 4</span></li>
+        </ul>
+      </div>
+      <div class="panel span-6">
+        <div class="title"><h3><img class="px" src="{{img:icon_RogueWaves_Fund}}" alt="" width="24" height="24" style="width:24px;height:24px;vertical-align:-4px"> Fund Transfer</h3><span class="st st-pc">Played with a second player</span></div>
+        <p>Friends can send each other base aura at VENDCINT in a break, up to 50 times the coming tide's number, in any mix of colours: 50 before Tide 1, 250 before Tide 5. Pure Aura never moves. This is the expansion's economy change, and it lets a team split into roles.</p>
+        <div class="title" style="margin-top:8px"><h3><img class="px" src="{{img:icon_RogueWaves_Retry}}" alt="" width="24" height="24" style="width:24px;height:24px;vertical-align:-4px"> Retries</h3><span class="st st-pc">Played on the PC</span></div>
+        <p>Three a campaign. A lost map is replayed from the last save; with none left, the run ends and keeps nothing. Only the host quitting mid-map spends one. A friend who drops can rejoin the running map.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vessels">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Four new vessels</span>
+      <h2>Yossele, Spool, Argo and Uloe</h2>
+      <p class="lede">Each one has its own towers, upgrade trees, minions and Directions, and plays outside the mode too. Spool's and Uloe's art is temporary; Yossele's sheets are final drafts waiting for the PC check; Argo keeps his shipped look.</p>
+    </div>
+    <div class="vessels">
+      <article class="vessel v-yossele" id="yossele">
+        <div class="portrait">
+          <div class="sprite yos" style="background-image:url({{img:yossele_idle}})" role="img" aria-label="Yossele, a clay golem with a sprout, idling"></div>
+          <span class="note">Final idle sheet, drawn from Dimitri's reshade</span>
+        </div>
+        <div class="info">
+          <div class="name"><h3>Yossele</h3><em>The Patient Golem · Intermediate</em><span class="st st-pc">Self-test 177 of 177</span></div>
+          <p>Sturdy, single-target ranged that mends itself. A clay golem with a hole for a mouth, firing a green laser. Its buildings grow stronger every tide they survive, so the game is keeping them alive.</p>
+          <div class="stats"><span>Health <b>70</b></span><span>Regen <b>1/s</b> while hurt</span><span>Speed <b>1.75</b></span><span>Damage <b>5.5</b></span><span>Range <b>4</b> tiles</span></div>
+          <div class="mech">
+            <div><b>Growth</b><span>Each building gains a stack for every tide it survives, 5 on maps of 4 tides or fewer, and loses them all when destroyed.</span></div>
+            <div><b>Fertilize</b><span>Spend 1 fertilizer for +1 Growth stage on one building. Unlocked only by the Compost Bin Direction; holds up to 10.</span></div>
+          </div>
+          <div class="kit">
+            <ul class="towers">
+              <li><div><b>Mushroom Cannon</b><i>Offense</i></div><span>Lobs spore bombs that stack spores, damaging foes over time.</span></li>
+              <li><div><b>Primordial Dandelion Tree</b><i>Offense</i></div><span>Releases seeds that strike targets who wander too close.</span></li>
+              <li><div><b>Overgrown Stonehenge</b><i>Defense</i></div><span>Sturdy stones, vines creep forward and slow foes.</span></li>
+              <li><div><b>Pachira Sapling</b><i>Economy</i></div><span>Its roots mine every ore node in reach; fully grown it drops aura fruit.</span></li>
+              <li><div><b>Cordyfriend</b><i>Minion</i></div><span>A tanky minion that rises from fallen foes, from the cannon's Cordyceps upgrade.</span></li>
+            </ul>
+            <div class="tower"><img src="{{img:tower_yossele}}" alt="The Primordial Dandelion Tree model, fully upgraded" width="138"><small>Primordial Dandelion Tree</small></div>
+          </div>
+          <p class="left">Wood Wide Web, the Shift Directions' panel names and Yossele's new Directions are built, not yet run. Its final sheets wait for the PC to show Yossele walking both ways.</p>
+        </div>
+      </article>
+
+      <article class="vessel v-spool" id="spool">
+        <div class="portrait">
+          <img class="px hero" src="{{img:spool}}" alt="Spool, a hooded sage green plush with a stitched face" width="160" height="160">
+          <span class="note">Temporary art, in the sage green picked on 5 November</span>
+        </div>
+        <div class="info">
+          <div class="name"><h3>Spool</h3><em>Crafty Crafted Crafter · Advanced</em><span class="st st-pc">Self-test 135 of 135</span></div>
+          <p>Crafty melee that commands a stitched army. A hooded plush whose Crafted do the damage, built from Thread that foes drop and that has to be carried home.</p>
+          <div class="stats"><span>Health <b>45</b></span><span>Speed <b>2.75</b></span><span>Damage <b>2.5</b></span><span>Range <b>1.5</b> tiles</span></div>
+          <div class="mech">
+            <div><b>Thread</b><span>Foes drop 1, elites up to 5. Spool or a Thread Head carries 20 at a time to the Yarn Stash, which starts each map with 10 and holds 50.</span></div>
+            <div><b>Patch</b><span>20 Thread heals one unit or building for 20% of its health, up to 500. Range 4 tiles, every 5 seconds.</span></div>
+          </div>
+          <div class="kit">
+            <ul class="towers">
+              <li><div><b>Yarn Stash</b><i>Support</i></div><span>Holds Spool's Thread; the Crafted draw from it.</span></li>
+              <li><div><b>Repurposed Cookie Tin</b><i>Minion summoner</i></div><span>Stitches Crafted from Thread (Stitched, Dart, Seam, Mangled) and sends them where you point.</span></li>
+              <li><div><b>Thread Head</b><i>Minion</i></div><span>A bigger minion you place, that gathers Thread from nearby kills and ports it home.</span></li>
+              <li><div><b>Pin Cushion</b><i>Defense</i></div><span>Build it first: pricks melee attackers, spins Thread when hit.</span></li>
+              <li><div><b>Loom</b><i>Economy</i></div><span>Mines aura, spins Thread.</span></li>
+            </ul>
+            <div class="tower"><img src="{{img:tower_spool}}" alt="The Repurposed Cookie Tin model" width="138"><small>Repurposed Cookie Tin</small></div>
+          </div>
+          <p class="left">Not built yet: 22 upgrades (the Yarn Stash, Thread Head and Loom trees, three Cookie Tin and two Pin Cushion upgrades) and the UNTHREAD button.</p>
+        </div>
+      </article>
+
+      <article class="vessel v-argo" id="argo">
+        <div class="portrait">
+          <img class="px argo-shot" src="{{img:argo}}" alt="Argo, a brass-helmeted deep sea diver, standing on a map" width="170">
+          <span class="note">In game, from a PC round</span>
+        </div>
+        <div class="info">
+          <div class="name"><h3>Argo</h3><em>Deep Sea Diver · Intermediate</em><span class="st st-pc">Self-test 144 of 144</span></div>
+          <p>Sturdy, slow melee that hits two at once. Argo has no walls of its own: it slows foes, pins them, reels them in, and blasts what's stuck. No ability button; the crew tunes towers instead.</p>
+          <div class="stats"><span>Health <b>65</b></span><span>Speed <b>2.25</b></span><span>Damage <b>4</b></span><span>Range <b>1.75</b> tiles</span><span>Second hit <b>60%</b></span></div>
+          <div class="mech">
+            <div><b>Fathoms</b><span>Every tide a Drill Rig stands through, it sinks a Fathom, down to 5: it mines harder and its Tremor widens.</span></div>
+            <div><b>Slows and pins</b><span>Slows from different sources add up, down to 10% of a foe's speed. A pinned foe is held twice as long in Deep Water.</span></div>
+          </div>
+          <div class="kit">
+            <ul class="towers">
+              <li><div><b>Scatter Cannon</b><i>Offense</i></div><span>Short range cone of pellets, hits slowed foes harder and pinned foes much harder.</span></li>
+              <li><div><b>Harpoon Gun</b><i>Offense</i></div><span>Long range, harpoons pierce a line; its upgrades pick damage or crowd control.</span></li>
+              <li><div><b>Deep Water</b><i>Trap</i></div><span>Walk-through pool that slows foes inside. FLOOD adds a pool next to it.</span></li>
+              <li><div><b>Drill Rig</b><i>Economy and defense</i></div><span>Mines ore and sinks deeper each tide; AIM places its Tremor, which slows foes.</span></li>
+              <li><div><b>Miner's Base</b><i>Support</i></div><span>One per player. Houses Nauts: press PORT or STARBOARD, then click a tower to tune it.</span></li>
+            </ul>
+            <div class="tower"><img src="{{img:tower_argo}}" alt="The Harpoon Gun model, Leviathan Lance upgrade" width="138"><small>Harpoon Gun, Leviathan Lance</small></div>
+          </div>
+          <p class="left">Played on a second player's machine. The 4 November review's changes are built, not yet run, and Argo waits on Dimitri's balance pass.</p>
+        </div>
+      </article>
+
+      <article class="vessel v-uloe" id="uloe">
+        <div class="portrait">
+          <img class="px hero" src="{{img:uloe}}" alt="Uloe, a light bulb on a lamp post with yellow arms of electricity" width="160" height="160">
+          <span class="note">Concept frame; in game Uloe uses temporary art</span>
+        </div>
+        <div class="info">
+          <div class="name"><h3>Uloe</h3><em>Light Personified · Advanced</em><span class="st st-pc">Self-test passes on the PC</span></div>
+          <p>Frail, single-target ranged. A light bulb on a lamp post that brings Light to a cluster of towers: towers hit harder the more Light they get, and Photons mark the foes.</p>
+          <div class="stats"><span>Health <b>30</b></span><span>Speed <b>2.25</b></span><span>Damage <b>2</b></span><span>Range <b>3</b> tiles</span></div>
+          <div class="mech">
+            <div><b>Light</b><span>Uloe gives Light 1 within 3 tiles, a Photon Light 1 within 2. A building counts up to 12, and up to 4 from teammates' Uloes.</span></div>
+            <div><b>Plug In</b><span>Plug into a node (Light 2 + 0.4 per aura, up to 10) or a Power Bank (up to 12) and light everything within 4 tiles, on a 5-tile cord.</span></div>
+          </div>
+          <div class="kit">
+            <ul class="towers">
+              <li><div><b>Magnifying Glass</b><i>Offense</i></div><span>Focused, single-target beam, burns brighter in Light.</span></li>
+              <li><div><b>Power Bank</b><i>Support</i></div><span>Makes Photons that wander and give Light. Every upgrade brightens Plug In.</span></li>
+              <li><div><b>Mirror</b><i>Defense</i></div><span>Sturdy, Blinds what hits it when lit.</span></li>
+              <li><div><b>Flood Light</b><i>Economy</i></div><span>Mines a node, aims its Light at a tower.</span></li>
+              <li><div><b>Photon</b><i>Minion</i></div><span>Illuminates foes (+15% to +45% damage taken) and Blinds them (−15% to −45% damage dealt).</span></li>
+            </ul>
+            <div class="tower"><img src="{{img:tower_uloe}}" alt="The Magnifying Glass model" width="138"><small>Magnifying Glass</small></div>
+          </div>
+          <p class="left">The 24 upgrades after Dimitri's first eight lines, and Light shared between teammates, are built, not yet run.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="directions">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Upgrades for the run</span>
+      <h2>55 Directions</h2>
+      <p class="lede">Every vessel gets its own, the base game's five included, plus a shared pool any vessel can draw. The first ones passed in game; most of the list was added on 5 November and is compiled, not yet run. <span class="st st-built">Mostly built, not yet run</span></p>
+    </div>
+    <div class="rules">
+      <span>3 offered before each map, 1 kept</span>
+      <span>A held Direction comes back as rank II, then III</span>
+      <span>Ranks bought at VENDCINT for <span class="pearl"></span> 20 and 30</span>
+      <span>Pairs: hold one, never see the other</span>
+      <span>Duos: only for a player holding both halves</span>
+      <span>Shift: changes one building or rule and gives something up</span>
+    </div>
+    <div class="dirs">
+<div class="dgroup"><h4>Any vessel <span class="count">22</span></h4><ul class="dlist">
+<li title="Your minions take reduced damage from attacks."><img class="px" src="{{img:icon_Direction_Tougher}}" alt="" width="24" height="24"><span class="dn">Made of Tougher Stuff</span><span class="r1">Your minions take reduced damage from attacks.</span></li>
+<li title="Your towers prick what hits them"><img class="px" src="{{img:icon_Direction_Barnacle}}" alt="" width="24" height="24"><span class="dn">Barnacle Coat</span><span class="r1">Your towers prick what hits them</span></li>
+<li title="Your towers mend what stands around them each tide"><img class="px" src="{{img:icon_Direction_Mend}}" alt="" width="24" height="24"><span class="dn">Tidal Mend</span><span class="r1">Your towers mend what stands around them each tide</span></li>
+<li title="Your towers gain health every tide"><img class="px" src="{{img:icon_Direction_Spring}}" alt="" width="24" height="24"><span class="dn">Spring Tide</span><span class="r1">Your towers gain health every tide</span></li>
+<li title="Your buildings cost less"><img class="px" src="{{img:icon_Direction_Cost}}" alt="" width="24" height="24"><span class="dn">Cut Costs</span><span class="r1">Your buildings cost less</span></li>
+<li title="Your upgrades cost less"><img class="px" src="{{img:icon_Direction_Refit}}" alt="" width="24" height="24"><span class="dn">Cheap Refits</span><span class="r1">Your upgrades cost less</span></li>
+<li title="Each tide, a little of your unspent base aura is paid on top"><img class="px" src="{{img:icon_Direction_Interest}}" alt="" width="24" height="24"><span class="dn">Compound Interest</span><span class="r1">Each tide, a little of your unspent base aura is paid on top</span></li>
+<li title="Your towers attack faster"><img class="px" src="{{img:icon_Direction_Wound}}" alt="" width="24" height="24"><span class="dn">Wound Spring</span><span class="r1">Your towers attack faster</span></li>
+<li title="Each Tide pays you a little of the colour you hold least"><img class="px" src="{{img:icon_Direction_Sieve}}" alt="" width="24" height="24"><span class="dn">Fine Sieve</span><span class="r1">Each Tide pays you a little of the colour you hold least</span></li>
+<li title="Each of your unit buildings keeps one more unit"><img class="px" src="{{img:icon_Direction_Hands}}" alt="" width="24" height="24"><span class="dn">Spare Hands</span><span class="r1">Each of your unit buildings keeps one more unit</span></li>
+<li title="Your vessel attacks faster the longer it keeps hitting"><img class="px" src="{{img:icon_Direction_Kettle}}" alt="" width="24" height="24"><span class="dn">Galley Kettle</span><span class="r1">Your vessel attacks faster the longer it keeps hitting</span></li>
+<li title="Every few hits, your vessel&#x27;s attack jumps to another foe"><img class="px" src="{{img:icon_Direction_Chain}}" alt="" width="24" height="24"><span class="dn">Chain Shot</span><span class="r1">Every few hits, your vessel&#x27;s attack jumps to another foe</span></li>
+<li title="Your vessel has more health"><img class="px" src="{{img:icon_Direction_Salt}}" alt="" width="24" height="24"><span class="dn">Salt Barrel</span><span class="r1">Your vessel has more health</span></li>
+<li title="Foes near your vessel move slower"><img class="px" src="{{img:icon_Direction_Fog}}" alt="" width="24" height="24"><span class="dn">Fog Horn</span><span class="r1">Foes near your vessel move slower</span></li>
+<li title="Once a map, your vessel lives through a killing blow at 1 health"><img class="px" src="{{img:icon_Direction_Clam}}" alt="" width="24" height="24"><span class="dn">Clam Shell</span><span class="r1">Once a map, your vessel lives through a killing blow at 1 health</span></li>
+<li title="Every 10th hit of your vessel deals double damage"><img class="px" src="{{img:icon_Direction_Oar}}" alt="" width="24" height="24"><span class="dn">Notched Oar</span><span class="r1">Every 10th hit of your vessel deals double damage</span></li>
+<li title="Foes your vessel drowns burst into flame, hurting foes around them"><img class="px" src="{{img:icon_Direction_Lamp}}" alt="" width="24" height="24"><span class="dn">Lamp Oil</span><span class="r1">Foes your vessel drowns burst into flame, hurting foes around them</span></li>
+<li title="Some of your vessel&#x27;s hits snag, and the foe bleeds"><img class="px" src="{{img:icon_Direction_Hook}}" alt="" width="24" height="24"><span class="dn">Fish Hook</span><span class="r1">Some of your vessel&#x27;s hits snag, and the foe bleeds</span></li>
+<li title="One more Direction is offered to you before each map"><img class="px" src="{{img:icon_Direction_Compass}}" alt="" width="24" height="24"><span class="dn">Spare Compass</span><span class="r1">One more Direction is offered to you before each map</span></li>
+<li title="Your vessel and towers hit harder for every Cardinal and Trinket you hold"><img class="px" src="{{img:icon_Direction_Magpie}}" alt="" width="24" height="24"><span class="dn">Magpie Nest</span><span class="r1">Your vessel and towers hit harder for every Cardinal and Trinket you hold</span></li>
+<li title="Every Chain Shot jump bursts where it lands, as Lamp Oil does"><img class="px" src="{{img:icon_Direction_Fireship}}" alt="" width="24" height="24"><span class="dn">Fire Ship <span class="kind kind-duo">Duo</span></span><span class="r1">Every Chain Shot jump bursts where it lands, as Lamp Oil does</span></li>
+<li title="Mending past full health stays on as extra health until the Tide ends"><img class="px" src="{{img:icon_Direction_Pool}}" alt="" width="24" height="24"><span class="dn">Tide Pool <span class="kind kind-duo">Duo</span></span><span class="r1">Mending past full health stays on as extra health until the Tide ends</span></li>
+</ul></div>
+<div class="dgroup"><h4>Argo <span class="count">4</span></h4><ul class="dlist">
+<li title="Deep Water reaches farther around each pool"><img class="px" src="{{img:icon_Direction_Deepcurrent}}" alt="" width="24" height="24"><span class="dn">Deep Current</span><span class="r1">Deep Water reaches farther around each pool</span></li>
+<li title="Harpoon Guns deal more damage"><img class="px" src="{{img:icon_Direction_Heavysalvo}}" alt="" width="24" height="24"><span class="dn">Heavy Salvo</span><span class="r1">Harpoon Guns deal more damage</span></li>
+<li title="Slowed and pinned foes take more damage from your towers"><img class="px" src="{{img:icon_Direction_Chumbucket}}" alt="" width="24" height="24"><span class="dn">Chum Bucket</span><span class="r1">Slowed and pinned foes take more damage from your towers</span></li>
+<li title="Your Drill Rigs start a Fathom deep"><img class="px" src="{{img:icon_Direction_Pressuregauge}}" alt="" width="24" height="24"><span class="dn">Pressure Gauge</span><span class="r1">Your Drill Rigs start a Fathom deep</span></li>
+</ul></div>
+<div class="dgroup"><h4>Yossele <span class="count">8</span></h4><ul class="dlist">
+<li title="Unlocks Fertilize, and earns fertilizer from foes killed around Yossele"><img class="px" src="{{img:icon_Direction_CompostBin}}" alt="" width="24" height="24"><span class="dn">Compost Bin <span class="kind kind-shift">Shift</span></span><span class="r1">Unlocks Fertilize, and earns fertilizer from foes killed around Yossele</span></li>
+<li title="Your Primordial Dandelion Tree becomes Dandelion Sapling. Dandelion Sapling have no limit."><img class="px" src="{{img:icon_Direction_DandelionSeason}}" alt="" width="24" height="24"><span class="dn">Dandelion Season <span class="kind kind-shift">Shift</span></span><span class="r1">Your Primordial Dandelion Tree becomes Dandelion Sapling. Dandelion Sapling have no limit.</span></li>
+<li title="Primordial Dandelion Tree is replaced by Primordial Mushboom. The Primordial Mushboom is a large mushroom tower that explodes in a large radius around it, dealing damage based on spore stacks on enemies, consuming the spore stacks."><img class="px" src="{{img:icon_Direction_MotherOfMushrooms}}" alt="" width="24" height="24"><span class="dn">Mother of Mushrooms <span class="kind kind-shift">Shift</span></span><span class="r1">Primordial Dandelion Tree is replaced by Primordial Mushboom. The Primordial Mushboom is a large mushroom tower that explodes in a large radius around it, dealing damage based on spore stacks on enemies, consuming the spore stacks.</span></li>
+<li title="A building that falls leaves a cutting: rebuild it on the same tile soon and it keeps some of its Growth"><img class="px" src="{{img:icon_Direction_Cuttingjar}}" alt="" width="24" height="24"><span class="dn">Cutting Jar <span class="kind kind-shift">Shift</span></span><span class="r1">A building that falls leaves a cutting: rebuild it on the same tile soon and it keeps some of its Growth</span></li>
+<li title="Yossele&#x27;s laser leaves sticky sap that slows foes"><img class="px" src="{{img:icon_Direction_Sapbucket}}" alt="" width="24" height="24"><span class="dn">Sap Bucket</span><span class="r1">Yossele&#x27;s laser leaves sticky sap that slows foes</span></li>
+<li title="Your vines reach farther"><img class="px" src="{{img:icon_Direction_Creepingivy}}" alt="" width="24" height="24"><span class="dn">Creeping Ivy</span><span class="r1">Your vines reach farther</span></li>
+<li title="When Yossele has not fired for a moment, its next beam hits harder"><img class="px" src="{{img:icon_Direction_Deepbreath}}" alt="" width="24" height="24"><span class="dn">Deep Breath</span><span class="r1">When Yossele has not fired for a moment, its next beam hits harder</span></li>
+<li title="When Yossele stands still, mushrooms ring it and mend what is near"><img class="px" src="{{img:icon_Direction_Fairyring}}" alt="" width="24" height="24"><span class="dn">Fairy Ring</span><span class="r1">When Yossele stands still, mushrooms ring it and mend what is near</span></li>
+</ul></div>
+<div class="dgroup"><h4>Spool <span class="count">7</span></h4><ul class="dlist">
+<li title="Unthread increases amount of Thread gained from minions"><img class="px" src="{{img:icon_Direction_EfficientRecycler}}" alt="" width="24" height="24"><span class="dn">Efficient Recycler</span><span class="r1">Unthread increases amount of Thread gained from minions</span></li>
+<li title="Loom is replaced by Sewing Machine, generating aura quicker and healing nearby buildings and units, but cannot generate Thread."><img class="px" src="{{img:icon_Direction_SewingMachine}}" alt="" width="24" height="24"><span class="dn">Sewing Machine <span class="kind kind-shift">Shift</span></span><span class="r1">Loom is replaced by Sewing Machine, generating aura quicker and healing nearby buildings and units, but cannot generate Thread.</span></li>
+<li title="Your Repurposed Cookie Tins stitch faster"><img class="px" src="{{img:icon_Direction_Doubleneedle}}" alt="" width="24" height="24"><span class="dn">Double Needle</span><span class="r1">Your Repurposed Cookie Tins stitch faster</span></li>
+<li title="Your Repurposed Cookie Tins stitch Crafted two at a time, smaller and weaker, for the Thread of one"><img class="px" src="{{img:icon_Direction_Buttonjar}}" alt="" width="24" height="24"><span class="dn">Button Jar <span class="kind kind-shift">Shift</span></span><span class="r1">Your Repurposed Cookie Tins stitch Crafted two at a time, smaller and weaker, for the Thread of one</span></li>
+<li title="Once a Tide, the first Crafted of each Repurposed Cookie Tin to fall is stitched again for free"><img class="px" src="{{img:icon_Direction_Patternbook}}" alt="" width="24" height="24"><span class="dn">Pattern Book</span><span class="r1">Once a Tide, the first Crafted of each Repurposed Cookie Tin to fall is stitched again for free</span></li>
+<li title="Your Crafted grow stronger with every foe they drown"><img class="px" src="{{img:icon_Direction_Meritbadge}}" alt="" width="24" height="24"><span class="dn">Merit Badge</span><span class="r1">Your Crafted grow stronger with every foe they drown</span></li>
+<li title="Your Crafted fight better beside a different kind of Crafted"><img class="px" src="{{img:icon_Direction_Oddsocks}}" alt="" width="24" height="24"><span class="dn">Odd Socks</span><span class="r1">Your Crafted fight better beside a different kind of Crafted</span></li>
+</ul></div>
+<div class="dgroup"><h4>Uloe <span class="count">4</span></h4><ul class="dlist">
+<li title="Plug In reaches farther"><img class="px" src="{{img:icon_Direction_Extension}}" alt="" width="24" height="24"><span class="dn">Extension Cord</span><span class="r1">Plug In reaches farther</span></li>
+<li title="Uloe gives off more Light"><img class="px" src="{{img:icon_Direction_Brightbulb}}" alt="" width="24" height="24"><span class="dn">Brighter Bulb</span><span class="r1">Uloe gives off more Light</span></li>
+<li title="Each Power Bank keeps another Photon"><img class="px" src="{{img:icon_Direction_Batteries}}" alt="" width="24" height="24"><span class="dn">Spare Batteries</span><span class="r1">Each Power Bank keeps another Photon</span></li>
+<li title="Uloe&#x27;s sparks Illuminate foes"><img class="px" src="{{img:icon_Direction_Flashbulb}}" alt="" width="24" height="24"><span class="dn">Flash Bulb <span class="kind kind-shift">Shift</span></span><span class="r1">Uloe&#x27;s sparks Illuminate foes</span></li>
+</ul></div>
+<div class="dgroup"><h4>Base game vessels <span class="count">10</span></h4><ul class="dlist">
+<li title="Buster runs faster"><img class="px" src="{{img:icon_Direction_Gallop}}" alt="" width="24" height="24"><span class="dn">Full Gallop</span><span class="for">Buster</span><span class="r1">Buster runs faster</span></li>
+<li title="Fie works faster"><img class="px" src="{{img:icon_Direction_Regulars}}" alt="" width="24" height="24"><span class="dn">House Regulars</span><span class="for">Fie</span><span class="r1">Fie works faster</span></li>
+<li title="Boutman reaches farther with his rod"><img class="px" src="{{img:icon_Direction_Longline}}" alt="" width="24" height="24"><span class="dn">Spare Reel</span><span class="for">Boutman</span><span class="r1">Boutman reaches farther with his rod</span></li>
+<li title="Sno Sno slides faster"><img class="px" src="{{img:icon_Direction_Packedsnow}}" alt="" width="24" height="24"><span class="dn">Packed Snow</span><span class="for">Sno Sno</span><span class="r1">Sno Sno slides faster</span></li>
+<li title="Smacky hits harder"><img class="px" src="{{img:icon_Direction_Skipping}}" alt="" width="24" height="24"><span class="dn">Skipping Stones</span><span class="for">Smacky</span><span class="r1">Smacky hits harder</span></li>
+<li title="Your Walls are sturdier"><img class="px" src="{{img:icon_Direction_Trowel}}" alt="" width="24" height="24"><span class="dn">Mason&#x27;s Trowel</span><span class="for">Smacky</span><span class="r1">Your Walls are sturdier</span></li>
+<li title="The snow Sno Sno leaves is deeper"><img class="px" src="{{img:icon_Direction_Shovel}}" alt="" width="24" height="24"><span class="dn">Snow Shovel</span><span class="for">Sno Sno</span><span class="r1">The snow Sno Sno leaves is deeper</span></li>
+<li title="Boutbro builds for less"><img class="px" src="{{img:icon_Direction_Wormtin}}" alt="" width="24" height="24"><span class="dn">Worm Tin</span><span class="for">Boutman</span><span class="r1">Boutbro builds for less</span></li>
+<li title="Your Rest Stop keeps one more regular"><img class="px" src="{{img:icon_Direction_Opensign}}" alt="" width="24" height="24"><span class="dn">Open Sign</span><span class="for">Fie</span><span class="r1">Your Rest Stop keeps one more regular</span></li>
+<li title="Buster keeps his full reach while dashing"><img class="px" src="{{img:icon_Direction_Leash}}" alt="" width="24" height="24"><span class="dn">Long Leash</span><span class="for">Buster</span><span class="r1">Buster keeps his full reach while dashing</span></li>
+</ul></div>
+    </div>
+  </div>
+</section>
+
+<section id="finds">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Washed ashore</span>
+      <h2>Trinkets and Cardinals</h2>
+      <p class="lede">Found objects bought with Pure Aura. A Trinket belongs to the player who bought it and works on their things alone. A Cardinal works for the whole team and sits in the row at the top of the screen. New ones stack up to 6 copies.</p>
+    </div>
+    <div class="flux">
+      <span class="st st-built">Built, not yet run</span>
+      <p><b>The list changed today.</b> The split of the base game's Cardinals into 13 Trinkets and 16 Cardinals merged on 5 November (PR #130). It is compiled, not run on the PC, and the split itself is still a default for Dimitri to confirm. The 16 new ones below were built the same day.</p>
+    </div>
+    <div class="finds">
+      <div class="panel">
+        <h3>New Trinkets <span class="count">12</span></h3>
+        <ul class="items">
+<li><img class="px" src="{{img:icon_Cardinal_VampireDentures}}" alt="" width="36" height="36"><div><b>Vampire Dentures</b><span>Your vessel&#x27;s attacks heal it for a portion of the damage dealt.</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_BrassSpyglass}}" alt="" width="36" height="36"><div><b>Brass Spyglass</b><span>Your vessel reaches farther</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_GuttingKnife}}" alt="" width="36" height="36"><div><b>Gutting Knife</b><span>Your vessel hits healthy foes harder</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_OilCan}}" alt="" width="36" height="36"><div><b>Oil Can</b><span>Your towers attack faster</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_TarBucket}}" alt="" width="36" height="36"><div><b>Tar Bucket</b><span>Your towers mend when left alone</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_RubberDuck}}" alt="" width="36" height="36"><div><b>Rubber Duck</b><span>Your vessel comes back sooner after it drowns</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_SparePlank}}" alt="" width="36" height="36"><div><b>Spare Plank</b><span>One of your walls is free each map, and comes back when it falls</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_PunchCard}}" alt="" width="36" height="36"><div><b>Punch Card</b><span>Cardinals and Trinkets cost you less</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_PearlOyster}}" alt="" width="36" height="36"><div><b>Pearl Oyster</b><span>Pure Aura grows while you save it</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_BottledStorm}}" alt="" width="36" height="36"><div><b>Bottled Storm</b><span>A storm now, a reward when it passes</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_OilskinCoat}}" alt="" width="36" height="36"><div><b>Oilskin Coat</b><span>Some hits slide off your vessel</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_GullFeather}}" alt="" width="36" height="36"><div><b>Gull Feather</b><span>Drowning an elite foe lends your vessel its strength</span></div></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>New Cardinals <span class="count">4</span></h3>
+        <ul class="items">
+<li><img class="px" src="{{img:icon_Cardinal_CorkLifebuoy}}" alt="" width="36" height="36"><div><b>Cork Lifebuoy</b><span>The Basin lives through one more killing blow each map</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_SignalFlare}}" alt="" width="36" height="36"><div><b>Signal Flare</b><span>Now and then, a flare strikes the toughest foe near the Basin</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_CargoCrate}}" alt="" width="36" height="36"><div><b>Cargo Crate</b><span>VENDCINT brings more Cardinals and Trinkets</span></div></li>
+<li><img class="px" src="{{img:icon_Cardinal_TinWhistle}}" alt="" width="36" height="36"><div><b>Tin Whistle</b><span>The last foes of each Tide are run down</span></div></li>
+        </ul>
+        <h3 style="margin-top:14px">Base game, now Trinkets <span class="count">13</span></h3>
+        <p>Each player buys their own copy, and it acts on that player's vessel, towers, builds or aura. A Coin pays its buyer the whole sum the game would split.</p>
+        <div class="stock"><span>Sport Water</span><span>Fluffy Slippers</span><span>Beast Tassle</span><span>Diorama</span><span>Paper Tower</span><span>Rusty Pipe</span><span>Frail Titan</span><span>Voice in a Bottle</span><span>Red Coin</span><span>Yellow Coin</span><span>Blue Coin</span><span>Green Coin</span><span>Aura Gavel</span></div>
+        <h3 style="margin-top:14px">Base game, still Cardinals <span class="count">16</span></h3>
+        <div class="stock"><span>Processor Jr</span><span>Starter Seeds</span><span>Cubed Drink</span><span>Tacklebox</span><span>Torrid Badge</span><span>Bendigo</span><span>Kippy</span><span>Fish Bait</span><span>Opal Core</span><span>Glass Core</span><span>Fragment</span><span>Wave Breaker</span><span>Blue Paint</span><span>Spear Point</span><span>1st Grade Textbook</span><span>Chimera Crystals</span></div>
+        <p style="margin-top:6px">The 11 that bend the tide clock, the game's speed, drops or the sandbox are never sold. A Cardinal picked in the lobby works for everyone, even one the shop sells as a Trinket.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="foes">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">New enemy modifiers</span>
+      <h2>Foes that change every campaign</h2>
+      <p class="lede">No new skins: a modifier shows as a ring around the foe, in a colour no stock elite uses. Each campaign's seed picks two of these four. <span class="st st-pc">Self-test 12 of 12 on the PC</span></p>
+    </div>
+    <div class="foes">
+      <article class="foe">
+        <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a cursed ring">
+          <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#7354D9" stroke-width="5" opacity=".9"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
+          <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
+          <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
+          <polygon points="128,18 140,46 128,74 120,46" fill="#D23E9F"/>
+          <polygon points="128,18 128,74 120,46" fill="#EA74C1"/>
+          <rect x="118" y="64" width="16" height="6" rx="3" fill="#6E747B"/>
+        </svg>
+        <h3>Cursed <span class="count">Aura</span></h3>
+        <p>"A curse on this foe weakens the attack of everything nearby"</p>
+        <div class="numbers">Attack −25% within 3 tiles, vessels, towers and units</div>
+      </article>
+      <article class="foe">
+        <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a berserk ring">
+          <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#FF529E" stroke-width="5" opacity=".9"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
+          <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
+          <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
+          <polygon points="128,18 140,46 128,74 120,46" fill="#D23E9F"/>
+          <polygon points="128,18 128,74 120,46" fill="#EA74C1"/>
+          <rect x="118" y="64" width="16" height="6" rx="3" fill="#6E747B"/>
+        </svg>
+        <h3>Berserk <span class="count">Self</span></h3>
+        <p>"Stronger and faster the more it is hurt"</p>
+        <div class="numbers">At no health left: damage +100%, speed +50%</div>
+      </article>
+      <article class="foe">
+        <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a aging ring">
+          <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#8CD1DB" stroke-width="5" opacity=".9"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
+          <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
+          <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
+          <polygon points="128,18 140,46 128,74 120,46" fill="#D23E9F"/>
+          <polygon points="128,18 128,74 120,46" fill="#EA74C1"/>
+          <rect x="118" y="64" width="16" height="6" rx="3" fill="#6E747B"/>
+        </svg>
+        <h3>Aging <span class="count">Self</span></h3>
+        <p>"Slow, but its health and damage grow the longer it lives"</p>
+        <div class="numbers">Speed −30%; health and damage up to +100% over 50 s</div>
+      </article>
+      <article class="foe">
+        <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a dazzling ring">
+          <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#FFEB59" stroke-width="5" opacity=".9"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
+          <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
+          <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
+          <polygon points="128,18 140,46 128,74 120,46" fill="#D23E9F"/>
+          <polygon points="128,18 128,74 120,46" fill="#EA74C1"/>
+          <rect x="118" y="64" width="16" height="6" rx="3" fill="#6E747B"/>
+        </svg>
+        <h3>Dazzling <span class="count">Aura</span></h3>
+        <p>"Blinds and Illuminates everything nearby"</p>
+        <div class="numbers">Within 3 tiles: −15% damage dealt, +15% taken, lingering 3 s</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="hood">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Online and under the hood</span>
+      <h2>Built for a crew of two to four</h2>
+    </div>
+    <div class="hood">
+      <div class="panel">
+        <div class="title"><h3>Playing together</h3><span class="st st-pc">Played with a second player</span></div>
+        <ul>
+          <li><b>The host runs the run</b>; everyone needs the same pack version.</li>
+          <li><b>Rejoin a running map.</b> The host keeps a dropped player's seat (vessel, towers, aura) and reopens the lobby. A game restart keeps the seat too.</li>
+          <li><b>Load watchdog.</b> One player who can't load a map is sent back, instead of everyone going to the main menu.</li>
+          <li>Steam's own Join Game and a real network's drops wait for an online evening. <span class="st st-no">Not tried yet</span></li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="title"><h3>Clearer screens</h3><span class="st st-pc">Played on the PC</span></div>
+        <ul>
+          <li>A campaign card on the loading screen, an intro card for each map, a world card on the chart and an end screen title.</li>
+          <li>Retry warnings: the host's exit dialog names the cost, and the end screen counts the retries left.</li>
+          <li>A "has no mods on" warning on the boat, and a rejoin line in a dropped player's error box.</li>
+          <li>Weather icons over chart islands, and the pack's tips in the game's tip lists.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <div class="title"><h3>Fixes and lighting</h3></div>
+        <ul>
+          <li><b>F picks the vessel again.</b> After a death, F no longer selects a minion such as Boutbro. <span class="st st-built">Fix built, the next PC round checks it</span></li>
+          <li><b>No way back in</b> after a drop is fixed by the rejoin above. <span class="st st-pc">Played on the PC</span></li>
+          <li><b>Map lighting.</b> The kit can now change a map's fog, ambient light and sun at run time, which the weather looks use. <span class="st st-pc">23 of 23 on the PC</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="left">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Called a feature, not built yet</span>
+      <h2>What the scope promises that isn't in the pack</h2>
+      <p class="lede">These appear in the scope or the plan as features, and are not in the build today.</p>
+    </div>
+    <ul class="gaps">
+      <li><span class="st st-no">Not built</span><b>Depth, the ascension levels</b><span>Five levels unlocked by winning a campaign. On hold until the core loop settles; the end screen says nothing unlocks.</span></li>
+      <li><span class="st st-no">Not built</span><b>New enemy types</b><span>The scope says they come later. Today the pack adds only the four modifiers.</span></li>
+      <li><span class="st st-no">Not built</span><b>Spool's 22 upgrades and UNTHREAD</b><span>The Yarn Stash, Thread Head and Loom trees, the Cookie Tin's Tacking Stitch, Cross Stitch and Patchwork Army, the Pin Cushion's Iron Thimble and Voodoo Doll, and the UNTHREAD button. Next after the PC round.</span></li>
+      <li><span class="st st-no">Not built</span><b>Final sprites for Spool and Uloe</b><span>Both play with temporary art. Spool's sage green is compiled, not seen in game.</span></li>
+      <li><span class="st st-no">Not written</span><b>Lore for Yossele, Spool and Uloe</b><span>Comes once each character is final. Argo has his.</span></li>
+      <li><span class="st st-no">Not built</span><b>Journal pages for the modifiers</b><span>The stock journal lists foe types, and a modifier isn't one; waits on a layout decision.</span></li>
+      <li><span class="st st-no">Idea only</span><b>Fog Bank weather and a mood ramp</b><span>Left as ideas when the weather looks were picked.</span></li>
+      <li><span class="st st-built">Built, not yet run</span><b>Most of 5 November's work</b><span>The new Directions, Trinkets and Cardinals, Uloe's 24 upgrades, Argo's review changes, the balance sweep and the weather looks: compiled here, waiting on PC round 4, which is running now.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="release">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Shipping</span>
+      <h2>How it reaches players</h2>
+    </div>
+    <div class="release">
+      <div class="panel">
+        <div class="title"><h3>First release: Yossele alone</h3></div>
+        <p>The RogueWavesMod pack holding only Yossele, version 0.1.0, as a zip you share yourself (the game has no Workshop). Yossele plays in a normal game; Fertilize waits for the mode, since only a Direction unlocks it. Ships after Dimitri's play test, his look at the sprites, his balance pass and his word.</p>
+      </div>
+      <div class="panel">
+        <div class="title"><h3>After it: everything else</h3></div>
+        <p>The Rogue Waves mode with its sea chart and weather, Argo, Spool, Uloe, the modifiers, Directions, Cardinals and Trinkets, each added to the same pack so players update one mod.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Sources: <code>docs/scope/</code> 01, 03-14, <code>docs/PLAN.md</code> Part C, <code>docs/reports/WEATHER_LOOK_2026-11-05.md</code>, <code>STOCK_TRINKETS_2026-11-05.md</code>, <code>BALANCE_SWEEP_2026-11-05.md</code>, <code>BUILD_UNBUILT_2026-11-05.md</code>. Pictures are the pack's own temporary and concept art, the Yossele sheet, model previews and one screenshot of Argo in game; nothing from the base game's sprites.</p>
+    <p>Page source: <code>docs/spotlight/</code>. The vessel-by-vessel journal lives in the <a href="https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw" target="_blank" rel="noopener">Vessel Spotlight</a>; the scope itself in the <a href="https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo" target="_blank" rel="noopener">Scope Editor</a>.</p>
+  </div>
+</footer>
