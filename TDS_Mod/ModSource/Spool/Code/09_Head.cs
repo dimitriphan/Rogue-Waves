@@ -29,9 +29,24 @@ public class SpoolHeadBrain : SpoolBuilding
             Button(SpoolData.ReturnCommand, SpoolData.ReturnLink);
         if (Has("Patchwork"))
             ShowMend();
+        HideMove();
         Show();
         if (ModKitUtil.Flat(Pos, Spot) > 0.9f)
             Walk(null, Spot, 0f);
+    }
+
+    // The stock MOVE's button goes, its command stays for the walk (B16): the link points at the None-styled copy, and the
+    // update sends the new command id to every machine. Looked at again on each think, as the command may come later.
+    public bool MoveHidden;
+
+    void HideMove()
+    {
+        Link_Command move;
+        if (MoveHidden || SpoolContent.HiddenMove == null || Master.Commandlistserver == null || !Master.Commandlistserver.TryGetValue(SpoolData.MoveLink, out move) || move == null)
+            return;
+        move.Ref = SpoolContent.HiddenMove;
+        Helper_Entitytools.Updatecommand(Master, SpoolData.MoveLink, "", false, false);
+        MoveHidden = true;
     }
 
     Link_Command Button(string command, string link)
@@ -138,6 +153,7 @@ public class SpoolHeadBrain : SpoolBuilding
         if (Time.time < nextThink)
             return;
         nextThink = Time.time + 0.25f;
+        HideMove();
         Vector3 pos = Pos;
         if (Carried < Cap)
         {

@@ -13,6 +13,7 @@ public static class SpoolContent
     public static readonly Dictionary<string, SpoolData.Upg> UpgradeDefs = new Dictionary<string, SpoolData.Upg>();
     public static readonly List<Upgradeproperties> Directions = new List<Upgradeproperties>();
     public static Commandobject Patch, Target, Spot, Return, Mend;
+    public static Commandobject HiddenMove;   // the stock MOVE, drawn as nothing: the Thread Head keeps SPOT only (B16)
     public static int VfxRegistered;
     public static bool IconsReady;
     public static string StuffedBlock = "", TokenBlock = "", PinBlock = "";
@@ -408,6 +409,17 @@ public static class SpoolContent
         Return.Keybind = new List<string> { "4" };
         Mend = Command(template, SpoolData.MendCommand, SpoolData.MendName, SpoolData.MendDesc, "Spool_Mend", new SpoolButton(), false);
         Mend.Keybind = new List<string> { "3" };
+        // The Thread Head's stock MOVE did SPOT's job a second way (Dimitri's default S10 of 2026-11-05, B16). Its brain walks
+        // by that command, so the command stays and only its button goes: the same command, styled None (nothing drawn).
+        Commandobject move = ModKitUtil.Load<Commandobject>("Command", "Command_Move");
+        if (move != null)
+        {
+            HiddenMove = SpoolUtil.Clone(move, SpoolData.HiddenMoveCommand);
+            HiddenMove.Style = Commandobject.Styles.None;
+            Register("Command", HiddenMove);
+        }
+        else
+            SpoolLog.Warn("Command_Move not loaded: the Thread Head keeps its stock MOVE button");
     }
 
     // ---------------------------------------------------------------- buildables

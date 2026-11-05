@@ -355,15 +355,22 @@ public static class YosseleFruit
         }
     }
 
-    // A player's vessel or minion close enough: tagged Hero or Mob, not a foe.
+    // A player's vessel or minion close enough: tagged Hero or Mob, not a foe, and owned by a player in the game: a mad beast
+    // on a hunt map (a neutral Mob, no player's) would take the pay to no one (YOS-3, Dimitri's default of 2026-11-05).
     static Entity_Master Picker(Vector3 at)
     {
         foreach (string tag in new[] { "Hero", "Mob" })
             foreach (Entity_Master e in ModKitUtil.Area(at, YosseleData.FruitReach + 0.3f, ModKitUtil.Tagged(tag)))
-                if (e != null && ModKitUtil.Alive(e) && !ModKitUtil.HasTag(e, "Enemy") && ModKitUtil.Flat(ModKitUtil.Pos(e), at) <= YosseleData.FruitReach
+                if (e != null && ModKitUtil.Alive(e) && !ModKitUtil.HasTag(e, "Enemy") && PlayerOwned(e) && ModKitUtil.Flat(ModKitUtil.Pos(e), at) <= YosseleData.FruitReach
                     && Mathf.Abs(ModKitUtil.Pos(e).y - at.y) < 1.2f)
                     return e;
         return null;
+    }
+
+    static bool PlayerOwned(Entity_Master e)
+    {
+        Blm_Server server = Blm_Server.Instance;
+        return server != null && server.Sessionidsplayer != null && server.Sessionidsplayer.ContainsKey(ModKitUtil.Owner(e));
     }
 
     static void Pay(Fruit f, Entity_Master picker)

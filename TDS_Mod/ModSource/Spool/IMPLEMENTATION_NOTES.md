@@ -1,5 +1,14 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-05: the decisions' build items
+
+Compiled, not yet run in game: the pack's own foe modifiers (`RW_Modifier_`) count as elite for the Thread drop
+(`SpoolServer.Elite`, B6); the Thread Head's stock MOVE has no button, its command stays for the walk (the link points at
+`Command_Mob_Spoolhead_Move`, a None-styled copy of `Command_Move`, B16); the Cookie Tin's TARGET pin no longer takes a
+Stitched's clicks: its hit colliders go off on every machine (`SpoolClient.QuietPins`, pitfall #162; round 3's selection
+miss, B17's code half). For the PC: the Head's panel without MOVE and still walking to SPOT; a Stitched on its pin
+selected and sold by a click.
+
 **2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** a Thread Head back with Patchwork Job shows MEND as it is (SPL-8: `Started` after the comeback upgrades); a last Stash, Loom or Head falling while Spool is down spills its Thread (SPL-10); "Loom strikes ore" is a SETUP with no ore in reach (one pass fewer on the test map). Correctness only; nothing about how Spool plays. `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
 
 **2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the PATCH, TARGET, SPOT, RETURN and MEND buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.

@@ -627,8 +627,18 @@ public static partial class RWTest
         yield return WaitDialog(8f);
         yield return Sync("leave1");
         ClickCard("Leave");                         // the host leaves, the second player stays: one of two is no majority
-        yield return Until(() => RWVote.State == "", 30f);
+        yield return Until(() => RWVote.State != "Leave", 30f);
         Check("Leave: one of two isn't a majority, the party stays", !RWVote.Departing && RWVote.LastVote == "1 of 2 to leave", RWVote.LastVote);
+        // B1: staying votes on the next map there and then, on both machines.
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || RWVote.State == "", 10f);
+        if (RWAsk.Open.StartsWith(RWVote.MapKind))
+        {
+            yield return WaitDialog(8f);
+            List<string> stayCards = CardNames();
+            if (stayCards.Count > 0) ClickCard(stayCards[0]);
+        }
+        yield return Until(() => RWVote.State == "", RWVote.MapSeconds + 10f);
+        Check("B1 staying votes on the next map for both, and the bonus Tides go on", RWCampaign.Choice >= 0 && !RWVote.HoldBreak, RWVote.LastVote + ", choice " + RWCampaign.Choice);
         yield return ToBreakAfter(RWCampaign.WinTide + 1);
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
         yield return WaitDialog(8f);
@@ -1199,6 +1209,14 @@ public static partial class RWTest
         yield return Sync("leave1");
         ClickCard("Stay");
         yield return Until(() => RWAsk.Open != RWVote.LeaveKind, 40f);
+        // B1: the vote on the next map, as the party stays.
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 10f);
+        if (RWAsk.Open.StartsWith(RWVote.MapKind))
+        {
+            yield return WaitDialog(8f);
+            List<string> stayCards = CardNames();
+            if (stayCards.Count > 0) ClickCard(stayCards[0]);
+        }
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 200f);
         yield return WaitDialog(8f);
         yield return Sync("leave2");
@@ -1213,7 +1231,8 @@ public static partial class RWTest
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 40f);
         yield return WaitDialog(8f);
         ClickCard("0");
-        yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 40f);
+        // With the map voted when the party stayed (B1) no second vote comes.
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || (Game_Mapvars.Instance != null && Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win"), 40f);
         if (RWAsk.Open.StartsWith(RWVote.MapKind))
         {
             yield return WaitDialog(8f);

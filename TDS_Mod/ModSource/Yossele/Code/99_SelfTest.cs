@@ -1088,6 +1088,27 @@ public static partial class YosseleSelfTest
             yield return Wait(0.4f);
             Check("Monument strips foes' debuffs at once", YosseleHooks.Cleansed >= cleansed + 2 && frozen.Dead && cut.Dead && Mathf.Abs(Calc(henge.Master, "Slow") - slow0) < 0.001f,
                 "Slow " + F(slow0) + " -> " + F(slowed) + " with the debuffs -> " + F(Calc(henge.Master, "Slow")) + ", cleansed " + cleansed + "->" + YosseleHooks.Cleansed);
+            // B9: a cut that comes with an upgrade of the building's own (a stock Cardinal's trade-off) stays; a stun that
+            // lands with it, and a cut that comes later with no upgrade, are stripped.
+            string fake = "YosseleTest_Tradeoff_Upgradeobject";
+            Upgradeproperties prop;
+            if (henge.Master.Upgradelistserver.TryGetValue(henge.Def.Id + "_Monument5_Upgradeobject", out prop))
+            {
+                henge.Master.Upgradelistserver[fake] = prop;
+                Link_Modifier trade = Helper_Entitytools.Addmod(henge.Master, "Slow", -0.25f, Helper_Entitytools.Modtypes.Multi, 0f);
+                Link_Modifier stun = Helper_Entitytools.Addmod(henge.Master, "Slow", 0.01f, Helper_Entitytools.Modtypes.Override, 0f);
+                yield return Wait(0.3f);
+                bool kept = !trade.Dead && YosseleHooks.IsOwn(henge.Master, trade), stunned = stun.Dead;
+                yield return Wait(YosseleHooks.AdoptSeconds);
+                Link_Modifier late = Helper_Entitytools.Addmod(henge.Master, "Slow", -0.5f, Helper_Entitytools.Modtypes.Multi, 0f);
+                yield return Wait(0.3f);
+                Check("Monument keeps its own upgrade's trade-off, strips a stun with it and a later cut (B9)", kept && stunned && !trade.Dead && late.Dead,
+                    "trade-off kept " + kept + " (now dead " + trade.Dead + "), stun stripped " + stunned + ", later cut stripped " + late.Dead);
+                henge.Master.Upgradelistserver.Remove(fake);
+                ModKitUtil.Unmod(trade);
+            }
+            else
+                ModKitTest.Setup("Monument keeps its own upgrade's trade-off (B9)", "no Monument upgrade on the Stonehenge");
         }
 
         ClearFoes();

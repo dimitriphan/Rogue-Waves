@@ -29,6 +29,7 @@ public static class ArgoServer
             ranks.Clear();
             ArgoHooks.Reset();
             ArgoStatus.Reset();
+            ArgoUtil.ForgetSlows();
             ModKitUtil.ForgetLooks(true);
             ArgoWater.Reset();
             if (ge != null)
@@ -50,6 +51,9 @@ public static class ArgoServer
         Heroes.RemoveAll(h => h == null);
         Towers.RemoveAll(t => t == null);
         Nauts.RemoveAll(n => n == null);
+        // The held slows come off first, so a throw further on can't leave a foe slowed for good.
+        try { ArgoUtil.SweepSlows(); }
+        catch (Exception e) { ArgoLog.Warn("slow sweep: " + e.Message); ArgoUtil.ForgetSlows(); }
         ArgoHooks.Update();
         ArgoWater.Update();
     }

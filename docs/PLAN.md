@@ -334,6 +334,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   ARG-3); kit 1.9's self-tests pass. Live and unfixed: Spring Tide by a Fie wall halves hits (R3, C3), the part takes a sub-core for
   the Basin on Artrio (A3). New: a Crafted with no TARGET stands inside its Tin (`docs/reports/TESTING_ROUND_3_2026-11-05.md` §7).
   The PC holds this base, with release builds on.
+  2026-11-05: the build of the unbuilt candidates, part 1 (the decisions' code items, `DECISIONS_APPLIED_2026-11-05.md`
+  §3-§4, and the max review's three calls at their defaults): B1 the map vote held when the party first stays, and the
+  host's ask on the boat when none was held; B2 the lobby's Cardinals locked to the campaign's (MODE-D9, MODEB-4
+  closed); B3-B4 the shelf's caps and Trinket slot, one roll a break, Trinkets on the vessel's panel, "+N Cardinals" on the run line; B5
+  Dazzling at 15% with Illuminate's 3 s linger; B6 the pack's foe modifiers are elite for Spool's Thread; B7 Spring Tide
+  and Tidal Mend on the mode's own effects (pitfall #159's fix); B9 Monument's Cleanse leaves a building's own
+  trade-offs; B12 Salt Sting's line; B13 Argo's slows renew, bosses never held; B15 Tougher for Boutbro (MODEB-8), the
+  Compost Bin III line, the meteor's 12 + 3 x map hits; B16 no stock MOVE on the Thread Head; the Stitched's click no
+  longer goes to its TARGET pin (pitfall #162); MODEA-3 the host keeps the boat's lead; YOS-3 fruit for players only;
+  MODE-A3 the Basin is the main core on Artrio; MODEB-7 no VENDCINT mid-Tide. Pitfalls #162-#163. Compiled here (every
+  part, release and test builds, 0 errors; editors clean), not run on the PC; the PC list is in the PR.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -360,7 +371,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #162 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, pitfall #164 (#162-#163 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

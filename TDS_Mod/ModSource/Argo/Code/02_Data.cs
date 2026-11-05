@@ -321,7 +321,7 @@ public static class ArgoData
                 U(Water, "Kelp", 3, "Kelp Bed", "Foes are caught for a moment on entering", "Catch_Duration=0.75", "Blueaura=80", "Abyss4,Crushing4")
                     .Fx("Holds a foe 0.75s as it wades in"),
                 U(Water, "Salt", 3, "Salt Sting", "Brine stings pinned foes harder", "Brinepinned_Multi=1", "Blueaura=70;Redaura=30", "Crushing4")
-                    .Fx("Pinned foes take double brine (0.5 a second without Brine)"),
+                    .Fx("Pinned foes take double brine (1 a second without Brine)"),
                 U(Water, "Abyss", 4, "Abyss", "FLOOD fills two tiles at once", "Flood_Add=1", "Blueaura=260", "")
                     .Fx("FLOOD adds a second pool for free"),
                 U(Water, "Crushing", 4, "Crushing Depth", "Foes inside take more damage", "Damagetaken_Multi=0.15", "Blueaura=300", "Trench5")

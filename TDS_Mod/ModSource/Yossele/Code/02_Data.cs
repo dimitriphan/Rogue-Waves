@@ -106,7 +106,7 @@ public static class YosseleData
         new Compost { Name = "Compostbin2", Display = "Compost Bin II", Kills = 6, Radius = 4f,
             Desc = "Unlocks FERTILIZE for Yossele, foes felled near Yossele make fertilizer faster" },
         new Compost { Name = "Compostbin3", Display = "Compost Bin III", Kills = 6, Radius = 7f,
-            Desc = "Unlocks FERTILIZE for Yossele, foes felled anywhere around Yossele make fertilizer faster" },
+            Desc = "Unlocks FERTILIZE for Yossele, foes felled within a much larger radius of Yossele make fertilizer faster" },
     };
 
     // The Tree's Directions (docs/scope/11), one per rank, Clash 1: a player holds one of the two.

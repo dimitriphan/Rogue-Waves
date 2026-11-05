@@ -335,6 +335,10 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
 
 ## Status
 
+- 2026-11-05 (the decisions' build items, compiled, not yet run in game): Argo's slows renew instead of stacking with their
+  own re-ticks (Deep Water, the Tremor, Barnacle Shot, Tether: one modifier per source and foe, `ArgoUtil.Slow` with a
+  kind, swept by `SweepSlows`; B13, pitfall #163); `Pin` and `Root` skip Boss-weight foes (600 max health or more) as
+  the reel does; Salt Sting's line says 1 a second without Brine (B12). New self-test check: Deep Water's renewals.
 - 1.2.1 (2026-10-03, art audit against kit 1.3 and Sprigg): the vessel sprite was 28×31 px (bigger than every base
   vessel and the concept's 24×28) → `ArgoCharacter` now draws it 24×28 (`Drop`, `HelmRx/HelmRy`, narrower torso, pads,
   sleeves and gauntlets, hands still on the sleeves); the boat sprite went from 15×14 to 11×12. Harpoon barrels

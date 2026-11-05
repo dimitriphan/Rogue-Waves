@@ -46,6 +46,7 @@ public static class SpoolClient
             return;
         nextScan = Time.unscaledTime + 0.25f;
         hooked.RemoveAll(c => c == null);
+        QuietPins(ge);
         foreach (Entity_Master master in ge.Entityclient)
         {
             if (master == null || master.Client == null || hooked.Contains(master.Client))
@@ -56,6 +57,35 @@ public static class SpoolClient
             Entity_Master m = master;
             master.Client.Vis += (type, position, number) => OnVis(m, type, position, number);
             hooked.Add(master.Client);
+        }
+    }
+
+    // A Cookie Tin's TARGET pin is a marker, never something to click: the pointer takes the nearest collider it meets, so the
+    // pin under a Stitched took its clicks (round 3, 2026-11-05: 0 of 3 and 2 of 3). Its hit colliders go off on every
+    // machine (the host's server-side hit object, a client's own copy); the pin has no upgrades, so they are built once.
+    public static int PinsQuieted;   // self-test
+    static readonly List<Entity_Master> quiet = new List<Entity_Master>();
+
+    static void QuietPins(Game_Entity ge)
+    {
+        List<Entity_Master> pins;
+        quiet.RemoveAll(m => m == null);
+        if (ge.Entityclienttags == null || !ge.Entityclienttags.TryGetValue("Spoolpin", out pins) || pins == null)
+            return;
+        foreach (Entity_Master pin in pins)
+        {
+            if (pin == null || quiet.Contains(pin))
+                continue;
+            GameObject server = pin.Currenthit, own = pin.Client != null ? pin.Client.Currentvishit : null;
+            // Done only once the one this machine's pointer reads is built: the host's server-side one, a client's own copy.
+            if (ge.IsServer ? server == null : own == null)
+                continue;
+            foreach (GameObject h in new[] { server, own })
+                if (h != null)
+                    foreach (Collider c in h.GetComponentsInChildren<Collider>(true))
+                        c.enabled = false;
+            quiet.Add(pin);
+            PinsQuieted++;
         }
     }
 

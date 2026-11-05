@@ -150,7 +150,9 @@ public static class RWBoat
         if (slow)
         {
             Lock();
+            KeepLead();
             RWCardinals.RestoreLobby();
+            RWCardinals.LockLobby();
         }
         // A new campaign's first stop opens by itself: the leader's boat is already there.
         if (RWCampaign.Staging && main.Selected.Value.ToString() == "" && !vis.Inworldtransition && !vis.Insetup && Time.realtimeSinceStartup - upAt > 12f && RWUtil.IsLeader && Picked == "")
@@ -176,6 +178,89 @@ public static class RWBoat
         }
         if (RWCampaign.Choice >= 0 && RWUtil.IsLeader)
             Sail(main, vis);
+        else if (slow)
+            AskHere(main, vis);
+    }
+
+    // The replay rule, the staging harbour and the sail to the vote's winner all steer from the leader's boat: in a campaign
+    // the lead stays with the host, given back if another mod handed it on (MAX MODEA-3, Dimitri's default of 2026-11-05;
+    // the stock game never moves it, kit docs/19).
+    static bool leadSaid;
+
+    static void KeepLead()
+    {
+        Blm_Server server = Blm_Server.Instance;
+        Blm_Player me = server != null ? server.Localplayer : null;
+        if (me == null || server.Currentleader == null || server.Currentleader.Value == me.Clientid || Blm_Multiplayer_Remote.Instance == null)
+            return;
+        try { Blm_Multiplayer_Remote.Instance.Setleader_ServerOnly(me.Clientid); }
+        catch (Exception e) { RWLog.Once("lead", "Setleader: " + e.Message); return; }
+        RWLog.Info("the boat's lead went back to the host");
+        if (!leadSaid)
+        {
+            leadSaid = true;
+            RWRejoin.Say("In a campaign the host keeps the boat's lead.");
+        }
+    }
+
+    // A won map left with no vote on the next map (the host quit right after Tide 15) leaves the boat without a choice
+    // (B1): the host's machine asks it once on this boat, with the in-map vote's cards. The boat carries no channel for a
+    // friend's pick (kit docs/19), so the host picks, said in chat; the stock arrows still steer as well.
+    static Macro_Main askedOn;
+    public static string Asked = "";     // self-test
+
+    static void AskHere(Macro_Main main, Macro_Worldvisual vis)
+    {
+        if (askedOn == main || RWCampaign.Staging || RWCampaign.Replay >= 0 || RWCampaign.Choice >= 0 || RWCampaign.Route.Count == 0
+            || RWCampaign.Route.Count >= RWChart.Rows || main.Selected.Value.ToString() != "" || vis.Inworldtransition || vis.Insetup
+            || !RWUtil.IsLeader || RWDialog.Asking || Time.realtimeSinceStartup - upAt < 12f || !WorldUp())
+            return;
+        askedOn = main;
+        List<RWChart.Node> open = RWCampaign.Open();
+        if (open.Count == 0)
+            return;
+        if (open.Count == 1)
+        {
+            RWCampaign.Choice = open[0].Col;
+            RWCampaign.SaveChoice();
+            Asked = "only " + open[0].Name;
+            return;
+        }
+        RogueWavesModeMod.Instance.StartCoroutine(RWUtil.Guarded(AskOpen(open), "the boat's map vote"));
+    }
+
+    static bool WorldUp()
+    {
+        Blockage.Menu.Blu2_Menu_Handler world;
+        return Blockage.Menu.Bl_Menus.Menus != null && Blockage.Menu.Bl_Menus.Menus.TryGetValue("World", out world) && world != null && world.Active;
+    }
+
+    static IEnumerator AskOpen(List<RWChart.Node> open)
+    {
+        List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
+        foreach (RWChart.Node n in open)
+        {
+            Bla_Ui_Confirmation.Entry card = RWVote.MapCard(n);
+            card.Tomenu = "World";     // the boat's own menu comes back with the pick, as the main menu's "Main" does
+            cards.Add(card);
+        }
+        RWRejoin.Say("No map was voted on before the party left: the host picks where it sails.");
+        Asked = "asked";
+        string pick = null;
+        yield return RWDialog.Ask(cards, "WHERE NEXT?", "No map was voted on: the host picks", 0f, n => pick = n);
+        if (!WorldUp())
+            try { Blockage.Menu.Bl_Menus.Changemenu("World", true); } catch (Exception) { }
+        int col;
+        if (pick == null || !int.TryParse(pick, out col) || !RWCampaign.Live || RWCampaign.Choice >= 0 || RWCampaign.Replay >= 0)
+        {
+            Asked = "no pick";
+            RWLog.Info("the boat's map vote: no pick, the arrows steer");
+            yield break;
+        }
+        RWCampaign.Choice = col;
+        RWCampaign.SaveChoice();
+        Asked = "picked " + col;
+        RWLog.Info("the boat's map vote: column " + col);
     }
 
     // Vessels are locked in once the campaign has seen them (docs/scope/04 [Campaign]): a player's vessel goes back to theirs,

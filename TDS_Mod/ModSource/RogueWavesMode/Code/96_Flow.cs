@@ -520,7 +520,7 @@ public static partial class RWTest
         else
         {
             List<string> ups = new List<string>(built.Upgradelistserver.Keys);
-            Check("Directions reach a player's new buildings at their top rank", ups.Contains("RW_Effect_Barnacle3_Upgradeobject") && ups.Contains("RW_Effect_Mend3_Upgradeobject") && ups.Contains("RW_Effect_Spring3_Upgradeobject"), string.Join(",", ups.ToArray()));
+            Check("Directions reach a player's new buildings at their top rank", ups.Contains("RW_Effect_Barnacle3_Upgradeobject") && !ups.Contains("RW_Effect_Mend3_Upgradeobject") && !ups.Contains("RW_Effect_Spring3_Upgradeobject"), string.Join(",", ups.ToArray()) + " (Tidal Mend and Spring Tide are the mode's own Tide effects since 2026-11-05, B7)");
             Check("no error from the effects on a new tower", errors == bad, (errors - bad) + " errors");
         }
         Check("Cut Costs: the vessel's build scale follows the rank", BuildScale(vessel) <= RWDirections.CostScale[3] + 0.001f, "scale " + RWUtil.F(BuildScale(vessel)));
@@ -615,6 +615,9 @@ public static partial class RWTest
         Check("a new objective is posted", RWObjectives.Posted != null, RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-");
         float tower1 = built != null && built.Beingserver != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
         Check("Spring Tide: the tower gained health in the Tide", tower0 > 0f && tower1 > tower0, tower0 + " -> " + tower1);
+        // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
+        Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", tower0 > 0f && Mathf.Abs(tower1 - tower0 - RWDirections.SpringHealth[3]) < 0.05f && built != null && !built.Statsserver.ContainsKey("Resistadd"),
+            tower0 + " -> " + tower1 + (built != null && built.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + built.Statsserver["Resistadd"].Value_Calc : ""));
         Info("objective", taken.Display + ": " + RWObjectives.Outcome);
         yield return Snap("break_after_tide1");
 
@@ -653,8 +656,22 @@ public static partial class RWTest
         yield return DialogFits("The vote to leave");
         yield return Snap("leave_vote");
         ClickCard("Stay");
-        yield return Until(() => RWVote.State == "", 8f);
+        yield return Until(() => RWVote.State != "Leave", 8f);
         Check("Leave: staying keeps the party on the map", !RWVote.Departing && RWVote.LastVote == "0 of 1 to leave", RWVote.LastVote);
+        // B1: the first stay votes on the next map there and then, so the boat has a choice however the map ends.
+        string staySub = "";
+        if (RWVote.State == "Map")
+        {
+            yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 8f);
+            yield return WaitDialog(8f);
+            staySub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
+            Info("the vote on the next map, staying", "sub '" + staySub + "', cards " + CardTexts());
+            List<string> stayCards = CardNames();
+            if (stayCards.Count > 0) ClickCard(stayCards[0]);
+            yield return Until(() => RWVote.State == "", 8f);
+        }
+        Check("B1 staying votes on the next map there and then, and the bonus Tides go on", RWCampaign.Choice >= 0 && RWVote.State == "" && !RWVote.HoldBreak && (staySub == "" || staySub.Contains("When the party leaves")), "choice " + RWCampaign.Choice + ", " + RWVote.LastVote + ", sub '" + staySub + "'");
+        int stayChoice = RWCampaign.Choice;
         int pure16 = player.Pure;
         yield return ToBreakAfter(RWCampaign.WinTide + 1);
         yield return new WaitForSeconds(1f);
@@ -706,6 +723,7 @@ public static partial class RWTest
         }
         yield return Until(() => Game_Mapvars.Instance == null || Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", 15f);
         Check("Leave: the party leaves by the stock win path", Game_Mapvars.Instance != null && Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", RWVote.LastVote);
+        Check("B1 leaving asks no second map vote: the party sails to the one voted when it stayed", secondWin == "" && RWVote.LastVote.StartsWith("voted before") && RWCampaign.Choice == stayChoice, RWVote.LastVote + ", choice " + RWCampaign.Choice + " (stayed " + stayChoice + ")");
         yield return new WaitForSeconds(0.5f);
         Check("T4 the end screen's title is the campaign's", Game_Mapvars.Instance.Display.Value.Display_Endgame.ToString() == "MAP 1 OF 10 WON", "'" + Game_Mapvars.Instance.Display.Value.Display_Endgame + "', last " + RWCard.LastEnd);
         yield return new WaitForSeconds(7f);

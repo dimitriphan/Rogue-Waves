@@ -181,7 +181,7 @@ public static class ArgoWater
                 wetVfx[e] = Time.time;
                 ModKitUtil.Vis(by, "Argo_Wet", new Vector3((float)e.NetworkObjectId, 1.6f, 0f), 1.6f);
             }
-            ArgoUtil.Slow(by, e, slow, ArgoData.WaterTick + 0.25f, vfx);
+            ArgoUtil.Slow(by, e, slow, ArgoData.WaterTick + 0.25f, vfx, "Water");
             ArgoStatus.Wet(e, ArgoData.WaterTick + 0.3f);
             // Kelp Bed: caught on entering (again only after it was out of the water for CatchMemory seconds).
             if (catchFor > 0f && (!lastWet.TryGetValue(e, out last) || Time.time - last > ArgoData.CatchMemory))

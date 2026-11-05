@@ -3,11 +3,15 @@
 // (Team and Vessel Cardinals until Dimitri renamed them on 2026-11-04):
 //   Cardinal acts on the core, the foes or the clock, for everyone: the upgrade goes on the core with its Artifactobject passed
 //            (nine stock scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby
-//            list while the row has room (8 counters, lobby picks included); past that it works but shows nowhere yet (the run
-//            line carries only the objective; docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md row 3). Every stock Cardinal on sale is one
-//   Trinket  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook.
-//            It is built as a Cardinal is (an Artifactobject and its entry) and keeps its "Cardinal_" id, so a saved
-//            campaign still finds it
+//            list while the row has room (8 counters, lobby picks included); past that it works and the run line counts it as
+//            "+N Cardinals" (B4, docs/scope/12 "No limit"). Every stock Cardinal on sale is one
+//   Trinket  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook,
+//            and every held stack shows on the vessel's panel (one that reaches units by a mark with no script, B4). It is
+//            built as a Cardinal is (an Artifactobject and its entry) and keeps its "Cardinal_" id, so a saved campaign
+//            still finds it
+// The shelf has 2 Cardinal slots and a Trinket slot; what a player can't buy more of (6 copies, a stock one once, lobby
+// picks included) leaves it (B3). The lobby's picks are locked once the campaign has played a map, and never one the shop
+// doesn't sell (B2, docs/scope/04 [Sea Chart] "Lobby Cardinals").
 // "The same upgrade twice does nothing" (RogueLab R2), so a stack is a numbered copy of its upgrades, made at boot.
 // The stock Cardinals the shop sells are granted as Riptide granted them (proven); the left-out ones fight the run's own
 // rules (docs/reports/SCOPE_VS_LOOP.md #7). The list is a default for docs/scope/12's NEEDS lines.
@@ -26,6 +30,7 @@ public static class RWCardinals
     public const float DenturesHeal = 0.2f;   // of the damage the vessel dealt, per stack
     public const int StockCost = 15;
     public const int OnShelf = 3;    // Cardinals and Trinkets on the shelf in a break, rolled per map and Tide, the same on every machine
+    public const int TrinketSlots = 1;   // of OnShelf, kept for a Trinket while one can be bought (audit 12 row 1); a kind short fills from the other
 
     // 2026-11-04: Claude's seven starter Cardinals (Spiny Hull, Sea Legs, Rising Tide, Puffer Float, Tide Clock, Rusted Bell,
     // Second Wind) are gone at Dimitri's word: each copied a stock Cardinal (docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md).
@@ -45,6 +50,7 @@ public static class RWCardinals
     public static readonly List<string> Sold = new List<string>();      // ids on the shelf's list, sorted, the same on every machine
     static readonly Dictionary<string, RWCardinalDef> defs = new Dictionary<string, RWCardinalDef>();
     static readonly Dictionary<string, Upgradeproperties> copies = new Dictionary<string, Upgradeproperties>();    // "<Name><n>"
+    static readonly Dictionary<string, Upgradeproperties> marks = new Dictionary<string, Upgradeproperties>();      // "<Name><n>": a unit Trinket's panel line
     static readonly Dictionary<string, Artifactobject> arts = new Dictionary<string, Artifactobject>();
     static readonly List<string> stock = new List<string>();
 
@@ -93,9 +99,12 @@ public static class RWCardinals
             int n = d.Stacks ? Stacks : 1;
             for (int i = 1; i <= n; i++)
             {
-                Upgradeproperties u = RWContent.Upgrade(Id(d) + i + "_Upgradeobject", d.Display, d.Desc, d.Script, d.Numbers);
+                string label = d.Display + (i > 1 ? " x" + i : "");     // each stack its own line on the panel
+                Upgradeproperties u = RWContent.Upgrade(Id(d) + i + "_Upgradeobject", label, d.Desc, d.Script, d.Numbers);
                 copies[d.Name + i] = u;
                 art.Coreupgrades.Add(u);
+                if (d.Trinket && d.Reach != "")
+                    marks[d.Name + i] = RWContent.Upgrade(Id(d) + "Held" + i + "_Upgradeobject", label, d.Desc, null, new object[0]);
             }
             Entry(d);
         }
@@ -163,20 +172,107 @@ public static class RWCardinals
         return e != null ? e.Display_Icon : null;
     }
 
-    // The shelf for a break: seeded by the campaign and the Tide, so client and host roll the same.
-    public static List<string> Shelf(uint seed, int map, int wave)
+    // Copies a player can hold: a pack one that stacks 6, the rest once.
+    public static int Cap(string id)
+    {
+        RWCardinalDef d;
+        return defs.TryGetValue(id, out d) && d.Stacks ? Stacks : 1;
+    }
+
+    // The shelf for a break: the list shuffled by the campaign and the Tide, so client and host roll the same, then the first
+    // Cardinals and the first Trinket not maxed for this player (maxed null: none is).
+    public static List<string> Shelf(uint seed, int map, int wave) { return Shelf(seed, map, wave, null); }
+
+    public static List<string> Shelf(uint seed, int map, int wave, Func<string, bool> maxed)
     {
         System.Random rng = new System.Random(unchecked((int)seed) ^ (map * 7919) ^ (wave * 104729));
-        List<string> pool = new List<string>(Sold);
-        List<string> shelf = new List<string>();
-        while (shelf.Count < OnShelf && pool.Count > 0)
+        List<string> order = new List<string>(Sold);
+        for (int i = order.Count - 1; i > 0; i--)
         {
-            int k = rng.Next(pool.Count);
-            string id = pool[k];
-            pool.RemoveAt(k);
-            shelf.Add(id);
+            int k = rng.Next(i + 1);
+            string t = order[i];
+            order[i] = order[k];
+            order[k] = t;
         }
+        List<string> cards = new List<string>(), trinkets = new List<string>(), spare = new List<string>();
+        foreach (string id in order)
+        {
+            if (maxed != null && maxed(id))
+                continue;
+            bool trinket = IsTrinket(id);
+            List<string> into = trinket ? trinkets : cards;
+            if (into.Count < (trinket ? TrinketSlots : OnShelf - TrinketSlots)) into.Add(id);
+            else spare.Add(id);
+        }
+        List<string> shelf = new List<string>(cards);
+        shelf.AddRange(trinkets);
+        for (int i = 0; shelf.Count < OnShelf && i < spare.Count; i++)
+            shelf.Add(spare[i]);
         return shelf;
+    }
+
+    // This break's shelf for one reader (the host keys each player, a machine its own view ""): rolled once, with what was
+    // maxed when it was first read, and kept to the break's end, so a buy leaves the card on it (held) and doesn't pull the
+    // next one in (a buyer could otherwise empty the whole list in one break). A new map, a retry or the next break
+    // (the table's Entry) rolls a new one.
+    static readonly Dictionary<string, List<string>> shelves = new Dictionary<string, List<string>>();
+
+    public static List<string> ShelfFor(string who, uint seed, int map, int wave, Func<string, bool> maxed)
+    {
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        string key = who + "#" + seed + "#" + map + "#" + wave + "#" + (mv != null ? mv.GetInstanceID() + "#" + mv.Entry.Value : "-");
+        List<string> shelf;
+        if (!shelves.TryGetValue(key, out shelf))
+        {
+            if (shelves.Count >= 64) shelves.Clear();
+            shelves[key] = shelf = Shelf(seed, map, wave, maxed);
+        }
+        return new List<string>(shelf);
+    }
+
+    // The host's reading of what a player can't buy more of.
+    public static bool MaxedFor(RWPlayer p, string id)
+    {
+        if (IsTrinket(id))
+            return Count(p.Trinkets, id) >= Cap(id);
+        return Count(RWRun.Cardinals, id) >= Cap(id) || (!IsMine(id) && InLobby(id));
+    }
+
+    // This machine's reading, from what syncs: a held Trinket's top copy on the vessel, a Cardinal's on a core, a stock one
+    // in the row's list (the lobby's picks are there) or its first upgrade on a core.
+    public static Func<string, bool> MaxedHere()
+    {
+        List<Entity_Master> cores = new List<Entity_Master>();
+        if (Game_Entity.Instance != null)
+            foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+                if (e != null && e.Taglist != null && e.Upgradelist != null && e.Taglist.Contains(new FixedString64Bytes("Core")) && !e.Taglist.Contains(new FixedString64Bytes("Enemycore")))
+                    cores.Add(e);
+        Entity_Master v = RWMine.Vessel();
+        return id =>
+        {
+            RWCardinalDef d;
+            if (!defs.TryGetValue(id, out d))
+            {
+                if (InLobby(id)) return true;
+                Artifactobject art = Object(id);
+                Upgradeproperties first = art != null && art.Coreupgrades != null && art.Coreupgrades.Count > 0 ? art.Coreupgrades[0] : null;
+                return first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname)));
+            }
+            FixedString64Bytes top = new FixedString64Bytes(Id(d) + Cap(id) + "_Upgradeobject");
+            if (d.Trinket)
+            {
+                Upgradeproperties mark;
+                if (d.Reach != "" && marks.TryGetValue(d.Name + Cap(id), out mark)) top = new FixedString64Bytes(mark.Objectname);
+                return v != null && v.Upgradelist != null && v.Upgradelist.Contains(top);
+            }
+            return cores.Exists(c => c.Upgradelist.Contains(top));
+        };
+    }
+
+    static bool InLobby(string id)
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        return info != null && (info.Artifacts.Contains(new FixedString64Bytes(id)) || info.Mixedart.Value.ToString() == id);
     }
 
     // ---------------------------------------------------------------- bought (host)
@@ -191,13 +287,13 @@ public static class RWCardinals
         if (mine && d.Trinket)
         {
             int held = Count(p.Trinkets, id);
-            if (!d.Stacks && held > 0) return "Already held";
+            if (held >= Cap(id)) return held > 1 ? "Held " + held + " times" : "Already held";
             p.Trinkets.Add(id + (held + 1));
         }
         else
         {
             int held = Count(RWRun.Cardinals, id);
-            if ((!mine || !d.Stacks) && held > 0) return "Already held";
+            if (held >= Cap(id) || (!mine && InLobby(id) && !shown.Contains(id))) return held > 1 ? "Held " + held + " times" : "Already held";
             RWRun.Cardinals.Add(id + "#" + (held + 1));
             if (Game_Entity.Instance != null) GrantCardinal(id, held + 1);
         }
@@ -215,6 +311,23 @@ public static class RWCardinals
             if (h.StartsWith(id) && (h.Length == id.Length || char.IsDigit(h[id.Length]) || h[id.Length] == '#'))
                 n++;
         return n;
+    }
+
+    // Held Cardinals the row has no room for (its 8 counters, lobby picks included): the run line shows "+N" (B4).
+    public static int Overflow()
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info == null || RWRun.Cardinals.Count == 0)
+            return 0;
+        List<string> ids = new List<string>();
+        foreach (string held in RWRun.Cardinals)
+        {
+            int cut = held.IndexOf('#');
+            string id = cut > 0 ? held.Substring(0, cut) : held;
+            if (!ids.Contains(id) && !info.Artifacts.Contains(new FixedString64Bytes(id)))
+                ids.Add(id);
+        }
+        return ids.Count;
     }
 
     static void Warn(string text, string icon)
@@ -397,27 +510,123 @@ public static class RWCardinals
         shown.Clear();
     }
 
+    // ---------------------------------------------------------------- the lobby's picks (host; B2, docs/scope/04 [Sea Chart])
+
+    // The campaign's first map: the lobby's picks as they stand are the campaign's, kept in the save ("<id>,<id>|<mixed>"),
+    // less any the shop doesn't sell (they fight the run's own rules, NotSold).
+    public static void RecordLobby()
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info == null || !RWCampaign.Live || RWUtil.Has(RWData.SaveFolder, RWKeys.Lobby))
+            return;
+        List<string> ids = new List<string>();
+        foreach (FixedString64Bytes a in info.Artifacts)
+        {
+            string id = a.ToString();
+            if (!shown.Contains(id) && Array.IndexOf(NotSold, id) < 0 && !ids.Contains(id)) ids.Add(id);
+        }
+        string mixed = info.Mixedart.Value.ToString();
+        if (Array.IndexOf(NotSold, mixed) >= 0) mixed = "";
+        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Lobby, string.Join(",", ids.ToArray()) + "|" + mixed);
+        RWUtil.Flush();
+        RWLog.Info("the lobby's Cardinals are the campaign's now: " + (ids.Count > 0 ? string.Join(", ", ids.ToArray()) : "none") + (mixed != "" ? ", mixed " + mixed : ""));
+    }
+
+    // On the boat, twice a second: before the first map a pick the shop doesn't sell comes off; after it the lobby goes back
+    // to the campaign's picks. Each said once in chat.
+    static readonly List<string> lobbySaid = new List<string>();
+    public static int LobbyFixes;     // self-test
+
+    public static void LockLobby()
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info == null || !info.IsServer || !RWCampaign.Live)
+            return;
+        bool locked = RWUtil.Has(RWData.SaveFolder, RWKeys.Lobby);
+        List<string> want = new List<string>();
+        string mixed = "";
+        if (locked)
+        {
+            string saved = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Lobby);
+            int bar = saved.IndexOf('|');
+            foreach (string id in (bar >= 0 ? saved.Substring(0, bar) : saved).Split(','))
+                if (id != "" && Array.IndexOf(NotSold, id) < 0) want.Add(id);
+            mixed = bar >= 0 ? saved.Substring(bar + 1) : "";
+            if (Array.IndexOf(NotSold, mixed) >= 0) mixed = "";
+        }
+        List<string> drop = new List<string>();
+        foreach (FixedString64Bytes a in info.Artifacts)
+        {
+            string id = a.ToString();
+            if (locked ? !want.Contains(id) : Array.IndexOf(NotSold, id) >= 0) drop.Add(id);
+        }
+        int changed = 0;
+        foreach (string id in drop)
+        {
+            info.Artifacts.Remove(new FixedString64Bytes(id));
+            changed++;
+            if (!locked) SayOnce(id, Display(id) + " isn't for a campaign: it came off the lobby's Cardinals.");
+        }
+        foreach (string id in want)
+            if (!info.Artifacts.Contains(new FixedString64Bytes(id)))
+            {
+                info.Artifacts.Add(new FixedString64Bytes(id));
+                changed++;
+            }
+        string m = info.Mixedart.Value.ToString();
+        if (locked ? m != mixed : Array.IndexOf(NotSold, m) >= 0)
+        {
+            if (!locked) SayOnce(m, Display(m) + " isn't for a campaign: it came off the lobby's Cardinals.");
+            info.Mixedart.Value = new FixedString64Bytes(locked ? mixed : "");
+            changed++;
+        }
+        if (changed == 0)
+            return;
+        LobbyFixes += changed;
+        if (locked) SayOnce("locked", "The lobby's Cardinals are locked for this campaign.");
+        RWLog.Info("lobby Cardinals: " + changed + " put back");
+    }
+
+    static void SayOnce(string key, string text)
+    {
+        if (lobbySaid.Contains(key))
+            return;
+        lobbySaid.Add(key);
+        RWRejoin.Say(text);
+    }
+
     // ---------------------------------------------------------------- Trinkets: on one player's things (host)
 
-    // RWRun.Carry, twice a second: the Trinkets that go on the vessel itself.
+    // RWRun.Carry, twice a second: every held Trinket on the vessel, so its panel lists them (B4): one that acts on the vessel
+    // as itself (a scriptless one, Vampire Dentures run by Update, as a line alone), one that reaches units by its mark.
     public static void Grant(Entity_Master vessel, RWPlayer p)
     {
+        if (vessel.Upgradelistserver == null)
+            return;
         foreach (string held in p.Trinkets)
         {
             Upgradeproperties u;
             RWCardinalDef d = Def(held);
-            if (d == null || d.Reach != "" || !copies.TryGetValue(d.Name + StackOf(held, d), out u) || u.Aiscripts.Count == 0)
+            if (d == null || !(d.Reach != "" ? marks : copies).TryGetValue(d.Name + StackOf(held, d), out u))
                 continue;
-            if (vessel.Upgradelistserver != null && !vessel.Upgradelistserver.ContainsKey(u.Objectname))
+            if (!vessel.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(vessel, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);
         }
     }
 
+    // The sheet a held id ("Cardinal_<Name><n>") is a stack of: the name and then digits only, so one name that starts another
+    // can't take its stacks.
     static RWCardinalDef Def(string held)
     {
         foreach (RWCardinalDef d in Mine)
-            if (held.StartsWith(Id(d)))
-                return d;
+        {
+            string id = Id(d);
+            if (!held.StartsWith(id))
+                continue;
+            bool digits = true;
+            for (int i = id.Length; i < held.Length; i++) if (!char.IsDigit(held[i])) digits = false;
+            if (digits) return d;
+        }
         return null;
     }
 
@@ -427,7 +636,8 @@ public static class RWCardinals
         return int.TryParse(held.Substring(Id(d).Length), out n) ? n : 1;
     }
 
-    // A new thing of this player's (the owner hook), or a sweep: unit-reaching Trinkets.
+    // A new thing of this player's (the owner hook), or a sweep: unit-reaching Trinkets. Every unit of theirs but the vessel
+    // (which holds the Trinket itself, with a mark) takes it, a Hero-tagged one such as Boutbro too, as the Directions do.
     public static void Reach(Entity_Master m, RWPlayer p)
     {
         List<string> tags = m.Beingserver.Entity.Tags;
@@ -435,7 +645,7 @@ public static class RWCardinals
         {
             RWCardinalDef d = Def(held);
             Upgradeproperties u;
-            if (d == null || d.Reach == "" || !tags.Contains(d.Reach) || tags.Contains("Hero") || !copies.TryGetValue(d.Name + StackOf(held, d), out u))
+            if (d == null || d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || tags.Contains("Clone") || tags.Contains("Prespawn") || !copies.TryGetValue(d.Name + StackOf(held, d), out u))
                 continue;
             if (m.Upgradelistserver != null && !m.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);

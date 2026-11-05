@@ -1,5 +1,13 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-05: the decisions' build items
+
+Compiled, not yet run in game: Monument's Cleanse strips only foes' debuffs (`YosseleHooks.Watch`: each Stonehenge is
+watched from the moment it stands; what showed in its first half-second or within half a second of an upgrade of its
+own stays, never an Override, which is how the game stuns; B9, YOS-2, pitfall #163);
+fruit pays only a player's vessel or minion, never a neutral beast (`YosseleFruit.PlayerOwned`, YOS-3); Compost Bin III
+says "within a much larger radius" (B15). For the PC: Paper Tower plus a Monument, a foe's hit: the trade-off stays.
+
 **2026-11-05, the code review at max (kit 1.11, compiled, not yet run in game):** a Pachira's share of a hit is dealt when the shooter died in flight (P1-2, pitfall #157); FERTILIZE refuses a building not begun or being felled (YOS-5); the self-test's Entangling Roots can FAIL, and "Growth stops at the maximum" counts growth steps. Left: neutral beasts and fruit (his call), fruit merging (YOS-4). `docs/reports/CODE_REVIEW_MAX_2026-11-05.md`.
 
 **2026-11-05, crisp command icons (kit 1.10, compiled, not yet run in game):** the FERTILIZE and COLOUR buttons' 12 px icons go into Icon_Types as 16 px textures with the drawing centred (`AddIcon`'s box, `ModKitAssets.CommandIcon`), so the HUD draws them one unit per pixel instead of stretching them by 4/3, which jittered as the buttons moved (pitfall #156). They look a little smaller, the size of the game's own icons. Stat icons are unchanged.

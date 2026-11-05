@@ -330,6 +330,11 @@ public static partial class RWTest
                     foreach (string id in s1) { if (once.Contains(id)) shelfBad++; once.Add(id); if (!sawOnShelf.Contains(id)) sawOnShelf.Add(id); }
                 }
         Check("The shelf: 3 different Cardinals or Trinkets, the same on every machine, each on sale coming up in time", shelfBad == 0 && sawOnShelf.Count == RWCardinals.Sold.Count, shelves + " shelves, " + shelfBad + " bad, " + sawOnShelf.Count + " of " + RWCardinals.Sold.Count + " seen");
+        int trinketSlotBad = 0;
+        bool anyTrinket = RWCardinals.Sold.Exists(RWCardinals.IsTrinket);
+        for (uint seed = 1; seed <= 30; seed++)
+            if (RWCardinals.Shelf(seed, 1, (int)seed % 16).FindAll(RWCardinals.IsTrinket).Count != (anyTrinket ? RWCardinals.TrinketSlots : 0)) trinketSlotBad++;
+        Check("B4 the shelf keeps a slot for a Trinket", trinketSlotBad == 0, trinketSlotBad + " of 30 shelves without exactly " + RWCardinals.TrinketSlots);
         foreach (string w in new[] { RWChart.WeatherNames[RWChart.RisingWater], RWChart.WeatherNames[RWChart.QuickeningCurrent], RWChart.WeatherNames[RWChart.NestingGround] })
             Info("weather name", w);
     }
@@ -893,7 +898,7 @@ public static partial class RWTest
             RWDirections.Take(player, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id("Any", "Mend")) as Upgradeproperties);
             yield return new WaitForSeconds(1.5f);
             Entity_Master wounded = plain != null && plain != tower ? plain : known.Find(k => k != null && k != tower);
-            string menders = tower.Upgradelistserver.ContainsKey("RW_Effect_Mend1_Upgradeobject") ? "rank I on it" : string.Join(",", new List<string>(tower.Upgradelistserver.Keys).ToArray());
+            string menders = "Tidal Mend rank " + RWDirections.Top(player, "Any", "Mend");
             if (wounded == null) Setup("Tidal Mend", "one tower only");
             else
             {
@@ -902,10 +907,11 @@ public static partial class RWTest
                 if (blow != null) Hurt(blow, wounded, 12f);
                 yield return new WaitForSeconds(0.3f);
                 ClearFoes();
-                float m0 = Hp(wounded), mMax = HpMax(wounded);
+                float m0 = Hp(wounded), mMax = HpMax(wounded), mended0 = RWDirections.Mended;
                 yield return ToBreakAfter(1);
                 yield return new WaitForSeconds(0.6f);
-                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
+                // Spring Tide, held too, raises max health with the share kept, so the mend is read from its own count as well (B7).
+                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0 && RWDirections.Mended > mended0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", mended " + (RWDirections.Mended - mended0) + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
             }
 
             // Made of Tougher Stuff at rank III: a big hit takes at most a quarter of a minion's health.
@@ -1002,6 +1008,29 @@ public static partial class RWTest
             string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - RWCardinals.Cost(stockCard), stockCard + ": '" + first + "', '" + second + "', Pure " + player.Pure);
+            // B3, B4: a Trinket stacks to 6 and then leaves the shelf; each stack shows on the vessel's panel; a Cardinal the
+            // row has no room for is counted on the run line.
+            player.Pure = 500;
+            int dentures0 = player.Trinkets.Count;
+            string refused = "";
+            for (int k = 0; k < RWCardinals.Stacks + 1 && refused == ""; k++) refused = RWCardinals.Buy(player, "Cardinal_Dentures");
+            yield return new WaitForSeconds(1.2f);
+            int onPanel = 0;
+            for (int k = 1; k <= RWCardinals.Stacks; k++)
+                if (vessel != null && vessel.Upgradelistserver != null && vessel.Upgradelistserver.ContainsKey("Cardinal_Dentures" + k + "_Upgradeobject")) onPanel++;
+            Check("B3 a Trinket stacks to 6 copies and the 7th is refused", player.Trinkets.Count == RWCardinals.Stacks && refused != "", "held " + player.Trinkets.Count + ", refusal '" + refused + "'");
+            Check("B4 every held Trinket stack is on the vessel's panel", onPanel == RWCardinals.Stacks, onPanel + " of " + RWCardinals.Stacks + " on the vessel");
+            List<string> maxedShelf = RWCardinals.Shelf(RWCampaign.Seed, 1, 3, c => RWCardinals.MaxedFor(player, c));
+            Check("B3 a maxed one leaves the shelf, which still holds 3", !maxedShelf.Contains("Cardinal_Dentures") && !maxedShelf.Contains(stockCard) && maxedShelf.Count == RWCardinals.OnShelf, string.Join(",", maxedShelf.ToArray()));
+            List<string> rolled = RWCardinals.ShelfFor("RWTest", RWCampaign.Seed, 1, 5, c => false), afterBuy = RWCardinals.ShelfFor("RWTest", RWCampaign.Seed, 1, 5, c => true);
+            Check("A buy leaves the break's shelf as it was rolled (no next card pulled in)", string.Join(",", rolled.ToArray()) == string.Join(",", afterBuy.ToArray()) && rolled.Count == RWCardinals.OnShelf, string.Join(",", rolled.ToArray()) + " / " + string.Join(",", afterBuy.ToArray()));
+            while (player.Trinkets.Count > dentures0) player.Trinkets.RemoveAt(player.Trinkets.Count - 1);
+            int over0 = RWCardinals.Overflow();
+            RWRun.Cardinals.Add("Cardinal_RWTestOverflow#1");
+            yield return new WaitForSeconds(1.2f);
+            string runShown = RWRunLabel.Shown;
+            RWRun.Cardinals.Remove("Cardinal_RWTestOverflow#1");
+            Check("B4 a Cardinal the row has no room for shows as +N on the run line", runShown.Contains("+" + (over0 + 1) + (over0 == 0 ? " Cardinal" : " Cardinals")), "'" + runShown + "', overflow before " + over0);
             // Only a run holding more than 8 can show the cap (MAX KIT-3: one Cardinal held passed it every time).
             if (RWRun.Cardinals.Count > 8)
                 Check("The HUD's Cardinal row keeps to 8, the rest in the run's count", Tds_Multiplayerinfo.Instance.Artifacts.Count <= 8, "row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + ", cardinals " + RWRun.Cardinals.Count);

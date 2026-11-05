@@ -189,7 +189,10 @@ public static class RWFTest
                 yield return new WaitForSeconds(0.2f);
             }
             if (dazzling != null) Game_Entity.Instance.Despawn(dazzling.Beingserver, false, "RogueWaves");
-            yield return new WaitForSeconds(5f);
+            // Illuminate lingers 3 s after the aura has gone (docs/scope/13, 2026-11-05).
+            yield return new WaitForSeconds(1.5f);
+            Check("Dazzling: the Illuminate mark lingers a moment after the foe is gone", tower.Upgradelistserver.ContainsKey(RWFModifiers.Illuminate.Objectname), "illuminated 1.5 s after");
+            yield return new WaitForSeconds(3.5f);
             Check("Dazzling: the Illuminate mark goes once the foe is gone, with no exception", !tower.Upgradelistserver.ContainsKey(RWFModifiers.Illuminate.Objectname) && errors == before, "errors " + (errors - before));
         }
     }
