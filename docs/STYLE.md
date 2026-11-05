@@ -87,3 +87,19 @@ New foes are crystal foes like every base foe: a grey stone body carrying one ma
 effect on the foe (`docs/scope/13_Enemy_Modifiers.txt`, decided 2026-10-09; `docs/13` §6). The base elites' looks are
 overlay materials in green, white, red, near-black, bronze and orange (`docs/18` §5.5), so a modifier's effect takes a
 colour none of them uses; Storm Coral sits between Tempered's red and Molten's orange, so it is not that colour.
+
+## Art review (every art PR)
+
+Each piece of new or redrawn art passes these before its PR, and the PR says which were done:
+
+1. **Contact sheets** at 1× and 6×, on the UI's Deep Swell and on a light ground, with the piece beside Dimitri's own
+   sprite where one exists (`/mnt/project-files/uploads/hearth/`, his PC's `Desktop\RogueWave\sprites`) and beside the nearest piece already in the pack.
+   Look at them, then read each against this sheet: the palette above, opaque, no outline, lit from the upper left,
+   shade keeps the hue, no pure black, magenta only on foes, the vessel's motif on its towers. The sheets stay in the
+   thread (scratchpad), not in the repository. `concept-tools/temp_art/b11_icons.py contact.png` draws one for icons.
+2. **The script**: `python3 concept-tools/temp_art/art_check.py` on the files (`--cell`, `--size`, `--palette`,
+   `--baseline` for sheets): sizes in whole cells, no stray semi-transparent pixels, no pure black, nothing off the
+   palette, frames whose feet don't line up. It must end with 0 files with problems; a "sparse" note is read by eye.
+3. **Models** (towers, objects): `TDS_Mod/Tools/cloud-check/lite/run_preview.sh <EditorDir> <Prefix> <OutDir> m`
+   renders each from the builder's camera; look at the render beside the building it replaces or stands with.
+4. **In game** is left to the next PC round: the PR lists each piece for his eye there.

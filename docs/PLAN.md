@@ -378,6 +378,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Feather; the Cardinals Cork Lifebuoy, Signal Flare, Cargo Crate and Tin Whistle. In
   `RogueWavesMode/Code/24_Trinkets.cs`, self-test part "trinkets" of the gaps build; their 15 icons wait for the art.
   Compiled here, not run on the PC.
+  2026-11-05, part 10: the 47 icons of the Directions, Trinkets and Cardinals built in parts 5-9 (A2), temporary, 12 x 12
+  from their Look lines (`concept-tools/temp_art/b11_icons.py`), and the art review in `docs/STYLE.md` with its
+  check script (`concept-tools/temp_art/art_check.py`: 0 problems on all 47). Not yet seen in game.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
