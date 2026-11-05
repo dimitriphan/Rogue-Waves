@@ -6,7 +6,7 @@ Set S2 of `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`, tuned by `docs/repor
 
 - `RWDifficulty`: map k's Tide 15 plays the base game's row `FinishRows[k]` (15, 18, 20, 21, 21, 24 x5) and its Tides
   1-14 the rows between (F1); a Tide entry and the break before it carry the notes of the row they play; the bonus Tides
-  go on from the row after and rewind on row 29. Foe health is one Pmulti (F2), x(2.6 + 0.08(k - 1)) (F3) x(1 + 1.5%
+  go on from the row after and rewind on row 29. Foe health is one Pmulti (F2), x(2.6 + 0.08(k - 1)) (F3) x(1 + 2%
   for each Cardinal stack, Trinket copy and Direction rank held as the map starts) (F5, `Hoard`). Modifiers from map 2,
   one more every second map, each Tide taking them in turn (F4). +50% foes a player past the first (X1).
 - `RWCardinals`: every price is 3 more for each Trinket copy the buyer holds and each Cardinal the run has bought (C1,

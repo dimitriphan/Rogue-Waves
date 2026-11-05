@@ -1290,8 +1290,8 @@ public static partial class RWTest
             RWPlayer player = RWRun.For(me);
             yield return new WaitForSeconds(1f);
             int hoard = RWDifficulty.Hoard();
-            // Scope 04's numbers written out, so a changed constant shows here: Tide 15's row, x2.6 on map 1, 0.08 more a map, 1.5% a held item.
-            float wantScale = 1f + RWDifficulty.CountPerMap * (map - 1), wantHealth = (2.6f + 0.08f * (map - 1)) * (1f + 0.015f * hoard) - 1f;
+            // Scope 04's numbers written out, so a changed constant shows here: Tide 15's row, x2.6 on map 1, 0.08 more a map, 2% a held item.
+            float wantScale = 1f + RWDifficulty.CountPerMap * (map - 1), wantHealth = (2.6f + 0.08f * (map - 1)) * (1f + 0.02f * hoard) - 1f;
             int wantMods = RWDifficulty.ModifiersOn(map, 4);
             int mods = RWDifficulty.LastModifiers == "" ? 0 : RWDifficulty.LastModifiers.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries).Length;
             Check("Map " + map + " of 10 (" + plan + ", " + RWWeather.Display(weather) + "): harder as written, every modifier loaded", Mathf.Abs(RWDifficulty.LastScale - wantScale) < 0.001f && Mathf.Abs(RWDifficulty.LastHealth - wantHealth) < 0.001f && RWDifficulty.LastHoard == hoard && RWDifficulty.LastFinish == new[] { 15, 18, 20, 21, 21, 24, 24, 24, 24, 24 }[Mathf.Clamp(map, 1, 10) - 1] && mods == wantMods,

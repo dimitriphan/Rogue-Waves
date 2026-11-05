@@ -17,7 +17,7 @@ public static class RWDifficulty
 {
     public const float CountPerMap = 0.06f, CountPerPlayer = 0.5f, IntervalPerMap = 0.03f, HealthPerMap = 0.08f, BonusPerTide = 0.1f;
     public const float HealthLift = 2.6f;        // F3: foe health x2.6 on map 1 (a Pmulti of +1.6), HealthPerMap more each map after
-    public const float HoardShare = 0.015f;      // F5: foe health x(1 + this x held) for the Cardinals, Trinket copies and Direction ranks held
+    public const float HoardShare = 0.02f;       // F5: foe health x(1 + this x held) for the Cardinals, Trinket copies and Direction ranks held
     public const int ModifiersFrom = 2;          // F4: the map the first of the campaign's modifiers comes on, then one more every second map
     public const int ModifierShare = 5;          // one foe in this many of each row carries a modifier
     public const int LastRow = 29;               // the base game's row the bonus Tides end on and replay (row 30 is the Basin waking)
