@@ -74,6 +74,7 @@ public static class RWContent
         RWDirections.Build();
         RWCardinals.Build();
         RWObjectives.Build();
+        RWDifficulty.BuildHealth();
         Built = true;
         RWLog.Info("content: VENDCINT " + (Vendcint != null) + ", " + RWDirections.List.Count + " Direction upgrades, " + RWCardinals.Sold.Count + " Cardinals and Trinkets on sale, " + RWObjectives.All.Length + " objectives");
     }

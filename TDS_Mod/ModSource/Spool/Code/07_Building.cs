@@ -53,11 +53,13 @@ public abstract class SpoolBuilding : MonoBehaviour
 
     void Begin()
     {
-        Started = true;
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
+        // Started after the upgrades it comes back with: they are not new buys (no sound, no Upgraded), and a Head back with
+        // Patchwork Job draws MEND from Started2, where its Mending is known (MAX SPL-8: it read MEND OFF while mending).
+        Started = true;
         Started2();
         ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
     }
@@ -180,7 +182,7 @@ public class SpoolStashBrain : SpoolBuilding
             {
                 int n = Mathf.Min(spill, SpoolData.TuftMax);
                 float a = i * 2.4f;
-                SpoolServer.Drop(Pos + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * (0.6f + 0.15f * (i / 6)), n);
+                SpoolServer.Drop(Pos + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * (0.6f + 0.15f * (i / 6)), n, Master);
                 spill -= n;
             }
             Tell(SpoolData.WarnStashFell);
@@ -293,7 +295,7 @@ public class SpoolLoomBrain : SpoolBuilding
     {
         // Held Thread falls where the Loom stood.
         if (killed && Held > 0)
-            SpoolServer.Drop(Pos, Held);
+            SpoolServer.Drop(Pos, Held, Master);
         Held = 0;
     }
 }

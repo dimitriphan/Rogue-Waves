@@ -1,5 +1,14 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the code review at max
+
+Kit 1.11, compiled, not yet run in game (`docs/reports/CODE_REVIEW_MAX_2026-11-05.md`): a counted chart map ends staging,
+and picking the harbour clears the next map (MODEA-1, -2); an ended campaign's Cardinals leave the lobby list (MODEB-1);
+the staging map's vote shows row 1 on a friend's screen (MODEB-3); Voice in a Bottle's catch-up uses the stock filter
+(MODEB-5); the map's health upgrades are registered on every machine (P1-7); a rejoin restarts only halves stopped at
+the load (P1-3); a purchase shows at once (P1-8). The gaps build compiles without a play build (P1-6); its probes and
+checks for MODE-D1, the F key, the Cardinal row, SONAR, N4 and the save fuzz's F4 can now fail.
+
 ## 0.1.0-dev, later (2026-11-05): crisp icons
 
 Compiled, not yet run in game. Dimitri saw the Rogue Waves button's icon, and others like it, jittering: every pack

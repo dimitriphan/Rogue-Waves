@@ -136,6 +136,9 @@ public static class RWBoat
         RWCampaign.OnBoat();
         if (!RWCampaign.Live)
         {
+            // A campaign that ended (won, or out of retries) leaves its bought Cardinals in the lobby's list, which the next
+            // stock map loads free (MAX MODEB-1). Nothing to do when none were shown.
+            RWCardinals.RestoreLobby();
             Home(main, vis);
             return;
         }
@@ -158,6 +161,13 @@ public static class RWBoat
             Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(home.Name, false, default(Unity.Netcode.ServerRpcParams));
         }
         RWChart.Node picked = RWCampaign.Chart.Find(main.Selected.Value.ToString());
+        // The harbour is never in Open(): a chart node picked before it must not stay Next, or the staging map plays as an
+        // uncounted chart map with no picks (MAX MODEA-2).
+        if (picked != null && picked == RWCampaign.Chart.At(0, 0) && RWCampaign.Next != null)
+        {
+            RWCampaign.Next = null;
+            RWLog.Info("picked the harbour: the staging map");
+        }
         if (picked != null && RWCampaign.Open().Contains(picked) && RWCampaign.Next != picked)
         {
             RWCampaign.Next = picked;

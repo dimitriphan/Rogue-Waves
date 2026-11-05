@@ -39,6 +39,7 @@ public static class RWMenu
             asking = false;
             Embarking = "";
             RWCampaign.AtMainMenu();
+            RWCardinals.AtMainMenu();
             RWLobby.AtMainMenu();
         }
         if (Button != null && crest != null)

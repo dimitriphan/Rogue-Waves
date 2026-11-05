@@ -147,6 +147,7 @@ public static class RWFTest
 #endif
 
         // Berserk: stronger as it hurts.
+        int worn0 = RWFLooks.Worn;   // the Aging foe's ring already counted (MAX KIT-4)
         Entity_Master berserk = Marked("Enemy_Dagger", RWFModifiers.Berserk, c, 12f, 30f);
         yield return new WaitForSeconds(1f);
         float b0 = Stat(berserk, "Damage"), s0 = Stat(berserk, "Speed");
@@ -154,7 +155,7 @@ public static class RWFTest
         yield return new WaitForSeconds(1f);
         float b1 = Stat(berserk, "Damage"), s1 = Stat(berserk, "Speed");
         Check("Berserk: at half health, more damage and speed", b1 > b0 * 1.3f && s1 > s0 * 1.1f, "damage " + F(b0) + " -> " + F(b1) + ", speed " + F(s0) + " -> " + F(s1));
-        Check("Berserk: the effect is on the foe, its look worn on this machine", RWFLooks.Holds(berserk) == RWFModifiers.Berserk && RWFLooks.Worn >= 1, "worn " + RWFLooks.Worn);
+        Check("Berserk: the effect is on the foe, its look worn on this machine", RWFLooks.Holds(berserk) == RWFModifiers.Berserk && RWFLooks.Worn > worn0, "worn " + worn0 + " -> " + RWFLooks.Worn);
 
         // Cursed and Dazzling, beside the tower.
         if (tower != null)

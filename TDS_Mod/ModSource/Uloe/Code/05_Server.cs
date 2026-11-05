@@ -296,6 +296,9 @@ public static class UloeMarks
 
     public static void Clear() { marks.Clear(); }
 
+    // Self-test: whether an entry is still kept for this foe, destroyed or not (BlindLevel reads 0 on a destroyed one).
+    public static bool Holds(Entity_Master foe) { return !ReferenceEquals(foe, null) && marks.ContainsKey(foe); }
+
     static UloeMark Get(Entity_Master foe)
     {
         UloeMark m;

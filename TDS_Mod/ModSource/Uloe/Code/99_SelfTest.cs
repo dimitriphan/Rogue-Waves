@@ -647,6 +647,8 @@ public static partial class UloeSelfTest
                 Hit(hm, far, 1f);
                 Check("Illuminate wears off", Near(h0 - ModKitUtil.Health(far), 1f) && UloeMarks.LitLevel(far) == 0, F(h0 - ModKitUtil.Health(far)));
             }
+            else
+                ModKitTest.Setup("Illuminate wears off", "the foe fell before it wore off");   // MAX ULO-9
             yield return FarFoe("Enemy_Dagger", slot);
             far = slot[0];
             if (far != null)
@@ -656,7 +658,8 @@ public static partial class UloeSelfTest
                 yield return Wait(0.2f);
                 Kill(far);
                 yield return Wait(1f);
-                Check("a marked foe falling leaves no mark behind", UloeMarks.BlindLevel(far) == 0);
+                // BlindLevel reads 0 on a destroyed foe whatever is kept: ask the table itself (MAX ULO-5).
+                Check("a marked foe falling leaves no mark behind", !UloeMarks.Holds(far));
             }
         }
         ClearFoes();
@@ -1158,7 +1161,9 @@ public static partial class UloeSelfTest
                     // A spark landing, as Projectile_Master.Interact delivers it.
                     Helper_Entitytools.Interacthurt(hm, far, new Dictionary<string, float>());
                     yield return Wait(0.2f);
-                    if (ModKitUtil.Alive(far))
+                    if (!ModKitUtil.Alive(far))
+                        ModKitTest.Setup("Flash Bulb rank " + r, "the foe fell to the spark");   // dropped out without a word (MAX ULO-9)
+                    else
                         Check("Flash Bulb rank " + r, UloeMarks.LitLevel(far) >= UloeData.FlashLit[r] && UloeMarks.BlindLevel(far) >= UloeData.FlashBlind[r], "Illuminate " + UloeMarks.LitLevel(far) + ", Blind " + UloeMarks.BlindLevel(far));
                     Kill(far);
                     yield return Wait(0.2f);
