@@ -301,6 +301,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   taken (1,192 tildes removed) and the text answers written; what needs code or art is handed to the queued build
   thread (B1-B15), art (A1-A4) and the balance sweep (S1-S2). Docs only. His project-files scope copy and the Scope
   Editor are behind again in 12 files (his word to sync).
+  2026-11-05: synced at his word (project-files scope copy, Scope Editor version 8); Open question 2, Spool's
+  defaults, spelled out as S1-S17 for his answer (`docs/reports/SPOOL_DEFAULTS_2026-11-05.md`).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -1035,7 +1037,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   what it needs, in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §1. Among them: the mode polish's nine readings
   confirmed; MODE-D5 stays; lobby Cardinals lock once a campaign starts; caps of 6 copies and one stock Cardinal kept;
   Spring Tide and Tidal Mend move to the mode's own effects; a teammate's Uloe Light counts up to 4 a building; Yossele's
-  P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open.
+  P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open. Same day, his "sync": the project-files scope copy and the Scope Editor (version 8) brought up to the repository; and
+  question 2 spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`.
 
 ### Open questions
 
@@ -1044,7 +1047,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | # | Question | Default if unanswered |
 | --- | --- | --- |
 | 1 | Scope sheets: the `[Questions]` blocks in `docs/scope/04`, `08`, `09` and `10` | the `~` default each line names |
-| 2 | Spool: the defaults in its `DESIGN.md` (the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are in scope `08` since 2026-11-04: designed, not built) | built without the new upgrades; every default stands |
+| 2 | Spool: the defaults in its `DESIGN.md`, spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`; (the Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are in scope `08` since 2026-11-04: designed, not built) | built without the new upgrades; every default stands |
 | 3 | Spool's balance (`docs/reports/BALANCE_2026-11-03.md` §8): Dart Range 4.5, 6 Crafted a Tin, Stitched 3 and Dart 3.5 Damage, and a "wall with Pin Cushions first" line; then its §9 PC round. The aura baseline leaves them unchanged | numbers as written in scope `08`; nothing changes until he picks |
 | 4 | Mining against the base vessels (`docs/reports/AURA_BASELINE_2026-11-03.md`): P5 Yossele's Sapling Attackspeed 0.25 → 0.15 (scope `07`), P6 its fruit Attackspeed × Damage × 15 → × 5 (his own number), P7 scope `08`'s Loom "Mining: like Smacky's Mining Hut" → what is built; then PC checks M8-M11 | numbers as written in scopes `07` and `08`; nothing changes until he picks |
 | 5 | The defaults in scope `04`, `10`, `11`, `12`, `13`, `14` (`docs/reports/BUILD_2026-11-03.md` §5) | each `~value~` stands |
