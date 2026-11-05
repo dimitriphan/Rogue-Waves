@@ -1,5 +1,8 @@
 # Base game Cardinals split into Trinkets and Cardinals (2026-11-05)
 
+> **Updated the same night (§7):** Dimitri's answers to §5 moved the four companion Cardinals to Trinkets (17 Trinkets,
+> 12 Cardinals) and made a Coin pay its buyer one share. The tables below are as first written.
+
 Dimitri, 2026-11-05 23:27Z: "Some base game cardinals are closer to independent trinkets rather than team Cardinals.
 Check which base game Cardinals can be turned into trinkets and which can only be teamwide, then separate them."
 
@@ -122,3 +125,27 @@ For the next PC round (the gaps build, solo then two players):
    unit drowning fires none. Note the bolt's damage against the unit's level.
 8. A lobby pick of Sport Water: it works for everyone and the shop never offers it; an old save holding Beast Tassle as
    a Cardinal keeps it on the core and in the row (the gaps "Old save" check still passes).
+
+## 7. His answers (2026-11-05 23:51Z) and what changed
+
+Dimitri: "1. Keep that 2. Make Trinket 3. Pay only share". So **17 Trinkets, 12 Cardinals**.
+
+1. **Aura Gavel** stays a Trinket for its buyer's units. No change.
+2. **Torrid Badge, Bendigo, Kippy, Fish Bait are Trinkets** (kind Unit). `RWCardinals.GrantStock` puts the Cardinal's
+   own spawner upgrade (`Entity_Ai_General_Spawnmobs`) on the buyer's vessel, so the unit spawns beside the vessel as its
+   child and is the buyer's (owner follows the parent), with their unit Directions and Trinkets. A vessel that drowns
+   and comes back starts its copied spawner again, so `RWTrinkets.Companions` (host, four times a second) keeps each
+   buyer to one of each unit. When the spawner replaces its unit (Torrid Badge's merchant, Fish Bait's Gabby: 10 s),
+   the newest stays and the older one goes, because its spawner died with the old vessel. When it doesn't (Bendigo's bird,
+   Kippy: 0), the first of the map stays and any later one goes at once, so the vessel's death never brings a new bird
+   (`CompanionsCut` counts them). They are despawned outside the spawn, never inside it.
+3. **A Coin pays its buyer one share**: each sum divided by the players in the campaign, as the game's Coin splits it
+   among the active players. In one-player play that is the whole sum.
+
+Checked: compiled here (release 0/0, SELFTEST 0/1, SELFTEST+GAPS 0/2, with SHOTS 0/2, the same as the base), gaps rule
+"Stock split" now also checks Kippy is kind Unit. Not run on the PC. Add to §6's list:
+
+9. Torrid Badge on Smacky: a merchant spawns beside the vessel, owned by the buyer (its kills credited to them). Drown
+   and respawn: one merchant stands afterwards, not two. Bendigo: one bird a map, even after a respawn. Kippy: one cat;
+   note whether a cat whose vessel drowned keeps working.
+10. Two players, Red Coin held by one: that player's Red rises by 12.5 at the start (25 split by 2), the other's not at all.

@@ -32,7 +32,12 @@
 //   Stock Trinkets (RWCardinals.StockTrinketIds; the rest go on the buyer's things through RWCardinals.Grant and Reach)
 //   the four Coins  the Coin's own numbers paid to the holder alone: its start sum once a map (on the map's first look with
 //                   the Basin up, or at once when bought mid-map), then each break its Tide sum, Add x Tide x (30 / Tides),
-//                   whole-number, as Entity_Ai_Artifact_Coin; the game splits the same sums among the team
+//                   whole-number, as Entity_Ai_Artifact_Coin, split by the players as the game splits it (Dimitri
+//                   2026-11-05: "Pay only share")
+//   Badge, Bendigo, Kippy, Fish Bait  the unit their spawner (on the holder's vessel, RWCardinals.GrantStock) makes is the
+//                   holder's, one at a time: a vessel that drowns and comes back starts its spawner again, so when a second
+//                   one stands the older goes if the spawner replaces its unit (Badge, Fish Bait: the new vessel's is the
+//                   live one), and the newer goes if it doesn't (Bendigo, Kippy: one a map, as the game's on the Basin)
 //   Aura Gavel      one of the holder's own units (a Mob, the vessel too) drowns: the Gavel's bolt flies from it at the
 //                   nearest foe within the Gavel's reach, damage by the unit's level (Damage_Base, Damage2_Base..Damage5_Base)
 // No look of their own yet, as the Directions (pitfall #114).
@@ -69,6 +74,7 @@ public static class RWTrinkets
         public int Spyglass, Knife, Oilcan, Tar, Duck, Plank, Oilskin, Gull;
         public bool Gavel;
         public readonly List<string> Coins = new List<string>();     // the stock Coins held
+        public readonly List<string> Units = new List<string>();     // the companion Trinkets held
         public float GullUntil;
         public Entity_Master Standing;                        // the plank, while it stands
         public Link_Command Button;                           // the vessel's wall button, held at no price while the plank is free
@@ -84,6 +90,8 @@ public static class RWTrinkets
     static readonly Dictionary<Entity_Master, Link_Modifier> whistled = new Dictionary<Entity_Master, Link_Modifier>();
     static readonly List<Entity_Master> corked = new List<Entity_Master>();
     static readonly List<string> coined = new List<string>();      // "<session>|<Coin id>": its start sum is paid on this map
+    static readonly Dictionary<Entity_Master, float> companions = new Dictionary<Entity_Master, float>();   // a holder's unit: first seen
+    static readonly List<string> companionMet = new List<string>();  // "<session>|<being>": one has stood on this map
     static readonly Dictionary<string, float> extra = new Dictionary<string, float> { { RWAny.Extra, 1f } };
     static readonly Entity_Master.Interacts dealt = OnDealt;
     static readonly Entity_Master.Oninteracts taken = OnTaken, basin = OnBasin, whistle = OnWhistled, tarHit = OnTarHit;
@@ -91,7 +99,7 @@ public static class RWTrinkets
     static int spawned, totalWave = -1, total;
     static readonly List<string> rowFoes = new List<string>();   // the beings the Tide's row sends
     public static bool ForceSlide, ForceLast;       // self-test: every hit slides off; a Tide's foes have all come
-    public static int Slid, Ducked, Planked, Storms, Feathered, Corked, Flares, Gavels;
+    public static int Slid, Ducked, Planked, Storms, Feathered, Corked, Flares, Gavels, CompanionsCut;
     public static float TarMended, Flared, CoinPaid;
 
     // A map starts (RWVote.MapStart): the last map's things go, each map's once-a-map uses and planks come back.
@@ -103,6 +111,8 @@ public static class RWTrinkets
         whistled.Clear();
         corked.Clear();
         coined.Clear();
+        companions.Clear();
+        companionMet.Clear();
         totalWave = -1;
         spawned = total = 0;
         rowFoes.Clear();
@@ -118,6 +128,8 @@ public static class RWTrinkets
         k.Gavel = RWCardinals.StockHeld(p, "Gavel").Count > 0;
         k.Coins.Clear();
         k.Coins.AddRange(RWCardinals.StockHeld(p, "Coin"));
+        k.Units.Clear();
+        k.Units.AddRange(RWCardinals.StockHeld(p, "Unit"));
     }
 
     // ---------------------------------------------------------------- every frame (host)
@@ -138,6 +150,7 @@ public static class RWTrinkets
                 Refresh(k, RWRun.For(s));
                 k.Vessel = RWRun.Vessel(s);
                 CoinStart(s, k);
+                Companions(s, k, now);
             }
         }
         if (now >= nextHooks)
@@ -488,7 +501,7 @@ public static class RWTrinkets
         {
             RWPlayer p = RWRun.For(s);
             foreach (string coin in RWCardinals.StockHeld(p, "Coin"))
-                Pay(s, coin, "_Add", wave * factor);
+                Pay(s, coin, "_Add", wave * factor);    // Pay divides by the players
             if (RWCardinals.Held(p, "Oyster") > 0 && !p.Bought)
                 p.Pure += OysterPay;
             if (p.StormLeft > 0 && --p.StormLeft == 0)
@@ -649,9 +662,11 @@ public static class RWTrinkets
         }
     }
 
-    // A Coin's "<aura>" + suffix numbers, times a factor, to one player: with an owner the game doesn't split it (kit docs/15 §14.2).
+    // A Coin's "<aura>" + suffix numbers, times a factor, to one player: their share, the sum divided by the players as the
+    // game's Coin splits it among the active players (with an owner Give doesn't split it itself, kit docs/15 §14.2).
     static void Pay(long s, string coin, string suffix, float times)
     {
+        times /= Mathf.Max(1, RWRun.Sessions().Count);
         List<Link_Resourceset> pay = new List<Link_Resourceset>();
         foreach (string aura in ModKitUtil.Auras)       // "Redaura": the Coin's numbers are "Red" + suffix
         {
@@ -662,6 +677,53 @@ public static class RWTrinkets
             return;
         Helper_Resources.Giveresources(pay, s, Helper_Resources.Styles.Default);
         foreach (Link_Resourceset r in pay) CoinPaid += r.Amount;
+    }
+
+    // A companion holder's units of each kind: one at a time (see the header). Despawned here, never inside the spawn.
+    static void Companions(long s, Kit k, float now)
+    {
+        if (k.Units.Count == 0)
+            return;
+        foreach (string id in k.Units)
+        {
+            float respawn;
+            string being = RWCardinals.CompanionOf(id, out respawn);
+            if (being == "")
+                continue;
+            List<Entity_Master> mine = new List<Entity_Master>();
+            foreach (Entity_Master e in RWAny.Owned("Mob"))
+                if (ModKitUtil.Owner(e) == s && ModKitUtil.BeingName(e) == being && !RWRun.IsCopy(e)) mine.Add(e);
+            string met = s + "|" + being;
+            List<Entity_Master> cut = new List<Entity_Master>();
+            foreach (Entity_Master e in mine)
+                if (!companions.ContainsKey(e))
+                {
+                    companions[e] = now;
+                    // Respawn 0: one a map. A later one goes at once (its spawner won't replace it).
+                    if (respawn <= 0f && companionMet.Contains(met)) cut.Add(e);
+                    else if (!companionMet.Contains(met)) companionMet.Add(met);
+                }
+            foreach (Entity_Master e in cut)
+                Despawn(e);
+            mine.RemoveAll(e => cut.Contains(e) || !ModKitUtil.Alive(e));
+            if (mine.Count < 2)
+                continue;
+            // Two stand: keep the newest when the spawner replaces its unit, else the first.
+            mine.Sort((a, b) => companions[a].CompareTo(companions[b]));
+            Entity_Master keep = respawn > 0f ? mine[mine.Count - 1] : mine[0];
+            foreach (Entity_Master e in mine)
+                if (e != keep) Despawn(e);
+        }
+        if (companions.Count >= 256)
+            foreach (Entity_Master gone in new List<Entity_Master>(companions.Keys)) if (gone == null) companions.Remove(gone);
+    }
+
+    static void Despawn(Entity_Master e)
+    {
+        if (!ModKitUtil.Alive(e))
+            return;
+        Helper_Entitytools.Despawn(e.Beingserver, false, "RogueWaves");
+        CompanionsCut++;
     }
 
     // One of a Gavel holder's units drowned (not a copy, not a foe): its bolt at the nearest foe Mob or tower in reach.

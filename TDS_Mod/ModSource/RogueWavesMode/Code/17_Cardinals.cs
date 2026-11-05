@@ -4,11 +4,11 @@
 //   Cardinal acts on the core, the foes or the clock, for everyone: the upgrade goes on the core with its Artifactobject passed
 //            (nine stock scripts throw without one, RogueLab N3); it shows in the HUD's Cardinal row through the synced lobby
 //            list while the row has room (8 counters, lobby picks included); past that it works and the run line counts it as
-//            "+N Cardinals" (B4, docs/scope/12 "No limit"). Sixteen of the stock Cardinals on sale are ones
+//            "+N Cardinals" (B4, docs/scope/12 "No limit"). Twelve of the stock Cardinals on sale are ones
 //   Trinket  acts on one player's things: the upgrade goes on that player's vessel or on what they build, by the owner hook,
 //            and every held stack shows on the vessel's panel (one that reaches units by a mark with no script, B4). It is
 //            built as a Cardinal is (an Artifactobject and its entry) and keeps its "Cardinal_" id, so a saved campaign
-//            still finds it. Thirteen stock Cardinals are Trinkets too (StockTrinketIds, 2026-11-05): held once by each player
+//            still finds it. Seventeen stock Cardinals are Trinkets too (StockTrinketIds, 2026-11-05): held once by each player
 //            who buys one, as "<Artifact id>1" in their list, never on the core or in the row
 // The shelf has 2 Cardinal slots and a Trinket slot; what a player can't buy more of (6 copies, a stock one once, lobby
 // picks included) leaves it (B3). The lobby's picks are locked once the campaign has played a map, and never one the shop
@@ -76,8 +76,11 @@ public static class RWCardinals
     //   Built  its Voiceapply list on what the buyer builds from a Hero (towers, traps, units), the same way
     //   Coin   RWTrinkets pays the buyer the Coin's own numbers: the whole sum the game splits among the team
     //   Gavel  RWTrinkets fires the Gavel's own bolt when one of the buyer's units drowns
-    // The other sixteen on sale stay Cardinals: they act on the Basin, the foes, the ore or the aura of everyone, or add a unit
-    // or a Basin build that serves the whole team. A campaign saved before 2026-11-05 that holds one of these as a Cardinal
+    //   Unit   its own spawner upgrade (General_Spawnmobs) on the buyer's vessel, so the unit is theirs (owner follows the
+    //          parent) and takes their unit Directions and Trinkets; RWTrinkets.Companions keeps it to one at a time
+    //          (Dimitri 2026-11-05: "Make Trinket")
+    // The other twelve on sale stay Cardinals: they act on the Basin, the foes, the ore or the aura of everyone, or are a Basin
+    // build that serves the whole team. A campaign saved before 2026-11-05 that holds one of these as a Cardinal
     // keeps it on the core (GrantHeld), and no player is offered its Trinket.
     // Each row's place names its panel line, so add a row only at the end.
     static readonly string[][] stockTable =
@@ -85,7 +88,8 @@ public static class RWCardinals
         new[] { "Artifact_Beastpelt", "Hero" }, new[] { "Artifact_Bluecoin", "Coin" }, new[] { "Artifact_Caffeine", "Hero" }, new[] { "Artifact_Diorama", "Hero" },
         new[] { "Artifact_Gavel", "Gavel" }, new[] { "Artifact_Greencoin", "Coin" }, new[] { "Artifact_Paper", "Hero" }, new[] { "Artifact_Redcoin", "Coin" },
         new[] { "Artifact_Rustypipe", "Tower" }, new[] { "Artifact_Slippers", "Hero" }, new[] { "Artifact_Titan", "Tower" }, new[] { "Artifact_Voice", "Built" },
-        new[] { "Artifact_Yellowcoin", "Coin" },
+        new[] { "Artifact_Yellowcoin", "Coin" }, new[] { "Artifact_Badge", "Unit" }, new[] { "Artifact_Bird", "Unit" }, new[] { "Artifact_Kippy", "Unit" },
+        new[] { "Artifact_Fishbait", "Unit" },
     };
     public static readonly string[] StockTrinketIds = Array.ConvertAll(stockTable, r => r[0]);
 
@@ -896,8 +900,33 @@ public static class RWCardinals
         Upgradeproperties mark;
         if (stockMarks.TryGetValue(id, out mark) && !vessel.Upgradelistserver.ContainsKey(mark.Objectname))
             Helper_Entitytools.Upgrade(vessel, mark, Helper_Entitytools.Upgradecheck.Forced, null);
-        if (StockKind(id) == "Hero" && !RWRun.IsCopy(vessel))
+        string kind = StockKind(id);
+        if (kind == "Hero" && !RWRun.IsCopy(vessel))
             Give(vessel, StockEffects(id));
+        else if (kind == "Unit" && !RWRun.IsCopy(vessel))
+        {
+            Artifactobject art = Object(id);
+            if (art != null && art.Coreupgrades != null)
+                foreach (Upgradeproperties up in art.Coreupgrades)
+                    if (up != null && !vessel.Upgradelistserver.ContainsKey(up.Objectname))
+                        Helper_Entitytools.Upgrade(vessel, up, Helper_Entitytools.Upgradecheck.Forced, art);
+        }
+    }
+
+    // A companion Trinket's unit (its spawner's first param: being name -> respawn seconds, 0 for none), or "".
+    public static string CompanionOf(string id, out float respawn)
+    {
+        respawn = 0f;
+        Artifactobject art = StockKind(id) == "Unit" ? Object(id) : null;
+        if (art != null && art.Coreupgrades != null)
+            foreach (Upgradeproperties up in art.Coreupgrades)
+                if (up != null && up.Defaultparams != null)
+                    foreach (KeyValuePair<string, float> p in up.Defaultparams)
+                    {
+                        respawn = p.Value;
+                        return p.Key;
+                    }
+        return "";
     }
 
     // The sheet a held id ("Cardinal_<Name><n>") is a stack of: the name and then digits only, so one name that starts another

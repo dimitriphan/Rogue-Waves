@@ -271,9 +271,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
   pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
   Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-05: base game Cardinals split** (Dimitri: "separate them"): 13 of the 29 sold are Trinkets, held once per buyer
-  (`docs/reports/STOCK_TRINKETS_2026-11-05.md`; §5 three questions, §6 the PC list); scope `12` lists them as defaults.
-  Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-05: base game Cardinals split** (Dimitri: "separate them", then "Make Trinket", "Pay only share"): 17 of the
+  29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
+  §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1124,6 +1124,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   gaps rules "Stock split" x2; a lobby pick or a pre-split save's Cardinal keeps the game's team-wide one. Scope `12`:
   the list as `~defaults~`. Compiled here (release, self-test, gaps, shots: 0 errors), not run on the PC (report §6 =
   next round's list; §5 three questions: Gavel, companions, Coin's sum). No kit change, no pitfall: kit 1.15, #172.
+- **2026-11-05: his answers on the split** (Dimitri 23:51Z: "1. Keep that 2. Make Trinket 3. Pay only share"). Aura
+  Gavel stays a Trinket; Torrid Badge, Bendigo, Kippy and Fish Bait become Trinkets of kind Unit (their stock spawner on
+  the buyer's vessel; `RWTrinkets.Companions` keeps one of each per buyer after a respawn: newest when the spawner
+  replaces, first of the map when it doesn't); a Coin pays its buyer the sum divided by the players. 17 Trinkets, 12
+  Cardinals. Report §7, scope `12` (list still `~defaults~` but his three answers). Compiled here (0 errors), not run on the PC. No kit, no pitfall.
 
 ### Decisions
 
@@ -1304,8 +1309,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open. Same day, his "sync": the project-files scope copy and the Scope Editor (version 8) brought up to the repository; and
   question 2 spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`.
 - 2026-11-05 (Dimitri, "Check which base game Cardinals can be turned into trinkets and which can only be teamwide, then
-  separate them"): 13 stock Cardinals on sale are Trinkets, held once by each buyer (list a `~default~` in scope `12`;
-  `docs/reports/STOCK_TRINKETS_2026-11-05.md`, §5 asks about Aura Gavel, the companions and the Coin's sum).
+  separate them"; 23:51Z "Keep that, Make Trinket, Pay only share"): 17 stock Cardinals on sale are Trinkets, held once
+  by each buyer (Aura Gavel and the four companions included; a Coin pays one share); 12 stay Cardinals. Scope `12`,
+  `docs/reports/STOCK_TRINKETS_2026-11-05.md` §7.
 
 ### Open questions
 

@@ -1,5 +1,12 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): his answers on the split (compiled, not yet run in game)
+
+Dimitri: "Keep that, Make Trinket, Pay only share" (`docs/reports/STOCK_TRINKETS_2026-11-05.md` §7). Kind Unit (Torrid
+Badge, Bendigo, Kippy, Fish Bait): `GrantStock` puts the stock spawner upgrade on the buyer's vessel (Artifactobject
+passed); `RWTrinkets.Companions` keeps one of each unit per buyer (spawner replaces: newest stays; respawn 0: first of
+the map stays), despawning outside the spawn. `RWTrinkets.Pay` divides a Coin's sums by `RWRun.Sessions().Count`.
+
 ## 0.1.0-dev, later (2026-11-05): base game Cardinals split into Trinkets (compiled, not yet run in game)
 
 Dimitri: "separate them" (`docs/reports/STOCK_TRINKETS_2026-11-05.md`). `RWCardinals.StockTrinketIds` lists the 13 stock
