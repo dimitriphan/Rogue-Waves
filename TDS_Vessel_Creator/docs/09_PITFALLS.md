@@ -614,3 +614,13 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      HUD, the tile numbers or the mode's own line (Light_round1: pictures 3-16) → read nothing into a missing HUD in a
      picture; for pictures that need it, raise `Game_Ui.Instance.Idlethreshold` (public) for the test and put it back.
      Seen in game (PC, 2026-11-05); the cause read from code.
+171. **A tower's max Health reads 0 while it stands, and a +10 shows as 0.0375** (2026-11-05) → `Value_Calc` is
+     `(ΣBase × ΣPmulti + ΣAdd) × ΣMulti`, clamped to the stat's data `Limits` (`Link_Stats.Value_Bounds`; `17` §2.1), and two
+     stock Cardinals shrink it: Frail Titan's `Health_Pmulti` (on every tower spawned after it, `Towerapply`) can push the
+     base part below 0, and Paper Tower's `Health_Multi` scales the whole sum on the first `Towerfighter` child spawned after
+     it, a forced test spawn too (`Parent.Child`, Entity_Master.cs:333-336). The mode's self-test built its Spring Tide
+     archer right after buying every stock Cardinal and read 0 -> 0.0375 over a Tide of +10 Add; that, and the stock
+     Beacon's 0.0375 -> 0.1375 of 4 Nov, fit a base part of -6.25, `Multi` 0.01 and a floor of 0 → measure a Health bonus
+     on a tower placed before any Cardinal is bought (`96_Flow.cs` `PlaceArcher`), or in the stat's buckets (`Value_Add`)
+     and on the modifier, never by the size of `Value_Calc` on a tower that may hold them. The formula, the clamp and both
+     scripts read from code; the numbers fitted to two PC readings, not yet confirmed (the next round logs the parts).

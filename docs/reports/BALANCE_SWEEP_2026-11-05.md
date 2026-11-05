@@ -284,8 +284,9 @@ stock Beacon effect Spring Tide rode on gives the tower `Resistadd` 1, which doe
 comes on (a Shield wall or Shared Strength) every hit divides by 1 + `Resistadd` (kit pitfall #159). Answer 14 rebuilt
 Spring Tide and Tidal Mend on the mode's own effects in PR #103 (B7), and `RogueWavesMode/Code/96_Flow.cs` checks "the
 gain is the mode's own, with no Resistadd on the tower". Nothing to tune here. The weather round of the same day
-(`LIGHTING_2026-11-05.md` §6) ran that check on the PC for the first time and B7's Tide gain failed (0 to 0.0375 where 10
-is asked): that is a code fix, handed to a thread of its own, not a balance number.
+(`LIGHTING_2026-11-05.md` §6) ran that check on the PC for the first time and it failed (0 to 0.0375 where 10 is asked);
+PR #122 traced that to the test's tower, built after Frail Titan and Paper Tower (kit pitfall #171), and now measures on
+a plain archer. Not a balance number either way.
 
 ## 6. The weather's pay
 
@@ -359,4 +360,4 @@ Nothing here needs an answer before the next PC round; each is a default he can 
 - Argo on a map 5 by hand: if it plays easy, Argo's numbers (scope `09`) are next.
 - The shelf's prices on both machines after a stock Cardinal is bought (the self-test checks the host).
 - Spool on one Pin Cushion: Stitched and Dart damage on the panel, 6 Crafted a Tin, the Loom's pace.
-- Spring Tide by a Fie wall (§5), once its own thread has fixed B7's gain.
+- Spring Tide by a Fie wall (§5), with PR #122's plain-archer lines.

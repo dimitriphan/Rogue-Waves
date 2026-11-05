@@ -131,6 +131,39 @@ public static partial class RWTest
         return t.name + (r != null ? "(" + RWUtil.F(r.anchoredPosition.x) + "," + RWUtil.F(r.anchoredPosition.y) + ")" : "");
     }
 
+    // A Smacky archer of the vessel's on the first free tile 2 to 7 from it, spawned as its child the way a build is; null if none fits.
+    static Entity_Master PlaceArcher(Entity_Master vessel)
+    {
+        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
+        if (archer == null || vessel == null) return null;
+        foreach (Genitem g in RWUtil.Ground())
+        {
+            float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
+            if (d < 2f || d > 7f) continue;
+            bool ok = false;
+            try { ok = Helper_Gridtools.Checkifplaceable(g, archer, 0, vessel.Entitydata.Value.Team); } catch (Exception) { }
+            if (!ok) continue;
+            Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(vessel.Beingserver);
+            spawn.Being = archer;
+            spawn.Genadd = g;
+            spawn.Skin = "";
+            spawn.Spawnstyle = Link_Spawn.Spawnstyles.Forced;
+            Link_Being made = Helper_Entitytools.Spawn(spawn, g.Position, vessel.Beingserver, true, null);
+            return made != null ? made.Worldobject : null;
+        }
+        return null;
+    }
+
+    // A thing's Health buckets, which Value_Calc sums as (base x Pmulti + Add) x Multi within its floor (kit docs/17 §2.1), and its
+    // Cardinals' effect upgrades.
+    static string HealthParts(Entity_Master m)
+    {
+        Link_Stats s;
+        if (m == null || m.Statsserver == null || !m.Statsserver.TryGetValue("Health", out s)) return "no Health";
+        return "max " + s.Value_Calc + " = (base " + s.Value_Base + " x Pmulti " + s.Value_Pmulti + " + Add " + s.Value_Add + ") x Multi " + s.Value_Multi + ", floor " + s.Value_Bounds.x
+            + "; Cardinal effects [" + (m.Upgradelistserver != null ? string.Join(",", new List<string>(m.Upgradelistserver.Keys).FindAll(k => k.Contains("Artifact")).ToArray()) : "") + "]";
+    }
+
     // Runs the current Tide table entries out until Tide 'wave' has started, then its foes are cleared and its break is up.
     static IEnumerator ToBreakAfter(int wave) { return ToBreakAfter(wave, false); }
 
@@ -454,6 +487,10 @@ public static partial class RWTest
         yield return SmoothInMap();
         yield break;
 #endif
+        // Spring Tide's tower, placed before this map's first Cardinal: Frail Titan reaches only towers spawned after it and Paper
+        // Tower only the first one after it, and the archer built below gets both (pitfall #171).
+        Entity_Master plain = PlaceArcher(RWRun.Vessel(me));
+        yield return new WaitForSeconds(0.5f);
         RWShop.Open("Shop");
         yield return WaitDialog(5f);
         List<string> shelf = CardNames();
@@ -507,31 +544,7 @@ public static partial class RWTest
                 }
         yield return new WaitForSeconds(1f);
         bad = errors;
-        Beingobject archer = ModKitUtil.Load<Beingobject>("Mob", "Tower_Smackyarcher");
-        Entity_Master built = null;
-        if (archer != null && vessel != null)
-        {
-            Link_Being probe = new Link_Being { Being = archer, Entity = archer.Entity, Block = archer.Block, Team = vessel.Entitydata.Value.Team };
-            Genitem tile = null;
-            foreach (Genitem g in RWUtil.Ground())
-            {
-                float d = ModKitUtil.Flat(g.Position, vessel.Entityposition.Value);
-                if (d < 2f || d > 7f) continue;
-                bool ok = false;
-                try { ok = Helper_Gridtools.Checkifplaceable(g, archer, 0, vessel.Entitydata.Value.Team); } catch (Exception) { }
-                if (ok) { tile = g; break; }
-            }
-            if (tile != null)
-            {
-                Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(vessel.Beingserver);
-                spawn.Being = archer;
-                spawn.Genadd = tile;
-                spawn.Skin = "";
-                spawn.Spawnstyle = Link_Spawn.Spawnstyles.Forced;
-                Link_Being made = Helper_Entitytools.Spawn(spawn, tile.Position, vessel.Beingserver, true, null);
-                built = made != null ? made.Worldobject : null;
-            }
-        }
+        Entity_Master built = PlaceArcher(vessel);
         yield return new WaitForSeconds(1f);
         if (built == null) Setup("Directions reach a player's buildings", "no tower could be placed");
         else
@@ -600,7 +613,11 @@ public static partial class RWTest
             Check("Made of Tougher Stuff softens a hit on a player's minion", RWHits.Softened == soft0 + 1 && saw && multi <= 1f - RWDirections.TougherResist[3] + 0.001f, "softened " + (RWHits.Softened - soft0) + ", multi " + multi);
             Helper_Entitytools.Despawn(minion.Beingserver, false, "RogueWaves");
         }
-        float tower0 = built != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
+        // Spring Tide is measured on the plain archer. Until 2026-11-05 it was 'built', which reads 0 -> 0.0375 over a Tide (PC,
+        // Light_round1): the first Towerfighter built after every stock Cardinal, so Paper Tower's Health Multi and Frail Titan's
+        // Pmulti are on it; its parts are logged so the next round sees them (pitfall #171, fitted, not yet confirmed).
+        float tower0 = ModKitUtil.MaxHealth(plain), spring0 = RWDirections.SpringOn(plain);
+        Info("Spring Tide: the archer built after the Cardinals, before the Tide", HealthParts(built));
 
         // The board: this break's objective.
         RWObjectives.Active = null;
@@ -629,11 +646,18 @@ public static partial class RWTest
         Check("Pure Aura: Tide 1 pays 3", player.Pure == paid0 + RWRun.PerTide + (RWWeather.Current != RWChart.Calm ? RWWeather.PureAuraPerTide : 0) + (RWObjectives.Outcome.EndsWith("done") ? taken.Pays : 0), paid0 + " -> " + player.Pure + ", weather " + RWWeather.Current + ", objective " + RWObjectives.Outcome);
         Check("VENDCINT lands again in the break", RWShop.Stand != null && RWShop.Landed >= 2, "landed " + RWShop.Landed);
         Check("a new objective is posted", RWObjectives.Posted != null, RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-");
-        float tower1 = built != null && built.Beingserver != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
-        Check("Spring Tide: the tower gained health in the Tide", tower0 > 0f && tower1 > tower0, tower0 + " -> " + tower1);
-        // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
-        Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", tower0 > 0f && Mathf.Abs(tower1 - tower0 - RWDirections.SpringHealth[3]) < 0.05f && built != null && !built.Statsserver.ContainsKey("Resistadd"),
-            tower0 + " -> " + tower1 + (built != null && built.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + built.Statsserver["Resistadd"].Value_Calc : ""));
+        Info("Spring Tide: the archer built after the Cardinals, after the Tide", HealthParts(built));
+        bool standing = ModKitUtil.Alive(plain);
+        float tower1 = standing ? ModKitUtil.MaxHealth(plain) : 0f, spring1 = RWDirections.SpringOn(plain);
+        string springSeen = "max " + tower0 + " -> " + tower1 + ", its modifier " + spring0 + " -> " + spring1 + (plain == null ? "; no tower placed" : standing ? "; " + HealthParts(plain) : "; the tower is gone");
+        if (plain == null) Setup("Spring Tide: the tower gained health in the Tide", "no tower could be placed before the shop");
+        else
+        {
+            Check("Spring Tide: the tower gained health in the Tide", standing && Mathf.Abs(tower1 - tower0 - RWDirections.SpringHealth[3]) < 0.05f, springSeen);
+            // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
+            Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", standing && Mathf.Abs(spring1 - spring0 - RWDirections.SpringHealth[3]) < 0.05f && !plain.Statsserver.ContainsKey("Resistadd"),
+                springSeen + (plain.Statsserver != null && plain.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + plain.Statsserver["Resistadd"].Value_Calc : ""));
+        }
         Info("objective", taken.Display + ": " + RWObjectives.Outcome);
         yield return Snap("break_after_tide1");
 
@@ -660,6 +684,16 @@ public static partial class RWTest
                 yield return new WaitForSeconds(0.5f);
                 Check("Objective " + goal.Display + " done pays everyone in full", RWObjectives.Outcome == goal.Name + " done" && player.Pure >= pureGoal + goal.Pays, "outcome '" + RWObjectives.Outcome + "', Pure " + pureGoal + " -> " + player.Pure);
                 if (goal.Name == "Nest") Check("A razed nest's Tide hook goes with it, so the Tides run on", RWWeather.HooksDropped > 0, RWWeather.HooksDropped + " dropped");
+            }
+            // Spring Tide's second Tide raises the same modifier (its Value_Add setter has the engine recount the stat).
+            if (w == 2)
+            {
+                const string springAgain = "Spring Tide: a second Tide raises the same modifier";
+                bool up = ModKitUtil.Alive(plain);
+                float tower2 = up ? ModKitUtil.MaxHealth(plain) : 0f, spring2 = RWDirections.SpringOn(plain);
+                if (plain == null) Setup(springAgain, "no tower could be placed before the shop");
+                else Check(springAgain, up && Mathf.Abs(tower2 - tower1 - RWDirections.SpringHealth[3]) < 0.05f && Mathf.Abs(spring2 - spring1 - RWDirections.SpringHealth[3]) < 0.05f,
+                    "max " + tower1 + " -> " + tower2 + ", its modifier " + spring1 + " -> " + spring2 + (up ? "" : "; the tower is gone"));
             }
         }
         Info("Tides 2-15", RWUtil.F(Time.realtimeSinceStartup - clock) + " s");
