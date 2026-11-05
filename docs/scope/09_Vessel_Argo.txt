@@ -7,7 +7,7 @@
 		# Sturdy, slow melee vessel whose swings hit two enemies at once. No ability button. /~ No sonar \
 		! NEEDS BALANCE PASS / Yours, whenever you get to it \ !
 		/~ Laid out in the Vessel template, 15_Templates.txt. Every value is what the built Argo 2.0 uses; you took them as defaults, and they still wait on your balance pass \
-		/~ Reviewed 2026-11-04 (docs/reports/ARGO_REVIEW_2026-11-04.md): every line the review changed ends with a "Review 2026-11-04: was ..." note, and is not built yet \
+		/~ Reviewed 2026-11-04 (docs/reports/ARGO_REVIEW_2026-11-04.md): every line the review changed ends with a "Review 2026-11-04: was ..." note; all of them are built (2026-11-05, compiled, not yet run in game) \
 
 		[Identity]
 			- Title: Deep Sea Diver
@@ -33,14 +33,14 @@
 			- Sell rate: 50%
 			- Second hit: every swing also hits a second foe within 1.25 tiles of the first, for 60% damage
 			- Special rule: {Fathoms} Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never traps
-			- Slows: one slow per source on a foe, renewed while it lasts, never stacked with itself; slows from different sources add up, down to 10% of a foe's speed /~ Review 2026-11-04: the code stacks Deep Water's and the Tremor's own re-ticks, so a 30% pool slows 60%. This line asks the next build to fix it \
+			- Slows: one slow per source on a foe, renewed while it lasts, never stacked with itself; slows from different sources add up, down to 10% of a foe's speed /~ Review 2026-11-04: the code stacks Deep Water's and the Tremor's own re-ticks, so a 30% pool slows 60%. Built 2026-11-05 \
 			- Pins: Anchor Line, Kelp Bed, Trench and Mantle Tap pin; a pinned foe is held in place, twice as long in Deep Water /~ Review 2026-11-04: Kelp Bed and Trench held foes without pinning them, so Salt Sting, Bedrock and the Scatter Cannon's pin bonus had almost nothing to read \
 
 		(Offense 1):{Scatter Cannon}
 			- Shoots close range blasts that are effective against hordes /~ A cone of 6 pellets \
 			- Deals bonus damage to enemies affected by debuffs /~ +50% to slowed enemies, +100% to pinned ones \
 			[Stats]
-				- In-game line: Short range, sprays a cone of pellets, hits slowed foes harder and pinned foes much harder /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+				- In-game line: Short range, sprays a cone of pellets, hits slowed foes harder and pinned foes much harder /~ Review 2026-11-04: a new line, built 2026-11-05 \
 				- Health: 40, +25 per level
 				- Damage: 1.25 per pellet, +0.25 per level
 				- Attack speed: 0.6
@@ -56,7 +56,7 @@
 					- Numbers: +2 pellets; cone +10 degrees /~ Review 2026-11-04: was cone +25. A 75 degree cone sends more pellets off a lane than the two new ones add, so Wide Bore cost a Scatter 20% of its hits on a single lane \
 					- Cost: Red 30
 				% 1:{Double Barrel} Loads extra volleys while idle, and fires them all at once
-					- In-game line: Loads extra volleys while idle, and fires them all at once /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- In-game line: Loads extra volleys while idle, and fires them all at once /~ Review 2026-11-04: a new line, built 2026-11-05 \
 					- Numbers: stores a volley every 2 seconds while no foe is in range, up to 3 /~ Review 2026-11-04: was 1 volley, about one extra volley a Tide. Three make it the opener for a Scatter placed behind the water \
 					- Cost: Red 30
 
@@ -173,7 +173,7 @@
 					- Cost: Blue 25
 
 				% 2:{Kelp Bed} Catch enemies on entering
-					- In-game line: Foes are pinned for a moment on entering /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- In-game line: Foes are pinned for a moment on entering /~ Review 2026-11-04: a new line, built 2026-11-05 \
 					- Numbers: pins a foe 0.5 seconds as it wades in, so 1 second in the water /~ Review 2026-11-04: was a 0.75 second hold that did not count as a pin \
 					- Cost: Blue 80
 				% 2:{Salt Sting} Brine stings pinned foes harder
@@ -183,7 +183,7 @@
 					- Cost: Blue 70 + Red 30
 
 				% 3:{Abyss} FLOOD fills two tiles at once
-					- In-game line: FLOOD fills two tiles at once, and the water runs deeper /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- In-game line: FLOOD fills two tiles at once, and the water runs deeper /~ Review 2026-11-04: a new line, built 2026-11-05 \
 					- Numbers: FLOOD adds a second pool for free; slow +10% /~ Review 2026-11-04: the slow is new. A free pool saves Blue 15, so Abyss alone paid back after 17 FLOODs \
 					- Leads to: nothing, the branch ends here
 					- Cost: Blue 260
@@ -193,7 +193,7 @@
 					- Cost: Blue 300
 
 				% 4:{Trench} Final upgrade that spreads the water each tide and drags enemies under
-					- In-game line: Spreads by itself each Tide, and drags foes under again and again /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- In-game line: Spreads by itself each Tide, and drags foes under again and again /~ Review 2026-11-04: a new line, built 2026-11-05 \
 					- Numbers: two free pools each Tide; every 3 seconds a foe inside is pinned 1 second, so 2 seconds in the water /~ Review 2026-11-04: was one pool and a 1 second hold every 6 seconds, for Blue 3000 \
 					- Cost: Blue 3000
 
@@ -235,7 +235,7 @@
 					- Cost: Yellow 80 + Red 30 /~ Review 2026-11-04: was Blue 80 + Red 30 \
 
 				% 3:{Gusher} Once it is deep enough, a gush of ore bursts up at each Tide
-					- In-game line: Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- In-game line: Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is /~ Review 2026-11-04: a new line, built 2026-11-05 \
 					- Numbers: 4 mining strikes per Fathom at once, each Tide; from Fathom 3 down /~ Review 2026-11-04: was 12 strikes, 12 aura a Tide on a Red node, 23 Tides to pay back Yellow 275. Now 20 at Fathom 5, 28 at Fathom 7 \
 					- Cost: Yellow 275
 				% 3:{Fault Line} Pulling enemies through tremors cause them to take large burst damage
@@ -245,7 +245,7 @@
 					- Cost: Yellow 300 /~ Review 2026-11-04: was Blue 300 \
 
 				% 4:{Mantle Tap} Mines much faster, and its quakes pin every foe in its Tremor
-					- In-game line: Mines much faster, and every few seconds a quake pins every foe in its Tremor /~ Review 2026-11-04: a new line; the build still shows the earlier one until this change is built \
+					- In-game line: Mines much faster, and every few seconds a quake pins every foe in its Tremor /~ Review 2026-11-04: a new line, built 2026-11-05 \
 					- Numbers: strikes per second x1.5; every 20 seconds a quake pins foes for 2 seconds /~ Review 2026-11-04: was ore per strike x2, which mines nothing more (a strike is already a full share from Fathom 3), and one quake a Tide \
 					- Cost: Yellow 3000
 

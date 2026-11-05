@@ -345,6 +345,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   longer goes to its TARGET pin (pitfall #162); MODEA-3 the host keeps the boat's lead; YOS-3 fruit for players only;
   MODE-A3 the Basin is the main core on Artrio; MODEB-7 no VENDCINT mid-Tide. Pitfalls #162-#163. Compiled here (every
   part, release and test builds, 0 errors; editors clean), not run on the PC; the PC list is in the PR.
+  2026-11-05, part 2: Argo's review of 2026-11-04 built (scope `09`, `ARGO_REVIEW_2026-11-04.md` §5, all fourteen):
+  Kelp Bed and Trench pin, the Scatter's +100% on a pinned foe, Wide Bore, Double Barrel's three, Abyss, Trench, Gusher a
+  Fathom, Mantle Tap's speed and 20 s quake, Yellow prices for the Drill's control path, the Base Blue 20 + Yellow 15.
+  Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

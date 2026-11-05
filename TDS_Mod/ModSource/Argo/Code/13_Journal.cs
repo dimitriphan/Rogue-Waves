@@ -22,7 +22,7 @@ public static class ArgoJournal
             { "Root", "Hold" }, { "Whaler", "Full Bonus At Health" }, { "Twin", "Second Harpoon After" },
             { "Lance", "Lance Every" }, { "Nautspeed", "Naut Speed" }, { "Repair", "Repair" }, { "Tunerange", "Tuned Range" },
             { "Bulkhead", "Damage Taken Cut" }, { "Divebell", "Dive" }, { "Tuneboost", "Tuning Boost" }, { "Fathommax", "Deepest Fathom" }, { "Tremor", "Tremor Radius" },
-            { "Gusher", "Gusher Strikes" }, { "Mantle", "Quake Pin" }, { "Debuffbonus", "Bonus vs Slowed or Pinned" },
+            { "Gusher", "Gusher Strikes" }, { "Mantle", "Quake Pin" }, { "Debuffbonus", "Bonus vs Slowed" }, { "Pinbonus", "Bonus vs Pinned" },
             { "Tetherslow", "Tether Slow" }, { "Pinstun", "Stun Beside Buildings" }, { "Reel", "Reel" }, { "Undertow", "Undertow" },
             { "Brine", "Brine" }, { "Catch", "Kelp Hold" }, { "Brinepinned", "Brine on Pinned" }, { "Flood", "Extra Pools" },
             { "Damagetaken", "Damage Taken" }, { "Spread_Per", "Pools Per Tide" }, { "Dragunder", "Drag Under" }, { "Bedrock", "Bedrock Damage" },

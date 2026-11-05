@@ -37,18 +37,19 @@ ninth PC self-test (103/103).
 - **Special rule** ("Fathoms"): "Swings hit two enemies, no walls of its own, Scatter Cannons punish slowed and pinned
   foes, Drill Rigs sink a Fathom each Tide and their aimed Tremors widen, the crew tunes towers, never
   traps."
-- **Debuffs the kit applies** (the Scatter's bonus reads either): Slowed (Deep Water, Tremor, Barnacle Shot, Tether),
-  Pinned (Anchor Line, Mantle Tap's quake).
+- **Debuffs the kit applies** (the Scatter's bonus reads either, +50% slowed, +100% pinned): Slowed (Deep Water, Tremor,
+  Barnacle Shot, Tether; one slow a source on a foe, renewed), Pinned (Anchor Line, Kelp Bed, Trench, Mantle Tap's quake;
+  review 2026-11-04).
 
 ## Buildables (five, as the scope lists; see Changes)
 
 | # | Name | Id | Role tag | Template | Cost | Stats (+per level) | What it does |
 |---|---|---|---|---|---|---|---|
-| 1 | Scatter Cannon | `Tower_Argoscatter` | Towerfighter | Bomb Tower | Red 30 | Health 40+25, Damage 1.25+0.25, Attackspeed 0.6, Range 4.5, Projcount 6, Spread 50, Pierce 1, **Debuffbonus 0.5** | Sprays a cone of 6 pellets, shreds a crowd up close; **+50% damage to a debuffed foe** (new) |
+| 1 | Scatter Cannon | `Tower_Argoscatter` | Towerfighter | Bomb Tower | Red 30 | Health 40+25, Damage 1.25+0.25, Attackspeed 0.6, Range 4.5, Projcount 6, Spread 50, Pierce 1, **Debuffbonus 0.5, Pinbonus 1** | Sprays a cone of 6 pellets, shreds a crowd up close; **+50% damage to a slowed foe, +100% to a pinned one** (new; split by the review of 2026-11-04) |
 | 2 | Harpoon Gun | `Tower_Argoharpoon` | Towerfighter | Archer Tower | Red 35 | Health 40+25, Damage 5+2, Attackspeed 0.35, Range 6.5, Projspeed 18, Pierce 3 | Slow, long-range harpoons that pierce a lane. **Its tree picks the job:** pure damage (Long Line, Skewer, Whaler, Leviathan Lance) or crowd control (Tether, Anchor Line's pin, Reel, Undertow). The base gun no longer reels (1.4.0 did) |
 | 3 | Deep Water | `Trap_Argowater` | Trap | Buster's Speed Pad block | Blue 20 | Health 30+15, Slow 0.3+0.05 | **New.** Walk-through pool; foes inside are Slowed. **FLOOD** (keys 1/Quickaction, like Fie's Grow Wall) adds an adjacent pool for Blue 15. Combines: a pinned foe in Deep Water is held twice as long; a Tremor touching a pool spreads through every pool connected to it |
 | 4 | Drill Rig | `Tower_Argodrill` | Gatherer | Archer Tower | Yellow 35 | Health 40+25, Damage 0.5 (mining), Attackspeed 0.25, Range 5 (aim), Tremor 2, Slow 0.2 | Mines ore up to 2 tiles away and sinks a Fathom each Tide (to 5): faster mining, a wider (+0.4 tiles) and stronger (+4%) Tremor. **AIM** (picker, within 5 tiles) **places the Tremor** where the player wants it (new; 1.4.0's ringed the drill) |
-| 5 | Miner's Base | `Tower_Argobell` (1.4.0's id, kept) | none | Mining Hut | Blue 35 | Health 50+25, Units 2, Respawn 8 | 1.4.0's Diving Bell, renamed. **Limit 1** (new: its build button goes while one stands, Boutman's Bouthouse pattern). Houses **Port** and **Starboard**: PORT or STARBOARD, then click a tower (a teammate's too) and that Naut walks over and **tunes** it, +20% attack speed and a slow repair. **Towers only, never traps** (new) |
+| 5 | Miner's Base | `Tower_Argobell` (1.4.0's id, kept) | none | Mining Hut | Blue 20 + Yellow 15 (review 2026-11-04; was Blue 35) | Health 50+25, Units 2, Respawn 8 | 1.4.0's Diving Bell, renamed. **Limit 1** (new: its build button goes while one stands, Boutman's Bouthouse pattern). Houses **Port** and **Starboard**: PORT or STARBOARD, then click a tower (a teammate's too) and that Naut walks over and **tunes** it, +20% attack speed and a slow repair. **Towers only, never traps** (new) |
 
 Units: `Mob_Argonaut_Port`, `Mob_Argonaut_Starboard` (and `Mob_Argonaut_Bosun` from Third Mate), as in 1.4.0.
 
@@ -70,6 +71,8 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 
 | Building | Upgrade | Status | Desc | Params | Cost | Next |
 |---|---|---|---|---|---|---|
+| Scatter | Wide Bore2 | **changed** (review 2026-11-04): cone +10, was +25 | A wider cone with two more pellets | Projcount_Add 2, Spread_Add 10 | Red 30 | Grapeshot3, Barnacle Shot3 |
+| Scatter | Double Barrel2 | **changed** (review 2026-11-04): up to 3 volleys, was 1 | Loads extra volleys while idle, and fires them all at once | Double_Base 3, Double_Every 2 (a volley every 2 s with nothing in range) | Red 30 | Barnacle Shot3, Grapeshot3 |
 | Scatter | Ironclad4 | **new** (scope: "increases health greatly"), replaces Undertow4 | Health greatly increased | Health_Multi 1.5 (health ×2.5), Healtharmor_Base 2 (the game's armour: each hit, whatever its damage, takes its Damagemulti, 1 by default, from it first) | Red 250, Blue 150 | (ends) |
 | Harpoon | Tether2 | **new**, replaces Barbed2 | Harpooned foes are slowed | Tetherslow_Base 0.3, Tetherslow_Duration 2 | Red 30 | Anchor Line3, Reel3 |
 | Harpoon | Anchor Line3 | **changed**: pins the foe hit, stunned instead beside a building | Pins the foe it hits, stunned against a building | Root_Base 1, Pinstun_Base 1 | Red 60, Blue 50 | (ends) |
@@ -78,14 +81,16 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 | Harpoon | Undertow5 | **new** CC capstone | Every harpoon reels the foes around its target | Undertow_Radius 1.5, Undertow_Tiles 1.5 | Red 1750, Blue 1750 | |
 | Deep Water | Undercurrent2 | **new** | Stronger slow | Slow_Add 0.1 | Blue 20 | Kelp Bed3, Salt Sting3 |
 | Deep Water | Brine2 | **new** | Foes inside take damage over time | Brine_Damage 0.5 | Blue 25 | Salt Sting3 |
-| Deep Water | Kelp Bed3 | **new** | Foes are caught for a moment on entering | Catch_Duration 0.75 | Blue 80 | Abyss4, Crushing Depth4 |
+| Deep Water | Kelp Bed3 | **new**; a pin since the review of 2026-11-04 | Foes are pinned for a moment on entering | Catch_Duration 0.5 (a pin, so 1 s in the water) | Blue 80 | Abyss4, Crushing Depth4 |
 | Deep Water | Salt Sting3 | **new** | Brine stings pinned foes harder | Brinepinned_Multi 1 (without Brine, its sting is on a default 0.5 a second) | Blue 70, Red 30 | Crushing Depth4 |
-| Deep Water | Abyss4 | **new** | FLOOD fills two tiles at once | Flood_Add 1 | Blue 260 | (ends) |
+| Deep Water | Abyss4 | **new**; slow added by the review of 2026-11-04 | FLOOD fills two tiles at once, and the water runs deeper | Flood_Add 1, Slow_Add 0.1 | Blue 260 | (ends) |
 | Deep Water | Crushing Depth4 | **new** | Foes inside take more damage | Damagetaken_Multi 0.15 | Blue 300 | Trench5 |
-| Deep Water | Trench5 | **new** | Spreads by itself each Tide, and drags foes under now and then | Spread_Per_Tide 1, Dragunder_Every 6, Dragunder_Duration 1 | Blue 3000 | |
-| Drill Rig | Bedrock3 | **new** (scope), replaces Aftershock3 | Pinned foes in its Tremor take damage over time | Bedrock_Damage 1.5 | Blue 80, Red 30 | Fault Line4 |
-| Drill Rig | Fault Line4 | **changed** (scope): was +1.5 tiles | Foes reeled through its Tremor take a burst of damage | Fault_Damage 12 | Blue 300 | (ends) |
-| Drill Rig | Seismic2 | **changed**: reach in the Tremor stat | The Tremor slows harder and reaches farther | Slow_Add 0.1, Tremor_Add 0.5 | Blue 25, Yellow 10 | Bedrock3 |
+| Deep Water | Trench5 | **new**; changed by the review of 2026-11-04 | Spreads by itself each Tide, and drags foes under again and again | Spread_Per_Tide 2, Dragunder_Every 3, Dragunder_Duration 1 (a pin, so 2 s in the water) | Blue 3000 | |
+| Drill Rig | Bedrock3 | **new** (scope), replaces Aftershock3 | Pinned foes in its Tremor take damage over time | Bedrock_Damage 1.5 | Yellow 80, Red 30 (review 2026-11-04; was Blue 80) | Fault Line4 |
+| Drill Rig | Fault Line4 | **changed** (scope): was +1.5 tiles | Foes reeled through its Tremor take a burst of damage | Fault_Damage 12 | Yellow 300 (review 2026-11-04; was Blue 300) | (ends) |
+| Drill Rig | Seismic2 | **changed**: reach in the Tremor stat | The Tremor slows harder and reaches farther | Slow_Add 0.1, Tremor_Add 0.5 | Yellow 35 (review 2026-11-04; was Blue 25, Yellow 10) | Bedrock3 |
+| Drill Rig | Gusher4 | **changed** (review 2026-11-04): grows with the Fathom, was 12 strikes | Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is | Gusher_Base 4 (strikes a Fathom, from Fathom 3) | Yellow 275 | Mantle Tap5 |
+| Drill Rig | Mantle Tap5 | **changed** (review 2026-11-04): was ore x2 (it mined nothing more) and a quake a Tide | Mines much faster, and every few seconds a quake pins every foe in its Tremor | Attackspeed_Pmulti 0.5 (strikes x1.5), Mantle_Base 2, Mantle_Every 20 | Yellow 3000 | |
 | Base | Old Salts2 | **changed**: Drill Rig's Tremor, never Deep Water | Nauts tune each kind of Argo tower its own way | Salts_Base 1 | Blue 30 | Overhaul3 |
 
 ## Choices this design makes
@@ -129,7 +134,7 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 | Five buildables | All five (Deep Water is new) | Four | The concept wins; the fifth build option works in game (PC round 2) |
 | Harpoon Gun: long-range damage **or** crowd control, "pin or reel depending on upgrade path" | Base gun pierces and doesn't reel; the tree splits into damage and CC paths, two capstones | Every harpoon reeled | As written; the reel (verified in 1.4.0) moves to Reel3 |
 | "Pinning against wall stuns" | Anchor Line pins the foe hit; beside any building it is stunned instead | Pinned the reeled foe | Argo has no walls, and the game has no knockback (`docs/05` §11) to pin a foe *against* something; "beside a building" reads the same on screen |
-| Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed or Pinned foes | none | As written; every debuff source is a tower, trap or upgrade |
+| Scatter: "bonus damage to enemies affected by debuffs" | +50% to Slowed foes, +100% to Pinned ones (review 2026-11-04) | none | As written; every debuff source is a tower, trap or upgrade |
 | Scatter: "% increases health greatly" | Ironclad4 (ends early) | Undertow4 | As written |
 | Deep Water: slowing trap, extends like Fie's wall, combines with Harpoon and Drill Rig | FLOOD extends it; pinned foes held twice as long; Tremors spread through pools | none | Gives "combines" two testable rules |
 | Drill Rig: "tremors in targeted location; tremor size increases per tide" | AIM picker places the Tremor; Fathoms widen it each Tide | Tremors ringed the drill | A target the player picks needs a picker (`docs/02` §2) |
@@ -168,10 +173,11 @@ Miner's Base (1.4.0's Diving Bell model, unchanged) and Drill Rig keep 1.4.0's l
 6. Miner's Base: a Naut picked onto Deep Water is refused (towers only); tuning as in 1.4.0.
 7. The F-key fix (`docs/15` §9): F selects Argo after a respawn with the crew out.
 
-## Review 2026-11-04 (proposed, not built)
+## Review 2026-11-04 (built 2026-11-05, compiled, not yet run in game)
 
 A balance and skill review (`docs/reports/ARGO_REVIEW_2026-11-04.md`) made fourteen changes and two notes in scope `09`, each
 line marked with a "Review 2026-11-04" note: slows one per source and Kelp Bed and Trench as pins (both code fixes),
 the Scatter's pin bonus, Wide Bore, Double Barrel, Abyss, Trench, Gusher, Mantle Tap, and Yellow prices for the Drill's
-control path and the Miner's Base. The tables above stay as built until Dimitri takes them and the next Argo build
-lands; `IMPLEMENTATION_NOTES.md` lists the code each one touches.
+control path and the Miner's Base. Dimitri's "build all" (decision 19, 2026-11-05) took them; all fourteen are built
+(the slows in the decisions' build, B13; the rest in the next). Where a table above and `02_Data.cs` differ, the data
+file and scope `09` win; `IMPLEMENTATION_NOTES.md` has the build.
