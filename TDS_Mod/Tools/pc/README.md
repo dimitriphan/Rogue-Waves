@@ -17,6 +17,8 @@ pass. Cloud threads write the handoff; a Remote Control session on the PC runs t
 | `../../Assets/ModKit/Editor/ModKitPipeline.cs` | PC (Unity) | Tools > ModKit > Build Queue: Build All Assets, Build Mod Prefab, Export and Restore for every vessel in `handoff\queue.txt`; Tools > ModKit > Build Pack: the release pack (below) |
 | `Build-Pack.ps1` | PC | The release pack's code (each part's release build with the pack version from `TDS_Mod/ModSource/Pack/pack.txt`), then with `-Zip` the players' `RogueWaves-<version>.zip` in the handoff folder |
 
+**Fix readings** (`docs/reports/TESTING_ROUND_3_2026-11-05.md`): a line "TEST INFO FINDING <id>: SEEN|not seen" reads the same before and after a fix and fails nothing. A vessel: `-Define <NAME>_SELFTEST,<NAME>_REVIEW` (Spool with `MODKIT_PLAY` for the Crafted by hand). The mode, solo: the gaps build with `-Extra "-rwonly review"`, and in a launch each `-rwonly throw`, `split`, `artrio`, `a2 -rwthrowicons`. Two players: `-Extra "-rwshort -rwreview -rwhosthero X -rwsecondhero Y"`.
+
 ## One-time setup (Dimitri)
 
 None if the PC's GitHub CLI is signed in (`gh auth status`): `Get-Handoff.ps1` uses it. Otherwise:
