@@ -240,8 +240,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (all Claude `~defaults~` until Dimitri takes them): Yossele's and Spool's missing upgrades (scopes `07`, `08`), Argo's
   review changes (`09`), Uloe's upgrades 8 to 32 (`10`), the new Directions and Claude's 11 Trinkets and 4 Cardinals (`11`, `12`).
   Argo keeps his shipped look (2026-11-04 05:31Z). Every dated entry, newest last, is in "Log"; the reports are indexed in
-  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion, files only until he picks (`docs/TEMP_ART.md` "Minion
-  versions"). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
+  `docs/reports/README.md`. 2026-11-04: ten Snoble-sized versions of every modded minion; his picks wired 2026-11-05 (below). 2026-11-04: every frame timed in real play, nothing of the mod's to fix (`docs/reports/SMOOTHNESS_2026-11-04.md`).
   2026-11-04: the repository checked and tidied (`docs/reports/REPO_QUALITY_CHECK_2026-11-04.md`). 2026-11-04: the mod's
   code read against the base game's for what could be simpler: ten findings, nothing changed, each waits for his word
   (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`). 2026-11-04: Vessel Cardinals are now **Trinkets** and Team Cardinals
@@ -274,7 +273,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
 - **Before that:** the next PC round shows the picked temporary art in game (Yossele's attack and Cordyfriend, Spool's sheets,
-  tuft and needle, Rising Water). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
+  tuft and needle, Rising Water, the picked minions of 2026-11-05 with Uloe's Photon). **Release 1, Yossele alone** (Part B, Decisions 2026-10-20, answers 2026-10-21): ranked 2026-10-28 in `docs/reports/PRIORITIES_2026-10-28.md` (a PC round to install the default branch's Yossele, then his play test; his sprite sheet, not yet asked for in scope `07`; three balance calls from the play test; the `Pack` step; one online evening). Defaults taken 2026-10-28 and the pack step built: Decisions. Then his play test of
   0.2.0-dev (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md` §3-5), his sprites and balance, the one-part pack build
   (its one version, `0.1.0`, replaces the dev builds' `0.1.0-dev`). Phase 5's pieces are built and passed in game
   ahead of Release 1 (kit 1.7, the main-menu button, the in-map vote and the mode's checks K0, CH, K1, P1, T0-T6, H1:
