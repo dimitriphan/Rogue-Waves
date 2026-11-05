@@ -154,7 +154,9 @@ this round. Not read: SPL-5, MODE-C2, C5, D9, B5, B6, YOS-2, YOS-4, ULO-3, ARG-2
 
 ### 7.4 Also done
 
-- **Release boot check, kit 1.9:** six lines, no "parts disagree", 0 exceptions (`boot_20261105_022551`).
+- **Release boot check:** on kit 1.9, six lines, no "parts disagree", 0 exceptions (`boot_20261105_022551`). Again on the newest base
+  `26fdae2`, kit 1.11: six lines, 0 exceptions (`boot_20261105_024012`). **The self-tests and readings ran on kit 1.9**, not on
+  what PRs #95-#101 changed since; only this boot check ran on those.
 - **Scope:** the 17 files in `Desktop\RogueWave\scope` now equal `docs/scope`; the old copies are in
   `handoff\backup_scope_before_round3_20261105`.
 - **`/code-review high` on the test code:** nothing reaches a release build (a text scan of the guards, and the release builds
