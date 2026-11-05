@@ -127,3 +127,20 @@ index. Docs only: nothing compiled, nothing run.
 - **S2** (26): measure the Loom's mining against the base vessels (`AURA_BASELINE_2026-11-03.md` §5: about 5 times a
   Mining Hut today); if it is above the base range, lower it to the top of that range and write the build's number
   into scope 08's Mining line (P7). Claude adds: check Uloe's Flood Light the same way, since it mines like the Loom.
+
+## 4. Spool's defaults (05:10Z: "Use all defaults")
+
+On `SPOOL_DEFAULTS_2026-11-05.md` (PLAN Open question 2, S1-S17). S1-S9, S11, S12 and S14 keep what is built: nothing to
+do. Scope 08's defaults are his now (143 values lose their tildes), except the four numbers the balance sweep owns
+(Stitched Damage, Dart Damage, Dart Range, Crafted alive a Tin) and the Loom's mining line (S1-S2 above). His answer
+lifts "leave Spool as is" for these items.
+
+### For the build thread
+
+- **B16** (S10): the Thread Head's stock MOVE goes; SPOT stays.
+- **B17** (S13): once he has tried selling a walking Stitched by hand, and if it is hard, give the Crafted a bigger
+  click box for the sell picker. Ask him first; he owes the try (`TESTING_ROUND_3_2026-11-05.md` §4).
+- **B18** (S15): Pin Barrage leads to Iron Thimble at level 4, as scope 08 says.
+- **B19** (S16): build scope 08's 22 unbuilt upgrades and the Tin's UNTHREAD button with the queued candidates, after
+  the balance sweep has written its one-wall numbers into 08 (`UPGRADE_GAPS_2026-11-04.md`).
+
