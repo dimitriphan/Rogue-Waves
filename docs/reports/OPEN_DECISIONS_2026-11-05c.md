@@ -5,6 +5,9 @@ pages (`OPEN_DECISIONS_2026-11-05.md`, `OPEN_DECISIONS_2026-11-05b.md`) are answ
 the base `1f33941`. Nothing was changed in code to write this page, and nothing ships in play until the answer below is
 built by a code thread and seen on the PC.
 
+**Answered 2026-11-05 17:45Z:** Dimitri picked **a** on the decision card. What follows from it is in "The answer" at the
+end.
+
 **How to answer:** by letter ("1 a", "1 b"...), or "as recommended". `~a~` is the default Claude takes if you say so.
 
 ## A. Game design
@@ -42,4 +45,26 @@ built by a code thread and seen on the PC.
 
 ## The answer
 
-_Waiting for Dimitri._
+Dimitri, 17:45Z, on the decision card: **"a. A look per weather"**.
+
+| # | Taken | Done by |
+| --- | --- | --- |
+| 1 | A look per weather: Rising Water under light mist, Quickening Current under storm grey, Nesting Ground at dusk; a map with no weather keeps its own light; no night, no borrowed grade, no heavy sea fog | a code thread of the mode (not built now; any time after PC round 4's list is fixed, or in it if the PC thread wants it there) |
+
+What the code thread builds, from `LIGHTING_2026-11-05.md` §6 and the gaps build's `92_GapsLight.cs`:
+
+- In `RogueWavesMode`, a three-row table weather to look (the gaps build's light mist, storm and dusk numbers in
+  `92_GapsLight.cs`, as relative looks so each map keeps its own fog distances), set with `ModKitLight` and a 4 s fade
+  when the map's weather is known (`RWRejoin.MapWeather()`, so every machine and a rejoin run it on their own; lighting
+  does not sync). Calm maps set nothing.
+- The look must survive the game's own lighting call at map load (L2 showed a held look comes back over it two frames
+  later) and let go on the map's own at the map's end, as L6 does.
+- A self-test check per weather: the look is what `RenderSettings` reads on a map with that weather, and nothing on a
+  calm map. The pictures need a PC round: the three weathers on a map with foes on screen, the HUD awake (pitfall
+  #170), and Dimitri's eye on whether each still reads at a glance.
+- No kit change is expected (kit 1.13 already has the look, the fade and the restore), so no kit bump unless the thread
+  finds one.
+
+Left for later, not decided now: **b**, a Fog Bank weather with heavy sea fog, stays in `docs/mode/MECHANIC_IDEAS.md` §2
+until a PC round shows foes in fog and a call on hiding markers in it; **c**, a mood ramp, can sit on top of **a** if he
+asks for it.

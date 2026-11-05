@@ -470,6 +470,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
   but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins PC
   round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
+  2026-11-05: whether a lighting look ships (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`, the lighting round's §5 call).
+  Dimitri picked **a look per weather** (17:45Z): Rising Water under light mist, Quickening Current under storm grey,
+  Nesting Ground at dusk, calm maps on their own light. Not built: a code thread of the mode builds it from the page's
+  hand-off (a table and one `ModKitLight` call from the map's weather, a self-test check), then a PC round shows it
+  with foes on screen. Fog Bank (heavy sea fog) and a mood ramp stay ideas. Docs only.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
