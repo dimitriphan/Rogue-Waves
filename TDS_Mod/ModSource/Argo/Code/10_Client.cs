@@ -372,7 +372,12 @@ public static class ArgoClient
     {
         Vector3 home;
         if (!rest.TryGetValue(t, out home))
+        {
+            if (rest.Count >= 64)      // a destroyed turret's entry is dropped (ARG-6)
+                foreach (Transform k in new List<Transform>(rest.Keys))
+                    if (k == null) rest.Remove(k);
             rest[t] = home = t.localPosition;
+        }
         Vector3 back = t.parent != null ? t.parent.InverseTransformDirection(-dir) * kick : -dir * kick;
         for (float e = 0f; e < 0.25f && t != null; e += Time.deltaTime)
         {
@@ -636,18 +641,25 @@ public static class ArgoClient
 
     public static bool Aimed(Entity_Master drill, out Vector3 center, out float radius)
     {
-        center = Vector3.zero;
-        radius = 0f;
+        Link_Commandref aim;
+        bool found = AimEntry(drill, out aim);
+        center = aim.Goalposition;
+        radius = aim.Goalvalue;
+        return found;
+    }
+
+    // The drill's synced AIM entry. The last "Aim" entry: Updatecommand moves the entry it updates to the end, so with a
+    // stale duplicate in the list (round 2 read 2.4 while the server sent 4.4) the last one is the newest.
+    public static bool AimEntry(Entity_Master drill, out Link_Commandref aim)
+    {
+        aim = default(Link_Commandref);
         if (drill == null || drill.Commandlist == null)
             return false;
-        // The last "Aim" entry: Updatecommand moves the entry it updates to the end, so with a stale duplicate in the
-        // list (round 2 read 2.4 while the server sent 4.4) the last one is the newest.
         bool found = false;
         foreach (Link_Commandref c in drill.Commandlist)
             if (c.Name.ToString() == ArgoData.AimLink && c.Goalvalue > 0f)
             {
-                center = c.Goalposition;
-                radius = c.Goalvalue;
+                aim = c;
                 found = true;
             }
         return found;

@@ -253,6 +253,11 @@ public static class RWCardinals
             foreach (Upgradeproperties u in ups)
                 if (u != null && core.Upgradelistserver != null && !core.Upgradelistserver.ContainsKey(u.Objectname))
                     Helper_Entitytools.Upgrade(core, u, Helper_Entitytools.Upgradecheck.Forced, art);
+        if (d == null)
+        {
+            int reached = CatchUp(art, cores[0]);
+            if (reached > 0) RWLog.Info(id + " caught up on " + reached + " things already standing");
+        }
         Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
         FixedString64Bytes key = new FixedString64Bytes(id);
         if (info != null && !info.Artifacts.Contains(key) && info.Artifacts.Count + (info.Mixedart.Value.Length > 0 ? 1 : 0) < 8)
@@ -260,6 +265,67 @@ public static class RWCardinals
             info.Artifacts.Add(key);
             shown.Add(id);
         }
+    }
+
+    // The stock apply-kinds hook Game_Entity.Onspawn or the core's Child, so they reach only what comes after them: a Cardinal
+    // bought mid-map would do nothing to the vessel and the towers already standing (MODE-C1). They get the same upgrades
+    // here, with the filters the game's scripts use (Riptide's CatchUp, proven in game; Voiceapply's filter is kit docs/17 §9).
+    // A repeat is skipped, so the map-start grant runs it too. Returns how many things got something.
+    public static int CatchUp(Artifactobject art, Entity_Master core)
+    {
+        int reached = 0;
+        if (art == null || art.Coreupgrades == null || core == null || Game_Entity.Instance == null)
+            return 0;
+        int team = ModKitUtil.Team(core);
+        foreach (Upgradeproperties up in art.Coreupgrades)
+        {
+            if (up == null || up.Aiscripts == null || up.Defaultparams == null)
+                continue;
+            string kinds = "";
+            foreach (UnityEngine.Object s in up.Aiscripts)
+                if (s != null) kinds += s.name + "+";
+            bool tower = kinds.Contains("Entity_Ai_Artifact_Towerapply"), mob = kinds.Contains("Entity_Ai_Artifact_Mobapply"),
+                teamApply = kinds.Contains("Entity_Ai_Artifact_Teamapply"), voice = kinds.Contains("Entity_Ai_Artifact_Voiceapply"),
+                hero = kinds.Contains("Entity_Ai_Artifact_Heroapply");   // Heroapply_Delay too: caught up at once
+            if (!tower && !mob && !teamApply && !voice && !hero)
+                continue;
+            List<Upgradeproperties> give = new List<Upgradeproperties>();
+            foreach (KeyValuePair<string, float> p in up.Defaultparams)
+            {
+                Upgradeproperties u = ModKitUtil.Load<Upgradeproperties>("Upgrade", p.Key);
+                if (u != null) give.Add(u);
+            }
+            if (give.Count == 0)
+                continue;
+            foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
+            {
+                if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Upgradelistserver == null)
+                    continue;
+                List<string> tags = e.Beingserver.Entity.Tags;
+                bool heroParent = ModKitUtil.HasTag(e.Parent, "Hero");
+                int n = 0;     // how many of give it gets
+                if (tower && tags.Contains("Tower") && ModKitUtil.Team(e) == team)
+                    n = give.Count;
+                else if (mob && tags.Contains("Mob"))
+                    n = give.Count;   // the game's Mobapply compares its own team with itself: every Mob gets it
+                else if (teamApply && heroParent && (tags.Contains("Tower") || tags.Contains("Mob")))
+                    n = 1;            // Teamapply uses its first upgrade only
+                else if (voice && heroParent)
+                    n = give.Count;
+                else if (hero && tags.Contains("Hero") && (ModKitUtil.HasTag(e.Parent, "Core") || tags.Contains("Boutbro")))
+                    n = give.Count;   // the core's hero children, and Boutbro, who calls every core's Child (kit docs/17 §5)
+                bool got = false;
+                for (int i = 0; i < n; i++)
+                    if (!e.Upgradelistserver.ContainsKey(give[i].Objectname))
+                    {
+                        Helper_Entitytools.Upgrade(e, give[i], Helper_Entitytools.Upgradecheck.Forced, null);
+                        got = true;
+                    }
+                if (got)
+                    reached++;
+            }
+        }
+        return reached;
     }
 
     static Artifactobject Object(string id)
@@ -382,6 +448,9 @@ public static class RWCardinals
     public static float Healed;
     static int seenCount = -1;
     static float loadedAt = -1f;
+
+    // A map starts (RWVote.MapStart): the last map's vessels go (MODE-C7).
+    public static void Reset() { dealt.Clear(); }
 
     public static void Update()
     {

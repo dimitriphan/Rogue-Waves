@@ -51,6 +51,12 @@ public static class YosseleFriends
     {
         if (cannon == null || cannon.Master == null || cannon.Master.Beingserver == null || !ModKitUtil.Alive(cannon.Master))
             return;
+        // Again here: a burst of deaths passes Raise's check once each before any of them has risen (YOS-3).
+        if (CountOf(cannon.Owner) >= YosseleData.FriendCap)
+        {
+            Capped++;
+            return;
+        }
         Link_Spawn spawn = Helper_Entitytools.Createlinkspawnparent(cannon.Master.Beingserver);
         spawn.Genadd = tile;
         spawn.Spawnstyle = Link_Spawn.Spawnstyles.Forced;

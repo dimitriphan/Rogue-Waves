@@ -1,4 +1,4 @@
-// Kit 1.7 (2026-11-03). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.9 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: host-side map events, from one poll of Game_Mapvars (docs/PACK.md section 3). The part calls Update()
 // every frame; listeners subscribe once at boot.
 //   MapStart        a map's Game_Mapvars appeared and finished loading (Maploaded)
@@ -38,15 +38,17 @@ public static class ModKitTides
         }
         if (mv == null || !host)
             return;
+        // Wave is still its first -1 when the map counts as loaded; the game writes 0 a moment later, which is no Tide,
+        // and no rewind either (kit 1.9, SHARED-2).
+        int wave = Mathf.Max(mv.Wave.Value, 0);
         if (!started)
         {
             if (!mv.Maploaded.Value)
                 return;
             started = true;
-            Wave = mv.Wave.Value;
+            Wave = wave;
             Fire(MapStart);
         }
-        int wave = mv.Wave.Value;
         if (wave > Wave)
         {
             Wave = wave;

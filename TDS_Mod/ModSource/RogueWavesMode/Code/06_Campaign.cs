@@ -92,7 +92,8 @@ public static class RWCampaign
         Ended = "";
         Active = true;
         WonThisMap = false;
-        Staging = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Staged) == "1";
+        // Past map 1 the staging map is long over, whatever an older save says (MODE-A1: it was left on by a quit before map 1).
+        Staging = Route.Count == 0 && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Staged) == "1";
         save = Blockage.Tags.Bla_Data.Playerdata;
         RWRun.Load();
         RWTips.MarkSailed();

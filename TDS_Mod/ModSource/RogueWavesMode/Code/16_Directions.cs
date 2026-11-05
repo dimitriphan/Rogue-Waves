@@ -233,14 +233,19 @@ public static class RWDirections
             if (ModKitDirections.Grant(vessel, u))
                 Sweep(p);
         }
-        foreach (Link_Command c in new List<Link_Command>(vessel.Commandlistserver.Values))
-            if (c != null && c.Name != null && c.Name.StartsWith("Buildoption"))
-                Scale(vessel, c);
+        float buildOff = BuildOff(p), refitOff = RefitOff(p);
+        Builds(vessel, buildOff);
         // A tower has no Upgrade command yet as it spawns, and each upgrade writes a new one (seen on the PC): kept up here.
-        if (Top(p, "Any", "Refit") > 0 && Game_Entity.Instance != null)
-            foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
-                if (e != null && e.Beingserver != null && !e.Beingserver.Dead && e.Beingserver.Entity != null && e.Entitydata.Value.Owner == p.Session && e.Beingserver.Entity.Tags.Contains("Tower"))
-                    Refit(e, p);
+        // Boutman's whole tree is on the Bouthouse, and a Fie wall builds its next segment from its own Buildoption1 (MODE-C6).
+        if ((refitOff > 0f || buildOff > 0f) && Game_Entity.Instance != null)
+            foreach (Entity_Master e in Standing())
+            {
+                if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Entitydata.Value.Owner != p.Session)
+                    continue;
+                List<string> tags = e.Beingserver.Entity.Tags;
+                if (tags.Contains("Tower") || tags.Contains("Bouthouse")) Refit(e, refitOff);
+                if (tags.Contains("Fiewall")) Builds(e, buildOff);
+            }
         foreach (RWDirectionDef d in Mine)
         {
             if (d.Stat == "") continue;
@@ -257,6 +262,29 @@ public static class RWDirections
     }
 
     static readonly Dictionary<string, Link_Modifier> statMods = new Dictionary<string, Link_Modifier>();
+
+    // One copy of the entity list a frame for every player's Grant (Carry runs them back to back), kept for reuse.
+    static readonly List<Entity_Master> standing = new List<Entity_Master>();
+    static int standingFrame = -1;
+
+    static List<Entity_Master> Standing()
+    {
+        if (standingFrame != Time.frameCount)
+        {
+            standingFrame = Time.frameCount;
+            standing.Clear();
+            standing.AddRange(Game_Entity.Instance.Entityclient);
+        }
+        return standing;
+    }
+
+    // A map starts (RWVote.MapStart): the last map's vessels and buildings go (MODE-C7).
+    public static void Reset()
+    {
+        statMods.Clear();
+        cuts.Clear();
+        pruneAt = 256;
+    }
 
     public static void Take(RWPlayer p, Upgradeproperties u)
     {
@@ -278,16 +306,67 @@ public static class RWDirections
         return best;
     }
 
-    // Build price scale = the vessel's BuildoptionN Goalvalue (kit docs/17 §6); Boutbro rewrites his own, so Cut Costs
-    // doesn't reach what he builds (docs/mode/MECHANIC_IDEAS.md: write his cost stats instead; left for his sheet).
-    static void Scale(Entity_Master vessel, Link_Command c)
+    // Build price scale = the BuildoptionN Goalvalue of what builds (kit docs/17 §2.7). Boutbro rewrites his own on every
+    // spawn; the cut goes on again within half a second, as the same amount off his larger scale, so less of his price
+    // (docs/mode/MECHANIC_IDEAS.md: writing his cost stats would be exact; left for his sheet).
+    static float BuildOff(RWPlayer p) { return 1f - CostScale[Mathf.Clamp(Top(p, "Any", "Cost"), 0, 3)]; }
+
+    static float RefitOff(RWPlayer p) { return 1f - RefitScale[Mathf.Clamp(Top(p, "Any", "Refit"), 0, 3)]; }
+
+    // A player's ranks only rise within a map, so a cut of 0 has nothing to undo.
+    static void Builds(Entity_Master m, float off)
     {
-        RWPlayer p = RWRun.For(vessel.Entitydata.Value.Owner);
-        float scale = CostScale[Mathf.Clamp(Top(p, "Any", "Cost"), 0, 3)];
-        if (Mathf.Approximately(c.Goalvalue, scale) || scale >= 1f)
+        if (off <= 0f || m.Commandlistserver == null)
             return;
-        c.Goalvalue = scale;
-        Helper_Entitytools.Updatecommand(vessel, c.Name, "", false, false);
+        options.Clear();
+        foreach (KeyValuePair<string, Link_Command> c in m.Commandlistserver)
+            if (c.Value != null && c.Key.StartsWith("Buildoption"))
+                options.Add(c);
+        foreach (KeyValuePair<string, Link_Command> c in options)
+            Lower(m, c.Key, c.Value, off);
+    }
+
+    static readonly List<KeyValuePair<string, Link_Command>> options = new List<KeyValuePair<string, Link_Command>>();
+
+    // A price cut is an amount taken off a command's Goalvalue once, and kept for that command: Voice in a Bottle's steps
+    // per Tide come off on top, and its reset after an upgrade adds back only its own (MODE-C4). A price someone else
+    // moved is a fresh one the game wrote, so the cut goes on again, if it is a build price (Boutbro rewrites his on every
+    // spawn, kit docs/17 §5.1) or an upgrade price back at 1 or more; a price only this cut wrote is left as it is.
+    sealed class Cut { public Entity_Master Owner; public string Name; public float Off, Written; }
+    static readonly Dictionary<Link_Command, Cut> cuts = new Dictionary<Link_Command, Cut>();
+    static int pruneAt = 256;
+
+    static void Lower(Entity_Master m, string name, Link_Command c, float off)
+    {
+        Cut cut;
+        if (!cuts.TryGetValue(c, out cut))
+        {
+            if (cuts.Count >= pruneAt)
+                Prune();
+            cuts[c] = cut = new Cut { Owner = m, Name = name };
+        }
+        else if (cut.Off > 0f && !Mathf.Approximately(c.Goalvalue, cut.Written) && (c.Goalvalue >= 0.999f || name.StartsWith("Buildoption")))
+            cut.Off = 0f;
+        float price = Mathf.Max(0f, c.Goalvalue + cut.Off - off);
+        if (Mathf.Approximately(price, c.Goalvalue))
+            return;
+        cut.Off += c.Goalvalue - price;
+        c.Goalvalue = price;
+        Helper_Entitytools.Updatecommand(m, name, "", false, false);
+        cut.Written = c.Goalvalue;
+    }
+
+    // Commands of what is gone, or that the game has since replaced; the next look waits until twice what is left.
+    static void Prune()
+    {
+        foreach (KeyValuePair<Link_Command, Cut> k in new List<KeyValuePair<Link_Command, Cut>>(cuts))
+        {
+            Link_Command now;
+            Entity_Master m = k.Value.Owner;
+            if (!ModKitUtil.Alive(m) || m.Commandlistserver == null || !m.Commandlistserver.TryGetValue(k.Value.Name, out now) || !ReferenceEquals(now, k.Key))
+                cuts.Remove(k.Key);
+        }
+        pruneAt = Mathf.Max(256, cuts.Count * 2);
     }
 
     // ---------------------------------------------------------------- on what a player builds (host)
@@ -309,9 +388,14 @@ public static class RWDirections
         long owner = m.Entitydata.Value.Owner;
         if (owner < 0)
             return;
-        RWPlayer p = RWRun.For(owner);
-        Reach(m, p);
-        RWCardinals.Reach(m, p);
+        // Inside Game_Entity.Spawn: a throw here would stop the spawn and every Onspawn listener after this one (MODE-C8).
+        try
+        {
+            RWPlayer p = RWRun.For(owner);
+            Reach(m, p);
+            RWCardinals.Reach(m, p);
+        }
+        catch (Exception e) { RWLog.Once("spawn reach", "Directions on a new spawn: " + e); }
     }
 
     static void Reach(Entity_Master m, RWPlayer p)
@@ -343,19 +427,16 @@ public static class RWDirections
             else if (d.Name == "Tougher")
                 RWHits.Resist(m, TougherResist[rank], rank >= 3 ? TougherMaxShare : 0f);
         }
-        if (tags.Contains("Tower"))
-            Refit(m, p);
+        if (tags.Contains("Tower") || tags.Contains("Bouthouse"))
+            Refit(m, RefitOff(p));
     }
 
-    // Upgrade price scale = the building's own Upgrade command's Goalvalue (kit docs/17 §6).
-    static void Refit(Entity_Master m, RWPlayer p)
+    // Upgrade price scale = the building's own Upgrade command's Goalvalue (kit docs/17 §2.7).
+    static void Refit(Entity_Master m, float off)
     {
-        float scale = RefitScale[Mathf.Clamp(Top(p, "Any", "Refit"), 0, 3)];
         Link_Command c;
-        if (scale >= 1f || m.Commandlistserver == null || !m.Commandlistserver.TryGetValue("Upgrade", out c) || c == null || Mathf.Approximately(c.Goalvalue, scale))
-            return;
-        c.Goalvalue = scale;
-        Helper_Entitytools.Updatecommand(m, "Upgrade", "", false, false);
+        if (off > 0f && m.Commandlistserver != null && m.Commandlistserver.TryGetValue("Upgrade", out c) && c != null)
+            Lower(m, "Upgrade", c, off);
     }
 
     // What a player already built when they took a Direction or a Trinket.

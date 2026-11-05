@@ -1,5 +1,7 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the code review's fixes (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`):** the cord tests its plug's reference itself, so a sold or destroyed Power Bank unplugs Uloe and PLUG IN comes back (ULO-1, pitfall #155). The PC check: that report's §5.
+
 **2026-11-04, code simplification (compiled, not yet run in game):** besides the stock route below, the game's own `Entity_Ai_General_Upgrade` runs the buildings' upgrade panels again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged. The self-test now has 145 checks (148 less the deleted route's three). The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (T1, G1, G3, U1, L1).
 
 **Built from the scope in one stretch: design (`DESIGN.md`), code (`Code/`), self-test (`Code/99_SelfTest.cs`), temporary art

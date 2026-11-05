@@ -1,9 +1,10 @@
-// Kit 1.8 (2026-11-04). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.9 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: a vessel's asset pack (<Part>Assets_Library, shipped inside the mod prefab) turned into game objects:
 // sliced sprites, Spriteobjects, the boat's Worldsprite, sounds and effects. Every part's build has its own copy of this
 // class (ModKit is renamed per part), so Library is that part's library. The part keeps what is its own: its hero's
 // sheets, its icons and their palette, its tower material and its sound levels (its Play passes the volume here).
-// Before kit 1.8 each vessel carried all of this in <Vessel>Assets; the bodies are unchanged (CODE_SIMPLIFICATION_2026-11-04).
+// Before kit 1.8 each vessel carried all of this in <Vessel>Assets; the bodies came unchanged
+// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Mixer`.
 public static class ModKitAssets
 {
     public static Transform Library;
@@ -257,10 +258,10 @@ public static class ModKitAssets
     {
         if (mixerSearched)
             return mixer;
-        mixerSearched = true;
         Blockage.Sound.Bla_Audio audio = Blockage.Sound.Bla_Audio.Instance;
         if (audio == null)
-            return null;
+            return null;          // asked again next time: a sound played before the game's audio is up doesn't end the search (kit 1.9, ARG-5)
+        mixerSearched = true;
         if (audio.Database != null)
             foreach (Blockage.Sound.Bl_Sound_Group g in audio.Database.Items)
                 if (g != null && g.Sounds != null)

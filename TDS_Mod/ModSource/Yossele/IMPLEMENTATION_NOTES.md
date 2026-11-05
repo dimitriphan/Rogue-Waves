@@ -1,5 +1,7 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+**2026-11-05, the code review's fixes (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`):** `SpawnOnTile` writes the asked-for skin again after the spawn, which copies the parent's, so a Grafted fruit shows its colour, while the Henge's vines, asked for no skin, keep the Henge's (YOS-1, pitfall #151); the Cordyfriend cap is checked again at the spawn (YOS-3); kit 1.9 fires no Tide 0, so the log's first Tide is 1 (SHARED-2). The PC checks: that report's §5.
+
 **2026-11-04, code simplification (compiled, not yet run in game):** the game's own `Entity_Ai_General_Upgrade` runs every building's upgrade panel again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged. The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (self-test 173/0, G1, G3, H1, L1).
 
 **0.2.0-dev is the 2026-10-12 build (0.1.0-dev, PC rounds 1-8) brought up to Dimitri's sheet of 2026-10-20**

@@ -22,6 +22,7 @@ public static class RWVote
     static List<RWChart.Node> choices = new List<RWChart.Node>();
     static float until, holdAt;
     static int leaveWave = -1;
+    static int lastBreak = -1;           // the Tide whose break was handled (a bonus rewind reads as a second break)
     static bool clearingWatch;
     static bool staging;
     static float startPickAt = -1f;
@@ -33,10 +34,14 @@ public static class RWVote
         State = "";
         HoldBreak = Departing = false;
         Votes.Clear();
-        leaveWave = -1;
+        leaveWave = lastBreak = -1;
         clearingWatch = false;
         startPickAt = -1f;
         RWHits.Reset();
+        RWDirections.Reset();
+        RWCardinals.Reset();
+        // An objective left running when the last map ended would be judged at this map's opening break (MODE-D2).
+        RWObjectives.Reset();
         if (!RWRun.InCampaignMap)
             return;
         RWDirections.Hook();
@@ -59,6 +64,11 @@ public static class RWVote
         Breaks++;
         if (!RWRun.InCampaignMap)
             return;
+        // RWDifficulty.Bonus rewinds Entry onto another break row, which ModKitTides reports as this Tide's break again:
+        // handled once, or every bonus break from Tide 29 on pays twice (MODE-D1). A real break always follows a new Tide.
+        if (wave > 0 && wave == lastBreak)
+            return;
+        lastBreak = wave;
         RWObjectives.Resolve();
         if (wave > 0)
         {
@@ -81,6 +91,7 @@ public static class RWVote
 
     public static void Tide(int wave)
     {
+        lastBreak = -1;      // a Tide played again (a stock replay) earns its break again
         if (!RWRun.InCampaignMap)
             return;
         RWShop.Leave();
@@ -348,6 +359,7 @@ public static class RWVote
         State = "Leave";
         Round++;
         until = Time.time + LeaveSeconds;
+        Hold(LeaveSeconds);    // a vote that opens late in the break isn't cut off by the next Tide (MODE-D6)
         foreach (long s in RWRun.Sessions())
             RWRun.Ask(s, LeaveKind, Round);
         RWLog.Info("the vote to leave opens after Tide " + wave);
@@ -368,7 +380,10 @@ public static class RWVote
         Votes.Clear();
         RWLog.Info("the vote to leave: " + LastVote);
         if (yes * 2 <= all)
+        {
+            HoldBreak = false;
             return;
+        }
         Departing = true;
         if (RWCampaign.Route.Count >= RWChart.Rows)
         {
@@ -391,6 +406,7 @@ public static class RWVote
             staging = false;
             RWCampaign.Staging = false;
             RWCampaign.Next = null;
+            RWCampaign.SaveChoice();    // a quit before map 1 must not bring the staging map back (MODE-A1)
             RWLog.Info("staging over: back to the boat, sailing to column " + RWCampaign.Choice);
             Tds_Multiplayer_Remote.Instance.Quitmap_ServerRpc(default(Unity.Netcode.ServerRpcParams));
             return;
@@ -452,19 +468,29 @@ public static class RWAsk
         {
             round = -1f;
             Open = "";
+            vessel = null;
             return;
         }
         Entity_Master v = RWMine.Vessel();
         Link_Commandref ask;
         if (v == null || !RWMine.Command(v, RWRun.AskLink, out ask))
             return;
+        // A respawned vessel's question is blank until the host writes the open one onto it (RWRun.Carry, twice a second).
+        if (!ReferenceEquals(v, vessel))
+        {
+            vessel = v;
+            vesselSince = Time.unscaledTime;
+        }
         string what = ask.Goalstring.ToString();
         if (what == "")
         {
+            if (Time.unscaledTime < vesselSince + 1.5f)
+                return;
             if (Open != "")
             {
                 Open = "";
-                RWDialog.Cancel();
+                // Only this question's own dialog: a SHOP or FUND opened after answering stays (MODE-D7).
+                if (running) RWDialog.Cancel();
             }
             round = -1f;
             return;
@@ -484,6 +510,8 @@ public static class RWAsk
     }
 
     static bool running, answered;
+    static Entity_Master vessel;
+    static float vesselSince;
 
     static IEnumerator Run(string what)
     {
@@ -547,11 +575,23 @@ public static class RWAsk
         if (pick == null)
             yield break;
         answered = true;
-        if (kind == RWVote.LeaveKind) RWMine.Send(kind, 0, pick);
-        else
+        int k = 0;
+        if (kind != RWVote.LeaveKind && !int.TryParse(pick, out k))
+            yield break;
+        // A pick made while this player's vessel is down goes out once it stands again and the host has written the same
+        // question back onto it: a round closed meanwhile never reads as open on the new vessel (MODE-D4).
+        float asked = round, until = Time.unscaledTime + seconds;
+        while (!(StillAsked(what, asked) && RWMine.Send(kind, k, kind == RWVote.LeaveKind ? pick : "")))
         {
-            int k;
-            if (int.TryParse(pick, out k)) RWMine.Send(kind, k, "");
+            if (Time.unscaledTime > until)
+                yield break;
+            yield return new WaitForSecondsRealtime(0.2f);
         }
+    }
+
+    static bool StillAsked(string what, float asked)
+    {
+        Link_Commandref ask;
+        return RWMine.Command(RWMine.Vessel(), RWRun.AskLink, out ask) && ask.Goalvalue == asked && ask.Goalstring.ToString() == what;
     }
 }
