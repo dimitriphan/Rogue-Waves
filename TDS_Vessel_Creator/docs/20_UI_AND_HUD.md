@@ -85,6 +85,9 @@ Read `01` §8, §11, `05` §7-8 and `15` §6, §14.6, §18.2 first.
 - **Placed elsewhere, keep it smooth and on whole pixels** (pitfall #138): don't ask this dialog's own text for its size, and leave the
   title's autosize on. The stock corner stands on whole screen pixels, and the art is drawn without smoothing, so put `List` and
   `Title` on whole pixels too.
+- **A card's picture is a 16 px icon in a 16-unit box** (`Confirmationbuttonbase/Icon`, no preserve-aspect): give it
+  16 px, or size the `Icon` to a whole number of screen pixels per art pixel yourself, or it shimmers as the dialog slides
+  in and the card's hover scales it (`09` #156; `RWAssets.Crisp`).
 - **The UI scale is the player's:** `Blu1_Ui_Handler.Updatescale` sets the `CanvasScaler`'s `scaleFactor`, and a resolution change
   doesn't touch it. On Dimitri's PC it is 3, so the canvas is 853 by 480 at 2560x1440 and 426 by 240 at 1280x720. Fit to the root
   canvas's rectangle, not to a resolution.
@@ -185,6 +188,10 @@ price itself.
 
 ## 6. Tooltips, rich text, icons, localization
 
+- **Icon sizes:** the game draws its icons one canvas unit per pixel: `Icon_Types` (command buttons, cards, the warning
+  popup's 48-unit box at three to one) is mostly 16 px, `Icon_Stats` (12-unit counters) 12 px. An icon of another size in
+  those boxes is stretched unevenly and jitters as the button moves; a smaller one goes in centred in a clear 16 px box
+  (`ModKitAssets.CommandIcon`, `09` #156).
 - `Blu4_Tooltip` (pointer only): `Text`, `Localize`, `Followmouse`, `Tooltipprefab`. The HUD fills icon tooltips with
   the icon's `Displayname` and command tooltips with the key only.
 - Rich text: TMP tags (`<b>`, `<color>`) work; **no `<sprite>` tag** is set up anywhere, so inline icons are separate

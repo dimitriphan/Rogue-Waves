@@ -81,7 +81,8 @@ public static class YosseleAssets
         "..rrryyuuu..", "..rrryyuuu..", "...rryyuu...", "....ryyu....", "............", "............"
     };
 
-    public static Sprite Pixel(string[] rows, string name) { return ModKitAssets.Pixel(rows, name, IconPalette); }
+    // box: ModKitAssets.CommandIcon for an icon the HUD's command buttons draw (pitfall #156).
+    public static Sprite Pixel(string[] rows, string name, int box = 0) { return ModKitAssets.Pixel(rows, name, IconPalette, box); }
 
     // ---------------------------------------------------------------- tower material
 

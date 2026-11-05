@@ -1,5 +1,19 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): crisp icons
+
+Compiled, not yet run in game. Dimitri saw the Rogue Waves button's icon, and others like it, jittering: every pack
+picture the game drew stretched to an uneven number of screen pixels per art pixel (pitfall #156). Now:
+
+- **The menu's crest** (`12_Menu.cs`, `RWMenu.Image`): `RWAssets.Crisp` sizes the 32 px crest to 32 units in Play's
+  48-unit box, its corner on a whole screen pixel, instead of stretching it to 48.
+- **Cards** (`11_Dialog.cs`, `RWDialog.Fit`): every card's `Icon` is crisped at the list's own scale once the dialog is
+  placed. Card art that stood at 32 px now uses the 12 px crest (New campaign, a Direction's or Cardinal's fallback,
+  the dialog-look test) and `RWDialog.Number` draws 16 px (wider only for five digits).
+- **Icon_Types** (`08_Icons.cs`): the weathers and the library icons go in as 16 px boxes (`ModKitAssets.Pixel`'s box,
+  `ModKitAssets.Boxed`, kit 1.10), so the HUD's SHOP, FUND TRANSFER and OBJECTIVE draw one unit per pixel; the
+  warning popup draws them three to one. Pure Aura in Icon_Stats stays 12 px. The part's own copy of `Pixel` is gone.
+
 ## 0.1.0-dev, later (2026-11-05): the code review's fixes
 
 Compiled, not yet run in game. The confirmed findings of `docs/reports/CODE_REVIEW_2026-11-04.md` that need

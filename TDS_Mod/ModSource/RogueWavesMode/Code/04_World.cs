@@ -452,7 +452,8 @@ public static class RWWorld
         Shape(parent, PrimitiveType.Cube, "Flag", at + new Vector3(0.45f, 1.85f, 0f), new Vector3(0.8f, 0.5f, 0.06f), c);
     }
 
-    // A pixel icon standing over a node, square to the chart's camera, readable from a row away.
+    // A pixel icon standing over a node, square to the chart's camera, readable from a row away: a 12 px drawing 2.6 wide,
+    // sized by the pixel, so a weather's 16 px command box (pitfall #156) doesn't shrink its drawing.
     static void Mark(Transform node, Sprite icon, float height)
     {
         if (icon == null)
@@ -461,7 +462,7 @@ public static class RWWorld
         g.transform.SetParent(node, false);
         g.transform.localPosition = new Vector3(0f, height, 0f);
         g.transform.localRotation = Quaternion.LookRotation(CameraLook);
-        g.transform.localScale = Vector3.one * (2.6f / Mathf.Max(0.01f, icon.bounds.size.x));
+        g.transform.localScale = Vector3.one * (2.6f / 12f * icon.pixelsPerUnit);
         g.AddComponent<SpriteRenderer>().sprite = icon;
     }
 

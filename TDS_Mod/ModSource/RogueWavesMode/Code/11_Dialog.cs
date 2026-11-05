@@ -41,7 +41,13 @@ public static class RWDialog
         return card;
     }
 
-    // A number as a card's picture, in pixels the size of the library's icons (the cards show no text of their own).
+    // The stock card draws its picture in a 16-unit box; the game's own card icons are 16 px.
+    const float CardIcon = 16f;
+    const int NumberSize = 24;
+
+    // A number as a card's picture (the cards show no text of their own): 24 px, so every amount up to three digits has
+    // the same size of digit, and it fills the card's 16-unit box at two screen pixels per art pixel at a UI scale of 3
+    // (RWAssets.Crisp). Four to six digits are drawn half as large, and longer numbers widen the picture.
     static readonly string[] Digits = { "111101101101111", "010110010010111", "111001111100111", "111001111001111", "101101111001001", "111100111001111", "111100111101111", "111001010010010", "111101111101111", "111101111001111" };
     static readonly Dictionary<int, Sprite> numbers = new Dictionary<int, Sprite>();
 
@@ -50,9 +56,9 @@ public static class RWDialog
         Sprite made;
         if (numbers.TryGetValue(n, out made) && made != null)
             return made;
-        const int Size = 32;
         string text = n.ToString();
-        int scale = text.Length <= 3 ? 3 : 2, wide = text.Length * 3 * scale + (text.Length - 1) * scale;
+        int scale = text.Length <= 3 ? 2 : 1, wide = text.Length * 3 * scale + (text.Length - 1) * scale;
+        int Size = Mathf.Max(NumberSize, wide);
         Texture2D tex = new Texture2D(Size, Size, TextureFormat.RGBA32, false);
         tex.filterMode = FilterMode.Point;
         Color32[] all = new Color32[Size * Size];
@@ -412,6 +418,13 @@ public static class RWDialog
         }
         Hold();
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(list);
+        // Each card's picture at a whole number of screen pixels per art pixel (pitfall #156). The cards are new with each
+        // prompt, so nothing is put back afterwards.
+        foreach (RectTransform card in Cards(dialog))
+        {
+            Transform icon = card.Find("Icon");
+            RWAssets.Crisp(icon != null ? icon.GetComponent<UnityEngine.UI.Image>() : null, CardIcon, pixels * scale);
+        }
     }
 
     // Last word before the frame is drawn, for as long as the dialog is the mode's: the game's own transition tweens may

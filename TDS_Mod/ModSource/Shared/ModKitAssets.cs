@@ -1,10 +1,10 @@
-// Kit 1.9 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.10 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: a vessel's asset pack (<Part>Assets_Library, shipped inside the mod prefab) turned into game objects:
 // sliced sprites, Spriteobjects, the boat's Worldsprite, sounds and effects. Every part's build has its own copy of this
 // class (ModKit is renamed per part), so Library is that part's library. The part keeps what is its own: its hero's
 // sheets, its icons and their palette, its tower material and its sound levels (its Play passes the volume here).
 // Before kit 1.8 each vessel carried all of this in <Vessel>Assets; the bodies came unchanged
-// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Mixer`.
+// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Mixer`; kit 1.10 added `CommandIcon`, `Pixel`'s box and `Boxed`.
 public static class ModKitAssets
 {
     public static Transform Library;
@@ -230,20 +230,56 @@ public static class ModKitAssets
         return o;
     }
 
-    // A small icon drawn in code: one string per row, one character per pixel, looked up in the part's palette.
-    public static Sprite Pixel(string[] rows, string name, Dictionary<char, Color32> palette)
+    // The game's command buttons (the HUD's ability row and the choice dialog's cards) draw their icon in a 16-unit box,
+    // and the game's own command icons are 16 px, one unit per pixel. A 12 px icon there is stretched by 4/3: its pixels
+    // come out unequal and shift as the button moves or scales, which reads as jitter (pitfall #156).
+    public const int CommandIcon = 16;
+
+    // A small icon drawn in code: one string per row, one character per pixel, looked up in the part's palette. With a
+    // box larger than the drawing (CommandIcon for a command), the drawing sits centred on whole pixels in a clear
+    // box x box texture, so the game's slot draws it one unit per pixel.
+    public static Sprite Pixel(string[] rows, string name, Dictionary<char, Color32> palette, int box = 0)
     {
         int h = rows.Length, w = rows[0].Length;
-        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
-        tex.filterMode = FilterMode.Point;
-        tex.wrapMode = TextureWrapMode.Clamp;
-        Color32[] px = new Color32[w * h];
+        int tw = Mathf.Max(w, box), th = Mathf.Max(h, box), ox = (tw - w) / 2, oy = (th - h) / 2;
+        Color32[] px = new Color32[tw * th];
         for (int y = 0; y < h; y++)
             for (int x = 0; x < w; x++)
             {
                 Color32 c;
-                px[(h - 1 - y) * w + x] = x < rows[y].Length && palette.TryGetValue(rows[y][x], out c) ? c : new Color32(0, 0, 0, 0);
+                px[(oy + h - 1 - y) * tw + ox + x] = x < rows[y].Length && palette.TryGetValue(rows[y][x], out c) ? c : new Color32(0, 0, 0, 0);
             }
+        return Icon(px, tw, th, name);
+    }
+
+    // An existing sprite (a library PNG) centred on whole pixels in a clear box of at least box x box, for the same
+    // slots. Needs a readable texture (the parts' art importer sets isReadable); returns the sprite itself when it
+    // already fills the box or can't be read.
+    public static Sprite Boxed(Sprite sprite, int box, string name)
+    {
+        if (sprite == null)
+            return null;
+        Rect r = sprite.textureRect;
+        int w = (int)r.width, h = (int)r.height;
+        if (w >= box && h >= box)
+            return sprite;
+        Color32[] src;
+        try { src = sprite.texture.GetPixels32(); }
+        catch (Exception) { return sprite; }
+        int sw = sprite.texture.width, tw = Mathf.Max(w, box), th = Mathf.Max(h, box), ox = (tw - w) / 2, oy = (th - h) / 2;
+        Color32[] px = new Color32[tw * th];
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+                px[(oy + y) * tw + ox + x] = src[((int)r.y + y) * sw + (int)r.x + x];
+        return Icon(px, tw, th, name);
+    }
+
+    // Pixels, bottom row first, as a point-sampled sprite at the game's 20 pixels a unit, centred.
+    static Sprite Icon(Color32[] px, int w, int h, string name)
+    {
+        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
         tex.SetPixels32(px);
         tex.Apply(false);
         tex.name = name;

@@ -157,7 +157,7 @@ public static class RWCardinals
         if (defs.TryGetValue(id, out d))
         {
             Sprite s = d.Look != "" ? RWAssets.Sprite(d.Look) : RWAssets.Like("Cardinal_" + d.Name);
-            return s ?? RWAssets.Sprite("RogueWaves_Crest32");
+            return s ?? RWAssets.Sprite("RogueWaves_Crest");
         }
         Artifactentryobject e = RWUtil.Item<Artifactentryobject>("Artifact", id);
         return e != null ? e.Display_Icon : null;

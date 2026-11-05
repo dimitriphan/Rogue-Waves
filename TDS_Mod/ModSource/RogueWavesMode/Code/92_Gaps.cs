@@ -277,7 +277,7 @@ public static partial class RWTest
     {
         int noName = 0, noDesc = 0, crest = 0, ranks = 0;
         List<string> crested = new List<string>(), bad = new List<string>();
-        Sprite fallback = RWAssets.Sprite("RogueWaves_Crest32");
+        Sprite fallback = RWAssets.Sprite("RogueWaves_Crest");
         foreach (Upgradeproperties u in RWDirections.List)
         {
             string v, n;

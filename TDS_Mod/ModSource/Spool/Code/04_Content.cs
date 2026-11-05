@@ -272,11 +272,11 @@ public static class SpoolContent
             Iconobject.Icon like = null;
             if (types != null && types.Icons != null)
                 foreach (Iconobject.Icon v in types.Icons.Values) { like = v; break; }
-            AddIcon(types, "Spool_Patch", SpoolAssets.PatchIcon, "Patch", like);
-            AddIcon(types, "Spool_Target", SpoolAssets.PinIcon, "Target", like);
-            AddIcon(types, "Spool_Spot", SpoolAssets.SpotIcon, "Spot", like);
-            AddIcon(types, "Spool_Return", SpoolAssets.ReturnIcon, "Return", like);
-            AddIcon(types, "Spool_Mend", SpoolAssets.MendIcon, "Mend", like);
+            AddIcon(types, "Spool_Patch", SpoolAssets.PatchIcon, "Patch", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Target", SpoolAssets.PinIcon, "Target", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Spot", SpoolAssets.SpotIcon, "Spot", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Return", SpoolAssets.ReturnIcon, "Return", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Mend", SpoolAssets.MendIcon, "Mend", like, ModKitAssets.CommandIcon);
             AddIcon(stats, "Thread", SpoolAssets.ThreadIcon, "Thread", like);
             AddIcon(stats, "Stash", SpoolAssets.StashIcon, "Stash", like);
             AddIcon(stats, "Carried", SpoolAssets.CarriedIcon, "Carried", like);
@@ -308,13 +308,13 @@ public static class SpoolContent
         SpoolLog.Warn("icon table was built before Spool's icons were added; Spool's buttons use stock icons");
     }
 
-    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like)
+    static void AddIcon(Iconobject into, string name, string[] rows, string display, Iconobject.Icon like, int box = 0)
     {
         if (into == null || into.Icons == null || into.Icons.ContainsKey(name))
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = SpoolAssets.Pixel(rows, "Icon_" + name);
+        icon.Image = SpoolAssets.Pixel(rows, "Icon_" + name, box);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = display;

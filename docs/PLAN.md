@@ -312,6 +312,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   half built, 47 Direction/Trinket/Cardinal sheets, pairs, B12 is code, the sweep's tilde lines, Leads to). New tool
   `TDS_Mod/Tools/cloud-check/scope_upgrades.py`. Docs only. His project-files scope copy and the Scope Editor are
   behind in six files (02, 07, 08, 09, 15, 16; his word to sync).
+  2026-11-05: the jittering button icons fixed (pitfall #156, kit 1.10): every pack icon the game drew stretched (the
+  menu's 32 px crest in Play's 48-unit box, the 12 px command icons and card pictures in 16-unit boxes) now draws a whole
+  number of screen pixels per art pixel: command icons are 16 px boxes (all four vessels and the mode's SHOP, FUND
+  TRANSFER, OBJECTIVE, weathers), the crest is sized to 32 units, and every card's picture is crisped where the dialog is
+  placed; card art uses the 12 px crest and 24 px numbers; the
+  sea chart's weather marks keep their size. Compiled here, not yet seen in game: his eye on the menu, a
+  dialog sliding in, and the HUD's buttons.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -338,7 +345,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #156 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes).
+- **Next free numbers:** kit chapter 25, pitfall #157 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

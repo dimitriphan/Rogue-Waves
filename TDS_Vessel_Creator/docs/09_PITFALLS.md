@@ -520,3 +520,13 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      Power Bank made `if (Plug == null) return;` skip the very unplug that should have run, so PLUG IN stuck on UNPLUG →
      ask the reference itself (`(object)Plug == null`) where the code must still act on a thing that went (`UloeHeroBrain`);
      `ModKitUtil.Alive` already reads both. Read from code (ULO-1); pitfalls #6 and #63 are the same rule met elsewhere.
+156. **An icon not drawn at a whole number of screen pixels per art pixel jitters as its button moves** (2026-11-05) →
+     the game's UI draws pixel art one canvas unit per art pixel (the main menu's Play picture is 48 px in a 48-unit box,
+     the HUD's command icons and the choice dialog's cards 16 px in 16-unit boxes), and a canvas unit is 3 screen pixels
+     at a UI scale of 3. A 12 px icon in a 16-unit box is 4 screen pixels a pixel, drawn as columns of 4 and 3 that trade
+     places with every sub-pixel step of a slide or a hover tween; the 32 px crest stretched to Play's 48-unit box is 4.5.
+     Dimitri saw the Rogue Waves button "jittering"; pitfall #138's whole-pixel placing of the dialog didn't reach it →
+     a command icon is a 16 px texture with the drawing centred in clear pixels (`ModKitAssets.CommandIcon`, `Pixel`'s
+     box, `Boxed`; kit 1.10); a picture the part sizes itself is sized to whole screen pixels per art pixel with its corner
+     on a whole pixel (`RWAssets.Crisp`: the menu's crest, every card). Read from the game's files (`level1` Main/Play,
+     the HUD's Commandcontainer, `Confirmationbuttonbase`); compiled, not yet seen in game.
