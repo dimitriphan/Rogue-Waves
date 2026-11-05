@@ -397,7 +397,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05: the text audit, Dimitri's queued order (`docs/reports/TEXT_AUDIT_2026-11-05.md`): every player-facing
   string and the living docs read for spelling, grammar, the names, stale facts and the clean rule. Seven game lines
   fixed with their scope lines (Rising Water's Tide, Dazzling's Illuminates, Vampire Dentures' grammar, "per hit",
-  "farther", Spool's mend line, Argo's Mods-menu text); 32 scope and doc lines (the F-key "pass" of 2026-11-04 ran
+  "farther", Spool's mend line, Argo's Mods-menu text); about 40 scope and doc lines (the F-key "pass" of 2026-11-04 ran
   with the fix unarmed: scope `03`, here, `RESEARCH_GAPS.md`, kit `docs/15`; stale "not built" and "passes in game"
   lines; typos). Seven calls for him in its §4 (the meteor's line, Long Line named twice, the leave vote's line, Depth's
   unlock, numbers in Notched Oar, British or American spelling, the weather's pay wording for the sweep). No number
