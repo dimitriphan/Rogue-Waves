@@ -350,8 +350,6 @@ public static class RWDirections
     {
         statMods.Clear();
         spring.Clear();
-        pooled.Clear();
-        poolMods.Clear();
         cuts.Clear();
         pruneAt = 256;
     }
@@ -534,10 +532,7 @@ public static class RWDirections
         if (Game_Entity.Instance == null || wave <= 0)
             return;
         // Tide Pool's extra health lasted the Tide that just ended.
-        foreach (Link_Modifier m in poolMods.Values)
-            ModKitUtil.Unmod(m);
-        pooled.Clear();
-        poolMods.Clear();
+        RWHold.Drop(PoolKey);
         List<Entity_Master> all = null;
         foreach (long s in RWRun.Sessions())
         {
@@ -602,31 +597,24 @@ public static class RWDirections
                 Helper_Entitytools.Interactheal(tower, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
                 Mended += heal;
             }
-            if (pools && heal > missing)
-                Pool(e, heal - missing);
+            float past = heal - Mathf.Max(0f, missing);
+            if (pools && past > 0f)
+                Pool(e, past);
         }
     }
 
     // Tide Pool: what was mended past full stays on as an Add to max health, at most a fifth of the tower's own, until the
     // Tide ends (TideEffects takes it off at the next break). Health is Variable, so the tower at full stays at full.
     public const float PoolCap = 0.2f;
-    static readonly Dictionary<Entity_Master, float> pooled = new Dictionary<Entity_Master, float>();
-    static readonly Dictionary<Entity_Master, Link_Modifier> poolMods = new Dictionary<Entity_Master, Link_Modifier>();
+    const string PoolKey = "Pool";
     public static float Pooled;     // self-test
 
     static void Pool(Entity_Master t, float amount)
     {
-        float had;
-        pooled.TryGetValue(t, out had);
+        float had = RWHold.Get(t, PoolKey);
         float want = Mathf.Min(had + amount, PoolCap * (ModKitUtil.MaxHealth(t) - had));
-        if (want <= had + 0.001f)
-            return;
-        Link_Modifier old;
-        if (poolMods.TryGetValue(t, out old))
-            ModKitUtil.Unmod(old);
-        poolMods[t] = Helper_Entitytools.Addmod(t, "Health", want, Helper_Entitytools.Modtypes.Add, 0f);
-        pooled[t] = want;
-        Pooled += want - had;
+        if (want > had + 0.001f && RWHold.Set(t, PoolKey, "Health", Helper_Entitytools.Modtypes.Add, want))
+            Pooled += want - had;
     }
 
     // Compound Interest, paid with the Tide's own aura (Fie's silo pattern, kit docs/16 §5).

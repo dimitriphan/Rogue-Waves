@@ -478,11 +478,13 @@ public static partial class RWTest
         yield return Snap("cardinal_row");
         if (Mathf.Abs(player.Pure) >= 0) player.Pure = 60;
 
-        // A Direction's reach: each pack Direction granted at rank III; a tower built now carries the effects.
+        // A Direction's reach: each pack Direction granted at rank III; a tower built now carries the effects. The ones any vessel
+        // can take since 2026-11-05 have their own test (gaps part "any"): held here they would change the checks below
+        // (Tide Pool grows the tower Spring Tide is measured on, Clam Shell keeps the vessel up).
         vessel = RWRun.Vessel(me);
         RWDirections.Refresh();
         foreach (RWDirectionDef d in RWDirections.Mine)
-            if (d.Vessel == "Any")
+            if (d.Vessel == "Any" && Array.IndexOf(RWAny.Names, d.Name) < 0)
                 foreach (string n in new[] { d.Name, d.Name + "2", d.Name + "3" })
                 {
                     Upgradeproperties u = Bl_Address.Getload("Upgrade", ModKitDirections.Id("Any", n)) as Upgradeproperties;
@@ -584,7 +586,6 @@ public static partial class RWTest
             Helper_Entitytools.Despawn(minion.Beingserver, false, "RogueWaves");
         }
         float tower0 = built != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
-        player.Directions.RemoveAll(id => id.StartsWith("Direction_Any_Tougher") == false && id.StartsWith("Direction_Any") && !id.EndsWith("_Upgradeobject"));
 
         // The board: this break's objective.
         RWObjectives.Active = null;

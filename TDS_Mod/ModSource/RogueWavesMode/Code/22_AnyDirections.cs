@@ -6,26 +6,30 @@
 //   Fine Sieve     each break after a Tide: 3 / 5 / 8 x the Tide's number of the colour held least, paid to the holder
 //   Spare Hands    the holder's unit buildings: Units +1 / +1 / +2 (the base vessels' own count message after it), Boutman's
 //                  barrels Vacantcurrent too; rank II and III: Respawn -25 / -40% on them and on the Bouthouse (Boutbro)
-//   Galley Kettle  each vessel hit: +4% Attackspeed, up to 20 / 35 / 50%, gone 3 s after the last; rank III: +10% Damage at the top
-//   Chain Shot     every 4th (rank III 3rd) vessel hit jumps 1 / 2 / 3 times to the nearest foe within 2 tiles of the last,
+//   Galley Kettle  each vessel attack: +4% Attackspeed, up to 20 / 35 / 50%, gone 3 s after the last; rank III: +10% Damage at the top
+//   Chain Shot     every 4th (rank III 3rd) vessel attack jumps 1 / 2 / 3 times to the nearest foe within 2 tiles of the last,
 //                  for half the hit; with Fire Ship each jump bursts for 10% of the struck foe's max health on the foes
 //                  within 0.75 tiles of it
 //   Salt Barrel    the vessel: Health Pmulti +15 / 30 / 45%; rank II and III: mends 0.5 / 1 a second while hurt
 //   Fog Horn       foes within 2 / 2 / 3 tiles of the vessel: Speed Multi -10 / 15 / 25% (the strongest holder's), four
 //                  times a second, gone as they leave
-//   Clam Shell     the vessel's hit hook, first in its chain: a killing blow leaves it at 1 health, once a map (rank III
-//                  twice); rank II and III: nothing hurts it for 3 s after
-//   Notched Oar    every 10th / 7th / 5th vessel hit: Damagemulti x2 (the attacker's side, before the foe takes it)
-//   Lamp Oil       a foe the vessel drowns (it is the foe's Lasthit) bursts: 15 / 25 / 35% of its max health on the foes
+//   Clam Shell     the vessel's hit hook, after the other mods' hooks and before the game's own: a killing blow leaves it at
+//                  1 health, once a map (rank III twice); rank II and III: nothing hurts it for 3 s after
+//   Notched Oar    every 10th / 7th / 5th vessel attack: Damagemulti x2 on each foe it strikes (the attacker's side)
+//   Lamp Oil       a foe the vessel drowns (it is the foe's Lasthit, set by the killing blow) bursts: 15 / 25 / 35% of its max health on the foes
 //                  within 1 / 1.25 / 1.5 tiles, credited to the vessel, so a burst's kills burst too
 //   Fish Hook      15 / 25 / 35% of vessel hits snag: half the hit again, in six ticks over 3 s; at most 3 / 3 / 5 of the
 //                  holder's on one foe
 //   Spare Compass  RWDirections.Roll offers 4 / 4 / 5; rank II and III: one redraw a map (RWVote's pick, RedrawPick)
 //   Magpie Nest    the vessel and the holder's towers: Damage Multi +1 / 1.5 / 2% for each Trinket stack and each Cardinal
 //   Tide Pool      in RWDirections.TideEffects (Tidal Mend's own pass)
-// No look of their own yet: a stock debuff look shows only on maps whose groups hold it (pitfall #114).
+// An attack is one hit for Galley Kettle, Chain Shot and Notched Oar however many foes it strikes: its hits land in one
+// frame. Fish Hook rolls for each foe struck. No look of their own yet: a stock debuff look shows only on maps whose groups
+// hold it (pitfall #114).
 public static class RWAny
 {
+    // Every Direction this file and Tide Pool build: the flow self-test leaves them to the gaps part "any".
+    public static readonly string[] Names = { "Wound", "Sieve", "Hands", "Kettle", "Chain", "Salt", "Fog", "Clam", "Oar", "Lamp", "Hook", "Compass", "Magpie", "Fireship", "Pool" };
     public const string Extra = "RW_Extra";
     public static readonly float[] WoundSpeed = { 0f, 0.06f, 0.12f, 0.2f };
     public static readonly int[] SieveTimes = { 0, 3, 5, 8 };
@@ -45,6 +49,7 @@ public static class RWAny
     public static readonly int[] OarEvery = { 0, 10, 7, 5 };
     public static readonly float[] LampBurst = { 0f, 0.15f, 0.25f, 0.35f };
     public static readonly float[] LampReach = { 0f, 1f, 1.25f, 1.5f };
+    public const float LampFresh = 0.25f;
     public static readonly float[] HookChance = { 0f, 0.15f, 0.25f, 0.35f };
     public static readonly int[] HookBleeds = { 0, 3, 3, 5 };
     public const float HookShare = 0.5f, HookLasts = 3f;
@@ -60,7 +65,8 @@ public static class RWAny
         public RWPlayer Player;
         public Entity_Master Vessel;
         public int Wound, Sieve, Hands, Kettle, Chain, Salt, Fog, Clam, Oar, Lamp, Hook, Compass, Magpie, Fireship;
-        public int KettleHits, ChainCount, OarCount, Saves;
+        public int KettleHits, ChainCount, OarCount, Saves, Hoard, AttackFrame = -1;
+        public bool OarNow, ChainNow;
         public float KettleLast = -99f, SafeUntil, NextMend;
         public bool Listens { get { return Kettle + Chain + Oar + Hook > 0; } }
     }
@@ -177,7 +183,7 @@ public static class RWAny
         if (c.Listens)
             ModKitUtil.Listen(v, dealt);
         if (c.Clam > 0)
-            ModKitUtil.Front(v, hurt);
+            AfterFronts(v, hurt);
         if (c.Kettle > 0)
         {
             if (now - c.KettleLast > KettleLasts)
@@ -204,10 +210,11 @@ public static class RWAny
         foreach (Crew c in crews.Values)
         {
             Entity_Master v = c.Vessel;
+            c.Hoard = c.Magpie > 0 ? Hoard(c.Player) : 0;
             if (ModKitUtil.Alive(v))
             {
                 if (c.Salt > 0) RWHold.Set(v, "Salt", "Health", Helper_Entitytools.Modtypes.Pmulti, SaltHealth[c.Salt]);
-                if (c.Magpie > 0) RWHold.Set(v, "Magpie", "Damage", Helper_Entitytools.Modtypes.Multi, MagpieEach[c.Magpie] * Hoard(c.Player));
+                if (c.Magpie > 0) RWHold.Set(v, "Magpie", "Damage", Helper_Entitytools.Modtypes.Multi, MagpieEach[c.Magpie] * c.Hoard);
             }
             if (c.Wound > 0 || c.Magpie > 0 || c.Hands > 0) towers = true;
         }
@@ -223,14 +230,15 @@ public static class RWAny
                 Crew c;
                 if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Statsserver == null || !crews.TryGetValue(ModKitUtil.Owner(e), out c))
                     continue;
+                // RWDirections.Reach's filter: no vessel and no Blurry Photo copy (Boutbro is no Tower, so not here).
                 List<string> tags = e.Beingserver.Entity.Tags;
-                if (tags.Contains("Hero"))
+                if (tags.Contains("Hero") || tags.Contains("Clone") || tags.Contains("Prespawn"))
                     continue;
                 bool house = tags.Contains("Bouthouse");
                 if (!house)
                 {
                     if (c.Wound > 0) RWHold.Set(e, "Wound", "Attackspeed", Helper_Entitytools.Modtypes.Multi, WoundSpeed[c.Wound]);
-                    if (c.Magpie > 0) RWHold.Set(e, "Magpie", "Damage", Helper_Entitytools.Modtypes.Multi, MagpieEach[c.Magpie] * Hoard(c.Player));
+                    if (c.Magpie > 0) RWHold.Set(e, "Magpie", "Damage", Helper_Entitytools.Modtypes.Multi, MagpieEach[c.Magpie] * c.Hoard);
                 }
                 if (c.Hands > 0) Hands(e, c, house, tags);
                 Swept++;
@@ -277,14 +285,22 @@ public static class RWAny
             float damage, multi;
             if (!hit.Data.TryGetValue("Damage", out damage) || !hit.Data.TryGetValue("Damagemulti", out multi))
                 return;
-            if (c.Kettle > 0)
+            // A new attack: the first of its hits counts it.
+            if (Time.frameCount != c.AttackFrame)
             {
-                c.KettleHits++;
-                c.KettleLast = Time.time;
+                c.AttackFrame = Time.frameCount;
+                if (c.Kettle > 0)
+                {
+                    c.KettleHits++;
+                    c.KettleLast = Time.time;
+                }
+                c.OarNow = c.Oar > 0 && ++c.OarCount >= OarEvery[c.Oar];
+                if (c.OarNow) c.OarCount = 0;
+                c.ChainNow = c.Chain > 0 && ++c.ChainCount >= ChainEvery[c.Chain];
+                if (c.ChainNow) c.ChainCount = 0;
             }
-            if (c.Oar > 0 && ++c.OarCount >= OarEvery[c.Oar])
+            if (c.OarNow)
             {
-                c.OarCount = 0;
                 // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
                 hit.Data = new Dictionary<string, float>(hit.Data);
                 multi *= 2f;
@@ -294,9 +310,10 @@ public static class RWAny
             float landed = damage * multi;
             if (landed <= 0f)
                 return;
-            if (c.Chain > 0 && ++c.ChainCount >= ChainEvery[c.Chain])
+            if (c.ChainNow)
             {
-                c.ChainCount = 0;
+                // From the first foe the attack strikes.
+                c.ChainNow = false;
                 jumps.Add(new Jump { From = hit.From, First = hit.To, At = ModKitUtil.Pos(hit.To), Damage = landed * ChainShare, Left = ChainJumps[c.Chain], Fire = c.Fireship > 0 });
             }
             if (c.Hook > 0 && (ForceSnag || UnityEngine.Random.value < HookChance[c.Hook]))
@@ -305,7 +322,46 @@ public static class RWAny
         catch (Exception e) { RWLog.Once("any dealt", "a vessel hit: " + e.Message); }
     }
 
-    // ---------------------------------------------------------------- the vessel taking a hit (first in its chain)
+    // ---------------------------------------------------------------- the vessel taking a hit
+
+    // After every other mod's front hook (Uloe's SURGE cut, Made of Tougher Stuff: they come first, ModKitUtil.Front) and
+    // before the first of the game's own handlers, one of which takes the health (Helper_Damagetools.Dodamage). An upgrade
+    // AI on the vessel that changes the hit still acts after it. Put back ten times a second, like Front.
+    static void AfterFronts(Entity_Master m, Entity_Master.Oninteracts handler)
+    {
+        Delegate[] list = m.Oninteract != null ? m.Oninteract.GetInvocationList() : new Delegate[0];
+        List<Delegate> want = new List<Delegate>(list.Length + 1);
+        foreach (Delegate d in list)
+        {
+            if (d.Equals(handler))
+                continue;
+            if (d.Target is Entity_Ai_Base && !want.Contains(handler))
+                want.Add(handler);
+            want.Add(d);
+        }
+        if (!want.Contains(handler))
+            want.Add(handler);
+        bool same = want.Count == list.Length;
+        for (int i = 0; same && i < list.Length; i++)
+            same = list[i].Equals(want[i]);
+        if (!same)
+            m.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(want.ToArray());
+    }
+
+    // Would this blow end the vessel? As the game deals it: armour takes any hit for 1, an overshield takes one it can hold
+    // whole (a bigger one breaks it and lands in full), ore health takes at most 1 (Helper_Damagetools.Dodamage).
+    static bool Kills(Entity_Master v, float dealt)
+    {
+        Link_Stats s;
+        Dictionary<string, Link_Stats> st = v.Statsserver;
+        if (st.TryGetValue("Healtharmor", out s) && s.Value > 0f)
+            return false;
+        if (st.TryGetValue("Healthover", out s) && s.Value > 0f && dealt <= s.Value)
+            return false;
+        if (st.TryGetValue("Healthresource", out s) && s.Value > 0f)
+            return false;
+        return st.TryGetValue("Health", out s) && s.Value > 0f && dealt >= s.Value;
+    }
 
     static void OnHurt(Link_Interact hit)
     {
@@ -325,7 +381,7 @@ public static class RWAny
             else if (c.Clam > 0 && c.Saves < ClamSaves[c.Clam])
             {
                 float hp = ModKitUtil.Health(hit.To);
-                if (hp > 0f && damage * multi >= hp)
+                if (hit.To.Statsserver != null && Kills(hit.To, damage * multi))
                 {
                     multi = Mathf.Max(0f, (hp - 1f) / damage);
                     c.Saves++;
@@ -376,18 +432,13 @@ public static class RWAny
         }
     }
 
+    // FoesNear gives the nearest first.
     static Entity_Master Nearest(Entity_Master from, Vector3 at, float reach, List<Entity_Master> skip)
     {
-        Entity_Master best = null;
-        float bestD = float.MaxValue;
         foreach (Entity_Master e in ModKitUtil.FoesNear(from, at, reach))
-        {
-            if (skip.Contains(e))
-                continue;
-            float d = ModKitUtil.Flat(ModKitUtil.Pos(e), at);
-            if (d < bestD) { best = e; bestD = d; }
-        }
-        return best;
+            if (!skip.Contains(e))
+                return e;
+        return null;
     }
 
     // Lamp Oil's and Fire Ship's bursts; a burst's kills queue theirs for the next frame.
@@ -415,9 +466,11 @@ public static class RWAny
     {
         if (!killed || master == null || !RWRun.InCampaignMap || !ModKitUtil.IsServer)
             return;
+        // Lasthit set by the killing blow, not by an older hit: one carrying its own Damage (a Sno Box, a wall's blast) never
+        // moves it (kit docs/17 §2.6), and a death comes inside the blow that deals it (Helper_Damagetools.Addressdamage).
         Entity_Master by = master.Lasthit;
         Crew c;
-        if (by == null || !crews.TryGetValue(ModKitUtil.Owner(by), out c) || c.Vessel != by || c.Lamp <= 0)
+        if (by == null || Time.fixedTime - master.Lasthittime > LampFresh || !crews.TryGetValue(ModKitUtil.Owner(by), out c) || c.Vessel != by || c.Lamp <= 0)
             return;
         if (master.Taglistserver == null || !master.Taglistserver.Contains("Enemy") || ModKitUtil.Team(master) == ModKitUtil.Team(by))
             return;
@@ -548,6 +601,20 @@ public static class RWHold
     static readonly Dictionary<string, Kept> kept = new Dictionary<string, Kept>();
 
     public static void Clear() { kept.Clear(); }
+
+    // Takes every thing's mod under this key off.
+    public static void Drop(string key)
+    {
+        string end = ":" + key;
+        List<string> gone = new List<string>();
+        foreach (KeyValuePair<string, Kept> kv in kept)
+            if (kv.Key.EndsWith(end))
+            {
+                if (kv.Value.Mod != null && !kv.Value.Mod.Dead) ModKitUtil.Unmod(kv.Value.Mod);
+                gone.Add(kv.Key);
+            }
+        foreach (string k in gone) kept.Remove(k);
+    }
 
     public static bool Set(Entity_Master e, string key, string stat, Helper_Entitytools.Modtypes type, float value)
     {

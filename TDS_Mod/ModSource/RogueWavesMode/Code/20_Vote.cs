@@ -273,10 +273,11 @@ public static class RWVote
         RWPlayer p = RWRun.For(s);
         if (!offers.TryGetValue(s, out had) || Votes.ContainsKey(s) || !RWAny.CanRedraw(p))
             return;
-        RWAny.Redrew(p);
+        // The player's dialog has closed on the click: it is always asked again, with the old cards when none other is left.
         List<int> o = RWDirections.Roll(p, HeroOf(s), PickSeed(p) ^ 7919, had);
         if (o.Count == 0)
-            return;
+            o = had;
+        RWAny.Redrew(p);
         offers[s] = o;
         Round++;
         until = Mathf.Max(until, Time.time + PickSeconds);

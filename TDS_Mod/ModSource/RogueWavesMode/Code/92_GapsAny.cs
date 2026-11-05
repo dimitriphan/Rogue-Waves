@@ -138,7 +138,8 @@ public static partial class RWTest
         Check("Salt Barrel rank III: the vessel mends about 1 a second while hurt", Hp(vessel) - hurtAt >= 2f && Hp(vessel) - hurtAt <= 4.01f, hurtAt + " -> " + Hp(vessel) + " in 3.1 s");
         DropAny(player, "Salt");
 
-        // Galley Kettle: 13 hits reach the rank III top, which also hits harder; 3 s without a hit and it is gone.
+        // Galley Kettle: 13 attacks reach the rank III top, which also hits harder; 3 s without a hit and it is gone. The first
+        // attack strikes three times in one frame, as one that hits three foes does: it counts once.
         TakeAny(player, "Kettle", 3);
         yield return new WaitForSeconds(0.6f);
         Entity_Master foe = FoeNear(field, 2f, 8f, null);
@@ -147,7 +148,12 @@ public static partial class RWTest
         if (foe == null) Setup("Galley Kettle", "no foe");
         else
         {
-            for (int i = 0; i < 13; i++) Hurt(vessel, foe, 0.01f);
+            RWAny.Crew crew = RWAny.CrewOf(me);
+            int hits0 = crew != null ? crew.KettleHits : -1;
+            for (int i = 0; i < 3; i++) Hurt(vessel, foe, 0.01f);
+            int once = crew != null ? crew.KettleHits - hits0 : -1;
+            for (int i = 0; i < 12; i++) { yield return null; Hurt(vessel, foe, 0.01f); }
+            Check("Galley Kettle: an attack that strikes three times counts once", once == 1, "counted " + once);
             yield return new WaitForSeconds(0.3f);
             float k1 = Multi(vessel, "Attackspeed"), kd1 = Multi(vessel, "Damage");
             yield return new WaitForSeconds(RWAny.KettleLasts + 0.4f);
@@ -171,13 +177,14 @@ public static partial class RWTest
         {
             float b0 = Hp(b), jumped0 = RWAny.Jumped;
             Hurt(vessel, a, 1f);
+            yield return null;
             Hurt(vessel, a, 1f);
             yield return null;
             float bAfterTwo = Hp(b);
             Hurt(vessel, a, 4f);
             yield return new WaitForSeconds(0.2f);
             float d = ModKitUtil.Flat(a.Entityposition.Value, b.Entityposition.Value);
-            Check("Chain Shot rank III: the 3rd hit, and not before, jumps to a foe within 2 tiles for half of it", Mathf.Abs(bAfterTwo - b0) < 0.001f && RWAny.Jumped > jumped0 && (d > RWAny.ChainReach || Mathf.Abs(b0 - Hp(b) - 2f) < 0.01f),
+            Check("Chain Shot rank III: the 3rd attack, and not before, jumps to a foe within 2 tiles for half of it", Mathf.Abs(bAfterTwo - b0) < 0.001f && RWAny.Jumped > jumped0 && (d > RWAny.ChainReach || Mathf.Abs(b0 - Hp(b) - 2f) < 0.01f),
                 "the foe beside it " + b0 + " -> " + bAfterTwo + " -> " + Hp(b) + ", " + RWUtil.F(d) + " tiles away, jumps " + (RWAny.Jumped - jumped0));
         }
         ClearFoes();
@@ -231,7 +238,7 @@ public static partial class RWTest
         DropAny(player, "Fireship");
         ClearFoes();
 
-        // Notched Oar at rank III: the 5th hit doubled.
+        // Notched Oar at rank III: the 5th attack doubled.
         TakeAny(player, "Oar", 3);
         yield return new WaitForSeconds(0.6f);
         foe = FoeNear(field, 2f, 8f, null);
@@ -240,10 +247,10 @@ public static partial class RWTest
         else
         {
             float f0 = Hp(foe);
-            for (int i = 0; i < 4; i++) Hurt(vessel, foe, 1f);
+            for (int i = 0; i < 4; i++) { Hurt(vessel, foe, 1f); yield return null; }
             float f4 = Hp(foe);
             Hurt(vessel, foe, 1f);
-            Check("Notched Oar rank III: every 5th hit of the vessel deals double", Mathf.Abs(f0 - f4 - 4f) < 0.01f && Mathf.Abs(f4 - Hp(foe) - 2f) < 0.01f, f0 + " -> " + f4 + " -> " + Hp(foe));
+            Check("Notched Oar rank III: every 5th attack of the vessel deals double", Mathf.Abs(f0 - f4 - 4f) < 0.01f && Mathf.Abs(f4 - Hp(foe) - 2f) < 0.01f, f0 + " -> " + f4 + " -> " + Hp(foe));
         }
         DropAny(player, "Oar");
         ClearFoes();
@@ -295,6 +302,19 @@ public static partial class RWTest
         if (striker == null) Setup("Clam Shell", "no foe");
         else
         {
+            // Another mod's hook that halves the blow is ahead of Clam Shell's: a blow it brings below a kill spends no save.
+            ModKitUtil.Heal(vessel, vessel, HpMax(vessel));
+            ModKitUtil.Front(vessel, halve);
+            yield return new WaitForSeconds(0.25f);
+            int halved0 = RWAny.Saved;
+            float full = Hp(vessel);
+            Hurt(striker, vessel, full * 1.5f);
+            float halvedTo = Hp(vessel);
+            ModKitUtil.Unfront(vessel, halve);
+            Check("Clam Shell judges the blow after the other mods' hooks: one halved below a kill spends no save", RWAny.Saved == halved0 && Mathf.Abs(halvedTo - full * 0.25f) < 0.05f,
+                full + " -> " + halvedTo + " after a halved blow of " + (full * 1.5f) + ", saves " + (RWAny.Saved - halved0));
+            ModKitUtil.Heal(vessel, vessel, HpMax(vessel));
+            yield return new WaitForSeconds(0.25f);
             int saved0 = RWAny.Saved;
             Hurt(striker, vessel, 100000f);
             float first = Hp(vessel);
@@ -349,6 +369,16 @@ public static partial class RWTest
         yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 150f);
         yield return new WaitForSecondsRealtime(3f);
     }
+
+    static readonly Entity_Master.Oninteracts halve = hit =>
+    {
+        float m;
+        if (hit != null && hit.Type == "Hurt" && hit.Data != null && hit.Data.TryGetValue("Damagemulti", out m))
+        {
+            hit.Data = new Dictionary<string, float>(hit.Data);
+            hit.Data["Damagemulti"] = m * 0.5f;
+        }
+    };
 
     static float DirectionsPoolCap(float max) { return RWDirections.PoolCap * (max + RWDirections.SpringHealth[1]); }
 }
