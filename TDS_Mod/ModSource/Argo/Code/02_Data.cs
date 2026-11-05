@@ -315,8 +315,8 @@ public static class ArgoData
                     .Fx("Pierce +3"),
                 U(Harpoon, "Anchor", 3, "Anchor Line", "Pins the foe it hits, stunned against a building", "Root_Base=1;Pinstun_Base=1", "Redaura=60;Blueaura=50", "")
                     .Fx("Pins the first foe hit for 1s", "Beside a building: stunned for 1s instead", "Twice as long in Deep Water"),
-                U(Harpoon, "Reel", 3, "Reel", "Reels the first foe hit toward the gun", "Reel_Tiles=1.5", "Redaura=60;Blueaura=50", "Twinline4")
-                    .Fx("Reels the first foe hit 1.5 tiles closer", "Place it beside or up the lane: a gun by your core pulls foes toward the core"),
+                U(Harpoon, "Reel", 3, "Reel", "Reels the first foe hit towards the gun", "Reel_Tiles=1.5", "Redaura=60;Blueaura=50", "Twinline4")
+                    .Fx("Reels the first foe hit 1.5 tiles closer", "Place it beside or up the lane: a gun by your core pulls foes towards the core"),
                 U(Harpoon, "Whaler", 4, "Whaler", "Hits harder, and up to twice as hard against tough enemies", "Whaler_Base=200;Damage_Add=4", "Redaura=450", "Leviathan5")
                     .Fx("Damage +4", "Up to x2 on big health pools"),
                 U(Harpoon, "Twinline", 4, "Twin Line", "A second harpoon follows, reeling its own foe", "Twin_Base=0.3", "Redaura=350", "Undertow5")

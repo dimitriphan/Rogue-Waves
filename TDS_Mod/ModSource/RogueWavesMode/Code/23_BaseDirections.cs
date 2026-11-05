@@ -197,7 +197,7 @@ public static class RWBase
         if (!Game_Entity.Instance.Entityclienttags.TryGetValue(tag, out list))
             return;
         foreach (Entity_Master e in new List<Entity_Master>(list))
-            if (ModKitUtil.Alive(e) && e.Statsserver != null && e.Statsserver.Count > 0 && ModKitUtil.Owner(e) == owner && !e.Taglistserver.Contains("Clone") && !e.Taglistserver.Contains("Prespawn"))
+            if (ModKitUtil.Alive(e) && e.Statsserver != null && e.Statsserver.Count > 0 && ModKitUtil.Owner(e) == owner && !RWRun.IsCopy(e))
                 act(e);
     }
 
@@ -211,13 +211,8 @@ public static class RWBase
         ModKitUtil.Front(e, wallHit);
     }
 
-    // A hit on a mending wall: first in its chain, so a heal in the same moment can't hide it.
-    static void OnWallHit(Link_Interact hit)
-    {
-        RWUtil.Rest w;
-        if (hit != null && hit.Type == "Hurt" && hit.To != null && walls.TryGetValue(hit.To, out w))
-            w.Hurt = Time.time;
-    }
+    // A hit on a mending wall (RWUtil.Hit, which Tar Bucket shares).
+    static void OnWallHit(Link_Interact hit) { RWUtil.Hit(walls, hit); }
 
     // Four times a second: one left alone 3 s mends 1 a second. A drop in health counts as a hit too, for the moments the
     // hook is off (an upgrade landing rebuilds the chain, kit docs/17 §2.3, until the next sweep puts it back).

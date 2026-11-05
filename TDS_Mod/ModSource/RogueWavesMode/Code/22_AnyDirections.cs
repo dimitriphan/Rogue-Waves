@@ -274,8 +274,7 @@ public static class RWAny
         {
             if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Statsserver == null)
                 continue;
-            List<string> tags = e.Beingserver.Entity.Tags;
-            if (!tags.Contains("Hero") && !tags.Contains("Clone") && !tags.Contains("Prespawn"))
+            if (!e.Beingserver.Entity.Tags.Contains("Hero") && !RWRun.IsCopy(e))
                 l.Add(e);
         }
         return l;
