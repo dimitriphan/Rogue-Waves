@@ -5,6 +5,8 @@ defaults in its `DESIGN.md`" without saying what they were. Here they are, each 
 open, what Spool 0.1.0-dev does today, the other ways it could go, and Claude's pick in `~tildes~`. Source:
 `TDS_Mod/ModSource/Spool/DESIGN.md` ("Defaults picked here", "Changes from the concept") and scope `08`.
 
+**Answered 05:10Z, "Use all defaults"**: what follows is in `DECISIONS_APPLIED_2026-11-05.md` §4 (B16-B19).
+
 **How to answer:** by number in the thread, for example "S3 no merging, S10 remove MOVE, rest defaults". Nothing is
 built from this page: what he changes goes to the build thread's Spool items, and "leave Spool as is" holds until then.
 
