@@ -231,9 +231,9 @@ public static class ModKitUtil
     // the spawn fills in its Worldobject, so clients can't resolve it and the effect never appears.
     // Sent with the ClientRpc itself (Argo 2.0.1's way): the game's Vfxdebuffcheck drops a look while 50 effects wait to
     // be sent, which happens in busy online fights (kit docs/19 §4, pitfall #95). The send still counts in the game's
-    // queue. A look sent in the last half second that shows until this one's end is not sent again. Any send of a look
-    // sets its time, shorter or not (Helper_Vfxtools.Debuff), so another source's short one can cut this part's long one:
-    // after half a second it goes again, for whichever end is later (kit 1.9).
+    // queue, and a look already showing until this one's end is not sent again, with one exception: any send of a look
+    // sets its time, shorter or not (Helper_Vfxtools.Debuff), so another source's short one can cut this part's long
+    // one; a caller still renewing it sends it once more in its last half second (kit 1.9).
     static readonly Dictionary<Entity_Master, Dictionary<string, Vector2>> shown = new Dictionary<Entity_Master, Dictionary<string, Vector2>>();   // x: shown until, y: sent at
 
     public static void Debuff(Entity_Master radioOf, Entity_Master target, string vfx, float duration)
@@ -251,7 +251,7 @@ public static class ModKitUtil
         Vector2 look;
         if (looks.TryGetValue(vfx, out look))
         {
-            if (look.x >= end - 0.1f && now - look.y < 0.5f)
+            if (look.x >= end - 0.1f && (look.x - now >= 0.5f || look.y >= look.x - 0.5f))
                 return;
             end = Mathf.Max(end, look.x);
         }

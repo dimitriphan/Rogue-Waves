@@ -38,16 +38,17 @@ public static class ModKitTides
         }
         if (mv == null || !host)
             return;
+        // Wave is still its first -1 when the map counts as loaded; the game writes 0 a moment later, which is no Tide,
+        // and no rewind either (kit 1.9, SHARED-2).
+        int wave = Mathf.Max(mv.Wave.Value, 0);
         if (!started)
         {
             if (!mv.Maploaded.Value)
                 return;
             started = true;
-            // Wave is still its first -1 here; the game writes 0 a moment later, which is no Tide (kit 1.9, SHARED-2).
-            Wave = Mathf.Max(mv.Wave.Value, 0);
+            Wave = wave;
             Fire(MapStart);
         }
-        int wave = mv.Wave.Value;
         if (wave > Wave)
         {
             Wave = wave;

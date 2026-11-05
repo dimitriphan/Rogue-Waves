@@ -24,7 +24,7 @@ not run on the PC**: §5 is the test list for the next PC round.
 | MODE-D1, SHARED-1 | From Tide 29 every bonus break paid Pure Aura and interest twice and landed VENDCINT twice | `RWVote.Break` handles each Tide's break once; a Tide clears the guard, so a replayed Tide still gets its break | `20_Vote.cs` |
 | MODE-D2 | An objective running at a map's end paid or failed at the next map's opening break | `RWObjectives.Reset` at every MapStart | `19_Objectives.cs`, `20_Vote.cs` |
 | MODE-D3 | "Mind the Vessels" failed whenever a Boutbro fell | only the player's own vessel counts (`RWRun.IsVessel`: tagged `Hero`, not a clone, the player's own being) | `14_Run.cs`, `19_Objectives.cs` |
-| MODE-D4 | A pick or a vote asked while a vessel was down never reached its player | the host keeps each player's open question and run line and writes them on the respawned vessel; a client keeps an answer it couldn't send and sends it once the vessel is back | `14_Run.cs`, `20_Vote.cs` |
+| MODE-D4 | A pick or a vote asked while a vessel was down never reached its player | the host keeps each player's open question and run line and writes them on the respawned vessel; a client keeps an answer it couldn't send and sends it once the vessel is back with the same question on it | `14_Run.cs`, `20_Vote.cs` |
 | MODE-D5 | From map 2 every foe wore the Hardened elite tint | the map's health upgrade has no script; the host adds its Health Multi to each foe that carries it | `21_Difficulty.cs`, `00_RogueWavesModeMod.cs` |
 | MODE-D6 | A late vote to leave was cut off by the next Tide | asking to leave holds the break for the vote's 20 s; no majority lets it go | `20_Vote.cs` |
 | MODE-D7 | Closing a question also closed a SHOP or FUND dialog opened after answering | the question closes only its own dialog | `20_Vote.cs` |
@@ -41,13 +41,13 @@ not run on the PC**: §5 is the test list for the next PC round.
 | MODE-B2 | A rejoin's repair restarted client halves that were alive | it restarts only halves still without a Master two frames after the player has loaded; a lookless half is restarted only after its group was in on two looks | `09_Rejoin.cs` |
 | MODE-B3 | A turned-away player's catch-up outlived its map | every wait ends with its map | `09_Rejoin.cs` |
 | MODE-B4 | A turned-away player was told to Join Game again | the "Lost the map" line is armed only once this player was in the map's play (`Activeplayer`) | `09_Rejoin.cs` |
-| SHARED-2 | A stray Tide 0 at every map's start | `ModKitTides` takes `Max(Wave, 0)` at MapStart (kit 1.9, pitfall #154) | `Shared/ModKitTides.cs` |
+| SHARED-2 | A stray Tide 0 at every map's start | `ModKitTides` reads `Max(Wave, 0)` on every poll (kit 1.9, pitfall #154) | `Shared/ModKitTides.cs` |
 | ULO-1 | PLUG IN stuck on UNPLUG once the Power Bank was sold or destroyed | the cord tests the reference itself (pitfall #155) and keeps the plug's last position for the unplug effects | `Uloe/06_HeroBrain.cs` |
 | SPL-1 | A Thread Head with a full Stash turned round at it every quarter second | it heads home only when the Stash has room | `Spool/09_Head.cs` |
 | SPL-2 | RETURN with nothing carried parked the Head at the Stash | it turns round on arrival whatever it carries | `Spool/09_Head.cs` |
 | YOS-1 | A Grafted Sapling's fruit always looked like the ALL fruit | the skin is written again after the spawn, which copied the parent's (pitfall #151) | `Yossele/01_Util.cs` |
 | YOS-3 | A burst of deaths pushed an owner past 30 Cordyfriends | the cap is checked again at the spawn | `Yossele/16_Friend.cs` |
-| ARG-3 | Another source's short slow look cut Argo's long one | `ModKitUtil.Debuff` sends again half a second after its last send, for whichever end is later (kit 1.9) | `Shared/ModKitUtil.cs` |
+| ARG-3 | Another source's short slow look cut Argo's long one | `ModKitUtil.Debuff` sends a look a caller still renews once more in its last half second (kit 1.9) | `Shared/ModKitUtil.cs` |
 | ARG-4 | AIM's reach and ring went stale while the Drill Rig stayed selected, and after a Calibrate tune | the picker reads the drill's newest synced AIM entry; the drill syncs again when its Range changes | `Argo/16_AimSelect.cs`, `Argo/07_TowerBrain.cs` |
 | ARG-5 | A first miss ended the sound mixer's search for the session | it waits for the game's audio (kit 1.9) | `Shared/ModKitAssets.cs` |
 | ARG-6 | The recoil dictionary kept every turret | destroyed turrets are dropped past 64 entries | `Argo/10_Client.cs` |
@@ -61,9 +61,12 @@ not run on the PC**: §5 is the test list for the next PC round.
   foe comes at the latest; a Health Multi added later keeps the foe's share of health, so it still comes whole
   (kit `17` §2.1, verified). The stock script did the same sum. Pitfall #152.
 - **MODE-C4, the price cuts:** applied as an amount off the price, not a factor, because Voice in a Bottle's steps and
-  its reset are amounts too: price = 1 − Voice's steps − the Refits cut. A new command, or a price back at 1 or more
-  while a cut is on it, counts as a fresh price the game wrote. Cut Costs on the vessel's own build commands goes the
-  same way; its price is unchanged from before (1 − 0.1 per rank).
+  its reset are amounts too: price = 1 − Voice's steps − the Refits cut. The cut remembers the price it wrote. A new
+  command, or a price someone else moved (a build price, or an upgrade price back at 1 or more), counts as a fresh
+  price the game wrote, and the cut goes on again; a price only the cut wrote is left alone. Cut Costs on the vessel's
+  own build commands goes the same way; its price is unchanged from before (1 − 0.1 per rank). Boutman is the
+  exception: Boutbro rewrites his build prices as his fish count grows (kit `17` §5.1), so his cut is the same amount
+  off a larger price, a smaller share of it (before, the cut wrote the plain price over his fish price).
 - **MODE-D1 in the mode, not the kit:** the rewind is the mode's own (`RWDifficulty.Bonus`), and the kit's `Break` is
   right to fire on a rewound Entry for anyone who rewinds on purpose. The guard lives where the rewind does.
 - **MODE-B1 on every machine, after lobby changes only:** setting the speed every frame would fight photo mode's own
@@ -128,7 +131,7 @@ once fixed (the review's §6 has what the old build shows).
 | SPL-2 | A Head carrying nothing, far from drops: press RETURN | it walks back to its spot as it reaches the Stash |
 | YOS-1 | A Grafted Sapling set to BLUE mines a node out at full growth | the fruit's `Skin.Value` "Blueaura", the blue model |
 | YOS-3 | Self-test: hold an owner at 29 friends, call `Raise` 5 times in one frame, wait 0.2 s | `CountOf` 30 |
-| ARG-3 | Pin a foe in Deep Water next to a stock slowing tower | the slow look stays on while the foe is held |
+| ARG-3 | Pin a foe in Deep Water next to a stock slowing tower | if the tower's short slow cuts the look, it is back for the hold's last half second at the latest |
 | ARG-4 | Tune a Drill Rig with Calibrate, open AIM between the old and the new reach | "Shake the ground here", and the server takes it |
 | FOES-2 | The Bouthouse 2 tiles from a Dazzling Dagger, Boutman away; read Boutman's upgrades | no Illuminate |
 | FOES-3 | A Dagger with Aging and Berserk at 50% health; read its Damage against a plain one's | base × (1 + Aging's share + 0.5) |
@@ -141,5 +144,27 @@ leftovers (Spool host with an Argo friend showing no debuff looks, Argo's Deep C
 From `TDS_Mod/ModSource`, after `setup.sh` once: `python3 ../Tools/cloud-check/check_mod.py <Part>/Code Shared <Part> ""`,
 again with `<PART>_SELFTEST,<PART>_SHOTS`, and `../Tools/cloud-check/check_editor.sh ../Assets/<Part>Mod/Editor`, for Argo,
 Yossele, Spool, Uloe, RogueWavesMode and RogueWavesFoes: 0 errors in all 18. The one warning, in the mode's self-test
-build (`96_Flow.cs:311`, an unused local), is the base's. Then `/simplify` and `/code-review high` on the diff, with what
-they confirmed fixed (the PR body lists it). Nothing was run in game.
+build (`96_Flow.cs:311`, an unused local), is the base's. Nothing was run in game.
+
+`/simplify` on the diff (reuse, simplification, efficiency, altitude), then fixed what it found inside the diff: one
+writer for the vessel's question and run line, the held pick as one loop, fewer copied lists, and the rejoin's map check
+as one wrapper, which it caught still running on a destroyed map. Skipped, as larger than the fix or outside the diff: a
+shared plan-prefix helper, `Guarded` in the kit, a generic prune helper, a tag index in place of the entity scan,
+`ModKitTides.SetEntry` for the bonus break, and three micro-optimisations.
+
+`/code-review high` on the diff after the base's #86 and #87 were merged in: nine findings. Fixed:
+
+- SHARED-2 still fired its Tide 0: the rewind rule set the -1 back a line later. `Max(Wave, 0)` now holds on every poll.
+- The slow look's resend went every half second for a look a caller kept renewing, a slot in the game's send queue each
+  time; now once, in the look's last half second (kit 1.9, pitfall #95, kit `19` §4).
+- A pick held while the vessel was down could go to a round the host had closed meanwhile; it now goes only once the
+  respawned vessel carries the same question (MODE-D4).
+- The price cut took any price of 1 or more for a fresh one, so a price above 1 that it wrote itself (Boutbro's) was cut
+  again every half second; it now remembers what it wrote.
+- The Henge's vines, spawned with no skin asked, lost the Henge's skin after YOS-1; an empty skin keeps the parent's again.
+- The price cuts copied the entity list once per player each half second; now once a frame for all.
+
+Left: the "Lost the map" line needs `Activeplayer` above 0, which a player in the map has from the game's start
+(`Game_Admin.Play`) or the rejoin's `Restore`, so the reviewer's seat with `Active` 0 is not a player in the map's play;
+two writers of `Time.timeScale` (both read `RWWeather.GameSpeed`, so they agree); `Guarded` ends only the coroutine that
+threw, on purpose (MODE-A2: the part must still boot, and every dialog step after it checks its answer).

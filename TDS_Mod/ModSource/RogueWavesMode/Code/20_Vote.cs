@@ -578,13 +578,20 @@ public static class RWAsk
         int k = 0;
         if (kind != RWVote.LeaveKind && !int.TryParse(pick, out k))
             yield break;
-        // A pick made while this player's vessel is down goes out once it stands again, while its question is open (MODE-D4).
+        // A pick made while this player's vessel is down goes out once it stands again and the host has written the same
+        // question back onto it: a round closed meanwhile never reads as open on the new vessel (MODE-D4).
         float asked = round, until = Time.unscaledTime + seconds;
-        while (!RWMine.Send(kind, k, kind == RWVote.LeaveKind ? pick : ""))
+        while (!(StillAsked(what, asked) && RWMine.Send(kind, k, kind == RWVote.LeaveKind ? pick : "")))
         {
-            if (Time.unscaledTime > until || round != asked)
+            if (Time.unscaledTime > until)
                 yield break;
             yield return new WaitForSecondsRealtime(0.2f);
         }
+    }
+
+    static bool StillAsked(string what, float asked)
+    {
+        Link_Commandref ask;
+        return RWMine.Command(RWMine.Vessel(), RWRun.AskLink, out ask) && ask.Goalvalue == asked && ask.Goalstring.ToString() == what;
     }
 }

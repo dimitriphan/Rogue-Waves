@@ -238,7 +238,7 @@ public static class RWDirections
         // A tower has no Upgrade command yet as it spawns, and each upgrade writes a new one (seen on the PC): kept up here.
         // Boutman's whole tree is on the Bouthouse, and a Fie wall builds its next segment from its own Buildoption1 (MODE-C6).
         if ((refitOff > 0f || buildOff > 0f) && Game_Entity.Instance != null)
-            foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
+            foreach (Entity_Master e in Standing())
             {
                 if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || e.Entitydata.Value.Owner != p.Session)
                     continue;
@@ -262,6 +262,21 @@ public static class RWDirections
     }
 
     static readonly Dictionary<string, Link_Modifier> statMods = new Dictionary<string, Link_Modifier>();
+
+    // One copy of the entity list a frame for every player's Grant (Carry runs them back to back), kept for reuse.
+    static readonly List<Entity_Master> standing = new List<Entity_Master>();
+    static int standingFrame = -1;
+
+    static List<Entity_Master> Standing()
+    {
+        if (standingFrame != Time.frameCount)
+        {
+            standingFrame = Time.frameCount;
+            standing.Clear();
+            standing.AddRange(Game_Entity.Instance.Entityclient);
+        }
+        return standing;
+    }
 
     // A map starts (RWVote.MapStart): the last map's vessels and buildings go (MODE-C7).
     public static void Reset()
@@ -291,8 +306,9 @@ public static class RWDirections
         return best;
     }
 
-    // Build price scale = the BuildoptionN Goalvalue of what builds (kit docs/17 §2.7); Boutbro rewrites his own, so Cut
-    // Costs doesn't reach what he builds (docs/mode/MECHANIC_IDEAS.md: write his cost stats instead; left for his sheet).
+    // Build price scale = the BuildoptionN Goalvalue of what builds (kit docs/17 §2.7). Boutbro rewrites his own on every
+    // spawn; the cut goes on again within half a second, as the same amount off his larger scale, so less of his price
+    // (docs/mode/MECHANIC_IDEAS.md: writing his cost stats would be exact; left for his sheet).
     static float BuildOff(RWPlayer p) { return 1f - CostScale[Mathf.Clamp(Top(p, "Any", "Cost"), 0, 3)]; }
 
     static float RefitOff(RWPlayer p) { return 1f - RefitScale[Mathf.Clamp(Top(p, "Any", "Refit"), 0, 3)]; }
@@ -302,15 +318,21 @@ public static class RWDirections
     {
         if (off <= 0f || m.Commandlistserver == null)
             return;
-        foreach (KeyValuePair<string, Link_Command> c in new List<KeyValuePair<string, Link_Command>>(m.Commandlistserver))
+        options.Clear();
+        foreach (KeyValuePair<string, Link_Command> c in m.Commandlistserver)
             if (c.Value != null && c.Key.StartsWith("Buildoption"))
-                Lower(m, c.Key, c.Value, off);
+                options.Add(c);
+        foreach (KeyValuePair<string, Link_Command> c in options)
+            Lower(m, c.Key, c.Value, off);
     }
 
+    static readonly List<KeyValuePair<string, Link_Command>> options = new List<KeyValuePair<string, Link_Command>>();
+
     // A price cut is an amount taken off a command's Goalvalue once, and kept for that command: Voice in a Bottle's steps
-    // per Tide come off on top, and its reset after an upgrade adds back only its own (MODE-C4). A new command, or a price
-    // back at 1 or more while ours is on it, is a fresh one the game wrote, so the cut goes on again.
-    sealed class Cut { public Entity_Master Owner; public string Name; public float Off; }
+    // per Tide come off on top, and its reset after an upgrade adds back only its own (MODE-C4). A price someone else
+    // moved is a fresh one the game wrote, so the cut goes on again, if it is a build price (Boutbro rewrites his on every
+    // spawn, kit docs/17 §5.1) or an upgrade price back at 1 or more; a price only this cut wrote is left as it is.
+    sealed class Cut { public Entity_Master Owner; public string Name; public float Off, Written; }
     static readonly Dictionary<Link_Command, Cut> cuts = new Dictionary<Link_Command, Cut>();
     static int pruneAt = 256;
 
@@ -323,7 +345,7 @@ public static class RWDirections
                 Prune();
             cuts[c] = cut = new Cut { Owner = m, Name = name };
         }
-        else if (cut.Off > 0f && c.Goalvalue >= 0.999f)
+        else if (cut.Off > 0f && !Mathf.Approximately(c.Goalvalue, cut.Written) && (c.Goalvalue >= 0.999f || name.StartsWith("Buildoption")))
             cut.Off = 0f;
         float price = Mathf.Max(0f, c.Goalvalue + cut.Off - off);
         if (Mathf.Approximately(price, c.Goalvalue))
@@ -331,6 +353,7 @@ public static class RWDirections
         cut.Off += c.Goalvalue - price;
         c.Goalvalue = price;
         Helper_Entitytools.Updatecommand(m, name, "", false, false);
+        cut.Written = c.Goalvalue;
     }
 
     // Commands of what is gone, or that the game has since replaced; the next look waits until twice what is left.

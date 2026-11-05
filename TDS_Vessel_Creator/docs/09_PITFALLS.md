@@ -294,7 +294,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
     look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`; every part's `ModKitUtil.Debuff` since kit 1.8).
     Any send of a look sets its time, shorter or not (`Helper_Vfxtools.Debuff`), so another source's short look cuts a long
-    one: since kit 1.9 `ModKitUtil.Debuff` sends again half a second after its last send, for whichever end is later.
+    one: since kit 1.9 `ModKitUtil.Debuff` sends a covered look once more in its last half second if a caller still
+    renews it (no more often: each send costs a slot in the queue).
     Read from code; the fix runs in game without error (Argo 2.0.1's self-test and a second player's machine,
     2026-11-04), but no fight there was big enough to fill the queue (`19` §8 N4), so the drop itself is still unseen.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
@@ -498,7 +499,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 151. **A spawned child wears its parent's skin, not the one asked for** (2026-11-05) → `Helper_Entitytools.Spawn` with a
      parent copies the parent's `Skin` over `Link_Spawn.Skin` (with its team and owner): a Grafted Sapling's one-colour fruit
      drew as the three-colour one, under the Sapling's `Growth` skin → write the skin again on the spawned master
-     (`ModKitUtil.Skin`, `YosseleUtil.SpawnOnTile`). Read from code (the code review's YOS-1); not yet seen fixed in game.
+     (`ModKitUtil.Skin`, `YosseleUtil.SpawnOnTile`), only when one was asked for: a child that should look like its parent
+     (the Henge's vines) asks for none. Read from code (the code review's YOS-1); not yet seen fixed in game.
 152. **A stock elite's script also paints the foe** (2026-11-05) → `Entity_Ai_Enemy_Health_Upgrade.Starting` adds its
      Health mod and then sets `Skin` to `Health`, the Hardened look, over any other; the mode's per-map health on that
      script made every foe from map 2 look Hardened → an upgrade with no script marks the foe and the part adds the mod
@@ -512,7 +514,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      (`RWWeather.SpeedUpdate`). Read from code (MODE-B1); not yet seen in game.
 154. **`Game_Mapvars.Wave` is still -1 when the map counts as loaded** (2026-11-05) → the game writes `Wave = 0` and
      `Entry = 1` a moment after `Maploaded`, so a poll that took Wave at MapStart saw 0 > -1 and fired a Tide 0 →
-     `ModKitTides` takes `Mathf.Max(Wave, 0)` at MapStart (kit 1.9). Read from code (SHARED-2).
+     `ModKitTides` reads `Mathf.Max(Wave, 0)` on every poll, not only at MapStart, or its rewind rule sets -1 back and
+     the 0 still fires (kit 1.9). Read from code (SHARED-2).
 155. **A destroyed thing still holds its reference, and `== null` reads true on it** (2026-11-05) → a field that held a sold
      Power Bank made `if (Plug == null) return;` skip the very unplug that should have run, so PLUG IN stuck on UNPLUG →
      ask the reference itself (`(object)Plug == null`) where the code must still act on a thing that went (`UloeHeroBrain`);

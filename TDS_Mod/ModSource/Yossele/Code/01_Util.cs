@@ -60,7 +60,9 @@ public static class YosseleUtil
             return null;
         // Spawning as the parent's child copies the parent's Skin over spawn.Skin (Helper_Entitytools.Spawn, Sameasparent):
         // a Grafted fruit came out with the Sapling's Growth skin and drew as the ALL fruit (YOS-1). Skin is networked.
-        ModKitUtil.Skin(made.Worldobject, skin);
+        // No skin asked (the Henge's vines) keeps the parent's, as before.
+        if (!string.IsNullOrEmpty(skin))
+            ModKitUtil.Skin(made.Worldobject, skin);
         return made.Worldobject;
     }
 
