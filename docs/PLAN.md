@@ -419,8 +419,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   plus his eye on a flooded map. Lighting: yes; fog, the ambient colours, the sun and any of the 55 stock grades can
   change a running map on every machine (kit 1.13 `ModKitLight`, kit `docs/16` §7.1, pitfall #167); a grade of our own
   needs a Unity-built profile, and drifting fog banks would be new art. The gaps build's `light` part shows each look in
-  pictures. Compiled here (every part, every test switch, 0 errors), not run on the PC: §4 waits for his OK; whether a
-  look ships is §5, after the pictures.
+  pictures. Compiled here (every part, every test switch, 0 errors); run on the PC since (the entry below); whether a
+  look ships is §5.
   2026-11-05: the art of decisions 10 and 11 (`OPEN_DECISIONS_2026-11-05b.md`, his "default for all"). The mode part has
   a model library (`Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs` into `RWAssets_Library/Models`, lit with a
   copy of the game's "General Tower" material by `RWModels`, `Code/25_Models.cs`), and Mind the Meteor's node wears its
@@ -438,6 +438,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (pitfall #169), the Cardinals' paired lookups read the panel's ids, Boutman's Direction is Spare Reel, the leave vote's
   new line, "towards" in Argo's Reel. `HasMinions` was right (all nine vessels have minions). Compiled here (every part,
   release and self-test, 0 errors), not run on the PC: its §4 joins the next round's list.
+  2026-11-05: the weather and lighting PC round (`Light_round1`, his "Run it now", code `fb208b8`, kit 1.13;
+  `docs/reports/LIGHTING_2026-11-05.md` §6). The mode's self-test with every part on: 157 pass, 2 fail; every weather
+  check passes (W0-W3, 12 of 12); the two fails are Spring Tide's Tide gain as B7 rebuilt it, run for the first time
+  (`0 -> 0.0375` where 10 is asked), handed on for a thread of its own. The gaps build's `light` part: 23/0 and 16
+  pictures: real depth fog on units and buildings alike (the UI stays sharp over it), a look darkens the ground but not
+  the sky (night reads as dusk; only a borrowed grade changes the sky), lamps are drawn, nothing measurable per frame;
+  the 55 stock groups' numbers in `docs/reports/lighting_2026-11-05/light_groups.txt`. Pitfall #170 (the HUD hides
+  after 10 s without input). His release builds, save and settings are back as they were; Unity's project holds
+  `fb208b8`. Whether a look ships (§5) goes to the open-decisions page with the pictures.
   2026-11-05: the balance simulator sweep, Dimitri's queued order on his "Starting set S2, all proposals"
   (`docs/reports/BALANCE_SWEEP_2026-11-05.md`, runs in `balance_sweep_2026-11-05/`). The mode: map k's Tide 15 plays
   the base game's row 15, 18, 20, 21, 21, then 24 to map 10 (F1); foe health one Pmulti (F2) of x2.6 on map 1 (F3),
@@ -446,7 +455,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   from the break before Tide 3 (P1). Fitted to the review's target, D 0.8 on map 1 to about 1.45 on map 10 (mid case),
   checked with 16 seeds and on Yossele, Spool and Argo. Spool on one Pin Cushion (answers 25, 26): Stitched 5, Dart
   5.5, 6 Crafted a Tin, Range 3.5 kept, the Loom 0.3 a second, the Cushion's "Build it first" line (P4); Uloe's Flood
-  Light 0.3 with it. Spring Tide by a Fie wall was B7's code (PR #103), and the weather's pay line is fixed. Scope `04`,
+  Light 0.3 with it. Spring Tide by a Fie wall is code, not a number: B7's rebuild, whose gain failed in the weather round, has a thread of its own. The weather's pay line is fixed. Scope `04`,
   `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
   but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins
   PC round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
@@ -476,7 +485,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #170 (#168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #171 (#170 the HUD's idle hide, `LIGHTING_2026-11-05.md` §6; #168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
