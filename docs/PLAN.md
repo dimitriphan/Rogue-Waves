@@ -305,11 +305,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   defaults, spelled out as S1-S17 for his answer (`docs/reports/SPOOL_DEFAULTS_2026-11-05.md`).
   2026-11-05: Spool's defaults answered ("Use all defaults"): scope 08's defaults taken except the four numbers the
   balance sweep owns; hand-off B16-B19 in `docs/reports/DECISIONS_APPLIED_2026-11-05.md` §4.
+  2026-11-05: the scope read against the code a second time (`docs/reports/SCOPE_CODE_AUDIT_2026-11-05.md`): 369
+  checkable rows, 269 MATCH, 93 on the queued lists, 7 unbuilt by design, no new behaviour mismatch; of the first audit's
+  41 rows 18 are resolved and 23 queued. Ten new items: N1-N4 fixed in the scope text (Spool sage green, the picked
+  Cordyfriend, self-test counts, 16's tildes and 15's weather line), N5-N10 for the build and balance threads (B5
+  half built, 47 Direction/Trinket/Cardinal sheets, pairs, B12 is code, the sweep's tilde lines, Leads to). New tool
+  `TDS_Mod/Tools/cloud-check/scope_upgrades.py`. Docs only. His project-files scope copy and the Scope Editor are
+  behind in six files (02, 07, 08, 09, 15, 16; his word to sync).
   2026-11-05: the jittering button icons fixed (pitfall #156, kit 1.10): every pack icon the game drew stretched (the
   menu's 32 px crest in Play's 48-unit box, the 12 px command icons and card pictures in 16-unit boxes) now draws a whole
   number of screen pixels per art pixel: command icons are 16 px boxes (all four vessels and the mode's SHOP, FUND
   TRANSFER, OBJECTIVE, weathers), the crest is sized to 32 units, and every card's picture is crisped where the dialog is
-  placed; card art uses the 12 px crest and 16 px numbers. Compiled here, not yet seen in game: his eye on the menu, a
+  placed; card art uses the 12 px crest and 24 px numbers; the
+  sea chart's weather marks keep their size. Compiled here, not yet seen in game: his eye on the menu, a
   dialog sliding in, and the HUD's buttons.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
