@@ -39,8 +39,8 @@ round, a scope fold-in) is worth proposing as a project skill.
   template, dated reports, the PLAN Log, version histories and his scope notes keep them on purpose.
 - Never commit the game's binaries, base-vessel game sprites or anything from `/mnt/project-files`; overwrite a file
   there only at Dimitri's word. Nothing touches his PC without his OK in the thread.
-- Pull requests base on `claude/phase-1-6lfnar`, start their body with the attribution block the session gives, and
-  Dimitri merges (`.claude/settings.json` denies merging). Each PR edits Part C "Now": after merging the base, keep the
+- Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Claude merges them (his
+  word, 2026-11-05; PLAN Part A "Merging"), merge commits, after merging the base. Each PR edits Part C "Now": keep the
   base's entries first and add yours last.
 
 ## Map
