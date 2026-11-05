@@ -274,6 +274,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05: the code review's bugs fixed, 32 of 54 (every confirmed one that needs neither his word nor a PC fact,
   and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
   look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
+  2026-11-05: PC testing round 3, stopped early at the usage limit: on PR #89's base every self-test passes and the fixes read hold in game; the two-player list did not run (`docs/reports/TESTING_ROUND_3_2026-11-05.md`).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
