@@ -568,3 +568,11 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      source kind, B13); what a building owns is what showed in its first half-second or within half a second of an
      upgrade of its own, never an Override (the game's stuns), watched from the moment it stands (`YosseleHooks.Watch`,
      B9). Read from code.
+164. **A building's panel title is its skin's name, not only its being's** (2026-11-05) → `Game_Ui` writes the selected
+     thing's `Beingobject.Entity.Display_Name` into the panel, then the client's current `Visentry.Displayname` over it
+     when that is not empty (Game_Ui.cs:1222-1226), and `Visentry` is the skin entry `Master.Skin` names on the visual
+     in use, base or upgrade (Entity_Master_Client.cs:510-585; only when that entry has a prefab) → to rename a
+     building for a while (a Shift Direction), add a skin on its base visual and on every upgrade's whose entry carries
+     the new `Displayname`, and set `Master.Skin` while it applies; every player sees it, since the skin is synced
+     (`SpoolData.SewingSkin`, `YosseleData.ShiftLooks`, which prefix the Growth skins). Read from code; compiled, for the
+     PC round.

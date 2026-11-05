@@ -185,12 +185,12 @@ public static class YosseleContent
         for (int g = 1; g <= stages; g++)
             ModKitUtil.AddSkin(vp, YosseleData.GrowthStat + g, ModelEntry(template.Default, model, display, "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
         if (shifts)
-            foreach (string[] look in YosseleData.ShiftLooks)
+            foreach (YosseleData.ShiftLook look in YosseleData.ShiftLooks)
             {
-                string shape = ModKitAssets.Quiet(look[2]) != null ? look[2] : model;
-                ModKitUtil.AddSkin(vp, look[0], ModelEntry(template.Default, shape, look[1], null, fallback));
+                string shape = ModKitAssets.Quiet(look.Model) != null ? look.Model : model;
+                ModKitUtil.AddSkin(vp, look.Skin, ModelEntry(template.Default, shape, look.Display, null, fallback));
                 for (int g = 1; g <= stages; g++)
-                    ModKitUtil.AddSkin(vp, look[0] + YosseleData.GrowthStat + g, ModelEntry(template.Default, shape, look[1], "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
+                    ModKitUtil.AddSkin(vp, look.Skin + YosseleData.GrowthStat + g, ModelEntry(template.Default, shape, look.Display, "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
             }
         return vp;
     }

@@ -418,7 +418,6 @@ public static partial class YosseleSelfTest
         return best;
     }
 
-    // Tide foes keep coming while the test runs and can fell a building; each section starts by saying which still stand.
     // The title the game's panel shows for a building, read as Game_Ui does: the client's skin entry's Displayname, else
     // the being's name.
     static string PanelName(Entity_Master m)
@@ -430,6 +429,7 @@ public static partial class YosseleSelfTest
         return m.Client.Beingobject != null && m.Client.Beingobject.Entity != null ? m.Client.Beingobject.Entity.Display_Name : "";
     }
 
+    // Tide foes keep coming while the test runs and can fell a building; each section starts by saying which still stand.
     static void Standing(Dictionary<string, YosseleBuilding> built)
     {
         List<string> gone = new List<string>();
@@ -1417,7 +1417,9 @@ public static partial class YosseleSelfTest
                     Helper_Resources.Giveresource(new Link_Resource { Name = "Redaura", Amount = lift / g }, owner, Helper_Resources.Styles.Default);
                 int trades = YosseleWeb.Trades;
                 yield return Until(() => YosseleWeb.Trades > trades, 2.5f);
-                Check("Wood Wide Web trades once a second while the gap is 100 or more", YosseleWeb.Trades > trades, (YosseleWeb.Trades - trades) + " trades");
+                int first = YosseleWeb.Trades;
+                yield return Wait(3.05f);
+                Check("Wood Wide Web trades once a second while the gap is 100 or more", first > trades && YosseleWeb.Trades - first >= 2 && YosseleWeb.Trades - first <= 4, (first - trades) + " to start, then " + (YosseleWeb.Trades - first) + " in 3 s");
                 string low = Res(owner, "Blueaura") <= Res(owner, "Yellowaura") ? "Blueaura" : "Yellowaura";
                 float r0 = Res(owner, "Redaura"), l0 = Res(owner, low);
                 bool traded = YosseleWeb.Trade(owner, third);
@@ -1621,7 +1623,7 @@ public static partial class YosseleSelfTest
                 ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[0].Name));
                 yield return Wait(1.2f);
                 Check("Mother of Mushrooms reads back", player.Mushrooms == 1, "rank " + player.Mushrooms);
-                Check("... and the Tree's panel reads Primordial Mushboom (its skin)", boom.Look.StartsWith(YosseleData.ShiftLooks[1][0]) && PanelName(boom.Master) == YosseleData.ShiftLooks[1][1], "skin " + boom.Look + ", panel " + PanelName(boom.Master));
+                Check("... and the Tree's panel reads Primordial Mushboom (its skin)", boom.Look.StartsWith(YosseleData.MushboomLook.Skin) && PanelName(boom.Master) == YosseleData.MushboomLook.Display, "skin " + boom.Look + ", panel " + PanelName(boom.Master));
                 YosseleCannonBrain sporer = null;
                 foreach (YosseleBuilding b in YosseleServer.Buildings) if (b is YosseleCannonBrain && b.Started && ModKitUtil.Alive(b.Master)) sporer = (YosseleCannonBrain)b;
                 int[] burstStacks = new int[1];
@@ -1657,13 +1659,13 @@ public static partial class YosseleSelfTest
                 foreach (YosseleData.Shift s in YosseleData.Mushboomkits) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
                 yield return Wait(1.2f);
                 Check("with its ranks gone, the Tree shoots seeds again", player.Mushrooms == 0, "rank " + player.Mushrooms);
-                Check("... under its own name again", !boom.Look.StartsWith(YosseleData.ShiftLooks[1][0]) && PanelName(boom.Master) != YosseleData.ShiftLooks[1][1], "skin " + boom.Look + ", panel " + PanelName(boom.Master));
+                Check("... under its own name again", !boom.Look.StartsWith(YosseleData.MushboomLook.Skin) && PanelName(boom.Master) != YosseleData.MushboomLook.Display, "skin " + boom.Look + ", panel " + PanelName(boom.Master));
                 float limit0 = ModKitUtil.Stat(boom.Master, "Range", 0f), dmg0 = ModKitUtil.Stat(boom.Master, "Damage", 0f);
                 string slotBefore = hero.Slot;
                 ModKitDirections.Grant(hm, direction(YosseleData.Seasons[0].Name));
                 yield return Wait(1.5f);
                 Check("Dandelion Season: 70% damage and range", player.Season == 1 && Mathf.Abs(ModKitUtil.Stat(boom.Master, "Damage", 0f) - dmg0 * YosseleData.SaplingShare) < 0.05f * Mathf.Max(1f, dmg0) && ModKitUtil.Stat(boom.Master, "Range", 0f) < limit0, "damage " + F(dmg0) + " -> " + F(ModKitUtil.Stat(boom.Master, "Damage", 0f)) + ", range " + F(limit0) + " -> " + F(ModKitUtil.Stat(boom.Master, "Range", 0f)));
-                Check("Dandelion Season: the Tree's panel reads Dandelion Sapling", boom.Look.StartsWith(YosseleData.ShiftLooks[0][0]) && PanelName(boom.Master) == YosseleData.ShiftLooks[0][1], "skin " + boom.Look + ", panel " + PanelName(boom.Master));
+                Check("Dandelion Season: the Tree's panel reads Dandelion Sapling", boom.Look.StartsWith(YosseleData.SaplingLook.Skin) && PanelName(boom.Master) == YosseleData.SaplingLook.Display, "skin " + boom.Look + ", panel " + PanelName(boom.Master));
                 Check("Dandelion Season: the Tree's button stays while one stands", hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption) && hero.Slot == YosseleData.Dandelion, "slot before " + slotBefore + ", now " + hero.Slot);
                 Vector3 secondAt = Spot(hm, YosseleContent.Beings[YosseleData.Dandelion], 4f);
                 YosseleDandelionBrain sapling2 = null;

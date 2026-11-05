@@ -36,7 +36,7 @@ public class YosseleDandelionBrain : YosseleBuilding
     protected virtual float StageSeeds { get { return YosseleData.SeedsPerStage; } }
     protected virtual bool Shifts { get { return true; } }
     // A shifted Tree's name and look: Primordial Mushboom or Dandelion Sapling (Mushboom first, as OnGrowth reads them).
-    protected override string SkinPrefix { get { return mushrooms > 0 ? YosseleData.ShiftLooks[1][0] : season > 0 ? YosseleData.ShiftLooks[0][0] : ""; } }
+    protected override string SkinPrefix { get { return mushrooms > 0 ? YosseleData.MushboomLook.Skin : season > 0 ? YosseleData.SaplingLook.Skin : ""; } }
     public string Look { get { return Master != null ? Master.Skin.Value.ToString() : ""; } }
 
     protected override void Started2()

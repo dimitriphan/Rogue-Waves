@@ -297,18 +297,21 @@ public static class YosseleSoftening
 
 // Wood Wide Web (host only): like Smacky's Processing Plant without picking the colour. Once a second, each player with a
 // standing Sapling that has it trades 2 of the colour they hold most of for 1 of the one they hold least of, while the gap
-// between the two is at least 100. The game's Give multiplies by the map's gain, so the amounts are divided by it first.
+// between the two is at least 100. Both sides go through the game's own Give, as the Processing Plant's do
+// (Entity_Ai_Tower_Converter: a negative Give for what it takes); Give multiplies by the map's gain, so the amounts are
+// divided by it first and the purse moves by exactly 2 and 1.
 public static class YosseleWeb
 {
     static readonly string[] colours = { "Redaura", "Blueaura", "Yellowaura" };
-    static readonly List<long> owners = new List<long>();
-    static readonly Dictionary<long, YosselePachiraBrain> by = new Dictionary<long, YosselePachiraBrain>();
+    static readonly List<long> seen = new List<long>();
+    static readonly Dictionary<long, float> nextLook = new Dictionary<long, float>();
     static float next;
     public static int Trades;
 
     public static void Reset()
     {
         next = 0f;
+        nextLook.Clear();
     }
 
     public static void Update(List<YosseleBuilding> buildings)
@@ -316,21 +319,23 @@ public static class YosseleWeb
         if (Time.time < next)
             return;
         next = Time.time + 1f;
-        owners.Clear();
-        by.Clear();
+        seen.Clear();
         foreach (YosseleBuilding b in buildings)
         {
             YosselePachiraBrain p = b as YosselePachiraBrain;
-            if (p == null || !p.Started || p.Master == null || !ModKitUtil.Alive(p.Master) || !p.Has("Web"))
+            if (p == null || !p.Started || p.Master == null || !ModKitUtil.Alive(p.Master) || !p.Has("Web") || seen.Contains(p.Owner))
                 continue;
-            long owner = p.Owner;
-            if (by.ContainsKey(owner))
+            seen.Add(p.Owner);
+            if (!Trade(p.Owner, p))
                 continue;
-            by[owner] = p;
-            owners.Add(owner);
+            // The trade's look, a root pulse of the three colours on that Sapling, at most every 3 s a player.
+            float at;
+            if (!nextLook.TryGetValue(p.Owner, out at) || Time.time >= at)
+            {
+                nextLook[p.Owner] = Time.time + 3f;
+                ModKitUtil.Vis(p.Master, "Yossele_Web", p.Pos, 0f);
+            }
         }
-        foreach (long owner in owners)
-            Trade(owner, by[owner]);
     }
 
     // One trade for one player now; true when it traded. Public for the self-test.

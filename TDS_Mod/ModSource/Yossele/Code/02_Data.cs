@@ -112,13 +112,12 @@ public static class YosseleData
     // The Tree's Directions (docs/scope/11), one per rank, Clash 1: a player holds one of the two.
     public class Shift { public string Name, Display, Desc; }
     // What a shifted Tree shows (decision 15): a skin per Shift, prefixed to the Growth skins, so the panel reads the new
-    // name (the title is the skin entry's Displayname, Game_Ui); the model is the Shift's own once there is one, else the
-    // Tree's. Skin, panel name, model.
-    public static readonly string[][] ShiftLooks =
-    {
-        new[] { "Sapling", "Dandelion Sapling", "Yossele_Dandelionsapling" },
-        new[] { "Mushboom", "Primordial Mushboom", "Yossele_Mushboom" },
-    };
+    // name (the title is the skin entry's Displayname, Game_Ui, pitfall #164); the model is the Shift's own once there is
+    // one, else the Tree's.
+    public class ShiftLook { public string Skin, Display, Model; }
+    public static readonly ShiftLook SaplingLook = new ShiftLook { Skin = "Sapling", Display = "Dandelion Sapling", Model = "Yossele_Dandelionsapling" };
+    public static readonly ShiftLook MushboomLook = new ShiftLook { Skin = "Mushboom", Display = "Primordial Mushboom", Model = "Yossele_Mushboom" };
+    public static readonly ShiftLook[] ShiftLooks = { SaplingLook, MushboomLook };
     public const float ShiftCheck = 0.5f;           // how often a Tree looks at them
 
     // Dandelion Season: no limit on Trees, each acts as a Dandelion Sapling. Its stages do less than a Tree's so its range
