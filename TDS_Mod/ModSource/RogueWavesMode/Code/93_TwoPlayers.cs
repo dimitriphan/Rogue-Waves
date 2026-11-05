@@ -981,10 +981,11 @@ public static partial class RWTest
         string rank = shelf.Find(n => n.StartsWith("D:"));
         string id = buy != null ? buy.Substring(2) : "";
         float pure0 = RWMine.Pure();
+        int price = buy != null ? RWCardinals.PriceMine(id) : 0;
         if (buy != null) ClickCard(buy);
         yield return Until(() => RWMine.Pure() != pure0, 10f);
         yield return new WaitForSeconds(0.5f);
-        Check("Shop: the second player's counter drops by the price", Mathf.RoundToInt(pure0 - RWMine.Pure()) == RWCardinals.Cost(id), id + " " + pure0 + " -> " + RWMine.Pure());
+        Check("Shop: the second player's counter drops by the price", Mathf.RoundToInt(pure0 - RWMine.Pure()) == price, id + " " + pure0 + " -> " + RWMine.Pure());
         if (!RWCardinals.IsTrinket(id))
         {
             yield return new WaitForSeconds(3f);

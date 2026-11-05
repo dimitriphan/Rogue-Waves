@@ -398,8 +398,9 @@ public static class RWDirections
         if (off <= 0f || m.Commandlistserver == null)
             return;
         options.Clear();
+        // Spare Plank's free button is left alone: the cut comes back with the price the Trinket kept (RWTrinkets.Holds).
         foreach (KeyValuePair<string, Link_Command> c in m.Commandlistserver)
-            if (c.Value != null && c.Key.StartsWith("Buildoption"))
+            if (c.Value != null && c.Key.StartsWith("Buildoption") && !RWTrinkets.Holds(c.Value))
                 options.Add(c);
         foreach (KeyValuePair<string, Link_Command> c in options)
             Lower(m, c.Key, c.Value, off);
@@ -464,6 +465,9 @@ public static class RWDirections
     {
         if (!RWRun.InCampaignMap || m == null || m.Beingserver == null || m.Beingserver.Entity == null)
             return;
+        // Foes too: Tin Whistle counts a Tide's arrivals (a throw here would stop the spawn, MODE-C8).
+        try { RWTrinkets.OnSpawn(m); }
+        catch (Exception e) { RWLog.Once("trinket spawn", "Trinkets on a new spawn: " + e.Message); }
         long owner = m.Entitydata.Value.Owner;
         if (owner < 0)
             return;

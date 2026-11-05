@@ -1,5 +1,47 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): Claude's Trinkets and Cardinals
+
+Compiled, not yet run in game (scope `12`, B11). Sheets in `17_Cardinals.cs` `Mine` (each with its scope line as the
+in-game line and the look `Cardinal_<Name>`, drawn by the art PR; the crest stands in until then); what they do is
+`24_Trinkets.cs` (`RWTrinkets`), host only, the stacks read four times a second (`RWCardinals.Held`, `Stacked`):
+- **Brass Spyglass**: the vessel's Range Add +0.5, or +0.25 for a melee one; "ranged" is a vessel with a `Projspeed`
+  stat (Sno Sno, Yossele, Uloe).
+- **Gutting Knife**: the vessel's own hit (`RWAny.Extra` hits left out) on a foe above half health, `Damagemulti` x1.2 a
+  stack, on its `Interact`.
+- **Oil Can**: Attackspeed Multi +5% a stack on the holder's towers (not the vessel, its clones or a ghost).
+- **Tar Bucket**: a tower with no hit (no drop in health, no `Lasthittime`) for 4 s mends 1% of its health a second a
+  stack.
+- **Rubber Duck**: the Basin's own respawn handler reads the core's `Respawn` stat as the vessel dies, so a first and a
+  last handler on the vessel's `Despawn` lower it by 20% a stack (at most 60%) for that moment and put it back (a Fixed
+  stat's Value follows its Calc on every recount).
+- **Spare Plank**: the vessel's own (Defense) button costs nothing while no plank stands (Hero_Buildsell prices a build
+  by the button's `Goalvalue`, which is what a host's own click reads too); the wall built at no price is the plank, and
+  the button's price comes back until it falls. Argo (his Drill Rig is no wall) and Buster are never offered it. The
+  core's Processor Jr slot is the team's and is left alone. The Any Cut Costs Direction skips the held button.
+- **Punch Card** and **Pearl Oyster**: a pair (`RWCardinalDef.Clash`): one held, the other is never on the holder's
+  shelf and the shop refuses it ("Clashes with ..."). Punch Card: every price 20% off, rounded down (`PriceFor`, and
+  `PriceMine` on a machine from the vessel's mark). Pearl Oyster: +1 Pure Aura each Tide's break while nothing was bought
+  on the map; the Oyster's own buy doesn't count, a Direction rank does (`RWPlayer.Bought`, not saved).
+- **Bottled Storm**: on buying, 5 Tides of 25% more damage on the vessel; when they end, a random Direction of theirs
+  below rank III goes one up (`RWDirections.NextRanks`), or Pure Aura 20. A second stack's storm follows the first.
+  `RWPlayer.StormLeft` and `StormsDone` are the save line's eighth field; a line from before reads 0/0.
+- **Oilskin Coat**: `1 - 0.9^stacks` of the hits on the vessel do nothing, judged after the other mods' fronts and
+  before Clam Shell (`RWAny.AfterFronts(..., RWAny.ClamHook)`).
+- **Gull Feather**: an elite (a stock modifier's upgrade or the pack's `RW_Modifier_`) whose last hit was the vessel's
+  adds 8 s of Damage Multi +0.2 and Speed Multi +0.15; more elites lengthen it.
+- **Cork Lifebuoy**: a hook right after the core's own (`Entity_Ai_Main_Core`, which spends its once-a-map stand
+  first) turns the next killing blow into 1 health, once a map, with the game's flash and a warning.
+- **Signal Flare**: every 20 s, the Aura Gavel's bolt from the Basin for 15 a stack at the foe with the most health
+  within 8 tiles; ready and waiting when no foe is near.
+- **Cargo Crate**: one more card a stack on the shelf (at most 6); the first three are the shelf without it.
+- **Tin Whistle**: once every foe of the Tide's row has come (its contents' Counts, the row's beings only), the last 3
+  standing move 30% slower (`RWAny.Slow`) and take 25% more damage.
+- Self-test: the gaps build's rules part checks the pair, the prices, Spare Plank's vessels, the Crate's shelf, the
+  Oilskin chances and the storm's save line; the new part "trinkets" (`92_GapsTrinkets.cs`) buys each on a calm map
+  with Smacky and measures it on the vessel, an archer, a wall, a foe or the Basin. The flow's buy-everything loop and
+  its shop click leave these out (their effects would change the flow's later checks).
+
 ## 0.1.0-dev, later (2026-11-05): the base vessels' Directions no held stat carries
 
 Compiled, not yet run in game (scope `11`). Sheets in `16_Directions.cs` `Mine` (no `Stat`); what they do is

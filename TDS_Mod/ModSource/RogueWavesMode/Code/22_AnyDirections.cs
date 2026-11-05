@@ -328,8 +328,13 @@ public static class RWAny
 
     // After every other mod's front hook (Uloe's SURGE cut, Made of Tougher Stuff: they come first, ModKitUtil.Front) and
     // before the first of the game's own handlers, one of which takes the health (Helper_Damagetools.Dodamage). An upgrade
-    // AI on the vessel that changes the hit still acts after it. Put back ten times a second, like Front.
-    static void AfterFronts(Entity_Master m, Entity_Master.Oninteracts handler)
+    // AI on the vessel that changes the hit still acts after it. Put back ten times a second, like Front. A handler that
+    // changes the blow goes before Clam Shell's, which judges it (before: ClamHook), so the order holds whichever part goes first.
+    public static Entity_Master.Oninteracts ClamHook { get { return hurt; } }
+
+    static void AfterFronts(Entity_Master m, Entity_Master.Oninteracts handler) { AfterFronts(m, handler, null); }
+
+    public static void AfterFronts(Entity_Master m, Entity_Master.Oninteracts handler, Entity_Master.Oninteracts before)
     {
         Delegate[] list = m.Oninteract != null ? m.Oninteract.GetInvocationList() : new Delegate[0];
         List<Delegate> want = new List<Delegate>(list.Length + 1);
@@ -337,7 +342,7 @@ public static class RWAny
         {
             if (d.Equals(handler))
                 continue;
-            if (d.Target is Entity_Ai_Base && !want.Contains(handler))
+            if ((d.Target is Entity_Ai_Base || (before != null && d.Equals(before))) && !want.Contains(handler))
                 want.Add(handler);
             want.Add(d);
         }
@@ -352,7 +357,7 @@ public static class RWAny
 
     // Would this blow end the vessel? As the game deals it: armour takes any hit for 1, an overshield takes one it can hold
     // whole (a bigger one breaks it and lands in full), ore health takes at most 1 (Helper_Damagetools.Dodamage).
-    static bool Kills(Entity_Master v, float dealt)
+    public static bool Kills(Entity_Master v, float dealt)
     {
         Link_Stats s;
         Dictionary<string, Link_Stats> st = v.Statsserver;

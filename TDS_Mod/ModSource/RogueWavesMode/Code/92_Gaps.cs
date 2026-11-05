@@ -5,6 +5,7 @@
 //   effects  on a real map: what each Direction and Vampire Dentures do to the wallet and to health; each objective's failure
 //   any      on a real map: each Direction any vessel can take (92_GapsAny.cs)
 //   base     on five real maps: the base vessels' Directions no held stat carries (92_GapsBase.cs)
+//   trinkets on a real map: each of Claude's Trinkets and Cardinals, bought at VENDCINT and measured (92_GapsTrinkets.cs)
 //   scales   every dialog of the mode at each UI scale and three screen sizes
 //   ten      a whole campaign on ten real maps, each voted, left and won, to the CAMPAIGN WON screen, with the difficulty measured
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
@@ -36,6 +37,7 @@ public static partial class RWTest
             try { RollChecks(); } catch (Exception e) { Check("the Direction rules ran", false, e.ToString()); }
             try { CatalogChecks(); } catch (Exception e) { Check("the catalogue checks ran", false, e.ToString()); }
             try { AnyRollChecks(); } catch (Exception e) { Check("the Any Direction rules ran", false, e.ToString()); }
+            try { TrinketRuleChecks(); } catch (Exception e) { Check("the Trinket and Cardinal rules ran", false, e.ToString()); }
         }
         if (Asked("oldsave")) { yield return Stepped(GapsOldSave()); yield break; }
         yield return GapsMenu();
@@ -55,6 +57,7 @@ public static partial class RWTest
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
         if (Part("any")) yield return Stepped(GapsAny());
         if (Part("base")) yield return Stepped(GapsBase());
+        if (Part("trinkets")) yield return Stepped(GapsTrinkets());
         if (Part("foes")) yield return Stepped(GapsFoes());
         if (Part("ten")) yield return Stepped(GapsTen());
         if (Part("tour")) yield return Stepped(GapsTour());
