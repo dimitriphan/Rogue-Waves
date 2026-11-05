@@ -240,8 +240,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   §6, `BALANCE_SWEEP_2026-11-05.md` §8, `DECIDED_CODE_FIXES_2026-11-05.md` §4; Spring Tide's three lines pass and its two
   `INFO` lines show a Multi near 0.01, `RogueWavesMode/IMPLEMENTATION_NOTES.md` first entry; the meteor on a map and
   Yossele walking left; it also syncs the PC's scope copy), then scope `07`'s sprite NEEDS line cleared in a docs PR;
-  the per-weather lighting look (`OPEN_DECISIONS_2026-11-05c.md`: Rising Water light mist, Quickening Current storm grey,
-  Nesting Ground dusk, calm maps unchanged; Fog Bank and a mood ramp stay ideas) and its PC round with foes on screen;
+  the per-weather lighting look's PC round with foes on screen (`WEATHER_LOOK_2026-11-05.md` §4; built, entry below);
   then Spool's 22 upgrades and UNTHREAD (scope `08`, B19).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
@@ -263,6 +262,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (which PR used which pitfall numbers: the last Log entry).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
+- **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
+  map's weather on every machine, a 4 s fade after the intro, calm maps unchanged; self-test W4. Compiled here (the mode,
+  every test build), not run on the PC; its PC round is §4. No kit change; no pitfall used.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1066,6 +1068,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
   - **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (#171 a tower's max Health under Frail Titan and Paper Tower, Spring Tide's test; #170 the HUD's idle hide, `LIGHTING_2026-11-05.md` §6; #168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+
+- **2026-11-05: a look per weather, built** (Dimitri's pick (a), 17:45Z, `OPEN_DECISIONS_2026-11-05c.md`;
+  `docs/reports/WEATHER_LOOK_2026-11-05.md`). `RWWeather` "the look" (`RogueWavesMode/Code/07_Weather.cs`): Rising
+  Water light mist (`C9D6D8`, 0.8-2.2 x the camera's distance, the map's own ambient and sun), Quickening Current storm
+  grey, Nesting Ground dusk, the PC's L1 numbers unchanged; a calm map sets nothing. `LookUpdate` sets it once a map on
+  every machine from `RWRejoin.MapWeather()` once that machine's intro is over (`Game_Client_Init.Gametimescale`), with
+  `ModKitLight.Set` and a 4 s fade; the ground is the lowest `Surface` tile (`RWUtil.GroundLow`, every machine). Self-test
+  W4 on the three probe maps and the flow's calm map 1; the gaps build's L1 pictures the shipped three. `/simplify` and
+  `/code-review high` run, their fixes in (report §2b). Compiled here: the mode release, self-test, gaps, gaps with shots,
+  shots, chart look and feel builds 0 errors (the base's warnings), editor clean; the two-PC and dialog-look builds fail
+  here as always. Not run on the PC. No kit change (kit 1.14 stays), no pitfall used: next free kit 1.15, pitfall #172
+  (which PR used which pitfall numbers: the entry before this one).
 
 ### Decisions
 

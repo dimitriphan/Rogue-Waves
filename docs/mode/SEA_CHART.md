@@ -189,6 +189,7 @@ lowers Quickening to Tides 1 and 2. Every boat probe of §5 but C7 (online) and 
 | W1 | Rising Water spawns, the water climbs at the next Tide and floods the low tiles (`Block_Flood_Deter` appears) |
 | W2 | Quickening Current sets the game speed to 1.25, then 1.5 |
 | W3 | Nesting Ground spawns and sends a Halberd at the next Tide |
+| W4 | the weather's look (light mist, storm grey, dusk; `07_Weather.cs` "the look", 2026-11-05) is what the game draws once it has faded in; the flow's calm map 1 sets none |
 | W | no error is logged while each weather runs |
 | C5 | a won map is sailed and no longer in play; back on the boat the party is on the next chart, the boat at the node just won |
 | C6 | after a map click's save write, the save holds no chart name |

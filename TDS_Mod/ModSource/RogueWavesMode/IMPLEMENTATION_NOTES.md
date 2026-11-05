@@ -1,5 +1,16 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): a look per weather (compiled, not yet run in game)
+
+Dimitri's pick on the third decisions page (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`): `RWWeather` ("the look",
+`07_Weather.cs`) holds a three-row table, Rising Water light mist, Quickening Current storm grey, Nesting Ground dusk,
+the PC's own L1 numbers (`docs/reports/LIGHTING_2026-11-05.md` §6.3). `LookUpdate`, every frame on every machine, sets
+it once a map with `ModKitLight.Set` and a 4 s fade when this machine's intro is over (`Game_Client_Init.Gametimescale`),
+from the synced names (`RWRejoin.MapWeather`); a calm map sets nothing. Fog distances are relative to the camera's
+distance to the map's lowest tile (the `Surface` entities every machine has). Self-test W4 on each probe map and on
+the flow's calm map 1; the gaps build's L1 takes its three looks from the same table. No kit change. The look's own PC
+round: `docs/reports/WEATHER_LOOK_2026-11-05.md` §4.
+
 ## 0.1.0-dev, later (2026-11-05): the balance sweep's numbers (compiled, not yet run in game)
 
 Set S2 of `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`, tuned by `docs/reports/BALANCE_SWEEP_2026-11-05.md`:

@@ -1,12 +1,13 @@
 #if ROGUEWAVESMODE_SELFTEST
-// The PC round for the sea chart and sea weather (docs/mode/SEA_CHART.md §9, probes C1-C6 and W0-W3) and the rejoin's solo
+// The PC round for the sea chart and sea weather (docs/mode/SEA_CHART.md §9, probes C1-C6 and W0-W4) and the rejoin's solo
 // probes (docs/mode/REJOIN.md §6, R1-R6, R2b), one launch,
 // logged as "[RogueWavesMode] TEST PASS|FAIL|SETUP|INFO ..." and "TEST DONE" for Run-SelfTests.ps1:
 //   menu   presses Play like the player would (the game ignores injected input)
 //   boat   starts campaign Seed with three maps' weather forced (Rising Water, then Quickening Current, then Nesting
 //          Ground) on a route the test picks, then C1 the warp onto the chart, C2 the arrows, C3 the boat sails to the
 //          chosen node by itself, C4 the node is picked and its map loads in Mode_RogueWave
-//   map    W1/W2/W3 the weather's object or speed reacts at the next Tide (forced), then the map is won and the party
+//   map    W1/W2/W3 the weather's object or speed reacts at the next Tide (forced), W4 the weather's look is what the
+//          game draws once it has faded in (the flow's map 1, always calm, sets none), then the map is won and the party
 //          returns: C5 back on the chart with the route one longer, C6 the save holds no chart name; in the first map
 //          also R1-R5 and R2b the rejoin's host side with a pretend missing friend, R6 the lobby shut once the map ends,
 //          and L1 the load watch saw the loading screen and sent nobody back
@@ -520,7 +521,45 @@ public static partial class RWTest
                 break;
             }
         }
+        yield return WeatherLook(node.Weather, node.Plan);
         Check("W map " + (m + 1) + ": no error while " + RWWeather.Display(node.Weather) + " ran", errors == e0, (errors - e0) + " error lines");
+    }
+
+    // W4: once this machine's intro is over, the weather's look (07_Weather.cs "the look") is what the game draws, after
+    // its fade; a calm map sets none and keeps its own light.
+    public static IEnumerator WeatherLook(int w, string plan)
+    {
+        yield return Until(() => RWWeather.Lit == RWChart.Calm || (RWWeather.Lit > 0 && Time.unscaledTime - RWWeather.LitAt > RWWeather.LookFade + 0.5f), 60f);
+        Blockage.Lighting.Bl_Lighting_Group own = ModKitLight.MapOwn();
+        ModKitLight.Look want = RWWeather.LookFor(w);
+        string d = want != null ? Differs(want) : "";
+        Check("W4 " + RWWeather.Display(w) + (w == RWChart.Calm ? " sets no look" : "'s look is what the game draws") + " on " + plan,
+            RWWeather.Lit == w && (w == RWChart.Calm ? ModKitLight.Holding == null : want != null && ModKitLight.Holding != null && d == ""),
+            "lit for " + (RWWeather.Lit >= 0 ? RWWeather.Display(RWWeather.Lit) : "nothing yet") + ", lighting " + (own != null ? own.name : "-") + ", holding " + (ModKitLight.Holding != null ? ModKitLight.Holding.ToString() : "none")
+            + "; on screen: " + ModKitLight.Look.Now() + (d != "" ? "; differs:" + d : ""));
+    }
+
+    static bool Near(Color a, Color b) { return Mathf.Abs(a.r - b.r) < 0.01f && Mathf.Abs(a.g - b.g) < 0.01f && Mathf.Abs(a.b - b.b) < 0.01f; }
+
+    static bool Near(float a, float b) { return Mathf.Abs(a - b) <= 0.01f * Mathf.Max(1f, Mathf.Abs(b)); }
+
+    // What the game draws now against what the look asks for; "" when they agree.
+    static string Differs(ModKitLight.Look want)
+    {
+        float scale = want.Relative ? ModKitLight.Reach : 1f;
+        string d = "";
+        if (RenderSettings.fog != want.Fog) d += " fog " + RenderSettings.fog;
+        if (!Near(RenderSettings.fogColor, want.FogColor)) d += " fog colour " + ColorUtility.ToHtmlStringRGB(RenderSettings.fogColor);
+        if (want.Fog && !Near(RenderSettings.fogStartDistance, want.FogStart * scale)) d += " fog start " + RWUtil.F(RenderSettings.fogStartDistance) + " (want " + RWUtil.F(want.FogStart * scale) + ")";
+        if (want.Fog && !Near(RenderSettings.fogEndDistance, want.FogEnd * scale)) d += " fog end " + RWUtil.F(RenderSettings.fogEndDistance) + " (want " + RWUtil.F(want.FogEnd * scale) + ")";
+        if (!Near(RenderSettings.ambientSkyColor, want.Top)) d += " sky " + ColorUtility.ToHtmlStringRGB(RenderSettings.ambientSkyColor);
+        if (!Near(RenderSettings.ambientEquatorColor, want.Mid)) d += " horizon " + ColorUtility.ToHtmlStringRGB(RenderSettings.ambientEquatorColor);
+        if (!Near(RenderSettings.ambientGroundColor, want.Bottom)) d += " ground " + ColorUtility.ToHtmlStringRGB(RenderSettings.ambientGroundColor);
+        Light sun = ModKitLight.SunLight();
+        if (sun == null) { if (want.SunIntensity > 0f) d += " no sun"; }
+        else if (!Near(sun.intensity, want.SunIntensity) || !Near(sun.color, want.Sun)) d += " sun " + ColorUtility.ToHtmlStringRGB(sun.color) + " x" + RWUtil.F(sun.intensity);
+        if (sun != null && want.SunDirection != Vector3.zero && Vector3.Angle(sun.transform.forward, want.SunDirection) > 1f) d += " sun toward " + RWUtil.V(sun.transform.forward);
+        return d.Trim();
     }
 
     // R1-R5: the rejoin's host side, solo. A pretend friend's seat stands in for a drop; a real drop and rejoin need
