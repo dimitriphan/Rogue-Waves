@@ -217,10 +217,11 @@ public static partial class UloeSelfTest
             Entity_Master far = slot[0];
             if (far != null && hero.Shielded)
             {
-                float h0 = ModKitUtil.Health(hm);
+                float h0 = ModKitUtil.Health(hm), healed = hero.SurgeHealed;
                 Hit(far, hm, 10f);
                 yield return null;
-                float lost = h0 - ModKitUtil.Health(hm);
+                // A heal can land in the frame between the hit and the read: it goes back on.
+                float lost = h0 - ModKitUtil.Health(hm) + (hero.SurgeHealed - healed);
                 Check("Surge Protector: 40% less damage", Near(lost, 6f, 0.3f), "a hit of 10 took " + F(lost));
                 float h1 = ModKitUtil.Health(hm);
                 yield return Wait(2.2f);
@@ -368,14 +369,12 @@ public static partial class UloeSelfTest
             Send(flood2.Master, UloeData.ColourLink, "");
             yield return Wait(0.3f);
             Check("COLOUR cycles to Red", flood2.Colour == "Redaura", flood2.Colour);
-            // A payout of Red 10 + Blue 5, traded: the owner's share back, then 70% of the total in Red.
-            float g = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f;
-            int players = UloeUtil.ActivePlayers();
+            // A gain of Red 10 + Blue 5 in the owner's purse, traded: all of it back, then 70% of the total in Red.
             float r0 = Res(owner, "Redaura"), b0 = Res(owner, "Blueaura"), y0 = Res(owner, "Yellowaura");
             flood2.Filter(10f, 5f, 0f);
             float dr = Res(owner, "Redaura") - r0, db = Res(owner, "Blueaura") - b0, dy = Res(owner, "Yellowaura") - y0;
-            Check("Colour Filter pays 70% of the node's total in the picked colour", players > 0 && Near(dr, g * (0.7f * 15f - 10f) / players, 0.02f) && Near(db, -g * 5f / players, 0.02f) && Near(dy, 0f),
-                "Red " + F(dr) + ", Blue " + F(db) + ", Yellow " + F(dy) + " for " + players + " player(s), gain x" + F(g));
+            Check("Colour Filter pays 70% of the payout's total in the picked colour", Near(dr, 0.7f * 15f - 10f, 0.02f) && Near(db, -5f, 0.02f) && Near(dy, 0f),
+                "Red " + F(dr) + ", Blue " + F(db) + ", Yellow " + F(dy));
             int payouts = flood2.Payouts, filtered = flood2.Filtered;
             yield return Until(() => flood2.Payouts > payouts, 20f);
             if (flood2.Payouts > payouts)

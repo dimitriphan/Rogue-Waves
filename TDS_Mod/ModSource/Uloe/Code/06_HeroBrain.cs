@@ -9,6 +9,7 @@ public class UloeHeroBrain : MonoBehaviour
     Vector3 plugAt;                 // where it was last seen, for the unplug effects once it's gone
     public float PlugReady, LightNow, RadiusNow;
     public int Plugs, Unplugs, Snaps, Refused, SurgeCuts, SurgeHeals;
+    public float SurgeHealed;
     public bool Armed;
     public string LastPlug = "";
     readonly UloeLight light = new UloeLight();
@@ -209,6 +210,7 @@ public class UloeHeroBrain : MonoBehaviour
         {
             ModKitUtil.Heal(bank.Master, Master, heal);
             SurgeHeals++;
+            SurgeHealed += heal;
         }
     }
 

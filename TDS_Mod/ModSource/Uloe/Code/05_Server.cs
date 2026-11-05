@@ -17,6 +17,7 @@ public class UloePlayer
 public class UloeLight
 {
     readonly Dictionary<Entity_Master, Link_Modifier> held = new Dictionary<Entity_Master, Link_Modifier>();
+    readonly Dictionary<Entity_Master, Share> heldShare = new Dictionary<Entity_Master, Share>();
     static readonly List<Entity_Master> gone = new List<Entity_Master>();
 
     // What every teammate source holds on a tower: a live modifier and the Light it adds.
@@ -32,6 +33,15 @@ public class UloeLight
         Link_Modifier m;
         if (held.TryGetValue(tower, out m) && m != null && !m.Dead)
             m.Remove();
+        // This source's own last share leaves the ledger with its modifier, so it never counts against itself.
+        Share old;
+        List<Share> list;
+        if (heldShare.TryGetValue(tower, out old))
+        {
+            if (shared.TryGetValue(tower, out list))
+                list.Remove(old);
+            heldShare.Remove(tower);
+        }
         bool teammate = by >= 0 && by != ModKitUtil.Owner(tower);
         if (teammate)
             amount = Mathf.Min(amount, Mathf.Max(0f, UloeData.TeamLightCap - SharedOn(tower)));
@@ -44,10 +54,11 @@ public class UloeLight
         held[tower] = m;
         if (teammate && m != null)
         {
-            List<Share> list;
             if (!shared.TryGetValue(tower, out list))
                 shared[tower] = list = new List<Share>();
-            list.Add(new Share { Mod = m, Amount = amount });
+            Share share = new Share { Mod = m, Amount = amount };
+            list.Add(share);
+            heldShare[tower] = share;
         }
     }
 
@@ -72,7 +83,10 @@ public class UloeLight
             if (kv.Key == null || kv.Value == null || kv.Value.Dead)
                 gone.Add(kv.Key);
         foreach (Entity_Master e in gone)
+        {
             held.Remove(e);
+            heldShare.Remove(e);
+        }
     }
 
     // The shared ledger, pruned of towers that are gone or hold nothing (UloeServer, a few times a second), or cleared.

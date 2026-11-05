@@ -159,7 +159,8 @@ public static class UloeData
 
     public const float HeliostatEvery = 1f;
     public const float SearchLine = 1f;                      // Searchlight: how near Long Throw's line a foe is in its light
-    public const float LighthouseWidth = 0.6f, LighthouseStep = 0.1f;
+    public const float LighthouseWidth = 0.6f, LighthouseStep = 0.2f;
+    public const float ZapLook = 0.25f;                      // Chain Lightning's spark look, at most this often a Bank
     public const int SearchLit = 1, SearchLitBright = 2, LighthouseMark = 2, NovaMark = 3, DeathMark = 3;
 
     // ---------------------------------------------------------------- buildables
@@ -293,7 +294,7 @@ public static class UloeData
                 U(Flood, "Voltage", 3, "High Voltage", "Strikes its node faster", "Attackspeed_Pmulti=0.6", "Yellowaura=100", "Filter4,Searchlight4",
                     "Strikes +60% faster"),
                 U(Flood, "Filter", 4, "Colour Filter", "Pick the colour of its aura", "Filter_Base=0.7", "Yellowaura=250", "",
-                    "A COLOUR button", "Every payout from its strikes comes in the picked colour, at 70% of the node's total"),
+                    "A COLOUR button", "Your share of each payout from its strikes comes in the picked colour, at 70% of its total"),
                 U(Flood, "Searchlight", 4, "Searchlight", "Foes in its light are caught out", "Searchlight_Base=1;Searchslow_Base=0.2;Searchradius_Base=1.5;Searchbright_Base=5",
                     "Yellowaura=250;Redaura=100", "Stadium5,Lighthouse5",
                     "Foes in its Light are Illuminated, level 1, level 2 once its Light out is 5 or more", "and slowed 20%, one slow a Flood Light",

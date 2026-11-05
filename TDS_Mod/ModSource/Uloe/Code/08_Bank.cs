@@ -246,12 +246,18 @@ public class UloePhotonBrain : MonoBehaviour
 
     // Chain Lightning: the hit jumps on to the foes nearest the one it landed on, with the Photon's damage and marks. The
     // jumps are the Bank's (the Photon's own Interact would hear them and jump again).
+    float nextZap;
+
     void Chain(Entity_Master from, int level)
     {
         if (Home == null || Home.Master == null)
             return;
         int n = Mathf.RoundToInt(Home.Param("Chain_Base", 2f));
         float damage = ModKitUtil.Stat(Master, "Damage", 0.5f);
+        // The spark is a look sent to every player: a Photon sends it at most every ZapLook seconds.
+        bool look = Time.time >= nextZap;
+        if (look)
+            nextZap = Time.time + UloeData.ZapLook;
         foreach (Entity_Master f in ModKitUtil.FoesNear(Master, ModKitUtil.Pos(from), Home.Param("Chainradius_Base", 2f)))
         {
             if (n <= 0)
@@ -266,7 +272,8 @@ public class UloePhotonBrain : MonoBehaviour
                 UloeMarks.Blind(Home.Master, f, level);
                 UloeMarks.Illuminate(Home.Master, f, level);
             }
-            ModKitUtil.Vis(Home.Master, "Uloe_Zap", ModKitUtil.Pos(f), 0f);
+            if (look)
+                ModKitUtil.Vis(Home.Master, "Uloe_Zap", ModKitUtil.Pos(f), 0f);
         }
     }
 

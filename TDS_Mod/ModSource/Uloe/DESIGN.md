@@ -240,12 +240,13 @@ the next level; "ends" leads nowhere. Costs sum per upgrade; params are in `Code
   `Interact` would hear its jumps and jump again.
 - Surge Protector is the vessel's hit hook at the front of its chain, on while the cord is in that Bank (`UloeHeroBrain`).
 - SURGE keeps "Off" in the command's `Goalstring` until `Game_Mapvars.Wave` rises; Photons that burst stay standing.
-- Colour Filter: a node splits its payout among the active players (`Entity_Ai_Resource_Mine`, `Styles.Split`); the owner's
-  share is given back as negative amounts through the game's own `Giveresource` (its Gained stat nets out) and 70% of the
-  share's total paid in the picked colour. Teammates keep their shares as paid. **Not yet seen on the PC.**
+- Colour Filter: a node pays inside the strike, split among the active players (`Entity_Ai_Resource_Mine.Oninteract`,
+  `Styles.Split`), so the owner's purse read around the strike is their share, after the map's gain. That gain is given
+  back as negative amounts through the game's own `Giveresource` (its Gained stat nets out) and 70% of its total paid in
+  the picked colour. Teammates keep their shares as paid. **Not yet seen on the PC.**
 - Searchlight's slow is one untimed `Speed` `Multi` per foe per Flood Light, never re-added, taken off as the foe leaves
   its Light (`ARGO_REVIEW_2026-11-04.md` §7).
-- Lighthouse counts the wedge the beam swept since its last step (ten a second), so nothing slips between steps; a
+- Lighthouse counts the wedge the beam swept since its last step (five a second), so nothing slips between steps; a
   building is lit again at most once a second. Clients turn the beam themselves from where it was and how long a turn takes.
 
 ## Directions

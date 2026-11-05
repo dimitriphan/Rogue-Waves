@@ -329,31 +329,41 @@ public class UloeFloodBrain : UloeBuilding
         Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", 1f }, { "Damagemulti", 1f }, { "Damageresource", hit - 1f } };
         // What a payout gives, read before the strike: a node that pays once is gone after it.
         float before = ModKitUtil.Stat(node, "Healthresource", -1f);
-        float red = ModKitUtil.Stat(node, "Redauramine", 0f), blue = ModKitUtil.Stat(node, "Blueauramine", 0f), yellow = ModKitUtil.Stat(node, "Yellowauramine", 0f);
+        // The node pays inside the strike (Entity_Ai_Resource_Mine.Oninteract), so the owner's purse read around it is
+        // exactly their share, whatever the split, the map's gain or a Direction did to it.
+        bool trade = Has("Filter") && Colour != "All";
+        long owner = Owner;
+        float r0 = -1f, b0 = 0f, y0 = 0f;
+        if (trade)
+        {
+            r0 = UloeUtil.Purse(owner, "Redaura");
+            b0 = UloeUtil.Purse(owner, "Blueaura");
+            y0 = UloeUtil.Purse(owner, "Yellowaura");
+        }
         Vector3 at = ModKitUtil.Pos(node);
         Helper_Entitytools.Interact(Master, node, "Hurt", d);
         Master.Radio.Vis_ClientRpc("Uloe_Strike", at, 0f);
         if (!UloeUtil.Paid(before, ModKitUtil.Stat(node, "Healthresource", -1f), hit, ModKitUtil.Alive(node)))
             return;
         Payouts++;
-        if (Has("Filter") && Colour != "All")
-            Filter(red, blue, yellow);
+        if (trade && r0 >= 0f)
+            Filter(Mathf.Max(0f, UloeUtil.Purse(owner, "Redaura") - r0), Mathf.Max(0f, UloeUtil.Purse(owner, "Blueaura") - b0), Mathf.Max(0f, UloeUtil.Purse(owner, "Yellowaura") - y0));
     }
 
-    // Colour Filter: the node just split its payout among the active players (Entity_Ai_Resource_Mine, Styles.Split). The
-    // owner's share is taken back colour by colour (the game's own Give, with a negative amount, so its Gained stat nets
-    // out) and paid as 70% of the share's total in the picked colour. Teammates keep theirs as the node paid it.
+    // Colour Filter: what the owner's purse just gained from a payout is taken back colour by colour (the game's own
+    // Give with a negative amount, so its Gained stat nets out; Give multiplies by the map's gain, so the amounts are
+    // divided by it first) and paid as 70% of its total in the picked colour. Teammates keep theirs as the node paid it.
     public void Filter(float red, float blue, float yellow)
     {
-        int players = UloeUtil.ActivePlayers();
         float total = red + blue + yellow;
-        if (players <= 0 || total <= 0f)
+        float g = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f;
+        if (total <= 0.001f || g <= 0f)
             return;
         long owner = Owner;
-        if (red > 0f) Give("Redaura", -red / players, owner);
-        if (blue > 0f) Give("Blueaura", -blue / players, owner);
-        if (yellow > 0f) Give("Yellowaura", -yellow / players, owner);
-        Give(Colour, Param("Filter_Base", 0.7f) * total / players, owner);
+        if (red > 0f) Give("Redaura", -red / g, owner);
+        if (blue > 0f) Give("Blueaura", -blue / g, owner);
+        if (yellow > 0f) Give("Yellowaura", -yellow / g, owner);
+        Give(Colour, Param("Filter_Base", 0.7f) * total / g, owner);
         Filtered++;
     }
 
@@ -470,16 +480,17 @@ public class UloeFloodBrain : UloeBuilding
         }
     }
 
-    // Lighthouse, ten times a second: the beam turns on; every building and foe it crossed since the last step (the wedge
+    // Lighthouse, five times a second: the beam turns on; every building and foe it crossed since the last step (the wedge
     // between the two angles, so nothing slips between steps) is lit or marked. A building is lit again at most once a
     // second; what it holds lasts Lighthousehold seconds.
     void Sweep()
     {
-        if (Node == null)
-            return;
         float turn = Mathf.Max(0.5f, Param("Lighthouseturn_Base", 6f)), reach = Param("Lighthousereach_Base", 9f);
         float from = SweepAngle;
+        // The beam turns on with no node too, so a node coming back never sweeps the whole wedge it missed.
         SweepAngle = Mathf.Repeat(Time.time / turn * Mathf.PI * 2f, Mathf.PI * 2f);
+        if (Node == null)
+            return;
         float span = Mathf.Repeat(SweepAngle - from, Mathf.PI * 2f);
         if (span > Mathf.PI)
             span = 0f;   // the first step, or a long stall: just the beam where it is now
@@ -608,11 +619,19 @@ public class UloeFloodBrain : UloeBuilding
         }
     }
 
-    public override void Gone(bool killed, string reason)
+    // Searchlight's slows are untimed, so they come off with the brain too (a brain that threw is switched off).
+    void OnDisable() { ClearSlows(); }
+
+    void ClearSlows()
     {
         foreach (Link_Modifier m in slows.Values)
             ModKitUtil.Unmod(m);
         slows.Clear();
+    }
+
+    public override void Gone(bool killed, string reason)
+    {
+        ClearSlows();
         if (Master != null && Master.Radio != null)
         {
             ModKitUtil.Vis(Master, "Uloe_Ray", Pos, -1f);
