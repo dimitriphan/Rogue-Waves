@@ -337,7 +337,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05: the build of the unbuilt candidates, part 1 (the decisions' code items, `DECISIONS_APPLIED_2026-11-05.md`
   §3-§4, and the max review's three calls at their defaults): B1 the map vote held when the party first stays, and the
   host's ask on the boat when none was held; B2 the lobby's Cardinals locked to the campaign's (MODE-D9, MODEB-4
-  closed); B3-B4 the shelf's caps and Trinket slot, Trinkets on the vessel's panel, "+N Cardinals" on the run line; B5
+  closed); B3-B4 the shelf's caps and Trinket slot, one roll a break, Trinkets on the vessel's panel, "+N Cardinals" on the run line; B5
   Dazzling at 15% with Illuminate's 3 s linger; B6 the pack's foe modifiers are elite for Spool's Thread; B7 Spring Tide
   and Tidal Mend on the mode's own effects (pitfall #159's fix); B9 Monument's Cleanse leaves a building's own
   trade-offs; B12 Salt Sting's line; B13 Argo's slows renew, bosses never held; B15 Tougher for Boutbro (MODEB-8), the
