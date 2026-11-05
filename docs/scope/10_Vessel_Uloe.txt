@@ -48,7 +48,7 @@
 			- Details: /~ The game has no light for gameplay, so the mod adds up the light from sources in range (docs/RESEARCH_GAPS.md B1) \
 			- Sources: Uloe Light 1 within 3 tiles; a {Photon} Light 1 within 2 tiles; {Plug In} and the {Flood Light} as written on them
 			- Cap: 12 Light counted per building
-			- Sharing: a teammate's Uloe Light also reaches your buildings, up to ~4~ Light per building from teammates
+			- Sharing: a teammate's Uloe Light also reaches your buildings, up to 4 Light per building from teammates
 			- Effects: {Magnifying Glass} +20% damage per Light; {Power Bank}'s {Photon}s come back 10% faster per Light; {Mirror} at level 1 from any Light, level 2 from Light 3, level 3 from Light 6; {Flood Light} mines 10% faster per Light
 			- Levels: {Blind} -15% / -30% / -45% damage dealt, {Illuminate} +15% / +30% / +45% damage taken, lasting 3 / 4 / 5 seconds; a foe holds one level of each, and a stronger one replaces a weaker
 

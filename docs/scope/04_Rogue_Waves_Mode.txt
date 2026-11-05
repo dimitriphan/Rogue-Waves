@@ -13,7 +13,7 @@
 		- Start: the host starts a campaign from the Rogue Waves button on the main menu (New or Continue), which takes them to the boat with the mode already set, and invites friends there
 		- Saving: progress is saved between maps, so a campaign can be played over several sessions
 		- Continue: when the host picks the campaign up again with Continue on the main menu's Rogue Waves button, each player gets back their vessel, [Pure Aura], [Directions] and [Trinkets], and the team its [Cardinals]
-		- Won: if the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked / Map 10 ends like every map, so the campaign is won by leaving map 10 after Tide 15 or later \
+		- Won: if the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked / Map 10 ends like every map, so the campaign is won by leaving map 10 after Tide 15 or later \ /~ Depth is on hold: until it is built, nothing unlocks and the end screen says so \
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
 		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !

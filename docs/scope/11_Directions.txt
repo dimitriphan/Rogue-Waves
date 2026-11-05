@@ -6,7 +6,6 @@
 
 	[Directions by Vessel]
 		(Any)
-			! NEEDS DIRECTIONS FOR EVERY VESSEL !
 			{Made of Tougher Stuff}
 				- Kind: Boost
 				- Vessel: Any Vessel with (Minions)
@@ -250,7 +249,6 @@
 				- Clashes: None
 				- By: Claude /~ After Hades' Duo boons \
 		(Argo)
-			! NEEDS ARGO'S DIRECTIONS !
 			{Deep Current}
 				- Kind: Boost
 				- Vessel: Argo
@@ -296,7 +294,6 @@
 				- Clashes: None
 				- By: Claude /~ After the Automated Refinery and Orbital Assimilators: an economy that starts ahead \
 		(Yossele)
-			! NEEDS YOSSELE'S DIRECTIONS !
 			{Compost Bin}
 				- Kind: Shift
 				- Vessel: Yossele
@@ -386,7 +383,6 @@
 				- Clashes: None
 				- By: Claude /~ After Risk of Rain 2's Bustling Fungus \
 		(Spool)
-			! NEEDS SPOOL'S DIRECTIONS !
 			{Efficient Recycler}
 				- Kind: Boost
 				- Vessel: Spool
@@ -465,7 +461,6 @@
 				- Clashes: None
 				- By: Claude /~ After The Binding of Isaac's transformations and Monster Train's clan pairs: mixing kinds pays \
 		(Uloe)
-			! NEEDS ULOE'S DIRECTIONS !
 			{Extension Cord}
 				- Kind: Boost
 				- Vessel: Uloe

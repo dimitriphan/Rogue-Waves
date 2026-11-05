@@ -408,6 +408,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   questions, Yossele's ~90 scope `07` defaults, the last defaults and built `! NEEDS !` lines, five wording calls, the
   meteor's crystal, Yossele's final sheet, when to run the next PC round, the sync, `.claude/settings.json`). Spring
   Tide by a Fie wall is not a call: B7 in PR #103 rebuilt it, and the PC still has to see it. Docs only, no compile.
+  2026-11-05 16:04Z, his answer: "Default for all, and I give permission for 12". Applied here: Yossele's 95 scope `07`
+  defaults, 03's names, 06's rules, 10's sharing limit and 12's shop list are his; the NEEDS lines in 11, 12 and 14
+  cleared; Depth's notes in 04 and 05. Handed on (the report's end): items 2, 5, 6 and 9 to a code thread, 10 and 11 to
+  art, the next PC round (his OK) right after the balance sweep, then the sync and 04's NEEDS line from this thread;
+  `.claude/settings.json` is his edit. Docs only, no compile.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

@@ -2,16 +2,16 @@
 	Yossele, The Patient Golem
 		# Yossele is slightly more powerful statwise, which allows them to defend their base as their towers ramp up in effectiveness. / More health, damage, and health regen, but slower movement speed. \
 		# Gameplay loops plays around time management and slow growth, and keeping your important buildings safe.
-		/~ Laid out in the Vessel template, 15_Templates.txt. A value written ~like this~ is a default Claude picked; most are what the current build uses \
+		/~ Laid out in the Vessel template, 15_Templates.txt. A value written like this is a default Claude picked; most are what the current build uses \
 
 		[Identity]
 			- Title: The Patient Golem
 			- Difficulty: Intermediate
 			- Archetype: Keeping your towers alive grants bonuses to them, with a "growing defense" gameplay style. Scaling archetype
-			- In-game line: ~Sturdy, single-target ranged that mends itself~
+			- In-game line: Sturdy, single-target ranged that mends itself
 			- Look: round clay head with a see-through hole for a mouth, a two-leaf sprout, glowing green eyes, four long root-like limbs. / The hole in Yossele's head is their mouth. \
 			- Towers look: Towers carry round holes and root feet, and each [Growth] stage adds leaves or sprouts.
-			- Accent colour: ~leaf green~
+			- Accent colour: leaf green
 			- Sprites: ! NEEDS YOUR FULL SPRITE SHEET: idle, move, back view, fall, land, attack. The first release waits for it ! /~ What the build takes: idle and move in one sheet of 32 px cells (rows idle front right, front left, back right, back left, then move the same, 6 frames each), attack 32 px cells (4 frames, the same four rows); fall and land are 32 px too. A file of the same name and size in TDS_Mod/ModSource/Yossele/Art/ replaces the temporary one with no code change. The temporary sheets: docs/TEMP_ART.md \
 			- Lore: / Lore comes once every character is fully realized \
 			- Status: Built as 0.2.0-dev from this sheet with temporary art; passes its PC self-test, 177 of 177 in the latest round, and is the build installed for your play test. {Wood Wide Web}, the Shift Directions' panel names and the new Directions in 11 are built, compiled but not yet run on the PC /~ What was built and what each default is: TDS_Mod/ModSource/Yossele/DESIGN.md; what is left to check: docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md \
@@ -23,35 +23,35 @@
 			- Speed: 1.75 /~ Slower than the usual 2.5 \
 			- Damage: 5.5 /~ More than Smacky's 4 \
 			- Range: 4 tiles
-			- Projectile speed: ~15~
+			- Projectile speed: 15
 			- Attack speed: 0.5
 			- Build range: 2.5 tiles
 			- Sell rate: 50%
-			- Special rule: {~Patient Growth~} ~Sturdy fighter that mends itself, buildings grow a stage for every Tide they survive and lose it all when destroyed, a Direction can unlock FERTILIZE~
+			- Special rule: {Patient Growth} Sturdy fighter that mends itself, buildings grow a stage for every Tide they survive and lose it all when destroyed, a Direction can unlock FERTILIZE
 
 		[Ability] {Fertilize}
 			- Does: spends fertilizer to speed up a tower's [Growth].
-			- Numbers: ~+1 [Growth] stage for 1 fertilizer~
-			- Target: ~one of your Yossele buildings~ /~ The hotkey with nothing picked takes the nearest one that can still grow \
-			- Range: ~6~ tiles /~ The hotkey's own pick; a building you click is fertilized at any distance \
-			- Cooldown: ~0.5~ seconds /~ Fertilizer is the limit \
-			- Keys: ~6 / 7~
+			- Numbers: +1 [Growth] stage for 1 fertilizer
+			- Target: one of your Yossele buildings /~ The hotkey with nothing picked takes the nearest one that can still grow \
+			- Range: 6 tiles /~ The hotkey's own pick; a building you click is fertilized at any distance \
+			- Cooldown: 0.5 seconds /~ Fertilizer is the limit \
+			- Keys: 6 / 7
 			- Unlocked: by a [Direction], and its button doesn't show until Yossele has it. -> 11_Directions.txt {Compost Bin}
-			- Cost: ~1 {Fertilizer}~
+			- Cost: 1 {Fertilizer}
 
 		[Resource] {Fertilizer}
 			- Does: allows Yossele to speed up growth of a tower. Fertilizer is only unlocked if a [Direction] is picked that includes it.
-			- Start: ~0~ each map
-			- Cap: ~10~
+			- Start: 0 each map
+			- Cap: 10
 			- Earned by: the requirements of Yossele's own [Directions]. -> 11_Directions.txt {Compost Bin}, the first, which carries its numbers
 			- Spent on: {Fertilize}
 			- Between maps: resets
-			- On the vessel's death: ~kept~
+			- On the vessel's death: kept
 
 		[Vessel Mechanic] [Growth]
 			- Rule: [Growth] rises with each tide a tower survives, and resets if the tower is destroyed.
 			- Details: Buildings gain a stack of [Growth] after surviving a tide, gaining more [Growth] depending on tide strength. / Some maps have long lasting tides, with only 3 or 4 tides total. In these cases, each tide grants 5 stacks of [Growth]. \
-			- Per tide: ~1~ stack; 5 on a map with 4 tides or fewer
+			- Per tide: 1 stack; 5 on a map with 4 tides or fewer
 
 		(Offense 1):{Mushroom Cannon}
 			# Slowly stacks spores on enemies, dealing DOT. Long range cannon
@@ -84,22 +84,22 @@
 					- Cost: Red 50
 				% 1:{Farout Fungus} Range increases, with spore bombs increases in explosion AOE depending on how long the projectile is in the air.
 					- In-game line: Spore bombs increase in potency while in the air
-					- Numbers: ~Range +2 tiles~; ~explosion AOE +50% per second in the air~, up to ~+75%~ /~ A lob flies ~0.6~ seconds plus ~0.08~ per tile \
+					- Numbers: Range +2 tiles; explosion AOE +50% per second in the air, up to +75% /~ A lob flies 0.6 seconds plus 0.08 per tile \
 					- Cost: Red 45 + Blue 10
 
 				% 2:{Viral Outbreak} Enemies that die with max stacks of spores have a chance to explode with a spore bomb.
 					- In-game line: Fully spored foes may burst when felled
 					- Numbers: 30% chance, deals 15 damage in an AOE of 2 tiles and applies 1 stack of spores.
-					- Cost: ~Red 90~
+					- Cost: Red 90
 				% 2:{Deathcap Training} Increases damage over time effect from spores, and reduces maximum amount of stacks.
-					- In-game line: ~Deadlier spores, fewer of them~
+					- In-game line: Deadlier spores, fewer of them
 					- Numbers: DOT increased by 25%, while maximum spore stacks it can apply is reduced to 8 / Cannot stack more than 8. If an enemy already has higher than 8 stacks, it increases the damage while reapplying spore stacks to the higher level. EX: Attacking an enemy with 10 stacks already keeps the stacks while applying the 25% damage bonus. \
-					- Cost: ~Red 100~
+					- Cost: Red 100
 
 				% 3:{Explosive Finish} When reaching maximum spore stacks, enemies explode with spores, consuming spore stacks and dealing AOE damage based on how many spore stacks were reached. This explosion also can apply spore stacks.
-					- In-game line: ~Full spores burst, spreading the rot~
-					- Numbers: ~1~ damage per stack consumed, to every enemy within ~1.25~ tiles (the exploding one included), and the others get ~2~ stacks; ~an enemy can't explode again for 1 second~
-					- Cost: ~Red 420~
+					- In-game line: Full spores burst, spreading the rot
+					- Numbers: 1 damage per stack consumed, to every enemy within 1.25 tiles (the exploding one included), and the others get 2 stacks; an enemy can't explode again for 1 second
+					- Cost: Red 420
 				% 3:{Hallucinogen} Enemies that have maximum spore stacks will become stunned briefly.
 					- In-game line: Fully spored foes are stunned momentarily
 					- Numbers: While at max spore stacks, every 5 seconds has a 20% chance to stun for 2 seconds.
@@ -116,18 +116,18 @@
 			- Dandelion seeds float around tower, slowly stacking in quantity. Seeds target enemy all at once.
 			[Stats]
 				- In-game line: Releases seeds that strike targets who wander too close.
-				- Health: ~50~, +~25~ per level
+				- Health: 50, +25 per level
 				- Damage: 2 per seed, +0.25 per level
 				- Range: 7 tiles
 				- Seed limit: 10
 				- Seed spawn rate: 1 seed every 2 seconds / Seeds start at maximum amount on tide start \
-				- Seed flight: ~0.3~ seconds /~ Seeds are shared out so each enemy in range gets enough to fell it, nearest first \
+				- Seed flight: 0.3 seconds /~ Seeds are shared out so each enemy in range gets enough to fell it, nearest first \
 				- Limit: 1
-				- Cost: ~Red 50~
+				- Cost: Red 50
 			[Growth] / Can only make 1, so limits for seeds and range are very high. \
 				- Max: 15
 				- Each stage: seed limit increases by 3, and range increases by 20% of its original range
-				- At max: ~nothing extra~
+				- At max: nothing extra
 			[Upgrades]
 				% 1:{Seed Packets} Killing an enemy with a seed refunds 2 seeds. Seeds deal more damage.
 					- In-game line: Hardened seeds that come back after felling a foe.
@@ -135,22 +135,22 @@
 					- Leads to: {Picky Placement}, {Garden Weeds}
 					- Cost: Red 40
 				% 1:{Demand and Supply} Stacks faster when you have lower seeds at the ready
-					- In-game line: ~Grows seeds faster when few are ready~
+					- In-game line: Grows seeds faster when few are ready
 					- Numbers: Twice as fast when at less than a quarter of maximum seed stacks.
 					- Leads to: {D-MDS}, {Picky Placement}, {Garden Weeds}
 					- Cost: Red 20 + Yellow 40
 
 				% 2:{Picky Placement} Seeds will target enemies on a priority of maximum health. Seeds also do a percentage of maximum health.
-					- In-game line: ~Seeds go for the toughest foes and bite deeper~
+					- In-game line: Seeds go for the toughest foes and bite deeper
 					- Numbers: Deal 0.25% of maximum health of enemy.
-					- Cost: ~Red 100~
+					- Cost: Red 100
 				% 2:{Garden Weeds} Applies a debuff onto an enemy that has a chance to grant seed regrowth speed when the debuffed enemy dies.
 					- In-game line: Chance to recharge seeds quicker when enemies recently damaged die.
 					- Numbers: Maximum stacks are equal to current [Growth], with each stack increasing seed spawn rate by 10%. Debuff lasts 3 seconds. Chance is 40%.
-					- Cost: ~Red 90 + Yellow 30~
+					- Cost: Red 90 + Yellow 30
 				% 2:{D-MDS} Seeds no longer attack foes, but can now intercept enemy projectiles within range. Seed spawn rate reduced to 1 seed every 4 seconds.
 					- In-game line: Can no longer damage foes, but now intercepts enemy projectiles. / Figure out what counts as projectiles. Boss projectiles cannot be intercepted, or must use many seeds to intercept? \
-					- Numbers: 1 seed every 4 seconds; ~1~ seed per projectile, ~5~ for a boss's (a foe of ~600~ base health or more) /~ Counts as a projectile: every foe's shot in range that hurts \
+					- Numbers: 1 seed every 4 seconds; 1 seed per projectile, 5 for a boss's (a foe of 600 base health or more) /~ Counts as a projectile: every foe's shot in range that hurts \
 					- Cost: Blue 150 + Yellow 40
 
 				% 3:{Bonsai} Allows Yossele to plant a smaller dandelion shrub, with the same upgrades as the {Primordial Dandelion Tree} with reduced effects.
@@ -163,7 +163,7 @@
 					- Cost: Red 450 + Blue 600
 
 				% 4:{Dandelion Storm} Greatly increases its range, maximum seed limit, and seed spawn rate.
-					- In-game line: ~Huge range, many more seeds, grown faster~
+					- In-game line: Huge range, many more seeds, grown faster
 					- Numbers: Range increases by 100%, seed limit increased by 20, seed spawn rate increased by 100%
 					- Cost: Red 1050 + Blue 800 + Yellow 2400
 
@@ -174,44 +174,44 @@
 			- Vines from wall can extend forward with debuffs, with a slowing effect by default and additional debuffs depending on upgrade paths. / Debuffs include slows or self healing depending on upgrade path \
 			[Stats]
 				- In-game line: Sturdy stones, vines creep forward and slow foes
-				- Health: ~80~, +~40~ per level
+				- Health: 80, +40 per level
 				- Vine slow: 15%
 				- Vine length: 1 tile at the start
-				- Facing: turned while placing, with Sno Sno's facing arrows /~ ~"Forwards if possible": the vine line stops at a cliff or a gap~ \
+				- Facing: turned while placing, with Sno Sno's facing arrows /~ "Forwards if possible": the vine line stops at a cliff or a gap \
 				- Vines: flat tiles lying on the ground
-				- On a vine: ~an enemy within 0.55 tiles of a vine tile's centre~
-				- Limit: ~none~
-				- Cost: ~Blue 25~
+				- On a vine: an enemy within 0.55 tiles of a vine tile's centre
+				- Limit: none
+				- Cost: Blue 25
 			[Growth]
 				- Max: 8
 				- Each stage: damage reduction increases by 10% every [Growth], and vine length from {Overgrown Stonehenge} increases by 1 every 2 [Growth]
-				- At max: ~nothing extra~
+				- At max: nothing extra
 			[Upgrades]
 				% 1:{Verdant Spread} Vines extend all around. / Allows for support vine upgrades to affect nearby buildings \
-					- In-game line: ~Vines spread all around~
+					- In-game line: Vines spread all around
 					- Numbers: vines cover every ground tile possible within 2 tiles, expanding to 3 tiles at full [Growth].
-					- Cost: ~Blue 30~
+					- Cost: Blue 30
 				% 1:{Vine Blockade} At the beginning of every tide, a vine barrier forms on the {Overgrown Stonehenge}, taking some damage before breaking. Maximum health also increases. / Barrier should work as a shield, tanking some damage but not allowing itself to heal past that amount. \
-					- In-game line: ~A vine barrier each Tide, sturdier stones~
-					- Numbers: ~maximum health +50%~; ~the barrier soaks 30% of maximum health, renewed each tide~
-					- Cost: ~Blue 35~
+					- In-game line: A vine barrier each Tide, sturdier stones
+					- Numbers: maximum health +50%; the barrier soaks 30% of maximum health, renewed each tide
+					- Cost: Blue 35
 
 				% 2:{Natural Remedy} Vines heal buildings slowly
-					- In-game line: ~Vines mend buildings~
+					- In-game line: Vines mend buildings
 					- Numbers: 0.5 health per second per [Growth]. / A building that hasn't grown yet counts as stage 1 \
-					- Cost: ~Blue 90~
+					- Cost: Blue 90
 				% 2:{Opportunistic Carnivore} Vines siphon health from enemies standing on them, slowly healing {Overgrown Stonehenge}.
-					- In-game line: ~Vines drain foes to mend the stones~
+					- In-game line: Vines drain foes to mend the stones
 					- Numbers: 5 health per second per enemy, with a limit of 5 enemies.
-					- Cost: ~Blue 80 + Red 30~
+					- Cost: Blue 80 + Red 30
 				% 2:{Easy Target} Vines give a debuff to enemies that makes them take increased damage after time spent on vines.
 					- In-game line: Vines eventually cause foes to take more damage
 					- Numbers: 15% damage increase after 5 seconds on vines.
 					- Cost: Blue 40 + Red 75
 
 				% 3:{Entangling Roots} Enemies spending at least 7 seconds on vines are briefly stunned, taking a percent of their maximum health as damage and healing {Overgrown Stonehenge} by the same amount. Can only occur once per enemy.
-					- In-game line: ~Lingering foes are snared and sapped~
-					- Numbers: 7 seconds; ~stunned 1.5 seconds~; 5% of maximum health
+					- In-game line: Lingering foes are snared and sapped
+					- Numbers: 7 seconds; stunned 1.5 seconds; 5% of maximum health
 					- Cost: Blue 420 + Red 300
 				% 3:{Obsidian} Greatly increases health
 					- In-game line: Massively increases health
@@ -227,36 +227,36 @@
 			# Economy sapling that mines nodes through its roots
 			- Collects every aura node in a range through its roots / Similar to Sno Sno \
 			[Stats]
-				- In-game line: ~Its roots mine every ore node in reach, fully grown it drops aura fruit~
-				- Health: ~30~, +~20~ per level
-				- Damage: ~1~ per strike / Mining \
-				- Attack speed: ~0.25~
+				- In-game line: Its roots mine every ore node in reach, fully grown it drops aura fruit
+				- Health: 30, +20 per level
+				- Damage: 1 per strike / Mining \
+				- Attack speed: 0.25
 				- Range: 2.5 tiles
 				- Aura fruit: Attack speed x Damage x 15 of all aura types / By default, aura fruit gives a small bonus to all auras. Any vessel or minion can pick up aura fruit. \
-				- Fruit pickup: ~within 0.75 tiles; it stays until picked up or the map ends~
-				- Limit: ~none~
-				- Cost: ~Yellow 35~
+				- Fruit pickup: within 0.75 tiles; it stays until picked up or the map ends
+				- Limit: none
+				- Cost: Yellow 35
 			[Growth]
 				- Max: 5
 				- Each stage: its mining speed and range increase. / Mining speed and range values are to be determined \
-				- Numbers: ~+10%~ mining speed and +0.4 tiles range per stage
+				- Numbers: +10% mining speed and +0.4 tiles range per stage
 				- At max: drops aura fruits on the ground after fully mining a node that can be picked up for aura.
 			[Upgrades]
 				% 1:{Focused Roots} Collects aura much faster, but can only select 1 node
-					- In-game line: ~Mines one node much faster~
+					- In-game line: Mines one node much faster
 					- Numbers: +80% mining speed / Adds to Growth's and the other mining bonuses, as the game adds percentages \
-					- Cost: ~Yellow 30~
+					- Cost: Yellow 30
 				% 1:{Sustaining Practices} Heals itself slowly based on how many mining nodes are in range, as well as [Growth] level.
-					- In-game line: ~Mends itself from the ore around it~
+					- In-game line: Mends itself from the ore around it
 					- Numbers: 0.5 health per second, per node in range, per [Growth] stage /~ Counts as stage 1 before it has grown \
-					- Cost: ~Yellow 25 + Blue 10~
+					- Cost: Yellow 25 + Blue 10
 
 				% 2:{Grafted} Aura fruit's aura color can be selected, with 70% efficiency.
-					- In-game line: ~Pick the colour of its fruit~
+					- In-game line: Pick the colour of its fruit
 					- Numbers: 70% efficiency / Combines all aura values together of fruit, then converts into 70% of total amount as one aura color. \
 					- Cost: Red 60 + Blue 60 + Yellow 60
 				% 2:{Forest Project} Aura mining speed increases when other {Pachira Sapling}s are built nearby.
-					- In-game line: ~Mines faster for each other Sapling nearby~
+					- In-game line: Mines faster for each other Sapling nearby
 					- Numbers: 10% increased mining speed per nearby {Pachira Sapling}; "nearby" is within 4 tiles, and anyone's Saplings count
 					- Cost: Yellow 140
 				% 2:{Spontaneous Mulch} Foes dying within range grant bonus mining speed
@@ -265,13 +265,13 @@
 					- Cost: Red 40 + Yellow 30
 
 				% 3:{Connected Roots} If {Pachira Sapling}'s health is above 50%, a portion of the damage taken by nearby buildings is received by {Pachira Sapling} instead.
-					- In-game line: ~Takes hits for buildings nearby while healthy~
+					- In-game line: Takes hits for buildings nearby while healthy
 					- Numbers: 65% of damage taken is received by {Pachira Sapling} if {Pachira Sapling} is healthy enough. /~ "Nearby" is your buildings within the Sapling's range, other Saplings left out \
 					- Cost: Yellow 120 + Blue 300
 				% 3:{Harvesting Season} Aura fruit's value is increased by 100%.
-					- In-game line: ~Fruit is worth double~
+					- In-game line: Fruit is worth double
 					- Numbers: 100%
-					- Cost: ~Yellow 400~
+					- Cost: Yellow 400
 				% 3:{Wood Wide Web} Trades the aura colour you hold most of for the one you hold least of.
 					- In-game line: Trades spare aura for what you lack
 					- Numbers: every 1 second, while you hold at least 100 more of your most-held colour than of your least-held, 2 of the most-held become 1 of the least-held. Once a second per player, however many {Pachira Sapling}s have it / Like Smacky's Processing Plant, without picking the colour \
@@ -282,26 +282,26 @@
 					- Numbers: Increases health by 100%, damage reduction aura 30%.
 					- Cost: Blue 2300 + Yellow 1000
 				% 4:{Softening Roots} Reduces the health of nearby nodes by 1 point. / See if game's code can handle this? \
-					- In-game line: ~Softens the ore around it~
-					- Numbers: 1 point, on ~every node within its range~, ~never below 1~ /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; proven in PC round 9) \
-					- Cost: ~Yellow 2300 + Red 1000~
+					- In-game line: Softens the ore around it
+					- Numbers: 1 point, on every node within its range, never below 1 /~ The code can: a node's health is the number of hits it takes to pay out, so 1 less pays one hit sooner, for every miner on that node (kit docs/16 section 4, read from the game's code; proven in PC round 9) \
+					- Cost: Yellow 2300 + Red 1000
 
 		(Minion):{Cordyfriend}
 			# Tanky minion that spawns from fallen foes
 			- Made by: {Cordyceps}, the {Mushroom Cannon}'s level 4 upgrade
-			- Attack: ~melee~
+			- Attack: melee
 			- Health: 75
 			- Damage: 2
 			- Range: 1.5 tiles
 			- Attack speed: 0.5
 			- Speed: 2.25
-			- How many: ~up to 30 at once per player~
-			- Respawn: ~none: each one rises from a fallen foe~
-			- Orders: ~walks to the nearest foe within 4 tiles, else back to where it rose~
-			- Leash: ~5 tiles from where it rose~
-			- Cost: ~free~
+			- How many: up to 30 at once per player
+			- Respawn: none: each one rises from a fallen foe
+			- Orders: walks to the nearest foe within 4 tiles, else back to where it rose
+			- Leash: 5 tiles from where it rose
+			- Cost: free
 			- Look: resembles a {Snoble} /~ Until your sprite: a temporary one at Snoble size, your pick of the ten versions: a cream puff with two forked orange growths like little antlers, charging head first (docs/TEMP_ART.md). The first release ships it unless you send your own: 24 px cells, idle 6, move 6, attack 4 frames \
 
 		[Directions] / Written in 11_Directions.txt under Yossele \
 			- {Compost Bin}, {Dandelion Season}, {Mother of Mushrooms}
-			- {~Cutting Jar~}, {~Sap Bucket~}, {~Creeping Ivy~}, {~Deep Breath~}, {~Fairy Ring~} /~ Made by Claude \
+			- {Cutting Jar}, {Sap Bucket}, {Creeping Ivy}, {Deep Breath}, {Fairy Ring} /~ Made by Claude \
