@@ -246,7 +246,7 @@ public static class RWRejoin
     static Game_Mapvars clientMap;
     static bool sorted, late, slowed;
     static readonly List<string> heroesAsked = new List<string>();
-    static bool inMap, dropped;
+    static bool inMap, dropped, played;
     static string hostName = "";
     public static bool Late { get { return late; } }
 
@@ -256,7 +256,7 @@ public static class RWRejoin
         if (mv != clientMap)
         {
             clientMap = mv;
-            sorted = late = slowed = false;
+            sorted = late = slowed = played = false;
             heroesAsked.Clear();
         }
         Watch(mv);
@@ -276,13 +276,13 @@ public static class RWRejoin
             int w = MapWeather();
             RWLog.Info("rejoin: joined a running map (Wave " + mv.Wave.Value + ", weather " + RWWeather.Display(w) + "), catching up");
             if (w != RWChart.Calm) RWWeather.Preload(w);
-            RogueWavesModeMod.Instance.StartCoroutine(CatchUp());
+            RogueWavesModeMod.Instance.StartCoroutine(InMap(CatchUp()));
         }
         if (!late)
             return;
         AskHeroes();
         if (slowed && Game_Client_Init.Instance != null && Time.timeScale != 0f)
-            Time.timeScale = mv.Time_Scale.Value * (mv.Time_Speedup.Value ? 1.5f : 1f);
+            Time.timeScale = RWWeather.GameSpeed(mv);
     }
 
     // The game loads every player's vessel group before the map (Game_Client_Init.Initalize), but a rejoiner's own
@@ -324,11 +324,10 @@ public static class RWRejoin
         else if (stack.Contains("Game_Endscreen.Initalize")) endDied = true;
     }
 
-    // What died gets its turn again, now that the player object is here. A client half left alone has no Master yet.
+    // What died gets its turn again, now that the player object is here.
     static void Repair()
     {
         Tds_Clientinfo me = Local();
-        int clients = 0;
         if (initDied && me != null && !me.Loaded.Value)
         {
             me.Loaded.Value = true;
@@ -345,6 +344,16 @@ public static class RWRejoin
             Game_Endscreen end = UnityEngine.Object.FindObjectOfType<Game_Endscreen>();
             if (end != null) end.SendMessage("Initalize", SendMessageOptions.DontRequireReceiver);
         }
+        RWLog.Info("rejoin: started again what the late player object stopped:" + (initDied ? " the map's load" : "") + (artifactsDied ? " the Cardinal row" : "") + (endDied ? " the end screen" : "") + (initDied || artifactsDied || endDied ? "" : " nothing"));
+        initDied = artifactsDied = endDied = false;
+    }
+
+    // A client half sets its Master once the local player has loaded, a frame after it looks. So two frames after that, a
+    // half still without one is one the late player object stopped; a live one still waiting must not start twice (two
+    // of every look and handler, MODE-B2).
+    static void RestartStopped()
+    {
+        int clients = 0;
         foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
             if (c.Master == null)
             {
@@ -352,20 +361,19 @@ public static class RWRejoin
                 clients++;
             }
         ClientsRestarted += clients;
-        RWLog.Info("rejoin: started again what the late player object stopped: " + clients + " entities" + (initDied ? ", the map's load" : "") + (artifactsDied ? ", the Cardinal row" : "") + (endDied ? ", the end screen" : ""));
-        initDied = artifactsDied = endDied = false;
+        RWLog.Info("rejoin: started again the client halves the late player object stopped: " + clients + " entities");
     }
 
     // The same arrival can outrun the load groups: a client half that asks for its being before its group is in gets null and
     // dies on it a few lines on, with its Master set and no look or state for good (116 things on a rejoin after a restart,
-    // 2026-11-04; pitfall #141). One still without its being on two looks a second apart, once the group holds it, runs again.
+    // 2026-11-04; pitfall #141). One still without its being on two looks a second apart, with its group in on both, runs again.
     // A live one waits on the game's flags for a frame or two, which the two looks leave alone.
     static IEnumerator Looks()
     {
         List<Entity_Master_Client> seen = new List<Entity_Master_Client>();
         List<string> beings = new List<string>();
         int started = 0;
-        for (int i = 0; i < 90 && Game_Mapvars.Instance != null; i++)
+        for (int i = 0; i < 90; i++)
         {
             yield return new WaitForSecondsRealtime(1f);
             List<Entity_Master_Client> now = new List<Entity_Master_Client>();
@@ -373,7 +381,11 @@ public static class RWRejoin
             {
                 if (c.Master == null || c.Beingobject != null || !c.Master.Clientready.Value || c.Master.Being.Value.ToString() == "")
                     continue;
-                if (!seen.Contains(c) || Blockage.Address.Bl_Address.Getload(c.Master.Being.Value) == null)
+                // Its group must have been in on the last look too: a run that waits on the group dies as it arrives, and
+                // started again in between, both runs would go through (MODE-B2).
+                if (Blockage.Address.Bl_Address.Getload(c.Master.Being.Value) == null)
+                    continue;
+                if (!seen.Contains(c))
                 {
                     now.Add(c);
                     continue;
@@ -394,17 +406,30 @@ public static class RWRejoin
             RWLog.Info("rejoin: gave " + started + " things their look once their groups had loaded: " + string.Join(", ", beings.ToArray()));
     }
 
+    // The catch-up and the looks end with their map: a player turned away goes on to the main menu and may load the next map
+    // before the host starts it, where a catch-up left running would start the fly-in under the loading screen (MODE-B3).
+    // A destroyed map reads == null while Game_Mapvars.Instance still holds it (kit 1.7), so that ends it too.
+    static IEnumerator InMap(IEnumerator run)
+    {
+        Game_Mapvars map = Game_Mapvars.Instance;
+        while (map != null && ReferenceEquals(Game_Mapvars.Instance, map) && run.MoveNext())
+            yield return run.Current;
+    }
+
     static IEnumerator CatchUp()
     {
         float t = 0f;
         while (t < 90f && (Blm_Server.Instance == null || Blm_Server.Instance.Localplayer == null)) { t += Time.unscaledDeltaTime; yield return null; }
         yield return new WaitForSecondsRealtime(1f);
         Repair();
-        RogueWavesModeMod.Instance.StartCoroutine(Looks());
+        RogueWavesModeMod.Instance.StartCoroutine(InMap(Looks()));
         t = 0f;
         while (t < 180f && !LocalLoaded()) { t += Time.unscaledDeltaTime; yield return null; }
         Game_Client_Init ci = Game_Client_Init.Instance;
         if (!LocalLoaded() || ci == null) { RWLog.Warn("rejoin: the map didn't finish loading here after " + RWUtil.F(t) + " s"); yield break; }
+        yield return null;
+        yield return null;
+        RestartStopped();
         yield return new WaitForSecondsRealtime(0.5f);
         try
         {
@@ -485,8 +510,12 @@ public static class RWRejoin
             if (!inMap) hostName = "";
             return;
         }
+        // Only once this player is in the map's play (Activeplayer, given back to a rejoiner by Restore): a player the host
+        // turns away has the map's objects for a moment too, and would be told to Join Game again (MODE-B4).
+        Tds_Clientinfo me = Local();
+        if (me != null && me.Activeplayer.Value > 0) played = true;
         string state = mv.Gamecomplete.Value.ToString();
-        inMap = state == "Running" || state == "";
+        inMap = played && (state == "Running" || state == "");
         // The host of this map only: a later map may be someone else's.
         if (!inMap) hostName = "";
         if (inMap && hostName == "" && Blm_Server.Instance != null)

@@ -28,10 +28,21 @@ public static class RWObjectives
     public static Beingobject MeteorBeing;
     static Entity_Master target;
     static bool failed, targetFell;
-    static float coreHurt, tideLength, clockLeft;
+    static float tideLength, clockLeft;
+    static readonly Dictionary<Entity_Master, float> coreHurt = new Dictionary<Entity_Master, float>();   // each Basin's damage taken as the Tide began
     public const float ClockShare = 0.25f;   // of the Tide's clock left when its last foe falls
 
     public static void Build() { }
+
+    // A map starts: nothing posted, taken or running carries over from the last one (MODE-D2).
+    public static void Reset()
+    {
+        Posted = Active = null;
+        target = null;
+        failed = targetFell = false;
+        tideLength = clockLeft = 0f;
+        coreHurt.Clear();
+    }
 
     // The ore node's group comes and goes with the map, so the copy is made again on each one, on every machine.
     static Game_Mapvars meteorMap;
@@ -124,8 +135,9 @@ public static class RWObjectives
         target = null;
         if (Active == null)
             return;
-        Entity_Master core = Core();
-        coreHurt = core != null ? core.Damagetaken : 0f;
+        coreHurt.Clear();
+        foreach (Entity_Master c in RWUtil.PlayerCores())
+            coreHurt[c] = c.Damagetaken;
         Game_Mapvars vars = Game_Mapvars.Instance;
         tideLength = vars != null ? vars.Time_Wave.Value : 0f;
         try
@@ -174,7 +186,7 @@ public static class RWObjectives
         switch (a.Name)
         {
             case "Meteor": case "Nest": ok = targetFell; break;
-            case "Hull": ok = core != null && core.Damagetaken <= coreHurt + 0.01f; break;
+            case "Hull": ok = BasinClean(); break;
             case "Clock": ok = tideLength > 0f && clockLeft > tideLength * ClockShare; break;
             case "Hands": ok = !failed; break;
         }
@@ -200,11 +212,24 @@ public static class RWObjectives
             return;
         if (master == target && killed)
             targetFell = true;
-        if (killed && master.Beingserver != null && master.Beingserver.Entity != null && master.Beingserver.Entity.Tags.Contains("Hero") && master.Entitydata.Value.Owner >= 0)
+        // A player's own vessel: a Boutbro falling is part of Boutman's day (MODE-D3).
+        if (killed && RWRun.IsVessel(master))
             failed = true;
     }
 
     static Entity_Master Core() { return RWUtil.PlayerCore(); }
+
+    // Every Basin standing when the Tide began, unhurt and still standing: a two-Basin map (Splithead) has two to keep
+    // clean (MODE-D8).
+    static bool BasinClean()
+    {
+        if (coreHurt.Count == 0)
+            return false;
+        foreach (KeyValuePair<Entity_Master, float> kv in coreHurt)
+            if (!ModKitUtil.Alive(kv.Key) || kv.Key.Damagetaken > kv.Value + 0.01f)
+                return false;
+        return true;
+    }
 
     // Farther and tougher on later maps (docs/scope/14 Mind the Meteor's "Later maps").
     static void SpawnMeteor()

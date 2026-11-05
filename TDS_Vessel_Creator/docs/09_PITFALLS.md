@@ -293,6 +293,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
     solo and 4 online → what a player must see goes through `Vis_ClientRpc`, a skin, a stat or a networked being, or
     calls the public `Vfxdebuff_ClientRpc` / `Vfxoneshot_ClientRpc` itself and adds one to `Clientsendstack`, sending a
     look again only when the one showing would end sooner than the new one (Argo 2.0.1 `ArgoUtil.Debuff`, `MustSee`; every part's `ModKitUtil.Debuff` since kit 1.8).
+    Any send of a look sets its time, shorter or not (`Helper_Vfxtools.Debuff`), so another source's short look cuts a long
+    one: since kit 1.9 `ModKitUtil.Debuff` sends a covered look once more in its last half second if a caller still
+    renews it (no more often: each send costs a slot in the queue).
     Read from code; the fix runs in game without error (Argo 2.0.1's self-test and a second player's machine,
     2026-11-04), but no fight there was big enough to fill the queue (`19` §8 N4), so the drop itself is still unseen.
 96. **`KeyNotFoundException` from the sound player, or a sound variant that never plays** (decompile, `21` §2.1) → the
@@ -493,3 +496,27 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 148. **Calling the game's disconnect callback is not a disconnect** (2026-11-04) → `SendMessage("Singleton_OnClientDisconnectCallback")` on a client reached the main menu with the error box hidden, while the box's text still read its prefab's "Host has disconnected", which no code writes. A real one showed the mod's line: test a drop with `NetworkManager.DisconnectClient` on the host, after the friend has heard the last word. **Verified** in game.
 149. **A self-test can end the map, and everything after it then reads as broken** (2026-11-04) → with six foes left walking for 30 s, `Wave` stopped rising at Entry 12 and every later check failed; with each foe's walk cut to 5.6 s the Tide ran on, so most likely they reached the Basin. Kill what a check spawns within seconds, and log `Wave` and `Entry` after a forced Tide. Also, `Game_Ui.Warning` upper-cases its text: a check searching for it must too.
 150. **A map counts as loaded before its Basin stands** (2026-11-04) → `ModKitTides.MapStart` fires on `Maploaded` with no player core yet, so anything put on the core there is lost: held Cardinals did nothing after the map they were bought on. Wait for `RWUtil.PlayerCores()` (`RWCardinals.Update`). **Verified** in game on a campaign saved before the Trinket rename.
+151. **A spawned child wears its parent's skin, not the one asked for** (2026-11-05) → `Helper_Entitytools.Spawn` with a
+     parent copies the parent's `Skin` over `Link_Spawn.Skin` (with its team and owner): a Grafted Sapling's one-colour fruit
+     drew as the three-colour one, under the Sapling's `Growth` skin → write the skin again on the spawned master
+     (`ModKitUtil.Skin`, `YosseleUtil.SpawnOnTile`), only when one was asked for: a child that should look like its parent
+     (the Henge's vines) asks for none. Read from code (the code review's YOS-1); not yet seen fixed in game.
+152. **A stock elite's script also paints the foe** (2026-11-05) → `Entity_Ai_Enemy_Health_Upgrade.Starting` adds its
+     Health mod and then sets `Skin` to `Health`, the Hardened look, over any other; the mode's per-map health on that
+     script made every foe from map 2 look Hardened → an upgrade with no script marks the foe and the part adds the mod
+     itself (`RWDifficulty.Update`; a Health Multi added later keeps the foe's share of health, `17` §2.1). Read from code
+     (MODE-D5); not yet seen fixed in game.
+153. **Any player who comes or goes puts the game speed back to x1 on every machine** (2026-11-05) → each map's pause menu
+     hooks `Blm_Server.Lobbyupdate` to set `Time.timeScale = 1` and never unhooks; the game applies `Time_Scale` and
+     `Time_Speedup` again only when one of them changes, and a rejoiner's `Startvisuals` asks before its own speed is on.
+     So a raised `Time_Scale` (Quickening Current) quietly dropped to x1 at a drop or a join → in the frames after each
+     lobby change, set `Time.timeScale = Time_Scale × (Time_Speedup ? 1.5 : 1)` again, leaving a pause (0) alone
+     (`RWWeather.SpeedUpdate`). Read from code (MODE-B1); not yet seen in game.
+154. **`Game_Mapvars.Wave` is still -1 when the map counts as loaded** (2026-11-05) → the game writes `Wave = 0` and
+     `Entry = 1` a moment after `Maploaded`, so a poll that took Wave at MapStart saw 0 > -1 and fired a Tide 0 →
+     `ModKitTides` reads `Mathf.Max(Wave, 0)` on every poll, not only at MapStart, or its rewind rule sets -1 back and
+     the 0 still fires (kit 1.9). Read from code (SHARED-2).
+155. **A destroyed thing still holds its reference, and `== null` reads true on it** (2026-11-05) → a field that held a sold
+     Power Bank made `if (Plug == null) return;` skip the very unplug that should have run, so PLUG IN stuck on UNPLUG →
+     ask the reference itself (`(object)Plug == null`) where the code must still act on a thing that went (`UloeHeroBrain`);
+     `ModKitUtil.Alive` already reads both. Read from code (ULO-1); pitfalls #6 and #63 are the same rule met elsewhere.

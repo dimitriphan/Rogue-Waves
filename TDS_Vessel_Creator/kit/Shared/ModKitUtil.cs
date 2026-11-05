@@ -1,8 +1,9 @@
-// Kit 1.8 (2026-11-04). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.9 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: the small helpers every vessel had its own copy of (the database, beings, stats, foes near a point, hits,
 // debuff looks, costs, json fields). Each part keeps only what names it: Retag and Clone (the "-<vessel>" id suffix),
 // Warn, Later, its own rules, and Argo's ById, Costs and Params (they read ids and numbers a little differently).
-// Before kit 1.8 each vessel carried these in <Vessel>Util; the bodies are unchanged (CODE_SIMPLIFICATION_2026-11-04).
+// Before kit 1.8 each vessel carried these in <Vessel>Util; the bodies came unchanged
+// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Debuff`.
 public static class ModKitUtil
 {
     public static Dictionary<string, UnityEngine.Object> Folder(string name)
@@ -230,34 +231,41 @@ public static class ModKitUtil
     // the spawn fills in its Worldobject, so clients can't resolve it and the effect never appears.
     // Sent with the ClientRpc itself (Argo 2.0.1's way): the game's Vfxdebuffcheck drops a look while 50 effects wait to
     // be sent, which happens in busy online fights (kit docs/19 §4, pitfall #95). The send still counts in the game's
-    // queue, and a look already showing until this one's end is not sent again.
-    static readonly Dictionary<Entity_Master, Dictionary<string, float>> shown = new Dictionary<Entity_Master, Dictionary<string, float>>();
+    // queue, and a look already showing until this one's end is not sent again, with one exception: any send of a look
+    // sets its time, shorter or not (Helper_Vfxtools.Debuff), so another source's short one can cut this part's long
+    // one; a caller still renewing it sends it once more in its last half second (kit 1.9).
+    static readonly Dictionary<Entity_Master, Dictionary<string, Vector2>> shown = new Dictionary<Entity_Master, Dictionary<string, Vector2>>();   // x: shown until, y: sent at
 
     public static void Debuff(Entity_Master radioOf, Entity_Master target, string vfx, float duration)
     {
         if (radioOf == null || radioOf.Radio == null || target == null || target.Beingref == null)
             return;
-        float end = Time.fixedTime + duration, until;
-        Dictionary<string, float> looks;
+        float now = Time.fixedTime, end = now + duration;
+        Dictionary<string, Vector2> looks;
         if (!shown.TryGetValue(target, out looks))
         {
             if (shown.Count >= 256)
                 ForgetLooks(false);
-            shown[target] = looks = new Dictionary<string, float>();
+            shown[target] = looks = new Dictionary<string, Vector2>();
         }
-        if (looks.TryGetValue(vfx, out until) && until >= end - 0.1f)
-            return;
-        looks[vfx] = end;
+        Vector2 look;
+        if (looks.TryGetValue(vfx, out look))
+        {
+            if (look.x >= end - 0.1f && (look.x - now >= 0.5f || look.y >= look.x - 0.5f))
+                return;
+            end = Mathf.Max(end, look.x);
+        }
+        looks[vfx] = new Vector2(end, now);
         if (Game_Mapvars.Instance != null)
             Game_Mapvars.Instance.Clientsendstack++;
-        radioOf.Radio.Vfxdebuff_ClientRpc(vfx, target.Beingref.Value, duration);
+        radioOf.Radio.Vfxdebuff_ClientRpc(vfx, target.Beingref.Value, end - now);
     }
 
     public static void RemoveDebuff(Entity_Master radioOf, Entity_Master target, string vfx)
     {
         if (radioOf == null || radioOf.Radio == null || target == null || target.Beingref == null)
             return;
-        Dictionary<string, float> looks;
+        Dictionary<string, Vector2> looks;
         if (shown.TryGetValue(target, out looks))
             looks.Remove(vfx);
         radioOf.Radio.Vfxremovedebuff_ClientRpc(vfx, target.Beingref.Value);
@@ -273,11 +281,11 @@ public static class ModKitUtil
         }
         float now = Time.fixedTime;
         List<Entity_Master> gone = new List<Entity_Master>();
-        foreach (KeyValuePair<Entity_Master, Dictionary<string, float>> kv in shown)
+        foreach (KeyValuePair<Entity_Master, Dictionary<string, Vector2>> kv in shown)
         {
             bool showing = false;
-            foreach (float until in kv.Value.Values)
-                if (until > now) showing = true;
+            foreach (Vector2 look in kv.Value.Values)
+                if (look.x > now) showing = true;
             if (kv.Key == null || !showing)
                 gone.Add(kv.Key);
         }

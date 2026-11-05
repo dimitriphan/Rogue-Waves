@@ -6,6 +6,7 @@ public class UloeHeroBrain : MonoBehaviour
     public Entity_Master Master;
     public UloePlayer Player;
     public Entity_Master Plug;      // what the cord is in; null when unplugged
+    Vector3 plugAt;                 // where it was last seen, for the unplug effects once it's gone
     public float PlugReady, LightNow, RadiusNow;
     public int Plugs, Unplugs, Snaps, Refused;
     public bool Armed;
@@ -239,6 +240,7 @@ public class UloeHeroBrain : MonoBehaviour
             return;
         }
         Plug = target;
+        plugAt = ModKitUtil.Pos(target);
         Plugs++;
         LastPlug = ModKitUtil.BeingName(target) + " Light " + PlugLight(target).ToString("0.##");
         ModKitUtil.Skin(Master, UloeData.Plugged);
@@ -252,11 +254,13 @@ public class UloeHeroBrain : MonoBehaviour
         nextFeed = 0f;
     }
 
+    // A sold or destroyed Bank still holds its reference here but reads == null (Unity's ==), so the tests below ask the
+    // reference itself, or the cord would stay in it for good (ULO-1).
     public void Unplug(bool snapped)
     {
-        if (Plug == null)
+        if ((object)Plug == null)
             return;
-        Vector3 at = ModKitUtil.Pos(Plug);
+        Vector3 at = ModKitUtil.Alive(Plug) ? ModKitUtil.Pos(Plug) : plugAt;
         Plug = null;
         Unplugs++;
         PlugReady = Time.time + UloeData.PlugCooldown;
@@ -276,8 +280,10 @@ public class UloeHeroBrain : MonoBehaviour
     // The cord: gone with what it was in, or snapped when Uloe walks past its length.
     void CheckCord()
     {
-        if (Plug == null)
+        if ((object)Plug == null)
             return;
+        if (ModKitUtil.Alive(Plug))
+            plugAt = ModKitUtil.Pos(Plug);
         if (!ModKitUtil.Alive(Master) || !ModKitUtil.Alive(Plug) || ModKitUtil.Flat(ModKitUtil.Pos(Plug), ModKitUtil.Pos(Master)) > Reach + UloeData.PlugSlack)
             Unplug(true);
     }

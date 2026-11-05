@@ -1,7 +1,8 @@
 // Each map harder than the last (docs/scope/04 [Difficulty]; numbers are defaults for its blank slot): the host writes the
 // mode's Tide table when a map starts, from a pristine copy, as Riptide proved live writes work (kit docs/15 §13):
 //   spawn rates   more foes in each row and shorter intervals, by map and by players beyond the first
-//   health        every foe gets a health upgrade on the stock Enemy_Health script with the map's number
+//   health        every foe gets the map's health upgrade, which has no script: the host adds its Health mod itself
+//                 (Update), as the stock Enemy_Health script would also paint the foe as a Hardened elite
 //   modifiers     the campaign's pool (rolled from its seed: two stock elites, two of the pack's, docs/reports/SCOPE_FIT_PLAN_2026-10-28.md
 //                 §5.1) adds its members one by one as the maps go on, each on a share of the foes
 // and the bonus Tides: past Tide 29 the table's last break is rewound onto Tide 29's row while Wave rises, each one
@@ -16,9 +17,16 @@ public static class RWDifficulty
     static List<Wavesobject.Waves> pristine;
     static List<Wavesobject.Waves> table;
     static readonly Dictionary<int, Upgradeproperties> health = new Dictionary<int, Upgradeproperties>();
+    static string healthId;                         // this map's health upgrade, null on map 1 and outside the campaign
+    static readonly Dictionary<Entity_Master, bool> toughened = new Dictionary<Entity_Master, bool>();
+    static float nextLook;
+    static int pruneAt = 256;
 
     public static void MapStart()
     {
+        healthId = null;
+        toughened.Clear();
+        pruneAt = 256;
         if (RWMode.ModeObject == null)
             return;
         table = RWMode.ModeObject.Enemies.Wave;
@@ -57,6 +65,7 @@ public static class RWDifficulty
         List<Upgradeproperties> mods = Pool(map);
         LastScale = scale;
         LastHealth = HealthPerMap * (map - 1);
+        healthId = tougher != null ? tougher.Objectname : null;
         List<string> names = new List<string>();
         foreach (Upgradeproperties m in mods) names.Add(m.Objectname);
         LastModifiers = string.Join(", ", names.ToArray());
@@ -109,10 +118,37 @@ public static class RWDifficulty
         Upgradeproperties u;
         if (health.TryGetValue(map, out u))
             return u;
-        // Elite params add to 1: Health_Multi x means health x(1 + x) (kit docs/13 §10); the stock script reads this one key.
-        u = RWContent.Upgrade("RW_Foe_Health" + map + "_Upgradeobject", "", "", "Entity_Ai_Enemy_Health_Upgrade", "Health_Multi", HealthPerMap * (map - 1));
+        // No script: the stock Entity_Ai_Enemy_Health_Upgrade also writes Skin "Health", the Hardened elite's look, over the
+        // foe's own. The upgrade only marks the foe, and Update adds the mod. Health_Multi x means health x(1 + x) (kit docs/13 §10).
+        u = RWContent.Upgrade("RW_Foe_Health" + map + "_Upgradeobject", "", "", null, "Health_Multi", HealthPerMap * (map - 1));
         health[map] = u;
         return u;
+    }
+
+    // Host, in a map: each foe that carries this map's health upgrade gets its Health Multi once, a quarter second after it
+    // comes at the latest; a Multi added later keeps the foe's share of health (kit docs/17 §2.1), so it still comes whole.
+    public static void Update()
+    {
+        Game_Entity ge = Game_Entity.Instance;
+        if (ge == null || !ge.IsServer || Game_Mapvars.Instance == null || healthId == null || Time.time < nextLook)
+            return;
+        nextLook = Time.time + 0.25f;
+        List<Entity_Master> enemies;
+        if (!ge.Entityclienttags.TryGetValue("Enemy", out enemies))
+            return;
+        foreach (Entity_Master e in enemies)
+        {
+            if (!ModKitUtil.Alive(e) || toughened.ContainsKey(e) || e.Upgradelistserver == null || !e.Upgradelistserver.ContainsKey(healthId))
+                continue;
+            toughened[e] = true;
+            if (e.Statsserver != null && e.Statsserver.ContainsKey("Health"))
+                Helper_Entitytools.Addmod(e, "Health", LastHealth, Helper_Entitytools.Modtypes.Multi, 0f);
+        }
+        if (toughened.Count < pruneAt)
+            return;
+        foreach (Entity_Master e in new List<Entity_Master>(toughened.Keys))
+            if (!ModKitUtil.Alive(e)) toughened.Remove(e);
+        pruneAt = Mathf.Max(256, toughened.Count * 2);
     }
 
     // The campaign's modifiers (docs/scope/04 "new modifiers that change with each campaign"): two stock, two of the pack's,

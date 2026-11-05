@@ -197,7 +197,8 @@ public static class RWFModifiers
         public Entity_Master Master;
         public bool Cursed, Berserk, Aging, Dazzling;
         public float Born;
-        public Link_Modifier Speed, Damage, Health;
+        // Each modifier its own handles: a foe with Aging and Berserk kept only Aging's damage when they shared one (FOES-3).
+        public Link_Modifier AgingDamage, AgingHealth, BerserkSpeed, BerserkDamage;
     }
 
     static readonly Dictionary<Entity_Master, Foe> foes = new Dictionary<Entity_Master, Foe>();
@@ -266,14 +267,14 @@ public static class RWFModifiers
             Foe f = new Foe { Master = e, Cursed = c, Berserk = b, Aging = a, Dazzling = d, Born = Time.time };
             if (a)
             {
-                f.Speed = Helper_Entitytools.Addmod(e, "Speed", RWFData.AgingSpeed, Helper_Entitytools.Modtypes.Multi, 0f);
-                f.Damage = Helper_Entitytools.Addmod(e, "Damage", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
-                f.Health = Helper_Entitytools.Addmod(e, "Health", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
+                Helper_Entitytools.Addmod(e, "Speed", RWFData.AgingSpeed, Helper_Entitytools.Modtypes.Multi, 0f);
+                f.AgingDamage = Helper_Entitytools.Addmod(e, "Damage", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
+                f.AgingHealth = Helper_Entitytools.Addmod(e, "Health", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
             }
             if (b)
             {
-                f.Speed = Helper_Entitytools.Addmod(e, "Speed", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
-                f.Damage = Helper_Entitytools.Addmod(e, "Damage", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
+                f.BerserkSpeed = Helper_Entitytools.Addmod(e, "Speed", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
+                f.BerserkDamage = Helper_Entitytools.Addmod(e, "Damage", 0f, Helper_Entitytools.Modtypes.Multi, 0f);
             }
             foes[e] = f;
             Tagged++;
@@ -284,15 +285,15 @@ public static class RWFModifiers
     {
         float hp = Helper_Damagetools.Getpercenthealth(f.Master);
         float missing = Mathf.Clamp01(1f - hp);
-        if (f.Damage != null) f.Damage.Value_Multi = RWFData.BerserkDamage * missing;
-        if (f.Speed != null) f.Speed.Value_Multi = RWFData.BerserkSpeed * missing;
+        if (f.BerserkDamage != null) f.BerserkDamage.Value_Multi = RWFData.BerserkDamage * missing;
+        if (f.BerserkSpeed != null) f.BerserkSpeed.Value_Multi = RWFData.BerserkSpeed * missing;
     }
 
     static void AgingTick(Foe f)
     {
         float share = Mathf.Clamp01((Time.time - f.Born) / RWFData.AgingSeconds) * RWFData.AgingMax;
-        if (f.Damage != null) f.Damage.Value_Multi = share;
-        if (f.Health != null) f.Health.Value_Multi = share;
+        if (f.AgingDamage != null) f.AgingDamage.Value_Multi = share;
+        if (f.AgingHealth != null) f.AgingHealth.Value_Multi = share;
     }
 
     static List<Entity_Master> Targets(Game_Entity ge)
@@ -303,7 +304,8 @@ public static class RWFModifiers
             List<Entity_Master> some;
             if (ge.Entitiesserver.TryGetValue(tag, out some) && some != null)
                 foreach (Entity_Master e in some)
-                    if (Alive(e) && !all.Contains(e) && e.Entitydata.Value.Team != 0) all.Add(e);
+                    // Never the Bouthouse: it hands what it holds on to Boutman, where nothing takes it off (pitfall #85, FOES-2).
+                    if (Alive(e) && !all.Contains(e) && e.Entitydata.Value.Team != 0 && !ModKitUtil.HasTag(e, "Bouthouse")) all.Add(e);
         }
         return all;
     }

@@ -44,8 +44,8 @@ public class RogueWavesModeMod : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.5f);
         while (Bla_Addressables.Instance == null)
             yield return new WaitForSecondsRealtime(0.5f);
-        RWAssets.Find();
-        RWIcons.Add();
+        try { RWAssets.Find(); } catch (Exception e) { RWLog.Warn("assets: " + e); }
+        try { RWIcons.Add(); } catch (Exception e) { RWLog.Warn("icons: " + e); }
         RWCampaign.Install();
 
         // Mode_Normal's group holds the Modeobject and Tide table the mode copies.
@@ -67,7 +67,7 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWLog.Info("chart pool: " + RWMode.Pool.Count + " base maps"); }
         catch (Exception e) { RWLog.Warn("chart pool: " + e.Message); }
         try { RWTips.Boot(); } catch (Exception e) { RWLog.Warn("tips: " + e.Message); }
-        yield return RWContent.Boot();
+        yield return RWUtil.Guarded(RWContent.Boot(), "content");
         ModKitTides.MapStart += RWCampaign.MapStart;
         ModKitTides.MapStart += RWRun.MapStart;
         ModKitTides.MapStart += RWDifficulty.MapStart;
@@ -81,6 +81,7 @@ public class RogueWavesModeMod : MonoBehaviour
         ModKitTides.MapEnd += RWWeather.MapEnd;
         ModKitTides.MapEnd += RWRun.MapEnd;
         ModKitTides.MapEnd += RWVote.MapEnd;
+        Blm_Server.Lobbyupdate += RWWeather.OnLobby;
 #if ROGUEWAVESMODE_SELFTEST
         RWTest.Boot();
 #endif
@@ -114,9 +115,11 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWShop.Update(); } catch (Exception e) { RWLog.Once("shop", "shop: " + e); }
         try { RWObjectives.Update(); } catch (Exception e) { RWLog.Once("objectives", "objectives: " + e); }
         try { RWCardinals.Update(); } catch (Exception e) { RWLog.Once("cardinals", "cardinals: " + e); }
+        try { RWDifficulty.Update(); } catch (Exception e) { RWLog.Once("difficulty", "map health: " + e); }
         try { ModKitTides.Update(); } catch (Exception e) { RWLog.Once("tides", "tides: " + e); }
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
         try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }
+        try { RWWeather.SpeedUpdate(); } catch (Exception e) { RWLog.Once("speed", "game speed: " + e); }
         try { RWRejoin.Update(); } catch (Exception e) { RWLog.Once("rejoin", "rejoin: " + e); }
 #if ROGUEWAVESMODE_SELFTEST
         try { RWTest.Update(); } catch (Exception e) { RWLog.Once("test", "self-test: " + e); }
