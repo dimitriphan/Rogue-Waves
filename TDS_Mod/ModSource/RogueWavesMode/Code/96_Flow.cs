@@ -131,6 +131,13 @@ public static partial class RWTest
         return t.name + (r != null ? "(" + RWUtil.F(r.anchoredPosition.x) + "," + RWUtil.F(r.anchoredPosition.y) + ")" : "");
     }
 
+    // A stat's Value_Calc is the engine's sum of its buckets, within its bounds (Helper_Entitytools.Addmod's recount; kit docs/17 §2.1).
+    static bool Recounted(Link_Stats s)
+    {
+        float sum = Mathf.Clamp((s.Value_Base * s.Value_Pmulti + s.Value_Add) * s.Value_Multi * (1f - Mathf.Clamp01(s.Value_Override_On)) + s.Value_Override, s.Value_Bounds.x, s.Value_Bounds.y);
+        return Mathf.Abs(s.Value_Calc - sum) <= 0.001f + 0.0001f * Mathf.Abs(sum);
+    }
+
     // Runs the current Tide table entries out until Tide 'wave' has started, then its foes are cleared and its break is up.
     static IEnumerator ToBreakAfter(int wave) { return ToBreakAfter(wave, false); }
 
@@ -590,7 +597,12 @@ public static partial class RWTest
             Check("Made of Tougher Stuff softens a hit on a player's minion", RWHits.Softened == soft0 + 1 && saw && multi <= 1f - RWDirections.TougherResist[3] + 0.001f, "softened " + (RWHits.Softened - soft0) + ", multi " + multi);
             Helper_Entitytools.Despawn(minion.Beingserver, false, "RogueWaves");
         }
-        float tower0 = built != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
+        // Spring Tide's share is read in the Health stat's Add bucket and on its own modifier, not in the max alone: this tower is the
+        // first Towerfighter built after the test bought every stock Cardinal, so Paper Tower's Health Multi and Frail Titan's Pmulti
+        // shrink its max to nothing. On the PC (2026-11-05) it read 0 -> 0.0375, which (base x Pmulti + Add) x Multi gives with a base
+        // part of -6.25, Multi 0.01 and a floor of 0, the same numbers that fit the stock Beacon's 0.0375 -> 0.1375 of 4 Nov (kit docs/17 §2.1).
+        Link_Stats hp = built != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"] : null;
+        float tower0 = hp != null ? hp.Value_Calc : 0f, add0 = hp != null ? hp.Value_Add : 0f, spring0 = RWDirections.SpringOn(built);
 
         // The board: this break's objective.
         RWObjectives.Active = null;
@@ -619,11 +631,20 @@ public static partial class RWTest
         Check("Pure Aura: Tide 1 pays 3", player.Pure == paid0 + RWRun.PerTide + (RWWeather.Current != RWChart.Calm ? RWWeather.PureAuraPerTide : 0) + (RWObjectives.Outcome.EndsWith("done") ? taken.Pays : 0), paid0 + " -> " + player.Pure + ", weather " + RWWeather.Current + ", objective " + RWObjectives.Outcome);
         Check("VENDCINT lands again in the break", RWShop.Stand != null && RWShop.Landed >= 2, "landed " + RWShop.Landed);
         Check("a new objective is posted", RWObjectives.Posted != null, RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-");
-        float tower1 = built != null && built.Beingserver != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
-        Check("Spring Tide: the tower gained health in the Tide", tower0 > 0f && tower1 > tower0, tower0 + " -> " + tower1);
-        // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
-        Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", tower0 > 0f && Mathf.Abs(tower1 - tower0 - RWDirections.SpringHealth[3]) < 0.05f && built != null && !built.Statsserver.ContainsKey("Resistadd"),
-            tower0 + " -> " + tower1 + (built != null && built.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + built.Statsserver["Resistadd"].Value_Calc : ""));
+        bool standing = hp != null && ModKitUtil.Alive(built);
+        float tower1 = standing ? hp.Value_Calc : 0f, add1 = standing ? hp.Value_Add : 0f, spring1 = RWDirections.SpringOn(built);
+        string springSeen = "Add " + add0 + " -> " + add1 + ", max " + tower0 + " -> " + tower1 + ", its modifier " + spring0 + " -> " + spring1
+            + (hp != null ? " (base " + hp.Value_Base + ", Pmulti " + hp.Value_Pmulti + ", Multi " + hp.Value_Multi + ", floor " + hp.Value_Bounds.x + ")" : "")
+            + (built != null && built.Upgradelistserver != null ? ", Cardinal effects [" + string.Join(",", new List<string>(built.Upgradelistserver.Keys).FindAll(k => k.Contains("Artifact")).ToArray()) + "]" : "");
+        if (!standing) Setup("Spring Tide: the tower gained health in the Tide", "the tower is gone: " + springSeen);
+        else
+        {
+            // The max is the engine's sum of the stat's buckets again, so the Add reached it (Helper_Entitytools.Addmod's recount).
+            Check("Spring Tide: the tower gained health in the Tide", add1 > add0 + 0.01f && Recounted(hp), springSeen);
+            // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
+            Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", Mathf.Abs(add1 - add0 - RWDirections.SpringHealth[3]) < 0.05f && Mathf.Abs(spring1 - spring0 - RWDirections.SpringHealth[3]) < 0.05f && !built.Statsserver.ContainsKey("Resistadd"),
+                springSeen + (built.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + built.Statsserver["Resistadd"].Value_Calc : ""));
+        }
         Info("objective", taken.Display + ": " + RWObjectives.Outcome);
         yield return Snap("break_after_tide1");
 
@@ -650,6 +671,14 @@ public static partial class RWTest
                 yield return new WaitForSeconds(0.5f);
                 Check("Objective " + goal.Display + " done pays everyone in full", RWObjectives.Outcome == goal.Name + " done" && player.Pure >= pureGoal + goal.Pays, "outcome '" + RWObjectives.Outcome + "', Pure " + pureGoal + " -> " + player.Pure);
                 if (goal.Name == "Nest") Check("A razed nest's Tide hook goes with it, so the Tides run on", RWWeather.HooksDropped > 0, RWWeather.HooksDropped + " dropped");
+            }
+            // Spring Tide's second Tide raises the same modifier, whose Value_Add setter has the engine recount the stat.
+            if (w == 2)
+            {
+                const string springAgain = "Spring Tide: a second Tide raises the same modifier";
+                if (!standing || !ModKitUtil.Alive(built)) Setup(springAgain, "the tower is gone");
+                else Check(springAgain, Mathf.Abs(hp.Value_Add - add1 - RWDirections.SpringHealth[3]) < 0.05f && Mathf.Abs(RWDirections.SpringOn(built) - spring1 - RWDirections.SpringHealth[3]) < 0.05f && Recounted(hp),
+                    "Add " + add1 + " -> " + hp.Value_Add + ", its modifier " + spring1 + " -> " + RWDirections.SpringOn(built) + ", max " + tower1 + " -> " + hp.Value_Calc);
             }
         }
         Info("Tides 2-15", RWUtil.F(Time.realtimeSinceStartup - clock) + " s");

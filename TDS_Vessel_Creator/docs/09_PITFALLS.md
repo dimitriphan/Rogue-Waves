@@ -614,3 +614,12 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      HUD, the tile numbers or the mode's own line (Light_round1: pictures 3-16) → read nothing into a missing HUD in a
      picture; for pictures that need it, raise `Game_Ui.Instance.Idlethreshold` (public) for the test and put it back.
      Seen in game (PC, 2026-11-05); the cause read from code.
+171. **A tower's max Health reads 0 while it stands, and a +10 shows as 0.0375** (2026-11-05) → `Value_Calc` is
+     `(ΣBase × ΣPmulti + ΣAdd) × ΣMulti`, clamped to the stat's data `Limits` (`Link_Stats.Value_Bounds`; `17` §2.1), and two
+     stock Cardinals shrink it: Frail Titan's `Health_Pmulti` (every tower, `Towerapply`) can push the base part below 0, and
+     Paper Tower's `Health_Multi` scales everything on the first `Towerfighter` built after it. The mode's self-test buys
+     every stock Cardinal and then builds its archer, so that archer read 0 -> 0.0375 over a Tide of Spring Tide's +10 Add
+     (fitted: base part -6.25, `Multi` 0.01, floor 0; the stock Beacon's 0.0375 -> 0.1375 of 4 Nov fits the same numbers) →
+     measure an Add or Multi effect in the stat's buckets (`Value_Add`, `Value_Multi`) or on the modifier it keeps, and check
+     `Value_Calc` against the sum, not against the size of the bonus (`96_Flow.cs` `Recounted`). Read from code and fitted to
+     the two PC readings; the next round's `Spring Tide` lines print the buckets.

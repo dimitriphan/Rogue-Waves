@@ -632,6 +632,13 @@ public static class RWDirections
         Grown += amount;
     }
 
+    // Self-test: the max health Spring Tide has given this tower so far on this map (its one modifier's Add), 0 if none.
+    public static float SpringOn(Entity_Master t)
+    {
+        Link_Modifier m;
+        return t != null && spring.TryGetValue(t, out m) && m != null && !m.Dead ? m.Value_Add : 0f;
+    }
+
     // pool: the session whose towers keep what is mended past full (Tide Pool), or long.MinValue.
     static void MendAround(Entity_Master tower, List<Entity_Master> all, float heal, float range, long pool)
     {

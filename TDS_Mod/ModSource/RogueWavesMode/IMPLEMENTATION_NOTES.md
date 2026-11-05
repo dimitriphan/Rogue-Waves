@@ -1,5 +1,16 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): Spring Tide's self-test reads its own Add (compiled, not yet run in game)
+
+Light_round1's two Spring Tide fails (`0 -> 0.0375` where 10 is asked) were the test's tower, not B7's effect: it is the
+first Towerfighter built after the flow buys every stock Cardinal, so it is Paper Tower's paper tower (Health Multi) and
+holds Frail Titan (Health Pmulti); its max Health sums below 0 and reads the floor, 0, and a +10 Add shows as 0.0375
+(pitfall #171; both readings, and the stock Beacon's `0.0375 -> 0.1375` of 4 Nov, fit a base part of -6.25 and Multi 0.01).
+`Grow` added its 10 as built. The flow (`96_Flow.cs`) now reads the Health stat's `Value_Add` and the tower's own modifier
+(`RWDirections.SpringOn`, read by the self-test), checks `Value_Calc` against the engine's sum of the buckets (`Recounted`), prints
+the buckets and the tower's Cardinal effects (Paper Tower's and Frail Titan's should be among them), and adds a third line at Tide 2's break: the same
+modifier rises by 10 again (its `Value_Add` setter's recount, never run before). No game code changed.
+
 ## 0.1.0-dev, later (2026-11-05): the decided fixes, kit 1.14 (compiled, not yet run in game)
 
 Dimitri's "default for all" on the second decisions page (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`):
@@ -42,7 +53,7 @@ a temporary white crystal for Mind the Meteor's node; the "white crystal" line s
 - A weather look would run on every machine from `RWRejoin.MapWeather()` (the synced names), never from the host alone.
 - PC, 2026-11-05 (`docs/reports/LIGHTING_2026-11-05.md` §6): the `light` part passed 23/0 on Map_Skyhook with 16
   pictures; the self-test with every part on passed every weather check (W0-W3) and failed Spring Tide's Tide gain twice
-  (`96_Flow.cs`, `0 -> 0.0375`, B7's `RWDirections.TideEffects`/`Grow`, not yet looked into).
+  (`96_Flow.cs`, `0 -> 0.0375`, B7's `RWDirections.TideEffects`/`Grow`): the test's setup, not the effect (this file's first entry).
 
 ## 0.1.0-dev, later (2026-11-05): the clean-up, kit 1.12 (compiled, not yet run in game)
 

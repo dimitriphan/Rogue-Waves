@@ -447,6 +447,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the 55 stock groups' numbers in `docs/reports/lighting_2026-11-05/light_groups.txt`. Pitfall #170 (the HUD hides
   after 10 s without input). His release builds, save and settings are back as they were; Unity's project holds
   `fb208b8`. Whether a look ships (§5) goes to the open-decisions page with the pictures.
+  2026-11-05: Spring Tide's Tide gain, the round's two fails, found to be the test's tower, not B7's effect
+  (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`, first entry; pitfall #171): the flow builds its archer right
+  after buying every stock Cardinal, so it is Paper Tower's paper tower and holds Frail Titan, its max Health sums below 0
+  (read as 0) and the +10 Add shows as 0.0375; `Grow` added its 10. The flow now reads the stat's Add and the tower's own
+  modifier, checks the max against the engine's sum, and adds a third line at Tide 2 (the same modifier +10 again). No
+  game code changed. Compiled here (the mode's release, self-test, self-test with gaps and with shots: 0 errors), not run
+  on the PC. **PC round 4:** the mode's self-test with every part on shows the three `Spring Tide` lines passing and their
+  detail printing the tower's buckets and, among its Cardinal effects, Paper Tower's and Frail Titan's (the cause
+  confirmed); one check more than before.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -473,7 +482,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #171 (#170 the HUD's idle hide, `LIGHTING_2026-11-05.md` §6; #168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (#171 a tower's max Health under Frail Titan and Paper Tower, Spring Tide's test; #170 the HUD's idle hide, `LIGHTING_2026-11-05.md` §6; #168-#169 the decided code fixes, `DECIDED_CODE_FIXES_2026-11-05.md`; #167 a map's lighting, `LIGHTING_2026-11-05.md`; #162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
