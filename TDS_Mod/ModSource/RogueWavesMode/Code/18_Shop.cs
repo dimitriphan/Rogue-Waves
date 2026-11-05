@@ -223,10 +223,12 @@ public static class RWShop
         uint seed = Seed(out map, out wave);
         int pure = Mathf.RoundToInt(RWMine.Pure());
         List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
-        foreach (string id in RWCardinals.Shelf(seed, map, wave, RWCardinals.MaxedHere()))
+        Func<string, bool> maxed = RWCardinals.MaxedHere();
+        foreach (string id in RWCardinals.ShelfFor("", seed, map, wave, maxed))
         {
             int cost = RWCardinals.Cost(id);
-            cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id), "Pure Aura " + cost + RWCard.Separator + (RWCardinals.IsTrinket(id) ? "Trinket" : "Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), cost <= pure ? RWDialog.Teal : RWDialog.Swell));
+            bool full = maxed(id);
+            cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id), (full ? "Held" : "Pure Aura " + cost) + RWCard.Separator + (RWCardinals.IsTrinket(id) ? "Trinket" : "Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), !full && cost <= pure ? RWDialog.Teal : RWDialog.Swell));
         }
         Entity_Master v = RWMine.Vessel();
         List<string> held = new List<string>();
@@ -361,7 +363,7 @@ public static class RWShop
         {
             string id = item.Substring(2);
             int map = RWCampaign.Route.Count + 1 - (RWCampaign.WonThisMap ? 1 : 0);
-            if (!RWCardinals.Shelf(RWCampaign.Seed, map, Game_Mapvars.Instance.Wave.Value, c => RWCardinals.MaxedFor(p, c)).Contains(id))
+            if (!RWCardinals.ShelfFor(p.Key, RWCampaign.Seed, map, Game_Mapvars.Instance.Wave.Value, c => RWCardinals.MaxedFor(p, c)).Contains(id))
                 return RWCardinals.MaxedFor(p, id) ? "Already held" : "Not on the shelf";
             return RWCardinals.Buy(p, id);
         }

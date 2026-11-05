@@ -2,8 +2,9 @@
 
 ## 2026-11-05: the decisions' build items
 
-Compiled, not yet run in game: Monument's Cleanse strips only foes' debuffs (`YosseleHooks.Adopt`: what the building
-carried when it became a Monument and what came within a second of its own upgrades stays; B9, YOS-2, pitfall #163);
+Compiled, not yet run in game: Monument's Cleanse strips only foes' debuffs (`YosseleHooks.Watch`: each Stonehenge is
+watched from the moment it stands; what showed in its first half-second or within half a second of an upgrade of its
+own stays, never an Override, which is how the game stuns; B9, YOS-2, pitfall #163);
 fruit pays only a player's vessel or minion, never a neutral beast (`YosseleFruit.PlayerOwned`, YOS-3); Compost Bin III
 says "within a much larger radius" (B15). For the PC: Paper Tower plus a Monument, a foe's hit: the trade-off stays.
 

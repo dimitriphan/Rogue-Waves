@@ -211,6 +211,25 @@ public static class RWCardinals
         return shelf;
     }
 
+    // This break's shelf for one reader (the host keys each player, a machine its own view ""): rolled once, with what was
+    // maxed when it was first read, and kept to the break's end, so a buy leaves the card on it (held) and doesn't pull the
+    // next one in (a buyer could otherwise empty the whole list in one break). A new map, a retry or the next break
+    // (the table's Entry) rolls a new one.
+    static readonly Dictionary<string, List<string>> shelves = new Dictionary<string, List<string>>();
+
+    public static List<string> ShelfFor(string who, uint seed, int map, int wave, Func<string, bool> maxed)
+    {
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        string key = who + "#" + seed + "#" + map + "#" + wave + "#" + (mv != null ? mv.GetInstanceID() + "#" + mv.Entry.Value : "-");
+        List<string> shelf;
+        if (!shelves.TryGetValue(key, out shelf))
+        {
+            if (shelves.Count >= 64) shelves.Clear();
+            shelves[key] = shelf = Shelf(seed, map, wave, maxed);
+        }
+        return new List<string>(shelf);
+    }
+
     // The host's reading of what a player can't buy more of.
     public static bool MaxedFor(RWPlayer p, string id)
     {
@@ -617,7 +636,8 @@ public static class RWCardinals
         return int.TryParse(held.Substring(Id(d).Length), out n) ? n : 1;
     }
 
-    // A new thing of this player's (the owner hook), or a sweep: unit-reaching Trinkets.
+    // A new thing of this player's (the owner hook), or a sweep: unit-reaching Trinkets. Every unit of theirs but the vessel
+    // (which holds the Trinket itself, with a mark) takes it, a Hero-tagged one such as Boutbro too, as the Directions do.
     public static void Reach(Entity_Master m, RWPlayer p)
     {
         List<string> tags = m.Beingserver.Entity.Tags;
@@ -625,7 +645,7 @@ public static class RWCardinals
         {
             RWCardinalDef d = Def(held);
             Upgradeproperties u;
-            if (d == null || d.Reach == "" || !tags.Contains(d.Reach) || tags.Contains("Hero") || !copies.TryGetValue(d.Name + StackOf(held, d), out u))
+            if (d == null || d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || tags.Contains("Clone") || tags.Contains("Prespawn") || !copies.TryGetValue(d.Name + StackOf(held, d), out u))
                 continue;
             if (m.Upgradelistserver != null && !m.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);

@@ -252,7 +252,7 @@ public static class ArgoUtil
     {
         Link_Being being = foe.Beingserver;
         if (being == null || being.Currentblock == null || foe.Commandlistserver == null || !foe.Commandlistserver.ContainsKey("Move")
-            || ModKitUtil.MaxHealth(foe) >= ArgoData.BossHealth)
+            || Boss(foe))
             return null;
         Vector3 from = being.Currentblock.Position;
         Vector3 dir = toward - from;
@@ -333,7 +333,9 @@ public static class ArgoUtil
         ArgoStatus.Slowed(target, seconds);
         if (vfx)
             ModKitUtil.Debuff(by, target, "Debuff_Slow", seconds);
-        string key = kind != "" && by != null ? kind + "#" + by.NetworkObjectId + "#" + target.NetworkObjectId : "";
+        // Deep Water is one slow a foe, whichever Argo leads the net that tick (the lead can change between re-ticks).
+        string key = kind == "Water" ? kind + "#" + target.NetworkObjectId
+            : kind != "" && by != null ? kind + "#" + by.NetworkObjectId + "#" + target.NetworkObjectId : "";
         Held h;
         if (key != "" && held.TryGetValue(key, out h) && h.Mod != null && !h.Mod.Dead && h.Foe == target)
         {

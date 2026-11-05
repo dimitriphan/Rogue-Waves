@@ -1022,6 +1022,8 @@ public static partial class RWTest
             Check("B4 every held Trinket stack is on the vessel's panel", onPanel == RWCardinals.Stacks, onPanel + " of " + RWCardinals.Stacks + " on the vessel");
             List<string> maxedShelf = RWCardinals.Shelf(RWCampaign.Seed, 1, 3, c => RWCardinals.MaxedFor(player, c));
             Check("B3 a maxed one leaves the shelf, which still holds 3", !maxedShelf.Contains("Cardinal_Dentures") && !maxedShelf.Contains(stockCard) && maxedShelf.Count == RWCardinals.OnShelf, string.Join(",", maxedShelf.ToArray()));
+            List<string> rolled = RWCardinals.ShelfFor("RWTest", RWCampaign.Seed, 1, 5, c => false), afterBuy = RWCardinals.ShelfFor("RWTest", RWCampaign.Seed, 1, 5, c => true);
+            Check("A buy leaves the break's shelf as it was rolled (no next card pulled in)", string.Join(",", rolled.ToArray()) == string.Join(",", afterBuy.ToArray()) && rolled.Count == RWCardinals.OnShelf, string.Join(",", rolled.ToArray()) + " / " + string.Join(",", afterBuy.ToArray()));
             while (player.Trinkets.Count > dentures0) player.Trinkets.RemoveAt(player.Trinkets.Count - 1);
             int over0 = RWCardinals.Overflow();
             RWRun.Cardinals.Add("Cardinal_RWTestOverflow#1");

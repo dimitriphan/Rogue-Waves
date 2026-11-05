@@ -37,6 +37,7 @@ public class YosseleHengeBrain : YosseleBuilding
 
     protected override void Started2()
     {
+        YosseleHooks.Watch(Master);
         Orientation = Master.Beingserver != null ? Master.Beingserver.Orientation : 0;
         try { Facing = Helper_Gridtools.Orientationdir(Vector3.forward, Vector3.up, Orientation); }
         catch (Exception) { Facing = Vector3.forward; }

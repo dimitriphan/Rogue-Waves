@@ -77,7 +77,8 @@ public static class SpoolClient
             if (pin == null || quiet.Contains(pin))
                 continue;
             GameObject server = pin.Currenthit, own = pin.Client != null ? pin.Client.Currentvishit : null;
-            if (server == null && own == null)
+            // Done only once the one this machine's pointer reads is built: the host's server-side one, a client's own copy.
+            if (ge.IsServer ? server == null : own == null)
                 continue;
             foreach (GameObject h in new[] { server, own })
                 if (h != null)

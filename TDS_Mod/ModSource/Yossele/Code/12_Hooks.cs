@@ -38,7 +38,9 @@ public static class YosseleHooks
         markUntil.Clear();
         monuments.Clear();
         own.Clear();
+        seen.Clear();
         ownUpgrades.Clear();
+        adoptUntil.Clear();
     }
 
     public static void Armor(Entity_Master e, float amount)
@@ -111,46 +113,86 @@ public static class YosseleHooks
     {
         if (e == null)
             return;
-        if (on && !monuments.Contains(e)) { monuments.Add(e); Adopt(e, true); }
-        else if (!on) { monuments.Remove(e); own.Remove(e); ownUpgrades.Remove(e); }
+        if (on && !monuments.Contains(e)) { monuments.Add(e); Adopt(e); }
+        else if (!on) monuments.Remove(e);
         if (on) First(e);
     }
 
-    // A Monument's own modifiers, never cleansed (YOS-2, Dimitri's answer 17 of 2026-11-05, B9): what it carried when it became
-    // one, and what comes within a second of an upgrade landing on it that isn't a foe's (a stock Cardinal's trade-off,
-    // Paper Tower's negative Multi). A foe's debuff (the Bulwark's stun on a hit, a cursed foe's aura, the pack's Blind)
-    // comes with no upgrade of the building's own, so it is stripped. Upgrades named Enemy_, RW_Modifier_ or RW_Effect_
-    // are foes' (kit docs/13 §4; the pack's foe part).
+    // A Stonehenge's own modifiers, never cleansed once it is a Monument (YOS-2, Dimitri's answer 17 of 2026-11-05, B9).
+    // Each Stonehenge is watched from the moment it stands (Watch): a modifier is its own when it first shows within a
+    // half-second of the building standing or of an upgrade landing on it that isn't a foe's (a stock Cardinal's trade-off,
+    // Paper Tower's negative Multi, a Direction). A foe's debuff (the Bulwark's stun on a hit, a cursed foe's aura, the
+    // pack's Blind) comes with no upgrade of the building's own, so it is stripped. An Override modifier is never
+    // adopted: the game uses them only for stuns (Bulwark, Aurabeast, Computer, Snare). Upgrades named Enemy_ or
+    // RW_Modifier_, and the foe part's Blind and Illuminate, are foes' (kit docs/13 §4).
     static readonly Dictionary<Entity_Master, List<Link_Modifier>> own = new Dictionary<Entity_Master, List<Link_Modifier>>();
+    static readonly Dictionary<Entity_Master, List<Link_Modifier>> seen = new Dictionary<Entity_Master, List<Link_Modifier>>();
     static readonly Dictionary<Entity_Master, int> ownUpgrades = new Dictionary<Entity_Master, int>();
     static readonly Dictionary<Entity_Master, float> adoptUntil = new Dictionary<Entity_Master, float>();
-    public const float AdoptSeconds = 1f;
+    public const float AdoptSeconds = 0.5f;
 
-    static bool FoeUpgrade(string key) { return key.StartsWith("Enemy_") || key.StartsWith("RW_Modifier_") || key.StartsWith("RW_Effect_"); }
-
-    static void Adopt(Entity_Master e, bool all)
+    static bool FoeUpgrade(string key)
     {
-        if (e == null || e.Modifiers == null)
-            return;
+        return key.StartsWith("Enemy_", StringComparison.Ordinal) || key.StartsWith("RW_Modifier_", StringComparison.Ordinal)
+            || key == "RW_Effect_Blind_Upgradeobject" || key == "RW_Effect_Illuminate_Upgradeobject";
+    }
+
+    static bool Stun(Link_Modifier m) { return m.Value_Override_On > 0 || m.Value_Override != 0f; }
+
+    static int OwnUpgrades(Entity_Master e)
+    {
         int mine = 0;
         if (e.Upgradelistserver != null)
             foreach (string key in e.Upgradelistserver.Keys)
                 if (!FoeUpgrade(key)) mine++;
-        int had;
-        if (!all && ownUpgrades.TryGetValue(e, out had) && had != mine)
-            adoptUntil[e] = Time.time + AdoptSeconds;
-        ownUpgrades[e] = mine;
-        float until;
-        if (!all && (!adoptUntil.TryGetValue(e, out until) || Time.time > until))
+        return mine;
+    }
+
+    // From Started2: what lands in the building's first half-second is its own.
+    public static void Watch(Entity_Master e)
+    {
+        if (e == null || adoptUntil.ContainsKey(e))
             return;
-        List<Link_Modifier> set;
-        if (!own.TryGetValue(e, out set)) own[e] = set = new List<Link_Modifier>();
-        set.RemoveAll(m => m == null || m.Dead);
+        adoptUntil[e] = Time.time + AdoptSeconds;
+        ownUpgrades[e] = OwnUpgrades(e);
+        own[e] = new List<Link_Modifier>();
+        seen[e] = new List<Link_Modifier>();
+        Adopt(e);
+    }
+
+    // Takes in the modifiers that are new since the last look, if the window is open; every look notes what it saw.
+    static void Adopt(Entity_Master e)
+    {
+        List<Link_Modifier> mine, saw;
+        if (e == null || e.Modifiers == null || !own.TryGetValue(e, out mine) || !seen.TryGetValue(e, out saw))
+            return;
+        int count = OwnUpgrades(e), had;
+        if (ownUpgrades.TryGetValue(e, out had) && had != count)
+            adoptUntil[e] = Time.time + AdoptSeconds;
+        ownUpgrades[e] = count;
+        float until;
+        bool open = adoptUntil.TryGetValue(e, out until) && Time.time <= until;
+        mine.RemoveAll(m => m == null || m.Dead);
+        saw.RemoveAll(m => m == null || m.Dead);
         foreach (KeyValuePair<string, List<Link_Modifier>> kv in e.Modifiers)
             if (kv.Value != null)
                 foreach (Link_Modifier m in kv.Value)
-                    if (m != null && !m.Dead && !set.Contains(m)) set.Add(m);
+                    if (m != null && !m.Dead && !saw.Contains(m))
+                    {
+                        saw.Add(m);
+                        if (open && !Stun(m)) mine.Add(m);
+                    }
     }
+
+    static void Unwatch(Entity_Master e)
+    {
+        own.Remove(e);
+        seen.Remove(e);
+        ownUpgrades.Remove(e);
+        adoptUntil.Remove(e);
+    }
+
+    public static bool IsOwn(Entity_Master e, Link_Modifier m) { List<Link_Modifier> mine; return e != null && own.TryGetValue(e, out mine) && mine.Contains(m); }
 
     public static bool IsMonument(Entity_Master e) { return e != null && monuments.Contains(e); }
 
@@ -160,6 +202,7 @@ public static class YosseleHooks
     {
         if (e == null || e.Modifiers == null)
             return 0;
+        Adopt(e);
         List<Link_Modifier> mine;
         own.TryGetValue(e, out mine);
         int n = 0;
@@ -168,7 +211,7 @@ public static class YosseleHooks
             if (kv.Value == null)
                 continue;
             foreach (Link_Modifier m in new List<Link_Modifier>(kv.Value))
-                if (m != null && !m.Dead && (mine == null || !mine.Contains(m)) && (m.Value_Override_On > 0 || m.Value_Override != 0f || m.Value_Multi < 0f || m.Value_Pmulti < 0f))
+                if (m != null && !m.Dead && (mine == null || !mine.Contains(m)) && (Stun(m) || m.Value_Multi < 0f || m.Value_Pmulti < 0f))
                 {
                     ModKitUtil.Unmod(m);
                     n++;
@@ -196,6 +239,7 @@ public static class YosseleHooks
         guarded.Remove(e);
         aura.Remove(e);
         monuments.Remove(e);
+        Unwatch(e);
     }
 
     public static void ForgetFoe(Entity_Master foe)
@@ -242,14 +286,14 @@ public static class YosseleHooks
         foreach (Entity_Master t in aura.Keys)
             First(t);
         monuments.RemoveAll(m => m == null || !ModKitUtil.Alive(m));
+        foreach (Entity_Master m in new List<Entity_Master>(own.Keys))
+            if (m == null || !ModKitUtil.Alive(m)) Unwatch(m);
+            else if (!monuments.Contains(m)) Adopt(m);
         foreach (Entity_Master m in monuments)
         {
             First(m);
-            Adopt(m, false);
             Cleanse(m);
         }
-        foreach (Entity_Master m in new List<Entity_Master>(own.Keys))
-            if (m == null || !monuments.Contains(m)) { own.Remove(m); ownUpgrades.Remove(m); adoptUntil.Remove(m); }
         List<Entity_Master> gone = null;
         foreach (KeyValuePair<Entity_Master, float> kv in markUntil)
             if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || kv.Value < Time.time - 5f)

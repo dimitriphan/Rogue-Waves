@@ -12,7 +12,8 @@ Compiled, not yet run in game (`docs/reports/DECISIONS_APPLIED_2026-11-05.md` §
   MODE-D9 closed, MAX MODEB-4 with it: a lobby pick never reaches the shelf).
 - **B3, B4** the shelf: 2 Cardinal slots and 1 Trinket slot, from a seeded shuffle that skips what a player can't buy
   more of (6 copies; a stock one held, lobby picks too), read from what syncs on a client (`MaxedHere`) and from the run
-  on the host (`MaxedFor`). Every held Trinket stack is on the vessel's panel ("X", "X x2"; a unit Trinket by a mark
+  on the host (`MaxedFor`), rolled once a break per reader (`ShelfFor`): a card bought stays on it as "Held" and
+  pulls no new one in until the next break. Every held Trinket stack is on the vessel's panel ("X", "X x2"; a unit Trinket by a mark
   with no script). Held Cardinals past the row's 8 show on the run line as "+N Cardinals" (RW_Run's Goalvalue).
 - **B7** Spring Tide and Tidal Mend run on the mode's own effects at each break (`16_Directions.cs` `TideEffects`): no
   stock Beacon or Regen, no `Resistadd` on Fie's walls (pitfall #159), Mend's heal at the tower's level each Tide.

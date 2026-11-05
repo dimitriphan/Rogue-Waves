@@ -461,7 +461,7 @@ public class ArgoTowerBrain : MonoBehaviour
     // every other foe within its radius of where the first one stood. A Boss-weight foe is never moved.
     void ReelIn(Entity_Master foe)
     {
-        if (ModKitUtil.MaxHealth(foe) >= ArgoData.BossHealth)
+        if (ArgoUtil.Boss(foe))
             BossHits++;
         Vector3 from = ModKitUtil.Pos(foe);
         Action<Entity_Master> done = f => { LastReelDone = Time.time; };

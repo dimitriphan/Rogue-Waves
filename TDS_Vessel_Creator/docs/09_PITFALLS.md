@@ -565,5 +565,6 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      `Link_Modifier.From` unset (only interacts set `From`) and ends a timed one with a coroutine of its own, so code can't
      tell a foe's debuff from a Cardinal's trade-off by the modifier, nor make a timed one last longer → keep your own
      references: a slow that renews is made with Duration 0 and taken off by your own clock (`ArgoUtil.Slow` with a
-     source kind, B13); what a building owns is what it carried when you started watching plus what came with its own
-     upgrades (`YosseleHooks.Adopt`, B9). Read from code.
+     source kind, B13); what a building owns is what showed in its first half-second or within half a second of an
+     upgrade of its own, never an Override (the game's stuns), watched from the moment it stands (`YosseleHooks.Watch`,
+     B9). Read from code.

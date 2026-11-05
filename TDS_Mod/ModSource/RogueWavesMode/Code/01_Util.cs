@@ -105,7 +105,7 @@ public static class RWUtil
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
             if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Core") && !e.Taglistserver.Contains("Enemycore") && e.Beingserver != null && !e.Beingserver.Dead)
             {
-                if (!ModKitUtil.BeingName(e).Contains("Subcore")) return e;
+                if (!e.Taglistserver.Contains("Subcore")) return e;   // the game's own test (Mode_Normal, the tutorial)
                 if (sub == null) sub = e;
             }
         return sub;
