@@ -62,79 +62,11 @@ public static partial class RWTest
         Application.logMessageReceived += ReviewLog;
         yield return Stepped(ReviewCampaign());
         yield return Stepped(ReviewBoutman());
-        yield return Stepped(ReviewFie());
+        yield return Stepped(ReviewFie(false));
+        yield return Stepped(ReviewFie(true));
         yield return Stepped(ReviewVoice());
-        yield return Stepped(ReviewSplithead());
-#if MODKIT_PLAY
-        yield return Stepped(ReviewCrafted());
-#endif
         Application.logMessageReceived -= ReviewLog;
     }
-
-#if MODKIT_PLAY
-    // PR #86's smaller Crafted: a virtual hand clicks one as it walks, and sells it with the panel's SELL.
-    static IEnumerator ReviewCrafted()
-    {
-        Macro_Main boat = Macro_Main.Instance;
-        RWRun.Clear();
-        boat.Selectcharacter("Hero_Spool");
-        yield return new WaitForSecondsRealtime(1f);
-        yield return ToMap(Seed, RWChart.Calm);
-        long me = RWMine.Session;
-        Entity_Master vessel = RWRun.Vessel(me);
-        if (vessel == null || vessel.Being.Value.ToString() != "Hero_Spool") { Setup("the Crafted by hand", "no Spool"); yield break; }
-        RogueWavesModeKitPlay.Log = m => Info("hud", m);
-        RogueWavesModeKitPlay.Host = RogueWavesModeMod.Instance;
-#if ROGUEWAVESMODE_SHOTS
-        RogueWavesModeKitPlay.Shot = RWShots.Shot;
-#endif
-        RogueWavesModeKitPlay.Init();
-        RogueWavesModeKitPlay.Reset(vessel);
-        Rich(me, 8000f);
-        yield return RogueWavesModeKitPlay.WaitForWorld(30f);
-        List<Vector3> used = new List<Vector3>();
-        List<Entity_Master> known = new List<Entity_Master>();
-        Entity_Master stash = null, tin = null;
-        yield return BuildOne(vessel, "Tower_Spoolstash", used, known, (m, c) => stash = m);
-        yield return new WaitForSeconds(1f);
-        yield return BuildOne(vessel, "Tower_Spooltin", used, known, (m, c) => tin = m);
-        if (tin == null) { Setup("the Crafted by hand", "no Cookie Tin"); yield break; }
-        foreach (string kind in new[] { "Mob_Spoolstitched", "Mob_Spooldart" })
-        {
-            if (kind == "Mob_Spooldart")
-            {
-                foreach (string u in new[] { "Recycle2", "Design3" })
-                {
-                    Upgradeproperties up = Bl_Address.Getload("Upgrade", "Tower_Spooltin_" + u + "_Upgradeobject") as Upgradeproperties;
-                    if (up != null) Helper_Entitytools.Upgrade(tin, up, Helper_Entitytools.Upgradecheck.Forced, null);
-                    yield return new WaitForSeconds(0.5f);
-                }
-            }
-            Entity_Master unit = null;
-            yield return Until(() => (unit = MineLast(kind, me)) != null, 40f);
-            if (unit == null) { Setup("the Crafted by hand: " + kind, "none after 40 s"); continue; }
-            yield return new WaitForSeconds(2f);
-            yield return RogueWavesModeKitPlay.Capture("Spool_" + kind);
-            int picks = 0;
-            for (int i = 0; i < 3; i++)
-            {
-                unit = MineLast(kind, me);
-                if (unit == null) break;
-                yield return RogueWavesModeKitPlay.Select(unit, kind);
-                if (RogueWavesModeKitPlay.IsSelected(unit)) picks++;
-                yield return RogueWavesModeKitPlay.Cancel();
-                yield return new WaitForSeconds(0.5f);
-            }
-            Check("The smaller art: a click selects a walking " + kind + " (3 tries)", picks == 3, picks + " of 3; the world's last click: " + RogueWavesModeKitPlay.Selected());
-            unit = MineLast(kind, me);
-            if (unit == null) { Setup("selling a " + kind, "none left"); continue; }
-            int count = MineCount(kind, me);
-            yield return RogueWavesModeKitPlay.Sell(unit, kind);
-            Check("The smaller art: SELL and a click sell a walking " + kind, RogueWavesModeKitPlay.LastOk, RogueWavesModeKitPlay.Counts() + ", " + count + " -> " + MineCount(kind, me));
-        }
-        yield return ToBoat();
-    }
-#endif
 
     // MODE-A1, C12, C1, C4, D1, D6, D2, then on map 2 D5 and the Cardinals' return.
     static IEnumerator ReviewCampaign()
@@ -461,7 +393,7 @@ public static partial class RWTest
     }
 
     // R3 and MODE-C3: Spring Tide's Beacon against Fie's walls, on real hits.
-    static IEnumerator ReviewFie()
+    static IEnumerator ReviewFie(bool springFirst)
     {
         Macro_Main boat = Macro_Main.Instance;
         RWRun.Clear();
@@ -473,6 +405,11 @@ public static partial class RWTest
         Entity_Master vessel = RWRun.Vessel(me);
         if (vessel == null || vessel.Being.Value.ToString() != "Hero_Fie") { Setup("R3", "no Fie"); yield break; }
         Rich(me, 8000f);
+        if (springFirst)
+        {
+            Direction(player, "Spring");
+            yield return new WaitForSeconds(1.5f);
+        }
         List<Vector3> used = new List<Vector3>();
         List<Entity_Master> known = new List<Entity_Master>();
         Entity_Master wall = null, beside = null, far = null;
@@ -513,7 +450,7 @@ public static partial class RWTest
             yield return new WaitForSeconds(0.2f);
             before[i] = h0 - Hp(targets[i]);
         }
-        Direction(player, "Spring");
+        if (!springFirst) Direction(player, "Spring");
         yield return new WaitForSeconds(2.5f);
         Info("R3 with Spring Tide", "wall [" + Holding(wall, "Effect") + "], Resistadd " + StatOf(wall, "Resistadd") + "; beside it [" + Holding(beside, "Effect") + "], Resistadd " + StatOf(beside, "Resistadd") + "; away [" + Holding(far, "Effect") + "], Resistadd " + StatOf(far, "Resistadd"));
         if (!ModKitUtil.Alive(foe)) { yield return NewFoe(); foe = lastFoe; }
@@ -525,8 +462,8 @@ public static partial class RWTest
             yield return new WaitForSeconds(0.2f);
             after[i] = h0 - Hp(targets[i]);
         }
-        Finding("R3", before[0] > 0f && after[0] <= before[0] * 0.65f, "a 10 hit on the building beside the wall: " + before[0] + " before Spring Tide, " + after[0] + " with it; on one away from the wall " + before[1] + " then " + after[1]);
-        Finding("MODE-C3", before[2] > 0f && after[2] <= before[2] * 0.65f, "a 10 hit on the Shield wall itself: " + before[2] + " before Spring Tide, " + after[2] + " with it, Resistadd " + StatOf(wall, "Resistadd"));
+        Finding(springFirst ? "R3, Spring Tide first" : "R3, the wall first", springFirst ? after[0] < 6.5f : before[0] > 0f && after[0] <= before[0] * 0.65f, "a 10 hit on the building beside the wall: " + before[0] + " before Spring Tide, " + after[0] + " with it; on one away from the wall " + before[1] + " then " + after[1]);
+        Finding(springFirst ? "MODE-C3, Spring Tide first" : "MODE-C3, the wall first", springFirst ? after[2] < 6.5f : before[2] > 0f && after[2] <= before[2] * 0.65f, "a 10 hit on the Shield wall itself: " + before[2] + " before Spring Tide, " + after[2] + " with it, Resistadd " + StatOf(wall, "Resistadd"));
         // MODE-C6: Cut Costs on what a Fie wall builds.
         Direction(player, "Cost");
         yield return new WaitForSeconds(1.5f);
@@ -579,6 +516,32 @@ public static partial class RWTest
         Check("G3 the next upgrade costs the fallen price", cannon.Upgradelistserver.ContainsKey(Sticky) && Mathf.Abs(paid - price * g2) <= 1f, "paid " + paid + " of " + price + " x " + g2);
         Info("G3 after the upgrade", "price scale " + UpgradePrice(cannon) + ", holds [" + Holding(cannon, "Voice") + "]");
         ClearFoes();
+        // FOES-1: a vessel that dies in a Dazzling aura: does it come back Illuminated?
+        Upgradeproperties dazzle = Bl_Address.Getload("Upgrade", "RW_Modifier_Dazzling_Upgradeobject") as Upgradeproperties;
+        Entity_Master bright = dazzle != null ? RogueWavesModeKitTest.SpawnFoe("Enemy_Dagger", vessel.Entityposition.Value, 1f, 2.5f, null) : null;
+        if (bright == null) Setup("FOES-1", "no Dazzling, or no Dagger");
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            Helper_Entitytools.Upgrade(bright, dazzle, Helper_Entitytools.Upgradecheck.Forced, null);
+            yield return new WaitForSeconds(2.5f);
+            Info("FOES-1 before the fall", "the vessel holds [" + Holding(vessel, "Illuminate") + "]");
+            Entity_Master was = vessel;
+            Hurt(bright, vessel, 100000f);
+            yield return new WaitForSeconds(0.3f);
+            ClearFoes();
+            freeze = false;
+            yield return Until(() => { Entity_Master v = RWRun.Vessel(me); return v != null && v != was && v.Beingserver != null && !v.Beingserver.Dead; }, 60f);
+            freeze = true;
+            yield return new WaitForSeconds(1.5f);
+            vessel = RWRun.Vessel(me);
+            yield return NewFoe();
+            float hp0 = Hp(vessel);
+            if (lastFoe != null && vessel != null) Hurt(lastFoe, vessel, 10f);
+            yield return new WaitForSeconds(0.3f);
+            Finding("FOES-1", Holding(vessel, "Illuminate") != "", "the respawned vessel holds [" + Holding(vessel, "Illuminate") + "]; a hit of 10 takes " + (hp0 - Hp(vessel)));
+            ClearFoes();
+        }
         // FOES-3: a foe with Aging and Berserk, at half health, against a plain one.
         Upgradeproperties aging = Bl_Address.Getload("Upgrade", "RW_Modifier_Aging_Upgradeobject") as Upgradeproperties, berserk = Bl_Address.Getload("Upgrade", "RW_Modifier_Berserk_Upgradeobject") as Upgradeproperties;
         yield return NewFoe();
@@ -601,6 +564,63 @@ public static partial class RWTest
         yield return ToBoat();
     }
 
+    // MODE-A3: a map with sub-cores: which being does the part take for the Basin?
+    static IEnumerator ReviewArtrio()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Smacky");
+        yield return new WaitForSecondsRealtime(1f);
+        RWCampaign.New(Seed);
+        RWCampaign.Staging = false;
+        yield return Until(() => RWCampaign.Live && Here(), 40f);
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 60f);
+        RWChart.Plan plan = RWMode.Pool.Find(p => p.Map == "Map_Artrio" || p.Name.Contains("Artrio"));
+        if (plan == null) { Setup("MODE-A3", "no Artrio in the pool: " + RWMode.Pool.Count + " maps"); yield break; }
+        RWChart.Node at = RWCampaign.Open()[0];
+        at.Plan = plan.Name;
+        at.Map = plan.Map;
+        at.Label = plan.Label;
+        at.Weather = RWChart.Calm;
+        foreach (Macro_Maplink_Add l in Macro_Worldvisual.Instance.World.GetComponentsInChildren<Macro_Maplink_Add>(true))
+            if (l.name == at.Name) l.Gameplan = RWMode.TwinPlan(plan.Name);
+        Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(at.Name, false, default(Unity.Netcode.ServerRpcParams));
+        yield return Until(() => boat.Selected.Value.ToString() == at.Name && Macro_Worldvisual.Instance.Insetup && Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString() == RWMode.Twin(plan.Name), 60f);
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
+        yield return Until(() => RWShop.Stand != null, 120f);
+        freeze = true;
+        yield return new WaitForSeconds(3f);
+        Entity_Master first = RWUtil.PlayerCore();
+        string all = "";
+        foreach (Entity_Master c in RWUtil.PlayerCores()) all += c.Being.Value + " ";
+        Finding("MODE-A3", first != null && first.Being.Value.ToString().ToLowerInvariant().Contains("sub"), plan.Name + ": PlayerCore() is " + (first != null ? first.Being.Value.ToString() : "none") + "; PlayerCores(): " + all);
+        yield return ToBoat();
+    }
+
+    // MODE-A2's reading: this launch's RWIcons.Add threw on purpose (-rwthrowicons), and the mode still came up.
+    public static bool ThrowShelf;
+
+    // MODE-D10: SHOP's dialog throws once; the buttons must still work.
+    static IEnumerator ReviewThrow()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Smacky");
+        yield return new WaitForSecondsRealtime(1f);
+        yield return ToMap(Seed, RWChart.Calm);
+        ThrowShelf = true;
+        RWShop.Open("Shop");
+        yield return new WaitForSeconds(1.5f);
+        bool threw = !ThrowShelf, upAfterThrow = RWDialog.Up();
+        RWShop.Open("Shop");
+        yield return WaitDialog(6f);
+        bool opened = RWDialog.Up();
+        Finding("MODE-D10", threw && !opened, "the dialog threw " + threw + ", nothing up after it " + !upAfterThrow + "; SHOP pressed again opens: " + opened);
+        if (opened) ClickCard("Back");
+        yield return ToBoat();
+    }
+
     // MODE-D8: Keep the Basin Clean on a two-Basin map, a foe hitting only the second.
     static IEnumerator ReviewSplithead()
     {
@@ -611,8 +631,9 @@ public static partial class RWTest
         RWCampaign.New(Seed);
         RWCampaign.Staging = false;
         yield return Until(() => RWCampaign.Live && Here(), 40f);
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 60f);      // the boat has docked: its own pick won't overwrite this one
         long me = RWMine.Session;
-        RWChart.Plan plan = RWMode.Pool.Find(p => p.Name.Contains("Splithead") || p.Map.Contains("Splithead"));
+        RWChart.Plan plan = RWMode.Pool.Find(p => p.Map == "Map_Split" || p.Name.Contains("Split"));
         if (plan == null) { Setup("MODE-D8", "no Splithead in the pool"); yield break; }
         RWChart.Node at = RWCampaign.Open()[0];
         at.Plan = plan.Name;
@@ -622,13 +643,18 @@ public static partial class RWTest
         foreach (Macro_Maplink_Add l in Macro_Worldvisual.Instance.World.GetComponentsInChildren<Macro_Maplink_Add>(true))
             if (l.name == at.Name) l.Gameplan = RWMode.TwinPlan(plan.Name);
         Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(at.Name, false, default(Unity.Netcode.ServerRpcParams));
-        yield return Until(() => boat.Selected.Value.ToString() == at.Name && Macro_Worldvisual.Instance.Insetup, 60f);
+        yield return Until(() => boat.Selected.Value.ToString() == at.Name && Macro_Worldvisual.Instance.Insetup && Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString() == RWMode.Twin(plan.Name), 60f);
         boat.Playgame(true);
         yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
         yield return Until(() => RWShop.Stand != null, 120f);
         freeze = true;
         yield return new WaitForSeconds(3f);
+        yield return Until(() => RWUtil.PlayerCores().Count >= 2, 30f);
         List<Entity_Master> cores = RWUtil.PlayerCores();
+        string coreNames = "";
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && e.Being.Value.ToString().ToLowerInvariant().Contains("core") && e.Entitydata.Value.Team != 0) coreNames += e.Being.Value + "[" + (e.Taglistserver != null ? string.Join(",", new List<string>(e.Taglistserver).ToArray()) : "") + "] ";
+        Info("MODE-D8 the map", plan.Name + ", plan " + Tds_Multiplayerinfo.Instance.Gameplan.Value + ": " + cores.Count + " Basins by PlayerCores(); on the player's side: " + coreNames);
         if (cores.Count < 2) { Setup("MODE-D8", plan.Name + " has " + cores.Count + " Basin here"); yield return ToBoat(); yield break; }
         RWPlayer player = RWRun.For(me);
         RWObjectives.Posted = Array.Find(RWObjectives.All, o => o.Name == "Hull");

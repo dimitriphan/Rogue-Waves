@@ -114,6 +114,9 @@ public static class RWIcons
 
     public static void Add()
     {
+#if ROGUEWAVESMODE_GAPS
+        if (Array.IndexOf(Environment.GetCommandLineArgs(), "-rwthrowicons") >= 0) throw new Exception("MODE-A2: a test's throw");
+#endif
         try
         {
             Iconobject types = Tds_Masterdatabase.Instance != null ? Tds_Masterdatabase.Instance.Getitem("Icons", "Icon_Types") as Iconobject : null;

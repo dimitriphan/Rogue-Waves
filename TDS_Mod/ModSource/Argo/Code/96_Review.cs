@@ -197,6 +197,34 @@ public static partial class ArgoSelfTest
         }
         // The double stun itself runs in the scenario (99_SelfTest.cs), where a foe beside a gun is to hand.
 
+        // ARG-3: a look a caller keeps renewing, cut by another source's short one (the same call a stock slowing tower makes).
+        Entity_Master looked = ModKitTest.SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(ModKitTest.Core()), 1f, 6f, null);
+        yield return Wait(0.5f);
+        if (looked == null) ModKitTest.Setup("ARG-3", "no foe");
+        else
+        {
+            Helper_Entitytools.Addmod(looked, "Speed", -0.9f, Helper_Entitytools.Modtypes.Multi, 8f);
+            float renew = 0f, clock = 0f, gap = 0f, longest = 0f, covered = 0f;
+            bool cutSent = false;
+            while (clock < 6f)
+            {
+                if (clock >= renew) { ArgoUtil.Slow(hm, looked, 0.3f, 0.75f, true); renew = clock + 0.5f; }
+                if (clock >= 2f && !cutSent) { cutSent = true; hm.Radio.Vfxdebuff_ClientRpc("Debuff_Slow", looked.Beingref.Value, 0.2f); }
+                bool on = false;
+                foreach (Transform t in looked.GetComponentsInChildren<Transform>(true))
+                    if (t.name.StartsWith("Debuff_Slow")) on = true;
+                if (clock >= 2f)
+                {
+                    if (on) { covered += Time.deltaTime; gap = 0f; }
+                    else { gap += Time.deltaTime; longest = Mathf.Max(longest, gap); }
+                }
+                clock += Time.deltaTime;
+                yield return null;
+            }
+            Finding("ARG-3", longest > 1f, "after a 0.2 s look from another source, of the 4 s that followed: the look on for " + F(covered) + " s, the longest gap " + F(longest) + " s");
+            ClearEnemies();
+        }
+
         // ARG-4: a tuned Drill Rig with Calibrate reaches farther: does its AIM's synced reach follow?
         ArgoTowerBrain drill = null;
         List<Entity_Master> ores = new List<Entity_Master>(ModKitUtil.Area(home, 45f, ModKitUtil.Tagged("Resource")));

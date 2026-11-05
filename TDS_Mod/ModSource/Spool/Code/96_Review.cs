@@ -85,6 +85,21 @@ public static partial class SpoolSelfTest
         Check("G1 " + b.Def.Id + " " + key + ": the border flashes once, not twice", most <= 1, most + " flashes");
     }
 
+    static void ClearCrafted(long owner)
+    {
+        foreach (Entity_Master e in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
+            if (e != null && ModKitUtil.Owner(e) == owner && (ModKitUtil.BeingName(e) == SpoolData.Stitched || ModKitUtil.BeingName(e) == SpoolData.Dart) && ModKitUtil.Alive(e))
+                Game_Entity.Instance.Despawn(e.Beingserver, false, "Selftest");
+    }
+
+    static Entity_Master AtSpot(string being, long owner, Vector3 spot)
+    {
+        foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
+            if (e != null && ModKitUtil.Owner(e) == owner && ModKitUtil.BeingName(e) == being && ModKitUtil.Alive(e) && ModKitUtil.Flat(ModKitUtil.Pos(e), spot) <= 2f)
+                return e;
+        return null;
+    }
+
     static IEnumerator ReviewSteps()
     {
         Log("match started: the review's checks begin");
@@ -155,6 +170,32 @@ public static partial class SpoolSelfTest
         head.Carried = 0;
         yield return Until(() => !head.Returning, 3f);
 
+#if SPOOL_SHOTS
+        // The sage look: Spool beside a Hardened foe, then on the map's green ground by the nearest ore nodes.
+        Entity_Master hardened = SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(hm), 2.5f, 1f);
+        Upgradeproperties harden = Bl_Address.Getload("Upgrade", "Enemy_Health_Upgradeobject") as Upgradeproperties;
+        if (hardened != null && harden != null)
+        {
+            yield return Wait(0.5f);
+            Helper_Entitytools.Upgrade(hardened, harden, Helper_Entitytools.Upgradecheck.Forced, null);
+            yield return Wait(0.5f);
+            Info("the Hardened foe", "skin '" + hardened.Skin.Value + "'");
+            yield return SpoolShots.Close("sage_hardened", ModKitUtil.Pos(hm), 3.5f);
+            ClearFoes();
+        }
+        Vector3 from = ModKitUtil.Pos(hm);
+        List<Entity_Master> ores = new List<Entity_Master>(ModKitUtil.Area(from, 45f, ModKitUtil.Tagged("Resource")));
+        ores.Sort((a, b) => ModKitUtil.Flat(ModKitUtil.Pos(a), from).CompareTo(ModKitUtil.Flat(ModKitUtil.Pos(b), from)));
+        for (int i = 0; i < ores.Count && i < 3; i++)
+        {
+            Entity_Master ore = ores[i];
+            if (ore == null || !ModKitUtil.Alive(ore)) continue;
+            ModKitUtil.MoveTo(hm, ore, Vector3.zero, 1f);
+            yield return Until(() => ModKitUtil.Flat(ModKitUtil.Pos(hm), ModKitUtil.Pos(ore)) <= 2f, 15f);
+            yield return SpoolShots.Close("sage_ground_" + i, ModKitUtil.Pos(hm), 3.5f);
+        }
+#endif
+
         // G1: the other buildings that have upgrades. The Stash has none on his sheet.
         foreach (string[] one in new[] { new[] { SpoolData.Tin, "Recycle2" }, new[] { SpoolData.Cushion, "Sharper2" }, new[] { SpoolData.Loom, "" } })
         {
@@ -168,6 +209,54 @@ public static partial class SpoolSelfTest
             Log("INFO G1 panel of " + one[0] + ": " + Panel(b.Master));
             if (one[1] != "") yield return BuyChecked(b, one[1], owner);
         }
+#if MODKIT_PLAY
+        // PR #86's smaller Crafted by a virtual hand: at their Tin's spot, not at the Tin they stand inside until one is picked.
+        SpoolTinBrain tin = null;
+        foreach (SpoolBuilding b in known) if (b is SpoolTinBrain) tin = (SpoolTinBrain)b;
+        if (tin == null) { ModKitTest.Setup("the Crafted by hand", "no Cookie Tin"); yield break; }
+        ModKitPlay.Log = m => Log("INFO hud: " + m);
+        ModKitPlay.Host = SpoolMod.Instance;
+#if SPOOL_SHOTS
+        ModKitPlay.Shot = SpoolShots.Shot;
+#endif
+        ModKitPlay.Init();
+        ModKitPlay.Reset(hm);
+        yield return ModKitPlay.WaitForWorld(30f);
+        Genitem tile = ModKitTest.FoeTile(SpoolContent.Beings[SpoolData.Stitched], tin.Pos, 3f, 5f, used);
+        if (tile == null) { ModKitTest.Setup("the Crafted by hand", "no tile for the Tin's spot"); yield break; }
+        Send(tin.Master, SpoolData.TargetLink, At(tile.Position));
+        yield return Wait(0.6f);
+        foreach (string kind in new[] { SpoolData.Stitched, SpoolData.Dart })
+        {
+            if (kind == SpoolData.Dart) yield return Upgrade(tin, "Design3", owner);
+            ClearCrafted(owner);
+            player.Stash = 50;
+            SpoolServer.Show(player);
+            Entity_Master unit = null;
+            string want = kind;
+            yield return Until(() => (unit = AtSpot(want, owner, tile.Position)) != null, 40f);
+            if (unit == null) { ModKitTest.Setup("the Crafted by hand: " + kind, "none reached the Tin's spot in 40 s"); continue; }
+#if SPOOL_SHOTS
+            yield return SpoolShots.Close("crafted_" + kind, ModKitUtil.Pos(unit), 3.5f);
+#endif
+            int picks = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                unit = AtSpot(want, owner, tile.Position);
+                if (unit == null) break;
+                yield return ModKitPlay.Select(unit, kind);
+                if (ModKitPlay.IsSelected(unit)) picks++;
+                yield return ModKitPlay.Cancel();
+                yield return Wait(0.3f);
+            }
+            Check("The smaller art: a click selects a " + kind + " at its spot (3 tries)", picks == 3, picks + " of 3, last " + ModKitPlay.Selected());
+            unit = AtSpot(want, owner, tile.Position);
+            if (unit == null) { ModKitTest.Setup("selling a " + kind, "none left at the spot"); continue; }
+            int stashBefore = player.Stash;
+            yield return ModKitPlay.Sell(unit, kind);
+            Check("The smaller art: SELL and a click sell a " + kind, ModKitPlay.LastOk, ModKitPlay.Counts() + ", Stash " + stashBefore + " -> " + player.Stash);
+        }
+#endif
     }
 }
 #endif

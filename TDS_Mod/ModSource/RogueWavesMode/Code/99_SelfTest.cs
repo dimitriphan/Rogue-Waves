@@ -592,7 +592,7 @@ public static partial class RWTest
     {
         yield return new WaitForSeconds(1f);
         ClearFoes();
-        int before = RWCampaign.Route.Count;
+        int before = RWCampaign.Route.Count + (RWCampaign.WonThisMap ? -1 : 0);   // a map won at Tide 15 has already taken its step
         Mode_Normal mode = Game_Rounds.Instance.GetComponent<Mode_Normal>();
         if (mode != null) mode.Finished = true;
         Tds_Multiplayerinfo.Instance.Gamestate.Value = new FixedString64Bytes("Win");

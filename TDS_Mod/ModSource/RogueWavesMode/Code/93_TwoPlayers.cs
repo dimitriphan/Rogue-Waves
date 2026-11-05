@@ -1151,7 +1151,14 @@ public static partial class RWTest
         Check("O3 Pure Aura and Directions follow", RWMine.Pure() > 0f && v != null && HeldDirections(v).Count >= 2, "Pure " + RWMine.Pure() + ", " + (v != null ? string.Join(",", HeldDirections(v).ToArray()) : "-"));
         Check("O7 the weather's objects are there for the rejoiner", RWWeather.Loaded(RWChart.RisingWater) && Thing("Main_Flood") != null && RWRejoin.MapWeather() == RWChart.RisingWater, "weather " + RWWeather.Display(RWRejoin.MapWeather()));
         yield return Snap("second_rejoined");
-        if (RWTwo.Review) Reading("MODE-B1 the rejoiner", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
+        if (RWTwo.Review)
+        {
+            Reading("MODE-B1 the rejoiner", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
+            int doubled;
+            string doubles = Doubles(out doubled);
+            Reading("MODE-B2", doubled > 0, doubles);
+            Info("MODE-C10 the rejoiner's row", CardinalRow());
+        }
         yield return Sync("back");
         float pureBack = RWMine.Pure();
         yield return Until(() => RWTwo.OtherSaid("paid"), 120f);

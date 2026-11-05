@@ -37,6 +37,11 @@ public static partial class RWTest
         if (Asked("oldsave")) { yield return Stepped(GapsOldSave()); yield break; }
         yield return GapsMenu();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("gaps", "never reached the boat"); yield break; }
+        if (Asked("a2")) { Finding("MODE-A2", !Macro_Main.Instance.Ready, "this launch's RWIcons.Add threw on purpose: the Rogue Waves button still took the party to the boat, ready " + Macro_Main.Instance.Ready); yield break; }
+        // Each in its own launch: a part that forces a map to end can leave the game's Lose menu up over the next (TEST_ROUND_2026-11-04 Â§6).
+        if (Asked("throw")) { yield return Stepped(ReviewThrow()); yield break; }
+        if (Asked("split")) { yield return Stepped(ReviewSplithead()); yield break; }
+        if (Asked("artrio")) { yield return Stepped(ReviewArtrio()); yield break; }
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
         if (Part("foes")) yield return Stepped(GapsFoes());
