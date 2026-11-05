@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `SPOOL_DEFAULTS_2026-11-05.md` | 2026-11-05 | Spool's open defaults (PLAN Open question 2) in plain words, S1-S17, each with Claude's pick |
 | `DECISIONS_APPLIED_2026-11-05.md` | 2026-11-05 | His answers to the open decisions: each one, what the scope took, and the hand-off for the build thread, art and the balance sweep |
 | `OPEN_DECISIONS_2026-11-05.md` | 2026-11-05 | Every call waiting on Dimitri on one page: 39 questions by theme with Claude's defaults, the scope audit's smaller rows in an appendix |
 | `TESTING_ROUND_3_2026-11-05.md` | 2026-11-05 | PC round, stopped early: self-tests on kit 1.9, the fixes read in game; two-player not run |
