@@ -144,6 +144,10 @@ def apply(picks):
         refresh(base, os.path.basename(dst)[:-4])
     if icons:
         refresh_icon_set()
+    # The versions under variants/ keep the purple they were drawn in; Spool is sage since 2026-11-05 (spool_sage.py).
+    if any(d.startswith(S) for d in sheets) or picks.get('tuft', 'cur') != 'cur':
+        import spool_sage
+        spool_sage.main()
 
 
 if __name__ == '__main__':

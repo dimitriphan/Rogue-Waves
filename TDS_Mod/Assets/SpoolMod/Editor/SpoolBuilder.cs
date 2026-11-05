@@ -481,12 +481,12 @@ namespace SpoolBuild
             var specs = new List<VfxSpec>
             {
                 // One-shots played by SpoolClient (Code/11_Client.cs).
-                new VfxSpec { Name = "World_Spool_Stitch", Use = "A Crafted is stitched, Thread is delivered, a Loom spins: a stitching sparkle", Tex = "Px_Star", A = H("EADFF6"), B = H("FFFFFF"), Burst = 12, Speed0 = 0.3f, Speed1 = 0.8f, Gravity = -0.2f, Life0 = 0.4f, Life1 = 0.8f, Size0 = 0.05f, Size1 = 0.09f, Radius = 0.25f },
+                new VfxSpec { Name = "World_Spool_Stitch", Use = "A Crafted is stitched, Thread is delivered, a Loom spins: a stitching sparkle", Tex = "Px_Star", A = H("DFF6E5"), B = H("FFFFFF"), Burst = 12, Speed0 = 0.3f, Speed1 = 0.8f, Gravity = -0.2f, Life0 = 0.4f, Life1 = 0.8f, Size0 = 0.05f, Size1 = 0.09f, Radius = 0.25f },
                 new VfxSpec { Name = "World_Spool_Stuffing", Use = "A Crafted or the Thread Head falls, a building goes up: a puff of stuffing", Tex = "Px_Fluff", A = H("FFFFFF"), B = H("F2E9D6"), Burst = 14, Speed0 = 0.6f, Speed1 = 1.3f, Gravity = 0.3f, Life0 = 0.5f, Life1 = 0.9f, Size0 = 0.08f, Size1 = 0.15f, Hemisphere = true, Grow = true, Radius = 0.15f },
-                new VfxSpec { Name = "World_Spool_Burst", Use = "One Last Surprise, Burst Seams: a ring of stuffing and thread (scaled to its radius)", Tex = "Px_Fluff", A = H("FFFFFF"), B = H("C6AEE3"), Burst = 40, Speed0 = 0.1f, Speed1 = 0.4f, Gravity = -0.05f, Life0 = 0.5f, Life1 = 0.9f, Size0 = 0.1f, Size1 = 0.2f, Radius = 1f, Edge = true, ShapeScale = true, Grow = true },
+                new VfxSpec { Name = "World_Spool_Burst", Use = "One Last Surprise, Burst Seams: a ring of stuffing and thread (scaled to its radius)", Tex = "Px_Fluff", A = H("FFFFFF"), B = H("AEE3BB"), Burst = 40, Speed0 = 0.1f, Speed1 = 0.4f, Gravity = -0.05f, Life0 = 0.5f, Life1 = 0.9f, Size0 = 0.1f, Size1 = 0.2f, Radius = 1f, Edge = true, ShapeScale = true, Grow = true },
                 new VfxSpec { Name = "World_Spool_Prick", Use = "A Pin Cushion pricks its attacker", Tex = "Px_Tri", A = H("E2E6EB"), B = H("F27C66"), Burst = 8, Speed0 = 0.8f, Speed1 = 1.5f, Gravity = 0.5f, Life0 = 0.15f, Life1 = 0.3f, Size0 = 0.04f, Size1 = 0.07f, Spin = true, Hemisphere = true, Radius = 0.08f },
                 new VfxSpec { Name = "World_Spool_Mend", Use = "The Thread Head's MEND heals a unit", Tex = "Px_Plus", A = H("A5DBA6"), B = H("FFFFFF"), Burst = 5, Speed0 = 0.2f, Speed1 = 0.5f, Gravity = -0.3f, Life0 = 0.5f, Life1 = 0.8f, Size0 = 0.05f, Size1 = 0.08f, Radius = 0.15f },
-                new VfxSpec { Name = "World_Hero_Spool_Death", Use = "Vessel death: cotton and scraps of purple plush", Tex = "Px_Fluff", A = H("9363AE"), B = H("FFFFFF"), Burst = 28, Speed0 = 1.4f, Speed1 = 2.6f, Gravity = 1.2f, Life0 = 0.8f, Life1 = 1.3f, Size0 = 0.07f, Size1 = 0.13f, Spin = true, Hemisphere = true },
+                new VfxSpec { Name = "World_Hero_Spool_Death", Use = "Vessel death: cotton and scraps of sage plush", Tex = "Px_Fluff", A = H("93CCA1"), B = H("FFFFFF"), Burst = 28, Speed0 = 1.4f, Speed1 = 2.6f, Gravity = 1.2f, Life0 = 0.8f, Life1 = 1.3f, Size0 = 0.07f, Size1 = 0.13f, Spin = true, Hemisphere = true },
             };
             foreach (var s in specs)
             {
@@ -652,7 +652,7 @@ namespace SpoolBuild
             var csv = new StringBuilder();
             csv.AppendLine("Note,Key,English");
             void Row(string note, string text) { csv.AppendLine(Csv(note) + "," + Csv(text) + "," + Csv(text)); }
-            Row("\"Spool\" Vessel proper name. A hooded purple plush with a stitched mouth.", "Spool");
+            Row("\"Spool\" Vessel proper name. A hooded sage-green plush with a stitched mouth.", "Spool");
             Row("Vessel title", "Crafty Crafted Crafter");
             Row("Vessel rule name", "Hand Stitched");
             Row("\"Thread\" Spool's resource, dropped by foes and carried to the Yarn Stash", "Thread");

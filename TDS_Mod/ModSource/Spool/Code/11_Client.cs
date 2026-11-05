@@ -11,7 +11,7 @@ public static class SpoolClient
     static Sprite tuftSprite;
     public static int TuftsShown, Flights;
 
-    public static readonly Color ThreadColor = new Color(0.58f, 0.39f, 0.68f, 1f);
+    public static readonly Color ThreadColor = new Color(0.435f, 0.682f, 0.494f, 1f);   // sage 6FAE7E (lilac 945DAD until 2026-11-05)
 
     class Tuft
     {
@@ -22,7 +22,7 @@ public static class SpoolClient
         public float Until, Seed;
     }
 
-    // Temporary art (ModSource/Spool/Art/Temporary/README.md): a coiled loop of lilac thread with its end trailing off
+    // Temporary art (ModSource/Spool/Art/Temporary/README.md): a coiled loop of sage thread (lilac until 2026-11-05) with its end trailing off
     // (Dimitri's pick of 2026-11-03), lit from the upper left (12x12, drawn here so ground Thread needs nothing from the
     // asset pack).
     static readonly string[] TuftPixels =

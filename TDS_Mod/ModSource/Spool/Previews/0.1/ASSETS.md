@@ -8,6 +8,10 @@ mini, the Crafted, the Thread Head, the towers, the effects and the sounds are d
 passes with 0 errors, and `lite/run_preview.sh ... sma` runs clean. These files are the cloud renders, made before any
 build in Unity; the art has been in game since Spool's PC round 1 (`docs/TEMP_ART.md`).
 
+**2026-11-05: sage, not purple.** At Dimitri's word every purple and lilac below is now his sage (plush `93CCA1` /
+`60A871`, thread `CBE6D1` to `4F8C5E`; `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/README.md`). The renders
+here were re-made then with `lite/run_preview.sh ... sm`; the five minion sheets are their files at 3x.
+
 ## Sprite sheets (PPU 20, bottom-centre pivot; v1/v3 = v0/v2 mirrored)
 
 - `Spool-Sheet` (192x256): idle (rows 0-3) is a plush breath: the hood settles and lifts, a blink inside the mouth, the

@@ -275,6 +275,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
   look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
   2026-11-05: PC testing round 3, stopped early at the usage limit: on PR #89's base every self-test passes and the fixes read hold in game; the two-player list did not run (`docs/reports/TESTING_ROUND_3_2026-11-05.md`).
+  2026-11-05: the 54 bugs checked again on that base with round 3's readings (`docs/reports/CODE_REVIEW_RECHECK_2026-11-05.md`):
+  18 fixed and gone in game, 14 fixed but not yet seen (the two-player ones, D8, A2, D10, ARG-3 and four guards), 20 still
+  there for his word, a PC fact or a sighting, MODE-C12 and ARG-1 (Dagger, Spear) not bugs; round 3's open readings explained.
+  2026-11-05: Spool is sage green, not purple, at his word (the purple read too close to the foes' magenta; a yellow
+  and a mint tried first, `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`): its frames (`SpoolCharacter.P`), the
+  UI colour, the Thread Head and Crafted sheets, the thread and the models' felt (`concept-tools/temp_art/spool_sage.py`).
+  Compiled here (release and self-test 0 errors, editor clean), not run on the PC: the next Spool round looks at it
+  beside a Hardened foe and on grass.
   2026-11-05: every call waiting on Dimitri gathered on one page, 39 questions by theme, each with Claude's default
   (`docs/reports/OPEN_DECISIONS_2026-11-05.md`); answered in its thread, small answers go straight into a PR.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`

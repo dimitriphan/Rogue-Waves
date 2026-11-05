@@ -215,7 +215,7 @@ namespace SpoolBuild
                 case "Surprise4":
                     // a jack-in-the-box: a spring pops out of the middle with a little plush head on it
                     for (int i = 0; i < 6; i++) Ring(m, V(-0.02f, 0.3f + i * 0.045f, 0.02f), 0.05f, 0.008f, Pal.Iron1, 8);
-                    m.Ball(V(-0.02f, 0.62f, 0.02f), V(0.08f, 0.075f, 0.08f), 8, 5, Pal.Purple, Pal.Felt3);
+                    m.Ball(V(-0.02f, 0.62f, 0.02f), V(0.08f, 0.075f, 0.08f), 8, 5, Pal.Plush, Pal.Felt3);
                     m.Ball(V(-0.05f, 0.63f, -0.055f), Vector3.one * 0.014f, 5, 3, Pal.ThreadGold);
                     m.Ball(V(0.015f, 0.63f, -0.055f), Vector3.one * 0.014f, 5, 3, Pal.ThreadGold);
                     // and a red bow on the lid
@@ -348,10 +348,10 @@ namespace SpoolBuild
             for (int i = 0; i < 9; i++)
             {
                 float x = -wide + 0.04f + i * (wide * 2f - 0.08f) / 8f;
-                Thread(m, V(x, top - 0.02f, -0.012f), V(x, 0.2f, -0.012f), i % 2 == 0 ? Pal.Felt1 : Pal.Lilac1, 0.005f);
+                Thread(m, V(x, top - 0.02f, -0.012f), V(x, 0.2f, -0.012f), i % 2 == 0 ? Pal.Felt1 : Pal.Pale1, 0.005f);
             }
-            // the woven band, in Spool's purple with a pink stripe
-            m.Block(V(0, 0.2f, -0.02f), V(wide * 2f - 0.06f, 0.16f, 0.02f), 0.006f, Pal.Purple, Pal.Felt4);
+            // the woven band, in Spool's sage with a pink stripe
+            m.Block(V(0, 0.2f, -0.02f), V(wide * 2f - 0.06f, 0.16f, 0.02f), 0.006f, Pal.Plush, Pal.Felt4);
             m.Block(V(0, 0.29f, -0.032f), V(wide * 2f - 0.06f, 0.025f, 0.012f), 0.003f, Pal.ThreadPink, Pal.ThreadPink);
             // the shuttle resting on the band
             m.Ball(V(0.05f, 0.37f, -0.045f), V(0.09f, 0.022f, 0.022f), 6, 3, Pal.Wood0, Pal.WoodPale);
@@ -381,7 +381,7 @@ namespace SpoolBuild
                     m.Block(V(-0.1f, 0.22f, -0.04f), V(0.08f, 0.07f, 0.012f), 0.003f, Pal.Cream0, Pal.Cream0);
                     m.Block(V(0.1f, 0.24f, -0.04f), V(0.07f, 0.06f, 0.012f), 0.003f, Pal.Tin1, Pal.Tin0);
                     for (int i = 0; i < 3; i++)
-                        m.Block(V(-0.125f + i * 0.025f, 0.288f, -0.048f), V(0.008f, 0.02f, 0.006f), 0.001f, Pal.Purple, Pal.Purple);
+                        m.Block(V(-0.125f + i * 0.025f, 0.288f, -0.048f), V(0.008f, 0.02f, 0.006f), 0.001f, Pal.Plush, Pal.Plush);
                     m.Tube(V(0.06f, 0.33f, -0.06f), V(0.17f, 0.45f, -0.1f), 0.006f, 0.002f, 4, Pal.Steel);
                     Thread(m, V(0.06f, 0.33f, -0.06f), V(0.0f, 0.27f, -0.05f), Pal.ThreadBlue, 0.004f);
                     break;
@@ -408,13 +408,13 @@ namespace SpoolBuild
 
         // The Dart's thrown needle (along z, point forward). Temporary art (ModSource/Spool/Art/Temporary/README.md),
         // Dimitri's pick of 2026-11-03, "Pearl-headed pin": a dressmaker's pin, a steel shaft 0.4 long with a white
-        // point and a big lilac pearl head that catches the eye in flight; no thread.
+        // point and a big pale sage pearl head that catches the eye in flight; no thread.
         static Lp Needle()
         {
             var m = new Lp();
             m.Tube(V(0, 0.5f, -0.16f), V(0, 0.5f, 0.16f), 0.018f, 0.016f, 6, Pal.Steel);
             m.Tube(V(0, 0.5f, 0.16f), V(0, 0.5f, 0.24f), 0.016f, 0f, 6, Pal.White);
-            m.Ball(V(0, 0.5f, -0.19f), Vector3.one * 0.06f, 8, 5, Pal.Lilac1, Pal.Lilac0, 0.4f);
+            m.Ball(V(0, 0.5f, -0.19f), Vector3.one * 0.06f, 8, 5, Pal.Pale1, Pal.Pale0, 0.4f);
             return m;
         }
     }

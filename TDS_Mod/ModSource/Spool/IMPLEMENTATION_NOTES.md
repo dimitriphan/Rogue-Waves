@@ -155,6 +155,16 @@ Thread Head (3), selling by clicking (4); also the tufts' look in URP (5), the C
 (6), the needle's flight (7), foes stopping at an Overstuffed Mangled (9), the Loom striking ore (12; no ore stood in
 its reach on 3B_Thehunt) and the whole look (13).
 
+## Sage recolour (2026-11-05)
+
+At Dimitri's word Spool is sage green, not purple: `SpoolCharacter.P` (plush, mouth, thread), `SpoolLowpoly.Pal` (felt
+ramp, `Plush`, `Pale0-2`, renamed from `Purple` / `Lilac0-2`), the effects in `SpoolBuilder`, `Sage` (was `Purple`) in
+`04_Content.cs` and `13_Journal.cs`, the units' `Tint`, `SpoolClient.ThreadColor`, `IconPalette`; the five minion sheets
+and the tuft recoloured by `concept-tools/temp_art/spool_sage.py`. No number or behaviour changed. Compiled here
+(release and `SPOOL_SELFTEST,SPOOL_SHOTS` 0 errors, editor clean, `lite/run_preview.sh sm` renders in `Previews/0.1/`).
+Next PC round: the build log still says "from Art/Temporary/" for the five sheets, and Spool reads apart from a Hardened
+foe and from the grass.
+
 ## Directions (kit 1.7)
 
 `SpoolContent.BuildDirections` registers two Directions, one upgrade per rank (`Direction_Spool_<Name><rank>_Upgradeobject`);

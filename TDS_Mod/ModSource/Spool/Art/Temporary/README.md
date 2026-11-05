@@ -67,3 +67,5 @@ temporary file. Generators: `concept-tools/temp_art/ui_icons.py` (the tuft rows 
 **Picks applied (2026-11-03):** the files in `game_size/` now carry Dimitri's picks among the versions (the list is in `docs/TEMP_ART.md`, "Dimitri's picks"), so where a row above describes art he replaced, the picked version's line in `variants/README.md` describes it now. Compiled, not yet seen in game.
 
 **Minion versions (2026-11-04):** ten Snoble-sized versions of the Thread Head and each of the four Crafted are in `minions_2026-11-04/` (its README); Dimitri's picks (2026-11-05) are copied into `game_size/` and `aseprite/` above, and the GIFs in `preview_8x/` were redrawn from them.
+
+**Sage green (2026-11-05):** Dimitri found Spool's purple too close to the foes and picked a soft sage (after a yellow and a mint, `pastel_green_2026-11-05/`), then had it applied to all of Spool. Every file in `game_size/`, `aseprite/` and `preview_8x/` is recoloured by `concept-tools/temp_art/spool_sage.py` (one old-to-new table; where a row above says purple or lilac, read the sage it maps to), and the code's colours follow (that folder's README lists them). Compiled, not yet seen in game.
