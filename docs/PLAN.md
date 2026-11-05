@@ -259,6 +259,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-04: one quality pass over the whole repository, paused at his word before a second: 127 issues, 120 fixed
   in docs and comments (mostly "not built / not run / online left" lines), 7 for him
   (`docs/reports/QUALITY_PASSES_2026-11-04.md`); the cloud compile break it found after PR #82 is repaired by PR #84.
+  2026-11-04: every line of the scope read against the code: 41 mismatches, 22 of them on Claude's defaults, each with
+  who should yield; nothing changed, each waits for his word (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -769,6 +771,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   old helper names, so the mode's release build failed with 6 errors and three vessels' self-tests failed too. Seven
   files three-way merged; every part compiles at 0 errors again. A change made on the PC goes back as a diff on the
   newest base (`TDS_Mod/Tools/pc/README.md`).
+- **2026-11-04: scope against code** (Dimitri: "Are there any token intense quality checks that you would recommend on
+  this project?", then "Start with 1, 2, and 3"; this is item 2, cloud only, `docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md`).
+  2,367 scope lines read against the code at `5d9b09e` (each row re-read after #80 and #82), a second pass on every file with more than three issues: 41
+  mismatches (22 on `~defaults~`), none in 00-03, 05, 06. First to decide: no map vote after a bonus-Tide loss (04:58),
+  the lobby Cardinal picker still free between maps (04:61), Trinkets and Cardinals past the eighth shown nowhere, stock
+  Cardinals bought once but still offered, the Shift Directions not renaming their building. Scope 16 matches the game's
+  data; 44 of its lines need the decompiled game. No scope file or code changed; nothing run on the PC.
 
 ### Decisions
 
@@ -949,6 +958,7 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 7 | New Directions, Cardinals and Trinkets (`docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §6, `docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §5): take, change or drop each; keep the research-choice pairs and Duos or not | each `~value~` stands; nothing is built until he picks |
 | 8 | Argo's review (`docs/reports/ARGO_REVIEW_2026-11-04.md` §5): take, change or drop each of the fourteen changes in scope `09`; and if he takes P5 (question 4), the Drill Rig's Attackspeed 0.25 → 0.2 with it | each `~value~` stands; the next Argo build picks them up; the Drill stays at 0.25 unless P5 is taken |
 | 9 | Uloe's 24 new upgrades (`docs/reports/ULOE_UPGRADES_2026-11-04.md` §3, scope `10` [Questions] 2-3): take, rename, change or drop each; Supernova a button or automatic; and if he takes P5 (question 4), the Flood Light's strike rate drops with the Sapling's | each `~value~` stands; nothing is built until he picks; the next Uloe build is an xhigh PC round |
+| 10 | The scope-against-code audit (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2-3): for each of the 41 rows, scope or code yields | nothing changes until he picks; each row names my lean |
 
 ### Phase 5 pieces
 
