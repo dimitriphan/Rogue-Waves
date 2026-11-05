@@ -4,10 +4,12 @@
 // Directions its owner's vessel holds (docs/scope/11, 2026-11-05):
 //   Double Needle  stitch time -15 / 30 / 30%; rank III: every third stitch makes one more Crafted for no Thread (it may
 //                  stand one over the Tin's Units until one falls).
-//   Button Jar     each stitch makes two smaller Crafted for one's Thread (each costs half for selling), each with 55 /
-//                  65 / 75% of the health and damage (a Pmulti: it scales the Tin's Woolen Lining too); Units doubled.
+//   Button Jar     each stitch makes two smaller Crafted for one's Thread (each costs half for selling, its refund
+//                  rounded down on its own), each with 55 / 65 / 75% of the health and damage (a Pmulti: it scales the
+//                  Tin's Woolen Lining too); Units doubled. With one slot free it makes one, for half the Thread.
 //   Pattern Book   once a Tide, the first 1 / 2 / 3 of its Crafted to fall are stitched again for free (no Thread back
-//                  when sold); ranks I and II on the usual stitch time, rank III at once.
+//                  when sold), in the fallen one's place even past the Tin's Units; ranks I and II on the usual stitch
+//                  time, rank III at once.
 public class SpoolTinBrain : SpoolBuilding
 {
     public bool HasSpot;
@@ -54,17 +56,19 @@ public class SpoolTinBrain : SpoolBuilding
 
     protected override void Tick()
     {
-        // Pattern Book: a fallen one stitched again for free (rank III at once, else on the usual stitch time).
-        if (again.Count > 0 && Alive < Slots && (Player.Pattern >= 3 || Time.time >= nextStitch))
+        // Pattern Book: a fallen one stitched again for free in its place (rank III at once, else on the usual stitch
+        // time). One that can't be made waits a second, as a paid one does.
+        if (again.Count > 0 && (Player.Pattern >= 3 || Time.time >= nextStitch))
         {
-            string kind0 = again[0];
-            again.RemoveAt(0);
-            if (Make(kind0, 0) != null)
+            if (Make(again[0], 0) == null)
             {
-                Restitched++;
-                if (Player.Pattern < 3)
-                    nextStitch = Time.time + StitchTime;
+                nextStitch = Time.time + 1f;
+                return;
             }
+            again.RemoveAt(0);
+            Restitched++;
+            if (Player.Pattern < 3)
+                nextStitch = Time.time + StitchTime;
             return;
         }
         if (Time.time < nextStitch || Alive >= Slots)
@@ -80,11 +84,12 @@ public class SpoolTinBrain : SpoolBuilding
             return;
         }
         shortWarned = false;
-        // Button Jar: two for one's Thread, the cost split between them for selling.
-        int pair = Player.Buttons > 0 ? SpoolData.ButtonPair : 1, paid = 0, made = 0;
-        for (int i = 0; i < pair; i++)
+        // Button Jar: two for one's Thread, the cost split between them for selling; as many as there is room for, each
+        // paying its share (what isn't made is refunded below).
+        int pair = Player.Buttons > 0 ? SpoolData.ButtonPair : 1, room = Mathf.Min(pair, Slots - Alive), paid = 0, made = 0;
+        for (int i = 0; i < room; i++)
         {
-            int share = i < pair - 1 ? cost / pair : cost - paid;
+            int share = i < pair - 1 ? cost / pair : cost - cost / pair * (pair - 1);
             if (Make(kind, share) != null)
             {
                 paid += share;

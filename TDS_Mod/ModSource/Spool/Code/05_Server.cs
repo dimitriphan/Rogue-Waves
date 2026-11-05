@@ -540,9 +540,10 @@ public static class SpoolServer
     {
         Vector3 at = ModKitUtil.Pos(u.Master);
         int team = ModKitUtil.Team(u.Master);
+        // The cheap tests first: most units are the same kind, or not Crafted at all.
         foreach (SpoolUnitBrain o in Units)
-            if (o != null && o != u && o.Master != null && o.Def.Sellable && o.Def.Id != u.Def.Id && ModKitUtil.Alive(o.Master)
-                && ModKitUtil.Team(o.Master) == team && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach)
+            if (o != null && o.Def != null && o.Def.Sellable && o.Def.Id != u.Def.Id && o.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach
+                && ModKitUtil.Team(o.Master) == team && ModKitUtil.Alive(o.Master))
                 return true;
         return false;
     }

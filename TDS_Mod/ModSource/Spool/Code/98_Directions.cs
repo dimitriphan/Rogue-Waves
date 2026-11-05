@@ -69,32 +69,29 @@ public static partial class SpoolSelfTest
             ModKitDirections.Grant(hm, DirectionOf(SpoolData.Buttonjars[0].Name));
             yield return Wait(1.2f);
             Check("Button Jar: a Tin holds twice as many", player.Buttons == 1 && tin.Slots == slots * SpoolData.ButtonPair, "rank " + player.Buttons + ", " + slots + " -> " + tin.Slots);
+            // Read from the Tin's own count and spend: Tin A stitches from the same Stash, and carriers fill it.
+            Fill(player);
+            int stitched = tin.Stitched, spent = tin.Spent, cost = tin.Cost(tin.Kind);
             KillAll(tin);
-            yield return Wait(0.5f);
-            player.Stash = 40;
-            SpoolServer.Show(player);
-            int stitched = tin.Stitched, cost = tin.Cost(tin.Kind);
             yield return Until(() => tin.Stitched > stitched, 8f);
             yield return Wait(0.6f);
             List<SpoolUnitBrain> pair = UnitsOf(tin);
             int costs = 0;
             foreach (SpoolUnitBrain u in pair) costs += u.Cost;
-            SpoolData.Unit def = SpoolData.UnitFor(tin.Kind);
-            float baseHealth = def != null ? StatOf(def, "Health") : 0f, baseDamage = def != null ? StatOf(def, "Damage") : 0f;
             float woolen = 1f + tin.Param("Craftedhealth_Multi", 0f);
             SpoolUnitBrain one = pair.Count > 0 ? pair[0] : null;
-            Check("Button Jar: one stitch makes two for one's Thread", pair.Count == SpoolData.ButtonPair && costs == cost && player.Stash == 40 - cost,
-                pair.Count + " stitched, costs " + costs + " of " + cost + ", Stash 40 -> " + player.Stash);
+            float baseHealth = BaseStat(one != null ? one.Master : null, "Health"), baseDamage = BaseStat(one != null ? one.Master : null, "Damage");
+            Check("Button Jar: one stitch makes two for one's Thread", tin.Stitched == stitched + 1 && pair.Count == SpoolData.ButtonPair && costs == cost && tin.Spent - spent == cost,
+                "stitches +" + (tin.Stitched - stitched) + ", " + pair.Count + " stitched, costs " + costs + " of " + cost + ", the Tin spent " + (tin.Spent - spent));
             Check("... each with 55% of the health (Woolen Lining's share too) and damage", one != null && Mathf.Abs(ModKitUtil.MaxHealth(one.Master) - baseHealth * SpoolData.ButtonShare[0] * woolen) < 0.05f
                 && Mathf.Abs(ModKitUtil.Stat(one.Master, "Damage", 0f) - baseDamage * SpoolData.ButtonShare[0]) < 0.02f,
                 one == null ? "none" : "health " + F(ModKitUtil.MaxHealth(one.Master)) + " (base " + F(baseHealth) + " x" + F(woolen) + "), damage " + F(ModKitUtil.Stat(one.Master, "Damage", 0f)) + " (base " + F(baseDamage) + ")");
             ModKitDirections.Grant(hm, DirectionOf(SpoolData.Buttonjars[1].Name));
             ModKitDirections.Grant(hm, DirectionOf(SpoolData.Buttonjars[2].Name));
             yield return Wait(1.2f);
-            KillAll(tin);
-            yield return Wait(0.5f);
             Fill(player);
             stitched = tin.Stitched;
+            KillAll(tin);
             yield return Until(() => tin.Stitched > stitched, 8f);
             yield return Wait(0.6f);
             one = UnitsOf(tin).Find(u => u.Started);
@@ -158,22 +155,22 @@ public static partial class SpoolSelfTest
             else
             {
                 float d0 = ModKitUtil.Stat(hero1.Master, "Damage", 0f), h0 = ModKitUtil.MaxHealth(hero1.Master);
-                SpoolData.Unit def = hero1.Def;
                 int drowned = 0;
+                Entity_Master[] slot = new Entity_Master[1];
                 for (int i = 0; i < 6; i++)
                 {
-                    Entity_Master foe = SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(hero1.Master), 4f, 1f);
-                    if (foe == null) continue;
-                    yield return null;
-                    foe.Lasthit = hero1.Master;
-                    Kill(foe);
+                    // Loaded first: killed in its spawn frame a foe isn't "Enemy" yet (round 1).
+                    yield return Foe("Enemy_Dagger", ModKitUtil.Pos(hero1.Master), 4f, 1f, slot);
+                    if (slot[0] == null) continue;
+                    slot[0].Lasthit = hero1.Master;
+                    Kill(slot[0]);
                     drowned++;
                     yield return null;
                 }
                 float d1 = ModKitUtil.Stat(hero1.Master, "Damage", 0f), h1 = ModKitUtil.MaxHealth(hero1.Master);
                 float cap = SpoolData.MeritCap[0];
                 Check("Merit Badge: +3% damage and health a foe drowned, at most +15%", drowned == 6 && hero1.Drowns == 6 && Mathf.Abs(hero1.MeritBonus - cap) < 0.001f
-                    && Mathf.Abs(d1 - d0 - StatOf(def, "Damage") * cap) < 0.02f && Mathf.Abs(h1 - h0 - StatOf(def, "Health") * cap) < 0.05f,
+                    && Mathf.Abs(d1 - d0 - BaseStat(hero1.Master, "Damage") * cap) < 0.02f && Mathf.Abs(h1 - h0 - BaseStat(hero1.Master, "Health") * cap) < 0.05f,
                     "drowned " + drowned + ", counted " + hero1.Drowns + ", bonus " + F(hero1.MeritBonus) + ", damage " + F(d0) + " -> " + F(d1) + ", health " + F(h0) + " -> " + F(h1));
             }
             Drop(hm, SpoolData.Meritbadges);
@@ -198,9 +195,12 @@ public static partial class SpoolSelfTest
                 float d1 = ModKitUtil.Stat(sock.Master, "Damage", 0f);
                 // Multis add: the bonus is +8% of the base (a Merit Badge it kept adds beside it).
                 Check("Odd Socks: a Crafted beside another kind deals +8%", player.Socks == 1 && Mathf.Abs(sock.SocksBonus - SpoolData.SocksBonus[0]) < 0.001f && Mathf.Abs(other.SocksBonus - SpoolData.SocksBonus[0]) < 0.001f
-                    && Mathf.Abs(d1 - d0 - StatOf(sock.Def, "Damage") * SpoolData.SocksBonus[0]) < 0.02f,
+                    && Mathf.Abs(d1 - d0 - BaseStat(sock.Master, "Damage") * SpoolData.SocksBonus[0]) < 0.02f,
                     "apart " + F(ModKitUtil.Flat(ModKitUtil.Pos(sock.Master), ModKitUtil.Pos(other.Master))) + ", bonus " + F(sock.SocksBonus) + "/" + F(other.SocksBonus) + ", damage " + F(d0) + " -> " + F(d1));
-                Entity_Master foe = SpawnFoe("Enemy_Dagger", ModKitUtil.Pos(sock.Master), 6f, 4f);
+                // A foe far from the army, which would fell one nearby before the second hit (round 1).
+                Entity_Master[] far = new Entity_Master[1];
+                yield return FarFoe("Enemy_Dagger", far);
+                Entity_Master foe = far[0];
                 if (foe == null) ModKitTest.Setup("Odd Socks rank III's guard", "no foe to hit with");
                 else
                 {
@@ -211,15 +211,17 @@ public static partial class SpoolSelfTest
                     ModKitDirections.Grant(hm, DirectionOf(SpoolData.Oddsocks[1].Name));
                     ModKitDirections.Grant(hm, DirectionOf(SpoolData.Oddsocks[2].Name));
                     yield return Wait(1.2f);
+                    yield return FarFoe("Enemy_Dagger", far);
+                    foe = far[0];
                     SetHealthFull(sock.Master);
                     h = ModKitUtil.Health(sock.Master);
                     int socked = SpoolUnitBrain.Socked;
                     Hit(foe, sock.Master, 5f);
                     float guarded = h - ModKitUtil.Health(sock.Master);
                     Check("Odd Socks rank III: +25%, and 10% less damage taken", player.Socks == 3 && sock.Guarded && Mathf.Abs(sock.SocksBonus - SpoolData.SocksBonus[2]) < 0.001f
-                        && plain > 0f && Mathf.Abs(guarded - plain * (1f - SpoolData.SocksGuard)) < 0.02f && SpoolUnitBrain.Socked == socked + 1,
+                        && foe != null && plain > 0f && Mathf.Abs(guarded - plain * (1f - SpoolData.SocksGuard)) < 0.02f && SpoolUnitBrain.Socked == socked + 1,
                         "bonus " + F(sock.SocksBonus) + ", hit " + F(plain) + " -> " + F(guarded) + ", guarded hits +" + (SpoolUnitBrain.Socked - socked));
-                    Kill(foe);
+                    if (foe != null) Kill(foe);
                 }
                 Drop(hm, SpoolData.Oddsocks);
                 yield return Wait(1.2f);
@@ -227,15 +229,6 @@ public static partial class SpoolSelfTest
             }
         }
         ClearFoes();
-    }
-
-    // A unit's sheet number (SpoolData.Units' "Name=value" lines).
-    static float StatOf(SpoolData.Unit def, string name)
-    {
-        foreach (string s in def.Stats)
-            if (s.StartsWith(name + "="))
-                return float.Parse(s.Substring(name.Length + 1), System.Globalization.CultureInfo.InvariantCulture);
-        return 0f;
     }
 
     static void SetHealthFull(Entity_Master e)

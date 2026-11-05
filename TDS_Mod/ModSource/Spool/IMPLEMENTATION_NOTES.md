@@ -202,11 +202,13 @@ not yet run in game (self-test section 10c, `98_Directions.cs`):
   which may stand one over the Tin's Units until one falls.
 - **Button Jar** (`Buttonjar`, a Shift with no clash): a stitch makes two for one's Thread, the cost split between them
   (what selling refunds); each has a Pmulti of share - 1 on Health and Damage (0.55 / 0.65 / 0.75), so Woolen Lining's
-  Multi applies to the smaller base; the Tin's Units doubles. Their look is a whole one's until the art PR draws a
-  smaller one.
+  Multi applies to the smaller base; the Tin's Units doubles; with one slot free a stitch makes one, for half the
+  Thread. Selling refunds each its own half, rounded down (a 10-Thread pair gives back 2 + 2 where a whole one gives 5).
+  Their look is a whole one's until the art PR draws a smaller one.
 - **Pattern Book** (`Patternbook`): a Tin's Crafted killed (not sold) is queued to come back (`SpoolTinBrain.Fell`, from
   the unit's `Gone`) while fewer than 1 / 2 / 3 have been queued this Tide (`ModKitTides.Wave`); it comes back of its
-  own kind with Cost 0, before any paid stitch, on the usual stitch time (rank III: at once).
+  own kind with Cost 0, before any paid stitch and in its place even past the Tin's Units, on the usual stitch time
+  (rank III: at once); one that can't be made waits a second in the queue.
 - **Merit Badge** (`Meritbadge`): a foe killed whose `Lasthit` is a Crafted (`SpoolServer.OnDespawn`) counts for it while
   its owner holds a rank: +3% Damage (a kept Multi) and Health (a Multi made anew, so its health keeps its share) each,
   up to +15 / 30 / 45%; a `Spool_Merit` look each time.
