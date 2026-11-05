@@ -16,13 +16,14 @@
 public static class RWDifficulty
 {
     public const float CountPerMap = 0.06f, CountPerPlayer = 0.5f, IntervalPerMap = 0.03f, HealthPerMap = 0.08f, BonusPerTide = 0.1f;
-    public const float HealthLift = 2.5f;        // F3: foe health x2.5 on map 1 (a Pmulti of +1.5), HealthPerMap more each map after
-    public const float HoardShare = 0.01f;       // F5: foe health x(1 + this) for each Cardinal, Trinket copy and Direction rank held
+    public const float HealthLift = 2.6f;        // F3: foe health x2.6 on map 1 (a Pmulti of +1.6), HealthPerMap more each map after
+    public const float HoardShare = 0.015f;      // F5: foe health x(1 + this x held) for the Cardinals, Trinket copies and Direction ranks held
     public const int ModifiersFrom = 2;          // F4: the map the first of the campaign's modifiers comes on, then one more every second map
     public const int ModifierShare = 5;          // one foe in this many of each row carries a modifier
     public const int LastRow = 29;               // the base game's row the bonus Tides end on and replay (row 30 is the Basin waking)
-    // F1: the base game's row map k's Tide 15 plays (map 1 the base game's own Tide 15).
-    public static readonly int[] FinishRows = { 15, 16, 18, 19, 20, 22, 23, 24, 26, 27 };
+    // F1: the base game's row map k's Tide 15 plays (map 1 the base game's own Tide 15). Maps 6-10 end on row 24, Downpour's
+    // last mixed Tide; they grow harder by health, count, intervals and modifiers (the balance sweep's fit).
+    public static readonly int[] FinishRows = { 15, 18, 20, 21, 21, 24, 24, 24, 24, 24 };
     public static readonly string[] StockElites = { "Enemy_Armor_Upgradeobject", "Enemy_Health_Upgradeobject", "Enemy_Red_Upgradeobject", "Enemy_Explode_Upgradeobject", "Enemy_Aegis_Upgradeobject" };
     public static readonly string[] PackModifiers = { "RW_Modifier_Cursed_Upgradeobject", "RW_Modifier_Berserk_Upgradeobject", "RW_Modifier_Aging_Upgradeobject", "RW_Modifier_Dazzling_Upgradeobject" };
     public static float LastScale, LastHealth;       // self-test, log: LastHealth is the Pmulti each foe gets (x(1 + it))

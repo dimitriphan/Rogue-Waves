@@ -17,11 +17,11 @@
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
 		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
-		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for maps 1 and 2, one comes on from map 3 and one more every second map, on one foe in five of each row; a stock elite a map can't load is replaced by the next one outside the four, so no map plays easier than its number~
+		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for map 1, one comes on from map 2 and one more every second map (all four by map 8), on one foe in five of each row, taken in turn from Tide to Tide; a stock elite a map can't load is replaced by the next one outside the four, so no map plays easier than its number~ /~ From map 2 and in turn: your "all proposals" (F4), docs/reports/BALANCE_SWEEP_2026-11-05.md section 2 \
 
 	[Difficulty]
 		- Each map: harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health
-		- Numbers: foes +6% a map, +35% per player past the first; spawn intervals -3% a map; foe health +8% a map; bonus Tides 16-29 are the game's own Tides with the map's scaling, and from Tide 30 each bonus Tide +10% foes on the last
+		- Numbers: map k's Tide 15 plays the base game's Tide ~15, 18, 20, 21, 21, 24, 24, 24, 24, 24~ (maps 1 to 10), its Tides 1-14 the rows spread before it; foes +6% a map, +50% per player past the first; spawn intervals -3% a map; foe health x~2.6~ on map 1 and 0.08 more a map (x~3.32~ on map 10), then ~+1.5%~ for every Cardinal, Trinket copy and Direction rank the party holds when the map starts (the lobby's picks not counted), all multiplying, and on top of an elite's own; bonus Tides play the rows after Tide 15's with the map's scaling, and from row 29 on each bonus Tide +10% foes on the last /~ Your "Starting set S2, all proposals" (2026-11-05), tuned by the balance sweep to the review's target: about 0.8 of a base game run on map 1, 1.0 by map 3, 1.45 on map 10 (mid case). docs/reports/BALANCE_SWEEP_2026-11-05.md section 2 \
 
 	[Retries]
 		- Per campaign: 3
