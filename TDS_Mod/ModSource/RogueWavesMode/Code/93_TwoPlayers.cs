@@ -12,6 +12,7 @@ public static class RWTwo
     public static readonly bool NoPack = HasArg("-rwnopack");
     public static readonly bool Skip = HasArg("-rwskip");
     public static readonly bool Short = HasArg("-rwshort");   // a pair of vessels: to the first rejoin and no further
+    public static readonly bool Review = HasArg("-rwreview"); // after that rejoin, the code review's online checks (93_Review.cs)
     public static readonly string Phase = Arg("-rwphase", "");
     public static readonly string HostHero = Arg("-rwhosthero", "Hero_Smacky");
     public static readonly string SecondHero = Arg("-rwsecondhero", "Hero_Yossele");
@@ -531,7 +532,7 @@ public static partial class RWTest
         }
         yield return Sync("build");
         yield return Until(() => RWTwo.OtherSaid("built"), 120f);
-        int errs = errors;
+        int hardBefore = hardErrors;
         freeze = false;
         forcing = false;
         Game_Mapvars.Instance.Time_Wave.Value = 0.1f;
@@ -548,8 +549,8 @@ public static partial class RWTest
             }
             Info("the big fight", spawned + " more foes by the second player's vessel, " + RWVote.Foes() + " up");
         }
-        yield return new WaitForSeconds(37f);
-        Check("N4 a real Tide with both players' things: no error on the host", errors == errs, (errors - errs) + " errors");
+        yield return BigFightHost(friend);
+        Check("N4 a real Tide with both players' things: no error on the host", hardErrors == hardBefore, (hardErrors - hardBefore) + " errors, the game's own cancels left out");
         ClearFoes();
         forcing = true;
         int breaks = RWVote.Breaks;
@@ -561,6 +562,12 @@ public static partial class RWTest
 
         // O1-O4: a lost connection, the game left open.
         float hisRedBefore = Purse(friend, "Redaura");
+        if (RWTwo.Review)
+        {
+            Game_Mapvars.Instance.Time_Scale.Value = 1.25f;     // what Quickening Current writes at its Tide 5
+            yield return new WaitForSecondsRealtime(1.5f);
+            Info("MODE-B1 before the drop", Speeds());
+        }
         yield return Sync("drop");
         yield return new WaitForSecondsRealtime(3f);     // the word has to reach the friend first
         // A real disconnect, so the friend's game goes the way a lost connection does: the transport's event, not a call into the game.
@@ -569,11 +576,13 @@ public static partial class RWTest
         yield return new WaitForSeconds(2f);
         Check("O1 the host says who dropped, the Tide clock runs on", RWTwo.ChatHas("lost the connection") && RWRejoin.Seats.ContainsKey(friend) && RWRejoin.Seats[friend].Away, "seats " + RWRejoin.Seats.Count);
         Check("O1 the lobby opens for the empty seat", Blm_Multiplayer.Instance.Server_Serveropen && RWRejoin.DoorOpen, "open " + Blm_Multiplayer.Instance.Server_Serveropen);
+        if (RWTwo.Review) Reading("MODE-B1 the drop, on the host", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
         Entity_Master keptVessel = RWRun.Vessel(friend);
         Check("O1 their vessel waits for them", keptVessel != null, keptVessel != null ? keptVessel.Being.Value.ToString() : "none");
         int restored = RWRejoin.Restored;
         yield return Until(() => RWRejoin.Restored > restored, 180f);
         Check("O3 the host gives the seat back to the same session", RWRejoin.Restored > restored && Blm_Server.Instance.Sessionids.ContainsKey(friend), "restored " + RWRejoin.Restored + ", " + PlayerList());
+        if (RWTwo.Review) Reading("MODE-B1 the rejoin, on the host", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
         yield return new WaitForSeconds(3f);
         Check("O3 their aura is as they left it, the lobby shut again", Mathf.Abs(Purse(friend, "Redaura") - hisRedBefore) < 0.01f && !RWRejoin.DoorOpen && RWTwo.ChatHas("is back"), "red " + hisRedBefore + " -> " + Purse(friend, "Redaura") + ", door " + RWRejoin.DoorOpen);
         yield return Sync("back");
@@ -583,6 +592,7 @@ public static partial class RWTest
         yield return new WaitForSeconds(1f);
         Check("O4 a Tide pays the rejoined player", RWRun.For(friend).Pure > pureHis, pureHis + " -> " + RWRun.For(friend).Pure);
         yield return Sync("paid");
+        if (RWTwo.Review) { yield return ReviewHost(me, friend); yield break; }
         if (RWTwo.Short) yield break;
 
         // O3b: the second copy killed as Task Manager would, started again: its id comes back, so the same seat.
@@ -1066,7 +1076,8 @@ public static partial class RWTest
         yield return SecondBuilds();
         yield return Say("built");
         yield return Sync("fight");
-        int errs = errors;
+        int hardBefore = hardErrors;
+        List<string> perSecond = new List<string>();
         // How many foes wear a debuff look on this machine, sampled through the fight.
         int mostLooks = 0, foesSeen = 0;
         List<string> lookNames = new List<string>();
@@ -1090,6 +1101,7 @@ public static partial class RWTest
                     }
                 if (wears) looks++;
             }
+            perSecond.Add(looks.ToString());
             if (looks > mostLooks) mostLooks = looks;
             if (foes > foesSeen) foesSeen = foes;
             if (!shot1 && looks > 0 && foes > 20) { shot1 = true; yield return Snap("second_fight1"); }
@@ -1097,8 +1109,9 @@ public static partial class RWTest
         }
         yield return Snap("second_fight2");
         Info("the big fight here", "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
-        Check("N4 in a big fight, foes wear their debuff looks on the second player's machine", foesSeen < 20 || RWTwo.SecondHero != "Hero_Argo" || mostLooks > 0, "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
-        Check("N4 a real Tide with both players' things: no error on the second player's machine", errors == errs, (errors - errs) + " errors");
+        Info("the big fight here, foes wearing a look each second", string.Join(",", perSecond.ToArray()));
+        Check("N4 in a big fight, a look sent by the host reaches foes on the second player's machine", foesSeen < 20 || mostLooks > 0, "up to " + foesSeen + " foes, up to " + mostLooks + " wearing a look: " + string.Join(", ", lookNames.ToArray()));
+        Check("N4 a real Tide with both players' things: no error on the second player's machine", hardErrors == hardBefore, (hardErrors - hardBefore) + " errors, the game's own cancels left out");
         yield return Sync("fought");
 
         // O1-O4, the game left open.
@@ -1138,11 +1151,13 @@ public static partial class RWTest
         Check("O3 Pure Aura and Directions follow", RWMine.Pure() > 0f && v != null && HeldDirections(v).Count >= 2, "Pure " + RWMine.Pure() + ", " + (v != null ? string.Join(",", HeldDirections(v).ToArray()) : "-"));
         Check("O7 the weather's objects are there for the rejoiner", RWWeather.Loaded(RWChart.RisingWater) && Thing("Main_Flood") != null && RWRejoin.MapWeather() == RWChart.RisingWater, "weather " + RWWeather.Display(RWRejoin.MapWeather()));
         yield return Snap("second_rejoined");
+        if (RWTwo.Review) Reading("MODE-B1 the rejoiner", Mathf.Abs(Time.timeScale - 1.25f) > 0.01f, Speeds());
         yield return Sync("back");
         float pureBack = RWMine.Pure();
         yield return Until(() => RWTwo.OtherSaid("paid"), 120f);
         yield return Say("paid");
         Check("O4 the rejoined player's counter rises with the Tide", RWMine.Pure() > pureBack, pureBack + " -> " + RWMine.Pure());
+        if (RWTwo.Review) { yield return ReviewSecond(); yield break; }
         // The host kills this copy here (O3b); the next launch carries on from AfterRestart.
         yield return new WaitForSecondsRealtime(600f);
     }
@@ -1301,6 +1316,7 @@ public static partial class RWTest
     // O5: this copy wasn't in the map. Turned away, twice.
     static IEnumerator Stranger()
     {
+        if (RWTwo.Review) { yield return ReviewStranger(); yield break; }
         for (int i = 1; i <= 2; i++)
         {
             yield return RWTwo.Join();

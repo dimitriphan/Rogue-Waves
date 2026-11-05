@@ -198,7 +198,12 @@ public static class ArgoClient
                     bool water = master != null && ArgoData.BuildFor(master.Being.Value.ToString()) != null && ArgoData.BuildFor(master.Being.Value.ToString()).Trap;
                     ArgoAssets.Play(water ? "Argo_Splash" : "Argo_Build", at);
                     break;
-                case "Argo_Upgrade": ArgoAssets.Play("Argo_Upgrade", at); break;
+                case "Argo_Upgrade":
+#if ARGO_REVIEW
+                    ArgoSelfTest.UpgradeSounds++;
+#endif
+                    ArgoAssets.Play("Argo_Upgrade", at);
+                    break;
                 case "Argo_Towerdown":
                     ModKitAssets.Effect("World_Argo_Wreck", Ground(at), 2.5f);
                     ArgoAssets.Play("Argo_Death", at, 0.6f);
