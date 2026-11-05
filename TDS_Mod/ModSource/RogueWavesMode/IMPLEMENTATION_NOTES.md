@@ -1,5 +1,43 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the Directions any vessel can take
+
+Compiled, not yet run in game (scope `11` (Any), B11; `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §4.1 and
+`ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md` §3.1 say what each rides on). The sheets are in `16_Directions.cs` `Mine`;
+what they do is `22_AnyDirections.cs` (`RWAny`), host only, reading the ranks a player holds four times a second:
+- **On the player's things, twice a second** (`RWHold`, one kept modifier per thing and key, kit `docs/17` §11.1 rules
+  4-7): Wound Spring (towers' Attackspeed), Magpie Nest (vessel's and towers' Damage, per Trinket stack and Cardinal,
+  the lobby's picks counted), Salt Barrel (the vessel's Health Pmulti, and its mend while hurt), Spare Hands (Units on
+  every unit building, then the base vessels' own count message, verified in RogueLab round 7; Boutman's barrels'
+  `Vacantcurrent` too; Respawn on them and the Bouthouse). Spare Hands is not offered to Sno Sno, and not to Yossele
+  either: his only units, the Cordyfriends, rise from foes, not from a building with a count.
+- **On the vessel's hits** (its `Interact`, re-said ten times a second): Galley Kettle, Notched Oar (Damagemulti x2 before
+  the foe takes it), Chain Shot (the jumps a frame later, to the nearest foe within 2 tiles of the last one struck), Fish
+  Hook (six ticks over 3 s). Every hit these deal carries `RW_Extra`, so none of them counts it as the vessel's. Kettle,
+  Oar and Chain count attacks: the hits an attack lands in one frame count once (Oar doubles each of them, Chain jumps
+  from the first), so a vessel that strikes five foes at once doesn't fill Galley Kettle five times faster. Fish Hook
+  rolls for each foe struck.
+- **On a hit the vessel takes**: Clam Shell, saves counted per map. Its hook sits after every other mod's front hook
+  (Uloe's SURGE cut, Made of Tougher Stuff) and before the game's first handler, which takes the health
+  (`Helper_Damagetools.Dodamage`), so it judges the blow as cut; it reads armour, overshield and ore health as `Dodamage`
+  does. An upgrade AI on the vessel that changes the hit still acts after it.
+- **On a foe the vessel drowns** (`Game_Entity.Ondespawn`, its `Lasthit`, set within 0.25 s: a hit with its own Damage
+  never moves `Lasthit`, so an older vessel hit doesn't count): Lamp Oil's burst, credited to the vessel, so a foe the
+  burst drowns bursts too. Fire Ship's burst, on each Chain Shot jump, hits the foes around the struck one,
+  not the struck one itself, as Lamp Oil's does.
+- **Around the vessel**: Fog Horn, the strongest holder's slow on each foe, four times a second, taken off as it leaves.
+- **At a break**: Fine Sieve (with the map's gain multiplier, as Compound Interest); Tide Pool in `TideEffects`, an Add
+  to a tower's max health taken off at the next break.
+- **The offers**: Spare Compass in `RWDirections.Roll` (4 / 4 / 5); its redraw is a "Draw again" card (`RWVote.RedrawMark`,
+  order `RedrawPick` -2), once a map, with a full pick's time again (the old cards come back if nothing else is left). A Duo (`Needs = "Duo:A+B"`, one rank) is offered only
+  to a player holding both; Wound Spring and Spring Tide share the Clash name "Spring".
+- No look of their own yet (pitfall #114); their card pictures wait for the art (A2), so the catalogue's "a picture of its
+  own" check fails for them until then.
+- Self-test: the gaps build's "rules" part checks the Duos, the pair, Spare Hands' vessels and Spare Compass's counts;
+  its new "any" part (`92_GapsAny.cs`) measures each one on a real archer, Mining Hut, foe or vessel. The flow test no
+  longer grants these (Tide Pool would grow the tower its Spring Tide check measures); its line meant to drop the Any
+  Directions after the reach check never matched an id and is gone, so the flow runs as in round 3.
+
 ## 0.1.0-dev, later (2026-11-05): the decisions' build items
 
 Compiled, not yet run in game (`docs/reports/DECISIONS_APPLIED_2026-11-05.md` §3; PLAN Part C has the PC list):

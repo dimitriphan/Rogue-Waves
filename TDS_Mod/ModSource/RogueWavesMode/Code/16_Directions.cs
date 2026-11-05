@@ -14,6 +14,7 @@ public class RWDirectionDef
     public string Stat = "";                    // a stat on the vessel itself, held while the Direction is
     public bool Plain;                          // an Add to it, not a Multi
     public float[] Amounts = null;              // per rank
+    public int Ranks = 3;                       // a Duo has one (docs/scope/06 [Directions] ~Duos~)
 }
 
 public static class RWDirections
@@ -38,7 +39,7 @@ public static class RWDirections
         // pitfall #140). Rank III's shrug is this part's own hit hook, SpringShrug.
         new RWDirectionDef { Name = "Mend", Display = "Tidal Mend", Reach = "Tower",
             Desc = new[] { "Your towers mend what stands around them each Tide", "Your towers mend more, a little farther", "Your towers mend much more, farther still" } },
-        new RWDirectionDef { Name = "Spring", Display = "Spring Tide", Reach = "Tower",
+        new RWDirectionDef { Name = "Spring", Display = "Spring Tide", Reach = "Tower", Clash = "Spring",
             Desc = new[] { "Your towers gain health every Tide", "Your towers gain more health every Tide", "Your towers gain more health every Tide and shrug off a little damage" } },
         new RWDirectionDef { Name = "Cost", Display = "Cut Costs",
             Desc = new[] { "Your buildings cost less", "Your buildings cost less still", "Your buildings cost much less" } },
@@ -46,6 +47,39 @@ public static class RWDirections
             Desc = new[] { "Your upgrades cost less", "Your upgrades cost less still", "Your upgrades cost much less" } },
         new RWDirectionDef { Name = "Interest", Display = "Compound Interest",
             Desc = new[] { "Each Tide, a little of your unspent base aura is paid on top", "A bigger share of your unspent base aura is paid each Tide", "A bigger share still of your unspent base aura is paid each Tide" } },
+        // Claude's StarCraft II and roguelike ones (docs/scope/11, built 2026-11-05): the mode's own code reads each one held,
+        // RWAny (22_AnyDirections.cs), on the holder's vessel, towers and units, and on the offers. Wound Spring and Spring Tide
+        // are a pair (one Clash name); a Duo is offered only to a player who holds both it names, and has one rank.
+        new RWDirectionDef { Name = "Wound", Display = "Wound Spring", Clash = "Spring",
+            Desc = new[] { "Your towers attack faster", "Your towers attack faster still", "Your towers attack much faster" } },
+        new RWDirectionDef { Name = "Sieve", Display = "Fine Sieve",
+            Desc = new[] { "Each Tide pays you a little of the colour you hold least", "Each Tide pays you more of it", "Each Tide pays you much more of it" } },
+        new RWDirectionDef { Name = "Hands", Display = "Spare Hands", Needs = "Units",
+            Desc = new[] { "Each of your unit buildings keeps one more unit", "Your units come back sooner", "Each of your unit buildings keeps two more units, and they come back sooner still" } },
+        new RWDirectionDef { Name = "Kettle", Display = "Galley Kettle",
+            Desc = new[] { "Your vessel attacks faster the longer it keeps hitting", "It builds up to a faster pace", "It builds up to a much faster pace, and hits harder at full steam" } },
+        new RWDirectionDef { Name = "Chain", Display = "Chain Shot",
+            Desc = new[] { "Every few hits, your vessel's attack jumps to another foe", "It jumps to two more foes", "It jumps to three more foes, more often" } },
+        new RWDirectionDef { Name = "Salt", Display = "Salt Barrel",
+            Desc = new[] { "Your vessel has more health", "It has more health, and mends while hurt", "It has much more health, and mends faster" } },
+        new RWDirectionDef { Name = "Fog", Display = "Fog Horn",
+            Desc = new[] { "Foes near your vessel move slower", "Foes near it move slower still", "Foes near it move much slower, over a wider area" } },
+        new RWDirectionDef { Name = "Clam", Display = "Clam Shell",
+            Desc = new[] { "Once a map, your vessel lives through a killing blow at 1 health", "After it saves you, nothing can hurt your vessel for a moment", "Twice a map" } },
+        new RWDirectionDef { Name = "Oar", Display = "Notched Oar",
+            Desc = new[] { "Every 10th hit of your vessel deals double damage", "Every 7th hit", "Every 5th hit" } },
+        new RWDirectionDef { Name = "Lamp", Display = "Lamp Oil",
+            Desc = new[] { "Foes your vessel drowns burst into flame, hurting foes around them", "The bursts are bigger", "The bursts are much bigger and reach farther" } },
+        new RWDirectionDef { Name = "Hook", Display = "Fish Hook",
+            Desc = new[] { "Some of your vessel's hits snag, and the foe bleeds", "More hits snag", "Most hits snag, and the bleeding stacks higher" } },
+        new RWDirectionDef { Name = "Compass", Display = "Spare Compass",
+            Desc = new[] { "One more Direction is offered to you before each map", "Once a map, you can throw back the offer and draw new ones", "Two more Directions are offered" } },
+        new RWDirectionDef { Name = "Magpie", Display = "Magpie Nest",
+            Desc = new[] { "Your vessel and towers hit harder for every Cardinal and Trinket you hold", "Harder still for each", "Much harder for each" } },
+        new RWDirectionDef { Name = "Fireship", Display = "Fire Ship", Needs = "Duo:Lamp+Chain", Ranks = 1,
+            Desc = new[] { "Every Chain Shot jump bursts where it lands, as Lamp Oil does", "", "" } },
+        new RWDirectionDef { Name = "Pool", Display = "Tide Pool", Needs = "Duo:Mend+Spring", Ranks = 1,
+            Desc = new[] { "Mending past full health stays on as extra health until the Tide ends", "", "" } },
         // Each base vessel's is one held number the vessel's own code reads live (kit docs/17 §8; their stock upgrades are
         // read by name, so a pack upgrade can't reach their builds' numbers).
         new RWDirectionDef { Vessel = "Buster", Name = "Gallop", Display = "Full Gallop", Stat = "Speed", Amounts = new[] { 0.1f, 0.2f, 0.3f },
@@ -76,7 +110,7 @@ public static class RWDirections
         foreach (RWDirectionDef d in Mine)
         {
             string vessel = d.Vessel;
-            for (int r = 1; r <= 3; r++)
+            for (int r = 1; r <= d.Ranks; r++)
             {
                 string name = d.Name + (r > 1 ? r.ToString() : "");
                 Upgradeproperties u = RWContent.Upgrade(ModKitDirections.Id(vessel, name), d.Display + (r == 2 ? " II" : r == 3 ? " III" : ""), d.Desc[r - 1], null);
@@ -109,9 +143,36 @@ public static class RWDirections
         return hero == "Hero_Boutman" || hero == "Hero_Snosno" || hero == "Hero_Spool" || hero == "Hero_Yossele" || hero == "Hero_Argo" || hero == "Hero_Uloe" || hero == "Hero_Smacky" || hero == "Hero_Fie" || hero == "Hero_Buster";
     }
 
+    // What a Direction needs of the vessel or of what the player holds: minions, a building that makes units (Sno Sno has
+    // no unit count to raise, kit docs/17 §8, and Yossele none either: his Cordyfriends rise from foes), or both Directions
+    // a Duo names.
+    static bool Meets(RWDirectionDef d, string hero, Dictionary<string, int> held)
+    {
+        if (d == null || d.Needs == "") return true;
+        if (d.Needs == "Minions") return HasMinions(hero);
+        if (d.Needs == "Units") return hero != "Hero_Snosno" && hero != "Hero_Yossele";
+        if (d.Needs.StartsWith("Duo:"))
+        {
+            foreach (string n in d.Needs.Substring(4).Split('+'))
+                if (!held.ContainsKey("Any/" + n)) return false;
+            return true;
+        }
+        return true;
+    }
+
+    // How many ranks a Direction has: 3, or 1 for a Duo (a vessel part's are all 3).
+    public static int Ranks(string id)
+    {
+        RWDirectionDef d;
+        return defs.TryGetValue(id, out d) ? d.Ranks : 3;
+    }
+
+    public static List<int> Roll(RWPlayer p, string hero, int seed) { return Roll(p, hero, seed, null); }
+
     // The offers for one player: next ranks of what they hold, and new ones for their vessel, seeded so a retry of the
-    // same pick offers the same cards. Clashes (only one per Clash name) and what the vessel lacks are left out.
-    public static List<int> Roll(RWPlayer p, string hero, int seed)
+    // same pick offers the same cards. Clashes (only one per Clash name) and what the vessel lacks are left out. Spare
+    // Compass offers more; its redraw passes the cards it throws back as skip, drawn again only if nothing else is left.
+    public static List<int> Roll(RWPlayer p, string hero, int seed, List<int> skip)
     {
         if (List.Count == 0) Refresh();
         string vessel = VesselName(hero);
@@ -151,18 +212,23 @@ public static class RWDirections
             string clash = Clash(List[i].Objectname, out d);
             if (have == 0 && clash != "" && heldClashes.Contains(clash))
                 continue;
-            if (d != null && d.Needs == "Minions" && !HasMinions(hero))
+            if (!Meets(d, hero, held))
                 continue;
             pool.Add(i);
         }
         System.Random rng = new System.Random(seed);
-        List<int> offers = new List<int>();
-        while (offers.Count < Offers && pool.Count > 0)
-        {
-            int k = rng.Next(pool.Count);
-            offers.Add(pool[k]);
-            pool.RemoveAt(k);
-        }
+        List<int> offers = new List<int>(), thrown = new List<int>();
+        if (skip != null)
+            foreach (int i in skip)
+                if (pool.Remove(i)) thrown.Add(i);
+        int want = Offers + RWAny.MoreOffers(p);
+        foreach (List<int> from in new[] { pool, thrown })
+            while (offers.Count < want && from.Count > 0)
+            {
+                int k = rng.Next(from.Count);
+                offers.Add(from[k]);
+                from.RemoveAt(k);
+            }
         return offers;
     }
 
@@ -465,6 +531,8 @@ public static class RWDirections
     {
         if (Game_Entity.Instance == null || wave <= 0)
             return;
+        // Tide Pool's extra health lasted the Tide that just ended.
+        RWHold.Drop(PoolKey);
         List<Entity_Master> all = null;
         foreach (long s in RWRun.Sessions())
         {
@@ -472,6 +540,7 @@ public static class RWDirections
             int springRank = Mathf.Clamp(Top(p, "Any", "Spring"), 0, 3), mendRank = Mathf.Clamp(Top(p, "Any", "Mend"), 0, 3);
             if (springRank <= 0 && mendRank <= 0)
                 continue;
+            long pool = Top(p, "Any", "Pool") > 0 ? s : long.MinValue;
             if (all == null)
                 all = new List<Entity_Master>(Game_Entity.Instance.Entityclient);
             foreach (Entity_Master t in all)
@@ -481,7 +550,7 @@ public static class RWDirections
                 if (springRank > 0)
                     Grow(t, SpringHealth[springRank]);
                 if (mendRank > 0)
-                    MendAround(t, all, MendHeal[mendRank] * Mathf.Max(1, t.Entitydata.Value.Level), MendRange[mendRank]);
+                    MendAround(t, all, MendHeal[mendRank] * Mathf.Max(1, t.Entitydata.Value.Level), MendRange[mendRank], pool);
             }
         }
         foreach (Entity_Master t in new List<Entity_Master>(spring.Keys))
@@ -505,7 +574,8 @@ public static class RWDirections
         Grown += amount;
     }
 
-    static void MendAround(Entity_Master tower, List<Entity_Master> all, float heal, float range)
+    // pool: the session whose towers keep what is mended past full (Tide Pool), or long.MinValue.
+    static void MendAround(Entity_Master tower, List<Entity_Master> all, float heal, float range, long pool)
     {
         int team = ModKitUtil.Team(tower);
         Vector3 at = tower.Entityposition.Value;
@@ -513,14 +583,38 @@ public static class RWDirections
         {
             Link_Stats hp;
             if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || ModKitUtil.Team(e) != team || e.Statsserver == null || !e.Statsserver.TryGetValue("Health", out hp)
-                || hp.Value >= hp.Value_Calc || ModKitUtil.Flat(e.Entityposition.Value, at) > range)
+                || ModKitUtil.Flat(e.Entityposition.Value, at) > range)
+                continue;
+            bool pools = pool != long.MinValue && OwnTower(e, pool);
+            float missing = hp.Value_Calc - hp.Value;
+            if (missing <= 0f && !pools)
                 continue;
             List<string> tags = e.Beingserver.Entity.Tags;
             if (!tags.Contains("Tower") && !tags.Contains("Mob"))
                 continue;
-            Helper_Entitytools.Interactheal(tower, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
-            Mended += heal;
+            if (missing > 0f)
+            {
+                Helper_Entitytools.Interactheal(tower, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
+                Mended += heal;
+            }
+            float past = heal - Mathf.Max(0f, missing);
+            if (pools && past > 0f)
+                Pool(e, past);
         }
+    }
+
+    // Tide Pool: what was mended past full stays on as an Add to max health, at most a fifth of the tower's own, until the
+    // Tide ends (TideEffects takes it off at the next break). Health is Variable, so the tower at full stays at full.
+    public const float PoolCap = 0.2f;
+    const string PoolKey = "Pool";
+    public static float Pooled;     // self-test
+
+    static void Pool(Entity_Master t, float amount)
+    {
+        float had = RWHold.Get(t, PoolKey);
+        float want = Mathf.Min(had + amount, PoolCap * (ModKitUtil.MaxHealth(t) - had));
+        if (want > had + 0.001f && RWHold.Set(t, PoolKey, "Health", Helper_Entitytools.Modtypes.Add, want))
+            Pooled += want - had;
     }
 
     // Compound Interest, paid with the Tide's own aura (Fie's silo pattern, kit docs/16 §5).
