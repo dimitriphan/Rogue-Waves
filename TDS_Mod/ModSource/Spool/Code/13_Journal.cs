@@ -4,7 +4,6 @@
 // ModKitVesselTabs keeps every vessel page's tab row complete.
 public static class SpoolJournal
 {
-    static readonly Color Sage = new Color(0.576f, 0.8f, 0.631f, 1f);   // 93CCA1, as in 04_Content.cs
 
     public static Logobject Page;
     public static int Pages;
@@ -25,7 +24,7 @@ public static class SpoolJournal
             HeroId = SpoolData.Hero, Template = template, Hero = hero,
             Rule = hero.Upgradesinit.Count > 0 ? hero.Upgradesinit[0] : null,
             Title = SpoolData.Displayname, Lore = SpoolData.Lore, Origin = "Rogue Waves",
-            Portrait = Portrait(), Tab = ModKitAssets.Single("Spooltabicon", 32), Accent = Sage,
+            Portrait = Portrait(), Tab = ModKitAssets.Single("Spooltabicon", 32), Accent = SpoolContent.Sage,
         };
         foreach (SpoolData.Build b in SpoolData.Builds)
         {

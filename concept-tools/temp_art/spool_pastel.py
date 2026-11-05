@@ -10,7 +10,8 @@ the plush (a, b) and the dark inside the mouth (m, n). Every pixel stays where i
 eyes keep his colours. The new ramp follows kit docs/18 section 3: the shade keeps the hue (within 2 degrees) and
 gains saturation and loses value; the mouth's dark is a warm near-black, not black.
 
-Nothing here is wired: the game still draws Spool from `SpoolCharacter.P` (see the folder's README for the follow-up).
+This made the proposal; since 2026-11-05 the sage is in `SpoolCharacter.P` itself and on all of Spool (spool_sage.py),
+so the script puts the purple back for the "before" side.
 
     python3 concept-tools/temp_art/spool_pastel.py
         -> TDS_Mod/ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/
@@ -185,8 +186,8 @@ def compare(before, after, pal_old, pal_new):
 
 def main():
     front, pal_old = read_source()
-    for k, (_, old, _) in NEW.items():
-        assert pal_old[k] == old, 'SpoolCharacter.P[%s] is %s, expected %s' % (k, pal_old[k], old)
+    # Since 2026-11-05 SpoolCharacter.P holds the sage itself (spool_sage.py); "before" is the purple it replaced.
+    pal_old.update({k: old for k, (_, old, _) in NEW.items()})
     pal_new = dict(pal_old)
     pal_new.update({k: new for k, (_, _, new) in NEW.items()})
     before, after = render(front, pal_old), render(front, pal_new)

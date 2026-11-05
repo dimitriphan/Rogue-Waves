@@ -1,12 +1,12 @@
 # Spool in pastel green: the main sprite, as an example (2026-11-05)
 
-**A proposal, not wired.** Dimitri, 2026-11-05: "Spool's current color scheme is too similar to enemy units. Swap
+**The proposal that led to the recolour.** Dimitri, 2026-11-05: "Spool's current color scheme is too similar to enemy units. Swap
 Spool's color scheme to pastel yellow, but only recolor the main sprite for now so I can see an example." After seeing the yellow
 he asked, 03:00Z: "Change the color to pastel green instead." Of the first green, a bright mint (`A4EBC7`, h149),
 03:05Z: "The color is too minty and bright. Darken the green while keeping the pastel theme." This is the darker one, and
 his pick (03:09Z: "This version works.").
-The game still draws Spool in purple from `SpoolCharacter.P` (`Assets/SpoolMod/Editor/SpoolCharacter.cs`); nothing
-here is read by a build.
+He then had it applied to all of Spool (below), so the game now draws Spool in sage from `SpoolCharacter.P`
+(`Assets/SpoolMod/Editor/SpoolCharacter.cs`); the files in this folder are the example and are not read by a build.
 
 ![before and after](preview_8x/Spool_Pastel_compare.png)
 
@@ -17,8 +17,8 @@ here is read by a build.
 | `preview_8x/Spool_Pastel_8x.png` | 8x on the house checker |
 | `preview_8x/Spool_Pastel_compare.png` | now and proposed side by side at 8x, at game size and 3x on grass beside the foe palette, the palette map and the distances below |
 
-Generator: `concept-tools/temp_art/spool_pastel.py`. It reads `Front` and `P` from `SpoolCharacter.cs`, so the "now"
-picture is exactly what the game builds (it equals the project files' `concepts/vessels_2026-10-09/v3_flat/game_size/spool_reshade.png`
+Generator: `concept-tools/temp_art/spool_pastel.py`. It reads `Front` from `SpoolCharacter.cs` and puts the purple back in `P`, so the "now"
+picture is exactly what the game built (it equals the project files' `concepts/vessels_2026-10-09/v3_flat/game_size/spool_reshade.png`
 pixel for pixel, checked 2026-11-05).
 
 ## Palette map
@@ -56,7 +56,7 @@ Unchanged: teeth and cuffs `E4DEDA` / `9A938E`, gloves `F6F3F8` / `D8D1E2`, cott
   paler and greyer; the leaf green is a small accent on those vessels, not a body colour. Green on the map's grass is the
   other thing to look at in game: darkening it brings it closer to the grass, and on the house checker it still stands
   off by its paler plush, darker shade and the white gloves and teeth.
-  The kit's rule (`docs/18` §4.2, no saturated hue in 270-320 degrees) now holds for Spool; its §7 exception is gone.
+  The kit's rule (`docs/18` §5.1 and §6, no saturated hue in 270-320 degrees) now holds for Spool; its §7 exception is gone.
 
 ## Applied to all of Spool (2026-11-05, at his word)
 

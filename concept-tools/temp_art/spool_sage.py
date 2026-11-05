@@ -11,11 +11,14 @@ plush, with a darker end so the ground tuft still reads. Whites, the gloves' pal
 eyes stay; the felt's darker lavender-grey shade turns sage-grey.
 The code takes the same values by hand (SpoolCharacter.P, the models' palette, the effects, the UI colour, the thread
 colour, the icon palette); this script recolours the files: Spool's `Art/Temporary/` sheets (game_size, aseprite,
-preview_8x PNGs and GIFs). The version archives (`variants/`, `minions_2026-11-04/`) and the proposal folder keep their
+preview_8x PNGs and GIFs; the GIFs, opaque and under 20 colours, are re-quantised exactly). The version archives (`variants/`, `minions_2026-11-04/`) and the proposal folder keep their
 colours as a record.
 
     python3 concept-tools/temp_art/spool_sage.py          -> recolours the files in place, prints what changed
     python3 concept-tools/temp_art/spool_sage.py --check  -> exits 1 if any old colour is left in those files
+
+Re-running a Spool generator (spool_units.py, spool_threadhead.py, ui_icons.py: their palettes are sage already) is
+safe; apply_picks.py copies purple versions in, so it runs this script after a Spool pick.
 """
 import colorsys
 import glob
@@ -148,6 +151,7 @@ def recolour_ase(path, check):
                     fl = struct.unpack('<H', c[q:q + 2])[0]
                     key = tuple(c[q + 2:q + 5])
                     if key in MAP_RGB:
+                        n += 1
                         c[q + 2:q + 5] = bytes(MAP_RGB[key])
                     q += 6
                     if fl & 1:
@@ -172,7 +176,7 @@ def files():
 
 
 def main():
-    check = '--check' in sys.argv
+    check = '--check' in sys.argv[1:]
     left = 0
     for f in files():
         n = recolour_ase(f, check) if f.endswith('.aseprite') else recolour_image(f, check)

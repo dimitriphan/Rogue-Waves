@@ -21,14 +21,14 @@ from tart import gif, Canvas, H, write_sheet, REPO
 
 CELL = 16
 PAL = {
-    'a': H('9363AE'), 'b': H('784B94'), 'c': H('613A7B'),        # plush, shade, deep
-    'm': H('41174F'), 'n': H('4A1D5A'), 'e': H('E6D85A'),        # mouth, its edge, eyes
+    'a': H('93CCA1'), 'b': H('60A871'), 'c': H('3F7A4F'),        # plush, shade, deep
+    'm': H('1F3325'), 'n': H('26422F'), 'e': H('E6D85A'),        # mouth, its edge, eyes
     'q': H('E58CC0'), 'p': H('C96CA6'),                          # tongue, tongue shade
     't': H('E4DEDA'), 'g': H('9A938E'),                          # teeth
-    'v': H('F6F3F8'), 'u': H('D8D1E2'), 'U': H('B5ABC6'),        # felt, gloves and cotton
-    'l': H('D5BEEC'), 'L': H('B292D6'), 'K': H('9A7CC4'),        # lilac (Dart)
+    'v': H('F6F3F8'), 'u': H('D8D1E2'), 'U': H('ABBFB1'),        # felt, gloves and cotton
+    'l': H('CBE6D1'), 'L': H('A2CFAD'), 'K': H('84BD92'),        # lilac (Dart)
     's': H('DCE3EA'), 'S': H('8C96A3'), 'w': H('FFFFFF'),        # needle, steel, flash
-    'x': H('B58BC9'),                                            # loose thread
+    'x': H('9AC9A5'),                                            # loose thread
 }
 
 # Body above the hips (row 13), facing right; gloves and legs are drawn per frame. '.' is empty.

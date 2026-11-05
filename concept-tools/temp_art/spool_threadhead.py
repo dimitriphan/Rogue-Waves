@@ -13,12 +13,12 @@ import os
 from tart import gif, Canvas, Mask, H, shade, write_sheet, REPO
 
 CELL = 24
-BALL = (H('D5BEEC'), H('B292D6'), H('9A7CC4'))
-WRAP = H('B292D6')
-MOUTH, TEETH, TEETH2 = H('41174F'), H('E4DEDA'), H('9A938E')
+BALL = (H('CBE6D1'), H('A2CFAD'), H('84BD92'))
+WRAP = H('A2CFAD')
+MOUTH, TEETH, TEETH2 = H('1F3325'), H('E4DEDA'), H('9A938E')
 EYE, TONGUE, TONGUE2 = H('E6D85A'), H('E58CC0'), H('C96CA6')
 GLOVE = (H('F6F3F8'), H('D8D1E2'))
-LEG = (H('9363AE'), H('784B94'))
+LEG = (H('93CCA1'), H('60A871'))
 SPARK = (H('FFFFFF'), H('E6D85A'))
 
 # Dimitri's Spool sprite (his 2026-10-23 reshade), rows 16-23, columns 11-22: the mouth, copied as he drew it.
@@ -32,7 +32,7 @@ MOUTH_STAMP = [
     "________qp_.",
     "_________p..",
 ]
-STAMP_PAL = {'t': TEETH, 'g': TEETH2, 'm': MOUTH, 'n': H('4A1D5A'), 'e': EYE, 'q': TONGUE, 'p': TONGUE2}
+STAMP_PAL = {'t': TEETH, 'g': TEETH2, 'm': MOUTH, 'n': H('26422F'), 'e': EYE, 'q': TONGUE, 'p': TONGUE2}
 
 
 def ring(cx, cy, rx, ry):

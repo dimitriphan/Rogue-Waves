@@ -369,7 +369,7 @@ public static class SpoolContent
     }
 
     // Spool's UI colour: the sage plush 93CCA1 (Dimitri 2026-11-05; was the purple 9363AE, too close to the foes).
-    static readonly Color Sage = new Color(0.576f, 0.8f, 0.631f, 1f);
+    internal static readonly Color Sage = new Color(0.576f, 0.8f, 0.631f, 1f);
 
     static Commandobject Command(Commandobject template, string id, string name, string desc, string icon, Entity_Command_Base funct, bool ability)
     {
