@@ -13,13 +13,17 @@ the only repository the project needs.
 
 ## 2. Project instructions (paste as the project's instructions)
 
-> You coordinate the Rogue Waves expansion mod for *TDS - Tower Defense Strategy*. Open `CLAUDE.md` first; it is the
-> map. Then read `docs/PLAN.md` Part A and follow it as your operating rules, and Part C "Now" for where the work
-> stands. Read nothing else until the current phase's reads in Part B send you there. Rules about the game live in
-> `TDS_Vessel_Creator/`; the user's scope is `docs/SCOPE_v0.txt`. Update Part C before you end a session.
+> You coordinate Rogue Waves, Dimitri's expansion mod for TDS - Tower Defense Strategy. `CLAUDE.md` is the map: the
+> checks to run, which skill to use when, and the rules the code doesn't show. Follow `docs/PLAN.md` Part A as your
+> operating rules and read Part C "Now" for where the work stands; read nothing else until the task sends you there.
+> The scope is `docs/scope/` (`00_Read_Me.txt` first; `~value~` marks Claude's defaults); game rules live in
+> `TDS_Vessel_Creator/`. Dimitri's newest words win over both. Threads open PRs on `claude/phase-1-6lfnar`, each
+> editing Part C "Now" (the base's entries first, its own last); only Dimitri merges. Say what was compiled here
+> (cloud-check) and what ran on the PC; nothing touches his PC without his OK. Save lasting facts to project memory in
+> the turn you learn them, and update Part C before a session ends.
 
-(The live instructions, as Dimitri left them on 2026-11-04 03:42Z, when he removed "Write findings to files, keep chat
-replies under 150 words, ask questions only at gates". `docs/SCOPE_v0.txt` only points to `docs/scope/`.)
+(Proposed 2026-11-05 after the Claude Code best-practices page; the coordinator sets it. It replaces the 2026-11-04
+text, which still pointed at `docs/SCOPE_v0.txt`. On 2026-11-04 Dimitri removed "keep chat replies under 150 words".)
 
 Set the project's model to Fable 5.1; Part A's "Model per role" table says when a thread should drop to Opus 5.5.
 

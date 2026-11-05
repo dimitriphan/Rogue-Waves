@@ -30,7 +30,8 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 >
 > **Write to files, not to chat.** Findings go to the kit chapter they belong to (new engine fact → that chapter or
 > `docs/09`; a mode or system fact → `docs/14+`), decisions go to Part C "Decisions" as one line each. Chat replies
-> stay under 150 words: what changed, what is blocked, what you need. Never paste file contents or restate a file.
+> say what changed, what is blocked, what you need (Dimitri dropped the 150-word cap, 2026-11-04). Never paste
+> file contents or restate a file.
 >
 > **One thing at a time.** One vessel, one system, one gate. Design before code (`DESIGN.md`, checked against
 > `docs/02` by its design script), `cloud-check` before any handoff, a handoff only when it is worth the user's PC
@@ -64,6 +65,10 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
 of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
 outcome and the constraints; the Part D templates stay as written for Opus threads.
+
+Effort per thread (Dimitri, 2026-11-04): `xhigh` for code builds, PC rounds, debugging and engine work; `high` for
+design, reviews and text PRs; `medium` for lookups, syncs and small fixes; `max` only at his word. A quality check
+states its pass cap and what counts as an issue in its opening prompt. Which skill to use when is in `CLAUDE.md`.
 
 ---
 
@@ -247,7 +252,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   resources read against the repository: 35 stale lines fixed, no code changed (`docs/reports/KIT_CHECK_2026-11-04.md`). 2026-11-04: the code simplification
   built at his word (findings 7, 8 without SONAR, 2 and 3; kit 1.8 with `ModKitUtil` and `ModKitAssets`; about 2,200 lines
   gone, no number changed); finding 1 not built, it would change numbers (Decisions). Compiled, not run on the PC: the
-  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4.
+  testing thread runs `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4. 2026-11-05: `CLAUDE.md` rewritten to the
+  Claude Code best-practices page: the checks to run, which skill to use when, the rules the code doesn't show; build
+  state left out of it, since this Part holds it. `.claude/settings.json` now denies merging and pushing to the base
+  branch; effort per thread is in Part A; new project instructions in `docs/PROJECT_SETUP.md` §2.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
