@@ -194,7 +194,7 @@ flooded at the first Tide, no error.
 - The 55 lighting groups and 28 atmospheres the base game ships (`reference/vessel_data_survey.txt`, `FOLDER Lighting`)
   can be loaded by name and applied to any map.
 
-### 7.1 What a mod can change, and how far (read 2026-11-05, kit 1.13 `ModKitLight`; not yet run in game)
+### 7.1 What a mod can change, and how far (read 2026-11-05, kit 1.13 `ModKitLight`; run in game the same day, 23/0)
 
 - **What `Editlighting` does, line by line** (Blockage.Lighting.Bl_Lighting.cs): linear fog only (`fogMode` 1) with the
   group's colour, start and end; ambient as a three-colour gradient (`Topcolor`, `Midcolor`, `Bottomcolor`); the
@@ -219,10 +219,18 @@ flooded at the first Tide, no error.
   `Resources/Betterfog`) when the camera has post-processing on and the volume stack's `Betterfog_Volumeoverride` has
   `On`: a near and a far colour over `Colorbounds`, a skybox fade, distance-based or not. Only a borrowed profile can
   switch it.
-- **Open on the PC** (`docs/reports/LIGHTING_2026-11-05.md` §4): whether the game's sprite and effect shaders take
-  Unity fog at all (a unit that ignores it stands out of the fog), whether a map's prefab carries baked lightmaps
-  (`Map_PrefabLightmapData`: the sun then darkens units but not the ground; fog and post-processing still apply), whether
-  extra point lights are drawn, and the 55 groups' own numbers (the gaps build's `-rwonly light` logs them).
+- **Seen in game** (PC, 2026-11-05, solo on Map_Skyhook, `docs/reports/LIGHTING_2026-11-05.md` §6): the fog is real
+  depth fog on everything in the world: ground, buildings, towers and the vessel fade with distance alike, nothing
+  stands out of it. The UI never takes fog: the HUD, tile brackets and tile icons stay sharp over it, so a marker gives
+  away what fog hides. A look's ambient and sun darken the ground and the units together (no baked lighting stops it),
+  but a look leaves the **skybox** as it is, so a dark look reads as dusk while the sky stays bright; only a borrowed
+  grade (or `Grade(name, true)`, the stock group's sky) changes the sky's colour. Extra point lights are drawn: a lamp
+  lit the vessel and the deck a few tiles round. A held look, a fade and a borrowed grade cost nothing measurable
+  (7.1-7.2 ms a frame either way). The 55 groups' own numbers: `docs/reports/lighting_2026-11-05/light_groups.txt`.
+- **The HUD hides itself after 10 s without input** (`Game_Ui.Update`: no key, no mouse movement and nothing selected
+  for `Idlethreshold`, 10 s, runs Main's "Top" group off): a test's pictures lose the HUD after the first ten seconds
+  (pitfall #170).
+- **Still open:** foes in fog (no foe was on screen), two players, and other maps' cameras.
 
 ## 8. Projectile behaviours a building can borrow
 

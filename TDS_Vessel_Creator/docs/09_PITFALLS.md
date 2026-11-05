@@ -593,7 +593,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      (`VolumeProfile`), `Volume`, `Bloom` or the game's `Betterfog_Volumeoverride` are CS0012 in game, while the cloud
      stubs type the unknown field as `object` and compile it → never name them: borrow a stock group's grade whole with a
      copy of the group (`Object.Instantiate`, then `Bl_Lighting.Editlighting`), as `ModKitLight.Grade` does (kit 1.13,
-     `docs/16` §7.1). Read from code; compiled, for the PC round.
+     `docs/16` §7.1). Read from code; the code that keeps to it ran in game 23/0 (PC, 2026-11-05).
 168. **Two parts' hit handlers on one thing swap order every few tenths of a second** (2026-11-05) → each part puts its
      handler back in front of `Oninteract` after `Updateinteract` rebuilds the chain, and `ModKitUtil.Front` up to kit
      1.13 moved a handler to the very front whenever it wasn't first: whoever called last went first, so a cap and a cut
@@ -608,3 +608,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      and in the pack's `Onspawn` the thing's own list doesn't hold it yet either → test `ModKitUtil.HasTag(e, "Clone")` /
      `"Prespawn"` (the mode's `RWRun.IsCopy`), and act on a Hero-tagged spawn once it has its stats, when a copy shows
      as one. Read from code; compiled, for the PC round.
+170. **A test's pictures lose the HUD after ten seconds** (2026-11-05) → `Game_Ui.Update` counts the time with no key,
+     no mouse movement and nothing selected, and at `Idlethreshold` (10 s) runs Main's "Top" group off (`Game_Ui.Idle`), so in a
+     self-test with no hand on the mouse every picture after the first ten seconds of a map shows the world without the
+     HUD, the tile numbers or the mode's own line (Light_round1: pictures 3-16) → read nothing into a missing HUD in a
+     picture; for pictures that need it, raise `Game_Ui.Instance.Idlethreshold` (public) for the test and put it back.
+     Seen in game (PC, 2026-11-05); the cause read from code.

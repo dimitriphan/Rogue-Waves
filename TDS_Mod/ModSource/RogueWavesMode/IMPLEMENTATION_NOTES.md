@@ -32,7 +32,7 @@ a temporary white crystal for Mind the Meteor's node; the "white crystal" line s
   built in Unity, not seen in game. For the next PC round: the boot line, the node on a map (size against a stock ore,
   white against the grass and the darkest map), the hit flash, and the gaps check.
 
-## 0.1.0-dev, later (2026-11-05): a map's lighting, kit 1.13 (compiled, not yet run in game)
+## 0.1.0-dev, later (2026-11-05): a map's lighting, kit 1.13 (run in game: 23/0, Light_round1)
 
 - `Update` calls `ModKitLight.Update()` every frame on every machine: the pack's one holder of a lighting look (kit
   `ModKitLight`: fog, ambient, sun, a borrowed stock grade). With no look set it does nothing; no weather or map sets one
@@ -40,6 +40,9 @@ a temporary white crystal for Mind the Meteor's node; the "white crystal" line s
 - The gaps build's `light` part (`92_GapsLight.cs`, `-rwonly light`, its own launch): L0-L6 on one calm map, a picture of
   each look with `ROGUEWAVESMODE_SHOTS`, and the 55 stock lighting groups' numbers in the log.
 - A weather look would run on every machine from `RWRejoin.MapWeather()` (the synced names), never from the host alone.
+- PC, 2026-11-05 (`docs/reports/LIGHTING_2026-11-05.md` §6): the `light` part passed 23/0 on Map_Skyhook with 16
+  pictures; the self-test with every part on passed every weather check (W0-W3) and failed Spring Tide's Tide gain twice
+  (`96_Flow.cs`, `0 -> 0.0375`, B7's `RWDirections.TideEffects`/`Grow`, not yet looked into).
 
 ## 0.1.0-dev, later (2026-11-05): the clean-up, kit 1.12 (compiled, not yet run in game)
 
