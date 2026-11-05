@@ -1656,7 +1656,7 @@ public static partial class YosseleSelfTest
                     if (ModKitUtil.Alive(spored)) Kill(spored);
                 }
                 // Off with Mushrooms; on with Dandelion Season.
-                foreach (YosseleData.Shift s in YosseleData.Mushboomkits) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
+                foreach (YosseleData.Direction s in YosseleData.Mushboomkits) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
                 yield return Wait(1.2f);
                 Check("with its ranks gone, the Tree shoots seeds again", player.Mushrooms == 0, "rank " + player.Mushrooms);
                 Check("... under its own name again", !boom.Look.StartsWith(YosseleData.MushboomLook.Skin) && PanelName(boom.Master) != YosseleData.MushboomLook.Display, "skin " + boom.Look + ", panel " + PanelName(boom.Master));
@@ -1684,10 +1684,12 @@ public static partial class YosseleSelfTest
                 yield return Wait(1.2f);
                 Log("Dandelion Season rank III: range " + F(r3) + ", damage " + F(d3) + "; other full-grown Saplings give +5% each");
                 Check("Dandelion Season rank III reads back", player.Season == 3, "rank " + player.Season);
-                foreach (YosseleData.Shift s in YosseleData.Seasons) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
+                foreach (YosseleData.Direction s in YosseleData.Seasons) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
                 yield return Wait(1f);
             }
         }
+        // 12c. Yossele's five Directions from scope 11 (98_Directions.cs).
+        yield return Directions(hero, owner, player, known, got, henge);
         // 13. The journal: Yossele's pages, and every vessel page with exactly one tab per vessel (Smacky included).
         {
             Logobject page = YosseleContent.Entry.Log;

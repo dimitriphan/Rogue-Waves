@@ -14,6 +14,7 @@ public static class YosseleContent
     public static Commandobject Fertilize, Colour;
     public static readonly List<Upgradeproperties> Compostbins = new List<Upgradeproperties>();
     public static readonly List<Upgradeproperties> Treeshifts = new List<Upgradeproperties>();
+    public static readonly List<Upgradeproperties> Boosts = new List<Upgradeproperties>();
     public static int VfxRegistered;
     public static bool IconsReady, LaserReady;
     public static string GroundFrom = "", LaserFrom = "", FriendFrom = "";
@@ -68,7 +69,7 @@ public static class YosseleContent
 
     public static string Summary()
     {
-        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + (Compostbins.Count + Treeshifts.Count) + " Directions, " + VfxRegistered + " effects, icons "
+        return Beings.Count + " beings, " + Upgrades.Count + " upgrades, " + (Compostbins.Count + Treeshifts.Count + Boosts.Count) + " Directions, " + VfxRegistered + " effects, icons "
             + (IconsReady ? "ok" : "stock") + ", ground from " + GroundFrom + ", laser from " + LaserFrom + ", Cordyfriend from " + FriendFrom
             + ", towers fitted " + ModKitTowers.Fitted;
     }
@@ -641,14 +642,14 @@ public static class YosseleContent
             Compostbins.Add(RegisterDirection(d));
         }
         // The Tree's two clash: Clash 1 lets the mode offer a player only one of them.
-        foreach (YosseleData.Shift s in YosseleData.Seasons)
+        foreach (YosseleData.Direction s in YosseleData.Seasons)
         {
             Upgradeproperties d = ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc);
             d.Defaultparams["Clash"] = 1f;
             d.Defaultparams["Season_Share"] = YosseleData.SaplingShare;
             Treeshifts.Add(RegisterDirection(d));
         }
-        foreach (YosseleData.Shift s in YosseleData.Mushboomkits)
+        foreach (YosseleData.Direction s in YosseleData.Mushboomkits)
         {
             Upgradeproperties d = ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc);
             d.Defaultparams["Clash"] = 1f;
@@ -656,6 +657,10 @@ public static class YosseleContent
             d.Defaultparams["Mushboom_Per"] = YosseleData.MushboomPerStack;
             Treeshifts.Add(RegisterDirection(d));
         }
+        // Claude's five (2026-11-05): no clash; their numbers are in YosseleData, one a rank.
+        foreach (YosseleData.Direction[] ranks in new[] { YosseleData.Cuttingjars, YosseleData.Sapbuckets, YosseleData.Creepingivies, YosseleData.Deepbreaths, YosseleData.Fairyrings })
+            foreach (YosseleData.Direction s in ranks)
+                Boosts.Add(RegisterDirection(ModKitDirections.Make(template, "Yossele", s.Name, s.Display, s.Desc)));
     }
 
     static Upgradeproperties RegisterDirection(Upgradeproperties d)

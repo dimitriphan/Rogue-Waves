@@ -110,7 +110,7 @@ public static class YosseleData
     };
 
     // The Tree's Directions (docs/scope/11), one per rank, Clash 1: a player holds one of the two.
-    public class Shift { public string Name, Display, Desc; }
+    public class Direction { public string Name, Display, Desc; }
     // What a shifted Tree shows (decision 15): a skin per Shift, prefixed to the Growth skins, so the panel reads the new
     // name (the title is the skin entry's Displayname, Game_Ui, pitfall #164); the model is the Shift's own once there is
     // one, else the Tree's.
@@ -122,13 +122,13 @@ public static class YosseleData
 
     // Dandelion Season: no limit on Trees, each acts as a Dandelion Sapling. Its stages do less than a Tree's so its range
     // stays at 70% of a Tree's at any Growth; rank II's stages do 25% more than that.
-    public static readonly Shift[] Seasons =
+    public static readonly Direction[] Seasons =
     {
-        new Shift { Name = "Dandelionseason", Display = "Dandelion Season",
+        new Direction { Name = "Dandelionseason", Display = "Dandelion Season",
             Desc = "Your Primordial Dandelion Tree becomes a Dandelion Sapling, slightly weaker and slower to grow. Dandelion Saplings have no limit" },
-        new Shift { Name = "Dandelionseason2", Display = "Dandelion Season II",
+        new Direction { Name = "Dandelionseason2", Display = "Dandelion Season II",
             Desc = "Dandelion Sapling's Growth scaling increases" },
-        new Shift { Name = "Dandelionseason3", Display = "Dandelion Season III",
+        new Direction { Name = "Dandelionseason3", Display = "Dandelion Season III",
             Desc = "Dandelion Sapling's damage and range increase based on the number of Dandelion Saplings at max Growth" },
     };
     public const float SaplingShare = 0.7f;         // of the Tree's damage, range and stages; default, docs/scope/11
@@ -137,19 +137,63 @@ public static class YosseleData
     public const float SaplingPackMax = 0.5f;       // default, docs/scope/11
 
     // Mother of Mushrooms: each Tree acts as a Primordial Mushboom, bursting on spored foes instead of shooting.
-    public static readonly Shift[] Mushboomkits =
+    public static readonly Direction[] Mushboomkits =
     {
-        new Shift { Name = "Mushrooms", Display = "Mother of Mushrooms",
+        new Direction { Name = "Mushrooms", Display = "Mother of Mushrooms",
             Desc = "Your Primordial Dandelion Tree is replaced by a Primordial Mushboom: it explodes in a large radius, dealing damage based on spore stacks on foes and consuming them. Growth increases its range" },
-        new Shift { Name = "Mushrooms2", Display = "Mother of Mushrooms II",
+        new Direction { Name = "Mushrooms2", Display = "Mother of Mushrooms II",
             Desc = "Primordial Mushboom's range is increased" },
-        new Shift { Name = "Mushrooms3", Display = "Mother of Mushrooms III",
+        new Direction { Name = "Mushrooms3", Display = "Mother of Mushrooms III",
             Desc = "Primordial Mushboom's explosion only consumes half of the spore stacks on a foe, while dealing the full damage" },
     };
     public const float MushboomEvery = 8f;          // seconds between bursts; default, docs/scope/11
     public const float MushboomPerStack = 2f;       // damage per spore stack; default, docs/scope/11
     public const float MushboomPerStage = 0.5f;     // tiles of range per Growth stage, in place of the Tree's 20%
     public const float MushboomRange = 0.25f;       // rank II
+
+    // Claude's Directions for Yossele (docs/scope/11, built 2026-11-05): one upgrade a rank like the Shifts above; the
+    // numbers a rank are scope 11's (YosseleCuttings, YosseleBoosts, the Stonehenge).
+    public static readonly Direction[] Cuttingjars =
+    {
+        new Direction { Name = "Cuttingjar", Display = "Cutting Jar",
+            Desc = "A building that falls leaves a cutting: rebuild it on the same tile soon and it keeps some of its Growth" },
+        new Direction { Name = "Cuttingjar2", Display = "Cutting Jar II", Desc = "The cutting keeps more of its Growth" },
+        new Direction { Name = "Cuttingjar3", Display = "Cutting Jar III", Desc = "The cutting keeps most of its Growth, and waits longer" },
+    };
+    public static readonly float[] CuttingKeep = { 0.25f, 0.5f, 0.75f }, CuttingWait = { 20f, 20f, 40f };
+    public static readonly Direction[] Sapbuckets =
+    {
+        new Direction { Name = "Sapbucket", Display = "Sap Bucket", Desc = "Yossele's laser leaves sticky sap that slows foes" },
+        new Direction { Name = "Sapbucket2", Display = "Sap Bucket II", Desc = "The sap slows more" },
+        new Direction { Name = "Sapbucket3", Display = "Sap Bucket III",
+            Desc = "The sap slows much more, and foes stuck in it take more damage from your towers" },
+    };
+    public static readonly float[] SapSlow = { 0.15f, 0.25f, 0.35f };
+    public const float SapLasts = 2f, SapBonus = 0.1f;   // seconds; rank III: more damage taken from your buildings
+    public static readonly Direction[] Creepingivies =
+    {
+        new Direction { Name = "Creepingivy", Display = "Creeping Ivy", Desc = "Your vines reach farther" },
+        new Direction { Name = "Creepingivy2", Display = "Creeping Ivy II", Desc = "Foes on your vines slow down" },
+        new Direction { Name = "Creepingivy3", Display = "Creeping Ivy III", Desc = "Your vines grow farther every Tide" },
+    };
+    public const int IvyReach = 1, IvyMax = 3;               // tiles; rank III: at most this much more
+    public const float IvySlow = 0.15f, IvyPerTide = 0.5f;   // rank II: on top of the stones' own; rank III a Tide
+    public static readonly Direction[] Deepbreaths =
+    {
+        new Direction { Name = "Deepbreath", Display = "Deep Breath", Desc = "When Yossele has not fired for a moment, its next beam hits harder" },
+        new Direction { Name = "Deepbreath2", Display = "Deep Breath II", Desc = "It hits harder still" },
+        new Direction { Name = "Deepbreath3", Display = "Deep Breath III", Desc = "It hits much harder, and reaches farther" },
+    };
+    public static readonly float[] BreathBonus = { 0.4f, 0.7f, 1f };
+    public const float BreathAfter = 2f, BreathRange = 1f;   // seconds without a beam; rank III: tiles for that beam
+    public static readonly Direction[] Fairyrings =
+    {
+        new Direction { Name = "Fairyring", Display = "Fairy Ring", Desc = "When Yossele stands still, mushrooms ring it and mend what is near" },
+        new Direction { Name = "Fairyring2", Display = "Fairy Ring II", Desc = "The ring mends more" },
+        new Direction { Name = "Fairyring3", Display = "Fairy Ring III", Desc = "The ring mends much more, farther out" },
+    };
+    public static readonly float[] FairyRadius = { 1.5f, 2f, 2.5f }, FairyHeal = { 0.01f, 0.015f, 0.02f };   // tiles; of max health a second
+    public const float FairyStill = 1.5f;                    // seconds standing still before the ring grows
 
     // ---------------------------------------------------------------- Mushroom Cannon, its spores, the Cordyfriend
 

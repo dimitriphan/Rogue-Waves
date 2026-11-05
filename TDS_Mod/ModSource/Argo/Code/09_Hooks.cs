@@ -4,6 +4,7 @@
 //   Pinged   (SONAR)   enemies take 20% more damage from every source, teammates' towers included.
 //   Bulkhead (Nauts)   a tuned tower takes 25% less.
 //   Soak     (2.0)     a foe in Crushing Depth water takes 15% more from every source.
+//   Chum     (Chum Bucket, a Direction) a Slowed or Pinned foe takes 8 / 15 / 25% more from the holder's buildings.
 // Helper_Entitytools.Updateinteract rebuilds the chain whenever an upgrade or effect lands on the entity, so the
 // handler is checked and moved back to the front a few times a second while it is needed.
 public static class ArgoHooks
@@ -15,7 +16,7 @@ public static class ArgoHooks
     static readonly Dictionary<Entity_Master, Vector2> soaked = new Dictionary<Entity_Master, Vector2>();   // (amount, until)
     static readonly Entity_Master.Oninteracts handler = OnHurt;
     static float nextCheck;
-    public static int Boosted, Softened, Crushed;
+    public static int Boosted, Softened, Crushed, Chummed;
 
     public static void Reset()
     {
@@ -111,6 +112,9 @@ public static class ArgoHooks
             foreach (Entity_Master e in drop)
                 soaked.Remove(e);
         drop = null;
+        if (ArgoServer.AnyChum())
+            foreach (Entity_Master foe in ArgoStatus.Held())
+                First(foe);
         foreach (Entity_Master t in armored.Keys)
         {
             if (t == null || !ModKitUtil.Alive(t))
@@ -129,8 +133,24 @@ public static class ArgoHooks
             }
     }
 
+    // Chum Bucket: a foe that was just Slowed or Pinned gets the handler at once, and Update keeps it there while held.
+    public static void Held(Entity_Master foe)
+    {
+        if (foe != null && ArgoServer.AnyChum())
+            First(foe);
+    }
+
     // Moves Argo's handler to the front of the entity's Oninteract chain (adding it if Updateinteract dropped it).
     static void First(Entity_Master e) { ModKitUtil.Front(e, handler); }
+
+    // What Chum Bucket adds to this hit: the holder's rank, when one of their buildings hits a Slowed or Pinned foe.
+    static float ChumOf(Link_Interact hit)
+    {
+        if (hit.From == null || hit.From.GetComponent<ArgoTowerBrain>() == null || !ArgoStatus.Debuffed(hit.To))
+            return 0f;
+        int rank = ArgoServer.RanksOf(ModKitUtil.Owner(hit.From)).Chumbucket;
+        return rank > 0 ? ArgoData.Chumbuckets[rank - 1].Bonus : 0f;
+    }
 
     static void OnHurt(Link_Interact hit)
     {
@@ -149,6 +169,12 @@ public static class ArgoHooks
             {
                 scale *= 1f + soak;
                 Crushed++;
+            }
+            float chum = ChumOf(hit);
+            if (chum > 0f)
+            {
+                scale *= 1f + chum;
+                Chummed++;
             }
             float armor = ArgoHooks.ArmorOf(hit.To);
             if (armor > 0f)

@@ -9,6 +9,7 @@ public class YosseleHeroBrain : MonoBehaviour
     public int Rank, Fertilizes, Healed, DandelionHidden, DandelionShown, BonsaiShown;
     public float Regenerated;
     public bool Armed;
+    public readonly YosseleBoosts Boosts = new YosseleBoosts();
     bool started;
     float nextCheck, nextRegen, guardUntil;
     readonly YosseleFaults faults = new YosseleFaults();
@@ -37,6 +38,7 @@ public class YosseleHeroBrain : MonoBehaviour
                 nextRegen = Time.time + 1f;
                 Regen();
             }
+            Boosts.Update(this);
             if (Time.time >= nextCheck)
             {
                 nextCheck = Time.time + 0.5f;
@@ -114,11 +116,16 @@ public class YosseleHeroBrain : MonoBehaviour
     // either. A button that must change is removed first and made again on the next check, half a second later.
     public string Slot = "";
 
-    // The Tree's Directions this vessel holds, for what its player's Trees do and the slot's limit (kit 1.7).
+    // The Directions this vessel holds, for what its player's Trees do, the slot's limit and the rest (kit 1.7).
     void CheckDirections()
     {
         Player.Season = YosseleServer.DirectionRank(Master, YosseleData.Seasons[0].Name);
         Player.Mushrooms = YosseleServer.DirectionRank(Master, YosseleData.Mushboomkits[0].Name);
+        Player.Cutting = YosseleServer.DirectionRank(Master, YosseleData.Cuttingjars[0].Name);
+        Player.Sap = YosseleServer.DirectionRank(Master, YosseleData.Sapbuckets[0].Name);
+        Player.Ivy = YosseleServer.DirectionRank(Master, YosseleData.Creepingivies[0].Name);
+        Player.Breath = YosseleServer.DirectionRank(Master, YosseleData.Deepbreaths[0].Name);
+        Player.Fairy = YosseleServer.DirectionRank(Master, YosseleData.Fairyrings[0].Name);
     }
 
     public void CheckDandelion()

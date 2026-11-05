@@ -408,14 +408,26 @@ public static class ArgoStatus
         wet.Clear();
     }
 
-    public static void Slowed(Entity_Master foe, float seconds) { Mark(slowed, foe, seconds); }
-    public static void Pinned(Entity_Master foe, float seconds) { Mark(pinned, foe, seconds); }
+    public static void Slowed(Entity_Master foe, float seconds) { Mark(slowed, foe, seconds); ArgoHooks.Held(foe); }
+    public static void Pinned(Entity_Master foe, float seconds) { Mark(pinned, foe, seconds); ArgoHooks.Held(foe); }
     public static void Wet(Entity_Master foe, float seconds) { Mark(wet, foe, seconds); }
 
     public static bool IsSlowed(Entity_Master foe) { return Active(slowed, foe); }
     public static bool IsPinned(Entity_Master foe) { return Active(pinned, foe); }
     public static bool IsWet(Entity_Master foe) { return Active(wet, foe); }
     public static bool Debuffed(Entity_Master foe) { return IsSlowed(foe) || IsPinned(foe); }
+
+    // Every foe Slowed or Pinned now (Chum Bucket's handler stays on them).
+    static readonly List<Entity_Master> held = new List<Entity_Master>();
+    public static List<Entity_Master> Held()
+    {
+        held.Clear();
+        foreach (KeyValuePair<Entity_Master, float> kv in slowed)
+            if (kv.Key != null && kv.Value > Time.time && ModKitUtil.Alive(kv.Key)) held.Add(kv.Key);
+        foreach (KeyValuePair<Entity_Master, float> kv in pinned)
+            if (kv.Key != null && kv.Value > Time.time && ModKitUtil.Alive(kv.Key) && !held.Contains(kv.Key)) held.Add(kv.Key);
+        return held;
+    }
 
     // Self-tests only need it: a foe read as clean whatever slowed it before (the game's own slow mods stay).
     public static void Clear(Entity_Master foe)

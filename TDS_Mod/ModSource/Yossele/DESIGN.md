@@ -214,6 +214,8 @@ gone (the game's own sounds play). Renders and notes: `Previews/0.2/`.
 | Hallucinogen, Explosive Finish, Viral and the rest | As written | |
 | Fertilizer unlocked by a Direction | Compost Bin as three rank Directions, granted by the mode or the self-test only | Ranks are Phase 5; Release 1 has no Directions (Dimitri 2026-10-21) |
 | Dandelion Season, Mother of Mushrooms (`11_Directions.txt`) | Built as Directions, one upgrade per rank (`IMPLEMENTATION_NOTES.md` "Directions") | Measured in game on 2026-11-04 |
+| Cutting Jar, Sap Bucket, Creeping Ivy, Deep Breath, Fairy Ring (`11_Directions.txt`, Claude's) | Built as Directions with the sheet's numbers (`IMPLEMENTATION_NOTES.md` "Directions") | Compiled 2026-11-05, not yet run in game |
+| Deep Breath's "after 2 seconds without firing" | 2 s past the laser's reload (1 / Attackspeed) | Yossele fires every 2 s, so 2 s from the last shot would charge every beam |
 | "Growth rises with each tide a tower survives" | A stage when a Tide begins, for buildings that stood through the whole Tide before | Makes "survived" exact; the game has no break event (kit 1.7's `ModKitTides.Break` came later) |
 | Aura fruit "after fully mining a node" | Each payout a fully grown Sapling's strike brings about, on the free tile beside the node | The game's nodes refill instead of running out (above) |
 | D-MDS: "what counts as projectiles, bosses?" (Dimitri's note) | Every foe projectile that hurts; a boss's costs 5 seeds | Default; the stock list is short (above) |

@@ -604,7 +604,7 @@ public static class ArgoContent
             ArgoLog.Warn("no upgrade to make the Directions from");
             return;
         }
-        foreach (ArgoData.Direction[] ranks in new[] { ArgoData.Deepcurrents, ArgoData.Heavysalvos })
+        foreach (ArgoData.Direction[] ranks in new[] { ArgoData.Deepcurrents, ArgoData.Heavysalvos, ArgoData.Chumbuckets, ArgoData.Pressuregauges })
             foreach (ArgoData.Direction r in ranks)
             {
                 Upgradeproperties d = ModKitDirections.Make(template, "Argo", r.Name, r.Display, r.Desc);
