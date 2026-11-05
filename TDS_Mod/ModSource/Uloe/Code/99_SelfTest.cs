@@ -477,7 +477,7 @@ public static partial class UloeSelfTest
             // Every key a Uloe button names must be one of the game's input actions: selecting a thing looks each up in
             // Bl_Inputs.Actions (Game_Selection.Addcommand) and throws on a miss (pitfall #113).
             List<string> bad = new List<string>();
-            foreach (Commandobject c in new[] { UloeContent.Plug, UloeContent.Aim })
+            foreach (Commandobject c in new[] { UloeContent.Plug, UloeContent.Aim, UloeContent.Surge, UloeContent.Colour })
                 if (c != null && c.Keybind != null)
                     foreach (string k in c.Keybind)
                         if (!Blockage.Bl_Inputs.Actions.ContainsKey(k)) bad.Add(c.name + " " + k);
@@ -1079,7 +1079,7 @@ public static partial class UloeSelfTest
                 {
                     yield return Build(hm, UloeData.Flood, fat2, known, got);
                     flood2 = got[0] as UloeFloodBrain;
-                    if (flood2 != null && UloeServer.NearestBuilding(flood2.Team, flood2.Pos, 6f, flood2.Master) == null)
+                    if (flood2 != null && UloeServer.NearestBuilding(flood2.Owner, flood2.Pos, 6f, flood2.Master) == null)
                     {
                         Vector3 near2 = ReachSpot(hm, flood2.Pos, UloeContent.Beings[UloeData.Glass], team, 1.5f, 3.5f);
                         if (!float.IsNaN(near2.x)) yield return Build(hm, UloeData.Glass, near2, known, got);
@@ -1134,6 +1134,9 @@ public static partial class UloeSelfTest
             else ModKitTest.Setup("a Flood Light with no node", "no tile away from the nodes");
         }
         else ModKitTest.Setup("the Flood Light", "no node");
+
+        // 8b. The 24 upgrades of 2026-11-05, the teammate cap and SURGE (98_Upgrades.cs).
+        yield return Upgrades24(hero, owner, team, known, glass, bank, mirror, mirrorB, flood, flood2);
 
         // 9. Directions.
         {

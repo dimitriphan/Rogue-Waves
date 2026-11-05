@@ -349,6 +349,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Kelp Bed and Trench pin, the Scatter's +100% on a pinned foe, Wide Bore, Double Barrel's three, Abyss, Trench, Gusher a
   Fathom, Mantle Tap's speed and 20 s quake, Yellow prices for the Drill's control path, the Base Blue 20 + Yellow 15.
   Compiled here (release, self-test and review builds, 0 errors), not run on the PC.
+  2026-11-05, part 3: Uloe's 24 upgrades built (scope `10`, `ULOE_UPGRADES_2026-11-04.md` §3 and §6), eight a building
+  with every Leads to (N10); a building takes at most 4 Light from teammates (B10, decision 18), and AIM, the default aim
+  and Photon visits keep to the owner's buildings (ULO-3); Supernova's SURGE once a Tide and Colour Filter's COLOUR are
+  one-click buttons. Self-test section 8b. Compiled here (release, self-test and review builds, 0 errors), not run on
+  the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

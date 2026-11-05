@@ -16,14 +16,14 @@ public static class UloeClient
     public static readonly Color Bright = new Color(0.98f, 0.95f, 0.35f, 1f);
     public static readonly Color Soft = new Color(1f, 0.98f, 0.66f, 0.28f);
 
-    enum Kind { Plugcord, Nodecord, Ray, Longray, Ring }
+    enum Kind { Plugcord, Nodecord, Ray, Longray, Ring, Sweep }
 
     class Link
     {
         public Kind Kind;
         public Entity_Master From;
         public Vector3 To;
-        public float Radius, Until;
+        public float Radius, Until, Heard;
         public LineRenderer Line;
         public GameObject Plug;
         public Transform Lamp;      // a tower's visual is remade when its skin changes: looked up again when it goes null
@@ -110,6 +110,18 @@ public static class UloeClient
                     break;
                 case "Uloe_Ring":
                     SetLink(master, Kind.Ring, position, number);
+                    break;
+                case "Uloe_Sweep":
+                    SetLink(master, Kind.Sweep, position, number);
+                    break;
+                case "Uloe_Line":
+                    // A beam that isn't the Glass's main one: Prism's, Focal Point's line, the Heliostat's.
+                    Run(LineRun(at + Vector3.up * UloeData.BeamEye, position + Vector3.up * 0.25f, 0.18f, 0.025f * Mathf.Max(1f, number), Bright));
+                    ModKitAssets.Effect("World_Uloe_Spark", position + Vector3.up * 0.3f, 0.6f);
+                    break;
+                case "Uloe_Zap":
+                    UloeAssets.Play("Uloe_Zap", position, 0.5f);
+                    ModKitAssets.Effect("World_Uloe_Spark", position + Vector3.up * 0.3f, 0.8f);
                     break;
                 case "Uloe_Pop":
                     UloeAssets.Play("Uloe_Pop", at);
@@ -254,6 +266,10 @@ public static class UloeClient
                 case Kind.Ring:
                     link.Line = Line("Uloe_Ring", 41, new Color(Bright.r, Bright.g, Bright.b, 0.5f), 0.04f);
                     break;
+                case Kind.Sweep:
+                    link.Line = Line("Uloe_Sweep", 2, Soft, 0.3f);
+                    link.Line.endWidth = 0.6f;
+                    break;
                 default:
                     link.Line = Line("Uloe_Ray", 2, Soft, kind == Kind.Longray ? 0.22f : 0.14f);
                     link.Line.endWidth = kind == Kind.Longray ? 0.3f : 0.2f;
@@ -265,6 +281,7 @@ public static class UloeClient
             link.Lamp = null;
         link.To = to;
         link.Radius = number;
+        link.Heard = Time.time;
         link.Until = Time.time + UloeData.LinkLife;
         if (kind == Kind.Plugcord && ModKitUtil.OwnedLocally(master))
             link.Line.startWidth = link.Line.endWidth = 0.035f;
@@ -329,6 +346,9 @@ public static class UloeClient
                 case Kind.Ring:
                     DrawRing(l.Line, Ground(at) + Vector3.up * 0.06f, l.Radius);
                     break;
+                case Kind.Sweep:
+                    DrawSweep(l, at, now);
+                    break;
                 default:
                     // The Flood Light's lamp turns to what it lights (its glass looks along local -z).
                     if (l.Lamp == null)
@@ -349,6 +369,23 @@ public static class UloeClient
         }
         foreach (string key in gone)
             links.Remove(key);
+    }
+
+    // Lighthouse: the server tells where the beam's end is and how many seconds a turn takes (its Radius); the beam turns on
+    // from there by itself, the same way round as the server's (Atan2 of z over x, rising), and the lamp turns with it.
+    static void DrawSweep(Link l, Vector3 at, float now)
+    {
+        Vector3 d = l.To - at;
+        d.y = 0f;
+        float reach = d.magnitude, turn = Mathf.Max(0.5f, l.Radius);
+        float a = Mathf.Atan2(d.z, d.x) + (now - l.Heard) / turn * Mathf.PI * 2f;
+        Vector3 dir = new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a));
+        if (l.Lamp == null)
+            l.Lamp = Part(l.From, "Lamp");
+        if (l.Lamp != null)
+            l.Lamp.rotation = Quaternion.LookRotation(-dir, Vector3.up);
+        l.Line.SetPosition(0, l.Lamp != null ? l.Lamp.position + Vector3.up * 0.05f : at + Vector3.up * 0.2f);
+        l.Line.SetPosition(1, at + dir * reach + Vector3.up * 0.2f);
     }
 
     static IEnumerator LineRun(Vector3 a, Vector3 b, float seconds, float width, Color color)

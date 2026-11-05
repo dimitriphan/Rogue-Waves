@@ -150,7 +150,7 @@ public abstract class UloePicker : Entity_Command_Itemselect_Base
     // The icon greys out on "Off" (Argo's SONAR).
     static readonly Dictionary<Image, Color> normal = new Dictionary<Image, Color>();
 
-    protected void Grey(GameObject button, bool grey)
+    public static void Grey(GameObject button, bool grey)
     {
         Transform icon = button != null ? button.transform.Find("Icon") : null;
         Image image = icon != null ? icon.GetComponent<Image>() : null;
@@ -235,4 +235,50 @@ public class UloeAimSelect : UloePicker
     }
 
     protected override bool Valid(Entity_Master m) { return MyBuilding(m, null); }
+}
+
+// SURGE on a Power Bank with Supernova: a one-click button like the Mining Hut's Convert. The Bank keeps "Off" in the
+// command's Goalstring (synced) until the next Tide, and the button greys out.
+public class UloeSurgeButton : Entity_Command_Simple
+{
+    public override void Render(GameObject Button)
+    {
+        base.Render(Button);
+        try
+        {
+            Getnewlink();
+            UloePicker.Grey(Button, Link.Goalstring.ToString() == "Off");
+        }
+        catch (Exception) { }
+    }
+}
+
+// COLOUR on a Flood Light with Colour Filter: a one-click button that cycles the aura its payouts come in (All, Red, Blue,
+// Yellow), kept in the command's Goalstring for every player; the button draws it, label and tint (Yossele's Grafted way).
+public class UloeColourButton : Entity_Command_Simple
+{
+    public override void Render(GameObject Button)
+    {
+        base.Render(Button);
+        try
+        {
+            Getnewlink();
+            if (Button == null)
+                return;
+            int i = Mathf.Max(0, Array.IndexOf(UloeData.Colours, Link.Goalstring.ToString()));
+            Color tint = i == 1 ? new Color(0.87f, 0.32f, 0.28f, 0.5f) : i == 2 ? new Color(0.31f, 0.55f, 0.9f, 0.5f) : i == 3 ? new Color(0.94f, 0.78f, 0.24f, 0.5f) : new Color(0.95f, 0.94f, 0.45f, 0.5f);
+            Image image = Button.transform.GetComponent<Image>();
+            if (image != null)
+                image.color = tint;
+            Transform icon = Button.transform.Find("Icon");
+            if (icon != null && icon.GetComponent<Image>() != null)
+                icon.GetComponent<Image>().color = new Color(tint.r, tint.g, tint.b, 1f);
+            Transform title = Button.transform.Find("Label");
+            if (title != null)
+                title = title.Find("Title");
+            if (title != null)
+                Bla_Localization.SetText(title, UloeData.ColourNames[i]);
+        }
+        catch (Exception) { }
+    }
 }

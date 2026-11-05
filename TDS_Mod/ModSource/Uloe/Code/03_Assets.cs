@@ -48,6 +48,18 @@ public static class UloeAssets
         "............", ".sss........", ".sSSs.......", ".sSSSs......", "..sSSgg.....", "...sgggy....",
         "....gyyyy...", ".....yyyyy..", "......yyyyy.", ".......yyYY.", "........yYY.", "............"
     };
+    // A burst of light from a bulb, the Power Bank's SURGE.
+    public static readonly string[] SurgeIcon =
+    {
+        ".....yy.....", ".y...yy...y.", "..y..yy..y..", "...ywwwwy...", "....wwwww...", "yyywwwwwwyyy",
+        "yyywwwwwwyyy", "....wwwww...", "...ywwwwy...", "..y..yy..y..", ".y...yy...y.", ".....yy....."
+    };
+    // A lamp's glass with a coloured filter over half of it, the Flood Light's COLOUR (the button tints it by colour).
+    public static readonly string[] ColourIcon =
+    {
+        "............", "...ssssss...", "..sggggggs..", ".sggwwwwggs.", ".sgwwwwSSSs.", ".sgwwwSSSSs.",
+        ".sgwwSSSSSs.", ".sgwSSSSSSs.", ".sggSSSSSgs.", "..sgggggGs..", "...ssssss...", "............"
+    };
     // A light bulb, the Light stat on a panel.
     public static readonly string[] LightIcon =
     {

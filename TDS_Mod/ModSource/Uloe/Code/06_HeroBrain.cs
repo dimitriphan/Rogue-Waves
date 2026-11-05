@@ -8,7 +8,7 @@ public class UloeHeroBrain : MonoBehaviour
     public Entity_Master Plug;      // what the cord is in; null when unplugged
     Vector3 plugAt;                 // where it was last seen, for the unplug effects once it's gone
     public float PlugReady, LightNow, RadiusNow;
-    public int Plugs, Unplugs, Snaps, Refused;
+    public int Plugs, Unplugs, Snaps, Refused, SurgeCuts, SurgeHeals;
     public bool Armed;
     public string LastPlug = "";
     readonly UloeLight light = new UloeLight();
@@ -16,6 +16,9 @@ public class UloeHeroBrain : MonoBehaviour
     bool started, off;
     float nextFeed, nextCheck, nextMenu, nextLink;
     Entity_Master.Interacts dealt;
+    Entity_Master.Oninteracts surgeHook;
+    bool surgeOn;
+    float surgeCut, nextSurge, nextHeal;
 
     public long Owner { get { return ModKitUtil.Owner(Master); } }
     public float Reach { get { return UloeData.PlugRange + UloeData.ExtensionReach[Player != null ? Player.Extension : 0]; } }
@@ -59,6 +62,11 @@ public class UloeHeroBrain : MonoBehaviour
             }
             if (Plug != null && Time.time >= nextLink)
                 ShowCord();
+            if (Time.time >= nextSurge)
+            {
+                nextSurge = Time.time + 0.1f;
+                CheckSurge();
+            }
         }
         catch (Exception e)
         {
@@ -160,6 +168,68 @@ public class UloeHeroBrain : MonoBehaviour
         LightNow = (Plug != null ? PlugLight(Plug) : UloeData.HeroLight) + UloeData.BrightLight[Player.Bright];
         RadiusNow = Plug != null ? UloeData.PlugRadius : UloeData.HeroRadius;
         UloeServer.Shine(light, Master, ModKitUtil.Pos(Master), RadiusNow, LightNow, null);
+    }
+
+    // ---------------------------------------------------------------- Surge Protector
+
+    // The Power Bank the cord is in, when it has Surge Protector.
+    public UloeBankBrain SurgeBank
+    {
+        get
+        {
+            UloeBankBrain bank = ModKitUtil.Alive(Plug) ? Plug.GetComponent<UloeBankBrain>() : null;
+            return bank != null && bank.Started && bank.Has("Surge") ? bank : null;
+        }
+    }
+
+    public bool Shielded { get { return surgeOn; } }
+
+    // Plugged into a Surge Protector: Uloe's own hit hook (at the front of its chain, which Updateinteract rebuilds) cuts
+    // what it takes, and the Bank heals it each second. Unplugged, the hook comes off.
+    void CheckSurge()
+    {
+        UloeBankBrain bank = SurgeBank;
+        if (bank == null || !ModKitUtil.Alive(Master))
+        {
+            if (surgeOn)
+                ModKitUtil.Unfront(Master, surgeHook);
+            surgeOn = false;
+            return;
+        }
+        if (surgeHook == null)
+            surgeHook = OnSurgeHit;
+        surgeCut = Mathf.Clamp01(bank.Param("Surge_Base", 0.4f));
+        surgeOn = true;
+        ModKitUtil.Front(Master, surgeHook);
+        if (Time.time < nextHeal)
+            return;
+        nextHeal = Time.time + 1f;
+        float heal = Mathf.Min(bank.Param("Surgeheal_Base", 2f), ModKitUtil.MaxHealth(Master) - ModKitUtil.Health(Master));
+        if (heal > 0f)
+        {
+            ModKitUtil.Heal(bank.Master, Master, heal);
+            SurgeHeals++;
+        }
+    }
+
+    // On its own copy: a caller may hand the same Data to every target it hits.
+    void OnSurgeHit(Link_Interact hit)
+    {
+        try
+        {
+            float m;
+            if (!surgeOn || hit == null || hit.To != Master || hit.Type != "Hurt" || hit.Data == null || !hit.Data.ContainsKey("Damage"))
+                return;
+            if (!hit.Data.TryGetValue("Damagemulti", out m))
+                m = 1f;
+            hit.Data = new Dictionary<string, float>(hit.Data);
+            hit.Data["Damagemulti"] = m * (1f - surgeCut);
+            SurgeCuts++;
+        }
+        catch (Exception e)
+        {
+            UloeLog.Warn("surge protector: " + e.Message);
+        }
     }
 
     // ---------------------------------------------------------------- commands
