@@ -475,6 +475,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Nesting Ground at dusk, calm maps on their own light. Not built: a code thread of the mode builds it from the page's
   hand-off (a table and one `ModKitLight` call from the map's weather, a self-test check), then a PC round shows it
   with foes on screen. Fog Bank (heavy sea fog) and a mood ramp stay ideas. Docs only.
+  2026-11-05: the scope sync after the sweep, his "sync" (item 13 of `docs/reports/OPEN_DECISIONS_2026-11-05b.md`)
+  and item 4's default for scope `04`: the per-campaign NEEDS line is gone, and the modifier schedule that answers it
+  (2 of the 4 new modifiers and 2 stock elites a campaign, from map 2, one more every second map) is his, without
+  tildes. The sweep's tuned numbers in `04`, `08`, `10` and `12` keep their tildes, as the sweep's report §7-8
+  leaves them, until he takes them (`06`'s and `14`'s lines were written as built). Scope `02` logs it. The Scope Editor and his project-files copy are refreshed
+  from this base (his word asked in the thread before the copy is overwritten). Docs only, no compile; nothing ran on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

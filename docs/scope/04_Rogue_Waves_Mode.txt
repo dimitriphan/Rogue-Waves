@@ -16,8 +16,7 @@
 		- Won: if the players clear Tide 15 on the final map and leave it, they complete the campaign and a new Depth level is unlocked / Map 10 ends like every map, so the campaign is won by leaving map 10 after Tide 15 or later \ /~ Depth is on hold: until it is built, nothing unlocks and the end screen says so \
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
-		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
-		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for map 1, one comes on from map 2 and one more every second map (all four by map 8), on one foe in five of each row, taken in turn from Tide to Tide; a stock elite a map can't load is replaced by the next one outside the four, so no map plays easier than its number~ /~ From map 2 and in turn: your "all proposals" (F4), docs/reports/BALANCE_SWEEP_2026-11-05.md section 2 \
+		- Changes per campaign: new modifiers / enemies that change with each campaign: each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for map 1, one comes on from map 2 and one more every second map (all four by map 8), on one foe in five of each row, taken in turn from Tide to Tide; a stock elite a map can't load is replaced by the next one outside the four, so no map plays easier than its number /~ Your "default for all" (2026-11-05, docs/reports/OPEN_DECISIONS_2026-11-05b.md item 4); from map 2 and in turn: your "all proposals" (F4), docs/reports/BALANCE_SWEEP_2026-11-05.md section 2 \
 
 	[Difficulty]
 		- Each map: harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health
