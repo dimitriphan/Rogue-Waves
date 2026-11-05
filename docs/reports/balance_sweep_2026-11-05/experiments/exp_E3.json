@@ -1,0 +1,54 @@
+[
+ {
+  "name": "E3 base argo purlest",
+  "v": "argo",
+  "m": "purlest",
+  "kind": "base",
+  "cand": "E3"
+ },
+ {
+  "name": "E3 argo purlest map1",
+  "v": "argo",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E3"
+ },
+ {
+  "name": "E3 argo purlest map5",
+  "v": "argo",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E3"
+ },
+ {
+  "name": "E3 argo purlest map10",
+  "v": "argo",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E3"
+ }
+]

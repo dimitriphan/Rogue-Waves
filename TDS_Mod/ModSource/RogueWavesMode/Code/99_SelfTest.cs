@@ -202,7 +202,7 @@ public static partial class RWTest
         yield return Stepped(DialogLook());
         yield break;
 #endif
-        yield return Stepped(Flow());     // the whole campaign as a player meets it; it ends back on the boat
+        yield return Stepped(BoardFromTide1(Flow()));     // the whole campaign as a player meets it; it ends back on the boat
 #if ROGUEWAVESMODE_FEELMAP
         yield break;
 #endif

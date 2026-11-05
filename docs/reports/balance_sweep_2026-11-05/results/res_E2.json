@@ -1,0 +1,722 @@
+[
+ {
+  "name": "E2 smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 0.719,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "E2 smacky purlest map2",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 1.021,
+  "win": 0.3125,
+  "mean_t": 13.8125
+ },
+ {
+  "name": "E2 smacky purlest map3",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 1.261,
+  "win": 0.0,
+  "mean_t": 9.75
+ },
+ {
+  "name": "E2 smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 1.67,
+  "win": 0.0,
+  "mean_t": 10.0
+ },
+ {
+  "name": "E2 smacky purlest map5",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 1.877,
+  "win": 0.0,
+  "mean_t": 9.3125
+ },
+ {
+  "name": "E2 smacky purlest map6",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 2.317,
+  "win": 0.0,
+  "mean_t": 7.875
+ },
+ {
+  "name": "E2 smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 2.667,
+  "win": 0.0,
+  "mean_t": 6.5
+ },
+ {
+  "name": "E2 smacky purlest map8",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 3.292,
+  "win": 0.0,
+  "mean_t": 6.125
+ },
+ {
+  "name": "E2 smacky purlest map9",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 3.45,
+  "win": 0.0,
+  "mean_t": 6.0
+ },
+ {
+  "name": "E2 smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 3.7,
+  "win": 0.0,
+  "mean_t": 5.625
+ },
+ {
+  "name": "E2 smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 8.797,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "E2 smacky woozy map2",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 14.381,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "E2 smacky woozy map3",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 15.792,
+  "win": 0.0,
+  "mean_t": 1.9375
+ },
+ {
+  "name": "E2 smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 16.166,
+  "win": 0.0,
+  "mean_t": 1.8125
+ },
+ {
+  "name": "E2 smacky woozy map5",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 16.549,
+  "win": 0.0,
+  "mean_t": 1.75
+ },
+ {
+  "name": "E2 smacky woozy map6",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 17.752,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 19.956,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky woozy map8",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 23.509,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky woozy map9",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 24.065,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 25.219,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 5.257,
+  "win": 0.0,
+  "mean_t": 5.0
+ },
+ {
+  "name": "E2 smacky thehunt map2",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 8.011,
+  "win": 0.0,
+  "mean_t": 3.0625
+ },
+ {
+  "name": "E2 smacky thehunt map3",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 9.437,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "E2 smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 12.497,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "E2 smacky thehunt map5",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 13.723,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "E2 smacky thehunt map6",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 16.549,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 18.173,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky thehunt map8",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 21.408,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky thehunt map9",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 22.965,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "w50": 21.408,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "E2 yossele purlest map1",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {},
+  "w50": 0.44,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "E2 yossele purlest map4",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {},
+  "w50": 1.485,
+  "win": 0.0625,
+  "mean_t": 11.0
+ },
+ {
+  "name": "E2 yossele purlest map7",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {},
+  "w50": 3.37,
+  "win": 0.0,
+  "mean_t": 9.0
+ },
+ {
+  "name": "E2 yossele purlest map10",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {},
+  "w50": 2.372,
+  "win": 0.0,
+  "mean_t": 9.0
+ },
+ {
+  "name": "E2 spool purlest map1",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "loom_aspd": 0.3,
+   "seal": false,
+   "open_cushions": 1
+  },
+  "w50": 25.219,
+  "win": 0.0,
+  "mean_t": 4.625
+ },
+ {
+  "name": "E2 spool purlest map4",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "loom_aspd": 0.3,
+   "seal": false,
+   "open_cushions": 1
+  },
+  "w50": 47.442,
+  "win": 0.0,
+  "mean_t": 3.0625
+ },
+ {
+  "name": "E2 spool purlest map7",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "loom_aspd": 0.3,
+   "seal": false,
+   "open_cushions": 1
+  },
+  "w50": 47.442,
+  "win": 0.0,
+  "mean_t": 1.9375
+ },
+ {
+  "name": "E2 spool purlest map10",
+  "v": "spool",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: [15, 18, 20, 21, 21, 24, 24, 24, 24, 24][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.6 + 0.08 * (k - 1)) * (1 + 0.015 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E2",
+  "tune": {
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "loom_aspd": 0.3,
+   "seal": false,
+   "open_cushions": 1
+  },
+  "w50": 47.442,
+  "win": 0.0,
+  "mean_t": 1.0
+ }
+]

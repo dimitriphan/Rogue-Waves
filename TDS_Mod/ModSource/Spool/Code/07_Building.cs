@@ -236,7 +236,7 @@ public class SpoolLoomBrain : SpoolBuilding
 
     void Strike()
     {
-        float aspd = Stat("Attackspeed", 0.4f);
+        float aspd = Stat("Attackspeed", 0.3f);
         if (aspd <= 0f || Time.time - lastStrike < 1f / aspd)
             return;
         lastStrike = Time.time;

@@ -1,0 +1,386 @@
+[
+ {
+  "name": "smacky one wall purlest",
+  "v": "smacky",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "break": 60
+  }
+ },
+ {
+  "name": "smacky shut purlest",
+  "v": "smacky",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest as built 2/2.5/4/3.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 0,
+   "dart_dmg": 0,
+   "tin_units": 4,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest P1-P3 3/3.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest P2-P3 3/3.5/6/3.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest 4/4.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest 3/3.5/8/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest 4/4.5/8/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest 5/5.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall purlest 5/5.5/8/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut purlest as built 2/2.5/4/3.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 0,
+   "dart_dmg": 0,
+   "tin_units": 4,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut purlest P1-P3 3/3.5/6/4.5",
+  "v": "spool",
+  "m": "purlest",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "smacky one wall woozy",
+  "v": "smacky",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "break": 60
+  }
+ },
+ {
+  "name": "smacky shut woozy",
+  "v": "smacky",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy as built 2/2.5/4/3.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 0,
+   "dart_dmg": 0,
+   "tin_units": 4,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy P1-P3 3/3.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy P2-P3 3/3.5/6/3.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy 4/4.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy 3/3.5/8/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy 4/4.5/8/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 2,
+   "dart_dmg": 2,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy 5/5.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool one wall woozy 5/5.5/8/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": false,
+   "open_cushions": 1,
+   "stitched_dmg": 3,
+   "dart_dmg": 3,
+   "tin_units": 8,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut woozy as built 2/2.5/4/3.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 0,
+   "dart_dmg": 0,
+   "tin_units": 4,
+   "dart_rng": 3.5,
+   "break": 60
+  }
+ },
+ {
+  "name": "spool shut woozy P1-P3 3/3.5/6/4.5",
+  "v": "spool",
+  "m": "woozy",
+  "p": "smart",
+  "coins": false,
+  "n": 15,
+  "tune": {
+   "seal": true,
+   "stitched_dmg": 1,
+   "dart_dmg": 1,
+   "tin_units": 6,
+   "dart_rng": 4.5,
+   "break": 60
+  }
+ }
+]

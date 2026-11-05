@@ -3,7 +3,7 @@
 
 	[Rules]
 		- Names: a short order, like a bounty on a notice board
-		- Offered: a new objective is offered at {VENDCINT} in every break between tides
+		- Offered: a new objective is offered at {VENDCINT} in every break between tides from the break before Tide 3 /~ Balance sweep 2026-11-05 (P1): three of the five are almost free on Tides 1-2, docs/reports/BALANCE_SWEEP_2026-11-05.md \
 		- Team pay: an objective the team takes pays every player the same, full amount
 		- Like: optional objectives that players can take on for bonus [Pure Aura], similar to the bounty mechanic from the base game
 
@@ -13,7 +13,7 @@
 			- In-game line: Fully mine a node that spawns in a random location on the map.
 			- Numbers: 12 hits + 3 per map; about 8 tiles + 1.5 per map from the Basin
 			- Taken by: The team
-			- Offered: Every break at {VENDCINT}
+			- Offered: Every break at {VENDCINT} from the one before Tide 3
 			- Lasts: The next tide
 			- If failed: Nothing
 			- Later maps: Node has more health and spawns further from player's spawn point
@@ -25,7 +25,7 @@
 			- In-game line: No foe hurts the Basin this Tide
 			- Numbers: no damage at all
 			- Taken by: The team
-			- Offered: Every break at {VENDCINT}
+			- Offered: Every break at {VENDCINT} from the one before Tide 3
 			- Lasts: The next tide
 			- If failed: Nothing
 			- Later maps: The same
@@ -37,7 +37,7 @@
 			- In-game line: Clear the Tide with time to spare
 			- Numbers: the last foe falls with at least 25% of the tide's clock left
 			- Taken by: The team
-			- Offered: Every break at {VENDCINT}
+			- Offered: Every break at {VENDCINT} from the one before Tide 3
 			- Lasts: The next tide
 			- If failed: Nothing
 			- Later maps: The same
@@ -49,7 +49,7 @@
 			- In-game line: No vessel drowns this Tide
 			- Numbers: no vessel falls
 			- Taken by: The team
-			- Offered: Every break at {VENDCINT}
+			- Offered: Every break at {VENDCINT} from the one before Tide 3
 			- Lasts: The next tide
 			- If failed: Nothing
 			- Later maps: The same
@@ -61,7 +61,7 @@
 			- In-game line: A halberd nest lands near the foes: destroy it before the Tide ends
 			- Numbers: 3 to 7 tiles from an enemy core
 			- Taken by: The team
-			- Offered: Every break at {VENDCINT}, never on a Nesting Ground map
+			- Offered: Every break at {VENDCINT} from the one before Tide 3, never on a Nesting Ground map
 			- Lasts: The next tide
 			- If failed: Nothing
 			- Later maps: The same

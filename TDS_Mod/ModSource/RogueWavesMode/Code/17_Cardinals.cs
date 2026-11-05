@@ -31,6 +31,7 @@ public static class RWCardinals
     public const int Stacks = 6;     // numbered copies made at boot; buying past them still takes Pure Aura for no more effect
     public const float DenturesHeal = 0.2f;   // of the damage the vessel dealt, per stack
     public const int StockCost = 15;
+    public const int Ramp = 3;       // C1: Pure Aura more for each Cardinal stack the run holds and each Trinket copy the buyer holds
     public const int OnShelf = 3;    // Cardinals and Trinkets on the shelf in a break, rolled per map and Tide, the same on every machine
     public const int TrinketSlots = 1;   // of OnShelf, kept for a Trinket while one can be bought (audit 12 row 1); a kind short fills from the other
 
@@ -307,13 +308,24 @@ public static class RWCardinals
         return OnPanel(d, stack, out u) ? u.Objectname : Id(d) + stack + "_Upgradeobject";
     }
 
-    // What a player pays: the price, or with Punch Card 20% off, rounded down (docs/scope/12).
-    public static int PriceFor(RWPlayer p, string id) { return Price(Cost(id), p != null && Count(p.Trinkets, "Cardinal_Punch") > 0); }
+    // What a player pays: the price, Ramp more for each Cardinal stack the run holds (the lobby's picks left out) and each
+    // Trinket copy the buyer holds (C1, docs/scope/12 [Rules] Price ramp), then with Punch Card 20% off, rounded down.
+    public static int PriceFor(RWPlayer p, string id) { return Price(Cost(id) + RampFor(p), p != null && Count(p.Trinkets, "Cardinal_Punch") > 0); }
+
+    public static int RampFor(RWPlayer p) { return Ramp * ((p != null ? p.Trinkets.Count : 0) + RWRun.Cardinals.Count); }
 
     public static int PriceMine(string id)
     {
         Entity_Master v = RWMine.Vessel();
-        return Price(Cost(id), OnPanel(v, "Cardinal_Punch"));
+        return Price(Cost(id) + RampMine(v), OnPanel(v, "Cardinal_Punch"));
+    }
+
+    // The ramp the host wrote on this player's vessel (RW_Price, RWRun.Carry): the bought stock Cardinals can't be told from
+    // the lobby's picks on a machine (both are in the HUD row and on the cores), so every machine takes the host's count.
+    static int RampMine(Entity_Master v)
+    {
+        Link_Commandref c;
+        return RWMine.Command(v, RWRun.PriceLink, out c) ? Mathf.RoundToInt(c.Goalvalue) : 0;
     }
 
     static int Price(int cost, bool punched) { return punched ? Mathf.FloorToInt(cost * (1f - RWTrinkets.PunchOff) + 0.0001f) : cost; }

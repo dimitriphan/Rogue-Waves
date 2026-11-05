@@ -215,7 +215,7 @@
 			[Stats]
 				- In-game line: Mines a node, aims its Light at a tower
 				- Health: 40, +20 per level
-				- Mining: ~strikes a node within 2.5 tiles for 1, 0.4 times a second, as the Mining Hut's pick does; no node in reach, no Light~ /~ The balance sweep checks it with the Loom's and lowers it if it outmines the base vessels \
+				- Mining: ~strikes a node within 2.5 tiles for 1, 0.3 times a second, 10% faster for each Light it gets; no node in reach, no Light~ /~ The balance sweep lowered it from 0.4 with Spool's Loom, as this sheet ties them (Uloe has no simulator yet). docs/reports/BALANCE_SWEEP_2026-11-05.md section 4 \
 				- Light out: 2, plus 0.2 per point of the node's total aura up to 3 more, to the one building it aims at
 				- Aim reach: 6 tiles /~ An AIM button picks the building; with no pick it lights the nearest \
 				- Limit: none

@@ -196,11 +196,11 @@ public static class SpoolData
         new Unit { Id = Stitched, Display = "Stitched", Sheet = "Spoolstitched-Sheet", SmallSheet = "Spoolstitchedsmall-Sheet", Thread = 10, Leash = 2f, Sellable = true,
             Desc = "Short and stubby, single-target melee",
             Lore = "A short, stubby plush stitched in four seconds flat. It runs where it's sent and stays there.",
-            Stats = new[] { "Health=20", "Speed=1.8", "Damage=2", "Range=1.5", "Attackspeed=0.8" } },
+            Stats = new[] { "Health=20", "Speed=1.8", "Damage=5", "Range=1.5", "Attackspeed=0.8" } },     // Damage: the balance sweep 2026-11-05 (one wall)
         new Unit { Id = Dart, Display = "Dart", Sheet = "Spooldart-Sheet", SmallSheet = "Spooldartsmall-Sheet", Thread = 15, Leash = 1f, Ranged = true, Sellable = true,
             Desc = "Thin and small, throws needles",
             Lore = "A thin little plush with a pocket full of needles. It keeps close to its spot and throws.",
-            Stats = new[] { "Health=12", "Speed=1.6", "Damage=2.5", "Range=3.5", "Attackspeed=0.6", "Projspeed=14" } },
+            Stats = new[] { "Health=12", "Speed=1.6", "Damage=5.5", "Range=3.5", "Attackspeed=0.6", "Projspeed=14" } },     // Damage: the balance sweep
         new Unit { Id = Seam, Display = "Seam", Sheet = "Spoolseam-Sheet", Leash = 2.5f,
             Desc = "Round and weak, mines and guards its Loom",
             Lore = "A round plush the Loom sews from offcuts. It picks at the ore and pokes at anything that comes close.",
@@ -273,7 +273,7 @@ public static class SpoolData
             Id = Tin, Template = "Tower_Smackyhut", Display = "Repurposed Cookie Tin", Tag = "Spooltin", Tags = new[] { "Tower" },
             Desc = "Stitches Crafted from Thread, sends them where you point", Costs = "Redaura=50",
             Lore = "A cookie tin full of sewing supplies. Feed it Thread and it sends Crafted running to the spot you pick.",
-            Stats = new[] { "Health=60+25", "Units=4", "Respawn=4", "Reach=8" },
+            Stats = new[] { "Health=60+25", "Units=6", "Respawn=4", "Reach=8" },     // Units: the balance sweep 2026-11-05 (one wall)
             Upgrades = new[]
             {
                 U(Tin, "Recycle", 2, "Reuse Reduce Recycle", "Fallen Crafted leave Thread behind", "Recycle_Base=0.5", "Redaura=30", "Discounted3,Design3",
@@ -305,8 +305,8 @@ public static class SpoolData
         new Build
         {
             Id = Cushion, Template = "Tower_Smackywall", Display = "Pin Cushion", Tag = "Spoolcushion", Tags = new[] { "Tower" },
-            Desc = "Sturdy, pricks melee attackers, spins Thread when hit", Costs = "Blueaura=20",
-            Lore = "A wall of stuffing bristling with pins. Whatever hits it gets pricked, and every hit shakes a little Thread loose.",
+            Desc = "Build it first: pricks melee attackers, spins Thread when hit", Costs = "Blueaura=20",
+            Lore = "A wall of stuffing bristling with pins. Whatever hits it gets pricked, and every hit shakes a little Thread loose. Set one where the paths meet before anything else: the Crafted fight best beside it.",
             Stats = new[] { "Health=100+40", "Reflect=0.2", "Spin=25" },
             Upgrades = new[]
             {
@@ -329,7 +329,7 @@ public static class SpoolData
             Id = Loom, Template = "Tower_Smackyhut", Display = "Loom", Tag = "Spoolloom", Tags = new[] { "Tower", "Gatherer" },
             Desc = "Mines aura, spins Thread", Costs = "Yellowaura=40",
             Lore = "It picks at the ore within reach and spins a little Thread on the side, for Spool or a Thread Head to collect.",
-            Stats = new[] { "Health=40+20", "Damage=1", "Attackspeed=0.4", "Range=2.5", "Spinrate=6", "Hold=10" },
+            Stats = new[] { "Health=40+20", "Damage=1", "Attackspeed=0.3", "Range=2.5", "Spinrate=6", "Hold=10" },     // Attackspeed: as low as Spool keeps The Hunt (the balance sweep 2026-11-05)
             Upgrades = new[]
             {
                 U(Loom, "Direct", 2, "Direct Line", "Thread goes straight home", "Direct_Base=1", "Yellowaura=30", "",

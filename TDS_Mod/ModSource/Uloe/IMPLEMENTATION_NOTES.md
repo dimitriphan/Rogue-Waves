@@ -1,5 +1,7 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the balance sweep's Flood Light (compiled, not yet run in game):** it strikes its node 0.3 times a second, not 0.4, with Spool's Loom, as scope `10` ties the two (`docs/reports/BALANCE_SWEEP_2026-11-05.md` section 4; `02_Data.cs`, the fallback in `07_Building.cs` and the two upgrade checks' fallbacks in `98_Upgrades.cs`). Light still adds 10% a point; Uloe has no simulator, so its play test is the check.
+
 **2026-11-05, the decided fixes, kit 1.14 (compiled, not yet run in game):** Searchlight's slow goes through
 `ModKitUtil.SlowOn`, so a foe under Fog Horn, Tin Whistle or Sap stays at 10% of its speed or more; a slow the floor cut
 short is made again at full strength once there is room (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md`).

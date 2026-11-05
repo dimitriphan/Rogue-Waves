@@ -1,0 +1,46 @@
+step 1
+step 2
+step 3
+step 4
+step 5
+step 6
+step 7
+step 8
+{"name": "E2 smacky purlest map1", "w50": 0.719, "win": 1.0, "mean_t": 16.0}
+{"name": "E2 smacky purlest map2", "w50": 1.021, "win": 0.3125, "mean_t": 13.8125}
+{"name": "E2 smacky purlest map3", "w50": 1.261, "win": 0.0, "mean_t": 9.75}
+{"name": "E2 smacky purlest map4", "w50": 1.67, "win": 0.0, "mean_t": 10.0}
+{"name": "E2 smacky purlest map5", "w50": 1.877, "win": 0.0, "mean_t": 9.3125}
+{"name": "E2 smacky purlest map6", "w50": 2.317, "win": 0.0, "mean_t": 7.875}
+{"name": "E2 smacky purlest map7", "w50": 2.667, "win": 0.0, "mean_t": 6.5}
+{"name": "E2 smacky purlest map8", "w50": 3.292, "win": 0.0, "mean_t": 6.125}
+{"name": "E2 smacky purlest map9", "w50": 3.45, "win": 0.0, "mean_t": 6.0}
+{"name": "E2 smacky purlest map10", "w50": 3.7, "win": 0.0, "mean_t": 5.625}
+{"name": "E2 smacky woozy map1", "w50": 8.797, "win": 0.0, "mean_t": 2.0}
+{"name": "E2 smacky woozy map2", "w50": 14.381, "win": 0.0, "mean_t": 2.0}
+{"name": "E2 smacky woozy map3", "w50": 15.792, "win": 0.0, "mean_t": 1.9375}
+{"name": "E2 smacky woozy map4", "w50": 16.166, "win": 0.0, "mean_t": 1.8125}
+{"name": "E2 smacky woozy map5", "w50": 16.549, "win": 0.0, "mean_t": 1.75}
+{"name": "E2 smacky woozy map6", "w50": 17.752, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky woozy map7", "w50": 19.956, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky woozy map8", "w50": 23.509, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky woozy map9", "w50": 24.065, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky woozy map10", "w50": 25.219, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky thehunt map1", "w50": 5.257, "win": 0.0, "mean_t": 5.0}
+{"name": "E2 smacky thehunt map2", "w50": 8.011, "win": 0.0, "mean_t": 3.0625}
+{"name": "E2 smacky thehunt map3", "w50": 9.437, "win": 0.0, "mean_t": 2.0}
+{"name": "E2 smacky thehunt map4", "w50": 12.497, "win": 0.0, "mean_t": 2.0}
+{"name": "E2 smacky thehunt map5", "w50": 13.723, "win": 0.0, "mean_t": 2.0}
+{"name": "E2 smacky thehunt map6", "w50": 16.549, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky thehunt map7", "w50": 18.173, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky thehunt map8", "w50": 21.408, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky thehunt map9", "w50": 22.965, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 smacky thehunt map10", "w50": 21.408, "win": 0.0, "mean_t": 1.0}
+{"name": "E2 yossele purlest map1", "w50": 0.44, "win": 1.0, "mean_t": 16.0}
+{"name": "E2 yossele purlest map4", "w50": 1.485, "win": 0.0625, "mean_t": 11.0}
+{"name": "E2 yossele purlest map7", "w50": 3.37, "win": 0.0, "mean_t": 9.0}
+{"name": "E2 yossele purlest map10", "w50": 2.372, "win": 0.0, "mean_t": 9.0}
+{"name": "E2 spool purlest map1", "w50": 25.219, "win": 0.0, "mean_t": 4.625}
+{"name": "E2 spool purlest map4", "w50": 47.442, "win": 0.0, "mean_t": 3.0625}
+{"name": "E2 spool purlest map7", "w50": 47.442, "win": 0.0, "mean_t": 1.9375}
+{"name": "E2 spool purlest map10", "w50": 47.442, "win": 0.0, "mean_t": 1.0}

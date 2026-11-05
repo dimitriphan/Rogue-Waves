@@ -42,9 +42,6 @@ public class SpoolMod : MonoBehaviour
 
     IEnumerator Boot()
     {
-#if SPOOL_PLAY && SPOOL_TUNE
-        SpoolPlay.Tune();
-#endif
         Heroentryobject template = null;
         while (template == null)
         {

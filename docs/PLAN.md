@@ -456,6 +456,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   release, self-test, with gaps and with shots: 0 errors), not run on the PC. **PC round 4:** the mode's self-test with
   every part on shows the three `Spring Tide` lines passing, and the two `INFO Spring Tide: the archer built after the
   Cardinals` lines list Paper Tower's and Frail Titan's effects with a Multi near 0.01 (the cause confirmed).
+  2026-11-05: the balance simulator sweep, Dimitri's queued order on his "Starting set S2, all proposals"
+  (`docs/reports/BALANCE_SWEEP_2026-11-05.md`, runs in `balance_sweep_2026-11-05/`). The mode: map k's Tide 15 plays
+  the base game's row 15, 18, 20, 21, 21, then 24 to map 10 (F1); foe health one Pmulti (F2) of x2.6 on map 1 (F3),
+  +0.08 a map, +2% for each Cardinal, Trinket copy and Direction rank held (F5); modifiers from map 2 (F4); +50% foes
+  a player (X1); prices +3 a held item (C1, shown right on every machine by a fourth None command, `RW_Price`);
+  objectives from the break before Tide 3 (P1). Measured (16 seeds): D 0.8 on map 1, 1.0 on map 3, about 1.5 on maps
+  8-10 (mid case), the review's target; Yossele follows Smacky, Spool on one Cushion can't hold the mode's maps until
+  a Stitched blocks (its 22 upgrades), and Argo looks easier than its base game (a PC check). Spool on one Pin Cushion
+  (answers 25, 26): Stitched 5, Dart 5.5, 6 Crafted a Tin, Range 3.5 kept, the Loom 0.3 a second, the Cushion's "Build
+  it first" line (P4); Uloe's Flood Light 0.3 with it. Spring Tide by a Fie wall is code, not a number: B7's rebuild,
+  whose weather-round fails were the test's tower (the entry above). The weather's pay line is fixed. Scope `04`,
+  `06`, `08`, `10`, `12`, `14` carry the numbers with tildes. Compiled here (the mode, Spool, Uloe, every test switch
+  but the two-PC and dialog-look builds, which fail here as always; editors clean), not run on the PC: its §8 joins PC
+  round 4's list. Next: the scope sync and scope `04`'s tidy, then PC round 4, then Spool's 22 upgrades.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

@@ -273,7 +273,8 @@ public static partial class RWTest
         reviewLines.Clear();
         int pureBefore = player.Pure;
         yield return ToNextMap();
-        yield return Until(() => SeenLines("posted:") > 0, 60f);
+        // P1 posts the board from Tide 3's break, so the opening has only the payout to wait for.
+        yield return Until(() => reviewLines.Exists(l => l.Contains("Mind the Vessels") && l.Contains("paid")), 60f);
         player = RWRun.For(me);
         int paidAt = reviewLines.FindIndex(l => l.Contains("Mind the Vessels") && l.Contains("paid")), postedAt = reviewLines.FindIndex(l => l.Contains("posted:"));
         Finding("MODE-D2", paidAt >= 0 && (postedAt < 0 || paidAt < postedAt), "map 2's opening: " + string.Join(" | ", reviewLines.ToArray()) + "; Pure " + pureBefore + " -> " + player.Pure);
@@ -321,7 +322,7 @@ public static partial class RWTest
             foreach (Statproperties.Defaultstatgroup g in e.Beingserver.Entity.Defaultstat.Stats) if (g.Name == "Health") listed = g.Value;
             if (healths.Length < 120) healths += e.Being.Value + " " + HpMax(e) + "/" + listed + " ";
         }
-        Finding("MODE-D5", healthSkin > 0, "map 2, Tide 1: " + read + " foes read, " + healthSkin + " wear 'Health', " + plainSkin + " none, " + withHealth + " hold the map's health upgrade: " + skins + "; max Health against the listed (fixed: x1.08): " + healths);
+        Finding("MODE-D5", healthSkin > 0, "map 2, Tide 1: " + read + " foes read, " + healthSkin + " wear 'Health', " + plainSkin + " none, " + withHealth + " hold the map's health upgrade: " + skins + "; max Health against the listed (want x" + RWUtil.F(1f + RWDifficulty.LastHealth) + "): " + healths);
         ClearFoes();
         freeze = true;
         yield return ToBoat();

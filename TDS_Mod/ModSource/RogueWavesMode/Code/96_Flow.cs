@@ -238,6 +238,15 @@ public static partial class RWTest
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 90f);
     }
 
+    // A test that reads the board from a map's opening break (P1 posts it from Tide 3's): set back however the test ends,
+    // a Setup's early exit and a throw included, so the gaps part's P1 check sees Tide 3 again.
+    public static IEnumerator BoardFromTide1(IEnumerator inner)
+    {
+        RWObjectives.FirstTide = 1;
+        try { while (inner.MoveNext()) yield return inner.Current; }
+        finally { RWObjectives.FirstTide = RWObjectives.ObjectivesFrom; }
+    }
+
     public static IEnumerator Flow()
     {
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
@@ -509,6 +518,7 @@ public static partial class RWTest
             if (RWCardinals.IsMine(id) && id != "Cardinal_Dentures") continue;
             string why = "", what = (RWCardinals.IsTrinket(id) ? "Trinket " : "Cardinal ") + id;
             float gainBefore = Game_Mapvars.Instance.Resourcegainmultiplier;
+            player.Pure = Mathf.Max(player.Pure, RWCardinals.PriceFor(player, id));     // C1's ramp outgrows any fixed budget
             try { why = RWCardinals.Buy(player, id); }
             catch (Exception e) { why = e.GetType().Name + ": " + e.Message; Check(what + " grants without an exception", false, why); }
             if (why != "") Info(what, why);

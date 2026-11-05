@@ -11,9 +11,15 @@ public static partial class RWTest
         RWPlayer punch = new RWPlayer { Key = "test", Hero = "Hero_Smacky" }, plain = new RWPlayer { Key = "test", Hero = "Hero_Smacky" };
         punch.Trinkets.Add("Cardinal_Punch1");
         string off = "";
+        int run = RWRun.Cardinals.Count, ramp = RWCardinals.Ramp;
         foreach (string id in RWCardinals.Sold)
-            if (RWCardinals.PriceFor(punch, id) != Mathf.FloorToInt(RWCardinals.Cost(id) * 0.8f + 0.0001f) || RWCardinals.PriceFor(plain, id) != RWCardinals.Cost(id)) off += id + " ";
-        Check("Punch Card: every Cardinal and Trinket costs its holder 20% less, rounded down (15 -> 12, 25 -> 20)", off == "" && RWCardinals.PriceFor(punch, "Cardinal_Cork") == 20 && RWCardinals.PriceFor(punch, "Cardinal_Dentures") == 12, off);
+            if (RWCardinals.PriceFor(punch, id) != Mathf.FloorToInt((RWCardinals.Cost(id) + ramp * (1 + run)) * 0.8f + 0.0001f) || RWCardinals.PriceFor(plain, id) != RWCardinals.Cost(id) + ramp * run) off += id + " ";
+        Check("Punch Card: every Cardinal and Trinket costs its holder 20% less, rounded down, after the ramp (25 + 3 -> 22, 15 + 3 -> 14)", off == "" && (run > 0 || RWCardinals.PriceFor(punch, "Cardinal_Cork") == 22 && RWCardinals.PriceFor(punch, "Cardinal_Dentures") == 14), off + "run " + run);
+        RWPlayer two = new RWPlayer { Key = "test", Hero = "Hero_Smacky" };
+        two.Trinkets.Add("Cardinal_Dentures1");
+        two.Trinkets.Add("Cardinal_Dentures2");
+        Check("C1: each Trinket copy a player holds and each Cardinal the run holds adds 3 Pure Aura to every price", RWCardinals.PriceFor(two, "Cardinal_Flare") == RWCardinals.Cost("Cardinal_Flare") + ramp * (2 + run) && RWCardinals.PriceFor(plain, "Cardinal_Flare") == RWCardinals.Cost("Cardinal_Flare") + ramp * run,
+            RWCardinals.PriceFor(two, "Cardinal_Flare") + " with two copies, " + RWCardinals.PriceFor(plain, "Cardinal_Flare") + " with none, run " + run);
 
         punch.Pure = 100;
         string refused = RWCardinals.Buy(punch, "Cardinal_Oyster");
@@ -60,7 +66,7 @@ public static partial class RWTest
         string why = "";
         for (int i = 0; i < times && why == ""; i++)
         {
-            p.Pure = Mathf.Max(p.Pure, 100);
+            p.Pure = Mathf.Max(p.Pure, RWCardinals.PriceFor(p, "Cardinal_" + name));     // C1's ramp grows with every copy held
             why = RWCardinals.Buy(p, "Cardinal_" + name);
         }
         return why;
@@ -179,13 +185,14 @@ public static partial class RWTest
         RWTrinkets.Tide(2);
         Check("Pearl Oyster: +1 Pure Aura a Tide until the next buy, then none on this map", why == "" && p1 == p0 + 1 && player.Pure == p2, "'" + why + "', Pure " + p0 + " -> " + p1 + "; after a buy " + p2 + " -> " + player.Pure);
 
-        // Punch Card, once the Oyster is let go: a Trinket at 12 costs 9.
+        // Punch Card, once the Oyster is let go: a Trinket at 12 (and C1's ramp) costs 20% less.
         string clash = BuyTrinket(player, "Punch", 1);
         player.Trinkets.RemoveAll(t => t.StartsWith("Cardinal_Oyster"));
         why = BuyTrinket(player, "Punch", 1);
-        int before = player.Pure;
+        player.Pure = Mathf.Max(player.Pure, 400);
+        int before = player.Pure, knifeWant = Mathf.FloorToInt((12 + RWCardinals.RampFor(player)) * 0.8f + 0.0001f);
         string knife = RWCardinals.Buy(player, "Cardinal_Knife");
-        Check("Punch Card: refused beside Pearl Oyster; held, a Trinket at 12 costs 9", clash == "Clashes with Pearl Oyster" && why == "" && knife == "" && before - player.Pure == 9, "'" + clash + "', '" + why + "', '" + knife + "', paid " + (before - player.Pure));
+        Check("Punch Card: refused beside Pearl Oyster; held, a Trinket at 12 and the ramp costs 20% less", clash == "Clashes with Pearl Oyster" && why == "" && knife == "" && before - player.Pure == knifeWant, "'" + clash + "', '" + why + "', '" + knife + "', paid " + (before - player.Pure) + " of " + knifeWant);
 
         // Bottled Storm: 5 Tides of 25% more damage, then a rank or Pure Aura 20.
         TakeRanks(player, "Any", "Salt", 1);

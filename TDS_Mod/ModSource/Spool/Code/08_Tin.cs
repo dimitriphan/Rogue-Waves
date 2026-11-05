@@ -22,7 +22,7 @@ public class SpoolTinBrain : SpoolBuilding
     int needleCount, bookWave = -1, bookUsed;
     readonly List<string> again = new List<string>();   // Pattern Book: the kinds of the fallen to stitch again
 
-    public int Slots { get { return Mathf.Max(1, Mathf.RoundToInt(Stat("Units", 4f))) * (Player.Buttons > 0 ? SpoolData.ButtonPair : 1); } }
+    public int Slots { get { return Mathf.Max(1, Mathf.RoundToInt(Stat("Units", 6f))) * (Player.Buttons > 0 ? SpoolData.ButtonPair : 1); } }
     public float StitchTime
     {
         get
