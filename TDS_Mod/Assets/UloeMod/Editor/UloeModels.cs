@@ -37,14 +37,14 @@ namespace UloeBuild
 
             const string G = "Tower_Uloeglass", B = "Tower_Uloebank", M = "Tower_Uloemirror", F = "Tower_Uloeflood";
             AddPart("Glass", G, () => GlassStand(""), "Lens", () => Lens(""), V(0, LensY, 0));
-            AddPart("Glass", G + "_Burn2", () => GlassStand("Burn2"), "Lens", () => Lens("Burn2"), V(0, LensY, 0));
+            // One look per upgrade, named Owner_KeyTier (Code/02_Data.cs Upg.Model); the code falls back to the tower's own.
+            foreach (var k in new[] { "Burn2", "Widelens2", "Polished3", "Quick3", "Prism3", "Sunspot4", "Focal4", "Deathray5" }) { string key = k; AddPart("Glass", G + "_" + key, () => GlassStand(key), "Lens", () => Lens(key), V(0, LensY, 0)); }
             Add("Bank", B, () => Bank(""));
-            Add("Bank", B + "_Short2", () => Bank("Short2"));
+            foreach (var k in new[] { "Short2", "Extracell2", "Static3", "Bright3", "Surge3", "Chain4", "Swarm4", "Supernova5" }) { string key = k; Add("Bank", B + "_" + key, () => Bank(key)); }
             Add("Mirror", M, () => Mirror(""));
-            foreach (var k in new[] { "Silver2", "Vanity2", "Glare3", "Bounce3" }) { string key = k; Add("Mirror", M + "_" + key, () => Mirror(key)); }
+            foreach (var k in new[] { "Silver2", "Vanity2", "Glare3", "Bounce3", "Tempered3", "Hall4", "Reflection4", "Heliostat5" }) { string key = k; Add("Mirror", M + "_" + key, () => Mirror(key)); }
             AddPart("Flood", F, () => FloodStand(""), "Lamp", () => Lamp(""), V(0, LampY, 0));
-            AddPart("Flood", F + "_Wide2", () => FloodStand("Wide2"), "Lamp", () => Lamp("Wide2"), V(0, LampY, 0));
-            AddPart("Flood", F + "_Long2", () => FloodStand("Long2"), "Lamp", () => Lamp("Long2"), V(0, LampY, 0));
+            foreach (var k in new[] { "Wide2", "Long2", "Halogen3", "Voltage3", "Filter4", "Searchlight4", "Stadium5", "Lighthouse5" }) { string key = k; AddPart("Flood", F + "_" + key, () => FloodStand(key), "Lamp", () => Lamp(key), V(0, LampY, 0)); }
             for (int i = 1; i <= 3; i++) { int band = i; Add("Extras", "Uloe_Lit" + band, () => LitLook(band)); }
             Add("Extras", "Uloe_Plug", PlugModel);
             Add("Projectiles", "Uloe_Spark", Spark, true);
@@ -135,11 +135,48 @@ namespace UloeBuild
             // the cord down the back and off to its plug
             Cord(m, new[] { V(0.05f, 0.4f, 0.08f), V(0.12f, 0.2f, 0.17f), V(0.25f, 0.06f, 0.24f), V(0.34f, 0.04f, 0.17f) });
             Plug(m, V(0.36f, 0.015f, 0.12f), 200f, 0.9f);
-            if (up == "Burn2")
+            switch (up)
             {
-                // scorch marks on the foot and a little heap of embers
-                m.Disc(V(-0.14f, 0.056f, -0.14f), 0.09f, 8, Pal.Cord2, 0.006f);
-                m.Ball(V(-0.14f, 0.075f, -0.14f), V(0.035f, 0.02f, 0.035f), 6, 3, Pal.Ember, Pal.Light1);
+                case "Burn2":
+                    // scorch marks on the foot and a little heap of embers
+                    m.Disc(V(-0.14f, 0.056f, -0.14f), 0.09f, 8, Pal.Cord2, 0.006f);
+                    m.Ball(V(-0.14f, 0.075f, -0.14f), V(0.035f, 0.02f, 0.035f), 6, 3, Pal.Ember, Pal.Light1);
+                    break;
+                case "Polished3":
+                    // a folded polishing cloth on the foot and a tin of polish
+                    m.Push(V(-0.15f, 0.056f, -0.12f), 25f, 1f);
+                    m.Block(V(0, 0, 0), V(0.15f, 0.025f, 0.1f), 0.008f, Pal.Card1, Pal.Card0);
+                    m.Pop();
+                    m.Prism(V(0.13f, 0.056f, -0.17f), 0.05f, 0.05f, 0.04f, 10, Pal.Brass2, Pal.Brass0);
+                    break;
+                case "Quick3":
+                    // a brass gear on the column's side, the clockwork that turns the lens quicker
+                    m.Push(V(0.105f, 0.29f, -0.02f), Quaternion.Euler(0f, 0f, 90f), Vector3.one);
+                    m.Prism(V(0, -0.014f, 0), 0.075f, 0.075f, 0.028f, 10, Pal.Brass2, Pal.Brass0, Pal.Brass1);
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float a = i / 8f * Mathf.PI * 2f;
+                        m.Block(V(Mathf.Cos(a) * 0.085f, -0.012f, Mathf.Sin(a) * 0.085f), V(0.028f, 0.024f, 0.028f), 0.004f, Pal.Brass1, Pal.Brass0);
+                    }
+                    m.Prism(V(0, 0.014f, 0), 0.025f, 0.025f, 0.012f, 6, Pal.Steel1, Pal.Steel0);
+                    m.Pop();
+                    break;
+                case "Deathray5":
+                    // a warning band round the foot and cooling fins up the column
+                    for (int i = 0; i < 12; i++)
+                    {
+                        float a = (i + 0.5f) / 12f * Mathf.PI * 2f;
+                        m.Push(V(Mathf.Cos(a) * 0.3f, 0.055f, Mathf.Sin(a) * 0.3f), -a * Mathf.Rad2Deg, 1f);
+                        m.Block(V(0, 0, 0), V(0.05f, 0.012f, 0.13f), 0.003f, i % 2 == 0 ? Pal.Light2 : Pal.Cord2, i % 2 == 0 ? Pal.Light2 : Pal.Cord2);
+                        m.Pop();
+                    }
+                    for (int i = 0; i < 4; i++)
+                    {
+                        float a = i * Mathf.PI * 0.5f + Mathf.PI * 0.25f;
+                        m.Block(V(Mathf.Cos(a) * 0.12f, 0.16f, Mathf.Sin(a) * 0.12f), V(0.05f, 0.24f, 0.05f), 0.006f, Pal.Cord3, Pal.Cord4);
+                    }
+                    m.Ball(V(-0.2f, 0.07f, -0.2f), Vector3.one * 0.03f, 6, 4, Pal.Fuse, Pal.Light1);
+                    break;
             }
             return m;
         }
@@ -150,13 +187,16 @@ namespace UloeBuild
         {
             var m = new Lp();
             Vector3 c = V(0, LensY, 0);
-            float r = 0.25f;
-            Hoop(m, c, r, 0.028f, Pal.Brass1);
-            // the pane: a shallow double lens, its face the palest glass
+            // Each upgrade's look is its own; Prism is only reached through Wide Lens, so it keeps the wider pane too.
+            float r = up == "Widelens2" || up == "Prism3" ? 0.31f : 0.25f;
+            bool hot = up == "Deathray5";
+            int pane = hot ? Pal.Ember : Pal.Glass1, face = hot ? Pal.Light1 : Pal.Glass0, shine = hot ? Pal.Light0 : Pal.White;
+            Hoop(m, c, r, 0.028f, hot ? Pal.Cord3 : Pal.Brass1);
+            // the pane: a shallow double lens, its face the palest glass (red-hot on the Death Ray)
             m.Push(c, Quaternion.Euler(-90f, 0f, 0f), Vector3.one);
-            m.Prism(V(0, -0.012f, 0), r * 0.98f, r * 0.98f, 0.024f, 14, Pal.Glass1, Pal.Glass0, Pal.Glass1);
-            m.Prism(V(0, 0.012f, 0), r * 0.92f, r * 0.55f, 0.018f, 14, Pal.Glass0, Pal.White);
-            m.Prism(V(0, -0.03f, 0), r * 0.55f, r * 0.92f, 0.018f, 14, Pal.Glass0, -1, Pal.White);
+            m.Prism(V(0, -0.012f, 0), r * 0.98f, r * 0.98f, 0.024f, 14, pane, face, pane);
+            m.Prism(V(0, 0.012f, 0), r * 0.92f, r * 0.55f, 0.018f, 14, face, shine);
+            m.Prism(V(0, -0.03f, 0), r * 0.55f, r * 0.92f, 0.018f, 14, face, -1, shine);
             m.Pop();
             // the glint
             m.Tri2(c + V(-0.15f, 0.13f, -0.036f), c + V(-0.05f, 0.18f, -0.036f), c + V(-0.14f, 0.04f, -0.036f), Pal.Light0, Pal.Glass0);
@@ -165,18 +205,98 @@ namespace UloeBuild
             m.Prism(h + Vector3.down * 0.06f, 0.034f, 0.04f, 0.05f, 8, Pal.Brass3, Pal.Brass1);
             m.Tube(c + V(-r, 0, 0), c + V(-r - 0.03f, 0, 0), 0.02f, 0.02f, 6, Pal.Brass2, Pal.Brass1);
             m.Tube(c + V(r, 0, 0), c + V(r + 0.03f, 0, 0), 0.02f, 0.02f, 6, Pal.Brass2, Pal.Brass1);
-            if (up == "Burn2")
+            switch (up)
             {
-                // a second, smaller lens out in front on two rods: the focus sharpens
-                Vector3 c2 = c + V(0, 0, -0.17f);
-                Hoop(m, c2, 0.12f, 0.016f, Pal.Brass2);
-                m.Push(c2, Quaternion.Euler(-90f, 0f, 0f), Vector3.one);
-                m.Prism(V(0, -0.008f, 0), 0.115f, 0.115f, 0.016f, 10, Pal.Light1, Pal.Light0, Pal.Light1);
-                m.Pop();
-                m.Tube(c + V(-0.19f, 0, -0.02f), c2 + V(-0.11f, 0, 0), 0.008f, 0.008f, 4, Pal.Brass3);
-                m.Tube(c + V(0.19f, 0, -0.02f), c2 + V(0.11f, 0, 0), 0.008f, 0.008f, 4, Pal.Brass3);
+                case "Burn2":
+                {
+                    // a second, smaller lens out in front on two rods: the focus sharpens
+                    Vector3 c2 = c + V(0, 0, -0.17f);
+                    Hoop(m, c2, 0.12f, 0.016f, Pal.Brass2);
+                    m.Push(c2, Quaternion.Euler(-90f, 0f, 0f), Vector3.one);
+                    m.Prism(V(0, -0.008f, 0), 0.115f, 0.115f, 0.016f, 10, Pal.Light1, Pal.Light0, Pal.Light1);
+                    m.Pop();
+                    m.Tube(c + V(-0.19f, 0, -0.02f), c2 + V(-0.11f, 0, 0), 0.008f, 0.008f, 4, Pal.Brass3);
+                    m.Tube(c + V(0.19f, 0, -0.02f), c2 + V(0.11f, 0, 0), 0.008f, 0.008f, 4, Pal.Brass3);
+                    break;
+                }
+                case "Widelens2":
+                    // the wider pane gets a second, outer rim
+                    Hoop(m, c + V(0, 0, 0.012f), r + 0.03f, 0.016f, Pal.Brass2, 16);
+                    break;
+                case "Polished3":
+                    // a four-point sparkle and a second glint: the glass polished to a shine
+                    Star(m, c + V(0.09f, 0.08f, -0.04f), 0.11f, Pal.White, Pal.Glass0);
+                    m.Tri2(c + V(0.06f, -0.1f, -0.036f), c + V(0.14f, -0.06f, -0.036f), c + V(0.1f, -0.14f, -0.036f), Pal.White, Pal.Glass0);
+                    break;
+                case "Quick3":
+                    // knurled focus knobs on both pins
+                    foreach (float sx in new[] { -1f, 1f })
+                    {
+                        m.Tube(c + V(sx * (r + 0.03f), 0, 0), c + V(sx * (r + 0.075f), 0, 0), 0.048f, 0.048f, 8, Pal.Brass1, Pal.Brass0, Pal.Brass0);
+                        m.Tube(c + V(sx * (r + 0.075f), 0, 0), c + V(sx * (r + 0.09f), 0, 0), 0.03f, 0.03f, 8, Pal.Steel1, Pal.Steel0, Pal.Steel0);
+                    }
+                    break;
+                case "Prism3":
+                {
+                    // a three-sided glass prism held out in front on two rods, the light splitting off it in three colours
+                    Vector3 pc = c + V(0, -0.02f, -0.2f);
+                    m.Push(pc, Quaternion.Euler(0f, 0f, 90f), Vector3.one);
+                    m.Prism(V(0, -0.11f, 0), 0.07f, 0.07f, 0.22f, 3, Pal.Glass1, Pal.Glass0, Pal.Glass0, 90f);
+                    m.Pop();
+                    m.Tube(c + V(-0.12f, -0.02f, -0.02f), pc + V(-0.1f, 0, 0), 0.008f, 0.008f, 4, Pal.Brass3);
+                    m.Tube(c + V(0.12f, -0.02f, -0.02f), pc + V(0.1f, 0, 0), 0.008f, 0.008f, 4, Pal.Brass3);
+                    int[] split = { Pal.Fuse, Pal.Light2, Pal.Led0 };
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float x = (i - 1) * 0.07f;
+                        m.Tri2(pc + V(x * 0.4f, -0.02f, -0.06f), pc + V(x * 0.4f + 0.025f, -0.02f, -0.06f), pc + V(x * 1.6f, -0.09f, -0.2f), split[i], split[i]);
+                    }
+                    break;
+                }
+                case "Sunspot4":
+                    // a ring of sun rays round the frame
+                    for (int i = 0; i < 12; i++)
+                    {
+                        float a = i / 12f * Mathf.PI * 2f + 0.13f, ra = r + 0.03f, rb = r + (i % 2 == 0 ? 0.12f : 0.08f);
+                        Vector3 d = V(Mathf.Cos(a), Mathf.Sin(a), 0), side = V(-d.y, d.x, 0) * 0.035f;
+                        m.Tri2(c + d * ra + side + V(0, 0, 0.005f), c + d * ra - side + V(0, 0, 0.005f), c + d * rb + V(0, 0, 0.005f), i % 2 == 0 ? Pal.Light1 : Pal.Light2, Pal.Light3);
+                    }
+                    break;
+                case "Focal4":
+                {
+                    // three rods out to a small sighting ring with a bright point: where the beam is gathered
+                    Vector3 fc = c + V(0, 0, -0.24f);
+                    Hoop(m, fc, 0.075f, 0.014f, Pal.Brass2, 10);
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float a = i / 3f * Mathf.PI * 2f + Mathf.PI * 0.5f;
+                        m.Tube(c + V(Mathf.Cos(a) * r * 0.9f, Mathf.Sin(a) * r * 0.9f, -0.02f), fc + V(Mathf.Cos(a) * 0.075f, Mathf.Sin(a) * 0.075f, 0), 0.009f, 0.009f, 4, Pal.Brass3);
+                    }
+                    m.Ball(fc, Vector3.one * 0.035f, 6, 4, Pal.Light0);
+                    break;
+                }
+                case "Deathray5":
+                    // heat-sink fins standing round the dark frame
+                    for (int i = 0; i < 10; i++)
+                    {
+                        float a = i / 10f * Mathf.PI * 2f;
+                        Vector3 d = V(Mathf.Cos(a), Mathf.Sin(a), 0);
+                        m.Tube(c + d * (r + 0.02f), c + d * (r + 0.07f), 0.022f, 0.016f, 4, Pal.Cord4, Pal.Cord3);
+                    }
+                    break;
             }
             return m;
+        }
+
+        // A four-point sparkle in the x-y plane (a glint on glass), facing -z.
+        static void Star(Lp m, Vector3 s, float size, int col, int back)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                float a = i * Mathf.PI * 0.5f;
+                Vector3 d = V(Mathf.Cos(a), Mathf.Sin(a), 0), side = V(-d.y, d.x, 0) * size * 0.22f;
+                m.Tri2(s + side, s - side, s + d * size, col, back);
+            }
         }
 
         // ---------------------------------------------------------------- Power Bank
@@ -191,14 +311,18 @@ namespace UloeBuild
             // the yellow band and the charge bars on the front
             m.Block(V(0, 0.145f, -0.236f), V(0.58f, 0.15f, 0.02f), 0.006f, Pal.Light2, Pal.Light1);
             for (int i = 0; i < 4; i++)
-                m.Block(V(-0.195f + i * 0.13f, 0.165f, -0.25f), V(0.1f, 0.11f, 0.012f), 0.004f, i == 3 ? Pal.Led1 : Pal.Led0, i == 3 ? Pal.Led1 : Pal.Led0);
+            {
+                int bar = i == 3 || up == "Supernova5" ? Pal.Led1 : Pal.Led0;
+                m.Block(V(-0.195f + i * 0.13f, 0.165f, -0.25f), V(0.1f, 0.11f, 0.012f), 0.004f, bar, bar);
+            }
             // the shade at the box's lower edge, a seam
             m.Block(V(0, 0.08f, -0.232f), V(0.6f, 0.02f, 0.012f), 0.003f, Pal.Steel4, Pal.Steel4);
             // terminals: a screw ring and a bulb on each
+            float bulb = up == "Bright3" ? 0.13f : 0.095f;
             foreach (float sx in new[] { -0.17f, 0.17f })
             {
                 ScrewRings(m, V(sx, 0.395f, 0.02f), 0.075f, 0.11f, 3);
-                Bulb(m, V(sx, 0.505f, 0.02f), 0.095f);
+                Bulb(m, V(sx, 0.505f, 0.02f), bulb);
             }
             // the cord
             Cord(m, new[] { V(0.31f, 0.2f, 0.1f), V(0.4f, 0.14f, 0.16f), V(0.42f, 0.06f, 0.27f), V(0.3f, 0.04f, 0.36f) });
@@ -210,6 +334,62 @@ namespace UloeBuild
                 Sparks(m, V(0f, 0.63f, -0.04f), 0.09f, Pal.Light0);
                 Sparks(m, V(-0.28f, 0.42f, -0.1f), 0.06f, Pal.Light1);
                 m.Block(V(0.195f, 0.165f, -0.255f), V(0.1f, 0.11f, 0.012f), 0.004f, Pal.Ember, Pal.Cord2);
+            }
+            switch (up)
+            {
+                case "Extracell2":
+                    // another cell strapped to the box's side
+                    m.Prism(V(-0.4f, 0.055f, 0.04f), 0.075f, 0.075f, 0.28f, 10, Pal.Light2, Pal.Light1);
+                    m.Prism(V(-0.4f, 0.335f, 0.04f), 0.035f, 0.03f, 0.03f, 8, Pal.Steel1, Pal.Steel0);
+                    m.Prism(V(-0.4f, 0.055f, 0.04f), 0.078f, 0.078f, 0.05f, 10, Pal.Steel2, Pal.Steel1);
+                    m.Block(V(-0.36f, 0.2f, 0.04f), V(0.12f, 0.03f, 0.17f), 0.006f, Pal.Cord0, Pal.Cord3);
+                    break;
+                case "Static3":
+                    // a little coil between the terminals, a steel ball on top crackling
+                    m.Prism(V(0, 0.395f, 0.02f), 0.022f, 0.022f, 0.24f, 6, Pal.Steel2, Pal.Steel1);
+                    for (int i = 0; i < 5; i++) Ring(m, V(0, 0.43f + i * 0.04f, 0.02f), 0.042f, 0.011f, i % 2 == 0 ? Pal.Brass1 : Pal.Brass2, 8);
+                    m.Ball(V(0, 0.67f, 0.02f), Vector3.one * 0.05f, 8, 5, Pal.Steel0, Pal.SteelPale);
+                    Sparks(m, V(0, 0.68f, 0.02f), 0.07f, Pal.Light0);
+                    break;
+                case "Bright3":
+                    // a third bulb on the box's front edge, and every bulb burning bigger
+                    m.Prism(V(0, 0.395f, -0.15f), 0.05f, 0.05f, 0.05f, 8, Pal.Steel2, Pal.Steel1);
+                    Bulb(m, V(0, 0.445f, -0.15f), 0.08f);
+                    break;
+                case "Surge3":
+                    // a white power strip on the ground in front, its sockets and red switch, wired to the box
+                    m.Block(V(0, 0.055f, -0.36f), V(0.48f, 0.05f, 0.11f), 0.012f, Pal.Card1, Pal.Card0);
+                    for (int i = 0; i < 3; i++)
+                        m.Block(V(-0.12f + i * 0.1f, 0.105f, -0.36f), V(0.06f, 0.006f, 0.06f), 0.002f, Pal.Cord2, Pal.Cord2);
+                    m.Block(V(0.19f, 0.105f, -0.36f), V(0.05f, 0.02f, 0.06f), 0.006f, Pal.Fuse, Pal.Fuse);
+                    Cord(m, new[] { V(-0.24f, 0.08f, -0.36f), V(-0.3f, 0.07f, -0.3f), V(-0.3f, 0.1f, -0.24f) });
+                    break;
+                case "Chain4":
+                    // a lightning rod behind the terminals, bolts jumping from its tip to both bulbs
+                    m.Tube(V(0, 0.395f, 0.16f), V(0, 0.92f, 0.16f), 0.02f, 0.014f, 6, Pal.Steel3, Pal.Steel2);
+                    m.Ball(V(0, 0.93f, 0.16f), Vector3.one * 0.04f, 6, 4, Pal.Light0);
+                    foreach (float sx in new[] { -1f, 1f })
+                        m.Stem(new[] { V(0, 0.92f, 0.16f), V(sx * 0.09f, 0.86f, 0.11f), V(sx * 0.05f, 0.8f, 0.09f), V(sx * 0.15f, 0.72f, 0.05f), V(sx * 0.11f, 0.68f, 0.04f), V(sx * 0.17f, 0.62f, 0.02f) }, 0.02f, 0.012f, 4, Pal.Light2);
+                    break;
+                case "Swarm4":
+                    // a rack of little bulbs along the box's front edge, one for each Photon more
+                    m.Block(V(0, 0.395f, -0.17f), V(0.5f, 0.03f, 0.08f), 0.006f, Pal.Steel3, Pal.Steel2);
+                    for (int i = 0; i < 4; i++) Bulb(m, V(-0.18f + i * 0.12f, 0.425f, -0.17f), 0.045f);
+                    break;
+                case "Supernova5":
+                {
+                    // a small sun held high over the box on a brass post, rays all round it
+                    Vector3 sun = V(0, 0.9f, 0.02f);
+                    m.Tube(V(0, 0.395f, 0.02f), sun, 0.024f, 0.018f, 6, Pal.Brass2, Pal.Brass1);
+                    Ring(m, sun + V(0, -0.02f, 0), 0.15f, 0.014f, Pal.Brass1, 12);
+                    m.Ball(sun, Vector3.one * 0.13f, 10, 6, Pal.Light1, Pal.Light0, 0.4f);
+                    for (int i = 0; i < 10; i++)
+                    {
+                        float a = i / 10f * Mathf.PI * 2f, t = (i % 2 == 0 ? 0.35f : -0.25f);
+                        m.Spike(sun + V(Mathf.Cos(a), t, Mathf.Sin(a)) * 0.12f, V(Mathf.Cos(a), t, Mathf.Sin(a)), 0.03f, 0.1f, Pal.Light2);
+                    }
+                }
+                    break;
             }
             return m;
         }
@@ -288,6 +468,53 @@ namespace UloeBuild
                     m.Block(V(0, 0, 0), V(0.56f, 0.3f, 0.02f), 0.006f, Pal.Card0, Pal.Card0, Pal.Card1);
                     m.Pop();
                     break;
+                case "Tempered3":
+                    // steel corner plates riveted over the frame, and a steel brace across the foot
+                    foreach (float sx in new[] { -1f, 1f })
+                        foreach (float yy in new[] { py, top - 0.12f })
+                        {
+                            m.Block(V(sx * (pw * 0.5f - 0.04f), yy, -0.035f), V(0.12f, 0.12f, 0.016f), 0.006f, Pal.Steel2, Pal.Steel1);
+                            m.Ball(V(sx * (pw * 0.5f - 0.04f), yy + 0.06f, -0.045f), Vector3.one * 0.017f, 5, 3, Pal.Steel0);
+                        }
+                    m.Block(V(0, bottom + 0.06f, -0.03f), V(w + 0.04f, 0.06f, 0.03f), 0.008f, Pal.Steel3, Pal.Steel2);
+                    break;
+                case "Hall4":
+                    // the panes show frames inside frames, a hall of mirrors running back into the glass
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float k = 0.8f - i * 0.22f, fw = pw * k, fh = ph * k, fy = py + (ph - fh) * 0.5f, z = -0.03f - i * 0.004f;
+                        int col = i % 2 == 0 ? Pal.Brass1 : Pal.Silver4;
+                        m.Block(V(0, fy, z), V(fw, 0.022f, 0.008f), 0.002f, col, col);
+                        m.Block(V(0, fy + fh - 0.022f, z), V(fw, 0.022f, 0.008f), 0.002f, col, col);
+                        foreach (float sx in new[] { -1f, 1f })
+                            m.Block(V(sx * (fw * 0.5f - 0.011f), fy, z), V(0.022f, fh, 0.008f), 0.002f, col, col);
+                    }
+                    m.Block(V(0, py + ph * 0.5f - 0.05f, -0.036f), V(0.1f, 0.1f, 0.006f), 0.002f, Pal.Silver5, Pal.Silver5);
+                    break;
+                case "Reflection4":
+                {
+                    // a round convex mirror set in the middle of the panes, in its own brass hoop
+                    Vector3 rc = V(0, py + ph * 0.5f, -0.035f);
+                    Hoop(m, rc, 0.17f, 0.02f, Pal.Brass1);
+                    m.Push(rc, Quaternion.Euler(-90f, 0f, 0f), Vector3.one);
+                    m.Dome(V(0, 0, 0), V(0.16f, 0.06f, 0.16f), 12, 3, Pal.Silver1, Pal.Silver4, 0.5f);
+                    m.Pop();
+                    m.Tri2(rc + V(-0.09f, 0.08f, -0.05f), rc + V(-0.03f, 0.1f, -0.05f), rc + V(-0.1f, 0.02f, -0.05f), Pal.White, Pal.Silver2);
+                    break;
+                }
+                case "Heliostat5":
+                {
+                    // a round mirror on a fork over the top rail, tipped to send its light down on the foes
+                    m.Tube(V(0, top, 0), V(0, top + 0.09f, 0), 0.022f, 0.02f, 6, Pal.Steel2, Pal.Steel1);
+                    m.Tube(V(-0.2f, top + 0.09f, 0), V(0.2f, top + 0.09f, 0), 0.016f, 0.016f, 5, Pal.Steel2, Pal.Steel1, Pal.Steel1);
+                    foreach (float sx in new[] { -0.2f, 0.2f }) m.Tube(V(sx, top + 0.09f, 0), V(sx, top + 0.2f, 0), 0.014f, 0.014f, 5, Pal.Steel2, Pal.Steel1);
+                    Vector3 hc = V(0, top + 0.2f, 0);
+                    m.Push(hc, Quaternion.Euler(-60f, 0f, 0f), Vector3.one);
+                    m.Prism(V(0, -0.015f, 0), 0.18f, 0.18f, 0.03f, 14, Pal.Brass2, Pal.Silver4, Pal.Brass3);
+                    m.Prism(V(0, 0.015f, 0), 0.06f, 0.05f, 0.006f, 10, Pal.Light0, Pal.Light0);
+                    m.Pop();
+                    break;
+                }
             }
             m.Pop();
             m.Pop();
@@ -315,13 +542,45 @@ namespace UloeBuild
             // the cord
             Cord(m, new[] { V(0.05f, 0.46f, 0.06f), V(0.14f, 0.26f, 0.2f), V(0.26f, 0.06f, 0.3f), V(0.36f, 0.05f, 0.2f) }, 0.02f);
             Plug(m, V(0.39f, 0.015f, 0.14f), 200f, 1f);
-            if (up == "Wide2")
-                // a wider stand: a fourth and fifth brace
-                foreach (float a in new[] { 150f, 30f })
-                {
-                    float ar = a * Mathf.Deg2Rad;
-                    m.Tube(V(Mathf.Cos(ar) * 0.34f, 0.03f, Mathf.Sin(ar) * 0.34f), V(0, 0.42f, 0), 0.016f, 0.014f, 5, Pal.Steel4);
-                }
+            switch (up)
+            {
+                case "Wide2":
+                    // a wider stand: a fourth and fifth brace
+                    foreach (float a in new[] { 150f, 30f })
+                    {
+                        float ar = a * Mathf.Deg2Rad;
+                        m.Tube(V(Mathf.Cos(ar) * 0.34f, 0.03f, Mathf.Sin(ar) * 0.34f), V(0, 0.42f, 0), 0.016f, 0.014f, 5, Pal.Steel4);
+                    }
+                    break;
+                case "Voltage3":
+                    // a transformer box at the foot, its yellow bolt sign and a red light, the cord coiled thick beside it
+                    m.Block(V(-0.2f, 0.055f, -0.13f), V(0.17f, 0.15f, 0.13f), 0.012f, Pal.Steel2, Pal.Steel1);
+                    m.Tri2(V(-0.19f, 0.19f, -0.197f), V(-0.23f, 0.12f, -0.197f), V(-0.2f, 0.125f, -0.197f), Pal.Light2, Pal.Steel2);
+                    m.Tri2(V(-0.2f, 0.135f, -0.197f), V(-0.17f, 0.14f, -0.197f), V(-0.21f, 0.07f, -0.197f), Pal.Light2, Pal.Steel2);
+                    m.Ball(V(-0.16f, 0.215f, -0.1f), Vector3.one * 0.022f, 6, 4, Pal.Fuse, Pal.Light1);
+                    Ring(m, V(0.2f, 0.06f, -0.18f), 0.07f, 0.02f, Pal.Cord1, 10);
+                    Ring(m, V(0.2f, 0.09f, -0.18f), 0.06f, 0.02f, Pal.Cord0, 10);
+                    break;
+                case "Filter4":
+                    // spare colour gels in their frames, leaning on a leg: red, blue, yellow
+                    int[] gel = { Pal.Fuse, Pal.Glass4, Pal.Light2 };
+                    for (int i = 0; i < 3; i++)
+                    {
+                        m.Push(V(-0.2f + i * 0.035f, 0.055f, -0.2f + i * 0.02f), Quaternion.Euler(-20f + i * 4f, 20f, 0f), Vector3.one);
+                        m.Block(V(0, 0, 0), V(0.14f, 0.14f, 0.012f), 0.004f, Pal.Card0, Pal.Card0);
+                        m.Block(V(0, 0.02f, -0.008f), V(0.11f, 0.1f, 0.006f), 0.002f, gel[i], gel[i]);
+                        m.Pop();
+                    }
+                    break;
+                case "Lighthouse5":
+                    // a red and white banded tower inside the tripod
+                    for (int i = 0; i < 4; i++)
+                    {
+                        float y0 = 0.055f + i * 0.095f, r0 = 0.1f - i * 0.009f;
+                        m.Prism(V(0, y0, 0), r0, r0 - 0.009f, 0.095f, 10, i % 2 == 0 ? Pal.Fuse : Pal.White, i % 2 == 0 ? Pal.Fuse : Pal.White);
+                    }
+                    break;
+            }
             return m;
         }
 
@@ -331,10 +590,58 @@ namespace UloeBuild
         {
             var m = new Lp();
             float y = LampY + 0.1f;
-            float w = up == "Wide2" ? 0.62f : 0.42f, h = up == "Wide2" ? 0.26f : 0.3f;
+            float w = up == "Wide2" ? 0.62f : up == "Stadium5" ? 0.6f : 0.42f, h = up == "Wide2" ? 0.26f : up == "Stadium5" ? 0.36f : 0.3f;
             // the yoke
             m.Tube(V(-w * 0.5f - 0.03f, y, 0), V(w * 0.5f + 0.03f, y, 0), 0.014f, 0.014f, 5, Pal.Steel3);
             m.Tube(V(0, LampY, 0), V(0, y, 0), 0.03f, 0.03f, 6, Pal.Steel3, Pal.Steel2);
+            // Three capstones and the Searchlight change the lamp itself.
+            switch (up)
+            {
+                case "Searchlight4":
+                {
+                    // a round searchlight drum, a brass bezel, a deep bright mirror behind the glass
+                    Vector3 sc = V(0, y - 0.14f, 0.06f);
+                    m.Tube(sc, sc + V(0, 0, -0.26f), 0.16f, 0.18f, 14, Pal.Steel3, Pal.Steel2, Pal.Steel2);
+                    m.Tube(sc + V(0, 0, -0.26f), sc + V(0, 0, -0.29f), 0.195f, 0.195f, 14, Pal.Brass1, Pal.Light0, Pal.Brass2);
+                    m.Ball(sc + V(0, 0, -0.27f), V(0.06f, 0.06f, 0.03f), 8, 4, Pal.White);
+                    m.Tri2(sc + V(-0.13f, 0.1f, -0.296f), sc + V(-0.05f, 0.14f, -0.296f), sc + V(-0.14f, 0.02f, -0.296f), Pal.Silver4, Pal.Light1);
+                    for (int i = 0; i < 4; i++) Ring(m, sc + V(0, 0, -0.04f - i * 0.05f), 0.17f + i * 0.004f, 0.008f, Pal.Steel4, 14);
+                    return m;
+                }
+                case "Lighthouse5":
+                {
+                    // a lantern room: a steel gallery, glass all round a bright core, a red dome on top
+                    Vector3 lc = V(0, y - 0.22f, 0);
+                    Ring(m, lc + V(0, 0.01f, 0), 0.2f, 0.014f, Pal.Steel2, 12);
+                    m.Prism(lc, 0.2f, 0.2f, 0.02f, 12, Pal.Steel3, Pal.Steel2);
+                    m.Prism(lc + V(0, 0.02f, 0), 0.15f, 0.15f, 0.24f, 8, Pal.Glass1, Pal.Glass0, -1, 22.5f);
+                    for (int i = 0; i < 8; i++)
+                    {
+                        float a = (i + 0.5f) / 8f * Mathf.PI * 2f;
+                        m.Tube(lc + V(Mathf.Cos(a) * 0.152f, 0.02f, Mathf.Sin(a) * 0.152f), lc + V(Mathf.Cos(a) * 0.152f, 0.26f, Mathf.Sin(a) * 0.152f), 0.01f, 0.01f, 4, Pal.Steel3);
+                    }
+                    m.Ball(lc + V(0, 0.14f, 0), Vector3.one * 0.075f, 8, 5, Pal.Light1, Pal.Light0);
+                    m.Tube(lc + V(0, 0.14f, -0.06f), lc + V(0, 0.14f, -0.155f), 0.05f, 0.06f, 8, Pal.Light0, Pal.White);
+                    m.Dome(lc + V(0, 0.26f, 0), V(0.17f, 0.12f, 0.17f), 10, 3, Pal.Fuse, Pal.Fuse);
+                    m.Ball(lc + V(0, 0.4f, 0), Vector3.one * 0.025f, 6, 3, Pal.Brass1);
+                    return m;
+                }
+                case "Stadium5":
+                {
+                    // a bank of six lamps in one steel frame
+                    m.Block(V(0, y - h, -0.04f), V(w, h, 0.18f), 0.02f, Pal.Steel3, Pal.Steel2, Pal.Steel1);
+                    for (int ix = 0; ix < 3; ix++)
+                        for (int iy = 0; iy < 2; iy++)
+                        {
+                            Vector3 fc = V(-w * 0.33f + ix * w * 0.33f, y - h + 0.04f + iy * h * 0.48f, -0.13f);
+                            m.Block(fc, V(w * 0.29f, h * 0.42f, 0.03f), 0.008f, Pal.Brass2, Pal.Brass1);
+                            m.Block(fc + V(0, 0.015f, -0.02f), V(w * 0.22f, h * 0.32f, 0.012f), 0.003f, Pal.Light1, Pal.Light0);
+                        }
+                    for (int i = 0; i < 6; i++)
+                        m.Block(V(-w * 0.42f + i * w * 0.168f, y - 0.01f, -0.04f), V(0.02f, 0.04f, 0.15f), 0.004f, Pal.Steel2, Pal.Steel1);
+                    return m;
+                }
+            }
             // the housing
             m.Block(V(0, y - h * 0.5f, -0.04f), V(w, h, 0.2f), 0.024f, Pal.Steel3, Pal.Steel2, Pal.Steel1);
             // the bezel and the glass
@@ -363,6 +670,28 @@ namespace UloeBuild
                     m.Tube(fc, fc + V(0, 0, -0.26f), h * 0.42f, h * 0.3f, 10, Pal.Steel3, -1);
                     m.Tube(fc + V(0, 0, -0.26f), fc + V(0, 0, -0.29f), h * 0.33f, h * 0.33f, 10, Pal.Brass1, Pal.Light0, Pal.Brass2);
                     break;
+                case "Halogen3":
+                    // a wire guard over the hotter glass, and a glowing element twice as thick
+                    m.Block(V(0, y - 0.025f, -0.18f), V(w - 0.14f, 0.05f, 0.01f), 0.003f, Pal.Light0, Pal.White);
+                    for (int i = 0; i < 3; i++)
+                        m.Tube(V(-w * 0.5f + 0.03f, y - h + 0.06f + i * (h - 0.08f) * 0.5f, -0.19f), V(w * 0.5f - 0.03f, y - h + 0.06f + i * (h - 0.08f) * 0.5f, -0.19f), 0.007f, 0.007f, 4, Pal.Steel1);
+                    foreach (float sx in new[] { -0.08f, 0.08f })
+                        m.Tube(V(sx, y - h + 0.03f, -0.19f), V(sx, y - 0.01f, -0.19f), 0.007f, 0.007f, 4, Pal.Steel1);
+                    break;
+                case "Voltage3":
+                    // a yellow warning bolt on the housing's side
+                    m.Tri2(V(w * 0.5f + 0.002f, y - 0.03f, -0.04f), V(w * 0.5f + 0.002f, y - 0.14f, 0.02f), V(w * 0.5f + 0.002f, y - 0.13f, -0.02f), Pal.Light2, Pal.Steel2);
+                    m.Tri2(V(w * 0.5f + 0.002f, y - 0.12f, -0.04f), V(w * 0.5f + 0.002f, y - 0.13f, 0.0f), V(w * 0.5f + 0.002f, y - 0.25f, -0.06f), Pal.Light2, Pal.Steel2);
+                    break;
+                case "Filter4":
+                {
+                    // a gel frame clipped over the glass, in the three aura colours
+                    int[] gel = { Pal.Fuse, Pal.Glass4, Pal.Light2 };
+                    m.Block(V(0, y - h - 0.005f, -0.19f), V(w + 0.02f, h + 0.01f, 0.014f), 0.004f, Pal.Card1, Pal.Card0);
+                    for (int i = 0; i < 3; i++)
+                        m.Block(V(-w / 3f + i * w / 3f, y - h + 0.025f, -0.2f), V(w / 3f - 0.025f, h - 0.04f, 0.008f), 0.002f, gel[i], gel[i]);
+                    break;
+                }
             }
             return m;
         }

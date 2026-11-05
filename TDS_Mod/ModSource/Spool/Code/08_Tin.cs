@@ -312,12 +312,15 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         if (SpeedMulti != 0f)
             Helper_Entitytools.Addmod(Master, "Speed", SpeedMulti, Helper_Entitytools.Modtypes.Multi, 0f);
-        // Button Jar: a share of a whole one's health and damage (a Pmulti multiplies with Woolen Lining's Multi).
+        // Button Jar: a share of a whole one's health and damage (a Pmulti multiplies with Woolen Lining's Multi), and the
+        // smaller look where its kind has one.
         if (Small > 0f)
         {
             Helper_Entitytools.Addmod(Master, "Health", Small - 1f, Helper_Entitytools.Modtypes.Pmulti, 0f);
             Helper_Entitytools.Addmod(Master, "Damage", Small - 1f, Helper_Entitytools.Modtypes.Pmulti, 0f);
             Fill();
+            if (Def != null && SpoolContent.HasSmallLook(Def.Id))
+                ModKitUtil.Skin(Master, SpoolData.SmallSkin);
         }
         ModKitUtil.Vis(Master, "Spool_Pop", ModKitUtil.Pos(Master), 0f);
         if (Crafted)

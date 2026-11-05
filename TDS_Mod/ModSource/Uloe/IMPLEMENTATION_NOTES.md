@@ -1,5 +1,16 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-05, the 24 upgrades' looks (rendered here, not yet built in Unity or seen in game):** every upgrade now has its
+own model, named as `Upg.Model` asks (`Tower_Uloe<building>_<Key><Tier>`; a missing one still falls back to the
+building's): Wide Lens's wider pane, Polished Lens's cloth and sparkle, Quick Focus's gear and knobs, Prism's glass prism,
+Sunspot's rays, Focal Point's sighting ring, Death Ray's red-hot pane and fins; Extra Cell's strapped cell, Static
+Charge's coil, Bright Spark's bigger bulbs, Surge Protector's power strip, Chain Lightning's rod and bolts, Photon Swarm's
+rack of bulbs, Supernova's sun; Tempered Glass's riveted plates, Hall of Mirrors' frames inside frames, Reflection's
+convex mirror, Heliostat's dish; Halogen's wire guard, High Voltage's transformer, Colour Filter's gels, Searchlight's
+drum, Stadium Lights' bank of six, Lighthouse's lantern room on a banded tower. The Glass and Flood Light ones keep the
+moving Lens and Lamp. Temporary art (`docs/TEMP_ART.md`); renders in `Previews/0.1/models_*.png`. For the PC: each by eye
+after Build All Assets, and the Lighthouse's and Searchlight's lamps turning with AIM.
+
 **2026-11-05, the 24 upgrades, Light sharing and SURGE (compiled, not yet run in game):** every building now has its
 eight upgrades from scope `10` (`DESIGN.md` "Upgrade trees", with the routes); Burning Point and Short Circuit lead where
 scope `10` says (audit N10). A building takes at most 4 Light from teammates' sources all told (`UloeLight`'s shared ledger,

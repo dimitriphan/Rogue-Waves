@@ -14,6 +14,7 @@ public static class RWContent
     public static readonly string[] IconNames =
     {
         "RogueWaves_Crest32", "RogueWaves_Shop", "RogueWaves_Fund", "RogueWaves_Board", "RogueWaves_Leave", "RogueWaves_Stay",
+        "RogueWaves_Objective_Meteor", "RogueWaves_Objective_Hull", "RogueWaves_Objective_Clock", "RogueWaves_Objective_Hands", "RogueWaves_Objective_Nest",
     };
 
     static Bl_Address.Loadgroup group;

@@ -381,6 +381,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05, part 10: the 47 icons of the Directions, Trinkets and Cardinals built in parts 5-9 (A2), temporary, 12 x 12
   from their Look lines (`concept-tools/temp_art/b11_icons.py`), and the art review in `docs/STYLE.md` with its
   check script (`concept-tools/temp_art/art_check.py`: 0 problems on all 47). Not yet seen in game.
+  2026-11-05, part 11: the models and the rest of the missing art (A1, A3, A4), temporary: the three Shift looks
+  (`Yossele_Dandelionsapling`, `Yossele_Mushboom`, `Spool_Sewingmachine`), a look for each of Uloe's 24 new upgrades,
+  Wood Wide Web's, Button Jar's small Stitched and Dart (a `Small` skin), and the five objectives' icons on the Board's
+  card and the DONE popup (`concept-tools/temp_art/objective_icons.py`). The meteor node keeps a stock ore's look: a
+  white crystal needs a model the mode part doesn't carry, and its boot log now names what that look is made of.
+  Compiled and rendered here, not run on the PC.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -407,7 +413,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #165 (#162-#164 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
+- **Next free numbers:** kit chapter 25, pitfall #167 (#162-#166 the build of the unbuilt candidates; #92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes, #156 the icons' pixel size, #157-#158 the max review).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

@@ -35,6 +35,8 @@ namespace SpoolBuild
             foreach (var k in new[] { "Sharper2", "Unravel2", "Barrage3", "Stuffing3", "Overstuffed4", "Burst4" }) { string key = k; Add("Cushion", C + "_" + key, () => Cushion(key)); }
             Add("Loom", L, () => Loom(""));
             foreach (var k in new[] { "Direct2", "Seam2" }) { string key = k; Add("Loom", L + "_" + key, () => Loom(key)); }
+            // The Sewing Machine Direction's look for the Loom (SpoolData.SewingModel, a skin on every Loom visual).
+            Add("Loom", "Spool_Sewingmachine", SewingMachine);
             Add("Extras", "Spool_Pin", Pin);
             Add("Projectiles", "Spool_Needle", Needle, true);
             return l;
@@ -327,6 +329,44 @@ namespace SpoolBuild
         }
 
         // ---------------------------------------------------------------- Loom
+
+        // Sewing Machine: a classic light blue machine on the Loom's plinth - the bed, the pillar and arm, the head with its
+        // needle down into a stitched scrap, the hand wheel on the right, a spool of Spool's thread on the arm, two pins in
+        // the plinth's edge.
+        static Lp SewingMachine()
+        {
+            var m = new Lp();
+            Plinth(m, 0.38f);
+            // the bed, with a cream needle plate
+            m.Block(V(0, 0.055f, 0.02f), V(0.62f, 0.07f, 0.34f), 0.02f, Pal.Tin1, Pal.Tin0, Pal.Tin0);
+            m.Block(V(-0.17f, 0.125f, -0.03f), V(0.14f, 0.008f, 0.12f), 0.002f, Pal.Iron1, Pal.Iron0);
+            // the pillar and the arm, with a gold line along the arm
+            m.Block(V(0.19f, 0.125f, 0.04f), V(0.14f, 0.3f, 0.17f), 0.03f, Pal.Tin1, Pal.Tin0, Pal.Tin0);
+            m.Block(V(0.02f, 0.36f, 0.04f), V(0.5f, 0.11f, 0.15f), 0.03f, Pal.Tin1, Pal.Tin0, Pal.Tin0);
+            m.Block(V(0.02f, 0.42f, -0.036f), V(0.4f, 0.012f, 0.004f), 0.001f, Pal.Brass, Pal.Brass);
+            // the head over the needle plate
+            m.Block(V(-0.18f, 0.29f, 0.03f), V(0.13f, 0.2f, 0.15f), 0.03f, Pal.Tin1, Pal.Tin0, Pal.Tin0);
+            m.Tube(V(-0.19f, 0.29f, -0.02f), V(-0.19f, 0.2f, -0.02f), 0.012f, 0.012f, 6, Pal.Iron1);
+            m.Tube(V(-0.19f, 0.2f, -0.02f), V(-0.19f, 0.135f, -0.02f), 0.004f, 0.003f, 4, Pal.Steel);
+            m.Block(V(-0.19f, 0.135f, -0.03f), V(0.05f, 0.01f, 0.05f), 0.002f, Pal.Iron2, Pal.Iron1);
+            // the scrap under the needle, sage felt with a row of white stitches
+            m.Block(V(-0.12f, 0.127f, -0.06f), V(0.2f, 0.006f, 0.11f), 0.002f, Pal.Plush, Pal.Felt3);
+            for (int i = 0; i < 5; i++)
+                m.Block(V(-0.2f + i * 0.04f, 0.133f, -0.06f), V(0.022f, 0.004f, 0.008f), 0.001f, Pal.White, Pal.White);
+            // the hand wheel, turning on the right
+            m.Tube(V(0.26f, 0.4f, 0.04f), V(0.3f, 0.4f, 0.04f), 0.1f, 0.1f, 12, Pal.Iron2, Pal.Iron1, Pal.Iron1);
+            m.Tube(V(0.3f, 0.4f, 0.04f), V(0.315f, 0.4f, 0.04f), 0.03f, 0.03f, 8, Pal.Brass, Pal.Brass, Pal.Brass);
+            // the spool pin on the arm and its thread down to the needle
+            m.Tube(V(0.08f, 0.47f, 0.04f), V(0.08f, 0.52f, 0.04f), 0.006f, 0.006f, 4, Pal.Steel);
+            Bobbin(m, V(0.08f, 0.47f, 0.04f), 0.035f, 0.08f, Pal.Felt2);
+            Thread(m, V(0.08f, 0.52f, 0.0f), V(-0.12f, 0.49f, -0.03f), Pal.Felt2, 0.004f);
+            Thread(m, V(-0.12f, 0.49f, -0.03f), V(-0.19f, 0.21f, -0.035f), Pal.Felt2, 0.004f);
+            // pins pushed into the plinth's edge, and a scrap of pink thread on the floor
+            PinStick(m, V(0.27f, 0.055f, -0.2f), V(0.3f, 1f, -0.2f), 0.08f, Pal.Tomato0, 0.018f);
+            PinStick(m, V(0.31f, 0.055f, -0.14f), V(0.5f, 1f, 0.1f), 0.07f, Pal.ThreadBlue, 0.018f);
+            Thread(m, V(-0.3f, 0.057f, -0.2f), V(-0.1f, 0.057f, -0.26f), Pal.ThreadPink, 0.005f);
+            return m;
+        }
 
         // A frame loom: two posts on feet, the warp threads strung top to bottom, a band half woven, the shuttle resting
         // on it; a drop spindle hangs on one side with the Thread it spins.

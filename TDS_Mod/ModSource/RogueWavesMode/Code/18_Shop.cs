@@ -322,18 +322,18 @@ public static class RWShop
     static IEnumerator Board()
     {
         Entity_Master v = RWMine.Vessel();
-        string posted = RWObjectives.PostedText(v);
-        if (posted == "")
+        RWObjectiveDef posted = RWObjectives.PostedOn(v);
+        if (posted == null)
         {
             RWMine.Popup("NO OBJECTIVE THIS BREAK", "RogueWaves_Board");
             yield break;
         }
-        string[] p = posted.Split('|');
+        string text = RWObjectives.CardText(posted);
         List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
-        cards.Add(RWDialog.Card("Take", "Take it", p[1], RWAssets.Sprite("RogueWaves_Board"), RWDialog.Teal));
+        cards.Add(RWDialog.Card("Take", "Take it", text, RWAssets.Sprite(RWObjectives.Icon(posted)) ?? RWAssets.Sprite("RogueWaves_Board"), RWDialog.Teal));
         cards.Add(Back());
         string pick = null;
-        yield return RWDialog.Ask(cards, p[0], p[1], 0f, n => pick = n);
+        yield return RWDialog.Ask(cards, posted.Display.ToUpperInvariant(), text, 0f, n => pick = n);
         if (pick == "Take")
             RWMine.Send("Board", 0, "");
     }

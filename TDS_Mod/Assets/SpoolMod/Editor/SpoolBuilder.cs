@@ -201,6 +201,8 @@ namespace SpoolBuild
             // The Crafted and the Thread Head (Code/02_Data.cs Units[].Sheet, Code/04_Content.cs BuildHead).
             SaveSheet(SpoolCharacter.DollSheet("Stitched"), "Unit", "Spoolstitched-Sheet", 16, 16, foot);
             SaveSheet(SpoolCharacter.DollSheet("Dart"), "Unit", "Spooldart-Sheet", 16, 16, foot);
+            SaveSheet(SpoolCharacter.DollSheet("Stitchedsmall"), "Unit", "Spoolstitchedsmall-Sheet", 16, 16, foot);
+            SaveSheet(SpoolCharacter.DollSheet("Dartsmall"), "Unit", "Spooldartsmall-Sheet", 16, 16, foot);
             SaveSheet(SpoolCharacter.DollSheet("Seam"), "Unit", "Spoolseam-Sheet", 16, 16, foot);
             SaveSheet(SpoolCharacter.DollSheet("Mangled"), "Unit", "Spoolmangled-Sheet", 16, 16, foot);
             SaveSheet(SpoolCharacter.DollSheet("Head"), "Unit", "Spoolhead-Sheet", 24, 24, foot);

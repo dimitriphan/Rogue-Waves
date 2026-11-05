@@ -179,9 +179,12 @@ public static class SpoolData
     public const string Stitched = "Mob_Spoolstitched", Dart = "Mob_Spooldart", Seam = "Mob_Spoolseam";
     public const string Mangled = "Mob_Spoolmangled", Stuffed = "Mob_Spoolmangled_Stuffed";
 
+    // Button Jar's small Crafted wear this skin: their SmallSheet's look (a whole one's when the library has no such sheet).
+    public const string SmallSkin = "Small";
+
     public class Unit
     {
-        public string Id, Display, Desc, Lore, Sheet;
+        public string Id, Display, Desc, Lore, Sheet, SmallSheet;
         public int Thread, Cell = 16;
         public bool Ranged, Blocker, Sellable;
         public float Leash;
@@ -190,11 +193,11 @@ public static class SpoolData
 
     public static readonly Unit[] Units =
     {
-        new Unit { Id = Stitched, Display = "Stitched", Sheet = "Spoolstitched-Sheet", Thread = 10, Leash = 2f, Sellable = true,
+        new Unit { Id = Stitched, Display = "Stitched", Sheet = "Spoolstitched-Sheet", SmallSheet = "Spoolstitchedsmall-Sheet", Thread = 10, Leash = 2f, Sellable = true,
             Desc = "Short and stubby, single-target melee",
             Lore = "A short, stubby plush stitched in four seconds flat. It runs where it's sent and stays there.",
             Stats = new[] { "Health=20", "Speed=1.8", "Damage=2", "Range=1.5", "Attackspeed=0.8" } },
-        new Unit { Id = Dart, Display = "Dart", Sheet = "Spooldart-Sheet", Thread = 15, Leash = 1f, Ranged = true, Sellable = true,
+        new Unit { Id = Dart, Display = "Dart", Sheet = "Spooldart-Sheet", SmallSheet = "Spooldartsmall-Sheet", Thread = 15, Leash = 1f, Ranged = true, Sellable = true,
             Desc = "Thin and small, throws needles",
             Lore = "A thin little plush with a pocket full of needles. It keeps close to its spot and throws.",
             Stats = new[] { "Health=12", "Speed=1.6", "Damage=2.5", "Range=3.5", "Attackspeed=0.6", "Projspeed=14" } },

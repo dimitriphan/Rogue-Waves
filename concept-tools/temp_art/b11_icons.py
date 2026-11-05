@@ -711,10 +711,12 @@ def check(name, rows):
         raise SystemExit('%s: unknown colours %s' % (name, ''.join(sorted(miss))))
 
 
-def build(out=None, force=False):
+def build(out=None, force=False, icons=None, ase='RogueWaves_Icons_B11.aseprite'):
+    """Writes each icon of `icons` (these 47 by default; objective_icons.py passes its own) and their .aseprite."""
     out = out or os.path.join(REPO, 'TDS_Mod', 'ModSource', 'RogueWavesMode', 'Art', 'Temporary')
+    icons = icons or ICONS
     written = []
-    for n, rows in ICONS.items():
+    for n, rows in icons.items():
         check(n, rows)
         path = os.path.join(out, 'game_size', n + '.png')
         if os.path.exists(path) and not force and n not in written:
@@ -724,16 +726,18 @@ def build(out=None, force=False):
         save_png(c, path)
         save_png(preview(c, 12, 8), os.path.join(out, 'preview_8x', n + '_8x.png'))
         written.append(n)
-    names = list(ICONS)
-    save_ase(os.path.join(out, 'aseprite', 'RogueWaves_Icons_B11.aseprite'), 12, [canvas(ICONS[n]) for n in names],
+    names = list(icons)
+    save_ase(os.path.join(out, 'aseprite', ase), 12, [canvas(icons[n]) for n in names],
              [(n, i, i, 'TEMP;icon=%s.png' % n) for i, n in enumerate(names)])
     return written
 
 
-def contact(path, k=6, names=None):
-    """Every icon at 1x and kx with its name, on the UI's dark panel and on a light ground (review only, not shipped)."""
+def contact(path, k=6, names=None, icons=None):
+    """Every icon at 1x and kx with its name, on the UI's dark panel and on a light ground (review only, not shipped).
+    icons: another set of rows in this palette (objective_icons.py), else these 47."""
     from PIL import Image, ImageDraw
-    names = names or list(ICONS)
+    icons = icons or ICONS
+    names = names or list(icons)
     pad, cols = 8, 8
     cw = 12 * k + 12 + 3 * pad
     ch = 12 * k + 2 * pad + 12
@@ -744,13 +748,13 @@ def contact(path, k=6, names=None):
         for i, n in enumerate(names):
             x0, y0 = (i % cols) * cw + pad, y_off + (i // cols) * ch + pad
             d.rectangle([x0 - 2, y0 - 2, x0 + 12 * k + 12 + pad + 2, y0 + 12 * k + 2], fill=bg)
-            for y, r in enumerate(ICONS[n]):
+            for y, r in enumerate(icons[n]):
                 for x, c in enumerate(r):
                     if c in PAL:
                         col = PAL[c][:3]
                         d.rectangle([x0 + x * k, y0 + y * k, x0 + x * k + k - 1, y0 + y * k + k - 1], fill=col)
                         img.putpixel((x0 + 12 * k + pad + x, y0 + y), col)
-            d.text((x0, y0 + 12 * k + 3), n.replace('Direction_', 'D ').replace('Cardinal_', 'C '), fill=(230, 230, 230) if band == 0 else (20, 20, 20))
+            d.text((x0, y0 + 12 * k + 3), n.replace('Direction_', 'D ').replace('Cardinal_', 'C ').replace('Objective_', 'O '), fill=(230, 230, 230) if band == 0 else (20, 20, 20))
     img.save(path)
 
 

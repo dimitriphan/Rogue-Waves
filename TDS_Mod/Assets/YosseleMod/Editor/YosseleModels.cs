@@ -35,7 +35,7 @@ namespace YosseleBuild
         public static readonly string[] CannonKeys = { "", "Sticky2", "Farout2", "Viral3", "Deathcap3", "Finish4", "Hallucinogen4", "Cordyceps5" };
         public static readonly string[] DandelionKeys = { "", "Packets2", "Demand2", "Picky3", "Weeds3", "Dmds3", "Bonsai4", "Rubbery4", "Storm5" };
         public static readonly string[] HengeKeys = { "", "Verdant2", "Blockade2", "Remedy3", "Carnivore3", "Easy3", "Roots4", "Obsidian4", "Monument5" };
-        public static readonly string[] PachiraKeys = { "", "Focused2", "Sustaining2", "Grafted3", "Forest3", "Mulch3", "Connected4", "Harvest4", "Fortifying5", "Softening5" };
+        public static readonly string[] PachiraKeys = { "", "Focused2", "Sustaining2", "Grafted3", "Forest3", "Mulch3", "Connected4", "Harvest4", "Web4", "Fortifying5", "Softening5" };
 
         static string Full(string b, string k) { return k == "" ? b : b + "_" + k; }
 
@@ -51,6 +51,10 @@ namespace YosseleBuild
             }
             foreach (var k in DandelionKeys) { string key = k; Add("Dandelion", Full(Dandelion, key), () => DandelionTree(key)); }
             Add("Dandelion", Bonsai, BonsaiPot);
+            // The Shift Directions' looks for the Tree (YosseleData.ShiftLooks, skins on every Tree visual; Growth props sit
+            // round the foot as on the Tree).
+            Add("Dandelion", "Yossele_Dandelionsapling", DandelionSapling);
+            Add("Dandelion", "Yossele_Mushboom", Mushboom);
             // The Stonehenge is built with its front (where the vines creep out) on +z, all in one part, "Facing"; the game
             // turns the whole model by the placement orientation (Entity_Master_Client), so nothing turns the part.
             foreach (var k in HengeKeys)
@@ -294,6 +298,67 @@ namespace YosseleBuild
         }
 
         // ---------------------------------------------------------------- 2. Primordial Dandelion Tree
+
+        // Dandelion Season: a young dandelion still in flower on a smaller clay stump, its yellow head not yet gone to seed
+        // (there may be many of them, so it stays low).
+        static Lp DandelionSapling()
+        {
+            var m = new Lp();
+            Roots(m, 4, 0.13f, 0.07f, 0.3f, 40f, Pal.Clay4, 0.04f);
+            m.Prism(V(0, 0, 0), 0.17f, 0.12f, 0.22f, 10, Pal.Clay, Pal.Clay2, -1, 18f);
+            m.Prism(V(0, 0.22f, 0), 0.12f, 0.07f, 0.06f, 10, Pal.Clay4, Pal.Clay2, -1, 18f);
+            Hole(m, V(0, 0.12f, -0.15f), V(0, 0.12f, -1f), 0.045f);
+            Moss(m, V(0.1f, 0.0f, 0.1f), 0.07f, 0.045f);
+            foreach (float a in new[] { 110f, 190f, 280f, 20f })
+            {
+                float r = a * Mathf.Deg2Rad;
+                Vector3 d = V(Mathf.Cos(r), 0.15f, Mathf.Sin(r));
+                m.Leaf(V(Mathf.Cos(r) * 0.11f, 0.02f, Mathf.Sin(r) * 0.11f), d, 0.25f, 0.09f, Pal.Leaf, Pal.LeafDark, 0.2f, 0.12f);
+            }
+            Vector3 hc = V(0.01f, 0.7f, 0f);
+            m.Stem(new[] { V(0, 0.27f, 0), V(0.012f, 0.4f, 0), hc - V(0, 0.07f, 0) }, 0.032f, 0.026f, 6, Pal.Stalk);
+            for (int i = 0; i < 6; i++)
+            {
+                float a = i * 60f * Mathf.Deg2Rad;
+                m.Leaf(hc - V(0, 0.07f, 0), V(Mathf.Cos(a), -0.8f, Mathf.Sin(a)), 0.1f, 0.045f, Pal.Leaf2, Pal.LeafDark, 0.2f, 0.1f);
+            }
+            // the flower head: a flat golden dome of florets, a ring of longer ones round it
+            m.Dome(hc - V(0, 0.03f, 0), V(0.17f, 0.1f, 0.17f), 12, 3, Pal.Floret2, Pal.Floret, 0.45f, Pal.Stalk2);
+            for (int i = 0; i < 14; i++)
+            {
+                float a = (i * 360f / 14f + (i % 2) * 12f) * Mathf.Deg2Rad;
+                Vector3 d = V(Mathf.Cos(a), 0.35f, Mathf.Sin(a));
+                m.Leaf(hc - V(0, 0.02f, 0) + V(Mathf.Cos(a), 0, Mathf.Sin(a)) * 0.11f, d, 0.12f, 0.045f, i % 2 == 0 ? Pal.Floret : Pal.Floret2, Pal.Floret2, 0.1f, 0.05f);
+            }
+            m.Ball(hc + V(0, 0.05f, 0), V(0.07f, 0.04f, 0.07f), 8, 3, Pal.Floret, Pal.Floret);
+            return m;
+        }
+
+        // Mother of Mushrooms: the Primordial Mushboom, a great red mushroom grown out of the Tree's clay trunk, its cap
+        // dotted with spore holes, small toadstools at its foot.
+        static Lp Mushboom()
+        {
+            var m = new Lp();
+            Roots(m, 5, 0.18f, 0.1f, 0.39f, 20f, Pal.Clay4, 0.05f);
+            m.Prism(V(0, 0, 0), 0.23f, 0.17f, 0.3f, 10, Pal.Clay, Pal.Clay2, -1, 18f);
+            Hole(m, V(0, 0.16f, -0.21f), V(0, 0.16f, -1f), 0.06f);
+            Moss(m, V(-0.14f, 0.0f, 0.12f), 0.1f, 0.06f);
+            // the stem, thick and pale, with a ring skirt
+            m.Prism(V(0, 0.28f, 0), 0.15f, 0.12f, 0.42f, 10, Pal.Stem, Pal.Stem2);
+            m.Tube(V(0, 0.6f, 0), V(0, 0.55f, 0), 0.13f, 0.19f, 12, Pal.Gill, -1, -1);
+            // the cap: wide and low, gills under it, cream spots, dark spore holes on the front
+            Vector3 cc = V(0, 0.76f, 0), cr = V(0.43f, 0.34f, 0.43f);
+            m.Dome(cc, cr, 14, 5, Pal.Cap1, Pal.Cap0, 0.55f, Pal.Gill);
+            float[,] spots = { { 0.3f, 250f }, { 0.7f, 280f }, { 0.75f, 220f }, { 0.8f, 330f }, { 0.85f, 170f }, { 0.85f, 20f }, { 0.7f, 120f }, { 0.65f, 70f }, { 1.1f, 300f }, { 1.15f, 0f }, { 1.1f, 150f } };
+            for (int i = 0; i < spots.GetLength(0); i++)
+                Spot(m, cc, cr, spots[i, 0], spots[i, 1] * Mathf.Deg2Rad, i == 0 ? 0.08f : 0.055f, Pal.Spot);
+            foreach (float[] h in new[] { new[] { 1.05f, 245f }, new[] { 1.2f, 270f }, new[] { 1.05f, 290f } })
+                Spot(m, cc, cr, h[0], h[1] * Mathf.Deg2Rad, 0.03f, Pal.Hole);
+            Toad(m, V(0.27f, 0f, -0.2f), 0.9f, Pal.Cap1, Pal.Cap0);
+            Toad(m, V(-0.3f, 0f, -0.12f), 0.7f, Pal.Cap1, Pal.Cap0);
+            Toad(m, V(0.2f, 0f, 0.28f), 0.8f, Pal.Cap1, Pal.Cap0);
+            return m;
+        }
 
         static Lp DandelionTree(string up)
         {
@@ -628,6 +693,29 @@ namespace YosseleBuild
                     m.Stem(new[] { c + V(0, 0.12f, 0), c + V(0, 0.06f, 0) }, 0.01f, 0.01f, 4, Pal.Bark2);
                     m.Ball(c, V(0.065f, 0.07f, 0.065f), 8, 5, (int)q.w);
                 }
+            if (up == "Web4")
+            {
+                // a web of pale mycelium threads round the pot on the ground, joining three aura knots: red, blue, yellow
+                int[] knot = { Pal.FruitRed, Pal.FruitBlue, Pal.FruitYellow };
+                var ring = new List<Vector3>();
+                for (int i = 0; i <= 12; i++)
+                {
+                    float a = (i * 30f + 15f) * Mathf.Deg2Rad, r = 0.4f + (i % 2) * 0.03f;
+                    ring.Add(V(Mathf.Cos(a) * r, 0.012f, Mathf.Sin(a) * r));
+                }
+                m.Stem(ring, 0.011f, 0.011f, 4, Pal.Puff);
+                for (int i = 0; i < 6; i++)
+                {
+                    float a = (i * 60f + 15f) * Mathf.Deg2Rad;
+                    Vector3 d = V(Mathf.Cos(a), 0, Mathf.Sin(a));
+                    m.Stem(new[] { d * 0.24f + V(0, 0.03f, 0), d * 0.32f + V(-d.z, 0, d.x) * 0.03f + V(0, 0.015f, 0), d * 0.41f + V(0, 0.012f, 0) }, 0.012f, 0.009f, 4, Pal.Puff2);
+                    if (i % 2 == 0)
+                    {
+                        m.Ball(d * 0.41f + V(0, 0.03f, 0), V(0.05f, 0.04f, 0.05f), 8, 4, knot[i / 2], Pal.White, 0.6f);
+                        m.Disc(d * 0.41f, 0.07f, 8, Pal.Puff2, 0.008f);
+                    }
+                }
+            }
             if (up == "Fortifying5")
             {
                 // stone bands bind the pot, and slabs lean on it

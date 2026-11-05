@@ -75,6 +75,9 @@ public static class RWObjectives
         Visualproperties vp = UnityEngine.Object.Instantiate(ore.Entity.Defaultvisual);
         RWContent.Retag(vp, Meteor + "_Visualproperties");
         Visualproperties.Entry e = vp.Default;
+        // Still the ore's own look (a white crystal would be a model, which this part doesn't carry): this line tells a PC
+        // round what that look is made of.
+        RWLog.Once("meteorlook", "meteor: the ore's look is " + e.Style + (e.Visprefab != null ? ", model " + e.Visprefab.name : "") + (e.Spriteobject != null ? ", sprite " + e.Spriteobject.name : ""));
         e.Displayname = "Meteor";
         e.Displaycolor = new Color(0.957f, 0.933f, 0.973f, 0f);
         vp.Default = e;
@@ -102,17 +105,34 @@ public static class RWObjectives
         RWLog.Info("posted: " + Posted.Display + " for Tide " + (wave + 1));
     }
 
-    // What the board shows: the run line the host writes names it, and every machine has the list ("<name>|<line>").
-    public static string PostedText(Entity_Master v)
+    // What the board shows: the run line the host writes names it, and every machine has the list.
+    public static RWObjectiveDef PostedOn(Entity_Master v)
     {
         Link_Commandref c;
         if (v == null || !RWMine.Command(v, RWRun.RunLink, out c))
-            return "";
+            return null;
         string line = c.Goalstring.ToString();
         foreach (RWObjectiveDef o in All)
             if (line == "Posted: " + o.Display)
-                return o.Display.ToUpperInvariant() + "|" + o.Line + RWCard.Separator + "Pays Pure Aura " + o.Pays + " to everyone";
-        return "";
+                return o;
+        return null;
+    }
+
+    public static string CardText(RWObjectiveDef o)
+    {
+        return o.Line + RWCard.Separator + "Pays Pure Aura " + o.Pays + " to everyone";
+    }
+
+    // Its icon (scope 14's Look lines) by its name in the icon table the popup reads (RWIcons.Add puts the library's in),
+    // else the Board's.
+    public static string Icon(RWObjectiveDef o)
+    {
+        if (o == null)
+            return "RogueWaves_Board";
+        string name = "RogueWaves_Objective_" + o.Name;
+        Sprite s = null;
+        try { s = Helper_Uitools.Geticon(name); } catch (Exception) { }
+        return s != null ? name : "RogueWaves_Board";
     }
 
     public static string Take(RWPlayer p)
@@ -202,7 +222,7 @@ public static class RWObjectives
         Paid += a.Pays;
         RWRun.Pay(a.Pays, a.Display);
         if (core != null && core.Radio != null)
-            core.Radio.Uiwarning_ClientRpc(a.Display.ToUpperInvariant() + " DONE", "RogueWaves_Board", 3f);
+            core.Radio.Uiwarning_ClientRpc(a.Display.ToUpperInvariant() + " DONE", Icon(a), 3f);
     }
 
     // A vessel fell: Mind the Vessels; the marked target fell: done.
