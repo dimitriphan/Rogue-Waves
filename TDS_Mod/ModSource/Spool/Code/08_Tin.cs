@@ -1,17 +1,35 @@
 // Repurposed Cookie Tin: stitches Crafted from the Yarn Stash's Thread, one every Respawn seconds while fewer than its
 // Units are alive, and sends each to the spot its TARGET button picked (the Tin itself until one is picked). A pin
 // marker every player sees stands on the current spot. Crafted already out keep the spot they were sent to.
+// Directions its owner's vessel holds (docs/scope/11, 2026-11-05):
+//   Double Needle  stitch time -15 / 30 / 30%; rank III: every third stitch makes one more Crafted for no Thread (it may
+//                  stand one over the Tin's Units until one falls).
+//   Button Jar     each stitch makes two smaller Crafted for one's Thread (each costs half for selling), each with 55 /
+//                  65 / 75% of the health and damage (a Pmulti: it scales the Tin's Woolen Lining too); Units doubled.
+//   Pattern Book   once a Tide, the first 1 / 2 / 3 of its Crafted to fall are stitched again for free (no Thread back
+//                  when sold); ranks I and II on the usual stitch time, rank III at once.
 public class SpoolTinBrain : SpoolBuilding
 {
     public bool HasSpot;
     public Vector3 Spot;
     public Entity_Master Pin;
-    public int Stitched, Spent, Targets;
+    public int Stitched, Spent, Targets, Doubled, Restitched;
     public string LastTarget = "";
     float nextStitch;
     bool shortWarned;
+    int needleCount, bookWave = -1, bookUsed;
+    readonly List<string> again = new List<string>();   // Pattern Book: the kinds of the fallen to stitch again
 
-    public int Slots { get { return Mathf.Max(1, Mathf.RoundToInt(Stat("Units", 4f))); } }
+    public int Slots { get { return Mathf.Max(1, Mathf.RoundToInt(Stat("Units", 4f))) * (Player.Buttons > 0 ? SpoolData.ButtonPair : 1); } }
+    public float StitchTime
+    {
+        get
+        {
+            int needle = Player.Needle;
+            return Mathf.Max(1f, Stat("Respawn", 4f) * (1f - (needle > 0 ? SpoolData.NeedleCut[needle - 1] : 0f)));
+        }
+    }
+    public int FreeWaiting { get { return again.Count; } }
     public float Reach { get { return Stat("Reach", 8f); } }
     public string Kind { get { return Has("Design") ? SpoolData.Dart : SpoolData.Stitched; } }
     public int Alive { get { return SpoolServer.UnitsOf(this); } }
@@ -36,6 +54,19 @@ public class SpoolTinBrain : SpoolBuilding
 
     protected override void Tick()
     {
+        // Pattern Book: a fallen one stitched again for free (rank III at once, else on the usual stitch time).
+        if (again.Count > 0 && Alive < Slots && (Player.Pattern >= 3 || Time.time >= nextStitch))
+        {
+            string kind0 = again[0];
+            again.RemoveAt(0);
+            if (Make(kind0, 0) != null)
+            {
+                Restitched++;
+                if (Player.Pattern < 3)
+                    nextStitch = Time.time + StitchTime;
+            }
+            return;
+        }
         if (Time.time < nextStitch || Alive >= Slots)
             return;
         string kind = Kind;
@@ -49,23 +80,67 @@ public class SpoolTinBrain : SpoolBuilding
             return;
         }
         shortWarned = false;
-        SpoolUnitBrain u = SpawnUnit(kind);
-        if (u == null)
+        // Button Jar: two for one's Thread, the cost split between them for selling.
+        int pair = Player.Buttons > 0 ? SpoolData.ButtonPair : 1, paid = 0, made = 0;
+        for (int i = 0; i < pair; i++)
+        {
+            int share = i < pair - 1 ? cost / pair : cost - paid;
+            if (Make(kind, share) != null)
+            {
+                paid += share;
+                made++;
+            }
+        }
+        if (made == 0)
         {
             SpoolServer.AddStash(Owner, cost);
             nextStitch = Time.time + 1f;
             return;
         }
+        if (paid < cost)
+            SpoolServer.AddStash(Owner, cost - paid);
+        Spent += paid;
+        Stitched++;
+        // Double Needle III: every third stitch, one more for no Thread.
+        if (Player.Needle >= 3 && ++needleCount % SpoolData.NeedleEvery == 0 && Make(kind, 0) != null)
+            Doubled++;
+        nextStitch = Time.time + StitchTime;
+    }
+
+    // One Crafted of this Tin, sent to its spot with the Tin's upgrades (Button Jar's share when its owner holds it).
+    SpoolUnitBrain Make(string kind, int cost)
+    {
+        SpoolUnitBrain u = SpawnUnit(kind);
+        if (u == null)
+            return null;
         u.Spot = HasSpot ? Spot : Pos;
         u.Cost = cost;
-        Spent += cost;
         u.Recycle = Has("Recycle") ? Param("Recycle_Base", 0.5f) : 0f;
         u.Burst = Has("Surprise") ? Param("Burst_Times", 3f) : 0f;
         u.HealthMulti = Param("Craftedhealth_Multi", 0f);
         u.SpeedMulti = kind == SpoolData.Stitched && Has("Discounted") ? Param("Stitchedspeed_Multi", SpoolData.StitchedSpeedUp) : 0f;
-        Stitched++;
+        int buttons = Player.Buttons;
+        u.Small = buttons > 0 ? SpoolData.ButtonShare[buttons - 1] : 0f;
         ModKitUtil.Vis(Master, "Spool_Stitch", Pos, 0f);
-        nextStitch = Time.time + Mathf.Max(1f, Stat("Respawn", 4f));
+        return u;
+    }
+
+    // Pattern Book: one of this Tin's Crafted fell (killed, not sold). The first ones of each Tide come back.
+    public void Fell(SpoolUnitBrain u)
+    {
+        int rank = Player.Pattern;
+        if (rank <= 0 || u == null || u.Def == null)
+            return;
+        int wave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
+        if (wave != bookWave)
+        {
+            bookWave = wave;
+            bookUsed = 0;
+        }
+        if (bookUsed >= SpoolData.PatternFree[rank - 1])
+            return;
+        bookUsed++;
+        again.Add(u.Def.Id);
     }
 
     // TARGET: the stock Relocate picker sends the clicked tile. It must be within Reach and a Crafted must be able to
@@ -158,6 +233,10 @@ public class SpoolTinBrain : SpoolBuilding
 // Fighting is the game's own Entity_Ai_Mob_Combat / Entity_Ai_Mob_Ranged (they pick a fight while the unit is Idle);
 // this brain only decides where it walks, the way the shipped units' AIs do it (a Move command with a Goalobject or a
 // Goalposition). Crafted run to their spot ignoring foes on the way, then guard it within their leash.
+// Directions its owner's vessel holds (docs/scope/11, 2026-11-05):
+//   Merit Badge  +3% Damage and Health (Multi) for each foe it drowns (lands the last hit on), up to +15 / 30 / 45%.
+//   Odd Socks    +8 / 15 / 25% Damage while a Crafted of another kind and its team stands within 2 tiles; rank III:
+//                also 10% less damage taken (a handler at the front of its hit chain).
 public class SpoolUnitBrain : MonoBehaviour
 {
     public Entity_Master Master;
@@ -165,12 +244,15 @@ public class SpoolUnitBrain : MonoBehaviour
     public SpoolBuilding Home;
     public Vector3 Spot;
     public bool Started, Arrived, Holding;
-    public int Cost, Orders;
-    public float Recycle, Burst, HealthMulti, SpeedMulti, Leap;
+    public int Cost, Orders, Drowns;
+    public float Recycle, Burst, HealthMulti, SpeedMulti, Leap, Small, MeritBonus, SocksBonus;
     public Entity_Master Target, LeapAt;
+    public bool Guarded;
 
-    float nextThink;
+    float nextThink, nextFront;
     bool armed;
+    Link_Modifier meritDamage, meritHealth, socksDamage;
+    static readonly Entity_Master.Oninteracts guard = OnGuarded;
 
     public long Owner { get { return ModKitUtil.Owner(Master); } }
     bool Crafted { get { return Def.Sellable; } }
@@ -194,6 +276,12 @@ public class SpoolUnitBrain : MonoBehaviour
             }
             if (Def.Ranged && !armed)
                 Arm();
+            // Updateinteract rebuilds the hit chain when an upgrade lands: Odd Socks' guard goes back to the front.
+            if (Guarded && Time.time >= nextFront)
+            {
+                nextFront = Time.time + 0.1f;
+                ModKitUtil.Front(Master, guard);
+            }
             if (Time.time >= nextThink)
             {
                 nextThink = Time.time + 0.4f;
@@ -219,6 +307,13 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         if (SpeedMulti != 0f)
             Helper_Entitytools.Addmod(Master, "Speed", SpeedMulti, Helper_Entitytools.Modtypes.Multi, 0f);
+        // Button Jar: a share of a whole one's health and damage (a Pmulti multiplies with Woolen Lining's Multi).
+        if (Small > 0f)
+        {
+            Helper_Entitytools.Addmod(Master, "Health", Small - 1f, Helper_Entitytools.Modtypes.Pmulti, 0f);
+            Helper_Entitytools.Addmod(Master, "Damage", Small - 1f, Helper_Entitytools.Modtypes.Pmulti, 0f);
+            Fill();
+        }
         ModKitUtil.Vis(Master, "Spool_Pop", ModKitUtil.Pos(Master), 0f);
         if (Crafted)
             Walk(null, Spot, 0f);
@@ -257,6 +352,8 @@ public class SpoolUnitBrain : MonoBehaviour
 
     void Think()
     {
+        if (Crafted)
+            Socks();
         Vector3 pos = ModKitUtil.Pos(Master);
         if (Crafted && !Arrived)
         {
@@ -391,6 +488,71 @@ public class SpoolUnitBrain : MonoBehaviour
         Helper_Entitytools.Despawn(Master.Beingserver, true, "Burst");
     }
 
+    // ---------------------------------------------------------------- Merit Badge and Odd Socks
+
+    // A foe this Crafted landed the last hit on fell (SpoolServer.OnDespawn).
+    public void Drowned()
+    {
+        int rank = SpoolServer.Player(Owner).Merit;
+        if (!Crafted || rank <= 0 || !ModKitUtil.Alive(Master))
+            return;
+        Drowns++;
+        float bonus = Mathf.Min(SpoolData.MeritEach * Drowns, SpoolData.MeritCap[rank - 1]);
+        if (bonus <= MeritBonus + 0.0001f)
+            return;
+        MeritBonus = bonus;
+        meritDamage = ModKitUtil.Keep(Master, meritDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
+        // Made anew rather than kept: Keep fills the stat, and Health is a Variable stat, which keeps its share of the
+        // maximum when the maximum moves.
+        ModKitUtil.Unmod(meritHealth);
+        meritHealth = Helper_Entitytools.Addmod(Master, "Health", bonus, Helper_Entitytools.Modtypes.Multi, 0f);
+        ModKitUtil.Vis(Radio(), "Spool_Merit", ModKitUtil.Pos(Master), Drowns);
+    }
+
+    void Socks()
+    {
+        int rank = SpoolServer.Player(Owner).Socks;
+        bool beside = rank > 0 && SpoolServer.OtherKindNear(this, SpoolData.SocksRange);
+        float bonus = beside ? SpoolData.SocksBonus[rank - 1] : 0f;
+        if (!Mathf.Approximately(bonus, SocksBonus))
+        {
+            socksDamage = ModKitUtil.Keep(Master, socksDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
+            SocksBonus = bonus;
+        }
+        bool guarded = beside && rank >= 3;
+        if (guarded == Guarded)
+            return;
+        Guarded = guarded;
+        if (guarded)
+            ModKitUtil.Front(Master, guard);
+        else
+            ModKitUtil.Unfront(Master, guard);
+    }
+
+    // Odd Socks III: 10% less from each hit while it stands beside another kind.
+    static void OnGuarded(Link_Interact hit)
+    {
+        try
+        {
+            float multi;
+            if (hit == null || hit.Type != "Hurt" || hit.To == null || hit.Data == null || !hit.Data.TryGetValue("Damagemulti", out multi))
+                return;
+            SpoolUnitBrain u = hit.To.GetComponent<SpoolUnitBrain>();
+            if (u == null || !u.Guarded)
+                return;
+            // A copy: some AIs reuse one dictionary for several hits (pitfall #30).
+            hit.Data = new Dictionary<string, float>(hit.Data);
+            hit.Data["Damagemulti"] = multi * (1f - SpoolData.SocksGuard);
+            Socked++;
+        }
+        catch (Exception e)
+        {
+            SpoolLog.Warn("Odd Socks: " + e.Message);
+        }
+    }
+
+    public static int Socked;
+
     Entity_Master Radio()
     {
         if (Home != null && Home.Master != null && Home.Master.Radio != null)
@@ -422,6 +584,9 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         if (!killed)
             return;
+        SpoolTinBrain tin = Home as SpoolTinBrain;
+        if (Crafted && tin != null && tin.Master != null)
+            tin.Fell(this);
         if (Recycle > 0f && Cost > 0)
             SpoolServer.Drop(pos, Mathf.CeilToInt(Cost * Recycle));
         if (Burst > 0f && radio != Master)

@@ -138,6 +138,11 @@ public static class SpoolClient
                     SpoolAssets.Play("Spool_Stitch", at);
                     ModKitAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.4f, 1.5f);
                     break;
+                // Merit Badge: a Crafted drowned another foe (number: how many).
+                case "Spool_Merit":
+                    SpoolAssets.Play("Spool_Pop", position, 0.6f);
+                    ModKitAssets.Effect("World_Spool_Stitch", position + Vector3.up * 0.4f, 1f);
+                    break;
                 case "Spool_Pop":
                     SpoolAssets.Play("Spool_Pop", at);
                     ModKitAssets.Effect("World_Spool_Stuffing", at, 1.2f);

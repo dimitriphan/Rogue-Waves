@@ -1191,6 +1191,8 @@ public static partial class SpoolSelfTest
                 }
             }
         }
+        // 10c. Spool's five Directions from scope 11 (98_Directions.cs).
+        yield return Directions(hero, owner, player, tinA, tinB);
         // 11. The journal: Spool's pages, and every vessel page with exactly one tab per vessel (Smacky included).
         {
             Logobject page = SpoolContent.Entry.Log;
