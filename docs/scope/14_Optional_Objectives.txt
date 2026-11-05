@@ -1,6 +1,5 @@
 | Optional Objectives |
 	# The rules for optional objectives, and the Optional Objective List: each objective in the Optional Objective template from 15_Templates.txt.
-	! NEEDS LIST OF OPTIONAL OBJECTIVES AND WHAT EACH ONE PAYS !
 
 	[Rules]
 		- Names: a short order, like a bounty on a notice board

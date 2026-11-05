@@ -4,6 +4,9 @@ Dimitri, 15:47Z: "Create a report of everything that needs my decision right now
 PR #115) and checked item by item against the reports and the code. The first page (`OPEN_DECISIONS_2026-11-05.md`)
 was answered at 04:59Z and is not reopened here. Nothing was changed to write this page.
 
+**Answered 2026-11-05 16:04Z** (Dimitri: "Default for all, and I give permission for 12"). Every **Rec** below is
+taken; what was applied and who does the rest is in "The answers" at the end.
+
 **How to answer:** by number, for example "1 yes, 2 yes but c keep, 9 American, rest as recommended". "Rest as
 recommended" takes every **Rec** below. A skipped item stays open and nothing changes for it. Scope and doc answers go
 straight into a PR from this thread; anything that needs code goes to the thread that owns it.
@@ -112,3 +115,24 @@ straight into a PR from this thread; anything that needs code goes to the thread
 - Turning off the connectors that fail to load: Figma, Notion, Slack, Datadog and the rest.
 - What only you can supply: your Argo balance pass, and the Yossele play test that decides P5/P6 (Yossele's
   Sapling speed and fruit pay).
+
+## The answers (16:04Z)
+
+Dimitri: "Default for all, and I give permission for 12."
+
+| # | Taken | Done by |
+| --- | --- | --- |
+| 1 | The 15 readings stand as built | nothing to do |
+| 2 | Fix a, b, c, f, g; leave d and e | a code thread (next code review or build) |
+| 3 | Scope 07's 95 defaults are his | done in this PR |
+| 4 | 03's names, 06's rules, 10's sharing limit, 12's shop list are his; NEEDS lines in 11, 12, 14 cleared | done in this PR; 04's NEEDS line after the balance sweep, from this thread |
+| 5 | Boutman's Direction becomes **Spare Reel** (`16_Directions.cs:89`, scope `11:537`) | a code thread, code and scope together |
+| 6 | "Most votes win. Nobody leaves right before their demise." (`20_Vote.cs:662`) | a code thread |
+| 7 | Depth's lines kept, with a Claude note | done in this PR (scope 04, 05) |
+| 8 | Notched Oar keeps its numbers | nothing to do |
+| 9 | British spelling in player text, names as he wrote them | a code thread, with the scope lines that are in-game lines |
+| 10 | The mode part gets a model library and a temporary white crystal; the line stays | an art thread |
+| 11 | Claude draws Yossele's final sheet from his reshade and the temporary sheet, in .aseprite, for him to edit; 07's sprite NEEDS stays until he takes it | an art thread |
+| 12 | **His OK for the next PC round**, right after the balance sweep merges and before Spool's 22 upgrades | the PC thread |
+| 13 | "sync": his project-files scope copy and the Scope Editor once the sweep merges | this thread |
+| 14 | `.claude/settings.json`: delete the three merge deny lines, add `apt-get update` and `python3 -m pip install UnityPy` | Dimitri (Claude may not change its own permissions) |

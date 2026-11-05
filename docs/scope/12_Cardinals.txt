@@ -2,9 +2,7 @@
 	# The rules for new Cardinals and Trinkets, and their list: each one in the Cardinal or Trinket template from 15_Templates.txt, under its kind.
 	# Each sheet ends with By: who made it, Dimitri or Claude. A Claude-made sheet is all defaults until you take it.
 	/~ What each of Claude's rides on in the game's code, and the StarCraft II campaign upgrade behind it: docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md. The overlap check against the base game's Cardinals and the roguelike ones: docs/reports/ROGUELIKE_DIRECTIONS_CARDINALS_2026-11-04.md \
-	! NEEDS LIST OF NEW CARDINALS AND TRINKETS: NAME AND EFFECT FOR EACH !
-	! NEEDS WHICH BASE GAME CARDINALS THE SHOP ALSO SELLS !
-	- Shop's base game Cardinals, until then: ~all but Moon, Moon Core, Loop, Looped Mirror, Vintage, Same Day Shipping, Pig, Money Bag, Sandbox, Sand, Blurry Photo, Checklist, Computer and Bottom Rock~ /~ What they leave out fights the run's own rules, docs/reports/SCOPE_VS_LOOP.md #7; Bottom Rock also cuts all aura pay to 1% (seen on the PC) \
+	- Shop's base game Cardinals: all but Moon, Moon Core, Loop, Looped Mirror, Vintage, Same Day Shipping, Pig, Money Bag, Sandbox, Sand, Blurry Photo, Checklist, Computer and Bottom Rock /~ What they leave out fights the run's own rules, docs/reports/SCOPE_VS_LOOP.md #7; Bottom Rock also cuts all aura pay to 1% (seen on the PC) \
 
 	[Rules]
 		- What: a new Cardinal or Trinket is a new run modifier, the same kind of effect as the base game's Cardinals
@@ -170,7 +168,6 @@
 				- Clashes: None
 				- By: Claude /~ After Risk of Rain 2's Wake of Vultures. Elite means any foe with a modifier, the base game's or the pack's (13_Enemy_Modifiers.txt) \
 		(Cardinals)
-			! NEEDS CARDINALS !
 			{Cork Lifebuoy}
 				- Kind: Cardinal
 				- In-game line: The Basin lives through one more killing blow each map
