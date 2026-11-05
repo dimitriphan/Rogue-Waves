@@ -5,8 +5,8 @@ reshade and its back view, which are embedded pixel for pixel and never recolour
 `concepts/vessels_2026-10-09/v3_flat/game_size/spool_reshade.png`, and the walk equals the concept
 `concepts/walk_2026-10-12/game_size/SpoolWalk-Sheet.png` pixel for pixel (its generator is ported to C#). The boat
 mini, the Crafted, the Thread Head, the towers, the effects and the sounds are drawn new. Checks: `check_editor.sh`
-passes with 0 errors, and `lite/run_preview.sh ... sma` runs clean. These files are the cloud renders; nothing has
-been built in Unity or seen in game yet.
+passes with 0 errors, and `lite/run_preview.sh ... sma` runs clean. These files are the cloud renders, made before any
+build in Unity; the art has been in game since Spool's PC round 1 (`docs/TEMP_ART.md`).
 
 ## Sprite sheets (PPU 20, bottom-centre pivot; v1/v3 = v0/v2 mirrored)
 

@@ -15,10 +15,10 @@ HOW = {
                '(the wired file, `YosseleBuilder.CopySheet`) and its `.aseprite` over `aseprite/`, then Build All Assets.',
     'Spool': 'A pick is a copy: put the picked `game_size/<sheet>.png` over `Art/Temporary/game_size/` (the wired files, '
              '`SpoolBuilder` `FileArt`) and its `.aseprite` over `aseprite/`, then rebuild Spool\'s assets.',
-    'Uloe': 'Not wired: `Uloephoton-Sheet` is drawn by code (`UloeCharacter.PhotonSheet`) and UloeBuilder has no file '
-            'override yet. A pick needs Yossele\'s `FileArt` in `UloeBuilder.SaveSheet` (load `Art/<name>.png`, else '
-            '`Art/Temporary/game_size/<name>.png`, when it has the code sheet\'s size), then the picked sheet copied to '
-            '`Art/Temporary/game_size/`. Same name, size and layout as the code\'s sheet (160 x 64).',
+    'Uloe': 'Not wired: `Uloephoton-Sheet` is drawn by code (`UloeCharacter.PhotonSheet`). `UloeBuilder.SaveSheet` '
+            'already takes a file over it (`FileArt`: `Art/<name>.png`, else `Art/Temporary/game_size/<name>.png`, when it '
+            'has the code sheet\'s size), so a pick only needs the picked sheet copied to `Art/Temporary/game_size/`. Same '
+            'name, size and layout as the code\'s sheet (160 x 64).',
     'Argo': 'Not wired: the six Naut sheets are drawn by code (`ArgoCharacter.NautSheet`, `NautTuneSheet`) and ArgoBuilder '
             'has no file override yet. A pick needs Yossele\'s `FileArt` in `ArgoBuilder.SaveSheet`, then the six picked '
             'sheets copied to `Art/Temporary/game_size/`. Same names, sizes and layout as the code\'s sheets (96 x 64 each). '

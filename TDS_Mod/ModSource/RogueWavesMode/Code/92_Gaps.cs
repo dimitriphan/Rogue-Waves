@@ -1,13 +1,13 @@
 #if ROGUEWAVESMODE_GAPS
 // Debug build only (-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_GAPS, with ROGUEWAVESMODE_SHOTS for captures): the features the
-// campaign flow (96_Flow.cs) reaches but never measures (docs/reports/UNTESTED_FEATURES_2026-11-04.md), one launch, on a solo host:
+// campaign flow (96_Flow.cs) reaches but never measures (docs/reports/TEST_ROUND_2026-11-04.md §3), one launch, on a solo host:
 //   rules    what a Direction roll may offer for each of the nine vessels; every Direction's, Cardinal's and Trinket's text and picture
 //   effects  on a real map: what each Direction and Vampire Dentures do to the wallet and to health; each objective's failure
 //   scales   every dialog of the mode at each UI scale and three screen sizes
 //   ten      a whole campaign on ten real maps, each voted, left and won, to the CAMPAIGN WON screen, with the difficulty measured
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
 //            both weather objects find a tile, a Tide runs; Boutman's real death for the F key
-// "-rwonly <word,word>" on the command line picks parts (Tools/pc/Run-TwoPlayers.ps1 -Solo -Extra "...").
+// "-rwonly <word,word>" on the command line picks parts (Tools/pc/Run-TwoPlayers.ps1 -Extra "..."; a solo build never starts the second copy).
 public static partial class RWTest
 {
     static readonly string[] AllHeroes = { "Hero_Smacky", "Hero_Buster", "Hero_Fie", "Hero_Boutman", "Hero_Snosno", "Hero_Yossele", "Hero_Spool", "Hero_Argo", "Hero_Uloe" };

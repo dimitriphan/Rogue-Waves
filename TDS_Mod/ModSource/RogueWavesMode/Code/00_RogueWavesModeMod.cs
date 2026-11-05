@@ -9,8 +9,8 @@
 //   08_Icons.cs     the weather icons
 //   09_Rejoin.cs    a player who drops can rejoin the running map (docs/mode/REJOIN.md), in every map while the pack is on
 //   10_Online.cs    a restarted friend keeps their Sessionid; a player whose map never loads is sent back, not everyone
-// Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button piece
-// (docs/mode/MAIN_MENU_START.md, not built yet) or, in a self-test build, by 99_SelfTest.cs.
+// Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button
+// (12_Menu.cs, docs/mode/MAIN_MENU_START.md) or, in a self-test build, by 99_SelfTest.cs.
 // Build: Build-RogueWavesModeMod.ps1 [-Define ROGUEWAVESMODE_SELFTEST].
 using System;
 using System.Collections;
@@ -135,7 +135,7 @@ public static class RWData
     public const string PlanPrefix = "RW_";              // + the base Gameplan's name: its twin in Mode_RogueWave
     public const string SaveFolder = "RogueWaves";
     public const string KeyPrefix = "RW_";               // every key in SaveFolder (kit docs/23 §2 rule 3): RWKeys
-    public const string WorldPrefix = "RW_Chart_";       // + seed + "_" + one column digit per row sailed
+    public const string WorldPrefix = "RW_Chart_";       // + seed + "_" + one column digit per row sailed + "r" + retries left (04_World.cs)
 }
 
 public static class RWLog

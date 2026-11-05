@@ -17,7 +17,7 @@
 //   YosseleClient    runs on every player: lobs, seeds, turret aim, effects, sounds, warnings (the game turns the
 //                    Stonehenge's model by its placement orientation; YosseleContent.ShowFacing adds its arrows).
 //   YosseleJournal   the journal pages through the shared ModKitVesselJournal.
-//   Kit 1.6          ModKitPack, ModKitTides (Growth on each Tide), ModKitCounter (Growth, Seeds, fertilizer),
+//   Kit 1.7          ModKitPack, ModKitTides (Growth on each Tide), ModKitCounter (Growth, Seeds, fertilizer),
 //                    ModKitDirections (Compost Bin, Dandelion Season, Mother of Mushrooms), ModKitFocus, ModKitTowers,
 //                    ModKitBoat. The build renames ModKit.
 using System;

@@ -3,7 +3,7 @@
 Rogue Waves' Yossele is **designed from the scope text** (`docs/scope/07_Vessel_Yossele.txt`, Dimitri's 2026-10-20
 sheet with his 2026-10-21 answers), checked against `TDS_Vessel_Creator/docs/02`. Where the sheet gives a number it is
 used as written; a value written `~like this~` on the sheet is a default Claude picked, and every default this page adds
-is listed under "Changes from the concept". Status: **built to this sheet and passed PC round 9 (9e, 160/0, 2026-10-23); Dimitri's play
+is listed under "Changes from the concept". Status: **built to this sheet and passed PC round 9 (9e, 160/0, 2026-10-23), 173/0 on 2026-11-04; Dimitri's play
 build** (`IMPLEMENTATION_NOTES.md`); what the self-test cannot see is still to check by play and by eye
 (`docs/reports/YOSSELE_TEST_PLAN_2026-10-23.md`).
 Yossele is Release 1, alone (`docs/PLAN.md` Part B): it works in a normal game, without the mode.
@@ -212,8 +212,8 @@ gone (the game's own sounds play). Renders and notes: `Previews/0.2/`.
 | Four upgrade levels | Tiers 2-5; level 4 is tier 5 | The game's tiers; the panel shows up to four options |
 | Hallucinogen, Explosive Finish, Viral and the rest | As written | |
 | Fertilizer unlocked by a Direction | Compost Bin as three rank Directions, granted by the mode or the self-test only | Ranks are Phase 5; Release 1 has no Directions (Dimitri 2026-10-21) |
-| Dandelion Season, Mother of Mushrooms (`11_Directions.txt`) | Not built | They come with the Direction catalogue (Phase 5/6) |
-| "Growth rises with each tide a tower survives" | A stage when a Tide begins, for buildings that stood through the whole Tide before | Makes "survived" exact; the game has no break event yet (`ModKitTides`) |
+| Dandelion Season, Mother of Mushrooms (`11_Directions.txt`) | Built as Directions, one upgrade per rank (`IMPLEMENTATION_NOTES.md` "Directions") | Measured in game on 2026-11-04 |
+| "Growth rises with each tide a tower survives" | A stage when a Tide begins, for buildings that stood through the whole Tide before | Makes "survived" exact; the game has no break event (kit 1.7's `ModKitTides.Break` came later) |
 | Aura fruit "after fully mining a node" | Each payout a fully grown Sapling's strike brings about, on the free tile beside the node | The game's nodes refill instead of running out (above) |
 | D-MDS: "what counts as projectiles, bosses?" (Dimitri's note) | Every foe projectile that hurts; a boss's costs 5 seeds | Default; the stock list is short (above) |
 | Cordyfriend "one for each foe that rises, no cap" (Claude's default) | Up to 30 at once per player | A safety limit on networked units in long games; the sheet's default changed to match |

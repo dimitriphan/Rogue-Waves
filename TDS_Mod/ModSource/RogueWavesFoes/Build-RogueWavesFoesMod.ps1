@@ -1,4 +1,4 @@
-﻿# Builds the Rogue Waves mode part's code (dev mod RogueWavesFoesMod, prefab RogueWaves_Foes_Default; docs/PACK.md):
+﻿# Builds the Rogue Waves enemies part's code (dev mod RogueWavesFoesMod, prefab RogueWaves_Foes_Default; docs/PACK.md):
 # joins Code/*.cs (name order; 00_RogueWavesFoesMod.cs first so its type is the entry point) and the shared kit in
 # ModSource/Shared/*.cs (the "ModKit" type prefix becomes "RogueWavesFoesKit" in every file, so no two parts ever define
 # the same type), hoists every `using` line to the top, rejects blocked namespaces, compile-checks the result against the

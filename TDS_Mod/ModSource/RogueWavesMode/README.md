@@ -42,7 +42,7 @@ chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMO
 
 | File | What |
 | --- | --- |
-| `Code/11_Dialog.cs` | `RWDialog`: the game's choice dialog for every choice, its cards laid in one centred row |
+| `Code/11_Dialog.cs` | `RWDialog`: the game's choice dialog for every choice, its cards centred, four or fewer in one row, more in two |
 | `Code/12_Menu.cs` | `RWMenu`: the main menu's button; `RWAssets`: the sprite library |
 | `Code/13_Card.cs` | `RWCard`: the campaign card on four screens, the exit warning, the end titles; `RWLobby`: no-mods warning, rejoin line; `RWTips` |
 | `Code/14_Run.cs` | `RWPlayer`, `RWRun`: each player's Pure Aura, Directions and Trinkets, and the team's Cardinals, saved with the campaign; `RWMine`: the same seen from a client |

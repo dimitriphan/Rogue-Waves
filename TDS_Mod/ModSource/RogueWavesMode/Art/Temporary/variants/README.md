@@ -4,7 +4,7 @@
 the files in `../game_size/` (same names, sizes and frame layouts), for Dimitri to pick from one animation at a time;
 `../game_size/` stays the one in game until he does. How picks are made and applied: `docs/TEMP_ART.md`, "Versions to
 pick from". Each folder has `game_size/` (the drop-in PNGs), `aseprite/` (layer "TEMP art", a tag per animation and
-view) and `preview_8x/` (enlarged sheets and GIFs).
+view) and `preview_8x/` (enlarged sheets).
 
 | File | v1 | v2 | v3 |
 | --- | --- | --- | --- |

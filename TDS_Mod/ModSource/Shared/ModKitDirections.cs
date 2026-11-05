@@ -5,7 +5,7 @@
 // exists on every machine with the pack; the mode lists them all by the "Direction_" prefix, offers them, and grants a
 // player's pick on that player's vessel (Grant): a respawn copies the dead vessel's upgrades, and the mode grants again
 // when each map starts (docs/15 section 14.1). The upgrade is game state, synced to every client by the engine.
-// A vessel part asks Rank(vessel, name) or Has(vessel, name) and reacts; kit 1.7 made these per vessel, not per team.
+// A vessel part asks Rank(vessel, owner, name) or Has(vessel, owner, name) and reacts; kit 1.7 made these per vessel, not per team.
 public static class ModKitDirections
 {
     public const string Prefix = "Direction_";

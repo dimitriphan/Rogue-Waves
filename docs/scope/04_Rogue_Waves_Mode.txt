@@ -17,7 +17,7 @@
 		- Lost: a failed campaign keeps nothing
 		- Score: does not count in this mode
 		- Changes per campaign: new modifiers / enemies that change with each campaign: ! NEEDS WHICH MODIFIERS AND ENEMIES CAN CHANGE FROM CAMPAIGN TO CAMPAIGN !
-		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), and one more joins as the maps go on~
+		- In use until then: ~each campaign's seed picks 2 of the 4 new modifiers and 2 of the stock elites (Armor, Health, Red, Explode, Aegis), none is on for maps 1 and 2, one comes on from map 3 and one more every second map~
 
 	[Difficulty]
 		- Each map: harder than the one before: more enemy modifiers, higher spawn rates, harder optional objectives and more enemy health

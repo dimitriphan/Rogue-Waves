@@ -4,7 +4,7 @@ Dimitri, 2026-11-04: "Create new sprites for all modded minions. They should be 
 
 Size: the Snoble is 6-8 px wide and 5-8 px tall in a 12 px cell (measured on the game's sheet, kit `docs/18` section 2). Every version keeps the wired sheet's name, size and frame layout; only the body in each cell is smaller. Drawn by `concept-tools/minions/` (`uloe.py`; `build.py` writes this folder).
 
-Not wired: `Uloephoton-Sheet` is drawn by code (`UloeCharacter.PhotonSheet`) and UloeBuilder has no file override yet. A pick needs Yossele's `FileArt` in `UloeBuilder.SaveSheet` (load `Art/<name>.png`, else `Art/Temporary/game_size/<name>.png`, when it has the code sheet's size), then the picked sheet copied to `Art/Temporary/game_size/`. Same name, size and layout as the code's sheet (160 x 64).
+Not wired: `Uloephoton-Sheet` is drawn by code (`UloeCharacter.PhotonSheet`). `UloeBuilder.SaveSheet` already takes a file over it (`FileArt`: `Art/<name>.png`, else `Art/Temporary/game_size/<name>.png`, when it has the code sheet's size), so a pick only needs the picked sheet copied to `Art/Temporary/game_size/`. Same name, size and layout as the code's sheet (160 x 64).
 
 Each `<minion>/vNN/` has `game_size/` (the sheet), `aseprite/` (one frame per cell, a tag per row and animation, layer "TEMP art") and `preview_8x/` (on a checker). GIFs of every version are in the project files, `/mnt/project-files/concepts/minions_2026-11-04/`.
 
