@@ -1,15 +1,20 @@
 # RogueWavesMode: implementation notes
 
-## 0.1.0-dev, later (2026-11-05): Spring Tide's self-test reads its own Add (compiled, not yet run in game)
+## 0.1.0-dev, later (2026-11-05): Spring Tide measured on a plain tower (compiled, not yet run in game)
 
-Light_round1's two Spring Tide fails (`0 -> 0.0375` where 10 is asked) were the test's tower, not B7's effect: it is the
-first Towerfighter built after the flow buys every stock Cardinal, so it is Paper Tower's paper tower (Health Multi) and
-holds Frail Titan (Health Pmulti); its max Health sums below 0 and reads the floor, 0, and a +10 Add shows as 0.0375
-(pitfall #171; both readings, and the stock Beacon's `0.0375 -> 0.1375` of 4 Nov, fit a base part of -6.25 and Multi 0.01).
-`Grow` added its 10 as built. The flow (`96_Flow.cs`) now reads the Health stat's `Value_Add` and the tower's own modifier
-(`RWDirections.SpringOn`, read by the self-test), checks `Value_Calc` against the engine's sum of the buckets (`Recounted`), prints
-the buckets and the tower's Cardinal effects (Paper Tower's and Frail Titan's should be among them), and adds a third line at Tide 2's break: the same
-modifier rises by 10 again (its `Value_Add` setter's recount, never run before). No game code changed.
+Light_round1's two Spring Tide fails (`0 -> 0.0375` where 10 is asked) point at the test's tower, not B7's effect. The
+archer it measured is built right after the flow buys every stock Cardinal, so it holds Frail Titan (a Health Pmulti on
+every tower spawned after it) and is Paper Tower's paper tower (a Health Multi on the first Towerfighter child after it;
+the game calls `Parent.Child` at the end of every spawn, Entity_Master.cs:333-336). Both readings, and the stock Beacon's
+`0.0375 -> 0.1375` of 4 Nov, fit `(base x Pmulti + Add) x Multi` with a base part of -6.25, Multi 0.01 and a floor of 0
+(pitfall #171): `Grow`'s +10 Add would then be on it. Fitted, not yet confirmed: the data's numbers are only on the PC.
+
+The flow (`96_Flow.cs`) now places a plain archer (`PlaceArcher`) before the map's first Cardinal is bought and checks on
+it that the max rises by 10 at Tide 1's break and the tower's own modifier (`RWDirections.SpringOn`, a read-only
+accessor for the self-test) by 10, with no `Resistadd`, and a third line at Tide 2's break: both by 10 again (the
+modifier's `Value_Add` setter path, never run before). The archer built after the Cardinals keeps its other checks and
+has its Health parts and Cardinal effects logged before and after Tide 1, so the next round confirms the cause. No game
+behaviour changed.
 
 ## 0.1.0-dev, later (2026-11-05): the decided fixes, kit 1.14 (compiled, not yet run in game)
 

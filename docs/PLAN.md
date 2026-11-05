@@ -447,15 +447,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the 55 stock groups' numbers in `docs/reports/lighting_2026-11-05/light_groups.txt`. Pitfall #170 (the HUD hides
   after 10 s without input). His release builds, save and settings are back as they were; Unity's project holds
   `fb208b8`. Whether a look ships (§5) goes to the open-decisions page with the pictures.
-  2026-11-05: Spring Tide's Tide gain, the round's two fails, found to be the test's tower, not B7's effect
-  (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`, first entry; pitfall #171): the flow builds its archer right
-  after buying every stock Cardinal, so it is Paper Tower's paper tower and holds Frail Titan, its max Health sums below 0
-  (read as 0) and the +10 Add shows as 0.0375; `Grow` added its 10. The flow now reads the stat's Add and the tower's own
-  modifier, checks the max against the engine's sum, and adds a third line at Tide 2 (the same modifier +10 again). No
-  game code changed. Compiled here (the mode's release, self-test, self-test with gaps and with shots: 0 errors), not run
-  on the PC. **PC round 4:** the mode's self-test with every part on shows the three `Spring Tide` lines passing and their
-  detail printing the tower's buckets and, among its Cardinal effects, Paper Tower's and Frail Titan's (the cause
-  confirmed); one check more than before.
+  2026-11-05: Spring Tide's Tide gain, the round's two fails, traced to the test's tower, not B7's effect
+  (`TDS_Mod/ModSource/RogueWavesMode/IMPLEMENTATION_NOTES.md`, first entry; pitfall #171): the flow built its archer
+  right after buying every stock Cardinal, so it holds Frail Titan and is Paper Tower's paper tower, and both readings fit
+  a max that sums below 0 (read as 0) and a +10 Add scaled by 0.01; fitted, not yet confirmed. The flow now measures on
+  a plain archer placed before the map's first Cardinal (the max and Spring Tide's own modifier +10 at Tide 1, and again
+  at Tide 2, a new line) and logs the other archer's Health parts. No game behaviour changed. Compiled here (the mode's
+  release, self-test, with gaps and with shots: 0 errors), not run on the PC. **PC round 4:** the mode's self-test with
+  every part on shows the three `Spring Tide` lines passing, and the two `INFO Spring Tide: the archer built after the
+  Cardinals` lines list Paper Tower's and Frail Titan's effects with a Multi near 0.01 (the cause confirmed).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14` (taken 2026-11-05, like every Open question below); one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6, now the balance sweep's), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
