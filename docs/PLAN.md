@@ -274,10 +274,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05: the code review's bugs fixed, 32 of 54 (every confirmed one that needs neither his word nor a PC fact,
   and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
   look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
-  2026-11-05: Spool's main sprite recoloured to pastel green as an example, at his word (his purple reads too close to
-  the foes' magenta; yellow, then a mint, then the soft sage `93CCA1` he picked): files only in `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`, not wired; the game still
-  draws Spool in purple. Its README lists the follow-up (the vessel's sheets through `SpoolCharacter.P`, the UI colour,
-  the minions, the thread), each waiting for his yes or no.
+  2026-11-05: Spool is sage green, not purple, at his word (the purple read too close to the foes' magenta; a yellow
+  and a mint tried first, `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`): its frames (`SpoolCharacter.P`), the
+  UI colour, the Thread Head and Crafted sheets, the thread and the models' felt (`concept-tools/temp_art/spool_sage.py`).
+  Compiled here (release and self-test 0 errors, editor clean), not run on the PC: the next Spool round looks at it
+  beside a Hardened foe and on grass.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

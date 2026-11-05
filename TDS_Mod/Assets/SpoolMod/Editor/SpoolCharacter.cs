@@ -5,7 +5,7 @@
 // the legs step, the gloves move, with pixels added for the needle, the thread, cotton and dust. The walk is the concept
 // in concepts/walk_2026-10-12 (src/walk.py) ported frame for frame. The 16 px boat mini, the Crafted and the Thread Head
 // are drawn new in his colours. Finish: fully opaque, shade on the right, no rim, no ground patch.
-// Spool: a hooded purple plush whose face is a stitched opening (a zipper of teeth), yellow eyes looking out, a pink
+// Spool (sage green since 2026-11-05, Dimitri's pick; purple before, too close to the foes' magenta): a hooded plush whose face is a stitched opening (a zipper of teeth), yellow eyes looking out, a pink
 // tongue, white gloves, and a severed arm on the floor with cotton coming out of the wound (an arm, not a tail).
 // 32x32 frames, PPU 20, bottom-centre pivot. Variants: v0 front facing right, v1 front mirrored, v2 back, v3 back mirrored.
 using System;
@@ -33,17 +33,19 @@ namespace SpoolBuild
     {
         public const int FxDust = 1, FxCotton = 2, FxThread = 3, FxThreadDark = 4, FxSpark = 5, FxImpact = 6, FxSwipe = 7, FxStar = 8;
 
-        // The reshade's own colours, then the colours the frames add.
+        // The reshade's colours, then the colours the frames add. Since 2026-11-05 the plush, the mouth and the thread are
+        // Dimitri's sage (ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/; concept-tools/temp_art/spool_sage.py MAP),
+        // were 9363AE / 784B94, 41174F / 4A1D5A and the lilac D5BEEC / B292D6; the pixels are his, unmoved.
         public static readonly Dictionary<char, Color32> P = new Dictionary<char, Color32>
         {
-            { 'a', Col.H("9363AE") }, { 'b', Col.H("784B94") },                            // plush, plush shade
-            { 'm', Col.H("41174F") }, { 'n', Col.H("4A1D5A") },                            // the dark inside the mouth, its edge
+            { 'a', Col.H("93CCA1") }, { 'b', Col.H("60A871") },                            // plush, plush shade
+            { 'm', Col.H("1F3325") }, { 'n', Col.H("26422F") },                            // the dark inside the mouth, its edge
             { 't', Col.H("E4DEDA") }, { 'g', Col.H("9A938E") },                            // teeth and cuffs, teeth shade
             { 'v', Col.H("F6F3F8") }, { 'u', Col.H("D8D1E2") }, { 'w', Col.H("FFFFFF") },  // gloves, glove shade, cotton
             { 'q', Col.H("E58CC0") }, { 'p', Col.H("C96CA6") },                            // tongue, tongue shade
             { 'e', Col.H("E6D85A") },                                                      // eyes
             // added: thread, needle, dust, sparkle
-            { 'l', Col.H("D5BEEC") }, { 'L', Col.H("B292D6") }, { 's', Col.H("C9D2DD") }, { 'S', Col.H("8C96A3") },
+            { 'l', Col.H("CBE6D1") }, { 'L', Col.H("A2CFAD") }, { 's', Col.H("C9D2DD") }, { 'S', Col.H("8C96A3") },
             { 'k', Col.H("BDB3A8") }, { 'y', Col.H("F8E39A") },
         };
 
@@ -618,7 +620,7 @@ namespace SpoolBuild
 
         // Drawn new in Spool's colours, facing right, feet on the bottom row. Face pixels (eyes, mouth) are hidden from
         // behind. Stitched: a short, stubby plush with Spool's zipper mouth. Dart: thin and small, a needle held up.
-        // Seam: round like a Snoble, white felt with a purple seam. Mangled: round and jagged, torn cotton with purple
+        // Seam: round like a Snoble, white felt with a seam in the plush colour. Mangled: round and jagged, torn cotton with plush
         // patches and odd eyes. Thread Head (24 px): a big ball of thread with Spool's mouth, gloves and a loose end.
         class Doll
         {

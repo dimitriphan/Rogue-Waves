@@ -56,19 +56,25 @@ Unchanged: teeth and cuffs `E4DEDA` / `9A938E`, gloves `F6F3F8` / `D8D1E2`, cott
   paler and greyer; the leaf green is a small accent on those vessels, not a body colour. Green on the map's grass is the
   other thing to look at in game: darkening it brings it closer to the grass, and on the house checker it still stands
   off by its paler plush, darker shade and the white gloves and teeth.
-  The kit's rule (`docs/18` §4.2, no saturated hue in 270-320 degrees) now holds for Spool, so its §7 exception would go
-  once the follow-up lands.
+  The kit's rule (`docs/18` §4.2, no saturated hue in 270-320 degrees) now holds for Spool; its §7 exception is gone.
 
-## Follow-up, if Dimitri says yes
+## Applied to all of Spool (2026-11-05, at his word)
 
-Swapping the four keys in `SpoolCharacter.P` recolours every 32 px vessel frame at once (idle, walk, attack, Patch,
-fall, landing, the boat mini, the icon, the end-screen poses), since they are all drawn from it. Beyond that, each its
-own yes or no:
+Dimitri, 03:19Z, on the follow-up: "Yes, plus UI and minions". Done on the same pull request, compiled here, not yet
+seen in game (the next PC round with Spool checks it, beside a Hardened foe and on grass):
 
-1. Spool's vessel sheets through `SpoolCharacter.P` (the four keys above): one code change, then a PC round to look.
-2. The UI colour: `Purple` in `ModSource/Spool/Code/04_Content.cs` and `Code/13_Journal.cs` (`Displaycolor`, journal), the death
-   puff's `9363AE` in `Assets/SpoolMod/Editor/SpoolBuilder.cs`, the splash and tab icon (drawn in the eyes' yellow: may want a darker line).
-3. The Thread Head and the four Crafted (`Art/Temporary/game_size/`, his 2026-11-05 picks), purple and lilac now.
-4. Spool's thread, which is lilac everywhere: the ground tuft, `SpoolClient.ThreadColor`, the needle's tail, the
-   Patch thread (`l`, `L` in `P`), and the models' felt (the palette's `9363AE` in `Assets/SpoolMod/Editor/SpoolLowpoly.cs`, built into `Assets/SpoolMod/Art/Models/Spool_Palette.png`).
-5. The docs that name his purple: `docs/STYLE.md` roster row, kit `docs/18` §7.
+1. Spool's own frames: `SpoolCharacter.P` takes the four colours above and the thread's `l` / `L` (`CBE6D1` /
+   `A2CFAD`), so idle, walk, attack, Patch, fall, landing, the boat mini, the icon and the end-screen poses are sage.
+2. The UI colour (`Sage` in `ModSource/Spool/Code/04_Content.cs` and `13_Journal.cs`: hero colour, command buttons,
+   journal accent), the units' display tint (`CBE6D1`), the death puff and the stitch and burst effects
+   (`Assets/SpoolMod/Editor/SpoolBuilder.cs`). The splash and tab icon are drawn in the eyes' yellow and stay.
+3. The Thread Head and the four Crafted: their files in `../game_size/`, `../aseprite/` and `../preview_8x/` recoloured
+   by `concept-tools/temp_art/spool_sage.py` (its `MAP`, one table for every file; `--check` finds any old colour left).
+4. The thread: the ground tuft (file and `IconPalette` j / x / X), `SpoolClient.ThreadColor` (`6FAE7E`), the icons'
+   thread tones, and the models' felt and pale lilac in `Assets/SpoolMod/Editor/SpoolLowpoly.cs` (same saturation and
+   value at hue 135; `Pal.Purple` / `Lilac0-2` renamed `Plush` / `Pale0-2`), which colours the yarn, the loom's band
+   and the Dart's pin head.
+5. The docs: `docs/STYLE.md` roster row, kit `docs/18` §7, Spool's `DESIGN.md` palette.
+
+Kept: whites, the gloves' pale cool shade, the tongue, the eyes; the version archives (`../variants/`,
+`../minions_2026-11-04/`) and this folder's own files keep the colours they were drawn in, as a record.

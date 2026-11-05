@@ -14,16 +14,16 @@ namespace SpoolBuild
         // 64 colours, index = row * 8 + column of the 8x8 palette texture.
         public static readonly string[] Hex =
         {
-            // 0-7 lilac felt, light to dark
-            "EADFF6", "D9C7EE", "C6AEE3", "B196D6", "9A7DC2", "8166AA", "6A528F", "523F70",
+            // 0-7 sage felt, light to dark (lilac until 2026-11-05: the same saturation and value at hue 135)
+            "DFF6E5", "C7EED1", "AEE3BB", "96D6A6", "7DC28E", "66AA77", "528F61", "3F704B",
             // 8-15 wood (the Loom, the basket)
             "EDCFA6", "D8B285", "BE9468", "A07850", "835F3E", "65472E", "F1DEC0", "CDB68F",
-            // 16-23 tomato red (the Pin Cushion), its leaf cap, and Spool's own purple
-            "F27C66", "E0594A", "C24538", "9C352C", "73271F", "86C46E", "5F9A52", "9363AE",
+            // 16-23 tomato red (the Pin Cushion), its leaf cap, and Spool's own colour (sage since 2026-11-05)
+            "F27C66", "E0594A", "C24538", "9C352C", "73271F", "86C46E", "5F9A52", "93CCA1",
             // 24-31 brass and gold
             "F8E39A", "EDC867", "D4A946", "AE8731", "836423", "FFF5CF", "E2BE5E", "BE923E",
-            // 32-39 cream canvas and pale lilac
-            "FCF7EE", "F2E9D6", "E2D5BC", "CBBB9C", "AB9B7C", "EFE6F8", "DED1EC", "BAABCB",
+            // 32-39 cream canvas and pale sage (pale lilac until 2026-11-05)
+            "FCF7EE", "F2E9D6", "E2D5BC", "CBBB9C", "AB9B7C", "E6F8EA", "D1ECD8", "ABCBB3",
             // 40-47 threads: white, silk, pink, blue, golden, red, teal, ink
             "FFFFFF", "F6F2FF", "F5BACB", "A3C8EF", "F8D97A", "E45F6E", "82D6C6", "2C2332",
             // 48-55 iron and steel
@@ -34,9 +34,9 @@ namespace SpoolBuild
 
         public const int Felt0 = 0, Felt1 = 1, Felt2 = 2, Felt3 = 3, Felt4 = 4, Felt5 = 5, Felt6 = 6, Felt7 = 7;
         public const int Wood0 = 8, Wood1 = 9, Wood2 = 10, Wood3 = 11, Wood4 = 12, Wood5 = 13, WoodPale = 14, WoodDry = 15;
-        public const int Tomato0 = 16, Tomato1 = 17, Tomato2 = 18, Tomato3 = 19, Tomato4 = 20, Leaf = 21, LeafDark = 22, Purple = 23;
+        public const int Tomato0 = 16, Tomato1 = 17, Tomato2 = 18, Tomato3 = 19, Tomato4 = 20, Leaf = 21, LeafDark = 22, Plush = 23;
         public const int Gold0 = 24, Gold1 = 25, Gold2 = 26, Gold3 = 27, Gold4 = 28, GoldPale = 29, Brass = 30, BrassDark = 31;
-        public const int Cream0 = 32, Cream1 = 33, Cream2 = 34, Cream3 = 35, Cream4 = 36, Lilac0 = 37, Lilac1 = 38, Lilac2 = 39;
+        public const int Cream0 = 32, Cream1 = 33, Cream2 = 34, Cream3 = 35, Cream4 = 36, Pale0 = 37, Pale1 = 38, Pale2 = 39;
         public const int White = 40, Silk = 41, ThreadPink = 42, ThreadBlue = 43, ThreadGold = 44, ThreadRed = 45, Teal = 46, Ink = 47;
         public const int Iron0 = 48, Iron1 = 49, Iron2 = 50, Iron3 = 51, Iron4 = 52, Iron5 = 53, Steel = 54, SteelDark = 55;
         public const int Tin0 = 56, Tin1 = 57, Tin2 = 58, Tin3 = 59, Shadow = 60, ShadowLight = 61, Mint = 62, Black = 63;
