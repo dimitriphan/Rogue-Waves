@@ -68,4 +68,4 @@ temporary file. Generators: `concept-tools/temp_art/ui_icons.py` (the tuft rows 
 
 **Minion versions (2026-11-04):** ten Snoble-sized versions of the Thread Head and each of the four Crafted are in `minions_2026-11-04/` (its README); Dimitri's picks (2026-11-05) are copied into `game_size/` and `aseprite/` above, and the GIFs in `preview_8x/` were redrawn from them.
 
-**Pastel yellow (2026-11-05):** Dimitri finds Spool's purple too close to the foes. The main sprite recoloured to pastel yellow, as an example only, is in `pastel_yellow_2026-11-05/` (its README has the palette map, the before and after, and the follow-up list). Not wired: everything above keeps its colours until he says yes.
+**Pastel green (2026-11-05):** Dimitri finds Spool's purple too close to the foes. The main sprite recoloured to pastel green (his pick after a yellow try), as an example only, is in `pastel_green_2026-11-05/` (its README has the palette map, the before and after, and the follow-up list). Not wired: everything above keeps its colours until he says yes.

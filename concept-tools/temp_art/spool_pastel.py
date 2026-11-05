@@ -1,7 +1,8 @@
-"""Temporary art proposal (2026-11-05): Spool's main sprite in a pastel yellow scheme, as an example for Dimitri.
+"""Temporary art proposal (2026-11-05): Spool's main sprite in a pastel green scheme, as an example for Dimitri.
 
 Dimitri, 2026-11-05: "Spool's current color scheme is too similar to enemy units. Swap Spool's color scheme to pastel
-yellow, but only recolor the main sprite for now so I can see an example." The main sprite is his reshade, embedded
+yellow, but only recolor the main sprite for now so I can see an example." Then, 03:00Z: "Change the color to pastel
+green instead." The main sprite is his reshade, embedded
 pixel for pixel as `Front` in `TDS_Mod/Assets/SpoolMod/Editor/SpoolCharacter.cs` with the palette `P` beside it. This
 script reads both from that file, so the "before" is exactly what the game builds, and swaps only the purple family:
 the plush (a, b) and the dark inside the mouth (m, n). Every pixel stays where it is; teeth, gloves, cotton, tongue and
@@ -11,7 +12,7 @@ gains saturation and loses value; the mouth's dark is a warm near-black, not bla
 Nothing here is wired: the game still draws Spool from `SpoolCharacter.P` (see the folder's README for the follow-up).
 
     python3 concept-tools/temp_art/spool_pastel.py
-        -> TDS_Mod/ModSource/Spool/Art/Temporary/pastel_yellow_2026-11-05/
+        -> TDS_Mod/ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/
            game_size/Spool_Pastel.png, aseprite/Spool_Pastel.aseprite, preview_8x/Spool_Pastel_8x.png,
            preview_8x/Spool_Pastel_compare.png; prints the palette map and the colour distances for the README.
 """
@@ -25,15 +26,16 @@ from PIL import Image, ImageDraw, ImageFont
 from tart import Canvas, H, REPO, preview, save_ase, save_png
 
 SRC = os.path.join(REPO, 'TDS_Mod', 'Assets', 'SpoolMod', 'Editor', 'SpoolCharacter.cs')
-OUT = os.path.join(REPO, 'TDS_Mod', 'ModSource', 'Spool', 'Art', 'Temporary', 'pastel_yellow_2026-11-05')
+OUT = os.path.join(REPO, 'TDS_Mod', 'ModSource', 'Spool', 'Art', 'Temporary', 'pastel_green_2026-11-05')
 
-# Old -> new, only the purple family. Butter yellow h43 (Smacky's head is h48, Buster's cream h45-46: friends, and
-# Spool's hood and mouth tell him apart); shade h41, +17 saturation, -9 value; a warm brown near-black for the mouth.
+# Old -> new, only the purple family. Mint h149, picked in the gap between the greens already taken: the Hardened
+# elite's glow on foes (h120), the shared leaf green (h124), Yossele's leaf and eyes (h90-96) and Buster's collar
+# (h173). Shade same hue, +15 saturation, -14 value; a deep green near-black for the mouth.
 NEW = {
-    'a': ('plush', '9363AE', 'F2D383'),
-    'b': ('plush shade', '784B94', 'D9B052'),
-    'm': ('inside the mouth', '41174F', '3F2B22'),
-    'n': ('mouth edge', '4A1D5A', '4F3427'),
+    'a': ('plush', '9363AE', 'A4EBC7'),
+    'b': ('plush shade', '784B94', '6DC99A'),
+    'm': ('inside the mouth', '41174F', '1F3830'),
+    'n': ('mouth edge', '4A1D5A', '25473C'),
 }
 
 # What Spool must not look like (kit docs/18 section 5, reference/palettes/tds_foes.gpl): every Tide foe's crystal and
@@ -41,7 +43,8 @@ NEW = {
 FOES = ['F6BAFF', 'DA89E6', 'D168E0', 'A54FB1', '8D4497', '8C8C8C', '6D6C6C', '646464']
 ELITES = [('Hardened', '2BFF2B'), ('Superheated', 'FFFFFF'), ('Tempered', 'FF000A'), ('Fractured', '1F1F1F'),
           ('Annealed', 'FFB990'), ('Molten', 'FF1400')]
-FRIENDS = [('Smacky', 'FDE791', 'F2D76B'), ('Buster', 'F0E5C1', 'E8D392'), ('Fie knight', '9677BB', '8764B0')]
+FRIENDS = [('Hardened (foe)', '2BFF2B', '2BFF2B'), ('leaf green', '7BCF80', '65AD69'), ('Yossele leaf', '72CC35', '6ABE30'),
+           ('Buster collar', '9FF3E9', '19DFCE')]
 
 
 def read_source():
@@ -108,12 +111,12 @@ def compare(before, after, pal_old, pal_new):
     W, Hh = 1180, 820
     im = Image.new('RGB', (W, Hh), (236, 238, 232))
     d = ImageDraw.Draw(im)
-    d.text((24, 16), 'Spool, main sprite: purple (now) and pastel yellow (proposal)', font=font(22, True), fill=INK)
+    d.text((24, 16), 'Spool, main sprite: purple (now) and pastel green (proposal)', font=font(22, True), fill=INK)
     d.text((24, 46), 'Same pixels, only the plush and the mouth colours change. Not in the game yet.', font=font(15),
            fill=INK)
 
     # 8x side by side on the house checker.
-    for i, (c, label) in enumerate([(before, 'now'), (after, 'pastel yellow')]):
+    for i, (c, label) in enumerate([(before, 'now'), (after, 'pastel green')]):
         x0 = 24 + i * 290
         big = to_image(preview(c, 32, 8))
         im.paste(big, (x0, 80))
@@ -159,19 +162,19 @@ def compare(before, after, pal_old, pal_new):
         o, n = pal_old[k], pal_new[k]
         fo = min(FOES, key=lambda f: delta_e(o, f))
         fn = min(FOES, key=lambda f: delta_e(n, f))
-        d.text((24, y), '%s  now %s: %.0f from %s, %d deg of hue from the crystal   ->   yellow %s: %.0f from %s, '
+        d.text((24, y), '%s  now %s: %.0f from %s, %d deg of hue from the crystal   ->   green %s: %.0f from %s, '
                '%d deg from the crystal' % (NEW[k][0], o, delta_e(o, fo), fo, hue_gap(o, 'D168E0'), n,
                                             delta_e(n, fn), fn, hue_gap(n, 'D168E0')), font=font(13), fill=INK)
         y += 24
     y += 10
-    d.text((24, y), 'Friends in yellow, for reference: Smacky FDE791/F2D76B (h48), Buster F0E5C1/E8D392 (h45). Spool '
-           'sits a little warmer (h43) and darker in the shade.', font=font(13), fill=INK)
-    for i, (name, a, b) in enumerate(FRIENDS[:2]):
+    d.text((24, y), 'Greens already taken: the Hardened elite glow on foes (h120), leaf green (h124), Yossele (h90-96), '
+           'Buster collar (h173). Spool sits between them at h149.', font=font(13), fill=INK)
+    for i, (name, a, b) in enumerate(FRIENDS):
         bx = 24 + i * 130
         d.rectangle([bx, y + 26, bx + 40, y + 56], fill=H(a)[:3])
         d.rectangle([bx + 40, y + 26, bx + 80, y + 56], fill=H(b)[:3])
         d.text((bx, y + 60), name, font=font(12), fill=INK)
-    bx = 24 + 2 * 130
+    bx = 24 + 4 * 130
     d.rectangle([bx, y + 26, bx + 40, y + 56], fill=H(pal_new['a'])[:3])
     d.rectangle([bx + 40, y + 26, bx + 80, y + 56], fill=H(pal_new['b'])[:3])
     d.text((bx, y + 60), 'Spool (new)', font=font(12), fill=INK)
@@ -189,7 +192,7 @@ def main():
     save_png(after, os.path.join(OUT, 'game_size', 'Spool_Pastel.png'))
     save_png(preview(after, 32, 8), os.path.join(OUT, 'preview_8x', 'Spool_Pastel_8x.png'))
     save_ase(os.path.join(OUT, 'aseprite', 'Spool_Pastel.aseprite'), 32, [after],
-             [('Idle', 0, 0, 'TEMP;proposal;Spool main sprite, pastel yellow, not wired')])
+             [('Idle', 0, 0, 'TEMP;proposal;Spool main sprite, pastel green, not wired')])
     compare(before, after, pal_old, pal_new).save(os.path.join(OUT, 'preview_8x', 'Spool_Pastel_compare.png'))
 
     print('| Key | Role | Old | New | Old h s v | New h s v |')

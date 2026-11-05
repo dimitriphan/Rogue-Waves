@@ -1,8 +1,8 @@
-# Spool in pastel yellow: the main sprite, as an example (2026-11-05)
+# Spool in pastel green: the main sprite, as an example (2026-11-05)
 
 **A proposal, not wired.** Dimitri, 2026-11-05: "Spool's current color scheme is too similar to enemy units. Swap
-Spool's color scheme to pastel yellow, but only recolor the main sprite for now so I can see an example." The game
-still draws Spool in purple from `SpoolCharacter.P` (`Assets/SpoolMod/Editor/SpoolCharacter.cs`); nothing here is read
+Spool's color scheme to pastel yellow, but only recolor the main sprite for now so I can see an example." After seeing the yellow
+he asked, 03:00Z: "Change the color to pastel green instead." The game still draws Spool in purple from `SpoolCharacter.P` (`Assets/SpoolMod/Editor/SpoolCharacter.cs`); nothing here is read
 by a build.
 
 ![before and after](preview_8x/Spool_Pastel_compare.png)
@@ -21,14 +21,15 @@ pixel for pixel, checked 2026-11-05).
 ## Palette map
 
 Only the purple family changes: 147 of the sprite's 195 pixels, none moved. The shade keeps the hue within 2 degrees
-and gains saturation, the mouth's dark is a warm near-black (kit `docs/18` §3).
+and gains saturation, the mouth's dark is a deep green near-black (kit `docs/18` §3). The hue, mint h149, sits in the
+gap between the greens the game and the pack already use (below).
 
 | Key | Role | Old | New | Old h s v | New h s v |
 | --- | --- | --- | --- | --- | --- |
-| `a` | plush | `9363AE` | `F2D383` | 278 43 68 | 43 46 95 |
-| `b` | plush shade | `784B94` | `D9B052` | 277 49 58 | 42 62 85 |
-| `m` | inside the mouth | `41174F` | `3F2B22` | 285 71 31 | 19 46 25 |
-| `n` | mouth edge | `4A1D5A` | `4F3427` | 284 68 35 | 19 51 31 |
+| `a` | plush | `9363AE` | `A4EBC7` | 278 43 68 | 150 30 92 |
+| `b` | plush shade | `784B94` | `6DC99A` | 277 49 58 | 149 46 79 |
+| `m` | inside the mouth | `41174F` | `1F3830` | 285 71 31 | 161 45 22 |
+| `n` | mouth edge | `4A1D5A` | `25473C` | 284 68 35 | 161 48 28 |
 
 Unchanged: teeth and cuffs `E4DEDA` / `9A938E`, gloves `F6F3F8` / `D8D1E2`, cotton `FFFFFF`, tongue `E58CC0` /
 `C96CA6`, eyes `E6D85A`. The severed arm on the floor keeps its white cotton end against the new shade.
@@ -37,14 +38,19 @@ Unchanged: teeth and cuffs `E4DEDA` / `9A938E`, gloves `F6F3F8` / `D8D1E2`, cott
 
 - **Every Tide foe** (kit `docs/18` §5.1, `TDS_Vessel_Creator/reference/palettes/tds_foes.gpl`): the magenta crystal
   `F6BAFF` `DA89E6` `D168E0` `A54FB1` `8D4497` (h292) and the stone greys `8C8C8C` `6D6C6C` `646464`. Spool's plush was
-  13 (shade 11) CIE76 units from the crystal's `8D4497` and 14-15 degrees of hue from it; the yellow is 51 (shade 55)
-  from the nearest foe colour, a grey, and 110-111 degrees of hue from the crystal. The mouth's dark sits about as far
-  from the stone grey (26, edge 25) as the old one sat from the crystal (29, edge 24); it is small and inside the hood.
+  13 (shade 11) CIE76 units from the crystal's `8D4497` and 14-15 degrees of hue from it; the green is 43 (shade 44)
+  from the nearest foe colour, a grey, and 142-143 degrees of hue from the crystal. The mouth's dark sits about as far
+  from the stone grey (24, edge 22) as the old one sat from the crystal (29, edge 24); it is small and inside the hood.
 - **The elite skins** (material tints over foes, `reference/art_survey_2026-10-15.txt` part 3): Hardened green,
   Superheated white, Tempered red, Fractured near-black, Annealed a faint bronze (h22, 6% alpha), Molten orange-red.
-  None is yellow; Annealed is the nearest hue and too faint to read as a colour.
-- **Friends in yellow** (`tds_base_vessels.gpl`): Smacky's head `FDE791` / `F2D76B` (h48) and Buster `F0E5C1` /
-  `E8D392` (h45-46). Spool sits a little warmer (h43) with a darker shade; his hood, mouth and gloves tell him apart.
+  **Hardened is green** (`_Tintcolor` 1.75, 11.98, 1.75: h120), so a Hardened foe glows green. Spool's mint is 30
+  degrees away, much paler, and Hardened stays on a grey and magenta crystal body; still, this is the one foe look to
+  check by eye next to Spool in game.
+- **Greens already taken** (`tds_base_vessels.gpl`, `docs/STYLE.md`): the shared leaf green `7BCF80` / `65AD69` (h124,
+  Smacky's sprout, Sno Sno), Yossele's leaf `72CC35` / `6ABE30` and eyes `99E550` (h90-96), Buster's collar `9FF3E9` /
+  `19DFCE` (h173). Mint h149 sits in the middle of that gap (25 degrees from the leaf green and from Buster's collar,
+  53 from Yossele). Green on the map's grass is the other thing to look at in game: on the house checker the paler
+  plush and the darker shade both stand off it.
   The kit's rule (`docs/18` §4.2, no saturated hue in 270-320 degrees) now holds for Spool, so its §7 exception would go
   once the follow-up lands.
 
