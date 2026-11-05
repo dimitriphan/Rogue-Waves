@@ -1,5 +1,23 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): save fuzz and three damaged-save guards
+
+Quality check 4 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §1). `98_SaveFuzz.cs` (`ROGUEWAVESMODE_SELFTEST` only)
+runs seven checks, F1-F7, over the campaign save's readers and writers; `99_SelfTest.cs` calls it on the boat after C0,
+before its campaign starts, and puts back every key it touches, so the self-test should read 155 (148 + 7).
+`Tools/cloud-check/save_fuzz.py` runs the same file here against the methods copied from this code. What it found, now
+guarded (a normal save never takes these paths):
+
+- `RWCampaign.Saved` cuts a route that leaves the chart back to its last charted map (one warning) and drops the
+  replay and playing columns saved for it: before, Continue waited on the boat for a world `RWWorld.Ensure` never builds.
+- `RWRun.Load`, `Forget` and `SavedCrew` read at most `RWRun.MaxSaved` (64) players, and `Save` writes no more: a
+  damaged count of `2147483647` read the save two billion times.
+- Self-test builds only: `RWUtil.HoldFlush` keeps the fuzz's writes off the disk until it has put every key back.
+- `RWRun.Load` and `Decode` drop empty ids (`"a,,b"`), and a negative Pure Aura loads as 0.
+
+**State:** compiled here (release, `_SELFTEST`, `_SELFTEST,_GAPS` at 0 errors); the fuzz passed 7/7 here on a stand-in
+save, and failed F2, F4 (hung), F6 on the code before the guards. Not run on the PC.
+
 ## 0.1.0-dev, later (2026-11-04): Trinkets and Cardinals
 
 Dimitri: "Rename Vessel Cardinals as Trinkets and Team Cardinals as just Cardinals." The shop card's kind line reads
