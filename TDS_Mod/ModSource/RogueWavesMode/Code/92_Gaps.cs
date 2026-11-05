@@ -4,6 +4,7 @@
 //   rules    what a Direction roll may offer for each of the nine vessels; every Direction's, Cardinal's and Trinket's text and picture
 //   effects  on a real map: what each Direction and Vampire Dentures do to the wallet and to health; each objective's failure
 //   any      on a real map: each Direction any vessel can take (92_GapsAny.cs)
+//   base     on five real maps: the base vessels' Directions no held stat carries (92_GapsBase.cs)
 //   scales   every dialog of the mode at each UI scale and three screen sizes
 //   ten      a whole campaign on ten real maps, each voted, left and won, to the CAMPAIGN WON screen, with the difficulty measured
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
@@ -53,6 +54,7 @@ public static partial class RWTest
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
         if (Part("any")) yield return Stepped(GapsAny());
+        if (Part("base")) yield return Stepped(GapsBase());
         if (Part("foes")) yield return Stepped(GapsFoes());
         if (Part("ten")) yield return Stepped(GapsTen());
         if (Part("tour")) yield return Stepped(GapsTour());

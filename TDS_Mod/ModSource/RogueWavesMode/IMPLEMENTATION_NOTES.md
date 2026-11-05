@@ -1,5 +1,25 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the base vessels' Directions no held stat carries
+
+Compiled, not yet run in game (scope `11`). Sheets in `16_Directions.cs` `Mine` (no `Stat`); what they do is
+`23_BaseDirections.cs` (`RWBase`), host only, on each holder's own things:
+- **Mason's Trowel** (Smacky): his walls' Health Pmulti +20 / 40 / 60% (`RWHold`); rank III mends 1 a second once 3 s
+  pass with no drop in health (a hit with its own Damage leaves no `Lasthittime`, so health is what is watched).
+- **Snow Shovel** (Sno Sno): the snow on each tile he leaves comes up to 30 / 40 / 55, read every frame as his tile
+  changes; a new snow waits until its AI lifts the Level cap to 100 (`Link_Stats.Value` clamps to `Value_Calc`). His own
+  +75% on snow above 20 then works on his trail.
+- **Worm Tin** (Boutman): Boutbro's `Fishcost`, `Barrelcost`, `Boatcost` Multi -10 / 20 / 30%, then his own `Countfish`,
+  `Countbarrel`, `Countboat` by `SendMessage` (private methods, one float), so the price follows at once.
+- **Open Sign** (Fie): the Rest Stop's regulars count is a private field read only when Regulars lands. With no
+  `System.Reflection` (kit `docs/01`), `RWBase.Sign` lands Regulars once more with the sheet's `Perm_Count` raised for
+  that call, puts back the `Duration` hook chain and the look it rewrites, and lands Buffet again if held (its throw
+  outranks Regulars'). The sheet is shared by every Rest Stop, so it is set back at once. Without Regulars it does nothing.
+- **Long Leash** (Buster): a Range Add +1 every frame he is in `Movelinear` (the game's -1 follows at its own tick, so a
+  tick's worth either side can differ); rank II and III multiply his dash hits' `Damagemulti` on his `Interact`.
+- Self-test: the gaps build's new part "base" (`92_GapsBase.cs`) takes each vessel to a calm map: a wall hit and left,
+  a walk on fresh ground, Boutbro's boat price, a Rest Stop's regulars counted through its own `Duration` hook, a dash.
+
 ## 0.1.0-dev, later (2026-11-05): the Directions any vessel can take
 
 Compiled, not yet run in game (scope `11` (Any), B11; `docs/reports/DIRECTIONS_CARDINALS_2026-11-04.md` §4.1 and
