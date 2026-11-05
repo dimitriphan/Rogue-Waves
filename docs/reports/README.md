@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `TESTING_ROUND_3_2026-11-05.md` | 2026-11-05 | PC round, stopped early: self-tests on kit 1.9, the fixes read in game; two-player not run |
 | `CODE_REVIEW_RECHECK_2026-11-05.md` | 2026-11-05 | The 54 bugs checked again on PR #89's base with PC round 3's readings: 18 gone in game, 14 fixed but not yet seen, 20 still there, 2 not bugs; round 3's three open readings explained. Docs only |
 | `CODE_REVIEW_FIXES_2026-11-05.md` | 2026-11-05 | The code review's bugs fixed: 32 of 54 (26 confirmed, 6 plain guards), kit 1.9, pitfalls #151-#155; what was left and why; the PC test list per fix. Compiled, not run on the PC |
 | `QUALITY_CHECKS_4-7_2026-11-05.md` | 2026-11-05 | Quality checks 4-7: save and load fuzz tests (seven checks as self-test code, also run here by `cloud-check/save_fuzz.py`; three damaged-save bugs found and guarded: a route off the chart stranded the boat, a huge player count froze Continue, empty ids), the Scope Editor (no edits saved; his copy and it behind the repo in 7 files), art (nothing to fix), PLAN Part C and Log (four missing Log entries added) |

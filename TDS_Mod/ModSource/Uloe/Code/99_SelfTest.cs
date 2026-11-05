@@ -8,7 +8,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class UloeSelfTest
+public static partial class UloeSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -108,7 +108,11 @@ public static class UloeSelfTest
         if (phase <= 2 && UloeServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if ULOE_REVIEW
+            UloeMod.Instance.StartCoroutine(Review());
+#else
             UloeMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 
@@ -842,7 +846,9 @@ public static class UloeSelfTest
         at = Spot(hm, UloeContent.Beings[UloeData.Mirror], 3f);
         yield return Build(hm, UloeData.Mirror, at, known, got);
         UloeMirrorBrain mirror = got[0] as UloeMirrorBrain;
-        at = Spot(hm, UloeContent.Beings[UloeData.Mirror], 3.5f);
+        // Beside the first, so the Bounce Card has a neighbour within its 3 tiles (round 3: two spots round the vessel stood 5.8 apart).
+        at = mirror != null ? ModKitTest.Spot(mirror.Pos, UloeContent.Beings[UloeData.Mirror], ModKitUtil.Team(hm), 1f, 2.8f, used, "the second Mirror") : new Vector3(float.NaN, 0f, 0f);
+        if (float.IsNaN(at.x)) at = Spot(hm, UloeContent.Beings[UloeData.Mirror], 3.5f);
         yield return Build(hm, UloeData.Mirror, at, known, got);
         UloeMirrorBrain mirrorB = got[0] as UloeMirrorBrain;
         if (Check("build two Mirrors", mirror != null && mirrorB != null))

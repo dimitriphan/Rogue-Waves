@@ -9,7 +9,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class ArgoSelfTest
+public static partial class ArgoSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -113,7 +113,11 @@ public static class ArgoSelfTest
         if (phase <= 2 && ArgoServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if ARGO_REVIEW
+            ArgoMod.Instance.StartCoroutine(Review());
+#else
             ArgoMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 
@@ -437,6 +441,10 @@ public static class ArgoSelfTest
         float t = 0f;
         while (g != null && !g.Loaded && t < 60f) { t += Time.unscaledDeltaTime; yield return null; }
     }
+
+    // What this building's upgrades cost against their list price: his save's Voice in a Bottle lowers it on pack buildings since the
+    // stock upgrade AI (kit docs/17 Â§6), and the list price would then fail a check that is doing nothing wrong (round 3).
+    static float PriceScale(Entity_Master m) { Link_Command c; return m != null && m.Commandlistserver != null && m.Commandlistserver.TryGetValue("Upgrade", out c) && c != null ? c.Goalvalue : 1f; }
 
     static IEnumerator Upgrade(ArgoTowerBrain t, string key, long owner)
     {
@@ -1612,10 +1620,11 @@ public static class ArgoSelfTest
         {
             ClearEnemies();
             float[] paid = new float[2];
+            float wideScale = PriceScale(scatter.Master);
             yield return UpgradePaid(scatter, "Widebore2", owner, "Redaura", paid);
             Check("Wide Bore: more pellets, wider cone", Has(scatter, "Widebore2") && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Projcount", 0), 8f) && Mathf.Approximately(ModKitUtil.Stat(scatter.Master, "Spread", 0), 75f),
                 "pellets " + ModKitUtil.Stat(scatter.Master, "Projcount", 0) + ", cone " + ModKitUtil.Stat(scatter.Master, "Spread", 0));
-            Check("Wide Bore paid", Mathf.Abs(paid[0] - 30f) < 0.01f, "Red spent " + F(paid[0]) + (paid[1] > 0f ? ", " + F(paid[1]) + " came in meanwhile" : ""));
+            Check("Wide Bore paid", Mathf.Abs(paid[0] - 30f * wideScale) < 0.01f, "Red spent " + F(paid[0]) + " at price scale " + F(wideScale) + (paid[1] > 0f ? ", " + F(paid[1]) + " came in meanwhile" : ""));
             yield return Upgrade(scatter, "Pressure4", owner);
             Check("tier-4 upgrade not offered from tier 2", !Has(scatter, "Pressure4"));
             if (enemyType != null)
@@ -1658,6 +1667,7 @@ public static class ArgoSelfTest
             Vector3 hp = ModKitUtil.Pos(hook.Master);
             float reach = ModKitUtil.Stat(hook.Master, "Range", 6.5f) - 0.4f;
             float[] paid = new float[2];
+            float tetherScale = PriceScale(hook.Master);
             yield return UpgradePaid(hook, "Tether2", owner, "Redaura", paid);
             ClearEnemies();
             List<Entity_Master> lane = Lane(hp, 5f, reach, 1);
@@ -1667,7 +1677,7 @@ public static class ArgoSelfTest
             {
                 int t0 = hook.Tethers;
                 yield return Until(() => hook.Tethers > t0, 8f);
-                Check("Tether: a harpooned foe is slowed (Red 30)", Has(hook, "Tether2") && hook.Tethers > t0 && ArgoStatus.IsSlowed(lane[0]) && Mathf.Abs(paid[0] - 30f) < 0.01f,
+                Check("Tether: a harpooned foe is slowed (Red 30)", Has(hook, "Tether2") && hook.Tethers > t0 && ArgoStatus.IsSlowed(lane[0]) && Mathf.Abs(paid[0] - 30f * tetherScale) < 0.01f,
                     "tethers " + (hook.Tethers - t0) + ", Red " + F(paid[0]));
             }
             yield return Upgrade(hook, "Anchor3", owner);
@@ -1699,6 +1709,15 @@ public static class ArgoSelfTest
                 ArgoUtil.Pin(hook.Master, beside, 1f, true);
                 Check("Anchor Line's pin beside a building stuns (no attacks while held)", ArgoStatus.Stuns == stuns + 1 && (aspd < 0f || ModKitUtil.Stat(beside, "Attackspeed", 0f) < aspd * 0.1f),
                     "stuns " + (ArgoStatus.Stuns - stuns) + ", attack speed " + F(aspd) + "->" + F(ModKitUtil.Stat(beside, "Attackspeed", 0f)));
+                // ARG-1 (code review): a second stun within the first. The stat's bounds decide whether its attack speed can go below 0.
+                Link_Stats stunStat;
+                if (beside.Statsserver != null && beside.Statsserver.TryGetValue("Attackspeed", out stunStat))
+                {
+                    float oneStun = stunStat.Value;
+                    ArgoUtil.Pin(hook.Master, beside, 1f, true);
+                    yield return Wait(0.1f);
+                    Log("INFO FINDING ARG-1: " + (stunStat.Value < 0f ? "SEEN" : "not seen") + " (" + ModKitUtil.BeingName(beside) + "'s attack speed " + F(aspd) + " -> " + F(oneStun) + " -> " + F(stunStat.Value) + " at a second stun, multi " + F(stunStat.Value_Multi) + ", bounds " + F(stunStat.Value_Bounds.x) + ".." + F(stunStat.Value_Bounds.y) + ")");
+                }
             }
             ClearEnemies();
             // Reel (forced: the other tier 3 of Tether): the first foe hit walks toward the gun, the one behind it stays.

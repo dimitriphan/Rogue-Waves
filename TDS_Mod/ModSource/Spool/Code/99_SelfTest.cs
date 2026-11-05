@@ -8,7 +8,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class SpoolSelfTest
+public static partial class SpoolSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -108,7 +108,11 @@ public static class SpoolSelfTest
         if (phase <= 2 && SpoolServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if SPOOL_REVIEW
+            SpoolMod.Instance.StartCoroutine(Review());
+#else
             SpoolMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 
@@ -1153,7 +1157,7 @@ public static class SpoolSelfTest
                     if (b == null || !b.Started || b is SpoolLoomBrain || !ModKitUtil.Alive(b.Master)) continue;
                     float nearest = float.MaxValue;
                     foreach (SpoolBuilding l in SpoolServer.Buildings) if (l is SpoolLoomBrain && l.Started) nearest = Mathf.Min(nearest, ModKitUtil.Flat(b.Pos, l.Pos));
-                    if (nearest > SpoolData.Sewingmachines[1].Radius + 0.1f && nearest < SpoolData.Sewingmachines[2].Radius - 0.1f) { farOne = b; break; }
+                    if (nearest > SpoolData.Sewingmachines[1].Radius + 0.75f && nearest < SpoolData.Sewingmachines[2].Radius - 0.1f) { farOne = b; break; }   // the engine's area query reaches a little past its radius (round 3)
                 }
                 if (farOne == null) ModKitTest.Setup("Sewing Machine rank III's reach", "nothing stands 3 to 5 from the Looms");
                 else

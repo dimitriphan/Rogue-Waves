@@ -37,6 +37,7 @@ public static partial class RWTest
         if (Asked("oldsave")) { yield return Stepped(GapsOldSave()); yield break; }
         yield return GapsMenu();
         if (Macro_Main.Instance == null || !Macro_Main.Instance.Ready) { Setup("gaps", "never reached the boat"); yield break; }
+        if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
         if (Part("foes")) yield return Stepped(GapsFoes());
         if (Part("ten")) yield return Stepped(GapsTen());
