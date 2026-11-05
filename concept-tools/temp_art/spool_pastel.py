@@ -2,7 +2,8 @@
 
 Dimitri, 2026-11-05: "Spool's current color scheme is too similar to enemy units. Swap Spool's color scheme to pastel
 yellow, but only recolor the main sprite for now so I can see an example." Then, 03:00Z: "Change the color to pastel
-green instead." The main sprite is his reshade, embedded
+green instead." 03:05Z: "The color is too minty and bright. Darken the green while keeping the pastel theme."
+The main sprite is his reshade, embedded
 pixel for pixel as `Front` in `TDS_Mod/Assets/SpoolMod/Editor/SpoolCharacter.cs` with the palette `P` beside it. This
 script reads both from that file, so the "before" is exactly what the game builds, and swaps only the purple family:
 the plush (a, b) and the dark inside the mouth (m, n). Every pixel stays where it is; teeth, gloves, cotton, tongue and
@@ -28,14 +29,15 @@ from tart import Canvas, H, REPO, preview, save_ase, save_png
 SRC = os.path.join(REPO, 'TDS_Mod', 'Assets', 'SpoolMod', 'Editor', 'SpoolCharacter.cs')
 OUT = os.path.join(REPO, 'TDS_Mod', 'ModSource', 'Spool', 'Art', 'Temporary', 'pastel_green_2026-11-05')
 
-# Old -> new, only the purple family. Mint h149, picked in the gap between the greens already taken: the Hardened
-# elite's glow on foes (h120), the shared leaf green (h124), Yossele's leaf and eyes (h90-96) and Buster's collar
-# (h173). Shade same hue, +15 saturation, -14 value; a deep green near-black for the mouth.
+# Old -> new, only the purple family. A soft sage, h135 at value 80: darker and less blue than the first mint (h149,
+# value 92, "too minty and bright"), still pastel (saturation 28). Greens already taken: the Hardened elite's glow on
+# foes (h120, saturated), the shared leaf green (h124), Yossele's leaf and eyes (h90-96), Buster's collar (h173).
+# Shade same hue, +15 saturation, -15 value; a deep green near-black for the mouth.
 NEW = {
-    'a': ('plush', '9363AE', 'A4EBC7'),
-    'b': ('plush shade', '784B94', '6DC99A'),
-    'm': ('inside the mouth', '41174F', '1F3830'),
-    'n': ('mouth edge', '4A1D5A', '25473C'),
+    'a': ('plush', '9363AE', '93CCA1'),
+    'b': ('plush shade', '784B94', '60A871'),
+    'm': ('inside the mouth', '41174F', '1F3325'),
+    'n': ('mouth edge', '4A1D5A', '26422F'),
 }
 
 # What Spool must not look like (kit docs/18 section 5, reference/palettes/tds_foes.gpl): every Tide foe's crystal and
@@ -168,7 +170,7 @@ def compare(before, after, pal_old, pal_new):
         y += 24
     y += 10
     d.text((24, y), 'Greens already taken: the Hardened elite glow on foes (h120), leaf green (h124), Yossele (h90-96), '
-           'Buster collar (h173). Spool sits between them at h149.', font=font(13), fill=INK)
+           'Buster collar (h173). Spool: a soft sage, h135.', font=font(13), fill=INK)
     for i, (name, a, b) in enumerate(FRIENDS):
         bx = 24 + i * 130
         d.rectangle([bx, y + 26, bx + 40, y + 56], fill=H(a)[:3])
