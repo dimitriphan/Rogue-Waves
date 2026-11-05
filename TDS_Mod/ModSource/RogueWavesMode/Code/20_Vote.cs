@@ -659,7 +659,7 @@ public static class RWAsk
             cards.Add(RWDialog.Card("Stay", "Stay", "Another bonus Tide: more Pure Aura, and harder", RWAssets.Sprite("RogueWaves_Stay"), RWDialog.Teal));
             cards.Add(RWDialog.Card("Leave", "Leave", "Leave this map", RWAssets.Sprite("RogueWaves_Leave"), RWDialog.Coral));
             title = "TIDE CLEARED";
-            sub = "A majority leaves. Nobody leaves right before their demise";
+            sub = "Most votes win. Nobody leaves right before their demise";
             seconds = RWVote.LeaveSeconds;
         }
         if (cards.Count == 0)

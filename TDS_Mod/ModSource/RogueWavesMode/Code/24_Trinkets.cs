@@ -77,7 +77,7 @@ public static class RWTrinkets
     static readonly List<Entity_Master> corked = new List<Entity_Master>();
     static readonly Dictionary<string, float> extra = new Dictionary<string, float> { { RWAny.Extra, 1f } };
     static readonly Entity_Master.Interacts dealt = OnDealt;
-    static readonly Entity_Master.Oninteracts taken = OnTaken, basin = OnBasin, whistle = OnWhistled;
+    static readonly Entity_Master.Oninteracts taken = OnTaken, basin = OnBasin, whistle = OnWhistled, tarHit = OnTarHit;
     static float nextKits, nextHooks, nextSweep, nextTar, nextWhistle, flareReady;
     static int spawned, totalWave = -1, total;
     static readonly List<string> rowFoes = new List<string>();   // the beings the Tide's row sends
@@ -202,7 +202,8 @@ public static class RWTrinkets
 
     // ---------------------------------------------------------------- Tar Bucket
 
-    // A hit is a drop in health or a newer Lasthit; once 4 s pass with neither, the tower mends each second.
+    // A hit is Mason's Trowel's (RWUtil.Hit, the hook put back here four times a second), or a drop in health while an
+    // upgrade landing has the hook off; once 4 s pass with neither, the tower mends each second.
     static void Tar(float now)
     {
         bool any = false;
@@ -217,7 +218,8 @@ public static class RWTrinkets
             RWUtil.Rest t;
             if (!tarred.TryGetValue(e, out t))
                 tarred[e] = t = new RWUtil.Rest { Health = ModKitUtil.Health(e), Hurt = now - TarAfter, Next = now };
-            TarMended += RWUtil.Mend(t, e, now, TarAfter, ModKitUtil.MaxHealth(e) * TarEach * k.Tar, Time.fixedTime - e.Lasthittime < 0.3f);
+            ModKitUtil.Front(e, tarHit);
+            TarMended += RWUtil.Mend(t, e, now, TarAfter, ModKitUtil.MaxHealth(e) * TarEach * k.Tar, false);
         }
         if (tarred.Count > 256)
             foreach (Entity_Master e in new List<Entity_Master>(tarred.Keys))
@@ -230,7 +232,7 @@ public static class RWTrinkets
     {
         try
         {
-            if (hit == null || hit.Type != "Hurt" || hit.Data == null || hit.From == null || hit.To == null || hit.Data.ContainsKey(RWAny.Extra))
+            if (hit == null || hit.Type != "Hurt" || hit.Data == null || hit.From == null || hit.To == null || RWAny.ExtraHit(hit.Data))
                 return;
             Kit k;
             if (!kits.TryGetValue(ModKitUtil.Owner(hit.From), out k) || k.Vessel != hit.From || k.Knife <= 0 || !ModKitUtil.IsFoe(hit.To, ModKitUtil.Team(hit.From)))
@@ -242,6 +244,8 @@ public static class RWTrinkets
         }
         catch (Exception e) { RWLog.Once("trinket dealt", "a vessel hit: " + e.Message); }
     }
+
+    static void OnTarHit(Link_Interact hit) { RWUtil.Hit(tarred, hit); }
 
     public static float SlideChance(int stacks) { return stacks > 0 ? 1f - Mathf.Pow(1f - OilskinEach, stacks) : 0f; }
 

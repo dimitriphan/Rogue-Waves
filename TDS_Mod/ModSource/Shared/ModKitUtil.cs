@@ -1,10 +1,10 @@
-// Kit 1.12 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.14 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: the small helpers every vessel had its own copy of (the database, beings, stats, foes near a point, hits,
 // debuff looks, costs, json fields). Each part keeps only what names it: Retag and Clone (the "-<vessel>" id suffix),
 // Warn, Later, its own rules, and Argo's ById, Costs and Params (they read ids and numbers a little differently).
 // Before kit 1.8 each vessel carried these in <Vessel>Util; the bodies came unchanged
 // (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Debuff`; kit 1.12 added `SlowOn`, `Purse`, `Give` and `Gain` (copies
-// the build of 2026-11-05 had made in several parts) and `Keep`'s Health rule.
+// the build of 2026-11-05 had made in several parts) and `Keep`'s Health rule; kit 1.14 keeps `Front`'s order.
 public static class ModKitUtil
 {
     public static Dictionary<string, UnityEngine.Object> Folder(string name)
@@ -408,17 +408,23 @@ public static class ModKitUtil
 
     // ---------------------------------------------------------------- hit chains
 
-    // Keeps a handler at the front of a thing's hit chain: Helper_Entitytools.Updateinteract rebuilds the chain from the
-    // thing's AIs whenever an upgrade lands or leaves, so every part's hit hooks call this again a few times a second.
+    // Keeps a handler ahead of the game's own in a thing's hit chain: Helper_Entitytools.Updateinteract rebuilds the chain
+    // from the thing's AIs whenever an upgrade lands or leaves, so every part's hit hooks call this again a few times a
+    // second. Kit 1.14: a handler already among the mod handlers in front stays where it is (it used to go first again,
+    // so two parts' handlers on one thing swapped order on every call; pitfall #168). The game's handlers are the ones
+    // whose target is an Entity_Ai_Base (Updateinteract adds only those); after a rebuild the parts line up again in the
+    // order they call.
     public static void Front(Entity_Master m, Entity_Master.Oninteracts handler)
     {
         Entity_Master.Oninteracts chain = m.Oninteract;
         if (chain != null)
-        {
-            Delegate[] list = chain.GetInvocationList();
-            if (list.Length > 0 && list[0].Equals(handler))
-                return;
-        }
+            foreach (Delegate d in chain.GetInvocationList())
+            {
+                if (d.Target is Entity_Ai_Base)
+                    break;
+                if (d.Equals(handler))
+                    return;
+            }
         Delegate rest = Delegate.Remove(chain, handler);
         m.Oninteract = (Entity_Master.Oninteracts)Delegate.Combine(handler, rest);
     }

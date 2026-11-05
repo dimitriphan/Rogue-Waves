@@ -529,7 +529,7 @@
 				- Look: A tally of a regular's tab
 				- Clashes: None
 				- By: Claude
-			{Long Line}
+			{Spare Reel}
 				- Kind: Boost
 				- Vessel: Boutman
 				- Touches: The vessel itself

@@ -123,8 +123,8 @@
 					- Numbers: pins the first foe hit for 1 second; beside a building: stunned for 1 second instead; twice as long in Deep Water
 					- Leads to: nothing, the branch ends here
 					- Cost: Red 60 + Blue 50
-				% 2:{Reel} Reels the first foe hit toward the gun
-					- In-game line: Reels the first foe hit toward the gun /~ Review 2026-11-04: the journal page adds "Place it beside or up the lane: a gun by your core pulls foes toward the core" \
+				% 2:{Reel} Reels the first foe hit towards the gun
+					- In-game line: Reels the first foe hit towards the gun /~ Review 2026-11-04: the journal page adds "Place it beside or up the lane: a gun by your core pulls foes towards the core" \
 					- Numbers: reels the first foe hit 1.5 tiles closer
 					- Leads to: {Twin Line}
 					- Cost: Red 60 + Blue 50
