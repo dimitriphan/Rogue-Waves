@@ -9,12 +9,12 @@
 			- Difficulty: Advanced
 			- Archetype: Commands a disposable minion army
 			- In-game line: Crafty melee, commands a stitched army
-			- Look: hooded purple plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \
+			- Look: hooded sage green plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \
 			- Towers look: stitches, pins and tins /~ Your earlier sheet said this and the new one leaves it out, so it is a default now \
-			- Accent colour: plush purple
+			- Accent colour: sage green /~ 93CCA1 and 60A871, docs/STYLE.md; purple read too close to the foes' magenta \
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \
 			- Lore: / Lore comes once the vessel is finalized \
-			- Status: Built as 0.1.0-dev from this sheet with temporary art; passes its PC self-test, 133 of 133 in the latest round. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are not built yet. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md \
+			- Status: Built as 0.1.0-dev from this sheet with temporary art; passes its PC self-test, 135 of 135 in the latest round. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are not built yet. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md \
 
 		[Vessel Stats]
 			- Attack: melee.
