@@ -23,7 +23,7 @@ public class ArgoTowerBrain : MonoBehaviour
     public float TunedReel, LastReelDone, NextDrag;
     public Vector3 AimCenter;
 
-    float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f;
+    float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f, syncedRange = -1f;
     int shotSerial, mantleTide = -1;
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
@@ -679,7 +679,8 @@ public class ArgoTowerBrain : MonoBehaviour
         if (Time.time >= nextTremor)
         {
             nextTremor = Time.time + ArgoData.TremorTick;
-            if (Mathf.Abs(TremorRadius - syncedRadius) > 0.01f)
+            // A Calibrate tune or an upgrade changes Range too, which the AIM picker's reach reads (ARG-4).
+            if (Mathf.Abs(TremorRadius - syncedRadius) > 0.01f || Mathf.Abs(ModKitUtil.Stat(Master, "Range", 5f) - syncedRange) > 0.01f)
                 SyncAim();
             float slow = Mathf.Min(ArgoData.SlowCap, ModKitUtil.Stat(Master, "Slow", 0.2f));
             List<Entity_Master> foes = TremorFoes();
@@ -770,11 +771,12 @@ public class ArgoTowerBrain : MonoBehaviour
     void SyncAim()
     {
         syncedRadius = TremorRadius;
+        syncedRange = ModKitUtil.Stat(Master, "Range", 5f);
         if (aimCommand == null)
             return;
         aimCommand.Goalposition = AimCenter;
         aimCommand.Goalvalue = syncedRadius;
-        aimCommand.Goalstring = (ModKitUtil.Stat(Master, "Range", 5f) + ArgoData.AimSlack).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
+        aimCommand.Goalstring = (syncedRange + ArgoData.AimSlack).ToString("0.##", System.Globalization.CultureInfo.InvariantCulture);
         // One "Aim" entry in the synced list: Updatecommand updates only the first it finds, so a duplicate (round 2: the
         // radius stayed 2.4 for clients after the drill's upgrades) would keep a stale copy. The last one is kept.
         int seen = 0;

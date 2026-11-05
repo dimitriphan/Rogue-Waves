@@ -46,14 +46,19 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
         }
     }
 
-    // The drill's reach, synced in the AIM command's Goalstring by the server (Range plus the slack it allows).
-    float Reach
+    // The drill's AIM entry as the server last synced it: Link is the copy the panel took when the drill was selected
+    // (Game_Selection), so a Fathom, an upgrade or a Calibrate tune since then would show stale (ARG-4).
+    Link_Commandref Aim()
     {
-        get
-        {
-            float r = ModKitUtil.F(Link.Goalstring.ToString());
-            return r > 0f ? r : 5.5f;
-        }
+        Link_Commandref aim;
+        return ArgoClient.AimEntry(Master, out aim) ? aim : Link;
+    }
+
+    // The drill's reach, synced in the AIM command's Goalstring by the server (Range plus the slack it allows).
+    static float Reach(Link_Commandref aim)
+    {
+        float r = ModKitUtil.F(aim.Goalstring.ToString());
+        return r > 0f ? r : 5.5f;
     }
 
     public override void Running()
@@ -61,7 +66,9 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
         Entity_Master s = Game_Client_Mouseobject.Surfacemaster;
         bool on = s != null && Game_Client_Mouseobject.Surfacehit && Master != null;
         Vector3 at = on ? s.Position.Value + Vector3.up : Vector3.zero;
-        bool ok = on && ModKitUtil.Flat(at, ModKitUtil.Pos(Master)) <= Reach;
+        Link_Commandref aim = Aim();
+        float reach = Reach(aim);
+        bool ok = on && ModKitUtil.Flat(at, ModKitUtil.Pos(Master)) <= reach;
         if (Clone1 != null)
         {
             Clone1.SetActive(ok);
@@ -73,7 +80,7 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
             if (ok)
             {
                 ring.transform.position = ArgoClient.Ground(at) + Vector3.up * 0.04f;
-                float r = Link.Goalvalue > 0f ? Link.Goalvalue : 2f;
+                float r = aim.Goalvalue > 0f ? aim.Goalvalue : 2f;
                 if (!Mathf.Approximately(r, ringRadius))
                 {
                     ringRadius = r;
@@ -84,7 +91,7 @@ public class ArgoAimSelect : Entity_Command_Itemselect_Base
         if (!on)
             Label("Desc", "Point at the ground");
         else if (!ok)
-            Label("Desc", "Too far: the Tremor goes within " + Reach.ToString("0.#") + " tiles of the Drill Rig");
+            Label("Desc", "Too far: the Tremor goes within " + reach.ToString("0.#") + " tiles of the Drill Rig");
         else
             Label("Desc", "Shake the ground here");
     }

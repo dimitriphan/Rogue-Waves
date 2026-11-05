@@ -527,7 +527,9 @@ The engine facts it found that weren't in the kit, **read** unless marked; Rogue
   (Helper_Entitytools.cs:77-93): spawn a neutral unit with `false`, a player's minion with the player's building or
   vessel as the parent. A shop every player can use: Owner -1, every `Blm_Server.Sessionids` key as a subowner
   (Merchut uses 0..9, Entity_Ai_Tower_Merchut.cs:59-61). **Proven** both ways: a parented minion took the local
-  player as owner; a neutral unit kept owner -1 with the player as subowner.
+  player as owner; a neutral unit kept owner -1 with the player as subowner. It also copies the parent's `Skin`
+  (Helper_Entitytools.cs:66-75): a child that should look its own way gets its skin written after the spawn (pitfall
+  #151; read from code).
 - **Buttons show only on the selected entity** and only to its owner or a subowner on its team (Game_Ui.cs:298); the
   bar rebuilds when the selected entity's `Commandlist` changes (Game_Ui.cs:1334-1342, 1387), and `Createcommand` /
   `Removecommand` change it on the host at any time (Helper_Entitytools.cs:264-293, 409). A `Button`-style command's

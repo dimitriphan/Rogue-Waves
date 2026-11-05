@@ -183,7 +183,14 @@ public static class RWShop
         if (asking != "" || RogueWavesModeMod.Instance == null)
             return;
         asking = what;
-        RogueWavesModeMod.Instance.StartCoroutine(what == "Shop" ? Shelf() : what == "Fund" ? Fund() : Board());
+        RogueWavesModeMod.Instance.StartCoroutine(Asking(what == "Shop" ? Shelf() : what == "Fund" ? Fund() : Board()));
+    }
+
+    // A dialog that throws still frees the buttons: SHOP, FUND and BOARD stayed dead for the launch (MODE-D10).
+    static IEnumerator Asking(IEnumerator dialog)
+    {
+        yield return RWUtil.Guarded(dialog, "VENDCINT's " + asking + " dialog");
+        asking = "";
     }
 
     static uint Seed(out int map, out int wave)
@@ -232,7 +239,6 @@ public static class RWShop
         cards.Add(Back());
         string pick = null;
         yield return RWDialog.Ask(cards, "VENDCINT", "Pure Aura: " + pure, 0f, n => pick = n);
-        asking = "";
         if (pick == null || pick == "Back")
             yield break;
         RWMine.Send("Buy", 0, pick);
@@ -272,14 +278,13 @@ public static class RWShop
                 friends.Add(RWDialog.Card(s.ToString(), Blm_Server.Instance.Sessionidsplayer[s].Displayname.Value.ToString(), "Send base aura to this friend", FriendPicture(Blm_Server.Instance.Sessionidsplayer[s]), RWDialog.Teal));
         if (friends.Count == 0)
         {
-            asking = "";
             RWMine.Popup("NO ONE TO SEND TO", "RogueWaves_Fund");
             yield break;
         }
         friends.Add(Back());
         string to = null;
         yield return RWDialog.Ask(friends, "FUND TRANSFER", "Send to whom?", 0f, n => to = n);
-        if (to == null || to == "Back") { asking = ""; yield break; }
+        if (to == null || to == "Back") yield break;
         yield return new WaitForSecondsRealtime(0.3f);
         List<Bla_Ui_Confirmation.Entry> colours = new List<Bla_Ui_Confirmation.Entry>();
         colours.Add(Colour("Redaura", "Red", Have("Redaura"), new Color(0.82f, 0.29f, 0.27f, 1f)));
@@ -288,7 +293,7 @@ public static class RWShop
         colours.Add(Back());
         string res = null;
         yield return RWDialog.Ask(colours, "FUND TRANSFER", "Send which aura?", 0f, n => res = n);
-        if (res == null || res == "Back") { asking = ""; yield break; }
+        if (res == null || res == "Back") yield break;
         yield return new WaitForSecondsRealtime(0.3f);
         int wave = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0;
         int limit = RWFund.Limit(wave);
@@ -299,7 +304,6 @@ public static class RWShop
         amounts.Add(Back());
         string amount = null;
         yield return RWDialog.Ask(amounts, "FUND TRANSFER", "This break's limit: " + limit, 0f, n => amount = n);
-        asking = "";
         if (amount == null || amount == "Back")
             yield break;
         RWMine.Send("Fund", int.Parse(amount), to + "/" + res);
@@ -311,7 +315,6 @@ public static class RWShop
         string posted = RWObjectives.PostedText(v);
         if (posted == "")
         {
-            asking = "";
             RWMine.Popup("NO OBJECTIVE THIS BREAK", "RogueWaves_Board");
             yield break;
         }
@@ -321,7 +324,6 @@ public static class RWShop
         cards.Add(Back());
         string pick = null;
         yield return RWDialog.Ask(cards, p[0], p[1], 0f, n => pick = n);
-        asking = "";
         if (pick == "Take")
             RWMine.Send("Board", 0, "");
     }

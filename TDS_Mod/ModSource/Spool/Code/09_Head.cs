@@ -150,9 +150,10 @@ public class SpoolHeadBrain : SpoolBuilding
                 Show();
             }
         }
-        if (Carried > 0 && SpoolServer.AtStash(Owner, pos, SpoolData.DropOff))
+        // At the Stash it drops off what it carries and turns round, even with nothing on it (RETURN pressed empty, SPL-2).
+        if (SpoolServer.AtStash(Owner, pos, SpoolData.DropOff))
         {
-            int put = SpoolServer.Deliver(Owner, Master, Carried);
+            int put = Carried > 0 ? SpoolServer.Deliver(Owner, Master, Carried) : 0;
             Carried -= put;
             if (put > 0)
             {
@@ -166,7 +167,8 @@ public class SpoolHeadBrain : SpoolBuilding
                 return;
             }
         }
-        if (!Returning && Has("Delivery") && Carried >= Cap && Player.Home != null)
+        // A full Stash takes nothing, so the Head waits at its spot until there is room (SPL-1).
+        if (!Returning && Has("Delivery") && Carried >= Cap && Player.Home != null && Player.Room > 0)
             StartReturn();
         if (Returning)
         {

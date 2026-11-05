@@ -1,5 +1,16 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-05): the code review's fixes
+
+Compiled, not yet run in game. The confirmed findings of `docs/reports/CODE_REVIEW_2026-11-04.md` that need
+no word from Dimitri, fixed in place and named in the code by their ids: the bonus break once (D1), objectives reset
+each map (D2), Mind the Vessels counting only vessels (D3), questions kept for a vessel that is down (D4), the map's
+health without the Hardened look (D5), the leave vote holding the break (D6), a question closing only its own dialog
+(D7), every Basin watched (D8), VENDCINT's buttons freed after a throw (D10), the staging flag saved (A1), the boot's
+steps guarded (A2), a mid-map Cardinal reaching what stands (C1), Cheap Refits and Cut Costs as kept cuts, also on the
+Bouthouse and Fie's walls (C4, C6, C7, C8), Quickening's speed after a drop (B1) and the rejoin's three (B2-B4). What
+was left and why, and the PC test list: `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`.
+
 ## 0.1.0-dev, later (2026-11-04): Trinkets and Cardinals
 
 Dimitri: "Rename Vessel Cardinals as Trinkets and Team Cardinals as just Cardinals." The shop card's kind line reads

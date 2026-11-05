@@ -146,6 +146,37 @@ public static class RWWeather
 
     public static bool HasDeter { get { return ModKitUtil.Load<Beingobject>("Mob", Deter) != null; } }
 
+    // Every machine, every frame. Each player who comes or goes runs Blm_Server.Lobbyupdate on every machine, and every map's
+    // pause menu has hooked it to set Time.timeScale to 1; the game puts the speed back only when Time_Scale or
+    // Time_Speedup changes, and a rejoiner's Startvisuals asks before its speed is on. So Quickening Current fell to x1
+    // for the rest of the map on any drop or join (MODE-B1): the speed goes back on in the two frames after each lobby
+    // change, and once when this machine's speed comes on, on the pack's maps only. A pause (0) is left alone.
+    static bool speedOn;
+    static int respeed;
+
+    public static void OnLobby() { respeed = 2; }      // hooked at boot
+
+    // The speed the game's own hook would set: the map's scale, and the players' fast-forward.
+    public static float GameSpeed(Game_Mapvars mv) { return mv.Time_Scale.Value * (mv.Time_Speedup.Value ? 1.5f : 1f); }
+
+    public static void SpeedUpdate()
+    {
+        Game_Client_Init init = Game_Client_Init.Instance;
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        bool on = init != null && init.Gametimescale && mv != null;
+        if (on && !speedOn) respeed = Mathf.Max(respeed, 1);
+        speedOn = on;
+        if (respeed <= 0)
+            return;
+        respeed--;
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (!on || Time.timeScale == 0f || info == null || !info.Gameplan.Value.ToString().StartsWith(RWData.PlanPrefix))
+            return;
+        float want = GameSpeed(mv);
+        if (!Mathf.Approximately(Time.timeScale, want))
+            Time.timeScale = want;
+    }
+
     // Every machine, every frame: in each map, once a second for its first 30 s (its groups are still loading), until
     // the stand-in exists; logs once.
     public static void DeterUpdate()

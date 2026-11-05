@@ -305,7 +305,8 @@ Upgrades are applied again on load (`Upgradelistserver`) so a rebuilt brain catc
 
 Like Perma-Wall's stump and Sno Sno's snow: a being (cloned from `Trap_Smackywall_Perma` or `Effect_Smackywall_Bramble`)
 spawned on the tile, Forced, same owner/team (`examples/code/Sprigg_01_Util.cs`, `SpawnOnTile`). The engine syncs it to everyone; find it
-later with `Helper_Entityai.Getfirstonblock(tile, entityName)`.
+later with `Helper_Entityai.Getfirstonblock(tile, entityName)`. A child spawned this way wears its parent's skin: write the one it
+should wear on the spawned master afterwards (`ModKitUtil.Skin`; pitfall #151).
 
 ## 16. Reading enemies
 

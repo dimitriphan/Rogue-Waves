@@ -16,6 +16,9 @@ public class RWPlayer
     public bool Owed;                                               // a Direction pick waits for this player
     public float Sent;                                              // base aura sent in this break (Fund Transfer)
     public long Session = -1;                                       // in this host session
+    // What the host last wrote on this player's vessel (RW_Ask, RW_Run), kept so a vessel that respawns carries it again.
+    public string AskWhat = "", RunText = "";
+    public float AskRound;
 }
 
 public static class RWRun
@@ -80,9 +83,7 @@ public static class RWRun
         List<Entity_Master> heroes;
         if (Game_Entity.Instance == null || !Game_Entity.Instance.Entityclienttags.TryGetValue("Hero", out heroes))
             return null;
-        Blm_Player bp;
-        Tds_Clientinfo info = Blm_Server.Instance != null && Blm_Server.Instance.Sessionidsplayer.TryGetValue(session, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
-        Beingobject being = info != null ? Bl_Address.Getload("Hero", info.Hero.Value.ToString()) as Beingobject : null;
+        Beingobject being = HeroBeing(session);
         Entity_Master any = null;
         foreach (Entity_Master e in heroes)
         {
@@ -95,6 +96,27 @@ public static class RWRun
         // While Boutman is down his Boutbro is the only thing of his tagged Hero: it is not his vessel, and must not take his Directions
         // and the run's commands (seen on the PC, 2026-11-04). "any" is only for a vessel this machine can't name.
         return being != null ? null : any;
+    }
+
+    // The being a player picked, or null when this machine can't name it.
+    static Beingobject HeroBeing(long session)
+    {
+        Blm_Player bp;
+        Tds_Clientinfo info = Blm_Server.Instance != null && Blm_Server.Instance.Sessionidsplayer.TryGetValue(session, out bp) && bp != null ? bp.GetComponent<Tds_Clientinfo>() : null;
+        return info != null ? Bl_Address.Getload("Hero", info.Hero.Value.ToString()) as Beingobject : null;
+    }
+
+    // A player's own vessel, not a Boutbro or another helper tagged Hero (pitfall #145; MODE-D3).
+    public static bool IsVessel(Entity_Master e)
+    {
+        if (e == null || e.Beingserver == null || e.Beingserver.Entity == null || !e.Beingserver.Entity.Tags.Contains("Hero")
+            || e.Beingserver.Entity.Tags.Contains("Clone") || ModKitUtil.HasTag(e, "Clone"))    // a lobby Blurry Photo's copy
+            return false;
+        long owner = e.Entitydata.Value.Owner;
+        if (owner < 0)
+            return false;
+        Beingobject being = HeroBeing(owner);
+        return being == null ? !e.Beingserver.Entity.Tags.Contains("Boutbro") : e.Being.Value.ToString() == being.Objectname;
     }
 
     // ---------------------------------------------------------------- the save
@@ -187,6 +209,11 @@ public static class RWRun
     public static void MapStart()
     {
         listening.Clear();
+        foreach (RWPlayer p in Players.Values)
+        {
+            p.AskWhat = p.RunText = "";
+            p.AskRound = 0f;
+        }
         InCampaignMap = RWCampaign.Live && Tds_Multiplayerinfo.Instance != null && Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString().StartsWith(RWData.PlanPrefix);
         if (!InCampaignMap)
             return;
@@ -257,6 +284,10 @@ public static class RWRun
         }
         if (Mathf.Abs(ModKitCounter.Get(v, PureStat) - p.Pure) > 0.01f || !v.Statsserver.ContainsKey(PureStat))
             ModKitCounter.Set(v, PureStat, p.Pure);
+        // A vessel that drowned comes back as a new entity with blank commands: the open question and the run line go on
+        // it again, or a vote asked while it was down never reaches its player (MODE-D4).
+        Write(v, AskLink, p.AskWhat, p.AskRound);
+        Write(v, RunLink, p.RunText, 0f);
         RWDirections.Grant(v, p);
         RWCardinals.Grant(v, p);
     }
@@ -275,30 +306,32 @@ public static class RWRun
 
     // ---------------------------------------------------------------- host to one player
 
+    // Kept on the host per player, then written on their vessel if it stands (a fallen one gets it in Carry).
     public static void Ask(long session, string what, float round)
     {
-        Entity_Master v = Vessel(session);
-        Link_Command link;
-        if (v == null || v.Commandlistserver == null || !v.Commandlistserver.TryGetValue(AskLink, out link))
-            return;
-        if ((link.Goalstring ?? "") == what && link.Goalvalue == round)
-            return;
-        link.Goalstring = what;
-        link.Goalvalue = round;
-        Helper_Entitytools.Updatecommand(v, AskLink, "", false, false);
+        RWPlayer p = For(session);
+        p.AskWhat = what;
+        p.AskRound = round;
+        Write(Vessel(session), AskLink, p.AskWhat, p.AskRound);
     }
 
     public static void RunLine(long session, string text)
     {
-        Entity_Master v = Vessel(session);
+        RWPlayer p = For(session);
+        p.RunText = ModKitUtil.Clip(text);
+        Write(Vessel(session), RunLink, p.RunText, 0f);
+    }
+
+    static void Write(Entity_Master v, string name, string text, float value)
+    {
         Link_Command link;
-        if (v == null || v.Commandlistserver == null || !v.Commandlistserver.TryGetValue(RunLink, out link))
+        if (v == null || v.Commandlistserver == null || !v.Commandlistserver.TryGetValue(name, out link) || link == null)
             return;
-        if (text.Length > 60) text = text.Substring(0, 60);
-        if ((link.Goalstring ?? "") == text)
+        if ((link.Goalstring ?? "") == text && link.Goalvalue == value)
             return;
         link.Goalstring = text;
-        Helper_Entitytools.Updatecommand(v, RunLink, "", false, false);
+        link.Goalvalue = value;
+        Helper_Entitytools.Updatecommand(v, name, "", false, false);
     }
 
     // ---------------------------------------------------------------- orders' little JSON (written by this part alone)
@@ -380,12 +413,15 @@ public static class RWMine
         return 0f;
     }
 
-    public static void Send(string kind, int pick, string text)
+    // False while this player has no vessel standing (it drowned): nothing was sent.
+    public static bool Send(string kind, int pick, string text)
     {
         Entity_Master v = Vessel();
         Entity_Master_Remote remote = v != null ? v.GetComponent<Entity_Master_Remote>() : null;
-        if (remote != null)
-            remote.Command_ServerRpc(RWRun.OrderLink, RWRun.Json(kind, pick, text), default(Unity.Netcode.ServerRpcParams));
+        if (remote == null)
+            return false;
+        remote.Command_ServerRpc(RWRun.OrderLink, RWRun.Json(kind, pick, text), default(Unity.Netcode.ServerRpcParams));
+        return true;
     }
 
     public static void Popup(string text, string icon)

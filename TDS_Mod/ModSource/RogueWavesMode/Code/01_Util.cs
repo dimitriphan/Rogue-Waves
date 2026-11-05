@@ -25,6 +25,29 @@ public static class RWUtil
 
     public static string V(Vector3 v) { return F(v.x) + "," + F(v.y) + "," + F(v.z); }
 
+    // Steps a coroutine, and each coroutine it yields, by hand: Unity runs a yielded coroutine by itself, so a throw in
+    // one ends it silently and never reaches the caller's try (pitfall #133). A throw here ends only that coroutine, with
+    // one warning, and its caller goes on (MODE-A2, MODE-D10).
+    public static IEnumerator Guarded(IEnumerator run, string what)
+    {
+        while (true)
+        {
+            object step;
+            try
+            {
+                if (!run.MoveNext()) yield break;
+                step = run.Current;
+            }
+            catch (Exception e)
+            {
+                RWLog.Warn(what + ": " + e);
+                yield break;
+            }
+            IEnumerator inner = step is CustomYieldInstruction ? null : step as IEnumerator;
+            yield return inner != null ? Guarded(inner, what) : step;
+        }
+    }
+
     // ---------------------------------------------------------------- the save
 
     public static string ReadString(string folder, string key)

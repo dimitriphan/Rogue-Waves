@@ -79,7 +79,7 @@ powershell -ExecutionPolicy Bypass -Command "& 'C:\Users\Dimitri\TDS_Mod\ModSour
 | `docs/22_NEW_MAPS.md` | A new map: the chain from a chart node to the `Mapdata` prefab, its children (grid, `Entities`, `Object`, colliders, visuals), why not the custom-map slot, the pack's own registration, online |
 | `docs/23_SAVE_UNLOCKS_LOADER.md` | The save (files, slots, what a mod may write, removal, a schema version), unlocks and what the boat announces, the mod loader's boot order, keywords, compile errors and Toggle, records and achievements |
 | `docs/24_ENEMY_BODIES_AND_BOSSES.md` | Enemy sprites and animation from the code, flying (Halberd), movement per enemy kind, the Tide around the contents, hooks for a mode, a pack boss plan |
-| `kit/Shared/` | The shared kit every vessel compiles (kit 1.8): journal, boat, tower ranges, combat hits, self-test helpers, the pack's registry, Tides, counter, Directions and F-key fix, and the helpers and asset reader every vessel uses (`ModKitUtil`, `ModKitAssets`; `kit/README.md`) |
+| `kit/Shared/` | The shared kit every vessel compiles (kit 1.9): journal, boat, tower ranges, combat hits, self-test helpers, the pack's registry, Tides, counter, Directions and F-key fix, and the helpers and asset reader every vessel uses (`ModKitUtil`, `ModKitAssets`; `kit/README.md`) |
 | `template/Mummer/` | The reference vessel (Mummer 1.0.0): runtime code, editor generator, build scripts |
 | `template/DESIGN_TEMPLATE.md` | The design form (copied into each new vessel) |
 | `tools/New-Vessel.ps1` | Scaffolds a new vessel from the template |

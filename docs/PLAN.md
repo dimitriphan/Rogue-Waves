@@ -261,6 +261,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (`docs/reports/QUALITY_PASSES_2026-11-04.md`); the cloud compile break it found after PR #82 is repaired by PR #84.
   2026-11-04: every line of the scope read against the code: 41 mismatches, 22 of them on Claude's defaults, each with
   who should yield; nothing changed, each waits for his word (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2).
+  2026-11-05: the code review's bugs fixed, 32 of 54 (every confirmed one that needs neither his word nor a PC fact,
+  and six plain guards), with kit 1.9 and pitfalls #151-#155; the map's extra foe health kept without the Hardened
+  look. Compiled, not run on the PC: the next PC round runs `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md` §5.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -287,7 +290,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Red squeeze and the laser mining ore, a way to sell a walking Stitched, the Thread Head's stock MOVE. The 2026-11-03
   balance study answers the first two: no start-kit number fixes Spool's first Tide, the Pin Cushion wall does; the Red
   squeeze is every vessel's and the laser keeps mining (`BALANCE_2026-11-03.md`; its P1-P4 are Open questions 3).
-- **Next free numbers:** kit chapter 25, pitfall #151 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82).
+- **Next free numbers:** kit chapter 25, pitfall #156 (#92 is unused; #105-#111 are Yossele's, #112-#113 Spool's, #114 Yossele's per-map look, #115-#120 the engine study's round 8, #121-#136 the build round of 2026-11-03, #137-#138 the dialog's placement, #139-#149 the test round of 2026-11-04, #150 the Basin's late start, PR #82, #151-#155 the code review's fixes).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

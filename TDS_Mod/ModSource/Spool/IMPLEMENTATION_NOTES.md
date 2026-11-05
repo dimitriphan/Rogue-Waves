@@ -1,5 +1,7 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+**2026-11-05, the code review's fixes (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`):** two plain bugs in the Thread Head's walk, nothing about how Spool plays: with Delivery it heads home only when the Stash has room (SPL-1), and it turns round at the Stash whatever it carries (SPL-2). The PC checks: that report's §5.
+
 **2026-11-04, code simplification (compiled, not yet run in game):** the game's own `Entity_Ai_General_Upgrade` runs the buildings' and the Thread Head's upgrade panels again (the brain's mirror of it is gone; it still hears each upgrade through `Master.Upgrade`), and the shared helpers and asset reader moved to kit 1.8's `ModKitUtil` and `ModKitAssets` with their bodies unchanged; the Pin Cushion keeps its handler first through `ModKitUtil.Front`. The PC checks: `docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4 (self-test 133/0, G1, G3, H1, L1).
 
 **Built from the scope in one stretch: design (`DESIGN.md`), temporary art (`Assets/SpoolMod/Editor`,

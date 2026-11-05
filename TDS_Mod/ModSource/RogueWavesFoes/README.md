@@ -14,4 +14,7 @@ colour no stock elite uses (`docs/STYLE.md` "Enemies"). The mode's `RWDifficulty
 Self-test in game: 12 pass, 0 fail (`-Define ROGUEWAVESFOES_SELFTEST`). The look is by self-test only: a player's eye on the rings is left.
 Build: `Build-RogueWavesFoesMod.ps1`, then Tools > ModKit > Build Queue. The editor half is `Assets/RogueWavesFoesMod/Editor`.
 
+2026-11-05 (compiled, not yet run in game; `docs/reports/CODE_REVIEW_FIXES_2026-11-05.md`): the auras skip the Bouthouse, which hands what it holds on to
+Boutman (FOES-2, pitfall #85), and a foe with Aging and Berserk keeps both modifiers' handles (FOES-3).
+
 No journal pages yet: the stock enemy pages list a foe type, and a modifier isn't one (a sheet for them waits on a decision of the journal's layout).
