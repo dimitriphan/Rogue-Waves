@@ -60,6 +60,10 @@ Value_Calc = (ΣBase × ΣPmulti + ΣAdd) × ΣMulti × (1 − clamp01(OverrideO
 - **Health is `Variable`** on vessels and the core (every other hero stat, and the core's `Respawn`, is `Fixed`): a
   change of max Health keeps the health fraction. **Verified**: 50/50 +20 gave 70/70, 30/50 +20 gave 42/70. A Health
   Cardinal or Direction refills nothing on a hurt vessel; heal it separately if the design wants that.
+- **`Value_Calc` is clamped to the stat's data `Limits`** (`Link_Stats.Value_Bounds`, set from `Min`/`Max` when the data
+  marks `Limits`, else unbounded; Link_Stats.cs, Entity_Master.cs:379-386). A sum below the floor reads as the floor, and
+  an `Add` is still scaled by ΣMulti: on a tower holding Frail Titan's Pmulti and Paper Tower's Multi a +10 Add likely
+  showed as 0.0375 (`09` #171, fitted). Measure a bonus on a tower no Cardinal reaches, or in the stat's buckets.
 - An Override mod replaces the stat; live overrides sum; `Value_Override = 0` switches it off, so stuns use 0.01.
   `Editstat` adds `Value_Override_On` again on **every** change of an Override mod and subtracts it once on removal
   (:665, 703): never edit an Override mod, remove and re-add it (`09` #81).
