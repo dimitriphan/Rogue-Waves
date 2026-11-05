@@ -8,7 +8,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class YosseleSelfTest
+public static partial class YosseleSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -110,7 +110,11 @@ public static class YosseleSelfTest
         if (phase <= 2 && YosseleServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if YOSSELE_REVIEW
+            YosseleMod.Instance.StartCoroutine(Review());
+#else
             YosseleMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 

@@ -8,7 +8,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class UloeSelfTest
+public static partial class UloeSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -108,7 +108,11 @@ public static class UloeSelfTest
         if (phase <= 2 && UloeServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if ULOE_REVIEW
+            UloeMod.Instance.StartCoroutine(Review());
+#else
             UloeMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 

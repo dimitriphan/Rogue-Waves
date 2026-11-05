@@ -8,7 +8,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class SpoolSelfTest
+public static partial class SpoolSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -108,7 +108,11 @@ public static class SpoolSelfTest
         if (phase <= 2 && SpoolServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if SPOOL_REVIEW
+            SpoolMod.Instance.StartCoroutine(Review());
+#else
             SpoolMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 

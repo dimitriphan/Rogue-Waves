@@ -1,0 +1,456 @@
+#if ROGUEWAVESMODE_GAPS
+// Debug build only, the solo gaps build's part "review" (-rwonly review, Tools/pc/Run-TwoPlayers.ps1 -Extra): the code review's and the
+// simplification build's solo PC checks in game (docs/reports/CODE_REVIEW_2026-11-04.md §6, SIMPLIFICATION_BUILD_2026-11-04.md §4 R3, G3).
+// A finding's reading is a line "TEST INFO FINDING <id>: SEEN|not seen (...)": it says the same before and after a fix, and fails nothing.
+public static partial class RWTest
+{
+    static readonly List<string> reviewLines = new List<string>();
+
+    static void Finding(string id, bool seen, string detail) { Line("INFO FINDING " + id + ": " + (seen ? "SEEN" : "not seen") + " (" + detail + ")"); }
+
+    static void ReviewLog(string text, string stack, LogType type)
+    {
+        if (text == null || text.IndexOf("TEST ") >= 0) return;
+        if (text.Contains(" paid ") || text.Contains("VENDCINT landed") || text.Contains("posted:") || text.Contains("the vote to leave") || text.Contains("bonus Tide"))
+            reviewLines.Add(text);
+    }
+
+    static int SeenLines(string part)
+    {
+        int n = 0;
+        foreach (string l in reviewLines) if (l.Contains(part)) n++;
+        return n;
+    }
+
+    static float UpgradePrice(Entity_Master m)
+    {
+        Link_Command c;
+        return m != null && m.Commandlistserver != null && m.Commandlistserver.TryGetValue("Upgrade", out c) && c != null ? c.Goalvalue : -1f;
+    }
+
+    static string Holding(Entity_Master m, string part)
+    {
+        List<string> held = new List<string>();
+        if (m != null && m.Upgradelistserver != null)
+            foreach (string k in m.Upgradelistserver.Keys) if (k.Contains(part)) held.Add(k);
+        return string.Join(",", held.ToArray());
+    }
+
+    static float StatOf(Entity_Master m, string name)
+    {
+        Link_Stats s;
+        return m != null && m.Statsserver != null && m.Statsserver.TryGetValue(name, out s) ? s.Value : -1f;
+    }
+
+    static void Direction(RWPlayer player, string name)
+    {
+        RWDirections.Take(player, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id("Any", name)) as Upgradeproperties);
+    }
+
+    static IEnumerator ToBoat()
+    {
+        Macro_Main old = Macro_Main.Instance;
+        freeze = false;
+        forcing = false;
+        Tds_Multiplayer_Remote.Instance.Quitmap_ServerRpc(default(Unity.Netcode.ServerRpcParams));
+        yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 150f);
+        yield return new WaitForSecondsRealtime(3f);
+    }
+
+    static IEnumerator GapsReview()
+    {
+        Application.logMessageReceived += ReviewLog;
+        yield return Stepped(ReviewCampaign());
+        yield return Stepped(ReviewBoutman());
+        yield return Stepped(ReviewFie());
+        yield return Stepped(ReviewVoice());
+        Application.logMessageReceived -= ReviewLog;
+    }
+
+    // MODE-A1, C12, C1, C4, D1, D6, D2, then on map 2 D5 and the Cardinals' return.
+    static IEnumerator ReviewCampaign()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWCampaign.New(0);
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Smacky");
+        yield return Until(() => RWCampaign.Live && Here(), 40f);
+        long me = RWMine.Session;
+        yield return Until(() => boat.Selected.Value.ToString() == RWCampaign.Chart.At(0, 0).Name && Macro_Worldvisual.Instance.Insetup, 40f);
+        boat.Playgame(true);
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 240f);
+        yield return WaitDialog(10f);
+        ClickCard("0");
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || RWCampaign.Choice >= 0, 20f);
+        if (RWAsk.Open.StartsWith(RWVote.MapKind))
+        {
+            yield return WaitDialog(10f);
+            ClickCard(CardNames()[0]);
+        }
+        Macro_Main old = boat;
+        yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 200f);
+        yield return new WaitForSecondsRealtime(1f);
+        string staged = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Staged);
+        Finding("MODE-A1", staged == "1", "after the staging map, on the boat: the save's " + RWKeys.Staged + " '" + staged + "', in memory " + RWCampaign.Staging);
+
+        boat = Macro_Main.Instance;
+        yield return Until(() => Here(), 40f);
+        yield return Until(() => boat.Selected.Value.ToString() != "" && Macro_Worldvisual.Instance.Insetup, 90f);
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
+        yield return Until(() => RWShop.Stand != null, 120f);
+        freeze = true;
+        yield return new WaitForSeconds(3f);
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        RWPlayer player = RWRun.For(me);
+        Entity_Master vessel = RWRun.Vessel(me);
+        if (vessel == null) { Setup("the review's campaign", "no vessel"); yield break; }
+        Rich(me, 8000f);
+        player.Pure = 800;
+        List<Vector3> used = new List<Vector3>();
+        List<Entity_Master> known = new List<Entity_Master>();
+
+        // MODE-C12: Voice's step is Rate_Base/100 * (float)(30 / Totalwaves), an integer division.
+        int total = vars.Mode != null && vars.Mode.Enemies != null ? vars.Mode.Enemies.Totalwaves : -1;
+        Finding("MODE-C12", total > 30, "Mode.Enemies.Totalwaves " + total + " on a campaign map, so Voice's factor is " + (total > 0 ? (30 / total).ToString() : "?"));
+
+        // MODE-C1: a Cardinal bought mid-map.
+        Entity_Master older = null, newer = null;
+        yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => older = m);
+        float speed0 = StatOf(vessel, "Speed");
+        string sport = RWCardinals.Buy(player, "Artifact_Caffeine"), pipe = RWCardinals.Buy(player, "Artifact_Rustypipe");
+        yield return new WaitForSeconds(1.5f);
+        yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => newer = m);
+        string onVessel = Holding(vessel, "Caffeine"), onOlder = Holding(older, "Rustypipe"), onNewer = Holding(newer, "Rustypipe");
+        Finding("MODE-C1", onVessel == "" || onOlder == "", "bought '" + sport + "' and '" + pipe + "' (empty is yes); vessel's Caffeine [" + onVessel + "], speed " + speed0 + " -> " + StatOf(vessel, "Speed")
+            + "; the tower from before [" + onOlder + "], a tower built after [" + onNewer + "]");
+
+        // MODE-C4: Voice alone for two Tides, then Cheap Refits.
+        string voice = RWCardinals.Buy(player, "Artifact_Voice");
+        Entity_Master voiced = null;
+        yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => voiced = m);
+        yield return new WaitForSeconds(1f);
+        float g0 = UpgradePrice(voiced);
+        Info("MODE-C4", "bought Voice '" + voice + "'; the new tower holds [" + Holding(voiced, "Voice") + "], price scale " + g0);
+        yield return ToBreakAfter(vars.Wave.Value + 1);
+        yield return new WaitForSeconds(1f);
+        yield return ToBreakAfter(vars.Wave.Value + 1);
+        yield return new WaitForSeconds(1f);
+        float g2 = UpgradePrice(voiced);
+        Direction(player, "Refit");
+        yield return new WaitForSeconds(1.5f);
+        float g3 = UpgradePrice(voiced);
+        Finding("MODE-C4", g2 < g0 - 0.001f && g3 >= g2 + 0.001f, "price scale " + g0 + " at the start, " + g2 + " after two Tides of Voice, " + g3 + " once Cheap Refits is held (fixed: lower than " + g2 + ")");
+        Finding("MODE-C12 (the effect)", g2 >= g0 - 0.001f, "two Tides of Voice took the scale from " + g0 + " to " + g2);
+
+        // MODE-D1: on to Tide 29's break, where the bonus rewind begins.
+        vars.Entry.Value = 2 * 29 - 1;
+        vars.Wave.Value = 28;
+        yield return new WaitForSeconds(1f);
+        ClearFoes();
+        int pure0 = player.Pure, breaks0 = RWVote.Breaks;
+        reviewLines.Clear();
+        yield return ToBreakAfter(29);
+        yield return new WaitForSeconds(3f);
+        Finding("MODE-D1", RWVote.Breaks - breaks0 >= 2 || SeenLines("Tide 29 paid") >= 2, "Tide 29's break: Break fired " + (RWVote.Breaks - breaks0) + " times, 'Tide 29 paid' " + SeenLines("Tide 29 paid") + " lines, 'VENDCINT landed' "
+            + SeenLines("VENDCINT landed") + " lines, Pure +" + (player.Pure - pure0) + " (a Tide pays " + RWRun.PerTide + ")");
+        // The vote to leave: stay.
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
+        if (RWAsk.Open == RWVote.LeaveKind)
+        {
+            yield return WaitDialog(6f);
+            ClickCard("Stay");
+        }
+        yield return Until(() => RWVote.State == "", 25f);
+
+        // MODE-D6: a Tide that runs out its clock with a foe left, which falls 45 s into the break; the vote takes its time.
+        ClearFoes();
+        int wave = vars.Wave.Value;
+        freeze = false;
+        forcing = false;
+        vars.Time_Wave.Value = 0.1f;
+        yield return Until(() => vars.Wave.Value > wave, 30f);
+        yield return NewFoe();
+        Entity_Master keeper = lastFoe;
+        if (keeper != null) Helper_Entitytools.Addmod(keeper, "Speed", -0.9f, Helper_Entitytools.Modtypes.Multi, 90f);
+        int breaks = RWVote.Breaks;
+        forcing = true;
+        float t = 0f;
+        while (RWVote.Breaks == breaks && t < 60f)
+        {
+            ClearFoesKeeping(keeper);
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        forcing = false;
+        vars.Time_Wave.Value = RWMode.BreakSeconds;     // the forced -1 mustn't run this break out as well
+        yield return new WaitForSeconds(0.5f);
+        float left0 = vars.Time_Wave.Value;
+        Info("MODE-D6", "the Tide ran out with " + RWVote.Foes() + " foes up, the break's clock at " + left0 + " s, Wave " + vars.Wave.Value);
+        t = 0f;
+        while (t < 45f && ModKitTides.InBreak)
+        {
+            ClearFoesKeeping(keeper);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        ClearFoes();
+        int waveAsked = vars.Wave.Value;
+        string lastVote = RWVote.LastVote;
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 6f);
+        bool asked = RWAsk.Open == RWVote.LeaveKind;
+        float clockAsked = vars.Time_Wave.Value;
+        yield return Until(() => vars.Wave.Value > waveAsked, 18f);       // the player reads the question for 18 s of its 20
+        bool cut = vars.Wave.Value > waveAsked;
+        string stateThen = RWVote.State, openThen = RWAsk.Open;
+        if (!cut && RWDialog.Up()) { ClickCard("Leave"); yield return new WaitForSeconds(1f); }
+        Finding("MODE-D6", cut && RWVote.LastVote == lastVote, "the vote opened " + asked + " with " + clockAsked + " s of break left; 18 s on: Wave " + waveAsked + " -> " + vars.Wave.Value + ", state '" + stateThen + "', question '" + openThen + "', last vote '" + RWVote.LastVote + "'");
+        ClearFoes();
+        yield return new WaitForSeconds(0.5f);
+
+        // MODE-D2: the objective taken in the break where the party votes to leave.
+        yield return ToBreakAfter(vars.Wave.Value + (cut ? 0 : 1));
+        yield return new WaitForSeconds(1f);
+        RWObjectiveDef hands = Array.Find(RWObjectives.All, o => o.Name == "Hands");
+        RWObjectives.Posted = hands;
+        RWObjectives.Active = null;
+        string took = RWObjectives.Take(player);
+        Info("MODE-D2", "took Mind the Vessels in the break: '" + took + "' (empty is yes)");
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 25f);
+        if (RWAsk.Open != RWVote.LeaveKind) { Setup("MODE-D2", "no vote to leave: state '" + RWVote.State + "', Wave " + vars.Wave.Value); yield break; }
+        yield return WaitDialog(6f);
+        ClickCard("Leave");
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind) || RWCampaign.Choice >= 0, 20f);
+        if (RWAsk.Open.StartsWith(RWVote.DirectionKind))
+        {
+            yield return WaitDialog(8f);
+            ClickCard("0");
+        }
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || RWCampaign.Choice >= 0, 20f);
+        if (RWAsk.Open.StartsWith(RWVote.MapKind))
+        {
+            yield return WaitDialog(8f);
+            List<string> next = CardNames();
+            ClickCard(next[next.Count - 1]);
+        }
+        yield return Until(() => Game_Mapvars.Instance == null || Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", 30f);
+        yield return new WaitForSeconds(7f);
+        old = Macro_Main.Instance;
+        Tds_Multiplayer_Remote.Instance.Returnmap_ServerRpc(true, default(Unity.Netcode.ServerRpcParams));
+        yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 150f);
+        yield return new WaitForSecondsRealtime(1f);
+        reviewLines.Clear();
+        int pureBefore = player.Pure;
+        yield return ToNextMap();
+        yield return Until(() => SeenLines("posted:") > 0, 60f);
+        player = RWRun.For(me);
+        int paidAt = reviewLines.FindIndex(l => l.Contains("Mind the Vessels") && l.Contains("paid")), postedAt = reviewLines.FindIndex(l => l.Contains("posted:"));
+        Finding("MODE-D2", paidAt >= 0 && (postedAt < 0 || paidAt < postedAt), "map 2's opening: " + string.Join(" | ", reviewLines.ToArray()) + "; Pure " + pureBefore + " -> " + player.Pure);
+
+        // The Cardinals held on map 1, on map 2: the return PR #82 fixed.
+        vars = Game_Mapvars.Instance;
+        vessel = RWRun.Vessel(me);
+        Check("A later map: the Cardinals held go back on its new core, and in the HUD's row", RWRun.Cardinals.Count >= 3 && RWCardinals.MissingOnCore() == 0, string.Join(",", RWRun.Cardinals.ToArray()) + ", missing " + RWCardinals.MissingOnCore() + ", row " + Tds_Multiplayerinfo.Instance.Artifacts.Count);
+        Info("A later map: what the Cardinals put on the vessel", "[" + Holding(vessel, "Caffeine") + "]; a tower built now gets Rusty Pipe, as map 1's did after buying");
+
+        // MODE-D5: map 2's plain foes.
+        freeze = false;
+        forcing = false;
+        wave = vars.Wave.Value;
+        vars.Time_Wave.Value = 0.1f;
+        yield return Until(() => vars.Wave.Value > wave, 30f);
+        t = 0f;
+        string skins = "";
+        int plainSkin = 0, healthSkin = 0, withHealth = 0, read = 0;
+        List<Entity_Master> seen = new List<Entity_Master>();
+        while (t < 20f && read < 8)
+        {
+            t += Time.unscaledDeltaTime;
+            List<Entity_Master> all;
+            if (Game_Entity.Instance.Entityclienttags.TryGetValue("Enemy", out all))
+                foreach (Entity_Master e in new List<Entity_Master>(all))
+                {
+                    if (e == null || e.Beingserver == null || e.Beingserver.Dead || seen.Contains(e) || e.Taglistserver.Contains("Enemycore") || e.Taglistserver.Contains("Tower") || e.Upgradelistserver == null || e.Upgradelistserver.Count == 0) continue;
+                    seen.Add(e);
+                    read++;
+                    string skin = e.Skin.Value.ToString();
+                    if (skin == "") plainSkin++;
+                    if (skin == "Health") healthSkin++;
+                    if (Holding(e, "RW_Foe_Health") != "") withHealth++;
+                    if (read <= 4) skins += e.Being.Value + "='" + skin + "' ";
+                }
+            yield return null;
+        }
+        Finding("MODE-D5", healthSkin > 0, "map 2, Tide 1: " + read + " foes read, " + healthSkin + " wear 'Health', " + plainSkin + " none, " + withHealth + " hold the map's health upgrade: " + skins);
+        ClearFoes();
+        freeze = true;
+        yield return ToBoat();
+    }
+
+    // MODE-D3: Mind the Vessels while a Boutbro falls and Boutman lives.
+    static IEnumerator ReviewBoutman()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Boutman");
+        yield return new WaitForSecondsRealtime(1f);
+        yield return ToMap(Seed, RWChart.Calm);
+        long me = RWMine.Session;
+        RWPlayer player = RWRun.For(me);
+        Entity_Master vessel = RWRun.Vessel(me);
+        if (vessel == null || vessel.Being.Value.ToString() != "Hero_Boutman") { Setup("MODE-D3", "no Boutman"); yield break; }
+        Rich(me, 3000f);
+        List<Entity_Master> known = new List<Entity_Master>();
+        Entity_Master house = null;
+        yield return BuildOne(vessel, "Tower_Boutmanhouse", new List<Vector3>(), known, (m, c) => house = m);
+        Entity_Master bro = null;
+        yield return Until(() => (bro = MineLast("Mob_Boutmanbro", me)) != null, 60f);
+        if (bro == null) { Setup("MODE-D3", "no Boutbro after 60 s"); yield break; }
+        yield return new WaitForSeconds(1f);
+        RWObjectiveDef hands = Array.Find(RWObjectives.All, o => o.Name == "Hands");
+        RWObjectives.Posted = hands;
+        RWObjectives.Active = null;
+        string took = RWObjectives.Take(player);
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        int wave = vars.Wave.Value, breaks = RWVote.Breaks;
+        freeze = false;
+        forcing = false;
+        vars.Time_Wave.Value = 0.1f;
+        yield return Until(() => vars.Wave.Value > wave, 40f);
+        yield return new WaitForSeconds(0.5f);
+        yield return NewFoe();
+        bro = MineLast("Mob_Boutmanbro", me);
+        if (lastFoe != null && bro != null) Hurt(lastFoe, bro, 100000f);
+        yield return new WaitForSeconds(0.5f);
+        forcing = true;
+        float t = 0f;
+        while (RWVote.Breaks == breaks && t < 90f)
+        {
+            ClearFoes();
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        forcing = false;
+        ClearFoes();
+        freeze = true;
+        yield return new WaitForSeconds(0.8f);
+        Entity_Master still = RWRun.Vessel(me);
+        Finding("MODE-D3", RWObjectives.Outcome == "Hands failed", "took '" + took + "'; outcome '" + RWObjectives.Outcome + "' with Boutman alive " + (still != null) + ", the Boutbro felled");
+        yield return ToBoat();
+    }
+
+    // R3 and MODE-C3: Spring Tide's Beacon against Fie's walls, on real hits.
+    static IEnumerator ReviewFie()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Fie");
+        yield return new WaitForSecondsRealtime(1f);
+        yield return ToMap(Seed, RWChart.Calm);
+        long me = RWMine.Session;
+        RWPlayer player = RWRun.For(me);
+        Entity_Master vessel = RWRun.Vessel(me);
+        if (vessel == null || vessel.Being.Value.ToString() != "Hero_Fie") { Setup("R3", "no Fie"); yield break; }
+        Rich(me, 8000f);
+        List<Vector3> used = new List<Vector3>();
+        List<Entity_Master> known = new List<Entity_Master>();
+        Entity_Master wall = null, beside = null, far = null;
+        yield return BuildOne(vessel, "Tower_Fiewall", used, known, (m, c) => wall = m);
+        if (wall == null) { Setup("R3", "no wall"); yield break; }
+        Beingobject silo = ModKitUtil.Load<Beingobject>("Mob", "Tower_Fiesilo"), shop = ModKitUtil.Load<Beingobject>("Mob", "Tower_Fieshop");
+        Vector3 at = silo != null ? RogueWavesModeKitTest.Spot(wall.Entityposition.Value, silo, wall.Entitydata.Value.Team, 1f, 1.6f, used, "beside the wall") : new Vector3(float.NaN, 0f, 0f);
+        if (float.IsNaN(at.x)) { Setup("R3", "no tile beside the wall"); yield break; }
+        vessel.GetComponent<Entity_Master_Remote>().Command_ServerRpc("Build", "{\"Tower\":\"Tower_Fiesilo\",\"Position\":" + Pos(at) + ",\"Orientation\":0,\"Owner\":" + me + "}", default(Unity.Netcode.ServerRpcParams));
+        yield return Until(() => (beside = Mine("Tower_Fiesilo", me, known)) != null, 15f);
+        if (beside != null) known.Add(beside);
+        at = shop != null ? RogueWavesModeKitTest.Spot(vessel.Entityposition.Value, shop, wall.Entitydata.Value.Team, 5f, 9f, used, "away from the wall") : new Vector3(float.NaN, 0f, 0f);
+        if (!float.IsNaN(at.x))
+        {
+            vessel.GetComponent<Entity_Master_Remote>().Command_ServerRpc("Build", "{\"Tower\":\"Tower_Fieshop\",\"Position\":" + Pos(at) + ",\"Orientation\":0,\"Owner\":" + me + "}", default(Unity.Netcode.ServerRpcParams));
+            yield return Until(() => (far = Mine("Tower_Fieshop", me, known)) != null, 15f);
+        }
+        if (beside == null) { Setup("R3", "no building beside the wall"); yield break; }
+        yield return new WaitForSeconds(1f);
+        foreach (string u in new[] { "Connect2", "Shield3", "Adjacent4" })
+        {
+            Upgradeproperties up = Bl_Address.Getload("Upgrade", "Tower_Fiewall_" + u + "_Upgradeobject") as Upgradeproperties;
+            if (up != null) Helper_Entitytools.Upgrade(wall, up, Helper_Entitytools.Upgradecheck.Forced, null);
+            yield return new WaitForSeconds(0.8f);
+        }
+        yield return new WaitForSeconds(1.5f);
+        Info("R3 before Spring Tide", "wall holds [" + Holding(wall, "Effect") + "], Resistadd " + StatOf(wall, "Resistadd") + "; the building beside it [" + Holding(beside, "Effect") + "], Resistadd " + StatOf(beside, "Resistadd"));
+        float[] before = new float[3], after = new float[3];
+        yield return NewFoe();
+        Entity_Master foe = lastFoe;
+        if (foe == null) { Setup("R3", "no foe"); yield break; }
+        Entity_Master[] targets = { beside, far, wall };
+        for (int i = 0; i < 3; i++)
+        {
+            if (targets[i] == null) continue;
+            float h0 = Hp(targets[i]);
+            Hurt(foe, targets[i], 10f);
+            yield return new WaitForSeconds(0.2f);
+            before[i] = h0 - Hp(targets[i]);
+        }
+        Direction(player, "Spring");
+        yield return new WaitForSeconds(2.5f);
+        Info("R3 with Spring Tide", "wall [" + Holding(wall, "Effect") + "], Resistadd " + StatOf(wall, "Resistadd") + "; beside it [" + Holding(beside, "Effect") + "], Resistadd " + StatOf(beside, "Resistadd") + "; away [" + Holding(far, "Effect") + "], Resistadd " + StatOf(far, "Resistadd"));
+        if (!ModKitUtil.Alive(foe)) { yield return NewFoe(); foe = lastFoe; }
+        for (int i = 0; i < 3; i++)
+        {
+            if (targets[i] == null) continue;
+            float h0 = Hp(targets[i]);
+            Hurt(foe, targets[i], 10f);
+            yield return new WaitForSeconds(0.2f);
+            after[i] = h0 - Hp(targets[i]);
+        }
+        Finding("R3", before[0] > 0f && after[0] <= before[0] * 0.65f, "a 10 hit on the building beside the wall: " + before[0] + " before Spring Tide, " + after[0] + " with it; on one away from the wall " + before[1] + " then " + after[1]);
+        Finding("MODE-C3", before[2] > 0f && after[2] <= before[2] * 0.65f, "a 10 hit on the Shield wall itself: " + before[2] + " before Spring Tide, " + after[2] + " with it, Resistadd " + StatOf(wall, "Resistadd"));
+        ClearFoes();
+        yield return ToBoat();
+    }
+
+    // G3: Voice in a Bottle held, a pack building: it stays, its price falls, the next upgrade costs that.
+    static IEnumerator ReviewVoice()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Yossele");
+        yield return new WaitForSecondsRealtime(1f);
+        yield return ToMap(Seed, RWChart.Calm);
+        long me = RWMine.Session;
+        RWPlayer player = RWRun.For(me);
+        Entity_Master vessel = RWRun.Vessel(me);
+        if (vessel == null || vessel.Being.Value.ToString() != "Hero_Yossele") { Setup("G3", "no Yossele"); yield break; }
+        Rich(me, 8000f);
+        player.Pure = 300;
+        string bought = RWCardinals.Buy(player, "Artifact_Voice");
+        yield return new WaitForSeconds(1f);
+        Entity_Master cannon = null;
+        yield return BuildOne(vessel, "Tower_Yosselecannon", new List<Vector3>(), new List<Entity_Master>(), (m, c) => cannon = m);
+        if (cannon == null) { Setup("G3", "no Spore Cannon"); yield break; }
+        yield return new WaitForSeconds(1f);
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        float g0 = UpgradePrice(cannon);
+        string held0 = Holding(cannon, "Voice");
+        yield return ToBreakAfter(vars.Wave.Value + 1);
+        yield return new WaitForSeconds(1f);
+        yield return ToBreakAfter(vars.Wave.Value + 1);
+        yield return new WaitForSeconds(1f);
+        float g2 = UpgradePrice(cannon);
+        Check("G3 Voice stays on a pack building, and its price falls with the Tides", cannon != null && Holding(cannon, "Voice") != "" && g2 < g0 - 0.001f, "bought '" + bought + "', holds [" + Holding(cannon, "Voice") + "] (at first [" + held0 + "]), price scale " + g0 + " -> " + g2);
+        const string Sticky = "Tower_Yosselecannon_Sticky2_Upgradeobject";
+        Upgradeproperties up = Bl_Address.Getload("Upgrade", Sticky) as Upgradeproperties;
+        float price = 0f;
+        if (up != null) foreach (Link_Resourceset c in up.Costs) price += c.Amount;
+        float t0 = Total(me);
+        cannon.GetComponent<Entity_Master_Remote>().Command_ServerRpc("Upgrade", "{\"Upgrade\":\"" + Sticky + "\",\"Upgrader\":" + me + "}", default(Unity.Netcode.ServerRpcParams));
+        yield return new WaitForSeconds(1f);
+        float paid = t0 - Total(me);
+        Check("G3 the next upgrade costs the fallen price", cannon.Upgradelistserver.ContainsKey(Sticky) && Mathf.Abs(paid - price * g2) <= 1f, "paid " + paid + " of " + price + " x " + g2);
+        Info("G3 after the upgrade", "price scale " + UpgradePrice(cannon) + ", holds [" + Holding(cannon, "Voice") + "]");
+        ClearFoes();
+        yield return ToBoat();
+    }
+}
+#endif

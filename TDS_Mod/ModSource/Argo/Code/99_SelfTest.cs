@@ -9,7 +9,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class ArgoSelfTest
+public static partial class ArgoSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -113,7 +113,11 @@ public static class ArgoSelfTest
         if (phase <= 2 && ArgoServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if ARGO_REVIEW
+            ArgoMod.Instance.StartCoroutine(Review());
+#else
             ArgoMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 
