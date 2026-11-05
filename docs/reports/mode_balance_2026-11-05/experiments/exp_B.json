@@ -1,0 +1,798 @@
+[
+ {
+  "name": "R smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map2",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map3",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map5",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map6",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map8",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map9",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "F2 smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F1 smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "R smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map2",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map3",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map5",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map6",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map8",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map9",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "F2 smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F1 smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "R smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map2",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map3",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map5",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map6",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map8",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map9",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "F2 smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F2 smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2"
+ },
+ {
+  "name": "F1 smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "F1 smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1"
+ },
+ {
+  "name": "R yossele purlest map1",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele purlest map4",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele purlest map7",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele purlest map10",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele woozy map1",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele woozy map4",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele woozy map7",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ },
+ {
+  "name": "R yossele woozy map10",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R"
+ }
+]

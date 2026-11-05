@@ -1,0 +1,84 @@
+step 1
+step 2
+step 3
+step 4
+step 5
+step 6
+step 7
+{"name": "base smacky purlest", "w50": 1.684, "win": 0.0, "mean_t": 27.083333333333332}
+{"name": "mode smacky purlest map1", "w50": 0.268, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map2", "w50": 0.286, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map3", "w50": 0.316, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map4", "w50": 0.337, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map5", "w50": 0.349, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map6", "w50": 0.385, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map7", "w50": 0.411, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map8", "w50": 0.424, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map9", "w50": 0.439, "win": 1.0, "mean_t": 16.0}
+{"name": "mode smacky purlest map10", "w50": 0.468, "win": 1.0, "mean_t": 16.0}
+{"name": "base smacky woozy", "w50": 5.137, "win": 0.0, "mean_t": 5.833333333333333}
+{"name": "mode smacky woozy map1", "w50": 3.353, "win": 0.0, "mean_t": 5.833333333333333}
+{"name": "mode smacky woozy map2", "w50": 3.353, "win": 0.0, "mean_t": 5.833333333333333}
+{"name": "mode smacky woozy map3", "w50": 3.581, "win": 0.0, "mean_t": 5.0}
+{"name": "mode smacky woozy map4", "w50": 3.581, "win": 0.0, "mean_t": 3.1666666666666665}
+{"name": "mode smacky woozy map5", "w50": 3.581, "win": 0.0, "mean_t": 3.4166666666666665}
+{"name": "mode smacky woozy map6", "w50": 3.951, "win": 0.0, "mean_t": 3.3333333333333335}
+{"name": "mode smacky woozy map7", "w50": 4.083, "win": 0.0, "mean_t": 2.9166666666666665}
+{"name": "mode smacky woozy map8", "w50": 4.36, "win": 0.0, "mean_t": 2.25}
+{"name": "mode smacky woozy map9", "w50": 4.36, "win": 0.0, "mean_t": 2.0}
+{"name": "mode smacky woozy map10", "w50": 4.656, "win": 0.0, "mean_t": 2.0}
+{"name": "base smacky thehunt", "w50": 3.14, "win": 0.0, "mean_t": 9.666666666666666}
+{"name": "mode smacky thehunt map1", "w50": 2.05, "win": 0.0, "mean_t": 11.166666666666666}
+{"name": "mode smacky thehunt map2", "w50": 2.262, "win": 0.0, "mean_t": 9.166666666666666}
+{"name": "mode smacky thehunt map3", "w50": 2.415, "win": 0.0, "mean_t": 9.583333333333334}
+{"name": "mode smacky thehunt map4", "w50": 2.337, "win": 0.0, "mean_t": 6.583333333333333}
+{"name": "mode smacky thehunt map5", "w50": 2.579, "win": 0.0, "mean_t": 5.25}
+{"name": "mode smacky thehunt map6", "w50": 2.754, "win": 0.0, "mean_t": 5.416666666666667}
+{"name": "mode smacky thehunt map7", "w50": 3.245, "win": 0.0, "mean_t": 5.0}
+{"name": "mode smacky thehunt map8", "w50": 3.039, "win": 0.0, "mean_t": 5.0}
+{"name": "mode smacky thehunt map9", "w50": 3.14, "win": 0.0, "mean_t": 4.583333333333333}
+{"name": "mode smacky thehunt map10", "w50": 3.14, "win": 0.0, "mean_t": 3.8333333333333335}
+{"name": "base yossele purlest", "w50": 7.87, "win": 0.0, "mean_t": 25.0}
+{"name": "mode yossele purlest map1", "w50": 0.181, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map2", "w50": 0.193, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map3", "w50": 0.2, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map4", "w50": 0.22, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map5", "w50": 0.251, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map6", "w50": 0.259, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map7", "w50": 0.259, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map8", "w50": 0.306, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map9", "w50": 0.326, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele purlest map10", "w50": 0.349, "win": 1.0, "mean_t": 16.0}
+{"name": "base yossele woozy", "w50": 7.87, "win": 0.0, "mean_t": 24.333333333333332}
+{"name": "mode yossele woozy map1", "w50": 0.326, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map2", "w50": 0.36, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map3", "w50": 0.385, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map4", "w50": 0.397, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map5", "w50": 0.439, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map6", "w50": 0.517, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map7", "w50": 0.517, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map8", "w50": 0.534, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map9", "w50": 0.57, "win": 1.0, "mean_t": 16.0}
+{"name": "mode yossele woozy map10", "w50": 0.609, "win": 1.0, "mean_t": 16.0}
+{"name": "base yossele thehunt", "w50": 7.87, "win": 0.0, "mean_t": 12.0}
+{"name": "mode yossele thehunt map1", "w50": 7.87, "win": 0.0, "mean_t": 11.833333333333334}
+{"name": "mode yossele thehunt map2", "w50": 7.87, "win": 0.0, "mean_t": 11.666666666666666}
+{"name": "mode yossele thehunt map3", "w50": 7.87, "win": 0.0, "mean_t": 10.666666666666666}
+{"name": "mode yossele thehunt map4", "w50": 7.87, "win": 0.0, "mean_t": 10.0}
+{"name": "mode yossele thehunt map5", "w50": 7.87, "win": 0.0, "mean_t": 9.916666666666666}
+{"name": "mode yossele thehunt map6", "w50": 7.87, "win": 0.0, "mean_t": 9.416666666666666}
+{"name": "mode yossele thehunt map7", "w50": 7.87, "win": 0.0, "mean_t": 8.333333333333334}
+{"name": "mode yossele thehunt map8", "w50": 7.87, "win": 0.0, "mean_t": 7.833333333333333}
+{"name": "mode yossele thehunt map9", "w50": 7.87, "win": 0.0, "mean_t": 7.916666666666667}
+{"name": "mode yossele thehunt map10", "w50": 7.87, "win": 0.0, "mean_t": 7.25}
+{"name": "base spool purlest", "w50": 7.87, "win": 0.0, "mean_t": 12.833333333333334}
+{"name": "mode spool purlest map1", "w50": 1.338, "win": 0.0, "mean_t": 14.0}
+{"name": "mode spool purlest map2", "w50": 1.429, "win": 0.0, "mean_t": 13.5}
+{"name": "mode spool purlest map3", "w50": 1.526, "win": 0.0, "mean_t": 13.0}
+{"name": "mode spool purlest map4", "w50": 1.684, "win": 0.0, "mean_t": 12.75}
+{"name": "mode spool purlest map5", "w50": 5.137, "win": 0.0, "mean_t": 12.166666666666666}
+{"name": "mode spool purlest map6", "w50": 6.255, "win": 0.0, "mean_t": 12.083333333333334}
+{"name": "mode spool purlest map7", "w50": 2.846, "win": 0.0, "mean_t": 12.0}
+{"name": "mode spool purlest map8", "w50": 2.665, "win": 0.0, "mean_t": 11.666666666666666}
+{"name": "mode spool purlest map9", "w50": 2.846, "win": 0.0, "mean_t": 11.416666666666666}
+{"name": "mode spool purlest map10", "w50": 2.941, "win": 0.0, "mean_t": 11.0}
