@@ -1,0 +1,646 @@
+{
+ "low": [
+  {
+   "map": 1,
+   "power": 1.15,
+   "directions": 1.15,
+   "cardinals": 1.0,
+   "items": 1,
+   "ranks": 2,
+   "bought": 0
+  },
+  {
+   "map": 2,
+   "power": 1.335,
+   "directions": 1.288,
+   "cardinals": 1.036,
+   "items": 4,
+   "ranks": 4,
+   "bought": 1
+  },
+  {
+   "map": 3,
+   "power": 1.489,
+   "directions": 1.342,
+   "cardinals": 1.109,
+   "items": 8,
+   "ranks": 6,
+   "bought": 3
+  },
+  {
+   "map": 4,
+   "power": 1.632,
+   "directions": 1.36,
+   "cardinals": 1.2,
+   "items": 12,
+   "ranks": 7,
+   "bought": 7
+  },
+  {
+   "map": 5,
+   "power": 1.748,
+   "directions": 1.378,
+   "cardinals": 1.269,
+   "items": 16,
+   "ranks": 8,
+   "bought": 10
+  },
+  {
+   "map": 6,
+   "power": 1.873,
+   "directions": 1.396,
+   "cardinals": 1.341,
+   "items": 21,
+   "ranks": 9,
+   "bought": 14
+  },
+  {
+   "map": 7,
+   "power": 2.006,
+   "directions": 1.456,
+   "cardinals": 1.378,
+   "items": 26,
+   "ranks": 11,
+   "bought": 16
+  },
+  {
+   "map": 8,
+   "power": 2.111,
+   "directions": 1.474,
+   "cardinals": 1.432,
+   "items": 29,
+   "ranks": 12,
+   "bought": 19
+  },
+  {
+   "map": 9,
+   "power": 2.19,
+   "directions": 1.486,
+   "cardinals": 1.473,
+   "items": 34,
+   "ranks": 13,
+   "bought": 22
+  },
+  {
+   "map": 10,
+   "power": 2.298,
+   "directions": 1.504,
+   "cardinals": 1.528,
+   "items": 38,
+   "ranks": 14,
+   "bought": 26
+  }
+ ],
+ "low_ramp": [
+  {
+   "map": 1,
+   "power": 1.15,
+   "directions": 1.15,
+   "cardinals": 1.0,
+   "items": 1,
+   "ranks": 2,
+   "bought": 0
+  },
+  {
+   "map": 2,
+   "power": 1.335,
+   "directions": 1.288,
+   "cardinals": 1.036,
+   "items": 4,
+   "ranks": 4,
+   "bought": 1
+  },
+  {
+   "map": 3,
+   "power": 1.489,
+   "directions": 1.342,
+   "cardinals": 1.109,
+   "items": 7,
+   "ranks": 6,
+   "bought": 3
+  },
+  {
+   "map": 4,
+   "power": 1.571,
+   "directions": 1.36,
+   "cardinals": 1.155,
+   "items": 11,
+   "ranks": 7,
+   "bought": 5
+  },
+  {
+   "map": 5,
+   "power": 1.661,
+   "directions": 1.438,
+   "cardinals": 1.155,
+   "items": 14,
+   "ranks": 10,
+   "bought": 5
+  },
+  {
+   "map": 6,
+   "power": 1.736,
+   "directions": 1.474,
+   "cardinals": 1.178,
+   "items": 17,
+   "ranks": 12,
+   "bought": 6
+  },
+  {
+   "map": 7,
+   "power": 1.799,
+   "directions": 1.528,
+   "cardinals": 1.178,
+   "items": 20,
+   "ranks": 15,
+   "bought": 6
+  },
+  {
+   "map": 8,
+   "power": 1.877,
+   "directions": 1.564,
+   "cardinals": 1.2,
+   "items": 23,
+   "ranks": 17,
+   "bought": 7
+  },
+  {
+   "map": 9,
+   "power": 1.935,
+   "directions": 1.612,
+   "cardinals": 1.2,
+   "items": 26,
+   "ranks": 20,
+   "bought": 7
+  },
+  {
+   "map": 10,
+   "power": 2.023,
+   "directions": 1.654,
+   "cardinals": 1.223,
+   "items": 29,
+   "ranks": 22,
+   "bought": 8
+  }
+ ],
+ "mid": [
+  {
+   "map": 1,
+   "power": 1.315,
+   "directions": 1.25,
+   "cardinals": 1.052,
+   "items": 1,
+   "ranks": 2,
+   "bought": 1
+  },
+  {
+   "map": 2,
+   "power": 1.782,
+   "directions": 1.54,
+   "cardinals": 1.157,
+   "items": 6,
+   "ranks": 5,
+   "bought": 3
+  },
+  {
+   "map": 3,
+   "power": 2.073,
+   "directions": 1.57,
+   "cardinals": 1.32,
+   "items": 12,
+   "ranks": 6,
+   "bought": 8
+  },
+  {
+   "map": 4,
+   "power": 2.426,
+   "directions": 1.6,
+   "cardinals": 1.516,
+   "items": 18,
+   "ranks": 7,
+   "bought": 15
+  },
+  {
+   "map": 5,
+   "power": 2.711,
+   "directions": 1.7,
+   "cardinals": 1.595,
+   "items": 25,
+   "ranks": 9,
+   "bought": 18
+  },
+  {
+   "map": 6,
+   "power": 2.986,
+   "directions": 1.82,
+   "cardinals": 1.641,
+   "items": 31,
+   "ranks": 13,
+   "bought": 20
+  },
+  {
+   "map": 7,
+   "power": 3.208,
+   "directions": 1.91,
+   "cardinals": 1.68,
+   "items": 36,
+   "ranks": 16,
+   "bought": 22
+  },
+  {
+   "map": 8,
+   "power": 3.502,
+   "directions": 1.97,
+   "cardinals": 1.778,
+   "items": 42,
+   "ranks": 18,
+   "bought": 27
+  },
+  {
+   "map": 9,
+   "power": 3.733,
+   "directions": 2.1,
+   "cardinals": 1.778,
+   "items": 47,
+   "ranks": 22,
+   "bought": 27
+  },
+  {
+   "map": 10,
+   "power": 3.971,
+   "directions": 2.17,
+   "cardinals": 1.83,
+   "items": 52,
+   "ranks": 24,
+   "bought": 31
+  }
+ ],
+ "mid_ramp": [
+  {
+   "map": 1,
+   "power": 1.315,
+   "directions": 1.25,
+   "cardinals": 1.052,
+   "items": 1,
+   "ranks": 2,
+   "bought": 1
+  },
+  {
+   "map": 2,
+   "power": 1.712,
+   "directions": 1.48,
+   "cardinals": 1.157,
+   "items": 5,
+   "ranks": 4,
+   "bought": 3
+  },
+  {
+   "map": 3,
+   "power": 1.987,
+   "directions": 1.67,
+   "cardinals": 1.19,
+   "items": 10,
+   "ranks": 8,
+   "bought": 4
+  },
+  {
+   "map": 4,
+   "power": 2.171,
+   "directions": 1.73,
+   "cardinals": 1.255,
+   "items": 14,
+   "ranks": 10,
+   "bought": 6
+  },
+  {
+   "map": 5,
+   "power": 2.356,
+   "directions": 1.83,
+   "cardinals": 1.288,
+   "items": 18,
+   "ranks": 13,
+   "bought": 7
+  },
+  {
+   "map": 6,
+   "power": 2.548,
+   "directions": 1.93,
+   "cardinals": 1.32,
+   "items": 22,
+   "ranks": 16,
+   "bought": 8
+  },
+  {
+   "map": 7,
+   "power": 2.72,
+   "directions": 2.06,
+   "cardinals": 1.32,
+   "items": 26,
+   "ranks": 20,
+   "bought": 8
+  },
+  {
+   "map": 8,
+   "power": 2.868,
+   "directions": 2.12,
+   "cardinals": 1.353,
+   "items": 30,
+   "ranks": 22,
+   "bought": 9
+  },
+  {
+   "map": 9,
+   "power": 3.048,
+   "directions": 2.2,
+   "cardinals": 1.386,
+   "items": 33,
+   "ranks": 25,
+   "bought": 10
+  },
+  {
+   "map": 10,
+   "power": 3.219,
+   "directions": 2.28,
+   "cardinals": 1.412,
+   "items": 37,
+   "ranks": 28,
+   "bought": 11
+  }
+ ],
+ "high": [
+  {
+   "map": 1,
+   "power": 1.645,
+   "directions": 1.645,
+   "cardinals": 1.0,
+   "items": 1,
+   "ranks": 3,
+   "bought": 0
+  },
+  {
+   "map": 2,
+   "power": 2.4,
+   "directions": 1.81,
+   "cardinals": 1.326,
+   "items": 7,
+   "ranks": 5,
+   "bought": 6
+  },
+  {
+   "map": 3,
+   "power": 2.992,
+   "directions": 1.96,
+   "cardinals": 1.526,
+   "items": 15,
+   "ranks": 7,
+   "bought": 11
+  },
+  {
+   "map": 4,
+   "power": 3.597,
+   "directions": 2.005,
+   "cardinals": 1.794,
+   "items": 24,
+   "ranks": 8,
+   "bought": 19
+  },
+  {
+   "map": 5,
+   "power": 4.14,
+   "directions": 2.245,
+   "cardinals": 1.844,
+   "items": 31,
+   "ranks": 13,
+   "bought": 21
+  },
+  {
+   "map": 6,
+   "power": 4.657,
+   "directions": 2.335,
+   "cardinals": 1.994,
+   "items": 38,
+   "ranks": 15,
+   "bought": 27
+  },
+  {
+   "map": 7,
+   "power": 5.161,
+   "directions": 2.545,
+   "cardinals": 2.028,
+   "items": 46,
+   "ranks": 19,
+   "bought": 29
+  },
+  {
+   "map": 8,
+   "power": 5.659,
+   "directions": 2.68,
+   "cardinals": 2.111,
+   "items": 54,
+   "ranks": 22,
+   "bought": 34
+  },
+  {
+   "map": 9,
+   "power": 6.102,
+   "directions": 2.845,
+   "cardinals": 2.145,
+   "items": 59,
+   "ranks": 26,
+   "bought": 36
+  },
+  {
+   "map": 10,
+   "power": 6.545,
+   "directions": 2.965,
+   "cardinals": 2.208,
+   "items": 66,
+   "ranks": 29,
+   "bought": 40
+  }
+ ],
+ "high_ramp": [
+  {
+   "map": 1,
+   "power": 1.645,
+   "directions": 1.645,
+   "cardinals": 1.0,
+   "items": 1,
+   "ranks": 3,
+   "bought": 0
+  },
+  {
+   "map": 2,
+   "power": 2.299,
+   "directions": 1.915,
+   "cardinals": 1.201,
+   "items": 7,
+   "ranks": 6,
+   "bought": 3
+  },
+  {
+   "map": 3,
+   "power": 2.658,
+   "directions": 2.005,
+   "cardinals": 1.326,
+   "items": 12,
+   "ranks": 8,
+   "bought": 6
+  },
+  {
+   "map": 4,
+   "power": 3.029,
+   "directions": 2.215,
+   "cardinals": 1.368,
+   "items": 17,
+   "ranks": 12,
+   "bought": 7
+  },
+  {
+   "map": 5,
+   "power": 3.333,
+   "directions": 2.365,
+   "cardinals": 1.409,
+   "items": 21,
+   "ranks": 15,
+   "bought": 8
+  },
+  {
+   "map": 6,
+   "power": 3.733,
+   "directions": 2.5,
+   "cardinals": 1.493,
+   "items": 26,
+   "ranks": 18,
+   "bought": 10
+  },
+  {
+   "map": 7,
+   "power": 4.022,
+   "directions": 2.635,
+   "cardinals": 1.526,
+   "items": 30,
+   "ranks": 21,
+   "bought": 11
+  },
+  {
+   "map": 8,
+   "power": 4.321,
+   "directions": 2.77,
+   "cardinals": 1.56,
+   "items": 34,
+   "ranks": 24,
+   "bought": 12
+  },
+  {
+   "map": 9,
+   "power": 4.701,
+   "directions": 2.89,
+   "cardinals": 1.627,
+   "items": 39,
+   "ranks": 27,
+   "bought": 14
+  },
+  {
+   "map": 10,
+   "power": 4.997,
+   "directions": 3.01,
+   "cardinals": 1.66,
+   "items": 43,
+   "ranks": 30,
+   "bought": 15
+  }
+ ],
+ "mid_review_ramp": [
+  {
+   "map": 1,
+   "power": 1.315,
+   "directions": 1.25,
+   "cardinals": 1.052,
+   "items": 1,
+   "ranks": 2,
+   "bought": 1
+  },
+  {
+   "map": 2,
+   "power": 1.712,
+   "directions": 1.48,
+   "cardinals": 1.157,
+   "items": 5,
+   "ranks": 4,
+   "bought": 3
+  },
+  {
+   "map": 3,
+   "power": 1.987,
+   "directions": 1.67,
+   "cardinals": 1.19,
+   "items": 10,
+   "ranks": 8,
+   "bought": 4
+  },
+  {
+   "map": 4,
+   "power": 2.171,
+   "directions": 1.73,
+   "cardinals": 1.255,
+   "items": 14,
+   "ranks": 10,
+   "bought": 6
+  },
+  {
+   "map": 5,
+   "power": 2.356,
+   "directions": 1.83,
+   "cardinals": 1.288,
+   "items": 18,
+   "ranks": 13,
+   "bought": 7
+  },
+  {
+   "map": 6,
+   "power": 2.535,
+   "directions": 1.92,
+   "cardinals": 1.32,
+   "items": 22,
+   "ranks": 16,
+   "bought": 8
+  },
+  {
+   "map": 7,
+   "power": 2.679,
+   "directions": 1.98,
+   "cardinals": 1.353,
+   "items": 26,
+   "ranks": 18,
+   "bought": 9
+  },
+  {
+   "map": 8,
+   "power": 2.827,
+   "directions": 2.04,
+   "cardinals": 1.386,
+   "items": 29,
+   "ranks": 21,
+   "bought": 10
+  },
+  {
+   "map": 9,
+   "power": 2.922,
+   "directions": 2.07,
+   "cardinals": 1.412,
+   "items": 33,
+   "ranks": 23,
+   "bought": 11
+  },
+  {
+   "map": 10,
+   "power": 2.991,
+   "directions": 2.08,
+   "cardinals": 1.438,
+   "items": 36,
+   "ranks": 24,
+   "bought": 12
+  }
+ ]
+}

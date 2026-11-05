@@ -1,0 +1,1769 @@
+[
+ {
+  "name": "smacky one wall purlest",
+  "n": 30,
+  "win": 1.0,
+  "med_lost": null,
+  "mean_t": 16,
+  "cfg": {
+   "name": "smacky one wall purlest",
+   "v": "smacky",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 1.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 616,
+  "income_mine": [
+   3363,
+   3347,
+   3283
+  ],
+  "income_kills": 885,
+  "spent": [
+   4188,
+   200,
+   165
+  ],
+  "wallet_end": [
+   110,
+   3197,
+   3168
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    18,
+    93,
+    28
+   ],
+   "2": [
+    20,
+    165,
+    187
+   ],
+   "3": [
+    10,
+    272,
+    320
+   ],
+   "4": [
+    16,
+    561,
+    453
+   ],
+   "5": [
+    14,
+    765,
+    708
+   ],
+   "6": [
+    17,
+    845,
+    1022
+   ],
+   "7": [
+    14,
+    973,
+    1152
+   ],
+   "8": [
+    17,
+    1338,
+    1299
+   ],
+   "9": [
+    27,
+    1630,
+    1590
+   ],
+   "10": [
+    23,
+    1790,
+    1991
+   ],
+   "11": [
+    25,
+    1982,
+    2183
+   ],
+   "12": [
+    26,
+    2356,
+    2332
+   ],
+   "13": [
+    114,
+    2521,
+    2497
+   ],
+   "14": [
+    110,
+    2673,
+    2876
+   ],
+   "15": [
+    46,
+    2810,
+    3014
+   ]
+  },
+  "lost_hist": {}
+ },
+ {
+  "name": "spool kept wall purlest as built",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 5,
+  "cfg": {
+   "name": "spool kept wall purlest as built",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 33.2,
+  "core_dmg_1_4": [
+   6.1,
+   12.8,
+   17.2,
+   30.7
+  ],
+  "kills": 65,
+  "income_mine": [
+   3784,
+   3772,
+   3955
+  ],
+  "income_kills": 65,
+  "spent": [
+   3520,
+   540,
+   140
+  ],
+  "wallet_end": [
+   379,
+   3282,
+   3865
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    159,
+    159
+   ],
+   "2": [
+    343,
+    258,
+    1408
+   ],
+   "3": [
+    366,
+    795,
+    1944
+   ],
+   "4": [
+    331,
+    2116,
+    2473
+   ],
+   "5": [
+    799,
+    3131,
+    3488
+   ]
+  },
+  "lost_hist": {
+   "5": 30
+  },
+  "thread": {
+   "dropped": 65,
+   "picked": 30,
+   "delivered": 234,
+   "spun": 214,
+   "spent": 239,
+   "lost": 27
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 8.0,
+  "mean_t": 8.03,
+  "cfg": {
+   "name": "spool kept wall purlest pick",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.15,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.267,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 91.8,
+  "core_dmg_1_4": [
+   2.9,
+   3.2,
+   1.0,
+   1.1
+  ],
+  "kills": 180,
+  "income_mine": [
+   2319,
+   2319,
+   2323
+  ],
+  "income_kills": 197,
+  "spent": [
+   2500,
+   540,
+   140
+  ],
+  "wallet_end": [
+   66,
+   1829,
+   2233
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    30,
+    60,
+    40
+   ],
+   "2": [
+    63,
+    148,
+    414
+   ],
+   "3": [
+    196,
+    341,
+    607
+   ],
+   "4": [
+    224,
+    419,
+    798
+   ],
+   "5": [
+    41,
+    783,
+    1163
+   ],
+   "6": [
+    86,
+    964,
+    1616
+   ],
+   "7": [
+    62,
+    1157,
+    1809
+   ],
+   "8": [
+    97,
+    1712,
+    2030
+   ],
+   "9": [
+    49,
+    2148,
+    2454
+   ]
+  },
+  "lost_hist": {
+   "6": 2,
+   "7": 4,
+   "8": 16,
+   "9": 7,
+   "10": 1
+  },
+  "thread": {
+   "dropped": 257,
+   "picked": 144,
+   "delivered": 483,
+   "spun": 356,
+   "spent": 481,
+   "lost": 105
+  }
+ },
+ {
+  "name": "spool kept wall purlest pick, Loom as built",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 8.0,
+  "mean_t": 7.67,
+  "cfg": {
+   "name": "spool kept wall purlest pick, Loom as built",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.167,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 94.4,
+  "core_dmg_1_4": [
+   0.9,
+   1.5,
+   1.0,
+   2.2
+  ],
+  "kills": 177,
+  "income_mine": [
+   6156,
+   6091,
+   6175
+  ],
+  "income_kills": 192,
+  "spent": [
+   5050,
+   540,
+   140
+  ],
+  "wallet_end": [
+   1348,
+   5601,
+   6085
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    129,
+    159,
+    159
+   ],
+   "2": [
+    359,
+    247,
+    1379
+   ],
+   "3": [
+    332,
+    774,
+    1906
+   ],
+   "4": [
+    281,
+    2058,
+    2420
+   ],
+   "5": [
+    731,
+    3054,
+    3416
+   ],
+   "6": [
+    689,
+    3549,
+    4652
+   ],
+   "7": [
+    1444,
+    4069,
+    5178
+   ],
+   "8": [
+    1509,
+    5586,
+    5787
+   ]
+  },
+  "lost_hist": {
+   "6": 5,
+   "7": 5,
+   "8": 15,
+   "9": 5
+  },
+  "thread": {
+   "dropped": 244,
+   "picked": 141,
+   "delivered": 473,
+   "spun": 347,
+   "spent": 473,
+   "lost": 95
+  }
+ },
+ {
+  "name": "spool shut purlest pick",
+  "n": 30,
+  "win": 1.0,
+  "med_lost": null,
+  "mean_t": 16,
+  "cfg": {
+   "name": "spool shut purlest pick",
+   "v": "spool",
+   "m": "purlest",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.15,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Opal"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 1.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 576,
+  "income_mine": [
+   5153,
+   5218,
+   5009
+  ],
+  "income_kills": 765,
+  "spent": [
+   5933,
+   5253,
+   140
+  ],
+  "wallet_end": [
+   34,
+   15,
+   4919
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    30,
+    20,
+    40
+   ],
+   "2": [
+    61,
+    46,
+    410
+   ],
+   "3": [
+    200,
+    61,
+    605
+   ],
+   "4": [
+    225,
+    132,
+    793
+   ],
+   "5": [
+    44,
+    99,
+    1160
+   ],
+   "6": [
+    89,
+    280,
+    1613
+   ],
+   "7": [
+    108,
+    70,
+    1803
+   ],
+   "8": [
+    91,
+    618,
+    2022
+   ],
+   "9": [
+    63,
+    1050,
+    2453
+   ],
+   "10": [
+    155,
+    1281,
+    3030
+   ],
+   "11": [
+    106,
+    352,
+    3348
+   ],
+   "12": [
+    148,
+    195,
+    3568
+   ],
+   "13": [
+    275,
+    195,
+    3804
+   ],
+   "14": [
+    89,
+    237,
+    4378
+   ],
+   "15": [
+    149,
+    213,
+    4590
+   ]
+  },
+  "lost_hist": {},
+  "thread": {
+   "dropped": 1685,
+   "picked": 1372,
+   "delivered": 1941,
+   "spun": 893,
+   "spent": 1841,
+   "lost": 509,
+   "stash_lost": 82
+  }
+ },
+ {
+  "name": "smacky one wall woozy",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 6.0,
+  "mean_t": 5.83,
+  "cfg": {
+   "name": "smacky one wall woozy",
+   "v": "smacky",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 98.7,
+  "core_dmg_1_4": [
+   0.0,
+   0.2,
+   1.1,
+   0.0
+  ],
+  "kills": 99,
+  "income_mine": [
+   0,
+   0,
+   918
+  ],
+  "income_kills": 99,
+  "spent": [
+   142,
+   25,
+   165
+  ],
+  "wallet_end": [
+   7,
+   25,
+   803
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    50,
+    5
+   ],
+   "2": [
+    5,
+    50,
+    19
+   ],
+   "3": [
+    17,
+    50,
+    199
+   ],
+   "4": [
+    8,
+    50,
+    377
+   ],
+   "5": [
+    6,
+    25,
+    558
+   ],
+   "6": [
+    0,
+    25,
+    732
+   ]
+  },
+  "lost_hist": {
+   "5": 5,
+   "6": 25
+  }
+ },
+ {
+  "name": "spool kept wall woozy as built",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 3.0,
+  "mean_t": 3.4,
+  "cfg": {
+   "name": "spool kept wall woozy as built",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   9.7,
+   34.7,
+   52.4,
+   5.3
+  ],
+  "kills": 31,
+  "income_mine": [
+   0,
+   1018,
+   1073
+  ],
+  "income_kills": 31,
+  "spent": [
+   67,
+   540,
+   140
+  ],
+  "wallet_end": [
+   14,
+   528,
+   983
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    35,
+    0
+   ],
+   "2": [
+    5,
+    272,
+    329
+   ],
+   "3": [
+    17,
+    227,
+    683
+   ],
+   "4": [
+    3,
+    578,
+    1034
+   ]
+  },
+  "lost_hist": {
+   "3": 18,
+   "4": 12
+  },
+  "thread": {
+   "dropped": 31,
+   "picked": 1,
+   "delivered": 80,
+   "spun": 99,
+   "spent": 40,
+   "lost": 24
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.57,
+  "cfg": {
+   "name": "spool kept wall woozy pick",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.15,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.567,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 7.6,
+  "core_dmg_1_4": [
+   4.7,
+   14.2,
+   25.3,
+   48.6
+  ],
+  "kills": 54,
+  "income_mine": [
+   0,
+   482,
+   537
+  ],
+  "income_kills": 54,
+  "spent": [
+   80,
+   367,
+   140
+  ],
+  "wallet_end": [
+   24,
+   165,
+   447
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    0,
+    15
+   ],
+   "2": [
+    5,
+    8,
+    64
+   ],
+   "3": [
+    17,
+    136,
+    192
+   ],
+   "4": [
+    3,
+    262,
+    317
+   ],
+   "5": [
+    26,
+    368,
+    447
+   ]
+  },
+  "lost_hist": {
+   "4": 13,
+   "5": 17
+  },
+  "thread": {
+   "dropped": 54,
+   "picked": 7,
+   "delivered": 100,
+   "spun": 113,
+   "spent": 60,
+   "lost": 43
+  }
+ },
+ {
+  "name": "spool kept wall woozy pick, Loom as built",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.77,
+  "cfg": {
+   "name": "spool kept wall woozy pick, Loom as built",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.767,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 9.4,
+  "core_dmg_1_4": [
+   3.5,
+   11.7,
+   24.8,
+   50.8
+  ],
+  "kills": 57,
+  "income_mine": [
+   0,
+   1451,
+   1507
+  ],
+  "income_kills": 57,
+  "spent": [
+   80,
+   540,
+   140
+  ],
+  "wallet_end": [
+   27,
+   961,
+   1417
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    35,
+    0
+   ],
+   "2": [
+    5,
+    267,
+    323
+   ],
+   "3": [
+    17,
+    216,
+    672
+   ],
+   "4": [
+    3,
+    559,
+    1014
+   ],
+   "5": [
+    26,
+    912,
+    1367
+   ]
+  },
+  "lost_hist": {
+   "4": 7,
+   "5": 23
+  },
+  "thread": {
+   "dropped": 57,
+   "picked": 5,
+   "delivered": 100,
+   "spun": 115,
+   "spent": 60,
+   "lost": 47
+  }
+ },
+ {
+  "name": "spool shut woozy pick",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 11.0,
+  "mean_t": 11,
+  "cfg": {
+   "name": "spool shut woozy pick",
+   "v": "spool",
+   "m": "woozy",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.15,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Blue",
+   "Yellow"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 1.0,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 327,
+  "income_mine": [
+   0,
+   1403,
+   1458
+  ],
+  "income_kills": 361,
+  "spent": [
+   390,
+   1441,
+   142
+  ],
+  "wallet_end": [
+   21,
+   12,
+   1365
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    0,
+    10,
+    15
+   ],
+   "2": [
+    5,
+    16,
+    62
+   ],
+   "3": [
+    17,
+    34,
+    189
+   ],
+   "4": [
+    3,
+    68,
+    313
+   ],
+   "5": [
+    26,
+    106,
+    442
+   ],
+   "6": [
+    0,
+    226,
+    562
+   ],
+   "7": [
+    22,
+    362,
+    697
+   ],
+   "8": [
+    8,
+    112,
+    848
+   ],
+   "9": [
+    13,
+    268,
+    1003
+   ],
+   "10": [
+    1,
+    14,
+    1150
+   ],
+   "11": [
+    21,
+    10,
+    1328
+   ]
+  },
+  "lost_hist": {
+   "11": 30
+  },
+  "thread": {
+   "dropped": 687,
+   "picked": 557,
+   "delivered": 813,
+   "spun": 378,
+   "spent": 816,
+   "lost": 186
+  }
+ },
+ {
+  "name": "smacky one wall thehunt",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 10.0,
+  "mean_t": 10,
+  "cfg": {
+   "name": "smacky one wall thehunt",
+   "v": "smacky",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 1.0,
+  "s10": 0.033,
+  "s15": 0.0,
+  "core_after4": 100.0,
+  "core_dmg_1_4": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "kills": 291,
+  "income_mine": [
+   438,
+   0,
+   730
+  ],
+  "income_kills": 326,
+  "spent": [
+   800,
+   50,
+   165
+  ],
+  "wallet_end": [
+   14,
+   0,
+   615
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    6,
+    50,
+    26
+   ],
+   "2": [
+    13,
+    50,
+    41
+   ],
+   "3": [
+    9,
+    25,
+    95
+   ],
+   "4": [
+    20,
+    25,
+    72
+   ],
+   "5": [
+    19,
+    0,
+    156
+   ],
+   "6": [
+    8,
+    0,
+    233
+   ],
+   "7": [
+    4,
+    0,
+    313
+   ],
+   "8": [
+    19,
+    0,
+    403
+   ],
+   "9": [
+    12,
+    0,
+    499
+   ],
+   "10": [
+    13,
+    0,
+    597
+   ]
+  },
+  "lost_hist": {
+   "9": 2,
+   "10": 27,
+   "12": 1
+  }
+ },
+ {
+  "name": "spool kept wall thehunt as built",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 4.6,
+  "cfg": {
+   "name": "spool kept wall thehunt as built",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.6,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   24.6,
+   31.4,
+   39.7,
+   59.1
+  ],
+  "kills": 53,
+  "income_mine": [
+   795,
+   0,
+   1326
+  ],
+  "income_kills": 53,
+  "spent": [
+   875,
+   40,
+   140
+  ],
+  "wallet_end": [
+   24,
+   10,
+   1236
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    10,
+    34
+   ],
+   "2": [
+    39,
+    10,
+    261
+   ],
+   "3": [
+    18,
+    10,
+    596
+   ],
+   "4": [
+    16,
+    10,
+    921
+   ],
+   "5": [
+    21,
+    10,
+    1258
+   ]
+  },
+  "lost_hist": {
+   "4": 12,
+   "5": 18
+  },
+  "thread": {
+   "dropped": 53,
+   "picked": 51,
+   "delivered": 213,
+   "spun": 181,
+   "spent": 219,
+   "lost": 2
+  }
+ },
+ {
+  "name": "spool kept wall thehunt pick",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 2.0,
+  "mean_t": 2.13,
+  "cfg": {
+   "name": "spool kept wall thehunt pick",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.15,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   24.3,
+   88.1,
+   1.5,
+   0.0
+  ],
+  "kills": 14,
+  "income_mine": [
+   103,
+   0,
+   171
+  ],
+  "income_kills": 14,
+  "spent": [
+   157,
+   40,
+   140
+  ],
+  "wallet_end": [
+   9,
+   10,
+   81
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    13,
+    10,
+    1
+   ],
+   "2": [
+    31,
+    10,
+    6
+   ]
+  },
+  "lost_hist": {
+   "2": 26,
+   "3": 4
+  },
+  "thread": {
+   "dropped": 14,
+   "picked": 4,
+   "delivered": 49,
+   "spun": 62,
+   "spent": 51,
+   "lost": 7
+  }
+ },
+ {
+  "name": "spool kept wall thehunt pick, Loom as built",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 5.0,
+  "mean_t": 5.2,
+  "cfg": {
+   "name": "spool kept wall thehunt pick, Loom as built",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": false,
+    "open_cushions": 1,
+    "keep_wall": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.4,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 1.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 6.0,
+  "core_dmg_1_4": [
+   22.1,
+   20.9,
+   20.3,
+   38.3
+  ],
+  "kills": 77,
+  "income_mine": [
+   898,
+   0,
+   1498
+  ],
+  "income_kills": 77,
+  "spent": [
+   1002,
+   40,
+   140
+  ],
+  "wallet_end": [
+   23,
+   10,
+   1408
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    2,
+    10,
+    34
+   ],
+   "2": [
+    41,
+    10,
+    257
+   ],
+   "3": [
+    13,
+    10,
+    584
+   ],
+   "4": [
+    18,
+    10,
+    906
+   ],
+   "5": [
+    34,
+    10,
+    1238
+   ],
+   "6": [
+    30,
+    10,
+    1543
+   ]
+  },
+  "lost_hist": {
+   "5": 24,
+   "6": 6
+  },
+  "thread": {
+   "dropped": 78,
+   "picked": 72,
+   "delivered": 251,
+   "spun": 205,
+   "spent": 256,
+   "lost": 5
+  }
+ },
+ {
+  "name": "spool shut thehunt pick",
+  "n": 30,
+  "win": 0.0,
+  "med_lost": 2.0,
+  "mean_t": 2.13,
+  "cfg": {
+   "name": "spool shut thehunt pick",
+   "v": "spool",
+   "m": "thehunt",
+   "p": "smart",
+   "coins": false,
+   "n": 15,
+   "tune": {
+    "seal": true,
+    "stitched_dmg": 3,
+    "dart_dmg": 3,
+    "tin_units": 6,
+    "dart_rng": 3.5,
+    "loom_aspd": 0.15,
+    "break": 60
+   }
+  },
+  "nodes": [
+   "Orange"
+  ],
+  "income_fruit": [
+   0,
+   0,
+   0
+  ],
+  "income_beasts": [
+   0,
+   0,
+   0
+  ],
+  "s4": 0.0,
+  "s8": 0.0,
+  "s10": 0.0,
+  "s15": 0.0,
+  "core_after4": 0,
+  "core_dmg_1_4": [
+   24.3,
+   88.1,
+   1.5,
+   0.0
+  ],
+  "kills": 14,
+  "income_mine": [
+   103,
+   0,
+   171
+  ],
+  "income_kills": 14,
+  "spent": [
+   157,
+   40,
+   140
+  ],
+  "wallet_end": [
+   9,
+   10,
+   81
+  ],
+  "conv": [
+   0,
+   0,
+   0
+  ],
+  "tide_wallet": {
+   "1": [
+    13,
+    10,
+    1
+   ],
+   "2": [
+    31,
+    10,
+    6
+   ]
+  },
+  "lost_hist": {
+   "2": 26,
+   "3": 4
+  },
+  "thread": {
+   "dropped": 14,
+   "picked": 4,
+   "delivered": 49,
+   "spun": 62,
+   "spent": 51,
+   "lost": 7
+  }
+ }
+]

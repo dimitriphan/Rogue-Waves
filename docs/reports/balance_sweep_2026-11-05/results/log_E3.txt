@@ -1,0 +1,11 @@
+step 1
+step 2
+step 3
+step 4
+step 5
+step 6
+step 7
+{"name": "E3 base argo purlest", "w50": 1.538, "win": 0.0, "mean_t": 27.0}
+{"name": "E3 argo purlest map1", "w50": 0.36, "win": 1.0, "mean_t": 16.0}
+{"name": "E3 argo purlest map5", "w50": 1.538, "win": 0.0, "mean_t": 11.875}
+{"name": "E3 argo purlest map10", "w50": 1.944, "win": 0.0, "mean_t": 4.5}

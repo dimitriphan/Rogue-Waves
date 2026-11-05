@@ -1,0 +1,1154 @@
+[
+ {
+  "name": "E1 smacky purlest map1 row15",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "row": 15,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map1 row15",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "row": 15,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map1 row15",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "row": 15,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map2 row16",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2,
+  "row": 16,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map2 row16",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2,
+  "row": 16,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map2 row16",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2,
+  "row": 16,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map2 row17",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2,
+  "row": 17,
+  "table": {
+   "finish": "lambda k: [15, 17, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map2 row17",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2,
+  "row": 17,
+  "table": {
+   "finish": "lambda k: [15, 17, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map2 row17",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2,
+  "row": 17,
+  "table": {
+   "finish": "lambda k: [15, 17, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map3 row18",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "row": 18,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map3 row18",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "row": 18,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map3 row18",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "row": 18,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map3 row19",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "row": 19,
+  "table": {
+   "finish": "lambda k: [15, 16, 19, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map3 row19",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "row": 19,
+  "table": {
+   "finish": "lambda k: [15, 16, 19, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map3 row19",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "row": 19,
+  "table": {
+   "finish": "lambda k: [15, 16, 19, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map3 row20",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 20, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map3 row20",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 20, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map3 row20",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 20, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map4 row19",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "row": 19,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map4 row19",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "row": 19,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map4 row19",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "row": 19,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map4 row20",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 20, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map4 row20",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 20, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map4 row20",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 20, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map4 row21",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 21, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map4 row21",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 21, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map4 row21",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 21, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map5 row20",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map5 row20",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map5 row20",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5,
+  "row": 20,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map5 row21",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 21, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map5 row21",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 21, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map5 row21",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 21, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map6 row21",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 21, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map6 row21",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 21, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map6 row21",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "row": 21,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 21, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map6 row22",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "row": 22,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map6 row22",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "row": 22,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map6 row22",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "row": 22,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map6 row23",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "row": 23,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 23, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map6 row23",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "row": 23,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 23, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map6 row23",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "row": 23,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 23, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map7 row23",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "row": 23,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map7 row23",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "row": 23,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map7 row23",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "row": 23,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map7 row24",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "row": 24,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 24, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map7 row24",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "row": 24,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 24, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map7 row24",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "row": 24,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 24, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map7 row25",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 25, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map7 row25",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 25, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map7 row25",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 25, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map8 row24",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8,
+  "row": 24,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map8 row24",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8,
+  "row": 24,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map8 row24",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8,
+  "row": 24,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map8 row25",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 25, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map8 row25",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 25, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map8 row25",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 25, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map9 row25",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 25, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map9 row25",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 25, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map9 row25",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 25, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map9 row26",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9,
+  "row": 26,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map9 row26",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9,
+  "row": 26,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map9 row26",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9,
+  "row": 26,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map10 row25",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 25][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map10 row25",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 25][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map10 row25",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "row": 25,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 25][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map10 row26",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "row": 26,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 26][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map10 row26",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "row": 26,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 26][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map10 row26",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "row": 26,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 26][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky purlest map10 row27",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "row": 27,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky woozy map10 row27",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "row": 27,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ },
+ {
+  "name": "E1 smacky thehunt map10 row27",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "row": 27,
+  "table": {
+   "finish": "lambda k: [15, 16, 18, 19, 20, 22, 23, 24, 26, 27][k - 1]",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (2.5 + 0.08 * (k - 1)) * (1 + 0.01 * [1, 5, 10, 14, 18, 22, 26, 30, 33, 37][k - 1]) - 1"
+  },
+  "cand": "E1"
+ }
+]
