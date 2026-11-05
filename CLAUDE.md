@@ -41,7 +41,7 @@ round, a scope fold-in) is worth proposing as a project skill.
   there only at Dimitri's word. Nothing touches his PC without his OK in the thread.
 - Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Claude merges them (his
   word, 2026-11-05; PLAN Part A "Merging"), merge commits, after merging the base. Each PR edits Part C "Now": keep the
-  base's entries first and add yours last.
+  base's entries first and add yours last, three lines at most, the detail in the Log.
 
 ## Map
 
