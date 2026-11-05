@@ -2,7 +2,8 @@
 //   opening   a staging map holds its opening break for the Direction picks and the map 1 vote, then returns to the boat;
 //             a map with picks still owed (a death in a bonus Tide, a late friend) holds them first
 //   a break   pays the Tide, VENDCINT lands, an objective is posted; from Tide 15 on, once the field is clear, the map is
-//             won and the players vote to leave: a majority leaves, nobody answering stays
+//             won and the players vote to leave: a majority leaves, nobody answering stays; the first stay votes on the next
+//             map there and then, so the boat has a choice however the map ends (B1)
 //   leaving   Direction picks, then the vote on the next map among the chart's links, then the stock win path; on the boat
 //             the host's boat sails to the winner by itself. Map 10 has no next map: leaving it wins the campaign
 //   bonus     the Tide table's Tide 29 is replayed for as long as they stay, each one harder (RWDifficulty)
@@ -26,6 +27,9 @@ public static class RWVote
     static bool clearingWatch;
     static bool staging;
     static float startPickAt = -1f;
+    static bool mapVoted;                // this map's party has picked the next map (B1)
+    static bool stayVote;                // the map vote open now was asked when the party stayed (B1)
+    public const string StayMark = "s";  // the map question's part that says so (a client before it skips the part)
 
     // ---------------------------------------------------------------- ModKitTides (host)
 
@@ -37,6 +41,7 @@ public static class RWVote
         leaveWave = lastBreak = -1;
         clearingWatch = false;
         startPickAt = -1f;
+        mapVoted = stayVote = false;
         RWHits.Reset();
         RWDirections.Reset();
         RWCardinals.Reset();
@@ -74,6 +79,7 @@ public static class RWVote
         {
             RWRun.PayTide(wave);
             RWDirections.Interest(wave);
+            RWDirections.TideEffects(wave);
         }
         foreach (long s in RWRun.Sessions())
             RWRun.For(s).Sent = 0f;
@@ -267,32 +273,60 @@ public static class RWVote
 
     // ---------------------------------------------------------------- the vote on the next map
 
-    static void AskMap()
+    // stay: the party stayed for the bonus Tides, and votes on the next map now, so a bonus Tide lost or the host's quit
+    // still leaves the boat a choice (B1, docs/scope/04 [Sea Chart]); the vote when it leaves is then skipped.
+    static void AskMap(bool stay = false)
     {
         choices = RWCampaign.Open();
-        if (choices.Count == 0)
+        if (!stay && mapVoted && RWCampaign.Choice >= 0)
         {
-            Leave();
-            return;
+            RWChart.Node voted = null;
+            foreach (RWChart.Node n in choices) if (n.Col == RWCampaign.Choice) voted = n;
+            if (voted != null)
+            {
+                LastVote = "voted before: " + voted.Name;
+                RWRejoin.Say("The party sails to " + Where(voted) + ", as voted.");
+                Leave();
+                return;
+            }
         }
-        if (choices.Count == 1)
+        if (choices.Count <= 1)
         {
-            RWCampaign.Choice = choices[0].Col;
-            RWCampaign.SaveChoice();
-            LastVote = "only " + choices[0].Name;
-            Leave();
+            if (choices.Count == 1)
+            {
+                RWCampaign.Choice = choices[0].Col;
+                RWCampaign.SaveChoice();
+                mapVoted = true;
+                LastVote = "only " + choices[0].Name;
+            }
+            if (stay) HoldBreak = false;
+            else Leave();
             return;
         }
         Votes.Clear();
         State = "Map";
+        stayVote = stay;
         Round++;
         until = Time.time + MapSeconds;
         Hold(MapSeconds);
         List<string> cols = new List<string>();
         foreach (RWChart.Node n in choices) cols.Add(n.Col.ToString());
+        if (stay) cols.Add(StayMark);
         foreach (long s in RWRun.Sessions())
             RWRun.Ask(s, MapKind + ":" + string.Join(".", cols.ToArray()), Round);
-        RWLog.Info("map vote open: " + string.Join(",", cols.ToArray()));
+        RWLog.Info("map vote open" + (stay ? " (staying)" : "") + ": " + string.Join(",", cols.ToArray()));
+    }
+
+    static string Where(RWChart.Node n)
+    {
+        return MapName(n) + (n.Weather != RWChart.Calm ? ", " + RWWeather.Display(n.Weather) : "");
+    }
+
+    // A map's card, as the vote shows it on every machine and the boat's ask on the host's.
+    public static Bla_Ui_Confirmation.Entry MapCard(RWChart.Node n)
+    {
+        string weather = n.Weather != RWChart.Calm ? RWWeather.Display(n.Weather) : "Calm waters";
+        return RWDialog.Card(n.Col.ToString(), MapName(n), weather + RWCard.Separator + "Danger " + n.Label, n.Weather != RWChart.Calm ? RWIcons.SpriteFor(n.Weather) : MapPicture(n), n.Breaker ? RWDialog.Coral : RWDialog.Teal);
     }
 
     static void CloseMap()
@@ -318,9 +352,18 @@ public static class RWVote
         }
         RWCampaign.Choice = best.Col;
         RWCampaign.SaveChoice();
+        mapVoted = true;
         LastVote = best.Name + " with " + top;
-        RWRejoin.Say("The party sails to " + MapName(best) + (best.Weather != RWChart.Calm ? ", " + RWWeather.Display(best.Weather) : "") + ".");
         CloseQuestion();
+        if (stayVote)
+        {
+            stayVote = false;
+            RWRejoin.Say("When the party leaves, it sails to " + Where(best) + ".");
+            HoldBreak = false;
+            Line();
+            return;
+        }
+        RWRejoin.Say("The party sails to " + Where(best) + ".");
         Leave();
     }
 
@@ -381,7 +424,10 @@ public static class RWVote
         RWLog.Info("the vote to leave: " + LastVote);
         if (yes * 2 <= all)
         {
-            HoldBreak = false;
+            if (!mapVoted && RWCampaign.Route.Count < RWChart.Rows)
+                AskMap(true);
+            else
+                HoldBreak = false;
             return;
         }
         Departing = true;
@@ -550,12 +596,10 @@ public static class RWAsk
                 int c;
                 if (!int.TryParse(p, out c)) continue;
                 RWChart.Node n = chart.At(row, c);
-                if (n == null) continue;
-                string weather = n.Weather != RWChart.Calm ? RWWeather.Display(n.Weather) : "Calm waters";
-                cards.Add(RWDialog.Card(c.ToString(), RWVote.MapName(n), weather + RWCard.Separator + "Danger " + n.Label, n.Weather != RWChart.Calm ? RWIcons.SpriteFor(n.Weather) : RWVote.MapPicture(n), n.Breaker ? RWDialog.Coral : RWDialog.Teal));
+                if (n != null) cards.Add(RWVote.MapCard(n));
             }
             title = "WHERE NEXT?";
-            sub = "The party sails to the map most of you pick";
+            sub = Array.IndexOf(parts, RWVote.StayMark) >= 0 ? "When the party leaves, it sails to the map most of you pick" : "The party sails to the map most of you pick";
             seconds = RWVote.MapSeconds;
         }
         else

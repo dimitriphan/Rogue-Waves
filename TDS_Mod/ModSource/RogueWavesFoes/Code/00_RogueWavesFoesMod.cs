@@ -4,7 +4,7 @@
 // through the game's load tables, not through types. The upgrade carries no script: this part's host brain finds foes
 // holding it and does the work; every machine reads the foe's synced Upgradelist and draws its effect. No new skins
 // (docs/scope/13): each shows as an effect, in a colour none of the stock elites use (docs/STYLE.md "Enemies", kit docs/18 §5.5).
-//   Cursed    an aura: nearby towers and units deal less damage while they stay in it (RogueLab R6's held loop, proven)
+//   Cursed    an aura: nearby vessels, towers and units deal less damage while they stay in it (RogueLab R6's held loop, proven)
 //   Berserk   damage and speed rise as its health falls
 //   Aging     30% slower, health and damage up to +100% over 50 s (RogueLab A1: the health fraction is kept)
 //   Dazzling  an aura: nearby vessels, towers and units are Blinded (they deal less) and Illuminated (they take more):
@@ -81,7 +81,8 @@ public static class RWFData
     public const float CursedRange = 3f, CursedDamage = -0.25f;                 // docs/scope/13: defaults
     public const float BerserkDamage = 1f, BerserkSpeed = 0.5f;                 // at no health left
     public const float AgingSpeed = -0.3f, AgingMax = 1f, AgingSeconds = 50f;   // the scope's numbers
-    public const float DazzlingRange = 3f, BlindDamage = -0.2f, IlluminateTaken = 0.2f, DazzleSeconds = 3f;   // defaults
+    // Dazzling: Blind and Illuminate at Light level 1 (docs/scope/13, Dimitri's answer 11 of 2026-11-05: 15%, 3 s after leaving).
+    public const float DazzlingRange = 3f, BlindDamage = -0.15f, IlluminateTaken = 0.15f, DazzleSeconds = 3f;
 }
 
 public static class RWFLog
@@ -204,6 +205,7 @@ public static class RWFModifiers
     static readonly Dictionary<Entity_Master, Foe> foes = new Dictionary<Entity_Master, Foe>();
     static readonly Dictionary<Entity_Master, Link_Modifier> cursedHeld = new Dictionary<Entity_Master, Link_Modifier>();
     static readonly List<Entity_Master> illuminated = new List<Entity_Master>();
+    static readonly Dictionary<Entity_Master, float> leftAt = new Dictionary<Entity_Master, float>();   // when it left every Dazzling aura
     static float nextTick, nextAura;
     static object seenMap;
     public static int Tagged;
@@ -233,6 +235,7 @@ public static class RWFModifiers
             foes.Clear();
             cursedHeld.Clear();
             illuminated.Clear();
+            leftAt.Clear();
         }
         if (Time.time < nextTick)
             return;
@@ -355,11 +358,23 @@ public static class RWFModifiers
             }
             else if (illuminated.Contains(t))
             {
-                illuminated.Remove(t);
-                Helper_Entitytools.Removeupgrade(t, Illuminate);
+                // Illuminate lingers 3 s after the thing leaves the aura, as the timed Blind does (docs/scope/13).
+                float left;
+                if (!leftAt.TryGetValue(t, out left))
+                    leftAt[t] = Time.time;
+                else if (Time.time - left >= RWFData.DazzleSeconds)
+                {
+                    illuminated.Remove(t);
+                    leftAt.Remove(t);
+                    Helper_Entitytools.Removeupgrade(t, Illuminate);
+                }
+                continue;
             }
+            leftAt.Remove(t);
         }
         illuminated.RemoveAll(t => t == null);
+        foreach (Entity_Master t in new List<Entity_Master>(leftAt.Keys))
+            if (t == null || !illuminated.Contains(t)) leftAt.Remove(t);
     }
 }
 

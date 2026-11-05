@@ -520,7 +520,7 @@ public static partial class RWTest
         else
         {
             List<string> ups = new List<string>(built.Upgradelistserver.Keys);
-            Check("Directions reach a player's new buildings at their top rank", ups.Contains("RW_Effect_Barnacle3_Upgradeobject") && ups.Contains("RW_Effect_Mend3_Upgradeobject") && ups.Contains("RW_Effect_Spring3_Upgradeobject"), string.Join(",", ups.ToArray()));
+            Check("Directions reach a player's new buildings at their top rank", ups.Contains("RW_Effect_Barnacle3_Upgradeobject") && !ups.Contains("RW_Effect_Mend3_Upgradeobject") && !ups.Contains("RW_Effect_Spring3_Upgradeobject"), string.Join(",", ups.ToArray()) + " (Tidal Mend and Spring Tide are the mode's own Tide effects since 2026-11-05, B7)");
             Check("no error from the effects on a new tower", errors == bad, (errors - bad) + " errors");
         }
         Check("Cut Costs: the vessel's build scale follows the rank", BuildScale(vessel) <= RWDirections.CostScale[3] + 0.001f, "scale " + RWUtil.F(BuildScale(vessel)));
@@ -615,6 +615,9 @@ public static partial class RWTest
         Check("a new objective is posted", RWObjectives.Posted != null, RWObjectives.Posted != null ? RWObjectives.Posted.Display : "-");
         float tower1 = built != null && built.Beingserver != null && built.Statsserver.ContainsKey("Health") ? built.Statsserver["Health"].Value_Calc : 0f;
         Check("Spring Tide: the tower gained health in the Tide", tower0 > 0f && tower1 > tower0, tower0 + " -> " + tower1);
+        // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
+        Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", tower0 > 0f && Mathf.Abs(tower1 - tower0 - RWDirections.SpringHealth[3]) < 0.05f && built != null && !built.Statsserver.ContainsKey("Resistadd"),
+            tower0 + " -> " + tower1 + (built != null && built.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + built.Statsserver["Resistadd"].Value_Calc : ""));
         Info("objective", taken.Display + ": " + RWObjectives.Outcome);
         yield return Snap("break_after_tide1");
 

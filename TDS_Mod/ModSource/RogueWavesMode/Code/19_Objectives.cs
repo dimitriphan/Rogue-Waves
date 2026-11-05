@@ -265,7 +265,7 @@ public static class RWObjectives
         spawn.Owner = -1;
         spawn.Team = -1;
         // The hit that takes it from 0 is the one that pays, so N hits need Healthresource N - 1 (pitfall #106).
-        Dictionary<string, float> init = new Dictionary<string, float> { { "Healthresource", 12 + map * 3 } };
+        Dictionary<string, float> init = new Dictionary<string, float> { { "Healthresource", 11 + map * 3 } };
         Link_Being made = Helper_Entitytools.Spawn(spawn, best.Position, null, false, init);
         target = made != null ? made.Worldobject : null;
         RWLog.Info("meteor at " + RWUtil.V(best.Position) + ", " + RWUtil.F(ModKitUtil.Flat(best.Position, from)) + " from the Basin, " + (12 + map * 3) + " hits");

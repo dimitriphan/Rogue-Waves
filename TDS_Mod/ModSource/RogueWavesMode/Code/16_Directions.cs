@@ -32,15 +32,13 @@ public static class RWDirections
         new RWDirectionDef { Name = "Barnacle", Display = "Barnacle Coat", Reach = "Tower", Script = "Entity_Ai_Effect_Smackywall_Bramble", Keys = new[] { "Effect_Add" },
             Numbers = new[] { new[] { 2f }, new[] { 4f }, new[] { 7f } },
             Desc = new[] { "Your towers prick what hits them", "Your towers prick harder", "Your towers prick much harder" } },
-        new RWDirectionDef { Name = "Mend", Display = "Tidal Mend", Reach = "Tower", Script = "Entity_Ai_Effect_Smackywall_Regen", Keys = new[] { "Range_Base", "Effect_Add" },
-            Numbers = new[] { new[] { 2f, 5f }, new[] { 2.5f, 8f }, new[] { 3f, 12f } },
+        // Tidal Mend and Spring Tide are the mode's own Tide effects (TideEffects; Dimitri's answer 14 of 2026-11-05, MODE-C2, C3, C5):
+        // the stock Regen froze its heal at the level a tower had when the effect started, and the stock Beacon both cancelled Smacky's
+        // own Beacon cut and, with its Resistadd, halved every hit on a Fie wall with Regen (pitfall #159; it divides by Effect_Multi too,
+        // pitfall #140). Rank III's shrug is this part's own hit hook, SpringShrug.
+        new RWDirectionDef { Name = "Mend", Display = "Tidal Mend", Reach = "Tower",
             Desc = new[] { "Your towers mend what stands around them each Tide", "Your towers mend more, a little farther", "Your towers mend much more, farther still" } },
-        // The stock script DIVIDES every hit's Damagemulti by Effect_Multi (Entity_Ai_Effect_Smackywall_Beacon.Oninteract): 0 made every
-        // hit on the tower infinite and 0.1 made it ten times worse, until a real hit was measured on 2026-11-04 (pitfall #140). It stays
-        // at 1, a no-op: a tower that has held a Beacon ignores the next one's number (Alreadyactive, so a rank bought later would do
-        // nothing). Rank III's shrug is this part's own hit hook, SpringShrug.
-        new RWDirectionDef { Name = "Spring", Display = "Spring Tide", Reach = "Tower", Script = "Entity_Ai_Effect_Smackywall_Beacon", Keys = new[] { "Effect_Multi", "Effect_Add" },
-            Numbers = new[] { new[] { 1f, 4f }, new[] { 1f, 7f }, new[] { 1f, 10f } },
+        new RWDirectionDef { Name = "Spring", Display = "Spring Tide", Reach = "Tower",
             Desc = new[] { "Your towers gain health every Tide", "Your towers gain more health every Tide", "Your towers gain more health every Tide and shrug off a little damage" } },
         new RWDirectionDef { Name = "Cost", Display = "Cut Costs",
             Desc = new[] { "Your buildings cost less", "Your buildings cost less still", "Your buildings cost much less" } },
@@ -69,6 +67,9 @@ public static class RWDirections
     public static readonly float[] TougherResist = { 0f, 0.15f, 0.25f, 0.35f };
     public const float TougherMaxShare = 0.25f;     // rank III: one hit takes at most this share of the unit's max health
     public const float SpringShrug = 0.1f;          // Spring Tide rank III: a tenth off every hit on a tower
+    public static readonly float[] SpringHealth = { 0f, 4f, 7f, 10f };        // max health a tower gains each Tide, kept for the map
+    public static readonly float[] MendHeal = { 0f, 5f, 8f, 12f };            // x the healing tower's level, read at each Tide
+    public static readonly float[] MendRange = { 0f, 2f, 2.5f, 3f };
 
     public static void Build()
     {
@@ -282,6 +283,7 @@ public static class RWDirections
     public static void Reset()
     {
         statMods.Clear();
+        spring.Clear();
         cuts.Clear();
         pruneAt = 256;
     }
@@ -403,7 +405,9 @@ public static class RWDirections
         List<string> tags = m.Beingserver.Entity.Tags;
         foreach (RWDirectionDef d in Mine)
         {
-            if (d.Reach == "" || !tags.Contains(d.Reach) || tags.Contains("Hero"))
+            // Only the player's own vessel is left out: Boutbro is tagged Hero too, and kit docs/17 §8 counts him among Boutman's
+            // minions (MAX MODEB-8, Dimitri's answer 39 of 2026-11-05). A Blurry Photo copy is no minion either.
+            if (d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || tags.Contains("Clone") || tags.Contains("Prespawn"))
                 continue;
             int rank = Top(p, d.Vessel, d.Name);
             if (rank <= 0)
@@ -421,9 +425,9 @@ public static class RWDirections
                 }
                 if (m.Upgradelistserver != null && !m.Upgradelistserver.ContainsKey(u.Objectname))
                     Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, null);
-                if (d.Name == "Spring" && rank >= 3)
-                    RWHits.Resist(m, SpringShrug, 0f);
             }
+            else if (d.Name == "Spring" && rank >= 3)
+                RWHits.Resist(m, SpringShrug, 0f);
             else if (d.Name == "Tougher")
                 RWHits.Resist(m, TougherResist[rank], rank >= 3 ? TougherMaxShare : 0f);
         }
@@ -450,6 +454,73 @@ public static class RWDirections
                 Reach(e, p);
                 RWCardinals.Reach(e, p);
             }
+    }
+
+    // Each Tide's break, host: Spring Tide grows the health of each of the holder's towers, and Tidal Mend heals what stands
+    // around each of them, by the tower's level now (the stock Regen read it once, when the effect started: MODE-C5).
+    static readonly Dictionary<Entity_Master, Link_Modifier> spring = new Dictionary<Entity_Master, Link_Modifier>();
+    public static float Mended, Grown;      // self-test
+
+    public static void TideEffects(int wave)
+    {
+        if (Game_Entity.Instance == null || wave <= 0)
+            return;
+        List<Entity_Master> all = null;
+        foreach (long s in RWRun.Sessions())
+        {
+            RWPlayer p = RWRun.For(s);
+            int springRank = Mathf.Clamp(Top(p, "Any", "Spring"), 0, 3), mendRank = Mathf.Clamp(Top(p, "Any", "Mend"), 0, 3);
+            if (springRank <= 0 && mendRank <= 0)
+                continue;
+            if (all == null)
+                all = new List<Entity_Master>(Game_Entity.Instance.Entityclient);
+            foreach (Entity_Master t in all)
+            {
+                if (!OwnTower(t, s))
+                    continue;
+                if (springRank > 0)
+                    Grow(t, SpringHealth[springRank]);
+                if (mendRank > 0)
+                    MendAround(t, all, MendHeal[mendRank] * Mathf.Max(1, t.Entitydata.Value.Level), MendRange[mendRank]);
+            }
+        }
+        foreach (Entity_Master t in new List<Entity_Master>(spring.Keys))
+            if (!ModKitUtil.Alive(t)) spring.Remove(t);
+    }
+
+    static bool OwnTower(Entity_Master t, long session)
+    {
+        return ModKitUtil.Alive(t) && t.Beingserver.Entity != null && t.Entitydata.Value.Owner == session && t.Statsserver != null
+            && t.Statsserver.ContainsKey("Health") && t.Beingserver.Entity.Tags.Contains("Tower") && !t.Beingserver.Entity.Tags.Contains("Hero");
+    }
+
+    // One Health Add per tower, raised each Tide (Health is Variable: the tower keeps its share of it, kit docs/17 §2.1).
+    static void Grow(Entity_Master t, float amount)
+    {
+        Link_Modifier m;
+        if (!spring.TryGetValue(t, out m) || m == null || m.Dead)
+            spring[t] = Helper_Entitytools.Addmod(t, "Health", amount, Helper_Entitytools.Modtypes.Add, 0f);
+        else
+            m.Value_Add += amount;
+        Grown += amount;
+    }
+
+    static void MendAround(Entity_Master tower, List<Entity_Master> all, float heal, float range)
+    {
+        int team = ModKitUtil.Team(tower);
+        Vector3 at = tower.Entityposition.Value;
+        foreach (Entity_Master e in all)
+        {
+            Link_Stats hp;
+            if (!ModKitUtil.Alive(e) || e.Beingserver.Entity == null || ModKitUtil.Team(e) != team || e.Statsserver == null || !e.Statsserver.TryGetValue("Health", out hp)
+                || hp.Value >= hp.Value_Calc || ModKitUtil.Flat(e.Entityposition.Value, at) > range)
+                continue;
+            List<string> tags = e.Beingserver.Entity.Tags;
+            if (!tags.Contains("Tower") && !tags.Contains("Mob"))
+                continue;
+            Helper_Entitytools.Interactheal(tower, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
+            Mended += heal;
+        }
     }
 
     // Compound Interest, paid with the Tide's own aura (Fie's silo pattern, kit docs/16 §5).

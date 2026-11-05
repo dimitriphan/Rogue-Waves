@@ -893,7 +893,7 @@ public static partial class RWTest
             RWDirections.Take(player, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id("Any", "Mend")) as Upgradeproperties);
             yield return new WaitForSeconds(1.5f);
             Entity_Master wounded = plain != null && plain != tower ? plain : known.Find(k => k != null && k != tower);
-            string menders = tower.Upgradelistserver.ContainsKey("RW_Effect_Mend1_Upgradeobject") ? "rank I on it" : string.Join(",", new List<string>(tower.Upgradelistserver.Keys).ToArray());
+            string menders = "Tidal Mend rank " + RWDirections.Top(player, "Any", "Mend");
             if (wounded == null) Setup("Tidal Mend", "one tower only");
             else
             {
@@ -902,10 +902,11 @@ public static partial class RWTest
                 if (blow != null) Hurt(blow, wounded, 12f);
                 yield return new WaitForSeconds(0.3f);
                 ClearFoes();
-                float m0 = Hp(wounded), mMax = HpMax(wounded);
+                float m0 = Hp(wounded), mMax = HpMax(wounded), mended0 = RWDirections.Mended;
                 yield return ToBreakAfter(1);
                 yield return new WaitForSeconds(0.6f);
-                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
+                // Spring Tide, held too, raises max health with the share kept, so the mend is read from its own count as well (B7).
+                Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0 && RWDirections.Mended > mended0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", mended " + (RWDirections.Mended - mended0) + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
             }
 
             // Made of Tougher Stuff at rank III: a big hit takes at most a quarter of a minion's health.
