@@ -64,8 +64,76 @@ public static partial class RWTest
         yield return Stepped(ReviewBoutman());
         yield return Stepped(ReviewFie());
         yield return Stepped(ReviewVoice());
+#if MODKIT_PLAY
+        yield return Stepped(ReviewCrafted());
+#endif
         Application.logMessageReceived -= ReviewLog;
     }
+
+#if MODKIT_PLAY
+    // PR #86's smaller Crafted: a virtual hand clicks one as it walks, and sells it with the panel's SELL.
+    static IEnumerator ReviewCrafted()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Spool");
+        yield return new WaitForSecondsRealtime(1f);
+        yield return ToMap(Seed, RWChart.Calm);
+        long me = RWMine.Session;
+        Entity_Master vessel = RWRun.Vessel(me);
+        if (vessel == null || vessel.Being.Value.ToString() != "Hero_Spool") { Setup("the Crafted by hand", "no Spool"); yield break; }
+        RogueWavesModeKitPlay.Log = m => Info("hud", m);
+        RogueWavesModeKitPlay.Host = RogueWavesModeMod.Instance;
+#if ROGUEWAVESMODE_SHOTS
+        RogueWavesModeKitPlay.Shot = RWShots.Shot;
+#endif
+        RogueWavesModeKitPlay.Init();
+        RogueWavesModeKitPlay.Reset(vessel);
+        Rich(me, 8000f);
+        yield return RogueWavesModeKitPlay.WaitForWorld(30f);
+        List<Vector3> used = new List<Vector3>();
+        List<Entity_Master> known = new List<Entity_Master>();
+        Entity_Master stash = null, tin = null;
+        yield return BuildOne(vessel, "Tower_Spoolstash", used, known, (m, c) => stash = m);
+        yield return new WaitForSeconds(1f);
+        yield return BuildOne(vessel, "Tower_Spooltin", used, known, (m, c) => tin = m);
+        if (tin == null) { Setup("the Crafted by hand", "no Cookie Tin"); yield break; }
+        foreach (string kind in new[] { "Mob_Spoolstitched", "Mob_Spooldart" })
+        {
+            if (kind == "Mob_Spooldart")
+            {
+                foreach (string u in new[] { "Recycle2", "Design3" })
+                {
+                    Upgradeproperties up = Bl_Address.Getload("Upgrade", "Tower_Spooltin_" + u + "_Upgradeobject") as Upgradeproperties;
+                    if (up != null) Helper_Entitytools.Upgrade(tin, up, Helper_Entitytools.Upgradecheck.Forced, null);
+                    yield return new WaitForSeconds(0.5f);
+                }
+            }
+            Entity_Master unit = null;
+            yield return Until(() => (unit = MineLast(kind, me)) != null, 40f);
+            if (unit == null) { Setup("the Crafted by hand: " + kind, "none after 40 s"); continue; }
+            yield return new WaitForSeconds(2f);
+            yield return RogueWavesModeKitPlay.Capture("Spool_" + kind);
+            int picks = 0;
+            for (int i = 0; i < 3; i++)
+            {
+                unit = MineLast(kind, me);
+                if (unit == null) break;
+                yield return RogueWavesModeKitPlay.Select(unit, kind);
+                if (RogueWavesModeKitPlay.IsSelected(unit)) picks++;
+                yield return RogueWavesModeKitPlay.Cancel();
+                yield return new WaitForSeconds(0.5f);
+            }
+            Check("The smaller art: a click selects a walking " + kind + " (3 tries)", picks == 3, picks + " of 3; the world's last click: " + RogueWavesModeKitPlay.Selected());
+            unit = MineLast(kind, me);
+            if (unit == null) { Setup("selling a " + kind, "none left"); continue; }
+            int count = MineCount(kind, me);
+            yield return RogueWavesModeKitPlay.Sell(unit, kind);
+            Check("The smaller art: SELL and a click sell a walking " + kind, RogueWavesModeKitPlay.LastOk, RogueWavesModeKitPlay.Counts() + ", " + count + " -> " + MineCount(kind, me));
+        }
+        yield return ToBoat();
+    }
+#endif
 
     // MODE-A1, C12, C1, C4, D1, D6, D2, then on map 2 D5 and the Cardinals' return.
     static IEnumerator ReviewCampaign()

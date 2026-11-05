@@ -68,7 +68,7 @@ public static partial class YosseleSelfTest
         float price = 0f;
         if (up != null && up.Costs != null)
             foreach (Link_Resourceset c in up.Costs) price += c.Amount;
-        float w0 = Wallet(owner);
+        float w0 = Wallet(owner), scale = PriceScale(b.Master);
         int count0 = UpgradedCount(owner), border0 = Borders(), most = 0;
         Send(b.Master, "Upgrade", "{\"Upgrade\":\"" + id + "\",\"Upgrader\":" + owner + "}");
         float t = 0f;
@@ -80,8 +80,8 @@ public static partial class YosseleSelfTest
         }
         float paid = w0 - Wallet(owner);
         // The Sapling's own mining can pay a little in the second this takes, so the wallet is read with room for it.
-        Check("G1 " + b.Def.Id + " " + key + ": bought at its price, Upgraded +1", Has(b, key) && Mathf.Abs(paid - price) < 4f && UpgradedCount(owner) == count0 + 1,
-            "paid " + F(paid) + " of " + F(price) + ", Upgraded " + count0 + "->" + UpgradedCount(owner) + ", border flashes " + most);
+        Check("G1 " + b.Def.Id + " " + key + ": bought at its price, Upgraded +1", Has(b, key) && Mathf.Abs(paid - price * scale) < 4f && UpgradedCount(owner) == count0 + 1,
+            "paid " + F(paid) + " of " + F(price) + " x " + F(scale) + ", Upgraded " + count0 + "->" + UpgradedCount(owner) + ", border flashes " + most);
         Check("G1 " + b.Def.Id + " " + key + ": the border flashes once, not twice", most <= 1, most + " flashes");
     }
 

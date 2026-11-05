@@ -1157,7 +1157,7 @@ public static partial class SpoolSelfTest
                     if (b == null || !b.Started || b is SpoolLoomBrain || !ModKitUtil.Alive(b.Master)) continue;
                     float nearest = float.MaxValue;
                     foreach (SpoolBuilding l in SpoolServer.Buildings) if (l is SpoolLoomBrain && l.Started) nearest = Mathf.Min(nearest, ModKitUtil.Flat(b.Pos, l.Pos));
-                    if (nearest > SpoolData.Sewingmachines[1].Radius + 0.1f && nearest < SpoolData.Sewingmachines[2].Radius - 0.1f) { farOne = b; break; }
+                    if (nearest > SpoolData.Sewingmachines[1].Radius + 0.75f && nearest < SpoolData.Sewingmachines[2].Radius - 0.1f) { farOne = b; break; }   // the engine's area query reaches a little past its radius (round 3)
                 }
                 if (farOne == null) ModKitTest.Setup("Sewing Machine rank III's reach", "nothing stands 3 to 5 from the Looms");
                 else

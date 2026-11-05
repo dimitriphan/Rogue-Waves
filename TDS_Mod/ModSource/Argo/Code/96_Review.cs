@@ -70,7 +70,7 @@ public static partial class ArgoSelfTest
         float price = 0f;
         if (up != null && up.Costs != null)
             foreach (Link_Resourceset c in up.Costs) price += c.Amount;
-        float w0 = Wallet(owner);
+        float w0 = Wallet(owner), scale = PriceScale(b.Master);
         int count0 = UpgradedCount(owner), border0 = Borders(), most = 0, sounds0 = UpgradeSounds;
         Send(b.Master, "Upgrade", "{\"Upgrade\":\"" + id + "\",\"Upgrader\":" + owner + "}");
         float t = 0f;
@@ -82,8 +82,8 @@ public static partial class ArgoSelfTest
         }
         float paid = w0 - Wallet(owner);
         // The Drill's own mining can pay a little in the second this takes, so the wallet is read with room for it.
-        Check("G1 " + b.Def.Id + " " + key + ": bought at its price, Upgraded +1", Has(b, key) && Mathf.Abs(paid - price) < 4f && UpgradedCount(owner) == count0 + 1,
-            "paid " + F(paid) + " of " + F(price) + ", Upgraded " + count0 + "->" + UpgradedCount(owner) + ", border flashes " + most);
+        Check("G1 " + b.Def.Id + " " + key + ": bought at its price, Upgraded +1", Has(b, key) && Mathf.Abs(paid - price * scale) < 4f && UpgradedCount(owner) == count0 + 1,
+            "paid " + F(paid) + " of " + F(price) + " x " + F(scale) + ", Upgraded " + count0 + "->" + UpgradedCount(owner) + ", border flashes " + most);
         Check("G1 " + b.Def.Id + " " + key + ": the border flashes once, not twice", most <= 1, most + " flashes");
         Check("G4 " + b.Def.Id + " " + key + ": one upgrade sound for the buy", UpgradeSounds - sounds0 == 1, (UpgradeSounds - sounds0) + " sounds");
     }
@@ -185,7 +185,6 @@ public static partial class ArgoSelfTest
 
         // ARG-1: the bounds of a foe's attack speed, and two stuns on one foe.
         if (harpoon == null) { ModKitTest.Setup("ARG-1", "no Harpoon Gun"); yield break; }
-        Vector3 hp = ModKitUtil.Pos(harpoon.Master);
         foreach (string kind in new[] { "Enemy_Dagger", "Enemy_Spear", "Enemy_Halberd", "Enemy_Bulwark", "Enemy_Archer" })
         {
             Entity_Master e = ModKitTest.Core() != null ? ModKitTest.SpawnFoe(kind, ModKitUtil.Pos(ModKitTest.Core()), 1f, 6f, null) : null;
@@ -196,31 +195,7 @@ public static partial class ArgoSelfTest
             else Info("ARG-1 bounds of " + kind, "no Attackspeed stat");
             ClearEnemies();
         }
-        Entity_Master beside = FoeBetween(hp, 0.9f, 1.2f);
-        yield return Wait(0.4f);
-        if (beside == null) { ModKitTest.Setup("ARG-1", "no foe beside the gun"); yield break; }
-        Link_Stats sp;
-        if (beside.Statsserver == null || !beside.Statsserver.TryGetValue("Attackspeed", out sp)) { ModKitTest.Setup("ARG-1", "the foe has no Attackspeed"); yield break; }
-        float plain = sp.Value;
-        int stuns = ArgoStatus.Stuns;
-        ArgoUtil.Pin(harpoon.Master, beside, 3f, true);
-        yield return Wait(0.2f);
-        float one1 = sp.Value;
-        ArgoUtil.Pin(harpoon.Master, beside, 3f, true);
-        yield return Wait(0.2f);
-        Finding("ARG-1", sp.Value < 0f, "stuns " + (ArgoStatus.Stuns - stuns) + ", attack speed " + F(plain) + " -> " + F(one1) + " -> " + F(sp.Value) + ", multi " + F(sp.Value_Multi) + ", bounds " + F(sp.Value_Bounds.x) + ".." + F(sp.Value_Bounds.y));
-        // Does a twice-stunned foe really hit more often? The gun's health over 2 s, against a plain foe's.
-        float h1 = ModKitUtil.Health(harpoon.Master);
-        yield return Wait(2f);
-        float lostStunned = h1 - ModKitUtil.Health(harpoon.Master);
-        ClearEnemies();
-        yield return Heal(harpoon.Master);
-        Entity_Master free = FoeBetween(hp, 0.9f, 1.2f);
-        yield return Wait(0.6f);
-        float h2 = ModKitUtil.Health(harpoon.Master);
-        yield return Wait(2f);
-        Info("ARG-1 what the gun lost in 2 s", "to a twice-stunned foe " + F(lostStunned) + ", to a plain foe " + F(h2 - ModKitUtil.Health(harpoon.Master)) + (free == null ? " (no plain foe)" : ""));
-        ClearEnemies();
+        // The double stun itself runs in the scenario (99_SelfTest.cs), where a foe beside a gun is to hand.
     }
 }
 #endif
