@@ -87,6 +87,13 @@
       "Bash(du -sh *)",
       "Bash(df -h *)"
     ],
+    "deny": [
+      "mcp__github__merge_pull_request",
+      "mcp__github__enable_pr_auto_merge",
+      "Bash(gh pr merge *)",
+      "Bash(git push origin claude/phase-1-6lfnar*)",
+      "Bash(git push -u origin claude/phase-1-6lfnar*)"
+    ],
     "ask": [
       "Bash(git push *--force*)",
       "Bash(git push * -f*)",

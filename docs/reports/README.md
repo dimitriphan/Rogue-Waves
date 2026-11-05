@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `CODE_REVIEW_2026-11-04.md` | 2026-11-04 | Every part's code read against the engine rules and the decompiled game (quality check 1, paused early at Dimitri's word): 54 bugs, 32 confirmed, none fixed yet; the ten to fix first, the fix batches, the PC checks; the base's compile repair after PR #82. Every finding in full, by part: `CODE_REVIEW_2026-11-04_FINDINGS.md` |
 | `SCOPE_CODE_AUDIT_2026-11-04.md` | 2026-11-04 | Every line of scope 00-16 read against what the code does: 41 mismatches (22 on Claude's defaults, 19 on Dimitri's own lines), who should yield on each, what is designed but not built, the 44 base-vessel lines only the decompiled game can settle. Nothing changed |
 | `SIMPLIFICATION_BUILD_2026-11-04.md` | 2026-11-04 | The code simplification built: Uloe's dead route and Argo's leftovers gone, the game's own upgrade AI on pack buildings, kit 1.8's shared helpers and asset reader (about 2,200 lines less, no number changed); why finding 1 waits; the PC list T0-L1 |
 | `KIT_CHECK_2026-11-04.md` | 2026-11-04 | The kit and the resources read against the repository after the rename and the 2026-11-04 test round: 35 stale lines fixed (29 in the kit, 6 in the parts' pages, the temporary-art index and scope 02), no code changed, everything compiles |
