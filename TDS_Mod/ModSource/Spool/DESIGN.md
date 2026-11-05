@@ -13,15 +13,17 @@ hand try of a Pin Cushion wall; temporary art (`IMPLEMENTATION_NOTES.md`, `Previ
 - **Name ▪ title ▪ difficulty:** Spool, "Crafty Crafted Crafter" ▪ Advanced (sheet).
 - **One-line fantasy:** a disposable stitched army. Foes drop Thread, Spool and its Thread Heads haul it home, and the
   Cookie Tins turn it into Crafted that run where you point.
-- **Silhouette:** a hooded purple plush whose face is a stitched opening, yellow eyes looking out, a pink tongue,
+- **Silhouette:** a hooded sage-green plush (purple until 2026-11-05) whose face is a stitched opening, yellow eyes looking out, a pink tongue,
   white gloves, and a severed arm on the floor with cotton stuffing coming out of the wound (not a tail)
   (`docs/STYLE.md`).
 - **Sprite baseline:** Dimitri's reshade (`concepts/vessels_2026-10-09/v3_flat/game_size/spool_reshade.png`, equal to
   the `spool_reshade.aseprite` he uploaded) and the back view in `concepts/vessels_2026-10-09/back/`. Every 32 px frame is
-  his pixels moved or added to, never redrawn or recoloured; the walk is the hinged-hood cycle he asked for
+  his pixels moved or added to, never redrawn; recoloured once, purple to sage, at his word (2026-11-05); the walk is the hinged-hood cycle he asked for
   (`concepts/walk_2026-10-12/`). Reference base vessel: Fie (`docs/STYLE.md`).
-- **Palette:** the sprite's own: plush `9363AE` / `784B94`, hollow `41174F`, stitches `E4DEDA` / `9A938E`, eyes `E6D85A`,
-  tongue `E58CC0` / `C96CA6`, gloves `F6F3F8` / `D8D1E2`. Accent (hero `Color`, buttons, journal): plush purple `9363AE`.
+- **Palette** (Dimitri's sage, 2026-11-05: the purple read too close to the foes' magenta; the old values and every
+  file's map are in `Art/Temporary/pastel_green_2026-11-05/README.md`): plush `93CCA1` / `60A871`, hollow `1F3325` /
+  `26422F`, thread `CBE6D1` / `A2CFAD` / `6FAE7E`, stitches `E4DEDA` / `9A938E`, eyes `E6D85A`, tongue `E58CC0` /
+  `C96CA6`, gloves `F6F3F8` / `D8D1E2`. Accent (hero `Color`, buttons, journal): plush sage `93CCA1`.
 - **Towers:** low-poly sleek, never voxel. Motif: stitches, pins and tins (sheet default): a wicker basket of yarn,
   a round blue cookie tin, a tomato pin cushion bristling with pins, a wooden frame loom.
 - **Lore:** none yet (sheet: "Lore comes once the vessel is finalized"). The journal shows a placeholder line.
@@ -162,7 +164,7 @@ measured in game on 2026-11-04.
 
 ## Visual effects and sounds
 
-- Ground Thread: a small purple tuft that bobs and fades in its last 2 s; a pickup flies to the carrier in a hop; a
+- Ground Thread: a small sage tuft (purple until 2026-11-05) that bobs and fades in its last 2 s; a pickup flies to the carrier in a hop; a
   drop-off flies from the carrier into the Stash. The Stash, Loom and Thread Heads show their counters.
 - Crafted pop out of the Tin with a stitch puff; a pin marker shows each Tin's spot; burst Crafted and Mangled throw a
   ring of stuffing; a pricked melee foe gets a pin spark; PATCH draws a thread from Spool to the target and stitches it.

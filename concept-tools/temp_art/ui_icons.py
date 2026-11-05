@@ -19,8 +19,8 @@ PAL = {
     'y': 'F6E43B', 'Y': 'FFF48B', 'o': 'D9C52E', 'r': 'D63A44', 'R': 'A12D37', 'K': 'DA867A', 'L': '7BCF80',
     'M': '65AD69', 'u': '97AFE5', 'U': '4764A4', 'a': 'C5B294', 'A': 'DFC9A8', 'm': '5A4C42',
     # Spool's own (docs/STYLE.md roster; his purple stays as is)
-    'v': '7E4D90', 'V': '633773', 'i': 'B5B1B0', 'z': 'BFBA3F', 'n': 'D77BBA', 'x': '945DAD', 'X': '7A4A8F',
-    'j': 'B58BC9',
+    'v': '7E4D90', 'V': '633773', 'i': 'B5B1B0', 'z': 'BFBA3F', 'n': 'D77BBA', 'x': '6FAE7E', 'X': '4F8C5E',
+    'j': '9AC9A5',
 }
 PAL = {k: H(v) for k, v in PAL.items()}
 

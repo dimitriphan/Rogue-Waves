@@ -216,10 +216,11 @@ For the art this means:
 
 ## 7. Pack notes (Rogue Waves)
 
-- **Spool's purple sits in the foes' band.** The concept and walk sheets use `7E4D90` / `9363AE` / `784B94` (h277-284,
-  measured on `SpoolWalk-Sheet`), next to the crystal's h292 and past the friendly purple's h267. It is darker and
-  greyer than the crystal and Spool has a face, so it may still read. **Dimitri, 2026-10-15: leave Spool's colours as
-  they are for now.** The exception is his; the magenta rule still binds every other new design.
+- **Spool is sage green since 2026-11-05.** His purple (`9363AE` / `784B94`, h277-284) sat in the foes' band, next to
+  the crystal's h292; Dimitri kept it on 2026-10-15, then found it read too close to the foes and picked a soft sage
+  (`93CCA1` / `60A871`, h135; after a yellow and a bright mint). It is 157 degrees of hue from the crystal. Its value
+  (80) is under §4.2's 90-100, at his word, and it is 15 degrees from Hardened's green glow (§5.5): check the two side by
+  side in game. The magenta rule now binds every vessel in the pack, Spool included.
 - **New modifiers' look.** Scope 13 says modifiers show as an effect, not a new skin. Kept: an entity holds one skin,
   so a modifier skin would hide a stock elite's look on a foe that has both. A third way the game's code allows is to
   add a cloned elite material straight to the foe's SpriteRenderer from the client, as `Entity_Master_Client` does for
@@ -260,4 +261,4 @@ Keep the extracted art in the scratchpad or the project files, never in the repo
 - How the elite overlays look on a sprite that is not a stock foe (expected identical: the material only reads the
   sprite's alpha and colour).
 - Whether a material added to a foe's SpriteRenderer from a mod (§7) survives the game's own skin changes.
-- How Spool's purple (kept, §7) reads next to the crystal foes at the game's camera distance.
+- How Spool's sage (§7) reads next to a Hardened foe and on the maps' grass at the game's camera distance.

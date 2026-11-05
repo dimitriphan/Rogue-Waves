@@ -28,12 +28,13 @@ public static class SpoolAssets
 
     // ---------------------------------------------------------------- icons (12x12 pixel art, drawn here)
 
+    // Spool's thread and plush tones are sage since 2026-11-05 (Dimitri's pick; concept-tools/temp_art/spool_sage.py MAP).
     static readonly Dictionary<char, Color32> IconPalette = new Dictionary<char, Color32>
     {
-        { 'l', new Color32(213, 190, 236, 255) }, { 'L', new Color32(178, 146, 214, 255) }, { 'm', new Color32(130, 96, 170, 255) },
+        { 'l', new Color32(203, 230, 209, 255) }, { 'L', new Color32(162, 207, 173, 255) }, { 'm', new Color32(96, 170, 114, 255) },
         { 'b', new Color32(232, 196, 108, 255) }, { 'B', new Color32(196, 156, 70, 255) }, { 'w', new Color32(245, 240, 250, 255) },
-        { 'd', new Color32(58, 40, 64, 255) }, { 'r', new Color32(228, 104, 128, 255) }, { 's', new Color32(176, 182, 196, 255) },
-        { 'j', new Color32(181, 139, 201, 255) }, { 'x', new Color32(148, 93, 173, 255) }, { 'X', new Color32(122, 74, 143, 255) },
+        { 'd', new Color32(40, 64, 46, 255) }, { 'r', new Color32(228, 104, 128, 255) }, { 's', new Color32(176, 182, 196, 255) },
+        { 'j', new Color32(154, 201, 165, 255) }, { 'x', new Color32(111, 174, 126, 255) }, { 'X', new Color32(79, 140, 94, 255) },
     };
 
     // A spool of thread.

@@ -368,7 +368,8 @@ public static class SpoolContent
         return template;
     }
 
-    static readonly Color Purple = new Color(0.576f, 0.388f, 0.682f, 1f);
+    // Spool's UI colour: the sage plush 93CCA1 (Dimitri 2026-11-05; was the purple 9363AE, too close to the foes).
+    internal static readonly Color Sage = new Color(0.576f, 0.8f, 0.631f, 1f);
 
     static Commandobject Command(Commandobject template, string id, string name, string desc, string icon, Entity_Command_Base funct, bool ability)
     {
@@ -376,7 +377,7 @@ public static class SpoolContent
         c.Style = Commandobject.Styles.Button;
         c.Display_Name = name;
         c.Display_Desc = desc;
-        c.Color = Purple;
+        c.Color = Sage;
         c.Keybind = ability ? new List<string> { "6", "7" } : new List<string> { "Quickaction", "5" };
         c.Keybindstate = ability ? "Onpressed" : "Onrelease";
         c.Priority = ability ? 6 : 2;
@@ -451,7 +452,7 @@ public static class SpoolContent
 
     // ---------------------------------------------------------------- units
 
-    static readonly Color Tint = new Color(0.84f, 0.75f, 0.92f, 0f);
+    static readonly Color Tint = new Color(0.796f, 0.902f, 0.82f, 0f);   // pale sage CBE6D1 (pale lilac until 2026-11-05)
 
     static Beingobject Miner()
     {
@@ -724,7 +725,7 @@ public static class SpoolContent
         Visualproperties.Entry e = te.Defaultvisual.Default;
         e.Rootvisualproperty = null;
         e.Spriteobject = SpoolAssets.Hero(templateSprite, footstep);
-        e.Displaycolor = Purple;
+        e.Displaycolor = Sage;
         vp.Default = e;
         vp.Skinoverride = new List<Visualproperties.Param>();
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
@@ -750,7 +751,7 @@ public static class SpoolContent
         Entry.Displayname = SpoolData.Displayname;
         Entry.Displaysub = SpoolData.Displaysub;
         Entry.Displayskill = SpoolData.Displayskill;
-        Entry.Color = Purple;
+        Entry.Color = Sage;
         // The 12x12 sprite in player lists, the setup bar and leaderboards: the ready-up portrait in its brackets.
         Entry.Icon = ModKitAssets.Single("Readyup6spool", 12) ?? template.Icon;
         Entry.Worldsplash = ModKitAssets.Single("Spoolsplash", 128) ?? template.Worldsplash;

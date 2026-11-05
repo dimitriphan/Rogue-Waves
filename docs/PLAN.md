@@ -278,6 +278,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   2026-11-05: the 54 bugs checked again on that base with round 3's readings (`docs/reports/CODE_REVIEW_RECHECK_2026-11-05.md`):
   18 fixed and gone in game, 14 fixed but not yet seen (the two-player ones, D8, A2, D10, ARG-3 and four guards), 20 still
   there for his word, a PC fact or a sighting, MODE-C12 and ARG-1 (Dagger, Spear) not bugs; round 3's open readings explained.
+  2026-11-05: Spool is sage green, not purple, at his word (the purple read too close to the foes' magenta; a yellow
+  and a mint tried first, `ModSource/Spool/Art/Temporary/pastel_green_2026-11-05/`): its frames (`SpoolCharacter.P`), the
+  UI colour, the Thread Head and Crafted sheets, the thread and the models' felt (`concept-tools/temp_art/spool_sage.py`).
+  Compiled here (release and self-test 0 errors, editor clean), not run on the PC: the next Spool round looks at it
+  beside a Hardened foe and on grass.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
