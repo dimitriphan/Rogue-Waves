@@ -64,6 +64,7 @@ public static partial class RWTest
         yield return Stepped(ReviewBoutman());
         yield return Stepped(ReviewFie());
         yield return Stepped(ReviewVoice());
+        yield return Stepped(ReviewSplithead());
 #if MODKIT_PLAY
         yield return Stepped(ReviewCrafted());
 #endif
@@ -210,6 +211,12 @@ public static partial class RWTest
         float g3 = UpgradePrice(voiced);
         Finding("MODE-C4", g2 < g0 - 0.001f && g3 >= g2 + 0.001f, "price scale " + g0 + " at the start, " + g2 + " after two Tides of Voice, " + g3 + " once Cheap Refits is held (fixed: lower than " + g2 + ")");
         Finding("MODE-C12 (the effect)", g2 >= g0 - 0.001f, "two Tides of Voice took the scale from " + g0 + " to " + g2);
+        if (voiced != null)
+        {
+            voiced.GetComponent<Entity_Master_Remote>().Command_ServerRpc("Upgrade", "{\"Upgrade\":\"Tower_Smackyarcher_Range2_Upgradeobject\",\"Upgrader\":" + me + "}", default(Unity.Netcode.ServerRpcParams));
+            yield return new WaitForSeconds(1.5f);
+            Info("MODE-C4 after an upgrade", "price scale " + UpgradePrice(voiced) + " (fixed: the Refits price)");
+        }
 
         // MODE-D1: on to Tide 29's break, where the bonus rewind begins.
         vars.Entry.Value = 2 * 29 - 1;
@@ -271,23 +278,34 @@ public static partial class RWTest
         yield return Until(() => vars.Wave.Value > waveAsked, 18f);       // the player reads the question for 18 s of its 20
         bool cut = vars.Wave.Value > waveAsked;
         string stateThen = RWVote.State, openThen = RWAsk.Open;
-        if (!cut && RWDialog.Up()) { ClickCard("Leave"); yield return new WaitForSeconds(1f); }
-        Finding("MODE-D6", cut && RWVote.LastVote == lastVote, "the vote opened " + asked + " with " + clockAsked + " s of break left; 18 s on: Wave " + waveAsked + " -> " + vars.Wave.Value + ", state '" + stateThen + "', question '" + openThen + "', last vote '" + RWVote.LastVote + "'");
+        // MODE-D2: the objective taken in the break where the party votes to leave, here if the vote is still up.
+        RWObjectiveDef hands = Array.Find(RWObjectives.All, o => o.Name == "Hands");
+        string took = "";
+        if (!cut && RWDialog.Up())
+        {
+            RWObjectives.Posted = hands;
+            RWObjectives.Active = null;
+            took = RWObjectives.Take(player);
+            ClickCard("Leave");
+            yield return new WaitForSeconds(1f);
+        }
+        Finding("MODE-D6", cut && RWVote.LastVote == lastVote, "the vote opened " + asked + " with " + clockAsked + " s of break left; 18 s on: Wave " + waveAsked + " -> " + vars.Wave.Value + ", state '" + stateThen + "', question '" + openThen + "', last vote '" + RWVote.LastVote + "', departing " + RWVote.Departing);
         ClearFoes();
         yield return new WaitForSeconds(0.5f);
 
-        // MODE-D2: the objective taken in the break where the party votes to leave.
-        yield return ToBreakAfter(vars.Wave.Value + (cut ? 0 : 1));
-        yield return new WaitForSeconds(1f);
-        RWObjectiveDef hands = Array.Find(RWObjectives.All, o => o.Name == "Hands");
-        RWObjectives.Posted = hands;
-        RWObjectives.Active = null;
-        string took = RWObjectives.Take(player);
-        Info("MODE-D2", "took Mind the Vessels in the break: '" + took + "' (empty is yes)");
-        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 25f);
-        if (RWAsk.Open != RWVote.LeaveKind) { Setup("MODE-D2", "no vote to leave: state '" + RWVote.State + "', Wave " + vars.Wave.Value); yield break; }
-        yield return WaitDialog(6f);
-        ClickCard("Leave");
+        if (!RWVote.Departing)
+        {
+            yield return ToBreakAfter(vars.Wave.Value + (cut ? 0 : 1));
+            yield return new WaitForSeconds(1f);
+            RWObjectives.Posted = hands;
+            RWObjectives.Active = null;
+            took = RWObjectives.Take(player);
+            yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 25f);
+            if (RWAsk.Open != RWVote.LeaveKind) { Setup("MODE-D2", "no vote to leave: state '" + RWVote.State + "', Wave " + vars.Wave.Value); yield break; }
+            yield return WaitDialog(6f);
+            ClickCard("Leave");
+        }
+        Info("MODE-D2", "took Mind the Vessels in the break of the vote to leave: '" + took + "' (empty is yes)");
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind) || RWCampaign.Choice >= 0, 20f);
         if (RWAsk.Open.StartsWith(RWVote.DirectionKind))
         {
@@ -349,7 +367,16 @@ public static partial class RWTest
                 }
             yield return null;
         }
-        Finding("MODE-D5", healthSkin > 0, "map 2, Tide 1: " + read + " foes read, " + healthSkin + " wear 'Health', " + plainSkin + " none, " + withHealth + " hold the map's health upgrade: " + skins);
+        yield return new WaitForSeconds(0.6f);
+        string healths = "";
+        foreach (Entity_Master e in seen)
+        {
+            if (e == null || e.Beingserver == null || e.Beingserver.Dead || e.Beingserver.Entity == null || e.Beingserver.Entity.Defaultstat == null) continue;
+            float listed = 0f;
+            foreach (Statproperties.Defaultstatgroup g in e.Beingserver.Entity.Defaultstat.Stats) if (g.Name == "Health") listed = g.Value;
+            if (healths.Length < 120) healths += e.Being.Value + " " + HpMax(e) + "/" + listed + " ";
+        }
+        Finding("MODE-D5", healthSkin > 0, "map 2, Tide 1: " + read + " foes read, " + healthSkin + " wear 'Health', " + plainSkin + " none, " + withHealth + " hold the map's health upgrade: " + skins + "; max Health against the listed (fixed: x1.08): " + healths);
         ClearFoes();
         freeze = true;
         yield return ToBoat();
@@ -375,6 +402,32 @@ public static partial class RWTest
         yield return Until(() => (bro = MineLast("Mob_Boutmanbro", me)) != null, 60f);
         if (bro == null) { Setup("MODE-D3", "no Boutbro after 60 s"); yield break; }
         yield return new WaitForSeconds(1f);
+        // MODE-C6: Cheap Refits reaches the Bouthouse.
+        Direction(player, "Refit");
+        yield return new WaitForSeconds(1.5f);
+        Finding("MODE-C6 the Bouthouse", UpgradePrice(house) >= 0.999f, "its Upgrade price scale with Cheap Refits held: " + UpgradePrice(house));
+        // FOES-2: a Dazzling Dagger beside the Bouthouse, Boutman walked away: does Illuminate reach him through the house?
+        Beingobject walker = ModKitUtil.Load<Beingobject>("Mob", "Tower_Boutmanhouse");
+        Vector3 away = walker != null && house != null ? RogueWavesModeKitTest.Spot(house.Entityposition.Value, walker, vessel.Entitydata.Value.Team, 6f, 12f, new List<Vector3>(), "away from the house") : new Vector3(float.NaN, 0f, 0f);
+        if (!float.IsNaN(away.x))
+        {
+            ModKitUtil.MoveTo(vessel, null, away, 0f);
+            yield return Until(() => vessel == null || ModKitUtil.Flat(vessel.Entityposition.Value, house.Entityposition.Value) >= 5.5f, 12f);
+        }
+        Upgradeproperties dazzling = Bl_Address.Getload("Upgrade", "RW_Modifier_Dazzling_Upgradeobject") as Upgradeproperties;
+        Entity_Master dagger = house != null ? RogueWavesModeKitTest.SpawnFoe("Enemy_Dagger", house.Entityposition.Value, 1f, 2.5f, null) : null;
+        if (dazzling == null || dagger == null) Setup("FOES-2", "no Dazzling (" + (dazzling != null) + ") or no Dagger (" + (dagger != null) + ")");
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            Helper_Entitytools.Upgrade(dagger, dazzling, Helper_Entitytools.Upgradecheck.Forced, null);
+            yield return new WaitForSeconds(2.5f);
+            float gap = ModKitUtil.Flat(vessel.Entityposition.Value, house.Entityposition.Value);
+            Finding("FOES-2", Holding(vessel, "Illuminate") != "", "Boutman " + RWUtil.F(gap) + " from the house holds [" + Holding(vessel, "Illuminate") + "], the house holds [" + Holding(house, "Illuminate") + "]");
+            ClearFoes();
+            yield return new WaitForSeconds(0.5f);
+            Info("FOES-2 once the foe is gone", "Boutman holds [" + Holding(vessel, "Illuminate") + "]");
+        }
         RWObjectiveDef hands = Array.Find(RWObjectives.All, o => o.Name == "Hands");
         RWObjectives.Posted = hands;
         RWObjectives.Active = null;
@@ -474,6 +527,14 @@ public static partial class RWTest
         }
         Finding("R3", before[0] > 0f && after[0] <= before[0] * 0.65f, "a 10 hit on the building beside the wall: " + before[0] + " before Spring Tide, " + after[0] + " with it; on one away from the wall " + before[1] + " then " + after[1]);
         Finding("MODE-C3", before[2] > 0f && after[2] <= before[2] * 0.65f, "a 10 hit on the Shield wall itself: " + before[2] + " before Spring Tide, " + after[2] + " with it, Resistadd " + StatOf(wall, "Resistadd"));
+        // MODE-C6: Cut Costs on what a Fie wall builds.
+        Direction(player, "Cost");
+        yield return new WaitForSeconds(1.5f);
+        string wallPrices = "";
+        float lowest = 9f;
+        foreach (KeyValuePair<string, Link_Command> kv in wall.Commandlistserver)
+            if (kv.Key.StartsWith("Buildoption") && kv.Value != null) { wallPrices += kv.Key + "=" + kv.Value.Goalvalue + " "; lowest = Mathf.Min(lowest, kv.Value.Goalvalue); }
+        Finding("MODE-C6 Fie's wall", wallPrices != "" && lowest >= 0.999f, "its build commands' price scales with Cut Costs held: " + (wallPrices != "" ? wallPrices : "none listed"));
         ClearFoes();
         yield return ToBoat();
     }
@@ -518,6 +579,84 @@ public static partial class RWTest
         Check("G3 the next upgrade costs the fallen price", cannon.Upgradelistserver.ContainsKey(Sticky) && Mathf.Abs(paid - price * g2) <= 1f, "paid " + paid + " of " + price + " x " + g2);
         Info("G3 after the upgrade", "price scale " + UpgradePrice(cannon) + ", holds [" + Holding(cannon, "Voice") + "]");
         ClearFoes();
+        // FOES-3: a foe with Aging and Berserk, at half health, against a plain one.
+        Upgradeproperties aging = Bl_Address.Getload("Upgrade", "RW_Modifier_Aging_Upgradeobject") as Upgradeproperties, berserk = Bl_Address.Getload("Upgrade", "RW_Modifier_Berserk_Upgradeobject") as Upgradeproperties;
+        yield return NewFoe();
+        Entity_Master plainFoe = lastFoe;
+        yield return NewFoe();
+        Entity_Master both = lastFoe;
+        if (aging == null || berserk == null || plainFoe == null || both == null) Setup("FOES-3", "no modifier or foe");
+        else
+        {
+            Helper_Entitytools.Upgrade(both, aging, Helper_Entitytools.Upgradecheck.Forced, null);
+            Helper_Entitytools.Upgrade(both, berserk, Helper_Entitytools.Upgradecheck.Forced, null);
+            yield return new WaitForSeconds(0.5f);
+            Link_Stats hp;
+            if (both.Statsserver.TryGetValue("Health", out hp)) hp.Value = hp.Value_Calc * 0.5f;
+            yield return new WaitForSeconds(1.5f);
+            float a = StatOf(both, "Damage"), p = StatOf(plainFoe, "Damage");
+            Finding("FOES-3", a < p * 1.4f, "at half health: Damage " + a + " against a plain foe's " + p + " (fixed: at least 1.5x, with Aging's share on top)");
+        }
+        ClearFoes();
+        yield return ToBoat();
+    }
+
+    // MODE-D8: Keep the Basin Clean on a two-Basin map, a foe hitting only the second.
+    static IEnumerator ReviewSplithead()
+    {
+        Macro_Main boat = Macro_Main.Instance;
+        RWRun.Clear();
+        boat.Selectcharacter("Hero_Smacky");
+        yield return new WaitForSecondsRealtime(1f);
+        RWCampaign.New(Seed);
+        RWCampaign.Staging = false;
+        yield return Until(() => RWCampaign.Live && Here(), 40f);
+        long me = RWMine.Session;
+        RWChart.Plan plan = RWMode.Pool.Find(p => p.Name.Contains("Splithead") || p.Map.Contains("Splithead"));
+        if (plan == null) { Setup("MODE-D8", "no Splithead in the pool"); yield break; }
+        RWChart.Node at = RWCampaign.Open()[0];
+        at.Plan = plan.Name;
+        at.Map = plan.Map;
+        at.Label = plan.Label;
+        at.Weather = RWChart.Calm;
+        foreach (Macro_Maplink_Add l in Macro_Worldvisual.Instance.World.GetComponentsInChildren<Macro_Maplink_Add>(true))
+            if (l.name == at.Name) l.Gameplan = RWMode.TwinPlan(plan.Name);
+        Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(at.Name, false, default(Unity.Netcode.ServerRpcParams));
+        yield return Until(() => boat.Selected.Value.ToString() == at.Name && Macro_Worldvisual.Instance.Insetup, 60f);
+        boat.Playgame(true);
+        yield return Until(() => Game_Mapvars.Instance != null && Game_Mapvars.Instance.Maploaded.Value && RWRun.InCampaignMap && RWCampaign.Playing >= 0, 240f);
+        yield return Until(() => RWShop.Stand != null, 120f);
+        freeze = true;
+        yield return new WaitForSeconds(3f);
+        List<Entity_Master> cores = RWUtil.PlayerCores();
+        if (cores.Count < 2) { Setup("MODE-D8", plan.Name + " has " + cores.Count + " Basin here"); yield return ToBoat(); yield break; }
+        RWPlayer player = RWRun.For(me);
+        RWObjectives.Posted = Array.Find(RWObjectives.All, o => o.Name == "Hull");
+        RWObjectives.Active = null;
+        string took = RWObjectives.Take(player);
+        Game_Mapvars vars = Game_Mapvars.Instance;
+        int wave = vars.Wave.Value, breaks = RWVote.Breaks;
+        freeze = false;
+        forcing = false;
+        vars.Time_Wave.Value = 0.1f;
+        yield return Until(() => vars.Wave.Value > wave, 40f);
+        yield return new WaitForSeconds(0.5f);
+        yield return NewFoe();
+        if (lastFoe != null) Hurt(lastFoe, cores[1], 1f);
+        yield return new WaitForSeconds(0.3f);
+        forcing = true;
+        float t = 0f;
+        while (RWVote.Breaks == breaks && t < 90f)
+        {
+            ClearFoes();
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        forcing = false;
+        ClearFoes();
+        freeze = true;
+        yield return new WaitForSeconds(0.8f);
+        Finding("MODE-D8", RWObjectives.Outcome == "Hull done", plan.Name + ", " + cores.Count + " Basins, took '" + took + "': a foe hit only the second; outcome '" + RWObjectives.Outcome + "' (fixed: Hull failed)");
         yield return ToBoat();
     }
 }

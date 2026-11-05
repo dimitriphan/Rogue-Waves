@@ -100,6 +100,27 @@ public static partial class RWTest
         yield return Say("d4over");
         yield return Until(() => RWTwo.OtherSaid("d4read"), 120f);
 
+        // MODE-D7: the host answers the vote, opens SHOP; the other player's answer closes the question, and the shop should stay.
+        yield return ToBreakAfter(vars.Wave.Value + 1);
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
+        if (RWAsk.Open != RWVote.LeaveKind) Setup("MODE-D7", "no vote to leave: state '" + RWVote.State + "'");
+        else
+        {
+            yield return WaitDialog(8f);
+            ClickCard("Stay");
+            yield return new WaitForSeconds(0.6f);
+            RWShop.Open("Shop");
+            yield return WaitDialog(6f);
+            bool shopUp = RWDialog.Up();
+            yield return Say("d7");
+            yield return Until(() => RWVote.State == "", 30f);
+            yield return new WaitForSeconds(1f);
+            Reading("MODE-D7", shopUp && !RWDialog.Up(), "SHOP up as the other player answered: " + shopUp + "; a second on: " + RWDialog.Up() + "; the vote: " + RWVote.LastVote);
+            if (RWDialog.Up()) ClickCard("Back");
+        }
+        yield return Say("d7over");
+        yield return new WaitForSeconds(1f);
+
         // MODE-B4 and B3: O5's mid-map join, which then joins on the boat for the next map.
         Line("DRIVER KILL");
         yield return Until(() => !Blm_Server.Instance.Sessionids.ContainsKey(friend), 40f);
@@ -138,15 +159,28 @@ public static partial class RWTest
         float backAt = -1f;
         while (!RWTwo.OtherSaid("d4over") && t < 150f)
         {
-            if (RWAsk.Open == RWVote.LeaveKind) opened = true;
             Entity_Master now = RWMine.Vessel();
             if (now != null && now != first && backAt < 0f) { cameBack = true; backAt = t; }
+            if (RWAsk.Open == RWVote.LeaveKind && !opened)
+            {
+                opened = true;
+                yield return WaitDialog(5f);
+                ClickCard("Stay");      // the host leaves, this player stays: the party stays for what comes next
+            }
             t += Time.unscaledDeltaTime;
             yield return null;
         }
         yield return new WaitForSeconds(2f);
         Reading("MODE-D4", !opened, "the vote to leave's dialog opened on this machine: " + opened + "; the respawned vessel stood after " + RWUtil.F(backAt) + " s: " + cameBack + "; RWAsk.Open now '" + RWAsk.Open + "'");
         yield return Say("d4read");
+        // MODE-D7: this player answers once the host's shop is up.
+        yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 150f);
+        if (RWAsk.Open == RWVote.LeaveKind)
+        {
+            yield return WaitDialog(8f);
+            yield return Until(() => RWTwo.OtherSaid("d7"), 40f);
+            ClickCard("Stay");
+        }
         yield return new WaitForSecondsRealtime(600f);     // the host kills this copy next
     }
 
@@ -171,7 +205,7 @@ public static partial class RWTest
             if (Macro_Main.Instance != null && Macro_Main.Instance.Ready) break;
             yield return new WaitForSecondsRealtime(3f);
             string box = ErrorBox();
-            Reading("MODE-B4 try " + i, box.Contains("Join Game"), "the turned-away player's error box: '" + box + "'");
+            Reading("MODE-B4 try " + i, box.Contains("Lost the map"), "the turned-away player's error box: '" + box + "'");
             if (i == 1)
             {
                 Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();

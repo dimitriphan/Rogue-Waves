@@ -196,6 +196,33 @@ public static partial class ArgoSelfTest
             ClearEnemies();
         }
         // The double stun itself runs in the scenario (99_SelfTest.cs), where a foe beside a gun is to hand.
+
+        // ARG-4: a tuned Drill Rig with Calibrate reaches farther: does its AIM's synced reach follow?
+        ArgoTowerBrain drill = null;
+        List<Entity_Master> ores = new List<Entity_Master>(ModKitUtil.Area(home, 45f, ModKitUtil.Tagged("Resource")));
+        ores.Sort((a, b) => ModKitUtil.Flat(ModKitUtil.Pos(a), home).CompareTo(ModKitUtil.Flat(ModKitUtil.Pos(b), home)));
+        foreach (Entity_Master o in ores)
+        {
+            if (o == null || !ModKitUtil.Alive(o)) continue;
+            Vector3 dat = Spot(ModKitUtil.Pos(o), ArgoContent.Beings[ArgoData.Drill], team, 1f, ArgoData.OreReach - 0.05f);
+            if (float.IsNaN(dat.x)) continue;
+            yield return Build(hm, ArgoData.Drill, dat, known, got);
+            drill = got[0];
+            break;
+        }
+        if (drill == null || bell == null || bell.Crew[0] == null) { ModKitTest.Setup("ARG-4", "no Drill Rig, Bell or Naut"); yield break; }
+        Force(bell, "Calibrate3");
+        yield return Wait(0.6f);
+        Link_Command aim;
+        drill.Master.Commandlistserver.TryGetValue("Aim", out aim);
+        string aim0 = aim != null ? aim.Goalstring.ToString() : "-";
+        float range0 = ModKitUtil.Stat(drill.Master, "Range", 0f);
+        Send(bell.Master, "Crew_Port", Ref(drill.Master));
+        yield return Until(() => Tuned(bell, 0, drill), 15f);
+        yield return Wait(1f);
+        string aim1 = aim != null ? aim.Goalstring.ToString() : "-";
+        float range1 = ModKitUtil.Stat(drill.Master, "Range", 0f);
+        Finding("ARG-4", range1 > range0 && aim1 == aim0, "tuned " + Tuned(bell, 0, drill) + ": Range " + F(range0) + " -> " + F(range1) + ", the AIM entry's reach '" + aim0 + "' -> '" + aim1 + "'");
     }
 }
 #endif

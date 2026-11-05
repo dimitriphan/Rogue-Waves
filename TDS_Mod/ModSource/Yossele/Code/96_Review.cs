@@ -138,6 +138,22 @@ public static partial class YosseleSelfTest
 #if YOSSELE_SHOTS
         yield return YosseleShots.Close("fruit_blue", ModKitUtil.Pos(fruit), 3f);
 #endif
+
+        // YOS-3: an owner at 29 Cordyfriends, five deaths in one frame.
+        YosseleCannonBrain cannon = known.Find(k => k is YosseleCannonBrain) as YosseleCannonBrain;
+        if (cannon == null) { ModKitTest.Setup("YOS-3", "no Cannon"); yield break; }
+        Vector3 rise = ModKitUtil.Pos(hm);
+        int tries = 0;
+        while (YosseleFriends.CountOf(owner) < YosseleData.FriendCap - 1 && tries < 60)
+        {
+            YosseleFriends.Raise(cannon, rise);
+            tries++;
+            yield return Wait(0.2f);
+        }
+        int held = YosseleFriends.CountOf(owner);
+        for (int i = 0; i < 5; i++) YosseleFriends.Raise(cannon, rise);
+        yield return Wait(0.5f);
+        Finding("YOS-3", YosseleFriends.CountOf(owner) > YosseleData.FriendCap, "held " + held + " of " + YosseleData.FriendCap + ", five raised in one frame: " + YosseleFriends.CountOf(owner) + " now, capped " + YosseleFriends.Capped);
     }
 }
 #endif
