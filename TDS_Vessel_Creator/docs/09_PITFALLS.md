@@ -594,3 +594,17 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      stubs type the unknown field as `object` and compile it → never name them: borrow a stock group's grade whole with a
      copy of the group (`Object.Instantiate`, then `Bl_Lighting.Editlighting`), as `ModKitLight.Grade` does (kit 1.13,
      `docs/16` §7.1). Read from code; compiled, for the PC round.
+168. **Two parts' hit handlers on one thing swap order every few tenths of a second** (2026-11-05) → each part puts its
+     handler back in front of `Oninteract` after `Updateinteract` rebuilds the chain, and `ModKitUtil.Front` up to kit
+     1.13 moved a handler to the very front whenever it wasn't first: whoever called last went first, so a cap and a cut
+     on one blow (Made of Tougher Stuff III and Odd Socks III on a Crafted) gave `cap` or `0.9 x cap` by turns → kit
+     1.14's `Front` leaves a handler that already stands among the mod handlers ahead of the game's own. The game's
+     handlers are those whose `Target` is an `Entity_Ai_Base` (`Updateinteract` adds only those, read from its IL). After
+     each rebuild the parts line up in the order they call; a fixed order would need a rank per part. Compiled, for the
+     PC round (`docs/reports/DECIDED_CODE_FIXES_2026-11-05.md` §4).
+169. **A Blurry Photo copy carries "Clone" and "Prespawn" in its own tags, never its being's** (2026-11-05) → the game
+     tags the copy with `Helper_Entitytools.Tag` after the spawn returns (`Entity_Ai_Effect_Artifact_Blurryphoto`, and
+     "Prespawn" on the enemy Boutman's ally the same way), so `Beingserver.Entity.Tags.Contains("Clone")` is never true,
+     and in the pack's `Onspawn` the thing's own list doesn't hold it yet either → test `ModKitUtil.HasTag(e, "Clone")` /
+     `"Prespawn"` (the mode's `RWRun.IsCopy`), and act on a Hero-tagged spawn once it has its stats, when a copy shows
+     as one. Read from code; compiled, for the PC round.

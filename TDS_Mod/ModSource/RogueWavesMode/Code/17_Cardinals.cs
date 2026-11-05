@@ -284,12 +284,28 @@ public static class RWCardinals
         RWCardinalDef d;
         if (!defs.TryGetValue(id, out d))
             return "";
-        if (d.Clash != "" && v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes("Cardinal_" + d.Clash + "1_Upgradeobject")))
+        if (d.Clash != "" && OnPanel(v, "Cardinal_" + d.Clash))
             return Display("Cardinal_" + d.Clash);
         // The pick, as the host reads it (p.Hero): the vessel may be down when the shelf is rolled.
         string hero = RWMine.Hero();
         if (hero == "" && v != null) hero = v.Being.Value.ToString();
         return d.Wall && hero != "" && RWTrinkets.WallOf(hero) == "" ? "a vessel with no wall" : "";
+    }
+
+    // A held Trinket's first stack on a vessel's panel, as every machine sees it (the synced upgrade list).
+    static bool OnPanel(Entity_Master v, string id)
+    {
+        RWCardinalDef d;
+        return v != null && v.Upgradelist != null && defs.TryGetValue(id, out d) && v.Upgradelist.Contains(new FixedString64Bytes(PanelId(d, 1)));
+    }
+
+    // The upgrade a held stack puts on the vessel's panel (Grant): its numbered copy, or its mark when it reaches units.
+    static bool OnPanel(RWCardinalDef d, int stack, out Upgradeproperties u) { return (d.Reach != "" ? marks : copies).TryGetValue(d.Name + stack, out u); }
+
+    static string PanelId(RWCardinalDef d, int stack)
+    {
+        Upgradeproperties u;
+        return OnPanel(d, stack, out u) ? u.Objectname : Id(d) + stack + "_Upgradeobject";
     }
 
     // What a player pays: the price, Ramp more for each Cardinal stack the run holds (the lobby's picks left out) and each
@@ -301,7 +317,7 @@ public static class RWCardinals
     public static int PriceMine(string id)
     {
         Entity_Master v = RWMine.Vessel();
-        return Price(Cost(id) + RampHere(v), v != null && v.Upgradelist != null && v.Upgradelist.Contains(new FixedString64Bytes("Cardinal_Punch1_Upgradeobject")));
+        return Price(Cost(id) + RampHere(v), OnPanel(v, "Cardinal_Punch"));
     }
 
     // The ramp as this machine sees it, from what syncs: this vessel's Trinket copies (a unit Trinket's by its panel mark),
@@ -322,8 +338,7 @@ public static class RWCardinals
             }
             for (int i = 1; i <= Cap(id); i++)
             {
-                Upgradeproperties mark;
-                FixedString64Bytes copy = new FixedString64Bytes(d.Trinket && d.Reach != "" && marks.TryGetValue(d.Name + i, out mark) ? mark.Objectname : Id(d) + i + "_Upgradeobject");
+                FixedString64Bytes copy = new FixedString64Bytes(PanelId(d, i));
                 if (d.Trinket ? v != null && v.Upgradelist != null && v.Upgradelist.Contains(copy) : cores.Exists(c => c.Upgradelist.Contains(copy))) n++;
             }
         }
@@ -380,15 +395,11 @@ public static class RWCardinals
                 Upgradeproperties first = art != null && art.Coreupgrades != null && art.Coreupgrades.Count > 0 ? art.Coreupgrades[0] : null;
                 return first != null && cores.Exists(c => c.Upgradelist.Contains(new FixedString64Bytes(first.Objectname)));
             }
-            FixedString64Bytes top = new FixedString64Bytes(Id(d) + Cap(id) + "_Upgradeobject");
+            FixedString64Bytes top = new FixedString64Bytes(PanelId(d, Cap(id)));
             if (ClashHere(id, v) != "")
                 return true;
             if (d.Trinket)
-            {
-                Upgradeproperties mark;
-                if (d.Reach != "" && marks.TryGetValue(d.Name + Cap(id), out mark)) top = new FixedString64Bytes(mark.Objectname);
                 return v != null && v.Upgradelist != null && v.Upgradelist.Contains(top);
-            }
             return cores.Exists(c => c.Upgradelist.Contains(top));
         };
     }
@@ -747,7 +758,7 @@ public static class RWCardinals
         {
             Upgradeproperties u;
             RWCardinalDef d = Def(held);
-            if (d == null || !(d.Reach != "" ? marks : copies).TryGetValue(d.Name + StackOf(held, d), out u))
+            if (d == null || !OnPanel(d, StackOf(held, d), out u))
                 continue;
             if (!vessel.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(vessel, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);
@@ -792,7 +803,7 @@ public static class RWCardinals
         {
             RWCardinalDef d = Def(held);
             Upgradeproperties u;
-            if (d == null || d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || tags.Contains("Clone") || tags.Contains("Prespawn") || !copies.TryGetValue(d.Name + StackOf(held, d), out u))
+            if (d == null || d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || RWRun.IsCopy(m) || !copies.TryGetValue(d.Name + StackOf(held, d), out u))
                 continue;
             if (m.Upgradelistserver != null && !m.Upgradelistserver.ContainsKey(u.Objectname))
                 Helper_Entitytools.Upgrade(m, u, Helper_Entitytools.Upgradecheck.Forced, arts[Id(d)]);

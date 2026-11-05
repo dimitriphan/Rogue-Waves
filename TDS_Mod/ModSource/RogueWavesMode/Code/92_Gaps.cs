@@ -1229,7 +1229,7 @@ public static partial class RWTest
                     RWDialog.Card("Stay", "Stay", "Another bonus Tide: more Pure Aura, and harder", RWAssets.Sprite("RogueWaves_Stay"), RWDialog.Teal),
                     RWDialog.Card("Leave", "Leave", "Leave this map", RWAssets.Sprite("RogueWaves_Leave"), RWDialog.Coral),
                 };
-                RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(leave, "TIDE CLEARED", "A majority leaves. Nobody leaves right before their demise", 0f, x => pick = x));
+                RogueWavesModeMod.Instance.StartCoroutine(RWDialog.Ask(leave, "TIDE CLEARED", "Most votes win. Nobody leaves right before their demise", 0f, x => pick = x));
                 yield return WaitDialog(6f);
                 yield return DialogFits("The vote to leave, " + at);
                 RWDialog.Cancel();

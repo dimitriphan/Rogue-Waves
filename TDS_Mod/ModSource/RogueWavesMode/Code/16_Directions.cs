@@ -86,7 +86,7 @@ public static class RWDirections
             Desc = new[] { "Buster runs faster", "Buster runs faster still", "Buster runs much faster" } },
         new RWDirectionDef { Vessel = "Fie", Name = "Regulars", Display = "House Regulars", Stat = "Attackspeed", Amounts = new[] { 0.1f, 0.2f, 0.3f },
             Desc = new[] { "Fie works faster", "Fie works faster still", "Fie works much faster" } },
-        new RWDirectionDef { Vessel = "Boutman", Name = "Longline", Display = "Long Line", Stat = "Fishingrange", Plain = true, Amounts = new[] { 1f, 2f, 3f },
+        new RWDirectionDef { Vessel = "Boutman", Name = "Longline", Display = "Spare Reel", Stat = "Fishingrange", Plain = true, Amounts = new[] { 1f, 2f, 3f },
             Desc = new[] { "Boutman reaches farther with his rod", "Boutman reaches farther still", "Boutman reaches much farther" } },
         new RWDirectionDef { Vessel = "Snosno", Name = "Packedsnow", Display = "Packed Snow", Stat = "Speed", Amounts = new[] { 0.08f, 0.16f, 0.25f },
             Desc = new[] { "Sno Sno slides faster", "Sno Sno slides faster still", "Sno Sno slides much faster" } },
@@ -149,8 +149,11 @@ public static class RWDirections
 
     static bool HasMinions(string hero)
     {
-        // The vessels that send minions (docs/scope/11 "Any Vessel with (Minions)"): all of them. Fie's Knight's Keep sends
-        // knights and Buster's Garage dogs, both tagged Mob (kit docs/17 §10); both were left out until 2026-11-04.
+        // The vessels that send minions (docs/scope/11 "Any Vessel with (Minions)"). Each of the nine has a (Minion) block in
+        // its scope (07-10, 16): Smacky's miners, Sno Sno's Snobles, Boutman's Boutbro and fish, Fie's knights, Buster's dogs,
+        // Argo's Nauts, Yossele's Cordyfriends, Spool's Crafted, Uloe's Photons. So all nine are here, and Needs="Minions"
+        // leaves out only a vessel the pack doesn't know, such as another mod's (checked 2026-11-05, BUILD_UNBUILT §2.7).
+        // Fie's knights and Buster's dogs (tagged Mob, kit docs/17 §10) were left out until 2026-11-04.
         return hero == "Hero_Boutman" || hero == "Hero_Snosno" || hero == "Hero_Spool" || hero == "Hero_Yossele" || hero == "Hero_Argo" || hero == "Hero_Uloe" || hero == "Hero_Smacky" || hero == "Hero_Fie" || hero == "Hero_Buster";
     }
 
@@ -489,7 +492,29 @@ public static class RWDirections
         long owner = m.Entitydata.Value.Owner;
         if (owner < 0)
             return;
+        // A Blurry Photo copy is a Hero being the game marks "Clone" only after this spawn returns (pitfall #169), so a thing
+        // tagged Hero (Boutbro, a copy) is reached once it has its stats, when a copy shows as one; the rest at once.
+        if (m.Beingserver.Entity.Tags.Contains("Hero"))
+        {
+            RogueWavesModeMod.Instance.StartCoroutine(ReachLater(m, owner));
+            return;
+        }
         // Inside Game_Entity.Spawn: a throw here would stop the spawn and every Onspawn listener after this one (MODE-C8).
+        try
+        {
+            RWPlayer p = RWRun.For(owner);
+            Reach(m, p);
+            RWCardinals.Reach(m, p);
+        }
+        catch (Exception e) { RWLog.Once("spawn reach", "Directions on a new spawn: " + e); }
+    }
+
+    static IEnumerator ReachLater(Entity_Master m, long owner)
+    {
+        for (int i = 0; i < 60 && m != null && (m.Statsserver == null || m.Statsserver.Count == 0); i++)
+            yield return null;
+        if (!RWRun.InCampaignMap || !ModKitUtil.Alive(m) || m.Statsserver == null || m.Statsserver.Count == 0 || RWRun.IsCopy(m))
+            yield break;
         try
         {
             RWPlayer p = RWRun.For(owner);
@@ -506,7 +531,7 @@ public static class RWDirections
         {
             // Only the player's own vessel is left out: Boutbro is tagged Hero too, and kit docs/17 §8 counts him among Boutman's
             // minions (MAX MODEB-8, Dimitri's answer 39 of 2026-11-05). A Blurry Photo copy is no minion either.
-            if (d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || tags.Contains("Clone") || tags.Contains("Prespawn"))
+            if (d.Reach == "" || !tags.Contains(d.Reach) || RWRun.IsVessel(m) || RWRun.IsCopy(m))
                 continue;
             int rank = Top(p, d.Vessel, d.Name);
             if (rank <= 0)
@@ -593,7 +618,7 @@ public static class RWDirections
     static bool OwnTower(Entity_Master t, long session)
     {
         return ModKitUtil.Alive(t) && t.Beingserver.Entity != null && t.Entitydata.Value.Owner == session && t.Statsserver != null
-            && t.Statsserver.ContainsKey("Health") && t.Beingserver.Entity.Tags.Contains("Tower") && !t.Beingserver.Entity.Tags.Contains("Hero");
+            && t.Statsserver.ContainsKey("Health") && t.Beingserver.Entity.Tags.Contains("Tower") && !t.Beingserver.Entity.Tags.Contains("Hero") && !RWRun.IsCopy(t);
     }
 
     // One Health Add per tower, raised each Tide (Health is Variable: the tower keeps its share of it, kit docs/17 §2.1).
