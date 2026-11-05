@@ -1016,7 +1016,7 @@ public static partial class RWTest
             player.Pure = 0;
             Check("Trinkets: refused with too little Pure Aura", RWCardinals.Buy(player, "Cardinal_Dentures") == "Not enough Pure Aura", "");
             player.Pure = 200;
-            string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
+            string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s) && !RWCardinals.IsTrinket(s));
             int stockPrice = RWCardinals.PriceFor(player, stockCard);
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - stockPrice, stockCard + ": '" + first + "', '" + second + "', price " + stockPrice + ", Pure " + player.Pure);

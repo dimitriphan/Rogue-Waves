@@ -29,6 +29,12 @@
 //   Cargo Crate     RWCardinals.ShelfFor: one more card on the shelf each break a stack (6 stacks, 9 cards)
 //   Tin Whistle     once all of a Tide's foes have come (its table row's count) and 3 or fewer stand: each of them -30%
 //                   Speed and +25% damage taken, until it drowns
+//   Stock Trinkets (RWCardinals.StockTrinketIds; the rest go on the buyer's things through RWCardinals.Grant and Reach)
+//   the four Coins  the Coin's own numbers paid to the holder alone: its start sum once a map (on the map's first look with
+//                   the Basin up, or at once when bought mid-map), then each break its Tide sum, Add x Tide x (30 / Tides),
+//                   whole-number, as Entity_Ai_Artifact_Coin; the game splits the same sums among the team
+//   Aura Gavel      one of the holder's own units (a Mob, the vessel too) drowns: the Gavel's bolt flies from it at the
+//                   nearest foe within the Gavel's reach, damage by the unit's level (Damage_Base, Damage2_Base..Damage5_Base)
 // No look of their own yet, as the Directions (pitfall #114).
 public static class RWTrinkets
 {
@@ -40,6 +46,7 @@ public static class RWTrinkets
     public const int CrateMost = 6, WhistleLast = 3;
     public const float WhistleSlow = 0.3f, WhistleTaken = 0.25f;
     public const string FlareBolt = "Artifact_Auragavel";
+    static readonly string[] coinAuras = { "Red", "Yellow", "Blue" };     // a Coin's param prefix; the aura is "<prefix>aura"
 
     // Each vessel's (Defense) building (docs/scope/07-10, 16). Buster has none; Argo's Drill Rig is Economy/Defense and his
     // own tooltip says "no walls of its own".
@@ -61,6 +68,8 @@ public static class RWTrinkets
         public RWPlayer Player;
         public Entity_Master Vessel;
         public int Spyglass, Knife, Oilcan, Tar, Duck, Plank, Oilskin, Gull;
+        public bool Gavel;
+        public readonly List<string> Coins = new List<string>();     // the stock Coins held
         public float GullUntil;
         public Entity_Master Standing;                        // the plank, while it stands
         public Link_Command Button;                           // the vessel's wall button, held at no price while the plank is free
@@ -75,6 +84,7 @@ public static class RWTrinkets
     static readonly Dictionary<Entity_Master, RWUtil.Rest> tarred = new Dictionary<Entity_Master, RWUtil.Rest>();
     static readonly Dictionary<Entity_Master, Link_Modifier> whistled = new Dictionary<Entity_Master, Link_Modifier>();
     static readonly List<Entity_Master> corked = new List<Entity_Master>();
+    static readonly List<string> coined = new List<string>();      // "<session>|<Coin id>": its start sum is paid on this map
     static readonly Dictionary<string, float> extra = new Dictionary<string, float> { { RWAny.Extra, 1f } };
     static readonly Entity_Master.Interacts dealt = OnDealt;
     static readonly Entity_Master.Oninteracts taken = OnTaken, basin = OnBasin, whistle = OnWhistled, tarHit = OnTarHit;
@@ -82,8 +92,8 @@ public static class RWTrinkets
     static int spawned, totalWave = -1, total;
     static readonly List<string> rowFoes = new List<string>();   // the beings the Tide's row sends
     public static bool ForceSlide, ForceLast;       // self-test: every hit slides off; a Tide's foes have all come
-    public static int Slid, Ducked, Planked, Storms, Feathered, Corked, Flares;
-    public static float TarMended, Flared;
+    public static int Slid, Ducked, Planked, Storms, Feathered, Corked, Flares, Gavels;
+    public static float TarMended, Flared, CoinPaid;
 
     // A map starts (RWVote.MapStart): the last map's things go, each map's once-a-map uses and planks come back.
     public static void Reset()
@@ -93,6 +103,7 @@ public static class RWTrinkets
         tarred.Clear();
         whistled.Clear();
         corked.Clear();
+        coined.Clear();
         totalWave = -1;
         spawned = total = 0;
         rowFoes.Clear();
@@ -105,6 +116,9 @@ public static class RWTrinkets
         k.Spyglass = RWCardinals.Held(p, "Spyglass"); k.Knife = RWCardinals.Held(p, "Knife"); k.Oilcan = RWCardinals.Held(p, "Oilcan");
         k.Tar = RWCardinals.Held(p, "Tar"); k.Duck = RWCardinals.Held(p, "Duck"); k.Plank = RWCardinals.Held(p, "Plank");
         k.Oilskin = RWCardinals.Held(p, "Oilskin"); k.Gull = RWCardinals.Held(p, "Gull");
+        k.Gavel = RWCardinals.StockHeld(p, "Gavel").Count > 0;
+        k.Coins.Clear();
+        k.Coins.AddRange(RWCardinals.StockHeld(p, "Coin"));
     }
 
     // ---------------------------------------------------------------- every frame (host)
@@ -124,6 +138,7 @@ public static class RWTrinkets
                     kits[s] = k = new Kit();
                 Refresh(k, RWRun.For(s));
                 k.Vessel = RWRun.Vessel(s);
+                CoinStart(s, k);
             }
         }
         if (now >= nextHooks)
@@ -430,6 +445,8 @@ public static class RWTrinkets
     public static void OnDespawn(Entity_Master master, bool killed)
     {
         whistled.Remove(master);
+        if (killed && master != null && RWRun.InCampaignMap && ModKitUtil.IsServer)
+            Gavel(master);
         if (!killed || master == null || !RWRun.InCampaignMap || !ModKitUtil.IsServer || master.Taglistserver == null || !master.Taglistserver.Contains("Enemy"))
             return;
         RWAny.Crew c = RWAny.DrownedBy(master);
@@ -465,9 +482,14 @@ public static class RWTrinkets
     {
         if (wave <= 0)
             return;
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        int tides = mv != null && mv.Mode != null && mv.Mode.Enemies != null ? mv.Mode.Enemies.Totalwaves : 0;
+        int factor = tides > 0 ? 30 / tides : 0;     // the game's whole-number factor: nothing past 30 Tides
         foreach (long s in RWRun.Sessions())
         {
             RWPlayer p = RWRun.For(s);
+            foreach (string coin in RWCardinals.StockHeld(p, "Coin"))
+                Pay(s, coin, "_Add", wave * factor);
             if (RWCardinals.Held(p, "Oyster") > 0 && !p.Bought)
                 p.Pure += OysterPay;
             if (p.StormLeft > 0 && --p.StormLeft == 0)
@@ -586,23 +608,85 @@ public static class RWTrinkets
         }
         flareReady = now + FlareEvery;
         float damage = FlareDamage * stacks;
-        Dictionary<string, float> data = new Dictionary<string, float>(extra) { { "Damage", damage }, { "Damagemulti", 1f } };
-        if (ModKitUtil.Load<Projectileobject>("Projectile", FlareBolt) != null)
-        {
-            // Aura Gavel's own call (Entity_Ai_Artifact_Gavel.Onitemdespawn): a homing bolt at its Goal, from the core.
-            Projdata p = new Projdata();
-            p.Paramsobject = new Dictionary<string, Entity_Master> { { "Goal", best } };
-            p.Data = data;
-            Helper_Damagetools.Projectile(core, FlareBolt, ModKitUtil.Pos(core) + Vector3.up * 0.5f, p, "Hurt");
-        }
-        else
-        {
-            RWLog.Once("no flare bolt", "Signal Flare: the Aura Gavel's bolt isn't loaded on this map; the flare strikes straight");
-            ModKitCombat.Hurt(core, best, damage, 1f, null, extra);
-        }
+        Bolt(core, ModKitUtil.Pos(core), best, damage);
         Helper_Entitytools.Editartifact("Cardinal_Flare", Time.fixedTime);
         Flares++;
         Flared += damage;
+    }
+
+    // Aura Gavel's own call (Entity_Ai_Artifact_Gavel.Onitemdespawn): a homing bolt from a place at its Goal, sent by the core;
+    // a straight hit if the bolt isn't loaded on this map.
+    static void Bolt(Entity_Master core, Vector3 from, Entity_Master goal, float damage)
+    {
+        Dictionary<string, float> data = new Dictionary<string, float>(extra) { { "Damage", damage }, { "Damagemulti", 1f } };
+        if (ModKitUtil.Load<Projectileobject>("Projectile", FlareBolt) != null)
+        {
+            Projdata p = new Projdata();
+            p.Paramsobject = new Dictionary<string, Entity_Master> { { "Goal", goal } };
+            p.Data = data;
+            Helper_Damagetools.Projectile(core, FlareBolt, from + Vector3.up * 0.5f, p, "Hurt");
+        }
+        else
+        {
+            RWLog.Once("no gavel bolt", "the Aura Gavel's bolt isn't loaded on this map; Signal Flare and the Gavel strike straight");
+            ModKitCombat.Hurt(core, goal, damage, 1f, null, extra);
+        }
+    }
+
+    // ---------------------------------------------------------------- the stock Coins and Aura Gavel, as Trinkets
+
+    // A Coin's start sum, once a map for each holder, once the Basin stands (the game's Coin pays as the core starts).
+    static void CoinStart(long s, Kit k)
+    {
+        if (k.Coins.Count == 0 || !ModKitUtil.Alive(RWUtil.PlayerCore()))
+            return;
+        foreach (string coin in k.Coins)
+        {
+            string key = s + "|" + coin;
+            if (coined.Contains(key))
+                continue;
+            coined.Add(key);
+            Pay(s, coin, "_Base", 1f);
+        }
+    }
+
+    // A Coin's "<aura>" + suffix numbers, times a factor, to one player: with an owner the game doesn't split it (kit docs/15 §14.2).
+    static void Pay(long s, string coin, string suffix, float times)
+    {
+        List<Link_Resourceset> pay = new List<Link_Resourceset>();
+        foreach (string aura in coinAuras)
+        {
+            float amount = RWCardinals.StockParam(coin, aura + suffix) * times;
+            if (amount > 0f) pay.Add(new Link_Resourceset { Name = aura + "aura", Amount = amount });
+        }
+        if (pay.Count == 0 || Game_Players.Instance == null || !Game_Players.Instance.Prevsessionlist.ContainsKey(s))
+            return;
+        Helper_Resources.Giveresources(pay, s, Helper_Resources.Styles.Default);
+        foreach (Link_Resourceset r in pay) CoinPaid += r.Amount;
+    }
+
+    // One of a Gavel holder's units drowned (not a copy, not a foe): its bolt at the nearest foe Mob or tower in reach.
+    static void Gavel(Entity_Master dead)
+    {
+        Kit k;
+        if (!kits.TryGetValue(ModKitUtil.Owner(dead), out k) || !k.Gavel || !ModKitUtil.HasTag(dead, "Mob") || ModKitUtil.HasTag(dead, "Enemy") || RWRun.IsCopy(dead))
+            return;
+        const string id = "Artifact_Gavel";
+        int level = Mathf.Clamp(Mathf.RoundToInt(ModKitUtil.Stat(dead, "Level", 1f)), 1, 5);
+        float reach = RWCardinals.StockParam(id, "Range_Base"), damage = RWCardinals.StockParam(id, level == 1 ? "Damage_Base" : "Damage" + level + "_Base");
+        Entity_Master core = RWUtil.PlayerCore();
+        if (reach <= 0f || damage <= 0f || !ModKitUtil.Alive(core))
+            return;
+        Vector3 at = ModKitUtil.Pos(dead);
+        foreach (Entity_Master foe in ModKitUtil.FoesNear(core, at, reach))
+        {
+            List<string> tags = foe.Beingserver != null && foe.Beingserver.Entity != null ? foe.Beingserver.Entity.Tags : null;
+            if (tags == null || tags.Contains("Enemycore") || (!tags.Contains("Mob") && !tags.Contains("Tower")))
+                continue;
+            Bolt(core, at, foe, damage);
+            Gavels++;
+            return;
+        }
     }
 
     // ---------------------------------------------------------------- Tin Whistle
