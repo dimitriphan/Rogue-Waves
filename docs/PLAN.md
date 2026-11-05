@@ -268,7 +268,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   needed nothing; four merged PRs got their missing Log entries. Still open from 2026-11-04, found missing here: the
   code review's 54 bugs are unfixed (`docs/reports/CODE_REVIEW_2026-11-04.md` §5 batches, §6 PC list); PR #82's test
   round stopped before #80's test list (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §4), and the PC's `TDS_Mod` is
-  older than PR #80, so the next PC round brings it up to the base first.
+  older than PR #80, so the next PC round brings it up to the base first. Then, at his word: his project-files scope
+  copy (all 17 files) and the Scope Editor (version 7) synced to the repository; his PC's copy waits for a PC round. The
+  chart's maps keep following the base game's map list (Decisions 2026-11-05).
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.
@@ -982,6 +984,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - 2026-11-04 (Claude, building the code simplification at Dimitri's word): armour and "takes more" stay in the pack's
   own hit hooks; the stock `Resistadd` route (finding 1) waits until its four number changes are dealt with
   (`docs/reports/SIMPLIFICATION_BUILD_2026-11-04.md` §2). Pack buildings use the game's own upgrade AI.
+- 2026-11-05 (Dimitri, "Leave as is" on the chart maps card): a chart's islands keep taking their maps from the game's
+  map list at each load, so a TDS update that adds or drops a map mid-campaign redraws the islands' maps; the rows,
+  links, route and retries stay (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §1.4 item 5). Same day, his "sync":
+  his project-files scope copy and the Scope Editor brought up to the repository.
 
 ### Open questions
 
@@ -1001,7 +1007,6 @@ Phase 0's eight questions are closed (see Decisions). New ones go here, with a d
 | 10 | The scope-against-code audit (`docs/reports/SCOPE_CODE_AUDIT_2026-11-04.md` §2-3): for each of the 41 rows, scope or code yields | nothing changes until he picks; each row names my lean |
 | 11 | The quality pass's seven (`docs/reports/QUALITY_PASSES_2026-11-04.md` "Left for Dimitri"): Cardinal stacking (6 working copies of a pack one, 1 of a stock one, against scope `12`'s no limit), scope `14`'s objective kinds, three scope wording points, Spool's Cookie Tin role, his scope copy | the build's caps stand; nothing changes until he picks |
 | 12 | The code review's calls (`docs/reports/CODE_REVIEW_2026-11-04.md`): §5 B: ULO-3 (do two Uloes share Light?), MODE-C2, C3 and C5 (Spring Tide and Tidal Mend on the mode's own mods, not stock scripts), MODE-D5 (the map's extra foe health without the elite look), YOS-2 (Monument's Cleanse and a stock artifact's trade-off), MODE-D9 (lobby Cardinals in a campaign) | the low-risk batch can be built without them; these wait |
-| 13 | Quality checks 4-7 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §5): sync his scope copy and the Scope Editor; keep the chart's maps following the base game's pool under a running campaign, or save each sailed map | no sync; the maps follow the pool |
 
 ### Phase 5 pieces
 
