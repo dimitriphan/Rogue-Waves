@@ -1,0 +1,59 @@
+# The game's 55 stock lighting groups (Bl_Lighting_Group, Tds_Masterdatabase "Lighting"), as the gaps build's L0 read them
+# on the PC, 2026-11-05 (Light_round1, code fb208b8). Name: fog colour start-end (world units), ambient sky/horizon/ground,
+# sun colour x intensity toward its direction, skybox. Pick a borrowed grade or a look's colours from here
+# (ModKitLight.Grade(name, sky) / ModKitLight.Look.Of(ModKitLight.Group(name))).
+Macro_Alphanchor: fog off, ambient FFFFFF/D0EEFF/80A0E4, sun FFFEF9 x2 toward 0.7,-2,-0.9, sky Macro_Alphanchor_Skybox
+Macro_Aquilla: fog FFF7E3 0-2000, ambient F1F1F1/D0EEFF/80A0E4, sun FFFEF9 x3 toward 0.7,-2,-1.12, sky Macro_Aquilla_Skybox
+Macro_Highsphere: fog FFFFFF 0-2000, ambient F1F1F1/DAA2FF/525252, sun FFFEF9 x3 toward 0.7,-4,-1, sky Macro_Highsphere_Skybox
+Macro_Omeanchor: fog EBF7FF 20-100000, ambient EBF7FF/D0EEFF/80A0E4, sun FFFEF9 x3 toward 0,-1,-1, sky Macro_Omeanchor_Skybox
+Macro_Omesphere: fog AAD5F5 20-1200, ambient FFFFFF/6B76B9/80A0E4, sun FFFEF9 x2 toward 0.1,-2,1.32, sky Macro_Omesphere_Skybox
+Macro_World: fog off, ambient FFFFFF/D0EEFF/80A0E4, sun FFFEF9 x3 toward 1,-2,-2, sky Other_Mainmenu_Skybox
+Map_Artrio: fog C3C3C3 0-200, ambient DBE2EC/E2ECEA/808BA1, sun E6EAEC x2 toward 0,-2,-1.87, sky Map_Artrio_Skybox
+Map_Artrio_Alt: fog 595959 0-200, ambient 7C8EA6/E2ECEA/808BA1, sun E6EAEC x1 toward 0,-2,1, sky Map_Artrio_Skybox_Alt
+Map_Blasthead: fog 484848 0-200, ambient FFF4EB/6A6A6A/606060, sun FFFEF9 x2.6 toward 0.04,-1,0.03, sky Map_Blasthead_Skybox
+Map_Blasthead_Alt: fog 484848 0-200, ambient BCBCBC/6A6A6A/606060, sun FFFEF9 x2.6 toward 0.06,-1,0.03, sky Map_Blasthead_Skybox
+Map_Brittle: fog 909090 20-600, ambient FFFFFF/C8C8C8/C5C5C5, sun FFFEF9 x2.5 toward -1,-4,1, sky Map_Brittle_Skybox
+Map_Brittle_Alt: fog 909090 20-600, ambient FFFFFF/C8C8C8/8C87BC, sun FFFEF9 x2.5 toward -1,-4,1, sky Map_Brittle_Skybox
+Map_Chrono: fog 000000 20-1000, ambient FFFFFF/3C2E82/543976, sun FFFEF9 x1.5 toward -1.5,-2,-0.4, sky Map_Chrono_Skybox
+Map_Chrono_Alt: fog 000000 20-1000, ambient FFFFFF/3C2E82/543976, sun FFFEF9 x1.5 toward -5,-2,-0.4, sky Map_Chrono_Skybox
+Map_Crescent: fog 3A4D6C 20-500, ambient DAE3FF/6DA4C5/587CAB, sun E3F4FF x2 toward -3.3,-2,-0.24, sky Map_Crescent_Skybox
+Map_Crescent_Alt: fog 5D7B90 20-100, ambient FFFFFF/B6E5FF/80A0E4, sun FFFEF9 x1 toward -3.3,-2,-0.24, sky Map_Crescent_Skybox_Alt
+Map_Crimson: fog off, ambient FFF1D2/ACB9AC/9D9F9D, sun FFE2D0 x2 toward -1.4,-2,-1.08, sky Map_Crimson_Skybox
+Map_Crimson_Alt: fog off, ambient FFD2D4/ACB9B4/9D9F9D, sun F3DBDB x3 toward 8,-2,-1.08, sky Map_Crimson_Skybox
+Map_Final: fog F1E0EB 20-500, ambient FFFFFF/CACACA/B0B0B0, sun FBC4FF x2 toward -1.2,-1,0.2, sky Map_Final_Skybox
+Map_Galbass: fog CCCBC2 20-500, ambient FFFFFF/FFF6EB/000000, sun FFFAF2 x3 toward -1.8,-2,0.5, sky Map_Galbass_Skybox
+Map_Galbass_Alt: fog 595959 20-500, ambient ADB4BE/D2DCEC/000000, sun F8FFF4 x2.5 toward 1.8,-2,0.5, sky Map_Galbass_Skybox_Alt
+Map_Gridhead: fog FFE3AE 50-350, ambient FFFFFF/D1CCBD/B77C5E, sun FFFBEB x2.5 toward 1,-2,0, sky Map_Gridhead_Skybox
+Map_Gridhead_Alt: fog B9AFA0 50-300, ambient FFFFFF/D1CCBD/B77C5E, sun C0AEAD x2 toward -5,-2,0, sky Map_Gridhead_Skybox
+Map_Hold: fog FFFFFF 20-1200, ambient FFFFFF/CAC7C7/908D8D, sun FFFEF9 x4 toward -1.2,-4.5,2.33, sky Map_Hold_Skybox
+Map_Hydragen: fog FF8080 20-1200, ambient FFFFFF/FFD0B6/E48980, sun FFFEF9 x4 toward -1.2,-2,0.2, sky Map_Hydragen_Skybox
+Map_Hydroplane: fog AAD5F5 20-700, ambient FFFFFF/D4EBF8/C0CFF1, sun FFFEF9 x3.5 toward 0.5,-1,-0.3, sky Map_Hydroplane_Skybox
+Map_Kong: fog off, ambient CCD5E2/A6A6A6/C5C5C5, sun FFFFFF x3 toward 4,-2,-0.9, sky Map_Kong_Skybox
+Map_Manafold: fog CFCEAF 0-400, ambient 6987BE/7DA896/576057, sun E3EDFF x2 toward -0.52,-1,-0.73, sky Map_Manafold_Skybox
+Map_Maybeth: fog 9BDCE2 0-1300, ambient D2FCFF/E5E5E5/764E5B, sun E1FDFF x3 toward -4.1,-2,1.6, sky Map_Maybeth_Skybox
+Map_Mercs: fog F3F3F3 20-1200, ambient FFFFFF/C5BFB4/B0ACA2, sun FFFEF9 x3 toward 0.73,-2,2, sky Map_Mercs_Skybox
+Map_Mercs_Alt: fog F3F3F3 20-800, ambient FFFFFF/E5BCB8/B0ACA2, sun FFFEF9 x3 toward 1,-2,-1, sky Map_Mercs_Skybox
+Map_Mini: fog ECBADB 20-1200, ambient FFD2D2/FF8B8A/EE6695, sun FFD0E4 x2 toward 1.3,-2,-0.65, sky Map_Mini_Skybox
+Map_Mini_Alt: fog BACBEC 20-1200, ambient D2E4FF/8ABCFF/6699EE, sun D0E7FF x2 toward 0,-2,0, sky Map_Mini_Skybox
+Map_Monogrove: fog AAD5F5 20-1200, ambient FFFFFF/D0EEFF/80A0E4, sun FFFEF9 x3 toward -1.2,-2,0.2, sky Map_Monogrove_Skybox
+Map_Monogrove_Alt: fog 4D5178 20-1200, ambient FFFFFF/D0EEFF/80A0E4, sun FFFEF9 x1 toward -0.2,-2,0.2, sky Map_Monogrove_Skybox_Alt
+Map_Oroboro: fog AAD5F5 20-1200, ambient FFFFFF/D0EEFF/80A0E4, sun FFFEF9 x4 toward 0.18,-2,0.1, sky Map_Oroboro_Skybox
+Map_Prototyping: fog AAD5F5 20-1200, ambient FFFFFF/B6E5FF/80A0E4, sun FFFEF9 x4 toward -1.2,-2,0.2, sky Map_Prototyping_Skybox
+Map_Purlest: fog E5BAD3 20-400, ambient FFFFFF/FFE8FA/FFB3D2, sun FFFEF9 x1.5 toward -1.2,-2,0.2, sky Map_Purlest_Skybox
+Map_Purlest_Alt: fog B4CCE2 20-400, ambient FFFFFF/E8EAFF/B3BDFF, sun FFFEF9 x1.5 toward 2,-2,0.2, sky Map_Purlest_Skybox_Alt
+Map_Skyhook: fog 878787 0-800, ambient 844743/80605D/957F7D, sun E7C2B4 x3 toward -1,-2,0.6, sky Map_Skyhook_Skybox
+Map_Skyhook_Alt: fog 878787 0-800, ambient 845D43/806E5D/95897D, sun E7C2B4 x1.25 toward 0.5,-0.3,-1, sky Map_Skyhook_Skybox_Alt
+Map_Snobound: fog BFD5FF 20-100, ambient FFFFFF/DCEBFF/9E9EFD, sun FFFFFF x2 toward 2.83,-2,-3.3, sky Map_Snobound_Skybox
+Map_Split: fog AAD5F5 20-1200, ambient FFFFFF/B6E5FF/80A0E4, sun FFFEF9 x2 toward 2,-2,1, sky Map_Split_Skybox
+Map_Split_Alt: fog FFFFFF 20-1200, ambient FFFFFF/A4A4A4/9F9F9F, sun FFFEF9 x2 toward -1,-1,0, sky Map_Split_Skybox
+Map_Thehunt: fog off, ambient 929393/AEBCE2/C0ACAA, sun C8D1C9 x3 toward -1,-2,-1.5, sky Map_Thehunt_Skybox
+Map_Tutorial: fog FFFFFF 0-800, ambient 7C80FF/D0D6FF/002AFF, sun FFFFFF x3 toward 0.98,-2,-0.3, sky Map_Tutorial_Skybox
+Map_Tutorial_Alt: fog FFFFFF 0-800, ambient 7C80FF/D0D6FF/002AFF, sun FFFFFF x3 toward 0.98,-2,-0.3, sky Map_Tutorial_Skybox
+Map_Ulu: fog DDDDDD 0-350, ambient D4CDC7/828282/8E8E8E, sun E5E5E5 x3 toward -0.9,-2,-0.25, sky Map_Ulu_Skybox
+Map_Ulu_Alt: fog 525252 0-100, ambient D4CDC7/828282/8E8E8E, sun E5E5E5 x1.25 toward -1,-2,-0.25, sky Map_Ulu_Skybox_Alt
+Map_Vultures: fog BE8980 10-800, ambient A47B78/957F7D/957F7D, sun ECE0DB x2.5 toward 2.6,-2,1.7, sky Map_Vultures_Skybox
+Map_Vultures_Alt: fog BE8980 10-300, ambient A47B78/957F7D/957F7D, sun ECE0DB x2.5 toward 1,-2,-5, sky Map_Vultures_Skybox
+Map_Woozy: fog 878787 0-800, ambient A47B78/957F7D/957F7D, sun CCC2BE x3 toward -0.85,-2,-0.25, sky Map_Woozy_Skybox
+Map_Woozy_Alt: fog 878787 0-800, ambient A47B78/957F7D/957F7D, sun CCC2BE x3 toward -2,-2,0, sky Map_Woozy_Skybox
+Other_Mainmenu: fog off, ambient FFFFFF/D0EEFF/80A0E4, sun FFFEF9 x3 toward 1,-2,-2, sky Other_Mainmenu_Skybox
+Other_Mainmenudemo: fog 89B3EC 20-2000, ambient D9CAB5/E3F2FF/83B3F5, sun FFFFFF x1 toward -5,5,1, sky Other_Mainmenudemo_Skybox
