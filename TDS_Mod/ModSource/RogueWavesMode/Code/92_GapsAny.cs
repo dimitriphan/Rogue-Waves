@@ -6,10 +6,12 @@ public static partial class RWTest
 {
     static string AnyId(string name, int rank) { return RogueWavesModeKitDirections.Id("Any", name + (rank > 1 ? rank.ToString() : "")); }
 
-    static void TakeAny(RWPlayer p, string name, int upTo)
+    static void TakeAny(RWPlayer p, string name, int upTo) { TakeRanks(p, "Any", name, upTo); }
+
+    static void TakeRanks(RWPlayer p, string vessel, string name, int upTo)
     {
         for (int r = 1; r <= upTo; r++)
-            RWDirections.Take(p, Bl_Address.Getload("Upgrade", AnyId(name, r)) as Upgradeproperties);
+            RWDirections.Take(p, Bl_Address.Getload("Upgrade", RogueWavesModeKitDirections.Id(vessel, name + (r > 1 ? r.ToString() : ""))) as Upgradeproperties);
     }
 
     static void DropAny(RWPlayer p, string name) { p.Directions.RemoveAll(d => d == AnyId(name, 1) || d == AnyId(name, 2) || d == AnyId(name, 3)); }

@@ -46,6 +46,7 @@ public static class RWVote
         RWDirections.Reset();
         RWCardinals.Reset();
         RWAny.Reset();
+        RWBase.Reset();
         // An objective left running when the last map ended would be judged at this map's opening break (MODE-D2).
         RWObjectives.Reset();
         if (!RWRun.InCampaignMap)

@@ -92,6 +92,17 @@ public static class RWDirections
             Desc = new[] { "Sno Sno slides faster", "Sno Sno slides faster still", "Sno Sno slides much faster" } },
         new RWDirectionDef { Vessel = "Smacky", Name = "Skipping", Display = "Skipping Stones", Stat = "Damage", Amounts = new[] { 0.15f, 0.3f, 0.5f },
             Desc = new[] { "Smacky hits harder", "Smacky hits harder still", "Smacky hits much harder" } },
+        // The rest are no held stat on the vessel: 23_BaseDirections.cs (RWBase) puts them on what each one touches.
+        new RWDirectionDef { Vessel = "Smacky", Name = "Trowel", Display = "Mason's Trowel",
+            Desc = new[] { "Your Walls are sturdier", "Your Walls are sturdier still", "Your Walls are much sturdier, and mend when left alone" } },
+        new RWDirectionDef { Vessel = "Snosno", Name = "Shovel", Display = "Snow Shovel",
+            Desc = new[] { "The snow Sno Sno leaves is deeper", "The snow he leaves is deeper still", "The snow he leaves is much deeper" } },
+        new RWDirectionDef { Vessel = "Boutman", Name = "Wormtin", Display = "Worm Tin",
+            Desc = new[] { "Boutbro builds for less", "Boutbro builds for less still", "Boutbro builds for much less" } },
+        new RWDirectionDef { Vessel = "Fie", Name = "Opensign", Display = "Open Sign",
+            Desc = new[] { "Your Rest Stop keeps one more regular", "It keeps two more", "It keeps three more" } },
+        new RWDirectionDef { Vessel = "Buster", Name = "Leash", Display = "Long Leash",
+            Desc = new[] { "Buster keeps his full reach while dashing", "His dash hits land harder", "His dash hits land much harder" } },
     };
 
     public static readonly float[] CostScale = { 1f, 0.9f, 0.8f, 0.7f };

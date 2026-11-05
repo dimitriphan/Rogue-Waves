@@ -118,7 +118,9 @@ public static class RWAny
         c.Fireship = Top(p, "Fireship");
     }
 
-    static int Top(RWPlayer p, string name) { return Mathf.Clamp(RWDirections.Top(p, "Any", name), 0, 3); }
+    static int Top(RWPlayer p, string name) { return Top(p, "Any", name); }
+
+    public static int Top(RWPlayer p, string vessel, string name) { return Mathf.Clamp(RWDirections.Top(p, vessel, name), 0, 3); }
 
     // ---------------------------------------------------------------- the offers (Spare Compass)
 
