@@ -99,8 +99,8 @@ seeds float round the crown; the Stonehenge faces its placement direction; the S
 
 ## Upgrade trees
 
-Added to the sheet, not built yet (Dimitri accepted it 2026-11-04, `docs/reports/UPGRADE_GAPS_2026-11-04.md` Y1): the
-Sapling's third level-3 upgrade, **Wood Wide Web** (Yellow 250; scope `07` holds its numbers).
+The Sapling's third level-3 upgrade, **Wood Wide Web** (Dimitri accepted it 2026-11-04, `docs/reports/UPGRADE_GAPS_2026-11-04.md`
+Y1), is built since 2026-11-05 (`YosseleWeb`); not yet run on the PC.
 
 The sheet gives four levels (`1:` to `4:`). They map to the game's tiers 2 to 5; level 4 is the tier-5 capstone. Every
 choice of a level leads to every choice of the next, except where the sheet writes **Leads to** (the Tree's level 1).
@@ -111,7 +111,7 @@ Dandelion Tree:   Seed Packets2 -> Picky Placement3 / Garden Weeds3
                   Demand and Supply2 -> D-MDS3 / Picky Placement3 / Garden Weeds3
                   (any level 2) -> Bonsai4 / Rubbery Shell4 -> Dandelion Storm5
 Stonehenge:       Verdant Spread2 / Vine Blockade2 -> Natural Remedy3 / Opportunistic Carnivore3 / Easy Target3 -> Entangling Roots4 / Obsidian4 -> Monument5
-Pachira Sapling:  Focused Roots2 / Sustaining Practices2 -> Grafted3 / Forest Project3 / Spontaneous Mulch3 -> Connected Roots4 / Harvesting Season4 -> Fortifying Roots5 / Softening Roots5
+Pachira Sapling:  Focused Roots2 / Sustaining Practices2 -> Grafted3 / Forest Project3 / Spontaneous Mulch3 -> Connected Roots4 / Harvesting Season4 / Wood Wide Web4 -> Fortifying Roots5 / Softening Roots5
 ```
 
 | Building | Upgrade (key) | In-game line | Params | Cost |
@@ -146,6 +146,7 @@ Pachira Sapling:  Focused Roots2 / Sustaining Practices2 -> Grafted3 / Forest Pr
 | Sapling | Spontaneous Mulch (Mulch3) | Foes dying within range increase mining speed | +20% for 5 s, a new death refreshes it, no stacking | Red 40, Yellow 30 |
 | Sapling | Connected Roots (Connected4) | Takes hits for buildings nearby while healthy | above 50% health it takes 65% of each hit on its owner's buildings in its Range (other Saplings left out) | Yellow 120, Blue 300 |
 | Sapling | Harvesting Season (Harvest4) | Fruit is worth double | fruit +100% | Yellow 400 |
+| Sapling | Wood Wide Web (Web4) | Trades spare aura for what you lack | once a second a player, however many Saplings have it: while the most-held colour is 100 or more above the least-held, 2 of the most become 1 of the least | Yellow 250 |
 | Sapling | Fortifying Roots (Fortifying5) | Increases health and grants a damage reduction aura to nearby buildings. | max health +100%; its team's buildings in its Range and itself take 30% less damage | Blue 2300, Yellow 1000 |
 | Sapling | Softening Roots (Softening5) | Softens the ore around it | every node in its Range takes one hit fewer to pay out, never fewer than 1 | Yellow 2300, Red 1000 |
 

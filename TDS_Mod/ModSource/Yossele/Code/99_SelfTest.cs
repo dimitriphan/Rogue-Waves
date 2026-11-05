@@ -419,6 +419,17 @@ public static partial class YosseleSelfTest
     }
 
     // Tide foes keep coming while the test runs and can fell a building; each section starts by saying which still stand.
+    // The title the game's panel shows for a building, read as Game_Ui does: the client's skin entry's Displayname, else
+    // the being's name.
+    static string PanelName(Entity_Master m)
+    {
+        if (m == null || m.Client == null)
+            return "";
+        if (!string.IsNullOrEmpty(m.Client.Visentry.Displayname))
+            return m.Client.Visentry.Displayname;
+        return m.Client.Beingobject != null && m.Client.Beingobject.Entity != null ? m.Client.Beingobject.Entity.Display_Name : "";
+    }
+
     static void Standing(Dictionary<string, YosseleBuilding> built)
     {
         List<string> gone = new List<string>();
@@ -1193,7 +1204,7 @@ public static partial class YosseleSelfTest
         // 11. Pachira Sapling: its roots mine every node in reach; fully grown, a strike that pays a node out drops an aura
         // fruit beside the node, worth Attackspeed x Damage x 15 of each aura, and walking over it pays.
         // Focused Roots -> Grafted -> Connected Roots -> Fortifying Roots; a second Sapling: Sustaining Practices -> Forest
-        // Project -> Harvesting Season -> Softening Roots; a third: Spontaneous Mulch.
+        // Project -> Harvesting Season -> Softening Roots; a third: Focused Roots -> Spontaneous Mulch -> Wood Wide Web.
         if (sapling != null && ModKitUtil.Alive(sapling.Master))
         {
             List<Entity_Master> ores = sapling.Ores();
@@ -1397,6 +1408,22 @@ public static partial class YosseleSelfTest
                 float mulch = 0.25f * (1f + YosseleData.PachiraGrowSpeed * third.Growth + 0.8f + 0.2f);
                 Check("Spontaneous Mulch: a foe falling in range gives +20% mining speed", spawned && third.Mulched > mulched && third.Mulching && Mathf.Abs(third.Stat("Attackspeed", 0f) - mulch) < 0.01f,
                     "mulched " + mulched + "->" + third.Mulched + ", mining speed " + F(third.Stat("Attackspeed", 0f)) + " (want " + F(mulch) + ")");
+                // Wood Wide Web: 500 more Red than the rest, so Red is the most-held; 2 Red become 1 of the least-held.
+                yield return Upgrade(third, "Web4", owner);
+                Check("Spontaneous Mulch -> Wood Wide Web", Has(third, "Web4"));
+                float g = Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Resourcegainmultiplier : 1f;
+                float lift = Mathf.Max(Res(owner, "Blueaura"), Res(owner, "Yellowaura")) + 500f - Res(owner, "Redaura");
+                if (lift > 0f && g > 0f)
+                    Helper_Resources.Giveresource(new Link_Resource { Name = "Redaura", Amount = lift / g }, owner, Helper_Resources.Styles.Default);
+                int trades = YosseleWeb.Trades;
+                yield return Until(() => YosseleWeb.Trades > trades, 2.5f);
+                Check("Wood Wide Web trades once a second while the gap is 100 or more", YosseleWeb.Trades > trades, (YosseleWeb.Trades - trades) + " trades");
+                string low = Res(owner, "Blueaura") <= Res(owner, "Yellowaura") ? "Blueaura" : "Yellowaura";
+                float r0 = Res(owner, "Redaura"), l0 = Res(owner, low);
+                bool traded = YosseleWeb.Trade(owner, third);
+                Check("... 2 of the most-held become 1 of the least-held", traded && Mathf.Abs(Res(owner, "Redaura") - r0 + 2f) < 0.01f && Mathf.Abs(Res(owner, low) - l0 - 1f) < 0.01f,
+                    "Red " + F(r0) + "->" + F(Res(owner, "Redaura")) + ", " + low + " " + F(l0) + "->" + F(Res(owner, low)));
+                Kill(third.Master);   // so it trades no more through the later steps' purse reads
             }
             else
                 ModKitTest.Setup("third Sapling", "could not build one");
@@ -1594,6 +1621,7 @@ public static partial class YosseleSelfTest
                 ModKitDirections.Grant(hm, direction(YosseleData.Mushboomkits[0].Name));
                 yield return Wait(1.2f);
                 Check("Mother of Mushrooms reads back", player.Mushrooms == 1, "rank " + player.Mushrooms);
+                Check("... and the Tree's panel reads Primordial Mushboom (its skin)", boom.Look.StartsWith(YosseleData.ShiftLooks[1][0]) && PanelName(boom.Master) == YosseleData.ShiftLooks[1][1], "skin " + boom.Look + ", panel " + PanelName(boom.Master));
                 YosseleCannonBrain sporer = null;
                 foreach (YosseleBuilding b in YosseleServer.Buildings) if (b is YosseleCannonBrain && b.Started && ModKitUtil.Alive(b.Master)) sporer = (YosseleCannonBrain)b;
                 int[] burstStacks = new int[1];
@@ -1629,11 +1657,13 @@ public static partial class YosseleSelfTest
                 foreach (YosseleData.Shift s in YosseleData.Mushboomkits) Helper_Entitytools.Removeupgrade(hm, direction(s.Name));
                 yield return Wait(1.2f);
                 Check("with its ranks gone, the Tree shoots seeds again", player.Mushrooms == 0, "rank " + player.Mushrooms);
+                Check("... under its own name again", !boom.Look.StartsWith(YosseleData.ShiftLooks[1][0]) && PanelName(boom.Master) != YosseleData.ShiftLooks[1][1], "skin " + boom.Look + ", panel " + PanelName(boom.Master));
                 float limit0 = ModKitUtil.Stat(boom.Master, "Range", 0f), dmg0 = ModKitUtil.Stat(boom.Master, "Damage", 0f);
                 string slotBefore = hero.Slot;
                 ModKitDirections.Grant(hm, direction(YosseleData.Seasons[0].Name));
                 yield return Wait(1.5f);
                 Check("Dandelion Season: 70% damage and range", player.Season == 1 && Mathf.Abs(ModKitUtil.Stat(boom.Master, "Damage", 0f) - dmg0 * YosseleData.SaplingShare) < 0.05f * Mathf.Max(1f, dmg0) && ModKitUtil.Stat(boom.Master, "Range", 0f) < limit0, "damage " + F(dmg0) + " -> " + F(ModKitUtil.Stat(boom.Master, "Damage", 0f)) + ", range " + F(limit0) + " -> " + F(ModKitUtil.Stat(boom.Master, "Range", 0f)));
+                Check("Dandelion Season: the Tree's panel reads Dandelion Sapling", boom.Look.StartsWith(YosseleData.ShiftLooks[0][0]) && PanelName(boom.Master) == YosseleData.ShiftLooks[0][1], "skin " + boom.Look + ", panel " + PanelName(boom.Master));
                 Check("Dandelion Season: the Tree's button stays while one stands", hm.Commandlistserver.ContainsKey(YosseleData.DandelionOption) && hero.Slot == YosseleData.Dandelion, "slot before " + slotBefore + ", now " + hero.Slot);
                 Vector3 secondAt = Spot(hm, YosseleContent.Beings[YosseleData.Dandelion], 4f);
                 YosseleDandelionBrain sapling2 = null;

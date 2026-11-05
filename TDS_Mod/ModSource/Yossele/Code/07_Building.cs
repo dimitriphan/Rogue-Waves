@@ -118,9 +118,17 @@ public abstract class YosseleBuilding : MonoBehaviour
     {
         Growth = Mathf.Clamp(stages, 0, Max);
         ModKitCounter.Set(Master, YosseleData.GrowthStat, Growth);
-        ModKitUtil.Skin(Master, Growth > 0 ? YosseleData.GrowthStat + Growth : "");
+        ShowSkin();
         OnGrowth();
     }
+
+    // The Growth skin, after a Shift's prefix when the building has one (YosseleData.ShiftLooks).
+    protected void ShowSkin()
+    {
+        ModKitUtil.Skin(Master, SkinPrefix + (Growth > 0 ? YosseleData.GrowthStat + Growth : ""));
+    }
+
+    protected virtual string SkinPrefix { get { return ""; } }
 
     // ---------------------------------------------------------------- commands and upgrades
 

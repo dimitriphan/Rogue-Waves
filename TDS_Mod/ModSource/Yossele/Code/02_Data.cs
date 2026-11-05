@@ -111,6 +111,14 @@ public static class YosseleData
 
     // The Tree's Directions (docs/scope/11), one per rank, Clash 1: a player holds one of the two.
     public class Shift { public string Name, Display, Desc; }
+    // What a shifted Tree shows (decision 15): a skin per Shift, prefixed to the Growth skins, so the panel reads the new
+    // name (the title is the skin entry's Displayname, Game_Ui); the model is the Shift's own once there is one, else the
+    // Tree's. Skin, panel name, model.
+    public static readonly string[][] ShiftLooks =
+    {
+        new[] { "Sapling", "Dandelion Sapling", "Yossele_Dandelionsapling" },
+        new[] { "Mushboom", "Primordial Mushboom", "Yossele_Mushboom" },
+    };
     public const float ShiftCheck = 0.5f;           // how often a Tree looks at them
 
     // Dandelion Season: no limit on Trees, each acts as a Dandelion Sapling. Its stages do less than a Tree's so its range
@@ -295,11 +303,12 @@ public static class YosseleData
             {
                 U(Pachira, "Focused", 2, "Focused Roots", "Mines one node much faster", "Focused_Multi=0.8", "Yellowaura=30", "Grafted3,Forest3,Mulch3"),
                 U(Pachira, "Sustaining", 2, "Sustaining Practices", "Mends itself from the ore around it", "Sustain_Heal=0.5", "Yellowaura=25;Blueaura=10", "Grafted3,Forest3,Mulch3"),
-                U(Pachira, "Grafted", 3, "Grafted", "Pick the colour of its fruit", "Grafted_Efficiency=0.7", "Redaura=60;Blueaura=60;Yellowaura=60", "Connected4,Harvest4"),
-                U(Pachira, "Forest", 3, "Forest Project", "Mines faster for each other Sapling nearby", "Forest_Per=0.1;Forest_Range=4", "Yellowaura=140", "Connected4,Harvest4"),
-                U(Pachira, "Mulch", 3, "Spontaneous Mulch", "Foes dying within range increase mining speed", "Mulch_Bonus=0.2;Mulch_Last=5", "Redaura=40;Yellowaura=30", "Connected4,Harvest4"),
+                U(Pachira, "Grafted", 3, "Grafted", "Pick the colour of its fruit", "Grafted_Efficiency=0.7", "Redaura=60;Blueaura=60;Yellowaura=60", "Connected4,Harvest4,Web4"),
+                U(Pachira, "Forest", 3, "Forest Project", "Mines faster for each other Sapling nearby", "Forest_Per=0.1;Forest_Range=4", "Yellowaura=140", "Connected4,Harvest4,Web4"),
+                U(Pachira, "Mulch", 3, "Spontaneous Mulch", "Foes dying within range increase mining speed", "Mulch_Bonus=0.2;Mulch_Last=5", "Redaura=40;Yellowaura=30", "Connected4,Harvest4,Web4"),
                 U(Pachira, "Connected", 4, "Connected Roots", "Takes hits for buildings nearby while healthy", "Connected_Share=0.65;Connected_Above=0.5", "Yellowaura=120;Blueaura=300", "Fortifying5,Softening5"),
                 U(Pachira, "Harvest", 4, "Harvesting Season", "Fruit is worth double", "Harvest_Multi=1", "Yellowaura=400", "Fortifying5,Softening5"),
+                U(Pachira, "Web", 4, "Wood Wide Web", "Trades spare aura for what you lack", "Web_Gap=100;Web_Take=2;Web_Give=1", "Yellowaura=250", "Fortifying5,Softening5"),
                 U(Pachira, "Fortifying", 5, "Fortifying Roots", "Increases health and grants a damage reduction aura to nearby buildings.", "Health_Multi=1;Fortify_Armor=0.3", "Blueaura=2300;Yellowaura=1000", ""),
                 U(Pachira, "Softening", 5, "Softening Roots", "Softens the ore around it", "Soften_Points=1", "Yellowaura=2300;Redaura=1000", ""),
             }
@@ -353,6 +362,6 @@ public static class YosseleData
         new[] { "Carnivore", "" }, new[] { "Easy", "" }, new[] { "Roots", "" }, new[] { "Monument", "Damage taken" },
         new[] { "Focused", "Mining speed" }, new[] { "Sustain", "Healing" }, new[] { "Grafted", "Fruit value" }, new[] { "Forest", "" },
         new[] { "Mulch", "" }, new[] { "Connected", "" }, new[] { "Harvest", "Fruit value" }, new[] { "Fortify", "Aura" },
-        new[] { "Soften", "" }, new[] { "Radius", "Radius" }, new[] { "Spores", "Spores" },
+        new[] { "Soften", "" }, new[] { "Web", "" }, new[] { "Radius", "Radius" }, new[] { "Spores", "Spores" },
     };
 }

@@ -174,8 +174,8 @@ public static class YosseleContent
     // A building's look: its model, plus one skin per Growth stage ("Growth1".."Growth<max>") that adds the sprouts and
     // leaves round its foot (Yossele_Growth<n>; stages past the last drawn one reuse it), on the base model and every
     // upgrade's. The skin is synced state, so every player sees the stage. An upgrade without a model of its own shows
-    // the building's.
-    static Visualproperties TowerVisual(Visualproperties template, string name, string model, string display, int stages, string fallback)
+    // the building's. The Tree's (shifts) also get each Shift's skins, "Sapling", "Sapling" + "Growth<n>" and so on.
+    static Visualproperties TowerVisual(Visualproperties template, string name, string model, string display, int stages, string fallback, bool shifts = false)
     {
         Visualproperties vp = UnityEngine.Object.Instantiate(template);
         YosseleUtil.Retag(vp, name);
@@ -184,6 +184,14 @@ public static class YosseleContent
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
         for (int g = 1; g <= stages; g++)
             ModKitUtil.AddSkin(vp, YosseleData.GrowthStat + g, ModelEntry(template.Default, model, display, "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
+        if (shifts)
+            foreach (string[] look in YosseleData.ShiftLooks)
+            {
+                string shape = ModKitAssets.Quiet(look[2]) != null ? look[2] : model;
+                ModKitUtil.AddSkin(vp, look[0], ModelEntry(template.Default, shape, look[1], null, fallback));
+                for (int g = 1; g <= stages; g++)
+                    ModKitUtil.AddSkin(vp, look[0] + YosseleData.GrowthStat + g, ModelEntry(template.Default, shape, look[1], "Yossele_Growth" + Mathf.Min(g, YosseleData.GrowthSkins), fallback));
+            }
         return vp;
     }
 
@@ -425,7 +433,7 @@ public static class YosseleContent
         ent.Tags.Add(b.Tag);
         ent.Defaultstat = Stats(te.Defaultstat, b.Id + "_Statproperties", b.Stats);
         Register("Mob", ent.Defaultstat);
-        ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display, b.Max, fallback);
+        ent.Defaultvisual = TowerVisual(te.Defaultvisual, b.Id + "_Visualproperties", b.Id, b.Display, b.Max, fallback, b.Id == YosseleData.Dandelion);
         Register("Mob", ent.Defaultvisual);
 
         // Upgrade tree, curated like the shipped ones: explicit next options per upgrade, costs from YosseleData.
@@ -453,7 +461,7 @@ public static class YosseleContent
             up.Priority = u.Tier;
             up.Aiscripts = new List<UnityEngine.Object>();
             up.Costs = ModKitUtil.Costs(u.Costs);
-            up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), u.Model, u.Display, b.Max, b.Id);
+            up.Ent_Visual = TowerVisual(te.Defaultvisual, u.Id.Replace("_Upgradeobject", "_Visualproperties"), u.Model, u.Display, b.Max, b.Id, b.Id == YosseleData.Dandelion);
             Register("Upgrade", up.Ent_Visual);
             up.Defaultparam = new List<Upgradeproperties.Param>();
             up.Defaultparams = new Dictionary<string, float>();

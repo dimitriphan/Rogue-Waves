@@ -194,6 +194,17 @@ public static partial class SpoolSelfTest
     static string F(float v) { return v.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture); }
     static string Vec(Vector3 v) { return "{\"x\":" + F(v.x) + ",\"y\":" + F(v.y) + ",\"z\":" + F(v.z) + "}"; }
 
+    // The title the game's panel shows for a building, read as Game_Ui does: the client's skin entry's Displayname, else
+    // the being's name.
+    static string PanelName(Entity_Master m)
+    {
+        if (m == null || m.Client == null)
+            return "";
+        if (!string.IsNullOrEmpty(m.Client.Visentry.Displayname))
+            return m.Client.Visentry.Displayname;
+        return m.Client.Beingobject != null && m.Client.Beingobject.Entity != null ? m.Client.Beingobject.Entity.Display_Name : "";
+    }
+
     static float Res(long owner, string name)
     {
         GameObject player;
@@ -1132,6 +1143,7 @@ public static partial class SpoolSelfTest
                 sewer.Held = 0;
                 ModKitDirections.Grant(hm, direction(SpoolData.Sewingmachines[0].Name));
                 yield return Wait(1.2f);
+                Check("Sewing Machine: the Loom's panel reads Sewing Machine (its skin)", sewer.Master.Skin.Value.ToString() == SpoolData.SewingSkin && PanelName(sewer.Master) == SpoolData.SewingDisplay, "skin " + sewer.Master.Skin.Value + ", panel " + PanelName(sewer.Master));
                 Check("Sewing Machine: the Looms mine half as fast again", player.Sewing == 1 && sewer.Sewing && Mathf.Abs(ModKitUtil.Stat(sewer.Master, "Attackspeed", 0f) - aspd0 * (1f + SpoolData.SewingMine)) < 0.01f, F(aspd0) + " -> " + F(ModKitUtil.Stat(sewer.Master, "Attackspeed", 0f)));
                 sewer.Held = 0;
                 sent0 = sewer.Sent;

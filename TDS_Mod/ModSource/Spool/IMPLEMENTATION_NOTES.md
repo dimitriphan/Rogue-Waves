@@ -188,7 +188,9 @@ the vessel's brain copies the ranks held to `SpoolPlayer` twice a second, and th
 - **Sewing Machine** (`Sewingmachine`, Clash 1): every Loom of that player keeps its model, gets a held +50% Attackspeed
   (default, docs/scope/11), spins no Thread (Thread it already holds can still be collected, and Direct Line does nothing),
   and each Tide heals its team's Mob and Tower around itself, Cores left out: radius 3 heal 10, radius 3 heal 20, radius 5 heal 20.
-  The Loom's panel still says Loom: a new name there needs a skin entry with its own `Displayname`, more than the one line allowed.
+  Since 2026-11-05 (B8, decision 15) its panel says **Sewing Machine**: the Loom's visuals (base and every upgrade's) carry a
+  `Sewing` skin whose entry's `Displayname` is the panel's title (`Game_Ui`), and the Loom shows it while its player holds
+  the Direction. The model stays the Loom's until A1 draws `Spool_Sewingmachine`, which the skin then takes on its own.
 
 With none held the numbers and behaviour are today's. Measured in game on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`): selling a Crafted refunds 65, 80 and 100%, rank III mends around it, a Sewing Machine's Looms mine half as fast again and spin no Thread, and it mends 10 and 20 each Tide.
 

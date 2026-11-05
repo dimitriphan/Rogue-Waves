@@ -39,6 +39,7 @@ public static class YosseleServer
             YosseleFruit.Reset();
             YosseleHooks.Reset();
             YosseleSoftening.Reset();
+            YosseleWeb.Reset();
             YosseleFriends.Reset();
             ModKitUtil.ForgetLooks(true);
             if (ge != null)
@@ -56,6 +57,7 @@ public static class YosseleServer
         Step("fruit", YosseleFruit.Update);
         Step("hooks", () => YosseleHooks.Update(Buildings));
         Step("softening", () => YosseleSoftening.Update(Buildings));
+        Step("web", () => YosseleWeb.Update(Buildings));
         Step("friends", YosseleFriends.Update);
     }
 

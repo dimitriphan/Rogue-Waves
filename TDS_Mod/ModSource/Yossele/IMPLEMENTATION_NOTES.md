@@ -1,5 +1,14 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-05: Wood Wide Web and the Shift names
+
+Compiled, not yet run in game: the Sapling's **Wood Wide Web** (`Web4`, Yellow 250, after Grafted, Forest Project or
+Spontaneous Mulch, leading to the level 4 pair): `YosseleWeb`, once a second a player however many Saplings have it, while
+the most-held colour is 100 or more above the least-held, gives the game's own `Giveresource` -2 of the most and +1 of the
+least (divided by the map's gain, which `Give` multiplies by, so the purse moves by exactly 2 and 1). Its model is the
+Sapling's until the art PR. A shifted Tree's panel says Dandelion Sapling or Primordial Mushboom (B8, "Directions" below).
+For the PC: the self-test's Wood Wide Web and panel-name lines; the purse after a minute with one colour far ahead.
+
 ## 2026-11-05: the decisions' build items
 
 Compiled, not yet run in game: Monument's Cleanse strips only foes' debuffs (`YosseleHooks.Watch`: each Stonehenge is
@@ -262,7 +271,11 @@ and keeps held modifiers, and with none held it makes none. Defaults are in `02_
   2 per stack and loses them (rank III loses half, rounded up, for the full damage). A stage adds 0.5 tiles in place of 20%;
   rank II +25% Range. The Tree's seed upgrades do nothing while it is a Mushboom; its Range upgrades still add.
 
-Same model and panel name for both, and the Bonsai stays a seed-firing Bonsai. It compiled, with and without
+Since 2026-11-05 (B8, decision 15) a shifted Tree's panel reads **Dandelion Sapling** or **Primordial Mushboom**: the Tree's
+visuals (base and every upgrade's) carry a skin per Shift, `Sapling`/`Mushboom` and the same with each Growth stage
+(`YosseleData.ShiftLooks`, `YosseleBuilding.ShowSkin`), whose entry's `Displayname` is the panel's title (`Game_Ui`). The
+model stays the Tree's until A1 draws `Yossele_Dandelionsapling` and `Yossele_Mushboom`, which the skins then take on
+their own. The Bonsai stays a seed-firing Bonsai under its own name. It compiled, with and without
 `YOSSELE_SELFTEST`. Measured in game on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`): the burst takes 2 a stack and the stacks go, rank III leaves half, Dandelion Season does 70% damage and range and allows a second Tree. Viral Outbreak, Cordyceps and Hallucinogen fired by their rates in the same run.
 
 ## Gap to the 2026-10-20 sheet: closed in 0.2.0-dev
