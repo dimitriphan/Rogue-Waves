@@ -1,0 +1,926 @@
+{
+ "low": [
+  {
+   "map": 1,
+   "power": 1.15,
+   "directions": 1.15,
+   "cardinals": 1.0,
+   "held": {
+    "Cut Costs": 2
+   },
+   "bought": 0,
+   "dentures": 0
+  },
+  {
+   "map": 2,
+   "power": 1.335,
+   "directions": 1.288,
+   "cardinals": 1.036,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 1
+   },
+   "bought": 1,
+   "dentures": 0
+  },
+  {
+   "map": 3,
+   "power": 1.489,
+   "directions": 1.342,
+   "cardinals": 1.109,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2,
+    "Spring Tide": 1
+   },
+   "bought": 3,
+   "dentures": 0
+  },
+  {
+   "map": 4,
+   "power": 1.632,
+   "directions": 1.36,
+   "cardinals": 1.2,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2,
+    "Spring Tide": 1,
+    "Tidal Mend": 1
+   },
+   "bought": 7,
+   "dentures": 0
+  },
+  {
+   "map": 5,
+   "power": 1.748,
+   "directions": 1.378,
+   "cardinals": 1.269,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2,
+    "Spring Tide": 1,
+    "Tidal Mend": 1,
+    "Skipping Stones": 1
+   },
+   "bought": 10,
+   "dentures": 0
+  },
+  {
+   "map": 6,
+   "power": 1.843,
+   "directions": 1.432,
+   "cardinals": 1.287,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 1,
+    "Skipping Stones": 1,
+    "Barnacle Coat": 1
+   },
+   "bought": 11,
+   "dentures": 0
+  },
+  {
+   "map": 7,
+   "power": 1.95,
+   "directions": 1.444,
+   "cardinals": 1.351,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 1,
+    "Skipping Stones": 1,
+    "Barnacle Coat": 1,
+    "Compound Interest": 1
+   },
+   "bought": 13,
+   "dentures": 2
+  },
+  {
+   "map": 8,
+   "power": 2.018,
+   "directions": 1.45,
+   "cardinals": 1.392,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 1,
+    "Skipping Stones": 1,
+    "Barnacle Coat": 1,
+    "Compound Interest": 1,
+    "Made of Tougher Stuff": 1
+   },
+   "bought": 13,
+   "dentures": 5
+  },
+  {
+   "map": 9,
+   "power": 2.103,
+   "directions": 1.468,
+   "cardinals": 1.432,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 1,
+    "Skipping Stones": 1,
+    "Barnacle Coat": 1,
+    "Compound Interest": 1,
+    "Made of Tougher Stuff": 1
+   },
+   "bought": 15,
+   "dentures": 6
+  },
+  {
+   "map": 10,
+   "power": 2.203,
+   "directions": 1.528,
+   "cardinals": 1.442,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 2,
+    "Skipping Stones": 1,
+    "Barnacle Coat": 2,
+    "Compound Interest": 1,
+    "Made of Tougher Stuff": 1
+   },
+   "bought": 16,
+   "dentures": 6
+  }
+ ],
+ "mid": [
+  {
+   "map": 1,
+   "power": 1.315,
+   "directions": 1.25,
+   "cardinals": 1.052,
+   "held": {
+    "Cut Costs": 2
+   },
+   "bought": 1,
+   "dentures": 0
+  },
+  {
+   "map": 2,
+   "power": 1.782,
+   "directions": 1.54,
+   "cardinals": 1.157,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2
+   },
+   "bought": 3,
+   "dentures": 0
+  },
+  {
+   "map": 3,
+   "power": 2.124,
+   "directions": 1.57,
+   "cardinals": 1.353,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2,
+    "Spring Tide": 1
+   },
+   "bought": 9,
+   "dentures": 0
+  },
+  {
+   "map": 4,
+   "power": 2.445,
+   "directions": 1.67,
+   "cardinals": 1.464,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 1
+   },
+   "bought": 13,
+   "dentures": 0
+  },
+  {
+   "map": 5,
+   "power": 2.656,
+   "directions": 1.7,
+   "cardinals": 1.562,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 1,
+    "Skipping Stones": 1
+   },
+   "bought": 13,
+   "dentures": 5
+  },
+  {
+   "map": 6,
+   "power": 2.91,
+   "directions": 1.84,
+   "cardinals": 1.582,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 2,
+    "Skipping Stones": 2,
+    "Barnacle Coat": 2
+   },
+   "bought": 13,
+   "dentures": 6
+  },
+  {
+   "map": 7,
+   "power": 3.105,
+   "directions": 1.9,
+   "cardinals": 1.634,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 3,
+    "Skipping Stones": 2,
+    "Barnacle Coat": 2,
+    "Compound Interest": 1
+   },
+   "bought": 16,
+   "dentures": 6
+  },
+  {
+   "map": 8,
+   "power": 3.304,
+   "directions": 1.99,
+   "cardinals": 1.66,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 2,
+    "Compound Interest": 1,
+    "Made of Tougher Stuff": 1
+   },
+   "bought": 18,
+   "dentures": 6
+  },
+  {
+   "map": 9,
+   "power": 3.45,
+   "directions": 2.07,
+   "cardinals": 1.667,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 2
+   },
+   "bought": 19,
+   "dentures": 6
+  },
+  {
+   "map": 10,
+   "power": 3.467,
+   "directions": 2.08,
+   "cardinals": 1.667,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 19,
+   "dentures": 6
+  }
+ ],
+ "high": [
+  {
+   "map": 1,
+   "power": 1.645,
+   "directions": 1.645,
+   "cardinals": 1.0,
+   "held": {
+    "Cut Costs": 3
+   },
+   "bought": 0,
+   "dentures": 0
+  },
+  {
+   "map": 2,
+   "power": 2.4,
+   "directions": 1.81,
+   "cardinals": 1.326,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2
+   },
+   "bought": 6,
+   "dentures": 0
+  },
+  {
+   "map": 3,
+   "power": 3.025,
+   "directions": 1.96,
+   "cardinals": 1.543,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1
+   },
+   "bought": 10,
+   "dentures": 2
+  },
+  {
+   "map": 4,
+   "power": 3.546,
+   "directions": 2.005,
+   "cardinals": 1.769,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 1
+   },
+   "bought": 14,
+   "dentures": 6
+  },
+  {
+   "map": 5,
+   "power": 4.027,
+   "directions": 2.245,
+   "cardinals": 1.794,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 3,
+    "Skipping Stones": 2
+   },
+   "bought": 15,
+   "dentures": 6
+  },
+  {
+   "map": 6,
+   "power": 4.499,
+   "directions": 2.44,
+   "cardinals": 1.844,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 2
+   },
+   "bought": 18,
+   "dentures": 6
+  },
+  {
+   "map": 7,
+   "power": 4.77,
+   "directions": 2.575,
+   "cardinals": 1.852,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3
+   },
+   "bought": 19,
+   "dentures": 6
+  },
+  {
+   "map": 8,
+   "power": 4.853,
+   "directions": 2.62,
+   "cardinals": 1.852,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 19,
+   "dentures": 6
+  },
+  {
+   "map": 9,
+   "power": 4.853,
+   "directions": 2.62,
+   "cardinals": 1.852,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 19,
+   "dentures": 6
+  },
+  {
+   "map": 10,
+   "power": 4.853,
+   "directions": 2.62,
+   "cardinals": 1.852,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 19,
+   "dentures": 6
+  }
+ ],
+ "low_ramp": [
+  {
+   "map": 1,
+   "power": 1.15,
+   "directions": 1.15,
+   "cardinals": 1.0,
+   "held": {
+    "Cut Costs": 2
+   },
+   "bought": 0,
+   "dentures": 0
+  },
+  {
+   "map": 2,
+   "power": 1.335,
+   "directions": 1.288,
+   "cardinals": 1.036,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 1
+   },
+   "bought": 1,
+   "dentures": 0
+  },
+  {
+   "map": 3,
+   "power": 1.489,
+   "directions": 1.342,
+   "cardinals": 1.109,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2,
+    "Spring Tide": 1
+   },
+   "bought": 3,
+   "dentures": 0
+  },
+  {
+   "map": 4,
+   "power": 1.571,
+   "directions": 1.36,
+   "cardinals": 1.155,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2,
+    "Spring Tide": 1,
+    "Tidal Mend": 1
+   },
+   "bought": 5,
+   "dentures": 0
+  },
+  {
+   "map": 5,
+   "power": 1.661,
+   "directions": 1.438,
+   "cardinals": 1.155,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1,
+    "Tidal Mend": 2,
+    "Skipping Stones": 1
+   },
+   "bought": 5,
+   "dentures": 0
+  },
+  {
+   "map": 6,
+   "power": 1.729,
+   "directions": 1.468,
+   "cardinals": 1.178,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 2,
+    "Skipping Stones": 1,
+    "Barnacle Coat": 1
+   },
+   "bought": 6,
+   "dentures": 0
+  },
+  {
+   "map": 7,
+   "power": 1.785,
+   "directions": 1.516,
+   "cardinals": 1.178,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 2,
+    "Skipping Stones": 2,
+    "Barnacle Coat": 2,
+    "Compound Interest": 1
+   },
+   "bought": 6,
+   "dentures": 0
+  },
+  {
+   "map": 8,
+   "power": 1.841,
+   "directions": 1.534,
+   "cardinals": 1.2,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 2,
+    "Skipping Stones": 2,
+    "Barnacle Coat": 2,
+    "Compound Interest": 2,
+    "Made of Tougher Stuff": 1
+   },
+   "bought": 7,
+   "dentures": 0
+  },
+  {
+   "map": 9,
+   "power": 1.906,
+   "directions": 1.588,
+   "cardinals": 1.2,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 2,
+    "Barnacle Coat": 2,
+    "Compound Interest": 2,
+    "Made of Tougher Stuff": 2
+   },
+   "bought": 7,
+   "dentures": 0
+  },
+  {
+   "map": 10,
+   "power": 1.956,
+   "directions": 1.63,
+   "cardinals": 1.2,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 2,
+    "Made of Tougher Stuff": 2
+   },
+   "bought": 7,
+   "dentures": 0
+  }
+ ],
+ "mid_ramp": [
+  {
+   "map": 1,
+   "power": 1.315,
+   "directions": 1.25,
+   "cardinals": 1.052,
+   "held": {
+    "Cut Costs": 2
+   },
+   "bought": 1,
+   "dentures": 0
+  },
+  {
+   "map": 2,
+   "power": 1.782,
+   "directions": 1.54,
+   "cardinals": 1.157,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 2
+   },
+   "bought": 3,
+   "dentures": 0
+  },
+  {
+   "map": 3,
+   "power": 2.004,
+   "directions": 1.64,
+   "cardinals": 1.222,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 1
+   },
+   "bought": 5,
+   "dentures": 0
+  },
+  {
+   "map": 4,
+   "power": 2.171,
+   "directions": 1.73,
+   "cardinals": 1.255,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 2
+   },
+   "bought": 6,
+   "dentures": 0
+  },
+  {
+   "map": 5,
+   "power": 2.356,
+   "directions": 1.83,
+   "cardinals": 1.288,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 2,
+    "Tidal Mend": 3,
+    "Skipping Stones": 2
+   },
+   "bought": 7,
+   "dentures": 0
+  },
+  {
+   "map": 6,
+   "power": 2.524,
+   "directions": 1.96,
+   "cardinals": 1.288,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 2
+   },
+   "bought": 7,
+   "dentures": 0
+  },
+  {
+   "map": 7,
+   "power": 2.719,
+   "directions": 2.01,
+   "cardinals": 1.353,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 1
+   },
+   "bought": 9,
+   "dentures": 0
+  },
+  {
+   "map": 8,
+   "power": 2.854,
+   "directions": 2.06,
+   "cardinals": 1.386,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 1
+   },
+   "bought": 10,
+   "dentures": 0
+  },
+  {
+   "map": 9,
+   "power": 2.936,
+   "directions": 2.08,
+   "cardinals": 1.412,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 11,
+   "dentures": 0
+  },
+  {
+   "map": 10,
+   "power": 2.991,
+   "directions": 2.08,
+   "cardinals": 1.438,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 12,
+   "dentures": 0
+  }
+ ],
+ "high_ramp": [
+  {
+   "map": 1,
+   "power": 1.645,
+   "directions": 1.645,
+   "cardinals": 1.0,
+   "held": {
+    "Cut Costs": 3
+   },
+   "bought": 0,
+   "dentures": 0
+  },
+  {
+   "map": 2,
+   "power": 2.299,
+   "directions": 1.915,
+   "cardinals": 1.201,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3
+   },
+   "bought": 3,
+   "dentures": 0
+  },
+  {
+   "map": 3,
+   "power": 2.738,
+   "directions": 2.065,
+   "cardinals": 1.326,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3
+   },
+   "bought": 6,
+   "dentures": 0
+  },
+  {
+   "map": 4,
+   "power": 3.029,
+   "directions": 2.215,
+   "cardinals": 1.368,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3
+   },
+   "bought": 7,
+   "dentures": 0
+  },
+  {
+   "map": 5,
+   "power": 3.432,
+   "directions": 2.365,
+   "cardinals": 1.451,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3
+   },
+   "bought": 9,
+   "dentures": 0
+  },
+  {
+   "map": 6,
+   "power": 3.793,
+   "directions": 2.485,
+   "cardinals": 1.526,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3
+   },
+   "bought": 11,
+   "dentures": 0
+  },
+  {
+   "map": 7,
+   "power": 4.017,
+   "directions": 2.575,
+   "cardinals": 1.56,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3
+   },
+   "bought": 12,
+   "dentures": 0
+  },
+  {
+   "map": 8,
+   "power": 4.216,
+   "directions": 2.605,
+   "cardinals": 1.618,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 2
+   },
+   "bought": 13,
+   "dentures": 1
+  },
+  {
+   "map": 9,
+   "power": 4.372,
+   "directions": 2.62,
+   "cardinals": 1.669,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 13,
+   "dentures": 3
+  },
+  {
+   "map": 10,
+   "power": 4.437,
+   "directions": 2.62,
+   "cardinals": 1.694,
+   "held": {
+    "Cut Costs": 3,
+    "Cheap Refits": 3,
+    "Spring Tide": 3,
+    "Tidal Mend": 3,
+    "Skipping Stones": 3,
+    "Barnacle Coat": 3,
+    "Compound Interest": 3,
+    "Made of Tougher Stuff": 3
+   },
+   "bought": 13,
+   "dentures": 4
+  }
+ ]
+}

@@ -325,6 +325,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   free in the lobby; Voice in a Bottle reaching the Bouthouse; 16 self-test checks that couldn't fail), 23 left: three
   for his word (§5.1), the rest for a PC fact. Pitfall #158 (first-frame looks lost). Compiled here (every part, release
   and test builds, 0 errors; editors clean), not run on the PC: the next round runs its §6.
+  2026-11-05: the mode's balance reviewed against the base game at his word ("with stacking cardinals and directions,
+  the difficulty should be higher than base game"; `docs/reports/MODE_BALANCE_REVIEW_2026-11-05.md`): as built every
+  map asks less than a Downpour run and the gap widens (carried power about x3.5 by map 10, foe pressure x1.5); the
+  proposals F1-F5, X1, C1 and P1 wait for his word (scope `04` and `06` numbers are his); the balance simulator sweep
+  thread starts from set S2 with `docs/reports/mode_balance_2026-11-05/`. Simulated here, no code changed.
 - **Next (2026-11-03):** Dimitri's eye and his answers: the chart, VENDCINT, Uloe and the campaign by hand (`docs/reports/BUILD_2026-11-03.md` §6), the `~defaults~`
   in scope `04`, `10`-`14`; one online evening, which now covers the campaign's votes and shop too; the balance round's picks (Open questions 3-4 and 6), after he tries a wall of his own on Purlest and Woozy (`docs/reports/BALANCE_RERUN_2026-11-03.md` §9). Release 1 below is unchanged.
 - **Online evening, since 2026-11-04:** only what loopback can't be is left: Steam's Join Game and lobby, a real network's delay and drop, a person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5). Wherever "one online evening" appears below, read that.

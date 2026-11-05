@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `MODE_BALANCE_REVIEW_2026-11-05.md` | 2026-11-05 | The mode's balance against the base game: as built every map is easier than a Downpour run, and more so as the campaign goes on (what a player carries grows about x3.5, the foes x1.5); why (the Tide 15 finish line, map health that adds to elites', the modifier turn); proposals F1-F5, X1, C1 with defaults, simulated (`mode_balance_2026-11-05/`, 207 setups): the starting set S2 holds maps 1-5 near the base game and ends about twice as hard. No number changed |
 | `CODE_REVIEW_MAX_2026-11-05.md` | 2026-11-05 | The code review at max, at Dimitri's word: every part against the engine again, 58 new findings, 35 fixed (17 shipping, 16 self-test checks that couldn't fail, 2 build guards), kit 1.11, pitfalls #157-#158; three calls for him, the rest for the PC |
 | `SPOOL_DEFAULTS_2026-11-05.md` | 2026-11-05 | Spool's open defaults (PLAN Open question 2) in plain words, S1-S17, each with Claude's pick |
 | `DECISIONS_APPLIED_2026-11-05.md` | 2026-11-05 | His answers to the open decisions: each one, what the scope took, and the hand-off for the build thread, art and the balance sweep |

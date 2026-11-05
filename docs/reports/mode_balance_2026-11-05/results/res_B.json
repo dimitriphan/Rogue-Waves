@@ -1,0 +1,984 @@
+[
+ {
+  "name": "R smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.265,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R smacky purlest map2",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.36,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R smacky purlest map3",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.428,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.664,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R smacky purlest map5",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.73,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R smacky purlest map6",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.835,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 1.694,
+  "win": 0.0,
+  "mean_t": 13.083333333333334
+ },
+ {
+  "name": "R smacky purlest map8",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 2.948,
+  "win": 0.0,
+  "mean_t": 9.5
+ },
+ {
+  "name": "R smacky purlest map9",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 3.435,
+  "win": 0.0,
+  "mean_t": 12.083333333333334
+ },
+ {
+  "name": "R smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 4.754,
+  "win": 0.0,
+  "mean_t": 6.0
+ },
+ {
+  "name": "F2 smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 0.265,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "F2 smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 0.396,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "F2 smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 0.498,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "F2 smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 0.639,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "F1 smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 0.265,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "F1 smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 0.444,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "F1 smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 1.372,
+  "win": 0.0,
+  "mean_t": 15.0
+ },
+ {
+  "name": "F1 smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 3.306,
+  "win": 0.0,
+  "mean_t": 7.75
+ },
+ {
+  "name": "R smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 3.306,
+  "win": 0.0,
+  "mean_t": 5.833333333333333
+ },
+ {
+  "name": "R smacky woozy map2",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 3.569,
+  "win": 0.0,
+  "mean_t": 4.0
+ },
+ {
+  "name": "R smacky woozy map3",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 5.755,
+  "win": 0.0,
+  "mean_t": 4.0
+ },
+ {
+  "name": "R smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 6.212,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "R smacky woozy map5",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 13.091,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "R smacky woozy map6",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 6.967,
+  "win": 0.0,
+  "mean_t": 1.9166666666666667
+ },
+ {
+  "name": "R smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 8.275,
+  "win": 0.0,
+  "mean_t": 1.8333333333333333
+ },
+ {
+  "name": "R smacky woozy map8",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 9.828,
+  "win": 0.0,
+  "mean_t": 1.3333333333333333
+ },
+ {
+  "name": "R smacky woozy map9",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 9.28,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "R smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 15.848,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "F2 smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 3.306,
+  "win": 0.0,
+  "mean_t": 5.833333333333333
+ },
+ {
+  "name": "F2 smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 4.158,
+  "win": 0.0,
+  "mean_t": 3.1666666666666665
+ },
+ {
+  "name": "F2 smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 5.131,
+  "win": 0.0,
+  "mean_t": 2.8333333333333335
+ },
+ {
+  "name": "F2 smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 6.835,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "F1 smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 3.306,
+  "win": 0.0,
+  "mean_t": 5.833333333333333
+ },
+ {
+  "name": "F1 smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 5.331,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "F1 smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 6.212,
+  "win": 0.0,
+  "mean_t": 1.9166666666666667
+ },
+ {
+  "name": "F1 smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 11.898,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "R smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 2.05,
+  "win": 0.0,
+  "mean_t": 11.166666666666666
+ },
+ {
+  "name": "R smacky thehunt map2",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 2.171,
+  "win": 0.0,
+  "mean_t": 5.833333333333333
+ },
+ {
+  "name": "R smacky thehunt map3",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 3.182,
+  "win": 0.0,
+  "mean_t": 4.166666666666667
+ },
+ {
+  "name": "R smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 3.927,
+  "win": 0.0,
+  "mean_t": 3.75
+ },
+ {
+  "name": "R smacky thehunt map5",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 5.979,
+  "win": 0.0,
+  "mean_t": 3.6666666666666665
+ },
+ {
+  "name": "R smacky thehunt map6",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 4.664,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "R smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 6.967,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "R smacky thehunt map8",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 8.275,
+  "win": 0.0,
+  "mean_t": 1.3333333333333333
+ },
+ {
+  "name": "R smacky thehunt map9",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 9.104,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "R smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 10.813,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "F2 smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 2.05,
+  "win": 0.0,
+  "mean_t": 11.166666666666666
+ },
+ {
+  "name": "F2 smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 2.892,
+  "win": 0.0,
+  "mean_t": 6.333333333333333
+ },
+ {
+  "name": "F2 smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 4.239,
+  "win": 0.0,
+  "mean_t": 5.0
+ },
+ {
+  "name": "F2 smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "compound": true
+  },
+  "cand": "F2",
+  "w50": 4.575,
+  "win": 0.0,
+  "mean_t": 3.8333333333333335
+ },
+ {
+  "name": "F1 smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 2.05,
+  "win": 0.0,
+  "mean_t": 11.166666666666666
+ },
+ {
+  "name": "F1 smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 3.501,
+  "win": 0.0,
+  "mean_t": 4.0
+ },
+ {
+  "name": "F1 smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 5.539,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "F1 smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)"
+  },
+  "cand": "F1",
+  "w50": 6.579,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "R yossele purlest map1",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.181,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R yossele purlest map4",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.396,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R yossele purlest map7",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 9.828,
+  "win": 0.0,
+  "mean_t": 14.833333333333334
+ },
+ {
+  "name": "R yossele purlest map10",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 15.848,
+  "win": 0.0,
+  "mean_t": 7.083333333333333
+ },
+ {
+  "name": "R yossele woozy map1",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 0.327,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "R yossele woozy map4",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 1.76,
+  "win": 0.0,
+  "mean_t": 14.583333333333334
+ },
+ {
+  "name": "R yossele woozy map7",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 12.6,
+  "win": 0.0,
+  "mean_t": 12.0
+ },
+ {
+  "name": "R yossele woozy map10",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true
+  },
+  "cand": "R",
+  "w50": 15.848,
+  "win": 0.0,
+  "mean_t": 5.5
+ }
+]

@@ -1,0 +1,132 @@
+| Map | asked as built | asked F2 | asked F1 | asked R | asked S | asked S2 | carried low / mid / high | carried mid, price ramp |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | 0.41 | 0.40 | 0.40 | 0.40 | 0.63 | 1.05 | 1.15 / 1.31 / 1.65 | 1.31 |
+| 2 | 0.43 |  |  | 0.47 | 0.74 | 1.45 | 1.33 / 1.78 / 2.40 | 1.78 |
+| 3 | 0.47 |  |  | 0.66 | 1.06 | 1.70 | 1.49 / 2.12 / 3.02 | 2.00 |
+| 4 | 0.47 | 0.56 | 0.67 | 0.84 | 1.36 | 1.77 | 1.63 / 2.44 / 3.55 | 2.17 |
+| 5 | 0.49 |  |  | 1.28 | 2.12 | 2.34 | 1.75 / 2.66 / 4.03 | 2.36 |
+| 6 | 0.54 |  |  | 1.00 | 1.67 | 3.49 | 1.84 / 2.91 / 4.50 | 2.52 |
+| 7 | 0.59 | 0.74 | 1.20 | 1.53 | 2.64 | 2.74 | 1.95 / 3.10 / 4.77 | 2.72 |
+| 8 | 0.59 |  |  | 2.07 | 3.60 | 3.54 | 2.02 / 3.30 / 4.85 | 2.85 |
+| 9 | 0.60 |  |  | 2.20 | 3.94 | 4.80 | 2.10 / 3.45 / 4.85 | 2.94 |
+| 10 | 0.63 | 0.90 | 2.12 | 3.11 | 5.15 | 5.93 | 2.20 / 3.47 / 4.85 | 2.99 |
+
+Effective difficulty D = asked / carried (mid); 1 = the base game
+| Map | as built | R | S | S2 | S2, low power | S2, high power |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 0.31 | 0.31 | 0.48 | 0.80 | 0.91 | 0.64 |
+| 2 | 0.24 | 0.26 | 0.42 | 0.81 | 1.08 | 0.63 |
+| 3 | 0.22 | 0.33 | 0.53 | 0.85 | 1.14 | 0.62 |
+| 4 | 0.19 | 0.39 | 0.63 | 0.82 | 1.13 | 0.59 |
+| 5 | 0.19 | 0.54 | 0.90 | 0.99 | 1.41 | 0.68 |
+| 6 | 0.18 | 0.40 | 0.66 | 1.38 | 2.02 | 0.92 |
+| 7 | 0.19 | 0.56 | 0.97 | 1.01 | 1.54 | 0.68 |
+| 8 | 0.18 | 0.72 | 1.26 | 1.24 | 1.92 | 0.84 |
+| 9 | 0.18 | 0.75 | 1.34 | 1.64 | 2.52 | 1.10 |
+| 10 | 0.18 | 1.04 | 1.72 | 1.98 | 3.03 | 1.34 |
+
+Per setup (W50; base W50 in brackets)
+mode smacky purlest map1 0.268 (1.684) win at power 1: 1.00
+mode smacky purlest map4 0.337 (1.684) win at power 1: 1.00
+mode smacky purlest map7 0.411 (1.684) win at power 1: 1.00
+mode smacky purlest map10 0.468 (1.684) win at power 1: 1.00
+mode smacky woozy map1 3.353 (5.137) win at power 1: 0.00
+mode smacky woozy map4 3.581 (5.137) win at power 1: 0.00
+mode smacky woozy map7 4.083 (5.137) win at power 1: 0.00
+mode smacky woozy map10 4.656 (5.137) win at power 1: 0.00
+mode smacky thehunt map1 2.05 (3.14) win at power 1: 0.00
+mode smacky thehunt map4 2.337 (3.14) win at power 1: 0.00
+mode smacky thehunt map7 3.245 (3.14) win at power 1: 0.00
+mode smacky thehunt map10 3.14 (3.14) win at power 1: 0.00
+mode yossele purlest map1 0.181 (7.87) win at power 1: 1.00
+mode yossele purlest map4 0.22 (7.87) win at power 1: 1.00
+mode yossele purlest map7 0.259 (7.87) win at power 1: 1.00
+mode yossele purlest map10 0.349 (7.87) win at power 1: 1.00
+mode yossele woozy map1 0.326 (7.87) win at power 1: 1.00
+mode yossele woozy map4 0.397 (7.87) win at power 1: 1.00
+mode yossele woozy map7 0.517 (7.87) win at power 1: 1.00
+mode yossele woozy map10 0.609 (7.87) win at power 1: 1.00
+mode yossele thehunt map1 7.87 (7.87) win at power 1: 0.00
+mode yossele thehunt map4 7.87 (7.87) win at power 1: 0.00
+mode yossele thehunt map7 7.87 (7.87) win at power 1: 0.00
+mode yossele thehunt map10 7.87 (7.87) win at power 1: 0.00
+mode spool purlest map1 1.338 (7.87) win at power 1: 0.00
+mode spool purlest map4 1.684 (7.87) win at power 1: 0.00
+mode spool purlest map7 2.846 (7.87) win at power 1: 0.00
+mode spool purlest map10 2.941 (7.87) win at power 1: 0.00
+R smacky purlest map1 0.265 (1.684) win at power 1: 1.00
+R smacky purlest map4 0.664 (1.684) win at power 1: 1.00
+R smacky purlest map7 1.694 (1.684) win at power 1: 0.00
+R smacky purlest map10 4.754 (1.684) win at power 1: 0.00
+F2 smacky purlest map1 0.265 (1.684) win at power 1: 1.00
+F2 smacky purlest map4 0.396 (1.684) win at power 1: 1.00
+F2 smacky purlest map7 0.498 (1.684) win at power 1: 1.00
+F2 smacky purlest map10 0.639 (1.684) win at power 1: 1.00
+F1 smacky purlest map1 0.265 (1.684) win at power 1: 1.00
+F1 smacky purlest map4 0.444 (1.684) win at power 1: 1.00
+F1 smacky purlest map7 1.372 (1.684) win at power 1: 0.00
+F1 smacky purlest map10 3.306 (1.684) win at power 1: 0.00
+R smacky woozy map1 3.306 (5.137) win at power 1: 0.00
+R smacky woozy map4 6.212 (5.137) win at power 1: 0.00
+R smacky woozy map7 8.275 (5.137) win at power 1: 0.00
+R smacky woozy map10 15.848 (5.137) win at power 1: 0.00
+F2 smacky woozy map1 3.306 (5.137) win at power 1: 0.00
+F2 smacky woozy map4 4.158 (5.137) win at power 1: 0.00
+F2 smacky woozy map7 5.131 (5.137) win at power 1: 0.00
+F2 smacky woozy map10 6.835 (5.137) win at power 1: 0.00
+F1 smacky woozy map1 3.306 (5.137) win at power 1: 0.00
+F1 smacky woozy map4 5.331 (5.137) win at power 1: 0.00
+F1 smacky woozy map7 6.212 (5.137) win at power 1: 0.00
+F1 smacky woozy map10 11.898 (5.137) win at power 1: 0.00
+R smacky thehunt map1 2.05 (3.14) win at power 1: 0.00
+R smacky thehunt map4 3.927 (3.14) win at power 1: 0.00
+R smacky thehunt map7 6.967 (3.14) win at power 1: 0.00
+R smacky thehunt map10 10.813 (3.14) win at power 1: 0.00
+F2 smacky thehunt map1 2.05 (3.14) win at power 1: 0.00
+F2 smacky thehunt map4 2.892 (3.14) win at power 1: 0.00
+F2 smacky thehunt map7 4.239 (3.14) win at power 1: 0.00
+F2 smacky thehunt map10 4.575 (3.14) win at power 1: 0.00
+F1 smacky thehunt map1 2.05 (3.14) win at power 1: 0.00
+F1 smacky thehunt map4 3.501 (3.14) win at power 1: 0.00
+F1 smacky thehunt map7 5.539 (3.14) win at power 1: 0.00
+F1 smacky thehunt map10 6.579 (3.14) win at power 1: 0.00
+R yossele purlest map1 0.181 (7.87) win at power 1: 1.00
+R yossele purlest map4 0.396 (7.87) win at power 1: 1.00
+R yossele purlest map7 9.828 (7.87) win at power 1: 0.00
+R yossele purlest map10 15.848 (7.87) win at power 1: 0.00
+R yossele woozy map1 0.327 (7.87) win at power 1: 1.00
+R yossele woozy map4 1.76 (7.87) win at power 1: 0.00
+R yossele woozy map7 12.6 (7.87) win at power 1: 0.00
+R yossele woozy map10 15.848 (7.87) win at power 1: 0.00
+S smacky purlest map1 0.429 (1.684) win at power 1: 1.00
+S smacky purlest map4 1.065 (1.684) win at power 1: 0.08
+S smacky purlest map7 2.937 (1.684) win at power 1: 0.00
+S smacky purlest map10 8.266 (1.684) win at power 1: 0.00
+S smacky woozy map1 5.135 (5.137) win at power 1: 0.00
+S smacky woozy map4 10.167 (5.137) win at power 1: 0.00
+S smacky woozy map7 14.158 (5.137) win at power 1: 0.00
+S smacky woozy map10 23.753 (5.137) win at power 1: 0.00
+S smacky thehunt map1 3.061 (3.14) win at power 1: 0.00
+S smacky thehunt map4 6.316 (3.14) win at power 1: 0.00
+S smacky thehunt map7 11.998 (3.14) win at power 1: 0.00
+S smacky thehunt map10 18.917 (3.14) win at power 1: 0.00
+S yossele purlest map1 0.255 (7.87) win at power 1: 1.00
+S yossele purlest map4 0.585 (7.87) win at power 1: 1.00
+S yossele purlest map7 16.365 (7.87) win at power 1: 0.00
+S yossele purlest map10 23.753 (7.87) win at power 1: 0.00
+S yossele woozy map1 0.516 (7.87) win at power 1: 1.00
+S yossele woozy map4 2.594 (7.87) win at power 1: 0.00
+S yossele woozy map7 20.549 (7.87) win at power 1: 0.00
+S yossele woozy map10 23.753 (7.87) win at power 1: 0.00
+S2 smacky purlest map1 0.695 (1.684) win at power 1: 1.00
+S2 smacky purlest map4 1.367 (1.684) win at power 1: 0.00
+S2 smacky purlest map7 2.308 (1.684) win at power 1: 0.00
+S2 smacky purlest map10 8.928 (1.684) win at power 1: 0.00
+S2 smacky woozy map1 8.547 (5.137) win at power 1: 0.00
+S2 smacky woozy map4 11.857 (5.137) win at power 1: 0.00
+S2 smacky woozy map7 19.163 (5.137) win at power 1: 0.00
+S2 smacky woozy map10 27.769 (5.137) win at power 1: 0.00
+S2 smacky thehunt map1 5.289 (3.14) win at power 1: 0.00
+S2 smacky thehunt map4 9.327 (3.14) win at power 1: 0.00
+S2 smacky thehunt map7 12.659 (3.14) win at power 1: 0.00
+S2 smacky thehunt map10 22.817 (3.14) win at power 1: 0.00

@@ -1,0 +1,686 @@
+[
+ {
+  "name": "S smacky purlest map1",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 0.429,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "S smacky purlest map2",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 0.573,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "S smacky purlest map3",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 0.676,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "S smacky purlest map4",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 1.065,
+  "win": 0.08333333333333333,
+  "mean_t": 15.083333333333334
+ },
+ {
+  "name": "S smacky purlest map5",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 1.206,
+  "win": 0.0,
+  "mean_t": 8.333333333333334
+ },
+ {
+  "name": "S smacky purlest map6",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 1.366,
+  "win": 0.0,
+  "mean_t": 8.0
+ },
+ {
+  "name": "S smacky purlest map7",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 2.937,
+  "win": 0.0,
+  "mean_t": 7.0
+ },
+ {
+  "name": "S smacky purlest map8",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 5.135,
+  "win": 0.0,
+  "mean_t": 6.0
+ },
+ {
+  "name": "S smacky purlest map9",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 6.316,
+  "win": 0.0,
+  "mean_t": 5.0
+ },
+ {
+  "name": "S smacky purlest map10",
+  "v": "smacky",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 8.266,
+  "win": 0.0,
+  "mean_t": 5.0
+ },
+ {
+  "name": "S smacky woozy map1",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 5.135,
+  "win": 0.0,
+  "mean_t": 4.5
+ },
+ {
+  "name": "S smacky woozy map2",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 5.695,
+  "win": 0.0,
+  "mean_t": 3.0
+ },
+ {
+  "name": "S smacky woozy map3",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 9.359,
+  "win": 0.0,
+  "mean_t": 2.4166666666666665
+ },
+ {
+  "name": "S smacky woozy map4",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 10.167,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "S smacky woozy map5",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 21.866,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "S smacky woozy map6",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 11.752,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky woozy map7",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 14.158,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky woozy map8",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 17.057,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky woozy map9",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 16.365,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky woozy map10",
+  "v": "smacky",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 23.753,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky thehunt map1",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 3.061,
+  "win": 0.0,
+  "mean_t": 6.0
+ },
+ {
+  "name": "S smacky thehunt map2",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 2,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 3.395,
+  "win": 0.0,
+  "mean_t": 4.0
+ },
+ {
+  "name": "S smacky thehunt map3",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 3,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 5.135,
+  "win": 0.0,
+  "mean_t": 4.0
+ },
+ {
+  "name": "S smacky thehunt map4",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 6.316,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "S smacky thehunt map5",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 5,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 9.755,
+  "win": 0.0,
+  "mean_t": 2.0
+ },
+ {
+  "name": "S smacky thehunt map6",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 6,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 7.931,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky thehunt map7",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 11.998,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky thehunt map8",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 8,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 14.454,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky thehunt map9",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 9,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 16.03,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S smacky thehunt map10",
+  "v": "smacky",
+  "m": "thehunt",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 18.917,
+  "win": 0.0,
+  "mean_t": 1.0
+ },
+ {
+  "name": "S yossele purlest map1",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 0.255,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "S yossele purlest map4",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 0.585,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "S yossele purlest map7",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 16.365,
+  "win": 0.0,
+  "mean_t": 13.0
+ },
+ {
+  "name": "S yossele purlest map10",
+  "v": "yossele",
+  "m": "purlest",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 23.753,
+  "win": 0.0,
+  "mean_t": 6.083333333333333
+ },
+ {
+  "name": "S yossele woozy map1",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 1,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 0.516,
+  "win": 1.0,
+  "mean_t": 16.0
+ },
+ {
+  "name": "S yossele woozy map4",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 4,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 2.594,
+  "win": 0.0,
+  "mean_t": 12.0
+ },
+ {
+  "name": "S yossele woozy map7",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 7,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 20.549,
+  "win": 0.0,
+  "mean_t": 7.0
+ },
+ {
+  "name": "S yossele woozy map10",
+  "v": "yossele",
+  "m": "woozy",
+  "kind": "mode",
+  "map": 10,
+  "table": {
+   "finish": "lambda k: 15 + round(15 * (k - 1) / 9)",
+   "compound": true,
+   "mods_from": 2,
+   "rotate": true,
+   "health_curve": "lambda k: (1.5 + 0.08 * (k - 1)) * (1 + 0.01 * [3, 8, 12, 16, 20, 24, 28, 32, 35, 36][k - 1]) - 1"
+  },
+  "cand": "S",
+  "w50": 23.753,
+  "win": 0.0,
+  "mean_t": 4.083333333333333
+ }
+]
