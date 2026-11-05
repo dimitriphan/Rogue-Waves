@@ -1,7 +1,8 @@
 // Claude's Directions for any vessel (docs/scope/11 (Any), built 2026-11-05; compiled, not yet run in game), host only, in
 // a campaign map. RWDirections holds their sheets (16_Directions.cs); this reads each player's ranks four times a second
 // and puts them on that player's own things, found by owner (kit docs/17 §11.1 rule 2). Hits a Direction adds itself carry
-// Extra in their data, so none of these counts them as the vessel's own (Chain Shot can't feed Notched Oar).
+// Extra in their data, so none of these counts them as the vessel's own (Chain Shot can't feed Notched Oar). Argo's Cleave
+// is the same kind of extra hit, dealt from the vessel: `ExtraHit` skips it too (Dimitri, 2026-11-05).
 //   Wound Spring   the holder's towers: Attackspeed Multi +6 / 12 / 20%                          (Sweep, twice a second)
 //   Fine Sieve     each break after a Tide: 3 / 5 / 8 x the Tide's number of the colour held least, paid to the holder
 //   Spare Hands    the holder's unit buildings: Units +1 / +1 / +2 (the base vessels' own count message after it), Boutman's
@@ -31,6 +32,11 @@ public static class RWAny
     // Every Direction this file and Tide Pool build: the flow self-test leaves them to the gaps part "any".
     public static readonly string[] Names = { "Wound", "Sieve", "Hands", "Kettle", "Chain", "Salt", "Fog", "Clam", "Oar", "Lamp", "Hook", "Compass", "Magpie", "Fireship", "Pool" };
     public const string Extra = "RW_Extra";
+    // Argo's Cleave: the swing's second foe, dealt from the vessel with this in its data (Argo/Code/06_HeroBrain.cs). Not
+    // the vessel's own hit for Notched Oar, Fish Hook, Gutting Knife or the attack counts.
+    public const string ArgoCleave = "Argocleave";
+
+    public static bool ExtraHit(Dictionary<string, float> data) { return data.ContainsKey(Extra) || data.ContainsKey(ArgoCleave); }
     public static readonly float[] WoundSpeed = { 0f, 0.06f, 0.12f, 0.2f };
     public static readonly int[] SieveTimes = { 0, 3, 5, 8 };
     public static readonly int[] HandsUnits = { 0, 1, 1, 2 };
@@ -306,7 +312,7 @@ public static class RWAny
     {
         try
         {
-            if (hit == null || hit.Type != "Hurt" || hit.Data == null || hit.From == null || hit.To == null || hit.Data.ContainsKey(Extra))
+            if (hit == null || hit.Type != "Hurt" || hit.Data == null || hit.From == null || hit.To == null || ExtraHit(hit.Data))
                 return;
             Crew c;
             if (!crews.TryGetValue(ModKitUtil.Owner(hit.From), out c) || c.Vessel != hit.From || !ModKitUtil.IsFoe(hit.To, ModKitUtil.Team(hit.From)))

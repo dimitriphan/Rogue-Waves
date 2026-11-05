@@ -1,4 +1,4 @@
-// Kit 1.12 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.14 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: the Rogue Waves pack registry (docs/PACK.md sections 2-4). Every part of the pack (each vessel, the mode)
 // is its own prefab with its own compiled copy of this file, and parts load in no fixed order. They meet on one
 // DontDestroyOnLoad GameObject, "RogueWaves_Registry", which the first part to boot creates: each part adds one child
@@ -10,7 +10,7 @@
 //   Mark(name)              a one-per-pack job (ModKitFocus): true for the first part to ask, false for the rest
 public static class ModKitPack
 {
-    public const string Kit = "1.12";
+    public const string Kit = "1.14";
     public const string RegistryName = "RogueWaves_Registry";
     static GameObject registry;
 

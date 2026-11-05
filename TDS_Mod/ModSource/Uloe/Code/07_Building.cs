@@ -447,9 +447,12 @@ public class UloeFloodBrain : UloeBuilding
             Link_Modifier m;
             if (slows.TryGetValue(f, out m) && m != null && !m.Dead)
                 continue;
-            if (ModKitUtil.Speed(f) == null)
+            // SlowOn keeps the foe at 10% of its speed or more, under Fog Horn, Tin Whistle or Sap too (pitfall #79); a foe
+            // already at the floor gets none and is tried again next second.
+            m = ModKitUtil.SlowOn(f, slow);
+            if (m == null)
                 continue;
-            slows[f] = Helper_Entitytools.Addmod(f, "Speed", -slow, Helper_Entitytools.Modtypes.Multi, 0f);
+            slows[f] = m;
             Searched++;
         }
         drop.Clear();

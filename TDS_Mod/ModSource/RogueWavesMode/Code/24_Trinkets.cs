@@ -230,7 +230,7 @@ public static class RWTrinkets
     {
         try
         {
-            if (hit == null || hit.Type != "Hurt" || hit.Data == null || hit.From == null || hit.To == null || hit.Data.ContainsKey(RWAny.Extra))
+            if (hit == null || hit.Type != "Hurt" || hit.Data == null || hit.From == null || hit.To == null || RWAny.ExtraHit(hit.Data))
                 return;
             Kit k;
             if (!kits.TryGetValue(ModKitUtil.Owner(hit.From), out k) || k.Vessel != hit.From || k.Knife <= 0 || !ModKitUtil.IsFoe(hit.To, ModKitUtil.Team(hit.From)))
