@@ -8,7 +8,7 @@ using Blockage.Menu;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public static class YosseleSelfTest
+public static partial class YosseleSelfTest
 {
     static int phase;
     static float seen = -1f, step = -1f;
@@ -110,7 +110,11 @@ public static class YosseleSelfTest
         if (phase <= 2 && YosseleServer.Heroes.Count > 0 && Game_Mapvars.Instance != null && ModKitUtil.IsServer)
         {
             phase = 3;
+#if YOSSELE_REVIEW
+            YosseleMod.Instance.StartCoroutine(Review());
+#else
             YosseleMod.Instance.StartCoroutine(Scenario());
+#endif
         }
     }
 
@@ -322,6 +326,10 @@ public static class YosseleSelfTest
     }
 
     static void Kill(Entity_Master e) { if (e != null && e.Beingserver != null) Game_Entity.Instance.Despawn(e.Beingserver, true, "Selftest"); }
+
+    // What this building's upgrades cost against their list price: his save's Voice in a Bottle lowers it on pack buildings since the
+    // stock upgrade AI (kit docs/17 Â§6), and the list price would then fail a check that is doing nothing wrong (round 3).
+    static float PriceScale(Entity_Master m) { Link_Command c; return m != null && m.Commandlistserver != null && m.Commandlistserver.TryGetValue("Upgrade", out c) && c != null ? c.Goalvalue : 1f; }
 
     static IEnumerator Upgrade(YosseleBuilding b, string key, long owner)
     {
@@ -705,10 +713,10 @@ public static class YosseleSelfTest
             yield return Wait(0.4f);
 
             // Upgrades: Sticky Spores -> Viral Outbreak -> Explosive Finish -> Cordyceps.
-            float red = Res(owner, "Redaura");
+            float red = Res(owner, "Redaura"), stickyScale = PriceScale(cannon.Master);
             yield return Upgrade(cannon, "Sticky2", owner);
             float stickyCost = CostOf(YosseleData.Cannon, "Sticky2", "Redaura");
-            Check("Sticky Spores bought and paid (Red " + stickyCost + ")", Has(cannon, "Sticky2") && Mathf.Abs((red - Res(owner, "Redaura")) - stickyCost) < 0.01f, "Red spent " + (red - Res(owner, "Redaura")));
+            Check("Sticky Spores bought and paid (Red " + stickyCost + ")", Has(cannon, "Sticky2") && Mathf.Abs((red - Res(owner, "Redaura")) - stickyCost * stickyScale) < 0.01f, "Red spent " + (red - Res(owner, "Redaura")) + " at price scale " + F(stickyScale));
             yield return Upgrade(cannon, "Finish4", owner);
             Check("a level 3 upgrade is not offered from level 1", !Has(cannon, "Finish4"));
             Entity_Master slowed = SpawnFoe("Enemy_Aegis", cp, 6f, 4f);
