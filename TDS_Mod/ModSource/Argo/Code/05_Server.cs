@@ -11,7 +11,7 @@ public static class ArgoServer
     static readonly Dictionary<long, Ranks> ranks = new Dictionary<long, Ranks>();
 
     // The Direction ranks a player's vessel holds: its brain refreshes them, they stay while it is down.
-    public class Ranks { public int Deepcurrent, Heavysalvo; }
+    public class Ranks { public int Deepcurrent, Heavysalvo, Chumbucket, Pressuregauge; }
 
     // Set by a Miner's Base just before it spawns a Naut (Onspawn fires synchronously inside the spawn call).
     public static ArgoTowerBrain PendingBell;
@@ -197,6 +197,15 @@ public static class ArgoServer
     }
 
     // ---------------------------------------------------------------- Directions (kit 1.7)
+
+    // Whether any player holds Chum Bucket (ArgoHooks then watches every Slowed or Pinned foe).
+    public static bool AnyChum()
+    {
+        foreach (Ranks r in ranks.Values)
+            if (r.Chumbucket > 0)
+                return true;
+        return false;
+    }
 
     public static Ranks RanksOf(long owner)
     {

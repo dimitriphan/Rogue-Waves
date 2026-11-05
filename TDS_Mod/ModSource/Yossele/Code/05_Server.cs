@@ -5,6 +5,7 @@ public class YosselePlayer
     public long Owner;
     public int Fertilizer, Compost, Made, Spent;
     public int Season, Mushrooms;   // Tree Direction ranks the vessel holds: its brain refreshes them, they stay while it is down
+    public int Cutting, Sap, Ivy, Breath, Fairy;   // the other Directions' ranks, the same way
     public bool Unlocked;
     public YosseleHeroBrain Hero;
 }
@@ -41,6 +42,8 @@ public static class YosseleServer
             YosseleSoftening.Reset();
             YosseleWeb.Reset();
             YosseleFriends.Reset();
+            YosseleSap.Reset();
+            YosseleCuttings.Reset();
             ModKitUtil.ForgetLooks(true);
             if (ge != null)
             {
@@ -59,6 +62,7 @@ public static class YosseleServer
         Step("softening", () => YosseleSoftening.Update(Buildings));
         Step("web", () => YosseleWeb.Update(Buildings));
         Step("friends", YosseleFriends.Update);
+        Step("sap", YosseleSap.Update);
     }
 
     static readonly YosseleFaults faults = new YosseleFaults();
@@ -242,7 +246,10 @@ public static class YosseleServer
                 YosseleLog.Info(building.Def.Id + " at " + building.Pos.ToString("F0") + " gone: " + (killed ? "destroyed" : "removed") + " (" + reason + "), Growth " + building.Growth);
                 building.Gone(killed);
                 if (killed)
+                {
+                    YosseleCuttings.Fell(building);
                     ModKitUtil.Vis(master, "Yossele_Towerdown", ModKitUtil.Pos(master), 0);
+                }
                 if (building is YosseleDandelionBrain)
                     Limit(ModKitUtil.Owner(master));
                 return;

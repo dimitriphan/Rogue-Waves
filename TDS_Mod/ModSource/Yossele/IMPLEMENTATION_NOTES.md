@@ -1,5 +1,12 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-05: five new Directions
+
+Compiled, not yet run in game: Claude's five Yossele Directions from scope 11 (`17_Directions.cs`, "Directions" below):
+Cutting Jar, Sap Bucket, Creeping Ivy, Deep Breath and Fairy Ring, with the sheet's numbers. For the PC: the self-test's
+section 12c (`98_Directions.cs`), and by eye the two new looks (`Yossele_Breath` on a charged beam, `Yossele_Fairy` round a
+still Yossele), both made from effects Yossele already has until the art PR.
+
 ## 2026-11-05: Wood Wide Web and the Shift names
 
 Compiled, not yet run in game: the Sapling's **Wood Wide Web** (`Web4`, Yellow 250, after Grafted, Forest Project or
@@ -270,6 +277,30 @@ and keeps held modifiers, and with none held it makes none. Defaults are in `02_
 - **Mother of Mushrooms** (`Mushrooms`): no seeds (`Seeds` shows 0). Every 8 s every foe within Range carrying spores takes
   2 per stack and loses them (rank III loses half, rounded up, for the full damage). A stage adds 0.5 tiles in place of 20%;
   rank II +25% Range. The Tree's seed upgrades do nothing while it is a Mushboom; its Range upgrades still add.
+
+Five more since 2026-11-05 (`17_Directions.cs`; the numbers are scope 11's, in `02_Data.cs`), no `Clash`:
+
+- **Cutting Jar** (`Cuttingjar`, a Shift): a building of the holder's that is destroyed (not sold) at Growth n leaves a
+  cutting (`YosseleCuttings.Fell`, from `YosseleServer.OnDespawn`); the same building built by the same player within
+  half a tile of it within 20 / 20 / 40 s starts at n x 25 / 50 / 75%, rounded down (`YosseleBuilding.Begin` takes it
+  before the upgrades run). A cutting is used once; a new map clears them.
+- **Sap Bucket** (`Sapbucket`): each laser hit (it carries `LaserTag`) slows the foe 15 / 25 / 35% for 2 s, one slow a
+  foe, renewed by each hit and replaced only by a stronger one, with the stock slow look (`YosseleSap`). Rank III: while
+  it lasts, the last sapper's buildings deal 10% more to it (`YosseleHooks.SapOf`, on the foe's hit chain); the vessel's
+  own laser doesn't.
+- **Creeping Ivy** (`Creepingivy`): the Stonehenge's vines reach 1 tile farther, the forward line and Verdant Spread's
+  radius alike (`YosseleHengeBrain.IvyBonus`); rank II: foes on them slow 15% more than the stones' own Slow; rank III:
+  each Tide a Stonehenge stands while its owner holds rank III counts (`IvyTides`), +1 tile every 2 of them, at most +3.
+  The vines spread again when the bonus changes; taken off, tiles already grown stay and keep working until the
+  Stonehenge goes (foes and buildings are looked for out to the farthest spread, `Span`).
+- **Deep Breath** (`Deepbreath`): on the attacker's side of the hit (`Interacthurt` calls `From.Interact` before the
+  target's chain; `YosseleBoosts.OnDealt`, said again every 0.1 s), the first laser hit after a rest deals +40 / 70 /
+  100% (`Damagemulti` on a copy of the hit's data; every hit of that same frame too). A rest is 2 s past the laser's own
+  reload: Yossele fires once every 1 / Attackspeed seconds (2 s at 0.5), so 2 s from the last shot would charge every
+  beam. Rank III: +1 Range while it is charged, gone with the beam.
+- **Fairy Ring** (`Fairyring`): after 1.5 s within 0.1 tiles of one spot, once a second, Yossele and the holder's
+  buildings within 1.5 / 2 / 2.5 tiles mend 1 / 1.5 / 2% of their max health, never past full (`YosseleBoosts.Fairy`,
+  with the `Heal` hit the vessel's regeneration uses); the look shows every 2 s.
 
 Since 2026-11-05 (B8, decision 15) a shifted Tree's panel reads **Dandelion Sapling** or **Primordial Mushboom**: the Tree's
 visuals (base and every upgrade's) carry a skin per Shift, `Sapling`/`Mushboom` and the same with each Growth stage

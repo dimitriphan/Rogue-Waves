@@ -181,6 +181,16 @@ public static class YosseleClient
                     ModKitAssets.Effect("World_Yossele_Fruitpick", Ground(position) + Vector3.up * 0.15f, 1.2f);
                     YosseleAssets.Play("Yossele_Rustle", position, 0.35f);
                     break;
+                // Deep Breath's charged beam lands (number: its rank).
+                case "Yossele_Breath":
+                    ModKitAssets.Effect("World_Yossele_Seedhit", position + Vector3.up * 0.3f, 1.2f + 0.2f * number);
+                    YosseleAssets.Play("Yossele_Pop", position, 0.5f);
+                    break;
+                // Fairy Ring mends round a still Yossele (number: the ring's radius in tiles).
+                case "Yossele_Fairy":
+                    ModKitAssets.Effect("World_Yossele_Grow", Ground(position) + Vector3.up * 0.1f, Mathf.Max(1f, number));
+                    YosseleAssets.Play("Yossele_Mend", position, 0.35f);
+                    break;
                 case "Yossele_Mend":
                     ModKitAssets.Effect("World_Yossele_Mend", position + Vector3.up * 0.3f, 1.5f);
                     YosseleAssets.Play("Yossele_Mend", position, 0.6f);

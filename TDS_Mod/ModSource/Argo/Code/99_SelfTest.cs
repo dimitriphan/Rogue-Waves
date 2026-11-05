@@ -2033,6 +2033,48 @@ public static partial class ArgoSelfTest
                 }
                 Check("Deep Current rank 3: a point past the plain reach is in the water, and wasn't before", dryAtFirst && net.Holds(hold), F(ModKitUtil.Flat(hold, wet)) + " from the pool, plain reach " + F(ArgoData.PoolReach) + ", now " + F(net.Reach));
             }
+            // Chum Bucket: a Slowed foe takes more from an Argo building's hit, nothing more from the vessel's own.
+            ArgoTowerBrain chummer = salvoGun ?? (towers.ContainsKey(ArgoData.Scatter) ? towers[ArgoData.Scatter] : null);
+            Entity_Master chum = chummer != null ? SpeedFoe(ModKitUtil.Pos(chummer.Master), 4f) : null;
+            yield return Wait(0.3f);
+            if (chum == null || !ModKitUtil.Alive(chum)) ModKitTest.Setup("Chum Bucket", chummer == null ? "no Argo tower" : "no foe would spawn");
+            else
+            {
+                ArgoStatus.Clear(chum);
+                float plain = Hit(chummer.Master, chum, 1f);
+                for (int r = 1; r <= 3 && ModKitUtil.Alive(chum); r++)
+                {
+                    ModKitDirections.Grant(hm, direction(ArgoData.Chumbuckets[r - 1].Name));
+                    yield return Wait(1.2f);
+                    // The hit in the frame the foe is slowed is the slowing hit's: no bonus (a tower's own slow lands first).
+                    ArgoStatus.Slowed(chum, 3f);
+                    float fresh = Hit(chummer.Master, chum, 1f);
+                    yield return null;
+                    float held = Hit(chummer.Master, chum, 1f), vessel = Hit(hm, chum, 1f);
+                    float bonus = ArgoData.Chumbuckets[r - 1].Bonus;
+                    Check("Chum Bucket rank " + r + ": a Slowed foe takes +" + F(bonus * 100f) + "% from your towers, not from the vessel, nor on the hit that slows it",
+                        plain > 0f && Mathf.Abs(held - plain * (1f + bonus)) < 0.02f && Mathf.Abs(vessel - plain) < 0.02f && Mathf.Abs(fresh - plain) < 0.02f,
+                        "plain " + F(plain) + ", the slowing hit " + F(fresh) + ", held " + F(held) + ", the vessel's " + F(vessel));
+                    ArgoStatus.Clear(chum);
+                }
+                if (ModKitUtil.Alive(chum)) Game_Entity.Instance.Despawn(chum.Beingserver, false, "Selftest");
+            }
+            // Pressure Gauge: a Drill Rig built now starts 1 + rank Fathoms down (never past its deepest).
+            for (int r = 1; r <= 3; r++)
+            {
+                ModKitDirections.Grant(hm, direction(ArgoData.Pressuregauges[r - 1].Name));
+                yield return Wait(1.2f);
+                Check("Pressure Gauge rank " + r + ": a new Drill Rig starts at Fathom " + (1 + r), ArgoTowerBrain.StartFathom(owner, ArgoData.FathomMax) == 1 + r, "Fathom " + ArgoTowerBrain.StartFathom(owner, ArgoData.FathomMax));
+            }
+            Vector3 gaugeAt = Spot(ModKitUtil.Pos(hm), ArgoContent.Beings[ArgoData.Drill], team, 2.5f, 7f);
+            if (float.IsNaN(gaugeAt.x)) ModKitTest.Setup("Pressure Gauge's Drill Rig", "no free tile");
+            else
+            {
+                yield return Build(hm, ArgoData.Drill, gaugeAt, known, got);
+                yield return Wait(0.5f);
+                Check("Pressure Gauge: the Drill Rig built with rank III stands at Fathom 4", got[0] != null && got[0].Fathom == 4, got[0] != null ? "Fathom " + got[0].Fathom : "not built");
+                if (got[0] != null) Game_Entity.Instance.Despawn(got[0].Master.Beingserver, false, "Selftest");
+            }
         }
         // 9. The journal: Argo's own pages, linked from every vessel's tabs, in one order, no duplicates.
         Logobject page = ArgoContent.Entry.Log;

@@ -117,6 +117,7 @@ public class ArgoTowerBrain : MonoBehaviour
             EnsureCrewCommands(false);
         if (IsDrill)
         {
+            Fathom = StartFathom(ModKitUtil.Owner(Master), FathomMax);
             ApplyFathom(false);
             AimCenter = ModKitUtil.Pos(Master);
             if (ArgoContent.Commands.ContainsKey(ArgoData.AimLink))
@@ -884,6 +885,14 @@ public class ArgoTowerBrain : MonoBehaviour
             ModKitUtil.Vis(Master, "Argo_Fathom", ModKitUtil.Pos(Master), Fathom);
         // The new radius reaches clients now, not at the next Tremor tick (round 1 read a stale one after a sink).
         SyncAim();
+    }
+
+    // Pressure Gauge (a Direction on its owner's vessel): a new Drill Rig starts this many Fathoms down, never past its deepest.
+    public static int StartFathom(long owner, int deepest)
+    {
+        int rank = ArgoServer.RanksOf(owner).Pressuregauge;
+        int below = rank > 0 ? Mathf.RoundToInt(ArgoData.Pressuregauges[rank - 1].Bonus) : 0;
+        return Mathf.Clamp(1 + below, 1, Mathf.Max(deepest, 1));
     }
 
     public void SinkTo(int fathom)

@@ -181,3 +181,15 @@ the Scatter's pin bonus, Wide Bore, Double Barrel, Abyss, Trench, Gusher, Mantle
 control path and the Miner's Base. Dimitri's "build all" (decision 19, 2026-11-05) took them; all fourteen are built
 (the slows in the decisions' build, B13; the rest in the next). Where a table above and `02_Data.cs` differ, the data
 file and scope `09` win; `IMPLEMENTATION_NOTES.md` has the build.
+
+## Directions (scope `11`, Claude's four)
+
+Built as Directions, one upgrade per rank, no `Clash`; the numbers are in `02_Data.cs` and `IMPLEMENTATION_NOTES.md`
+"Directions" has how.
+
+| Direction | Rank I / II / III | Reading |
+|---|---|---|
+| Deep Current | Deep Water reaches +15 / 30 / 50% | For a network led by the holder's pump |
+| Heavy Salvo | Harpoon Guns +10 / 20 / 35% Damage | A held Multi on each gun |
+| Chum Bucket | A Slowed or Pinned foe takes +8 / 15 / 25% from the holder's buildings | On top of the Scatter's own bonus; the hit that slows it doesn't count |
+| Pressure Gauge | A new Drill Rig starts 1 / 2 / 3 Fathoms down | Counted below the first: Fathom 2 / 3 / 4, never past its deepest |

@@ -251,13 +251,28 @@ crew of Nauts, a scatter cannon, a harpoon tower and a drill that sinks deeper e
 
 ## Directions (kit 1.7)
 
-Scope `11` has none of Dimitri's for Argo yet (its NEEDS line), only Claude's four defaults; `ArgoContent.BuildDirections` registers two of them (Deep Current, Heavy Salvo), one upgrade per rank, no
+Scope `11` has none of Dimitri's for Argo yet (its NEEDS line), only Claude's four defaults; `ArgoContent.BuildDirections` registers all four (Deep Current and Heavy Salvo since kit 1.7, Chum Bucket and Pressure Gauge since 2026-11-05), one upgrade per rank, no
 `Clash`. The vessel's brain copies the ranks held to `ArgoServer.RanksOf(owner)` twice a second; they stay while it is down.
 
 - **Deep Current** (`Deepcurrent`): `ArgoData.PoolReach` +15 / 30 / 50% for a network led by that player's pump (0.55 to
   0.825 tiles). The pool's look doesn't change.
 - **Heavy Salvo** (`Heavysalvo`): a held Multi of +10 / 20 / 35% on each Harpoon Gun's Damage, made at its first check after
   it spawns and remade if the rank rises.
+
+- **Chum Bucket** (`Chumbucket`, 2026-11-05): a foe that is Slowed or Pinned (`ArgoStatus.Debuffed`) takes +8 / 15 / 25% from
+  every hit by a building of the holder's (anything with an `ArgoTowerBrain`, traps included), on top of the Scatter
+  Cannon's own bonus on a pinned foe; in `ArgoHooks.OnHurt`, whose handler a foe gets the moment it is slowed or pinned
+  while anyone holds a rank, and keeps while it stays so (`ArgoStatus.Debuffees`, `ArgoHooks.Chummed`). The hit that
+  slows or pins it doesn't count: a tower's own slow lands on the attacker's side of the hit, before the target's
+  chain, so the foe must have been held since an earlier frame (`ArgoStatus.DebuffedBefore`), as the Scatter's bonus
+  reads the status before its pellet's slow.
+- **Pressure Gauge** (`Pressuregauge`, 2026-11-05): a Drill Rig the holder builds starts at Fathom 2 / 3 / 4 (the sheet's
+  "1 / 2 / 3 Fathoms down", counted below the first), never past its deepest (`ArgoTowerBrain.StartFathom`); its
+  Fathom's mining and damage follow as if it had been sunk there.
+
+Chum Bucket and Pressure Gauge compiled with and without `ARGO_SELFTEST`, not yet run in game: the self-test's Chum
+Bucket line (a slowed foe hit by a holder's building, the plain hit beside it, the vessel's own hit unchanged) and
+Pressure Gauge lines (`StartFathom` for ranks 1-3, then a Drill Rig built at rank III standing at Fathom 4).
 
 With none held the numbers and behaviour are today's. Measured in game on 2026-11-04 (`docs/reports/TEST_ROUND_2026-11-04.md`): Heavy Salvo's +10, +20, +35% on the Harpoon Gun's Damage, and Deep Current's reach numbers. A foe past the plain reach couldn't be set up, so the longer reach's effect on a foe isn't seen.
 

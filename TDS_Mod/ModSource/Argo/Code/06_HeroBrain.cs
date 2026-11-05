@@ -135,12 +135,14 @@ public class ArgoHeroBrain : MonoBehaviour
         }
     }
 
-    // The Directions this vessel holds, for what its player's Deep Water and Harpoon Guns do (kit 1.7).
+    // The Directions this vessel holds, for what its player's Deep Water, Harpoon Guns, Drill Rigs and hits on held foes do (kit 1.7).
     void CheckDirections()
     {
         ArgoServer.Ranks r = ArgoServer.RanksOf(ModKitUtil.Owner(Master));
         r.Deepcurrent = ArgoServer.DirectionRank(Master, ArgoData.Deepcurrents[0].Name);
         r.Heavysalvo = ArgoServer.DirectionRank(Master, ArgoData.Heavysalvos[0].Name);
+        r.Chumbucket = ArgoServer.DirectionRank(Master, ArgoData.Chumbuckets[0].Name);
+        r.Pressuregauge = ArgoServer.DirectionRank(Master, ArgoData.Pressuregauges[0].Name);
     }
 
     // The button's look follows the command's Goalstring ("Off" while SONAR recharges), synced through Commandlist.

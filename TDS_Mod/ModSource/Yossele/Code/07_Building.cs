@@ -72,7 +72,8 @@ public abstract class YosseleBuilding : MonoBehaviour
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         BuiltWave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
-        SetGrowth(0);
+        // Cutting Jar: rebuilt on the tile of one that fell, it starts with the cutting's stages (17_Directions.cs).
+        SetGrowth(YosseleCuttings.Take(this));
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         Started2();

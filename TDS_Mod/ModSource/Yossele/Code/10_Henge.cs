@@ -11,19 +11,22 @@
 //                       stones; once per foe.
 //   Obsidian            +200% max health.
 //   Monument            20% less damage taken, and foes' debuffs on it are stripped at once (YosseleHooks).
+// Creeping Ivy (a Direction its owner holds, 17_Directions.cs): +1 tile of reach; rank II: foes on the vines slow 15%
+// more; rank III: +1 tile more for every 2 Tides this Stonehenge stands, at most +3 (IvyBonus).
 public class YosseleHengeBrain : YosseleBuilding
 {
     public Vector3 Facing = Vector3.forward;
     public int Orientation;
     public readonly List<Genitem> Tiles = new List<Genitem>();
     public readonly Dictionary<Entity_Master, float> OnSince = new Dictionary<Entity_Master, float>();
-    public int Snares, Drained, Mended, Marked;
+    public int Snares, Drained, Mended, Marked, IvyTides;
+    int ivyShown, span;
     public float Barrier;
     float nextMendLook;   // the Mend look shows at most every 1.5 seconds per Stonehenge
     readonly List<Entity_Master> snared = new List<Entity_Master>();   // Entangling Roots takes each foe once
     bool faced;   // Begin sets Growth 0 before Started2 has read the facing
 
-    public int Length { get { return 1 + Growth / 2; } }
+    public int Length { get { return 1 + Growth / 2 + IvyBonus; } }
     // How far its vines reach: the forward line, or Verdant Spread's radius (2 steps, 3 at full Growth).
     public int Reach
     {
@@ -31,7 +34,24 @@ public class YosseleHengeBrain : YosseleBuilding
         {
             if (!Has("Verdant"))
                 return Length;
-            return Mathf.RoundToInt(FullGrown ? Param("Verdant_Full", 3f) : Param("Verdant_Reach", 2f));
+            return Mathf.RoundToInt(FullGrown ? Param("Verdant_Full", 3f) : Param("Verdant_Reach", 2f)) + IvyBonus;
+        }
+    }
+
+    // The farthest its vines have spread (tiles already grown stay when Creeping Ivy's reach drops): foes and buildings
+    // are looked for this far out.
+    public int Span { get { return Mathf.Max(span, Mathf.Max(Length, Reach)); } }
+
+    // Creeping Ivy's extra tiles, from the rank its owner holds now.
+    public int IvyBonus
+    {
+        get
+        {
+            int rank = Master != null ? YosseleServer.Player(Owner).Ivy : 0;
+            if (rank <= 0)
+                return 0;
+            int grown = rank >= 3 ? Mathf.Min(YosseleData.IvyMax, Mathf.FloorToInt(IvyTides * YosseleData.IvyPerTide + 0.0001f)) : 0;
+            return YosseleData.IvyReach + grown;
         }
     }
 
@@ -47,11 +67,20 @@ public class YosseleHengeBrain : YosseleBuilding
         Facing = Mathf.Abs(Facing.x) > Mathf.Abs(Facing.z) ? new Vector3(Mathf.Sign(Facing.x), 0f, 0f) : new Vector3(0f, 0f, Mathf.Sign(Facing.z));
         YosseleLog.Info("Stonehenge at " + Pos.ToString("F1") + " faces " + Facing + " (orientation " + Orientation + ")");
         faced = true;
+        ivyShown = IvyBonus;
         Armor();
         Spread();
     }
 
-    protected override void Tick() { }
+    // The vines spread again when Creeping Ivy's reach changes (a rank taken, or rank III's Tides).
+    protected override void Tick()
+    {
+        int ivy = IvyBonus;
+        if (!faced || ivy == ivyShown)
+            return;
+        ivyShown = ivy;
+        Spread();
+    }
 
     protected override void OnGrowth()
     {
@@ -75,6 +104,8 @@ public class YosseleHengeBrain : YosseleBuilding
     // Vine Blockade's barrier, renewed each Tide (a fresh one replaces what is left of the last).
     protected override void OnTide(int wave)
     {
+        if (YosseleServer.Player(Owner).Ivy >= 3)
+            IvyTides++;
         if (!Has("Blockade"))
             return;
         Barrier = Param("Blockade_Share", 0.3f) * ModKitUtil.MaxHealth(Master);
@@ -103,6 +134,7 @@ public class YosseleHengeBrain : YosseleBuilding
         if (home == null)
             return;
         List<Genitem> want = Has("Verdant") ? Around(home, Reach) : Line(home, Facing, Length);
+        span = Mathf.Max(span, Mathf.Max(Length, Reach));
         int added = 0;
         foreach (Genitem g in want)
             if (!Tiles.Contains(g) && YosseleVines.Claim(this, g))
@@ -242,7 +274,7 @@ public class YosseleHengeBrain : YosseleBuilding
     void Remedy(float dt)
     {
         float amount = Param("Remedy_Heal", 0.5f) * Mathf.Max(1, Growth) * dt;
-        float reach = Mathf.Max(Length, Reach) + 1.5f;
+        float reach = Span + 1.5f;
         foreach (Entity_Master b in ModKitUtil.Area(Pos, reach, ModKitUtil.Tagged("Tower")))
         {
             if (b == null || !ModKitUtil.Alive(b) || ModKitUtil.Team(b) != Team || !Covers(ModKitUtil.Pos(b)))
@@ -348,10 +380,10 @@ public static class YosseleVines
             if (henge == null || !henge.Started || henge.Master == null || !ModKitUtil.Alive(henge.Master))
                 continue;
             List<Entity_Master> on = new List<Entity_Master>();
-            foreach (Entity_Master foe in ModKitUtil.FoesNear(henge.Master, henge.Pos, Mathf.Max(henge.Length, henge.Reach) + 1.5f))
+            foreach (Entity_Master foe in ModKitUtil.FoesNear(henge.Master, henge.Pos, henge.Span + 1.5f))
                 if (henge.Covers(ModKitUtil.Pos(foe)))
                     on.Add(foe);
-            float slow = henge.Stat("Slow", 0.15f);
+            float slow = henge.Stat("Slow", 0.15f) + (YosseleServer.Player(henge.Owner).Ivy >= 2 ? YosseleData.IvySlow : 0f);
             foreach (Entity_Master foe in on)
             {
                 float had;
@@ -390,4 +422,7 @@ public static class YosseleVines
     }
 
     public static bool IsSlowed(Entity_Master foe) { return foe != null && slowed.ContainsKey(foe); }
+
+    // The slow the vines hold on a foe now (0: none).
+    public static float SlowOf(Entity_Master foe) { float a; return foe != null && slowed.ContainsKey(foe) && slowAmount.TryGetValue(foe, out a) ? a : 0f; }
 }

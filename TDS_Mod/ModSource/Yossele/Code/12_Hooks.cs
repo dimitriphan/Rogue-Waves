@@ -8,6 +8,7 @@
 //   Connected Roots     65% of a hit on a Tower-tagged building of the Sapling's owner within a healthy Sapling's
 //                       Range goes to the Sapling.
 //   Easy Target         a marked foe takes 15% more from every hit (the handler sits on the foe).
+//   Sap Bucket III      a sapped foe takes 10% more from the sapper's buildings while the sap lasts (17_Directions.cs).
 //   Monument            the attacker's Interact runs before the target's Oninteract (Helper_Entitytools.Interacthurt),
 //                       so a foe's debuff (the Bulwark's stun: Override modifiers and the Disabled look) is already on
 //                       the stones when the hit reaches this handler, which strips it; a sweep ten times a second
@@ -22,10 +23,12 @@ public static class YosseleHooks
     static readonly Dictionary<Entity_Master, float> aura = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> markBonus = new Dictionary<Entity_Master, float>();
     static readonly Dictionary<Entity_Master, float> markUntil = new Dictionary<Entity_Master, float>();
+    class SapMark { public float Bonus, Until; public long Owner; }
+    static readonly Dictionary<Entity_Master, SapMark> sapped = new Dictionary<Entity_Master, SapMark>();
     static readonly List<Entity_Master> monuments = new List<Entity_Master>();
     static readonly Entity_Master.Oninteracts handler = OnHurt;
     static float nextCheck;
-    public static int Softened, Soaked, Shared, Skipped, Marked, Cleansed;
+    public static int Softened, Soaked, Shared, Skipped, Marked, Cleansed, SapHits;
     public static float SharedDamage, SoakedDamage;
 
     public static void Reset()
@@ -36,6 +39,7 @@ public static class YosseleHooks
         aura.Clear();
         markBonus.Clear();
         markUntil.Clear();
+        sapped.Clear();
         monuments.Clear();
         own.Clear();
         seen.Clear();
@@ -101,6 +105,26 @@ public static class YosseleHooks
         }
         else
             ModKitUtil.Debuff(by, foe, YosseleData.VfxMarked, markUntil[foe] - Time.time);
+    }
+
+    // Sap Bucket III: the foe takes 'bonus' more from 'owner''s buildings for 'seconds' (renewed by each laser hit; the
+    // last sapper's).
+    public static void Sap(Entity_Master foe, long owner, float bonus, float seconds)
+    {
+        if (foe == null || !ModKitUtil.Alive(foe) || bonus <= 0f)
+            return;
+        sapped[foe] = new SapMark { Bonus = bonus, Until = Time.time + seconds, Owner = owner };
+        First(foe);
+    }
+
+    // The Sap Bucket bonus a hit from 'from' gets on 'foe' (0: none).
+    public static float SapOf(Entity_Master foe, Entity_Master from)
+    {
+        SapMark s;
+        if (foe == null || from == null || !sapped.TryGetValue(foe, out s) || s.Until <= Time.time)
+            return 0f;
+        YosseleBuilding b = from.GetComponent<YosseleBuilding>();
+        return b != null && b.Owner == s.Owner ? s.Bonus : 0f;
     }
 
     public static float MarkOf(Entity_Master foe)
@@ -246,6 +270,7 @@ public static class YosseleHooks
     {
         markBonus.Remove(foe);
         markUntil.Remove(foe);
+        sapped.Remove(foe);
     }
 
     public static void Update(List<YosseleBuilding> buildings)
@@ -305,7 +330,22 @@ public static class YosseleHooks
                 First(kv.Key);
         if (gone != null)
             foreach (Entity_Master e in gone)
-                ForgetFoe(e);
+            {
+                markBonus.Remove(e);
+                markUntil.Remove(e);
+            }
+        gone = null;
+        foreach (KeyValuePair<Entity_Master, SapMark> kv in sapped)
+            if (kv.Key == null || !ModKitUtil.Alive(kv.Key) || kv.Value.Until < Time.time)
+            {
+                if (gone == null) gone = new List<Entity_Master>();
+                gone.Add(kv.Key);
+            }
+            else
+                First(kv.Key);
+        if (gone != null)
+            foreach (Entity_Master e in gone)
+                sapped.Remove(e);
     }
 
     static void Keep(Dictionary<Entity_Master, float> table)
@@ -368,6 +408,12 @@ public static class YosseleHooks
             float mark = MarkOf(hit.To);
             if (mark > 0f)
                 scale *= 1f + mark;
+            float sap = SapOf(hit.To, hit.From);
+            if (sap > 0f)
+            {
+                scale *= 1f + sap;
+                SapHits++;
+            }
             float s;
             if (shield.TryGetValue(hit.To, out s) && s > 0f)
             {

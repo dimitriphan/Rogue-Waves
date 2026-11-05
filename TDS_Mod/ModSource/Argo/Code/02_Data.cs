@@ -172,7 +172,7 @@ public static class ArgoData
 
     // ---------------------------------------------------------------- Directions (kit 1.7)
 
-    // docs/scope/11 has none of Dimitri's for Argo yet (its NEEDS line): two of its four defaults, one per rank, built on what Argo already has.
+    // docs/scope/11 has none of Dimitri's for Argo yet (its NEEDS line): its four, one upgrade per rank, built on what Argo already has.
     public class Direction { public string Name, Display, Desc; public float Bonus; }
     // Deep Current: Deep Water reaches this much farther (PoolReach). Default, docs/scope/11.
     public static readonly Direction[] Deepcurrents =
@@ -193,6 +193,28 @@ public static class ArgoData
             Desc = "Harpoon Guns deal even more damage" },
         new Direction { Name = "Heavysalvo3", Display = "Heavy Salvo III", Bonus = 0.35f,
             Desc = "Harpoon Guns deal much more damage" },
+    };
+    // Chum Bucket: a Slowed or Pinned foe takes this much more from every hit by its holder's buildings, on top of the
+    // Scatter Cannon's own bonus (ArgoHooks). Docs/scope/11.
+    public static readonly Direction[] Chumbuckets =
+    {
+        new Direction { Name = "Chumbucket", Display = "Chum Bucket", Bonus = 0.08f,
+            Desc = "Slowed and pinned foes take more damage from your towers" },
+        new Direction { Name = "Chumbucket2", Display = "Chum Bucket II", Bonus = 0.15f,
+            Desc = "They take more still" },
+        new Direction { Name = "Chumbucket3", Display = "Chum Bucket III", Bonus = 0.25f,
+            Desc = "They take much more" },
+    };
+    // Pressure Gauge: a Drill Rig its holder builds starts this many Fathoms down (Bonus = Fathoms below the first).
+    // Docs/scope/11.
+    public static readonly Direction[] Pressuregauges =
+    {
+        new Direction { Name = "Pressuregauge", Display = "Pressure Gauge", Bonus = 1f,
+            Desc = "Your Drill Rigs start a Fathom deep" },
+        new Direction { Name = "Pressuregauge2", Display = "Pressure Gauge II", Bonus = 2f,
+            Desc = "They start two Fathoms deep" },
+        new Direction { Name = "Pressuregauge3", Display = "Pressure Gauge III", Bonus = 3f,
+            Desc = "They start three Fathoms deep" },
     };
 
     // ---------------------------------------------------------------- the harpoon's reel (1.4)
