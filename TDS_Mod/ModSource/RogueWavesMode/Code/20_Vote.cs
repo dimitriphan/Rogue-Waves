@@ -49,6 +49,7 @@ public static class RWVote
         RWObjectives.Reset();
         if (!RWRun.InCampaignMap)
             return;
+        RWCardinals.RecordLobby();
         RWDirections.Hook();
         RWRun.Order -= OnOrder;
         RWRun.Order += OnOrder;
@@ -128,7 +129,8 @@ public static class RWVote
         if (startPickAt > 0f && Time.time >= startPickAt && ((AllStanding() && IntroOver(vars)) || Time.time >= startPickAt + 90f))
         {
             startPickAt = -1f;
-            if (openingShop && !staging)
+            // The 90 s fallback can come after the opening break's clock ran out: VENDCINT doesn't land mid-Tide (MAX MODEB-7).
+            if (openingShop && !staging && ModKitTides.InBreak)
                 OpenShop(0);
             openingShop = false;
             OpeningPicks();

@@ -142,7 +142,7 @@ public static partial class RWTest
             ClickCard("Leave");
         }
         else Setup("MODE-D4", "the vote never opened: state '" + RWVote.State + "', won " + RWCampaign.WonThisMap);
-        yield return Until(() => RWVote.State == "", RWVote.LeaveSeconds + 15f);
+        yield return Until(() => RWVote.State == "", RWVote.LeaveSeconds + RWVote.MapSeconds + 15f);    // the stay's map vote too (B1)
         Info("MODE-D4 on the host", "the friend's vessel down as the vote opened: " + down + "; the vote: " + RWVote.LastVote + ", departing " + RWVote.Departing);
         yield return Until(() => RWRun.Vessel(friend) != null, 70f);
         freeze = true;

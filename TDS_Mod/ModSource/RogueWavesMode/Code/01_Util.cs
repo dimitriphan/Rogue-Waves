@@ -95,14 +95,20 @@ public static class RWUtil
     }
 
     // The player team's first living Basin (the host's lists; the client tag lists don't hold it).
+    // The Basin: on a map with sub-cores (4_Artrio) the main one, which the list doesn't always give first (MODE-A3, seen on
+    // the PC in round 3); a sub-core only when no main core stands.
     public static Entity_Master PlayerCore()
     {
         if (Game_Entity.Instance == null)
             return null;
+        Entity_Master sub = null;
         foreach (Entity_Master e in Game_Entity.Instance.Entityclient)
             if (e != null && e.Taglistserver != null && e.Taglistserver.Contains("Core") && !e.Taglistserver.Contains("Enemycore") && e.Beingserver != null && !e.Beingserver.Dead)
-                return e;
-        return null;
+            {
+                if (!ModKitUtil.BeingName(e).Contains("Subcore")) return e;
+                if (sub == null) sub = e;
+            }
+        return sub;
     }
 
     public static List<Entity_Master> PlayerCores()
@@ -161,6 +167,7 @@ public static class RWKeys
 {
     public const string Seed = "RW_Campaign_Seed", Route = "RW_Campaign_Route", Retries = "RW_Campaign_Retries",
         Replay = "RW_Campaign_Replay", Playing = "RW_Campaign_Playing", Choice = "RW_Campaign_Choice", Staged = "RW_Campaign_Staging",
+        Lobby = "RW_Campaign_Lobby",
         StockWorld = "RW_Stock_World", StockGameplan = "RW_Stock_Gameplan",
         Guid = "RW_Player_Guid", Device = "RW_Player_Device";
     public static readonly string[] Old = { "Campaign_Seed", "Campaign_Route", "Stock_World", "Stock_Gameplan", "Player_Guid", "Player_Device" };

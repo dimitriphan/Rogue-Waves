@@ -66,6 +66,7 @@ public static class RWCampaign
         Staging = true;
         save = Blockage.Tags.Bla_Data.Playerdata;
         RWRun.Clear();
+        if (RWUtil.Has(RWData.SaveFolder, RWKeys.Lobby)) RWUtil.Remove(RWData.SaveFolder, RWKeys.Lobby);   // a new campaign picks its lobby again
         Save();
         RWRun.Save();
         RWTips.MarkSailed();
@@ -151,7 +152,7 @@ public static class RWCampaign
         Choice = Replay = Playing = -1;
         Next = null;
         save = null;
-        foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing, RWKeys.Choice, RWKeys.Staged })
+        foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing, RWKeys.Choice, RWKeys.Staged, RWKeys.Lobby })
             if (RWUtil.Has(RWData.SaveFolder, key)) RWUtil.Remove(RWData.SaveFolder, key);
         RWRun.Forget();
         RWUtil.Flush();

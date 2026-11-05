@@ -3,7 +3,7 @@
 // what already syncs: a Pure Aura counter on each vessel (ModKitCounter), the upgrades on it, and three None-style commands
 // on each vessel (kit docs/20 §3.1), which draw nothing:
 //   RW_Ask    host to its owner: the question open for that player (Goalstring what, Goalvalue the round)
-//   RW_Run    host to its owner: the run line's text
+//   RW_Run    host to its owner: the run line's text (Goalstring) and the held Cardinals the HUD row has no room for (Goalvalue)
 //   RW_Order  owner to host: a pick, sent with Command_ServerRpc, which only the vessel's owner may send (kit docs/15 §6)
 // Saved under the host's save for Continue, keyed by the GUID the pack keeps for each player (RWIdentity, kit docs/19 §5),
 // and only at a checkpoint: a map's start and its win. A lost map replays from the last save, so what it earned goes.
@@ -300,7 +300,7 @@ public static class RWRun
         // A vessel that drowned comes back as a new entity with blank commands: the open question and the run line go on
         // it again, or a vote asked while it was down never reaches its player (MODE-D4).
         Write(v, AskLink, p.AskWhat, p.AskRound);
-        Write(v, RunLink, p.RunText, 0f);
+        Write(v, RunLink, p.RunText, RWCardinals.Overflow());
         RWDirections.Grant(v, p);
         RWCardinals.Grant(v, p);
     }
@@ -332,7 +332,7 @@ public static class RWRun
     {
         RWPlayer p = For(session);
         p.RunText = ModKitUtil.Clip(text);
-        Write(Vessel(session), RunLink, p.RunText, 0f);
+        Write(Vessel(session), RunLink, p.RunText, RWCardinals.Overflow());
     }
 
     static void Write(Entity_Master v, string name, string text, float value)
@@ -463,8 +463,14 @@ public static class RWRunLabel
             return;
         Link_Commandref line;
         string text = "Pure Aura " + Mathf.RoundToInt(RWMine.Pure());
-        if (RWMine.Command(v, RWRun.RunLink, out line) && line.Goalstring.ToString() != "")
-            text += RWCard.Separator + line.Goalstring;
+        if (RWMine.Command(v, RWRun.RunLink, out line))
+        {
+            if (line.Goalstring.ToString() != "")
+                text += RWCard.Separator + line.Goalstring;
+            int more = Mathf.RoundToInt(line.Goalvalue);
+            if (more > 0)
+                text += RWCard.Separator + "+" + more + (more == 1 ? " Cardinal" : " Cardinals");
+        }
         if (label.text != text)
             label.text = text;
         Shown = text;

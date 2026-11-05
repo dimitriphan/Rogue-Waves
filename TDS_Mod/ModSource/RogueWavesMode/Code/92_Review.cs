@@ -181,7 +181,7 @@ public static partial class RWTest
             yield return WaitDialog(6f);
             ClickCard("Stay");
         }
-        yield return Until(() => RWVote.State == "", 25f);
+        yield return Until(() => RWVote.State == "", 25f + RWVote.MapSeconds);    // the stay's vote on the next map too (B1)
 
         // MODE-D6: a Tide that runs out its clock with a foe left, which falls 45 s into the break; the vote takes its time.
         ClearFoes();

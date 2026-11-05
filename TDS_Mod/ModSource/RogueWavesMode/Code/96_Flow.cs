@@ -656,8 +656,22 @@ public static partial class RWTest
         yield return DialogFits("The vote to leave");
         yield return Snap("leave_vote");
         ClickCard("Stay");
-        yield return Until(() => RWVote.State == "", 8f);
+        yield return Until(() => RWVote.State != "Leave", 8f);
         Check("Leave: staying keeps the party on the map", !RWVote.Departing && RWVote.LastVote == "0 of 1 to leave", RWVote.LastVote);
+        // B1: the first stay votes on the next map there and then, so the boat has a choice however the map ends.
+        string staySub = "";
+        if (RWVote.State == "Map")
+        {
+            yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 8f);
+            yield return WaitDialog(8f);
+            staySub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
+            Info("the vote on the next map, staying", "sub '" + staySub + "', cards " + CardTexts());
+            List<string> stayCards = CardNames();
+            if (stayCards.Count > 0) ClickCard(stayCards[0]);
+            yield return Until(() => RWVote.State == "", 8f);
+        }
+        Check("B1 staying votes on the next map there and then, and the bonus Tides go on", RWCampaign.Choice >= 0 && RWVote.State == "" && !RWVote.HoldBreak && (staySub == "" || staySub.Contains("When the party leaves")), "choice " + RWCampaign.Choice + ", " + RWVote.LastVote + ", sub '" + staySub + "'");
+        int stayChoice = RWCampaign.Choice;
         int pure16 = player.Pure;
         yield return ToBreakAfter(RWCampaign.WinTide + 1);
         yield return new WaitForSeconds(1f);
@@ -709,6 +723,7 @@ public static partial class RWTest
         }
         yield return Until(() => Game_Mapvars.Instance == null || Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", 15f);
         Check("Leave: the party leaves by the stock win path", Game_Mapvars.Instance != null && Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", RWVote.LastVote);
+        Check("B1 leaving asks no second map vote: the party sails to the one voted when it stayed", secondWin == "" && RWVote.LastVote.StartsWith("voted before") && RWCampaign.Choice == stayChoice, RWVote.LastVote + ", choice " + RWCampaign.Choice + " (stayed " + stayChoice + ")");
         yield return new WaitForSeconds(0.5f);
         Check("T4 the end screen's title is the campaign's", Game_Mapvars.Instance.Display.Value.Display_Endgame.ToString() == "MAP 1 OF 10 WON", "'" + Game_Mapvars.Instance.Display.Value.Display_Endgame + "', last " + RWCard.LastEnd);
         yield return new WaitForSeconds(7f);

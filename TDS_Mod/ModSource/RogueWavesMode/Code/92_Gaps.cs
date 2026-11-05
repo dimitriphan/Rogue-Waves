@@ -330,6 +330,11 @@ public static partial class RWTest
                     foreach (string id in s1) { if (once.Contains(id)) shelfBad++; once.Add(id); if (!sawOnShelf.Contains(id)) sawOnShelf.Add(id); }
                 }
         Check("The shelf: 3 different Cardinals or Trinkets, the same on every machine, each on sale coming up in time", shelfBad == 0 && sawOnShelf.Count == RWCardinals.Sold.Count, shelves + " shelves, " + shelfBad + " bad, " + sawOnShelf.Count + " of " + RWCardinals.Sold.Count + " seen");
+        int trinketSlotBad = 0;
+        bool anyTrinket = RWCardinals.Sold.Exists(RWCardinals.IsTrinket);
+        for (uint seed = 1; seed <= 30; seed++)
+            if (RWCardinals.Shelf(seed, 1, (int)seed % 16).FindAll(RWCardinals.IsTrinket).Count != (anyTrinket ? RWCardinals.TrinketSlots : 0)) trinketSlotBad++;
+        Check("B4 the shelf keeps a slot for a Trinket", trinketSlotBad == 0, trinketSlotBad + " of 30 shelves without exactly " + RWCardinals.TrinketSlots);
         foreach (string w in new[] { RWChart.WeatherNames[RWChart.RisingWater], RWChart.WeatherNames[RWChart.QuickeningCurrent], RWChart.WeatherNames[RWChart.NestingGround] })
             Info("weather name", w);
     }
@@ -1003,6 +1008,27 @@ public static partial class RWTest
             string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - RWCardinals.Cost(stockCard), stockCard + ": '" + first + "', '" + second + "', Pure " + player.Pure);
+            // B3, B4: a Trinket stacks to 6 and then leaves the shelf; each stack shows on the vessel's panel; a Cardinal the
+            // row has no room for is counted on the run line.
+            player.Pure = 500;
+            int dentures0 = player.Trinkets.Count;
+            string refused = "";
+            for (int k = 0; k < RWCardinals.Stacks + 1 && refused == ""; k++) refused = RWCardinals.Buy(player, "Cardinal_Dentures");
+            yield return new WaitForSeconds(1.2f);
+            int onPanel = 0;
+            for (int k = 1; k <= RWCardinals.Stacks; k++)
+                if (vessel != null && vessel.Upgradelistserver != null && vessel.Upgradelistserver.ContainsKey("Cardinal_Dentures" + k + "_Upgradeobject")) onPanel++;
+            Check("B3 a Trinket stacks to 6 copies and the 7th is refused", player.Trinkets.Count == RWCardinals.Stacks && refused != "", "held " + player.Trinkets.Count + ", refusal '" + refused + "'");
+            Check("B4 every held Trinket stack is on the vessel's panel", onPanel == RWCardinals.Stacks, onPanel + " of " + RWCardinals.Stacks + " on the vessel");
+            List<string> maxedShelf = RWCardinals.Shelf(RWCampaign.Seed, 1, 3, c => RWCardinals.MaxedFor(player, c));
+            Check("B3 a maxed one leaves the shelf, which still holds 3", !maxedShelf.Contains("Cardinal_Dentures") && !maxedShelf.Contains(stockCard) && maxedShelf.Count == RWCardinals.OnShelf, string.Join(",", maxedShelf.ToArray()));
+            while (player.Trinkets.Count > dentures0) player.Trinkets.RemoveAt(player.Trinkets.Count - 1);
+            int over0 = RWCardinals.Overflow();
+            RWRun.Cardinals.Add("Cardinal_RWTestOverflow#1");
+            yield return new WaitForSeconds(1.2f);
+            string runShown = RWRunLabel.Shown;
+            RWRun.Cardinals.Remove("Cardinal_RWTestOverflow#1");
+            Check("B4 a Cardinal the row has no room for shows as +N on the run line", runShown.Contains("+" + (over0 + 1) + (over0 == 0 ? " Cardinal" : " Cardinals")), "'" + runShown + "', overflow before " + over0);
             // Only a run holding more than 8 can show the cap (MAX KIT-3: one Cardinal held passed it every time).
             if (RWRun.Cardinals.Count > 8)
                 Check("The HUD's Cardinal row keeps to 8, the rest in the run's count", Tds_Multiplayerinfo.Instance.Artifacts.Count <= 8, "row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + ", cardinals " + RWRun.Cardinals.Count);

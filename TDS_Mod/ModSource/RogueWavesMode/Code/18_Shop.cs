@@ -223,7 +223,7 @@ public static class RWShop
         uint seed = Seed(out map, out wave);
         int pure = Mathf.RoundToInt(RWMine.Pure());
         List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
-        foreach (string id in RWCardinals.Shelf(seed, map, wave))
+        foreach (string id in RWCardinals.Shelf(seed, map, wave, RWCardinals.MaxedHere()))
         {
             int cost = RWCardinals.Cost(id);
             cards.Add(RWDialog.Card("C:" + id, RWCardinals.Display(id), "Pure Aura " + cost + RWCard.Separator + (RWCardinals.IsTrinket(id) ? "Trinket" : "Cardinal") + RWCard.Separator + RWCardinals.Desc(id), RWCardinals.Picture(id), cost <= pure ? RWDialog.Teal : RWDialog.Swell));
@@ -361,8 +361,8 @@ public static class RWShop
         {
             string id = item.Substring(2);
             int map = RWCampaign.Route.Count + 1 - (RWCampaign.WonThisMap ? 1 : 0);
-            if (!RWCardinals.Shelf(RWCampaign.Seed, map, Game_Mapvars.Instance.Wave.Value).Contains(id))
-                return "Not on the shelf";
+            if (!RWCardinals.Shelf(RWCampaign.Seed, map, Game_Mapvars.Instance.Wave.Value, c => RWCardinals.MaxedFor(p, c)).Contains(id))
+                return RWCardinals.MaxedFor(p, id) ? "Already held" : "Not on the shelf";
             return RWCardinals.Buy(p, id);
         }
         if (!item.StartsWith("D:"))

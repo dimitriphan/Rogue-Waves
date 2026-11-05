@@ -152,6 +152,7 @@ public static class RWBoat
             Lock();
             KeepLead();
             RWCardinals.RestoreLobby();
+            RWCardinals.LockLobby();
         }
         // A new campaign's first stop opens by itself: the leader's boat is already there.
         if (RWCampaign.Staging && main.Selected.Value.ToString() == "" && !vis.Inworldtransition && !vis.Insetup && Time.realtimeSinceStartup - upAt > 12f && RWUtil.IsLeader && Picked == "")
