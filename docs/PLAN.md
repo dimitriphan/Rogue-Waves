@@ -256,7 +256,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #176 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #177 (which PR used which pitfall numbers: the last Log entry).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -364,6 +364,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the map card freeze and PC round 5's test leftovers** (Dimitri: "Ok", PC round 5): map cards keep their
   name and badge between openings, Pin Barrage's check wants Iron Thimble, an unreached Tide is a SETUP, Snare Line's
   line says what the hunt saw. Compiled here, not run on the PC. Pitfall #175, no kit change.
+- **2026-11-06: PC round 6 runs #163** (Dimitri: "Ok"): cards reuse their name and badge, but the freeze is the render
+  thread's and comes by chance (dialog 83/1, 84/0); Spool's Thread Heads can't walk with the pack loaded (B16's renamed
+  MOVE; alone 230/0); Uloe 220/0 (`PC_ROUND6_2026-11-06.md`). His PC put back. Test-only frame split; pitfalls #175-#176.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1568,6 +1571,22 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spool once WITHOUT `SPOOL_SHOTS` first (the pictures add 1-2 s each; the map drowned mid-run). Compiled here
   (release and every self-test define; `/code-review high`, its 9 findings fixed; DIALOGLOOK shows the base's two `PointerEventData` stub errors, TWOPC the known
   Netcode.Transports one); not run on the PC. Next free numbers: kit chapter 25, kit 1.16, pitfall #176 (#175 this one).
+
+- **2026-11-06: PC round 6, PR #163 on the PC** (Dimitri 20:10Z: "Ok"; `docs/reports/PC_ROUND6_2026-11-06.md`). Synced
+  without a handoff (the PC was `6d864ba` but seven build-made PNGs; 11 files copied), every launch on `03f807a`, kit
+  1.15. The dialog round twice: #175's carry-over proven (4 made on the first map cards, 0 more in 10 openings, every
+  card dressed); the map-card freeze check 2 of 10 (55.61 ms, FAIL) then 0 of 10 (PASS); freezes on any of the mode's
+  openings (map cards 3 of 50, the plain dialog 1 of 20, stock 0 of 20). A test-only frame split (`94_FrameSplit.cs`
+  `RWFrameSplit`, DIALOGLOOK: a marker before each of the player loop's 165 steps) put each freeze's 63-74 ms in
+  `PostLateUpdate.FinishFrameRendering`, about 1 ms in scripts, layout and canvases, each a whole number of 144 Hz
+  refreshes, on the first frame or two of the new dialog: the render side is the lead (pitfall #175 updated). Spool
+  without pictures 219/4/7 and with them 217/4/7: the map lost at Wave 5 and 4 either way (#163's SETUP rule held, Pin
+  Barrage's new check passes); 4 new Thread Head fails (RETURN, SPOT, hand-over, the walk back) with the whole pack
+  loaded, 230/0/5 with Spool alone: alone `Command_Move` isn't loaded so B16's hidden MOVE (`39b28f9`) is skipped; with
+  the pack the Thread Head's `Move` link points at the renamed copy and it never walks (pitfall #176; his installed
+  Spool predates B16). Uloe 220/0/0. COLOUR's panel missed again (BASIN DROWNED over it); weather with foes not run.
+  His PC put back: Mods hash for hash, save, registry but Unity's session lines; scope copy untouched. Next free
+  numbers: kit chapter 25, kit 1.16, pitfall #177 (#176 this one, #175 updated).
 
 ### Decisions
 
