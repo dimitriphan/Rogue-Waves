@@ -331,6 +331,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
   layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
   PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
+- **2026-11-06: chart round 1 on the PC** (Dimitri: "Go chart round"): flow 178/1 (CV10's blacklist read too early, test
+  fixed), two players 167/0; chart pictures on his PC; after-win vote's view and a mini chart overlap for his eye
+  (`CHART_ROUND1_2026-11-06.md`). His builds and save back. No kit change, no pitfall.
+- **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
+  fixable?"): 14 small fixes need no decision (5 best proven on the PC after), three need his word
+  (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from code only; nothing changed or run on the PC.
 - **2026-11-06: MVP board built** (Dimitri: "just the most notable thing of the player ... Defaults for rest, and then
   build"): one title per player, failures as common as accolades, Tab replays it; `27_Board.cs`, `28_BoardView.cs`,
   MB1-MB11 (`MVP_BOARD.md` §4, §6). Compiled here, not run on the PC. No kit change, no pitfall.
@@ -1378,6 +1384,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   parts, 0 exceptions; the fixed mode build stays in his Mods, the old one parked; `Run-SelfTests.ps1` doesn't restore the
   save, so it was copied back by hand (the README said otherwise).
   No kit change; pitfall #174. Next free: kit 1.15, pitfall #175.
+- **2026-11-06: chart round 1 on the PC** (Dimitri 06:59Z: "Go chart round"): handoff `Chart_round1` (`0be84ef`, code
+  `5e03648` = the chart build on `beab230` plus the wobble fix, since merged as #150). Mode flow 178 pass, 1 fail: CV10's
+  "never picked" line ran before the boat wrote its blacklist; the rest, Continue and sail-on lines pass, CV1-CV5, CV9,
+  CV11, CV12 pass. Two players 167/0 over six launches. Captures in `Desktop\RogueWave\chart_round1` (PC only): the
+  staging vote with the chart beside the cards, the boat's banner and mini chart, "SAILING TO THE COVE"; open for his
+  eye: the after-win vote captured with no view and its title over the cards, and the game's top-right title over the
+  mini chart. CV10 now waits for the blacklist (compiled here). Not run: mouse clicks on islands, key M, the hover hitch.
+  PC: Mods hash-identical, save copied back by hand, Unity project at the handoff with a TWOPC build.
+- **2026-11-06: pitfall fixes assessed** (thread "Find fixes suggested by the pitfalls"): every pitfall #1-#173 checked
+  against the six parts and `Shared` by three read-only sub-agents (two Haiku scans by number range, one Opus pass over
+  the batch §0 leads, the code review's 22 left items and the chart reviewer's notes), each hit read in place. Top items:
+  Spool's and Uloe's brains switch off on their first exception (#80), a missing stock elite's stand-in comes from the
+  campaign's own four (#146), a Wreck-given Pearl Oyster pays nothing that map. Not bugs: Uloe's `"Collide"` (the game's
+  beam param), the vessels' spawn-time `Updatecommand(..., true)`. Docs only.
 - **2026-11-06: MVP board built** (Dimitri 06:55Z: "It doesn't need to account for one accolade and one failure, just
   the most notable thing of the player (balanced so that getting a failure is as common as getting an accolade).
   Defaults for rest, and then build."): each player gets the one title whose share stands out most above an even split;
@@ -1390,7 +1410,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   view's pieces; Tab replays it. Self-tests MB1-MB8 at boot (`90_Board.cs`), MB9-MB11 in the two-player round. The
   cloud stubs gain Tab, Enter, Space, NumpadEnter and `Gamepad.buttonSouth`. Mockup redrawn with one title a card.
   Compiled here (release, self-test and gaps 0 errors), MB1-MB6's pure code run under mono; not run on the PC. PC list
-  in `RogueWavesMode/IMPLEMENTATION_NOTES.md`. No kit change, no pitfall (HashSet is already #1's).
+  in `RogueWavesMode/IMPLEMENTATION_NOTES.md`. `/code-review high` fixed 10 items, the PR #151 reviewer 4 more (a stale
+  board on the next map, MB10 times its Continue, odd boards alternate on a count, two doc slips). No kit change, no
+  pitfall (HashSet is already #1's).
+
 
 ### Decisions
 
