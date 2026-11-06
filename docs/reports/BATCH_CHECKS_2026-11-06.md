@@ -17,7 +17,9 @@ medium effort.
 
 - Meteor objective off by one map (scope `14`:14; §2.1): code gives 15 hits and 9.5 tiles on map 1 (`12 + 3*map`,
   `8 + 1.5*map` with map 1), the scope says 12 and 8 at the first map.
-- Pearl Oyster (scope `12`:126-137; §2.1): buying the Oyster itself does not stop its pay; the scope reads as any buy.
+- Pearl Oyster (scope `12`:126-137; §2.1): buying the Oyster itself does not stop its pay, on purpose by the comment
+  above `OnBuy` (`24_Trinkets.cs:476-479`), while the scope reads as any buy. Sharper edge: `p.Bought = id !=
+  "Cardinal_Oyster"` sets `Bought` back to false when the Oyster is bought after another buy, so its pay starts again.
 - Shop's excluded Cardinals (scope `12`:5; §2.1): `NotSold` also drops `Artifact_Rock`, which the scope does not list.
 - Uloe (scope `10`; §2.1): Plug In on a safe socket can reach Light 10, the scope's note says at most 8; Supernova
   bursts Photons in place rather than bringing them back; Bounce Card, Wide Flood and Lighthouse feed teammates'
@@ -31,7 +33,7 @@ medium effort.
 - Design pages (06b §2.1): Argo's Salt Sting stings 1 a second unpinned by Brine's doubling, page says 0.5; Argo's
   page cites kit 1.6, code header 1.7; Spool's test plan says at most 4 Crafted, code 6; Yossele's page says any level
   2 leads to Bonsai and Rubbery, only the tier-3 nodes do; Uloe's Mirror reaches level 1 at any Light above 0.
-- Text (§1): "Woolen Lining" should be "Woollen"; Uloe's Death Ray text says both "never cools down" and "cools after
+- Text (§1): Uloe's Death Ray text says both "never cools down" and "cools after
   3 s"; Argo's Mantle Tap says "every few seconds", its other line "every 20s"; two log lines in
   `RogueWavesMode/Code/09_Rejoin.cs` (374, 416) and Uloe's "one slow a Flood Light" do not parse.
 - Docs (§3): `docs/reports/README.md`'s STOCK_TRINKETS row still says 13 Trinkets and 16 Cardinals (his answer made it
@@ -39,7 +41,8 @@ medium effort.
   paths that name nothing are on purpose (`TDS_Mod/Handoff/Argo_next/` as a former path, `pc/QUEUE.md` as the stale
   project-files lock, `Art/Temporary/game_size/` as a pattern under each part): a lead for the free pass, not the docs.
 
-**Likely noise, checked or explained:** "Made of Tougher Stuff" not found (06b §1.1, Spool design) is a false lead:
+**Likely noise, checked or explained:** "Woolen Lining" (§1) is his own spelling in scope `08`:170, already an open
+question (`docs/reports/TEXT_AUDIT_2026-11-05.md` §4 A6, which leans to names as he wrote them). "Made of Tougher Stuff" not found (06b §1.1, Spool design) is a false lead:
 it is in `RogueWavesMode/Code/16_Directions.cs:31`, which the Spool requests were not given. The part versions
 (Argo, Yossele read 0.1.0-dev, the pack's version) are the pack's numbering, not a bug. The missing "Kind" labels on
 objectives and "By" fields on Directions and Cardinals, the missing 2-4 player check, "Streamlined Economy Changes"
