@@ -343,6 +343,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons left alone while a hover grows
   them, the game's stacked lists always; a still P2 passes only if its control saw the flicker (`BUTTON_WOBBLE_2026-11-06.md`
   §3-4). Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.32 ($3.14 this month), 35 of 36
+  answers whole (`docs/reports/BATCH_CHECKS_2026-11-06c.md`, leads only, none fixed); no PC round (it needs his reply in
+  the thread to start). Docs only; nothing ran on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1430,6 +1433,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   longer hides a failure; the reviewer's pass: the grow skip only while grown, the even-scale case, the notes' wording. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`,
   `+GAPS`: 0 errors); not run on the PC; his Mods hold the round's `2a3d907` build. No kit change, no pitfall. Next free:
   kit 1.15, pitfall #175.
+- **2026-11-06: morning run** (Dimitri's daily routine "Morning mod test run", 12:04Z). Batch:
+  `run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 90` on `d4b4c4b`, 36 requests (text, scope
+  and art whole, since they had no earlier full base; design and docs on what changed), $1.32, $3.14 this month;
+  `design-Spool` cut at max_tokens (rerun with `--effort low`). Report `docs/reports/BATCH_CHECKS_2026-11-06c.md`:
+  4 text, 63 scope rows DIFFERENT or MISSING, 9 design rows, 7 docs, 68 art; leads only, none fixed here. The PC was
+  reachable, but a Remote Control session can only be started from a message Dimitri writes in the thread, so no PC
+  round ran; suggestions instead. Docs only. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
 
 ### Decisions
 
