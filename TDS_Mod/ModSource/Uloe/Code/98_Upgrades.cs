@@ -514,7 +514,7 @@ public static partial class UloeSelfTest
             yield return Wait(floodC.Param("Lighthouseturn_Base", 6f) + 0.5f);
             Check("Lighthouse: the beam turns, lighting buildings it crosses", floodC.Node != null && floodC.SweepAngle != a0 && floodC.Swept > swept, "node " + (floodC.Node != null) + ", angle " + F(a0) + " -> " + F(floodC.SweepAngle) + ", lit " + (floodC.Swept - swept));
         }
-        else ModKitTest.Setup("Lighthouse", "no room for a third Flood Light by a node");
+        else ModKitTest.Setup("Lighthouse", "no node with one of our buildings within 6 tiles had room for a third Flood Light");
 
         // The buildings made here go, so the later sections count as before (section 10 counts every Photon). A Sell from a
         // fallen vessel goes nowhere: wait for it to come back first.

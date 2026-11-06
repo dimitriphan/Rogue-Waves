@@ -1260,9 +1260,10 @@ public static partial class UloeSelfTest
                 Send(hm, "Sell", Sell(hm, bank.Master));
                 yield return Until(() => bank == null || bank.Master == null, 12f);
                 yield return Wait(0.5f);
-                int ownLeft = own.FindAll(p => p != null && p.Master != null).Count;
-                Check("a Power Bank's Photons go with it", (bank == null || bank.Master == null) && ownLeft == 0,
-                    ownLeft + " of its " + own.Count + " left; " + Beings(UloeData.Photon) + " Photons in all, " + banks + " Banks before the Sell, " + UloeServer.Owned<UloeBankBrain>(owner).Count + " after");
+                // ... and one it made after they were named (its home gone with it).
+                int ownLeft = own.FindAll(p => p != null && p.Master != null).Count, homeless = UloeServer.Photons.FindAll(p => p != null && p.Master != null && p.Home == null).Count;
+                Check("a Power Bank's Photons go with it", (bank == null || bank.Master == null) && ownLeft == 0 && homeless == 0,
+                    ownLeft + " of its " + own.Count + " left, " + homeless + " with no Bank; " + Beings(UloeData.Photon) + " Photons in all, " + banks + " Banks before the Sell, " + UloeServer.Owned<UloeBankBrain>(owner).Count + " after");
             }
         }
         {
