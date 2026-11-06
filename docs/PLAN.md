@@ -231,15 +231,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps
   his shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
   kit 1.14. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`; of the weather look only its W4 lines), the menu
-  wobble round (`BUTTON_WOBBLE_2026-11-06.md`) and chart round 1 (`CHART_ROUND1_2026-11-06.md`); a full test round on
-  `6830ba2` is running and reports in its own PR. Built since, compiled here, not run on the PC: the MVP board, the
-  whole-pixel follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12`
+  wobble round (`BUTTON_WOBBLE_2026-11-06.md`), chart round 1 (`CHART_ROUND1_2026-11-06.md`) and the full test of
+  `6830ba2` with the sea chart and the MVP board (`PC_FULL_2026-11-06.md`). Built since, compiled here, not run on the
+  PC: the whole-pixel follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12`
   keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest
   last); reports: `docs/reports/README.md`.
-- **Next, in order:** the full test round's report and the PC checks it leaves (`BUG_FIXES_2026-11-06.md` §5,
-  `CHART_BUILD_2026-11-06.md` §4, `STOCK_TRINKETS_2026-11-05.md` §6 and §8, the MVP board's two-player checks, the top 4
-  pitfall fixes' checks, Spool's upgrade sections 10d-10f), and the weather look's own round
-  (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
+- **Next, in order:** the full test's three fixes for his word (`PC_FULL_2026-11-06.md` §5); a PC round for what merged
+  after `6830ba2` (the whole-pixel follow-up, the top 4 pitfall fixes' checks, Spool's upgrade sections 10d-10f) with the
+  full test's leftovers (§6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -350,6 +349,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri: "Yes"): scope `08` B18/B19, all 37 rows matching,
   BEE, UNTHREAD and COLOUR, Spool's brain guard (#80) and late looks (#158); self-test 10d-10f (`Spool/DESIGN.md`
   defaults). Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: full PC test of the newest build** (Dimitri: "run a full test using the most up to date version"): every
+  part 0 FAIL after ten test faults were fixed; to fix: Diorama's tiny look, the mini chart's place, the vote cards'
+  pictures (`PC_FULL_2026-11-06.md` §5). His PC put back. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1475,6 +1477,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `Spool/DESIGN.md` "Defaults picked here", for his word. Compiled here: Spool (none, SELFTEST, SELFTEST+SHOTS) 0 errors,
   0 warnings, the editor check clean. Not run on the PC (the full test held the lock); `Spool/IMPLEMENTATION_NOTES.md`
   lists the round's checks. No kit change, no pitfall.
+- **2026-11-06: full PC test of the newest build** (Dimitri 07:00Z: "Once the chart and MVP board are compiled and
+  created, run a full test using the most up to date version"; GO and the PC lock 10:56Z, done 16:30Z). Base `6830ba2`
+  plus test lines: new gaps parts `stock` (`92_GapsStock.cs`) and `decided` (`92_GapsDecided.cs`), handoffs
+  `Full_round1` to `Full_round1f`. Results: self-tests Argo 159/0, Yossele 202/0, Spool 155/0, Uloe 211/0, Foes 13/0;
+  the mode's flow 187/0 (CV1-CV5, CV9-CV12, MB1-MB8, the wobble P1-P2); eleven gaps launches (the campaign won over ten
+  maps 57/0, the 45-map tour 292/0, all five decided fixes 27/0, the light 35/0); two players 73/0 with every copy 0
+  FAIL (MB9-MB11, CV6, O3b), the short online run 49/0; both play builds PLAY DONE. Ten first-run fails and G1's crash
+  were test faults (Argo B13 and Pay Dirt, Uloe Chain Lightning, Lighthouse, a sold Bank's Photons and the teammate
+  cap's reads, G1's `blocked` launching with no map, kit `docs/09` #135, and its share count, T1's O3b and Continue
+  timing, the `-Also` vessels built as self-tests), fixed in the tests and rerun green; `docs/skills/pc-round.md` and
+  `Tools/pc/README.md` now say the `-Also` parts are release builds and the long gaps launches' timeouts. Found: Diorama's
+  tiny look missing on Yossele, the mini chart under the game's lobby line and buttons, the vote cards with no map
+  picture or name; four code-read suspects (§5). New log lines (release): the chart banner, the board's caption, each
+  map's start numbers. After the runs `/code-review high` (10 findings: 8 fixed, compiled only; DcStep kept beside
+  Stepped; "Now" written here). Compiled here: Argo, Uloe (none, SELFTEST), RogueWavesMode (none, SELFTEST,
+  SELFTEST+GAPS+SHOTS) 0 errors with the base's warnings; TWOPC's `Unity.Netcode.Transports` error is the base's too.
+  His release builds, save and registry back hash for hash. No kit change, no pitfall.
 
 ### Decisions
 

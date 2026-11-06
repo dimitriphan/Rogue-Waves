@@ -85,6 +85,19 @@ public static partial class RWTest
         return RWCardinals.Buy(p, id);
     }
 
+    // The Cardinals (not Trinkets) on sale this player may buy: first the ones that act on the Basin or the shelf, then the rest.
+    static readonly string[] quietCardinals = { "Cardinal_Crate", "Cardinal_Cork", "Artifact_Opalcore", "Artifact_Converter", "Artifact_Tackle", "Artifact_Cubeddrink" };
+
+    static List<string> ReviewCardinals(RWPlayer p)
+    {
+        List<string> ids = new List<string>();
+        foreach (string id in quietCardinals)
+            if (RWCardinals.Sold.Contains(id) && !RWCardinals.IsTrinket(id) && !RWCardinals.MaxedFor(p, id)) ids.Add(id);
+        foreach (string id in RWCardinals.Sold)
+            if (!ids.Contains(id) && !RWCardinals.IsTrinket(id) && !RWCardinals.MaxedFor(p, id)) ids.Add(id);
+        return ids;
+    }
+
     // MODE-A1, C12, C1, C4, D1, D6, D2, then on map 2 D5 and the Cardinals' return.
     static IEnumerator ReviewCampaign()
     {
@@ -168,6 +181,20 @@ public static partial class RWTest
             yield return new WaitForSeconds(1.5f);
             Info("MODE-C4 after an upgrade", "price scale " + UpgradePrice(voiced) + " (fixed: the Refits price)");
         }
+
+        // R4 §8: three Cardinals held for map 2's check, at C1's prices. Sport Water, Rusty Pipe and Voice are Trinkets since the
+        // stock split (STOCK_TRINKETS_2026-11-05), so map 1 held none: these act on the Basin or the shelf, not the foes the
+        // findings after read.
+        string laterBought = "";
+        int laterHeld = 0;
+        foreach (string id in ReviewCardinals(player))
+        {
+            if (laterHeld == 3) break;
+            string why = BuyAt(player, id);
+            laterBought += id + " '" + why + "', ";
+            if (why == "") laterHeld++;
+        }
+        Info("A later map: the Cardinals bought on map 1", laterBought + "(empty is yes)");
 
         // MODE-D1: on to Tide 29's break, where the bonus rewind begins.
         vars.Entry.Value = 2 * 29 - 1;
@@ -295,7 +322,7 @@ public static partial class RWTest
         // R4 Review: as many as map 1 ended with, not a fixed three (PC round 4 held two: one purchase had failed, its answer unread).
         const string laterMap = "A later map: the Cardinals held go back on its new core, and in the HUD's row";
         string laterSeen = RWRun.Cardinals.Count + " held [" + string.Join(",", RWRun.Cardinals.ToArray()) + "], " + heldMap1.Count + " at map 1's end; missing " + RWCardinals.MissingOnCore()
-            + ", row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + "; bought Caffeine '" + sport + "', Rusty Pipe '" + pipe + "', Voice '" + voice + "' (empty is yes)";
+            + ", row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + "; bought " + laterBought + "and the Trinkets Caffeine '" + sport + "', Rusty Pipe '" + pipe + "', Voice '" + voice + "' (empty is yes)";
         if (heldMap1.Count == 0) Setup(laterMap, "map 1 ended with no Cardinal held: " + laterSeen);
         else Check(laterMap, RWRun.Cardinals.Count == heldMap1.Count && RWCardinals.MissingOnCore() == 0, laterSeen);
         Info("A later map: what the Cardinals put on the vessel", "[" + Holding(vessel, "Caffeine") + "]; a tower built now gets Rusty Pipe, as map 1's did after buying");

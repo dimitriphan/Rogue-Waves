@@ -1254,10 +1254,16 @@ public static partial class UloeSelfTest
             Check("selling a Glass refunds aura", (glass == null || glass.Master == null) && Res(owner, "Redaura") > red0, F(red0) + " -> " + F(Res(owner, "Redaura")));
             if (bank != null && bank.Master != null)
             {
+                // Its own Photons, named before the Sell: another Bank still standing keeps its own (PC_FULL_2026-11-06).
+                List<UloePhotonBrain> own = PhotonsOf(bank);
+                int banks = UloeServer.Owned<UloeBankBrain>(owner).Count;
                 Send(hm, "Sell", Sell(hm, bank.Master));
                 yield return Until(() => bank == null || bank.Master == null, 12f);
                 yield return Wait(0.5f);
-                Check("a Power Bank's Photons go with it", Beings(UloeData.Photon) == 0, Beings(UloeData.Photon) + " left");
+                // ... and one it made after they were named (its home gone with it).
+                int ownLeft = own.FindAll(p => p != null && p.Master != null).Count, homeless = UloeServer.Photons.FindAll(p => p != null && p.Master != null && p.Home == null).Count;
+                Check("a Power Bank's Photons go with it", (bank == null || bank.Master == null) && ownLeft == 0 && homeless == 0,
+                    ownLeft + " of its " + own.Count + " left, " + homeless + " with no Bank; " + Beings(UloeData.Photon) + " Photons in all, " + banks + " Banks before the Sell, " + UloeServer.Owned<UloeBankBrain>(owner).Count + " after");
             }
         }
         {

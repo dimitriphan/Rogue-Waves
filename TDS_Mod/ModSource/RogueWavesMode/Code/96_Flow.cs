@@ -244,13 +244,18 @@ public static partial class RWTest
     // Home to the main menu through the pause menu's Leave, as a player on the boat goes.
     static IEnumerator ToMainMenu()
     {
-        Tds_Pausemenu.Openpausemenu();
-        yield return new WaitForSecondsRealtime(1.2f);
-        GameObject leave;
-        if (Blockage.Menu.Bl_Menus.Menus["Pause"].Items.TryGetValue("Leavegame", out leave) && leave != null && leave.GetComponent<Blu3_Button>() != null && leave.GetComponent<Blu3_Button>().Buttonclick != null)
-            leave.GetComponent<Blu3_Button>().Buttonclick();
-        yield return WaitDialog(5f);
-        Info("the boat's exit dialog", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + string.Join(",", CardNames().ToArray()));
+        // Up to three tries: a menu change on the boat (the Setup panel opening as the boat docks) can sweep the prompt away.
+        for (int tries = 1; tries <= 3 && CardNamed("Exit") == null; tries++)
+        {
+            Tds_Pausemenu.Openpausemenu();
+            yield return new WaitForSecondsRealtime(1.2f);
+            GameObject leave;
+            if (Blockage.Menu.Bl_Menus.Menus["Pause"].Items.TryGetValue("Leavegame", out leave) && leave != null && leave.GetComponent<Blu3_Button>() != null && leave.GetComponent<Blu3_Button>().Buttonclick != null)
+                leave.GetComponent<Blu3_Button>().Buttonclick();
+            yield return WaitDialog(5f);
+            Info("the boat's exit dialog", "try " + tries + ": title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + string.Join(",", CardNames().ToArray())
+                + ", up " + RWDialog.Up() + ", setup panel " + (Macro_Worldvisual.Instance != null && Macro_Worldvisual.Instance.Insetup));
+        }
         ClickCard("Exit");
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 90f);
     }

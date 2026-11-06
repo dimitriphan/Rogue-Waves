@@ -258,7 +258,9 @@ public static class RWBoardView
         parts.Add(leaks + (leaks == 1 ? " foe slipped through" : " foes slipped through"));
         string then = next == RWBoard.NextPicks ? "Direction picks" : next == RWBoard.NextVoyage ? "The Voyage" : next == RWBoard.NextBoat ? "Back to the boat" : "";
         if (then != "") parts.Add("Next: " + then);
-        Label(area, string.Join(RWCard.Separator, parts.ToArray()), new Vector2(W * 0.5f, y0 - 12f), 6f, TMPro.TextAlignmentOptions.Center, Ink, 0.9f);
+        string caption = string.Join(RWCard.Separator, parts.ToArray());
+        if (mode == "Live") RWLog.Info("MVP board caption: " + caption);
+        Label(area, caption, new Vector2(W * 0.5f, y0 - 12f), 6f, TMPro.TextAlignmentOptions.Center, Ink, 0.9f);
 
         // Continue: a teal stock-built tile.
         float bw = 70f, bh = 16f;

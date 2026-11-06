@@ -11,6 +11,8 @@
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
 //            both weather objects find a tile, a Tide runs; Boutman's real death for the F key
 //   light    only when named, its own launch: a map's lighting changed by the kit's ModKitLight, fog included (92_GapsLight.cs)
+//   stock    only when named, its own launch: the stock Trinkets a buyer holds, measured in a map (92_GapsStock.cs)
+//   decided  only when named, its own launch: the decided code fixes 2a-2g, measured in a map (92_GapsDecided.cs)
 // "-rwonly <word,word>" on the command line picks parts (Tools/pc/Run-TwoPlayers.ps1 -Extra "..."; a solo build never starts the second copy).
 public static partial class RWTest
 {
@@ -56,6 +58,8 @@ public static partial class RWTest
         if (Asked("artrio")) { yield return Stepped(ReviewArtrio()); yield break; }
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Asked("light")) { yield return Stepped(GapsLight()); yield break; }
+        if (Asked("stock")) { yield return Stepped(GapsStock()); yield break; }
+        if (Asked("decided")) { yield return Stepped(GapsDecided()); yield break; }
 #if MODKIT_PLAY
         if (Asked("r4")) { yield return Stepped(GapsRound4()); yield break; }
 #endif
@@ -507,10 +511,17 @@ public static partial class RWTest
     static IEnumerator GapsBlocked()
     {
         Macro_Main boat = Macro_Main.Instance;
+        RWCampaign.New(Seed);   // its own staging campaign: earlier parts leave one live mid-chart, whose harbour never opens (PC_FULL_2026-11-06 §4.3)
         boat.Selectcharacter("Hero_Smacky");
         yield return Until(() => RWCampaign.Live && Here(), 40f);
         long me = RWMine.Session;
         yield return Until(() => boat.Selected.Value.ToString() == RWCampaign.Chart.At(0, 0).Name && Macro_Worldvisual.Instance.Insetup, 40f);
+        // Playgame with no map picked kills the game in Boatlaunch (kit docs/09 #135)
+        if (boat.Selected.Value.ToString() != RWCampaign.Chart.At(0, 0).Name || !Macro_Worldvisual.Instance.Insetup)
+        {
+            Setup("blocked", "the harbour's Setup never opened: selected '" + boat.Selected.Value + "', in Setup " + Macro_Worldvisual.Instance.Insetup);
+            yield break;
+        }
         boat.Playgame(true);
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 240f);
         yield return WaitDialog(10f);
@@ -1437,6 +1448,26 @@ public static partial class RWTest
         yield return new WaitForSeconds(0.5f);
         vars.Time_Wave.Value = 0.1f;
         yield return Until(() => vars.Wave.Value >= 8, 30f);
+        // The row's own elites aren't the campaign's (Hardened is Enemy_Health): Apply writes each marked share right after its
+        // row, the same foe with the row's upgrades in order and one of the map's modifiers last (21_Difficulty.cs), so only the
+        // upgrades of unmarked rows are the row's own. A map's own elite row after its plain one ([] then [Hardened]) differs
+        // from it in the first upgrade, the health one, so it stays a row of its own.
+        List<string> mods = new List<string>(RWDifficulty.LastModifiers.Split(new[] { ", " }, StringSplitOptions.None)), own = new List<string>();
+        int tides8 = 0;
+        if (RWMode.ModeObject != null && RWMode.ModeObject.Enemies != null && RWMode.ModeObject.Enemies.Wave != null)
+            foreach (Wavesobject.Waves w in RWMode.ModeObject.Enemies.Wave)
+                if (w.Wave && ++tides8 == 8 && w.Content != null)
+                    for (int k = 0; k < w.Content.Count; k++)
+                    {
+                        Wavesobject.Wavecontent c = w.Content[k], before = k > 0 ? w.Content[k - 1] : c;
+                        bool markedRow = k > 0 && c.Enemy != null && before.Enemy == c.Enemy && c.Upgrades != null && before.Upgrades != null && c.Upgrades.Count == before.Upgrades.Count + 1
+                            && c.Upgrades[c.Upgrades.Count - 1] != null && mods.Contains(c.Upgrades[c.Upgrades.Count - 1].Objectname);
+                        for (int q = 0; markedRow && q < before.Upgrades.Count; q++)
+                            markedRow = before.Upgrades[q] == c.Upgrades[q];
+                        if (c.Enemy != null && c.Upgrades != null && !markedRow)
+                            foreach (Upgradeproperties u in c.Upgrades)
+                                if (u != null) own.Add(c.Enemy.Objectname + "|" + u.Objectname);
+                    }
         int withHealth = 0, withMod = 0, total = 0;
         List<string> names = new List<string>(), kinds = new List<string>();
         float t = 0f, hpFirst = -1f;
@@ -1456,7 +1487,7 @@ public static partial class RWTest
                     foreach (string u in e.Upgradelistserver.Keys)
                     {
                         if (u.StartsWith("RW_Foe_Health")) h = true;
-                        if (RWDifficulty.LastModifiers.Contains(u)) { m = true; if (!names.Contains(u)) names.Add(u); }
+                        if (mods.Contains(u) && !own.Contains(e.Being.Value.ToString() + "|" + u)) { m = true; if (!names.Contains(u)) names.Add(u); }
                     }
                     if (h) withHealth++;
                     if (m) withMod++;

@@ -598,9 +598,14 @@ public static partial class RWTest
 
         // O3b: the second copy killed as Task Manager would, started again: its id comes back, so the same seat.
         Line("DRIVER KILL");
-        yield return Until(() => !Blm_Server.Instance.Sessionids.ContainsKey(friend), 40f);
-        yield return new WaitForSeconds(2f);
-        Check("O3b a killed second player's seat is kept", RWRejoin.Seats.ContainsKey(friend) && RWRejoin.Seats[friend].Away && RWRejoin.DoorOpen, "");
+        float killAt = Time.realtimeSinceStartup;   // a killed copy says no goodbye: the host hears of it at the transport's timeout (PC_FULL_2026-11-06 §4.4)
+        yield return Until(() => !Blm_Server.Instance.Sessionids.ContainsKey(friend), 90f);
+        float heard = Time.realtimeSinceStartup - killAt;
+        yield return new WaitForSecondsRealtime(2f);
+        RWRejoin.Seat kept;
+        bool held = RWRejoin.Seats.TryGetValue(friend, out kept);
+        Check("O3b a killed second player's seat is kept", held && kept.Away && RWRejoin.DoorOpen, "seat " + held + ", away " + (held && kept.Away) + ", door " + RWRejoin.DoorOpen
+            + ", lobby open " + Blm_Multiplayer.Instance.Server_Serveropen + ", session gone " + !Blm_Server.Instance.Sessionids.ContainsKey(friend) + " after " + RWUtil.F(heard) + " s");
         // O5: a stranger tries to join first, twice.
         int turned = RWRejoin.Turned;
         Line("DRIVER START stranger");
@@ -775,6 +780,9 @@ public static partial class RWTest
         RWPlayer his;
         Entity_Master hisVessel;
         // N13: the host goes home from the boat; the second player lands on the main menu. Then Continue, and they join again.
+        // After the Exit the boat sails back to the lost map and picks it on arrival (the Setup panel): settle first.
+        yield return Until(() => RWCampaign.Choice < 0 && (RWBoat.Picked == "" || (Macro_Worldvisual.Instance != null && Macro_Worldvisual.Instance.Insetup)), 60f);
+        yield return new WaitForSecondsRealtime(2f);
         yield return ToMainMenu();
         Mainmenu_Main again = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
         if (again == null) { Setup("Continue", "the boat's Exit never reached the main menu"); yield break; }

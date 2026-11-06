@@ -385,6 +385,7 @@ public static class RWChartView
 
     static void Banner(string title, string line, float seconds)
     {
+        if (title != bannerTitle) RWLog.Info("chart view: banner '" + title + "', " + line + (RWUtil.IsHost ? " (host)" : " (client, from the boat's heading)"));   // CV6's reading on every machine
         bannerTitle = title;
         bannerLine = line;
         bannerUntil = seconds > 0f ? Time.unscaledTime + seconds : 0f;

@@ -724,7 +724,7 @@ public static partial class ArgoSelfTest
     // An enemy between 'min' and 'max' tiles (flat) from a point, on that point's level or one up or down. The tile is
     // picked by its own position, nearest the middle of the band first: a fresh spawn's position isn't set until its
     // first frame.
-    static Entity_Master FoeBetween(Vector3 c, float min, float max)
+    static Entity_Master FoeBetween(Vector3 c, float min, float max, Func<Vector3, bool> skip = null)
     {
         float mid = (min + max) * 0.5f;
         List<Genitem> tiles = new List<Genitem>();
@@ -734,7 +734,7 @@ public static partial class ArgoSelfTest
                 foreach (float dy in new[] { 0f, -1f, 1f })
                 {
                     Genitem b = ModKitUtil.Surface(new Vector3(Mathf.Round(c.x) + dx, c.y + dy, Mathf.Round(c.z) + dz));
-                    if (b == null || tiles.Contains(b) || used.Contains(b.Position))
+                    if (b == null || tiles.Contains(b) || used.Contains(b.Position) || (skip != null && skip(b.Position)))
                         continue;
                     float f = ModKitUtil.Flat(b.Position, c);
                     if (f >= min && f <= max)
@@ -1440,8 +1440,13 @@ public static partial class ArgoSelfTest
             {
                 Check("a FLOOD pool is a trap with no upgrades of its own", ModKitUtil.HasTag(pool1.Master, "Trap") && !ModKitUtil.HasTag(pool1.Master, "Tower") && !pool1.Master.Commandlistserver.ContainsKey("Upgrade"));
                 List<Entity_Master> wet = new List<Entity_Master>();
-                yield return FoeOn(pool1.Master.Beingserver.Currentblock, wet, water);
+                List<Link_Modifier> wetHolds = new List<Link_Modifier>();
+                yield return FoeOn(pool1.Master.Beingserver.Currentblock, wet, water, wetHolds);
                 Entity_Master e = wet.Count > 0 ? wet[0] : null;
+                // The -1 hold leaves a slow no room (01_Util.cs Slow; PC_FULL_2026-11-06 §3): eased so the water's slow fits and
+                // the foe crawls at 10%.
+                if (e != null)
+                    foreach (Link_Modifier h in wetHolds) if (h != null && !h.Dead) ModKitUtil.Keep(e, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - Mathf.Min(ArgoData.WaterSlowCap, ModKitUtil.Stat(water.Master, "Slow", ArgoData.WaterSlow))));
                 int renewed0 = ArgoUtil.Renewed;
                 yield return Wait(0.8f);
                 if (Check("a foe wading in the pool", e != null && ModKitUtil.Alive(e), e != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(e), ModKitUtil.Pos(pool1.Master))) + " from the pool" : "none"))
@@ -1519,8 +1524,11 @@ public static partial class ArgoSelfTest
                 // Kelp's catch first (a foe whose stats weren't up is caught a tick later), then its end.
                 yield return Until(() => deepFoe == null || !ModKitUtil.Alive(deepFoe) || ArgoWater.Catches > caught0, 1.5f);
                 yield return Until(() => deepFoe == null || !ModKitUtil.Alive(deepFoe) || (ArgoStatus.IsWet(deepFoe) && !ArgoStatus.IsPinned(deepFoe)), 3f);
-                foreach (Link_Modifier h in deepHolds) ModKitUtil.Unmod(h);
-                yield return Wait(0.3f);   // a water re-tick (every 0.25 s) with the foe free; it wades at a third of its speed
+                // The hold eased, not taken off: a freed foe waded out of the pool's reach before a tick (PC_FULL_2026-11-06 §3).
+                // It leaves room for the whole 65% and the foe at 10%.
+                if (deepFoe != null)
+                    foreach (Link_Modifier h in deepHolds) if (h != null && !h.Dead) ModKitUtil.Keep(deepFoe, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - ArgoData.WaterSlowCap));
+                yield return Wait(0.3f);   // a water re-tick (every 0.25 s)
                 float wantSlow = Mathf.Min(ArgoData.WaterSlowCap, slowNow), gotSlow = ArgoUtil.WaterSlowOn(deepFoe);
                 Link_Stats sp = deepFoe != null && ModKitUtil.Alive(deepFoe) ? ModKitUtil.Speed(deepFoe) : null;
                 float room = sp != null ? sp.Value_Multi + gotSlow - 0.1f : 0f;   // what the 10% speed floor leaves the water
@@ -1962,7 +1970,7 @@ public static partial class ArgoSelfTest
                 yield return Wait(0.3f);
                 Check("Pay Dirt: a foe felled in the Tremor is dug up for two strikes of ore", placedIn && !ModKitUtil.Alive(inside) && drill.PaydirtBites == dug + 2 && drill.Bites >= bites + 2,
                     !placedIn ? "no foe placed inside " + F(radius) : "strikes " + (drill.PaydirtBites - dug) + ", bites " + (drill.Bites - bites));
-                Entity_Master outside = FoeBetween(c, radius + 1f, radius + 3f);
+                Entity_Master outside = FoeBetween(c, radius + 1f, radius + 3f, drill.InTremor);   // not in water the Tremor touches
                 bool placedOut = outside != null && !drill.InTremor(ModKitUtil.Pos(outside));
                 yield return Wait(0.4f);
                 dug = drill.PaydirtBites;

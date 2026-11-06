@@ -26,10 +26,14 @@ public static partial class UloeSelfTest
             yield return Wait(0.2f);
             float two = ModKitUtil.Stat(glass.Master, "Light", 0f) - before;
             Check("a teammate's Light: at most 4 a building", Near(one, UloeData.TeamLightCap, 0.05f), "6 offered, " + F(one) + " taken");
-            Check("... from every teammate together", Near(two, UloeData.TeamLightCap, 0.05f) && Near(UloeLight.SharedOn(glass.Master), UloeData.TeamLightCap, 0.05f), "and 3 more offered: " + F(two) + " in all");
+            // The building's own sources move its Light too (a Photon passing, a Flood Light's tick: PC_FULL_2026-11-06 read
+            // 5 and 8 here once), so the second teammate's take is read from its source, and the owner's from a read just before.
+            Check("... from every teammate together", mateB.Holding == 0 && Near(UloeLight.SharedOn(glass.Master), UloeData.TeamLightCap, 0.05f),
+                "and 3 more offered: the second holds " + mateB.Holding + ", teammates " + F(UloeLight.SharedOn(glass.Master)) + " in all; the building's Light moved " + F(two));
+            float pre = ModKitUtil.Stat(glass.Master, "Light", 0f);
             test.Feed(glass.Master, 3f, owner);
             yield return Wait(0.2f);
-            Check("... while the owner's own Light is not capped", Near(ModKitUtil.Stat(glass.Master, "Light", 0f) - before, UloeData.TeamLightCap + 3f, 0.05f), F(ModKitUtil.Stat(glass.Master, "Light", 0f) - before));
+            Check("... while the owner's own Light is not capped", test.Holding == 1 && Near(ModKitUtil.Stat(glass.Master, "Light", 0f) - pre, 3f, 0.05f), F(pre) + " -> " + F(ModKitUtil.Stat(glass.Master, "Light", 0f)));
             yield return Wait(UloeData.LightHold + 0.3f);
         }
 
@@ -153,11 +157,16 @@ public static partial class UloeSelfTest
                 Check("Static Charge: Photon damage +100%", Near(ModKitUtil.Stat(p0.Master, "Damage", 0f), 1f, 0.02f) && p0.MarkLevel == 2, "damage " + F(ModKitUtil.Stat(p0.Master, "Damage", 0f)) + ", marks " + p0.MarkLevel);
             yield return Upgrade(bank, "Chain4", owner);
             Check("Chain Lightning", Has(bank, "Chain4"));
-            yield return Foe("Enemy_Aegis", bank.Pos, 2.2f, 0.8f, slot);
+            // At a Photon's anchor (a Photon on a lit line stands at its end), armoured: the towers round the Bank felled the
+            // plain Aegis before a Photon reached it (PC_FULL_2026-11-06 §3, as R4 §8 found for the Searchlight).
+            UloePhotonBrain pa = PhotonsOf(bank).Find(p => p.Started);
+            yield return Foe("Enemy_Aegis", pa != null ? pa.Anchor : bank.Pos, 2.2f, 0.8f, slot);
             Entity_Master a = slot[0];
+            Armour(a);
             if (a != null)
             {
                 yield return Foe("Enemy_Aegis", ModKitUtil.Pos(a), 1.5f, 0.3f, slot);
+                Armour(slot[0]);
                 int chained = 0, marked = 0;
                 yield return Until(() =>
                 {
@@ -517,7 +526,7 @@ public static partial class UloeSelfTest
         hero = vessel[0]; hm = hero.Master;
         Vector3 fat = new Vector3(float.NaN, 0f, 0f);
         foreach (Entity_Master n in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
-            if (float.IsNaN(fat.x) && UloeUtil.IsNode(n))
+            if (float.IsNaN(fat.x) && UloeUtil.IsNode(n) && UloeServer.NearestBuilding(owner, ModKitUtil.Pos(n), 6f, null) != null)   // a node with a building of ours for the beam to cross
                 fat = ReachSpot(hm, ModKitUtil.Pos(n), UloeContent.Beings[UloeData.Flood], team, 0.5f, 2.3f);
         if (!float.IsNaN(fat.x))
         {
@@ -537,16 +546,26 @@ public static partial class UloeSelfTest
             yield return Wait(floodC.Param("Lighthouseturn_Base", 6f) + 0.5f);
             Check("Lighthouse: the beam turns, lighting buildings it crosses", floodC.Node != null && floodC.SweepAngle != a0 && floodC.Swept > swept, "node " + (floodC.Node != null) + ", angle " + F(a0) + " -> " + F(floodC.SweepAngle) + ", lit " + (floodC.Swept - swept));
         }
-        else ModKitTest.Setup("Lighthouse", "no room for a third Flood Light by a node");
+        else ModKitTest.Setup("Lighthouse", "no node with one of our buildings within 6 tiles had room for a third Flood Light");
 
-        // The buildings made here go, so the later sections count as before (section 10 counts every Photon).
-        foreach (UloeBuilding b in new UloeBuilding[] { glassB, glassC, bankB, bankC, mirrorD, floodC })
+        // The buildings made here go, so the later sections count as before (section 10 counts every Photon). A Sell from a
+        // fallen vessel goes nowhere: wait for it to come back first.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
+        UloeBuilding[] made = { glassB, glassC, bankB, bankC, mirrorD, floodC };
+        foreach (UloeBuilding b in made)
             if (b != null && b.Master != null)
             {
                 Send(hm, "Sell", Sell(hm, b.Master));
-                yield return Wait(0.4f);
+                yield return Until(() => b == null || b.Master == null, 3f);
             }
         yield return Wait(1f);
+        string standing = "";
+        foreach (UloeBuilding b in made)
+            if (b != null && b.Master != null)
+                standing += " " + b.Master.name + " (" + b.UpgradeCount + " upgrades)";
+        if (standing != "")
+            Log("INFO the cleanup's Sells left standing:" + standing);
         ClearFoes();
     }
 
