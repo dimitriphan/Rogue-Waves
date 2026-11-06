@@ -17,6 +17,7 @@ Dimitri: one title per player, "the most notable thing", failures as common as a
   `From` (leaks show in the caption); does `Activeplayerdata` reset on the boat (a card's numbers look like one map's);
   which things `Deaths` counts (Driftwood); the late board over the end screen; Tab replay; the pad's south button;
   Continue after a rejoin keeps the run's totals.
+
 ## 0.1.0-dev, later (2026-11-06): the menu buttons' wobble (self-test 168/0 on the PC, `Wobble_round1`)
 
 - Dimitri: "The button itself wobbles and jitters, including the base game buttons in the main menu." The game's layout puts
