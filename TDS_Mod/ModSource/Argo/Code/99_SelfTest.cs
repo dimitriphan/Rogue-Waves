@@ -1524,8 +1524,8 @@ public static partial class ArgoSelfTest
                 float wantSlow = Mathf.Min(ArgoData.WaterSlowCap, slowNow), gotSlow = ArgoUtil.WaterSlowOn(deepFoe);
                 Link_Stats sp = deepFoe != null && ModKitUtil.Alive(deepFoe) ? ModKitUtil.Speed(deepFoe) : null;
                 float room = sp != null ? sp.Value_Multi + gotSlow - 0.1f : 0f;   // what the 10% speed floor leaves the water
-                ArgoWater.Net deepNet = ArgoWater.NetOf(water);
-                Func<bool> inWater = () => deepNet != null && deepNet.Foes.Contains(deepFoe);   // the last water tick slowed it
+                // The last water tick slowed it (the nets are rebuilt each tick, so look the net up at each read).
+                Func<bool> inWater = () => { ArgoWater.Net n = ArgoWater.NetOf(water); return n != null && n.Foes.Contains(deepFoe); };
                 if (sp == null || !inWater())
                     ModKitTest.Setup("Abyss's slow on a foe in the water", sp == null ? "no foe stood in the pool" : "the foe waded out of the water before a tick");
                 else if (room < ArgoData.WaterSlowCap - 0.01f)
