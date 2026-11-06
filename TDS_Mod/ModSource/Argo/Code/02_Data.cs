@@ -75,6 +75,7 @@ public static class ArgoData
 
     public static readonly string[] NautStats = { "Health=20+5", "Speed=1.6", "Range=1.5" };
     public const float NautRespawn = 8f;
+    public const float FirstLookDelay = 0.5f;   // a new thing's first look waits for the client's 0.25 s hook scan (pitfall #158)
     public const float TuneReach = 1.75f;       // a Naut tunes a tower from this far (flat distance)
     public const float TuneAttackspeed = 0.2f;  // +20% attack speed; Full Crew adds another 0.2 (Tuneboost_Base)
     public const float TuneHeal = 0.5f;         // health a second on any tuned tower; Overhaul adds Repair_Base

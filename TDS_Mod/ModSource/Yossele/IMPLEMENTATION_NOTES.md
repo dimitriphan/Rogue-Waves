@@ -1,5 +1,10 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-06: the build look waits for the client (compiled here, not yet run in game)
+
+A building's build look goes out 0.5 s after `Begin`, once a client's 0.25 s hook scan has hooked it
+(`YosseleData.FirstLookDelay`, pitfall #158, `docs/reports/PITFALL_FIXES_2026-11-06.md` item 4).
+
 ## 2026-11-05: the clean-up, kit 1.12 (compiled, not yet run in game)
 
 No number or behaviour changed. `YosseleUtil.SlowOn` is now the kit's `ModKitUtil.SlowOn`; Wood Wide Web reads the purse and gives through `ModKitUtil.Purse`/`Give`; the Monument watch (`YosseleHooks`, four dictionaries) and Sap Bucket (`YosseleSap`, three) each keep one record a thing; the hit hooks set Damagemulti with `ModKitCombat.SetMulti`; `SapHits` (read by nothing) is gone. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.

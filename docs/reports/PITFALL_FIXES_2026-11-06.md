@@ -1,5 +1,10 @@
 # Fixes the pitfalls point to (2026-11-06)
 
+> **Since (2026-11-06, Dimitri: "Do top 4 recommended fixes, super nova flies photons back, keep cap at 8, wait for
+> upgrade thread"):** items 1-4 are built (item 4 also for Yossele's build look), Supernova's Photons fly back to their
+> Bank, Uloe plugged into a Surge Protector Bank gives at most Light 8 in all, and Spool waits for its upgrades thread.
+> Compiled here, not yet run on the PC; the parts' `IMPLEMENTATION_NOTES.md` entries of 2026-11-06 say what changed.
+
 Dimitri asked (07:15Z): "Based on the pitfalls, would there be any bug fixes or improvements that might fixable?"
 This is an assessment on base `3680331`, read from the code only: nothing was changed, built or run on the PC. Every
 pitfall in kit `docs/09` (#1-#173) was checked against the six parts and `Shared`, with the open leads from

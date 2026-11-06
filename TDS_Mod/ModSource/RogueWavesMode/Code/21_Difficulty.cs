@@ -273,19 +273,27 @@ public static class RWDifficulty
         List<string> pool = CampaignPool(RWCampaign.Seed);
         int count = ModifiersOn(map, pool.Count);
         // A stock elite's upgrade is only there on maps whose groups load it (Molten wasn't on Alt_3B_Woozy, seen on the PC 2026-11-04):
-        // the next one of the campaign's, then of the rest, takes its place, so a map never goes easier than its number.
-        List<string> reserve = new List<string>(pool);
-        foreach (string s in StockElites) if (!reserve.Contains(s)) reserve.Add(s);
-        foreach (string s in PackModifiers) if (!reserve.Contains(s)) reserve.Add(s);
-        foreach (string name in reserve)
+        // the next one outside the campaign's four takes its place (scope 04), so a map never goes easier than its number and
+        // never brings in early one of the four that is due on a later map.
+        List<string> outside = new List<string>();
+        foreach (string s in StockElites) if (!pool.Contains(s)) outside.Add(s);
+        foreach (string s in PackModifiers) if (!pool.Contains(s)) outside.Add(s);
+        int next = 0;
+        for (int i = 0; i < count; i++)
         {
-            if (on.Count >= count)
-                break;
-            Upgradeproperties u = ModKitUtil.Load<Upgradeproperties>("Upgrade", name);
+            Upgradeproperties u = Modifier(pool[i]);
+            while (u == null && next < outside.Count)
+                u = Modifier(outside[next++]);
             if (u != null) on.Add(u);
-            else RWLog.Once("no modifier " + name, "modifier " + name + " isn't loaded on this map: the next one stands in");
         }
         return on;
+    }
+
+    static Upgradeproperties Modifier(string name)
+    {
+        Upgradeproperties u = ModKitUtil.Load<Upgradeproperties>("Upgrade", name);
+        if (u == null) RWLog.Once("no modifier " + name, "modifier " + name + " isn't loaded on this map: the next one outside the campaign's four stands in");
+        return u;
     }
 
     // A break from Tide 15 on. Once a Tide has played LastRow (Tide 29 on map 1, sooner where Tide 15 plays a later row)

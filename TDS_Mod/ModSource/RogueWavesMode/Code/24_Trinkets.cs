@@ -479,14 +479,21 @@ public static class RWTrinkets
     {
         if (p == null)
             return;
-        p.Bought = id != "Cardinal_Oyster";
+        if (id != "Cardinal_Oyster")
+            p.Bought = true;
         OnGain(p, id);
     }
 
-    // What a Trinket starts when a player gains it, bought or given (a Wreck's pay, RWCardinals.Give).
+    // What a Trinket starts when a player gains it, bought or given (a Wreck's pay, RWCardinals.Give): Pearl Oyster pays
+    // from the moment it is held, so a buy made before it no longer counts (a Wreck's Oyster after a buy paid nothing
+    // until the next map); a Bottled Storm starts if none blows.
     public static void OnGain(RWPlayer p, string id)
     {
-        if (p != null && id == "Cardinal_Storm")
+        if (p == null)
+            return;
+        if (id == "Cardinal_Oyster")
+            p.Bought = false;
+        else if (id == "Cardinal_Storm")
             StartStorm(p);
     }
 

@@ -346,6 +346,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.32 ($3.14 this month), 35 of 36
   answers whole (`docs/reports/BATCH_CHECKS_2026-11-06c.md`, leads only, none fixed); no PC round (it needs his reply in
   the thread to start). Docs only; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-06: the top 4 pitfall fixes built** (Dimitri: "Do top 4 recommended fixes, super nova flies photons back,
+  keep cap at 8"): Uloe's brain guard, the elite stand-in, a Wreck's Pearl Oyster, late build looks; Supernova flies its
+  Photons home; Uloe's safe-socket Light capped at 8. Compiled here, not run on the PC; Spool waits.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1440,6 +1443,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   4 text, 51 scope rows DIFFERENT or MISSING, 9 design rows, 7 docs, 68 art; leads only, none fixed here. The PC was
   reachable, but a Remote Control session can only be started from a message Dimitri writes in the thread, so no PC
   round ran; suggestions instead. Docs only. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
+- **2026-11-06: the top 4 pitfall fixes built** (thread "Find fixes suggested by the pitfalls"; his word 12:52Z): Uloe's
+  three brains skip a bad tick (`UloeFaults`, #80); a missing stock elite is replaced from outside the campaign's four
+  (`RWDifficulty.Pool`, #146); Pearl Oyster pays from the moment it is held, also from a Wreck (`RWTrinkets.OnGain`); the
+  build looks of Argo, Yossele and Uloe and Uloe's Photon pop wait 0.5 s for the client's hook scan (#158; Spool left);
+  Supernova's Photons fly back to their Bank at double speed (`ComeHome`); Uloe plugged into a Surge Protector Bank gives at
+  most Light 8 in all. Self-test and gaps checks added or changed in Uloe `98_Upgrades.cs` and mode `92_GapsTrinkets.cs`.
+  Compiled here (release and self-test, every changed part), not run on the PC. No kit change; no new pitfall.
 
 ### Decisions
 

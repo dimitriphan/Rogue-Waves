@@ -1,5 +1,10 @@
 # RogueWavesMode: implementation notes
 
+**2026-11-06, two pitfall fixes (compiled here, not yet run in game; `docs/reports/PITFALL_FIXES_2026-11-06.md`):** a
+stock elite a map can't load is replaced by the next one outside the campaign's four (`RWDifficulty.Pool`, scope `04`),
+no longer by one of the four due on a later map (pitfall #146). Pearl Oyster pays from the moment it is held, also when a
+Wreck gives it after a buy on that map (`RWTrinkets.OnGain`; gaps check "one given after a buy pays from the next Tide").
+
 ## 0.1.0-dev, later (2026-11-06): the MVP board (compiled here, not yet run in game)
 
 Dimitri: one title per player, "the most notable thing", failures as common as accolades; defaults for the rest

@@ -176,10 +176,14 @@ public static partial class UloeSelfTest
             if (PhotonsOf(bank).Count > 0)
                 Kill(PhotonsOf(bank)[0].Master);
             yield return Wait(0.3f);
-            int bursts = UloeServer.Bursts, alive = PhotonsOf(bank).Count;
+            int bursts = UloeServer.Bursts, alive = PhotonsOf(bank).Count, homes = 0;
+            foreach (UloePhotonBrain p in PhotonsOf(bank)) homes += p.Homecomings;
             Send(bank.Master, UloeData.SurgeLink, "");
             yield return Wait(0.4f);
             Check("SURGE: every Photon bursts", bank.Novas == 1 && UloeServer.Bursts >= bursts + alive, (UloeServer.Bursts - bursts) + " bursts from " + alive + " Photons");
+            int homed = 0;
+            foreach (UloePhotonBrain p in PhotonsOf(bank)) homed += p.Homecomings;
+            Check("... and each one that burst flies back to its Bank", homed - homes >= alive, (homed - homes) + " of " + alive + " Photons sent home");
             Check("... and all come back at once", PhotonsOf(bank).Count == bank.Slots, PhotonsOf(bank).Count + " of " + bank.Slots);
             UloePhotonBrain p1 = PhotonsOf(bank).Find(p => p.Master != null);
             Check("... giving Light 3 for a while", bank.NovaOn && p1 != null && Near(p1.LightOut, 3f), p1 != null ? "Light " + F(p1.LightOut) : "no Photon");
@@ -244,9 +248,8 @@ public static partial class UloeSelfTest
             // Bank can take (the branch ends there); a third upgrade forced on, as the batch check counted it (Extra
             // Cell), would make 4 + 2 x 3 = 10 without the cap.
             yield return Wait(UloeData.LightTick + 0.1f);
-            float bright = UloeData.BrightLight[hero.Player != null ? hero.Player.Bright : 0];
             bool onC = hero.Plug == bankC.Master;
-            Check("Plug In on a Surge Protector Bank with all it can take: Light 8", bankC.UpgradeCount == 2 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f + bright)),
+            Check("Plug In on a Surge Protector Bank with all it can take: Light 8", bankC.UpgradeCount == 2 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f)),
                 bankC.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bankC.Master)) + (onC ? ", Uloe gives " + F(hero.LightNow) : ", not plugged in"));
             Upgradeproperties extra;
             if (UloeContent.Upgrades.TryGetValue(UloeData.Bank + "_Extracell2_Upgradeobject", out extra) && extra != null)
@@ -254,7 +257,7 @@ public static partial class UloeSelfTest
                 Helper_Entitytools.Upgrade(bankC.Master, extra, Helper_Entitytools.Upgradecheck.Forced, null);
                 yield return Wait(UloeData.LightTick + 0.2f);
                 onC = hero.Plug == bankC.Master;
-                Check("... still Light 8 with a third upgrade forced on", bankC.UpgradeCount == 3 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f + bright)),
+                Check("... still Light 8 with a third upgrade forced on", bankC.UpgradeCount == 3 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f)),
                     bankC.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bankC.Master)) + (onC ? ", Uloe gives " + F(hero.LightNow) : ", not plugged in"));
             }
             else ModKitTest.Setup("Plug In's cap with a third upgrade", "no Extra Cell upgrade object");
