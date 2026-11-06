@@ -24,7 +24,7 @@ through the InputSystem; the 3D brackets, the 5 s view after a loss and the lane
 
 ## 2. Checks run here
 
-From `TDS_Mod/ModSource`, after merging base `06fb34b`:
+From `TDS_Mod/ModSource`, after merging base `06fb34b`, then again after `8710ba8` (docs only):
 
 - `check_mod.py RogueWavesMode/Code Shared RogueWavesMode ""`: **0 errors, 0 warnings**.
 - `... "ROGUEWAVESMODE_SELFTEST"`: **0 errors**, 1 warning (`96_Flow.cs` `before`, on the base before).
