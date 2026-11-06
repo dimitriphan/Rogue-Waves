@@ -11,15 +11,24 @@ public static class UloeLog
 // exception, so one bad tick could leave Uloe, a building or a Photon dead; now the tick is skipped and the brain carries
 // on, and only a brain that throws on every frame for 600 frames (~10 s) stops. The first three errors are logged in
 // full, then one line every 500.
+// A kind of brain that comes in numbers (the Photons) passes one shared log count, so a fault common to them logs three
+// traces in all; the stop rule stays each brain's own.
 public sealed class UloeFaults
 {
-    int count, streak, lastFrame = -10;
+    public sealed class Log { public int Count; }
+
+    int streak, lastFrame = -10;
+    readonly Log log;
+
+    public UloeFaults() : this(null) { }
+    public UloeFaults(Log shared) { log = shared ?? new Log(); }
 
     // True when the brain should stop: it threw on every frame for 600 frames running.
     public bool Fail(string who, Exception e)
     {
-        count++;
-        streak = Time.frameCount - lastFrame <= 1 ? streak + 1 : 1;
+        int count = ++log.Count;
+        if (Time.frameCount != lastFrame)
+            streak = Time.frameCount - lastFrame == 1 ? streak + 1 : 1;
         lastFrame = Time.frameCount;
         if (count <= 3) UloeLog.Warn(who + ": " + e);
         else if (count % 500 == 0) UloeLog.Warn(who + ": " + count + " errors, last: " + e.Message);

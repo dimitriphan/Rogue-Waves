@@ -196,7 +196,9 @@ public static partial class UloeSelfTest
                 if (p.Homing) { homing++; if (speed0 > 0f && ModKitUtil.Stat(p.Master, "Speed", 0f) > speed0 * 1.5f) quick++; }
             }
             Check("... and each one that burst flies back to its Bank", homed - homes >= alive, (homed - homes) + " of " + alive + " Photons sent home");
-            Check("... at double speed", homing == 0 || quick == homing, quick + " of " + homing + " homing Photons quicker than " + F(speed0));
+            if (homing > 0)
+                Check("... at double speed", quick == homing, quick + " of " + homing + " homing Photons quicker than " + F(speed0));
+            else ModKitTest.Setup("Supernova's double speed", "no Photon was still on its way home");
             yield return Wait(1.5f);
             int nearer = 0;
             foreach (KeyValuePair<UloePhotonBrain, float> w in away)

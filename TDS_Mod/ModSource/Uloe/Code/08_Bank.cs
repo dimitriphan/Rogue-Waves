@@ -138,8 +138,10 @@ public class UloeBankBrain : UloeBuilding
 public class UloePhotonBrain : MonoBehaviour
 {
     public Entity_Master Master;
-    // One count for every Photon: they are many and respawn, so a fault common to all logs three traces, not three each.
-    static readonly UloeFaults faults = new UloeFaults();
+    // Each Photon stops on its own errors; they share one log count, as they are many and respawn (a fault common to all
+    // logs three traces, not three each).
+    static readonly UloeFaults.Log faultLog = new UloeFaults.Log();
+    readonly UloeFaults faults = new UloeFaults(faultLog);
     bool begun;                     // Begin ran to its end
     public UloeBankBrain Home;
     public UloeFloodBrain Following;
@@ -204,8 +206,8 @@ public class UloePhotonBrain : MonoBehaviour
                 begun = true;
             }
             // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
-            // hooked this Photon, so the pop goes out half a second later; it waits to wander until then, so the pop (played
-            // where the Photon stands) is still where it was born.
+            // hooked this Photon, so the pop goes out half a second later; it stands still until then (Think), so the pop,
+            // played where the Photon stands, is still where it was born.
             if (popLookAt >= 0f && Time.time >= popLookAt)
             {
                 popLookAt = -1f;
@@ -312,6 +314,8 @@ public class UloePhotonBrain : MonoBehaviour
         lastPos = pos;
         if (Homing && FlyHome(pos))
             return;
+        if (popLookAt >= 0f)
+            return;                 // it stands where it was born until its pop has gone out (pitfall #158)
         CheckPath(pos);
         if (Fight(pos))
             return;
