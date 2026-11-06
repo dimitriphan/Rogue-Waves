@@ -263,10 +263,14 @@ public static class RWChartView
     static bool Key()
     {
         UnityEngine.InputSystem.Keyboard k = UnityEngine.InputSystem.Keyboard.current;
-        if (k == null || !k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame || RWDialog.Up())
-            return false;
+        return k != null && k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame && !RWDialog.Up() && !RWBoardView.Up && !Typing();
+    }
+
+    // A text field (the chat box) has the focus: keys are the player's words, not ours (the MVP board asks too).
+    public static bool Typing()
+    {
         GameObject sel = UnityEngine.EventSystems.EventSystem.current != null ? UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject : null;
-        return sel == null || (sel.GetComponent<TMPro.TMP_InputField>() == null && sel.GetComponent<UnityEngine.UI.InputField>() == null);
+        return sel != null && (sel.GetComponent<TMPro.TMP_InputField>() != null || sel.GetComponent<UnityEngine.UI.InputField>() != null);
     }
 
     static void OpenLook(string scene)
@@ -476,9 +480,9 @@ public static class RWChartView
 
     // ---------------------------------------------------------------- drawing
 
-    static bool Canvasable() { return Blockage.Menu.Bl_Menus.Ui != null; }
+    public static bool Canvasable() { return Blockage.Menu.Bl_Menus.Ui != null; }
 
-    static float UiScale()
+    public static float UiScale()
     {
         UnityEngine.UI.CanvasScaler s = Blockage.Menu.Bl_Menus.Ui != null ? Blockage.Menu.Bl_Menus.Ui.GetComponent<UnityEngine.UI.CanvasScaler>() : null;
         return s != null && s.scaleFactor > 0f ? s.scaleFactor : 3f;
@@ -486,6 +490,8 @@ public static class RWChartView
 
     static TMPro.TMP_FontAsset font;
     static Material fontMaterial;
+    public static TMPro.TMP_FontAsset GameFont { get { Font(); return font; } }      // the MVP board's text too (RWBoardView)
+    public static Material GameFontMaterial { get { Font(); return fontMaterial; } }
 
     // The game's own font, from any label of the scene's UI (kit docs/20 §4).
     static void Font()
@@ -683,7 +689,7 @@ public static class RWChartView
 
     // ---------------------------------------------------------------- pieces (canvas units, origin at the bottom left)
 
-    static RectTransform Rt(Transform parent, string name)
+    public static RectTransform Rt(Transform parent, string name)
     {
         GameObject g = new GameObject(name, typeof(RectTransform));
         g.transform.SetParent(parent, false);
@@ -693,7 +699,7 @@ public static class RWChartView
         return rt;
     }
 
-    static RectTransform Box(Transform parent, string name, Rect r, Color c)
+    public static RectTransform Box(Transform parent, string name, Rect r, Color c)
     {
         RectTransform rt = Rt(parent, name);
         rt.pivot = Vector2.zero;
@@ -708,7 +714,7 @@ public static class RWChartView
         return rt;
     }
 
-    static void Image(Transform parent, string name, Sprite sprite, Rect r, float alpha)
+    public static void Image(Transform parent, string name, Sprite sprite, Rect r, float alpha)
     {
         if (sprite == null)
             return;
@@ -728,7 +734,7 @@ public static class RWChartView
         Image(tile, "Icon", sprite, new Rect((size - s) * 0.5f, (size - s) * 0.5f, s, s), alpha);
     }
 
-    static TMPro.TMP_Text Text(Transform parent, string name, string words, Vector2 at, float size, TMPro.TextAlignmentOptions align, Color c, float alpha)
+    public static TMPro.TMP_Text Text(Transform parent, string name, string words, Vector2 at, float size, TMPro.TextAlignmentOptions align, Color c, float alpha)
     {
         RectTransform rt = Rt(parent, name);
         float wide = Mathf.Max(20f, words.Length * size * 0.62f + 8f);
@@ -747,7 +753,7 @@ public static class RWChartView
         return t;
     }
 
-    static void Line(Transform parent, string name, Vector2 a, Vector2 b, float width, Color c, float alpha)
+    public static void Line(Transform parent, string name, Vector2 a, Vector2 b, float width, Color c, float alpha)
     {
         RectTransform rt = Rt(parent, name);
         Vector2 d = b - a;
@@ -803,7 +809,7 @@ public static class RWChartView
     // A tile built like the stock cards: a light grey outer frame, a gap, the tile and a darker inner rim (20 x 20 px).
     static readonly Dictionary<string, Sprite> frames = new Dictionary<string, Sprite>();
 
-    static RectTransform Framed(Transform parent, string name, Vector2 at, float size, Color fill, float alpha)
+    public static RectTransform Framed(Transform parent, string name, Vector2 at, float size, Color fill, float alpha)
     {
         string key = ColorUtility.ToHtmlStringRGB(fill);
         Sprite s;

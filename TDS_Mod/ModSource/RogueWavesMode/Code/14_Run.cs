@@ -23,6 +23,11 @@ public class RWPlayer
     // Bottled Storm (RWTrinkets): Tides left in the storm blowing now, and storms passed; saved, one storm to each stack.
     public int StormLeft, StormsDone;
     public bool Bought;                                             // bought at VENDCINT on this map, since Pearl Oyster (not saved)
+    // The MVP board (RWBoard): tallies since the last board (not saved: a lost map's go with it), and the run's totals by
+    // RWBoard's stat ids (saved, the ninth field).
+    public int Leaks, Missed, Drops;
+    public float SentMap;
+    public readonly int[] Run = new int[RWBoard.Stats];
 }
 
 public static class RWRun
@@ -185,10 +190,12 @@ public static class RWRun
 
     // Tabs split the fields: a Steam name may hold anything but a tab, and a tab can't be typed into one. The eighth, Bottled
     // Storm's "<left>/<passed>", came on 2026-11-05: a line without it reads as no storm, and an older build reads the first seven.
+    // The ninth, the MVP board's run totals (RWBoard stat ids, comma separated), came on 2026-11-06: a line without it reads
+    // as a run with no boards yet.
     public static string Encode(RWPlayer p)
     {
         return string.Join("\t", new[] { p.Key, p.Name.Replace("\t", " "), p.Hero, p.Pure.ToString(), string.Join(",", p.Directions.ToArray()), string.Join(",", p.Trinkets.ToArray()), p.Owed ? "1" : "0",
-            p.StormLeft + "/" + p.StormsDone });
+            p.StormLeft + "/" + p.StormsDone, string.Join(",", Array.ConvertAll(p.Run, x => x.ToString())) });
     }
 
     public static RWPlayer Decode(string line)
@@ -213,6 +220,9 @@ public static class RWRun
         }
         else
             p.StormLeft = p.StormsDone = 0;
+        string[] run = f.Length > 8 ? f[8].Split(',') : new string[0];
+        for (int i = 0; i < run.Length && i < p.Run.Length; i++)
+            if (!int.TryParse(run[i], out p.Run[i]) || p.Run[i] < 0) p.Run[i] = 0;
         return p;
     }
 
@@ -314,6 +324,7 @@ public static class RWRun
         foreach (string link in new[] { OrderLink, AskLink, RunLink, PriceLink })
             if (!v.Commandlistserver.ContainsKey(link))
                 Helper_Entitytools.Createcommand(v, RWContent.CommandFor(link), link, false, link == OrderLink);
+        CarryLog(v);
         if (!listening.Contains(v))
         {
             listening.RemoveAll(h => h == null);
@@ -360,6 +371,27 @@ public static class RWRun
         RWPlayer p = For(session);
         p.RunText = ModKitUtil.Clip(text);
         Write(Vessel(session), RunLink, p.RunText, RWCardinals.Overflow());
+    }
+
+    // The MVP board's five lines (RWBoard), on a vessel: made if missing, then what the host holds now.
+    static void CarryLog(Entity_Master v)
+    {
+        if (v == null || v.Commandlistserver == null || RWContent.LogCommands[0] == null)
+            return;
+        for (int i = 0; i < RWBoard.Lines; i++)
+        {
+            string link = RWBoard.Link(i);
+            if (!v.Commandlistserver.ContainsKey(link))
+                Helper_Entitytools.Createcommand(v, RWContent.LogName(i), link, false, false);
+            Write(v, link, RWBoard.Text[i], RWBoard.Round);
+        }
+    }
+
+    // Host: the board on every player's vessel now, standing or not (a board after the map ended has no Tick to carry it).
+    public static void WriteLog()
+    {
+        foreach (long s in Sessions())
+            CarryLog(Vessel(s));
     }
 
     static void Write(Entity_Master v, string name, string text, float value)
