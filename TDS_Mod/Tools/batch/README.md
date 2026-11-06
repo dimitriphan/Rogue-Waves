@@ -31,7 +31,7 @@ python3 TDS_Mod/Tools/batch/run_checks.py plan                         # request
 python3 TDS_Mod/Tools/batch/run_checks.py plan --exact                 # exact input tokens (free endpoint; needs the key)
 python3 TDS_Mod/Tools/batch/run_checks.py submit --model haiku         # the four checks on Haiku 5.5, waits, writes the report
 python3 TDS_Mod/Tools/batch/run_checks.py submit                       # the same on Sonnet 5.5
-python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 1   # only what changed since the last report
+python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 2   # only what changed since each check's last full run
 python3 TDS_Mod/Tools/batch/run_checks.py submit --check art --art TDS_Mod/ModSource/Spool/Art/Temporary/game_size
 python3 TDS_Mod/Tools/batch/run_checks.py submit --check scope,design --scope-files 07,11 --no-wait
 python3 TDS_Mod/Tools/batch/run_checks.py collect msgbatch_...         # finish a --no-wait or interrupted run
@@ -44,11 +44,16 @@ the model thinks, and thinking is billed as output), `--scope-files 07,11`, `--a
 
 - **`--since REF`** keeps only what changed between `REF` and `HEAD` (committed changes): `text` for parts whose game
   code changed, `scope` for scope files whose parts or own text changed, `design` for vessels whose code or page
-  changed, `docs` when one of its files did, `art` for changed PNGs. `--since last` takes the base commit named in the
-  newest `BATCH_CHECKS_*.md`; with no report yet it checks everything. Nothing changed: it says so and sends nothing.
-  A change to the mode's code wakes ten scope files, so such a run costs nearly a full one.
-- **`--max-cost USD`** (default 5): `submit` refuses to send, exit code 4, when the estimate with every cache write
-  is over it. A full Sonnet run is about $4.73 at worst, so the default lets it through and stops anything bigger.
+  changed, `docs` when one of its files did, `art` for changed PNGs. `--since last` diffs each check from its own
+  base, kept in a hidden `batch-bases` line at the end of each report: the commit up to which that check last ran in
+  full with every request answered. A narrowed run (`--scope-files`, `--art`), a failed or cut request, or an explicit
+  `--since REF` leaves that check's base where it was, so nothing it left out is skipped later; a check with no base
+  yet is checked whole. Nothing changed: it says so and sends nothing. A change to the mode's code wakes ten scope
+  files, so such a run costs nearly a full one.
+- **`--max-cost USD`** (default 10): `submit` refuses to send, exit code 4, when the most the run can cost is over
+  it: every request writing its whole `max_tokens` (8,000 text, docs and art; 40,000 scope; 24,000 design; thinking
+  included) and every cache block written, never read. That is a true ceiling: a full Sonnet run is at most $6.94
+  (about $4.07 expected), a full Haiku run at most $1.26 (about $0.76). `plan` prints both figures.
 - **`--max-wait MIN`** stops waiting after `MIN` minutes; the batch keeps running and `collect` finishes it.
 - **Exit codes:** 0 done or nothing to check, 2 bad arguments, 3 no key (nothing sent), 4 over `--max-cost`, 1 any
   other failure.
@@ -58,12 +63,14 @@ in `out/` beside the script (not committed), so `collect` needs that record: set
 A cloud container is gone after its thread, so a cloud thread waits for its batch (Haiku batches of this size
 usually end within minutes) or sets `RW_BATCH_OUT=/mnt/project-files/batch` so a later thread can collect.
 
-**The key.** Read from `ANTHROPIC_API_KEY`. When the variable is unset, the script asks for the key once, hidden, and
-stores it nowhere (with no terminal it stops with exit code 3). On a Windows PC, set it for one PowerShell window only
-(`$env:ANTHROPIC_API_KEY = "..."`), never as a permanent user variable: Claude Code on that PC would then offer to bill
-every session to the key (`docs/PROJECT_SETUP.md` "API credit"). In this project's cloud threads, the key lives in the
-cloud environment's settings, which Dimitri enters; a cloud session's own Claude Code keeps using the plan whatever
-the key.
+**The key.** Read from `RW_BATCH_API_KEY`, a name Claude Code never reads, so no session is ever offered the key;
+`ANTHROPIC_API_KEY` works too, as a fallback. When neither is set, the script asks for the key once, hidden, and
+stores it nowhere (with no terminal it stops with exit code 3). In this project's cloud threads the key is an
+**environment variable** of the cloud environment (`RW_BATCH_API_KEY=...`, which Dimitri enters), not a network secret:
+the agent proxy never attaches a network secret to `api.anthropic.com`. Every command in that environment's sessions
+can read the variable; it is his private environment. On a Windows PC, set it for one PowerShell window
+(`$env:RW_BATCH_API_KEY = "..."`); never set `ANTHROPIC_API_KEY` as a permanent user variable, since Claude Code on
+that PC would then offer to bill every session to the key (`docs/PROJECT_SETUP.md` "API credit").
 
 ## From a thread or the morning routine
 
@@ -71,12 +78,12 @@ A thread that wants a check runs `submit` itself and reads the report; it commit
 C "Now" names it). The cheap daily form, for the morning routine once the key is set:
 
 ```
-[ -n "$ANTHROPIC_API_KEY" ] && python3 -m pip install -q anthropic \
-  && python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 1 --max-wait 90
+[ -n "$RW_BATCH_API_KEY" ] && python3 -m pip install -q anthropic \
+  && python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 2 --max-wait 90
 ```
 
-It sends only what changed since the last report (usually cents, about $0.76 at most), skips itself without the key,
-and writes the report the routine's PR carries. The month's figure: `spend`, or the last line of each report.
+It sends only what changed since each check's last full run (usually cents; a full Haiku run is about $0.76 and at
+most $1.26), skips itself without the key, and writes the report the routine's PR carries. The month's figure: `spend`, or the last line of each report.
 
 ## Cost per run
 
@@ -98,8 +105,8 @@ $0.25, or $0.25 / $1.25 for a prompt over 100K tokens (the mode's scope files ar
 
 Each part's code is its own block, marked for prompt caching, the mode's first, so ten scope requests share the
 mode's block and a vessel's scope and design requests share its block: a cache hit reads it at a tenth of the price,
-a write costs 1.25 times. Inside a batch, hits are best effort, so a run can cost up to about $0.66 more on Sonnet or
-$0.13 on Haiku, or noticeably less. The report gives the real cost from the API's usage figures. At these prices the
+a write costs 1.25 times. Inside a batch, hits are best effort, so a run can cost more than the estimate (never more
+than the ceiling `plan` prints), or noticeably less. The report gives the real cost from the API's usage figures. At these prices the
 $100 a month covers about 20 full Sonnet runs, or a daily Haiku run with plenty to spare. Rerun `plan` after a big
 change to refresh the numbers.
 
@@ -110,6 +117,8 @@ DIFFERENT, MISSING and NOT-IN-CODE row against the code, and look at art yoursel
 ## What ran where
 
 Built 2026-11-05 (`text`, `scope`), extended 2026-11-06 (`design`, `docs`, `art`, `--since`, `--max-cost`,
-`--max-wait`, `spend`). Here (cloud): `plan` for every check on both models, the report writer on made-up results for
-every check, the art pictures looked at, and the missing-key and over-cap exits. No real batch has run: no key was
+`--max-wait`, `spend`; review fixes: at most 2 cache marks a request, the API's limit being 4, which scope `11`'s five
+parts broke; per-check bases; a true cost ceiling; `--art` sends only files git tracks). Here (cloud): `plan` for every
+check on both models, the report writer on made-up results for every check, per-check bases through a failed, a
+narrowed and an explicit-`--since` run, the art pictures looked at, and the missing-key and over-cap exits. No real batch has run: no key was
 available in the container.

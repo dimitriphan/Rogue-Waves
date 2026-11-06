@@ -21,7 +21,8 @@ From the repository root (README.md beside this file has the key, the steps and 
 plan sends nothing and costs nothing (with --exact it calls the free token-count endpoint, which needs the key).
 submit sends one batch, waits for it and writes docs/reports/BATCH_CHECKS_<date>.md; collect does the second half
 for a batch submitted with --no-wait or interrupted. spend adds up what this month's reports cost. The key is read
-from ANTHROPIC_API_KEY, or asked for once (hidden, never stored) when the variable is unset and a terminal is there.
+from RW_BATCH_API_KEY (a name Claude Code never reads), else ANTHROPIC_API_KEY, else asked for once (hidden, never
+stored) when a terminal is there.
 Only the mod's own code and art, the scope, and the project's docs are sent; never the game's binaries or sprites.
 
 Exit codes: 0 done (or nothing to check), 2 bad arguments, 3 no key, 4 over --max-cost, 1 any other failure.
@@ -65,6 +66,8 @@ DOC_GLOBS = ["docs/skills/*.md"]
 TEXT_CHUNK = 250          # strings per text request
 ART_CHUNK = 8             # images per art request
 GUESS_OUT = {"text": 3_000, "scope": 14_000, "design": 10_000, "docs": 4_000, "art": 3_000}
+# Each request's max_tokens (thinking included): the most it can write, so the ceiling --max-cost holds a run to.
+MAX_OUT = {"text": 8_000, "scope": 40_000, "design": 24_000, "docs": 8_000, "art": 8_000}
 DEEP_SWELL, LIGHT = (0x2E, 0x4A, 0x62, 255), (0xE9, 0xF1, 0xEE, 255)   # docs/STYLE.md: Deep Swell and Foam
 
 
@@ -170,31 +173,31 @@ def git(*args):
     return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
 
 
-def base_commit():
+def base_commit(short=True):
     try:
-        return git("rev-parse", "--short", "HEAD").stdout.strip() or "?"
+        return git("rev-parse", *(["--short"] if short else []), "HEAD").stdout.strip() or "?"
     except OSError:
         return "?"
 
 
-def last_batch_base():
-    """The base commit named by the newest BATCH_CHECKS report, or None when there is none."""
+BASES_LINE = re.compile(r"<!-- batch-bases: (\{.*?\}) -->")
+
+
+def prior_bases():
+    """Each check's base from the newest report that records them: the commit up to which that check last ran in
+    full with every request answered. A narrowed run (--scope-files, --art), a failed request or an explicit
+    --since REF leaves the check's old base, so `--since last` never skips what such a run left out."""
     for p in sorted(REPORTS.glob("BATCH_CHECKS_*.md"), reverse=True):
-        m = re.search(r"on base `([0-9a-f]{7,40})`", p.read_text(encoding="utf-8"))
+        m = BASES_LINE.search(p.read_text(encoding="utf-8"))
         if m:
-            return m.group(1)
-    return None
+            return json.loads(m.group(1))
+    return {}
 
 
 def changed_since(ref):
     """Repository paths changed between ref and HEAD (committed changes only), or None for 'everything'."""
     if ref is None:
         return None
-    if ref == "last":
-        ref = last_batch_base()
-        if ref is None:
-            print("--since last: no earlier batch report, so everything is checked this time.")
-            return None
     r = git("diff", "--name-only", ref, "HEAD")
     if r.returncode:
         print(f"--since {ref}: {r.stderr.strip() or 'git diff failed'}", file=sys.stderr)
@@ -252,7 +255,16 @@ def art_files(paths, changed):
         for part in PARTS:
             out += sorted((SRC / part / "Art").glob("*.png"))
             out += sorted((SRC / part / "Art" / "Temporary" / "game_size").glob("*.png"))
-    return [f for f in out if "preview_8x" not in f.parts]
+    tracked = set(git("ls-files", "*.png").stdout.split())
+    keep = []
+    for f in out:                 # only files git tracks: nothing untracked, ignored or linked from outside is sent
+        try:
+            name = f.resolve().relative_to(ROOT).as_posix()
+        except ValueError:
+            continue
+        if name in tracked and "preview_8x" not in f.parts:
+            keep.append(ROOT / name)
+    return keep
 
 
 def art_check_module():
@@ -417,15 +429,19 @@ def params(model, effort, max_tokens, system, user, schema):
 
 
 def code_system(parts):
-    """The preamble, then one cached block per part. The same part gives the same block in every check, so a scope
-    request and a design request for one vessel can share the cache."""
+    """The preamble, then one block per part. The same part gives the same block in every check, so a scope request
+    and a design request for one vessel can share the cache. Only the first and the last block carry a cache mark:
+    the API takes at most 4 a request (scope 11 has five parts), and only the first part's prefix (the mode's) is
+    shared between requests."""
     system, files = [{"type": "text", "text": PREAMBLE}], []
-    for part in parts:
+    for k, part in enumerate(parts):
         part_files = game_files(part)
         files += part_files
-        system.append({"type": "text", "cache_control": {"type": "ephemeral"},
-                       "text": f"The code of {part} (game code only; self-tests left out):\n\n"
-                               + "\n\n".join(numbered(f) for f in part_files)})
+        block = {"type": "text", "text": f"The code of {part} (game code only; self-tests left out):\n\n"
+                                         + "\n\n".join(numbered(f) for f in part_files)}
+        if k in (0, len(parts) - 1):
+            block["cache_control"] = {"type": "ephemeral"}
+        system.append(block)
     return system, files
 
 
@@ -448,7 +464,7 @@ def text_requests(model, effort, changed):
         cid = f"text-{c // TEXT_CHUNK + 1:02d}"
         user = "Proofread these strings (id | first place | text):\n\n" + "\n".join(rows)
         reqs.append((cid, {"check": "text", "strings": meta},
-                     params(model, effort, 16_000, TEXT_SYSTEM, user, TEXT_SCHEMA)))
+                     params(model, effort, MAX_OUT["text"], TEXT_SYSTEM, user, TEXT_SCHEMA)))
     return reqs
 
 
@@ -476,7 +492,7 @@ def scope_requests(model, effort, which, changed):
                  + "\n".join(f"{i}\t{l.rstrip()}" for i, l in enumerate(scope, 1))
                  + f"\n\nAudit every line of {path.name} against the code. Give lines as {num}:N or {num}:N-M.")
         reqs.append((f"scope-{num}", {"check": "scope", "file": path.name, "code_files": [rel(f) for f in files]},
-                     params(model, effort, 64_000, system, user, rows_schema(SCOPE_MARKS))))
+                     params(model, effort, MAX_OUT["scope"], system, user, rows_schema(SCOPE_MARKS))))
     return reqs
 
 
@@ -494,7 +510,7 @@ def design_requests(model, effort, changed):
                 + "\n".join(f"{i}\t{l.rstrip()}" for i, l in enumerate(page.read_text(encoding='utf-8-sig').split('\n'), 1))
                 + "\n\nCheck every line of the page against the code. Give lines as D:N or D:N-M.")
         reqs.append((f"design-{part}", {"check": "design", "file": rel(page), "code_files": [rel(f) for f in files]},
-                     params(model, effort, 48_000, system, user, rows_schema(DESIGN_MARKS))))
+                     params(model, effort, MAX_OUT["design"], system, user, rows_schema(DESIGN_MARKS))))
     return reqs
 
 
@@ -512,7 +528,7 @@ def docs_requests(model, effort, changed):
     user = (f"{DOCS_TASK}\n\nCited paths the local pass could not find ({len(missing)}):\n"
             + ("\n".join(missing) if missing else "none"))
     return [("docs-01", {"check": "docs", "missing": missing},
-             params(model, effort, 16_000, system, user, DOCS_SCHEMA))]
+             params(model, effort, MAX_OUT["docs"], system, user, DOCS_SCHEMA))]
 
 
 def art_requests(model, effort, files):
@@ -539,12 +555,12 @@ def art_requests(model, effort, files):
             img_tokens += w * h // 750
         cid = f"art-{c // ART_CHUNK + 1:02d}"
         reqs.append((cid, {"check": "art", "images": meta, "image_tokens": img_tokens},
-                     params(model, effort, 16_000, system, content, ART_SCHEMA)))
+                     params(model, effort, MAX_OUT["art"], system, content, ART_SCHEMA)))
     return reqs
 
 
 def parse_checks(spec):
-    which = CHECKS if spec == "all" else [c.strip() for c in spec.split(",") if c.strip()]
+    which = list(CHECKS) if spec == "all" else [c.strip() for c in spec.split(",") if c.strip()]
     bad = [c for c in which if c not in CHECKS]
     if bad or not which:
         print(f"--check: unknown {', '.join(bad) or 'nothing'}; pick from all,{','.join(CHECKS)}", file=sys.stderr)
@@ -552,13 +568,36 @@ def parse_checks(spec):
     return which
 
 
+def changes_per_check(since, checks):
+    """check -> the paths changed since its base (None = check everything)."""
+    if since is None:
+        return {c: None for c in checks}
+    if since != "last":
+        changed = changed_since(since)
+        return {c: changed for c in checks}
+    bases, diffs, out = prior_bases(), {}, {}
+    for c in checks:
+        ref = bases.get(c)
+        if ref is None:
+            print(f"--since last: {c} has no earlier full run, so all of it is checked this time.")
+            out[c] = None
+            continue
+        if ref not in diffs:
+            diffs[ref] = changed_since(ref)
+        out[c] = diffs[ref]
+    return out
+
+
 def build(args):
     model = MODELS[args.model]
     checks = parse_checks(args.check)
-    changed = changed_since(args.since)
+    if "art" in checks and args.check == "all" and not (args.art or args.since):
+        # "all" without --since or --art leaves art out: the default set is the art in use, about a hundred images.
+        checks.remove("art")
+    ch = changes_per_check(args.since, checks)
     reqs = []
     if "text" in checks:
-        reqs += text_requests(model, args.effort, changed)
+        reqs += text_requests(model, args.effort, ch["text"])
     if "scope" in checks:
         which = DEFAULT_SCOPE
         if args.scope_files:
@@ -568,17 +607,18 @@ def build(args):
                 print(f"--scope-files: no audit for {', '.join(bad) or 'nothing'}; "
                       f"pick from {','.join(DEFAULT_SCOPE)}", file=sys.stderr)
                 sys.exit(2)
-        reqs += scope_requests(model, args.effort, which, changed)
+        reqs += scope_requests(model, args.effort, which, ch["scope"])
     if "design" in checks:
-        reqs += design_requests(model, args.effort, changed)
+        reqs += design_requests(model, args.effort, ch["design"])
     if "docs" in checks:
-        reqs += docs_requests(model, args.effort, changed)
+        reqs += docs_requests(model, args.effort, ch["docs"])
     if "art" in checks:
-        # "all" without --since or --art leaves art out: the default set is the art in use, about a hundred images.
-        if args.art or changed is not None or args.check != "all":
-            reqs += art_requests(model, args.effort, art_files(args.art, changed))
+        reqs += art_requests(model, args.effort, art_files(args.art, ch["art"]))
+    # The checks this run covers in full, whose base may move to HEAD once every request of theirs is answered.
+    narrowed = {"scope": bool(args.scope_files), "art": bool(args.art)}
+    covered = [c for c in checks if not narrowed.get(c) and args.since in (None, "last")]
     built = [c for c in CHECKS if any(meta["check"] == c for _, meta, _ in reqs)]
-    return model, built, reqs
+    return model, built, reqs, covered
 
 
 # ---------------------------------------------------------------- cost
@@ -614,16 +654,17 @@ def cost(model, inp, out, cache_write=0, cache_read=0):
 
 
 def estimate(model, reqs, counted=None):
-    """Rows (id, input tokens, guessed output, $), total input, total $, and the worst-case extra for cache writes."""
-    rows, total_in, total, extra = [], 0, 0.0, 0.0
+    """Rows (id, input tokens, guessed output, $), total input, the estimate in $, and the ceiling in $: every
+    cached block written and never read, every request writing its whole max_tokens."""
+    rows, total_in, total, ceiling = [], 0, 0.0, 0.0
     for cid, meta, p in reqs:
         n = counted[cid] if counted else est_tokens(meta, p)
         out = GUESS_OUT[meta["check"]]
         c_ = cost(model, n, out)
-        cw = min(cached_tokens(p), n)          # worst case: every cached block is written, never read
-        extra += cost(model, n - cw, 0, cache_write=cw) - cost(model, n, 0)
+        cw = min(cached_tokens(p), n)
+        ceiling += cost(model, n - cw, p["max_tokens"], cache_write=cw)
         rows.append((cid, n, out, c_)); total_in += n; total += c_
-    return rows, total_in, total, extra
+    return rows, total_in, total, ceiling
 
 
 # ---------------------------------------------------------------- the API
@@ -634,10 +675,10 @@ def client():
     except ImportError:
         print("The Anthropic SDK is missing: python3 -m pip install anthropic", file=sys.stderr)
         sys.exit(1)
-    key = os.environ.get("ANTHROPIC_API_KEY")
+    key = os.environ.get("RW_BATCH_API_KEY") or os.environ.get("ANTHROPIC_API_KEY")
     if not key:
         if not sys.stdin.isatty():
-            print("ANTHROPIC_API_KEY is not set (README.md beside this script says how). Nothing was sent.",
+            print("RW_BATCH_API_KEY is not set (README.md beside this script says how). Nothing was sent.",
                   file=sys.stderr)
             sys.exit(3)
         key = getpass.getpass("API key (hidden, not stored): ").strip()
@@ -645,7 +686,7 @@ def client():
 
 
 def cmd_plan(args):
-    model, checks, reqs = build(args)
+    model, checks, reqs, covered = build(args)
     if not reqs:
         print("Nothing to check: no request was built (nothing changed for these checks).")
         return
@@ -662,13 +703,14 @@ def cmd_plan(args):
             except anthropic.APIError as e:
                 print(f"Token count failed on {cid}: {e}", file=sys.stderr)
                 sys.exit(1)
-    rows, total_in, total, extra = estimate(model, reqs, counted)
+    rows, total_in, total, ceiling = estimate(model, reqs, counted)
     print(f"{'request':<16} {'input tok':>10} {'out (guess)':>11} {'batch $':>9}")
     for cid, n, out, c_ in rows:
         print(f"{cid:<16} {n:>10,} {out:>11,} {c_:>9.3f}")
     print(f"{len(reqs)} requests ({', '.join(checks)}), {total_in:,} input tokens "
-          f"({'counted' if counted else 'estimated'}), {model}: about ${total:.2f} at batch prices (cache writes can "
-          f"add up to ${extra:.2f}; cache reads lower it).")
+          f"({'counted' if counted else 'estimated'}), {model}: about ${total:.2f} at batch prices; at most "
+          f"${ceiling:.2f} (every request at its max_tokens, every cache block written), the figure --max-cost "
+          f"checks.")
     path = OUT / f"plan_{args.model}.jsonl"
     with path.open("w", encoding="utf-8") as f:
         for cid, _, p in reqs:
@@ -677,15 +719,15 @@ def cmd_plan(args):
 
 
 def cmd_submit(args):
-    model, checks, reqs = build(args)
+    model, checks, reqs, covered = build(args)
     if not reqs:
         print("Nothing to check: no request was built (nothing changed for these checks). Nothing was sent.")
         return
-    _, _, total, extra = estimate(model, reqs)
-    if total + extra > args.max_cost:
-        print(f"About ${total:.2f} (up to ${total + extra:.2f} with cache writes) is over --max-cost "
-              f"${args.max_cost:.2f}. Nothing was sent; narrow it (--check, --scope-files, --since, --model haiku) "
-              f"or raise --max-cost.", file=sys.stderr)
+    _, _, total, ceiling = estimate(model, reqs)
+    if ceiling > args.max_cost:
+        print(f"About ${total:.2f}, at most ${ceiling:.2f}: the most is over --max-cost ${args.max_cost:.2f}. Nothing "
+              f"was sent; narrow it (--check, --scope-files, --since, --model haiku) or raise --max-cost.",
+              file=sys.stderr)
         sys.exit(4)
     anthropic, c = client()
     try:
@@ -702,11 +744,12 @@ def cmd_submit(args):
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / f"{batch.id}.json").write_text(json.dumps({
         "model": model, "effort": args.effort, "checks": checks, "base": base_commit(),
-        "since": args.since, "estimate": round(total, 2),
+        "head": base_commit(short=False), "covered": covered, "prev_bases": prior_bases(),
+        "since": args.since, "estimate": round(total, 2), "ceiling": round(ceiling, 2),
         "submitted": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "requests": {cid: meta for cid, meta, _ in reqs}}), encoding="utf-8")
     print(f"Batch {batch.id}: {len(reqs)} requests ({', '.join(checks)}), {model}, effort {args.effort}, "
-          f"about ${total:.2f}. Record: {OUT / (batch.id + '.json')}")
+          f"about ${total:.2f} (at most ${ceiling:.2f}). Record: {OUT / (batch.id + '.json')}")
     if args.no_wait:
         print(f"Collect it later, on a machine that has the record: "
               f"python3 TDS_Mod/Tools/batch/run_checks.py collect {batch.id}")
@@ -917,6 +960,11 @@ def write_report(batch_id, meta, results):
     total = sum(c_ for _, c_ in report_costs(month)) + spent
     L += ["", f"Spent on batch checks in {month}, this run included: ${total:.2f} of the ${MONTHLY_CREDIT:.0f} "
           "monthly API credit."]
+    bases = dict(meta.get("prev_bases") or {})
+    for c in meta.get("covered", []):
+        if all(st == "ok" for cid, st, *_ in runs if reqs[cid]["check"] == c):
+            bases[c] = meta.get("head") or meta["base"]
+    L += ["", f"<!-- batch-bases: {json.dumps(bases, sort_keys=True)} -->"]
     path.write_text("\n".join(L) + "\n", encoding="utf-8")
     print(f"Report: {os.path.relpath(path, ROOT)}  (${spent:.2f}; ${total:.2f} this month)")
 
@@ -932,13 +980,14 @@ def main():
         p.add_argument("--effort", choices=["low", "medium", "high"], default="medium")
         p.add_argument("--scope-files", help="comma list of scope numbers, e.g. 07,11 (default: 01,03-14,16)")
         p.add_argument("--since", metavar="REF",
-                       help="only what changed between REF and HEAD; 'last' = the base of the newest batch report")
+                       help="only what changed between REF and HEAD; 'last' = each check since its last full run")
         p.add_argument("--art", nargs="+", metavar="PATH", help="PNG files or folders for the art check")
         if name == "plan":
             p.add_argument("--exact", action="store_true", help="count tokens with the free endpoint (needs the key)")
         else:
-            p.add_argument("--max-cost", type=float, default=5.0,
-                           help="refuse to send when the estimate, cache writes included, is over this many $ (5)")
+            p.add_argument("--max-cost", type=float, default=10.0,
+                           help="refuse to send when the most the run can cost (every request at its max_tokens, "
+                                "every cache block written) is over this many $ (10)")
             p.add_argument("--no-wait", action="store_true", help="submit and return; run collect later")
             p.add_argument("--max-wait", type=int, default=0, metavar="MIN",
                            help="stop waiting after MIN minutes (0 = until the batch ends)")
