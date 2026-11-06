@@ -31,7 +31,8 @@ Effort xhigh. Past rounds to copy the shape of: `docs/reports/TESTING_ROUND_3_20
 
 1. **Back up and park.** Move his release builds out of `TDS\Mods` into `<h>\parked\release_before_<round>_<yyyymmdd>`
    and note their hashes. Back up `Desktop\RogueWave\scope` to `<h>\backup_scope_before_<round>_<yyyymmdd>`.
-   `Run-SelfTests.ps1` backs up his save itself; `Run-TwoPlayers.ps1` also backs up and restores the registry.
+   `Run-SelfTests.ps1` backs up his save itself but never puts it back; `Run-TwoPlayers.ps1` backs up and restores the
+   save and the registry.
 2. **Apply.** `Get-Handoff.ps1 -Ref <branch> -Name <Name>`, then `<h>\<Name>\Apply-Handoff.ps1` (check only). Stop and
    report on `DIFFERS`, `MISSING FROM HANDOFF`, `HANDOFF COPY DAMAGED`, `MISSING`, `PATCH DOESN'T FIT` or a non-zero
    exit. Then `Apply-Handoff.ps1 -Apply` (backs up what it replaces, writes `pc_manifest.txt`).
@@ -48,9 +49,10 @@ Effort xhigh. Past rounds to copy the shape of: `docs/reports/TESTING_ROUND_3_20
    `D:\TDS_second`; `-Extra "-rwshort -rwhosthero X -rwsecondhero Y"` as the list asks). Play builds:
    `Run-Play.ps1 -Vessel <Part>`.
 8. **Scope copy.** Make `Desktop\RogueWave\scope` equal the repository's `docs/scope` (the 17 files).
-9. **Restore.** Put the parked release builds back, hash-identical and enabled; his save and registry back; TDS
-   closed. If release builds were rebuilt: `Run-SelfTests.ps1 -Vessels <Parts> -BootCheck`. `Get-PcManifest.ps1` if
-   anything changed after Apply. Leave the Mods folder as he had it.
+9. **Restore.** Put the parked release builds back, hash-identical and enabled; his save back (with TDS closed, copy
+   the self-test's `handoff\save_backup_<stamp>` over it) and the registry; TDS closed. If release builds were
+   rebuilt: `Run-SelfTests.ps1 -Vessels <Parts> -BootCheck`. `Get-PcManifest.ps1` if anything changed after Apply.
+   Leave the Mods folder as he had it.
 10. Send the results, then stop the session.
 
 ## After the round (cloud)

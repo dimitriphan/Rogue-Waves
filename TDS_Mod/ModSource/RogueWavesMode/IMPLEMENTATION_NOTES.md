@@ -1,6 +1,6 @@
 # RogueWavesMode: implementation notes
 
-## 0.1.0-dev, later (2026-11-06): the menu buttons' wobble (compiled, not yet run in game)
+## 0.1.0-dev, later (2026-11-06): the menu buttons' wobble (self-test 168/0 on the PC, `Wobble_round1`)
 
 - Dimitri: "The button itself wobbles and jitters, including the base game buttons in the main menu." The game's layout puts
   its button pictures on half pixels at UI scale 3, and the main menu's camera sways with the UI camera as its child

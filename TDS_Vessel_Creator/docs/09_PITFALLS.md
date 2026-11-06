@@ -648,8 +648,9 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      every frame and those lines pick the left or the right art pixel by chance. The boat's `Maincamera/Ui` sways the
      same way (two noise channels); a map's `Camera/Ui` has none and moves only with the player. The main menu's hover
      only swaps a tile's sprite and tweens its colour (`Blu5_Buttonanim_Image`, `_Color`; no `_Size` in the scene), so
-     nothing moves on hover → put every still picture a whole number of screen pixels from the nearest thing that moves
-     it as a whole (`RWPixels`, `RogueWavesMode/Code/26_Pixels.cs`); a half pixel must always round the same way, or the
-     camera's last digits move it a pixel. The layout and the cameras are the game's own, so a game without mods should
-     show it too (read, not measured). Read from the game's `level1`-`level3` (UnityPy, read-only); the fix is
-     compiled, its PC check is P1-P2 of the mode's self-test (`docs/reports/BUTTON_WOBBLE_2026-11-06.md`).
+     nothing moves on hover → put every still picture a whole number of screen pixels from its canvas's corner
+     (`RWPixels`, `RogueWavesMode/Code/26_Pixels.cs`); a half pixel must always round the same way, or the camera's last
+     digits move it a pixel. Measured on his PC at 2560x1440 (self-test P2, `Wobble_round1`): at the game's own places
+     the five pictures' squares change in 144 of 144 frames, on whole pixels in 0. The layout and the cameras are the
+     game's own, so a game without mods should show it too (read, not run without mods). Read from the game's
+     `level1`-`level3` (UnityPy, read-only); report `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
