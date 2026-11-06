@@ -314,8 +314,8 @@ def caption_for(n, rows):
         elif n["weather"]:
             parts.append(sc.WEATHERS[n["weather"]])
     ahead = [rows[n["row"] + 1][k] for k in n["links"]]
-    parts.append("Leads on to " + ", ".join(nice(a["plan"]) for a in ahead))
-    return "  •  ".join(parts)
+    # two lines, so the caption stays inside the title's rule
+    return "  •  ".join(parts), "Leads on to " + ", ".join(nice(a["plan"]) for a in ahead)
 
 
 def stand_in(w, h, tint=(0x4C, 0x58, 0x66)):
@@ -362,8 +362,10 @@ def vote_view(rows, background=None):
         card(c, x, 370, size, rows[r][k], "ABC"[i], i == HOVER)
         x += size + gap
     n = rows[choices[HOVER][0]][choices[HOVER][1]]
-    c.text((1055, 470), caption_for(n, rows), font(13), INK, 225, anchor="ma")
-    c.text((1055, 494), "Pick a card or a lit island  •  A tie goes to A  •  18 s", font(12), INK, 150, anchor="ma")
+    first, ahead = caption_for(n, rows)
+    c.text((1055, 470), first, font(13), INK, 225, anchor="ma")
+    c.text((1055, 491), ahead, font(13), INK, 225, anchor="ma")
+    c.text((1055, 518), "Pick a card or a lit island  •  A tie goes to A  •  18 s", font(12), INK, 150, anchor="ma")
     out = c.onto(base)
     return out
 

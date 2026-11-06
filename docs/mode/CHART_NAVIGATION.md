@@ -33,11 +33,11 @@ each island leads to, where the stretch closes. The player in game never sees th
 
 | Its map screen | Rogue Waves |
 | --- | --- |
-| The whole map is one screen you can open at any time | **The chart view**: the whole chart on one flat panel (11 rows fit without scrolling), opened by itself at every vote and by a key at any time (§3.2) |
-| Start at the bottom, the boss at the top | The harbour at the bottom, row 10 at the top marked "the last map"; a rail of row numbers with the two stretches bracketed, rows 5 and 10 in coral |
+| The whole map is one screen you can open at any time | **The chart view**: the whole chart in one view (11 rows fit without scrolling), opened by itself at every vote and by a key at any time (§3.2) |
+| Start at the bottom, the boss at the top | The harbour at the bottom, row 10 at the top marked "the last map"; a rail of row numbers with a thin rule beside each stretch, rows 5 and 10 in coral |
 | An icon per kind of room, and a legend | Each island a square tile like the stock cards (§3.6): teal with its Danger number; a Breaker coral; the weather's 12 px icon on its corner; a Cove and a Wreck with their own icons (§4); a legend under the chart |
 | Rest sites and treasure rooms | **The Cove** (no map: a retry back) and **the Wreck** (a harder map that pays a Trinket), one of each in each stretch (§4) |
-| The path taken is drawn in; you see where you stand | Sailed lanes thick Rogue Teal, sailed islands ticked, a boat marker and "YOU ARE HERE" |
+| The path taken is drawn in; you see where you stand | Sailed lanes a solid white rule, sailed islands slate with a tick, a boat marker and "YOU ARE HERE" |
 | The rooms you can enter next are lit; the rest of the row is greyed | The choices in white corner brackets and lettered A, B, C; islands out of reach from here faded |
 | Click a lit room to go there | Click a lit island to vote for it; the stock cards stay for a gamepad (§3.3) |
 | Hovering a room shows what it is | Hovering an island (or the card under the pad's focus) puts what it is on the caption line under the cards and lights every lane it leads on to (§3.4) |
@@ -63,10 +63,10 @@ is taken from the map that is loaded, not from the name.
 | Header | "SEA CHART" as a stock title, then one caption line: "Row N of 10 • Stretch N • N retries left • Seed N" (the chart's name already carries the retries left, `04_World.cs`; the seed for bug reports) |
 | Rail | Row numbers H, 1-10; a thin rule beside each stretch; rows 5 and 10 in coral; the next row's number bright |
 | Lanes | Sailed: a solid white rule. Reachable from here: dashed. The hovered choice's way on: dashed, brighter. Out of reach: faint |
-| Islands | A square tile per island (§3.6): a map's tile shows its Danger; Breakers coral; the weather's icon on its corner; a Cove's and a Wreck's tiles their line icons; sailed tiles dark with a tick; the harbour an anchor; out of reach at a third of the strength |
+| Islands | A square tile per island (§3.6): a map's tile shows its Danger; Breakers coral; the weather's icon on its corner; a Cove's and a Wreck's tiles their pixel icons; sailed tiles slate with a tick; the harbour an anchor; out of reach at a third of the strength |
 | Choices | White corner brackets and a letter A, B, C (brighter brackets on your vote) |
 | You | The boat marker beside the island the party stands on |
-| Legend | Map (number = Danger), Breaker, sailed or harbour, can sail to next, the three weathers, out of reach, Cove, Wreck |
+| Legend | One caption line under the chart: Map (its Danger), Breaker, Cove, Wreck, Sailed, the three weathers |
 | Footnote | "A tie goes to A; no votes take A" |
 
 **After a loss** the only lit island is the lost one, with "Only this map: 2 retries left" in the header (the rule is
@@ -102,7 +102,7 @@ are at least a lane apart, so ~0.5 s~ of the networked boat's heading names the 
   there. The boat still sails to the winner by itself.
 - **A pick is a vote.** Clicking a lit island picks its card through a new `RWDialog.Choose(name)`, which answers the
   dialog as a card click does (`RWDialog.Cancel` would close it with no pick), so the same order (`RWVote` `MapKind`)
-  goes to the host. The view stays up until the vote closes, showing your tag filled and the time left.
+  goes to the host. The view stays up until the vote closes, showing brighter brackets on your vote and the time left.
 - **Changing your mind:** until the timer ends, clicking another lit island sends a new vote; the host already keeps
   each player's last (`RWVote.Votes[session]` is overwritten). Default ~on~.
 - **Ties and silence** as today: the most votes wins, a tie goes to the left-most choice (A), nobody voting takes A
@@ -211,7 +211,7 @@ weather billboard. A campaign started before the change continues without stops.
 | `21_Difficulty.cs`, `14_Run.cs`, `24_Trinkets.cs` | A Wreck plays one row ahead; its pay | compiles | the numbers in the log |
 | `12_Menu.cs` or the view | The key (~M~) read with `InputSystem.Keyboard.current`, ignored while a chat or text field has focus, never while the choice dialog is up | compiles | no clash with the game's keys; typing "m" in chat |
 | `99_SelfTest.cs`, `97_Shots.cs` | New checks CV1-CV12 (§8) and pictures of the vote and the sailing boat for his eye | compiles | runs in the self-test |
-| `08_Icons.cs`, temporary art | 12 px line icons (Cove, Wreck, harbour, tick, boat; `sea_chart_look.py` `PIX`) in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
+| `08_Icons.cs`, temporary art | 12 px coloured pixel icons (Cove, Wreck, harbour, tick, boat; `sea_chart_look.py` `PIX`) in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
 
 No kit change is needed to write it; anything the PC teaches goes to kit `docs/20` and the pitfalls then. On his go,
 scope `04` [Sea Chart] gains "Navigation" and "Stops" lines pointing here, with this page's defaults in tildes.
