@@ -289,16 +289,23 @@ public static partial class RWTest
         Entity_Master tower = r.After;
         if (!ModKitUtil.Alive(tower) || Holding(tower, "Effect_Artifact_Titan") == "") { Setup("Frail Titan's burst", "no standing archer holding Frail Titan"); yield break; }
         float range = EffectParam(TitanUp, "Range_Base");
+        // Armoured (+10000 Health, filled, R4 §8) and the foe held still, so neither fells the other before the drowning:
+        // Frail Titan's Health_Pmulti can leave the archer at 0 health (pitfall #171). The burst reads its level, not its health.
+        float towerHp = Hp(tower), towerMax = HpMax(tower);
+        DcArmour(tower);
         ClearFoes();
         Entity_Master foe = FoeNear(ModKitUtil.Pos(tower), 0.5f, Mathf.Clamp(range * 0.7f, 0.8f, 1.8f), null);
         if (foe == null) { Setup("Frail Titan's burst", "no foe could stand beside the archer"); yield break; }
+        yield return Until(() => !ModKitUtil.Alive(foe) || Hp(foe) >= 0f, 1f);
+        DcArmour(foe);
+        DcHold(foe);
         yield return new WaitForSeconds(0.4f);
-        if (!ModKitUtil.Alive(foe) || !ModKitUtil.Alive(tower)) { Setup("Frail Titan's burst", "the foe or the archer fell before the test drowned the archer"); ClearFoes(); yield break; }
+        if (!ModKitUtil.Alive(foe) || !ModKitUtil.Alive(tower)) { Setup("Frail Titan's burst", "armoured, still fell before the test drowned the archer: foe up " + ModKitUtil.Alive(foe) + ", archer up " + ModKitUtil.Alive(tower)); ClearFoes(); yield break; }
         stockHits.Clear();
         ModKitUtil.Front(foe, recordStock);
         int level = Mathf.Clamp(tower.Entitydata.Value.Level, 1, 5);
-        float levelStat = Calc(tower, "Level"), dist = ModKitUtil.Flat(ModKitUtil.Pos(foe), ModKitUtil.Pos(tower)), hp0 = Hp(foe), towerHp = Hp(tower), towerMax = HpMax(tower);
-        Hurt(foe, tower, Mathf.Max(0f, towerHp) + 1000f);
+        float levelStat = Calc(tower, "Level"), dist = ModKitUtil.Flat(ModKitUtil.Pos(foe), ModKitUtil.Pos(tower)), hp0 = Hp(foe);
+        Hurt(foe, tower, Mathf.Max(0f, Hp(tower)) + 1000f);
         yield return Until(() => !ModKitUtil.Alive(tower), 1f);
         string how = "hurt by the foe";
         if (ModKitUtil.Alive(tower)) { Helper_Entitytools.Despawn(tower.Beingserver, true, "RWTest"); how = "despawned as killed (a hurt left it standing)"; }
@@ -312,7 +319,7 @@ public static partial class RWTest
         StockHit burst = stockHits.Find(h => h.Self);
         float want = EffectParam(TitanUp, level == 1 ? "Damage_Base" : "Damage" + level + "_Base");
         Check("Frail Titan: a tower holding it bursts when it drowns, and hurts a foe beside it", burst != null && burst.Damage > 0f,
-            "archer " + how + " (health " + RWUtil.F(towerHp) + " of " + RWUtil.F(towerMax) + "), foe " + RWUtil.F(dist) + " tiles off (Range_Base " + range + "); burst " + (burst != null ? RWUtil.F(burst.Damage) : "not seen") + ", want " + want + " for level " + level + " (Level stat " + levelStat + "); foe health " + RWUtil.F(hp0) + " -> " + RWUtil.F(Hp(foe)) + ", " + stockHits.Count + " hits seen");
+            "archer " + how + " (health " + RWUtil.F(towerHp) + " of " + RWUtil.F(towerMax) + " before the test's armour), foe " + RWUtil.F(dist) + " tiles off (Range_Base " + range + "); burst " + (burst != null ? RWUtil.F(burst.Damage) : "not seen") + ", want " + want + " for level " + level + " (Level stat " + levelStat + "); foe health " + RWUtil.F(hp0) + " -> " + RWUtil.F(Hp(foe)) + ", " + stockHits.Count + " hits seen");
         if (ModKitUtil.Alive(foe)) ModKitUtil.Unfront(foe, recordStock);
         ClearFoes();
     }
@@ -329,11 +336,18 @@ public static partial class RWTest
         yield return new WaitForSeconds(0.6f);
         miner = MineLast("Mob_Smackyminer", r.Me);
         if (miner == null) { Setup("Aura Gavel", "the miner was gone after the buy"); yield break; }
+        // Both armoured (+10000 Health, filled, R4 §8) and held still, so neither fells the other before the drowning; the bolt
+        // reads the unit's level, not its health.
+        DcArmour(miner);
+        DcHold(miner);
         ClearFoes();
         Entity_Master foe = FoeNear(ModKitUtil.Pos(miner), 1f, 3f, null);
         if (foe == null) { Setup("Aura Gavel", "no foe could stand by the miner"); yield break; }
+        yield return Until(() => !ModKitUtil.Alive(foe) || Hp(foe) >= 0f, 1f);
+        DcArmour(foe);
+        DcHold(foe);
         yield return new WaitForSeconds(0.4f);
-        if (!ModKitUtil.Alive(miner) || !ModKitUtil.Alive(foe)) { Setup("Aura Gavel", "the miner or the foe fell before the test drowned the miner"); ClearFoes(); yield break; }
+        if (!ModKitUtil.Alive(miner) || !ModKitUtil.Alive(foe)) { Setup("Aura Gavel", "armoured, still fell before the test drowned the miner: miner up " + ModKitUtil.Alive(miner) + ", foe up " + ModKitUtil.Alive(foe)); ClearFoes(); yield break; }
         stockHits.Clear();
         ModKitUtil.Front(foe, recordStock);
         int gavels0 = RWTrinkets.Gavels;
