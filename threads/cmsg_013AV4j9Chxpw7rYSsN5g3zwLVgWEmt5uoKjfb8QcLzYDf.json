@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwLVgWEmt5uoKjfb8QcLzYDf",
-  "thread": "Plan ChatGPT art and PR review setup",
-  "state": "building",
-  "started": "2026-11-06T23:18:12Z",
-  "step": "Reading art docs and PR rules",
+  "thread": "Set up ChatGPT for art and reviews",
+  "state": "waiting",
+  "started": "2026-11-06T23:20:59Z",
+  "step": "Plan posted, waiting for his go",
   "helpers": [],
-  "updated": "2026-11-06T23:18:12Z"
+  "updated": "2026-11-06T23:20:59Z"
 }
