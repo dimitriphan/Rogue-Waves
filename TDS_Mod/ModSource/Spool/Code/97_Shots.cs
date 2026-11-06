@@ -38,6 +38,21 @@ public static class SpoolShots
         Debug.Log("[SpoolDump] INFO captured " + name);
     }
 
+    // PC round Proof_round1 (test only): selects a building so the HUD shows its panel and buttons, pictures the whole
+    // frame and a close-up of the building, then clears the selection.
+    public static IEnumerator Hud(Entity_Master m, string name)
+    {
+        if (m == null || Game_Selection.Instance == null) { Debug.Log("[SpoolDump] INFO hud " + name + ": nothing to select"); yield break; }
+        Game_Selection.Instance.Selected = m;
+        Game_Selection.Instance.Select();
+        yield return new WaitForSecondsRealtime(0.8f);
+        yield return Shot("hud_" + name);
+        yield return Close("hud_" + name, ModKitUtil.Pos(m), 4f);
+        Game_Selection.Instance.Selected = null;
+        Game_Selection.Instance.Select();
+        yield return new WaitForSecondsRealtime(0.2f);
+    }
+
     // A close-up from a temporary camera that copies the game camera's settings and heading, tipped down steeply and
     // placed 'distance' back from 'target', rendered into a texture (the game's own camera is left alone). Argo 1.0's.
     public static IEnumerator Close(string name, Vector3 target, float distance)

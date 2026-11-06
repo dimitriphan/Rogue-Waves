@@ -142,6 +142,9 @@ public static partial class SpoolSelfTest
             Link_Command bee;
             bool shown = stash.Master.Commandlistserver.TryGetValue(SpoolData.BeeLink, out bee) && bee != null;
             Check("Quilting Bee adds BEE to the Stash", Has(stash, "Bee5") && shown && bee.Goalstring == "", "bought " + Has(stash, "Bee5") + ", BEE " + (shown ? "'" + bee.Goalstring + "'" : "missing"));
+#if SPOOL_SHOTS
+            yield return SpoolShots.Hud(stash.Master, "bee");
+#endif
             List<SpoolTinBrain> tins = SpoolServer.Owned<SpoolTinBrain>(owner);
             if (!shown || tins.Count == 0) ModKitTest.Setup("Quilting Bee", shown ? "no Cookie Tin standing" : "no BEE button");
             else
