@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zw8JdFdWAWbrHBFwtFwktajC",
   "thread": "Run PC round 6 for card freeze fix",
-  "state": "testing",
-  "started": "2026-11-06T20:23:38Z",
-  "step": "Putting his PC back (release builds, save)",
+  "state": "reviewing",
+  "started": "2026-11-06T21:24:47Z",
+  "step": "PR #164 open: waiting for a cloud review and merge",
   "helpers": [],
-  "updated": "2026-11-06T21:20:56Z"
+  "updated": "2026-11-06T21:24:47Z"
 }
