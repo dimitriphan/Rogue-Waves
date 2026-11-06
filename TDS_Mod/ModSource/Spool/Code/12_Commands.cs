@@ -69,7 +69,10 @@ public class SpoolPatchSelect : Entity_Command_Itemselect_Base
             return;
         }
         float distance = ModKitUtil.Flat(ModKitUtil.Pos(m), ModKitUtil.Pos(Master));
-        Label("Desc", distance > SpoolData.PatchRange + 0.6f ? "Too far away" : "20 Thread: mend 20%");
+        // The price comes from the server in the command's Goalvalue (Quick Patch lowers it); 0 before it first syncs.
+        Getnewlink();
+        int cost = Link.Goalvalue > 0f ? Mathf.RoundToInt(Link.Goalvalue) : SpoolData.PatchCost;
+        Label("Desc", distance > SpoolData.PatchRange + 0.6f ? "Too far away" : cost + " Thread: mend " + Mathf.RoundToInt(SpoolData.PatchHeal * 100f) + "%");
     }
 
     public override void Send()

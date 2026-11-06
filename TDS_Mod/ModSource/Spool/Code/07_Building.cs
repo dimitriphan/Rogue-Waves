@@ -160,10 +160,20 @@ public abstract class SpoolBuilding : MonoBehaviour
 
 // Yarn Stash: holds the player's Thread (SpoolPlayer.Stash), the drop-off point and where Thread Heads come back. The
 // first one placed each map starts with 10 Thread. Sold, its Thread is kept for the next one; destroyed, it spills.
+// Its upgrades are read where they act, through SpoolPlayer.Holds: Roomy Pockets and Elbow Patches on Spool, Quick Patch
+// and Darning in PATCH, Remnant Bin and Mending Circle in SpoolServer. Quilting Bee adds BEE here.
 public class SpoolStashBrain : SpoolBuilding
 {
     public bool Refused;   // a second Stash of its player, being taken back
+    public int Bees, BeeAgain, BeeSewn, BeeSpurred;   // BEE presses that sewed, presses refused that Tide, Crafted sewn, Crafted spurred on
+    Link_Command beeCommand;
+    int beeWave = int.MinValue;
+    float beeUntil;
+    readonly List<SpoolUnitBrain> beeWaiting = new List<SpoolUnitBrain>();   // sewn by the Bee, spurred on once their stats are in
+
     public int Cap { get { return Mathf.RoundToInt(Stat("Threadcap", SpoolData.StashCap)); } }
+    public int BeeWaiting { get { return beeWaiting.Count; } }
+    public bool BeeUsed { get { return beeWave == Wave(); } }
 
     protected override void Started2()
     {
@@ -188,9 +198,93 @@ public class SpoolStashBrain : SpoolBuilding
         }
         p.Stash = Mathf.Min(p.Stash, Cap);
         SpoolServer.Show(p);
+        if (Has("Bee"))
+            ShowBee();
     }
 
-    protected override void Tick() { }
+    protected override void Upgraded(SpoolData.Upg def)
+    {
+        if (def.Key == "Bee")
+            ShowBee();
+    }
+
+    protected override void Tick()
+    {
+        // BEE comes back with the next Tide.
+        if (beeCommand != null && beeCommand.Goalstring == "Off" && !BeeUsed)
+            SetBee(false);
+        for (int i = beeWaiting.Count - 1; i >= 0; i--)
+        {
+            SpoolUnitBrain u = beeWaiting[i];
+            if (u == null || u.Master == null || !ModKitUtil.Alive(u.Master) || Time.time >= beeUntil || Spur(u))
+                beeWaiting.RemoveAt(i);
+        }
+    }
+
+    // ---------------------------------------------------------------- Quilting Bee
+
+    // The Tide now, counted as the Tin's Pattern Book counts it.
+    static int Wave() { return ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0); }
+
+    void ShowBee()
+    {
+        if (beeCommand != null || SpoolContent.Bee == null)
+            return;
+        beeCommand = Helper_Entitytools.Createcommand(Master, SpoolData.BeeCommand, SpoolData.BeeLink, false, true);
+        SetBee(BeeUsed);
+    }
+
+    // BEE greys out once it has sewn this Tide: its Goalstring is "Off", synced to every player (PATCH's way).
+    void SetBee(bool off)
+    {
+        if (beeCommand == null)
+            return;
+        beeCommand.Goalstring = off ? "Off" : "";
+        Helper_Entitytools.Updatecommand(Master, SpoolData.BeeLink, "", false, false);
+    }
+
+    protected override void Command(string command, string json, bool server)
+    {
+        if (command != SpoolData.BeeLink || !Has("Bee"))
+            return;
+        if (BeeUsed)
+        {
+            BeeAgain++;
+            Tell(SpoolData.WarnBeeUsed);
+            return;
+        }
+        beeWave = Wave();
+        Bee();
+        SetBee(true);
+    }
+
+    // Once a Tide: every Cookie Tin of this player stitches up to its limit at once for no Thread, then every Crafted of
+    // theirs out (Stitched, Dart, Seam, Mangled) deals more damage for a while.
+    void Bee()
+    {
+        Bees++;
+        foreach (SpoolTinBrain tin in SpoolServer.Owned<SpoolTinBrain>(Owner))
+            if (ModKitUtil.Alive(tin.Master))
+                BeeSewn += tin.Sew();
+        beeUntil = Time.time + Param("Beetime_Base", 15f);
+        beeWaiting.Clear();
+        foreach (SpoolUnitBrain u in SpoolServer.Units)
+            if (u != null && u.Master != null && u.Owner == Owner && ModKitUtil.Alive(u.Master) && !Spur(u))
+                beeWaiting.Add(u);
+        ModKitUtil.Vis(Master, "Spool_Bee", Pos, 0f);
+        Tell(SpoolData.WarnBee);
+    }
+
+    // The Bee's Damage, for what is left of it, on a Crafted whose stats are in: one sewn this frame gets it a frame or two
+    // later (a mod on a stat that isn't there yet is never applied, pitfall #82).
+    bool Spur(SpoolUnitBrain u)
+    {
+        if (!u.Started || u.Master.Statsserver == null || !u.Master.Statsserver.ContainsKey("Damage"))
+            return false;
+        Helper_Entitytools.Addmod(u.Master, "Damage", Param("Beedamage_Base", 0.5f), Helper_Entitytools.Modtypes.Multi, beeUntil - Time.time);
+        BeeSpurred++;
+        return true;
+    }
 
     public override void Gone(bool killed, string reason)
     {
