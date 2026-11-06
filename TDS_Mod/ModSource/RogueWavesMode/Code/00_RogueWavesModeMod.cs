@@ -8,6 +8,7 @@
 //   07_Weather.cs   Rising Water, Quickening Current, Nesting Ground: the stock map objects, put on chart maps
 //   08_Icons.cs     the weather icons
 //   09_Rejoin.cs    a player who drops can rejoin the running map (docs/mode/REJOIN.md), in every map while the pack is on
+//   26_ChartView.cs the whole chart beside the map vote, on a key, and as a mini chart and banner on the boat
 //   10_Online.cs    a restarted friend keeps their Sessionid; a player whose map never loads is sent back, not everyone;
 //                   a player who joins a running map has the stock sprite body for the things already there
 // Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button
@@ -124,6 +125,7 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWDifficulty.Update(); } catch (Exception e) { RWLog.Once("difficulty", "map health: " + e); }
         try { ModKitTides.Update(); } catch (Exception e) { RWLog.Once("tides", "tides: " + e); }
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
+        try { RWChartView.Update(); } catch (Exception e) { RWLog.Once("chart view", "chart view: " + e); }
         try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }
         try { RWWeather.SpeedUpdate(); } catch (Exception e) { RWLog.Once("speed", "game speed: " + e); }
         try { RWWeather.LookUpdate(); } catch (Exception e) { RWLog.Once("look", "weather look: " + e); }

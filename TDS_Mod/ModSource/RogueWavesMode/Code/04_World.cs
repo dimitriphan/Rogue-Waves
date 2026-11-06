@@ -1,7 +1,8 @@
 // The chart as a world of the game's own (docs/mode/SEA_CHART.md §3 steps 3 and 5; kit docs/15 §17): a
 // Mapworlddatabaseobject in Items["World"] whose Worldobj is built here from the seed, so the stock boat, camera, arrows,
 // Setup panel and map loading work on it unchanged. The world's name carries everything a client needs:
-// "RW_Chart_<seed>_<one column digit per row sailed>r<retries left>". Each machine builds the same world from the name
+// "RW_Chart_<seed>_<one column digit per row sailed>r<retries left>", an "S" after the seed on a chart with rest and
+// treasure stops (docs/mode/CHART_NAVIGATION.md §4.3; a campaign saved before them keeps its chart). Each machine builds the same world from the name
 // when it first sees it (the boat's Tds_Multiplayerinfo.World or Macro_Main.Worlded), so nothing else crosses the
 // network. The retries ride on the name for the campaign card (13_Card.cs): a lost map warps the party onto the new name,
 // and the world card is the right moment to say so.
@@ -13,7 +14,7 @@ public static class RWWorld
 {
     public const float Scale = 1f;            // chart units to world units: rows 30 apart, columns about 33, the base game's isles at their own size
     static GameObject holder;
-    static readonly Dictionary<uint, RWChart.Chart> charts = new Dictionary<uint, RWChart.Chart>();
+    static readonly Dictionary<ulong, RWChart.Chart> charts = new Dictionary<ulong, RWChart.Chart>();
     static readonly Dictionary<string, Material> paints = new Dictionary<string, Material>();
     static bool sourceLogged;
 
@@ -23,30 +24,50 @@ public static class RWWorld
 
     // ---------------------------------------------------------------- names
 
-    public static string Name(uint seed, List<int> route, int retries)
+    public static string Name(uint seed, List<int> route, int retries) { return Name(seed, route, retries, false); }
+
+    public static string Name(uint seed, List<int> route, int retries, bool stops)
     {
         string digits = "";
         foreach (int c in route) digits += c.ToString();
-        return RWData.WorldPrefix + seed + "_" + digits + (retries >= 0 ? "r" + retries : "");
+        return RWData.WorldPrefix + seed + (stops ? StopsMark : "") + "_" + digits + (retries >= 0 ? "r" + retries : "");
     }
+
+    public const string StopsMark = "S";
 
     public static bool Parse(string name, out uint seed, out List<int> route)
     {
         int retries;
-        return Parse(name, out seed, out route, out retries);
+        bool stops;
+        return Parse(name, out seed, out route, out retries, out stops);
+    }
+
+    public static bool Parse(string name, out uint seed, out List<int> route, out int retries)
+    {
+        bool stops;
+        return Parse(name, out seed, out route, out retries, out stops);
     }
 
     // retries is -1 for a name that doesn't carry them (the save's seed and route, RWCampaign.Saved).
-    public static bool Parse(string name, out uint seed, out List<int> route, out int retries)
+    public static bool Parse(string name, out uint seed, out List<int> route, out int retries, out bool stops)
     {
         seed = 0;
         route = new List<int>();
         retries = -1;
+        stops = false;
         if (string.IsNullOrEmpty(name) || !name.StartsWith(RWData.WorldPrefix))
             return false;
         string rest = name.Substring(RWData.WorldPrefix.Length);
         int cut = rest.IndexOf('_');
-        if (cut <= 0 || !uint.TryParse(rest.Substring(0, cut), out seed))
+        if (cut <= 0)
+            return false;
+        string head = rest.Substring(0, cut);
+        if (head.EndsWith(StopsMark))
+        {
+            stops = true;
+            head = head.Substring(0, head.Length - StopsMark.Length);
+        }
+        if (!uint.TryParse(head, out seed))
             return false;
         string tail = rest.Substring(cut + 1);
         int mark = tail.IndexOf('r');
@@ -63,17 +84,30 @@ public static class RWWorld
         return route.Count <= RWChart.Rows;
     }
 
-    public static RWChart.Chart Chart(uint seed)
+    public static RWChart.Chart Chart(uint seed) { return Chart(seed, false); }
+
+    public static RWChart.Chart Chart(uint seed, bool stops)
     {
         RWChart.Chart chart;
-        if (!charts.TryGetValue(seed, out chart))
+        ulong key = seed | (stops ? 1UL << 32 : 0UL);
+        if (!charts.TryGetValue(key, out chart))
         {
-            chart = RWChart.Generate(seed, RWMode.Pool);
-            charts[seed] = chart;
+            chart = RWChart.Generate(seed, RWMode.Pool, stops);
+            charts[key] = chart;
             foreach (string line in RWChart.Dump(chart))
                 RWLog.Info(line);
         }
         return chart;
+    }
+
+    // The chart a world's name is on (its seed, and its stops when the name has the mark), or null for another name.
+    public static RWChart.Chart ChartOf(string name)
+    {
+        uint seed;
+        List<int> route;
+        int retries;
+        bool stops;
+        return Parse(name, out seed, out route, out retries, out stops) ? Chart(seed, stops) : null;
     }
 
     // The node the party stands on after sailing 'route' (the harbour before map 1), or null for a route off the chart.
@@ -111,9 +145,10 @@ public static class RWWorld
         uint seed;
         List<int> route;
         int retries;
-        if (!Parse(name, out seed, out route, out retries) || RWMode.Pool.Count == 0 || Source() == null)
+        bool stops;
+        if (!Parse(name, out seed, out route, out retries, out stops) || RWMode.Pool.Count == 0 || Source() == null)
             return null;
-        RWChart.Chart chart = Chart(seed);
+        RWChart.Chart chart = Chart(seed, stops);
         RWChart.Node here = Here(chart, route);
         if (here == null) { RWLog.Once("route " + name, "world " + name + ": the route leaves the chart"); return null; }
         Mapworlddatabaseobject stock = StockWorld();
@@ -126,7 +161,7 @@ public static class RWWorld
         world.Defaultnode = here.Name;
         world.Defaultlighting = stock != null ? stock.Defaultlighting : null;
         world.Display_Name = "Sea Chart";
-        world.Display_Desc = route.Count < RWChart.Rows ? "Map " + (route.Count + 1) + " of " + RWChart.Rows + (retries >= 0 ? RWCard.Separator + RWCard.Retries(retries) : "") : "Charted";
+        world.Display_Desc = route.Count < RWChart.Rows ? (stops ? "Row " : "Map ") + (route.Count + 1) + " of " + RWChart.Rows + (retries >= 0 ? RWCard.Separator + RWCard.Retries(retries) : "") : "Charted";
         world.Display_Sound = stock != null ? stock.Display_Sound : "";
         world.Display_Soundtrack = stock != null ? stock.Display_Soundtrack : "";
 
@@ -278,6 +313,8 @@ public static class RWWorld
             Mark(go.transform, RWIcons.SpriteFor(n.Weather), Mathf.Clamp(top, 1f, 9f) + 2.2f);
             Billboard(go.transform, n);
         }
+        else if (n.Stop != RWChart.NoStop)
+            Mark(go.transform, RWIcons.Stop(n.Stop), Mathf.Clamp(top, 1f, 9f) + 2.2f);   // the Cove's fire, the Wreck's chest
         return link;
     }
 
