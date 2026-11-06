@@ -1,7 +1,8 @@
-// Two online fixes from reading the game's code (kit docs/19 §3 and §5, pitfalls #93 and #94), in every map and on
+// Three online fixes from reading the game's code (kit docs/19 §3 and §5, pitfalls #93 and #94), in every map and on
 // every machine while the pack is on:
 //   RWIdentity  a friend who restarts their game keeps their Sessionid, so the rejoin gives their seat back
 //   RWLoad      the host sends back a player whose map never loads, so the others aren't all sent to the main menu
+//   RWBody      a player who joins a running map has the stock sprite body (Vfx/Mobbase) for the things already there
 public static class RWIdentity
 {
     // The game makes a player's Sessionid from a GUID in the save's "Metadata" folder (Blm_Player.Start), and wipes
@@ -144,5 +145,105 @@ public static class RWLoad
             RWRejoin.Say(name + " couldn't load the map in time and went back to the main menu. They can join again on the boat.");
             Blm_Multiplayer.Instance.Kickclient(kv.Key);
         }
+    }
+}
+
+// R4 VFX: PC round 4 §5 "Open" (548 "Could not retrieve Vfx/Mobbase The GROUP exists, but item does not" on the stranger's
+// and the rejoiner's machine, none on the host's or the first friend's). Every thing's client half takes the body sprite
+// things are drawn on, Getload("Vfx", "Mobbase"), once, as the first step of its Start, before it waits for this machine
+// to load (Entity_Master_Client.<Start>d__25, IL_0040). Mobbase is in the stock group General_Default, which the game
+// loads only in a map (Game_Ui, Game_Client_Players, Game_Artifacts and Game_Client_Init each Waitload it), and
+// Bl_Address.Load puts a group's lists in Groups at once but fills them as each asset arrives. A join into a running map
+// gets every thing there in one go, in the frames that load starts: each half logs the line once (548 = the things on
+// that map; the stranger's 548 NREs per try at IL_0073 are the same halves) and keeps no body for good, so a thing drawn
+// on it (Style Sprite, as every stock foe; or no prefab) has no look on that machine (Editvis, IL_025a). A map loaded
+// from the boat never meets it: the host spawns its things after its own load, and every map after a machine's first
+// finds the group in (nothing is unloaded). So every machine loads the group at boot (Preload), and on a join a half
+// still without the body gets it the first frame it is in. That is always before its look is built: the look waits for
+// this machine's Loaded, which Game_Client_Init sets only after loading the group. The joining machine logs the counts.
+public static class RWBody
+{
+    public const string Group = "General_Default", Label = "Vfx", Item = "Mobbase";
+    public const float Settle = 3f;                  // seconds after this machine's Loaded before the count
+    public static float BootSeconds = -1f;           // how long the boot's load took; -1 until it is in (self-test, log)
+    public static bool InAtJoin, Told;               // this join: the body was in as the map arrived; the line is written
+    public static int Things, Given, Missing;        // this join: client halves here, given the body here, still without it
+    static Game_Mapvars map;
+    static bool joined, gave;
+    static float since, loadedAt;
+
+    public static GameObject Body() { return ModKitUtil.Load<GameObject>(Label, Item); }
+
+    // From the mode's boot, once the address book is up; nothing waits for it.
+    public static IEnumerator Preload()
+    {
+        Bl_Address.Loadgroup g = null;
+        try { g = Bl_Address.Load(Group); }
+        catch (Exception e) { RWLog.Warn("general: loading " + Group + ": " + e.Message); }
+        float t = 0f;
+        while (g != null && !g.Loaded && t < 180f)
+        {
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
+        if (g != null && g.Loaded)
+            BootSeconds = t;
+        RWLog.Info("general: " + Group + " loaded at boot: " + (g != null && g.Loaded) + " after " + RWUtil.F(t) + " s; " + Label + "/" + Item + " in: " + (Body() != null));
+    }
+
+    public static string Line()
+    {
+        return "the stock sprite body " + Label + "/" + Item + " (" + Group + ") was in as this map arrived: " + InAtJoin
+            + "; things here " + Things + ", given the body here " + Given + ", still without it " + Missing;
+    }
+
+    public static void Update()
+    {
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        if (mv != map)
+        {
+            map = mv;
+            joined = gave = Told = InAtJoin = false;
+            Things = Given = Missing = 0;
+            loadedAt = -1f;
+        }
+        if (mv == null || Told || !RWRejoin.Late)
+            return;
+        float now = Time.realtimeSinceStartup;
+        GameObject body = Body();
+        if (!joined)
+        {
+            joined = true;
+            since = now;
+            InAtJoin = body != null;
+        }
+        // One pass, the first frame the body is in: a half that looked before has none, one that looks after finds it.
+        if (!gave && body != null)
+        {
+            gave = true;
+            foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
+                if (c.Visbasedefault == null)
+                {
+                    c.Visbasedefault = body;
+                    Given++;
+                }
+        }
+        Blm_Player me = Blm_Server.Instance != null ? Blm_Server.Instance.Localplayer : null;
+        Tds_Clientinfo info = me != null ? me.GetComponent<Tds_Clientinfo>() : null;
+        if (loadedAt < 0f && info != null && info.Loaded.Value)
+            loadedAt = now;
+        bool gaveUp = now - since > 180f;
+        if (!gaveUp && (loadedAt < 0f || now - loadedAt < Settle))
+            return;
+        Told = true;
+        foreach (Entity_Master_Client c in UnityEngine.Object.FindObjectsOfType<Entity_Master_Client>())
+        {
+            Things++;
+            if (c.Visbasedefault == null)
+                Missing++;
+        }
+        string line = "rejoin: " + Line() + (loadedAt < 0f ? " (the map didn't finish loading here in 180 s)" : "");
+        if (Missing > 0) RWLog.Warn(line);
+        else RWLog.Info(line);
     }
 }

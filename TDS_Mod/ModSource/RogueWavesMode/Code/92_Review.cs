@@ -77,6 +77,14 @@ public static partial class RWTest
         Application.logMessageReceived -= ReviewLog;
     }
 
+    // R4 Review: a Cardinal at the shelf's price, which rises with each one held (Ramp): the Pure Aura is topped up to it first,
+    // so the C1 and C4 readings and map 2's check have every purchase (PC round 4: 800 bought only two).
+    static string BuyAt(RWPlayer p, string id)
+    {
+        p.Pure = Mathf.Max(p.Pure, RWCardinals.PriceFor(p, id));
+        return RWCardinals.Buy(p, id);
+    }
+
     // MODE-A1, C12, C1, C4, D1, D6, D2, then on map 2 D5 and the Cardinals' return.
     static IEnumerator ReviewCampaign()
     {
@@ -128,7 +136,7 @@ public static partial class RWTest
         Entity_Master older = null, newer = null;
         yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => older = m);
         float speed0 = StatOf(vessel, "Speed");
-        string sport = RWCardinals.Buy(player, "Artifact_Caffeine"), pipe = RWCardinals.Buy(player, "Artifact_Rustypipe");
+        string sport = BuyAt(player, "Artifact_Caffeine"), pipe = BuyAt(player, "Artifact_Rustypipe");
         yield return new WaitForSeconds(1.5f);
         yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => newer = m);
         if (older == null) { Setup("MODE-C1", "no tower built before the purchase"); yield break; }
@@ -137,7 +145,7 @@ public static partial class RWTest
             + "; the tower from before [" + onOlder + "], a tower built after [" + onNewer + "]");
 
         // MODE-C4: Voice alone for two Tides, then Cheap Refits.
-        string voice = RWCardinals.Buy(player, "Artifact_Voice");
+        string voice = BuyAt(player, "Artifact_Voice");
         Entity_Master voiced = null;
         yield return BuildOne(vessel, "Tower_Smackyarcher", used, known, (m, c) => voiced = m);
         yield return new WaitForSeconds(1f);
@@ -266,6 +274,8 @@ public static partial class RWTest
         }
         yield return Until(() => Game_Mapvars.Instance == null || Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", 30f);
         yield return new WaitForSeconds(7f);
+        // R4 Review: what map 1 ends with, for map 2's check to find again.
+        List<string> heldMap1 = new List<string>(RWRun.Cardinals);
         old = Macro_Main.Instance;
         Tds_Multiplayer_Remote.Instance.Returnmap_ServerRpc(true, default(Unity.Netcode.ServerRpcParams));
         yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != old && Macro_Main.Instance.Ready, 150f);
@@ -282,7 +292,12 @@ public static partial class RWTest
         // The Cardinals held on map 1, on map 2: the return PR #82 fixed.
         vars = Game_Mapvars.Instance;
         vessel = RWRun.Vessel(me);
-        Check("A later map: the Cardinals held go back on its new core, and in the HUD's row", RWRun.Cardinals.Count >= 3 && RWCardinals.MissingOnCore() == 0, string.Join(",", RWRun.Cardinals.ToArray()) + ", missing " + RWCardinals.MissingOnCore() + ", row " + Tds_Multiplayerinfo.Instance.Artifacts.Count);
+        // R4 Review: as many as map 1 ended with, not a fixed three (PC round 4 held two: one purchase had failed, its answer unread).
+        const string laterMap = "A later map: the Cardinals held go back on its new core, and in the HUD's row";
+        string laterSeen = RWRun.Cardinals.Count + " held [" + string.Join(",", RWRun.Cardinals.ToArray()) + "], " + heldMap1.Count + " at map 1's end; missing " + RWCardinals.MissingOnCore()
+            + ", row " + Tds_Multiplayerinfo.Instance.Artifacts.Count + "; bought Caffeine '" + sport + "', Rusty Pipe '" + pipe + "', Voice '" + voice + "' (empty is yes)";
+        if (heldMap1.Count == 0) Setup(laterMap, "map 1 ended with no Cardinal held: " + laterSeen);
+        else Check(laterMap, RWRun.Cardinals.Count == heldMap1.Count && RWCardinals.MissingOnCore() == 0, laterSeen);
         Info("A later map: what the Cardinals put on the vessel", "[" + Holding(vessel, "Caffeine") + "]; a tower built now gets Rusty Pipe, as map 1's did after buying");
 
         // MODE-D5: map 2's plain foes.

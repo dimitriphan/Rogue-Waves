@@ -10,6 +10,7 @@ public static partial class UloeSelfTest
         Entity_Master hm = hero.Master;
         UloeBuilding[] got = new UloeBuilding[1];
         Entity_Master[] slot = new Entity_Master[1];
+        UloeHeroBrain[] vessel = new UloeHeroBrain[1];   // R4 stall: the vessel the core sends again after a fall (Vessel)
         UloeLight test = new UloeLight();
         ClearFoes();
 
@@ -93,6 +94,8 @@ public static partial class UloeSelfTest
         else ModKitTest.Setup("Death Ray", "no Aegis could spawn in its Range");
 
         // Glass B: Wide Lens -> Prism -> Focal Point. Glass C: Wide Lens -> Quick Focus.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
         Vector3 at = Spot(hm, UloeContent.Beings[UloeData.Glass], 2.5f);
         yield return Build(hm, UloeData.Glass, at, known, got);
         UloeGlassBrain glassB = got[0] as UloeGlassBrain;
@@ -183,10 +186,15 @@ public static partial class UloeSelfTest
             Send(bank.Master, UloeData.SurgeLink, "");
             yield return Wait(0.3f);
             Check("... and a second press does nothing", bank.Novas == 1);
+            // BATCH 10:145: the branch without Surge Protector keeps its own top, 4 + 2 an upgrade, 12 with all four (scope 10:35).
+            Check("Plug In from a Power Bank with all four upgrades: Light 12", bank.UpgradeCount == 4 && Near(UloeHeroBrain.PlugLight(bank.Master), 12f),
+                bank.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bank.Master)));
         }
         else ModKitTest.Setup("Static Charge to Supernova", "no Power Bank");
 
         // Bank B: Extra Cell -> Bright Spark -> Photon Swarm. Bank C: Short Circuit -> Surge Protector.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
         at = Spot(hm, UloeContent.Beings[UloeData.Bank], 3.5f);
         yield return Build(hm, UloeData.Bank, at, known, got);
         UloeBankBrain bankB = got[0] as UloeBankBrain;
@@ -228,6 +236,24 @@ public static partial class UloeSelfTest
                 Check("... and heals 2 a second", ModKitUtil.Health(hm) >= h1 + 3.9f || ModKitUtil.Health(hm) >= ModKitUtil.MaxHealth(hm) - 0.01f, F(h1) + " -> " + F(ModKitUtil.Health(hm)) + " in 2.2 s");
             }
             else ModKitTest.Setup("Surge Protector's numbers", far == null ? "no foe could stand by the enemy core" : "not shielded");
+            // BATCH 10:145: a safe socket gives Plug In at most Light 8. Short Circuit and Surge Protector are all such a
+            // Bank can take (the branch ends there); a third upgrade forced on, as the batch check counted it (Extra
+            // Cell), would make 4 + 2 x 3 = 10 without the cap.
+            yield return Wait(UloeData.LightTick + 0.1f);
+            float bright = UloeData.BrightLight[hero.Player != null ? hero.Player.Bright : 0];
+            bool onC = hero.Plug == bankC.Master;
+            Check("Plug In on a Surge Protector Bank with all it can take: Light 8", bankC.UpgradeCount == 2 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f + bright)),
+                bankC.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bankC.Master)) + (onC ? ", Uloe gives " + F(hero.LightNow) : ", not plugged in"));
+            Upgradeproperties extra;
+            if (UloeContent.Upgrades.TryGetValue(UloeData.Bank + "_Extracell2_Upgradeobject", out extra) && extra != null)
+            {
+                Helper_Entitytools.Upgrade(bankC.Master, extra, Helper_Entitytools.Upgradecheck.Forced, null);
+                yield return Wait(UloeData.LightTick + 0.2f);
+                onC = hero.Plug == bankC.Master;
+                Check("... still Light 8 with a third upgrade forced on", bankC.UpgradeCount == 3 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f + bright)),
+                    bankC.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bankC.Master)) + (onC ? ", Uloe gives " + F(hero.LightNow) : ", not plugged in"));
+            }
+            else ModKitTest.Setup("Plug In's cap with a third upgrade", "no Extra Cell upgrade object");
             Send(hm, UloeData.PlugLink, "{\"Unplug\":1}");
             yield return Wait(0.5f);
             Check("unplugged, the shield goes", !hero.Shielded);
@@ -288,19 +314,44 @@ public static partial class UloeSelfTest
             {
                 lightM.Feed(mirrorB.Master, 2f);
                 yield return Wait(0.2f);
+                // R4 §8: the Mirror holds what all its sources give (Light 12 in round 4), not the test's 2, so the share
+                // wanted follows the Light it holds, by scope 10:202: 30% of each hit back, 60% from Light 6.
+                float lightNow = mirrorB.Light, want = lightNow >= 6f ? 0.6f : 0.3f;
                 float h0 = ModKitUtil.Health(far), back = mirrorB.ReflectedDamage;
                 Hit(far, mirrorB.Master, 10f);
                 yield return Wait(0.1f);
-                float share = mirrorB.ReflectShare;
-                Check("Reflection: 30% of the hit back at the attacker", Near(mirrorB.ReflectedDamage - back, 10f * share, 0.05f) && Near(share, 0.3f) && ModKitUtil.Health(far) < h0,
-                    F(mirrorB.ReflectedDamage - back) + " back at Light " + F(mirrorB.Light) + ", the foe " + F(h0) + " -> " + F(ModKitUtil.Health(far)));
+                Check("Reflection: its share of the hit back at the attacker, by its Light", Near(mirrorB.ReflectedDamage - back, 10f * want, 0.05f) && ModKitUtil.Health(far) < h0,
+                    F(mirrorB.ReflectedDamage - back) + " of 10 back at Light " + F(lightNow) + ", wanted " + F(10f * want) + ", the foe " + F(h0) + " -> " + F(ModKitUtil.Health(far)));
+                // The 30% half: dimmed under Light 6 for one hit by a test modifier, taken off in the same frame (the hit
+                // and its Reflection run at once), since its sources keep it bright.
+                float raw = mirrorB.Stat(UloeData.LightStat, 0f);
+                Link_Modifier dim = raw > 2f ? Helper_Entitytools.Addmod(mirrorB.Master, UloeData.LightStat, 2f - raw, Helper_Entitytools.Modtypes.Add, 0.5f) : null;
+                float dimmed = mirrorB.Light;
+                back = mirrorB.ReflectedDamage;
+                bool hit30 = dimmed < 6f && ModKitUtil.Alive(far);
+                if (hit30)
+                    Hit(far, mirrorB.Master, 10f);
+                float got30 = mirrorB.ReflectedDamage - back;
+                ModKitUtil.Unmod(dim);
+                if (hit30)
+                    Check("... 30% under Light 6", Near(got30, 3f, 0.05f), F(got30) + " of 10 back at Light " + F(dimmed));
+                else ModKitTest.Setup("Reflection's 30% under Light 6", "Light " + F(dimmed) + " after dimming, the foe alive " + ModKitUtil.Alive(far));
                 lightM.Feed(mirrorB.Master, 7f);
                 yield return Wait(0.2f);
-                Check("... 60% from Light 6", Near(mirrorB.ReflectShare, 0.6f), "Light " + F(mirrorB.Light) + ", share " + F(mirrorB.ReflectShare));
+                back = mirrorB.ReflectedDamage;
+                if (ModKitUtil.Alive(far))
+                {
+                    Hit(far, mirrorB.Master, 10f);
+                    yield return Wait(0.1f);
+                    Check("... 60% from Light 6", mirrorB.Light >= 6f && Near(mirrorB.ReflectedDamage - back, 6f, 0.05f), F(mirrorB.ReflectedDamage - back) + " of 10 back at Light " + F(mirrorB.Light));
+                }
+                else ModKitTest.Setup("Reflection's 60% from Light 6", "the foe fell");
             }
             else ModKitTest.Setup("Reflection", "no foe could stand by the enemy core");
             ClearFoes();
         }
+        yield return Vessel(owner, vessel);
+        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
         at = Spot(hm, UloeContent.Beings[UloeData.Mirror], 3f);
         yield return Build(hm, UloeData.Mirror, at, known, got);
         UloeMirrorBrain mirrorD = got[0] as UloeMirrorBrain;
@@ -336,18 +387,56 @@ public static partial class UloeSelfTest
             Check("Halogen Bulb: Light out +2", Has(flood, "Halogen3") && Near(flood.Stat("Lightout", 0f), lo + 2f), F(lo) + " -> " + F(flood.Stat("Lightout", 0f)));
             yield return Upgrade(flood, "Searchlight4", owner);
             Check("Searchlight", Has(flood, "Searchlight4"));
+            // R4 §8: the Aegis fell to the towers round the lamp (Heliostat, Death Ray) before the first search, so the
+            // slow was never read: it is armoured now (+10000 Health), and each read says where it stood.
+            int searched = flood.Searched;
             yield return Foe("Enemy_Aegis", flood.Pos, flood.RingRadius - 0.5f, 0.5f, slot);
             foe = slot[0];
+            Armour(foe);
             if (foe != null && flood.Node != null)
             {
-                float s0 = ModKitUtil.Stat(foe, "Speed", 0f);
-                int searched = flood.Searched;
+                // Its speed before the light: read now, or its being's when a search caught it while it loaded.
+                float s0 = flood.Searched > searched ? BaseStat(foe, "Speed") : ModKitUtil.Stat(foe, "Speed", 0f);
                 yield return Until(() => flood.Searched > searched || !ModKitUtil.Alive(foe), 2.5f);
-                Check("Searchlight: a foe in its Light is Illuminated and slowed 20%", ModKitUtil.Alive(foe) && UloeMarks.LitLevel(foe) >= 1 && Near(ModKitUtil.Stat(foe, "Speed", 0f), s0 * 0.8f, 0.02f),
-                    "Illuminate " + UloeMarks.LitLevel(foe) + ", speed " + F(s0) + " -> " + F(ModKitUtil.Stat(foe, "Speed", 0f)) + ", Light out " + F(flood.Output)
+                int wantLit = flood.Output >= 5f - 0.0001f ? 2 : 1;     // scope 10:249: level 2 once its Light out is 5 or more
+                Check("Searchlight: a foe in its Light is Illuminated and slowed 20%", ModKitUtil.Alive(foe) && flood.Searched > searched && UloeMarks.LitLevel(foe) >= wantLit && Near(ModKitUtil.Stat(foe, "Speed", 0f), s0 * 0.8f, 0.02f),
+                    "Illuminate " + UloeMarks.LitLevel(foe) + " (wanted " + wantLit + "), speed " + F(s0) + " -> " + F(ModKitUtil.Stat(foe, "Speed", 0f)) + ", Light out " + F(flood.Output)
                     + "; the foe alive " + ModKitUtil.Alive(foe) + " (" + (foe != null ? "health " + F(ModKitUtil.Health(foe)) : "gone") + "), " + (flood.Searched - searched) + " searches, at " + F(foe != null ? ModKitUtil.Flat(ModKitUtil.Pos(foe), flood.Pos) : -1f) + " of ring " + F(flood.RingRadius));
                 yield return Wait(UloeData.LightTick + 0.2f);
-                Check("... one slow a Flood Light, not one a second", Near(ModKitUtil.Stat(foe, "Speed", 0f), s0 * 0.8f, 0.02f), "speed " + F(ModKitUtil.Stat(foe, "Speed", 0f)));
+                if (ModKitUtil.Alive(foe) && ModKitUtil.Flat(ModKitUtil.Pos(foe), flood.Pos) <= flood.RingRadius)
+                    Check("... one slow a Flood Light, not one a second", Near(ModKitUtil.Stat(foe, "Speed", 0f), s0 * 0.8f, 0.02f), "speed " + F(ModKitUtil.Stat(foe, "Speed", 0f)));
+                else ModKitTest.Setup("Searchlight's one slow", "the foe " + (ModKitUtil.Alive(foe) ? "walked out of the ring, " + F(ModKitUtil.Flat(ModKitUtil.Pos(foe), flood.Pos)) + " away" : "fell"));
+                // Decision 2b (docs/reports/DECIDED_CODE_FIXES_2026-11-05.md): a foe already slowed to 15% of its speed (as
+                // under Fog Horn) comes into the light: the Searchlight's slow stops at the 10% floor (ModKitUtil.SlowOn),
+                // and is made again at the full 20% once the other slow leaves.
+                ClearFoes();
+                yield return Wait(0.3f);
+                int searched2 = flood.Searched;
+                yield return Foe("Enemy_Aegis", flood.Pos, flood.RingRadius - 0.5f, 0.5f, slot);
+                Entity_Master held = slot[0];
+                Armour(held);
+                // Speed is its parts times the sum of its Multis (m0 before any slow), so a slow scales it by that sum.
+                float h0s = ModKitUtil.Stat(held, "Speed", 0f);
+                Link_Stats sp = ModKitUtil.Speed(held);
+                float m0 = sp != null ? sp.Value_Multi : 1f, room = m0 - 0.15f;
+                Link_Modifier other = held != null && room > 0.01f ? ModKitUtil.SlowOn(held, room) : null;
+                // The other slow at its full size shows it came first: a search in the frames before it would have cut it.
+                if (other != null && Near(other.Value_Multi, -room, 0.001f) && flood.Searched == searched2)
+                {
+                    yield return Until(() => flood.Searched > searched2 || !ModKitUtil.Alive(held), 2.5f);
+                    Check("Searchlight on a foe already slowed stops at 10% of its speed (decision 2b)", ModKitUtil.Alive(held) && flood.Searched > searched2 && Near(ModKitUtil.Stat(held, "Speed", 0f), h0s * 0.1f / m0, 0.02f),
+                        "speed " + F(h0s) + " -> " + F(ModKitUtil.Stat(held, "Speed", 0f)) + ", Multi " + F(m0) + ", " + (flood.Searched - searched2) + " searches, at " + F(ModKitUtil.Alive(held) ? ModKitUtil.Flat(ModKitUtil.Pos(held), flood.Pos) : -1f) + " of ring " + F(flood.RingRadius));
+                    ModKitUtil.Unmod(other);
+                    yield return Wait(UloeData.LightTick + 0.2f);
+                    if (ModKitUtil.Alive(held) && ModKitUtil.Flat(ModKitUtil.Pos(held), flood.Pos) <= flood.RingRadius)
+                        Check("... and slows the full 20% once the other slow leaves", Near(ModKitUtil.Stat(held, "Speed", 0f), h0s * (m0 - 0.2f) / m0, 0.02f), "speed " + F(ModKitUtil.Stat(held, "Speed", 0f)));
+                    else ModKitTest.Setup("Searchlight's slow made again", "the foe " + (ModKitUtil.Alive(held) ? "walked out of the ring" : "fell"));
+                }
+                else
+                {
+                    ModKitUtil.Unmod(other);
+                    ModKitTest.Setup("Searchlight on a foe already slowed (decision 2b)", held == null ? "no Aegis could spawn in its ring" : "the light reached the foe before the other slow");
+                }
             }
             else ModKitTest.Setup("Searchlight", foe == null ? "no Aegis could spawn in its ring" : "the Flood Light has no node");
             ClearFoes();
@@ -384,6 +473,8 @@ public static partial class UloeSelfTest
         }
         else ModKitTest.Setup("High Voltage and Colour Filter", "no Long Throw Flood Light");
         UloeFloodBrain floodC = null;
+        yield return Vessel(owner, vessel);
+        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
         Vector3 fat = new Vector3(float.NaN, 0f, 0f);
         foreach (Entity_Master n in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
             if (float.IsNaN(fat.x) && UloeUtil.IsNode(n))
@@ -417,6 +508,16 @@ public static partial class UloeSelfTest
             }
         yield return Wait(1f);
         ClearFoes();
+    }
+
+    // R4 §8: +10000 Health, filled, so the towers round a test foe can't fell it before its check reads it (Riptide's way).
+    static void Armour(Entity_Master foe)
+    {
+        Link_Stats s;
+        if (foe == null || foe.Statsserver == null || !foe.Statsserver.TryGetValue("Health", out s) || s == null)
+            return;
+        Helper_Entitytools.Addmod(foe, "Health", 10000f, Helper_Entitytools.Modtypes.Add, 0f);
+        s.Value = s.Value_Calc;
     }
 }
 #endif

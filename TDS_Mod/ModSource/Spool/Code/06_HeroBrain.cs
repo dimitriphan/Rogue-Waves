@@ -76,9 +76,13 @@ public class SpoolHeroBrain : MonoBehaviour
     // Until the Yarn Stash stands the menu holds only the Stash; then the four buildables (Entity_Ai_Hero_Boutman
     // removes and recreates Buildoption1 the same way, and Argo's Miner's Base proved it). The server checks build
     // commands against the vessel's own options, so a removed button can't be built from either.
-    void CheckMenu()
+    // BATCH 08:64 (Limit: 1): the Stash counts from its spawn (SpoolServer.HasStash), and SpoolServer.StashLimit runs this
+    // the moment one spawns or goes, as Argo's Miner's Base and Yossele's Tree do; it was a Stash that had started, read
+    // every half second, which left a moment for a second Stash order. removeOnly: called inside the build that spawned
+    // the Stash, it only takes buttons away (as Argo's Base does there); the four come at the next half-second check.
+    public void CheckMenu(bool removeOnly = false)
     {
-        bool home = Player.Home != null && Player.Home.Master != null;
+        bool home = SpoolServer.HasStash(Owner);
         for (int i = 0; i < SpoolData.Buildables.Length; i++)
         {
             string link = "Buildoption" + (i + 1);
@@ -92,7 +96,7 @@ public class SpoolHeroBrain : MonoBehaviour
                 MenuChanges++;
             }
             // Quiet lookup: asked every half second, and Getload logs each miss (pitfall #71).
-            if (shown || want == null || ModKitUtil.Load<Commandobject>("Command", "Command_" + link) == null)
+            if (removeOnly || shown || want == null || ModKitUtil.Load<Commandobject>("Command", "Command_" + link) == null)
                 continue;
             Link_Command c = Helper_Entitytools.Createcommand(Master, "Command_" + link, link, false, true);
             c.Goalstring = want;

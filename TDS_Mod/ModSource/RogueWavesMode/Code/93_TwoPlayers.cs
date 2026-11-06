@@ -627,9 +627,11 @@ public static partial class RWTest
         yield return Until(() => RWAsk.Open == RWVote.LeaveKind, 20f);
         yield return WaitDialog(8f);
         yield return Sync("leave1");
+        LeaveVote = "";
         ClickCard("Leave");                         // the host leaves, the second player stays: one of two is no majority
         yield return Until(() => RWVote.State != "Leave", 30f);
-        Check("Leave: one of two isn't a majority, the party stays", !RWVote.Departing && RWVote.LastVote == "1 of 2 to leave", RWVote.LastVote);
+        // R4 Leave: the vote's own result; with a single map ahead B1's map vote writes LastVote over it in the same call.
+        Check("Leave: one of two isn't a majority, the party stays", !RWVote.Departing && LeaveVote == "1 of 2 to leave", "the vote to leave: '" + LeaveVote + "', last vote " + RWVote.LastVote);
         // B1: staying votes on the next map there and then, on both machines.
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || RWVote.State == "", 10f);
         if (RWAsk.Open.StartsWith(RWVote.MapKind))
@@ -1195,6 +1197,9 @@ public static partial class RWTest
         Entity_Master v = RWMine.Vessel();
         yield return Until(() => Lookless() == "", 30f);
         Check("O3b every thing on the map has its look on the restarted machine", Lookless() == "", "without: " + Lookless());
+        // R4 VFX: the halves already on the map when this copy joined have the stock sprite body (RWBody, 10_Online.cs).
+        yield return Until(() => RWBody.Told, 15f);
+        Check("O3b every thing on the restarted machine has the stock sprite body Vfx/Mobbase", RWBody.Told && RWBody.Things > 0 && RWBody.InAtJoin && RWBody.Missing == 0, RWBody.Line());
         Check("O7 the flood is there on the restarted machine", RWWeather.Loaded(RWChart.RisingWater) && Thing("Main_Flood") != null && RWRejoin.MapWeather() == RWChart.RisingWater, "weather " + RWWeather.Display(RWRejoin.MapWeather()));
         Check("O3b the same session and vessel come back, with what they held", v != null && v.Being.Value.ToString() == RWTwo.SecondHero && RWMine.Pure() > 0f && HeldDirections(v).Count >= 2 && OwnCount() > 1, "vessel " + (v != null ? v.Being.Value.ToString() : "-") + ", Pure " + RWMine.Pure() + ", things " + OwnCount());
         yield return Snap("second_restarted");
@@ -1233,6 +1238,8 @@ public static partial class RWTest
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 40f);
         yield return WaitDialog(8f);
         ClickCard("0");
+        // R4 U3: the map this machine plays, read from what every machine has, for the title its end screen should show.
+        int wonRow = RWCard.Row();
         // With the map voted when the party stayed (B1) no second vote comes.
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || (Game_Mapvars.Instance != null && Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win"), 40f);
         if (RWAsk.Open.StartsWith(RWVote.MapKind))
@@ -1247,7 +1254,14 @@ public static partial class RWTest
         GameObject title = null;
         Blockage.Menu.Blu2_Menu_Handler win;
         if (Blockage.Menu.Bl_Menus.Menus.TryGetValue("Win", out win) && win != null) win.Items.TryGetValue("Title", out title);
-        Check("U3 the second player's end screen reads the campaign's title", title != null && TextOf(title).ToUpperInvariant().Contains("MAP 1 OF 10 WON"), "'" + TextOf(title) + "'");
+        // R4 P1-4: the title of the map won (not a fixed map 1), put on this friend's screen by its own hold (RWCard.ClientEnd)
+        // from the synced Display_Endgame, whatever the stock screen read once (it read "BASIN BREACHED" in PC round 4).
+        string wantEnd = WonTitle(wonRow);
+        yield return Until(() => title != null && TextOf(title).ToUpperInvariant().Contains(wantEnd), 6f);
+        string endSeen = "'" + TextOf(title) + "', want '" + wantEnd + "' (row " + wonRow + "); synced '" + (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Display.Value.Display_Endgame.ToString() : "-")
+            + "', this machine's hold saw '" + RWCard.SeenEnd + "' and put the shown title right " + RWCard.ClientEndWrites + " times in all";
+        if (wonRow < 1) Setup("U3 the second player's end screen reads the campaign's title", "this machine can't tell which chart map it plays: " + endSeen);
+        else Check("U3 the second player's end screen reads the campaign's title", title != null && TextOf(title).ToUpperInvariant().Contains(wantEnd), endSeen);
         // O8: the rejoined player is on the end screen's list, with stats.
         Blockage.Menu.Blu2_Menu_Handler endstats;
         Func<int> statRows = () => Blockage.Menu.Bl_Menus.Menus.TryGetValue("Endstats", out endstats) && endstats != null && endstats.Items.ContainsKey("List") ? endstats.Items["List"].transform.childCount : -1;
@@ -1351,6 +1365,9 @@ public static partial class RWTest
         if (RWTwo.Review) { yield return Stepped(ReviewStranger()); yield break; }
         for (int i = 1; i <= 2; i++)
         {
+            // R4 VFX: the boot's load of General_Default is in before the join, so the map's things find their body.
+            yield return Until(() => RWBody.BootSeconds >= 0f, 60f);
+            Check("O5 try " + i + ": Vfx/Mobbase is in before the stranger joins", RWBody.Body() != null, "boot load " + RWUtil.F(RWBody.BootSeconds) + " s");
             yield return RWTwo.Join();
             yield return Until(() => Unity.Netcode.NetworkManager.Singleton.IsConnectedClient, 30f);
             Info("the stranger", "try " + i + ": connected " + Unity.Netcode.NetworkManager.Singleton.IsConnectedClient);

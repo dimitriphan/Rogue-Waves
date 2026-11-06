@@ -39,7 +39,7 @@ public static class SpoolServer
     static bool subscribed;
     static int nextDrop = 1;
     static float nextSweep;
-    public static int Dropped, Picked, Delivered, Spilled, Refunded, Swapped, Returned;
+    public static int Dropped, Picked, Delivered, Spilled, Refunded, Swapped, Returned, StashRefused;
 
     // Set just before a brain spawns one of Spool's units; read by OnSpawn (Onspawn fires synchronously inside Spawn).
     public static SpoolBuilding PendingHome;
@@ -394,6 +394,9 @@ public static class SpoolServer
             building.Master = master;
             building.Def = b;
             Buildings.Add(building);
+            // BATCH 08:64 (Limit: 1): the Stash button goes the moment a Stash spawns, not at the next menu check.
+            if (building is SpoolStashBrain)
+                StashLimit(ModKitUtil.Owner(master), true);
         }
         catch (Exception e)
         {
@@ -412,6 +415,9 @@ public static class SpoolServer
             {
                 Buildings.Remove(building);
                 building.Gone(killed, reason);
+                // BATCH 08:64: and comes back the moment the last one goes (sold or destroyed).
+                if (building is SpoolStashBrain)
+                    StashLimit(ModKitUtil.Owner(master));
                 return;
             }
             SpoolUnitBrain unit = master.GetComponent<SpoolUnitBrain>();
@@ -524,6 +530,29 @@ public static class SpoolServer
             if (h != null && h.Master != null && ModKitUtil.Owner(h.Master) == owner)
                 return h;
         return null;
+    }
+
+    // BATCH 08:64 (scope 08 "Limit: 1"): one Yarn Stash a player, the Miner's Base and Bonsai way (Boutman's
+    // Checkbouthouses): the vessel's Stash button goes while one stands and comes back when it is gone, refreshed on the
+    // spot as one spawns or despawns. The first one spawned is the player's, counted from its spawn, before it starts.
+    public static SpoolStashBrain FirstStash(long owner)
+    {
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolStashBrain s = b as SpoolStashBrain;
+            if (s != null && !s.Refused && ModKitUtil.Alive(s.Master) && s.Owner == owner)
+                return s;
+        }
+        return null;
+    }
+
+    public static bool HasStash(long owner) { return FirstStash(owner) != null; }
+
+    public static void StashLimit(long owner, bool spawned = false)
+    {
+        foreach (SpoolHeroBrain h in Heroes)
+            if (h != null && h.Master != null && h.Player != null && ModKitUtil.Owner(h.Master) == owner)
+                h.CheckMenu(spawned);
     }
 
     public static List<T> Owned<T>(long owner) where T : SpoolBuilding

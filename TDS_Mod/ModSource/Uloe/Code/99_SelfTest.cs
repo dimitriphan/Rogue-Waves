@@ -188,6 +188,12 @@ public static partial class UloeSelfTest
 
     static void Send(Entity_Master m, string link, string json)
     {
+        // R4 stall: GetComponent on a fallen vessel (a destroyed object) threw and ended the scenario with no DONE.
+        if (m == null)
+        {
+            Log("no " + link + " sent: the entity is gone");
+            return;
+        }
         m.GetComponent<Entity_Master_Remote>().Command_ServerRpc(link, json, default(ServerRpcParams));
     }
 
@@ -209,10 +215,44 @@ public static partial class UloeSelfTest
     static readonly List<Vector3> used = new List<Vector3>();
 
     // A free tile at about 'ring' tiles from the vessel where this being can be placed (kit ModKitTest.Spot: every level of
-    // each column out to 8 tiles; when there is none it logs why and a picture of the ground).
+    // each column out to 8 tiles, then out to 14; when there is none it logs why and a picture of the ground). None: NaN.
     static Vector3 Spot(Entity_Master hero, Beingobject being, float ring)
     {
-        return ModKitTest.Spot(ModKitUtil.Pos(hero), being, ModKitUtil.Team(hero), ring, 8f, used, being.Objectname);
+        // R4 stall: a fallen vessel reads 0,0,0, where Spot found no ground at all.
+        if (!ModKitUtil.Alive(hero))
+        {
+            Log("no tile for " + being.Objectname + ": the vessel is gone");
+            return new Vector3(float.NaN, 0f, 0f);
+        }
+        Vector3 at = ModKitTest.Spot(ModKitUtil.Pos(hero), being, ModKitUtil.Team(hero), ring, 8f, used, being.Objectname);
+        if (float.IsNaN(at.x))
+            at = ModKitTest.Spot(ModKitUtil.Pos(hero), being, ModKitUtil.Team(hero), ring, 14f, used, being.Objectname + ", wider");
+        return at;
+    }
+
+    // R4 stall (Uloe_20261105_161306): Uloe (30 health) fell to section 5's foes. The core sends a new vessel, a new entity,
+    // after its wait (pitfall #157), and the old one, destroyed, read 0,0,0. This waits for the owner's vessel to stand
+    // and hands back its brain in slot[0]; null when none comes in time.
+    static IEnumerator Vessel(long owner, UloeHeroBrain[] slot, float timeout = 60f)
+    {
+        slot[0] = UloeServer.HeroOf(owner);
+        if (slot[0] != null && ModKitUtil.Alive(slot[0].Master))
+            yield break;
+        Log("the vessel fell: waiting up to " + F(timeout) + " s for the core to send it again");
+        yield return Until(() => { UloeHeroBrain h = UloeServer.HeroOf(owner); return h != null && ModKitUtil.Alive(h.Master); }, timeout);
+        slot[0] = UloeServer.HeroOf(owner);
+        if (slot[0] != null && !ModKitUtil.Alive(slot[0].Master))
+            slot[0] = null;
+        Log(slot[0] != null ? "the vessel is back at " + ModKitUtil.Pos(slot[0].Master) : "the vessel did not come back");
+    }
+
+    // The run ends with an honest SETUP and its DONE line when the vessel fell and never came back.
+    static void NoVessel(string from)
+    {
+        ModKitTest.Setup(from, "the vessel fell and the core did not send it again");
+        freeze = false;
+        Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups + " (no vessel: nothing else can be tested)");
+        phase = 9;
     }
 
     static T Newest<T>(string being, List<UloeBuilding> known) where T : UloeBuilding
@@ -226,6 +266,12 @@ public static partial class UloeSelfTest
     static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<UloeBuilding> known, UloeBuilding[] result)
     {
         result[0] = null;
+        // R4 stall: no tile, or no vessel to build it, is a null result at once, not a throw or 20 s of waiting.
+        if (float.IsNaN(at.x) || !ModKitUtil.Alive(hero))
+        {
+            Log("no " + tower + " built: " + (float.IsNaN(at.x) ? "no tile" : "the vessel is gone"));
+            yield break;
+        }
         string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + ModKitUtil.Owner(hero) + "}";
         Send(hero, "Build", json);
         float t = 0f;
@@ -459,6 +505,7 @@ public static partial class UloeSelfTest
         List<UloeBuilding> known = new List<UloeBuilding>();
         UloeBuilding[] got = new UloeBuilding[1];
         Entity_Master[] slot = new Entity_Master[1];
+        UloeHeroBrain[] vessel = new UloeHeroBrain[1];
         Entity_Master far = null;
         Vector3 at;
         UloeLight test = new UloeLight();
@@ -718,14 +765,23 @@ public static partial class UloeSelfTest
             ClearFoes();
         }
 
-        // 6. The Power Bank and its Photons.
+        // 6. The Power Bank and its Photons. R4 stall: the vessel can fall to section 5's foes; the new one stands in for it.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] == null) { NoVessel("the Power Bank and on"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         at = Spot(hm, UloeContent.Beings[UloeData.Bank], 3f);
         float yellow = Res(owner, "Yellowaura");
         red = Res(owner, "Redaura");
-        yield return Build(hm, UloeData.Bank, at, known, got);
-        UloeBankBrain bank = got[0] as UloeBankBrain;
+        UloeBankBrain bank = null;
+        if (float.IsNaN(at.x))
+            ModKitTest.Setup("the Power Bank and its Photons", "no free tile for it within 14 tiles of the vessel");
+        else
+        {
+            yield return Build(hm, UloeData.Bank, at, known, got);
+            bank = got[0] as UloeBankBrain;
+        }
         UloePhotonBrain ph = null;
-        if (Check("build a Power Bank", bank != null, "at " + at))
+        if (!float.IsNaN(at.x) && Check("build a Power Bank", bank != null, "at " + at))
         {
             Check("a Power Bank costs Red 40 + Yellow 20", Near(red - Res(owner, "Redaura"), 40f) && Near(yellow - Res(owner, "Yellowaura"), 20f), "spent Red " + F(red - Res(owner, "Redaura")) + ", Yellow " + F(yellow - Res(owner, "Yellowaura")));
             // The vessel off to one side, so what lights the Bank is a Photon.
@@ -846,6 +902,9 @@ public static partial class UloeSelfTest
         }
 
         // 7. The Mirror.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] == null) { NoVessel("the Mirror and on"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         at = Spot(hm, UloeContent.Beings[UloeData.Mirror], 3f);
         yield return Build(hm, UloeData.Mirror, at, known, got);
         UloeMirrorBrain mirror = got[0] as UloeMirrorBrain;
@@ -987,6 +1046,9 @@ public static partial class UloeSelfTest
         }
 
         // 8. The Flood Light.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] == null) { NoVessel("the Flood Light and on"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         UloeFloodBrain flood = null, flood2 = null;
         if (node != null)
         {
@@ -1136,9 +1198,15 @@ public static partial class UloeSelfTest
         else ModKitTest.Setup("the Flood Light", "no node");
 
         // 8b. The 24 upgrades of 2026-11-05, the teammate cap and SURGE (98_Upgrades.cs).
+        yield return Vessel(owner, vessel);
+        if (vessel[0] == null) { NoVessel("the 24 upgrades and on"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         yield return Upgrades24(hero, owner, team, known, glass, bank, mirror, mirrorB, flood, flood2);
 
         // 9. Directions.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] == null) { NoVessel("the Directions and on"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         {
             List<string> names = new List<string>();
             foreach (Upgradeproperties d in ModKitDirections.All())
@@ -1176,6 +1244,9 @@ public static partial class UloeSelfTest
         ClearFoes();
 
         // 10. Selling and the journal.
+        yield return Vessel(owner, vessel);
+        if (vessel[0] == null) { NoVessel("selling and the journal"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         {
             float red0 = Res(owner, "Redaura");
             Send(hm, "Sell", Sell(hm, glass.Master));

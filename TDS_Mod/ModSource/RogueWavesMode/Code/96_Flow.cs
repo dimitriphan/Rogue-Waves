@@ -164,6 +164,23 @@ public static partial class RWTest
             + "; Cardinal effects [" + (m.Upgradelistserver != null ? string.Join(",", new List<string>(m.Upgradelistserver.Keys).FindAll(k => k.Contains("Artifact")).ToArray()) : "") + "]";
     }
 
+    // R4 Spring Tide: a thing's Health buckets as they stand (base, Pmulti, Add, Multi, floor, ceiling, override on, override);
+    // null without Health.
+    static float[] HealthBuckets(Entity_Master m)
+    {
+        Link_Stats s;
+        if (m == null || m.Statsserver == null || !m.Statsserver.TryGetValue("Health", out s)) return null;
+        return new[] { s.Value_Base, s.Value_Pmulti, s.Value_Add, s.Value_Multi, s.Value_Bounds.x, s.Value_Bounds.y, s.Value_Override_On, s.Value_Override };
+    }
+
+    // The max those buckets give with 'more' on the Add: (base x Pmulti + Add) x Multi x (1 - override on) + override, within the
+    // stat's Limits (kit docs/17 §2.1); a ceiling only where the data gives one above the floor.
+    static float HealthWith(float[] h, float more)
+    {
+        float v = (h[0] * h[1] + h[2] + more) * h[3] * (1f - Mathf.Clamp01(h[6])) + h[7];
+        return h[5] > h[4] ? Mathf.Clamp(v, h[4], h[5]) : Mathf.Max(v, h[4]);
+    }
+
     // Runs the current Tide table entries out until Tide 'wave' has started, then its foes are cleared and its break is up.
     static IEnumerator ToBreakAfter(int wave) { return ToBreakAfter(wave, false); }
 
@@ -617,7 +634,10 @@ public static partial class RWTest
         // Spring Tide is measured on the plain archer. Until 2026-11-05 it was 'built', which reads 0 -> 0.0375 over a Tide (PC,
         // Light_round1): the first Towerfighter built after every stock Cardinal, so Paper Tower's Health Multi and Frail Titan's
         // Pmulti are on it; its parts are logged so the next round sees them (pitfall #171, fitted, not yet confirmed).
+        // R4 Spring Tide: the mode's catch-up (MODE-C1) puts each stock Cardinal bought above on the plain archer too (pitfall #172),
+        // so its gain is measured against what its own Health buckets make of Spring Tide's Add, read before the Tide.
         float tower0 = ModKitUtil.MaxHealth(plain), spring0 = RWDirections.SpringOn(plain);
+        float[] health0 = HealthBuckets(plain);
         Info("Spring Tide: the archer built after the Cardinals, before the Tide", HealthParts(built));
 
         // The board: this break's objective.
@@ -650,11 +670,17 @@ public static partial class RWTest
         Info("Spring Tide: the archer built after the Cardinals, after the Tide", HealthParts(built));
         bool standing = ModKitUtil.Alive(plain);
         float tower1 = standing ? ModKitUtil.MaxHealth(plain) : 0f, spring1 = RWDirections.SpringOn(plain);
-        string springSeen = "max " + tower0 + " -> " + tower1 + ", its modifier " + spring0 + " -> " + spring1 + (plain == null ? "; no tower placed" : standing ? "; " + HealthParts(plain) : "; the tower is gone");
-        if (plain == null) Setup("Spring Tide: the tower gained health in the Tide", "no tower could be placed before the shop");
+        float[] health1 = standing ? HealthBuckets(plain) : null;
+        float model0 = health0 != null ? HealthWith(health0, 0f) : 0f, want1 = health0 != null ? HealthWith(health0, RWDirections.SpringHealth[3]) : 0f;
+        string springSeen = "max " + tower0 + " -> " + tower1 + ", want " + want1 + " from its buckets before the Tide (they give " + model0 + " without it), its modifier " + spring0 + " -> " + spring1
+            + (plain == null ? "; no tower placed" : standing ? "; " + HealthParts(plain) : "; the tower is gone");
+        const string springGain = "Spring Tide: the tower gained health in the Tide";
+        if (plain == null) Setup(springGain, "no tower could be placed before the shop");
         else
         {
-            Check("Spring Tide: the tower gained health in the Tide", standing && Mathf.Abs(tower1 - tower0 - RWDirections.SpringHealth[3]) < 0.05f, springSeen);
+            if (health0 == null || Mathf.Abs(model0 - tower0) >= 0.05f) Setup(springGain, "its Health buckets before the Tide don't give the max read then: " + springSeen);
+            else if (want1 - tower0 < 0.01f) Setup(springGain, "its other Cardinals hold its max at the floor, where a +" + RWDirections.SpringHealth[3] + " Add can't show: " + springSeen);
+            else Check(springGain, standing && Mathf.Abs(tower1 - want1) < 0.05f, springSeen);
             // B7: rank III's 10 a Tide on the mode's own Health Add, no stock Beacon or Resistadd on the tower (pitfall #159).
             Check("Spring Tide: the gain is the mode's own, with no Resistadd on the tower", standing && Mathf.Abs(spring1 - spring0 - RWDirections.SpringHealth[3]) < 0.05f && !plain.Statsserver.ContainsKey("Resistadd"),
                 springSeen + (plain.Statsserver != null && plain.Statsserver.ContainsKey("Resistadd") ? ", Resistadd " + plain.Statsserver["Resistadd"].Value_Calc : ""));
@@ -692,9 +718,11 @@ public static partial class RWTest
                 const string springAgain = "Spring Tide: a second Tide raises the same modifier";
                 bool up = ModKitUtil.Alive(plain);
                 float tower2 = up ? ModKitUtil.MaxHealth(plain) : 0f, spring2 = RWDirections.SpringOn(plain);
+                // R4 Spring Tide: what its buckets after Tide 1 make of one more Add, not a bare +10 (a Paper Tower Multi scales it).
+                float want2 = health1 != null ? HealthWith(health1, RWDirections.SpringHealth[3]) : tower1 + RWDirections.SpringHealth[3];
                 if (plain == null) Setup(springAgain, "no tower could be placed before the shop");
-                else Check(springAgain, up && Mathf.Abs(tower2 - tower1 - RWDirections.SpringHealth[3]) < 0.05f && Mathf.Abs(spring2 - spring1 - RWDirections.SpringHealth[3]) < 0.05f,
-                    "max " + tower1 + " -> " + tower2 + ", its modifier " + spring1 + " -> " + spring2 + (up ? "" : "; the tower is gone"));
+                else Check(springAgain, up && Mathf.Abs(tower2 - want2) < 0.05f && Mathf.Abs(spring2 - spring1 - RWDirections.SpringHealth[3]) < 0.05f,
+                    "max " + tower1 + " -> " + tower2 + ", want " + want2 + ", its modifier " + spring1 + " -> " + spring2 + (up ? "" : "; the tower is gone"));
             }
         }
         Info("Tides 2-15", RWUtil.F(Time.realtimeSinceStartup - clock) + " s");
@@ -706,9 +734,11 @@ public static partial class RWTest
         Info("the vote to leave", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', sub '" + TextOf(Bla_Ui_Confirmation.Instance.Subbox) + "', cards " + CardTexts());
         yield return DialogFits("The vote to leave");
         yield return Snap("leave_vote");
+        LeaveVote = "";
         ClickCard("Stay");
         yield return Until(() => RWVote.State != "Leave", 8f);
-        Check("Leave: staying keeps the party on the map", !RWVote.Departing && RWVote.LastVote == "0 of 1 to leave", RWVote.LastVote);
+        // R4 Leave: the vote's own result (its log line); B1's map vote has written LastVote over it by now.
+        Check("Leave: staying keeps the party on the map", !RWVote.Departing && LeaveVote == "0 of 1 to leave", "the vote to leave: '" + LeaveVote + "', last vote " + RWVote.LastVote);
         // B1: the first stay votes on the next map there and then, so the boat has a choice however the map ends.
         string staySub = "";
         if (RWVote.State == "Map")
@@ -776,12 +806,15 @@ public static partial class RWTest
         Check("Leave: the party leaves by the stock win path", Game_Mapvars.Instance != null && Game_Mapvars.Instance.Gamecomplete.Value.ToString() == "Win", RWVote.LastVote);
         Check("B1 leaving asks no second map vote: the party sails to the one voted when it stayed", secondWin == "" && RWVote.LastVote.StartsWith("voted before") && RWCampaign.Choice == stayChoice, RWVote.LastVote + ", choice " + RWCampaign.Choice + " (stayed " + stayChoice + ")");
         yield return new WaitForSeconds(0.5f);
-        Check("T4 the end screen's title is the campaign's", Game_Mapvars.Instance.Display.Value.Display_Endgame.ToString() == "MAP 1 OF 10 WON", "'" + Game_Mapvars.Instance.Display.Value.Display_Endgame + "', last " + RWCard.LastEnd);
+        // R4 U3: the title of the map won, from the facts every machine reads (RWCard.Row), not a fixed map 1.
+        int wonRow = RWCard.Row();
+        string wantEnd = WonTitle(wonRow);
+        Check("T4 the end screen's title is the campaign's", wonRow >= 1 && Game_Mapvars.Instance.Display.Value.Display_Endgame.ToString() == wantEnd, "'" + Game_Mapvars.Instance.Display.Value.Display_Endgame + "', want '" + wantEnd + "' (row " + wonRow + "), last " + RWCard.LastEnd);
         yield return new WaitForSeconds(7f);
         GameObject title = null;
         Blockage.Menu.Blu2_Menu_Handler win;
         if (Blockage.Menu.Bl_Menus.Menus.TryGetValue("Win", out win) && win != null) win.Items.TryGetValue("Title", out title);
-        Check("U3 the Win screen reads the title, its score line hidden", title != null && TextOf(title).ToUpperInvariant().Contains("MAP 1 OF 10 WON"), "'" + TextOf(title) + "'");
+        Check("U3 the Win screen reads the title, its score line hidden", wonRow >= 1 && title != null && TextOf(title).ToUpperInvariant().Contains(wantEnd), "'" + TextOf(title) + "', want '" + wantEnd + "'");
         yield return Snap("end_screen");
 
         // Back on the boat, one row on; the second map's Setup panel.

@@ -26,6 +26,7 @@ public static class RWObjectives
     public static string Outcome = "";       // self-test
     public static int Paid, NoRoom;          // self-test
     public static Beingobject MeteorBeing;
+    public static int MeteorHits; public static float MeteorWant;   // self-test: the last node's hits and tiles from the Basin
     static Entity_Master target;
     static bool failed, targetFell;
     static float tideLength, clockLeft;
@@ -276,7 +277,9 @@ public static class RWObjectives
         if (core == null || MeteorBeing == null)
             return;
         int map = Mathf.Max(1, RWCampaign.Route.Count + (RWCampaign.WonThisMap ? 0 : 1));
-        float want = 8f + map * 1.5f;
+        // BATCH 14:14: the first map is 12 hits and 8 tiles (scope 14), so the steps count maps after the first.
+        int later = map - 1;
+        float want = 8f + later * 1.5f;
         Vector3 from = core.Entityposition.Value;
         Link_Being probe = new Link_Being { Being = MeteorBeing, Entity = MeteorBeing.Entity, Block = MeteorBeing.Block, Team = -1 };
         System.Random rng = new System.Random(unchecked((int)RWCampaign.Seed) ^ (map * 131) ^ (Game_Mapvars.Instance.Wave.Value * 17));
@@ -303,10 +306,12 @@ public static class RWObjectives
         spawn.Owner = -1;
         spawn.Team = -1;
         // The hit that takes it from 0 is the one that pays, so N hits need Healthresource N - 1 (pitfall #106).
-        Dictionary<string, float> init = new Dictionary<string, float> { { "Healthresource", 11 + map * 3 } };
+        Dictionary<string, float> init = new Dictionary<string, float> { { "Healthresource", 11 + later * 3 } };
+        MeteorHits = 12 + later * 3;
+        MeteorWant = want;
         Link_Being made = Helper_Entitytools.Spawn(spawn, best.Position, null, false, init);
         target = made != null ? made.Worldobject : null;
-        RWLog.Info("meteor at " + RWUtil.V(best.Position) + ", " + RWUtil.F(ModKitUtil.Flat(best.Position, from)) + " from the Basin, " + (12 + map * 3) + " hits");
+        RWLog.Info("meteor at " + RWUtil.V(best.Position) + ", " + RWUtil.F(ModKitUtil.Flat(best.Position, from)) + " from the Basin, " + (12 + later * 3) + " hits");
     }
 
     static void SpawnNest()
