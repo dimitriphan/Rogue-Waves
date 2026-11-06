@@ -192,6 +192,9 @@ price itself.
   popup's 48-unit box at three to one) is mostly 16 px, `Icon_Stats` (12-unit counters) 12 px. An icon of another size in
   those boxes is stretched unevenly and jitters as the button moves; a smaller one goes in centred in a clear 16 px box
   (`ModKitAssets.CommandIcon`, `09` #156).
+- **The game's own menus put their button pictures on half pixels** at an odd UI scale (Play's picture 13.5 units into its
+  75-unit tile), and the main menu's and the boat's cameras sway, with the UI camera as their child, so those pictures
+  flicker by a pixel column every frame. The mode moves every still picture onto whole screen pixels (`RWPixels`, `09` #174).
 - `Blu4_Tooltip` (pointer only): `Text`, `Localize`, `Followmouse`, `Tooltipprefab`. The HUD fills icon tooltips with
   the icon's `Displayname` and command tooltips with the key only.
 - Rich text: TMP tags (`<b>`, `<color>`) work; **no `<sprite>` tag** is set up anywhere, so inline icons are separate

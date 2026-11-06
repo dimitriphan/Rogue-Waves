@@ -288,6 +288,7 @@ public static partial class RWTest
         List<string> comps = new List<string>();
         foreach (Component c in RWMenu.Button.GetComponentsInChildren<Component>(true)) if (c != null) comps.Add(c.GetType().Name);
         Info("B1 the clone's components", string.Join(",", comps.ToArray()));
+        yield return Pixels(main);
         yield return Snap("mainmenu");
 
         RWMenu.Clicked();
