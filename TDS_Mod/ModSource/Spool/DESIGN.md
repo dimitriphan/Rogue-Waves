@@ -128,32 +128,51 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 
 ## Upgrade trees
 
-The sheet's levels 1-3 are the game's tiers 2-4; a building takes one upgrade per level. Every choice of a level leads
-to every choice of the next, except where noted. No tier-5 capstones built yet (the sheet has them since 2026-11-04, below). Costs are the sheet's
-defaults.
+The sheet's levels 1-4 are the game's tiers 2-5; a building takes one upgrade per level. Every choice of a level leads
+to every choice of the next, except where noted. All 37 are built (the 22 the sheet added on 2026-11-04 since
+2026-11-06, compiled, not yet run in game). Costs are the sheet's; the Desc column is the in-game line (no numbers).
 
 | Building | Tier | Upgrade | Desc (in-game line) | What it does | Cost | Next |
 |---|---|---|---|---|---|---|
-| Cookie Tin | 2 | Reuse Reduce Recycle | Fallen Crafted leave Thread behind | a Crafted that is killed drops half its cost, rounded up | Red 30 | Discounted, New Design |
-| | 2 | Woolen Lining | Sturdier Crafted | Crafted health +50% | Red 30 | Discounted, New Design |
-| | 3 | Discounted Material | Cheaper, faster Stitched | Stitched cost 8 Thread and walk 30% faster | Red 90 | One Last Surprise |
-| | 3 | New Design | Stitches Darts that throw needles | the Tin stitches Darts | Red 100 | One Last Surprise |
-| | 4 | One Last Surprise | Crafted burst when they fall | a falling Crafted hurts every foe within its attack range for 3 × its damage | Red 400 | |
-| Thread Head | 2 | Threaded Delivery | Carries Thread home on its own | full, it walks to the Stash, drops off and returns to its spot | Red 30 | |
-| | 2 | Patchwork Job | Mends nearby units with Thread | a **MEND** toggle: 2 health a second to each of your units within 2 tiles, 1 Thread per 5 health | Red 30 | |
+| Yarn Stash | 2 | Roomy Pockets | Spool carries more | Spool carries 40 Thread and picks it up within 2 tiles | Yellow 30 | Darning, Elbow Patches |
+| | 2 | Quick Patch | Faster, cheaper PATCH | PATCH costs 15 Thread; cooldown 2.5 s | Yellow 25 + Blue 10 | Darning, Elbow Patches |
+| | 3 | Darning | PATCH mends a whole patch | everything of yours within 1.5 tiles of PATCH's target is healed as much as the target | Yellow 100 | Remnant Bin, Mending Circle |
+| | 3 | Elbow Patches | Spool gets stuck in | Spool's health +60%, damage +100% | Red 60 + Yellow 60 | Remnant Bin, Mending Circle |
+| | 4 | Remnant Bin | Nothing goes to waste | Thread lasts 30 s on the ground; a tuft that runs out comes home at 50%, rounded down | Yellow 300 | Quilting Bee |
+| | 4 | Mending Circle | Everything mends between Tides | at each Tide's start every building of yours heals 25% of its maximum health | Blue 150 + Yellow 200 | Quilting Bee |
+| | 5 | Quilting Bee | Everyone sews at once | a **BEE** button, once a Tide: every Cookie Tin stitches up to its limit at once for no Thread; Crafted +50% damage for 15 s | Yellow 2500 + Red 1000 | |
+| Cookie Tin | 2 | Reuse Reduce Recycle | Fallen Crafted leave Thread behind | a Crafted that is killed drops half its cost, rounded up | Red 30 | Discounted, New Design, Tacking |
+| | 2 | Woolen Lining | Sturdier Crafted | Crafted health +50% | Red 30 | Discounted, New Design, Tacking |
+| | 3 | Discounted Material | Cheaper, faster Stitched | Stitched cost 8 Thread and walk 30% faster | Red 90 | One Last Surprise, Cross Stitch |
+| | 3 | New Design | Stitches Darts that throw needles | the Tin stitches Darts | Red 100 | One Last Surprise, Cross Stitch |
+| | 3 | Tacking Stitch | Stitched hold the line | the Tin stitches Tacked Stitched: +100% health, on Sno Sno's blocker block, holding their spot; no Darts | Red 110 | One Last Surprise, Cross Stitch |
+| | 4 | One Last Surprise | Crafted burst when they fall | a falling Crafted hurts every foe within its attack range for 3 × its damage | Red 400 | Patchwork Army |
+| | 4 | Cross Stitch | Crafted hit harder | this Tin's Crafted +100% damage | Red 350 | Patchwork Army |
+| | 5 | Patchwork Army | A bigger, faster sewing circle | +3 Crafted alive at once; one every 2 s | Red 2500 + Yellow 1000 | |
+| Thread Head | 2 | Threaded Delivery | Carries Thread home on its own | full, it walks to the Stash, drops off and returns to its spot | Red 30 | Big Bobbin, Needle Point |
+| | 2 | Patchwork Job | Mends nearby units with Thread | a **MEND** toggle: 2 health a second to each of your units within 2 tiles, 1 Thread per 5 health | Red 30 | Big Bobbin, Needle Point |
+| | 3 | Big Bobbin | Carries more, reaches farther | carries 40, collects from 5 tiles (porter) | Yellow 60 | High Thread Count, Stitch in Time |
+| | 3 | Needle Point | Points the Crafted at the weak spot | your Crafted within 3 tiles +25% damage (buffer) | Red 80 | High Thread Count, Stitch in Time |
+| | 4 | High Thread Count | Foes near it drop more Thread | +1 Thread from each foe felled within 3 tiles (porter) | Yellow 250 | Head of the Class |
+| | 4 | Stitch in Time | Nearby Crafted shrug off hits | your Crafted within 3 tiles take 30% less damage (buffer) | Red 300 + Yellow 100 | Head of the Class |
+| | 5 | Head of the Class | The best stitch in the house | buffs reach 4 tiles: +50% damage and 45% less damage taken; Thread it picks up goes straight to the Stash | Red 2000 + Yellow 1500 | |
 | Pin Cushion | 2 | Sharper Pins | Pricks melee attackers harder | reflects 40% of melee damage | Blue 30 | Pin Barrage, Loose Stuffing |
 | | 2 | Slow Unravel | Takes half its damage later, spins more Thread | half of each hit now, half over the next 4 s (heals can cancel it); Thread spun ×2 | Blue 30 | Pin Barrage, Loose Stuffing |
-| | 3 | Pin Barrage | Pricks ranged attackers too | also reflects 20% of ranged damage | Blue 100 | *(ends: the level-4 upgrades shape Mangled)* |
-| | 3 | Loose Stuffing | Spills Mangled when hit | 1 Mangled per 40 damage taken, at most 3 alive | Blue 90 | Overstuffed, Burst Seams |
-| | 4 | Overstuffed | Mangled leap in to block | Mangled health ×3; each leaps up to 2 tiles toward the foe that hit the Cushion and holds there, blocking like a Snoble (Sno Sno's mob-blocker block) | Blue 400 | |
-| | 4 | Burst Seams | Mangled burst on foes | a Mangled that reaches a foe bursts: 5 damage to every foe within 1.25 tiles | Blue 400 | |
-| Loom | 2 | Direct Line | Thread goes straight home | spun Thread goes straight into the Stash while it has room | Yellow 30 | |
-| | 2 | Seam Allowance | Makes Seams that mine and guard | one Seam per Loom | Yellow 30 | |
+| | 3 | Pin Barrage | Pricks ranged attackers too | also reflects 20% of ranged damage | Blue 100 | Iron Thimble |
+| | 3 | Loose Stuffing | Spills Mangled when hit | 1 Mangled per 40 damage taken, at most 3 alive | Blue 90 | Overstuffed, Burst Seams, Iron Thimble |
+| | 4 | Overstuffed | Mangled leap in to block | Mangled health ×3; each leaps up to 2 tiles toward the foe that hit the Cushion and holds there, blocking like a Snoble (Sno Sno's mob-blocker block) | Blue 400 | Voodoo Doll |
+| | 4 | Burst Seams | Mangled burst on foes | a Mangled that reaches a foe bursts: 5 damage to every foe within 1.25 tiles | Blue 400 | Voodoo Doll |
+| | 4 | Iron Thimble | Sturdier pins, harder to break | health +200%; 25% less damage taken | Blue 300 + Yellow 300 | Voodoo Doll |
+| | 5 | Voodoo Doll | Prick it and everyone feels it | once a Tide, the first time it falls below 50% health: every foe within 3 tiles stunned 3 s, and it heals 50% of its maximum | Blue 2000 + Yellow 1500 | |
+| Loom | 2 | Direct Line | Thread goes straight home | spun Thread goes straight into the Stash while it has room | Yellow 30 | Dyed in the Wool, Bobbin Winder |
+| | 2 | Seam Allowance | Makes Seams that mine and guard | one Seam per Loom | Yellow 30 | Dyed in the Wool, Bobbin Winder |
+| | 3 | Dyed in the Wool | Pick the colour of its aura | a **COLOUR** button: your share of each payout from its strikes and its Seams' comes in the picked colour at 70% of its total | Yellow 150 | Seam Squad, Snare Line |
+| | 3 | Bobbin Winder | Spins Thread twice as fast | a Thread every 3 s; holds 20 | Yellow 100 | Seam Squad, Snare Line |
+| | 4 | Seam Squad | More Seams to mine and guard | 3 Seams per Loom | Yellow 350 | Golden Thread |
+| | 4 | Snare Line | Seams hunt the wild aura | its Seams chase aura beasts within 6 tiles of the Loom | Yellow 300 | Golden Thread |
+| | 5 | Golden Thread | Thread spun from gold | Spool and Thread Heads drop off here (straight into the Stash); spins twice as fast | Yellow 3000 | |
 
-Added to the sheet, not built yet (Dimitri accepted them 2026-11-04, `docs/reports/UPGRADE_GAPS_2026-11-04.md`): seven
-Yarn Stash upgrades, the Thread Head's levels 2-4, the Loom's levels 2-4, the Cookie Tin's Tacking Stitch, Cross Stitch
-and Patchwork Army, the Pin Cushion's Iron Thimble and Voodoo Doll (Pin Barrage then leads to Iron Thimble), and the
-Tin's UNTHREAD button. Scope `08` holds their numbers.
+The Cookie Tin's **UNTHREAD** button sells every Crafted it has out, each refunding half its Thread as selling one does.
 
 ## Directions
 
@@ -187,7 +206,7 @@ Claude's five, built 2026-11-05 with the sheet's numbers (compiled, not yet run 
 |---|---|---|
 | Thread Head "Works like Boutman's fish" | placed through a walk-through token, then a plain unit that doesn't block foes | a fish's block blocks foes (Gubby); the sheet asks for a porter that guards, not a wall |
 | Target spot "on a path" | any walkable tile within 8 tiles that a Crafted can reach | the game has no "path tile" flag a mod can read cheaply; reachability is what matters |
-| Pin Barrage leads on to level 3 | it ends the branch | both level-3 upgrades shape Mangled, which only Loose Stuffing makes |
+| Pin Barrage leads on | to Iron Thimble only (2026-11-06; it ended the branch before) | the sheet's "Leads to"; Overstuffed and Burst Seams shape Mangled, which only Loose Stuffing makes |
 | "Melee damage" | a hit whose attacker's `Range` is 2.25 or less | the hit itself doesn't say whether it was melee |
 
 ## Test plan (self-test sections, docs/08)
@@ -203,6 +222,9 @@ Claude's five, built 2026-11-05 with the sheet's numbers (compiled, not yet run 
    Overstuffed health and block, Burst Seams.
 8. Loom: spins every 6 s up to 10, Direct Line, Seam spawn and respawn.
 9. PATCH: cost 20 from the Stash, 20% heal capped at 500, range, cooldown, refusals.
+10. The Stash falls and is sold; the Directions (10b, 10c).
+11. The upgrades of 2026-11-06 (10d `98_UpStash.cs`, 10e `98_UpTinHead.cs`, 10f `98_UpLoom.cs`): each of the 22, UNTHREAD.
+12. The journal.
 
 ## Defaults picked here
 
@@ -227,4 +249,13 @@ takes it. The number lives in `Code/02_Data.cs` unless the row says otherwise.
 | Thread Head sold | drops what it carried; the stock refund (Red 40 × Sellrate) | like any unit |
 | A Loom destroyed | drops the Thread it held | nothing is lost |
 | "Melee" for the Pin Cushion | the attacker's `Range` stat is 2.25 or less | Changes from the concept |
-| Pin Barrage | ends its branch | Changes from the concept |
+| Pin Barrage | leads to Iron Thimble only | the sheet's "Leads to" (Changes from the concept) |
+| Quilting Bee's BEE button | on the Yarn Stash, where it is bought | like the Loom's COLOUR; Spool's own bar keeps PATCH and the build menu |
+| Darning's "healed the same" | as much as PATCH's target, each capped at its own missing health | the sheet's words read literally |
+| Remnant Bin with two Spools | any holder makes every tuft last 30 s; one that runs out goes to the nearest holder's Stash | ground Thread belongs to nobody until picked up |
+| Head of the Class on a porter path | gives both buffs at their capstone numbers | the sheet lists both, whatever came before |
+| Several Heads' buffs, High Thread Count | the best Head in reach counts; +1 a foe however many Heads | no stacking, so a cluster of Heads can't multiply |
+| Seam Squad or Snare Line after Direct Line | Seam Squad keeps 3 Seams; Snare Line gives a Seam-less Loom one | each upgrade does what it says on any path |
+| Voodoo Doll's stun | every foe in reach, bosses included | the sheet names no exception |
+| Dyed in the Wool on a Seam's payout | read around the Seam's own hit (its purse before, late in the same frame after) | the Seam mines with the game's own AI; another payout on that same frame would be traded too |
+| UNTHREAD's key | 4, like the Thread Head's RETURN | TARGET keeps the Quick Action key |
