@@ -158,6 +158,7 @@ public static class RWDialog
                 bool wrap;
                 text.fontSize = NameSize(look.Name, out wrap);
                 text.enableWordWrapping = wrap;
+                text.color = Pearl;   // a carried-over text looks as a new one does, whatever tint it last had
                 text.text = look.Name.ToUpperInvariant();
             }
         }
@@ -178,6 +179,7 @@ public static class RWDialog
                 rt.sizeDelta = new Vector2(FaceBadge, FaceBadge);
                 rt.anchoredPosition = new Vector2(size.x - FaceBadge * 0.5f - 4f, size.y - FaceBadge * 0.5f - 4f);
                 badge.sprite = look.Badge;
+                badge.color = Color.white;
                 RWAssets.Crisp(badge, FaceBadge, pixels);
             }
         }

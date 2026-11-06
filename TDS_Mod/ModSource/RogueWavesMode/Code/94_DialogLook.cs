@@ -43,6 +43,9 @@ public static partial class RWTest
 
     const string LongLine = "A long hover line, about as long as the longest Cardinal the shop sells, with its price and its kind in front of it, to see that it wraps and every word of it stays on the screen";
 
+    static int lastNames;
+    static bool lastBadge;
+
     static IEnumerator Opening(string name, bool mine, Action<float> worst, bool maps = false, bool mapName = true, bool mapBadge = true)
     {
         Coroutine timed = RogueWavesModeMod.Instance.StartCoroutine(Frames(name, 1.8f, worst));
@@ -59,6 +62,19 @@ public static partial class RWTest
             Bla_Ui_Confirmation.Instance.Runprompt(cards, "VENDCINT", "Pure Aura: 60", false);
         }
         yield return timed;
+        if (maps)
+        {
+            // What the opening showed: cards with a name, and the first card's badge.
+            lastNames = 0;
+            lastBadge = false;
+            string n;
+            float p;
+            foreach (RectTransform c in RWDialog.Cards(Bla_Ui_Confirmation.Instance))
+            {
+                if (RWDialog.Faced(c, out n, out p)) lastNames++;
+                if (c.name == "c0" && c.Find(RWDialog.FaceBadgeName) != null && c.Find(RWDialog.FaceBadgeName).gameObject.activeInHierarchy) lastBadge = true;
+            }
+        }
         if (mine) RWDialog.Cancel();
         else Blockage.Menu.Bl_Menus.Closemenu(Bla_Ui_Confirmation.Instance.gameObject, true);
         yield return new WaitForSecondsRealtime(3f);
@@ -81,16 +97,22 @@ public static partial class RWTest
             mineLong + " of " + Rounds + " openings with a frame over 25 ms, worst " + RWUtil.F(mine * 1000f) + " ms; stock " + stockLong + ", worst " + RWUtil.F(stock * 1000f) + " ms; a launch's first opening " + RWUtil.F(first * 1000f) + " ms");
         // The map cards draw a name and a badge on each card as the dialog opens (full test 2026-11-06 §5 item 3).
         // A launch's first map cards make their name texts and badge (RWDialog.FacesMade); every later opening reuses them.
-        yield return Opening("map cards, first", true, w => { }, true);
+        // Its frame is reported beside the check, as the plain dialog's first opening is: round 5's first freeze was there.
+        float firstMaps = 0f;
+        yield return Opening("map cards, first", true, w => firstMaps = w, true);
         int made = RWDialog.FacesMade;
+        bool firstDressed = lastNames == 3 && lastBadge;
         float maps = 0f;
-        int mapsLong = 0;
+        int mapsLong = 0, dressed = 0;
         for (int round = 1; round <= Rounds; round++)
+        {
             yield return Opening("map cards, round " + round, true, w => { maps = Mathf.Max(maps, w); if (w * 1000f > 25f) mapsLong++; }, true);
+            if (lastNames == 3 && lastBadge) dressed++;
+        }
         Check("Map cards with their name and badge open with no frame long enough to see, as the stock dialog does", mapsLong <= stockLong + 1,
-            mapsLong + " of " + Rounds + " openings with a frame over 25 ms, worst " + RWUtil.F(maps * 1000f) + " ms; stock " + stockLong);
-        Check("Map cards keep their name texts and badge from one opening to the next", made > 0 && RWDialog.FacesMade == made,
-            "made " + made + " on the first map cards, " + (RWDialog.FacesMade - made) + " more in " + Rounds + " openings after");
+            mapsLong + " of " + Rounds + " openings with a frame over 25 ms, worst " + RWUtil.F(maps * 1000f) + " ms; stock " + stockLong + "; a launch's first map cards " + RWUtil.F(firstMaps * 1000f) + " ms");
+        Check("Map cards keep their name texts and badge from one opening to the next: every card dressed, nothing new made", firstDressed && dressed == Rounds && made >= 4 && RWDialog.FacesMade == made,
+            "made " + made + " on the first map cards (3 names, 1 badge), " + (RWDialog.FacesMade - made) + " more in " + Rounds + " openings after; dressed (3 names, the badge) in " + dressed + " of " + Rounds + (firstDressed ? "" : ", the first not"));
         // Which piece costs, should the check above fail again: five openings each with a piece taken off.
         string[] parts = { "picture only", "picture and name", "picture and badge" };
         for (int v = 0; v < parts.Length; v++)
