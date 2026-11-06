@@ -11,13 +11,16 @@ This is a tool around the project, not part of the pack: nothing here is built i
 
 1. Open the **status-widget** release of this repository on the phone (GitHub, Releases), tap `RogueWavesStatus.apk`,
    and allow the install from the browser when Android asks. A newer build installs over the old one.
-2. Make a token at github.com: Settings > Developer settings > Fine-grained tokens > Generate new token. Repository
-   access: only `Rogue-Waves`. Permissions: Contents, read-only. Expiry: as long as you like.
-3. Open **Rogue Waves Status**, paste the token, tap **Save and refresh**. The screen lists what it read.
+2. Open **Rogue Waves Status** and tap **Save and refresh**. The screen lists what it read. No token is needed: the
+   repository is public, and the widget makes one API call per read (the files come from `raw.githubusercontent.com`),
+   well under GitHub's 60 an hour. A token only lifts that limit (github.com: Settings > Developer settings >
+   Fine-grained tokens; repository `Rogue-Waves` only, Contents read-only); paste it in the same box.
+3. Mind that the `status` branch is public like the rest of the repository: thread titles and steps are readable there.
 4. Long-press the home screen > Widgets > Rogue Waves Status, and drag it out at 4 × 6.
 
-The widget reads again every 15 minutes (Android's shortest background period) and when you tap it. The animation runs
-the whole time. The token stays in the app's private storage and is only sent to `api.github.com`.
+The widget reads again every 15 minutes (Android's shortest background period) and when you tap it; GitHub's raw
+files can lag a write by up to 5 minutes. The animation runs the whole time. A token, if given, stays in the app's
+private storage and is only sent to GitHub.
 
 ## What it shows
 
@@ -60,8 +63,10 @@ threads' files untouched for a day (a week for `waiting`). `--list` prints them 
 ## Building
 
 The cloud threads can't reach Google's Android SDK host, so `.github/workflows/status-widget.yml` builds on every push
-that touches `StatusWidget/`: it runs the unit tests, builds the signed APK and replaces the **status-widget** release.
-On a PC with Android Studio: open `StatusWidget/` and run `app`.
+that touches `StatusWidget/`: it runs the unit tests and builds the signed APK (a run artifact on any branch); a build of
+`claude/phase-1-6lfnar` also replaces the **status-widget** release. On a PC with Android Studio: open `StatusWidget/`
+with Gradle 8.11.1 (CI's; there is no wrapper) and run `app`. A local build is versionCode 1, lower than CI's, so
+uninstall the phone's copy first or use `adb install -r -d`.
 
 `app/sideload.keystore` (password `roguewaves`) signs every build so each one installs over the last; it is a key for a
 sideloaded personal app, not a store key.

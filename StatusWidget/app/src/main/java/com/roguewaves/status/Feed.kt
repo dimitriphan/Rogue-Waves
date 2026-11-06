@@ -18,14 +18,15 @@ object Feed {
 
     class FeedError(message: String) : IOException(message)
 
-    /** The raw files, as one JSON array of objects; an empty array when the branch or folder isn't there yet. */
+    /** The raw files, as one JSON array of objects; an empty array when the branch or folder isn't there yet.
+     *  The repository is public, so the token is optional: without one GitHub allows 60 reads an hour. */
     fun fetch(token: String): JSONArray {
         val (code, listing) = get(API, token, raw = false)
         when (code) {
             200 -> {}
             404 -> return JSONArray()
-            401 -> throw FeedError("GitHub refused the token (401). Make a new one and paste it here.")
-            403 -> throw FeedError("The token can't read Rogue-Waves (403). Give it Contents: read-only on that repository.")
+            401 -> throw FeedError("GitHub refused the token (401). Paste a new one, or clear it to read without one.")
+            403, 429 -> throw FeedError("GitHub said no ($code): the hourly limit, or a token without Contents: read-only.")
             else -> throw FeedError("GitHub answered $code.")
         }
         val files = JSONArray(listing)
@@ -33,7 +34,9 @@ object Feed {
         for (i in 0 until minOf(files.length(), MAX_FILES)) {
             val f = files.getJSONObject(i)
             if (f.optString("type") != "file" || !f.optString("name").endsWith(".json")) continue
-            val (c, body) = get(f.getString("url"), token, raw = true)
+            // the files themselves come from raw.githubusercontent.com, which doesn't count against the hourly API limit
+            val raw = f.optString("download_url")
+            val (c, body) = if (raw.startsWith("https://")) get(raw, token, raw = true) else get(f.getString("url"), token, raw = true)
             if (c != 200) continue
             try {
                 out.put(JSONObject(body))
@@ -80,7 +83,7 @@ object Feed {
         try {
             c.connectTimeout = 15_000
             c.readTimeout = 15_000
-            c.setRequestProperty("Authorization", "Bearer $token")
+            if (token.isNotEmpty()) c.setRequestProperty("Authorization", "Bearer $token")
             c.setRequestProperty("Accept", if (raw) "application/vnd.github.raw+json" else "application/vnd.github+json")
             c.setRequestProperty("X-GitHub-Api-Version", "2022-11-28")
             c.setRequestProperty("User-Agent", "RogueWavesStatus")

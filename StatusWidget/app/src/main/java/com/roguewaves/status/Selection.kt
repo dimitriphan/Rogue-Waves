@@ -1,7 +1,7 @@
 package com.roguewaves.status
 
 // What the widget shows, worked out from the threads' status files. Plain Kotlin (no Android), so the rules can be
-// tested off the phone: StatusWidget/README.md "How the widget picks the big scene".
+// tested off the phone: StatusWidget/README.md "What it shows".
 
 data class Helper(val task: String, val model: String)
 

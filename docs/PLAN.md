@@ -1521,11 +1521,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   frames from `art/scenes.py`, drawn from Yossele's final sheets, Argo's shipped idle and sonar, Spool's sage sprite and
   Uloe's concept frame), its step and two of its sub-agents, and up to three other busy threads. Status: one file per
   thread on the `status` branch, written by `status/set_status.py` (retries a rejected push on the new tip, prunes files
-  a day old); the app reads them with a read-only fine-grained token every 15 minutes and on a tap. Pick order and
+  a day old); the app reads them every 15 minutes and on a tap (the repository is public: one API call a read, the
+  files from `raw.githubusercontent.com`, a token optional). Pick order and
   lifetimes in `Selection.kt` (unit-tested in CI): your turn (never stale), failed and testing (2 h), building,
   reviewing, art, shipped (30 min). Google's SDK host is closed to the cloud threads, so
-  `.github/workflows/status-widget.yml` builds, tests and replaces the `status-widget` release on every push that
-  touches `StatusWidget/`. Usage (5-hour, weekly) left out: no public way to read it. The rule: `CLAUDE.md` map row,
+  `.github/workflows/status-widget.yml` builds and tests every push that touches `StatusWidget/`, and a build of the
+  base replaces the `status-widget` release. Usage (5-hour, weekly) left out: no public way to read it. The rule: `CLAUDE.md` map row,
   `ship-a-pr` (shipped) and `pc-round` (testing) skills. Not the pack; no kit change, no pitfall.
 
 ### Decisions

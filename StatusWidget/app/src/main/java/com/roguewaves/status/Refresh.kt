@@ -47,9 +47,7 @@ object Refresh {
         val store = Store(context)
         val token = store.token
         val now = System.currentTimeMillis()
-        val line = if (token.isEmpty()) {
-            "No token yet."
-        } else try {
+        val line = try {
             val files = Feed.fetch(token)
             store.saveGood(files, now)
             val entries = Feed.parse(files)

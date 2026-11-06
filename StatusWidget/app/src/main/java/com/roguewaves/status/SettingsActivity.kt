@@ -22,11 +22,9 @@ class SettingsActivity : Activity() {
 
         findViewById<Button>(R.id.save).setOnClickListener {
             val t = token.text.toString().trim()
-            if (t.isNotEmpty()) {
-                store.token = t
-                token.setText("")
-                token.hint = "Token saved (paste a new one to replace it)"
-            }
+            store.token = t                                   // empty clears it: the public repository reads without one
+            token.setText("")
+            token.hint = if (t.isEmpty()) "github_pat_… (optional)" else "Token saved (paste a new one to replace it)"
             read()
         }
         findViewById<Button>(R.id.refresh).setOnClickListener { read() }

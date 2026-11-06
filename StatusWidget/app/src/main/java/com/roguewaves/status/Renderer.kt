@@ -72,11 +72,6 @@ object Renderer {
         val step: String
         var since = ""
         when {
-            store.token.isEmpty() -> {
-                title = "SET UP"
-                line = "Open Rogue Waves Status and paste a GitHub token"
-                step = "Then tap here to refresh"
-            }
             main == null -> {
                 title = look.title
                 line = "The crew is asleep on deck"
@@ -149,7 +144,6 @@ object Renderer {
     private fun footer(store: Store, now: Long): String {
         val good = store.fetchedMs
         return when {
-            store.token.isEmpty() -> "No token yet"
             store.error.isNotEmpty() && store.errorMs >= good ->
                 if (good == 0L) "Couldn't read GitHub, tap the app" else "Offline, last read ${clock(good, now)}"
             good == 0L -> "Not read yet"

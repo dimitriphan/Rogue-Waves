@@ -36,7 +36,7 @@
             android:layout_marginTop="12dp"
             android:fontFamily="@font/barlow_medium"
             android:lineSpacingMultiplier="1.2"
-            android:text="The widget reads the project's status from GitHub with a token that can only read the repository. Make one at github.com: Settings, Developer settings, Fine-grained tokens, Generate new token. Repository access: only Rogue-Waves. Permissions: Contents, read-only. Paste it below."
+            android:text="The widget reads the project's status from GitHub. It works without a token; a token only lifts GitHub's limit of 60 reads an hour, which the widget stays well under. If you want one: github.com, Settings, Developer settings, Fine-grained tokens, Generate new token; repository Rogue-Waves only, Contents read-only. Paste it below, or leave the box empty and tap Save to read without one."
             android:textColor="@color/mist"
             android:textSize="15sp" />
 
@@ -48,7 +48,7 @@
             android:autofillHints="password"
             android:background="@drawable/field"
             android:fontFamily="@font/barlow_medium"
-            android:hint="github_pat_…"
+            android:hint="github_pat_… (optional)"
             android:inputType="textPassword"
             android:paddingStart="14dp"
             android:paddingEnd="14dp"

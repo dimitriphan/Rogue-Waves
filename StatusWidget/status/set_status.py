@@ -90,9 +90,12 @@ def prune(work, keep):
             with open(path) as fh:
                 o = json.load(fh)
             at = datetime.datetime.fromisoformat(o['updated'].replace('Z', '+00:00'))
-        except (ValueError, KeyError, TypeError, OSError):
+            if at.tzinfo is None:                        # a hand-edited time without a zone: read it as UTC
+                at = at.replace(tzinfo=datetime.timezone.utc)
+            old = (cut - at).total_seconds() > 3600 * PRUNE_HOURS.get(o.get('state'), 24)
+        except (ValueError, KeyError, TypeError, AttributeError, OSError):
             continue
-        if (cut - at).total_seconds() > 3600 * PRUNE_HOURS.get(o.get('state'), 24):
+        if old:
             os.remove(path)
             gone = True
     return gone
@@ -129,7 +132,7 @@ def apply(work, a):
     if a.step is not None:
         new['step'] = a.step
     helpers = [] if a.helpers_clear else list(old.get('helpers', []))
-    for h in a.helper_done or []:
+    for h in [x.strip() for x in a.helper_done or [] if x.strip()]:   # an empty value never clears them all
         helpers = [x for x in helpers if not x.get('task', '').lower().startswith(h.lower())]
     for h in a.helper or []:
         task, _, model = h.partition('|')

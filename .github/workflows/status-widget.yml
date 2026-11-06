@@ -41,6 +41,7 @@ jobs:
           path: StatusWidget/app/build/outputs/apk/release/app-release.apk
 
       - name: Publish the APK as the status-widget release
+        if: github.ref_name == 'claude/phase-1-6lfnar'       # only merged builds reach the phone; branches keep the artifact
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
