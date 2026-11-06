@@ -748,6 +748,9 @@ public static class RWChartView
         if (under == 0)
             return false;
         Rect at = Spot(size, W, H);
+        // With no spot clear it keeps its own unless the new one is clearly less covered, so it doesn't hop between two.
+        if (under > 0 && Covered(at) > 0f && Covered(at) > Covered(was) * 0.9f)
+            at = was;
         MiniAt = at;
         MiniUnder = Under(at);
         if (at == was)

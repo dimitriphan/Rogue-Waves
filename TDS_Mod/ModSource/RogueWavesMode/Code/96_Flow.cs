@@ -443,6 +443,7 @@ public static partial class RWTest
         // piece over its spot moves it after two looks a second apart, so the check gives it three seconds.
         yield return Until(() => RWChartView.Shown == "Boat" && RWChartView.MiniUnder == 0, 3f);
         if (RWChartView.Shown != "Boat") Setup("CV14 the mini chart stands clear of the game's pieces", "view '" + RWChartView.Shown + "', setup " + (Macro_Worldvisual.Instance != null && Macro_Worldvisual.Instance.Insetup));
+        else if (RWChartView.MiniPieces == 0) Setup("CV14 the mini chart stands clear of the game's pieces", "none of the game's pieces measured on the boat, so clear says nothing");
         else Check("CV14 the mini chart stands clear of the game's pieces on the boat", RWChartView.MiniAt.width > 0f && RWChartView.MiniUnder == 0,
             "at " + Rc(RWChartView.MiniAt) + " in canvas units, under " + RWChartView.MiniUnder + " of " + RWChartView.MiniPieces + " pieces");
         yield return Snap("boat_after_staging");
