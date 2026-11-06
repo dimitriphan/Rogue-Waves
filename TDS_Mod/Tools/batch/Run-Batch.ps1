@@ -2,7 +2,7 @@
 # Claude API with your API key and are paid from the API credit (the Max plan's $100 a month), never from the plan's
 # usage limits, so this works when the five-hour limit is used up. README.md beside this file has the details.
 #
-# First time, once (asks for the key, hidden, and keeps it as your Windows user variable RW_BATCH_API_KEY):
+# First time, once (asks for the key, hidden, keeps it as your Windows user variable RW_BATCH_API_KEY, sends nothing):
 #   powershell -ExecutionPolicy Bypass -File "<this folder>\Run-Batch.ps1" -SaveKey
 # Then, any time (Haiku 5.5, only what changed since each check's last full run, at most $3):
 #   powershell -ExecutionPolicy Bypass -File "<this folder>\Run-Batch.ps1"
@@ -11,12 +11,14 @@
 #   ... Run-Batch.ps1 -Full                     # every check whole, not only what changed
 #   ... Run-Batch.ps1 -Model sonnet -MaxCost 12 # Sonnet 5.5 (a full run about $5.48, at most $10.52)
 #   ... Run-Batch.ps1 -Check scope,design       # some checks only (text, scope, design, docs, art)
+#   ... Run-Batch.ps1 -Collect msgbatch_...     # finish a batch still running when the two-hour wait ended
 #
 # What it does: pulls the newest base into this clone (git pull --ff-only), installs the Python packages it needs the
-# first time, runs run_checks.py, waits for the batch (up to two hours; most end within minutes), and copies the
+# first time, runs run_checks.py, waits for the batch (up to two hours; most end within minutes), and moves the
 # report from docs\reports to Desktop\RogueWave\batch, where a Claude thread can read it later (that folder is
 # approved for the project's threads): say "read the batch report on my Desktop" in the project. Nothing else on the
-# PC is touched, the game is never started, and the report is not committed: a thread does that in its own PR.
+# PC is touched, the game is never started, and the report is not committed: a thread does that in its own PR. The
+# report is moved, not copied, so the clone keeps no untracked report that would stop the next git pull.
 param(
     [ValidateSet("haiku", "sonnet")][string]$Model = "haiku",
     [string]$Check = "all",
@@ -25,12 +27,14 @@ param(
     [switch]$Plan,
     [switch]$SaveKey,
     [switch]$NoPull,
+    [string]$Collect = "",
     [string]$CopyTo = (Join-Path ([Environment]::GetFolderPath("Desktop")) "RogueWave\batch")
 )
 # Exit codes of git, Python and pip are checked one by one, so a line on stderr is not treated as a failure.
 $ErrorActionPreference = "Continue"
 $repo = (Resolve-Path (Join-Path $PSScriptRoot "..\..\..")).Path
 $script = Join-Path $repo "TDS_Mod\Tools\batch\run_checks.py"
+$reports = Join-Path $repo "docs\reports"
 $inv = [Globalization.CultureInfo]::InvariantCulture
 
 # The key: this window, else your saved user variable, else -SaveKey asks for it.
@@ -41,9 +45,10 @@ if ($SaveKey) {
     finally { [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr) }
     if (-not $plain) { Write-Host "No key typed; nothing saved."; exit 3 }
     [Environment]::SetEnvironmentVariable("RW_BATCH_API_KEY", $plain, "User")
-    $env:RW_BATCH_API_KEY = $plain
     Remove-Variable plain
     Write-Host "Saved. Claude Code never reads this name, so no Claude session is offered the key."
+    Write-Host "Nothing was sent. Run the same command without -SaveKey to run the checks."
+    exit 0
 }
 if (-not $env:RW_BATCH_API_KEY) {
     $env:RW_BATCH_API_KEY = [Environment]::GetEnvironmentVariable("RW_BATCH_API_KEY", "User")
@@ -68,21 +73,45 @@ if ($LASTEXITCODE -ne 0) {
     if ($LASTEXITCODE -ne 0) { Write-Host "pip could not install anthropic and pillow."; exit 1 }
 }
 
-# The newest base, so the checks read what the threads built.
 $git = [bool](Get-Command git -ErrorAction SilentlyContinue)
-if (-not $git -and -not $Full) {
+if (-not $git -and -not $Full -and -not $Collect) {
     Write-Host "Git is missing, so 'only what changed' can't work: running everything (-Full). Install Git for Windows (winget install Git.Git) to fix."
     $Full = $true
 }
+
+# Batch reports this script left in docs\reports go to the Desktop folder. With git: every untracked one (also one
+# left by a run that was stopped, which would otherwise stop the pull once a thread commits a report of that name).
+# Without git: only those written since $After.
+function Move-Reports {
+    param([datetime]$After)
+    if ($git) {
+        $names = @(& git -C $repo ls-files --others --exclude-standard -- docs/reports |
+            ForEach-Object { Split-Path $_ -Leaf } | Where-Object { $_ -like "BATCH_CHECKS_*.md" })
+        $left = @($names | ForEach-Object { Get-Item (Join-Path $reports $_) })
+    } else {
+        $left = @(Get-ChildItem $reports -Filter "BATCH_CHECKS_*.md" | Where-Object { $_.LastWriteTime -ge $After })
+    }
+    if (-not $left) { return @() }
+    New-Item -ItemType Directory -Force -Path $CopyTo | Out-Null
+    foreach ($f in $left) { Move-Item $f.FullName -Destination (Join-Path $CopyTo $f.Name) -Force }
+    return @($left | ForEach-Object { Join-Path $CopyTo $_.Name })
+}
+foreach ($m in (Move-Reports -After ([datetime]::MaxValue))) { Write-Host "Moved an earlier report to: $m" }
+
+# The newest base, so the checks read what the threads built.
 if ($git -and -not $NoPull) {
     & git -C $repo pull --ff-only --quiet origin claude/phase-1-6lfnar
     if ($LASTEXITCODE -ne 0) { Write-Host "git pull failed; checking the clone as it is." }
 }
 
-$cmd = if ($Plan) { "plan" } else { "submit" }
-$a = @($script, $cmd, "--model", $Model, "--check", $Check)
-if (-not $Full) { $a += @("--since", "last") }
-if (-not $Plan) { $a += @("--max-cost", $MaxCost.ToString($inv), "--max-wait", "120") }
+if ($Collect) {
+    $a = @($script, "collect", $Collect, "--max-wait", "120")
+} else {
+    $cmd = if ($Plan) { "plan" } else { "submit" }
+    $a = @($script, $cmd, "--model", $Model, "--check", $Check)
+    if (-not $Full) { $a += @("--since", "last") }
+    if (-not $Plan) { $a += @("--max-cost", $MaxCost.ToString($inv), "--max-wait", "120") }
+}
 $start = Get-Date
 Push-Location $repo
 try { Invoke-Py $a; $code = $LASTEXITCODE } finally { Pop-Location }
@@ -96,15 +125,14 @@ switch ($code) {
 }
 if ($Plan -or $code -ne 0) { exit $code }
 
-$report = Get-ChildItem (Join-Path $repo "docs\reports") -Filter "BATCH_CHECKS_*.md" |
-    Where-Object { $_.LastWriteTime -ge $start } | Sort-Object LastWriteTime | Select-Object -Last 1
-if (-not $report) {
-    Write-Host "No new report: nothing changed since the last run, or the batch is still running (collect it later with: py -3 $script collect <batch id>)."
+$moved = @(Move-Reports -After $start)
+if (-not $moved) {
+    Write-Host "No new report: nothing changed since the last run, or the batch is still running. To finish it, run"
+    Write-Host "this script again with -Collect and the batch id printed above (msgbatch_...)."
     exit 0
 }
-New-Item -ItemType Directory -Force -Path $CopyTo | Out-Null
-Copy-Item $report.FullName -Destination $CopyTo -Force
-Write-Host ""
-Write-Host "Report: $($report.FullName)"
-Write-Host "Copied to: $(Join-Path $CopyTo $report.Name)"
-Write-Host "To hand it back, tell the project: read the batch report on my Desktop ($($report.Name))."
+foreach ($m in $moved) {
+    Write-Host ""
+    Write-Host "Report: $m"
+    Write-Host "To hand it back, tell the project: read the batch report on my Desktop ($(Split-Path $m -Leaf))."
+}

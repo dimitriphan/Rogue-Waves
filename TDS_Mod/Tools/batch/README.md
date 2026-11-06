@@ -86,14 +86,14 @@ when the plan's five-hour limit is used up: the key bills the API credit, never 
    for the key, hidden, and keeps it as your Windows user variable `RW_BATCH_API_KEY`, which Claude Code never reads.
 2. **Any time:** `powershell -ExecutionPolicy Bypass -File "$HOME\Rogue-Waves\TDS_Mod\Tools\batch\Run-Batch.ps1"`.
    It pulls the newest base, installs `anthropic` and `pillow` the first time, sends Haiku 5.5 only what changed since
-   each check's last full run (at most $3), waits for the batch and copies the report to `Desktop\RogueWave\batch`.
+   each check's last full run (at most $3), waits for the batch and moves the report to `Desktop\RogueWave\batch`.
    `-Plan` gives the cost and sends nothing; `-Full` checks everything; `-Model sonnet -MaxCost 12` uses Sonnet 5.5 (at most about $10.52);
-   `-Check scope,design` picks checks.
+   `-Check scope,design` picks checks; `-Collect msgbatch_...` finishes a batch still running after the two-hour wait.
 3. **Hand it back** when you are next in the project: "read the batch report on my Desktop". That folder is approved for
    the project's threads; a thread reads the report, confirms its leads and commits it in a docs PR.
 
-The report also stays in the clone's `docs\reports`, uncommitted. A cloud run doesn't see it until a thread commits it,
-so it may check the same changes again (it never skips any).
+The report leaves the clone's `docs\reports` (an untracked report there could stop the next `git pull`), so neither the
+PC nor the cloud sees it until a thread commits it: until then a run checks the same changes again (it never skips any).
 
 ## From a thread or the morning routine
 
