@@ -46,6 +46,10 @@ All read-only from his game folder (`D:\Steam\steamapps\common\TDS\TDS\DATA`), w
   `ScrollRect` or under `Bla_Ui_Confirmation` (RWDialog places the dialog), and a picture whose position someone else wrote
   over ours twice in a row. A position someone writes becomes its new start; flipped parents move the right way; rotated
   ones are skipped.
+- Added after the review (follow-up PR, compiled here, not run on the PC): the children of a `Blu4_List_Stacker`'s `Ref`
+  (the game's stacker writes them every frame and is no `LayoutGroup`), and a picture while its size isn't a whole number
+  of times its canvas's, so a hover's `Blu5_Buttonanim_Size` never makes a grown tile jump; it ends on exactly 1, already
+  on whole pixels. P2 now reads as a setup line, not a pass, when the reading sees no flicker at the game's half pixels.
 - The Rogue Waves tile's crest was already on whole pixels (`RWAssets.Crisp`, pitfall #156); this reaches the game's own.
 
 ## 4. Checks

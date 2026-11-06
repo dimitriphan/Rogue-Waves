@@ -10,6 +10,8 @@
   no garbage.
 - Self-test P1-P2 (`94_Pixels.cs`, in the flow on the main menu) reads the drawn frame over 144 frames with and without it.
   PC checks: `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
+- After the review (compiled here, not run on the PC): a `Blu4_List_Stacker`'s children and a picture a hover has grown
+  (its scale isn't a whole number of times its canvas's) are left alone; P2 is a setup line when its control sees no flicker.
 
 ## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
 
