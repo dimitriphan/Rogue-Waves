@@ -55,6 +55,8 @@ chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMO
 | `Code/19_Objectives.cs` | `RWObjectives`: the five optional objectives |
 | `Code/20_Vote.cs` | `RWVote`: the flow between Tides, Direction picks, the map vote, the vote to leave; `RWAsk`: every machine's own question |
 | `Code/21_Difficulty.cs` | `RWDifficulty`: each map's Tide table, modifiers, bonus Tides |
+| `Code/26_ChartView.cs` | `RWChartView`: the whole sea chart beside the map vote's cards (its lit islands vote too), on key M in a break or on the boat, and the boat's banner and mini chart (`docs/mode/CHART_NAVIGATION.md`, 2026-11-06) |
+| `Code/90_Stops.cs` | the Coves' and Wrecks' checks CV1, CV3, CV9-CV12 (`ROGUEWAVESMODE_SELFTEST` only); CV2, CV4, CV5 run in `96_Flow.cs` |
 | `Code/25_Models.cs` | `RWModels`: the part's model library (`RWAssets_Library/Models`, built from `Assets/RogueWavesModeMod/Editor/RogueWavesModeModels.cs`), lit with a copy of the game's tower material; the meteor's white crystal `RW_Meteor` (2026-11-05) |
 | `Code/26_Pixels.cs` | `RWPixels`: every still picture of the game's menus a whole number of screen pixels from what moves it, so the stock buttons stop flickering while the main menu's and the boat's cameras sway (pitfall #174, 2026-11-06) |
 | `Code/94_Pixels.cs` | P1-P2 (`ROGUEWAVESMODE_SELFTEST` only, in the flow on the main menu): the button pictures on whole pixels, and frames changed with and without `RWPixels` |

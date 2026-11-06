@@ -5,10 +5,24 @@
 - Dimitri: "The button itself wobbles and jitters, including the base game buttons in the main menu." The game's layout puts
   its button pictures on half pixels at UI scale 3, and the main menu's camera sways with the UI camera as its child
   (pitfall #174). `RWPixels` (`26_Pixels.cs`, every machine, every scene with menus) moves each still picture by under half a
-  pixel onto whole screen pixels from the nearest thing that moves it; it leaves pictures the game slides or lays out, the
-  choice dialog's, and any someone keeps writing. A pass is spread at 64 pictures a frame, at most once a second, no garbage.
+  pixel onto whole screen pixels, measured from its canvas's corner; it leaves pictures the game slides, animates, scrolls
+  or lays out, the choice dialog's, and any someone keeps writing. A pass at most every half second, 64 pictures a frame,
+  no garbage.
 - Self-test P1-P2 (`94_Pixels.cs`, in the flow on the main menu) reads the drawn frame over 144 frames with and without it.
   PC checks: `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
+
+## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
+
+Dimitri: "Go" on `docs/mode/CHART_NAVIGATION.md`, built with its §7 defaults (`docs/reports/CHART_BUILD_2026-11-06.md`).
+- Stops: `RWChart` places one Cove (rows 4, 9) and one Wreck (rows 2-3, 6-8) per stretch from a second stream; `S` in the
+  world's name and `RW_Campaign_Stops`; older campaigns keep their charts without stops. Route counts rows, a Cove's too.
+- The Cove is always blacklisted on the boat; `RWCampaign.Rest` is the one save write (route, gift, `Choice = After`), then
+  the party warps onto the new name and sails on (`05_Boat.cs` `Rested`). Its second vote: `M:<row>:<cols>`, `RW_Campaign_After`.
+- The Wreck plays row + 1 (`21_Difficulty.cs`); after its Tide 15 the "T" question gives each player a Trinket of three, free.
+- `26_ChartView.cs`: the chart beside the vote (`RWDialog.Ask(..., at)` moves the cards right), key M, banner and mini chart.
+  Pointer and key through `UnityEngine.InputSystem`; the shade blocks clicks; the view hides under any other dialog.
+- Self-tests: CV1, CV3, CV9 at boot; CV10-CV12 (`90_Stops.cs`); CV2, CV4, CV5 in the flow. Older tests run with
+  `StopsOnNew` off. Save fuzz F5 covers the `S` mark. PC list: the report's §4.
 
 ## 0.1.0-dev, later (2026-11-06): round 4 and batch fixes (compiled, not yet run in game)
 

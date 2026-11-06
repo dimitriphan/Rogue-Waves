@@ -125,6 +125,38 @@ namespace Unity.Netcode
 namespace UnityEngine.EventSystems
 {
     public abstract class UIBehaviour : UnityEngine.MonoBehaviour { }
+    // Added 2026-11-06 for RogueWavesMode's chart view (26_ChartView.cs, 11_Dialog.cs): the pad's focus.
+    public class EventSystem : UIBehaviour
+    {
+        public static EventSystem current { get { throw null; } set { } }
+        public UnityEngine.GameObject currentSelectedGameObject { get { throw null; } }
+    }
+}
+
+// Added 2026-11-06 for RogueWavesMode's chart view (26_ChartView.cs): the key and the pointer, read as the game reads them
+// (Unity.InputSystem is on the game's reference list). Only the members the mode uses.
+namespace UnityEngine.InputSystem
+{
+    public enum Key { None = 0, M = 27 }
+    public class InputDevice { }
+    public class Keyboard : InputDevice
+    {
+        public static Keyboard current { get { throw null; } }
+        public UnityEngine.InputSystem.Controls.KeyControl this[Key key] { get { throw null; } }
+    }
+    public class Pointer : InputDevice { public UnityEngine.InputSystem.Controls.Vector2Control position { get { throw null; } } }
+    public class Mouse : Pointer
+    {
+        public static Mouse current { get { throw null; } }
+        public UnityEngine.InputSystem.Controls.ButtonControl leftButton { get { throw null; } }
+    }
+}
+
+namespace UnityEngine.InputSystem.Controls
+{
+    public class ButtonControl { public bool wasPressedThisFrame { get { throw null; } } public bool isPressed { get { throw null; } } }
+    public class KeyControl : ButtonControl { }
+    public class Vector2Control { public UnityEngine.Vector2 ReadValue() { throw null; } }
 }
 
 namespace UnityEngine.UI
@@ -144,7 +176,7 @@ namespace UnityEngine.UI
         public float fillAmount { get { throw null; } set { } }
         public bool preserveAspect { get { throw null; } set { } }
     }
-    public class RawImage : MaskableGraphic { public UnityEngine.Texture texture { get { throw null; } set { } } }
+    public class RawImage : MaskableGraphic { public UnityEngine.Texture texture { get { throw null; } set { } } public UnityEngine.Rect uvRect { get { throw null; } set { } } }
     public class Text : MaskableGraphic { public string text { get { throw null; } set { } } }
     public class Selectable : UnityEngine.EventSystems.UIBehaviour { public bool interactable { get { throw null; } set { } } }
     public class Button : Selectable

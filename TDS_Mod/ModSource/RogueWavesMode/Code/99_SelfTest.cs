@@ -18,6 +18,8 @@
 //          then the campaign is stopped and its keys removed, and H1 the party is taken back to the stock world.
 //          I1 (on the boat) the player's id is kept for a restart, and says whether this launch put one back; K1 no
 //          key in the save folder lacks RW_; F1-F7 the save fuzz (98_SaveFuzz.cs), every key it touches put back
+//   stops  CV10-CV12 a campaign with Coves and Wrecks: the boat rests at a Cove and sails on, Continue there, a Wreck's pay
+//          (90_Stops.cs; CV1, CV3 and CV9 at boot, CV2, CV4 and CV5 in the flow's staging vote)
 //   boot   K0 the mode's breaks between Tides are 60 s and Mode_Normal's own table is untouched; CH every chart map of
 //          500 seeds links to 1 to 3 maps
 public static partial class RWTest
@@ -38,6 +40,8 @@ public static partial class RWTest
         RWWeather.QuickerTide = 2;
         Info("self-test", "v" + RWData.Version + ", seed " + Seed + ", " + Maps + " maps, Quickening Current from Tide 1 and 2");
         try { BootChecks(); } catch (Exception e) { Check("boot checks ran", false, e.ToString()); }
+        RWCampaign.StopsOnNew = false;    // the older checks play charts without stops; Stops() turns them on for its own
+        try { StopsChecks(); } catch (Exception e) { Check("CV boot checks ran", false, e.ToString()); }
         RogueWavesModeMod.Instance.StartCoroutine(Guarded());
     }
 
@@ -297,6 +301,7 @@ public static partial class RWTest
         RWCampaign.AutoReplay = false;
         yield return Retries();
         RWCampaign.AutoReplay = true;
+        yield return Stepped(Stops());
         RWCampaign.Stop();
         string left = "";
         foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing }) if (RWUtil.Has(RWData.SaveFolder, key)) left += key + " ";

@@ -164,15 +164,17 @@ public static class RWSaveFuzz
             int len = rng.Next(0, RWChart.Rows + 1);
             for (int k = 0; k < len; k++) route.Add(rng.Next(0, 4));
             int retries = rng.Next(-1, RWCampaign.RetriesPerCampaign + 1);
-            string name = RWWorld.Name(seed, route, retries);
+            bool stops = rng.Next(2) == 0;
+            string name = RWWorld.Name(seed, route, retries, stops);
             uint s;
             List<int> r;
             int t;
-            bool ok = RWWorld.Parse(name, out s, out r, out t);
-            string why = !ok ? "not parsed" : s != seed ? "seed " + s : Digits(r) != Digits(route) ? "route " + Digits(r) : t != retries ? "retries " + t : "";
+            bool st;
+            bool ok = RWWorld.Parse(name, out s, out r, out t, out st);
+            string why = !ok ? "not parsed" : s != seed ? "seed " + s : Digits(r) != Digits(route) ? "route " + Digits(r) : t != retries ? "retries " + t : st != stops ? "stops " + st : "";
             if (why != "" && bad++ == 0) first = name + ": " + why;
         }
-        check("F5 a chart world's name round-trips through Name and Parse (" + Cases + " cases)", bad == 0, bad == 0 ? "" : bad + " broke; first " + first);
+        check("F5 a chart world's name, with or without stops, round-trips through Name and Parse (" + Cases + " cases)", bad == 0, bad == 0 ? "" : bad + " broke; first " + first);
     }
 
     // ---------------------------------------------------------------- F6, F7: the campaign's keys

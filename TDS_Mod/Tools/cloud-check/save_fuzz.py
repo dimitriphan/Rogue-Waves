@@ -102,7 +102,8 @@ public static class RWMode {
         'public static string HeroName(string hero) { return hero; }',
     ]) + '\n}',
     'public static class RWWorld {\n' + '\n'.join([
-        statement(world, r'static readonly Dictionary<uint, RWChart.Chart> charts'),
+        statement(world, r'static readonly Dictionary<ulong, RWChart.Chart> charts'),
+        statement(world, r'public const string StopsMark'),
         members(world, r'public static string Name\('),
         members(world, r'public static bool Parse\('),
         members(world, r'public static RWChart.Chart Chart\('),
@@ -110,7 +111,9 @@ public static class RWMode {
         members(world, r'public static List<RWChart.Node> Choices\('),
     ]) + '\n}',
     'public static class RWCampaign {\n' + statement(campaign, r'public const int RetriesPerCampaign') + '\n'
-    + members(campaign, r'public static bool Saved\(') + '\n}',
+    + members(campaign, r'public static bool Saved\(') + '\n' + members(campaign, r'static bool SavedStops\(') + '\n}',
+    'public static class RWTrinkets { public const int StormTides = ' + re.search(r'StormTides = (\d+)', open(os.path.join(code, '24_Trinkets.cs'), encoding='utf-8').read()).group(1) + '; }',
+    'public static class RWCardinals { public const int Stacks = ' + re.search(r'const int Stacks = (\d+)', open(os.path.join(code, '17_Cardinals.cs'), encoding='utf-8').read()).group(1) + '; }',
     src('98_SaveFuzz.cs'),
     '''public static class SaveFuzzMain {
     static int fails;

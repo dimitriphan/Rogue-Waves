@@ -179,4 +179,120 @@ public static class RWIcons
             into.Iconslist.Add(icon);
     }
 
+    // ---------------------------------------------------------------- the chart view's icons (docs/mode/CHART_NAVIGATION.md §3.6)
+    // 12 x 12, coloured like the stock cards' icons; the tick white like the stock "back" mark. The rows are
+    // concept-tools/sea_chart_look.py's PIX, its palette PAL; temporary art (docs/TEMP_ART.md).
+    static readonly Dictionary<char, Color32> chartPalette = new Dictionary<char, Color32>
+    {
+        { 'w', new Color32(0xF2, 0xF4, 0xF3, 255) },
+        { 'g', new Color32(0xA9, 0xB1, 0xB8, 255) },
+        { 'G', new Color32(0x7D, 0x86, 0x8F, 255) },
+        { 'o', new Color32(0xF0, 0x9A, 0x3E, 255) },
+        { 'y', new Color32(0xF6, 0xD8, 0x6B, 255) },
+        { 'b', new Color32(0x7A, 0x4E, 0x33, 255) },
+        { 'B', new Color32(0xA8, 0x72, 0x48, 255) },
+        { 's', new Color32(0xD8, 0xC4, 0x9A, 255) }
+    };
+
+    static readonly string[] HarbourRows =
+    {
+        "....gggg....",
+        "....g..G....",
+        "....ggGG....",
+        ".....gG.....",
+        "...ggggGG...",
+        ".....gG.....",
+        ".....gG.....",
+        "g....gG....G",
+        "gg...gG...GG",
+        ".gg..gG..GG.",
+        "..ggg..GGG..",
+        "....gGGG....",
+    };
+
+    static readonly string[] CoveRows =
+    {
+        "............",
+        ".....y......",
+        "....yo......",
+        "....yoo.y...",
+        "...yooooy...",
+        "...yoyyoy...",
+        "...ooyyoo...",
+        "....oyyo....",
+        ".b........b.",
+        "..bBBbbBBb..",
+        ".bBBbbbbBBb.",
+        "..b......b..",
+    };
+
+    static readonly string[] WreckRows =
+    {
+        "............",
+        "............",
+        "..bbbbbbbb..",
+        ".bBBBBBBBBb.",
+        ".bBBBBBBBBb.",
+        ".bbbbyybbbb.",
+        ".bBBByyBBBb.",
+        ".bBBBBBBBBb.",
+        ".bBBBBBBBBb.",
+        ".bbbbbbbbbb.",
+        "............",
+        "............",
+    };
+
+    static readonly string[] TickRows =
+    {
+        "............",
+        "............",
+        "..........w.",
+        ".........ww.",
+        "........ww..",
+        "w......ww...",
+        "ww....ww....",
+        ".ww..ww.....",
+        "..wwww......",
+        "...ww.......",
+        "............",
+        "............",
+    };
+
+    static readonly string[] BoatRows =
+    {
+        ".....b......",
+        ".....bs.....",
+        ".....bss....",
+        ".....bsss...",
+        ".....bssss..",
+        ".....bsssss.",
+        ".....b......",
+        "wwwwwwwwwwww",
+        ".wwwwwwwwwg.",
+        "..gggggggg..",
+        "............",
+        "............",
+    };
+
+    static readonly Dictionary<string, Sprite> chartIcons = new Dictionary<string, Sprite>();
+
+    // "Harbour", "Cove", "Wreck", "Tick" or "Boat", at 12 px (box 0) or centred in a clear box (a card's 16).
+    public static Sprite Chart(string name, int box = 0)
+    {
+        string key = name + "#" + box;
+        Sprite made;
+        if (chartIcons.TryGetValue(key, out made) && made != null)
+            return made;
+        string[] rows = name == "Harbour" ? HarbourRows : name == "Cove" ? CoveRows : name == "Wreck" ? WreckRows : name == "Tick" ? TickRows : name == "Boat" ? BoatRows : null;
+        if (rows == null)
+            return null;
+        made = ModKitAssets.Pixel(rows, "RW_Chart_" + name + (box > 0 ? "_" + box : ""), chartPalette, box);
+        chartIcons[key] = made;
+        return made;
+    }
+
+    public static Sprite Stop(int stop, int box = 0)
+    {
+        return stop == RWChart.Cove ? Chart("Cove", box) : stop == RWChart.Wreck ? Chart("Wreck", box) : null;
+    }
 }

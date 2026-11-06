@@ -294,7 +294,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
 - **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
   stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
-  (`docs/mode/CHART_NAVIGATION.md`). Docs only; not built until his go.
+  (`docs/mode/CHART_NAVIGATION.md`). Built on his go (entry below).
 - **2026-11-06: PC round 4 merged** (Dimitri: "Go"): `PC_ROUND4_2026-11-05.md`, no game fault in a self-test; open: P1-4
   (rejoined friend's "BASIN BREACHED"), U3's "MAP 1 OF 10 WON", 548 Vfx/Mobbase lines, §8 test faults. Scope `07` sprite
   NEEDS cleared. Test lines compiled here and on the PC. Pitfall #172.
@@ -309,7 +309,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   deleted. Index and steps: `docs/artifacts/README.md` (Log).
 - **2026-11-06: sea chart redrawn in the game's look** (Dimitri: "more inline with the current TDS art style and
   theme"): no panel, the stock title and rule, framed square tiles, pixel icons, corner brackets (`CHART_NAVIGATION.md` §3.6,
-  `chart_look_*.png`). Docs only; not built.
+  `chart_look_*.png`). Built on his go (entry below).
 
 - **2026-11-06: batch checks on the PC without Claude** (Dimitri: run it when the 5-hour limit is up):
   `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report moved to `Desktop\RogueWave\batch`).
@@ -322,6 +322,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: spotlight restyled in Rogue Tide** (Dimitri: "as if it were a finished product ready to ship"): no
   status chips or "not built" list; chart view with Cove and Wreck added (`docs/spotlight/`, artifact v3). Docs only,
   nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-06: sea chart navigation built** (Dimitri: "Go"): the chart view beside the vote and on M, banner and mini
+  chart, Coves and Wrecks, CV1-CV12 (`CHART_BUILD_2026-11-06.md`, PC list §4). Compiled here and save fuzz passed, not
+  run on the PC. No kit change, no pitfall.
 - **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters, including the base game
   buttons in the main menu"): the game's half-pixel layout under the menu camera's sway; `RWPixels` puts still pictures on
   whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, pitfall #174). PC_RESULT_NOW. No kit change.
@@ -1334,6 +1337,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   today" box, the Steam line. Added: the chart view (`chart_look_vote.png`), the M key, the boat banner, the Cove and
   the Wreck; weather never on a Cove or Wreck; a Cove gives a retry back. Upgrade tooltips still carry no numbers. Kept
   separate from the Vessel Spotlight (his merge answer still open). Republished to the same artifact URL.
+- **2026-11-06: sea chart navigation built** (Dimitri 05:59Z: "Go"; the §7 defaults as written, his to change):
+  `03_Chart.cs` and `sea_chart.py` place a Cove (rows 4, 9) and a Wreck (rows 2-3, 6-8) per stretch from a second
+  stream, equal in C# and Python; `S` in the chart's name; the Cove rests on the boat (a retry back, or each player's
+  lowest Direction a rank up) and asks where after; the Wreck plays a row harder and gives a free Trinket of three;
+  `26_ChartView.cs` shows the chart beside the vote (islands vote), on M, and a banner and mini chart on the boat;
+  self-tests CV1-CV5, CV9-CV12 (`90_Stops.cs`, `96_Flow.cs`); save fuzz F5 covers `S` and `save_fuzz.py` compiles again.
+  `/code-review high` fixed 8 of 10; `/simplify` run. Compiled here (release 0/0, self-test 0 errors), not run on the
+  PC; PC list `docs/reports/CHART_BUILD_2026-11-06.md` §4. No kit change, no pitfall.
 - **2026-11-06: the menu buttons' wobble fixed** (thread "Fix stuttering buttons in main menu"; Dimitri 05:48Z "The
   buttons in game still stutter, but mainly in the main menu", 05:57Z "The button itself wobbles and jitters, including the
   base game buttons in the main menu"). Report `docs/reports/BUTTON_WOBBLE_2026-11-06.md`. Read from his game's `level1`-`3`

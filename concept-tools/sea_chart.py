@@ -5,6 +5,8 @@ client and this script build the same chart from one seed. `--check` prints the 
 
     python3 concept-tools/sea_chart.py [seed ...]           -> docs/concepts/art/sea_chart_<seed>.png and the node list
     python3 concept-tools/sea_chart.py --check [seed ...]   -> CHART lines only (compare with RWChart.Dump)
+    python3 concept-tools/sea_chart.py --check --stops [seed ...]   -> the same with the Coves and Wrecks (a campaign
+                                                              started after 2026-11-06, docs/mode/CHART_NAVIGATION.md §4)
 
 Rules: a harbour (the start, no map) linked to every node of row 1, then ROWS rows of 3-4 map nodes; each map node
 links to 1-3 neighbouring nodes in the next row (2 most often), every node has a parent, and links never cross. Rows 5
@@ -147,18 +149,37 @@ def chart(seed, pool=POOL):
     return rows
 
 
+STOPS_SALT = 0x5EA57095                            # the second stream's seed is the chart's seed XOR this
+
+
+def stops(rows, seed):
+    """Rest and treasure stops (docs/mode/CHART_NAVIGATION.md §4.3): from a second stream, after the chart is built, so
+    every map, link and weather of a seed stays as it was. One Cove in each stretch's row before its Breaker (rows 4 and
+    9), one Wreck in each stretch's middle (rows 2-3 and 6-8). A Cove plays no map; a Wreck keeps its map; both are calm."""
+    rng = Rng(seed ^ STOPS_SALT)
+    for r in (4, 9):
+        n = rows[r][rng.below(len(rows[r]))]
+        n["stop"], n["weather"] = "cove", CALM
+    for lo, span in ((2, 2), (6, 3)):
+        r = lo + rng.below(span)
+        n = rows[r][rng.below(len(rows[r]))]
+        n["stop"], n["weather"] = "wreck", CALM
+    return rows
+
+
 def name(n):                                                    # the node's GameObject name in the mod's world
     return "RW_Harbour" if n["row"] == 0 else "RW_Node_%d_%d" % (n["row"], n["col"])
 
 
-def check_lines(seed, rows):
+def check_lines(seed, rows, with_stops=False):
     """The lines RWChart.Dump logs in game ('CHART ...'), so a PC log can be diffed against this script."""
-    out = ["CHART seed %d widths %s" % (seed, ",".join(str(len(r)) for r in rows))]
+    out = ["CHART seed %d%s widths %s" % (seed, "S" if with_stops else "", ",".join(str(len(r)) for r in rows))]
     for r in rows:
         for n in r:
-            out.append("CHART %s %d,%d %s %s w%d -> %s" % (
+            out.append("CHART %s %d,%d %s %s w%d%s -> %s" % (
                 name(n), int(round(n["x"] * 10)), int(round(n["z"] * 10)), n["plan"] or "-",
-                "B" if n["breaker"] else "-", n["weather"], ",".join(str(k) for k in n["links"]) or "-"))
+                "B" if n["breaker"] else "-", n["weather"], " " + n["stop"] if n.get("stop") else "",
+                ",".join(str(k) for k in n["links"]) or "-"))
     return out
 
 
@@ -190,12 +211,15 @@ def draw(rows, path):
 if __name__ == "__main__":
     args = sys.argv[1:]
     check = "--check" in args
-    seeds = [int(a) for a in args if a != "--check"] or [20261009]
+    with_stops = "--stops" in args
+    seeds = [int(a) for a in args if not a.startswith("--")] or [20261009]
     out = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "docs", "concepts", "art")
     for seed in seeds:
         rows = chart(seed)
+        if with_stops:
+            stops(rows, seed)
         if check:
-            print("\n".join(check_lines(seed, rows)))
+            print("\n".join(check_lines(seed, rows, with_stops)))
             continue
         print("seed", seed, "widths", [len(r) for r in rows])
         for r in rows:
