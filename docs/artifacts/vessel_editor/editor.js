@@ -642,8 +642,8 @@ function applyStored(data, removed) {
       accent: data.accent || '#3f8f96', accent2: data.accent2 || data.accent || '#3f8f96', baseAccent: ['#3f8f96', '#3f8f96'], added: true, ver: 0 };
     RECS.push(rec);
   } else {
-    if (rec.remote && rec.remote.updatedAt === data.updatedAt) { const st = (rec.remote.status || '') + (rec.remote.pr || ''); rec.remote = data; return st !== (data.status || '') + (data.pr || ''); }
-    if (docToText(rec.doc) === data.text && rec.frameUrl === (data.frameUrl || null) && rec.accent === data.accent && rec.file === data.file) { rec.remote = data; rec.savedAt = data.updatedAt; return false; }
+    if (rec.remote && rec.remote.updatedAt === data.updatedAt) { const st = (rec.remote.status || '') + (rec.remote.pr || ''); rec.remote = data; return st !== (data.status || '') + (data.pr || '') ? 'status' : false; }
+    if (docToText(rec.doc) === data.text && rec.frameUrl === (data.frameUrl || null) && rec.accent === data.accent && rec.file === data.file) { rec.remote = data; rec.savedAt = data.updatedAt; return 'status'; }
     rec.doc = textToDoc(data.text); rec.file = data.file || rec.file; rec.frameUrl = data.frameUrl || null;
     rec.accent = data.accent || rec.accent; rec.accent2 = data.accent2 || rec.accent2; rec.ver++;
   }
@@ -651,7 +651,7 @@ function applyStored(data, removed) {
   return true;
 }
 function afterRemote(changed) {
-  if (!changed) { if (ED.rec) status(); return; }
+  if (!changed || changed === 'status') { if (ED.rec) status(); return; }   // a status-only change keeps the open bar and undo
   if (ED.rec && !RECS.includes(ED.rec)) { ED.rec = null; show('lineup', true); return; }
   if (ED.rec && CUR === ED.rec.id) {
     if (ED.act >= 0) return; // never pull a line out from under the cursor
@@ -677,9 +677,8 @@ async function initStore() {
     if (user && user.can) { const w = await user.can('data.write'); if (w === false) { CANWRITE = false; show(CUR, false); } }
   } catch (e) { /* not told: keep the inputs */ }
   db.collection('sheets').onSnapshot(snap => {
-    if (snap.metadata && snap.metadata.hasPendingWrites) return;
     let ch = false;
-    snap.docChanges().forEach(x => { ch = applyStored(x.doc.data ? (x.type === 'removed' ? x.doc.data() : x.doc.data()) : null, x.type === 'removed') || ch; });
+    snap.docChanges().forEach(x => { const r = applyStored(x.doc.data ? x.doc.data() : null, x.type === 'removed'); ch = r === true || ch === true ? true : (r || ch); });
     afterRemote(ch);
   }, e => { if (e && e.code !== 'revoked') msg('Live updates stopped. Reload the page to see edits made elsewhere.', 'err'); });
   RECS.forEach(r => { if (r.dirty) scheduleSave(r); });

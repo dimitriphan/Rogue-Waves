@@ -254,10 +254,11 @@ async function saveNow(k) {
   const body = { text: S[k].text, baseHash: S[k].baseHash, at: new Date().toISOString(), file: fileOf(k).name, status: 'draft', note: S[k].note || '' };
   S[k].status = edited(k) ? 'draft' : null; S[k].pr = null; S[k].sentAt = null;
   if (db) {
-    if (writing[k]) { writing[k].then(() => saveNow(k)); return; }
+    if (writing[k]) { writing[k].finally(() => saveNow(k)); return; }
     const ref = db.collection('scopes').doc('f' + k);
     writing[k] = (edited(k) ? ref.set(body) : ref.delete()).then(() => { setSave('ok', 'Saved to this page'); }, e => {
-      setSave('err', 'Not saved: ' + (e && e.code === 'permission_denied' ? 'you can read this page but not change it' : (e && e.message) || 'the page store refused it'));
+      if (e && e.code === 'invalid_argument') canWrite = false;   // below the viewer's level: read only for this visit
+      setSave('err', 'Not saved: ' + (e && e.code === 'invalid_argument' ? 'you can read this page but not change it' : (e && e.message) || 'the page store refused it'));
       localSave(k, body);
     }).finally(() => { writing[k] = null; pending.delete(k); });
   } else { pending.delete(k); localSave(k, body); setSave(store === 'local' ? 'ok' : 'err', store === 'local' ? 'Saved in this browser only' : 'Not saved'); }
@@ -271,16 +272,15 @@ async function sendFile(k) {
   const now = new Date().toISOString();
   const body = { text: S[k].text, baseHash: S[k].baseHash, at: S[k].at || now, file: fileOf(k).name, status: 'waiting', sentAt: now, note: S[k].note || '', builtFrom: BUILT };
   setSave('wait', 'Sending…');
-  try {
-    writing[k] = db.collection('scopes').doc('f' + k).set(body);
-    await writing[k];
-    applyStatus(k, body); setSave('ok', 'Sent to the project');
-    return true;
-  } catch (e) {
-    notice = { t: 'Not sent: ' + (e && e.code === 'permission_denied' ? 'you can read this page but not change it' : (e && e.message) || 'the page store refused it'), err: true };
-    setSave('err', 'Not sent');
-    return false;
-  } finally { writing[k] = null; }
+  const w = db.collection('scopes').doc('f' + k).set(body).then(() => null, e => e || {});
+  writing[k] = w;
+  const e = await w;
+  if (writing[k] === w) writing[k] = null;
+  if (!e) { applyStatus(k, body); setSave('ok', 'Sent to the project'); return true; }
+  if (e.code === 'invalid_argument') canWrite = false;
+  notice = { t: 'Not sent: ' + (e.code === 'invalid_argument' ? 'you can read this page but not change it' : e.message || 'the page store refused it'), err: true };
+  setSave('err', 'Not sent');
+  return false;
 }
 const STATUS = {
   draft: ['Not sent', 'Saved here. Send it when it is ready for the project.'],
@@ -398,6 +398,7 @@ function render(soft) {
   const q = document.getElementById('q').value.trim();
   if (q.length >= 2) { v.innerHTML = searchHtml(q); return; }
   if (!cur) { v.innerHTML = overviewHtml(); return; }
+  if (soft && document.activeElement && document.activeElement.id === 'sendnote') return;   // he is typing a note
   if (soft && (editing || (document.activeElement && document.activeElement.id === 'txt'))) { renderHead(); return; }
   v.innerHTML = '<div class="fhead" id="fhead"></div><div id="body"></div>';
   renderHead(); renderBody();

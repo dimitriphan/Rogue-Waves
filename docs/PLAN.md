@@ -261,7 +261,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, kit 1.15, pitfall #173 (which PR used which pitfall numbers: the last Log entry).
 - **Artifacts (2026-11-06):** the Scope and Vessel Editors send edits back like the Art Bench ("bring in my scope / vessel
-  edits"); six old pages archived to project files. Index and steps: `docs/artifacts/README.md` (Log).
+  edits"); six old pages archived to project files and deleted. Index and steps: `docs/artifacts/README.md` (Log).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -1255,8 +1255,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Editor had read the stale project-files copy of 2026-10-23); their sources move into `docs/artifacts/` (index and
   steps: `docs/artifacts/README.md`; `scope-sync` skill updated). The Art Bench already had the path: unchanged. Six
   pages whose decisions are made (the first Scope Editor, Temporary Art, Temp Art Picks, Argo Diver Takes, Minion
-  Picks, the 10-09 concepts) are copied with their picks to `/mnt/project-files/artifacts_archive/2026-11-06/`; deleting
-  them from his gallery waits for his word. Pinned: Art Bench, Scope Editor, Spotlight. Tested here: both pages headless
+  Picks, the 10-09 concepts) are copied with their picks to `/mnt/project-files/artifacts_archive/2026-11-06/`
+  (`MANIFEST.md`; the first Scope Editor from its build file, as it could no longer be read) and deleted from his
+  gallery at his pick. Reviewer's fixes: a save queued behind a failed send still runs; `invalid_argument` means view
+  only; a thread's status write no longer redraws the Vessel Editor (keeps the Send bar's note and undo). Pinned: Art Bench, Scope Editor, Spotlight. Tested here: both pages headless
   against a mock store (edit, send with note, a thread's `pr`, a cleared row, phone width), no errors. No mod code.
 
 ### Decisions

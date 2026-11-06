@@ -31,10 +31,11 @@ the spotlight thread, so it is neither rebuilt nor archived here.
 
 ## Archived 2026-11-06
 
-Older pages whose decisions are made. Each page's HTML and its database rows (his picks) are saved in the project
-files, `/mnt/project-files/artifacts_archive/2026-11-06/<slug>/` (`page.html`, `db/`), listed in that folder's
-`MANIFEST.md`. They stay out of the repository because several embed base-vessel game sprites or his uploads. The
-links still work until he deletes them from his gallery.
+Older pages whose decisions are made, deleted from his gallery at his pick (2026-11-06), so the links below no longer
+open. Each page's HTML is saved in the project files, `/mnt/project-files/artifacts_archive/2026-11-06/<slug>/page.html`,
+with its picks rows under `db/picks/` for the three picks pages (35, 1 and 8 rows), all listed in that folder's
+`MANIFEST.md`. The first Scope Editor could no longer be read by then, so its copy is its build file from
+`/mnt/project-files/concepts/scope_editor_2026-11-04/scope_editor.html`, and none of its rows could be saved. They stay out of the repository because several embed base-vessel game sprites or his uploads.
 
 | Page | Link | Why archived |
 | --- | --- | --- |

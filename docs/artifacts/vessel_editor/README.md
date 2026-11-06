@@ -36,3 +36,6 @@ and `builtFrom`, and from a thread `pr`.
    (`TDS_Mod/Tools/artbench/README.md`), not into the scope. His `note` says what he meant.
 3. Reviewed PR; set each row `status: "pr"`, `pr: <number>`. After the merge, rebuild, `Artifact` read the URL,
    publish to the same `url`, set the rows `merged`, and delete a row only once the page carries it.
+4. An `added` vessel is not on the rebuilt page until `build.py`'s `RW` list names its id and scope file, with his frame saved
+   as `dimitri_<id>.png` in the assets folder (`build.py` needs one). Add both in the same PR. Until it is, keep its row (as
+   `merged`): deleting it would drop the vessel from the editor.
