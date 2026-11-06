@@ -216,8 +216,7 @@ weather billboard. A campaign started before the change continues without stops.
 | `08_Icons.cs`, temporary art | 12 px coloured pixel icons (Cove, Wreck, harbour, tick, boat; `sea_chart_look.py` `PIX`) in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
 
 No kit change was needed to write it; anything the PC teaches goes to kit `docs/20` and the pitfalls then. Scope `04`
-[Sea Chart] gains "Navigation" and "Stops" lines pointing here, with this page's defaults in tildes, at his next "sync"
-(the repo's scope copies are behind until then).
+[Sea Chart] lists the chart view, the Cove and the Wreck with this page's defaults in tildes (PR #146).
 
 ### 6.1 Where the build differs from the plan above
 

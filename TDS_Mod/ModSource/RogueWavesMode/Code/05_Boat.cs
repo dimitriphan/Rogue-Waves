@@ -76,9 +76,11 @@ public static class RWBoat
     {
         uint seed;
         List<int> route;
-        if (!RWWorld.Parse(vis.World.name, out seed, out route))
+        int retries;
+        bool stops;
+        if (!RWWorld.Parse(vis.World.name, out seed, out route, out retries, out stops))
             return;
-        RWChart.Chart chart = RWWorld.ChartOf(vis.World.name);
+        RWChart.Chart chart = RWWorld.Chart(seed, stops);
         bool campaign = RWUtil.IsHost && RWCampaign.Live && vis.World.name == RWCampaign.WorldName();
         int replay = campaign ? RWCampaign.Replay : -1;
         if (keptWorld != vis.World || keptReplay != replay)
@@ -183,13 +185,10 @@ public static class RWBoat
         }
         if (RWCampaign.Choice >= 0 && RWUtil.IsLeader)
             Sail(main, vis);
-        else
+        else if (slow)
         {
-            if (slow)
-            {
-                SteeredToCove(main, vis);
-                AskHere(main, vis);
-            }
+            SteeredToCove(main, vis);
+            AskHere(main, vis);
         }
     }
 

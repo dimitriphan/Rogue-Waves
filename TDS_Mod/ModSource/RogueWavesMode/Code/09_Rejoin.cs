@@ -483,9 +483,11 @@ public static class RWRejoin
         string plan = info.Gameplan.Value.ToString();
         uint seed;
         List<int> route;
-        if (!plan.StartsWith(RWData.PlanPrefix) || !RWWorld.Parse(info.World.Value.ToString(), out seed, out route))
+        int retries;
+        bool stops;
+        if (!plan.StartsWith(RWData.PlanPrefix) || !RWWorld.Parse(info.World.Value.ToString(), out seed, out route, out retries, out stops))
             return RWChart.Calm;
-        foreach (RWChart.Node n in RWWorld.Choices(RWWorld.ChartOf(info.World.Value.ToString()), route))
+        foreach (RWChart.Node n in RWWorld.Choices(RWWorld.Chart(seed, stops), route))
             if (RWMode.Twin(n.Plan) == plan)
                 return n.Weather;
         return RWChart.Calm;

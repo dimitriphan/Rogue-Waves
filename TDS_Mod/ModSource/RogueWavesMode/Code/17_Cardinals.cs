@@ -571,7 +571,7 @@ public static class RWCardinals
         RWLog.Info(p.Name + (free ? " was given " + id : " bought " + id + " for " + cost + " Pure Aura, " + p.Pure + " left"));
         Warn(Display(id).ToUpperInvariant(), mine ? "RogueWaves_Crest" : id);
         if (!free) RWTrinkets.OnBuy(p, id);                 // a gift is no buy at VENDCINT (Pearl Oyster keeps paying)
-        else if (id == "Cardinal_Storm") RWTrinkets.StartStorm(p);
+        else RWTrinkets.OnGain(p, id);
         RWDirections.Sweep(p);
         return "";
     }

@@ -574,11 +574,9 @@ public static class RWVote
         foreach (KeyValuePair<long, List<string>> kv in Treasure)
         {
             string pick;
-            int k = 0;
-            if (Votes.TryGetValue(kv.Key, out pick) && int.TryParse(pick, out k) && k >= 0 && k < RWCardinals.Sold.Count)
-                k = Mathf.Max(0, kv.Value.IndexOf(RWCardinals.Sold[k]));
-            else
-                k = 0;   // time ran out: the first card
+            int k;
+            // A vote is the Trinket's index in RWCardinals.Sold; no vote (time ran out): the first card.
+            k = Votes.TryGetValue(kv.Key, out pick) && int.TryParse(pick, out k) && k >= 0 && k < RWCardinals.Sold.Count ? Mathf.Max(0, kv.Value.IndexOf(RWCardinals.Sold[k])) : 0;
             RWPlayer p = RWRun.For(kv.Key);
             // Bought from the SHOP in the same break (held, or clashing): the next card of the three instead.
             string why = "", took = "";
@@ -835,10 +833,11 @@ public static class RWAsk
         {
             uint seed;
             List<int> route;
-            string world = Tds_Multiplayerinfo.Instance.World.Value.ToString();
-            RWWorld.Parse(world, out seed, out route);
+            int retries;
+            bool stops;
+            RWWorld.Parse(Tds_Multiplayerinfo.Instance.World.Value.ToString(), out seed, out route, out retries, out stops);
             // After a won map the host's route is one longer than the world this map was warped from.
-            RWChart.Chart chart = RWWorld.ChartOf(world) ?? RWWorld.Chart(seed);
+            RWChart.Chart chart = RWWorld.Chart(seed, stops);
             // The staging map is never won, so its vote is on row 1 on every machine (MAX MODEB-3; the test is RWCard.Line's).
             string plan = Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString();
             bool stagingMap = route.Count == 0 && plan == RWMode.Twin(RWWorld.StagingPlan(chart));

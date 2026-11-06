@@ -138,7 +138,7 @@ public static class RWCampaign
         replay = playing = -1;
         string s = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Seed), r = RWUtil.ReadString(RWData.SaveFolder, RWKeys.Route);
         bool stops = SavedStops();
-        if (s == "" || s.EndsWith(RWWorld.StopsMark) || !RWWorld.Parse(RWData.WorldPrefix + s + (stops ? RWWorld.StopsMark : "") + "_" + r, out seed, out route))
+        if (s == "" || s.EndsWith(RWWorld.StopsMark) || !RWWorld.Parse(RWData.WorldPrefix + s + "_" + r, out seed, out route))
             return false;
         retries = Mathf.Clamp(RWUtil.ReadInt(RWData.SaveFolder, RWKeys.Retries, RetriesPerCampaign), 0, RetriesPerCampaign);
         replay = RWUtil.ReadInt(RWData.SaveFolder, RWKeys.Replay, -1);
@@ -155,17 +155,11 @@ public static class RWCampaign
             RWLog.Once("route " + seed + " " + r, "save: route " + r + " leaves the chart of seed " + seed + " after " + route.Count + " maps; continued from there");
             replay = playing = -1;
         }
+        // A Cove is never played or lost (it has no map): a column on one is a damaged key, as one off the row.
         List<int> cols = new List<int>();
-        foreach (RWChart.Node n in RWWorld.Choices(chart, route)) cols.Add(n.Col);
+        foreach (RWChart.Node n in RWWorld.Choices(chart, route)) if (n.Stop != RWChart.Cove) cols.Add(n.Col);
         if (!cols.Contains(replay)) replay = -1;
         if (!cols.Contains(playing)) playing = -1;
-        // A Cove is never played or lost (it has no map): a column on one is a damaged key.
-        foreach (RWChart.Node n in RWWorld.Choices(chart, route))
-            if (n.Stop == RWChart.Cove)
-            {
-                if (n.Col == replay) replay = -1;
-                if (n.Col == playing) playing = -1;
-            }
         return true;
     }
 

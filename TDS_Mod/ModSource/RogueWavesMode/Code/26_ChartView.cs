@@ -22,7 +22,7 @@ public static class RWChartView
     const float Margin = 12f;
 
     // docs/STYLE.md and CHART_NAVIGATION.md §3.6.
-    static readonly Color Teal = new Color32(0x3F, 0x8F, 0x96, 255), Coral = new Color32(0xE2, 0x72, 0x5B, 255),
+    static readonly Color Teal = RWDialog.Teal, Coral = RWDialog.Coral,
         Slate = new Color32(0x5B, 0x5D, 0x69, 255), Frame = new Color32(0xC8, 0xCC, 0xD0, 255), Ink = new Color32(0xF2, 0xF4, 0xF3, 255);
 
     // ---------------------------------------------------------------- the layout (no Unity objects: the self-test's CV1-CV3)
@@ -126,7 +126,7 @@ public static class RWChartView
     static string mode = "";                     // "", "Vote", "Look" (the key), "Boat" (mini chart and banner)
     static string question = "";                 // the vote's question this view answers
     static RWChart.Chart chart;
-    static RWChart.Node here, via, hover, pad;
+    static RWChart.Node here, via, hover;
     static List<RWChart.Node> sailed = new List<RWChart.Node>(), choices = new List<RWChart.Node>();
     static RWChart.Node voted;
     static float closesAt;
@@ -201,7 +201,7 @@ public static class RWChartView
         spots.Clear();
         mode = "";
         question = "";
-        hover = pad = null;
+        hover = null;
         RWDialog.Hover(null);
     }
 
@@ -234,12 +234,14 @@ public static class RWChartView
                 return;
             }
             Pointer();
-            if (clock != null)
+            int left = Mathf.Max(0, Mathf.CeilToInt(closesAt - Time.unscaledTime));
+            if (clock != null && (left != clockLeft || voted != clockVoted))
             {
-                int left = Mathf.Max(0, Mathf.CeilToInt(closesAt - Time.unscaledTime));
+                clockLeft = left;
+                clockVoted = voted;
                 string text = question == OnTheBoat ? "The host picks where the boat sails"
                     : (voted != null ? "Your vote: " + "ABC".Substring(Mathf.Max(0, choices.IndexOf(voted)), 1) + RWCard.Separator : "") + "A tie goes to A" + RWCard.Separator + "no votes take A" + RWCard.Separator + left + " s";
-                if (clock.text != text) clock.text = text;
+                clock.text = text;
             }
             return;
         }
@@ -311,16 +313,20 @@ public static class RWChartView
             return;
         }
         string world = vis.World.name;
-        RWChart.Chart on = RWWorld.ChartOf(world);
-        uint seed;
-        List<int> route;
-        if (on == null || !RWWorld.Parse(world, out seed, out route))
-            return;
-        RWChart.Node at = RWWorld.Here(on, route);
         bool redraw = false;
         if (world != boatWorld)
         {
+            uint seed;
+            List<int> route;
+            int retries;
+            bool stops;
+            if (!RWWorld.Parse(world, out seed, out route, out retries, out stops))
+                return;
+            RWChart.Chart on = RWWorld.Chart(seed, stops);
+            RWChart.Node at = RWWorld.Here(on, route);
             boatWorld = world;
+            boatChart = on;
+            boatAt = at;
             chart = on;
             here = at;
             sailed = Path(on, route, at);
@@ -330,12 +336,12 @@ public static class RWChartView
             redraw = true;
             // A new name that stands on a Cove: the party rested there (RWCampaign.Rest).
             if (at != null && at.Stop == RWChart.Cove)
-                Banner("THE COVE", "The party rests" + RWCard.Separator + RWCard.Retries(RetriesOf(world)), 4f);
+                Banner("THE COVE", "The party rests" + RWCard.Separator + RWCard.Retries(Mathf.Max(0, retries)), 4f);
         }
         if (Time.unscaledTime >= boatLook)
         {
             boatLook = Time.unscaledTime + 0.5f;
-            RWChart.Node to = Heading(vis, on, at);
+            RWChart.Node to = Heading(vis, boatChart, boatAt);
             if (to != heading)
             {
                 heading = to;
@@ -346,10 +352,10 @@ public static class RWChartView
         }
         bool sailing = heading != null && !vis.Insetup;
         if (!sailing && Time.unscaledTime >= bannerUntil) bannerTitle = "";
-        string want = (vis.Insetup ? "setup" : "") + "|" + bannerTitle;
-        if (mode != "Boat" || redraw || want != boatDrawn)
+        if (mode != "Boat" || redraw || vis.Insetup != drawnSetup || bannerTitle != drawnTitle)
         {
-            boatDrawn = want;
+            drawnSetup = vis.Insetup;
+            drawnTitle = bannerTitle;
             if (!Canvasable())
                 return;
             mode = "Boat";
@@ -357,7 +363,12 @@ public static class RWChartView
         }
     }
 
-    static string boatDrawn = "";
+    static bool drawnSetup;
+    static int clockLeft = -1;                   // the footer is rewritten only when its second or the vote changes
+    static RWChart.Node clockVoted;
+    static string drawnTitle = "";
+    static RWChart.Chart boatChart;
+    static RWChart.Node boatAt;
 
     static int RetriesOf(string world)
     {
@@ -420,8 +431,11 @@ public static class RWChartView
         if (m != null)
         {
             Vector2 at = m.position.ReadValue();
-            foreach (KeyValuePair<RWChart.Node, RectTransform> kv in spots)
-                if (kv.Value != null && choices.Contains(kv.Key) && RectTransformUtility.RectangleContainsScreenPoint(kv.Value, at, null)) over = kv.Key;
+            foreach (RWChart.Node c in choices)
+            {
+                RectTransform rt;
+                if (spots.TryGetValue(c, out rt) && rt != null && RectTransformUtility.RectangleContainsScreenPoint(rt, at, null)) over = c;
+            }
         }
         // A pad: the card holding the focus lights its island.
         string focused = RWDialog.Focused();
@@ -520,7 +534,7 @@ public static class RWChartView
     static void Full(Rect r, bool vote)
     {
         float title = Mathf.Clamp(r.height * 0.04f, 9f, 16f), cap = title * 0.55f;
-        RuledTitle(r, vote ? "SEA CHART" : "SEA CHART", title);
+        RuledTitle(r, "SEA CHART", title);
         int retries = RetriesOf(Tds_Multiplayerinfo.Instance != null ? Tds_Multiplayerinfo.Instance.World.Value.ToString() : "");
         if (mode == "Look" && RWBoat.OnChart) retries = RetriesOf(Macro_Worldvisual.Instance.World.name);
         int row = Mathf.Min(RWChart.Rows, here.Row + 1);
@@ -603,7 +617,7 @@ public static class RWChartView
         LegendItem(ref lx, ly, Slate, RWIcons.Chart("Tick"), "Sailed", cap);
         string foot = vote ? "A tie goes to A" + RWCard.Separator + "no votes take A" : "M closes the chart";
         TMPro.TMP_Text f = Text(area, "Foot", foot, new Vector2(r.xMin + 4f, r.yMin + cap * 0.6f), cap, TMPro.TextAlignmentOptions.Left, Ink, 0.6f);
-        if (vote) clock = f;
+        if (vote) { clock = f; clockLeft = -1; }
     }
 
     static void LegendItem(ref float x, float y, Color fill, Sprite icon, string words, float cap)
@@ -647,7 +661,6 @@ public static class RWChartView
         Rect m = new Rect(W - Margin - mw, H - Margin - mh - 24f, mw, mh);
         RuledTitle(m, "SEA CHART", 9f);
         Rect inner = new Rect(m.xMin + 6f, m.yMin + 14f, m.width - 14f, m.height - 34f);
-        List<RWChart.Node> lit = heading != null ? new List<RWChart.Node> { heading } : new List<RWChart.Node>();
         Layout lay = Lay(chart, sailed, here, new List<RWChart.Node>(), null, heading, inner);
         foreach (Lane l in lay.Lanes)
         {
@@ -661,7 +674,7 @@ public static class RWChartView
         {
             Color fill = t.Node.Row == 0 ? Teal : t.Sailed ? Slate : t.Node.Breaker ? Coral : Teal;
             Framed(area, t.Node.Name, t.At, T, fill, t.Reach || t.Sailed ? 1f : 0.3f);
-            if (lit.Contains(t.Node)) Brackets(area, t.At, T * 0.5f + 3f, 1f, 3f);
+            if (heading != null && t.Node == heading) Brackets(area, t.At, T * 0.5f + 3f, 1f, 3f);
         }
         Tile me = lay.Find(here);
         if (me != null) Image(area, "Boat", RWIcons.Chart("Boat"), new Rect(me.At.x + T * 0.5f + 1f, me.At.y - 3f, 10f, 10f), 1f);

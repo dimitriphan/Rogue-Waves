@@ -1,5 +1,18 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
+
+Dimitri: "Go" on `docs/mode/CHART_NAVIGATION.md`, built with its §7 defaults (`docs/reports/CHART_BUILD_2026-11-06.md`).
+- Stops: `RWChart` places one Cove (rows 4, 9) and one Wreck (rows 2-3, 6-8) per stretch from a second stream; `S` in the
+  world's name and `RW_Campaign_Stops`; older campaigns keep their charts without stops. Route counts rows, a Cove's too.
+- The Cove is always blacklisted on the boat; `RWCampaign.Rest` is the one save write (route, gift, `Choice = After`), then
+  the party warps onto the new name and sails on (`05_Boat.cs` `Rested`). Its second vote: `M:<row>:<cols>`, `RW_Campaign_After`.
+- The Wreck plays row + 1 (`21_Difficulty.cs`); after its Tide 15 the "T" question gives each player a Trinket of three, free.
+- `26_ChartView.cs`: the chart beside the vote (`RWDialog.Ask(..., at)` moves the cards right), key M, banner and mini chart.
+  Pointer and key through `UnityEngine.InputSystem`; the shade blocks clicks; the view hides under any other dialog.
+- Self-tests: CV1, CV3, CV9 at boot; CV10-CV12 (`90_Stops.cs`); CV2, CV4, CV5 in the flow. Older tests run with
+  `StopsOnNew` off. Save fuzz F5 covers the `S` mark. PC list: the report's §4.
+
 ## 0.1.0-dev, later (2026-11-06): round 4 and batch fixes (compiled, not yet run in game)
 
 - A friend's end title holds on every machine: `RWCard.HoldEnd` runs everywhere, and a friend's `ClientEnd` writes the last campaign title the sync brought (`IsEndTitle`) into the shown title, never the synced value (P1-4, pitfall #129; `13_Card.cs`).
