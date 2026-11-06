@@ -316,6 +316,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Written here, not run on the PC (no PowerShell here). No game code; no kit change, no pitfall.
 - **2026-11-06: Rogue Tide theme for pages and decks** (Dimitri: "Choose rogue tide"): `docs/themes/rogue-tide.md`, the
   pack palette with the HUD's bracket frames and tiles, linked from `STYLE.md`. Docs only; nothing ran on the PC.
+- **2026-11-06: Scope Editor refreshed in Rogue Tide** (Dimitri: "Update the rogue waves scope editor with updated
+  information"): scope `02` logs 11-05/06 work, `04` gains the chart view, Cove and Wreck as ~defaults~; the page wears
+  Rogue Tide and is republished. Docs and page only; nothing ran on the PC.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1309,6 +1312,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   palette (Deep Swell ground, Rogue Teal tiles, Foam text, one Storm Coral accent, Wet Sand, Pearl for Pure Aura only),
   Exo 2 Light caps / Barlow / Pixelify Sans, the HUD's bracket frame and bevelled square tiles, CSS tokens and contrast
   rules; colours measured from the round 4 screenshots. STYLE.md and CLAUDE.md's map point to it. Docs only.
+- **2026-11-06: Scope Editor refreshed** (Dimitri 06:19Z: "Update the rogue waves scope editor with updated information"):
+  the scope files had not changed since the page's v12, so the new information went into them first: `02_Progress.txt`
+  [Now] gains the chart navigation and the unproven round 4 fixes, its [Log] the stock Trinket split, Tidal Mend and
+  Abyss, the round 4 bug fixes, the chart navigation with its stops, and the Rogue Tide pick; `04_Rogue_Waves_Mode.txt`
+  [Sea Chart] gains the chart view and look lines and {Cove} and {Wreck} sheets from `docs/mode/CHART_NAVIGATION.md`
+  §4.1-4.2, every value Claude's ~default~. `docs/artifacts/scope_editor/template.html` wears Rogue Tide (Exo 2 caps,
+  Barlow, Pixelify Sans; square tiles, bracket frames; Deep Swell in dark, Foam paper in light); the Send flow is
+  unchanged. Rebuilt and republished to the same link after the merge. Docs and page only; nothing ran on the PC.
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
