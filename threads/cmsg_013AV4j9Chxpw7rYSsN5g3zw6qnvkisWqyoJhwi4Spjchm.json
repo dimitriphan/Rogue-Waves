@@ -4,11 +4,6 @@
   "state": "building",
   "started": "2026-11-06T19:18:56Z",
   "step": "Writing the widget app",
-  "helpers": [
-    {
-      "task": "Reviewing the widget PR",
-      "model": "Opus"
-    }
-  ],
-  "updated": "2026-11-06T19:18:58Z"
+  "helpers": [],
+  "updated": "2026-11-06T19:19:00Z"
 }
