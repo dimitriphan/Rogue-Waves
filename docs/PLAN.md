@@ -277,6 +277,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: feature spotlight page** (Dimitri: "Design a spotlight of all of the new features"): `docs/spotlight/`
   (artifact https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr), every feature chipped played, built-not-run or not built,
   with the PR #130 Trinket split. Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-05: his answers on the split** (Dimitri: "Keep that", "Make Trinket", "Pay only share"): 17 of the
+  29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
+  §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1136,6 +1139,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   UNTHREAD, Spool's and Uloe's final sprites, three vessels' lore, the modifiers' journal pages, Fog Bank and the mood
   ramp (ideas); most of 5 November's work is marked built, not yet run, until PC round 4 reports. Docs only, no compile.
   Next free numbers unchanged: kit 1.15, pitfall #172.
+- **2026-11-05: his answers on the split** (Dimitri 23:51Z: "1. Keep that 2. Make Trinket 3. Pay only share"). Aura
+  Gavel stays a Trinket; Torrid Badge, Bendigo, Kippy and Fish Bait become Trinkets of kind Unit (their stock spawner on
+  the buyer's vessel; `RWTrinkets.Companions` removes the drowned vessel's unit once the new vessel's stands); a Coin pays its buyer the sum divided by the players. 17 Trinkets, 12
+  Cardinals. Report §7, scope `12` (list still `~defaults~` but his three answers). Compiled here (0 errors), not run on the PC. No kit, no pitfall.
 
 ### Decisions
 
@@ -1316,8 +1323,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open. Same day, his "sync": the project-files scope copy and the Scope Editor (version 8) brought up to the repository; and
   question 2 spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`.
 - 2026-11-05 (Dimitri, "Check which base game Cardinals can be turned into trinkets and which can only be teamwide, then
-  separate them"): 13 stock Cardinals on sale are Trinkets, held once by each buyer (list a `~default~` in scope `12`;
-  `docs/reports/STOCK_TRINKETS_2026-11-05.md`, §5 asks about Aura Gavel, the companions and the Coin's sum).
+  separate them"; 23:51Z "Keep that, Make Trinket, Pay only share"): 17 stock Cardinals on sale are Trinkets, held once
+  by each buyer (Aura Gavel and the four companions included; a Coin pays one share); 12 stay Cardinals. Scope `12`,
+  `docs/reports/STOCK_TRINKETS_2026-11-05.md` §7.
 
 ### Open questions
 
