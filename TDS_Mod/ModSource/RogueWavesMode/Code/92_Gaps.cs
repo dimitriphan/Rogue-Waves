@@ -1145,8 +1145,8 @@ public static partial class RWTest
                 // BATCH 14:14: the node's hits and distance follow scope 14 for the map it spawned on.
                 int mapNow = Mathf.Max(1, RWCampaign.Route.Count + (RWCampaign.WonThisMap ? 0 : 1));
                 Check("Objective " + goal.Display + ": " + (12 + 3 * (mapNow - 1)) + " hits and about " + (8 + 1.5f * (mapNow - 1)) + " tiles from the Basin on map " + mapNow + " (scope 14)",
-                    RWObjectives.MeteorHits == 12 + 3 * (mapNow - 1) && Mathf.Abs(RWObjectives.MeteorWant - (8f + 1.5f * (mapNow - 1))) < 0.01f,
-                    RWObjectives.MeteorHits + " hits, want " + RWUtil.F(RWObjectives.MeteorWant) + " tiles");
+                    RWObjectives.MeteorMap == mapNow && RWObjectives.MeteorHits == 12 + 3 * (mapNow - 1) && Mathf.Abs(RWObjectives.MeteorWant - (8f + 1.5f * (mapNow - 1))) < 0.01f,
+                    RWObjectives.MeteorHits + " hits, want " + RWUtil.F(RWObjectives.MeteorWant) + " tiles, spawned on map " + RWObjectives.MeteorMap);
             }
             Entity_Master target = RWObjectives.Target;
             forcing = true;

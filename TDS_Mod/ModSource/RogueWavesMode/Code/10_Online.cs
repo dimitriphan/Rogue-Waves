@@ -168,6 +168,8 @@ public static class RWBody
     public static float BootSeconds = -1f;           // how long the boot's load took; -1 until it is in (self-test, log)
     public static bool InAtJoin, Told;               // this join: the body was in as the map arrived; the line is written
     public static int Things, Given, Missing;        // this join: client halves here, given the body here, still without it
+    public static int Lookless;                      // this join: halves given the body here that still have no look (too late)
+    static readonly List<Entity_Master_Client> given = new List<Entity_Master_Client>();
     static Game_Mapvars map;
     static bool joined, gave;
     static float since, loadedAt;
@@ -194,7 +196,7 @@ public static class RWBody
     public static string Line()
     {
         return "the stock sprite body " + Label + "/" + Item + " (" + Group + ") was in as this map arrived: " + InAtJoin
-            + "; things here " + Things + ", given the body here " + Given + ", still without it " + Missing;
+            + "; things here " + Things + ", given the body here " + Given + " (of those, still without a look " + Lookless + "), still without it " + Missing;
     }
 
     public static void Update()
@@ -204,7 +206,8 @@ public static class RWBody
         {
             map = mv;
             joined = gave = Told = InAtJoin = false;
-            Things = Given = Missing = 0;
+            Things = Given = Missing = Lookless = 0;
+            given.Clear();
             loadedAt = -1f;
         }
         if (mv == null || Told || !RWRejoin.Late)
@@ -225,6 +228,7 @@ public static class RWBody
                 if (c.Visbasedefault == null)
                 {
                     c.Visbasedefault = body;
+                    given.Add(c);
                     Given++;
                 }
         }
@@ -242,8 +246,12 @@ public static class RWBody
             if (c.Visbasedefault == null)
                 Missing++;
         }
+        // Review: a body given after the half built its look would not redraw it; such a half has no Currentvis by now.
+        foreach (Entity_Master_Client c in given)
+            if (c != null && c.Currentvis == null)
+                Lookless++;
         string line = "rejoin: " + Line() + (loadedAt < 0f ? " (the map didn't finish loading here in 180 s)" : "");
-        if (Missing > 0) RWLog.Warn(line);
+        if (Missing > 0 || Lookless > 0) RWLog.Warn(line);
         else RWLog.Info(line);
     }
 }

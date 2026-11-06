@@ -82,11 +82,13 @@ public class SpoolHeroBrain : MonoBehaviour
     // the Stash, it only takes buttons away (as Argo's Base does there); the four come at the next half-second check.
     public void CheckMenu(bool removeOnly = false)
     {
-        bool home = SpoolServer.HasStash(Owner);
+        // Review: a Stash that has only spawned takes the Stash button away; the four wait for it to start (Player.Home and
+        // its Thread set in Started2), as before.
+        bool stash = SpoolServer.HasStash(Owner), home = stash && Player.Home != null && Player.Home.Master != null;
         for (int i = 0; i < SpoolData.Buildables.Length; i++)
         {
             string link = "Buildoption" + (i + 1);
-            string want = home ? SpoolData.Buildables[i] : i == 0 ? SpoolData.Stash : null;
+            string want = home ? SpoolData.Buildables[i] : i == 0 && !stash ? SpoolData.Stash : null;
             Link_Command have;
             bool shown = Master.Commandlistserver.TryGetValue(link, out have);
             if (shown && (want == null || have == null || have.Goalstring != want))

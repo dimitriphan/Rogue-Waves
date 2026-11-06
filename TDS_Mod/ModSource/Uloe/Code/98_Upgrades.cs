@@ -95,7 +95,9 @@ public static partial class UloeSelfTest
 
         // Glass B: Wide Lens -> Prism -> Focal Point. Glass C: Wide Lens -> Quick Focus.
         yield return Vessel(owner, vessel);
-        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
+        // Review: no vessel back means nothing more here can be measured; an honest SETUP, and section 9 ends the run.
+        if (vessel[0] == null) { ModKitTest.Setup("8b the 24 upgrades", "the vessel fell and the core did not send it again"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         Vector3 at = Spot(hm, UloeContent.Beings[UloeData.Glass], 2.5f);
         yield return Build(hm, UloeData.Glass, at, known, got);
         UloeGlassBrain glassB = got[0] as UloeGlassBrain;
@@ -194,7 +196,9 @@ public static partial class UloeSelfTest
 
         // Bank B: Extra Cell -> Bright Spark -> Photon Swarm. Bank C: Short Circuit -> Surge Protector.
         yield return Vessel(owner, vessel);
-        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
+        // Review: no vessel back means nothing more here can be measured; an honest SETUP, and section 9 ends the run.
+        if (vessel[0] == null) { ModKitTest.Setup("8b the 24 upgrades", "the vessel fell and the core did not send it again"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         at = Spot(hm, UloeContent.Beings[UloeData.Bank], 3.5f);
         yield return Build(hm, UloeData.Bank, at, known, got);
         UloeBankBrain bankB = got[0] as UloeBankBrain;
@@ -351,7 +355,9 @@ public static partial class UloeSelfTest
             ClearFoes();
         }
         yield return Vessel(owner, vessel);
-        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
+        // Review: no vessel back means nothing more here can be measured; an honest SETUP, and section 9 ends the run.
+        if (vessel[0] == null) { ModKitTest.Setup("8b the 24 upgrades", "the vessel fell and the core did not send it again"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         at = Spot(hm, UloeContent.Beings[UloeData.Mirror], 3f);
         yield return Build(hm, UloeData.Mirror, at, known, got);
         UloeMirrorBrain mirrorD = got[0] as UloeMirrorBrain;
@@ -474,7 +480,9 @@ public static partial class UloeSelfTest
         else ModKitTest.Setup("High Voltage and Colour Filter", "no Long Throw Flood Light");
         UloeFloodBrain floodC = null;
         yield return Vessel(owner, vessel);
-        if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
+        // Review: no vessel back means nothing more here can be measured; an honest SETUP, and section 9 ends the run.
+        if (vessel[0] == null) { ModKitTest.Setup("8b the 24 upgrades", "the vessel fell and the core did not send it again"); yield break; }
+        hero = vessel[0]; hm = hero.Master;
         Vector3 fat = new Vector3(float.NaN, 0f, 0f);
         foreach (Entity_Master n in new List<Entity_Master>(Game_Entity.Instance.Entityclient))
             if (float.IsNaN(fat.x) && UloeUtil.IsNode(n))
@@ -510,7 +518,7 @@ public static partial class UloeSelfTest
         ClearFoes();
     }
 
-    // R4 §8: +10000 Health, filled, so the towers round a test foe can't fell it before its check reads it (Riptide's way).
+    // R4 §8: +10000 Health, filled, so the towers round a test foe can't fell it before its check reads it.
     static void Armour(Entity_Master foe)
     {
         Link_Stats s;
