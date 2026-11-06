@@ -26,10 +26,14 @@ public static partial class UloeSelfTest
             yield return Wait(0.2f);
             float two = ModKitUtil.Stat(glass.Master, "Light", 0f) - before;
             Check("a teammate's Light: at most 4 a building", Near(one, UloeData.TeamLightCap, 0.05f), "6 offered, " + F(one) + " taken");
-            Check("... from every teammate together", Near(two, UloeData.TeamLightCap, 0.05f) && Near(UloeLight.SharedOn(glass.Master), UloeData.TeamLightCap, 0.05f), "and 3 more offered: " + F(two) + " in all");
+            // The building's own sources move its Light too (a Photon passing, a Flood Light's tick: PC_FULL_2026-11-06 read
+            // 5 and 8 here once), so the second teammate's take is read from its source, and the owner's from a read just before.
+            Check("... from every teammate together", mateB.Holding == 0 && Near(UloeLight.SharedOn(glass.Master), UloeData.TeamLightCap, 0.05f),
+                "and 3 more offered: the second holds " + mateB.Holding + ", teammates " + F(UloeLight.SharedOn(glass.Master)) + " in all; the building's Light moved " + F(two));
+            float pre = ModKitUtil.Stat(glass.Master, "Light", 0f);
             test.Feed(glass.Master, 3f, owner);
             yield return Wait(0.2f);
-            Check("... while the owner's own Light is not capped", Near(ModKitUtil.Stat(glass.Master, "Light", 0f) - before, UloeData.TeamLightCap + 3f, 0.05f), F(ModKitUtil.Stat(glass.Master, "Light", 0f) - before));
+            Check("... while the owner's own Light is not capped", test.Holding == 1 && Near(ModKitUtil.Stat(glass.Master, "Light", 0f) - pre, 3f, 0.05f), F(pre) + " -> " + F(ModKitUtil.Stat(glass.Master, "Light", 0f)));
             yield return Wait(UloeData.LightHold + 0.3f);
         }
 
@@ -516,13 +520,20 @@ public static partial class UloeSelfTest
         // fallen vessel goes nowhere: wait for it to come back first.
         yield return Vessel(owner, vessel);
         if (vessel[0] != null) { hero = vessel[0]; hm = hero.Master; }
-        foreach (UloeBuilding b in new UloeBuilding[] { glassB, glassC, bankB, bankC, mirrorD, floodC })
+        UloeBuilding[] made = { glassB, glassC, bankB, bankC, mirrorD, floodC };
+        foreach (UloeBuilding b in made)
             if (b != null && b.Master != null)
             {
                 Send(hm, "Sell", Sell(hm, b.Master));
-                yield return Wait(0.4f);
+                yield return Until(() => b == null || b.Master == null, 3f);
             }
         yield return Wait(1f);
+        string standing = "";
+        foreach (UloeBuilding b in made)
+            if (b != null && b.Master != null)
+                standing += " " + b.Master.name + " (" + b.UpgradeCount + " upgrades)";
+        if (standing != "")
+            Log("INFO the cleanup's Sells left standing:" + standing);
         ClearFoes();
     }
 
