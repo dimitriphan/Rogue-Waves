@@ -1,5 +1,21 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-06: the 22 upgrades and UNTHREAD (compiled, not yet run in game)
+
+Scope `08` B19 and B18 (Dimitri's "Yes", 2026-11-06): the Yarn Stash's 7 upgrades (Pockets, Quick Patch, Darning, Elbow
+Patches, Remnant Bin, Mending Circle, Quilting Bee), the Cookie Tin's 3 (Tacking Stitch, Cross Stitch, Stitch Army) and
+UNTHREAD, the Thread Head's 5 (Bobbin, Needle Point, High Thread Count, Stitch in Time, Head of the Class), the Pin
+Cushion's 2 (Iron Thimble, Voodoo Doll; Pin Barrage leads to Iron Thimble) and the Loom's 5 (Dyed in the Wool, Bobbin,
+Seam Squad, Snare Line, Golden Thread). All 37 rows match the sheet (`Tools/cloud-check/scope_upgrades.py`). New: the
+Tacked Stitched (`Mob_Spoolstitched_Tacked`, Sno Sno's blocker block), BEE on the Stash, UNTHREAD on a Tin and COLOUR on
+a Loom (key 4). Pitfall #80, Spool's share: a brain that throws skips the tick (`SpoolFaults`, `01_Util.cs`) and stops
+only after 600 frames running; #158: the build puff goes 0.5 s late and the Crafted's pop and leap through their home.
+After `/code-review high`: a Tacked crowd holds where it stopped, a Seam's colour trade is never made twice, Woolen
+Lining and Cross Stitch reach the Crafted already out. Self-test sections 10d-10f (`98_UpStash.cs`, `98_UpTinHead.cs`,
+`98_UpLoom.cs`, about 75 checks). The readings picked where the sheet is silent: `DESIGN.md` "Defaults picked here".
+For the PC: the self-test with the new sections; by hand BEE, UNTHREAD and COLOUR's buttons and icons, a Tacked line
+on a path, a Voodoo stun, a Golden Thread drop-off, a Remnant flying home on a client.
+
 ## 2026-11-06: one Yarn Stash a player (compiled, not yet run in game)
 
 Scope `08`:64 says Limit: 1, so a player holds one Yarn Stash. `SpoolServer.FirstStash`, `HasStash` and `StashLimit` (`05_Server.cs`) decide it. The Stash button goes from the spawn of a Stash, and the four buildables come once one has started (`06_HeroBrain.cs`, `CheckMenu`). A second Stash that gets past the menu is taken back with reason "Limit", and the first keeps the Thread (`07_Building.cs`). The PATCH hotkey test sets the Thread at the press. Three self-test checks are new: "a second Stash can't be built", "a second Stash past the menu is taken back" and "two Stash orders at once build one Stash, the first" (`docs/reports/BUG_FIXES_2026-11-06.md` §5 item 5).
@@ -74,7 +90,7 @@ says about the game is read from its code, not seen.
 | `11_Client.cs` | Every look and sound (Vis RPCs): ground tufts, flights to the carrier and the Stash, pops, pricks, patch, warnings |
 | `12_Commands.cs` | The PATCH picker (the template's HOOK picker on your own units and buildings), the RETURN and MEND buttons |
 | `13_Journal.cs` | Journal pages, diagnostics dump |
-| `97_Shots.cs`, `99_SelfTest.cs` | Debug builds only; the self-test makes 133 checks (2026-11-04) in the sections of `DESIGN.md`'s test plan |
+| `97_Shots.cs`, `99_SelfTest.cs`, `98_Up*.cs` | Debug builds only; the self-test makes 133 checks (2026-11-04) in the sections of `DESIGN.md`'s test plan, and the upgrades' sections 10d-10f (2026-11-06) |
 | `97_Measure.cs`, `98_Play.cs` | Play builds only (`SPOOL_PLAY`, with kit `ModKitPlay`): the virtual player and the balance round's measures |
 
 ## What the first PC round must show (each is an assumption the code makes)
@@ -243,6 +259,4 @@ not yet run in game (self-test section 10c, `98_Directions.cs`):
 
 ## Open in the sheet (Dimitri's)
 
-The Yarn Stash's upgrades, the Thread Head's and the Loom's levels 2 and 3 and the level-4 capstones are on the sheet
-since 2026-11-04 (designed, not built: `DESIGN.md`); every default in
-`DESIGN.md` "Defaults picked here"; his own sprites, models and sounds (all of this build's art is temporary).
+Every default in `DESIGN.md` "Defaults picked here" (the upgrades' readings since 2026-11-06); his own sprites, models and sounds (all of this build's art is temporary).

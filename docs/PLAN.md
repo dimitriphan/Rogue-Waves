@@ -238,8 +238,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   last); reports: `docs/reports/README.md`.
 - **Next, in order:** the full test round's report and the PC checks it leaves (`BUG_FIXES_2026-11-06.md` §5,
   `CHART_BUILD_2026-11-06.md` §4, `STOCK_TRINKETS_2026-11-05.md` §6 and §8, the MVP board's two-player checks, the top 4
-  pitfall fixes' checks), and the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7); then Spool's 22
-  upgrades and UNTHREAD (scope `08`, B19), with Spool's brain guard.
+  pitfall fixes' checks, Spool's upgrade sections 10d-10f), and the weather look's own round
+  (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -347,6 +347,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the morning's suggestions** (Dimitri: "implement suggestions but skip the PC round"): two log lines,
   Spool's Seam and Mangled temporary sheets in sage, "Now" tidied, the batch README; two batch leads were no bugs. Compiled
   here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri: "Yes"): scope `08` B18/B19, all 37 rows matching,
+  BEE, UNTHREAD and COLOUR, Spool's brain guard (#80) and late looks (#158); self-test 10d-10f (`Spool/DESIGN.md`
+  defaults). Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1460,6 +1463,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   entry dropped (the Log keeps it), the batch README's "What ran where". CLAUDE.md is 80 lines against "under 80": left
   for his word. Compiled here: RogueWavesMode (none, SELFTEST, SELFTEST+SHOTS+GAPS) and Spool (none, SELFTEST,
   SELFTEST+SHOTS) 0 errors; the TWOPC build's `Unity.Netcode.Transports` error is the base's too. Not run on the PC.
+- **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri 13:58Z: "Yes" to building B19 with B18 and Spool's
+  share of the pitfall fixes; thread "Build Spool's 22 upgrades and Unthread"). Rows: the Yarn Stash 7, the Cookie Tin 3
+  plus UNTHREAD, the Thread Head 5, the Pin Cushion 2 (Pin Barrage leads to Iron Thimble), the Loom 5; all 37 rows match
+  scope `08` by `scope_upgrades.py`; sheet level N is the game's tier N+1. New: the Tacked Stitched on Sno Sno's blocker
+  block; BEE on the Stash, UNTHREAD on a Tin, COLOUR on a Loom (key 4). Spool's brain guard (`SpoolFaults`, Uloe's #80
+  shape) and the build puff 0.5 s late, the Crafted's pop and leap through their home (#158). Built in three parallel
+  chunks (Stash; Tin, Head and Cushion; Loom), merged, `/code-review high` (10 findings: 7 fixed, among them a Tacked
+  crowd that never arrived and a Seam colour trade that could run twice; 3 dismissed) and `/simplify`. The readings the
+  sheet leaves open (BEE's place, Darning's amount, two Spools' Remnant Bin, buffs not stacking, Voodoo on bosses) are
+  `Spool/DESIGN.md` "Defaults picked here", for his word. Compiled here: Spool (none, SELFTEST, SELFTEST+SHOTS) 0 errors,
+  0 warnings, the editor check clean. Not run on the PC (the full test held the lock); `Spool/IMPLEMENTATION_NOTES.md`
+  lists the round's checks. No kit change, no pitfall.
 
 ### Decisions
 
