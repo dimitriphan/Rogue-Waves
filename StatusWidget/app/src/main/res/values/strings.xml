@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Rogue Waves Status</string>
+    <string name="widget_name">Rogue Waves: now</string>
+    <string name="widget_description">What the Rogue Waves project is doing, acted out by the crew</string>
+    <string name="label_now">ROGUE WAVES · NOW</string>
+    <string name="label_deck">ALSO ON DECK</string>
+    <string name="tap_refresh">Tap to refresh</string>
+</resources>

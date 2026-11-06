@@ -358,6 +358,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: PC round 5 proves #141, #154, #156-#158 and #160** (Dimitri: "Ok"): 0 FAIL from the code but #160's map
   cards (a 70-76 ms freeze in 2 of 10 openings); Spool 229/3 in its new sections (test faults, one unsettled), Supernova's
   flight home and a client's first looks read (`PC_ROUND5_2026-11-06.md`). His PC put back. No kit change, no pitfall.
+- **2026-11-06: the phone status widget** (Dimitri: "an android widget ... what is happening currently"): `StatusWidget/`,
+  4 x 6, the crew acts out each state; every thread now reports to the `status` branch (`StatusWidget/README.md`). Built
+  on GitHub Actions (APK in the `status-widget` release), not yet on his phone. Not the pack; no kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1531,6 +1534,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   weather look's §4 items 4-7, foes in each weather on camera. His PC put back (Mods hash for hash, save, registry), his
   Desktop scope copy now the base's (old copy in `handoff\backup_scope_before_Proof_round1_20261106`). No kit change, no
   pitfall.
+- **2026-11-06: the phone status widget** (Dimitri 18:52Z: "create an android widget or claude mod that allows me to see
+  what is happening currently in this project", then his answers at 19:03Z, "Leave usage out for now" at 19:13Z, "add what
+  the sub agents are working on" at 19:14Z, "Ok" to the design canvas at 19:15Z). `StatusWidget/`: a Kotlin app (min
+  Android 12) whose 4 x 6 widget shows the busiest thread as a 12-frame scene (a `ViewFlipper` of nearest-neighbour
+  frames from `art/scenes.py`, drawn from Yossele's final sheets, Argo's shipped idle and sonar, Spool's sage sprite and
+  Uloe's concept frame), its step and two of its sub-agents, and up to three other busy threads. Status: one file per
+  thread on the `status` branch, written by `status/set_status.py` (retries a rejected push on the new tip, prunes files
+  a day old); the app reads them every 15 minutes and on a tap (the repository is public: one API call a read, the
+  files from `raw.githubusercontent.com`, a token optional). Pick order and
+  lifetimes in `Selection.kt` (unit-tested in CI): your turn (never stale), failed and testing (2 h), building,
+  reviewing, art, shipped (30 min). Google's SDK host is closed to the cloud threads, so
+  `.github/workflows/status-widget.yml` builds and tests every push that touches `StatusWidget/`, and a build of the
+  base replaces the `status-widget` release. Usage (5-hour, weekly) left out: no public way to read it. The rule: `CLAUDE.md` map row,
+  `ship-a-pr` (shipped) and `pc-round` (testing) skills. Not the pack; no kit change, no pitfall.
 
 ### Decisions
 

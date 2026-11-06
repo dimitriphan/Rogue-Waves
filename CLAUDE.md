@@ -55,7 +55,7 @@ round, a scope fold-in) is worth proposing as a project skill; the drafted ones 
 | `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md`, `docs/themes/` | Packaging and versions; look and naming; temporary art; page and deck themes | before packaging; before drawing or naming; before styling a page |
 | `docs/EXPANSION_SCOPE.md`, `docs/RESEARCH_GAPS.md` | Non-vessel systems and what is known about them; engine facts left to research | before non-vessel work |
 | `docs/mode/`, `docs/concepts/`, `docs/reports/`, `docs/spotlight/`, `docs/artifacts/` | Mode design pages; concept pages and art; dated, frozen reports; the feature spotlight page; every artifact, its source and how input comes back | the page the task names; reports' and artifacts' `README.md` |
-| `concept-tools/` | Python for concept pages, sprites, low-poly models, the sea chart | the docstring of each file |
+| `concept-tools/`, `StatusWidget/` | Python for concept pages, sprites, low-poly models, the sea chart; his phone widget (not the pack), which every thread reports its state to | each file's docstring; `StatusWidget/README.md` "When a thread reports" |
 
 ## Reading order by task
 

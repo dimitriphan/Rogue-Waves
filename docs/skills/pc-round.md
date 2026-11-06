@@ -26,6 +26,9 @@ Effort xhigh. Past rounds to copy the shape of: `docs/reports/TESTING_ROUND_3_20
 4. `start_remote_control` with `message_id` = his OK message and folder `C:\Users\Dimitri\TDS_Mod` exactly as listed.
    The PC session cannot reach `/mnt/project-files` or GitHub and does not take `message_thread`: the coordinator
    relays, and results come back as messages under 50 KB each (`<NAME> part i/n`).
+   The cloud thread reports the round to the phone widget for the PC session, which has no copy of the script:
+   `StatusWidget/status/set_status.py --id <thread id> --state testing --step "<what runs now>"`, a new `--step` per
+   result it hears back (`StatusWidget/README.md` "When a thread reports").
 
 ## PC session, in order (`<h>` = `Desktop\ClaudeProjects\handoff`)
 
