@@ -11,6 +11,8 @@
 //   tour     every one of the 45 chart maps in Mode_RogueWave, each with another vessel: VENDCINT lands, both objective targets and
 //            both weather objects find a tile, a Tide runs; Boutman's real death for the F key
 //   light    only when named, its own launch: a map's lighting changed by the kit's ModKitLight, fog included (92_GapsLight.cs)
+//   stock    only when named, its own launch: the stock Trinkets a buyer holds, measured in a map (92_GapsStock.cs)
+//   decided  only when named, its own launch: the decided code fixes 2a-2g, measured in a map (92_GapsDecided.cs)
 // "-rwonly <word,word>" on the command line picks parts (Tools/pc/Run-TwoPlayers.ps1 -Extra "..."; a solo build never starts the second copy).
 public static partial class RWTest
 {
@@ -56,6 +58,8 @@ public static partial class RWTest
         if (Asked("artrio")) { yield return Stepped(ReviewArtrio()); yield break; }
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Asked("light")) { yield return Stepped(GapsLight()); yield break; }
+        if (Asked("stock")) { yield return Stepped(GapsStock()); yield break; }
+        if (Asked("decided")) { yield return Stepped(GapsDecided()); yield break; }
 #if MODKIT_PLAY
         if (Asked("r4")) { yield return Stepped(GapsRound4()); yield break; }
 #endif
