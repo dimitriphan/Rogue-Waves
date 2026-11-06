@@ -6,17 +6,22 @@
 //   Slow Unravel     half of each hit now, half over the next Unravel_Base seconds (a heal cancels what is still owed).
 //   Pin Barrage      ranged attackers are pricked for Rangedreflect_Base too.
 //   Loose Stuffing   a Mangled per Mangled_Per damage taken, Mangled_Max alive; Overstuffed and Burst Seams shape them.
+//   Iron Thimble     Health_Multi is its own stat's modifier; each hit lands Thimble_Base lighter. Pricks count off what
+//                    the attacker dealt; Slow Unravel, Spin and Loose Stuffing off what it took.
+//   Voodoo Doll      once a Tide, after the first hit that leaves it under Voodoo_Base of its maximum health: every foe
+//                    within Voodoorange_Base is stunned Voodoostun_Base seconds, and it mends Voodooheal_Base of its maximum.
 // Helper_Entitytools.Updateinteract rebuilds the chain whenever an upgrade or effect lands, so the handler is moved back
 // to the front ten times a second.
 public class SpoolCushionBrain : SpoolBuilding
 {
     public const float MeleeRange = 2.25f;
 
-    public int Pricks, Spun, Mangled, Bursts, Splits;
-    public float Taken, Reflected, Delayed, Cancelled;
+    public int Pricks, Spun, Mangled, Bursts, Splits, Dolls, Stunned;
+    public float Taken, Reflected, Delayed, Cancelled, Thimbled, DollHealed;
     public Entity_Master LastAttacker;
     float spinDebt, stuffDebt, nextFront, nextUnravel, lastPrickVis;
-    bool own;
+    bool own, hurt;
+    int dollWave = -1;
     Entity_Master.Oninteracts handler;
 
     // Damage still owed by Slow Unravel: how fast it comes, how much is left.
@@ -45,6 +50,13 @@ public class SpoolCushionBrain : SpoolBuilding
             nextUnravel = Time.time + 0.5f;
             Unravel();
         }
+        // A hit flagged in OnHit has landed by now: its health is the one after it.
+        if (hurt)
+        {
+            hurt = false;
+            if (Has("Voodoo"))
+                Doll();
+        }
     }
 
     // Keeps the cushion's handler first in the wall's hit chain (Updateinteract rebuilds it when an upgrade lands).
@@ -67,7 +79,7 @@ public class SpoolCushionBrain : SpoolBuilding
             float total = damage * multi;
             if (total <= 0f)
                 return;
-            Taken += total;
+            hurt = true;
             Entity_Master from = hit.From;
             if (from != null && from != Master && ModKitUtil.IsFoe(from, ModKitUtil.Team(Master)))
             {
@@ -77,6 +89,16 @@ public class SpoolCushionBrain : SpoolBuilding
                 if (rate > 0f)
                     Prick(from, total * rate);
             }
+            // Iron Thimble: the hit lands lighter; everything below counts what it took.
+            if (Has("Thimble"))
+            {
+                float cut = Mathf.Clamp01(Param("Thimble_Base", 0.25f));
+                multi *= 1f - cut;
+                ModKitCombat.SetMulti(hit, multi);
+                Thimbled += total * cut;
+                total *= 1f - cut;
+            }
+            Taken += total;
             if (Has("Unravel"))
             {
                 float secs = Mathf.Max(0.5f, Param("Unravel_Base", 4f));
@@ -163,6 +185,36 @@ public class SpoolCushionBrain : SpoolBuilding
         own = true;
         try { ModKitCombat.Hurt(Master, Master, damage, 1f, LastAttacker != null && ModKitUtil.Alive(LastAttacker) ? LastAttacker : Master, null); }
         finally { own = false; }
+        hurt = true;
+    }
+
+    // Voodoo Doll, once a Tide (the Wave read as SpoolTinBrain.Fell reads it): under its mark after a hit, every foe in
+    // reach is stunned (no walking, hardly any attacks: Argo's and Yossele's hold) and the doll mends itself.
+    void Doll()
+    {
+        float max = ModKitUtil.MaxHealth(Master);
+        if (!ModKitUtil.Alive(Master) || max <= 0f || ModKitUtil.Health(Master) >= max * Param("Voodoo_Base", 0.5f))
+            return;
+        int wave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
+        if (wave == dollWave)
+            return;
+        dollWave = wave;
+        Dolls++;
+        float stun = Param("Voodoostun_Base", 3f);
+        foreach (Entity_Master foe in Foes(Param("Voodoorange_Base", 3f)))
+        {
+            if (ModKitUtil.Speed(foe) == null)
+                continue;
+            Helper_Entitytools.Addmod(foe, "Speed", -1f, Helper_Entitytools.Modtypes.Multi, stun);
+            if (foe.Statsserver.ContainsKey("Attackspeed"))
+                Helper_Entitytools.Addmod(foe, "Attackspeed", -0.95f, Helper_Entitytools.Modtypes.Multi, stun);
+            Stunned++;
+            ModKitUtil.Vis(Master, "Spool_Voodoo", ModKitUtil.Pos(foe), stun);
+        }
+        float heal = max * Param("Voodooheal_Base", 0.5f);
+        ModKitUtil.Heal(Master, Master, heal);
+        DollHealed += heal;
+        ModKitUtil.Vis(Master, "Spool_Voodoo", Pos, 0f);
     }
 
     public float Owing()
