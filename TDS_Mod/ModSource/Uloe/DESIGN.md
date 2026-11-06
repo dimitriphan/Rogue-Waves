@@ -56,7 +56,7 @@ in range of what they plugged into. The level of Light depends on the node's tot
   owner-only line.
 - **Light while plugged:** radius 4 *(default)*.
   Node: `2 + 0.4 x total aura`, at most 10 *(default)*: a 5 aura node gives 4, a 15 aura node 8.
-  Power Bank: `4 + 2 per upgrade` *(default)*: 4, or 6 with Short Circuit.
+  Power Bank: `4 + 2 per upgrade` *(default)*: 4, or 6 with Short Circuit; a bank with Surge Protector gives at most Light 8 (scope `10`:145, `UloeData.SurgeBankMax`).
 - **Press again:** unplugs. **Cooldown:** 0.5 s from an unplug (the template's default); the button greys out.
 - **Look:** the bulb burns bright while plugged (a skin, so every player sees it); a cord sags from Uloe's foot to a plug
   at the target and moves with Uloe every frame on every machine (Argo's harpoon rope); a ring on the ground at the real

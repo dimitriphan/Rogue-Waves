@@ -1,5 +1,14 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-06): round 4 and batch fixes (compiled, not yet run in game)
+
+- A friend's end title holds on every machine: `RWCard.HoldEnd` runs everywhere, and a friend's `ClientEnd` writes the last campaign title the sync brought (`IsEndTitle`) into the shown title, never the synced value (P1-4, pitfall #129; `13_Card.cs`).
+- `RWBody` (`10_Online.cs`): boot loads `General_Default`, and a late joiner's things get the Vfx/Mobbase body the first frame they are in, with a count line after (pitfall #173).
+- The meteor is 12 hits and about 8 tiles from the Basin on map 1, +3 hits and +1.5 tiles a map after (`19_Objectives.cs`, scope `14`:14; it was one map ahead).
+- Test fixes (round 4 §8): U3 and T4 compute their titles from the map's row; Spring Tide's expected max comes from the tower's own Health buckets; the flow's leave vote keeps its own line (`LeaveVote`); the review checks a later map (`99_SelfTest.cs`, `93_TwoPlayers.cs`, `96_Flow.cs`).
+- Three rejoin log lines are reworded (`09_Rejoin.cs`).
+- PC checks for the next round: `docs/reports/BUG_FIXES_2026-11-06.md` §5.
+
 ## 0.1.0-dev, later (2026-11-06): Tidal Mend's heal is flat (compiled, not yet run in game)
 
 Dimitri picked "Code follows the scope" for the third scope audit's N1 (`docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md` §2):
