@@ -6,14 +6,34 @@ public class SpoolHeroBrain : MonoBehaviour
     public Entity_Master Master;
     public SpoolPlayer Player;
     public float PatchReady;
-    public int Patches, MenuChanges, SoldByFallback;
+    public int Patches, MenuChanges, SoldByFallback, Darned;
+    public float ElbowHealth, ElbowDamage;   // Elbow Patches' Multis on Spool now (0 without)
     public string LastPatch = "";
     bool started, begun, patchOff, fullWarned, stashFullWarned;
     readonly SpoolFaults faults = new SpoolFaults();
     Link_Command patchCommand;
+    Link_Modifier elbowHealth, elbowDamage;
     float nextCollect, nextMenu;
 
     public long Owner { get { return ModKitUtil.Owner(Master); } }
+
+    // Quick Patch: PATCH costs less Thread and is ready sooner.
+    public int PatchCost
+    {
+        get
+        {
+            SpoolStashBrain s = Player != null ? Player.Holds("Quick") : null;
+            return s != null ? Mathf.RoundToInt(s.Param("Patchcost_Base", SpoolData.PatchCost)) : SpoolData.PatchCost;
+        }
+    }
+    public float PatchCooldown
+    {
+        get
+        {
+            SpoolStashBrain s = Player != null ? Player.Holds("Quick") : null;
+            return s != null ? s.Param("Patchcooldown_Base", SpoolData.PatchCooldown) : SpoolData.PatchCooldown;
+        }
+    }
 
     void Update()
     {
@@ -40,6 +60,7 @@ public class SpoolHeroBrain : MonoBehaviour
                 nextMenu = Time.time + 0.5f;
                 CheckMenu();
                 CheckDirections();
+                CheckStash();
             }
             if (Time.time >= nextCollect)
             {
@@ -67,6 +88,7 @@ public class SpoolHeroBrain : MonoBehaviour
         if (SpoolContent.Patch != null)
         {
             patchCommand = Helper_Entitytools.Createcommand(Master, SpoolData.PatchCommand, SpoolData.PatchLink, false, true);
+            patchCommand.Goalvalue = PatchCost;
             Helper_Entitytools.Updatecommand(Master, SpoolData.PatchLink, "", true, true);
         }
         // Subscribed after the Updatecommand calls above, which run each command once.
@@ -123,6 +145,26 @@ public class SpoolHeroBrain : MonoBehaviour
         Player.Socks = SpoolServer.DirectionRank(Master, SpoolData.Oddsocks[0].Name);
     }
 
+    // The Yarn Stash's upgrades on Spool: Elbow Patches' Health and Damage, taken back to nothing when the Stash no longer
+    // holds it (sold or destroyed), and PATCH's price on its button for the picker (Quick Patch).
+    void CheckStash()
+    {
+        SpoolStashBrain elbow = Player.Holds("Elbow");
+        float health = elbow != null ? elbow.Param("Herohealth_Multi", 0f) : 0f, damage = elbow != null ? elbow.Param("Herodamage_Multi", 0f) : 0f;
+        if (!Mathf.Approximately(health, ElbowHealth))
+        {
+            elbowHealth = ModKitUtil.Keep(Master, elbowHealth, "Health", Helper_Entitytools.Modtypes.Multi, health);
+            ElbowHealth = health;
+        }
+        if (!Mathf.Approximately(damage, ElbowDamage))
+        {
+            elbowDamage = ModKitUtil.Keep(Master, elbowDamage, "Damage", Helper_Entitytools.Modtypes.Multi, damage);
+            ElbowDamage = damage;
+        }
+        if (patchCommand != null && !Mathf.Approximately(patchCommand.Goalvalue, PatchCost))
+            SetPatchButton(patchOff);
+    }
+
     public string Menu()
     {
         List<string> l = new List<string>();
@@ -137,7 +179,8 @@ public class SpoolHeroBrain : MonoBehaviour
 
     // ---------------------------------------------------------------- carrying
 
-    // Spool picks up ground Thread within a tile and a Loom's within 1.5, and hands it over at its Yarn Stash.
+    // Spool picks up ground Thread within a tile (Roomy Pockets: farther) and a Loom's within 1.5, and hands it over at its
+    // Yarn Stash.
     void Collect()
     {
         if (!ModKitUtil.Alive(Master))
@@ -145,7 +188,8 @@ public class SpoolHeroBrain : MonoBehaviour
         Vector3 pos = ModKitUtil.Pos(Master);
         bool changed = false;
         int room = Player.CarryCap - Player.Carried;
-        int took = SpoolServer.Collect(Master, SpoolData.PickHero, room);
+        float reach = Player.Reach;
+        int took = SpoolServer.Collect(Master, reach, room);
         took += SpoolServer.CollectLooms(Owner, Master, SpoolData.LoomPick, room - took);
         if (took > 0)
         {
@@ -154,7 +198,7 @@ public class SpoolHeroBrain : MonoBehaviour
         }
         if (Player.Carried < Player.CarryCap)
             fullWarned = false;
-        else if (!fullWarned && SpoolServer.DropsNear(pos, SpoolData.PickHero) > 0)
+        else if (!fullWarned && SpoolServer.DropsNear(pos, reach) > 0)
         {
             fullWarned = true;
             SpoolUtil.Warn(Master, SpoolData.WarnCarryFull);
@@ -231,13 +275,14 @@ public class SpoolHeroBrain : MonoBehaviour
     // ---------------------------------------------------------------- PATCH
 
     // The button greys out while PATCH threads its needle: its Goalstring is "Off", synced through Commandlist
-    // (Run=false, so the command is not cast again).
+    // (Run=false, so the command is not cast again). Its Goalvalue carries PATCH's price, which the picker shows.
     void SetPatchButton(bool off)
     {
         patchOff = off;
         if (patchCommand == null)
             return;
         patchCommand.Goalstring = off ? "Off" : "";
+        patchCommand.Goalvalue = PatchCost;
         Helper_Entitytools.Updatecommand(Master, SpoolData.PatchLink, "", false, false);
     }
 
@@ -264,19 +309,25 @@ public class SpoolHeroBrain : MonoBehaviour
         return being != SpoolData.Pin && being != SpoolData.HeadToken && being != SpoolData.Hero && ModKitUtil.MaxHealth(m) > 0f;
     }
 
-    // The most hurt of this player's Spool units and buildings within reach.
-    Entity_Master MostHurt(Vector3 pos)
+    // This player's Spool units and buildings PATCH can mend.
+    List<Entity_Master> Mine()
     {
         List<Entity_Master> mine = new List<Entity_Master>();
         foreach (SpoolBuilding b in SpoolServer.Buildings)
-            if (b != null && b.Started && b.Master != null) mine.Add(b.Master);
+            if (b != null && b.Started && b.Master != null && Patchable(b.Master)) mine.Add(b.Master);
         foreach (SpoolUnitBrain u in SpoolServer.Units)
-            if (u != null && u.Master != null) mine.Add(u.Master);
+            if (u != null && u.Master != null && Patchable(u.Master)) mine.Add(u.Master);
+        return mine;
+    }
+
+    // The most hurt of this player's Spool units and buildings within reach.
+    Entity_Master MostHurt(Vector3 pos)
+    {
         Entity_Master best = null;
         float worst = 0.999f;
-        foreach (Entity_Master m in mine)
+        foreach (Entity_Master m in Mine())
         {
-            if (!Patchable(m) || ModKitUtil.Flat(ModKitUtil.Pos(m), pos) > SpoolData.PatchRange + 0.6f)
+            if (ModKitUtil.Flat(ModKitUtil.Pos(m), pos) > SpoolData.PatchRange + 0.6f)
                 continue;
             float frac = ModKitUtil.Health(m) / Mathf.Max(0.01f, ModKitUtil.MaxHealth(m));
             if (frac < worst)
@@ -288,7 +339,8 @@ public class SpoolHeroBrain : MonoBehaviour
         return best;
     }
 
-    // 20 Thread from the Yarn Stash heals the picked unit or building by 20% of its maximum health, at most 500.
+    // 20 Thread from the Yarn Stash (Quick Patch: fewer, and ready sooner) heals the picked unit or building by 20% of its
+    // maximum health, at most 500; Darning mends what stands around it as much.
     public void Patch(Entity_Master target)
     {
         if (Time.time < PatchReady)
@@ -326,7 +378,7 @@ public class SpoolHeroBrain : MonoBehaviour
             SpoolUtil.Warn(Master, SpoolData.WarnNoStash);
             return;
         }
-        if (!SpoolServer.SpendStash(Owner, SpoolData.PatchCost))
+        if (!SpoolServer.SpendStash(Owner, PatchCost))
         {
             LastPatch = "short";
             SpoolUtil.Warn(Master, SpoolData.WarnShort);
@@ -334,7 +386,8 @@ public class SpoolHeroBrain : MonoBehaviour
         }
         float heal = Mathf.Min(max * SpoolData.PatchHeal, SpoolData.PatchMax);
         ModKitUtil.Heal(Master, target, heal);
-        PatchReady = Time.time + SpoolData.PatchCooldown;
+        Darn(target, heal);
+        PatchReady = Time.time + PatchCooldown;
         Patches++;
         LastPatch = ModKitUtil.BeingName(target) + " +" + heal.ToString("F1");
         SetPatchButton(true);
@@ -344,5 +397,24 @@ public class SpoolHeroBrain : MonoBehaviour
             Master.Entitydirection.Value = dir.normalized;
         // Clients: Spool plays its Patch animation and a thread runs from Spool to what it mends.
         Master.Radio.Vis_ClientRpc("Spool_Patch", ModKitUtil.Pos(target), (float)target.NetworkObjectId);
+    }
+
+    // Darning: every other unit and building of this player's within reach of what PATCH mended is healed the same
+    // amount as it was (the sheet: "healed the same").
+    void Darn(Entity_Master target, float heal)
+    {
+        SpoolStashBrain s = Player.Holds("Darning");
+        if (s == null)
+            return;
+        float reach = s.Param("Darning_Base", 1.5f);
+        Vector3 at = ModKitUtil.Pos(target);
+        foreach (Entity_Master m in Mine())
+        {
+            if (m == target || ModKitUtil.Flat(ModKitUtil.Pos(m), at) > reach || ModKitUtil.Health(m) >= ModKitUtil.MaxHealth(m) - 0.01f)
+                continue;
+            ModKitUtil.Heal(Master, m, heal);
+            ModKitUtil.Vis(Master, "Spool_Mend", ModKitUtil.Pos(m), 0f);
+            Darned++;
+        }
     }
 }
