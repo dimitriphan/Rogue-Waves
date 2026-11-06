@@ -21,8 +21,8 @@ moves those two bodies to the sage as well, per sheet, since the same whites are
     python3 concept-tools/temp_art/spool_sage.py          -> recolours the files in place, prints what changed
     python3 concept-tools/temp_art/spool_sage.py --check  -> exits 1 if any old colour is left in those files
 
-Re-running a Spool generator (spool_units.py, spool_threadhead.py, ui_icons.py: their palettes are sage already) is
-safe; apply_picks.py copies purple versions in, so it runs this script after a Spool pick.
+Re-running spool_threadhead.py or ui_icons.py (sage palettes already) is safe; spool_units.py still draws the Seam and
+Mangled bodies white, so run this script after it (--check catches a missed run); apply_picks.py copies purple versions in, so it runs this script after a Spool pick.
 """
 import colorsys
 import glob

@@ -227,18 +227,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **State (2026-11-06, base `7997a4d`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
-  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps his
-  shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part; kit
-  1.14. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`, weather looks included), the menu wobble round
-  (`BUTTON_WOBBLE_2026-11-06.md`) and chart round 1 (`CHART_ROUND1_2026-11-06.md`); a full test round on `6830ba2` is
-  running and reports in its own PR. Built since, compiled here, not run on the PC: the MVP board, the whole-pixel
-  follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12` keep their
-  tildes until he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest last);
-  reports: `docs/reports/README.md`.
+- **State (2026-11-06, base `6eab9ac`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
+  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps
+  his shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
+  kit 1.14. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`; of the weather look only its W4 lines), the menu
+  wobble round (`BUTTON_WOBBLE_2026-11-06.md`) and chart round 1 (`CHART_ROUND1_2026-11-06.md`); a full test round on
+  `6830ba2` is running and reports in its own PR. Built since, compiled here, not run on the PC: the MVP board, the
+  whole-pixel follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12`
+  keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest
+  last); reports: `docs/reports/README.md`.
 - **Next, in order:** the full test round's report and the PC checks it leaves (`BUG_FIXES_2026-11-06.md` §5,
-  `CHART_BUILD_2026-11-06.md` §4, `STOCK_TRINKETS_2026-11-05.md` §6 and §8, the MVP board's two-player checks, the
-  top 4 pitfall fixes' checks); then Spool's 22 upgrades and UNTHREAD (scope `08`, B19), with Spool's brain guard.
+  `CHART_BUILD_2026-11-06.md` §4, `STOCK_TRINKETS_2026-11-05.md` §6 and §8, the MVP board's two-player checks, the top 4
+  pitfall fixes' checks), and the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7); then Spool's 22
+  upgrades and UNTHREAD (scope `08`, B19), with Spool's brain guard.
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
