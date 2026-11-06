@@ -305,7 +305,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
   (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
 - **2026-11-06: sea chart redrawn in the game's look** (Dimitri: "more inline with the current TDS art style and
-  theme"): no panel, the stock title and rule, square tiles, line icons, corner brackets (`CHART_NAVIGATION.md` §3.6,
+  theme"): no panel, the stock title and rule, framed square tiles, pixel icons, corner brackets (`CHART_NAVIGATION.md` §3.6,
   `chart_look_*.png`). Docs only; not built.
 
 ### Log (newest last; was "Now" until 2026-10-11)
@@ -1263,11 +1263,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the sea chart view redrawn in the game's look** (Dimitri, 05:23Z: "Draft a design that is more inline
   with the current TDS art style and theme"): the first draft's board (rounded panel, discs, heavy type) replaced by the
   stock UI's own pieces as the PC round 4 pictures show them: no panel, the chart on the dialog's dim; the stock title
-  with its glyph and the rule that turns down the right; one caption line with "•" instead of a hover box; square
-  tiles (teal, coral Breakers, dark once sailed); white 12 px line icons (Cove, Wreck, harbour, tick, boat); white
-  corner brackets on the choices; a banner in the HUD's "TIDE APPROACHING" shape. New `concept-tools/sea_chart_look.py`
-  (mockups `docs/concepts/art/chart_look_vote.png`, `chart_look_boat.png`; a preview over a round 4 screenshot kept in
-  the project files only). `CHART_NAVIGATION.md` §3.1, §3.6 and §6 updated. Docs only; nothing ran on the PC.
+  with its glyph and the rule that turns down the right; one caption line with "•" instead of a hover box; square tiles
+  framed like the stock cards (teal, coral Breakers, slate once sailed); coloured 12 px pixel icons (Cove, Wreck,
+  harbour, boat; a white tick); white corner brackets on the choices; a banner in the HUD's "TIDE APPROACHING" shape.
+  New `concept-tools/sea_chart_look.py` (mockups `docs/concepts/art/chart_look_vote.png`, `chart_look_boat.png`; a
+  preview over a round 4 screenshot kept in the project files only). `CHART_NAVIGATION.md` §2, §3.1, §3.6, §6 and §8
+  updated; reviewer's eight findings fixed. Docs only; nothing ran on the PC.
 
 ### Decisions
 

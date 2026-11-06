@@ -4,17 +4,19 @@ sea_chart_view.py (the layout draft); only the look changes, taken from the stoc
 PC round 4 pictures show them:
 
 - no panel: the chart floats on the dialog's dim, like the stock choice dialog's cards;
-- a thin uppercase title with the stock corner rule (a small glyph, a line under the title that turns down the right
-  side), and one short caption line with "•" between its parts, as under the stock cards;
-- square tiles for islands, as the stock cards are squares: Rogue Teal, a Breaker in Storm Coral (the coral tile
-  VENDCINT uses), a sailed one dark; white one-pixel line icons on them (the game's line-drawing icons);
+- the stock title: capitals centred over the block, a bright rule that turns down the right side with a small knot at
+  the corner, a small glyph standing on the rule; one short caption line with "•" between its parts, as under the
+  stock cards;
+- square tiles built like the stock cards (a light grey outer frame, a gap, the tile, a darker inner rim): Rogue Teal,
+  a Breaker in Storm Coral (the coral tile VENDCINT uses), a sailed one slate (VENDCINT's back tile); small coloured
+  pixel icons on them, as on the stock cards, the tick white like the stock "back" mark;
 - the choices in white corner brackets, the game's selection mark; lanes as thin rules, dashed ahead, solid sailed.
 
     python3 concept-tools/sea_chart_look.py                  -> docs/concepts/art/chart_look_vote.png, chart_look_boat.png
     python3 concept-tools/sea_chart_look.py --over SHOT.png  -> the vote view over a real map screenshot (1600 x 900 crop
                                                                 of SHOT), written next to SHOT; never committed
 
-Fonts: Inter Light and Regular stand in for the game's thin sans. Not game art; the pixel icons are drawn here as
+Fonts: Inter stands in for the game's own TMP font, which only the build can use. Not game art; the pixel icons are drawn here as
 string rows in the kit's way (TDS_Vessel_Creator/docs/03 §2) and would become the mode's temporary art.
 """
 import os, sys
@@ -25,33 +27,37 @@ import sea_chart as sc
 from sea_chart_view import stops, forward, nice, SEED, ROUTE, HOVER, RETRIES, ICONS, OUT, WEATHER_ICON
 
 TEAL, SWELL, FOAM, CORAL, SAND = (0x3F, 0x8F, 0x96), (0x2E, 0x4A, 0x62), (0xE9, 0xF1, 0xEE), (0xE2, 0x72, 0x5B), (0xD8, 0xC4, 0x9A)
-DARK = (0x2A, 0x33, 0x3D)          # the dark tile (VENDCINT's back button)
+DARK = (0x5B, 0x5D, 0x69)          # the slate tile (VENDCINT's back button)
+FRAME = (0xC8, 0xCC, 0xD0)         # the cards' light grey outer frame
 INK = (0xF2, 0xF4, 0xF3)
 S = 2                              # supersampling for the vector layer
 
 FONT_DIR = "/usr/share/fonts/opentype/inter/"
 
 
-def font(size, weight="Light"):
+def font(size, weight="Regular"):
     return ImageFont.truetype(FONT_DIR + "Inter-%s.otf" % weight, size * S)
 
 
-# 12 x 12 line icons, '#' = ink, '+' = accent (Wet Sand), '.' = clear
+# 12 x 12 pixel icons, coloured like the stock cards' icons (a bottle, a coin, a hammer); the tick is white like the
+# stock "back" mark. One character per pixel, '.' clear (the kit's string rows, TDS_Vessel_Creator/docs/03 §2).
+PAL = {"w": (0xF2, 0xF4, 0xF3), "g": (0xA9, 0xB1, 0xB8), "G": (0x7D, 0x86, 0x8F), "o": (0xF0, 0x9A, 0x3E),
+       "y": (0xF6, 0xD8, 0x6B), "b": (0x7A, 0x4E, 0x33), "B": (0xA8, 0x72, 0x48), "s": (0xD8, 0xC4, 0x9A)}
 PIX = {
-    "harbour": ["....####....", "....#..#....", "....####....", ".....##.....", "...######...", ".....##.....",
-                ".....##.....", "#....##....#", "##...##...##", ".##..##..##.", "..###..###..", "....####...."],
-    "cove": ["............", ".....#......", ".....##.....", "....#.#.....", "....#..#....", "...#.++.#...",
-             "...#.++.#...", "....#..#....", ".....##.....", ".##......##.", "...######...", ".##......##."],
-    "wreck": ["............", "............", "..########..", ".#........#.", ".#........#.", ".####++####.",
-              ".#...++...#.", ".#........#.", ".#........#.", ".##########.", "............", "............"],
-    "check": ["............", "............", "..........#.", ".........#..", "........#...", "#......#....",
-              ".#....#.....", "..#..#......", "...##.......", "............", "............", "............"],
-    "boat": [".....#......", ".....##.....", ".....#+#....", ".....#++#...", ".....#+++#..", ".....#####..",
-             ".....#......", "############", ".#........#.", "..########..", "............", "............"],
+    "harbour": ["....gggg....", "....g..G....", "....ggGG....", ".....gG.....", "...ggggGG...", ".....gG.....",
+                ".....gG.....", "g....gG....G", "gg...gG...GG", ".gg..gG..GG.", "..ggg..GGG..", "....gGGG...."],
+    "cove": ["............", ".....y......", "....yo......", "....yoo.y...", "...yooooy...", "...yoyyoy...",
+             "...ooyyoo...", "....oyyo....", ".b........b.", "..bBBbbBBb..", ".bBBbbbbBBb.", "..b......b.."],
+    "wreck": ["............", "............", "..bbbbbbbb..", ".bBBBBBBBBb.", ".bBBBBBBBBb.", ".bbbbyybbbb.",
+              ".bBBByyBBBb.", ".bBBBBBBBBb.", ".bBBBBBBBBb.", ".bbbbbbbbbb.", "............", "............"],
+    "check": ["............", "............", "..........w.", ".........ww.", "........ww..", "w......ww...",
+              "ww....ww....", ".ww..ww.....", "..wwww......", "...ww.......", "............", "............"],
+    "boat": [".....b......", ".....bs.....", ".....bss....", ".....bsss...", ".....bssss..", ".....bsssss.",
+             ".....b......", "wwwwwwwwwwww", ".wwwwwwwwwg.", "..gggggggg..", "............", "............"],
 }
 
 
-def pix(name, scale, ink=INK, accent=SAND, alpha=255):
+def pix(name, scale, alpha=255):
     rows = PIX[name]
     im = Image.new("RGBA", (12 * scale, 12 * scale), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
@@ -59,8 +65,7 @@ def pix(name, scale, ink=INK, accent=SAND, alpha=255):
         assert len(row) == 12, (name, y)
         for x, ch in enumerate(row):
             if ch != ".":
-                c = ink if ch == "#" else accent
-                d.rectangle([x * scale, y * scale, x * scale + scale - 1, y * scale + scale - 1], fill=c + (alpha,))
+                d.rectangle([x * scale, y * scale, x * scale + scale - 1, y * scale + scale - 1], fill=PAL[ch] + (alpha,))
     return im
 
 
@@ -132,13 +137,24 @@ def brackets(c, box, a=255, arm=6, w=1.5):
         c.line([(x, y + dy * arm), (x, y), (x + dx * arm, y)], INK, a, w)
 
 
-def ruled_title(c, x, y, text, size, right, bottom, a=235):
-    """The stock dialog's title: a small glyph, the title in thin capitals, a rule under it that turns down the right."""
-    f = font(size)
-    c.stamp(wicon("Crest", 1, a), x - 16, y + size * 0.85)
-    c.text((x, y), text, f, INK, a, spacing=size * 0.06)
-    ry = y + size * 1.45
-    c.line([(x - 18, ry), (right, ry), (right, bottom)], INK, 150, 1)
+def ruled_title(c, left, y, text, size, right, bottom, a=240):
+    """The stock dialog's title: capitals centred over the block, a bright rule under them that turns down the right
+    side with a small knot at the corner, and a small glyph standing on the rule's left end."""
+    c.text(((left + right) / 2, y), text, font(size), INK, a, anchor="ma")
+    ry = y + size * 1.4
+    c.line([(left, ry), (right, ry), (right, bottom)], INK, a, 1.5)
+    c.rect((right - 2, ry - 2, right + 3, ry + 3), INK, None, a)
+    c.stamp(wicon("Crest", 1, a), left, ry - 13)
+
+
+def framed(c, box, fill, a=255, outer=True):
+    """A stock card: a light grey outer frame, a gap, the tile, and a darker inner rim."""
+    x0, y0, x1, y1 = box
+    if outer:
+        c.rect((x0 - 3, y0 - 3, x1 + 3, y1 + 3), None, FRAME, 0, int(a * 0.85), 1)
+    c.rect(box, fill, None, a)
+    dark = tuple(int(v * 0.8) for v in fill)
+    c.rect((x0 + 2, y0 + 2, x1 - 2, y1 - 2), None, dark, 0, a, 1)
 
 
 def tile(c, n, key, x, y, size, state, alpha):
@@ -154,7 +170,7 @@ def tile(c, n, key, x, y, size, state, alpha):
     else:
         fill = TEAL
     a = int(255 * alpha)
-    c.rect((x - half, y - half, x + half, y + half), fill, (min(255, fill[0] + 60), min(255, fill[1] + 60), min(255, fill[2] + 60)), a, a, 1)
+    framed(c, (x - half, y - half, x + half, y + half), fill, a, outer=size >= 20)
     sc_ = 2 if size >= 26 else 1
     if state == "harbour":
         c.stamp(pix("harbour", sc_, alpha=a), x - 6 * sc_, y - 6 * sc_)
@@ -197,7 +213,7 @@ def chart(c, box, rows, route, hover, mini=False, sail=None):
         for k, (a_, b_) in enumerate([(1, 5), (6, 10)]):
             ya, yb = rowy(a_) + 6, rowy(b_) - 6
             c.line([(x0 + 14, ya), (x0 + 14, yb)], INK, 90, 1)
-        c.text((ax0 + (ax1 - ax0) / 2, ay0 - 30), "THE LAST MAP", font(10, "Regular"), CORAL, 220, anchor="mm", spacing=1.5)
+        c.text((ax0 + (ax1 - ax0) / 2, ay0 - 30), "THE LAST MAP", font(10, "Regular"), CORAL, 220, anchor="mm")
 
     here = (here_row, route[-1])
     reach = forward(rows, *here)
@@ -243,7 +259,7 @@ def chart(c, box, rows, route, hover, mini=False, sail=None):
     if sail is None:
         c.stamp(pix("boat", 2 if not mini else 1), hx + T / 2 + 6, hy - 12 if not mini else hy - 6)
         if not mini:
-            c.text((hx + T / 2 + 36, hy), "YOU ARE HERE", font(10, "Regular"), INK, 215, anchor="lm", spacing=1)
+            c.text((hx + T / 2 + 36, hy), "YOU ARE HERE", font(10, "Regular"), INK, 215, anchor="lm")
     else:
         vx, vy = P(rows[voted[0]][voted[1]])
         bx, by = hx + (vx - hx) * sail, hy + (vy - hy) * sail
@@ -260,7 +276,7 @@ def chart(c, box, rows, route, hover, mini=False, sail=None):
         for i, (kind, col, text) in enumerate(items):
             if i == 3:
                 x, ly = x0 + 20, ly + 26
-            c.rect((x, ly - 8, x + 16, ly + 8), col, (min(255, col[0] + 60), min(255, col[1] + 60), min(255, col[2] + 60)))
+            framed(c, (x, ly - 8, x + 16, ly + 8), col, outer=False)
             if kind in ("cove", "wreck"):
                 c.stamp(pix(kind, 1), x + 2, ly - 6)
             c.text((x + 22, ly), text, f, INK, 205, anchor="lm")
@@ -276,7 +292,7 @@ def chart(c, box, rows, route, hover, mini=False, sail=None):
 def card(c, x, y, size, n, letter, focus):
     stop = n.get("stop")
     fill = CORAL if n["breaker"] else TEAL
-    c.rect((x, y, x + size, y + size), fill, (min(255, fill[0] + 60), min(255, fill[1] + 60), min(255, fill[2] + 60)), 255, 255, 1)
+    framed(c, (x, y, x + size, y + size), fill)
     if stop in ("cove", "wreck"):
         c.stamp(pix(stop, 2), x + size / 2 - 12, y + size / 2 - 12)
     elif n["weather"]:
@@ -339,15 +355,15 @@ def vote_view(rows, background=None):
     c = Canvas(W, H)
     P, choices = chart(c, (70, 46, 690, 860), rows, ROUTE, HOVER)
     # the stock dialog, moved to the right half: title and rule, the square cards, one caption line
-    ruled_title(c, 860, 300, "WHERE NEXT?", 28, 1440, 470)
+    ruled_title(c, 850, 290, "WHERE NEXT?", 28, 1260, 460)
     size, gap = 64, 18
-    x = 860
+    x = 1055 - (len(choices) * (size + gap) - gap) / 2      # the cards centred under the title, as stock
     for i, (r, k) in enumerate(choices):
         card(c, x, 370, size, rows[r][k], "ABC"[i], i == HOVER)
         x += size + gap
     n = rows[choices[HOVER][0]][choices[HOVER][1]]
-    c.text((860, 470), caption_for(n, rows), font(13), INK, 225)
-    c.text((860, 494), "Pick a card or a lit island  •  A tie goes to A  •  18 s", font(12), INK, 150)
+    c.text((1055, 470), caption_for(n, rows), font(13), INK, 225, anchor="ma")
+    c.text((1055, 494), "Pick a card or a lit island  •  A tie goes to A  •  18 s", font(12), INK, 150, anchor="ma")
     out = c.onto(base)
     return out
 
@@ -362,9 +378,9 @@ def boat_view(rows):
                     outline=(0xE6, 0xE2, 0xD6, 255), width=2 * S)
     c.dashed((360, 610), (740, 410), INK, 230, 2.5, 14, 10)
     brackets(c, (600, 320, 920, 460), 240, 18, 2)
-    # a banner in the HUD's own shape (TIDE APPROACHING): a filled bar, a lighter rim, thin capitals
-    c.rect((520, 30, 1080, 82), TEAL, (0x8F, 0xC9, 0xCC), 235, 255, 2)
-    c.text((800, 56), "SAILING TO THE COVE", font(26), INK, 255, anchor="mm", spacing=1.5)
+    # a banner in the HUD's own shape (TIDE APPROACHING): a bar inside a light grey frame with a gap, plain capitals
+    framed(c, (520, 30, 1080, 82), TEAL)
+    c.text((800, 56), "SAILING TO THE COVE", font(26), INK, 255, anchor="mm")
     c.text((800, 100), "Row 4 of 10  •  A retry back  •  Then on to the party's second pick", font(13), INK, 230, anchor="mm")
     chart(c, (1250, 140, 1560, 660), rows, ROUTE, HOVER, mini=True, sail=0.45)
     c.text((1405, 680), "M  •  the whole chart", font(12, "Regular"), INK, 220, anchor="mm")
@@ -374,8 +390,8 @@ def boat_view(rows):
     bx, by = 440, 590
     d.polygon([(bx - 30, by), (bx + 30, by), (bx + 20, by + 14), (bx - 20, by + 14)], fill=(0xEF, 0xEF, 0xE8, 255))
     d.line([(bx, by), (bx, by - 44)], fill=(0x6B, 0x55, 0x40, 255), width=3)
-    d.polygon([(bx + 2, by - 42), (bx + 2, by - 6), (bx + 26, by - 6)], fill=(0xE2, 0x72, 0x5B, 255))
-    d.text((40, 860), "stand-in for the boat's 3D chart as built today", font=ImageFont.truetype(FONT_DIR + "Inter-Light.otf", 12), fill=(0xFF, 0xFF, 0xFF, 140))
+    d.polygon([(bx + 2, by - 42), (bx + 2, by - 6), (bx + 26, by - 6)], fill=(0xD8, 0xC4, 0x9A, 255))
+    d.text((40, 860), "stand-in for the boat's 3D chart as built today", font=ImageFont.truetype(FONT_DIR + "Inter-Regular.otf", 12), fill=(0xFF, 0xFF, 0xFF, 140))
     return out
 
 
