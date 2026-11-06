@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwLVgWEmt5uoKjfb8QcLzYDf",
   "thread": "Set up ChatGPT for art and reviews",
-  "state": "waiting",
-  "started": "2026-11-06T23:20:59Z",
-  "step": "Plan posted, waiting for his go",
+  "state": "art",
+  "started": "2026-11-06T23:22:47Z",
+  "step": "Building the art guide and sprite pack",
   "helpers": [],
-  "updated": "2026-11-06T23:20:59Z"
+  "updated": "2026-11-06T23:22:47Z"
 }
