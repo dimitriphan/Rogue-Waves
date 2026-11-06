@@ -325,6 +325,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: sea chart navigation built** (Dimitri: "Go"): the chart view beside the vote and on M, banner and mini
   chart, Coves and Wrecks, CV1-CV12 (`CHART_BUILD_2026-11-06.md`, PC list §4). Compiled here and save fuzz passed, not
   run on the PC. No kit change, no pitfall.
+- **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
+  failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
+  from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
 - **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters, including the base game
   buttons in the main menu"): the game's half-pixel layout under the menu camera's sway; `RWPixels` puts still pictures on
   whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, pitfall #174). PC_RESULT_NOW. No kit change.
@@ -1345,6 +1348,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   self-tests CV1-CV5, CV9-CV12 (`90_Stops.cs`, `96_Flow.cs`); save fuzz F5 covers `S` and `save_fuzz.py` compiles again.
   `/code-review high` fixed 8 of 10; `/simplify` run. Compiled here (release 0/0, self-test 0 errors), not run on the
   PC; PC list `docs/reports/CHART_BUILD_2026-11-06.md` §4. No kit change, no pitfall.
+- **2026-11-06: multiplayer MVP board proposed** (Dimitri 06:35Z: "Draft an MVP board for multiplayer that shows
+  accolades and failures of the players"): `docs/mode/MVP_BOARD.md`. A "SHIP'S LOG" board after each won map (after
+  the leave vote, before the picks) and a Voyage board at the campaign's end, two or more players only; six accolades
+  and seven failures plus a fallback for each, everyone gets exactly one of each, an MVP in corner brackets under the
+  one coral banner. Most of it reads `Activeplayerdata` (kit `docs/16` §5), snapshotted per map; new: aura sent per
+  map, unanswered votes, drops, and leaks charged to the last hitter (an engine hook). Mockup
+  `docs/concepts/art/mvp_board_map.png` from `concept-tools/mvp_board_look.py`. Docs only, nothing compiled or run on
+  the PC; no kit change, no pitfall.
 - **2026-11-06: the menu buttons' wobble fixed** (thread "Fix stuttering buttons in main menu"; Dimitri 05:48Z "The
   buttons in game still stutter, but mainly in the main menu", 05:57Z "The button itself wobbles and jitters, including the
   base game buttons in the main menu"). Report `docs/reports/BUTTON_WOBBLE_2026-11-06.md`. Read from his game's `level1`-`3`
