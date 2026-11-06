@@ -328,9 +328,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
   failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
   from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
-- **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters, including the base game
-  buttons in the main menu"): the game's half-pixel layout under the menu camera's sway; `RWPixels` puts still pictures on
-  whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, pitfall #174). PC_RESULT_NOW. No kit change.
+- **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
+  layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
+  PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1369,7 +1369,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   skips scalers, transitions, animators, layout cells, scroll lists, `Bla_Ui_Confirmation` and a picture someone else keeps
   writing. Self-test P1-P2 (`94_Pixels.cs`, in `96_Flow.cs` after B1): whole pixels, and 144 frames read back with the fix,
   then at the game's own places (`RWPixels.Restore`), then on again. Kit `docs/09` #174 and `docs/20` §6. Compiled here
-  (every mode build; `TWOPC` and `DIALOGLOOK` keep the base's stub errors), `/code-review high` ten fixed. PC_RESULT_LOG
+  (every mode build; `TWOPC` and `DIALOGLOOK` keep the base's stub errors), `/code-review high` ten fixed. PC round
+  `Wobble_round1` (his OK 05:57Z, 06:15Z; code `2a3d907`): mode self-test 168/0/0 with every part on, P1 and P2 pass, FINDING
+  P2 SEEN (the game's own places change in 144 of 144 frames at 2560x1440, ours in 0); release build and boot check of six
+  parts, 0 exceptions; the fixed mode build stays in his Mods, the old one parked; `Run-SelfTests.ps1` doesn't restore the
+  save, so it was copied back by hand (the README said otherwise).
   No kit change; pitfall #174. Next free: kit 1.15, pitfall #175.
 
 ### Decisions

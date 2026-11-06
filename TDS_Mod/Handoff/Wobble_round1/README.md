@@ -60,6 +60,6 @@ the other five parts' release builds in `TDS\Mods` stay as they are and enabled.
    fixed release build stands in `TDS\Mods\RogueWavesModeMod`, enabled. Then
    `Run-SelfTests.ps1 -Vessels RogueWavesMode,Argo,Yossele,Spool,Uloe,RogueWavesFoes -BootCheck` and send its lines.
    Otherwise put the parked copy from step 1 back, hash-identical, and say why.
-7. Leave the six parts enabled as he had them, his save back (the script restores it), TDS closed. `Get-PcManifest.ps1`, then
+7. Leave the six parts enabled as he had them, his save back (`Run-SelfTests.ps1` only backs it up: copy the backup back with TDS closed), TDS closed. `Get-PcManifest.ps1`, then
    send the results and stop the session.
 
