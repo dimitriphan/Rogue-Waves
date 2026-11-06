@@ -44,8 +44,7 @@ code { font-family: var(--rt-label); font-size: .9em; }
 .frame::before { content: ""; position: absolute; left: 0; top: -1px; width: 1px; height: 9px; background: var(--rt-foam); }
 .frame::after { content: ""; position: absolute; right: -4px; top: -4px; width: 7px; height: 7px; background: var(--rt-foam); }
 /* a bevelled square tile */
-.tile { background: var(--rt-teal); box-shadow: inset 0 0 0 3px var(--rt-teal-hi); }
-.tile-o { outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
+.tile { background: var(--rt-teal); box-shadow: inset 0 0 0 3px var(--rt-teal-hi); outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
 
 /* masthead */
 .mast { padding-block: 56px 28px; background: linear-gradient(180deg, var(--rt-swell-deep), var(--rt-swell)); }
@@ -55,7 +54,7 @@ code { font-family: var(--rt-label); font-size: .9em; }
 .brand img { width: 56px; height: 56px; }
 .mast h1 { font-size: clamp(2.6rem, 9vw, 5.4rem); line-height: 1; letter-spacing: .14em; }
 .mast .tag { font-size: 1.15rem; max-width: 62ch; color: var(--rt-mist); }
-.banner { justify-self: start; background: var(--rt-coral); color: var(--rt-on-coral); font: 400 clamp(1.15rem, 2.6vw, 1.5rem)/1.2 var(--rt-head); letter-spacing: .12em; text-transform: uppercase; padding: 10px 18px; outline: 1px solid var(--rt-foam); outline-offset: 2px; margin: 2px; }
+.banner { justify-self: start; background: var(--rt-coral); color: var(--rt-on-coral); font: 400 1.5rem/1.25 var(--rt-head); letter-spacing: .12em; text-transform: uppercase; padding: 10px 18px; outline: 1px solid var(--rt-foam); outline-offset: 2px; margin: 2px; }
 .tally { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 22px; padding: 18px 16px 4px 0; }
 .tally div { display: grid; gap: 4px; }
 .tally b { font: 400 2.2rem/1 var(--rt-label); color: var(--rt-sand); }
@@ -108,7 +107,7 @@ section { padding-block: 60px 8px; }
 .stops { display: grid; gap: 18px; }
 .stop { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
 .stop .mark { width: 40px; height: 40px; display: grid; place-items: center; font: 400 1.1rem/1 var(--rt-label); }
-.stop .mark.wreck { background: var(--rt-slate); box-shadow: inset 0 0 0 3px #696B77; }
+.stop .mark.wreck { background: var(--rt-slate); box-shadow: inset 0 0 0 3px #696B77; outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
 .stop h3 { margin-bottom: 4px; }
 .stop p + p { margin-top: 6px; }
 .weathers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px 18px; margin-top: 34px; }
@@ -192,14 +191,14 @@ section { padding-block: 60px 8px; }
 .dlist .r1 { grid-column: 2; font-size: .84rem; color: var(--rt-mist); line-height: 1.35; }
 .kind { font: 400 .7rem/1 var(--rt-label); padding: 2px 5px; vertical-align: 2px; margin-left: 4px; }
 .kind-shift { color: var(--rt-swell); background: var(--rt-sand); }
-.kind-duo { color: var(--rt-foam); background: var(--rt-teal-lo); }
+.kind-duo { color: var(--rt-foam); background: var(--rt-swell); box-shadow: inset 0 0 0 1px var(--rt-teal-hi); }
 
 /* finds */
 .finds { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px 18px; }
 .finds .panel h3 { display: flex; align-items: baseline; gap: 10px; }
-.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.items { list-style: none; margin: 0; padding: 4px 0 0 4px; display: grid; gap: 16px; }
 .items li { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: center; }
-.items img { width: 32px; height: 32px; padding: 5px; box-sizing: content-box; background: var(--rt-teal); box-shadow: inset 0 0 0 3px var(--rt-teal-hi); }
+.items img { width: 32px; height: 32px; padding: 5px; box-sizing: content-box; background: var(--rt-teal); box-shadow: inset 0 0 0 3px var(--rt-teal-hi); outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
 .items b { display: block; font-size: .94rem; font-weight: 600; }
 .items span { font-size: .84rem; color: var(--rt-mist); }
 .stock { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -255,7 +254,7 @@ footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; di
       <div><b class="num">16</b><span>Cardinals in the shop</span></div>
       <div><b class="num">4</b><span>foe modifiers</span></div>
       <div><b class="num">3</b><span>sea weathers</span></div>
-      <div><b class="num">2</b><span>stops off the map: Cove, Wreck</span></div>
+      <div><b class="num">2</b><span>new stops: the Cove and the Wreck</span></div>
     </div>
   </div>
 </header>

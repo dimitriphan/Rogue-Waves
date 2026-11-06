@@ -16,7 +16,8 @@ https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr (private to Dimitri).
 
 Pictures come only from the repository: the mode's icons and VENDCINT sheet, Spool's sage green sprite, the Uloe
 concept frame, Yossele's final idle sheet, one tower model preview per vessel, the chart view mockup
-(`docs/concepts/art/chart_look_vote.png`) and one PC screenshot of Argo. No base game sprite and nothing from the project files.
+(`docs/concepts/art/chart_look_vote.png`) and one PC screenshot of Argo. No base game sprite and nothing from the
+project files.
 
 **Keeping it current.** Content as of 2026-11-06, base `262f2c6`. The Directions and the new Trinkets and Cardinals
 were drawn from scope `11` and `12` with a one-off script, so a change there is edited into `spotlight.src.html` by

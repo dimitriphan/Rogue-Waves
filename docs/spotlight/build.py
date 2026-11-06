@@ -2,9 +2,8 @@
 
 Reads `spotlight.src.html` (the page, with `{{img:<key>}}` placeholders) and the repository's own art, and writes
 `spotlight.html`, one self-contained file with every picture inlined as a data URI. Every picture comes from the
-repository (the pack's icons and sprites, the Uloe art, the Yossele sheet, model previews, the sea chart view and one
-screenshot of Argo); nothing comes
-from the project files or the base game.
+repository (the pack's icons and sprites, the Uloe art, the Yossele sheet, model previews, the sea chart view and
+one screenshot of Argo); nothing comes from the project files or the base game.
 
     python3 docs/spotlight/build.py            # from the repository root
 """
