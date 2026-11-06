@@ -25,7 +25,7 @@ public static class RWDirections
     static readonly Dictionary<string, RWDirectionDef> defs = new Dictionary<string, RWDirectionDef>();
     static readonly Dictionary<string, Upgradeproperties> effects = new Dictionary<string, Upgradeproperties>();
 
-    // Defaults Claude picked (docs/scope/11's NEEDS line; docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §7.1, docs/mode/MECHANIC_IDEAS.md §4).
+    // Claude's sheets in docs/scope/11 (By: Claude; docs/reports/SCOPE_FIT_PLAN_2026-10-28.md §7.1, docs/mode/MECHANIC_IDEAS.md §4).
     public static readonly RWDirectionDef[] Mine =
     {
         new RWDirectionDef { Name = "Tougher", Display = "Made of Tougher Stuff", Look = "Direction_Tougher", Reach = "Mob", Needs = "Minions",
@@ -113,7 +113,7 @@ public static class RWDirections
     public const float TougherMaxShare = 0.25f;     // rank III: one hit takes at most this share of the unit's max health
     public const float SpringShrug = 0.1f;          // Spring Tide rank III: a tenth off every hit on a tower
     public static readonly float[] SpringHealth = { 0f, 4f, 7f, 10f };        // max health a tower gains each Tide, kept for the map
-    public static readonly float[] MendHeal = { 0f, 5f, 8f, 12f };            // x the healing tower's level, read at each Tide
+    public static readonly float[] MendHeal = { 0f, 5f, 8f, 12f };            // flat at each Tide, whatever the tower's level (scope 11; Dimitri 2026-11-06)
     public static readonly float[] MendRange = { 0f, 2f, 2.5f, 3f };
 
     public static void Build()
@@ -581,9 +581,10 @@ public static class RWDirections
     }
 
     // Each Tide's break, host: Spring Tide grows the health of each of the holder's towers, and Tidal Mend heals what stands
-    // around each of them, by the tower's level now (the stock Regen read it once, when the effect started: MODE-C5).
+    // around each of them by its rank's flat number, whatever the tower's level (scope 11; Dimitri 2026-11-06).
     static readonly Dictionary<Entity_Master, Link_Modifier> spring = new Dictionary<Entity_Master, Link_Modifier>();
     public static float Mended, Grown;      // self-test
+    public static int Mends;                // self-test: how many heals Tidal Mend gave
 
     public static void TideEffects(int wave)
     {
@@ -608,7 +609,7 @@ public static class RWDirections
                 if (springRank > 0)
                     Grow(t, SpringHealth[springRank]);
                 if (mendRank > 0)
-                    MendAround(t, all, MendHeal[mendRank] * Mathf.Max(1, t.Entitydata.Value.Level), MendRange[mendRank], pool);
+                    MendAround(t, all, MendHeal[mendRank], MendRange[mendRank], pool);
             }
         }
         foreach (Entity_Master t in new List<Entity_Master>(spring.Keys))
@@ -661,6 +662,7 @@ public static class RWDirections
             {
                 Helper_Entitytools.Interactheal(tower, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
                 Mended += heal;
+                Mends++;
             }
             float past = heal - Mathf.Max(0f, missing);
             if (pools && past > 0f)

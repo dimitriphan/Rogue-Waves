@@ -87,7 +87,7 @@ Small notes, not counted as rows:
 
 ## 3. What the next threads take from this page
 
-- **Dimitri:** N1 and N2, one word each (a card in the thread).
+- **Dimitri:** N1 and N2, one word each (a card in the thread). Answered 01:03Z: "Code follows the scope" for both, built the same day; the PC checks are in `STOCK_TRINKETS_2026-11-05.md` §8.
 - **Build thread:** whichever way N1 and N2 go (one line each), then B18/B19 as queued.
 - **PC round 4:** nothing new; every RESOLVED row here is built-not-run and already on its lists.
 - **Scope sync:** this PR edits 02, 04, 05 and 15, so his project-files copy and the Scope Editor are behind in those

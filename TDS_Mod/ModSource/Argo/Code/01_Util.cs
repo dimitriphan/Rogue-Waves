@@ -336,7 +336,7 @@ public static class ArgoUtil
         if (vfx)
             ModKitUtil.Debuff(by, target, "Debuff_Slow", seconds);
         // Deep Water is one slow a foe, whichever Argo leads the net that tick (the lead can change between re-ticks).
-        string key = kind == "Water" ? kind + "#" + target.NetworkObjectId
+        string key = kind == "Water" ? WaterKey(target)
             : kind != "" && by != null ? kind + "#" + by.NetworkObjectId + "#" + target.NetworkObjectId : "";
         Held h;
         if (key != "" && held.TryGetValue(key, out h) && h.Mod != null && !h.Mod.Dead && h.Foe == target)
@@ -379,6 +379,15 @@ public static class ArgoUtil
     }
 
     public static void ForgetSlows() { held.Clear(); }
+
+    static string WaterKey(Entity_Master foe) { return "Water#" + foe.NetworkObjectId; }
+
+    // Self-test: the slow Deep Water holds on a foe now (0 when none).
+    public static float WaterSlowOn(Entity_Master foe)
+    {
+        Held h;
+        return foe != null && held.TryGetValue(WaterKey(foe), out h) && h.Mod != null && !h.Mod.Dead && h.Foe == foe ? -h.Mod.Value_Multi : 0f;
+    }
 
     // A one-off look a player must see (a refused build), past the same queue.
     public static void MustSee(Entity_Master by, string vfx, Vector3 at, Vector3 direction)
