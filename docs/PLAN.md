@@ -289,6 +289,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
   checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
   the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
+- **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
+  (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
+  undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
