@@ -1060,9 +1060,10 @@ public static partial class SpoolSelfTest
             }
             Hit(hm, tinA.Master, 20f);
             yield return Wait(0.1f);
+            float stashAtKey = player.Stash;
             Send(hm, SpoolData.PatchLink, "");
             yield return Wait(0.3f);
-            Check("the PATCH hotkey mends the most hurt in reach", hero.Patches == patches + 2, hero.LastPatch);
+            Check("the PATCH hotkey mends the most hurt in reach", hero.Patches == patches + 2, hero.LastPatch + "; Thread " + F(stashAtKey) + " when pressed, " + F(player.Stash) + " after, cooldown '" + hm.Commandlistserver[SpoolData.PatchLink].Goalstring + "'");
         }
         else ModKitTest.Setup("PATCH", "no Cookie Tin to mend");
 

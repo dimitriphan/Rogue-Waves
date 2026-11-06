@@ -56,6 +56,9 @@ public static partial class RWTest
         if (Asked("artrio")) { yield return Stepped(ReviewArtrio()); yield break; }
         if (Asked("review")) { yield return Stepped(GapsReview()); yield break; }
         if (Asked("light")) { yield return Stepped(GapsLight()); yield break; }
+#if MODKIT_PLAY
+        if (Asked("r4")) { yield return Stepped(GapsRound4()); yield break; }
+#endif
         if (Part("effects") || Part("scales")) yield return Stepped(GapsEffects());
         if (Part("any")) yield return Stepped(GapsAny());
         if (Part("base")) yield return Stepped(GapsBase());
@@ -1672,9 +1675,17 @@ public static partial class RWTest
         Entity_Master stockPick = Game_Selection.Instance.Selected;
         Info("F key: the stock handler alone selects", stockPick != null ? stockPick.Being.Value.ToString() : "nothing");
         Game_Selection.Instance.Selected = null;
+        int fixes0 = RogueWavesModeKitFocus.Fixes;
         focus.Function("Onpressed");
         yield return null;
         Entity_Master pick = Game_Selection.Instance.Selected;
+        Info("F key: the fix's count", fixes0 + " -> " + RogueWavesModeKitFocus.Fixes + ", installed " + RogueWavesModeKitFocus.Installed + ", respawn seen " + RogueWavesModeKitFocus.Respawned);
+#if MODKIT_PLAY
+        RogueWavesModeKitPlay.Log = m => Info("F key camera", m);
+        yield return RogueWavesModeKitPlay.Look(vessel.Entityposition.Value);
+        yield return new WaitForSecondsRealtime(0.5f);
+#endif
+        yield return Snap("fkey_after_respawn");
         Check("F key: after Boutman's real death with a real Boutbro up, F selects Boutman", pick != null && pick == vessel && pick.Being.Value.ToString() == "Hero_Boutman", "selected " + (pick != null ? pick.Being.Value.ToString() : "nothing") + ", stock alone " + (stockPick != null ? stockPick.Being.Value.ToString() : "nothing"));
         Game_Selection.Instance.Selected = null;
         focus.Function("Onpressed");

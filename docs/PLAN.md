@@ -259,7 +259,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #172 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #173 (which PR used which pitfall numbers: the last Log entry).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -295,6 +295,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
   stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
   (`docs/mode/CHART_NAVIGATION.md`). Docs only; not built until his go.
+- **2026-11-06: PC round 4 merged** (Dimitri: "Go"): `PC_ROUND4_2026-11-05.md`, no game fault in a self-test; open: P1-4
+  (rejoined friend's "BASIN BREACHED"), U3's "MAP 1 OF 10 WON", 548 Vfx/Mobbase lines, §8 test faults. Scope `07` sprite
+  NEEDS cleared. Test lines compiled here and on the PC. Pitfall #172.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1212,6 +1215,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   charts without stops; difficulty follows the row. Mockups from the new `concept-tools/sea_chart_view.py`. Code and
   checks CV1-CV12 in `CHART_NAVIGATION.md` §6 and §8. Reviewer's nine findings fixed. Docs only; nothing ran on the
   PC. No kit change, no pitfall.
+- **2026-11-06: PC round 4's results merged.** The round ran on his PC on `8b7daed` (kit 1.14; Dimitri "Go" 20:07Z
+  11-05) and wrote `docs/reports/PC_ROUND4_2026-11-05.md` with its test-only lines (`92_Round4.cs` part `r4`, `92_Gaps.cs`
+  F key, `92_Review.cs` R3's wall picture, Uloe `98_Upgrades.cs`, Spool `99_SelfTest.cs`). The cloud thread merged base
+  `b1fffbd`, compiled the mode (`_GAPS`, `_GAPS,MODKIT_PLAY`), Uloe and Spool with their self-test defines, added pitfall
+  #172 (the mode's Cardinal catch-up reaches towers already standing; Spring Tide's plain archer) and cleared scope `07`'s
+  sprite NEEDS line (Yossele walks rows 4/6 and 5/7 and attacks rows 2 and 1 from `Art/`, report §6.6). Not fixed here:
+  P1-4, U3's expected title, the 548 "Could not retrieve Vfx/Mobbase" lines, §8's test faults. Next free: kit 1.15,
+  pitfall #173.
 
 ### Decisions
 

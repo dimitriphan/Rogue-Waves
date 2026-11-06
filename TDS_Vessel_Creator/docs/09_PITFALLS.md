@@ -624,3 +624,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      on a tower placed before any Cardinal is bought (`96_Flow.cs` `PlaceArcher`), or in the stat's buckets (`Value_Add`)
      and on the modifier, never by the size of `Value_Calc` on a tower that may hold them. The formula, the clamp and both
      scripts read from code; the numbers fitted to two PC readings, not yet confirmed (the next round logs the parts).
+172. **In the mode a tower placed before a Cardinal is bought still gets it** (2026-11-06) → #171's "place it first" holds
+     in the base game only: the mode's `RWCardinals.CatchUp` (`RogueWavesMode/Code/17_Cardinals.cs`, MODE-C1) gives a
+     stock Cardinal bought mid-map to the vessel and every tower already standing, logging "Artifact_Titan caught up on 16
+     things already standing", so the flow's plain archer held Frail Titan and Paper Tower too (`(base 25 x Pmulti -0.25 +
+     Add 0) x Multi 0.00999999`) → in a mode test, measure a stat on the modifier or its buckets, or on a tower spawned by
+     a part the Cardinals skip, never on a tower kept "plain" by placing it early. Seen in game, PC round 4
+     (`docs/reports/PC_ROUND4_2026-11-05.md` §3); confirms #171's fitted numbers.
