@@ -334,6 +334,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: chart round 1 on the PC** (Dimitri: "Go chart round"): flow 178/1 (CV10's blacklist read too early, test
   fixed), two players 167/0; chart pictures on his PC; after-win vote's view and a mini chart overlap for his eye
   (`CHART_ROUND1_2026-11-06.md`). His builds and save back. No kit change, no pitfall.
+- **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
+  fixable?"): 14 small fixes need no decision (5 best proven on the PC after), three need his word
+  (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from code only; nothing changed or run on the PC.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1387,6 +1390,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   eye: the after-win vote captured with no view and its title over the cards, and the game's top-right title over the
   mini chart. CV10 now waits for the blacklist (compiled here). Not run: mouse clicks on islands, key M, the hover hitch.
   PC: Mods hash-identical, save copied back by hand, Unity project at the handoff with a TWOPC build.
+- **2026-11-06: pitfall fixes assessed** (thread "Find fixes suggested by the pitfalls"): every pitfall #1-#173 checked
+  against the six parts and `Shared` by three read-only sub-agents (two Haiku scans by number range, one Opus pass over
+  the batch §0 leads, the code review's 22 left items and the chart reviewer's notes), each hit read in place. Top items:
+  Spool's and Uloe's brains switch off on their first exception (#80), a missing stock elite's stand-in comes from the
+  campaign's own four (#146), a Wreck-given Pearl Oyster pays nothing that map. Not bugs: Uloe's `"Collide"` (the game's
+  beam param), the vessels' spawn-time `Updatecommand(..., true)`. Docs only.
 
 ### Decisions
 

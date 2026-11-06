@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `PITFALL_FIXES_2026-11-06.md` | 2026-11-06 | What the pitfalls (#1-#173) and the open leads still point to in the code: 14 small fixes needing no decision (Uloe's brain-off-on-first-error guard first, the elite stand-in, a Wreck-given Pearl Oyster), three calls for Dimitri, the PC looks; read from code, nothing changed |
 | `BUTTON_WOBBLE_2026-11-06.md` | 2026-11-06 | Why the main menu's buttons, the game's own too, wobble and jitter: the stock layout's half pixels under the menu camera's sway (pitfall #174); `RWPixels` puts still pictures on whole pixels; self-test P1-P2 and PC round `Wobble_round1` |
 | `CHART_ROUND1_2026-11-06.md` | 2026-11-06 | The chart navigation's first PC round: mode flow 178 pass 1 fail (CV10's blacklist read too early, test fixed), two players 167/0; pictures of the chart view and the boat on his PC; the after-win vote's view and a mini chart overlap for his eye |
 | `CHART_BUILD_2026-11-06.md` | 2026-11-06 | The sea chart navigation built on his "Go": the chart view beside the vote and on M, the boat's banner and mini chart, a Cove and a Wreck per stretch, CV1-CV12; compiled here and save fuzz passed, not run on the PC; §4 the PC round's list |
