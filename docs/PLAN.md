@@ -312,7 +312,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `chart_look_*.png`). Docs only; not built.
 
 - **2026-11-06: batch checks on the PC without Claude** (Dimitri: run it when the 5-hour limit is up):
-  `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report copied to `Desktop\RogueWave\batch`).
+  `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report moved to `Desktop\RogueWave\batch`).
   Written here, not run on the PC (no PowerShell here). No game code; no kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)

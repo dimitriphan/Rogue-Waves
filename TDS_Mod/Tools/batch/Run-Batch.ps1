@@ -84,17 +84,29 @@ if (-not $git -and -not $Full -and -not $Collect) {
 # Without git: only those written since $After.
 function Move-Reports {
     param([datetime]$After)
+    $left = $null
     if ($git) {
-        $names = @(& git -C $repo ls-files --others --exclude-standard -- docs/reports |
-            ForEach-Object { Split-Path $_ -Leaf } | Where-Object { $_ -like "BATCH_CHECKS_*.md" })
-        $left = @($names | ForEach-Object { Get-Item (Join-Path $reports $_) })
-    } else {
+        $out = @(& git -C $repo ls-files --others --exclude-standard -- docs/reports)
+        if ($LASTEXITCODE -eq 0) {
+            $names = @($out | ForEach-Object { Split-Path $_ -Leaf } | Where-Object { $_ -like "BATCH_CHECKS_*.md" })
+            $left = @($names | ForEach-Object { Get-Item (Join-Path $reports $_) })
+        }
+    }
+    if ($null -eq $left) {   # no git, or not a git clone (a ZIP download)
         $left = @(Get-ChildItem $reports -Filter "BATCH_CHECKS_*.md" | Where-Object { $_.LastWriteTime -ge $After })
     }
     if (-not $left) { return @() }
     New-Item -ItemType Directory -Force -Path $CopyTo | Out-Null
-    foreach ($f in $left) { Move-Item $f.FullName -Destination (Join-Path $CopyTo $f.Name) -Force }
-    return @($left | ForEach-Object { Join-Path $CopyTo $_.Name })
+    $dests = @()
+    foreach ($f in $left) {
+        # The clone no longer holds earlier PC reports, so run_checks.py can reuse a day's name: never overwrite one.
+        $dest = Join-Path $CopyTo $f.Name
+        $n = 2
+        while (Test-Path $dest) { $dest = Join-Path $CopyTo ("{0}-{1}{2}" -f $f.BaseName, $n, $f.Extension); $n++ }
+        Move-Item $f.FullName -Destination $dest
+        $dests += $dest
+    }
+    return $dests
 }
 foreach ($m in (Move-Reports -After ([datetime]::MaxValue))) { Write-Host "Moved an earlier report to: $m" }
 
