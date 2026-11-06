@@ -36,10 +36,11 @@ STOPS_SALT = 0x5EA57095
 
 def stops(rows, seed):
     """Marks one Cove in each stretch's row before its Breaker (rows 4 and 9) and one Wreck in each stretch's middle
-    (rows 2-3 and 6-8), from a second stream. A Cove plays no map; a Wreck keeps its map and loses its weather."""
+    (rows 2-3 and 6-8), from a second stream. A Cove plays no map; a Wreck keeps its map; both are calm."""
     rng = sc.Rng(seed ^ STOPS_SALT)
     for r in (4, 9):
-        rows[r][rng.below(len(rows[r]))]["stop"] = "cove"
+        n = rows[r][rng.below(len(rows[r]))]
+        n["stop"], n["weather"] = "cove", sc.CALM
     for lo, span in ((2, 2), (6, 3)):
         r = lo + rng.below(span)
         n = rows[r][rng.below(len(rows[r]))]
@@ -360,7 +361,7 @@ def boat_view(rows):
     boat(d, 420, 560, 2.2)
     d.rounded_rectangle([480, 26, 1120, 86], 12, fill=SWELL, outline=FOAM, width=2)
     d.text((800, 34), "SAILING TO THE COVE, AS VOTED", font=font(20, True), fill=FOAM, anchor="ma")
-    d.text((800, 62), "Row 4 of 10  ·  a retry back  ·  then on to Split (alt), as voted", font=font(13), fill=SAND, anchor="ma")
+    d.text((800, 62), "Row 4 of 10  ·  a retry back  ·  then on to the party's second pick", font=font(13), fill=SAND, anchor="ma")
     chart_panel(im, (1250, 110, 1570, 640), rows, ROUTE, HOVER, mini=True, sail=0.45)
     d.text((1410, 652), "M  open the whole chart", font=font(13, True), fill=FOAM, anchor="ma")
     im.save(os.path.join(OUT, "chart_view_boat.png"))

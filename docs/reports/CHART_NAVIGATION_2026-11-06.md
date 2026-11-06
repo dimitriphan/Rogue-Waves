@@ -35,12 +35,15 @@ Nine findings, all taken: the vote's winner must not ride on the chart's name (t
 changes and clears the choice on arrival), so clients read it from the boat; the view sorts above the dialog's dim and
 the cards move right; `RWDialog.Choose` instead of `Cancel`; the campaign card already shows progress; a client's name
 is one map behind in a map; `InputSystem` for the key; self-tests run on the PC; the mockup's hover card, tie
-footnote and tally line; "2 retries left".
+footnote and tally line; "2 retries left". A second pass found six more, all taken: the Cove's second question
+carries its row and keeps its winner apart from `Choice`; Coves are calm too; a client learns the leg after a Cove
+only when the boat leaves it; the Cove's retry and route digit change the chart's name once; the host is asked again
+at a Cove picked on the boat; the campaign card counts rows.
 
 ## For Dimitri
 
 - Defaults to confirm or change: `CHART_NAVIGATION.md` §7.
 - Building it needs his "go": one part (`RogueWavesMode`), a new `26_ChartView.cs` plus the vote, dialog, boat, world,
   chart, campaign and difficulty changes in §6 there. Its PC round: checks CV1-CV12 (§8 there); the main unknowns are
-  whether the stock choice dialog lets clicks through to a panel beside it (if not, the chart is a picture and the
-  cards pick) and a code-built stop with no map.
+  whether clicks reach the view above the stock choice dialog without upsetting it (if not, the chart is a picture and the
+  cards pick), a code-built stop with no map, and a chart-to-chart warp with the boat up.

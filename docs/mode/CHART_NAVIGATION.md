@@ -136,8 +136,8 @@ are at least a lane apart, so ~0.5 s~ of the networked boat's heading names the 
 | Where | One Cove in each stretch, in the row before its Breaker: rows ~4 and 9~, on one island of that row picked by the seed |
 | What it is | No map. The boat sails there, the party rests, and the boat sails on |
 | What it gives | ~A retry back~, up to 3. With all 3 retries left, ~each player's lowest-ranked held Direction goes up a rank~ instead |
-| The vote | Voted like a map. When a Cove wins, the same map asks a second question right away: where to sail after the Cove (its links), so every leg is still voted in a map (route V1, proven channel) |
-| On the boat | The boat sails to the Cove; the host applies its gift and saves; the banner says "THE COVE: A RETRY BACK (2 TO 3)" for ~4 s~; the host warps the party onto the next chart name (the route one longer: the stock warp, proven) and the boat sails on to the second vote's winner, whose Setup panel opens as today |
+| The vote | Voted like a map. When a Cove wins, the same map asks a second question right away: where to sail after the Cove (its links), so every leg is still voted in a map (route V1, proven channel). Today a map question carries only columns and each machine works out the row from the route (`20_Vote.cs`), which doesn't hold the Cove yet, so the question carries its row (`M:<row>:<cols>`), and `CloseMap` writes the second winner to `RW_Campaign_After`, not `Choice`. When the host picks a Cove on the boat (`AskHere`, no map left to ask in), the host is asked again at the Cove |
+| On the boat | The boat sails to the Cove; the host applies its gift and saves; the banner says "THE COVE: A RETRY BACK (2 TO 3)" for ~4 s~; the host warps the party onto the next chart name (the route one longer) and the boat sails on to the second vote's winner, whose Setup panel opens as today. Any change to the chart's name warps the party (`05_Boat.cs`), so the retry and the Cove's route digit change in one write and the name changes once. A warp from chart to chart while the boat is up is new (the proven warps land from the stock world): PC. A client's banner learns the leg after the Cove only when the boat leaves it (§3.2); the host's names it at once |
 | Counting | The campaign is still 10 rows, won by leaving row 10's map. A party that rests plays fewer maps (8 if it takes both Coves). The difficulty follows the **row**, not the maps played (~by row~), so a rest skips a map's pay, not its climb |
 | Retries and saves | A Cove is never lost or replayed. Its gift is saved with the route in one write, so `Continue` after a quit at the Cove never gives it twice |
 
@@ -146,7 +146,7 @@ are at least a lane apart, so ~0.5 s~ of the networked boat's heading names the 
 | | Rule |
 | --- | --- |
 | Where | One Wreck in each stretch's middle: rows ~2-3 and 6-8~, on one island picked by the seed; never on rows 1, 5 or 10 |
-| What it is | A map like the others, its own base map kept, but calm (a Wreck carries no weather: one danger at a time) |
+| What it is | A map like the others, its own base map kept, but calm (a Wreck carries no weather: one danger at a time; a Cove, with no map, none either) |
 | Harder | It plays ~one row harder~: its Tides, foe health and modifier schedule are the next row's (scope `04` "Numbers", "Changes per campaign") |
 | What it pays | When it is won, each player picks ~one Trinket of 3~ the shop may sell and they don't hold, free, held as if bought (scope `12`; the same per-player choice dialog as the Direction picks, proven channel). A Trinket held raises later foes' health like any other (scope `04`: ~+2%~ each), so the pay is also a cost |
 | Lost | As any map: a retry is spent and only the Wreck can be picked until it is won |
@@ -155,13 +155,13 @@ are at least a lane apart, so ~0.5 s~ of the networked boat's heading names the 
 
 - **A second random stream.** The stops are drawn from a second xorshift32 stream, seeded with the chart's seed XOR
   `0x5EA57095`, after the chart is built. The first stream's draws are untouched, so every map, link and weather
-  of a seed stays the same (a Wreck then drops its weather), and `sea_chart.py --check` still matches today's lines
+  of a seed stays the same (a Cove or a Wreck then drops its weather), and `sea_chart.py --check` still matches today's lines
   for charts without stops. Order of draws: the Cove's column in row 4, then in row 9; the Wreck's row (2 + 0-1) and
   column, then (6 + 0-2) and column. Seed 20261009: Coves at row 4 col 0 and row 9 col 3, Wrecks at row 2 col 0 and
   row 8 col 1 (the mockup).
 - **Old campaigns keep old charts.** A campaign saved before the change has no stops (a new save key `RW_Campaign_Stops`
   says a chart has them), so a run in progress never finds its next island turned into a Cove. Clients learn it from
-  the chart's name: an `S` after the seed (`RW_Chart_<seed>S_<route>r<retries>`, one byte more, at most 33 of 64).
+  the chart's name: an `S` after the seed (`RW_Chart_<seed>S_<route>r<retries>`, one byte more, at most 33 of 64), which `RWCampaign`'s name writer (`06_Campaign.cs` `Saved`) adds and `RWWorld.Parse` reads.
 - **Not every route meets a stop**: a Cove is one island of 3 or 4 in its row, so taking it is a route choice, as
   in Slay the Spire.
 
@@ -179,11 +179,11 @@ weather billboard. A campaign started before the change continues without stops.
 | --- | --- | --- | --- |
 | new `26_ChartView.cs` | An own Canvas (Screen Space Overlay, `CanvasScaler`, the save's `Settings/Uiscale`, sorted above the choice dialog's dim but on the left half only; kit `20` §4); the full and mini layouts from `RWChart.Chart`, the route and the choices; lanes as stretched `Image`s, discs from one circle sprite made in code, labels in a TMP font copied from a HUD label, icons from `RWIcons`; the layout math in one static function the self-test can call | compiles | its look, UI scale, sorting against the dialog, the Setup panel, pause and the HUD; the layout's counts (self-test) |
 | `11_Dialog.cs` | The letter on each card; the cards placed on the right half while the view is up (they are centred today); `Choose(name)`; which card holds the pad's focus (`EventSystem.current.currentSelectedGameObject`), for the highlight | compiles | the placement after the dialog's slide-in; the focus read with a pad |
-| `20_Vote.cs` | Open the view with every map question, pass the choices and letters, close it at `CloseMap`; a click on a lit island answers through `Choose`; a second click sends a new vote; the Cove's second question; the Wreck's Trinket pick after its win | compiles | **whether the dialog lets clicks through to a panel beside it** (if it blocks them, the chart stays a picture and the cards pick: the fallback costs nothing); a client's re-vote reaching the host |
-| `05_Boat.cs` | The banner and the mini chart while the boat sails (the winner from the boat's heading, §3.2); the view beside `AskHere`'s dialog; the Cove's stop: arrive, gift, save, banner, warp, sail on | compiles | a client's banner in a two-player round; a code-built stop with no map (a `Macro_Nodelink_Add`, or a map node the host never selects) |
+| `20_Vote.cs` | Open the view with every map question, pass the choices and letters, close it at `CloseMap`; a click on a lit island answers through `Choose`; a second click sends a new vote; the Cove's second question with its row in the question (`M:<row>:<cols>`), its winner to `RW_Campaign_After`; the Wreck's Trinket pick after its win | compiles | **whether clicks reach the view sorted above the dialog without upsetting the dialog** (if not, the chart stays a picture and the cards pick: the fallback costs nothing); a client's re-vote reaching the host; the Cove's second question on a client |
+| `05_Boat.cs` | The banner and the mini chart while the boat sails (the winner from the boat's heading, §3.2); the view beside `AskHere`'s dialog; the Cove's stop: arrive, gift, save, banner, warp, sail on; the host asked again at a Cove picked on the boat | compiles | a client's banner in a two-player round; a code-built stop with no map (a `Macro_Nodelink_Add`, or a map node the host never selects); the chart-to-chart warp with the boat up |
 | `04_World.cs` | A Foam ring on the island the boat sails to; the Cove's and the Wreck's marks on their islands; `S` in the chart's name | compiles | the look |
 | `03_Chart.cs`, `concept-tools/sea_chart.py` | The stops' second stream (§4.3), ported from `sea_chart_view.py`'s `stops()`; `--check` lines gain the stop | compiles; the Python and C# lines compared | the `CHART` lines in the PC log |
-| `06_Campaign.cs` | `RW_Campaign_Stops`; the route counts rows sailed (a Cove's column included); the Cove's gift saved with its column; the second vote's winner kept (`RW_Campaign_After`) | compiles | `Continue` at the Cove |
+| `06_Campaign.cs`, `13_Card.cs` | `RW_Campaign_Stops` and the name's `S`; the route counts rows sailed (a Cove's column included); the Cove's gift saved with its column in one write; the second vote's winner kept (`RW_Campaign_After`); the campaign card's "Map N of 10" becomes "Row N of 10" on charts with stops | compiles | `Continue` at the Cove |
 | `21_Difficulty.cs`, `14_Run.cs`, `24_Trinkets.cs` | A Wreck plays one row ahead; its pay | compiles | the numbers in the log |
 | `12_Menu.cs` or the view | The key (~M~) read with `InputSystem.Keyboard.current`, ignored while a chat or text field has focus, never while the choice dialog is up | compiles | no clash with the game's keys; typing "m" in chat |
 | `99_SelfTest.cs`, `97_Shots.cs` | New checks CV1-CV12 (§8) and pictures of the vote and the sailing boat for his eye | compiles | runs in the self-test |
