@@ -631,3 +631,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      Add 0) x Multi 0.00999999`) → in a mode test, measure a stat on the modifier or its buckets, or on a tower spawned by
      a part the Cardinals skip, never on a tower kept "plain" by placing it early. Seen in game, PC round 4
      (`docs/reports/PC_ROUND4_2026-11-05.md` §3); confirms #171's fitted numbers.
+173. **"Could not retrieve Vfx/Mobbase The GROUP exists, but item does not", once per thing, when a machine's first map
+     is a join into a running map** (2026-11-06) → `Entity_Master_Client.Start` takes `Getload("Vfx","Mobbase")`, the
+     body a Sprite look is drawn on, as its first step, before this machine's `Loaded`, and keeps the null; Mobbase is
+     in the stock group `General_Default`, loaded only on entering a map, and `Bl_Address.Load` lists a group in
+     `Groups` before its assets arrive. So every Sprite-style thing already on the map has no body there. Load
+     `General_Default` at boot and give a late joiner's things the body (`RWBody`, `RogueWavesMode/Code/10_Online.cs`).
+     Read from the game's IL, not yet verified in game (`docs/reports/BUG_FIXES_2026-11-06.md` §2).

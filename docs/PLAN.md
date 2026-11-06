@@ -259,7 +259,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #173 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #174 (which PR used which pitfall numbers: the last Log entry).
 - **Artifacts (2026-11-06):** the Scope and Vessel Editors send edits back like the Art Bench ("bring in my scope / vessel
   edits"); six old pages archived to project files and deleted. Index and steps: `docs/artifacts/README.md` (Log).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
@@ -303,6 +303,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: Art Bench page** (Dimitri: an artifact to edit every sprite frame and model, "Give the whole row"):
   every sheet by row as `.aseprite`, every model as `.glb` for Blender, edits sent back on the page and brought in by
   `TDS_Mod/Tools/artbench/ingest.py`. Tool only, tested here; models need builder support next. No kit change.
+- **2026-11-06: round 4 and batch bugs fixed** (Dimitri: "Fix bugs"): a friend's end title, the Vfx/Mobbase lines on a join
+  (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
+  (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1245,6 +1248,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   findings are fixed (a second edit to a row kept the first; frames the file holds unedited still follow the code). Found: 629 triangles in 16 Spool and Uloe models have zero
   normals (thin triangles pass the builder's 1e-12 cross check but `Normalize` zeroes under 1e-5); not fixed, for a
   later kit fix. No mod code, no kit change, no pitfall; nothing ran on the PC.
+- **2026-11-06: round 4 and batch bugs fixed** (thread "Fix round 4 and batch check bugs"; Dimitri 02:53Z "Fix bugs" on
+  the round 4 findings and `BATCH_CHECKS_2026-11-06.md` §0's meteor, Plug In, Yarn Stash and text leads). Report
+  `docs/reports/BUG_FIXES_2026-11-06.md`. Mode: `RWCard.HoldEnd` on every machine, a friend's `ClientEnd` writes the synced
+  campaign title into the shown Win/Lose title (P1-4; the failing U3 was map 1's, so round 4 §5's "map 2" was a misread);
+  `RWBody` loads `General_Default` at boot and gives a late joiner's things `Vfx/Mobbase` (pitfall #173, read from the IL);
+  the meteor 12 hits and 8 tiles on map 1 (scope `14`:14); U3/T4, Spring Tide, Leave and the review's later map tests.
+  Spool: one Yarn Stash a player (scope `08`:64). Uloe: `SurgeBankMax` 8 (scope `10`:145), Searchlight, Reflection, the
+  stall. Argo: Chum Bucket's test foe. Left for his word: Mantle Tap's scope `09`:248 against `09`:249; Yossele's two lines
+  are his. Compiled here (every part and test build at its baseline), `/code-review high` 7 of 10 fixed; nothing ran on
+  the PC. No kit change; pitfall #173. Next free: kit 1.15, pitfall #174.
 - **2026-11-06: input artifacts brought up to date, old ones archived** (Dimitri 02:57Z: "Update older Artifacts that take
   input ... now that I updated Claude with artifact capabilities, and store older and less relevant artifacts in a folder
   elsewhere. Pin the artifacts that are expected to be revisited the most."). The Scope Editor (version 11) and the Vessel

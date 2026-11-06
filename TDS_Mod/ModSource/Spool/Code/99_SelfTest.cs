@@ -234,11 +234,25 @@ public static partial class SpoolSelfTest
         return null;
     }
 
+    // A build order as the build button sends it (Entity_Ai_Hero_Buildsell.Builddata).
+    static string Order(string tower, Vector3 at, long owner)
+    {
+        return "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + owner + "}";
+    }
+
+    // BATCH 08:64: every Yarn Stash of this player standing now, started or not, taken back or not.
+    static int Stashes(long owner)
+    {
+        int n = 0;
+        foreach (SpoolBuilding b in SpoolServer.Buildings)
+            if (b is SpoolStashBrain && ModKitUtil.Alive(b.Master) && b.Owner == owner) n++;
+        return n;
+    }
+
     static IEnumerator Build(Entity_Master hero, string tower, Vector3 at, List<SpoolBuilding> known, SpoolBuilding[] result)
     {
         result[0] = null;
-        string json = "{\"Tower\":\"" + tower + "\",\"Position\":" + Vec(at) + ",\"Orientation\":0,\"Owner\":" + ModKitUtil.Owner(hero) + "}";
-        Send(hero, "Build", json);
+        Send(hero, "Build", Order(tower, at, ModKitUtil.Owner(hero)));
         float t = 0f;
         while (t < 20f && result[0] == null)
         {
@@ -452,9 +466,42 @@ public static partial class SpoolSelfTest
         Check("Stash cap " + SpoolData.StashCap, stash.Cap == (int)SpoolData.StashCap, "cap " + stash.Cap);
         Check("with the Stash standing, the menu holds the four", hero.Menu() == ModKitUtil.Join(SpoolData.Buildables), hero.Menu());
         Vector3 second = Spot(hm, SpoolContent.Beings[SpoolData.Stash], 4f);
-        Send(hm, "Build", "{\"Tower\":\"" + SpoolData.Stash + "\",\"Position\":" + Vec(second) + ",\"Orientation\":0,\"Owner\":" + owner + "}");
+        Send(hm, "Build", Order(SpoolData.Stash, second, owner));
         yield return Wait(2f);
-        Check("a second Stash can't be built", SpoolServer.Owned<SpoolStashBrain>(owner).Count == 1, SpoolServer.Owned<SpoolStashBrain>(owner).Count + " Stashes");
+        // BATCH 08:64 (scope 08 "Limit: 1"): and the first stays the player's.
+        Check("a second Stash can't be built", Stashes(owner) == 1 && player.Home == stash && ModKitUtil.Alive(stash.Master), Stashes(owner) + " Stashes, the first is home " + (player.Home == stash));
+        // BATCH 08:64: a second Stash that gets past the menu (spawned beside Spool as a build would, with no button behind
+        // it) is taken back as it starts, and the first stays the player's with its Thread.
+        {
+            Vector3 third = Spot(hm, SpoolContent.Beings[SpoolData.Stash], 5f);
+            Genitem block = float.IsNaN(third.x) ? null : ModKitTest.Surface(third);
+            if (block == null) ModKitTest.Setup("a second Stash past the menu", "no free tile");
+            else
+            {
+                int refused = SpoolServer.StashRefused, held = player.Stash, traffic = Traffic(owner);
+                Link_Spawn s = Helper_Entitytools.Createlinkspawnparent(hm.Beingserver);
+                s.Genadd = block;
+                s.Spawnstyle = Link_Spawn.Spawnstyles.Forced;
+                s.Being = SpoolContent.Beings[SpoolData.Stash];
+                s.Destroyonparent = false;
+                Link_Being lb = Helper_Entitytools.Spawn(s, block.Position, hm.Beingserver, true, null);
+                Entity_Master extra = lb != null ? lb.Worldobject : null;
+                if (extra == null) ModKitTest.Setup("a second Stash past the menu", "the spawn made nothing");
+                else
+                {
+                    yield return Until(() => SpoolServer.StashRefused > refused, 3f);
+                    yield return Wait(0.3f);
+                    int standing = Stashes(owner), now = player.Stash - (Traffic(owner) - traffic);
+                    Check("a second Stash past the menu is taken back; the first stays with its Thread",
+                        SpoolServer.StashRefused == refused + 1 && !ModKitUtil.Alive(extra) && standing == 1 && player.Home == stash && ModKitUtil.Alive(stash.Master) && now == held
+                        && hero.Menu() == ModKitUtil.Join(SpoolData.Buildables),
+                        "taken back " + (SpoolServer.StashRefused - refused) + ", the second still up " + ModKitUtil.Alive(extra) + " (owner " + (ModKitUtil.Alive(extra) ? ModKitUtil.Owner(extra).ToString() : "-")
+                        + "), standing " + standing + ", the first is home " + (player.Home == stash) + ", Thread " + held + "->" + now + ", menu " + hero.Menu());
+                    if (ModKitUtil.Alive(extra))
+                        Game_Entity.Instance.Despawn(extra.Beingserver, false, "Selftest");
+                }
+            }
+        }
 
         // 3. Thread on the ground.
         {
@@ -1058,12 +1105,20 @@ public static partial class SpoolSelfTest
                 yield return Wait(0.3f);
                 Check("PATCH reaches 4 tiles", hero.Patches == patches + 1 && hero.LastPatch == "too far", hero.LastPatch);
             }
+            // R4 §8: the Tins stitch from the Stash all the while, and the 40 Thread set for the check above had gone by the
+            // press (round 4: 26 in the run that passed, under the 20 a PATCH costs in the two that read "short"). Now PATCH
+            // is off cooldown, the Tin is hurt, the Stash is filled at the press, and the check waits for the cast.
+            yield return Until(() => Time.time >= hero.PatchReady, 6f);
             Hit(hm, tinA.Master, 20f);
             yield return Wait(0.1f);
+            player.Stash = 40;
+            SpoolServer.Show(player);
+            int keyTraffic = Traffic(owner);
             float stashAtKey = player.Stash;
             Send(hm, SpoolData.PatchLink, "");
-            yield return Wait(0.3f);
-            Check("the PATCH hotkey mends the most hurt in reach", hero.Patches == patches + 2, hero.LastPatch + "; Thread " + F(stashAtKey) + " when pressed, " + F(player.Stash) + " after, cooldown '" + hm.Commandlistserver[SpoolData.PatchLink].Goalstring + "'");
+            yield return Until(() => hero.Patches > patches + 1, 1f);
+            Check("the PATCH hotkey mends the most hurt in reach", hero.Patches == patches + 2, hero.LastPatch + "; Thread " + F(stashAtKey) + " when pressed, " + F(player.Stash) + " after (other traffic "
+                + (Traffic(owner) - keyTraffic) + "), cooldown '" + hm.Commandlistserver[SpoolData.PatchLink].Goalstring + "'");
         }
         else ModKitTest.Setup("PATCH", "no Cookie Tin to mend");
 
@@ -1077,9 +1132,26 @@ public static partial class SpoolSelfTest
             Check("a fallen Stash spills its Thread", SpoolServer.Spilled == spilled + 30 && player.Stash == 0 && SpoolServer.DropsNear(sp, 2.5f) >= 30, "spilled " + (SpoolServer.Spilled - spilled) + ", on the ground " + SpoolServer.DropsNear(sp, 2.5f));
             Check("... and the menu goes back to the Stash", hero.Menu() == SpoolData.Stash, hero.Menu());
             at = Spot(hm, SpoolContent.Beings[SpoolData.Stash], 2.5f);
-            int traffic = Traffic(owner);
-            yield return Build(hm, SpoolData.Stash, at, known, got);
-            stash = got[0] as SpoolStashBrain;
+            Vector3 twin = Spot(hm, SpoolContent.Beings[SpoolData.Stash], 4.5f);
+            int traffic = Traffic(owner), refused = SpoolServer.StashRefused, menus = hero.MenuChanges;
+            // BATCH 08:64 (Limit: 1): two Stash orders in the same moment, as a quick double click sends them, build one
+            // Stash, the first ordered (the menu drops the button as it spawns; a second that still comes is taken back).
+            Send(hm, "Build", Order(SpoolData.Stash, at, owner));
+            if (!float.IsNaN(twin.x))
+                Send(hm, "Build", Order(SpoolData.Stash, twin, owner));
+            yield return Until(() => player.Home != null && player.Home.Master != null, 20f);
+            yield return Wait(1f);
+            stash = player.Home;
+            if (stash != null && !known.Contains(stash))
+                known.Add(stash);
+            if (float.IsNaN(twin.x)) ModKitTest.Setup("two Stash orders at once", "no second free tile");
+            else
+            {
+                int standing = Stashes(owner);
+                Check("two Stash orders at once build one Stash, the first", stash != null && standing == 1 && ModKitUtil.Flat(stash.Pos, at) < 0.75f,
+                    "standing " + standing + ", home at " + (stash != null ? stash.Pos.ToString("F1") : "none") + " (ordered " + at.ToString("F1") + " then " + twin.ToString("F1")
+                    + "), taken back " + (SpoolServer.StashRefused - refused) + ", menu changes " + (hero.MenuChanges - menus));
+            }
             int start = player.Stash - (Traffic(owner) - traffic);
             Check("a rebuilt Stash starts empty", stash != null && start == 0, "started with " + start + ", Stash " + player.Stash);
             if (stash != null)

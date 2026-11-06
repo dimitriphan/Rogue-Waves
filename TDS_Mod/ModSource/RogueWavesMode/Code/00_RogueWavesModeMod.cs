@@ -8,7 +8,8 @@
 //   07_Weather.cs   Rising Water, Quickening Current, Nesting Ground: the stock map objects, put on chart maps
 //   08_Icons.cs     the weather icons
 //   09_Rejoin.cs    a player who drops can rejoin the running map (docs/mode/REJOIN.md), in every map while the pack is on
-//   10_Online.cs    a restarted friend keeps their Sessionid; a player whose map never loads is sent back, not everyone
+//   10_Online.cs    a restarted friend keeps their Sessionid; a player whose map never loads is sent back, not everyone;
+//                   a player who joins a running map has the stock sprite body for the things already there
 // Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button
 // (12_Menu.cs, docs/mode/MAIN_MENU_START.md) or, in a self-test build, by 99_SelfTest.cs.
 // Build: Build-RogueWavesModeMod.ps1 [-Define ROGUEWAVESMODE_SELFTEST].
@@ -44,6 +45,8 @@ public class RogueWavesModeMod : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.5f);
         while (Bla_Addressables.Instance == null)
             yield return new WaitForSecondsRealtime(0.5f);
+        // R4 VFX: the stock group whose Vfx/Mobbase a joiner's things ask for in their first frame (RWBody, 10_Online.cs).
+        StartCoroutine(RWUtil.Guarded(RWBody.Preload(), "general"));
         try { RWAssets.Find(); } catch (Exception e) { RWLog.Warn("assets: " + e); }
         try { RWIcons.Add(); } catch (Exception e) { RWLog.Warn("icons: " + e); }
         RWCampaign.Install();
@@ -126,6 +129,7 @@ public class RogueWavesModeMod : MonoBehaviour
         try { RWWeather.LookUpdate(); } catch (Exception e) { RWLog.Once("look", "weather look: " + e); }
         try { ModKitLight.Update(); } catch (Exception e) { RWLog.Once("light", "lighting: " + e); }
         try { RWRejoin.Update(); } catch (Exception e) { RWLog.Once("rejoin", "rejoin: " + e); }
+        try { RWBody.Update(); } catch (Exception e) { RWLog.Once("body", "sprite body: " + e); }   // R4 VFX: after RWRejoin, which sorts a late join
 #if ROGUEWAVESMODE_SELFTEST
         try { RWTest.Update(); } catch (Exception e) { RWLog.Once("test", "self-test: " + e); }
 #endif

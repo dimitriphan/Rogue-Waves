@@ -42,6 +42,10 @@ client; Prism's side lines and the Heliostat's beam looks.
 model, effect and sound is gone. The sheet is `docs/scope/10_Vessel_Uloe.txt`; the routes are `docs/reports/SCOPE_FIT_PLAN_2026-10-28.md`
 §8.3, §10, §11.
 
+## 2026-11-06: Plug In's safe-socket cap and round 4's test faults (compiled, not yet run in game)
+
+`UloeData.SurgeBankMax` is 8 (`02_Data.cs`), and `PlugLight` in `06_HeroBrain.cs` uses it for a Power Bank that holds Surge Protector: a safe socket gives Plug In at most Light 8, not 12 (scope `10`:145). In normal play a Surge bank holds two upgrades, which is 8 already, so the cap is a guard. Round 4's test faults are fixed: Searchlight and Reflection in `98_Upgrades.cs`, and the stalled launch's wait for a vessel (`Vessel` and `NoVessel`) in `99_SelfTest.cs`. The text changed too: Death Ray's effect line (`02_Data.cs`:224) and the Searchlight line of the Flood Light tree (`02_Data.cs`:302).
+
 ## What has been checked, and how
 
 | Check | State |
