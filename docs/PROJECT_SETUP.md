@@ -121,7 +121,7 @@ these threads included, always use the plan and ignore the key.
    - **On the PC, with no Claude session** (works when the plan's five-hour limit is used up, since the key bills the
      API credit, not the plan): `TDS_Mod/Tools/batch/README.md` "On your PC, without Claude". Once:
      `Run-Batch.ps1 -SaveKey` keeps the key, asked for hidden, as the Windows user variable `RW_BATCH_API_KEY`; then
-     `Run-Batch.ps1` runs the cheap daily form and copies the report to `Desktop\RogueWave\batch`. Don't set
+     `Run-Batch.ps1` runs the cheap daily form and moves the report to `Desktop\RogueWave\batch`. Don't set
      `ANTHROPIC_API_KEY` as a permanent user variable (System Properties or `setx`): every Claude Code session on the
      PC, the Remote Control rounds included, would then be offered the key, and `claude -p` uses it without asking.
 4. **Confirm it is active.** `plan --exact` prints counted (not estimated) tokens; `submit` prints a batch id
