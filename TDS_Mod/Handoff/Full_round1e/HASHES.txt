@@ -1,0 +1,7 @@
+# Handoff Full_round1e: commit af9d932 of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit bc1d989.
+1d7cc2940f87b4f2  1ba41a87e09ae0c5  ModSource\RogueWavesMode\Code\26_ChartView.cs
+5f79f267e4fe403d  9c7c43b0cfa4fd85  ModSource\RogueWavesMode\Code\27_Board.cs
+22942f3dd4907a0a  23ecb412d81221e5  ModSource\RogueWavesMode\Code\28_BoardView.cs
+c063bd13fa566e0f  7d8942706e5510d2  ModSource\RogueWavesMode\Code\93_TwoPlayers.cs
+258d5daa9cfd239c  87fb23c89bc4d85b  ModSource\RogueWavesMode\Code\96_Flow.cs
