@@ -163,8 +163,9 @@ public class SpoolPatchSelect : Entity_Command_Itemselect_Base
     }
 }
 
-// RETURN and MEND on a Thread Head: one-click buttons like the Mining Hut's Convert. MEND's Goalstring is "On" while
-// mending (synced to every player), and the button shows it.
+// RETURN and MEND on a Thread Head, UNTHREAD on a Cookie Tin, BEE on the Yarn Stash: one-click buttons like the Mining
+// Hut's Convert. MEND's Goalstring is "On" while mending (synced to every player), and the button shows it; BEE's is
+// "Off" once the Quilting Bee has sewn this Tide, and the button greys out (PATCH's way).
 public class SpoolButton : Entity_Command_Simple
 {
     public override void Render(GameObject Button)
@@ -173,7 +174,16 @@ public class SpoolButton : Entity_Command_Simple
         try
         {
             Getnewlink();
-            if (Button == null || Link.Name.ToString() != SpoolData.MendLink)
+            if (Button == null)
+                return;
+            if (Link.Name.ToString() == SpoolData.BeeLink)
+            {
+                Transform bee = Button.transform.Find("Icon");
+                if (bee != null && bee.GetComponent<Image>() != null)
+                    bee.GetComponent<Image>().color = Link.Goalstring.ToString() == "Off" ? new Color(0.5f, 0.5f, 0.5f, 0.3f) : Color.white;
+                return;
+            }
+            if (Link.Name.ToString() != SpoolData.MendLink)
                 return;
             bool on = Link.Goalstring.ToString() == "On";
             Transform icon = Button.transform.Find("Icon");
@@ -184,6 +194,37 @@ public class SpoolButton : Entity_Command_Simple
                 title = title.Find("Title");
             if (title != null)
                 Bla_Localization.SetText(title, on ? "MEND ON" : "MEND OFF");
+        }
+        catch (Exception) { }
+    }
+}
+
+// COLOUR on a Loom with Dyed in the Wool: a one-click button that cycles the aura its payouts come in (All, Red, Blue,
+// Yellow), kept in the command's Goalstring for every player; the button draws it, label and tint (Uloe's Colour Filter
+// and Yossele's Grafted way).
+public class SpoolColourButton : Entity_Command_Simple
+{
+    public override void Render(GameObject Button)
+    {
+        base.Render(Button);
+        try
+        {
+            Getnewlink();
+            if (Button == null)
+                return;
+            int i = Mathf.Max(0, Array.IndexOf(SpoolData.Colours, Link.Goalstring.ToString()));
+            Color tint = i == 1 ? new Color(0.87f, 0.32f, 0.28f, 0.5f) : i == 2 ? new Color(0.31f, 0.55f, 0.9f, 0.5f) : i == 3 ? new Color(0.94f, 0.78f, 0.24f, 0.5f) : new Color(0.576f, 0.8f, 0.631f, 0.5f);
+            Image image = Button.transform.GetComponent<Image>();
+            if (image != null)
+                image.color = tint;
+            Transform icon = Button.transform.Find("Icon");
+            if (icon != null && icon.GetComponent<Image>() != null)
+                icon.GetComponent<Image>().color = i == 0 ? Color.white : new Color(tint.r, tint.g, tint.b, 1f);
+            Transform title = Button.transform.Find("Label");
+            if (title != null)
+                title = title.Find("Title");
+            if (title != null)
+                Bla_Localization.SetText(title, SpoolData.ColourNames[i]);
         }
         catch (Exception) { }
     }

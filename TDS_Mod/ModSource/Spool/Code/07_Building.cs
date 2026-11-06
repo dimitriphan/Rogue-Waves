@@ -9,6 +9,9 @@ public abstract class SpoolBuilding : MonoBehaviour
     public Entity_Master Master;
     public SpoolData.Build Def;
     public bool Started;
+    readonly SpoolFaults faults = new SpoolFaults();
+    bool begun;                  // Begin ran to its end
+    float builtLookAt = -1f;     // when the build look goes out (pitfall #158)
 
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
@@ -41,13 +44,23 @@ public abstract class SpoolBuilding : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
                     return;
                 Begin();
+                begun = true;
+            }
+            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
+            // hooked this thing, so the build look goes out half a second later.
+            if (builtLookAt >= 0f && Time.time >= builtLookAt)
+            {
+                builtLookAt = -1f;
+                if (ModKitUtil.Alive(Master))
+                    ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
             }
             Tick();
         }
         catch (Exception e)
         {
-            SpoolLog.Warn(Def.Id + " brain: " + e.Message);
-            enabled = false;
+            // Pitfall #80: a bad tick is skipped; a Begin that threw (Started is set inside it) still stops the brain.
+            if (faults.Fail(Def.Id + " brain", e) || !begun)
+                enabled = false;
         }
     }
 
@@ -62,7 +75,7 @@ public abstract class SpoolBuilding : MonoBehaviour
         Started = true;
         Started2();
         if (ModKitUtil.Alive(Master))   // BATCH 08:64: a second Stash taken back in Started2 shows no build puff
-            ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
+            builtLookAt = Time.time + SpoolData.FirstLookDelay;
     }
 
     protected virtual void Started2() { }

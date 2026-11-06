@@ -8,7 +8,8 @@ public class SpoolHeroBrain : MonoBehaviour
     public float PatchReady;
     public int Patches, MenuChanges, SoldByFallback;
     public string LastPatch = "";
-    bool started, patchOff, fullWarned, stashFullWarned;
+    bool started, begun, patchOff, fullWarned, stashFullWarned;
+    readonly SpoolFaults faults = new SpoolFaults();
     Link_Command patchCommand;
     float nextCollect, nextMenu;
 
@@ -30,6 +31,7 @@ public class SpoolHeroBrain : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
                     return;
                 Begin();
+                begun = true;
             }
             if (patchOff && Time.time >= PatchReady)
                 SetPatchButton(false);
@@ -47,8 +49,10 @@ public class SpoolHeroBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            SpoolLog.Warn("hero brain: " + e.Message);
-            enabled = false;
+            // Pitfall #80: a bad tick is skipped. A Begin that threw left this brain half set up (started is set on its
+            // first line), so that still stops it.
+            if (faults.Fail("hero brain", e) || !begun)
+                enabled = false;
         }
     }
 

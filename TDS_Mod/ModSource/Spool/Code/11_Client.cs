@@ -11,6 +11,11 @@ public static class SpoolClient
     static Sprite tuftSprite;
     public static int TuftsShown, Flights;
 
+    // Spool_Tuft's flag for a tuft that lasts Remnant Bin's 30 s (the number stays an exact float: id < 2^19, so all of
+    // it is below 2^24).
+    public const int LongTuft = 1 << 23;
+    public const float LongLife = 30f;
+
     public static readonly Color ThreadColor = new Color(0.435f, 0.682f, 0.494f, 1f);   // sage 6FAE7E (lilac 945DAD until 2026-11-05)
 
     class Tuft
@@ -111,8 +116,26 @@ public static class SpoolClient
             int n = Mathf.RoundToInt(number);
             switch (type)
             {
+                // The number packs the tuft: id * 16 + amount, plus LongTuft when it lasts Remnant Bin's 30 s.
                 case "Spool_Tuft":
-                    SetTuft(n >> 4, position, n & 15, true);
+                    bool lasting = n >= LongTuft;
+                    n &= LongTuft - 1;
+                    SetTuft(n >> 4, position, n & 15, true, lasting ? LongLife : SpoolData.DropLife);
+                    break;
+                // Remnant Bin: a tuft that ran out flies home into the Yarn Stash (told through the Stash: at is its place).
+                case "Spool_Remnant":
+                    RemoveTuft(n >> 4);
+                    Run(Fly(position, null, true, at));
+                    break;
+                // Voodoo Doll: a pinned foe (number: its stun seconds), or the doll mending itself (0).
+                case "Spool_Voodoo":
+                    SpoolAssets.Play(n > 0 ? "Spool_Prick" : "Spool_Patch", position, n > 0 ? 0.8f : 1.2f);
+                    ModKitAssets.Effect(n > 0 ? "World_Spool_Prick" : "World_Spool_Mend", position + Vector3.up * (n > 0 ? 0.5f : 0.4f), n > 0 ? 1.3f : 2f);
+                    break;
+                // Quilting Bee: the Stash calls everyone to sew (the Tins' own stitch looks follow).
+                case "Spool_Bee":
+                    SpoolAssets.Play("Spool_Stitch", at, 1.4f);
+                    ModKitAssets.Effect("World_Spool_Stitch", at + Vector3.up * 0.6f, 2.5f);
                     break;
                 case "Spool_Take":
                     Run(Fly(position, master, false));
@@ -141,9 +164,10 @@ public static class SpoolClient
                     SpoolAssets.Play("Spool_Pop", position, 0.6f);
                     ModKitAssets.Effect("World_Spool_Stitch", position + Vector3.up * 0.4f, 1f);
                     break;
+                // Told through the unit's home since 2026-11-06 (pitfall #158): the position is the unit's.
                 case "Spool_Pop":
-                    SpoolAssets.Play("Spool_Pop", at);
-                    ModKitAssets.Effect("World_Spool_Stuffing", at, 1.2f);
+                    SpoolAssets.Play("Spool_Pop", position);
+                    ModKitAssets.Effect("World_Spool_Stuffing", position, 1.2f);
                     break;
                 case "Spool_Down":
                     SpoolAssets.Play("Spool_Down", position, n == 1 ? 1.3f : 1f);
@@ -159,7 +183,7 @@ public static class SpoolClient
                     if (ring != null) ring.transform.localScale = Vector3.one * Mathf.Max(0.8f, number);
                     break;
                 case "Spool_Leap":
-                    SpoolAssets.Play("Spool_Pop", at, 1.2f);
+                    SpoolAssets.Play("Spool_Pop", position, 1.2f);
                     break;
                 case "Spool_Prick":
                     SpoolAssets.Play("Spool_Prick", position);
@@ -251,7 +275,7 @@ public static class SpoolClient
     }
 
     // A new tuft, a merged one (fresh time and size), or one a carrier took from (smaller or gone).
-    static void SetTuft(int id, Vector3 at, int amount, bool fresh)
+    static void SetTuft(int id, Vector3 at, int amount, bool fresh, float life = 0f)
     {
         Tuft t;
         if (!tufts.TryGetValue(id, out t))
@@ -271,7 +295,7 @@ public static class SpoolClient
         }
         t.Amount = amount;
         if (fresh)
-            t.Until = Time.time + SpoolData.DropLife;
+            t.Until = Time.time + (life > 0f ? life : SpoolData.DropLife);
         float size = Mathf.Lerp(0.7f, 1.3f, Mathf.Clamp01((amount - 1) / 6f));   // 0.42 to 0.78 wide: the 8 px tuft was 0.32 to 0.64 and hard to see
         t.Go.transform.localScale = Vector3.one * size;
     }

@@ -255,7 +255,9 @@ public class SpoolUnitBrain : MonoBehaviour
     public bool Guarded;
 
     float nextThink, nextFront;
-    bool armed;
+    bool armed, begun;
+    static readonly SpoolFaults.Log faultLog = new SpoolFaults.Log();
+    readonly SpoolFaults faults = new SpoolFaults(faultLog);
     Link_Modifier meritDamage, meritHealth, socksDamage;
     static readonly Entity_Master.Oninteracts guard = OnGuarded;
 
@@ -278,6 +280,7 @@ public class SpoolUnitBrain : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || !Master.Commandlistserver.ContainsKey("Move"))
                     return;
                 Begin();
+                begun = true;
             }
             if (Def.Ranged && !armed)
                 Arm();
@@ -295,8 +298,9 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            SpoolLog.Warn(Def.Id + " brain: " + e.Message);
-            enabled = false;
+            // Pitfall #80: a bad tick is skipped; a Begin that threw (Started is set on its first line) still stops it.
+            if (faults.Fail(Def.Id + " brain", e) || !begun)
+                enabled = false;
         }
     }
 
@@ -322,7 +326,8 @@ public class SpoolUnitBrain : MonoBehaviour
             if (Def != null && SpoolContent.HasSmallLook(Def.Id))
                 ModKitUtil.Skin(Master, SpoolData.SmallSkin);
         }
-        ModKitUtil.Vis(Master, "Spool_Pop", ModKitUtil.Pos(Master), 0f);
+        // Pitfall #158: told through its home (or Spool), which every client has hooked: the unit itself is a frame old.
+        ModKitUtil.Vis(Radio(), "Spool_Pop", ModKitUtil.Pos(Master), 0f);
         if (Crafted)
             Walk(null, Spot, 0f);
         else if (Leap > 0f)
@@ -481,7 +486,7 @@ public class SpoolUnitBrain : MonoBehaviour
         Spot = tile != null ? tile.Position : from + dir.normalized * far;
         Helper_Entitytools.Addmod(Master, "Speed", 2f, Helper_Entitytools.Modtypes.Multi, 1.2f);
         Walk(null, Spot, 0f);
-        ModKitUtil.Vis(Master, "Spool_Leap", Spot, 0f);
+        ModKitUtil.Vis(Radio(), "Spool_Leap", Spot, 0f);
     }
 
     // Burst Seams: a Mangled that reaches a foe bursts on every foe within the radius.

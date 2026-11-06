@@ -35,6 +35,7 @@ public static class SpoolAssets
         { 'b', new Color32(232, 196, 108, 255) }, { 'B', new Color32(196, 156, 70, 255) }, { 'w', new Color32(245, 240, 250, 255) },
         { 'd', new Color32(40, 64, 46, 255) }, { 'r', new Color32(228, 104, 128, 255) }, { 's', new Color32(176, 182, 196, 255) },
         { 'j', new Color32(154, 201, 165, 255) }, { 'x', new Color32(111, 174, 126, 255) }, { 'X', new Color32(79, 140, 94, 255) },
+        { 'R', new Color32(214, 84, 72, 255) }, { 'u', new Color32(88, 140, 228, 255) },
     };
 
     // A spool of thread.
@@ -72,6 +73,24 @@ public static class SpoolAssets
     {
         "............", "....wwww....", "....wrrw....", "....wrrw....", ".wwwwrrwwww.", ".wrrrrrrrrw.",
         ".wrrrrrrrrw.", ".wwwwrrwwww.", "....wrrw....", "....wrrw....", "....wwww....", "............"
+    };
+    // Quilting Bee's BEE: a striped bee with its wings up.
+    public static readonly string[] BeeIcon =
+    {
+        "............", "....ww.ww...", "...wwwwwww..", "....wwwww...", "..bbbbbbbb..", ".bddbbddbbb.",
+        ".bddbbddbbBs", ".bddbbddbbb.", "..bbbbbbbb..", "............", "............", "............"
+    };
+    // UNTHREAD: a pair of scissors.
+    public static readonly string[] UnthreadIcon =
+    {
+        "s..........s", ".s........s.", "..s......s..", "...s....s...", "....s..s....", ".....ss.....",
+        ".....ss.....", "....s..s....", "..rrr..rrr..", ".r..r..r..r.", ".r..r..r..r.", "..rr....rr.."
+    };
+    // Dyed in the Wool's COLOUR: three drops of dye over a skein (the button tints it the picked colour).
+    public static readonly string[] ColourIcon =
+    {
+        "............", "..R...u...b.", ".RRR.uuu.bbb", ".RRR.uuu.bbb", "..R...u...b.", "............",
+        "..ssssssss..", ".sLLLLLLLLs.", ".sLlLlLlLLs.", ".sLLLLLLLLs.", "..ssssssss..", "............"
     };
     // The yarn basket.
     public static readonly string[] StashIcon =

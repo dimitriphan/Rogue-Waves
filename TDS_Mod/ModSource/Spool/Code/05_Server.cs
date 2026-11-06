@@ -569,9 +569,10 @@ public static class SpoolServer
     {
         Vector3 at = ModKitUtil.Pos(u.Master);
         int team = ModKitUtil.Team(u.Master);
-        // The cheap tests first: most units are the same kind, or not Crafted at all.
+        // The cheap tests first: most units are the same kind, or not Crafted at all. A Tacked Stitched counts as a Stitched.
+        string family = SpoolData.FamilyOf(u.Def);
         foreach (SpoolUnitBrain o in Units)
-            if (o != null && o.Def != null && o.Def.Sellable && o.Def.Id != u.Def.Id && o.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach
+            if (o != null && o.Def != null && o.Def.Sellable && SpoolData.FamilyOf(o.Def) != family && o.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach
                 && ModKitUtil.Team(o.Master) == team && ModKitUtil.Alive(o.Master))
                 return true;
         return false;

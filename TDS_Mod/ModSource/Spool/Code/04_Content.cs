@@ -12,7 +12,7 @@ public static class SpoolContent
     public static readonly Dictionary<string, Upgradeproperties> Upgrades = new Dictionary<string, Upgradeproperties>();
     public static readonly Dictionary<string, SpoolData.Upg> UpgradeDefs = new Dictionary<string, SpoolData.Upg>();
     public static readonly List<Upgradeproperties> Directions = new List<Upgradeproperties>();
-    public static Commandobject Patch, Target, Spot, Return, Mend;
+    public static Commandobject Patch, Target, Spot, Return, Mend, Bee, Unthread, Colour;
     public static Commandobject HiddenMove;   // the stock MOVE, drawn as nothing: the Thread Head keeps SPOT only (B16)
     public static int VfxRegistered;
     public static bool IconsReady;
@@ -289,6 +289,9 @@ public static class SpoolContent
             AddIcon(types, "Spool_Spot", SpoolAssets.SpotIcon, "Spot", like, ModKitAssets.CommandIcon);
             AddIcon(types, "Spool_Return", SpoolAssets.ReturnIcon, "Return", like, ModKitAssets.CommandIcon);
             AddIcon(types, "Spool_Mend", SpoolAssets.MendIcon, "Mend", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Bee", SpoolAssets.BeeIcon, "Bee", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Unthread", SpoolAssets.UnthreadIcon, "Unthread", like, ModKitAssets.CommandIcon);
+            AddIcon(types, "Spool_Colour", SpoolAssets.ColourIcon, "Colour", like, ModKitAssets.CommandIcon);
             AddIcon(stats, "Thread", SpoolAssets.ThreadIcon, "Thread", like);
             AddIcon(stats, "Stash", SpoolAssets.StashIcon, "Stash", like);
             AddIcon(stats, "Carried", SpoolAssets.CarriedIcon, "Carried", like);
@@ -317,6 +320,9 @@ public static class SpoolContent
         if (Spot != null) Spot.Icon = Icon("", "Move");
         if (Return != null) Return.Icon = Icon("", "Move");
         if (Mend != null) Mend.Icon = Icon("", "Heal", "Units", "Move");
+        if (Bee != null) Bee.Icon = Icon("", "Units", "Upgrade", "Move");
+        if (Unthread != null) Unthread.Icon = Icon("", "Sell", "Move");
+        if (Colour != null) Colour.Icon = Icon("", "Convert", "Upgrade", "Move");
         SpoolLog.Warn("icon table was built before Spool's icons were added; Spool's buttons use stock icons");
     }
 
@@ -420,6 +426,14 @@ public static class SpoolContent
         Return.Keybind = new List<string> { "4" };
         Mend = Command(template, SpoolData.MendCommand, SpoolData.MendName, SpoolData.MendDesc, "Spool_Mend", new SpoolButton(), false);
         Mend.Keybind = new List<string> { "3" };
+        // BEE (Quilting Bee) on the Yarn Stash, UNTHREAD on a Cookie Tin, COLOUR (Dyed in the Wool) on a Loom: one-click
+        // buttons like the Mining Hut's Convert. BEE greys out once used in a Tide (Goalstring "Off"); COLOUR draws the
+        // picked colour from its Goalstring (Uloe's Colour Filter way).
+        Bee = Command(template, SpoolData.BeeCommand, SpoolData.BeeName, SpoolData.BeeDesc, "Spool_Bee", new SpoolButton(), false);
+        Unthread = Command(template, SpoolData.UnthreadCommand, SpoolData.UnthreadName, SpoolData.UnthreadDesc, "Spool_Unthread", new SpoolButton(), false);
+        Unthread.Keybind = new List<string> { "4" };
+        Colour = Command(template, SpoolData.ColourCommand, SpoolData.ColourName, SpoolData.ColourDesc, "Spool_Colour", new SpoolColourButton(), false);
+        Colour.Keybind = new List<string> { "4" };
         // The Thread Head's stock MOVE did SPOT's job a second way (Dimitri's default S10 of 2026-11-05, B16). Its brain walks
         // by that command, so the command stays and only its button goes: the same command, styled None (nothing drawn).
         Commandobject move = ModKitUtil.Load<Commandobject>("Command", "Command_Move");
