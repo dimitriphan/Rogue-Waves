@@ -490,6 +490,20 @@ public static partial class RWTest
         Check("Diorama: Yossele's look turns tiny, by a skin named after its being", skin == being && look,
             "skin '" + skin0 + "' -> '" + skin + "', being " + being + ", a skin of that name on its visual " + SkinHas(own, being) + ", on the shown one " + SkinHas(shown, being)
             + " (" + (own != null && own.Skinoverrides != null ? own.Skinoverrides.Count : -1) + " skins)");
+        // The other pack vessels carry the same two skins, the being's name and its copy's (kit 1.15 ModKitAssets.TinyLooks).
+        string others = "";
+        int loaded = 0;
+        bool all = true;
+        foreach (string hero in new[] { "Hero_Spool", "Hero_Argo", "Hero_Uloe" })
+        {
+            Beingobject b = ModKitUtil.Load<Beingobject>("Hero", hero);
+            Visualproperties vp = b != null && b.Entity != null ? b.Entity.Defaultvisual : null;
+            bool has = SkinHas(vp, hero) && SkinHas(vp, hero + "2");
+            if (b != null) { loaded++; all &= has; }
+            others += hero + (b == null ? " not loaded" : has ? " has both" : " lacks them") + "; ";
+        }
+        if (loaded == 0) Setup("Diorama: the other vessels' tiny look", "none of Spool, Argo, Uloe loaded");
+        else Check("Diorama: Spool, Argo and Uloe carry the tiny look's skins too", all, others);
 #if MODKIT_PLAY
         RogueWavesModeKitPlay.Log = m => Info("Diorama camera", m);
         yield return RogueWavesModeKitPlay.Look(ModKitUtil.Pos(v));

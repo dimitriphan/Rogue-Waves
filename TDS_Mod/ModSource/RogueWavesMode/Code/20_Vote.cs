@@ -430,11 +430,12 @@ public static class RWVote
     public static Bla_Ui_Confirmation.Entry MapCard(RWChart.Node n, RWChart.Chart chart)
     {
         string desc;
-        Sprite picture;
-        string title = MapName(n);
+        Sprite picture, badge = null;
+        string title = MapName(n), name = title;
+        // The card shows the map's picture and name, its weather or the Wreck as a badge (RWDialog.Face); the Cove, its own.
         if (n.Stop == RWChart.Cove)
         {
-            title = "The Cove";
+            title = name = "The Cove";
             desc = "No map" + RWCard.Separator + "Rest: a retry back, or a Direction rank with every retry in hand";
             picture = RWIcons.Stop(n.Stop, 16);
         }
@@ -442,13 +443,15 @@ public static class RWVote
         {
             title = MapName(n) + " (Wreck)";
             desc = "Danger " + n.Label + RWCard.Separator + "Plays one row harder" + RWCard.Separator + "Pays each player a Trinket";
-            picture = RWIcons.Stop(n.Stop, 16);
+            picture = MapPicture(n);
+            badge = RWIcons.Stop(n.Stop, 16);
         }
         else
         {
             desc = (n.Weather != RWChart.Calm ? RWWeather.Display(n.Weather) : "Calm waters") + RWCard.Separator + "Danger " + n.Label
                 + (n.Breaker ? RWCard.Separator + "Closes stretch " + RWCard.StretchOf(n.Row) : "");
-            picture = n.Weather != RWChart.Calm ? RWIcons.SpriteFor(n.Weather) : MapPicture(n);
+            picture = MapPicture(n);
+            if (n.Weather != RWChart.Calm) badge = RWIcons.SpriteFor(n.Weather);
         }
         if (chart != null && n.Row < RWChart.Rows)
         {
@@ -460,7 +463,7 @@ public static class RWVote
             }
             if (on.Count > 0) desc += RWCard.Separator + "Leads on to " + string.Join(", ", on.ToArray());
         }
-        return RWDialog.Card(n.Col.ToString(), title, desc, picture, n.Breaker ? RWDialog.Coral : RWDialog.Teal);
+        return RWDialog.Face(RWDialog.Card(n.Col.ToString(), title, desc, picture, n.Breaker ? RWDialog.Coral : RWDialog.Teal), name, badge);
     }
 
     static void CloseMap()
@@ -604,8 +607,8 @@ public static class RWVote
         AskLeave(treasureWave);
     }
 
-    // A calm map's card shows the map's own glyph, the one on its Setup panel, at the cards' 20 pixels a unit (its own sprite
-    // is drawn for a larger panel, and comes out a speck on a card, seen on the PC).
+    // A map's card shows the map's own glyph, the one on its Setup panel, at the cards' 20 pixels a unit (its own sprite
+    // is drawn for a larger panel, and comes out a speck on a card, seen on the PC); RWDialog.Face draws it large.
     static readonly Dictionary<string, Sprite> glyphs = new Dictionary<string, Sprite>();
 
     public static Sprite MapPicture(RWChart.Node n)

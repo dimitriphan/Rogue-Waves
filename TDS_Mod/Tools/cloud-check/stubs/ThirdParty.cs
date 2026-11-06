@@ -173,6 +173,9 @@ namespace UnityEngine.UI
         public virtual UnityEngine.Material material { get { throw null; } set { } }
         public bool raycastTarget { get { throw null; } set { } }
         public RectTransformStub rectTransform { get { throw null; } }
+        // Added 2026-11-06 for RogueWavesMode's mini chart, which measures the game's pieces on the boat (26_ChartView.cs).
+        public UnityEngine.Canvas canvas { get { throw null; } }
+        public UnityEngine.CanvasRenderer canvasRenderer { get { throw null; } }
     }
     public class RectTransformStub { }
     public abstract class MaskableGraphic : Graphic { }
@@ -216,7 +219,7 @@ namespace UnityEngine.UI
         public FitMode verticalFit { get { throw null; } set { } }
     }
     public class LayoutRebuilder { public static void ForceRebuildLayoutImmediate(UnityEngine.RectTransform layoutRoot) { } }
-    public class Mask : UnityEngine.EventSystems.UIBehaviour { }
+    public class Mask : UnityEngine.EventSystems.UIBehaviour { public bool showMaskGraphic { get { throw null; } set { } } }   // showMaskGraphic: 2026-11-06, 26_ChartView.cs
     public class RectMask2D : UnityEngine.EventSystems.UIBehaviour { }
     public class Outline : UnityEngine.EventSystems.UIBehaviour { }
     public class Shadow : UnityEngine.EventSystems.UIBehaviour { }

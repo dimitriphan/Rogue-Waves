@@ -423,7 +423,7 @@ one exception. Each row says what a **pack vessel** needs for the Cardinal to wo
 | Paper Tower | `Buildoption1..4` whose being is `Towerfighter`, read at the effect's `Starting` (Effect_Artifact_Paper.cs:15-63) | build commands named `Buildoption1..4`, made before then; attack buildings tagged `Towerfighter`; built through `Hero_Buildsell` |
 | Bottom Rock | disables `Buildoption1..4` past its limit; the count is **team-wide** (Artifact_Bottomrock_Effect.cs:32, 56-64) | the same command names (any other `Build*` command escapes the limit) |
 | Voice in a Bottle | `Entity_Ai_General_Upgrade` on buildings whose parent is tagged `Hero` | carry the stock upgrade AI (`05` §14; the pack's buildings since 2026-11-04); a building that mirrors the flow loses it (§2.7) |
-| Diorama, Blurry Photo | set `Skin` = the being's name (`<name>2` for the clone) | a `Skinoverride` of that name for the look; never drive the vessel's own stages by `Skin`; the clone (tags `Clone`, `Prespawn`, parent a `Hero`) also fires the pack's `Onspawn` |
+| Diorama, Blurry Photo | set `Skin` = the being's name (`<name>2` for the clone); both write the same two names (read in code, 2026-11-06) | a `Skinoverride` of that name for the look (`ModKitAssets.TinyLooks`, kit 1.15); never drive the vessel's own stages by `Skin`; the clone (tags `Clone`, `Prespawn`, parent a `Hero`) also fires the pack's `Onspawn` |
 | Pig Named Bank, Voiceapply, Teamapply | the thing's **parent tagged `Hero`**, whoever owns it: Teamapply reached another player's building and kept reaching new ones after its upgrade was removed (verified, RogueLab round 8; pitfall #118) | build through `Hero_Buildsell`; a building's units (parent = building) are left out, as for the base vessels |
 | Heroapply family (Sport Water, Fluffy Slippers, Diorama, Money Bag...) | data tag `Hero` and the core's `Child` | tag `Hero`; a minion that builds and calls the core's `Child` (Boutbro) gets them too |
 | Towerapply (Rusty Pipe, Frail Titan) | data tag `Tower` | `Tower` on every building (traps and the Bouthouse are skipped) |
@@ -510,7 +510,10 @@ the engineer, the Boutman family boosts, `Hero_Boutman_Shoot`) are name-locked: 
 18. **Spawn units with a fresh `Link_Spawn` and the building as parent** (owner follows); make the count follow a stat
     the brain polls, so "+1 unit" works by `Addmod` (the base vessels' `Units` does not).
 19. **Keep vessel state in upgrades** so it comes back after death; give the vessel a `Skinoverride` named after its
-    being (Diorama) and `<being>2` (Blurry Photo), and don't use `Skin` for gameplay stages on the vessel.
+    being (Diorama) and `<being>2` (its copy, and Blurry Photo's, which writes the same two names), and don't use `Skin`
+    for gameplay stages on the vessel. `ModKitAssets.TinyLooks(vp, being)` (kit 1.15) adds both as the vessel's sprites
+    at half size, and `<being><skin>` for each skin the visual already has; a part that sets its own skin names it with
+    `TinyName` while the vessel is tiny (Uloe's lit bulb, `Uloe/Code/06_HeroBrain.cs`).
 
 ## 12. PC list
 

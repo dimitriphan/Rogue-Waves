@@ -63,6 +63,24 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(0.6f);
     }
 
+    // CV13 (docs/mode/CHART_NAVIGATION.md §8): each map card shows its map's name and its picture large, not the stock
+    // card's 16-unit glyph alone (full test 2026-11-06 §5 item 3).
+    static void Faces(string when)
+    {
+        List<string> seen = new List<string>();
+        bool ok = true;
+        int n = 0;
+        foreach (RectTransform card in RWDialog.Cards(Bla_Ui_Confirmation.Instance))
+        {
+            string name;
+            float picture;
+            ok &= RWDialog.Faced(card, out name, out picture) && picture > 16.5f;   // larger than the stock card's 16-unit box
+            n++;
+            seen.Add(card.name + " '" + name + "' picture " + RWUtil.F(picture) + " units");
+        }
+        Check("CV13 " + when + ": every card shows its map's picture and name", ok && n > 0, n + " cards: " + string.Join(", ", seen.ToArray()));
+    }
+
     static string Rc(Rect r) { return "x " + Mathf.RoundToInt(r.xMin) + ".." + Mathf.RoundToInt(r.xMax) + " y " + Mathf.RoundToInt(r.yMin) + ".." + Mathf.RoundToInt(r.yMax); }
 
     static bool OnTheScreen(Rect r) { return r.xMin >= -1f && r.yMin >= -1f && r.xMax <= Screen.width + 1f && r.yMax <= Screen.height + 1f; }
@@ -396,6 +414,7 @@ public static partial class RWTest
         yield return WaitDialog(10f);
         Info("the map vote", "title '" + TextOf(Bla_Ui_Confirmation.Instance.Titlebox) + "', cards " + CardTexts());
         yield return DialogFits("The map vote");
+        Faces("the map vote");
         yield return Snap("map_vote");
         List<string> mapCards = CardNames();
         Check("Vote: every map of the first row is offered", mapCards.Count == RWCampaign.Open().Count && RWVote.State == "Map", "cards " + string.Join(",", mapCards.ToArray()) + ", open " + Names(RWCampaign.Open()));
@@ -420,6 +439,13 @@ public static partial class RWTest
         Check("staging: the party is back on the boat, no retry spent", boat != null && RWCampaign.Retries == 3 && !RWCampaign.Staging && RWCampaign.Route.Count == 0, "retries " + RWCampaign.Retries + ", route " + Digits(RWCampaign.Route));
         yield return Until(() => Here(), 30f);
         yield return new WaitForSecondsRealtime(5f);
+        // CV14: the mini chart stands clear of every picture and word the game shows on the boat (full test §5 item 2). A
+        // piece over its spot moves it after two looks a second apart, so the check gives it three seconds.
+        yield return Until(() => RWChartView.Shown == "Boat" && RWChartView.MiniUnder == 0, 3f);
+        if (RWChartView.Shown != "Boat") Setup("CV14 the mini chart stands clear of the game's pieces", "view '" + RWChartView.Shown + "', setup " + (Macro_Worldvisual.Instance != null && Macro_Worldvisual.Instance.Insetup));
+        else if (RWChartView.MiniPieces == 0) Setup("CV14 the mini chart stands clear of the game's pieces", "none of the game's pieces measured on the boat, so clear says nothing");
+        else Check("CV14 the mini chart stands clear of the game's pieces on the boat", RWChartView.MiniAt.width > 0f && RWChartView.MiniUnder == 0,
+            "at " + Rc(RWChartView.MiniAt) + " in canvas units, under " + RWChartView.MiniUnder + " of " + RWChartView.MiniPieces + " pieces");
         yield return Snap("boat_after_staging");
 
         // Sails to the winner, picks it: map 1.
@@ -764,6 +790,7 @@ public static partial class RWTest
             yield return WaitDialog(8f);
             staySub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
             Info("the vote on the next map, staying", "sub '" + staySub + "', cards " + CardTexts());
+            Faces("the after-win vote");
             List<string> stayCards = CardNames();
             if (stayCards.Count > 0) ClickCard(stayCards[0]);
             yield return Until(() => RWVote.State == "", 8f);

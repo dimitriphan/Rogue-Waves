@@ -7,8 +7,8 @@
 //                     (RWAsk.Revote: the host keeps each player's last). Hovering an island hovers its card, so the
 //                     dialog's own line names it. A pad keeps the cards (kit docs/20 §1.3); the island of the focused card
 //                     is lit the same. The view stays until the question closes
-//   on the boat       a mini chart in the top right corner, all the time on the chart; while the boat sails, a banner in
-//                     the HUD's "TIDE APPROACHING" shape names where it goes, read from the boat's heading on every machine
+//   on the boat       a mini chart where the game's pieces leave room (Mini), all the time on the chart; while the boat
+//                     sails a banner in the HUD's "TIDE APPROACHING" shape names where it goes, read from its heading on each machine
 //                     (the winner is never in the chart's name, which would warp the party again, §3.2)
 //   any time          the key ~M~ opens the whole chart, read only, on the chart or in a map's break; not while typing,
 //                     not while a choice dialog is up
@@ -354,6 +354,13 @@ public static class RWChartView
                     Banner(to.Stop == RWChart.Cove ? "SAILING TO THE COVE" : "SAILING TO " + RWVote.MapName(to).ToUpperInvariant(), Says(to), 0f);
             }
         }
+        // The game's pieces on the boat screen come and go (the lobby line, a player's card, a menu sliding in): the mini chart
+        // looks again each second, and moves only when its spot is no longer clear.
+        if (!vis.Insetup && Time.unscaledTime >= miniLook && Canvasable())
+        {
+            miniLook = Time.unscaledTime + 1f;
+            if (Mini(world)) redraw = true;
+        }
         bool sailing = heading != null && !vis.Insetup;
         if (!sailing && Time.unscaledTime >= bannerUntil) bannerTitle = "";
         if (mode != "Boat" || redraw || vis.Insetup != drawnSetup || bannerTitle != drawnTitle)
@@ -648,7 +655,7 @@ public static class RWChartView
         Image(area, "Crest", RWAssets.Sprite("RogueWaves_Crest"), new Rect(r.xMin + 2f, ry + 1f, 12f, 12f), 0.95f);
     }
 
-    // On the boat: the mini chart top right; the banner top centre while it sails or after a rest.
+    // On the boat: the mini chart where the game's pieces leave room (Mini); the banner top centre while it sails or after a rest.
     static void BoatLook(float W, float H)
     {
         if (bannerTitle != "")
@@ -664,8 +671,9 @@ public static class RWChartView
         Macro_Worldvisual vis = Macro_Worldvisual.Instance;
         if (vis != null && vis.Insetup)
             return;
-        float mw = Mathf.Min(W * 0.2f, 150f), mh = Mathf.Min(H * 0.55f, 240f);
-        Rect m = new Rect(W - Margin - mw, H - Margin - mh - 24f, mw, mh);
+        if (MiniAt.size != MiniSize(W, H))
+            Mini(boatWorld);
+        Rect m = MiniAt;
         RuledTitle(m, "SEA CHART", 9f);
         Rect inner = new Rect(m.xMin + 6f, m.yMin + 14f, m.width - 14f, m.height - 34f);
         Layout lay = Lay(chart, sailed, here, new List<RWChart.Node>(), null, heading, inner);
@@ -686,6 +694,175 @@ public static class RWChartView
         Tile me = lay.Find(here);
         if (me != null) Image(area, "Boat", RWIcons.Chart("Boat"), new Rect(me.At.x + T * 0.5f + 1f, me.At.y - 3f, 10f, 10f), 1f);
         Text(area, "Key", "M" + RWCard.Separator + "the whole chart", new Vector2(m.center.x, m.yMin + 4f), 7f, TMPro.TextAlignmentOptions.Center, Ink, 0.85f);
+    }
+
+    // ---------------------------------------------------------------- the mini chart's place
+    //
+    // The boat screen's top right holds the game's own title, the lobby line, the blue player card and the HUD's tool buttons,
+    // and what stands there changes with the screen's size, the players and the menus open: the mini chart drawn there sat
+    // under them (full test 2026-11-06 §5 item 2). So it takes the first spot that every picture and word of the game's open
+    // menus leaves clear, measured on the screen: down the left edge from the top, then down the right edge; with none clear,
+    // the spot they cover least. It keeps its spot while that stays clear. What the old top right spot had over it is logged
+    // once a world, for the PC round's eye.
+    public static Rect MiniAt { get; private set; }     // where the mini chart stands, in this view's canvas units
+    public static int MiniUnder { get; private set; }   // how many of the game's pieces stand on that spot (the self-test's CV14)
+    public static int MiniPieces { get; private set; }  // how many were measured
+    const float MiniStep = 4f, MiniGap = 3f, Backdrop = 0.4f;
+    static readonly List<Rect> pieces = new List<Rect>();
+    static readonly List<string> pieceNames = new List<string>();
+    static readonly List<UnityEngine.UI.Graphic> graphics = new List<UnityEngine.UI.Graphic>();
+    static readonly List<Canvas> canvases = new List<Canvas>();
+    static readonly Vector3[] corners = new Vector3[4];
+    static float miniLook;
+    static int blocked;
+    static string miniWorld = "";
+
+    static Vector2 MiniSize(float W, float H) { return new Vector2(Mathf.Min(W * 0.2f, 150f), Mathf.Min(H * 0.55f, 240f)); }
+
+    // Where it stood before the full test: top right, a line under the screen's top.
+    static Rect OldSpot(Vector2 size, float W, float H) { return new Rect(W - Margin - size.x, H - Margin - size.y - 24f, size.x, size.y); }
+
+    // Measures and picks the spot; true when it moved.
+    static bool Mini(string world)
+    {
+        float ui = UiScale(), W = Screen.width / ui, H = Screen.height / ui;
+        Vector2 size = MiniSize(W, H);
+        bool named = world != miniWorld;
+        Measure(ui, W, H, named);
+        if (named)
+        {
+            miniWorld = world;
+            List<string> over = new List<string>();
+            Rect corner = Padded(OldSpot(size, W, H));
+            for (int i = 0; i < pieces.Count && over.Count < 8; i++)
+                if (pieces[i].Overlaps(corner) && !over.Contains(pieceNames[i])) over.Add(pieceNames[i]);
+            RWLog.Info("chart view: on the boat the old top right spot holds " + (over.Count > 0 ? string.Join(", ", over.ToArray()) : "none of the game's pieces") + " (" + pieces.Count + " measured)");
+        }
+        // A piece over the spot for one look only (a hover's tooltip, a slide) doesn't move it.
+        Rect was = MiniAt;
+        int under = was.size == size ? Under(was) : -1;
+        MiniUnder = under;
+        if (under > 0 && ++blocked < 2)
+            return false;
+        blocked = 0;
+        if (under == 0)
+            return false;
+        Rect at = Spot(size, W, H);
+        // With no spot clear it keeps its own unless the new one is clearly less covered, so it doesn't hop between two.
+        if (under > 0 && Covered(at) > 0f && Covered(at) > Covered(was) * 0.9f)
+            at = was;
+        MiniAt = at;
+        MiniUnder = Under(at);
+        if (at == was)
+            return false;
+        RWLog.Info("chart view: mini chart at " + (at.center.x < W * 0.5f ? "the left" : "the right") + " (" + RWUtil.F(at.x) + ", " + RWUtil.F(at.y) + "), " + RWUtil.F(at.width) + " by "
+            + RWUtil.F(at.height) + " of " + RWUtil.F(W) + " by " + RWUtil.F(H) + ", " + (MiniUnder == 0 ? "clear of the game's " + pieces.Count + " pieces" : "under " + MiniUnder + " of " + pieces.Count + " pieces, none clear"));
+        return true;
+    }
+
+    // Down the left edge, then the right, from the top: the first clear spot, or the least covered.
+    static Rect Spot(Vector2 size, float W, float H)
+    {
+        Rect best = OldSpot(size, W, H);
+        float least = float.MaxValue;
+        float[] xs = { Margin, W - Margin - size.x };
+        foreach (float x in xs)
+            for (float y = H - Margin - size.y; y >= Margin - 0.01f; y -= MiniStep)
+            {
+                Rect r = new Rect(x, y, size.x, size.y);
+                float covered = Covered(r);
+                if (covered <= 0f) return r;
+                if (covered < least)
+                {
+                    least = covered;
+                    best = r;
+                }
+            }
+        return best;
+    }
+
+    static Rect Padded(Rect r) { return new Rect(r.x - MiniGap, r.y - MiniGap, r.width + MiniGap * 2f, r.height + MiniGap * 2f); }
+
+    static float Covered(Rect r)
+    {
+        Rect p = Padded(r);
+        float area = 0f;
+        foreach (Rect q in pieces)
+        {
+            float w = Mathf.Min(p.xMax, q.xMax) - Mathf.Max(p.xMin, q.xMin), h = Mathf.Min(p.yMax, q.yMax) - Mathf.Max(p.yMin, q.yMin);
+            if (w > 0f && h > 0f) area += w * h;
+        }
+        return area;
+    }
+
+    static int Under(Rect r)
+    {
+        if (r.width <= 0f) return int.MaxValue;
+        Rect p = Padded(r);
+        int n = 0;
+        foreach (Rect q in pieces)
+            if (q.Overlaps(p)) n++;
+        return n;
+    }
+
+    // Every picture and word the game's open menus show, in this view's canvas units, from the outermost canvas of each open
+    // menu (so the HUD's buttons beside a menu count too). Hidden and see-through pieces don't count, nor a backdrop over 40%
+    // of the screen. A text's words are where its last drawn mesh put them: asking TMP to draw again freezes frames (#138).
+    // The canvases are the outermost ones, so no piece is met twice; names only for the once-a-world log.
+    static void Measure(float ui, float W, float H, bool named)
+    {
+        pieces.Clear();
+        pieceNames.Clear();
+        canvases.Clear();
+        if (Blockage.Menu.Bl_Menus.Ui != null) Top(Blockage.Menu.Bl_Menus.Ui.transform);
+        if (Blockage.Menu.Bl_Menus.Menus != null)
+            foreach (Blockage.Menu.Blu2_Menu_Handler menu in Blockage.Menu.Bl_Menus.Menus.Values)
+                if (menu != null && menu.Active && menu.gameObject.activeInHierarchy) Top(menu.transform);
+        Rect screen = new Rect(0f, 0f, W, H);
+        foreach (Canvas c in canvases)
+        {
+            c.GetComponentsInChildren<UnityEngine.UI.Graphic>(false, graphics);
+            foreach (UnityEngine.UI.Graphic g in graphics)
+            {
+                if (g == null || !g.isActiveAndEnabled || g.canvas == null || !g.canvas.isActiveAndEnabled || g.canvas.renderMode == RenderMode.WorldSpace
+                    || g.canvasRenderer.cull || g.color.a * g.canvasRenderer.GetInheritedAlpha() < 0.05f)
+                    continue;
+                UnityEngine.UI.Mask mask = g.GetComponent<UnityEngine.UI.Mask>();
+                if (mask != null && !mask.showMaskGraphic)
+                    continue;
+                Rect r;
+                TMPro.TMP_Text text = g as TMPro.TMP_Text;
+                if (text != null)
+                {
+                    if (string.IsNullOrEmpty(text.text) || text.text.Trim() == "" || !RWDialog.TextOnScreen(text, out r)) continue;
+                }
+                else if (g is UnityEngine.UI.Image || g is UnityEngine.UI.RawImage)
+                {
+                    ((RectTransform)g.transform).GetWorldCorners(corners);
+                    r = RWDialog.OnScreen(corners, g.canvas);
+                }
+                else continue;
+                r = Rect.MinMaxRect(Mathf.Max(0f, r.xMin / ui), Mathf.Max(0f, r.yMin / ui), Mathf.Min(W, r.xMax / ui), Mathf.Min(H, r.yMax / ui));
+                if (r.width < 1f || r.height < 1f || !r.Overlaps(screen) || r.width * r.height > W * H * Backdrop)
+                    continue;
+                pieces.Add(r);
+                if (named) pieceNames.Add((g.transform.parent != null ? g.transform.parent.name + "/" : "") + g.name);
+            }
+        }
+        graphics.Clear();
+        MiniPieces = pieces.Count;
+    }
+
+    // The outermost canvas over t, found by hand (GetComponentInParent skips inactive parents).
+    static void Top(Transform t)
+    {
+        Canvas top = null;
+        for (; t != null; t = t.parent)
+        {
+            Canvas c = t.GetComponent<Canvas>();
+            if (c != null) top = c;
+        }
+        if (top != null && top.renderMode != RenderMode.WorldSpace && !canvases.Contains(top)) canvases.Add(top);
     }
 
     // ---------------------------------------------------------------- pieces (canvas units, origin at the bottom left)

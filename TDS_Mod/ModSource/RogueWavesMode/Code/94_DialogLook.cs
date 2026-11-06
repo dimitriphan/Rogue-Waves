@@ -32,12 +32,20 @@ public static partial class RWTest
         return list;
     }
 
+    // Map cards as a vote shows them (RWVote.MapCard): a name and a badge drawn on each when the dialog opens.
+    static List<Bla_Ui_Confirmation.Entry> MapProbes(int cards)
+    {
+        List<Bla_Ui_Confirmation.Entry> list = Probes(cards, "Calm waters" + RWCard.Separator + "Danger 3");
+        for (int i = 0; i < list.Count; i++) RWDialog.Face(list[i], "Map card " + i, i == 0 ? RWAssets.Sprite("RogueWaves_Crest") : null);
+        return list;
+    }
+
     const string LongLine = "A long hover line, about as long as the longest Cardinal the shop sells, with its price and its kind in front of it, to see that it wraps and every word of it stays on the screen";
 
-    static IEnumerator Opening(string name, bool mine, Action<float> worst)
+    static IEnumerator Opening(string name, bool mine, Action<float> worst, bool maps = false)
     {
         Coroutine timed = RogueWavesModeMod.Instance.StartCoroutine(Frames(name, 1.8f, worst));
-        List<Bla_Ui_Confirmation.Entry> cards = Probes(5, LongLine);
+        List<Bla_Ui_Confirmation.Entry> cards = maps ? MapProbes(3) : Probes(5, LongLine);
         if (mine)
         {
             string pick = "-";
@@ -70,6 +78,13 @@ public static partial class RWTest
         }
         Check("The mode's dialog opens with no frame long enough to see, as the stock one does", mineLong <= stockLong + 1,
             mineLong + " of " + Rounds + " openings with a frame over 25 ms, worst " + RWUtil.F(mine * 1000f) + " ms; stock " + stockLong + ", worst " + RWUtil.F(stock * 1000f) + " ms; a launch's first opening " + RWUtil.F(first * 1000f) + " ms");
+        // The map cards draw a name and a badge on each card as the dialog opens (full test 2026-11-06 §5 item 3).
+        float maps = 0f;
+        int mapsLong = 0;
+        for (int round = 1; round <= Rounds; round++)
+            yield return Opening("map cards, round " + round, true, w => { maps = Mathf.Max(maps, w); if (w * 1000f > 25f) mapsLong++; }, true);
+        Check("Map cards with their name and badge open with no frame long enough to see, as the stock dialog does", mapsLong <= stockLong + 1,
+            mapsLong + " of " + Rounds + " openings with a frame over 25 ms, worst " + RWUtil.F(maps * 1000f) + " ms; stock " + stockLong);
 
         // A card's hover, by the pointer's own calls.
         string pick = "-";

@@ -786,6 +786,8 @@ public static class SpoolContent
         vp.Default = e;
         vp.Skinoverride = new List<Visualproperties.Param>();
         vp.Skinoverrides = new Dictionary<string, Visualproperties.Entry>();
+        // Diorama's tiny look, by the skin named after the being (kit docs/17 §11 rule 19).
+        ModKitAssets.TinyLooks(vp, SpoolData.Hero);
         ent.Defaultvisual = vp;
         Register("Hero", vp);
 
