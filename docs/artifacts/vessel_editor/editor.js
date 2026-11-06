@@ -621,7 +621,7 @@ function localPut(all) { try { localStorage.setItem('rw-vessel-sheets-v1', JSON.
 const OWN_DELETES = new Set();   // ids this page is deleting: their removal echo is the page's own, not a thread's
 async function removeStored(rec) {
   try {
-    if (STORE === 'db') { OWN_DELETES.add(rec.id); try { await DB.doc('sheets/' + rec.id).delete(); } catch (e) { OWN_DELETES.delete(rec.id); throw e; } }
+    if (STORE === 'db') { const echo = !!rec.remote; if (echo) OWN_DELETES.add(rec.id); try { await DB.doc('sheets/' + rec.id).delete(); } catch (e) { if (echo) OWN_DELETES.delete(rec.id); throw e; } }   // a doc never saved sends no removal echo
     else { const all = localAll(); delete all[rec.id]; localPut(all); }
   } catch (e) { msg('Could not remove the saved copy. Try again in a moment.', 'err'); return false; }
   rec.remote = null; rec.savedAt = null;
