@@ -319,6 +319,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: Scope Editor refreshed in Rogue Tide** (Dimitri: "Update the rogue waves scope editor with updated
   information"): scope `02` logs 11-05/06 work, `04` gains the chart view, Cove and Wreck as ~defaults~; the page wears
   Rogue Tide and is republished. Docs and page only; nothing ran on the PC.
+- **2026-11-06: spotlight restyled in Rogue Tide** (Dimitri: "as if it were a finished product ready to ship"): no
+  status chips or "not built" list; chart view with Cove and Wreck added (`docs/spotlight/`, artifact v3). Docs only,
+  nothing ran on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1320,6 +1323,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   §4.1-4.2, every value Claude's ~default~. `docs/artifacts/scope_editor/template.html` wears Rogue Tide (Exo 2 caps,
   Barlow, Pixelify Sans; square tiles, bracket frames; Deep Swell in dark, Foam paper in light); the Send flow is
   unchanged. Rebuilt and republished to the same link after the merge. Docs and page only; nothing ran on the PC.
+- **2026-11-06: the feature spotlight as the finished pack, in Rogue Tide** (Dimitri: "update the spotlight using the
+  rogue wave theme. Have the spotlight not mention if an asset is completed or not, as if it were a finished product
+  ready to ship"). `docs/spotlight/spotlight.src.html` restyled with `docs/themes/rogue-tide.md` (Deep Swell ground,
+  bracket frames, bevelled teal tiles, one coral banner, Exo 2 / Barlow / Pixelify Sans, one dark look). Removed: every
+  status chip and the legend, the "not built" section, the release plan, temporary-art notes, the dated "list changed
+  today" box, the Steam line. Added: the chart view (`chart_look_vote.png`), the M key, the boat banner, the Cove and
+  the Wreck; weather never on a Cove or Wreck; a Cove gives a retry back. Upgrade tooltips still carry no numbers. Kept
+  separate from the Vessel Spotlight (his merge answer still open). Republished to the same artifact URL.
+
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
