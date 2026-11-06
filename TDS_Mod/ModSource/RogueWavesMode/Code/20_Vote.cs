@@ -16,7 +16,7 @@ public static class RWVote
     public const string LeaveKind = "L", DirectionKind = "D", MapKind = "M", TreasureKind = "T";
     public const float PickSeconds = 30f, MapSeconds = 25f, LeaveSeconds = 20f;
     public const int TreasureCards = 3;  // a Wreck pays one Trinket of this many (docs/mode/CHART_NAVIGATION.md §4.2, ~one of 3~)
-    public static string State = "";     // "", "Picks", "Map", "Leave", "Treasure" (self-test reads it)
+    public static string State = "";     // "", "Picks", "Map", "Leave", "Treasure", "Board" (self-test reads it)
     public static bool HoldBreak;        // the Tide clock is held while the party answers
     public static bool Departing;        // the party voted to leave
     public static int Round;             // a question's number, never repeated in a launch
@@ -60,6 +60,8 @@ public static class RWVote
         RWTrinkets.Reset();
         // An objective left running when the last map ended would be judged at this map's opening break (MODE-D2).
         RWObjectives.Reset();
+        boardThen = "";
+        RWBoard.MapStart();
         if (!RWRun.InCampaignMap)
             return;
         RWCardinals.RecordLobby();
@@ -127,6 +129,7 @@ public static class RWVote
     {
         RWShop.Leave();
         RWHits.Reset();
+        boardThen = "";
         State = "";
         HoldBreak = false;
     }
@@ -171,6 +174,7 @@ public static class RWVote
             else if (State == "Map") CloseMap();
             else if (State == "Leave") CloseLeave();
             else if (State == "Treasure") CloseTreasure();
+            else if (State == "Board") CloseBoard();
         }
     }
 
@@ -304,6 +308,7 @@ public static class RWVote
 
     static void ClosePicks()
     {
+        RWBoard.Votes(offers.Keys, Votes, null);
         foreach (KeyValuePair<long, List<int>> kv in offers)
         {
             RWPlayer p = RWRun.For(kv.Key);
@@ -479,6 +484,7 @@ public static class RWVote
             count.TryGetValue(n.Col, out have);
             if (have > top) { top = have; best = n; }
         }
+        RWBoard.Votes(RWRun.Sessions(), Votes, best.Col.ToString());
         CloseQuestion();
         if (coveVoted == null)
         {
@@ -571,6 +577,7 @@ public static class RWVote
 
     static void CloseTreasure()
     {
+        RWBoard.Votes(Treasure.Keys, Votes, null);
         foreach (KeyValuePair<long, List<string>> kv in Treasure)
         {
             string pick;
@@ -648,6 +655,7 @@ public static class RWVote
             if (Votes.TryGetValue(s, out v) && v == "Leave") yes++;
         }
         LastVote = yes + " of " + all + " to leave";
+        RWBoard.Votes(RWRun.Sessions(), Votes, yes * 2 > all ? "Leave" : "Stay");
         CloseQuestion();
         State = "";
         Votes.Clear();
@@ -661,7 +669,46 @@ public static class RWVote
             return;
         }
         Departing = true;
-        if (RWCampaign.Route.Count >= RWChart.Rows)
+        bool last = RWCampaign.Route.Count >= RWChart.Rows;
+        // The MVP board first (docs/mode/MVP_BOARD.md §1); after map 10 the Voyage board follows it, or comes alone when
+        // this map had too few players for a board of its own.
+        bool shown = RWBoard.ShowMap(last ? RWBoard.NextVoyage : RWBoard.NextPicks);
+        if (!last ? OpenBoard("picks", shown) : shown ? OpenBoard("voyage", true) : OpenBoard("leave", RWBoard.ShowVoyage(RWBoard.NextEnd)))
+            return;
+        AfterBoard(last ? "leave" : "picks");
+    }
+
+    // ---------------------------------------------------------------- the MVP board (RWBoard writes it, every machine draws it)
+
+    static string boardThen = "";        // what follows the board up now: "picks", "voyage" (then "leave"), "leave"
+
+    static bool OpenBoard(string then, bool shown)
+    {
+        if (!shown)
+            return false;
+        Votes.Clear();
+        State = "Board";
+        boardThen = then;
+        until = Time.time + RWBoard.Seconds;
+        Hold(RWBoard.Seconds);
+        return true;
+    }
+
+    static void CloseBoard()
+    {
+        State = "";
+        Votes.Clear();
+        string then = boardThen;
+        boardThen = "";
+        if (then == "voyage" && OpenBoard("leave", RWBoard.ShowVoyage(RWBoard.NextEnd)))
+            return;
+        RWBoard.Clear();
+        AfterBoard(then == "picks" ? "picks" : "leave");
+    }
+
+    static void AfterBoard(string then)
+    {
+        if (then == "leave")
         {
             Leave();
             return;
@@ -718,6 +765,7 @@ public static class RWVote
         else if (kind == MapKind && State == "Map") Votes[s] = RWRun.JsonInt(json, "Pick").ToString();
         else if (kind == TreasureKind && State == "Treasure") Votes[s] = RWRun.JsonInt(json, "Pick").ToString();
         else if (kind == LeaveKind && State == "Leave") Votes[s] = RWRun.JsonText(json, "Text");
+        else if (kind == RWBoard.Kind && State == "Board" && RWRun.JsonInt(json, "Pick") == Mathf.RoundToInt(RWBoard.Round)) Votes[s] = "Continue";
     }
 
     // ---------------------------------------------------------------- the board and the run line

@@ -337,6 +337,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
   fixable?"): 14 small fixes need no decision (5 best proven on the PC after), three need his word
   (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from code only; nothing changed or run on the PC.
+- **2026-11-06: MVP board built** (Dimitri: "just the most notable thing of the player ... Defaults for rest, and then
+  build"): one title per player, failures as common as accolades, Tab replays it; `27_Board.cs`, `28_BoardView.cs`,
+  MB1-MB11 (`MVP_BOARD.md` §4, §6). Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1396,6 +1399,22 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spool's and Uloe's brains switch off on their first exception (#80), a missing stock elite's stand-in comes from the
   campaign's own four (#146), a Wreck-given Pearl Oyster pays nothing that map. Not bugs: Uloe's `"Collide"` (the game's
   beam param), the vessels' spawn-time `Updatecommand(..., true)`. Docs only.
+- **2026-11-06: MVP board built** (Dimitri 06:55Z: "It doesn't need to account for one accolade and one failure, just
+  the most notable thing of the player (balanced so that getting a failure is as common as getting an accolade).
+  Defaults for rest, and then build."): each player gets the one title whose share stands out most above an even split;
+  half the crew takes a failure, an odd crew one more on every other odd-sized board, so failures and accolades come out equal over a run
+  (MB3: 1503 and 1503 over 1002 made-up boards). Quartermaster (most aura spent) joins the accolades; the MVP is apart
+  from the title. `27_Board.cs` snapshots `Activeplayerdata` per map, keeps leaks (the Basin's `Oninteract`, charged to
+  `Lasthit`), unanswered votes, drops, aura sent and the run's totals (saved as the run line's ninth field); writes four
+  cards and a header as `RW_Log0-4` on every vessel. `20_Vote.cs` holds the break in state "Board" for 12 s or until
+  all press Continue (order "B"); after map 10 the Voyage board follows. `28_BoardView.cs` draws it with the chart
+  view's pieces; Tab replays it. Self-tests MB1-MB8 at boot (`90_Board.cs`), MB9-MB11 in the two-player round. The
+  cloud stubs gain Tab, Enter, Space, NumpadEnter and `Gamepad.buttonSouth`. Mockup redrawn with one title a card.
+  Compiled here (release, self-test and gaps 0 errors), MB1-MB6's pure code run under mono; not run on the PC. PC list
+  in `RogueWavesMode/IMPLEMENTATION_NOTES.md`. `/code-review high` fixed 10 items, the PR #151 reviewer 4 more (a stale
+  board on the next map, MB10 times its Continue, odd boards alternate on a count, two doc slips). No kit change, no
+  pitfall (HashSet is already #1's).
+
 
 ### Decisions
 
