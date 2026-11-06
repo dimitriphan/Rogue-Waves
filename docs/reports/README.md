@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `BUTTON_WOBBLE_2026-11-06.md` | 2026-11-06 | Why the main menu's buttons, the game's own too, wobble and jitter: the stock layout's half pixels under the menu camera's sway (pitfall #174); `RWPixels` puts still pictures on whole pixels; self-test P1-P2 and PC round `Wobble_round1` |
 | `BUG_FIXES_2026-11-06.md` | 2026-11-06 | PC round 4's findings and the first batch checks' leads fixed, compiled here: a friend's end title (P1-4), the 548 Vfx/Mobbase lines (#173), the meteor's first map, one Yarn Stash, Uloe's Plug In cap at Light 8, every round 4 test fault; §5 the next PC round's lines |
 | `PC_ROUND4_2026-11-05.md` | 2026-11-05 | PC round 4 on kit 1.14: every self-test (Argo 157/0, Yossele 202/0, Foes 13/0, Spool 153/0, Uloe 206/3 test faults), the mode's flow 162/2, the gaps launches, two players; Spring Tide's cause read (#172), Yossele's final sheets walk and attack both ways; open: the rejoined friend's "BASIN BREACHED" (P1-4), 548 Vfx/Mobbase lines, test faults (§8) |
 | `CHART_NAVIGATION_2026-11-06.md` | 2026-11-06 | Why the sea chart confuses (the vote's cards sit apart from the chart, the boat frames one row, no legend or progress) and the proposal: a whole-chart view at every vote and on a key, a banner and mini chart on the boat, a Cove (rest) and a Wreck (treasure) in each stretch (Dimitri's pick) (`docs/mode/CHART_NAVIGATION.md`, mockups); docs only, not built |
