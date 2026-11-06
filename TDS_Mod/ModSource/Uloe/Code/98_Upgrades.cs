@@ -344,7 +344,8 @@ public static partial class UloeSelfTest
                 int searched = flood.Searched;
                 yield return Until(() => flood.Searched > searched || !ModKitUtil.Alive(foe), 2.5f);
                 Check("Searchlight: a foe in its Light is Illuminated and slowed 20%", ModKitUtil.Alive(foe) && UloeMarks.LitLevel(foe) >= 1 && Near(ModKitUtil.Stat(foe, "Speed", 0f), s0 * 0.8f, 0.02f),
-                    "Illuminate " + UloeMarks.LitLevel(foe) + ", speed " + F(s0) + " -> " + F(ModKitUtil.Stat(foe, "Speed", 0f)) + ", Light out " + F(flood.Output));
+                    "Illuminate " + UloeMarks.LitLevel(foe) + ", speed " + F(s0) + " -> " + F(ModKitUtil.Stat(foe, "Speed", 0f)) + ", Light out " + F(flood.Output)
+                    + "; the foe alive " + ModKitUtil.Alive(foe) + " (" + (foe != null ? "health " + F(ModKitUtil.Health(foe)) : "gone") + "), " + (flood.Searched - searched) + " searches, at " + F(foe != null ? ModKitUtil.Flat(ModKitUtil.Pos(foe), flood.Pos) : -1f) + " of ring " + F(flood.RingRadius));
                 yield return Wait(UloeData.LightTick + 0.2f);
                 Check("... one slow a Flood Light, not one a second", Near(ModKitUtil.Stat(foe, "Speed", 0f), s0 * 0.8f, 0.02f), "speed " + F(ModKitUtil.Stat(foe, "Speed", 0f)));
             }

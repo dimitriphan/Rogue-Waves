@@ -467,6 +467,12 @@ public static partial class RWTest
         if (!springFirst) Direction(player, "Spring");
         yield return new WaitForSeconds(2.5f);
         Info("R3 with Spring Tide", "wall [" + Holding(wall, "Effect") + "], Resistadd " + StatOf(wall, "Resistadd") + "; beside it [" + Holding(beside, "Effect") + "], Resistadd " + StatOf(beside, "Resistadd") + "; away [" + Holding(far, "Effect") + "], Resistadd " + StatOf(far, "Resistadd"));
+#if MODKIT_PLAY
+        RogueWavesModeKitPlay.Log = m => Info("R3 camera", m);
+        yield return RogueWavesModeKitPlay.Look(wall.Entityposition.Value);
+        yield return new WaitForSecondsRealtime(1f);
+#endif
+        yield return Snap("r3_fie_wall_" + (springFirst ? "spring_first" : "wall_first"));
         if (!ModKitUtil.Alive(foe)) { yield return NewFoe(); foe = lastFoe; }
         for (int i = 0; i < 3; i++)
         {
