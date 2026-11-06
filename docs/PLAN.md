@@ -1296,8 +1296,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   rely on messaging you so I can still call it when my 5 hour limit is up"): `TDS_Mod/Tools/batch/Run-Batch.ps1` keeps
   the key as the Windows user variable `RW_BATCH_API_KEY` (`-SaveKey`, asked hidden), pulls the base, installs
   `anthropic` and `pillow` once, runs `run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 120`
-  (`-Plan`, `-Full`, `-Model`, `-Check`, `-MaxCost`), and copies the report to `Desktop\RogueWave\batch` for a thread to
-  read and commit. `run_checks.py`'s `git()` returns a failure instead of crashing when git is missing, and `submit` checks `--max-cost` on counted input (the guess ran low: the first full
+  (`-Plan`, `-Full`, `-Model`, `-Check`, `-MaxCost`, `-Collect`), and moves the report to `Desktop\RogueWave\batch` for a
+  thread to read and commit (moved, so an untracked report never stops the next pull). `run_checks.py`'s `git()` returns a failure instead of crashing when git is missing, and `submit` checks `--max-cost` on counted input (the guess ran low: the first full
   Haiku run cost $1.19 against $0.76 estimated); max_tokens back to 64k scope / 48k design (the first run cut seven
   answers at 40k / 24k); default `--max-cost` 15. README "On your
   PC, without Claude"; `docs/PROJECT_SETUP.md` points there. The key bills the API credit, never the plan. Written here,
