@@ -161,7 +161,7 @@ are at least a lane apart, so ~0.5 s~ of the networked boat's heading names the 
   row 8 col 1 (the mockup).
 - **Old campaigns keep old charts.** A campaign saved before the change has no stops (a new save key `RW_Campaign_Stops`
   says a chart has them), so a run in progress never finds its next island turned into a Cove. Clients learn it from
-  the chart's name: an `S` after the seed (`RW_Chart_<seed>S_<route>r<retries>`, one byte more, at most 33 of 64), which `RWCampaign`'s name writer (`06_Campaign.cs` `Saved`) adds and `RWWorld.Parse` reads.
+  the chart's name: an `S` after the seed (`RW_Chart_<seed>S_<route>r<retries>`, one byte more, at most 33 of 64), which `RWWorld.Name` writes (through `RWCampaign.WorldName`) and `RWWorld.Parse` reads.
 - **Not every route meets a stop**: a Cove is one island of 3 or 4 in its row, so taking it is a route choice, as
   in Slay the Spire.
 
