@@ -245,7 +245,7 @@ public static partial class RWTest
 
     // ---------------------------------------------------------------- item 1: two parts' hit hooks on one thing (2a)
 
-    // Odd Socks III beside another kind: +25% Damage, and x(1 - 0.1) on each hit taken (Spool/Code/02_Data.cs:174-175).
+    // Odd Socks III beside another kind: +25% Damage, and x(1 - 0.1) on each hit taken (Spool/Code/02_Data.cs:187-188).
     const float DcSocksBonus = 0.25f, DcSocksGuard = 0.1f;
     const string DcTougherFirst = "Made of Tougher Stuff's hook first", DcSocksFirst = "Odd Socks' hook first";
 
@@ -350,7 +350,7 @@ public static partial class RWTest
         yield return ToBoat();
     }
 
-    // Vine Blockade's barrier: 30% of the Henge's max health as each Tide begins (Yossele/Code/02_Data.cs:330, 10_Henge.cs:111).
+    // Vine Blockade's barrier: 30% of the Henge's max health as each Tide begins (Yossele/Code/02_Data.cs:331, 10_Henge.cs:111).
     const float DcBlockadeShare = 0.3f;
 
     // Blows of a 6.5th of the barrier. The Henge's own hook (Yossele's: armour, then the barrier) and Spring Tide's (x0.9) each
@@ -416,7 +416,7 @@ public static partial class RWTest
 
     // ---------------------------------------------------------------- item 2: a Searchlight under Fog Horn (2b)
 
-    // Searchlight's slow and Wide Flood's ring (Uloe/Code/02_Data.cs:300, 290); the floor of every slow (ModKitUtil.SlowOn).
+    // Searchlight's slow and Wide Flood's ring (Uloe/Code/02_Data.cs:304, 294); the floor of every slow (ModKitUtil.SlowOn).
     const float DcSearchSlow = 0.2f, DcRing = 3.5f, DcFloor = 0.1f;
 
     static IEnumerator DcUloe()
@@ -430,7 +430,7 @@ public static partial class RWTest
         Beingobject lamp = ModKitUtil.Load<Beingobject>("Mob", "Tower_Uloeflood");
         Entity_Master node = DcNode(vessel.Entityposition.Value, 80f);
         List<Vector3> used = new List<Vector3>();
-        // Within the lamp's Range of the node (2.5, Uloe/Code/07_Building.cs:285).
+        // Within the lamp's Range of the node (2.5, Uloe/Code/07_Building.cs:297).
         Vector3 at = lamp != null && node != null ? RogueWavesModeKitTest.Spot(node.Entityposition.Value, lamp, team, 1.6f, 2.3f, used, "a Flood Light by a node") : new Vector3(float.NaN, 0f, 0f);
         if (float.IsNaN(at.x))
         {
@@ -547,7 +547,7 @@ public static partial class RWTest
     const string DcAfterLine = "Tar Bucket waits 4 s after the last of the hits that carry their own Damage";
     const string DcMaskedLine = "A hit healed in the same moment still holds Tar Bucket back 4 s";
 
-    // Argo's Damage, Cleave's reach from the first foe and its share of the swing (Argo/Code/02_Data.cs:128, 131, 132).
+    // Argo's Damage, Cleave's reach from the first foe and its share of the swing (Argo/Code/02_Data.cs:129, 132, 133).
     const float DcSwing = 4f, DcCleaveReach = 1.25f, DcCleaveShare = 0.6f;
 
     sealed class DcHit { public Entity_Master To; public float Damage, Multi; public bool Cleave, Extra; }

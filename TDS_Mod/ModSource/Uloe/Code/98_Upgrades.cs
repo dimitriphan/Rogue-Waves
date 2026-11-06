@@ -158,7 +158,7 @@ public static partial class UloeSelfTest
             yield return Upgrade(bank, "Chain4", owner);
             Check("Chain Lightning", Has(bank, "Chain4"));
             // At a Photon's anchor (a Photon on a lit line stands at its end), armoured: the towers round the Bank felled the
-            // plain Aegis before a Photon reached it (PC_FULL_2026-11-06 §4, as R4 §8 found for the Searchlight).
+            // plain Aegis before a Photon reached it (PC_FULL_2026-11-06 §3, as R4 §8 found for the Searchlight).
             UloePhotonBrain pa = PhotonsOf(bank).Find(p => p.Started);
             yield return Foe("Enemy_Aegis", pa != null ? pa.Anchor : bank.Pos, 2.2f, 0.8f, slot);
             Entity_Master a = slot[0];

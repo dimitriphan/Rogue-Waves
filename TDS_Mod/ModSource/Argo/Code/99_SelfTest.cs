@@ -1443,7 +1443,7 @@ public static partial class ArgoSelfTest
                 List<Link_Modifier> wetHolds = new List<Link_Modifier>();
                 yield return FoeOn(pool1.Master.Beingserver.Currentblock, wet, water, wetHolds);
                 Entity_Master e = wet.Count > 0 ? wet[0] : null;
-                // The -1 hold leaves a slow no room (01_Util.cs Slow; PC_FULL_2026-11-06 §4): eased so the water's slow fits and
+                // The -1 hold leaves a slow no room (01_Util.cs Slow; PC_FULL_2026-11-06 §3): eased so the water's slow fits and
                 // the foe crawls at 10%.
                 if (e != null)
                     foreach (Link_Modifier h in wetHolds) if (h != null && !h.Dead) ModKitUtil.Keep(e, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - Mathf.Min(ArgoData.WaterSlowCap, ModKitUtil.Stat(water.Master, "Slow", ArgoData.WaterSlow))));
@@ -1524,7 +1524,7 @@ public static partial class ArgoSelfTest
                 // Kelp's catch first (a foe whose stats weren't up is caught a tick later), then its end.
                 yield return Until(() => deepFoe == null || !ModKitUtil.Alive(deepFoe) || ArgoWater.Catches > caught0, 1.5f);
                 yield return Until(() => deepFoe == null || !ModKitUtil.Alive(deepFoe) || (ArgoStatus.IsWet(deepFoe) && !ArgoStatus.IsPinned(deepFoe)), 3f);
-                // The hold eased, not taken off: a freed foe waded out of the pool's reach before a tick (PC_FULL_2026-11-06 §4).
+                // The hold eased, not taken off: a freed foe waded out of the pool's reach before a tick (PC_FULL_2026-11-06 §3).
                 // It leaves room for the whole 65% and the foe at 10%.
                 if (deepFoe != null)
                     foreach (Link_Modifier h in deepHolds) if (h != null && !h.Dead) ModKitUtil.Keep(deepFoe, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - ArgoData.WaterSlowCap));
