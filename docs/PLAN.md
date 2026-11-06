@@ -292,6 +292,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
   (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
   undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
+- **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... the spotlight ... Slay the Spire 2"): a
+  whole-chart view at every vote and on a key, a banner and mini chart on the boat (`docs/mode/CHART_NAVIGATION.md`,
+  `docs/reports/CHART_NAVIGATION_2026-11-06.md`). Not built: his go, and whether to add new kinds of island, first.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1197,6 +1200,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   hand-written §0 sorts the rows into leads (meteor objective one map ahead, Uloe's Plug In cap and teammate light,
   Spool's Stash limit, design-page numbers, text slips, two stale docs lines) and noise ("Made of Tougher Stuff" is
   built in the mode; versions, labels and tolerances). Nothing fixed; docs only; nothing ran on the PC.
+- **2026-11-06: sea chart navigation proposed** (Dimitri, 02:18Z: navigating "through just the nodes feels a little bit
+  confusing"): read from the mode's code why (the vote's cards sit apart from the chart, the boat's camera frames one
+  row, the boat sails by itself, no legend or progress) and proposed a chart view in the manner of Slay the Spire's map
+  screen: the whole chart on one panel beside the lettered cards at every vote, clickable lit islands, a hover card
+  with where each island leads, a key (~M~) to open it any time, a banner and a mini chart on the boat, a ring on the
+  voted island; the chart's generator, seeds, saves, the vote's channel and the 3D boat unchanged. Mockups from the new
+  `concept-tools/sea_chart_view.py`. Code it implies and checks CV1-CV8 in `CHART_NAVIGATION.md` §5 and §7. Asked him
+  whether to add new kinds of island (recommended: not yet). Docs only; nothing ran on the PC. No kit change, no pitfall.
 
 ### Decisions
 
