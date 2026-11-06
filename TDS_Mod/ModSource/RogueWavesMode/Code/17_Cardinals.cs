@@ -65,7 +65,8 @@ public static class RWCardinals
     public static readonly string[] NotSold =
     {
         "Artifact_Moon", "Artifact_Mooncore", "Artifact_Loop", "Artifact_Loopedmirror", "Artifact_Vintage", "Artifact_Samedayshipping", "Artifact_Pig", "Artifact_Moneybag",
-        "Artifact_Sandbox", "Artifact_Sand", "Artifact_Blurryphoto", "Artifact_Checklist", "Artifact_Computer", "Artifact_Bottomrock", "Artifact_Rock",
+        "Artifact_Sandbox", "Artifact_Sand", "Artifact_Blurryphoto", "Artifact_Checklist", "Artifact_Computer", "Artifact_Bottomrock",
+        "Artifact_Rock",   // Bottom Rock's real id (pitfall #132): scope 12:5's fourteen names, not a fifteenth
     };
 
     // The stock Cardinals that act on one player's things are Trinkets (docs/reports/STOCK_TRINKETS_2026-11-05.md, Dimitri:

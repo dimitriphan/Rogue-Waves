@@ -234,7 +234,7 @@ public static class RWCampaign
         Save();
         RWRun.Save();
         Rested = gift;
-        RWLog.Info("rested at " + cove.Name + " (row " + cove.Row + "): " + (gift == RetryBack ? "a retry back, " + Retries + " left" : "every player's lowest Direction up a rank") + (Choice >= 0 ? "; on to column " + Choice : "; the host picks the leg after it"));
+        RWLog.Info("rested at " + cove.Name + " (row " + cove.Row + "): " + (gift == RetryBack ? "a retry back, " + Retries + " left" : "every player's lowest Direction goes up a rank") + (Choice >= 0 ? "; on to column " + Choice : "; the host picks the leg after it"));
         RWRejoin.Say(gift == RetryBack ? "The Cove: the party rests and gets a retry back (" + Retries + " left)." : "The Cove: the party rests. With every retry in hand, each player's lowest Direction goes up a rank.");
         return true;
     }
