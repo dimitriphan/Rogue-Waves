@@ -657,7 +657,19 @@ public static partial class RWTest
         ClickCard("Leave");                         // both leave
         yield return Until(() => RWVote.Departing, 30f);
         Check("Leave: both leave", RWVote.Departing && RWVote.LastVote == "2 of 2 to leave", RWVote.LastVote);
+        // The MVP board (docs/mode/MVP_BOARD.md): both cards, one MVP, this player's card marked; Continue on both closes it.
+        yield return Until(() => RWBoardView.Up, 10f);
+        string said = "";
+        foreach (RWBoard.Row r in RWBoard.LastRows) said += (said == "" ? "" : "; ") + r.Name + " " + r.Title + (r.Mvp ? " MVP" : "");
+        Check("MB9 the MVP board shows on the host with both players' cards, one MVP, its own card marked",
+            RWBoardView.Up && RWBoardView.CardsShown == 2 && RWBoardView.MvpShown != "" && RWBoardView.MineShown != "" && RWVote.State == "Board", said + "; state '" + RWVote.State + "'");
+        float pressedAt = Time.unscaledTime;
+        RWBoardView.Continue();
+        yield return Until(() => RWVote.State != "Board", RWBoard.Seconds + 5f);
+        float took = Time.unscaledTime - pressedAt;
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 15f);
+        Check("MB10 the board closes on every Continue, before its time, and the picks follow", took < RWBoard.Seconds - 3f && !RWBoardView.Up && RWAsk.Open.StartsWith(RWVote.DirectionKind),
+            "closed " + RWUtil.F(took) + " s after this Continue (its time " + RWBoard.Seconds + " s); state '" + RWVote.State + "'");
         yield return WaitDialog(8f);
         ClickCard("0");
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || RWCampaign.Choice >= 0, 40f);
@@ -1236,6 +1248,10 @@ public static partial class RWTest
         yield return WaitDialog(8f);
         yield return Sync("leave3");
         ClickCard("Leave");
+        yield return Until(() => RWBoardView.Up, 20f);
+        Check("MB11 a friend sees the MVP board from what syncs: both cards, its own marked", RWBoardView.Up && RWBoardView.CardsShown == 2 && RWBoardView.MineShown != "",
+            "cards " + RWBoardView.CardsShown + ", mine '" + RWBoardView.MineShown + "', MVP '" + RWBoardView.MvpShown + "'");
+        RWBoardView.Continue();
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 40f);
         yield return WaitDialog(8f);
         ClickCard("0");

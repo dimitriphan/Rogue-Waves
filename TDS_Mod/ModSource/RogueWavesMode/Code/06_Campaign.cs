@@ -302,7 +302,12 @@ public static class RWCampaign
         else if (!WonThisMap)
             return;
         else
+        {
+            // A won map that ended in a bonus Tide: its board over the end screen (the last map's is the Voyage board).
+            if (!RWBoard.ShownThisMap && Route.Count >= RWChart.Rows) { RWBoard.TakeMap(); RWBoard.ShowVoyage(RWBoard.NextEnd); }
+            else RWBoard.ShowMap(RWBoard.NextBoat);
             RWRun.Save();    // what the bonus Tides earned stays
+        }
         // The end screen's title (T4); a host leaving by the menu has no end screen to read it.
         RWCard.EndTitle(!Active ? (Ended == "won" ? "CAMPAIGN WON" : "CAMPAIGN LOST") : WonThisMap && Route.Count >= RWChart.Rows ? "CAMPAIGN WON"
             : WonThisMap ? "MAP " + LastMap + " OF " + RWChart.Rows + " WON" : "MAP LOST" + RWCard.Separator + RWCard.Retries(Retries).ToUpperInvariant());
@@ -365,6 +370,7 @@ public static class RWCampaign
             return;
         }
         RWRejoin.Say("Map lost with no retries left: the campaign is over.");
+        RWBoard.ShowVoyage(RWBoard.NextEnd);    // over the end screen: the maps won before (docs/mode/MVP_BOARD.md §1)
         End("lost", "map " + (Route.Count + 1) + " lost with no retries left (" + why + ")");
     }
 

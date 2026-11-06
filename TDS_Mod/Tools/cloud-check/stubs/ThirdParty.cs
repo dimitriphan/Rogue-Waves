@@ -137,12 +137,18 @@ namespace UnityEngine.EventSystems
 // (Unity.InputSystem is on the game's reference list). Only the members the mode uses.
 namespace UnityEngine.InputSystem
 {
-    public enum Key { None = 0, M = 27 }
+    // Space, Enter, Tab, NumpadEnter and Gamepad added 2026-11-06 for the MVP board (28_BoardView.cs).
+    public enum Key { None = 0, Space = 1, Enter = 2, Tab = 3, M = 27, NumpadEnter = 77 }
     public class InputDevice { }
     public class Keyboard : InputDevice
     {
         public static Keyboard current { get { throw null; } }
         public UnityEngine.InputSystem.Controls.KeyControl this[Key key] { get { throw null; } }
+    }
+    public class Gamepad : InputDevice
+    {
+        public static Gamepad current { get { throw null; } }
+        public UnityEngine.InputSystem.Controls.ButtonControl buttonSouth { get { throw null; } }
     }
     public class Pointer : InputDevice { public UnityEngine.InputSystem.Controls.Vector2Control position { get { throw null; } } }
     public class Mouse : Pointer

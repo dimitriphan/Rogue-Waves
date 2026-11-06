@@ -568,6 +568,7 @@ public static class RWCardinals
             if (Game_Entity.Instance != null) GrantCardinal(id, held + 1);
         }
         p.Pure -= cost;
+        p.Run[RWBoard.PureSpent] += cost;
         RWLog.Info(p.Name + (free ? " was given " + id : " bought " + id + " for " + cost + " Pure Aura, " + p.Pure + " left"));
         Warn(Display(id).ToUpperInvariant(), mine ? "RogueWaves_Crest" : id);
         if (!free) RWTrinkets.OnBuy(p, id);                 // a gift is no buy at VENDCINT (Pearl Oyster keeps paying)
