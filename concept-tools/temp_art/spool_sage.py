@@ -14,11 +14,15 @@ colour, the icon palette); this script recolours the files: Spool's `Art/Tempora
 preview_8x PNGs and GIFs; the GIFs, opaque and under 20 colours, are re-quantised exactly). The version archives (`variants/`, `minions_2026-11-04/`) and the proposal folder keep their
 colours as a record.
 
+2026-11-06: the Seam's felt and the Mangled's cotton, drawn white with a lilac-grey mid and a grey-green shade, read as
+Pearl, which docs/STYLE.md keeps for Pure Aura (docs/reports/BATCH_CHECKS_2026-11-06c.md section 5), so `SHEET_MAP`
+moves those two bodies to the sage as well, per sheet, since the same whites are the other Crafted's gloves.
+
     python3 concept-tools/temp_art/spool_sage.py          -> recolours the files in place, prints what changed
     python3 concept-tools/temp_art/spool_sage.py --check  -> exits 1 if any old colour is left in those files
 
-Re-running a Spool generator (spool_units.py, spool_threadhead.py, ui_icons.py: their palettes are sage already) is
-safe; apply_picks.py copies purple versions in, so it runs this script after a Spool pick.
+Re-running spool_threadhead.py or ui_icons.py (sage palettes already) is safe; spool_units.py still draws the Seam and
+Mangled bodies white, so run this script after it (--check catches a missed run); apply_picks.py copies purple versions in, so it runs this script after a Spool pick.
 """
 import colorsys
 import glob
@@ -54,6 +58,19 @@ MAP = {
     'B5ABC6': 'ABBFB1',
 }
 
+# Per sheet, after MAP: the Seam (Button) and the Mangled (Burst) bodies, light / mid / shade (felt F6F3F8 / D8D1E2 /
+# ABBFB1). The Seam is the lighter of the two and its legs step down a tone to stay apart from its rim; the Mangled sits
+# a tone darker, which keeps it apart from the Seam and lifts its yellow eye. A sheet's table applies only while its
+# felt white (the first key) is in the file, because the Seam's legs would darken again on a second pass. In the
+# crafted GIFs the four sheets stand side by side (apply_picks.refresh: stitched, dart, seam, mangled), so a table
+# there covers its own strip.
+SHEET_MAP = {
+    'Spoolseam': {'F6F3F8': 'A6D6B1', 'D8D1E2': '93CCA1', 'ABBFB1': '60A871', '93CCA1': '60A871', '60A871': '3F7A4F'},
+    'Spoolmangled': {'F6F3F8': '93CCA1', 'D8D1E2': '6FAE7E', 'ABBFB1': '4F8C5E'},
+}
+GIF_STRIP = {'Spoolseam': 2, 'Spoolmangled': 3}
+CRAFTED_GIFS = ('Spool_crafted_move.gif', 'Spool_crafted_attack.gif')
+
 
 def hx(c):
     return '%02X%02X%02X' % tuple(c[:3])
@@ -71,8 +88,21 @@ def hsv(s):
 MAP_RGB = {rgb(k): rgb(v) for k, v in MAP.items()}
 
 
-def map_px(r, g, b):
-    return MAP_RGB.get((r, g, b), (r, g, b))
+def sheet_of(path):
+    return os.path.basename(path).split('-')[0]
+
+
+def table_for(name, present):
+    """The lookup for a file (or a GIF strip) of sheet `name`: MAP, then the sheet's own table while its marker colour
+    is `present`, composed into one pass."""
+    if name not in SHEET_MAP:
+        return MAP_RGB
+    own = {rgb(k): rgb(v) for k, v in SHEET_MAP[name].items()}
+    if not present(rgb(next(iter(SHEET_MAP[name])))):
+        return MAP_RGB
+    t = {k: own.get(v, v) for k, v in MAP_RGB.items()}
+    t.update(own)
+    return t
 
 
 # ------------------------------------------------------------------ PNG / GIF
@@ -82,15 +112,17 @@ def recolour_image(path, check):
     if getattr(im, 'is_animated', False) or im.format == 'GIF':
         return recolour_gif(path, check)
     rgba = im.convert('RGBA')
+    cols = {c[:3] for _, c in rgba.getcolors(rgba.width * rgba.height) if c[3]}
+    table = table_for(sheet_of(path), lambda c: c in cols)
     px = rgba.load()
     n = 0
     for y in range(rgba.height):
         for x in range(rgba.width):
             r, g, b, a = px[x, y]
-            if a and (r, g, b) in MAP_RGB:
+            if a and (r, g, b) in table:
                 n += 1
                 if not check:
-                    px[x, y] = map_px(r, g, b) + (a,)
+                    px[x, y] = table[(r, g, b)] + (a,)
     if n and not check:
         rgba.save(path)
     return n
@@ -102,15 +134,22 @@ def recolour_gif(path, check):
     for i in range(getattr(im, 'n_frames', 1)):
         im.seek(i)
         durations.append(im.info.get('duration', 100))
-        f = im.convert('RGBA')
+        frames.append(im.convert('RGBA'))
+    strip = {}
+    if os.path.basename(path) in CRAFTED_GIFS:
+        sw = im.width // 4
+        for name, k in GIF_STRIP.items():
+            strip[k] = table_for(name, lambda c: any(f.getpixel((x, y))[:3] == c for f in frames
+                                                     for y in range(f.height) for x in range(k * sw, (k + 1) * sw)))
+    for f in frames:
         px = f.load()
         for y in range(f.height):
             for x in range(f.width):
+                table = strip.get(x // sw, MAP_RGB) if strip else MAP_RGB
                 r, g, b, a = px[x, y]
-                if a and (r, g, b) in MAP_RGB:
+                if a and (r, g, b) in table:
                     n += 1
-                    px[x, y] = map_px(r, g, b) + (a,)
-        frames.append(f)
+                    px[x, y] = table[(r, g, b)] + (a,)
     if n and not check:
         loop = im.info.get('loop', 0)
         conv = [f.convert('RGB').convert('P', palette=Image.ADAPTIVE, colors=255) for f in frames]
@@ -120,7 +159,9 @@ def recolour_gif(path, check):
 
 # ------------------------------------------------------------------ .aseprite (RGBA), patched chunk by chunk
 
-def recolour_ase(path, check):
+def recolour_ase(path, check, table=None):
+    if table is None:
+        table = table_for(sheet_of(path), lambda c: recolour_ase(path, True, {c: c}) > 0)
     d = bytearray(open(path, 'rb').read())
     nframes, depth = struct.unpack('<H', d[6:8])[0], struct.unpack('<H', d[12:14])[0]
     assert depth == 32, path + ': not RGBA'
@@ -139,9 +180,9 @@ def recolour_ase(path, check):
                     raw = bytearray(c[20:] if typ == 0 else zlib.decompress(c[20:]))
                     for i in range(0, len(raw), 4):
                         key = (raw[i], raw[i + 1], raw[i + 2])
-                        if raw[i + 3] and key in MAP_RGB:
+                        if raw[i + 3] and key in table:
                             n += 1
-                            raw[i:i + 3] = bytes(MAP_RGB[key])
+                            raw[i:i + 3] = bytes(table[key])
                     c = c[:20] + (bytes(raw) if typ == 0 else zlib.compress(bytes(raw), 9))
             elif ct == 0x2019:
                 c = bytearray(c)
@@ -150,9 +191,9 @@ def recolour_ase(path, check):
                 for _k in range(a, b + 1):
                     fl = struct.unpack('<H', c[q:q + 2])[0]
                     key = tuple(c[q + 2:q + 5])
-                    if key in MAP_RGB:
+                    if key in table:
                         n += 1
-                        c[q + 2:q + 5] = bytes(MAP_RGB[key])
+                        c[q + 2:q + 5] = bytes(table[key])
                     q += 6
                     if fl & 1:
                         q += 2 + struct.unpack('<H', c[q:q + 2])[0]
@@ -189,6 +230,11 @@ def main():
     print('| Old | New | Old h s v | New h s v |')
     for k, v in MAP.items():
         print('| `%s` | `%s` | %d %d %d | %d %d %d |' % (k, v, *hsv(k), *hsv(v)))
+    for name, table in SHEET_MAP.items():
+        print()
+        print('%s (after MAP):' % name)
+        for k, v in table.items():
+            print('| `%s` | `%s` | %d %d %d | %d %d %d |' % (k, v, *hsv(k), *hsv(v)))
 
 
 if __name__ == '__main__':

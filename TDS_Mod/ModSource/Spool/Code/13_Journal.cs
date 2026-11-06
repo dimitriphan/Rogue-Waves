@@ -11,7 +11,7 @@ public static class SpoolJournal
     // Which units each buildable's page lists.
     static readonly Dictionary<string, string[]> UnitsOf = new Dictionary<string, string[]>
     {
-        { SpoolData.Tin, new[] { SpoolData.Stitched, SpoolData.Dart } },
+        { SpoolData.Tin, new[] { SpoolData.Stitched, SpoolData.Dart, SpoolData.Tacked } },
         { SpoolData.Loom, new[] { SpoolData.Seam } },
         { SpoolData.Cushion, new[] { SpoolData.Mangled } },
     };

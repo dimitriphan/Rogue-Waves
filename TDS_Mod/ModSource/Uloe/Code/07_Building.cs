@@ -8,12 +8,15 @@ public abstract class UloeBuilding : MonoBehaviour
 {
     public Entity_Master Master;
     public UloeData.Build Def;
+    readonly UloeFaults faults = new UloeFaults();
+    bool begun;                     // Begin ran to its end
     public bool Started;
     public int LookBand;
 
     readonly Dictionary<string, float> param = new Dictionary<string, float>();
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
     float nextLook, lookFrom;
+    float builtLookAt = -1f;     // when the build look goes out (pitfall #158)
 
     public bool Has(string key) { return keys.Contains(key); }
     public int UpgradeCount { get { return keys.Count; } }
@@ -50,6 +53,14 @@ public abstract class UloeBuilding : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
                     return;
                 Begin();
+                begun = true;
+            }
+            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
+            // hooked this thing, so the build look goes out half a second later.
+            if (builtLookAt >= 0f && Time.time >= builtLookAt)
+            {
+                builtLookAt = -1f;
+                ModKitUtil.Vis(Master, "Uloe_Built", Pos, 0);
             }
             Tick();
             if (Time.time >= nextLook)
@@ -60,8 +71,9 @@ public abstract class UloeBuilding : MonoBehaviour
         }
         catch (Exception e)
         {
-            UloeLog.Warn(Def.Id + " brain: " + e.Message);
-            enabled = false;
+            // A Begin that threw left this brain half set up (Started is set on its first line), so that still stops it.
+            if (faults.Fail(Def.Id + " brain", e) || !begun)
+                enabled = false;
         }
     }
 
@@ -81,7 +93,7 @@ public abstract class UloeBuilding : MonoBehaviour
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         Started2();
-        ModKitUtil.Vis(Master, "Uloe_Built", Pos, 0);
+        builtLookAt = Time.time + UloeData.FirstLookDelay;
     }
 
     protected virtual void Started2() { }

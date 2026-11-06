@@ -121,9 +121,19 @@ public static partial class RWTest
         Places(pics, out againOff);
 
         Info("P2 the game's own places", stock + ": " + stockOff + " of " + pics.Count + " on half pixels");
-        Check("P2 no button picture flickers on whole pixels", onFrames == 0 && againOff == 0,
-            onFrames + " of " + FlickerFrames + " frames changed (most pixels in one square " + onWorst + "); where the game puts them " + stockFrames
-            + " (most " + stockWorst + "); back on whole pixels after: " + (againOff == 0));
+        string read = onFrames + " of " + FlickerFrames + " frames changed (most pixels in one square " + onWorst + "); where the game puts them " + stockFrames
+            + " (most " + stockWorst + "); back on whole pixels after: " + (againOff == 0);
+        // The control: the same reading must see the flicker at the game's own places, or a still reading with the fix proves
+        // nothing. Only a pass is held back by it; a flicker or a picture left on a half pixel with the fix fails whatever the
+        // control saw. At an even UI scale the game's places are whole already and there is nothing to compare.
+        const string P2 = "P2 no button picture flickers on whole pixels";
+        bool still = onFrames == 0 && againOff == 0;
+        if (!still || stockFrames > 0)
+            Check(P2, still, read);
+        else if (stockOff > 0)
+            Setup(P2, "the reading saw no flicker at the game's half pixels either: " + read);
+        else
+            Info(P2, "nothing to compare: the game's own places are on whole pixels at this UI scale: " + read);
         Line("INFO FINDING P2 the flicker on the game's half pixels: " + (stockFrames > 0 ? "SEEN" : "not seen") + " (" + stockFrames + " of " + FlickerFrames + " frames)");
     }
 }

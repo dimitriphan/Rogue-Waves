@@ -56,7 +56,7 @@ in range of what they plugged into. The level of Light depends on the node's tot
   owner-only line.
 - **Light while plugged:** radius 4 *(default)*.
   Node: `2 + 0.4 x total aura`, at most 10 *(default)*: a 5 aura node gives 4, a 15 aura node 8.
-  Power Bank: `4 + 2 per upgrade` *(default)*: 4, or 6 with Short Circuit; a bank with Surge Protector gives at most Light 8 (scope `10`:145, `UloeData.SurgeBankMax`).
+  Power Bank: `4 + 2 per upgrade` *(default)*: 4, or 6 with Short Circuit; a bank with Surge Protector gives at most Light 8 (scope `10`:145, `UloeData.SurgeBankMax`), and Uloe plugged into it gives at most Light 8 in all, Brighter Bulb included (Dimitri 2026-11-06, "keep cap at 8").
 - **Press again:** unplugs. **Cooldown:** 0.5 s from an unplug (the template's default); the button greys out.
 - **Look:** the bulb burns bright while plugged (a skin, so every player sees it); a cord sags from Uloe's foot to a plug
   at the target and moves with Uloe every frame on every machine (Argo's harpoon rope); a ring on the ground at the real
@@ -214,7 +214,7 @@ the next level; "ends" leads nowhere. Costs sum per upgrade; params are in `Code
 | | 3 | Surge Protector | Shields Uloe while plugged in | plugged into this Bank, Uloe takes 40% less damage and heals 2 a second | ends | Yellow 60 + Blue 40 |
 | | 4 | Chain Lightning | Zaps jump between foes | each Photon hit jumps to the 2 foes nearest it within 2 tiles, the Photon's damage and marks (the jumps are the Bank's) | Supernova | Red 350 |
 | | 4 | Photon Swarm | A swarm of Photons | Units +2; leash 5 tiles | Supernova | Red 150 + Yellow 200 |
-| | 5 | Supernova | Every Photon goes off at once | a SURGE button, once a Tide (greyed until the Wave rises): every Photon of this Bank bursts for 20 within 2 tiles, Blind 3 and Illuminate 3; every empty slot fills at once; its Photons give Light 3 for 15 s | | Red 2000 + Yellow 1000 |
+| | 5 | Supernova | Every Photon goes off at once | a SURGE button, once a Tide (greyed until the Wave rises): every Photon of this Bank bursts for 20 within 2 tiles, Blind 3 and Illuminate 3, then flies straight back to the Bank at double speed, fighting nothing, until it is within 1.5 tiles of it (6 s at most, Dimitri 2026-11-06); every empty slot fills at once; its Photons give Light 3 for 15 s | | Red 2000 + Yellow 1000 |
 | Mirror | 2 | **Silver Backing** | Blinds harder | Blind one level stronger, at most 3 | all | Blue 30 |
 | | 2 | **Vanity Lights** | Shows foes up instead | Illuminates what hits it, in place of Blind, at the level its Light gives | all | Blue 30 |
 | | 3 | **Glare** | Can shrug off a Blinded foe's hit | a hit from a foe with Blind level N has an N x 20% chance to do nothing | all | Blue 100 |

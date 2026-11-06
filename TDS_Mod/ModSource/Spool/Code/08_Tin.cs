@@ -10,6 +10,12 @@
 //   Pattern Book   once a Tide, the first 1 / 2 / 3 of its Crafted to fall are stitched again for free (no Thread back
 //                  when sold), in the fallen one's place even past the Tin's Units; ranks I and II on the usual stitch
 //                  time, rank III at once.
+// Its upgrades past Discounted Material and New Design (scope 08, 2026-11-04):
+//   Tacking Stitch   it stitches Tacked Stitched (a Stitched on Sno Sno's blocker block) that hold their spot once there,
+//                    with Tackedhealth_Multi more health; it makes no Darts (New Design is the other level-2 choice).
+//   Cross Stitch     its Crafted get Crafteddamage_Multi more damage.
+//   Patchwork Army   Units and Respawn are the Tin's own stats: the upgrade's modifiers reach Slots and StitchTime.
+//   UNTHREAD         a button on every Tin: sells every Crafted it has out, each refunding as a sold one does.
 public class SpoolTinBrain : SpoolBuilding
 {
     public bool HasSpot;
@@ -33,7 +39,7 @@ public class SpoolTinBrain : SpoolBuilding
     }
     public int FreeWaiting { get { return again.Count; } }
     public float Reach { get { return Stat("Reach", 8f); } }
-    public string Kind { get { return Has("Design") ? SpoolData.Dart : SpoolData.Stitched; } }
+    public string Kind { get { return Has("Tacking") ? SpoolData.Tacked : Has("Design") ? SpoolData.Dart : SpoolData.Stitched; } }
     public int Alive { get { return SpoolServer.UnitsOf(this); } }
 
     public int Cost(string kind)
@@ -47,10 +53,9 @@ public class SpoolTinBrain : SpoolBuilding
     protected override void Started2()
     {
         if (SpoolContent.Target != null)
-        {
-            Helper_Entitytools.Createcommand(Master, SpoolData.TargetCommand, SpoolData.TargetLink, false, true);
-            Helper_Entitytools.Updatecommand(Master, SpoolData.TargetLink, "", false, false);
-        }
+            Button(SpoolData.TargetCommand, SpoolData.TargetLink);
+        if (SpoolContent.Unthread != null)
+            Button(SpoolData.UnthreadCommand, SpoolData.UnthreadLink);
         nextStitch = Time.time + 1f;
     }
 
@@ -122,12 +127,40 @@ public class SpoolTinBrain : SpoolBuilding
         u.Cost = cost;
         u.Recycle = Has("Recycle") ? Param("Recycle_Base", 0.5f) : 0f;
         u.Burst = Has("Surprise") ? Param("Burst_Times", 3f) : 0f;
-        u.HealthMulti = Param("Craftedhealth_Multi", 0f);
+        u.HealthMulti = HealthFor(kind);
+        u.DamageMulti = Param("Crafteddamage_Multi", 0f);
         u.SpeedMulti = kind == SpoolData.Stitched && Has("Discounted") ? Param("Stitchedspeed_Multi", SpoolData.StitchedSpeedUp) : 0f;
         int buttons = Player.Buttons;
         u.Small = buttons > 0 ? SpoolData.ButtonShare[buttons - 1] : 0f;
         ModKitUtil.Vis(Master, "Spool_Stitch", Pos, 0f);
         return u;
+    }
+
+    // A Crafted's health Multi: Woolen Lining's, and Tacking Stitch's extra on a Tacked (both Multis, so they add).
+    float HealthFor(string kind) { return Param("Craftedhealth_Multi", 0f) + (kind == SpoolData.Tacked ? Param("Tackedhealth_Multi", 0f) : 0f); }
+
+    // Woolen Lining and Cross Stitch reach the Crafted already out too (new ones take them in Begin); health keeps its
+    // share of the new maximum.
+    protected override void Upgraded(SpoolData.Upg def)
+    {
+        float damage = Param("Crafteddamage_Multi", 0f);
+        foreach (SpoolUnitBrain u in SpoolServer.Units)
+            if (u != null && u.Master != null && u.Home == this && u.Started && u.Def != null && u.Def.Sellable && ModKitUtil.Alive(u.Master))
+                u.Fit(HealthFor(u.Def.Id), damage);
+    }
+
+    // Quilting Bee (the Yarn Stash's BEE): stitches up to the Tin's Units at once, for no Thread (sold, they give nothing
+    // back). Returns how many it made.
+    public int Sew()
+    {
+        int made = 0;
+        for (int guard = 0; Alive < Slots && guard < 64; guard++)
+        {
+            if (Make(Kind, 0) == null)
+                break;
+            made++;
+        }
+        return made;
     }
 
     // Pattern Book: one of this Tin's Crafted fell (killed, not sold). The first ones of each Tide come back.
@@ -136,7 +169,7 @@ public class SpoolTinBrain : SpoolBuilding
         int rank = Player.Pattern;
         if (rank <= 0 || u == null || u.Def == null)
             return;
-        int wave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
+        int wave = SpoolUtil.Wave();
         if (wave != bookWave)
         {
             bookWave = wave;
@@ -152,6 +185,11 @@ public class SpoolTinBrain : SpoolBuilding
     // stand there and walk to it (checked with a live Crafted of this Tin, when there is one).
     protected override void Command(string command, string json, bool server)
     {
+        if (command == SpoolData.UnthreadLink)
+        {
+            Unthread();
+            return;
+        }
         Vector3 at;
         if (command != SpoolData.TargetLink || !ModKitUtil.JsonPosition(json, out at))
             return;
@@ -169,6 +207,29 @@ public class SpoolTinBrain : SpoolBuilding
         MovePin(spot);
         SpoolUtil.Warn(Master, SpoolData.WarnSpot);
         ModKitUtil.Vis(Master, "Spool_Target", Spot, 0f);
+    }
+
+    // UNTHREAD: every Crafted this Tin has out is sold (despawned with reason "Sell", so SpoolUnitBrain.Gone refunds its
+    // Thread as selling one does). The Tin keeps stitching after.
+    public int Unthreads, Unthreaded;
+
+    void Unthread()
+    {
+        int n = 0;
+        // A copy: each despawn takes its unit out of SpoolServer.Units at once (Ondespawn runs inside Despawn).
+        foreach (SpoolUnitBrain u in SpoolServer.Units.ToArray())
+            if (u != null && u.Master != null && u.Home == this && u.Def != null && u.Def.Sellable && ModKitUtil.Alive(u.Master) && u.Master.Beingserver != null)
+            {
+                Helper_Entitytools.Despawn(u.Master.Beingserver, false, "Sell");
+                n++;
+            }
+        if (n == 0)
+        {
+            SpoolUtil.Warn(Master, SpoolData.WarnNothingOut);
+            return;
+        }
+        Unthreads++;
+        Unthreaded += n;
     }
 
     public Genitem Reachable(Vector3 at, out string why)
@@ -242,6 +303,8 @@ public class SpoolTinBrain : SpoolBuilding
 //   Merit Badge  +3% Damage and Health (Multi) for each foe it drowns (lands the last hit on), up to +15 / 30 / 45%.
 //   Odd Socks    +8 / 15 / 25% Damage while a Crafted of another kind and its team stands within 2 tiles; rank III:
 //                also 10% less damage taken (a handler at the front of its hit chain).
+// Thread Heads of its owner in reach (Needle Point, Stitch in Time, Head of the Class) add Damage and cut the damage it
+// takes, the best of each over every Head (SpoolServer.HeadBuffs); the guard shares Odd Socks' front handler.
 public class SpoolUnitBrain : MonoBehaviour
 {
     public Entity_Master Master;
@@ -252,11 +315,19 @@ public class SpoolUnitBrain : MonoBehaviour
     public int Cost, Orders, Drowns;
     public float Recycle, Burst, HealthMulti, SpeedMulti, Leap, Small, MeritBonus, SocksBonus;
     public Entity_Master Target, LeapAt;
-    public bool Guarded;
+    public bool Guarded;            // its hit handler is at the front: Odd Socks III or a Thread Head's guard is on
+    public float DamageMulti;       // Cross Stitch, from its Tin
+    public float HeadBonus, HeadGuard;
+    bool socksGuard;
+    Link_Modifier headDamage;
 
     float nextThink, nextFront;
-    bool armed;
-    Link_Modifier meritDamage, meritHealth, socksDamage;
+    bool armed, begun;
+    static readonly SpoolFaults.Log faultLog = new SpoolFaults.Log();
+    readonly SpoolFaults faults = new SpoolFaults(faultLog), dyeFaults = new SpoolFaults(faultLog);
+    Link_Modifier meritDamage, meritHealth, socksDamage, fitHealth, fitDamage;
+    Entity_Master.Oninteracts fronted;   // the hit chain as the guard last left it
+    bool seam;                           // a Loom's Seam (Snare Line, Dyed in the Wool)
     static readonly Entity_Master.Oninteracts guard = OnGuarded;
 
     public long Owner { get { return ModKitUtil.Owner(Master); } }
@@ -278,14 +349,17 @@ public class SpoolUnitBrain : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || !Master.Commandlistserver.ContainsKey("Move"))
                     return;
                 Begin();
+                begun = true;
             }
             if (Def.Ranged && !armed)
                 Arm();
-            // Updateinteract rebuilds the hit chain when an upgrade lands: Odd Socks' guard goes back to the front.
-            if (Guarded && Time.time >= nextFront)
+            // Updateinteract rebuilds the hit chain when an upgrade lands: the guard goes back to the front (a chain is never
+            // changed in place, so the same one means nothing to do).
+            if (Guarded && Time.time >= nextFront && (fronted == null || !ReferenceEquals(Master.Oninteract, fronted)))
             {
                 nextFront = Time.time + 0.1f;
                 ModKitUtil.Front(Master, guard);
+                fronted = Master.Oninteract;
             }
             if (Time.time >= nextThink)
             {
@@ -295,21 +369,21 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            SpoolLog.Warn(Def.Id + " brain: " + e.Message);
-            enabled = false;
+            // Pitfall #80: a bad tick is skipped; a Begin that threw (Started is set on its first line) still stops it.
+            if (faults.Fail(Def.Id + " brain", e) || !begun)
+                enabled = false;
         }
     }
 
     void Begin()
     {
         Started = true;
+        seam = Def.Id == SpoolData.Seam;
         if (Spot == Vector3.zero)
             Spot = Home != null && Home.Master != null ? Home.Pos : ModKitUtil.Pos(Master);
+        Fit(HealthMulti, DamageMulti);
         if (HealthMulti != 0f)
-        {
-            Helper_Entitytools.Addmod(Master, "Health", HealthMulti, Helper_Entitytools.Modtypes.Multi, 0f);
             Fill();
-        }
         if (SpeedMulti != 0f)
             Helper_Entitytools.Addmod(Master, "Speed", SpeedMulti, Helper_Entitytools.Modtypes.Multi, 0f);
         // Button Jar: a share of a whole one's health and damage (a Pmulti multiplies with Woolen Lining's Multi), and the
@@ -322,11 +396,24 @@ public class SpoolUnitBrain : MonoBehaviour
             if (Def != null && SpoolContent.HasSmallLook(Def.Id))
                 ModKitUtil.Skin(Master, SpoolData.SmallSkin);
         }
-        ModKitUtil.Vis(Master, "Spool_Pop", ModKitUtil.Pos(Master), 0f);
+        // Pitfall #158: told through its home (or Spool), which every client has hooked: the unit itself is a frame old.
+        ModKitUtil.Vis(Radio(), "Spool_Pop", ModKitUtil.Pos(Master), 0f);
         if (Crafted)
             Walk(null, Spot, 0f);
         else if (Leap > 0f)
             LeapIn();
+    }
+
+    // Its Tin's Woolen Lining and Cross Stitch: set as it comes out and again on each of the Tin's buys, one kept
+    // modifier each, so ones already out match new ones.
+    public void Fit(float health, float damage)
+    {
+        if (health != 0f || fitHealth != null)
+            fitHealth = ModKitUtil.Keep(Master, fitHealth, "Health", Helper_Entitytools.Modtypes.Multi, health);
+        if (damage != 0f || fitDamage != null)
+            fitDamage = ModKitUtil.Keep(Master, fitDamage, "Damage", Helper_Entitytools.Modtypes.Multi, damage);
+        HealthMulti = health;
+        DamageMulti = damage;
     }
 
     // A raised maximum starts full.
@@ -362,11 +449,21 @@ public class SpoolUnitBrain : MonoBehaviour
     {
         if (Crafted)
             Socks();
+        Heads();
+        KeepGuard();
         Vector3 pos = ModKitUtil.Pos(Master);
         if (Crafted && !Arrived)
         {
-            if (ModKitUtil.Flat(pos, Spot) <= 0.9f)
+            // A Tacked Stitched stands on a blocker block, so a crowd of them can't all reach one tile: one that has
+            // stopped close by (TackedNear), or anywhere once it has been sent TackedTries times, holds where it stopped.
+            float off = ModKitUtil.Flat(pos, Spot);
+            bool stuck = Def.Blocker && ModKitUtil.State(Master) != "Move" && Orders > 1 && (off <= SpoolData.TackedNear || Orders >= SpoolData.TackedTries);
+            if (off <= 0.9f || stuck)
+            {
                 Arrived = true;
+                if (stuck)
+                    Spot = pos;
+            }
             else
             {
                 if (ModKitUtil.State(Master) != "Move")
@@ -374,6 +471,9 @@ public class SpoolUnitBrain : MonoBehaviour
                 return;
             }
         }
+        // Tacking Stitch: a Tacked Stitched at its spot holds it, blocking foes like a Snoble.
+        if (Crafted && Arrived && Def.Blocker)
+            Holding = true;
         if (Leap > 0f && !Holding)
         {
             if (ModKitUtil.Flat(pos, Spot) <= 0.6f || ModKitUtil.State(Master) != "Move")
@@ -387,7 +487,7 @@ public class SpoolUnitBrain : MonoBehaviour
         SpoolCushionBrain cushion = Home as SpoolCushionBrain;
         if (target != null && cushion != null && cushion.Has("Burst") && ModKitUtil.Flat(ModKitUtil.Pos(target), pos) <= ModKitUtil.Stat(Master, "Range", 1.5f) + 0.2f)
             BurstOn(cushion);
-        else if (target == null && Def.Id == SpoolData.Seam)
+        else if (target == null && Def.Id == SpoolData.Seam && !Snare(pos))
             Mine(pos);
     }
 
@@ -457,6 +557,178 @@ public class SpoolUnitBrain : MonoBehaviour
             Walk(ore, Vector3.zero, 1f);
     }
 
+    // ---------------------------------------------------------------- a Loom's Seams: Snare Line, Dyed in the Wool
+
+    // Snare Line: the aura beast it hunts. Dyed in the Wool: the node its last hit landed on, what the node held and the
+    // hit could take, and the owner's purse before it, read again in LateUpdate.
+    public Entity_Master Prey;
+    bool hunting, struckNoted;
+    float nextSnare, nextListen, struckBefore, struckHit;
+    int struckTrades;
+    Entity_Master struck;
+    readonly float[] purseBefore = new float[3], purseAfter = new float[3];
+    Entity_Master.Interacts dealt, listened;
+
+    // Aura beasts, by being name (the large one is an aura beast too): they wander the map and pay every player when they
+    // fall (kit docs/16 section 3).
+    static readonly string[] Beasts = { "Mob_Aurabeast", "Mob_Largeaurabeast" };
+
+    static bool IsBeast(Entity_Master e) { return Array.IndexOf(Beasts, ModKitUtil.BeingName(e)) >= 0; }
+
+    // Snare Line: with no foe within its leash of the Loom, the Seam goes after the aura beast nearest it within the
+    // Loom's Snare reach and strikes it itself at its attack speed (a beast may be no foe to the stock melee AI). With
+    // none left, or a foe at the Loom, it walks back, and Mine takes it to the ore from there. True while it hunts or
+    // turns back (Mine waits).
+    bool Snare(Vector3 pos)
+    {
+        SpoolLoomBrain loom = Home as SpoolLoomBrain;
+        float reach = loom != null && loom.Master != null ? loom.SnareReach : 0f;
+        if (reach <= 0f)
+            return false;
+        Vector3 anchor = loom.Pos;
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f);
+        Entity_Master prey = Beast(anchor, reach, pos);
+        if (prey != null && FoeAtLoom(anchor, range))
+            prey = null;
+        if (prey == null)
+        {
+            if (!hunting)
+                return false;
+            hunting = false;
+            Prey = null;
+            Walk(null, anchor + Offset(), 0f);
+            return true;
+        }
+        bool fresh = !hunting || prey != Prey;
+        if (fresh)
+            loom.Hunts++;
+        hunting = true;
+        Prey = prey;
+        string state = ModKitUtil.State(Master);
+        if (ModKitUtil.Flat(ModKitUtil.Pos(prey), pos) > range + 0.2f)
+        {
+            if (fresh || state != "Move")
+                Walk(prey, Vector3.zero, Mathf.Max(0f, range - 0.5f));
+            return true;
+        }
+        if (state == "Move")
+            ModKitUtil.Stop(Master);
+        // When the stock melee AI is already swinging at this beast (it is a foe to it on this map), its hits are enough.
+        Link_Command attack;
+        bool swinging = state == "Attack" && Master.Commandlistserver.TryGetValue("Attack", out attack) && attack != null && attack.Goalobject == prey;
+        if (!swinging && Time.time >= nextSnare)
+        {
+            nextSnare = Time.time + 1f / Mathf.Max(0.05f, ModKitUtil.Stat(Master, "Attackspeed", 0.8f));
+            ModKitUtil.Hurt(Master, prey, ModKitUtil.Stat(Master, "Damage", 1f));
+            loom.Snared++;
+            ModKitUtil.Vis(Radio(), "Spool_Strike", ModKitUtil.Pos(prey), 0f);
+        }
+        return true;
+    }
+
+    // A foe other than a beast within the Seam's leash of its Loom: it guards first.
+    bool FoeAtLoom(Vector3 loom, float range)
+    {
+        foreach (Entity_Master f in ModKitUtil.FoesNear(Master, loom, Def.Leash + range))
+            if (!IsBeast(f))
+                return true;
+        return false;
+    }
+
+    // The aura beast nearest the Seam within 'reach' of its Loom; the one it hunts is kept while it stays in reach. The
+    // query asks for Mob-tagged things or things of another team (Styles.Either, read as either test), so a beast is found
+    // whichever team the map gives it.
+    Entity_Master Beast(Vector3 loom, float reach, Vector3 pos)
+    {
+        if (hunting && ModKitUtil.Alive(Prey) && ModKitUtil.Flat(ModKitUtil.Pos(Prey), loom) <= reach)
+            return Prey;
+        Link_Entityquery query = new Link_Entityquery { Being = Master.Beingserver, Teamfor = false, Tags = new List<string> { "Mob" }, Style = Link_Entityquery.Styles.Either };
+        int team = ModKitUtil.Team(Master);
+        Entity_Master best = null;
+        float nearest = float.MaxValue;
+        foreach (Entity_Master e in ModKitUtil.Area(loom, reach, query))
+        {
+            if (!ModKitUtil.Alive(e) || ModKitUtil.Team(e) == team || !IsBeast(e) || ModKitUtil.Flat(ModKitUtil.Pos(e), loom) > reach)
+                continue;
+            float d = ModKitUtil.Flat(ModKitUtil.Pos(e), pos);
+            if (d < nearest)
+            {
+                best = e;
+                nearest = d;
+            }
+        }
+        return best;
+    }
+
+    // Dyed in the Wool: a hit this Seam lands (the stock melee AI mines with it), heard on the attacker's side, which runs
+    // before the node's own hit chain, where it pays. A hit on a node, for a dyed Loom, notes the node's count, what the
+    // hit can take off it and the owner's purse; LateUpdate reads them again.
+    void OnDealt(Link_Interact hit)
+    {
+        try
+        {
+            SpoolLoomBrain loom = Home as SpoolLoomBrain;
+            if (hit == null || hit.Type != "Hurt" || loom == null || !loom.Dyed || !ModKitUtil.HasTag(hit.To, "Resource") || hit.To.Statsserver == null
+                || !hit.To.Statsserver.ContainsKey("Healthresource") || !ModKitUtil.Purse(loom.Owner, purseBefore))
+                return;
+            float damage, extra;
+            struck = hit.To;
+            struckNoted = true;
+            struckTrades = SpoolLoomBrain.TradesFor(loom.Owner);
+            struckBefore = ModKitUtil.Stat(hit.To, "Healthresource", -1f);
+            // A node takes min(Damage, 1) + Damageresource a hit (kit docs/16 section 4).
+            struckHit = Mathf.Clamp01(hit.Data != null && hit.Data.TryGetValue("Damage", out damage) ? damage : 1f)
+                + (hit.Data != null && hit.Data.TryGetValue("Damageresource", out extra) ? Mathf.Max(0f, extra) : 0f);
+        }
+        catch (Exception e)
+        {
+            SpoolLog.Warn("Seam hit: " + e.Message);
+        }
+    }
+
+    // A Seam's hit noted this frame, read after every Update (the stock AI's hit and the node's payout among them): when
+    // it paid, the owner's purse gain is traded into the Loom's colour. Another payout landing on the same frame (a beast
+    // falling) is in that gain too, so it is traded as well. When another trade for the owner landed in between (the
+    // Loom's own strike, another Seam's trade that already took this gain), the purse no longer tells this hit's share,
+    // so it is left as the node paid it: a missed trade, never a second one.
+    void LateUpdate()
+    {
+        if (!seam || Master == null || !ModKitUtil.IsServer)
+            return;
+        try
+        {
+            SpoolLoomBrain loom = Home as SpoolLoomBrain;
+            if (struckNoted)
+            {
+                struckNoted = false;
+                Entity_Master ore = struck;
+                struck = null;
+                // A node that pays once is gone after it: Stat and Alive read it as gone, which Paid counts as paid.
+                if (loom != null && loom.Dyed && SpoolLoomBrain.TradesFor(loom.Owner) == struckTrades && SpoolLoomBrain.Paid(struckBefore, ModKitUtil.Stat(ore, "Healthresource", -1f), struckHit, ModKitUtil.Alive(ore))
+                    && ModKitUtil.Purse(loom.Owner, purseAfter) && loom.Trade(purseBefore, purseAfter))
+                    loom.SeamTraded++;
+            }
+            // Updateinteract clears the attacker's side of the hit chain too, so the handler is said again after a rebuild
+            // (looked at ten times a second).
+            if (loom != null && Time.time >= nextListen)
+            {
+                nextListen = Time.time + 0.1f;
+                if ((dealt == null || !ReferenceEquals(Master.Interact, listened)) && loom.Dyed)
+                {
+                    if (dealt == null)
+                        dealt = OnDealt;
+                    ModKitUtil.Listen(Master, dealt);
+                    listened = Master.Interact;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            // A bad trade is skipped; the Seam's own brain carries on (its own streak, so it can't stop the brain).
+            dyeFaults.Fail(Def.Id + " dye", e);
+        }
+    }
+
     void Walk(Entity_Master target, Vector3 position, float stop)
     {
         ModKitUtil.MoveTo(Master, target, position, stop);
@@ -481,7 +753,7 @@ public class SpoolUnitBrain : MonoBehaviour
         Spot = tile != null ? tile.Position : from + dir.normalized * far;
         Helper_Entitytools.Addmod(Master, "Speed", 2f, Helper_Entitytools.Modtypes.Multi, 1.2f);
         Walk(null, Spot, 0f);
-        ModKitUtil.Vis(Master, "Spool_Leap", Spot, 0f);
+        ModKitUtil.Vis(Radio(), "Spool_Leap", from, 0f);
     }
 
     // Burst Seams: a Mangled that reaches a foe bursts on every foe within the radius.
@@ -524,7 +796,27 @@ public class SpoolUnitBrain : MonoBehaviour
             socksDamage = ModKitUtil.Keep(Master, socksDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
             SocksBonus = bonus;
         }
-        bool guarded = beside && rank >= 3;
+        socksGuard = beside && rank >= 3;
+    }
+
+    // Needle Point, Stitch in Time, Head of the Class: the best damage bonus and guard any of its owner's Thread Heads
+    // gives where it stands (several don't stack).
+    void Heads()
+    {
+        float bonus, cut;
+        SpoolServer.HeadBuffs(Owner, ModKitUtil.Pos(Master), out bonus, out cut);
+        if (!Mathf.Approximately(bonus, HeadBonus))
+        {
+            headDamage = ModKitUtil.Keep(Master, headDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
+            HeadBonus = bonus;
+        }
+        HeadGuard = cut;
+    }
+
+    // The hit handler stays at the front while Odd Socks III or a Head's guard is on.
+    void KeepGuard()
+    {
+        bool guarded = socksGuard || HeadGuard > 0f;
         if (guarded == Guarded)
             return;
         Guarded = guarded;
@@ -534,7 +826,7 @@ public class SpoolUnitBrain : MonoBehaviour
             ModKitUtil.Unfront(Master, guard);
     }
 
-    // Odd Socks III: 10% less from each hit while it stands beside another kind.
+    // Odd Socks III: 10% less from each hit while it stands beside another kind; a Thread Head's guard cuts what is left.
     static void OnGuarded(Link_Interact hit)
     {
         try
@@ -545,16 +837,20 @@ public class SpoolUnitBrain : MonoBehaviour
             SpoolUnitBrain u = hit.To.GetComponent<SpoolUnitBrain>();
             if (u == null || !u.Guarded)
                 return;
-            ModKitCombat.SetMulti(hit, multi * (1f - SpoolData.SocksGuard));
-            Socked++;
+            float socks = u.socksGuard ? SpoolData.SocksGuard : 0f;
+            ModKitCombat.SetMulti(hit, multi * (1f - socks) * (1f - u.HeadGuard));
+            if (socks > 0f)
+                Socked++;
+            if (u.HeadGuard > 0f)
+                HeadGuarded++;
         }
         catch (Exception e)
         {
-            SpoolLog.Warn("Odd Socks: " + e.Message);
+            SpoolLog.Warn("unit guard: " + e.Message);
         }
     }
 
-    public static int Socked;
+    public static int Socked, HeadGuarded;
 
     Entity_Master Radio()
     {

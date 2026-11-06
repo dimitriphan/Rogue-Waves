@@ -9,6 +9,7 @@ public static class SpoolData
     public const string Version = "0.1.0-dev";
     public const string Part = "Spool";
     public const bool Diagnostics = true;
+    public const float FirstLookDelay = 0.5f;   // a new thing's first look waits for the client's 0.25 s hook scan (pitfall #158)
 
     public const string TemplateHero = "Hero_Smacky";
     // Other vessels' asset groups Spool borrows from: Buster's walk-through pad block (the Thread Head's placement token
@@ -37,6 +38,9 @@ public static class SpoolData
     public const string HiddenMoveCommand = "Command_Mob_Spoolhead_Move", MoveLink = "Move";
     public const string ReturnCommand = "Command_Mob_Spoolhead_Return", ReturnLink = "Return";
     public const string MendCommand = "Command_Mob_Spoolhead_Mend", MendLink = "Mend";
+    public const string BeeCommand = "Command_Tower_Spoolstash_Bee", BeeLink = "Bee";
+    public const string UnthreadCommand = "Command_Tower_Spooltin_Unthread", UnthreadLink = "Unthread";
+    public const string ColourCommand = "Command_Tower_Spoolloom_Colour", ColourLink = "Colour";
     public const string Needle = "Mob_Spooldart_Needle";
 
     // ---------------------------------------------------------------- sound levels (matched to the game's world SFX)
@@ -70,6 +74,15 @@ public static class SpoolData
     public const string ReturnDesc = "Carry the Thread home, then come back";
     public const string MendName = "MEND";
     public const string MendDesc = "Mend nearby units with carried Thread";
+    public const string BeeName = "BEE";
+    public const string BeeDesc = "Quilting Bee, once a Tide: every Cookie Tin stitches its whole count at once for no Thread, and the Crafted hit harder for a while";
+    public const string UnthreadName = "UNTHREAD";
+    public const string UnthreadDesc = "Sell every Crafted this Tin has out, for half their Thread back";
+    public const string ColourName = "COLOUR";
+    public const string ColourDesc = "Dyed in the Wool: pick the colour of the aura this Loom and its Seams mine";
+    // Dyed in the Wool's COLOUR cycles these (Uloe's Colour Filter and Yossele's Grafted way).
+    public static readonly string[] Colours = { "All", "Redaura", "Blueaura", "Yellowaura" };
+    public static readonly string[] ColourNames = { "ALL", "RED", "BLUE", "YELLOW" };
 
     // ---------------------------------------------------------------- vessel stats (the sheet's)
 
@@ -178,6 +191,8 @@ public static class SpoolData
 
     public const string Stitched = "Mob_Spoolstitched", Dart = "Mob_Spooldart", Seam = "Mob_Spoolseam";
     public const string Mangled = "Mob_Spoolmangled", Stuffed = "Mob_Spoolmangled_Stuffed";
+    // Tacking Stitch's Stitched: a Stitched on Sno Sno's mob-blocker block that holds its spot (scope 08, 2026-11-06).
+    public const string Tacked = "Mob_Spoolstitched_Tacked";
 
     // Button Jar's small Crafted wear this skin: their SmallSheet's look (a whole one's when the library has no such sheet).
     public const string SmallSkin = "Small";
@@ -185,6 +200,7 @@ public static class SpoolData
     public class Unit
     {
         public string Id, Display, Desc, Lore, Sheet, SmallSheet;
+        public string Family;   // the kind it counts as (Odd Socks): a Tacked Stitched is a Stitched; null: its own Id
         public int Thread, Cell = 16;
         public bool Ranged, Blocker, Sellable;
         public float Leash;
@@ -197,6 +213,10 @@ public static class SpoolData
             Desc = "Short and stubby, single-target melee",
             Lore = "A short, stubby plush stitched in four seconds flat. It runs where it's sent and stays there.",
             Stats = new[] { "Health=20", "Speed=1.8", "Damage=5", "Range=1.5", "Attackspeed=0.8" } },     // Damage: the balance sweep 2026-11-05 (one wall)
+        new Unit { Id = Tacked, Display = "Tacked Stitched", Sheet = "Spoolstitched-Sheet", SmallSheet = "Spoolstitchedsmall-Sheet", Thread = 10, Leash = 2f, Blocker = true, Sellable = true, Family = Stitched,
+            Desc = "Short and stubby, holds the line",
+            Lore = "A Stitched tacked down at the seams. It runs to its spot and stays put, and nothing walks through it.",
+            Stats = new[] { "Health=20", "Speed=1.8", "Damage=5", "Range=1.5", "Attackspeed=0.8" } },
         new Unit { Id = Dart, Display = "Dart", Sheet = "Spooldart-Sheet", SmallSheet = "Spooldartsmall-Sheet", Thread = 15, Leash = 1f, Ranged = true, Sellable = true,
             Desc = "Thin and small, throws needles",
             Lore = "A thin little plush with a pocket full of needles. It keeps close to its spot and throws.",
@@ -216,9 +236,12 @@ public static class SpoolData
     };
 
     public static Unit UnitFor(string being) { foreach (Unit u in Units) if (u.Id == being) return u; return null; }
+    public static string FamilyOf(Unit u) { return u == null ? "" : u.Family ?? u.Id; }
 
     public const float CraftedEngage = 3f;       // how far a Crafted at its spot looks for foes (inside its leash)
     public const float StitchedSpeedUp = 0.3f;
+    public const float TackedNear = 1.6f;        // Tacking Stitch: a Tacked that stopped this close to its spot holds there
+    public const int TackedTries = 4;            // ...and one sent this many times holds wherever it stopped
 
     // The Thread Head: a unit bought from the build menu, with its own upgrades (it is one of the four buildables).
     public static readonly string[] HeadStats =
@@ -254,10 +277,11 @@ public static class SpoolData
         };
     }
 
-    // The sheet's levels 1-3 are the game's tiers 2-4, one upgrade per level; every choice of a level leads to every
-    // choice of the next except Pin Barrage (both level-3 Cushion upgrades shape Mangled, which only Loose Stuffing
-    // makes). The sheet's Stash upgrades, the Thread Head's and Loom's levels 2-4 and the level-4 capstones (scope 08 since
-    // 2026-11-04) are not built yet. The Effects lines are the journal's EFFECTS, written for the player.
+    // The sheet's levels 1-4 are the game's tiers 2-5, one upgrade per level; every choice of a level leads to every
+    // choice of the next except on the Pin Cushion: Pin Barrage leads to Iron Thimble only (scope 08 "Leads to"; Overstuffed
+    // and Burst Seams shape Mangled, which only Loose Stuffing makes). The 22 upgrades scope 08 added on 2026-11-04 are
+    // built since 2026-11-06 (Yarn Stash 7, Cookie Tin 3, Thread Head 5, Pin Cushion 2, Loom 5). The Effects lines are the
+    // journal's EFFECTS, written for the player; the in-game line (Desc) carries no numbers (docs/STYLE.md).
     public static readonly Build[] Builds =
     {
         new Build
@@ -266,7 +290,24 @@ public static class SpoolData
             Desc = "Holds Spool's Thread, the Crafted draw from it", Costs = "",
             Lore = "Every scrap of Thread Spool and its Thread Heads bring home goes in here, and the Cookie Tins draw on it.",
             Stats = new[] { "Health=100+50", "Threadcap=50+25" },
-            Upgrades = new Upg[0],
+            // Like Boutman's Bouthouse, several land on Spool itself (read from the player's Stash while it stands).
+            Upgrades = new[]
+            {
+                U(Stash, "Pockets", 2, "Roomy Pockets", "Spool carries more", "Carry_Base=40;Pick_Base=2", "Yellowaura=30", "Darning3,Elbow3",
+                    "Spool carries 40 Thread", "Spool picks Thread up within 2 tiles"),
+                U(Stash, "Quick", 2, "Quick Patch", "Faster, cheaper PATCH", "Patchcost_Base=15;Patchcooldown_Base=2.5", "Yellowaura=25;Blueaura=10", "Darning3,Elbow3",
+                    "PATCH costs 15 Thread", "PATCH is ready again after 2.5 seconds"),
+                U(Stash, "Darning", 3, "Darning", "PATCH mends a whole patch", "Darning_Base=1.5", "Yellowaura=100", "Remnant4,Circle4",
+                    "PATCH also mends everything of yours within 1.5 tiles of its target, as much as the target"),
+                U(Stash, "Elbow", 3, "Elbow Patches", "Spool gets stuck in", "Herohealth_Multi=0.6;Herodamage_Multi=1", "Redaura=60;Yellowaura=60", "Remnant4,Circle4",
+                    "+60% Spool's Health", "+100% Spool's Damage"),
+                U(Stash, "Remnant", 4, "Remnant Bin", "Nothing goes to waste", "Droplife_Base=30;Remnant_Base=0.5", "Yellowaura=300", "Bee5",
+                    "Thread lasts 30 seconds on the ground", "Thread that despawns comes to the Yarn Stash at 50%, rounded down"),
+                U(Stash, "Circle", 4, "Mending Circle", "Everything mends between Tides", "Circle_Base=0.25", "Blueaura=150;Yellowaura=200", "Bee5",
+                    "At the start of each Tide, every building of yours heals 25% of its maximum Health"),
+                U(Stash, "Bee", 5, "Quilting Bee", "Everyone sews at once", "Beedamage_Base=0.5;Beetime_Base=15", "Yellowaura=2500;Redaura=1000", "",
+                    "A BEE button, once a Tide: every Cookie Tin stitches up to its limit at once, for no Thread", "Crafted deal +50% damage for 15 seconds"),
+            },
         },
         new Build
         {
@@ -276,16 +317,22 @@ public static class SpoolData
             Stats = new[] { "Health=60+25", "Units=6", "Respawn=4", "Reach=8" },     // Units: the balance sweep 2026-11-05 (one wall)
             Upgrades = new[]
             {
-                U(Tin, "Recycle", 2, "Reuse Reduce Recycle", "Fallen Crafted leave Thread behind", "Recycle_Base=0.5", "Redaura=30", "Discounted3,Design3",
+                U(Tin, "Recycle", 2, "Reuse Reduce Recycle", "Fallen Crafted leave Thread behind", "Recycle_Base=0.5", "Redaura=30", "Discounted3,Design3,Tacking3",
                     "A killed Crafted drops half its cost in Thread"),
-                U(Tin, "Woolen", 2, "Woolen Lining", "Sturdier Crafted", "Craftedhealth_Multi=0.5", "Redaura=30", "Discounted3,Design3",
+                U(Tin, "Woolen", 2, "Woolen Lining", "Sturdier Crafted", "Craftedhealth_Multi=0.5", "Redaura=30", "Discounted3,Design3,Tacking3",
                     "+50% Crafted Health"),
-                U(Tin, "Discounted", 3, "Discounted Material", "Cheaper, faster Stitched", "Stitchedcost_Base=8;Stitchedspeed_Multi=0.3", "Redaura=90", "Surprise4",
+                U(Tin, "Discounted", 3, "Discounted Material", "Cheaper, faster Stitched", "Stitchedcost_Base=8;Stitchedspeed_Multi=0.3", "Redaura=90", "Surprise4,Cross4",
                     "Stitched cost 8 Thread", "+30% Stitched Speed"),
-                U(Tin, "Design", 3, "New Design", "Stitches Darts that throw needles", "Dart_Base=1", "Redaura=100", "Surprise4",
+                U(Tin, "Design", 3, "New Design", "Stitches Darts that throw needles", "Dart_Base=1", "Redaura=100", "Surprise4,Cross4",
                     "Stitches Darts (15 Thread)"),
-                U(Tin, "Surprise", 4, "One Last Surprise", "Crafted burst when they fall", "Burst_Times=3", "Redaura=400", "",
+                U(Tin, "Tacking", 3, "Tacking Stitch", "Stitched hold the line", "Tacked_Base=1;Tackedhealth_Multi=1", "Redaura=110", "Surprise4,Cross4",
+                    "Stitched hold their spot and block foes like a Snoble", "+100% Stitched Health", "This Tin makes no Darts"),
+                U(Tin, "Surprise", 4, "One Last Surprise", "Crafted burst when they fall", "Burst_Times=3", "Redaura=400", "Army5",
                     "A falling Crafted hurts every foe within its range for 3x its damage"),
+                U(Tin, "Cross", 4, "Cross Stitch", "Crafted hit harder", "Crafteddamage_Multi=1", "Redaura=350", "Army5",
+                    "+100% Damage for this Tin's Crafted"),
+                U(Tin, "Army", 5, "Patchwork Army", "A bigger, faster sewing circle", "Units_Add=3;Respawn_Multi=-0.5", "Redaura=2500;Yellowaura=1000", "",
+                    "+3 Crafted alive at once", "Stitches one every 2 seconds"),
             }
         },
         new Build
@@ -296,10 +343,21 @@ public static class SpoolData
             Stats = HeadStats,
             Upgrades = new[]
             {
-                U(Head, "Delivery", 2, "Threaded Delivery", "Carries Thread home on its own", "Delivery_Base=1", "Redaura=30", "",
+                U(Head, "Delivery", 2, "Threaded Delivery", "Carries Thread home on its own", "Delivery_Base=1", "Redaura=30", "Bobbin3,Needle3",
                     "Full, it carries its Thread home and comes back"),
-                U(Head, "Patchwork", 2, "Patchwork Job", "Mends nearby units with Thread", "Mend_Base=2;Mendrange_Base=2;Mendper_Base=5", "Redaura=30", "",
+                U(Head, "Patchwork", 2, "Patchwork Job", "Mends nearby units with Thread", "Mend_Base=2;Mendrange_Base=2;Mendper_Base=5", "Redaura=30", "Bobbin3,Needle3",
                     "MEND: 2 health a second to your units within 2 tiles", "1 Thread per 5 health"),
+                // Porter (Big Bobbin, High Thread Count) or buffer (Needle Point, Stitch in Time); Head of the Class caps both.
+                U(Head, "Bobbin", 3, "Big Bobbin", "Carries more, reaches farther", "Carry_Add=20;Collect_Add=2", "Yellowaura=60", "Count4,Time4",
+                    "Carries 40 Thread", "Collects Thread from 5 tiles around it"),
+                U(Head, "Needle", 3, "Needle Point", "Points the Crafted at the weak spot", "Needle_Base=0.25;Needlerange_Base=3", "Redaura=80", "Count4,Time4",
+                    "+25% Damage for your Crafted within 3 tiles"),
+                U(Head, "Count", 4, "High Thread Count", "Foes near it drop more Thread", "Count_Base=1;Countrange_Base=3", "Yellowaura=250", "Class5",
+                    "+1 Thread from each foe felled within 3 tiles"),
+                U(Head, "Time", 4, "Stitch in Time", "Nearby Crafted shrug off hits", "Stitchtime_Base=0.3;Stitchrange_Base=3", "Redaura=300;Yellowaura=100", "Class5",
+                    "Your Crafted within 3 tiles take 30% less damage"),
+                U(Head, "Class", 5, "Head of the Class", "The best stitch in the house", "Classbuff_Base=0.5;Classguard_Base=0.45;Classrange_Base=4;Classhome_Base=1", "Redaura=2000;Yellowaura=1500", "",
+                    "Its buffs reach 4 tiles: +50% Damage and 45% less damage taken for your Crafted", "Thread it picks up goes straight to the Yarn Stash"),
             }
         },
         new Build
@@ -314,14 +372,18 @@ public static class SpoolData
                     "Reflects 40% of melee damage"),
                 U(Cushion, "Unravel", 2, "Slow Unravel", "Takes half its damage later, spins more Thread", "Unravel_Base=4;Spin_Multi=-0.5", "Blueaura=30", "Barrage3,Stuffing3",
                     "Half of each hit now, half over 4 seconds", "Spins twice the Thread"),
-                U(Cushion, "Barrage", 3, "Pin Barrage", "Pricks ranged attackers too", "Rangedreflect_Base=0.2", "Blueaura=100", "",
+                U(Cushion, "Barrage", 3, "Pin Barrage", "Pricks ranged attackers too", "Rangedreflect_Base=0.2", "Blueaura=100", "Thimble4",
                     "Reflects 20% of ranged damage"),
-                U(Cushion, "Stuffing", 3, "Loose Stuffing", "Spills Mangled when hit", "Mangled_Per=40;Mangled_Max=3", "Blueaura=90", "Overstuffed4,Burst4",
+                U(Cushion, "Stuffing", 3, "Loose Stuffing", "Spills Mangled when hit", "Mangled_Per=40;Mangled_Max=3", "Blueaura=90", "Overstuffed4,Burst4,Thimble4",
                     "1 Mangled per 40 damage taken", "At most 3 alive"),
-                U(Cushion, "Overstuffed", 4, "Overstuffed", "Mangled leap in to block", "Leap_Base=2", "Blueaura=400", "",
+                U(Cushion, "Overstuffed", 4, "Overstuffed", "Mangled leap in to block", "Leap_Base=2", "Blueaura=400", "Voodoo5",
                     "Mangled have 3x Health", "They leap 2 tiles in and block like a Snoble"),
-                U(Cushion, "Burst", 4, "Burst Seams", "Mangled burst on foes", "Seams_Damage=5;Seams_Radius=1.25", "Blueaura=400", "",
+                U(Cushion, "Burst", 4, "Burst Seams", "Mangled burst on foes", "Seams_Damage=5;Seams_Radius=1.25", "Blueaura=400", "Voodoo5",
                     "A Mangled that reaches a foe bursts for 5 damage within 1.25 tiles"),
+                U(Cushion, "Thimble", 4, "Iron Thimble", "Sturdier pins, harder to break", "Health_Multi=2;Thimble_Base=0.25", "Blueaura=300;Yellowaura=300", "Voodoo5",
+                    "+200% Health", "Takes 25% less damage"),
+                U(Cushion, "Voodoo", 5, "Voodoo Doll", "Prick it and everyone feels it", "Voodoo_Base=0.5;Voodoostun_Base=3;Voodoorange_Base=3;Voodooheal_Base=0.5", "Blueaura=2000;Yellowaura=1500", "",
+                    "Once a Tide, the first time it falls below 50% Health: every foe within 3 tiles is stunned for 3 seconds", "It heals 50% of its maximum Health"),
             }
         },
         new Build
@@ -332,10 +394,20 @@ public static class SpoolData
             Stats = new[] { "Health=40+20", "Damage=1", "Attackspeed=0.3", "Range=2.5", "Spinrate=6", "Hold=10" },     // Attackspeed: as low as Spool keeps The Hunt (the balance sweep 2026-11-05)
             Upgrades = new[]
             {
-                U(Loom, "Direct", 2, "Direct Line", "Thread goes straight home", "Direct_Base=1", "Yellowaura=30", "",
+                U(Loom, "Direct", 2, "Direct Line", "Thread goes straight home", "Direct_Base=1", "Yellowaura=30", "Dyed3,Bobbin3",
                     "Spun Thread goes straight into the Yarn Stash"),
-                U(Loom, "Seam", 2, "Seam Allowance", "Makes Seams that mine and guard", "Seam_Base=1;Seamrespawn_Base=10", "Yellowaura=30", "",
+                U(Loom, "Seam", 2, "Seam Allowance", "Makes Seams that mine and guard", "Seam_Base=1;Seamrespawn_Base=10", "Yellowaura=30", "Dyed3,Bobbin3",
                     "One Seam per Loom, back 10 seconds after it falls"),
+                U(Loom, "Dyed", 3, "Dyed in the Wool", "Pick the colour of its aura", "Dyed_Base=0.7", "Yellowaura=150", "Squad4,Snare4",
+                    "A COLOUR button", "Your share of each payout from its strikes and its Seams' comes in the picked colour, at 70% of its total"),
+                U(Loom, "Bobbin", 3, "Bobbin Winder", "Spins Thread twice as fast", "Spinrate_Multi=-0.5;Hold_Add=10", "Yellowaura=100", "Squad4,Snare4",
+                    "Spins a Thread every 3 seconds", "Holds up to 20"),
+                U(Loom, "Squad", 4, "Seam Squad", "More Seams to mine and guard", "Squad_Base=3;Seamrespawn_Base=10", "Yellowaura=350", "Golden5",
+                    "3 Seams per Loom"),
+                U(Loom, "Snare", 4, "Snare Line", "Seams hunt the wild aura", "Snare_Base=6;Seamrespawn_Base=10", "Yellowaura=300", "Golden5",
+                    "Its Seams chase aura beasts within 6 tiles of the Loom"),
+                U(Loom, "Golden", 5, "Golden Thread", "Thread spun from gold", "Golden_Base=1;Spinrate_Pmulti=-0.5", "Yellowaura=3000", "",
+                    "Spool and Thread Heads can drop off Thread here, and it goes straight to the Yarn Stash", "Spins Thread twice as fast"),
             }
         },
     };
@@ -367,8 +439,11 @@ public static class SpoolData
         "Spool can't carry more",
         "Your Yarn Stash fell, its Thread spilled",
         "Mending needs Thread: send it to collect some",
+        "The Quilting Bee has sewn this Tide",
+        "No Crafted out to unthread",
+        "Everyone sews at once!",
     };
     public const int WarnShort = 1, WarnNoTarget = 2, WarnFar = 3, WarnCooldown = 4, WarnFull = 5, WarnNoStash = 6, WarnStashFull = 7,
         WarnUnreachable = 8, WarnSpot = 9, WarnNoHome = 10, WarnMendOn = 11, WarnMendOff = 12, WarnCarryFull = 13, WarnStashFell = 14,
-        WarnMendEmpty = 15;
+        WarnMendEmpty = 15, WarnBeeUsed = 16, WarnNothingOut = 17, WarnBee = 18;
 }

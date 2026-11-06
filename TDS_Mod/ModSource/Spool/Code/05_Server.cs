@@ -16,7 +16,21 @@ public class SpoolPlayer
 
     public int Cap { get { return Home != null ? Home.Cap : (int)SpoolData.StashCap; } }
     public int Room { get { return Home != null ? Mathf.Max(0, Cap - Stash) : 0; } }
-    public int CarryCap { get { return SpoolData.CarryHero; } }
+
+    // Roomy Pockets: Spool carries more and picks Thread up from farther away.
+    public int CarryCap { get { return Mathf.RoundToInt(Upg("Pockets", "Carry_Base", SpoolData.CarryHero)); } }
+    public float Reach { get { return Upg("Pockets", "Pick_Base", SpoolData.PickHero); } }
+
+    // This player's Yarn Stash while it stands and holds the upgrade, else null. Several of its upgrades land on Spool
+    // (like Boutman's Bouthouse): they last as long as the Stash does, and go when it is sold or destroyed.
+    public SpoolStashBrain Holds(string key) { return Home != null && Home.Has(key) ? Home : null; }
+
+    // One number of a Stash upgrade while it is held, else 'fallback'.
+    public float Upg(string key, string name, float fallback)
+    {
+        SpoolStashBrain s = Holds(key);
+        return s != null ? s.Param(name, fallback) : fallback;
+    }
 }
 
 public class SpoolDrop
@@ -94,7 +108,7 @@ public static class SpoolServer
             if (Time.time >= nextSweep)
             {
                 nextSweep = Time.time + 0.5f;
-                Drops.RemoveAll(d => d.Until <= Time.time || d.Amount <= 0);
+                Sweep();
             }
         }
         catch (Exception e)
@@ -151,8 +165,10 @@ public static class SpoolServer
             ModKitCounter.Set(p.Home.Master, "Thread", p.Stash);
     }
 
-    // A carrier at its Stash hands over what fits; the rest stays carried.
-    public static int Deliver(long owner, Entity_Master carrier, int carried)
+    // A carrier at its Stash (or at a Golden Thread Loom) hands over what fits; the rest stays carried. The Thread goes
+    // into the Stash either way; the look flies to the nearer of the two, or always to the Stash with 'straight' (Head of
+    // the Class).
+    public static int Deliver(long owner, Entity_Master carrier, int carried, bool straight = false)
     {
         SpoolPlayer p = Player(owner);
         if (p.Home == null || p.Home.Master == null || carried <= 0)
@@ -163,14 +179,26 @@ public static class SpoolServer
         p.Stash += put;
         Delivered += put;
         Show(p);
-        ModKitUtil.Vis(carrier, "Spool_Deliver", ModKitUtil.Pos(p.Home.Master), put);
+        Vector3 to = ModKitUtil.Pos(p.Home.Master), from = carrier != null ? ModKitUtil.Pos(carrier) : to;
+        SpoolLoomBrain golden = straight ? null : GoldenNear(owner, from, ModKitUtil.Flat(to, from));
+        if (golden != null && ModKitUtil.Flat(golden.Pos, from) < ModKitUtil.Flat(to, from))
+        {
+            to = golden.Pos;
+            GoldenDrops++;
+            GoldenThread += put;
+        }
+        ModKitUtil.Vis(carrier, "Spool_Deliver", to, put);
         return put;
     }
 
+    // Within 'reach' of the player's Yarn Stash, or of one of their Looms with Golden Thread. With no Stash standing there
+    // is nowhere for the Thread to go, so a Golden Thread Loom is no drop-off point either.
     public static bool AtStash(long owner, Vector3 at, float reach)
     {
         SpoolPlayer p = Player(owner);
-        return p.Home != null && p.Home.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(p.Home.Master), at) <= reach;
+        if (p.Home == null || p.Home.Master == null)
+            return false;
+        return ModKitUtil.Flat(ModKitUtil.Pos(p.Home.Master), at) <= reach || GoldenNear(owner, at, reach) != null;
     }
 
     // ---------------------------------------------------------------- ground Thread
@@ -190,10 +218,14 @@ public static class SpoolServer
     // A tuft on the ground: it joins one within half a tile while the sum fits one tuft; larger amounts become several.
     // 'via': a dying building's own entity, whose messages still go out (Ondespawn runs before the game despawns it). With
     // no radio at all the Thread still lies there for a carrier, unseen, instead of vanishing (MAX SPL-10: a last Stash
-    // falling while Spool was down spilled nothing).
+    // falling while Spool was down spilled nothing). While any player's Stash holds the Remnant Bin, a new tuft and one
+    // joined last the bin's longer life, and clients are told so (SpoolClient.LongTuft).
     public static void Drop(Vector3 at, int amount, Entity_Master via = null)
     {
         Entity_Master radio = Radio() ?? via;
+        SpoolStashBrain bin = RemnantBin(at);
+        float life = bin != null ? bin.Param("Droplife_Base", SpoolData.DropLife) : SpoolData.DropLife;
+        int lasting = bin != null ? SpoolClient.LongTuft : 0;
         int left = amount, n = 0;
         while (left > 0)
         {
@@ -213,11 +245,11 @@ public static class SpoolServer
             }
             int put = Mathf.Min(left, SpoolData.TuftMax - d.Amount);
             d.Amount += put;
-            d.Until = Time.time + SpoolData.DropLife;
+            d.Until = Time.time + life;
             left -= put;
             n++;
             Dropped += put;
-            ModKitUtil.Vis(radio, "Spool_Tuft", d.Pos, d.Id * 16 + d.Amount);   // nothing when there is no radio
+            ModKitUtil.Vis(radio, "Spool_Tuft", d.Pos, d.Id * 16 + d.Amount + lasting);   // nothing when there is no radio
         }
     }
 
@@ -276,7 +308,8 @@ public static class SpoolServer
         return n;
     }
 
-    // A foe fell: Thread on the ground where it fell, while some player is Spool (landed this map, alive or not).
+    // A foe fell: Thread on the ground where it fell, while some player is Spool (landed this map, alive or not). High
+    // Thread Count's extra comes on top of the cap.
     static void FoeFell(Entity_Master foe)
     {
         if (players.Count == 0)
@@ -284,7 +317,10 @@ public static class SpoolServer
         int n = ModKitUtil.BaseHealth(foe) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall;
         if (Elite(foe))
             n += SpoolData.DropElite;
-        Drop(ModKitUtil.Pos(foe), Mathf.Min(n, SpoolData.DropMax));
+        Vector3 at = ModKitUtil.Pos(foe);
+        int more = CountBonus(at);
+        Counted += more;
+        Drop(at, Mathf.Min(n, SpoolData.DropMax) + more);
     }
 
     // An elite for the drop: the game's Enemy_* modifiers (the kit's reading) and the pack's own foe modifiers, which the
@@ -324,16 +360,22 @@ public static class SpoolServer
         int team = ModKitUtil.Team(from);
         foreach (Entity_Master e in ModKitUtil.Area(at, radius, ModKitUtil.Friends(from)))
         {
-            if (e == except || !ModKitUtil.Alive(e) || ModKitUtil.Team(e) != team || e.Taglistserver == null || e.Taglistserver.Contains("Core"))
-                continue;
-            if (ModKitUtil.Health(e) >= ModKitUtil.MaxHealth(e) - 0.01f)
-                continue;
-            Helper_Entitytools.Interactheal(from, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
-            ModKitUtil.Vis(from, "Spool_Mend", ModKitUtil.Pos(e), 0f);
+            if (e != except && ModKitUtil.Alive(e) && ModKitUtil.Team(e) == team && e.Taglistserver != null && !e.Taglistserver.Contains("Core"))
+                Mend(from, e, heal);
         }
     }
 
-    // Sewing Machine: each Tide every Loom of a player holding it mends around itself.
+    // One mend: nothing at full health; the game's own heal, so it counts as healing, and the mend look on every screen.
+    static bool Mend(Entity_Master from, Entity_Master e, float heal)
+    {
+        if (ModKitUtil.Health(e) >= ModKitUtil.MaxHealth(e) - 0.01f)
+            return false;
+        Helper_Entitytools.Interactheal(from, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
+        ModKitUtil.Vis(from, "Spool_Mend", ModKitUtil.Pos(e), 0f);
+        return true;
+    }
+
+    // Sewing Machine: each Tide every Loom of a player holding it mends around itself. Mending Circle: see MendingCircle.
     static void OnTide(int wave)
     {
         foreach (SpoolBuilding b in Buildings.ToArray())
@@ -344,6 +386,8 @@ public static class SpoolServer
             SpoolData.Sewing s = SpoolData.Sewingmachines[loom.Player.Sewing - 1];
             MendAround(loom.Master, loom.Pos, s.Radius, s.Heal, null);
         }
+        try { MendingCircle(); }
+        catch (Exception e) { SpoolLog.Warn("Mending Circle: " + e.Message); }
     }
 
     // ---------------------------------------------------------------- spawns
@@ -569,9 +613,10 @@ public static class SpoolServer
     {
         Vector3 at = ModKitUtil.Pos(u.Master);
         int team = ModKitUtil.Team(u.Master);
-        // The cheap tests first: most units are the same kind, or not Crafted at all.
+        // The cheap tests first: most units are the same kind, or not Crafted at all. A Tacked Stitched counts as a Stitched.
+        string family = SpoolData.FamilyOf(u.Def);
         foreach (SpoolUnitBrain o in Units)
-            if (o != null && o.Def != null && o.Def.Sellable && o.Def.Id != u.Def.Id && o.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach
+            if (o != null && o.Def != null && o.Def.Sellable && SpoolData.FamilyOf(o.Def) != family && o.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(o.Master), at) <= reach
                 && ModKitUtil.Team(o.Master) == team && ModKitUtil.Alive(o.Master))
                 return true;
         return false;
@@ -584,5 +629,141 @@ public static class SpoolServer
             if (u != null && u.Master != null && u.Home == home)
                 n++;
         return n;
+    }
+
+    // ---------------------------------------------------------------- the Yarn Stash's upgrades
+
+    public static int Remnants, Circled;   // Thread the Remnant Bin brought home; buildings the Mending Circle healed
+
+    // Ground Thread that ran out goes, every half second (the self-test calls it to time a check); the Remnant Bin brings
+    // part of it home.
+    public static void Sweep()
+    {
+        for (int i = Drops.Count - 1; i >= 0; i--)
+        {
+            SpoolDrop d = Drops[i];
+            if (d.Amount > 0 && d.Until > Time.time)
+                continue;
+            Drops.RemoveAt(i);
+            if (d.Amount > 0)
+                Remnant(d);
+        }
+    }
+
+    // The Stash nearest to 'at' of a player whose Stash holds the Remnant Bin; null while nobody's does.
+    static SpoolStashBrain RemnantBin(Vector3 at)
+    {
+        SpoolStashBrain best = null;
+        float bestD = float.MaxValue;
+        foreach (SpoolPlayer p in players.Values)
+        {
+            SpoolStashBrain s = p.Holds("Remnant");
+            if (s == null || !ModKitUtil.Alive(s.Master))
+                continue;
+            float d = ModKitUtil.Flat(s.Pos, at);
+            if (d < bestD)
+            {
+                best = s;
+                bestD = d;
+            }
+        }
+        return best;
+    }
+
+    // Remnant Bin: a tuft that ran out gives its share, rounded down, to the nearest bin's Stash (what doesn't fit is
+    // lost), and flies there on every screen.
+    static void Remnant(SpoolDrop d)
+    {
+        SpoolStashBrain bin = RemnantBin(d.Pos);
+        int share = bin != null ? Mathf.FloorToInt(d.Amount * bin.Param("Remnant_Base", 0.5f)) : 0;
+        if (share <= 0)
+            return;
+        int given = share - AddStash(bin.Owner, share);
+        if (given <= 0)
+            return;   // a full Stash: the tuft fades where it lay, on its own clock
+        Remnants += given;
+        ModKitUtil.Vis(bin.Master, "Spool_Remnant", d.Pos, d.Id * 16 + given);
+    }
+
+    // Mending Circle: as each Tide starts, every building of a player whose Stash holds it heals a share of its maximum
+    // health (its Spool buildings; Thread Heads are units).
+    static void MendingCircle()
+    {
+        foreach (SpoolPlayer p in players.Values)
+        {
+            SpoolStashBrain circle = p.Holds("Circle");
+            if (circle == null || !ModKitUtil.Alive(circle.Master))
+                continue;
+            float share = circle.Param("Circle_Base", 0.25f);
+            foreach (SpoolBuilding b in Owned<SpoolBuilding>(p.Owner))
+                if (!(b is SpoolHeadBrain) && ModKitUtil.Alive(b.Master) && Mend(circle.Master, b.Master, ModKitUtil.MaxHealth(b.Master) * share))
+                    Circled++;
+        }
+    }
+
+    // ---------------------------------------------------------------- Thread Head upgrades
+
+    public static int Counted;   // High Thread Count's extra Thread dropped
+
+    // The best damage bonus and the best guard (less damage taken) any of this owner's Thread Heads gives at a point:
+    // Needle Point and Stitch in Time within their range, Head of the Class both within its own, whatever path the Head
+    // took. Several Heads don't stack.
+    public static void HeadBuffs(long owner, Vector3 at, out float damage, out float guard)
+    {
+        damage = 0f;
+        guard = 0f;
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolHeadBrain h = b as SpoolHeadBrain;
+            if (h == null || !h.Started || h.Master == null || h.Owner != owner || !ModKitUtil.Alive(h.Master))
+                continue;
+            float d = ModKitUtil.Flat(h.Pos, at);
+            if (h.Has("Class") && d <= h.Param("Classrange_Base", 4f))
+            {
+                damage = Mathf.Max(damage, h.Param("Classbuff_Base", 0.5f));
+                guard = Mathf.Max(guard, h.Param("Classguard_Base", 0.45f));
+            }
+            if (h.Has("Needle") && d <= h.Param("Needlerange_Base", 3f))
+                damage = Mathf.Max(damage, h.Param("Needle_Base", 0.25f));
+            if (h.Has("Time") && d <= h.Param("Stitchrange_Base", 3f))
+                guard = Mathf.Max(guard, h.Param("Stitchtime_Base", 0.3f));
+        }
+    }
+
+    // High Thread Count: the extra Thread a foe felled here drops, once however many Heads with it stand in reach.
+    public static int CountBonus(Vector3 at)
+    {
+        int more = 0;
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolHeadBrain h = b as SpoolHeadBrain;
+            if (h != null && h.Started && h.Has("Count") && ModKitUtil.Alive(h.Master) && ModKitUtil.Flat(h.Pos, at) <= h.Param("Countrange_Base", 3f))
+                more = Mathf.Max(more, Mathf.RoundToInt(h.Param("Count_Base", 1f)));
+        }
+        return more;
+    }
+
+    // ---------------------------------------------------------------- Golden Thread
+
+    public static int GoldenDrops, GoldenThread;   // drop-offs at a Golden Thread Loom, and the Thread they handed over
+
+    // The player's nearest standing Loom with Golden Thread within 'reach' of a point, or null.
+    public static SpoolLoomBrain GoldenNear(long owner, Vector3 at, float reach)
+    {
+        SpoolLoomBrain best = null;
+        float nearest = reach;
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolLoomBrain loom = b as SpoolLoomBrain;
+            if (loom == null || !loom.Started || loom.Owner != owner || !loom.Golden || !ModKitUtil.Alive(loom.Master))
+                continue;
+            float d = ModKitUtil.Flat(loom.Pos, at);
+            if (d <= nearest)
+            {
+                best = loom;
+                nearest = d;
+            }
+        }
+        return best;
     }
 }

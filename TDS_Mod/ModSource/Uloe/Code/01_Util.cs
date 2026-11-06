@@ -7,6 +7,37 @@ public static class UloeLog
     public static void Error(string message) { Debug.LogError(Tag + message); }
 }
 
+// A brain's error count (pitfall #80; Argo's ArgoFaults). A brain's catch used to switch it off for the map on its first
+// exception, so one bad tick could leave Uloe, a building or a Photon dead; now the tick is skipped and the brain carries
+// on, and only a brain that throws on every frame for 600 frames (~10 s) stops. The first three errors are logged in
+// full, then one line every 500.
+// A kind of brain that comes in numbers (the Photons) passes one shared log count, so a fault common to them logs three
+// traces in all; the stop rule stays each brain's own.
+public sealed class UloeFaults
+{
+    public sealed class Log { public int Count; }
+
+    int streak, lastFrame = -10;
+    readonly Log log;
+
+    public UloeFaults() : this(null) { }
+    public UloeFaults(Log shared) { log = shared ?? new Log(); }
+
+    // True when the brain should stop: it threw on every frame for 600 frames running.
+    public bool Fail(string who, Exception e)
+    {
+        int count = ++log.Count;
+        if (Time.frameCount != lastFrame)
+            streak = Time.frameCount - lastFrame == 1 ? streak + 1 : 1;
+        lastFrame = Time.frameCount;
+        if (count <= 3) UloeLog.Warn(who + ": " + e);
+        else if (count % 500 == 0) UloeLog.Warn(who + ": " + count + " errors, last: " + e.Message);
+        if (streak < 600) return false;
+        UloeLog.Error(who + ": threw every frame for 600 frames, stopped");
+        return true;
+    }
+}
+
 public static class UloeUtil
 {
     public static T Clone<T>(T source, string name) where T : Bl_ScriptableObject

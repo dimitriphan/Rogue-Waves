@@ -19,6 +19,7 @@ public abstract class YosseleBuilding : MonoBehaviour
     readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
     readonly List<Link_Modifier> upgradeMods = new List<Link_Modifier>();
     readonly YosseleFaults faults = new YosseleFaults();
+    float builtLookAt = -1f;     // when the build look goes out (pitfall #158)
 
     // Stats the buildings own: an upgrade param named after one of these (Range_Add, Seedlimit_Add...) is a modifier.
     static readonly string[] StatNames = { "Damage", "Attackspeed", "Range", "Health", "Radius", "Spores", "Seedlimit", "Seedrate", "Slow" };
@@ -56,6 +57,13 @@ public abstract class YosseleBuilding : MonoBehaviour
                     return;
                 Begin();
             }
+            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
+            // hooked this building, so the build look goes out half a second later.
+            if (builtLookAt >= 0f && Time.time >= builtLookAt)
+            {
+                builtLookAt = -1f;
+                ModKitUtil.Vis(Master, "Yossele_Built", Pos, 0);
+            }
             if (ModKitUtil.Alive(Master))
                 Tick();
         }
@@ -77,7 +85,7 @@ public abstract class YosseleBuilding : MonoBehaviour
         foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
             OnUpgrade(u);
         Started2();
-        ModKitUtil.Vis(Master, "Yossele_Built", Pos, 0);
+        builtLookAt = Time.time + YosseleData.FirstLookDelay;
     }
 
     protected virtual void Started2() { }

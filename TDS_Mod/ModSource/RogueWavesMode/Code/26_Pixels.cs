@@ -7,9 +7,10 @@
 // too. The boat's camera sways the same way; a map's moves only when the player moves it.
 // A pass moves each still, shown picture by less than half a pixel onto the screen's pixel grid, measured from the canvas's
 // corner, where it was before ours; it runs again every half second, so a picture caught while its menu slid in is set right
-// once the menu rests. It never moves a picture the game slides, animates, scrolls or lays out itself, nor the
-// choice dialog's (RWDialog places those), and a position anyone writes later becomes its new start; a picture someone keeps
-// writing is left alone. A pass is spread over frames, a few dozen pictures a frame, with no garbage.
+// once the menu rests. It never moves a picture the game slides, animates, scrolls or lays out itself (a LayoutGroup or the
+// game's Blu4_List_Stacker), nor the choice dialog's (RWDialog places those), nor one inside a button while its hover or
+// click has it grown (Blu5_Buttonanim_Size); a position anyone writes later becomes its new start, and a picture someone
+// keeps writing is left alone. A pass is spread over frames, a few dozen pictures a frame, with no garbage.
 public static class RWPixels
 {
     public static bool On = true;           // the self-test compares the game's own places with these
@@ -18,7 +19,11 @@ public static class RWPixels
     const float Every = 0.5f;               // a new pass starts at most this often
     const int GiveUp = 2;                   // our writes undone by someone else, with none kept between, before a picture is left alone
 
-    sealed class Seat { public Transform Parent; public bool Ours; public Vector2 Start, Wrote; public bool Written; public int Undone; }
+    sealed class Seat
+    {
+        public Transform Parent; public bool Ours; public Vector2 Start, Wrote; public bool Written; public int Undone;
+        public Blockage.Menu.Blu4_Button_Animator Grower;   // the button around it that grows on hover or click, if any
+    }
 
     static readonly List<UnityEngine.UI.Graphic> found = new List<UnityEngine.UI.Graphic>();
     static readonly List<UnityEngine.UI.Graphic> pass = new List<UnityEngine.UI.Graphic>();
@@ -127,8 +132,12 @@ public static class RWPixels
             return;
         Seat seat;
         if (!seats.TryGetValue(rt, out seat) || seat.Parent != parent)
-            seats[rt] = seat = new Seat { Parent = parent, Ours = Ours(rt) };
+            seats[rt] = seat = new Seat { Parent = parent, Ours = Ours(rt), Grower = Grower(rt) };
         if (!seat.Ours)
+            return;
+        // While its button is grown or growing the picture is off the grid by design; once it rests (the tween ends on exactly
+        // 1) the picture is where this pass left it.
+        if (seat.Grower != null && (seat.Grower.Active || seat.Grower.transform.localScale != Vector3.one))
             return;
         seen++;
         float pixels = rootPixels[r];
@@ -171,7 +180,8 @@ public static class RWPixels
 
     // Whether the picture is ours to move: nothing of the game's moves it by itself, it isn't in a scrolling list, and it isn't
     // the choice dialog's. The whole chain up to the canvas is read, since the dialog's root sits above its own sliding parts.
-    // Something moving a holder above the picture is fine: the next pass at rest puts it right.
+    // Something moving a holder above the picture is fine: the next pass at rest puts it right. Read once per picture, when
+    // its seat is made.
     static bool Ours(RectTransform rt)
     {
         if (Moves(rt))
@@ -186,14 +196,59 @@ public static class RWPixels
         return true;
     }
 
-    // The game moves it itself: its transitions, scaler or animator write it, or a layout places it.
+    // The nearest button, the picture itself or above it, whose hover or click grows it; a hover grows the whole button with
+    // the pictures in it.
+    static Blockage.Menu.Blu4_Button_Animator Grower(RectTransform rt)
+    {
+        for (Transform t = rt; t != null; t = t.parent)
+        {
+            Blockage.Menu.Blu4_Button_Animator a = t.GetComponent<Blockage.Menu.Blu4_Button_Animator>();
+            if (Grows(a))
+                return a;
+            if (t.GetComponent<Canvas>() != null && t.parent == null)
+                break;
+        }
+        return null;
+    }
+
+    // The game moves it itself: its transitions, scaler or animator write it, or a layout or the game's stacker places it.
+    // A Blu4_List_Stacker writes every child of its Ref each frame; it sits on the Ref or above it.
     static bool Moves(RectTransform r)
     {
         if (r.GetComponent<Blockage.Menu.Blu4_Scaler>() != null || r.GetComponent<Blockage.Menu.Blu4_Transition_Animator>() != null
             || r.GetComponent<Animator>() != null)
             return true;
         Transform p = r.parent;
-        return p != null && p.GetComponent<UnityEngine.UI.LayoutGroup>() != null;
+        if (p == null)
+            return false;
+        if (p.GetComponent<UnityEngine.UI.LayoutGroup>() != null)
+            return true;
+        for (Transform t = p; t != null; t = t.parent)
+        {
+            Blockage.Menu.Blu4_List_Stacker st = t.GetComponent<Blockage.Menu.Blu4_List_Stacker>();
+            if (st != null && st.Ref == p)
+                return true;
+            if (t.GetComponent<Canvas>() != null && t.parent == null)
+                break;
+        }
+        return false;
+    }
+
+    // A button whose hover or click scales it (Blu5_Buttonanim_Size: DOScale to Tosize and back): its pictures leave the
+    // pixel grid while it is grown, and a pass that put them back on it then would move them by a pixel when the hover ends.
+    static bool Grows(Blockage.Menu.Blu4_Button_Animator a)
+    {
+        return a != null && (Sizes(a.Buttonanimations_Enter) || Sizes(a.Buttonanimations_Click));
+    }
+
+    static bool Sizes(List<Blockage.Menu.Blu5_Buttonanim> anims)
+    {
+        if (anims == null)
+            return false;
+        foreach (Blockage.Menu.Blu5_Buttonanim b in anims)
+            if (b != null && b.Ref is Blockage.Menu.Blu5_Buttonanim_Size)
+                return true;
+        return false;
     }
 
     // Seats of destroyed pictures, after each pass.

@@ -144,5 +144,6 @@ PowerShell in the container; `design`, `docs`, `art`, `--since`, `--max-cost`,
 `--max-wait`, `spend`; review fixes: at most 2 cache marks a request, the API's limit being 4, which scope `11`'s five
 parts broke; per-check bases; a true cost ceiling; `--art` sends only files git tracks). Here (cloud): `plan` for every
 check on both models, the report writer on made-up results for every check, per-check bases through a failed, a
-narrowed and an explicit-`--since` run, the art pictures looked at, and the missing-key and over-cap exits. No real batch has run: no key was
-available in the container.
+narrowed and an explicit-`--since` run, the art pictures looked at, and the missing-key and over-cap exits. Real runs since: the first on
+2026-11-06 (Haiku, $1.82 with its rerun, `docs/reports/BATCH_CHECKS_2026-11-06.md` and `06b`) and the morning
+routine's (Haiku, $1.32, `BATCH_CHECKS_2026-11-06c.md`); `spend` lists a month's runs.

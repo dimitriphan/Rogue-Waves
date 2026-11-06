@@ -227,21 +227,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **State (2026-11-05, base `7de9305`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
-  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps his
-  shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen), the foes part; kit 1.14. Last run on the PC:
-  testing round 3 (kit 1.9, `docs/reports/TESTING_ROUND_3_2026-11-05.md`) and `Light_round1` (`fb208b8`, kit 1.13,
-  `docs/reports/LIGHTING_2026-11-05.md` §6). Built since, compiled here, not run on the PC: the unbuilt candidates
-  (`BUILD_UNBUILT_2026-11-05.md`), the max review's fixes, the decided code fixes, the balance sweep, Spring Tide's test,
-  the meteor's crystal and Yossele's final sheets. Every scope default is his except the sweep's tuned numbers in `04`,
-  `08`, `10`, `12` (tildes until after PC round 4); his project-files scope copy and the Scope Editor equal `7de9305`.
-  Dated history: "Log" (newest last); reports: `docs/reports/README.md`.
-- **Next, in order:** PC round 4 (his OK 16:04Z; lists: `BUILD_UNBUILT_2026-11-05.md` §5, `CODE_REVIEW_MAX_2026-11-05.md`
-  §6, `BALANCE_SWEEP_2026-11-05.md` §8, `DECIDED_CODE_FIXES_2026-11-05.md` §4; Spring Tide's three lines pass and its two
-  `INFO` lines show a Multi near 0.01, `RogueWavesMode/IMPLEMENTATION_NOTES.md` first entry; the meteor on a map and
-  Yossele walking left; it also syncs the PC's scope copy), then scope `07`'s sprite NEEDS line cleared in a docs PR;
-  the per-weather lighting look's PC round with foes on screen (`WEATHER_LOOK_2026-11-05.md` §4; built, entry below);
-  then Spool's 22 upgrades and UNTHREAD (scope `08`, B19).
+- **State (2026-11-06, base `6eab9ac`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
+  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps
+  his shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
+  kit 1.14. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`; of the weather look only its W4 lines), the menu
+  wobble round (`BUTTON_WOBBLE_2026-11-06.md`) and chart round 1 (`CHART_ROUND1_2026-11-06.md`); a full test round on
+  `6830ba2` is running and reports in its own PR. Built since, compiled here, not run on the PC: the MVP board, the
+  whole-pixel follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12`
+  keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest
+  last); reports: `docs/reports/README.md`.
+- **Next, in order:** the full test round's report and the PC checks it leaves (`BUG_FIXES_2026-11-06.md` §5,
+  `CHART_BUILD_2026-11-06.md` §4, `STOCK_TRINKETS_2026-11-05.md` §6 and §8, the MVP board's two-player checks, the top 4
+  pitfall fixes' checks, Spool's upgrade sections 10d-10f), and the weather look's own round
+  (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -271,9 +269,6 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
   pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
   Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-05: base game Cardinals split** (Dimitri: "separate them"): 13 of the 29 sold are Trinkets, held once per buyer
-  (`docs/reports/STOCK_TRINKETS_2026-11-05.md`; §5 three questions, §6 the PC list); scope `12` lists them as defaults.
-  Compiled here, not run on the PC. No kit change, no pitfall.
 - **2026-11-05: feature spotlight page** (Dimitri: "Design a spotlight of all of the new features"): `docs/spotlight/`
   (artifact https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr), every feature chipped played, built-not-run or not built,
   with the PR #130 Trinket split. Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
@@ -340,6 +335,21 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: MVP board built** (Dimitri: "just the most notable thing of the player ... Defaults for rest, and then
   build"): one title per player, failures as common as accolades, Tab replays it; `27_Board.cs`, `28_BoardView.cs`,
   MB1-MB11 (`MVP_BOARD.md` §4, §6). Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons left alone while a hover grows
+  them, the game's stacked lists always; a still P2 passes only if its control saw the flicker (`BUTTON_WOBBLE_2026-11-06.md`
+  §3-4). Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.32 ($3.14 this month), 35 of 36
+  answers whole (`docs/reports/BATCH_CHECKS_2026-11-06c.md`, leads only, none fixed); no PC round (it needs his reply in
+  the thread to start). Docs only; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-06: the top 4 pitfall fixes built** (Dimitri: "Do top 4 recommended fixes, super nova flies photons back,
+  keep cap at 8"): Uloe's brain guard, the elite stand-in, a Wreck's Pearl Oyster, late build looks; Supernova flies its
+  Photons home; Uloe's safe-socket Light capped at 8. Compiled here, not run on the PC; Spool waits.
+- **2026-11-06: the morning's suggestions** (Dimitri: "implement suggestions but skip the PC round"): two log lines,
+  Spool's Seam and Mangled temporary sheets in sage, "Now" tidied, the batch README; two batch leads were no bugs. Compiled
+  here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri: "Yes"): scope `08` B18/B19, all 37 rows matching,
+  BEE, UNTHREAD and COLOUR, Spool's brain guard (#80) and late looks (#158); self-test 10d-10f (`Spool/DESIGN.md`
+  defaults). Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1414,7 +1424,57 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   in `RogueWavesMode/IMPLEMENTATION_NOTES.md`. `/code-review high` fixed 10 items, the PR #151 reviewer 4 more (a stale
   board on the next map, MB10 times its Continue, odd boards alternate on a count, two doc slips). No kit change, no
   pitfall (HashSet is already #1's).
-
+- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri 07:24Z: "Follow up pr", after PR #150 merged with the
+  review's two points open). `26_Pixels.cs`: the children of a `Blu4_List_Stacker`'s `Ref` are left alone (the stacker
+  sits on the Ref or above it, writes them in its `Update` and is no `LayoutGroup`; read once per picture, when its seat is
+  made); a picture under a `Blu4_Button_Animator` whose Enter or Click list holds a `Blu5_Buttonanim_Size` (a DOTween
+  `DOScale` of the button to `Tosize` and back to exactly 1) keeps that animator in its seat and is skipped while the
+  button is `Active` (hovered) or its scale isn't 1, so it is placed at rest and never moved while grown. Stackers in his
+  game: one in `level1` (the patch banners), five in `level3`, none on the boat. `94_Pixels.cs`: a still P2 passes only
+  if the same reading saw the flicker at the game's places, else SETUP on half pixels, INFO when they are whole already
+  (an even UI scale); a flicker with the fix still fails. `/code-review high` on the first draft: a scale gate dropped (it
+  unplaced static scaled pictures and failed P1 under a resting pointer), the per-pass stacker scan dropped, the control no
+  longer hides a failure; the reviewer's pass: the grow skip only while grown, the even-scale case, the notes' wording. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`,
+  `+GAPS`: 0 errors); not run on the PC; his Mods hold the round's `2a3d907` build. No kit change, no pitfall. Next free:
+  kit 1.15, pitfall #175.
+- **2026-11-06: morning run** (Dimitri's daily routine "Morning mod test run", 12:04Z). Batch:
+  `run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 90` on `d4b4c4b`, 36 requests (text, scope
+  and art whole, since they had no earlier full base; design and docs on what changed), $1.32, $3.14 this month;
+  `design-Spool` cut at max_tokens (rerun with `--effort low`). Report `docs/reports/BATCH_CHECKS_2026-11-06c.md`:
+  4 text, 51 scope rows DIFFERENT or MISSING, 9 design rows, 7 docs, 68 art; leads only, none fixed here. The PC was
+  reachable, but a Remote Control session can only be started from a message Dimitri writes in the thread, so no PC
+  round ran; suggestions instead. Docs only. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
+- **2026-11-06: the top 4 pitfall fixes built** (thread "Find fixes suggested by the pitfalls"; his word 12:52Z): Uloe's
+  three brains skip a bad tick (`UloeFaults`, #80); a missing stock elite is replaced from outside the campaign's four
+  (`RWDifficulty.Pool`, #146); Pearl Oyster pays from the moment it is held, also from a Wreck (`RWTrinkets.OnGain`); the
+  build looks of Argo, Yossele and Uloe and Uloe's Photon pop wait 0.5 s for the client's hook scan (#158; Spool left);
+  Supernova's Photons fly back to their Bank at double speed (`ComeHome`); Uloe plugged into a Surge Protector Bank gives at
+  most Light 8 in all. Self-test and gaps checks added or changed in Uloe `98_Upgrades.cs` and mode `92_GapsTrinkets.cs`.
+  Compiled here (release and self-test, every changed part), not run on the PC. No kit change; no new pitfall.
+- **2026-11-06: the morning's suggestions** (Dimitri 13:00Z: "If not done already, implement suggestions but skip the PC
+  round as it is already being run"). The pitfall-fix thread holds the elite stand-in order, the Wreck's Pearl Oyster,
+  the brain guards, the first-frame effects and Supernova's fly-back, so they are left out here. Text: the Cove's log
+  line ("goes up a rank", `06_Campaign.cs`) and Spool's second-Stash warning ("one per player", `07_Building.cs`); the
+  two Direction lines the batch called awkward (`16_Directions.cs:32`, `:68`) are his scope `11` words, left. Art:
+  Spool's Seam and Mangled temporary sheets from white and lilac (read as Pearl) to sage, by a per-sheet table in
+  `concept-tools/temp_art/spool_sage.py`; PNG, `.aseprite` and previews, shapes unchanged (`docs/TEMP_ART.md`). Not
+  bugs: the shop's `Artifact_Rock` is Bottom Rock's id (pitfall #132, now commented in `NotSold`); Uloe's six Light is
+  `4 + 2 per upgrade`, any one upgrade. Docs: "Now"'s State and Next brought to 2026-11-06, the superseded 13-of-29
+  entry dropped (the Log keeps it), the batch README's "What ran where". CLAUDE.md is 80 lines against "under 80": left
+  for his word. Compiled here: RogueWavesMode (none, SELFTEST, SELFTEST+SHOTS+GAPS) and Spool (none, SELFTEST,
+  SELFTEST+SHOTS) 0 errors; the TWOPC build's `Unity.Netcode.Transports` error is the base's too. Not run on the PC.
+- **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri 13:58Z: "Yes" to building B19 with B18 and Spool's
+  share of the pitfall fixes; thread "Build Spool's 22 upgrades and Unthread"). Rows: the Yarn Stash 7, the Cookie Tin 3
+  plus UNTHREAD, the Thread Head 5, the Pin Cushion 2 (Pin Barrage leads to Iron Thimble), the Loom 5; all 37 rows match
+  scope `08` by `scope_upgrades.py`; sheet level N is the game's tier N+1. New: the Tacked Stitched on Sno Sno's blocker
+  block; BEE on the Stash, UNTHREAD on a Tin, COLOUR on a Loom (key 4). Spool's brain guard (`SpoolFaults`, Uloe's #80
+  shape) and the build puff 0.5 s late, the Crafted's pop and leap through their home (#158). Built in three parallel
+  chunks (Stash; Tin, Head and Cushion; Loom), merged, `/code-review high` (10 findings: 7 fixed, among them a Tacked
+  crowd that never arrived and a Seam colour trade that could run twice; 3 dismissed) and `/simplify`. The readings the
+  sheet leaves open (BEE's place, Darning's amount, two Spools' Remnant Bin, buffs not stacking, Voodoo on bosses) are
+  `Spool/DESIGN.md` "Defaults picked here", for his word. Compiled here: Spool (none, SELFTEST, SELFTEST+SHOTS) 0 errors,
+  0 warnings, the editor check clean. Not run on the PC (the full test held the lock); `Spool/IMPLEMENTATION_NOTES.md`
+  lists the round's checks. No kit change, no pitfall.
 
 ### Decisions
 
