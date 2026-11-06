@@ -3,7 +3,7 @@
 ## 2026-11-06: the 22 upgrades and UNTHREAD (compiled, not yet run in game)
 
 Scope `08` B19 and B18 (Dimitri's "Yes", 2026-11-06): the Yarn Stash's 7 upgrades (Pockets, Quick Patch, Darning, Elbow
-Patches, Remnant Bin, Mending Circle, Quilting Bee), the Cookie Tin's 3 (Tacking Stitch, Cross Stitch, Stitch Army) and
+Patches, Remnant Bin, Mending Circle, Quilting Bee), the Cookie Tin's 3 (Tacking Stitch, Cross Stitch, Patchwork Army) and
 UNTHREAD, the Thread Head's 5 (Bobbin, Needle Point, High Thread Count, Stitch in Time, Head of the Class), the Pin
 Cushion's 2 (Iron Thimble, Voodoo Doll; Pin Barrage leads to Iron Thimble) and the Loom's 5 (Dyed in the Wool, Bobbin,
 Seam Squad, Snare Line, Golden Thread). All 37 rows match the sheet (`Tools/cloud-check/scope_upgrades.py`). New: the
@@ -11,7 +11,9 @@ Tacked Stitched (`Mob_Spoolstitched_Tacked`, Sno Sno's blocker block), BEE on th
 a Loom (key 4). Pitfall #80, Spool's share: a brain that throws skips the tick (`SpoolFaults`, `01_Util.cs`) and stops
 only after 600 frames running; #158: the build puff goes 0.5 s late and the Crafted's pop and leap through their home.
 After `/code-review high`: a Tacked crowd holds where it stopped, a Seam's colour trade is never made twice, Woolen
-Lining and Cross Stitch reach the Crafted already out. Self-test sections 10d-10f (`98_UpStash.cs`, `98_UpTinHead.cs`,
+Lining and Cross Stitch reach the Crafted already out. After the PR review: a Thread Head's RETURN and Threaded
+Delivery walk to the nearer drop-off point (a Golden Thread Loom too); Head of the Class's Thread flies to the Stash; a
+rebuilt Stash keeps Thread over its cap until spent. Self-test sections 10d-10f (`98_UpStash.cs`, `98_UpTinHead.cs`,
 `98_UpLoom.cs`, about 75 checks). The readings picked where the sheet is silent: `DESIGN.md` "Defaults picked here".
 For the PC: the self-test with the new sections; by hand BEE, UNTHREAD and COLOUR's buttons and icons, a Tacked line
 on a path, a Voodoo stun, a Golden Thread drop-off, a Remnant flying home on a client.

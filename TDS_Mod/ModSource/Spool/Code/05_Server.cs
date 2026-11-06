@@ -166,8 +166,9 @@ public static class SpoolServer
     }
 
     // A carrier at its Stash (or at a Golden Thread Loom) hands over what fits; the rest stays carried. The Thread goes
-    // into the Stash either way; the look flies to the nearer of the two.
-    public static int Deliver(long owner, Entity_Master carrier, int carried)
+    // into the Stash either way; the look flies to the nearer of the two, or always to the Stash with 'straight' (Head of
+    // the Class).
+    public static int Deliver(long owner, Entity_Master carrier, int carried, bool straight = false)
     {
         SpoolPlayer p = Player(owner);
         if (p.Home == null || p.Home.Master == null || carried <= 0)
@@ -179,7 +180,7 @@ public static class SpoolServer
         Delivered += put;
         Show(p);
         Vector3 to = ModKitUtil.Pos(p.Home.Master), from = carrier != null ? ModKitUtil.Pos(carrier) : to;
-        SpoolLoomBrain golden = GoldenNear(owner, from, ModKitUtil.Flat(to, from));
+        SpoolLoomBrain golden = straight ? null : GoldenNear(owner, from, ModKitUtil.Flat(to, from));
         if (golden != null && ModKitUtil.Flat(golden.Pos, from) < ModKitUtil.Flat(to, from))
         {
             to = golden.Pos;

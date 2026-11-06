@@ -207,7 +207,7 @@ public class SpoolStashBrain : SpoolBuilding
             p.Placed = true;
             p.Stash = Mathf.Max(p.Stash, SpoolData.StashStart);
         }
-        p.Stash = Mathf.Min(p.Stash, Cap);
+        // Thread over this Stash's cap (one upgraded higher, sold) is kept: nothing more comes in until it is spent below.
         SpoolServer.Show(p);
         if (Has("Bee"))
             ShowBee();

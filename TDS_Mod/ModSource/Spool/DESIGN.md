@@ -86,7 +86,7 @@ Stash, Cookie Tin, Pin Cushion and Loom; the Thread Head is a unit and has its j
 | Pin Cushion | `Tower_Spoolcushion` | defence | Tower_Smackywall | Blue 20 | Health 100 (+40/level), reflect 20% melee, 1 Thread per 25 damage taken | the wall: pricks melee attackers, spins Thread when hit; its in-game line says to build it first (P4) |
 | Loom | `Tower_Spoolloom` | Gatherer | Tower_Smackyhut | Yellow 40 | Health 40 (+20/level), Range 2.5, Damage 1, Attackspeed 0.3 *(balance sweep 2026-11-05; was 0.4)* | mines ore in reach, spins 1 Thread every 6 s up to 10 held for pickup |
 
-- **Yarn Stash** *(defaults)*: sellable for nothing (to move it; its Thread is kept for the next one). Destroyed, its
+- **Yarn Stash** *(defaults)*: sellable for nothing (to move it; its Thread is kept for the next one, even over that one's cap until spent). Destroyed, its
   Thread spills on the ground around it as drops and the build menu goes back to the Stash (rebuilt free). No upgrades
   built yet: the sheet has seven since 2026-11-04 (below, not built).
 - **Cookie Tin:** "Crafted alive at once" 6 per Tin *(balance sweep 2026-11-05; was 4)*; one is stitched every 4 s while the Stash has the Thread. Its
@@ -170,7 +170,7 @@ to every choice of the next, except where noted. All 37 are built (the 22 the sh
 | | 3 | Bobbin Winder | Spins Thread twice as fast | a Thread every 3 s; holds 20 | Yellow 100 | Seam Squad, Snare Line |
 | | 4 | Seam Squad | More Seams to mine and guard | 3 Seams per Loom | Yellow 350 | Golden Thread |
 | | 4 | Snare Line | Seams hunt the wild aura | its Seams chase aura beasts within 6 tiles of the Loom | Yellow 300 | Golden Thread |
-| | 5 | Golden Thread | Thread spun from gold | Spool and Thread Heads drop off here (straight into the Stash); spins twice as fast | Yellow 3000 | |
+| | 5 | Golden Thread | Thread spun from gold | Spool and Thread Heads drop off here (straight into the Stash; RETURN and Threaded Delivery walk to the nearer of the two); spins twice as fast | Yellow 3000 | |
 
 The Cookie Tin's **UNTHREAD** button sells every Crafted it has out, each refunding half its Thread as selling one does.
 

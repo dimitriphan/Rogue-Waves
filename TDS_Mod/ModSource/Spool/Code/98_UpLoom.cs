@@ -183,6 +183,11 @@ public static partial class SpoolSelfTest
                 + ", from the Seam's hits +" + (loomD.SeamTraded - seamTraded) + ", last " + F(loomD.LastIn) + " in -> " + F(loomD.LastOut) + " Red";
             Check("Dyed in the Wool: the Loom's own payout comes in Red, at 70% of its total", loomD.Traded > traded && loomD.LastIn > 0f && Mathf.Abs(loomD.LastOut - 0.7f * loomD.LastIn) < 0.001f, detail);
             Check("Dyed in the Wool: its Seam's payout is traded too", loomD.SeamTraded > seamTraded, detail);
+            // The trade on the purse itself, read around one: a gain of 10 Blue goes back and 7 Red comes in.
+            float[] p0 = new float[3], p1 = new float[3];
+            bool read = ModKitUtil.Purse(owner, p0) && loomD.Trade(new float[3], new float[] { 0f, 10f, 0f }) && ModKitUtil.Purse(owner, p1);
+            Check("Dyed in the Wool: a 10 Blue gain leaves the purse as 7 Red, the Blue taken back", read && Mathf.Abs(p1[0] - p0[0] - 7f) < 0.05f && Mathf.Abs(p1[1] - p0[1] + 10f) < 0.05f && Mathf.Abs(p1[2] - p0[2]) < 0.05f,
+                read ? "Red " + F(p1[0] - p0[0]) + ", Blue " + F(p1[1] - p0[1]) + ", Yellow " + F(p1[2] - p0[2]) : "purse not read");
         }
 
         // Seam Squad: 3 Seams, each back 10 s after it falls.

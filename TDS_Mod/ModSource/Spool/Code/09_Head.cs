@@ -132,9 +132,21 @@ public class SpoolHeadBrain : SpoolBuilding
     void StartReturn()
     {
         Returning = true;
+        Entity_Master to = DropPoint();
+        if (to != null)
+            Walk(to, Vector3.zero, 1f);
+    }
+
+    // Where RETURN and Threaded Delivery walk: the Yarn Stash, or a Golden Thread Loom of its owner's that is nearer (a
+    // drop-off point too). Null with no Stash standing.
+    Entity_Master DropPoint()
+    {
         SpoolStashBrain home = Player.Home;
-        if (home != null && home.Master != null)
-            Walk(home.Master, Vector3.zero, 1f);
+        if (home == null || home.Master == null)
+            return null;
+        float far = ModKitUtil.Flat(Pos, home.Pos);
+        SpoolLoomBrain loom = SpoolServer.GoldenNear(Owner, Pos, far);
+        return loom != null && ModKitUtil.Flat(loom.Pos, Pos) < far ? loom.Master : home.Master;
     }
 
     void Walk(Entity_Master target, Vector3 position, float stop) { ModKitUtil.MoveTo(Master, target, position, stop); }
@@ -165,7 +177,8 @@ public class SpoolHeadBrain : SpoolBuilding
         }
         if (Has("Class") && Param("Classhome_Base", 1f) > 0f && !Mending && Carried > 0)
             SendHome();
-        // At the Stash it drops off what it carries and turns round, even with nothing on it (RETURN pressed empty, SPL-2).
+        // At the Stash (or a Golden Thread Loom) it drops off what it carries and turns round, even with nothing on it
+        // (RETURN pressed empty, SPL-2).
         if (SpoolServer.AtStash(Owner, pos, SpoolData.DropOff))
         {
             int put = Carried > 0 ? SpoolServer.Deliver(Owner, Master, Carried) : 0;
@@ -187,14 +200,14 @@ public class SpoolHeadBrain : SpoolBuilding
             StartReturn();
         if (Returning)
         {
-            SpoolStashBrain home = Player.Home;
-            if (home == null || home.Master == null)
+            Entity_Master to = DropPoint();
+            if (to == null)
             {
                 Returning = false;
                 Walk(null, Spot, 0f);
             }
             else if (ModKitUtil.State(Master) != "Move")
-                Walk(home.Master, Vector3.zero, 1f);
+                Walk(to, Vector3.zero, 1f);
             return;
         }
         Guard(pos);
@@ -203,7 +216,7 @@ public class SpoolHeadBrain : SpoolBuilding
     // Head of the Class: its Thread flies straight into the Yarn Stash (Deliver's look, from the Head to the Stash).
     void SendHome()
     {
-        int put = SpoolServer.Deliver(Owner, Master, Carried);
+        int put = SpoolServer.Deliver(Owner, Master, Carried, true);
         if (put <= 0)
             return;
         Carried -= put;

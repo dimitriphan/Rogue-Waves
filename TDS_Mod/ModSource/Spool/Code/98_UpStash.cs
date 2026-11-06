@@ -23,7 +23,9 @@ public static partial class SpoolSelfTest
         {
             Check("Roomy Pockets: without it Spool carries 20 and picks up within a tile", player.CarryCap == 20 && Mathf.Approximately(player.Reach, 1f),
                 "carry " + player.CarryCap + ", reach " + F(player.Reach));
+            int cap0 = stash.Cap;
             yield return Upgrade(stash, "Pockets2", owner);
+            Check("an upgrade raises the Stash's cap by 25 Thread", stash.Cap == cap0 + 25, "cap " + cap0 + " -> " + stash.Cap);
             Check("Roomy Pockets: Spool carries 40 and picks up within 2 tiles", Has(stash, "Pockets2") && player.CarryCap == 40 && Mathf.Abs(player.Reach - 2f) < 0.01f,
                 "bought " + Has(stash, "Pockets2") + ", carry " + player.CarryCap + ", reach " + F(player.Reach));
             // Carrying 25 (over the old 20), Thread 1.7 tiles away comes in. Spool picks up before it drops off, so what it
@@ -288,8 +290,12 @@ public static partial class SpoolSelfTest
             }
         }
 
-        // Sold, the Stash takes Elbow Patches and Quick Patch back; one is built again for the checks after these.
+        // Sold, the Stash takes Elbow Patches and Quick Patch back; one is built again for the checks after these, and keeps
+        // the Thread even over its own (lower) cap.
         {
+            int kept = stash.Cap;
+            player.Stash = kept;
+            SpoolServer.Show(player);
             yield return StashSell(hm, player, stash);
             yield return Wait(0.6f);
             Link_Command pc = hm.Commandlistserver[SpoolData.PatchLink];
@@ -298,6 +304,11 @@ public static partial class SpoolSelfTest
                 "health " + F(ModKitUtil.MaxHealth(hm)) + " (was " + F(h0) + "), damage " + F(ModKitUtil.Stat(hm, "Damage", 0f)) + " (was " + F(dmg0) + "), PATCH " + hero.PatchCost + ", button " + F(pc.Goalvalue));
             yield return StashBuild(hm, player, built);
             Check("the Yarn Stash is built again for what follows", built[0] != null && player.Home == built[0]);
+            Check("the new Stash keeps all the Thread, over its cap until spent", built[0] != null && player.Stash == kept && kept > built[0].Cap,
+                player.Stash + " of " + kept + " kept, cap " + (built[0] != null ? built[0].Cap : 0));
+            if (built[0] != null)
+                player.Stash = Mathf.Min(player.Stash, built[0].Cap);
+            SpoolServer.Show(player);
         }
     }
 
