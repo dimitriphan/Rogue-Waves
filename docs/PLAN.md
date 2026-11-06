@@ -1437,7 +1437,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 90` on `d4b4c4b`, 36 requests (text, scope
   and art whole, since they had no earlier full base; design and docs on what changed), $1.32, $3.14 this month;
   `design-Spool` cut at max_tokens (rerun with `--effort low`). Report `docs/reports/BATCH_CHECKS_2026-11-06c.md`:
-  4 text, 63 scope rows DIFFERENT or MISSING, 9 design rows, 7 docs, 68 art; leads only, none fixed here. The PC was
+  4 text, 51 scope rows DIFFERENT or MISSING, 9 design rows, 7 docs, 68 art; leads only, none fixed here. The PC was
   reachable, but a Remote Control session can only be started from a message Dimitri writes in the thread, so no PC
   round ran; suggestions instead. Docs only. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
 
