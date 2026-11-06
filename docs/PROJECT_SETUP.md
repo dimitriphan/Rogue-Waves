@@ -115,7 +115,7 @@ these threads included, always use the plan and ignore the key.
 3. **Give it to the batch, not to Claude Code.** Two ways:
    - **Cloud (recommended; nothing touches the PC).** In the project's settings on claude.ai, Cloud environment, the
      gear beside the selected environment: add `ANTHROPIC_API_KEY` under Network secrets where offered, otherwise as an
-     environment variable. A new thread then runs `plan --exact` (free) to prove it, and `submit`.
+     environment variable. A new thread then runs `plan --exact` (free) to prove it, and `submit --model haiku` (about $0.76).
    - **One PowerShell window on the PC**, from a clone of the repository:
      ```powershell
      py -m pip install anthropic

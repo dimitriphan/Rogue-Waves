@@ -283,6 +283,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 512 rows, 355 MATCH,
   117 resolved, 24 queued (Spool B18/B19), 11 by design; N1 Tidal Mend x level and N2 Abyss's capped slow wait for his
   word; scope 02, 04, 05, 15 texts fixed (`SCOPE_CODE_AUDIT_2026-11-06.md`). Docs only, read from the code, nothing run.
+- **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
+  checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`). Planned and
+  tested on made-up answers here; no real batch yet: the key is not in the cloud environment.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1155,6 +1158,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   claims an end-screen line, N4 02:9's installed build, N5 15:176's Stacks "no limit" (his answer 3). His scope copies
   are behind in 02, 04, 05, 12, 15 until he says "sync". Docs only, no compile, nothing run on the PC. Next free
   numbers unchanged: kit 1.15, pitfall #172.
+- **2026-11-06: batch checks extended** (Dimitri: "Help me set up the cheap batch jobs further"):
+  `TDS_Mod/Tools/batch/run_checks.py` gains `design` (each vessel's DESIGN.md against its code: MATCH, DIFFERENT,
+  NOT-IN-CODE), `docs` (CLAUDE.md, Part C "Now", the reports' README, the batch README and `docs/skills/` read against
+  each other, after a free local pass listing cited paths that name nothing) and `art` (PNGs on Deep Swell and Foam
+  against `docs/STYLE.md`, with `art_check.py` beside each); `--since REF|last` (only what changed since the newest
+  report's base), `--max-cost` (default $5, exit 4), `--max-wait`, `spend` (the month's batch reports against the $100),
+  exit code 3 without a key, `RW_BATCH_OUT` for the record. `all` = text, scope, design, docs: about $4.07 on Sonnet 5.5,
+  $0.76 on Haiku 5.5; art in use $0.29 / $0.01. Run here: `plan` for every check on both models, the report writer on
+  made-up answers, the missing-key and over-cap exits. No real batch: ANTHROPIC_API_KEY is not in the cloud environment
+  (he adds it in the project's Cloud environment settings). No kit change, no pitfall; nothing ran on the PC.
 
 ### Decisions
 
