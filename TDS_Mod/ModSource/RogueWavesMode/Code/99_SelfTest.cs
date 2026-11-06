@@ -511,6 +511,25 @@ public static partial class RWTest
         Game_Mapvars vars = Game_Mapvars.Instance;
         yield return Until(() => RWWeather.Current == node.Weather && (node.Weather == RWChart.QuickeningCurrent || RWWeather.Flood != null || RWWeather.Nest != null), 75f);
         yield return new WaitForSeconds(1f);
+#if ROGUEWAVESMODE_SHOTS
+        // PC round Proof_round1 (test only): the weather's look for Dimitri's eye, the HUD kept awake (pitfall #170): its fade
+        // in three pictures from when it starts, then mid-Tide with foes out (after the W check's Tide, below).
+        string wn = RWWeather.Display(node.Weather).Replace(" ", "");
+        if (Game_Ui.Instance != null) Game_Ui.Instance.Idlethreshold = 100000f;
+        if (node.Weather != RWChart.Calm)
+        {
+            yield return Until(() => RWWeather.Lit == node.Weather, 30f);
+            float lit = RWWeather.LitAt;
+            float[] at = { 0.3f, 2f, 4.6f };
+            for (int i = 0; i < at.Length; i++)
+            {
+                float wait = lit + at[i] - Time.unscaledTime;
+                if (wait > 0f) yield return new WaitForSecondsRealtime(wait);
+                Info("weather picture", "weather_" + wn + "_fade" + (i + 1) + " at " + RWUtil.F(Time.unscaledTime - lit) + " s into the " + RWUtil.F(RWWeather.LookFade) + " s fade on " + node.Plan);
+                yield return Snap("weather_" + wn + "_fade" + (i + 1));
+            }
+        }
+#endif
         int e0 = errors;
         switch (node.Weather)
         {
@@ -552,6 +571,10 @@ public static partial class RWTest
                 break;
             }
         }
+#if ROGUEWAVESMODE_SHOTS
+        Info("weather picture", "weather_" + wn + "_tide on " + node.Plan + ", Wave " + vars.Wave.Value + ", foes alive " + RWUtil.Count("Enemy_Dagger") + " Daggers, " + RWUtil.Count("Enemy_Halberd") + " Halberds");
+        yield return Snap("weather_" + wn + "_tide");
+#endif
         yield return WeatherLook(node.Weather, node.Plan);
         Check("W map " + (m + 1) + ": no error while " + RWWeather.Display(node.Weather) + " ran", errors == e0, (errors - e0) + " error lines");
     }

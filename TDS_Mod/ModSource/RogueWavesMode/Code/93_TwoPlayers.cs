@@ -1529,7 +1529,17 @@ public static partial class RWTest
             Info("building", tower + (ok ? " stands" : " did not appear") + ", wallet " + red0 + " -> " + (Wallet("Redaura") + Wallet("Blueaura") + Wallet("Yellowaura")));
             if (!ok) continue;
             built++;
+            // PC round Proof_round1 (test only, pitfall #158): the looks this machine hears on the new building in its first
+            // 1.5 s, and when. A vessel's own handler hooks it within its 0.25 s scan, so a look heard after 0.3 s reaches it.
+            Entity_Master fresh = Newest(tower);
+            List<string> heard = new List<string>();
+            bool listening = true;
+            float seen = Time.time;
+            if (fresh != null && fresh.Client != null)
+                fresh.Client.Vis += (a, b, c) => { if (listening) heard.Add(a + " at " + RWUtil.F(Time.time - seen) + " s"); };
             yield return new WaitForSeconds(1.5f);
+            listening = false;
+            Info("FINDING #158 the client hears " + tower + "'s first looks", heard.Count == 0 ? "none in 1.5 s" : string.Join(", ", heard.ToArray()));
             Entity_Master made = Newest(tower);
             if (made == null) continue;
             List<string> names = new List<string>();

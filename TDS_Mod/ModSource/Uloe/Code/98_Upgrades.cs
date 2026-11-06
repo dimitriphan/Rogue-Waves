@@ -182,9 +182,21 @@ public static partial class UloeSelfTest
             yield return Upgrade(bank, "Supernova5", owner);
             Link_Command surge;
             Check("Supernova puts a SURGE button on the Bank", Has(bank, "Supernova5") && bank.Master.Commandlistserver.TryGetValue(UloeData.SurgeLink, out surge) && surge.Controllable && UloeContent.Surge.Commandfuncts[0] is UloeSurgeButton);
+            // Proof_round1 (test only): wait for the Bank's Photons to be out, so one is left after the one felled here.
+            yield return Until(() => PhotonsOf(bank).Count >= Mathf.Min(2, bank.Slots), 12f);
+            Log("INFO Proof_round1 Photons out before the fell: " + PhotonsOf(bank).Count + " of " + bank.Slots);
             if (PhotonsOf(bank).Count > 0)
                 Kill(PhotonsOf(bank)[0].Master);
             yield return Wait(0.3f);
+            // PC round Proof_round1 (test only): the Photons left are walked about 3 tiles out first, so a flight home can be read.
+            foreach (UloePhotonBrain p in PhotonsOf(bank))
+            {
+                Vector3 dir = p.Pos - bank.Pos; dir.y = 0f;
+                if (dir.sqrMagnitude < 0.01f) dir = Vector3.right;
+                ModKitUtil.MoveTo(p.Master, null, bank.Pos + dir.normalized * 3f, 0f);
+            }
+            yield return Until(() => PhotonsOf(bank).Exists(p => p.Master != null && ModKitUtil.Flat(p.Pos, bank.Pos) > 2.6f), 4f);
+            Log("INFO Proof_round1 Photons before SURGE: " + string.Join(", ", PhotonsOf(bank).ConvertAll(p => F(ModKitUtil.Flat(p.Pos, bank.Pos)) + " tiles out").ToArray()));
             int bursts = UloeServer.Bursts, alive = PhotonsOf(bank).Count, homes = 0;
             float speed0 = -1f;
             Dictionary<UloePhotonBrain, float> away = new Dictionary<UloePhotonBrain, float>();   // the ones out of reach of the Bank
@@ -196,14 +208,13 @@ public static partial class UloeSelfTest
                 if (speed0 < 0f) speed0 = ModKitUtil.Stat(p.Master, "Speed", 0f);
             }
             Send(bank.Master, UloeData.SurgeLink, "");
-            yield return Wait(0.4f);
-            Check("SURGE: every Photon bursts", bank.Novas == 1 && UloeServer.Bursts >= bursts + alive, (UloeServer.Bursts - bursts) + " bursts from " + alive + " Photons");
+            yield return Wait(0.1f);   // Proof_round1 (test only): the speed read early, while a Photon 3 tiles out is still on its way
             int homed = 0, quick = 0, homing = 0;
             foreach (UloePhotonBrain p in PhotonsOf(bank))
-            {
-                homed += p.Homecomings;
                 if (p.Homing) { homing++; if (speed0 > 0f && ModKitUtil.Stat(p.Master, "Speed", 0f) > speed0 * 1.5f) quick++; }
-            }
+            yield return Wait(0.3f);
+            Check("SURGE: every Photon bursts", bank.Novas == 1 && UloeServer.Bursts >= bursts + alive, (UloeServer.Bursts - bursts) + " bursts from " + alive + " Photons");
+            foreach (UloePhotonBrain p in PhotonsOf(bank)) homed += p.Homecomings;
             Check("... and each one that burst flies back to its Bank", homed - homes >= alive, (homed - homes) + " of " + alive + " Photons sent home");
             if (homing > 0)
                 Check("... at double speed", quick == homing, quick + " of " + homing + " homing Photons quicker than " + F(speed0));

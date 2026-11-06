@@ -1054,6 +1054,9 @@ public static partial class SpoolSelfTest
             SpoolUnitBrain seam = null;
             yield return Until(() => (seam = UnitsOf(loomB).Find(u => u.Def.Id == SpoolData.Seam)) != null, 3f);
             Check("Seam Allowance: a Seam beside the Loom", seam != null);
+#if SPOOL_SHOTS
+            if (seam != null) yield return SpoolShots.Close("seam", ModKitUtil.Pos(seam.Master), 2.5f);
+#endif
             if (seam != null)
             {
                 Kill(seam.Master);
