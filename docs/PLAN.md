@@ -331,6 +331,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
   layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
   PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
+- **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
+  fixable?"): 14 small fixes need no decision, three need his word (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from
+  code only; nothing changed or run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1375,6 +1378,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   parts, 0 exceptions; the fixed mode build stays in his Mods, the old one parked; `Run-SelfTests.ps1` doesn't restore the
   save, so it was copied back by hand (the README said otherwise).
   No kit change; pitfall #174. Next free: kit 1.15, pitfall #175.
+- **2026-11-06: pitfall fixes assessed** (thread "Find fixes suggested by the pitfalls"): every pitfall #1-#173 checked
+  against the six parts and `Shared` by three read-only sub-agents (two Haiku scans by number range, one Opus pass over
+  the batch §0 leads, the code review's 22 left items and the chart reviewer's notes), each hit read in place. Top items:
+  Spool's and Uloe's brains switch off on their first exception (#80), a missing stock elite's stand-in comes from the
+  campaign's own four (#146), a Wreck-given Pearl Oyster pays nothing that map. Not bugs: Uloe's `"Collide"` (the game's
+  beam param), the vessels' spawn-time `Updatecommand(..., true)`. Docs only.
 
 ### Decisions
 
