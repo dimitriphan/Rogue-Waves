@@ -106,6 +106,7 @@ public class RogueWavesModeMod : MonoBehaviour
         if (!Ready)
             return;
         try { RWMenu.Update(); } catch (Exception e) { RWLog.Once("menu", "main menu: " + e); }
+        try { RWPixels.Update(); } catch (Exception e) { RWLog.Once("pixels", "whole pixels: " + e); }
         try { RWCard.Update(); } catch (Exception e) { RWLog.Once("card", "campaign card: " + e); }
         try { RWLobby.Update(); } catch (Exception e) { RWLog.Once("lobby", "lobby: " + e); }
         try { RWTips.Update(); } catch (Exception e) { RWLog.Once("tips", "tips: " + e); }

@@ -1,5 +1,15 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-06): the menu buttons' wobble (compiled, not yet run in game)
+
+- Dimitri: "The button itself wobbles and jitters, including the base game buttons in the main menu." The game's layout puts
+  its button pictures on half pixels at UI scale 3, and the main menu's camera sways with the UI camera as its child
+  (pitfall #174). `RWPixels` (`26_Pixels.cs`, every machine, every scene with menus) moves each still picture by under half a
+  pixel onto whole screen pixels from the nearest thing that moves it; it leaves pictures the game slides or lays out, the
+  choice dialog's, and any someone keeps writing. A pass is spread at 64 pictures a frame, at most once a second, no garbage.
+- Self-test P1-P2 (`94_Pixels.cs`, in the flow on the main menu) reads the drawn frame over 144 frames with and without it.
+  PC checks: `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
+
 ## 0.1.0-dev, later (2026-11-06): round 4 and batch fixes (compiled, not yet run in game)
 
 - A friend's end title holds on every machine: `RWCard.HoldEnd` runs everywhere, and a friend's `ClientEnd` writes the last campaign title the sync brought (`IsEndTitle`) into the shown title, never the synced value (P1-4, pitfall #129; `13_Card.cs`).

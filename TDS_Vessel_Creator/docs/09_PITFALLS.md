@@ -638,3 +638,18 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      `Groups` before its assets arrive. So every Sprite-style thing already on the map has no body there. Load
      `General_Default` at boot and give a late joiner's things the body (`RWBody`, `RogueWavesMode/Code/10_Online.cs`).
      Read from the game's IL, not yet verified in game (`docs/reports/BUG_FIXES_2026-11-06.md` §2).
+174. **The game's own menu buttons wobble and jitter on the main menu and the boat** (2026-11-06) → at an odd
+     UI scale (3 on Dimitri's PC: a canvas unit is 3 screen pixels) the stock layout puts its button pictures on half
+     pixels: `Main/Buttons/Play/Image` is 48 units centred in a 75-unit tile, 13.5 units in; the 16-unit icons of
+     `Settings`, `More` and `Exit` are centred in 45-unit tiles, 14.5 in; `Hero/Image` sits at x -0.5. Every third column
+     and row of the screen then samples the point-filtered art exactly on the line between two art pixels. The scene's
+     `Ui` canvas is Screen Space - Camera on the camera `UI`, a child of `Main Camera`, and the active virtual camera
+     `Cameras/Main` carries Cinemachine noise (amplitude 0.1, frequency 0.3), so the canvas is placed a hair differently
+     every frame and those lines pick the left or the right art pixel by chance. The boat's `Maincamera/Ui` sways the
+     same way (two noise channels); a map's `Camera/Ui` has none and moves only with the player. The main menu's hover
+     only swaps a tile's sprite and tweens its colour (`Blu5_Buttonanim_Image`, `_Color`; no `_Size` in the scene), so
+     nothing moves on hover → put every still picture a whole number of screen pixels from the nearest thing that moves
+     it as a whole (`RWPixels`, `RogueWavesMode/Code/26_Pixels.cs`); a half pixel must always round the same way, or the
+     camera's last digits move it a pixel. The layout and the cameras are the game's own, so a game without mods should
+     show it too (read, not measured). Read from the game's `level1`-`level3` (UnityPy, read-only); the fix is
+     compiled, its PC check is P1-P2 of the mode's self-test (`docs/reports/BUTTON_WOBBLE_2026-11-06.md`).
