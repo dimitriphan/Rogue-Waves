@@ -118,7 +118,7 @@ what the host sends (§6), so all see the same board.
    out for a player only when its note is above 0, so in an even crew nothing does.
 3. **How many failures.** Half the crew, `n / 2`; an odd crew takes one more failure on every other odd-sized board
    the host gives (map and Voyage boards counted together, so a crew whose size changes between maps still alternates),
-   so a failure is as common as an accolade (Dimitri's rule; a Continue restarts the count, a shift of one board at most). Two players: one each.
+   so a failure is as common as an accolade (Dimitri's rule; each Continue restarts the count, which can tip the balance by one board). Two players: one each.
    Three: one failure, then two, in turn. Four: two.
 4. **Who takes them.** Each player's lean is their best failure note minus their best accolade note. The players who
    lean furthest to a failure take the failure side; ties go to the smaller `RWPlayer.Key` (the GUID the pack keeps

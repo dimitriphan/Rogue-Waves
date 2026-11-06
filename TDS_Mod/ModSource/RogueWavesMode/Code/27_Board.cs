@@ -103,7 +103,7 @@ public static class RWBoard
 
     // The parity for a board of n: an odd board takes the next of a count kept over the boards given (map and Voyage),
     // so odd boards alternate even when the crew's size changes between maps. Not saved: a Continue starts it again,
-    // which shifts the balance by one board at most.
+    // which can tip the balance by one board each time.
     static int oddBoards;
     static int Parity(int n) { return n % 2 == 1 ? oddBoards++ : 0; }
 
