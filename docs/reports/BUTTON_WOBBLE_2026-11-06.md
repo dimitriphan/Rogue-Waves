@@ -4,6 +4,9 @@ Dimitri: "The buttons in game still stutter, but mainly in the main menu", then 
 including the base game buttons in the main menu." Base `262f2c6`; the fix is `RWPixels` in the mode
 (`ModSource/RogueWavesMode/Code/26_Pixels.cs`), pitfall #174. No kit code change.
 
+> Note (the same day, the review's follow-up PR): §3's last-but-one bullet and §4's P2 setup line came after the PC round;
+> they are compiled here, not run on the PC. The round (§5) ran `2a3d907`, without them.
+
 ## 1. In short
 
 - **It is the game's own layout, seen through a swaying camera.** At UI scale 3 (his PC: one canvas unit is 3 screen
@@ -46,6 +49,13 @@ All read-only from his game folder (`D:\Steam\steamapps\common\TDS\TDS\DATA`), w
   `ScrollRect` or under `Bla_Ui_Confirmation` (RWDialog places the dialog), and a picture whose position someone else wrote
   over ours twice in a row. A position someone writes becomes its new start; flipped parents move the right way; rotated
   ones are skipped.
+- Added after the review: the children of a `Blu4_List_Stacker`'s `Ref` are left alone (the game's stacker writes them in
+  its `Update` and is no `LayoutGroup`; read once per picture, when its seat is made). A picture inside a button whose
+  `Blu4_Button_Animator` grows it on hover or click (`Blu5_Buttonanim_Size`, a `DOScale` to `Tosize` and back to exactly 1)
+  is skipped only while the button is hovered or its scale isn't 1, so it is placed at rest and never moved while grown.
+  The main menu's buttons have neither: its one stacker places the patch banners (`Ui/Main/Update/Patchbanners`); a map has
+  five (`Ui/Main/Char/Upgradelist`, `Ui/Main/Selection/Buildlist` and its `Barcontainer`, the Win and Lose titles), the
+  boat none (UnityPy count of `level1`-`level3`).
 - The Rogue Waves tile's crest was already on whole pixels (`RWAssets.Crisp`, pitfall #156); this reaches the game's own.
 
 ## 4. Checks
@@ -59,7 +69,9 @@ Self-test P1-P2 (`94_Pixels.cs`), in the mode's flow on the main menu once its m
 - **P1** Play's, Hero's, Settings', More's and Exit's pictures and the crest stand on whole screen pixels.
 - **P2** over 144 drawn frames, no picture's square changes (a channel moving more than 48), then the same with
   `RWPixels.Restore()` putting the game's places back, then on again. The `INFO FINDING P2` line says whether the game's own
-  places flicker.
+  places flicker. Since the follow-up, a still reading passes only if the same reading saw the flicker at the game's places;
+  otherwise it is a `SETUP` line when those places are on half pixels, and an `INFO` line ("nothing to compare") when they
+  are whole already, as at an even UI scale. A flicker with the fix fails whatever the control saw.
 
 ## 5. PC round `Wobble_round1`
 
