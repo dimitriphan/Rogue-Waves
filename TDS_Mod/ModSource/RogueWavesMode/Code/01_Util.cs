@@ -220,7 +220,7 @@ public static class RWKeys
 {
     public const string Seed = "RW_Campaign_Seed", Route = "RW_Campaign_Route", Retries = "RW_Campaign_Retries",
         Replay = "RW_Campaign_Replay", Playing = "RW_Campaign_Playing", Choice = "RW_Campaign_Choice", Staged = "RW_Campaign_Staging",
-        Lobby = "RW_Campaign_Lobby",
+        Lobby = "RW_Campaign_Lobby", Stops = "RW_Campaign_Stops", After = "RW_Campaign_After",
         StockWorld = "RW_Stock_World", StockGameplan = "RW_Stock_Gameplan",
         Guid = "RW_Player_Guid", Device = "RW_Player_Device";
     public static readonly string[] Old = { "Campaign_Seed", "Campaign_Route", "Stock_World", "Stock_Gameplan", "Player_Guid", "Player_Device" };

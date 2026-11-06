@@ -113,7 +113,7 @@ public static partial class RWTest
         }
         RectTransform main = d.List.transform.parent as RectTransform;
         Rect stage = main != null ? RWDialog.OnScreen(main) : new Rect();
-        bool centred = Mathf.Abs(all.center.x - Screen.width * 0.5f) <= 2f;
+        bool centred = Mathf.Abs(all.center.x - Screen.width * RWDialog.Shift) <= 2f;   // beside the chart view, at its Shift
         bool stock = main != null && Mathf.Abs(stage.xMin) <= 2f && Mathf.Abs(stage.xMax - Screen.width) <= 2f;
         Check(what + ": every card and word on the screen on whole pixels, the cards in its middle", cards.Count > 0 && off.Count == 0 && centred && stock,
             Screen.width + "x" + Screen.height + ", " + cards.Count + " cards at " + Rc(all) + ", title " + title + ", last line " + line + ", Main " + Rc(stage) + (off.Count > 0 ? "; off: " + string.Join("; ", off.ToArray()) : ""));
@@ -394,10 +394,21 @@ public static partial class RWTest
         List<string> mapCards = CardNames();
         Check("Vote: every map of the first row is offered", mapCards.Count == RWCampaign.Open().Count && RWVote.State == "Map", "cards " + string.Join(",", mapCards.ToArray()) + ", open " + Names(RWCampaign.Open()));
         if (mapCards.Count == 0) yield break;
-        ClickCard(mapCards[0]);
+        // CV2 and CV4 (docs/mode/CHART_NAVIGATION.md §8): the chart view stands beside the cards, the same choices lit and
+        // lettered in the dialog's order, and its island answers the dialog as the card would.
+        List<string> lettered = new List<string>();
+        for (int i = 0; i < mapCards.Count; i++) lettered.Add("ABC".Substring(Mathf.Min(i, 2), 1) + mapCards[i]);
+        Check("CV2 the chart view lights and letters the vote's choices in the dialog's order", RWChartView.Shown == "Vote" && RWChartView.Letters == string.Join(",", lettered.ToArray()) && RWChartView.LitTiles == mapCards.Count,
+            "view '" + RWChartView.Shown + "', letters " + RWChartView.Letters + ", lit " + RWChartView.LitTiles + ", " + RWChartView.Tiles + " islands, " + RWChartView.Lanes + " lanes");
+        int island;
+        if (!int.TryParse(mapCards[0], out island) || !RWChartView.Click(island)) { Setup("CV4 a lit island votes", "no view or island for " + mapCards[0]); ClickCard(mapCards[0]); }
         Macro_Main oldBoat = boat;
         yield return Until(() => RWCampaign.Choice >= 0, 10f);
         Check("Vote: the winner is the boat's next stop", RWCampaign.Choice.ToString() == mapCards[0], "choice " + RWCampaign.Choice + ", " + RWVote.LastVote);
+        Check("CV4 the island's click reached the host as the card's would", RWVote.Votes.ContainsKey(me) && RWVote.Votes[me] == mapCards[0], "votes " + (RWVote.Votes.ContainsKey(me) ? RWVote.Votes[me] : "none") + ", " + RWVote.LastVote);
+        yield return Until(() => !RWChartView.Up, 5f);
+        yield return null;   // Destroy lands at the frame's end
+        Check("CV5 the chart view closes with the vote and leaves no canvas behind", !RWChartView.Up && GameObject.Find("RW_ChartView") == null, "view '" + RWChartView.Shown + "'");
         yield return Until(() => Macro_Main.Instance != null && Macro_Main.Instance != oldBoat && Macro_Main.Instance.Ready, 150f);
         boat = Macro_Main.Instance;
         Check("staging: the party is back on the boat, no retry spent", boat != null && RWCampaign.Retries == 3 && !RWCampaign.Staging && RWCampaign.Route.Count == 0, "retries " + RWCampaign.Retries + ", route " + Digits(RWCampaign.Route));

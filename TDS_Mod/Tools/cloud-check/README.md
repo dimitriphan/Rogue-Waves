@@ -56,9 +56,10 @@ cd ../Assets/ArgoMod/Editor && ../../../Tools/cloud-check/lite/run_preview.sh . 
 - `stubs/ThirdParty.cs` (Netcode, TMP, UniTask stand-ins) is hand-written: add a member when real code needs it
   (`ClientRpcParams.Send.TargetClientIds` and `NetworkManager.ServerClientId`, 2026-10-14), then rerun
   `build_stubs.sh <TDS_Vessel_Creator>`.
-- Play builds (`MODKIT_PLAY`, kit `ModKitPlay.cs` and a vessel's `98_Play.cs`) use `UnityEngine.InputSystem`, which
-  the stubs don't carry: they report CS0234 here (7 errors for Yossele, 2026-10-27) and compile only on the PC. Release
-  and self-test builds don't include that code.
+- Play builds (`MODKIT_PLAY`, kit `ModKitPlay.cs` and a vessel's `98_Play.cs`) use more of `UnityEngine.InputSystem`
+  than the stubs carry (since 2026-11-06 only `Keyboard.current[Key]`, `Mouse.current` and their button and position
+  controls, for the mode's chart view): they may report CS0234 or CS1061 here (7 errors for Yossele, 2026-10-27) and
+  compile only on the PC. Release and self-test builds don't include that code.
 - The mode's two-player test build (`ROGUEWAVESMODE_TWOPC`, `93_TwoPlayers.cs`) drives Netcode's transport and the game's
   chat box, which the stubs don't carry: it reports errors here and compiles only on the PC. The mode's
   release, `ROGUEWAVESMODE_SELFTEST` and `ROGUEWAVESMODE_GAPS` builds compile at 0 errors (the TMPro and layout

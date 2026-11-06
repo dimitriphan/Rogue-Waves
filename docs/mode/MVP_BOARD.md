@@ -22,6 +22,7 @@ icons and no game pictures; Inter stands in for the game's font, as in the chart
   already says it all.
 - It holds the flow for `~12 s~` or until every player presses Continue, whichever is first; it never waits on a
   player who doesn't answer (the vote's rule, `20_Vote.cs` header).
+- A Cove has no map, so no board; a Wreck is a map like any other and gets one (`CHART_NAVIGATION.md` §4).
 - A lost map shows no board: it replays from the last save, and what it earned goes with it (`14_Run.cs` header), so
   its numbers would vanish anyway. The Voyage board counts the retries used instead.
 
@@ -124,12 +125,12 @@ fit at 1080p is for the PC.
 
 | Piece | Where | Compiles here | Needs the PC |
 | --- | --- | --- | --- |
-| Snapshot `Activeplayerdata` per player at a map's start and win; board the difference | new `26_Board.cs`, called from `14_Run.cs` checkpoints | yes | whether `Activeplayer` passes through 0 on the boat |
+| Snapshot `Activeplayerdata` per player at a map's start and win; board the difference | new `27_Board.cs`, called from `14_Run.cs` checkpoints | yes | whether `Activeplayer` passes through 0 on the boat |
 | Tallies: `Sent` per map, unanswered votes, drops | `14_Run.cs` `RWPlayer`, `20_Vote.cs`, `09_Rejoin.cs` | yes | no |
 | Leaks: a foe reaching the core, charged to its last hitter | a hook where the core takes damage (kit `15` §16 `Lasthit`; engine point to read) | yes | yes, and which foes count |
 | `Deaths`: which of a player's things it counts | read `Game_Entity.cs:389-395` on the decompile | no | a look at the numbers after a round |
-| Hand-out (§4) on the host; each player's result as a short code on a `None` command `RW_Board` on their vessel (titles as two letters, four figures), like `RW_Run` | `26_Board.cs` | yes | no |
-| The board on every machine, from the codes and a local text table; the key in breaks | `26_Board.cs`, the dialog look in `94_DialogLook.cs` | yes | the look, and four cards at 1080p |
+| Hand-out (§4) on the host; each player's result as a short code on a `None` command `RW_Board` on their vessel (titles as two letters, four figures), like `RW_Run` | `27_Board.cs` | yes | no |
+| The board on every machine, from the codes and a local text table; the key in breaks | `27_Board.cs`, the dialog look in `94_DialogLook.cs` | yes | the look, and four cards at 1080p |
 | Voyage totals saved for Continue at the same checkpoints as the run (`RW_Board_` keys) | `14_Run.cs` save | yes | Continue keeps them |
 | Self-tests: hand-out ties, Spotless, two- and four-player boards, a rejoiner's row | `99_SelfTest.cs`, `93_TwoPlayers.cs` | yes | a two-player round |
 

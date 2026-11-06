@@ -12,6 +12,14 @@ public static class RWChart
     public const int Calm = 0, RisingWater = 1, QuickeningCurrent = 2, NestingGround = 3;
     public static readonly string[] WeatherNames = { "Calm", "Rising Water", "Quickening Current", "Nesting Ground" };
 
+    // Rest and treasure stops (docs/mode/CHART_NAVIGATION.md §4, Dimitri's pick 2026-11-06): a Cove plays no map, a Wreck
+    // plays its map one row harder and pays a Trinket. Both are calm. Drawn from a second stream after the chart is built,
+    // so a seed's maps, links and weather stay as they were (a stop drops its weather).
+    public const int NoStop = 0, Cove = 1, Wreck = 2;
+    public const uint StopsSalt = 0x5EA57095u;
+    public static readonly int[] CoveRows = { 4, 9 };                       // the row before each Breaker
+    public static readonly int[,] WreckRows = { { 2, 2 }, { 6, 3 } };       // first row and span: rows 2-3, then 6-8
+
     public class Plan
     {
         public string Name, Map;
@@ -27,12 +35,14 @@ public static class RWChart
         public bool Breaker;
         public string Plan = "", Map = "";
         public int Label, Weather;
+        public int Stop;                     // NoStop, Cove or Wreck
         public string Name { get { return Row == 0 ? "RW_Harbour" : "RW_Node_" + Row + "_" + Col; } }
     }
 
     public class Chart
     {
         public uint Seed;
+        public bool Stops;                   // drawn with its Coves and Wrecks (a campaign started after 2026-11-06)
         public System.Collections.Generic.List<System.Collections.Generic.List<Node>> Rows = new System.Collections.Generic.List<System.Collections.Generic.List<Node>>();
         public Node At(int row, int col) { return row >= 0 && row < Rows.Count && col >= 0 && col < Rows[row].Count ? Rows[row][col] : null; }
         public Node Find(string name)
@@ -99,7 +109,9 @@ public static class RWChart
     }
 
     // pool: the base Gameplans a vote may offer, sorted by name (ordinal), as the script's POOL.
-    public static Chart Generate(uint seed, System.Collections.Generic.List<Plan> pool)
+    public static Chart Generate(uint seed, System.Collections.Generic.List<Plan> pool) { return Generate(seed, pool, false); }
+
+    public static Chart Generate(uint seed, System.Collections.Generic.List<Plan> pool, bool stops)
     {
         Rng rng = new Rng(seed);
         Chart chart = new Chart();
@@ -161,7 +173,46 @@ public static class RWChart
                     if (!Native(w, n.Map)) { n.Weather = w; break; }
                 }
             }
+        if (stops)
+            PlaceStops(chart);
         return chart;
+    }
+
+    // The second stream (concept-tools/sea_chart.py stops()): a Cove's column in row 4, then in row 9; a Wreck's row and
+    // column in the first stretch's middle, then in the second's.
+    static void PlaceStops(Chart chart)
+    {
+        chart.Stops = true;
+        Rng rng = new Rng(chart.Seed ^ StopsSalt);
+        foreach (int r in CoveRows)
+        {
+            Node n = chart.Rows[r][rng.Below(chart.Rows[r].Count)];
+            n.Stop = Cove;
+            n.Weather = Calm;
+        }
+        for (int k = 0; k < WreckRows.GetLength(0); k++)
+        {
+            int r = WreckRows[k, 0] + rng.Below(WreckRows[k, 1]);
+            Node n = chart.Rows[r][rng.Below(chart.Rows[r].Count)];
+            n.Stop = Wreck;
+            n.Weather = Calm;
+        }
+    }
+
+    // Every node reachable from n (n included), for the chart view's lit and faded islands.
+    public static System.Collections.Generic.List<Node> Ahead(Chart chart, Node n)
+    {
+        System.Collections.Generic.List<Node> seen = new System.Collections.Generic.List<Node>();
+        if (n == null)
+            return seen;
+        seen.Add(n);
+        for (int i = 0; i < seen.Count; i++)
+            foreach (int k in seen[i].Links)
+            {
+                Node to = chart.At(seen[i].Row + 1, k);
+                if (to != null && !seen.Contains(to)) seen.Add(to);
+            }
+        return seen;
     }
 
     // The lines concept-tools/sea_chart.py --check prints, for a diff of a PC log against the script.
@@ -170,14 +221,14 @@ public static class RWChart
         System.Collections.Generic.List<string> lines = new System.Collections.Generic.List<string>();
         string widths = "";
         foreach (System.Collections.Generic.List<Node> r in chart.Rows) widths += (widths == "" ? "" : ",") + r.Count;
-        lines.Add("CHART seed " + chart.Seed + " widths " + widths);
+        lines.Add("CHART seed " + chart.Seed + (chart.Stops ? "S" : "") + " widths " + widths);
         foreach (System.Collections.Generic.List<Node> r in chart.Rows)
             foreach (Node n in r)
             {
                 string links = "";
                 foreach (int k in n.Links) links += (links == "" ? "" : ",") + k;
                 lines.Add("CHART " + n.Name + " " + (int)System.Math.Round(n.X * 10) + "," + (int)System.Math.Round(n.Z * 10) + " " + (n.Plan == "" ? "-" : n.Plan)
-                    + " " + (n.Breaker ? "B" : "-") + " w" + n.Weather + " -> " + (links == "" ? "-" : links));
+                    + " " + (n.Breaker ? "B" : "-") + " w" + n.Weather + (n.Stop == Cove ? " cove" : n.Stop == Wreck ? " wreck" : "") + " -> " + (links == "" ? "-" : links));
             }
         return lines;
     }

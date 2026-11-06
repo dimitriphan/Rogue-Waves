@@ -44,9 +44,10 @@ public static class RWCard
             return null;
         uint seed;
         List<int> route;
-        if (!RWWorld.Parse(world, out seed, out route, out retries))
+        bool stops;
+        if (!RWWorld.Parse(world, out seed, out route, out retries, out stops))
             return null;
-        RWChart.Chart chart = RWWorld.Chart(seed);
+        RWChart.Chart chart = RWWorld.Chart(seed, stops);
         if (route.Count == 0 && plan == RWMode.Twin(RWWorld.StagingPlan(chart)))
         {
             staging = true;
@@ -58,6 +59,13 @@ public static class RWCard
         return node;
     }
 
+    static bool Rows()
+    {
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        RWChart.Chart chart = info != null ? RWWorld.ChartOf(info.World.Value.ToString()) : null;
+        return chart != null && chart.Stops;
+    }
+
     // R4 P1-4: the chart row of the map this machine plays, -1 outside one (the self-test's title for a won map).
     public static int Row()
     {
@@ -67,9 +75,10 @@ public static class RWCard
         return node != null ? node.Row : -1;
     }
 
+    // A chart with stops counts rows, not maps: a party that rests at a Cove plays fewer maps (CHART_NAVIGATION.md §4.1).
     public static string Line(int row, int weather, int retries)
     {
-        string line = "Map " + row + " of " + RWChart.Rows + Separator + "Stretch " + StretchOf(row);
+        string line = (Rows() ? "Row " : "Map ") + row + " of " + RWChart.Rows + Separator + "Stretch " + StretchOf(row);
         if (weather != RWChart.Calm) line += Separator + RWWeather.Display(weather);
         if (retries >= 0) line += Separator + Retries(retries);
         return line;

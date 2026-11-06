@@ -31,21 +31,11 @@ SEED = 20261009
 ROUTE = [0, 0, 0, 0]       # harbour, then rows 1-3 col 0 (row 2 was a Wreck): the party picks row 4, a Cove or a map
 HOVER = 0                  # the choice under the pointer (or the card with pad focus): the Cove
 RETRIES = 2                # one spent, so the Cove's retry matters
-STOPS_SALT = 0x5EA57095
 
 
 def stops(rows, seed):
-    """Marks one Cove in each stretch's row before its Breaker (rows 4 and 9) and one Wreck in each stretch's middle
-    (rows 2-3 and 6-8), from a second stream. A Cove plays no map; a Wreck keeps its map; both are calm."""
-    rng = sc.Rng(seed ^ STOPS_SALT)
-    for r in (4, 9):
-        n = rows[r][rng.below(len(rows[r]))]
-        n["stop"], n["weather"] = "cove", sc.CALM
-    for lo, span in ((2, 2), (6, 3)):
-        r = lo + rng.below(span)
-        n = rows[r][rng.below(len(rows[r]))]
-        n["stop"], n["weather"] = "wreck", sc.CALM
-    return rows
+    """The Coves and Wrecks, from sea_chart.py's second stream (the mod's port is RWChart.PlaceStops)."""
+    return sc.stops(rows, seed)
 
 
 def chest(d, x, y, s=1.0, a=1.0):

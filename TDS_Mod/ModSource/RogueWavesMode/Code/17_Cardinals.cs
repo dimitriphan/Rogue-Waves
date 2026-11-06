@@ -539,12 +539,17 @@ public static class RWCardinals
 
     // ---------------------------------------------------------------- bought (host)
 
-    public static string Buy(RWPlayer p, string id)
+    public static string Buy(RWPlayer p, string id) { return Buy(p, id, false); }
+
+    // A Wreck's pay (RWVote): the same as bought, for nothing.
+    public static string Give(RWPlayer p, string id) { return Buy(p, id, true); }
+
+    static string Buy(RWPlayer p, string id, bool free)
     {
         string clash = ClashFor(p, id);
         if (clash != "")
             return "Clashes with " + clash;
-        int cost = PriceFor(p, id);
+        int cost = free ? 0 : PriceFor(p, id);
         if (p.Pure < cost)
             return "Not enough Pure Aura";
         RWCardinalDef d;
@@ -563,9 +568,10 @@ public static class RWCardinals
             if (Game_Entity.Instance != null) GrantCardinal(id, held + 1);
         }
         p.Pure -= cost;
-        RWLog.Info(p.Name + " bought " + id + " for " + cost + " Pure Aura, " + p.Pure + " left");
+        RWLog.Info(p.Name + (free ? " was given " + id : " bought " + id + " for " + cost + " Pure Aura, " + p.Pure + " left"));
         Warn(Display(id).ToUpperInvariant(), mine ? "RogueWaves_Crest" : id);
-        RWTrinkets.OnBuy(p, id);
+        if (!free) RWTrinkets.OnBuy(p, id);                 // a gift is no buy at VENDCINT (Pearl Oyster keeps paying)
+        else RWTrinkets.OnGain(p, id);
         RWDirections.Sweep(p);
         return "";
     }
