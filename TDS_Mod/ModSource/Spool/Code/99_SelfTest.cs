@@ -1268,6 +1268,11 @@ public static partial class SpoolSelfTest
         }
         // 10c. Spool's five Directions from scope 11 (98_Directions.cs).
         yield return Directions(hero, owner, player, tinA, tinB);
+        // 10d-10f. The upgrades of 2026-11-06: the Yarn Stash's seven (98_UpStash.cs); the Cookie Tin's three, UNTHREAD, the
+        // Thread Head's five and the Pin Cushion's two (98_UpTinHead.cs); the Loom's five (98_UpLoom.cs).
+        yield return UpStash(hero, owner, player);
+        yield return UpTinHead(hero, owner, player);
+        yield return UpLoom(hero, owner, player);
         // 11. The journal: Spool's pages, and every vessel page with exactly one tab per vessel (Smacky included).
         {
             Logobject page = SpoolContent.Entry.Log;

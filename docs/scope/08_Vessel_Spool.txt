@@ -14,7 +14,7 @@
 			- Accent colour: sage green /~ 93CCA1 and 60A871, docs/STYLE.md; purple read too close to the foes' magenta \
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \
 			- Lore: / Lore comes once the vessel is finalized \
-			- Status: Built as 0.1.0-dev from this sheet with temporary art; passes its PC self-test, 135 of 135 in the latest round. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are not built yet. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md \
+			- Status: Built as 0.1.0-dev from this sheet with temporary art; passes its PC self-test, 135 of 135 in the latest round. The upgrades that fill the Yarn Stash, the Thread Head and the Loom, the {Repurposed Cookie Tin}'s {Tacking Stitch}, {Cross Stitch} and {Patchwork Army}, the {Pin Cushion}'s {Iron Thimble} and {Voodoo Doll} and the UNTHREAD button are built too, compiled, not yet run on your PC. /~ Why each was added and what the simulator says: docs/reports/UPGRADE_GAPS_2026-11-04.md; how each is built and the readings Claude picked where the sheet is silent: TDS_Mod/ModSource/Spool/DESIGN.md "Upgrade trees" and "Defaults picked here" \
 
 		[Vessel Stats]
 			- Attack: melee.
@@ -263,7 +263,7 @@
 				- Thread spun: 1 {Thread} for every 25 damage taken, dropped beside it for pickup
 				- Limit: none
 				- Cost: Blue 20
-			[Upgrades] /~ Your two ideas plus the {Mangled} paths, laid into levels. Every name with ~ is a placeholder for yours \
+			[Upgrades] /~ Your two ideas plus the {Mangled} paths, laid into levels \
 				% 1:{Sharper Pins} Reflects more damage using pins
 					- In-game line: Pricks melee attackers harder
 					- Numbers: 40% of melee damage reflected

@@ -3,11 +3,16 @@
 // reach, fights foes within its leash, and RETURN sends it to the Yarn Stash to hand over what it carries and come back.
 // Threaded Delivery does that on its own when it is full; Patchwork Job adds MEND. Killed, it drops what it carried and
 // comes back at the Stash with its upgrades.
+//   Big Bobbin          Carry and Collect are its own stats, so the upgrade's modifiers reach Cap and Reach.
+//   Needle Point, Stitch in Time, High Thread Count and Head of the Class's buffs stay in its params, read by the
+//                       Crafted (SpoolServer.HeadBuffs) and by a falling foe (SpoolServer.CountBonus).
+//   Head of the Class   what it picks up goes straight to the Yarn Stash (what doesn't fit stays carried), except while
+//                       MEND is on: then it keeps its Thread to mend with.
 public class SpoolHeadBrain : SpoolBuilding
 {
     public SpoolServer.Comeback Back;
     public Vector3 Spot;
-    public int Carried, Collected, Deliveries, Spots, Mends;
+    public int Carried, Collected, Deliveries, Spots, Mends, SentHome;
     public float Mended;
     public bool Mending, Returning;
     public Entity_Master Target;
@@ -49,13 +54,6 @@ public class SpoolHeadBrain : SpoolBuilding
         MoveHidden = true;
     }
 
-    Link_Command Button(string command, string link)
-    {
-        Link_Command c = Helper_Entitytools.Createcommand(Master, command, link, false, true);
-        Helper_Entitytools.Updatecommand(Master, link, "", false, false);
-        return c;
-    }
-
     protected override void Upgraded(SpoolData.Upg def)
     {
         if (def.Key == "Patchwork")
@@ -67,8 +65,7 @@ public class SpoolHeadBrain : SpoolBuilding
     {
         if (mendCommand != null || SpoolContent.Mend == null)
             return;
-        mendCommand = Helper_Entitytools.Createcommand(Master, SpoolData.MendCommand, SpoolData.MendLink, false, true);
-        SetMend(Mending);
+        mendCommand = Button(SpoolData.MendCommand, SpoolData.MendLink, Mending ? "On" : "");
     }
 
     void SetMend(bool on)
@@ -135,9 +132,21 @@ public class SpoolHeadBrain : SpoolBuilding
     void StartReturn()
     {
         Returning = true;
+        Entity_Master to = DropPoint();
+        if (to != null)
+            Walk(to, Vector3.zero, 1f);
+    }
+
+    // Where RETURN and Threaded Delivery walk: the Yarn Stash, or a Golden Thread Loom of its owner's that is nearer (a
+    // drop-off point too). Null with no Stash standing.
+    Entity_Master DropPoint()
+    {
         SpoolStashBrain home = Player.Home;
-        if (home != null && home.Master != null)
-            Walk(home.Master, Vector3.zero, 1f);
+        if (home == null || home.Master == null)
+            return null;
+        float far = ModKitUtil.Flat(Pos, home.Pos);
+        SpoolLoomBrain loom = SpoolServer.GoldenNear(Owner, Pos, far);
+        return loom != null && ModKitUtil.Flat(loom.Pos, Pos) < far ? loom.Master : home.Master;
     }
 
     void Walk(Entity_Master target, Vector3 position, float stop) { ModKitUtil.MoveTo(Master, target, position, stop); }
@@ -166,7 +175,10 @@ public class SpoolHeadBrain : SpoolBuilding
                 Show();
             }
         }
-        // At the Stash it drops off what it carries and turns round, even with nothing on it (RETURN pressed empty, SPL-2).
+        if (Has("Class") && Param("Classhome_Base", 1f) > 0f && !Mending && Carried > 0)
+            SendHome();
+        // At the Stash (or a Golden Thread Loom) it drops off what it carries and turns round, even with nothing on it
+        // (RETURN pressed empty, SPL-2).
         if (SpoolServer.AtStash(Owner, pos, SpoolData.DropOff))
         {
             int put = Carried > 0 ? SpoolServer.Deliver(Owner, Master, Carried) : 0;
@@ -188,17 +200,28 @@ public class SpoolHeadBrain : SpoolBuilding
             StartReturn();
         if (Returning)
         {
-            SpoolStashBrain home = Player.Home;
-            if (home == null || home.Master == null)
+            Entity_Master to = DropPoint();
+            if (to == null)
             {
                 Returning = false;
                 Walk(null, Spot, 0f);
             }
             else if (ModKitUtil.State(Master) != "Move")
-                Walk(home.Master, Vector3.zero, 1f);
+                Walk(to, Vector3.zero, 1f);
             return;
         }
         Guard(pos);
+    }
+
+    // Head of the Class: its Thread flies straight into the Yarn Stash (Deliver's look, from the Head to the Stash).
+    void SendHome()
+    {
+        int put = SpoolServer.Deliver(Owner, Master, Carried, true);
+        if (put <= 0)
+            return;
+        Carried -= put;
+        SentHome += put;
+        Show();
     }
 
     // Fights what comes within its leash of its spot, else walks back to it.
