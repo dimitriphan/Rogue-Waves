@@ -922,10 +922,16 @@ public static partial class RWTest
                 yield return new WaitForSeconds(0.3f);
                 ClearFoes();
                 float m0 = Hp(wounded), mMax = HpMax(wounded), mended0 = RWDirections.Mended;
+                int mends0 = RWDirections.Mends;
                 yield return ToBreakAfter(1);
                 yield return new WaitForSeconds(0.6f);
                 // Spring Tide, held too, raises max health with the share kept, so the mend is read from its own count as well (B7).
                 Check("Tidal Mend: towers mend what stands around them at the next Tide", Hp(wounded) > m0 && RWDirections.Mended > mended0, m0 + " -> " + Hp(wounded) + " of " + mMax + ", mended " + (RWDirections.Mended - mended0) + ", " + RWUtil.F(ModKitUtil.Flat(wounded.Entityposition.Value, tower.Entityposition.Value)) + " tiles from another; " + menders);
+                // Each heal is the rank's flat number (scope 11; Dimitri 2026-11-06): the levels say whether a factor would have shown.
+                int mendsGiven = RWDirections.Mends - mends0, mendTop = Mathf.Clamp(RWDirections.Top(player, "Any", "Mend"), 0, 3);
+                float mendEach = mendsGiven > 0 ? (RWDirections.Mended - mended0) / mendsGiven : 0f;
+                Check("Tidal Mend: each mend is the rank's flat number, whatever the tower's level", mendsGiven > 0 && Mathf.Abs(mendEach - RWDirections.MendHeal[mendTop]) < 0.01f,
+                    mendsGiven + " mends of " + RWUtil.F(mendEach) + ", rank " + mendTop + " mends " + RWUtil.F(RWDirections.MendHeal[mendTop]) + "; tower level " + tower.Entitydata.Value.Level + ", wounded level " + wounded.Entitydata.Value.Level);
             }
 
             // Made of Tougher Stuff at rank III: a big hit takes at most a quarter of a minion's health.
@@ -1019,7 +1025,7 @@ public static partial class RWTest
             player.Pure = 0;
             Check("Trinkets: refused with too little Pure Aura", RWCardinals.Buy(player, "Cardinal_Dentures") == "Not enough Pure Aura", "");
             player.Pure = 200;
-            string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s));
+            string stockCard = RWCardinals.Sold.Find(s => !RWCardinals.IsMine(s) && !RWCardinals.IsTrinket(s));
             int stockPrice = RWCardinals.PriceFor(player, stockCard);
             string first = RWCardinals.Buy(player, stockCard), second = RWCardinals.Buy(player, stockCard);
             Check("Cardinals: a stock one can be held only once, and the refusal takes nothing", first == "" && second == "Already held" && player.Pure == 200 - stockPrice, stockCard + ": '" + first + "', '" + second + "', price " + stockPrice + ", Pure " + player.Pure);

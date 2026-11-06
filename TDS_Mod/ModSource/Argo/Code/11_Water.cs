@@ -167,7 +167,7 @@ public static class ArgoWater
                     net.Foes.Add(e);
         }
         ArgoTowerBrain lead = net.Lead;
-        float slow = lead != null ? Mathf.Min(ArgoData.SlowCap, ModKitUtil.Stat(lead.Master, "Slow", ArgoData.WaterSlow)) : ArgoData.WaterSlow;
+        float slow = lead != null ? Mathf.Min(ArgoData.WaterSlowCap, ModKitUtil.Stat(lead.Master, "Slow", ArgoData.WaterSlow)) : ArgoData.WaterSlow;
         float brine = lead != null ? lead.Param("Brine_Damage", 0f) : 0f;
         float salt = lead != null && lead.Has("Salt") ? lead.Param("Brinepinned_Multi", 1f) : 0f;
         float catchFor = lead != null ? lead.Param("Catch_Duration", 0f) : 0f;

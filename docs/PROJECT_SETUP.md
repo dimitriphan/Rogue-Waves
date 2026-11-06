@@ -77,3 +77,63 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
 of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
 outcome and the constraints; the Part D templates stay as written for Opus threads.
+
+## API credit
+
+(Checked 2026-11-05 against the Claude Code docs and the Claude help centre; sources at the end.) The Max plan
+includes $100 of API credit a month for the Claude Platform. It sits in the Claude Console organization linked to the
+plan, shows on the Console's Billing page (`platform.claude.com/settings/billing`) with its expiry, does not roll
+over, and is spent before any credit you buy. When it runs out, API requests stop until next month's credit, unless
+you buy credit or turn on auto-reload.
+
+**What it can pay for.** API calls made with a key from that organization: the batch checks
+(`TDS_Mod/Tools/batch/README.md`), and `claude -p` or Agent SDK scripts you run yourself with that key.
+
+**What it can't.** Interactive Claude Code (terminal, IDE, desktop, web), this project's threads, and the plan's
+usage credits. So the credit cannot be an overflow for the plan. There is also no automatic overflow from the plan
+to a key: with `ANTHROPIC_API_KEY` set, Claude Code in a terminal asks once whether to use it, and if you say yes it
+bills every session to the key from the first message, instead of the plan, not after the limit. Cloud sessions,
+these threads included, always use the plan and ignore the key.
+
+### When the plan's limit is hit
+
+1. **Usage credits** (the real overflow, paid separately at API prices). At `claude.ai/settings/usage`, section
+   "Usage credits": **Enable**, **Adjust limit** (a monthly cap, or unlimited), **Add funds**, **Purchase**. Auto-reload
+   and usage alerts are on the same page. They cover Claude chats and Claude Code in the terminal; the help article
+   does not say whether they cover cloud sessions. The $100 API credit can't pay for them.
+2. **Continue on API credit.** At the limit, Claude Code can offer to carry on through Console API credit at API
+   prices; saying no keeps you on the plan. Only bought credit pays for this; the monthly $100 does not.
+3. **Wait** for the five-hour or weekly limit to reset (`/status` shows what is left).
+
+### Set up the key for the batch checks (Windows)
+
+1. **Check the credit.** Console, Billing page: a monthly credit line with an expiry date. If there is none, link a
+   Console organization to the plan as the help article "Monthly API credits for Max, Ultra, and Team plans" says.
+   Leave auto-reload off: the $100 then is a hard cap.
+2. **Make a key.** Console, Settings, API keys, **Create key**, name it `rogue-waves-batch`. It is shown once; keep it in
+   a password manager. Never paste it into a chat, a scope file or the repository.
+3. **Give it to the batch, not to Claude Code.** Two ways:
+   - **Cloud (recommended; nothing touches the PC).** In the project's settings on claude.ai, Cloud environment, the
+     gear beside the selected environment: under **Environment variables** add one line, `RW_BATCH_API_KEY=<the key>`.
+     Not under Network secrets: the agent proxy never attaches one to `api.anthropic.com` (Claude Code docs "Configure
+     cloud environments", "Requests that never get the secret"). The batch reads `RW_BATCH_API_KEY`, a name Claude Code
+     itself never reads. A new thread then runs `plan --exact` (free) to prove it, and `submit --model haiku` (about $0.76).
+   - **One PowerShell window on the PC**, from a clone of the repository:
+     ```powershell
+     py -m pip install anthropic
+     $env:RW_BATCH_API_KEY = "<the key>"      # this window only; closing it forgets the key
+     py TDS_Mod\Tools\batch\run_checks.py plan --exact
+     py TDS_Mod\Tools\batch\run_checks.py submit
+     ```
+     Leaving out the `$env:` line also works: the script asks for the key, hidden, and keeps it nowhere. Don't set
+     `ANTHROPIC_API_KEY` as a permanent user variable (System Properties or `setx`): every Claude Code session on the
+     PC, the Remote Control rounds included, would then be offered the key, and `claude -p` uses it without asking.
+4. **Confirm it is active.** `plan --exact` prints counted (not estimated) tokens; `submit` prints a batch id
+   (`msgbatch_...`); the report ends with each request's cost; the Console's Billing page shows the spend. In Claude
+   Code, `/status` names the credential in use and marks the unused one when both a login and a key exist;
+   `/config`, "Use custom API key", changes the choice while the variable is set. To undo a key in a window:
+   `Remove-Item Env:RW_BATCH_API_KEY`.
+
+Sources: Claude Code docs "Authentication" (precedence; cloud sessions keep the plan); help centre "Use Claude Code
+with your Pro, Max, or Ultra plan", "Monthly API credits for Max, Ultra, and Team plans", "Manage usage credits for
+paid Claude plans", "Manage API key environment variables in Claude Code".

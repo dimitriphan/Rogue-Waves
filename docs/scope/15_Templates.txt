@@ -173,7 +173,7 @@
 		- In-game line: / One line as the game shows it, no numbers, like the base game's Cardinals \
 		- Numbers: / Exact values. Leave blank and the design gate proposes them \
 		- Lasts: / The rest of the campaign, this map only, or a number of Tides \
-		- Stacks: / Yes if a player (or the team) can own more than one, with no limit; no if it leaves the shop once owned \
+		- Stacks: / Yes if a player (or the team) can own more than one, up to 6 copies; no if it leaves the shop once owned \
 		- Where from: / Shop, a reward, or the lobby too (a lobby Cardinal needs an unlock: say how it is unlocked) \
 		- Colour: / Red, Blue, Yellow, Green or Mixed: its lobby slot. A shop card's colour says whether the buyer can pay \
 		- Cost: / In Pure Aura \

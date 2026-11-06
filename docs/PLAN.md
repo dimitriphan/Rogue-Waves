@@ -265,6 +265,36 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
   map's weather on every machine, a 4 s fade after the intro, calm maps unchanged; self-test W4. Compiled here (the mode,
   every test build), not run on the PC; its PC round is §4. No kit change; no pitfall used.
+- **2026-11-05: API credit set up** (Dimitri: "Setup both"): `docs/PROJECT_SETUP.md` "API credit" (the $100 can't
+  overflow the plan; usage credits can; key steps for Windows) and `TDS_Mod/Tools/batch/` (text and scope checks on
+  the Batches API, about $3.50 a run on Sonnet 5.5, $0.70 on Haiku 5.5). No real batch run yet: no key here.
+- **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
+  pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
+  Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-05: base game Cardinals split** (Dimitri: "separate them"): 13 of the 29 sold are Trinkets, held once per buyer
+  (`docs/reports/STOCK_TRINKETS_2026-11-05.md`; §5 three questions, §6 the PC list); scope `12` lists them as defaults.
+  Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-05: feature spotlight page** (Dimitri: "Design a spotlight of all of the new features"): `docs/spotlight/`
+  (artifact https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr), every feature chipped played, built-not-run or not built,
+  with the PR #130 Trinket split. Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-05: his answers on the split** (Dimitri: "Keep that", "Make Trinket", "Pay only share"): 17 of the
+  29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
+  §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 512 rows, 355 MATCH,
+  117 resolved, 24 queued (Spool B18/B19), 11 by design; N1 Tidal Mend x level and N2 Abyss's capped slow wait for his
+  word; scope 02, 04, 05, 15 texts fixed (`SCOPE_CODE_AUDIT_2026-11-06.md`). Docs only, read from the code, nothing run.
+- **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri: "Code follows the scope"): Mend heals a flat 5/8/12,
+  Deep Water slows up to its own 0.65 (Abyss's +10% whole; the Tremor keeps 0.6); self-tests read both. Compiled here,
+  not run on the PC (`STOCK_TRINKETS_2026-11-05.md` §8). No kit change, no pitfall.
+- **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
+  checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
+  the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
+- **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
+  (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
+  undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
+- **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
+  stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
+  (`docs/mode/CHART_NAVIGATION.md`). Docs only; not built until his go.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1081,6 +1111,108 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   here as always. Not run on the PC. No kit change (kit 1.14 stays), no pitfall used: next free kit 1.15, pitfall #172
   (which PR used which pitfall numbers: the entry before this one).
 
+- 2026-11-05, API credit and batch checks (Dimitri 20:13Z "Setup both of those options", on the coordinator's 20:12Z
+  proposal). Checked against the Claude Code docs ("Authentication") and four help-centre articles: the Max plan's $100
+  monthly API credit pays only for API calls with a key from the linked Console organization (and `claude -p` or Agent
+  SDK runs with it); it can't pay for interactive Claude Code, cloud sessions or usage credits, and Claude Code has no
+  automatic overflow to a key: a set and approved `ANTHROPIC_API_KEY` replaces the plan for every terminal session,
+  while cloud sessions always keep the plan. The overflow is usage credits (`claude.ai/settings/usage`), paid
+  separately. `docs/PROJECT_SETUP.md` "API credit" has the Windows steps (key in the cloud environment, or one
+  PowerShell window, never a permanent variable) and how to confirm it. `TDS_Mod/Tools/batch/run_checks.py`: `plan`,
+  `submit`, `collect`; the text audit's strings (1,310 from the six parts' game code) and one scope-to-code request per
+  scope file (`01`, `03`-`14`, `16`), structured answers, report `docs/reports/BATCH_CHECKS_<date>.md`; cost table in
+  its README. Ran here: `plan` for both checks on both models, the report writer on made-up results, the missing-key
+  exit. Not run: a real batch (no key in the container). No mod code changed, so nothing compiled; no kit change, no
+  pitfall: next free kit 1.15, pitfall #172.
+- **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills", after the coordinator named four
+  recipes re-explained to nearly every thread). `docs/skills/ship-a-pr.md` (branch, Part C entry, cloud-check, attribution,
+  re-merge the base, second merger renumbers, merge commit via `merge_pull_request`), `pc-round.md` (his OK and the PC lock
+  first; handoff, park and back up, apply, self-test builds, `Run-SelfTests.ps1 -TimeoutMinutes 30` for the mode, gaps
+  launches, two players, scope copy, restore, dated report), `scope-audit.md` (one file a pass, the six marks of
+  `SCOPE_CODE_AUDIT_2026-11-05.md`, `scope_upgrades.py`), `scope-sync.md` (his edits first from the Scope Editor's
+  `scopes` rows and the project-files diff, keep his tildes, NEEDS lines, `build.py`, publish to the same URL), and a
+  README on installing them. Each was also posted on a save card. Steps taken from `CLAUDE.md`, Part A,
+  `TDS_Mod/Tools/pc/README.md` and the 2026-11-05 reports; project memory supplied two facts the repository doesn't hold
+  (the PC lock lives in memory; RC sessions can't reach the project files). Docs only, no compile. Next free numbers
+  unchanged: kit 1.15, pitfall #172.
+- **2026-11-05: base game Cardinals split into Trinkets and Cardinals** (Dimitri: "Check which base game Cardinals can
+  be turned into trinkets and which can only be teamwide, then separate them"). `docs/reports/STOCK_TRINKETS_2026-11-05.md`:
+  of the 29 the shop sells, 13 are Trinkets (Sport Water, Fluffy Slippers, Beast Tassle, Diorama, Paper Tower: their
+  Heroapply effects on the buyer's vessel; Rusty Pipe, Frail Titan, Voice in a Bottle: their effects on the buyer's
+  towers or builds through the init list; the four Coins: the mode pays the buyer the whole sum; Aura Gavel: its bolt
+  for the buyer's own units), held once by each buyer, on their vessel panel; 16 stay Cardinals (Basin, foes, ore, Basin
+  builds, companion units). `RWCardinals.StockTrinketIds`, `GrantStock`, `Reach`, `RWTrinkets.CoinStart`/`Gavel`;
+  gaps rules "Stock split" x2; a lobby pick or a pre-split save's Cardinal keeps the game's team-wide one. Scope `12`:
+  the list as `~defaults~`. Compiled here (release, self-test, gaps, shots: 0 errors), not run on the PC (report §6 =
+  next round's list; §5 three questions: Gavel, companions, Coin's sum). No kit change, no pitfall: kit 1.15, #172.
+- **2026-11-05: Rogue Waves Spotlight** (Dimitri: "Design a spotlight of all of the new features added in the Rogue
+  Waves mod"). A new artifact, https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr; the older Vessel Spotlight
+  (NZ3wMMaujKDSNSaYCw7NZw, the per-vessel journal with the base vessels' private sheets) is kept as it was, since this page
+  covers the whole pack instead. Source `docs/spotlight/` (`spotlight.src.html`, `build.py`, the built page). Read from
+  scope `01`, `03`-`14`, Part C and the 2026-11-05 reports, `STOCK_TRINKETS_2026-11-05.md` included (13 base Trinkets,
+  16 base Cardinals). Flagged as called a feature but not built: Depth, new enemy types, Spool's 22 upgrades and
+  UNTHREAD, Spool's and Uloe's final sprites, three vessels' lore, the modifiers' journal pages, Fog Bank and the mood
+  ramp (ideas); most of 5 November's work is marked built, not yet run, until PC round 4 reports. Docs only, no compile.
+  Next free numbers unchanged: kit 1.15, pitfall #172.
+- **2026-11-05: his answers on the split** (Dimitri 23:51Z: "1. Keep that 2. Make Trinket 3. Pay only share"). Aura
+  Gavel stays a Trinket; Torrid Badge, Bendigo, Kippy and Fish Bait become Trinkets of kind Unit (their stock spawner on
+  the buyer's vessel; `RWTrinkets.Companions` removes the drowned vessel's unit once the new vessel's stands); a Coin pays its buyer the sum divided by the players. 17 Trinkets, 12
+  Cardinals. Report §7, scope `12` (list still `~defaults~` but his three answers). Compiled here (0 errors), not run on the PC. No kit, no pitfall.
+- **2026-11-06: third scope-to-code audit** (Dimitri 00:44Z `/scope-audit`; card 00:48Z "All 17 files, changes only").
+  `docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md`, base `c197626`: every row of the 11-05 audit re-read against the ~35
+  PRs since `99b9f3d`, plus the new scope lines; seven file passes. 512 rows: 355 MATCH, 117 RESOLVED (all 93 queued
+  rows outside Spool now built), 24 UNBUILT-QUEUED (Spool's 22 upgrades and UNTHREAD, B19; Pin Barrage's Leads to,
+  B18), 11 by design, 5 DIFFERENT. For his word: N1 Tidal Mend heals x the tower's level (11:38 says flat 5/8/12), N2
+  Abyss's +10% slow held to +5% by `SlowCap` 0.6. Fixed in the scope here: N3 Depth's note (04:16, 05:13) no longer
+  claims an end-screen line, N4 02:9's installed build, N5 15:176's Stacks "no limit" (his answer 3). His scope copies
+  are behind in 02, 04, 05, 12, 15 until he says "sync". Docs only, no compile, nothing run on the PC. Next free
+  numbers unchanged: kit 1.15, pitfall #172.
+- **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri 01:03Z, card in the scope audit's thread: "Code follows
+  the scope" for N1 and N2 of `docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md` §2). N1: `RogueWavesMode/Code/16_Directions.cs`
+  `TideEffects` heals `MendHeal` 5 / 8 / 12 a rank with no tower-level factor; the gaps test checks each mend is that flat
+  number (`RWDirections.Mends`). N2: `ArgoData.WaterSlowCap` 0.65 caps Deep Water (`Argo/Code/11_Water.cs`), the Tremor
+  keeps `SlowCap` 0.6; the self-test reads the slow on a foe in the water (`ArgoUtil.WaterSlowOn`): the pump's whole
+  slow, then the 0.65 ceiling. The two comments citing scope 11's dropped NEEDS line now point at Claude's sheets.
+  `/code-review high`: seven of its eight findings fixed; the eighth (the ceiling is a typed number) is noted in Argo's
+  `DESIGN.md` and notes. Compiled here: Argo release, SELFTEST, SELFTEST+SHOTS and REVIEW 0 errors 0 warnings; the mode
+  release 0/0, SELFTEST 0/1, SELFTEST+GAPS and with SHOTS 0/2 (the base's warnings). Not run on the PC:
+  `docs/reports/STOCK_TRINKETS_2026-11-05.md` §8. No kit change, no pitfall; next free numbers unchanged: kit 1.15,
+  pitfall #172.
+- **2026-11-06: batch checks extended** (Dimitri: "Help me set up the cheap batch jobs further"):
+  `TDS_Mod/Tools/batch/run_checks.py` gains `design` (each vessel's DESIGN.md against its code: MATCH, DIFFERENT,
+  NOT-IN-CODE), `docs` (CLAUDE.md, Part C "Now", the reports' README, the batch README and `docs/skills/` read against
+  each other, after a free local pass listing cited paths that name nothing) and `art` (PNGs on Deep Swell and Foam
+  against `docs/STYLE.md`, with `art_check.py` beside each); `--since REF|last` (only what changed since the newest
+  report's base, per check), `--max-cost` (a true ceiling, every request at its max_tokens; default $10, exit 4),
+  `--max-wait`, `spend` (the month's batch reports against the $100), exit code 3 without a key, `RW_BATCH_OUT` for the
+  record. The key is read from `RW_BATCH_API_KEY` (Claude Code never reads that name), an environment variable of the
+  cloud environment: a network secret is never attached to api.anthropic.com. Review fixes: scope 11 sent 5 cache
+  marks (the API takes 4; now first and last part only), `--since last` keeps a base per check (a narrowed or failed
+  run doesn't move it), `--art` sends only tracked files. `all` = text, scope, design, docs: about $4.07 (at most
+  $6.94) on Sonnet 5.5, $0.76 (at most $1.26) on Haiku 5.5; art in use $0.29 / $0.01. Run here: `plan` for every check
+  on both models, the report writer on made-up answers, per-check bases through failed, narrowed and explicit runs, the
+  missing-key and over-cap exits. No real batch: the key is not in the cloud environment yet. No kit change, no pitfall; nothing ran on the PC.
+- **2026-11-06: first batch checks run** (Dimitri: "It's saved", the key in the cloud environment): `plan --exact`
+  (free) proved the key and counted 4.13M input tokens against the README's 2.78M estimate (about $1.32, at most $2.00
+  on Haiku 5.5). Batch `msgbatch_01XM6GKkEVGqJgqX7PVfJCeP`: 25 requests, $1.19, `docs/reports/BATCH_CHECKS_2026-11-06.md`;
+  seven answers (the four design pages, scope `07`, `08`, `11`) hit their max_tokens at medium effort, so they were rerun
+  at `--effort low` for $0.63 (`BATCH_CHECKS_2026-11-06b.md`, every answer whole). $1.82 of the month's $100. A
+  hand-written §0 sorts the rows into leads (meteor objective one map ahead, Uloe's Plug In cap and teammate light,
+  Spool's Stash limit, design-page numbers, text slips, two stale docs lines) and noise ("Made of Tougher Stuff" is
+  built in the mode; versions, labels and tolerances). Nothing fixed; docs only; nothing ran on the PC.
+- **2026-11-06: sea chart navigation proposed** (Dimitri, 02:18Z: navigating "through just the nodes feels a little bit
+  confusing"): read from the mode's code why (the vote's cards sit apart from the chart, the boat's camera frames one
+  row, the boat sails by itself, no legend or progress) and proposed a chart view in the manner of Slay the Spire's map
+  screen: the whole chart on one panel beside the lettered cards at every vote, clickable lit islands, a hover card
+  with where each island leads, a key (~M~) to open it any time, a banner and a mini chart on the boat, a ring on the
+  island it sails to (clients read the winner from the boat's heading: in the chart's name it would re-warp the party).
+  Asked about new kinds of stop, he picked "Add rest and treasure stops" (02:28Z): a Cove (no map, ~a retry back~,
+  rows ~4 and 9~; a Cove's win asks where to sail after it in the same map) and a Wreck (~one row harder~, ~a Trinket
+  of 3~ each, rows ~2-3 and 6-8~), from a second random stream so a seed's maps stay the same; old campaigns keep
+  charts without stops; difficulty follows the row. Mockups from the new `concept-tools/sea_chart_view.py`. Code and
+  checks CV1-CV12 in `CHART_NAVIGATION.md` §6 and §8. Reviewer's nine findings fixed. Docs only; nothing ran on the
+  PC. No kit change, no pitfall.
+
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
@@ -1259,6 +1391,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spring Tide and Tidal Mend move to the mode's own effects; a teammate's Uloe Light counts up to 4 a building; Yossele's
   P5 and P6 wait for his play test; `D:\TDS_second` and the kit's older-mod examples stay. Open questions 1 and 3-13 closed by it; 2 (Spool's `DESIGN.md` defaults) was not on the page and stays open. Same day, his "sync": the project-files scope copy and the Scope Editor (version 8) brought up to the repository; and
   question 2 spelled out as S1-S17 in `docs/reports/SPOOL_DEFAULTS_2026-11-05.md`.
+- 2026-11-05 (Dimitri, "Check which base game Cardinals can be turned into trinkets and which can only be teamwide, then
+  separate them"; 23:51Z "Keep that, Make Trinket, Pay only share"): 17 stock Cardinals on sale are Trinkets, held once
+  by each buyer (Aura Gavel and the four companions included; a Coin pays one share); 12 stay Cardinals. Scope `12`,
+  `docs/reports/STOCK_TRINKETS_2026-11-05.md` §7.
 
 ### Open questions
 

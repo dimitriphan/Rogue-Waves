@@ -1,5 +1,33 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-06): Tidal Mend's heal is flat (compiled, not yet run in game)
+
+Dimitri picked "Code follows the scope" for the third scope audit's N1 (`docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md` §2):
+`TideEffects` heals `MendHeal` 5 / 8 / 12 a rank, whatever the tower's level (scope `11`). The gaps test adds "each mend is
+the rank's flat number" (`RWDirections.Mends`), with the towers' levels in its line. PC checks:
+`docs/reports/STOCK_TRINKETS_2026-11-05.md` §8.
+
+## 0.1.0-dev, later (2026-11-05): his answers on the split (compiled, not yet run in game)
+
+Dimitri: "Keep that, Make Trinket, Pay only share" (`docs/reports/STOCK_TRINKETS_2026-11-05.md` §7). Kind Unit (Torrid
+Badge, Bendigo, Kippy, Fish Bait): `GrantStock` puts the stock spawner upgrade on the buyer's vessel (Artifactobject
+passed); `RWTrinkets.Companions` takes away a buyer's unit whose parent vessel is gone once the new vessel's
+stands (one at a time; a live spawner's unit is never taken), outside the spawn. `RWTrinkets.Pay` divides a Coin's sums
+by `RWRun.Sessions().Count`; the start sum waits for every vessel.
+
+## 0.1.0-dev, later (2026-11-05): base game Cardinals split into Trinkets (compiled, not yet run in game)
+
+Dimitri: "separate them" (`docs/reports/STOCK_TRINKETS_2026-11-05.md`). `RWCardinals.StockTrinketIds` lists the 13 stock
+Cardinals that are Trinkets now, each with its kind: Hero (Sport Water, Fluffy Slippers, Beast Tassle, Diorama, Paper
+Tower: `GrantStock` puts the Cardinal's own Heroapply effects on the buyer's vessel, `Reach` on a Hero-tagged unit of
+theirs), Tower (Rusty Pipe, Frail Titan) and Built (Voice in a Bottle): `Reach` gives the Towerapply or Voiceapply
+effect to the buyer's new things through their init list (pitfall #118), at once to what stands; Coin (the four):
+`RWTrinkets.CoinStart` and `Tide` pay the buyer the Coin's own sums; Gavel: `RWTrinkets.Gavel` fires the Gavel's bolt
+(`Bolt`, shared with Signal Flare) when one of the buyer's units drowns. A held one is `"<Artifact id>1"` in
+`RWPlayer.Trinkets`, with a scriptless panel line `RW_StockTrinket<i>_Upgradeobject` (the game's own words); never on the
+core or the row. `StockTaken`: not sold while a lobby pick or a pre-split save's run Cardinal already gives it to
+everyone. Gaps rules "Stock split" x2. The PC list is the report's §6.
+
 ## 0.1.0-dev, later (2026-11-05): a look per weather (compiled, not yet run in game)
 
 Dimitri's pick on the third decisions page (`docs/reports/OPEN_DECISIONS_2026-11-05c.md`): `RWWeather` ("the look",
@@ -229,7 +257,7 @@ Compiled, not yet run in game (`docs/reports/DECISIONS_APPLIED_2026-11-05.md` §
   pulls no new one in until the next break. Every held Trinket stack is on the vessel's panel ("X", "X x2"; a unit Trinket by a mark
   with no script). Held Cardinals past the row's 8 show on the run line as "+N Cardinals" (RW_Run's Goalvalue).
 - **B7** Spring Tide and Tidal Mend run on the mode's own effects at each break (`16_Directions.cs` `TideEffects`): no
-  stock Beacon or Regen, no `Resistadd` on Fie's walls (pitfall #159), Mend's heal at the tower's level each Tide.
+  stock Beacon or Regen, no `Resistadd` on Fie's walls (pitfall #159), Mend's heal at the tower's level each Tide (flat since 2026-11-06, above).
 - **B15, MODEB-8** Made of Tougher Stuff skips only the player's own vessel (Boutbro gets it); the meteor node takes
   12 + 3 x map hits (`Healthresource` 11 + 3 x map).
 - **MODEA-3** in a campaign the host keeps the boat's lead (`KeepLead`, said once). **MODE-A3** the Basin is the main
