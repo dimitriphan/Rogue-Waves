@@ -3,7 +3,7 @@
   "thread": "Run PC round 6 for card freeze fix",
   "state": "testing",
   "started": "2026-11-06T20:23:38Z",
-  "step": "Spool with pictures: COLOUR panel, Thread Heads",
+  "step": "Spool alone: do Thread Heads move without the rest of the pack?",
   "helpers": [],
-  "updated": "2026-11-06T20:58:44Z"
+  "updated": "2026-11-06T21:10:01Z"
 }
