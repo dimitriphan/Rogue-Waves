@@ -240,6 +240,7 @@ public static class SpoolData
 
     public const float CraftedEngage = 3f;       // how far a Crafted at its spot looks for foes (inside its leash)
     public const float StitchedSpeedUp = 0.3f;
+    public const float TackedNear = 1.6f;        // Tacking Stitch: a Tacked that stopped this close to its spot holds there
 
     // The Thread Head: a unit bought from the build menu, with its own upgrades (it is one of the four buildables).
     public static readonly string[] HeadStats =

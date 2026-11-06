@@ -437,7 +437,10 @@ public class SpoolUnitBrain : MonoBehaviour
         Vector3 pos = ModKitUtil.Pos(Master);
         if (Crafted && !Arrived)
         {
-            if (ModKitUtil.Flat(pos, Spot) <= 0.9f)
+            // A Tacked Stitched stands on a blocker block, so a crowd of them can't all reach one tile: one that has
+            // stopped close by (TackedNear) holds where it stopped.
+            float off = ModKitUtil.Flat(pos, Spot);
+            if (off <= 0.9f || (Def.Blocker && off <= SpoolData.TackedNear && ModKitUtil.State(Master) != "Move" && Orders > 1))
                 Arrived = true;
             else
             {
@@ -462,7 +465,7 @@ public class SpoolUnitBrain : MonoBehaviour
         SpoolCushionBrain cushion = Home as SpoolCushionBrain;
         if (target != null && cushion != null && cushion.Has("Burst") && ModKitUtil.Flat(ModKitUtil.Pos(target), pos) <= ModKitUtil.Stat(Master, "Range", 1.5f) + 0.2f)
             BurstOn(cushion);
-        else if (target == null && Def.Id == SpoolData.Seam)
+        else if (target == null && Def.Id == SpoolData.Seam && !Snare(pos))
             Mine(pos);
     }
 
@@ -530,6 +533,167 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         if (ModKitUtil.Flat(ModKitUtil.Pos(ore), pos) > ModKitUtil.Stat(Master, "Range", 1.5f))
             Walk(ore, Vector3.zero, 1f);
+    }
+
+    // ---------------------------------------------------------------- a Loom's Seams: Snare Line, Dyed in the Wool
+
+    // Snare Line: the aura beast it hunts. Dyed in the Wool: the node its last hit landed on, what the node held and the
+    // hit could take, and the owner's purse before it, read again in LateUpdate.
+    public Entity_Master Prey;
+    bool hunting, struckNoted;
+    float nextSnare, nextListen, struckBefore, struckHit;
+    Entity_Master struck;
+    readonly float[] purseBefore = new float[3], purseAfter = new float[3];
+    Entity_Master.Interacts dealt;
+
+    // Aura beasts, by being name (the large one is an aura beast too): they wander the map and pay every player when they
+    // fall (kit docs/16 section 3).
+    static readonly string[] Beasts = { "Mob_Aurabeast", "Mob_Largeaurabeast" };
+
+    static bool IsBeast(Entity_Master e) { return Array.IndexOf(Beasts, ModKitUtil.BeingName(e)) >= 0; }
+
+    // Snare Line: with no foe within its leash of the Loom, the Seam goes after the aura beast nearest it within the
+    // Loom's Snare reach and strikes it itself at its attack speed (a beast may be no foe to the stock melee AI). With
+    // none left, or a foe at the Loom, it walks back, and Mine takes it to the ore from there. True while it hunts or
+    // turns back (Mine waits).
+    bool Snare(Vector3 pos)
+    {
+        SpoolLoomBrain loom = Home as SpoolLoomBrain;
+        float reach = loom != null && loom.Master != null ? loom.SnareReach : 0f;
+        if (reach <= 0f)
+            return false;
+        Vector3 anchor = loom.Pos;
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f);
+        Entity_Master prey = FoeAtLoom(anchor, range) ? null : Beast(anchor, reach, pos);
+        if (prey == null)
+        {
+            if (!hunting)
+                return false;
+            hunting = false;
+            Prey = null;
+            Walk(null, anchor + Offset(), 0f);
+            return true;
+        }
+        bool fresh = !hunting || prey != Prey;
+        if (fresh)
+            loom.Hunts++;
+        hunting = true;
+        Prey = prey;
+        string state = ModKitUtil.State(Master);
+        if (ModKitUtil.Flat(ModKitUtil.Pos(prey), pos) > range + 0.2f)
+        {
+            if (fresh || state != "Move")
+                Walk(prey, Vector3.zero, Mathf.Max(0f, range - 0.5f));
+            return true;
+        }
+        if (state == "Move")
+            ModKitUtil.Stop(Master);
+        // When the stock melee AI is already swinging at this beast (it is a foe to it on this map), its hits are enough.
+        Link_Command attack;
+        bool swinging = state == "Attack" && Master.Commandlistserver.TryGetValue("Attack", out attack) && attack != null && attack.Goalobject == prey;
+        if (!swinging && Time.time >= nextSnare)
+        {
+            nextSnare = Time.time + 1f / Mathf.Max(0.05f, ModKitUtil.Stat(Master, "Attackspeed", 0.8f));
+            ModKitUtil.Hurt(Master, prey, ModKitUtil.Stat(Master, "Damage", 1f));
+            loom.Snared++;
+            ModKitUtil.Vis(Radio(), "Spool_Strike", ModKitUtil.Pos(prey), 0f);
+        }
+        return true;
+    }
+
+    // A foe other than a beast within the Seam's leash of its Loom: it guards first.
+    bool FoeAtLoom(Vector3 loom, float range)
+    {
+        foreach (Entity_Master f in ModKitUtil.FoesNear(Master, loom, Def.Leash + range))
+            if (!IsBeast(f))
+                return true;
+        return false;
+    }
+
+    // The aura beast nearest the Seam within 'reach' of its Loom; the one it hunts is kept while it stays in reach. The
+    // query asks for Mob-tagged things or things of another team (Styles.Either, read as either test), so a beast is found
+    // whichever team the map gives it.
+    Entity_Master Beast(Vector3 loom, float reach, Vector3 pos)
+    {
+        if (hunting && ModKitUtil.Alive(Prey) && ModKitUtil.Flat(ModKitUtil.Pos(Prey), loom) <= reach)
+            return Prey;
+        Link_Entityquery query = new Link_Entityquery { Being = Master.Beingserver, Teamfor = false, Tags = new List<string> { "Mob" }, Style = Link_Entityquery.Styles.Either };
+        int team = ModKitUtil.Team(Master);
+        Entity_Master best = null;
+        float nearest = float.MaxValue;
+        foreach (Entity_Master e in ModKitUtil.Area(loom, reach, query))
+        {
+            if (!ModKitUtil.Alive(e) || ModKitUtil.Team(e) == team || !IsBeast(e) || ModKitUtil.Flat(ModKitUtil.Pos(e), loom) > reach)
+                continue;
+            float d = ModKitUtil.Flat(ModKitUtil.Pos(e), pos);
+            if (d < nearest)
+            {
+                best = e;
+                nearest = d;
+            }
+        }
+        return best;
+    }
+
+    // Dyed in the Wool: a hit this Seam lands (the stock melee AI mines with it), heard on the attacker's side, which runs
+    // before the node's own hit chain, where it pays. A hit on a node, for a dyed Loom, notes the node's count, what the
+    // hit can take off it and the owner's purse; LateUpdate reads them again.
+    void OnDealt(Link_Interact hit)
+    {
+        try
+        {
+            SpoolLoomBrain loom = Home as SpoolLoomBrain;
+            if (hit == null || hit.Type != "Hurt" || loom == null || !loom.Dyed || !ModKitUtil.HasTag(hit.To, "Resource") || hit.To.Statsserver == null
+                || !hit.To.Statsserver.ContainsKey("Healthresource") || !ModKitUtil.Purse(loom.Owner, purseBefore))
+                return;
+            float damage, extra;
+            struck = hit.To;
+            struckNoted = true;
+            struckBefore = ModKitUtil.Stat(hit.To, "Healthresource", -1f);
+            // A node takes min(Damage, 1) + Damageresource a hit (kit docs/16 section 4).
+            struckHit = Mathf.Clamp01(hit.Data != null && hit.Data.TryGetValue("Damage", out damage) ? damage : 1f)
+                + (hit.Data != null && hit.Data.TryGetValue("Damageresource", out extra) ? Mathf.Max(0f, extra) : 0f);
+        }
+        catch (Exception e)
+        {
+            SpoolLog.Warn("Seam hit: " + e.Message);
+        }
+    }
+
+    // A Seam's hit noted this frame, read after every Update (the stock AI's hit and the node's payout among them): when
+    // it paid, the owner's purse gain is traded into the Loom's colour. Another payout landing on the same frame (a
+    // strike of the Loom's, a beast falling) is in that gain too, so it is traded as well.
+    void LateUpdate()
+    {
+        if (Master == null || !Started || Def == null || Def.Id != SpoolData.Seam || !ModKitUtil.IsServer)
+            return;
+        try
+        {
+            SpoolLoomBrain loom = Home as SpoolLoomBrain;
+            if (struckNoted)
+            {
+                struckNoted = false;
+                Entity_Master ore = struck;
+                struck = null;
+                // A node that pays once is gone after it: Stat and Alive read it as gone, which Paid counts as paid.
+                if (loom != null && loom.Dyed && SpoolLoomBrain.Paid(struckBefore, ModKitUtil.Stat(ore, "Healthresource", -1f), struckHit, ModKitUtil.Alive(ore))
+                    && ModKitUtil.Purse(loom.Owner, purseAfter) && loom.Trade(purseBefore, purseAfter))
+                    loom.SeamTraded++;
+            }
+            // Updateinteract clears the attacker's side of the hit chain too, so the handler is said again ten times a second.
+            if (loom != null && loom.Dyed && Time.time >= nextListen)
+            {
+                nextListen = Time.time + 0.1f;
+                if (dealt == null)
+                    dealt = OnDealt;
+                ModKitUtil.Listen(Master, dealt);
+            }
+        }
+        catch (Exception e)
+        {
+            // A bad trade is skipped; the Seam's own brain carries on.
+            faults.Fail(Def.Id + " dye", e);
+        }
     }
 
     void Walk(Entity_Master target, Vector3 position, float stop)

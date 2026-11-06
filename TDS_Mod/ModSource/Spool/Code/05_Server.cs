@@ -172,7 +172,8 @@ public static class SpoolServer
             ModKitCounter.Set(p.Home.Master, "Thread", p.Stash);
     }
 
-    // A carrier at its Stash hands over what fits; the rest stays carried.
+    // A carrier at its Stash (or at a Golden Thread Loom) hands over what fits; the rest stays carried. The Thread goes
+    // into the Stash either way; the look flies to the nearer of the two.
     public static int Deliver(long owner, Entity_Master carrier, int carried)
     {
         SpoolPlayer p = Player(owner);
@@ -184,14 +185,26 @@ public static class SpoolServer
         p.Stash += put;
         Delivered += put;
         Show(p);
-        ModKitUtil.Vis(carrier, "Spool_Deliver", ModKitUtil.Pos(p.Home.Master), put);
+        Vector3 to = ModKitUtil.Pos(p.Home.Master), from = carrier != null ? ModKitUtil.Pos(carrier) : to;
+        SpoolLoomBrain golden = GoldenNear(owner, from, ModKitUtil.Flat(to, from));
+        if (golden != null && ModKitUtil.Flat(golden.Pos, from) < ModKitUtil.Flat(to, from))
+        {
+            to = golden.Pos;
+            GoldenDrops++;
+            GoldenThread += put;
+        }
+        ModKitUtil.Vis(carrier, "Spool_Deliver", to, put);
         return put;
     }
 
+    // Within 'reach' of the player's Yarn Stash, or of one of their Looms with Golden Thread. With no Stash standing there
+    // is nowhere for the Thread to go, so a Golden Thread Loom is no drop-off point either.
     public static bool AtStash(long owner, Vector3 at, float reach)
     {
         SpoolPlayer p = Player(owner);
-        return p.Home != null && p.Home.Master != null && ModKitUtil.Flat(ModKitUtil.Pos(p.Home.Master), at) <= reach;
+        if (p.Home == null || p.Home.Master == null)
+            return false;
+        return ModKitUtil.Flat(ModKitUtil.Pos(p.Home.Master), at) <= reach || GoldenNear(owner, at, reach) != null;
     }
 
     // ---------------------------------------------------------------- ground Thread
@@ -734,5 +747,29 @@ public static class SpoolServer
                 more = Mathf.Max(more, Mathf.RoundToInt(h.Param("Count_Base", 1f)));
         }
         return more;
+    }
+
+    // ---------------------------------------------------------------- Golden Thread
+
+    public static int GoldenDrops, GoldenThread;   // drop-offs at a Golden Thread Loom, and the Thread they handed over
+
+    // The player's nearest standing Loom with Golden Thread within 'reach' of a point, or null.
+    public static SpoolLoomBrain GoldenNear(long owner, Vector3 at, float reach)
+    {
+        SpoolLoomBrain best = null;
+        float nearest = reach;
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolLoomBrain loom = b as SpoolLoomBrain;
+            if (loom == null || !loom.Started || loom.Owner != owner || !loom.Golden || !ModKitUtil.Alive(loom.Master))
+                continue;
+            float d = ModKitUtil.Flat(loom.Pos, at);
+            if (d <= nearest)
+            {
+                best = loom;
+                nearest = d;
+            }
+        }
+        return best;
     }
 }
