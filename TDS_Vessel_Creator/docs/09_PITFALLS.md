@@ -688,8 +688,10 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      drawn from (read in the game's IL) → to sync a command without touching the state, switch its `Statechange` off
      around the update and back after; to take a unit's button away, set its link's `Controllable` false and sync it
      that way (the selection panel and `Game_Ui` skip such links, and a player's press is refused), with no copy of the
-     command. Stock links with `Statechange` on: "Move" and "Sell"; `Buildoption*`, `Upgrade`, `Upgradeoption*` and
-     every link the pack makes are off, so the pack's other sync-only updates are safe. `HideMove` does both, again
-     whenever the link is Controllable (compiled, not yet run in game: the self-test's "its stock MOVE has no button"
-     line and the RETURN and SPOT lines prove it). Run each vessel's self-test once a round with the pack loaded as well
-     (Spool's picked and DONE lines now say which), since a vessel alone can take paths the pack never takes.
+     command. Stock links with `Statechange` on: the AI state links (Idle, Attack ...) and the buttons "Move",
+     "Movelinear", "Build" (the vessel's and the Fie wall's), "Sell" and the Merchant's "Spawntype", "Spawnelite" and
+     "Contracted"; `Buildoption*`, `Upgrade`, `Upgradeoption*` and every link the pack makes are off, so the pack's
+     other sync-only updates are safe. `HideMove` does both, again whenever the link is Controllable (compiled, not yet
+     run in game: the self-test's "its stock MOVE has no button" line and the RETURN and SPOT lines prove it). Run each
+     vessel's self-test once a round with the pack loaded as well (Spool's picked and DONE lines now say which), since a
+     vessel alone can take paths the pack never takes.
