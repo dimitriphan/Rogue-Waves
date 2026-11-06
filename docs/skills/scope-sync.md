@@ -16,7 +16,9 @@ Rules from `docs/PLAN.md` Part A ("The user's scope") and `docs/scope/00_Read_Me
 
 ## First, look for his edits
 
-1. Scope Editor: `ArtifactData` list, collection `scopes`, on the editor's URL. A doc `f<NN>` is his edit of file NN.
+1. Scope Editor and Vessel Editor: `ArtifactData` list, collections `scopes` and `sheets`. A row with `status: "waiting"`
+   is an edit he sent; a `draft` row is still his work in progress, so leave it. Steps and statuses:
+   `docs/artifacts/README.md`.
 2. Project files: `diff -r docs/scope /mnt/project-files/scope` (ignore `pc_backup_*` and the old zip). A line he
    changed that the repository never had is his edit, not staleness.
 3. Fold every edit of his in before copying anything over it (below).
@@ -42,8 +44,8 @@ Rules from `docs/PLAN.md` Part A ("The user's scope") and `docs/scope/00_Read_Me
 1. Docs PR with `ship-a-pr`; its Part C entry says his copies now equal the new base sha. Merge it.
 2. Copy the 17 `docs/scope/NN_*.txt` files over `/mnt/project-files/scope/` (leave its other files). It is a network
    mount: wait about ten seconds and `diff -r` again.
-3. Scope Editor: `python3 /mnt/project-files/concepts/scope_editor_2026-11-04/build.py docs/scope <scratchpad>/scope_editor.html`,
-   `Artifact` read the editor's URL, then publish the built file to that same `url`. Leave its `scopes` rows unless he
-   says to clear the ones you folded in. Add a "Synced ..." line with the new version to that folder's `README.md`.
+3. Scope Editor: `python3 docs/artifacts/scope_editor/build.py docs/scope <scratchpad>/scope_editor.html`, `Artifact`
+   read the editor's URL, then publish the built file to that same `url`. Set the rows you folded in to `merged`;
+   delete one only once the republished page carries it, and leave `draft` rows alone.
 4. Update project memory's scope line: base sha and Scope Editor version.
 5. Reply: which files changed, the sha both copies now equal, and that his PC copy waits for the next PC round.
