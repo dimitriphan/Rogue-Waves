@@ -79,6 +79,7 @@ public static class UloeData
     public const string LightStat = "Light";
     public const float LightTick = 1f, LightHold = 1.5f;   // each source re-adds its timed Add every second (pitfall #119)
     public const float LightCap = 12f;                     // what a building counts, at most
+    public const float FirstLookDelay = 0.5f;   // a new thing's first look waits for the client's 0.25 s hook scan (pitfall #158)
     public const float TeamLightCap = 4f;                  // Light a building takes from teammates' sources, at most (scope 10 "Sharing")
     public const float HeroLight = 1f, HeroRadius = 3f;
     public const float PhotonLight = 1f, PhotonRadius = 2f;
@@ -147,6 +148,9 @@ public static class UloeData
     public const string PhotonSheet = "Uloephoton-Sheet";
     public const int PhotonCell = 16;
     public const float PhotonLeash = 3.5f, PhotonEngage = 2.5f, PhotonVisit = 0.5f, WanderMin = 1.5f, WanderMax = 4f;
+    // Supernova: each Photon bursts, then flies straight back to its Power Bank at double speed (Dimitri 2026-11-06),
+    // fighting nothing on the way, until it is within HomeReach of the Bank or HomeTime runs out.
+    public const float HomeSpeed = 1f, HomeTime = 6f, HomeReach = 1.5f;
     public const float PathGrab = 1.25f;                   // how near a Flood Light's line a Photon must come to follow it
     public const int PhotonMark = 1, BurstMark = 2;      // the Blind and Illuminate level of a hit, of a burst
 

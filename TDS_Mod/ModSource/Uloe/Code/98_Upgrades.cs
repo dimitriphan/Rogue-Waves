@@ -176,10 +176,36 @@ public static partial class UloeSelfTest
             if (PhotonsOf(bank).Count > 0)
                 Kill(PhotonsOf(bank)[0].Master);
             yield return Wait(0.3f);
-            int bursts = UloeServer.Bursts, alive = PhotonsOf(bank).Count;
+            int bursts = UloeServer.Bursts, alive = PhotonsOf(bank).Count, homes = 0;
+            float speed0 = -1f;
+            Dictionary<UloePhotonBrain, float> away = new Dictionary<UloePhotonBrain, float>();   // the ones out of reach of the Bank
+            foreach (UloePhotonBrain p in PhotonsOf(bank))
+            {
+                homes += p.Homecomings;
+                float d = ModKitUtil.Flat(p.Pos, bank.Pos);
+                if (d > UloeData.HomeReach + 0.5f) away[p] = d;
+                if (speed0 < 0f) speed0 = ModKitUtil.Stat(p.Master, "Speed", 0f);
+            }
             Send(bank.Master, UloeData.SurgeLink, "");
             yield return Wait(0.4f);
             Check("SURGE: every Photon bursts", bank.Novas == 1 && UloeServer.Bursts >= bursts + alive, (UloeServer.Bursts - bursts) + " bursts from " + alive + " Photons");
+            int homed = 0, quick = 0, homing = 0;
+            foreach (UloePhotonBrain p in PhotonsOf(bank))
+            {
+                homed += p.Homecomings;
+                if (p.Homing) { homing++; if (speed0 > 0f && ModKitUtil.Stat(p.Master, "Speed", 0f) > speed0 * 1.5f) quick++; }
+            }
+            Check("... and each one that burst flies back to its Bank", homed - homes >= alive, (homed - homes) + " of " + alive + " Photons sent home");
+            if (homing > 0)
+                Check("... at double speed", quick == homing, quick + " of " + homing + " homing Photons quicker than " + F(speed0));
+            else ModKitTest.Setup("Supernova's double speed", "no Photon was still on its way home");
+            yield return Wait(1.5f);
+            int nearer = 0;
+            foreach (KeyValuePair<UloePhotonBrain, float> w in away)
+                if (w.Key != null && w.Key.Master != null && ModKitUtil.Flat(w.Key.Pos, bank.Pos) < w.Value - 0.3f) nearer++;
+            if (away.Count > 0)
+                Check("... and they come nearer the Bank", nearer == away.Count, nearer + " of " + away.Count + " that were away came nearer");
+            else ModKitTest.Setup("Supernova's flight home", "every Photon already stood by its Bank");
             Check("... and all come back at once", PhotonsOf(bank).Count == bank.Slots, PhotonsOf(bank).Count + " of " + bank.Slots);
             UloePhotonBrain p1 = PhotonsOf(bank).Find(p => p.Master != null);
             Check("... giving Light 3 for a while", bank.NovaOn && p1 != null && Near(p1.LightOut, 3f), p1 != null ? "Light " + F(p1.LightOut) : "no Photon");
@@ -244,9 +270,15 @@ public static partial class UloeSelfTest
             // Bank can take (the branch ends there); a third upgrade forced on, as the batch check counted it (Extra
             // Cell), would make 4 + 2 x 3 = 10 without the cap.
             yield return Wait(UloeData.LightTick + 0.1f);
-            float bright = UloeData.BrightLight[hero.Player != null ? hero.Player.Bright : 0];
             bool onC = hero.Plug == bankC.Master;
-            Check("Plug In on a Surge Protector Bank with all it can take: Light 8", bankC.UpgradeCount == 2 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f + bright)),
+            // Dimitri 2026-11-06 "keep cap at 8": Brighter Bulb doesn't lift a safe socket's Light past 8 either (the rule
+            // Feed uses; the Direction can't be taken off again here, so its top rank is read through the rule).
+            int top = UloeData.BrightLight.Length - 1;
+            Check("... and Brighter Bulb at its top rank doesn't lift a safe socket past Light 8, elsewhere it adds",
+                Near(UloeHeroBrain.TotalLight(8f, top, true), 8f) && Near(UloeHeroBrain.TotalLight(6f, 1, true), 6f + UloeData.BrightLight[1])
+                && Near(UloeHeroBrain.TotalLight(8f, top, false), 8f + UloeData.BrightLight[top]),
+                F(UloeHeroBrain.TotalLight(8f, top, true)) + ", " + F(UloeHeroBrain.TotalLight(6f, 1, true)) + ", " + F(UloeHeroBrain.TotalLight(8f, top, false)));
+            Check("Plug In on a Surge Protector Bank with all it can take: Light 8", bankC.UpgradeCount == 2 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f)),
                 bankC.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bankC.Master)) + (onC ? ", Uloe gives " + F(hero.LightNow) : ", not plugged in"));
             Upgradeproperties extra;
             if (UloeContent.Upgrades.TryGetValue(UloeData.Bank + "_Extracell2_Upgradeobject", out extra) && extra != null)
@@ -254,7 +286,7 @@ public static partial class UloeSelfTest
                 Helper_Entitytools.Upgrade(bankC.Master, extra, Helper_Entitytools.Upgradecheck.Forced, null);
                 yield return Wait(UloeData.LightTick + 0.2f);
                 onC = hero.Plug == bankC.Master;
-                Check("... still Light 8 with a third upgrade forced on", bankC.UpgradeCount == 3 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f + bright)),
+                Check("... still Light 8 with a third upgrade forced on", bankC.UpgradeCount == 3 && Near(UloeHeroBrain.PlugLight(bankC.Master), 8f) && (!onC || Near(hero.LightNow, 8f)),
                     bankC.UpgradeCount + " upgrades, Light " + F(UloeHeroBrain.PlugLight(bankC.Master)) + (onC ? ", Uloe gives " + F(hero.LightNow) : ", not plugged in"));
             }
             else ModKitTest.Setup("Plug In's cap with a third upgrade", "no Extra Cell upgrade object");

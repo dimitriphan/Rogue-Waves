@@ -85,6 +85,7 @@ public static class YosseleData
         "Health=70", "Speed=1.75", "Damage=5.5", "Range=4", "Projspeed=15", "Attackspeed=0.5", "Buildrange=2.5", "Sellrate=0.5",
     };
     public const float Regen = 1f;              // health a second, healed by the brain (no base vessel regenerates)
+    public const float FirstLookDelay = 0.5f;   // a new thing's first look waits for the client's 0.25 s hook scan (pitfall #158)
 
     // ---------------------------------------------------------------- Growth, FERTILIZE, fertilizer, Compost Bin
 

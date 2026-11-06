@@ -542,6 +542,8 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      0.25 s, and a brain's `Begin` runs about a frame after the spawn (#61), so Argo's and Uloe's build looks and
      Uloe's Photon pop land before anyone listens → send a first-frame look a moment later, or let the client play it
      as it first hooks the thing. Read from code (max review ARG-2, ULO-6); not yet seen in game, left for a PC look.
+     Done 2026-11-06 for Argo, Yossele and Uloe (`FirstLookDelay`, 0.5 s; compiled, not yet seen in game); Spool's
+     build look and Tin pop still go out in `Begin`, left for its upgrades thread.
 159. **Spring Tide's Beacon on a building that then gets Fie's Regen halves its hits** (2026-11-05) → the Beacon gives `Resistadd` 1,
      which does nothing alone; once a Shield wall or Shared Strength adds `Effect_Fiewall_Regen_Upgradeobject`, every hit divides by
      1 + `Resistadd`: 4.88 of a 10 hit, against 9.52 with the wall's effect on first. Measured in game (round 3, MODE-C3);
