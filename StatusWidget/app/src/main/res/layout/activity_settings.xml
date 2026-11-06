@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/swell"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="The crew asleep on the boat"
+            android:src="@drawable/f_idle_00" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/exo2_light"
+            android:letterSpacing="0.1"
+            android:text="ROGUE WAVES STATUS"
+            android:textColor="@color/foam"
+            android:textSize="26sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/barlow_medium"
+            android:lineSpacingMultiplier="1.2"
+            android:text="The widget reads the project's status from GitHub with a token that can only read the repository. Make one at github.com: Settings, Developer settings, Fine-grained tokens, Generate new token. Repository access: only Rogue-Waves. Permissions: Contents, read-only. Paste it below."
+            android:textColor="@color/mist"
+            android:textSize="15sp" />
+
+        <EditText
+            android:id="@+id/token"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:autofillHints="password"
+            android:background="@drawable/field"
+            android:fontFamily="@font/barlow_medium"
+            android:hint="github_pat_…"
+            android:inputType="textPassword"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:textColor="@color/foam"
+            android:textColorHint="@color/mist"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/save"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_weight="1"
+                android:background="@drawable/button"
+                android:fontFamily="@font/barlow_semibold"
+                android:text="Save and refresh"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/refresh"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:background="@drawable/row"
+                android:fontFamily="@font/barlow_semibold"
+                android:text="Refresh now"
+                android:textAllCaps="false"
+                android:textColor="@color/foam"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/barlow_medium"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="@color/foam"
+            android:textIsSelectable="true"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/barlow_medium"
+            android:lineSpacingMultiplier="1.2"
+            android:text="To add the widget: long-press the home screen, Widgets, Rogue Waves Status, and drag it out at 4 × 6. Tap the widget any time to refresh it; it also refreshes by itself every 15 minutes."
+            android:textColor="@color/mist"
+            android:textSize="14sp" />
+    </LinearLayout>
+</ScrollView>

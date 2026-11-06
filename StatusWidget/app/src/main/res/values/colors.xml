@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Rogue Tide, docs/themes/rogue-tide.md -->
+    <color name="swell">#2E4A62</color>
+    <color name="swell_raised">#35546D</color>
+    <color name="swell_deep">#1E3347</color>
+    <color name="teal">#3F8F96</color>
+    <color name="teal_hi">#4A9AA1</color>
+    <color name="foam">#E9F1EE</color>
+    <color name="mist">#B4C8CF</color>
+    <color name="coral">#E2725B</color>
+    <color name="sand">#D8C49A</color>
+    <color name="white">#FFFFFF</color>
+</resources>

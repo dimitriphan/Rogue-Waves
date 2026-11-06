@@ -57,4 +57,6 @@ Rules from `CLAUDE.md`, `docs/PLAN.md` Part A "Merging" and Part C "Now". Dimitr
    `gh pr merge` is refused here. Do not merge a PR whose own thread is still working on it.
 4. After the merge: tell the coordinator (`message_coordinator`), so the threads with PRs still open re-merge the base
    and re-run cloud-check. Update the PR STATE line in project memory (merged range, base sha, next free numbers).
+   Tell the phone widget: `StatusWidget/status/set_status.py --id <thread id> --state shipped --step "PR #<n>: <title>"`
+   (`StatusWidget/README.md` "When a thread reports").
 5. A Remote Control (PC) thread has no GitHub tool: a cloud thread opens and merges its PR for it.
