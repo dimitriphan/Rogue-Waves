@@ -328,15 +328,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
   failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
   from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
-- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): pictures a hover grows and the game's
-  stacked lists are left alone; P2 needs its control to see the flicker (`BUTTON_WOBBLE_2026-11-06.md` §3). Compiled here,
-  not run on the PC. No kit change, no pitfall.
 - **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
   layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
   PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
 - **2026-11-06: chart round 1 on the PC** (Dimitri: "Go chart round"): flow 178/1 (CV10's blacklist read too early, test
   fixed), two players 167/0; chart pictures on his PC; after-win vote's view and a mini chart overlap for his eye
   (`CHART_ROUND1_2026-11-06.md`). His builds and save back. No kit change, no pitfall.
+- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): pictures a hover grows and the game's
+  stacked lists are left alone; P2 needs its control to see the flicker (`BUTTON_WOBBLE_2026-11-06.md` §3). Compiled here,
+  not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1381,14 +1381,6 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   parts, 0 exceptions; the fixed mode build stays in his Mods, the old one parked; `Run-SelfTests.ps1` doesn't restore the
   save, so it was copied back by hand (the README said otherwise).
   No kit change; pitfall #174. Next free: kit 1.15, pitfall #175.
-- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri 07:24Z: "Follow up pr", after PR #150 merged with the
-  review's two points open). `26_Pixels.cs`: each pass also lists every `Blu4_List_Stacker` under the menu canvases
-  (inactive ones too) and leaves the children of its `Ref` alone, since the stacker writes them in its `Update` and is no
-  `LayoutGroup`; a picture whose scale isn't a whole number of times its canvas's is skipped while it is so, so a hover's
-  `Blu5_Buttonanim_Size` (a DOTween `DOScale` to `Tosize` and back to exactly 1) never moves a grown tile by a pixel.
-  `94_Pixels.cs`: P2 is a setup line, not a check, when the game's places are on half pixels and the same reading saw no
-  flicker there. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`, `+GAPS`: 0 errors); not run on the PC; the
-  build in his Mods is PR #150's. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
 
 - **2026-11-06: chart round 1 on the PC** (Dimitri 06:59Z: "Go chart round"): handoff `Chart_round1` (`0be84ef`, code
   `5e03648` = the chart build on `beab230` plus the wobble fix, since merged as #150). Mode flow 178 pass, 1 fail: CV10's
@@ -1398,6 +1390,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   eye: the after-win vote captured with no view and its title over the cards, and the game's top-right title over the
   mini chart. CV10 now waits for the blacklist (compiled here). Not run: mouse clicks on islands, key M, the hover hitch.
   PC: Mods hash-identical, save copied back by hand, Unity project at the handoff with a TWOPC build.
+- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri 07:24Z: "Follow up pr", after PR #150 merged with the
+  review's two points open). `26_Pixels.cs`: each pass also lists every `Blu4_List_Stacker` under the menu canvases
+  (inactive ones too) and leaves the children of its `Ref` alone, since the stacker writes them in its `Update` and is no
+  `LayoutGroup`; a picture whose scale isn't a whole number of times its canvas's is skipped while it is so, so a hover's
+  `Blu5_Buttonanim_Size` (a DOTween `DOScale` to `Tosize` and back to exactly 1) never moves a grown tile by a pixel.
+  `94_Pixels.cs`: P2 is a setup line, not a check, when the game's places are on half pixels and the same reading saw no
+  flicker there. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`, `+GAPS`: 0 errors); not run on the PC; the
+  build in his Mods is PR #150's. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
 
 ### Decisions
 
