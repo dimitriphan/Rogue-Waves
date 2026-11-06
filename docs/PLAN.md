@@ -260,8 +260,6 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, kit 1.15, pitfall #174 (which PR used which pitfall numbers: the last Log entry).
-- **Artifacts (2026-11-06):** the Scope and Vessel Editors send edits back like the Art Bench ("bring in my scope / vessel
-  edits"); six old pages archived to project files and deleted. Index and steps: `docs/artifacts/README.md` (Log).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -306,6 +304,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: round 4 and batch bugs fixed** (Dimitri: "Fix bugs"): a friend's end title, the Vfx/Mobbase lines on a join
   (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
   (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
+- **2026-11-06: input artifacts send edits back** (Dimitri: "Update older Artifacts that take input"): the Scope and
+  Vessel Editors gain a Send step ("bring in my scope / vessel edits"); six old pages archived to project files and
+  deleted. Index and steps: `docs/artifacts/README.md` (Log).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

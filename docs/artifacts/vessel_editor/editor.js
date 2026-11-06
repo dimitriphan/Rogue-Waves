@@ -618,9 +618,10 @@ async function save(rec) {
 }
 function localAll() { try { return JSON.parse(localStorage.getItem('rw-vessel-sheets-v1') || '{}') || {}; } catch (e) { return {}; } }
 function localPut(all) { try { localStorage.setItem('rw-vessel-sheets-v1', JSON.stringify(all)); } catch (e) { throw { code: 'local' }; } }
+const OWN_DELETES = new Set();   // ids this page is deleting: their removal echo is the page's own, not a thread's
 async function removeStored(rec) {
   try {
-    if (STORE === 'db') await DB.doc('sheets/' + rec.id).delete();
+    if (STORE === 'db') { OWN_DELETES.add(rec.id); try { await DB.doc('sheets/' + rec.id).delete(); } catch (e) { OWN_DELETES.delete(rec.id); throw e; } }
     else { const all = localAll(); delete all[rec.id]; localPut(all); }
   } catch (e) { msg('Could not remove the saved copy. Try again in a moment.', 'err'); return false; }
   rec.remote = null; rec.savedAt = null;
@@ -678,7 +679,11 @@ async function initStore() {
   } catch (e) { /* not told: keep the inputs */ }
   db.collection('sheets').onSnapshot(snap => {
     let ch = false;
-    snap.docChanges().forEach(x => { const r = applyStored(x.doc.data ? x.doc.data() : null, x.type === 'removed'); ch = r === true || ch === true ? true : (r || ch); });
+    snap.docChanges().forEach(x => {
+      if (x.type === 'removed' && OWN_DELETES.delete(x.doc.id)) return;   // the echo of this page's own delete
+      if (x.doc.metadata && x.doc.metadata.hasPendingWrites) return;      // the echo of this page's own unconfirmed write
+      const r = applyStored(x.doc.data ? x.doc.data() : null, x.type === 'removed'); ch = r === true || ch === true ? true : (r || ch);
+    });
     afterRemote(ch);
   }, e => { if (e && e.code !== 'revoked') msg('Live updates stopped. Reload the page to see edits made elsewhere.', 'err'); });
   RECS.forEach(r => { if (r.dirty) scheduleSave(r); });
@@ -873,7 +878,7 @@ document.addEventListener('click', e => {
     const rec = ED.rec;
     if (rec.added) confirmBar(`Delete ${modelOf(rec) ? modelOf(rec).name : rec.id} and its sheet from this page? Export the .txt first if you want to keep it.`, 'Delete', async () => {
       clearTimeout(saveTimers[rec.id]); rec.dirty = false;
-      if (await removeStored(rec)) { RECS.splice(RECS.indexOf(rec), 1); MODELS.delete(rec.id); ED.rec = null; show('lineup', true); }
+      if (await removeStored(rec)) { const i = RECS.indexOf(rec); if (i >= 0) RECS.splice(i, 1); MODELS.delete(rec.id); ED.rec = null; show('lineup', true); }
     }, true);
     else confirmBar('Go back to the published sheet? Your edits here are removed; Undo keeps them for this visit.', 'Go back', async () => {
       clearTimeout(saveTimers[rec.id]);
