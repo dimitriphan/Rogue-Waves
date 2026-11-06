@@ -322,6 +322,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: spotlight restyled in Rogue Tide** (Dimitri: "as if it were a finished product ready to ship"): no
   status chips or "not built" list; chart view with Cove and Wreck added (`docs/spotlight/`, artifact v3). Docs only,
   nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
+  failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
+  from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1331,6 +1334,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   today" box, the Steam line. Added: the chart view (`chart_look_vote.png`), the M key, the boat banner, the Cove and
   the Wreck; weather never on a Cove or Wreck; a Cove gives a retry back. Upgrade tooltips still carry no numbers. Kept
   separate from the Vessel Spotlight (his merge answer still open). Republished to the same artifact URL.
+- **2026-11-06: multiplayer MVP board proposed** (Dimitri 06:35Z: "Draft an MVP board for multiplayer that shows
+  accolades and failures of the players"): `docs/mode/MVP_BOARD.md`. A "SHIP'S LOG" board after each won map (after
+  the leave vote, before the picks) and a Voyage board at the campaign's end, two or more players only; six accolades
+  and eight failures, everyone gets one of each, an MVP in corner brackets under the one coral banner. Most of it reads
+  `Activeplayerdata` (kit `docs/16` §5), snapshotted per map; new: aura sent per map, unanswered votes, drops, and
+  leaks charged to the last hitter (an engine hook). Mockup `docs/concepts/art/mvp_board_map.png` from
+  `concept-tools/mvp_board_look.py`. Docs only, nothing compiled or run on the PC; no kit change, no pitfall.
 
 ### Decisions
 
