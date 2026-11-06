@@ -355,6 +355,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the full test's three fixes** (Dimitri: "Fix all three"): Diorama's tiny look on the four vessels, map
   cards with picture, name and badge (CV13), the mini chart in a clear spot (CV14). Compiled here, not run on the PC.
   Kit 1.15 (`ModKitAssets.TinyLooks`), no pitfall.
+- **2026-11-06: PC round 5 proves #141, #154, #156-#158 and #160** (Dimitri: "Ok"): 0 FAIL from the code but #160's map
+  cards (a 70-76 ms freeze in 2 of 10 openings); Spool 229/3 in its new sections (test faults, one unsettled), Supernova's
+  flight home and a client's first looks read (`PC_ROUND5_2026-11-06.md`). His PC put back. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1511,6 +1514,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Argo's and Uloe's skins; `CHART_NAVIGATION.md` §7-8. Cloud-check stubs: `Graphic.canvas`, `canvasRenderer`,
   `Mask.showMaskGraphic`. Compiled here: every part's release and self-test builds 0 errors (the mode's DIALOGLOOK,
   FEELMAP and TWOPC errors are the base's). Not run on the PC (the PC round held the lock). Kit 1.15, no pitfall.
+- **2026-11-06: PC round 5** (Dimitri 16:33Z: "Ok", the go for the next PC round; report `docs/reports/PC_ROUND5_2026-11-06.md`).
+  Run on the PC itself, synced without a handoff as the base moved: the vessel self-tests on `0cbfe62`, the mode's flow and
+  Uloe's reruns on `7529452`, the gaps launches, two players, a second flow and the dialog round on `7e7f4e4` (kit 1.15).
+  Argo 160/0, Yossele 202/0, Uloe 219/0, the flow 187/0 and 190/0, gaps trinkets 29/0, effects 50/0, review 15/0, stock
+  29/0, two players host 73/0 and every client copy 0 FAIL, short pairs 45/0 (Argo, Uloe, Spool joining). Proven: P2
+  against its control (0 of 144 frames on whole pixels, 144 of 144 on the game's half pixels), Supernova's flight home at
+  double speed (after a test fix: the Photon walked out first), Plug In's Light 8 cap, the Wreck's Pearl Oyster, every
+  pack building's first look on a client at about 0.5 s (#158), the Meteor's 12 hits on map 1, the later map's Cardinals,
+  0 Vfx/Mobbase lines, Diorama on the four vessels, CV13 and CV14. Real fail: #160's map cards freeze 70-76 ms in 2 of 10
+  openings and drop a frame in each (DIALOGLOOK). Spool 229/3: "Pin Barrage ends its branch" is stale (it leads to Iron
+  Thimble), Voodoo's next Tide wasn't reached (the test map ended mid-run, "BASIN DROWNED"), Snare Line's hunt never started
+  (unsettled). Test-only lines on the branch: Uloe's Supernova setup, Spool's HUD pictures (BEE, UNTHREAD, COLOUR, Seam),
+  the flow's weather fade pictures, a #158 reading on the client. BEE and UNTHREAD seen on their panels; COLOUR's picture
+  missed. The ~500 client exceptions are the game's `Entity_Master_Client.Start`. Not run: #156's elite stand-in, the
+  weather look's §4 items 4-7, foes in each weather on camera. His PC put back (Mods hash for hash, save, registry), his
+  Desktop scope copy now the base's (old copy in `handoff\backup_scope_before_Proof_round1_20261106`). No kit change, no
+  pitfall.
 
 ### Decisions
 
