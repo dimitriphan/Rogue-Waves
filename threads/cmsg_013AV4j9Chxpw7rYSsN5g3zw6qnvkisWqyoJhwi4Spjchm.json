@@ -3,12 +3,12 @@
   "thread": "Build a project status widget",
   "state": "reviewing",
   "started": "2026-11-06T19:26:23Z",
-  "step": "PR #161 open, CI building the APK",
+  "step": "Fixing the review's points",
   "helpers": [
     {
       "task": "Reviewing PR #161",
       "model": "Opus"
     }
   ],
-  "updated": "2026-11-06T19:26:23Z"
+  "updated": "2026-11-06T19:30:59Z"
 }
