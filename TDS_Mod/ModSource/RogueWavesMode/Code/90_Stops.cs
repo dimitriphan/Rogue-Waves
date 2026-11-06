@@ -82,6 +82,7 @@ public static partial class RWTest
         RWCampaign.SaveChoice();
         int sailed = RWCampaign.Route.Count, after = RWCampaign.After;
         yield return Until(() => Here(), 40f);
+        yield return Until(() => Listed(cove.Name), 10f);   // the blacklist is written a moment after the warp (Chart_round1)
         Check("CV10 the Cove is never picked: blacklisted on the boat", Listed(cove.Name), cove.Name);
         float since = Time.realtimeSinceStartup;
         yield return Until(() => RWBoat.RestedAt > since, 90f);
