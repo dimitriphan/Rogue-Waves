@@ -1,5 +1,9 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-06: one Yarn Stash a player (compiled, not yet run in game)
+
+Scope `08`:64 says Limit: 1, so a player holds one Yarn Stash. `SpoolServer.FirstStash`, `HasStash` and `StashLimit` (`05_Server.cs`) decide it. The Stash button goes from the spawn of a Stash, and the four buildables come once one has started (`06_HeroBrain.cs`, `CheckMenu`). A second Stash that gets past the menu is taken back with reason "Limit", and the first keeps the Thread (`07_Building.cs`). The PATCH hotkey test sets the Thread at the press. Three self-test checks are new: "a second Stash can't be built", "a second Stash past the menu is taken back" and "two Stash orders at once build one Stash, the first" (`docs/reports/BUG_FIXES_2026-11-06.md` §5 item 5).
+
 ## 2026-11-05: the balance sweep's numbers (compiled, not yet run in game)
 
 For one Pin Cushion (Dimitri's answer 25) and the Loom's mining (answer 26), `docs/reports/BALANCE_SWEEP_2026-11-05.md`
@@ -76,7 +80,7 @@ says about the game is read from its code, not seen.
 ## What the first PC round must show (each is an assumption the code makes)
 
 1. **The Stash-first menu.** Until a Yarn Stash stands, the hero's `Buildoption1-4` are removed and only the Stash is
-   offered; then the four buildables come back (checked every 0.5 s, remove and recreate, as Argo and Boutman do).
+   offered; then the four buildables come back (checked every 0.5 s and also the moment a Stash spawns or goes (2026-11-06), remove and recreate, as Argo and Boutman do).
    Check the bar's order and that a destroyed Stash brings the Stash-only menu back.
 2. **The Thread Head token.** The build menu places `Mob_Spoolhead_Place` (tag `Spoolheadtoken`) on Buster's walk-through pad block and the
    host swaps it for the Thread Head at once (a `Forced` spawn on the token's block, then the token is despawned with

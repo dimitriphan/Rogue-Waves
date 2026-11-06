@@ -5,7 +5,8 @@
 //   T2  the map intro card's line (Cine's Maptitlealt/Desc, written by the stock once)
 //   T3  the boat's world card: the chart world's Display_Desc (RWWorld.Build)
 //   T4  the end screen's title: the host writes the synced Display_Endgame ("MAP 4 OF 10 WON", "MAP LOST ▪ 2 RETRIES LEFT",
-//       "CAMPAIGN WON") after Mode_Normal's own write; the end screen reads it about 5 s later
+//       "CAMPAIGN WON") after Mode_Normal's own write; the end screen reads it about 5 s later, and every machine holds it
+//       on the shown Win or Lose screen (HoldEnd)
 // And the retry warnings (B4): the host's Exit Map dialog names what leaving costs, rewritten while that dialog is up.
 public static class RWCard
 {
@@ -21,24 +22,49 @@ public static class RWCard
     // The card for the chart map being loaded or played, on any machine; "" outside a chart map.
     public static string Line()
     {
+        int retries;
+        bool staging;
+        RWChart.Node node = Here(out retries, out staging);
+        if (staging)
+            return "Setting out" + Separator + "Choose your Directions, then vote";
+        return node != null ? Line(node.Row, node.Weather, retries) : "";
+    }
+
+    // The chart map being loaded or played, from what every machine has (the chart world's name and the Gameplan); null
+    // outside one and on the staging map, which sets 'staging'.
+    static RWChart.Node Here(out int retries, out bool staging)
+    {
+        retries = -1;
+        staging = false;
         Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
         if (info == null)
-            return "";
+            return null;
         string plan = info.Gameplan.Value.ToString(), world = info.World.Value.ToString();
         if (!plan.StartsWith(RWData.PlanPrefix))
-            return "";
+            return null;
         uint seed;
         List<int> route;
-        int retries;
         if (!RWWorld.Parse(world, out seed, out route, out retries))
-            return "";
+            return null;
         RWChart.Chart chart = RWWorld.Chart(seed);
         if (route.Count == 0 && plan == RWMode.Twin(RWWorld.StagingPlan(chart)))
-            return "Setting out" + Separator + "Choose your Directions, then vote";
+        {
+            staging = true;
+            return null;
+        }
         RWChart.Node node = null;
         foreach (RWChart.Node n in RWWorld.Choices(chart, route))
             if (RWMode.Twin(n.Plan) == plan) node = n;
-        return node != null ? Line(node.Row, node.Weather, retries) : "";
+        return node;
+    }
+
+    // R4 P1-4: the chart row of the map this machine plays, -1 outside one (the self-test's title for a won map).
+    public static int Row()
+    {
+        int retries;
+        bool staging;
+        RWChart.Node node = Here(out retries, out staging);
+        return node != null ? node.Row : -1;
     }
 
     public static string Line(int row, int weather, int retries)
@@ -147,7 +173,7 @@ public static class RWCard
         return RWCampaign.WonThisMap ? "The map is won: leave now?" : "";
     }
 
-    // ---------------------------------------------------------------- the end screen's title (host)
+    // ---------------------------------------------------------------- the end screen's title (host; a friend's in HoldEnd)
 
     // Host, right after the map's end is known; every machine reads the synced title.
     public static void EndTitle(string title)
@@ -163,18 +189,35 @@ public static class RWCard
     static Game_Mapvars endMap;
 
     // Mode_Normal writes the whole display from its own copy at its own moments (kit docs/20 §2), so the title is held
-    // until the map goes.
+    // until the map goes. Every machine, from Update: the host holds its own title, a friend the one the sync brings.
     static void HoldEnd()
     {
         Game_Mapvars vars = Game_Mapvars.Instance;
-        if (ReferenceEquals(endMap, null) || endMap == null || !ReferenceEquals(vars, endMap) || !ModKitUtil.IsServer)
+        if (vars == null)
             return;
-        Game_Mapvars.Link_Displaydataref d = vars.Display.Value;
-        if (d.Display_Endgame.ToString() != LastEnd)
+        string title;
+        bool client = false;
+        if (ModKitUtil.IsServer)
         {
-            d.Display_Endgame = new FixedString64Bytes(LastEnd);
-            vars.Display.Value = d;
+            if (ReferenceEquals(endMap, null) || endMap == null || !ReferenceEquals(vars, endMap))
+                return;
+            Game_Mapvars.Link_Displaydataref d = vars.Display.Value;
+            if (d.Display_Endgame.ToString() != LastEnd)
+            {
+                d.Display_Endgame = new FixedString64Bytes(LastEnd);
+                vars.Display.Value = d;
+            }
+            title = LastEnd;
         }
+        else if (!RWUtil.IsHost)
+        {
+            title = ClientEnd(vars);
+            client = true;
+            if (title == "")
+                return;
+        }
+        else
+            return;
         // The screen reads the display once: Mode_Normal's own write may be what it read (seen on the PC).
         foreach (string name in new[] { "Win", "Lose" })
         {
@@ -183,8 +226,44 @@ public static class RWCard
             if (Blockage.Menu.Bl_Menus.Menus == null || !Blockage.Menu.Bl_Menus.Menus.TryGetValue(name, out menu) || menu == null || !menu.Items.TryGetValue("Title", out shown) || shown == null || !shown.activeInHierarchy)
                 continue;
             TMPro.TMP_Text text = shown.GetComponentInChildren<TMPro.TMP_Text>();
-            if (text != null && text.text != LastEnd) text.text = LastEnd;
+            if (text == null || text.text == title)
+                continue;
+            if (client && ClientEndWrites++ == clientWritesAtMap)
+                RWLog.Info("end screen: the " + name + " screen read '" + text.text + "', shown as the campaign's '" + title + "'");
+            text.text = title;
         }
+    }
+
+    // R4 P1-4: a friend's end screen. Its stock screen reads the synced Display_Endgame once, and on the wire the host's title
+    // races Mode_Normal's own write (pitfall #129): a friend who had rejoined read "BASIN BREACHED" after map 1 was won (PC
+    // round 4 §5). A client never writes the NetworkVariable: it keeps the last campaign title the sync brought on this map.
+    public static string SeenEnd = "";       // client, this map: the campaign title synced (self-test)
+    public static int ClientEndWrites;       // client: the shown titles this hold put right (self-test)
+    static Game_Mapvars seenMap;
+    static int clientWritesAtMap;
+
+    static string ClientEnd(Game_Mapvars vars)
+    {
+        if (!ReferenceEquals(vars, seenMap))
+        {
+            seenMap = vars;
+            SeenEnd = "";
+            clientWritesAtMap = ClientEndWrites;
+        }
+        Tds_Multiplayerinfo info = Tds_Multiplayerinfo.Instance;
+        if (info == null || !info.Gameplan.Value.ToString().StartsWith(RWData.PlanPrefix))
+            return "";
+        string synced = vars.Display.Value.Display_Endgame.ToString();
+        if (IsEndTitle(synced))
+            SeenEnd = synced;
+        return SeenEnd;
+    }
+
+    // The titles the host writes (RWCampaign.MapEnd): "MAP 4 OF 10 WON", "MAP LOST ▪ 2 RETRIES LEFT", "CAMPAIGN WON",
+    // "CAMPAIGN LOST". The stock's ("BASIN REMAINS", "BASIN BREACHED"...) are none of them.
+    public static bool IsEndTitle(string t)
+    {
+        return t == "CAMPAIGN WON" || t == "CAMPAIGN LOST" || (t.StartsWith("MAP ") && (t.EndsWith(" WON") || t.StartsWith("MAP LOST" + Separator)));
     }
 }
 

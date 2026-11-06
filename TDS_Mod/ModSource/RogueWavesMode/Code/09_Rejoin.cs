@@ -344,7 +344,12 @@ public static class RWRejoin
             Game_Endscreen end = UnityEngine.Object.FindObjectOfType<Game_Endscreen>();
             if (end != null) end.SendMessage("Initalize", SendMessageOptions.DontRequireReceiver);
         }
-        RWLog.Info("rejoin: started again what the late player object stopped:" + (initDied ? " the map's load" : "") + (artifactsDied ? " the Cardinal row" : "") + (endDied ? " the end screen" : "") + (initDied || artifactsDied || endDied ? "" : " nothing"));
+        // R4: the list read "the map's load the Cardinal row the end screen" (PC round 4, the friend's log): commas between.
+        List<string> stopped = new List<string>();
+        if (initDied) stopped.Add("the map's load");
+        if (artifactsDied) stopped.Add("the Cardinal row");
+        if (endDied) stopped.Add("the end screen");
+        RWLog.Info("rejoin: started again what the late player object stopped: " + (stopped.Count > 0 ? string.Join(", ", stopped.ToArray()) : "nothing"));
         initDied = artifactsDied = endDied = false;
     }
 
@@ -371,7 +376,8 @@ public static class RWRejoin
                 clients++;
             }
         ClientsRestarted += clients;
-        RWLog.Info("rejoin: started again the client halves the late player object stopped: " + clients + " entities");
+        // BATCH 09_Rejoin:374: the line read "started again the client halves the late player object stopped".
+        RWLog.Info("rejoin: started again the client halves that the late player object stopped: " + clients + " entities");
     }
 
     // The same arrival can outrun the load groups: a client half that asks for its being before its group is in gets null and
@@ -413,7 +419,8 @@ public static class RWRejoin
         }
         ClientsRestarted += started;
         if (started > 0)
-            RWLog.Info("rejoin: gave " + started + " things their look once their groups had loaded: " + string.Join(", ", beings.ToArray()));
+            // BATCH 09_Rejoin:416: the line read "gave N things their look once their groups had loaded".
+            RWLog.Info("rejoin: started again " + started + " things that had no look, once their load groups were in: " + string.Join(", ", beings.ToArray()));
     }
 
     // The catch-up and the looks end with their map: a player turned away goes on to the main menu and may load the next map

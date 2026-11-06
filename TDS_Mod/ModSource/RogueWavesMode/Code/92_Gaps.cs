@@ -1142,6 +1142,11 @@ public static partial class RWTest
                 GameObject vis = RWObjectives.Target != null && RWObjectives.Target.Client != null ? RWObjectives.Target.Client.Currentvis : null;
                 Check("Objective " + goal.Display + ": the node wears the white crystal " + RWModels.Meteor + ", lit like a stock ore", vis != null && vis.name.StartsWith(RWModels.Meteor) && RWModels.IsLit(vis),
                     vis != null ? vis.name + (RWModels.IsLit(vis) ? ", tower shader" : ", NOT on the tower shader (no hit flash)") : "no look");
+                // BATCH 14:14: the node's hits and distance follow scope 14 for the map it spawned on.
+                int mapNow = Mathf.Max(1, RWCampaign.Route.Count + (RWCampaign.WonThisMap ? 0 : 1));
+                Check("Objective " + goal.Display + ": " + (12 + 3 * (mapNow - 1)) + " hits and about " + (8 + 1.5f * (mapNow - 1)) + " tiles from the Basin on map " + mapNow + " (scope 14)",
+                    RWObjectives.MeteorMap == mapNow && RWObjectives.MeteorHits == 12 + 3 * (mapNow - 1) && Mathf.Abs(RWObjectives.MeteorWant - (8f + 1.5f * (mapNow - 1))) < 0.01f,
+                    RWObjectives.MeteorHits + " hits, want " + RWUtil.F(RWObjectives.MeteorWant) + " tiles, spawned on map " + RWObjectives.MeteorMap);
             }
             Entity_Master target = RWObjectives.Target;
             forcing = true;

@@ -386,6 +386,7 @@ Models), `ArgoPreview` (Preview Sprites), `ArgoModPrefab` (Build Mod Prefab, Exp
 - Self-test run 2 (2026-10-02): 63/64 (the miss was the harness reading an enemy's speed on its spawn frame; fixed).
 - Tower sizes were matched to the shipped towers measured in game (Sno Sno 0.75-1.15, Buster 0.85/1.9, Smacky 1.0-2.05):
   scale baked into the meshes about the ground point (`ArgoModels.*Scale`).
+- 2026-11-06: the self-test's Chum Bucket foe spawns by the enemy core with +500 Health and is held, so ranks 1-3 are measured (it was a SETUP every run in PC round 4); compiled, not yet run in game.
 
 ## Build, deploy and test
 

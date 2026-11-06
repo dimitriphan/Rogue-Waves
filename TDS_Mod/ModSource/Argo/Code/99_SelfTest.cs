@@ -2072,11 +2072,19 @@ public static partial class ArgoSelfTest
             }
             // Chum Bucket: a Slowed foe takes more from an Argo building's hit, nothing more from the vessel's own.
             ArgoTowerBrain chummer = salvoGun ?? (towers.ContainsKey(ArgoData.Scatter) ? towers[ArgoData.Scatter] : null);
-            Entity_Master chum = chummer != null ? SpeedFoe(ModKitUtil.Pos(chummer.Master), 4f) : null;
-            yield return Wait(0.3f);
-            if (chum == null || !ModKitUtil.Alive(chum)) ModKitTest.Setup("Chum Bucket", chummer == null ? "no Argo tower" : "no foe would spawn");
+            // R4 §2: the foe stood 4 tiles from the gun and fell to the towers within the 0.3 s wait, a SETUP every run ("no
+            // foe would spawn"). The hits below are direct and need no range, so it now stands beside the enemy core, far from
+            // Argo's towers (no tower's own slow marks it either), held there with 500 health to spare (Ready).
+            Entity_Master chumCore = Core();
+            Entity_Master chum = chummer != null && chumCore != null ? SpeedFoe(ModKitUtil.Pos(chumCore), 4f) : null;
+            if (chum != null)
+                yield return Ready(chummer, new List<Entity_Master> { chum }, 500f, new List<Link_Modifier>());
+            if (chum == null || !ModKitUtil.Alive(chum))
+                ModKitTest.Setup("Chum Bucket", chummer == null ? "no Argo tower" : chumCore == null ? "no enemy core" : chum == null ? "no foe would spawn beside the enemy core" : "the foe fell before the check");
             else
             {
+                Log("Chum Bucket's foe: " + ModKitUtil.BeingName(chum) + " " + F(ModKitUtil.Flat(ModKitUtil.Pos(chum), ModKitUtil.Pos(chummer.Master))) + " tiles from the "
+                    + chummer.Def.Id + ", health " + F(Life(chum)));
                 ArgoStatus.Clear(chum);
                 float plain = Hit(chummer.Master, chum, 1f);
                 for (int r = 1; r <= 3 && ModKitUtil.Alive(chum); r++)

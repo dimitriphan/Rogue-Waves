@@ -153,12 +153,16 @@ public class UloeHeroBrain : MonoBehaviour
 
     // ---------------------------------------------------------------- Light
 
-    // Light a node gives Plug In: from its total aura; a Power Bank's: from its upgrades.
+    // Light a node gives Plug In: from its total aura; a Power Bank's: from its upgrades, at most 8 from a safe socket.
     public static float PlugLight(Entity_Master target)
     {
         UloeBankBrain bank = target != null ? target.GetComponent<UloeBankBrain>() : null;
         if (bank != null)
-            return UloeData.BankBase + UloeData.BankPerUpgrade * bank.UpgradeCount;
+        {
+            float l = UloeData.BankBase + UloeData.BankPerUpgrade * bank.UpgradeCount;
+            // BATCH 10:145: a Surge Protector bank gives at most Light 8, however many upgrades it holds.
+            return bank.Has("Surge") ? Mathf.Min(UloeData.SurgeBankMax, l) : l;
+        }
         return Mathf.Min(UloeData.NodeMax, UloeData.NodeBase + UloeData.NodePerAura * UloeUtil.NodeAura(target));
     }
 

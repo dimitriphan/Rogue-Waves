@@ -61,7 +61,8 @@ public abstract class SpoolBuilding : MonoBehaviour
         // Patchwork Job draws MEND from Started2, where its Mending is known (MAX SPL-8: it read MEND OFF while mending).
         Started = true;
         Started2();
-        ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
+        if (ModKitUtil.Alive(Master))   // BATCH 08:64: a second Stash taken back in Started2 shows no build puff
+            ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
     }
 
     protected virtual void Started2() { }
@@ -148,13 +149,24 @@ public abstract class SpoolBuilding : MonoBehaviour
 // first one placed each map starts with 10 Thread. Sold, its Thread is kept for the next one; destroyed, it spills.
 public class SpoolStashBrain : SpoolBuilding
 {
+    public bool Refused;   // a second Stash of its player, being taken back
     public int Cap { get { return Mathf.RoundToInt(Stat("Threadcap", SpoolData.StashCap)); } }
 
     protected override void Started2()
     {
         SpoolPlayer p = Player;
-        if (p.Home != null && p.Home != this && p.Home.Master != null)
-            SpoolLog.Warn("player " + Owner + " has a second Yarn Stash; the newest holds the Thread");
+        // BATCH 08:64 (Limit: 1): the menu drops the Stash as one spawns (SpoolServer.StashLimit); one that still comes
+        // (two orders in the same moment) is taken back, free as it was, and the first keeps the Thread. It used to stand
+        // beside the first, and the newest took the Thread.
+        SpoolStashBrain first = SpoolServer.FirstStash(Owner);
+        if (first != null && first != this)
+        {
+            Refused = true;
+            SpoolServer.StashRefused++;
+            SpoolLog.Warn("player " + Owner + " placed a second Yarn Stash; taken back, one a player");
+            Helper_Entitytools.Despawn(Master.Beingserver, false, "Limit");
+            return;
+        }
         p.Home = this;
         if (!p.Placed)
         {

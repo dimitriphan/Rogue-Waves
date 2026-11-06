@@ -96,6 +96,8 @@ public static class UloeData
     public const float PlugRange = 5f, PlugRadius = 4f, PlugCooldown = 0.5f, PlugSlack = 0.5f;
     public const float NodeBase = 2f, NodePerAura = 0.4f, NodeMax = 10f;
     public const float BankBase = 4f, BankPerUpgrade = 2f;
+    // BATCH 10:145: a safe socket (a Power Bank with Surge Protector) gives Plug In at most Light 8, not 12.
+    public const float SurgeBankMax = 8f;
     public const float LinkResend = 5f, LinkLife = 12f;    // how often cords, rays and rings are told again; when a client lets one go
 
     // ---------------------------------------------------------------- Blind and Illuminate (index = level - 1)
@@ -219,7 +221,7 @@ public static class UloeData
                 U(Glass, "Focal", 4, "Focal Point", "Burns through a whole line", "Focal_Base=1", "Redaura=350", "",
                     "Full damage to every foe on the line from the lens out to its range", "With Prism, the side beams burn through too"),
                 U(Glass, "Deathray", 5, "Death Ray", "Never cools down", "Deathramp_Base=0.12;Deathmax_Base=2.5;Deathidle_Base=3", "Redaura=3000", "",
-                    "+12% Damage per beam, at most +250%, kept from target to target", "It cools only after 3 s with nothing to beam",
+                    "+12% Damage per beam, at most +250%, kept from target to target", "It keeps its heat through up to 3 s with nothing to beam",   // BATCH 02_Data:222: agreed with "Never cools down"
                     "At full heat its target is Illuminated, level 3", "Takes the place of Burning Point's ramp"),
             }
         },
@@ -297,7 +299,7 @@ public static class UloeData
                     "A COLOUR button", "Your share of each payout from its strikes comes in the picked colour, at 70% of its total"),
                 U(Flood, "Searchlight", 4, "Searchlight", "Foes in its light are caught out", "Searchlight_Base=1;Searchslow_Base=0.2;Searchradius_Base=1.5;Searchbright_Base=5",
                     "Yellowaura=250;Redaura=100", "Stadium5,Lighthouse5",
-                    "Foes in its Light are Illuminated, level 1, level 2 once its Light out is 5 or more", "and slowed 20%, one slow a Flood Light",
+                    "Foes in its Light are Illuminated, level 1, level 2 once its Light out is 5 or more", "They are slowed 20%, one slow per Flood Light",   // BATCH 02_Data:300
                     "Its Light: its ring, its line, or 1.5 tiles round what it aims at"),
                 U(Flood, "Stadium", 5, "Stadium Lights", "Lights up the whole ground", "Stadium_Base=1;Stadiumradius_Base=5;Attackspeed_Multi=1", "Yellowaura=3000", "",
                     "100% of its Light to your buildings within 5 tiles", "AIM comes back, and what it aims at takes its Light twice",

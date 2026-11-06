@@ -77,7 +77,20 @@ public static partial class RWTest
                 foreach (RWChart.Node n in c.Rows[r]) { worst = Math.Max(worst, n.Links.Count); fewest = Math.Min(fewest, n.Links.Count); }
         }
         Check("CH every chart map links to 1 to " + RWChart.MaxLinks + " maps (" + charts + " seeds)", charts == 500 && fewest >= 1 && worst <= RWChart.MaxLinks, "fewest " + fewest + ", most " + worst);
+
+        // R4 P1-4: a friend's end screen takes only the host's campaign titles from the sync, never the stock's (RWCard.ClientEnd);
+        // U3 in the two-player test reads it on a real friend's screen.
+        string[] ourTitles = { WonTitle(2), WonTitle(RWChart.Rows), "MAP LOST" + RWCard.Separator + RWCard.Retries(2).ToUpperInvariant(), "MAP LOST" + RWCard.Separator + RWCard.Retries(1).ToUpperInvariant(), "CAMPAIGN LOST" };
+        string[] stockTitles = { "BASIN BREACHED", "BASIN REMAINS", "BASIN DROWNED", "" };
+        List<string> titleSlips = new List<string>();
+        foreach (string t in ourTitles) if (!RWCard.IsEndTitle(t)) titleSlips.Add("'" + t + "' not taken");
+        foreach (string t in stockTitles) if (RWCard.IsEndTitle(t)) titleSlips.Add("'" + t + "' taken");
+        Check("U3 a friend's end screen takes the campaign's titles from the sync, not the stock's", titleSlips.Count == 0 && WonTitle(2) == "MAP 2 OF 10 WON" && WonTitle(RWChart.Rows) == "CAMPAIGN WON",
+            titleSlips.Count == 0 ? string.Join(", ", ourTitles) : string.Join("; ", titleSlips.ToArray()));
     }
+
+    // The end screen's title for a won chart map of this row, as the host writes it (RWCampaign.MapEnd); U3 and T4 expect it.
+    static string WonTitle(int row) { return row >= RWChart.Rows ? "CAMPAIGN WON" : "MAP " + row + " OF " + RWChart.Rows + " WON"; }
 
     static void Line(string message) { RWLog.Info("TEST " + message); }
     static void Info(string name, string detail) { Line("INFO " + name + ": " + detail); }
@@ -90,8 +103,18 @@ public static partial class RWTest
         return ok;
     }
 
+    // R4 Leave: the vote to leave's own result, from its log line. B1's map vote (PR #103) writes RWVote.LastVote over it in
+    // the same call when the party stays ("only RW_Node_2_0", PC round 4 §3), so the flow's Leave line can't read it there.
+    public static string LeaveVote = "";
+    const string LeaveVoteLine = "] the vote to leave: ";
+
     static void OnLog(string condition, string stack, LogType type)
     {
+        if (type == LogType.Log && condition != null)
+        {
+            int at = condition.IndexOf(LeaveVoteLine, StringComparison.Ordinal);
+            if (at >= 0) LeaveVote = condition.Substring(at + LeaveVoteLine.Length);
+        }
         if (type != LogType.Exception && type != LogType.Error)
             return;
         errors++;
@@ -218,6 +241,7 @@ public static partial class RWTest
         Check("I1 this player's id is kept for a restart", kept != "" && RWUtil.ReadString("Metadata", "Player_Guid") == kept
             && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Device) == RWIdentity.Device(),
             (RWIdentity.Restored ? "put back from the last launch" : "first kept this launch") + ", session " + (Blm_Server.Instance.Localplayer != null ? Blm_Server.Instance.Localplayer.Sessionid.Value.ToString() : "-"));
+        Check("R4 VFX the boot loaded General_Default, which holds Vfx/Mobbase", RWBody.BootSeconds >= 0f && RWBody.Body() != null, "after " + RWUtil.F(RWBody.BootSeconds) + " s");
         if (RWMode.Pool.Count == 0) { Check("C0 chart pool", false, "no base maps found"); yield break; }
         try { RWSaveFuzz.Run(Check); } catch (Exception e) { Check("F the save fuzz ran", false, e.ToString()); }
         if (!Plan()) yield break;
