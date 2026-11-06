@@ -1348,10 +1348,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: multiplayer MVP board proposed** (Dimitri 06:35Z: "Draft an MVP board for multiplayer that shows
   accolades and failures of the players"): `docs/mode/MVP_BOARD.md`. A "SHIP'S LOG" board after each won map (after
   the leave vote, before the picks) and a Voyage board at the campaign's end, two or more players only; six accolades
-  and seven failures plus a fallback for each, everyone gets exactly one of each, an MVP in corner brackets under the one coral banner. Most of it reads
-  `Activeplayerdata` (kit `docs/16` §5), snapshotted per map; new: aura sent per map, unanswered votes, drops, and
-  leaks charged to the last hitter (an engine hook). Mockup `docs/concepts/art/mvp_board_map.png` from
-  `concept-tools/mvp_board_look.py`. Docs only, nothing compiled or run on the PC; no kit change, no pitfall.
+  and seven failures plus a fallback for each, everyone gets exactly one of each, an MVP in corner brackets under the
+  one coral banner. Most of it reads `Activeplayerdata` (kit `docs/16` §5), snapshotted per map; new: aura sent per
+  map, unanswered votes, drops, and leaks charged to the last hitter (an engine hook). Mockup
+  `docs/concepts/art/mvp_board_map.png` from `concept-tools/mvp_board_look.py`. Docs only, nothing compiled or run on
+  the PC; no kit change, no pitfall.
 
 ### Decisions
 

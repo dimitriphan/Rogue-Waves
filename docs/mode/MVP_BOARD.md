@@ -16,7 +16,7 @@ icons and no game pictures; Inter stands in for the game's font, as in the chart
 | --- | --- | --- |
 | **Map board** ("SHIP'S LOG") | A won map's leave vote passes (`20_Vote.cs` "leaving"): the board first, then the Direction picks and the next-map vote | every machine, each player's own card marked |
 | **Map board, late** | A won map that ends in a bonus Tide instead (it still counts as won and saves what the bonus Tides earned, `06_Campaign.cs:302-305`): the same board over the stock end screen (`~untested: drawing over the end screen~`) | every machine |
-| **Voyage board** ("THE VOYAGE") | The campaign's end. Map 10 won: its map board, then the Voyage board, then the stock win path (`20_Vote.cs:659-663` goes straight to `Leave()`, no picks). The last retry lost: the Voyage board alone, over the end screen | every machine; the run's totals |
+| **Voyage board** ("THE VOYAGE") | The campaign's end. Map 10 won: its map board, then the Voyage board, then the stock win path (`20_Vote.cs:664-668` goes straight to `Leave()`, no picks). The last retry lost: the Voyage board alone, over the end screen | every machine; the run's totals |
 | **On a key** | During any break, the last map board again (`~Tab held~`), so a friend who blinked can read it | the one who pressed |
 
 - Multiplayer only: with one player in the map the board is skipped (`~solo: no board~`). Alone, the stock end screen
@@ -107,7 +107,7 @@ same hand-out (§4) runs over the Voyage list. Its team line: maps won, retries 
 The host runs this once per board; every machine draws what the host sends (§6), so all see the same board.
 
 1. **Values.** For each title `t` and player `p`, a count `v(t, p)` from §3. A player can take a title only if
-   `v(t, p) > 0`. Unsinkable: `p` can take it only with no vessel deaths; its value is `Kills + 1`.
+   `v(t, p) > 0`. Unsinkable: its value is `Kills + 1` for a player with no vessel deaths and 0 for anyone else.
 2. **Accolades.** While some player has no accolade: among every pair (a title not yet given on this board, a player
    without an accolade who can take it), pick the one with the largest share `v(t, p) / total(t)`, where `total(t)`
    sums `v(t, ·)` over all players (above 0 whenever someone can take it). Give it. Ties: the larger `v(t, p)`, then
@@ -145,8 +145,8 @@ fit at 1080p is for the PC.
 
 | Piece | Where | Compiles here | Needs the PC |
 | --- | --- | --- | --- |
-| Snapshot `Activeplayerdata` per player at a map's start and win; board the difference | new `27_Board.cs`, called from `14_Run.cs` checkpoints | yes | whether `Activeplayer` passes through 0 on the boat |
-| Tallies: `Sent` per map, unanswered votes, drops; for the Voyage, winning-side votes, Pure Aura spent, map MVPs | `14_Run.cs` `RWPlayer`, `20_Vote.cs`, `09_Rejoin.cs`, `18_Shop.cs` | yes | no |
+| Snapshot `Activeplayerdata` per player at a map's start and when the board is drawn (§2); board the difference | new `27_Board.cs`, called from `14_Run.cs` checkpoints | yes | whether `Activeplayer` passes through 0 on the boat |
+| Tallies: `Sent` per map, unanswered votes, drops; for the Voyage, winning-side votes, Pure Aura spent, map MVPs | `14_Run.cs` `RWPlayer`, `20_Vote.cs`, `09_Rejoin.cs`, `17_Cardinals.cs`, `18_Shop.cs` | yes | no |
 | A fairer kill credit: sum each player's things' `Damagedone` (the attacker's damage dealt, proven, kit `docs/15` §16), read each break and when a thing despawns | `27_Board.cs` | yes | yes |
 | Leaks: a foe reaching the core, charged to its last hitter | a hook where the core takes damage (kit `15` §16 `Lasthit`; engine point to read) | yes | yes, and which foes count |
 | `Deaths`: which of a player's things it counts | read `Game_Entity.cs:389-395` on the decompile | no | a look at the numbers after a round |
