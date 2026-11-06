@@ -673,14 +673,23 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      each freeze a whole number of the 144 Hz screen's refreshes, on the first frame or two that draw the new dialog;
      the map cards' 13.9 ms frame is one missed refresh, and it comes with the large picture alone. The render side is
      the lead (what the mod's dialog draws that the stock one doesn't), not the text.
-176. **A unit's stock MOVE swapped for a renamed copy stops it walking** (2026-11-06) → Spool's Thread Head points its
-     `Move` link's `Ref` at `Command_Mob_Spoolhead_Move`, a clone of `Command_Move` styled None so its button is not
-     drawn (B16, `SpoolHeadBrain.HideMove`, `Spool/Code/09_Head.cs`), and keeps walking by `ModKitUtil.MoveTo` on that
-     link. With the whole pack loaded it never moved again (RETURN, SPOT, the hand-over, the walk back after a comeback;
-     the same 4 fails in each of two runs). With Spool alone `Command_Move` is not loaded when Spool builds its content
-     ("Command_Move not loaded: the Thread Head keeps its stock MOVE button"), so the swap never happened and every
-     vessel self-test, each run alone, passed (`docs/reports/PC_ROUND6_2026-11-06.md` §3). Why the renamed command won't
-     walk is not traced (its id or name is the first suspect), nor which part makes `Command_Move` load first → keep a
-     unit's own stock `Command_Move` on the link that walks it and hide its button some other way, or prove a renamed
-     copy walks in a Spool-only build with the copy forced on; and run each vessel's self-test once a round with the
-     pack loaded as well, since a vessel alone can take paths the pack never takes.
+176. **An update that runs nothing can still leave a unit unable to walk** (2026-11-06; traced the same day) →
+     `Helper_Entitytools.Updatecommand(master, link, json, server, run)` sets `master.State` to the link's name whenever
+     that link's `Statechange` is on, even with `run` false; only with `run` does it call the AIs' `Command`, and their
+     `Action` only when the state changed. `Entity_Ai_Mob_Movement` makes its "Move" link with `Statechange` on and
+     starts a walk only in `Action("Move")`. So B16's `Updatecommand(Master, "Move", "", false, false)`
+     (`SpoolHeadBrain.HideMove`, `Spool/Code/09_Head.cs`) left the Thread Head in state "Move" with no walk, and every
+     later Move (`ModKitUtil.MoveTo`: the same state, so no `Action`) never started one: with the whole pack loaded
+     RETURN, SPOT, the hand-over and the walk back after a comeback failed, the same 4 fails in each of two runs (PC
+     round 6, `docs/reports/PC_ROUND6_2026-11-06.md` §3). With Spool alone the update never ran: B16 waited for its
+     renamed copy of `Command_Move` (`Command_Mob_Spoolhead_Move`, styled None), and `Command_Move` was not yet loaded
+     when Spool built its content. The copy was not the cause and hid nothing: the engine reads a link's `Ref` only when
+     a player presses it (`Command_ServerRpc`), and `Updatecommand` never changes the synced `Commandid` the buttons are
+     drawn from (read in the game's IL) → to sync a command without touching the state, switch its `Statechange` off
+     around the update and back after; to take a unit's button away, set its link's `Controllable` false and sync it
+     that way (the selection panel and `Game_Ui` skip such links, and a player's press is refused), with no copy of the
+     command. Stock links with `Statechange` on: "Move" and "Sell"; `Buildoption*`, `Upgrade`, `Upgradeoption*` and
+     every link the pack makes are off, so the pack's other sync-only updates are safe. `HideMove` does both, again
+     whenever the link is Controllable (compiled, not yet run in game: the self-test's "its stock MOVE has no button"
+     line and the RETURN and SPOT lines prove it). Run each vessel's self-test once a round with the pack loaded as well
+     (Spool's picked and DONE lines now say which), since a vessel alone can take paths the pack never takes.

@@ -367,6 +367,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: PC round 6 runs #163** (Dimitri: "Ok"): cards reuse their name and badge, but the freeze is the render
   thread's and comes by chance (dialog 83/1, 84/0); Spool's Thread Heads can't walk with the pack loaded (B16's renamed
   MOVE; alone 230/0); Uloe 220/0 (`PC_ROUND6_2026-11-06.md`). His PC put back. Test-only frame split; pitfalls #175-#176.
+- **2026-11-06: Spool's Thread Heads walk with the pack loaded** (PC round 6's bug): B16's hide set the unit's state to
+  "Move" with no walk; now MOVE's link is not Controllable, synced with Statechange off, no renamed copy; the self-test
+  says alone or with the pack. Compiled here, not run on the PC. Pitfall #176 traced, no kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1587,6 +1590,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Spool predates B16). Uloe 220/0/0. COLOUR's panel missed again (BASIN DROWNED over it); weather with foes not run.
   His PC put back: Mods hash for hash, save, registry but Unity's session lines; scope copy untouched. Next free
   numbers: kit chapter 25, kit 1.16, pitfall #177 (#176 this one, #175 updated).
+
+- **2026-11-06: the Thread Heads walk with the whole pack loaded** (PC round 6's real bug, `PC_ROUND6_2026-11-06.md`
+  §3). Read in the game's IL: `Updatecommand(master, link, json, server, run)` sets `State` to the link's name whenever
+  the link's `Statechange` is on, even with `run` false; `Entity_Ai_Mob_Movement` makes "Move" with `Statechange` on and
+  walks only in `Action("Move")`, which runs only on a state change. B16's `Updatecommand(Master, "Move", "", false,
+  false)` left the Thread Head in "Move" with no walk, so every later `ModKitUtil.MoveTo` started none; Spool alone never
+  ran it (its renamed copy of `Command_Move` wasn't made). The copy hid nothing either: the engine reads `Ref` only on a
+  player's press and the synced `Commandid` never changes. `SpoolHeadBrain.HideMove` now sets the link's `Controllable`
+  false (no button: `Game_Selection`/`Game_Ui` skip it; a player's MOVE refused) and syncs it with `Statechange` off;
+  `Command_Mob_Spoolhead_Move` removed. Spool's self-test gains "its stock MOVE has no button but stays for the walk" and
+  says on its picked and DONE lines whether Spool ran alone or with the pack (`ModKitPack.Registry`'s other parts). Kit
+  `docs/05` notes the state side of `Updatecommand`; pitfall #176 rewritten as traced. Compiled here (Spool release,
+  `SPOOL_SELFTEST`, `SPOOL_SELFTEST,SPOOL_SHOTS`, editor); not run on the PC. Next free numbers: kit chapter 25, kit
+  1.16, pitfall #177 (#176 updated).
 
 ### Decisions
 

@@ -18,6 +18,20 @@ public static partial class SpoolSelfTest
 
     static void Log(string m) { SpoolLog.Info("TEST " + m); }
 
+    // Which other parts of the pack share this launch: a vessel alone can take paths the pack never takes (PC round 6, the
+    // Thread Heads stood still only with the pack loaded, pitfall #176). On the picked and DONE lines, so the PC summary has it.
+    static string PackNote()
+    {
+        List<string> others = new List<string>();
+        foreach (Transform c in ModKitPack.Registry.transform)
+        {
+            string[] p = c.name.Split(' ');   // a part's entry is "<Part> <version> kit <kit>"; others are one-per-pack jobs (Mark)
+            if (p.Length >= 4 && p[2] == "kit" && p[0] != SpoolData.Part)
+                others.Add(c.name);
+        }
+        return others.Count == 0 ? "Spool alone" : "with the pack: " + string.Join(", ", others.ToArray());
+    }
+
     // Once the map has ended under the scenario nothing it measures is the game's any more (PC round 5's Spool map drowned
     // mid-run): a fail from then on is a SETUP that says so.
     static bool Check(string name, bool ok, string detail = "")
@@ -107,7 +121,7 @@ public static partial class SpoolSelfTest
             {
                 macro.Selectcharacter(SpoolData.Hero);
                 node = PickNode();
-                Log("picked Spool and map node '" + node + "'");
+                Log("picked Spool and map node '" + node + "'; " + PackNote());
                 if (node != "")
                     Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(node, false, default(ServerRpcParams));
                 step = now;
@@ -217,6 +231,27 @@ public static partial class SpoolSelfTest
     }
 
     static string F(float v) { return v.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture); }
+
+    // B16: the Thread Head's "Move" link is there for its walks but not Controllable, on the host and in the synced list
+    // every machine draws its buttons from, and its Statechange is back on (pitfall #176). The walks are the RETURN and
+    // SPOT checks.
+    static bool MoveHidden(SpoolHeadBrain h, out string detail)
+    {
+        Link_Command move;
+        bool has = h.Master.Commandlistserver.TryGetValue(SpoolData.MoveLink, out move) && move != null;
+        string synced = "";
+        bool syncedOk = true;
+        int listed = 0;
+        foreach (Link_Commandref r in h.Master.Commandlist)
+            if (r.Name.ToString() == SpoolData.MoveLink)
+            {
+                synced += (listed++ > 0 ? "/" : "") + r.Controllable;
+                syncedOk &= !r.Controllable;
+            }
+        detail = "hidden " + h.MoveHides + "x, link " + (has ? "controllable " + move.Controllable + ", statechange " + move.Statechange : "missing")
+            + ", synced " + (listed > 0 ? synced : "none") + ", state " + ModKitUtil.State(h.Master);
+        return has && h.MoveHides > 0 && !move.Controllable && move.Statechange && listed == 1 && syncedOk;
+    }
     static string Vec(Vector3 v) { return "{\"x\":" + F(v.x) + ",\"y\":" + F(v.y) + ",\"z\":" + F(v.z) + "}"; }
 
     // The title the game's panel shows for a building, read as Game_Ui does: the client's skin entry's Displayname, else
@@ -486,7 +521,7 @@ public static partial class SpoolSelfTest
         SpoolStashBrain stash = got[0] as SpoolStashBrain;
         if (!Check("build the Yarn Stash", stash != null, "at " + at))
         {
-            Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups + " (no Stash: nothing else can be tested)");
+            Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups + " (no Stash: nothing else can be tested); " + PackNote());
             phase = 9;
             yield break;
         }
@@ -784,6 +819,9 @@ public static partial class SpoolSelfTest
                 Check("Thread Head costs Red 40", Mathf.Abs(red - Res(owner, "Redaura") - 40f) < 0.01f, "spent " + F(red - Res(owner, "Redaura")));
                 Check("its token is gone, the Thread Head guards the token's tile", Beings(SpoolData.HeadToken) == 0 && ModKitUtil.Flat(h.Spot, at) < 0.6f, "tokens " + Beings(SpoolData.HeadToken) + ", spot " + F(ModKitUtil.Flat(h.Spot, at)));
                 Check("Thread Head has SPOT, RETURN and upgrades", h.Master.Commandlistserver.ContainsKey(SpoolData.SpotLink) && h.Master.Commandlistserver.ContainsKey(SpoolData.ReturnLink) && h.Master.Commandlistserver.ContainsKey("Upgrade"));
+                string moveDetail;
+                bool moveHidden = MoveHidden(h, out moveDetail);
+                Check("its stock MOVE has no button but stays for the walk (B16)", moveHidden, moveDetail);
                 Check("Thread Head stats", Mathf.Approximately(ModKitUtil.MaxHealth(h.Master), 60f) && Mathf.Approximately(ModKitUtil.Stat(h.Master, "Speed", 0f), 2.25f) && h.Cap == 20,
                     F(ModKitUtil.MaxHealth(h.Master)) + " health, speed " + F(ModKitUtil.Stat(h.Master, "Speed", 0f)) + ", carries " + h.Cap);
             }
@@ -1368,7 +1406,7 @@ public static partial class SpoolSelfTest
         Log("counts: dropped " + SpoolServer.Dropped + ", picked " + SpoolServer.Picked + ", delivered " + SpoolServer.Delivered + ", tufts shown " + SpoolClient.TuftsShown
             + ", flights " + SpoolClient.Flights + ", heads swapped " + SpoolServer.Swapped + ", came back " + SpoolServer.Returned + ", menu changes " + hero.MenuChanges);
         freeze = false;
-        Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups);
+        Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups + "; " + PackNote());
         phase = 9;
     }
 }

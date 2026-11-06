@@ -40,18 +40,24 @@ public class SpoolHeadBrain : SpoolBuilding
             Walk(null, Spot, 0f);
     }
 
-    // The stock MOVE's button goes, its command stays for the walk (B16): the link points at the None-styled copy, and the
-    // update sends the new command id to every machine. Looked at again on each think, as the command may come later.
-    public bool MoveHidden;
+    // The stock MOVE's button goes, its command stays for the walk (B16, pitfall #176): the link is no longer Controllable,
+    // so no machine draws its button (the selection panel skips such links) and a player's MOVE is refused; the brain still
+    // walks by it. The update that syncs this runs with Statechange off: with it on, even an update that runs nothing sets
+    // the unit's state to "Move" without starting the walk, and every later Move (no state change) never starts one.
+    // Looked at again on each think, as the movement AI makes the command when it spawns, and hidden again if it comes back.
+    public int MoveHides;
 
     void HideMove()
     {
         Link_Command move;
-        if (MoveHidden || SpoolContent.HiddenMove == null || Master.Commandlistserver == null || !Master.Commandlistserver.TryGetValue(SpoolData.MoveLink, out move) || move == null)
+        if (Master.Commandlistserver == null || !Master.Commandlistserver.TryGetValue(SpoolData.MoveLink, out move) || move == null || !move.Controllable)
             return;
-        move.Ref = SpoolContent.HiddenMove;
-        Helper_Entitytools.Updatecommand(Master, SpoolData.MoveLink, "", false, false);
-        MoveHidden = true;
+        bool statechange = move.Statechange;
+        move.Controllable = false;
+        move.Statechange = false;
+        try { Helper_Entitytools.Updatecommand(Master, SpoolData.MoveLink, "", false, false); }
+        finally { move.Statechange = statechange; }
+        MoveHides++;
     }
 
     protected override void Upgraded(SpoolData.Upg def)
