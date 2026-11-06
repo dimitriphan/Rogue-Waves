@@ -5,7 +5,7 @@ stock elite a map can't load is replaced by the next one outside the campaign's 
 no longer by one of the four due on a later map (pitfall #146). Pearl Oyster pays from the moment it is held, also when a
 Wreck gives it after a buy on that map (`RWTrinkets.OnGain`; gaps check "one given after a buy pays from the next Tide").
 
-## 0.1.0-dev, later (2026-11-06): the MVP board (compiled here, not yet run in game)
+## 0.1.0-dev, later (2026-11-06): the MVP board (MB1-MB11 pass on the PC, `docs/reports/PC_FULL_2026-11-06.md`)
 
 Dimitri: one title per player, "the most notable thing", failures as common as accolades; defaults for the rest
 (`docs/mode/MVP_BOARD.md`, §4 the rule, §6 the pieces).
@@ -18,10 +18,10 @@ Dimitri: one title per player, "the most notable thing", failures as common as a
 - `28_BoardView.cs` (every machine): reads its own vessel's lines, draws the cards with `26_ChartView.cs`'s pieces
   (made public), Continue by click, Enter, Space or the pad's south button; Tab replays the last board.
 - Self-tests: MB1-MB8 at boot (`90_Board.cs`), MB9-MB11 in `93_TwoPlayers.cs` after both leave.
-- For the PC: MB1-MB11 pass; the look at 1080p with four cards; do foes hit the Basin as "Hurt" with themselves as
-  `From` (leaks show in the caption); does `Activeplayerdata` reset on the boat (a card's numbers look like one map's);
-  which things `Deaths` counts (Driftwood); the late board over the end screen; Tab replay; the pad's south button;
-  Continue after a rejoin keeps the run's totals.
+- On the PC (full round, 2026-11-06): MB1-MB11 pass on one and two machines; leaks reach the caption ("20 foes slipped
+  through"); every player's numbers stand at 0 at each map's start, so a card holds one map's. Still open: the look at
+  1080p with four cards, which things `Deaths` counts (Driftwood), the late board over the end screen, Tab replay, the
+  pad's south button, the Voyage totals after a relaunch's Continue. Log lines for the caption and each map's start.
 
 ## 0.1.0-dev, later (2026-11-06): the menu buttons' wobble (self-test 168/0 on the PC, `Wobble_round1`)
 
@@ -37,7 +37,7 @@ Dimitri: one title per player, "the most notable thing", failures as common as a
   pictures of a button whose hover or click grows it (`Blu5_Buttonanim_Size`) while it is hovered or not at scale 1. A still
   P2 passes only if its control saw the flicker: else SETUP on half pixels, INFO when the game's places are whole already.
 
-## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
+## 0.1.0-dev, later (2026-11-06): sea chart navigation (CV1-CV6, CV9-CV12 pass on the PC, `docs/reports/PC_FULL_2026-11-06.md`)
 
 Dimitri: "Go" on `docs/mode/CHART_NAVIGATION.md`, built with its §7 defaults (`docs/reports/CHART_BUILD_2026-11-06.md`).
 - Stops: `RWChart` places one Cove (rows 4, 9) and one Wreck (rows 2-3, 6-8) per stretch from a second stream; `S` in the
@@ -49,6 +49,9 @@ Dimitri: "Go" on `docs/mode/CHART_NAVIGATION.md`, built with its §7 defaults (`
   Pointer and key through `UnityEngine.InputSystem`; the shade blocks clicks; the view hides under any other dialog.
 - Self-tests: CV1, CV3, CV9 at boot; CV10-CV12 (`90_Stops.cs`); CV2, CV4, CV5 in the flow. Older tests run with
   `StopsOnNew` off. Save fuzz F5 covers the `S` mark. PC list: the report's §4.
+- On the PC (chart round 1 and the full round, 2026-11-06): the chart view sits beside the after-win vote; a client's
+  banner names the island. To fix: the mini chart lies under the game's lobby line, player card and right-hand buttons,
+  and the vote's cards show a small glyph but no map picture or name. By hand: M key, island clicks, 1080p, a pad.
 
 ## 0.1.0-dev, later (2026-11-06): round 4 and batch fixes (compiled, not yet run in game)
 
