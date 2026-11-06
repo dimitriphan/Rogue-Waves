@@ -8,7 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
-| `CHART_NAVIGATION_2026-11-06.md` | 2026-11-06 | Why the sea chart confuses (the vote's cards sit apart from the chart, the boat frames one row, no legend or progress) and the proposal: a whole-chart view at every vote and on a key, a banner and mini chart on the boat (`docs/mode/CHART_NAVIGATION.md`, mockups); docs only, not built |
+| `CHART_NAVIGATION_2026-11-06.md` | 2026-11-06 | Why the sea chart confuses (the vote's cards sit apart from the chart, the boat frames one row, no legend or progress) and the proposal: a whole-chart view at every vote and on a key, a banner and mini chart on the boat, a Cove (rest) and a Wreck (treasure) in each stretch (Dimitri's pick) (`docs/mode/CHART_NAVIGATION.md`, mockups); docs only, not built |
 | `STOCK_TRINKETS_2026-11-05.md` | 2026-11-05 | The base game Cardinals the shop sells, split: 13 Trinkets (held once by each buyer, on their own things) and 16 Cardinals, each with its reason; how each kind works, balance, three open questions, the PC list (§8 adds Tidal Mend and Abyss, 2026-11-06); compiled, not run on the PC |
 | `WEATHER_LOOK_2026-11-05.md` | 2026-11-05 | A look per weather, built (Dimitri's pick): Rising Water light mist, Quickening Current storm grey, Nesting Ground dusk, calm maps on their own light, set by every machine after its intro with a 4 s fade; self-test W4; the reviews' fixes; compiled here, the check list for its PC round |
 | `OPEN_DECISIONS_2026-11-05c.md` | 2026-11-05 | The third decisions page: whether a lighting look ships, with the PC's pictures; answered (a), a look per weather |

@@ -292,9 +292,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
   (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
   undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
-- **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... the spotlight ... Slay the Spire 2"): a
-  whole-chart view at every vote and on a key, a banner and mini chart on the boat (`docs/mode/CHART_NAVIGATION.md`,
-  `docs/reports/CHART_NAVIGATION_2026-11-06.md`). Not built: his go, and whether to add new kinds of island, first.
+- **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
+  stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
+  (`docs/mode/CHART_NAVIGATION.md`). Docs only; not built until his go.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1205,9 +1205,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   row, the boat sails by itself, no legend or progress) and proposed a chart view in the manner of Slay the Spire's map
   screen: the whole chart on one panel beside the lettered cards at every vote, clickable lit islands, a hover card
   with where each island leads, a key (~M~) to open it any time, a banner and a mini chart on the boat, a ring on the
-  voted island; the chart's generator, seeds, saves, the vote's channel and the 3D boat unchanged. Mockups from the new
-  `concept-tools/sea_chart_view.py`. Code it implies and checks CV1-CV8 in `CHART_NAVIGATION.md` §5 and §7. Asked him
-  whether to add new kinds of island (recommended: not yet). Docs only; nothing ran on the PC. No kit change, no pitfall.
+  island it sails to (clients read the winner from the boat's heading: in the chart's name it would re-warp the party).
+  Asked about new kinds of stop, he picked "Add rest and treasure stops" (02:28Z): a Cove (no map, ~a retry back~,
+  rows ~4 and 9~; a Cove's win asks where to sail after it in the same map) and a Wreck (~one row harder~, ~a Trinket
+  of 3~ each, rows ~2-3 and 6-8~), from a second random stream so a seed's maps stay the same; old campaigns keep
+  charts without stops; difficulty follows the row. Mockups from the new `concept-tools/sea_chart_view.py`. Code and
+  checks CV1-CV12 in `CHART_NAVIGATION.md` §6 and §8. Reviewer's nine findings fixed. Docs only; nothing ran on the
+  PC. No kit change, no pitfall.
 
 ### Decisions
 

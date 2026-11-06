@@ -3,6 +3,10 @@ roguelike map screen reads, drawn from the same generator the mod uses (sea_char
 
     python3 concept-tools/sea_chart_view.py   -> docs/concepts/art/chart_view_vote.png, chart_view_boat.png
 
+Rest and treasure stops (Dimitri's pick, 2026-11-06): `stops()` is the proposed placement rule, a second xorshift32
+stream so the chart's own draws, and so every existing chart line, stay the same; the build ports it to sea_chart.py
+and 03_Chart.cs.
+
 Not game art: plain shapes in the docs/STYLE.md palette and the mode's 12 x 12 temporary icons, to agree the layout on.
 Map names are the plan names tidied (the game shows each map's own display name).
 """
@@ -24,8 +28,29 @@ WEATHER_LINE = {sc.RISING_WATER: "the water climbs each Tide", sc.QUICKENING_CUR
                 sc.NESTING_GROUND: "a halberd nest grows near the foes"}
 
 SEED = 20261009
-ROUTE = [0, 1, 1]          # harbour, row 1 col 1, row 2 col 1: two maps won, the party picks map 3
-HOVER = 1                  # the choice under the pointer (or the card with pad focus)
+ROUTE = [0, 0, 0, 0]       # harbour, then rows 1-3 col 0 (row 2 was a Wreck): the party picks row 4, a Cove or a map
+HOVER = 0                  # the choice under the pointer (or the card with pad focus): the Cove
+RETRIES = 2                # one spent, so the Cove's retry matters
+STOPS_SALT = 0x5EA57095
+
+
+def stops(rows, seed):
+    """Marks one Cove in each stretch's row before its Breaker (rows 4 and 9) and one Wreck in each stretch's middle
+    (rows 2-3 and 6-8), from a second stream. A Cove plays no map; a Wreck keeps its map and loses its weather."""
+    rng = sc.Rng(seed ^ STOPS_SALT)
+    for r in (4, 9):
+        rows[r][rng.below(len(rows[r]))]["stop"] = "cove"
+    for lo, span in ((2, 2), (6, 3)):
+        r = lo + rng.below(span)
+        n = rows[r][rng.below(len(rows[r]))]
+        n["stop"], n["weather"] = "wreck", sc.CALM
+    return rows
+
+
+def chest(d, x, y, s=1.0, a=1.0):
+    d.rectangle([x - 7 * s, y - 3 * s, x + 7 * s, y + 6 * s], fill=blend((0x8A, 0x5A, 0x3A), a), outline=blend(DEEP, a))
+    d.rectangle([x - 7 * s, y - 7 * s, x + 7 * s, y - 3 * s], fill=blend((0xA8, 0x72, 0x48), a), outline=blend(DEEP, a))
+    d.rectangle([x - 1.5 * s, y - 4 * s, x + 1.5 * s, y], fill=blend(SAND, a))
 
 
 def font(size, bold=False):
@@ -73,18 +98,18 @@ def chart_panel(im, box, rows, route, hover, mini=False, sail=None):
     d.rounded_rectangle(box, 14, fill=SWELL, outline=FOAM, width=2)
     f_h, f_s, f_n, f_t = (font(13, True), font(10), font(9, True), font(9)) if mini else (font(22, True), font(14), font(13, True), font(12))
     head = 34 if mini else 64
-    legend_h = 0 if mini else 128
+    legend_h = 0 if mini else 154
     d.text((x0 + 16, y0 + 10), "SEA CHART", font=f_h, fill=FOAM)
     here_row = len(route) - 1
     d.text((x0 + (120 if mini else 170), y0 + (13 if mini else 16)),
-           ("Map %d of 10" % (here_row + 1)) if mini else
-           "Map %d of 10   Stretch %d   Retries " % (here_row + 1, 1 if here_row < 5 else 2), font=f_s, fill=FOAM)
+           ("Row %d of 10" % (here_row + 1)) if mini else
+           "Row %d of 10   Stretch %d   Retries " % (here_row + 1, 1 if here_row < 5 else 2), font=f_s, fill=FOAM)
     rx = x1 - 50 if mini else x0 + 418
     for i in range(3):
         cx = rx + i * (12 if mini else 18)
         cy = y0 + (19 if mini else 24)
         rr = 4 if mini else 6
-        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=TEAL, outline=FOAM)
+        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], fill=TEAL if i < RETRIES else SWELL, outline=FOAM)
     if not mini:
         d.text((x0 + 16, y0 + 40), "Seed %d" % SEED, font=f_t, fill=MUTED)
 
@@ -145,8 +170,11 @@ def chart_panel(im, box, rows, route, hover, mini=False, sail=None):
             x, y = P(n)
             rad = (7 if mini else 15) if n["row"] else (9 if mini else 18)
             a = 1.0 if key in reach or key in sailed else 0.28
+            stop = n.get("stop")
             if n["row"] == 0:
                 fill = TEAL
+            elif stop == "cove" and key not in sailed:
+                fill = FOAM
             elif key in sailed:
                 fill = TEAL
             elif n["breaker"]:
@@ -165,13 +193,19 @@ def chart_panel(im, box, rows, route, hover, mini=False, sail=None):
                     d.text((x, y - 8), "H", font=font(14, True), fill=FOAM, anchor="ma")
                 elif key in sailed:
                     d.line([(x - 6, y), (x - 2, y + 5), (x + 7, y - 6)], fill=FOAM, width=3)
+                elif stop == "cove":
+                    d.text((x, y - 10), "\u2668", font=font(17, True), fill=blend(TEAL, a), anchor="ma")
                 else:
                     d.text((x, y - 7), str(n["label"]), font=f_n, fill=blend(DEEP, a), anchor="ma")
+                if stop == "wreck" and key not in sailed:
+                    chest(d, x + rad + 2, y - rad - 2, 1.0, a)
                 if n["weather"] and key not in sailed:
                     ic = icon(WEATHER_ICON[n["weather"]], 2)
                     if a < 1:
                         ic.putalpha(ic.getchannel("A").point(lambda v: int(v * 0.35)))
                     im.paste(ic, (int(x + rad - 6), int(y - rad - 14)), ic)
+            elif stop == "wreck" and key not in sailed and a == 1:
+                d.rectangle([x + 5, y - 10, x + 11, y - 5], fill=(0x8A, 0x5A, 0x3A), outline=DEEP)
             elif n["weather"] and key not in sailed and a == 1:
                 d.rectangle([x + 5, y - 10, x + 10, y - 5], fill=TEAL if n["weather"] == 1 else FOAM if n["weather"] == 2 else CORAL, outline=DEEP)
             if key in choices and sail is None and not mini:
@@ -197,7 +231,8 @@ def chart_panel(im, box, rows, route, hover, mini=False, sail=None):
         items = [("disc", SAND, "Map (number = Danger)"), ("breaker", CORAL, "Breaker: closes a stretch"),
                  ("disc", TEAL, "Sailed / harbour"), ("ring", FOAM, "Can sail to next"),
                  ("icon", "RisingWater", "Rising Water"), ("icon", "Quickening", "Quickening Current"),
-                 ("icon", "Nesting", "Nesting Ground"), ("fade", SAND, "Out of reach from here")]
+                 ("icon", "Nesting", "Nesting Ground"), ("fade", SAND, "Out of reach from here"),
+                 ("cove", FOAM, "Cove: no map, rest"), ("wreck", SAND, "Wreck: harder, pays a Trinket")]
         for i, (kind, c, text) in enumerate(items):
             cx = x0 + 34 + (i % 2) * 270
             cy = ly + 22 + (i // 2) * 26
@@ -209,6 +244,12 @@ def chart_panel(im, box, rows, route, hover, mini=False, sail=None):
             elif kind == "ring":
                 d.ellipse([cx - 13, cy - 13, cx + 13, cy + 13], outline=c, width=2)
                 d.ellipse([cx - 8, cy - 8, cx + 8, cy + 8], fill=SAND, outline=DEEP, width=2)
+            elif kind == "cove":
+                d.ellipse([cx - 9, cy - 9, cx + 9, cy + 9], fill=c, outline=DEEP, width=2)
+                d.text((cx, cy - 9), "\u2668", font=font(13, True), fill=TEAL, anchor="ma")
+            elif kind == "wreck":
+                d.ellipse([cx - 8, cy - 8, cx + 8, cy + 8], fill=c, outline=DEEP, width=2)
+                chest(d, cx + 9, cy - 8, 0.8)
             elif kind == "fade":
                 d.ellipse([cx - 8, cy - 8, cx + 8, cy + 8], fill=blend(c, 0.28), outline=blend(DEEP, 0.28), width=2)
             else:
@@ -231,6 +272,14 @@ def dash(d, a, b, col, w, on=8, off=6):
         t += on + off
 
 
+COVE_LINE = "Rest: a retry back (%d of 3 to %d of 3). No map."
+WRECK_LINE = "Plays one row harder. Pays each player a Trinket."
+
+
+def title(n):
+    return "The Cove" if n.get("stop") == "cove" else nice(n["plan"]) + (" (Wreck)" if n.get("stop") == "wreck" else "")
+
+
 def card(im, box, letter, n, focus):
     d = ImageDraw.Draw(im)
     x0, y0, x1, y1 = box
@@ -238,14 +287,24 @@ def card(im, box, letter, n, focus):
     d.rounded_rectangle([x0 + 12, y0 + 12, x0 + 40, y0 + 40], 6, fill=FOAM if focus else TEAL, outline=DEEP)
     d.text((x0 + 26, y0 + 15), letter, font=font(17, True), fill=DEEP, anchor="ma")
     d.rectangle([x0 + 54, y0 + 14, x0 + 102, y0 + 62], fill=DEEP, outline=MUTED)
-    if n["weather"]:
+    stop = n.get("stop")
+    if stop == "cove":
+        d.text((x0 + 78, y0 + 20), "\u2668", font=font(28, True), fill=TEAL, anchor="ma")
+    elif stop == "wreck":
+        chest(d, x0 + 78, y0 + 40, 2.0)
+    elif n["weather"]:
         ic = icon(WEATHER_ICON[n["weather"]], 3)
         im.paste(ic, (x0 + 60, y0 + 20), ic)
     else:
         d.text((x0 + 78, y0 + 30), "map", font=font(10), fill=MUTED, anchor="ma")
-    d.text((x0 + 116, y0 + 14), nice(n["plan"]), font=font(17, True), fill=FOAM)
-    d.text((x0 + 116, y0 + 40), "Danger %d" % n["label"], font=font(13), fill=SAND)
-    if n["weather"]:
+    d.text((x0 + 116, y0 + 14), title(n), font=font(17, True), fill=FOAM)
+    d.text((x0 + 116, y0 + 40), "No map" if stop == "cove" else "Danger %d" % n["label"], font=font(13), fill=SAND)
+    if stop == "cove":
+        d.text((x0 + 14, y0 + 74), COVE_LINE % (RETRIES, min(3, RETRIES + 1)), font=font(12), fill=FOAM)
+        d.text((x0 + 14, y0 + 92), "Then the party votes where to sail after it, before leaving this map.", font=font(12), fill=FOAM)
+    elif stop == "wreck":
+        d.text((x0 + 14, y0 + 74), WRECK_LINE, font=font(12), fill=FOAM)
+    elif n["weather"]:
         d.text((x0 + 14, y0 + 74), "%s: %s." % (sc.WEATHERS[n["weather"]], WEATHER_LINE[n["weather"]]), font=font(12), fill=FOAM)
         d.text((x0 + 14, y0 + 92), "+1 Pure Aura each Tide.", font=font(12), fill=FOAM)
     else:
@@ -265,21 +324,26 @@ def vote_view(rows):
     # the hovered choice's card: what the player sees before choosing
     n = rows[choices[HOVER][0]][choices[HOVER][1]]
     x, y = P(n)
-    tip = (int(x) + 40, int(y) + 34, int(x) + 40 + 250, int(y) + 34 + 108)
+    tip = (int(x) + 130, int(y) + 44, int(x) + 130 + 270, int(y) + 44 + 108)
     d.rounded_rectangle(tip, 8, fill=DEEP, outline=FOAM, width=2)
-    d.text((tip[0] + 12, tip[1] + 10), nice(n["plan"]), font=font(14, True), fill=FOAM)
-    d.text((tip[0] + 12, tip[1] + 32), "Danger %d   Row %d" % (n["label"], n["row"]), font=font(12), fill=SAND)
-    d.text((tip[0] + 12, tip[1] + 52), sc.WEATHERS[n["weather"]] if n["weather"] else "Calm waters", font=font(12), fill=FOAM)
+    d.text((tip[0] + 12, tip[1] + 10), title(n), font=font(14, True), fill=FOAM)
+    cove = n.get("stop") == "cove"
+    d.text((tip[0] + 12, tip[1] + 32), ("No map   Row %d" % n["row"]) if cove else "Danger %d   Row %d" % (n["label"], n["row"]),
+           font=font(12), fill=SAND)
+    d.text((tip[0] + 12, tip[1] + 52), "A retry back: %d to %d" % (RETRIES, min(3, RETRIES + 1)) if cove else
+           (sc.WEATHERS[n["weather"]] if n["weather"] else "Calm waters"), font=font(12), fill=FOAM)
     ahead = [rows[n["row"] + 1][k] for k in n["links"]]
-    d.text((tip[0] + 12, tip[1] + 74), "Leads on to: " + ", ".join("%s (%d)" % (nice(a["plan"]), a["label"]) for a in ahead),
+    d.text((tip[0] + 12, tip[1] + 74), "Leads on to: " + ", ".join("%s (%d)" % (title(a), a["label"]) for a in ahead),
            font=font(11), fill=MUTED)
     # the stock choice dialog, beside the chart, cards lettered to match
     d.text((1100, 70), "WHERE NEXT?", font=font(30, True), fill=FOAM, anchor="ma")
     d.text((1100, 112), "Pick a lit island or a card. 18 s left", font=font(15), fill=FOAM, anchor="ma")
     for i, (r, c) in enumerate(choices):
         card(im, (760, 160 + i * 150, 1440, 160 + i * 150 + 128), "ABC"[i], rows[r][c], i == HOVER)
-    d.text((1100, 640), "Your vote: B.  Votes so far: A 1, B 1  (host's tally, option)", font=font(14), fill=FOAM, anchor="ma")
-    d.text((1100, 668), "The highlighted lanes on the chart are where B leads.", font=font(13), fill=MUTED, anchor="ma")
+    yb = 160 + len(choices) * 150 + 20
+    d.text((1100, yb), "Your vote: A.  A tie goes to A; no votes take A.", font=font(14), fill=FOAM, anchor="ma")
+    d.text((1100, yb + 28), "The highlighted lanes on the chart are where A leads. If the Cove wins,", font=font(13), fill=MUTED, anchor="ma")
+    d.text((1100, yb + 48), "a second question here picks where to sail after it.", font=font(13), fill=MUTED, anchor="ma")
     im.save(os.path.join(OUT, "chart_view_vote.png"))
 
 
@@ -295,15 +359,15 @@ def boat_view(rows):
     dash(d, (330, 600), (690, 400), FOAM, 6, 18, 12)                                    # the voted lane, bright
     boat(d, 420, 560, 2.2)
     d.rounded_rectangle([480, 26, 1120, 86], 12, fill=SWELL, outline=FOAM, width=2)
-    d.text((800, 34), "SAILING TO GRIDHEAD (ALT), AS VOTED", font=font(20, True), fill=FOAM, anchor="ma")
-    d.text((800, 62), "Map 3 of 10  ·  Danger 4  ·  Quickening Current", font=font(13), fill=SAND, anchor="ma")
+    d.text((800, 34), "SAILING TO THE COVE, AS VOTED", font=font(20, True), fill=FOAM, anchor="ma")
+    d.text((800, 62), "Row 4 of 10  ·  a retry back  ·  then on to Split (alt), as voted", font=font(13), fill=SAND, anchor="ma")
     chart_panel(im, (1250, 110, 1570, 640), rows, ROUTE, HOVER, mini=True, sail=0.45)
     d.text((1410, 652), "M  open the whole chart", font=font(13, True), fill=FOAM, anchor="ma")
     im.save(os.path.join(OUT, "chart_view_boat.png"))
 
 
 if __name__ == "__main__":
-    rows = sc.chart(SEED)
+    rows = stops(sc.chart(SEED), SEED)
     vote_view(rows)
     boat_view(rows)
     print("wrote chart_view_vote.png, chart_view_boat.png in", OUT)
