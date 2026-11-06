@@ -1,5 +1,7 @@
 # Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2026-11-06, Abyss's slow whole (compiled, not yet run in game):** Dimitri picked "Code follows the scope" for the third scope audit's N2 (`docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md` §2). Deep Water has its own ceiling, `ArgoData.WaterSlowCap` 0.65 (`11_Water.cs` `Work`), so Abyss's pump at level 4 slows the scope's full 0.3 + 3 x 0.05 + 0.1 + 0.1; the Tremor keeps `SlowCap` 0.6. A change to Deep Water's slow numbers moves the ceiling with them. The self-test reads the slow on a foe in the water (`ArgoUtil.WaterSlowOn`): the pump's whole slow, then 0.65 with the pump's Slow pushed past it; `FoeOn` can hand back its hold so a check lets the foe wade. PC checks: `docs/reports/STOCK_TRINKETS_2026-11-05.md` §8.
+
 **2026-11-05, the clean-up, kit 1.12 (compiled, not yet run in game):** no number or behaviour changed. Chum Bucket tests the foe's state before the attacker's component; the hooks set Damagemulti with `ModKitCombat.SetMulti`; `ArgoHooks.Chummed` (read by nothing) is gone. `docs/reports/BUILD_UNBUILT_2026-11-05.md` §2.
 
 **2026-11-05, the review of 2026-11-04 built (compiled, not yet run in game):** the fourteen changes in scope `09`

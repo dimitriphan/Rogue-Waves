@@ -283,6 +283,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 512 rows, 355 MATCH,
   117 resolved, 24 queued (Spool B18/B19), 11 by design; N1 Tidal Mend x level and N2 Abyss's capped slow wait for his
   word; scope 02, 04, 05, 15 texts fixed (`SCOPE_CODE_AUDIT_2026-11-06.md`). Docs only, read from the code, nothing run.
+- **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri: "Code follows the scope"): Mend heals a flat 5/8/12,
+  Deep Water slows up to its own 0.65 (Abyss's +10% whole; the Tremor keeps 0.6); self-tests read both. Compiled here,
+  not run on the PC (`STOCK_TRINKETS_2026-11-05.md` §8). No kit change, no pitfall.
 - **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
   checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
   the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
@@ -1158,6 +1161,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   claims an end-screen line, N4 02:9's installed build, N5 15:176's Stacks "no limit" (his answer 3). His scope copies
   are behind in 02, 04, 05, 12, 15 until he says "sync". Docs only, no compile, nothing run on the PC. Next free
   numbers unchanged: kit 1.15, pitfall #172.
+- **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri 01:03Z, card in the scope audit's thread: "Code follows
+  the scope" for N1 and N2 of `docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md` §2). N1: `RogueWavesMode/Code/16_Directions.cs`
+  `TideEffects` heals `MendHeal` 5 / 8 / 12 a rank with no tower-level factor; the gaps test checks each mend is that flat
+  number (`RWDirections.Mends`). N2: `ArgoData.WaterSlowCap` 0.65 caps Deep Water (`Argo/Code/11_Water.cs`), the Tremor
+  keeps `SlowCap` 0.6; the self-test reads the slow on a foe in the water (`ArgoUtil.WaterSlowOn`): the pump's whole
+  slow, then the 0.65 ceiling. The two comments citing scope 11's dropped NEEDS line now point at Claude's sheets.
+  `/code-review high`: seven of its eight findings fixed; the eighth (the ceiling is a typed number) is noted in Argo's
+  `DESIGN.md` and notes. Compiled here: Argo release, SELFTEST, SELFTEST+SHOTS and REVIEW 0 errors 0 warnings; the mode
+  release 0/0, SELFTEST 0/1, SELFTEST+GAPS and with SHOTS 0/2 (the base's warnings). Not run on the PC:
+  `docs/reports/STOCK_TRINKETS_2026-11-05.md` §8. No kit change, no pitfall; next free numbers unchanged: kit 1.15,
+  pitfall #172.
 - **2026-11-06: batch checks extended** (Dimitri: "Help me set up the cheap batch jobs further"):
   `TDS_Mod/Tools/batch/run_checks.py` gains `design` (each vessel's DESIGN.md against its code: MATCH, DIFFERENT,
   NOT-IN-CODE), `docs` (CLAUDE.md, Part C "Now", the reports' README, the batch README and `docs/skills/` read against

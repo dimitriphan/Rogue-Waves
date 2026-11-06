@@ -996,7 +996,8 @@ public static partial class ArgoSelfTest
     }
 
     // A foe stood on a tile and held there (Ready's hold), for the water and Tremor checks.
-    static IEnumerator FoeOn(Genitem block, List<Entity_Master> into, ArgoTowerBrain jam)
+    // holdsOut: the Speed holds that keep the foe on the water, for a check that lets it go (else they stay).
+    static IEnumerator FoeOn(Genitem block, List<Entity_Master> into, ArgoTowerBrain jam, List<Link_Modifier> holdsOut = null)
     {
         Entity_Master e = EnemyOn(block);
         // Round 3: no foe would spawn on the pool tile; any tile of the same water will do.
@@ -1011,8 +1012,7 @@ public static partial class ArgoSelfTest
             yield break;
         }
         into.Add(e);
-        List<Link_Modifier> holds = new List<Link_Modifier>();
-        yield return Ready(jam, new List<Entity_Master> { e }, 200f, holds);
+        yield return Ready(jam, new List<Entity_Master> { e }, 200f, holdsOut ?? new List<Link_Modifier>());
     }
 
     static float Hit(Entity_Master from, Entity_Master to, float damage)
@@ -1508,6 +1508,43 @@ public static partial class ArgoSelfTest
                 yield return Wait(0.2f);
                 float slowNow = ModKitUtil.Stat(water.Master, "Slow", 0f);
                 Check("Abyss: the water slows 10% more", Mathf.Abs(slowNow - slowWas - 0.1f) < 0.01f, F(slowWas) + " -> " + F(slowNow));
+                // ...and a foe in it takes that slow (scope 09; Dimitri 2026-11-06), read on the foe's water modifier with the guns
+                // quiet, once Kelp Bed's pin is over and the test's hold let go; then, with the pump's Slow pushed past it, Deep
+                // Water's own 65% ceiling (the Tremor keeps 60%).
+                List<Link_Modifier> calm = JamGuns(), deepHolds = new List<Link_Modifier>();
+                List<Entity_Master> deepFoes = new List<Entity_Master>();
+                int caught0 = ArgoWater.Catches;
+                yield return FoeOn(tile, deepFoes, water, deepHolds);
+                Entity_Master deepFoe = deepFoes.Count > 0 ? deepFoes[0] : null;
+                // Kelp's catch first (a foe whose stats weren't up is caught a tick later), then its end.
+                yield return Until(() => deepFoe == null || !ModKitUtil.Alive(deepFoe) || ArgoWater.Catches > caught0, 1.5f);
+                yield return Until(() => deepFoe == null || !ModKitUtil.Alive(deepFoe) || (ArgoStatus.IsWet(deepFoe) && !ArgoStatus.IsPinned(deepFoe)), 3f);
+                foreach (Link_Modifier h in deepHolds) ModKitUtil.Unmod(h);
+                yield return Wait(0.3f);   // a water re-tick (every 0.25 s) with the foe free; it wades at a third of its speed
+                float wantSlow = Mathf.Min(ArgoData.WaterSlowCap, slowNow), gotSlow = ArgoUtil.WaterSlowOn(deepFoe);
+                Link_Stats sp = deepFoe != null && ModKitUtil.Alive(deepFoe) ? ModKitUtil.Speed(deepFoe) : null;
+                float room = sp != null ? sp.Value_Multi + gotSlow - 0.1f : 0f;   // what the 10% speed floor leaves the water
+                // The last water tick slowed it (the nets are rebuilt each tick, so look the net up at each read).
+                Func<bool> inWater = () => { ArgoWater.Net n = ArgoWater.NetOf(water); return n != null && n.Foes.Contains(deepFoe); };
+                if (sp == null || !inWater())
+                    ModKitTest.Setup("Abyss's slow on a foe in the water", sp == null ? "no foe stood in the pool" : "the foe waded out of the water before a tick");
+                else if (room < ArgoData.WaterSlowCap - 0.01f)
+                    ModKitTest.Setup("Abyss's slow on a foe in the water", "another slow leaves the water only " + F(room) + ", " + SpeedInfo(deepFoe));
+                else
+                {
+                    Check("Abyss: a foe in the water takes the pump's whole slow", Mathf.Abs(gotSlow - wantSlow) < 0.01f, "pump " + F(slowNow) + ", on the foe " + F(gotSlow) + ", " + SpeedInfo(deepFoe));
+                    Link_Modifier deeper = Helper_Entitytools.Addmod(water.Master, "Slow", 0.5f, Helper_Entitytools.Modtypes.Add, 0f);
+                    yield return Wait(0.3f);
+                    float capped = ArgoUtil.WaterSlowOn(deepFoe), pushed = ModKitUtil.Stat(water.Master, "Slow", 0f);
+                    ModKitUtil.Unmod(deeper);
+                    if (!inWater())
+                        ModKitTest.Setup("Deep Water's 65% ceiling on a foe", "the foe waded out of the water before a tick");
+                    else
+                        Check("Deep Water slows up to its own 65%, past the Tremor's 60%", Mathf.Abs(capped - ArgoData.WaterSlowCap) < 0.01f && capped > ArgoData.SlowCap + 0.01f,
+                            "pump pushed to " + F(pushed) + ", on the foe " + F(capped) + ", " + SpeedInfo(deepFoe));
+                }
+                foreach (Link_Modifier j in calm) ModKitUtil.Unmod(j);
+                ClearEnemies();
                 Genitem more = FloodTile(water, team);
                 int n0 = PoolCount();
                 if (more != null)
