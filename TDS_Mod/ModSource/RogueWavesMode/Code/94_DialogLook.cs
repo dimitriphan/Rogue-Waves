@@ -93,6 +93,7 @@ public static partial class RWTest
         const int Rounds = 10;
         RWFrameSplit.Start();                                        // PC round 6, test only
         Info("split", "markers before " + RWFrameSplit.Steps + " steps of the player loop");
+        yield return new WaitForSecondsRealtime(1f);                 // the line above lands outside the first window
         yield return Opening("first opening", true, w => first = w);
         for (int round = 1; round <= Rounds; round++)
         {

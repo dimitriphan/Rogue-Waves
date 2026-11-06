@@ -63,7 +63,8 @@ a Crafted with a Button Jar share puts it on in `Begin`. Self-test section 10c c
 
 Compiled, not yet run in game: the pack's own foe modifiers (`RW_Modifier_`) count as elite for the Thread drop
 (`SpoolServer.Elite`, B6); the Thread Head's stock MOVE has no button, its command stays for the walk (the link points at
-`Command_Mob_Spoolhead_Move`, a None-styled copy of `Command_Move`, B16); the Cookie Tin's TARGET pin no longer takes a
+`Command_Mob_Spoolhead_Move`, a None-styled copy of `Command_Move`, B16; with the whole pack loaded it stopped the
+Thread Head walking, PC round 6, pitfall #176); the Cookie Tin's TARGET pin no longer takes a
 Stitched's clicks: its hit colliders go off on every machine (`SpoolClient.QuietPins`, pitfall #162; round 3's selection
 miss, B17's code half). For the PC: the Head's panel without MOVE and still walking to SPOT; a Stitched on its pin
 selected and sold by a click.
