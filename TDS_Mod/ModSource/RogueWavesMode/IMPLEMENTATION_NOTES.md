@@ -1,5 +1,16 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-06): the menu buttons' wobble (self-test 168/0 on the PC, `Wobble_round1`)
+
+- Dimitri: "The button itself wobbles and jitters, including the base game buttons in the main menu." The game's layout puts
+  its button pictures on half pixels at UI scale 3, and the main menu's camera sways with the UI camera as its child
+  (pitfall #174). `RWPixels` (`26_Pixels.cs`, every machine, every scene with menus) moves each still picture by under half a
+  pixel onto whole screen pixels, measured from its canvas's corner; it leaves pictures the game slides, animates, scrolls
+  or lays out, the choice dialog's, and any someone keeps writing. A pass at most every half second, 64 pictures a frame,
+  no garbage.
+- Self-test P1-P2 (`94_Pixels.cs`, in the flow on the main menu) reads the drawn frame over 144 frames with and without it.
+  PC checks: `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
+
 ## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
 
 Dimitri: "Go" on `docs/mode/CHART_NAVIGATION.md`, built with its §7 defaults (`docs/reports/CHART_BUILD_2026-11-06.md`).
