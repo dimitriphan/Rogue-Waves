@@ -154,3 +154,14 @@ Checked: compiled here (release 0/0, SELFTEST 0/1, SELFTEST+GAPS 0/2, with SHOTS
    and respawn: one merchant stands afterwards, not two. Bendigo: one bird at a time; note whether a bird taken away
    pops (hurting every foe) as it goes. Kippy: one cat; note whether a cat keeps working while its vessel is down.
 10. Two players, Red Coin held by one: that player's Red rises by 12.5 at the start (25 split by 2), the other's not at all.
+
+## 8. Added for the same PC round (2026-11-06): Tidal Mend and Abyss
+
+Dimitri: "Code follows the scope" for N1 and N2 of `SCOPE_CODE_AUDIT_2026-11-06.md` §2. Compiled here, not run on the PC.
+
+11. Mode gaps build: "Tidal Mend: each mend is the rank's flat number, whatever the tower's level" passes; note the tower
+    levels in its line (a level above 1 proves the factor is gone). By hand: a level-3 tower holding Tidal Mend I mends 5
+    at a break, not 15.
+12. Argo self-test: "Abyss: a foe in the water takes the pump's whole slow" and "Deep Water slows up to its own 65%, past
+    the Tremor's 60%" pass (or say SETUP with the reason), and every other Deep Water and Tremor line still passes. By eye:
+    a foe in an Abyss pool wades at about a third of its speed.

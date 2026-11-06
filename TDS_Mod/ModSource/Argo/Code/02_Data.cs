@@ -167,12 +167,14 @@ public static class ArgoData
     public const float CatchMemory = 3f;        // Kelp Bed catches a foe again only after it was out of the water this long
     public const float FloodLinkReach = 1.1f;   // pools join a network when their tiles touch (no diagonals)
     public const float WaterSlow = 0.3f;        // pools whose pump was sold keep Deep Water's base slow
+    public const float WaterSlowCap = 0.65f;    // Deep Water never slows more than this: Abyss's pump at level 4 (0.3 + 3 x 0.05
+                                                // + Undercurrent 0.1 + Abyss 0.1), so its +10% is whole (scope 09; Dimitri 2026-11-06)
     public const float SaltBrine = 0.5f;        // Salt Sting's brine on pinned foes when Brine wasn't taken (doubled)
     public const float AimSlack = 0.5f;         // AIM accepts a tile this far past the Range (tile centres)
 
     // ---------------------------------------------------------------- Directions (kit 1.7)
 
-    // docs/scope/11 has none of Dimitri's for Argo yet (its NEEDS line): its four, one upgrade per rank, built on what Argo already has.
+    // Claude's four in docs/scope/11 (By: Claude), one upgrade per rank, built on what Argo already has.
     public class Direction { public string Name, Display, Desc; public float Bonus; }
     // Deep Current: Deep Water reaches this much farther (PoolReach). Default, docs/scope/11.
     public static readonly Direction[] Deepcurrents =
