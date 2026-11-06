@@ -231,7 +231,11 @@ No kit change was needed to write it; anything the PC teaches goes to kit `docs/
 4. **The Cove on the boat** is always blacklisted in `Macro_Main`; the host's Sail hovers it, and a boat standing at its
    dock 1.5 s with no vote is the rest too. The rest is one save write, then the party warps chart-to-chart onto the new
    name and sails on to the second vote's winner (or the host is asked, `AskHere`).
-5. **Older self-tests** play charts without stops (`RWCampaign.StopsOnNew` off at boot); `90_Stops.cs` turns it on for
+5. **Not done from the table above:** the `97_Shots.cs` pictures of the vote and the boat (the PC round takes them by
+   hand, CV8); the pixel icons are drawn in code (`08_Icons.cs`, from `sea_chart_look.py` `PIX`), not files in
+   `Art/Temporary`; the key lives in the view, not `12_Menu.cs`; the Wreck's pay is in `20_Vote.cs` and
+   `17_Cardinals.cs` (`Give`), not `14_Run.cs` or `24_Trinkets.cs` (which gains only `OnGain`).
+6. **Older self-tests** play charts without stops (`RWCampaign.StopsOnNew` off at boot); `90_Stops.cs` turns it on for
    its own campaign. A new campaign in a release build has stops.
 
 ## 7. Choices for Dimitri (defaults taken; the proposal doesn't wait on them)

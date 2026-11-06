@@ -185,18 +185,15 @@ public static class RWBoat
         }
         if (RWCampaign.Choice >= 0 && RWUtil.IsLeader)
             Sail(main, vis);
-        else if (slow)
-        {
-            SteeredToCove(main, vis);
-            AskHere(main, vis);
-        }
+        else if (slow && !SteeredToCove(main, vis))
+            AskHere(main, vis);   // after a rest the warp comes first; the next tick asks
     }
 
     // The leader sailed to a Cove with the stock arrows, with no vote for it: it can't be picked (blacklisted), so standing
     // at its dock a moment is the rest.
     static float atCoveSince = -1f;
 
-    static void SteeredToCove(Macro_Main main, Macro_Worldvisual vis)
+    static bool SteeredToCove(Macro_Main main, Macro_Worldvisual vis)
     {
         RWChart.Node cove = null;
         foreach (RWChart.Node n in RWCampaign.Open())
@@ -204,14 +201,15 @@ public static class RWBoat
         if (cove == null || vis.Inworldtransition || vis.Insetup || RWCampaign.Replay >= 0)
         {
             atCoveSince = -1f;
-            return;
+            return false;
         }
         if (atCoveSince < 0f) atCoveSince = Time.realtimeSinceStartup;
         if (Time.realtimeSinceStartup - atCoveSince < 1.5f)
-            return;
+            return false;
         atCoveSince = -1f;
         RWLog.Info("the boat stands at " + cove.Name + " by the arrows: the party rests");
         Rested(cove);
+        return true;
     }
 
     static bool AtDock(Macro_Worldvisual vis, RWChart.Node n)

@@ -67,3 +67,17 @@ Nothing here was launched; every line below is unproven until a PC round.
    icons.
 9. A hitch when the pointer crosses islands (the view rebuilds on each hover change); if seen, keep the tiles and
    recolour only the brackets and lanes.
+
+## 5. The PR review's notes left for later
+
+The reviewer approved #148 with 9 notes, none blocking. Fixed before the merge: the host was asked "where next" in
+the same tick as a dock rest (`05_Boat.cs`), a stale second-vote winner could set the next stop (`Rest` checks the
+Cove's links), §6.1 item 5, and the cloud-check README's InputSystem line. The base's two "Now" entries were edited on
+the coordinator's word. Left for a later change:
+
+1. The end title (`06_Campaign.cs`) and the main menu's Continue line (`12_Menu.cs`) still say "Map N" on charts with
+   stops, where the card says "Row N".
+2. "THE COVE" banner shows again on Continue and for a joining client, with no gift given then.
+3. CV10 tests the retry back only; the Direction rank-up with all three retries left needs its own check.
+4. Map votes carry no round mark, so a late vote from the first question could count in the Cove's second (the
+   pattern is older than this change).

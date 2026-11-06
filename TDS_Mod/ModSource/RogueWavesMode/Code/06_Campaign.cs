@@ -228,7 +228,7 @@ public static class RWCampaign
             foreach (long s in RWRun.Sessions())
                 RWDirections.RankLowest(RWRun.For(s));
         }
-        Choice = After;
+        Choice = cove.Links.Contains(After) ? After : -1;   // a stale winner from another Cove: the host is asked
         After = Replay = Playing = -1;
         Next = null;
         Save();
