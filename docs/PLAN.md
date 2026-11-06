@@ -298,6 +298,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: PC round 4 merged** (Dimitri: "Go"): `PC_ROUND4_2026-11-05.md`, no game fault in a self-test; open: P1-4
   (rejoined friend's "BASIN BREACHED"), U3's "MAP 1 OF 10 WON", 548 Vfx/Mobbase lines, §8 test faults. Scope `07` sprite
   NEEDS cleared. Test lines compiled here and on the PC. Pitfall #172.
+- **2026-11-06: Art Bench page** (Dimitri: an artifact to edit every sprite frame and model, "Give the whole row"):
+  every sheet by row as `.aseprite`, every model as `.glb` for Blender, edits sent back on the page and brought in by
+  `TDS_Mod/Tools/artbench/ingest.py`. Tool only, tested here; models need builder support next. No kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1223,6 +1226,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   sprite NEEDS line (Yossele walks rows 4/6 and 5/7 and attacks rows 2 and 1 from `Art/`, report §6.6). Not fixed here:
   P1-4, U3's expected title, the 548 "Could not retrieve Vfx/Mobbase" lines, §8's test faults. Next free: kit 1.15,
   pitfall #173.
+- **2026-11-06: Art Bench** (thread "Build sprite and model editing artifact"; Dimitri 02:10Z asked for an artifact
+  laying out every sprite frame to download for Aseprite and send back, the same for models in Blender; draft approved
+  02:19Z with "Give the whole row", "Blender is ok", the return "whichever is more token efficient": dropping on the
+  page). Page https://claude.ai/artifact/PgF7QP6n2HN56syTDUaUi5, source `TDS_Mod/Tools/artbench/` (README): 64 sheets
+  (1145 frames) of the four vessels and the mode, 90 mode icons, 175 models. A row downloads as a zip of one `.aseprite`
+  (tags and `gen=` in the builder's merge format, the part's palette); a returned `.aseprite` or PNG is checked (size,
+  frame counts, changed frames, new colours, magenta) and kept in the page's `edits` collection with the row as a PNG
+  asset. `ingest.py` writes merge-route sheets into `ModSource/<Part>/Aseprite/<sheet>.aseprite` (only changed frames,
+  mirrored facings follow) and file-route sheets into their PNG; models into `ModSource/<Part>/Art/Models/` (not read by
+  the builders yet: the first model edit adds that and a PC round). The cloud preview's `m` run now also dumps each
+  model's mesh (`meshes/`) and runs for RogueWavesMode (no Px, no builder). Tested here: `web/test_ase.mjs` 45/0 against
+  `ase_sheets.py`; all 175 models through `.glb` and back, and through headless Blender 4.0.2, with 0 Khronos
+  validator errors; three made-up sprite edits and one model through `ingest.py`, the builder's merge re-run in Python
+  showing exactly the edited frames and a mirror following; the reviewer ran the real `YosseleAseprite.Apply` and its two
+  findings are fixed (a second edit to a row kept the first; frames the file holds unedited still follow the code). Found: 629 triangles in 16 Spool and Uloe models have zero
+  normals (thin triangles pass the builder's 1e-12 cross check but `Normalize` zeroes under 1e-5); not fixed, for a
+  later kit fix. No mod code, no kit change, no pitfall; nothing ran on the PC.
 
 ### Decisions
 
