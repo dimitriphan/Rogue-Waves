@@ -163,6 +163,9 @@ public static partial class SpoolSelfTest
             yield return Wait(0.4f);
             Check("COLOUR: one press picks Red, shown on the button", loomD.Colour == "Redaura" && loomD.Dyed && button && "" + colour.Goalstring == "Redaura",
                 "colour " + loomD.Colour + ", button " + (button ? "" + colour.Goalstring : "-"));
+#if SPOOL_SHOTS
+            yield return SpoolShots.Hud(loomD.Master, "colour_red");
+#endif
         }
         Entity_Master ore = Helper_Entityquerytools.Entitynearest(loomD.Pos, ModKitUtil.Stat(loomD.Master, "Range", 2.5f), ModKitUtil.Tagged("Resource"));
         if (ore == null || ore.Statsserver == null || !ore.Statsserver.ContainsKey("Healthresource"))

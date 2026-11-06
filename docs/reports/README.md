@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `PC_ROUND5_2026-11-06.md` | 2026-11-06 | PC round 5, proving #141, #154, #156-#158 and #160 on `0cbfe62`/`7529452`/`7e7f4e4`: every self-test, the flow twice (187/0, 190/0), four gaps launches, two players, the dialog round; one real fail (#160's map cards freeze 70-76 ms), Spool's new sections 73/2 (test faults); Supernova's flight home and a client's first looks read; his PC put back |
 | `PC_FULL_2026-11-06.md` | 2026-11-06 | The full PC test of base `6830ba2` (sea chart, MVP board): every self-test, the mode's flow, eleven gaps launches (the whole campaign won, 45 maps toured), two players, both play builds, 0 FAIL but Diorama once ten test faults were fixed; for Dimitri: Diorama's tiny look, the mini chart's place, the vote cards' missing pictures; his PC put back |
 | `PITFALL_FIXES_2026-11-06.md` | 2026-11-06 | What the pitfalls (#1-#173) and the open leads still point to in the code: 14 small fixes needing no decision (Uloe's brain-off-on-first-error guard first, the elite stand-in, a Wreck-given Pearl Oyster), three calls for Dimitri, the PC looks; read from code, nothing changed |
 | `BUTTON_WOBBLE_2026-11-06.md` | 2026-11-06 | Why the main menu's buttons, the game's own too, wobble and jitter: the stock layout's half pixels under the menu camera's sway (pitfall #174); `RWPixels` puts still pictures on whole pixels; self-test P1-P2 and PC round `Wobble_round1` |

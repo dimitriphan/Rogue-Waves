@@ -84,6 +84,9 @@ public static partial class SpoolSelfTest
         {
             yield return Wait(0.3f);
             Check("UNTHREAD on every Cookie Tin", tin.Master.Commandlistserver.ContainsKey(SpoolData.UnthreadLink));
+#if SPOOL_SHOTS
+            yield return SpoolShots.Hud(tin.Master, "unthread");
+#endif
             int presses = tin.Unthreads;
             Send(tin.Master, SpoolData.UnthreadLink, "");
             yield return Wait(0.4f);
