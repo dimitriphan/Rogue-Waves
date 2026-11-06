@@ -1,11 +1,13 @@
-# Navigating the sea chart, with rest and treasure stops (2026-11-06, proposal, not built)
+# Navigating the sea chart, with rest and treasure stops (2026-11-06, built, compiled here, not yet run on the PC)
 
 Dimitri asked (2026-11-06 02:18Z): "Expand on the roguelike map. Navigating the map should be closer to navigating the
 sea chart on the spotlight artifact, similar to Slay the Spire 2. Navigation through just the nodes feels a little
 bit confusing for the player." Asked whether that should also bring new kinds of stop, he picked **"Add rest and
 treasure stops"** (02:28Z). This page proposes both: **what the players see and how they pick** (§1-3), and **the
 Cove and the Wreck** (§4). The chart's rows, links, maps and weather stay as `SEA_CHART.md` has them. Nothing here is
-built; §6 marks what compiles here and what needs the PC. Dated summary: `docs/reports/CHART_NAVIGATION_2026-11-06.md`.
+built on his "go" (05:59Z) with the §7 defaults; §6 marks what compiles here and what needs the PC, §6.1 where the build
+differs from this page. Dated summaries: `docs/reports/CHART_NAVIGATION_2026-11-06.md` (the proposal),
+`docs/reports/CHART_BUILD_2026-11-06.md` (the build and its PC list).
 
 Tags as in `SEA_CHART.md`: **proven** = shown in game, **read** = from the game's code, **untested** = needs the PC.
 Code paths are `TDS_Mod/ModSource/RogueWavesMode/Code/`. `~value~` = a default Claude picked, his to change.
@@ -195,7 +197,7 @@ The chart's first stream (rows, links, maps, weather), seeds of campaigns alread
 and the boat's sail (proven, PC rounds 1-4), the in-map vote's channel and timers, the Setup panel and ready-up, the
 weather billboard. A campaign started before the change continues without stops.
 
-## 6. The code it implies (not built)
+## 6. The code (built 2026-11-06, compiled here; the PC column is still to run)
 
 "Here" means it compiles in the cloud check; every self-test runs in the mode's self-test build on the PC.
 
@@ -213,8 +215,25 @@ weather billboard. A campaign started before the change continues without stops.
 | `99_SelfTest.cs`, `97_Shots.cs` | New checks CV1-CV12 (§8) and pictures of the vote and the sailing boat for his eye | compiles | runs in the self-test |
 | `08_Icons.cs`, temporary art | 12 px coloured pixel icons (Cove, Wreck, harbour, tick, boat; `sea_chart_look.py` `PIX`) in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
 
-No kit change is needed to write it; anything the PC teaches goes to kit `docs/20` and the pitfalls then. On his go,
-scope `04` [Sea Chart] gains "Navigation" and "Stops" lines pointing here, with this page's defaults in tildes.
+No kit change was needed to write it; anything the PC teaches goes to kit `docs/20` and the pitfalls then. Scope `04`
+[Sea Chart] gains "Navigation" and "Stops" lines pointing here, with this page's defaults in tildes, at his next "sync"
+(the repo's scope copies are behind until then).
+
+### 6.1 Where the build differs from the plan above
+
+1. **The view's title** is drawn with its own Images and a TMP label in the stock dialog's colours, not copied from
+   `Bla_Ui_Confirmation`'s `Title` (one less object to strip of Blockage components; the look is his to judge, CV8).
+2. **The pointer and the key** are read with `UnityEngine.InputSystem` (`Mouse.current`, `Keyboard.current`) and the
+   islands' rectangles, not through EventSystem raycasts. The shade on the chart's half takes raycasts, so a click on
+   the chart never reaches the game under it. While another dialog is up (SHOP, FUND, the game's own) the view hides.
+3. **Not built yet:** the 3D white corner brackets on the island the boat sails to (§3.2; the banner and the mini chart
+   name it), the 5 s view after a lost map, and the flash of the winning lane. Each is a small follow-up after the PC
+   has shown the rest.
+4. **The Cove on the boat** is always blacklisted in `Macro_Main`; the host's Sail hovers it, and a boat standing at its
+   dock 1.5 s with no vote is the rest too. The rest is one save write, then the party warps chart-to-chart onto the new
+   name and sails on to the second vote's winner (or the host is asked, `AskHere`).
+5. **Older self-tests** play charts without stops (`RWCampaign.StopsOnNew` off at boot); `90_Stops.cs` turns it on for
+   its own campaign. A new campaign in a release build has stops.
 
 ## 7. Choices for Dimitri (defaults taken; the proposal doesn't wait on them)
 

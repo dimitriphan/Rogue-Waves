@@ -280,6 +280,26 @@ public static class RWDirections
         return next;
     }
 
+    // The Cove's gift when no retry is spent (docs/mode/CHART_NAVIGATION.md §4.1): the player's lowest-ranked held Direction
+    // goes up a rank, the first by name among equals; false when every one is at its top.
+    public static bool RankLowest(RWPlayer p)
+    {
+        Upgradeproperties best = null;
+        int bestRank = int.MaxValue;
+        foreach (Upgradeproperties u in NextRanks(p.Directions))
+        {
+            string v, n;
+            int r;
+            if (!ModKitDirections.Parse(u.Objectname, out v, out n, out r)) continue;
+            if (r < bestRank || (r == bestRank && string.CompareOrdinal(u.Objectname, best.Objectname) < 0)) { best = u; bestRank = r; }
+        }
+        if (best == null)
+            return false;
+        Take(p, best);
+        Sweep(p);
+        return true;
+    }
+
     public static int RankCost(int rank) { return rank >= 3 ? RankThreeCost : RankTwoCost; }
 
     public static Sprite Picture(string id)

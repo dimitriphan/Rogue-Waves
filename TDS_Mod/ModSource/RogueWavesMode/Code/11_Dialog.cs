@@ -11,6 +11,9 @@ public static class RWDialog
         Coral = new Color(0.886f, 0.447f, 0.357f, 1f), Pearl = new Color(0.957f, 0.933f, 0.973f, 1f), Sand = new Color(0.847f, 0.769f, 0.604f, 1f);
     static int asks, owner;
     public static bool Asking;
+    static float shift = 0.5f;
+    public static float Shift { get { return shift; } }   // where across the screen the last Ask's block stands: 0.5, or the right half beside the chart view
+    public static bool Beside { get { return Asking && Shift > 0.5f; } }   // the chart view's own vote is the dialog up
     public static string LastTitle = "";     // the self-test reads what was asked
     public static int LastCards;
 
@@ -88,8 +91,15 @@ public static class RWDialog
     // newer Ask took over. seconds <= 0 waits for as long as the dialog stays up. Run as a coroutine on the mod's object.
     public static IEnumerator Ask(List<Bla_Ui_Confirmation.Entry> cards, string title, string sub, float seconds, Action<string> done)
     {
+        return Ask(cards, title, sub, seconds, done, 0.5f);
+    }
+
+    // at: where across the screen the block's middle stands (0.5 centred; the chart view's vote, RWChartView.CardsAt).
+    public static IEnumerator Ask(List<Bla_Ui_Confirmation.Entry> cards, string title, string sub, float seconds, Action<string> done, float at)
+    {
         Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
         int ask = ++asks;
+        shift = at;
         if (dialog == null || cards == null || cards.Count == 0)
         {
             done(null);
@@ -151,6 +161,53 @@ public static class RWDialog
         Asking = false;
         if (Up())
             Blockage.Menu.Bl_Menus.Closemenu(Bla_Ui_Confirmation.Instance.gameObject, true);
+    }
+
+    // Answers the dialog on screen as a click on its card named 'name' would (the chart view's islands, 26_ChartView.cs);
+    // false when no such card is up. Cancel would close the dialog with no pick.
+    public static bool Choose(string name)
+    {
+        Blu3_Button b = CardButton(name);
+        if (b == null || b.Buttonclick == null || !Beside)
+            return false;
+        b.Buttonclick();
+        return true;
+    }
+
+    // Shows a card's hover line as the pointer on the card would, so an island hovered on the chart view names itself in
+    // the dialog's own line; null leaves the card it hovered.
+    static Blu3_Button hovered;
+
+    public static void Hover(string name)
+    {
+        Blu3_Button b = name != null && Beside ? CardButton(name) : null;
+        if (b == hovered)
+            return;
+        try
+        {
+            if (hovered != null && hovered.Buttonleave != null) hovered.Buttonleave();
+            if (b != null && b.Buttonenter != null) b.Buttonenter();
+        }
+        catch (Exception e) { RWLog.Once("hover", "dialog hover: " + e.Message); }
+        hovered = b;
+    }
+
+    static Blu3_Button CardButton(string name)
+    {
+        Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
+        if (dialog == null || dialog.List == null || !Up())
+            return null;
+        foreach (Transform c in dialog.List.transform)
+            if (c.name == name && c.gameObject.activeInHierarchy) return c.GetComponent<Blu3_Button>();
+        return null;
+    }
+
+    // The card under the pad's focus, or "" (the chart view lights its island).
+    public static string Focused()
+    {
+        GameObject sel = UnityEngine.EventSystems.EventSystem.current != null ? UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject : null;
+        Bla_Ui_Confirmation dialog = Bla_Ui_Confirmation.Instance;
+        return sel != null && dialog != null && dialog.List != null && sel.transform.parent == dialog.List.transform && Up() ? sel.name : "";
     }
 
     // The subtitle of the dialog on screen (a vote's tally).
@@ -349,6 +406,9 @@ public static class RWDialog
             return;
         RectTransform rootRect = (RectTransform)canvas.rootCanvas.transform;
         Vector2 room = rootRect.rect.size - new Vector2(Margin * 2f, Margin * 2f);
+        // Beside the chart view the block keeps to the screen's right part, centred at Shift.
+        float shift = (Mathf.Clamp(Shift, 0.5f, 0.9f) - 0.5f) * rootRect.rect.width;
+        room.x = Mathf.Max(80f, room.x - shift * 2f);
 
         KeepWords(head);
         head.alignment = TMPro.TextAlignmentOptions.Bottom;
@@ -395,8 +455,8 @@ public static class RWDialog
 
         // The block is the title, the cards and the words under them; its middle stands in the middle of Main.
         float top = OnPixel(Screen.height * 0.5f, pixels, scale * ((headTall + tall + SubGap + lines) * 0.5f - headTall));
-        float listX = OnPixel(Screen.width * 0.5f, pixels, wide * scale * 0.5f) - wide * scale * 0.5f;
-        float headX = OnPixel(Screen.width * 0.5f, pixels, headWide * scale * 0.5f) - headWide * scale * 0.5f;
+        float listX = OnPixel(Screen.width * 0.5f, pixels, shift + wide * scale * 0.5f) - wide * scale * 0.5f;
+        float headX = OnPixel(Screen.width * 0.5f, pixels, shift + headWide * scale * 0.5f) - headWide * scale * 0.5f;
         Vector2 middle = new Vector2(0.5f, 0.5f);
         Vector3 scaled = new Vector3(scale, scale, 1f);
         Want(list, middle, new Vector2(0.5f, 1f), new Vector2(listX, top));

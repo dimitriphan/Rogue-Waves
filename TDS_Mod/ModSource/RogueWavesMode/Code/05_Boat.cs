@@ -10,6 +10,10 @@
 //                  back to the stock world it sailed from
 //   leader (host)  when RWCampaign.Choice names a column (the vote's winner, or a self-test), hovers that node so the
 //                  stock boat sails there, and picks it on arrival (Selectmap_ServerRpc), which opens the Setup panel
+// A Cove (docs/mode/CHART_NAVIGATION.md §4.1) has no map: it is always blacklisted, so the stock arrows can sail to it but
+// never pick it (a blacklisted node can still be hovered, kit docs/15 §17). The leader's boat sails there as to a map,
+// and on arrival the host rests (RWCampaign.Rest) instead of picking it; the chart's name changes once, the party warps
+// onto it at the Cove, and the boat sails on to the second vote's winner, or the host is asked where (AskHere).
 // Beside the in-map vote (20_Vote.cs; docs/mode/SEA_CHART.md §4, route V1), the leader may also steer with the stock
 // arrows: they only offer the next row's linked maps, and only those can be picked (on the host, only the map to replay
 // after a loss; only the leader steers, so the host's blacklist is the one that counts).
@@ -74,7 +78,7 @@ public static class RWBoat
         List<int> route;
         if (!RWWorld.Parse(vis.World.name, out seed, out route))
             return;
-        RWChart.Chart chart = RWWorld.Chart(seed);
+        RWChart.Chart chart = RWWorld.ChartOf(vis.World.name);
         bool campaign = RWUtil.IsHost && RWCampaign.Live && vis.World.name == RWCampaign.WorldName();
         int replay = campaign ? RWCampaign.Replay : -1;
         if (keptWorld != vis.World || keptReplay != replay)
@@ -87,7 +91,8 @@ public static class RWBoat
             int shut = 0;
             foreach (Macro_Link_Add_Base node in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             {
-                bool closed = !open.Contains(node.name), listed = main.Blacklist.Contains(node);
+                RWChart.Node n = chart.Find(node.name);
+                bool closed = !open.Contains(node.name) || (n != null && n.Stop == RWChart.Cove), listed = main.Blacklist.Contains(node);
                 if (closed && !listed) main.Blacklist.Add(node);
                 else if (!closed && listed) main.Blacklist.Remove(node);   // open again (a replay was won or dropped)
                 if (closed) shut++;
@@ -178,9 +183,63 @@ public static class RWBoat
         }
         if (RWCampaign.Choice >= 0 && RWUtil.IsLeader)
             Sail(main, vis);
-        else if (slow)
-            AskHere(main, vis);
+        else
+        {
+            if (slow)
+            {
+                SteeredToCove(main, vis);
+                AskHere(main, vis);
+            }
+        }
     }
+
+    // The leader sailed to a Cove with the stock arrows, with no vote for it: it can't be picked (blacklisted), so standing
+    // at its dock a moment is the rest.
+    static float atCoveSince = -1f;
+
+    static void SteeredToCove(Macro_Main main, Macro_Worldvisual vis)
+    {
+        RWChart.Node cove = null;
+        foreach (RWChart.Node n in RWCampaign.Open())
+            if (n.Stop == RWChart.Cove && AtDock(vis, n)) cove = n;
+        if (cove == null || vis.Inworldtransition || vis.Insetup || RWCampaign.Replay >= 0)
+        {
+            atCoveSince = -1f;
+            return;
+        }
+        if (atCoveSince < 0f) atCoveSince = Time.realtimeSinceStartup;
+        if (Time.realtimeSinceStartup - atCoveSince < 1.5f)
+            return;
+        atCoveSince = -1f;
+        RWLog.Info("the boat stands at " + cove.Name + " by the arrows: the party rests");
+        Rested(cove);
+    }
+
+    static bool AtDock(Macro_Worldvisual vis, RWChart.Node n)
+    {
+        foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
+            if (l.name == n.Name)
+            {
+                Transform dock = l.transform.Find("Dock");
+                return ModKitUtil.Flat(vis.Boat.transform.position, dock != null ? dock.position : l.transform.position) < 1.5f && vis.Boatspeed < 1f;
+            }
+        return false;
+    }
+
+    // The rest itself: the next question on this boat may be asked again (the leg after the Cove, when no vote named it).
+    static void Rested(RWChart.Node cove)
+    {
+        if (!RWCampaign.Rest(cove))
+            return;
+        askedOn = null;
+        Sailing = Picked = "";
+        arriveSince = -1f;
+        RestedAt = Time.realtimeSinceStartup;
+        RestedAtCove = cove.Name;
+    }
+
+    public static float RestedAt = -1f;      // realtime of the last rest, for the banner and the self-test
+    public static string RestedAtCove = "";
 
     // The replay rule, the staging harbour and the sail to the vote's winner all steer from the leader's boat: in a campaign
     // the lead stays with the host, given back if another mod handed it on (MAX MODEA-3, Dimitri's default of 2026-11-05;
@@ -240,14 +299,17 @@ public static class RWBoat
         List<Bla_Ui_Confirmation.Entry> cards = new List<Bla_Ui_Confirmation.Entry>();
         foreach (RWChart.Node n in open)
         {
-            Bla_Ui_Confirmation.Entry card = RWVote.MapCard(n);
+            Bla_Ui_Confirmation.Entry card = RWVote.MapCard(n, RWCampaign.Chart);
             card.Tomenu = "World";     // the boat's own menu comes back with the pick, as the main menu's "Main" does
             cards.Add(card);
         }
         RWRejoin.Say("No map was voted on before the party left: the host picks where it sails.");
         Asked = "asked";
         string pick = null;
-        yield return RWDialog.Ask(cards, "WHERE NEXT?", "No map was voted on: the host picks", 0f, n => pick = n);
+        List<int> cols = new List<int>();
+        foreach (RWChart.Node n in open) cols.Add(n.Col);
+        bool view = RWChartView.OpenVote(RWCampaign.Chart, RWCampaign.Here, open[0].Row, cols, RWChartView.OnTheBoat, 0f);
+        yield return RWDialog.Ask(cards, "WHERE NEXT?", "No map was voted on: the host picks", 0f, n => pick = n, view ? RWChartView.CardsAt : 0.5f);
         if (!WorldUp())
             try { Blockage.Menu.Bl_Menus.Changemenu("World", true); } catch (Exception) { }
         int col;
@@ -368,6 +430,11 @@ public static class RWBoat
             return;
         ArrivedAt = Time.realtimeSinceStartup;
         RWLog.Info("arrived at " + to.Name + " after " + RWUtil.F(ArrivedAt - SailedAt) + " s, boat " + RWUtil.V(vis.Boat.transform.position) + ", camera " + RWUtil.V(Game_Cameracontroller.Instance.Movepos));
+        if (to.Stop == RWChart.Cove)
+        {
+            Rested(to);
+            return;
+        }
         Picked = to.Name;
         RWCampaign.Choice = -1;
         Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(to.Name, false, default(Unity.Netcode.ServerRpcParams));

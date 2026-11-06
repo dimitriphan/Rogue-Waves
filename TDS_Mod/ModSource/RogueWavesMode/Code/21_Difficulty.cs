@@ -51,7 +51,8 @@ public static class RWDifficulty
         Restore();
         if (!RWRun.InCampaignMap || RWCampaign.Next == null)
             return;
-        Apply(RWCampaign.Route.Count + 1, RWRun.Sessions().Count, Hoard());
+        // A Wreck plays one row harder (docs/mode/CHART_NAVIGATION.md §4.2); the difficulty follows the row, a Cove's too.
+        Apply(RWCampaign.Route.Count + 1 + (RWCampaign.Next.Stop == RWChart.Wreck ? 1 : 0), RWRun.Sessions().Count, Hoard());
     }
 
     // F5: what the party holds as the map starts (the lobby's picks left out, as the base game has them too): every Cardinal
