@@ -260,6 +260,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, kit 1.15, pitfall #173 (which PR used which pitfall numbers: the last Log entry).
+- **Artifacts (2026-11-06):** the Scope and Vessel Editors send edits back like the Art Bench ("bring in my scope / vessel
+  edits"); six old pages archived to project files. Index and steps: `docs/artifacts/README.md` (Log).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -1243,6 +1245,19 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   findings are fixed (a second edit to a row kept the first; frames the file holds unedited still follow the code). Found: 629 triangles in 16 Spool and Uloe models have zero
   normals (thin triangles pass the builder's 1e-12 cross check but `Normalize` zeroes under 1e-5); not fixed, for a
   later kit fix. No mod code, no kit change, no pitfall; nothing ran on the PC.
+- **2026-11-06: input artifacts brought up to date, old ones archived** (Dimitri 02:57Z: "Update older Artifacts that take
+  input ... now that I updated Claude with artifact capabilities, and store older and less relevant artifacts in a folder
+  elsewhere. Pin the artifacts that are expected to be revisited the most."). The Scope Editor (version 11) and the Vessel
+  Editor (version 2, contract 0.2.96) gain the Art Bench's return path: a Send step marks a saved row `waiting` with his
+  note and the commit the page was built from; "bring in my scope edits" / "bring in my vessel edits" has a thread fold
+  the waiting rows in through a reviewed PR and write `pr` then `merged` back, which the page shows. The Scope Editor
+  also gains `user` (view-only viewers lose the Send button). Both rebuilt from `docs/scope` at `a9d84a3` (the Vessel
+  Editor had read the stale project-files copy of 2026-10-23); their sources move into `docs/artifacts/` (index and
+  steps: `docs/artifacts/README.md`; `scope-sync` skill updated). The Art Bench already had the path: unchanged. Six
+  pages whose decisions are made (the first Scope Editor, Temporary Art, Temp Art Picks, Argo Diver Takes, Minion
+  Picks, the 10-09 concepts) are copied with their picks to `/mnt/project-files/artifacts_archive/2026-11-06/`; deleting
+  them from his gallery waits for his word. Pinned: Art Bench, Scope Editor, Spotlight. Tested here: both pages headless
+  against a mock store (edit, send with note, a thread's `pr`, a cleared row, phone width), no errors. No mod code.
 
 ### Decisions
 
