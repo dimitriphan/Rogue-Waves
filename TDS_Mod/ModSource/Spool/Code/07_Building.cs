@@ -221,20 +221,62 @@ public class SpoolStashBrain : SpoolBuilding
 // straight to the Yarn Stash; Seam Allowance keeps one Seam mining and guarding beside it. While its player's vessel
 // holds the Sewing Machine Direction it works as one: its panel reads Sewing Machine (the "Sewing" skin; the Loom's model
 // until A1's arrives), it mines faster and spins nothing, and SpoolServer mends around it each Tide.
+// The upgrades scope 08 added on 2026-11-04:
+//   Dyed in the Wool  a COLOUR button (All, Red, Blue, Yellow): the owner's share of each payout from its strikes and its
+//                     Seams' hits is taken back and paid as 70% of its total in the picked colour (Uloe's Colour Filter).
+//   Bobbin Winder     Spinrate and Hold modifiers: a Thread every 3 s, holds 20.
+//   Seam Squad        3 Seams, each back Seamrespawn seconds after it falls.
+//   Snare Line        its Seams hunt aura beasts within 6 tiles of it (SpoolUnitBrain.Snare).
+//   Golden Thread     spins twice as fast (a Pmulti), and Spool and Thread Heads drop off at it (SpoolServer.AtStash).
 public class SpoolLoomBrain : SpoolBuilding
 {
     public int Held, Spun, Sent, Strikes, Seams;
-    float lastStrike, nextSpin, seamAt = -1f;
-    SpoolUnitBrain seam;
+    // Dyed in the Wool: the picked colour ("All" trades nothing); payouts from its strikes, those traded, those traded
+    // from its Seams' hits; the last trade's aura taken back and paid out.
+    public string Colour = "All";
+    public int Payouts, Traded, SeamTraded;
+    public float LastIn, LastOut;
+    // Snare Line: hunts its Seams set off on, and strikes they landed on aura beasts.
+    public int Hunts, Snared;
+    float lastStrike, nextSpin;
+    readonly List<SpoolUnitBrain> seams = new List<SpoolUnitBrain>();
+    readonly List<float> seamDue = new List<float>();   // when each missing Seam is stitched again
+    readonly float[] purseBefore = new float[3], purseAfter = new float[3];   // the owner's aura around a strike
+    Link_Command colourCommand;
     bool sewingMod;
 
     public int Hold { get { return Mathf.RoundToInt(Stat("Hold", 10f)); } }
+    public float SpinTime { get { return Mathf.Max(1f, Stat("Spinrate", 6f)); } }
     public bool Sewing { get { return Player.Sewing > 0; } }
+    // Its payouts trade into a colour: Dyed in the Wool with one picked.
+    public bool Dyed { get { return Has("Dyed") && Colour != SpoolData.Colours[0]; } }
+    public float SnareReach { get { return Has("Snare") ? Param("Snare_Base", 6f) : 0f; } }
+    public bool Golden { get { return Has("Golden"); } }
+
+    // Seam Allowance keeps one Seam, Seam Squad three, on a Loom that took Direct Line instead too. Snare Line alone
+    // makes one, so a Direct Line Loom's Snare Line has a Seam to hunt with (the owner's reading is needed on that).
+    public int SeamCount
+    {
+        get
+        {
+            if (Has("Squad"))
+                return Mathf.RoundToInt(Param("Squad_Base", 3f));
+            return Has("Seam") || Has("Snare") ? 1 : 0;
+        }
+    }
 
     protected override void Started2()
     {
-        nextSpin = Time.time + Mathf.Max(1f, Stat("Spinrate", 6f));
+        nextSpin = Time.time + SpinTime;
         ShowHeld();
+        if (Has("Dyed"))
+            ShowColour();
+    }
+
+    protected override void Upgraded(SpoolData.Upg def)
+    {
+        if (def.Key == "Dyed")
+            ShowColour();
     }
 
     protected override void Tick()
@@ -251,12 +293,12 @@ public class SpoolLoomBrain : SpoolBuilding
         Strike();
         if (Time.time >= nextSpin)
         {
-            nextSpin = Time.time + Mathf.Max(1f, Stat("Spinrate", 6f));
+            nextSpin = Time.time + SpinTime;
             if (!sewing)
                 Spin();
         }
-        if (Has("Seam"))
-            KeepSeam();
+        if (SeamCount > 0)
+            KeepSeams();
     }
 
     void Strike()
@@ -269,10 +311,88 @@ public class SpoolLoomBrain : SpoolBuilding
         if (ore == null || ore.Statsserver == null || !ore.Statsserver.ContainsKey("Healthresource"))
             return;
         // Ore takes min(Damage, 1) + Damageresource per strike (Helper_Damagetools.Dodamage) and pays out when emptied.
-        Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", 1f }, { "Damagemulti", 1f }, { "Damageresource", Mathf.Max(0f, Stat("Damage", 1f) - 1f) } };
+        float hit = 1f + Mathf.Max(0f, Stat("Damage", 1f) - 1f);
+        Dictionary<string, float> d = new Dictionary<string, float> { { "Damage", 1f }, { "Damagemulti", 1f }, { "Damageresource", hit - 1f } };
+        // What the node holds before the strike (a node that pays once is gone after it), and with Dyed in the Wool the
+        // owner's purse: the node pays inside the strike (Entity_Ai_Resource_Mine.Oninteract), so the purse read around it
+        // is exactly the owner's share, whatever the split, the map's gain or a Direction did to it.
+        float before = ModKitUtil.Stat(ore, "Healthresource", -1f);
+        bool trade = Dyed && ModKitUtil.Purse(Owner, purseBefore);
+        Vector3 at = ModKitUtil.Pos(ore);
         Helper_Entitytools.Interact(Master, ore, "Hurt", d);
         Strikes++;
-        Master.Radio.Vis_ClientRpc("Spool_Strike", ModKitUtil.Pos(ore), 0f);
+        Master.Radio.Vis_ClientRpc("Spool_Strike", at, 0f);
+        if (!Paid(before, ModKitUtil.Stat(ore, "Healthresource", -1f), hit, ModKitUtil.Alive(ore)))
+            return;
+        Payouts++;
+        if (trade && ModKitUtil.Purse(Owner, purseAfter) && Trade(purseBefore, purseAfter))
+            Traded++;
+    }
+
+    // Whether one hit paid a node out (Uloe's Flood Light and Yossele's Pachira read it the same way): it refilled (after
+    // > before), or it was full, the hit was enough to empty it and it refilled to the same number, or it went (a node
+    // that pays once).
+    public static bool Paid(float before, float after, float hit, bool alive)
+    {
+        if (before < 0f)
+            return false;
+        if (!alive)
+            return true;
+        if (after > before + 0.001f)
+            return true;
+        return Mathf.Abs(after - before) <= 0.001f && before <= hit + 0.001f;
+    }
+
+    // Dyed in the Wool: what the owner's purse gained between two reads is taken back colour by colour (the game's own
+    // Give with a negative amount, so its Gained stat nets out; Give multiplies by the map's gain, so the amounts are
+    // divided by it first) and paid as Dyed_Base of its total in the picked colour. Teammates keep theirs as the node paid
+    // it. False when there was nothing to trade.
+    public bool Trade(float[] before, float[] after)
+    {
+        float total = 0f;
+        for (int i = 0; i < ModKitUtil.Auras.Length; i++)
+            total += Mathf.Max(0f, after[i] - before[i]);
+        float g = ModKitUtil.Gain();
+        if (!Dyed || total <= 0.001f || g <= 0f)
+            return false;
+        long owner = Owner;
+        for (int i = 0; i < ModKitUtil.Auras.Length; i++)
+            if (after[i] - before[i] > 0f)
+                ModKitUtil.Give(ModKitUtil.Auras[i], -(after[i] - before[i]) / g, owner);
+        LastIn = total;
+        LastOut = Param("Dyed_Base", 0.7f) * total;
+        ModKitUtil.Give(Colour, LastOut / g, owner);
+        return true;
+    }
+
+    // COLOUR, made on the buy (and in Started2 for a Loom that comes with it); its Goalstring carries the colour to the
+    // button on every player's screen.
+    void ShowColour()
+    {
+        if (SpoolContent.Colour == null)
+            return;
+        if (colourCommand == null && (!Master.Commandlistserver.TryGetValue(SpoolData.ColourLink, out colourCommand) || colourCommand == null))
+            colourCommand = Helper_Entitytools.Createcommand(Master, SpoolData.ColourCommand, SpoolData.ColourLink, false, true);
+        SyncColour();
+    }
+
+    // run: false, so the update isn't pressed again.
+    void SyncColour()
+    {
+        if (colourCommand == null)
+            return;
+        colourCommand.Goalstring = Colour;
+        Helper_Entitytools.Updatecommand(Master, SpoolData.ColourLink, "", false, false);
+    }
+
+    // COLOUR: the next of All, Red, Blue, Yellow.
+    protected override void Command(string command, string json, bool server)
+    {
+        if (command != SpoolData.ColourLink || !Has("Dyed"))
+            return;
+        int i = Array.IndexOf(SpoolData.Colours, Colour);
+        Colour = SpoolData.Colours[(i + 1) % SpoolData.Colours.Length];
+        SyncColour();
     }
 
     void Spin()
@@ -303,19 +423,31 @@ public class SpoolLoomBrain : SpoolBuilding
 
     void ShowHeld() { ModKitCounter.Set(Master, "Thread", Held); }
 
-    // One Seam per Loom; it comes back Seamrespawn seconds after it falls.
-    void KeepSeam()
+    // Keeps SeamCount Seams: one that falls comes back Seamrespawn seconds later; new ones (a fresh buy) come at once.
+    void KeepSeams()
     {
-        if (seam != null && seam.Master != null)
-            return;
-        if (seamAt < 0f)
-            seamAt = Time.time + (Seams == 0 ? 0.5f : Param("Seamrespawn_Base", 10f));
-        if (Time.time < seamAt)
-            return;
-        seamAt = -1f;
-        seam = SpawnUnit(SpoolData.Seam);
-        if (seam != null)
+        for (int i = seams.Count - 1; i >= 0; i--)
+            if (seams[i] == null || seams[i].Master == null)
+            {
+                seams.RemoveAt(i);
+                seamDue.Add(Time.time + Param("Seamrespawn_Base", 10f));
+            }
+        while (seams.Count + seamDue.Count < SeamCount)
+            seamDue.Add(Time.time + 0.5f);
+        for (int i = seamDue.Count - 1; i >= 0; i--)
+        {
+            if (Time.time < seamDue[i])
+                continue;
+            SpoolUnitBrain seam = SpawnUnit(SpoolData.Seam);
+            if (seam == null)
+            {
+                seamDue[i] = Time.time + 1f;   // it couldn't be stitched now: tried again in a second
+                continue;
+            }
+            seamDue.RemoveAt(i);
+            seams.Add(seam);
             Seams++;
+        }
     }
 
     public override void Gone(bool killed, string reason)
@@ -326,5 +458,3 @@ public class SpoolLoomBrain : SpoolBuilding
         Held = 0;
     }
 }
-
-
