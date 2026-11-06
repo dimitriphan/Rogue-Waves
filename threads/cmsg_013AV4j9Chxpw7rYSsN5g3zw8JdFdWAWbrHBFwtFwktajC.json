@@ -3,7 +3,7 @@
   "thread": "Run PC round 6 for card freeze fix",
   "state": "testing",
   "started": "2026-11-06T20:23:38Z",
-  "step": "Spool alone: do Thread Heads move without the rest of the pack?",
+  "step": "Putting his PC back (release builds, save)",
   "helpers": [],
-  "updated": "2026-11-06T21:10:01Z"
+  "updated": "2026-11-06T21:20:56Z"
 }
