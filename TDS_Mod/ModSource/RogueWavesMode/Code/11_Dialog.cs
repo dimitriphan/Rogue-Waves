@@ -77,7 +77,49 @@ public static class RWDialog
         return n <= 10 ? 7f : n <= 14 ? 6f : n <= 28 ? 5.5f : 4.5f;
     }
 
-    static void Dress(RectTransform card, Look look, float pixels, List<string> said)
+    // The name's text and the badge are kept from one opening to the next rather than made new on every card each time: a map
+    // card's dialog froze a frame of 70-76 ms in 2 of 10 openings and dropped one in every opening while each card got a
+    // new TextMeshPro text (PC round 5 §2.3), where the plain dialog never did (pitfall #175). The game destroys the last
+    // prompt's cards when the next one opens, so their pieces are moved to a hidden holder under the dialog first (Keep)
+    // and taken from there (Take); only a launch's first map cards make them.
+    const string FaceStash = "RW_FaceStash";
+    static bool saidFaces;
+
+    static Transform Stash(Bla_Ui_Confirmation dialog)
+    {
+        Transform had = dialog.transform.Find(FaceStash);
+        if (had != null) return had;
+        GameObject g = new GameObject(FaceStash, typeof(RectTransform));
+        g.transform.SetParent(dialog.transform, false);
+        g.SetActive(false);
+        return g.transform;
+    }
+
+    // Every card of the list that isn't this prompt's (the hidden ones Fit put aside) hands its name and badge to the holder,
+    // whatever this prompt is, so a shop or a Direction pick between two votes doesn't lose them.
+    static void Keep(Bla_Ui_Confirmation dialog)
+    {
+        Transform stash = null;
+        foreach (Transform c in dialog.List.transform)
+        {
+            if (c.gameObject.activeInHierarchy) continue;
+            Transform t = c.Find(FaceName), b = c.Find(FaceBadgeName);
+            if (t == null && b == null) continue;
+            if (stash == null) stash = Stash(dialog);
+            if (t != null) t.SetParent(stash, false);
+            if (b != null) b.SetParent(stash, false);
+        }
+    }
+
+    static RectTransform Take(Transform stash, string name, RectTransform card)
+    {
+        Transform t = stash != null ? stash.Find(name) : null;
+        if (t == null) return null;
+        t.SetParent(card, false);
+        return (RectTransform)t;
+    }
+
+    static void Dress(RectTransform card, Look look, float pixels, Transform stash, List<string> said)
     {
         Vector2 size = card.rect.size;
         if (size.x < 1f || size.y < 1f) return;
@@ -92,40 +134,63 @@ public static class RWDialog
             RWAssets.Crisp(icon, FacePicture, pixels);
         }
         bool made = false;
-        Transform had = card.Find(FaceName);
-        TMPro.TextMeshProUGUI text = had != null ? had.GetComponent<TMPro.TextMeshProUGUI>() : null;
-        if (text == null && look.Name != "" && RWChartView.GameFont != null)
+        if (look.Name != "" && card.Find(FaceName) == null)
         {
-            RectTransform rt = RWChartView.Rt(card, FaceName);
-            rt.sizeDelta = new Vector2(size.x * FaceNameWide, size.y * 0.3f);
-            rt.anchoredPosition = new Vector2(size.x * 0.5f, size.y * FaceNameY);
-            text = rt.gameObject.AddComponent<TMPro.TextMeshProUGUI>();
-            text.font = RWChartView.GameFont;
-            if (RWChartView.GameFontMaterial != null) text.fontSharedMaterial = RWChartView.GameFontMaterial;
-            bool wrap;
-            text.fontSize = NameSize(look.Name, out wrap);
-            text.enableAutoSizing = false;
-            text.enableWordWrapping = wrap;
-            text.alignment = TMPro.TextAlignmentOptions.Center;
-            text.color = Pearl;
-            text.raycastTarget = false;
-            text.text = look.Name.ToUpperInvariant();
-            made = true;
+            RectTransform rt = Take(stash, FaceName, card);
+            TMPro.TextMeshProUGUI text = rt != null ? rt.GetComponent<TMPro.TextMeshProUGUI>() : null;
+            if (rt == null && RWChartView.GameFont != null)
+            {
+                rt = RWChartView.Rt(card, FaceName);
+                text = rt.gameObject.AddComponent<TMPro.TextMeshProUGUI>();
+                text.font = RWChartView.GameFont;
+                if (RWChartView.GameFontMaterial != null) text.fontSharedMaterial = RWChartView.GameFontMaterial;
+                text.enableAutoSizing = false;
+                text.alignment = TMPro.TextAlignmentOptions.Center;
+                text.color = Pearl;
+                text.raycastTarget = false;
+                made = true;
+                FacesMade++;
+            }
+            if (text != null)
+            {
+                rt.sizeDelta = new Vector2(size.x * FaceNameWide, size.y * 0.3f);
+                rt.anchoredPosition = new Vector2(size.x * 0.5f, size.y * FaceNameY);
+                bool wrap;
+                text.fontSize = NameSize(look.Name, out wrap);
+                text.enableWordWrapping = wrap;
+                text.color = Pearl;   // a carried-over text looks as a new one does, whatever tint it last had
+                text.text = look.Name.ToUpperInvariant();
+            }
         }
         if (look.Badge != null && card.Find(FaceBadgeName) == null)
         {
-            RectTransform rt = RWChartView.Rt(card, FaceBadgeName);
-            rt.sizeDelta = new Vector2(FaceBadge, FaceBadge);
-            rt.anchoredPosition = new Vector2(size.x - FaceBadge * 0.5f - 4f, size.y - FaceBadge * 0.5f - 4f);
-            UnityEngine.UI.Image badge = rt.gameObject.AddComponent<UnityEngine.UI.Image>();
-            badge.sprite = look.Badge;
-            badge.raycastTarget = false;
-            RWAssets.Crisp(badge, FaceBadge, pixels);
+            RectTransform rt = Take(stash, FaceBadgeName, card);
+            UnityEngine.UI.Image badge = rt != null ? rt.GetComponent<UnityEngine.UI.Image>() : null;
+            if (rt == null)
+            {
+                rt = RWChartView.Rt(card, FaceBadgeName);
+                badge = rt.gameObject.AddComponent<UnityEngine.UI.Image>();
+                badge.raycastTarget = false;
+                FacesMade++;
+            }
+            if (badge != null)
+            {
+                rt.anchorMin = rt.anchorMax = Vector2.zero;
+                rt.sizeDelta = new Vector2(FaceBadge, FaceBadge);
+                rt.anchoredPosition = new Vector2(size.x - FaceBadge * 0.5f - 4f, size.y - FaceBadge * 0.5f - 4f);
+                badge.sprite = look.Badge;
+                badge.color = Color.white;
+                RWAssets.Crisp(badge, FaceBadge, pixels);
+            }
         }
+        // Said once a launch: a long log line shows up as a hitch on the next frames (pitfall #138).
         if (made && said != null)
             said.Add(card.name + " " + (icon != null && icon.sprite != null ? (int)icon.sprite.rect.width + " px at " + RWUtil.F(((RectTransform)icon.transform).sizeDelta.x) : "none")
                 + (look.Badge != null ? " +badge" : ""));
     }
+
+    // How many name texts and badges were made new since the launch (the self-test's dialog round reads it).
+    public static int FacesMade;
 
     // What a card on screen shows beyond its icon (the self-test's CV13): its name, and the picture's width in card units.
     public static bool Faced(RectTransform card, out string name, out float picture)
@@ -580,7 +645,9 @@ public static class RWDialog
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(list);
         // Each card's picture at a whole number of screen pixels per art pixel (pitfall #156). The cards are new with each
         // prompt, so nothing is put back afterwards. A map's card is dressed with its picture, name and badge (Face).
-        List<string> said = new List<string>();
+        List<string> said = saidFaces ? null : new List<string>();
+        Keep(dialog);
+        Transform stash = dialog.transform.Find(FaceStash);
         foreach (RectTransform card in Cards(dialog))
         {
             Look look = null;
@@ -588,14 +655,17 @@ public static class RWDialog
                 if (e != null && e.Name == card.name && looks.TryGetValue(e, out look)) break;
             if (look != null)
             {
-                Dress(card, look, pixels * scale, said);
+                Dress(card, look, pixels * scale, stash, said);
                 continue;
             }
             Transform icon = card.Find("Icon");
             RWAssets.Crisp(icon != null ? icon.GetComponent<UnityEngine.UI.Image>() : null, CardIcon, pixels * scale);
         }
-        if (said.Count > 0)
+        if (said != null && said.Count > 0)
+        {
+            saidFaces = true;
             RWLog.Info("dialog: map card pictures (art px at card units) " + string.Join(", ", said.ToArray()));
+        }
     }
 
     // Last word before the frame is drawn, for as long as the dialog is the mode's: the game's own transition tweens may

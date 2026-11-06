@@ -626,6 +626,21 @@ public class SpoolUnitBrain : MonoBehaviour
         return true;
     }
 
+#if SPOOL_SELFTEST
+    // What the Snare Line hunt sees now, for a test line that didn't settle (PC round 5 §2.1): the reach, the beast the query
+    // finds, a foe at the Loom, the Seam's team and state.
+    public string SnareWhy()
+    {
+        SpoolLoomBrain loom = Home as SpoolLoomBrain;
+        if (loom == null || loom.Master == null || Master == null) return "no Loom or no Seam";
+        float range = ModKitUtil.Stat(Master, "Range", 1.5f);
+        Entity_Master prey = Beast(loom.Pos, loom.SnareReach, ModKitUtil.Pos(Master));
+        return "reach " + loom.SnareReach.ToString("0.##") + ", beast (the kept prey while hunting, else the query's) " + (prey != null ? prey.name : "none") + ", foe at the Loom " + FoeAtLoom(loom.Pos, range)
+            + ", hunting " + hunting + ", prey " + (Prey != null ? Prey.name : "none") + ", target " + (Target != null ? Target.name : "none")
+            + ", Seam team " + ModKitUtil.Team(Master) + ", state " + ModKitUtil.State(Master);
+    }
+#endif
+
     // A foe other than a beast within the Seam's leash of its Loom: it guards first.
     bool FoeAtLoom(Vector3 loom, float range)
     {

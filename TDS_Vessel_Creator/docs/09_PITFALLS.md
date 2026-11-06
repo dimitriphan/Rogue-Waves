@@ -656,3 +656,14 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      the five pictures' squares change in 144 of 144 frames, on whole pixels in 0. The layout and the cameras are the
      game's own, so a game without mods should show it too (read, not run without mods). Read from the game's
      `level1`-`level3` (UnityPy, read-only); report `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
+175. **A choice dialog whose cards get a new TextMeshPro text each time it opens freezes a frame** (2026-11-06) → the
+     map vote's cards (`RWDialog.Dress`, `RogueWavesMode/Code/11_Dialog.cs`) each made a name text (`AddComponent`
+     `TextMeshProUGUI`, the game's font and material) and a badge image on every opening, and logged a line: every
+     opening dropped one frame (13.9 ms at +0.03 s, the plain dialog 7 ms) and 2 of 10 froze 70-76 ms at about +0.1 s,
+     the same 2-in-10 pattern as #138's autosize; the plain and the stock dialog never did (self-test DIALOGLOOK,
+     `docs/reports/PC_ROUND5_2026-11-06.md` §2.3). The mechanism isn't traced → make a card's own text and images once a
+     launch and carry them over: before the next prompt's cards are dressed, move them off the last prompt's cards (which
+     the game destroys at the end of that frame) to a hidden holder and take them from there (`RWDialog.Keep`/`Take`),
+     and log once a launch. Compiled, not yet verified in game: the dialog round's "keep their name texts" line proves
+     the carry-over, its map-card line the frame, and its three "picture only / and name / and badge" lines split the
+     cost if it still hitches.

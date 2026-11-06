@@ -1,5 +1,12 @@
 # RogueWavesMode: implementation notes
 
+**2026-11-06, the map card freeze (compiled here, not yet run in game; `docs/reports/PC_ROUND5_2026-11-06.md` §2.3,
+pitfall #175):** a map card's name text and badge are made once a launch and carried from one dialog to the next:
+`RWDialog.Keep` moves them off the last prompt's cards (whatever that prompt was) to a hidden `RW_FaceStash` under the
+dialog, `Dress` takes them from there, and the pictures line is logged once a launch. For the PC: the dialog round
+(`94_DialogLook.cs`): the map-card frame line, "Map cards keep their name texts and badge" (`RWDialog.FacesMade`), and
+three INFO variants that split the cost if it still hitches.
+
 **2026-11-06, the full test's three fixes (compiled here, not yet run in game; `docs/reports/PC_FULL_2026-11-06.md`
 §5):** a map card in every vote (`RWVote.MapCard`, also the boat's own ask) shows its map's picture in a 38-unit box,
 its name under it and its weather or the Wreck as a badge (`RWDialog.Face`, dressed in `Fit`; sizes from letter counts,

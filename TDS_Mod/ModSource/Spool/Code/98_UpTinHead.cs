@@ -431,9 +431,14 @@ public static partial class SpoolSelfTest
             yield return Wait(0.3f);
             Check("Voodoo Doll: once a Tide", c.Dolls == dolls + 1, "dolls +" + (c.Dolls - dolls) + ", " + F(ModKitUtil.Health(c.Master)) + " of " + F(max));
             yield return NextTide();
-            Hit(hm, c.Master, Mathf.Max(1f, (ModKitUtil.Health(c.Master) - max * (mark - 0.3f)) / (1f - cut)));
-            yield return Wait(0.3f);
-            Check("... and again the next Tide", c.Dolls == dolls + 2, "dolls +" + (c.Dolls - dolls));
+            if (!TideRose)
+                ModKitTest.Setup("Voodoo Doll's next Tide", "the Tide didn't rise" + (mapEnd != "" ? ": " + mapEnd : ""));
+            else
+            {
+                Hit(hm, c.Master, Mathf.Max(1f, (ModKitUtil.Health(c.Master) - max * (mark - 0.3f)) / (1f - cut)));
+                yield return Wait(0.3f);
+                Check("... and again the next Tide", c.Dolls == dolls + 2, "dolls +" + (c.Dolls - dolls));
+            }
         }
 
         // Taken down: the Tin's Crafted first (they outlive their Tin), then the buildings.

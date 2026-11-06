@@ -256,7 +256,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #175 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #176 (which PR used which pitfall numbers: the last Log entry).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -361,6 +361,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: the phone status widget** (Dimitri: "an android widget ... what is happening currently"): `StatusWidget/`,
   4 x 6, the crew acts out each state; every thread now reports to the `status` branch (`StatusWidget/README.md`). Built
   on GitHub Actions (APK in the `status-widget` release), not yet on his phone. Not the pack; no kit change, no pitfall.
+- **2026-11-06: the map card freeze and PC round 5's test leftovers** (Dimitri: "Ok", PC round 5): map cards keep their
+  name and badge between openings, Pin Barrage's check wants Iron Thimble, an unreached Tide is a SETUP, Snare Line's
+  line says what the hunt saw. Compiled here, not run on the PC. Pitfall #175, no kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1548,6 +1551,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `.github/workflows/status-widget.yml` builds and tests every push that touches `StatusWidget/`, and a build of the
   base replaces the `status-widget` release. Usage (5-hour, weekly) left out: no public way to read it. The rule: `CLAUDE.md` map row,
   `ship-a-pr` (shipped) and `pc-round` (testing) skills. Not the pack; no kit change, no pitfall.
+
+- **2026-11-06: the map card freeze and PC round 5's test leftovers** (PR after #162; `PC_ROUND5_2026-11-06.md` §2.1,
+  §2.3). The map vote's cards froze 70-76 ms in 2 of 10 openings and dropped a frame in each, while each card got a new
+  TextMeshPro name and badge image every time. `RWDialog` (`RogueWavesMode/Code/11_Dialog.cs`) now moves them off the
+  last prompt's cards (whatever that prompt was) to a hidden `RW_FaceStash` under the dialog and reuses them; only a launch's first map cards make
+  them (`FacesMade`), and the pictures line is logged once a launch (pitfall #175, mechanism not traced). The dialog
+  round (`94_DialogLook.cs`) adds "Map cards keep their name texts and badge" and three INFO variants (picture only,
+  and name, and badge) that split the cost if it still hitches. Spool: "Pin Barrage leads to Iron Thimble alone"
+  replaces the stale "ends its branch"; `NextTide` sets `TideRose` and logs when the Tide didn't come, so Voodoo
+  Doll's next-Tide line becomes a SETUP; `Drive()` logs the map's end once (`Gamecomplete` past "Running", the end
+  screen's words) and every later fail is a SETUP that says so;
+  Snare Line's line adds the beast's tags and `SpoolUnitBrain.SnareWhy()` (self-test only: the query's beast, a foe at
+  the Loom, the Seam's team, state, prey). PR #162's review: Supernova's burst lines are a SETUP with no Photon left
+  (`Uloe/Code/98_Upgrades.cs`; "SURGE fires once" stays a check); the weather pictures say when the look never lit. Next round: the dialog round, and
+  Spool once WITHOUT `SPOOL_SHOTS` first (the pictures add 1-2 s each; the map drowned mid-run). Compiled here
+  (release and every self-test define; `/code-review high`, its 9 findings fixed; DIALOGLOOK shows the base's two `PointerEventData` stub errors, TWOPC the known
+  Netcode.Transports one); not run on the PC. Next free numbers: kit chapter 25, kit 1.16, pitfall #176 (#175 this one).
 
 ### Decisions
 
