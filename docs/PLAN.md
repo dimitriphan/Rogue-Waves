@@ -259,7 +259,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #174 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #175 (which PR used which pitfall numbers: the last Log entry).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -328,6 +328,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
   failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
   from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
+- **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
+  layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
+  PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1353,6 +1356,25 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   map, unanswered votes, drops, and leaks charged to the last hitter (an engine hook). Mockup
   `docs/concepts/art/mvp_board_map.png` from `concept-tools/mvp_board_look.py`. Docs only, nothing compiled or run on
   the PC; no kit change, no pitfall.
+- **2026-11-06: the menu buttons' wobble fixed** (thread "Fix stuttering buttons in main menu"; Dimitri 05:48Z "The
+  buttons in game still stutter, but mainly in the main menu", 05:57Z "The button itself wobbles and jitters, including the
+  base game buttons in the main menu"). Report `docs/reports/BUTTON_WOBBLE_2026-11-06.md`. Read from his game's `level1`-`3`
+  and `boot.config` (UnityPy, read only): at UI scale 3 the stock layout centres Play's 48-unit picture in a 75-unit tile and
+  the 16-unit icons in 45-unit tiles, half a canvas unit off; the `Ui` canvas is Screen Space - Camera on a child of
+  `Main Camera`, and the main menu's and the boat's virtual cameras carry Cinemachine noise, so the pixel columns on the
+  half lines flip from frame to frame. Not a hitch: the GC is incremental and the mod's main-menu garbage is about 9 bytes
+  a frame; hover only swaps sprites and tweens colour. New `RogueWavesMode/Code/26_Pixels.cs` (`RWPixels`, every machine,
+  every frame after `RWMenu`): a pass every half second, 64 pictures a frame, no garbage, moves each still `Image` and
+  `RawImage` of a screen-space menu canvas by under half a pixel onto the screen grid measured from the canvas's corner;
+  skips scalers, transitions, animators, layout cells, scroll lists, `Bla_Ui_Confirmation` and a picture someone else keeps
+  writing. Self-test P1-P2 (`94_Pixels.cs`, in `96_Flow.cs` after B1): whole pixels, and 144 frames read back with the fix,
+  then at the game's own places (`RWPixels.Restore`), then on again. Kit `docs/09` #174 and `docs/20` §6. Compiled here
+  (every mode build; `TWOPC` and `DIALOGLOOK` keep the base's stub errors), `/code-review high` ten fixed. PC round
+  `Wobble_round1` (his OK 05:57Z, 06:15Z; code `2a3d907`): mode self-test 168/0/0 with every part on, P1 and P2 pass, FINDING
+  P2 SEEN (the game's own places change in 144 of 144 frames at 2560x1440, ours in 0); release build and boot check of six
+  parts, 0 exceptions; the fixed mode build stays in his Mods, the old one parked; `Run-SelfTests.ps1` doesn't restore the
+  save, so it was copied back by hand (the README said otherwise).
+  No kit change; pitfall #174. Next free: kit 1.15, pitfall #175.
 
 ### Decisions
 

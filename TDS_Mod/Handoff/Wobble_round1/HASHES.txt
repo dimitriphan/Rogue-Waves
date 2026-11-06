@@ -1,0 +1,20 @@
+# Handoff Wobble_round1: commit 8950091 of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from the PC manifest (PC manifest of C:\Users\Dimitri\TDS_Mod, 2026-11-05 21:42, 1126 files).
+925cce81d4db8d87  8ee6af5c70646ad8  ModSource\RogueWavesMode\Code\00_RogueWavesModeMod.cs
+d4f9e9391345dc6a  7aa8b29bf9c0366a  ModSource\RogueWavesMode\Code\09_Rejoin.cs
+e056f214704dc706  93bdbdf2dc2afc3b  ModSource\RogueWavesMode\Code\10_Online.cs
+f7404f7b3468641b  71359d4c0d283f6e  ModSource\RogueWavesMode\Code\13_Card.cs
+0f3b153210c93911  73fd254e61bdb060  ModSource\RogueWavesMode\Code\16_Directions.cs
+76dc0488c307990a  c46a085fe163016d  ModSource\RogueWavesMode\Code\17_Cardinals.cs
+96d8300dc7fb549b  3183f9473b8c0d33  ModSource\RogueWavesMode\Code\19_Objectives.cs
+f16fbe810f948b7f  d155565b615ce50c  ModSource\RogueWavesMode\Code\24_Trinkets.cs
+new  b32b05a9a816ccda  ModSource\RogueWavesMode\Code\26_Pixels.cs
+0c84e0b62d71112e  b94bf0d8755e6799  ModSource\RogueWavesMode\Code\92_Gaps.cs
+183b53cf82f3e857  4264adf5b5bd6a64  ModSource\RogueWavesMode\Code\92_GapsTrinkets.cs
+f23be1129685bdbf  00e5cb88e1798bc0  ModSource\RogueWavesMode\Code\92_Review.cs
+e7453fd4cbe7d6bd  7e76542a1ed66321  ModSource\RogueWavesMode\Code\93_TwoPlayers.cs
+new  764c274e722515ff  ModSource\RogueWavesMode\Code\94_Pixels.cs
+37d69b352a69ebb0  476b3d7a3501a0c8  ModSource\RogueWavesMode\Code\96_Flow.cs
+881a633180a6ad0e  39e799be3b682fbb  ModSource\RogueWavesMode\Code\99_SelfTest.cs
+11aaaf31eadeb696  55d376812c0f32ac  ModSource\RogueWavesMode\IMPLEMENTATION_NOTES.md
+320cc2e04eee04d6  d051f417c24d8840  ModSource\RogueWavesMode\README.md
