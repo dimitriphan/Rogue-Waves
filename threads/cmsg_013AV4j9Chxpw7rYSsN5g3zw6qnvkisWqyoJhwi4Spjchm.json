@@ -4,11 +4,6 @@
   "state": "reviewing",
   "started": "2026-11-06T19:26:23Z",
   "step": "Fixing the review's points",
-  "helpers": [
-    {
-      "task": "Reviewing PR #161",
-      "model": "Opus"
-    }
-  ],
-  "updated": "2026-11-06T19:30:59Z"
+  "helpers": [],
+  "updated": "2026-11-06T19:31:13Z"
 }
