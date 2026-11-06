@@ -6,6 +6,7 @@ public class UloeHeroBrain : MonoBehaviour
     public Entity_Master Master;
     public UloePlayer Player;
     readonly UloeFaults faults = new UloeFaults();
+    bool begun;                     // Begin ran to its end
     public Entity_Master Plug;      // what the cord is in; null when unplugged
     Vector3 plugAt;                 // where it was last seen, for the unplug effects once it's gone
     public float PlugReady, LightNow, RadiusNow;
@@ -41,6 +42,7 @@ public class UloeHeroBrain : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
                     return;
                 Begin();
+                begun = true;
             }
             if (!Armed)
                 Arm();
@@ -72,7 +74,8 @@ public class UloeHeroBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            if (faults.Fail("hero brain", e))
+            // A Begin that threw left this brain half set up (Started is set on its first line), so that still stops it.
+            if (faults.Fail("hero brain", e) || !begun)
                 enabled = false;
         }
     }
@@ -167,14 +170,19 @@ public class UloeHeroBrain : MonoBehaviour
         return Mathf.Min(UloeData.NodeMax, UloeData.NodeBase + UloeData.NodePerAura * UloeUtil.NodeAura(target));
     }
 
+    // What Uloe gives: its source's Light and Brighter Bulb's; a safe socket gives at most Light 8 in all, Brighter Bulb
+    // included (scope 10:145; Dimitri 2026-11-06 "keep cap at 8").
+    public static float TotalLight(float source, int bright, bool safeSocket)
+    {
+        float l = source + UloeData.BrightLight[Mathf.Clamp(bright, 0, UloeData.BrightLight.Length - 1)];
+        return safeSocket ? Mathf.Min(UloeData.SurgeBankMax, l) : l;
+    }
+
     void Feed()
     {
         if (!ModKitUtil.Alive(Master))
             return;
-        LightNow = (Plug != null ? PlugLight(Plug) : UloeData.HeroLight) + UloeData.BrightLight[Player.Bright];
-        // A safe socket gives Uloe at most Light 8 in all, Brighter Bulb included (scope 10:145; Dimitri 2026-11-06 "keep cap at 8").
-        if (SurgeBank != null)
-            LightNow = Mathf.Min(UloeData.SurgeBankMax, LightNow);
+        LightNow = TotalLight(Plug != null ? PlugLight(Plug) : UloeData.HeroLight, Player.Bright, SurgeBank != null);
         RadiusNow = Plug != null ? UloeData.PlugRadius : UloeData.HeroRadius;
         UloeServer.Shine(light, Master, ModKitUtil.Pos(Master), RadiusNow, LightNow, null);
     }

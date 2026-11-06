@@ -138,7 +138,9 @@ public class UloeBankBrain : UloeBuilding
 public class UloePhotonBrain : MonoBehaviour
 {
     public Entity_Master Master;
-    readonly UloeFaults faults = new UloeFaults();
+    // One count for every Photon: they are many and respawn, so a fault common to all logs three traces, not three each.
+    static readonly UloeFaults faults = new UloeFaults();
+    bool begun;                     // Begin ran to its end
     public UloeBankBrain Home;
     public UloeFloodBrain Following;
     public Entity_Master Target;
@@ -199,9 +201,11 @@ public class UloePhotonBrain : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || !Master.Commandlistserver.ContainsKey("Move"))
                     return;
                 Begin();
+                begun = true;
             }
             // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
-            // hooked this Photon, so the pop goes out half a second later, where it was born.
+            // hooked this Photon, so the pop goes out half a second later; it waits to wander until then, so the pop (played
+            // where the Photon stands) is still where it was born.
             if (popLookAt >= 0f && Time.time >= popLookAt)
             {
                 popLookAt = -1f;
@@ -223,7 +227,8 @@ public class UloePhotonBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            if (faults.Fail("photon brain", e))
+            // A Begin that threw left this brain half set up (Started is set on its first line), so that still stops it.
+            if (faults.Fail("photon brain", e) || !begun)
                 enabled = false;
         }
     }
@@ -235,7 +240,7 @@ public class UloePhotonBrain : MonoBehaviour
         dealt = OnDealt;
         ModKitUtil.Listen(Master, dealt);
         popLookAt = Time.time + UloeData.FirstLookDelay;
-        nextWander = Time.time + 0.3f;
+        nextWander = Time.time + UloeData.FirstLookDelay + 0.1f;
     }
 
     // Every hit it lands marks the foe (Merchant's Mob_Merchant.Interact does the same): very little damage, but it counts.

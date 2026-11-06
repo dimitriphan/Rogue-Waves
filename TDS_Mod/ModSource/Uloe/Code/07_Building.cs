@@ -9,6 +9,7 @@ public abstract class UloeBuilding : MonoBehaviour
     public Entity_Master Master;
     public UloeData.Build Def;
     readonly UloeFaults faults = new UloeFaults();
+    bool begun;                     // Begin ran to its end
     public bool Started;
     public int LookBand;
 
@@ -52,6 +53,7 @@ public abstract class UloeBuilding : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
                     return;
                 Begin();
+                begun = true;
             }
             // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
             // hooked this thing, so the build look goes out half a second later.
@@ -69,7 +71,8 @@ public abstract class UloeBuilding : MonoBehaviour
         }
         catch (Exception e)
         {
-            if (faults.Fail(Def.Id + " brain", e))
+            // A Begin that threw left this brain half set up (Started is set on its first line), so that still stops it.
+            if (faults.Fail(Def.Id + " brain", e) || !begun)
                 enabled = false;
         }
     }

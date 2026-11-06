@@ -214,7 +214,7 @@ the next level; "ends" leads nowhere. Costs sum per upgrade; params are in `Code
 | | 3 | Surge Protector | Shields Uloe while plugged in | plugged into this Bank, Uloe takes 40% less damage and heals 2 a second | ends | Yellow 60 + Blue 40 |
 | | 4 | Chain Lightning | Zaps jump between foes | each Photon hit jumps to the 2 foes nearest it within 2 tiles, the Photon's damage and marks (the jumps are the Bank's) | Supernova | Red 350 |
 | | 4 | Photon Swarm | A swarm of Photons | Units +2; leash 5 tiles | Supernova | Red 150 + Yellow 200 |
-| | 5 | Supernova | Every Photon goes off at once | a SURGE button, once a Tide (greyed until the Wave rises): every Photon of this Bank bursts for 20 within 2 tiles, Blind 3 and Illuminate 3, then flies straight back to the Bank at double speed (6 s at most, Dimitri 2026-11-06); every empty slot fills at once; its Photons give Light 3 for 15 s | | Red 2000 + Yellow 1000 |
+| | 5 | Supernova | Every Photon goes off at once | a SURGE button, once a Tide (greyed until the Wave rises): every Photon of this Bank bursts for 20 within 2 tiles, Blind 3 and Illuminate 3, then flies straight back to the Bank at double speed, fighting nothing, until it is within 1.5 tiles of it (6 s at most, Dimitri 2026-11-06); every empty slot fills at once; its Photons give Light 3 for 15 s | | Red 2000 + Yellow 1000 |
 | Mirror | 2 | **Silver Backing** | Blinds harder | Blind one level stronger, at most 3 | all | Blue 30 |
 | | 2 | **Vanity Lights** | Shows foes up instead | Illuminates what hits it, in place of Blind, at the level its Light gives | all | Blue 30 |
 | | 3 | **Glare** | Can shrug off a Blinded foe's hit | a hit from a foe with Blind level N has an N x 20% chance to do nothing | all | Blue 100 |
