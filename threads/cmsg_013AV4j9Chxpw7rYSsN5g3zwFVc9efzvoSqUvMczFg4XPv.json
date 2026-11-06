@@ -1,9 +1,14 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwFVc9efzvoSqUvMczFg4XPv",
   "thread": "Merge PC round 5 and fix map card freeze",
-  "state": "building",
-  "started": "2026-11-06T19:37:56Z",
-  "step": "Map card freeze fix: checks and review",
-  "helpers": [],
-  "updated": "2026-11-06T19:37:56Z"
+  "state": "reviewing",
+  "started": "2026-11-06T19:44:55Z",
+  "step": "PR #163: reviewer reading the map card fix",
+  "helpers": [
+    {
+      "task": "Review PR #163",
+      "model": "Opus"
+    }
+  ],
+  "updated": "2026-11-06T19:44:55Z"
 }
