@@ -8,7 +8,7 @@ below was read in place; "plausible" means the code reads that way but nothing h
 
 ## 1. Fixable now (no decision needed), best first
 
-Rows marked "(plausible)" were left for the PC by the 11-05 fix report; each can be written now, then proven in its
+Rows 4, 5, 6 and 10 were left for the PC by the 11-05 fix report; each can be written now, then proven in its
 next PC round, so their risk is medium.
 
 | # | Pitfall / id | What to fix | Where | Effort | Risk |
