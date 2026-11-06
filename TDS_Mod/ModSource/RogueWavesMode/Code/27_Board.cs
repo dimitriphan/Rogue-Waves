@@ -101,6 +101,12 @@ public static class RWBoard
     // run a failure is exactly as common as an accolade.
     public static int Failures(int n, int parity) { return n / 2 + (n % 2 == 1 && (parity & 1) == 1 ? 1 : 0); }
 
+    // The parity for a board of n: an odd board takes the next of a count kept over the boards given (map and Voyage),
+    // so odd boards alternate even when the crew's size changes between maps. Not saved: a Continue starts it again,
+    // which shifts the balance by one board at most.
+    static int oddBoards;
+    static int Parity(int n) { return n % 2 == 1 ? oddBoards++ : 0; }
+
     // §4: each player gets the one title that stands out most for them. The players whose best failure stands out most
     // past their best accolade take the failures, as many as Failures says; within each side the largest lead takes its
     // title first, one player a title; a player left with none gets Deckhand or Spotless. The MVP: the largest summed share
@@ -270,7 +276,7 @@ public static class RWBoard
     // RWVote.MapStart, host, every map: no board yet; a campaign map snapshots everyone's numbers.
     public static void MapStart()
     {
-        for (int i = 0; i < Lines; i++) Text[i] = "";
+        Clear();    // every vessel's lines too: a board written after the last map was gone never reached a screen
         ShownThisMap = false;
         TeamLeaks = 0;
         leaked.Clear();
@@ -435,7 +441,7 @@ public static class RWBoard
         }
         if (rows.Count < 2)
             return rows;
-        Give(rows, false, RWCampaign.Route.Count);
+        Give(rows, false, Parity(rows.Count));
         foreach (Row r in rows)
         {
             RWPlayer p;
@@ -476,7 +482,7 @@ public static class RWBoard
         // Four cards at most: those who sailed the most maps, then by key.
         rows.Sort((a, b) => { int c = b.V[Maps].CompareTo(a.V[Maps]); return c != 0 ? c : string.CompareOrdinal(a.Key, b.Key); });
         if (rows.Count > Cards) rows.RemoveRange(Cards, rows.Count - Cards);
-        Give(rows, true, RWCampaign.Route.Count + 1);    // the parity after the last map board's, so the two even out
+        Give(rows, true, Parity(rows.Count));
         int leaks = 0;
         foreach (RWPlayer p in RWRun.Players.Values) leaks = Math.Max(leaks, p.Run[Watched]);    // the one who sailed the most maps saw the most
         Write(VoyageBoard, rows, RWCampaign.Route.Count, Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0, RWCampaign.Retries, leaks, next, "");

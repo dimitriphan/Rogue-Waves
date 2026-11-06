@@ -663,9 +663,13 @@ public static partial class RWTest
         foreach (RWBoard.Row r in RWBoard.LastRows) said += (said == "" ? "" : "; ") + r.Name + " " + r.Title + (r.Mvp ? " MVP" : "");
         Check("MB9 the MVP board shows on the host with both players' cards, one MVP, its own card marked",
             RWBoardView.Up && RWBoardView.CardsShown == 2 && RWBoardView.MvpShown != "" && RWBoardView.MineShown != "" && RWVote.State == "Board", said + "; state '" + RWVote.State + "'");
+        float pressedAt = Time.unscaledTime;
         RWBoardView.Continue();
-        yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), RWBoard.Seconds + 15f);
-        Check("MB10 the board closes on every Continue, before its time, and the picks follow", !RWBoardView.Up && RWAsk.Open.StartsWith(RWVote.DirectionKind), "state '" + RWVote.State + "'");
+        yield return Until(() => RWVote.State != "Board", RWBoard.Seconds + 5f);
+        float took = Time.unscaledTime - pressedAt;
+        yield return Until(() => RWAsk.Open.StartsWith(RWVote.DirectionKind), 15f);
+        Check("MB10 the board closes on every Continue, before its time, and the picks follow", took < RWBoard.Seconds - 3f && !RWBoardView.Up && RWAsk.Open.StartsWith(RWVote.DirectionKind),
+            "closed " + RWUtil.F(took) + " s after this Continue (its time " + RWBoard.Seconds + " s); state '" + RWVote.State + "'");
         yield return WaitDialog(8f);
         ClickCard("0");
         yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind) || RWCampaign.Choice >= 0, 40f);

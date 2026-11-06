@@ -41,7 +41,11 @@ public static class RWBoardView
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Game")
         {
             if (root != null || mode != "") Close();
-            return;    // seen stays: the host's lines hold the last board until the next map's start blanks them
+            // A board the host writes with no map open (a map's end after it is gone, the last retry lost on the boat) has
+            // nowhere to show: the host marks it seen, so the next map doesn't open it while it loads (the next map's start
+            // blanks every vessel's lines for the others).
+            if (RWUtil.IsHost) seen = RWBoard.Round;
+            return;
         }
         if (Time.unscaledTime >= nextLook)
         {

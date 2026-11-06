@@ -27,7 +27,7 @@ icons and no game pictures; Inter stands in for the game's font, as in the chart
   player who doesn't answer (the vote's rule, `20_Vote.cs` header). The Tide clock stays held while it shows, as it
   does for the picks (`RWVote.HoldBreak`).
 - The caption's "Next:" names what really follows: "Direction picks" after maps 1-9, "The Voyage" after map 10,
-  "The boat" for a late board, "The end" on the Voyage board.
+  "Back to the boat" for a late board; the Voyage board names nothing after it.
 - A Cove has no map, so no board; a Wreck is a map like any other and gets one (`CHART_NAVIGATION.md` §4).
 - A lost map shows no board: it replays from the last save, and what it earned goes with it (`14_Run.cs` header), so
   its numbers would vanish anyway. The Voyage board counts the retries used instead.
@@ -116,8 +116,9 @@ what the host sends (§6), so all see the same board.
    Unsinkable's count is `Kills + 1` for a player with no vessel deaths, else 0.
 2. **How much it stands out.** `note(t, p) = v(t, p) / total(t) - 1 / n`, a share above an even split. A title stands
    out for a player only when its note is above 0, so in an even crew nothing does.
-3. **How many failures.** Half the crew, `n / 2`; an odd crew takes one more failure on every other board (odd map
-   numbers), so over a run a failure is exactly as common as an accolade (Dimitri's rule). Two players: one each.
+3. **How many failures.** Half the crew, `n / 2`; an odd crew takes one more failure on every other odd-sized board
+   the host gives (map and Voyage boards counted together, so a crew whose size changes between maps still alternates),
+   so a failure is as common as an accolade (Dimitri's rule; a Continue restarts the count, a shift of one board at most). Two players: one each.
    Three: one failure, then two, in turn. Four: two.
 4. **Who takes them.** Each player's lean is their best failure note minus their best accolade note. The players who
    lean furthest to a failure take the failure side; ties go to the smaller `RWPlayer.Key` (the GUID the pack keeps
@@ -131,7 +132,7 @@ what the host sends (§6), so all see the same board.
    the key; no MVP when every sum is 0. The MVP is apart from the title, so the MVP can wear a failure (carried the
    crew and drowned the most). One MVP per board, shown with the white corner brackets and the coral "MVP" banner.
 
-The result depends only on the counts, the keys and the map's number, never on the order players joined.
+The result depends only on the counts, the keys and that count, never on the order players joined.
 
 ## 5. The look (`docs/themes/rogue-tide.md`, the game's UI pieces as in `CHART_NAVIGATION.md` §3.6)
 
