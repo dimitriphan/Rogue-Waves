@@ -1381,6 +1381,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   parts, 0 exceptions; the fixed mode build stays in his Mods, the old one parked; `Run-SelfTests.ps1` doesn't restore the
   save, so it was copied back by hand (the README said otherwise).
   No kit change; pitfall #174. Next free: kit 1.15, pitfall #175.
+
 - **2026-11-06: chart round 1 on the PC** (Dimitri 06:59Z: "Go chart round"): handoff `Chart_round1` (`0be84ef`, code
   `5e03648` = the chart build on `beab230` plus the wobble fix, since merged as #150). Mode flow 178 pass, 1 fail: CV10's
   "never picked" line ran before the boat wrote its blacklist; the rest, Continue and sail-on lines pass, CV1-CV5, CV9,
