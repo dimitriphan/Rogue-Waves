@@ -1,5 +1,5 @@
 | Rogue Waves Mode |
-	# The mode's rules: the campaign, map difficulty, retries, Depth, tides and leaving, the sea chart and sea weather.
+	# The mode's rules: the campaign, map difficulty, retries, Depth, tides and leaving, the sea chart with its rest and treasure stops, and sea weather.
 	# 05_Gameplay_Rundown.txt walks through a campaign step by step and points back here.
 	# The mode comes after the first release, which is Yossele alone -> 01_Expansion.txt [Releases]
 
@@ -60,7 +60,30 @@
 		- On the boat: between maps, players can't swap their Cardinals or Trinkets
 		- Lobby Cardinals: picked once, before the first map, then locked for the campaign; the lobby offers only what the shop may sell -> 12_Cardinals.txt
 		- Islands: each map shows its own island from the base game's world maps, at the base game's size, in the home world's water; a map with no island of its own borrows one
+		- Chart view: the whole chart shows beside the vote cards, and on a key at any time; ~the cards are lettered A, B, C, and pointing at one lights its island and the routes it leads to~. The boat shows ~a banner naming the map it sails to and a mini chart~ /~ Designed, being built: docs/mode/CHART_NAVIGATION.md \
+		- Look: the game's own UI: ~square tiles, teal for a map with its Danger, coral for a stretch's last map, pixel icons, white corner brackets on the island picked~
+		- Rest and treasure stops: one {Cove} and one {Wreck} in each stretch. Not every route meets one, so taking one is a route choice
+		- Old campaigns: a campaign saved before the stops keeps its chart without them
 		- Status: built, and passed on the PC, the in-map vote and the boat's trip included. How the chart looks is yours to check by eye /~ docs/mode/SEA_CHART.md sections 7-9; docs/reports/BUILD_2026-11-03.md \
+
+		{Cove}
+			- What: a rest stop. No map: the boat sails there, the party rests, and the boat sails on
+			- Where: the row before each stretch's last map, rows ~4 and 9~, on one island the chart picks
+			- Gives: ~a retry back~, up to 3. With all 3 retries left, ~each player's lowest-ranked held Direction goes up a rank~ instead
+			- Vote: voted like a map; when it wins, the same vote asks at once where to sail after it
+			- Counting: the campaign is still 10 rows. Difficulty follows the row, not the maps played (~by row~), so a rest skips a map's pay, not its climb
+			- Never lost: a Cove is never lost or replayed, and its gift is never given twice
+			- Icon: ~a campfire~
+			- Status: designed, being built /~ docs/mode/CHART_NAVIGATION.md section 4.1 \
+
+		{Wreck}
+			- What: a treasure stop: a map like the others, calm (no weather)
+			- Where: the middle of each stretch, rows ~2-3 and 6-8~, on one island the chart picks; never rows 1, 5 or 10
+			- Harder: it plays ~one row harder~: the next row's Tides, foe health and modifiers
+			- Pays: when it is won, each player picks ~one Trinket of 3~ the shop may sell and they don't hold, free. A Trinket held raises later foes' health like any other -> [Difficulty]
+			- Lost: as any map: a retry is spent and only the Wreck can be picked until it is won
+			- Icon: ~a chest~
+			- Status: designed, being built /~ docs/mode/CHART_NAVIGATION.md section 4.2 \
 
 	[Sea Weather]
 		- Which maps: some maps on the chart carry a weather, rolled with the chart
