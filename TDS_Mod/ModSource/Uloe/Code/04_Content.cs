@@ -625,6 +625,8 @@ public static class UloeContent
         Visualproperties.Entry lit = e;
         lit.Spriteobject = UloeAssets.Hero(templateSprite, footstep, true);
         ModKitUtil.AddSkin(vp, UloeData.Plugged, lit);
+        // Diorama's tiny look, by the skin named after the being (kit docs/17 §11 rule 19), and a tiny Plugged (UloeHeroBrain.Look).
+        ModKitAssets.TinyLooks(vp, UloeData.Hero);
         ent.Defaultvisual = vp;
         Register("Hero", vp);
 

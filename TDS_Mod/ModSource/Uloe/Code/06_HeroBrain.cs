@@ -58,6 +58,7 @@ public class UloeHeroBrain : MonoBehaviour
                 nextMenu = Time.time + 0.5f;
                 CheckDirections();
                 ModKitUtil.Listen(Master, dealt);
+                KeepLook();
             }
             if (Time.time >= nextFeed)
             {
@@ -330,7 +331,7 @@ public class UloeHeroBrain : MonoBehaviour
         plugAt = ModKitUtil.Pos(target);
         Plugs++;
         LastPlug = ModKitUtil.BeingName(target) + " Light " + PlugLight(target).ToString("0.##");
-        ModKitUtil.Skin(Master, UloeData.Plugged);
+        ModKitUtil.Skin(Master, Look(true));
         SetButton();
         Vector3 dir = ModKitUtil.Pos(target) - pos;
         dir.y = 0f;
@@ -356,12 +357,24 @@ public class UloeHeroBrain : MonoBehaviour
             Snaps++;
             UloeUtil.Warn(Master, UloeData.WarnSnapped);
         }
-        ModKitUtil.Skin(Master, "");
+        ModKitUtil.Skin(Master, Look(false));
         SetButton();
         ModKitUtil.Vis(Master, "Uloe_Plugcord", at, -1f);
         ModKitUtil.Vis(Master, "Uloe_Ring", at, -1f);
         ModKitUtil.Vis(Master, "Uloe_Unplug", at, snapped ? 1f : 0f);
         nextFeed = 0f;
+    }
+
+    // The bulb's skin, tiny while Uloe is (Diorama, Blurry Photo; kit 1.15, ModKitAssets.TinyLooks).
+    string Look(bool plugged) { return ModKitAssets.TinyName(Master, UloeData.Hero, plugged ? UloeData.Plugged : ""); }
+
+    // Diorama's own skin write ("Hero_Uloe", a copy's "Hero_Uloe2") comes when its upgrade starts, which can be while the
+    // cord is in: the bulb is lit again.
+    void KeepLook()
+    {
+        string skin = Master.Skin.Value.ToString();
+        if ((object)Plug != null && (skin == UloeData.Hero || skin == UloeData.Hero + "2"))
+            ModKitUtil.Skin(Master, Look(true));
     }
 
     // The cord: gone with what it was in, or snapped when Uloe walks past its length.

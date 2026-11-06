@@ -1,5 +1,13 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-06: Diorama's tiny look, kit 1.15 (compiled here, not yet run in game)
+
+The vessel's visual now carries the skins Diorama switches to, named after the being and its
+copy's (`ModKitAssets.TinyLooks` in `04_Content.cs`: the same
+sprites at half size; kit `docs/17` §11 rule 19), so holding Diorama shows it tiny; before, the stats came and the look
+never did (`docs/reports/PC_FULL_2026-11-06.md` §5 item 1). For the PC: the mode's gaps check "Diorama: Yossele's look
+turns tiny", and the look by eye.
+
 ## 2026-11-06: the build look waits for the client (compiled here, not yet run in game)
 
 A building's build look goes out 0.5 s after `Begin`, once a client's 0.25 s hook scan has hooked it

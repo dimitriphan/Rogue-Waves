@@ -81,7 +81,7 @@ today's, `SEA_CHART.md` §7 step 2); there is no vote then, so the view shows fo
 | The map vote (each map's leave vote; map 1's in the staging map's opening break; the stay vote, B1) | The chart view on the left half, sorted above the dialog's dim; the stock dialog's cards moved to the right half, lettered to match | pick a card, or click a lit island |
 | The vote closes | The winning lane flashes, "The party sails to X" (today's line), the view closes after ~2 s~ | none |
 | A Cove won | The same view asks the second question at once: where to sail after the Cove (§4.1) | as the map vote |
-| On the boat, while it sails | A banner "SAILING TO X, AS VOTED" with the map's Danger and weather (or the Cove's rest); a mini chart top right inking the lane as the boat goes; in the 3D chart white corner brackets on the island it sails to | none |
+| On the boat, while it sails | A banner "SAILING TO X, AS VOTED" with the map's Danger and weather (or the Cove's rest); a mini chart inking the lane as the boat goes, where the game's own pieces leave room (left edge first, 2026-11-06); in the 3D chart white corner brackets on the island it sails to | none |
 | On the boat, arrived | The Setup panel as today; the mini chart stays in its corner | as today |
 | On the boat with no vote (the host is asked, `05_Boat.cs` `AskHere`) | As the map vote | as the map vote |
 | Any time on a chart or in a map's break | The chart view, read only, toggled by a key (~M~) | the key again, or a close button |
@@ -245,7 +245,9 @@ No kit change was needed to write it; anything the PC teaches goes to kit `docs/
 3. The Wreck: ~one row harder~, ~one Trinket of 3~ for each player; its rows ~2-3 and 6-8~.
 4. Difficulty after a rest follows the row: ~yes~.
 5. The key that opens the chart: ~M~. Changing a vote before the timer ends: ~on~. Others' votes on the chart:
-   ~later~. The mini chart on the boat: ~top right, all the time on the chart~.
+   ~later~. The mini chart on the boat: ~top right, all the time on the chart~; since the full test (2026-11-06,
+   `docs/reports/PC_FULL_2026-11-06.md` §5) ~the first spot the game's pieces leave clear, down the left edge, then the
+   right~ (`26_ChartView.cs` `Mini`).
 
 ## 8. Checks for the build and its PC round
 
@@ -263,3 +265,5 @@ No kit change was needed to write it; anything the PC teaches goes to kit `docs/
 | CV10 | A Cove's win asks the second question; the boat stops at the Cove, the retry comes back once, the party warps and sails on, and the second winner's Setup panel opens | self-test |
 | CV11 | `Continue` after a quit at the Cove neither gives its gift twice nor skips the leg after it | self-test |
 | CV12 | A Wreck plays the next row's numbers (logged) and, once won, each player gets their Trinket pick and holds it after | self-test, then two-player |
+| CV13 | Each map card in a vote (the staging map's and the after-win one) shows its map's name and its picture large, its weather or the Wreck as a badge (2026-11-06, the full test's §5 item 3) | self-test, then his eye |
+| CV14 | On the boat the mini chart stands clear of every picture and word the game shows: the title, the lobby line, the player cards, the HUD's buttons (2026-11-06, §5 item 2) | self-test, then his eye |

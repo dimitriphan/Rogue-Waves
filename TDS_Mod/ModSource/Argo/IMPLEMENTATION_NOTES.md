@@ -1,5 +1,11 @@
 # Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2026-11-06, Diorama's tiny look, kit 1.15 (compiled here, not yet run in game):** the vessel's visual now carries the
+skins Diorama switches to, named after the being and its copy's (`ModKitAssets.TinyLooks` in `04_Content.cs`: the same
+sprites at half size; kit `docs/17` §11 rule 19), so holding Diorama shows it tiny; before, the stats came and the look
+never did (`docs/reports/PC_FULL_2026-11-06.md` §5 item 1). For the PC: the mode's gaps check "Diorama: Spool,
+Argo and Uloe carry the tiny look's skins too", and the look by eye.
+
 **2026-11-06, the build look waits for the client (compiled here, not yet run in game):** a tower's build look goes out
 0.5 s after `Begin`, once a client's 0.25 s hook scan has hooked the tower (`ArgoData.FirstLookDelay`, pitfall #158,
 `docs/reports/PITFALL_FIXES_2026-11-06.md` item 4).

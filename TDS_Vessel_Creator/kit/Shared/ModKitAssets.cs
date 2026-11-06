@@ -1,10 +1,11 @@
-// Kit 1.10 (2026-11-05). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
+// Kit 1.15 (2026-11-06). Versions and compatibility rules: TDS_Vessel_Creator\kit\README.md
 // Shared kit: a vessel's asset pack (<Part>Assets_Library, shipped inside the mod prefab) turned into game objects:
 // sliced sprites, Spriteobjects, the boat's Worldsprite, sounds and effects. Every part's build has its own copy of this
 // class (ModKit is renamed per part), so Library is that part's library. The part keeps what is its own: its hero's
 // sheets, its icons and their palette, its tower material and its sound levels (its Play passes the volume here).
 // Before kit 1.8 each vessel carried all of this in <Vessel>Assets; the bodies came unchanged
-// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Mixer`; kit 1.10 added `CommandIcon`, `Pixel`'s box and `Boxed`.
+// (CODE_SIMPLIFICATION_2026-11-04); kit 1.9 changed `Mixer`; kit 1.10 added `CommandIcon`, `Pixel`'s box and `Boxed`;
+// kit 1.15 added `TinyLooks`, `TinyName` and `Scaled` (Diorama's tiny look).
 public static class ModKitAssets
 {
     public static Transform Library;
@@ -186,6 +187,107 @@ public static class ModKitAssets
         Add(so, Anim("Attack", s, 10, 0, 6, 4, 4, false, true, 1, 3f, "Idle"));
         so.Preview = s.Count > 0 ? s[0] : null;
         return so;
+    }
+
+    // ---------------------------------------------------------------- Diorama's tiny look (kit 1.15, docs/17 §11 rule 19)
+
+    // The stock Diorama (Entity_Ai_Effect_Artifact_Diorama.Starting) sets the vessel's Skin to its being's name, and a
+    // copy's (tag Clone) to the name and "2"; the client then draws the skin of that name, or Default when there is none.
+    // Blurry Photo writes the same two names (read from code, 2026-11-06), so this look shows under it too.
+    public const string Diorama = "Effect_Artifact_Diorama_Upgradeproperties";
+    public const float TinyScale = 0.5f;
+
+    // Gives a vessel's visual the tiny look: the skins "<being>" and "<being>2" (Default made small), and "<being><skin>" for
+    // each skin it already has (Uloe's Plugged), so a part that sets its own skin can keep the look (TinyName). Every
+    // machine builds it with the content, so every player sees it.
+    public static void TinyLooks(Visualproperties vp, string being)
+    {
+        if (vp == null || string.IsNullOrEmpty(being))
+            return;
+        List<Visualproperties.Param> own = new List<Visualproperties.Param>(vp.Skinoverride);
+        Visualproperties.Entry tiny = vp.Default;
+        tiny.Spriteobject = Scaled(vp.Default.Spriteobject, TinyScale, being + "_Tiny_Sprite");
+        ModKitUtil.AddSkin(vp, being, tiny);
+        ModKitUtil.AddSkin(vp, being + "2", tiny);
+        foreach (Visualproperties.Param p in own)
+        {
+            Visualproperties.Entry e = p.Value;
+            e.Spriteobject = Scaled(p.Value.Spriteobject, TinyScale, being + p.Name + "_Tiny_Sprite");
+            ModKitUtil.AddSkin(vp, being + p.Name, e);
+        }
+    }
+
+    // The skin a part sets itself, kept tiny while the vessel is: it holds Diorama, or its skin is one of the tiny ones
+    // (Blurry Photo's, a copy's "<being>2", or a part's own "<being><skin>"). Host: the upgrade list is the server's.
+    public static string TinyName(Entity_Master vessel, string being, string skin)
+    {
+        skin = skin ?? "";
+        if (vessel == null || string.IsNullOrEmpty(being))
+            return skin;
+        bool tiny = (vessel.Upgradelistserver != null && vessel.Upgradelistserver.ContainsKey(Diorama))
+            || vessel.Skin.Value.ToString().StartsWith(being, System.StringComparison.Ordinal);
+        return tiny ? being + skin : skin;
+    }
+
+    // A copy of a sprite object at 'scale' of the size: the same folders, frames, timings and footstep sounds, each frame cut
+    // again from its own texture with more pixels to a unit, so the art keeps every pixel. Null stays null.
+    public static Spriteobject Scaled(Spriteobject so, float scale, string name)
+    {
+        if (so == null || scale <= 0f)
+            return so;
+        Spriteobject copy = NewSpriteobject(name, so, so.Defaultspeedmulti, so.Defaultfolder);
+        copy.Preview = Scaled(so.Preview, scale);
+        foreach (Spritesinlist a in so.Itemslist)
+        {
+            if (a == null)
+                continue;
+            Spritesinlist b = new Spritesinlist();
+            b.Name = a.Name;
+            b.Dumpsplit = a.Dumpsplit;
+            b.Dump = new List<Sprite>();
+            if (a.Dump != null)
+                foreach (Sprite s in a.Dump) b.Dump.Add(Scaled(s, scale));
+            b.Loop = a.Loop;
+            b.Reset = a.Reset;
+            b.Priority = a.Priority;
+            b.Speed = a.Speed;
+            b.Spriteto = a.Spriteto;
+            b.Sprites = new List<Spritevariantlist>();
+            if (a.Sprites != null)
+                foreach (Spritevariantlist v in a.Sprites)
+                {
+                    Spritevariantlist w = new Spritevariantlist();
+                    w.Variant = new List<Spritecont>();
+                    if (v != null && v.Variant != null)
+                        foreach (Spritecont c in v.Variant)
+                        {
+                            Spritecont d = new Spritecont();
+                            d.Item = Scaled(c.Item, scale);
+                            d.Sound = c.Sound;
+                            w.Variant.Add(d);
+                        }
+                    b.Sprites.Add(w);
+                }
+            Add(copy, b);
+        }
+        return copy;
+    }
+
+    static readonly Dictionary<Sprite, Sprite> scaled = new Dictionary<Sprite, Sprite>();
+
+    static Sprite Scaled(Sprite s, float scale)
+    {
+        if (s == null || s.texture == null)
+            return s;
+        Sprite made;
+        if (scaled.TryGetValue(s, out made) && made != null)
+            return made;
+        Rect r = s.rect;
+        Vector2 pivot = new Vector2(r.width > 0f ? s.pivot.x / r.width : 0.5f, r.height > 0f ? s.pivot.y / r.height : 0f);
+        made = Sprite.Create(s.texture, r, pivot, s.pixelsPerUnit / scale, 0, SpriteMeshType.FullRect);
+        made.name = s.name + "_Tiny";
+        scaled[s] = made;
+        return made;
     }
 
     // The boat's character select feeds Worldsprite to a VFX graph. Match the template's layout. The art is the

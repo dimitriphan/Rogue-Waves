@@ -44,6 +44,99 @@ public static class RWDialog
         return card;
     }
 
+    // A map's card (RWVote.MapCard) also shows the map's picture large, its name under it, and its weather or the Wreck as a
+    // badge in the top corner: the stock card draws only its 16-unit icon, which left the vote's cards a small glyph each with
+    // nothing to read until hovered (full test 2026-11-06 §5 item 3). Fit dresses the card once the game has made it.
+    sealed class Look
+    {
+        public string Name;
+        public Sprite Badge;
+    }
+
+    static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Bla_Ui_Confirmation.Entry, Look> looks = new System.Runtime.CompilerServices.ConditionalWeakTable<Bla_Ui_Confirmation.Entry, Look>();
+
+    public static Bla_Ui_Confirmation.Entry Face(Bla_Ui_Confirmation.Entry card, string name, Sprite badge)
+    {
+        if (card != null)
+        {
+            looks.Remove(card);
+            looks.Add(card, new Look { Name = name ?? "", Badge = badge });
+        }
+        return card;
+    }
+
+    // In card units, from its bottom left corner: the picture's box and middle, the name's line, the badge's box.
+    const float FacePicture = 38f, FacePictureY = 0.6f, FaceNameY = 0.17f, FaceNameWide = 0.84f, FaceBadge = 14f;
+    public const string FaceName = "RW_Name", FaceBadgeName = "RW_Badge";
+
+    // The name's size from its letter count, never by asking the text (pitfall #138): one line up to 14 letters, two above.
+    static float NameSize(string name, out bool wrap)
+    {
+        int n = name.Length;
+        wrap = n > 14;
+        return n <= 10 ? 7f : n <= 14 ? 6f : n <= 28 ? 5.5f : 4.5f;
+    }
+
+    static void Dress(RectTransform card, Look look, float pixels, List<string> said)
+    {
+        Vector2 size = card.rect.size;
+        if (size.x < 1f || size.y < 1f) return;
+        UnityEngine.UI.Image icon = card.Find("Icon") != null ? card.Find("Icon").GetComponent<UnityEngine.UI.Image>() : null;
+        if (icon != null)
+        {
+            RectTransform rt = (RectTransform)icon.transform;
+            rt.anchorMin = rt.anchorMax = Vector2.zero;
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = new Vector2(FacePicture, FacePicture);
+            rt.anchoredPosition = new Vector2(size.x * 0.5f, size.y * FacePictureY);
+            RWAssets.Crisp(icon, FacePicture, pixels);
+        }
+        bool made = false;
+        Transform had = card.Find(FaceName);
+        TMPro.TextMeshProUGUI text = had != null ? had.GetComponent<TMPro.TextMeshProUGUI>() : null;
+        if (text == null && look.Name != "" && RWChartView.GameFont != null)
+        {
+            RectTransform rt = RWChartView.Rt(card, FaceName);
+            rt.sizeDelta = new Vector2(size.x * FaceNameWide, size.y * 0.3f);
+            rt.anchoredPosition = new Vector2(size.x * 0.5f, size.y * FaceNameY);
+            text = rt.gameObject.AddComponent<TMPro.TextMeshProUGUI>();
+            text.font = RWChartView.GameFont;
+            if (RWChartView.GameFontMaterial != null) text.fontSharedMaterial = RWChartView.GameFontMaterial;
+            bool wrap;
+            text.fontSize = NameSize(look.Name, out wrap);
+            text.enableAutoSizing = false;
+            text.enableWordWrapping = wrap;
+            text.alignment = TMPro.TextAlignmentOptions.Center;
+            text.color = Pearl;
+            text.raycastTarget = false;
+            text.text = look.Name.ToUpperInvariant();
+            made = true;
+        }
+        if (look.Badge != null && card.Find(FaceBadgeName) == null)
+        {
+            RectTransform rt = RWChartView.Rt(card, FaceBadgeName);
+            rt.sizeDelta = new Vector2(FaceBadge, FaceBadge);
+            rt.anchoredPosition = new Vector2(size.x - FaceBadge * 0.5f - 4f, size.y - FaceBadge * 0.5f - 4f);
+            UnityEngine.UI.Image badge = rt.gameObject.AddComponent<UnityEngine.UI.Image>();
+            badge.sprite = look.Badge;
+            badge.raycastTarget = false;
+            RWAssets.Crisp(badge, FaceBadge, pixels);
+        }
+        if (made && said != null)
+            said.Add(card.name + " " + (icon != null && icon.sprite != null ? (int)icon.sprite.rect.width + " px at " + RWUtil.F(((RectTransform)icon.transform).sizeDelta.x) : "none")
+                + (look.Badge != null ? " +badge" : ""));
+    }
+
+    // What a card on screen shows beyond its icon (the self-test's CV13): its name, and the picture's width in card units.
+    public static bool Faced(RectTransform card, out string name, out float picture)
+    {
+        Transform t = card != null ? card.Find(FaceName) : null, icon = card != null ? card.Find("Icon") : null;
+        TMPro.TMP_Text text = t != null && t.gameObject.activeInHierarchy ? t.GetComponent<TMPro.TMP_Text>() : null;
+        name = text != null ? text.text : "";
+        picture = icon != null ? ((RectTransform)icon).rect.width : 0f;
+        return name != "";
+    }
+
     // The stock card draws its picture in a 16-unit box; the game's own card icons are 16 px.
     const float CardIcon = 16f;
     const int NumberSize = 24;
@@ -289,7 +382,7 @@ public static class RWDialog
         return OnScreen(corners, rt.GetComponentInParent<Canvas>());
     }
 
-    static Rect OnScreen(Vector3[] corners, Canvas canvas)
+    public static Rect OnScreen(Vector3[] corners, Canvas canvas)
     {
         Camera cam = Cam(canvas);
         Vector2 min = new Vector2(float.MaxValue, float.MaxValue), max = new Vector2(float.MinValue, float.MinValue);
@@ -310,6 +403,13 @@ public static class RWDialog
         if (text == null || string.IsNullOrEmpty(text.text) || text.text.Trim() == "")
             return false;
         text.ForceMeshUpdate();
+        return TextOnScreen(text, out r);
+    }
+
+    // Where a text's words stood when its mesh was last drawn, on the screen; false when it has none.
+    public static bool TextOnScreen(TMPro.TMP_Text text, out Rect r)
+    {
+        r = new Rect();
         Bounds b = text.textBounds;
         if (b.size.x <= 0f || b.size.y <= 0f)
             return false;
@@ -479,12 +579,23 @@ public static class RWDialog
         Hold();
         UnityEngine.UI.LayoutRebuilder.ForceRebuildLayoutImmediate(list);
         // Each card's picture at a whole number of screen pixels per art pixel (pitfall #156). The cards are new with each
-        // prompt, so nothing is put back afterwards.
+        // prompt, so nothing is put back afterwards. A map's card is dressed with its picture, name and badge (Face).
+        List<string> said = new List<string>();
         foreach (RectTransform card in Cards(dialog))
         {
+            Look look = null;
+            foreach (Bla_Ui_Confirmation.Entry e in entries)
+                if (e != null && e.Name == card.name && looks.TryGetValue(e, out look)) break;
+            if (look != null)
+            {
+                Dress(card, look, pixels * scale, said);
+                continue;
+            }
             Transform icon = card.Find("Icon");
             RWAssets.Crisp(icon != null ? icon.GetComponent<UnityEngine.UI.Image>() : null, CardIcon, pixels * scale);
         }
+        if (said.Count > 0)
+            RWLog.Info("dialog: map card pictures (art px at card units) " + string.Join(", ", said.ToArray()));
     }
 
     // Last word before the frame is drawn, for as long as the dialog is the mode's: the game's own transition tweens may

@@ -230,15 +230,15 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **State (2026-11-06, base `6eab9ac`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps
   his shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
-  kit 1.14. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`; of the weather look only its W4 lines), the menu
+  kit 1.15. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`; of the weather look only its W4 lines), the menu
   wobble round (`BUTTON_WOBBLE_2026-11-06.md`), chart round 1 (`CHART_ROUND1_2026-11-06.md`) and the full test of
   `6830ba2` with the sea chart and the MVP board (`PC_FULL_2026-11-06.md`). Built since, compiled here, not run on the
   PC: the whole-pixel follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12`
   keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest
   last); reports: `docs/reports/README.md`.
-- **Next, in order:** the full test's three fixes for his word (`PC_FULL_2026-11-06.md` §5); a PC round for what merged
-  after `6830ba2` (the whole-pixel follow-up, the top 4 pitfall fixes' checks, Spool's upgrade sections 10d-10f) with the
-  full test's leftovers (§6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
+- **Next, in order:** a PC round for what merged after `6830ba2` (the whole-pixel follow-up, the top 4 pitfall fixes'
+  checks, Spool's upgrade sections 10d-10f, the full test's three fixes: CV13, CV14, the Diorama checks) with the full
+  test's leftovers (§6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -256,7 +256,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.15, pitfall #175 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #175 (which PR used which pitfall numbers: the last Log entry).
 - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
   entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
 - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
@@ -352,6 +352,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: full PC test of the newest build** (Dimitri: "run a full test using the most up to date version"): every
   part 0 FAIL after ten test faults were fixed; to fix: Diorama's tiny look, the mini chart's place, the vote cards'
   pictures (`PC_FULL_2026-11-06.md` §5). His PC put back. No kit change, no pitfall.
+- **2026-11-06: the full test's three fixes** (Dimitri: "Fix all three"): Diorama's tiny look on the four vessels, map
+  cards with picture, name and badge (CV13), the mini chart in a clear spot (CV14). Compiled here, not run on the PC.
+  Kit 1.15 (`ModKitAssets.TinyLooks`), no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1494,6 +1497,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Stepped; "Now" written here). Compiled here: Argo, Uloe (none, SELFTEST), RogueWavesMode (none, SELFTEST,
   SELFTEST+GAPS+SHOTS) 0 errors with the base's warnings; TWOPC's `Unity.Netcode.Transports` error is the base's too.
   His release builds, save and registry back hash for hash. No kit change, no pitfall.
+- **2026-11-06: the full test's three fixes** (Dimitri 16:47Z: "Fix all three", `PC_FULL_2026-11-06.md` §5). (1) Diorama's
+  tiny look: the game shows it only by a `Skinoverride` named after the being (`<being>2` on its copy; Blurry Photo
+  writes the same two names, read in code), and the four vessels had none. Kit 1.15 `ModKitAssets.TinyLooks(vp, being)`
+  adds both, the vessel's sprites at half size (`Scaled`), and `<being><skin>` per existing skin; Yossele, Spool, Argo and
+  Uloe call it in `04_Content.cs`; Uloe's plug-in names its lit skin with `TinyName` and lights it again after Diorama's
+  own write (`KeepLook`). Kit `docs/17` §9 and §11 rule 19 say so. (2) The mini chart: `RWChartView.Mini` measures every
+  picture and word of the game's open menus once a second (TMP's last drawn bounds, never a redraw, #138) and takes the
+  first clear spot down the left edge, then the right, the least covered if none; it moves after two covered looks and
+  logs what the top right held. (3) The vote cards: `RWDialog.Face` marks a map card, and `Fit` draws its picture in a
+  38-unit box, its name under it (size by letter count) and its weather or Wreck as a badge; the Cove keeps its icon.
+  Self-tests CV13 (the map vote and the after-win vote), CV14 (the boat after staging) and a gaps check of Spool's,
+  Argo's and Uloe's skins; `CHART_NAVIGATION.md` §7-8. Cloud-check stubs: `Graphic.canvas`, `canvasRenderer`,
+  `Mask.showMaskGraphic`. Compiled here: every part's release and self-test builds 0 errors (the mode's DIALOGLOOK,
+  FEELMAP and TWOPC errors are the base's). Not run on the PC (the PC round held the lock). Kit 1.15, no pitfall.
 
 ### Decisions
 

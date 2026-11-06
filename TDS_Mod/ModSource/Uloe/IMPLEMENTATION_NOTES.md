@@ -1,5 +1,13 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-06, Diorama's tiny look, kit 1.15 (compiled here, not yet run in game):** the vessel's visual now carries the
+skins Diorama switches to, named after the being and its copy's (`ModKitAssets.TinyLooks` in `04_Content.cs`: the same
+sprites at half size; kit `docs/17` §11 rule 19), so holding Diorama shows it tiny; before, the stats came and the look
+never did (`docs/reports/PC_FULL_2026-11-06.md` §5 item 1). The lit bulb has a tiny copy too: while Uloe is tiny (Diorama, or a tiny skin
+already on), a plug-in switches to `Hero_UloePlugged` (`ModKitAssets.TinyName`), and Diorama's own skin write, which can come while the cord
+is in, is lit again within half a second (`UloeHeroBrain.KeepLook`). For the PC: the mode's gaps check "Diorama: Spool,
+Argo and Uloe carry the tiny look's skins too", and the look by eye.
+
 **2026-11-06, the pitfall fixes (compiled here, not yet run in game; `docs/reports/PITFALL_FIXES_2026-11-06.md`):** a
 brain's error no longer switches it off for the map: Uloe's, a building's and a Photon's brain skip the bad tick
 (`UloeFaults`, Argo's guard; pitfall #80), and stop only after 600 frames of errors in a row, or at once when `Begin`

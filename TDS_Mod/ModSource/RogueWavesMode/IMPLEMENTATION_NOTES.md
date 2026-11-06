@@ -1,5 +1,17 @@
 # RogueWavesMode: implementation notes
 
+**2026-11-06, the full test's three fixes (compiled here, not yet run in game; `docs/reports/PC_FULL_2026-11-06.md`
+§5):** a map card in every vote (`RWVote.MapCard`, also the boat's own ask) shows its map's picture in a 38-unit box,
+its name under it and its weather or the Wreck as a badge (`RWDialog.Face`, dressed in `Fit`; sizes from letter counts,
+pitfall #138); the Cove keeps its own picture. The mini chart on the boat takes the first spot the game's open menus
+leave clear, measured once a second (`RWChartView.Mini`: down the left edge from the top, then the right; it moves only
+after two looks covered), and logs what the top right held. Self-tests: CV13 (the map vote's and the after-win vote's
+cards), CV14 (the mini chart clear on the boat), and the gaps check that Spool, Argo and Uloe carry Diorama's skins
+(kit 1.15, `ModKitAssets.TinyLooks`). The cloud-check stubs gained `Graphic.canvas`, `canvasRenderer` and
+`Mask.showMaskGraphic`. For the PC: the flow and stock gaps launches, the dialog round's new map-card opening check
+(`94_DialogLook.cs`: a name and badge drawn as the dialog opens, timed against the stock dialog, pitfall #138), and by
+eye the cards and the mini chart.
+
 **2026-11-06, two pitfall fixes (compiled here, not yet run in game; `docs/reports/PITFALL_FIXES_2026-11-06.md`):** a
 stock elite a map can't load is replaced by the next one outside the campaign's four (`RWDifficulty.Pool`, scope `04`),
 no longer by one of the four due on a later map (pitfall #146). Pearl Oyster pays from the moment it is held, also when a
