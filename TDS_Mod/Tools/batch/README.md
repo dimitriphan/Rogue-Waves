@@ -48,7 +48,7 @@ the model thinks, and thinking is billed as output), `--scope-files 07,11`, `--a
   base, kept in a hidden `batch-bases` line at the end of each report: the commit up to which that check last ran in
   full with every request answered. A narrowed run (`--scope-files`, `--art`), a failed or cut request, or an explicit
   `--since REF` leaves that check's base where it was, so nothing it left out is skipped later; a check with no base
-  yet is checked whole. Nothing changed: it says so and sends nothing. A change to the mode's code wakes ten scope
+  yet, or with a base outside the clone's history (a shallow clone is deepened once first), is checked whole. Nothing changed: it says so and sends nothing. A change to the mode's code wakes ten scope
   files, so such a run costs nearly a full one.
 - **`--max-cost USD`** (default 10): `submit` refuses to send, exit code 4, when the most the run can cost is over
   it: every request writing its whole `max_tokens` (8,000 text, docs and art; 40,000 scope; 24,000 design; thinking

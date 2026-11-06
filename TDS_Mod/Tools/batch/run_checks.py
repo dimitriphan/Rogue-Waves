@@ -582,10 +582,26 @@ def changes_per_check(since, checks):
             print(f"--since last: {c} has no earlier full run, so all of it is checked this time.")
             out[c] = None
             continue
+        if not have_commit(ref):
+            print(f"--since last: {c}'s base {ref[:10]} is not in this clone's history, so all of it is checked.")
+            out[c] = None
+            continue
         if ref not in diffs:
             diffs[ref] = changed_since(ref)
         out[c] = diffs[ref]
     return out
+
+
+def have_commit(ref):
+    """True when ref is a commit here; a shallow cloud clone is deepened once before giving up."""
+    def there():
+        return git("cat-file", "-e", f"{ref}^{{commit}}").returncode == 0
+    if there():
+        return True
+    if git("rev-parse", "--is-shallow-repository").stdout.strip() == "true":
+        git("fetch", "-q", "--deepen=500", "origin")
+        return there()
+    return False
 
 
 def build(args):
