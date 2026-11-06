@@ -280,7 +280,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-05: his answers on the split** (Dimitri: "Keep that", "Make Trinket", "Pay only share"): 17 of the
   29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
   §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 514 rows, 357 MATCH,
+- **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 512 rows, 355 MATCH,
   117 resolved, 24 queued (Spool B18/B19), 11 by design; N1 Tidal Mend x level and N2 Abyss's capped slow wait for his
   word; scope 02, 04, 05, 15 texts fixed (`SCOPE_CODE_AUDIT_2026-11-06.md`). Docs only, read from the code, nothing run.
 
@@ -1148,7 +1148,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Cardinals. Report §7, scope `12` (list still `~defaults~` but his three answers). Compiled here (0 errors), not run on the PC. No kit, no pitfall.
 - **2026-11-06: third scope-to-code audit** (Dimitri 00:44Z `/scope-audit`; card 00:48Z "All 17 files, changes only").
   `docs/reports/SCOPE_CODE_AUDIT_2026-11-06.md`, base `c197626`: every row of the 11-05 audit re-read against the ~35
-  PRs since `99b9f3d`, plus the new scope lines; seven file passes. 514 rows: 357 MATCH, 117 RESOLVED (all 93 queued
+  PRs since `99b9f3d`, plus the new scope lines; seven file passes. 512 rows: 355 MATCH, 117 RESOLVED (all 93 queued
   rows outside Spool now built), 24 UNBUILT-QUEUED (Spool's 22 upgrades and UNTHREAD, B19; Pin Barrage's Leads to,
   B18), 11 by design, 5 DIFFERENT. For his word: N1 Tidal Mend heals x the tower's level (11:38 says flat 5/8/12), N2
   Abyss's +10% slow held to +5% by `SlowCap` 0.6. Fixed in the scope here: N3 Depth's note (04:16, 05:13) no longer

@@ -30,7 +30,7 @@ compiled since PR #95; PC round 4 is the first to run it.
 | `04_Rogue_Waves_Mode` | 51 | 46 | 2 | | 2 | 1 (N3, fixed here) | B1 map vote, B2 locked lobby Cardinals |
 | `05_Gameplay_Rundown` | 10 | 7 | 1 | | 1 | 1 (N3, fixed here) | every map voted (B1) |
 | `06_New_Mechanics` | 28 | 26 | 2 | | | 0 | Duos and the Direction counts built |
-| `07_Vessel_Yossele` | 67 | 64 | 1 | | 2 | 0 | Wood Wide Web (#106) |
+| `07_Vessel_Yossele` | 65 | 62 | 1 | | 2 | 0 | Wood Wide Web (#106) |
 | `08_Vessel_Spool` | 74 | 45 | 3 | 24 | 2 | 0 | B6, B16, the Loom's mining; 22 upgrades + UNTHREAD (B19) and Pin Barrage's Leads to (B18) still queued |
 | `09_Vessel_Argo` | 74 | 54 | 18 | | 1 | 1 (N2) | B12, B13 and the fourteen review changes |
 | `10_Vessel_Uloe` | 52 | 23 | 27 | | 2 | 0 | the 24 upgrades, B10, B14; old N10's Leads to set |
@@ -40,11 +40,12 @@ compiled since PR #95; PC round 4 is the first to run it.
 | `14_Optional_Objectives` | 13 | 10 | 3 | | | 0 | 12 + 3 hits (B15), the crystal (#119), the icons (#113) |
 | `15_Templates` | 9 | 9 | | | | 0 (N5, fixed here) | |
 | `16_Base_Vessels` | 4 | 4 | | | | 0 | the four pack rows equal each `02_Data.cs` |
-| **Total** | **514** | **357** | **117** | **24** | **11** | **5** | |
+| **Total** | **512** | **355** | **117** | **24** | **11** | **5** | |
 
 So: of the second audit's 93 queued rows, every one outside Spool is now built, and every built one matches its line
 except two numbers (N1, N2). What is still queued is only Spool's B18/B19. This pass found **two behaviour
-differences for Dimitri's word** and **three scope texts fixed here**. Nothing is MISSING.
+differences for Dimitri's word** and **three scope texts fixed here**. Nothing is MISSING. N3 and N4 sit on slot
+rows and count as DIFFERENT there; N5 is a template's guidance text, not a slot, so it adds no row.
 
 ## 2. New items
 
@@ -70,7 +71,7 @@ N1 and N2 are his call (a number in play). N3-N5 are scope texts fixed in this P
    here:** "its release build is installed with every other pack part's, for your test".
 5. **N5. The template's Stacks slot said "with no limit"** (15:176), against his answer 3 (caps kept:
    `DECISIONS_APPLIED_2026-11-05.md` §1 row 3; 12:18; `RogueWavesMode/Code/17_Cardinals.cs:32`). **Fixed here:**
-   `~up to 6 copies~`.
+   "up to 6 copies" (his number, so no tildes).
 
 Small notes, not counted as rows:
 
@@ -279,7 +280,7 @@ Findings: none.
 
 ### 07_Vessel_Yossele.txt
 
-Summary: rows 67; MATCH 64; RESOLVED 1; UNBUILT-QUEUED 0; UNBUILT-BY-DESIGN 2; DIFFERENT 0; MISSING 0.
+Summary: rows 65; MATCH 62; RESOLVED 1; UNBUILT-QUEUED 0; UNBUILT-BY-DESIGN 2; DIFFERENT 0; MISSING 0.
 Since 11-05 the scope only lost its tildes (his defaults now) and its Status line moved to "177 of 177" plus "built, not
 run"; the code gained Wood Wide Web (#106, the 11-05 audit's one UNBUILT-QUEUED row, now RESOLVED), the Shift panel
 names (B8, #106), the five Claude-made Directions (#107) and Claude's final sprite sheets in `Yossele/Art/` (0a8ed49).
@@ -738,9 +739,8 @@ Findings (DIFFERENT / MISSING / SCOPE-TEXT)
    level, read at each Tide`, applied at `:611` as `MendHeal[mendRank] * Mathf.Max(1, t.Entitydata.Value.Level)`. So a
    level-3 tower mends 15/24/36. Decision 14 (rebuild on the mode's own effects, a default taken) and B7 fixed the
    *frozen* level (MODE-C5). Nothing Dimitri said asked for scaling by level. The first audit (11-04 row 1) already
-   asked: divide by the level, or write "x the tower's level" into Numbers. Recommended: `~write "mends 5 / 8 / 12 x the
-   tower's level" into 11:38 (Claude's default; the code stays)~`, or if he wants a flat heal, `~drop the level factor at
-   16_Directions.cs:611~`. Take: text (scope line), or the build thread on his word; balance sweep to check it beside
+   asked: divide by the level, or write "x the tower's level" into Numbers. Recommended (as §2 N1): `~drop the level
+   factor at 16_Directions.cs:611, so the scope's flat 5 / 8 / 12 holds~`, or `~write "x the tower's level" into 11:38~`. Take: text (scope line), or the build thread on his word; balance sweep to check it beside
    Spring Tide.
 
 Not counted (comments only): `RogueWavesMode/Code/16_Directions.cs:28` and `Argo/Code/02_Data.cs:175` still cite scope
@@ -793,7 +793,7 @@ Findings: none.
 
 ### 13_Enemy_Modifiers.txt
 Summary: rows 13; MATCH 12; RESOLVED 1; UNBUILT-QUEUED 0; UNBUILT-BY-DESIGN 0; DIFFERENT 0; MISSING 0.
-B5 (PR #103) set Dazzling to 15% and made Illuminate linger 3 s; the part's header comment now names vessels (N5 done). The only scope edit since 11-05 is the capital in Dazzling's line (13:39), which already matches the code.
+B5 (PR #103) set Dazzling to 15% and made Illuminate linger 3 s; the part's header comment now names vessels (the 11-05 audit's N5 done). The only scope edit since 11-05 is the capital in Dazzling's line (13:39), which already matches the code.
 
 All paths in `RogueWavesFoes/Code/00_RogueWavesFoesMod.cs`. `#` lines 13:2-3 are skipped.
 
@@ -856,7 +856,7 @@ Only the template lines that state a rule the code must follow were checked, as 
 | 15:245 | Weather line shows in the boat's map panel; the map's start announces only the name | MATCH | `RogueWavesMode/Code/05_Boat.cs:113`; `07_Weather.cs:264` | |
 
 Findings:
-- **SCOPE-TEXT 1.** 15:176 (Cardinal or Trinket template, Stacks slot) says "Yes if a player (or the team) can own more than one, with no limit". Dimitri kept the caps: `docs/reports/DECISIONS_APPLIED_2026-11-05.md` row 3 ("Caps kept: a new one stacks to 6 copies, a base game Cardinal is bought once; both then leave the shop"; asked in `OPEN_DECISIONS_2026-11-05.md` item 3). 12:18 says the same, and the code makes 6 copies (`RogueWavesMode/Code/17_Cardinals.cs:32`, `:336-340`). Fix: `~Yes if a player (or the team) can own more than one, up to 6 copies; no if it leaves the shop once owned~`. Owner: the text thread (scope sync).
+- **SCOPE-TEXT 1.** 15:176 (Cardinal or Trinket template, Stacks slot) says "Yes if a player (or the team) can own more than one, with no limit". Dimitri kept the caps: `docs/reports/DECISIONS_APPLIED_2026-11-05.md` row 3 ("Caps kept: a new one stacks to 6 copies, a base game Cardinal is bought once; both then leave the shop"; asked in `OPEN_DECISIONS_2026-11-05.md` item 3). 12:18 says the same, and the code makes 6 copies (`RogueWavesMode/Code/17_Cardinals.cs:32`, `:336-340`). Fixed in this PR (§2 N5): "Yes if a player (or the team) can own more than one, up to 6 copies; no if it leaves the shop once owned".
 
 ### 16_Base_Vessels.txt
 Summary: rows 4; MATCH 4; RESOLVED 0; UNBUILT-QUEUED 0; UNBUILT-BY-DESIGN 0; DIFFERENT 0; MISSING 0.
