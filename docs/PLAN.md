@@ -295,6 +295,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
   stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
   (`docs/mode/CHART_NAVIGATION.md`). Docs only; not built until his go.
+- **2026-11-06: Art Bench page** (Dimitri: an artifact to edit every sprite frame and model, "Give the whole row"):
+  every sheet by row as `.aseprite`, every model as `.glb` for Blender, edits sent back on the page and brought in by
+  `TDS_Mod/Tools/artbench/ingest.py`. Tool only, tested here; models need builder support next. No kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1212,6 +1215,22 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   charts without stops; difficulty follows the row. Mockups from the new `concept-tools/sea_chart_view.py`. Code and
   checks CV1-CV12 in `CHART_NAVIGATION.md` §6 and §8. Reviewer's nine findings fixed. Docs only; nothing ran on the
   PC. No kit change, no pitfall.
+- **2026-11-06: Art Bench** (thread "Build sprite and model editing artifact"; Dimitri 02:10Z asked for an artifact
+  laying out every sprite frame to download for Aseprite and send back, the same for models in Blender; draft approved
+  02:19Z with "Give the whole row", "Blender is ok", the return "whichever is more token efficient": dropping on the
+  page). Page https://claude.ai/artifact/PgF7QP6n2HN56syTDUaUi5, source `TDS_Mod/Tools/artbench/` (README): 64 sheets
+  (1145 frames) of the four vessels and the mode, 90 mode icons, 175 models. A row downloads as a zip of one `.aseprite`
+  (tags and `gen=` in the builder's merge format, the part's palette); a returned `.aseprite` or PNG is checked (size,
+  frame counts, changed frames, new colours, magenta) and kept in the page's `edits` collection with the row as a PNG
+  asset. `ingest.py` writes merge-route sheets into `ModSource/<Part>/Aseprite/<sheet>.aseprite` (only changed frames,
+  mirrored facings follow) and file-route sheets into their PNG; models into `ModSource/<Part>/Art/Models/` (not read by
+  the builders yet: the first model edit adds that and a PC round). The cloud preview's `m` run now also dumps each
+  model's mesh (`meshes/`) and runs for RogueWavesMode (no Px, no builder). Tested here: `web/test_ase.mjs` 45/0 against
+  `ase_sheets.py`; all 175 models through `.glb` and back, and through headless Blender 4.0.2, with 0 Khronos
+  validator errors; three made-up sprite edits and one model through `ingest.py`, the builder's merge re-run in Python
+  showing exactly the edited frames and a mirror following. Found: 629 triangles in 16 Spool and Uloe models have zero
+  normals (thin triangles pass the builder's 1e-12 cross check but `Normalize` zeroes under 1e-5); not fixed, for a
+  later kit fix. No mod code, no kit change, no pitfall; nothing ran on the PC.
 
 ### Decisions
 

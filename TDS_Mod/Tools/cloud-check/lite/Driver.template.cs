@@ -1,8 +1,13 @@
 // Runs {P}'s editor generators outside Unity: writes the sprite sheets (1x, as Build All Assets would) and previews
 // (scaled, on a checker), and renders every low-poly model at the builders' preview camera angle with a rasterizer.
+// The model run also writes each model's raw mesh to meshes/<name>.json (body, moving parts at their pivots, palette)
+// for TDS_Mod/Tools/artbench/mesh_glb.py. A part without its own Px class (the mode part) is compiled with LITE_NO_PX
+// by run_preview.sh: then only the meshes are written.
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using UnityEngine;
 
 namespace {NS}
@@ -21,6 +26,7 @@ namespace {NS}
             if (audio) Audio();
         }
 
+#if !LITE_NO_PX
         static void Save(string name, Px px, int cell)
         {
             px.Save(Path.Combine(outDir, "sheets", name + ".png"));
@@ -40,6 +46,9 @@ namespace {NS}
 
         static void Audio()
         {
+#if LITE_NO_PX
+        }
+#else
             foreach (var s in {P}Audio.All())
             {
                 float[] b = s.Make();
@@ -48,6 +57,11 @@ namespace {NS}
                 Console.WriteLine("audio " + s.Name + " " + (b.Length / 44100f).ToString("F2") + "s rms " + Math.Sqrt(sum / Math.Max(1, b.Length)).ToString("F3") + " peak " + peak.ToString("F2"));
             }
         }
+#endif
+#else
+        static void Sprites() { }
+        static void Audio() { }
+#endif
 
         // ------------------------------------------------------------ models
 
@@ -78,11 +92,15 @@ namespace {NS}
             {
                 var defs = groups[g];
                 int cell = 256, cols = Math.Min(4, defs.Count), rows = (defs.Count + cols - 1) / cols;
+#if !LITE_NO_PX
                 var sheet = new Px(cell * cols, cell * rows);
+#endif
                 for (int i = 0; i < defs.Count; i++)
                 {
                     var lp = defs[i].Build();
                     var mesh = lp.ToMesh(defs[i].Name);
+                    bool turnedCopy = defs[i].Name.EndsWith("(turned)");
+                    string bodyGeo = Geo(mesh), parts = "";
                     if (partF != null && partF.GetValue(defs[i]) is Func<Lp> partFn)
                     {
                         var pivot = (Vector3)pivotF.GetValue(defs[i]) + new Vector3(0f, -0.5f, 0f);
@@ -90,7 +108,8 @@ namespace {NS}
                         var pm = plp.ToMesh(defs[i].Name + "_Part");
                         for (int k = 0; k < pm.V.Count; k++) pm.V[k] -= pivot;
                         pm.RecalculateBounds();
-                        var turn = Quaternion.Euler(0f, defs[i].Name.EndsWith("(turned)") ? 60f : 0f, 0f);
+                        parts = "{\"name\":" + Str((string)typeof(ModelDef).GetField("PartName").GetValue(defs[i])) + ",\"pivot\":" + Arr(new List<Vector3> { pivot }) + "," + Geo(pm) + "}";
+                        var turn = Quaternion.Euler(0f, turnedCopy ? 60f : 0f, 0f);
                         int baseIdx = mesh.V.Count;
                         for (int k = 0; k < pm.V.Count; k++) { mesh.V.Add(turn * pm.V[k] + pivot); mesh.N.Add(turn * pm.N[k]); mesh.UV.Add(pm.UV[k]); }
                         for (int k = 0; k < pm.Tris.Count; k++) mesh.Tris.Add(pm.Tris[k] + baseIdx);
@@ -101,16 +120,43 @@ namespace {NS}
                     var b = mesh.bounds;
                     Console.WriteLine("model " + defs[i].Name + " tris=" + lp.Triangles + " size=" + b.size.ToString("F2") + " min=" + b.min.ToString("F2") + " max=" + b.max.ToString("F2"));
                     bool proj = defs[i].Projectile;
+                    if (!turnedCopy)
+                    {
+                        var scaleF = typeof(ModelDef).GetField("Scale");   // Argo bakes a scale in at build time; the mesh here is unscaled
+                        string json = "{\"name\":" + Str(defs[i].Name) + ",\"group\":" + Str(defs[i].Group) + ",\"projectile\":" + (proj ? "true" : "false")
+                            + ",\"tris\":" + (mesh.Tris.Count / 3) + (scaleF != null ? ",\"scale\":" + F((float)scaleF.GetValue(defs[i])) : "")
+                            + ",\"body\":{" + bodyGeo + "},\"parts\":[" + parts + "],\"palette\":[" + string.Join(",", Array.ConvertAll(Pal.Hex, Str)) + "]}\n";
+                        Directory.CreateDirectory(Path.Combine(outDir, "meshes"));
+                        File.WriteAllText(Path.Combine(outDir, "meshes", Safe(defs[i].Name) + ".json"), json);
+                    }
+#if !LITE_NO_PX
                     var img = Render(mesh, cell, proj ? 0.3f : 0.95f, proj ? b.center : new Vector3(0, 0.15f, 0), proj);
                     sheet.Draw(img, (i % cols) * cell, (i / cols) * cell);
                     Directory.CreateDirectory(Path.Combine(outDir, "models"));
                     img.Save(Path.Combine(outDir, "models", defs[i].Name.Replace(" ", "_").Replace("(", "").Replace(")", "") + ".png"));
                     Label(sheet, (i % cols) * cell + 4, (i / cols) * cell + 4, defs[i].Name);
+#endif
                 }
+#if !LITE_NO_PX
                 sheet.Save(Path.Combine(outDir, "preview", "models_" + g + ".png"));
+#endif
             }
         }
 
+        // ------------------------------------------------------------ mesh JSON (Unity coordinates, floats round-trip exactly)
+
+        static string Safe(string n) { var sb = new StringBuilder(); foreach (char c in n) if (char.IsLetterOrDigit(c) || c == '_' || c == '-') sb.Append(c); else if (c == ' ') sb.Append('_'); return sb.ToString(); }
+        static string Str(string s) { return "\"" + (s ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"") + "\""; }
+        static string F(float f) { return f.ToString("R", CultureInfo.InvariantCulture); }
+        static string Arr(List<Vector3> l) { var sb = new StringBuilder("["); foreach (var p in l) sb.Append(sb.Length > 1 ? "," : "").Append(F(p.x)).Append(',').Append(F(p.y)).Append(',').Append(F(p.z)); return sb.Append(']').ToString(); }
+        static string Geo(Mesh m)
+        {
+            var uv = new StringBuilder("[");
+            foreach (var p in m.UV) uv.Append(uv.Length > 1 ? "," : "").Append(F(p.x)).Append(',').Append(F(p.y));
+            return "\"v\":" + Arr(m.V) + ",\"n\":" + Arr(m.N) + ",\"uv\":" + uv + "],\"t\":[" + string.Join(",", m.Tris) + "]";
+        }
+
+#if !LITE_NO_PX
         // Orthographic, rotation Euler(35, 45, 0) like the builder's preview camera; one key light + fill + ambient.
         static Px Render(Mesh m, int size, float ortho, Vector3 look, bool proj)
         {
@@ -200,5 +246,6 @@ namespace {NS}
                 cx += 4;
             }
         }
+#endif
     }
 }

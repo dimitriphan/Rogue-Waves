@@ -1,0 +1,577 @@
+<title>Rogue Waves Art Bench</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a workbench. Left rail = parts and sheets, middle = the sheet cut into frames, right = the row on the bench. */
+:root {
+  --bg: #e9ece6; --surface: #f6f7f3; --sunk: #dde2da; --ink: #1b2a31; --muted: #56676d; --line: #c4ccc3;
+  --accent: #23607d; --accent-ink: #ffffff; --brass: #b97a1f; --bad: #b03a2e; --good: #2f7a4b;
+  --final: #2f7a4b; --temp: #9a6a12; --code: #4b6478; --model-bg: #dcd8cf;
+  --check-a: #d6dbd3; --check-b: #c6ccc3;
+  --display: "Pixelify Sans", "Courier New", monospace;
+  --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11191d; --surface: #182328; --sunk: #0d1417; --ink: #e2e8e3; --muted: #93a4a8; --line: #2b3a40;
+  --accent: #6cb2d3; --accent-ink: #0d1a20; --brass: #e2a74a; --bad: #ef7d6f; --good: #6fc08d;
+  --final: #6fc08d; --temp: #e0b155; --code: #9bb3c6; --model-bg: #2a3236; --check-a: #2a363b; --check-b: #222d31; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11191d; --surface: #182328; --sunk: #0d1417; --ink: #e2e8e3; --muted: #93a4a8; --line: #2b3a40;
+  --accent: #6cb2d3; --accent-ink: #0d1a20; --brass: #e2a74a; --bad: #ef7d6f; --good: #6fc08d;
+  --final: #6fc08d; --temp: #e0b155; --code: #9bb3c6; --model-bg: #2a3236; --check-a: #2a363b; --check-b: #222d31; color-scheme: dark }
+
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 18px 40px; max-width: 1480px; margin: 0 auto; }
+h1, h2 { font-family: var(--display); font-weight: 700; text-wrap: balance; margin: 0; letter-spacing: .01em }
+h1 { font-size: 30px; line-height: 1.1 }
+h2 { font-size: 19px; overflow-wrap: anywhere }
+h3 { margin: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted) }
+p { margin: 0 }
+.mono { font-family: var(--mono); font-size: 12.5px; overflow-wrap: anywhere }
+.muted { color: var(--muted) }
+.small { font-size: 13px }
+button, input, select { font: inherit; color: inherit }
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px }
+code { font-family: var(--mono); font-size: 12.5px; background: var(--sunk); padding: 0 4px; border-radius: 3px; overflow-wrap: anywhere }
+
+header.top { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: end; justify-content: space-between; margin-bottom: 14px }
+.status { font-size: 13.5px; color: var(--muted); text-align: right }
+.status b { color: var(--ink) }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 16px; overflow-x: auto }
+.tab { background: none; border: 0; border-bottom: 3px solid transparent; padding: 8px 14px; cursor: pointer; font-family: var(--display); font-size: 16px; color: var(--muted); white-space: nowrap }
+.tab[aria-selected="true"] { color: var(--ink); border-color: var(--accent) }
+.tab .n { font-family: var(--mono); font-size: 12px; margin-left: 6px; color: var(--muted) }
+
+.bench { display: grid; grid-template-columns: 240px minmax(0, 1fr) 360px; gap: 16px; align-items: start }
+@media (max-width: 1150px) { .bench { grid-template-columns: 220px minmax(0, 1fr) } .inspector { grid-column: 1 / -1 } }
+@media (max-width: 720px) { .bench { grid-template-columns: minmax(0, 1fr) } }
+
+.rail { display: flex; flex-direction: column; gap: 12px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 10px); max-height: calc(100vh - 40px); overflow-y: auto; padding-right: 4px }
+@media (max-width: 720px) { .rail { position: static; max-height: 300px; border: 1px solid var(--line); border-radius: 6px; padding: 8px } }
+.rail ul { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 1px }
+.rail .sub { font-family: var(--mono); font-size: 11px; color: var(--muted); margin: 6px 0 0 8px }
+.rail li button { width: 100%; text-align: left; background: none; border: 0; padding: 5px 8px; border-radius: 4px; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0 8px; align-items: center }
+.rail li button:hover { background: var(--sunk) }
+.rail li button[aria-current="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent) }
+.rail .nm { font-weight: 700; font-size: 13.5px; overflow-wrap: anywhere }
+.rail .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brass) }
+
+.chip { display: inline-block; font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; padding: 1px 6px; border-radius: 3px; border: 1px solid currentColor; white-space: nowrap }
+.chip.final { color: var(--final) } .chip.temporary { color: var(--temp) } .chip.code { color: var(--code) }
+.chip.waiting, .chip.pr { color: var(--brass) } .chip.merged, .chip.seen { color: var(--good) }
+
+.sheet { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; min-width: 0 }
+.sheethead { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: start; justify-content: space-between; margin-bottom: 12px }
+.zoom { display: flex; gap: 4px; align-items: center }
+.zoom button { border: 1px solid var(--line); background: var(--bg); border-radius: 4px; padding: 2px 8px; cursor: pointer; font-family: var(--mono); font-size: 12px }
+.zoom button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent) }
+.row { margin-bottom: 10px; padding: 6px; border-radius: 5px; border: 1px solid transparent }
+.row.on { border-color: var(--line); background: var(--bg) }
+.rowlab { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 4px }
+.frames { display: flex; flex-wrap: wrap; gap: 5px }
+.checker { background-color: var(--check-a);
+  background-image: linear-gradient(45deg, var(--check-b) 25%, transparent 25%, transparent 75%, var(--check-b) 75%), linear-gradient(45deg, var(--check-b) 25%, transparent 25%, transparent 75%, var(--check-b) 75%);
+  background-size: 8px 8px; background-position: 0 0, 4px 4px }
+.fr { position: relative; padding: 0; border: 1px solid var(--line); border-radius: 3px; cursor: pointer; line-height: 0 }
+.fr canvas { image-rendering: pixelated; display: block }
+.fr .ix { position: absolute; left: 2px; top: 1px; font: 10px/1 var(--mono); color: var(--muted); background: var(--surface); padding: 1px 2px; border-radius: 2px; opacity: .85 }
+.fr.empty { opacity: .35 }
+.fr[aria-pressed="true"] { outline: 3px solid var(--brass); outline-offset: 1px; border-color: var(--brass) }
+.fr .ed { position: absolute; right: 2px; bottom: 2px; width: 8px; height: 8px; border-radius: 50%; background: var(--brass); box-shadow: 0 0 0 1px var(--surface) }
+.fr.changed { outline: 2px solid var(--brass) }
+
+.inspector { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px; display: flex; flex-direction: column; gap: 12px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 10px) }
+@media (max-width: 1150px) { .inspector { position: static } }
+.stage { display: grid; place-items: center; border-radius: 4px; padding: 12px; min-height: 200px; background-size: 16px 16px; background-position: 0 0, 8px 8px }
+.stage canvas { image-rendering: pixelated; max-width: 100% }
+.stage.model { background: var(--model-bg); padding: 0; cursor: grab; touch-action: none }
+.stage.model canvas { image-rendering: auto; width: 100%; height: auto }
+.ctl { display: flex; gap: 8px; flex-wrap: wrap; align-items: center }
+.btn { border: 1px solid var(--line); background: var(--bg); border-radius: 5px; padding: 7px 11px; cursor: pointer; font-size: 13.5px; display: inline-flex; gap: 6px; align-items: center }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700 }
+.btn.small { padding: 2px 8px; font-size: 12px }
+.btn[disabled] { cursor: not-allowed; opacity: .55 }
+dl.meta { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 3px 12px; margin: 0; font-size: 13.5px }
+dl.meta dt { color: var(--muted) }
+dl.meta dd { margin: 0; overflow-wrap: anywhere; font-variant-numeric: tabular-nums }
+.sw { display: inline-flex; gap: 2px; flex-wrap: wrap; vertical-align: middle }
+.sw i { width: 12px; height: 12px; border: 1px solid var(--line); display: inline-block }
+.drop { border: 2px dashed var(--line); border-radius: 6px; padding: 12px; text-align: center; color: var(--muted); font-size: 13.5px; display: flex; flex-direction: column; gap: 6px; cursor: pointer }
+.drop.over { border-color: var(--accent); background: var(--bg) }
+.drop strong { color: var(--ink); font-size: 14.5px }
+.review { border: 1px solid var(--brass); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 10px }
+.pair { display: flex; gap: 10px; flex-wrap: wrap; align-items: end }
+.pair figure { margin: 0; display: flex; flex-direction: column; gap: 3px; align-items: center; font-size: 11.5px; color: var(--muted) }
+.checks { margin: 0; padding: 0; list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 3px }
+.checks li::before { content: "•"; margin-right: 6px; font-weight: 700 }
+.checks li.ok::before { content: "✓"; color: var(--good) }
+.checks li.warn::before { content: "!"; color: var(--brass) }
+.checks li.bad::before { content: "✗"; color: var(--bad) }
+.track { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; font-size: 11.5px; text-align: center }
+.track span { border-top: 4px solid var(--line); padding-top: 4px; color: var(--muted) }
+.track span.on { border-color: var(--brass); color: var(--ink); font-weight: 700 }
+.msg { font-size: 13px; padding: 8px 10px; border-radius: 5px; background: var(--bg); border-left: 3px solid var(--accent) }
+.msg.bad { border-color: var(--bad) }
+
+.icongrid { display: flex; flex-direction: column; gap: 14px }
+.models { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px }
+.mcard { background: var(--bg); border: 1px solid var(--line); border-radius: 5px; padding: 8px 10px; cursor: pointer; text-align: left; display: flex; flex-direction: column; gap: 2px }
+.mcard[aria-pressed="true"] { outline: 3px solid var(--brass); outline-offset: 1px }
+.mcard .nm { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; font-weight: 500 }
+.mgroup { margin: 12px 0 6px; font-family: var(--mono); font-size: 12px; color: var(--muted) }
+
+.editlist { display: flex; flex-direction: column; gap: 10px }
+.edit { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px; display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 12px; align-items: center }
+@media (max-width: 720px) { .edit { grid-template-columns: minmax(0, 1fr) } }
+.edit img { image-rendering: pixelated; max-width: 100%; height: auto }
+.how { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px }
+@media (max-width: 860px) { .how { grid-template-columns: minmax(0, 1fr) } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0 }
+.panel p, .panel li { max-width: 68ch }
+ol.steps { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 10px }
+ol.steps li::marker { font-family: var(--display); color: var(--accent) }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h3>Rogue Waves</h3>
+      <h1>Art Bench</h1>
+      <p class="muted">Every mod sprite cut into its frames, and every model, to edit and send back into the mod.</p>
+    </div>
+    <div class="status" id="status">Built from <b id="commit"></b>. <span id="dbstate">Connecting…</span></div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-sprites" aria-selected="true" data-view="sprites">Sprites<span class="n" id="n-sprites"></span></button>
+    <button class="tab" role="tab" id="tab-icons" aria-selected="false" data-view="icons">Icons<span class="n" id="n-icons"></span></button>
+    <button class="tab" role="tab" id="tab-models" aria-selected="false" data-view="models">Models<span class="n" id="n-models"></span></button>
+    <button class="tab" role="tab" id="tab-edits" aria-selected="false" data-view="edits">Your edits<span class="n" id="n-edits"></span></button>
+    <button class="tab" role="tab" id="tab-how" aria-selected="false" data-view="how">How it works</button>
+  </nav>
+
+  <section id="view-sprites" class="bench">
+    <aside class="rail" id="rail"></aside>
+    <div class="sheet" id="sheet"></div>
+    <aside class="inspector" id="insp"></aside>
+  </section>
+
+  <section id="view-icons" class="bench" hidden>
+    <aside class="rail"><div><h3>Mode icons</h3><p class="muted small">Directions, Cardinals, Trinkets and the mode's own icons, one frame each.</p></div></aside>
+    <div class="sheet"><div class="icongrid" id="icons"></div></div>
+    <aside class="inspector" id="insp-icons"></aside>
+  </section>
+
+  <section id="view-models" class="bench" hidden>
+    <aside class="rail" id="mrail"></aside>
+    <div class="sheet" id="mlist"></div>
+    <aside class="inspector" id="insp-models"></aside>
+  </section>
+
+  <section id="view-edits" hidden><div class="editlist" id="edits"></div></section>
+
+  <section id="view-how" hidden>
+    <div class="how">
+      <div class="panel">
+        <h2>How an edit gets back into the mod</h2>
+        <ol class="steps">
+          <li><b>Pick a row and download it.</b> You get a .zip holding one <code>.aseprite</code> file: the row's frames, one tag per animation, and the part's palette. A model comes as a .zip holding a <code>.glb</code> that Blender opens with File › Import › glTF.</li>
+          <li><b>Edit it and save.</b> Keep the canvas size and each tag's frame count. Extra layers are fine; hidden layers are left out. In Blender, keep the moving parts' names (<code>Pivot</code>, <code>Gun</code>) and export as glTF binary (.glb).</li>
+          <li><b>Drop the file back on the same row or model here.</b> The page checks it and shows the changed frames next to the current ones. Press Send to the mod: it is kept here, marked <i>waiting</i>.</li>
+          <li><b>Say "bring in my art edits" in the project.</b> A thread reads every waiting edit, writes it into the repo, rebuilds this page and runs the cloud compile.</li>
+          <li><b>It opens a pull request</b> with a reviewer. It merges once the reviewer approves and the compile is clean, and the edit shows <i>merged</i>.</li>
+          <li><b>The next PC round shows it in the game</b>, and the edit shows <i>seen on the PC</i>.</li>
+        </ol>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
+        <div class="panel">
+          <h2>Where an edit goes</h2>
+          <p><b>Sheets the builder merges</b> (most vessel sheets): your frames go into <code>ModSource/&lt;Part&gt;/Aseprite/&lt;sheet&gt;.aseprite</code>. The builder swaps in only the frames you changed. Frames you left alone keep following the code, and a mirrored facing (v1 from v0, v3 from v2) follows your edit unless you edited it too.</p>
+          <p><b>Sheets kept as files</b> (the Cordyfriend, the Thread Head, Uloe's lit sheet, the tuft, Vendcint and the mode icons): the changed frames are written into that file. A code-drawn sheet becomes a file this way, so later code changes to it stop showing.</p>
+          <p><b>Models</b>: the edited mesh is saved next to the part's models and replaces the code's shape for that model. Colours snap to the nearest of the 64 palette swatches. The builder support for this comes with the first model edit, which also needs a PC round.</p>
+        </div>
+        <div class="panel">
+          <h2>Not on the bench yet</h2>
+          <p class="small">Argo's six Naut crew sheets (the preview skips sheets made in a loop), the foes (they use the game's own art with overlays), effects and sounds. Base-vessel game sprites are never shown here.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>/*ase.js*/</script>
+<script>/*glb.js*/</script>
+<script>
+const DATA = /*DATA*/null;
+const $ = id => document.getElementById(id);
+const el = (t, a = {}, ...kids) => { const e = document.createElement(t); for (const [k, v] of Object.entries(a)) { if (v == null || v === false) continue; if (k === 'class') e.className = v; else if (k === 'text') e.textContent = v; else if (k.startsWith('on')) e.addEventListener(k.slice(2), v); else e.setAttribute(k, v === true ? '' : v); } kids.flat().forEach(k => k != null && k !== false && e.append(k)); return e; };
+const originLabel = { final: 'final', temporary: 'temporary', code: 'drawn by code' };
+const chip = (cls, text) => el('span', { class: 'chip ' + cls, text: text || originLabel[cls] || cls });
+const STEPS = ['waiting', 'pr', 'merged', 'seen'], STEP_LABEL = ['Waiting', 'In a PR', 'Merged', 'Seen on the PC'];
+const cap = { db: null, assets: null, downloads: null, user: null };
+let edits = [], zoom = 3, sel = { s: 0, r: 0, c: 0 }, pending = null, playing = null;
+
+/* ---------- images and frames ---------- */
+const imgs = new Map();
+function load(src) { if (!imgs.has(src)) imgs.set(src, new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; })); return imgs.get(src); }
+const pixCache = new Map();
+async function pixels(sheet) {
+  if (pixCache.has(sheet.src)) return pixCache.get(sheet.src);
+  const img = await load(sheet.src), c = document.createElement('canvas'); c.width = sheet.w; c.height = sheet.h;
+  const x = c.getContext('2d'); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, sheet.w, sheet.h).data; pixCache.set(sheet.src, d); return d;
+}
+function cut(d, W, x0, y0, cell) {
+  const f = new Uint8Array(cell * cell * 4);
+  for (let y = 0; y < cell; y++) f.set(d.subarray(((y0 + y) * W + x0) * 4, ((y0 + y) * W + x0 + cell) * 4), y * cell * 4);
+  return f;
+}
+function canvasOf(rgba, cell, z) {
+  const c = document.createElement('canvas'); c.width = cell * z; c.height = cell * z;
+  const t = document.createElement('canvas'); t.width = t.height = cell;
+  t.getContext('2d').putImageData(new ImageData(new Uint8ClampedArray(rgba), cell, cell), 0, 0);
+  const x = c.getContext('2d'); x.imageSmoothingEnabled = false; x.drawImage(t, 0, 0, cell * z, cell * z); return c;
+}
+const hex = (r, g, b) => '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+function colours(rgba) { const s = new Set(); for (let i = 0; i < rgba.length; i += 4) if (rgba[i + 3]) s.add(hex(rgba[i], rgba[i + 1], rgba[i + 2])); return [...s]; }
+const same = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
+const swatches = list => el('span', { class: 'sw' }, ...list.slice(0, 24).map(c => el('i', { style: `background:${c}`, title: c })));
+function magenta(h) { const r = parseInt(h.slice(1, 3), 16) / 255, g = parseInt(h.slice(3, 5), 16) / 255, b = parseInt(h.slice(5, 7), 16) / 255;
+  const mx = Math.max(r, g, b), mn = Math.min(r, g, b); if (mx - mn < .25 || mx < .3) return false;
+  let hue = mx === r ? ((g - b) / (mx - mn)) % 6 : mx === g ? (b - r) / (mx - mn) + 2 : (r - g) / (mx - mn) + 4; hue = (hue * 60 + 360) % 360;
+  return hue >= 270 && hue <= 320; }
+const rowFrames = (s, r) => s.rows[r].tags.reduce((n, t) => n + t.count, 0);
+
+/* ---------- edits (db) ---------- */
+const openEdit = e => e.status === 'waiting' || e.status === 'pr';
+function editsFor(kind, part, name, row) { return edits.filter(e => e.kind === kind && e.part === part && (e.sheet || e.model) === name && (row == null || e.row === row)); }
+function track(e) {
+  const on = STEPS.indexOf(e.status);
+  return el('div', {}, el('div', { class: 'track' }, ...STEP_LABEL.map((t, i) => el('span', { class: i <= on ? 'on' : '' }, t))),
+    e.pr ? el('p', { class: 'small muted', style: 'margin-top:4px' }, 'Pull request ', el('a', { href: `https://github.com/dimitriphan/Rogue-Waves/pull/${e.pr}`, target: '_blank', rel: 'noopener', text: '#' + e.pr })) : null,
+    e.note ? el('p', { class: 'small muted' }, e.note) : null);
+}
+async function connect() {
+  const use = n => (window.claude && window.claude.use) ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+  [cap.db, cap.assets, cap.downloads, cap.user] = await Promise.all([use('db'), use('assets'), use('downloads'), use('user')]);
+  if (!cap.db) { $('dbstate').textContent = 'Sign in to send edits back; downloads work without it.'; return; }
+  const t = setTimeout(() => { $('dbstate').textContent = 'Edits are slow to load.'; }, 10000);
+  cap.db.collection('edits').onSnapshot(snap => {
+    clearTimeout(t);
+    edits = snap.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => (b.at || '').localeCompare(a.at || ''));
+    const w = edits.filter(openEdit).length;
+    $('dbstate').textContent = w ? `${w} edit${w === 1 ? '' : 's'} waiting or in a PR.` : 'No edits waiting.';
+    $('n-edits').textContent = edits.length || '';
+    renderRail(); renderSheet(); renderInsp(); renderEdits(); renderIcons(); renderIconInsp();
+  }, () => { clearTimeout(t); $('dbstate').textContent = 'Edits could not load.'; });
+}
+async function saveFile(name, bytes, msgEl) {
+  if (!cap.downloads) { msgEl.replaceChildren(el('div', { class: 'msg bad', text: 'Downloads are not available in this view. Open the page on claude.ai, signed in.' })); return; }
+  try { await cap.downloads.save({ filename: name, data: bytes }); msgEl.replaceChildren(el('div', { class: 'msg', text: `Saved ${name}.` })); }
+  catch (e) { msgEl.replaceChildren(el('div', { class: 'msg bad', text: e && e.code === 'declined' ? 'Download cancelled.' : 'The download did not go through: ' + ((e && e.message) || 'unknown error') })); }
+}
+async function send(doc, blob, type, msgEl, btn) {
+  if (!cap.db || !cap.assets) { msgEl.replaceChildren(el('div', { class: 'msg bad', text: 'Sending needs you signed in as the page owner.' })); return false; }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try {
+    const up = await cap.assets.upload(blob, { type });
+    const me = cap.user ? await cap.user.id().catch(() => null) : null;
+    await cap.db.collection('edits').add({ ...doc, asset: up.id, status: 'waiting', at: new Date().toISOString(), by: me });
+    msgEl.replaceChildren(el('div', { class: 'msg', text: 'Sent. Say "bring in my art edits" in the project when you are ready.' }));
+    return true;
+  } catch (e) { btn.disabled = false; btn.textContent = 'Send to the mod'; msgEl.replaceChildren(el('div', { class: 'msg bad', text: 'Not sent: ' + ((e && e.message) || e) })); return false; }
+}
+
+/* ---------- sprites ---------- */
+const sheetsOf = part => DATA.sheets.filter(s => s.part === part);
+function renderRail() {
+  const rail = $('rail'); rail.replaceChildren();
+  for (const part of [...new Set(DATA.sheets.map(s => s.part))]) {
+    const box = el('div', {}, el('h3', { text: part === 'RogueWavesMode' ? 'Mode' : part }));
+    for (const folder of ['Vessel', 'Unit', 'UI']) {
+      const list = sheetsOf(part).filter(s => s.folder === folder); if (!list.length) continue;
+      box.append(el('div', { class: 'sub', text: { Vessel: 'vessel', Unit: 'units', UI: 'menus and UI' }[folder] }),
+        el('ul', {}, ...list.map(s => { const i = DATA.sheets.indexOf(s);
+          return el('li', {}, el('button', { 'aria-current': String(i === sel.s), onclick: () => { sel = { s: i, r: 0, c: 0 }; pending = null; renderRail(); renderSheet(); renderInsp(); } },
+            el('span', { class: 'nm', text: s.name }), editsFor('sprite', s.part, s.name).some(openEdit) ? el('span', { class: 'dot', title: 'has an edit waiting' }) : el('span'))); })));
+    }
+    rail.append(box);
+  }
+}
+async function renderSheet() {
+  const s = DATA.sheets[sel.s], d = await pixels(s), box = $('sheet'); box.replaceChildren();
+  box.append(el('div', { class: 'sheethead' },
+    el('div', { style: 'min-width:0;display:flex;flex-direction:column;gap:2px' }, el('h2', { text: s.name }),
+      el('div', { class: 'ctl' }, chip(s.origin), s.edited ? chip('waiting', s.edited + ' hand-edited frames') : null, el('span', { class: 'small muted', text: `${s.w} × ${s.h}, ${s.cell} px frames` }))),
+    el('div', { class: 'zoom' }, el('span', { class: 'muted small', text: 'Zoom' }), ...[1, 2, 3, 4, 6].map(z => el('button', { 'aria-pressed': String(z === zoom), onclick: () => { zoom = z; renderSheet(); } }, z + '×')))));
+  const z = Math.max(1, Math.round(zoom * 32 / Math.max(16, s.cell)) - (s.cell >= 64 ? 1 : 0));
+  s.rows.forEach((row, r) => {
+    const marks = new Set(editsFor('sprite', s.part, s.name, r).filter(openEdit).flatMap(e => e.changed || []));
+    const fr = el('div', { class: 'frames' }); let col = 0;
+    for (const t of row.tags) for (let k = 0; k < t.count; k++, col++) {
+      const c = col, f = cut(d, s.w, c * s.cell, r * s.cell, s.cell), empty = !f.some((v, i) => i % 4 === 3 && v);
+      fr.append(el('button', { class: 'fr checker' + (empty ? ' empty' : ''), 'aria-pressed': String(sel.r === r && sel.c === c), 'aria-label': `${t.name} frame ${k}`, title: `${t.name} · frame ${k}`,
+        onclick: () => { if (sel.r !== r) pending = null; sel.r = r; sel.c = c; renderSheet(); renderInsp(); } }, canvasOf(f, s.cell, z), el('span', { class: 'ix', text: String(c) }), marks.has(c) ? el('span', { class: 'ed', title: 'edit waiting' }) : null));
+    }
+    const mirror = row.tags.filter(t => t.mirrorOf).map(t => `${t.name} mirrors ${t.mirrorOf}`).join(', ');
+    box.append(el('div', { class: 'row' + (sel.r === r ? ' on' : '') },
+      el('div', { class: 'rowlab' }, el('span', { text: `row ${r}` }), el('b', { style: 'color:var(--ink)', text: row.label }), mirror ? el('span', { text: '· ' + mirror }) : null), fr));
+  });
+}
+async function rowAse(s, r) {
+  const d = await pixels(s), frames = [], tags = []; let col = 0;
+  const colour = { idle: [106, 190, 48], move: [91, 110, 225], attack: [217, 87, 99], ability: [178, 102, 216], fall: [223, 113, 38], land: [238, 195, 154], mini: [95, 205, 228], unit: [55, 148, 110], ui: [155, 173, 183] };
+  for (const t of s.rows[r].tags) {
+    const from = frames.length;
+    for (let k = 0; k < t.count; k++) frames.push(cut(d, s.w, (col + k) * s.cell, r * s.cell, s.cell));
+    const gen = frames.slice(from).map(f => RWAse.frameCrc(f)).join(',');
+    tags.push({ name: t.name, from, to: frames.length - 1, color: colour[t.kind] || colour.ui,
+      data: `sheet=${s.folder}/${s.name}.png;row=${r};col=${t.col};cols=${s.w / s.cell};rows=${s.h / s.cell};gen=${gen}` + (t.mirrorOf ? ';mirror=' + t.mirrorOf : '') });
+    col += t.count;
+  }
+  return RWAse.writeAse({ w: s.cell, h: s.cell, frames, tags, palette: DATA.palettes[s.part] || [[0, 0, 0, 0]], layerName: `${s.name} row ${r}`, duration: 100 });
+}
+async function readBack(file, s, r) {
+  const bytes = new Uint8Array(await file.arrayBuffer()), n = rowFrames(s, r), cell = s.cell, out = { name: file.name, frames: null, problems: [] };
+  if (bytes[0] === 0x89 && bytes[1] === 0x50) {
+    const img = await createImageBitmap(new Blob([bytes])), c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+    const x = c.getContext('2d'); x.drawImage(img, 0, 0); const d = x.getImageData(0, 0, img.width, img.height).data;
+    if (img.width === n * cell && img.height === cell) out.frames = [...Array(n)].map((_, k) => cut(d, img.width, k * cell, 0, cell));
+    else if (img.width === s.w && img.height === s.h) out.frames = [...Array(n)].map((_, k) => cut(d, s.w, k * cell, r * cell, cell));
+    else if (img.width === cell && img.height === cell) { out.single = true; out.frames = null; out.one = cut(d, cell, 0, 0, cell); }
+    else out.problems.push(`The PNG is ${img.width} × ${img.height}. Use the row (${n * cell} × ${cell}), the whole sheet (${s.w} × ${s.h}) or one frame (${cell} × ${cell}).`);
+    return out;
+  }
+  let ase; try { ase = await RWAse.readAse(bytes); } catch (e) { out.problems.push('This is not an .aseprite or .png file Aseprite saved: ' + e.message); return out; }
+  if (ase.w !== cell || ase.h !== cell) { out.problems.push(`The canvas is ${ase.w} × ${ase.h}; this sheet's frames are ${cell} × ${cell}.`); return out; }
+  const frames = [];
+  for (const t of s.rows[r].tags) {
+    const at = ase.tags.find(x => x.name === t.name);
+    if (at) { if (at.to - at.from + 1 !== t.count) out.problems.push(`Tag ${t.name} has ${at.to - at.from + 1} frames; it needs ${t.count}.`); for (let k = 0; k < t.count; k++) frames.push(ase.frames[at.from + k] || ase.frames[at.from]); }
+    else if (ase.frames.length === n) { frames.push(...ase.frames.slice(frames.length, frames.length + t.count)); }
+    else out.problems.push(`Tag ${t.name} is missing.`);
+  }
+  if (!out.problems.length) out.frames = frames;
+  return out;
+}
+async function renderInsp() {
+  const s = DATA.sheets[sel.s], d = await pixels(s), box = $('insp'), cell = s.cell, r = sel.r, n = rowFrames(s, r);
+  if (playing) { clearInterval(playing); playing = null; }
+  const rowF = [...Array(n)].map((_, k) => cut(d, s.w, k * cell, r * cell, cell));
+  let tagOf = null, kOf = 0; { let c = 0; for (const t of s.rows[r].tags) { if (sel.c < c + t.count) { tagOf = t; kOf = sel.c - c; break; } c += t.count; } }
+  const bigZ = Math.max(2, Math.floor(220 / cell)), stage = el('div', { class: 'stage checker' }, canvasOf(rowF[sel.c], cell, bigZ));
+  const play = el('button', { class: 'btn', onclick: () => {
+    if (playing) { clearInterval(playing); playing = null; play.textContent = 'Play row'; stage.replaceChildren(canvasOf(rowF[sel.c], cell, bigZ)); return; }
+    let k = tagOf ? tagOf.col : 0; const a = tagOf ? tagOf.col : 0, b = tagOf ? tagOf.col + tagOf.count : n; play.textContent = 'Stop';
+    playing = setInterval(() => { stage.replaceChildren(canvasOf((pending && pending.frames ? pending.frames : rowF)[k], cell, bigZ)); k = k + 1 >= b ? a : k + 1; }, 125);
+  } }, 'Play row');
+  const msg = el('div');
+  const dl = el('button', { class: 'btn primary', onclick: async () => { dl.disabled = true; try { const ase = await rowAse(s, r), fn = `${s.name}_row${r}`;
+    await saveFile(fn + '.zip', RWAse.zipStore([{ name: fn + '.aseprite', bytes: ase }]), msg); } finally { dl.disabled = false; } } }, 'Download row for Aseprite');
+  const fileIn = el('input', { type: 'file', accept: '.aseprite,.ase,.png', hidden: true, id: 'file-sprite',
+    onchange: async () => { if (fileIn.files[0]) { pending = await readBack(fileIn.files[0], s, r); if (pending.single) { pending.frames = rowF.map((f, k) => k === sel.c ? pending.one : f); } renderInsp(); } } });
+  const drop = el('div', { class: 'drop', role: 'button', tabindex: '0', onclick: () => fileIn.click(), onkeydown: e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileIn.click(); } },
+    ondragover: e => { e.preventDefault(); drop.classList.add('over'); }, ondragleave: () => drop.classList.remove('over'),
+    ondrop: async e => { e.preventDefault(); drop.classList.remove('over'); const f = e.dataTransfer.files[0]; if (f) { pending = await readBack(f, s, r); if (pending.single) pending.frames = rowF.map((x, k) => k === sel.c ? pending.one : x); renderInsp(); } } },
+    el('strong', { text: 'Drop your edited row here' }), el('span', { text: 'the .aseprite you downloaded, or a PNG of the row, the sheet or this one frame' }), fileIn);
+  const mine = editsFor('sprite', s.part, s.name, r);
+  box.replaceChildren(
+    el('div', {}, el('h3', { text: 'On the bench' }), el('h2', { text: `${s.name} · row ${r}` })),
+    stage, el('div', { class: 'ctl' }, play, el('span', { class: 'small muted', text: tagOf ? `${tagOf.name}, frame ${kOf + 1} of ${tagOf.count}` : '' })),
+    el('dl', { class: 'meta' },
+      el('dt', { text: 'Row' }), el('dd', { text: s.rows[r].label }),
+      el('dt', { text: 'Frames' }), el('dd', { text: `${n}, ${cell} × ${cell} px` }),
+      el('dt', { text: 'Colours' }), el('dd', {}, `${colours(rowF[sel.c]).length} in this frame `, swatches(colours(rowF[sel.c]))),
+      el('dt', { text: 'Source' }), el('dd', {}, chip(s.origin)),
+      el('dt', { text: 'Goes to' }), el('dd', { class: 'mono', text: s.target })),
+    el('div', { class: 'ctl' }, dl), msg, pending ? review(s, r, rowF, msg, pending, () => { pending = null; renderInsp(); }) : drop,
+    ...mine.slice(0, 3).map(e => el('div', { style: 'display:flex;flex-direction:column;gap:6px' }, el('h3', { text: `Edit sent ${(e.at || '').slice(0, 16).replace('T', ' ')}` }),
+      e.asset ? el('img', { src: '/_blob/' + e.asset, alt: 'the edited row', style: `image-rendering:pixelated;width:${Math.min(320, n * cell * 2)}px;max-width:100%`, class: 'checker' }) : null, track(e))));
+}
+function review(s, r, rowF, msg, p, done) {
+  const cell = s.cell, z = Math.max(1, Math.floor(96 / cell));
+  const reset = el('button', { class: 'btn', onclick: done }, 'Discard');
+  if (!p.frames) return el('div', { class: 'review' }, el('h3', { text: p.name }), el('ul', { class: 'checks' }, ...p.problems.map(t => el('li', { class: 'bad', text: t }))), el('div', { class: 'ctl' }, reset));
+  const changed = p.frames.map((f, k) => same(f, rowF[k]) ? -1 : k).filter(k => k >= 0);
+  const pal = new Set((DATA.palettes[s.part] || []).map(c => hex(c[0], c[1], c[2]))), newCols = [...new Set(changed.flatMap(k => colours(p.frames[k])))].filter(c => !pal.has(c));
+  const mag = newCols.filter(magenta), semi = changed.some(k => p.frames[k].some((v, i) => i % 4 === 3 && v > 0 && v < 255));
+  const mirrored = s.route === 'merge' ? s.rows.flatMap(rw => rw.tags).filter(t => t.mirrorOf && s.rows[r].tags.some(x => x.name === t.mirrorOf)).map(t => t.name) : [];
+  const checks = [
+    [changed.length ? 'ok' : 'bad', changed.length ? `${changed.length} of ${p.frames.length} frames changed (${changed.join(', ')})` : 'No frame differs from the current row.'],
+    ['ok', `Size ${cell} × ${cell}, ${p.frames.length} frames`],
+    [newCols.length ? 'warn' : 'ok', newCols.length ? `${newCols.length} colour${newCols.length === 1 ? '' : 's'} new to ${s.part}` : 'Only colours the part already uses'],
+    mag.length ? ['warn', 'Magenta is the foes\' colour (kit docs/18); keep it off friendly art'] : null,
+    semi ? ['warn', 'Some pixels are part-transparent'] : null,
+    mirrored.length ? ['ok', `${mirrored.join(', ')} ${mirrored.length === 1 ? 'is' : 'are'} drawn as a mirror of this row and will follow your edit`] : null,
+    s.route === 'file' && s.origin === 'code' ? ['warn', 'This sheet is drawn by code; after this edit it becomes a file, and later code changes to it stop showing'] : null,
+  ].filter(Boolean);
+  const sendBtn = el('button', { class: 'btn primary', disabled: !changed.length || !cap.db, onclick: async () => {
+    const c = document.createElement('canvas'); c.width = p.frames.length * cell; c.height = cell; const x = c.getContext('2d');
+    p.frames.forEach((f, k) => x.putImageData(new ImageData(new Uint8ClampedArray(f), cell, cell), k * cell, 0));
+    const blob = await new Promise(res => c.toBlob(res, 'image/png'));
+    const ok = await send({ kind: 'sprite', part: s.part, sheet: s.name, folder: s.folder, route: s.route, target: s.target, cell, row: r, cols: s.w / cell, rows: s.h / cell,
+      tags: s.rows[r].tags.map(t => ({ name: t.name, col: t.col, count: t.count, mirrorOf: t.mirrorOf || null })), changed, file: p.name, commit: DATA.commit }, blob, 'image/png', msg, sendBtn);
+    if (ok) done();
+  } }, 'Send to the mod');
+  return el('div', { class: 'review' }, el('h3', { text: 'Your file: ' + p.name }),
+    el('div', { class: 'pair' }, ...(changed.length ? changed : [0]).slice(0, 6).map(k => el('figure', {}, el('div', { class: 'ctl' }, el('span', { class: 'checker', style: 'line-height:0' }, canvasOf(rowF[k], cell, z)), el('span', { class: 'checker', style: 'line-height:0' }, canvasOf(p.frames[k], cell, z))), el('figcaption', { text: `frame ${k}: now · yours` })))),
+    el('ul', { class: 'checks' }, ...checks.map(([c, t]) => el('li', { class: c, text: t }))),
+    !cap.db ? el('p', { class: 'small muted', text: 'Sign in as the page owner to send it.' }) : null,
+    el('div', { class: 'ctl' }, sendBtn, reset));
+}
+
+/* ---------- icons ---------- */
+let selIcon = 0, pendingIcon = null;
+async function renderIcons() {
+  const box = $('icons'); box.replaceChildren();
+  const groups = [['Direction', 'Directions'], ['Cardinal', 'Cardinals and Trinkets'], ['RogueWaves', 'Mode: map, shop, weather, objectives']];
+  for (const [k, title] of groups) {
+    const fr = el('div', { class: 'frames' });
+    for (const [i, ic] of DATA.icons.entries()) { if (ic.kind !== k) continue;
+      const d = await pixels(ic), f = cut(d, ic.w, 0, 0, ic.w), open = editsFor('sprite', ic.part, ic.name).some(openEdit);
+      fr.append(el('button', { class: 'fr checker', 'aria-pressed': String(i === selIcon), title: ic.name, onclick: () => { selIcon = i; pendingIcon = null; renderIcons(); renderIconInsp(); } }, canvasOf(f, ic.w, Math.max(2, Math.round(36 / ic.w))), open ? el('span', { class: 'ed' }) : null)); }
+    box.append(el('div', {}, el('div', { class: 'rowlab', text: title }), fr));
+  }
+}
+async function renderIconInsp() {
+  const ic = DATA.icons[selIcon]; if (!ic) return;
+  const d = await pixels(ic), f = cut(d, ic.w, 0, 0, ic.w), box = $('insp-icons'), msg = el('div');
+  const dl = el('button', { class: 'btn primary', onclick: async () => { const ase = await RWAse.writeAse({ w: ic.w, h: ic.h, frames: [f], tags: [{ name: ic.rows[0].tags[0].name, from: 0, to: 0, color: [155, 173, 183], data: `file=${ic.target}` }], palette: DATA.palettes[ic.part], layerName: ic.name, duration: 100 });
+    saveFile(ic.name + '.zip', RWAse.zipStore([{ name: ic.name + '.aseprite', bytes: ase }]), msg); } }, 'Download for Aseprite');
+  const take = async file => { pendingIcon = await readBack(file, ic, 0); if (pendingIcon.single) pendingIcon.frames = [pendingIcon.one]; renderIconInsp(); };
+  const fileIn = el('input', { type: 'file', accept: '.aseprite,.ase,.png', hidden: true, id: 'file-icon', onchange: () => fileIn.files[0] && take(fileIn.files[0]) });
+  const drop = el('div', { class: 'drop', role: 'button', tabindex: '0', onclick: () => fileIn.click(), ondragover: e => e.preventDefault(), ondrop: e => { e.preventDefault(); e.dataTransfer.files[0] && take(e.dataTransfer.files[0]); } },
+    el('strong', { text: 'Drop your edited icon here' }), el('span', { text: '.aseprite or .png, ' + ic.w + ' × ' + ic.h }), fileIn);
+  const rev = pendingIcon ? review(ic, 0, [f], msg, pendingIcon, () => { pendingIcon = null; renderIconInsp(); }) : drop;
+  box.replaceChildren(el('div', {}, el('h3', { text: 'On the bench' }), el('h2', { text: ic.name })),
+    el('div', { class: 'stage checker' }, canvasOf(f, ic.w, Math.floor(200 / ic.w))),
+    el('dl', { class: 'meta' }, el('dt', { text: 'Size' }), el('dd', { text: `${ic.w} × ${ic.h} px` }), el('dt', { text: 'Colours' }), el('dd', {}, swatches(colours(f))),
+      el('dt', { text: 'Goes to' }), el('dd', { class: 'mono', text: ic.target })),
+    el('div', { class: 'ctl' }, dl), msg, rev, ...editsFor('sprite', ic.part, ic.name).slice(0, 2).map(track));
+}
+
+/* ---------- models ---------- */
+let selModel = 0, mpending = null, modelPart = DATA.models.length ? DATA.models[0].part : null;
+const partFiles = new Map();
+function partFile(part) { if (!partFiles.has(part)) partFiles.set(part, fetch(`models/${part}.json`).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })); return partFiles.get(part); }
+const b64bytes = b => Uint8Array.from(atob(b), c => c.charCodeAt(0));
+function turntable(mesh, palette, w = 320, h = 260) {
+  const c = el('canvas', { width: w * 2, height: h * 2 }), x = c.getContext('2d'); let yaw = 45 * Math.PI / 180, drag = null;
+  const tris = mesh.triangles, n = tris.length / 9, b = mesh.bounds, cx = (b.min[0] + b.max[0]) / 2, cy = (b.min[1] + b.max[1]) / 2, cz = (b.min[2] + b.max[2]) / 2;
+  const size = Math.max(b.max[0] - b.min[0], b.max[1] - b.min[1], b.max[2] - b.min[2]) || 1, scale = Math.min(w, h) * 2 * 0.62 / size;
+  const pal = palette.map(hx => [parseInt(hx.slice(-6, -4), 16), parseInt(hx.slice(-4, -2), 16), parseInt(hx.slice(-2), 16)]);
+  const pitch = 30 * Math.PI / 180, L = [-0.4, 0.8, -0.45];
+  function draw() {
+    const cy_ = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch), order = [];
+    const P = new Float32Array(n * 9);
+    for (let i = 0; i < n * 3; i++) { const X = tris[i * 3] - cx, Y = tris[i * 3 + 1] - cy, Z = tris[i * 3 + 2] - cz;
+      const x1 = X * cy_ - Z * sy, z1 = X * sy + Z * cy_, y2 = Y * cp - z1 * sp, z2 = Y * sp + z1 * cp; P[i * 3] = x1; P[i * 3 + 1] = y2; P[i * 3 + 2] = z2; }
+    for (let t = 0; t < n; t++) order.push([P[t * 9 + 2] + P[t * 9 + 5] + P[t * 9 + 8], t]);
+    order.sort((a, b2) => b2[0] - a[0]);
+    x.clearRect(0, 0, c.width, c.height);
+    for (const [, t] of order) {
+      const o = t * 9, ax = tris[o + 3] - tris[o], ay = tris[o + 4] - tris[o + 1], az = tris[o + 5] - tris[o + 2], bx = tris[o + 6] - tris[o], by = tris[o + 7] - tris[o + 1], bz = tris[o + 8] - tris[o + 2];
+      let nx = ay * bz - az * by, ny = az * bx - ax * bz, nz = ax * by - ay * bx; const ln = Math.hypot(nx, ny, nz) || 1;
+      const lit = 0.55 + 0.45 * Math.abs((nx * L[0] + ny * L[1] + nz * L[2]) / ln / Math.hypot(...L));
+      const col = pal[mesh.colours[t]] || [200, 0, 200];
+      x.fillStyle = `rgb(${col.map(v => Math.round(v * lit)).join(',')})`; x.strokeStyle = x.fillStyle; x.lineWidth = 0.6;
+      x.beginPath(); for (let k = 0; k < 3; k++) { const px = c.width / 2 + P[o + k * 3] * scale, py = c.height / 2 - P[o + k * 3 + 1] * scale; k ? x.lineTo(px, py) : x.moveTo(px, py); } x.closePath(); x.fill(); x.stroke();
+    }
+  }
+  c.addEventListener('pointerdown', e => { drag = e.clientX; c.setPointerCapture(e.pointerId); });
+  c.addEventListener('pointermove', e => { if (drag == null) return; yaw += (e.clientX - drag) * 0.012; drag = e.clientX; draw(); });
+  c.addEventListener('pointerup', () => { drag = null; });
+  draw(); return c;
+}
+function renderModelRail() {
+  const parts = [...new Set(DATA.models.map(m => m.part))];
+  $('mrail').replaceChildren(el('div', {}, el('h3', { text: 'Parts' }), el('ul', {}, ...parts.map(p => el('li', {}, el('button', { 'aria-current': String(p === modelPart), onclick: () => { modelPart = p; selModel = DATA.models.findIndex(m => m.part === p); mpending = null; renderModelRail(); renderModels(); renderModelInsp(); } },
+    el('span', { class: 'nm', text: p === 'RogueWavesMode' ? 'Mode' : p }), el('span', { class: 'mono muted', text: String(DATA.models.filter(m => m.part === p).length) })))))),
+    el('p', { class: 'small muted', text: 'Every tower, upgrade look, unit prop and projectile the part\'s model code makes. Drag a model on the bench to turn it.' }));
+}
+function renderModels() {
+  const box = $('mlist'); box.replaceChildren();
+  if (!DATA.models.length) { box.append(el('p', { class: 'muted', text: 'No models in this build.' })); return; }
+  const list = DATA.models.filter(m => m.part === modelPart);
+  for (const g of [...new Set(list.map(m => m.group))]) {
+    box.append(el('div', { class: 'mgroup', text: g }), el('div', { class: 'models' }, ...list.filter(m => m.group === g).map(m => { const i = DATA.models.indexOf(m);
+      return el('button', { class: 'mcard', 'aria-pressed': String(i === selModel), onclick: () => { selModel = i; mpending = null; renderModels(); renderModelInsp(); } },
+        el('span', { class: 'nm', text: m.name }), el('span', { class: 'small muted', text: `${m.tris} triangles${m.parts.length ? ' · moves: ' + m.parts.join(', ') : ''}` }),
+        editsFor('model', m.part, m.name).some(openEdit) ? chip('waiting', 'edit waiting') : null); })));
+  }
+}
+async function renderModelInsp() {
+  const m = DATA.models[selModel], box = $('insp-models'); if (!m) return;
+  box.replaceChildren(el('h2', { text: m.name }), el('p', { class: 'muted', text: 'Loading the model…' }));
+  let pf, mesh; try { pf = await partFile(m.part); } catch (e) { box.replaceChildren(el('h2', { text: m.name }), el('div', { class: 'msg bad', text: 'The model file did not load.' })); return; }
+  const item = pf.models.find(x => x.name === m.name), glb = b64bytes(item.glb);
+  try { mesh = await RWGlb.parse(glb.buffer.slice(glb.byteOffset, glb.byteOffset + glb.byteLength), pf.palette); } catch (e) { box.replaceChildren(el('div', { class: 'msg bad', text: 'Could not read the model: ' + e.message })); return; }
+  if (DATA.models[selModel] !== m) return;
+  const msg = el('div');
+  const dl = el('button', { class: 'btn primary', onclick: () => saveFile(item.file + '.zip', RWAse.zipStore([{ name: item.file + '.glb', bytes: glb }]), msg) }, 'Download for Blender');
+  const take = async file => { const buf = await file.arrayBuffer(); try { const em = await RWGlb.parseAsync(buf, pf.palette); mpending = { name: file.name, mesh: em, bytes: new Uint8Array(buf) }; } catch (e) { mpending = { name: file.name, error: e.message }; } renderModelInsp(); };
+  const fileIn = el('input', { type: 'file', accept: '.glb', hidden: true, id: 'file-model', onchange: () => fileIn.files[0] && take(fileIn.files[0]) });
+  const drop = el('div', { class: 'drop', role: 'button', tabindex: '0', onclick: () => fileIn.click(), ondragover: e => e.preventDefault(), ondrop: e => { e.preventDefault(); e.dataTransfer.files[0] && take(e.dataTransfer.files[0]); } },
+    el('strong', { text: 'Drop your edited model here' }), el('span', { text: 'the .glb Blender exported (File › Export › glTF 2.0, binary)' }), fileIn);
+  let rev = drop;
+  if (mpending) {
+    const reset = el('button', { class: 'btn', onclick: () => { mpending = null; renderModelInsp(); } }, 'Discard');
+    if (mpending.error) rev = el('div', { class: 'review' }, el('ul', { class: 'checks' }, el('li', { class: 'bad', text: 'Could not read it: ' + mpending.error })), el('div', { class: 'ctl' }, reset));
+    else {
+      const e = mpending.mesh, ob = mesh.bounds, eb = e.bounds, grow = Math.max(...[0, 1, 2].map(k => (eb.max[k] - eb.min[k]) / Math.max(1e-3, ob.max[k] - ob.min[k])));
+      const lost = m.parts.filter(p => !e.parts.includes(p));
+      const checks = [[e.tris <= Math.max(800, m.tris * 1.25) ? 'ok' : 'warn', `${e.tris} triangles (was ${m.tris})` + (e.tris > Math.max(800, m.tris * 1.25) ? '; heavy for a tower, the kit aims for 40 to 800' : '')],
+        [lost.length ? 'bad' : 'ok', lost.length ? `Moving part${lost.length > 1 ? 's' : ''} missing: ${lost.join(', ')}. Keep the names, or it stops aiming.` : (m.parts.length ? `Moving parts kept: ${m.parts.join(', ')}` : 'No moving parts to keep')],
+        [grow <= 1.25 ? 'ok' : 'warn', grow <= 1.25 ? 'About the same size as before' : `Up to ${grow.toFixed(1)}× bigger than before; check it still fits its tile`],
+        ['ok', 'Colours snap to the nearest of the 64 palette swatches']];
+      const sendBtn = el('button', { class: 'btn primary', disabled: !cap.db || lost.length > 0, onclick: async () => {
+        let s = ''; for (let i = 0; i < mpending.bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, mpending.bytes.subarray(i, i + 0x8000));
+        const blob = new Blob([JSON.stringify({ model: m.name, part: m.part, file: mpending.name, glb_base64: btoa(s) })], { type: 'application/json' });
+        if (await send({ kind: 'model', part: m.part, model: m.name, group: m.group, file: item.file, tris: m.tris, newTris: e.tris, parts: m.parts, name: mpending.name, commit: DATA.commit }, blob, 'application/json', msg, sendBtn)) mpending = null;
+      } }, 'Send to the mod');
+      rev = el('div', { class: 'review' }, el('h3', { text: 'Your file: ' + mpending.name }), el('div', { class: 'stage model' }, turntable(e, pf.palette)), el('ul', { class: 'checks' }, ...checks.map(([c, t]) => el('li', { class: c, text: t }))), el('div', { class: 'ctl' }, sendBtn, reset));
+    }
+  }
+  box.replaceChildren(el('div', {}, el('h3', { text: `${m.part} · ${m.group}` }), el('h2', { text: m.name })),
+    el('div', { class: 'stage model' }, turntable(mesh, pf.palette)),
+    el('dl', { class: 'meta' }, el('dt', { text: 'Triangles' }), el('dd', { text: String(m.tris) }), el('dt', { text: 'Moving parts' }), el('dd', { text: m.parts.join(', ') || 'none' }),
+      el('dt', { text: 'Colours' }), el('dd', { text: 'the part\'s 64-swatch palette' }), el('dt', { text: 'Source' }), el('dd', {}, chip('code'))),
+    el('div', { class: 'ctl' }, dl), msg, rev, ...editsFor('model', m.part, m.name).slice(0, 2).map(track));
+}
+
+/* ---------- edits list ---------- */
+function renderEdits() {
+  const box = $('edits'); box.replaceChildren();
+  if (!cap.db) { box.append(el('div', { class: 'panel' }, el('p', { text: 'Sign in to see the edits you sent. They are kept with this page, so they stay when the page is rebuilt.' }))); return; }
+  if (!edits.length) { box.append(el('div', { class: 'panel' }, el('h2', { text: 'No edits yet' }), el('p', { class: 'muted', text: 'Download a row or a model, edit it, and drop it back on the same row or model. It shows up here.' }))); return; }
+  for (const e of edits) {
+    const withdraw = e.status === 'waiting' ? el('button', { class: 'btn small', onclick: async () => { withdraw.disabled = true; try { await cap.db.collection('edits').doc(e.id).delete(); if (e.asset && cap.assets) await cap.assets.delete(e.asset).catch(() => {}); } catch (x) { withdraw.disabled = false; } } }, 'Withdraw') : null;
+    box.append(el('div', { class: 'edit' },
+      el('div', { style: 'display:flex;flex-direction:column;gap:6px;min-width:0' },
+        el('div', { class: 'ctl' }, chip(e.status, STEP_LABEL[STEPS.indexOf(e.status)] || e.status), el('b', { text: e.kind === 'model' ? e.model : `${e.sheet} · row ${e.row}` }), el('span', { class: 'small muted', text: `${e.part} · sent ${(e.at || '').slice(0, 16).replace('T', ' ')}` })),
+        e.kind === 'sprite' && e.asset ? el('img', { src: '/_blob/' + e.asset, alt: 'edited row', class: 'checker', style: `width:${Math.min(480, (e.cols ? e.tags.reduce((a, t) => a + t.count, 0) : 1) * e.cell * 2)}px` }) : el('p', { class: 'small muted', text: e.kind === 'model' ? `${e.newTris} triangles (was ${e.tris}), from ${e.name}` : '' }),
+        el('p', { class: 'mono muted', text: e.kind === 'sprite' ? `${e.changed.length} frame(s) changed → ${e.target}` : '' })),
+      el('div', { style: 'display:flex;flex-direction:column;gap:8px' }, track(e), withdraw)));
+  }
+}
+
+/* ---------- tabs and start ---------- */
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-selected', String(x === t)));
+  for (const v of ['sprites', 'icons', 'models', 'edits', 'how']) $('view-' + v).hidden = v !== t.dataset.view;
+  if (t.dataset.view === 'models') renderModelInsp();
+  try { localStorage.setItem('artbench-tab', t.dataset.view); } catch (e) {}
+}));
+$('commit').textContent = DATA.commit || 'this repo';
+$('n-sprites').textContent = DATA.sheets.reduce((a, s) => a + (s.w / s.cell) * (s.h / s.cell), 0) + ' frames';
+$('n-icons').textContent = DATA.icons.length; $('n-models').textContent = DATA.models.length;
+{ const y = DATA.sheets.findIndex(s => s.name === 'Yossele-Sheet'); if (y >= 0) sel.s = y; }
+renderRail(); renderSheet(); renderInsp(); renderIcons(); renderIconInsp(); renderModelRail(); renderModels(); renderEdits();
+try { const t = localStorage.getItem('artbench-tab'); if (t) document.querySelector(`.tab[data-view="${t}"]`)?.click(); } catch (e) {}
+connect();
+</script>
