@@ -287,7 +287,11 @@ public static class RWBoard
         if (!InMap)
             return;
         foreach (long s in RWRun.Sessions())
+        {
             baseline[RWRun.KeyOf(s)] = Read(RWRun.Info(s) != null ? RWRun.Info(s).Activeplayerdata : null);
+            // Does Activeplayerdata reset on the boat? A non-zero line on map 1 after the staging map says no.
+            RWLog.Info("MVP board: map start, " + RWRun.KeyOf(s) + " stands at [" + string.Join(",", System.Array.ConvertAll(baseline[RWRun.KeyOf(s)], x => x.ToString())) + "]");
+        }
     }
 
     // The game's own numbers for a player, as stat ids (Spent and Gained summed over the aura colours).
