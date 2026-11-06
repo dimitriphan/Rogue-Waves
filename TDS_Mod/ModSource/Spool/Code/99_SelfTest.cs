@@ -18,8 +18,15 @@ public static partial class SpoolSelfTest
 
     static void Log(string m) { SpoolLog.Info("TEST " + m); }
 
+    // Once the map has ended under the scenario nothing it measures is the game's any more (PC round 5's Spool map drowned
+    // mid-run): a fail from then on is a SETUP that says so.
     static bool Check(string name, bool ok, string detail = "")
     {
+        if (!ok && mapEnd != "")
+        {
+            ModKitTest.Setup(name, "after " + mapEnd + (detail != "" ? "; " + detail : ""));
+            return false;
+        }
         if (ok) pass++; else fail++;
         Log((ok ? "PASS " : "FAIL ") + name + (detail != "" ? ": " + detail : ""));
         return ok;
@@ -33,10 +40,28 @@ public static partial class SpoolSelfTest
 
     // ---------------------------------------------------------------- getting into a match
 
+    // The map's end, as the game writes it, read once a frame by Drive: "" while it runs. The kit's rule (ModKitTides):
+    // Gamecomplete reads "Running" or "" while the map runs; a map gone while the scenario runs is an end too.
+    static string mapEnd = "";
+
+    static string ReadMapEnd()
+    {
+        Game_Mapvars mv = Game_Mapvars.Instance;
+        if (mv == null) return "the map went away";
+        string done = mv.Gamecomplete != null ? mv.Gamecomplete.Value.ToString() : "";
+        return done == "" || done == "Running" ? "" : "the map ended: '" + done + "', '" + (mv.Display != null ? mv.Display.Value.Display_Endgame.ToString() : "") + "' at Wave " + mv.Wave.Value;
+    }
+
     static void Drive()
     {
         if (freeze && Game_Mapvars.Instance != null && ModKitUtil.IsServer && Game_Mapvars.Instance.Time_Wave.Value < 600f)
             Game_Mapvars.Instance.Time_Wave.Value = 900f;
+        // Said once when the map ends under a running scenario: nothing else in the log tells why later checks found no Tide.
+        if (phase == 3 && mapEnd == "")
+        {
+            mapEnd = ReadMapEnd();
+            if (mapEnd != "") Log(mapEnd + ", with the scenario still running; a later fail counts as a SETUP");
+        }
         if (phase >= 3)
             return;
         float now = Time.realtimeSinceStartup;
@@ -389,7 +414,10 @@ public static partial class SpoolSelfTest
 
     // ---------------------------------------------------------------- the scenario
 
-    // One Tide on: the frozen clock let go until the Wave rises, its foes cleared, frozen again.
+    // One Tide on: the frozen clock let go until the Wave rises, its foes cleared, frozen again. TideRose says whether it did:
+    // a map that has ended can't rise (PC round 5 §2.1), and a check that needs the next Tide is then a SETUP.
+    static bool TideRose;
+
     static IEnumerator NextTide()
     {
         int wave = Game_Mapvars.Instance.Wave.Value;
@@ -402,6 +430,9 @@ public static partial class SpoolSelfTest
             t += Time.unscaledDeltaTime;
             yield return null;
         }
+        TideRose = Game_Mapvars.Instance.Wave.Value != wave;
+        if (!TideRose)
+            Log("the next Tide did not come in 60 s: Wave " + wave + (mapEnd != "" ? ", " + mapEnd : ", the map still running"));
         freeze = true;
         yield return Wait(0.6f);
         ClearFoes();
@@ -914,7 +945,10 @@ public static partial class SpoolSelfTest
                     Hit(ranged[0], c.Master, 10f);
                 yield return Wait(0.2f);
                 Check("Pin Barrage: ranged attackers pricked for 20%", Has(c, "Barrage3") && Mathf.Abs(c.Reflected - back - 2f) < 0.05f, "range " + F(range) + ", " + F(c.Reflected - back) + " back");
-                Check("Pin Barrage ends its branch", c.Master.Upgradelistserver[SpoolData.Cushion + "_Barrage3_Upgradeobject"].Upgrades.Count == 0);
+                // Since #158 Pin Barrage leads to Iron Thimble alone (scope 08 "Leads to"; SpoolData's Cushion row).
+                List<Upgradeproperties> after = c.Master.Upgradelistserver[SpoolData.Cushion + "_Barrage3_Upgradeobject"].Upgrades;
+                Check("Pin Barrage leads to Iron Thimble alone", after.Count == 1 && after[0] != null && after[0].Objectname == SpoolData.Cushion + "_Thimble4_Upgradeobject",
+                    after.Count + " next: " + string.Join(", ", after.ConvertAll(u => u != null ? u.Objectname : "null").ToArray()));
             }
             else ModKitTest.Setup("Pin Barrage", archer == null ? "no Ballista by the enemy core" : "the Ballista's range is " + F(range) + ", melee by the Cushion's rule");
         }

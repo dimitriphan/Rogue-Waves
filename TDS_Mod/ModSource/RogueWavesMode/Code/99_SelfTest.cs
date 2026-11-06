@@ -519,6 +519,8 @@ public static partial class RWTest
         if (node.Weather != RWChart.Calm)
         {
             yield return Until(() => RWWeather.Lit == node.Weather, 30f);
+            if (RWWeather.Lit != node.Weather)
+                Info("weather picture", "the look never lit in 30 s on " + node.Plan + ": the fade pictures below are timed from the last one lit");
             float lit = RWWeather.LitAt;
             float[] at = { 0.3f, 2f, 4.6f };
             for (int i = 0; i < at.Length; i++)

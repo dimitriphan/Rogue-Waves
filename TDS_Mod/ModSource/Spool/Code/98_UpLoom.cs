@@ -94,9 +94,11 @@ public static partial class SpoolSelfTest
                 yield return Walk(hm, loomC.Pos - off.normalized * 3f, 1f, 6f);
                 float far = ModKitUtil.Flat(ModKitUtil.Pos(beast), loomC.Pos), hp0 = ModKitUtil.Health(beast);
                 int hunts = loomC.Hunts, snared = loomC.Snared;
+                Log("INFO Snare Line as the hunt should start: " + seam.SnareWhy());
                 yield return Until(() => loomC.Snared > snared || !ModKitUtil.Alive(beast) || seam.Master == null, 20f);
                 string detail = "hunts +" + (loomC.Hunts - hunts) + ", strikes +" + (loomC.Snared - snared) + ", beast " + F(far) + " from the Loom, health " + F(hp0) + " -> "
-                    + (ModKitUtil.Alive(beast) ? F(ModKitUtil.Health(beast)) : "fallen") + ", team " + ModKitUtil.Team(beast) + ", a foe " + ModKitUtil.IsFoe(beast, team);
+                    + (ModKitUtil.Alive(beast) ? F(ModKitUtil.Health(beast)) : "fallen") + ", team " + ModKitUtil.Team(beast) + ", a foe " + ModKitUtil.IsFoe(beast, team)
+                    + ", tags " + (beast != null && beast.Taglistserver != null ? string.Join("/", beast.Taglistserver.ToArray()) : "none") + "; " + seam.SnareWhy();
                 if (loomC.Snared == snared && (seam.Master == null || !ModKitUtil.Alive(beast)))
                     ModKitTest.Setup("Snare Line's hunt", (seam.Master == null ? "the Seam fell" : "the beast fell to something else") + " before the Seam struck; " + detail);
                 else Check("Snare Line: its Seam chases an aura beast and strikes it", loomC.Hunts > hunts && loomC.Snared > snared, detail);

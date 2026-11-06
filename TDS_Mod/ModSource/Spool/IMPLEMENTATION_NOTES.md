@@ -1,5 +1,13 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-06: PC round 5's test leftovers (compiled here, not yet run in game)
+
+Test only (`docs/reports/PC_ROUND5_2026-11-06.md` §2.1): "Pin Barrage leads to Iron Thimble alone" replaces the stale
+"ends its branch"; `Drive()` logs the map's end once (`Gamecomplete` past "Running", the end screen's words), and from
+then on a fail is a SETUP that says so; `NextTide` logs a Tide that didn't come (`TideRose`) and Voodoo Doll's next-Tide
+line is then a SETUP; Snare Line logs what the hunt sees as it starts and when it ends (`SpoolUnitBrain.SnareWhy`, self-test
+only). Next run: once without `SPOOL_SHOTS` first (each picture adds 1-2 s; the round 5 map drowned mid-run).
+
 ## 2026-11-06: Diorama's tiny look, kit 1.15 (compiled here, not yet run in game)
 
 The vessel's visual now carries the skins Diorama switches to, named after the being and its

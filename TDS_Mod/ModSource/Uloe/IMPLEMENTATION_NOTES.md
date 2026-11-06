@@ -1,5 +1,9 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-06, PC round 5's review (test only, compiled here):** Supernova's "every Photon bursts" and "flies back"
+lines are a SETUP when no Photon is left after the fell (they passed on 0 of 0 before); "SURGE fires once" is
+checked either way.
+
 **2026-11-06, Diorama's tiny look, kit 1.15 (compiled here, not yet run in game):** the vessel's visual now carries the
 skins Diorama switches to, named after the being and its copy's (`ModKitAssets.TinyLooks` in `04_Content.cs`: the same
 sprites at half size; kit `docs/17` §11 rule 19), so holding Diorama shows it tiny; before, the stats came and the look

@@ -213,9 +213,16 @@ public static partial class UloeSelfTest
             foreach (UloePhotonBrain p in PhotonsOf(bank))
                 if (p.Homing) { homing++; if (speed0 > 0f && ModKitUtil.Stat(p.Master, "Speed", 0f) > speed0 * 1.5f) quick++; }
             yield return Wait(0.3f);
-            Check("SURGE: every Photon bursts", bank.Novas == 1 && UloeServer.Bursts >= bursts + alive, (UloeServer.Bursts - bursts) + " bursts from " + alive + " Photons");
             foreach (UloePhotonBrain p in PhotonsOf(bank)) homed += p.Homecomings;
-            Check("... and each one that burst flies back to its Bank", homed - homes >= alive, (homed - homes) + " of " + alive + " Photons sent home");
+            Check("SURGE fires once", bank.Novas == 1, "Novas " + bank.Novas);
+            // With no Photon left after the fell, both lines would pass on 0 of 0 (PR #162 review).
+            if (alive == 0)
+                ModKitTest.Setup("Supernova's bursts", "no Photon left after the fell (" + bank.Slots + " slots)");
+            else
+            {
+                Check("SURGE: every Photon bursts", bank.Novas == 1 && UloeServer.Bursts >= bursts + alive, (UloeServer.Bursts - bursts) + " bursts from " + alive + " Photons");
+                Check("... and each one that burst flies back to its Bank", homed - homes >= alive, (homed - homes) + " of " + alive + " Photons sent home");
+            }
             if (homing > 0)
                 Check("... at double speed", quick == homing, quick + " of " + homing + " homing Photons quicker than " + F(speed0));
             else ModKitTest.Setup("Supernova's double speed", "no Photon was still on its way home");
