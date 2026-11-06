@@ -119,6 +119,7 @@ public static class RWRejoin
                 string name = Name(kv.Key);
                 if (name != "") seat.Name = name;
                 Say(seat.Name + " is back.");
+                RWBoard.Back(kv.Key);
                 RWLog.Info("rejoin: " + seat.Name + " (session " + kv.Key + ") is back after " + RWUtil.F(now - seat.AwaySince) + " s: " + seat.Hero + ", team " + seat.Team + ", " + Aura(seat.Aura));
             }
             else if (copy)

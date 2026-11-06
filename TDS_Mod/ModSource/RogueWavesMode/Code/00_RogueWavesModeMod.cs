@@ -9,6 +9,8 @@
 //   08_Icons.cs     the weather icons
 //   09_Rejoin.cs    a player who drops can rejoin the running map (docs/mode/REJOIN.md), in every map while the pack is on
 //   26_ChartView.cs the whole chart beside the map vote, on a key, and as a mini chart and banner on the boat
+//   27_Board.cs     the MVP board after a won map and at the campaign's end: tallies, titles, the lines every vessel carries
+//   28_BoardView.cs the MVP board drawn on every machine
 //   10_Online.cs    a restarted friend keeps their Sessionid; a player whose map never loads is sent back, not everyone;
 //                   a player who joins a running map has the stock sprite body for the things already there
 // Nothing here starts a campaign by itself: RWCampaign.New / Continue do, called by the main menu button
@@ -126,6 +128,8 @@ public class RogueWavesModeMod : MonoBehaviour
         try { ModKitTides.Update(); } catch (Exception e) { RWLog.Once("tides", "tides: " + e); }
         try { RWBoat.Update(); } catch (Exception e) { RWLog.Once("boat", "boat: " + e); }
         try { RWChartView.Update(); } catch (Exception e) { RWLog.Once("chart view", "chart view: " + e); }
+        try { RWBoard.Update(); } catch (Exception e) { RWLog.Once("board", "MVP board: " + e); }
+        try { RWBoardView.Update(); } catch (Exception e) { RWLog.Once("board view", "MVP board view: " + e); }
         try { RWWeather.DeterUpdate(); } catch (Exception e) { RWLog.Once("deter", "deter: " + e); }
         try { RWWeather.SpeedUpdate(); } catch (Exception e) { RWLog.Once("speed", "game speed: " + e); }
         try { RWWeather.LookUpdate(); } catch (Exception e) { RWLog.Once("look", "weather look: " + e); }

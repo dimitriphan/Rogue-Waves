@@ -385,6 +385,7 @@ public static class RWShop
         if (p.Pure < cost)
             return "Not enough Pure Aura";
         p.Pure -= cost;
+        p.Run[RWBoard.PureSpent] += cost;
         RWDirections.Take(p, u);
         RWTrinkets.OnBuy(p, item);
         return "";
@@ -437,6 +438,7 @@ public static class RWFund
             vars.Resourcelossmultiplier = loss;
         }
         from.Sent += send;
+        from.SentMap += send;
         Moved += send;
         RWLog.Info(from.Name + " sent " + send + " " + p[1] + " to " + to + "; " + from.Sent + " of " + Limit(wave) + " this break");
         return "";

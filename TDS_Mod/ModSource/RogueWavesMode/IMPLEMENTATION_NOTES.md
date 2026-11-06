@@ -1,5 +1,23 @@
 # RogueWavesMode: implementation notes
 
+## 0.1.0-dev, later (2026-11-06): the MVP board (compiled here, not yet run in game)
+
+Dimitri: one title per player, "the most notable thing", failures as common as accolades; defaults for the rest
+(`docs/mode/MVP_BOARD.md`, §4 the rule, §6 the pieces).
+- `27_Board.cs` (host): per-map snapshot of `Activeplayerdata`; tallies on `RWPlayer` (Leaks, Missed, Drops, SentMap, and
+  `Run[]` saved as the run line's ninth field); the leak hook on the Basin; `Give` (pure); `ShowMap`, `ShowVoyage`; the
+  board as `RW_Log0-4` None commands on every vessel (`14_Run.cs` `CarryLog`, `15_Content.cs` `LogCommands`).
+- `20_Vote.cs`: state "Board" between the vote to leave and the picks (12 s or everyone's Continue, order "B"); after
+  map 10 the Voyage board, then `Leave()`. `06_Campaign.cs`: the late board after a bonus Tide, the Voyage board after
+  the last lost retry. `09_Rejoin.cs`: drops. `17_Cardinals.cs`, `18_Shop.cs`: Pure Aura spent, aura sent.
+- `28_BoardView.cs` (every machine): reads its own vessel's lines, draws the cards with `26_ChartView.cs`'s pieces
+  (made public), Continue by click, Enter, Space or the pad's south button; Tab replays the last board.
+- Self-tests: MB1-MB8 at boot (`90_Board.cs`), MB9-MB11 in `93_TwoPlayers.cs` after both leave.
+- For the PC: MB1-MB11 pass; the look at 1080p with four cards; do foes hit the Basin as "Hurt" with themselves as
+  `From` (leaks show in the caption); does `Activeplayerdata` reset on the boat (a card's numbers look like one map's);
+  which things `Deaths` counts (Driftwood); the late board over the end screen; Tab replay; the pad's south button;
+  Continue after a rejoin keeps the run's totals.
+
 ## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
 
 Dimitri: "Go" on `docs/mode/CHART_NAVIGATION.md`, built with its §7 defaults (`docs/reports/CHART_BUILD_2026-11-06.md`).

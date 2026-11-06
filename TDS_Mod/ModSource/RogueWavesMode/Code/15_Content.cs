@@ -7,6 +7,8 @@ public static class RWContent
     public const string ShopName = "Command_RW_Shop", FundName = "Command_RW_Fund", BoardName = "Command_RW_Board";
     public const string Vendor = "Mob_Vendcint", VendorSheet = "Vendcint-Sheet";
     public static Commandobject OrderCommand, AskCommand, RunCommand, PriceCommand, ShopCommand, FundCommand, BoardCommand;
+    public static readonly Commandobject[] LogCommands = new Commandobject[RWBoard.Lines];   // the MVP board's lines (RWBoard)
+    public static string LogName(int i) { return "Command_RW_Log" + i; }
     public static Beingobject Vendcint;
     public static bool Built;
 
@@ -201,6 +203,8 @@ public static class RWContent
         if (t == null) { RWLog.Warn("no command template: no shop, votes or Directions"); return; }
         OrderCommand = Command(t, OrderName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         AskCommand = Command(t, AskName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
+        for (int i = 0; i < RWBoard.Lines; i++)
+            LogCommands[i] = Command(t, LogName(i), Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         RunCommand = Command(t, RunName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         PriceCommand = Command(t, PriceName, Commandobject.Styles.None, "", "", "Move", new RWNoButton(), "");
         ShopCommand = Command(t, ShopName, Commandobject.Styles.Button, "SHOP", "Spend Pure Aura on Cardinals, Trinkets and the next rank of your Directions", Icon("RogueWaves_Shop"), new RWShopButton(), "3");
