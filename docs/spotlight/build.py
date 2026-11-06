@@ -2,7 +2,8 @@
 
 Reads `spotlight.src.html` (the page, with `{{img:<key>}}` placeholders) and the repository's own art, and writes
 `spotlight.html`, one self-contained file with every picture inlined as a data URI. Every picture comes from the
-repository (temporary art, concept art, the final Yossele sheet, model previews and one PC screenshot); nothing comes
+repository (the pack's icons and sprites, the Uloe art, the Yossele sheet, model previews, the sea chart view and one
+screenshot of Argo); nothing comes
 from the project files or the base game.
 
     python3 docs/spotlight/build.py            # from the repository root
@@ -69,9 +70,8 @@ def images():
     out["tower_argo"] = png(model_cell("TDS_Mod/ModSource/Argo/Previews/2.0/harpoon.png", 0, 2))
     # The mode
     out["vendcint"] = png(Image.open(os.path.join(ICONS, "Vendcint-Sheet.png")).convert("RGBA").crop((0, 0, 192, 32)))
-    chart = Image.open(path("docs", "concepts", "art", "sea_chart_20261009.png")).convert("RGB")
-    chart.thumbnail((480, 700))
-    out["chart"] = png(chart)
+    chart = Image.open(path("docs", "concepts", "art", "chart_look_vote.png")).convert("RGB")
+    out["chart"] = png(chart.resize((1120, 630), Image.LANCZOS))  # the chart view at a vote (CHART_NAVIGATION.md)
     for name in os.listdir(ICONS):
         stem, ext = os.path.splitext(name)
         if ext == ".png" and stem != "Vendcint-Sheet":
