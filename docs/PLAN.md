@@ -332,8 +332,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
   PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
 - **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
-  fixable?"): 14 small fixes need no decision, three need his word (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from
-  code only; nothing changed or run on the PC. No kit change, no pitfall.
+  fixable?"): 14 small fixes need no decision (5 best proven on the PC after), three need his word
+  (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from code only; nothing changed or run on the PC.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
