@@ -26,6 +26,9 @@ modifiers and the mode's UI.
 Rules: pastel or muted mains with one saturated accent (the house style). Never put pure black or a black outline on
 anything. Pure Aura is always Pearl, so it never looks like a base aura.
 
+Pages, decks and editors about the pack (not the game itself) use the **Rogue Tide** theme, `docs/themes/rogue-tide.md`:
+this palette with the HUD's bracket frames and square tiles (Dimitri's pick, 2026-11-06).
+
 ## Motifs
 
 - **The crest**: one breaking curl with a Foam rim. It is the pack's mark: the mode icon, the corner of pack UI
