@@ -246,9 +246,10 @@ public static class RWBody
             if (c.Visbasedefault == null)
                 Missing++;
         }
-        // Review: a body given after the half built its look would not redraw it; such a half has no Currentvis by now.
+        // Review: a body given after the half built its look would not redraw it; such a half has its being but no
+        // Currentvis by now. A half still waiting for its being (Beingobject null) hasn't built a look yet: not counted.
         foreach (Entity_Master_Client c in given)
-            if (c != null && c.Currentvis == null)
+            if (c != null && c.Beingobject != null && c.Currentvis == null)
                 Lookless++;
         string line = "rejoin: " + Line() + (loadedAt < 0f ? " (the map didn't finish loading here in 180 s)" : "");
         if (Missing > 0 || Lookless > 0) RWLog.Warn(line);
