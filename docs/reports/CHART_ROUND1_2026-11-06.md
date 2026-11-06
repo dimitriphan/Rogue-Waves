@@ -69,7 +69,7 @@ The wobble fix's P1 and P2 passed in the same run. On the second player, CV1, CV
 
 ## 6. Not run
 
-`CHART_BUILD_2026-11-06.md` §4 items 2 and 7 (by hand), item 9 (a hitch while the pointer crosses islands: nobody
+`CHART_BUILD_2026-11-06.md` §4 items 2 and 7 (by hand), item 5's Wreck map played by hand and with two players (CV12 covers the pay only), item 9 (a hitch while the pointer crosses islands: nobody
 moved a mouse), and the second player's banner lines (logs kept, not read).
 
 ## 7. The PC as left
