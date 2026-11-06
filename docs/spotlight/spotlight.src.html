@@ -2,260 +2,223 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jersey+15&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400&family=Barlow:ital,wght@0,400;0,600;1,400&family=Pixelify+Sans:wght@400;500&display=swap">
 <style>
-/* Layout: a sailing log. A deep-swell masthead, then the run in the order a player meets it:
-   the loop, the ten maps, the chart and its weather, the breaks, the vessels, the finds, the foes, what is left. */
+/* Rogue Tide (docs/themes/rogue-tide.md): the mode's own UI on a page. Deep Swell ground, Rogue Teal tiles,
+   Foam bracket frames, one Storm Coral element per view. A single dark look on purpose, like the game's HUD.
+   Layout: a sailing log, in the order a player meets the run: the loop, the ten maps, the chart, the breaks,
+   the vessels, the finds, the foes, the crew. */
 :root {
-  --bg: #EDF3F1;          /* Foam, a touch deeper */
-  --surface: #F9FBFA;
-  --ink: #1D3245;         /* Deep Swell, darkened for text */
-  --muted: #546977;
-  --line: rgba(46, 74, 98, .16);
-  --swell: #2E4A62;       /* Deep Swell */
-  --swell-ink: #E9F1EE;   /* Foam */
-  --teal: #2F7C83;        /* Rogue Teal, darkened to read on Foam */
-  --teal-soft: rgba(63, 143, 150, .14);
-  --coral: #C4553F;       /* Storm Coral, darkened for text */
-  --coral-soft: rgba(226, 114, 91, .14);
-  --sand: #8A7340;        /* Wet Sand, as ink */
-  --sand-soft: rgba(216, 196, 154, .34);
-  --pearl: #F4EEF8;
-  --plate: #E3DDD2;       /* behind tower renders */
-  --c-yossele: #4E9A22;   --c-yossele-bg: rgba(114, 204, 53, .15);
-  --c-spool: #3F8A56;     --c-spool-bg: rgba(147, 204, 161, .26);
-  --c-argo: #3B6E9C;      --c-argo-bg: rgba(79, 134, 184, .15);
-  --c-uloe: #8C7F0E;      --c-uloe-bg: rgba(241, 239, 114, .28);
-  --f-display: "Jersey 15", "Atkinson Hyperlegible", system-ui, sans-serif;
-  --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --f-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
-  --radius: 10px;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #13212E; --surface: #1A2B3B; --ink: #E4EDEA; --muted: #9DB1BC; --line: rgba(233, 241, 238, .12);
-    --swell: #0E1A25; --swell-ink: #E9F1EE; --teal: #6EC0C6; --teal-soft: rgba(63, 143, 150, .22);
-    --coral: #F0907C; --coral-soft: rgba(226, 114, 91, .18); --sand: #D8C49A; --sand-soft: rgba(216, 196, 154, .16);
-    --plate: #2A3B4B;
-    --c-yossele: #8FD95E; --c-yossele-bg: rgba(114, 204, 53, .12);
-    --c-spool: #93CCA1;   --c-spool-bg: rgba(147, 204, 161, .13);
-    --c-argo: #8DB9E2;    --c-argo-bg: rgba(79, 134, 184, .16);
-    --c-uloe: #F1EF72;    --c-uloe-bg: rgba(241, 239, 114, .10);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #13212E; --surface: #1A2B3B; --ink: #E4EDEA; --muted: #9DB1BC; --line: rgba(233, 241, 238, .12);
-  --swell: #0E1A25; --swell-ink: #E9F1EE; --teal: #6EC0C6; --teal-soft: rgba(63, 143, 150, .22);
-  --coral: #F0907C; --coral-soft: rgba(226, 114, 91, .18); --sand: #D8C49A; --sand-soft: rgba(216, 196, 154, .16);
-  --plate: #2A3B4B;
-  --c-yossele: #8FD95E; --c-yossele-bg: rgba(114, 204, 53, .12);
-  --c-spool: #93CCA1;   --c-spool-bg: rgba(147, 204, 161, .13);
-  --c-argo: #8DB9E2;    --c-argo-bg: rgba(79, 134, 184, .16);
+  --rt-swell: #2E4A62; --rt-swell-2: #35546D; --rt-swell-deep: #26405A;
+  --rt-teal: #3F8F96; --rt-teal-hi: #4A9AA1; --rt-teal-lo: #377A80;
+  --rt-foam: #E9F1EE; --rt-mist: #B4C8CF; --rt-coral: #E2725B; --rt-sand: #D8C49A;
+  --rt-pearl: #F4EEF8; --rt-slate: #5B5D69; --rt-on-coral: #FFFFFF;
+  --rt-line: rgba(233, 241, 238, .18); --rt-teal-soft: rgba(63, 143, 150, .28);
+  --rt-head: "Exo 2", "DejaVu Sans", "Segoe UI Light", sans-serif;
+  --rt-body: "Barlow", "DejaVu Sans", "Segoe UI", sans-serif;
+  --rt-label: "Pixelify Sans", "DejaVu Sans Mono", ui-monospace, monospace;
+  --c-yossele: #8FD95E; --c-yossele-bg: rgba(114, 204, 53, .14);
+  --c-spool: #93CCA1;   --c-spool-bg: rgba(147, 204, 161, .14);
+  --c-argo: #8DB9E2;    --c-argo-bg: rgba(79, 134, 184, .18);
   --c-uloe: #F1EF72;    --c-uloe-bg: rgba(241, 239, 114, .10);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--f-body); }
+body { background: var(--rt-swell); color: var(--rt-foam); font: 16px/1.55 var(--rt-body); }
 .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-h1, h2, h3, h4 { font-family: var(--f-display); font-weight: 400; line-height: 1.15; text-wrap: balance; margin: 0; letter-spacing: .01em; }
-h2 { font-size: clamp(2.1rem, 4.4vw, 2.9rem); }
-h3 { font-size: 1.55rem; }
-h4 { font-size: 1.25rem; }
+h1, h2, h3, h4 { font-family: var(--rt-head); font-weight: 300; line-height: 1.15; text-wrap: balance; margin: 0; text-transform: uppercase; letter-spacing: .12em; }
+h2 { font-size: clamp(1.6rem, 3.6vw, 2.3rem); }
+h3 { font-size: 1.2rem; font-weight: 400; }
+h4 { font-size: 1rem; font-weight: 400; }
 p { margin: 0; max-width: 68ch; }
 .px { image-rendering: pixelated; image-rendering: crisp-edges; }
-.eyebrow { font: 500 .74rem/1 var(--f-data); letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
-.lede { color: var(--muted); font-size: 1.05rem; }
-.num { font-family: var(--f-data); font-variant-numeric: tabular-nums; }
-a { color: var(--teal); }
-a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+.eyebrow { font: 400 .8rem/1 var(--rt-label); letter-spacing: .08em; color: var(--rt-sand); }
+.lede { color: var(--rt-mist); font-size: 1.05rem; }
+.num { font-family: var(--rt-label); font-variant-numeric: tabular-nums; }
+a { color: var(--rt-foam); text-decoration-color: var(--rt-teal-hi); text-underline-offset: 3px; }
+a:focus-visible { outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
+code { font-family: var(--rt-label); font-size: .9em; }
 
-/* status chips */
-.st { display: inline-flex; align-items: center; gap: .35em; font: 500 .7rem/1 var(--f-data); letter-spacing: .04em; padding: .32em .55em; border-radius: 99px; white-space: nowrap; vertical-align: middle; }
-.st::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: currentColor; }
-.st-pc { color: var(--teal); background: var(--teal-soft); }
-.st-built { color: var(--sand); background: var(--sand-soft); }
-.st-no { color: var(--coral); background: var(--coral-soft); }
-.st-no::before { background: transparent; border: 1.5px solid currentColor; }
+/* the bracket frame: a Foam line along the top and right, a notch at top-left, a filled tick at top-right */
+.frame { position: relative; border-top: 1px solid var(--rt-foam); border-right: 1px solid var(--rt-foam); }
+.frame::before { content: ""; position: absolute; left: 0; top: -1px; width: 1px; height: 9px; background: var(--rt-foam); }
+.frame::after { content: ""; position: absolute; right: -4px; top: -4px; width: 7px; height: 7px; background: var(--rt-foam); }
+/* a bevelled square tile */
+.tile { background: var(--rt-teal); box-shadow: inset 0 0 0 3px var(--rt-teal-hi); outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
 
 /* masthead */
-.mast { background: var(--swell); color: var(--swell-ink); padding-block: 48px 0; position: relative; overflow: hidden; }
+.mast { padding-block: 56px 28px; background: linear-gradient(180deg, var(--rt-swell-deep), var(--rt-swell)); }
 .mast .wrap { display: grid; gap: 22px; }
-.brand { display: flex; align-items: center; gap: 16px; }
-.brand img { width: 64px; height: 64px; }
-.mast h1 { font-size: clamp(3.4rem, 11vw, 6rem); line-height: .95; }
-.mast .tag { font-size: 1.15rem; max-width: 60ch; opacity: .92; }
-.mast .eyebrow { color: #9ED3D7; }
-.tally { display: flex; flex-wrap: wrap; gap: 8px 26px; padding-block: 6px 4px; }
-.tally div { display: grid; }
-.tally b { font: 400 2.4rem/1 var(--f-display); }
-.tally span { font-size: .8rem; opacity: .8; }
-.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; font-size: .85rem; padding-bottom: 8px; }
-.legend .st { background: rgba(233, 241, 238, .12); }
-.legend .st-pc { color: #8FD3D8; } .legend .st-built { color: #E2CF9F; } .legend .st-no { color: #F3A08F; }
-.wave { display: block; width: 100%; height: 56px; margin-top: 18px; }
-.wave path { fill: var(--bg); }
+.brand { display: flex; align-items: center; gap: 18px; }
+.brand .crest { width: 72px; height: 72px; display: grid; place-items: center; flex: none; }
+.brand img { width: 56px; height: 56px; }
+.mast h1 { font-size: clamp(2.6rem, 9vw, 5.4rem); line-height: 1; letter-spacing: .14em; }
+.mast .tag { font-size: 1.15rem; max-width: 62ch; color: var(--rt-mist); }
+.banner { justify-self: start; background: var(--rt-coral); color: var(--rt-on-coral); font: 400 1.5rem/1.25 var(--rt-head); letter-spacing: .12em; text-transform: uppercase; padding: 10px 18px; outline: 1px solid var(--rt-foam); outline-offset: 2px; margin: 2px; }
+.tally { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px 22px; padding: 18px 16px 4px 0; }
+.tally div { display: grid; gap: 4px; }
+.tally b { font: 400 2.2rem/1 var(--rt-label); color: var(--rt-sand); }
+.tally span { font-size: .82rem; color: var(--rt-mist); }
 
-section { padding-block: 56px 8px; }
-.head { display: grid; gap: 10px; margin-bottom: 26px; }
+section { padding-block: 60px 8px; }
+.head { display: grid; gap: 10px; margin-bottom: 28px; }
+.head h2 { padding-bottom: 10px; border-bottom: 1px solid var(--rt-foam); position: relative; max-width: 100%; }
+.head h2::after { content: ""; position: absolute; left: -3px; bottom: -4px; width: 7px; height: 7px; border-radius: 50%; background: var(--rt-foam); }
+
+/* panels */
+.panel { background: var(--rt-swell-2); padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.panel .title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.panel p { font-size: .95rem; color: var(--rt-mist); }
 
 /* the loop */
-.loop { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; counter-reset: step; }
-.loop li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 8px; align-content: start; counter-increment: step; min-width: 0; }
-.loop .top { display: flex; align-items: center; gap: 10px; }
-.loop .top::before { content: counter(step); font: 400 1.3rem/1 var(--f-display); color: var(--teal); width: 1.7em; height: 1.7em; display: grid; place-items: center; border: 1.5px solid var(--teal); border-radius: 50%; flex: none; }
-.loop img { width: 24px; height: 24px; margin-left: auto; }
-.loop p { font-size: .93rem; color: var(--muted); }
+.loop { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 22px 18px; counter-reset: step; }
+.loop li { background: var(--rt-swell-2); padding: 16px; display: grid; gap: 8px; align-content: start; counter-increment: step; min-width: 0; }
+.loop .top { display: flex; align-items: center; gap: 12px; }
+.loop .top::before { content: counter(step); font: 400 1.1rem/1 var(--rt-label); color: var(--rt-sand); flex: none; min-width: 1.2em; }
+.loop .ic { margin-left: auto; width: 34px; height: 34px; display: grid; place-items: center; flex: none; }
+.loop img { width: 24px; height: 24px; }
+.loop p { font-size: .94rem; color: var(--rt-mist); }
 
 /* ten maps */
-.route-box { overflow-x: auto; padding-bottom: 6px; }
-.route { display: grid; grid-template-columns: 120px repeat(10, minmax(64px, 1fr)); min-width: 760px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
-.route > div { padding: 10px 8px; border-top: 1px solid var(--line); font-size: .85rem; text-align: center; }
+.route-box { overflow-x: auto; padding: 6px 6px 8px 0; }
+.route { display: grid; grid-template-columns: 128px repeat(10, minmax(64px, 1fr)); min-width: 780px; background: var(--rt-swell-2); }
+.route > div { padding: 10px 8px; border-top: 1px solid var(--rt-line); font-size: .85rem; text-align: center; }
 .route > div:nth-child(-n+11) { border-top: 0; }
-.route .rl { text-align: left; color: var(--muted); font-size: .78rem; }
-.route .mh { font: 400 1.35rem/1 var(--f-display); }
-.route .mh small { display: block; font: 400 .68rem/1.3 var(--f-body); color: var(--muted); margin-top: 3px; }
-.route .end { background: var(--teal-soft); }
+.route .rl { text-align: left; color: var(--rt-mist); font-size: .8rem; }
+.route .mh { font: 400 1.3rem/1 var(--rt-label); }
+.route .mh small { display: block; font: 400 .7rem/1.3 var(--rt-body); color: var(--rt-mist); margin-top: 4px; }
+.route .end { background: var(--rt-teal-soft); }
 .dots { display: inline-flex; gap: 3px; }
-.dots i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--muted); }
-.dots i.on { border-color: var(--coral); background: var(--coral); }
-.bar { height: 6px; border-radius: 3px; background: var(--teal); margin: 4px auto 0; }
-.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 28px; margin-top: 20px; font-size: .93rem; }
-.notes p { color: var(--muted); }
-.notes b { color: var(--ink); }
+.dots i { width: 9px; height: 9px; border: 1.5px solid var(--rt-mist); }
+.dots i.on { border-color: var(--rt-coral); background: var(--rt-coral); }
+.bar { height: 6px; background: var(--rt-sand); margin: 5px auto 0; }
+.notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px 28px; margin-top: 22px; font-size: .94rem; }
+.notes p { color: var(--rt-mist); }
+.notes b { color: var(--rt-foam); font-weight: 600; }
 
-/* chart and weather */
-.chart { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 32px; align-items: start; }
-.chart figure { margin: 0; }
-.chart figure img { width: 100%; border-radius: var(--radius); display: block; }
-.chart figcaption { font-size: .8rem; color: var(--muted); margin-top: 8px; }
+/* chart */
+.chart-fig { margin: 0 0 26px; padding: 14px 14px 12px 0; }
+.chart-fig img { width: 100%; height: auto; display: block; }
+.chart-fig figcaption { font-size: .82rem; color: var(--rt-mist); margin-top: 8px; }
+.chart { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
 .facts { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
-.facts li { display: grid; grid-template-columns: 9.5em 1fr; gap: 12px; border-bottom: 1px solid var(--line); padding-bottom: 10px; font-size: .95rem; }
-.facts li > span:first-child { color: var(--muted); font-size: .85rem; }
-.weathers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 26px; }
-.wx { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: var(--surface); display: grid; min-width: 0; }
-.wx .sky { height: 92px; position: relative; display: flex; align-items: flex-end; padding: 10px 12px; color: #fff; }
-.wx .sky img { width: 36px; height: 36px; background: rgba(255,255,255,.85); border-radius: 6px; padding: 3px; }
-.wx .sky .look { margin-left: auto; font: 500 .72rem/1 var(--f-data); background: rgba(14, 26, 37, .55); padding: 4px 6px; border-radius: 4px; }
+.facts li { display: grid; grid-template-columns: 8.5em 1fr; gap: 12px; border-bottom: 1px solid var(--rt-line); padding-bottom: 10px; font-size: .95rem; }
+.facts li > span:first-child { color: var(--rt-sand); font: 400 .82rem/1.5 var(--rt-label); }
+.stops { display: grid; gap: 18px; }
+.stop { display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: start; }
+.stop .mark { width: 40px; height: 40px; display: grid; place-items: center; font: 400 1.1rem/1 var(--rt-label); }
+.stop .mark.wreck { background: var(--rt-slate); box-shadow: inset 0 0 0 3px #696B77; outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
+.stop h3 { margin-bottom: 4px; }
+.stop p + p { margin-top: 6px; }
+.weathers { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px 18px; margin-top: 34px; }
+.wx { background: var(--rt-swell-2); display: grid; min-width: 0; }
+.wx .sky { height: 92px; display: flex; align-items: flex-end; padding: 10px 12px; }
+.wx .sky .ic { width: 42px; height: 42px; display: grid; place-items: center; }
+.wx .sky img { width: 32px; height: 32px; }
+.wx .sky .look { margin-left: auto; font: 400 .78rem/1 var(--rt-label); background: rgba(38, 64, 90, .75); color: var(--rt-foam); padding: 5px 7px; }
 .wx-rise .sky { background: linear-gradient(180deg, #C9D6D8 0%, #9FB9BD 55%, #3F8F96 100%); }
 .wx-quick .sky { background: linear-gradient(180deg, #5A646C 0%, #4B545B 50%, #30363B 100%); }
 .wx-nest .sky { background: linear-gradient(180deg, #6A5A8A 0%, #B07A6A 55%, #E09A6B 100%); }
 .wx .body { padding: 14px; display: grid; gap: 8px; }
-.wx .body p { font-size: .92rem; color: var(--muted); }
-.wx .line { font-style: italic; font-size: .88rem; color: var(--ink); }
+.wx .body p { font-size: .93rem; color: var(--rt-mist); }
+.wx .line { font-style: italic; color: var(--rt-foam) !important; }
 
 /* breaks */
-.breaks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
-.span-5 { grid-column: span 5; } .span-7 { grid-column: span 7; } .span-4 { grid-column: span 4; } .span-6 { grid-column: span 6; } .span-12 { grid-column: span 12; }
-.panel .title { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-.panel .title .st { margin-left: auto; }
-.panel p { font-size: .93rem; color: var(--muted); }
+.breaks { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px 18px; }
+.span-5 { grid-column: span 5; } .span-7 { grid-column: span 7; } .span-6 { grid-column: span 6; }
 .vend { display: flex; gap: 18px; align-items: center; }
 .sprite { flex: none; background-repeat: no-repeat; image-rendering: pixelated; }
-.vend .sprite { width: 96px; height: 96px; background-size: 576px 96px; animation: frames6 .9s steps(6) infinite; border-radius: 8px; background-color: var(--sand-soft); }
+.vend .sprite { width: 96px; height: 96px; background-size: 576px 96px; animation: frames6 .9s steps(6) infinite; background-color: var(--rt-swell); }
 @keyframes frames6 { to { background-position: -576px 0; } }
-.pearl { display: inline-block; width: 12px; height: 15px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 35% 30%, #fff, #F4EEF8 45%, #C9E4F2 75%, #F2D9E6); box-shadow: 0 0 0 1px rgba(46, 74, 98, .25); vertical-align: -2px; }
+.pearl { display: inline-block; width: 12px; height: 15px; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; background: radial-gradient(circle at 35% 30%, #fff, #F4EEF8 45%, #C9E4F2 75%, #F2D9E6); vertical-align: -2px; }
 .pays { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.pays div { background: var(--bg); border-radius: 8px; padding: 10px; display: grid; gap: 2px; }
-.pays b { font: 400 1.9rem/1 var(--f-display); }
-.pays span { font-size: .76rem; color: var(--muted); }
-.obj { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.obj li { display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center; font-size: .92rem; }
-.obj img { width: 30px; height: 30px; }
-.obj small { display: block; color: var(--muted); font-size: .8rem; }
-.obj .pay { font: 500 .8rem/1 var(--f-data); white-space: nowrap; }
+.pays div { background: var(--rt-swell); padding: 10px; display: grid; gap: 4px; }
+.pays b { font: 400 1.8rem/1 var(--rt-label); color: var(--rt-pearl); }
+.pays span { font-size: .78rem; color: var(--rt-mist); }
+.obj { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.obj li { display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: center; font-size: .94rem; }
+.obj .ic { width: 34px; height: 34px; display: grid; place-items: center; }
+.obj img { width: 26px; height: 26px; }
+.obj small { display: block; color: var(--rt-mist); font-size: .82rem; }
+.obj .pay { font: 400 .9rem/1 var(--rt-label); white-space: nowrap; color: var(--rt-pearl); }
+.inline-ic { width: 24px; height: 24px; vertical-align: -5px; margin-right: 4px; }
 
 /* vessels */
-.vessels { display: grid; gap: 18px; }
-.vessel { border-radius: 14px; border: 1px solid var(--line); background: var(--surface); display: grid; grid-template-columns: 230px minmax(0, 1fr); overflow: hidden; }
+.vessels { display: grid; gap: 30px; }
+.vessel { background: var(--rt-swell-2); display: grid; grid-template-columns: 230px minmax(0, 1fr); }
 .vessel .portrait { background: var(--vbg); display: grid; place-items: center; padding: 22px 14px; gap: 10px; align-content: center; }
 .vessel .portrait .hero { width: 160px; height: 160px; }
-.vessel .portrait .argo-shot { width: 170px; border-radius: 8px; }
+.vessel .portrait .argo-shot { width: 170px; }
 .vessel .portrait .yos { width: 160px; height: 160px; background-size: 960px 160px; animation: frames6y .8s steps(6) infinite; }
 @keyframes frames6y { to { background-position: -960px 0; } }
-.vessel .portrait .note { font-size: .72rem; color: var(--muted); text-align: center; }
 .vessel .info { padding: 22px; display: grid; gap: 14px; min-width: 0; }
-.vessel .name { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-.vessel .name h3 { font-size: 2.6rem; color: var(--vc); }
-.vessel .name em { font-style: normal; color: var(--muted); }
-.vessel .name .st { margin-left: auto; }
+.vessel .name { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+.vessel .name h3 { font-size: 2rem; font-weight: 300; color: var(--vc); }
+.vessel .name em { font-style: normal; color: var(--rt-mist); }
 .stats { display: flex; flex-wrap: wrap; gap: 6px; }
-.stats span { font: 500 .78rem/1 var(--f-data); padding: 6px 8px; border-radius: 6px; background: var(--vbg); }
-.stats span b { font-weight: 500; color: var(--vc); }
+.stats span { font: 400 .82rem/1 var(--rt-label); padding: 7px 9px; background: var(--rt-swell); color: var(--rt-mist); }
+.stats span b { font-weight: 400; color: var(--vc); }
 .mech { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
-.mech div { border-left: 3px solid var(--vc); padding-left: 10px; font-size: .92rem; }
-.mech b { display: block; font-family: var(--f-display); font-weight: 400; font-size: 1.25rem; }
-.mech span { color: var(--muted); }
+.mech div { border-left: 2px solid var(--vc); padding-left: 10px; font-size: .94rem; }
+.mech b { display: block; font: 400 1rem/1.4 var(--rt-head); text-transform: uppercase; letter-spacing: .1em; }
+.mech span { color: var(--rt-mist); }
 .kit { display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 16px; align-items: start; }
-.towers { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: .9rem; }
+.towers { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; font-size: .92rem; }
 .towers li { display: grid; grid-template-columns: 11.5em 1fr; gap: 10px; }
-.towers li b { font-weight: 700; }
-.towers li span { color: var(--muted); }
-.towers li i { font-style: normal; font: 500 .68rem/1 var(--f-data); color: var(--vc); display: block; margin-top: 2px; letter-spacing: .04em; text-transform: uppercase; }
-.tower { background: var(--plate); border-radius: 10px; display: grid; justify-items: center; padding: 6px 6px 8px; }
+.towers li b { font-weight: 600; }
+.towers li span { color: var(--rt-mist); }
+.towers li i { font: 400 .74rem/1 var(--rt-label); font-style: normal; color: var(--vc); display: block; margin-top: 3px; }
+.tower { background: #DBD6CC; display: grid; justify-items: center; padding: 6px 6px 8px; }
 .tower img { width: 138px; height: auto; }
-.tower small { font-size: .72rem; color: var(--muted); text-align: center; }
-.left { font-size: .86rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+.tower small { font-size: .74rem; color: var(--rt-swell); text-align: center; }
 .v-yossele { --vc: var(--c-yossele); --vbg: var(--c-yossele-bg); }
 .v-spool { --vc: var(--c-spool); --vbg: var(--c-spool-bg); }
 .v-argo { --vc: var(--c-argo); --vbg: var(--c-argo-bg); }
 .v-uloe { --vc: var(--c-uloe); --vbg: var(--c-uloe-bg); }
 
 /* directions */
-.rules { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
-.rules span { font-size: .85rem; padding: 6px 10px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface); }
-.dirs { columns: 3 300px; column-gap: 24px; }
-.dgroup { break-inside: avoid; margin-bottom: 22px; }
-.dgroup h4 { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); margin-bottom: 4px; }
-.count { font: 500 .75rem/1 var(--f-data); color: var(--muted); }
+.rules { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+.rules span { font-size: .86rem; padding: 6px 10px; background: var(--rt-swell-2); border-left: 2px solid var(--rt-teal-hi); }
+.dirs { columns: 3 300px; column-gap: 26px; }
+.dgroup { break-inside: avoid; margin-bottom: 24px; }
+.dgroup h4 { display: flex; align-items: center; gap: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--rt-foam); margin-bottom: 4px; }
+.count { font: 400 .8rem/1 var(--rt-label); color: var(--rt-sand); letter-spacing: 0; text-transform: none; }
 .dlist { list-style: none; margin: 0; padding: 0; }
-.dlist li { display: grid; grid-template-columns: 24px 1fr; column-gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--line); align-items: center; }
-.dlist img { width: 24px; height: 24px; grid-row: span 2; align-self: start; margin-top: 2px; }
-.dlist .dn { font-weight: 700; font-size: .92rem; }
-.dlist .for { grid-column: 2; font: 500 .68rem/1.2 var(--f-data); color: var(--teal); text-transform: uppercase; letter-spacing: .06em; }
-.dlist .r1 { grid-column: 2; font-size: .8rem; color: var(--muted); line-height: 1.35; }
-.kind { font: 500 .62rem/1 var(--f-data); text-transform: uppercase; letter-spacing: .06em; padding: 2px 5px; border-radius: 4px; vertical-align: 2px; margin-left: 4px; }
-.kind-shift { color: var(--coral); background: var(--coral-soft); }
-.kind-duo { color: var(--teal); background: var(--teal-soft); }
+.dlist li { display: grid; grid-template-columns: 30px 1fr; column-gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rt-line); align-items: center; }
+.dlist img { width: 24px; height: 24px; grid-row: span 2; align-self: start; padding: 3px; box-sizing: content-box; background: var(--rt-teal); box-shadow: inset 0 0 0 2px var(--rt-teal-hi); margin-top: 2px; }
+.dlist .dn { font-weight: 600; font-size: .93rem; }
+.dlist .for { grid-column: 2; font: 400 .74rem/1.2 var(--rt-label); color: var(--rt-sand); }
+.dlist .r1 { grid-column: 2; font-size: .84rem; color: var(--rt-mist); line-height: 1.35; }
+.kind { font: 400 .7rem/1 var(--rt-label); padding: 2px 5px; vertical-align: 2px; margin-left: 4px; }
+.kind-shift { color: var(--rt-swell); background: var(--rt-sand); }
+.kind-duo { color: var(--rt-foam); background: var(--rt-swell); box-shadow: inset 0 0 0 1px var(--rt-teal-hi); }
 
 /* finds */
-.flux { display: flex; gap: 12px; align-items: flex-start; background: var(--sand-soft); border-radius: var(--radius); padding: 12px 14px; font-size: .9rem; margin-bottom: 22px; }
-.flux b { font-family: var(--f-display); font-weight: 400; font-size: 1.15rem; }
-.finds { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; }
-.finds .panel h3 { display: flex; align-items: baseline; gap: 8px; }
-.finds ul.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.items li { display: grid; grid-template-columns: 36px 1fr; gap: 10px; align-items: center; }
-.items img { width: 36px; height: 36px; background: var(--bg); border-radius: 6px; padding: 2px; }
-.items b { display: block; font-size: .92rem; }
-.items span { font-size: .82rem; color: var(--muted); }
+.finds { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px 18px; }
+.finds .panel h3 { display: flex; align-items: baseline; gap: 10px; }
+.items { list-style: none; margin: 0; padding: 4px 0 0 4px; display: grid; gap: 16px; }
+.items li { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: center; }
+.items img { width: 32px; height: 32px; padding: 5px; box-sizing: content-box; background: var(--rt-teal); box-shadow: inset 0 0 0 3px var(--rt-teal-hi); outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
+.items b { display: block; font-size: .94rem; font-weight: 600; }
+.items span { font-size: .84rem; color: var(--rt-mist); }
 .stock { display: flex; flex-wrap: wrap; gap: 6px; }
-.stock span { font-size: .8rem; padding: 4px 8px; border-radius: 6px; background: var(--bg); border: 1px solid var(--line); }
+.stock span { font-size: .82rem; padding: 4px 8px; background: var(--rt-swell); }
 
 /* foes */
-.foes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
-.foe { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: grid; gap: 8px; align-content: start; }
+.foes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px 18px; }
+.foe { background: var(--rt-swell-2); padding: 16px; display: grid; gap: 8px; align-content: start; }
 .foe svg { width: 100%; height: 110px; display: block; }
-.foe .numbers { font: 500 .78rem/1.4 var(--f-data); color: var(--ink); }
-.foe p { font-size: .9rem; color: var(--muted); }
+.foe .numbers { font: 400 .82rem/1.45 var(--rt-label); color: var(--rt-sand); }
+.foe p { font-size: .92rem; color: var(--rt-mist); }
 
-/* hood */
-.hood { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
-.hood ul { margin: 0; padding-left: 1.1em; font-size: .92rem; color: var(--muted); display: grid; gap: 6px; }
-.hood ul b { color: var(--ink); }
+/* crew */
+.hood { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px 18px; }
+.hood ul { margin: 0; padding-left: 1.1em; font-size: .94rem; color: var(--rt-mist); display: grid; gap: 7px; }
+.hood ul b { color: var(--rt-foam); font-weight: 600; }
 
-/* not built */
-.gaps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 0 28px; align-items: start; }
-.gaps li { align-content: start; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-.gaps li .st { grid-row: span 2; align-self: start; margin-top: 2px; }
-.gaps b { font-size: .95rem; }
-.gaps span:last-child { font-size: .86rem; color: var(--muted); grid-column: 2; }
-
-.release { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
-.release .panel:first-child { border-color: var(--c-yossele); }
-footer { padding-block: 48px 56px; color: var(--muted); font-size: .82rem; }
-footer .wrap { display: grid; gap: 8px; border-top: 1px solid var(--line); padding-top: 18px; }
-code { font-family: var(--f-data); font-size: .85em; }
+footer { padding-block: 56px 60px; color: var(--rt-mist); font-size: .84rem; }
+footer .wrap { display: grid; gap: 8px; }
+footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; display: grid; gap: 8px; }
 
 @media (max-width: 860px) {
   .chart, .vessel { grid-template-columns: 1fr; }
@@ -264,25 +227,26 @@ code { font-family: var(--f-data); font-size: .85em; }
   .tower { justify-self: start; }
 }
 @media (max-width: 520px) {
+  .tally { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .towers li { grid-template-columns: 1fr; gap: 0; }
   .facts li { grid-template-columns: 1fr; gap: 2px; }
-  .pays { grid-template-columns: 1fr 1fr 1fr; }
-  .vessel .name .st { margin-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .vend .sprite, .vessel .portrait .yos { animation: none; }
 }
 </style>
 
+
 <header class="mast">
   <div class="wrap">
     <div class="brand">
-      <img class="px" src="{{img:icon_RogueWaves_Crest32}}" alt="The Rogue Waves crest" width="64" height="64">
+      <span class="crest tile"><img class="px" src="{{img:icon_RogueWaves_Crest32}}" alt="The Rogue Waves crest" width="56" height="56"></span>
       <span class="eyebrow">A fan expansion for TDS - Tower Defense Strategy</span>
     </div>
     <h1>Rogue Waves</h1>
     <p class="tag">The wave that comes out of nowhere. A roguelike campaign of ten maps for two to four players, four new vessels, foes that change every run, and a sea of washed-up things to find, all in one mod pack.</p>
-    <div class="tally" aria-label="What the pack adds">
+    <div class="banner">Ten maps. One run. No way back.</div>
+    <div class="tally frame" aria-label="What the pack adds">
       <div><b class="num">10</b><span>maps a campaign</span></div>
       <div><b class="num">4</b><span>new vessels</span></div>
       <div><b class="num">55</b><span>Directions</span></div>
@@ -290,17 +254,9 @@ code { font-family: var(--f-data); font-size: .85em; }
       <div><b class="num">16</b><span>Cardinals in the shop</span></div>
       <div><b class="num">4</b><span>foe modifiers</span></div>
       <div><b class="num">3</b><span>sea weathers</span></div>
-      <div><b class="num">5</b><span>optional objectives</span></div>
-    </div>
-    <div class="legend">
-      <span>Each feature says where it stands:</span>
-      <span class="st st-pc">Played on the PC</span>
-      <span class="st st-built">Built, not yet run in game</span>
-      <span class="st st-no">Not built</span>
-      <span style="opacity:.75">As of 5 November 2026, base <code>3ee6305</code></span>
+      <div><b class="num">2</b><span>new stops: the Cove and the Wreck</span></div>
     </div>
   </div>
-  <svg class="wave" viewBox="0 0 1200 56" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C 140 10, 260 10, 380 30 S 600 56, 760 26 S 1000 0, 1200 30 L 1200 56 L 0 56 Z"/></svg>
 </header>
 
 <main>
@@ -309,16 +265,16 @@ code { font-family: var(--f-data); font-size: .85em; }
     <div class="head">
       <span class="eyebrow">The Rogue Waves mode</span>
       <h2>One campaign, start to finish</h2>
-      <p class="lede">The host starts a run from the main menu. Every map after that follows the same loop: pick a Direction, vote, sail, hold the tides, spend Pure Aura in the breaks, and leave once Tide 15 is behind you. <span class="st st-pc">Played on the PC</span></p>
+      <p class="lede">The host starts a run from the main menu. Every map after that follows the same loop: pick a Direction, vote, sail, hold the tides, spend Pure Aura in the breaks, and leave once Tide 15 is behind you.</p>
     </div>
     <ol class="loop">
-      <li><div class="top"><h4>Board the boat</h4><img class="px" src="{{img:icon_RogueWaves_Board}}" alt="" width="24" height="24"></div><p>The Rogue Waves button on the main menu offers New or Continue and takes the host to the boat with the mode set. Friends join there. Each player picks a vessel and is locked into it for the run.</p></li>
-      <li><div class="top"><h4>Pick a Direction</h4><img class="px" src="{{img:icon_Direction_Compass}}" alt="" width="24" height="24"></div><p>Before every map each player is offered 3 Directions and keeps 1. Some raise a stat; Shifts change how a vessel plays.</p></li>
-      <li><div class="top"><h4>Vote and sail</h4><img class="px" src="{{img:icon_RogueWaves_Vote}}" alt="" width="24" height="24"></div><p>The party votes on the next island among the ones linked on the sea chart. The boat then sails there by itself.</p></li>
-      <li><div class="top"><h4>Hold the tides</h4><img class="px" src="{{img:icon_RogueWaves_PureAura}}" alt="" width="24" height="24"></div><p>The map plays like the base game, harder. Every tide pays each player Pure Aura, and optional objectives pay more.</p></li>
-      <li><div class="top"><h4>Shop in the break</h4><img class="px" src="{{img:icon_RogueWaves_Shop}}" alt="" width="24" height="24"></div><p>Breaks last 60 seconds. VENDCINT drops in to sell Cardinals, Trinkets and Direction ranks, and to carry aura between friends.</p></li>
-      <li><div class="top"><h4>Leave or stay</h4><img class="px" src="{{img:icon_RogueWaves_Stay}}" alt="" width="24" height="24"></div><p>Clearing Tide 15 wins the map. From then on the party votes between tides: leave, or stay for bonus tides that pay more and hit harder. Nobody can leave mid-tide.</p></li>
-      <li><div class="top"><h4>Save and go on</h4><img class="px" src="{{img:icon_RogueWaves_Retry}}" alt="" width="24" height="24"></div><p>The host's save keeps the run between maps. Continue brings back each vessel, Pure Aura, Directions and Trinkets, and the team's Cardinals. Three retries replay a lost map.</p></li>
+      <li class="frame"><div class="top"><h4>Board the boat</h4><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Board}}" alt="" width="24" height="24"></span></div><p>The Rogue Waves button on the main menu offers New or Continue and takes the host to the boat with the mode set. Friends join there. Each player picks a vessel and is locked into it for the run.</p></li>
+      <li class="frame"><div class="top"><h4>Pick a Direction</h4><span class="ic tile"><img class="px" src="{{img:icon_Direction_Compass}}" alt="" width="24" height="24"></span></div><p>Before every map each player is offered 3 Directions and keeps 1. Some raise a stat; Shifts change how a vessel plays.</p></li>
+      <li class="frame"><div class="top"><h4>Vote and sail</h4><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Vote}}" alt="" width="24" height="24"></span></div><p>The whole sea chart opens beside the vote. The islands in reach are lettered A, B, C; hover one to light every lane it leads to. The boat then sails there, a banner naming where it goes.</p></li>
+      <li class="frame"><div class="top"><h4>Hold the tides</h4><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_PureAura}}" alt="" width="24" height="24"></span></div><p>The map plays like the base game, harder. Every tide pays each player Pure Aura, and optional objectives pay more.</p></li>
+      <li class="frame"><div class="top"><h4>Shop in the break</h4><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Shop}}" alt="" width="24" height="24"></span></div><p>Breaks last 60 seconds. VENDCINT drops in to sell Cardinals, Trinkets and Direction ranks, and to carry aura between friends.</p></li>
+      <li class="frame"><div class="top"><h4>Leave or stay</h4><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Stay}}" alt="" width="24" height="24"></span></div><p>Clearing Tide 15 wins the map. From then on the party votes between tides: leave, or stay for bonus tides that pay more and hit harder. Nobody can leave mid-tide.</p></li>
+      <li class="frame"><div class="top"><h4>Save and go on</h4><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Retry}}" alt="" width="24" height="24"></span></div><p>The host's save keeps the run between maps. Continue brings back each vessel, Pure Aura, Directions and Trinkets, and the team's Cardinals. Three retries replay a lost map, and a Cove on the chart gives one back.</p></li>
     </ol>
   </div>
 </section>
@@ -328,10 +284,10 @@ code { font-family: var(--f-data); font-size: .85em; }
     <div class="head">
       <span class="eyebrow">Difficulty</span>
       <h2>Ten maps, each harder than the last</h2>
-      <p class="lede">The run must end harder than the base game, even with every Cardinal and Direction the party stacks up. Each map's Tide 15 plays a later base-game tide, foe health climbs, and the seed switches on its foe modifiers one at a time. <span class="st st-built">Tuned numbers built, not yet run</span></p>
+      <p class="lede">The run must end harder than the base game, even with every Cardinal and Direction the party stacks up. Each map's Tide 15 plays a later base-game tide, foe health climbs, and the seed switches on its foe modifiers one at a time.</p>
     </div>
     <div class="route-box">
-      <div class="route" role="table" aria-label="The ten maps of a campaign">
+      <div class="route frame" role="table" aria-label="The ten maps of a campaign">
         <div class="rl" role="rowheader">Map</div>
         <div class="mh">1<small>calm</small></div><div class="mh">2</div><div class="mh">3</div><div class="mh">4</div><div class="mh">5<small>closes stretch, calm</small></div><div class="mh">6</div><div class="mh">7</div><div class="mh">8</div><div class="mh">9</div><div class="mh end">10<small>closes stretch, calm</small></div>
         <div class="rl">Tide 15 plays like base Tide</div>
@@ -352,43 +308,48 @@ code { font-family: var(--f-data); font-size: .85em; }
 
 <section id="chart">
   <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">Between maps</span>
+      <h2>A new sea chart every run</h2>
+      <p class="lede">A roguelike map screen, sailed by the game's own boat. A harbour, then 10 rows of 3 or 4 base-game maps, each linked to 1 to 3 in the next row. Every vote opens the whole chart, so the party sees where each island leads before it picks.</p>
+    </div>
+    <figure class="chart-fig frame">
+      <img src="{{img:chart}}" alt="The sea chart view at row 4's vote: ten rows of square island tiles, the sailed route ticked off, and two choices lettered A and B beside the vote cards" width="1120" height="630">
+      <figcaption>The chart at row 4's vote. Teal tiles are maps with their Danger, coral tiles the Breakers that close each stretch, and the choices sit in white brackets: A is a Cove, B a map of Danger 5.</figcaption>
+    </figure>
     <div class="chart">
-      <figure>
-        <img src="{{img:chart}}" alt="A generated sea chart: a harbour at the bottom and ten rows of linked islands above it" width="340">
-        <figcaption>The sea chart prototype from <code>concept-tools/sea_chart.py</code>. In game the chart is built from the base game's own islands, water, rocks and buoys.</figcaption>
-      </figure>
-      <div class="head" style="margin:0">
-        <span class="eyebrow">Between maps</span>
-        <h2>A new sea chart every run</h2>
-        <p class="lede">Like a roguelike map screen, sailed by the game's own boat. A harbour, then 10 rows of 3 or 4 base-game maps, each linked to 1 to 3 in the next row. <span class="st st-pc">Played on the PC</span></p>
-        <ul class="facts" style="margin-top:14px">
-          <li><span>Spread</span><span>Easier maps in the first rows, harder and δ maps later, the hardest closing each stretch of five.</span></li>
-          <li><span>No repeats</span><span>No map sits on a chart twice. Every base-game map can come up; the custom slot never does.</span></li>
-          <li><span>The vote</span><span>Held in the map, after the vote to leave. Map 1's vote is held in the opening break of a staging map.</span></li>
-          <li><span>After a loss</span><span>The boat sails back by itself, and only the lost map can be picked until it is won.</span></li>
-          <li><span>On the boat</span><span>No Cardinal or Trinket swaps. Lobby Cardinals are picked once, before map 1, and stay for the run.</span></li>
-          <li><span>The chart's look</span><span>Islands at the base game's size in the home world's water, a flag and dashed lanes in the pack's colours. <span class="st st-built">Still his to check by eye</span></span></li>
-        </ul>
+      <ul class="facts">
+        <li><span>Spread</span><span>Easier maps in the first rows, harder and δ maps later, the hardest closing each stretch of five.</span></li>
+        <li><span>No repeats</span><span>No map sits on a chart twice. Every base-game map can come up.</span></li>
+        <li><span>The vote</span><span>Held in the map after the vote to leave, with the chart on the left and the lettered cards on the right. Click a lit island or pick a card.</span></li>
+        <li><span>Any time</span><span>Press M on the boat or in a break to open the chart and read the route ahead.</span></li>
+        <li><span>Sailing</span><span>A banner says where the boat goes, with its Danger and weather, and a mini chart inks the lane as it sails.</span></li>
+        <li><span>After a loss</span><span>The boat sails back by itself, and only the lost map can be picked until it is won.</span></li>
+        <li><span>On the boat</span><span>No Cardinal or Trinket swaps. Lobby Cardinals are picked once, before map 1, and stay for the run.</span></li>
+      </ul>
+      <div class="stops">
+        <div class="stop"><span class="mark tile">C</span><div><h3>The Cove</h3><p>A rest stop, one in each stretch, on the row before its Breaker. No map: the party rests and gets a retry back. With all three retries left, each player's lowest held Direction goes up a rank instead.</p><p>Resting skips a map's pay, not its climb: the next map is as hard as its row.</p></div></div>
+        <div class="stop"><span class="mark wreck">W</span><div><h3>The Wreck</h3><p>A treasure stop in the middle of each stretch. A calm map that plays one row harder. Win it and each player picks one Trinket of three, free.</p><p>Every Trinket held makes later foes tougher, so the prize is also a cost.</p></div></div>
       </div>
     </div>
 
     <div class="weathers" id="weather">
-      <article class="wx wx-rise">
-        <div class="sky"><img class="px" src="{{img:icon_RogueWaves_RisingWater}}" alt="" width="36" height="36"><span class="look">light mist</span></div>
+      <article class="frame wx wx-rise">
+        <div class="sky"><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_RisingWater}}" alt="" width="32" height="32"></span><span class="look">light mist</span></div>
         <div class="body"><h3>Rising Water</h3><p class="line">"Rising Water: the water climbs each Tide. More Pure Aura"</p><p>Flooded tiles can't be built on and shots through the water slow down. Never on Manafold, which floods already.</p></div>
       </article>
-      <article class="wx wx-quick">
-        <div class="sky"><img class="px" src="{{img:icon_RogueWaves_Quickening}}" alt="" width="36" height="36"><span class="look">storm grey</span></div>
+      <article class="frame wx wx-quick">
+        <div class="sky"><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Quickening}}" alt="" width="32" height="32"></span><span class="look">storm grey</span></div>
         <div class="body"><h3>Quickening Current</h3><p class="line">"Quickening Current: the game runs faster from Tide 5. More Pure Aura"</p><p><span class="num">×1.25</span> speed from Tide 5, <span class="num">×1.5</span> from Tide 10. Never on Chrono.</p></div>
       </article>
-      <article class="wx wx-nest">
-        <div class="sky"><img class="px" src="{{img:icon_RogueWaves_Nesting}}" alt="" width="36" height="36"><span class="look">dusk</span></div>
+      <article class="frame wx wx-nest">
+        <div class="sky"><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Nesting}}" alt="" width="32" height="32"></span><span class="look">dusk</span></div>
         <div class="body"><h3>Nesting Ground</h3><p class="line">"Nesting Ground: a halberd nest grows near the foes. More Pure Aura"</p><p>A nest 3 to 7 tiles from an enemy core grows each tide and sends out a halberd every few tides. Never on Vultures.</p></div>
       </article>
     </div>
     <div class="notes">
-      <p><b>Sea weather</b> is rolled with the chart: about 1 map in 3 in the first stretch, 1 in 2 in the second, never on the first row or a row that closes a stretch. A weather map pays 1 extra Pure Aura each tide. <span class="st st-pc">Played on the PC</span></p>
-      <p><b>A look per weather:</b> each weather now brings its own light and fog, fading in over 4 seconds after the map's intro, on every player's screen. Calm maps keep their own light. <span class="st st-built">Built, being checked in the PC round now</span></p>
+      <p><b>Sea weather</b> is rolled with the chart: about 1 map in 3 in the first stretch, 1 in 2 in the second, never on the first row, a row that closes a stretch, a Cove or a Wreck. A weather map pays 1 extra Pure Aura each tide.</p>
+      <p><b>A look per weather:</b> each weather brings its own light and fog, fading in over 4 seconds after the map's intro, on every player's screen. Calm maps keep their own light.</p>
     </div>
   </div>
 </section>
@@ -400,15 +361,15 @@ code { font-family: var(--f-data); font-size: .85em; }
       <h2>Breaks, the shop and Pure Aura</h2>
     </div>
     <div class="breaks">
-      <div class="panel span-7">
-        <div class="title"><h3>VENDCINT</h3><span class="st st-pc">Played on the PC</span></div>
+      <div class="panel frame span-7">
+        <div class="title"><h3>VENDCINT</h3></div>
         <div class="vend">
           <div class="sprite" style="background-image:url({{img:vendcint}})" role="img" aria-label="VENDCINT, a vending machine, idle"></div>
-          <p>A sentient vending machine that falls from the sky by the vessels' landing spot at the start of every break and jumps back out when it ends. It sells Cardinals, Trinkets and the next rank of a Direction you hold, hands out the optional objective, and runs Fund Transfer. Each buy costs 3 Pure Aura more for every Cardinal the team holds and every Trinket copy the buyer holds. Its look is temporary art.</p>
+          <p>A sentient vending machine that falls from the sky by the vessels' landing spot at the start of every break and jumps back out when it ends. It sells Cardinals, Trinkets and the next rank of a Direction you hold, hands out the optional objective, and runs Fund Transfer. Each buy costs 3 Pure Aura more for every Cardinal the team holds and every Trinket copy the buyer holds.</p>
         </div>
       </div>
-      <div class="panel span-5">
-        <div class="title"><h3><span class="pearl" aria-hidden="true"></span> Pure Aura</h3><span class="st st-pc">Played on the PC</span></div>
+      <div class="panel frame span-5">
+        <div class="title"><h3><span class="pearl" aria-hidden="true"></span> Pure Aura</h3></div>
         <p>A new currency for the run, one counter per player in a pearl white none of the base auras use.</p>
         <div class="pays">
           <div><b class="num">3</b><span>each tide, 1 to 15</span></div>
@@ -417,22 +378,22 @@ code { font-family: var(--f-data); font-size: .85em; }
         </div>
         <p>Direction rank II costs <span class="num">20</span>, rank III <span class="num">30</span>; a base-game Cardinal <span class="num">15</span>.</p>
       </div>
-      <div class="panel span-6">
-        <div class="title"><h3>Optional objectives</h3><span class="st st-pc">Played on the PC</span></div>
+      <div class="panel frame span-6">
+        <div class="title"><h3>Optional objectives</h3></div>
         <p>A new bounty is offered at VENDCINT in every break from the one before Tide 3. It lasts the next tide, pays every player in full, and failing it costs nothing.</p>
         <ul class="obj">
-          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Meteor}}" alt="" width="30" height="30"><div>Mind the Meteor<small>Fully mine a node that lands somewhere on the map. Its white crystal is built, not yet seen.</small></div><span class="pay"><span class="pearl"></span> 3</span></li>
-          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Hull}}" alt="" width="30" height="30"><div>Keep the Basin Clean<small>No foe hurts the Basin this tide</small></div><span class="pay"><span class="pearl"></span> 2</span></li>
-          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Clock}}" alt="" width="30" height="30"><div>Beat the Clock<small>The last foe falls with 25% of the tide's clock left</small></div><span class="pay"><span class="pearl"></span> 3</span></li>
-          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Hands}}" alt="" width="30" height="30"><div>Mind the Vessels<small>No vessel drowns this tide</small></div><span class="pay"><span class="pearl"></span> 2</span></li>
-          <li><img class="px" src="{{img:icon_RogueWaves_Objective_Nest}}" alt="" width="30" height="30"><div>Raze the Nest<small>A halberd nest lands near the foes: destroy it</small></div><span class="pay"><span class="pearl"></span> 4</span></li>
+          <li><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Objective_Meteor}}" alt="" width="26" height="26"></span><div>Mind the Meteor<small>Fully mine the white crystal node that lands somewhere on the map</small></div><span class="pay"><span class="pearl"></span> 3</span></li>
+          <li><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Objective_Hull}}" alt="" width="26" height="26"></span><div>Keep the Basin Clean<small>No foe hurts the Basin this tide</small></div><span class="pay"><span class="pearl"></span> 2</span></li>
+          <li><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Objective_Clock}}" alt="" width="26" height="26"></span><div>Beat the Clock<small>The last foe falls with 25% of the tide's clock left</small></div><span class="pay"><span class="pearl"></span> 3</span></li>
+          <li><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Objective_Hands}}" alt="" width="26" height="26"></span><div>Mind the Vessels<small>No vessel drowns this tide</small></div><span class="pay"><span class="pearl"></span> 2</span></li>
+          <li><span class="ic tile"><img class="px" src="{{img:icon_RogueWaves_Objective_Nest}}" alt="" width="26" height="26"></span><div>Raze the Nest<small>A halberd nest lands near the foes: destroy it</small></div><span class="pay"><span class="pearl"></span> 4</span></li>
         </ul>
       </div>
-      <div class="panel span-6">
-        <div class="title"><h3><img class="px" src="{{img:icon_RogueWaves_Fund}}" alt="" width="24" height="24" style="width:24px;height:24px;vertical-align:-4px"> Fund Transfer</h3><span class="st st-pc">Played with a second player</span></div>
+      <div class="panel frame span-6">
+        <div class="title"><h3><img class="px inline-ic" src="{{img:icon_RogueWaves_Fund}}" alt="" width="24" height="24"> Fund Transfer</h3></div>
         <p>Friends can send each other base aura at VENDCINT in a break, up to 50 times the coming tide's number, in any mix of colours: 50 before Tide 1, 250 before Tide 5. Pure Aura never moves. This is the expansion's economy change, and it lets a team split into roles.</p>
-        <div class="title" style="margin-top:8px"><h3><img class="px" src="{{img:icon_RogueWaves_Retry}}" alt="" width="24" height="24" style="width:24px;height:24px;vertical-align:-4px"> Retries</h3><span class="st st-pc">Played on the PC</span></div>
-        <p>Three a campaign. A lost map is replayed from the last save; with none left, the run ends and keeps nothing. Only the host quitting mid-map spends one. A friend who drops can rejoin the running map.</p>
+        <div class="title" style="margin-top:8px"><h3><img class="px inline-ic" src="{{img:icon_RogueWaves_Retry}}" alt="" width="24" height="24"> Retries</h3></div>
+        <p>Three a campaign. A lost map is replayed from the last save; with none left, the run ends and keeps nothing. Only the host quitting mid-map spends one. A Cove gives one back. A friend who drops can rejoin the running map.</p>
       </div>
     </div>
   </div>
@@ -443,16 +404,15 @@ code { font-family: var(--f-data); font-size: .85em; }
     <div class="head">
       <span class="eyebrow">Four new vessels</span>
       <h2>Yossele, Spool, Argo and Uloe</h2>
-      <p class="lede">Each one has its own towers, upgrade trees, minions and Directions, and plays outside the mode too. Spool's and Uloe's art is temporary; Yossele's sheets are final drafts waiting for the PC check; Argo keeps his shipped look.</p>
+      <p class="lede">Each one has its own towers, upgrade trees, minions and Directions, and plays outside the mode too.</p>
     </div>
     <div class="vessels">
-      <article class="vessel v-yossele" id="yossele">
+      <article class="frame vessel v-yossele" id="yossele">
         <div class="portrait">
           <div class="sprite yos" style="background-image:url({{img:yossele_idle}})" role="img" aria-label="Yossele, a clay golem with a sprout, idling"></div>
-          <span class="note">Final idle sheet, drawn from Dimitri's reshade</span>
         </div>
         <div class="info">
-          <div class="name"><h3>Yossele</h3><em>The Patient Golem · Intermediate</em><span class="st st-pc">Self-test 177 of 177</span></div>
+          <div class="name"><h3>Yossele</h3><em>The Patient Golem · Intermediate</em></div>
           <p>Sturdy, single-target ranged that mends itself. A clay golem with a hole for a mouth, firing a green laser. Its buildings grow stronger every tide they survive, so the game is keeping them alive.</p>
           <div class="stats"><span>Health <b>70</b></span><span>Regen <b>1/s</b> while hurt</span><span>Speed <b>1.75</b></span><span>Damage <b>5.5</b></span><span>Range <b>4</b> tiles</span></div>
           <div class="mech">
@@ -469,17 +429,15 @@ code { font-family: var(--f-data); font-size: .85em; }
             </ul>
             <div class="tower"><img src="{{img:tower_yossele}}" alt="The Primordial Dandelion Tree model, fully upgraded" width="138"><small>Primordial Dandelion Tree</small></div>
           </div>
-          <p class="left">Wood Wide Web, the Shift Directions' panel names and Yossele's new Directions are built, not yet run. Its final sheets wait for the PC to show Yossele walking both ways.</p>
         </div>
       </article>
 
-      <article class="vessel v-spool" id="spool">
+      <article class="frame vessel v-spool" id="spool">
         <div class="portrait">
           <img class="px hero" src="{{img:spool}}" alt="Spool, a hooded sage green plush with a stitched face" width="160" height="160">
-          <span class="note">Temporary art, in the sage green picked on 5 November</span>
         </div>
         <div class="info">
-          <div class="name"><h3>Spool</h3><em>Crafty Crafted Crafter · Advanced</em><span class="st st-pc">Self-test 135 of 135</span></div>
+          <div class="name"><h3>Spool</h3><em>Crafty Crafted Crafter · Advanced</em></div>
           <p>Crafty melee that commands a stitched army. A hooded plush whose Crafted do the damage, built from Thread that foes drop and that has to be carried home.</p>
           <div class="stats"><span>Health <b>45</b></span><span>Speed <b>2.75</b></span><span>Damage <b>2.5</b></span><span>Range <b>1.5</b> tiles</span></div>
           <div class="mech">
@@ -496,17 +454,15 @@ code { font-family: var(--f-data); font-size: .85em; }
             </ul>
             <div class="tower"><img src="{{img:tower_spool}}" alt="The Repurposed Cookie Tin model" width="138"><small>Repurposed Cookie Tin</small></div>
           </div>
-          <p class="left">Not built yet: 22 upgrades (the Yarn Stash, Thread Head and Loom trees, three Cookie Tin and two Pin Cushion upgrades) and the UNTHREAD button.</p>
         </div>
       </article>
 
-      <article class="vessel v-argo" id="argo">
+      <article class="frame vessel v-argo" id="argo">
         <div class="portrait">
           <img class="px argo-shot" src="{{img:argo}}" alt="Argo, a brass-helmeted deep sea diver, standing on a map" width="170">
-          <span class="note">In game, from a PC round</span>
         </div>
         <div class="info">
-          <div class="name"><h3>Argo</h3><em>Deep Sea Diver · Intermediate</em><span class="st st-pc">Self-test 144 of 144</span></div>
+          <div class="name"><h3>Argo</h3><em>Deep Sea Diver · Intermediate</em></div>
           <p>Sturdy, slow melee that hits two at once. Argo has no walls of its own: it slows foes, pins them, reels them in, and blasts what's stuck. No ability button; the crew tunes towers instead.</p>
           <div class="stats"><span>Health <b>65</b></span><span>Speed <b>2.25</b></span><span>Damage <b>4</b></span><span>Range <b>1.75</b> tiles</span><span>Second hit <b>60%</b></span></div>
           <div class="mech">
@@ -523,17 +479,15 @@ code { font-family: var(--f-data); font-size: .85em; }
             </ul>
             <div class="tower"><img src="{{img:tower_argo}}" alt="The Harpoon Gun model, Leviathan Lance upgrade" width="138"><small>Harpoon Gun, Leviathan Lance</small></div>
           </div>
-          <p class="left">Played on a second player's machine. The 4 November review's changes are built, not yet run, and Argo waits on Dimitri's balance pass.</p>
         </div>
       </article>
 
-      <article class="vessel v-uloe" id="uloe">
+      <article class="frame vessel v-uloe" id="uloe">
         <div class="portrait">
           <img class="px hero" src="{{img:uloe}}" alt="Uloe, a light bulb on a lamp post with yellow arms of electricity" width="160" height="160">
-          <span class="note">Concept frame; in game Uloe uses temporary art</span>
         </div>
         <div class="info">
-          <div class="name"><h3>Uloe</h3><em>Light Personified · Advanced</em><span class="st st-pc">Self-test passes on the PC</span></div>
+          <div class="name"><h3>Uloe</h3><em>Light Personified · Advanced</em></div>
           <p>Frail, single-target ranged. A light bulb on a lamp post that brings Light to a cluster of towers: towers hit harder the more Light they get, and Photons mark the foes.</p>
           <div class="stats"><span>Health <b>30</b></span><span>Speed <b>2.25</b></span><span>Damage <b>2</b></span><span>Range <b>3</b> tiles</span></div>
           <div class="mech">
@@ -550,7 +504,6 @@ code { font-family: var(--f-data); font-size: .85em; }
             </ul>
             <div class="tower"><img src="{{img:tower_uloe}}" alt="The Magnifying Glass model" width="138"><small>Magnifying Glass</small></div>
           </div>
-          <p class="left">The 24 upgrades after Dimitri's first eight lines, and Light shared between teammates, are built, not yet run.</p>
         </div>
       </article>
     </div>
@@ -562,7 +515,7 @@ code { font-family: var(--f-data); font-size: .85em; }
     <div class="head">
       <span class="eyebrow">Upgrades for the run</span>
       <h2>55 Directions</h2>
-      <p class="lede">Every vessel gets its own, the base game's five included, plus a shared pool any vessel can draw. The first ones passed in game; most of the list was added on 5 November and is compiled, not yet run. <span class="st st-built">Mostly built, not yet run</span></p>
+      <p class="lede">Every vessel gets its own, the base game's five included, plus a shared pool any vessel can draw.</p>
     </div>
     <div class="rules">
       <span>3 offered before each map, 1 kept</span>
@@ -651,12 +604,8 @@ code { font-family: var(--f-data); font-size: .85em; }
       <h2>Trinkets and Cardinals</h2>
       <p class="lede">Found objects bought with Pure Aura. A Trinket belongs to the player who bought it and works on their things alone. A Cardinal works for the whole team and sits in the row at the top of the screen. New ones stack up to 6 copies.</p>
     </div>
-    <div class="flux">
-      <span class="st st-built">Built, not yet run</span>
-      <p><b>The list changed today.</b> The base game's Cardinals were split into 17 Trinkets and 12 Cardinals on 5 November (PR #130, then Dimitri's answers: Aura Gavel kept a Trinket, the four companions made Trinkets, Coins a share). It is compiled, not run on the PC. The 16 new ones below were built the same day.</p>
-    </div>
-    <div class="finds">
-      <div class="panel">
+        <div class="finds">
+      <div class="panel frame">
         <h3>New Trinkets <span class="count">12</span></h3>
         <ul class="items">
 <li><img class="px" src="{{img:icon_Cardinal_VampireDentures}}" alt="" width="36" height="36"><div><b>Vampire Dentures</b><span>Your vessel&#x27;s attacks heal it for a portion of the damage dealt.</span></div></li>
@@ -673,7 +622,7 @@ code { font-family: var(--f-data); font-size: .85em; }
 <li><img class="px" src="{{img:icon_Cardinal_GullFeather}}" alt="" width="36" height="36"><div><b>Gull Feather</b><span>Drowning an elite foe lends your vessel its strength</span></div></li>
         </ul>
       </div>
-      <div class="panel">
+      <div class="panel frame">
         <h3>New Cardinals <span class="count">4</span></h3>
         <ul class="items">
 <li><img class="px" src="{{img:icon_Cardinal_CorkLifebuoy}}" alt="" width="36" height="36"><div><b>Cork Lifebuoy</b><span>The Basin lives through one more killing blow each map</span></div></li>
@@ -697,13 +646,13 @@ code { font-family: var(--f-data); font-size: .85em; }
     <div class="head">
       <span class="eyebrow">New enemy modifiers</span>
       <h2>Foes that change every campaign</h2>
-      <p class="lede">No new skins: a modifier shows as a ring around the foe, in a colour no stock elite uses. Each campaign's seed picks two of these four. <span class="st st-pc">Self-test 12 of 12 on the PC</span></p>
+      <p class="lede">No new skins: a modifier shows as a ring around the foe, in a colour no stock elite uses. Each campaign's seed picks two of these four.</p>
     </div>
     <div class="foes">
-      <article class="foe">
+      <article class="frame foe">
         <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a cursed ring">
           <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#7354D9" stroke-width="5" opacity=".9"/>
-          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#1E3345" opacity=".45"/>
           <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
           <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
           <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
@@ -715,10 +664,10 @@ code { font-family: var(--f-data); font-size: .85em; }
         <p>"A curse on this foe weakens the attack of everything nearby"</p>
         <div class="numbers">Attack −25% within 3 tiles, vessels, towers and units</div>
       </article>
-      <article class="foe">
+      <article class="frame foe">
         <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a berserk ring">
           <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#FF529E" stroke-width="5" opacity=".9"/>
-          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#1E3345" opacity=".45"/>
           <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
           <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
           <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
@@ -730,10 +679,10 @@ code { font-family: var(--f-data); font-size: .85em; }
         <p>"Stronger and faster the more it is hurt"</p>
         <div class="numbers">At no health left: damage +100%, speed +50%</div>
       </article>
-      <article class="foe">
+      <article class="frame foe">
         <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a aging ring">
           <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#8CD1DB" stroke-width="5" opacity=".9"/>
-          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#1E3345" opacity=".45"/>
           <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
           <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
           <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
@@ -745,10 +694,10 @@ code { font-family: var(--f-data); font-size: .85em; }
         <p>"Slow, but its health and damage grow the longer it lives"</p>
         <div class="numbers">Speed −30%; health and damage up to +100% over 50 s</div>
       </article>
-      <article class="foe">
+      <article class="frame foe">
         <svg viewBox="0 0 200 110" role="img" aria-label="A grey crystal foe with a dazzling ring">
           <ellipse cx="100" cy="92" rx="54" ry="13" fill="none" stroke="#FFEB59" stroke-width="5" opacity=".9"/>
-          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#000" opacity=".12"/>
+          <ellipse cx="100" cy="92" rx="38" ry="8" fill="#1E3345" opacity=".45"/>
           <rect x="78" y="40" width="44" height="50" rx="14" fill="#8D939A"/>
           <rect x="78" y="40" width="22" height="50" rx="11" fill="#A3A9AF"/>
           <rect x="88" y="54" width="7" height="7" fill="#3E4349"/><rect x="105" y="54" width="7" height="7" fill="#3E4349"/>
@@ -767,21 +716,20 @@ code { font-family: var(--f-data); font-size: .85em; }
 <section id="hood">
   <div class="wrap">
     <div class="head">
-      <span class="eyebrow">Online and under the hood</span>
+      <span class="eyebrow">Online</span>
       <h2>Built for a crew of two to four</h2>
     </div>
     <div class="hood">
-      <div class="panel">
-        <div class="title"><h3>Playing together</h3><span class="st st-pc">Played with a second player</span></div>
+      <div class="panel frame">
+        <div class="title"><h3>Playing together</h3></div>
         <ul>
           <li><b>The host runs the run</b>; everyone needs the same pack version.</li>
           <li><b>Rejoin a running map.</b> The host keeps a dropped player's seat (vessel, towers, aura) and reopens the lobby. A game restart keeps the seat too.</li>
           <li><b>Load watchdog.</b> One player who can't load a map is sent back, instead of everyone going to the main menu.</li>
-          <li>Steam's own Join Game and a real network's drops wait for an online evening. <span class="st st-no">Not tried yet</span></li>
         </ul>
       </div>
-      <div class="panel">
-        <div class="title"><h3>Clearer screens</h3><span class="st st-pc">Played on the PC</span></div>
+      <div class="panel frame">
+        <div class="title"><h3>Clearer screens</h3></div>
         <ul>
           <li>A campaign card on the loading screen, an intro card for each map, a world card on the chart and an end screen title.</li>
           <li>Retry warnings: the host's exit dialog names the cost, and the end screen counts the retries left.</li>
@@ -789,61 +737,27 @@ code { font-family: var(--f-data); font-size: .85em; }
           <li>Weather icons over chart islands, and the pack's tips in the game's tip lists.</li>
         </ul>
       </div>
-      <div class="panel">
-        <div class="title"><h3>Fixes and lighting</h3></div>
+      <div class="panel frame">
+        <div class="title"><h3>Every screen alike</h3></div>
         <ul>
-          <li><b>F picks the vessel again.</b> After a death, F no longer selects a minion such as Boutbro. <span class="st st-built">Fix built, the next PC round checks it</span></li>
-          <li><b>No way back in</b> after a drop is fixed by the rejoin above. <span class="st st-pc">Played on the PC</span></li>
-          <li><b>Map lighting.</b> The kit can now change a map's fog, ambient light and sun at run time, which the weather looks use. <span class="st st-pc">23 of 23 on the PC</span></li>
+          <li><b>One sea, one light.</b> Each weather's fog, ambient light and sun fade in on every player's screen at once.</li>
+          <li><b>Every foe on every screen</b>, even for a friend whose first map is a join.</li>
+          <li><b>The campaign's title</b> crowns the win screen on every machine.</li>
+          <li><b>F picks your vessel</b>, even after it drowns.</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<section id="left">
-  <div class="wrap">
-    <div class="head">
-      <span class="eyebrow">Called a feature, not built yet</span>
-      <h2>What the scope promises that isn't in the pack</h2>
-      <p class="lede">These appear in the scope or the plan as features, and are not in the build today.</p>
-    </div>
-    <ul class="gaps">
-      <li><span class="st st-no">Not built</span><b>Depth, the ascension levels</b><span>Five levels unlocked by winning a campaign. On hold until the core loop settles; the end screen says nothing unlocks.</span></li>
-      <li><span class="st st-no">Not built</span><b>New enemy types</b><span>The scope says they come later. Today the pack adds only the four modifiers.</span></li>
-      <li><span class="st st-no">Not built</span><b>Spool's 22 upgrades and UNTHREAD</b><span>The Yarn Stash, Thread Head and Loom trees, the Cookie Tin's Tacking Stitch, Cross Stitch and Patchwork Army, the Pin Cushion's Iron Thimble and Voodoo Doll, and the UNTHREAD button. Next after the PC round.</span></li>
-      <li><span class="st st-no">Not built</span><b>Final sprites for Spool and Uloe</b><span>Both play with temporary art. Spool's sage green is compiled, not seen in game.</span></li>
-      <li><span class="st st-no">Not written</span><b>Lore for Yossele, Spool and Uloe</b><span>Comes once each character is final. Argo has his.</span></li>
-      <li><span class="st st-no">Not built</span><b>Journal pages for the modifiers</b><span>The stock journal lists foe types, and a modifier isn't one; waits on a layout decision.</span></li>
-      <li><span class="st st-no">Idea only</span><b>Fog Bank weather and a mood ramp</b><span>Left as ideas when the weather looks were picked.</span></li>
-      <li><span class="st st-built">Built, not yet run</span><b>Most of 5 November's work</b><span>The new Directions, Trinkets and Cardinals, Uloe's 24 upgrades, Argo's review changes, the balance sweep and the weather looks: compiled here, waiting on PC round 4, which is running now.</span></li>
-    </ul>
-  </div>
-</section>
 
-<section id="release">
-  <div class="wrap">
-    <div class="head">
-      <span class="eyebrow">Shipping</span>
-      <h2>How it reaches players</h2>
-    </div>
-    <div class="release">
-      <div class="panel">
-        <div class="title"><h3>First release: Yossele alone</h3></div>
-        <p>The RogueWavesMod pack holding only Yossele, version 0.1.0, as a zip you share yourself (the game has no Workshop). Yossele plays in a normal game; Fertilize waits for the mode, since only a Direction unlocks it. Ships after Dimitri's play test, his look at the sprites, his balance pass and his word.</p>
-      </div>
-      <div class="panel">
-        <div class="title"><h3>After it: everything else</h3></div>
-        <p>The Rogue Waves mode with its sea chart and weather, Argo, Spool, Uloe, the modifiers, Directions, Cardinals and Trinkets, each added to the same pack so players update one mod.</p>
-      </div>
-    </div>
-  </div>
-</section>
 </main>
 
 <footer>
   <div class="wrap">
-    <p>Sources: <code>docs/scope/</code> 01, 03-14, <code>docs/PLAN.md</code> Part C, <code>docs/reports/WEATHER_LOOK_2026-11-05.md</code>, <code>STOCK_TRINKETS_2026-11-05.md</code>, <code>BALANCE_SWEEP_2026-11-05.md</code>, <code>BUILD_UNBUILT_2026-11-05.md</code>. Pictures are the pack's own temporary and concept art, the Yossele sheet, model previews and one screenshot of Argo in game; nothing from the base game's sprites.</p>
-    <p>Page source: <code>docs/spotlight/</code>. The vessel-by-vessel journal lives in the <a href="https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw" target="_blank" rel="noopener">Vessel Spotlight</a>; the scope itself in the <a href="https://claude.ai/artifact/5KAGb5wdqiNV1bEoxNMgEo" target="_blank" rel="noopener">Scope Editor</a>.</p>
+    <div>
+      <p>Rogue Waves is a fan expansion for <i>TDS - Tower Defense Strategy</i> by Blockage. Every player in a party needs the same pack version; the host's save carries the run.</p>
+      <p>Pictures are the pack's own art: its icons, VENDCINT, the four vessels, one tower model each and the sea chart.</p>
+    </div>
   </div>
 </footer>
