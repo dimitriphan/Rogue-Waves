@@ -24,6 +24,7 @@ public class ArgoTowerBrain : MonoBehaviour
     public Vector3 AimCenter;
 
     float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f, syncedRange = -1f;
+    float buildLookAt = -1f;     // when the build look goes out (pitfall #158)
     float nextStore = -1f;   // Double Barrel's idle clock: -1 until the first empty look after a volley (or ever)
     public float LastQuake = -999f;
     int shotSerial;
@@ -84,6 +85,13 @@ public class ArgoTowerBrain : MonoBehaviour
                     return;
                 Begin();
             }
+            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
+            // hooked this thing, so the build look goes out half a second later.
+            if (buildLookAt >= 0f && Time.time >= buildLookAt)
+            {
+                buildLookAt = -1f;
+                ModKitUtil.Vis(Master, "Argo_Build", ModKitUtil.Pos(Master), 0);
+            }
             // Helper_Entitytools.Updateinteract rebuilds Interact on every upgrade or effect: keep the hit listener on it.
             if ((IsScatter || IsHarpoon) && Time.time >= nextHookCheck)
             {
@@ -132,7 +140,7 @@ public class ArgoTowerBrain : MonoBehaviour
         Master.Command += OnCommand;
         Master.Upgrade += Upgraded;
         lastAttack = Time.fixedTime - 0.5f;
-        ModKitUtil.Vis(Master, "Argo_Build", ModKitUtil.Pos(Master), 0);
+        buildLookAt = Time.time + ArgoData.FirstLookDelay;
     }
 
     void AddFlood()

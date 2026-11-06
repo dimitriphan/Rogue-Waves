@@ -75,7 +75,10 @@ public class UloeBankBrain : UloeBuilding
         float damage = Param("Supernova_Base", 20f), radius = Param("Novaradius_Base", 2f);
         foreach (UloePhotonBrain p in new List<UloePhotonBrain>(UloeServer.Photons))
             if (p != null && p.Master != null && p.Home == this && ModKitUtil.Alive(p.Master))
+            {
                 p.Burst(damage, radius, UloeData.NovaMark);
+                p.ComeHome();
+            }
         for (int i = 0; i < 16 && Alive < Slots; i++)
             Spawn();
         waiting = false;
@@ -135,16 +138,25 @@ public class UloeBankBrain : UloeBuilding
 public class UloePhotonBrain : MonoBehaviour
 {
     public Entity_Master Master;
+    // Each Photon stops on its own errors; they share one log count, as they are many and respawn (a fault common to all
+    // logs three traces, not three each).
+    static readonly UloeFaults.Log faultLog = new UloeFaults.Log();
+    readonly UloeFaults faults = new UloeFaults(faultLog);
+    bool begun;                     // Begin ran to its end
     public UloeBankBrain Home;
     public UloeFloodBrain Following;
     public Entity_Master Target;
     public bool Started;
-    public int Walks, Visits, Marked, Fights, Followed, Chained;
+    public int Walks, Visits, Marked, Fights, Followed, Chained, Homecomings;
     public float Travelled;
+    public bool Homing { get { return homingUntil > 0f; } }
+    float homingUntil;              // Supernova's flight home ends by then at the latest
+    Link_Modifier homeSpeed;
     readonly UloeLight light = new UloeLight();
     Entity_Master.Interacts dealt;
     Link_Modifier staticMod;
     float nextThink, nextFeed, nextWander;
+    float popLookAt = -1f;       // when the pop look goes out (pitfall #158)
     Vector3 lastPos, spawnPos;
 
     public long Owner { get { return ModKitUtil.Owner(Master); } }
@@ -191,6 +203,15 @@ public class UloePhotonBrain : MonoBehaviour
                 if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || !Master.Commandlistserver.ContainsKey("Move"))
                     return;
                 Begin();
+                begun = true;
+            }
+            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
+            // hooked this Photon, so the pop goes out half a second later; it stands still until then (Think), so the pop,
+            // played where the Photon stands, is still where it was born.
+            if (popLookAt >= 0f && Time.time >= popLookAt)
+            {
+                popLookAt = -1f;
+                ModKitUtil.Vis(Master, "Uloe_Pop", spawnPos, 0f);
             }
             if (Time.time >= nextFeed)
             {
@@ -208,8 +229,9 @@ public class UloePhotonBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            UloeLog.Warn("photon brain: " + e.Message);
-            enabled = false;
+            // A Begin that threw left this brain half set up (Started is set on its first line), so that still stops it.
+            if (faults.Fail("photon brain", e) || !begun)
+                enabled = false;
         }
     }
 
@@ -219,8 +241,8 @@ public class UloePhotonBrain : MonoBehaviour
         spawnPos = lastPos = Pos;
         dealt = OnDealt;
         ModKitUtil.Listen(Master, dealt);
-        ModKitUtil.Vis(Master, "Uloe_Pop", Pos, 0f);
-        nextWander = Time.time + 0.3f;
+        popLookAt = Time.time + UloeData.FirstLookDelay;
+        nextWander = Time.time + UloeData.FirstLookDelay + 0.1f;
     }
 
     // Every hit it lands marks the foe (Merchant's Mob_Merchant.Interact does the same): very little damage, but it counts.
@@ -290,6 +312,10 @@ public class UloePhotonBrain : MonoBehaviour
         Vector3 pos = Pos;
         Travelled += ModKitUtil.Flat(pos, lastPos);
         lastPos = pos;
+        if (Homing && FlyHome(pos))
+            return;
+        if (popLookAt >= 0f)
+            return;                 // it stands where it was born until its pop has gone out (pitfall #158)
         CheckPath(pos);
         if (Fight(pos))
             return;
@@ -298,6 +324,34 @@ public class UloePhotonBrain : MonoBehaviour
             return;
         nextWander = Time.time + UnityEngine.Random.Range(UloeData.WanderMin, UloeData.WanderMax);
         Wander(pos);
+    }
+
+    // Supernova: after its burst it flies straight back to its Power Bank, quicker, past any foe or line of light.
+    public void ComeHome()
+    {
+        if (Home == null || Home.Master == null)
+            return;
+        Target = null;
+        Following = null;
+        homingUntil = Time.time + UloeData.HomeTime;
+        homeSpeed = ModKitUtil.Keep(Master, homeSpeed, "Speed", Helper_Entitytools.Modtypes.Multi, UloeData.HomeSpeed);
+        Walk(Home.Master, Vector3.zero, 1f);
+        Homecomings++;
+    }
+
+    // True while it is still on its way home; at the Bank, or out of time, it is a Photon like any other again.
+    bool FlyHome(Vector3 pos)
+    {
+        if (Home != null && Home.Master != null && Time.time < homingUntil && ModKitUtil.Flat(pos, Home.Pos) > UloeData.HomeReach)
+        {
+            if (ModKitUtil.State(Master) != "Move")
+                Walk(Home.Master, Vector3.zero, 1f);
+            return true;
+        }
+        homingUntil = 0f;
+        homeSpeed = ModKitUtil.Keep(Master, homeSpeed, "Speed", Helper_Entitytools.Modtypes.Multi, 0f);
+        nextWander = Time.time + UloeData.WanderMin;
+        return false;
     }
 
     // A line of light close by takes it along; a line that went away lets it go back to its Bank.

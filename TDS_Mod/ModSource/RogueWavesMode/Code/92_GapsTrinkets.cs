@@ -205,6 +205,13 @@ public static partial class RWTest
         RWTrinkets.Tide(2);
         Check("Pearl Oyster: +1 Pure Aura a Tide until the next buy, then none on this map", why == "" && p1 == p0 + 1 && player.Pure == p2, "'" + why + "', Pure " + p0 + " -> " + p1 + "; after a buy " + p2 + " -> " + player.Pure);
 
+        // Pearl Oyster given by a Wreck after a buy on this map: it pays from the moment it is held.
+        player.Trinkets.RemoveAll(t => t.StartsWith("Cardinal_Oyster"));
+        string gift = RWCardinals.Give(player, "Cardinal_Oyster");
+        int g0 = player.Pure;
+        RWTrinkets.Tide(3);
+        Check("Pearl Oyster: one given after a buy pays from the next Tide", gift == "" && player.Pure == g0 + 1, "'" + gift + "', Pure " + g0 + " -> " + player.Pure);
+
         // Punch Card, once the Oyster is let go: a Trinket at 12 (and C1's ramp) costs 20% less.
         string clash = BuyTrinket(player, "Punch", 1);
         player.Trinkets.RemoveAll(t => t.StartsWith("Cardinal_Oyster"));

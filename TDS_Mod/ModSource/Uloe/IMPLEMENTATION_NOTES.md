@@ -1,5 +1,17 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-06, the pitfall fixes (compiled here, not yet run in game; `docs/reports/PITFALL_FIXES_2026-11-06.md`):** a
+brain's error no longer switches it off for the map: Uloe's, a building's and a Photon's brain skip the bad tick
+(`UloeFaults`, Argo's guard; pitfall #80), and stop only after 600 frames of errors in a row, or at once when `Begin`
+itself threw (a half set-up brain); each Photon stops on its own errors, and the Photons share one log count, so a
+fault common to them logs three traces in all. The build look and a Photon's pop go out 0.5 s after `Begin`, once a
+client has hooked the thing (`UloeData.FirstLookDelay`, pitfall #158); a new Photon stands still until its pop has gone
+out, so the pop plays where it was born. Supernova's Photons burst, then fly straight back to their Bank at double
+speed (`UloePhotonBrain.ComeHome`, 6 s at most, home within 1.5 tiles; self-tests: sent home, at double speed, nearer
+the Bank after 1.5 s). Plugged into a Surge Protector Bank, Uloe gives at most Light 8 in all, Brighter Bulb included
+(`UloeHeroBrain.TotalLight`; the two Light 8 checks now expect 8, and a check reads the rule at Brighter Bulb's top
+rank). Both at Dimitri's word.
+
 **2026-11-05, the balance sweep's Flood Light (compiled, not yet run in game):** it strikes its node 0.3 times a second, not 0.4, with Spool's Loom, as scope `10` ties the two (`docs/reports/BALANCE_SWEEP_2026-11-05.md` section 4; `02_Data.cs`, the fallback in `07_Building.cs` and the two upgrade checks' fallbacks in `98_Upgrades.cs`). Light still adds 10% a point; Uloe has no simulator, so its play test is the check.
 
 **2026-11-05, the decided fixes, kit 1.14 (compiled, not yet run in game):** Searchlight's slow goes through
