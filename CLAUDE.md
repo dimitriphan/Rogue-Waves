@@ -39,9 +39,9 @@ round, a scope fold-in) is worth proposing as a project skill; the drafted ones 
   template, dated reports, the PLAN Log, version histories and his scope notes keep them on purpose.
 - Never commit the game's binaries, base-vessel game sprites or anything from `/mnt/project-files`; overwrite a file
   there only at Dimitri's word. Nothing touches his PC without his OK in the thread.
-- Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Claude merges them (his
-  word, 2026-11-05; PLAN Part A "Merging"), merge commits, after merging the base. Each PR edits Part C "Now": keep the
-  base's entries first and add yours last, three lines at most, the detail in the Log.
+- Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Codex reviews each one
+  (`AGENTS.md`); Claude merges once that review leaves no open P0/P1 and cloud-check is clean (PLAN Part A "Merging"),
+  merge commits. Each PR edits Part C "Now": base's entries first, yours last, three lines at most, detail in the Log.
 
 ## Map
 
@@ -52,7 +52,7 @@ round, a scope fold-in) is worth proposing as a project skill; the drafted ones 
 | `TDS_Mod/Tools/` | `cloud-check` (compile, previews), `pc` (PC rounds), `aseprite`, `artbench` (Art Bench: edit sprites and models, bring edits in), `batch` (text, scope, design, docs and art checks on API credit) | its `README.md` |
 | `docs/scope/` | Dimitri's scope, one `.txt` per category; `! NEEDS ... !` marks what only he can supply, `~value~` a default Claude picked | `00_Read_Me.txt`, then the file the task touches |
 | `docs/PLAN.md` | Part A coordinator rules, B phases, C state, D prompt templates | Part C "Now" |
-| `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md`, `docs/themes/` | Packaging and versions; look and naming; temporary art; page and deck themes | before packaging; before drawing or naming; before styling a page |
+| `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md`, `docs/art/`, `docs/themes/` | Packaging and versions; look and naming; temporary art; art made in ChatGPT; page and deck themes | before packaging; before drawing or naming; before bringing in ChatGPT art; before styling a page |
 | `docs/EXPANSION_SCOPE.md`, `docs/RESEARCH_GAPS.md` | Non-vessel systems and what is known about them; engine facts left to research | before non-vessel work |
 | `docs/mode/`, `docs/concepts/`, `docs/reports/`, `docs/spotlight/`, `docs/artifacts/` | Mode design pages; concept pages and art; dated, frozen reports; the feature spotlight page; every artifact, its source and how input comes back | the page the task names; reports' and artifacts' `README.md` |
 | `concept-tools/`, `StatusWidget/` | Python for concept pages, sprites, low-poly models, the sea chart; his phone widget (not the pack), which every thread reports its state to | each file's docstring; `StatusWidget/README.md` "When a thread reports" |
