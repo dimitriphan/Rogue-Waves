@@ -90,7 +90,7 @@ Miner's Base:   Flippers2 / Old Salts2 -> Overhaul3 / Calibrate3 -> Third Mate4 
 | Drill Rig | Fault Line4 | **changed** (scope): was +1.5 tiles | Foes reeled through its Tremor take a burst of damage | Fault_Damage 12 | Yellow 300 (review 2026-11-04; was Blue 300) | (ends) |
 | Drill Rig | Seismic2 | **changed**: reach in the Tremor stat | The Tremor slows harder and reaches farther | Slow_Add 0.1, Tremor_Add 0.5 | Yellow 35 (review 2026-11-04; was Blue 25, Yellow 10) | Bedrock3 |
 | Drill Rig | Gusher4 | **changed** (review 2026-11-04): grows with the Fathom, was 12 strikes | Once it is deep enough, a gush of ore bursts up at each Tide, bigger the deeper it is | Gusher_Base 4 (strikes a Fathom, from Fathom 3) | Yellow 275 | Mantle Tap5 |
-| Drill Rig | Mantle Tap5 | **changed** (review 2026-11-04): was ore x2 (it mined nothing more) and a quake a Tide | Mines much faster, and every few seconds a quake pins every foe in its Tremor | Attackspeed_Pmulti 0.5 (strikes x1.5), Mantle_Base 2, Mantle_Every 20 | Yellow 3000 | |
+| Drill Rig | Mantle Tap5 | **changed** (review 2026-11-04): was ore x2 (it mined nothing more) and a quake a Tide | Mines much faster, and every 20 seconds a quake pins every foe in its Tremor | Attackspeed_Pmulti 0.5 (strikes x1.5), Mantle_Base 2, Mantle_Every 20 | Yellow 3000 | |
 | Base | Old Salts2 | **changed**: Drill Rig's Tremor, never Deep Water | Nauts tune each kind of Argo tower its own way | Salts_Base 1 | Blue 30 | Overhaul3 |
 
 ## Choices this design makes

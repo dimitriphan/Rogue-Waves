@@ -245,7 +245,7 @@
 					- Cost: Yellow 300 /~ Review 2026-11-04: was Blue 300 \
 
 				% 4:{Mantle Tap} Mines much faster, and its quakes pin every foe in its Tremor
-					- In-game line: Mines much faster, and every few seconds a quake pins every foe in its Tremor /~ Review 2026-11-04: a new line, built 2026-11-05 \
+					- In-game line: Mines much faster, and every 20 seconds a quake pins every foe in its Tremor /~ Review 2026-11-04: a new line, built 2026-11-05; "every 20 seconds" his word 2026-11-06 (was "every few seconds") \
 					- Numbers: strikes per second x1.5; every 20 seconds a quake pins foes for 2 seconds /~ Review 2026-11-04: was ore per strike x2, which mines nothing more (a strike is already a full share from Fathom 3), and one quake a Tide \
 					- Cost: Yellow 3000
 

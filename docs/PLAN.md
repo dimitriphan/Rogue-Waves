@@ -304,6 +304,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: round 4 and batch bugs fixed** (Dimitri: "Fix bugs"): a friend's end title, the Vfx/Mobbase lines on a join
   (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
   (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
+- **2026-11-06: Mantle Tap's line says every 20 seconds** (Dimitri: "Yes"): the tooltip, scope `09`:248 and Argo's
+  `DESIGN.md` now match the 20 s quake. Compiled here (Argo, `ARGO_SELFTEST`), not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1256,6 +1258,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   stall. Argo: Chum Bucket's test foe. Left for his word: Mantle Tap's scope `09`:248 against `09`:249; Yossele's two lines
   are his. Compiled here (every part and test build at its baseline), `/code-review high` 7 of 10 fixed; nothing ran on
   the PC. No kit change; pitfall #173. Next free: kit 1.15, pitfall #174.
+- **2026-11-06: Mantle Tap's in-game line** (same thread; Dimitri 04:34Z "Yes" to "every 20 seconds"): scope `09`:248
+  said "every few seconds" while `09`:249 gives a quake every 20 s; the line, `Argo/Code/02_Data.cs`:382 and
+  `Argo/DESIGN.md` now say "every 20 seconds". Compiled here; nothing ran on the PC. His project-files scope copy and the
+  Scope Editor are behind in `09` until he says "sync".
 
 ### Decisions
 

@@ -379,7 +379,7 @@ public static class ArgoData
                     .Fx("4 mining strikes per Fathom at once, each Tide", "From Fathom 3 down"),
                 U(Drill, "Faultline", 4, "Fault Line", "Foes reeled through its Tremor take a burst of damage", "Fault_Damage=12", "Yellowaura=300", "")
                     .Fx("12 damage to a foe reeled into or across the Tremor"),
-                U(Drill, "Mantle", 5, "Mantle Tap", "Mines much faster, and every few seconds a quake pins every foe in its Tremor", "Attackspeed_Pmulti=0.5;Mantle_Base=2;Mantle_Every=20", "Yellowaura=3000", "")
+                U(Drill, "Mantle", 5, "Mantle Tap", "Mines much faster, and every 20 seconds a quake pins every foe in its Tremor", "Attackspeed_Pmulti=0.5;Mantle_Base=2;Mantle_Every=20", "Yellowaura=3000", "")
                     .Fx("Strikes per second x1.5", "Every 20s a quake pins foes for 2s"),
             }
         },
