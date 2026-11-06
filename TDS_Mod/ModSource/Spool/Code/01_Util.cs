@@ -39,6 +39,9 @@ public sealed class SpoolFaults
 
 public static class SpoolUtil
 {
+    // The Tide now: the mode's count while a campaign runs, else the map's own wave.
+    public static int Wave() { return ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0); }
+
     public static T Clone<T>(T source, string name) where T : Bl_ScriptableObject
     {
         T copy = UnityEngine.Object.Instantiate(source);

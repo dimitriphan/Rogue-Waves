@@ -679,6 +679,8 @@ public static class SpoolServer
         if (share <= 0)
             return;
         int given = share - AddStash(bin.Owner, share);
+        if (given <= 0)
+            return;   // a full Stash: the tuft fades where it lay, on its own clock
         Remnants += given;
         ModKitUtil.Vis(bin.Master, "Spool_Remnant", d.Pos, d.Id * 16 + given);
     }

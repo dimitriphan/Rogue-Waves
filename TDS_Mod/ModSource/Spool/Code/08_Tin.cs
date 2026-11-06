@@ -143,6 +143,18 @@ public class SpoolTinBrain : SpoolBuilding
         return u;
     }
 
+    // Woolen Lining and Cross Stitch reach the Crafted already out too (new ones take them in Begin); health keeps its
+    // share of the new maximum.
+    protected override void Upgraded(SpoolData.Upg def)
+    {
+        if (def.Key != "Woolen" && def.Key != "Cross")
+            return;
+        float health = Param("Craftedhealth_Multi", 0f), damage = Param("Crafteddamage_Multi", 0f);
+        foreach (SpoolUnitBrain u in SpoolServer.Units)
+            if (u != null && u.Master != null && u.Home == this && u.Started && u.Def != null && u.Def.Sellable && ModKitUtil.Alive(u.Master))
+                u.Refit(health + (u.Def.Id == SpoolData.Tacked ? Param("Tackedhealth_Multi", 0f) : 0f), damage);
+    }
+
     // Quilting Bee (the Yarn Stash's BEE): stitches up to the Tin's Units at once, for no Thread (sold, they give nothing
     // back). Returns how many it made.
     public int Sew()
@@ -163,7 +175,7 @@ public class SpoolTinBrain : SpoolBuilding
         int rank = Player.Pattern;
         if (rank <= 0 || u == null || u.Def == null)
             return;
-        int wave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
+        int wave = SpoolUtil.Wave();
         if (wave != bookWave)
         {
             bookWave = wave;
@@ -321,7 +333,7 @@ public class SpoolUnitBrain : MonoBehaviour
     float nextThink, nextFront;
     bool armed, begun;
     static readonly SpoolFaults.Log faultLog = new SpoolFaults.Log();
-    readonly SpoolFaults faults = new SpoolFaults(faultLog);
+    readonly SpoolFaults faults = new SpoolFaults(faultLog), dyeFaults = new SpoolFaults(faultLog);
     Link_Modifier meritDamage, meritHealth, socksDamage;
     static readonly Entity_Master.Oninteracts guard = OnGuarded;
 
@@ -400,6 +412,17 @@ public class SpoolUnitBrain : MonoBehaviour
             LeapIn();
     }
 
+    // Its Tin's Woolen Lining and Cross Stitch, bought after it came out: only the difference is added.
+    public void Refit(float health, float damage)
+    {
+        if (health != HealthMulti)
+            Helper_Entitytools.Addmod(Master, "Health", health - HealthMulti, Helper_Entitytools.Modtypes.Multi, 0f);
+        if (damage != DamageMulti)
+            Helper_Entitytools.Addmod(Master, "Damage", damage - DamageMulti, Helper_Entitytools.Modtypes.Multi, 0f);
+        HealthMulti = health;
+        DamageMulti = damage;
+    }
+
     // A raised maximum starts full.
     void Fill()
     {
@@ -438,10 +461,15 @@ public class SpoolUnitBrain : MonoBehaviour
         if (Crafted && !Arrived)
         {
             // A Tacked Stitched stands on a blocker block, so a crowd of them can't all reach one tile: one that has
-            // stopped close by (TackedNear) holds where it stopped.
+            // stopped close by (TackedNear), or anywhere once it has been sent TackedTries times, holds where it stopped.
             float off = ModKitUtil.Flat(pos, Spot);
-            if (off <= 0.9f || (Def.Blocker && off <= SpoolData.TackedNear && ModKitUtil.State(Master) != "Move" && Orders > 1))
+            bool stuck = Def.Blocker && ModKitUtil.State(Master) != "Move" && Orders > 1 && (off <= SpoolData.TackedNear || Orders >= SpoolData.TackedTries);
+            if (off <= 0.9f || stuck)
+            {
                 Arrived = true;
+                if (stuck)
+                    Spot = pos;
+            }
             else
             {
                 if (ModKitUtil.State(Master) != "Move")
@@ -542,6 +570,7 @@ public class SpoolUnitBrain : MonoBehaviour
     public Entity_Master Prey;
     bool hunting, struckNoted;
     float nextSnare, nextListen, struckBefore, struckHit;
+    int struckTrades;
     Entity_Master struck;
     readonly float[] purseBefore = new float[3], purseAfter = new float[3];
     Entity_Master.Interacts dealt;
@@ -649,6 +678,7 @@ public class SpoolUnitBrain : MonoBehaviour
             float damage, extra;
             struck = hit.To;
             struckNoted = true;
+            struckTrades = SpoolLoomBrain.TradesFor(loom.Owner);
             struckBefore = ModKitUtil.Stat(hit.To, "Healthresource", -1f);
             // A node takes min(Damage, 1) + Damageresource a hit (kit docs/16 section 4).
             struckHit = Mathf.Clamp01(hit.Data != null && hit.Data.TryGetValue("Damage", out damage) ? damage : 1f)
@@ -661,8 +691,10 @@ public class SpoolUnitBrain : MonoBehaviour
     }
 
     // A Seam's hit noted this frame, read after every Update (the stock AI's hit and the node's payout among them): when
-    // it paid, the owner's purse gain is traded into the Loom's colour. Another payout landing on the same frame (a
-    // strike of the Loom's, a beast falling) is in that gain too, so it is traded as well.
+    // it paid, the owner's purse gain is traded into the Loom's colour. Another payout landing on the same frame (a beast
+    // falling) is in that gain too, so it is traded as well. When another trade for the owner landed in between (the
+    // Loom's own strike, another Seam's trade that already took this gain), the purse no longer tells this hit's share,
+    // so it is left as the node paid it: a missed trade, never a second one.
     void LateUpdate()
     {
         if (Master == null || !Started || Def == null || Def.Id != SpoolData.Seam || !ModKitUtil.IsServer)
@@ -676,7 +708,7 @@ public class SpoolUnitBrain : MonoBehaviour
                 Entity_Master ore = struck;
                 struck = null;
                 // A node that pays once is gone after it: Stat and Alive read it as gone, which Paid counts as paid.
-                if (loom != null && loom.Dyed && SpoolLoomBrain.Paid(struckBefore, ModKitUtil.Stat(ore, "Healthresource", -1f), struckHit, ModKitUtil.Alive(ore))
+                if (loom != null && loom.Dyed && SpoolLoomBrain.TradesFor(loom.Owner) == struckTrades && SpoolLoomBrain.Paid(struckBefore, ModKitUtil.Stat(ore, "Healthresource", -1f), struckHit, ModKitUtil.Alive(ore))
                     && ModKitUtil.Purse(loom.Owner, purseAfter) && loom.Trade(purseBefore, purseAfter))
                     loom.SeamTraded++;
             }
@@ -691,8 +723,8 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         catch (Exception e)
         {
-            // A bad trade is skipped; the Seam's own brain carries on.
-            faults.Fail(Def.Id + " dye", e);
+            // A bad trade is skipped; the Seam's own brain carries on (its own streak, so it can't stop the brain).
+            dyeFaults.Fail(Def.Id + " dye", e);
         }
     }
 
@@ -720,7 +752,7 @@ public class SpoolUnitBrain : MonoBehaviour
         Spot = tile != null ? tile.Position : from + dir.normalized * far;
         Helper_Entitytools.Addmod(Master, "Speed", 2f, Helper_Entitytools.Modtypes.Multi, 1.2f);
         Walk(null, Spot, 0f);
-        ModKitUtil.Vis(Radio(), "Spool_Leap", Spot, 0f);
+        ModKitUtil.Vis(Radio(), "Spool_Leap", from, 0f);
     }
 
     // Burst Seams: a Mangled that reaches a foe bursts on every foe within the radius.

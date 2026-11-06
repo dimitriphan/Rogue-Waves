@@ -173,7 +173,7 @@ public class SpoolStashBrain : SpoolBuilding
 
     public int Cap { get { return Mathf.RoundToInt(Stat("Threadcap", SpoolData.StashCap)); } }
     public int BeeWaiting { get { return beeWaiting.Count; } }
-    public bool BeeUsed { get { return beeWave == Wave(); } }
+    public bool BeeUsed { get { return beeWave == SpoolUtil.Wave(); } }
 
     protected override void Started2()
     {
@@ -223,9 +223,6 @@ public class SpoolStashBrain : SpoolBuilding
 
     // ---------------------------------------------------------------- Quilting Bee
 
-    // The Tide now, counted as the Tin's Pattern Book counts it.
-    static int Wave() { return ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0); }
-
     void ShowBee()
     {
         if (beeCommand != null || SpoolContent.Bee == null)
@@ -253,7 +250,7 @@ public class SpoolStashBrain : SpoolBuilding
             Tell(SpoolData.WarnBeeUsed);
             return;
         }
-        beeWave = Wave();
+        beeWave = SpoolUtil.Wave();
         Bee();
         SetBee(true);
     }
@@ -456,7 +453,17 @@ public class SpoolLoomBrain : SpoolBuilding
         LastIn = total;
         LastOut = Param("Dyed_Base", 0.7f) * total;
         ModKitUtil.Give(Colour, LastOut / g, owner);
+        tradesBy[owner] = TradesFor(owner) + 1;
         return true;
+    }
+
+    // Trades made for each owner so far: a Seam reads its purse window again only when none landed inside it.
+    static readonly Dictionary<long, int> tradesBy = new Dictionary<long, int>();
+
+    public static int TradesFor(long owner)
+    {
+        int n;
+        return tradesBy.TryGetValue(owner, out n) ? n : 0;
     }
 
     // COLOUR, made on the buy (and in Started2 for a Loom that comes with it); its Goalstring carries the colour to the

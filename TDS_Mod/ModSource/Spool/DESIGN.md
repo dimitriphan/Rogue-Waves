@@ -257,5 +257,7 @@ takes it. The number lives in `Code/02_Data.cs` unless the row says otherwise.
 | Several Heads' buffs, High Thread Count | the best Head in reach counts; +1 a foe however many Heads | no stacking, so a cluster of Heads can't multiply |
 | Seam Squad or Snare Line after Direct Line | Seam Squad keeps 3 Seams; Snare Line gives a Seam-less Loom one | each upgrade does what it says on any path |
 | Voodoo Doll's stun | every foe in reach, bosses included | the sheet names no exception |
-| Dyed in the Wool on a Seam's payout | read around the Seam's own hit (its purse before, late in the same frame after) | the Seam mines with the game's own AI; another payout on that same frame would be traded too |
+| Tacking Stitch crowd | a Tacked that stopped within 1.6 tiles of its spot, or anywhere after four sends, holds where it stopped | Tacked stand on blocker blocks, so a crowd can't share one tile |
+| Woolen Lining, Cross Stitch on Crafted already out | they get it too, health keeping its share | the sheet says Crafted, not new Crafted |
+| Dyed in the Wool on a Seam's payout | read around the Seam's own hit (its purse before, late in the same frame after); skipped when another trade for the owner landed in between | the Seam mines with the game's own AI; a beast's payout on that same frame is traded too, and a skipped one stays as the node paid it (never traded twice) |
 | UNTHREAD's key | 4, like the Thread Head's RETURN | TARGET keeps the Quick Action key |

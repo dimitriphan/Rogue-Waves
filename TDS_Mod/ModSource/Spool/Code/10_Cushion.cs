@@ -195,7 +195,7 @@ public class SpoolCushionBrain : SpoolBuilding
         float max = ModKitUtil.MaxHealth(Master);
         if (!ModKitUtil.Alive(Master) || max <= 0f || ModKitUtil.Health(Master) >= max * Param("Voodoo_Base", 0.5f))
             return;
-        int wave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
+        int wave = SpoolUtil.Wave();
         if (wave == dollWave)
             return;
         dollWave = wave;
