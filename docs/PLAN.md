@@ -340,9 +340,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: MVP board built** (Dimitri: "just the most notable thing of the player ... Defaults for rest, and then
   build"): one title per player, failures as common as accolades, Tab replays it; `27_Board.cs`, `28_BoardView.cs`,
   MB1-MB11 (`MVP_BOARD.md` §4, §6). Compiled here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons that grow on hover and the
-  game's stacked lists are left alone; a still P2 needs its control to see the flicker (`BUTTON_WOBBLE_2026-11-06.md` §3-4).
-  Compiled here, not run on the PC. No kit change, no pitfall.
+- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons left alone while a hover grows
+  them, the game's stacked lists always; a still P2 passes only if its control saw the flicker (`BUTTON_WOBBLE_2026-11-06.md`
+  §3-4). Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1418,14 +1418,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   board on the next map, MB10 times its Continue, odd boards alternate on a count, two doc slips). No kit change, no
   pitfall (HashSet is already #1's).
 - **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri 07:24Z: "Follow up pr", after PR #150 merged with the
-  review's two points open). `26_Pixels.cs`, read once per picture when its seat is made: the children of a
-  `Blu4_List_Stacker`'s `Ref` are left alone (the stacker sits on the Ref or above it, writes them in its `Update` and is no
-  `LayoutGroup`), and so is every picture under a `Blu4_Button_Animator` whose Enter or Click list holds a
-  `Blu5_Buttonanim_Size` (a DOTween `DOScale` of the button to `Tosize` and back), which a pass would put on the grid while
-  grown and so move a pixel when the hover ends. `94_Pixels.cs`: a still P2 is a setup line when the game's places are on
-  half pixels and the same reading saw no flicker there; a flicker with the fix still fails. `/code-review high` on the first
-  draft: a scale gate dropped (it unplaced static scaled pictures and failed P1 under a resting pointer), the per-pass
-  stacker scan dropped, the control no longer hides a failure. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`,
+  review's two points open). `26_Pixels.cs`: the children of a `Blu4_List_Stacker`'s `Ref` are left alone (the stacker
+  sits on the Ref or above it, writes them in its `Update` and is no `LayoutGroup`; read once per picture, when its seat is
+  made); a picture under a `Blu4_Button_Animator` whose Enter or Click list holds a `Blu5_Buttonanim_Size` (a DOTween
+  `DOScale` of the button to `Tosize` and back to exactly 1) keeps that animator in its seat and is skipped while the
+  button is `Active` (hovered) or its scale isn't 1, so it is placed at rest and never moved while grown. Stackers in his
+  game: one in `level1` (the patch banners), five in `level3`, none on the boat. `94_Pixels.cs`: a still P2 passes only
+  if the same reading saw the flicker at the game's places, else SETUP on half pixels, INFO when they are whole already
+  (an even UI scale); a flicker with the fix still fails. `/code-review high` on the first draft: a scale gate dropped (it
+  unplaced static scaled pictures and failed P1 under a resting pointer), the per-pass stacker scan dropped, the control no
+  longer hides a failure; the reviewer's pass: the grow skip only while grown, the even-scale case, the notes' wording. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`,
   `+GAPS`: 0 errors); not run on the PC; his Mods hold the round's `2a3d907` build. No kit change, no pitfall. Next free:
   kit 1.15, pitfall #175.
 

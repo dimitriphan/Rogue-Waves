@@ -49,10 +49,13 @@ All read-only from his game folder (`D:\Steam\steamapps\common\TDS\TDS\DATA`), w
   `ScrollRect` or under `Bla_Ui_Confirmation` (RWDialog places the dialog), and a picture whose position someone else wrote
   over ours twice in a row. A position someone writes becomes its new start; flipped parents move the right way; rotated
   ones are skipped.
-- Added after the review: the children of a `Blu4_List_Stacker`'s `Ref` (the game's stacker writes them in its `Update`
-  and is no `LayoutGroup`), and every picture inside a button whose `Blu4_Button_Animator` grows it on hover or click
-  (`Blu5_Buttonanim_Size`, a `DOScale` to `Tosize` and back), which would otherwise be put back on the grid while grown and
-  move a pixel when the hover ends. Both are read once per picture, when its seat is made. The main menu has neither.
+- Added after the review: the children of a `Blu4_List_Stacker`'s `Ref` are left alone (the game's stacker writes them in
+  its `Update` and is no `LayoutGroup`; read once per picture, when its seat is made). A picture inside a button whose
+  `Blu4_Button_Animator` grows it on hover or click (`Blu5_Buttonanim_Size`, a `DOScale` to `Tosize` and back to exactly 1)
+  is skipped only while the button is hovered or its scale isn't 1, so it is placed at rest and never moved while grown.
+  The main menu's buttons have neither: its one stacker places the patch banners (`Ui/Main/Update/Patchbanners`); a map has
+  five (`Ui/Main/Char/Upgradelist`, `Ui/Main/Selection/Buildlist` and its `Barcontainer`, the Win and Lose titles), the
+  boat none (UnityPy count of `level1`-`level3`).
 - The Rogue Waves tile's crest was already on whole pixels (`RWAssets.Crisp`, pitfall #156); this reaches the game's own.
 
 ## 4. Checks
@@ -66,8 +69,9 @@ Self-test P1-P2 (`94_Pixels.cs`), in the mode's flow on the main menu once its m
 - **P1** Play's, Hero's, Settings', More's and Exit's pictures and the crest stand on whole screen pixels.
 - **P2** over 144 drawn frames, no picture's square changes (a channel moving more than 48), then the same with
   `RWPixels.Restore()` putting the game's places back, then on again. The `INFO FINDING P2` line says whether the game's own
-  places flicker. Since the follow-up, a still reading is a `SETUP` line, not a pass, when the game's places are on half
-  pixels and the same reading saw no flicker there either; a flicker with the fix fails whatever the control saw.
+  places flicker. Since the follow-up, a still reading passes only if the same reading saw the flicker at the game's places;
+  otherwise it is a `SETUP` line when those places are on half pixels, and an `INFO` line ("nothing to compare") when they
+  are whole already, as at an even UI scale. A flicker with the fix fails whatever the control saw.
 
 ## 5. PC round `Wobble_round1`
 

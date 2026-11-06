@@ -28,8 +28,9 @@ Dimitri: one title per player, "the most notable thing", failures as common as a
   no garbage.
 - Self-test P1-P2 (`94_Pixels.cs`, in the flow on the main menu) reads the drawn frame over 144 frames with and without it.
   PC checks: `docs/reports/BUTTON_WOBBLE_2026-11-06.md`.
-- After the review (compiled here, not run on the PC): a `Blu4_List_Stacker`'s children and the pictures of a button whose
-  hover or click grows it (`Blu5_Buttonanim_Size`) are left alone; a still P2 is a setup line when its control saw no flicker.
+- After the review (compiled here, not run on the PC): the children of a `Blu4_List_Stacker`'s `Ref` are left alone, and the
+  pictures of a button whose hover or click grows it (`Blu5_Buttonanim_Size`) while it is hovered or not at scale 1. A still
+  P2 passes only if its control saw the flicker: else SETUP on half pixels, INFO when the game's places are whole already.
 
 ## 0.1.0-dev, later (2026-11-06): sea chart navigation (compiled here, not yet run in game)
 

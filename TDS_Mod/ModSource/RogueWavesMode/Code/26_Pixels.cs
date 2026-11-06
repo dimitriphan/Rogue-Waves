@@ -8,9 +8,9 @@
 // A pass moves each still, shown picture by less than half a pixel onto the screen's pixel grid, measured from the canvas's
 // corner, where it was before ours; it runs again every half second, so a picture caught while its menu slid in is set right
 // once the menu rests. It never moves a picture the game slides, animates, scrolls or lays out itself (a LayoutGroup or the
-// game's Blu4_List_Stacker), nor one inside a button whose hover grows it (Blu5_Buttonanim_Size), nor the choice dialog's
-// (RWDialog places those); a position anyone writes later becomes its new start, and a picture someone keeps writing is left
-// alone. A pass is spread over frames, a few dozen pictures a frame, with no garbage.
+// game's Blu4_List_Stacker), nor the choice dialog's (RWDialog places those), nor one inside a button while its hover or
+// click has it grown (Blu5_Buttonanim_Size); a position anyone writes later becomes its new start, and a picture someone
+// keeps writing is left alone. A pass is spread over frames, a few dozen pictures a frame, with no garbage.
 public static class RWPixels
 {
     public static bool On = true;           // the self-test compares the game's own places with these
@@ -19,7 +19,11 @@ public static class RWPixels
     const float Every = 0.5f;               // a new pass starts at most this often
     const int GiveUp = 2;                   // our writes undone by someone else, with none kept between, before a picture is left alone
 
-    sealed class Seat { public Transform Parent; public bool Ours; public Vector2 Start, Wrote; public bool Written; public int Undone; }
+    sealed class Seat
+    {
+        public Transform Parent; public bool Ours; public Vector2 Start, Wrote; public bool Written; public int Undone;
+        public Blockage.Menu.Blu4_Button_Animator Grower;   // the button around it that grows on hover or click, if any
+    }
 
     static readonly List<UnityEngine.UI.Graphic> found = new List<UnityEngine.UI.Graphic>();
     static readonly List<UnityEngine.UI.Graphic> pass = new List<UnityEngine.UI.Graphic>();
@@ -128,8 +132,12 @@ public static class RWPixels
             return;
         Seat seat;
         if (!seats.TryGetValue(rt, out seat) || seat.Parent != parent)
-            seats[rt] = seat = new Seat { Parent = parent, Ours = Ours(rt) };
+            seats[rt] = seat = new Seat { Parent = parent, Ours = Ours(rt), Grower = Grower(rt) };
         if (!seat.Ours)
+            return;
+        // While its button is grown or growing the picture is off the grid by design; once it rests (the tween ends on exactly
+        // 1) the picture is where this pass left it.
+        if (seat.Grower != null && (seat.Grower.Active || seat.Grower.transform.localScale != Vector3.one))
             return;
         seen++;
         float pixels = rootPixels[r];
@@ -170,24 +178,37 @@ public static class RWPixels
         moved++;
     }
 
-    // Whether the picture is ours to move: nothing of the game's moves it by itself, it isn't in a scrolling list, a button
-    // that grows on hover or the choice dialog. The whole chain up to the canvas is read, since the dialog's root sits above
-    // its own sliding parts and a hover grows the whole button with the pictures in it. Something moving a holder above the
-    // picture is fine: the next pass at rest puts it right. Read once per picture, when its seat is made.
+    // Whether the picture is ours to move: nothing of the game's moves it by itself, it isn't in a scrolling list, and it isn't
+    // the choice dialog's. The whole chain up to the canvas is read, since the dialog's root sits above its own sliding parts.
+    // Something moving a holder above the picture is fine: the next pass at rest puts it right. Read once per picture, when
+    // its seat is made.
     static bool Ours(RectTransform rt)
     {
         if (Moves(rt))
             return false;
-        for (Transform t = rt; t != null; t = t.parent)
+        for (Transform t = rt.parent; t != null; t = t.parent)
         {
-            if (t != rt && (t.GetComponent<Bla_Ui_Confirmation>() != null || t.GetComponent<UnityEngine.UI.ScrollRect>() != null))
-                return false;
-            if (Grows(t.GetComponent<Blockage.Menu.Blu4_Button_Animator>()))
+            if (t.GetComponent<Bla_Ui_Confirmation>() != null || t.GetComponent<UnityEngine.UI.ScrollRect>() != null)
                 return false;
             if (t.GetComponent<Canvas>() != null && t.parent == null)
                 break;
         }
         return true;
+    }
+
+    // The nearest button, the picture itself or above it, whose hover or click grows it; a hover grows the whole button with
+    // the pictures in it.
+    static Blockage.Menu.Blu4_Button_Animator Grower(RectTransform rt)
+    {
+        for (Transform t = rt; t != null; t = t.parent)
+        {
+            Blockage.Menu.Blu4_Button_Animator a = t.GetComponent<Blockage.Menu.Blu4_Button_Animator>();
+            if (Grows(a))
+                return a;
+            if (t.GetComponent<Canvas>() != null && t.parent == null)
+                break;
+        }
+        return null;
     }
 
     // The game moves it itself: its transitions, scaler or animator write it, or a layout or the game's stacker places it.
@@ -214,7 +235,7 @@ public static class RWPixels
     }
 
     // A button whose hover or click scales it (Blu5_Buttonanim_Size: DOScale to Tosize and back): its pictures leave the
-    // pixel grid while it grows, and a pass that put them back on it would move them by a pixel when the hover ends.
+    // pixel grid while it is grown, and a pass that put them back on it then would move them by a pixel when the hover ends.
     static bool Grows(Blockage.Menu.Blu4_Button_Animator a)
     {
         return a != null && (Sizes(a.Buttonanimations_Enter) || Sizes(a.Buttonanimations_Click));
