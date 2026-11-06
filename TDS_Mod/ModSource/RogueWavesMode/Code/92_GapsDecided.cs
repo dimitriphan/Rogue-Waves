@@ -670,7 +670,7 @@ public static partial class RWTest
             string why = "no swing cleaved: " + detail;
             Setup(share, why); Setup(snag, why); Setup(once, why); yield break;
         }
-        Check(share, n == 5 && cleaves == n && sharesOk == n && firstOk == n && due == 1, detail);
+        Check(share, n == 5 && cleaves == n && sharesOk == n && firstOk == n && due >= 1, detail);   // at least one swing doubled (Argo's own swings move which)
         if (dcNatural > 0) Setup(snag, "Argo swung by himself " + dcNatural + " time(s), so a bleed on either foe can be his: " + detail);
         else Check(snag, n == 5 && snagged == n && ticksA > 0 && ticksB == 0, detail);
         Check(once, n == 5 && counted == n, detail);
@@ -710,8 +710,8 @@ public static partial class RWTest
         float lht1 = tower.Lasthittime, between = RWTrinkets.TarMended - start, m1 = RWTrinkets.TarMended;
         yield return Until(() => !ModKitUtil.Alive(tower) || RWTrinkets.TarMended > m1 + 0.0001f, RWTrinkets.TarAfter + 4f);
         float first = RWTrinkets.TarMended > m1 + 0.0001f ? Time.time - last : -1f;
-        Check(after, between < 0.0001f && first >= lo && first <= hi, "the first mend " + DcF(first) + " s after the last hit (want " + DcF(RWTrinkets.TarAfter) + " to " + DcF(RWTrinkets.TarAfter + 0.25f)
-            + ": a look each 0.25 s), mended " + DcF(between) + " during the hits; Lasthittime " + DcF(lht0) + " -> " + DcF(lht1) + (Mathf.Approximately(lht0, lht1) ? " (unmoved)" : " (moved: these hits set it)"));
+        Check(after, between < 0.0001f && first >= lo && first <= hi, "the first mend " + DcF(first) + " s after the last hit (want " + DcF(lo) + " to " + DcF(hi)
+            + ": a look each 0.25 s and the frame's slack), mended " + DcF(between) + " during the hits; Lasthittime " + DcF(lht0) + " -> " + DcF(lht1) + (Mathf.Approximately(lht0, lht1) ? " (unmoved)" : " (moved: these hits set it)"));
 
         // One hit whose loss is put back in the same frame: only the hit hook (RWUtil.Hit) sees it, not the drop in health.
         yield return new WaitForSeconds(1.6f);
@@ -723,8 +723,8 @@ public static partial class RWTest
         yield return Until(() => !ModKitUtil.Alive(tower) || RWTrinkets.TarMended > m2 + 0.0001f, RWTrinkets.TarAfter + 4f);
         float next = RWTrinkets.TarMended > m2 + 0.0001f ? Time.time - hitAt : -1f;
         if (took <= 0.0001f) Setup(masked, "the hit took nothing from the Scatter Cannon");
-        else Check(masked, next >= lo && next <= hi, "the hit took " + DcF(took) + ", put back at once; the next mend came " + DcF(next) + " s later (want " + DcF(RWTrinkets.TarAfter) + " to "
-            + DcF(RWTrinkets.TarAfter + 0.25f) + "; the mends ran once a second before it)");
+        else Check(masked, next >= lo && next <= hi, "the hit took " + DcF(took) + ", put back at once; the next mend came " + DcF(next) + " s later (want " + DcF(lo) + " to "
+            + DcF(hi) + "; the mends ran once a second before it)");
     }
 
     // ---------------------------------------------------------------- item 5: a lobby Blurry Photo (2g)

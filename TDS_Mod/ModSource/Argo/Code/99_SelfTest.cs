@@ -1446,7 +1446,7 @@ public static partial class ArgoSelfTest
                 // The -1 hold leaves a slow no room (01_Util.cs Slow; PC_FULL_2026-11-06 §4): eased so the water's slow fits and
                 // the foe crawls at 10%.
                 if (e != null)
-                    foreach (Link_Modifier h in wetHolds) ModKitUtil.Keep(e, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - Mathf.Min(ArgoData.WaterSlowCap, ModKitUtil.Stat(water.Master, "Slow", ArgoData.WaterSlow))));
+                    foreach (Link_Modifier h in wetHolds) if (h != null && !h.Dead) ModKitUtil.Keep(e, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - Mathf.Min(ArgoData.WaterSlowCap, ModKitUtil.Stat(water.Master, "Slow", ArgoData.WaterSlow))));
                 int renewed0 = ArgoUtil.Renewed;
                 yield return Wait(0.8f);
                 if (Check("a foe wading in the pool", e != null && ModKitUtil.Alive(e), e != null ? F(ModKitUtil.Flat(ModKitUtil.Pos(e), ModKitUtil.Pos(pool1.Master))) + " from the pool" : "none"))
@@ -1527,7 +1527,7 @@ public static partial class ArgoSelfTest
                 // The hold eased, not taken off: a freed foe waded out of the pool's reach before a tick (PC_FULL_2026-11-06 §4).
                 // It leaves room for the whole 65% and the foe at 10%.
                 if (deepFoe != null)
-                    foreach (Link_Modifier h in deepHolds) ModKitUtil.Keep(deepFoe, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - ArgoData.WaterSlowCap));
+                    foreach (Link_Modifier h in deepHolds) if (h != null && !h.Dead) ModKitUtil.Keep(deepFoe, h, "Speed", Helper_Entitytools.Modtypes.Multi, -(0.9f - ArgoData.WaterSlowCap));
                 yield return Wait(0.3f);   // a water re-tick (every 0.25 s)
                 float wantSlow = Mathf.Min(ArgoData.WaterSlowCap, slowNow), gotSlow = ArgoUtil.WaterSlowOn(deepFoe);
                 Link_Stats sp = deepFoe != null && ModKitUtil.Alive(deepFoe) ? ModKitUtil.Speed(deepFoe) : null;

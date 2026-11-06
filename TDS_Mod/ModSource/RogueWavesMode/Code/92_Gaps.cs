@@ -1449,7 +1449,9 @@ public static partial class RWTest
         vars.Time_Wave.Value = 0.1f;
         yield return Until(() => vars.Wave.Value >= 8, 30f);
         // The row's own elites aren't the campaign's (Hardened is Enemy_Health): Apply writes each marked share right after its
-        // row, the same foe with one upgrade more (21_Difficulty.cs), so only the upgrades of unmarked rows are the row's own.
+        // row, the same foe with the row's upgrades in order and one of the map's modifiers last (21_Difficulty.cs), so only the
+        // upgrades of unmarked rows are the row's own. A map's own elite row after its plain one ([] then [Hardened]) differs
+        // from it in the first upgrade, the health one, so it stays a row of its own.
         List<string> mods = new List<string>(RWDifficulty.LastModifiers.Split(new[] { ", " }, StringSplitOptions.None)), own = new List<string>();
         int tides8 = 0;
         if (RWMode.ModeObject != null && RWMode.ModeObject.Enemies != null && RWMode.ModeObject.Enemies.Wave != null)
@@ -1458,7 +1460,10 @@ public static partial class RWTest
                     for (int k = 0; k < w.Content.Count; k++)
                     {
                         Wavesobject.Wavecontent c = w.Content[k], before = k > 0 ? w.Content[k - 1] : c;
-                        bool markedRow = k > 0 && c.Enemy != null && before.Enemy == c.Enemy && c.Upgrades != null && before.Upgrades != null && c.Upgrades.Count == before.Upgrades.Count + 1;
+                        bool markedRow = k > 0 && c.Enemy != null && before.Enemy == c.Enemy && c.Upgrades != null && before.Upgrades != null && c.Upgrades.Count == before.Upgrades.Count + 1
+                            && c.Upgrades[c.Upgrades.Count - 1] != null && mods.Contains(c.Upgrades[c.Upgrades.Count - 1].Objectname);
+                        for (int q = 0; markedRow && q < before.Upgrades.Count; q++)
+                            markedRow = before.Upgrades[q] == c.Upgrades[q];
                         if (c.Enemy != null && c.Upgrades != null && !markedRow)
                             foreach (Upgradeproperties u in c.Upgrades)
                                 if (u != null) own.Add(c.Enemy.Objectname + "|" + u.Objectname);
