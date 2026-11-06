@@ -10,6 +10,12 @@
 //   Pattern Book   once a Tide, the first 1 / 2 / 3 of its Crafted to fall are stitched again for free (no Thread back
 //                  when sold), in the fallen one's place even past the Tin's Units; ranks I and II on the usual stitch
 //                  time, rank III at once.
+// Its upgrades past Discounted Material and New Design (scope 08, 2026-11-04):
+//   Tacking Stitch   it stitches Tacked Stitched (a Stitched on Sno Sno's blocker block) that hold their spot once there,
+//                    with Tackedhealth_Multi more health; it makes no Darts (New Design is the other level-2 choice).
+//   Cross Stitch     its Crafted get Crafteddamage_Multi more damage.
+//   Patchwork Army   Units and Respawn are the Tin's own stats: the upgrade's modifiers reach Slots and StitchTime.
+//   UNTHREAD         a button on every Tin: sells every Crafted it has out, each refunding as a sold one does.
 public class SpoolTinBrain : SpoolBuilding
 {
     public bool HasSpot;
@@ -33,7 +39,7 @@ public class SpoolTinBrain : SpoolBuilding
     }
     public int FreeWaiting { get { return again.Count; } }
     public float Reach { get { return Stat("Reach", 8f); } }
-    public string Kind { get { return Has("Design") ? SpoolData.Dart : SpoolData.Stitched; } }
+    public string Kind { get { return Has("Tacking") ? SpoolData.Tacked : Has("Design") ? SpoolData.Dart : SpoolData.Stitched; } }
     public int Alive { get { return SpoolServer.UnitsOf(this); } }
 
     public int Cost(string kind)
@@ -50,6 +56,11 @@ public class SpoolTinBrain : SpoolBuilding
         {
             Helper_Entitytools.Createcommand(Master, SpoolData.TargetCommand, SpoolData.TargetLink, false, true);
             Helper_Entitytools.Updatecommand(Master, SpoolData.TargetLink, "", false, false);
+        }
+        if (SpoolContent.Unthread != null)
+        {
+            Helper_Entitytools.Createcommand(Master, SpoolData.UnthreadCommand, SpoolData.UnthreadLink, false, true);
+            Helper_Entitytools.Updatecommand(Master, SpoolData.UnthreadLink, "", false, false);
         }
         nextStitch = Time.time + 1f;
     }
@@ -122,7 +133,9 @@ public class SpoolTinBrain : SpoolBuilding
         u.Cost = cost;
         u.Recycle = Has("Recycle") ? Param("Recycle_Base", 0.5f) : 0f;
         u.Burst = Has("Surprise") ? Param("Burst_Times", 3f) : 0f;
-        u.HealthMulti = Param("Craftedhealth_Multi", 0f);
+        // Tacking Stitch's extra health adds to Woolen Lining's (both Multis); Cross Stitch's damage is the Tin's own.
+        u.HealthMulti = Param("Craftedhealth_Multi", 0f) + (kind == SpoolData.Tacked ? Param("Tackedhealth_Multi", 0f) : 0f);
+        u.DamageMulti = Param("Crafteddamage_Multi", 0f);
         u.SpeedMulti = kind == SpoolData.Stitched && Has("Discounted") ? Param("Stitchedspeed_Multi", SpoolData.StitchedSpeedUp) : 0f;
         int buttons = Player.Buttons;
         u.Small = buttons > 0 ? SpoolData.ButtonShare[buttons - 1] : 0f;
@@ -166,6 +179,11 @@ public class SpoolTinBrain : SpoolBuilding
     // stand there and walk to it (checked with a live Crafted of this Tin, when there is one).
     protected override void Command(string command, string json, bool server)
     {
+        if (command == SpoolData.UnthreadLink)
+        {
+            Unthread();
+            return;
+        }
         Vector3 at;
         if (command != SpoolData.TargetLink || !ModKitUtil.JsonPosition(json, out at))
             return;
@@ -183,6 +201,32 @@ public class SpoolTinBrain : SpoolBuilding
         MovePin(spot);
         SpoolUtil.Warn(Master, SpoolData.WarnSpot);
         ModKitUtil.Vis(Master, "Spool_Target", Spot, 0f);
+    }
+
+    // UNTHREAD: every Crafted this Tin has out is sold (despawned with reason "Sell", so SpoolUnitBrain.Gone refunds its
+    // Thread as selling one does). The Tin keeps stitching after.
+    public int Unthreads, Unthreaded;
+
+    void Unthread()
+    {
+        List<SpoolUnitBrain> cast = new List<SpoolUnitBrain>();
+        foreach (SpoolUnitBrain u in SpoolServer.Units)
+            if (u != null && u.Master != null && u.Home == this && u.Def != null && u.Def.Sellable && ModKitUtil.Alive(u.Master) && u.Master.Beingserver != null)
+                cast.Add(u);
+        if (cast.Count == 0)
+        {
+            SpoolUtil.Warn(Master, SpoolData.WarnNothingOut);
+            return;
+        }
+        Unthreads++;
+        // A copy: each despawn takes its unit out of SpoolServer.Units at once (Ondespawn runs inside Despawn).
+        foreach (SpoolUnitBrain u in cast)
+        {
+            if (u == null || u.Master == null || u.Master.Beingserver == null)
+                continue;
+            Helper_Entitytools.Despawn(u.Master.Beingserver, false, "Sell");
+            Unthreaded++;
+        }
     }
 
     public Genitem Reachable(Vector3 at, out string why)
@@ -256,6 +300,8 @@ public class SpoolTinBrain : SpoolBuilding
 //   Merit Badge  +3% Damage and Health (Multi) for each foe it drowns (lands the last hit on), up to +15 / 30 / 45%.
 //   Odd Socks    +8 / 15 / 25% Damage while a Crafted of another kind and its team stands within 2 tiles; rank III:
 //                also 10% less damage taken (a handler at the front of its hit chain).
+// Thread Heads of its owner in reach (Needle Point, Stitch in Time, Head of the Class) add Damage and cut the damage it
+// takes, the best of each over every Head (SpoolServer.HeadBuffs); the guard shares Odd Socks' front handler.
 public class SpoolUnitBrain : MonoBehaviour
 {
     public Entity_Master Master;
@@ -266,7 +312,11 @@ public class SpoolUnitBrain : MonoBehaviour
     public int Cost, Orders, Drowns;
     public float Recycle, Burst, HealthMulti, SpeedMulti, Leap, Small, MeritBonus, SocksBonus;
     public Entity_Master Target, LeapAt;
-    public bool Guarded;
+    public bool Guarded;            // its hit handler is at the front: Odd Socks III or a Thread Head's guard is on
+    public float DamageMulti;       // Cross Stitch, from its Tin
+    public float HeadBonus, HeadGuard;
+    bool socksGuard;
+    Link_Modifier headDamage;
 
     float nextThink, nextFront;
     bool armed, begun;
@@ -298,7 +348,7 @@ public class SpoolUnitBrain : MonoBehaviour
             }
             if (Def.Ranged && !armed)
                 Arm();
-            // Updateinteract rebuilds the hit chain when an upgrade lands: Odd Socks' guard goes back to the front.
+            // Updateinteract rebuilds the hit chain when an upgrade lands: the guard goes back to the front.
             if (Guarded && Time.time >= nextFront)
             {
                 nextFront = Time.time + 0.1f;
@@ -330,6 +380,8 @@ public class SpoolUnitBrain : MonoBehaviour
         }
         if (SpeedMulti != 0f)
             Helper_Entitytools.Addmod(Master, "Speed", SpeedMulti, Helper_Entitytools.Modtypes.Multi, 0f);
+        if (DamageMulti != 0f)
+            Helper_Entitytools.Addmod(Master, "Damage", DamageMulti, Helper_Entitytools.Modtypes.Multi, 0f);
         // Button Jar: a share of a whole one's health and damage (a Pmulti multiplies with Woolen Lining's Multi), and the
         // smaller look where its kind has one.
         if (Small > 0f)
@@ -381,6 +433,7 @@ public class SpoolUnitBrain : MonoBehaviour
     {
         if (Crafted)
             Socks();
+        Heads();
         Vector3 pos = ModKitUtil.Pos(Master);
         if (Crafted && !Arrived)
         {
@@ -393,6 +446,9 @@ public class SpoolUnitBrain : MonoBehaviour
                 return;
             }
         }
+        // Tacking Stitch: a Tacked Stitched at its spot holds it, blocking foes like a Snoble.
+        if (Crafted && Arrived && Def.Blocker)
+            Holding = true;
         if (Leap > 0f && !Holding)
         {
             if (ModKitUtil.Flat(pos, Spot) <= 0.6f || ModKitUtil.State(Master) != "Move")
@@ -543,7 +599,29 @@ public class SpoolUnitBrain : MonoBehaviour
             socksDamage = ModKitUtil.Keep(Master, socksDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
             SocksBonus = bonus;
         }
-        bool guarded = beside && rank >= 3;
+        socksGuard = beside && rank >= 3;
+        KeepGuard();
+    }
+
+    // Needle Point, Stitch in Time, Head of the Class: the best damage bonus and guard any of its owner's Thread Heads
+    // gives where it stands (several don't stack).
+    void Heads()
+    {
+        float bonus, cut;
+        SpoolServer.HeadBuffs(Owner, ModKitUtil.Pos(Master), out bonus, out cut);
+        if (!Mathf.Approximately(bonus, HeadBonus))
+        {
+            headDamage = ModKitUtil.Keep(Master, headDamage, "Damage", Helper_Entitytools.Modtypes.Multi, bonus);
+            HeadBonus = bonus;
+        }
+        HeadGuard = cut;
+        KeepGuard();
+    }
+
+    // The hit handler stays at the front while Odd Socks III or a Head's guard is on.
+    void KeepGuard()
+    {
+        bool guarded = socksGuard || HeadGuard > 0f;
         if (guarded == Guarded)
             return;
         Guarded = guarded;
@@ -553,7 +631,7 @@ public class SpoolUnitBrain : MonoBehaviour
             ModKitUtil.Unfront(Master, guard);
     }
 
-    // Odd Socks III: 10% less from each hit while it stands beside another kind.
+    // Odd Socks III: 10% less from each hit while it stands beside another kind; a Thread Head's guard cuts what is left.
     static void OnGuarded(Link_Interact hit)
     {
         try
@@ -564,16 +642,20 @@ public class SpoolUnitBrain : MonoBehaviour
             SpoolUnitBrain u = hit.To.GetComponent<SpoolUnitBrain>();
             if (u == null || !u.Guarded)
                 return;
-            ModKitCombat.SetMulti(hit, multi * (1f - SpoolData.SocksGuard));
-            Socked++;
+            float socks = u.socksGuard ? SpoolData.SocksGuard : 0f;
+            ModKitCombat.SetMulti(hit, multi * (1f - socks) * (1f - u.HeadGuard));
+            if (socks > 0f)
+                Socked++;
+            if (u.HeadGuard > 0f)
+                HeadGuarded++;
         }
         catch (Exception e)
         {
-            SpoolLog.Warn("Odd Socks: " + e.Message);
+            SpoolLog.Warn("unit guard: " + e.Message);
         }
     }
 
-    public static int Socked;
+    public static int Socked, HeadGuarded;
 
     Entity_Master Radio()
     {

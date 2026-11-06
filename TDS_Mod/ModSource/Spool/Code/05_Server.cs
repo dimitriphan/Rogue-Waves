@@ -276,7 +276,8 @@ public static class SpoolServer
         return n;
     }
 
-    // A foe fell: Thread on the ground where it fell, while some player is Spool (landed this map, alive or not).
+    // A foe fell: Thread on the ground where it fell, while some player is Spool (landed this map, alive or not). High
+    // Thread Count's extra comes on top of the cap.
     static void FoeFell(Entity_Master foe)
     {
         if (players.Count == 0)
@@ -284,7 +285,10 @@ public static class SpoolServer
         int n = ModKitUtil.BaseHealth(foe) >= SpoolData.LargeHealth ? SpoolData.DropLarge : SpoolData.DropSmall;
         if (Elite(foe))
             n += SpoolData.DropElite;
-        Drop(ModKitUtil.Pos(foe), Mathf.Min(n, SpoolData.DropMax));
+        Vector3 at = ModKitUtil.Pos(foe);
+        int more = CountBonus(at);
+        Counted += more;
+        Drop(at, Mathf.Min(n, SpoolData.DropMax) + more);
     }
 
     // An elite for the drop: the game's Enemy_* modifiers (the kit's reading) and the pack's own foe modifiers, which the
@@ -585,5 +589,47 @@ public static class SpoolServer
             if (u != null && u.Master != null && u.Home == home)
                 n++;
         return n;
+    }
+
+    // ---------------------------------------------------------------- Thread Head upgrades
+
+    public static int Counted;   // High Thread Count's extra Thread dropped
+
+    // The best damage bonus and the best guard (less damage taken) any of this owner's Thread Heads gives at a point:
+    // Needle Point and Stitch in Time within their range, Head of the Class both within its own, whatever path the Head
+    // took. Several Heads don't stack.
+    public static void HeadBuffs(long owner, Vector3 at, out float damage, out float guard)
+    {
+        damage = 0f;
+        guard = 0f;
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolHeadBrain h = b as SpoolHeadBrain;
+            if (h == null || !h.Started || h.Master == null || h.Owner != owner || !ModKitUtil.Alive(h.Master))
+                continue;
+            float d = ModKitUtil.Flat(h.Pos, at);
+            if (h.Has("Class") && d <= h.Param("Classrange_Base", 4f))
+            {
+                damage = Mathf.Max(damage, h.Param("Classbuff_Base", 0.5f));
+                guard = Mathf.Max(guard, h.Param("Classguard_Base", 0.45f));
+            }
+            if (h.Has("Needle") && d <= h.Param("Needlerange_Base", 3f))
+                damage = Mathf.Max(damage, h.Param("Needle_Base", 0.25f));
+            if (h.Has("Time") && d <= h.Param("Stitchrange_Base", 3f))
+                guard = Mathf.Max(guard, h.Param("Stitchtime_Base", 0.3f));
+        }
+    }
+
+    // High Thread Count: the extra Thread a foe felled here drops, once however many Heads with it stand in reach.
+    public static int CountBonus(Vector3 at)
+    {
+        int more = 0;
+        foreach (SpoolBuilding b in Buildings)
+        {
+            SpoolHeadBrain h = b as SpoolHeadBrain;
+            if (h != null && h.Started && h.Has("Count") && ModKitUtil.Alive(h.Master) && ModKitUtil.Flat(h.Pos, at) <= h.Param("Countrange_Base", 3f))
+                more = Mathf.Max(more, Mathf.RoundToInt(h.Param("Count_Base", 1f)));
+        }
+        return more;
     }
 }

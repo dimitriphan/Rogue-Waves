@@ -3,11 +3,16 @@
 // reach, fights foes within its leash, and RETURN sends it to the Yarn Stash to hand over what it carries and come back.
 // Threaded Delivery does that on its own when it is full; Patchwork Job adds MEND. Killed, it drops what it carried and
 // comes back at the Stash with its upgrades.
+//   Big Bobbin          Carry and Collect are its own stats, so the upgrade's modifiers reach Cap and Reach.
+//   Needle Point, Stitch in Time, High Thread Count and Head of the Class's buffs stay in its params, read by the
+//                       Crafted (SpoolServer.HeadBuffs) and by a falling foe (SpoolServer.CountBonus).
+//   Head of the Class   what it picks up goes straight to the Yarn Stash (what doesn't fit stays carried), except while
+//                       MEND is on: then it keeps its Thread to mend with.
 public class SpoolHeadBrain : SpoolBuilding
 {
     public SpoolServer.Comeback Back;
     public Vector3 Spot;
-    public int Carried, Collected, Deliveries, Spots, Mends;
+    public int Carried, Collected, Deliveries, Spots, Mends, SentHome;
     public float Mended;
     public bool Mending, Returning;
     public Entity_Master Target;
@@ -166,6 +171,8 @@ public class SpoolHeadBrain : SpoolBuilding
                 Show();
             }
         }
+        if (Has("Class") && Param("Classhome_Base", 1f) > 0f && !Mending && Carried > 0)
+            SendHome();
         // At the Stash it drops off what it carries and turns round, even with nothing on it (RETURN pressed empty, SPL-2).
         if (SpoolServer.AtStash(Owner, pos, SpoolData.DropOff))
         {
@@ -199,6 +206,17 @@ public class SpoolHeadBrain : SpoolBuilding
             return;
         }
         Guard(pos);
+    }
+
+    // Head of the Class: its Thread flies straight into the Yarn Stash (Deliver's look, from the Head to the Stash).
+    void SendHome()
+    {
+        int put = SpoolServer.Deliver(Owner, Master, Carried);
+        if (put <= 0)
+            return;
+        Carried -= put;
+        SentHome += put;
+        Show();
     }
 
     // Fights what comes within its leash of its spot, else walks back to it.
