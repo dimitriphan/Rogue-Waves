@@ -7,7 +7,8 @@
 {id, data: {...}}). <assets_dir>: each edit's asset saved as <asset id>.png (a sprite row) or <asset id>.json (a model).
 Only edits with status "waiting" are applied; prints what it wrote, one line per edit, and the ids it applied.
 
-Sprite rows. Only the frames the page marked changed are taken; the row's other frames stay as the sheet is now.
+Sprite rows. Only the frames the page marked changed are taken; the row's other frames keep an earlier hand edit, else the sheet as
+it is now.
 - route "merge" (sheets <Part>Aseprite.Apply merges): the tags of that row go into
   ModSource/<Part>/Aseprite/<sheet>.aseprite with gen= set to the CRCs of the sheet as the builder sees it before hand
   edits, so the builder swaps in exactly the changed frames. A facing drawn as a mirror of an edited tag (v1 of v0,
@@ -82,6 +83,15 @@ def sprite(e, asset, cache, dry):
     folder, _, _, rows = lay
     target = os.path.join(build.MOD, 'ModSource', part, 'Aseprite', name + '.aseprite')
     tags = read_existing(target)
+    # A frame not changed this time keeps an earlier hand edit of it (the page diffed against the merged row).
+    col = 0
+    for t in e['tags']:
+        kept = tags.get(t['name'])
+        if kept and len(kept[0]) == t['count']:
+            for k in range(t['count']):
+                if col + k not in changed:
+                    new[col + k] = kept[0][k]
+        col += t['count']
 
     def data(r, col, count, mirror=None):
         gen = ','.join('%08x' % zlib.crc32(f) for f in frames_of(w, h, px, cell, r, col, count))

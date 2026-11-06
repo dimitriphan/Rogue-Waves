@@ -35,7 +35,7 @@ on the first publish only (omit them afterwards to keep them).
    - **merge route** (most vessel sheets): the row's tags go into `ModSource/<Part>/Aseprite/<sheet>.aseprite`, `gen=`
      holding the CRCs of the sheet before hand edits, so the builder swaps in only the frames he changed; a facing the
      code draws as a mirror of an edited tag comes along unedited with `mirror=`, so it follows. Only the frames the
-     page marked changed are taken; the rest of the row stays as the code draws it now.
+     page marked changed are taken; the row's other frames keep an earlier hand edit, else follow the code.
    - **file route** (the Cordyfriend, the Thread Head, `UloeLit-Sheet`, the tuft, Vendcint, the mode icons): the
      changed frames are pasted into the file the build reads; a code-drawn sheet becomes `Art/<sheet>.png` (final), so
      later code changes to it stop showing.
