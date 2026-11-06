@@ -289,6 +289,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
   checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
   the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
+- **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
+  (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
+  undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1186,6 +1189,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   $6.94) on Sonnet 5.5, $0.76 (at most $1.26) on Haiku 5.5; art in use $0.29 / $0.01. Run here: `plan` for every check
   on both models, the report writer on made-up answers, per-check bases through failed, narrowed and explicit runs, the
   missing-key and over-cap exits. No real batch: the key is not in the cloud environment yet. No kit change, no pitfall; nothing ran on the PC.
+- **2026-11-06: first batch checks run** (Dimitri: "It's saved", the key in the cloud environment): `plan --exact`
+  (free) proved the key and counted 4.13M input tokens against the README's 2.78M estimate (about $1.32, at most $2.00
+  on Haiku 5.5). Batch `msgbatch_01XM6GKkEVGqJgqX7PVfJCeP`: 25 requests, $1.19, `docs/reports/BATCH_CHECKS_2026-11-06.md`;
+  seven answers (the four design pages, scope `07`, `08`, `11`) hit their max_tokens at medium effort, so they were rerun
+  at `--effort low` for $0.63 (`BATCH_CHECKS_2026-11-06b.md`, every answer whole). $1.82 of the month's $100. A
+  hand-written §0 sorts the rows into leads (meteor objective one map ahead, Uloe's Plug In cap and teammate light,
+  Spool's Stash limit, design-page numbers, text slips, two stale docs lines) and noise ("Made of Tougher Stuff" is
+  built in the mode; versions, labels and tolerances). Nothing fixed; docs only; nothing ran on the PC.
 
 ### Decisions
 
