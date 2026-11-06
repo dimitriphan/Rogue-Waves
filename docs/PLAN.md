@@ -314,6 +314,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: batch checks on the PC without Claude** (Dimitri: run it when the 5-hour limit is up):
   `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report moved to `Desktop\RogueWave\batch`).
   Written here, not run on the PC (no PowerShell here). No game code; no kit change, no pitfall.
+- **2026-11-06: Rogue Tide theme for pages and decks** (Dimitri: "Choose rogue tide"): `docs/themes/rogue-tide.md`, the
+  pack palette with the HUD's bracket frames and tiles, linked from `STYLE.md`. Docs only; nothing ran on the PC.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1302,6 +1304,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   answers at 40k / 24k); default `--max-cost` 15. README "On your
   PC, without Claude"; `docs/PROJECT_SETUP.md` points there. The key bills the API credit, never the plan. Written here,
   not run: the container has no PowerShell; Python side run here (`plan`, git missing). Nothing ran on the PC.
+- **2026-11-06: the Rogue Tide theme** (Dimitri asked for a theme from the TDS UI, drafts first, then picked Rogue Tide
+  of three: Fogbound Slate, the stock grey; Rogue Tide; Harbour Fog, a light one). `docs/themes/rogue-tide.md`: STYLE.md's
+  palette (Deep Swell ground, Rogue Teal tiles, Foam text, one Storm Coral accent, Wet Sand, Pearl for Pure Aura only),
+  Exo 2 Light caps / Barlow / Pixelify Sans, the HUD's bracket frame and bevelled square tiles, CSS tokens and contrast
+  rules; colours measured from the round 4 screenshots. STYLE.md and CLAUDE.md's map point to it. Docs only.
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
