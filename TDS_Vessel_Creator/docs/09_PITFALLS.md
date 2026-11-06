@@ -664,6 +664,22 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      `docs/reports/PC_ROUND5_2026-11-06.md` §2.3). The mechanism isn't traced → make a card's own text and images once a
      launch and carry them over: before the next prompt's cards are dressed, move them off the last prompt's cards (which
      the game destroys at the end of that frame) to a hidden holder and take them from there (`RWDialog.Keep`/`Take`),
-     and log once a launch. Compiled, not yet verified in game: the dialog round's "keep their name texts" line proves
-     the carry-over, its map-card line the frame, and its three "picture only / and name / and badge" lines split the
-     cost if it still hitches.
+     and log once a launch. **Verified in game, but not the freeze's cure** (PC round 6, `PC_ROUND6_2026-11-06.md` §2):
+     4 made on the first map cards, 0 more in 10 openings, every card dressed. The freezes stayed, at a lower rate and on
+     any of the mode's openings (map cards 3 of 50, the plain dialog 1 of 20, stock 0 of 20), so the 10-opening check
+     passes or fails by chance. A test-only split of the frame by player-loop step (`RWFrameSplit`, DIALOGLOOK) put each
+     frozen frame's 63-74 ms in `PostLateUpdate.FinishFrameRendering` (the render thread), about 1 ms in scripts, layout and
+     canvases together, each freeze a whole number of the 144 Hz screen's refreshes, on the first frame or two that draw
+     the new dialog; the map cards' 13.9 ms frame is one missed refresh, and it comes with the large picture alone. The
+     render side is the lead (what the mod's dialog draws that the stock one doesn't), not the text.
+176. **A unit's stock MOVE swapped for a renamed copy stops it walking** (2026-11-06) → Spool's Thread Head points its
+     `Move` link's `Ref` at `Command_Mob_Spoolhead_Move`, a clone of `Command_Move` styled None so its button is not drawn
+     (B16, `SpoolHeadBrain.HideMove`, `Spool/Code/09_Head.cs`), and keeps walking by `ModKitUtil.MoveTo` on that link.
+     With the whole pack loaded it never moved again (RETURN, SPOT, the walk back after a comeback; 4 fails in two runs).
+     With Spool alone `Command_Move` is not loaded when Spool builds its content ("Command_Move not loaded: the Thread
+     Head keeps its stock MOVE button"), so the swap never happened and every vessel self-test, each run alone, passed
+     (`PC_ROUND6_2026-11-06.md` §3). Why the renamed command won't walk is not traced (its id or name is the first
+     suspect), nor which part makes `Command_Move` load first → keep a unit's own stock `Command_Move` on the link that
+     walks it and hide its button some other way, or prove a renamed copy walks in a Spool-only build with the copy forced
+     on; and run each vessel's self-test once a round with the pack loaded as well, since a vessel alone can take paths
+     the pack never takes.

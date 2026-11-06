@@ -10,6 +10,8 @@ public static partial class RWTest
         List<string> slow = new List<string>();
         float begin = Time.unscaledTime, end = begin + seconds, most = 0f;
         int frames = 0, cleanups = GC.CollectionCount(0);
+        RWFrameSplit.What = what;                                    // PC round 6, test only
+        RWFrameSplit.Since = Time.realtimeSinceStartupAsDouble;
         while (Time.unscaledTime < end)
         {
             yield return null;
@@ -21,6 +23,8 @@ public static partial class RWTest
             cleanups = now;
         }
         Info("frames", what + ": " + frames + " frames, worst " + RWUtil.F(most * 1000f) + " ms" + (slow.Count > 0 ? "; slow: " + string.Join(", ", slow.ToArray()) : ""));
+        RWFrameSplit.What = "";                                      // PC round 6, test only
+        foreach (string s in RWFrameSplit.Take()) Info("split", s);
         worst(most);
     }
 
@@ -87,6 +91,8 @@ public static partial class RWTest
         float first = 0f, mine = 0f, stock = 0f;
         int mineLong = 0, stockLong = 0;
         const int Rounds = 10;
+        RWFrameSplit.Start();                                        // PC round 6, test only
+        Info("split", "markers before " + RWFrameSplit.Steps + " steps of the player loop");
         yield return Opening("first opening", true, w => first = w);
         for (int round = 1; round <= Rounds; round++)
         {
@@ -123,6 +129,7 @@ public static partial class RWTest
                 yield return Opening("map cards, " + parts[v] + ", round " + round, true, w => { worstPart = Mathf.Max(worstPart, w); if (w * 1000f > 25f) longPart++; }, true, v == 1, v == 2);
             Info("map cards", parts[v] + ": " + longPart + " of 5 openings with a frame over 25 ms, worst " + RWUtil.F(worstPart * 1000f) + " ms");
         }
+        RWFrameSplit.Stop();                                         // PC round 6, test only
 
         // A card's hover, by the pointer's own calls.
         string pick = "-";
