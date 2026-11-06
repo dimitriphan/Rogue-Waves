@@ -1,14 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwLEFC99Hx17hZVTvVMqYShJ",
   "thread": "Merge PC round 6 report and fix Thread Heads",
-  "state": "reviewing",
-  "started": "2026-11-06T21:28:17Z",
-  "step": "Reviewer on PR #164; tracing Thread Head walk",
-  "helpers": [
-    {
-      "task": "Review PR #164",
-      "model": "Opus 5.5"
-    }
-  ],
-  "updated": "2026-11-06T21:28:17Z"
+  "state": "building",
+  "started": "2026-11-06T21:36:53Z",
+  "step": "Thread Head fix: docs and PR",
+  "helpers": [],
+  "updated": "2026-11-06T21:36:53Z"
 }
