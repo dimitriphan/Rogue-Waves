@@ -22,14 +22,16 @@ MIST = (0xB4, 0xC8, 0xCF)
 WHITE = (0xFF, 0xFF, 0xFF)
 SWELL2 = (0x35, 0x54, 0x6D)
 
-L.PAL.update({"l": (0x9C, 0xD3, 0xDB), "c": (0xE2, 0x72, 0x5B)})
+L.PAL.update({"l": (0x9C, 0xD3, 0xDB)})   # no Storm Coral in icons: the MVP banner is the one coral piece
 L.PIX.update({
     "wave": ["............", ".....llll...", "...llwwwwl..", "..lwwl..lwl.", ".lwl.....wl.", ".lw...l..l..",
              "lwl..lwl....", "lw..lwwwl..l", "lwllwwwwwllw", "lwwwwwwwwwww", "llllllllllll", "............"],
     "hammer": ["............", "..gggggg....", ".gwwwwwwgG..", ".gggggggGG..", "..GGGGGGG...", ".....bB.....",
                ".....bB.....", ".....bB.....", ".....bB.....", ".....bB.....", ".....bb.....", "............"],
-    "ring": ["............", "....cwwc....", "..cccwwccc..", ".ccc....ccc.", ".cc......cc.", "ww........ww",
-             "ww........ww", ".cc......cc.", ".ccc....ccc.", "..cccwwccc..", "....cwwc....", "............"],
+    "ring": ["............", "....owwo....", "..ooowwooo..", ".ooo....ooo.", ".oo......oo.", "ww........ww",
+             "ww........ww", ".oo......oo.", ".ooo....ooo.", "..ooowwooo..", "....owwo....", "............"],
+    "hoard": ["............", "...y.yy.y...", "..yyyyyyyy..", ".bbbbbbbbbb.", ".bBBBBBBBBb.", ".bbbbyybbbb.",
+              ".bBBByyBBBb.", ".bBBBBBBBBb.", ".bBBBBBBBBb.", ".bbbbbbbbbb.", "............", "............"],
     "hourglass": ["............", "..bbbbbbbb..", "...g....g...", "...gssssg...", "....gssg....", ".....gg.....",
                   ".....gg.....", "....gssg....", "...gssssg...", "..bbbbbbbb..", "............", "............"],
 })
@@ -62,7 +64,7 @@ PLAYERS = [
     {"name": "Dimitri", "vessel": "Yossele", "icon": "Yossele/Previews/0.1/sprite_Yossele_Icon.png", "you": True,
      "mvp": True,
      "good": ("wave", "TIDEBREAKER", "Sent 214 foes to the bottom."),
-     "bad": ("wreck", "DRAGON'S HOARD", "Died rich. Well, sailed rich."),
+     "bad": ("hoard", "DRAGON'S HOARD", "Died rich. Well, sailed rich."),
      "nums": (("214", "SUNK"), ("19", "BUILT"), ("1,240", "AURA"), ("0", "DROWNED"))},
     {"name": "Wren", "vessel": "Spool", "icon": "Spool/Previews/0.1/sprite_Spool_Icon.png",
      "good": ("hammer", "SHIPWRIGHT", "Built half the harbour. Upgraded the other half."),
