@@ -3,7 +3,7 @@
   "thread": "Run PC round 6 for card freeze fix",
   "state": "testing",
   "started": "2026-11-06T20:23:38Z",
-  "step": "Dialog round (map card freeze check) on the PC",
+  "step": "Spool self-test without pictures (dialog round 83/1)",
   "helpers": [],
-  "updated": "2026-11-06T20:23:38Z"
+  "updated": "2026-11-06T20:31:45Z"
 }
