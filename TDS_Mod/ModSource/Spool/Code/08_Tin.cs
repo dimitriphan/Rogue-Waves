@@ -130,6 +130,20 @@ public class SpoolTinBrain : SpoolBuilding
         return u;
     }
 
+    // Quilting Bee (the Yarn Stash's BEE): stitches up to the Tin's Units at once, for no Thread (sold, they give nothing
+    // back). Returns how many it made.
+    public int Sew()
+    {
+        int made = 0;
+        for (int guard = 0; Alive < Slots && guard < 64; guard++)
+        {
+            if (Make(Kind, 0) == null)
+                break;
+            made++;
+        }
+        return made;
+    }
+
     // Pattern Book: one of this Tin's Crafted fell (killed, not sold). The first ones of each Tide come back.
     public void Fell(SpoolUnitBrain u)
     {
