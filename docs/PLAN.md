@@ -286,6 +286,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri: "Code follows the scope"): Mend heals a flat 5/8/12,
   Deep Water slows up to its own 0.65 (Abyss's +10% whole; the Tremor keeps 0.6); self-tests read both. Compiled here,
   not run on the PC (`STOCK_TRINKETS_2026-11-05.md` §8). No kit change, no pitfall.
+- **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
+  checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
+  the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1169,6 +1172,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   release 0/0, SELFTEST 0/1, SELFTEST+GAPS and with SHOTS 0/2 (the base's warnings). Not run on the PC:
   `docs/reports/STOCK_TRINKETS_2026-11-05.md` §8. No kit change, no pitfall; next free numbers unchanged: kit 1.15,
   pitfall #172.
+- **2026-11-06: batch checks extended** (Dimitri: "Help me set up the cheap batch jobs further"):
+  `TDS_Mod/Tools/batch/run_checks.py` gains `design` (each vessel's DESIGN.md against its code: MATCH, DIFFERENT,
+  NOT-IN-CODE), `docs` (CLAUDE.md, Part C "Now", the reports' README, the batch README and `docs/skills/` read against
+  each other, after a free local pass listing cited paths that name nothing) and `art` (PNGs on Deep Swell and Foam
+  against `docs/STYLE.md`, with `art_check.py` beside each); `--since REF|last` (only what changed since the newest
+  report's base, per check), `--max-cost` (a true ceiling, every request at its max_tokens; default $10, exit 4),
+  `--max-wait`, `spend` (the month's batch reports against the $100), exit code 3 without a key, `RW_BATCH_OUT` for the
+  record. The key is read from `RW_BATCH_API_KEY` (Claude Code never reads that name), an environment variable of the
+  cloud environment: a network secret is never attached to api.anthropic.com. Review fixes: scope 11 sent 5 cache
+  marks (the API takes 4; now first and last part only), `--since last` keeps a base per check (a narrowed or failed
+  run doesn't move it), `--art` sends only tracked files. `all` = text, scope, design, docs: about $4.07 (at most
+  $6.94) on Sonnet 5.5, $0.76 (at most $1.26) on Haiku 5.5; art in use $0.29 / $0.01. Run here: `plan` for every check
+  on both models, the report writer on made-up answers, per-check bases through failed, narrowed and explicit runs, the
+  missing-key and over-cap exits. No real batch: the key is not in the cloud environment yet. No kit change, no pitfall; nothing ran on the PC.
 
 ### Decisions
 

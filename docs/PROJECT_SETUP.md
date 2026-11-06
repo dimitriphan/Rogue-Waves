@@ -114,12 +114,14 @@ these threads included, always use the plan and ignore the key.
    a password manager. Never paste it into a chat, a scope file or the repository.
 3. **Give it to the batch, not to Claude Code.** Two ways:
    - **Cloud (recommended; nothing touches the PC).** In the project's settings on claude.ai, Cloud environment, the
-     gear beside the selected environment: add `ANTHROPIC_API_KEY` under Network secrets where offered, otherwise as an
-     environment variable. A new thread then runs `plan --exact` (free) to prove it, and `submit`.
+     gear beside the selected environment: under **Environment variables** add one line, `RW_BATCH_API_KEY=<the key>`.
+     Not under Network secrets: the agent proxy never attaches one to `api.anthropic.com` (Claude Code docs "Configure
+     cloud environments", "Requests that never get the secret"). The batch reads `RW_BATCH_API_KEY`, a name Claude Code
+     itself never reads. A new thread then runs `plan --exact` (free) to prove it, and `submit --model haiku` (about $0.76).
    - **One PowerShell window on the PC**, from a clone of the repository:
      ```powershell
      py -m pip install anthropic
-     $env:ANTHROPIC_API_KEY = "<the key>"     # this window only; closing it forgets the key
+     $env:RW_BATCH_API_KEY = "<the key>"      # this window only; closing it forgets the key
      py TDS_Mod\Tools\batch\run_checks.py plan --exact
      py TDS_Mod\Tools\batch\run_checks.py submit
      ```
@@ -130,7 +132,7 @@ these threads included, always use the plan and ignore the key.
    (`msgbatch_...`); the report ends with each request's cost; the Console's Billing page shows the spend. In Claude
    Code, `/status` names the credential in use and marks the unused one when both a login and a key exist;
    `/config`, "Use custom API key", changes the choice while the variable is set. To undo a key in a window:
-   `Remove-Item Env:ANTHROPIC_API_KEY`.
+   `Remove-Item Env:RW_BATCH_API_KEY`.
 
 Sources: Claude Code docs "Authentication" (precedence; cloud sessions keep the plan); help centre "Use Claude Code
 with your Pro, Max, or Ultra plan", "Monthly API credits for Max, Ultra, and Team plans", "Manage usage credits for
