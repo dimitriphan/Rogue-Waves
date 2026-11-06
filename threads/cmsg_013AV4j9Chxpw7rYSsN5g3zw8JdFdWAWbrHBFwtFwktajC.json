@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zw8JdFdWAWbrHBFwtFwktajC",
   "thread": "Run PC round 6 for card freeze fix",
-  "state": "",
-  "started": "2026-11-06T20:21:28Z",
-  "step": "",
+  "state": "building",
+  "started": "2026-11-06T20:21:51Z",
+  "step": "Build Queue: dialog round, Spool and Uloe self-tests",
   "helpers": [],
-  "updated": "2026-11-06T20:21:28Z"
+  "updated": "2026-11-06T20:21:51Z"
 }
