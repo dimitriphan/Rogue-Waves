@@ -117,15 +117,11 @@ these threads included, always use the plan and ignore the key.
      gear beside the selected environment: under **Environment variables** add one line, `RW_BATCH_API_KEY=<the key>`.
      Not under Network secrets: the agent proxy never attaches one to `api.anthropic.com` (Claude Code docs "Configure
      cloud environments", "Requests that never get the secret"). The batch reads `RW_BATCH_API_KEY`, a name Claude Code
-     itself never reads. A new thread then runs `plan --exact` (free) to prove it, and `submit --model haiku` (about $0.76).
-   - **One PowerShell window on the PC**, from a clone of the repository:
-     ```powershell
-     py -m pip install anthropic
-     $env:RW_BATCH_API_KEY = "<the key>"      # this window only; closing it forgets the key
-     py TDS_Mod\Tools\batch\run_checks.py plan --exact
-     py TDS_Mod\Tools\batch\run_checks.py submit
-     ```
-     Leaving out the `$env:` line also works: the script asks for the key, hidden, and keeps it nowhere. Don't set
+     itself never reads. A new thread then runs `plan --exact` (free) to prove it, and `submit --model haiku` (about $1.20).
+   - **On the PC, with no Claude session** (works when the plan's five-hour limit is used up, since the key bills the
+     API credit, not the plan): `TDS_Mod/Tools/batch/README.md` "On your PC, without Claude". Once:
+     `Run-Batch.ps1 -SaveKey` keeps the key, asked for hidden, as the Windows user variable `RW_BATCH_API_KEY`; then
+     `Run-Batch.ps1` runs the cheap daily form and copies the report to `Desktop\RogueWave\batch`. Don't set
      `ANTHROPIC_API_KEY` as a permanent user variable (System Properties or `setx`): every Claude Code session on the
      PC, the Remote Control rounds included, would then be offered the key, and `claude -p` uses it without asking.
 4. **Confirm it is active.** `plan --exact` prints counted (not estimated) tokens; `submit` prints a batch id

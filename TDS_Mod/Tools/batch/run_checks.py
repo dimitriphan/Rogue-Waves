@@ -67,7 +67,7 @@ TEXT_CHUNK = 250          # strings per text request
 ART_CHUNK = 8             # images per art request
 GUESS_OUT = {"text": 3_000, "scope": 14_000, "design": 10_000, "docs": 4_000, "art": 3_000}
 # Each request's max_tokens (thinking included): the most it can write, so the ceiling --max-cost holds a run to.
-MAX_OUT = {"text": 8_000, "scope": 40_000, "design": 24_000, "docs": 8_000, "art": 8_000}
+MAX_OUT = {"text": 8_000, "scope": 64_000, "design": 48_000, "docs": 8_000, "art": 8_000}
 DEEP_SWELL, LIGHT = (0x2E, 0x4A, 0x62, 255), (0xE9, 0xF1, 0xEE, 255)   # docs/STYLE.md: Deep Swell and Foam
 
 
@@ -170,7 +170,11 @@ def plan_now():
 
 
 def git(*args):
-    return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
+    """Run git in the repository; without git installed, a failed result (code 127, no output) instead of a crash."""
+    try:
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True)
+    except FileNotFoundError:
+        return subprocess.CompletedProcess(args, 127, "", "git is not installed")
 
 
 def base_commit(short=True):
@@ -710,15 +714,9 @@ def cmd_plan(args):
     counted = None
     if args.exact:
         anthropic, c = client()
-        counted = {}
-        for cid, _, p in reqs:
-            try:
-                counted[cid] = c.messages.count_tokens(model=p["model"], system=p["system"],
-                                                       messages=p["messages"],
-                                                       output_config=p["output_config"]).input_tokens
-            except anthropic.APIError as e:
-                print(f"Token count failed on {cid}: {e}", file=sys.stderr)
-                sys.exit(1)
+        counted = count_all(anthropic, c, reqs)
+        if counted is None:
+            sys.exit(1)
     rows, total_in, total, ceiling = estimate(model, reqs, counted)
     print(f"{'request':<16} {'input tok':>10} {'out (guess)':>11} {'batch $':>9}")
     for cid, n, out, c_ in rows:
@@ -734,18 +732,37 @@ def cmd_plan(args):
     print(f"Requests written to {path} (nothing sent).")
 
 
+def count_all(anthropic, c, reqs):
+    """Each request's input tokens from the free count endpoint, or None (with the reason printed) when it fails."""
+    counted = {}
+    for cid, _, p in reqs:
+        try:
+            counted[cid] = c.messages.count_tokens(model=p["model"], system=p["system"], messages=p["messages"],
+                                                   output_config=p["output_config"]).input_tokens
+        except anthropic.APIError as e:
+            print(f"Token count failed on {cid}: {e}", file=sys.stderr)
+            return None
+    return counted
+
+
 def cmd_submit(args):
     model, checks, reqs, covered = build(args)
     if not reqs:
         print("Nothing to check: no request was built (nothing changed for these checks). Nothing was sent.")
         return
-    _, _, total, ceiling = estimate(model, reqs)
+    anthropic, c = client()
+    # The cap is checked on counted input (free endpoint), not the 3.5-characters guess, which ran low on the
+    # first real run; if counting fails, the guess is raised by half instead.
+    counted = count_all(anthropic, c, reqs)
+    if counted is None:
+        counted = {cid: int(est_tokens(meta, p) * 1.5) for cid, meta, p in reqs}
+        print("Using the estimate plus half for the cap.", file=sys.stderr)
+    _, _, total, ceiling = estimate(model, reqs, counted)
     if ceiling > args.max_cost:
         print(f"About ${total:.2f}, at most ${ceiling:.2f}: the most is over --max-cost ${args.max_cost:.2f}. Nothing "
               f"was sent; narrow it (--check, --scope-files, --since, --model haiku) or raise --max-cost.",
               file=sys.stderr)
         sys.exit(4)
-    anthropic, c = client()
     try:
         batch = c.messages.batches.create(requests=[{"custom_id": cid, "params": p} for cid, _, p in reqs])
     except anthropic.AuthenticationError:
@@ -1001,9 +1018,9 @@ def main():
         if name == "plan":
             p.add_argument("--exact", action="store_true", help="count tokens with the free endpoint (needs the key)")
         else:
-            p.add_argument("--max-cost", type=float, default=10.0,
+            p.add_argument("--max-cost", type=float, default=15.0,
                            help="refuse to send when the most the run can cost (every request at its max_tokens, "
-                                "every cache block written) is over this many $ (10)")
+                                "every cache block written) is over this many $ (15)")
             p.add_argument("--no-wait", action="store_true", help="submit and return; run collect later")
             p.add_argument("--max-wait", type=int, default=0, metavar="MIN",
                            help="stop waiting after MIN minutes (0 = until the batch ends)")

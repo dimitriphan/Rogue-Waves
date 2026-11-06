@@ -305,6 +305,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
   (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
 
+- **2026-11-06: batch checks on the PC without Claude** (Dimitri: run it when the 5-hour limit is up):
+  `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report copied to `Desktop\RogueWave\batch`).
+  Written here, not run on the PC (no PowerShell here). No game code; no kit change, no pitfall.
+
 ### Log (newest last; was "Now" until 2026-10-11)
 
 - **2026-10-08:** Phases 1 and 2 done. **Phase 3 Argo**: steps 1-5; PC round 6 **139 pass, 0 fail**,
@@ -1257,6 +1261,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   are his. Compiled here (every part and test build at its baseline), `/code-review high` 7 of 10 fixed; nothing ran on
   the PC. No kit change; pitfall #173. Next free: kit 1.15, pitfall #174.
 
+- **2026-11-06: batch checks on the PC without Claude** (Dimitri 05:47Z: "a method of doing the batch job that does not
+  rely on messaging you so I can still call it when my 5 hour limit is up"): `TDS_Mod/Tools/batch/Run-Batch.ps1` keeps
+  the key as the Windows user variable `RW_BATCH_API_KEY` (`-SaveKey`, asked hidden), pulls the base, installs
+  `anthropic` and `pillow` once, runs `run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 120`
+  (`-Plan`, `-Full`, `-Model`, `-Check`, `-MaxCost`), and copies the report to `Desktop\RogueWave\batch` for a thread to
+  read and commit. `run_checks.py`'s `git()` returns a failure instead of crashing when git is missing, and `submit` checks `--max-cost` on counted input (the guess ran low: the first full
+  Haiku run cost $1.19 against $0.76 estimated); max_tokens back to 64k scope / 48k design (the first run cut seven
+  answers at 40k / 24k); default `--max-cost` 15. README "On your
+  PC, without Claude"; `docs/PROJECT_SETUP.md` points there. The key bills the API credit, never the plan. Written here,
+  not run: the container has no PowerShell; Python side run here (`plan`, git missing). Nothing ran on the PC.
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check

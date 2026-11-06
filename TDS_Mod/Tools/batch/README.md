@@ -31,7 +31,7 @@ python3 TDS_Mod/Tools/batch/run_checks.py plan                         # request
 python3 TDS_Mod/Tools/batch/run_checks.py plan --exact                 # exact input tokens (free endpoint; needs the key)
 python3 TDS_Mod/Tools/batch/run_checks.py submit --model haiku         # the four checks on Haiku 5.5, waits, writes the report
 python3 TDS_Mod/Tools/batch/run_checks.py submit                       # the same on Sonnet 5.5
-python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 2   # only what changed since each check's last full run
+python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 3   # only what changed since each check's last full run
 python3 TDS_Mod/Tools/batch/run_checks.py submit --check art --art TDS_Mod/ModSource/Spool/Art/Temporary/game_size
 python3 TDS_Mod/Tools/batch/run_checks.py submit --check scope,design --scope-files 07,11 --no-wait
 python3 TDS_Mod/Tools/batch/run_checks.py collect msgbatch_...         # finish a --no-wait or interrupted run
@@ -50,10 +50,12 @@ the model thinks, and thinking is billed as output), `--scope-files 07,11`, `--a
   `--since REF` leaves that check's base where it was, so nothing it left out is skipped later; a check with no base
   yet, or with a base outside the clone's history (a shallow clone is deepened once first), is checked whole. Nothing changed: it says so and sends nothing. A change to the mode's code wakes ten scope
   files, so such a run costs nearly a full one.
-- **`--max-cost USD`** (default 10): `submit` refuses to send, exit code 4, when the most the run can cost is over
-  it: every request writing its whole `max_tokens` (8,000 text, docs and art; 40,000 scope; 24,000 design; thinking
-  included) and every cache block written, never read. That is a true ceiling: a full Sonnet run is at most $6.94
-  (about $4.07 expected), a full Haiku run at most $1.26 (about $0.76). `plan` prints both figures.
+- **`--max-cost USD`** (default 15): `submit` refuses to send, exit code 4, when the most the run can cost is over
+  it: every request writing its whole `max_tokens` (8,000 text, docs and art; 64,000 scope; 48,000 design; thinking
+  included) and every cache block written, never read. `submit` counts the input first (the free endpoint), since the
+  3.5-characters guess runs low (2.78M guessed, 4.19M counted on base `1cc21d1`). Counted, a full run is about $1.33 and
+  at most $2.56 on Haiku 5.5, about $5.48 and at most $10.52 on Sonnet 5.5; the first real full Haiku run cost $1.19,
+  and $1.82 with the seven answers cut by the lower limits of that day rerun. `plan --exact` prints both figures.
 - **`--max-wait MIN`** stops waiting after `MIN` minutes; the batch keeps running and `collect` finishes it.
 - **Exit codes:** 0 done or nothing to check, 2 bad arguments, 3 no key (nothing sent), 4 over `--max-cost`, 1 any
   other failure.
@@ -72,6 +74,27 @@ can read the variable; it is his private environment. On a Windows PC, set it fo
 (`$env:RW_BATCH_API_KEY = "..."`); never set `ANTHROPIC_API_KEY` as a permanent user variable, since Claude Code on
 that PC would then offer to bill every session to the key (`docs/PROJECT_SETUP.md` "API credit").
 
+## On your PC, without Claude
+
+`Run-Batch.ps1` beside this file runs everything above from a PowerShell window, with no Claude session, so it works
+when the plan's five-hour limit is used up: the key bills the API credit, never the plan.
+
+1. **Once:** Python 3.10 or later (`winget install Python.Python.3.12`), Git (`winget install Git.Git`), and a clone of
+   the repository on the base branch: `git clone -b claude/phase-1-6lfnar https://github.com/dimitriphan/Rogue-Waves.git
+   "$HOME\Rogue-Waves"` (Git asks you to sign in to GitHub the first time). Then save the key:
+   `powershell -ExecutionPolicy Bypass -File "$HOME\Rogue-Waves\TDS_Mod\Tools\batch\Run-Batch.ps1" -SaveKey`. It asks
+   for the key, hidden, and keeps it as your Windows user variable `RW_BATCH_API_KEY`, which Claude Code never reads.
+2. **Any time:** `powershell -ExecutionPolicy Bypass -File "$HOME\Rogue-Waves\TDS_Mod\Tools\batch\Run-Batch.ps1"`.
+   It pulls the newest base, installs `anthropic` and `pillow` the first time, sends Haiku 5.5 only what changed since
+   each check's last full run (at most $3), waits for the batch and copies the report to `Desktop\RogueWave\batch`.
+   `-Plan` gives the cost and sends nothing; `-Full` checks everything; `-Model sonnet -MaxCost 12` uses Sonnet 5.5 (at most about $10.52);
+   `-Check scope,design` picks checks.
+3. **Hand it back** when you are next in the project: "read the batch report on my Desktop". That folder is approved for
+   the project's threads; a thread reads the report, confirms its leads and commits it in a docs PR.
+
+The report also stays in the clone's `docs\reports`, uncommitted. A cloud run doesn't see it until a thread commits it,
+so it may check the same changes again (it never skips any).
+
 ## From a thread or the morning routine
 
 A thread that wants a check runs `submit` itself and reads the report; it commits the report in its own docs PR (Part
@@ -79,11 +102,11 @@ C "Now" names it). The cheap daily form, for the morning routine once the key is
 
 ```
 [ -n "$RW_BATCH_API_KEY" ] && python3 -m pip install -q anthropic \
-  && python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 2 --max-wait 90
+  && python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 90
 ```
 
-It sends only what changed since each check's last full run (usually cents; a full Haiku run is about $0.76 and at
-most $1.26), skips itself without the key, and writes the report the routine's PR carries. The month's figure: `spend`, or the last line of each report.
+It sends only what changed since each check's last full run (usually cents; a full Haiku run is about $1.33, at most
+$2.56), skips itself without the key, and writes the report the routine's PR carries. The month's figure: `spend`, or the last line of each report.
 
 ## Cost per run
 
@@ -98,7 +121,7 @@ $0.25, or $0.25 / $1.25 for a prompt over 100K tokens (the mode's scope files ar
 | `scope`, all 14 files | 14 | about 2,420,000 | about $3.40 | about $0.73 |
 | `design`, four vessels | 4 | about 313,000 | about $0.51 | about $0.03 |
 | `docs` | 1 | about 15,000 | about $0.04 | under $0.01 |
-| `all` (the four above) | 25 | about 2,778,000 | about $4.07 | about $0.76 |
+| `all` (the four above) | 25 | about 2,778,000 (counted: 4,194,000) | about $4.07 (counted: $5.48) | about $0.76 (counted: $1.33; first run $1.19) |
 | `art`, the art in use | 14 (106 images) | about 78,000 | about $0.29 | about $0.01 |
 | `scope` for one vessel (`07`-`10`) | 1 | 68,000-91,000 | about $0.14-0.16 | about $0.01 |
 | `scope` for `11` (Directions) | 1 | about 457,000 | about $0.53 | about $0.13 |
@@ -116,7 +139,8 @@ DIFFERENT, MISSING and NOT-IN-CODE row against the code, and look at art yoursel
 
 ## What ran where
 
-Built 2026-11-05 (`text`, `scope`), extended 2026-11-06 (`design`, `docs`, `art`, `--since`, `--max-cost`,
+Built 2026-11-05 (`text`, `scope`), extended 2026-11-06 (`Run-Batch.ps1`, written here, not yet run on the PC: no
+PowerShell in the container; `design`, `docs`, `art`, `--since`, `--max-cost`,
 `--max-wait`, `spend`; review fixes: at most 2 cache marks a request, the API's limit being 4, which scope `11`'s five
 parts broke; per-check bases; a true cost ceiling; `--art` sends only files git tracks). Here (cloud): `plan` for every
 check on both models, the report writer on made-up results for every check, per-check bases through a failed, a
