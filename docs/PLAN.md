@@ -334,9 +334,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: chart round 1 on the PC** (Dimitri: "Go chart round"): flow 178/1 (CV10's blacklist read too early, test
   fixed), two players 167/0; chart pictures on his PC; after-win vote's view and a mini chart overlap for his eye
   (`CHART_ROUND1_2026-11-06.md`). His builds and save back. No kit change, no pitfall.
-- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): pictures a hover grows and the game's
-  stacked lists are left alone; P2 needs its control to see the flicker (`BUTTON_WOBBLE_2026-11-06.md` §3). Compiled here,
-  not run on the PC. No kit change, no pitfall.
+- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons that grow on hover and the
+  game's stacked lists are left alone; a still P2 needs its control to see the flicker (`BUTTON_WOBBLE_2026-11-06.md` §3-4).
+  Compiled here, not run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1391,13 +1391,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   mini chart. CV10 now waits for the blacklist (compiled here). Not run: mouse clicks on islands, key M, the hover hitch.
   PC: Mods hash-identical, save copied back by hand, Unity project at the handoff with a TWOPC build.
 - **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri 07:24Z: "Follow up pr", after PR #150 merged with the
-  review's two points open). `26_Pixels.cs`: each pass also lists every `Blu4_List_Stacker` under the menu canvases
-  (inactive ones too) and leaves the children of its `Ref` alone, since the stacker writes them in its `Update` and is no
-  `LayoutGroup`; a picture whose scale isn't a whole number of times its canvas's is skipped while it is so, so a hover's
-  `Blu5_Buttonanim_Size` (a DOTween `DOScale` to `Tosize` and back to exactly 1) never moves a grown tile by a pixel.
-  `94_Pixels.cs`: P2 is a setup line, not a check, when the game's places are on half pixels and the same reading saw no
-  flicker there. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`, `+GAPS`: 0 errors); not run on the PC; the
-  build in his Mods is PR #150's. No kit change, no pitfall. Next free: kit 1.15, pitfall #175.
+  review's two points open). `26_Pixels.cs`, read once per picture when its seat is made: the children of a
+  `Blu4_List_Stacker`'s `Ref` are left alone (the stacker sits on the Ref or above it, writes them in its `Update` and is no
+  `LayoutGroup`), and so is every picture under a `Blu4_Button_Animator` whose Enter or Click list holds a
+  `Blu5_Buttonanim_Size` (a DOTween `DOScale` of the button to `Tosize` and back), which a pass would put on the grid while
+  grown and so move a pixel when the hover ends. `94_Pixels.cs`: a still P2 is a setup line when the game's places are on
+  half pixels and the same reading saw no flicker there; a flicker with the fix still fails. `/code-review high` on the first
+  draft: a scale gate dropped (it unplaced static scaled pictures and failed P1 under a resting pointer), the per-pass
+  stacker scan dropped, the control no longer hides a failure. Compiled here (the mode with no define, `SELFTEST`, `+SHOTS`,
+  `+GAPS`: 0 errors); not run on the PC; his Mods hold the round's `2a3d907` build. No kit change, no pitfall. Next free:
+  kit 1.15, pitfall #175.
 
 ### Decisions
 

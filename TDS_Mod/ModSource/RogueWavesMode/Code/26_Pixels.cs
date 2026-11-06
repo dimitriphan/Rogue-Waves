@@ -8,10 +8,9 @@
 // A pass moves each still, shown picture by less than half a pixel onto the screen's pixel grid, measured from the canvas's
 // corner, where it was before ours; it runs again every half second, so a picture caught while its menu slid in is set right
 // once the menu rests. It never moves a picture the game slides, animates, scrolls or lays out itself (a LayoutGroup or the
-// game's Blu4_List_Stacker), nor the choice dialog's (RWDialog places those), nor one scaled to a size that isn't a whole
-// number of times its canvas's (a hover's Blu5_Buttonanim_Size grows a tile while the pointer is on it); a position anyone
-// writes later becomes its new start, and a picture someone keeps writing is left alone. A pass is spread over frames, a few
-// dozen pictures a frame, with no garbage.
+// game's Blu4_List_Stacker), nor one inside a button whose hover grows it (Blu5_Buttonanim_Size), nor the choice dialog's
+// (RWDialog places those); a position anyone writes later becomes its new start, and a picture someone keeps writing is left
+// alone. A pass is spread over frames, a few dozen pictures a frame, with no garbage.
 public static class RWPixels
 {
     public static bool On = true;           // the self-test compares the game's own places with these
@@ -29,8 +28,6 @@ public static class RWPixels
     static readonly List<float> rootPixels = new List<float>();
     static readonly Dictionary<RectTransform, Seat> seats = new Dictionary<RectTransform, Seat>();
     static readonly List<RectTransform> dead = new List<RectTransform>();
-    static readonly List<Blockage.Menu.Blu4_List_Stacker> stackers = new List<Blockage.Menu.Blu4_List_Stacker>();
-    static readonly List<Transform> stacked = new List<Transform>();   // the holders a stacker places the children of, every frame
     static int sceneHandle = int.MinValue, at, moved, seen;
     static float nextPass;
 
@@ -88,7 +85,6 @@ public static class RWPixels
         passRoot.Clear();
         roots.Clear();
         rootPixels.Clear();
-        stacked.Clear();
         if (Blockage.Menu.Bl_Menus.Menus == null)
             return;
         foreach (Blockage.Menu.Blu2_Menu_Handler menu in Blockage.Menu.Bl_Menus.Menus.Values)
@@ -110,9 +106,6 @@ public static class RWPixels
         }
         for (int i = 0; i < roots.Count; i++)
         {
-            roots[i].GetComponentsInChildren<Blockage.Menu.Blu4_List_Stacker>(true, stackers);
-            foreach (Blockage.Menu.Blu4_List_Stacker st in stackers)
-                if (st != null && st.Ref != null && !stacked.Contains(st.Ref)) stacked.Add(st.Ref);
             roots[i].GetComponentsInChildren<UnityEngine.UI.Graphic>(false, found);
             foreach (UnityEngine.UI.Graphic g in found)
                 if (g is UnityEngine.UI.Image || g is UnityEngine.UI.RawImage)
@@ -122,7 +115,6 @@ public static class RWPixels
                 }
         }
         found.Clear();
-        stackers.Clear();
     }
 
     static void Place(UnityEngine.UI.Graphic g, int r)
@@ -148,11 +140,6 @@ public static class RWPixels
         // Screen pixels per unit of the parent's space, signed, so a flipped parent moves the right way.
         Vector2 perParent = new Vector2(pixels * parentScale.x / rootScale.x, pixels * parentScale.y / rootScale.y);
         if (Mathf.Abs(perParent.x) < 1e-4f || Mathf.Abs(perParent.y) < 1e-4f)
-            return;
-        // Only a picture drawn at a whole number of times its canvas's size gains from whole pixels; one a hover is growing or
-        // has grown is left where it is, and is back on whole pixels when the hover ends (the tween ends on exactly 1).
-        Vector3 own = rt.lossyScale;
-        if (!Whole(own.x / rootScale.x) || !Whole(own.y / rootScale.y))
             return;
         Vector2 now = rt.anchoredPosition;
         if (seat.Written)
@@ -183,16 +170,19 @@ public static class RWPixels
         moved++;
     }
 
-    // Whether the picture is ours to move: nothing of the game's moves it by itself, it isn't in a scrolling list, and it isn't
-    // the choice dialog's. The whole chain up to the canvas is read, since the dialog's root sits above its own sliding parts.
-    // Something moving a holder above the picture is fine: the next pass at rest puts it right.
+    // Whether the picture is ours to move: nothing of the game's moves it by itself, it isn't in a scrolling list, a button
+    // that grows on hover or the choice dialog. The whole chain up to the canvas is read, since the dialog's root sits above
+    // its own sliding parts and a hover grows the whole button with the pictures in it. Something moving a holder above the
+    // picture is fine: the next pass at rest puts it right. Read once per picture, when its seat is made.
     static bool Ours(RectTransform rt)
     {
         if (Moves(rt))
             return false;
-        for (Transform t = rt.parent; t != null; t = t.parent)
+        for (Transform t = rt; t != null; t = t.parent)
         {
-            if (t.GetComponent<Bla_Ui_Confirmation>() != null || t.GetComponent<UnityEngine.UI.ScrollRect>() != null)
+            if (t != rt && (t.GetComponent<Bla_Ui_Confirmation>() != null || t.GetComponent<UnityEngine.UI.ScrollRect>() != null))
+                return false;
+            if (Grows(t.GetComponent<Blockage.Menu.Blu4_Button_Animator>()))
                 return false;
             if (t.GetComponent<Canvas>() != null && t.parent == null)
                 break;
@@ -201,19 +191,43 @@ public static class RWPixels
     }
 
     // The game moves it itself: its transitions, scaler or animator write it, or a layout or the game's stacker places it.
+    // A Blu4_List_Stacker writes every child of its Ref each frame; it sits on the Ref or above it.
     static bool Moves(RectTransform r)
     {
         if (r.GetComponent<Blockage.Menu.Blu4_Scaler>() != null || r.GetComponent<Blockage.Menu.Blu4_Transition_Animator>() != null
             || r.GetComponent<Animator>() != null)
             return true;
         Transform p = r.parent;
-        return p != null && (p.GetComponent<UnityEngine.UI.LayoutGroup>() != null || stacked.Contains(p));
+        if (p == null)
+            return false;
+        if (p.GetComponent<UnityEngine.UI.LayoutGroup>() != null)
+            return true;
+        for (Transform t = p; t != null; t = t.parent)
+        {
+            Blockage.Menu.Blu4_List_Stacker st = t.GetComponent<Blockage.Menu.Blu4_List_Stacker>();
+            if (st != null && st.Ref == p)
+                return true;
+            if (t.GetComponent<Canvas>() != null && t.parent == null)
+                break;
+        }
+        return false;
     }
 
-    static bool Whole(float v)
+    // A button whose hover or click scales it (Blu5_Buttonanim_Size: DOScale to Tosize and back): its pictures leave the
+    // pixel grid while it grows, and a pass that put them back on it would move them by a pixel when the hover ends.
+    static bool Grows(Blockage.Menu.Blu4_Button_Animator a)
     {
-        v = Mathf.Abs(v);
-        return v > 0.999f && Mathf.Abs(v - Mathf.Round(v)) < 0.001f;
+        return a != null && (Sizes(a.Buttonanimations_Enter) || Sizes(a.Buttonanimations_Click));
+    }
+
+    static bool Sizes(List<Blockage.Menu.Blu5_Buttonanim> anims)
+    {
+        if (anims == null)
+            return false;
+        foreach (Blockage.Menu.Blu5_Buttonanim b in anims)
+            if (b != null && b.Ref is Blockage.Menu.Blu5_Buttonanim_Size)
+                return true;
+        return false;
     }
 
     // Seats of destroyed pictures, after each pass.
