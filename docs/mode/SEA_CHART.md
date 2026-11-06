@@ -9,6 +9,8 @@ Tags: **proven** = shown in game by Riptide or RogueLab; **read** = from the dec
 `docs/13` §11), file:line into that folder; **untested** = needs the PC (§5). Kit paths: `docs/NN` =
 `TDS_Vessel_Creator/docs/`. The engine facts are filed once in kit `docs/15` §17.
 
+How the players see and pick on the chart (a whole-chart view), and rest and treasure stops, proposed 2026-11-06: `CHART_NAVIGATION.md`.
+
 ## 1. Answer
 
 **Yes, it can be built, on the game's own world map system** (read). The base campaign map is not a picture: it is a
