@@ -163,7 +163,7 @@ public class SpoolStashBrain : SpoolBuilding
         {
             Refused = true;
             SpoolServer.StashRefused++;
-            SpoolLog.Warn("player " + Owner + " placed a second Yarn Stash; taken back, one a player");
+            SpoolLog.Warn("player " + Owner + " placed a second Yarn Stash; taken back, one per player");
             Helper_Entitytools.Despawn(Master.Beingserver, false, "Limit");
             return;
         }
