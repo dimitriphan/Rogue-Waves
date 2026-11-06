@@ -150,6 +150,17 @@ public abstract class SpoolBuilding : MonoBehaviour
         return b != null && b.Worldobject != null ? b.Worldobject.GetComponent<SpoolUnitBrain>() : null;
     }
 
+    // A button of this building's own: the command made and sent to every player; 'goal', when given, is its Goalstring,
+    // which the button draws (BEE's "Off", MEND's "On", COLOUR's colour).
+    protected Link_Command Button(string command, string link, string goal = null)
+    {
+        Link_Command c = Helper_Entitytools.Createcommand(Master, command, link, false, true);
+        if (c != null && goal != null)
+            c.Goalstring = goal;
+        Helper_Entitytools.Updatecommand(Master, link, "", false, false);
+        return c;
+    }
+
     // Owner-only message, sent through the owner's vessel when it is around (a building that is going can't carry it).
     protected void Tell(int code)
     {
@@ -227,8 +238,7 @@ public class SpoolStashBrain : SpoolBuilding
     {
         if (beeCommand != null || SpoolContent.Bee == null)
             return;
-        beeCommand = Helper_Entitytools.Createcommand(Master, SpoolData.BeeCommand, SpoolData.BeeLink, false, true);
-        SetBee(BeeUsed);
+        beeCommand = Button(SpoolData.BeeCommand, SpoolData.BeeLink, BeeUsed ? "Off" : "");
     }
 
     // BEE greys out once it has sewn this Tide: its Goalstring is "Off", synced to every player (PATCH's way).
@@ -388,8 +398,9 @@ public class SpoolLoomBrain : SpoolBuilding
             if (!sewing)
                 Spin();
         }
-        if (SeamCount > 0)
-            KeepSeams();
+        int seamCount = SeamCount;
+        if (seamCount > 0)
+            KeepSeams(seamCount);
     }
 
     void Strike()
@@ -472,9 +483,10 @@ public class SpoolLoomBrain : SpoolBuilding
     {
         if (SpoolContent.Colour == null)
             return;
-        if (colourCommand == null && (!Master.Commandlistserver.TryGetValue(SpoolData.ColourLink, out colourCommand) || colourCommand == null))
-            colourCommand = Helper_Entitytools.Createcommand(Master, SpoolData.ColourCommand, SpoolData.ColourLink, false, true);
-        SyncColour();
+        if (colourCommand != null || (Master.Commandlistserver.TryGetValue(SpoolData.ColourLink, out colourCommand) && colourCommand != null))
+            SyncColour();
+        else
+            colourCommand = Button(SpoolData.ColourCommand, SpoolData.ColourLink, Colour);
     }
 
     // run: false, so the update isn't pressed again.
@@ -525,7 +537,7 @@ public class SpoolLoomBrain : SpoolBuilding
     void ShowHeld() { ModKitCounter.Set(Master, "Thread", Held); }
 
     // Keeps SeamCount Seams: one that falls comes back Seamrespawn seconds later; new ones (a fresh buy) come at once.
-    void KeepSeams()
+    void KeepSeams(int count)
     {
         for (int i = seams.Count - 1; i >= 0; i--)
             if (seams[i] == null || seams[i].Master == null)
@@ -533,7 +545,7 @@ public class SpoolLoomBrain : SpoolBuilding
                 seams.RemoveAt(i);
                 seamDue.Add(Time.time + Param("Seamrespawn_Base", 10f));
             }
-        while (seams.Count + seamDue.Count < SeamCount)
+        while (seams.Count + seamDue.Count < count)
             seamDue.Add(Time.time + 0.5f);
         for (int i = seamDue.Count - 1; i >= 0; i--)
         {

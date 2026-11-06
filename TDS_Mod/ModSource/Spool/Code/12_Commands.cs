@@ -10,6 +10,8 @@ public class SpoolPatchSelect : Entity_Command_Itemselect_Base
 {
     GameObject ui;
     bool keyed;
+    int shownCost = -1;
+    string costLine;   // the price line, made again only when the price changes
 
     public override void Activate(bool Keybind)
     {
@@ -72,7 +74,12 @@ public class SpoolPatchSelect : Entity_Command_Itemselect_Base
         // The price comes from the server in the command's Goalvalue (Quick Patch lowers it); 0 before it first syncs.
         Getnewlink();
         int cost = Link.Goalvalue > 0f ? Mathf.RoundToInt(Link.Goalvalue) : SpoolData.PatchCost;
-        Label("Desc", distance > SpoolData.PatchRange + 0.6f ? "Too far away" : cost + " Thread: mend " + Mathf.RoundToInt(SpoolData.PatchHeal * 100f) + "%");
+        if (cost != shownCost)
+        {
+            shownCost = cost;
+            costLine = cost + " Thread: mend " + Mathf.RoundToInt(SpoolData.PatchHeal * 100f) + "%";
+        }
+        Label("Desc", distance > SpoolData.PatchRange + 0.6f ? "Too far away" : costLine);
     }
 
     public override void Send()

@@ -4,10 +4,7 @@
 // aura node, Seam Allowance, Dyed in the Wool and Seam Squad. (Written 2026-11-06, not yet run on the PC.)
 public static partial class SpoolSelfTest
 {
-    static void LoomTopUp(long owner)
-    {
-        Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=5000;Blueaura=5000;Yellowaura=8000"), owner, Helper_Resources.Styles.Default);
-    }
+    static void LoomTopUp(long owner) { Aura(owner, "Redaura=5000;Blueaura=5000;Yellowaura=8000"); }
 
     // The nearest aura node within 'reach' (tagged Resource with a Healthresource: dens are tagged Resource too).
     static Entity_Master LoomNode(Vector3 at, float reach)

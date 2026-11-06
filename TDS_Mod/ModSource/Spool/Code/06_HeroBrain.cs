@@ -7,7 +7,7 @@ public class SpoolHeroBrain : MonoBehaviour
     public SpoolPlayer Player;
     public float PatchReady;
     public int Patches, MenuChanges, SoldByFallback, Darned;
-    public float ElbowHealth, ElbowDamage;   // Elbow Patches' Multis on Spool now (0 without)
+    float ElbowHealth, ElbowDamage;   // Elbow Patches' Multis on Spool now (0 without)
     public string LastPatch = "";
     bool started, begun, patchOff, fullWarned, stashFullWarned;
     readonly SpoolFaults faults = new SpoolFaults();
@@ -18,22 +18,8 @@ public class SpoolHeroBrain : MonoBehaviour
     public long Owner { get { return ModKitUtil.Owner(Master); } }
 
     // Quick Patch: PATCH costs less Thread and is ready sooner.
-    public int PatchCost
-    {
-        get
-        {
-            SpoolStashBrain s = Player != null ? Player.Holds("Quick") : null;
-            return s != null ? Mathf.RoundToInt(s.Param("Patchcost_Base", SpoolData.PatchCost)) : SpoolData.PatchCost;
-        }
-    }
-    public float PatchCooldown
-    {
-        get
-        {
-            SpoolStashBrain s = Player != null ? Player.Holds("Quick") : null;
-            return s != null ? s.Param("Patchcooldown_Base", SpoolData.PatchCooldown) : SpoolData.PatchCooldown;
-        }
-    }
+    public int PatchCost { get { return Player != null ? Mathf.RoundToInt(Player.Upg("Quick", "Patchcost_Base", SpoolData.PatchCost)) : SpoolData.PatchCost; } }
+    public float PatchCooldown { get { return Player != null ? Player.Upg("Quick", "Patchcooldown_Base", SpoolData.PatchCooldown) : SpoolData.PatchCooldown; } }
 
     void Update()
     {
@@ -149,8 +135,7 @@ public class SpoolHeroBrain : MonoBehaviour
     // holds it (sold or destroyed), and PATCH's price on its button for the picker (Quick Patch).
     void CheckStash()
     {
-        SpoolStashBrain elbow = Player.Holds("Elbow");
-        float health = elbow != null ? elbow.Param("Herohealth_Multi", 0f) : 0f, damage = elbow != null ? elbow.Param("Herodamage_Multi", 0f) : 0f;
+        float health = Player.Upg("Elbow", "Herohealth_Multi", 0f), damage = Player.Upg("Elbow", "Herodamage_Multi", 0f);
         if (!Mathf.Approximately(health, ElbowHealth))
         {
             elbowHealth = ModKitUtil.Keep(Master, elbowHealth, "Health", Helper_Entitytools.Modtypes.Multi, health);

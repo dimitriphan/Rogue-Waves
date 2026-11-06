@@ -120,7 +120,7 @@ public static class SpoolClient
                 case "Spool_Tuft":
                     bool lasting = n >= LongTuft;
                     n &= LongTuft - 1;
-                    SetTuft(n >> 4, position, n & 15, true, lasting ? LongLife : SpoolData.DropLife);
+                    SetTuft(n >> 4, position, n & 15, lasting ? LongLife : SpoolData.DropLife);
                     break;
                 // Remnant Bin: a tuft that ran out flies home into the Yarn Stash (told through the Stash: at is its place).
                 case "Spool_Remnant":
@@ -140,7 +140,7 @@ public static class SpoolClient
                 case "Spool_Take":
                     Run(Fly(position, master, false));
                     if (n >> 4 > 0)
-                        SetTuft(n >> 4, position, n & 15, false);
+                        SetTuft(n >> 4, position, n & 15, 0f);
                     SpoolAssets.Play("Spool_Tuft", position);
                     break;
                 case "Spool_Deliver":
@@ -274,8 +274,9 @@ public static class SpoolClient
         return go;
     }
 
-    // A new tuft, a merged one (fresh time and size), or one a carrier took from (smaller or gone).
-    static void SetTuft(int id, Vector3 at, int amount, bool fresh, float life = 0f)
+    // A new tuft, a merged one (fresh time and size: 'life' its seconds), or one a carrier took from (smaller or gone:
+    // 'life' 0, its time kept).
+    static void SetTuft(int id, Vector3 at, int amount, float life)
     {
         Tuft t;
         if (!tufts.TryGetValue(id, out t))
@@ -294,8 +295,8 @@ public static class SpoolClient
             return;
         }
         t.Amount = amount;
-        if (fresh)
-            t.Until = Time.time + (life > 0f ? life : SpoolData.DropLife);
+        if (life > 0f)
+            t.Until = Time.time + life;
         float size = Mathf.Lerp(0.7f, 1.3f, Mathf.Clamp01((amount - 1) / 6f));   // 0.42 to 0.78 wide: the 8 px tuft was 0.32 to 0.64 and hard to see
         t.Go.transform.localScale = Vector3.one * size;
     }

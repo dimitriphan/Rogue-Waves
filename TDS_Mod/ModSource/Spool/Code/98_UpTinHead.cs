@@ -5,10 +5,7 @@
 // down after so the sections that follow meet none of their buffs. (Written 2026-11-06, not yet run on the PC.)
 public static partial class SpoolSelfTest
 {
-    static void TopTierAura(long owner)
-    {
-        Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=8000;Blueaura=8000;Yellowaura=8000"), owner, Helper_Resources.Styles.Default);
-    }
+    static void TopTierAura(long owner) { Aura(owner, "Redaura=8000;Blueaura=8000;Yellowaura=8000"); }
 
     // A Thread Head placed from the build menu about 'ring' tiles from the vessel (section 6's way): slot[0], or null.
     static IEnumerator PlaceThreadHead(Entity_Master hm, long owner, float ring, List<SpoolBuilding> known, SpoolHeadBrain[] slot)

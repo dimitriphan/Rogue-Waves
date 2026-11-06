@@ -18,26 +18,19 @@ public class SpoolPlayer
     public int Room { get { return Home != null ? Mathf.Max(0, Cap - Stash) : 0; } }
 
     // Roomy Pockets: Spool carries more and picks Thread up from farther away.
-    public int CarryCap
-    {
-        get
-        {
-            SpoolStashBrain s = Holds("Pockets");
-            return s != null ? Mathf.RoundToInt(s.Param("Carry_Base", SpoolData.CarryHero)) : SpoolData.CarryHero;
-        }
-    }
-    public float Reach
-    {
-        get
-        {
-            SpoolStashBrain s = Holds("Pockets");
-            return s != null ? s.Param("Pick_Base", SpoolData.PickHero) : SpoolData.PickHero;
-        }
-    }
+    public int CarryCap { get { return Mathf.RoundToInt(Upg("Pockets", "Carry_Base", SpoolData.CarryHero)); } }
+    public float Reach { get { return Upg("Pockets", "Pick_Base", SpoolData.PickHero); } }
 
     // This player's Yarn Stash while it stands and holds the upgrade, else null. Several of its upgrades land on Spool
     // (like Boutman's Bouthouse): they last as long as the Stash does, and go when it is sold or destroyed.
     public SpoolStashBrain Holds(string key) { return Home != null && Home.Has(key) ? Home : null; }
+
+    // One number of a Stash upgrade while it is held, else 'fallback'.
+    public float Upg(string key, string name, float fallback)
+    {
+        SpoolStashBrain s = Holds(key);
+        return s != null ? s.Param(name, fallback) : fallback;
+    }
 }
 
 public class SpoolDrop
@@ -366,13 +359,19 @@ public static class SpoolServer
         int team = ModKitUtil.Team(from);
         foreach (Entity_Master e in ModKitUtil.Area(at, radius, ModKitUtil.Friends(from)))
         {
-            if (e == except || !ModKitUtil.Alive(e) || ModKitUtil.Team(e) != team || e.Taglistserver == null || e.Taglistserver.Contains("Core"))
-                continue;
-            if (ModKitUtil.Health(e) >= ModKitUtil.MaxHealth(e) - 0.01f)
-                continue;
-            Helper_Entitytools.Interactheal(from, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
-            ModKitUtil.Vis(from, "Spool_Mend", ModKitUtil.Pos(e), 0f);
+            if (e != except && ModKitUtil.Alive(e) && ModKitUtil.Team(e) == team && e.Taglistserver != null && !e.Taglistserver.Contains("Core"))
+                Mend(from, e, heal);
         }
+    }
+
+    // One mend: nothing at full health; the game's own heal, so it counts as healing, and the mend look on every screen.
+    static bool Mend(Entity_Master from, Entity_Master e, float heal)
+    {
+        if (ModKitUtil.Health(e) >= ModKitUtil.MaxHealth(e) - 0.01f)
+            return false;
+        Helper_Entitytools.Interactheal(from, e, new Dictionary<string, float> { { "Damage", heal }, { "Damagemulti", 1f } });
+        ModKitUtil.Vis(from, "Spool_Mend", ModKitUtil.Pos(e), 0f);
+        return true;
     }
 
     // Sewing Machine: each Tide every Loom of a player holding it mends around itself. Mending Circle: see MendingCircle.
@@ -695,17 +694,9 @@ public static class SpoolServer
             if (circle == null || !ModKitUtil.Alive(circle.Master))
                 continue;
             float share = circle.Param("Circle_Base", 0.25f);
-            foreach (SpoolBuilding b in Buildings.ToArray())
-            {
-                if (b == null || !b.Started || b is SpoolHeadBrain || b.Master == null || b.Owner != p.Owner || !ModKitUtil.Alive(b.Master))
-                    continue;
-                float max = ModKitUtil.MaxHealth(b.Master);
-                if (ModKitUtil.Health(b.Master) >= max - 0.01f)
-                    continue;
-                Helper_Entitytools.Interactheal(circle.Master, b.Master, new Dictionary<string, float> { { "Damage", max * share }, { "Damagemulti", 1f } });
-                ModKitUtil.Vis(circle.Master, "Spool_Mend", b.Pos, 0f);
-                Circled++;
-            }
+            foreach (SpoolBuilding b in Owned<SpoolBuilding>(p.Owner))
+                if (!(b is SpoolHeadBrain) && ModKitUtil.Alive(b.Master) && Mend(circle.Master, b.Master, ModKitUtil.MaxHealth(b.Master) * share))
+                    Circled++;
         }
     }
 

@@ -301,10 +301,13 @@ public static partial class SpoolSelfTest
         }
     }
 
-    static void StashAura(long owner)
+    // Aura for the tests' buys, as the costs string gives it.
+    static void Aura(long owner, string costs)
     {
-        Helper_Resources.Giveresources(ModKitUtil.Costs("Redaura=5000;Blueaura=5000;Yellowaura=5000"), owner, Helper_Resources.Styles.Default);
+        Helper_Resources.Giveresources(ModKitUtil.Costs(costs), owner, Helper_Resources.Styles.Default);
     }
+
+    static void StashAura(long owner) { Aura(owner, "Redaura=5000;Blueaura=5000;Yellowaura=5000"); }
 
     // This player's units whose stats are in, standing.
     static List<SpoolUnitBrain> StashCrafted(long owner)

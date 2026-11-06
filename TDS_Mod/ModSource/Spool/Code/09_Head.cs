@@ -54,13 +54,6 @@ public class SpoolHeadBrain : SpoolBuilding
         MoveHidden = true;
     }
 
-    Link_Command Button(string command, string link)
-    {
-        Link_Command c = Helper_Entitytools.Createcommand(Master, command, link, false, true);
-        Helper_Entitytools.Updatecommand(Master, link, "", false, false);
-        return c;
-    }
-
     protected override void Upgraded(SpoolData.Upg def)
     {
         if (def.Key == "Patchwork")
@@ -72,8 +65,7 @@ public class SpoolHeadBrain : SpoolBuilding
     {
         if (mendCommand != null || SpoolContent.Mend == null)
             return;
-        mendCommand = Helper_Entitytools.Createcommand(Master, SpoolData.MendCommand, SpoolData.MendLink, false, true);
-        SetMend(Mending);
+        mendCommand = Button(SpoolData.MendCommand, SpoolData.MendLink, Mending ? "On" : "");
     }
 
     void SetMend(bool on)

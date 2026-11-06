@@ -17,7 +17,7 @@ public class SpoolCushionBrain : SpoolBuilding
     public const float MeleeRange = 2.25f;
 
     public int Pricks, Spun, Mangled, Bursts, Splits, Dolls, Stunned;
-    public float Taken, Reflected, Delayed, Cancelled, Thimbled, DollHealed;
+    public float Taken, Reflected, Delayed, Cancelled, DollHealed;
     public Entity_Master LastAttacker;
     float spinDebt, stuffDebt, nextFront, nextUnravel, lastPrickVis;
     bool own, hurt;
@@ -95,7 +95,6 @@ public class SpoolCushionBrain : SpoolBuilding
                 float cut = Mathf.Clamp01(Param("Thimble_Base", 0.25f));
                 multi *= 1f - cut;
                 ModKitCombat.SetMulti(hit, multi);
-                Thimbled += total * cut;
                 total *= 1f - cut;
             }
             Taken += total;
@@ -192,11 +191,11 @@ public class SpoolCushionBrain : SpoolBuilding
     // reach is stunned (no walking, hardly any attacks: Argo's and Yossele's hold) and the doll mends itself.
     void Doll()
     {
-        float max = ModKitUtil.MaxHealth(Master);
-        if (!ModKitUtil.Alive(Master) || max <= 0f || ModKitUtil.Health(Master) >= max * Param("Voodoo_Base", 0.5f))
-            return;
         int wave = SpoolUtil.Wave();
         if (wave == dollWave)
+            return;
+        float max = ModKitUtil.MaxHealth(Master);
+        if (!ModKitUtil.Alive(Master) || max <= 0f || ModKitUtil.Health(Master) >= max * Param("Voodoo_Base", 0.5f))
             return;
         dollWave = wave;
         Dolls++;
