@@ -83,13 +83,15 @@ def sprite(e, asset, cache, dry):
     folder, _, _, rows = lay
     target = os.path.join(build.MOD, 'ModSource', part, 'Aseprite', name + '.aseprite')
     tags = read_existing(target)
-    # A frame not changed this time keeps an earlier hand edit of it (the page diffed against the merged row).
+    # A frame not changed this time keeps an earlier hand edit of it (the page diffed against the merged row);
+    # a frame the file holds unedited follows the code as it is now.
     col = 0
     for t in e['tags']:
         kept = tags.get(t['name'])
         if kept and len(kept[0]) == t['count']:
-            for k in range(t['count']):
-                if col + k not in changed:
+            old = dict(p.split('=', 1) for p in kept[1].split(';') if '=' in p).get('gen', '').split(',')
+            for k in range(t['count']):  # only frames Apply already treats as edited (CRC differs from the old gen)
+                if col + k not in changed and (k >= len(old) or '%08x' % zlib.crc32(kept[0][k]) != old[k]):
                     new[col + k] = kept[0][k]
         col += t['count']
 
