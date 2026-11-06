@@ -42,11 +42,12 @@ each island leads to, where the stretch closes. The player in game never sees th
 | Click a lit room to go there | Click a lit island to vote for it; the stock cards stay for a gamepad (§3.3) |
 | Hovering a room shows what it is | Hovering an island (or the card under the pad's focus) shows its card and lights every lane it leads on to (§3.4) |
 
-![the chart view at a vote](../concepts/art/chart_view_vote.png)
+![the chart view at a vote, in the game's look](../concepts/art/chart_look_vote.png)
 
-*The chart view at row 4's vote, seed 20261009 (the spotlight's chart) with the stops of §4: three maps won (row 2's
-was a Wreck), one retry spent, the choices a Cove (A, under the pointer) and a map (B). Plain shapes to agree the
-layout on, from `concept-tools/sea_chart_view.py`; the game draws its own map names.*
+*The chart view at row 4's vote, in the game's own UI look (§3.6): seed 20261009 (the spotlight's chart) with the
+stops of §4; three maps won (row 2's was a Wreck), one retry spent, the choices a Cove (A, under the pointer) and a map
+(B). From `concept-tools/sea_chart_look.py` over a stand-in scene; the first layout draft, in plain shapes, is
+`chart_view_vote.png` (`sea_chart_view.py`).*
 
 ## 3. The chart view
 
@@ -60,10 +61,10 @@ is taken from the map that is loaded, not from the name.
 | Part | What it shows |
 | --- | --- |
 | Header | "SEA CHART", "Row N of 10", the stretch, three retry pips (spent ones hollow; the chart's name already carries the retries left, `04_World.cs`); the seed small, for bug reports |
-| Rail | Row numbers H, 1-10; "STRETCH 1" and "STRETCH 2" brackets; rows 5 and 10 in coral; the next row's number bright |
-| Lanes | Sailed: thick teal. Reachable from here: Foam. The hovered choice's way on: Foam, thicker. Out of reach: faint |
-| Islands | A disc per map with its Danger number; Breakers coral and ringed; weather icon; a Cove pale with its rest mark; a Wreck with a chest on its shoulder; sailed ticked; harbour "H"; out of reach at a third of the strength |
-| Choices | A double ring and a letter tag A, B, C (the tag filled when it is your vote) |
+| Rail | Row numbers H, 1-10; a thin rule beside each stretch; rows 5 and 10 in coral; the next row's number bright |
+| Lanes | Sailed: a solid white rule. Reachable from here: dashed. The hovered choice's way on: dashed, brighter. Out of reach: faint |
+| Islands | A square tile per island (§3.6): a map's tile shows its Danger; Breakers coral; the weather's icon on its corner; a Cove's and a Wreck's tiles their line icons; sailed tiles dark with a tick; the harbour an anchor; out of reach at a third of the strength |
+| Choices | White corner brackets and a letter A, B, C (brighter brackets on your vote) |
 | You | The boat marker beside the island the party stands on |
 | Legend | Map (number = Danger), Breaker, sailed or harbour, can sail to next, the three weathers, out of reach, Cove, Wreck |
 | Footnote | "A tie goes to A; no votes take A" |
@@ -83,7 +84,7 @@ today's, `SEA_CHART.md` §7 step 2); there is no vote then, so the view shows fo
 | On the boat with no vote (the host is asked, `05_Boat.cs` `AskHere`) | As the map vote | as the map vote |
 | Any time on a chart or in a map's break | The chart view, read only, toggled by a key (~M~) | the key again, or a close button |
 
-![the boat while it sails](../concepts/art/chart_view_boat.png)
+![the boat while it sails](../concepts/art/chart_look_boat.png)
 
 *On the boat: the 3D chart stays as built and proven; the banner and the mini chart say where the boat goes.*
 
@@ -126,6 +127,29 @@ are at least a lane apart, so ~0.5 s~ of the networked boat's heading names the 
   field the question rides on (`RW_Ask`, proven); the tally itself is untested. Default ~later~.
 - **Unknown islands** (Slay the Spire's "?": map and weather hidden until the party is a row away): not in his pick;
   easy to add later with the same second stream (§4.3).
+
+### 3.6 The look: the game's own UI (Dimitri, 2026-11-06 05:23Z: "more inline with the current TDS art style and theme")
+
+The first draft drew the chart as a board of its own (a rounded panel, discs, heavy type). The game's UI is lighter,
+and the view now borrows every piece from what the stock dialog, VENDCINT, the objective board and the HUD show in
+the PC round 4 pictures (his `round4_for_your_eye.png`):
+
+| Piece | The game's | The chart view |
+| --- | --- | --- |
+| Background | The choice dialog has no panel: the map stays, under its dim (`Fade`, kit `20` §2) | No panel: the chart floats on the same dim, a little darker on its side so the lanes read over a busy map |
+| Title | Thin capitals, a small glyph at the left, a rule under the title that turns down the right side (`Title` with `Line`) | "SEA CHART" and "WHERE NEXT?" the same, the glyph the pack's 12 px crest |
+| Caption | One short line under the cards, its parts between "•" ("No foe hurts the Basin this Tide • Pays Pure Aura 2 to everyone") | One line under the chart ("Row 4 of 10 • Stretch 1 • 2 retries left") and one under the cards for the hovered island ("The Cove • No map • A retry back (2 to 3) • Leads on to …"), so no floating hover box |
+| Tiles | Square cards, Rogue Teal or coral, a lighter one-pixel rim; a dark tile for "back" | An island is a small square tile: teal, coral for a Breaker, dark once sailed |
+| Icons | Small pixel icons, white line drawings with an open interior (kit `TDS_Vessel_Creator/docs/03` §2) | Cove, Wreck, harbour, tick and boat drawn the same way, 12 × 12; the weathers' existing icons |
+| Selection | White corner brackets around the selected thing | The choices and the boat's destination in white corner brackets |
+| Banner | "TIDE APPROACHING": a filled bar with a lighter rim, thin capitals | "SAILING TO THE COVE" in the same shape, Rogue Teal |
+| Type | the game's thin sans | the HUD's TMP font (§6); the mockups use Inter Light as a stand-in |
+
+The theme comes in through the sea, not ornament: dashed lanes like a course plotted on a chart, the anchor at the
+harbour, a boat for "you are here", the Cove's little fire and the Wreck's chest, and Storm Coral only on the rows
+that close a stretch (`docs/STYLE.md`: pastel mains, one saturated accent, no black outlines). Over a real map the
+view looks like the third picture in his project files (`concepts/chart_navigation_2026-11-06/`, over a round 4
+screenshot; not committed, as game pictures stay out of the repository).
 
 ## 4. Rest and treasure stops (Dimitri's pick, 2026-11-06 02:28Z)
 
@@ -177,7 +201,7 @@ weather billboard. A campaign started before the change continues without stops.
 
 | File | Change | Here | PC |
 | --- | --- | --- | --- |
-| new `26_ChartView.cs` | An own Canvas (Screen Space Overlay, `CanvasScaler`, the save's `Settings/Uiscale`, sorted above the choice dialog's dim but on the left half only; kit `20` §4); the full and mini layouts from `RWChart.Chart`, the route and the choices; lanes as stretched `Image`s, discs from one circle sprite made in code, labels in a TMP font copied from a HUD label, icons from `RWIcons`; the layout math in one static function the self-test can call | compiles | its look, UI scale, sorting against the dialog, the Setup panel, pause and the HUD; the layout's counts (self-test) |
+| new `26_ChartView.cs` | An own Canvas (Screen Space Overlay, `CanvasScaler`, the save's `Settings/Uiscale`, sorted above the choice dialog's dim but on the left half only; kit `20` §4); the full and mini layouts from `RWChart.Chart`, the route and the choices; lanes as stretched `Image`s (dashed from a small repeating texture made in code), square tiles and corner brackets as `Image`s, the stock dialog's title-and-rule copied from `Bla_Ui_Confirmation`'s `Title`, labels in a TMP font copied from a HUD label, icons from `RWIcons`; the layout math in one static function the self-test can call | compiles | its look, UI scale, sorting against the dialog, the Setup panel, pause and the HUD; the layout's counts (self-test) |
 | `11_Dialog.cs` | The letter on each card; the cards placed on the right half while the view is up (they are centred today); `Choose(name)`; which card holds the pad's focus (`EventSystem.current.currentSelectedGameObject`), for the highlight | compiles | the placement after the dialog's slide-in; the focus read with a pad |
 | `20_Vote.cs` | Open the view with every map question, pass the choices and letters, close it at `CloseMap`; a click on a lit island answers through `Choose`; a second click sends a new vote; the Cove's second question with its row in the question (`M:<row>:<cols>`), its winner to `RW_Campaign_After`; the Wreck's Trinket pick after its win | compiles | **whether clicks reach the view sorted above the dialog without upsetting the dialog** (if not, the chart stays a picture and the cards pick: the fallback costs nothing); a client's re-vote reaching the host; the Cove's second question on a client |
 | `05_Boat.cs` | The banner and the mini chart while the boat sails (the winner from the boat's heading, §3.2); the view beside `AskHere`'s dialog; the Cove's stop: arrive, gift, save, banner, warp, sail on; the host asked again at a Cove picked on the boat | compiles | a client's banner in a two-player round; a code-built stop with no map (a `Macro_Nodelink_Add`, or a map node the host never selects); the chart-to-chart warp with the boat up |
@@ -187,7 +211,7 @@ weather billboard. A campaign started before the change continues without stops.
 | `21_Difficulty.cs`, `14_Run.cs`, `24_Trinkets.cs` | A Wreck plays one row ahead; its pay | compiles | the numbers in the log |
 | `12_Menu.cs` or the view | The key (~M~) read with `InputSystem.Keyboard.current`, ignored while a chat or text field has focus, never while the choice dialog is up | compiles | no clash with the game's keys; typing "m" in chat |
 | `99_SelfTest.cs`, `97_Shots.cs` | New checks CV1-CV12 (§8) and pictures of the vote and the sailing boat for his eye | compiles | runs in the self-test |
-| `08_Icons.cs`, temporary art | 12 px Cove and Wreck icons in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
+| `08_Icons.cs`, temporary art | 12 px line icons (Cove, Wreck, harbour, tick, boat; `sea_chart_look.py` `PIX`) in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
 
 No kit change is needed to write it; anything the PC teaches goes to kit `docs/20` and the pitfalls then. On his go,
 scope `04` [Sea Chart] gains "Navigation" and "Stops" lines pointing here, with this page's defaults in tildes.
