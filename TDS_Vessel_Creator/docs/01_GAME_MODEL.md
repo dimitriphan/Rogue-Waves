@@ -151,6 +151,11 @@ network prefab**; `Entity_Master.Being` (synced) carries the being's Objectname 
 - On an entity: `Helper_Entitytools.Createcommand(master, commandObjectName, link, ...)` → `Link_Command {Goalobject,
   Goalposition, Goalvalue, Goalstring, Controllable, Statechange}`; `Updatecommand(master, link, json, server, run)`
   syncs it to `Commandlist` and, **if `run`**, invokes `Master.Command` handlers (and `Action` on a state change).
+  Whatever `run` is, a link with `Statechange` on sets `State` to the link's name (on: the AI state links such as Idle
+  and Attack, and the stock buttons Move, Movelinear, Build, Sell and the Merchant's Spawntype, Spawnelite and
+  Contracted; off: `Buildoption*`, `Upgrade*` and the pack's own links): switch it off around a sync-only update
+  (pitfall #176).
+  The buttons are drawn from the synced `Commandid` (never changed by an update) and only for `Controllable` links.
 - The vessel's build buttons are commands `Buildoption1..4` with `Goalstring` = buildable id, `Goalvalue` 1.
 - Built-in UI classes: `Entity_Command_Simple` (one-click button), `Entity_Command_Itemselect_Base` (point-and-click
   picker, as Sell and Fie's Reroute use), `Entity_Command_Move`.

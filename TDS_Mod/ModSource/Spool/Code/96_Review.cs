@@ -30,7 +30,7 @@ public static partial class SpoolSelfTest
             yield return step;
         }
         freeze = false;
-        Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups);
+        Log("DONE pass=" + pass + " fail=" + fail + " setup=" + ModKitTest.Setups + "; " + PackNote());
         phase = 9;
     }
 

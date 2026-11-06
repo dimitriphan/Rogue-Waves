@@ -162,8 +162,9 @@ Master.Command += OnCommand;     // (string command, string json, bool server)
 
 **Cooldown on the button**: the server sets `hookCommand.Goalstring = "Off"` and calls
 `Updatecommand(Master, link, "", false, false)`: that syncs the command to every client **without running it**
-(`run = true` would invoke `OnCommand` again). The button class reads `Link.Goalstring` in `Render` and greys its
-`Icon` child. A stateful building button (COSTUME) does the same with `Goalstring`/`Goalvalue` for its label.
+(`run = true` would invoke `OnCommand` again). It still sets the entity's `State` to the link's name when the link's
+`Statechange` is on (a unit's "Move" is): switch that off around such an update (pitfall #176). The button class
+reads `Link.Goalstring` in `Render` and greys its `Icon` child. A stateful building button (COSTUME) does the same with `Goalstring`/`Goalvalue` for its label.
 
 **Picker** (`Entity_Command_Itemselect_Base`, like Sell): override `Visobjs` (borders `Sellborder`/`Sellfromborder`
 and the prompt `Ui_Command_Sell`, never null), `Running` (hover feedback from `Game_Client_Mouseobject.Master`),

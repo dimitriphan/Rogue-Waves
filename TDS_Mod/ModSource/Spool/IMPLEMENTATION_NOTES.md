@@ -1,5 +1,17 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-06: the Thread Head walks with the pack loaded (compiled here, not yet run in game)
+
+PC round 6's four Thread Head fails (RETURN, SPOT, the hand-over, the walk back; only with the whole pack loaded) came
+from B16's hide: its `Updatecommand(Master, "Move", "", false, false)` set the unit's state to "Move" without a walk, and
+the stock movement AI starts walks only on a state change. `SpoolHeadBrain.HideMove` now sets the `Move` link's
+`Controllable` false (no button on any machine, a player's MOVE refused) and syncs it with `Statechange` off; the
+renamed copy `Command_Mob_Spoolhead_Move` is gone, so Spool alone and Spool in the pack take the same path. The
+self-test checks the hidden MOVE ("its stock MOVE has no button but stays for the walk") and says on its picked and DONE
+lines whether Spool ran alone or with the pack. Compiled here, not yet run in game. For the PC: the Spool self-test once
+alone and once with the pack (RETURN, SPOT, the walk back all pass, the MOVE line passes); by eye, a Thread Head's panel
+shows SPOT and RETURN but no MOVE.
+
 ## 2026-11-06: PC round 5's test leftovers (compiled here, not yet run in game)
 
 Test only (`docs/reports/PC_ROUND5_2026-11-06.md` §2.1): "Pin Barrage leads to Iron Thimble alone" replaces the stale

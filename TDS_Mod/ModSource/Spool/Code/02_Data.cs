@@ -35,7 +35,7 @@ public static class SpoolData
     public const string PatchCommand = "Command_Hero_Spool_Patch", PatchLink = "Patch";
     public const string TargetCommand = "Command_Tower_Spooltin_Target", TargetLink = "Target";
     public const string SpotCommand = "Command_Mob_Spoolhead_Spot", SpotLink = "Spot";
-    public const string HiddenMoveCommand = "Command_Mob_Spoolhead_Move", MoveLink = "Move";
+    public const string MoveLink = "Move";
     public const string ReturnCommand = "Command_Mob_Spoolhead_Return", ReturnLink = "Return";
     public const string MendCommand = "Command_Mob_Spoolhead_Mend", MendLink = "Mend";
     public const string BeeCommand = "Command_Tower_Spoolstash_Bee", BeeLink = "Bee";
