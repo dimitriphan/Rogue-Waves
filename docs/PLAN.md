@@ -307,6 +307,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: input artifacts send edits back** (Dimitri: "Update older Artifacts that take input"): the Scope and
   Vessel Editors gain a Send step ("bring in my scope / vessel edits"); six old pages archived to project files and
   deleted. Index and steps: `docs/artifacts/README.md` (Log).
+- **2026-11-06: sea chart redrawn in the game's look** (Dimitri: "more inline with the current TDS art style and
+  theme"): no panel, the stock title and rule, framed square tiles, pixel icons, corner brackets (`CHART_NAVIGATION.md` §3.6,
+  `chart_look_*.png`). Docs only; not built.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1274,6 +1277,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   gallery at his pick. Reviewer's fixes: a save queued behind a failed send still runs; `invalid_argument` means view
   only; a thread's status write no longer redraws the Vessel Editor (keeps the Send bar's note and undo). Pinned: Art Bench, Scope Editor, Spotlight. Tested here: both pages headless
   against a mock store (edit, send with note, a thread's `pr`, a cleared row, phone width), no errors. No mod code.
+
+- **2026-11-06: the sea chart view redrawn in the game's look** (Dimitri, 05:23Z: "Draft a design that is more inline
+  with the current TDS art style and theme"): the first draft's board (rounded panel, discs, heavy type) replaced by the
+  stock UI's own pieces as the PC round 4 pictures show them: no panel, the chart on the dialog's dim; the stock title
+  with its glyph and the rule that turns down the right; one caption line with "•" instead of a hover box; square tiles
+  framed like the stock cards (teal, coral Breakers, slate once sailed); coloured 12 px pixel icons (Cove, Wreck,
+  harbour, boat; a white tick); white corner brackets on the choices; a banner in the HUD's "TIDE APPROACHING" shape.
+  New `concept-tools/sea_chart_look.py` (mockups `docs/concepts/art/chart_look_vote.png`, `chart_look_boat.png`; a
+  preview over a round 4 screenshot kept in the project files only). `CHART_NAVIGATION.md` §2, §3.1, §3.6, §6 and §8
+  updated; two review rounds fixed. Docs only; nothing ran on the PC.
 
 ### Decisions
 
