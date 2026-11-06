@@ -40,7 +40,9 @@ Effort xhigh. Past rounds to copy the shape of: `docs/reports/TESTING_ROUND_3_20
 4. **Self-test builds.** `Build-<Part>Mod.ps1 -Define <PART>_SELFTEST` per part, write `<h>\queue.txt`, run
    `Tools/ModKit/Build Queue` once and read the `[ModKit]` lines in Editor.log (pitfall #76: not `queue_status.txt`).
 5. **Self-tests.** `Run-SelfTests.ps1 -Vessels <Parts>`. The mode's whole flow:
-   `-Vessels RogueWavesMode -Also <the other parts> -TimeoutMinutes 30` (the 12-minute default cuts it short).
+   `-Vessels RogueWavesMode -Also <the other parts> -TimeoutMinutes 30` (the 12-minute default cuts it short). The
+   `-Also` parts must be release builds (no define): a part still in its self-test build runs its own test and takes
+   the lobby from the flow (`PC_FULL_2026-11-06.md` §3).
    Report each `*_summary.txt` in full, with the `*_map.txt` files.
 6. **Gaps launches.** Build with `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_GAPS` (add `ROGUEWAVESMODE_SHOTS` for
    pictures), then one solo launch per item: `Run-TwoPlayers.ps1 -Extra "-rwonly <rules|effects|...|light|review>"`
