@@ -394,6 +394,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.61 ($4.75 this month), 27 of 27
   answers whole (`docs/reports/BATCH_CHECKS_2026-11-07.md`, leads only, none fixed); PC round waits for his "Go".
   Docs only; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-07: the Naut sheets join the art manifest** (Dimitri: ChatGPT asked for them): `sprite_calls.py` unrolls
+  Argo's crew loop, so the preview, Art Bench and `docs/art/ASSET_MANIFEST.md` list all six (70 sheets); no other
+  sheet was missing. Tools and docs only, preview run here; no mod code, nothing on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1679,6 +1682,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/BATCH_CHECKS_2026-11-07.md`: 13 text, 38 scope rows DIFFERENT or MISSING, 11 design, 6 docs, 5 art; leads
   only. Read by hand: Spool's "The first two are" and "gets stuck in" and Yossele's "fertilizer" follow his scope's own
   words. The PC lock was free; the round waits for his "Go" in the thread. Docs only. No kit change, no pitfall.
+- **2026-11-07: the Naut sheets join the art manifest** (Dimitri, relaying ChatGPT: "What are the exact Naut
+  filenames, cell sizes, and animation rows/frame counts?"). The manifest had 64 sheets and none of Argo's six crew
+  sheets: `ArgoBuilder.WriteSprites` saves them in a `foreach` over the crews, which `lite/sprite_calls.py` skipped.
+  It now unrolls a loop over a table of string arrays; `ase_sheets.layout` names their rows `naut_<crew>_move` and
+  `naut_<crew>_tune`; `build_pack.py --manifest` rebuilt the manifest at `3e1cc93` (70 sheets, only the six Naut rows
+  added). Checked every `SaveSheet` in the four builders against the manifest: nothing else missing. The published Art
+  Bench page and the ChatGPT pack in project files predate it (rebuild on the next art send). He got the spec in the
+  thread to paste into ChatGPT. Preview run here (`run_preview.sh` Argo, six Naut PNGs); no mod code, nothing on the PC.
 
 ### Decisions
 

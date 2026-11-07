@@ -143,7 +143,10 @@ def layout(vessel, name, w, h, stages):
     # unit: 4 rows v0-v3; the only sheets 64 high, so the name isn't checked (the scaffold names a unit <Vessel>unit)
     if h == 64 and w % 16 == 0:
         u, cols = snake(rem), w // 16
-        if cols == 10:  # move 0-5 (idle is column 0), attack 6-9
+        if rem.startswith('Naut') and cols == 6:  # Argo's crew: Naut_<Crew> walks (idle is column 0), NautTune_<Crew> taps
+            tune = rem.startswith('NautTune_')
+            rows = vrows('naut_%s_%s' % (snake(rem.split('_', 1)[1]), 'tune' if tune else 'move'), 6, 'unit')
+        elif cols == 10:  # move 0-5 (idle is column 0), attack 6-9
             rows = [[(u + '_move_v%d' % i, 6, 'unit'), (u + '_attack_v%d' % i, 4, 'unit')] for i in range(4)]
         else:
             rows = vrows(u, cols, 'unit')
