@@ -1,9 +1,14 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwHzeEQKTmy1PLBLDoc6LJMC",
   "thread": "Review ChatGPT art against TDS style",
-  "state": "art",
-  "started": "2026-11-07T21:09:50Z",
-  "step": "Reading style rules",
-  "helpers": [],
-  "updated": "2026-11-07T21:09:50Z"
+  "state": "reviewing",
+  "started": "2026-11-07T21:13:24Z",
+  "step": "Eye review of the art",
+  "helpers": [
+    {
+      "task": "Art eye review",
+      "model": "Opus 5.5"
+    }
+  ],
+  "updated": "2026-11-07T21:13:24Z"
 }
