@@ -9,6 +9,7 @@ and the procedure around it. The base game's sprites are the private half: they 
 | --- | --- |
 | `CHATGPT_BRIEF.md` | Part 1 of the guide ChatGPT reads: its workflow, sizes by kind, the rules no picture may break |
 | `PROJECT_INSTRUCTIONS.md` | the text pasted into the ChatGPT Project's instructions |
+| `RECREATE_PROMPT.md` | the prompt that has ChatGPT sketch the vessels, ask Dimitri, then remake every asset, and the main menu button's look |
 | `ASSET_MANIFEST.md` | every pack sheet, icon and model: file name, size, cell, rows, Look line; generated, never edited |
 | `concept-tools/chatgpt/pixelize.py` | turns a generated picture into a clean game-size sprite and checks it; runs in ChatGPT's Python |
 | `concept-tools/chatgpt/build_pack.py` | builds the Project's files and rewrites `ASSET_MANIFEST.md` |
