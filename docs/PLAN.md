@@ -54,8 +54,8 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > is still working on it. **Review (Dimitri, 2026-11-06: "use Chat GPT to review pull requests so that you aren't
 > using Claude to review Claude"):** Codex, from his ChatGPT plan, reviews every PR against `AGENTS.md` "Code Review
 > Rules"; no Claude reviewer sub-agent. The thread answers each Codex comment (fix, or say why not) and merges once
-> Codex has reviewed the head with no P0/P1 left open; Codex comments but never approves, so its "no major issues"
-> note or a clean review is the approval. No review within an hour: comment `@codex review` once; still none an hour
+> Codex has reviewed the head with no P0/P1 left open; Codex comments but never approves, so a clean review (its
+> 👍 on the PR) is the approval. No review within an hour: comment `@codex review` once; still none an hour
 > later: leave the PR open and tell Dimitri in the thread (Codex's limits or its GitHub app). After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
 >

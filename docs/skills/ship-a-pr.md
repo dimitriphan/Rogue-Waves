@@ -54,8 +54,9 @@ reviewer sub-agent. `/code-review high` before a code PR stays, as the author's 
 
 1. Codex's comments arrive as PR events. Answer each one in its thread: fix it and say which commit, or say why not.
    It marks findings P0 to P3; P0 and P1 must be fixed or answered before the merge.
-2. Codex never approves: its review of the current head with no P0/P1 left open (or its "no major issues" note) is
-   the approval. A push after its review gets a new review; wait for it.
+2. Codex never approves: its review of the current head with no P0/P1 left open is the approval. A clean review is
+   a 👍 reaction on the PR; its "Codex Review Summary" comment tracks the run per commit. A push after its review
+   gets a new review; wait for it (or comment `@codex review`).
 3. No review an hour after opening or pushing: comment `@codex review` once. Still none an hour later: leave the PR
    open and tell Dimitri in the thread (his Codex limits or its GitHub app).
 

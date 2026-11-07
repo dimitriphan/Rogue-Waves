@@ -330,8 +330,9 @@ def pack_order(s):
 def main(argv):
     if len(argv) < 2:
         sys.exit(__doc__)
-    out_dir = os.path.abspath(argv[1])
-    if out_dir.startswith(REPO + os.sep):
+    out_dir = os.path.realpath(argv[1])
+    repo = os.path.realpath(REPO)
+    if out_dir == repo or out_dir.startswith(repo + os.sep):
         sys.exit('write the pack outside the repository: it can hold the game\'s sprites')
     opt = lambda k: argv[argv.index(k) + 1] if k in argv else None
     os.makedirs(out_dir, exist_ok=True)
