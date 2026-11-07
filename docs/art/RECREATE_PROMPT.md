@@ -4,7 +4,9 @@ Dimitri, 2026-11-07: a prompt for the ChatGPT Project "Rogue Waves Art" (set up 
 asset in the pack, in three stages with a stop after each: (1) sketch the vessels and the mode's other characters in
 higher detail, so he can see whether ChatGPT reads his vision; (2) read the style resources and ask him questions;
 (3) make the assets in batches, per `ASSET_MANIFEST.md`, delivered as `README.md` "Bringing art in" expects. It also
-redraws the main menu's Rogue Waves button after his reference picture (a sleek, minimal tile).
+redraws the main menu's Rogue Waves button after his reference picture (a sleek, minimal tile). Argo is not
+sketched but redesigned from scratch (Dimitri, 2026-11-07: "I want to completely redesign Argos"): Stage 1B drafts
+new concepts from his setting and theme, and his sheets wait for a pick.
 
 **How to use it.** Open a new chat inside the Project, attach his button reference picture (the white tile with a grey
 ship and » arrows), paste the block below and send. Answer each stop in plain words; "go" or "next" moves it on. Save
@@ -14,25 +16,36 @@ the PNGs it delivers to `Desktop\RogueWave\sprites\chatgpt\`, then tell a Claude
 shows `RogueWaves_Crest32`; the new look needs that thread to keep the tile's own white face and show
 `RogueWaves_MenuButton.png` in Play's 48-unit picture box instead.
 
+**After he picks an Argo concept.** Scope `09_Vessel_Argo.txt` [Identity] (Look, Sprites, maybe Towers look) and
+`docs/STYLE.md`'s Argo row still say "as shipped"; a Claude thread folds his pick into both (the scope at his word),
+and the Naut's look follows the new Argo.
+
 ```text
 You are making the art for Rogue Waves, my fan expansion for TDS - Tower Defense Strategy. Your instructions and every file in this Project still apply (01_RogueWaves_Art_Guide.md first). This chat remakes every art asset in the pack, in three stages. Stop at the end of each stage and wait for my answer; never run two stages in one reply.
 
 STAGE 1: SKETCH MY VESSELS (before reading the style rules in depth)
 Show me that you see my characters before you make anything for the game.
 1. Read Part 5 of the guide (my concepts), the vessel rows of Part 2's table, his_sprites.png, and the pack_*.png contact sheets. Where they disagree, the newer word wins: Spool is sage green now (plush 93CCA1 / 60A871), not the purple Part 5 still describes.
-2. Make one higher-detail character sheet per vessel: Yossele, Spool, Uloe, Argo. Each is one picture with a front three-quarter view facing right and a back view, about 128 pixels tall, still pixel art with flat colours and light from the upper left, but with more detail than the 32 px game sprite allows. Keep each silhouette and colour from my sprites; add detail, don't redesign.
+2. Make one higher-detail character sheet per vessel: Yossele, Spool, Uloe (Argo comes in Stage 1B). Each is one picture with a front three-quarter view facing right and a back view, about 128 pixels tall, still pixel art with flat colours and light from the upper left, but with more detail than the 32 px game sprite allows. Keep each silhouette and colour from my sprites; add detail, don't redesign.
    - Yossele: the patient clay golem. Round head with a see-through hole (it is the mouth), green eyes beside it at different heights, a two-leaf sprout on a short stalk and a second sprout off the left shoulder, a dark slate V at the neck, four long root-like limbs that reach the ground.
    - Spool: a hooded sage plush whose whole face is a stitched opening (light and dark stitches around a dark green hollow), two small yellow eyes looking out, a pink tongue hanging from the right, white glove hands held out, short legs, and its own severed arm on the floor with white cotton stuffing spilling out (not a tail).
    - Uloe: light personified. A pale blue light-bulb head with yellow glints, a filament face (two arched dark blue eyes over a wide U), a ribbed screw base on a long steel lamp post that widens into a foot, a yellow light stroke slanting down on each side, a power cord running to a two-prong plug on the left.
-   - Argo: the deep sea diver who went down to find the bottom of the Basin and never quite came back up. Bulky round brass dome with a porthole and pale eyes in the dark, riveted breastplate, blue suit, brass mitts on the hips, dark boots.
 3. Then one line-up of the mode's other characters at the same detail: Yossele's Cordyfriend; Spool's Crafted (Dart, small Dart, Mangled, Seam, Stitched, small Stitched) and the Thread Head; Uloe's Photon; VENDCINT the shopkeeper. Take each one's look from its current sheet (pack_*.png) and its scope Look line (docs/scope/ on GitHub).
 4. Under each picture, list in a few short lines what you were sure of and what you guessed. Then stop and ask me what you got wrong.
+
+STAGE 1B: REDESIGN ARGO FROM SCRATCH
+When I have answered Stage 1, draft new concepts for Argo. I want a complete redesign: his current sprite (the bulky brass-dome diver with hands on the body) is not a constraint, only his setting and theme are. Read docs/scope/09_Vessel_Argo.txt on GitHub first. What to build on:
+   - Setting: the deep of the Basin, in a pack about the unexpected: rogue waves, flotsam, things the sea takes back. Lore: "Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough." His title is Deep Sea Diver.
+   - How he plays: a sturdy, slow melee vessel whose wrench swings hit two foes at once. No walls; he controls the field: slows, pins, reels foes in (Tether, Anchor Line, Reel, Undertow), deep water, and Drill Rigs that sink a Fathom each Tide. A crew of small divers, the Nauts (Port, Starboard, later Bosun), tune his towers.
+   - His towers and traps: Scatter Cannon, Harpoon Gun, Drill Rig, Miner's Base (a diving bell), sea traps (Crushing, Kelp, Salt, Trench, Undercurrent).
+   - Earlier rounds with me kept the dome diver; what did not land was odd containers for a head (bell jar, fish tank, globe) and crude shading. What did land was a detailed, classic, readable silhouette.
+Make 5 concepts, each a clearly different take on who Argo is (how human he still is, what the deep has made of him, what era his gear is from, how he carries the wrench). For each concept, one picture with: a front three-quarter view facing right and a back view at about 128 pixels tall in the same pixel style as Stage 1; a 32 px game-size mock-up of the front view beside it (19-28 px tall, the house rules: no outline, no pure black, nothing in the foes' magenta and purple, hue 270-320) to prove it still reads in game; a small Naut in the same design. Under each, a name, two lines on the idea, and the colours with hex values. Then stop and ask me to pick one, mix them, or ask for another round.
 
 STAGE 2: READ THE STYLE RESOURCES, THEN ASK ME
 When I say go, read the whole guide (Parts 1-6), 03_palettes.txt, the game_*.png contact sheets, and open 04_pack_sheets.zip and 05_game_sheets.zip in Python to measure real sizes, heights and colours. Fold my Stage 1 corrections in.
 Then ask me your clarifying questions in one numbered list, at most 15, each with the answer you would pick if I said "defaults". Cover at least:
 - which assets to remake and in what order (my suggestion below), and whether Yossele's sheets marked "final" (my own reshade) are remade or skipped;
-- Argo: keep his shipped look, or one of the diver takes (Barnacled, Angler, Hollow, Passenger, Pressure Hull);
+- Argo: the details of the concept I picked in Stage 1B (colours, the wrench, how much changes in each animation), and whether his towers' look (brass domes, portholes, rivets) should follow the new design;
 - how far a remake may move from the current version (polish only, or a new drawing in the same silhouette);
 - full animation sheets, or key frames only for Claude and me to fill in;
 - the main menu button (below);
@@ -44,7 +57,7 @@ Work through Part 6 of the guide (the asset manifest) in batches, following Part
 1. The main menu button picture.
 2. The icons (90): Directions, then Trinkets, then Cardinals, then the RogueWaves_ UI icons.
 3. The minions and units, then VENDCINT.
-4. Per vessel (Spool, Uloe, Argo, then Yossele if I said yes): the key frame first (idle_v0, frame 0) for my OK, then idle and move, attack, the vessel's own action sheet, fall and land, then its UI pieces (icon, splash, end stats, journal tab, ready-up, mini sheet).
+4. Per vessel (Spool, Uloe, Argo in the concept I picked, then Yossele if I said yes): the key frame first (idle_v0, frame 0) for my OK, then idle and move, attack, the vessel's own action sheet, fall and land, then its UI pieces (icon, splash, end stats, journal tab, ready-up, mini sheet).
 5. Towers and buildings are 3D models built in code: only if I ask, concept pictures, front and three-quarter view.
 Each batch is about 6 to 10 assets. For each asset deliver the game-size PNG under its exact file name, its _x8 preview, and one line: what it is and what 02_pixelize.py printed. End every batch with a progress line (done / left / skipped, and which are key frames only) and stop until I say "next". Never invent a file name: ask if an asset is not in Part 6.
 
