@@ -8,7 +8,8 @@ under the same rules (Dimitri, 2026-11-07). Pull requests base on `claude/phase-
 
 ## Code Review Rules
 
-These rules bind whoever reviews: Codex, or the Claude reviewer standing in for it. Review for real defects and rule breaks. Leave out style, wording and formatting, and don't flag compile errors:
+These rules bind whoever reviews: Codex, or the Claude reviewer standing in for it. Review for real defects and rule
+breaks. Leave out style, wording and formatting, and don't flag compile errors:
 the PR's thread compiles every changed part with `TDS_Mod/Tools/cloud-check` and says so in the PR.
 
 Flag as P0:

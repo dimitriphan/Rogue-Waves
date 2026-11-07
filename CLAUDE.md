@@ -27,9 +27,8 @@ works) > this file. **Every session** reads `docs/PLAN.md` Part C "Now" (state),
 | A failing self-test or PC-round bug | `docs/09_PITFALLS.md` by symptom first, then a debugging skill |
 | A chart for a report | `dataviz` |
 
-Skills that assume a test runner, worktrees, subagents or their own handoff file (superpowers' process skills,
-`handoff`) don't fit: design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagents only when
-Dimitri or `docs/PLAN.md` asks. `/run` can't start the game here; the PC does. A procedure repeated three times (a PC
+Skills that assume a test runner, worktrees, subagents or their own handoff file (superpowers', `handoff`) don't fit:
+design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagents only when Dimitri or PLAN asks. `/run` can't start the game here; the PC does. A procedure repeated three times (a PC
 round, a scope fold-in) is worth proposing as a project skill; the drafted ones are in `docs/skills/`.
 
 ## Rules the code doesn't show
@@ -40,8 +39,8 @@ round, a scope fold-in) is worth proposing as a project skill; the drafted ones 
 - Never commit the game's binaries, base-vessel game sprites or anything from `/mnt/project-files`; overwrite a file
   there only at Dimitri's word. Nothing touches his PC without his OK in the thread.
 - Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Codex reviews each one
-  (`AGENTS.md`), a Claude reviewer after two silent hours; Claude merges once that review leaves no open P0/P1 and
-  cloud-check is clean (PLAN Part A "Merging"), merge commits. Each PR edits Part C "Now": base's entries first, yours last, three lines at most, detail in the Log.
+  (`AGENTS.md`; a Claude reviewer if Codex stalls); Claude merges once that review leaves no open P0/P1 and cloud-check
+  is clean (PLAN Part A "Merging"), merge commits. Each PR edits Part C "Now": base first, yours last, 3 lines max.
 
 ## Map
 

@@ -56,9 +56,11 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > Rules"; no Claude reviewer sub-agent while Codex answers. The thread answers each Codex comment (fix, or say why not) and merges once
 > Codex has reviewed the head with no P0/P1 left open; Codex comments but never approves, so a clean review (its
 > 👍 on the PR) is the approval. **Fallback (Dimitri, 2026-11-07, for when his ChatGPT usage runs out):** no
-> review within an hour: comment `@codex review` once; still none an hour later: a Claude reviewer sub-agent (Opus
-> 5.5) runs `/code-review high` on the head under the same rules, the thread fixes what it raises, notes in the PR
-> body that Claude reviewed in Codex's place, and merges once that review is clean and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
+> review within an hour: comment `@codex review` once; still none an hour later, or Codex answers that its usage
+> limit is reached: tell Dimitri in the thread, and a Claude reviewer sub-agent (model: `docs/PROJECT_SETUP.md`
+> "Model per role", reviews) runs `/code-review high` on the head, labelling findings P0-P3 under the same rules; the
+> thread fixes or answers each P0/P1, the same reviewer re-reviews the new head (no new Codex wait), the PR body notes
+> that Claude reviewed in Codex's place, and the thread merges once no P0/P1 is open and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
 >
 > **End of every session.** Update Part C "Now" (done / next / blocked, three lines; fold finished items into
@@ -387,8 +389,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Stage 1B drafts 5 Argo concepts from his scope `09` setting and theme, with a Naut each; his sheets wait for a pick,
   then scope `09` Look and `docs/STYLE.md`'s Argo row change at his word. Docs only.
 - **2026-11-07: Claude stands in when Codex stalls** (Dimitri: "Yes", to a Claude fallback if ChatGPT runs out of
-  usage): no Codex review two hours on (one `@codex review` between), a Claude sub-agent runs `/code-review high`, the
-  PR notes it, merge once clean (Part A "Merging", ship-a-pr, `AGENTS.md`, `CLAUDE.md`). Docs only.
+  usage): no Codex review two hours on (one `@codex review` between) or Codex out of usage, a Claude sub-agent reviews
+  under `AGENTS.md`'s P0-P3 (Part A "Merging", ship-a-pr, `CLAUDE.md`). Docs only; PR #169 was its first use.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1664,8 +1666,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   that allows Claude to review the pull requests?", then "Yes" to the offered rule). Codex still reviews every PR. No
   Codex review of the head an hour after opening or pushing: the thread comments `@codex review` once; still none an
   hour later: a Claude reviewer sub-agent (Opus 5.5) runs `/code-review high` on the head under `AGENTS.md` "Code Review
-  Rules", the thread fixes what it raises, notes in the PR body that Claude reviewed in Codex's place, and merges with a
-  merge commit once that review and cloud-check are clean. Written into Part A "Merging", `docs/skills/ship-a-pr.md`
+  Rules" with P0-P3 labels, the thread tells Dimitri, fixes or answers each P0/P1, has the same reviewer re-review the
+  new head, notes in the PR body that Claude reviewed in Codex's place, and merges with a merge commit once no P0/P1 is
+  open and cloud-check is clean. Codex answering that its usage limit is reached starts the fallback at once. PR #169
+  was its first use (Codex hit its usage limit on the `@codex review`). Written into Part A "Merging", `docs/skills/ship-a-pr.md`
   "Review" and "Merge" step 0, `AGENTS.md` and `CLAUDE.md`; the project settings carry the same paragraph. Docs only.
 
 ### Decisions

@@ -50,21 +50,24 @@ Rules from `CLAUDE.md`, `docs/PLAN.md` Part A "Merging" and Part C "Now". Dimitr
 ## Review (Codex, Dimitri 2026-11-06)
 
 Codex, from Dimitri's ChatGPT plan, reviews every PR on its own against `AGENTS.md` "Code Review Rules"; no Claude
-reviewer sub-agent while Codex answers (fallback in step 3). `/code-review high` before a code PR stays, as the author's own check.
+reviewer sub-agent while Codex answers (fallback in step 3). `/code-review high` before a code PR stays, as the
+author's own check.
 
 1. Codex's comments arrive as PR events. Answer each one in its thread: fix it and say which commit, or say why not.
    It marks findings P0 to P3; P0 and P1 must be fixed or answered before the merge.
 2. Codex never approves: its review of the current head with no P0/P1 left open is the approval. A clean review is
    a 👍 reaction on the PR; its "Codex Review Summary" comment tracks the run per commit. A push after its review
    gets a new review; wait for it (or comment `@codex review`).
-3. No review an hour after opening or pushing: comment `@codex review` once. Still none an hour later (his ChatGPT
-   usage ran out, or its GitHub app; Dimitri 2026-11-07): run a Claude reviewer sub-agent (Opus 5.5,
-   `/code-review high` on the head, same rules), fix what it raises, note in the PR body that Claude reviewed in
-   Codex's place, and merge once that review is clean.
+3. No review an hour after opening or pushing: comment `@codex review` once. Still none an hour later, or Codex
+   answers that its usage limit is reached (Dimitri 2026-11-07): tell Dimitri in the thread, then run a Claude
+   reviewer sub-agent (model: `docs/PROJECT_SETUP.md` "Model per role") with `/code-review high` on the head,
+   labelling findings P0-P3 under the same rules. Fix or answer each P0/P1; after a fix push the same reviewer
+   re-reviews the new head (no new Codex wait). Note in the PR body that Claude reviewed in Codex's place; merge once
+   no P0/P1 is open.
 
 ## Merge (Claude merges its own PR, Dimitri 2026-11-05)
 
-0. Codex's review, or the stand-in Claude review (above), is in and clean, and cloud-check is clean.
+0. Codex's review, or the stand-in Claude review (above), of the head has no P0/P1 open, and cloud-check is clean.
 1. `git fetch origin claude/phase-1-6lfnar` and merge it into your branch. In Part C "Now", keep the base's entries
    first and yours last. If a PR merged first used the same kit version or pitfall numbers, you are the second
    merger: renumber yours to the next free ones everywhere they appear, and fix "Next free numbers".
