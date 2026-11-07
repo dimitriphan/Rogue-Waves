@@ -236,18 +236,21 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **State (2026-11-06, base `6eab9ac`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
+- **State (2026-11-07, base `3e1cc93`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps
   his shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
-  kit 1.15. Last runs on the PC: PC round 4 (`PC_ROUND4_2026-11-05.md`; of the weather look only its W4 lines), the menu
-  wobble round (`BUTTON_WOBBLE_2026-11-06.md`), chart round 1 (`CHART_ROUND1_2026-11-06.md`) and the full test of
-  `6830ba2` with the sea chart and the MVP board (`PC_FULL_2026-11-06.md`). Built since, compiled here, not run on the
-  PC: the whole-pixel follow-up and the entries below that say so. The sweep's tuned numbers in scope `04`, `08`, `10`, `12`
-  keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest
-  last); reports: `docs/reports/README.md`.
-- **Next, in order:** a PC round for what merged after `6830ba2` (the whole-pixel follow-up, the top 4 pitfall fixes'
-  checks, Spool's upgrade sections 10d-10f, the full test's three fixes: CV13, CV14, the Diorama checks) with the full
-  test's leftovers (§6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7).
+  kit 1.15. Last runs on the PC: the full test of `6830ba2` (`PC_FULL_2026-11-06.md`), PC round 5 on `7e7f4e4`
+  (`PC_ROUND5_2026-11-06.md`: the whole-pixel follow-up, the top 4 pitfall fixes, the bug fixes, CV13, CV14 and the
+  Diorama looks proven; the map cards' open freeze left) and PC round 6 on `03f807a` (`PC_ROUND6_2026-11-06.md`: the
+  names made once proven; Spool's Thread Heads stuck with the whole pack). Built since, compiled here, not run on the
+  PC: the Thread Heads' fix (PR #165). The sweep's tuned numbers in scope `04`, `08`, `10`, `12` keep their tildes until
+  he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest last); reports:
+  `docs/reports/README.md`.
+- **Next, in order:** a PC round for the Thread Heads' fix (Spool's self-test alone and with the whole pack; a Thread
+  Head's panel shows no MOVE) with what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md` §7, `PC_ROUND6_2026-11-06.md` §6:
+  COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's leftovers (`PC_FULL_2026-11-06.md`
+  §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and 4-7, its foes-on-camera pictures need
+  a camera step or a play build); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -389,7 +392,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Stage 1B drafts 5 Argo concepts from his scope `09` setting and theme, with a Naut each; his sheets wait for a pick,
   then scope `09` Look and `docs/STYLE.md`'s Argo row change at his word. Docs only.
 - **2026-11-07: Claude stands in when Codex stalls** (Dimitri: "Yes", to a Claude fallback if ChatGPT runs out of
-  usage): no Codex review two hours on (one `@codex review` between) or Codex out of usage, a Claude sub-agent reviews
+  usage): no Codex review an hour on, `@codex review` once; none an hour later or Codex out of usage, a Claude sub-agent reviews
   under `AGENTS.md`'s P0-P3 (Part A "Merging", ship-a-pr, `CLAUDE.md`). Docs only; PR #169 was its first use.
 - **2026-11-07: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.61 ($4.75 this month), 27 of 27
   answers whole (`docs/reports/BATCH_CHECKS_2026-11-07.md`, leads only, none fixed); PC round waits for his "Go".
@@ -397,6 +400,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: the Naut sheets join the art manifest** (Dimitri: ChatGPT asked for them): `sprite_calls.py` unrolls
   Argo's crew loop, so the preview, Art Bench and `docs/art/ASSET_MANIFEST.md` list all six (70 sheets); no other
   sheet was missing. Tools and docs only, preview run here; no mod code, nothing on the PC. No kit change, no pitfall.
+- **2026-11-07: the morning's docs suggestions** (Dimitri: "Do 2, 3, and 5"): "Now"'s State and Next brought to PC rounds
+  5 and 6; the Codex wait written the same in `AGENTS.md` and here; scope-sync's tilde line. Docs only; nothing ran on
+  the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1690,6 +1696,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   added). Checked every `SaveSheet` in the four builders against the manifest: nothing else missing. The published Art
   Bench page and the ChatGPT pack in project files predate it (rebuild on the next art send). He got the spec in the
   thread to paste into ChatGPT. Preview run here (`run_preview.sh` Argo, six Naut PNGs); no mod code, nothing on the PC.
+- **2026-11-07: the morning's docs suggestions** (Dimitri 19:02Z: "Do 2, 3, and 5 of the suggestions", from the
+  morning page). 2: "Now"'s State names PC rounds 5 and 6 and what each proved, the Thread Heads' fix (PR #165) as the
+  one change built and not run, and Next is the round for that fix with rounds 5 and 6's leftovers, the weather look's
+  round and the map cards' freeze. 3: `AGENTS.md` and the 2026-11-07 "Now" entry said "two hours on"; both now say what
+  Part A and ship-a-pr say (an hour, `@codex review` once, an hour more or Codex out of usage). 5: scope-sync's tilde
+  example said the sweep's numbers stay "until after PC round 4", which has run; it now says until he takes them.
+  Docs only. No kit change, no pitfall.
 
 ### Decisions
 

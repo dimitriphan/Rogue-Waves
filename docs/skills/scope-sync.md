@@ -35,8 +35,8 @@ Rules from `docs/PLAN.md` Part A ("The user's scope") and `docs/scope/00_Read_Me
 ## Tildes and NEEDS lines
 
 - Never strip a tilde he did not strip. Defaults he has not taken stay `~value~`, including any a decision says
-  stay until a later round (the decision names them; e.g. the sweep's numbers in `04`, `08`, `10`, `12` until after
-  PC round 4).
+  stay until a later round (the decision names them; e.g. the sweep's numbers in `04`, `08`, `10`, `12` until he takes
+  them, PLAN Part C).
 - Clear a `! NEEDS !` line only when it is answered or the thing is supplied, and say which.
 
 ## Sync
