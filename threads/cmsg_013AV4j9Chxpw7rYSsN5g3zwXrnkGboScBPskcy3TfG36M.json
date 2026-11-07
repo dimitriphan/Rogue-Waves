@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwXrnkGboScBPskcy3TfG36M",
   "thread": "Answer ChatGPT's Naut sprite spec question",
-  "state": "building",
-  "started": "2026-11-07T18:58:41Z",
-  "step": "Add Naut to art manifest",
+  "state": "reviewing",
+  "started": "2026-11-07T19:02:20Z",
+  "step": "PR #171 waits for Codex",
   "helpers": [],
-  "updated": "2026-11-07T18:58:41Z"
+  "updated": "2026-11-07T19:02:20Z"
 }
