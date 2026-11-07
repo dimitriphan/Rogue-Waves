@@ -248,9 +248,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/README.md`.
 - **Next, in order:** a PC round for the Thread Heads' fix (Spool's self-test alone and with the whole pack; a Thread
   Head's panel shows no MOVE) with what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md` §7, `PC_ROUND6_2026-11-06.md` §6:
-  COLOUR's panel, the elite stand-in, Spool's by-hand checks); the weather look's own round
-  (`WEATHER_LOOK_2026-11-05.md` §4 items 2-7, its foes-on-camera pictures need a camera step or a play build); the map
-  cards' freeze, which waits in Unity's render thread (round 6 §2).
+  COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's leftovers (`PC_FULL_2026-11-06.md`
+  §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and 4-7, its foes-on-camera pictures need
+  a camera step or a play build); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -397,6 +397,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.61 ($4.75 this month), 27 of 27
   answers whole (`docs/reports/BATCH_CHECKS_2026-11-07.md`, leads only, none fixed); PC round waits for his "Go".
   Docs only; nothing ran on the PC. No kit change, no pitfall.
+- **2026-11-07: the Naut sheets join the art manifest** (Dimitri: ChatGPT asked for them): `sprite_calls.py` unrolls
+  Argo's crew loop, so the preview, Art Bench and `docs/art/ASSET_MANIFEST.md` list all six (70 sheets); no other
+  sheet was missing. Tools and docs only, preview run here; no mod code, nothing on the PC. No kit change, no pitfall.
 - **2026-11-07: the morning's docs suggestions** (Dimitri: "Do 2, 3, and 5"): "Now"'s State and Next brought to PC rounds
   5 and 6; the Codex wait written the same in `AGENTS.md` and here; scope-sync's tilde line. Docs only; nothing ran on
   the PC. No kit change, no pitfall.
@@ -1685,6 +1688,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/reports/BATCH_CHECKS_2026-11-07.md`: 13 text, 38 scope rows DIFFERENT or MISSING, 11 design, 6 docs, 5 art; leads
   only. Read by hand: Spool's "The first two are" and "gets stuck in" and Yossele's "fertilizer" follow his scope's own
   words. The PC lock was free; the round waits for his "Go" in the thread. Docs only. No kit change, no pitfall.
+- **2026-11-07: the Naut sheets join the art manifest** (Dimitri, relaying ChatGPT: "What are the exact Naut
+  filenames, cell sizes, and animation rows/frame counts?"). The manifest had 64 sheets and none of Argo's six crew
+  sheets: `ArgoBuilder.WriteSprites` saves them in a `foreach` over the crews, which `lite/sprite_calls.py` skipped.
+  It now unrolls a loop over a table of string arrays; `ase_sheets.layout` names their rows `naut_<crew>_move` and
+  `naut_<crew>_tune`; `build_pack.py --manifest` rebuilt the manifest at `3e1cc93` (70 sheets, only the six Naut rows
+  added). Checked every `SaveSheet` in the four builders against the manifest: nothing else missing. The published Art
+  Bench page and the ChatGPT pack in project files predate it (rebuild on the next art send). He got the spec in the
+  thread to paste into ChatGPT. Preview run here (`run_preview.sh` Argo, six Naut PNGs); no mod code, nothing on the PC.
 - **2026-11-07: the morning's docs suggestions** (Dimitri 19:02Z: "Do 2, 3, and 5 of the suggestions", from the
   morning page). 2: "Now"'s State names PC rounds 5 and 6 and what each proved, the Thread Heads' fix (PR #165) as the
   one change built and not run, and Next is the round for that fix with rounds 5 and 6's leftovers, the weather look's
