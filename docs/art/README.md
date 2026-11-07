@@ -51,6 +51,9 @@ For the folder:
    Fall, Land and hop sheets lift frames off the bottom row on purpose: check those with `pixelize.py --check
    --anchor center` (it skips only the feet line), and read `art_check.py --baseline`'s lines on their rows against the
    lifts ChatGPT lists for each frame.
+   A `<Name>splash.png` carries one translucent fill on purpose: the accent colour at alpha 70, as the builders' own
+   splashes. Both checkers' half-transparent lines are expected on a splash, so long as every semi-transparent pixel
+   has alpha 70. Any other line on it fails as usual.
 3. Place it where the builder takes a file over its own drawing: `TDS_Mod/ModSource/<Part>/Art/<name>.png` (final;
    Yossele, Spool and Uloe read it through `FileArt`), the mode's files in
    `TDS_Mod/ModSource/RogueWavesMode/Art/Temporary/game_size/` (replace in place), Argo's only with a builder change.
