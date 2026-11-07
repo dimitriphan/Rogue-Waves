@@ -10,6 +10,7 @@ and the procedure around it. The base game's sprites are the private half: they 
 | `CHATGPT_BRIEF.md` | Part 1 of the guide ChatGPT reads: its workflow, sizes by kind, the rules no picture may break |
 | `PROJECT_INSTRUCTIONS.md` | the text pasted into the ChatGPT Project's instructions |
 | `RECREATE_PROMPT.md` | the prompt that has ChatGPT sketch the vessels, ask Dimitri, then remake every asset, and the main menu button's look |
+| `FEEDBACK_ROUND1_2026-11-07.md` | the note for ChatGPT after the review of its round 1 art (`docs/reports/ART_REVIEW_CHATGPT_2026-11-07.md`): rules for every asset, what to keep, batches 2A-2F |
 | `ASSET_MANIFEST.md` | every pack sheet, icon and model: file name, size, cell, rows, Look line; generated, never edited |
 | `concept-tools/chatgpt/pixelize.py` | turns a generated picture into a clean game-size sprite and checks it; runs in ChatGPT's Python |
 | `concept-tools/chatgpt/build_pack.py` | builds the Project's files and rewrites `ASSET_MANIFEST.md` |
@@ -47,6 +48,12 @@ For the folder:
 2. Check each against its manifest row: `python3 concept-tools/chatgpt/pixelize.py --check <png> --cell <cell>
    --palette <pack palette>` and `concept-tools/temp_art/art_check.py`, then the art review in `docs/STYLE.md`
    (contact sheets beside the current version and his own sprite). A file that fails goes back to him with the lines.
+   Fall, Land and hop sheets lift frames off the bottom row on purpose: check those with `pixelize.py --check
+   --anchor center` (it skips only the feet line), and read `art_check.py --baseline`'s lines on their rows against the
+   lifts ChatGPT lists for each frame.
+   A `<Name>splash.png` carries one translucent fill on purpose: the accent colour at alpha 70, as the builders' own
+   splashes. Both checkers' half-transparent lines are expected on a splash, so long as every semi-transparent pixel
+   has alpha 70. Any other line on it fails as usual.
 3. Place it where the builder takes a file over its own drawing: `TDS_Mod/ModSource/<Part>/Art/<name>.png` (final;
    Yossele, Spool and Uloe read it through `FileArt`), the mode's files in
    `TDS_Mod/ModSource/RogueWavesMode/Art/Temporary/game_size/` (replace in place), Argo's only with a builder change.

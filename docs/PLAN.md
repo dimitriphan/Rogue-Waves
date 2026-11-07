@@ -409,6 +409,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: the advisor tool in the batch checks** (Dimitri: "Install advisor-tool-2026-03-01"): `--advisor opus`
   lets scope and design consult Opus 5.5 once, counted in the cap and report; off by default (dearer than Sonnet
   alone). One real test batch, $0.015; tools and docs only, nothing on the PC. No kit change, no pitfall.
+- **2026-11-07: ChatGPT's art reviewed** (Dimitri: "Do they follow the art style and rules of TDS?"): rules pass, the look not yet
+  (still animation, Spool and Argo off model, panel-colour icons); `ART_REVIEW_CHATGPT_2026-11-07.md`, ChatGPT's note
+  `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (batches 2A-2F). Docs only; nothing on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1718,6 +1721,16 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the frames moved down 1 px. Art review (Opus sub-agent): the four falls collapse instead of hanging in mid-air (stand-in
   of the idle frames), the tab icons are filled heads (the code's kept), `Direction_Extension` unreadable (old kept),
   `SpoolPatch` v2/v3 frozen; redraw list in the PR. Compiled here; PC round follows.
+- **2026-11-07: ChatGPT's art reviewed against the TDS style** (Dimitri: "Do a review of the ChatGPT assets. Do they
+  follow the art style and rules of TDS? Generate a report for ChatGPT on what could be changed so that the assets look
+  more official."). `docs/reports/ART_REVIEW_CHATGPT_2026-11-07.md`: `art_check.py` and `pixelize.py --check` clean
+  (sizes, opaque, no black or magenta, feet and centre); measured against the base vessels, the idles hold 2 distinct
+  frames of 6 and move 0-30 px a frame (base 26-385), Land and Fall don't leave the ground; by eye (Opus 5.5 sub-agent),
+  Spool departs from his concept (32 px wide, toothed jaw, arm as a tail), Argo is dark and not chibi with a one-colour
+  splash, Uloe's face is lost, 32 icons paint the panel's `2E4A62`/`22384B` (Extension's cause), five miss their Look,
+  PureAura is grey. Kept: Yossele's palette (his reshade), Spool's colours, Uloe's silhouette, 19 icons. The note for
+  ChatGPT, `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (copy `chatgpt/prompts/feedback_round1_2026-11-07.txt` in project
+  files), folds in PR #173's batch-2 list as batch 2A. Docs only, no compile; nothing ran on the PC.
 
 ### Decisions
 
