@@ -381,6 +381,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: a ChatGPT prompt remakes the pack's art** (Dimitri: "Write me a prompt for chatGPT that will recreate all
   of the art assets"): `docs/art/RECREATE_PROMPT.md`, three stops (sketch the vessels, ask him, make the assets in
   batches) and the main menu button after his minimal reference. Docs only; `12_Menu.cs` changes when the button arrives.
+- **2026-11-07: Argo redesigned from scratch in that prompt** (Dimitri: "I want to completely redesign Argos"): its new
+  Stage 1B drafts 5 Argo concepts from his scope `09` setting and theme, with a Naut each; his sheets wait for a pick,
+  then scope `09` Look and `docs/STYLE.md`'s Argo row change at his word. Docs only.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1644,6 +1647,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `RogueWaves_MenuButton.png`, 48 x 48, the crest and a double chevron in `C8C8C8` only, plus a x4 mock-up of the tile;
   its `pixelize.py` command was run here on a test picture ("0 problem(s)"). When it comes in, `RWMenu.Image`
   (`TDS_Mod/ModSource/RogueWavesMode/Code/12_Menu.cs`) stops tinting the tile Rogue Teal and shows it in Play's 48-unit box. Docs only.
+- **2026-11-07: Argo redesigned from scratch in the ChatGPT prompt** (Dimitri, 00:56Z: "I want to completely redesign
+  Argos. Have it draft up new concepts based on his setting and theme."). `docs/art/RECREATE_PROMPT.md`: Stage 1 no longer
+  sketches Argo; a new Stage 1B reads scope `09` and drafts 5 concepts from his lore, title, play (slow two-hit wrench,
+  slows, pins, reels, Drill Rigs, the Naut crew) and towers, each with a back view, a 32 px game-size mock-up under the
+  house rules and a matching Naut, then stops for a pick; it names what missed in the 2026-11-04 rounds (odd head
+  containers, crude shading) and what landed (a detailed classic silhouette). Stage 2 asks the pick's details and
+  whether the towers' brass-dome look follows; Stage 3 draws Argo in the picked concept. After the pick, scope `09`
+  [Identity] Look and Sprites and `docs/STYLE.md`'s Argo row change at his word. Docs only.
 
 ### Decisions
 
