@@ -3,12 +3,7 @@
   "thread": "Review ChatGPT art against TDS style",
   "state": "reviewing",
   "started": "2026-11-07T21:13:24Z",
-  "step": "Eye review of the art",
-  "helpers": [
-    {
-      "task": "Art eye review",
-      "model": "Opus 5.5"
-    }
-  ],
-  "updated": "2026-11-07T21:13:24Z"
+  "step": "PR #175 waiting for Codex",
+  "helpers": [],
+  "updated": "2026-11-07T21:26:42Z"
 }
