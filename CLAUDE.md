@@ -40,8 +40,8 @@ round, a scope fold-in) is worth proposing as a project skill; the drafted ones 
 - Never commit the game's binaries, base-vessel game sprites or anything from `/mnt/project-files`; overwrite a file
   there only at Dimitri's word. Nothing touches his PC without his OK in the thread.
 - Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Codex reviews each one
-  (`AGENTS.md`); Claude merges once that review leaves no open P0/P1 and cloud-check is clean (PLAN Part A "Merging"),
-  merge commits. Each PR edits Part C "Now": base's entries first, yours last, three lines at most, detail in the Log.
+  (`AGENTS.md`), a Claude reviewer after two silent hours; Claude merges once that review leaves no open P0/P1 and
+  cloud-check is clean (PLAN Part A "Merging"), merge commits. Each PR edits Part C "Now": base's entries first, yours last, three lines at most, detail in the Log.
 
 ## Map
 

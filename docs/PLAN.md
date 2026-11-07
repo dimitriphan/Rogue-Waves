@@ -53,10 +53,12 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > last), run the cloud-check of every changed part (docs-only: check the cited paths), and leave a PR whose own thread
 > is still working on it. **Review (Dimitri, 2026-11-06: "use Chat GPT to review pull requests so that you aren't
 > using Claude to review Claude"):** Codex, from his ChatGPT plan, reviews every PR against `AGENTS.md` "Code Review
-> Rules"; no Claude reviewer sub-agent. The thread answers each Codex comment (fix, or say why not) and merges once
+> Rules"; no Claude reviewer sub-agent while Codex answers. The thread answers each Codex comment (fix, or say why not) and merges once
 > Codex has reviewed the head with no P0/P1 left open; Codex comments but never approves, so a clean review (its
-> 👍 on the PR) is the approval. No review within an hour: comment `@codex review` once; still none an hour
-> later: leave the PR open and tell Dimitri in the thread (Codex's limits or its GitHub app). After merging, message the threads of the PRs still open to re-merge the base. Pushing
+> 👍 on the PR) is the approval. **Fallback (Dimitri, 2026-11-07, for when his ChatGPT usage runs out):** no
+> review within an hour: comment `@codex review` once; still none an hour later: a Claude reviewer sub-agent (Opus
+> 5.5) runs `/code-review high` on the head under the same rules, the thread fixes what it raises, notes in the PR
+> body that Claude reviewed in Codex's place, and merges once that review is clean and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
 >
 > **End of every session.** Update Part C "Now" (done / next / blocked, three lines; fold finished items into
@@ -384,6 +386,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: Argo redesigned from scratch in that prompt** (Dimitri: "I want to completely redesign Argos"): its new
   Stage 1B drafts 5 Argo concepts from his scope `09` setting and theme, with a Naut each; his sheets wait for a pick,
   then scope `09` Look and `docs/STYLE.md`'s Argo row change at his word. Docs only.
+- **2026-11-07: Claude stands in when Codex stalls** (Dimitri: "Yes", to a Claude fallback if ChatGPT runs out of
+  usage): no Codex review two hours on (one `@codex review` between), a Claude sub-agent runs `/code-review high`, the
+  PR notes it, merge once clean (Part A "Merging", ship-a-pr, `AGENTS.md`, `CLAUDE.md`). Docs only.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1655,6 +1660,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   containers, crude shading) and what landed (a detailed classic silhouette). Stage 2 asks the pick's details and
   whether the towers' brass-dome look follows; Stage 3 draws Argo in the picked concept. After the pick, scope `09`
   [Identity] Look and Sprites and `docs/STYLE.md`'s Argo row change at his word. Docs only.
+- **2026-11-07: a Claude fallback for PR review** (Dimitri, 01:12Z: "If ChatGPT runs out of usage, is there a failsafe
+  that allows Claude to review the pull requests?", then "Yes" to the offered rule). Codex still reviews every PR. No
+  Codex review of the head an hour after opening or pushing: the thread comments `@codex review` once; still none an
+  hour later: a Claude reviewer sub-agent (Opus 5.5) runs `/code-review high` on the head under `AGENTS.md` "Code Review
+  Rules", the thread fixes what it raises, notes in the PR body that Claude reviewed in Codex's place, and merges with a
+  merge commit once that review and cloud-check are clean. Written into Part A "Merging", `docs/skills/ship-a-pr.md`
+  "Review" and "Merge" step 0, `AGENTS.md` and `CLAUDE.md`; the project settings carry the same paragraph. Docs only.
 
 ### Decisions
 

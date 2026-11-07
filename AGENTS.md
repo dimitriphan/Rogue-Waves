@@ -3,11 +3,12 @@
 Dimitri's fan expansion for *TDS - Tower Defense Strategy*: a roguelike campaign mode, four vessels, foes, Directions,
 Trinkets and Cardinals, as C# mod code built with the game's mod tools. `CLAUDE.md` is the map of the repository;
 `docs/PLAN.md` Part A holds the working rules and Part C "Now" the state. Claude writes the pull requests; Codex
-reviews them (Dimitri, 2026-11-06). Pull requests base on `claude/phase-1-6lfnar`.
+reviews them (Dimitri, 2026-11-06). When Codex has not reviewed a PR's head two hours on, a Claude reviewer stands in
+under the same rules (Dimitri, 2026-11-07). Pull requests base on `claude/phase-1-6lfnar`.
 
 ## Code Review Rules
 
-Review for real defects and rule breaks. Leave out style, wording and formatting, and don't flag compile errors:
+These rules bind whoever reviews: Codex, or the Claude reviewer standing in for it. Review for real defects and rule breaks. Leave out style, wording and formatting, and don't flag compile errors:
 the PR's thread compiles every changed part with `TDS_Mod/Tools/cloud-check` and says so in the PR.
 
 Flag as P0:
