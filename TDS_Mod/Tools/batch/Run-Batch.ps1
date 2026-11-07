@@ -11,6 +11,7 @@
 #   ... Run-Batch.ps1 -Full                     # every check whole, not only what changed
 #   ... Run-Batch.ps1 -Model sonnet -MaxCost 12 # Sonnet 5.5 (a full run about $5.48, at most $10.52)
 #   ... Run-Batch.ps1 -Check scope,design       # some checks only (text, scope, design, docs, art)
+#   ... Run-Batch.ps1 -Advisor opus -MaxCost 6  # scope and design consult Opus 5.5 once each (README.md, costs)
 #   ... Run-Batch.ps1 -Collect msgbatch_...     # finish a batch still running when the two-hour wait ended
 #
 # What it does: pulls the newest base into this clone (git pull --ff-only), installs the Python packages it needs the
@@ -21,6 +22,7 @@
 # report is moved, not copied, so the clone keeps no untracked report that would stop the next git pull.
 param(
     [ValidateSet("haiku", "sonnet")][string]$Model = "haiku",
+    [ValidateSet("none", "opus")][string]$Advisor = "none",
     [string]$Check = "all",
     [switch]$Full,
     [double]$MaxCost = 3,
@@ -120,7 +122,7 @@ if ($Collect) {
     $a = @($script, "collect", $Collect, "--max-wait", "120")
 } else {
     $cmd = if ($Plan) { "plan" } else { "submit" }
-    $a = @($script, $cmd, "--model", $Model, "--check", $Check)
+    $a = @($script, $cmd, "--model", $Model, "--check", $Check, "--advisor", $Advisor)
     if (-not $Full) { $a += @("--since", "last") }
     if (-not $Plan) { $a += @("--max-cost", $MaxCost.ToString($inv), "--max-wait", "120") }
 }

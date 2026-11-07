@@ -13,8 +13,10 @@ Checks:
           concept-tools/temp_art/art_check.py's findings beside each
 
 From the repository root (README.md beside this file has the key, the steps and the costs):
-  python3 TDS_Mod/Tools/batch/run_checks.py plan    [--check LIST] [--model sonnet|haiku] [--since REF|last] [--exact]
-  python3 TDS_Mod/Tools/batch/run_checks.py submit  [--check ...] [--model ...] [--since ...] [--max-cost USD] [--no-wait]
+  python3 TDS_Mod/Tools/batch/run_checks.py plan    [--check LIST] [--model sonnet|haiku] [--advisor opus|none]
+                                                     [--since REF|last] [--exact]
+  python3 TDS_Mod/Tools/batch/run_checks.py submit  [--check ...] [--model ...] [--advisor ...] [--since ...]
+                                                     [--max-cost USD] [--no-wait]
   python3 TDS_Mod/Tools/batch/run_checks.py collect BATCH_ID
   python3 TDS_Mod/Tools/batch/run_checks.py spend   [--month YYYY-MM]
 
@@ -23,6 +25,10 @@ submit sends one batch, waits for it and writes docs/reports/BATCH_CHECKS_<date>
 for a batch submitted with --no-wait or interrupted. spend adds up what this month's reports cost. The key is read
 from RW_BATCH_API_KEY (a name Claude Code never reads), else ANTHROPIC_API_KEY, else asked for once (hidden, never
 stored) when a terminal is there.
+--advisor opus gives the scope and design requests the advisor tool (beta advisor-tool-2026-03-01): once a request,
+before it answers, the model consults Opus 5.5, which reads the whole request. Its tokens count in the cost, the cap
+and the report; when the cap would be passed, submit takes the advisor off the largest requests first. Off by
+default: Opus reading a whole request costs more than running that request on Sonnet 5.5 alone.
 Only the mod's own code and art, the scope, and the project's docs are sent; never the game's binaries or sprites.
 
 Exit codes: 0 done (or nothing to check), 2 bad arguments, 3 no key, 4 over --max-cost, 1 any other failure.
@@ -36,11 +42,13 @@ REPORTS = ROOT / "docs" / "reports"
 OUT = Path(os.environ.get("RW_BATCH_OUT") or Path(__file__).resolve().parent / "out")
 
 MODELS = {"sonnet": "claude-sonnet-5-5", "haiku": "claude-haiku-5-5"}
+ADVISORS = {"opus": "claude-opus-5-5", "none": None}
 # Standard $ per million tokens (2026-11-05); a batch costs half. Haiku 5.5 charges the higher row for a prompt over
 # 100K tokens. Cache writes cost 1.25x input and reads 0.1x; inside a batch, cache hits are best effort.
 PRICES = {
     "claude-sonnet-5-5": [(None, 2.00, 10.00)],
     "claude-haiku-5-5": [(100_000, 0.10, 0.50), (None, 0.50, 2.50)],
+    "claude-opus-5-5": [(None, 4.00, 20.00)],
 }
 BATCH = 0.5
 MONTHLY_CREDIT = 100.0
@@ -68,6 +76,17 @@ ART_CHUNK = 8             # images per art request
 GUESS_OUT = {"text": 3_000, "scope": 14_000, "design": 10_000, "docs": 4_000, "art": 3_000}
 # Each request's max_tokens (thinking included): the most it can write, so the ceiling --max-cost holds a run to.
 MAX_OUT = {"text": 8_000, "scope": 64_000, "design": 48_000, "docs": 8_000, "art": 8_000}
+# The advisor tool (docs: platform.claude.com .../tool-use/advisor-tool). It reads the request's whole transcript (system,
+# user, what the model has written so far) under its own system prompt, about 1,700 tokens on a first test; the batch
+# halves its price too ("all usage"). Only the checks that map rules to code get it; one consult a request, its
+# answer capped (2,048 is the docs' starting point; 1,024 the least).
+ADVISOR_BETA = "advisor-tool-2026-03-01"
+ADVISED = {"scope", "design"}
+ADVISOR_USES, ADVISOR_OUT, ADVISOR_OVERHEAD, ADVISOR_GUESS_OUT = 1, 2_048, 2_000, 1_600
+ADVISOR_NOTE = ("\n\nYou have an advisor, a stronger model that reads this whole request and what you have written so "
+                "far. Call it once, before you write your final answer, and weigh its advice on the rows you are "
+                "least sure of. Advisor: the rows where a mark could go either way matter most; say which code lines "
+                "settle them.")
 DEEP_SWELL, LIGHT = (0x2E, 0x4A, 0x62, 255), (0xE9, 0xF1, 0xEE, 255)   # docs/STYLE.md: Deep Swell and Foam
 
 
@@ -634,11 +653,27 @@ def build(args):
         reqs += docs_requests(model, args.effort, ch["docs"])
     if "art" in checks:
         reqs += art_requests(model, args.effort, art_files(args.art, ch["art"]))
+    adv = ADVISORS[args.advisor]
+    for _, meta, p in reqs:
+        if adv and meta["check"] in ADVISED:
+            set_advisor(meta, p, adv)
     # The checks this run covers in full, whose base may move to HEAD once every request of theirs is answered.
     narrowed = {"scope": bool(args.scope_files), "art": bool(args.art)}
     covered = [c for c in checks if not narrowed.get(c) and args.since in (None, "last")]
     built = [c for c in CHECKS if any(meta["check"] == c for _, meta, _ in reqs)]
     return model, built, reqs, covered
+
+
+def set_advisor(meta, p, adv):
+    meta["advisor"] = adv
+    p["tools"] = [{"type": "advisor_20260301", "name": "advisor", "model": adv,
+                   "max_uses": ADVISOR_USES, "max_tokens": ADVISOR_OUT}]
+    p["messages"][0]["content"] += ADVISOR_NOTE
+
+
+def drop_advisor(meta, p):
+    del meta["advisor"], p["tools"]
+    p["messages"][0]["content"] = p["messages"][0]["content"].removesuffix(ADVISOR_NOTE)
 
 
 # ---------------------------------------------------------------- cost
@@ -673,18 +708,70 @@ def cost(model, inp, out, cache_write=0, cache_read=0):
     return BATCH * (inp * i + cache_write * i * 1.25 + cache_read * i * 0.1 + out * o) / 1e6
 
 
+def request_cost(model, meta, p, n):
+    """One request's estimate and ceiling in $. The ceiling: every cached block written and never read, the request
+    writing its whole max_tokens; with the advisor, each consult reading all of that plus its own prompt and writing
+    its cap, and the model then reading the whole request again, uncached, before it goes on."""
+    cw = min(cached_tokens(p), n)
+    guess, ceiling = cost(model, n, GUESS_OUT[meta["check"]]), cost(model, n - cw, p["max_tokens"], cache_write=cw)
+    adv = meta.get("advisor")
+    if adv:
+        # The guess assumes the request's cached blocks are read; a run where the cap took the advisor off some
+        # requests and not others changes their prefix (tools come first), so it may cost more, never over the ceiling.
+        before = n + GUESS_OUT[meta["check"]]
+        guess += cost(adv, before + ADVISOR_OVERHEAD, ADVISOR_GUESS_OUT) + cost(model, before - cw, 0, cache_read=cw)
+        seen = n + p["max_tokens"] + ADVISOR_OUT
+        ceiling += ADVISOR_USES * (cost(adv, seen + ADVISOR_OVERHEAD, ADVISOR_OUT) + cost(model, seen, 0))
+    return guess, ceiling
+
+
 def estimate(model, reqs, counted=None):
-    """Rows (id, input tokens, guessed output, $), total input, the estimate in $, and the ceiling in $: every
-    cached block written and never read, every request writing its whole max_tokens."""
+    """Rows (id, input tokens, guessed output, $), total input, the estimate in $, and the ceiling in $
+    (request_cost says what each holds)."""
     rows, total_in, total, ceiling = [], 0, 0.0, 0.0
     for cid, meta, p in reqs:
         n = counted[cid] if counted else est_tokens(meta, p)
-        out = GUESS_OUT[meta["check"]]
-        c_ = cost(model, n, out)
-        cw = min(cached_tokens(p), n)
-        ceiling += cost(model, n - cw, p["max_tokens"], cache_write=cw)
-        rows.append((cid, n, out, c_)); total_in += n; total += c_
+        c_, top = request_cost(model, meta, p, n)
+        rows.append((cid, n, GUESS_OUT[meta["check"]], c_)); total_in += n; total += c_; ceiling += top
     return rows, total_in, total, ceiling
+
+
+def fit_advisor(model, reqs, counted, max_cost):
+    """Take the advisor off the largest advised requests until the ceiling is within max_cost (or none is left);
+    returns the ids it came off."""
+    dropped = []
+    advised = sorted((counted[cid], cid, meta, p) for cid, meta, p in reqs if meta.get("advisor"))
+    while advised and estimate(model, reqs, counted)[3] > max_cost:
+        _, cid, meta, p = advised.pop()
+        drop_advisor(meta, p)
+        dropped.append(cid)
+    return dropped
+
+
+def field(o, name):
+    """A field of an SDK object, or of the plain dict an older SDK keeps for a type it does not know."""
+    return o.get(name) if isinstance(o, dict) else getattr(o, name, None)
+
+
+def usage_cost(model, adv_model, u):
+    """A result's real cost: each iteration at its own model's price (the top-level figures are the model's alone and
+    leave the advisor out), the advisor's share of it, and its consults. An id not in PRICES is priced as the model
+    asked for."""
+    its = field(u, "iterations") or []
+    if not its:
+        return cost(model, u.input_tokens, u.output_tokens,
+                    u.cache_creation_input_tokens or 0, u.cache_read_input_tokens or 0), 0.0, 0
+    total, adv, consults = 0.0, 0.0, 0
+    for it in its:
+        is_adv = field(it, "type") == "advisor_message"
+        m = field(it, "model")
+        m = m if m in PRICES else (adv_model if is_adv and adv_model else model)
+        c_ = cost(m, field(it, "input_tokens") or 0, field(it, "output_tokens") or 0,
+                  field(it, "cache_creation_input_tokens") or 0, field(it, "cache_read_input_tokens") or 0)
+        total += c_
+        if is_adv:
+            adv += c_; consults += 1
+    return total, adv, consults
 
 
 # ---------------------------------------------------------------- the API
@@ -721,6 +808,11 @@ def cmd_plan(args):
     print(f"{'request':<16} {'input tok':>10} {'out (guess)':>11} {'batch $':>9}")
     for cid, n, out, c_ in rows:
         print(f"{cid:<16} {n:>10,} {out:>11,} {c_:>9.3f}")
+    advised = [cid for cid, meta, _ in reqs if meta.get("advisor")]
+    if advised:
+        print(f"Advisor {ADVISORS[args.advisor]} on {len(advised)} request{'' if len(advised) == 1 else 's'} "
+              f"({', '.join(advised)}): one consult each at most, its reading and writing included in the $ below. "
+              f"submit takes it off the largest first when the most is over --max-cost.")
     print(f"{len(reqs)} requests ({', '.join(checks)}), {total_in:,} input tokens "
           f"({'counted' if counted else 'estimated'}), {model}: about ${total:.2f} at batch prices; at most "
           f"${ceiling:.2f} (every request at its max_tokens, every cache block written), the figure --max-cost "
@@ -737,6 +829,7 @@ def count_all(anthropic, c, reqs):
     counted = {}
     for cid, _, p in reqs:
         try:
+            # The advisor's tool definition is left out: it adds a few tokens, and the count is per request.
             counted[cid] = c.messages.count_tokens(model=p["model"], system=p["system"], messages=p["messages"],
                                                    output_config=p["output_config"]).input_tokens
         except anthropic.APIError as e:
@@ -757,14 +850,21 @@ def cmd_submit(args):
     if counted is None:
         counted = {cid: int(est_tokens(meta, p) * 1.5) for cid, meta, p in reqs}
         print("Using the estimate plus half for the cap.", file=sys.stderr)
+    dropped = fit_advisor(model, reqs, counted, args.max_cost)
     _, _, total, ceiling = estimate(model, reqs, counted)
+    if dropped and ceiling <= args.max_cost:
+        print(f"The advisor is off {', '.join(dropped)} to keep the most within --max-cost ${args.max_cost:.2f}.")
     if ceiling > args.max_cost:
         print(f"About ${total:.2f}, at most ${ceiling:.2f}: the most is over --max-cost ${args.max_cost:.2f}. Nothing "
               f"was sent; narrow it (--check, --scope-files, --since, --model haiku) or raise --max-cost.",
               file=sys.stderr)
         sys.exit(4)
     try:
-        batch = c.messages.batches.create(requests=[{"custom_id": cid, "params": p} for cid, _, p in reqs])
+        batch_reqs = [{"custom_id": cid, "params": p} for cid, _, p in reqs]
+        if any(meta.get("advisor") for _, meta, _ in reqs):
+            batch = c.beta.messages.batches.create(requests=batch_reqs, betas=[ADVISOR_BETA])
+        else:
+            batch = c.messages.batches.create(requests=batch_reqs)
     except anthropic.AuthenticationError:
         print("The API key was refused (401). Check it on the Console's API keys page.", file=sys.stderr)
         sys.exit(1)
@@ -781,7 +881,9 @@ def cmd_submit(args):
         "since": args.since, "estimate": round(total, 2), "ceiling": round(ceiling, 2),
         "submitted": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
         "requests": {cid: meta for cid, meta, _ in reqs}}), encoding="utf-8")
+    advised = sum(1 for _, meta, _ in reqs if meta.get("advisor"))
     print(f"Batch {batch.id}: {len(reqs)} requests ({', '.join(checks)}), {model}, effort {args.effort}, "
+          f"advisor on {advised}, "
           f"about ${total:.2f} (at most ${ceiling:.2f}). Record: {OUT / (batch.id + '.json')}")
     if args.no_wait:
         print(f"Collect it later, on a machine that has the record: "
@@ -800,7 +902,7 @@ def collect(c, batch_id, max_wait=0):
     start = time.monotonic()
     try:
         while True:
-            b = c.messages.batches.retrieve(batch_id)
+            b = c.beta.messages.batches.retrieve(batch_id)
             rc = b.request_counts
             print(f"{datetime.datetime.now():%H:%M} {b.processing_status}: {rc.processing} running, "
                   f"{rc.succeeded} done, {rc.errored} errored", flush=True)
@@ -816,7 +918,7 @@ def collect(c, batch_id, max_wait=0):
               f"python3 TDS_Mod/Tools/batch/run_checks.py collect {batch_id}")
         sys.exit(1)
     results = {}
-    for r in c.messages.batches.results(batch_id):
+    for r in c.beta.messages.batches.results(batch_id):
         results[r.custom_id] = r.result
     write_report(batch_id, meta, results)
 
@@ -875,10 +977,35 @@ def mark_section(L, n, title, recipe, results, marks, work_marks):
         L += [f"### {n}.{k} {name}", ""] + row_table(rows) + [""]
 
 
+def advice_note(info, msg, consults, adv_cost):
+    """The Requests table's Advisor cell: empty without the advisor, else consults and their $ (a cut answer and a
+    failed call named), or not consulted."""
+    if not info.get("advisor"):
+        return ""
+    results = [field(b, "content") or {} for b in msg.content if field(b, "type") == "advisor_tool_result"]
+    errors = [field(r, "error_code") for r in results if field(r, "type") == "advisor_tool_result_error"]
+    cut = sum(1 for r in results if field(r, "stop_reason") == "max_tokens")
+    cell = f"{consults} (${adv_cost:.3f})" if consults else "not consulted"
+    if cut:
+        cell += f", {cut} cut at {ADVISOR_OUT:,}"
+    if errors:
+        cell += f", failed: {', '.join(map(str, errors))}"
+    return cell
+
+
+def advisor_line(reqs, adv_spent):
+    advised = sorted(cid for cid, i in reqs.items() if i.get("advisor"))
+    if not advised:
+        return ""
+    adv = reqs[advised[0]]["advisor"]
+    return (f", of which ${adv_spent:.2f} for the advisor `{adv}` on {len(advised)} request"
+            f"{'' if len(advised) == 1 else 's'} (scope and design)")
+
+
 def write_report(batch_id, meta, results):
     model, reqs = meta["model"], meta["requests"]
     checks = meta.get("checks") or sorted({i["check"] for i in reqs.values()})
-    texts, scopes, designs, docs, arts, missing, runs, spent = [], {}, {}, [], [], None, [], 0.0
+    texts, scopes, designs, docs, arts, missing, runs, spent, adv_spent = [], {}, {}, [], [], None, [], 0.0, 0.0
     for cid in sorted(reqs):
         info, res = reqs[cid], results.get(cid)
         if info["check"] == "docs":
@@ -887,24 +1014,25 @@ def write_report(batch_id, meta, results):
         if res and res.type == "succeeded":
             msg = res.message
             u = msg.usage
-            c_ = cost(model, u.input_tokens, u.output_tokens,
-                      u.cache_creation_input_tokens or 0, u.cache_read_input_tokens or 0)
-            spent += c_
+            c_, a_, consults = usage_cost(model, info.get("advisor"), u)
+            spent += c_; adv_spent += a_
             status = msg.stop_reason
             if msg.stop_reason in ("end_turn", "stop_sequence"):
-                text = next((b.text for b in msg.content if b.type == "text"), "")
+                # The last text block: with the advisor, the model may write a line before it consults.
+                text = next((b.text for b in reversed(msg.content) if b.type == "text"), "")
                 try:
                     data = json.loads(text)
                     status = "ok"
                 except json.JSONDecodeError:
                     status = "unreadable answer"
+            advice = advice_note(info, msg, consults, a_)
             runs.append((cid, status, u.input_tokens + (u.cache_creation_input_tokens or 0)
-                         + (u.cache_read_input_tokens or 0), u.output_tokens, c_))
+                         + (u.cache_read_input_tokens or 0), u.output_tokens, advice, c_))
         else:
             if res and res.type == "errored":
                 err = getattr(res.error, "error", res.error)
                 status = f"errored: {getattr(err, 'type', '?')} {cell(getattr(err, 'message', ''))}".strip()
-            runs.append((cid, status, 0, 0, 0.0))
+            runs.append((cid, status, 0, 0, "", 0.0))
         if data is None:
             continue
         if info["check"] == "text":
@@ -936,7 +1064,7 @@ def write_report(batch_id, meta, results):
     L = [f"# Batch checks ({day})", "",
          f"Machine-read by `{model}` (effort {meta['effort']}) through the Message Batches API, batch `{batch_id}`, "
          f"on base `{meta['base']}`{since}, checks {', '.join(checks)}, by `TDS_Mod/Tools/batch/run_checks.py`. "
-         f"Cost: ${spent:.2f} at batch prices. Every row is a lead to confirm by hand before it changes code, docs, "
+         f"Cost: ${spent:.2f} at batch prices{advisor_line(reqs, adv_spent)}. Every row is a lead to confirm by hand before it changes code, docs, "
          "art or the scope: the model reads, it does not run the game. Nothing ran on the PC.", ""]
     n = 1
     if "text" in checks and any(i["check"] == "text" for i in reqs.values()):
@@ -985,9 +1113,12 @@ def write_report(batch_id, meta, results):
                   f"{cell(img['script'])} |" for img, f in arts]
             L.append("")
         n += 1
-    L += [f"## {n}. Requests", "", "| Request | Result | Input tokens | Output tokens | $ |", "| --- | --- | --- | --- | --- |"]
-    L += [f"| {cid} | {st} | {i:,} | {o:,} | {c_:.3f} |" for cid, st, i, o, c_ in runs]
-    L += ["", "A result other than `ok`: `max_tokens` (answer cut, rerun that request with a lower effort), `refusal`, "
+    L += [f"## {n}. Requests", "", "| Request | Result | Input tokens | Output tokens | Advisor | $ |",
+          "| --- | --- | --- | --- | --- | --- |"]
+    L += [f"| {cid} | {st} | {i:,} | {o:,} | {a} | {c_:.3f} |" for cid, st, i, o, a, c_ in runs]
+    L += ["", "Input and output tokens are the model's own; the $ column includes the advisor's. A result other than "
+          "`ok`: `max_tokens` (answer cut, rerun that request with a lower effort), `pause_turn` (the advisor was "
+          "still answering; rerun it), `refusal`, "
           "`unreadable answer` or `errored` (rerun it alone with `--check` and `--scope-files`)."]
     month = day[:7]
     total = sum(c_ for _, c_ in report_costs(month)) + spent
@@ -1011,6 +1142,8 @@ def main():
                        help=f"all, or a comma list of {','.join(CHECKS)} (all leaves art out unless --since or --art)")
         p.add_argument("--model", choices=sorted(MODELS), default="sonnet")
         p.add_argument("--effort", choices=["low", "medium", "high"], default="medium")
+        p.add_argument("--advisor", choices=sorted(ADVISORS), default="none",
+                       help="opus: the scope and design requests consult claude-opus-5-5 once each (none)")
         p.add_argument("--scope-files", help="comma list of scope numbers, e.g. 07,11 (default: 01,03-14,16)")
         p.add_argument("--since", metavar="REF",
                        help="only what changed between REF and HEAD; 'last' = each check since its last full run")
