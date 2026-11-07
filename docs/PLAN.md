@@ -391,6 +391,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: Claude stands in when Codex stalls** (Dimitri: "Yes", to a Claude fallback if ChatGPT runs out of
   usage): no Codex review two hours on (one `@codex review` between) or Codex out of usage, a Claude sub-agent reviews
   under `AGENTS.md`'s P0-P3 (Part A "Merging", ship-a-pr, `CLAUDE.md`). Docs only; PR #169 was its first use.
+- **2026-11-07: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.61 ($4.75 this month), 27 of 27
+  answers whole (`docs/reports/BATCH_CHECKS_2026-11-07.md`, leads only, none fixed); PC round waits for his "Go".
+  Docs only; nothing ran on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1671,6 +1674,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   open and cloud-check is clean. Codex answering that its usage limit is reached starts the fallback at once. PR #169
   was its first use (Codex hit its usage limit on the `@codex review`). Written into Part A "Merging", `docs/skills/ship-a-pr.md`
   "Review" and "Merge" step 0, `AGENTS.md` and `CLAUDE.md`; the project settings carry the same paragraph. Docs only.
+- **2026-11-07: morning run** (routine "Morning mod test run", 12:03Z). `run_checks.py submit --since last --model haiku
+  --max-cost 3 --max-wait 90` on `18b947e`: 27 requests, $1.61, $4.75 this month, every answer whole. Report
+  `docs/reports/BATCH_CHECKS_2026-11-07.md`: 13 text, 38 scope rows DIFFERENT or MISSING, 11 design, 6 docs, 5 art; leads
+  only. Read by hand: Spool's "The first two are" and "gets stuck in" and Yossele's "fertilizer" follow his scope's own
+  words. The PC lock was free; the round waits for his "Go" in the thread. Docs only. No kit change, no pitfall.
 
 ### Decisions
 
