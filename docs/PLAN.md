@@ -412,6 +412,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: ChatGPT's art reviewed** (Dimitri: "Do they follow the art style and rules of TDS?"): rules pass, the look not yet
   (still animation, Spool and Argo off model, panel-colour icons); `ART_REVIEW_CHATGPT_2026-11-07.md`, ChatGPT's note
   `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (batches 2A-2F). Docs only; nothing on the PC. No kit change, no pitfall.
+- **2026-11-07: PC round Art_round1** (`PC_ART_ROUND1_2026-11-07.md`): the new art in every build, vessel self-tests
+  pass, #165 proven with the pack; the mode's flow regressed (121/2: B1 subtitle, C3 boat never sails; suspect #163's
+  `11_Dialog.cs`), its fix waits for his word. Report only; his PC put back. No kit change, no pitfall yet.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
