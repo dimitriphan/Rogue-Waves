@@ -51,7 +51,12 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > `claude/phase-1-6lfnar` itself, with a merge commit, through the GitHub MCP tool `merge_pull_request` (pass
 > `expectedHeadSha`). Before merging: merge the base into the PR's branch (Part C entries base first, the PR's own
 > last), run the cloud-check of every changed part (docs-only: check the cited paths), and leave a PR whose own thread
-> is still working on it. After merging, message the threads of the PRs still open to re-merge the base. Pushing
+> is still working on it. **Review (Dimitri, 2026-11-06: "use Chat GPT to review pull requests so that you aren't
+> using Claude to review Claude"):** Codex, from his ChatGPT plan, reviews every PR against `AGENTS.md` "Code Review
+> Rules"; no Claude reviewer sub-agent. The thread answers each Codex comment (fix, or say why not) and merges once
+> Codex has reviewed the head with no P0/P1 left open; Codex comments but never approves, so a clean review (its
+> 👍 on the PR) is the approval. No review within an hour: comment `@codex review` once; still none an hour
+> later: leave the PR open and tell Dimitri in the thread (Codex's limits or its GitHub app). After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
 >
 > **End of every session.** Update Part C "Now" (done / next / blocked, three lines; fold finished items into
@@ -370,6 +375,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: Spool's Thread Heads walk with the pack loaded** (PC round 6's bug): B16's hide set the unit's state to
   "Move" with no walk; now MOVE's link is not Controllable, synced with Statechange off, no renamed copy; the self-test
   says alone or with the pack. Compiled here, not run on the PC. Pitfall #176 traced, no kit change.
+- **2026-11-06: ChatGPT makes the art, Codex reviews the PRs** (Dimitri: "Go as planned"): `docs/art/` (guide, manifest,
+  Project text), `concept-tools/chatgpt/` (pixelize, pack builder), `AGENTS.md`; Codex replaces the reviewer sub-agent
+  (Part A "Merging", ship-a-pr). Private sprite pack outside the repo. Scripts run here; no mod code, nothing on the PC.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1604,6 +1612,21 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/05` notes the state side of `Updatecommand`; pitfall #176 rewritten as traced. Compiled here (Spool release,
   `SPOOL_SELFTEST`, `SPOOL_SELFTEST,SPOOL_SHOTS`, editor); not run on the PC. Next free numbers: kit chapter 25, kit
   1.16, pitfall #177 (#176 updated).
+- **2026-11-06: ChatGPT for the art and Codex for PR review** (Dimitri: "I've purchased a Chat GPT subscription ... to
+  create sprites and art ... Also use Chat GPT to review pull requests so that you aren't using Claude to review Claude";
+  plan picked "Go as planned"). No OpenAI API key: a ChatGPT Project "Rogue Waves Art" holds the guide and the sprite
+  reference, and Codex code review (part of his ChatGPT plan) reviews every PR. Public half in the repo: `docs/art/`
+  (`README.md` the procedure and "bring in my ChatGPT art", `CHATGPT_BRIEF.md` ChatGPT's workflow, `PROJECT_INSTRUCTIONS.md`
+  the Project text, `ASSET_MANIFEST.md` 64 sheets, 90 icons with their scope Look lines, 175 models, generated from the
+  Art Bench data); `concept-tools/chatgpt/pixelize.py` (background out, majority-vote scaling, palette snap, the house
+  checks; a Yossele frame painted 31x on magenta with blur and noise came back pixel for pixel) and `build_pack.py`
+  (guide = brief + `docs/STYLE.md` + kit `docs/18` §1-7 + kit `docs/03` §1-2, §5 + the concepts page + the manifest;
+  palettes; two zips; contact sheets 768 px wide, as ChatGPT shrinks a picture's short side to 768). Private half, never
+  committed: the pack with the base game's sheets, built to `/mnt/project-files/chatgpt/2026-11-06/` and his PC's
+  `Desktop\RogueWave\chatgpt\2026-11-06\`. Review: `AGENTS.md` "Code Review Rules" (P0/P1 from `CLAUDE.md`'s rules,
+  `.claude/rules/mod-code.md`, kit `docs/07` and `docs/09`); Part A "Merging" and `docs/skills/ship-a-pr.md` "Review":
+  merge once Codex has reviewed the head with no P0/P1 open; `@codex review` once after an hour; still none, the PR
+  waits for him. `/code-review high` stays as the author's check. Not compiled (no mod code); scripts run here.
 
 ### Decisions
 

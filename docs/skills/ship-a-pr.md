@@ -47,8 +47,22 @@ Rules from `CLAUDE.md`, `docs/PLAN.md` Part A "Merging" and Part C "Now". Dimitr
 3. Assign and request review from `dimitriphan` (`issue_write` update, `update_pull_request` reviewers), then
    `subscribe_pr_activity`.
 
+## Review (Codex, Dimitri 2026-11-06)
+
+Codex, from Dimitri's ChatGPT plan, reviews every PR on its own against `AGENTS.md` "Code Review Rules"; no Claude
+reviewer sub-agent. `/code-review high` before a code PR stays, as the author's own check.
+
+1. Codex's comments arrive as PR events. Answer each one in its thread: fix it and say which commit, or say why not.
+   It marks findings P0 to P3; P0 and P1 must be fixed or answered before the merge.
+2. Codex never approves: its review of the current head with no P0/P1 left open is the approval. A clean review is
+   a 👍 reaction on the PR; its "Codex Review Summary" comment tracks the run per commit. A push after its review
+   gets a new review; wait for it (or comment `@codex review`).
+3. No review an hour after opening or pushing: comment `@codex review` once. Still none an hour later: leave the PR
+   open and tell Dimitri in the thread (his Codex limits or its GitHub app).
+
 ## Merge (Claude merges its own PR, Dimitri 2026-11-05)
 
+0. Codex's review is in (above) and cloud-check is clean.
 1. `git fetch origin claude/phase-1-6lfnar` and merge it into your branch. In Part C "Now", keep the base's entries
    first and yours last. If a PR merged first used the same kit version or pitfall numbers, you are the second
    merger: renumber yours to the next free ones everywhere they appear, and fix "Next free numbers".
