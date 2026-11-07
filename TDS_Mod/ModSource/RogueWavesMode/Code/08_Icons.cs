@@ -1,4 +1,5 @@
-// The weather icons for the warning popup, 12x12 in the pack's palette (docs/STYLE.md); temporary art, the rows are
+// The weather icons for the warning popup, 12x12 in the pack's palette (docs/STYLE.md). The library's file of the same name
+// (Art/Temporary/game_size/RogueWaves_*.png, ChatGPT's art since 2026-11-07) wins; the rows below are the fallback, the older
 // Art/Temporary/game_size/RogueWaves_*.png as concept-tools/temp_art/ui_icons.py prints them (Rising Water: Dimitri's pick
 // of 2026-11-03, version 2 as variants_icons.py prints it), added to the game's "Icon_Types"
 // table the way Argo adds its own (kit docs/09 #20): early, before the table is first read, since it freezes then. If
@@ -170,7 +171,8 @@ public static class RWIcons
             return;
         Iconobject.Icon icon = new Iconobject.Icon();
         icon.Name = name;
-        icon.Image = ModKitAssets.Pixel(rows, "Icon_" + name, palette, ModKitAssets.CommandIcon);
+        Sprite file = RWAssets.Sprite(name);   // the library's picture of the same name (ChatGPT's, 2026-11-07) wins over the rows
+        icon.Image = file != null ? ModKitAssets.Boxed(file, ModKitAssets.CommandIcon, "Icon_" + name) : ModKitAssets.Pixel(rows, "Icon_" + name, palette, ModKitAssets.CommandIcon);
         icon.Color = Color.white;
         icon.Material = like != null ? like.Material : null;
         icon.Displayname = RWWeather.Display(w);

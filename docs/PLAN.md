@@ -237,13 +237,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 ### Now
 
 - **State (2026-11-07, base `3e1cc93`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
-  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (temporary art, `docs/TEMP_ART.md`; Argo keeps
-  his shipped look), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
+  Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (ChatGPT's art since 2026-11-07, Argo
+  redesigned; `docs/TEMP_ART.md`), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
   kit 1.15. Last runs on the PC: the full test of `6830ba2` (`PC_FULL_2026-11-06.md`), PC round 5 on `7e7f4e4`
   (`PC_ROUND5_2026-11-06.md`: the whole-pixel follow-up, the top 4 pitfall fixes, the bug fixes, CV13, CV14 and the
   Diorama looks proven; the map cards' open freeze left) and PC round 6 on `03f807a` (`PC_ROUND6_2026-11-06.md`: the
   names made once proven; Spool's Thread Heads stuck with the whole pack). Built since, compiled here, not run on the
-  PC: the Thread Heads' fix (PR #165). The sweep's tuned numbers in scope `04`, `08`, `10`, `12` keep their tildes until
+  PC: the Thread Heads' fix (PR #165) and ChatGPT's art (the art PR of 2026-11-07). The sweep's tuned numbers in scope `04`, `08`, `10`, `12` keep their tildes until
   he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest last); reports:
   `docs/reports/README.md`.
 - **Next, in order:** a PC round for the Thread Heads' fix (Spool's self-test alone and with the whole pack; a Thread
@@ -1703,6 +1703,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Part A and ship-a-pr say (an hour, `@codex review` once, an hour more or Codex out of usage). 5: scope-sync's tilde
   example said the sweep's numbers stay "until after PC round 4", which has run; it now says until he takes them.
   Docs only. No kit change, no pitfall.
+- **2026-11-07: ChatGPT's art brought in** (Dimitri: "replace the assets with the new updated art. Afterwards, run tests").
+  His zip `Rogue_Waves_Completed_Assets.zip` (Desktop\RogueWave\chatgpt): 160 game-size PNGs, all the manifest's sizes,
+  `ArgoSonar-Sheet` not made (the code keeps the old-look sheet); 185 tower concept pictures left in his folder (towers
+  are code-built models). Placed per `docs/art/README.md`; `ArgoBuilder.FileArt` added (Argo read no files before); the
+  menu button shows `RogueWaves_MenuButton` on Play's white tile (12_Menu.cs, no teal); the weather icons' files win over
+  their rows (08_Icons.cs); Spool's tuft rows redrawn from the file. Naut sheets: a semi-clear ground shadow removed and
+  the frames moved down 1 px. Compiled here; PC round follows.
 
 ### Decisions
 

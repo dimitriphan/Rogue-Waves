@@ -102,16 +102,19 @@ public static class RWMenu
         RWLog.Info("main menu: the Rogue Waves button stands beside Play");
     }
 
-    // Play's tile: its picture (child "Image", the ship and arrows) becomes the pack's crest, on Rogue Teal (docs/STYLE.md). Its
-    // border stays, and the line down to the column stays Play's alone. Play's picture is 48 px in a 48-unit box; the crest
-    // is 32 px, so it is sized to 32 units rather than stretched to fill the box (pitfall #156).
+    // Play's tile: its picture (child "Image", the ship and arrows) becomes the pack's button picture, RogueWaves_MenuButton
+    // (48 px, the crest and » chevrons in Play's own flat grey), on Play's own white tile (docs/STYLE.md). Its border stays,
+    // and the line down to the column stays Play's alone. Without that file the 32 px crest stands in on Rogue Teal, as
+    // before. Either is sized to whole screen pixels per art pixel, never stretched to fill the 48-unit box (pitfall #156).
     public const float PictureBox = 48f;
 
     static void Image(GameObject copy)
     {
-        Sprite art = RWAssets.Sprite("RogueWaves_Crest32");
+        Sprite art = RWAssets.Sprite("RogueWaves_MenuButton");
+        bool tile = art != null;
+        if (!tile) art = RWAssets.Sprite("RogueWaves_Crest32");
         UnityEngine.UI.Image box = copy.GetComponent<UnityEngine.UI.Image>();
-        if (box != null) box.color = RWDialog.Teal;
+        if (box != null && !tile) box.color = RWDialog.Teal;
         Transform picture = copy.transform.Find("Image"), down = copy.transform.Find("Linev");
         UnityEngine.UI.Image i = picture != null ? picture.GetComponent<UnityEngine.UI.Image>() : null;
         crest = null;

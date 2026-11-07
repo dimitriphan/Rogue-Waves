@@ -36,6 +36,7 @@ public static class SpoolAssets
         { 'd', new Color32(40, 64, 46, 255) }, { 'r', new Color32(228, 104, 128, 255) }, { 's', new Color32(176, 182, 196, 255) },
         { 'j', new Color32(154, 201, 165, 255) }, { 'x', new Color32(111, 174, 126, 255) }, { 'X', new Color32(79, 140, 94, 255) },
         { 'R', new Color32(214, 84, 72, 255) }, { 'u', new Color32(88, 140, 228, 255) },
+        { 'T', new Color32(0xE4, 0xDE, 0xDA, 255) }, { 't', new Color32(0x9A, 0x93, 0x8E, 255) },   // Spool_Tuft (ChatGPT art, 2026-11-07)
     };
 
     // A spool of thread.

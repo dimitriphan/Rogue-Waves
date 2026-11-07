@@ -17,7 +17,7 @@ modifiers and the mode's UI.
 | Swatch | Hex | Used for |
 | --- | --- | --- |
 | Deep Swell | `2E4A62` | panels and shadows of the mode's UI, the dark side of pack icons |
-| Rogue Teal | `3F8F96` | the mode's main colour: the main menu's Rogue Waves button, vote and shop frames |
+| Rogue Teal | `3F8F96` | the mode's main colour: vote and shop frames (the main menu's Rogue Waves button is Play's white tile with the crest and » chevrons in Play's flat grey `C8C8C8`, `RogueWaves_MenuButton.png`, since 2026-11-07) |
 | Foam | `E9F1EE` | rims, highlights, the crest motif |
 | Pearl (Pure Aura) | `F4EEF8`, sheen `C9E4F2` / `F2D9E6` | Pure Aura only: a white that is none of the base auras (Red, Blue, Yellow, Green = all), with a faint two-tone sheen |
 | Storm Coral | `E2725B` | danger and ascension marks (not a modifier's colour: see Enemies below) |
