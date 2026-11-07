@@ -378,6 +378,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-06: ChatGPT makes the art, Codex reviews the PRs** (Dimitri: "Go as planned"): `docs/art/` (guide, manifest,
   Project text), `concept-tools/chatgpt/` (pixelize, pack builder), `AGENTS.md`; Codex replaces the reviewer sub-agent
   (Part A "Merging", ship-a-pr). Private sprite pack outside the repo. Scripts run here; no mod code, nothing on the PC.
+- **2026-11-07: a ChatGPT prompt remakes the pack's art** (Dimitri: "Write me a prompt for chatGPT that will recreate all
+  of the art assets"): `docs/art/RECREATE_PROMPT.md`, three stops (sketch the vessels, ask him, make the assets in
+  batches) and the main menu button after his minimal reference. Docs only; `12_Menu.cs` changes when the button arrives.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1627,6 +1630,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `.claude/rules/mod-code.md`, kit `docs/07` and `docs/09`); Part A "Merging" and `docs/skills/ship-a-pr.md` "Review":
   merge once Codex has reviewed the head with no P0/P1 open; `@codex review` once after an hour; still none, the PR
   waits for him. `/code-review high` stays as the author's check. Not compiled (no mod code); scripts run here.
+- **2026-11-07: a ChatGPT prompt to remake every pack asset** (Dimitri: "Write me a prompt for chatGPT that will recreate
+  all of the art assets in the mod pack. Before it starts, have it sketch what it thinks the modded vessels look like in
+  higher detail ... have it look through the art style resources and ask me clarifying questions ... the Rogue Waves
+  button in the main menu to look more like [his picture], which is a sleek minimalistic design"). `docs/art/RECREATE_PROMPT.md`
+  holds the paste-ready prompt for the Project "Rogue Waves Art": Stage 1 sketches Yossele, Spool (sage, overriding
+  the purple the concepts page still describes), Uloe and Argo at about 128 px, front and back, plus a line-up of the
+  minions and VENDCINT, and stops for his corrections; Stage 2 reads the whole guide and asks at most 15 questions with
+  defaults (what to remake and in what order, Yossele's final sheets, Argo's shipped look or a diver take, how far a
+  remake may move, full sheets or key frames, a touch of Rogue Teal on the button); Stage 3 works through the manifest
+  in batches of 6-10 with a stop after each. His reference looks like the game's own Play tile (white face, a light grey
+  `DEDFDE` double-line frame, one flat `C8C8C8` picture of a ship and a double chevron): the prompt asks for
+  `RogueWaves_MenuButton.png`, 48 x 48, the crest and a double chevron in `C8C8C8` only, plus a x4 mock-up of the tile;
+  its `pixelize.py` command was run here on a test picture ("0 problem(s)"). When it comes in, `RWMenu.Image`
+  (`TDS_Mod/ModSource/RogueWavesMode/Code/12_Menu.cs`) stops tinting the tile Rogue Teal and shows it in Play's 48-unit box. Docs only.
 
 ### Decisions
 
