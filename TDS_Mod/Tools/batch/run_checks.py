@@ -84,9 +84,9 @@ ADVISOR_BETA = "advisor-tool-2026-03-01"
 ADVISED = {"scope", "design"}
 ADVISOR_USES, ADVISOR_OUT, ADVISOR_OVERHEAD, ADVISOR_GUESS_OUT = 1, 2_048, 2_000, 1_600
 ADVISOR_NOTE = ("\n\nYou have an advisor, a stronger model that reads this whole request and what you have written so "
-                "far. Make a first pass over every line, then call the advisor once, before your final answer, and "
-                "weigh its advice on the rows you are least sure of. Advisor: the rows where a mark could go either "
-                "way matter most; say which code lines settle them.")
+                "far. Call it once, before you write your final answer, and weigh its advice on the rows you are "
+                "least sure of. Advisor: the rows where a mark could go either way matter most; say which code lines "
+                "settle them.")
 DEEP_SWELL, LIGHT = (0x2E, 0x4A, 0x62, 255), (0xE9, 0xF1, 0xEE, 255)   # docs/STYLE.md: Deep Swell and Foam
 
 
@@ -716,7 +716,10 @@ def request_cost(model, meta, p, n):
     guess, ceiling = cost(model, n, GUESS_OUT[meta["check"]]), cost(model, n - cw, p["max_tokens"], cache_write=cw)
     adv = meta.get("advisor")
     if adv:
-        guess += cost(adv, n + ADVISOR_OVERHEAD, ADVISOR_GUESS_OUT) + cost(model, n - cw, 0, cache_read=cw)
+        # The guess assumes the request's cached blocks are read; a run where the cap took the advisor off some
+        # requests and not others changes their prefix (tools come first), so it may cost more, never over the ceiling.
+        before = n + GUESS_OUT[meta["check"]]
+        guess += cost(adv, before + ADVISOR_OVERHEAD, ADVISOR_GUESS_OUT) + cost(model, before - cw, 0, cache_read=cw)
         seen = n + p["max_tokens"] + ADVISOR_OUT
         ceiling += ADVISOR_USES * (cost(adv, seen + ADVISOR_OVERHEAD, ADVISOR_OUT) + cost(model, seen, 0))
     return guess, ceiling
@@ -745,19 +748,28 @@ def fit_advisor(model, reqs, counted, max_cost):
     return dropped
 
 
-def usage_cost(model, u):
+def field(o, name):
+    """A field of an SDK object, or of the plain dict an older SDK keeps for a type it does not know."""
+    return o.get(name) if isinstance(o, dict) else getattr(o, name, None)
+
+
+def usage_cost(model, adv_model, u):
     """A result's real cost: each iteration at its own model's price (the top-level figures are the model's alone and
-    leave the advisor out), and the advisor's share of it."""
-    its = getattr(u, "iterations", None) or []
+    leave the advisor out), the advisor's share of it, and its consults. An id not in PRICES is priced as the model
+    asked for."""
+    its = field(u, "iterations") or []
     if not its:
         return cost(model, u.input_tokens, u.output_tokens,
                     u.cache_creation_input_tokens or 0, u.cache_read_input_tokens or 0), 0.0, 0
     total, adv, consults = 0.0, 0.0, 0
     for it in its:
-        c_ = cost(it.model or model, it.input_tokens, it.output_tokens,
-                  it.cache_creation_input_tokens or 0, it.cache_read_input_tokens or 0)
+        is_adv = field(it, "type") == "advisor_message"
+        m = field(it, "model")
+        m = m if m in PRICES else (adv_model if is_adv and adv_model else model)
+        c_ = cost(m, field(it, "input_tokens") or 0, field(it, "output_tokens") or 0,
+                  field(it, "cache_creation_input_tokens") or 0, field(it, "cache_read_input_tokens") or 0)
         total += c_
-        if it.type == "advisor_message":
+        if is_adv:
             adv += c_; consults += 1
     return total, adv, consults
 
@@ -839,17 +851,20 @@ def cmd_submit(args):
         counted = {cid: int(est_tokens(meta, p) * 1.5) for cid, meta, p in reqs}
         print("Using the estimate plus half for the cap.", file=sys.stderr)
     dropped = fit_advisor(model, reqs, counted, args.max_cost)
-    if dropped:
-        print(f"The advisor is off {', '.join(dropped)} to keep the most within --max-cost ${args.max_cost:.2f}.")
     _, _, total, ceiling = estimate(model, reqs, counted)
+    if dropped and ceiling <= args.max_cost:
+        print(f"The advisor is off {', '.join(dropped)} to keep the most within --max-cost ${args.max_cost:.2f}.")
     if ceiling > args.max_cost:
         print(f"About ${total:.2f}, at most ${ceiling:.2f}: the most is over --max-cost ${args.max_cost:.2f}. Nothing "
               f"was sent; narrow it (--check, --scope-files, --since, --model haiku) or raise --max-cost.",
               file=sys.stderr)
         sys.exit(4)
     try:
-        batch = c.beta.messages.batches.create(requests=[{"custom_id": cid, "params": p} for cid, _, p in reqs],
-                                               betas=[ADVISOR_BETA])
+        batch_reqs = [{"custom_id": cid, "params": p} for cid, _, p in reqs]
+        if any(meta.get("advisor") for _, meta, _ in reqs):
+            batch = c.beta.messages.batches.create(requests=batch_reqs, betas=[ADVISOR_BETA])
+        else:
+            batch = c.messages.batches.create(requests=batch_reqs)
     except anthropic.AuthenticationError:
         print("The API key was refused (401). Check it on the Console's API keys page.", file=sys.stderr)
         sys.exit(1)
@@ -963,14 +978,19 @@ def mark_section(L, n, title, recipe, results, marks, work_marks):
 
 
 def advice_note(info, msg, consults, adv_cost):
-    """The Requests table's Advisor cell: empty without the advisor, else consults and their $, or why it failed."""
+    """The Requests table's Advisor cell: empty without the advisor, else consults and their $ (a cut answer and a
+    failed call named), or not consulted."""
     if not info.get("advisor"):
         return ""
-    errors = [b.content.error_code for b in msg.content
-              if b.type == "advisor_tool_result" and b.content.type == "advisor_tool_result_error"]
+    results = [field(b, "content") or {} for b in msg.content if field(b, "type") == "advisor_tool_result"]
+    errors = [field(r, "error_code") for r in results if field(r, "type") == "advisor_tool_result_error"]
+    cut = sum(1 for r in results if field(r, "stop_reason") == "max_tokens")
+    cell = f"{consults} (${adv_cost:.3f})" if consults else "not consulted"
+    if cut:
+        cell += f", {cut} cut at {ADVISOR_OUT:,}"
     if errors:
-        return f"failed: {', '.join(errors)}"
-    return f"{consults} (${adv_cost:.3f})" if consults else "not consulted"
+        cell += f", failed: {', '.join(map(str, errors))}"
+    return cell
 
 
 def advisor_line(reqs, adv_spent):
@@ -994,7 +1014,7 @@ def write_report(batch_id, meta, results):
         if res and res.type == "succeeded":
             msg = res.message
             u = msg.usage
-            c_, a_, consults = usage_cost(model, u)
+            c_, a_, consults = usage_cost(model, info.get("advisor"), u)
             spent += c_; adv_spent += a_
             status = msg.stop_reason
             if msg.stop_reason in ("end_turn", "stop_sequence"):

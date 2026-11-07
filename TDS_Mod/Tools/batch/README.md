@@ -53,7 +53,7 @@ the model thinks, and thinking is billed as output), `--advisor none|opus` (defa
   requests (`plan --exact`, base `d8cddbd`) Haiku 5.5 with the advisor is about $2.74, at most $4.44; Haiku alone
   $0.38; Sonnet 5.5 alone $1.52; Sonnet with the advisor $4.25. A full Haiku run with it is about $12 counted, so the
   default `--max-cost 15` trims it. The advisor's answer is capped at 2,048 tokens and is encrypted: only the model
-  reads it. Tested 2026-11-07 on one made-up design request in a real batch: it consulted once, the answer kept its
+  reads it. It needs a recent SDK: `python3 -m pip install -U anthropic` (2.6.0 tested). Tested 2026-11-07 on one made-up design request in a real batch: it consulted once, the answer kept its
   schema, $0.015 in all, $0.014 of it the advisor.
 
 - **`--since REF`** keeps only what changed between `REF` and `HEAD` (committed changes): `text` for parts whose game
@@ -70,7 +70,7 @@ the model thinks, and thinking is billed as output), `--advisor none|opus` (defa
   its 2,048, and the model reading it all again uncached. Over the cap, `submit` first takes the advisor off the
   largest requests, one at a time, and says which; only if the run is still over does it refuse. `submit` counts the input first (the free endpoint), since the
   3.5-characters guess runs low (2.78M guessed, 4.19M counted on base `1cc21d1`). Counted, a full run is about $1.33 and
-  at most $2.56 on Haiku 5.5, about $5.48 and at most $10.52 on Sonnet 5.5; the first real full Haiku run cost $1.19,
+  at most $2.56 on Haiku 5.5 (on `d8cddbd`, 5.10M counted: $1.56, at most $2.81), about $5.48 and at most $10.52 on Sonnet 5.5; the first real full Haiku run cost $1.19,
   and $1.82 with the seven answers cut by the lower limits of that day rerun. `plan --exact` prints both figures.
 - **The advisor's cost** is in every figure: `plan`'s estimate and most, the cap, and the report, whose cost line
   names the advisor's share and whose Requests table has an Advisor column (consults and their $, `not consulted`,
@@ -125,8 +125,8 @@ C "Now" names it). The cheap daily form, for the morning routine once the key is
   && python3 TDS_Mod/Tools/batch/run_checks.py submit --since last --model haiku --max-cost 3 --max-wait 90
 ```
 
-It sends only what changed since each check's last full run (usually cents; a full Haiku run is about $1.33, at most
-$2.56), skips itself without the key, and writes the report the routine's PR carries. The month's figure: `spend`, or the last line of each report.
+It sends only what changed since each check's last full run (usually cents; a full Haiku run is about $1.56, at most
+$2.81, counted on base `d8cddbd`), skips itself without the key, and writes the report the routine's PR carries. The month's figure: `spend`, or the last line of each report.
 
 ## Cost per run
 
