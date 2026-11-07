@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwXPd7YFR3ZD2hT3bQqztjPF",
   "thread": "Add Claude fallback when Codex review stalls",
-  "state": "reviewing",
-  "started": "2026-11-07T01:20:45Z",
-  "step": "PR #169 waiting on Codex",
+  "state": "waiting",
+  "started": "2026-11-07T02:24:04Z",
+  "step": "Nudged Codex; Claude review at 03:24Z if silent",
   "helpers": [],
-  "updated": "2026-11-07T01:20:45Z"
+  "updated": "2026-11-07T02:24:04Z"
 }
