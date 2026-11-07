@@ -28,8 +28,8 @@ works) > this file. **Every session** reads `docs/PLAN.md` Part C "Now" (state),
 | A chart for a report | `dataviz` |
 
 Skills that assume a test runner, worktrees, subagents or their own handoff file (superpowers', `handoff`) don't fit:
-design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagents only when Dimitri or PLAN asks. `/run` can't start the game here; the PC does. A procedure repeated three times (a PC
-round, a scope fold-in) is worth proposing as a project skill; the drafted ones are in `docs/skills/`.
+design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagents only when Dimitri or PLAN asks.
+`/run` can't start the game here; the PC does. A procedure repeated three times (a PC round, a scope fold-in) is worth proposing as a project skill; the drafted ones are in `docs/skills/`.
 
 ## Rules the code doesn't show
 

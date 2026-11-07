@@ -58,7 +58,7 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > 👍 on the PR) is the approval. **Fallback (Dimitri, 2026-11-07, for when his ChatGPT usage runs out):** no
 > review within an hour: comment `@codex review` once; still none an hour later, or Codex answers that its usage
 > limit is reached: tell Dimitri in the thread, and a Claude reviewer sub-agent (model: `docs/PROJECT_SETUP.md`
-> "Model per role", reviews) runs `/code-review high` on the head, labelling findings P0-P3 under the same rules; the
+> "Model per role", stand-in PR reviewer) runs `/code-review high` on the head, labelling findings P0-P3 under the same rules; the
 > thread fixes or answers each P0/P1, the same reviewer re-reviews the new head (no new Codex wait), the PR body notes
 > that Claude reviewed in Codex's place, and the thread merges once no P0/P1 is open and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
