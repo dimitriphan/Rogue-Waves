@@ -1709,7 +1709,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   are code-built models). Placed per `docs/art/README.md`; `ArgoBuilder.FileArt` added (Argo read no files before); the
   menu button shows `RogueWaves_MenuButton` on Play's white tile (12_Menu.cs, no teal); the weather icons' files win over
   their rows (08_Icons.cs); Spool's tuft rows redrawn from the file. Naut sheets: a semi-clear ground shadow removed and
-  the frames moved down 1 px. Compiled here; PC round follows.
+  the frames moved down 1 px. Art review (Opus sub-agent): the four falls collapse instead of hanging in mid-air (stand-in
+  of the idle frames), the tab icons are filled heads (the code's kept), `Direction_Extension` unreadable (old kept),
+  `SpoolPatch` v2/v3 frozen; redraw list in the PR. Compiled here; PC round follows.
 
 ### Decisions
 

@@ -1,9 +1,13 @@
 # Argo: final art (ChatGPT, 2026-11-07)
 
 Made in Dimitri's ChatGPT Project from the brief in `docs/art/` and brought in on 2026-11-07 ("bring in my ChatGPT
-art", `docs/art/README.md`): 18 game-size PNGs, each the size and layout its row in `docs/art/ASSET_MANIFEST.md` gives.
+art", `docs/art/README.md`): 17 game-size PNGs, each the size and layout its row in `docs/art/ASSET_MANIFEST.md` gives.
 
 `ArgoSonar-Sheet` was not made, so the code still draws it, in the Argo look from before the redesign.
+
+Held back after the art review: `ArgoFall-Sheet.png` here is a stand-in (the new idle_v0 frames twice) because
+ChatGPT's fall showed a collapse and Falling loops in mid-air; the journal tab icon stays the code's (it must be a
+white line drawing). Both go back to ChatGPT.
 
 Files here, one folder above `Temporary/`, win over the temporary files and over the code's own sheets
 (`ArgoBuilder.FileArt`; `build_log.txt` says "from Art/ (final)" for each). A file of the wrong size is skipped and logged.
