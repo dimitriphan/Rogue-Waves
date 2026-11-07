@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwHzeEQKTmy1PLBLDoc6LJMC",
   "thread": "Review ChatGPT art against TDS style",
-  "state": "reviewing",
-  "started": "2026-11-07T21:13:24Z",
-  "step": "PR #175 waiting for Codex",
+  "state": "shipped",
+  "started": "2026-11-07T21:33:13Z",
+  "step": "PR #175 merged; note ready to paste",
   "helpers": [],
-  "updated": "2026-11-07T21:26:42Z"
+  "updated": "2026-11-07T21:33:13Z"
 }
