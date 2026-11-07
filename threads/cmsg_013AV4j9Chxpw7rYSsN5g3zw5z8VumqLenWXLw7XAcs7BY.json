@@ -3,7 +3,7 @@
   "thread": "Add the advisor tool to the batch checks",
   "state": "building",
   "started": "2026-11-07T20:26:51Z",
-  "step": "Reading the advisor tool docs",
+  "step": "Wiring the advisor into run_checks.py",
   "helpers": [],
-  "updated": "2026-11-07T20:26:51Z"
+  "updated": "2026-11-07T20:31:58Z"
 }
