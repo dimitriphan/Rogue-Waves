@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwLVgWEmt5uoKjfb8QcLzYDf",
   "thread": "Set up ChatGPT for art and reviews",
-  "state": "reviewing",
-  "started": "2026-11-06T23:34:31Z",
-  "step": "Docs PR open, waiting for Codex's first review",
+  "state": "shipped",
+  "started": "2026-11-07T00:37:49Z",
+  "step": "PR #166: ChatGPT art guide and Codex review",
   "helpers": [],
-  "updated": "2026-11-06T23:34:31Z"
+  "updated": "2026-11-07T00:37:49Z"
 }
