@@ -48,6 +48,9 @@ For the folder:
 2. Check each against its manifest row: `python3 concept-tools/chatgpt/pixelize.py --check <png> --cell <cell>
    --palette <pack palette>` and `concept-tools/temp_art/art_check.py`, then the art review in `docs/STYLE.md`
    (contact sheets beside the current version and his own sprite). A file that fails goes back to him with the lines.
+   Fall, Land and hop sheets lift frames off the bottom row on purpose: check those with `pixelize.py --check
+   --anchor center` (it skips only the feet line), and read `art_check.py --baseline`'s lines on their rows against the
+   lifts ChatGPT lists for each frame.
 3. Place it where the builder takes a file over its own drawing: `TDS_Mod/ModSource/<Part>/Art/<name>.png` (final;
    Yossele, Spool and Uloe read it through `FileArt`), the mode's files in
    `TDS_Mod/ModSource/RogueWavesMode/Art/Temporary/game_size/` (replace in place), Argo's only with a builder change.

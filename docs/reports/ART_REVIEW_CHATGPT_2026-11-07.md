@@ -114,7 +114,7 @@ Objective_Nest reads but still has panel-colour pixels (I1).
 ## 2. What ChatGPT should do next
 
 The note `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (copy in project files, `chatgpt/prompts/feedback_round1_2026-11-07.txt`)
-turns §1 into seven rules for every asset, a keep list, and six batches. It follows the rules style of `RECREATE_PROMPT.md`:
+turns §1 into eight rules for every asset, a keep list, and six batches. It follows the rules style of `RECREATE_PROMPT.md`:
 
 - GPT-6 Sol Medium;
 - short bookkeeping turns;
