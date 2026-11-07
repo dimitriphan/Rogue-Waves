@@ -40,7 +40,21 @@ python3 TDS_Mod/Tools/batch/run_checks.py spend                        # this mo
 
 Options: `--check` (`all`, or a comma list of `text,scope,design,docs,art`), `--model sonnet|haiku` (default `sonnet`
 = `claude-sonnet-5-5`; `haiku` = `claude-haiku-5-5`), `--effort low|medium|high` (default `medium`; it sets how much
-the model thinks, and thinking is billed as output), `--scope-files 07,11`, `--art PATH...`.
+the model thinks, and thinking is billed as output), `--advisor none|opus` (default `none`; below), `--scope-files 07,11`,
+`--art PATH...`.
+
+- **`--advisor opus`** gives the `scope` and `design` requests the Claude API's advisor tool (beta
+  `advisor-tool-2026-03-01`, `platform.claude.com/docs/en/agents-and-tools/tool-use/advisor-tool`): after a first pass
+  over every line the model consults Opus 5.5 (`claude-opus-5-5`) once, before its answer, on the rows it is least
+  sure of. The advisor reads the whole request (system, code, scope, what the model has written so far) under its own
+  prompt of about 1,700 tokens, so each consult costs Opus 5.5's batch price ($2 in, $10 out per million) on the whole
+  request, and the model then reads the request again. That is why it is off by default: the requests are 90K-540K
+  tokens and the model consults once, the shape where the advisor costs most. On the four vessels' scope and design
+  requests (`plan --exact`, base `d8cddbd`) Haiku 5.5 with the advisor is about $2.74, at most $4.44; Haiku alone
+  $0.38; Sonnet 5.5 alone $1.52; Sonnet with the advisor $4.25. A full Haiku run with it is about $12 counted, so the
+  default `--max-cost 15` trims it. The advisor's answer is capped at 2,048 tokens and is encrypted: only the model
+  reads it. Tested 2026-11-07 on one made-up design request in a real batch: it consulted once, the answer kept its
+  schema, $0.015 in all, $0.014 of it the advisor.
 
 - **`--since REF`** keeps only what changed between `REF` and `HEAD` (committed changes): `text` for parts whose game
   code changed, `scope` for scope files whose parts or own text changed, `design` for vessels whose code or page
@@ -52,10 +66,16 @@ the model thinks, and thinking is billed as output), `--scope-files 07,11`, `--a
   files, so such a run costs nearly a full one.
 - **`--max-cost USD`** (default 15): `submit` refuses to send, exit code 4, when the most the run can cost is over
   it: every request writing its whole `max_tokens` (8,000 text, docs and art; 64,000 scope; 48,000 design; thinking
-  included) and every cache block written, never read. `submit` counts the input first (the free endpoint), since the
+  included) and every cache block written, never read; with the advisor, each consult reading all of that and writing
+  its 2,048, and the model reading it all again uncached. Over the cap, `submit` first takes the advisor off the
+  largest requests, one at a time, and says which; only if the run is still over does it refuse. `submit` counts the input first (the free endpoint), since the
   3.5-characters guess runs low (2.78M guessed, 4.19M counted on base `1cc21d1`). Counted, a full run is about $1.33 and
   at most $2.56 on Haiku 5.5, about $5.48 and at most $10.52 on Sonnet 5.5; the first real full Haiku run cost $1.19,
   and $1.82 with the seven answers cut by the lower limits of that day rerun. `plan --exact` prints both figures.
+- **The advisor's cost** is in every figure: `plan`'s estimate and most, the cap, and the report, whose cost line
+  names the advisor's share and whose Requests table has an Advisor column (consults and their $, `not consulted`,
+  or why it failed). The report prices each step (`usage.iterations`) at its own model's batch price, since the API's
+  top-level token figures leave the advisor out.
 - **`--max-wait MIN`** stops waiting after `MIN` minutes; the batch keeps running and `collect` finishes it.
 - **Exit codes:** 0 done or nothing to check, 2 bad arguments, 3 no key (nothing sent), 4 over `--max-cost`, 1 any
   other failure.
@@ -88,7 +108,7 @@ when the plan's five-hour limit is used up: the key bills the API credit, never 
    It pulls the newest base, installs `anthropic` and `pillow` the first time, sends Haiku 5.5 only what changed since
    each check's last full run (at most $3), waits for the batch and moves the report to `Desktop\RogueWave\batch`.
    `-Plan` gives the cost and sends nothing; `-Full` checks everything; `-Model sonnet -MaxCost 12` uses Sonnet 5.5 (at most about $10.52);
-   `-Check scope,design` picks checks; `-Collect msgbatch_...` finishes a batch still running after the two-hour wait.
+   `-Check scope,design` picks checks; `-Advisor opus` adds the advisor; `-Collect msgbatch_...` finishes a batch still running after the two-hour wait.
 3. **Hand it back** when you are next in the project: "read the batch report on my Desktop". That folder is approved for
    the project's threads; a thread reads the report, confirms its leads and commits it in a docs PR.
 
@@ -129,12 +149,16 @@ $0.25, or $0.25 / $1.25 for a prompt over 100K tokens (the mode's scope files ar
 Each part's code is its own block, marked for prompt caching, the mode's first, so ten scope requests share the
 mode's block and a vessel's scope and design requests share its block: a cache hit reads it at a tenth of the price,
 a write costs 1.25 times. Inside a batch, hits are best effort, so a run can cost more than the estimate (never more
-than the ceiling `plan` prints), or noticeably less. The report gives the real cost from the API's usage figures. At these prices the
+than the ceiling `plan` prints), or noticeably less. The report gives the real cost from the API's usage figures. Counted by `plan --exact` on base `d8cddbd`
+(2026-11-07, 5.10M input tokens): a full Haiku run is about $1.56, at most $2.81; `--advisor opus` adds Opus 5.5
+reading each of the 18 scope and design requests once. At these prices the
 $100 a month covers about 20 full Sonnet runs, or a daily Haiku run with plenty to spare. Rerun `plan` after a big
 change to refresh the numbers.
 
 **Which model.** Sonnet 5.5 for a scope or design audit whose rows will drive work; Haiku 5.5 for the daily sweep,
-the text, docs and art checks, and a cheap first pass. Neither replaces the hand-read audit's judgment: check every
+the text, docs and art checks, and a cheap first pass. `--advisor opus` puts Opus 5.5's judgment on a scope or design
+audit for about $0.30 a vessel request; Sonnet 5.5 alone costs about half that, so reach for the advisor when Opus's
+read is worth it, and compare the two reports on one base before making it a habit. Neither replaces the hand-read audit's judgment: check every
 DIFFERENT, MISSING and NOT-IN-CODE row against the code, and look at art yourself before changing it.
 
 ## What ran where

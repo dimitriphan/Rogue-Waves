@@ -73,6 +73,7 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 | Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
 | Stand-in PR reviewer when Codex stalls or is out of usage (`/code-review high`, PLAN Part A "Merging") | Opus 5.5 | Rule-bound, `AGENTS.md` P0-P3 |
 | Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
+| Batch checks (`TDS_Mod/Tools/batch/run_checks.py`, API credit) | Haiku 5.5 daily, Sonnet 5.5 for an audit that drives work; `--advisor opus` lets scope and design consult Opus 5.5 once a request (advisor tool, beta `advisor-tool-2026-03-01`), off by default | Opus reads the whole request each consult, so it costs more than Sonnet alone (batch README "`--advisor opus`") |
 | Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's 10-map campaign loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
 
 Escalation rule: an Opus thread that fails twice at the same problem hands it to a Fable thread with a short summary
@@ -88,7 +89,7 @@ over, and is spent before any credit you buy. When it runs out, API requests sto
 you buy credit or turn on auto-reload.
 
 **What it can pay for.** API calls made with a key from that organization: the batch checks
-(`TDS_Mod/Tools/batch/README.md`), and `claude -p` or Agent SDK scripts you run yourself with that key.
+(`TDS_Mod/Tools/batch/README.md`; with `--advisor opus` also Opus 5.5's consults, counted in the run's cap), and `claude -p` or Agent SDK scripts you run yourself with that key.
 
 **What it can't.** Interactive Claude Code (terminal, IDE, desktop, web), this project's threads, and the plan's
 usage credits. So the credit cannot be an overflow for the plan. There is also no automatic overflow from the plan

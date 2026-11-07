@@ -406,6 +406,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: ChatGPT's art brought in** (PR #173): 151 pictures for the four vessels, Nauts, icons, VENDCINT and the
   menu button; falls, tab icons and `Direction_Extension` held back for ChatGPT. Compiled here; PC round Art_round1
   under way. Detail in Log.
+- **2026-11-07: the advisor tool in the batch checks** (Dimitri: "Install advisor-tool-2026-03-01"): `--advisor opus`
+  lets scope and design consult Opus 5.5 once, counted in the cap and report; off by default (dearer than Sonnet
+  alone). One real test batch, $0.015; tools and docs only, nothing on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
