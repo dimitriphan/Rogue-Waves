@@ -403,6 +403,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: the morning's docs suggestions** (Dimitri: "Do 2, 3, and 5"): "Now"'s State and Next brought to PC rounds
   5 and 6; the Codex wait written the same in `AGENTS.md` and here; scope-sync's tilde line. Docs only; nothing ran on
   the PC. No kit change, no pitfall.
+- **2026-11-07: ChatGPT's art brought in** (PR #173): 151 pictures for the four vessels, Nauts, icons, VENDCINT and the
+  menu button; falls, tab icons and `Direction_Extension` held back for ChatGPT. Compiled here; PC round Art_round1
+  under way. Detail in Log.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
