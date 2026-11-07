@@ -14,10 +14,10 @@
 			- Difficulty: Intermediate
 			- Archetype: No walls; control the field instead. Slow foes, pin them, reel them in, and blast what's stuck
 			- In-game line: Sturdy, slow melee, hits two at once
-			- Look: bulky dome-helmeted diver with hands touching the body
+			- Look: an offshore drilling-rig worker, "Last Watch": ochre hardhat and work coat over dark teal waders, a steel face guard with pale eyes, strands of kelp, a heavy two-handed pipe wrench across the body (Dimitri's ChatGPT redesign, 2026-11-07); the Nauts are small hardhat workers in yellow, red or green coats
 			- Towers look: low-poly and sleek: brass domes, portholes and rivets on the top and front faces
 			- Accent colour: sea blue
-			- Sprites: as shipped in the earlier ArgoMod
+			- Sprites: ChatGPT's redesign (ModSource/Argo/Art, 2026-11-07); the Sonar sheet still the code's old look until redrawn
 			- Lore: Argo went down to find the bottom of the Basin and never quite came back up. Heavy boots, a heavier wrench, and a crew that fixes anything that stands still long enough.
 			- Status: Argo 2.0.1 designed, built, passes its PC self-test, 144 of 144 in the latest round, and played on a second player's machine. The 2026-11-04 review's changes below are built, compiled but not yet run on the PC. Ships only inside the Rogue Waves pack.
 

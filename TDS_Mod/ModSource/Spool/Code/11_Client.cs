@@ -27,13 +27,12 @@ public static class SpoolClient
         public float Until, Seed;
     }
 
-    // Temporary art (ModSource/Spool/Art/Temporary/README.md): a coiled loop of sage thread (lilac until 2026-11-05) with its end trailing off
-    // (Dimitri's pick of 2026-11-03), lit from the upper left (12x12, drawn here so ground Thread needs nothing from the
-    // asset pack).
+    // ChatGPT's tuft of 2026-11-07 (ModSource/Spool/Art/Spool_Tuft.png, docs/art/README.md), as rows: 12x12, drawn here so
+    // ground Thread needs nothing from the asset pack. Re-run the rows from the file when it changes.
     static readonly string[] TuftPixels =
     {
-        "............", "....jjjx....", "...jx...xx..", "..jx.jjx.xX.", "..j.jx..x.X.", "..j.x.jx.xX.",
-        "..x.xX..XX..", "..xX.xXXX.X.", "...xX....X..", "....XXXXX...", "..........X.", "...........X",
+        "............", ".....TT.....", ".....TT.....", ".....TTT....", ".....TTT....", ".TTTTTTTTT..",
+        ".TTTTTTttTT.", "..TtTTttt...", "...TTTTT....", "..TTt.TT....", "......TT....", "............"
     };
 
     public static void Update()
