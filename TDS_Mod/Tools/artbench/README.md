@@ -47,7 +47,8 @@ on the first publish only (omit them afterwards to keep them).
 
 ## Limits
 
-- Argo's six Naut crew sheets aren't on the bench: the preview skips sheets saved in a loop (`sprite_calls.py`).
+- Argo's six Naut crew sheets come in from the next rebuild: `sprite_calls.py` now unrolls the builder's crew loop
+  (the published page predates it).
 - The foes use the game's own art with overlays; effects and sounds are not on the bench.
 - The merge route trusts that the cloud preview draws a sheet exactly as Unity does (checked for the first vessels, see
   `../aseprite/README.md`); a frame that differs would read as hand-edited.
