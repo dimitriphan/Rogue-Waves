@@ -4,7 +4,7 @@ Dimitri, 2026-11-08: "create a prompt to continue the asset process", after Chat
 (`Argo_Complete_Attack_Refined.zip`, brought in by its own thread) and stopped Spool for a restart from an earlier
 version without a chosen source. The Argo review (`docs/reports/ART_REVIEW_ARGO_2026-11-08.md`, PR #179) took all 19
 files and asked for five small edits (A1, A2, D1, D2, N1), which open the prompt. This prompt opens a fresh chat in the ChatGPT Project "Rogue Waves Art" on
-GPT-6 Sol Medium. Paste `CHATGPT_HARD_RULES.md`'s block first, then this one, and attach `Spool_Restart_Handoff.zip`
+GPT-6 Sol Medium or Astra Medium (Dimitri, 2026-11-08). Paste `CHATGPT_HARD_RULES.md`'s block first, then this one, and attach `Spool_Restart_Handoff.zip`
 (ChatGPT's own package; it holds `spool_history/` and the references). A copy is in project files,
 `chatgpt/prompts/continue_2026-11-08.txt`.
 
@@ -21,7 +21,7 @@ the pose, hood, teeth, eyes and tongue and fixes exactly those faults.
 ```text
 CONTINUE ROGUE WAVES ART (2026-11-08)
 
-Read the hard rules I pasted first; they win over everything below except my newest words. Use GPT-6 Sol Medium. Attached: Spool_Restart_Handoff.zip (your own package: spool_history/, references/his_sprites.png, Round1_feedback.txt).
+Read the hard rules I pasted first; they win over everything below except my newest words. Use GPT-6 Sol Medium or GPT-6 Astra Medium. Attached: Spool_Restart_Handoff.zip (your own package: spool_history/, references/his_sprites.png, Round1_feedback.txt).
 
 WHERE WE ARE
 - Argo: all 19 files of Argo_Complete_Attack_Refined.zip are taken into the game. Locked, do not change: the argo_naut_key_v1 design, the approved fall, the walk, the idles, the Sonar sheet, the white-line tab icon, the splash style, the Nauts. Your relit mirrored facings are fine. Only the five small edits of Step 1 remain.
