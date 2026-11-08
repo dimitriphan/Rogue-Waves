@@ -429,6 +429,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-08: Spool's arm is attached again** (Dimitri: "the arm is attached, but dragging behind him palm facing up with
   long claws"): STYLE.md, scope `08` Look, hard rule 21 and the prompt's Step 2 (source version 01, the hunched key) follow;
   the severed arm is gone. Docs only. No kit change, no pitfall.
+- **2026-11-08: ChatGPT may use Astra Medium** (Dimitri: "Allow GPT-6 to use Astra Medium"): hard rule 1 and the continue
+  prompt allow GPT-6 Sol Medium or Astra Medium. Docs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
