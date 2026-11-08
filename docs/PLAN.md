@@ -436,6 +436,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-08: Spool broken down for ChatGPT, and the facts-only art rules** (Dimitri: "a detailed breakdown of Spool's
   sprites"): `SPOOL_SPRITE_BREAKDOWN.md` with a target key (version 01 fixed) and `TDS_ART_RULES.md` (no character
   looks). Docs and one reference PNG only. No kit change, no pitfall.
+- **2026-11-08: Spool's key art is the Art Bench's Spool** (Dimitri: "Use the current Spool sprites as the key art that is
+  currently in the Art Bench"): its 13 files in `docs/art/spool/artbench_key/`; the breakdown, hard rules 12/16/18/21, the
+  prompt's Steps 2-3, STYLE.md and scope `08` follow; #184's target key removed. Docs and PNGs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

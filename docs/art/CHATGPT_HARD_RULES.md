@@ -29,24 +29,24 @@ A. HOW YOU WORK
 
 B. SIZE AND PLACEMENT
 11. File size, cell size and row order exactly as ASSET_MANIFEST (guide Part 6). Never resize a delivered file.
-12. Vessels in a 32 px cell: 15-27 px wide, 19-28 px tall, never taller than 28, never touching the cell's sides. Spool: 19-22 tall; its body 18-20 wide, up to 27 wide with the dragging arm. Mini vessels in a 16 px cell: about 7 wide, 10 tall.
+12. Vessels in a 32 px cell: 15-27 px wide, 19-28 px tall, never taller than 28, never touching the cell's sides. Spool: the approved Art Bench key is 18 wide, 19 tall; ground frames never taller than 22. Mini vessels in a 16 px cell: about 7 wide, 10 tall.
 13. Units in a 16 px cell (Nauts, the Crafted, Photon): 6-12 px wide, 8-12 px tall.
 14. Feet on the bottom row (row 31 of a 32 px cell), body centred on the cell's middle column. Airborne frames (fall, drop-in, hop) are the only exception: raise them by a planned lift and list the lift per frame.
 15. Rows marked "mirror of": v1 is the exact silhouette mirror of v0, v3 of v2. The shade stays on the right and underside in every facing (re-shade the flipped pixels); nothing else changes.
 
 C. COLOUR AND SHADING
 16. Use only the asset's palette from 03_palettes.txt and the values below. No colour that is not listed; snap near-misses to the listed value.
-    Spool: sage 93CCA1 lit, 60A871 shade, 4F8C5E deepest (under the hood brim, feet); thread CBE6D1; zipper teeth and coat stitches E4DEDA / 9A938E; hollow 1F3325; eyes E6D85A; tongue E58CC0; claws E4DEDA. One hue for the body ramp. Never olive, never grey-green, never purple.
+    Spool (the Art Bench key's 12 colours): sage 93CCA1 / 60A871; mouth 1F3325, its edge 26422F; teeth and cuffs E4DEDA / 9A938E; gloves F6F3F8 / D8D1E2; cotton FFFFFF; tongue E58CC0 / C96CA6; eyes E6D85A. Effects only: thread CBE6D1 / A2CFAD, needle C9D2DD / 8C96A3, dust BDB3A8, sparkle F8E39A. Never olive, never grey-green, never purple.
     Yossele (his reshade is the baseline): clay 945743 / 79432F, collar 35403A, leaf 7BCF80 / 65AD69, eyes 99E550.
     Argo (approved Naut-based key): ochre C8A04B / 967533, teal 2B555C / 263C42, steel 9AA7A0 / 657772, eyes DCE9CB. No moss 638868.
     Uloe: glass DAE6FC / CBDBFC, glints F1EF72, steel 9BADB7 to 595652, arms FBF236, face 3F3F74, 222222 on cord and plug only.
 17. Never 000000. Never magenta or purple (hue 270-320) on a friend; those belong to foes. Pearl F4EEF8 only for Pure Aura and the pearl in PearlOyster. Never paint the panel colours 2E4A62 or 22384B into an icon; the one exception is the dark roundel of RogueWaves_Crest, Crest32 and the menu button, which is 2E4A62 (batch 2E).
-18. Flat fills: 2-3 tones per material, at most 16 colours in a vessel frame. No dithering, noise, gradients, anti-aliasing or painted texture. At most 13% of opaque pixels may be lone specks (a pixel with no same-colour neighbour); eye glints and stitches count toward it.
+18. Flat fills: 2-3 tones per material, at most 16 colours in a vessel frame. No dithering, noise, gradients, anti-aliasing or painted texture. At most 13% of opaque pixels may be lone specks (a pixel with no same-colour neighbour); eye glints and stitches count toward it. Exception: Spool's approved key has 24% (Dimitri's own pixels); new pixels must keep a Spool frame at 25% or less.
 19. Light from the upper left. Left and top edges take the lit tone; the darkest tone only on the right edge, the underside and under overhangs. No outline and no dark rim.
 20. Opaque pixels only (alpha 0 or 255). The one exception: a splash's inside fill at alpha 70.
 
 D. DESIGN (what each vessel is; never drift from it)
-21. Spool (Dimitri, 2026-11-08): a hunched hooded sage plush, leaning forward, head and hood thrust ahead of the body, short legs. Face: a dark 1F3325 opening under the hood with a zipper-like row of teeth along its top edge (alternating E4DEDA / 9A938E), two E6D85A eyes inside, and a 2-3 px E58CC0 tongue hanging from its front end. One long arm, attached at the back shoulder, drags behind it on the floor, palm facing up, ending in long E4DEDA claws (3 claws, 2-3 px each). The arm is always joined to the body (one connected piece), never severed, never a tail. No cotton patches, no pink anywhere but the tongue.
+21. Spool (Dimitri, 2026-11-08: "Use the current Spool sprites as the key art that is currently in the Art Bench"): the key is Spool_key_idle_v0_f0.png, Spool-Sheet idle_v0 frame 0 of the Art Bench, approved and frozen pixel for pixel; the 13 Art Bench files are the starting frames of every Spool sheet. A hunched hooded sage plush: a wide dark mouth with a zipper of small teeth top and bottom, two yellow eye pixels, a pink tongue at the front corner, two white gloves, short legs, and one arm lying behind it along the floor, joined at the hip and dragged with it, ending in pale tufts. SPOOL_SPRITE_BREAKDOWN.txt gives every pixel.
 22. Argo: the approved Naut-based rig worker (round2/batch2a/argo_naut_key_v1). Pointed hardhat or hood, pale matching lenses, compact teal glove, open wrench. The approved fall sheet is frozen byte for byte.
 23. Yossele: the see-through round hole, the stalk with its two-leaf sprout, the dark V collar, four limbs; a second sprout off the left shoulder.
 24. Uloe: glass bulb with eyes as two 3 px arcs and a 4-5 px U mouth (at least half the glass clear), ribbed screw base, post, yellow arms, cord and plug. Legless; it hops.

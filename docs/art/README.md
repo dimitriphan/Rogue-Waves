@@ -14,7 +14,7 @@ and the procedure around it. The base game's sprites are the private half: they 
 | `FEEDBACK_SPOOL_KEY_2026-11-08.md` | the note for ChatGPT on its Spool key frame (batch 2B): size, sage ramp, flat fills, stitched slit, the arm on the floor, what to keep |
 | `CHATGPT_HARD_RULES.md` | the numbered rules ChatGPT may not break without Dimitri naming the rule: workflow, sizes, palettes, each vessel's design, delivery |
 | `CONTINUE_PROMPT_2026-11-08.md` | the prompt that restarts Spool from a named source (version 01, his attached dragging arm) and lists what comes after: rest of 2A, 2D-2F |
-| `SPOOL_SPRITE_BREAKDOWN.md` | Spool part by part: the target key map (`spool/`), pixels per part, colours, facings, every sheet frame by frame |
+| `SPOOL_SPRITE_BREAKDOWN.md` | Spool part by part: the Art Bench key (`spool/artbench_key/`, his pick 2026-11-08), its pixel map, pixels per part, colours, facings, every sheet frame by frame |
 | `TDS_ART_RULES.md` | the base game's art rules as facts only (canvas, shape, colour, light, animation, UI art); no character's look |
 | `ASSET_MANIFEST.md` | every pack sheet, icon and model: file name, size, cell, rows, Look line; generated, never edited |
 | `concept-tools/chatgpt/pixelize.py` | turns a generated picture into a clean game-size sprite and checks it; runs in ChatGPT's Python |
