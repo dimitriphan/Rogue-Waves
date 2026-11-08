@@ -1,5 +1,7 @@
 # Hard rules for ChatGPT (Rogue Waves art)
 
+> **Replaced 2026-11-08 by `reset_2026-11-08/`** (Dimitri: "create a prompt that will have it reset all of its rulings"). Kept as history; ChatGPT no longer follows it.
+
 Dimitri, 2026-11-08: "Create a set of hard rules for ChatGPT so that it doesn't go off the rails of the established
 rules." ChatGPT's Spool key went through 15 versions in one chat: wrong size, olive instead of sage, the arm
 changed from version to version, painted specks, a restart source nobody chose. These rules close each of those doors. Each one can be checked

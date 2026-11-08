@@ -1,5 +1,7 @@
 # Feedback for ChatGPT: art round 1, and batch 2
 
+> **Replaced 2026-11-08 by `reset_2026-11-08/`** (Dimitri: "create a prompt that will have it reset all of its rulings"). Kept as history; ChatGPT no longer follows it.
+
 Dimitri, 2026-11-07: "Do a review of the ChatGPT assets. Do they follow the art style and rules of TDS? Generate a
 report for ChatGPT on what could be changed so that the assets look more official." The review is
 `docs/reports/ART_REVIEW_CHATGPT_2026-11-07.md`; this page is its note for ChatGPT, with PR #173's batch-2 list folded in

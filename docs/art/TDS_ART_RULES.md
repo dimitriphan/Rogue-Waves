@@ -1,5 +1,7 @@
 # TDS art rules: the facts only, 2026-11-08
 
+> **Replaced 2026-11-08 by `reset_2026-11-08/`** (Dimitri: "create a prompt that will have it reset all of its rulings"). Kept as history; ChatGPT no longer follows it.
+
 Dimitri, 2026-11-08: "provide a new TDS art theme ruling that only has the factual rules, with nothing about what the
 characters look like currently." These are the rules the base game's own art follows, measured on its sheets (kit
 `docs/18` §1-3 and §6, kit `docs/03` §1-2), plus the pack's file and delivery specs (`ASSET_MANIFEST.md`,

@@ -1,5 +1,7 @@
 # Continue prompt for ChatGPT, 2026-11-08
 
+> **Replaced 2026-11-08 by `reset_2026-11-08/`** (Dimitri: "create a prompt that will have it reset all of its rulings"). Kept as history; ChatGPT no longer follows it.
+
 Dimitri, 2026-11-08: "create a prompt to continue the asset process", after ChatGPT delivered Argo
 (`Argo_Complete_Attack_Refined.zip`, brought in by its own thread) and stopped Spool for a restart from an earlier
 version without a chosen source. The Argo review (`docs/reports/ART_REVIEW_ARGO_2026-11-08.md`, PR #179) took all 19

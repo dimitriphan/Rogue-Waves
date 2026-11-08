@@ -1,5 +1,7 @@
 # Feedback for ChatGPT: Spool's key frame (batch 2B), 2026-11-08
 
+> **Replaced 2026-11-08 by `reset_2026-11-08/`** (Dimitri: "create a prompt that will have it reset all of its rulings"). Kept as history; ChatGPT no longer follows it.
+
 > **Superseded on the arm, face and size** by Dimitri, 2026-11-08 03:20Z: the arm is attached and drags behind, palm up,
 > with long claws; zipper-like teeth and the hunched pose stay. The current spec is `CONTINUE_PROMPT_2026-11-08.md` Step 2
 > and `CHATGPT_HARD_RULES.md` rule 21.
