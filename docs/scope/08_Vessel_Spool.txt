@@ -9,7 +9,7 @@
 			- Difficulty: Advanced
 			- Archetype: Commands a disposable minion army
 			- In-game line: Crafty melee, commands a stitched army
-			- Look: hooded sage green plush whose face is a stitched opening, yellow eyes looking out, pink tongue, white gloves, a severed arm on the floor with cotton stuffing coming out of the open wound / Not a tail \
+			- Look: hunched hooded sage green plush whose face is an opening with zipper like teeth, yellow eyes looking out, pink tongue, the arm attached and dragging behind him, palm facing up, with long claws / Not a tail \
 			- Towers look: stitches, pins and tins /~ Your earlier sheet said this and the new one leaves it out, so it is a default now \
 			- Accent colour: sage green /~ 93CCA1 and 60A871, docs/STYLE.md; purple read too close to the foes' magenta \
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \

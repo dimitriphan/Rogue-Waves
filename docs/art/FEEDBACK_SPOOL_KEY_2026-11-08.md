@@ -1,5 +1,9 @@
 # Feedback for ChatGPT: Spool's key frame (batch 2B), 2026-11-08
 
+> **Superseded on the arm, face and size** by Dimitri, 2026-11-08 03:20Z: the arm is attached and drags behind, palm up,
+> with long claws; zipper-like teeth and the hunched pose stay. The current spec is `CONTINUE_PROMPT_2026-11-08.md` Step 2
+> and `CHATGPT_HARD_RULES.md` rule 21.
+
 Dimitri, 2026-11-08, with ChatGPT's picture "Selected game study" beside "Refined 32x32 key - 8x": "I want ChatGPT to
 make this keyframe more similar to the art style of TDS." The picture is **Spool** (hooded sage plush, stitched face
 opening, yellow eyes, pink tongue, severed arm with cotton stuffing; `docs/STYLE.md` Vessels, `docs/concepts/YOSSELE_SPOOL_ULOE.md` §2),
