@@ -431,6 +431,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the severed arm is gone. Docs only. No kit change, no pitfall.
 - **2026-11-08: ChatGPT may use Astra Medium** (Dimitri: "Allow GPT-6 to use Astra Medium"): hard rule 1 and the continue
   prompt allow GPT-6 Sol Medium or Astra Medium. Docs only. No kit change, no pitfall.
+- **2026-11-08: ChatGPT uses Astra only** (Dimitri: "Only use astra"): hard rule 1 and the continue prompt now say GPT-6
+  Astra Medium only, never Sol. Docs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

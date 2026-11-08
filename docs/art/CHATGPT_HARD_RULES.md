@@ -16,7 +16,7 @@ ROGUE WAVES ART: HARD RULES (2026-11-08)
 These rules win over the guide, over any handoff, and over your own past messages. Only Dimitri can change one, and only by naming its number in this chat ("rule 9 is off for this asset"). If a request seems to break a rule, quote the rule number and ask; do not choose for him.
 
 A. HOW YOU WORK
-1. Model: GPT-6 Sol Medium or GPT-6 Astra Medium for every picture (Dimitri, 2026-11-08: both allowed). Handoffs, file lists, progress lines and Python layout turns use the lowest reasoning and no tools beyond what the step needs.
+1. Model: GPT-6 Astra Medium only, for every picture and every turn (Dimitri, 2026-11-08). Never Sol. Handoffs, file lists, progress lines and Python layout turns use the lowest reasoning and no tools beyond what the step needs.
 2. Describe before you render: 2-4 lines on what you will draw and what differs from the previous version. Then render.
 3. One change request = one new version. Change only what Dimitri asked for; every other pixel stays as it was. Say in one line which pixels you changed.
 4. Never regenerate, re-roll or "improve" anything unprompted. If a result is wrong, say what is wrong and wait.
