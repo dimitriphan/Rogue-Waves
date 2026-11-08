@@ -5,7 +5,9 @@ Vessel's animations and sprites so that it understands a bit more about TDS, but
 what it is creating before continuing in steps." His answers at 21:20Z: only Spool's 13 character files (its units and
 Uloe later); the base game's facts go in as text, its pictures stay look-only; before each step ChatGPT answers a
 short quiz and waits for "go", after it waits for "approved"; the order is facings, idle, move, attack, Patch, land,
-fall, menu idle and boat mini, the UI set.
+fall, menu idle and boat mini, the UI set. Dimitri, 21:54Z: "Pivot the Chat 3 to also decompile
+Yossele and Argo first based on the keyframes": Step 0 takes his finals apart from their key frames before any Spool
+step (both finals' v1 and v3 rows are exact pixel mirrors, checked on every sheet).
 
 **Where the numbers come from.** Part 2: kit `TDS_Vessel_Creator/docs/03` §1 and `docs/18` §1-§4, and the game's own
 animation tables (`research/art_dump_2026-10-15/animation_tables.txt` in project files). Part 3: measured on 2026-11-08
@@ -16,14 +18,14 @@ uploads of 2026-11-08). Part 5: `docs/art/ASSET_MANIFEST.md`. Note: the base gam
 ground and squash; the old rule "frames 0-3 airborne" (`TDS_ART_RULES.md` rule 25) did not match them.
 
 **How to use it.** Open a new chat in the Project after chat 2's handoff. Paste the block below and attach: the key
-frame (both files), chat 2's approved concept sheet and its handoff text, and the two finals' `assets/` folders
-(project files `chatgpt/prompts/reset_2026-11-08/references/`). Copy of this prompt:
+frame (both files), chat 2's approved concept sheet and its handoff text, and the two finals' `assets/` folders and
+key frames (project files `chatgpt/prompts/reset_2026-11-08/chat3_references_Yossele_Argo.zip`). Copy of this prompt:
 `chatgpt/prompts/reset_2026-11-08/3_assets.txt`.
 
 ```text
 ROGUE WAVES ART: SPOOL'S GAME FILES, STEP BY STEP (Dimitri, 2026-11-08)
 
-The reset holds: no earlier ruling, file or Spool version counts. Attached: Spool_keyframe.png (32x32, frozen) and its x8; the approved concept sheet and the handoff from the concept chat; Yossele's and Argo's final assets (approved, frozen, the examples of good work). Read Parts 1-5 now. Then answer the Step 1 quiz and stop.
+The reset holds: no earlier ruling, file or Spool version counts. Attached: Spool_keyframe.png (32x32, frozen) and its x8; the approved concept sheet and the handoff from the concept chat; Yossele's and Argo's final assets with their key frames (approved, frozen, the examples of good work). Read Parts 1-5 now. Then answer the Step 0 quiz and stop.
 
 PART 1: HOW WE WORK, EVERY STEP
 1. Before a step: answer its quiz in your own words, with numbers. Then stop and wait for "go". If Dimitri corrects an answer, answer the quiz again.
@@ -43,7 +45,7 @@ The drawing rules for every step:
 
 PART 2: HOW TDS DRAWS A VESSEL (the engine's facts)
 - A sheet is a grid of square cells read left to right; each row is one animation in one facing. The pivot is the bottom centre of each cell. Point filtering: every pixel shows as a hard square.
-- Facings: v0 = toward the camera, heading screen-right; v1 = toward the camera, heading screen-left; v2 = away from the camera (the back), heading right; v3 = the back, heading left. The game never flips a sprite in code: every facing is a drawn row. In Spool's sheets v1 is the mirror of v0 and v3 the mirror of v2, re-shaded so the shade is still on the right and underside; anything that must not swap sides is redrawn (Dimitri says which at Step 1).
+- Facings: v0 = toward the camera, heading screen-right; v1 = toward the camera, heading screen-left; v2 = away from the camera (the back), heading right; v3 = the back, heading left. The game never flips a sprite in code: every facing is a drawn row. In the approved Yossele and Argo sheets every v1 row is the exact pixel mirror of v0 and every v3 of v2 (main, attack and ability sheets alike). Spool does the same unless Dimitri says at Step 1 that a part must not swap sides.
 - Speed: a vessel plays 8-10 frames a second (Smacky 8, Fie 8, Sno Sno 8, Boutman 9, Buster 10). Idle and Move loop. Fall loops. Land plays once, then Idle. Attack and the ability play once (some at double speed, the game's cap), then Idle.
 - The base game plays the footstep sound on Move frames 2 and 5 (frames counted from 0): one per landing of a two-step cycle. Spool's code plays its footstep on Move frames 1 and 4, so Spool's feet land on frames 1 and 4 (Yossele's on 0 and 3, Argo's on 2 and 5).
 - The journal portrait is the main sheet's frame 0; the boat select uses a separate mini sheet.
@@ -119,8 +121,20 @@ PART 5: SPOOL'S 13 FILES (exact names and sizes; frames per row)
 
 THE STEPS (answer the quiz, wait for "go", draw, wait for "approved")
 
+STEP 0: TAKE YOSSELE AND ARGO APART, STARTING FROM THEIR KEY FRAMES (no drawing)
+Dimitri's finals were each built out of one approved key frame: Yossele_idle_v0_frame0.png, Argo_front_approved.png (and Argo_back.png for the back). Work out, in Python on the attached files, exactly how every sheet grew out of its key, so you build Spool's the same way. Three parts, each delivered on its own and closed by Dimitri's "approved":
+0a YOSSELE, 0b ARGO, each:
+  1. The key: its box (columns, rows, w x h), its colours, and its parts with their pixel coordinates.
+  2. Where the key appears pixel for pixel (check every sheet: idle v0 frame 0, land frame 11, menu idle frame 0, and for Argo the back key as idle v2 frame 0).
+  3. For every sheet and row, frame by frame: which parts of the key stay pixel-identical, which move (by how many px, which way), which are redrawn, and the top, lift, w x h and pixels changed (check against Part 4).
+  4. The facings: confirm v1 and v3 are exact mirrors; how the back (v2) relates to the front key: what is kept, what is new.
+  5. The mini (16 px) and the UI files: which parts of the key survive at that size, and how each was simplified.
+0c THE METHOD: 5-10 rules, in your words, for growing a full set of sheets out of one key frame, taken from 0a and 0b (what stays frozen, what moves first, how big each animation's motion is, where the key must reappear). These rules then govern Steps 1-9 for Spool.
+Quiz before 0a: what you will measure, with which Python checks, and how you will show it (tables per sheet, and an x8 picture marking the key's parts on Yossele's key and on Argo's).
+
+
 STEP 1: THE FOUR FACINGS (one frame each: idle frame 0 of v0, v1, v2, v3)
-Quiz: (a) Which way does the key frame face, and which facing is it? (b) What does the back (v2) show that the key frame does not, taken from the concept sheet? What disappears? (c) For v1: which pixels flip, which get re-shaded, and is there anything that must not swap sides? (d) Size and centre of each of the four. (e) Which colours you will use.
+Quiz: (a) Which way does the key frame face, and which facing is it? (b) What does the back (v2) show that the key frame does not, taken from the concept sheet? What disappears? (c) For v1: confirm it is the exact pixel mirror of v0, and name anything you think must not swap sides. (d) Size and centre of each of the four. (e) Which colours you will use.
 
 STEP 2: IDLE (rows 0-3 of Spool-Sheet, 6 frames each)
 Quiz: (a) Frame by frame for v0: the top row of the drawing, what moves (the breath and one secondary part, named), and the pixels you expect to change. (b) Which frame is the key, pixel for pixel. (c) How the frames loop from 5 back to 0. (d) What changes for v2.

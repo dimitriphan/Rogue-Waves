@@ -442,6 +442,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-08: ChatGPT reset, Spool rebuilt from his new key frame** (Dimitri: "have it reset all of its rulings"): three
   one-chat prompts in `docs/art/reset_2026-11-08/` (reset, blind reading + concepts, 13 files in 9 quizzed steps with the
   base vessels measured); old rule files bannered; no model rule. STYLE.md and scope `08` Look wait for the concepts. Docs only.
+- **2026-11-08: chat 3 takes Yossele and Argo apart first** (Dimitri: "decompile Yossele and Argo first based on the
+  keyframes"): Step 0 in `docs/art/reset_2026-11-08/3_ASSETS.md`; v1/v3 are exact pixel mirrors in both finals. Docs only.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
