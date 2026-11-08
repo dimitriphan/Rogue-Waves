@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwEmErCB2Ko2MB4jwBJM6HEn",
   "thread": "Write ChatGPT hard rules and continuation prompt",
-  "state": "art",
-  "started": "2026-11-08T08:22:27Z",
-  "step": "Spool breakdown + factual art rules",
+  "state": "reviewing",
+  "started": "2026-11-08T08:27:57Z",
+  "step": "PR #184 Spool breakdown, waiting for Codex",
   "helpers": [],
-  "updated": "2026-11-08T08:22:27Z"
+  "updated": "2026-11-08T08:27:57Z"
 }
