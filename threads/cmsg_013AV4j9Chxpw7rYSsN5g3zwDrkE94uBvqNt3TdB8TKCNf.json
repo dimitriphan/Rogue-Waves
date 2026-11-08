@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwDrkE94uBvqNt3TdB8TKCNf",
-  "thread": "Make Yossele keyframe match TDS style",
-  "state": "art",
-  "started": "2026-11-08T01:02:23Z",
-  "step": "Reading style rules",
+  "thread": "Make Spool keyframe match TDS style",
+  "state": "reviewing",
+  "started": "2026-11-08T01:04:29Z",
+  "step": "PR open, waiting for review",
   "helpers": [],
-  "updated": "2026-11-08T01:02:23Z"
+  "updated": "2026-11-08T01:04:29Z"
 }
