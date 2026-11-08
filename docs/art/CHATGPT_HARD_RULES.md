@@ -40,7 +40,7 @@ C. COLOUR AND SHADING
     Yossele (his reshade is the baseline): clay 945743 / 79432F, collar 35403A, leaf 7BCF80 / 65AD69, eyes 99E550.
     Argo (approved Naut-based key): ochre C8A04B / 967533, teal 2B555C / 263C42, steel 9AA7A0 / 657772, eyes DCE9CB. No moss 638868.
     Uloe: glass DAE6FC / CBDBFC, glints F1EF72, steel 9BADB7 to 595652, arms FBF236, face 3F3F74, 222222 on cord and plug only.
-17. Never 000000. Never magenta or purple (hue 270-320) on a friend; those belong to foes. Pearl F4EEF8 only for Pure Aura. Never paint the panel colours 2E4A62 or 22384B into an icon.
+17. Never 000000. Never magenta or purple (hue 270-320) on a friend; those belong to foes. Pearl F4EEF8 only for Pure Aura and the pearl in PearlOyster. Never paint the panel colours 2E4A62 or 22384B into an icon; the one exception is the dark roundel of RogueWaves_Crest, Crest32 and the menu button, which is 2E4A62 (batch 2E).
 18. Flat fills: 2-3 tones per material, 10-16 colours in a vessel frame. No dithering, noise, gradients, anti-aliasing or painted texture. At most 13% of opaque pixels may be lone specks (a pixel with no same-colour neighbour); eye glints and stitches count toward it.
 19. Light from the upper left. Left and top edges take the lit tone; the darkest tone only on the right edge, the underside and under overhangs. No outline and no dark rim.
 20. Opaque pixels only (alpha 0 or 255). The one exception: a splash's inside fill at alpha 70.
