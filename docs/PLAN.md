@@ -421,6 +421,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-08: ChatGPT's hard rules and continue prompt** (Dimitri: "so that it doesn't go off the rails"): 28 rules in
   `docs/art/CHATGPT_HARD_RULES.md`; `CONTINUE_PROMPT_2026-11-08.md` restarts Spool from version 12 with 13's hood (severed
   arm per STYLE.md, his pick open), then 2A, 2D-2F. Docs only. No kit change, no pitfall.
+- **2026-11-08: ChatGPT's complete Argo set in** (`ART_REVIEW_ARGO_2026-11-08.md`): all 19 files, Sonar, tab icon and his
+  fall included, nothing held back; asks for ChatGPT: attack lean, wrench head, ready-up face. Compiled here, not run on
+  the PC. No code, kit or pitfall change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1747,6 +1750,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (Fie 13%, Smacky 12%), a mask face, the arm a tentacle joined to the body, stuffing as blossoms, no gloves. Ten fixes
   and what to keep: `docs/art/FEEDBACK_SPOOL_KEY_2026-11-08.md` (copy `chatgpt/prompts/feedback_spool_key_2026-11-08.txt`).
   Docs only, no compile; nothing ran on the PC.
+- **2026-11-08: ChatGPT's complete Argo set** (Dimitri: "These are the Argo files and handoff from ChatGPT"). The
+  delivery is `Argo_Complete_Attack_Refined.zip`, drawn from the key he picked in ChatGPT and his approved fall. All 19
+  PNGs replaced `ModSource/Argo/Art/`; that adds the first `ArgoSonar-Sheet` and `Argotabicon`. The `aseprite/` files
+  were repacked (they round-trip exactly) and `preview_8x/` remade.
+  - Checks: the sizes equal the manifest and the code's sheets; `pixelize.py --check` and `art_check.py` are clean
+    apart from the splash's expected alpha-70 fill.
+  - Mirrored facings: the silhouettes are exact, and 20-31% of the RGB is relit, as Boutman's is.
+  - Asks for ChatGPT: the attack's lean reads as a crouch (the head moves under 1 px toward the strike); the open
+    wrench reads as a fork; the ready-up face. Scope 09's Look and `STYLE.md`'s Argo row wait for his word.
+  - No code change (`FileArt` takes every file). Argo compiled here: release, `ARGO_SELFTEST`, `ARGO_SELFTEST,ARGO_SHOTS`
+    0/0, editor check clean. Nothing ran on the PC.
 
 ### Decisions
 
