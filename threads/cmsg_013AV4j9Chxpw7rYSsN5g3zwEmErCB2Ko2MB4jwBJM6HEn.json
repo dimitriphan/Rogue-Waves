@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwEmErCB2Ko2MB4jwBJM6HEn",
   "thread": "Write ChatGPT hard rules and continuation prompt",
-  "state": "art",
-  "started": "2026-11-08T08:38:30Z",
-  "step": "Spool key = Art Bench sprites: rewriting breakdown",
+  "state": "reviewing",
+  "started": "2026-11-08T08:41:54Z",
+  "step": "PR #185 Art Bench Spool key: Codex review",
   "helpers": [],
-  "updated": "2026-11-08T08:38:30Z"
+  "updated": "2026-11-08T08:41:54Z"
 }
