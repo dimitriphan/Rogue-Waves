@@ -1,5 +1,7 @@
 # Spool sprite breakdown (for ChatGPT), 2026-11-08
 
+> **Replaced 2026-11-08 by `reset_2026-11-08/`** (Dimitri: "create a prompt that will have it reset all of its rulings"). Kept as history; ChatGPT no longer follows it.
+
 Dimitri, 2026-11-08 08:21Z: "Give a detailed breakdown of Spool's sprites so that it understands what the vision is for
 Spool exactly." Then, 08:35Z: **"Use the current Spool sprites as the key art that is currently in the Art Bench."**
 

@@ -439,6 +439,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-08: Spool's key art is the Art Bench's Spool** (Dimitri: "Use the current Spool sprites as the key art that is
   currently in the Art Bench"): its 13 files in `docs/art/spool/artbench_key/`; the breakdown, hard rules 12/16/18/21, the
   prompt's Steps 2-3, STYLE.md and scope `08` follow; #184's target key removed. Docs and PNGs only. No kit change, no pitfall.
+- **2026-11-08: ChatGPT reset, Spool rebuilt from his new key frame** (Dimitri: "have it reset all of its rulings"): three
+  one-chat prompts in `docs/art/reset_2026-11-08/` (reset, blind reading + concepts, 13 files in 9 quizzed steps with the
+  base vessels measured); old rule files bannered; no model rule. STYLE.md and scope `08` Look wait for the concepts. Docs only.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
