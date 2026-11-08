@@ -420,7 +420,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `docs/art/FEEDBACK_SPOOL_KEY_2026-11-08.md` (copy in project files). Docs only. No kit change, no pitfall.
 - **2026-11-08: ChatGPT's hard rules and continue prompt** (Dimitri: "so that it doesn't go off the rails"): 28 rules in
   `docs/art/CHATGPT_HARD_RULES.md`; `CONTINUE_PROMPT_2026-11-08.md` restarts Spool from version 12 with 13's hood (severed
-  arm per STYLE.md, his pick open), then 2A, 2D-2F. Docs only. No kit change, no pitfall.
+  arm per STYLE.md, his pick open), then 2A, 2D-2F; the Argo review's five edits (A1-N1) open it. Docs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
