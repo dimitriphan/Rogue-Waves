@@ -433,6 +433,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   prompt allow GPT-6 Sol Medium or Astra Medium. Docs only. No kit change, no pitfall.
 - **2026-11-08: ChatGPT uses Astra only** (Dimitri: "Only use astra"): hard rule 1 and the continue prompt now say GPT-6
   Astra Medium only, never Sol. Docs only. No kit change, no pitfall.
+- **2026-11-08: Spool broken down for ChatGPT, and the facts-only art rules** (Dimitri: "a detailed breakdown of Spool's
+  sprites"): `SPOOL_SPRITE_BREAKDOWN.md` with a target key (version 01 fixed) and `TDS_ART_RULES.md` (no character
+  looks). Docs and one reference PNG only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
