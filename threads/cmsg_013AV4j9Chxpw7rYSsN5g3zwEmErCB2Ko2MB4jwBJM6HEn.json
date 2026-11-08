@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwEmErCB2Ko2MB4jwBJM6HEn",
   "thread": "Write ChatGPT hard rules and continuation prompt",
-  "state": "art",
-  "started": "2026-11-08T02:18:14Z",
-  "step": "Reading handoff and rules",
+  "state": "reviewing",
+  "started": "2026-11-08T02:21:02Z",
+  "step": "PR open, waiting for Codex",
   "helpers": [],
-  "updated": "2026-11-08T02:18:14Z"
+  "updated": "2026-11-08T02:21:02Z"
 }
