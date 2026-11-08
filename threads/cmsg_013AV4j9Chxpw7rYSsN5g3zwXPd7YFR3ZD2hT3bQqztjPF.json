@@ -1,9 +1,0 @@
-{
-  "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwXPd7YFR3ZD2hT3bQqztjPF",
-  "thread": "Add Claude fallback when Codex review stalls",
-  "state": "shipped",
-  "started": "2026-11-07T02:28:06Z",
-  "step": "PR #169 merged 18b947e",
-  "helpers": [],
-  "updated": "2026-11-07T02:28:06Z"
-}

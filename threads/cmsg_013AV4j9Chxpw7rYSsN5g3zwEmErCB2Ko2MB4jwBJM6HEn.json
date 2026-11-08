@@ -3,7 +3,7 @@
   "thread": "Write ChatGPT hard rules and continuation prompt",
   "state": "shipped",
   "started": "2026-11-08T02:24:53Z",
-  "step": "PR #178 merged; arm pick open",
+  "step": "PR #178 + #180 merged; arm pick open",
   "helpers": [],
-  "updated": "2026-11-08T02:24:53Z"
+  "updated": "2026-11-08T02:29:29Z"
 }
