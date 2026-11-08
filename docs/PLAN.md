@@ -424,6 +424,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-08: ChatGPT's complete Argo set in** (`ART_REVIEW_ARGO_2026-11-08.md`): all 19 files, Sonar, tab icon and his
   fall included, nothing held back; asks for ChatGPT: attack lean, wrench head, ready-up face. Compiled here, not run on
   the PC. No code, kit or pitfall change.
+- **2026-11-08: the continue prompt takes the Argo review's edits** (#179's findings): Step 1 is now A1, A2, D1 (wrench head,
+  the one exception to the locked key), D2 and N1; Spool moves to Steps 2-5. Docs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
