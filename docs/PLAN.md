@@ -426,6 +426,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the PC. No code, kit or pitfall change.
 - **2026-11-08: the continue prompt takes the Argo review's edits** (#179's findings): Step 1 is now A1, A2, D1 (wrench head,
   the one exception to the locked key), D2 and N1; Spool moves to Steps 2-5. Docs only. No kit change, no pitfall.
+- **2026-11-08: Spool's arm is attached again** (Dimitri: "the arm is attached, but dragging behind him palm facing up with
+  long claws"): STYLE.md, scope `08` Look, hard rule 21 and the prompt's Step 2 (source version 01, the hunched key) follow;
+  the severed arm is gone. Docs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
