@@ -36,7 +36,7 @@ B. SIZE AND PLACEMENT
 
 C. COLOUR AND SHADING
 16. Use only the asset's palette from 03_palettes.txt and the values below. No colour that is not listed; snap near-misses to the listed value.
-    Spool (the Art Bench key's 12 colours): sage 93CCA1 / 60A871; mouth 1F3325, its edge 26422F; teeth and cuffs E4DEDA / 9A938E; gloves F6F3F8 / D8D1E2; cotton FFFFFF; tongue E58CC0 / C96CA6; eyes E6D85A. Effects only: thread CBE6D1 / A2CFAD, needle C9D2DD / 8C96A3, dust BDB3A8, sparkle F8E39A. Never olive, never grey-green, never purple.
+    Spool (the Art Bench key's 12 colours): sage 93CCA1 / 60A871; mouth 1F3325, its edge 26422F; teeth and cuffs E4DEDA / 9A938E; gloves F6F3F8 / D8D1E2; cotton FFFFFF; tongue E58CC0 / C96CA6; eyes E6D85A. Effects only: thread CBE6D1 / A2CFAD, needle C9D2DD / 8C96A3, dust BDB3A8, sparkle F8E39A. Exception: Spoolendstat2 (defeated) keeps the greyed tones of its Art Bench file as given (709A76, 8FB093, 938D87, AF7696, B8B3BA, C089A5, C0BAB5, CAC7C7, D0CECB); do not snap them. Never olive, never grey-green, never purple.
     Yossele (his reshade is the baseline): clay 945743 / 79432F, collar 35403A, leaf 7BCF80 / 65AD69, eyes 99E550.
     Argo (approved Naut-based key): ochre C8A04B / 967533, teal 2B555C / 263C42, steel 9AA7A0 / 657772, eyes DCE9CB. No moss 638868.
     Uloe: glass DAE6FC / CBDBFC, glints F1EF72, steel 9BADB7 to 595652, arms FBF236, face 3F3F74, 222222 on cord and plug only.

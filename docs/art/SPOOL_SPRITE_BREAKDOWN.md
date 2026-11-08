@@ -67,7 +67,7 @@ Legend: L 93CCA1 sage / s 60A871 sage shade / H 1F3325 mouth inside / n 26422F m
 - One piece: every pixel touches another (8-way).
 
 4. COLOURS
-The key's 12: 93CCA1, 60A871, 1F3325, 26422F, E4DEDA, 9A938E, F6F3F8, D8D1E2, FFFFFF, E58CC0, C96CA6, E6D85A. For effects only, as in the Art Bench sheets: CBE6D1 / A2CFAD thread, C9D2DD / 8C96A3 needle, BDB3A8 dust, F8E39A sparkle. No other colour; no olive, no grey-green, no purple.
+The key's 12: 93CCA1, 60A871, 1F3325, 26422F, E4DEDA, 9A938E, F6F3F8, D8D1E2, FFFFFF, E58CC0, C96CA6, E6D85A. For effects only, as in the Art Bench sheets: CBE6D1 / A2CFAD thread, C9D2DD / 8C96A3 needle, BDB3A8 dust, F8E39A sparkle. Spoolendstat2 alone keeps the greyed tones of its Art Bench file (709A76, 8FB093, 938D87, AF7696, B8B3BA, C089A5, C0BAB5, CAC7C7, D0CECB). No other colour; no olive, no grey-green, no purple.
 Lone specks: the key's own count as approved; new pixels you add must not raise a frame above 25%.
 
 5. SILHOUETTE: WHAT MUST READ AT 1x
