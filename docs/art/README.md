@@ -11,6 +11,7 @@ and the procedure around it. The base game's sprites are the private half: they 
 | `PROJECT_INSTRUCTIONS.md` | the text pasted into the ChatGPT Project's instructions |
 | `RECREATE_PROMPT.md` | the prompt that has ChatGPT sketch the vessels, ask Dimitri, then remake every asset, and the main menu button's look |
 | `FEEDBACK_ROUND1_2026-11-07.md` | the note for ChatGPT after the review of its round 1 art (`docs/reports/ART_REVIEW_CHATGPT_2026-11-07.md`): rules for every asset, what to keep, batches 2A-2F |
+| `FEEDBACK_SPOOL_KEY_2026-11-08.md` | the note for ChatGPT on its Spool key frame (batch 2B): size, sage ramp, flat fills, stitched slit, the arm on the floor, what to keep |
 | `ASSET_MANIFEST.md` | every pack sheet, icon and model: file name, size, cell, rows, Look line; generated, never edited |
 | `concept-tools/chatgpt/pixelize.py` | turns a generated picture into a clean game-size sprite and checks it; runs in ChatGPT's Python |
 | `concept-tools/chatgpt/build_pack.py` | builds the Project's files and rewrites `ASSET_MANIFEST.md` |

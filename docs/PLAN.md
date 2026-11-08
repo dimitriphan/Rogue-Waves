@@ -415,6 +415,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-07: PC round Art_round1** (`PC_ART_ROUND1_2026-11-07.md`): the new art in every build, vessel self-tests
   pass, #165 proven with the pack; the mode's flow regressed (121/2: B1 subtitle, C3 boat never sails; suspect #163's
   `11_Dialog.cs`), its fix waits for his word. Report only; his PC put back. No kit change, no pitfall yet.
+- **2026-11-08: ChatGPT's Spool key frame noted** (Dimitri: "more similar to the art style of TDS"): too big (27x30),
+  grey-olive drifting ramp, painterly specks, mask face, arm as a tail; ten fixes and what to keep in
+  `docs/art/FEEDBACK_SPOOL_KEY_2026-11-08.md` (copy in project files). Docs only. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1734,6 +1737,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   PureAura is grey. Kept: Yossele's palette (his reshade), Spool's colours, Uloe's silhouette, 19 icons. The note for
   ChatGPT, `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (copy `chatgpt/prompts/feedback_round1_2026-11-07.txt` in project
   files), folds in PR #173's batch-2 list as batch 2A. Docs only, no compile; nothing ran on the PC.
+- **2026-11-08: ChatGPT's Spool key frame** (Dimitri, with ChatGPT's "Selected game study" beside its "Refined 32x32
+  key - 8x": "I want ChatGPT to make this keyframe more similar to the art style of TDS."). The picture is Spool (sent as
+  Yossele). The 32x32 read back exactly from the 8x (flat 8x8 blocks); `art_check.py --baseline` clean; measured: 27 x 30
+  px (his concept about 18 x 19), a grey-olive ramp drifting h92-h128 (agreed sage `93CCA1`/`60A871`), 22% lone specks
+  (Fie 13%, Smacky 12%), a mask face, the arm a tentacle joined to the body, stuffing as blossoms, no gloves. Ten fixes
+  and what to keep: `docs/art/FEEDBACK_SPOOL_KEY_2026-11-08.md` (copy `chatgpt/prompts/feedback_spool_key_2026-11-08.txt`).
+  Docs only, no compile; nothing ran on the PC.
 
 ### Decisions
 
