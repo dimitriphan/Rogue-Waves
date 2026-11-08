@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwEmErCB2Ko2MB4jwBJM6HEn",
   "thread": "Write ChatGPT hard rules and continuation prompt",
-  "state": "shipped",
-  "started": "2026-11-08T03:24:09Z",
-  "step": "PR #183 merged: Astra only",
+  "state": "art",
+  "started": "2026-11-08T08:22:27Z",
+  "step": "Spool breakdown + factual art rules",
   "helpers": [],
-  "updated": "2026-11-08T03:33:20Z"
+  "updated": "2026-11-08T08:22:27Z"
 }
