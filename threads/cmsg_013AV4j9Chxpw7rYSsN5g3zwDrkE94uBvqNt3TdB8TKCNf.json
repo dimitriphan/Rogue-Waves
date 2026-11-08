@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwDrkE94uBvqNt3TdB8TKCNf",
   "thread": "Make Spool keyframe match TDS style",
-  "state": "reviewing",
-  "started": "2026-11-08T01:04:29Z",
-  "step": "PR open, waiting for review",
+  "state": "shipped",
+  "started": "2026-11-08T01:06:51Z",
+  "step": "PR #177 merged 47265ff",
   "helpers": [],
-  "updated": "2026-11-08T01:04:29Z"
+  "updated": "2026-11-08T01:06:51Z"
 }
