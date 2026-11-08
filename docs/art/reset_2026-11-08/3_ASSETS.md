@@ -45,7 +45,7 @@ PART 2: HOW TDS DRAWS A VESSEL (the engine's facts)
 - A sheet is a grid of square cells read left to right; each row is one animation in one facing. The pivot is the bottom centre of each cell. Point filtering: every pixel shows as a hard square.
 - Facings: v0 = toward the camera, heading screen-right; v1 = toward the camera, heading screen-left; v2 = away from the camera (the back), heading right; v3 = the back, heading left. The game never flips a sprite in code: every facing is a drawn row. In Spool's sheets v1 is the mirror of v0 and v3 the mirror of v2, re-shaded so the shade is still on the right and underside; anything that must not swap sides is redrawn (Dimitri says which at Step 1).
 - Speed: a vessel plays 8-10 frames a second (Smacky 8, Fie 8, Sno Sno 8, Boutman 9, Buster 10). Idle and Move loop. Fall loops. Land plays once, then Idle. Attack and the ability play once (some at double speed, the game's cap), then Idle.
-- The game plays the footstep sound on Move frames 2 and 5 (frames counted from 0): one per landing of a two-step cycle. Those two frames are the landings.
+- The base game plays the footstep sound on Move frames 2 and 5 (frames counted from 0): one per landing of a two-step cycle. Spool's code plays its footstep on Move frames 1 and 4, so Spool's feet land on frames 1 and 4 (Yossele's on 0 and 3, Argo's on 2 and 5).
 - The journal portrait is the main sheet's frame 0; the boat select uses a separate mini sheet.
 
 PART 3: THE FIVE BASE VESSELS, TAKEN APART (measured on their sheets; frames counted from 0)
@@ -126,7 +126,7 @@ STEP 2: IDLE (rows 0-3 of Spool-Sheet, 6 frames each)
 Quiz: (a) Frame by frame for v0: the top row of the drawing, what moves (the breath and one secondary part, named), and the pixels you expect to change. (b) Which frame is the key, pixel for pixel. (c) How the frames loop from 5 back to 0. (d) What changes for v2.
 
 STEP 3: MOVE (rows 4-7 of Spool-Sheet, 6 frames each)
-Quiz: (a) Which frames carry the footstep, and what the body does on them. (b) Frame by frame for v0: the top row, the lift (if any), what each limb does, how the part that trails along the floor (from your concept) follows. (c) Hop or squash and stretch, and why for this body. (d) Pixels changed per frame, against Part 3. (e) What changes for v2.
+Quiz: (a) Which frames carry the footstep (Spool: 1 and 4), and what the body does on them. (b) Frame by frame for v0: the top row, the lift (if any), what each limb does, how the part that trails along the floor (from your concept) follows. (c) Hop or squash and stretch, and why for this body. (d) Pixels changed per frame, against Part 3. (e) What changes for v2.
 
 STEP 4: ATTACK (SpoolAttack-Sheet, 4 frames per facing)
 Quiz: (a) What hits (which limb or part), per the concept sheet. (b) Frame by frame: anticipation, strike, follow-through, recovery: the pose, the top row, the width. (c) Any flash or effect, and its colour (ask). (d) How frame 3 leads back into idle.
