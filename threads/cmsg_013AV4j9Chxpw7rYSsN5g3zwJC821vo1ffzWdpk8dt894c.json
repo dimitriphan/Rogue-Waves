@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwJC821vo1ffzWdpk8dt894c",
   "thread": "Reset ChatGPT and rebuild Spool animations",
-  "state": "reviewing",
-  "started": "2026-11-08T21:25:23Z",
-  "step": "PR #186 waiting for Codex review",
+  "state": "shipped",
+  "started": "2026-11-08T21:29:20Z",
+  "step": "PR #186 merged; prompts ready to paste",
   "helpers": [],
-  "updated": "2026-11-08T21:25:23Z"
+  "updated": "2026-11-08T21:29:20Z"
 }
