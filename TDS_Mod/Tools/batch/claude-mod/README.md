@@ -16,7 +16,7 @@ that hold no `TDS_Mod/Tools/batch/run_checks.py`, unless a clone sits at `~/Rogu
 
 Where it runs: on Windows the band starts `Run-Batch.ps1 -NoPull` beside `run_checks.py` (it needs Python 3.10+, Git,
 a clone, and the key saved once with `Run-Batch.ps1 -SaveKey`; it never pulls, and it moves the report to
-`Desktop\RogueWave\batch`; Stop also ends the `python` it started). Elsewhere, a cloud session included, it starts
+`Desktop\RogueWave\batch`; Stop ends that PowerShell and only its own descendants). Elsewhere, a cloud session included, it starts
 `python3 run_checks.py` from the clone's root, installs `anthropic` and `pillow` once if missing, and reads the key from
 `RW_BATCH_API_KEY` (the report lands in `docs/reports/`, uncommitted; a wait over 120 minutes ends with the batch id
 to collect).

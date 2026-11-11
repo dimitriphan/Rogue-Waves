@@ -32,6 +32,9 @@ const LABEL: Record<Kind, string> = { plan: 'Plan (free)', run: 'Run', full: 'Fu
 let isStopAsked = false
 // Held from the press to the 'running' write, so a double press starts one child.
 let isStarting = false
+// The running child's process id, from its first line.
+let childPid: number | null = null
+const PID_TAG = 'RWPID'
 let repoPath = ''
 
 // The configured clone, else the session's folder, else a clone named Rogue-Waves in the home folder
@@ -55,17 +58,32 @@ async function isWindows($: EngineInterface): Promise<boolean> {
   return (await $.env.get('OS')) === 'Windows_NT'
 }
 
+// Each command first prints `RWPID <pid>`, the process Stop ends: on Windows the PowerShell that runs the
+// wrapper (Stop ends it with its own descendants only), elsewhere python itself (sh execs into it).
 function argvFor(onWindows: boolean, root: string, kind: Kind): string[] {
   if (onWindows) {
     // -NoPull: the button never moves the clone's branch. The wrapper moves the report to Desktop\RogueWave\batch.
-    const flags = kind === 'plan' ? ['-Plan'] : kind === 'full' ? ['-Full', '-MaxCost', MAX_COST] : []
-    return ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', `${root}/${WRAPPER}`, '-NoPull', ...flags]
+    const flags = kind === 'plan' ? ' -Plan' : kind === 'full' ? ` -Full -MaxCost ${MAX_COST}` : ''
+    const wrapper = `${root}/${WRAPPER}`.replace(/'/g, "''")
+    const script = `Write-Output "${PID_TAG} $PID"; & '${wrapper}' -NoPull${flags}; exit $LASTEXITCODE`
+    return ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', script]
   }
   const since = kind === 'full' ? [] : ['--since', 'last']
-  if (kind === 'plan') {
-    return ['python3', SCRIPT, 'plan', ...since, '--model', 'haiku']
+  const args = kind === 'plan'
+    ? ['plan', ...since, '--model', 'haiku']
+    : ['submit', ...since, '--model', 'haiku', '--max-cost', MAX_COST, '--max-wait', MAX_WAIT]
+  return ['sh', '-c', `echo "${PID_TAG} $$"; exec "$@"`, 'sh', 'python3', '-u', SCRIPT, ...args]
+}
+
+// Ends this run's process at once, whatever it is waiting on (Codex review of PR #188).
+async function stopRun($: EngineInterface): Promise<void> {
+  isStopAsked = true
+  const pid = childPid
+  if (pid === null) {
+    return // not spawned yet: watch() sees the flag before it spawns
   }
-  return ['python3', SCRIPT, 'submit', ...since, '--model', 'haiku', '--max-cost', MAX_COST, '--max-wait', MAX_WAIT]
+  const kill = (await isWindows($)) ? ['taskkill', '/T', '/F', '/PID', String(pid)] : ['kill', '-TERM', String(pid)]
+  await $.process.run(kill).catch(() => undefined)
 }
 
 function append($: EngineInterface, lines: string[]) {
@@ -84,14 +102,6 @@ function splitter() {
     },
     rest: (): string[] => [partial.stdout, partial.stderr],
   }
-}
-
-// Stop on Windows: killing powershell leaves the python it started, so end that one by its command line.
-async function stopWindowsPython($: EngineInterface): Promise<void> {
-  const script =
-    "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*run_checks.py*' -and $_.Name -like 'py*' } " +
-    '| ForEach-Object { Stop-Process -Id $_.ProcessId -Force }'
-  await $.process.run(['powershell', '-NoProfile', '-Command', script]).catch(() => undefined)
 }
 
 // Off Windows: the SDK and Pillow (the art check imports it), once; --user where the system Python is managed.
@@ -149,17 +159,22 @@ async function watch($: EngineInterface, root: string, kind: Kind): Promise<void
     if (!isStopAsked) {
       const child = $.process.spawn({ argv: argvFor(onWindows, root, kind), cwd: root })
       const lines = splitter()
+      // The loop ends when the child does; Stop kills it from outside, so a silent child stops too.
       for await (const piece of child) {
-        await append($, lines.take(piece.stream, piece.text))
-        if (isStopAsked) {
-          break // leaving the loop kills the child
+        const got = lines.take(piece.stream, piece.text)
+        const tag = got.find(line => line.startsWith(`${PID_TAG} `))
+        if (tag && childPid === null) {
+          childPid = Number(tag.slice(PID_TAG.length + 1)) || null
+          if (isStopAsked) {
+            await stopRun($) // Stop pressed between the spawn and this line
+          }
         }
+        await append($, got.filter(line => !line.startsWith(`${PID_TAG} `)))
       }
+      childPid = null
       await append($, lines.rest())
       if (!isStopAsked) {
         code = (await child.result).code
-      } else if (onWindows) {
-        await stopWindowsPython($)
       }
     }
     if (isStopAsked) {
@@ -201,7 +216,7 @@ export const register: Register = (on, options) => {
   on('command.run', { command: 'run-batch' }, async ($, e) => {
     const word = e.args.trim().toLowerCase()
     if (word === 'stop') {
-      isStopAsked = true
+      await stopRun($)
       return { text: 'Stopping the batch run.' }
     }
     if (word === 'plan' || word === '') {
@@ -244,7 +259,7 @@ export const register: Register = (on, options) => {
           <Text>Batch {LABEL[r.kind].toLowerCase()} running, {minutes} min{' '}</Text>
           <Button key="show" label="Output" onPress={show} />
           <Text> </Text>
-          <Button key="stop" label="Stop" onPress={() => { isStopAsked = true }} />
+          <Button key="stop" label="Stop" onPress={() => stopRun($)} />
         </Box>
       )
     }
