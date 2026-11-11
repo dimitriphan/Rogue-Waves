@@ -12,7 +12,7 @@ clone, with three buttons, and adds `/run-batch`:
 Run and Full ask once more on the band before anything is sent. While a run goes, the band shows its minutes, an
 **Output** button opens a pane with the output, and **Stop** (or `/run-batch stop`) ends the local process; a batch
 already sent keeps running at Anthropic and `run_checks.py collect <id>` finishes it. The band stays away in folders
-that hold no `TDS_Mod/Tools/batch/run_checks.py`; `/config` sets another clone's folder (`repoPath`).
+that hold no `TDS_Mod/Tools/batch/run_checks.py`, unless a clone sits at `~/Rogue-Waves` (`C:\Users\<you>\Rogue-Waves`), which it then uses; `/config` sets another clone's folder (`repoPath`).
 
 Where it runs: on Windows the band starts `Run-Batch.ps1 -NoPull` beside `run_checks.py` (it needs Python 3.10+, Git,
 a clone, and the key saved once with `Run-Batch.ps1 -SaveKey`; it never pulls, and it moves the report to

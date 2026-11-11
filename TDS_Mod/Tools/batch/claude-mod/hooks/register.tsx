@@ -34,12 +34,21 @@ let isStopAsked = false
 let isStarting = false
 let repoPath = ''
 
+// The configured clone, else the session's folder, else a clone named Rogue-Waves in the home folder
+// (so the band shows in every session on a PC that keeps one there).
 async function findRepo($: EngineInterface): Promise<string | null> {
   const configured = repoPath.trim()
-  const root = (configured || (await $.session.cwd())).replace(/[\\/]+$/, '')
-  const found = await $.fs.stat(`${root}/${SCRIPT}`).catch(() => undefined)
+  const home = (await $.env.get('USERPROFILE').catch(() => undefined)) ?? (await $.env.get('HOME').catch(() => undefined))
+  const places = configured ? [configured] : [await $.session.cwd(), ...(home ? [`${home}/Rogue-Waves`] : [])]
+  for (const place of places) {
+    const root = place.replace(/[\\/]+$/, '')
+    const found = await $.fs.stat(`${root}/${SCRIPT}`).catch(() => undefined)
+    if (found?.kind === 'file') {
+      return root
+    }
+  }
 
-  return found?.kind === 'file' ? root : null
+  return null
 }
 
 async function isWindows($: EngineInterface): Promise<boolean> {
