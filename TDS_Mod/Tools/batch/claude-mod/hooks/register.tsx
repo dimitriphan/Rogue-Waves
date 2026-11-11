@@ -1,8 +1,9 @@
-// Rogue Waves batch button: a "Batch checks" band above the prompt with Plan (free) and Run buttons
+// Rogue Waves batch button: a "Batch checks" band above the prompt with Plan (free), Run and Full buttons
 // that start the project's batch checks tool (TDS_Mod/Tools/batch), and a pane with the run's output.
-// On Windows it runs Run-Batch.ps1 (which needs Python 3.10+ and the key saved once with -SaveKey);
-// elsewhere it runs run_checks.py with python3. Run = Haiku 5.5, only what changed since each check's
-// last run, at most $3 of API credit, the morning routine's settings. Nothing runs without a press.
+// On Windows it runs Run-Batch.ps1 -NoPull (which needs Python 3.10+, Git and the key saved once with
+// -SaveKey); elsewhere it runs run_checks.py with python3. Run = Haiku 5.5, only what changed since each
+// check's last run, at most $3 of API credit, the morning routine's settings. Run and Full always wait
+// for the band's "Yes, run"; the command only asks for it.
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
@@ -12,6 +13,7 @@ const PANE = 'rw-batch'
 const SCRIPT = 'TDS_Mod/Tools/batch/run_checks.py'
 const WRAPPER = 'TDS_Mod/Tools/batch/Run-Batch.ps1'
 const MAX_COST = '3'
+const MAX_WAIT = '120' // minutes, as Run-Batch.ps1 waits
 const KEEP_LINES = 400
 // run_checks.py's own exit codes (its README).
 const EXIT_WHY: Record<number, string> = {
@@ -28,6 +30,8 @@ const LABEL: Record<Kind, string> = { plan: 'Plan (free)', run: 'Run', full: 'Fu
 
 // The running child's loop leaves when this is set; leaving it kills the child.
 let isStopAsked = false
+// Held from the press to the 'running' write, so a double press starts one child.
+let isStarting = false
 let repoPath = ''
 
 async function findRepo($: EngineInterface): Promise<string | null> {
@@ -42,79 +46,126 @@ async function isWindows($: EngineInterface): Promise<boolean> {
   return (await $.env.get('OS')) === 'Windows_NT'
 }
 
-async function argvFor($: EngineInterface, root: string, kind: Kind): Promise<string[]> {
-  if (await isWindows($)) {
+function argvFor(onWindows: boolean, root: string, kind: Kind): string[] {
+  if (onWindows) {
+    // -NoPull: the button never moves the clone's branch. The wrapper moves the report to Desktop\RogueWave\batch.
     const flags = kind === 'plan' ? ['-Plan'] : kind === 'full' ? ['-Full', '-MaxCost', MAX_COST] : []
-    return ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', `${root}/${WRAPPER}`, ...flags]
+    return ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', `${root}/${WRAPPER}`, '-NoPull', ...flags]
   }
   const since = kind === 'full' ? [] : ['--since', 'last']
   if (kind === 'plan') {
     return ['python3', SCRIPT, 'plan', ...since, '--model', 'haiku']
   }
-  return ['python3', SCRIPT, 'submit', ...since, '--model', 'haiku', '--max-cost', MAX_COST, '--max-wait', '90']
+  return ['python3', SCRIPT, 'submit', ...since, '--model', 'haiku', '--max-cost', MAX_COST, '--max-wait', MAX_WAIT]
 }
 
-function append($: EngineInterface, text: string) {
-  return update($, run, (r): BatchRun => ({ ...r, lines: [...r.lines, ...text.replace(/\r/g, '').split('\n')].slice(-KEEP_LINES) }))
+function append($: EngineInterface, lines: string[]) {
+  const kept = lines.filter(line => line.trim() !== '')
+  return update($, run, (r): BatchRun => ({ ...r, lines: [...r.lines, ...kept].slice(-KEEP_LINES) }))
+}
+
+// Pieces end wherever the child's write did: each pipe's unfinished line waits for its newline.
+function splitter() {
+  const partial = { stdout: '', stderr: '' }
+  return {
+    take(stream: 'stdout' | 'stderr', text: string): string[] {
+      const parts = (partial[stream] + text.replace(/\r/g, '')).split('\n')
+      partial[stream] = parts.pop() ?? ''
+      return parts
+    },
+    rest: (): string[] => [partial.stdout, partial.stderr],
+  }
+}
+
+// Stop on Windows: killing powershell leaves the python it started, so end that one by its command line.
+async function stopWindowsPython($: EngineInterface): Promise<void> {
+  const script =
+    "Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -like '*run_checks.py*' -and $_.Name -like 'py*' } " +
+    '| ForEach-Object { Stop-Process -Id $_.ProcessId -Force }'
+  await $.process.run(['powershell', '-NoProfile', '-Command', script]).catch(() => undefined)
+}
+
+// Off Windows: the SDK and Pillow (the art check imports it), once; --user where the system Python is managed.
+async function ensurePackages($: EngineInterface, root: string): Promise<void> {
+  const has = await $.process.run(['python3', '-c', 'import anthropic, PIL'], { cwd: root })
+  if (has.exitCode === 0) {
+    return
+  }
+  await append($, ['Installing the Python packages (anthropic, pillow), once...'])
+  const base = ['python3', '-m', 'pip', 'install', '--quiet']
+  let pip = await $.process.run([...base, 'anthropic', 'pillow'], { cwd: root, timeoutMs: 300000 })
+  if (pip.exitCode !== 0) {
+    pip = await $.process.run([...base, '--user', 'anthropic', 'pillow'], { cwd: root, timeoutMs: 300000 })
+  }
+  if (pip.exitCode !== 0) {
+    await append($, (pip.stderr || 'pip could not install anthropic and pillow.').split('\n'))
+    throw new Error('pip failed')
+  }
 }
 
 async function start($: EngineInterface, kind: Kind): Promise<void> {
-  const current = await read($, run)
-  if (current.phase === 'running') {
-    $.ui.toast('A batch run is already going.')
+  if (isStarting) {
     return
   }
-  const root = await findRepo($)
-  if (!root) {
-    $.ui.toast(`No ${SCRIPT} here: open a Rogue Waves clone, or set the clone folder in /config.`)
-    return
+  isStarting = true
+  try {
+    if ((await read($, run)).phase === 'running') {
+      $.ui.toast('A batch run is already going.')
+      return
+    }
+    const root = await findRepo($)
+    if (!root) {
+      $.ui.toast(`No ${SCRIPT} here: open a Rogue Waves clone, or set the clone folder in /config.`)
+      return
+    }
+    isStopAsked = false
+    const startedAt = await $.clock.now()
+    await update($, run, (): BatchRun => ({ phase: 'running', kind, lines: [], code: null, startedAt, endedAt: 0 }))
+    void $.ui.open({ id: PANE, title: 'Batch checks' })
+    $.ui.status(`Batch ${LABEL[kind].toLowerCase()} running`)
+    void watch($, root, kind)
+  } finally {
+    isStarting = false
   }
-  isStopAsked = false
-  const startedAt = await $.clock.now()
-  await update($, run, (): BatchRun => ({ phase: 'running', kind, lines: [], code: null, startedAt, endedAt: 0 }))
-  void $.ui.open({ id: PANE, title: 'Batch checks' })
-  $.ui.status(`Batch ${LABEL[kind].toLowerCase()} running`)
+}
 
-  void (async () => {
-    let code: number | null = null
-    try {
-      // The cloud container has python3 but not always the SDK; the Windows wrapper installs its own.
-      if (kind !== 'plan' && !(await isWindows($))) {
-        const has = await $.process.run(['python3', '-c', 'import anthropic'], { cwd: root })
-        if (has.exitCode !== 0) {
-          await append($, 'Installing the anthropic package, once...')
-          const pip = await $.process.run(['python3', '-m', 'pip', 'install', '--quiet', 'anthropic'], {
-            cwd: root,
-            timeoutMs: 300000,
-          })
-          if (pip.exitCode !== 0) {
-            await append($, pip.stderr || 'pip could not install anthropic.')
-            throw new Error('pip failed')
-          }
-        }
-      }
-      const child = $.process.spawn({ argv: await argvFor($, root, kind), cwd: root })
+// Runs the child for as long as it lives, after the press that started it has returned.
+async function watch($: EngineInterface, root: string, kind: Kind): Promise<void> {
+  let code: number | null = null
+  try {
+    const onWindows = await isWindows($)
+    if (!onWindows) {
+      await ensurePackages($, root) // the Windows wrapper installs its own
+    }
+    if (!isStopAsked) {
+      const child = $.process.spawn({ argv: argvFor(onWindows, root, kind), cwd: root })
+      const lines = splitter()
       for await (const piece of child) {
-        await append($, piece.text)
+        await append($, lines.take(piece.stream, piece.text))
         if (isStopAsked) {
           break // leaving the loop kills the child
         }
       }
-      if (isStopAsked) {
-        await append($, 'Stopped by you. A batch already sent keeps running at Anthropic; the report can be collected later (README, collect).')
-      } else {
+      await append($, lines.rest())
+      if (!isStopAsked) {
         code = (await child.result).code
+      } else if (onWindows) {
+        await stopWindowsPython($)
       }
-    } catch (error) {
-      await append($, `Could not run: ${error instanceof Error ? error.message : String(error)}`)
-      code = code ?? 1
     }
-    const endedAt = await $.clock.now()
-    const isOk = code === 0 && !isStopAsked
-    await update($, run, (r): BatchRun => ({ ...r, phase: isOk ? 'done' : 'failed', code, endedAt }))
-    $.ui.status(undefined)
-    $.ui.toast(isOk ? `Batch ${LABEL[kind].toLowerCase()} finished.` : `Batch ${LABEL[kind].toLowerCase()} ended (exit ${code ?? 'stopped'}).`)
-  })()
+    if (isStopAsked) {
+      await append($, ['Stopped by you. A batch already sent keeps running at Anthropic: run_checks.py collect <its msgbatch id> finishes it.'])
+    }
+  } catch (error) {
+    await append($, [`Could not run: ${error instanceof Error ? error.message : String(error)}`])
+    code = code ?? 1
+  }
+  const endedAt = await $.clock.now()
+  const isOk = code === 0 && !isStopAsked
+  await update($, run, (r): BatchRun => ({ ...r, phase: isOk ? 'done' : 'failed', code, endedAt }))
+  $.ui.status(undefined)
+  const name = `Batch ${LABEL[kind].toLowerCase()}`
+  $.ui.toast(isOk ? `${name} finished.` : `${name} ended (exit ${code ?? 'stopped'}).`)
 }
 
 export const register: Register = (on, options) => {
@@ -125,8 +176,8 @@ export const register: Register = (on, options) => {
     await update($, repo, () => null)
     const root = await findRepo($)
     await update($, repo, () => root)
+    // A run cut off by a reload or a restart has no child any more: show it as ended.
     const last = await read($, run)
-    // A run cut off by a reload or a restart left no child behind: show it as ended.
     if (last.phase === 'running' || last.phase === 'confirm') {
       await update($, run, (r): BatchRun => ({ ...r, phase: r.phase === 'confirm' ? 'idle' : 'failed' }))
     }
@@ -146,11 +197,12 @@ export const register: Register = (on, options) => {
     }
     if (word === 'plan' || word === '') {
       await start($, 'plan')
-      return { text: 'Batch plan started (free): see the Batch checks pane. Use /run-batch run to spend credit.' }
+      return { text: 'Batch plan started (free): see the Batch checks pane. /run-batch run spends credit.' }
     }
     if (word === 'run' || word === 'full') {
-      await start($, word)
-      return { text: `Batch ${word} started (Haiku, at most $${MAX_COST}): see the Batch checks pane.` }
+      // Spending always waits for the band's "Yes, run".
+      await update($, run, (x): BatchRun => (x.phase === 'running' ? x : { ...x, phase: 'confirm', kind: word }))
+      return { text: `Confirm the batch ${word} (Haiku, at most $${MAX_COST}) on the band above the prompt.` }
     }
     return { text: 'Use /run-batch plan, run, full or stop.' }
   })
@@ -211,14 +263,14 @@ export const register: Register = (on, options) => {
     const room = Math.max(4, (e.viewport?.rows ?? 30) - 3)
     const head =
       r.phase === 'running' ? `${LABEL[r.kind]} running...`
-      : r.phase === 'done' ? `${LABEL[r.kind]} finished. The report is under docs/reports (on Windows, Desktop\\RogueWave\\batch).`
+      : r.phase === 'done' ? `${LABEL[r.kind]} finished. Its last lines name the report, or the batch id to collect.`
       : r.phase === 'failed' ? `${LABEL[r.kind]} ended with exit ${r.code ?? 'stopped'}${EXIT_WHY[r.code ?? -1] ?? ''}.`
       : 'No run yet. Press Plan (free) or Run above the prompt.'
 
     return (
       <Box flexDirection="column">
         <Text bold>{head}</Text>
-        {r.lines.filter(line => line.trim() !== '').slice(-room).map(line => <Text>{line}</Text>)}
+        {r.lines.slice(-room).map(line => <Text>{line}</Text>)}
       </Box>
     )
   })

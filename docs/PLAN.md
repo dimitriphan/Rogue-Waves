@@ -446,7 +446,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   keyframes"): Step 0 in `docs/art/reset_2026-11-08/3_ASSETS.md`; v1/v3 are exact pixel mirrors in both finals. Docs only.
 - **2026-11-11: a Run Batch button for Claude Code** (Dimitri: "Create a button mod that allows me to run the TDS Run Batch
   tool"): `TDS_Mod/Tools/batch/claude-mod/` (`rw-batch-button`: Plan free, Run/Full Haiku at most $3, asks first), root
-  `.claude-plugin/marketplace.json`. Validated and its 2 tests pass here; not yet run on the PC. No kit change, no pitfall.
+  `.claude-plugin/marketplace.json`. Validated and its 3 tests pass here; not yet run on the PC. No kit change, no pitfall.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

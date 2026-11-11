@@ -39,3 +39,18 @@ test('outside a Rogue Waves clone the band stays away', async ($, on) => {
   expect(await ui.find({ key: 'plan' })).toBeUndefined()
   await ui.unmount()
 })
+
+test('/run-batch run only asks on the band; nothing starts', async ($, on) => {
+  on('command.register', () => ({ value: { command: 'run-batch' } }))
+  on('session.start', (_, e) => ({ cwd: e.cwd }))
+  on('session.cwd', () => ({ value: '/repo' }))
+  on('fs.stat', () => ({ value: { kind: 'file', size: 1, mtimeMs: 0, isLink: false } }))
+  on('process.run', () => { throw new Error('nothing may run before the Yes') })
+  await $.session.start({ cwd: '/repo', surface: 'desktop', isInteractive: true })
+
+  const answer = await $.command.run({ command: 'run-batch', args: 'run' })
+  expect(JSON.stringify(answer)).toContain('Confirm')
+  const ui = await $.ui.mount({ ...BAND, surface: 'desktop' })
+  expect(await ui.find({ key: 'yes' })).toBeDefined()
+  await ui.unmount()
+})

@@ -14,10 +14,12 @@ Run and Full ask once more on the band before anything is sent. While a run goes
 already sent keeps running at Anthropic and `run_checks.py collect <id>` finishes it. The band stays away in folders
 that hold no `TDS_Mod/Tools/batch/run_checks.py`; `/config` sets another clone's folder (`repoPath`).
 
-Where it runs: on Windows the band starts `Run-Batch.ps1` beside `run_checks.py` (Python 3.10+, Git, a clone, and the
-key saved once with `Run-Batch.ps1 -SaveKey`; the report goes to `Desktop\RogueWave\batch`). Elsewhere, a cloud
-session included, it starts `python3 run_checks.py` from the clone's root, installs `anthropic` once if missing, and
-reads the key from `RW_BATCH_API_KEY` (the report lands in `docs/reports/`, uncommitted).
+Where it runs: on Windows the band starts `Run-Batch.ps1 -NoPull` beside `run_checks.py` (it needs Python 3.10+, Git,
+a clone, and the key saved once with `Run-Batch.ps1 -SaveKey`; it never pulls, and it moves the report to
+`Desktop\RogueWave\batch`; Stop also ends the `python` it started). Elsewhere, a cloud session included, it starts
+`python3 run_checks.py` from the clone's root, installs `anthropic` and `pillow` once if missing, and reads the key from
+`RW_BATCH_API_KEY` (the report lands in `docs/reports/`, uncommitted; a wait over 120 minutes ends with the batch id
+to collect).
 
 ## Install
 
@@ -31,5 +33,5 @@ Answer `y` to add the marketplace, pick the user scope, and restart the Claude d
 
 ## Check it
 
-From this folder: `claude plugin validate .` and `claude plugin test .` (two tests: the band in a clone, with Run
-asking before it spends, and no band elsewhere).
+From this folder: `claude plugin validate .` and `claude plugin test .` (three tests: the band in a clone, with Run
+asking before it spends; no band elsewhere; `/run-batch run` only asks).
