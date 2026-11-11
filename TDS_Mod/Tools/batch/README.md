@@ -22,6 +22,13 @@ batch spend so far. Every row is a lead for a thread to confirm by hand before i
 Only the mod's own code and art, the scope and the project's docs are sent; never the game's binaries, the base
 vessels' sprites or anything from `/mnt/project-files`.
 
+## The button (a Claude Code mod)
+
+`claude-mod/` is `rw-batch-button`, a Claude Code mod with Plan (free), Run and Full buttons above the prompt and
+`/run-batch`; it runs this tool with the morning routine's settings (Haiku 5.5, `--since last`, at most $3) and asks
+before it spends. Install: `/plugin install rw-batch-button --marketplace dimitriphan/Rogue-Waves`
+(`claude-mod/README.md`).
+
 ## Run it
 
 Python 3.10 or later, the SDK (`python3 -m pip install anthropic`) and Pillow for `art`. From the repository root:
