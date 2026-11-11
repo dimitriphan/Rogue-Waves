@@ -10,7 +10,7 @@ clone, with three buttons, and adds `/run-batch`:
 | Full | `/run-batch full` | the same with every check whole (no `--since`) | at most $3; over that, nothing is sent (exit 4) |
 
 Run and Full ask once more on the band before anything is sent. While a run goes, the band shows its minutes, an
-**Output** button opens a pane with the output, and **Stop** (or `/run-batch stop`) ends the local process; a batch
+**Output** button opens a pane with the output, and **Stop** (or `/run-batch stop`) ends this run's own process at once, even a silent one; a batch
 already sent keeps running at Anthropic and `run_checks.py collect <id>` finishes it. The band stays away in folders
 that hold no `TDS_Mod/Tools/batch/run_checks.py`, unless a clone sits at `~/Rogue-Waves` (`C:\Users\<you>\Rogue-Waves`), which it then uses; `/config` sets another clone's folder (`repoPath`).
 
