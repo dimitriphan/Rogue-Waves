@@ -3,9 +3,9 @@
 **2026-11-12, the flow regression of 2026-11-07 (compiled here, not yet run in game; pitfall #177):** the two fails
 (B1's stay-vote line, C3's boat never sails) came from the game's gamepad mode, not from #163: with a gamepad as the last
 device the stock boat parks on a node's island, not at its dock, and dialogs show the focused card's line. The leader's
-auto-sail and the Cove rest now measure arrival where the game steers (`RWBoat.Berth`, `Berthed`, `PadSteers`); C3 and B1
-say the input mode, C5 measures from the berth, B1 accepts a card's own line with a pad, and the flow logs the input
-mode first. For the PC: the flow with the mouse as the last device (it should pass as on 2026-11-06), and once with a
+auto-sail and the Cove rest now measure arrival where the game steers (`RWBoat.Off`, `Berthed`, `PadSteers`: with a pad
+the island counts as well as the dock, since four of the game's five panel flags are private); C3 says the input mode, C5 measures from the berth, B1 and B4 leave the focused
+card (`RWTest.Unfocus`, the game's Unhover) before they read the subtitle, and the flow logs the input mode first. For the PC: the flow with the mouse as the last device (it should pass as on 2026-11-06), and once with a
 gamepad touched before the start (C3 should arrive "a gamepad steers: the island itself").
 
 **2026-11-06, the map card freeze (compiled here, not yet run in game; `docs/reports/PC_ROUND5_2026-11-06.md` §2.3,

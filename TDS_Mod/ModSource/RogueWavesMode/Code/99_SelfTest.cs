@@ -468,7 +468,7 @@ public static partial class RWTest
     // and each dialog's focused card shows its own line in place of the subtitle (pitfall #177).
     public static string InputMode() { return Blockage.Bl_Inputs.Isgamepad ? "input gamepad" : "input mouse"; }
 
-    // C3: the boat sails to the chosen node by itself and stops where the game steers it (RWBoat.Berth).
+    // C3: the boat sails to the chosen node by itself and stops where the game steers it (RWBoat.Berthed).
     static IEnumerator Sail(int m)
     {
         RWChart.Node to = RWCampaign.Chart.At(m + 1, route[m]);
@@ -726,10 +726,10 @@ public static partial class RWTest
         Macro_Link_Add_Base node = null;
         if (vis.World != null && here != null)
             foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true)) if (l.name == here.Name) node = l;
-        // Where the game steers the boat: the dock, or the island itself when a gamepad steers (RWBoat.Berth).
-        float off = node != null ? ModKitUtil.Flat(vis.Boat.transform.position, RWBoat.Berth(vis, node)) : -1f;
-        Check("C5 map " + (m + 1) + ": back on the chart one row on, the boat at " + (here != null ? here.Name : "-"), Here() && RWCampaign.Route.Count == m + 1 && node != null && off < (RWBoat.PadSteers(vis) ? node.Boat_Radius + 0.5f : 3f),
-            "world " + (vis.World != null ? vis.World.name : "-") + ", boat " + RWUtil.F(off) + " from " + (RWBoat.PadSteers(vis) ? "the island (a gamepad steers)" : "the dock"));
+        // Where the game steers the boat: the dock, or with a gamepad the island itself (RWBoat.Off).
+        float room = 0f, off = node != null ? RWBoat.Off(vis, node, out room) : -1f;
+        Check("C5 map " + (m + 1) + ": back on the chart one row on, the boat at " + (here != null ? here.Name : "-"), Here() && RWCampaign.Route.Count == m + 1 && node != null && off < Mathf.Max(3f, room),
+            "world " + (vis.World != null ? vis.World.name : "-") + ", boat " + RWUtil.F(off) + " from where the game parks it (room " + RWUtil.F(room) + "), " + InputMode());
         string w = RWUtil.ReadString("Player", "Player_Worldselect"), g = RWUtil.ReadString("Player", "Player_Gameplanselect");
         Check("C6 map " + (m + 1) + ": the save holds no chart name", !w.StartsWith(RWData.WorldPrefix) && !g.StartsWith("RW_"), "Player_Worldselect " + w + ", Player_Gameplanselect " + g);
     }

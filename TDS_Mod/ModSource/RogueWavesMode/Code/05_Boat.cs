@@ -197,7 +197,7 @@ public static class RWBoat
     {
         RWChart.Node cove = null;
         foreach (RWChart.Node n in RWCampaign.Open())
-            if (n.Stop == RWChart.Cove && AtDock(vis, n)) cove = n;
+            if (n.Stop == RWChart.Cove && AtBerth(vis, n)) cove = n;
         if (cove == null || vis.Inworldtransition || vis.Insetup || RWCampaign.Replay >= 0)
         {
             atCoveSince = -1f;
@@ -212,7 +212,7 @@ public static class RWBoat
         return true;
     }
 
-    static bool AtDock(Macro_Worldvisual vis, RWChart.Node n)
+    static bool AtBerth(Macro_Worldvisual vis, RWChart.Node n)
     {
         foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             if (l.name == n.Name)
@@ -220,23 +220,34 @@ public static class RWBoat
         return false;
     }
 
-    // Where the game's own boat steers for the node it hovers (Macro_Worldvisual's boat loop, read in its IL 2026-11-12): its
+    // Where the game's own boat steers for the node it hovers (Macro_Worldvisual.Update, read in its IL 2026-11-12): its
     // child "Dock", except when a gamepad was the last device used (Bl_Inputs.Isgamepad, set from Bl_Inputs.Lastdevice) and
-    // no Setup panel is open: then it parks on the island itself, and the stick moves it up to Boat_Radius around it. The
-    // 2026-11-07 flow ran in that state, and the boat waited at the island's middle, 2.6 from the dock, for ever (pitfall #177).
+    // no panel is open (Insetup, and four private flags for its other panels): then it parks on the island itself, and the
+    // stick moves it up to Boat_Radius around it. The 2026-11-07 flow ran in that state, and the boat waited at the
+    // island's middle, 2.6 from the dock (pitfall #177). The private flags can't be read, so with a pad either spot counts.
     public static bool PadSteers(Macro_Worldvisual vis) { return Blockage.Bl_Inputs.Isgamepad && !vis.Insetup; }
 
-    public static Vector3 Berth(Macro_Worldvisual vis, Macro_Link_Add_Base node)
+    // How far the boat stands from where the game may have parked it, against how far still counts as there: the dock
+    // (1.5), or with a pad the island too (Boat_Radius + 0.5, anywhere the stick can hold it), whichever it is nearer.
+    public static float Off(Macro_Worldvisual vis, Macro_Link_Add_Base node, out float room)
     {
-        Transform dock = PadSteers(vis) ? null : node.transform.Find("Dock");
-        return dock != null ? dock.position : node.transform.position;
+        Vector3 boat = vis.Boat.transform.position;
+        Transform dock = node.transform.Find("Dock");
+        float off = ModKitUtil.Flat(boat, dock != null ? dock.position : node.transform.position);
+        room = 1.5f;
+        if (PadSteers(vis))
+        {
+            float island = ModKitUtil.Flat(boat, node.transform.position), wide = Mathf.Max(1.5f, node.Boat_Radius + 0.5f);
+            if (island - wide < off - room) { off = island; room = wide; }
+        }
+        return off;
     }
 
-    // At rest where the game steers it: within 1.5 of the dock, or with a pad anywhere the stick can hold it.
+    // At rest where the game steers it.
     public static bool Berthed(Macro_Worldvisual vis, Macro_Link_Add_Base node)
     {
-        float room = PadSteers(vis) ? Mathf.Max(1.5f, node.Boat_Radius + 0.5f) : 1.5f;
-        return ModKitUtil.Flat(vis.Boat.transform.position, Berth(vis, node)) < room && vis.Boatspeed < 1f;
+        float room;
+        return Off(vis, node, out room) < room && vis.Boatspeed < 1f;
     }
 
     // The rest itself: the next question on this boat may be asked again (the leg after the Cove, when no vote named it).
