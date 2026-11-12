@@ -10,7 +10,8 @@ dialog keeps its place while it is still up after the 3 s slide (to 8 s, no newe
 the cards). For the PC: Tab and M on the boat, in a break, in a Tide (the board) and in chat; the after-win WHERE
 NEXT? with the chart beside it; a long map name on a card; by eye the legend's right end.
 
-**2026-11-12, the flow regression of 2026-11-07 (compiled here, not yet run in game; pitfall #177):** the two fails
+**2026-11-12, the flow regression of 2026-11-07 (proven on the PC 2026-11-12: mouse 190/0, gamepad 189/0 and 190/0,
+`docs/reports/PC_FLOW_ROUND1_2026-11-12.md`; pitfall #177):** the two fails
 (B1's stay-vote line, C3's boat never sails) came from the game's gamepad mode, not from #163: with a gamepad as the last
 device the stock boat parks on a node's island, not at its dock, and dialogs show the focused card's line. The leader's
 auto-sail and the Cove rest now measure arrival where the game steers (`RWBoat.Off`, `Berthed`, `PadSteers`: with a pad

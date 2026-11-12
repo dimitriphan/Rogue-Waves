@@ -239,9 +239,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **State (2026-11-12, base `0ef182b`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (ChatGPT's art since 2026-11-07, Argo
   redesigned; `docs/TEMP_ART.md`), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
-  kit 1.15. Last PC run: Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
-  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2, B1's stay-vote
-  subtitle and C3's boat never sailing: the game's gamepad mode, pitfall #177, fixed and compiled only). Before it: rounds 5 and 6 and the full test
+  kit 1.15. Last PC run: Flow_round1 (`PC_FLOW_ROUND1_2026-11-12.md`). Before it, Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
+  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2: the game's gamepad
+  mode, pitfall #177; fixed by #196, proven 2026-11-12 in `PC_FLOW_ROUND1_2026-11-12.md`, mouse 190/0, gamepad 190/0). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
   on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
@@ -249,9 +249,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
   (08's and 09's Look lines changed after, #193); his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
-- **Next, in order:** a PC round with the mode flow's fix (the 2026-11-07 regression was the game's gamepad mode,
-  pitfall #177; the flow with the mouse, and once with a gamepad touched; a release blocker until it passes), #179's
-  Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
+- **Next, in order:** a PC round with #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
   §7, `PC_ROUND6_2026-11-06.md` §6: COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's
   leftovers (`PC_FULL_2026-11-06.md` §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and
   4-7); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
@@ -1833,6 +1831,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   three overlaps fixed (the legend over the frame, a long map name under its card, the dialog's title on the cards
   after its slide). Compiled only (`RogueWavesMode/IMPLEMENTATION_NOTES.md`, `CHART_NAVIGATION.md` §7). ChatGPT art
   stays in the backlog while he makes new art. No pitfall numbers used.
+
+- **2026-11-12: PC round Flow_round1, the mode flow fix proven** (Dimitri: "1 ok"): #196 on the PC with the other five
+  parts at `d8cddbd`: mouse 190/0/0, a virtual gamepad held as the last device (test-only `ROGUEWAVESMODE_PAD`,
+  `96_Flow.cs`) 189/0/0 and 190/0/0 (2026-11-07: 121/2). With a pad the boat parks 0.1 from the island and arrives,
+  and the stay vote reads its own line after `RWTest.Unfocus`. Report `docs/reports/PC_FLOW_ROUND1_2026-11-12.md`;
+  cloud-check stubs gained `InputSystem.AddDevice`. Next free unchanged: kit chapter 25, kit 1.16, pitfall #178.
 
 ### Decisions
 
