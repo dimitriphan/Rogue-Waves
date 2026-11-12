@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zw8eHSayE8wn1tPoKXDQ2tQB",
   "thread": "Build a Run Batch button mod",
-  "state": "reviewing",
-  "started": "2026-11-11T05:19:22Z",
-  "step": "PR #188 waits for Codex; PC install waits for his OK",
+  "state": "shipped",
+  "started": "2026-11-12T06:08:19Z",
+  "step": "PR #188 + #189 merged; button installed on PC",
   "helpers": [],
-  "updated": "2026-11-11T05:19:22Z"
+  "updated": "2026-11-12T06:08:19Z"
 }
