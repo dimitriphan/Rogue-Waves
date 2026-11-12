@@ -3,7 +3,7 @@
   "thread": "Merge the two spotlight pages",
   "state": "waiting",
   "started": "2026-11-12T07:03:34Z",
-  "step": "Merged page built; waiting on Spotlight privacy pick, opening PR",
+  "step": "PR #194 open; waiting on Spotlight privacy pick and Codex",
   "helpers": [],
-  "updated": "2026-11-12T07:03:34Z"
+  "updated": "2026-11-12T07:05:15Z"
 }
