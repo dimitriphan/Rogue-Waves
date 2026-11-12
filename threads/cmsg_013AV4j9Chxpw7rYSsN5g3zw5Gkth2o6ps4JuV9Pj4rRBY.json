@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zw5Gkth2o6ps4JuV9Pj4rRBY",
   "thread": "Open chart on Tab and after wins",
-  "state": "waiting",
-  "started": "2026-11-12T17:44:20Z",
-  "step": "PR #199 merged; Tab-in-break choice open",
+  "state": "shipped",
+  "started": "2026-11-12T18:22:56Z",
+  "step": "PRs #199 and #200 merged; compiled only",
   "helpers": [],
-  "updated": "2026-11-12T17:44:20Z"
+  "updated": "2026-11-12T18:22:56Z"
 }
