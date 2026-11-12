@@ -10,8 +10,9 @@
 //   on the boat       a mini chart where the game's pieces leave room (Mini), all the time on the chart; while the boat
 //                     sails a banner in the HUD's "TIDE APPROACHING" shape names where it goes, read from its heading on each machine
 //                     (the winner is never in the chart's name, which would warp the party again, §3.2)
-//   any time          the key ~M~ opens the whole chart, read only, on the chart or in a map's break; not while typing,
-//                     not while a choice dialog is up
+//   any time          the keys ~M~ and Tab (Dimitri 2026-11-12) open the whole chart, read only, on the chart or in a
+//                     map's break; not while typing, not while a choice dialog or the MVP board is up. Where the chart
+//                     can't open (a Tide running), Tab is the MVP board's (28_BoardView.cs)
 // Its own Canvas (Screen Space Overlay, kit docs/20 §4) at the game's UI scale, above the dialog. Clicks and hovers are read
 // from the pointer here rather than through the EventSystem, so they never depend on the dialog's layer (the PC decides the
 // rest: CV4, CV8). The layout is one pure function (Lay) the self-test calls.
@@ -168,6 +169,7 @@ public static class RWChartView
             closesAt = Time.unscaledTime + seconds;
             mode = "Vote";
             Draw();
+            lastVote = new Vote_ { On = on, Standing = standing, Row = row, Cols = new List<int>(cols), Asked = asked, ClosesAt = closesAt };
             return true;
         }
         catch (Exception e)
@@ -191,6 +193,19 @@ public static class RWChartView
             Draw();
         }
     }
+
+    // The vote the view last drew, so that it comes back while its WHERE NEXT? still stands beside where it was (Dimitri
+    // 2026-11-12: "WHERE NEXT should open the map automatically"; chart_round1's 021312 caught the cards with no chart).
+    class Vote_ { public RWChart.Chart On; public RWChart.Node Standing; public int Row; public List<int> Cols; public string Asked; public float ClosesAt; }
+    static Vote_ lastVote;
+
+    static bool Alive(string asked, string scene)
+    {
+        return asked == OnTheBoat ? RWDialog.Asking : scene == "Game" && RWAsk.Open == asked;
+    }
+
+    // The keys answered this frame (open or close): the MVP board, after this view in the frame, leaves Tab alone.
+    public static int KeyFrame { get; private set; }
 
     public static void Close()
     {
@@ -217,10 +232,22 @@ public static class RWChartView
     public static void Update()
     {
         string scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        if (lastVote != null && !Alive(lastVote.Asked, scene))
+            lastVote = null;
+        // The map vote's dialog stands beside an empty half (the view closed or its canvas went while the question is
+        // still asked): the chart is drawn again, with the time it has left.
+        if (lastVote != null && RWDialog.Beside && (mode != "Vote" || root == null))
+        {
+            Vote_ v = lastVote;
+            if (mode != "") Close();
+            if (!OpenVote(v.On, v.Standing, v.Row, v.Cols, v.Asked, Mathf.Max(0f, v.ClosesAt - Time.unscaledTime)))
+                lastVote = null;
+            else
+                RWLog.Info("chart view: drawn again beside the map vote");
+        }
         if (mode == "Vote")
         {
-            bool alive = question == OnTheBoat ? RWDialog.Asking : scene == "Game" && RWAsk.Open == question;
-            if (!alive)
+            if (!Alive(question, scene))
             {
                 Close();
                 return;
@@ -247,9 +274,15 @@ public static class RWChartView
         }
         if (Key())
         {
-            if (mode == "Look") { Close(); return; }
+            if (mode == "Look")
+            {
+                Close();
+                KeyFrame = Time.frameCount;
+                return;
+            }
             OpenLook(scene);
-            return;
+            if (mode == "Look") KeyFrame = Time.frameCount;
+            if (mode == "Look" || !TabOnly()) return;
         }
         if (mode == "Look")
         {
@@ -259,11 +292,19 @@ public static class RWChartView
         Boat(scene);
     }
 
-    // The key, on this machine: ~M~, not while a text field (chat) has the focus or a choice dialog is up.
+    // The keys, on this machine: ~M~ and Tab, not while a text field (chat) has the focus or a choice dialog or the MVP board is up.
     static bool Key()
     {
         UnityEngine.InputSystem.Keyboard k = UnityEngine.InputSystem.Keyboard.current;
-        return k != null && k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame && !RWDialog.Up() && !RWBoardView.Up && !Typing();
+        return k != null && (k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame || k[UnityEngine.InputSystem.Key.Tab].wasPressedThisFrame)
+            && !RWDialog.Up() && !RWBoardView.Up && !Typing();
+    }
+
+    // Only Tab was pressed (no chart opened for it): the frame goes on, so the mini chart is kept.
+    static bool TabOnly()
+    {
+        UnityEngine.InputSystem.Keyboard k = UnityEngine.InputSystem.Keyboard.current;
+        return k != null && !k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame;
     }
 
     // A text field (the chat box) has the focus: keys are the player's words, not ours (the MVP board asks too).
@@ -623,16 +664,29 @@ public static class RWChartView
             Text(area, "Here", "YOU ARE HERE", new Vector2(me.At.x + T * 0.5f + 18f, me.At.y + 4f), cap * 0.85f, TMPro.TextAlignmentOptions.Left, Ink, 0.85f);
         }
         // The legend, one caption line: tiles and words.
+        // Its words at the width this view's Text gives them (0.62 of a size a letter): at 0.5, "Sailed" ran over the
+        // frame's right line (chart_round1's 020735, Dimitri 2026-11-12: "some UI overlaps"). A line too long for the
+        // frame is drawn smaller. No text is measured: asking TMP froze a frame (11_Dialog.cs, HeadLetter).
+        string[] words = { "Map (its Danger)", "Breaker", "Cove: rest", "Wreck: harder, a Trinket", "Sailed" };
+        float wide = 0f;
+        foreach (string w in words) wide += LegendWide(w, cap);
+        // Only the sizes shrink, not each item's 3-unit gap; the last item's trailing room isn't drawn.
+        float gaps = 3f * words.Length;
+        float legendSize = cap * Mathf.Clamp(((r.xMax - 6f) - (r.xMin + 4f) - gaps) / Mathf.Max(1f, wide - gaps - cap * 1.4f), 0.5f, 1f);
         float lx = r.xMin + 4f, ly = r.yMin + legend - cap;
-        LegendItem(ref lx, ly, Teal, null, "Map (its Danger)", cap);
-        LegendItem(ref lx, ly, Coral, null, "Breaker", cap);
-        LegendItem(ref lx, ly, Teal, RWIcons.Chart("Cove"), "Cove: rest", cap);
-        LegendItem(ref lx, ly, Teal, RWIcons.Chart("Wreck"), "Wreck: harder, a Trinket", cap);
-        LegendItem(ref lx, ly, Slate, RWIcons.Chart("Tick"), "Sailed", cap);
-        string foot = vote ? "A tie goes to A" + RWCard.Separator + "no votes take A" : "M closes the chart";
+        LegendItem(ref lx, ly, Teal, null, words[0], legendSize);
+        LegendItem(ref lx, ly, Coral, null, words[1], legendSize);
+        LegendItem(ref lx, ly, Teal, RWIcons.Chart("Cove"), words[2], legendSize);
+        LegendItem(ref lx, ly, Teal, RWIcons.Chart("Wreck"), words[3], legendSize);
+        LegendItem(ref lx, ly, Slate, RWIcons.Chart("Tick"), words[4], legendSize);
+        string foot = vote ? "A tie goes to A" + RWCard.Separator + "no votes take A" : "M or Tab closes the chart";
         TMPro.TMP_Text f = Text(area, "Foot", foot, new Vector2(r.xMin + 4f, r.yMin + cap * 0.6f), cap, TMPro.TextAlignmentOptions.Left, Ink, 0.6f);
         if (vote) { clock = f; clockLeft = -1; }
     }
+
+    public const float Letter = 0.62f;   // a letter's width, of its size, in the game's font (Text's box; the legend fits by it)
+
+    static float LegendWide(string words, float cap) { return cap * 1.7f + 3f + words.Length * cap * Letter + cap * 1.4f; }
 
     static void LegendItem(ref float x, float y, Color fill, Sprite icon, string words, float cap)
     {
@@ -640,7 +694,7 @@ public static class RWChartView
         RectTransform t = Framed(area, "Legend", new Vector2(x + s * 0.5f, y), s, fill, 1f);
         if (icon != null) Icon(t, icon, s, 1f);
         Text(area, "Legend", words, new Vector2(x + s + 3f, y), cap, TMPro.TextAlignmentOptions.Left, Ink, 0.8f);
-        x += s + 3f + words.Length * cap * 0.5f + cap * 1.4f;
+        x += LegendWide(words, cap);
     }
 
     // The stock dialog's title: capitals centred, a bright rule under them that turns down the right side with a small knot
@@ -693,7 +747,7 @@ public static class RWChartView
         }
         Tile me = lay.Find(here);
         if (me != null) Image(area, "Boat", RWIcons.Chart("Boat"), new Rect(me.At.x + T * 0.5f + 1f, me.At.y - 3f, 10f, 10f), 1f);
-        Text(area, "Key", "M" + RWCard.Separator + "the whole chart", new Vector2(m.center.x, m.yMin + 4f), 7f, TMPro.TextAlignmentOptions.Center, Ink, 0.85f);
+        Text(area, "Key", "M, Tab" + RWCard.Separator + "whole chart", new Vector2(m.center.x, m.yMin + 4f), 7f, TMPro.TextAlignmentOptions.Center, Ink, 0.85f);
     }
 
     // ---------------------------------------------------------------- the mini chart's place
@@ -915,7 +969,7 @@ public static class RWChartView
     public static TMPro.TMP_Text Text(Transform parent, string name, string words, Vector2 at, float size, TMPro.TextAlignmentOptions align, Color c, float alpha)
     {
         RectTransform rt = Rt(parent, name);
-        float wide = Mathf.Max(20f, words.Length * size * 0.62f + 8f);
+        float wide = Mathf.Max(20f, words.Length * size * Letter + 8f);
         rt.pivot = align == TMPro.TextAlignmentOptions.Left ? new Vector2(0f, 0.5f) : align == TMPro.TextAlignmentOptions.Right ? new Vector2(1f, 0.5f) : new Vector2(0.5f, 0.5f);
         rt.anchoredPosition = at;
         rt.sizeDelta = new Vector2(wide, size * 1.4f);

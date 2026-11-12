@@ -66,7 +66,7 @@ public static class RWDialog
     }
 
     // In card units, from its bottom left corner: the picture's box and middle, the name's line, the badge's box.
-    const float FacePicture = 38f, FacePictureY = 0.6f, FaceNameY = 0.17f, FaceNameWide = 0.84f, FaceBadge = 14f;
+    const float FacePicture = 38f, FacePictureY = 0.6f, FaceNameBottom = 3f, FaceNameWide = 0.84f, FaceBadge = 14f;
     public const string FaceName = "RW_Name", FaceBadgeName = "RW_Badge";
 
     // The name's size from its letter count, never by asking the text (pitfall #138): one line up to 14 letters, two above.
@@ -74,7 +74,7 @@ public static class RWDialog
     {
         int n = name.Length;
         wrap = n > 14;
-        return n <= 10 ? 7f : n <= 14 ? 6f : n <= 28 ? 5.5f : 4.5f;
+        return n <= 10 ? 7f : n <= 14 ? 6f : n <= 28 ? 5f : 4.5f;   // two lines of 5 stay under the picture
     }
 
     // The name's text and the badge are kept from one opening to the next rather than made new on every card each time: a map
@@ -153,11 +153,15 @@ public static class RWDialog
             }
             if (text != null)
             {
+                // Standing on the card's bottom rim and growing upward: a two-line name hung below the card when it was
+                // centred on its box (Proof_round1's "SILU BASTACK I FRACTURE", Dimitri 2026-11-12: "some UI overlaps").
+                rt.pivot = new Vector2(0.5f, 0f);
                 rt.sizeDelta = new Vector2(size.x * FaceNameWide, size.y * 0.3f);
-                rt.anchoredPosition = new Vector2(size.x * 0.5f, size.y * FaceNameY);
+                rt.anchoredPosition = new Vector2(size.x * 0.5f, FaceNameBottom);
                 bool wrap;
                 text.fontSize = NameSize(look.Name, out wrap);
                 text.enableWordWrapping = wrap;
+                text.alignment = TMPro.TextAlignmentOptions.Bottom;
                 text.color = Pearl;   // a carried-over text looks as a new one does, whatever tint it last had
                 text.text = look.Name.ToUpperInvariant();
             }
@@ -688,9 +692,12 @@ public static class RWDialog
     // Once the dialog has gone, not as it goes: its way out is a slide too, and the cards shouldn't jump to the corner in it.
     static IEnumerator UnplaceLater(int ask)
     {
-        float cap = Time.unscaledTime + 3f;
+        // The slide out has 3 s; a dialog still up after them, with no newer ask of ours, keeps its place a little longer:
+        // put back while it showed, the title fell onto the cards (chart_round1's 021315, Dimitri 2026-11-12: "some UI overlaps").
+        float cap = Time.unscaledTime + 3f, stay = Time.unscaledTime + 8f;
         Blockage.Menu.Blu2_Menu_Handler menu = Menu();
-        while (owner == ask && menu != null && (menu.Active || menu.Intransition) && Time.unscaledTime < cap)
+        while (owner == ask && menu != null && (menu.Active || menu.Intransition)
+            && (Time.unscaledTime < cap || (menu.Active && asks == ask && Time.unscaledTime < stay)))
             yield return null;
         float gone = Time.unscaledTime + 0.6f;
         while (owner == ask && menu != null && !menu.Active && Time.unscaledTime < gone)

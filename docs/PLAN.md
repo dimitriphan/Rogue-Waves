@@ -243,7 +243,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2, B1's stay-vote
   subtitle and C3's boat never sailing: the game's gamepad mode, pitfall #177, fixed and compiled only). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
-  on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
@@ -1827,6 +1827,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   scheduled task "Morning mod test run" keeps its daily 7 AM time but starts with one git check: if nothing outside
   `docs/reports/` and `docs/PLAN.md` reached `claude/phase-1-6lfnar` in the last 25 hours, it stops with no batch, no PC
   round and no post. The task's prompt was changed in place; the batch README's routine section says so. Docs only.
+- **2026-11-12: the chart verdict built** (Dimitri: "Chart design flows ok, but some UI overlaps in the photos. Tab
+  should open map as well. Sheet 1 WHERE NEXT should open the map automatically. All reads well."): §7's defaults
+  stand; Tab opens the chart beside M, WHERE NEXT? redraws the chart whenever it stands beside an empty half, and
+  three overlaps fixed (the legend over the frame, a long map name under its card, the dialog's title on the cards
+  after its slide). Compiled only (`RogueWavesMode/IMPLEMENTATION_NOTES.md`, `CHART_NAVIGATION.md` §7). ChatGPT art
+  stays in the backlog while he makes new art. No pitfall numbers used.
 
 ### Decisions
 
