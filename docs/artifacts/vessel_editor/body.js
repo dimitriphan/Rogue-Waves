@@ -106,8 +106,8 @@ function renderLineup() {
     return `<button class="vcard" style="--cc:${v.accent}" data-go="${v.id}">
       <div class="vart">${art}</div>
       <div class="vb"><span class="lab">${v.kind === 'base' ? 'Base game' : 'Rogue Waves'}${v.difficulty ? ' · ' + esc(v.difficulty) : ''}</span><b>${esc(v.name)}</b><span class="tt">${esc(v.title)}</span>
-      <span class="mini-meter" title="${r.have} done, ${r.part} partly, of ${r.need}"><i style="width:${pa}%"></i><i style="width:${pb}%;opacity:.4"></i></span>
-      <span class="tt num">${r.have + r.part} of ${r.need} started</span></div></button>`;
+      ${SHIP ? '' : `<span class="mini-meter" title="${r.have} done, ${r.part} partly, of ${r.need}"><i style="width:${pa}%"></i><i style="width:${pb}%;opacity:.4"></i></span>
+      <span class="tt num">${r.have + r.part} of ${r.need} started</span>`}</div></button>`;
   }).join('') + (EDIT ? `<button class="vcard addcard" data-act="new-vessel"><div class="vart">${icon('units', 40)}</div><div class="vb"><span class="lab">From the template</span><b>New vessel</b><span class="tt">Start a sheet, or import a .txt</span></div></button>` : '');
   const rolls = all.map(v => roll(v));
   const groups = rolls[0].map(g => g[0]);
@@ -122,6 +122,14 @@ function renderLineup() {
   const words = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
   const names = NEW.map(v => v.name);
   const nameList = names.length > 1 ? names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1] : names[0] || 'The new vessels';
+  if (SHIP) return `<div class="page">
+    <section class="intro">
+      <span class="lab">${words[all.length] || all.length} vessels</span>
+      <h1>Five from the base game. ${esc(nameList)} sail with them.</h1>
+      <p>Every vessel's page in the game's journal layout: its sprite, stats and lore, its ability and rule, its four buildings with their upgrade trees, its units and its Directions. Pick one from the row above.</p>
+    </section>
+    <section class="cards">${cards}</section>
+  </div>`;
   return `<div class="page">
     <section class="intro">
       <span class="lab">${words[all.length] || all.length} vessels</span>
@@ -151,10 +159,10 @@ function hero(v) {
     note = `The game's own sheet at 6× zoom, ${a.Idle.fps} frames a second.`;
   } else {
     const ks = ['Move', 'Attack', v.ability, 'Landing', 'Falling'].filter(Boolean);
-    chips = `<button class="chip" aria-pressed="true">Idle</button>` + ks.map(k => `<button class="chip" disabled>${esc(k)}<span class="w">WIP</span></button>`).join('');
-    faces = `<button class="chip" aria-pressed="true">Front ▸</button>` + ['◂ Front', 'Back ▸', '◂ Back'].map(f => `<button class="chip" disabled>${f}<span class="w">WIP</span></button>`).join('');
+    chips = `<button class="chip" aria-pressed="true">Idle</button>` + (SHIP ? '' : ks.map(k => `<button class="chip" disabled>${esc(k)}<span class="w">WIP</span></button>`).join(''));
+    faces = `<button class="chip" aria-pressed="true">Front ▸</button>` + (SHIP ? '' : ['◂ Front', 'Back ▸', '◂ Back'].map(f => `<button class="chip" disabled>${f}<span class="w">WIP</span></button>`).join(''));
     sprite = frameArt(v, 192, 'hero-spr', 'position:absolute');
-    note = v.frameUrl ? "Dimitri's own frame at 6× zoom. One frame of the 48 a vessel's main sheet needs." : 'No sprite yet. A vessel\'s main sheet needs 48 frames.';
+    note = SHIP ? 'Idle, front, at 6× zoom.' : v.frameUrl ? "Dimitri's own frame at 6× zoom. One frame of the 48 a vessel's main sheet needs." : 'No sprite yet. A vessel\'s main sheet needs 48 frames.';
   }
   const isle = `<svg class="isle" viewBox="0 0 460 190" aria-hidden="true">
       <g class="waves"><path d="M-20 150 Q 20 142 60 150 T 140 150 T 220 150 T 300 150 T 380 150 T 460 150 T 540 150 V 190 H -20 Z" fill="var(--water)" opacity=".75"/><path d="M-20 162 Q 25 154 70 162 T 160 162 T 250 162 T 340 162 T 430 162 T 520 162 V 190 H -20 Z" fill="var(--water2)" opacity=".8"/></g>
@@ -189,7 +197,7 @@ function hero(v) {
         <span class="pill ${base ? '' : 'solid'}">${base ? 'Base vessel' : 'Rogue Waves vessel'}</span>
         ${v.difficulty ? `<span class="pill">${pips(v.difficulty)} ${esc(v.difficulty)}</span>` : `<span class="pill">${wipTag('Difficulty')}</span>`}
         ${melee ? `<span class="pill">${melee}</span>` : ''}
-        ${base ? '' : '<span class="pill tape">In development</span>'}
+        ${base || SHIP ? '' : '<span class="pill tape">In development</span>'}
       </div>
       <div><h1 class="vname">${esc(v.name)}</h1><p class="vtitle">${esc(v.title)}</p></div>
       ${line}
@@ -200,7 +208,7 @@ function hero(v) {
         <div><span class="lab">Attack</span><p class="v">${v.attack ? esc(cap(v.attack)) : wipTag()}</p></div>
         <div><span class="lab">Colour</span><p class="v">${colour}</p></div>
         ${v.towersLook ? `<div><span class="lab">Towers look</span><p class="v">${esc(v.towersLook)}</p></div>` : ''}
-        ${!base && v.status ? `<div class="wide"><span class="lab">Status</span><p class="v">${esc(cap(v.status))}</p></div>` : ''}
+        ${!base && !SHIP && v.status ? `<div class="wide"><span class="lab">Status</span><p class="v">${esc(cap(v.status))}</p></div>` : ''}
       </div>
     </div>
   </section>`;
@@ -222,7 +230,7 @@ function statsCard(v) {
   }
   const set = v.bars.filter(b => b.v).length;
   const inner = set ? body : wipCover(body, 'WORK IN PROGRESS', 'No numbers set yet.');
-  return `<section class="band pad c7"><div class="sec-h"><h2>Vessel stats</h2><span class="lab">${set} of ${v.bars.length} set · bars to the base game's top</span></div>
+  return `<section class="band pad c7"><div class="sec-h"><h2>Vessel stats</h2><span class="lab">${SHIP ? '' : `${set} of ${v.bars.length} set · `}bars to the base game's top</span></div>
     ${inner}<p class="scale-note">Bar ends: health 65, speed 3.5, damage 5, range 3 tiles, attack speed 0.75, build range 3 tiles, sell rate 75%. A bar past the end fills it.</p></section>`;
 }
 
@@ -247,7 +255,7 @@ function sigSection(v) {
     const rows = rowsHTML(s.rows.filter(r => !['Keys'].includes(r.k) || r.v));
     return `<div class="sig"><span class="lab">${esc(s.type)}</span><h3>${s.name ? esc(s.name) : wipTag('Name WIP')}</h3><div class="rows">${rows}</div></div>`;
   }).join('');
-  return `<section class="band pad c12"><div class="sec-h"><h2>Signature</h2><span class="lab">${v.kind === 'base' ? 'Ability, resource, rule' : 'WIP = not set by Dimitri yet'}</span></div><div class="sigs">${cards}</div></section>`;
+  return `<section class="band pad c12"><div class="sec-h"><h2>Signature</h2><span class="lab">${v.kind === 'base' ? 'Ability, resource, rule' : (SHIP ? 'Ability, resource, rule' : 'WIP = not set by Dimitri yet')}</span></div><div class="sigs">${cards}</div></section>`;
 }
 
 function upTile(u, lvl, mine) {
@@ -304,7 +312,7 @@ function towers(v) {
   if (!v.buildings.length) return `<section class="band pad c12"><div class="sec-h"><h2>Towers and units</h2></div><p class="frame-note">No buildings on the sheet yet.</p></section>`;
   const cur = Math.min(BTAB[v.id] || 0, v.buildings.length - 1);
   const tabs = v.buildings.map((b, i) => `<button class="btab" role="tab" aria-selected="${i === cur}" data-b="${i}"><span class="ico">${icon(slotIcon(b.slot), 18)}</span><span class="t"><span>${esc(b.slot)}</span><b>${esc(b.name)}</b></span></button>`).join('');
-  return `<section class="band pad c12"><div class="sec-h"><h2>Towers and units</h2><span class="lab">${v.kind === 'base' ? 'Pick a building to read its page' : 'Dimitri\'s designs; WIP marks what is still open'}</span></div>
+  return `<section class="band pad c12"><div class="sec-h"><h2>Towers and units</h2><span class="lab">${v.kind === 'base' ? 'Pick a building to read its page' : (SHIP ? 'Pick a building to read its page' : 'Dimitri\'s designs; WIP marks what is still open')}</span></div>
     <div class="btabs" role="tablist">${tabs}</div><div id="bdetail">${buildingDetail(v, v.buildings[cur])}</div></section>`;
 }
 
@@ -334,7 +342,7 @@ function directionsSection(v) {
       <div class="rows"><div class="r"><span>Numbers</span><span>${val(g('Numbers').v)}</span></div><div class="r"><span>Icon brief</span><span>${g('Look').v ? esc(g('Look').v) : wipTag()}</span></div>${g('Clashes').v ? `<div class="r"><span>Clashes</span><span>${esc(g('Clashes').v)}</span></div>` : ''}</div>`;
     return `<article class="dir"><div class="dh"><div class="dico">ICON<br>WIP</div><div><span class="lab">${esc(g('Kind').v || '')}${g('Touches').v ? ' · ' + esc(g('Touches').v) : ''}</span><h3>${esc(d.name)}</h3></div></div>${body}</article>`;
   }).join('');
-  return `<section class="band pad c12"><div class="sec-h"><h2>Directions</h2><span class="lab">Rogue Waves run upgrades, picked between maps · from 11_Directions.txt</span></div><div class="dirs">${cards}</div></section>`;
+  return `<section class="band pad c12"><div class="sec-h"><h2>Directions</h2><span class="lab">Rogue Waves run upgrades, picked between maps${SHIP ? '' : ' · from 11_Directions.txt'}</span></div><div class="dirs">${cards}</div></section>`;
 }
 
 function rollSection(v) {
@@ -352,7 +360,7 @@ function rollSection(v) {
 function renderVessel(v) {
   return `<div class="page" style="${vesselStyle(v)}">
     ${hero(v)}
-    <div class="cols">${statsCard(v)}${loreCard(v)}${sigSection(v)}${towers(v)}${unitsSection(v)}${directionsSection(v)}${rollSection(v)}</div>
+    <div class="cols">${statsCard(v)}${loreCard(v)}${sigSection(v)}${towers(v)}${unitsSection(v)}${directionsSection(v)}${SHIP ? '' : rollSection(v)}</div>
   </div>`;
 }
 
@@ -361,7 +369,7 @@ let CUR = 'lineup';
 function renderDock(cur) {
   const slot = v => `<button class="slot" role="tab" aria-selected="${cur === v.id}" data-go="${v.id}" title="${att(v.name)}, ${att(v.title)}">
       ${v.kind === 'base' ? spr(v.anims.Mini, 3) : frameArt(v, 48)}
-      <span class="nm">${esc(v.name)}</span>${v.kind === 'rw' ? '<span class="wipdot">WIP</span>' : ''}</button>`;
+      <span class="nm">${esc(v.name)}</span>${v.kind === 'rw' && !SHIP ? '<span class="wipdot">WIP</span>' : ''}</button>`;
   const dock = document.getElementById('dock');
   const add = EDIT ? `<button class="slot addslot" data-act="new-vessel" title="Start a new vessel sheet"><span class="lineup-ico">${icon('units', 30)}</span><span class="nm">+ New</span></button>` : '';
   dock.innerHTML = `<div class="grp"><button class="slot lineup" role="tab" aria-selected="${cur === 'lineup'}" data-go="lineup"><span class="lineup-ico">${icon('units', 30)}</span><span class="nm">Lineup</span></button></div>
@@ -386,7 +394,8 @@ function show(id, push) {
     mount(main);
     if (v) wire(v, main);
   }
-  if (push) { try { history.replaceState(null, '', '#' + key); } catch (e) { location.hash = key; } }
+  if (SHIP) { try { parent.postMessage({ rwJournal: key, changed }, '*'); } catch (e) { /* not framed */ } }
+  else if (push) { try { history.replaceState(null, '', '#' + key); } catch (e) { location.hash = key; } }
   const sel = document.querySelector('.slot[aria-selected="true"]');
   if (sel && sel.scrollIntoView && changed) sel.scrollIntoView({ block: 'nearest', inline: 'center' });
 }

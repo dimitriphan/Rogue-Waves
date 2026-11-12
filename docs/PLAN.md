@@ -1806,6 +1806,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pointed hood-hat, two lenses, one-handed adjustable wrench, no kelp. All five Argo asks (A1, A2, D1, D2, N1) go to
   ChatGPT as `docs/art/ARGO_EDITS_2026-11-12.md`; the game's 19 Argo files equal the reset's Argo finals. New copies:
   project files `chatgpt/prompts/argo_edits_2026-11-12.txt`, `chatgpt/prompts/spool_claws_2026-11-12/`. Docs only.
+- **2026-11-12: the two spotlights merged** (Dimitri: "5. Yes", to merging the Feature Spotlight with the Vessel
+  Spotlight). The Spotlight (same link) gains the vessel journal after its vessels section: one journal page per vessel,
+  base five plus Yossele, Spool, Argo and Uloe, in a frame of its own, Rogue Tide tokens and fonts, with no WIP marks,
+  readiness meter or asset sheet (a `ship` build of `docs/artifacts/vessel_editor/`, `SHIP` in `page.js`); each new
+  vessel's card links to its page. `docs/spotlight/build.py --journal ... --out ...` writes the published page outside
+  the repository (game sprites); `spotlight.html` stays the pack page alone. The Vessel Editor is unchanged in what it
+  shows. The Vessel Spotlight is superseded and left in his gallery. Tested here: headless Chromium, no page errors,
+  nine journal pages, 390 px wide without sideways scroll. Docs and page tools only.
 
 ### Decisions
 

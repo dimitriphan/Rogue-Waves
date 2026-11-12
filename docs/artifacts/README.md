@@ -23,11 +23,10 @@ has rebuilt and republished the page, so the page's own copy already carries the
 
 | Page | Link | Pinned | Source |
 | --- | --- | --- | --- |
-| Spotlight (every new feature, with PC/built chips) | https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr | yes | `docs/spotlight/` |
-| Vessel Spotlight (journal pages, read-only twin of the Vessel Editor) | https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw | no | `vessel_editor/` (`build.py` writes both) |
+| Spotlight (every new feature, plus the vessel journal: every vessel's journal page) | https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr | yes | `docs/spotlight/` + `vessel_editor/` (journal) |
 
-The Vessel Spotlight still shows the scope of 2026-10-23; whether it merges into the Spotlight is his open question in
-the spotlight thread, so it is neither rebuilt nor archived here.
+Superseded 2026-11-12: the **Vessel Spotlight** (https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw) merged into the
+Spotlight at Dimitri's yes. It is left in his gallery, unchanged since 2026-10-23, until he says to delete it.
 
 ## Archived 2026-11-06
 
