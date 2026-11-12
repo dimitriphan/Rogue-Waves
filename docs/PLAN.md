@@ -256,8 +256,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
   button's and chart's look, a flooded map, the chart, VENDCINT, Uloe and the campaign (`BUILD_2026-11-03.md` §6), the
-  polish's readings (`MODE_POLISH_2026-11-03.md` §2); his `.claude/settings.json` edit (item 14,
-  `OPEN_DECISIONS_2026-11-05b.md`).
+  polish's readings (`MODE_POLISH_2026-11-03.md` §2).
 - **Online evening:** only what loopback can't be: Steam's Join Game and lobby, a real network's delay and drop, a
   person's eye (`docs/reports/TEST_ROUND_2026-11-04.md` §5, `docs/RESEARCH_GAPS.md` §E, kit `docs/19` §8). Wherever
   "one online evening" appears, read that.
@@ -1791,6 +1790,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-12: "Now" trimmed again** (Dimitri: "greatly reduce the amount of tokens used"): 23 KB to about 4 KB,
   its dated entries 2026-11-05 to 11-12 moved verbatim to the entry above; State and Next brought up to date.
   From now on PRs add dated entries to the Log only (AGENTS.md, ship-a-pr). Docs only.
+- **2026-11-12: `.claude/settings.json` loosened** (Dimitri: "Do this for me", item 14 of
+  `docs/reports/OPEN_DECISIONS_2026-11-05b.md`): the deny lines for `mcp__github__merge_pull_request`,
+  `mcp__github__enable_pr_auto_merge` and `gh pr merge *` removed, so Claude can merge its own PRs as Part A says (the
+  denies on pushing to `claude/phase-1-6lfnar` stay); `apt-get update` and `python3 -m pip install UnityPy` allowed.
+  Settings only, no code.
 
 ### Decisions
 
