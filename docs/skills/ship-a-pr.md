@@ -33,10 +33,10 @@ Rules from `CLAUDE.md`, `docs/PLAN.md` Part A "Merging" and Part C "Now". Dimitr
 
 ## Part C and the Log
 
-- Add one entry at the END of Part C "Now", three lines at most:
+- Do not add dated entries to Part C "Now" (Dimitri 2026-11-12, token use). Edit its State, Next, open and "Next free
+  numbers" lines in place so they stay true, keep it under about 4 KB, and add one entry at the END of the Log:
   `- **YYYY-MM-DD: what changed** (Dimitri: "his words"): result; compiled here / not run on the PC; kit or pitfall used.`
-- Put the detail in the Log (`### Log`, newest last) as one dated entry. Keep "Now" near 4 KB: fold finished items
-  into its "State" line.
+  The detail goes under it in the same Log entry.
 
 ## Open
 
@@ -68,8 +68,8 @@ author's own check.
 ## Merge (Claude merges its own PR, Dimitri 2026-11-05)
 
 0. Codex's review, or the stand-in Claude review (above), of the head has no P0/P1 open, and cloud-check is clean.
-1. `git fetch origin claude/phase-1-6lfnar` and merge it into your branch. In Part C "Now", keep the base's entries
-   first and yours last. If a PR merged first used the same kit version or pitfall numbers, you are the second
+1. `git fetch origin claude/phase-1-6lfnar` and merge it into your branch. In Part C "Now", keep the base's lines and
+   re-apply your edits; in the Log, the base's entries first and yours last. If a PR merged first used the same kit version or pitfall numbers, you are the second
    merger: renumber yours to the next free ones everywhere they appear, and fix "Next free numbers".
 2. Re-run the checks above on the merged tree and push.
 3. GitHub MCP `merge_pull_request` with `merge_method: "merge"` and `expectedHeadSha` set to your pushed head.

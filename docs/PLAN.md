@@ -63,8 +63,8 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > that Claude reviewed in Codex's place, and the thread merges once no P0/P1 is open and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
 >
-> **End of every session.** Update Part C "Now" (done / next / blocked, three lines; fold finished items into
-> "State" and put their detail in "Log" as one dated entry, so "Now" stays under about 4 KB), add decisions and open
+> **End of every session.** Edit Part C "Now"'s State / Next / open lines in place (no dated entries there, so "Now"
+> stays under about 4 KB) and put what was done in "Log" as one dated entry, add decisions and open
 > questions, commit with a message under five lines, push to the working branch.
 
 ### Model per role
@@ -236,21 +236,22 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 
 ### Now
 
-- **State (2026-11-07, base `3e1cc93`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
+- **State (2026-11-12, base `0ef182b`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (ChatGPT's art since 2026-11-07, Argo
   redesigned; `docs/TEMP_ART.md`), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
-  kit 1.15. Last runs on the PC: the full test of `6830ba2` (`PC_FULL_2026-11-06.md`), PC round 5 on `7e7f4e4`
-  (`PC_ROUND5_2026-11-06.md`: the whole-pixel follow-up, the top 4 pitfall fixes, the bug fixes, CV13, CV14 and the
-  Diorama looks proven; the map cards' open freeze left) and PC round 6 on `03f807a` (`PC_ROUND6_2026-11-06.md`: the
-  names made once proven; Spool's Thread Heads stuck with the whole pack). Built since, compiled here, not run on the
-  PC: the Thread Heads' fix (PR #165) and ChatGPT's art (the art PR of 2026-11-07). The sweep's tuned numbers in scope `04`, `08`, `10`, `12` keep their tildes until
-  he takes them; his project-files scope copy waits for his "sync". Dated history: "Log" (newest last); reports:
-  `docs/reports/README.md`.
-- **Next, in order:** a PC round for the Thread Heads' fix (Spool's self-test alone and with the whole pack; a Thread
-  Head's panel shows no MOVE) with what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md` §7, `PC_ROUND6_2026-11-06.md` §6:
-  COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's leftovers (`PC_FULL_2026-11-06.md`
-  §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and 4-7, its foes-on-camera pictures need
-  a camera step or a play build); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
+  kit 1.15. Last PC run: Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
+  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; **the mode's flow regressed**, 121/2: B1's
+  stay-vote subtitle, C3's boat never sails, suspect #163's `11_Dialog.cs`). Before it: rounds 5 and 6 and the full test
+  (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
+  on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  sheets not in yet. The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
+  `10`, `12` keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history:
+  "Log" (newest last); reports: `docs/reports/README.md`.
+- **Next, in order:** the mode flow regression's fix (`PC_ART_ROUND1_2026-11-07.md` §3 and §5; **waits for his word**,
+  a release blocker); then a PC round with it, #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
+  §7, `PC_ROUND6_2026-11-06.md` §6: COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's
+  leftovers (`PC_FULL_2026-11-06.md` §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and
+  4-7); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
 - **Still open for his eye or word:** the code review's bugs left for his word, a PC fact or a sighting
   (`CODE_REVIEW_RECHECK_2026-11-05.md`, `CODE_REVIEW_MAX_2026-11-05.md` §5.1); by hand: the F key on a real Boutman death
   (P1-1), the icons, Spool's sage green beside a Hardened foe and on grass, the picked temporary art and minions, the
@@ -269,8 +270,6 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, kit 1.16, pitfall #177 (which PR used which pitfall numbers: the last Log entry).
-- **2026-11-12: "Now" trimmed again** (Dimitri: "greatly reduce the amount of tokens used"): 23 KB to about 4 KB,
-  its dated entries 2026-11-05 to 11-12 moved verbatim to the Log's last entry; no rule dropped. Docs only.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1789,6 +1788,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
     `.claude-plugin/marketplace.json`. 3 tests pass; installed on his PC, where `Run-Batch.ps1 -NoPull -Plan` ran (first Windows run). No kit change.
   - **2026-11-12: the batch button's Stop works on Windows** (#188 follow-up): the pid line has no double quotes, which
     Windows PowerShell 5.1 drops; checked on his PC (`RWPID <pid>`, Plan exit 0, `taskkill /T` ends the run's python). No kit change.
+- **2026-11-12: "Now" trimmed again** (Dimitri: "greatly reduce the amount of tokens used"): 23 KB to about 4 KB,
+  its dated entries 2026-11-05 to 11-12 moved verbatim to the entry above; State and Next brought up to date.
+  From now on PRs add dated entries to the Log only (AGENTS.md, ship-a-pr). Docs only.
 
 ### Decisions
 

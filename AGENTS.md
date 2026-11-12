@@ -33,8 +33,9 @@ Flag as P1:
   `DESIGN.md` without the PR saying Dimitri asked for it. Values in `~tildes~` in the scope are Claude's defaults and
   may change; plain values are his.
 - An id without its vessel's name (`Hero_<Name>`, `Tower_<Name>x`, `Mob_<Name>x`, `Debuff_<Name>x`).
-- `docs/PLAN.md` Part C "Now": the PR must add one entry of at most three lines at the end, after the base's entries,
-  and must not reorder or drop the base's.
+- `docs/PLAN.md` Part C "Now" (Dimitri 2026-11-12, token use): the PR adds its dated entry at the end of the Log, not
+  in "Now"; it may edit "Now"'s State, Next, open and "Next free numbers" lines in place, keeping what the base says is
+  still open or blocked, and "Now" stays under about 4 KB.
 - A doc that cites a path, section, pitfall or kit number that does not exist in the PR's tree.
 - Upgrade or item text that carries numbers; the old names "Vessel Cardinals" or "Team Cardinals" outside save keys
   (they are Trinkets and Cardinals); mentions of the mods from before the scope outside dated reports, the PLAN Log and
