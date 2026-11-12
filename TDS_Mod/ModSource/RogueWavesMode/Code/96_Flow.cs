@@ -287,8 +287,24 @@ public static partial class RWTest
         finally { RWObjectives.FirstTide = RWObjectives.ObjectivesFrom; }
     }
 
+    // True when the line is a card's own hover line: it starts with the name a card on screen shows.
+    static bool LineOfACard(string line)
+    {
+        Bla_Ui_Confirmation d = Bla_Ui_Confirmation.Instance;
+        if (line == "" || d == null || d.List == null)
+            return false;
+        foreach (Transform c in d.List.transform)
+        {
+            if (!c.gameObject.activeInHierarchy || c.GetComponent<Blu3_Button>() == null) continue;
+            TMPro.TMP_Text t = c.GetComponentInChildren<TMPro.TMP_Text>(true);
+            if (t != null && t.text != "" && line.StartsWith(t.text)) return true;
+        }
+        return false;
+    }
+
     public static IEnumerator Flow()
     {
+        Info("input", InputMode() + " at the start (the last device used; a gamepad changes where the boat parks and what a dialog's line shows)");
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
         Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
         if (menu == null) { Setup("flow", "never reached the main menu"); yield break; }
@@ -784,18 +800,21 @@ public static partial class RWTest
         Check("Leave: staying keeps the party on the map", !RWVote.Departing && LeaveVote == "0 of 1 to leave", "the vote to leave: '" + LeaveVote + "', last vote " + RWVote.LastVote);
         // B1: the first stay votes on the next map there and then, so the boat has a choice however the map ends.
         string staySub = "";
+        bool stayPad = false;
         if (RWVote.State == "Map")
         {
             yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 8f);
             yield return WaitDialog(8f);
             staySub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
+            // With a gamepad the game focuses the last card, whose hover line takes the subtitle's place (stock; pitfall #177).
+            stayPad = Blockage.Bl_Inputs.Isgamepad && LineOfACard(staySub);
             Info("the vote on the next map, staying", "sub '" + staySub + "', cards " + CardTexts());
             Faces("the after-win vote");
             List<string> stayCards = CardNames();
             if (stayCards.Count > 0) ClickCard(stayCards[0]);
             yield return Until(() => RWVote.State == "", 8f);
         }
-        Check("B1 staying votes on the next map there and then, and the bonus Tides go on", RWCampaign.Choice >= 0 && RWVote.State == "" && !RWVote.HoldBreak && (staySub == "" || staySub.Contains("When the party leaves")), "choice " + RWCampaign.Choice + ", " + RWVote.LastVote + ", sub '" + staySub + "'");
+        Check("B1 staying votes on the next map there and then, and the bonus Tides go on", RWCampaign.Choice >= 0 && RWVote.State == "" && !RWVote.HoldBreak && (staySub == "" || staySub.Contains("When the party leaves") || stayPad), "choice " + RWCampaign.Choice + ", " + RWVote.LastVote + ", sub '" + staySub + "', " + InputMode());
         int stayChoice = RWCampaign.Choice;
         int pure16 = player.Pure;
         yield return ToBreakAfter(RWCampaign.WinTide + 1);

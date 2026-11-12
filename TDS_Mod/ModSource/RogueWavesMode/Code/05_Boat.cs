@@ -216,11 +216,27 @@ public static class RWBoat
     {
         foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             if (l.name == n.Name)
-            {
-                Transform dock = l.transform.Find("Dock");
-                return ModKitUtil.Flat(vis.Boat.transform.position, dock != null ? dock.position : l.transform.position) < 1.5f && vis.Boatspeed < 1f;
-            }
+                return Berthed(vis, l);
         return false;
+    }
+
+    // Where the game's own boat steers for the node it hovers (Macro_Worldvisual's boat loop, read in its IL 2026-11-12): its
+    // child "Dock", except when a gamepad was the last device used (Bl_Inputs.Isgamepad, set from Bl_Inputs.Lastdevice) and
+    // no Setup panel is open: then it parks on the island itself, and the stick moves it up to Boat_Radius around it. The
+    // 2026-11-07 flow ran in that state, and the boat waited at the island's middle, 2.6 from the dock, for ever (pitfall #177).
+    public static bool PadSteers(Macro_Worldvisual vis) { return Blockage.Bl_Inputs.Isgamepad && !vis.Insetup; }
+
+    public static Vector3 Berth(Macro_Worldvisual vis, Macro_Link_Add_Base node)
+    {
+        Transform dock = PadSteers(vis) ? null : node.transform.Find("Dock");
+        return dock != null ? dock.position : node.transform.position;
+    }
+
+    // At rest where the game steers it: within 1.5 of the dock, or with a pad anywhere the stick can hold it.
+    public static bool Berthed(Macro_Worldvisual vis, Macro_Link_Add_Base node)
+    {
+        float room = PadSteers(vis) ? Mathf.Max(1.5f, node.Boat_Radius + 0.5f) : 1.5f;
+        return ModKitUtil.Flat(vis.Boat.transform.position, Berth(vis, node)) < room && vis.Boatspeed < 1f;
     }
 
     // The rest itself: the next question on this boat may be asked again (the leg after the Cove, when no vote named it).
@@ -418,15 +434,12 @@ public static class RWBoat
             main.Preview = node;
             try { Macro_Worldui.Instance.Showhover(); } catch (Exception e) { RWLog.Once("showhover", "Showhover: " + e.Message); }
         }
-        Transform dock = node.transform.Find("Dock");
-        Vector3 at = dock != null ? dock.position : node.transform.position;
-        bool there = ModKitUtil.Flat(vis.Boat.transform.position, at) < 1.5f && vis.Boatspeed < 1f;
-        if (!there) { arriveSince = -1f; return; }
+        if (!Berthed(vis, node)) { arriveSince = -1f; return; }
         if (arriveSince < 0f) { arriveSince = Time.realtimeSinceStartup; return; }
         if (Time.realtimeSinceStartup - arriveSince < 0.8f)
             return;
         ArrivedAt = Time.realtimeSinceStartup;
-        RWLog.Info("arrived at " + to.Name + " after " + RWUtil.F(ArrivedAt - SailedAt) + " s, boat " + RWUtil.V(vis.Boat.transform.position) + ", camera " + RWUtil.V(Game_Cameracontroller.Instance.Movepos));
+        RWLog.Info("arrived at " + to.Name + (PadSteers(vis) ? " (a gamepad steers: the island itself)" : "") + " after " + RWUtil.F(ArrivedAt - SailedAt) + " s, boat " + RWUtil.V(vis.Boat.transform.position) + ", camera " + RWUtil.V(Game_Cameracontroller.Instance.Movepos));
         if (to.Stop == RWChart.Cove)
         {
             Rested(to);

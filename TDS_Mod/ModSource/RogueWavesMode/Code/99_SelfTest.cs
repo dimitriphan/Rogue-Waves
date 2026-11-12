@@ -464,7 +464,11 @@ public static partial class RWTest
             "arrows " + string.Join(", ", got.ToArray()) + "; links " + string.Join(", ", want.ToArray()) + "; hovering " + (Macro_Main.Instance.Hovering != null ? Macro_Main.Instance.Hovering.name : "-"));
     }
 
-    // C3: the boat sails to the chosen node by itself and stops at its dock.
+    // The game's input mode (Bl_Inputs.Isgamepad, from the last device used): with a gamepad the boat parks on the island
+    // and each dialog's focused card shows its own line in place of the subtitle (pitfall #177).
+    public static string InputMode() { return Blockage.Bl_Inputs.Isgamepad ? "input gamepad" : "input mouse"; }
+
+    // C3: the boat sails to the chosen node by itself and stops where the game steers it (RWBoat.Berth).
     static IEnumerator Sail(int m)
     {
         RWChart.Node to = RWCampaign.Chart.At(m + 1, route[m]);
@@ -472,7 +476,7 @@ public static partial class RWTest
         yield return Until(() => RWBoat.ArrivedAt > 0f, 60f);
         Macro_Worldvisual vis = Macro_Worldvisual.Instance;
         Check("C3 map " + (m + 1) + ": the boat sails to " + to.Name + " by itself", RWBoat.ArrivedAt > 0f,
-            RWBoat.ArrivedAt > 0f ? RWUtil.F(RWBoat.ArrivedAt - RWBoat.SailedAt) + " s, " + RWUtil.F(ModKitUtil.Flat(vis.Boat.transform.position, RWWorld.At(to))) + " from the island" : "not there after 60 s, boat at " + RWUtil.V(vis.Boat.transform.position) + ", hovering " + (Macro_Main.Instance.Hovering != null ? Macro_Main.Instance.Hovering.name : "-") + ", prev " + (Macro_Main.Instance.Prevhovering != null ? Macro_Main.Instance.Prevhovering.name : "-") + ", preview " + (Macro_Main.Instance.Preview != null ? Macro_Main.Instance.Preview.name : "-") + ", goto " + (Macro_Main.Instance.Goto != null ? Macro_Main.Instance.Goto.name : "-") + ", speed " + RWUtil.F(vis.Boatspeed) + ", setup " + vis.Insetup + ", transition " + vis.Inworldtransition + ", selected '" + Macro_Main.Instance.Selected.Value + "'");
+            RWBoat.ArrivedAt > 0f ? RWUtil.F(RWBoat.ArrivedAt - RWBoat.SailedAt) + " s, " + RWUtil.F(ModKitUtil.Flat(vis.Boat.transform.position, RWWorld.At(to))) + " from the island" : "not there after 60 s, boat at " + RWUtil.V(vis.Boat.transform.position) + ", hovering " + (Macro_Main.Instance.Hovering != null ? Macro_Main.Instance.Hovering.name : "-") + ", prev " + (Macro_Main.Instance.Prevhovering != null ? Macro_Main.Instance.Prevhovering.name : "-") + ", preview " + (Macro_Main.Instance.Preview != null ? Macro_Main.Instance.Preview.name : "-") + ", goto " + (Macro_Main.Instance.Goto != null ? Macro_Main.Instance.Goto.name : "-") + ", speed " + RWUtil.F(vis.Boatspeed) + ", setup " + vis.Insetup + ", transition " + vis.Inworldtransition + ", selected '" + Macro_Main.Instance.Selected.Value + "', " + InputMode());
     }
 
     // C4: picking the node opens its Setup panel in the mode, and its map loads in Mode_RogueWave.
@@ -719,12 +723,13 @@ public static partial class RWTest
         yield return new WaitForSecondsRealtime(6f);
         Macro_Worldvisual vis = Macro_Worldvisual.Instance;
         RWChart.Node here = RWCampaign.Here;
-        Transform dock = null;
+        Macro_Link_Add_Base node = null;
         if (vis.World != null && here != null)
-            foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true)) if (l.name == here.Name) dock = l.transform.Find("Dock");
-        float off = dock != null ? ModKitUtil.Flat(vis.Boat.transform.position, dock.position) : -1f;
-        Check("C5 map " + (m + 1) + ": back on the chart one row on, the boat at " + (here != null ? here.Name : "-"), Here() && RWCampaign.Route.Count == m + 1 && dock != null && off < 3f,
-            "world " + (vis.World != null ? vis.World.name : "-") + ", boat " + RWUtil.F(off) + " from the dock");
+            foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true)) if (l.name == here.Name) node = l;
+        // Where the game steers the boat: the dock, or the island itself when a gamepad steers (RWBoat.Berth).
+        float off = node != null ? ModKitUtil.Flat(vis.Boat.transform.position, RWBoat.Berth(vis, node)) : -1f;
+        Check("C5 map " + (m + 1) + ": back on the chart one row on, the boat at " + (here != null ? here.Name : "-"), Here() && RWCampaign.Route.Count == m + 1 && node != null && off < (RWBoat.PadSteers(vis) ? node.Boat_Radius + 0.5f : 3f),
+            "world " + (vis.World != null ? vis.World.name : "-") + ", boat " + RWUtil.F(off) + " from " + (RWBoat.PadSteers(vis) ? "the island (a gamepad steers)" : "the dock"));
         string w = RWUtil.ReadString("Player", "Player_Worldselect"), g = RWUtil.ReadString("Player", "Player_Gameplanselect");
         Check("C6 map " + (m + 1) + ": the save holds no chart name", !w.StartsWith(RWData.WorldPrefix) && !g.StartsWith("RW_"), "Player_Worldselect " + w + ", Player_Gameplanselect " + g);
     }

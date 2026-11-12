@@ -246,11 +246,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
-  `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
+  `10`, `12` keep their tildes until he takes them; the mode flow's gamepad fix (compiled only); his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
   (08's and 09's Look lines changed after, #193); his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
-- **Next, in order:** the mode flow regression's fix (`PC_ART_ROUND1_2026-11-07.md` §3 and §5; **waits for his word**,
-  a release blocker); then a PC round with it, #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
+- **Next, in order:** a PC round with the mode flow's fix (the 2026-11-07 regression was the game's gamepad mode,
+  pitfall #177; run the flow with the mouse, and once with a gamepad touched; a release blocker until it passes), #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
   §7, `PC_ROUND6_2026-11-06.md` §6: COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's
   leftovers (`PC_FULL_2026-11-06.md` §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and
   4-7); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
@@ -270,7 +270,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #177 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #178 (which PR used which pitfall numbers: the last Log entry).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -2033,6 +2033,13 @@ All of these passed in game on 2026-11-03 (`docs/reports/BUILD_2026-11-03.md`) a
   - [x] the pack's tips in the game's tip lists (end screen, pause menu, Close Game)
 
 ---
+- **2026-11-12: the mode flow regression fixed** (Dimitri: "Go"): the 2026-11-07 flow's two fails (`PC_ART_ROUND1_2026-11-07.md`
+  §3) were the game's gamepad mode, read from both runs' logs and the game's IL, not #163's map cards: with a gamepad as
+  the last device the stock boat parks on the hovered island (plus the stick times `Boat_Radius`), not at its `Dock`, and
+  every dialog shows its focused last card's line. `RWBoat.Berth`/`Berthed`/`PadSteers` measure arrival where the game
+  steers (the auto-sail and the Cove rest); C3, C5 and B1 say the input mode and accept the pad's case; the flow logs
+  the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
+  clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
 
 ## Part D. Prompt templates (copy, fill, send)
 
