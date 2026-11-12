@@ -1,0 +1,6 @@
+# Handoff Flow_round1: commit 1aafcc5 of HEAD. base[,older]  new  path under TDS_Mod (Apply-Handoff.ps1)
+# Bases from commit d8cddbd.
+deaa241c4c5534f0  e70b9be553366cd5  ModSource\RogueWavesMode\Code\05_Boat.cs
+b0cde8f99c9b0f89  9923eacc4cb92b64  ModSource\RogueWavesMode\Code\96_Flow.cs
+5c4e758c1826a0dd  fc45f68bba934936  ModSource\RogueWavesMode\Code\99_SelfTest.cs
+e170f32ab241d126  5a14d37e2ea41051  ModSource\RogueWavesMode\IMPLEMENTATION_NOTES.md
