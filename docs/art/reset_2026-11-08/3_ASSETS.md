@@ -7,7 +7,8 @@ Uloe later); the base game's facts go in as text, its pictures stay look-only; b
 short quiz and waits for "go", after it waits for "approved"; the order is facings, idle, move, attack, Patch, land,
 fall, menu idle and boat mini, the UI set. Dimitri, 21:54Z: "Pivot the Chat 3 to also decompile
 Yossele and Argo first based on the keyframes": Step 0 takes his finals apart from their key frames before any Spool
-step (both finals' v1 and v3 rows are exact pixel mirrors, checked on every sheet).
+step (Yossele's v1 and v3 rows are exact pixel mirrors; Argo's mirror the silhouette exactly but relight the colours so the
+light stays upper-left, `docs/reports/ART_REVIEW_ARGO_2026-11-08.md` §2; corrected 2026-11-12).
 
 **Where the numbers come from.** Part 2: kit `TDS_Vessel_Creator/docs/03` §1 and `docs/18` §1-§4, and the game's own
 animation tables (`research/art_dump_2026-10-15/animation_tables.txt` in project files). Part 3: measured on 2026-11-08
@@ -37,6 +38,7 @@ PART 1: HOW WE WORK, EVERY STEP
 
 The drawing rules for every step:
 - Pixel art at 20 pixels per game unit. Every pixel fully opaque or fully clear (the splash's inside fill is the one exception, Step 9).
+- The claws stay (Dimitri, 2026-11-12): the pale E4DEDA spikes on both hands and along the arm on the floor are long claws, and the arm on the floor is attached at the back, dragging behind, palm facing up. Every frame and every facing keeps them.
 - Only the key frame's 8 colours: 93CCA1, 60A871, 9A938E, E4DEDA, 1F3325, E6D85A, 4F8C5E, E58CC0. A needle, thread, dust or flash may add colours only when Dimitri OKs each one at its quiz.
 - No outline, no dark rim, no pure black 000000, no gradient, dithering, blur, glow or anti-aliasing.
 - Light from the upper left: left and top edges keep the light tone; the right side, the underside and whatever sits under an overhang take the shade.
@@ -45,7 +47,7 @@ The drawing rules for every step:
 
 PART 2: HOW TDS DRAWS A VESSEL (the engine's facts)
 - A sheet is a grid of square cells read left to right; each row is one animation in one facing. The pivot is the bottom centre of each cell. Point filtering: every pixel shows as a hard square.
-- Facings: v0 = toward the camera, heading screen-right; v1 = toward the camera, heading screen-left; v2 = away from the camera (the back), heading right; v3 = the back, heading left. The game never flips a sprite in code: every facing is a drawn row. In the approved Yossele and Argo sheets every v1 row is the exact pixel mirror of v0 and every v3 of v2 (main, attack and ability sheets alike). Spool does the same unless Dimitri says at Step 1 that a part must not swap sides.
+- Facings: v0 = toward the camera, heading screen-right; v1 = toward the camera, heading screen-left; v2 = away from the camera (the back), heading right; v3 = the back, heading left. The game never flips a sprite in code: every facing is a drawn row. In the approved finals every v1 row mirrors v0 and every v3 mirrors v2 (main, attack and ability sheets alike): Yossele's pixel for pixel; Argo's silhouette exactly, with the colours relit so the light stays upper-left. Spool mirrors pixel for pixel, as Yossele does, unless Dimitri says at Step 1 that a part must not swap sides.
 - Speed: a vessel plays 8-10 frames a second (Smacky 8, Fie 8, Sno Sno 8, Boutman 9, Buster 10). Idle and Move loop. Fall loops. Land plays once, then Idle. Attack and the ability play once (some at double speed, the game's cap), then Idle.
 - The base game plays the footstep sound on Move frames 2 and 5 (frames counted from 0): one per landing of a two-step cycle. Spool's code plays its footstep on Move frames 1 and 4, so Spool's feet land on frames 1 and 4 (Yossele's on 0 and 3, Argo's on 2 and 5).
 - The journal portrait is the main sheet's frame 0; the boat select uses a separate mini sheet.

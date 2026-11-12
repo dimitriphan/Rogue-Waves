@@ -9,7 +9,7 @@
 			- Difficulty: Advanced
 			- Archetype: Commands a disposable minion army
 			- In-game line: Crafty melee, commands a stitched army
-			- Look: hunched hooded sage green plush whose face is an opening with zipper like teeth, yellow eyes looking out, pink tongue, the arm attached and dragging behind him, palm facing up, with long claws / Not a tail / Key art: the Spool sprites in the Art Bench (2026-11-08), drawn pixel for pixel in docs/art/SPOOL_SPRITE_BREAKDOWN.md: white gloves, the arm on the floor joined at the hip with pale tufts \
+			- Look: hunched hooded sage green plush whose face is an opening with zipper like teeth, yellow eyes looking out, pink tongue, the arm attached and dragging behind him, palm facing up, with long claws / Not a tail / Key art: your key frame of 2026-11-08, docs/art/reset_2026-11-08/Spool_keyframe.png (32x32, 8 colours); its pale spikes on both hands and on the arm along the floor are the claws, kept on every frame (your yes, 2026-11-12); no gloves; the Art Bench key is retired \
 			- Towers look: stitches, pins and tins /~ Your earlier sheet said this and the new one leaves it out, so it is a default now \
 			- Accent colour: sage green /~ 93CCA1 and 60A871, docs/STYLE.md; purple read too close to the foes' magenta \
 			- Sprites: Full sprite sheet (idle, move, back view, fall, land, attack) comes once the design is past drafting. /~ One front facing concept frame so far, in sprites, and a walk cycle in concepts\walk_2026-10-12 \

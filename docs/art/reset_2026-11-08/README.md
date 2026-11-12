@@ -4,6 +4,8 @@ Dimitri, 2026-11-08 21:15Z: "Chat GPT is still struggling to get animations righ
 each, replace every earlier ruling for ChatGPT (`../CHATGPT_HARD_RULES.md`, `../TDS_ART_RULES.md`,
 `../SPOOL_SPRITE_BREAKDOWN.md`, `../CONTINUE_PROMPT_2026-11-08.md`, the feedback notes). His answers of 21:20Z set the
 rest: the new key frame below is Spool's only key; the Art Bench key and its 13 sheets are retired; no model rule.
+His yes of 2026-11-12: the claws stay. The key's pale spikes on both hands and on the arm along the floor are long
+claws; chat 2 states it after the blind reading (Step C) and chat 3 among its drawing rules.
 
 | File | What |
 | --- | --- |
@@ -24,5 +26,7 @@ rest: the new key frame below is Spool's only key; the Art Bench key and its 13 
    `chat3_references_Yossele_Argo.zip` (Yossele's and Argo's final assets and key frames). Each step: read the quiz, "go", check the delivery, "approved".
 
 Paste-ready copies: project files `chatgpt/prompts/reset_2026-11-08/` (`1_reset.txt`, `2_concept.txt`,
-`3_assets.txt`, the two PNGs, `references/`). The Yossele and Argo finals are Dimitri's own approved art; bringing them
-into the game is a separate job.
+`3_assets.txt`, the two PNGs, `references/`). Since 2026-11-12 paste `2_concept.txt` and `3_assets.txt` from
+`chatgpt/prompts/spool_claws_2026-11-12/` instead (the claws line added; nothing else changed). The Yossele and Argo
+finals are Dimitri's own approved art; bringing them into the game is a separate job. Argo's five small edits of
+2026-11-12 go in a chat of their own (`../ARGO_EDITS_2026-11-12.md`).
