@@ -447,6 +447,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-11: a Run Batch button for Claude Code** (Dimitri: "Create a button mod that allows me to run the TDS Run Batch
   tool"): `TDS_Mod/Tools/batch/claude-mod/` (`rw-batch-button`: Plan free, Run/Full Haiku at most $3, asks first), root
   `.claude-plugin/marketplace.json`. 3 tests pass; installed on his PC, where `Run-Batch.ps1 -NoPull -Plan` ran (first Windows run). No kit change.
+- **2026-11-12: the batch button's Stop works on Windows** (#188 follow-up): the pid line has no double quotes, which
+  Windows PowerShell 5.1 drops; checked on his PC (`RWPID <pid>`, Plan exit 0, `taskkill /T` ends the run's python). No kit change.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 

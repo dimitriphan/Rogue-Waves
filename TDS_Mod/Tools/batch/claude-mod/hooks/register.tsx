@@ -65,7 +65,8 @@ function argvFor(onWindows: boolean, root: string, kind: Kind): string[] {
     // -NoPull: the button never moves the clone's branch. The wrapper moves the report to Desktop\RogueWave\batch.
     const flags = kind === 'plan' ? ' -Plan' : kind === 'full' ? ` -Full -MaxCost ${MAX_COST}` : ''
     const wrapper = `${root}/${WRAPPER}`.replace(/'/g, "''")
-    const script = `Write-Output "${PID_TAG} $PID"; & '${wrapper}' -NoPull${flags}; exit $LASTEXITCODE`
+    // No double quotes: Windows PowerShell 5.1 drops them from a native argument.
+    const script = `Write-Output ('${PID_TAG} ' + $PID); & '${wrapper}' -NoPull${flags}; exit $LASTEXITCODE`
     return ['powershell', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-Command', script]
   }
   const since = kind === 'full' ? [] : ['--since', 'last']
