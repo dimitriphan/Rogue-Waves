@@ -17,6 +17,7 @@ and the procedure around it. The base game's sprites are the private half: they 
 | `SPOOL_SPRITE_BREAKDOWN.md` | Spool part by part: the Art Bench key (`spool/artbench_key/`, his pick 2026-11-08), its pixel map, pixels per part, colours, facings, every sheet frame by frame |
 | `TDS_ART_RULES.md` | the base game's art rules as facts only (canvas, shape, colour, light, animation, UI art); no character's look |
 | `reset_2026-11-08/` | **the current prompts** (Dimitri, 2026-11-08): chat 1 drops every earlier ruling, chat 2 reads his new Spool key frame and draws concepts, chat 3 builds Spool's 13 files step by step with the base vessels taken apart; replaces the hard rules, art rules, Spool breakdown, continue prompt and feedback notes above |
+| `ARGO_EDITS_2026-11-12.md` | Argo's five small edits for ChatGPT (A1, A2, D1, D2, N1 from the #179 review), his yes 2026-11-12; a chat of its own |
 | `ASSET_MANIFEST.md` | every pack sheet, icon and model: file name, size, cell, rows, Look line; generated, never edited |
 | `concept-tools/chatgpt/pixelize.py` | turns a generated picture into a clean game-size sprite and checks it; runs in ChatGPT's Python |
 | `concept-tools/chatgpt/build_pack.py` | builds the Project's files and rewrites `ASSET_MANIFEST.md` |

@@ -3,11 +3,13 @@
 Dimitri, 2026-11-08 21:15Z: "create a prompt that will create concept art based on what it thinks the original sprite
 is trying to portray." His answers at 21:20Z: ChatGPT reads the key frame **blind** (no name, scope or old notes),
 writes what it sees part by part and stops; only after he confirms or corrects does it draw one concept sheet (a
-clean illustration, not pixel art): a front, side and back turnaround and three action poses.
+clean illustration, not pixel art): a front, side and back turnaround and three action poses. His yes of 2026-11-12
+("the claws stay") is written into Step C, after the blind reading, so the reading stays blind.
 
 **How to use it.** Open a new chat in the Project after chat 1 said "Reset done". Paste the block below and attach
 `Spool_keyframe.png` (32x32) and `Spool_keyframe_8x.png` from this folder (copies in project files,
-`chatgpt/prompts/reset_2026-11-08/`). When the chat ends, keep its concept sheet and its handoff (step D) for chat 3.
+`chatgpt/prompts/reset_2026-11-08/`; the version with the claws line is in `chatgpt/prompts/spool_claws_2026-11-12/`).
+When the chat ends, keep its concept sheet and its handoff (step D) for chat 3.
 
 The key frame is Dimitri's upload of 2026-11-08: 32x32 cell, drawing 26 wide x 22 tall (columns 3-28, rows 10-31),
 8 colours. The map below was read from the file; letters are neutral so that the map names no part.
@@ -62,6 +64,7 @@ If he corrected you, write the reading again as one paragraph with his correctio
 
 STEP C: THE CONCEPT SHEET (after "go")
 Now you may know what the character does in the game: its name is Spool; it fights in melee (close-up hits); its ability, Patch, mends one of its own units or buildings with needle and thread; it picks up Thread that defeated foes drop.
+Fixed by Dimitri (2026-11-12), whatever your reading said: the pale E4DEDA spikes are long claws. They are the two pale clusters (rows 16-23 on the left, rows 23-28 on the right) and the pale tips along the shape on the floor (rows 28-30), which is his arm: attached at the back, dragging behind him, palm facing up. Every view and every pose keeps the claws.
 Draw ONE concept sheet as a clean illustration, not pixel art, on a plain light background:
 - a turnaround at one height: front (the key frame's pose and facing), side, back;
 - three action poses: walking, attacking, patching with a needle and thread;
