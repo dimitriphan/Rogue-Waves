@@ -10,9 +10,9 @@
 //   on the boat       a mini chart where the game's pieces leave room (Mini), all the time on the chart; while the boat
 //                     sails a banner in the HUD's "TIDE APPROACHING" shape names where it goes, read from its heading on each machine
 //                     (the winner is never in the chart's name, which would warp the party again, §3.2)
-//   any time          the keys ~M~ and Tab (Dimitri 2026-11-12) open the whole chart, read only, on the chart or in a
-//                     map's break; not while typing, not while a choice dialog or the MVP board is up. Where the chart
-//                     can't open (a Tide running), Tab is the MVP board's (28_BoardView.cs)
+//   any time          the key ~M~ opens the whole chart, read only, on the chart or in a map's break, and Tab on the
+//                     chart too (Dimitri 2026-11-12; in a map Tab is the MVP board's, 28_BoardView.cs); not while typing,
+//                     not while a choice dialog or the MVP board is up
 // Its own Canvas (Screen Space Overlay, kit docs/20 §4) at the game's UI scale, above the dialog. Clicks and hovers are read
 // from the pointer here rather than through the EventSystem, so they never depend on the dialog's layer (the PC decides the
 // rest: CV4, CV8). The layout is one pure function (Lay) the self-test calls.
@@ -272,7 +272,7 @@ public static class RWChartView
             }
             return;
         }
-        if (Key())
+        if (Key(scene))
         {
             if (mode == "Look")
             {
@@ -292,11 +292,12 @@ public static class RWChartView
         Boat(scene);
     }
 
-    // The keys, on this machine: ~M~ and Tab, not while a text field (chat) has the focus or a choice dialog or the MVP board is up.
-    static bool Key()
+    // The keys, on this machine: ~M~, and Tab on the boat (in a map Tab is the MVP board's, Dimitri 2026-11-12); not while a
+    // text field (chat) has the focus or a choice dialog or the MVP board is up.
+    static bool Key(string scene)
     {
         UnityEngine.InputSystem.Keyboard k = UnityEngine.InputSystem.Keyboard.current;
-        return k != null && (k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame || k[UnityEngine.InputSystem.Key.Tab].wasPressedThisFrame)
+        return k != null && (k[UnityEngine.InputSystem.Key.M].wasPressedThisFrame || (scene != "Game" && k[UnityEngine.InputSystem.Key.Tab].wasPressedThisFrame))
             && !RWDialog.Up() && !RWBoardView.Up && !Typing();
     }
 
@@ -679,7 +680,7 @@ public static class RWChartView
         LegendItem(ref lx, ly, Teal, RWIcons.Chart("Cove"), words[2], legendSize);
         LegendItem(ref lx, ly, Teal, RWIcons.Chart("Wreck"), words[3], legendSize);
         LegendItem(ref lx, ly, Slate, RWIcons.Chart("Tick"), words[4], legendSize);
-        string foot = vote ? "A tie goes to A" + RWCard.Separator + "no votes take A" : "M or Tab closes the chart";
+        string foot = vote ? "A tie goes to A" + RWCard.Separator + "no votes take A" : RWBoat.OnChart && UnityEngine.SceneManagement.SceneManager.GetActiveScene().name != "Game" ? "M or Tab closes the chart" : "M closes the chart";
         TMPro.TMP_Text f = Text(area, "Foot", foot, new Vector2(r.xMin + 4f, r.yMin + cap * 0.6f), cap, TMPro.TextAlignmentOptions.Left, Ink, 0.6f);
         if (vote) { clock = f; clockLeft = -1; }
     }
