@@ -1833,6 +1833,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   three overlaps fixed (the legend over the frame, a long map name under its card, the dialog's title on the cards
   after its slide). Compiled only (`RogueWavesMode/IMPLEMENTATION_NOTES.md`, `CHART_NAVIGATION.md` §7). ChatGPT art
   stays in the backlog while he makes new art. No pitfall numbers used.
+- **2026-11-12: Tab in a map stays the MVP board's** (Dimitri's pick on #199's card, "MVP board in breaks"): Tab
+  opens the sea chart on the boat only; in a map, breaks included, it re-shows the last board and M opens the chart.
+  Compiled only.
 
 ### Decisions
 

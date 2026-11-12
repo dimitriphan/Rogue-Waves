@@ -1,13 +1,13 @@
 # RogueWavesMode: implementation notes
 
 **2026-11-12, the chart verdict (compiled here, not yet run in game; `docs/mode/CHART_NAVIGATION.md` §7):** Tab opens
-the whole chart as M does (`RWChartView.Key`); where the chart can't open (a Tide running) Tab stays the MVP board's,
-and a press the chart answered is not the board's (`RWChartView.KeyFrame`). The map vote's chart is drawn again
+the whole chart on the boat as M does (`RWChartView.Key`); in a map, breaks included, Tab stays the MVP board's (his
+pick after #199), and a press the chart answered is not the board's (`RWChartView.KeyFrame`). The map vote's chart is drawn again
 whenever WHERE NEXT? stands beside an empty half while its question is asked (`lastVote`). Overlaps: the legend's
 width counts 0.62 of a size a letter and shrinks to fit the frame ("Sailed" ran over its right line); a map card's
 name stands on the card's bottom rim and grows upward, two lines at size 5 (`FaceNameBottom`; a two-line name hung below the card); the
 dialog keeps its place while it is still up after the 3 s slide (to 8 s, no newer ask) (`UnplaceLater`, chart_round1's 021315 title over
-the cards). For the PC: Tab and M on the boat, in a break, in a Tide (the board) and in chat; the after-win WHERE
+the cards). For the PC: Tab and M on the boat, in a break (Tab: the board), in a Tide and in chat; the after-win WHERE
 NEXT? with the chart beside it; a long map name on a card; by eye the legend's right end.
 
 **2026-11-12, the flow regression of 2026-11-07 (compiled here, not yet run in game; pitfall #177):** the two fails
