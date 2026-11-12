@@ -2,6 +2,8 @@ const D = /*__DATA__*/null;
 const SH = D.sheets;
 const BASE = D.vessels;
 const EDIT = !!D.edit;
+/* SHIP: the journal inside the Rogue Waves Spotlight, read as the finished pack: no WIP marks, readiness or asset roll */
+const SHIP = !!D.ship;
 const DIR_LINES = textToDoc(D.dirText).lines;
 /* Rogue Waves vessels live as sheet text (their scope .txt); the page model is parsed from it.
    rec: {id, file, doc, baseText, frameUrl, accent, accent2, added, ver} */
@@ -92,7 +94,7 @@ function slotIcon(slot) {
 }
 
 /* ---------------------------------------------------------------- small parts */
-const wipTag = (t = 'WIP') => `<span class="inwip">${esc(t)}</span>`;
+const wipTag = (t = 'WIP') => SHIP ? '' : `<span class="inwip">${esc(t)}</span>`;
 function wipCover(ghost, title, line, extra = '') {
   return `<div class="wipc"><div class="ghost" aria-hidden="true">${ghost}</div><div class="plate"><b>${esc(title || 'WORK IN PROGRESS')}</b>${line ? `<span>${esc(line)}</span>` : ''}${extra}</div></div>`;
 }

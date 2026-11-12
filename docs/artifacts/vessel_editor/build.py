@@ -15,8 +15,11 @@ import parse
 
 SCOPE = os.path.normpath(os.path.join(HERE, '..', '..', 'scope')) + os.sep   # the repository's docs/scope
 DUMP = '/mnt/project-files/research/art_dump_2026-10-15/sheets/'
-# Dimitri's own reshade frames (his uploads): private, read from the project files, never committed
-ASSETS = '/mnt/project-files/concepts/vessel_spotlight_2026-10-15/assets'
+# Dimitri's own reshade frames (his uploads): private, read from the project files, never committed. The project
+# files keep concepts/ as concepts.zip: unzip concepts/vessel_spotlight_2026-10-15/assets/ to a scratch folder and
+# point RW_ASSETS at it.
+ASSETS = os.environ.get('RW_ASSETS', '/mnt/project-files/concepts/vessel_spotlight_2026-10-15/assets')
+REPO = os.path.normpath(os.path.join(HERE, '..', '..', '..'))
 
 SHEETS = {}
 
@@ -253,13 +256,39 @@ def data_url(path):
     return 'data:image/png;base64,' + base64.b64encode(open(path, 'rb').read()).decode()
 
 
+def png_url(im):
+    buf = io.BytesIO()
+    im.save(buf, 'PNG', optimize=True)
+    return 'data:image/png;base64,' + base64.b64encode(buf.getvalue()).decode()
+
+
+def argo_frame():
+    # Argo's own idle sheet in the repository: first cell, front right
+    return png_url(Image.open(os.path.join(REPO, 'TDS_Mod', 'ModSource', 'Argo', 'Art', 'Argo-Sheet.png')).convert('RGBA').crop((0, 0, 32, 32)))
+
+
+def uloe_frame():
+    # The Uloe frame the Spotlight shows (docs/spotlight/build.py): concept frame keyed out, at game size
+    im = Image.open(os.path.join(REPO, 'docs', 'concepts', 'art', 'uloe_8x.png')).convert('RGBA')
+    px = im.load()
+    for y in range(im.height):
+        for x in range(im.width):
+            r, g, b, a = px[x, y]
+            if (r, g, b) in ((214, 218, 224), (232, 234, 238)):
+                px[x, y] = (0, 0, 0, 0)
+    return png_url(im.resize((32, 32), Image.NEAREST))
+
+
 RW = [
-    {'id': 'spool', 'file': '08_Vessel_Spool.txt', 'accent': '#7E4D90', 'accent2': '#BFBA3F'},
     {'id': 'yossele', 'file': '07_Vessel_Yossele.txt', 'accent': '#864B41', 'accent2': '#72CC35'},
+    {'id': 'spool', 'file': '08_Vessel_Spool.txt', 'accent': '#7E4D90', 'accent2': '#BFBA3F'},
+    {'id': 'argo', 'file': '09_Vessel_Argo.txt', 'accent': '#4F86B8', 'accent2': '#8DB9E2', 'frame': argo_frame, 'ship': True},
+    {'id': 'uloe', 'file': '10_Vessel_Uloe.txt', 'accent': '#A8A63C', 'accent2': '#F1EF72', 'frame': uloe_frame, 'ship': True},
 ]
 for r in RW:
     r['text'] = open(SCOPE + r['file'], encoding='utf-8', newline='').read()
-    r['frameUrl'] = data_url(os.path.join(ASSETS, 'dimitri_' + r['id'] + '.png'))
+    make = r.pop('frame', None)
+    r['frameUrl'] = make() if make else data_url(os.path.join(ASSETS, 'dimitri_' + r['id'] + '.png'))
 
 tpl = open(SCOPE + '15_Templates.txt', encoding='utf-8', newline='').read()
 a = tpl.index('| Template: Vessel |')
@@ -273,8 +302,41 @@ except (OSError, subprocess.CalledProcessError):
     BUILT = ''
 
 
+# The journal inside the Rogue Waves Spotlight (docs/spotlight/build.py --journal): Rogue Tide tokens over the page's
+# own (docs/themes/rogue-tide.md), the page's masthead and footer left to the Spotlight, no WIP marks.
+SHIP_FONTS = ('<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400'
+              '&family=Barlow:ital,wght@0,400;0,600;1,400&family=Pixelify+Sans:wght@400;500;600&display=swap">')
+SHIP_CSS = '''<style>
+:root:root:root {
+  --bg: #2E4A62; --band: #26405A; --panel: #35546D; --ink: #E9F1EE; --ink2: #B4C8CF; --line: rgba(233, 241, 238, .18);
+  --swell: #26405A; --teal: #3F8F96; --sand: #D8C49A; --tape: #D8C49A; --water: #3F8F96; --water2: #377A80; --foam: #E9F1EE;
+  --f-display: "Exo 2", "DejaVu Sans", "Segoe UI Light", sans-serif;
+  --f-label: "Pixelify Sans", "DejaVu Sans Mono", ui-monospace, monospace;
+  --f-body: "Barlow", "DejaVu Sans", "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+body { background: transparent; }
+.mast { background: transparent; }
+.mast .wrap { padding-block: 0; }
+.mast .brand, .mast .motto, footer { display: none; }
+.dock { padding-top: 4px; border-bottom: 1px solid var(--line); }
+.slot[aria-selected="true"] { background: var(--panel); }
+.vname, .intro h1, .sec-h h2, .bhead h3 { font-weight: 300; text-transform: uppercase; letter-spacing: .08em; }
+.vname { letter-spacing: .04em; }
+.band, .sig, .unit, .dir, .up, .vcard, .btab, .st { border-radius: 2px; }
+.band { box-shadow: inset 0 0 0 1px rgba(233, 241, 238, .06); }
+.wipc, .needs, .noframe .inwip, .chip:disabled { display: none !important; }
+.lore::before { color: var(--sand); }
+</style>
+'''
+
+
 def page(edit):
-    data = {'vessels': VESSELS, 'sheets': SHEETS, 'rw': RW, 'edit': edit,
+    ship = edit == 'ship'
+    edit = edit is True
+    rw = [r for r in RW if ship or not r.get('ship')]
+    data = {'vessels': VESSELS, 'sheets': SHEETS, 'rw': [{k: x for k, x in r.items() if k != 'ship'} for r in rw],
+            'edit': edit, 'ship': ship,
             'dirText': open(SCOPE + '11_Directions.txt', encoding='utf-8', newline='').read(),
             'vesselTemplate': VESSEL_TEMPLATE, 'built': BUILT}
     t = open(os.path.join(HERE, 'template.html'), encoding='utf-8').read()
@@ -288,6 +350,10 @@ def page(edit):
         t = t.replace('<!--EDIT_ONLY', '').replace('EDIT_ONLY-->', '')
     else:
         pj += "\nshow(location.hash.slice(1) || 'lineup', false);\n"
+    if ship:
+        t = t.replace('<title>Rogue Waves Vessel Spotlight</title>', '<title>Rogue Waves Vessel Journal</title>')
+        t = t.replace('</style>', '</style>\n' + SHIP_CSS, 1)
+        t = re.sub(r'<link rel="stylesheet" href="https://fonts.googleapis.com/css2[^"]*">', SHIP_FONTS, t, count=1)
     # sheet.js runs in its own scope; the page takes only its public functions
     js = ('const { WIPMARK, textToDoc, docToText, depthOf, isBlank, parseSheet, sheetName, vesselModel, lintSheet, slug } = (() => {\n'
           + js.replace("if (typeof module !== 'undefined') module.exports = ", 'return ') + '\n})();')
@@ -296,9 +362,9 @@ def page(edit):
 
 
 if len(sys.argv) < 3:
-    sys.exit('usage: build.py <spotlight.html> <editor.html>  (write both outside the repository: they hold game sprites)')
+    sys.exit('usage: build.py <journal.html> <editor.html>  (write both outside the repository: they hold game sprites)')
 out, eout = sys.argv[1], sys.argv[2]
-for path, edit in ((out, False), (eout, True)):
+for path, edit in ((out, 'ship'), (eout, True)):
     html = page(edit)
     open(path, 'w', encoding='utf-8').write(html)
     print('wrote', path, len(html) // 1024, 'KB;', len(SHEETS), 'sheets')

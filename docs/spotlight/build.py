@@ -6,7 +6,17 @@ repository (the pack's icons and sprites, the Uloe art, the Yossele sheet, model
 one screenshot of Argo); nothing comes from the project files or the base game.
 
     python3 docs/spotlight/build.py            # from the repository root
+
+The published page also carries the vessel journal (every vessel's journal page, base five and new four), built by
+`docs/artifacts/vessel_editor/build.py`. It holds the base game's sprites, so that page is written outside the
+repository:
+
+    python3 docs/spotlight/build.py --journal <journal.html> --out <published.html>
+
+Without `--journal` the `<!--JOURNAL-->` parts are left out and `spotlight.html` is the pack page alone.
 """
+import html as htmllib
+import re
 import base64
 import io
 import os
@@ -79,7 +89,16 @@ def images():
 
 
 def main():
+    args = sys.argv[1:]
+    opt = lambda k: args[args.index(k) + 1] if k in args else None
+    journal, out = opt("--journal"), opt("--out")
+    if journal and not out:
+        sys.exit("--journal needs --out <path outside the repository>: the journal holds game sprites")
     src = open(os.path.join(HERE, "spotlight.src.html"), encoding="utf-8").read()
+    if journal:
+        src = src.replace("<!--JOURNAL-->", "").replace("<!--/JOURNAL-->", "")
+    else:
+        src = re.sub(r"[ \t]*<!--JOURNAL-->.*?<!--/JOURNAL-->\n?", "", src, flags=re.S)
     imgs = images()
     missing = []
 
@@ -102,7 +121,10 @@ def main():
     html = sub(src)
     if missing:
         sys.exit("missing pictures: " + ", ".join(sorted(set(missing))))
-    dst = os.path.join(HERE, "spotlight.html")
+    if journal:
+        page = open(journal, encoding="utf-8").read()
+        html = html.replace("{{journal}}", htmllib.escape(page, quote=True))
+    dst = os.path.abspath(out) if out else os.path.join(HERE, "spotlight.html")
     open(dst, "w", encoding="utf-8").write(html)
     print(f"wrote {os.path.relpath(dst, ROOT)}, {len(html) // 1024} KB")
 

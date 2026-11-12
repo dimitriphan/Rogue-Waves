@@ -145,6 +145,12 @@ section { padding-block: 60px 8px; }
 
 /* vessels */
 .vessels { display: grid; gap: 30px; }
+/* The vessel journal: the game's journal pages for every vessel, base five and new four, in a frame of its own */
+.jlink { justify-self: start; font: 400 .82rem/1 var(--rt-label); letter-spacing: .06em; color: var(--rt-foam); background: var(--rt-teal); padding: 9px 12px; text-decoration: none; }
+.jlink::after { content: " \25B8"; }
+.jlink:hover { background: var(--rt-teal-hi); }
+.jlink:focus-visible { outline: 1.5px solid var(--rt-foam); outline-offset: 3px; }
+.journal { display: block; width: 100%; height: 900px; border: 0; background: transparent; color-scheme: dark; }
 .vessel { background: var(--rt-swell-2); display: grid; grid-template-columns: 230px minmax(0, 1fr); }
 .vessel .portrait { background: var(--vbg); display: grid; place-items: center; padding: 22px 14px; gap: 10px; align-content: center; }
 .vessel .portrait .hero { width: 160px; height: 160px; }
@@ -429,6 +435,7 @@ footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; di
             </ul>
             <div class="tower"><img src="{{img:tower_yossele}}" alt="The Primordial Dandelion Tree model, fully upgraded" width="138"><small>Primordial Dandelion Tree</small></div>
           </div>
+          <!--JOURNAL--><a class="jlink" href="#journal" data-journal="yossele">Read its journal page</a><!--/JOURNAL-->
         </div>
       </article>
 
@@ -454,6 +461,7 @@ footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; di
             </ul>
             <div class="tower"><img src="{{img:tower_spool}}" alt="The Repurposed Cookie Tin model" width="138"><small>Repurposed Cookie Tin</small></div>
           </div>
+          <!--JOURNAL--><a class="jlink" href="#journal" data-journal="spool">Read its journal page</a><!--/JOURNAL-->
         </div>
       </article>
 
@@ -479,6 +487,7 @@ footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; di
             </ul>
             <div class="tower"><img src="{{img:tower_argo}}" alt="The Harpoon Gun model, Leviathan Lance upgrade" width="138"><small>Harpoon Gun, Leviathan Lance</small></div>
           </div>
+          <!--JOURNAL--><a class="jlink" href="#journal" data-journal="argo">Read its journal page</a><!--/JOURNAL-->
         </div>
       </article>
 
@@ -504,11 +513,44 @@ footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; di
             </ul>
             <div class="tower"><img src="{{img:tower_uloe}}" alt="The Magnifying Glass model" width="138"><small>Magnifying Glass</small></div>
           </div>
+          <!--JOURNAL--><a class="jlink" href="#journal" data-journal="uloe">Read its journal page</a><!--/JOURNAL-->
         </div>
       </article>
     </div>
   </div>
 </section>
+
+<!--JOURNAL--><section id="journal">
+  <div class="wrap">
+    <div class="head">
+      <span class="eyebrow">The vessel journal</span>
+      <h2>Every vessel, page by page</h2>
+      <p class="lede">The five base vessels and the four new ones side by side, each on a page laid out like the game's journal: stats, lore, ability and rule, every building with its upgrade tree, the units and the Directions. Pick a vessel from the row.</p>
+    </div>
+    <iframe class="journal" title="The vessel journal" loading="eager" srcdoc="{{journal}}"></iframe>
+  </div>
+</section>
+<script>
+(() => {
+  const fr = document.querySelector('iframe.journal');
+  if (!fr) return;
+  const fit = () => { try { const d = fr.contentDocument; if (d && d.body) fr.style.height = Math.max(400, Math.ceil(d.body.getBoundingClientRect().height)) + 'px'; } catch (e) { /* keeps its fixed height */ } };
+  fr.addEventListener('load', () => {
+    fit();
+    try { new ResizeObserver(fit).observe(fr.contentDocument.body); } catch (e) { setInterval(fit, 1000); }
+  });
+  addEventListener('message', e => {
+    if (e.source !== fr.contentWindow || !e.data || !e.data.rwJournal) return;
+    setTimeout(fit, 0);
+    if (e.data.changed && e.data.rwJournal !== 'lineup' && fr.getBoundingClientRect().top < 0) fr.scrollIntoView({ block: 'start' });
+  });
+  document.querySelectorAll('[data-journal]').forEach(a => a.addEventListener('click', ev => {
+    ev.preventDefault();
+    try { fr.contentWindow.show(a.dataset.journal, false); } catch (e) { /* the frame is still loading */ }
+    document.getElementById('journal').scrollIntoView({ block: 'start' });
+  }));
+})();
+</script><!--/JOURNAL-->
 
 <section id="directions">
   <div class="wrap">
@@ -757,7 +799,7 @@ footer .wrap > div { border-top: 1px solid var(--rt-line); padding-top: 18px; di
   <div class="wrap">
     <div>
       <p>Rogue Waves is a fan expansion for <i>TDS - Tower Defense Strategy</i> by Blockage. Every player in a party needs the same pack version; the host's save carries the run.</p>
-      <p>Pictures are the pack's own art: its icons, VENDCINT, the four vessels, one tower model each and the sea chart.</p>
+      <p>Pictures are the pack's own art: its icons, VENDCINT, the four vessels, one tower model each and the sea chart.<!--JOURNAL--> The base vessels in the journal wear the game's own sprites and carry the game's own numbers.<!--/JOURNAL--></p>
     </div>
   </div>
 </footer>
