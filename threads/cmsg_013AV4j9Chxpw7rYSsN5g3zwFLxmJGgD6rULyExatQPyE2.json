@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwFLxmJGgD6rULyExatQPyE2",
   "thread": "Fix mode flow regression",
-  "state": "testing",
-  "started": "2026-11-12T17:25:56Z",
-  "step": "PC round Flow_round1 running",
+  "state": "shipped",
+  "started": "2026-11-12T18:27:40Z",
+  "step": "Proven on the PC, report merged (#201)",
   "helpers": [],
-  "updated": "2026-11-12T17:25:56Z"
+  "updated": "2026-11-12T18:27:40Z"
 }
