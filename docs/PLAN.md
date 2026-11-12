@@ -245,7 +245,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
   on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet. The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
-  `10`, `12` keep their tildes until he takes them; his project-files scope copy waits for his "sync". Dated history:
+  `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`; his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
 - **Next, in order:** the mode flow regression's fix (`PC_ART_ROUND1_2026-11-07.md` §3 and §5; **waits for his word**,
   a release blocker); then a PC round with it, #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
@@ -1795,6 +1795,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `mcp__github__enable_pr_auto_merge` and `gh pr merge *` removed, so Claude can merge its own PRs as Part A says (the
   denies on pushing to `claude/phase-1-6lfnar` stay); `apt-get update` and `python3 -m pip install UnityPy` allowed.
   Settings only, no code.
+- **2026-11-12: scope copies synced** (Dimitri: "Sync"): `/mnt/project-files/scope/` took 02, 04, 05, 07, 08, 09, 12 and 15
+  from `1c236a7` (no edits of his in it or in the Scope Editor's rows); the Scope Editor's data swapped in on its live page,
+  version 14 (02, 04, 08, 09 had changed). His PC's copy waits for a PC round. Docs only.
 
 ### Decisions
 
