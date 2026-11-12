@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwY8y5MYayk2Uaky8p2gGiAY",
   "thread": "Update Spool and Argo art wording",
-  "state": "art",
-  "started": "2026-11-12T06:58:51Z",
-  "step": "Finding Spool claw and Argo look lines",
+  "state": "reviewing",
+  "started": "2026-11-12T07:02:13Z",
+  "step": "PR #193 waiting on Codex",
   "helpers": [],
-  "updated": "2026-11-12T06:58:51Z"
+  "updated": "2026-11-12T07:02:13Z"
 }
