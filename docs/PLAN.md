@@ -250,7 +250,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (08's and 09's Look lines changed after, #193); his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
 - **Next, in order:** a PC round with the mode flow's fix (the 2026-11-07 regression was the game's gamepad mode,
-  pitfall #177; run the flow with the mouse, and once with a gamepad touched; a release blocker until it passes), #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
+  pitfall #177; the flow with the mouse, and once with a gamepad touched; a release blocker until it passes), #179's
+  Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
   §7, `PC_ROUND6_2026-11-06.md` §6: COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's
   leftovers (`PC_FULL_2026-11-06.md` §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and
   4-7); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
@@ -1815,6 +1816,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   shows. The Vessel Spotlight is superseded and left in his gallery. Tested here: headless Chromium, no page errors,
   nine journal pages, 390 px wide without sideways scroll. Docs and page tools only.
 
+- **2026-11-12: the mode flow regression fixed** (Dimitri: "Go"): the 2026-11-07 flow's two fails (`PC_ART_ROUND1_2026-11-07.md`
+  §3) were the game's gamepad mode, read from both runs' logs and the game's IL, not #163's map cards: with a gamepad as
+  the last device the stock boat parks on the hovered island (plus the stick times `Boat_Radius`), not at its `Dock`, and
+  every dialog shows its focused last card's line. `RWBoat.Berth`/`Berthed`/`PadSteers` measure arrival where the game
+  steers (the auto-sail and the Cove rest); C3, C5 and B1 say the input mode and accept the pad's case; the flow logs
+  the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
+  clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
+
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
@@ -2041,13 +2050,6 @@ All of these passed in game on 2026-11-03 (`docs/reports/BUILD_2026-11-03.md`) a
   - [x] the pack's tips in the game's tip lists (end screen, pause menu, Close Game)
 
 ---
-- **2026-11-12: the mode flow regression fixed** (Dimitri: "Go"): the 2026-11-07 flow's two fails (`PC_ART_ROUND1_2026-11-07.md`
-  §3) were the game's gamepad mode, read from both runs' logs and the game's IL, not #163's map cards: with a gamepad as
-  the last device the stock boat parks on the hovered island (plus the stick times `Boat_Radius`), not at its `Dock`, and
-  every dialog shows its focused last card's line. `RWBoat.Berth`/`Berthed`/`PadSteers` measure arrival where the game
-  steers (the auto-sail and the Cove rest); C3, C5 and B1 say the input mode and accept the pad's case; the flow logs
-  the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
-  clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
 
 ## Part D. Prompt templates (copy, fill, send)
 
