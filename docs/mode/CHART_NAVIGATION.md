@@ -84,7 +84,7 @@ today's, `SEA_CHART.md` §7 step 2); there is no vote then, so the view shows fo
 | On the boat, while it sails | A banner "SAILING TO X, AS VOTED" with the map's Danger and weather (or the Cove's rest); a mini chart inking the lane as the boat goes, where the game's own pieces leave room (left edge first, 2026-11-06); in the 3D chart white corner brackets on the island it sails to | none |
 | On the boat, arrived | The Setup panel as today; the mini chart stays in its corner | as today |
 | On the boat with no vote (the host is asked, `05_Boat.cs` `AskHere`) | As the map vote | as the map vote |
-| Any time on a chart or in a map's break | The chart view, read only, toggled by a key (M or Tab, §7) | the key again, or a close button |
+| Any time on a chart or in a map's break | The chart view, read only, toggled by a key (M, and Tab on the boat, §7) | the key again, or a close button |
 
 ![the boat while it sails](../concepts/art/chart_look_boat.png)
 
@@ -242,8 +242,8 @@ No kit change was needed to write it; anything the PC teaches goes to kit `docs/
 
 **His verdict (2026-11-12, after chart round 1's pictures):** "Chart design flows ok", the defaults stand ("Default to
 the rest"); Tab opens the chart as well as M; the after-win WHERE NEXT? opens the chart by itself; fix the UI overlaps
-in the pictures. Built in the 2026-11-12 PR (compiled only): Tab beside M (where the chart can't open, a Tide running,
-Tab stays the MVP board's), the view drawn again whenever the map vote's dialog stands beside an empty half, the
+in the pictures. Built in the 2026-11-12 PR (compiled only): Tab beside M (his pick after: Tab opens the chart on the
+boat only; in a map, breaks included, Tab stays the MVP board's and M opens the chart), the view drawn again whenever the map vote's dialog stands beside an empty half, the
 legend kept inside the frame, a long map name standing on its card's bottom rim, and the dialog keeping its place until
 it has gone.
 
@@ -251,7 +251,7 @@ it has gone.
 2. The Cove's gift: ~a retry back, or a Direction rank when none is spent~; its rows ~4 and 9~.
 3. The Wreck: ~one row harder~, ~one Trinket of 3~ for each player; its rows ~2-3 and 6-8~.
 4. Difficulty after a rest follows the row: ~yes~.
-5. The key that opens the chart: M and Tab (his word, 2026-11-12). Changing a vote before the timer ends: ~on~. Others' votes on the chart:
+5. The key that opens the chart: M; Tab too on the boat (his word, 2026-11-12; in a map Tab is the MVP board's). Changing a vote before the timer ends: ~on~. Others' votes on the chart:
    ~later~. The mini chart on the boat: ~top right, all the time on the chart~; since the full test (2026-11-06,
    `docs/reports/PC_FULL_2026-11-06.md` §5) ~the first spot the game's pieces leave clear, down the left edge, then the
    right~ (`26_ChartView.cs` `Mini`).
