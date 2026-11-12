@@ -287,8 +287,21 @@ public static partial class RWTest
         finally { RWObjectives.FirstTide = RWObjectives.ObjectivesFrom; }
     }
 
+    // With a gamepad the game focuses a dialog's last card, whose hover line stands in the subtitle's place (pitfall #177);
+    // leaving that card the way the pointer does puts the prompt's own subtitle back (the game's Unhover), so a check reads it.
+    static void Unfocus()
+    {
+        GameObject sel = UnityEngine.EventSystems.EventSystem.current != null ? UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject : null;
+        Blu3_Button b = sel != null ? sel.GetComponent<Blu3_Button>() : null;
+        if (!Blockage.Bl_Inputs.Isgamepad || b == null || b.Buttonleave == null)
+            return;
+        try { b.Buttonleave(); }
+        catch (Exception e) { Info("input", "the focused card's leave: " + e.Message); }
+    }
+
     public static IEnumerator Flow()
     {
+        Info("input", InputMode() + " at the start (the last device used; a gamepad changes where the boat parks and what a dialog's line shows)");
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
         Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
         if (menu == null) { Setup("flow", "never reached the main menu"); yield break; }
@@ -499,6 +512,7 @@ public static partial class RWTest
         if (exitButton != null && exitButton.Buttonclick != null) exitButton.Buttonclick();
         yield return WaitDialog(5f);
         yield return new WaitForSecondsRealtime(0.5f);
+        Unfocus();
         string exitSub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
         Check("B4 the host's exit dialog names the cost", RWCard.ExitWrites > 0 && exitSub.Contains("loses this map") && exitSub.Contains("2 retries left"), "'" + exitSub + "'");
         yield return Snap("exit_warning");
@@ -788,6 +802,7 @@ public static partial class RWTest
         {
             yield return Until(() => RWAsk.Open.StartsWith(RWVote.MapKind), 8f);
             yield return WaitDialog(8f);
+            Unfocus();
             staySub = TextOf(Bla_Ui_Confirmation.Instance.Subbox);
             Info("the vote on the next map, staying", "sub '" + staySub + "', cards " + CardTexts());
             Faces("the after-win vote");
@@ -795,7 +810,7 @@ public static partial class RWTest
             if (stayCards.Count > 0) ClickCard(stayCards[0]);
             yield return Until(() => RWVote.State == "", 8f);
         }
-        Check("B1 staying votes on the next map there and then, and the bonus Tides go on", RWCampaign.Choice >= 0 && RWVote.State == "" && !RWVote.HoldBreak && (staySub == "" || staySub.Contains("When the party leaves")), "choice " + RWCampaign.Choice + ", " + RWVote.LastVote + ", sub '" + staySub + "'");
+        Check("B1 staying votes on the next map there and then, and the bonus Tides go on", RWCampaign.Choice >= 0 && RWVote.State == "" && !RWVote.HoldBreak && (staySub == "" || staySub.Contains("When the party leaves")), "choice " + RWCampaign.Choice + ", " + RWVote.LastVote + ", sub '" + staySub + "', " + InputMode());
         int stayChoice = RWCampaign.Choice;
         int pure16 = player.Pure;
         yield return ToBreakAfter(RWCampaign.WinTide + 1);

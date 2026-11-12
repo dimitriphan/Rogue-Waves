@@ -695,3 +695,18 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
      run in game: the self-test's "its stock MOVE has no button" line and the RETURN and SPOT lines prove it). Run each
      vessel's self-test once a round with the pack loaded as well (Spool's picked and DONE lines now say which), since a
      vessel alone can take paths the pack never takes.
+177. **With a gamepad the boat never reaches a node's dock, and a dialog's line names its last card** (2026-11-12; read
+     from the PC round of 2026-11-07, `docs/reports/PC_ART_ROUND1_2026-11-07.md` §3, and the game's IL) →
+     `Bl_Inputs.Isgamepad` is true whenever the last device used was a gamepad (`Bla_Input.Mousegamepadquery`). Then the
+     leader's boat loop (`Macro_Worldvisual.Update`) steers to the hovered node's own position plus the stick times
+     `Boat_Radius` instead of its child `Dock` (unless `Insetup`, `Inwaypointselect`, `Indiscoveryselect`,
+     `Incharacterselect` or `Inleaderboardselect`), and the menus focus a dialog's last card, whose hover line
+     (`Display_Desc`, when it has one) takes the subtitle's place until the card is left. The mode's flow ran so twice
+     (121/2, 112/11): its auto-sail waited 60 s for the boat within 1.5 of the dock while the boat stood still on the
+     island's middle, 2.6 away, and B1 read the focused card's line ("SKYHOOK Δ ▪ Calm waters ...") for the stay vote's
+     subtitle. Not PR #163's map cards: the same logs show the shop, the board and the vote to leave with their last
+     card's line too ("BACK", "LEAVE ▪ Leave this map"), none of them map cards → measure arrival where the game steers
+     (`RWBoat.Off`, `RWBoat.Berthed`: with a pad the island, within `Boat_Radius` + 0.5, counts as well as the dock, since
+     the four other panel flags are private), and before a
+     test reads a dialog's line, leave the focused card the way the pointer does (`Buttonleave`: the game's Unhover puts
+     the subtitle back; `RWTest.Unfocus`). The flow logs the input mode at its start.

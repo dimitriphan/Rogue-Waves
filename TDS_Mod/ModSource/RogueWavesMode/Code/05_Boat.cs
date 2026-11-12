@@ -197,7 +197,7 @@ public static class RWBoat
     {
         RWChart.Node cove = null;
         foreach (RWChart.Node n in RWCampaign.Open())
-            if (n.Stop == RWChart.Cove && AtDock(vis, n)) cove = n;
+            if (n.Stop == RWChart.Cove && AtBerth(vis, n)) cove = n;
         if (cove == null || vis.Inworldtransition || vis.Insetup || RWCampaign.Replay >= 0)
         {
             atCoveSince = -1f;
@@ -212,15 +212,42 @@ public static class RWBoat
         return true;
     }
 
-    static bool AtDock(Macro_Worldvisual vis, RWChart.Node n)
+    static bool AtBerth(Macro_Worldvisual vis, RWChart.Node n)
     {
         foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             if (l.name == n.Name)
-            {
-                Transform dock = l.transform.Find("Dock");
-                return ModKitUtil.Flat(vis.Boat.transform.position, dock != null ? dock.position : l.transform.position) < 1.5f && vis.Boatspeed < 1f;
-            }
+                return Berthed(vis, l);
         return false;
+    }
+
+    // Where the game's own boat steers for the node it hovers (Macro_Worldvisual.Update, read in its IL 2026-11-12): its
+    // child "Dock", except when a gamepad was the last device used (Bl_Inputs.Isgamepad, set from Bl_Inputs.Lastdevice) and
+    // no panel is open (Insetup, and four private flags for its other panels): then it parks on the island itself, and the
+    // stick moves it up to Boat_Radius around it. The 2026-11-07 flow ran in that state, and the boat waited at the
+    // island's middle, 2.6 from the dock (pitfall #177). The private flags can't be read, so with a pad either spot counts.
+    public static bool PadSteers(Macro_Worldvisual vis) { return Blockage.Bl_Inputs.Isgamepad && !vis.Insetup; }
+
+    // How far the boat stands from where the game may have parked it, against how far still counts as there: the dock
+    // (1.5), or with a pad the island too (Boat_Radius + 0.5, anywhere the stick can hold it), whichever it is nearer.
+    public static float Off(Macro_Worldvisual vis, Macro_Link_Add_Base node, out float room)
+    {
+        Vector3 boat = vis.Boat.transform.position;
+        Transform dock = node.transform.Find("Dock");
+        float off = ModKitUtil.Flat(boat, dock != null ? dock.position : node.transform.position);
+        room = 1.5f;
+        if (PadSteers(vis))
+        {
+            float island = ModKitUtil.Flat(boat, node.transform.position), wide = Mathf.Max(1.5f, node.Boat_Radius + 0.5f);
+            if (island - wide < off - room) { off = island; room = wide; }
+        }
+        return off;
+    }
+
+    // At rest where the game steers it.
+    public static bool Berthed(Macro_Worldvisual vis, Macro_Link_Add_Base node)
+    {
+        float room;
+        return Off(vis, node, out room) < room && vis.Boatspeed < 1f;
     }
 
     // The rest itself: the next question on this boat may be asked again (the leg after the Cove, when no vote named it).
@@ -418,15 +445,12 @@ public static class RWBoat
             main.Preview = node;
             try { Macro_Worldui.Instance.Showhover(); } catch (Exception e) { RWLog.Once("showhover", "Showhover: " + e.Message); }
         }
-        Transform dock = node.transform.Find("Dock");
-        Vector3 at = dock != null ? dock.position : node.transform.position;
-        bool there = ModKitUtil.Flat(vis.Boat.transform.position, at) < 1.5f && vis.Boatspeed < 1f;
-        if (!there) { arriveSince = -1f; return; }
+        if (!Berthed(vis, node)) { arriveSince = -1f; return; }
         if (arriveSince < 0f) { arriveSince = Time.realtimeSinceStartup; return; }
         if (Time.realtimeSinceStartup - arriveSince < 0.8f)
             return;
         ArrivedAt = Time.realtimeSinceStartup;
-        RWLog.Info("arrived at " + to.Name + " after " + RWUtil.F(ArrivedAt - SailedAt) + " s, boat " + RWUtil.V(vis.Boat.transform.position) + ", camera " + RWUtil.V(Game_Cameracontroller.Instance.Movepos));
+        RWLog.Info("arrived at " + to.Name + (PadSteers(vis) ? " (a gamepad steers: the island itself)" : "") + " after " + RWUtil.F(ArrivedAt - SailedAt) + " s, boat " + RWUtil.V(vis.Boat.transform.position) + ", camera " + RWUtil.V(Game_Cameracontroller.Instance.Movepos));
         if (to.Stop == RWChart.Cove)
         {
             Rested(to);

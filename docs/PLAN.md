@@ -240,8 +240,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (ChatGPT's art since 2026-11-07, Argo
   redesigned; `docs/TEMP_ART.md`), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
   kit 1.15. Last PC run: Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
-  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; **the mode's flow regressed**, 121/2: B1's
-  stay-vote subtitle, C3's boat never sails, suspect #163's `11_Dialog.cs`). Before it: rounds 5 and 6 and the full test
+  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2, B1's stay-vote
+  subtitle and C3's boat never sailing: the game's gamepad mode, pitfall #177, fixed and compiled only). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
   on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
@@ -249,8 +249,9 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
   (08's and 09's Look lines changed after, #193); his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
-- **Next, in order:** the mode flow regression's fix (`PC_ART_ROUND1_2026-11-07.md` §3 and §5; **waits for his word**,
-  a release blocker); then a PC round with it, #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
+- **Next, in order:** a PC round with the mode flow's fix (the 2026-11-07 regression was the game's gamepad mode,
+  pitfall #177; the flow with the mouse, and once with a gamepad touched; a release blocker until it passes), #179's
+  Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
   §7, `PC_ROUND6_2026-11-06.md` §6: COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's
   leftovers (`PC_FULL_2026-11-06.md` §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and
   4-7); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
@@ -270,7 +271,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #177 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #178 (which PR used which pitfall numbers: the last Log entry).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1814,6 +1815,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the repository (game sprites); `spotlight.html` stays the pack page alone. The Vessel Editor is unchanged in what it
   shows. The Vessel Spotlight is superseded and left in his gallery. Tested here: headless Chromium, no page errors,
   nine journal pages, 390 px wide without sideways scroll. Docs and page tools only.
+
+- **2026-11-12: the mode flow regression fixed** (Dimitri: "Go"): the 2026-11-07 flow's two fails (`PC_ART_ROUND1_2026-11-07.md`
+  §3) were the game's gamepad mode, read from both runs' logs and the game's IL, not #163's map cards: with a gamepad as
+  the last device the stock boat parks on the hovered island (plus the stick times `Boat_Radius`), not at its `Dock`, and
+  every dialog shows its focused last card's line. `RWBoat.Off`/`Berthed`/`PadSteers` measure arrival where the game
+  steers (the auto-sail and the Cove rest; with a pad the island counts as well as the dock); C3 and C5 measure from there,
+  B1 and B4 leave the focused card (`RWTest.Unfocus`) before they read the subtitle; the flow logs the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
+  clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
 
 ### Decisions
 
