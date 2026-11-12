@@ -125,7 +125,9 @@ PC nor the cloud sees it until a thread commits it: until then a run checks the 
 ## From a thread or the morning routine
 
 A thread that wants a check runs `submit` itself and reads the report; it commits the report in its own docs PR (Part
-C "Now" names it). The cheap daily form, for the morning routine once the key is set:
+C "Now" names it). The morning routine runs only after a merge day (Dimitri, 2026-11-12): its first step checks
+whether anything outside `docs/reports/` and `docs/PLAN.md` reached the base in the last 25 hours, and stops at once
+when nothing did. The cheap daily form, for the morning routine once the key is set:
 
 ```
 [ -n "$RW_BATCH_API_KEY" ] && python3 -m pip install -q anthropic \
