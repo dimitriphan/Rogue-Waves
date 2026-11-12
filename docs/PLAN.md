@@ -269,186 +269,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
 - **Next free numbers:** kit chapter 25, kit 1.16, pitfall #177 (which PR used which pitfall numbers: the last Log entry).
-- **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
-  entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
-- **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
-  map's weather on every machine, a 4 s fade after the intro, calm maps unchanged; self-test W4. Compiled here (the mode,
-  every test build), not run on the PC; its PC round is §4. No kit change; no pitfall used.
-- **2026-11-05: API credit set up** (Dimitri: "Setup both"): `docs/PROJECT_SETUP.md` "API credit" (the $100 can't
-  overflow the plan; usage credits can; key steps for Windows) and `TDS_Mod/Tools/batch/` (text and scope checks on
-  the Batches API, about $3.50 a run on Sonnet 5.5, $0.70 on Haiku 5.5). No real batch run yet: no key here.
-- **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
-  pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
-  Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-05: feature spotlight page** (Dimitri: "Design a spotlight of all of the new features"): `docs/spotlight/`
-  (artifact https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr), every feature chipped played, built-not-run or not built,
-  with the PR #130 Trinket split. Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-05: his answers on the split** (Dimitri: "Keep that", "Make Trinket", "Pay only share"): 17 of the
-  29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
-  §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 512 rows, 355 MATCH,
-  117 resolved, 24 queued (Spool B18/B19), 11 by design; N1 Tidal Mend x level and N2 Abyss's capped slow wait for his
-  word; scope 02, 04, 05, 15 texts fixed (`SCOPE_CODE_AUDIT_2026-11-06.md`). Docs only, read from the code, nothing run.
-- **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri: "Code follows the scope"): Mend heals a flat 5/8/12,
-  Deep Water slows up to its own 0.65 (Abyss's +10% whole; the Tremor keeps 0.6); self-tests read both. Compiled here,
-  not run on the PC (`STOCK_TRINKETS_2026-11-05.md` §8). No kit change, no pitfall.
-- **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
-  checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
-  the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
-- **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
-  (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
-  undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
-- **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
-  stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
-  (`docs/mode/CHART_NAVIGATION.md`). Built on his go (entry below).
-- **2026-11-06: PC round 4 merged** (Dimitri: "Go"): `PC_ROUND4_2026-11-05.md`, no game fault in a self-test; open: P1-4
-  (rejoined friend's "BASIN BREACHED"), U3's "MAP 1 OF 10 WON", 548 Vfx/Mobbase lines, §8 test faults. Scope `07` sprite
-  NEEDS cleared. Test lines compiled here and on the PC. Pitfall #172.
-- **2026-11-06: Art Bench page** (Dimitri: an artifact to edit every sprite frame and model, "Give the whole row"):
-  every sheet by row as `.aseprite`, every model as `.glb` for Blender, edits sent back on the page and brought in by
-  `TDS_Mod/Tools/artbench/ingest.py`. Tool only, tested here; models need builder support next. No kit change.
-- **2026-11-06: round 4 and batch bugs fixed** (Dimitri: "Fix bugs"): a friend's end title, the Vfx/Mobbase lines on a join
-  (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
-  (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
-- **2026-11-06: input artifacts send edits back** (Dimitri: "Update older Artifacts that take input"): the Scope and
-  Vessel Editors gain a Send step ("bring in my scope / vessel edits"); six old pages archived to project files and
-  deleted. Index and steps: `docs/artifacts/README.md` (Log).
-- **2026-11-06: sea chart redrawn in the game's look** (Dimitri: "more inline with the current TDS art style and
-  theme"): no panel, the stock title and rule, framed square tiles, pixel icons, corner brackets (`CHART_NAVIGATION.md` §3.6,
-  `chart_look_*.png`). Built on his go (entry below).
-
-- **2026-11-06: batch checks on the PC without Claude** (Dimitri: run it when the 5-hour limit is up):
-  `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report moved to `Desktop\RogueWave\batch`).
-  Written here, not run on the PC (no PowerShell here). No game code; no kit change, no pitfall.
-- **2026-11-06: Rogue Tide theme for pages and decks** (Dimitri: "Choose rogue tide"): `docs/themes/rogue-tide.md`, the
-  pack palette with the HUD's bracket frames and tiles, linked from `STYLE.md`. Docs only; nothing ran on the PC.
-- **2026-11-06: Scope Editor refreshed in Rogue Tide** (Dimitri: "Update the rogue waves scope editor with updated
-  information"): scope `02` logs 11-05/06 work, `04` gains the chart view, Cove and Wreck as ~defaults~; the page wears
-  Rogue Tide and is republished. Docs and page only; nothing ran on the PC.
-- **2026-11-06: spotlight restyled in Rogue Tide** (Dimitri: "as if it were a finished product ready to ship"): no
-  status chips or "not built" list; chart view with Cove and Wreck added (`docs/spotlight/`, artifact v3). Docs only,
-  nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-06: sea chart navigation built** (Dimitri: "Go"): the chart view beside the vote and on M, banner and mini
-  chart, Coves and Wrecks, CV1-CV12 (`CHART_BUILD_2026-11-06.md`, PC list §4). Compiled here and save fuzz passed, not
-  run on the PC. No kit change, no pitfall.
-- **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
-  failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
-  from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
-- **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
-  layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
-  PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
-- **2026-11-06: chart round 1 on the PC** (Dimitri: "Go chart round"): flow 178/1 (CV10's blacklist read too early, test
-  fixed), two players 167/0; chart pictures on his PC; after-win vote's view and a mini chart overlap for his eye
-  (`CHART_ROUND1_2026-11-06.md`). His builds and save back. No kit change, no pitfall.
-- **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
-  fixable?"): 14 small fixes need no decision (5 best proven on the PC after), three need his word
-  (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from code only; nothing changed or run on the PC.
-- **2026-11-06: MVP board built** (Dimitri: "just the most notable thing of the player ... Defaults for rest, and then
-  build"): one title per player, failures as common as accolades, Tab replays it; `27_Board.cs`, `28_BoardView.cs`,
-  MB1-MB11 (`MVP_BOARD.md` §4, §6). Compiled here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons left alone while a hover grows
-  them, the game's stacked lists always; a still P2 passes only if its control saw the flicker (`BUTTON_WOBBLE_2026-11-06.md`
-  §3-4). Compiled here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.32 ($3.14 this month), 35 of 36
-  answers whole (`docs/reports/BATCH_CHECKS_2026-11-06c.md`, leads only, none fixed); no PC round (it needs his reply in
-  the thread to start). Docs only; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-06: the top 4 pitfall fixes built** (Dimitri: "Do top 4 recommended fixes, super nova flies photons back,
-  keep cap at 8"): Uloe's brain guard, the elite stand-in, a Wreck's Pearl Oyster, late build looks; Supernova flies its
-  Photons home; Uloe's safe-socket Light capped at 8. Compiled here, not run on the PC; Spool waits.
-- **2026-11-06: the morning's suggestions** (Dimitri: "implement suggestions but skip the PC round"): two log lines,
-  Spool's Seam and Mangled temporary sheets in sage, "Now" tidied, the batch README; two batch leads were no bugs. Compiled
-  here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri: "Yes"): scope `08` B18/B19, all 37 rows matching,
-  BEE, UNTHREAD and COLOUR, Spool's brain guard (#80) and late looks (#158); self-test 10d-10f (`Spool/DESIGN.md`
-  defaults). Compiled here, not run on the PC. No kit change, no pitfall.
-- **2026-11-06: full PC test of the newest build** (Dimitri: "run a full test using the most up to date version"): every
-  part 0 FAIL after ten test faults were fixed; to fix: Diorama's tiny look, the mini chart's place, the vote cards'
-  pictures (`PC_FULL_2026-11-06.md` §5). His PC put back. No kit change, no pitfall.
-- **2026-11-06: the full test's three fixes** (Dimitri: "Fix all three"): Diorama's tiny look on the four vessels, map
-  cards with picture, name and badge (CV13), the mini chart in a clear spot (CV14). Compiled here, not run on the PC.
-  Kit 1.15 (`ModKitAssets.TinyLooks`), no pitfall.
-- **2026-11-06: PC round 5 proves #141, #154, #156-#158 and #160** (Dimitri: "Ok"): 0 FAIL from the code but #160's map
-  cards (a 70-76 ms freeze in 2 of 10 openings); Spool 229/3 in its new sections (test faults, one unsettled), Supernova's
-  flight home and a client's first looks read (`PC_ROUND5_2026-11-06.md`). His PC put back. No kit change, no pitfall.
-- **2026-11-06: the phone status widget** (Dimitri: "an android widget ... what is happening currently"): `StatusWidget/`,
-  4 x 6, the crew acts out each state; every thread now reports to the `status` branch (`StatusWidget/README.md`). Built
-  on GitHub Actions (APK in the `status-widget` release), not yet on his phone. Not the pack; no kit change, no pitfall.
-- **2026-11-06: the map card freeze and PC round 5's test leftovers** (Dimitri: "Ok", PC round 5): map cards keep their
-  name and badge between openings, Pin Barrage's check wants Iron Thimble, an unreached Tide is a SETUP, Snare Line's
-  line says what the hunt saw. Compiled here, not run on the PC. Pitfall #175, no kit change.
-- **2026-11-06: PC round 6 runs #163** (Dimitri: "Ok"): cards reuse their name and badge, but the freeze is the render
-  thread's and comes by chance (dialog 83/1, 84/0); Spool's Thread Heads can't walk with the pack loaded (B16's renamed
-  MOVE; alone 230/0); Uloe 220/0 (`PC_ROUND6_2026-11-06.md`). His PC put back. Test-only frame split; pitfalls #175-#176.
-- **2026-11-06: Spool's Thread Heads walk with the pack loaded** (PC round 6's bug): B16's hide set the unit's state to
-  "Move" with no walk; now MOVE's link is not Controllable, synced with Statechange off, no renamed copy; the self-test
-  says alone or with the pack. Compiled here, not run on the PC. Pitfall #176 traced, no kit change.
-- **2026-11-06: ChatGPT makes the art, Codex reviews the PRs** (Dimitri: "Go as planned"): `docs/art/` (guide, manifest,
-  Project text), `concept-tools/chatgpt/` (pixelize, pack builder), `AGENTS.md`; Codex replaces the reviewer sub-agent
-  (Part A "Merging", ship-a-pr). Private sprite pack outside the repo. Scripts run here; no mod code, nothing on the PC.
-- **2026-11-07: a ChatGPT prompt remakes the pack's art** (Dimitri: "Write me a prompt for chatGPT that will recreate all
-  of the art assets"): `docs/art/RECREATE_PROMPT.md`, three stops (sketch the vessels, ask him, make the assets in
-  batches) and the main menu button after his minimal reference. Docs only; `12_Menu.cs` changes when the button arrives.
-- **2026-11-07: Argo redesigned from scratch in that prompt** (Dimitri: "I want to completely redesign Argos"): its new
-  Stage 1B drafts 5 Argo concepts from his scope `09` setting and theme, with a Naut each; his sheets wait for a pick,
-  then scope `09` Look and `docs/STYLE.md`'s Argo row change at his word. Docs only.
-- **2026-11-07: Claude stands in when Codex stalls** (Dimitri: "Yes", to a Claude fallback if ChatGPT runs out of
-  usage): no Codex review an hour on, `@codex review` once; none an hour later or Codex out of usage, a Claude sub-agent reviews
-  under `AGENTS.md`'s P0-P3 (Part A "Merging", ship-a-pr, `CLAUDE.md`). Docs only; PR #169 was its first use.
-- **2026-11-07: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.61 ($4.75 this month), 27 of 27
-  answers whole (`docs/reports/BATCH_CHECKS_2026-11-07.md`, leads only, none fixed); PC round waits for his "Go".
-  Docs only; nothing ran on the PC. No kit change, no pitfall.
-- **2026-11-07: the Naut sheets join the art manifest** (Dimitri: ChatGPT asked for them): `sprite_calls.py` unrolls
-  Argo's crew loop, so the preview, Art Bench and `docs/art/ASSET_MANIFEST.md` list all six (70 sheets); no other
-  sheet was missing. Tools and docs only, preview run here; no mod code, nothing on the PC. No kit change, no pitfall.
-- **2026-11-07: the morning's docs suggestions** (Dimitri: "Do 2, 3, and 5"): "Now"'s State and Next brought to PC rounds
-  5 and 6; the Codex wait written the same in `AGENTS.md` and here; scope-sync's tilde line. Docs only; nothing ran on
-  the PC. No kit change, no pitfall.
-- **2026-11-07: ChatGPT's art brought in** (PR #173): 151 pictures for the four vessels, Nauts, icons, VENDCINT and the
-  menu button; falls, tab icons and `Direction_Extension` held back for ChatGPT. Compiled here; PC round Art_round1
-  under way. Detail in Log.
-- **2026-11-07: the advisor tool in the batch checks** (Dimitri: "Install advisor-tool-2026-03-01"): `--advisor opus`
-  lets scope and design consult Opus 5.5 once, counted in the cap and report; off by default (dearer than Sonnet
-  alone). One real test batch, $0.015; tools and docs only, nothing on the PC. No kit change, no pitfall.
-- **2026-11-07: ChatGPT's art reviewed** (Dimitri: "Do they follow the art style and rules of TDS?"): rules pass, the look not yet
-  (still animation, Spool and Argo off model, panel-colour icons); `ART_REVIEW_CHATGPT_2026-11-07.md`, ChatGPT's note
-  `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (batches 2A-2F). Docs only; nothing on the PC. No kit change, no pitfall.
-- **2026-11-07: PC round Art_round1** (`PC_ART_ROUND1_2026-11-07.md`): the new art in every build, vessel self-tests
-  pass, #165 proven with the pack; the mode's flow regressed (121/2: B1 subtitle, C3 boat never sails; suspect #163's
-  `11_Dialog.cs`), its fix waits for his word. Report only; his PC put back. No kit change, no pitfall yet.
-- **2026-11-08: ChatGPT's Spool key frame noted** (Dimitri: "more similar to the art style of TDS"): too big (27x30),
-  grey-olive drifting ramp, painterly specks, mask face, arm as a tail; ten fixes and what to keep in
-  `docs/art/FEEDBACK_SPOOL_KEY_2026-11-08.md` (copy in project files). Docs only. No kit change, no pitfall.
-- **2026-11-08: ChatGPT's hard rules and continue prompt** (Dimitri: "so that it doesn't go off the rails"): 28 rules in
-  `docs/art/CHATGPT_HARD_RULES.md`; `CONTINUE_PROMPT_2026-11-08.md` restarts Spool from version 12 with 13's hood (severed
-  arm per STYLE.md, his pick open), then 2A, 2D-2F. Docs only. No kit change, no pitfall.
-- **2026-11-08: ChatGPT's complete Argo set in** (`ART_REVIEW_ARGO_2026-11-08.md`): all 19 files, Sonar, tab icon and his
-  fall included, nothing held back; asks for ChatGPT: attack lean, wrench head, ready-up face. Compiled here, not run on
-  the PC. No code, kit or pitfall change.
-- **2026-11-08: the continue prompt takes the Argo review's edits** (#179's findings): Step 1 is now A1, A2, D1 (wrench head,
-  the one exception to the locked key), D2 and N1; Spool moves to Steps 2-5. Docs only. No kit change, no pitfall.
-- **2026-11-08: Spool's arm is attached again** (Dimitri: "the arm is attached, but dragging behind him palm facing up with
-  long claws"): STYLE.md, scope `08` Look, hard rule 21 and the prompt's Step 2 (source version 01, the hunched key) follow;
-  the severed arm is gone. Docs only. No kit change, no pitfall.
-- **2026-11-08: ChatGPT may use Astra Medium** (Dimitri: "Allow GPT-6 to use Astra Medium"): hard rule 1 and the continue
-  prompt allow GPT-6 Sol Medium or Astra Medium. Docs only. No kit change, no pitfall.
-- **2026-11-08: ChatGPT uses Astra only** (Dimitri: "Only use astra"): hard rule 1 and the continue prompt now say GPT-6
-  Astra Medium only, never Sol. Docs only. No kit change, no pitfall.
-- **2026-11-08: Spool broken down for ChatGPT, and the facts-only art rules** (Dimitri: "a detailed breakdown of Spool's
-  sprites"): `SPOOL_SPRITE_BREAKDOWN.md` with a target key (version 01 fixed) and `TDS_ART_RULES.md` (no character
-  looks). Docs and one reference PNG only. No kit change, no pitfall.
-- **2026-11-08: Spool's key art is the Art Bench's Spool** (Dimitri: "Use the current Spool sprites as the key art that is
-  currently in the Art Bench"): its 13 files in `docs/art/spool/artbench_key/`; the breakdown, hard rules 12/16/18/21, the
-  prompt's Steps 2-3, STYLE.md and scope `08` follow; #184's target key removed. Docs and PNGs only. No kit change, no pitfall.
-- **2026-11-08: ChatGPT reset, Spool rebuilt from his new key frame** (Dimitri: "have it reset all of its rulings"): three
-  one-chat prompts in `docs/art/reset_2026-11-08/` (reset, blind reading + concepts, 13 files in 9 quizzed steps with the
-  base vessels measured); old rule files bannered; no model rule. STYLE.md and scope `08` Look wait for the concepts. Docs only.
-- **2026-11-08: chat 3 takes Yossele and Argo apart first** (Dimitri: "decompile Yossele and Argo first based on the
-  keyframes"): Step 0 in `docs/art/reset_2026-11-08/3_ASSETS.md`; v1/v3 are exact pixel mirrors in both finals. Docs only.
-- **2026-11-11: a Run Batch button for Claude Code** (Dimitri: "Create a button mod that allows me to run the TDS Run Batch
-  tool"): `TDS_Mod/Tools/batch/claude-mod/` (`rw-batch-button`: Plan free, Run/Full Haiku at most $3, asks first), root
-  `.claude-plugin/marketplace.json`. 3 tests pass; installed on his PC, where `Run-Batch.ps1 -NoPull -Plan` ran (first Windows run). No kit change.
-- **2026-11-12: the batch button's Stop works on Windows** (#188 follow-up): the pid line has no double quotes, which
-  Windows PowerShell 5.1 drops; checked on his PC (`RWPID <pid>`, Plan exit 0, `taskkill /T` ends the run's python). No kit change.
+- **2026-11-12: "Now" trimmed again** (Dimitri: "greatly reduce the amount of tokens used"): 23 KB to about 4 KB,
+  its dated entries 2026-11-05 to 11-12 moved verbatim to the Log's last entry; no rule dropped. Docs only.
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1786,6 +1608,187 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
     wrench reads as a fork; the ready-up face. Scope 09's Look and `STYLE.md`'s Argo row wait for his word.
   - No code change (`FileArt` takes every file). Argo compiled here: release, `ARGO_SELFTEST`, `ARGO_SELFTEST,ARGO_SHOTS`
     0/0, editor check clean. Nothing ran on the PC.
+- **2026-11-12: "Now"'s dated entries, moved here verbatim** (token audit; each also has its own Log entry above):
+  - **2026-11-05: the always-read files trimmed** (Dimitri: token efficiency): "Now" from 32 KB to about 4 KB, its dated
+    entries moved verbatim to the Log's last entry; Part A's model table to `docs/PROJECT_SETUP.md`; no rule dropped.
+  - **2026-11-05: a look per weather built** (`docs/reports/WEATHER_LOOK_2026-11-05.md`): mist, storm grey, dusk from the
+    map's weather on every machine, a 4 s fade after the intro, calm maps unchanged; self-test W4. Compiled here (the mode,
+    every test build), not run on the PC; its PC round is §4. No kit change; no pitfall used.
+  - **2026-11-05: API credit set up** (Dimitri: "Setup both"): `docs/PROJECT_SETUP.md` "API credit" (the $100 can't
+    overflow the plan; usage credits can; key steps for Windows) and `TDS_Mod/Tools/batch/` (text and scope checks on
+    the Batches API, about $3.50 a run on Sonnet 5.5, $0.70 on Haiku 5.5). No real batch run yet: no key here.
+  - **2026-11-05: four project skills drafted** (Dimitri: "Draft the 4 skills"): `docs/skills/` holds ship-a-pr,
+    pc-round, scope-audit and scope-sync, each a whole SKILL.md for his claude.ai settings, plus how to install them.
+    Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+  - **2026-11-05: feature spotlight page** (Dimitri: "Design a spotlight of all of the new features"): `docs/spotlight/`
+    (artifact https://claude.ai/artifact/MCPDgVngHmnZcVHeZwxNSr), every feature chipped played, built-not-run or not built,
+    with the PR #130 Trinket split. Docs only, no compile; nothing ran on the PC. No kit change, no pitfall.
+  - **2026-11-05: his answers on the split** (Dimitri: "Keep that", "Make Trinket", "Pay only share"): 17 of the
+    29 sold are Trinkets, held once per buyer, companions one at a time, Coins a share (`docs/reports/STOCK_TRINKETS_2026-11-05.md`
+    §6-§7 the PC list); scope `12` lists them. Compiled here, not run on the PC. No kit change, no pitfall.
+  - **2026-11-06: third scope-to-code audit** (Dimitri: `/scope-audit`, "All 17 files, changes only"): 512 rows, 355 MATCH,
+    117 resolved, 24 queued (Spool B18/B19), 11 by design; N1 Tidal Mend x level and N2 Abyss's capped slow wait for his
+    word; scope 02, 04, 05, 15 texts fixed (`SCOPE_CODE_AUDIT_2026-11-06.md`). Docs only, read from the code, nothing run.
+  - **2026-11-06: Tidal Mend and Abyss follow the scope** (Dimitri: "Code follows the scope"): Mend heals a flat 5/8/12,
+    Deep Water slows up to its own 0.65 (Abyss's +10% whole; the Tremor keeps 0.6); self-tests read both. Compiled here,
+    not run on the PC (`STOCK_TRINKETS_2026-11-05.md` §8). No kit change, no pitfall.
+  - **2026-11-06: batch checks extended** (Dimitri: "set up the cheap batch jobs further"): `design`, `docs` and `art`
+    checks, `--since last`, `--max-cost`, `spend`, a morning-routine line (`TDS_Mod/Tools/batch/README.md`); the key is
+    the cloud environment variable `RW_BATCH_API_KEY`. Tested on made-up answers here; no real batch yet: no key.
+  - **2026-11-06: first batch checks run** (Dimitri: key saved): Haiku 5.5, $1.82 of the $100; leads only, none fixed
+    (`docs/reports/BATCH_CHECKS_2026-11-06.md` §0, rerun of seven cut answers in `06b`); the batch README's estimate
+    undercounts (4.13M tokens counted, not 2.78M). Docs only, nothing run on the PC. No kit change, no pitfall.
+  - **2026-11-06: sea chart navigation proposed** (Dimitri: "closer to ... Slay the Spire 2"; "Add rest and treasure
+    stops"): a whole-chart view at votes and on a key, a boat banner, a Cove and a Wreck per stretch
+    (`docs/mode/CHART_NAVIGATION.md`). Built on his go (entry below).
+  - **2026-11-06: PC round 4 merged** (Dimitri: "Go"): `PC_ROUND4_2026-11-05.md`, no game fault in a self-test; open: P1-4
+    (rejoined friend's "BASIN BREACHED"), U3's "MAP 1 OF 10 WON", 548 Vfx/Mobbase lines, §8 test faults. Scope `07` sprite
+    NEEDS cleared. Test lines compiled here and on the PC. Pitfall #172.
+  - **2026-11-06: Art Bench page** (Dimitri: an artifact to edit every sprite frame and model, "Give the whole row"):
+    every sheet by row as `.aseprite`, every model as `.glb` for Blender, edits sent back on the page and brought in by
+    `TDS_Mod/Tools/artbench/ingest.py`. Tool only, tested here; models need builder support next. No kit change.
+  - **2026-11-06: round 4 and batch bugs fixed** (Dimitri: "Fix bugs"): a friend's end title, the Vfx/Mobbase lines on a join
+    (#173), the meteor's first map, one Yarn Stash, Plug In's Light 8 cap, every round 4 test fault
+    (`BUG_FIXES_2026-11-06.md`, PC lines §5). Compiled here, not run on the PC. No kit change.
+  - **2026-11-06: input artifacts send edits back** (Dimitri: "Update older Artifacts that take input"): the Scope and
+    Vessel Editors gain a Send step ("bring in my scope / vessel edits"); six old pages archived to project files and
+    deleted. Index and steps: `docs/artifacts/README.md` (Log).
+  - **2026-11-06: sea chart redrawn in the game's look** (Dimitri: "more inline with the current TDS art style and
+    theme"): no panel, the stock title and rule, framed square tiles, pixel icons, corner brackets (`CHART_NAVIGATION.md` §3.6,
+    `chart_look_*.png`). Built on his go (entry below).
+
+  - **2026-11-06: batch checks on the PC without Claude** (Dimitri: run it when the 5-hour limit is up):
+    `TDS_Mod/Tools/batch/Run-Batch.ps1` (`-SaveKey` once, then one command; report moved to `Desktop\RogueWave\batch`).
+    Written here, not run on the PC (no PowerShell here). No game code; no kit change, no pitfall.
+  - **2026-11-06: Rogue Tide theme for pages and decks** (Dimitri: "Choose rogue tide"): `docs/themes/rogue-tide.md`, the
+    pack palette with the HUD's bracket frames and tiles, linked from `STYLE.md`. Docs only; nothing ran on the PC.
+  - **2026-11-06: Scope Editor refreshed in Rogue Tide** (Dimitri: "Update the rogue waves scope editor with updated
+    information"): scope `02` logs 11-05/06 work, `04` gains the chart view, Cove and Wreck as ~defaults~; the page wears
+    Rogue Tide and is republished. Docs and page only; nothing ran on the PC.
+  - **2026-11-06: spotlight restyled in Rogue Tide** (Dimitri: "as if it were a finished product ready to ship"): no
+    status chips or "not built" list; chart view with Cove and Wreck added (`docs/spotlight/`, artifact v3). Docs only,
+    nothing ran on the PC. No kit change, no pitfall.
+  - **2026-11-06: sea chart navigation built** (Dimitri: "Go"): the chart view beside the vote and on M, banner and mini
+    chart, Coves and Wrecks, CV1-CV12 (`CHART_BUILD_2026-11-06.md`, PC list §4). Compiled here and save fuzz passed, not
+    run on the PC. No kit change, no pitfall.
+  - **2026-11-06: multiplayer MVP board proposed** (Dimitri: "Draft an MVP board for multiplayer that shows accolades and
+    failures of the players"): one accolade and one failure per player after each won map and at the campaign's end, mostly
+    from the game's own match statistics (`docs/mode/MVP_BOARD.md`). Docs only; not built until his go.
+  - **2026-11-06: the menu buttons' wobble fixed** (Dimitri: "The button itself wobbles and jitters"): the game's half-pixel
+    layout under the menu camera's sway; `RWPixels` puts still pictures on whole pixels (`BUTTON_WOBBLE_2026-11-06.md`, #174).
+    PC self-test 168/0: the game's places flicker 144 of 144 frames, ours 0; the fixed build is in his Mods. No kit change.
+  - **2026-11-06: chart round 1 on the PC** (Dimitri: "Go chart round"): flow 178/1 (CV10's blacklist read too early, test
+    fixed), two players 167/0; chart pictures on his PC; after-win vote's view and a mini chart overlap for his eye
+    (`CHART_ROUND1_2026-11-06.md`). His builds and save back. No kit change, no pitfall.
+  - **2026-11-06: what the pitfalls still point to** (Dimitri: "would there be any bug fixes or improvements that might
+    fixable?"): 14 small fixes need no decision (5 best proven on the PC after), three need his word
+    (`docs/reports/PITFALL_FIXES_2026-11-06.md`). Read from code only; nothing changed or run on the PC.
+  - **2026-11-06: MVP board built** (Dimitri: "just the most notable thing of the player ... Defaults for rest, and then
+    build"): one title per player, failures as common as accolades, Tab replays it; `27_Board.cs`, `28_BoardView.cs`,
+    MB1-MB11 (`MVP_BOARD.md` §4, §6). Compiled here, not run on the PC. No kit change, no pitfall.
+  - **2026-11-06: the whole-pixel fix's review follow-up** (Dimitri: "Follow up pr"): buttons left alone while a hover grows
+    them, the game's stacked lists always; a still P2 passes only if its control saw the flicker (`BUTTON_WOBBLE_2026-11-06.md`
+    §3-4). Compiled here, not run on the PC. No kit change, no pitfall.
+  - **2026-11-06: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.32 ($3.14 this month), 35 of 36
+    answers whole (`docs/reports/BATCH_CHECKS_2026-11-06c.md`, leads only, none fixed); no PC round (it needs his reply in
+    the thread to start). Docs only; nothing ran on the PC. No kit change, no pitfall.
+  - **2026-11-06: the top 4 pitfall fixes built** (Dimitri: "Do top 4 recommended fixes, super nova flies photons back,
+    keep cap at 8"): Uloe's brain guard, the elite stand-in, a Wreck's Pearl Oyster, late build looks; Supernova flies its
+    Photons home; Uloe's safe-socket Light capped at 8. Compiled here, not run on the PC; Spool waits.
+  - **2026-11-06: the morning's suggestions** (Dimitri: "implement suggestions but skip the PC round"): two log lines,
+    Spool's Seam and Mangled temporary sheets in sage, "Now" tidied, the batch README; two batch leads were no bugs. Compiled
+    here, not run on the PC. No kit change, no pitfall.
+  - **2026-11-06: Spool's 22 upgrades and UNTHREAD built** (Dimitri: "Yes"): scope `08` B18/B19, all 37 rows matching,
+    BEE, UNTHREAD and COLOUR, Spool's brain guard (#80) and late looks (#158); self-test 10d-10f (`Spool/DESIGN.md`
+    defaults). Compiled here, not run on the PC. No kit change, no pitfall.
+  - **2026-11-06: full PC test of the newest build** (Dimitri: "run a full test using the most up to date version"): every
+    part 0 FAIL after ten test faults were fixed; to fix: Diorama's tiny look, the mini chart's place, the vote cards'
+    pictures (`PC_FULL_2026-11-06.md` §5). His PC put back. No kit change, no pitfall.
+  - **2026-11-06: the full test's three fixes** (Dimitri: "Fix all three"): Diorama's tiny look on the four vessels, map
+    cards with picture, name and badge (CV13), the mini chart in a clear spot (CV14). Compiled here, not run on the PC.
+    Kit 1.15 (`ModKitAssets.TinyLooks`), no pitfall.
+  - **2026-11-06: PC round 5 proves #141, #154, #156-#158 and #160** (Dimitri: "Ok"): 0 FAIL from the code but #160's map
+    cards (a 70-76 ms freeze in 2 of 10 openings); Spool 229/3 in its new sections (test faults, one unsettled), Supernova's
+    flight home and a client's first looks read (`PC_ROUND5_2026-11-06.md`). His PC put back. No kit change, no pitfall.
+  - **2026-11-06: the phone status widget** (Dimitri: "an android widget ... what is happening currently"): `StatusWidget/`,
+    4 x 6, the crew acts out each state; every thread now reports to the `status` branch (`StatusWidget/README.md`). Built
+    on GitHub Actions (APK in the `status-widget` release), not yet on his phone. Not the pack; no kit change, no pitfall.
+  - **2026-11-06: the map card freeze and PC round 5's test leftovers** (Dimitri: "Ok", PC round 5): map cards keep their
+    name and badge between openings, Pin Barrage's check wants Iron Thimble, an unreached Tide is a SETUP, Snare Line's
+    line says what the hunt saw. Compiled here, not run on the PC. Pitfall #175, no kit change.
+  - **2026-11-06: PC round 6 runs #163** (Dimitri: "Ok"): cards reuse their name and badge, but the freeze is the render
+    thread's and comes by chance (dialog 83/1, 84/0); Spool's Thread Heads can't walk with the pack loaded (B16's renamed
+    MOVE; alone 230/0); Uloe 220/0 (`PC_ROUND6_2026-11-06.md`). His PC put back. Test-only frame split; pitfalls #175-#176.
+  - **2026-11-06: Spool's Thread Heads walk with the pack loaded** (PC round 6's bug): B16's hide set the unit's state to
+    "Move" with no walk; now MOVE's link is not Controllable, synced with Statechange off, no renamed copy; the self-test
+    says alone or with the pack. Compiled here, not run on the PC. Pitfall #176 traced, no kit change.
+  - **2026-11-06: ChatGPT makes the art, Codex reviews the PRs** (Dimitri: "Go as planned"): `docs/art/` (guide, manifest,
+    Project text), `concept-tools/chatgpt/` (pixelize, pack builder), `AGENTS.md`; Codex replaces the reviewer sub-agent
+    (Part A "Merging", ship-a-pr). Private sprite pack outside the repo. Scripts run here; no mod code, nothing on the PC.
+  - **2026-11-07: a ChatGPT prompt remakes the pack's art** (Dimitri: "Write me a prompt for chatGPT that will recreate all
+    of the art assets"): `docs/art/RECREATE_PROMPT.md`, three stops (sketch the vessels, ask him, make the assets in
+    batches) and the main menu button after his minimal reference. Docs only; `12_Menu.cs` changes when the button arrives.
+  - **2026-11-07: Argo redesigned from scratch in that prompt** (Dimitri: "I want to completely redesign Argos"): its new
+    Stage 1B drafts 5 Argo concepts from his scope `09` setting and theme, with a Naut each; his sheets wait for a pick,
+    then scope `09` Look and `docs/STYLE.md`'s Argo row change at his word. Docs only.
+  - **2026-11-07: Claude stands in when Codex stalls** (Dimitri: "Yes", to a Claude fallback if ChatGPT runs out of
+    usage): no Codex review an hour on, `@codex review` once; none an hour later or Codex out of usage, a Claude sub-agent reviews
+    under `AGENTS.md`'s P0-P3 (Part A "Merging", ship-a-pr, `CLAUDE.md`). Docs only; PR #169 was its first use.
+  - **2026-11-07: morning run** (Dimitri's daily routine): batch checks on Haiku 5.5, $1.61 ($4.75 this month), 27 of 27
+    answers whole (`docs/reports/BATCH_CHECKS_2026-11-07.md`, leads only, none fixed); PC round waits for his "Go".
+    Docs only; nothing ran on the PC. No kit change, no pitfall.
+  - **2026-11-07: the Naut sheets join the art manifest** (Dimitri: ChatGPT asked for them): `sprite_calls.py` unrolls
+    Argo's crew loop, so the preview, Art Bench and `docs/art/ASSET_MANIFEST.md` list all six (70 sheets); no other
+    sheet was missing. Tools and docs only, preview run here; no mod code, nothing on the PC. No kit change, no pitfall.
+  - **2026-11-07: the morning's docs suggestions** (Dimitri: "Do 2, 3, and 5"): "Now"'s State and Next brought to PC rounds
+    5 and 6; the Codex wait written the same in `AGENTS.md` and here; scope-sync's tilde line. Docs only; nothing ran on
+    the PC. No kit change, no pitfall.
+  - **2026-11-07: ChatGPT's art brought in** (PR #173): 151 pictures for the four vessels, Nauts, icons, VENDCINT and the
+    menu button; falls, tab icons and `Direction_Extension` held back for ChatGPT. Compiled here; PC round Art_round1
+    under way. Detail in Log.
+  - **2026-11-07: the advisor tool in the batch checks** (Dimitri: "Install advisor-tool-2026-03-01"): `--advisor opus`
+    lets scope and design consult Opus 5.5 once, counted in the cap and report; off by default (dearer than Sonnet
+    alone). One real test batch, $0.015; tools and docs only, nothing on the PC. No kit change, no pitfall.
+  - **2026-11-07: ChatGPT's art reviewed** (Dimitri: "Do they follow the art style and rules of TDS?"): rules pass, the look not yet
+    (still animation, Spool and Argo off model, panel-colour icons); `ART_REVIEW_CHATGPT_2026-11-07.md`, ChatGPT's note
+    `docs/art/FEEDBACK_ROUND1_2026-11-07.md` (batches 2A-2F). Docs only; nothing on the PC. No kit change, no pitfall.
+  - **2026-11-07: PC round Art_round1** (`PC_ART_ROUND1_2026-11-07.md`): the new art in every build, vessel self-tests
+    pass, #165 proven with the pack; the mode's flow regressed (121/2: B1 subtitle, C3 boat never sails; suspect #163's
+    `11_Dialog.cs`), its fix waits for his word. Report only; his PC put back. No kit change, no pitfall yet.
+  - **2026-11-08: ChatGPT's Spool key frame noted** (Dimitri: "more similar to the art style of TDS"): too big (27x30),
+    grey-olive drifting ramp, painterly specks, mask face, arm as a tail; ten fixes and what to keep in
+    `docs/art/FEEDBACK_SPOOL_KEY_2026-11-08.md` (copy in project files). Docs only. No kit change, no pitfall.
+  - **2026-11-08: ChatGPT's hard rules and continue prompt** (Dimitri: "so that it doesn't go off the rails"): 28 rules in
+    `docs/art/CHATGPT_HARD_RULES.md`; `CONTINUE_PROMPT_2026-11-08.md` restarts Spool from version 12 with 13's hood (severed
+    arm per STYLE.md, his pick open), then 2A, 2D-2F. Docs only. No kit change, no pitfall.
+  - **2026-11-08: ChatGPT's complete Argo set in** (`ART_REVIEW_ARGO_2026-11-08.md`): all 19 files, Sonar, tab icon and his
+    fall included, nothing held back; asks for ChatGPT: attack lean, wrench head, ready-up face. Compiled here, not run on
+    the PC. No code, kit or pitfall change.
+  - **2026-11-08: the continue prompt takes the Argo review's edits** (#179's findings): Step 1 is now A1, A2, D1 (wrench head,
+    the one exception to the locked key), D2 and N1; Spool moves to Steps 2-5. Docs only. No kit change, no pitfall.
+  - **2026-11-08: Spool's arm is attached again** (Dimitri: "the arm is attached, but dragging behind him palm facing up with
+    long claws"): STYLE.md, scope `08` Look, hard rule 21 and the prompt's Step 2 (source version 01, the hunched key) follow;
+    the severed arm is gone. Docs only. No kit change, no pitfall.
+  - **2026-11-08: ChatGPT may use Astra Medium** (Dimitri: "Allow GPT-6 to use Astra Medium"): hard rule 1 and the continue
+    prompt allow GPT-6 Sol Medium or Astra Medium. Docs only. No kit change, no pitfall.
+  - **2026-11-08: ChatGPT uses Astra only** (Dimitri: "Only use astra"): hard rule 1 and the continue prompt now say GPT-6
+    Astra Medium only, never Sol. Docs only. No kit change, no pitfall.
+  - **2026-11-08: Spool broken down for ChatGPT, and the facts-only art rules** (Dimitri: "a detailed breakdown of Spool's
+    sprites"): `SPOOL_SPRITE_BREAKDOWN.md` with a target key (version 01 fixed) and `TDS_ART_RULES.md` (no character
+    looks). Docs and one reference PNG only. No kit change, no pitfall.
+  - **2026-11-08: Spool's key art is the Art Bench's Spool** (Dimitri: "Use the current Spool sprites as the key art that is
+    currently in the Art Bench"): its 13 files in `docs/art/spool/artbench_key/`; the breakdown, hard rules 12/16/18/21, the
+    prompt's Steps 2-3, STYLE.md and scope `08` follow; #184's target key removed. Docs and PNGs only. No kit change, no pitfall.
+  - **2026-11-08: ChatGPT reset, Spool rebuilt from his new key frame** (Dimitri: "have it reset all of its rulings"): three
+    one-chat prompts in `docs/art/reset_2026-11-08/` (reset, blind reading + concepts, 13 files in 9 quizzed steps with the
+    base vessels measured); old rule files bannered; no model rule. STYLE.md and scope `08` Look wait for the concepts. Docs only.
+  - **2026-11-08: chat 3 takes Yossele and Argo apart first** (Dimitri: "decompile Yossele and Argo first based on the
+    keyframes"): Step 0 in `docs/art/reset_2026-11-08/3_ASSETS.md`; v1/v3 are exact pixel mirrors in both finals. Docs only.
+  - **2026-11-11: a Run Batch button for Claude Code** (Dimitri: "Create a button mod that allows me to run the TDS Run Batch
+    tool"): `TDS_Mod/Tools/batch/claude-mod/` (`rw-batch-button`: Plan free, Run/Full Haiku at most $3, asks first), root
+    `.claude-plugin/marketplace.json`. 3 tests pass; installed on his PC, where `Run-Batch.ps1 -NoPull -Plan` ran (first Windows run). No kit change.
+  - **2026-11-12: the batch button's Stop works on Windows** (#188 follow-up): the pid line has no double quotes, which
+    Windows PowerShell 5.1 drops; checked on his PC (`RWPID <pid>`, Plan exit 0, `taskkill /T` ends the run's python). No kit change.
 
 ### Decisions
 
