@@ -6,7 +6,8 @@ device the stock boat parks on a node's island, not at its dock, and dialogs sho
 auto-sail and the Cove rest now measure arrival where the game steers (`RWBoat.Off`, `Berthed`, `PadSteers`: with a pad
 the island counts as well as the dock, since four of the game's five panel flags are private); C3 says the input mode, C5 measures from the berth, B1 and B4 leave the focused
 card (`RWTest.Unfocus`, the game's Unhover) before they read the subtitle, and the flow logs the input mode first. For the PC: the flow with the mouse as the last device (it should pass as on 2026-11-06), and once with a
-gamepad touched before the start (C3 should arrive "a gamepad steers: the island itself").
+gamepad as the last device: the test-only define `ROGUEWAVESMODE_PAD` (`96_Flow.cs` `HoldPad`) adds a virtual gamepad and
+holds it as `Bl_Inputs.Lastdevice` for the whole launch (C3 should arrive "a gamepad steers: the island itself").
 
 **2026-11-06, the map card freeze (compiled here, not yet run in game; `docs/reports/PC_ROUND5_2026-11-06.md` §2.3,
 pitfall #175):** a map card's name text and badge are made once a launch and carried from one dialog to the next:
