@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwY8y5MYayk2Uaky8p2gGiAY",
   "thread": "Update Spool and Argo art wording",
-  "state": "reviewing",
-  "started": "2026-11-12T07:02:13Z",
-  "step": "PR #193 waiting on Codex",
+  "state": "shipped",
+  "started": "2026-11-12T07:06:13Z",
+  "step": "PR #193 merged",
   "helpers": [],
-  "updated": "2026-11-12T07:02:13Z"
+  "updated": "2026-11-12T07:06:13Z"
 }
