@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zw3cU91bz2xaemb1SR3Cpzoi",
   "thread": "Cut the project's token use",
-  "state": "reviewing",
-  "started": "2026-11-12T06:25:40Z",
-  "step": "PR #190 Codex re-review; his side: plugins, coordinator",
+  "state": "shipped",
+  "started": "2026-11-12T06:43:54Z",
+  "step": "PR #190 merged 1c236a7",
   "helpers": [],
-  "updated": "2026-11-12T06:43:08Z"
+  "updated": "2026-11-12T06:43:54Z"
 }
