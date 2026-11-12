@@ -1,0 +1,9 @@
+{
+  "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zw3cU91bz2xaemb1SR3Cpzoi",
+  "thread": "Cut the project's token use",
+  "state": "reviewing",
+  "started": "2026-11-12T06:25:40Z",
+  "step": "Measuring always-loaded context",
+  "helpers": [],
+  "updated": "2026-11-12T06:25:40Z"
+}
