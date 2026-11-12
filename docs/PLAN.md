@@ -1824,6 +1824,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   B1 and B4 leave the focused card (`RWTest.Unfocus`) before they read the subtitle; the flow logs the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
   clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
 
+- **2026-11-12: the morning batch** (Dimitri's daily routine): Haiku 5.5 over the 435 files changed since 2026-11-07,
+  38 requests, $1.00 (`BATCH_CHECKS_2026-11-12.md`). Leads checked by hand in its thread: `Argosplash.png` keeps 2822
+  half-transparent pixels and an outline (`art_check.py` agrees); Spool's `DESIGN.md` still says the Yarn Stash has no
+  upgrades built and the Cookie Tin holds 4 (code: seven upgrades, `Units=6`); docs' request hit max_tokens. Not leads:
+  the Trinket log line, Made of Tougher Stuff (built in the mode), "Woolen Lining" (his word). Docs only; nothing ran on
+  the PC. No kit change, no pitfall.
+
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
