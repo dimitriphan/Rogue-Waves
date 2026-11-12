@@ -1,0 +1,11 @@
+{
+  "name": "rogue-waves",
+  "owner": { "name": "dimitriphan" },
+  "plugins": [
+    {
+      "name": "rw-batch-button",
+      "source": "./TDS_Mod/Tools/batch/claude-mod",
+      "description": "A Batch checks band in Claude Code with Plan (free) and Run buttons for the Rogue Waves batch checks"
+    }
+  ]
+}

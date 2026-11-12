@@ -48,7 +48,7 @@ design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagen
 | --- | --- | --- |
 | `TDS_Vessel_Creator/` | The kit: every TDS rule learned so far | `README.md`, then the chapter the task needs |
 | `TDS_Mod/ModSource/<Part>` + `Assets/<Part>Mod` | The pack's parts: `Argo`, `Yossele`, `Spool`, `Uloe`, `RogueWavesMode`, `RogueWavesFoes`; `Pack` builds them into one bundle; `Shared` is the live kit (keep equal to `TDS_Vessel_Creator/kit/Shared`) | its `README.md` or `DESIGN.md`, then `IMPLEMENTATION_NOTES.md` |
-| `TDS_Mod/Tools/` | `cloud-check` (compile, previews), `pc` (PC rounds), `aseprite`, `artbench` (Art Bench: edit sprites and models, bring edits in), `batch` (text, scope, design, docs and art checks on API credit) | its `README.md` |
+| `TDS_Mod/Tools/` | `cloud-check` (compile, previews), `pc` (PC rounds), `aseprite`, `artbench` (Art Bench: edit sprites and models, bring edits in), `batch` (text, scope, design, docs and art checks on API credit; `claude-mod/` its Run Batch button) | its `README.md` |
 | `docs/scope/` | Dimitri's scope, one `.txt` per category; `! NEEDS ... !` marks what only he can supply, `~value~` a default Claude picked | `00_Read_Me.txt`, then the file the task touches |
 | `docs/PLAN.md` | Part A coordinator rules, B phases, C state, D prompt templates | Part C "Now" |
 | `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md`, `docs/art/`, `docs/themes/` | Packaging and versions; look and naming; temporary art; art made in ChatGPT; page and deck themes | before packaging; before drawing or naming; before bringing in ChatGPT art; before styling a page |

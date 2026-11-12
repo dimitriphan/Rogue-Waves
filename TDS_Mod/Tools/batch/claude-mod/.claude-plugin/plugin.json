@@ -1,0 +1,14 @@
+{
+  "name": "rw-batch-button",
+  "version": "0.1.0",
+  "description": "Rogue Waves: a Batch checks band with Plan and Run buttons that start the project's batch checks tool",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "repoPath": {
+      "type": "string",
+      "title": "Rogue Waves clone",
+      "description": "Folder of a Rogue Waves clone; empty means the session's own folder",
+      "default": ""
+    }
+  }
+}
