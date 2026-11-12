@@ -27,9 +27,7 @@ works) > this file. **Every session** reads `docs/PLAN.md` Part C "Now" (state),
 | A failing self-test or PC-round bug | `docs/09_PITFALLS.md` by symptom first, then a debugging skill |
 | A chart for a report | `dataviz` |
 
-Skills that assume a test runner, worktrees, subagents or their own handoff file (superpowers', `handoff`) don't fit:
-design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagents only when Dimitri or PLAN asks.
-`/run` can't start the game here; the PC does. A procedure repeated three times (a PC round, a scope fold-in) is worth proposing as a project skill; the drafted ones are in `docs/skills/`.
+Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't start the game. Drafts: `docs/skills/`.
 
 ## Rules the code doesn't show
 
@@ -37,10 +35,12 @@ design goes through `docs/scope/` and `DESIGN.md`, state through Part C, subagen
 - The repository presents only Rogue Waves: no mention of the mods from before the scope, except where the kit's
   template, dated reports, the PLAN Log, version histories and his scope notes keep them on purpose.
 - Never commit the game's binaries, base-vessel game sprites or anything from `/mnt/project-files`; overwrite a file
-  there only at Dimitri's word. Nothing touches his PC without his OK in the thread.
+  there only at Dimitri's word (its `concepts/`, `artifacts_archive/`, `chatgpt/2026-11-06/` are zipped: unzip a
+  missing path into the scratchpad). Nothing touches his PC without his OK in the thread.
 - Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Codex reviews each one
   (`AGENTS.md`; a Claude reviewer if Codex stalls); Claude merges once that review leaves no open P0/P1 and cloud-check
-  is clean (PLAN Part A "Merging"), merge commits. Each PR edits Part C "Now": base first, yours last, 3 lines max.
+  is clean (PLAN Part A "Merging"), merge commits. Each PR adds one dated Log entry and edits Part C "Now"'s lines in
+  place (no dated entries in "Now"; under 4 KB).
 
 ## Map
 
