@@ -1798,6 +1798,14 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **2026-11-12: scope copies synced** (Dimitri: "Sync"): `/mnt/project-files/scope/` took 02, 04, 05, 07, 08, 09, 12 and 15
   from `1c236a7` (no edits of his in it or in the Scope Editor's rows); the Scope Editor's data swapped in on its live page,
   version 14 (02, 04, 08, 09 had changed). His PC's copy waits for a PC round. Docs only.
+- **2026-11-12: the two spotlights merged** (Dimitri: "5. Yes", to merging the Feature Spotlight with the Vessel
+  Spotlight). The Spotlight (same link) gains the vessel journal after its vessels section: one journal page per vessel,
+  base five plus Yossele, Spool, Argo and Uloe, in a frame of its own, Rogue Tide tokens and fonts, with no WIP marks,
+  readiness meter or asset sheet (a `ship` build of `docs/artifacts/vessel_editor/`, `SHIP` in `page.js`); each new
+  vessel's card links to its page. `docs/spotlight/build.py --journal ... --out ...` writes the published page outside
+  the repository (game sprites); `spotlight.html` stays the pack page alone. The Vessel Editor is unchanged in what it
+  shows. The Vessel Spotlight is superseded and left in his gallery. Tested here: headless Chromium, no page errors,
+  nine journal pages, 390 px wide without sideways scroll. Docs and page tools only.
 
 ### Decisions
 

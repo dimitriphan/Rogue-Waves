@@ -3,15 +3,16 @@
 - **Vessel Editor** https://claude.ai/artifact/JiVvnHii85Fg9c1DBMC6wj: journal pages for the five base vessels, Spool
   and Yossele, with the Rogue Waves sheets editable line by line beside the page they make; Export/Import .txt byte
   for byte, Check, and Send. Capabilities `db`, `downloads`, `user`.
-- **Vessel Spotlight** https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw: the same pages, read only (version 3,
-  2026-10-23; not rebuilt while its merge with the Spotlight is his open question).
+- **Vessel journal**: the same pages, read only, for all nine vessels (Argo and Uloe too), inside the Rogue Waves
+  Spotlight (`docs/spotlight/README.md`) in the Rogue Tide look, with no WIP marks, readiness or asset sheet (`SHIP`
+  in `page.js`). It replaced the Vessel Spotlight https://claude.ai/artifact/NZ3wMMaujKDSNSaYCw7NZw on 2026-11-12.
 
 Dimitri's rule: Spool and Yossele show only his own work, his reshade frames and his sheets 07, 08, 11. Every Claude
 default (`~value~`, `/~ note \`) shows as WIP; none of Claude's concept or build art is used.
 
 | File | Does |
 | --- | --- |
-| `build.py` | `python3 build.py <spotlight.html> <editor.html>`: reads `docs/scope` (07, 08, 11, 15, 16), the game's sheets from `/mnt/project-files/research/art_dump_2026-10-15/sheets/` and his frames from `/mnt/project-files/concepts/vessel_spotlight_2026-10-15/assets/`. Write both pages outside the repository: they hold game sprites. Needs Pillow |
+| `build.py` | `RW_ASSETS=<dir> python3 build.py <journal.html> <editor.html>`: reads `docs/scope` (07-11, 15, 16), the game's sheets from `/mnt/project-files/research/art_dump_2026-10-15/sheets/` and his frames from `RW_ASSETS` (unzip `concepts/vessel_spotlight_2026-10-15/assets/` from `/mnt/project-files/concepts.zip`). Write both pages outside the repository: they hold game sprites. Needs Pillow |
 | `parse.py` | Reads the base vessels from `16_Base_Vessels.txt` |
 | `sheet.js` | Scope-sheet parser and writer (lines kept as text, so export = import byte for byte; lint) |
 | `page.js`, `body.js` | Render the pages |
