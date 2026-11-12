@@ -48,9 +48,11 @@
       "mcp__github__get_job_logs",
       "mcp__github__get_check_run",
 
+      "Bash(apt-get update)",
       "Bash(apt-get install -y mono-devel)",
       "Bash(pip install pillow)",
       "Bash(python3 -m pip install pillow)",
+      "Bash(python3 -m pip install UnityPy)",
       "Bash(bash TDS_Mod/Tools/cloud-check/setup.sh *)",
       "Bash(TDS_Mod/Tools/cloud-check/setup.sh *)",
       "Bash(./setup.sh *)",
@@ -88,9 +90,6 @@
       "Bash(df -h *)"
     ],
     "deny": [
-      "mcp__github__merge_pull_request",
-      "mcp__github__enable_pr_auto_merge",
-      "Bash(gh pr merge *)",
       "Bash(git push origin claude/phase-1-6lfnar*)",
       "Bash(git push -u origin claude/phase-1-6lfnar*)"
     ],
