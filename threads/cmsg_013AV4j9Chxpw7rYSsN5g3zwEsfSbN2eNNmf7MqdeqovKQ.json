@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwEsfSbN2eNNmf7MqdeqovKQ",
   "thread": "Sync the shared scope copies",
-  "state": "reviewing",
-  "started": "2026-11-12T07:01:01Z",
-  "step": "Copies synced; PR #192 waits for Codex",
+  "state": "shipped",
+  "started": "2026-11-12T07:03:30Z",
+  "step": "Synced; PR #192 merged",
   "helpers": [],
-  "updated": "2026-11-12T07:01:01Z"
+  "updated": "2026-11-12T07:03:30Z"
 }
