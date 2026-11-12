@@ -1823,6 +1823,10 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   steers (the auto-sail and the Cove rest; with a pad the island counts as well as the dock); C3 and C5 measure from there,
   B1 and B4 leave the focused card (`RWTest.Unfocus`) before they read the subtitle; the flow logs the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
   clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
+- **2026-11-12: the morning routine runs only after a merge day** (Dimitri: "set it to only after merge day"). The
+  scheduled task "Morning mod test run" keeps its daily 7 AM time but starts with one git check: if nothing outside
+  `docs/reports/` and `docs/PLAN.md` reached `claude/phase-1-6lfnar` in the last 25 hours, it stops with no batch, no PC
+  round and no post. The task's prompt was changed in place; the batch README's routine section says so. Docs only.
 
 ### Decisions
 
