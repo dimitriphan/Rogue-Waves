@@ -156,6 +156,11 @@ namespace UnityEngine.InputSystem
         public static Mouse current { get { throw null; } }
         public UnityEngine.InputSystem.Controls.ButtonControl leftButton { get { throw null; } }
     }
+    // Added 2026-11-12 for the flow's virtual gamepad (96_Flow.cs, ROGUEWAVESMODE_PAD).
+    public static class InputSystem
+    {
+        public static TDevice AddDevice<TDevice>(string name = null) where TDevice : InputDevice { throw null; }
+    }
 }
 
 namespace UnityEngine.InputSystem.Controls

@@ -299,8 +299,27 @@ public static partial class RWTest
         catch (Exception e) { Info("input", "the focused card's leave: " + e.Message); }
     }
 
+#if ROGUEWAVESMODE_PAD
+    // PC round (test only): a virtual gamepad is the last device used for the whole launch, as a pad touched before the
+    // start would make it, so the flow runs in the game's gamepad mode (pitfall #177). Set again four times a second in
+    // case a stray mouse event takes it back.
+    static IEnumerator HoldPad()
+    {
+        UnityEngine.InputSystem.Gamepad pad = UnityEngine.InputSystem.InputSystem.AddDevice<UnityEngine.InputSystem.Gamepad>("RW test pad");
+        while (true)
+        {
+            Blockage.Bl_Inputs.Lastdevice = pad;
+            yield return new WaitForSecondsRealtime(0.25f);
+        }
+    }
+#endif
+
     public static IEnumerator Flow()
     {
+#if ROGUEWAVESMODE_PAD
+        RogueWavesModeMod.Instance.StartCoroutine(HoldPad());
+        yield return new WaitForSecondsRealtime(1f);
+#endif
         Info("input", InputMode() + " at the start (the last device used; a gamepad changes where the boat parks and what a dialog's line shows)");
         yield return Until(() => UnityEngine.Object.FindObjectOfType<Mainmenu_Main>() != null, 120f);
         Mainmenu_Main menu = UnityEngine.Object.FindObjectOfType<Mainmenu_Main>();
