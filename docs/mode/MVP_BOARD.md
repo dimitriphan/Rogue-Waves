@@ -18,7 +18,7 @@ icons and no game pictures; Inter stands in for the game's font, as in the chart
 | **Map board** ("SHIP'S LOG") | A won map's leave vote passes (`20_Vote.cs` "leaving"): the board first, then the Direction picks and the next-map vote | every machine, each player's own card marked |
 | **Map board, late** | A won map that ends in a bonus Tide instead (it still counts as won and saves what the bonus Tides earned, `06_Campaign.cs` `MapEnd`): the same board over the stock end screen (`~untested: drawing over the end screen~`) | every machine |
 | **Voyage board** ("THE VOYAGE") | The campaign's end. Map 10 won: its map board, then the Voyage board, then the stock win path (`20_Vote.cs` `CloseBoard`, then `Leave()`, no picks). The last retry lost: the Voyage board alone, over the end screen | every machine; the run's totals |
-| **On a key** | Tab opens the last board again and Tab closes it (`~Tab~`; not while typing, a dialog or the chart view is up), so a friend who blinked can read it | the one who pressed |
+| **On a key** | Tab opens the last board again and Tab closes it (`~Tab~`; not while typing, a dialog or the chart view is up; since 2026-11-12 Tab opens the sea chart where it can, so the board's Tab is for a Tide running), so a friend who blinked can read it | the one who pressed |
 
 - Multiplayer only: with one player in the map the board is skipped (`~solo: no board~`). Alone, the stock end screen
   already says it all.

@@ -84,7 +84,7 @@ today's, `SEA_CHART.md` §7 step 2); there is no vote then, so the view shows fo
 | On the boat, while it sails | A banner "SAILING TO X, AS VOTED" with the map's Danger and weather (or the Cove's rest); a mini chart inking the lane as the boat goes, where the game's own pieces leave room (left edge first, 2026-11-06); in the 3D chart white corner brackets on the island it sails to | none |
 | On the boat, arrived | The Setup panel as today; the mini chart stays in its corner | as today |
 | On the boat with no vote (the host is asked, `05_Boat.cs` `AskHere`) | As the map vote | as the map vote |
-| Any time on a chart or in a map's break | The chart view, read only, toggled by a key (~M~) | the key again, or a close button |
+| Any time on a chart or in a map's break | The chart view, read only, toggled by a key (M or Tab, §7) | the key again, or a close button |
 
 ![the boat while it sails](../concepts/art/chart_look_boat.png)
 
@@ -211,7 +211,7 @@ weather billboard. A campaign started before the change continues without stops.
 | `03_Chart.cs`, `concept-tools/sea_chart.py` | The stops' second stream (§4.3), ported from `sea_chart_view.py`'s `stops()`; `--check` lines gain the stop | compiles; the Python and C# lines compared | the `CHART` lines in the PC log |
 | `06_Campaign.cs`, `13_Card.cs` | `RW_Campaign_Stops` and the name's `S`; the route counts rows sailed (a Cove's column included); the Cove's gift saved with its column in one write; the second vote's winner kept (`RW_Campaign_After`); the campaign card's "Map N of 10" becomes "Row N of 10" on charts with stops | compiles | `Continue` at the Cove |
 | `21_Difficulty.cs`, `14_Run.cs`, `24_Trinkets.cs` | A Wreck plays one row ahead; its pay | compiles | the numbers in the log |
-| `12_Menu.cs` or the view | The key (~M~) read with `InputSystem.Keyboard.current`, ignored while a chat or text field has focus, never while the choice dialog is up | compiles | no clash with the game's keys; typing "m" in chat |
+| `12_Menu.cs` or the view | The keys (M and Tab, §7) read with `InputSystem.Keyboard.current`, ignored while a chat or text field has focus, never while the choice dialog is up | compiles | no clash with the game's keys; typing "m" in chat |
 | `99_SelfTest.cs`, `97_Shots.cs` | New checks CV1-CV12 (§8) and pictures of the vote and the sailing boat for his eye | compiles | runs in the self-test |
 | `08_Icons.cs`, temporary art | 12 px coloured pixel icons (Cove, Wreck, harbour, tick, boat; `sea_chart_look.py` `PIX`) in `Art/Temporary` (`docs/TEMP_ART.md`) | drawn here | his eye |
 
@@ -240,11 +240,18 @@ No kit change was needed to write it; anything the PC teaches goes to kit `docs/
 
 ## 7. Choices for Dimitri (defaults taken; the proposal doesn't wait on them)
 
+**His verdict (2026-11-12, after chart round 1's pictures):** "Chart design flows ok", the defaults stand ("Default to
+the rest"); Tab opens the chart as well as M; the after-win WHERE NEXT? opens the chart by itself; fix the UI overlaps
+in the pictures. Built in the 2026-11-12 PR (compiled only): Tab beside M (where the chart can't open, a Tide running,
+Tab stays the MVP board's), the view drawn again whenever the map vote's dialog stands beside an empty half, the
+legend kept inside the frame, a long map name standing on its card's bottom rim, and the dialog keeping its place until
+it has gone.
+
 1. ~~New kinds of stop~~: **answered 02:28Z, rest and treasure stops** (§4).
 2. The Cove's gift: ~a retry back, or a Direction rank when none is spent~; its rows ~4 and 9~.
 3. The Wreck: ~one row harder~, ~one Trinket of 3~ for each player; its rows ~2-3 and 6-8~.
 4. Difficulty after a rest follows the row: ~yes~.
-5. The key that opens the chart: ~M~. Changing a vote before the timer ends: ~on~. Others' votes on the chart:
+5. The key that opens the chart: M and Tab (his word, 2026-11-12). Changing a vote before the timer ends: ~on~. Others' votes on the chart:
    ~later~. The mini chart on the boat: ~top right, all the time on the chart~; since the full test (2026-11-06,
    `docs/reports/PC_FULL_2026-11-06.md` §5) ~the first spot the game's pieces leave clear, down the left edge, then the
    right~ (`26_ChartView.cs` `Mini`).

@@ -5,7 +5,8 @@
 //   live    a new board number on the vessel opens it; Continue (click, Enter, Space or the pad's south button) tells the
 //           host this player is done; it closes when the host blanks the lines, or by itself a little after its time
 //           (a board over the end screen has no host step to close it)
-//   look    ~Tab~ opens the last board again in a map, read only; Tab, Enter or a dialog closes it
+//   look    ~Tab~ opens the last board again in a map, read only, where the sea chart's Tab doesn't open the chart
+//           (a Tide running); Tab, Enter or a dialog closes it
 // Its own Canvas above the chart view. Pictures sit on whole canvas units, one unit an art pixel (pitfall #156).
 using System;
 using System.Collections.Generic;
@@ -135,7 +136,8 @@ public static class RWBoardView
     static bool TabPressed()
     {
         UnityEngine.InputSystem.Keyboard k = UnityEngine.InputSystem.Keyboard.current;
-        return k != null && k[UnityEngine.InputSystem.Key.Tab].wasPressedThisFrame && !RWChartView.Typing();
+        // Tab opens the sea chart too (Dimitri 2026-11-12): a press the chart view answered this frame is not the board's.
+        return k != null && k[UnityEngine.InputSystem.Key.Tab].wasPressedThisFrame && !RWChartView.Typing() && RWChartView.KeyFrame != Time.frameCount;
     }
 
     static bool ContinuePressed()
