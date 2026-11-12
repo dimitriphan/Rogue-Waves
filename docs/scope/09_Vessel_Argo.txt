@@ -14,7 +14,7 @@
 			- Difficulty: Intermediate
 			- Archetype: No walls; control the field instead. Slow foes, pin them, reel them in, and blast what's stuck
 			- In-game line: Sturdy, slow melee, hits two at once
-			- Look: an offshore drilling-rig worker, "Last Watch": ochre hardhat and work coat over dark teal waders, a steel face guard with pale eyes, strands of kelp, a heavy two-handed pipe wrench across the body (Dimitri's ChatGPT redesign, 2026-11-07); the Nauts are small hardhat workers in yellow, red or green coats
+			- Look: an offshore drilling-rig worker, "Last Watch": a pointed ochre hood-hat and work coat over dark teal waders, a steel face guard with two pale lenses, a one-handed adjustable wrench with a solid head and one longer jaw, no kelp (Dimitri's ChatGPT redesign, 2026-11-07, key argo_naut_key_v1; wording your yes, 2026-11-12); the Nauts are small hardhat workers in yellow, red or green coats / The sheets in the game still show the open U jaw until ChatGPT's edit pass (docs/art/ARGO_EDITS_2026-11-12.md) comes back \
 			- Towers look: low-poly and sleek: brass domes, portholes and rivets on the top and front faces
 			- Accent colour: sea blue
 			- Sprites: ChatGPT's redesign (ModSource/Argo/Art, 2026-11-07; the complete set with Sonar, tab icon and the approved fall 2026-11-08)

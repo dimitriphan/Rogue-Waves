@@ -37,6 +37,7 @@ PART 1: HOW WE WORK, EVERY STEP
 
 The drawing rules for every step:
 - Pixel art at 20 pixels per game unit. Every pixel fully opaque or fully clear (the splash's inside fill is the one exception, Step 9).
+- The claws stay (Dimitri, 2026-11-12): the pale E4DEDA spikes on both hands and along the arm on the floor are long claws, and the arm on the floor is attached at the back, dragging behind, palm facing up. Every frame and every facing keeps them.
 - Only the key frame's 8 colours: 93CCA1, 60A871, 9A938E, E4DEDA, 1F3325, E6D85A, 4F8C5E, E58CC0. A needle, thread, dust or flash may add colours only when Dimitri OKs each one at its quiz.
 - No outline, no dark rim, no pure black 000000, no gradient, dithering, blur, glow or anti-aliasing.
 - Light from the upper left: left and top edges keep the light tone; the right side, the underside and whatever sits under an overhang take the shade.
