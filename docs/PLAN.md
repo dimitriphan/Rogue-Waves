@@ -246,8 +246,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
-  `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
-  (08's and 09's Look lines changed after, #193); his PC's copy waits for a PC round. Dated history:
+  `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 15) equal `8b4c916`;
+  his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
 - **Next, in order:** the mode flow regression's fix (`PC_ART_ROUND1_2026-11-07.md` §3 and §5; **waits for his word**,
   a release blocker); then a PC round with it, #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
@@ -1806,6 +1806,8 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   pointed hood-hat, two lenses, one-handed adjustable wrench, no kelp. All five Argo asks (A1, A2, D1, D2, N1) go to
   ChatGPT as `docs/art/ARGO_EDITS_2026-11-12.md`; the game's 19 Argo files equal the reset's Argo finals. New copies:
   project files `chatgpt/prompts/argo_edits_2026-11-12.txt`, `chatgpt/prompts/spool_claws_2026-11-12/`. Docs only.
+- **2026-11-12: scope 08 and 09 re-synced** (Dimitri: "Sync"): #193's Look lines; project-files `scope/` and the Scope Editor
+  (version 15) equal `8b4c916`. Docs only.
 
 ### Decisions
 
