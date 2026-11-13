@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "reviewing",
-  "started": "2026-11-13T12:47:24Z",
-  "step": "PR #206 up (campaign module), waiting for Codex",
+  "state": "shipped",
+  "started": "2026-11-13T12:50:32Z",
+  "step": "PR #206 merged (1304727): campaign module; wants a PC round",
   "helpers": [],
-  "updated": "2026-11-13T12:47:24Z"
+  "updated": "2026-11-13T12:50:32Z"
 }
