@@ -1875,7 +1875,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   code did (`Pick`, `Unpick` and `ClearChoice` don't, as before). The self-tests still set fields: a
   `ROGUEWAVESMODE_SELFTEST` build keeps them open, so no test changed. New checks C1-C12 in `rules/RulesTest.cs` play
   campaigns here (ten maps won, three losses and the fourth, a quit in a map then Continue, a Cove's retry or rank, a
-  slot switch, a damaged save, the saved keys by name and value); eleven deliberate breaks of the rules were each
+  slot switch, a damaged save, the saved keys by name and value); nine deliberate breaks of the rules were each
   caught. Ran here: `rules_check.py` 36 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
   GAPS and FEEL, 0 errors. Not run on the PC, and unlike the first step this one changed who calls what: the next PC
   round's mode self-test and flow are its proof. No save key, value or number changed. No pitfall or kit number used.
