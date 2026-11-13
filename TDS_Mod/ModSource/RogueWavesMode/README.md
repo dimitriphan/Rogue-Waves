@@ -29,7 +29,8 @@ code items) and kit 1.12 (`docs/reports/BUILD_UNBUILT_2026-11-05.md`, whose §5 
 | `Code/04_World.cs` | the chart as a world: built on every machine from its name `RW_Chart_<seed>_<route>` |
 | `Code/04_WorldNames.cs` | rules file: `RWWorld`'s names (`Name`, `Parse`), the chart of a seed, `Here` and `Choices` on a route |
 | `Code/05_Boat.cs` | on the boat: register, warp, blacklist (only the lost map during a replay), sail to a choice, pick it, keep the save clean, take the party home when no campaign is on |
-| `Code/06_Campaign.cs` | the host's campaign: seed, route, retries, the map to replay and the map in play in the save; `New`, `Continue`, `Stop`; a map won at Tide 15, lost at its end or when the host leaves it; `Live` leaves it behind after a slot switch |
+| `Code/06_Campaign.cs` | the host's campaign, the game's side (its header describes the whole): a map's start and end with their boards and end title, the save-slot watch behind `Live`, the stock world, and the few calls the rules make to the game |
+| `Code/06_CampaignRules.cs` | rules file: the campaign's state and what each event does to it (`New`, `Continue`, a map started, won or lost, a retry, `Rest` at a Cove, the end), the one writer of its save keys, and the steps the boat and the vote take (`Choose`, `ChooseAfter`, `Pick`, `Unpick`, `ClearChoice`, `StagingDone`); only this class writes the state outside a self-test build |
 | `Code/06_CampaignSave.cs` | rules file: `RWCampaign.Saved`, the campaign read back from the save with a damaged key made safe; `WinTide`, `RetriesPerCampaign` |
 | `Code/07_Weather.cs` | Rising Water, Quickening Current, Nesting Ground; each one's look (light mist, storm grey, dusk), set by every machine (2026-11-05) |
 | `Code/08_Icons.cs` | the weather icons for the warning popup |
@@ -83,7 +84,8 @@ python3 ../Tools/cloud-check/rules_check.py        # the rules files run here: t
 
 **Rules files.** A file whose first line starts `// RULES FILE` names no engine type: `rules_check.py` compiles all of
 them whole with `Tools/cloud-check/rules/Standins.cs` in place of the game (the save as a dictionary, the log, `Mathf`'s
-sums, the map pool, a hero's shown name) and runs the save fuzz (F1-F7), the rule checks (`rules/RulesTest.cs`, R1-R16)
+sums, the map pool, a hero's shown name, the campaign's few calls to the game) and runs the save fuzz (F1-F7), the rule
+checks (`rules/RulesTest.cs`: R1-R16, and C1-C12, which play campaigns through `RWCampaign`'s own steps)
 and the chart's parity with `concept-tools/sea_chart.py` (seeds 1-300 and 20261009, with and without stops; `--seeds N`
 for more). A rule that needs no game goes into one of these files, as the other half of its `partial` class, with a
 check in `RulesTest.cs`; one that names an engine type there stops `rules_check.py` with a compile error. Chart parity

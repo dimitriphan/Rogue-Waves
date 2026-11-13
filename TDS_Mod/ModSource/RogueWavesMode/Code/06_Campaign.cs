@@ -22,222 +22,18 @@
 // writes it into another slot (kit docs/23, #99).
 public static partial class RWCampaign
 {
-    public static bool Active;
-    public static uint Seed;
-    public static readonly List<int> Route = new List<int>();
-    public static int Retries = RetriesPerCampaign;
-    public static int Replay = -1;             // a column of the next row: the lost map the boat must replay; -1 for none
-    public static int Playing = -1;            // the column of the chart map being played (not yet won or lost); -1 for none
-    public static int HighestTide;             // the highest Tide started in this map (host)
-    public static int Choice = -1;             // a column of the next row the boat sails to by itself (the vote's winner)
-    public static int After = -1;              // when Choice is a Cove: the column of the row after it, the second vote's winner
-    public static bool Stops;                  // the chart has its Coves and Wrecks (the name's "S", RWKeys.Stops)
-    public static bool StopsOnNew = true;      // a new campaign's chart gets them (the older self-tests turn it off)
-    public static string Rested = "";          // the last Cove's gift, said and logged (self-test)
-    public static RWChart.Node Next;           // the node picked on the boat, whose map is loading or being played
-    public static bool Staging;                // a new campaign's first vote is still to come (docs/scope/04 [Sea Chart]: the staging map)
-    public static string Ended = "";           // how the last campaign ended in this launch: "won" or "lost" (self-test, log)
-    public static int WonStop;                 // the stop the map in hand was (a Wreck pays when won, RWVote)
-    public static bool WonThisMap;             // the map in hand was won (its bonus Tides, if any, are running or it just ended)
-    public static int LastMap;                 // the number of the map last in play (the end screen's title)
     static object save;                        // the Bla_Data.Playerdata the campaign lives in
 
-    public static RWChart.Chart Chart { get { return RWWorld.Chart(Seed, Stops); } }
-    public static string WorldName() { return RWWorld.Name(Seed, Route, Retries, Stops); }
-    public static RWChart.Node Here { get { return RWWorld.Here(Chart, Route); } }
-
-    // The maps the boat may go to next: the next row's links of where it stands, or only the map to replay.
-    public static List<RWChart.Node> Open()
-    {
-        List<RWChart.Node> choices = RWWorld.Choices(Chart, Route);
-        if (Replay < 0)
-            return choices;
-        List<RWChart.Node> one = new List<RWChart.Node>();
-        foreach (RWChart.Node n in choices) if (n.Col == Replay) one.Add(n);
-        return one.Count > 0 ? one : choices;
-    }
-
-    // A new campaign: seed 0 draws one. Host only.
-    public static void New(uint seed)
-    {
-        if (seed == 0)
-            seed = (uint)UnityEngine.Random.Range(1, int.MaxValue);
-        Seed = seed;
-        Stops = StopsOnNew;
-        Route.Clear();
-        Retries = RetriesPerCampaign;
-        Replay = Playing = Choice = After = -1;
-        Next = null;
-        Ended = "";
-        Active = true;
-        WonThisMap = false;
-        Staging = true;
-        save = Blockage.Tags.Bla_Data.Playerdata;
-        RWRun.Clear();
-        if (RWUtil.Has(RWData.SaveFolder, RWKeys.Lobby)) RWUtil.Remove(RWData.SaveFolder, RWKeys.Lobby);   // a new campaign picks its lobby again
-        Save();
-        RWRun.Save();
-        RWTips.MarkSailed();
-        RWLog.Info("new campaign, seed " + Seed + (Stops ? " with its Coves and Wrecks" : "") + ", " + Retries + " retries");
-    }
-
-    // The campaign in the host's save, if there is one. A map still in play there was left while it ran (the host quit
-    // or the game closed): it counts as lost now. A campaign whose ten maps are won is completed instead.
-    public static bool Continue()
-    {
-        uint seed;
-        List<int> route;
-        int retries, replay, playing;
-        if (!Saved(out seed, out route, out retries, out replay, out playing))
-            return false;
-        Seed = seed;
-        Stops = SavedStops();
-        Route.Clear();
-        Route.AddRange(route);
-        Retries = retries;
-        Replay = replay;
-        Playing = playing;
-        Choice = RWUtil.ReadInt(RWData.SaveFolder, RWKeys.Choice, -1);
-        After = RWUtil.ReadInt(RWData.SaveFolder, RWKeys.After, -1);
-        // A damaged pair: the column after a Cove only with a Cove to sail to first.
-        RWChart.Node cove = null;
-        foreach (RWChart.Node n in Open()) if (n.Col == Choice && n.Stop == RWChart.Cove) cove = n;
-        if (cove == null || !cove.Links.Contains(After)) After = -1;
-        Next = null;
-        Ended = "";
-        Active = true;
-        WonThisMap = false;
-        // Past map 1 the staging map is long over, whatever an older save says (MODE-A1: it was left on by a quit before map 1).
-        Staging = Route.Count == 0 && RWUtil.ReadString(RWData.SaveFolder, RWKeys.Staged) == "1";
-        save = Blockage.Tags.Bla_Data.Playerdata;
-        RWRun.Load();
-        RWTips.MarkSailed();
-        RWLog.Info("continued campaign, seed " + Seed + ", " + Route.Count + " maps sailed, " + Retries + " retries left" + (Replay >= 0 ? ", replaying column " + Replay : ""));
-        if (Playing >= 0)
-            Lost("the host left map " + (Route.Count + 1) + " while it ran, in an earlier launch");
-        if (Live && Route.Count >= RWChart.Rows)
-            Complete();
-        return Live;
-    }
-
-    // Ends the campaign and takes it out of the save (a won or failed campaign keeps nothing, docs/scope/04 [Campaign]).
-    public static void Stop()
-    {
-        Active = false;
-        Choice = Replay = Playing = After = -1;
-        Next = null;
-        save = null;
-        foreach (string key in new[] { RWKeys.Seed, RWKeys.Route, RWKeys.Retries, RWKeys.Replay, RWKeys.Playing, RWKeys.Choice, RWKeys.Staged, RWKeys.Lobby, RWKeys.Stops, RWKeys.After })
-            if (RWUtil.Has(RWData.SaveFolder, key)) RWUtil.Remove(RWData.SaveFolder, key);
-        RWRun.Forget();
-        RWUtil.Flush();
-        RWLog.Info("campaign stopped");
-    }
-
-    static void Save()
-    {
-        if (!Live)
-            return;
-        string digits = "";
-        foreach (int c in Route) digits += c.ToString();
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Seed, Seed.ToString());
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Route, digits);
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Retries, Retries.ToString());
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Replay, Replay >= 0 ? Replay.ToString() : "");
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Playing, Playing >= 0 ? Playing.ToString() : "");
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Choice, Choice >= 0 ? Choice.ToString() : "");
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Staged, Staging ? "1" : "");
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.Stops, Stops ? "1" : "");
-        RWUtil.WriteString(RWData.SaveFolder, RWKeys.After, After >= 0 ? After.ToString() : "");
-        RWUtil.Flush();
-    }
-
-    // The vote's winner, kept so a party that stops on the boat sails to it after Continue.
-    public static void SaveChoice()
-    {
-        Save();
-    }
-
-    // ---------------------------------------------------------------- the Cove (host, on the boat)
-
-    public const string RetryBack = "retry", RankUp = "rank";
-
-    // The boat reached a Cove (docs/mode/CHART_NAVIGATION.md §4.1): the route counts it as a row sailed, the party gets a retry
-    // back (up to 3) or, with all 3 left, each player's lowest-ranked held Direction goes up a rank, and the second vote's
-    // winner becomes the next choice. All of it in one write, so Continue after a quit here neither gives the gift twice nor
-    // skips the leg after it. The chart's name changes once (route and retries together): the boat warps onto it (RWBoat).
-    public static bool Rest(RWChart.Node cove)
-    {
-        if (!Live || cove == null || cove.Stop != RWChart.Cove || !Open().Contains(cove))
-            return false;
-        Route.Add(cove.Col);
-        string gift;
-        if (Retries < RetriesPerCampaign)
-        {
-            Retries++;
-            gift = RetryBack;
-        }
-        else
-        {
-            gift = RankUp;
-            foreach (long s in RWRun.Sessions())
-                RWDirections.RankLowest(RWRun.For(s));
-        }
-        Choice = cove.Links.Contains(After) ? After : -1;   // a stale winner from another Cove: the host is asked
-        After = Replay = Playing = -1;
-        Next = null;
-        Save();
-        RWRun.Save();
-        Rested = gift;
-        RWLog.Info("rested at " + cove.Name + " (row " + cove.Row + "): " + (gift == RetryBack ? "a retry back, " + Retries + " left" : "every player's lowest Direction goes up a rank") + (Choice >= 0 ? "; on to column " + Choice : "; the host picks the leg after it"));
-        RWRejoin.Say(gift == RetryBack ? "The Cove: the party rests and gets a retry back (" + Retries + " left)." : "The Cove: the party rests. With every retry in hand, each player's lowest Direction goes up a rank.");
-        return true;
-    }
+    // The campaign's state and its steps are 06_CampaignRules.cs, which runs without the game; what it reads back from
+    // the save is 06_CampaignSave.cs. Here: the game's side of a map's start and end, the slot guard, the stock world,
+    // and at the end the few things the rules ask of the game.
 
     // ---------------------------------------------------------------- the map (host, ModKitTides)
 
     // A chart map starts: it is in play, and in the save, until it is won or lost.
     public static void MapStart()
     {
-        HighestTide = 0;
-        WonThisMap = false;
-        WonStop = RWChart.NoStop;
-        if (!Live || Next == null)
-            return;
-        string plan = Tds_Multiplayerinfo.Instance != null ? Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString() : "";
-        if (plan != RWMode.Twin(Next.Plan))
-        {
-            RWLog.Warn("map " + plan + " started, not the chart's " + RWMode.Twin(Next.Plan) + ": it doesn't count for the campaign");
-            return;
-        }
-        if (Replay >= 0 && Next.Col != Replay)
-            RWLog.Warn(Next.Name + " started, but the boat was to replay column " + Replay);
-        Playing = Next.Col;
-        LastMap = Route.Count + 1;
-        // A counted chart map ends the staging map's turn, also when the party sailed past it: left on, every later boat
-        // opened the harbour again and replayed it with free picks (MAX MODEA-1).
-        Staging = false;
-        Save();
-        RWLog.Info("playing " + Next.Name + " (" + Next.Plan + "), map " + (Route.Count + 1) + " of " + RWChart.Rows + (Replay >= 0 ? ", a replay" : "") + ", " + Retries + " retries left");
-    }
-
-    // Tide 15 cleared: the map is won, and every Tide after it is a bonus Tide.
-    public static void Tide(int wave)
-    {
-        if (wave > HighestTide)
-            HighestTide = wave;
-        if (!Live || Playing < 0 || wave <= WinTide)
-            return;
-        Cleared();
-    }
-
-    // Tide 15 is cleared: from its break, once no foe is left, or when Tide 16 starts. The map is won now.
-    public static void Cleared()
-    {
-        if (!Live || Playing < 0)
-            return;
-        Won("Tide " + WinTide + " cleared");
-        RWRejoin.Say("Tide " + WinTide + " cleared: this map is won. The Tides from here are bonus Tides.");
+        MapStarted(Tds_Multiplayerinfo.Instance != null ? Tds_Multiplayerinfo.Instance.Gameplan.Value.ToString() : "", RWMode.Twin);
     }
 
     // ModKitTides.MapEnd, host. "Win" before Tide 15 is cleared is a won map too (the self-test's, and the vote to
@@ -270,89 +66,6 @@ public static partial class RWCampaign
             Complete();
     }
 
-    // The main menu appeared: the campaign in memory goes, its save stays for Continue. A map still in play there counts
-    // as lost when Continue reads it.
-    public static void AtMainMenu()
-    {
-        if (Active)
-            LeaveBehind("the party went back to the main menu");
-    }
-
-    // Host, on the boat, every frame: a map still in play was left while it ran (the host quit to the main menu), and a
-    // campaign whose last map is won is complete.
-    public static void OnBoat()
-    {
-        if (!Live)
-            return;
-        if (Playing >= 0)
-            Lost("the host left map " + (Route.Count + 1) + " while it ran");
-        if (Live && Route.Count >= RWChart.Rows)
-            Complete();
-    }
-
-    static void Won(string why)
-    {
-        RWChart.Node node = Chart.At(Route.Count + 1, Playing);
-        WonStop = node != null ? node.Stop : RWChart.NoStop;
-        Route.Add(Playing);
-        Playing = Replay = -1;
-        Next = null;
-        WonThisMap = true;
-        foreach (long s in RWRun.Sessions())
-            RWRun.For(s).Owed = true;
-        Save();
-        RWRun.Save();
-        RWLog.Info("map " + Route.Count + " won (" + why + "): sailed " + (node != null ? node.Name : "?") + ", route " + WorldName() + (Route.Count >= RWChart.Rows ? ", the chart is done" : ""));
-    }
-
-    // The team replays the map (Next stays on it, so a restarted map still counts), or, with no retry left, the
-    // campaign ends.
-    public static bool AutoReplay = true;    // off only in the self-test's pretend losses
-
-    public static void Lost(string why)
-    {
-        int col = Playing;
-        Playing = -1;
-        RWRun.Load();        // what the lost map earned goes: it replays from the last save (docs/scope/04 [Retries])
-        if (Retries > 0)
-        {
-            Retries--;
-            Replay = col;
-            if (AutoReplay) Choice = col;   // the boat sails back to it by itself, as to a vote's winner
-            Save();
-            RWLog.Info("map " + (Route.Count + 1) + " lost (" + why + "): " + Retries + " retries left, the boat replays column " + col);
-            RWRejoin.Say("Map lost. The team replays it from the boat: " + Retries + (Retries == 1 ? " retry" : " retries") + " left.");
-            return;
-        }
-        RWRejoin.Say("Map lost with no retries left: the campaign is over.");
-        RWBoard.ShowVoyage(RWBoard.NextEnd);    // over the end screen: the maps won before (docs/mode/MVP_BOARD.md §1)
-        End("lost", "map " + (Route.Count + 1) + " lost with no retries left (" + why + ")");
-    }
-
-    static void Complete()
-    {
-        RWRejoin.Say("All " + RWChart.Rows + " maps sailed: the campaign is won.");
-        End("won", "all " + RWChart.Rows + " maps won; Depth, its reward, is on hold");
-    }
-
-    static void End(string how, string why)
-    {
-        Ended = how;
-        RWLog.Info("campaign " + how + ": " + why);
-        Stop();
-    }
-
-    // Active, in the save it came from. Read this, not Active, before acting on the campaign.
-    public static bool Live
-    {
-        get
-        {
-            if (Active && !ReferenceEquals(save, Blockage.Tags.Bla_Data.Playerdata))
-                LeaveBehind("the save slot was switched or cleared");
-            return Active;
-        }
-    }
-
     // Once at launch, every machine (only the host ever has a campaign). The game invokes these without a try.
     public static void Install()
     {
@@ -370,20 +83,6 @@ public static partial class RWCampaign
     {
         try { _ = Live; }
         catch (Exception e) { RWLog.Warn("campaign: slot change: " + e.Message); }
-    }
-
-    // Forgets the campaign here without touching any save: after a switch its own slot still holds it for Continue.
-    static void LeaveBehind(string why)
-    {
-        Active = false;
-        Seed = 0;
-        Route.Clear();
-        Retries = RetriesPerCampaign;
-        Choice = Replay = Playing = After = -1;
-        Stops = false;
-        Next = null;
-        save = null;
-        RWLog.Info("campaign left behind: " + why + "; it stays in its own slot");
     }
 
 #if ROGUEWAVESMODE_SELFTEST
@@ -406,4 +105,29 @@ public static partial class RWCampaign
         if (world == "") world = main != null && main.Defaultworld != null ? main.Defaultworld.Objectname : "";
         if (gameplan == "") gameplan = main != null ? main.Defaultgameplan : "";
     }
+
+    // ---------------------------------------------------------------- what the rules ask of the game (06_CampaignRules.cs)
+
+    static uint DrawSeed() { return (uint)UnityEngine.Random.Range(1, int.MaxValue); }
+    static void HoldSave() { save = Blockage.Tags.Bla_Data.Playerdata; }
+    static void DropSave() { save = null; }
+    static bool SameSave() { return ReferenceEquals(save, Blockage.Tags.Bla_Data.Playerdata); }
+    static void Say(string line) { RWRejoin.Say(line); }
+    static void TipsSailed() { RWTips.MarkSailed(); }
+
+    // A won map owes every player a Direction pick.
+    static void OweEveryone()
+    {
+        foreach (long s in RWRun.Sessions())
+            RWRun.For(s).Owed = true;
+    }
+
+    // The Cove's gift with every retry in hand: each player's lowest-ranked held Direction goes up a rank.
+    static void RankEveryone()
+    {
+        foreach (long s in RWRun.Sessions())
+            RWDirections.RankLowest(RWRun.For(s));
+    }
+
+    static void ShowVoyage() { RWBoard.ShowVoyage(RWBoard.NextEnd); }
 }
