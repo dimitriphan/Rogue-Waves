@@ -113,6 +113,7 @@ public static class RWMode {
     'public static class RWCampaign {\n' + statement(campaign, r'public const int RetriesPerCampaign') + '\n'
     + members(campaign, r'public static bool Saved\(') + '\n' + members(campaign, r'static bool SavedStops\(') + '\n}',
     'public static class RWTrinkets { public const int StormTides = ' + re.search(r'StormTides = (\d+)', open(os.path.join(code, '24_Trinkets.cs'), encoding='utf-8').read()).group(1) + '; }',
+    'public static class RWBoard { public const int Stats = ' + re.search(r'\bStats = (\d+)', open(os.path.join(code, '27_Board.cs'), encoding='utf-8').read()).group(1) + '; }',
     'public static class RWCardinals { public const int Stacks = ' + re.search(r'const int Stacks = (\d+)', open(os.path.join(code, '17_Cardinals.cs'), encoding='utf-8').read()).group(1) + '; }',
     src('98_SaveFuzz.cs'),
     '''public static class SaveFuzzMain {
