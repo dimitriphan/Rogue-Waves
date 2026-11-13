@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "building",
-  "started": "2026-11-13T12:41:54Z",
-  "step": "Building the campaign state module",
+  "state": "reviewing",
+  "started": "2026-11-13T12:47:24Z",
+  "step": "PR #206 up (campaign module), waiting for Codex",
   "helpers": [],
-  "updated": "2026-11-13T12:41:54Z"
+  "updated": "2026-11-13T12:47:24Z"
 }
