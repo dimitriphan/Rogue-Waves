@@ -100,4 +100,10 @@
       "Bash(git commit *--amend*)"
     ]
   }
+    ]
+  },
+  "enabledPlugins": {
+    "mattpocock-skills@claude-plugins-official": true
+  }
+}
 }
