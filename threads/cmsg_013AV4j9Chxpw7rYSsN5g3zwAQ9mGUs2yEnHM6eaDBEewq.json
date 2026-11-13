@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwAQ9mGUs2yEnHM6eaDBEewq",
   "thread": "Apply Claude Code best practices",
-  "state": "waiting",
-  "started": "2026-11-13T04:48:05Z",
-  "step": "Pick which best-practice lessons to apply",
+  "state": "building",
+  "started": "2026-11-13T04:56:28Z",
+  "step": "Opening the PR for lessons 2-6",
   "helpers": [],
-  "updated": "2026-11-13T04:48:05Z"
+  "updated": "2026-11-13T04:56:28Z"
 }
