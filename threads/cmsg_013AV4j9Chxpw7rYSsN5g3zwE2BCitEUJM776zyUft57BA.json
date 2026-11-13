@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "building",
-  "started": "2026-11-13T15:09:49Z",
-  "step": "Candidate 4: kit modules for the buildings' start-up",
+  "state": "reviewing",
+  "started": "2026-11-13T15:17:09Z",
+  "step": "PR #208 (kit 1.16 brain) waits for Codex",
   "helpers": [],
-  "updated": "2026-11-13T15:09:49Z"
+  "updated": "2026-11-13T15:17:09Z"
 }
