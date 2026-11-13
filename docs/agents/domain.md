@@ -28,8 +28,8 @@ creates them when a term or a decision is actually resolved.
 ## Use the project's vocabulary
 
 When your output names a domain concept (an issue title, a refactor proposal, a hypothesis, a test name), use the term
-as `GLOSSARY.md`, the scope and `docs/STYLE.md` define it. Don't drift to a synonym they avoid: **Trinkets**, never
-"Vessel Cardinals"; **Cardinals**, never "Team Cardinals".
+as `GLOSSARY.md`, the scope and `docs/STYLE.md` define it. Don't drift to a synonym they avoid: a vessel's own are
+**Trinkets**, the team's are **Cardinals**, and their retired names stay in save keys only.
 
 If the concept you need isn't defined yet, either you are inventing language the project doesn't use (reconsider) or
 there is a real gap (note it for `domain-modeling`).
