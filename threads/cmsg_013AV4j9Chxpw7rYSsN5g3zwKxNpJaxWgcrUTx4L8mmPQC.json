@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwKxNpJaxWgcrUTx4L8mmPQC",
   "thread": "Set up Matt Pocock's skills",
-  "state": "waiting",
-  "started": "2026-11-13T05:08:02Z",
-  "step": "Pick where the skills keep tickets; docs PR open",
+  "state": "shipped",
+  "started": "2026-11-13T05:11:20Z",
+  "step": "PR #204: Set up Matt Pocock's skills for the repository",
   "helpers": [],
-  "updated": "2026-11-13T05:08:02Z"
+  "updated": "2026-11-13T05:11:20Z"
 }
