@@ -1,5 +1,6 @@
 // The mode's rules, checked here without the game (rules_check.py): each check names the rule and where it is written.
-// R1-R16 the names, routes, player lines and difficulty; C1-C12 the campaign, played through its own steps.
+// R1-R16 the names, routes, player lines and difficulty; C1-C12 the campaign, played through its own steps;
+// V1-V9 the questions' text and the votes' counting.
 // These are the numbers the scope and the balance sweep set; a check that fails after a number was changed on purpose is
 // changed with it, in the same commit.
 using System;
@@ -16,6 +17,81 @@ public static class RulesTest
         Lines(check);
         Difficulty(check);
         Campaign(check);
+        Questions(check);
+        Tallies(check);
+    }
+
+    static List<int> Ints(params int[] n) { return new List<int>(n); }
+    static string Show(RWQuestion q) { return q.Kind + "|" + string.Join(",", q.Numbers) + "|row " + q.Row + (q.Redraw ? "|redraw" : "") + (q.Stay ? "|stay" : ""); }
+
+    // 20_VoteRules.cs RWQuestion: the text on a vessel's RW_Ask. Every machine in a lobby reads the host's, so these
+    // forms are a wire format: a check that fails here after a change means two builds would no longer understand each other.
+    static void Questions(Checker check)
+    {
+        string forms = RWQuestion.Directions(Ints(3, 7), false) + " " + RWQuestion.Directions(Ints(3, 7, 12), true) + " " + RWQuestion.Map(Ints(0, 2), -1, false) + " " + RWQuestion.Map(Ints(1, 3), -1, true)
+            + " " + RWQuestion.Map(Ints(0, 1, 2), 5, false) + " " + RWQuestion.Map(Ints(0, 2), 10, true) + " " + RWQuestion.Treasure(Ints(4, 9, 11)) + " " + RWQuestion.Leave();
+        check("V1 the questions are written as they have been: D:, M: with its row and stay mark, T:, L", forms == "D:3.7 D:3.7.12.r M:0.2 M:1.3.s M:5:0.1.2 M:10:0.2.s T:4.9.11 L", forms);
+        string read = Show(RWQuestion.Read("D:3.7.12.r")) + " " + Show(RWQuestion.Read("M:1.3.s")) + " " + Show(RWQuestion.Read("M:5:0.1.2")) + " " + Show(RWQuestion.Read("M:10:0.2.s"))
+            + " " + Show(RWQuestion.Read("T:4.9.11")) + " " + Show(RWQuestion.Read("L"));
+        check("V2 each reads back: its kind, its numbers in order, the row named, the redraw and stay marks", read == "D|3,7,12|row -1|redraw M|1,3|row -1|stay M|0,1,2|row 5 M|0,2|row 10|stay T|4,9,11|row -1 L||row -1", read);
+        string odd = Show(RWQuestion.Read("M:0.x.2.future")) + " " + Show(RWQuestion.Read("D:1.s.2")) + " " + Show(RWQuestion.Read("M:0.r")) + " " + Show(RWQuestion.Read("M:")) + " " + Show(RWQuestion.Read("M"))
+            + " " + Show(RWQuestion.Read("M::0.1")) + " " + Show(RWQuestion.Read("M:x:0.1")) + " " + Show(RWQuestion.Read("Q:1.2")) + " " + Show(RWQuestion.Read("")) + " " + Show(RWQuestion.Read(null));
+        check("V3 a part a build doesn't know is skipped, a mark counts only on its own kind, and a row that is no number names none",
+            odd == "M|0,2|row -1 D|1,2|row -1 M|0|row -1 M||row -1 M||row -1 M|1|row -1 M|1|row -1 Q|1,2|row -1 ||row -1 ||row -1", odd);
+        System.Random rng = new System.Random(20261113);
+        string alphabet = "DMTLQ:.rs0123456789-x ", broke = "";
+        for (int i = 0; i < 2000 && broke == ""; i++)
+        {
+            string what = "";
+            for (int n = rng.Next(12); n > 0; n--) what += alphabet[rng.Next(alphabet.Length)];
+            try { RWQuestion q = RWQuestion.Read(what); if (q.Kind.Length > 1 || (what != "" && q.Kind != what.Substring(0, 1))) broke = "[" + what + "] reads as kind " + q.Kind; }
+            catch (Exception e) { broke = "[" + what + "] throws " + e.GetType().Name; }
+        }
+        for (int i = 0; i < 500 && broke == ""; i++)
+        {
+            List<int> cols = new List<int>();
+            for (int n = 1 + rng.Next(4); n > 0; n--) cols.Add(rng.Next(40));
+            int row = rng.Next(3) == 0 ? rng.Next(11) : -1;
+            bool mark = rng.Next(2) == 0;
+            RWQuestion m = RWQuestion.Read(RWQuestion.Map(cols, row, mark)), d = RWQuestion.Read(RWQuestion.Directions(cols, mark)), t = RWQuestion.Read(RWQuestion.Treasure(cols));
+            string want = string.Join(",", cols);
+            if (string.Join(",", m.Numbers) != want || m.Row != row || m.Stay != mark || m.Redraw || string.Join(",", d.Numbers) != want || d.Redraw != mark || d.Stay || d.Row != -1 || string.Join(",", t.Numbers) != want)
+                broke = "no round trip: " + RWQuestion.Map(cols, row, mark);
+        }
+        check("V4 any text reads without a throw, and every question written reads back as asked (2000 damaged, 500 written)", broke == "", broke);
+        check("V5 the log lists a question's cards with commas, marks and all", RWQuestion.Listed("M:5:0.2.s") == "0,2,s" && RWQuestion.Listed("M:0.2") == "0,2", RWQuestion.Listed("M:5:0.2.s"));
+    }
+
+    // 20_VoteRules.cs RWTally (docs/scope/04 [Tides and Leaving]: "a majority leaves, nobody answering stays"; [Sea Chart]).
+    static void Tallies(Checker check)
+    {
+        int top;
+        List<int> cols = Ints(0, 2, 3);
+        string got = "";
+        got += RWTally.MapWinner(new[] { "2", "2", "3" }, cols, out top) + "/" + top + " ";            // the most votes
+        got += RWTally.MapWinner(new[] { "3", "2" }, cols, out top) + "/" + top + " ";                 // a tie: the first of the choices
+        got += RWTally.MapWinner(new string[0], cols, out top) + "/" + top + " ";                      // nobody answered: the first choice
+        got += RWTally.MapWinner(new[] { "1", "9", "x", "", "3" }, cols, out top) + "/" + top + " ";   // no choice, no number: nothing
+        got += RWTally.MapWinner(new[] { "3", "3", "0", "0" }, cols, out top) + "/" + top;
+        check("V6 the map vote: the most votes win, a tie or no answer goes to the first of the choices, a vote that is no choice counts for nothing", got == "1/2 1/1 0/0 2/1 0/2", got);
+        Dictionary<long, string> votes = new Dictionary<long, string>();
+        List<long> players = new List<long>(new long[] { 1, 2, 3, 4 });
+        int all;
+        string leave = "";
+        votes[1] = "Leave"; votes[2] = "Leave";
+        leave += RWTally.ToLeave(votes, players, out all) + "of" + all + (RWTally.Leaves(RWTally.ToLeave(votes, players, out all), all) ? "L " : "S ");     // a half stays
+        votes[3] = "Leave"; votes[4] = "Stay"; votes[77] = "Leave";                                                                                      // a vote from nobody in the map
+        leave += RWTally.ToLeave(votes, players, out all) + "of" + all + (RWTally.Leaves(RWTally.ToLeave(votes, players, out all), all) ? "L " : "S ");
+        votes.Clear(); votes[1] = ""; votes[2] = "leave";
+        leave += RWTally.ToLeave(votes, players, out all) + "of" + all + (RWTally.Leaves(RWTally.ToLeave(votes, players, out all), all) ? "L " : "S ");
+        leave += (RWTally.Leaves(0, 0) ? "L" : "S") + (RWTally.Leaves(1, 1) ? "L" : "S") + (RWTally.Leaves(1, 2) ? "L" : "S") + (RWTally.Leaves(2, 3) ? "L" : "S");
+        check("V7 the vote to leave: more than half of the players in the map leave; a half, nobody answering, or any other word stays", leave == "2of4S 3of4L 0of4S SLSL", leave);
+        string card = "" + RWTally.Card("2", 3) + RWTally.Card("0", 3) + RWTally.Card(null, 3) + RWTally.Card("3", 3) + RWTally.Card("-2", 3) + RWTally.Card("", 3) + RWTally.Card("x", 3);
+        check("V8 a Direction pick: the card picked, and the first card when time ran out or the pick is no card", card == "2000000", card);
+        List<string> sold = new List<string>(new[] { "A", "B", "C", "D", "E" }), offer = new List<string>(new[] { "D", "B", "E" });
+        string wreck = "" + RWTally.TreasureCard("1", offer, sold) + RWTally.TreasureCard("4", offer, sold) + RWTally.TreasureCard("3", offer, sold) + RWTally.TreasureCard("0", offer, sold)
+            + RWTally.TreasureCard(null, offer, sold) + RWTally.TreasureCard("9", offer, sold) + RWTally.TreasureCard("-1", offer, sold) + RWTally.TreasureCard("x", offer, sold);
+        check("V9 the Wreck's pick: the offered Trinket of that shelf index, and the first card for one not offered, off the shelf, or no pick", wreck == "12000000", wreck);
     }
 
     static List<int> Route(params int[] cols) { return new List<int>(cols); }

@@ -243,7 +243,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2: the game's gamepad
   mode, pitfall #177; fixed by #196, proven 2026-11-12 in `PC_FLOW_ROUND1_2026-11-12.md`, mouse 190/0, gamepad 190/0). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
-  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files and campaign module (`rules_check.py`; the module wants the mode's self-test and flow on the PC). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files, campaign module and vote rules (`rules_check.py`; they want the mode's self-test and flow on the PC). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
@@ -1879,6 +1879,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   caught. Ran here: `rules_check.py` 36 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
   GAPS and FEEL, 0 errors. Not run on the PC, and unlike the first step this one changed who calls what: the next PC
   round's mode self-test and flow are its proof. No save key, value or number changed. No pitfall or kit number used.
+- **2026-11-13: the questions' text and the votes' counting as modules** (Dimitri: "Go to a new section", then "Build A
+  and B" on the design's card; the review's candidate 3, two parts of three): new rules file `20_VoteRules.cs`.
+  `RWQuestion` is the one writer and the one reader of what the host puts on a vessel's `RW_Ask` (`Directions`, `Map`,
+  `Treasure`, `Leave`, `Read`): the host's three hand-built strings and the client's parsing in `RWAsk.Run` now go
+  through it, and the text is byte for byte what it was (`D:3.7.r`, `M:5:0.2.s`, `T:4.9.11`, `L`). `RWTally` holds the
+  counting the flow calls at the same moments as before: `MapWinner` (a tie or no answer: the first of the choices),
+  `ToLeave` and `Leaves` (a majority; a half stays), `Card` and `TreasureCard` (a late or wrong pick: the first card).
+  The flow itself (`RWVote`'s `State`, its order, its clock) is untouched: part C, its rewrite as events and
+  commands, was left out at his pick, as nothing here can run it. Checks V1-V9 in `rules/RulesTest.cs` pin every
+  form, read back damaged text and count the votes; eight deliberate breaks were each caught (a ninth changed
+  nothing). Ran here: `rules_check.py` 45 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
+  GAPS, 0 errors. Not run on the PC. No message text, number or self-test changed. No pitfall or kit number used.
 
 - **2026-11-12: the morning batch** (Dimitri's daily routine): Haiku 5.5 over the 435 files changed since 2026-11-07,
   38 requests, $1.00 (`BATCH_CHECKS_2026-11-12.md`). Leads checked by hand in its thread: `Argosplash.png` keeps 2822
