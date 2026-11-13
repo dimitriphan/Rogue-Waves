@@ -1845,6 +1845,12 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   line had left the file invalid JSON, now fixed). `mattpocock-skills:code-review` replaces `/code-review high` in
   `CLAUDE.md`, Part A "Merging", ship-a-pr and `docs/PROJECT_SETUP.md`; ship-a-pr keeps its steps and writes bodies
   with `mattpocock-skills:pr`. Docs only.
+- **2026-11-13: Matt Pocock's skills set up for the repository** (Dimitri: `/setup-matt-pocock-skills`): the plugin's
+  setup steps, followed from its source at the marketplace's pinned commit `49dd158` because the cloud thread had not
+  loaded the plugin's commands. New `docs/agents/`: `issue-tracker.md` (GitHub Issues through the GitHub tools, no `gh`
+  in a cloud thread; state stays in Part C), `triage-labels.md` (the five default labels; not created on GitHub, the
+  tools here can't), `domain.md` (single-context; no `GLOSSARY.md` or `docs/adr/` yet, made when first needed).
+  `CLAUDE.md` gains "Agent skills" and its line limit goes from 80 to 90. Docs only.
 
 ### Decisions
 
