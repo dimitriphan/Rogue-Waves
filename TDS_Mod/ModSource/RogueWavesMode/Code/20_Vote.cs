@@ -11,9 +11,8 @@
 //             each player one Trinket of three, free, before the vote to leave (docs/mode/CHART_NAVIGATION.md §4)
 // Each player's question is on their own vessel (RW_Ask: Goalstring what, Goalvalue the round), and every machine opens the
 // choice dialog for its own; a pick comes back as an order. A timed question closes itself and takes "no answer".
-public static class RWVote
+public static partial class RWVote
 {
-    public const string LeaveKind = "L", DirectionKind = "D", MapKind = "M", TreasureKind = "T";
     public const float PickSeconds = 30f, MapSeconds = 25f, LeaveSeconds = 20f;
     public const int TreasureCards = 3;  // a Wreck pays one Trinket of this many (docs/mode/CHART_NAVIGATION.md §4.2, ~one of 3~)
     public static string State = "";     // "", "Picks", "Map", "Leave", "Treasure", "Board" (self-test reads it)
@@ -37,7 +36,6 @@ public static class RWVote
     static bool treasurePaid;            // this map's Wreck has paid
     static int treasureWave;
     public static readonly Dictionary<long, List<string>> Treasure = new Dictionary<long, List<string>>();   // the Trinkets offered (self-test)
-    public const string StayMark = "s";  // the map question's part that says so (a client before it skips the part)
 
     // ---------------------------------------------------------------- ModKitTides (host)
 
@@ -274,16 +272,10 @@ public static class RWVote
 
     static int PickSeed(RWPlayer p) { return unchecked((int)RWCampaign.Seed) ^ (RWCampaign.Route.Count * 613) ^ p.Key.GetHashCode(); }
 
-    // The cards' indexes, and Spare Compass's redraw mark while the holder has one this map (a client before it skips the part).
-    public const string RedrawMark = "r";
-    public const int RedrawPick = -2;
-
+    // The cards' indexes, and Spare Compass's redraw mark while the holder has one this map (RWQuestion.Directions).
     static void AskOffers(long s, RWPlayer p, List<int> o)
     {
-        List<string> idx = new List<string>();
-        foreach (int i in o) idx.Add(i.ToString());
-        if (RWAny.CanRedraw(p)) idx.Add(RedrawMark);
-        RWRun.Ask(s, DirectionKind + ":" + string.Join(".", idx.ToArray()), Round);
+        RWRun.Ask(s, RWQuestion.Directions(o, RWAny.CanRedraw(p)), Round);
     }
 
     // Spare Compass rank II: the offer thrown back and drawn again, once a map; the clock gets a full pick's time back.
@@ -313,9 +305,7 @@ public static class RWVote
         {
             RWPlayer p = RWRun.For(kv.Key);
             string pick;
-            int k = -1;
-            if (Votes.TryGetValue(kv.Key, out pick)) int.TryParse(pick, out k);
-            if (k < 0 || k >= kv.Value.Count) k = 0;   // time ran out: the first card
+            int k = RWTally.Card(Votes.TryGetValue(kv.Key, out pick) ? pick : null, kv.Value.Count);
             Upgradeproperties u = RWDirections.List[kv.Value[k]];
             RWDirections.Take(p, u);
             p.Owed = false;
@@ -381,16 +371,18 @@ public static class RWVote
         Round++;
         until = Time.time + MapSeconds;
         Hold(MapSeconds);
-        List<string> cols = new List<string>();
-        foreach (RWChart.Node n in on) cols.Add(n.Col.ToString());
-        if (stay) cols.Add(StayMark);
-        string what = MapKind + ":" + (row >= 0 ? row + RowMark : "") + string.Join(".", cols.ToArray());
+        string what = RWQuestion.Map(Cols(on), row, stay);
         foreach (long s in RWRun.Sessions())
             RWRun.Ask(s, what, Round);
-        RWLog.Info("map vote open" + (stay ? " (staying)" : "") + (row >= 0 ? " on the leg after the Cove, row " + row : "") + ": " + string.Join(",", cols.ToArray()));
+        RWLog.Info("map vote open" + (stay ? " (staying)" : "") + (row >= 0 ? " on the leg after the Cove, row " + row : "") + ": " + RWQuestion.Listed(what));
     }
 
-    public const string RowMark = ":";
+    static List<int> Cols(List<RWChart.Node> nodes)
+    {
+        List<int> cols = new List<int>();
+        foreach (RWChart.Node n in nodes) cols.Add(n.Col);
+        return cols;
+    }
 
     // The Cove won: where after it, asked at once in this map (the boat carries no channel for a friend's vote, route V1).
     // False when there was nothing to ask (one way on, taken as voted).
@@ -465,25 +457,8 @@ public static class RWVote
 
     static void CloseMap()
     {
-        Dictionary<int, int> count = new Dictionary<int, int>();
-        foreach (string v in Votes.Values)
-        {
-            int c;
-            if (int.TryParse(v, out c))
-            {
-                int have;
-                count.TryGetValue(c, out have);
-                count[c] = have + 1;
-            }
-        }
-        RWChart.Node best = choices[0];
-        int top = 0;
-        foreach (RWChart.Node n in choices)
-        {
-            int have;
-            count.TryGetValue(n.Col, out have);
-            if (have > top) { top = have; best = n; }
-        }
+        int top;
+        RWChart.Node best = choices[RWTally.MapWinner(Votes.Values, Cols(choices), out top)];
         RWBoard.Votes(RWRun.Sessions(), Votes, best.Col.ToString());
         CloseQuestion();
         if (coveVoted == null)
@@ -538,9 +513,9 @@ public static class RWVote
             List<string> o = TreasureOffer(p, PickSeed(p) ^ 0x5EA);
             if (o.Count == 0) { Votes[s] = ""; continue; }
             Treasure[s] = o;
-            List<string> idx = new List<string>();
-            foreach (string id in o) idx.Add(RWCardinals.Sold.IndexOf(id).ToString());
-            RWRun.Ask(s, TreasureKind + ":" + string.Join(".", idx.ToArray()), Round);
+            List<int> idx = new List<int>();
+            foreach (string id in o) idx.Add(RWCardinals.Sold.IndexOf(id));
+            RWRun.Ask(s, RWQuestion.Treasure(idx), Round);
             asked++;
         }
         if (asked == 0)
@@ -578,9 +553,8 @@ public static class RWVote
         foreach (KeyValuePair<long, List<string>> kv in Treasure)
         {
             string pick;
-            int k;
             // A vote is the Trinket's index in RWCardinals.Sold; no vote (time ran out): the first card.
-            k = Votes.TryGetValue(kv.Key, out pick) && int.TryParse(pick, out k) && k >= 0 && k < RWCardinals.Sold.Count ? Mathf.Max(0, kv.Value.IndexOf(RWCardinals.Sold[k])) : 0;
+            int k = RWTally.TreasureCard(Votes.TryGetValue(kv.Key, out pick) ? pick : null, kv.Value, RWCardinals.Sold);
             RWPlayer p = RWRun.For(kv.Key);
             // Bought from the SHOP in the same break (held, or clashing): the next card of the three instead.
             string why = "", took = "";
@@ -638,26 +612,22 @@ public static class RWVote
         until = Time.time + LeaveSeconds;
         Hold(LeaveSeconds);    // a vote that opens late in the break isn't cut off by the next Tide (MODE-D6)
         foreach (long s in RWRun.Sessions())
-            RWRun.Ask(s, LeaveKind, Round);
+            RWRun.Ask(s, RWQuestion.Leave(), Round);
         RWLog.Info("the vote to leave opens after Tide " + wave);
     }
 
     static void CloseLeave()
     {
-        int yes = 0, all = 0;
-        foreach (long s in RWRun.Sessions())
-        {
-            all++;
-            string v;
-            if (Votes.TryGetValue(s, out v) && v == "Leave") yes++;
-        }
+        int all;
+        int yes = RWTally.ToLeave(Votes, RWRun.Sessions(), out all);
+        bool leaves = RWTally.Leaves(yes, all);
         LastVote = yes + " of " + all + " to leave";
-        RWBoard.Votes(RWRun.Sessions(), Votes, yes * 2 > all ? "Leave" : "Stay");
+        RWBoard.Votes(RWRun.Sessions(), Votes, leaves ? "Leave" : "Stay");
         CloseQuestion();
         State = "";
         Votes.Clear();
         RWLog.Info("the vote to leave: " + LastVote);
-        if (yes * 2 <= all)
+        if (!leaves)
         {
             if (!mapVoted && RWCampaign.Route.Count < RWChart.Rows)
                 AskMap(true);
@@ -840,13 +810,9 @@ public static class RWAsk
 
     static IEnumerator Run(string what)
     {
-        string kind = what.Substring(0, 1);
-        string body = what.Length > 2 ? what.Substring(2) : "";
-        // A map question on the leg after a Cove names its row first ("M:<row>:<cols>").
-        int askedRow = -1, mark = body.IndexOf(RWVote.RowMark, StringComparison.Ordinal);
-        if (mark > 0 && int.TryParse(body.Substring(0, mark), out askedRow)) body = body.Substring(mark + 1);
-        else askedRow = -1;
-        string[] parts = body.Length > 0 ? body.Split('.') : new string[0];
+        RWQuestion q = RWQuestion.Read(what);
+        string kind = q.Kind;
+        int askedRow = q.Row;
         RWChart.Chart viewChart = null;
         RWChart.Node viewHere = null;
         int viewRow = -1;
@@ -857,12 +823,10 @@ public static class RWAsk
         if (kind == RWVote.DirectionKind)
         {
             RWDirections.Refresh();
-            bool redraw = false;
-            foreach (string p in parts)
+            bool redraw = q.Redraw;
+            foreach (int i in q.Numbers)
             {
-                int i;
-                if (p == RWVote.RedrawMark) { redraw = true; continue; }
-                if (!int.TryParse(p, out i) || i < 0 || i >= RWDirections.List.Count) continue;
+                if (i < 0 || i >= RWDirections.List.Count) continue;
                 Upgradeproperties u = RWDirections.List[i];
                 cards.Add(RWDialog.Card(cards.Count.ToString(), u.Display_Name, u.Display_Desc, RWDirections.Picture(u.Objectname), RWDialog.Teal));
             }
@@ -886,10 +850,8 @@ public static class RWAsk
             bool stagingMap = route.Count == 0 && plan == RWMode.Twin(RWWorld.StagingPlan(chart));
             int next = RWCampaign.Live ? RWCampaign.Route.Count + 1 : route.Count + (stagingMap ? 1 : 2);
             int row = askedRow > 0 ? askedRow : next;
-            foreach (string p in parts)
+            foreach (int c in q.Numbers)
             {
-                int c;
-                if (!int.TryParse(p, out c)) continue;
                 RWChart.Node n = chart.At(row, c);
                 if (n == null) continue;
                 cards.Add(RWVote.MapCard(n, chart));
@@ -900,16 +862,15 @@ public static class RWAsk
             viewHere = RWChartView.Standing(chart, route, plan, stagingMap);
             bool afterCove = askedRow > 0;
             title = afterCove ? "AFTER THE COVE?" : "WHERE NEXT?";
-            sub = Array.IndexOf(parts, RWVote.StayMark) >= 0 ? "When the party leaves, it sails to the map most of you pick"
+            sub = q.Stay ? "When the party leaves, it sails to the map most of you pick"
                 : afterCove ? "The party rests at the Cove, then sails on to the map most of you pick" : "The party sails to the map most of you pick";
             seconds = RWVote.MapSeconds;
         }
         else if (kind == RWVote.TreasureKind)
         {
-            foreach (string p in parts)
+            foreach (int i in q.Numbers)
             {
-                int i;
-                if (!int.TryParse(p, out i) || i < 0 || i >= RWCardinals.Sold.Count) continue;
+                if (i < 0 || i >= RWCardinals.Sold.Count) continue;
                 string id = RWCardinals.Sold[i];
                 cards.Add(RWDialog.Card(i.ToString(), RWCardinals.Display(id), RWCardinals.Desc(id), RWCardinals.Picture(id), RWDialog.Teal));
             }

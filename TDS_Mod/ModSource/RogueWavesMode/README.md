@@ -60,6 +60,7 @@ chart's look (`-Define ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS,ROGUEWAVESMO
 | `Code/18_Shop.cs` | `RWShop`: VENDCINT's landing, shelf, board; `RWFund`: Fund Transfer |
 | `Code/19_Objectives.cs` | `RWObjectives`: the five optional objectives |
 | `Code/20_Vote.cs` | `RWVote`: the flow between Tides, Direction picks, the map vote, the vote to leave; `RWAsk`: every machine's own question |
+| `Code/20_VoteRules.cs` | rules file: `RWQuestion`, the one writer and reader of a question's text (`D:`, `M:`, `T:`, `L` and their marks), and `RWTally`, who wins a vote and which card a pick is |
 | `Code/21_Difficulty.cs` | `RWDifficulty`: each map's Tide table, modifiers, bonus Tides |
 | `Code/21_DifficultyRules.cs` | rules file: `RWDifficulty`'s numbers and formulas (`Finish`, `RowOf`, `HealthFor`, `CampaignPool`, `ModifiersOn`) |
 | `Code/26_ChartView.cs` | `RWChartView`: the whole sea chart beside the map vote's cards (its lit islands vote too), on key M in a break or on the boat, and the boat's banner and mini chart (`docs/mode/CHART_NAVIGATION.md`, 2026-11-06) |
@@ -85,7 +86,8 @@ python3 ../Tools/cloud-check/rules_check.py        # the rules files run here: t
 **Rules files.** A file whose first line starts `// RULES FILE` names no engine type: `rules_check.py` compiles all of
 them whole with `Tools/cloud-check/rules/Standins.cs` in place of the game (the save as a dictionary, the log, `Mathf`'s
 sums, the map pool, a hero's shown name, the campaign's few calls to the game) and runs the save fuzz (F1-F7), the rule
-checks (`rules/RulesTest.cs`: R1-R16, and C1-C12, which play campaigns through `RWCampaign`'s own steps)
+checks (`rules/RulesTest.cs`: R1-R16; C1-C12, which play campaigns through `RWCampaign`'s own steps; V1-V9, the
+questions' text and the votes' counting)
 and the chart's parity with `concept-tools/sea_chart.py` (seeds 1-300 and 20261009, with and without stops; `--seeds N`
 for more). A rule that needs no game goes into one of these files, as the other half of its `partial` class, with a
 check in `RulesTest.cs`; one that names an engine type there stops `rules_check.py` with a compile error. Chart parity
