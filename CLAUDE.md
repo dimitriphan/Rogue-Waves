@@ -21,12 +21,13 @@ works) > this file. **Every session** reads `docs/PLAN.md` Part C "Now" (state),
 
 | When | Use |
 | --- | --- |
-| Before opening a code PR | `/code-review high` on the diff, fix what it confirms; `max` only when Dimitri asks |
+| Before opening a code PR | `mattpocock-skills:code-review` against `origin/claude/phase-1-6lfnar`, fix what it confirms |
 | After a build or a big code change | `/simplify`, keeping every game number (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`) |
 | A change that reads what another player sends, or a save file | `/security-review`; otherwise skip it (no secrets, no server) |
 | A failing self-test or PC-round bug | `docs/09_PITFALLS.md` by symptom first, then a debugging skill |
 | A chart for a report | `dataviz` |
 
+Plugin `mattpocock-skills` is on (`.claude/settings.json`); PR bodies use its `pr` inside ship-a-pr.
 Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't start the game. Drafts: `docs/skills/`.
 
 ## Rules the code doesn't show

@@ -26,7 +26,7 @@ Rules from `CLAUDE.md`, `docs/PLAN.md` Part A "Merging" and Part C "Now". Dimitr
    (`"<PART>_SELFTEST"`, plus `_SHOTS`, `_GAPS`, `_TWOPC` where the part has them), and
    `../Tools/cloud-check/check_editor.sh ../Assets/<Part>Mod/Editor`. A kit change compiles every part.
 3. Docs only: no compile, but every path, section and number the change cites must exist (grep each one).
-4. Code: `/code-review high` on the diff (never `max` unless Dimitri names it) and fix what it confirms.
+4. Code: `mattpocock-skills:code-review` against `origin/claude/phase-1-6lfnar` and fix what it confirms.
    `/security-review` only for code that reads another player's messages or a save.
 5. Say which it was: "compiled here" (with the command and its output) or "self-test N/0 on the PC". A clean compile
    is not a test.
@@ -43,14 +43,15 @@ Rules from `CLAUDE.md`, `docs/PLAN.md` Part A "Merging" and Part C "Now". Dimitr
 1. Commit (message under five lines, ending with the session's attribution lines) and `git push -u origin <branch>`.
 2. GitHub MCP `create_pull_request`, base `claude/phase-1-6lfnar`. The body starts with the two attribution lines from
    the session context, verbatim (the `claude-projects-attribution` marker for `dimitriphan`, then the
-   "Requested by" line with the thread link). Then: what changed, what was checked and how, what ran on the PC.
+   "Requested by" line with the thread link). Write the rest with `mattpocock-skills:pr`, keeping: what changed,
+   what was checked and how, what ran on the PC.
 3. Assign and request review from `dimitriphan` (`issue_write` update, `update_pull_request` reviewers), then
    `subscribe_pr_activity`.
 
 ## Review (Codex, Dimitri 2026-11-06)
 
 Codex, from Dimitri's ChatGPT plan, reviews every PR on its own against `AGENTS.md` "Code Review Rules"; no Claude
-reviewer sub-agent while Codex answers (fallback in step 3). `/code-review high` before a code PR stays, as the
+reviewer sub-agent while Codex answers (fallback in step 3). `mattpocock-skills:code-review` before a code PR stays, as the
 author's own check.
 
 1. Codex's comments arrive as PR events. Answer each one in its thread: fix it and say which commit, or say why not.
@@ -60,7 +61,7 @@ author's own check.
    gets a new review; wait for it (or comment `@codex review`).
 3. No review an hour after opening or pushing: comment `@codex review` once. Still none an hour later, or Codex
    answers that its usage limit is reached (Dimitri 2026-11-07): tell Dimitri in the thread, then run a Claude
-   reviewer sub-agent (model: `docs/PROJECT_SETUP.md` "Model per role") with `/code-review high` on the head,
+   reviewer sub-agent (model: `docs/PROJECT_SETUP.md` "Model per role") with `mattpocock-skills:code-review` on the head,
    labelling findings P0-P3 under the same rules. Fix or answer each P0/P1; after a fix push the same reviewer
    re-reviews the new head (no new Codex wait). Note in the PR body that Claude reviewed in Codex's place; merge once
    no P0/P1 is open.

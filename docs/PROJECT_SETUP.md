@@ -71,7 +71,7 @@ puts the judgment in the coordinator and the volume in the threads, so the model
 | --- | --- | --- |
 | Coordinator at a gate (Phase 1 go/fallback, packaging, design gates, definition of done) | Fable 5.1 | Few tokens, costly if wrong |
 | Coordinator on routine sessions (session close, packing a handoff, Phase 6 data passes) | Opus 5.5 | Routine |
-| Stand-in PR reviewer when Codex stalls or is out of usage (`/code-review high`, PLAN Part A "Merging") | Opus 5.5 | Rule-bound, `AGENTS.md` P0-P3 |
+| Stand-in PR reviewer when Codex stalls or is out of usage (`mattpocock-skills:code-review`, PLAN Part A "Merging") | Opus 5.5 | Rule-bound, `AGENTS.md` P0-P3 |
 | Threads by default (Part D research, code modules, sprite generators, cloud-check loops) | Opus 5.5 | The kit makes this work routine |
 | Batch checks (`TDS_Mod/Tools/batch/run_checks.py`, API credit) | Haiku 5.5 daily, Sonnet 5.5 for an audit that drives work; `--advisor opus` lets scope and design consult Opus 5.5 once a request (advisor tool, beta `advisor-tool-2026-03-01`), off by default | Opus reads the whole request each consult, so it costs more than Sonnet alone (batch README "`--advisor opus`") |
 | Threads on open-ended engine work: Phase 1 decompiler research (mode chain, save writes, client UI), Phase 5's 10-map campaign loop and its online sync, a PC round whose self-test fails for an unnamed reason after one Opus pass | Fable 5.1 | New territory, no prior art in the kit |
