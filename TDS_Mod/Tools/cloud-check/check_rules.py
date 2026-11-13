@@ -119,9 +119,10 @@ def main():
         added, changed = added_lines(base), changed_files(base)
     except subprocess.CalledProcessError as e:
         sys.exit('rules: cannot diff against %s (%s); fetch it first' % (base, e.stderr.strip()))
-    if any(p.startswith('TDS_Vessel_Creator/kit/') for p in changed) and \
-            'TDS_Vessel_Creator/kit/README.md' not in changed:
-        flag('P0', 'TDS_Vessel_Creator/kit', 'changed without its version bumped in kit/README.md')
+    kit_readme = 'TDS_Vessel_Creator/kit/README.md'
+    if any(p.startswith('TDS_Vessel_Creator/kit/') and p != kit_readme for p in changed) and \
+            not any(re.match(r'\| \d+\.\d+', text) for _, text in added.get(kit_readme, [])):
+        flag('P0', 'TDS_Vessel_Creator/kit', 'changed without a new row in kit/README.md "Versions"')
     for p, lines in added.items():
         for n, text in lines:
             where = '%s:%d' % (p, n)
