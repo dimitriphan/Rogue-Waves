@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "waiting",
-  "started": "2026-11-13T15:08:03Z",
-  "step": "Candidate 4 design shown; waiting for Dimitri's pick",
+  "state": "building",
+  "started": "2026-11-13T15:09:49Z",
+  "step": "Candidate 4: kit modules for the buildings' start-up",
   "helpers": [],
-  "updated": "2026-11-13T15:08:03Z"
+  "updated": "2026-11-13T15:09:49Z"
 }
