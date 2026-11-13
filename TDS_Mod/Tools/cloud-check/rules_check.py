@@ -2,7 +2,8 @@
 is compiled whole (never copied in pieces) with rules/Standins.cs in place of the game, then run:
 
     the save fuzz    RogueWavesMode/Code/98_SaveFuzz.cs, F1-F7, on a dictionary standing in for the save
-    the rule checks  rules/RulesTest.cs, R1-R16: world names, routes, player lines, the difficulty's numbers
+    the rule checks  rules/RulesTest.cs, R1-R16: world names, routes, player lines, the difficulty's numbers;
+                     C1-C12: whole campaigns played through RWCampaign's steps, and the keys they save
     chart parity     RWChart against concept-tools/sea_chart.py, seed by seed, with and without stops
 
     cd TDS_Mod/ModSource && python3 ../Tools/cloud-check/rules_check.py [RogueWavesMode/Code] [--seeds N]

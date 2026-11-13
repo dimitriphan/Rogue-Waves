@@ -174,13 +174,12 @@ public static class RWBoat
         // uncounted chart map with no picks (MAX MODEA-2).
         if (picked != null && picked == RWCampaign.Chart.At(0, 0) && RWCampaign.Next != null)
         {
-            RWCampaign.Next = null;
+            RWCampaign.Unpick();
             RWLog.Info("picked the harbour: the staging map");
         }
         if (picked != null && RWCampaign.Open().Contains(picked) && RWCampaign.Next != picked)
         {
-            RWCampaign.Next = picked;
-            RWCampaign.Choice = -1;
+            RWCampaign.Pick(picked);
             RWLog.Info("picked " + picked.Name + ": " + picked.Plan + " (" + picked.Map + "), " + RWChart.WeatherNames[picked.Weather]);
         }
         if (RWCampaign.Choice >= 0 && RWUtil.IsLeader)
@@ -304,8 +303,7 @@ public static class RWBoat
             return;
         if (open.Count == 1)
         {
-            RWCampaign.Choice = open[0].Col;
-            RWCampaign.SaveChoice();
+            RWCampaign.Choose(open[0].Col);
             Asked = "only " + open[0].Name;
             return;
         }
@@ -343,8 +341,7 @@ public static class RWBoat
             RWLog.Info("the boat's map vote: no pick, the arrows steer");
             yield break;
         }
-        RWCampaign.Choice = col;
-        RWCampaign.SaveChoice();
+        RWCampaign.Choose(col);
         Asked = "picked " + col;
         RWLog.Info("the boat's map vote: column " + col);
     }
@@ -392,7 +389,7 @@ public static class RWBoat
         main.Worlded.Value = new FixedString64Bytes("");
         main.Worlded.Value = new FixedString64Bytes(target);
         Warped = target;
-        RWCampaign.Next = null;
+        RWCampaign.Unpick();
         RWLog.Info("warped the party onto " + target);
     }
 
@@ -425,7 +422,7 @@ public static class RWBoat
     {
         RWChart.Node to = null;
         foreach (RWChart.Node n in RWCampaign.Open()) if (n.Col == RWCampaign.Choice) to = n;
-        if (to == null) { RWLog.Warn("choice " + RWCampaign.Choice + " is not open from where the boat stands" + (RWCampaign.Replay >= 0 ? " (the lost map, column " + RWCampaign.Replay + ", is replayed)" : "")); RWCampaign.Choice = -1; return; }
+        if (to == null) { RWLog.Warn("choice " + RWCampaign.Choice + " is not open from where the boat stands" + (RWCampaign.Replay >= 0 ? " (the lost map, column " + RWCampaign.Replay + ", is replayed)" : "")); RWCampaign.ClearChoice(); return; }
         Macro_Link_Add_Base node = null;
         foreach (Macro_Link_Add_Base l in vis.World.GetComponentsInChildren<Macro_Link_Add_Base>(true))
             if (l.name == to.Name) node = l;
@@ -457,7 +454,7 @@ public static class RWBoat
             return;
         }
         Picked = to.Name;
-        RWCampaign.Choice = -1;
+        RWCampaign.ClearChoice();
         Tds_Multiplayer_Remote.Instance.Selectmap_ServerRpc(to.Name, false, default(Unity.Netcode.ServerRpcParams));
     }
 

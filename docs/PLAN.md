@@ -243,7 +243,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2: the game's gamepad
   mode, pitfall #177; fixed by #196, proven 2026-11-12 in `PC_FLOW_ROUND1_2026-11-12.md`, mouse 190/0, gamepad 190/0). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
-  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files (`rules_check.py` runs them here). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files and campaign module (`rules_check.py`; the module wants the mode's self-test and flow on the PC). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
@@ -1865,6 +1865,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   and save as one module, the vote flow and question format, the vessels' building start-up, one upgrade-tree model,
   one build script with a kit drift check) and its one open finding (the shop counts the map two ways,
   `18_Shop.cs:205` and `:368`) wait for his word. No pitfall or kit number used.
+- **2026-11-13: the campaign's state and save as one module** (Dimitri: "Go to a new section", then "Build it as shown"
+  on the design's card; the review's candidate 2): `RWCampaign`'s state and what each event does to it moved into
+  the rules file `06_CampaignRules.cs` (a new campaign, Continue, a map started, won or lost, a retry, a Cove, the
+  end, and the one writer of the ten save keys); `06_Campaign.cs` keeps the game's side and ends with the nine calls
+  the rules make to the game (seed draw, save slot, chat line, tips, owed picks, the Cove's rank, the Voyage board).
+  Outside a self-test build only `RWCampaign` writes its state: the boat's and the vote's 16 direct writes are now the
+  steps `Choose`, `ChooseAfter`, `Pick`, `Unpick`, `ClearChoice`, `StagingDone`, each saving exactly where the old
+  code did (`Pick`, `Unpick` and `ClearChoice` don't, as before). The self-tests still set fields: a
+  `ROGUEWAVESMODE_SELFTEST` build keeps them open, so no test changed. New checks C1-C12 in `rules/RulesTest.cs` play
+  campaigns here (ten maps won, three losses and the fourth, a quit in a map then Continue, a Cove's retry or rank, a
+  slot switch, a damaged save, the saved keys by name and value); eleven deliberate breaks of the rules were each
+  caught. Ran here: `rules_check.py` 36 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
+  GAPS and FEEL, 0 errors. Not run on the PC, and unlike the first step this one changed who calls what: the next PC
+  round's mode self-test and flow are its proof. No save key, value or number changed. No pitfall or kit number used.
 
 ### Decisions
 

@@ -1,5 +1,5 @@
 // What the mode's rules files ask of the game, stood in for here (rules_check.py): the save as a dictionary, the log as
-// counters, Mathf's few sums, the map pool, a hero's shown name. A rules file that needs more than this needs the game:
+// counters, Mathf's few sums, the map pool, a hero's shown name, and what the campaign's rules ask of the game. A rules file that needs more than this needs the game:
 // it fails to compile here, and either the need moves out of it or its stand-in is written here, on purpose.
 using System;
 using System.Collections.Generic;
@@ -50,4 +50,28 @@ public static class RWMode
 public static partial class RWRun
 {
     public static string HeroName(string hero) { return hero; }
+}
+
+// What 06_CampaignRules.cs asks of the game (06_Campaign.cs ends with the real ones), counted so a check can read it,
+// and the two doors a check needs that the game's side holds: a map's start and a map won.
+public static partial class RWCampaign
+{
+    public static uint NextSeed = 4242;
+    public static bool OtherSave;                 // the save slot was switched: the campaign in memory is another slot's
+    public static readonly List<string> Said = new List<string>();
+    public static int Tips, Owed, Ranked, Voyages;
+
+    static uint DrawSeed() { return NextSeed; }
+    static void HoldSave() { OtherSave = false; }
+    static void DropSave() { }
+    static bool SameSave() { return !OtherSave; }
+    static void Say(string line) { Said.Add(line); }
+    static void TipsSailed() { Tips++; }
+    static void OweEveryone() { Owed++; foreach (RWPlayer p in RWRun.Players.Values) p.Owed = true; }
+    static void RankEveryone() { Ranked++; }
+    static void ShowVoyage() { Voyages++; }
+
+    public const string TwinPrefix = "RW_";
+    public static void TestMapStart(string plan) { MapStarted(plan, p => TwinPrefix + p); }
+    public static void TestWon() { Won("the check"); }
 }

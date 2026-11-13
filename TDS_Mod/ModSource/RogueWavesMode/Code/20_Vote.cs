@@ -358,9 +358,7 @@ public static class RWVote
         {
             if (choices.Count == 1)
             {
-                RWCampaign.Choice = choices[0].Col;
-                RWCampaign.After = -1;
-                RWCampaign.SaveChoice();
+                RWCampaign.Choose(choices[0].Col, -1);
                 mapVoted = true;
                 LastVote = "only " + choices[0].Name;
                 firstWinner = choices[0];
@@ -405,8 +403,7 @@ public static class RWVote
             return false;
         if (next.Count == 1)
         {
-            RWCampaign.After = next[0].Col;
-            RWCampaign.SaveChoice();
+            RWCampaign.ChooseAfter(next[0].Col);
             LastVote += "; after it " + next[0].Name;
             return false;
         }
@@ -491,9 +488,7 @@ public static class RWVote
         CloseQuestion();
         if (coveVoted == null)
         {
-            RWCampaign.Choice = best.Col;
-            RWCampaign.After = -1;
-            RWCampaign.SaveChoice();
+            RWCampaign.Choose(best.Col, -1);
             mapVoted = true;
             LastVote = best.Name + " with " + top;
             firstWinner = best;
@@ -502,8 +497,7 @@ public static class RWVote
         }
         else
         {
-            RWCampaign.After = best.Col;
-            RWCampaign.SaveChoice();
+            RWCampaign.ChooseAfter(best.Col);
             LastVote += "; after it " + best.Name + " with " + top;
             coveVoted = null;
         }
@@ -730,9 +724,7 @@ public static class RWVote
         if (staging)
         {
             staging = false;
-            RWCampaign.Staging = false;
-            RWCampaign.Next = null;
-            RWCampaign.SaveChoice();    // a quit before map 1 must not bring the staging map back (MODE-A1)
+            RWCampaign.StagingDone();   // a quit before map 1 must not bring the staging map back (MODE-A1)
             RWLog.Info("staging over: back to the boat, sailing to column " + RWCampaign.Choice);
             Tds_Multiplayer_Remote.Instance.Quitmap_ServerRpc(default(Unity.Netcode.ServerRpcParams));
             return;
