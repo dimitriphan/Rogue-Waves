@@ -12,7 +12,7 @@ Read `TDS_Vessel_Creator/docs/09_PITFALLS.md` before writing, `docs/05_CODE_COOK
 recipes, `docs/07_ONLINE.md` for anything that changes state (host decides, engine syncs, clients only draw).
 
 - Every id carries the vessel name (`Hero_<Name>`, `Tower_<Name>x`, `Mob_<Name>x`, `Debuff_<Name>x`). One global table.
-- `ModSource/Shared` is the live kit (1.8; `TDS_Vessel_Creator/kit/Shared` is a copy, keep them equal). Changing it:
+- `ModSource/Shared` is the live kit (1.15; `TDS_Vessel_Creator/kit/Shared` is a copy, keep them equal). Changing it:
   keep tab order and the boat layout (the two compatibility rules in `TDS_Vessel_Creator/kit/README.md`), bump the
   version there and in the file headers, compile every vessel.
 - The game compiles with Roslyn 3.8, no `System.dll`/`System.Core`, no `System.IO`/`System.Reflection`.
@@ -25,4 +25,6 @@ recipes, `docs/07_ONLINE.md` for anything that changes state (host decides, engi
   ../Tools/cloud-check/check_editor.sh ../Assets/<Name>Mod/Editor
   ```
 
+- The mode's rules that need no game sit in its rules files and run here: `python3 ../Tools/cloud-check/rules_check.py`
+  after any change to `RogueWavesMode/Code` (`RogueWavesMode/README.md` "Rules files").
 - A clean compile is not a test. Say so in `IMPLEMENTATION_NOTES.md`: compiled here, self-test and play on the PC.

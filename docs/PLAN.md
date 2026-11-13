@@ -243,7 +243,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2: the game's gamepad
   mode, pitfall #177; fixed by #196, proven 2026-11-12 in `PC_FLOW_ROUND1_2026-11-12.md`, mouse 190/0, gamepad 190/0). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
-  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files (`rules_check.py` runs them here). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
@@ -1851,6 +1851,20 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   in a cloud thread; state stays in Part C), `triage-labels.md` (the five default labels; not created on GitHub, the
   tools here can't), `domain.md` (single-context; no `GLOSSARY.md` or `docs/adr/` yet, made when first needed).
   `CLAUDE.md` gains "Agent skills" and its line limit goes from 80 to 90. Docs only.
+- **2026-11-13: the mode's rules run in the cloud** (Dimitri: `/improve-codebase-architecture`, then his pick "1: Pure
+  rules and cloud tests" of the review's six candidates): the mode's rules that name no engine type moved, word for
+  word, into six rules files as the other half of `partial` classes (`01_Names.cs`, `04_WorldNames.cs`,
+  `06_CampaignSave.cs`, `14_RunSave.cs`, `15_Limits.cs`, `21_DifficultyRules.cs`; `03_Chart.cs` was one already). New
+  `Tools/cloud-check/rules_check.py` compiles them whole with `rules/Standins.cs` in place of the game and runs the
+  save fuzz F1-F7, sixteen new rule checks R1-R16 (`rules/RulesTest.cs`) and the chart's parity with `sea_chart.py`,
+  which was a hand recipe. It replaces `save_fuzz.py`'s copying of methods by regex, which had stopped compiling on
+  base when `RWPlayer` gained `RWBoard.Stats` (#151's board; the old name still runs the new script). Ran here: 24
+  PASS, 0 FAIL; the mode compiled here plain and with its self-test defines, 0 errors. Not run on the PC: no number,
+  key or name changed, and the next PC round's mode self-test is its first run in game. Kit version text corrected
+  to 1.15 in `.claude/rules/mod-code.md` and `TDS_Mod/README.md`. The review's other candidates (the campaign's state
+  and save as one module, the vote flow and question format, the vessels' building start-up, one upgrade-tree model,
+  one build script with a kit drift check) and its one open finding (the shop counts the map two ways,
+  `18_Shop.cs:205` and `:368`) wait for his word. No pitfall or kit number used.
 
 ### Decisions
 
