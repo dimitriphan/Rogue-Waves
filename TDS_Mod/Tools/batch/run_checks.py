@@ -70,7 +70,7 @@ DEFAULT_SCOPE = sorted(SCOPE_PARTS)
 VESSEL_DATA = {"07": "Yossele", "08": "Spool", "09": "Argo", "10": "Uloe"}
 # The docs check: whole files, plus PLAN's "Now" only (the Log is history and stays out).
 DOC_FILES = ["CLAUDE.md", "docs/reports/README.md", "TDS_Mod/Tools/batch/README.md"]
-DOC_GLOBS = ["docs/skills/*.md"]
+DOC_GLOBS = [".claude/skills/*/SKILL.md"]
 TEXT_CHUNK = 250          # strings per text request
 ART_CHUNK = 8             # images per art request
 GUESS_OUT = {"text": 3_000, "scope": 14_000, "design": 10_000, "docs": 4_000, "art": 3_000}
@@ -1092,7 +1092,7 @@ def write_report(batch_id, meta, results):
     if missing is not None:
         L += [f"## {n}. Docs", "",
               f"{len(docs)} finding{'' if len(docs) == 1 else 's'} from reading `CLAUDE.md`, PLAN Part C \"Now\", "
-              "the reports' README, the batch README and `docs/skills/` against each other.", ""]
+              "the reports' README, the batch README and `.claude/skills/` against each other.", ""]
         if docs:
             L += ["| Where | Kind | Problem | Fix |", "| --- | --- | --- | --- |"]
             L += [f"| `{cell(f['id'])}` | {f['kind']} | {cell(f['problem'])} | {cell(f['suggestion'])} |" for f in docs]

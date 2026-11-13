@@ -90,6 +90,10 @@
       "Bash(df -h *)"
     ],
     "deny": [
+      "Read(**/api_assembly_csharp.txt)",
+      "Read(**/vessel_data_survey.txt)",
+      "Bash(cat *api_assembly_csharp.txt*)",
+      "Bash(cat *vessel_data_survey.txt*)",
       "Bash(git push origin claude/phase-1-6lfnar*)",
       "Bash(git push -u origin claude/phase-1-6lfnar*)"
     ],

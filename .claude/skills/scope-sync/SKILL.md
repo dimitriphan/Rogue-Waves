@@ -1,6 +1,7 @@
 ---
 name: scope-sync
 description: Use in Rogue Waves when Dimitri says "sync" for his scope copies, or sends back an edited scope file to fold in.
+effort: medium
 ---
 
 # Sync Dimitri's scope copies
@@ -49,3 +50,8 @@ Rules from `docs/PLAN.md` Part A ("The user's scope") and `docs/scope/00_Read_Me
    delete one only once the republished page carries it, and leave `draft` rows alone.
 4. Update project memory's scope line: base sha and Scope Editor version.
 5. Reply: which files changed, the sha both copies now equal, and that his PC copy waits for the next PC round.
+
+## Gotchas
+
+- `/mnt/project-files` is a network mount: after copying, wait about ten seconds before the `diff -r`, or it reads stale.
+- A `draft` row in the Scope Editor is his work in progress: never fold it in or delete it.

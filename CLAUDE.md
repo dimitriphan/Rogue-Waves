@@ -27,21 +27,20 @@ works) > this file. **Every session** reads `docs/PLAN.md` Part C "Now" (state),
 | A failing self-test or PC-round bug | `docs/09_PITFALLS.md` by symptom first, then a debugging skill |
 | A chart for a report | `dataviz` |
 
-Plugin `mattpocock-skills` is on (`.claude/settings.json`); PR bodies use its `pr` inside ship-a-pr.
-Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't start the game. Drafts: `docs/skills/`.
+Plugins: `mattpocock-skills` on (its `pr` writes PR bodies); superpowers, engineering, handoff, cowork off. `/run` can't
+start the game. Project skills: `.claude/skills/`. Before any PR: `python3 TDS_Mod/Tools/cloud-check/check_rules.py`.
 
 ## Rules the code doesn't show
 
 - Names: **Trinkets** (were "Vessel Cardinals") and **Cardinals** (were "Team Cardinals"). Save keys keep the old names.
 - The repository presents only Rogue Waves: no mention of the mods from before the scope, except where the kit's
-  template, dated reports, the PLAN Log, version histories and his scope notes keep them on purpose.
+  template, dated reports, the Log (`docs/log/`), version histories and his scope notes keep them on purpose.
 - Never commit the game's binaries, base-vessel game sprites or anything from `/mnt/project-files`; overwrite a file
   there only at Dimitri's word (its `concepts/`, `artifacts_archive/`, `chatgpt/2026-11-06/` are zipped: unzip a
   missing path into the scratchpad). Nothing touches his PC without his OK in the thread.
-- Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Codex reviews each one
-  (`AGENTS.md`; a Claude reviewer if Codex stalls); Claude merges once that review leaves no open P0/P1 and cloud-check
-  is clean (PLAN Part A "Merging"), merge commits. Each PR adds one dated Log entry and edits Part C "Now"'s lines in
-  place (no dated entries in "Now"; under 4 KB).
+- Pull requests base on `claude/phase-1-6lfnar` and start with the session's attribution block. Codex reviews each
+  (`AGENTS.md`); Claude merges, merge commits, once no P0/P1 is open and cloud-check is clean (PLAN Part A "Merging").
+  Each PR adds one Log file (`docs/log/README.md`; search the Log, never read it whole) and edits "Now" in place.
 
 ## Map
 
@@ -51,7 +50,7 @@ Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't
 | `TDS_Mod/ModSource/<Part>` + `Assets/<Part>Mod` | The pack's parts: `Argo`, `Yossele`, `Spool`, `Uloe`, `RogueWavesMode`, `RogueWavesFoes`; `Pack` builds them into one bundle; `Shared` is the live kit (keep equal to `TDS_Vessel_Creator/kit/Shared`) | its `README.md` or `DESIGN.md`, then `IMPLEMENTATION_NOTES.md` |
 | `TDS_Mod/Tools/` | `cloud-check` (compile, previews), `pc` (PC rounds), `aseprite`, `artbench` (Art Bench: edit sprites and models, bring edits in), `batch` (text, scope, design, docs and art checks on API credit; `claude-mod/` its Run Batch button) | its `README.md` |
 | `docs/scope/` | Dimitri's scope, one `.txt` per category; `! NEEDS ... !` marks what only he can supply, `~value~` a default Claude picked | `00_Read_Me.txt`, then the file the task touches |
-| `docs/PLAN.md` | Part A coordinator rules, B phases, C state, D prompt templates | Part C "Now" |
+| `docs/PLAN.md`, `docs/log/` | Part A coordinator rules, B phases, C state, D prompt templates; the dated Log, one file per PR | Part C "Now"; `docs/log/README.md` |
 | `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md`, `docs/art/`, `docs/themes/` | Packaging and versions; look and naming; temporary art; art made in ChatGPT; page and deck themes | before packaging; before drawing or naming; before bringing in ChatGPT art; before styling a page |
 | `docs/EXPANSION_SCOPE.md`, `docs/RESEARCH_GAPS.md` | Non-vessel systems and what is known about them; engine facts left to research | before non-vessel work |
 | `docs/mode/`, `docs/concepts/`, `docs/reports/`, `docs/spotlight/`, `docs/artifacts/` | Mode design pages; concept pages and art; dated, frozen reports; the feature spotlight page; every artifact, its source and how input comes back | the page the task names; reports' and artifacts' `README.md` |

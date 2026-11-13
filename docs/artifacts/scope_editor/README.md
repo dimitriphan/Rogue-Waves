@@ -24,7 +24,7 @@ browser only and cannot be sent.
 2. For each, fold `text` into `docs/scope/<file>` with the `scope-sync` skill ("Fold in one file of his"). If
    `builtFrom` is older than the base, diff his text against the scope at `builtFrom` first, so a line changed in the
    repository since is not taken for his. His `note` says what he meant.
-3. Reviewed PR (`docs/skills/ship-a-pr.md`); set each row `status: "pr"`, `pr: <number>` (`ArtifactData` `update`
+3. Reviewed PR (`.claude/skills/ship-a-pr/SKILL.md`); set each row `status: "pr"`, `pr: <number>` (`ArtifactData` `update`
    with the row's `if_version`).
 4. After the merge: rebuild (`python3 docs/artifacts/scope_editor/build.py docs/scope <scratchpad>/scope_editor.html`),
    `Artifact` read the URL, publish to the same `url`, then set the rows `merged`. Delete a `merged` row only once the
