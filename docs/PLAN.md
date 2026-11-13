@@ -1879,19 +1879,6 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   caught. Ran here: `rules_check.py` 36 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
   GAPS and FEEL, 0 errors. Not run on the PC, and unlike the first step this one changed who calls what: the next PC
   round's mode self-test and flow are its proof. No save key, value or number changed. No pitfall or kit number used.
-- **2026-11-13: the questions' text and the votes' counting as modules** (Dimitri: "Go to a new section", then "Build A
-  and B" on the design's card; the review's candidate 3, two parts of three): new rules file `20_VoteRules.cs`.
-  `RWQuestion` is the one writer and the one reader of what the host puts on a vessel's `RW_Ask` (`Directions`, `Map`,
-  `Treasure`, `Leave`, `Read`): the host's three hand-built strings and the client's parsing in `RWAsk.Run` now go
-  through it, and the text is byte for byte what it was (`D:3.7.r`, `M:5:0.2.s`, `T:4.9.11`, `L`). `RWTally` holds the
-  counting the flow calls at the same moments as before: `MapWinner` (a tie or no answer: the first of the choices),
-  `ToLeave` and `Leaves` (a majority; a half stays), `Card` and `TreasureCard` (a late or wrong pick: the first card).
-  The flow itself (`RWVote`'s `State`, its order, its clock) is untouched: part C, its rewrite as events and
-  commands, was left out at his pick, as nothing here can run it. Checks V1-V9 in `rules/RulesTest.cs` pin every
-  form, read back damaged text and count the votes; eight deliberate breaks were each caught (a ninth changed
-  nothing). Ran here: `rules_check.py` 45 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
-  GAPS, 0 errors. Not run on the PC. No message text, number or self-test changed. No pitfall or kit number used.
-
 - **2026-11-12: the morning batch** (Dimitri's daily routine): Haiku 5.5 over the 435 files changed since 2026-11-07,
   38 requests, $1.00 (`BATCH_CHECKS_2026-11-12.md`). Leads checked by hand in its thread: `Argosplash.png` keeps 2822
   half-transparent pixels and an outline (`art_check.py` agrees); Spool's `DESIGN.md` still says the Yarn Stash has no
@@ -1905,6 +1892,18 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   is offered every break; only Mind the Meteor grows by map where scope `04` line 22 asks for harder objectives each map;
   `CLAUDE.md`'s Map row cites `claude-mod/` without its parent. Not leads: two log lines, the Wreck's row (its tilde
   default), Clam Shell's "saves you". Docs only; the PC was on and free and nothing ran on it. No kit change, no pitfall.
+- **2026-11-13: the questions' text and the votes' counting as modules** (Dimitri: "Go to a new section", then "Build A
+  and B" on the design's card; the review's candidate 3, two parts of three): new rules file `20_VoteRules.cs`.
+  `RWQuestion` is the one writer and the one reader of what the host puts on a vessel's `RW_Ask` (`Directions`, `Map`,
+  `Treasure`, `Leave`, `Read`): the host's three hand-built strings and the client's parsing in `RWAsk.Run` now go
+  through it, and the text is byte for byte what it was (`D:3.7.r`, `M:5:0.2.s`, `T:4.9.11`, `L`). `RWTally` holds the
+  counting the flow calls at the same moments as before: `MapWinner` (a tie or no answer: the first of the choices),
+  `ToLeave` and `Leaves` (a majority; a half stays), `Card` and `TreasureCard` (a late or wrong pick: the first card).
+  The flow itself (`RWVote`'s `State`, its order, its clock) is untouched: part C, its rewrite as events and
+  commands, was left out at his pick, as nothing here can run it. Checks V1-V9 in `rules/RulesTest.cs` pin every
+  form, read back damaged text and count the votes; eight deliberate breaks were each caught (a ninth changed
+  nothing). Ran here: `rules_check.py` 45 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
+  GAPS, 0 errors. Not run on the PC. No message text, number or self-test changed. No pitfall or kit number used.
 
 ### Decisions
 
