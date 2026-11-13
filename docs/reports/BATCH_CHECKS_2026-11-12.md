@@ -2,6 +2,12 @@
 
 Machine-read by `claude-haiku-5-5` (effort medium) through the Message Batches API, batch `msgbatch_01NGK8xep2SPDBsucJn4w9oG`, on base `66a7e9a`, changes since `last`, checks text, scope, design, docs, art, by `TDS_Mod/Tools/batch/run_checks.py`. Cost: $1.00 at batch prices. Every row is a lead to confirm by hand before it changes code, docs, art or the scope: the model reads, it does not run the game. Nothing ran on the PC.
 
+**Citation corrections (added by hand, 2026-11-13; the rows below stay as the model wrote them).** Four file names the
+model cited do not exist; it named the class, or the wrong number, for the file. Read `RWAny.cs` (the two rows citing
+`RWAny.cs:40`, in §2.1 and §2.6) as `RogueWavesMode/Code/22_AnyDirections.cs`; `04_Server.cs` (three rows in §2.8) as
+`Argo/Code/05_Server.cs`; `RWRun.cs` (one row in §2.13) as `RogueWavesMode/Code/14_Run.cs`; `RWCardinals.cs` (one row
+in §2.13) as `RogueWavesMode/Code/17_Cardinals.cs`. The line numbers after them are the model's and are leads too.
+
 ## 1. Text
 
 6 findings. Recipe: `docs/reports/TEXT_AUDIT_2026-11-05.md` §1.
