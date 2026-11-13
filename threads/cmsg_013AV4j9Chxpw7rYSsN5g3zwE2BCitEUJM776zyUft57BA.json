@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "reviewing",
-  "started": "2026-11-13T05:26:17Z",
-  "step": "PR #205 up, waiting for Codex's review",
+  "state": "shipped",
+  "started": "2026-11-13T05:28:11Z",
+  "step": "PR #205 merged (8e96d2c): mode rules run in the cloud",
   "helpers": [],
-  "updated": "2026-11-13T05:26:17Z"
+  "updated": "2026-11-13T05:28:11Z"
 }
