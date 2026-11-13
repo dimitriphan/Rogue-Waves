@@ -12,6 +12,8 @@ thread and a Claude reviewer stands in under the same rules (Dimitri, 2026-11-07
 These rules bind whoever reviews: Codex, or the Claude reviewer standing in for it. Review for real defects and rule
 breaks. Leave out style, wording and formatting, and don't flag compile errors:
 the PR's thread compiles every changed part with `TDS_Mod/Tools/cloud-check` and says so in the PR.
+`TDS_Mod/Tools/cloud-check/check_rules.py` runs on every PR (the "Rules" check) and already covers the mechanical
+rules below; when that check is green, spend the review on what a script cannot judge.
 
 Flag as P0:
 
@@ -33,12 +35,12 @@ Flag as P1:
   `DESIGN.md` without the PR saying Dimitri asked for it. Values in `~tildes~` in the scope are Claude's defaults and
   may change; plain values are his.
 - An id without its vessel's name (`Hero_<Name>`, `Tower_<Name>x`, `Mob_<Name>x`, `Debuff_<Name>x`).
-- `docs/PLAN.md` Part C "Now" (Dimitri 2026-11-12, token use): the PR adds its dated entry at the end of the Log, not
-  in "Now"; it may edit "Now"'s State, Next, open and "Next free numbers" lines in place, keeping what the base says is
+- `docs/PLAN.md` Part C "Now" (Dimitri 2026-11-12, token use): the PR adds its dated entry as one new file in `docs/log/` (`docs/log/README.md`), not
+  in "Now" and not in `docs/PLAN.md`; it may edit "Now"'s State, Next, open and "Next free numbers" lines in place, keeping what the base says is
   still open or blocked, and "Now" stays under about 4 KB.
 - A doc that cites a path, section, pitfall or kit number that does not exist in the PR's tree.
 - Upgrade or item text that carries numbers; the old names "Vessel Cardinals" or "Team Cardinals" outside save keys
-  (they are Trinkets and Cardinals); mentions of the mods from before the scope outside dated reports, the PLAN Log and
+  (they are Trinkets and Cardinals); mentions of the mods from before the scope outside dated reports, the Log (`docs/log/`) and
   version histories.
 - Art (`*.png` under `TDS_Mod/ModSource`): half-transparent pixels, pure black `000000`, or a saturated hue between 270
   and 320 degrees on anything that is not a foe (`docs/STYLE.md`, `docs/art/CHATGPT_BRIEF.md`).

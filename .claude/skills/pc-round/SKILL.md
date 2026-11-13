@@ -1,6 +1,7 @@
 ---
 name: pc-round
 description: Use in Rogue Waves when code must be built, self-tested or played on Dimitri's PC: a PC round, a self-test round, a two-player round or a release boot check.
+effort: xhigh
 ---
 
 # Run a Rogue Waves PC round
@@ -69,3 +70,14 @@ Effort xhigh. Past rounds to copy the shape of: `docs/reports/TESTING_ROUND_3_20
    says the code it ran on (commit, kit version).
 3. Open and merge it with `ship-a-pr`; add the report to `docs/reports/README.md`.
 4. Release the PC lock in memory and update its "PC STATE" line (what the Mods folder and Unity project now hold).
+
+## Gotchas
+
+- A gamepad on the PC turns on the game's gamepad mode: the boat parks on the island, dialogs read the focused card's
+  line. A flow that passes with the mouse can fail with a pad; run both (pitfall #177).
+- Export Mod "times out" in UnityMCP and runs twice: wait for the `.info` timestamp to settle before Restore (#53).
+  An export leaves the mod disabled: `Deploy-Wait.ps1` (#54).
+- Built the old art: Unity hadn't recompiled the generator; check the editor assembly is newer than the edit (#55).
+- Never batch deletes with unverified steps; count files after every park and restore (#56).
+- The process is `TDSgame`; close it with `CloseMainWindow()` (#66). `Player.log` is overwritten each launch: copy it
+  after every run (#67). Never screenshot the desktop, only in-mod captures (#65).

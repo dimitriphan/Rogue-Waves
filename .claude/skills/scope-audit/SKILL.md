@@ -1,9 +1,21 @@
 ---
 name: scope-audit
 description: Use in Rogue Waves when asked to check the code against Dimitri's scope (a scope audit or scope-to-code check), one docs/scope file at a time.
+context: fork
+agent: general-purpose
+model: opus
+effort: high
+background: false
 ---
 
 # Audit Rogue Waves code against the scope
+
+This skill runs in its own sub-agent (`context: fork`): its file reads stay out of the thread, which gets back only
+the report's path and summary table. Where it did not start as its own sub-agent (the claude.ai copy drops that
+setting), hand the audit to one Opus 5.5 sub-agent at effort high with this page, and keep only what it returns.
+The scope file to audit: $ARGUMENTS.
+
+Scope files (run it yourself if it shows as a command): !`cd "$(git rev-parse --show-toplevel 2>/dev/null || echo /home/user/Rogue-Waves)" && ls docs/scope`
 
 Method from `docs/reports/SCOPE_CODE_AUDIT_2026-11-05.md` (read its opening table of marks and one "File by file"
 section as the model, not the whole page). Effort high. Dimitri's newest words beat the scope, and the scope beats the
@@ -47,6 +59,13 @@ before the command adds the Numbers line and the code parameters side by side, t
    DIFFERENT and MISSING rows (N1, N2, ...) so build threads can take them.
 2. Change no game code in the audit. Fix scope text only where it contradicts a decision Dimitri already made, and
    list each fix.
-3. Docs-only PR with `ship-a-pr`: grep that every cited `file:line` exists; say "docs only, read from the code,
-   nothing compiled or run on the PC".
+3. Grep that every cited `file:line` exists, then return: the report's path, its summary table, the numbered
+   DIFFERENT/MISSING rows. The thread opens the docs-only PR with `ship-a-pr` and says "docs only, read from the
+   code, nothing compiled or run on the PC".
 4. A scope file the audit edited makes his copies out of date: say so, and sync only at his word (`scope-sync`).
+
+## Gotchas
+
+- Scope level N is code tier N+1; `scope_upgrades.py` already applies it, so don't shift it twice.
+- `#` lines are design notes, never values; a `~value~` is still audited.
+- A line a queued build list already names is UNBUILT-QUEUED, not MISSING: check the queues first (Setup 3).

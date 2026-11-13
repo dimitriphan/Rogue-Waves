@@ -1,0 +1,19 @@
+# Runs the mechanical half of AGENTS.md "Code Review Rules" on every pull request, so a review is not spent on them.
+name: Rules
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install --quiet pillow
+      - run: python3 TDS_Mod/Tools/cloud-check/check_rules.py --base "origin/${{ github.base_ref }}"

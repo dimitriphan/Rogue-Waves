@@ -42,7 +42,7 @@ on the first publish only (omit them afterwards to keep them).
    - **models**: the `.glb` becomes `ModSource/<Part>/Art/Models/<model>.json`. The builders don't read these yet: the
      first model edit also adds that support to the builders and the cloud preview, and needs a PC round.
 4. Rebuild and republish the page, run the cloud checks for each touched part (`CLAUDE.md` "Check your work"), open the
-   PR (`docs/skills/ship-a-pr`), and set each applied edit's `status` to `pr` with `pr: <number>` (`ArtifactData`
+   PR (`.claude/skills/ship-a-pr`), and set each applied edit's `status` to `pr` with `pr: <number>` (`ArtifactData`
    `update`); `merged` after the merge, `seen` after the PC round that shows it.
 
 ## Limits

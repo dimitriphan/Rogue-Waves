@@ -80,6 +80,18 @@ Escalation rule: an Opus thread that fails twice at the same problem hands it to
 of what was tried. Prompting: Fable does better with the goal and the gate than with steps, so give a Fable thread the
 outcome and the constraints; the Part D templates stay as written for Opus threads.
 
+## Your own Claude Code sessions
+
+For Dimitri's sessions in the Code tab (project threads manage themselves). From
+shanraisshan/claude-code-best-practice, 2026-11-13:
+
+- **One job, one session.** A new job starts with `/clear` and a two-line brief, not on top of the last job's context.
+- **Compact early, with a hint.** `/compact keep the chart fix, drop the test logs` before the context is about 40%
+  full beats the automatic compact, which fires when the model is at its worst. `/context` shows how full it is.
+- **Rewind, don't correct.** After a wrong attempt, press Esc twice (or `/rewind`) back to before it and ask again
+  with what you learned; corrections piled on a failed attempt stay in the context and cost tokens every turn.
+- **Say the outcome, not the steps.** "Fix this" with the error pasted does better than directing each edit.
+
 ## API credit
 
 (Checked 2026-11-05 against the Claude Code docs and the Claude help centre; sources at the end.) The Max plan
