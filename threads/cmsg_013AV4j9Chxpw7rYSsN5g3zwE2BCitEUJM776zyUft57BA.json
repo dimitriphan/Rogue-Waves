@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "reviewing",
-  "started": "2026-11-13T13:56:54Z",
-  "step": "PR #207 up (vote rules), waiting for Codex",
+  "state": "shipped",
+  "started": "2026-11-13T14:01:42Z",
+  "step": "Vote rules merged (#207); more candidates wait for Dimitri",
   "helpers": [],
-  "updated": "2026-11-13T13:56:54Z"
+  "updated": "2026-11-13T14:01:42Z"
 }
