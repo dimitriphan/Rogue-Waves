@@ -1,5 +1,10 @@
 # Uloe implementation notes (0.1.0-dev, 2026-11-03)
 
+**2026-11-13, kit 1.16's brain (compiled here, not yet run in game):** `UloeBuilding` derives from the kit's `ModKitBrain`, which now owns the start-up
+(`Setup`: the Light stat, the handlers) and the catch; a despawned building's idle frame is the kit's `Resting`; its upgrade
+keys and kept numbers sit in a `ModKitUpgrades`; `UloeFaults` is gone, every brain holds the kit's `ModKitFaults` (the
+Photons still share one log count). Nothing is meant to change in play. For the PC: the self-test.
+
 **2026-11-06, PC round 5's review (test only, compiled here):** Supernova's "every Photon bursts" and "flies back"
 lines are a SETUP when no Photon is left after the fell (they passed on 0 of 0 before); "SURGE fires once" is
 checked either way.

@@ -5,7 +5,7 @@ public class UloeHeroBrain : MonoBehaviour
 {
     public Entity_Master Master;
     public UloePlayer Player;
-    readonly UloeFaults faults = new UloeFaults();
+    readonly ModKitFaults faults = new ModKitFaults(UloeLog.Tag);
     bool begun;                     // Begin ran to its end
     public Entity_Master Plug;      // what the cord is in; null when unplugged
     Vector3 plugAt;                 // where it was last seen, for the unplug effects once it's gone

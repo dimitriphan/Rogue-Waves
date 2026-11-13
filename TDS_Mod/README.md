@@ -6,7 +6,7 @@ Spool and Uloe, the mode and the foes (table below), plus the research mod and t
 
 | Path | What |
 | --- | --- |
-| `ModSource/Shared/` | The shared vessel-mod kit (1.15), compiled into every vessel and renamed `<Name>Kit` per mod: journal, boat, tower ranges, combat hits, self-test helpers, the pack's registry, Tides, counter, Directions, F-key fix, and the helpers and asset reader every part uses (`ModKitUtil`, `ModKitAssets`). Keep it equal to `TDS_Vessel_Creator/kit/Shared`; rules in `TDS_Vessel_Creator/kit/README.md` |
+| `ModSource/Shared/` | The shared vessel-mod kit (1.16), compiled into every vessel and renamed `<Name>Kit` per mod: journal, boat, tower ranges, combat hits, self-test helpers, the pack's registry, Tides, counter, Directions, F-key fix, and the helpers and asset reader every part uses (`ModKitUtil`, `ModKitAssets`). Keep it equal to `TDS_Vessel_Creator/kit/Shared`; rules in `TDS_Vessel_Creator/kit/README.md` |
 | `ModSource/Pack/` | The release pack: `pack.txt` (the one version, the parts, the Mods menu text) and the player's `README.txt`; built with `Tools/pc/Build-Pack.ps1` and Tools > ModKit > Build Pack (`docs/PACK.md` §1). A handoff carries it with `--only Pack` |
 | `Assets/ModKit/Editor/ModKitPipeline.cs` | Unity: Tools > ModKit > Build Queue, one Build All Assets, Build Mod Prefab, Export and Restore for every vessel in `handoff\queue.txt` |
 | `Tools/cloud-check/` | Compile a vessel against the game's API here (Roslyn 3.8, no `System.Core`), compile its editor code, preview its sprites, models and sounds, read self-test map snapshots. One-time `setup.sh` per container (`README.md`) |

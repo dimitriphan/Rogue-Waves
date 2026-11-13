@@ -1,5 +1,7 @@
 # Argo implementation notes (2.0.1, 142/0 and a second player 2026-11-04; 2.0.0, PC round 6 139/0, 2026-10-08; v1.4.0, 2026-10-04; 1.0.0 on 2026-10-02)
 
+**2026-11-13, kit 1.16's brain (compiled here, not yet run in game):** `ArgoTowerBrain` derives from the kit's `ModKitBrain`, which now owns the start-up (`Setup`, the replay of the upgrades it came with, `Started2`, the build look) and the catch; its upgrade keys and kept numbers sit in a `ModKitUpgrades` (a `_Base`, `_Every` or `_Count` met again replaces, as before); `ArgoFaults` is gone, every brain holds the kit's `ModKitFaults`. Changed in play: several errors in one frame count once toward the 600 (they counted each), and a tower whose start-up threw stops (it ticked on half set up). For the PC: the self-test.
+
 **2026-11-06, Diorama's tiny look, kit 1.15 (compiled here, not yet run in game):** the vessel's visual now carries the
 skins Diorama switches to, named after the being and its copy's (`ModKitAssets.TinyLooks` in `04_Content.cs`: the same
 sprites at half size; kit `docs/17` §11 rule 19), so holding Diorama shows it tiny; before, the stats came and the look

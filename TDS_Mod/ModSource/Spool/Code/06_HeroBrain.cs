@@ -10,7 +10,7 @@ public class SpoolHeroBrain : MonoBehaviour
     float ElbowHealth, ElbowDamage;   // Elbow Patches' Multis on Spool now (0 without)
     public string LastPatch = "";
     bool started, begun, patchOff, fullWarned, stashFullWarned;
-    readonly SpoolFaults faults = new SpoolFaults();
+    readonly ModKitFaults faults = new ModKitFaults(SpoolLog.Tag);
     Link_Command patchCommand;
     Link_Modifier elbowHealth, elbowDamage;
     float nextCollect, nextMenu;

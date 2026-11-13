@@ -1,5 +1,12 @@
 # Spool implementation notes (0.1.0-dev, 2026-10-26)
 
+## 2026-11-13: kit 1.16's brain (compiled here, not yet run in game)
+
+`SpoolBuilding` derives from the kit's `ModKitBrain`, which now owns the start-up and the catch; Spool's order (Started
+after the upgrades a thing comes back with) is the kit's `StartedAfterUpgrades`; its upgrade keys and kept numbers sit
+in a `ModKitUpgrades`; `SpoolFaults` is gone, every brain holds the kit's `ModKitFaults` (the Crafted still share one log
+count). Nothing is meant to change in play. For the PC: the self-test.
+
 ## 2026-11-06: the Thread Head walks with the pack loaded (compiled here, not yet run in game)
 
 PC round 6's four Thread Head fails (RETURN, SPOT, the hand-over, the walk back; only with the whole pack loaded) came

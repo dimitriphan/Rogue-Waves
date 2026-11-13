@@ -1,6 +1,6 @@
 // The mode's rules, checked here without the game (rules_check.py): each check names the rule and where it is written.
 // R1-R16 the names, routes, player lines and difficulty; C1-C12 the campaign, played through its own steps;
-// V1-V9 the questions' text and the votes' counting.
+// V1-V9 the questions' text and the votes' counting; K1-K8 the kit's brain rules (Shared/ModKitBrainRules.cs).
 // These are the numbers the scope and the balance sweep set; a check that fails after a number was changed on purpose is
 // changed with it, in the same commit.
 using System;
@@ -19,6 +19,7 @@ public static class RulesTest
         Campaign(check);
         Questions(check);
         Tallies(check);
+        Kit(check);
     }
 
     static List<int> Ints(params int[] n) { return new List<int>(n); }
@@ -92,6 +93,49 @@ public static class RulesTest
         string wreck = "" + RWTally.TreasureCard("1", offer, sold) + RWTally.TreasureCard("4", offer, sold) + RWTally.TreasureCard("3", offer, sold) + RWTally.TreasureCard("0", offer, sold)
             + RWTally.TreasureCard(null, offer, sold) + RWTally.TreasureCard("9", offer, sold) + RWTally.TreasureCard("-1", offer, sold) + RWTally.TreasureCard("x", offer, sold);
         check("V9 the Wreck's pick: the offered Trinket of that shelf index, and the first card for one not offered, off the shelf, or no pick", wreck == "12000000", wreck);
+    }
+
+    // Shared/ModKitBrainRules.cs: when a brain that keeps throwing stops, and what an upgrade's numbers mean.
+    static void Kit(Checker check)
+    {
+        ModKitStreak run = new ModKitStreak();
+        int stopped = -1;
+        for (int f = 1; f <= 700 && stopped < 0; f++) if (run.Hit(f)) stopped = f;
+        check("K1 a brain that threw on 600 frames running stops on the 600th, not before", stopped == ModKitStreak.Limit && ModKitStreak.Limit == 600, "" + stopped);
+        ModKitStreak twice = new ModKitStreak();
+        stopped = -1;
+        for (int f = 1; f <= 700 && stopped < 0; f++) { twice.Hit(f); if (twice.Hit(f)) stopped = f; }
+        check("K2 two errors in one frame count once (the first copies stopped such a brain at frame 300)", stopped == 600, "" + stopped);
+        ModKitStreak gap = new ModKitStreak();
+        bool early = false;
+        for (int f = 1; f <= 599; f++) early |= gap.Hit(f);
+        for (int f = 601; f <= 1199; f++) early |= gap.Hit(f);
+        check("K3 one clean frame starts the count again, and the stop holds while the run goes on", !early && gap.Hit(1200) && gap.Hit(1201) && !gap.Hit(1203), "");
+
+        string stat, type;
+        bool add = ModKitUpgrades.Split("Range_Add", out stat, out type), multi = ModKitUpgrades.Split("Seed_Limit_Multi", out stat, out type);
+        string two = stat + "|" + type;
+        bool pm = ModKitUpgrades.Split("Damage_Pmulti", out stat, out type), b = ModKitUpgrades.Split("Fathommax_Base", out stat, out type);
+        string three = stat + "|" + type;
+        bool bare = ModKitUpgrades.Split("Web", out stat, out type);
+        check("K4 a number's name splits at its last '_'; Add, Multi and Pmulti are a modifier's types, the rest are kept", add && multi && pm && !b && !bare
+            && two == "Seed_Limit|Multi" && three == "Fathommax|Base" && stat == "Web" && type == "", two + " " + three + " " + stat + "|" + type);
+
+        ModKitUpgrades u = new ModKitUpgrades(ModKitUpgrades.BaseMax);
+        check("K5 an upgrade is held once: the replay at start-up and a buy cannot both count it", u.Add("Web") && !u.Add("Web") && u.Add("Sap") && u.Has("Web") && !u.Has("Ivy") && u.Count == 2, "" + u.Count);
+        u.Keep("Burst_Add", 2f); u.Keep("Burst_Add", 3f);
+        u.Keep("Reach_Base", 4f); u.Keep("Reach_Base", 6f);
+        u.Keep("Stock_Max", 1f); u.Keep("Stock_Max", 9f);
+        check("K6 a kept number met again adds up, except a _Base or a _Max, which is a new value; one never met reads as the fallback",
+            u.Param("Burst_Add", 0f) == 5f && u.Param("Reach_Base", 0f) == 6f && u.Param("Stock_Max", 0f) == 9f && u.Param("None", 7f) == 7f,
+            u.Param("Burst_Add", 0f) + " " + u.Param("Reach_Base", 0f) + " " + u.Param("Stock_Max", 0f));
+        ModKitUpgrades argo = new ModKitUpgrades(new[] { "_Base", "_Every", "_Count" });
+        argo.Keep("Salvo_Every", 4f); argo.Keep("Salvo_Every", 3f); argo.Keep("Barrel_Count", 1f); argo.Keep("Barrel_Count", 2f); argo.Keep("Stock_Max", 1f); argo.Keep("Stock_Max", 9f);
+        check("K7 Argo's endings: an _Every or a _Count is a new value, and its _Max adds up as it always did",
+            argo.Param("Salvo_Every", 0f) == 3f && argo.Param("Barrel_Count", 0f) == 2f && argo.Param("Stock_Max", 0f) == 10f, "" + argo.Param("Stock_Max", 0f));
+        u.Clear();
+        check("K8 cleared (the Bonsai before it copies another Tree): no upgrade and no number is left, and the same upgrade can be held again",
+            u.Count == 0 && !u.Has("Web") && u.Param("Burst_Add", -1f) == -1f && u.Add("Web"), "");
     }
 
     static List<int> Route(params int[] cols) { return new List<int>(cols); }

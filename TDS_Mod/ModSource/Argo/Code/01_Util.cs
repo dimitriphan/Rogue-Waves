@@ -1,32 +1,12 @@
 public static class ArgoLog
 {
-    const string Tag = "[Argo] ";
+    public const string Tag = "[Argo] ";
 
     public static void Info(string message) { Debug.Log(Tag + message); }
     public static void Warn(string message) { Debug.LogWarning(Tag + message); }
     public static void Error(string message) { Debug.LogError(Tag + message); }
 }
 
-// A brain's error count. Up to 1.2.2 a brain's catch switched it off for the match on its first exception, so one bad
-// tick could silence a tower or a Naut for good; now the tick is skipped and the brain carries on, and only a brain that
-// throws on every frame for ~10 s stops. The first three errors are logged in full, then one line every 500.
-public sealed class ArgoFaults
-{
-    int count, streak, lastFrame = -10;
-
-    // True when the brain should stop: it threw on every frame for 600 frames running (~10 s).
-    public bool Fail(string who, Exception e)
-    {
-        count++;
-        streak = Time.frameCount - lastFrame <= 1 ? streak + 1 : 1;
-        lastFrame = Time.frameCount;
-        if (count <= 3) ArgoLog.Warn(who + ": " + e);
-        else if (count % 500 == 0) ArgoLog.Warn(who + ": " + count + " errors, last: " + e.Message);
-        if (streak < 600) return false;
-        ArgoLog.Error(who + ": threw every frame for 600 frames, stopped");
-        return true;
-    }
-}
 
 public static class ArgoUtil
 {

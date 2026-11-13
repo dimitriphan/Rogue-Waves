@@ -110,7 +110,7 @@ public class YosseleFriendBrain : MonoBehaviour
     public Entity_Master Target;
     public int Orders;
     float nextThink;
-    readonly YosseleFaults faults = new YosseleFaults();
+    readonly ModKitFaults faults = new ModKitFaults(YosseleLog.Tag);
 
     void Update()
     {

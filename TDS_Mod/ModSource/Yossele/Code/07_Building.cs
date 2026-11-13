@@ -8,30 +8,20 @@
 // (5 stages on a map of 4 Tides or fewer), up to its maximum; FERTILIZE adds one at once. The stage is shown as the "Growth" counter (ModKitCounter) and the
 // skin "Growth<n>" (sprouts round its foot), both synced by the engine. Destroyed or sold, it is gone: a new one
 // starts at 0.
-public abstract class YosseleBuilding : MonoBehaviour
+public abstract class YosseleBuilding : ModKitBrain
 {
-    public Entity_Master Master;
     public YosseleData.Build Def;
-    public bool Started;
     public int Growth, BuiltWave = -1, Grown, Fertilized;
 
-    readonly Dictionary<string, float> param = new Dictionary<string, float>();
-    readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
+    readonly ModKitUpgrades upgrades = new ModKitUpgrades(ModKitUpgrades.BaseMax);
     readonly List<Link_Modifier> upgradeMods = new List<Link_Modifier>();
-    readonly YosseleFaults faults = new YosseleFaults();
-    float builtLookAt = -1f;     // when the build look goes out (pitfall #158)
 
     // Stats the buildings own: an upgrade param named after one of these (Range_Add, Seedlimit_Add...) is a modifier.
     static readonly string[] StatNames = { "Damage", "Attackspeed", "Range", "Health", "Radius", "Spores", "Seedlimit", "Seedrate", "Slow" };
 
-    public bool Has(string key) { return keys.Contains(key); }
-    public List<string> Keys { get { return keys; } }
-
-    public float Param(string name, float fallback)
-    {
-        float v;
-        return param.TryGetValue(name, out v) ? v : fallback;
-    }
+    public bool Has(string key) { return upgrades.Has(key); }
+    public List<string> Keys { get { return upgrades.Keys; } }
+    public float Param(string name, float fallback) { return upgrades.Param(name, fallback); }
 
     public float Stat(string name, float fallback) { return ModKitUtil.Stat(Master, name, fallback); }
     public long Owner { get { return ModKitUtil.Owner(Master); } }
@@ -40,55 +30,29 @@ public abstract class YosseleBuilding : MonoBehaviour
     public int Max { get { return Def != null ? Def.Max : 0; } }
     public bool FullGrown { get { return Growth >= Max; } }
 
-    void Update()
-    {
-        if (Master == null)
-        {
-            Destroy(this);
-            return;
-        }
-        if (!ModKitUtil.IsServer)
-            return;
-        try
-        {
-            if (!Started)
-            {
-                if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
-                    return;
-                Begin();
-            }
-            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
-            // hooked this building, so the build look goes out half a second later.
-            if (builtLookAt >= 0f && Time.time >= builtLookAt)
-            {
-                builtLookAt = -1f;
-                ModKitUtil.Vis(Master, "Yossele_Built", Pos, 0);
-            }
-            if (ModKitUtil.Alive(Master))
-                Tick();
-        }
-        catch (Exception e)
-        {
-            if (faults.Fail(Def.Id + " brain", e))
-                enabled = false;
-        }
-    }
+    // The start-up and each frame: ModKitBrain (kit 1.16).
+    protected override string LogTag { get { return YosseleLog.Tag; } }
+    protected override string Who { get { return Def.Id + " brain"; } }
+    protected override float BuiltLookDelay { get { return YosseleData.FirstLookDelay; } }
 
-    void Begin()
+    protected override void Setup()
     {
-        Started = true;
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
         BuiltWave = ModKitTides.Wave >= 0 ? ModKitTides.Wave : (Game_Mapvars.Instance != null ? Game_Mapvars.Instance.Wave.Value : 0);
         // Cutting Jar: rebuilt on the tile of one that fell, it starts with the cutting's stages (17_Directions.cs).
         SetGrowth(YosseleCuttings.Take(this));
-        foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
-            OnUpgrade(u);
-        Started2();
-        builtLookAt = Time.time + YosseleData.FirstLookDelay;
     }
 
-    protected virtual void Started2() { }
+    protected override void Replay(Upgradeproperties up) { OnUpgrade(up); }
+    protected override void BuiltLook() { ModKitUtil.Vis(Master, "Yossele_Built", Pos, 0); }
+
+    protected override void Frame()
+    {
+        if (ModKitUtil.Alive(Master))
+            Tick();
+    }
+
     protected abstract void Tick();
     protected virtual void OnTide(int wave) { }
     protected virtual void Command(string command, string json, bool server) { }
@@ -166,29 +130,15 @@ public abstract class YosseleBuilding : MonoBehaviour
     protected YosseleData.Upg Apply(Upgradeproperties up, float share)
     {
         YosseleData.Upg def;
-        if (up == null || !YosseleContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
+        if (up == null || !YosseleContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || !upgrades.Add(def.Key))
             return null;
-        keys.Add(def.Key);
         if (up.Defaultparams != null)
             foreach (KeyValuePair<string, float> kv in up.Defaultparams)
             {
                 float value = kv.Value;
                 if (share < 1f && value > 0f && Array.IndexOf(YosseleData.BonsaiKept, kv.Key) < 0)
                     value = Array.IndexOf(YosseleData.BonsaiCounts, kv.Key) >= 0 ? Mathf.Max(1f, Mathf.Round(value * share)) : value * share;
-                int cut = kv.Key.LastIndexOf('_');
-                string stat = cut > 0 ? kv.Key.Substring(0, cut) : kv.Key;
-                string type = cut > 0 ? kv.Key.Substring(cut + 1) : "";
-                bool own = Array.IndexOf(StatNames, stat) >= 0 && Master.Statsserver.ContainsKey(stat);
-                if (own && (type == "Add" || type == "Multi" || type == "Pmulti"))
-                {
-                    Helper_Entitytools.Modtypes mt = type == "Add" ? Helper_Entitytools.Modtypes.Add : type == "Multi" ? Helper_Entitytools.Modtypes.Multi : Helper_Entitytools.Modtypes.Pmulti;
-                    upgradeMods.Add(Helper_Entitytools.Addmod(Master, stat, value, mt, 0f));
-                }
-                else
-                {
-                    float old;
-                    param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Max") ? old + value : value;
-                }
+                ReadParam(upgrades, kv.Key, value, StatNames, upgradeMods);
             }
         return def;
     }
@@ -199,8 +149,7 @@ public abstract class YosseleBuilding : MonoBehaviour
         foreach (Link_Modifier m in upgradeMods)
             ModKitUtil.Unmod(m);
         upgradeMods.Clear();
-        keys.Clear();
-        param.Clear();
+        upgrades.Clear();
     }
 
     // Foes near this building, nearest first.

@@ -140,8 +140,8 @@ public class UloePhotonBrain : MonoBehaviour
     public Entity_Master Master;
     // Each Photon stops on its own errors; they share one log count, as they are many and respawn (a fault common to all
     // logs three traces, not three each).
-    static readonly UloeFaults.Log faultLog = new UloeFaults.Log();
-    readonly UloeFaults faults = new UloeFaults(faultLog);
+    static readonly ModKitFaults.Log faultLog = new ModKitFaults.Log();
+    readonly ModKitFaults faults = new ModKitFaults(UloeLog.Tag, faultLog);
     bool begun;                     // Begin ran to its end
     public UloeBankBrain Home;
     public UloeFloodBrain Following;

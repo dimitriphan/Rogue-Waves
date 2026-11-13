@@ -1,30 +1,12 @@
 public static class YosseleLog
 {
-    const string Tag = "[Yossele] ";
+    public const string Tag = "[Yossele] ";
 
     public static void Info(string message) { Debug.Log(Tag + message); }
     public static void Warn(string message) { Debug.LogWarning(Tag + message); }
     public static void Error(string message) { Debug.LogError(Tag + message); }
 }
 
-// Keeps a brain running through a bad frame (Argo's pattern): logs the first errors, then every 500th, and only stops
-// when it threw on every frame for 600 frames running (~10 s).
-public sealed class YosseleFaults
-{
-    int count, streak, lastFrame = -10;
-
-    public bool Fail(string who, Exception e)
-    {
-        count++;
-        streak = Time.frameCount - lastFrame <= 1 ? streak + 1 : 1;
-        lastFrame = Time.frameCount;
-        if (count <= 3) YosseleLog.Warn(who + ": " + e);
-        else if (count % 500 == 0) YosseleLog.Warn(who + ": " + count + " errors, last: " + e.Message);
-        if (streak < 600) return false;
-        YosseleLog.Error(who + ": threw every frame for 600 frames, stopped");
-        return true;
-    }
-}
 
 public static class YosseleUtil
 {

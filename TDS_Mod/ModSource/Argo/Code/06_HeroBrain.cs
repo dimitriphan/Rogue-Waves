@@ -14,7 +14,7 @@ public class ArgoHeroBrain : MonoBehaviour
     bool sonarOff;
     float nextHookCheck;
     Entity_Master.Interacts hitHandler;
-    readonly ArgoFaults faults = new ArgoFaults();
+    readonly ModKitFaults faults = new ModKitFaults(ArgoLog.Tag);
 
     public static readonly string[] WarnText =
     {
