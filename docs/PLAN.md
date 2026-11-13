@@ -58,7 +58,7 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > 👍 on the PR) is the approval. **Fallback (Dimitri, 2026-11-07, for when his ChatGPT usage runs out):** no
 > review within an hour: comment `@codex review` once; still none an hour later, or Codex answers that its usage
 > limit is reached: tell Dimitri in the thread, and a Claude reviewer sub-agent (model: `docs/PROJECT_SETUP.md`
-> "Model per role", stand-in PR reviewer) runs `/code-review high` on the head, labelling findings P0-P3 under the same rules; the
+> "Model per role", stand-in PR reviewer) runs `mattpocock-skills:code-review` on the head, labelling findings P0-P3 under the same rules; the
 > thread fixes or answers each P0/P1, the same reviewer re-reviews the new head (no new Codex wait), the PR body notes
 > that Claude reviewed in Codex's place, and the thread merges once no P0/P1 is open and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
@@ -1840,6 +1840,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   `96_Flow.cs`) 189/0/0 and 190/0/0 (2026-11-07: 121/2). With a pad the boat parks 0.1 from the island and arrives,
   and the stay vote reads its own line after `RWTest.Unfocus`. Report `docs/reports/PC_FLOW_ROUND1_2026-11-12.md`;
   cloud-check stubs gained `InputSystem.AddDevice`. Next free unchanged: kit chapter 25, kit 1.16, pitfall #178.
+- **2026-11-13: Matt Pocock's skills on for every thread** (Dimitri: "remove our own code-review and pr skills and use
+  matt's instead"): `.claude/settings.json` enables `mattpocock-skills@claude-plugins-official` (MIT; the hand-added
+  line had left the file invalid JSON, now fixed). `mattpocock-skills:code-review` replaces `/code-review high` in
+  `CLAUDE.md`, Part A "Merging", ship-a-pr and `docs/PROJECT_SETUP.md`; ship-a-pr keeps its steps and writes bodies
+  with `mattpocock-skills:pr`. Docs only.
 
 ### Decisions
 
