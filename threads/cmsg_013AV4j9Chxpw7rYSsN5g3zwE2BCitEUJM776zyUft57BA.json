@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "reviewing",
-  "started": "2026-11-13T15:17:09Z",
-  "step": "PR #208 (kit 1.16 brain) waits for Codex",
+  "state": "shipped",
+  "started": "2026-11-13T15:19:19Z",
+  "step": "Kit 1.16 brain merged (#208); candidates 5, 6 wait for Dimitri",
   "helpers": [],
-  "updated": "2026-11-13T15:17:09Z"
+  "updated": "2026-11-13T15:19:19Z"
 }
