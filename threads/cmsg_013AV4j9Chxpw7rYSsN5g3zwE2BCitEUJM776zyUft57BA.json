@@ -1,9 +1,9 @@
 {
   "id": "cmsg_013AV4j9Chxpw7rYSsN5g3zwE2BCitEUJM776zyUft57BA",
   "thread": "Improve codebase architecture",
-  "state": "shipped",
-  "started": "2026-11-13T14:01:42Z",
-  "step": "Vote rules merged (#207); more candidates wait for Dimitri",
+  "state": "building",
+  "started": "2026-11-13T15:07:22Z",
+  "step": "Designing candidate 4: buildings' start-up in the kit",
   "helpers": [],
-  "updated": "2026-11-13T14:01:42Z"
+  "updated": "2026-11-13T15:07:22Z"
 }
