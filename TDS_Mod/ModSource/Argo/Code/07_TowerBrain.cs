@@ -11,11 +11,9 @@
 //   Drill Rig       bites the nearest ore (the game's own mining, like the Sno Box), sinks a Fathom each Tide, and
 //                   slows enemies inside its Tremor, which AIM places (2.0) and which spreads through any Deep Water
 //                   it touches. 1.4's "Pressure" (loaded guns) is gone.
-public class ArgoTowerBrain : MonoBehaviour
+public class ArgoTowerBrain : ModKitBrain
 {
-    public Entity_Master Master;
     public ArgoData.Build Def;
-    public bool Started;
     public int Shots, Volleys, Bites, Quakes, Fathom = 1;
     // Double Barrel's stored volleys; the reel; Pay Dirt. 2.0: the debuff bonus, Tether, Anchor Line, Undertow, the aim,
     // Bedrock and Fault Line.
@@ -24,12 +22,11 @@ public class ArgoTowerBrain : MonoBehaviour
     public Vector3 AimCenter;
 
     float lastAttack, nextScan, nextTremor, nextBedrock, nextHookCheck, dryWarned = -99f, syncedRadius = -1f, syncedRange = -1f;
-    float buildLookAt = -1f;     // when the build look goes out (pitfall #158)
     float nextStore = -1f;   // Double Barrel's idle clock: -1 until the first empty look after a volley (or ever)
     public float LastQuake = -999f;
     int shotSerial;
-    readonly Dictionary<string, float> param = new Dictionary<string, float>();
-    readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
+    // A number met again is added to the one held, except a "_Base", an "_Every" or a "_Count": those are new values.
+    readonly ModKitUpgrades upgrades = new ModKitUpgrades(new[] { "_Base", "_Every", "_Count" });
     readonly List<Link_Modifier> fathomMods = new List<Link_Modifier>();
     readonly Dictionary<Entity_Master, float> slowVfx = new Dictionary<Entity_Master, float>();
     readonly List<float> reelShots = new List<float>();   // shots whose first hit is still to come
@@ -39,7 +36,6 @@ public class ArgoTowerBrain : MonoBehaviour
     Link_Modifier salvoMod;
     int salvoRank;
     Entity_Master.Interacts hitHandler;
-    readonly ArgoFaults faults = new ArgoFaults();
 
     // Miner's Base: one slot per crew member (Port, Starboard, Bosun).
     public readonly ArgoNautBrain[] Crew = new ArgoNautBrain[3];
@@ -49,13 +45,8 @@ public class ArgoTowerBrain : MonoBehaviour
     readonly Link_Being[] divers = new Link_Being[3];
     int crewCommands;
 
-    public bool Has(string key) { return keys.Contains(key); }
-
-    public float Param(string name, float fallback)
-    {
-        float v;
-        return param.TryGetValue(name, out v) ? v : fallback;
-    }
+    public bool Has(string key) { return upgrades.Has(key); }
+    public float Param(string name, float fallback) { return upgrades.Param(name, fallback); }
 
     public bool IsScatter { get { return Def.Id == ArgoData.Scatter; } }
     public bool IsHarpoon { get { return Def.Id == ArgoData.Harpoon; } }
@@ -63,64 +54,42 @@ public class ArgoTowerBrain : MonoBehaviour
     public bool IsDrill { get { return Def.Id == ArgoData.Drill; } }
     public bool IsWater { get { return Def.Id == ArgoData.Water; } }
     public bool IsPool { get { return Def.Id == ArgoData.Pool; } }
-    public int UpgradeCount { get { return keys.Count; } }
+    public int UpgradeCount { get { return upgrades.Count; } }
     public int FathomMax { get { return Mathf.RoundToInt(Param("Fathommax_Base", ArgoData.FathomMax)); } }
     // 2.0: the Tremor's radius is its own stat (Range is how far AIM reaches).
     public float TremorRadius { get { return ModKitUtil.Stat(Master, "Tremor", 2f); } }
 
-    void Update()
+    // The start-up and each frame: ModKitBrain (kit 1.16).
+    protected override string LogTag { get { return ArgoLog.Tag; } }
+    protected override string Who { get { return Def.Id + " brain"; } }
+    protected override float BuiltLookDelay { get { return ArgoData.FirstLookDelay; } }
+    protected override void BuiltLook() { ModKitUtil.Vis(Master, "Argo_Build", ModKitUtil.Pos(Master), 0); }
+
+    protected override void Frame()
     {
-        if (Master == null)
+        // Helper_Entitytools.Updateinteract rebuilds Interact on every upgrade or effect: keep the hit listener on it.
+        if ((IsScatter || IsHarpoon) && Time.time >= nextHookCheck)
         {
-            Destroy(this);
-            return;
+            nextHookCheck = Time.time + 0.25f;
+            if (Master.Interact == null || Array.IndexOf(Master.Interact.GetInvocationList(), hitHandler) < 0)
+                Master.Interact += hitHandler;
+            if (IsHarpoon)
+                CheckSalvo();
         }
-        if (!ModKitUtil.IsServer)
-            return;
-        try
-        {
-            if (!Started)
-            {
-                if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
-                    return;
-                Begin();
-            }
-            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
-            // hooked this thing, so the build look goes out half a second later.
-            if (buildLookAt >= 0f && Time.time >= buildLookAt)
-            {
-                buildLookAt = -1f;
-                ModKitUtil.Vis(Master, "Argo_Build", ModKitUtil.Pos(Master), 0);
-            }
-            // Helper_Entitytools.Updateinteract rebuilds Interact on every upgrade or effect: keep the hit listener on it.
-            if ((IsScatter || IsHarpoon) && Time.time >= nextHookCheck)
-            {
-                nextHookCheck = Time.time + 0.25f;
-                if (Master.Interact == null || Array.IndexOf(Master.Interact.GetInvocationList(), hitHandler) < 0)
-                    Master.Interact += hitHandler;
-                if (IsHarpoon)
-                    CheckSalvo();
-            }
-            if ((IsWater || IsPool) && !Master.Commandlistserver.ContainsKey(ArgoData.FloodLink) && ArgoContent.Commands.ContainsKey(ArgoData.FloodKey))
-                AddFlood();
-            if (IsScatter) Scatter();
-            else if (IsHarpoon) Harpoon();
-            else if (IsBell) KeepCrew();
-            else if (IsDrill) DrillTick();
-        }
-        catch (Exception e)
-        {
-            if (faults.Fail(Def.Id + " brain", e))
-                enabled = false;
-        }
+        if ((IsWater || IsPool) && !Master.Commandlistserver.ContainsKey(ArgoData.FloodLink) && ArgoContent.Commands.ContainsKey(ArgoData.FloodKey))
+            AddFlood();
+        if (IsScatter) Scatter();
+        else if (IsHarpoon) Harpoon();
+        else if (IsBell) KeepCrew();
+        else if (IsDrill) DrillTick();
     }
 
-    void Begin()
+    protected override void Setup() { hitHandler = OnHit; }
+    protected override void Replay(Upgradeproperties up) { OnUpgrade(up); }
+
+    // After the upgrades the tower came with: what each kind of tower sets up.
+    protected override void Started2()
     {
-        Started = true;
-        hitHandler = OnHit;
-        foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
-            OnUpgrade(u);
         if (IsBell)
             EnsureCrewCommands(false);
         if (IsDrill)
@@ -140,7 +109,6 @@ public class ArgoTowerBrain : MonoBehaviour
         Master.Command += OnCommand;
         Master.Upgrade += Upgraded;
         lastAttack = Time.fixedTime - 0.5f;
-        buildLookAt = Time.time + ArgoData.FirstLookDelay;
     }
 
     void AddFlood()
@@ -968,29 +936,14 @@ public class ArgoTowerBrain : MonoBehaviour
     bool OnUpgrade(Upgradeproperties up)
     {
         ArgoData.Upg def;
-        if (up == null || !ArgoContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
+        if (up == null || !ArgoContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || !upgrades.Add(def.Key))
             return false;
-        keys.Add(def.Key);
         if (up.Defaultparams == null)
             return true;
+        // A stat this tower has (Damage, Range, Projcount, Spread, Pierce, Slow, Units...) is a modifier like the game's;
+        // anything else is a rule parameter the brain reads.
         foreach (KeyValuePair<string, float> kv in up.Defaultparams)
-        {
-            int cut = kv.Key.LastIndexOf('_');
-            string stat = cut > 0 ? kv.Key.Substring(0, cut) : kv.Key;
-            string type = cut > 0 ? kv.Key.Substring(cut + 1) : "";
-            // A stat this tower has (Damage, Range, Projcount, Spread, Pierce, Slow, Units...) is a modifier like the game's;
-            // anything else is a rule parameter the brain reads.
-            if (Master.Statsserver.ContainsKey(stat) && (type == "Add" || type == "Multi" || type == "Pmulti"))
-            {
-                Helper_Entitytools.Modtypes mt = type == "Add" ? Helper_Entitytools.Modtypes.Add : type == "Multi" ? Helper_Entitytools.Modtypes.Multi : Helper_Entitytools.Modtypes.Pmulti;
-                Helper_Entitytools.Addmod(Master, stat, kv.Value, mt, 0f);
-            }
-            else
-            {
-                float old;
-                param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Every") && !kv.Key.EndsWith("_Count") ? old + kv.Value : kv.Value;
-            }
-        }
+            ReadParam(upgrades, kv.Key, kv.Value, null, null);
         // Ironclad: the game's armour stat, added like Sno Sno's Brain Freeze adds it to his wall.
         float armor = Param("Healtharmor_Base", 0f);
         if (armor > 0f && !Master.Statsserver.ContainsKey("Healtharmor"))

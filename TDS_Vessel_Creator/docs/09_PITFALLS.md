@@ -237,7 +237,7 @@ ones as the next number in §J (older entries kept suffixes such as 18a and 40a)
 80. **One exception silences a tower or a unit for the whole match** (Argo 1.3.0, carried from ModProjects' 40k) → the
     brain's catch logged and set `enabled = false` on its first exception → skip the failing tick and stop the brain
     only after it throws on every frame for 600 frames (~10 s) (`ArgoFaults`, `TDS_Mod/ModSource/Argo`). Seen in game in
-    Argo 1.x; the fix is in Argo 2.0.
+    Argo 1.x; the fix is in Argo 2.0. Since kit 1.16 the one copy is `ModKitFaults` (`ModKitBrain.cs`).
 81. **A stat stays at 0 after an Override mod was changed and then removed** (base-vessel dive, `17` §2.1) →
     `Editstat` adds `Value_Override_On` again on every change of an Override mod and takes it off once on removal →
     never edit an Override mod: remove it and add a new one; use 0.01, not 0, for a stun. Read from code.

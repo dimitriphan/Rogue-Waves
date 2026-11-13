@@ -65,7 +65,7 @@ public static class YosseleServer
         Step("sap", YosseleSap.Update);
     }
 
-    static readonly YosseleFaults faults = new YosseleFaults();
+    static readonly ModKitFaults faults = new ModKitFaults(YosseleLog.Tag);
 
     static void Step(string what, Action a)
     {

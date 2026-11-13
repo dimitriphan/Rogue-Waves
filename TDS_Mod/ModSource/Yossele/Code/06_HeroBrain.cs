@@ -12,7 +12,7 @@ public class YosseleHeroBrain : MonoBehaviour
     public readonly YosseleBoosts Boosts = new YosseleBoosts();
     bool started;
     float nextCheck, nextRegen, guardUntil;
-    readonly YosseleFaults faults = new YosseleFaults();
+    readonly ModKitFaults faults = new ModKitFaults(YosseleLog.Tag);
 
     void Update()
     {

@@ -239,11 +239,11 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **State (2026-11-12, base `0ef182b`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (ChatGPT's art since 2026-11-07, Argo
   redesigned; `docs/TEMP_ART.md`), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
-  kit 1.15. Last PC run: Flow_round1 (`PC_FLOW_ROUND1_2026-11-12.md`). Before it, Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
+  kit 1.16. Last PC run: Flow_round1 (`PC_FLOW_ROUND1_2026-11-12.md`). Before it, Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
   self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2: the game's gamepad
   mode, pitfall #177; fixed by #196, proven 2026-11-12 in `PC_FLOW_ROUND1_2026-11-12.md`, mouse 190/0, gamepad 190/0). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
-  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files, campaign module and vote rules (`rules_check.py`; they want the mode's self-test and flow on the PC). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files, campaign module and vote rules (`rules_check.py`; they want the mode's self-test and flow on the PC), kit 1.16's brain (the four vessels' self-tests). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
@@ -269,7 +269,7 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   (sweep). Spool: his play test and look by eye (`Spool/IMPLEMENTATION_NOTES.md` "PC rounds"), the sheet's open items,
   his sprites. Engine study facts N6, N8-N11 stay read only until a round needs them (never N12).
 - **Blocked:** nothing; what's left needs Dimitri at the keyboard or a friend online.
-- **Next free numbers:** kit chapter 25, kit 1.16, pitfall #178 (which PR used which pitfall numbers: the last Log entry).
+- **Next free numbers:** kit chapter 25, kit 1.17, pitfall #178 (which PR used which pitfall numbers: the last Log entry).
 
 ### Log (newest last; was "Now" until 2026-10-11)
 
@@ -1904,6 +1904,23 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   form, read back damaged text and count the votes; eight deliberate breaks were each caught (a ninth changed
   nothing). Ran here: `rules_check.py` 45 PASS, 0 FAIL; the mode compiled plain, with its self-test defines and with
   GAPS, 0 errors. Not run on the PC. No message text, number or self-test changed. No pitfall or kit number used.
+- **2026-11-13: the buildings' start-up in the kit, kit 1.16** (Dimitri: "Next section", then "Build A, B and C" on
+  the design's card; the review's candidate 4): new kit files `ModKitBrain.cs` and `ModKitBrainRules.cs`. Yossele's,
+  Spool's and Uloe's building bases and Argo's tower brain each had a copy of the same start-up, error counter and
+  upgrade reader, and the copies had drifted. (A) `ModKitFaults` replaces `ArgoFaults`, `YosseleFaults`, `SpoolFaults`
+  and `UloeFaults` in every brain: Argo's and Yossele's copies counted every error toward the 600, so two faults a frame
+  stopped a brain in half the time; all four now count a frame once, with the same log lines under each part's tag.
+  (B) `ModKitUpgrades` holds a building's upgrade keys and kept numbers, `ModKitBrain.ReadParam` turns one number
+  into a modifier or a kept param; each vessel keeps its own endings that replace (Argo's `_Base`, `_Every`, `_Count`;
+  the others' `_Base`, `_Max`), Yossele its `StatNames` and the Bonsai's share. (C) `ModKitBrain` is the base the four
+  derive from: it waits for the entity, then `Setup`, `Replay`, `Started2`, the build look half a second later, then
+  `Frame`; each vessel's steps moved into those hooks in their old order. Meant to change in play: an Argo tower or a
+  Yossele building whose start-up threw now stops, as Spool's and Uloe's did (it ticked on half set up). Kept: when
+  Started is set (Spool after the replay, `StartedAfterUpgrades`; the others before); moving the others to Spool's
+  order waits for a PC round. Checks K1-K8 in `rules/RulesTest.cs` (`rules_check.py` reads the kit's rules files
+  too); four deliberate breaks were each caught. Ran here: `rules_check.py` 53 PASS, 0 FAIL; Argo, Yossele, Spool,
+  Uloe, the mode and the foes compiled plain and with their self-test and other defines, 0 errors (the mode's two
+  warnings are base's). Not run on the PC: each vessel's self-test is the proof. Kit 1.16 used; no pitfall number.
 
 ### Decisions
 

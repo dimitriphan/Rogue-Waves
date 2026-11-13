@@ -4,81 +4,42 @@
 // throttle, costs, Upgradeborder effect, the owner's Upgraded end-screen stat and Voice in a Bottle's price cut. This brain
 // hears each upgrade through Master.Upgrade: a parameter on a stat the entity has becomes a modifier; the rest are read by
 // the subclass through Param().
-public abstract class SpoolBuilding : MonoBehaviour
+public abstract class SpoolBuilding : ModKitBrain
 {
-    public Entity_Master Master;
     public SpoolData.Build Def;
-    public bool Started;
-    readonly SpoolFaults faults = new SpoolFaults();
-    bool begun;                  // Begin ran to its end
-    float builtLookAt = -1f;     // when the build look goes out (pitfall #158)
+    readonly ModKitUpgrades upgrades = new ModKitUpgrades(ModKitUpgrades.BaseMax);
 
-    readonly Dictionary<string, float> param = new Dictionary<string, float>();
-    readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
-
-    public bool Has(string key) { return keys.Contains(key); }
-
-    public float Param(string name, float fallback)
-    {
-        float v;
-        return param.TryGetValue(name, out v) ? v : fallback;
-    }
+    public bool Has(string key) { return upgrades.Has(key); }
+    public float Param(string name, float fallback) { return upgrades.Param(name, fallback); }
 
     public float Stat(string name, float fallback) { return ModKitUtil.Stat(Master, name, fallback); }
     public long Owner { get { return ModKitUtil.Owner(Master); } }
     public Vector3 Pos { get { return ModKitUtil.Pos(Master); } }
 
-    void Update()
-    {
-        if (Master == null)
-        {
-            Destroy(this);
-            return;
-        }
-        if (!ModKitUtil.IsServer)
-            return;
-        try
-        {
-            if (!Started)
-            {
-                if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
-                    return;
-                Begin();
-                begun = true;
-            }
-            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
-            // hooked this thing, so the build look goes out half a second later.
-            if (builtLookAt >= 0f && Time.time >= builtLookAt)
-            {
-                builtLookAt = -1f;
-                if (ModKitUtil.Alive(Master))
-                    ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
-            }
-            Tick();
-        }
-        catch (Exception e)
-        {
-            // Pitfall #80: a bad tick is skipped; a Begin that threw (Started is set inside it) still stops the brain.
-            if (faults.Fail(Def.Id + " brain", e) || !begun)
-                enabled = false;
-        }
-    }
+    // The start-up and each frame: ModKitBrain (kit 1.16).
+    protected override string LogTag { get { return SpoolLog.Tag; } }
+    protected override string Who { get { return Def.Id + " brain"; } }
+    protected override float BuiltLookDelay { get { return SpoolData.FirstLookDelay; } }
+    // Started after the upgrades it comes back with: they are not new buys (no sound, no Upgraded), and a Head back with
+    // Patchwork Job draws MEND from Started2, where its Mending is known (MAX SPL-8: it read MEND OFF while mending).
+    protected override bool StartedAfterUpgrades { get { return true; } }
 
-    void Begin()
+    protected override void Setup()
     {
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
-        foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
-            OnUpgrade(u);
-        // Started after the upgrades it comes back with: they are not new buys (no sound, no Upgraded), and a Head back with
-        // Patchwork Job draws MEND from Started2, where its Mending is known (MAX SPL-8: it read MEND OFF while mending).
-        Started = true;
-        Started2();
-        if (ModKitUtil.Alive(Master))   // BATCH 08:64: a second Stash taken back in Started2 shows no build puff
-            builtLookAt = Time.time + SpoolData.FirstLookDelay;
     }
 
-    protected virtual void Started2() { }
+    protected override void Replay(Upgradeproperties up) { OnUpgrade(up); }
+
+    protected override void BuiltLook()
+    {
+        if (ModKitUtil.Alive(Master))   // BATCH 08:64: a second Stash taken back in Started2 shows no build puff
+            ModKitUtil.Vis(Master, "Spool_Built", Pos, 0);
+    }
+
+    protected override void Frame() { Tick(); }
+
     protected abstract void Tick();
     // Called by SpoolServer as the entity despawns (killed, or Reason "Sell", "Place"...).
     public virtual void Gone(bool killed, string reason) { }
@@ -97,28 +58,12 @@ public abstract class SpoolBuilding : MonoBehaviour
     void OnUpgrade(Upgradeproperties up)
     {
         SpoolData.Upg def;
-        if (up == null || !SpoolContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
+        if (up == null || !SpoolContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || !upgrades.Add(def.Key))
             return;
-        keys.Add(def.Key);
+        // Stats this entity owns take the modifier; the rest (Crafted Health on a Tin) are kept as params.
         if (up.Defaultparams != null)
             foreach (KeyValuePair<string, float> kv in up.Defaultparams)
-            {
-                int cut = kv.Key.LastIndexOf('_');
-                string stat = cut > 0 ? kv.Key.Substring(0, cut) : kv.Key;
-                string type = cut > 0 ? kv.Key.Substring(cut + 1) : "";
-                // Stats this entity owns take the modifier; the rest (Crafted Health on a Tin) are kept as params.
-                bool own = Master.Statsserver.ContainsKey(stat);
-                if (own && (type == "Add" || type == "Multi" || type == "Pmulti"))
-                {
-                    Helper_Entitytools.Modtypes mt = type == "Add" ? Helper_Entitytools.Modtypes.Add : type == "Multi" ? Helper_Entitytools.Modtypes.Multi : Helper_Entitytools.Modtypes.Pmulti;
-                    Helper_Entitytools.Addmod(Master, stat, kv.Value, mt, 0f);
-                }
-                else
-                {
-                    float old;
-                    param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Max") ? old + kv.Value : kv.Value;
-                }
-            }
+                ReadParam(upgrades, kv.Key, kv.Value, null, null);
         if (Started)
         {
             ModKitUtil.Vis(Master, "Spool_Upgrade", Pos, def.Tier);

@@ -14,7 +14,7 @@ public class ArgoNautBrain : MonoBehaviour
     float lastOrder, closest, closestAt, nextHeal;
     Entity_Master tunedTower;
     Link_Modifier speedMod, rangeMod, nautSpeedMod, saltMod;
-    readonly ArgoFaults faults = new ArgoFaults();
+    readonly ModKitFaults faults = new ModKitFaults(ArgoLog.Tag);
 
     void Update()
     {

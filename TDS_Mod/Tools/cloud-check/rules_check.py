@@ -1,10 +1,11 @@
-"""Runs the mode's rules here, without the game. Every file in RogueWavesMode/Code whose first line starts "// RULES FILE"
-is compiled whole (never copied in pieces) with rules/Standins.cs in place of the game, then run:
+"""Runs the mode's rules here, without the game. Every file in RogueWavesMode/Code and in Shared (the kit) whose first
+line starts "// RULES FILE" is compiled whole (never copied in pieces) with rules/Standins.cs in place of the game, then run:
 
     the save fuzz    RogueWavesMode/Code/98_SaveFuzz.cs, F1-F7, on a dictionary standing in for the save
     the rule checks  rules/RulesTest.cs, R1-R16: world names, routes, player lines, the difficulty's numbers;
                      C1-C12: whole campaigns played through RWCampaign's steps, and the keys they save;
-                     V1-V9: the questions' text as written and read, and who wins a vote
+                     V1-V9: the questions' text as written and read, and who wins a vote;
+                     K1-K8: the kit's brain rules (Shared/ModKitBrainRules.cs): the stop rule, an upgrade's numbers
     chart parity     RWChart against concept-tools/sea_chart.py, seed by seed, with and without stops
 
     cd TDS_Mod/ModSource && python3 ../Tools/cloud-check/rules_check.py [RogueWavesMode/Code] [--seeds N]
@@ -22,7 +23,8 @@ if '--seeds' in args: del args[args.index('--seeds'):args.index('--seeds') + 2]
 code = args[0] if args else 'RogueWavesMode/Code'
 read = lambda path: open(path, encoding='utf-8-sig').read().replace('\r\n', '\n')
 
-rules = [f for f in sorted(glob.glob(os.path.join(code, '*.cs'))) if read(f).startswith('// RULES FILE')]
+shared = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(code))), 'Shared')   # the kit's rules files
+rules = [f for f in sorted(glob.glob(os.path.join(code, '*.cs'))) + sorted(glob.glob(os.path.join(shared, '*.cs'))) if read(f).startswith('// RULES FILE')]
 if not rules:
     sys.exit('rules_check: no "// RULES FILE" in ' + code)
 MAIN = '''public static class RulesMain {

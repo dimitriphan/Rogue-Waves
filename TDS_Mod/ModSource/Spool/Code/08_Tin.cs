@@ -323,8 +323,8 @@ public class SpoolUnitBrain : MonoBehaviour
 
     float nextThink, nextFront;
     bool armed, begun;
-    static readonly SpoolFaults.Log faultLog = new SpoolFaults.Log();
-    readonly SpoolFaults faults = new SpoolFaults(faultLog), dyeFaults = new SpoolFaults(faultLog);
+    static readonly ModKitFaults.Log faultLog = new ModKitFaults.Log();
+    readonly ModKitFaults faults = new ModKitFaults(SpoolLog.Tag, faultLog), dyeFaults = new ModKitFaults(SpoolLog.Tag, faultLog);
     Link_Modifier meritDamage, meritHealth, socksDamage, fitHealth, fitDamage;
     Entity_Master.Oninteracts fronted;   // the hit chain as the guard last left it
     bool seam;                           // a Loom's Seam (Snare Line, Dyed in the Wool)

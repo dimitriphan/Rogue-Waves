@@ -1,5 +1,12 @@
 # Yossele implementation notes (0.2.0-dev, 2026-10-23)
 
+## 2026-11-13: kit 1.16's brain (compiled here, not yet run in game)
+
+`YosseleBuilding` derives from the kit's `ModKitBrain`, which now owns the start-up (`Setup`: the handlers, the built Tide, a cutting's stages; the replay of the upgrades it came with; `Started2`; the build look) and the catch; its upgrade keys and
+kept numbers sit in a `ModKitUpgrades` (the Bonsai's share and `StatNames` as before); `YosseleFaults` is gone, every brain holds the kit's `ModKitFaults`.
+Changed in play: several errors in one frame count once toward the 600 (they counted each), and a building whose
+start-up threw stops (it ticked on half set up). For the PC: the self-test.
+
 ## 2026-11-06: Diorama's tiny look, kit 1.15 (compiled here, not yet run in game)
 
 The vessel's visual now carries the skins Diorama switches to, named after the being and its

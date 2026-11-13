@@ -4,28 +4,17 @@
 // a Bottle's price cut. This brain hears each upgrade through Master.Upgrade: a parameter on a stat the entity has becomes
 // a modifier; the rest are read by the subclass through Param(). Every building has a Light stat
 // (UloeLight feeds it) and shows its band as a skin.
-public abstract class UloeBuilding : MonoBehaviour
+public abstract class UloeBuilding : ModKitBrain
 {
-    public Entity_Master Master;
     public UloeData.Build Def;
-    readonly UloeFaults faults = new UloeFaults();
-    bool begun;                     // Begin ran to its end
-    public bool Started;
     public int LookBand;
 
-    readonly Dictionary<string, float> param = new Dictionary<string, float>();
-    readonly List<string> keys = new List<string>();   // no HashSet: System.Core isn't referenced by the game's compiler
+    readonly ModKitUpgrades upgrades = new ModKitUpgrades(ModKitUpgrades.BaseMax);
     float nextLook, lookFrom;
-    float builtLookAt = -1f;     // when the build look goes out (pitfall #158)
 
-    public bool Has(string key) { return keys.Contains(key); }
-    public int UpgradeCount { get { return keys.Count; } }
-
-    public float Param(string name, float fallback)
-    {
-        float v;
-        return param.TryGetValue(name, out v) ? v : fallback;
-    }
+    public bool Has(string key) { return upgrades.Has(key); }
+    public int UpgradeCount { get { return upgrades.Count; } }
+    public float Param(string name, float fallback) { return upgrades.Param(name, fallback); }
 
     public float Stat(string name, float fallback) { return ModKitUtil.Stat(Master, name, fallback); }
     public long Owner { get { return ModKitUtil.Owner(Master); } }
@@ -35,51 +24,16 @@ public abstract class UloeBuilding : MonoBehaviour
     // The Light this building counts: what it receives, up to the cap.
     public float Light { get { return Mathf.Min(Stat(UloeData.LightStat, 0f), UloeData.LightCap); } }
 
-    void Update()
-    {
-        if (Master == null)
-        {
-            Destroy(this);
-            return;
-        }
-        // A despawned building lives to the end of its frame (Game_Entity.Despawn destroys it last): a Bank due a Photon
-        // then made one its Despawn no longer reached, which never went (MAX ULO-4).
-        if (!ModKitUtil.IsServer || (Master.Beingserver != null && Master.Beingserver.Dead))
-            return;
-        try
-        {
-            if (!Started)
-            {
-                if (Master.Statsserver == null || Master.Statsserver.Count == 0 || Master.Commandlistserver == null || Master.Radio == null)
-                    return;
-                Begin();
-                begun = true;
-            }
-            // Pitfall #158: a look sent in Begin, a frame after the spawn, lands before a client's 0.25 s hook scan has
-            // hooked this thing, so the build look goes out half a second later.
-            if (builtLookAt >= 0f && Time.time >= builtLookAt)
-            {
-                builtLookAt = -1f;
-                ModKitUtil.Vis(Master, "Uloe_Built", Pos, 0);
-            }
-            Tick();
-            if (Time.time >= nextLook)
-            {
-                nextLook = Time.time + 0.5f;
-                ShowLight();
-            }
-        }
-        catch (Exception e)
-        {
-            // A Begin that threw left this brain half set up (Started is set on its first line), so that still stops it.
-            if (faults.Fail(Def.Id + " brain", e) || !begun)
-                enabled = false;
-        }
-    }
+    // The start-up and each frame: ModKitBrain (kit 1.16).
+    protected override string LogTag { get { return UloeLog.Tag; } }
+    protected override string Who { get { return Def.Id + " brain"; } }
+    protected override float BuiltLookDelay { get { return UloeData.FirstLookDelay; } }
+    // A despawned building lives to the end of its frame (Game_Entity.Despawn destroys it last): a Bank due a Photon
+    // then made one its Despawn no longer reached, which never went (MAX ULO-4).
+    protected override bool Resting { get { return Master.Beingserver != null && Master.Beingserver.Dead; } }
 
-    void Begin()
+    protected override void Setup()
     {
-        Started = true;
         // Light as a stat (fit plan 10, RogueLab R3): a modifier on a stat that isn't there never applies.
         Link_Stats light = new Link_Stats();
         light.Name = UloeData.LightStat;
@@ -90,13 +44,21 @@ public abstract class UloeBuilding : MonoBehaviour
         Helper_Entitytools.Addstat(Master, light, 0f);
         Master.Command += OnCommand;
         Master.Upgrade += OnUpgrade;
-        foreach (Upgradeproperties u in new List<Upgradeproperties>(Master.Upgradelistserver.Values))
-            OnUpgrade(u);
-        Started2();
-        builtLookAt = Time.time + UloeData.FirstLookDelay;
     }
 
-    protected virtual void Started2() { }
+    protected override void Replay(Upgradeproperties up) { OnUpgrade(up); }
+    protected override void BuiltLook() { ModKitUtil.Vis(Master, "Uloe_Built", Pos, 0); }
+
+    protected override void Frame()
+    {
+        Tick();
+        if (Time.time >= nextLook)
+        {
+            nextLook = Time.time + 0.5f;
+            ShowLight();
+        }
+    }
+
     protected abstract void Tick();
     // Called by UloeServer as the entity despawns (killed, or Reason "Sell", "Place"...).
     public virtual void Gone(bool killed, string reason) { }
@@ -115,27 +77,11 @@ public abstract class UloeBuilding : MonoBehaviour
     void OnUpgrade(Upgradeproperties up)
     {
         UloeData.Upg def;
-        if (up == null || !UloeContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || keys.Contains(def.Key))
+        if (up == null || !UloeContent.UpgradeDefs.TryGetValue(up.Objectname, out def) || !upgrades.Add(def.Key))
             return;
-        keys.Add(def.Key);
         if (up.Defaultparams != null)
             foreach (KeyValuePair<string, float> kv in up.Defaultparams)
-            {
-                int cut = kv.Key.LastIndexOf('_');
-                string stat = cut > 0 ? kv.Key.Substring(0, cut) : kv.Key;
-                string type = cut > 0 ? kv.Key.Substring(cut + 1) : "";
-                bool own = Master.Statsserver.ContainsKey(stat);
-                if (own && (type == "Add" || type == "Multi" || type == "Pmulti"))
-                {
-                    Helper_Entitytools.Modtypes mt = type == "Add" ? Helper_Entitytools.Modtypes.Add : type == "Multi" ? Helper_Entitytools.Modtypes.Multi : Helper_Entitytools.Modtypes.Pmulti;
-                    Helper_Entitytools.Addmod(Master, stat, kv.Value, mt, 0f);
-                }
-                else
-                {
-                    float old;
-                    param[kv.Key] = param.TryGetValue(kv.Key, out old) && !kv.Key.EndsWith("_Base") && !kv.Key.EndsWith("_Max") ? old + kv.Value : kv.Value;
-                }
-            }
+                ReadParam(upgrades, kv.Key, kv.Value, null, null);
         if (Started)
         {
             ModKitUtil.Vis(Master, "Uloe_Upgrade", Pos, def.Tier);
