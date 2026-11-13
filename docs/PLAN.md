@@ -1873,6 +1873,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   the Trinket log line, Made of Tougher Stuff (built in the mode), "Woolen Lining" (his word). Docs only; nothing ran on
   the PC. No kit change, no pitfall.
 
+- **2026-11-13: the morning batch** (Dimitri's daily routine, after the merge-day gate said RUN): Haiku 5.5 over the 49
+  files changed since 2026-11-12, 14 requests, all whole, $0.71 (`BATCH_CHECKS_2026-11-13.md`). Leads checked by hand in
+  its thread: one optional objective is drawn at random per break (`19_Objectives.cs:112-124`) where scope `14` says each
+  is offered every break; only Mind the Meteor grows by map where scope `04` line 22 asks for harder objectives each map;
+  `CLAUDE.md`'s Map row cites `claude-mod/` without its parent. Not leads: two log lines, the Wreck's row (its tilde
+  default), Clam Shell's "saves you". Docs only; the PC was on and free and nothing ran on it. No kit change, no pitfall.
+
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
