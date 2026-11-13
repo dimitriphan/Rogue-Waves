@@ -404,7 +404,8 @@ was left and why, and the PC test list: `docs/reports/CODE_REVIEW_FIXES_2026-11-
 Quality check 4 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §1). `98_SaveFuzz.cs` (`ROGUEWAVESMODE_SELFTEST` only)
 runs seven checks, F1-F7, over the campaign save's readers and writers; `99_SelfTest.cs` calls it on the boat after C0,
 before its campaign starts, and puts back every key it touches, so the self-test should read 155 (148 + 7).
-`Tools/cloud-check/save_fuzz.py` runs the same file here against the methods copied from this code. What it found, now
+`Tools/cloud-check/rules_check.py` runs the same file here against the rules files, compiled whole (until 2026-11-13
+`save_fuzz.py`, against methods copied out of this code). What it found, now
 guarded (a normal save never takes these paths):
 
 - `RWCampaign.Saved` cuts a route that leaves the chart back to its last charted map (one warning) and drops the

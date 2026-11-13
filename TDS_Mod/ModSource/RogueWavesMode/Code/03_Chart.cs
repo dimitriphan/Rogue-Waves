@@ -1,3 +1,4 @@
+// RULES FILE: no engine types. Compiled whole and run here by Tools/cloud-check/rules_check.py (RogueWavesMode/README.md).
 // The sea chart as data: a harbour, then ten rows of 3-4 map nodes, each with its links to the next row, its place on
 // the sea, its base map and its weather (docs/mode/SEA_CHART.md). An exact port of concept-tools/sea_chart.py: the same
 // xorshift32 PRNG and the same draws in the same order, so the host, every client and the script build one chart from

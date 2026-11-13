@@ -40,11 +40,11 @@
 //   Aura Gavel      one of the holder's own units (a Mob, the vessel too) drowns: the Gavel's bolt flies from it at the
 //                   nearest foe within the Gavel's reach, damage by the unit's level (Damage_Base, Damage2_Base..Damage5_Base)
 // No look of their own yet, as the Directions (pitfall #114).
-public static class RWTrinkets
+public static partial class RWTrinkets
 {
     public const float SpyglassRanged = 0.5f, SpyglassMelee = 0.25f, KnifeEach = 0.2f, KnifeAbove = 0.5f, OilcanEach = 0.05f;
     public const float TarEach = 0.01f, TarAfter = 4f, DuckEach = 0.2f, DuckMost = 0.6f, PunchOff = 0.2f;
-    public const int OysterPay = 1, StormTides = 5, StormPure = 20;
+    public const int OysterPay = 1, StormPure = 20;   // StormTides: 15_Limits.cs
     public const float StormTaken = 0.25f, OilskinEach = 0.1f, GullDamage = 0.2f, GullSpeed = 0.15f, GullLasts = 8f;
     public const float FlareEvery = 20f, FlareDamage = 15f, FlareReach = 8f;
     public const int CrateMost = 6, WhistleLast = 3;

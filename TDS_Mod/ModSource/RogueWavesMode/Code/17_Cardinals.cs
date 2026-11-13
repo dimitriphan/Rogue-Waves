@@ -27,9 +27,8 @@ public class RWCardinalDef
     public bool Wall;               // never offered to a vessel with no (Defense) wall (Spare Plank)
 }
 
-public static class RWCardinals
+public static partial class RWCardinals
 {
-    public const int Stacks = 6;     // numbered copies made at boot; buying past them still takes Pure Aura for no more effect
     public const float DenturesHeal = 0.2f;   // of the damage the vessel dealt, per stack
     public const int StockCost = 15;
     public const int Ramp = 3;       // C1: Pure Aura more for each Cardinal stack the run holds and each Trinket copy the buyer holds

@@ -50,5 +50,8 @@ def where(n):
 for l in errs + (warns if show_warnings else []):
     m = re.search(r'\((\d+),(\d+)\)', l)
     print((where(int(m.group(1))) + ' ' if m else '') + l.split(': ', 1)[-1])
+# The compiler never ran (no mono, or setup.sh not run in this container): that is not "0 errors".
+if p.returncode and not errs:
+    sys.exit('%s: the compiler did not run (exit %d). Run setup.sh first (README.md).\n%s' % (prefix, p.returncode, (p.stderr or p.stdout).strip()[:400]))
 print('%s: %d errors, %d warnings, %d bytes' % (prefix, len(errs), len(warns), len(code)))
 sys.exit(1 if errs or p.returncode else 0)
