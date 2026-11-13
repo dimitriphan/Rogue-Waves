@@ -21,13 +21,20 @@ works) > this file. **Every session** reads `docs/PLAN.md` Part C "Now" (state),
 
 | When | Use |
 | --- | --- |
-| Before opening a code PR | `/code-review high` on the diff, fix what it confirms; `max` only when Dimitri asks |
+| Before opening a code PR | `mattpocock-skills:code-review` against `origin/claude/phase-1-6lfnar`, fix what it confirms |
 | After a build or a big code change | `/simplify`, keeping every game number (`docs/reports/CODE_SIMPLIFICATION_2026-11-04.md`) |
 | A change that reads what another player sends, or a save file | `/security-review`; otherwise skip it (no secrets, no server) |
 | A failing self-test or PC-round bug | `docs/09_PITFALLS.md` by symptom first, then a debugging skill |
 | A chart for a report | `dataviz` |
 
+Plugin `mattpocock-skills` is on (`.claude/settings.json`); PR bodies use its `pr` inside ship-a-pr.
 Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't start the game. Drafts: `docs/skills/`.
+
+## Agent skills
+
+Read by Matt Pocock's skills (`setup-matt-pocock-skills`, 2026-11-13). Issue tracker: this repository's GitHub Issues,
+through the GitHub tools; state stays in `docs/PLAN.md` (`docs/agents/issue-tracker.md`). Triage labels: the five
+defaults (`docs/agents/triage-labels.md`). Domain docs: single-context (`docs/agents/domain.md`).
 
 ## Rules the code doesn't show
 
@@ -53,7 +60,7 @@ Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't
 | `docs/PLAN.md` | Part A coordinator rules, B phases, C state, D prompt templates | Part C "Now" |
 | `docs/PACK.md`, `docs/STYLE.md`, `docs/TEMP_ART.md`, `docs/art/`, `docs/themes/` | Packaging and versions; look and naming; temporary art; art made in ChatGPT; page and deck themes | before packaging; before drawing or naming; before bringing in ChatGPT art; before styling a page |
 | `docs/EXPANSION_SCOPE.md`, `docs/RESEARCH_GAPS.md` | Non-vessel systems and what is known about them; engine facts left to research | before non-vessel work |
-| `docs/mode/`, `docs/concepts/`, `docs/reports/`, `docs/spotlight/`, `docs/artifacts/` | Mode design pages; concept pages and art; dated, frozen reports; the feature spotlight page; every artifact, its source and how input comes back | the page the task names; reports' and artifacts' `README.md` |
+| `docs/mode/`, `docs/concepts/`, `docs/reports/`, `docs/spotlight/`, `docs/artifacts/`, `docs/agents/` | Mode design pages; concept pages and art; dated, frozen reports; the feature spotlight page; every artifact, its source and how input comes back; what Matt Pocock's skills read | the page the task names; reports' and artifacts' `README.md` |
 | `concept-tools/`, `StatusWidget/` | Python for concept pages, sprites, low-poly models, the sea chart; his phone widget (not the pack), which every thread reports its state to | each file's docstring; `StatusWidget/README.md` "When a thread reports" |
 
 ## Reading order by task
@@ -76,4 +83,4 @@ Plugins superpowers, engineering, handoff, cowork: off (token use). `/run` can't
 New knowledge goes where the next reader looks, once: an engine fact or error to kit `docs/09` (next free number in
 Part C) or its chapter; a vessel's numbers to its `DESIGN.md`, its build state to `IMPLEMENTATION_NOTES.md`; a kit
 change bumps the version in `TDS_Vessel_Creator/kit/README.md` and the file headers; a new folder or part adds a row
-above. Keep this file under 80 lines.
+above. Keep this file under 90 lines.

@@ -8,6 +8,7 @@ Names: since 2026-11-04 (Dimitri's word) the pack's Vessel Cardinals are **Trink
 
 | Report | Date | What |
 | --- | --- | --- |
+| `PC_FLOW_ROUND1_2026-11-12.md` | 2026-11-12 | PC round Flow_round1: the mode flow fix #196 proven, mouse 190/0, a held virtual gamepad 189/0 and 190/0 (2026-11-07: 121/2); the boat parks on the island with a pad, the stay vote keeps its line |
 | `TOKEN_AUDIT_2026-11-12.md` | 2026-11-12 | What every session loads, ranked ways to cut token use, and the "Now" trim |
 | `ART_REVIEW_ARGO_2026-11-08.md` | 2026-11-08 | ChatGPT's complete Argo delivery (19 files, his picked key and fall) brought in: every check passes, nothing held back; mirrored facings relit like the base vessels; asks: the attack's lean reads as a crouch, the open wrench reads as a fork, the ready-up face; scope 09's Look waits for his word |
 | `PC_ART_ROUND1_2026-11-07.md` | 2026-11-07 | PC round Art_round1 on `d8cddbd` (#173, ChatGPT's art): every vessel's build uses the new art, self-tests pass (Yossele 206/0, Spool 232/1 chance, Uloe 220/0, Argo 162/0, Foes 13/0); the Thread Heads' fix (#165) proven with the pack (232/0); the mode's flow regressed (121/2: B1's vote subtitle shows a map card's text, C3's boat never sails); his PC put back |

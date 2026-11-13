@@ -1,10 +1,10 @@
 #if ROGUEWAVESMODE_SELFTEST
 // Save and load fuzz (quality check 4, docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md §1): seeded random and damaged values
-// through the campaign save's readers and writers (06_Campaign.cs, 14_Run.cs, 04_World.cs names). The same cases run
+// through the campaign save's readers and writers (06_CampaignSave.cs, 14_RunSave.cs, 04_WorldNames.cs). The same cases run
 //   in game    RWTest, on the boat before its campaign starts, against the real save in memory (RWUtil.HoldFlush: no
 //              write reaches the disk until every key it touches is put back, then one flush)
-//   in cloud   TDS_Mod/Tools/cloud-check/save_fuzz.py, against a dictionary standing in for the save, with the methods
-//              copied from this part's code at each run
+//   in cloud   TDS_Mod/Tools/cloud-check/rules_check.py, against a dictionary standing in for the save, with this part's
+//              rules files compiled whole
 // One check per invariant, with the number of cases and the first case that broke it:
 //   F1 a player line round-trips (Encode, Decode); F2 a damaged player line never throws, never gives negative Pure Aura
 //   or an empty id; F3 the players and Cardinals round-trip through the save (RWRun.Save, Load); F4 a damaged player

@@ -15,12 +15,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public static class RWBoard
+public static partial class RWBoard
 {
-    // Stat ids: a card's numbers and the run's totals (RWPlayer.Run, saved) share them. Hoard is only ever a map's.
-    public const int Kills = 0, Built = 1, Gained = 2, Spent = 3, Drowned = 4, Lost = 5, Sold = 6, Leaks = 7, Missed = 8,
-        Drops = 9, Sent = 10, WinVotes = 11, PureSpent = 12, Mvps = 13, Hoard = 14, Maps = 15, Watched = 16, Stats = 17;
-    // Watched: the crew's leaks on the maps a player sailed, charged or not (the Voyage caption's count).
     public const float Seconds = 12f;            // ~12 s~ or until everyone presses Continue (§1)
     public const string Kind = "B";              // the Continue order
     public const string MapBoard = "M", VoyageBoard = "V";

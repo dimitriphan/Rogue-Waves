@@ -942,6 +942,8 @@ public static class RWAsk
         string pick = null;
         // The map vote: the whole chart beside the cards, its lit islands a second way to vote (docs/mode/CHART_NAVIGATION.md §3).
         bool view = viewChart != null && RWChartView.OpenVote(viewChart, viewHere, viewRow, viewCols, what, seconds);
+        if (viewChart != null && !view)
+            RWLog.Info("chart view: not drawn for " + title + " (" + (viewHere == null ? "no island here" : viewCols.Count == 0 ? "no columns" : !RWChartView.Canvasable() ? "no UI yet" : "see 'chart view' above") + "): the cards stand centred");
         yield return RWDialog.Ask(cards, title, sub, seconds, n => pick = n, view ? RWChartView.CardsAt : 0.5f);
         if (view) RWChartView.Picked(pick);
         running = false;

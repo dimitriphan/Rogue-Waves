@@ -58,7 +58,7 @@ Paste this once as the project's instructions, or keep it here and let `CLAUDE.m
 > 👍 on the PR) is the approval. **Fallback (Dimitri, 2026-11-07, for when his ChatGPT usage runs out):** no
 > review within an hour: comment `@codex review` once; still none an hour later, or Codex answers that its usage
 > limit is reached: tell Dimitri in the thread, and a Claude reviewer sub-agent (model: `docs/PROJECT_SETUP.md`
-> "Model per role", stand-in PR reviewer) runs `/code-review high` on the head, labelling findings P0-P3 under the same rules; the
+> "Model per role", stand-in PR reviewer) runs `mattpocock-skills:code-review` on the head, labelling findings P0-P3 under the same rules; the
 > thread fixes or answers each P0/P1, the same reviewer re-reviews the new head (no new Codex wait), the PR body notes
 > that Claude reviewed in Codex's place, and the thread merges once no P0/P1 is open and cloud-check is clean. After merging, message the threads of the PRs still open to re-merge the base. Pushing
 > straight to the base stays denied, and his OK is still needed for anything that touches his PC.
@@ -239,19 +239,17 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
 - **State (2026-11-12, base `0ef182b`):** Phases 1-3 done; Phase 4's foes and Phase 5's mode built and run in game.
   Parts: Argo 2.0.1, Yossele 0.2.0-dev, Spool 0.1.0-dev, Uloe 0.1.0-dev (ChatGPT's art since 2026-11-07, Argo
   redesigned; `docs/TEMP_ART.md`), `RogueWavesMode` 0.1.0-dev (main-menu button to end screen, sea chart, MVP board), the foes part;
-  kit 1.15. Last PC run: Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
-  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2, B1's stay-vote
-  subtitle and C3's boat never sailing: the game's gamepad mode, pitfall #177, fixed and compiled only). Before it: rounds 5 and 6 and the full test
+  kit 1.15. Last PC run: Flow_round1 (`PC_FLOW_ROUND1_2026-11-12.md`). Before it, Art_round1 on `d8cddbd` (`PC_ART_ROUND1_2026-11-07.md`: the new art in every build, vessel
+  self-tests pass, the Thread Heads' fix #165 proven with the whole pack; the mode's flow failed 121/2: the game's gamepad
+  mode, pitfall #177; fixed by #196, proven 2026-11-12 in `PC_FLOW_ROUND1_2026-11-12.md`, mouse 190/0, gamepad 190/0). Before it: rounds 5 and 6 and the full test
   (`PC_ROUND5_2026-11-06.md`, `PC_ROUND6_2026-11-06.md`, `PC_FULL_2026-11-06.md`). Built since, compiled here, not run
-  on the PC: ChatGPT's full Argo set (#179). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
+  on the PC: ChatGPT's full Argo set (#179), the chart verdict (Tab, overlaps), the mode's rules files (`rules_check.py` runs them here). ChatGPT reset 2026-11-08 (`docs/art/reset_2026-11-08/`), Spool's new
   sheets not in yet; Spool keeps its claws, Argo's Look is the rig worker and its five edits wait on ChatGPT
   (`docs/art/ARGO_EDITS_2026-11-12.md`). The Run Batch button for Claude Code (#188, #189). The sweep's tuned numbers in scope `04`, `08`,
   `10`, `12` keep their tildes until he takes them; his project-files scope copy and the Scope Editor (version 14) equal `1c236a7`
   (08's and 09's Look lines changed after, #193); his PC's copy waits for a PC round. Dated history:
   "Log" (newest last); reports: `docs/reports/README.md`.
-- **Next, in order:** a PC round with the mode flow's fix (the 2026-11-07 regression was the game's gamepad mode,
-  pitfall #177; the flow with the mouse, and once with a gamepad touched; a release blocker until it passes), #179's
-  Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
+- **Next, in order:** a PC round with #179's Argo art, and what rounds 5 and 6 left (`PC_ROUND5_2026-11-06.md`
   §7, `PC_ROUND6_2026-11-06.md` §6: COLOUR's panel, the elite stand-in, Spool's by-hand checks) and the full test's
   leftovers (`PC_FULL_2026-11-06.md` §6); the weather look's own round (`WEATHER_LOOK_2026-11-05.md` §4 items 2 and
   4-7); the map cards' freeze, which waits in Unity's render thread (round 6 §2).
@@ -1823,6 +1821,50 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   steers (the auto-sail and the Cove rest; with a pad the island counts as well as the dock); C3 and C5 measure from there,
   B1 and B4 leave the focused card (`RWTest.Unfocus`) before they read the subtitle; the flow logs the input mode first. Pitfall #177. Compiled here (cloud-check, `""` and `ROGUEWAVESMODE_SELFTEST,ROGUEWAVESMODE_SHOTS`
   clean); not run on the PC. Next free: kit chapter 25, kit 1.16, pitfall #178 (#177 this one).
+- **2026-11-12: the morning routine runs only after a merge day** (Dimitri: "set it to only after merge day"). The
+  scheduled task "Morning mod test run" keeps its daily 7 AM time but starts with one git check: if nothing outside
+  `docs/reports/` and `docs/PLAN.md` reached `claude/phase-1-6lfnar` in the last 25 hours, it stops with no batch, no PC
+  round and no post. The task's prompt was changed in place; the batch README's routine section says so. Docs only.
+- **2026-11-12: the chart verdict built** (Dimitri: "Chart design flows ok, but some UI overlaps in the photos. Tab
+  should open map as well. Sheet 1 WHERE NEXT should open the map automatically. All reads well."): §7's defaults
+  stand; Tab opens the chart beside M, WHERE NEXT? redraws the chart whenever it stands beside an empty half, and
+  three overlaps fixed (the legend over the frame, a long map name under its card, the dialog's title on the cards
+  after its slide). Compiled only (`RogueWavesMode/IMPLEMENTATION_NOTES.md`, `CHART_NAVIGATION.md` §7). ChatGPT art
+  stays in the backlog while he makes new art. No pitfall numbers used.
+- **2026-11-12: Tab in a map stays the MVP board's** (Dimitri's pick on #199's card, "MVP board in breaks"): Tab
+  opens the sea chart on the boat only; in a map, breaks included, it re-shows the last board and M opens the chart.
+  Compiled only.
+
+- **2026-11-12: PC round Flow_round1, the mode flow fix proven** (Dimitri: "1 ok"): #196 on the PC with the other five
+  parts at `d8cddbd`: mouse 190/0/0, a virtual gamepad held as the last device (test-only `ROGUEWAVESMODE_PAD`,
+  `96_Flow.cs`) 189/0/0 and 190/0/0 (2026-11-07: 121/2). With a pad the boat parks 0.1 from the island and arrives,
+  and the stay vote reads its own line after `RWTest.Unfocus`. Report `docs/reports/PC_FLOW_ROUND1_2026-11-12.md`;
+  cloud-check stubs gained `InputSystem.AddDevice`. Next free unchanged: kit chapter 25, kit 1.16, pitfall #178.
+- **2026-11-13: Matt Pocock's skills on for every thread** (Dimitri: "remove our own code-review and pr skills and use
+  matt's instead"): `.claude/settings.json` enables `mattpocock-skills@claude-plugins-official` (MIT; the hand-added
+  line had left the file invalid JSON, now fixed). `mattpocock-skills:code-review` replaces `/code-review high` in
+  `CLAUDE.md`, Part A "Merging", ship-a-pr and `docs/PROJECT_SETUP.md`; ship-a-pr keeps its steps and writes bodies
+  with `mattpocock-skills:pr`. Docs only.
+- **2026-11-13: Matt Pocock's skills set up for the repository** (Dimitri: `/setup-matt-pocock-skills`): the plugin's
+  setup steps, followed from its source at the marketplace's pinned commit `49dd158` because the cloud thread had not
+  loaded the plugin's commands. New `docs/agents/`: `issue-tracker.md` (GitHub Issues through the GitHub tools, no `gh`
+  in a cloud thread; state stays in Part C), `triage-labels.md` (the five default labels; not created on GitHub, the
+  tools here can't), `domain.md` (single-context; no `GLOSSARY.md` or `docs/adr/` yet, made when first needed).
+  `CLAUDE.md` gains "Agent skills" and its line limit goes from 80 to 90. Docs only.
+- **2026-11-13: the mode's rules run in the cloud** (Dimitri: `/improve-codebase-architecture`, then his pick "1: Pure
+  rules and cloud tests" of the review's six candidates): the mode's rules that name no engine type moved, word for
+  word, into six rules files as the other half of `partial` classes (`01_Names.cs`, `04_WorldNames.cs`,
+  `06_CampaignSave.cs`, `14_RunSave.cs`, `15_Limits.cs`, `21_DifficultyRules.cs`; `03_Chart.cs` was one already). New
+  `Tools/cloud-check/rules_check.py` compiles them whole with `rules/Standins.cs` in place of the game and runs the
+  save fuzz F1-F7, sixteen new rule checks R1-R16 (`rules/RulesTest.cs`) and the chart's parity with `sea_chart.py`,
+  which was a hand recipe. It replaces `save_fuzz.py`'s copying of methods by regex, which had stopped compiling on
+  base when `RWPlayer` gained `RWBoard.Stats` (#151's board; the old name still runs the new script). Ran here: 24
+  PASS, 0 FAIL; the mode compiled here plain and with its self-test defines, 0 errors. Not run on the PC: no number,
+  key or name changed, and the next PC round's mode self-test is its first run in game. Kit version text corrected
+  to 1.15 in `.claude/rules/mod-code.md` and `TDS_Mod/README.md`. The review's other candidates (the campaign's state
+  and save as one module, the vote flow and question format, the vessels' building start-up, one upgrade-tree model,
+  one build script with a kit drift check) and its one open finding (the shop counts the map two ways,
+  `18_Shop.cs:205` and `:368`) wait for his word. No pitfall or kit number used.
 
 - **2026-11-12: the morning batch** (Dimitri's daily routine): Haiku 5.5 over the 435 files changed since 2026-11-07,
   38 requests, $1.00 (`BATCH_CHECKS_2026-11-12.md`). Leads checked by hand in its thread: `Argosplash.png` keeps 2822

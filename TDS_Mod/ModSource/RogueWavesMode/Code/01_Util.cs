@@ -216,13 +216,8 @@ public static class RWUtil
 // The pack's keys in its own save folder, RWData.SaveFolder (kit docs/23 §2). Each carries "RW_" (rule 3), so a stock
 // tracker that searches every folder never reads one as its own (Player_Guid is also a stock key's name). Until
 // 0.1.0-dev they had no prefix: Migrate renames any old key it finds, once per save object, before anything reads them.
-public static class RWKeys
+public static partial class RWKeys
 {
-    public const string Seed = "RW_Campaign_Seed", Route = "RW_Campaign_Route", Retries = "RW_Campaign_Retries",
-        Replay = "RW_Campaign_Replay", Playing = "RW_Campaign_Playing", Choice = "RW_Campaign_Choice", Staged = "RW_Campaign_Staging",
-        Lobby = "RW_Campaign_Lobby", Stops = "RW_Campaign_Stops", After = "RW_Campaign_After",
-        StockWorld = "RW_Stock_World", StockGameplan = "RW_Stock_Gameplan",
-        Guid = "RW_Player_Guid", Device = "RW_Player_Device";
     public static readonly string[] Old = { "Campaign_Seed", "Campaign_Route", "Stock_World", "Stock_Gameplan", "Player_Guid", "Player_Device" };
     public static int Moved;                     // old keys renamed since launch (self-test, log)
     static object migrated;

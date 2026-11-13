@@ -1,12 +1,24 @@
 # RogueWavesMode: implementation notes
 
-**2026-11-12, the flow regression of 2026-11-07 (compiled here, not yet run in game; pitfall #177):** the two fails
+**2026-11-12, the chart verdict (compiled here, not yet run in game; `docs/mode/CHART_NAVIGATION.md` §7):** Tab opens
+the whole chart on the boat as M does (`RWChartView.Key`); in a map, breaks included, Tab stays the MVP board's (his
+pick after #199), and a press the chart answered is not the board's (`RWChartView.KeyFrame`). The map vote's chart is drawn again
+whenever WHERE NEXT? stands beside an empty half while its question is asked (`lastVote`). Overlaps: the legend's
+width counts 0.62 of a size a letter and shrinks to fit the frame ("Sailed" ran over its right line); a map card's
+name stands on the card's bottom rim and grows upward, two lines at size 5 (`FaceNameBottom`; a two-line name hung below the card); the
+dialog keeps its place while it is still up after the 3 s slide (to 8 s, no newer ask) (`UnplaceLater`, chart_round1's 021315 title over
+the cards). For the PC: Tab and M on the boat, in a break (Tab: the board), in a Tide and in chat; the after-win WHERE
+NEXT? with the chart beside it; a long map name on a card; by eye the legend's right end.
+
+**2026-11-12, the flow regression of 2026-11-07 (proven on the PC 2026-11-12: mouse 190/0, gamepad 189/0 and 190/0,
+`docs/reports/PC_FLOW_ROUND1_2026-11-12.md`; pitfall #177):** the two fails
 (B1's stay-vote line, C3's boat never sails) came from the game's gamepad mode, not from #163: with a gamepad as the last
 device the stock boat parks on a node's island, not at its dock, and dialogs show the focused card's line. The leader's
 auto-sail and the Cove rest now measure arrival where the game steers (`RWBoat.Off`, `Berthed`, `PadSteers`: with a pad
 the island counts as well as the dock, since four of the game's five panel flags are private); C3 says the input mode, C5 measures from the berth, B1 and B4 leave the focused
 card (`RWTest.Unfocus`, the game's Unhover) before they read the subtitle, and the flow logs the input mode first. For the PC: the flow with the mouse as the last device (it should pass as on 2026-11-06), and once with a
-gamepad touched before the start (C3 should arrive "a gamepad steers: the island itself").
+gamepad as the last device: the test-only define `ROGUEWAVESMODE_PAD` (`96_Flow.cs` `HoldPad`) adds a virtual gamepad and
+holds it as `Bl_Inputs.Lastdevice` for the whole launch (C3 should arrive "a gamepad steers: the island itself").
 
 **2026-11-06, the map card freeze (compiled here, not yet run in game; `docs/reports/PC_ROUND5_2026-11-06.md` §2.3,
 pitfall #175):** a map card's name text and badge are made once a launch and carried from one dialog to the next:
@@ -392,7 +404,8 @@ was left and why, and the PC test list: `docs/reports/CODE_REVIEW_FIXES_2026-11-
 Quality check 4 (`docs/reports/QUALITY_CHECKS_4-7_2026-11-05.md` §1). `98_SaveFuzz.cs` (`ROGUEWAVESMODE_SELFTEST` only)
 runs seven checks, F1-F7, over the campaign save's readers and writers; `99_SelfTest.cs` calls it on the boat after C0,
 before its campaign starts, and puts back every key it touches, so the self-test should read 155 (148 + 7).
-`Tools/cloud-check/save_fuzz.py` runs the same file here against the methods copied from this code. What it found, now
+`Tools/cloud-check/rules_check.py` runs the same file here against the rules files, compiled whole (until 2026-11-13
+`save_fuzz.py`, against methods copied out of this code). What it found, now
 guarded (a normal save never takes these paths):
 
 - `RWCampaign.Saved` cuts a route that leaves the chart back to its last charted map (one warning) and drops the
