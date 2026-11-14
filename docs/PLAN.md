@@ -1922,6 +1922,13 @@ README, versioned zips, and `docs/10` hand-off. Gate: release.
   Uloe, the mode and the foes compiled plain and with their self-test and other defines, 0 errors (the mode's two
   warnings are base's). Not run on the PC: each vessel's self-test is the proof. Kit 1.16 used; no pitfall number.
 
+- **2026-11-14: the morning batch** (Dimitri's daily routine; merges #206-#208): Haiku 5.5 over the 45 files changed
+  since 2026-11-13, 26 requests, $1.45 (`BATCH_CHECKS_2026-11-14.md`). Leads checked by hand in its thread: Argo's
+  `DESIGN.md` tree lines (D:65-69) join every tier to every next one, where `Argo/Code/02_Data.cs:286-409` links some
+  only one way (Barnacle Shot to Ironclad only); Spool's `DESIGN.md` D:91 still says no Stash upgrades are built; the
+  docs request hit max_tokens again. Not leads: Mantle Tap's "every few seconds" (tooltips carry no numbers), "SONAR"
+  (switched off). Docs only; the PC was on and free and nothing ran on it. No kit change, no pitfall.
+
 ### Decisions
 
 - 2026-11-05: Claude merges PRs into the base itself, merge commits, after the base is merged in and the cloud-check
